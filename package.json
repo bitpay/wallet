@@ -1,0 +1,24 @@
+{
+  "name": "cosign",
+  "version": "0.0.1",
+  "description": "A multisignature wallet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bitpay/cosign.git"
+  },
+  "keywords": [
+    "wallet",
+    "cosign",
+    "multisignature",
+    "bitcoin"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitpay/cosign/issues"
+  },
+  "homepage": "https://github.com/bitpay/cosign",
+  "devDependencies": {
+    "grunt-cli": "~0.1.13"
+  }
+}
