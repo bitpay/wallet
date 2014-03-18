@@ -3,22 +3,29 @@
 //Setting up route
 angular
   .module('cosign')
-  .config(function($routeProvider) {
-    $routeProvider.
-      when('signin', {
-        templateUrl: '/views/signin.html',
-        title: 'Signin'
+  .config(function($stateProvider, $urlRouterProvider) {
+    // For unmatched routes:
+    $urlRouterProvider.otherwise('/');
+
+    // States for cosign
+    $stateProvider
+      .state('home', {
+        url: '/',
+        templateUrl: 'views/home.html'
       })
-      .otherwise({
-        templateUrl: '/views/404.html',
-        title: 'Error'
+      .state('signin', {
+        url: '/signin',
+        templateUrl: 'views/signin.html'
+      })
+      .state('404', {
+        url: '/404',
+        templateUrl: 'views404.hmtl'
       });
   });
 
 //Setting HTML5 Location Mode
 angular
-  .module('insight')
+  .module('cosign')
   .config(function($locationProvider) {
-    $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
   });

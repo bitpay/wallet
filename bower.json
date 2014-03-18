@@ -3,10 +3,11 @@
   "keywords": [
     "cosign",
     "wallet",
-    "multisignaure"
+    "multisignature"
   ],
   "dependencies": {
     "angular": "~1.2.x",
-    "angular-route": "~1.2.x"
+    "angular-ui-router": "~0.2.10",
+    "angular-bootstrap": "~0.10.0"
   }
 }
