@@ -3,23 +3,14 @@
 //Setting up route
 angular
   .module('cosign')
-  .config(function($stateProvider, $urlRouterProvider) {
-    // For unmatched routes:
-    $urlRouterProvider.otherwise('/');
+  .config(function($routeProvider) {
 
-    // States for cosign
-    $stateProvider
-      .state('home', {
-        url: '/',
-        templateUrl: 'views/home.html'
+    $routeProvider
+      .when('/signin', {
+        templateUrl: 'signin.html' 
       })
-      .state('signin', {
-        url: '/signin',
-        templateUrl: 'views/signin.html'
-      })
-      .state('404', {
-        url: '/404',
-        templateUrl: 'views404.hmtl'
+      .when('/home', {
+        templateUrl: 'home.html'
       });
   });
 
@@ -27,5 +18,7 @@ angular
 angular
   .module('cosign')
   .config(function($locationProvider) {
-    $locationProvider.hashPrefix('!');
+    $locationProvider
+      .html5Mode(false);
+      //.hashPrefix('!');
   });
