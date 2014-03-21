@@ -15,7 +15,7 @@ describe('Network service', function() {
   it('should return 2', function() {
     network.f().should.equal(2);
   });
-  it('should', function() {});
+  it('can start a tx signing request', function() {});
   it('should', function() {});
 
 });
