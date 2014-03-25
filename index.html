@@ -9,15 +9,37 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <header>cosign</header>
-    <a href="#signin">Signin</a>
-    <a href="#home">Home</a>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="banner" ng-controller="HeaderController" ng-init="init()">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./index.html">Cosign</a>
+        </div>
+        <div class="collapse navbar-collapse" ng-if="$root.isLogged">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="" ng-click="signout()"><i class="glyphicon glyphicon-log-out"></i> Signout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-    <div ng-view></div>
+    <div class="container">
+      <div ng-view></div>
+    </div>
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
-      <h1>Signin</h1>
+      <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="form-control" placeholder="Wallet ID" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
     </script>
 
     <script type="text/ng-template" id="home.html">
@@ -30,7 +52,6 @@
 
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
-
     <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>
@@ -39,6 +60,8 @@
     <script src="js/config.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
+
+    <script src="js/controllers/header.js"></script>
 
     <script src="js/init.js"></script>
   </body>
