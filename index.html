@@ -9,28 +9,19 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="banner" ng-controller="HeaderController" ng-init="init()">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="./index.html">Cosign</a>
-        </div>
-        <div class="collapse navbar-collapse" ng-if="$root.isLogged">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="" ng-click="signout()"><i class="glyphicon glyphicon-log-out"></i> Signout</a></li>
-          </ul>
-        </div>
+  <div class="container">
+    <div class="header" data-ng-init="init()" data-ng-controller="HeaderController">
+      <div class="page-header">
+        <h1>cosign</h1>
       </div>
+      <ul class="nav nav-pills">
+        <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" data-ng-class="{active: isActive(item)}">
+          <a href="{{item.link}}">{{item.title}}</a>
+        </li>
+      </ul>
     </div>
-
-    <div class="container">
-      <div ng-view></div>
-    </div>
+    <div ng-view></div>
+  </div>
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
@@ -43,11 +34,30 @@
     </script>
 
     <script type="text/ng-template" id="home.html">
-      <h1>home</h1>
+      <div class="home" data-ng-controller="HomeController">
+      <h2>{{title}}</h2>
+      </div>
+    </script>
+    <script type="text/ng-template" id="transactions.html">
+      <div class="transactions" data-ng-controller="TransactionsController">
+      <h2>{{title}}</h2>
+      </div>
+   </script>
+    <script type="text/ng-template" id="send.html">
+      <div class="send" data-ng-controller="SendController">
+      <h2>{{title}}</h2>
+      </div>
+    </script>
+    <script type="text/ng-template" id="backup.html">
+      <div class="backup" data-ng-controller="BackupController">
+      <h2>{{title}}</h2>
+      </div>
     </script>
 
     <script type="text/ng-template" id="404.html">
-      <h1>404</h1>
+      <h2 class="text-center">404</h2>
+      <h3 class="text-center">Page not found</h3>
+      <p class="text-center"><a href="#/">go back...</a></p>
     </script>
 
     <script src="lib/angular/angular.min.js"></script>
@@ -62,6 +72,10 @@
     <script src="js/filters.js"></script>
 
     <script src="js/controllers/header.js"></script>
+    <script src="js/controllers/home.js"></script>
+    <script src="js/controllers/transactions.js"></script>
+    <script src="js/controllers/send.js"></script>
+    <script src="js/controllers/backup.js"></script>
 
     <script src="js/init.js"></script>
   </body>
