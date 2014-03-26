@@ -4,6 +4,8 @@ angular.module('cosign.transactions').controller('TransactionsController',
   function($scope, $rootScope, $location) {
     $scope.title = 'Transactions';
 
+    $scope.oneAtATime = true;
+
     $scope.txsinput = [
     {
       fromAddr: "n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb",
