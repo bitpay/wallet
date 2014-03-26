@@ -7,7 +7,8 @@ angular.module('cosign',[
   'cosign.home',
   'cosign.transactions',
   'cosign.send',
-  'cosign.backup'
+  'cosign.backup',
+  'monospaced.qrcode'
 ]);
 
 angular.module('cosign.header', []);
