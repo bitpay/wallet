@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>cosign - Multisignature Wallet</title>
+    <title>Cosign - Multisignature Wallet</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
@@ -34,12 +34,42 @@
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
-      <form class="form-signin" role="form">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Wallet ID" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+      <div class="text-center" ng-controller="SigninController">
+        <div ng-if="!peerReady">Opening peers...</div>
+        <div ng-if="peerReady">
+          <h1>Join or Create a New Connection</h1>
+          <div class="col-lg-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="join(connectionId)"><i class="glyphicon glyphicon-log-in"></i> Join</button>
+              </span>
+            </div>
+            <hr>
+            <button class="btn btn-primary btn-block" ng-click="join()"><i class="glyphicon glyphicon-plus"></i> Create a New Connection</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="join.html">
+      <div ng-controller="JoinController" ng-init="init()">
+        <h1>Joined to <span class="text-muted">{{connectionId}}</span></h1>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Cosigners ({{cosigners.length}}/5)</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <li ng-repeat="cosigner in cosigners">
+                <span ng-if="cosigner == $root.peerId">You ({{$root.peerId}})</span>
+                <span ng-if="cosigner != $root.peerId">{{cosigner}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <a href="#/home">Skip</a>
+      </div>
     </script>
 
     <script type="text/ng-template" id="home.html">
@@ -54,14 +84,18 @@
     <script src="lib/angular-route/angular-route.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="lib/peerjs/peer.js"></script>
+    <script src="lib/peerjs/peer.min.js"></script>
 
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
 
+    <script src="js/services/network.js"></script>
+
     <script src="js/controllers/header.js"></script>
+    <script src="js/controllers/signin.js"></script>
+    <script src="js/controllers/join.js"></script>
 
     <script src="js/init.js"></script>
   </body>
