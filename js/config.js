@@ -7,16 +7,27 @@ angular
 
     $routeProvider
       .when('/', {
-        templateUrl: 'home.html' 
-      }).when('/transactions', {
-        templateUrl: 'transactions.html' 
-      }).when('/send', {
-        templateUrl: 'send.html' 
-      }).when('/backup', {
-        templateUrl: 'backup.html' 
-      }).when('/signin', {
+        templateUrl: 'signin.html'
+      })
+      .when('/signin', {
         templateUrl: 'signin.html' 
-      }).otherwise({
+      })
+      .when('/home', {
+        templateUrl: 'home.html'
+      })
+      .when('/join/:id', {
+        templateUrl: 'join.html'
+      })
+      .when('/transactions', {
+        templateUrl: 'transactions.html' 
+      })
+      .when('/send', {
+        templateUrl: 'send.html' 
+      })
+      .when('/backup', {
+        templateUrl: 'backup.html' 
+      })
+      .otherwise({
         templateUrl: '404.html'
       });
   });
