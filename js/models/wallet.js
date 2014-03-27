@@ -2,6 +2,8 @@
 var imports = require('soop').imports();
 var bitcore = require('bitcore');
 var BIP32   = bitcore.BIP32;
+var Address = bitcore.Address;
+var Script  = bitcore.Script;
 var coinUtil= bitcore.util;
 
 var Storage = imports.Storage || require('./Storage');
@@ -24,7 +26,7 @@ function Wallet(opts) {
   this.network = opts.network === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
 
-  this.neededCosigners = opts.neededCosigners || 3;
+  this.requiredCosigners = opts.neededCosigners || 3;
   this.totalCosigners = opts.totalCosigners || 5;
 
   this.id = opts.id || Wallet.getRandomId();
@@ -32,6 +34,9 @@ function Wallet(opts) {
   this.dirty = 1;
   this.cosignersWallets = [];
   this.bip32 = new BIP32(opts.bytes ||  this.network.name);
+
+  this.changeAddress
+
 }
 
 
@@ -70,7 +75,7 @@ Wallet.read = function (id, passphrase) {
 
   var w = new Wallet(config);
 
-  w.neededCosigners = data.neededCosigners;
+  w.requiredCosigners = data.neededCosigners;
   w.totalCosigners = data.totalCosigners;
   w.cosignersWallets = data.cosignersExtPubKeys.map( function (pk) { 
     return new Wallet({bytes:pk, network: w.network.name});
@@ -85,7 +90,7 @@ Wallet.prototype.serialize = function () {
   return JSON.stringify({
     id: this.id,
     network: this.network.name,
-    neededCosigners: this.neededCosigners,
+    requiredCosigners: this.neededCosigners,
     totalCosigners: this.totalCosigners,
     cosignersExtPubKeys: this.cosignersWallets.map( function (b) { 
       return b.getExtendedPubKey(); 
@@ -127,11 +132,22 @@ Wallet.prototype.getExtendedPubKey = function () {
 };
 
 
+Wallet.prototype.haveAllRequiredPubKeys = function () {
+  return this.registeredCosigners() === this.totalCosigners;
+};
+
+Wallet.prototype._checkKeys = function() {
+
+  if (!this.haveAllRequiredPubKeys())
+      throw new Error('dont have required keys yet');
+};
+
+
 //  should receive an array also?
 Wallet.prototype.addCosignerExtendedPubKey = function (newEpk) {
 
-  if (this.haveAllNeededPubKeys())
-      throw new Error('already have all needed key:' + this.totalCosigners);
+  if (this.haveAllRequiredPubKeys())
+      throw new Error('already have all required key:' + this.totalCosigners);
 
   if (this.getExtendedPubKey() === newEpk)
     throw new Error('already have that key (self kehy)');
@@ -147,18 +163,47 @@ Wallet.prototype.addCosignerExtendedPubKey = function (newEpk) {
 };
 
 
-Wallet.prototype.haveAllNeededPubKeys = function () {
-  return this.registeredCosigners() === this.totalCosigners;
+Wallet.prototype.getPubKey = function (index,isChange) {
+
+  var path = (isChange ? CHANGE_BRANCH : PUBLIC_BRANCH) + index;
+  var bip32 = this.bip32.derive(path);
+  var pub   = bip32.eckey.public;
+  return pub;
 };
 
 
-Wallet.prototype.getChangeAddress = function (index) {
+Wallet.prototype.getAddress = function (index, isChange) {
+  this._checkKeys();
 
-  //index can be 0, 1, 2, etc.
-  if (! this.haveAllNeededPubKeys() ) 
-      throw new Error('cosigners pub key missing');
+  var pubkey = [];
+  var l = this.cosignersWallets.length;
+  for(var i=0; i<l; i++) {
+    pubkey[i] = this.cosignersWallets[i].getPubKey(index, isChange);
+  }
+
+  var version = this.network.addressScript;
+  var script  = Script.createMultisig(this.requiredCosigners, pubkey);
+  var buf     = script.buffer;
+  var hash    = coinUtil.sha256ripe160(buf);
+  var addr    = new Address(version, hash);
+  var addrStr = addr.as('base58');
+  return addrStr;
 };
 
+Wallet.prototype.createAddress = function(isChange) {
+
+  var ret =  
+    this.getAddress(isChange ? this.changeAddressIndex : this.addressIndex, isChange);
+
+  if (isChange) 
+    this.addressIndex++;
+  else 
+    this.changeAddressIndex++;
+
+  return ret;
+
+};
+  
 
 // Input: Bitcore's Transaction, sign with ownPK
 // return partially signed or fully signed tx

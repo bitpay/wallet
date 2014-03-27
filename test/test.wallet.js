@@ -6,6 +6,7 @@ var bitcore = bitcore || require('../node_modules/bitcore');
 
 var cosign = cosign || {};
 
+var Address = bitcore.Address;
 var fakeStorage = require('./FakeStorage');
 var Wallet = cosign.Wallet || require('soop').load('../js/models/Wallet', {Storage: fakeStorage});
  
@@ -21,7 +22,7 @@ var createW = function () {
   var cosigners = [];
   for(var i=0; i<4; i++) {
     var c = new Wallet(config);
-    w.haveAllNeededPubKeys().should.equal(false);
+    w.haveAllRequiredPubKeys().should.equal(false);
 
     w.addCosignerExtendedPubKey(c.getExtendedPubKey());
     cosigners.push(c);
@@ -71,9 +72,9 @@ describe('Wallet model', function() {
     should.exist(w2);
 
     w2.registeredCosigners().should.equal(1); 
-    w2.haveAllNeededPubKeys().should.equal(false);
+    w2.haveAllRequiredPubKeys().should.equal(false);
 
-    w2.getChangeAddress.bind(0).should.throw();
+    w2.getAddress.bind(false).should.throw();
   });
 
   it('should add and check when adding shared pub keys', function () {
@@ -81,7 +82,7 @@ describe('Wallet model', function() {
     var w = k.w;
     var cosigners = k.cosigners;
 
-    w.haveAllNeededPubKeys().should.equal(true);
+    w.haveAllRequiredPubKeys().should.equal(true);
     w.addCosignerExtendedPubKey.bind(w.getExtendedPubKey()).should.throw();
     w.addCosignerExtendedPubKey.bind(cosigners[0].getExtendedPubKey()).should.throw();
     w.addCosignerExtendedPubKey.bind((new Wallet(config)).getExtendedPubKey()).should.throw();
@@ -98,11 +99,27 @@ describe('Wallet model', function() {
     w.store.bind().should.throw();
 
     var w2 = Wallet.read(ID);
-    w2.haveAllNeededPubKeys().should.equal(true);
+    w2.haveAllRequiredPubKeys().should.equal(true);
     w2.addCosignerExtendedPubKey.bind(w.getExtendedPubKey()).should.throw();
     w2.addCosignerExtendedPubKey.bind(cosigners[0].getExtendedPubKey()).should.throw();
     w2.addCosignerExtendedPubKey.bind((new Wallet(config)).getExtendedPubKey()).should.throw();
  
+  });
+
+
+  it('should create some p2sh address', function () {
+    var k = createW();
+    var w = k.w;
+
+    for(var isChange=0; isChange<2; isChange++) {
+      for(var i=0; i<5; i++) {
+        var addr = w.getAddress(i,isChange);
+        var a = new Address(addr);
+        a.isValid().should.equal(true);
+        a.isScript().should.equal(true);
+        a.network().name.should.equal('livenet');
+      }
+    }
   });
 
 });
