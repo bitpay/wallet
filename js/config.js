@@ -18,6 +18,15 @@ angular
       .when('/join/:id', {
         templateUrl: 'join.html'
       })
+      .when('/transactions', {
+        templateUrl: 'transactions.html' 
+      })
+      .when('/send', {
+        templateUrl: 'send.html' 
+      })
+      .when('/backup', {
+        templateUrl: 'backup.html' 
+      })
       .otherwise({
         templateUrl: '404.html'
       });
