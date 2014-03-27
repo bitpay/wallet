@@ -24,7 +24,7 @@ var createW = function () {
     var c = new Wallet(config);
     w.haveAllRequiredPubKeys().should.equal(false);
 
-    w.addCosignerExtendedPubKey(c.getExtendedPubKey());
+    w.addCosignerExtendedPubKey(c.getMasterExtendedPubKey());
     cosigners.push(c);
   }
 
@@ -50,21 +50,21 @@ describe('Wallet model', function() {
     var w2 = new Wallet(config);
     should.exist(w2);
 
-    w2.getExtendedPrivKey.bind().should.throw();
+    w2.getMasterExtendedPrivKey.bind().should.throw();
   });
 
 
   it('should create an master priv key', function () {
     var w2 = new Wallet(config);
     should.exist(w2);
-    should.exist(w2.getExtendedPrivKey());
+    should.exist(w2.getMasterExtendedPrivKey());
   });
 
 
   it('should create an master pub key', function () {
     var w2 = new Wallet(config);
     should.exist(w2);
-    should.exist(w2.getExtendedPubKey());
+    should.exist(w2.getMasterExtendedPubKey());
   });
 
   it('should fail to generate shared pub keys wo extended key', function () {
@@ -83,9 +83,9 @@ describe('Wallet model', function() {
     var cosigners = k.cosigners;
 
     w.haveAllRequiredPubKeys().should.equal(true);
-    w.addCosignerExtendedPubKey.bind(w.getExtendedPubKey()).should.throw();
-    w.addCosignerExtendedPubKey.bind(cosigners[0].getExtendedPubKey()).should.throw();
-    w.addCosignerExtendedPubKey.bind((new Wallet(config)).getExtendedPubKey()).should.throw();
+    w.addCosignerExtendedPubKey.bind(w.getMasterExtendedPubKey()).should.throw();
+    w.addCosignerExtendedPubKey.bind(cosigners[0].getMasterExtendedPubKey()).should.throw();
+    w.addCosignerExtendedPubKey.bind((new Wallet(config)).getMasterExtendedPubKey()).should.throw();
   });
 
   it('show be able to store and retrieve', function () {
@@ -100,14 +100,14 @@ describe('Wallet model', function() {
 
     var w2 = Wallet.read(ID);
     w2.haveAllRequiredPubKeys().should.equal(true);
-    w2.addCosignerExtendedPubKey.bind(w.getExtendedPubKey()).should.throw();
-    w2.addCosignerExtendedPubKey.bind(cosigners[0].getExtendedPubKey()).should.throw();
-    w2.addCosignerExtendedPubKey.bind((new Wallet(config)).getExtendedPubKey()).should.throw();
+    w2.addCosignerExtendedPubKey.bind(w.getMasterExtendedPubKey()).should.throw();
+    w2.addCosignerExtendedPubKey.bind(cosigners[0].getMasterExtendedPubKey()).should.throw();
+    w2.addCosignerExtendedPubKey.bind((new Wallet(config)).getMasterExtendedPubKey()).should.throw();
  
   });
 
 
-  it('should create some p2sh address', function () {
+  it('should create some p2sh addresses', function () {
     var k = createW();
     var w = k.w;
 

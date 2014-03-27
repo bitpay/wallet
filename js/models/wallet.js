@@ -14,6 +14,10 @@ var storage = Storage.default();
 /*
  * This follow Electrum convetion, as described on
  * https://bitcointalk.org/index.php?topic=274182.0
+ *
+ * We should probably adapt the next standard once its ready as discussed at:
+ * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
+ *
  */
 
 var PUBLIC_BRANCH = 'm/0/';
@@ -26,7 +30,7 @@ function Wallet(opts) {
   this.network = opts.network === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
 
-  this.requiredCosigners = opts.neededCosigners || 3;
+  this.requiredCosigners = opts.requiredCosigners || 3;
   this.totalCosigners = opts.totalCosigners || 5;
 
   this.id = opts.id || Wallet.getRandomId();
@@ -35,7 +39,8 @@ function Wallet(opts) {
   this.cosignersWallets = [];
   this.bip32 = new BIP32(opts.bytes ||  this.network.name);
 
-  this.changeAddress
+  this.changeAddressIndex=0;
+  this.addressIndex=0;
 
 }
 
@@ -93,9 +98,9 @@ Wallet.prototype.serialize = function () {
     requiredCosigners: this.neededCosigners,
     totalCosigners: this.totalCosigners,
     cosignersExtPubKeys: this.cosignersWallets.map( function (b) { 
-      return b.getExtendedPubKey(); 
+      return b.getMasterExtendedPubKey(); 
     }),
-    priv: this.getExtendedPrivKey(),
+    priv: this.getMasterExtendedPrivKey(),
   });
 };
 
@@ -118,7 +123,7 @@ Wallet.prototype.registeredCosigners = function () {
   return 1 + this.cosignersWallets.length;
 };
 
-Wallet.prototype.getExtendedPrivKey = function () {
+Wallet.prototype.getMasterExtendedPrivKey = function () {
 
   if (!this.bip32) 
       throw new Error('no priv key defined on the wallet');
@@ -127,7 +132,7 @@ Wallet.prototype.getExtendedPrivKey = function () {
 };
 
 
-Wallet.prototype.getExtendedPubKey = function () {
+Wallet.prototype.getMasterExtendedPubKey = function () {
   return this.bip32.extended_public_key_string();
 };
 
@@ -149,12 +154,12 @@ Wallet.prototype.addCosignerExtendedPubKey = function (newEpk) {
   if (this.haveAllRequiredPubKeys())
       throw new Error('already have all required key:' + this.totalCosigners);
 
-  if (this.getExtendedPubKey() === newEpk)
-    throw new Error('already have that key (self kehy)');
+  if (this.getMasterExtendedPubKey() === newEpk)
+    throw new Error('already have that key (self key)');
 
 
   this.cosignersWallets.forEach(function(b){
-    if (b.getExtendedPubKey() === newEpk)
+    if (b.getMasterExtendedPubKey() === newEpk)
       throw new Error('already have that key');
   });
 
@@ -172,17 +177,53 @@ Wallet.prototype.getPubKey = function (index,isChange) {
 };
 
 
-Wallet.prototype.getAddress = function (index, isChange) {
+
+
+Wallet.prototype.getCosignersPubKeys = function (index, isChange) {
   this._checkKeys();
 
-  var pubkey = [];
+  var pubKeys = [];
   var l = this.cosignersWallets.length;
   for(var i=0; i<l; i++) {
-    pubkey[i] = this.cosignersWallets[i].getPubKey(index, isChange);
+    pubKeys[i] = this.cosignersWallets[i].getPubKey(index, isChange);
   }
 
+  return pubKeys;
+};
+
+
+Wallet.prototype.getCosignersSortedPubKeys = function(index, isChange) {
+  var self = this;
+  var pubKeys = self.getCosignersPubKeys(index, isChange);
+
+  //sort lexicographically, i.e. as strings, i.e. alphabetically
+  // From https://github.com/ryanxcharles/treasure/blob/master/treasure.js
+  return pubKeys.sort(function(buf1, buf2) {
+    var len = buf1.length > buf1.length ? buf1.length : buf2.length;
+    for (var i = 0; i <= len; i++) {
+      if (buf1[i] === undefined)
+        return -1; //shorter strings come first
+      if (buf2[i] === undefined)
+        return 1;
+      if (buf1[i] < buf2[i])
+        return -1;
+      if (buf1[i] > buf2[i])
+        return 1;
+      else
+        continue;
+    }
+    return 0;
+  });
+};
+
+
+
+Wallet.prototype.getAddress = function (index, isChange) {
+
+  var pubKeys = this.getCosignersSortedPubKeys(index, isChange);
+
   var version = this.network.addressScript;
-  var script  = Script.createMultisig(this.requiredCosigners, pubkey);
+  var script  = Script.createMultisig(this.requiredCosigners, pubKeys);
   var buf     = script.buffer;
   var hash    = coinUtil.sha256ripe160(buf);
   var addr    = new Address(version, hash);
