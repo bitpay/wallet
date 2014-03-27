@@ -2,7 +2,7 @@
 
 angular.module('cosign',[
   'ngRoute',
-  'ui.bootstrap',
+  'mm.foundation',
   'cosign.header',
   'cosign.home',
   'cosign.transactions',
