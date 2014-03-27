@@ -1,15 +1,16 @@
 'use strict';
-var imports = require('soop').imports();
-var bitcore = require('bitcore');
-var BIP32   = bitcore.BIP32;
-var Address = bitcore.Address;
-var Script  = bitcore.Script;
-var coinUtil= bitcore.util;
+var imports     = require('soop').imports();
+var bitcore     = require('bitcore');
+var BIP32       = bitcore.BIP32;
+var Address     = bitcore.Address;
+var Script      = bitcore.Script;
+var coinUtil    = bitcore.util;
+var Transaction = bitcore.Transaction;
 
-var Storage = imports.Storage || require('./Storage');
-var log     = imports.log || console.log;
+var Storage     = imports.Storage || require('./Storage');
+var log         = imports.log || console.log;
 
-var storage = Storage.default();
+var storage     = Storage.default();
 
 /*
  * This follow Electrum convetion, as described on
@@ -220,6 +221,12 @@ Wallet.prototype.getCosignersSortedPubKeys = function(index, isChange) {
 
 Wallet.prototype.getAddress = function (index, isChange) {
 
+  if ( (isChange && index > this.changeAddressIndex)
+      || (!isChange && index > this.addressIndex)) {
+    log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
+    throw new Error('index out of bound');
+  }
+
   var pubKeys = this.getCosignersSortedPubKeys(index, isChange);
 
   var version = this.network.addressScript;
@@ -244,7 +251,26 @@ Wallet.prototype.createAddress = function(isChange) {
   return ret;
 
 };
-  
+
+Wallet.prototype.getAddresses = function() {
+  var ret = [];
+
+  for (var i=0; i<this.changeAddressIndex; i++) {
+    ret.push(this.getAddress(i,true));
+  }
+
+  for (var i=0; i<this.addressIndex; i++) {
+    ret.push(this.getAddress(i,false));
+  }
+  return ret;
+};
+
+Wallet.prototype.createTx = function(utxos,outs) {
+  var opts = {
+    remainderAddress: this.createAddress(1),
+  };
+  return Transaction.create(utxos, outs, opts);
+};
 
 // Input: Bitcore's Transaction, sign with ownPK
 // return partially signed or fully signed tx

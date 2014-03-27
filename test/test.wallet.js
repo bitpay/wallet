@@ -113,12 +113,32 @@ describe('Wallet model', function() {
 
     for(var isChange=0; isChange<2; isChange++) {
       for(var i=0; i<5; i++) {
-        var addr = w.getAddress(i,isChange);
+        var addr = w.createAddress(isChange);
         var a = new Address(addr);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
       }
+    }
+  });
+
+  it('should return wallet addresses', function () {
+    var k = createW();
+    var w = k.w;
+
+
+    var a = w.getAddresses();
+    a.length.should.equal(0);
+
+    for(var isChange=0; isChange<2; isChange++) 
+      for(var i=0; i<6; i++) 
+         w.createAddress(isChange);
+ 
+    var as = w.getAddresses();
+    as.length.should.equal(12);
+    for(var i in as) {
+      var a = new Address(as[i]);
+      a.isValid().should.equal(true);
     }
   });
 
