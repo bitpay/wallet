@@ -54,7 +54,7 @@
       <div class="transactions" data-ng-controller="TransactionsController">
       <h2>{{title}}</h2>
       <div class="row">
-        <div class="col-xs-6">
+        <div class="large-6 columns">
           <h3>Input</h3>
           <accordion close-others="oneAtATime">
             <accordion-group ng-repeat="tx in txsinput">
@@ -69,7 +69,7 @@
             </accordion-group>
           </accordion> 
         </div>
-        <div class="col-xs-6">
+        <div class="large-6 columns">
           <h3>Output</h3>
           <accordion close-others="oneAtATime">
             <accordion-group ng-repeat="tx in txsoutput">
@@ -87,34 +87,18 @@
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
       <h2>{{title}}</h2>
-        <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <label for="address" class="col-sm-2 control-label">To:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="address" placeholder="Send to">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="amount" class="col-sm-2 control-label">Amount:</label>
-            <div class="col-sm-10">
-              <div class="row">
-              <div class="col-xs-6">
-                <input type="text" class="form-control" id="amount" placeholder="Amount">
-              </div>
-              <div class="col-xs-6">
-                <select class="form-control">
-                  <option>mBTC</option>
-                  <option>BTC</option>
-                </select>
-              </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default">send</button>
-            </div>
-          </div>
+        <form>
+          <label for="address">To
+            <input type="text" id="address" placeholder="Send to">
+          </label>
+          <label for="amount">Amount
+            <input type="text" id="amount" placeholder="Amount">
+            <select class="form-control">
+              <option>mBTC</option>
+              <option>BTC</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-default">send</button>
         </form>
       </div>
     </script>
