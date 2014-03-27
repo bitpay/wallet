@@ -6,6 +6,7 @@ var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
 var Transaction = bitcore.Transaction;
+var buffertools = bitcore.buffertools;
 
 var Storage     = imports.Storage || require('./Storage');
 var log         = imports.log || console.log;
@@ -47,7 +48,7 @@ function Wallet(opts) {
 
 
 Wallet.getRandomId = function () {
-  return coinUtil.generateNonce().toString('hex');
+  return buffertools.toHex(coinUtil.generateNonce());
 };
 
 Wallet.decrypt = function (passphrase, encPayload) {
@@ -265,9 +266,9 @@ Wallet.prototype.getAddresses = function() {
   return ret;
 };
 
-Wallet.prototype.createTx = function(utxos,outs) {
+Wallet.prototype.createTx = function(utxos,outs, changeAddress) {
   var opts = {
-    remainderAddress: this.createAddress(1),
+    remainderAddress: changeAddress || this.createAddress(1),
   };
   return Transaction.create(utxos, outs, opts);
 };
