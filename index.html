@@ -9,28 +9,19 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="banner" ng-controller="HeaderController" ng-init="init()">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="./index.html">Cosign</a>
-        </div>
-        <div class="collapse navbar-collapse" ng-if="$root.isLogged">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="" ng-click="signout()"><i class="glyphicon glyphicon-log-out"></i> Signout</a></li>
-          </ul>
-        </div>
+  <div class="container">
+    <div class="header" data-ng-init="init()" data-ng-controller="HeaderController">
+      <div class="page-header">
+        <h1>cosign</h1>
       </div>
+      <ul class="nav nav-pills">
+        <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" data-ng-class="{active: isActive(item)}">
+          <a href="{{item.link}}">{{item.title}}</a>
+        </li>
+      </ul>
     </div>
-
-    <div class="container">
-      <div ng-view></div>
-    </div>
+    <div ng-view></div>
+  </div>
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
@@ -42,26 +33,128 @@
       </form>
     </script>
 
+    <!-- HOME -->
     <script type="text/ng-template" id="home.html">
-      <h1>home</h1>
+      <div class="home" data-ng-controller="HomeController">
+      <h2>{{title}}</h2>
+
+      <accordion close-others="oneAtATime">
+        <accordion-group ng-repeat="addr in addrs">
+          <accordion-heading>
+            {{addr.addrStr}}
+          </accordion-heading>
+          <qrcode size="160" data="{{addr.addrStr}}"></qrcode>
+        </accordion-group>
+      </accordion>
+      </div>
     </script>
 
+    <!-- TRANSACTIONS -->
+    <script type="text/ng-template" id="transactions.html">
+      <div class="transactions" data-ng-controller="TransactionsController">
+      <h2>{{title}}</h2>
+      <div class="row">
+        <div class="col-xs-6">
+          <h3>Input</h3>
+          <accordion close-others="oneAtATime">
+            <accordion-group ng-repeat="tx in txsinput">
+              <accordion-heading>
+                {{tx.fromAddr}} -> {{tx.toAddr}} : {{tx.amount}}
+              </accordion-heading>
+              <div class="row">
+                <div class="col-xs-6 col-md-4">ignore</div>
+                <div class="col-xs-6 col-md-4">(Required 3 cosign)</div>
+                <div class="col-xs-6 col-md-4">sign</div>
+              </div>
+            </accordion-group>
+          </accordion> 
+        </div>
+        <div class="col-xs-6">
+          <h3>Output</h3>
+          <accordion close-others="oneAtATime">
+            <accordion-group ng-repeat="tx in txsoutput">
+              <accordion-heading>
+                {{tx.fromAddr}} <- {{tx.toAddr}} : {{tx.amount}}
+              </accordion-heading>
+              Details...
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+   </script>
+
+   <!-- SEND -->
+    <script type="text/ng-template" id="send.html">
+      <div class="send" data-ng-controller="SendController">
+      <h2>{{title}}</h2>
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="address" class="col-sm-2 control-label">To:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="address" placeholder="Send to">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="amount" class="col-sm-2 control-label">Amount:</label>
+            <div class="col-sm-10">
+              <div class="row">
+              <div class="col-xs-6">
+                <input type="text" class="form-control" id="amount" placeholder="Amount">
+              </div>
+              <div class="col-xs-6">
+                <select class="form-control">
+                  <option>mBTC</option>
+                  <option>BTC</option>
+                </select>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </script>
+
+    <!-- BACKUP -->
+    <script type="text/ng-template" id="backup.html">
+      <div class="backup" data-ng-controller="BackupController">
+      <h2>{{title}}</h2>
+      <div class="row">
+        <div class="col-xs-6 col-md-4">Download file</div>
+        <div class="col-xs-6 col-md-4">Backup to Dropbox</div>
+        <div class="col-xs-6 col-md-4">Backup to email</div>
+      </div>
+      </div>
+    </script>
+
+    <!-- NOT FOUND -->
     <script type="text/ng-template" id="404.html">
-      <h1>404</h1>
+      <h2 class="text-center">404</h2>
+      <h3 class="text-center">Page not found</h3>
+      <p class="text-center"><a href="#/">go back...</a></p>
     </script>
 
     <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/qrcode-generator/js/qrcode.js"></script>
+    <script src="lib/angular-qrcode/qrcode.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>
-
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
 
     <script src="js/controllers/header.js"></script>
+    <script src="js/controllers/home.js"></script>
+    <script src="js/controllers/transactions.js"></script>
+    <script src="js/controllers/send.js"></script>
+    <script src="js/controllers/backup.js"></script>
 
     <script src="js/init.js"></script>
   </body>

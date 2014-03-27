@@ -6,11 +6,18 @@ angular
   .config(function($routeProvider) {
 
     $routeProvider
-      .when('/signin', {
+      .when('/', {
+        templateUrl: 'home.html' 
+      }).when('/transactions', {
+        templateUrl: 'transactions.html' 
+      }).when('/send', {
+        templateUrl: 'send.html' 
+      }).when('/backup', {
+        templateUrl: 'backup.html' 
+      }).when('/signin', {
         templateUrl: 'signin.html' 
-      })
-      .when('/home', {
-        templateUrl: 'home.html'
+      }).otherwise({
+        templateUrl: '404.html'
       });
   });
 
