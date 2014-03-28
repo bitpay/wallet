@@ -1,10 +1,10 @@
 {
-  "name": "cosign",
+  "name": "copay",
   "version": "0.0.1",
   "description": "A multisignature wallet",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bitpay/cosign.git"
+    "url": "git://github.com/bitpay/copay.git"
   },
   "keywords": [
     "wallet",
@@ -15,9 +15,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bitpay/cosign/issues"
+    "url": "https://github.com/bitpay/copay/issues"
   },
-  "homepage": "https://github.com/bitpay/cosign",
+  "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
     "grunt-cli": "~0.1.13",
     "karma": "~0.12.1",
