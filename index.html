@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width">
     <title>Copay - Multisignature Wallet</title>
     <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/foundation-icons.css">
     <link rel="stylesheet" href="css/main.css">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,700italic' rel='stylesheet' type='text/css'>
   </head>
@@ -33,7 +34,7 @@
           <!-- Right Nav Section -->
           <ul data-ng-repeat="item in menu" ui-route="/{{item.link}}">
             <li class="large-3 text-center" data-ng-class="{active: isActive(item)}">
-              <a href="{{item.link}}">{{item.title}}</a>
+              <a href="{{item.link}}"> <i class="fi-home size-16"></i> {{item.title}}</a>
             </li>
           </ul>
         </section>
