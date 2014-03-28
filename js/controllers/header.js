@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosign.header').controller('HeaderController',
+angular.module('copay.header').controller('HeaderController',
   function($scope, $rootScope, $location) {
     $scope.menu = [{
       'title': 'Home',

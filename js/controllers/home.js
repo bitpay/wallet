@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosign.home').controller('HomeController',
+angular.module('copay.home').controller('HomeController',
   function($scope, $rootScope, $location) {
     $scope.title = 'Home';
 
