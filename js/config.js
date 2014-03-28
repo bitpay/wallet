@@ -2,7 +2,7 @@
 
 //Setting up route
 angular
-  .module('cosign')
+  .module('copay')
   .config(function($routeProvider) {
 
     $routeProvider
@@ -34,7 +34,7 @@ angular
 
 //Setting HTML5 Location Mode
 angular
-  .module('cosign')
+  .module('copay')
   .config(function($locationProvider) {
     $locationProvider
       .html5Mode(false);

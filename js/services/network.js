@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosign.network')
+angular.module('copay.network')
   .factory('NetworkTest', function() {
     this.f = function() {
       return 2;
@@ -55,7 +55,7 @@ angular.module('cosign.network')
         label: 'wallet',
         serialization: 'none',
         reliable: false,
-        metadata: { message: 'hi! cosigners' }
+        metadata: { message: 'hi! copayers' }
       });
 
       c.on('open', function() {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosign.signin').controller('SigninController',
+angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, Network) {
     $rootScope.peerId = null;
     $scope.peerReady = false;

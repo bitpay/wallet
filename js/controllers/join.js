@@ -1,20 +1,20 @@
 'use strict';
 
-angular.module('cosign.join').controller('JoinController',
+angular.module('copay.join').controller('JoinController',
   function($scope, $rootScope, $routeParams, Network) {
 
     $scope.connectionId = $routeParams.id;
-    $scope.cosigners = [];
+    $scope.copayers = [];
 
     $scope.init = function() {
       console.log('-------- init --------');
       console.log($rootScope.peerId);
-      $scope.cosigners.push($rootScope.peerId);
+      $scope.copayers.push($rootScope.peerId);
 
-      Network.connect($scope.connectionId, function(cosigner) {
+      Network.connect($scope.connectionId, function(copayer) {
         console.log('----- join connect --------');
-        console.log(cosigner);
-        $scope.cosigners.push(cosigner);
+        console.log(copayer);
+        $scope.copayers.push(copayer);
         $scope.$digest();
       });
     };

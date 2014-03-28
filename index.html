@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Cosign - Multisignature Wallet</title>
+    <title>Copay - Multisignature Wallet</title>
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,700italic' rel='stylesheet' type='text/css'>
@@ -70,13 +70,13 @@
         <h1>Joined to <span class="text-muted">{{connectionId}}</span></h1>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Cosigners ({{cosigners.length}}/5)</h3>
+            <h3 class="panel-title">Copayers ({{copayers.length}}/5)</h3>
           </div>
           <div class="panel-body">
             <ul>
-              <li ng-repeat="cosigner in cosigners">
-                <span ng-if="cosigner == $root.peerId">You ({{$root.peerId}})</span>
-                <span ng-if="cosigner != $root.peerId">{{cosigner}}</span>
+              <li ng-repeat="copayer in copayers">
+                <span ng-if="copayer == $root.peerId">You ({{$root.peerId}})</span>
+                <span ng-if="copayer != $root.peerId">{{copayer}}</span>
               </li>
             </ul>
           </div>
@@ -115,7 +115,7 @@
               </accordion-heading>
               <div class="row">
                 <div class="col-xs-6 col-md-4">ignore</div>
-                <div class="col-xs-6 col-md-4">(Required 3 cosign)</div>
+                <div class="col-xs-6 col-md-4">(Required 3 copay)</div>
                 <div class="col-xs-6 col-md-4">sign</div>
               </div>
             </accordion-group>
