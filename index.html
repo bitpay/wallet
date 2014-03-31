@@ -60,24 +60,24 @@
           Connecting to wallet...
         </div>
         <div ng-show="!loading">
-        <div class="row">
-          <div class="large-6 columns">
-            <h3>Join wallet</h3>
-            <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Join wallet</h3>
+              <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
+            </div>
+            <div class="large-3 columns">
+              <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
+            </div>
           </div>
-          <div class="large-3 columns">
-            <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
+          <hr>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Create a new wallet</h3>
+            </div>
+            <div class="large-3 columns">
+              <button class="button secondary expand round" ng-click="create()">Create</button>
+            </div>
           </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="large-6 columns">
-            <h3>Create a new wallet</h3>
-          </div>
-          <div class="large-3 columns">
-            <button class="button secondary expand round" ng-click="create()">Create</button>
-          </div>
-        </div>
         </div>
       </div>
     </script>
@@ -88,9 +88,9 @@
           <h1>I am <p class="text-muted">{{$root.peerId}}</p></h1>
         </div>
         <div class="large-6 columns">
-          <h3 class="panel-title">Copayers ({{$root.copayers.length}}/5)</h3>
+          <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
           <ul class="no-bullet">
-            <li class="panel" ng-repeat="copayer in $root.copayers">
+            <li class="panel" ng-repeat="copayer in $root.connectedPeers">
               <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
               <span ng-if="copayer != $root.peerId">{{copayer}}</span>
             </li>

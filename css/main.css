@@ -47,8 +47,8 @@ body {
 }
 
 .panel {
-	background: #FFFFFF;
-	padding: 0.25rem 1rem;
+  background: #FFFFFF;
+  padding: 0.25rem 1rem;
 }
 
 button.primary { background-color: #111; }
