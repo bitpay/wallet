@@ -26,8 +26,8 @@
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
       <div class="text-center" ng-controller="SigninController">
-        <div ng-if="!peerReady">Opening peers...</div>
-        <div ng-if="peerReady">
+        <div ng-if="!$root.peerId">Opening peers...</div>
+        <div ng-if="$root.peerId">
           <h1>Join or Create a New Connection</h1>
           <div class="col-lg-12">
             <div class="input-group">
@@ -48,11 +48,11 @@
         <h1>Joined to <span class="text-muted">{{connectionId}}</span></h1>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Cosigners ({{cosigners.length}}/5)</h3>
+            <h3 class="panel-title">Cosigners ({{$root.connectedPeers.length}}/5)</h3>
           </div>
           <div class="panel-body">
             <ul>
-              <li ng-repeat="cosigner in cosigners">
+              <li ng-repeat="cosigner in $root.connectedPeers">
                 <span ng-if="cosigner == $root.peerId">You ({{$root.peerId}})</span>
                 <span ng-if="cosigner != $root.peerId">{{cosigner}}</span>
               </li>
