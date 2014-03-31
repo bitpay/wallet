@@ -32,13 +32,14 @@ body {
 
 .header {
 	background: #111;
-	margin: 0!important;
-	overflow: hidden;
 	color: white;
+  overflow: hidden;
+  margin-bottom: 30px;
 }
 
 .header-content {
 	padding: 1.5rem;
+	overflow: hidden;
 }
 
 .header h1, h5 {

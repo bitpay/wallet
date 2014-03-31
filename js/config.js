@@ -18,6 +18,9 @@ angular
       .when('/join/:id', {
         templateUrl: 'join.html'
       })
+      .when('/peer', {
+        templateUrl: 'peer.html'
+      })
       .when('/transactions', {
         templateUrl: 'transactions.html' 
       })
