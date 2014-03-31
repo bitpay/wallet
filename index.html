@@ -13,7 +13,9 @@
   <body>
     <div class="header" data-ng-init="init()" data-ng-controller="HeaderController">
         <div class="header-content">
-          <h1 class="left">Copay</h1>
+          <figure class="left">
+            <img src="./img/logo-negative.svg" alt="" width="130">
+          </figure>
           <div class="text-right" ng-show="$root.peerId">
             <h5>Company Funds</h5>
             <p>4.324 BTC</p>
@@ -63,8 +65,8 @@
               <h3>Join wallet</h3>
               <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
             </div>
-            <div class="large-6 columns">
-              <button class="btn btn-default" type="button" ng-click="join(connectionId)">Join</button>
+            <div class="large-3 columns">
+              <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
             </div>
           </div>
           <hr>
@@ -72,8 +74,8 @@
             <div class="large-6 columns">
               <h3>Create a new wallet</h3>
             </div>
-            <div class="large-6 columns">
-              <button class="btn btn-primary btn-block" ng-click="create()">Create</button>
+            <div class="large-3 columns">
+              <button class="button secondary expand round" ng-click="create()">Create</button>
             </div>
           </div>
         </div>
@@ -81,23 +83,21 @@
     </script>
 
     <script type="text/ng-template" id="peer.html">
-      <div ng-controller="PeerController" ng-init="init()">
-        <h1>I am <span class="text-muted">{{$root.peerId}}</span></h1>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
-          </div>
-          <div class="panel-body">
-            <ul>
-              <li ng-repeat="copayer in $root.connectedPeers">
-                <span ng-if="copayer == $root.peerId">You ({{$root.peerId}})</span>
-                <span ng-if="copayer != $root.peerId">{{copayer}}</span>
-              </li>
-            </ul>
-          </div>
+      <div class="row" ng-controller="PeerController" ng-init="init()">
+        <div class="large-6 columns">
+          <h1>I am <p class="text-muted">{{$root.peerId}}</p></h1>
         </div>
-        <div class="text-center">
-          <a href="#/home">Go home</a>
+        <div class="large-6 columns">
+          <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
+          <ul class="no-bullet">
+            <li class="panel" ng-repeat="copayer in $root.connectedPeers">
+              <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
+              <span ng-if="copayer != $root.peerId">{{copayer}}</span>
+            </li>
+          </ul>
+          <div class="text-center">
+            <button href="#/home" class="button secondary round large expand">Go to home</button>
+          </div>
         </div>
       </div>
     </script>

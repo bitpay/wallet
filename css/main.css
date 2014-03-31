@@ -38,13 +38,25 @@ body {
 }
 
 .header-content {
-  padding: 1.5rem;
+  padding: 1.5rem 3rem 1.5rem 0;
   overflow: hidden;
 }
 
 .header h1, h5 {
   color: #fff;
 }
+
+.panel {
+  background: #FFFFFF;
+  padding: 0.25rem 1rem;
+}
+
+button.primary { background-color: #111; }
+button.secondary { background-color: #FAE448 !important; }
+
+button.primary:hover { background-color: #333;}
+button.secondary:hover { background-color: #D7C020 !important;}
+
 
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
