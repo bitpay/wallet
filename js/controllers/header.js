@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('cosign.header').controller('HeaderController',
-  function($scope, $rootScope, $location) {
+angular.module('copay.header').controller('HeaderController',
+  function($scope, $rootScope, $location, Network) {
     $scope.menu = [{
       'title': 'Home',
-      'link': '#/'
+      'link': '#/home'
     }, {
       'title': 'Transactions',
       'link': '#/transactions'
@@ -15,6 +15,10 @@ angular.module('cosign.header').controller('HeaderController',
       'title': 'Backup',
       'link': '#/backup'
     }];
+
+    if (!$rootScope.peerId) {
+      $location.path('signin');
+    }
 
     $scope.isActive = function(item) {
       if (item.link.replace('#','') == $location.path()) {
@@ -29,7 +33,7 @@ angular.module('cosign.header').controller('HeaderController',
 
     $scope.signout = function() {
       $rootScope.isLogged = false;
-
+      Network.disconnect();
       $location.path('signin');
     };
   });

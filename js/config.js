@@ -2,7 +2,7 @@
 
 //Setting up route
 angular
-  .module('cosign')
+  .module('copay')
   .config(function($routeProvider) {
 
     $routeProvider
@@ -17,6 +17,9 @@ angular
       })
       .when('/join/:id', {
         templateUrl: 'join.html'
+      })
+      .when('/peer', {
+        templateUrl: 'peer.html'
       })
       .when('/transactions', {
         templateUrl: 'transactions.html' 
@@ -34,7 +37,7 @@ angular
 
 //Setting HTML5 Location Mode
 angular
-  .module('cosign')
+  .module('copay')
   .config(function($locationProvider) {
     $locationProvider
       .html5Mode(false);

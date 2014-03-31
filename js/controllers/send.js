@@ -1,6 +1,11 @@
 'use strict';
 
-angular.module('cosign.send').controller('SendController',
+angular.module('copay.send').controller('SendController',
   function($scope, $rootScope, $location) {
     $scope.title = 'Send';
+
+    if (!$rootScope.peerId) {
+      $location.path('signin');
+    }
+
   });

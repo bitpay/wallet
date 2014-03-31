@@ -1,25 +1,25 @@
 'use strict';
 
-angular.module('cosign',[
+angular.module('copay',[
   'ngRoute',
   'mm.foundation',
   'monospaced.qrcode',
-  'cosign.header',
-  'cosign.home',
-  'cosign.transactions',
-  'cosign.send',
-  'cosign.backup',
-  'cosign.network',
-  'cosign.signin',
-  'cosign.join'
+  'copay.header',
+  'copay.home',
+  'copay.transactions',
+  'copay.send',
+  'copay.backup',
+  'copay.network',
+  'copay.signin',
+  'copay.peer'
 ]);
 
-angular.module('cosign.header', []);
-angular.module('cosign.home', []);
-angular.module('cosign.transactions', []);
-angular.module('cosign.send', []);
-angular.module('cosign.backup', []);
-angular.module('cosign.network', []);
-angular.module('cosign.signin', []);
-angular.module('cosign.join', []);
+angular.module('copay.header', []);
+angular.module('copay.home', []);
+angular.module('copay.transactions', []);
+angular.module('copay.send', []);
+angular.module('copay.backup', []);
+angular.module('copay.network', []);
+angular.module('copay.signin', []);
+angular.module('copay.peer', []);
 

@@ -1,10 +1,14 @@
 'use strict';
 
-angular.module('cosign.transactions').controller('TransactionsController',
+angular.module('copay.transactions').controller('TransactionsController',
   function($scope, $rootScope, $location) {
     $scope.title = 'Transactions';
 
     $scope.oneAtATime = true;
+
+    if (!$rootScope.peerId) {
+      $location.path('signin');
+    }
 
     $scope.txsinput = [
     {

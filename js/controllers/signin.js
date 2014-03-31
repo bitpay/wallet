@@ -1,15 +1,28 @@
 'use strict';
 
-angular.module('cosign.signin').controller('SigninController',
+angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, Network) {
+    $scope.loading = false;
+    $rootScope.peerId = null;
 
-    // Init peer
-    Network.init();
+    $scope.create = function() {
+      $scope.loading = true;
+
+      Network.init(function(pid) {
+        $rootScope.masterId = pid;
+        $location.path('peer'); 
+      });
+    };
 
     $scope.join = function(cid) {
-      console.log('------- joining to ' + cid +  ' --------');
+      $scope.loading = true;
 
-      var pid = cid || $rootScope.peerId;
-      $location.path('join/' + pid);
+      Network.init(function() {
+        Network.connect(cid, function() {
+          $rootScope.masterId = cid;
+          $location.path('peer');
+        });  
+      });
+
     };
   });

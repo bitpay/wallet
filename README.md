@@ -1,1 +1,1 @@
-Cosign
+Copay

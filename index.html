@@ -4,62 +4,101 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Cosign - Multisignature Wallet</title>
+    <title>Copay - Multisignature Wallet</title>
     <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/foundation-icons.css">
     <link rel="stylesheet" href="css/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,700italic' rel='stylesheet' type='text/css'>
   </head>
   <body>
-  <div class="row">
-    <div class="large-12 columns" data-ng-init="init()" data-ng-controller="HeaderController">
-      <h1>cosign</h1>
-      <dl class="sub-nav">
-        <dd data-ng-repeat="item in menu" ui-route="/{{item.link}}" data-ng-class="{active: isActive(item)}">
-          <a href="{{item.link}}">{{item.title}}</a>
-        </dd>
-      </dl>
+    <div class="header" data-ng-init="init()" data-ng-controller="HeaderController">
+        <div class="header-content">
+          <h1 class="left">Copay</h1>
+          <div class="text-right" ng-show="$root.peerId">
+            <h5>Company Funds</h5>
+            <p>4.324 BTC</p>
+          </div>
+        </div>
+
+      <nav class="top-bar" data-topbar ng-show="$root.peerId">
+        <ul class="title-area" data-ng-repeat="item in menu" ui-route="/{{item.link}}" data-ng-class="{active: isActive(item)}">
+          <li class="name"></li>
+          <li class="toggle-topbar menu-icon">
+            <a href="{{item.link}}">{{item.title}}</a>
+          </li>
+        </ul>
+
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul data-ng-repeat="item in menu" ui-route="/{{item.link}}">
+            <li class="large-3 text-center" data-ng-class="{active: isActive(item)}">
+              <a href="{{item.link}}"> <i class="fi-home size-16"></i> {{item.title}}</a>
+            </li>
+          </ul>
+        </section>
+      </nav>
     </div>
-  </div>
+
   <div class="row">
     <div class="large-12 columns" ng-view></div>
+  </div>
+  <div ng-controller="HeaderController" ng-show="$root.peerId">
+    <hr>
+    <div class="row">
+      <div class="text-center large-12 columns">
+        <a href="#" ng-click="signout()" class="button tiny">Signout</a>
+      </div>
+    </div>
   </div>
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
-      <div class="text-center" ng-controller="SigninController">
-        <div ng-if="!$root.peerId">Opening peers...</div>
-        <div ng-if="$root.peerId">
-          <h1>Join or Create a New Connection</h1>
-          <div class="col-lg-12">
-            <div class="input-group">
+      <div ng-controller="SigninController">
+        <div class="panel callout radius" ng-show="loading">
+          Connecting to wallet...
+        </div>
+        <div ng-show="!loading">
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Join wallet</h3>
               <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button" ng-click="join(connectionId)"><i class="glyphicon glyphicon-log-in"></i> Join</button>
-              </span>
             </div>
-            <hr>
-            <button class="btn btn-primary btn-block" ng-click="join()"><i class="glyphicon glyphicon-plus"></i> Create a New Connection</button>
+            <div class="large-6 columns">
+              <button class="btn btn-default" type="button" ng-click="join(connectionId)">Join</button>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Create a new wallet</h3>
+            </div>
+            <div class="large-6 columns">
+              <button class="btn btn-primary btn-block" ng-click="create()">Create</button>
+            </div>
           </div>
         </div>
       </div>
     </script>
 
-    <script type="text/ng-template" id="join.html">
-      <div ng-controller="JoinController" ng-init="init()">
-        <h1>Joined to <span class="text-muted">{{connectionId}}</span></h1>
+    <script type="text/ng-template" id="peer.html">
+      <div ng-controller="PeerController" ng-init="init()">
+        <h1>I am <span class="text-muted">{{$root.peerId}}</span></h1>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Cosigners ({{$root.connectedPeers.length}}/5)</h3>
+            <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
           </div>
           <div class="panel-body">
             <ul>
-              <li ng-repeat="cosigner in $root.connectedPeers">
-                <span ng-if="cosigner == $root.peerId">You ({{$root.peerId}})</span>
-                <span ng-if="cosigner != $root.peerId">{{cosigner}}</span>
+              <li ng-repeat="copayer in $root.connectedPeers">
+                <span ng-if="copayer == $root.peerId">You ({{$root.peerId}})</span>
+                <span ng-if="copayer != $root.peerId">{{copayer}}</span>
               </li>
             </ul>
           </div>
         </div>
-        <a href="#/home">Skip</a>
+        <div class="text-center">
+          <a href="#/home">Go home</a>
+        </div>
       </div>
     </script>
 
@@ -93,7 +132,7 @@
               </accordion-heading>
               <div class="row">
                 <div class="col-xs-6 col-md-4">ignore</div>
-                <div class="col-xs-6 col-md-4">(Required 3 cosign)</div>
+                <div class="col-xs-6 col-md-4">(Required 3 copay)</div>
                 <div class="col-xs-6 col-md-4">sign</div>
               </div>
             </accordion-group>
@@ -173,7 +212,7 @@
     <script src="js/controllers/send.js"></script>
     <script src="js/controllers/backup.js"></script>
     <script src="js/controllers/signin.js"></script>
-    <script src="js/controllers/join.js"></script>
+    <script src="js/controllers/peer.js"></script>
 
     <script src="js/init.js"></script>
   </body>

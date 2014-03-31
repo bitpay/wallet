@@ -1,10 +1,14 @@
 'use strict';
 
-angular.module('cosign.home').controller('HomeController',
+angular.module('copay.home').controller('HomeController',
   function($scope, $rootScope, $location) {
     $scope.title = 'Home';
 
     $scope.oneAtATime = true;
+
+    if (!$rootScope.peerId) {
+      $location.path('signin');
+    }
 
     $scope.addrs = [
     { addrStr: 'n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb'},

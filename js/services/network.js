@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cosign.network')
+angular.module('copay.network')
   .factory('Network', function($rootScope) {
     var peer;
     $rootScope.connectedPeers = [];
@@ -59,17 +59,19 @@ angular.module('cosign.network')
       });
     };
 
-    var _init = function() {
+    var _init = function(cb) {
       peer = new Peer($rootScope.peerId, {
         key: 'lwjd5qra8257b9', // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
         debug: 3
       });
 
       peer.on('open', function(pid) {
-        $rootScope.$apply(function() {
-          $rootScope.peerId = pid;
-          $rootScope.connectedPeers.push(pid);
-        });
+        $rootScope.peerId = pid;
+        $rootScope.connectedPeers.push(pid);
+
+        cb(pid);
+
+        $rootScope.$digest();
       });
 
       peer.on('connection', function(conn) {
@@ -77,7 +79,11 @@ angular.module('cosign.network')
           conn.on('open', function() {
             console.log('-------- ' + conn.peer + ' conected to me --------');
 
+            console.log($rootScope.masterId);
+            console.log($rootScope.peerId);
+
             if ($rootScope.masterId === $rootScope.peerId) {
+              console.log('-------- I am the master --------');
               var c = peer.connect(conn.peer, {
                 label: 'wallet',
                 serialization: 'none',
@@ -86,12 +92,12 @@ angular.module('cosign.network')
               });
 
               c.on('open', function() {
-                $rootScope.$apply(function() {
-                  $rootScope.connectedPeers.push(conn.peer);
-                  $rootScope.connectedTo.push(conn.peer);
-                });
+                $rootScope.connectedPeers.push(conn.peer);
+                $rootScope.connectedTo.push(conn.peer);
 
                 _send($rootScope.connectedPeers, { peers: $rootScope.connectedPeers });
+
+                $rootScope.$digest();
               });
             }
           });
@@ -103,7 +109,7 @@ angular.module('cosign.network')
       });
     };
 
-    var _connect = function(pid) {
+    var _connect = function(pid, cb) {
       if (pid !== $rootScope.peerId) {
         console.log('------- conecting to ' + pid + ' ------');
         var c = peer.connect(pid, {
@@ -118,10 +124,13 @@ angular.module('cosign.network')
           console.log($rootScope.connectedPeers);
           console.log($rootScope.connectedTo);
 
-          $rootScope.$apply(function() {
-            $rootScope.connectedPeers.push(pid);
-            $rootScope.connectedTo.push(pid);
-          });
+          $rootScope.connectedPeers.push(pid);
+          $rootScope.connectedTo.push(pid);
+
+          if (typeof cb === 'function')
+            cb();
+
+          $rootScope.$digest();
 
           console.log($rootScope.connectedPeers);
           console.log($rootScope.connectedTo);
@@ -145,10 +154,17 @@ angular.module('cosign.network')
       }
     };
 
+    var _disconnect = function() {
+      peer.disconnect();
+      peer.destroy();
+      console.log('Disconnected and destroyed connection');
+    }
+
     return {
       init: _init,
       connect: _connect,
-      send: _send
+      send: _send,
+      disconnect: _disconnect
     } 
   });
 
