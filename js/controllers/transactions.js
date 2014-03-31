@@ -6,6 +6,10 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.oneAtATime = true;
 
+    if (!$rootScope.peerId) {
+      $location.path('signin');
+    }
+
     $scope.txsinput = [
     {
       fromAddr: "n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb",

@@ -11,7 +11,7 @@ angular.module('copay',[
   'copay.backup',
   'copay.network',
   'copay.signin',
-  'copay.join'
+  'copay.peer'
 ]);
 
 angular.module('copay.header', []);
@@ -21,5 +21,5 @@ angular.module('copay.send', []);
 angular.module('copay.backup', []);
 angular.module('copay.network', []);
 angular.module('copay.signin', []);
-angular.module('copay.join', []);
+angular.module('copay.peer', []);
 

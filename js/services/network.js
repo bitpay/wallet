@@ -6,14 +6,15 @@ angular.module('copay.network')
       return 2;
     };
   })
-  .factory('Network', function() {
+  .factory('Network', function($rootScope) {
     var peer;
     var connectedPeers = {};
 
     var _onConnect = function(c, cb) {
       if (c.label === 'wallet') {
         var a = peer.connections[c.peer][0];
-        console.log(peer.connections[c.peer]);
+        console.log(peer.connections[c.peer][0]);
+        console.log(a);
         a.send('------ origin recived -------');
         
         c.on('data', function(data) {
@@ -43,7 +44,12 @@ angular.module('copay.network')
         debug: 3
       });
 
-      peer.on('open', cb);
+      peer.on('open', function() {
+        $rootScope.peerId = peer.id;
+        $rootScope.peerReady = true;
+        cb(peer.id);
+        $rootScope.$digest();
+      });
     };
 
     var _connect = function(pid, cb) {
@@ -59,17 +65,18 @@ angular.module('copay.network')
       });
 
       c.on('open', function() {
-        c.send('-------oopen-------');
+        c.send('-------open-------');
       });
 
       c.on('data', function(data) {
         if (data)
-        console.log(data);
+          console.log('Data:' + data);
       });
 
       c.on('error', function(err) {
         console.error(err);
       });
+      cb(c.peer);
     };
 
     var _sendTo = function(pid, data) {
@@ -81,10 +88,17 @@ angular.module('copay.network')
       console.log(data);
     };
 
+    var _disconnect = function() {
+      peer.disconnect();
+      peer.destroy();
+      console.log('Disconnected and destroyed connection');
+    }
+
     return {
       init: _init,
       connect: _connect,
-      sendTo: _sendTo
+      sendTo: _sendTo,
+      disconnect: _disconnect
     } 
   });
 
