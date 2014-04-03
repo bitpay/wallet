@@ -76,6 +76,26 @@ body {
   padding: 0.25rem 1rem;
 }
 
+.box-backup {
+  margin: 2rem 0;
+  background: white;
+  padding: 2rem 1rem;
+}
+
+a.box-backup {
+  display: block;
+  color: #111;
+}
+
+a.box-backup:hover {
+  color:#666;
+}
+
+.box-backup i {
+  margin-bottom: 2rem;
+  display: block;
+}
+
 button.primary { background-color: #111; }
 button.secondary { background-color: #FAE448 !important; }
 
