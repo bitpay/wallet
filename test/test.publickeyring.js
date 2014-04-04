@@ -75,6 +75,10 @@ describe('PublicKeyRing model', function() {
     var k = createW();
     var w = k.w;
     var copayers = k.copayers;
+    for(var i=0; i<3; i++)
+      w.generateAddress(true);
+    for(var i=0; i<5; i++)
+      w.generateAddress(false);
 
     w.store().should.equal(true);
     var ID = w.id;
@@ -86,7 +90,9 @@ describe('PublicKeyRing model', function() {
     w2.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
       w2.addCopayer.bind(copayers[i]).should.throw();
- 
+
+    w2.changeAddressIndex.should.equal(3);   
+    w2.addressIndex.should.equal(5); 
   });
 
 
@@ -101,7 +107,6 @@ describe('PublicKeyRing model', function() {
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
-
         if (i>1) {
           w.getAddress(i-1,isChange).should
             .not.equal(w.getAddress(i-2,isChange));
@@ -124,11 +129,25 @@ describe('PublicKeyRing model', function() {
  
     var as = w.getAddresses();
     as.length.should.equal(12);
-    for(var i in as) {
-      var a = new Address(as[i]);
+    for(var j in as) {
+      var a = new Address(as[j]);
       a.isValid().should.equal(true);
     }
   });
+
+  it('should count generation indexes', function () {
+    var k = createW();
+    var w = k.w;
+
+    for(var i=0; i<3; i++)
+      w.generateAddress(true);
+    for(var i=0; i<5; i++)
+      w.generateAddress(false);
+
+    w.changeAddressIndex.should.equal(3);   
+    w.addressIndex.should.equal(5); 
+  });
+
 
 });
 

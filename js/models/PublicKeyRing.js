@@ -84,6 +84,8 @@ PublicKeyRing.read = function (id, passphrase) {
 
   w.requiredCopayers = data.neededCopayers;
   w.totalCopayers = data.totalCopayers;
+  w.addressIndex = data.addressIndex;
+  w.changeAddressIndex = data.changeAddressIndex;
 
 //  this.bip32 = ;
   w.copayersBIP32 = data.copayersExtPubKeys.map( function (pk) { 
@@ -95,16 +97,22 @@ PublicKeyRing.read = function (id, passphrase) {
   return w;
 };
 
-PublicKeyRing.prototype.serialize = function () {
-  return JSON.stringify({
+PublicKeyRing.prototype._toObj = function() {
+  return {
     id: this.id,
     network: this.network.name,
     requiredCopayers: this.neededCopayers,
     totalCopayers: this.totalCopayers,
+    changeAddressIndex: this.changeAddressIndex,
+    addressIndex: this.addressIndex,
     copayersExtPubKeys: this.copayersBIP32.map( function (b) { 
       return b.extendedPublicKeyString(); 
     }),
-  });
+  };
+};
+
+PublicKeyRing.prototype.serialize = function () {
+  return JSON.stringify(this._toObj());
 };
 
 
