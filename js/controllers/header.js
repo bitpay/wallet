@@ -33,7 +33,8 @@ angular.module('copay.header').controller('HeaderController',
 
     $scope.signout = function() {
       $rootScope.isLogged = false;
-      Network.disconnect();
-      $location.path('signin');
+      Network.disconnect(function() {
+        $location.path('signin');
+      });
     };
   });
