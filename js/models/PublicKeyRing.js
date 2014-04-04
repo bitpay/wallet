@@ -1,4 +1,7 @@
+
 'use strict';
+
+
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
 var BIP32       = bitcore.BIP32;
@@ -25,7 +28,6 @@ var storage     = Storage.default();
 var PUBLIC_BRANCH = 'm/0/';
 var CHANGE_BRANCH = 'm/1/';
 
-
 function PublicKeyRing(opts) {
   opts = opts || {};
 
@@ -38,8 +40,7 @@ function PublicKeyRing(opts) {
   this.id = opts.id || PublicKeyRing.getRandomId();
 
   this.dirty = 1;
-  this.copayersWallets = [];
-  this.bip32 = new BIP32(opts.bytes ||  this.network.name);
+  this.copayersBIP32 = [];
 
   this.changeAddressIndex=0;
   this.addressIndex=0;
@@ -83,8 +84,10 @@ PublicKeyRing.read = function (id, passphrase) {
 
   w.requiredCopayers = data.neededCopayers;
   w.totalCopayers = data.totalCopayers;
-  w.copayersWallets = data.copayersExtPubKeys.map( function (pk) { 
-    return new PublicKeyRing({bytes:pk, network: w.network.name});
+
+//  this.bip32 = ;
+  w.copayersBIP32 = data.copayersExtPubKeys.map( function (pk) { 
+    return new BIP32(pk);
   });
 
   w.dirty = 0;
@@ -98,11 +101,12 @@ PublicKeyRing.prototype.serialize = function () {
     network: this.network.name,
     requiredCopayers: this.neededCopayers,
     totalCopayers: this.totalCopayers,
-    copayersExtPubKeys: this.copayersWallets.map( function (b) { 
-      return b.getMasterExtendedPubKey(); 
+    copayersExtPubKeys: this.copayersBIP32.map( function (b) { 
+      return b.extendedPublicKeyString(); 
     }),
   });
 };
+
 
 PublicKeyRing.prototype.store = function (passphrase) {
 
@@ -116,16 +120,9 @@ PublicKeyRing.prototype.store = function (passphrase) {
 };
 
 PublicKeyRing.prototype.registeredCopayers = function () {
-  if (! this.copayersWallets) return 1;
-
-
-  // 1 is self.
-  return 1 + this.copayersWallets.length;
+  return this.copayersBIP32.length;
 };
 
-PublicKeyRing.prototype.getMasterExtendedPubKey = function () {
-  return this.bip32.extendedPublicKeyString();
-};
 
 
 PublicKeyRing.prototype.haveAllRequiredPubKeys = function () {
@@ -139,62 +136,69 @@ PublicKeyRing.prototype._checkKeys = function() {
 };
 
 
-//  should receive an array also?
-PublicKeyRing.prototype.addCopayerExtendedPubKey = function (newEpk) {
+PublicKeyRing.prototype._newExtendedPublicKey = function () {
+  return new BIP32(this.network.name)
+    .extendedPublicKeyString();
+};
+
+PublicKeyRing.prototype.addCopayer = function (newEpk) {
 
   if (this.haveAllRequiredPubKeys())
       throw new Error('already have all required key:' + this.totalCopayers);
 
-  if (this.getMasterExtendedPubKey() === newEpk)
-    throw new Error('already have that key (self key)');
+  if (!newEpk) {
+    newEpk = this._newExtendedPublicKey();
+  }
 
-
-  this.copayersWallets.forEach(function(b){
-    if (b.getMasterExtendedPubKey() === newEpk)
+  this.copayersBIP32.forEach(function(b){
+    if (b.extendedPublicKeyString() === newEpk)
       throw new Error('already have that key');
   });
 
-  this.copayersWallets.push(new PublicKeyRing({bytes:newEpk, network: this.network.name } ));
+  this.copayersBIP32.push(new BIP32(newEpk));
   this.dirty = 1;
+  return newEpk;
 };
 
-
-PublicKeyRing.prototype.getPubKey = function (index,isChange) {
-
-  var path = (isChange ? CHANGE_BRANCH : PUBLIC_BRANCH) + index;
-  var bip32 = this.bip32.derive(path);
-  var pub   = bip32.eckey.public;
-  return pub;
-};
 
 PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
   this._checkKeys();
 
   var pubKeys = [];
-  var l = this.copayersWallets.length;
+  var l = this.copayersBIP32.length;
   for(var i=0; i<l; i++) {
-    pubKeys[i] = this.copayersWallets[i].getPubKey(index, isChange);
+    var path = (isChange ? CHANGE_BRANCH : PUBLIC_BRANCH) + index;
+    var bip32 = this.copayersBIP32[i].derive(path);
+    pubKeys[i] = bip32.eckey.public;
   }
 
   return pubKeys;
 };
 
-PublicKeyRing.prototype.getAddress = function (index, isChange) {
-
-  if ( (isChange && index > this.changeAddressIndex)
-      || (!isChange && index > this.addressIndex)) {
+PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
+  if ( (isChange && index > this.changeAddressIndex) ||
+      (!isChange && index > this.addressIndex)) {
     log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
     throw new Error('index out of bound');
   }
+};
+
+PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
+  this._checkIndexRange(index, isChange);
 
   var pubKeys = this.getCopayersPubKeys();
-  var version = this.network.addressScript;
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
-  var buf     = script.buffer;
-  var hash    = coinUtil.sha256ripe160(buf);
+  return script;
+};
+
+PublicKeyRing.prototype.getAddress = function (index, isChange) {
+  this._checkIndexRange(index, isChange);
+
+  var script  = this.getRedeemScript(index,isChange);
+  var hash    = coinUtil.sha256ripe160(script.getBuffer());
+  var version = this.network.addressScript;
   var addr    = new Address(version, hash);
-  var addrStr = addr.as('base58');
-  return addrStr;
+  return addr.as('base58');
 };
 
 //generate a new address, update index.

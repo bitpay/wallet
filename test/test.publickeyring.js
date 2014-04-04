@@ -16,24 +16,20 @@ var config = {
   network:'livenet',
 };
 
-var createW = function (network, bytes) {
+var createW = function (network) {
 
   var config = {
     network: network || 'livenet',
   };
-  if (bytes) config.bytes = bytes;
 
   var w = new PublicKeyRing(config);
   should.exist(w);
 
   var copayers = [];
-  for(var i=0; i<4; i++) {
-    delete config['bytes'];
-    var c = new PublicKeyRing(config);
+  for(var i=0; i<5; i++) {
     w.haveAllRequiredPubKeys().should.equal(false);
-
-    w.addCopayerExtendedPubKey(c.getMasterExtendedPubKey());
-    copayers.push(c);
+    var newEpk = w.addCopayer();
+    copayers.push(newEpk);
   }
   
   return {w:w, copayers: copayers};
@@ -54,17 +50,11 @@ describe('PublicKeyRing model', function() {
     w2.network.name.should.equal('testnet');
   });
 
-  it('should create an master pub key', function () {
-    var w2 = new PublicKeyRing(config);
-    should.exist(w2);
-    should.exist(w2.getMasterExtendedPubKey());
-  });
-
   it('should fail to generate shared pub keys wo extended key', function () {
     var w2 = new PublicKeyRing(config);
     should.exist(w2);
 
-    w2.registeredCopayers().should.equal(1); 
+    w2.registeredCopayers().should.equal(0); 
     w2.haveAllRequiredPubKeys().should.equal(false);
 
     w2.getAddress.bind(false).should.throw();
@@ -76,9 +66,9 @@ describe('PublicKeyRing model', function() {
     var copayers = k.copayers;
 
     w.haveAllRequiredPubKeys().should.equal(true);
-    w.addCopayerExtendedPubKey.bind(w.getMasterExtendedPubKey()).should.throw();
-    w.addCopayerExtendedPubKey.bind(copayers[0].getMasterExtendedPubKey()).should.throw();
-    w.addCopayerExtendedPubKey.bind((new PublicKeyRing(config)).getMasterExtendedPubKey()).should.throw();
+    w.addCopayer.bind().should.throw();
+    for(var i =0; i<5; i++) 
+      w.addCopayer.bind(copayers[i]).should.throw();
   });
 
   it('show be able to store and retrieve', function () {
@@ -93,9 +83,9 @@ describe('PublicKeyRing model', function() {
 
     var w2 = PublicKeyRing.read(ID);
     w2.haveAllRequiredPubKeys().should.equal(true);
-    w2.addCopayerExtendedPubKey.bind(w.getMasterExtendedPubKey()).should.throw();
-    w2.addCopayerExtendedPubKey.bind(copayers[0].getMasterExtendedPubKey()).should.throw();
-    w2.addCopayerExtendedPubKey.bind((new PublicKeyRing(config)).getMasterExtendedPubKey()).should.throw();
+    w2.addCopayer.bind().should.throw();
+    for(var i =0; i<5; i++) 
+      w2.addCopayer.bind(copayers[i]).should.throw();
  
   });
 
