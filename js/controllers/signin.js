@@ -29,13 +29,9 @@ angular.module('copay.signin').controller('SigninController',
       }
     };
 
-    if (peerData && peerData.peerId) {
-      console.log('------- reloaded ----------');
-      console.log(peerData);
+    if (peerData && peerData.peerId && peerData.connectedTo.length > 0) {
       $rootScope.peerId = peerData.peerId;
       $rootScope.connectedPeers = peerData.connectedPeers;
-
-      console.log(peerData.connectedTo[0]);
 
       $scope.join(peerData.connectedTo[0]);
     }

@@ -7,24 +7,37 @@ angular.module('copay.network')
     $rootScope.connectedTo = [];
     $rootScope.peerId = null;
 
+    // Array helpers
     var _arrayDiff = function(a, b) {
       var seen = [];
       var diff = [];
 
-      for ( var i = 0; i < b.length; i++)
+      for (var i = 0; i < b.length; i++)
         seen[b[i]] = true;
 
-      for ( var i = 0; i < a.length; i++)
+      for (var i = 0; i < a.length; i++)
         if (!seen[a[i]])
           diff.push(a[i]);
 
       return diff;
     };
 
-    var _isInArray = function(i, array) {
-      return array.indexOf(i) > -1;
+    var _inArray = function(el, array) {
+      return array.indexOf(el) > -1;
     };
 
+    var _arrayPushOnce = function(el, array) {
+      if (!_inArray(el, array)) array.push(el);
+    };
+
+    var _arrayRemove = function(el, array) {
+      var pos = array.indexOf(el);
+      if (pos >= 0) array.splice(pos, 1);
+
+      return array;
+    };
+
+    // General helpers
     var _saveDataStorage = function() {
       Storage.save('peerData', {
         peerId: $rootScope.peerId,
@@ -33,9 +46,8 @@ angular.module('copay.network')
       });
     };
 
-    var _sender = function(pid, data) {
+    var _sender = function(pid, data, cb) {
       if (pid !== $rootScope.peerId) {
-        console.log('-------- sending data to: ' + pid + ' --------');
         var conns = peer.connections[pid];
 
         if (conns) {
@@ -48,23 +60,34 @@ angular.module('copay.network')
             var conn = conns[i];
             conn.send(str);
           }
+
+          if (typeof cb === 'function') cb();
         }
       }
     };
 
     var _onData = function(data) {
-      console.log('-------- Data received --------');
-      console.log(data);
       var obj = JSON.parse(data);
 
-      if (obj.data.type === 'connectToPeers')
-        _connectToPeers(obj.data.peers);
+      switch(obj.data.type) {
+        case 'connectedPeers':
+          _connectToPeers(obj.data.peers);
+          break;
+        case 'getPeers':
+          _send(obj.sender, {
+            type: 'connectToPeers',
+            peers: $rootScope.connectedPeers
+          });
+          break;
+        case 'disconnect':
+          $rootScope.connectedPeers = _arrayRemove(obj.sender, $rootScope.connectedPeers);
+          $rootScope.connectedTo = _arrayRemove(obj.sender, $rootScope.connectedTo);
 
-      if (obj.data.type === 'getPeers')
-        _send(obj.sender, {
-          type: 'connectToPeers',
-          peers: $rootScope.connectedPeers
-        });
+          _saveDataStorage();
+
+          $rootScope.$digest();
+          break;
+      }
     };
 
     var _connectToPeers = function(peers) {
@@ -75,6 +98,7 @@ angular.module('copay.network')
       });
     };
 
+    // public methods
     var _init = function(cb) {
       peer = new Peer($rootScope.peerId, {
         key: 'lwjd5qra8257b9', // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
@@ -83,10 +107,7 @@ angular.module('copay.network')
 
       peer.on('open', function(pid) {
         $rootScope.peerId = pid;
-
-        if (!_isInArray(pid, $rootScope.connectedPeers))
-          $rootScope.connectedPeers.push(pid);
-
+        _arrayPushOnce(pid, $rootScope.connectedPeers);
         _saveDataStorage();
 
         cb();
@@ -97,10 +118,7 @@ angular.module('copay.network')
       peer.on('connection', function(conn) {
         if (conn.label === 'wallet') {
           conn.on('open', function() {
-            console.log('<<<<<<<<<<< ' + conn.peer + ' conected to me --------');
-
-            var isConnected = $rootScope.connectedTo.indexOf(conn.peer);
-            if (isConnected === -1) {
+            if (!_inArray(conn.peer, $rootScope.connectedTo)) {
               var c = peer.connect(conn.peer, {
                 label: 'wallet',
                 serialization: 'none',
@@ -109,32 +127,22 @@ angular.module('copay.network')
               });
 
               c.on('open', function() {
-                console.log('>>>>>>>>> i am connected to ' + conn.peer);
-                if (!_isInArray(conn.peer, $rootScope.connectedPeers))
-                  $rootScope.connectedPeers.push(conn.peer);
-
-                if (!_isInArray(conn.peer, $rootScope.connectedTo))
-                  $rootScope.connectedTo.push(conn.peer);
-
+                $rootScope.connectedTo.push(conn.peer);
+                _arrayPushOnce(conn.peer, $rootScope.connectedPeers);
                 _saveDataStorage();
 
                 $rootScope.$digest();
               });
+
+              c.on('data', _onData);
             }
           });
         }
-      });
-
-      peer.on('data', _onData);
-
-      peer.on('close', function() {
-        console.log('------- connection closed ---------');
       });
     };
 
     var _connect = function(pid, cb) {
       if (pid !== $rootScope.peerId) {
-        console.log('------- conecting to ' + pid + ' ------');
         var c = peer.connect(pid, {
           label: 'wallet',
           serialization: 'none',
@@ -143,40 +151,50 @@ angular.module('copay.network')
         });
 
         c.on('open', function() {
-          console.log('-------- I\'m connected to ' + pid + ' ------');
-          $rootScope.connectedPeers.push(pid);
-          $rootScope.connectedTo.push(pid);
+          _arrayPushOnce(pid, $rootScope.connectedTo);
+          _arrayPushOnce(pid, $rootScope.connectedPeers);
+
+          _send(pid, { type: 'getPeers' });
+          _saveDataStorage();
 
           if (typeof cb === 'function') cb();
-
-          _send(c.peer, { type: 'getPeers' });
           
           $rootScope.$digest();
         });
 
         c.on('data', _onData);
-
-        c.on('error', function(err) {
-          console.error('-------- Error --------')
-        });
       }
     };
 
-    var _send = function(pids, data) {
-      if (Array.isArray(pids)) {
+    var _send = function(pids, data, cb) {
+      if (Array.isArray(pids))
         pids.forEach(function(pid) {
-          _sender(pid, data);
-        }); 
-      } else if (typeof pids === 'string') {
-        _sender(pids, data);
-      }
+          _sender(pid, data, cb);
+        });
+      else if (typeof pids === 'string')
+        _sender(pids, data, cb);
     };
 
-    var _disconnect = function() {
-      peer.disconnect();
-      peer.destroy();
+    var _disconnect = function(cb) {
+      var conns = $rootScope.connectedPeers.length;
+      var i = 1;
+
+      _send($rootScope.connectedPeers, { type: 'disconnect' }, function() {
+        i += 1;
+
+        if (i === conns) {
+          peer.disconnect();
+          peer.destroy();
+
+          if (typeof cb === 'function') cb();
+        }
+      });
+
       Storage.remove('peerData');
-      console.log('Disconnected and destroyed connection');
+
+      $rootScope.connectedPeers = [];
+      $rootScope.connectedTo = [];
+      $rootScope.peerId = null;
     }
 
     return {
