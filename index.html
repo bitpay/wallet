@@ -174,15 +174,31 @@
     <!-- BACKUP -->
     <script type="text/ng-template" id="backup.html">
       <div class="backup" data-ng-controller="BackupController">
-      <h2>{{title}}</h2>
-      <div class="row">
-        <div class="col-xs-6 col-md-4">Download file</div>
-        <div class="col-xs-6 col-md-4">Backup to Dropbox</div>
-        <div class="col-xs-6 col-md-4">Backup to email</div>
-      </div>
+        <h2>{{title}}</h2>
+        <div class="row text-center">
+          <div class="large-4 columns">
+            <a href="/" class="box-backup">
+              <i class="fi-download size-72"></i>
+              <p> Download File </p>
+            </a>
+          </div>
+          <div class="large-4 columns">
+            <a href="/" class="box-backup">
+              <i class="fi-social-dropbox size-72"></i>
+              <p> Backup to Dropbox </p>
+            </a>
+          </div>
+          <div class="large-4 columns">
+            <a href="/" class="box-backup">
+              <i class="fi-mail size-72"></i>
+              <p> Backup to email </p>
+            </a>
+          </div>
+        </div>
       </div>
     </script>
-
+<!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
+          // <div class="large-4 columns box-backup">Backup to email</div> -->
     <!-- NOT FOUND -->
     <script type="text/ng-template" id="404.html">
       <h2 class="text-center">404</h2>
