@@ -161,7 +161,7 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
 };
 
 
-PublicKeyRing.prototype.getCopayersPubKeys = function () {
+PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
   this._checkKeys();
 
   var pubKeys = [];
@@ -186,7 +186,7 @@ PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
-  var pubKeys = this.getCopayersPubKeys();
+  var pubKeys = this.getCopayersPubKeys(index, isChange);
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;
 };
@@ -207,9 +207,9 @@ PublicKeyRing.prototype.generateAddress = function(isChange) {
   var ret =  
     this.getAddress(isChange ? this.changeAddressIndex : this.addressIndex, isChange);
   if (isChange) 
-    this.addressIndex++;
-  else 
     this.changeAddressIndex++;
+  else 
+    this.addressIndex++;
 
   return ret;
 

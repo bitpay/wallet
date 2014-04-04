@@ -101,6 +101,11 @@ describe('PublicKeyRing model', function() {
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
+
+        if (i>1) {
+          w.getAddress(i-1,isChange).should
+            .not.equal(w.getAddress(i-2,isChange));
+        }
       }
     }
   });
