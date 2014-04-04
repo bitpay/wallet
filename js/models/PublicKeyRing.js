@@ -17,10 +17,10 @@ var log         = imports.log || console.log;
 var storage     = Storage.default();
 
 /*
- * This follow Electrum convetion, as described on
+ * This follow Electrum convetion, as described in
  * https://bitcointalk.org/index.php?topic=274182.0
  *
- * We should probably adapt the next standard once its ready as discussed at:
+ * We should probably adopt the next standard once it's ready, as discussed in:
  * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
  *
  */
