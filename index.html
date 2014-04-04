@@ -4,41 +4,231 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>cosign - Multisignature Wallet</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>Copay - Multisignature Wallet</title>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/foundation-icons.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <header>cosign</header>
-    <a href="#signin">Signin</a>
-    <a href="#home">Home</a>
+    <div class="header" data-ng-init="init()" data-ng-controller="HeaderController">
+        <div class="header-content">
+          <figure class="left">
+            <img src="./img/logo-negative.svg" alt="" width="130">
+          </figure>
+          <div class="text-right" ng-show="$root.peerId">
+            <h5>Company Funds</h5>
+            <p>4.324 BTC</p>
+          </div>
+        </div>
 
-    <div ng-view></div>
+      <nav class="top-bar" data-topbar ng-show="$root.peerId">
+        <ul class="title-area" data-ng-repeat="item in menu" ui-route="/{{item.link}}" data-ng-class="{active: isActive(item)}">
+          <li class="name"></li>
+          <li class="toggle-topbar menu-icon">
+            <a href="{{item.link}}">{{item.title}}</a>
+          </li>
+        </ul>
+
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul data-ng-repeat="item in menu" ui-route="/{{item.link}}">
+            <li class="large-3 text-center" data-ng-class="{active: isActive(item)}">
+              <a href="{{item.link}}"> <i class="fi-home size-16"></i> {{item.title}}</a>
+            </li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+
+  <div class="row">
+    <div class="large-12 columns" ng-view></div>
+  </div>
+  <div ng-controller="HeaderController" ng-show="$root.peerId">
+    <hr>
+    <div class="row">
+      <div class="text-center large-12 columns">
+        <a href="#" ng-click="signout()" class="button tiny">Signout</a>
+      </div>
+    </div>
+  </div>
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
-      <h1>Signin</h1>
+      <div ng-controller="SigninController">
+        <div class="panel callout radius" ng-show="loading">
+          Connecting to wallet...
+        </div>
+        <div ng-show="!loading">
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Join wallet</h3>
+              <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
+            </div>
+            <div class="large-3 columns">
+              <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Create a new wallet</h3>
+            </div>
+            <div class="large-3 columns">
+              <button class="button secondary expand round" ng-click="create()">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </script>
 
+    <script type="text/ng-template" id="peer.html">
+      <div class="row" ng-controller="PeerController" ng-init="init()">
+        <div class="large-6 columns">
+          <h1>I am <p class="text-muted">{{$root.peerId}}</p></h1>
+        </div>
+        <div class="large-6 columns">
+          <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
+          <ul class="no-bullet">
+            <li class="panel" ng-repeat="copayer in $root.connectedPeers">
+              <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
+              <span ng-if="copayer != $root.peerId">{{copayer}}</span>
+            </li>
+          </ul>
+          <div class="text-center">
+            <button href="#/home" class="button secondary round large expand">Go to home</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <!-- HOME -->
     <script type="text/ng-template" id="home.html">
-      <h1>home</h1>
+      <div class="home" data-ng-controller="HomeController">
+      <h2>{{title}}</h2>
+
+      <accordion close-others="oneAtATime">
+        <accordion-group ng-repeat="addr in addrs">
+          <accordion-heading>
+            {{addr.addrStr}}
+          </accordion-heading>
+          <qrcode size="160" data="{{addr.addrStr}}"></qrcode>
+        </accordion-group>
+      </accordion>
+      </div>
     </script>
 
+    <!-- TRANSACTIONS -->
+    <script type="text/ng-template" id="transactions.html">
+      <div class="transactions" data-ng-controller="TransactionsController">
+      <h2>{{title}}</h2>
+      <div class="row">
+        <div class="large-6 columns">
+          <h3>Input</h3>
+          <accordion close-others="oneAtATime">
+            <accordion-group ng-repeat="tx in txsinput">
+              <accordion-heading>
+                {{tx.fromAddr}} -> {{tx.toAddr}} : {{tx.amount}}
+              </accordion-heading>
+              <div class="row">
+                <div class="col-xs-6 col-md-4">ignore</div>
+                <div class="col-xs-6 col-md-4">(Required 3 copay)</div>
+                <div class="col-xs-6 col-md-4">sign</div>
+              </div>
+            </accordion-group>
+          </accordion> 
+        </div>
+        <div class="large-6 columns">
+          <h3>Output</h3>
+          <accordion close-others="oneAtATime">
+            <accordion-group ng-repeat="tx in txsoutput">
+              <accordion-heading>
+                {{tx.fromAddr}} <- {{tx.toAddr}} : {{tx.amount}}
+              </accordion-heading>
+              Details...
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+   </script>
+
+   <!-- SEND -->
+    <script type="text/ng-template" id="send.html">
+      <div class="send" data-ng-controller="SendController">
+      <h2>{{title}}</h2>
+        <form>
+          <label for="address">To
+            <input type="text" id="address" placeholder="Send to">
+          </label>
+          <label for="amount">Amount
+            <input type="text" id="amount" placeholder="Amount">
+            <select class="form-control">
+              <option>mBTC</option>
+              <option>BTC</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-default">send</button>
+        </form>
+      </div>
+    </script>
+
+    <!-- BACKUP -->
+    <script type="text/ng-template" id="backup.html">
+      <div class="backup" data-ng-controller="BackupController">
+        <h2>{{title}}</h2>
+        <div class="row text-center">
+          <div class="large-4 columns">
+            <a href="/" class="box-backup">
+              <i class="fi-download size-72"></i>
+              <p> Download File </p>
+            </a>
+          </div>
+          <div class="large-4 columns">
+            <a href="/" class="box-backup">
+              <i class="fi-social-dropbox size-72"></i>
+              <p> Backup to Dropbox </p>
+            </a>
+          </div>
+          <div class="large-4 columns">
+            <a href="/" class="box-backup">
+              <i class="fi-mail size-72"></i>
+              <p> Backup to email </p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </script>
+<!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
+          // <div class="large-4 columns box-backup">Backup to email</div> -->
+    <!-- NOT FOUND -->
     <script type="text/ng-template" id="404.html">
-      <h1>404</h1>
+      <h2 class="text-center">404</h2>
+      <h3 class="text-center">Page not found</h3>
+      <p class="text-center"><a href="#/">go back...</a></p>
     </script>
 
     <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/qrcode-generator/js/qrcode.js"></script>
+    <script src="lib/angular-qrcode/qrcode.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
-
-    <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
-    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="lib/angular-foundation/mm-foundation.min.js"></script>
+    <script src="lib/angular-foundation/mm-foundation-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>
 
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
+
+    <script src="js/services/network.js"></script>
+    <script src="js/services/storage.js"></script>
+
+    <script src="js/controllers/header.js"></script>
+    <script src="js/controllers/home.js"></script>
+    <script src="js/controllers/transactions.js"></script>
+    <script src="js/controllers/send.js"></script>
+    <script src="js/controllers/backup.js"></script>
+    <script src="js/controllers/signin.js"></script>
+    <script src="js/controllers/peer.js"></script>
 
     <script src="js/init.js"></script>
   </body>
