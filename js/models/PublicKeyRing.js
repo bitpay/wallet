@@ -161,7 +161,7 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
 };
 
 
-PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
+PublicKeyRing.prototype.getCopayersPubKeys = function () {
   this._checkKeys();
 
   var pubKeys = [];
