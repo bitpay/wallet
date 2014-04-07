@@ -76,13 +76,13 @@ PublicKeyRing.read = function (id, passphrase) {
   if (data.id !== id) 
     throw new Error('Wrong id in data');
 
-  var config = { network: data.network === 'livenet' ? 
+  var config = { network: data.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet
   };
 
   var w = new PublicKeyRing(config);
 
-  w.requiredCopayers = data.neededCopayers;
+  w.requiredCopayers = data.requiredCopayers;
   w.totalCopayers = data.totalCopayers;
   w.addressIndex = data.addressIndex;
   w.changeAddressIndex = data.changeAddressIndex;
@@ -97,22 +97,24 @@ PublicKeyRing.read = function (id, passphrase) {
   return w;
 };
 
-PublicKeyRing.prototype._toObj = function() {
+PublicKeyRing.prototype.toObj = function() {
   return {
     id: this.id,
-    network: this.network.name,
-    requiredCopayers: this.neededCopayers,
+    networkName: this.network.name,
+    requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
+
     changeAddressIndex: this.changeAddressIndex,
     addressIndex: this.addressIndex,
     copayersExtPubKeys: this.copayersBIP32.map( function (b) { 
       return b.extendedPublicKeyString(); 
     }),
+    ts: parseInt(Date.now() / 1000),
   };
 };
 
 PublicKeyRing.prototype.serialize = function () {
-  return JSON.stringify(this._toObj());
+  return JSON.stringify(this.toObj());
 };
 
 
@@ -234,6 +236,80 @@ PublicKeyRing.prototype.getAddresses = function() {
     ret.push(this.getAddress(i,false));
   }
   return ret;
+};
+
+PublicKeyRing.prototype._checkInPRK = function(inPKR) {
+  if (this.id !== inPKR.id)
+    throw new Error('inPRK id mismatch');
+
+  if (this.network.name !== inPKR.networkName)
+    throw new Error('inPRK network mismatch');
+
+  if (
+    this.requiredCopayers && inPKR.requiredCopayers &&
+    (this.requiredCopayers !== inPKR.requiredCopayers))
+    throw new Error('inPRK requiredCopayers mismatch');
+
+  if (
+    this.totalCopayers && inPKR.totalCopayers &&
+    (this.totalCopayers !== inPKR.totalCopayers))
+    throw new Error('inPRK requiredCopayers mismatch');
+
+  if (! inPKR.ts)
+    throw new Error('no ts at inPRK');
+};
+
+
+PublicKeyRing.prototype._mergeIndexes = function(inPKR) {
+  var hasChanged = false;
+
+  // Indexes
+  if (inPKR.changeAddressIndex > this.changeAddressIndex) {
+    this.changeAddressIndex = inPKR.changeAddressIndex;
+    hasChanged = true;
+  }
+
+  if (inPKR.addressIndex > this.addressIndex) {
+    this.addressIndex = inPKR.addressIndex;
+    hasChanged = true;
+  }
+  return hasChanged;
+};
+
+PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
+  var hasChanged = false;
+  var l= this.copayersBIP32.length;
+
+  var self = this;
+
+  inPKR.copayersExtPubKeys.forEach( function(epk) {
+    var haveIt = false;
+    for(var j=0; j<l; j++) {
+      if (self.copayersBIP32[j].extendedPublicKeyString() === epk) {
+        haveIt=true;
+        break;
+      }
+    }
+    if (!haveIt) {
+      self.copayersBIP32.push(new BIP32(epk));
+      hasChanged=true;
+    }
+  });
+  return hasChanged;
+};
+
+PublicKeyRing.prototype.merge = function(inPKR) {
+  var hasChanged = false;
+
+  this._checkInPRK(inPKR);
+
+  if (this._mergeIndexes(inPKR))
+    hasChanged = true;
+
+  if (this._mergePubkeys(inPKR))
+    hasChanged = true;
+
+  return hasChanged;
 };
 
 module.exports = require('soop')(PublicKeyRing);
