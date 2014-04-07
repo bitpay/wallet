@@ -80,14 +80,18 @@ angular.module('copay.network')
           });
           break;
         case 'disconnect':
-          $rootScope.connectedPeers = _arrayRemove(obj.sender, $rootScope.connectedPeers);
-          $rootScope.connectedTo = _arrayRemove(obj.sender, $rootScope.connectedTo);
-
-          _saveDataStorage();
-
-          $rootScope.$digest();
+          _onClose(obj.sender);
           break;
       }
+    };
+
+    var _onClose = function(pid) {
+      $rootScope.connectedPeers = _arrayRemove(pid, $rootScope.connectedPeers);
+      $rootScope.connectedTo = _arrayRemove(pid, $rootScope.connectedTo);
+
+      _saveDataStorage();
+
+      $rootScope.$digest();
     };
 
     var _connectToPeers = function(peers) {
@@ -99,7 +103,7 @@ angular.module('copay.network')
     };
 
     // public methods
-    var _init = function(cb) {
+    var init = function(cb) {
       peer = new Peer($rootScope.peerId, {
         key: 'lwjd5qra8257b9', // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
         debug: 3
@@ -135,13 +139,17 @@ angular.module('copay.network')
               });
 
               c.on('data', _onData);
+
+              c.on('close', function() {
+                _onClose(c.peer);
+              });
             }
           });
         }
       });
     };
 
-    var _connect = function(pid, cb) {
+    var connect = function(pid, cb) {
       if (pid !== $rootScope.peerId) {
         var c = peer.connect(pid, {
           label: 'wallet',
@@ -163,6 +171,10 @@ angular.module('copay.network')
         });
 
         c.on('data', _onData);
+
+        c.on('close', function() {
+          _onClose(c.peer);
+        });
       }
     };
 
@@ -175,7 +187,7 @@ angular.module('copay.network')
         _sender(pids, data, cb);
     };
 
-    var _disconnect = function(cb) {
+    var disconnect = function(cb) {
       var conns = $rootScope.connectedPeers.length;
       var i = 1;
 
@@ -198,10 +210,10 @@ angular.module('copay.network')
     }
 
     return {
-      init: _init,
-      connect: _connect,
+      init: init,
+      connect: connect,
       send: _send,
-      disconnect: _disconnect
+      disconnect: disconnect
     } 
   });
 
