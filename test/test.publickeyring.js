@@ -252,13 +252,10 @@ describe('PublicKeyRing model', function() {
         id: w.id,
       });
       w2.addCopayer();
-      w.merge(w2.toObj());
+      w.merge(w2.toObj()).should.equal(true);
     }
     w.haveAllRequiredPubKeys().should.equal(true);
   });
-
-
-
 });
 
 
