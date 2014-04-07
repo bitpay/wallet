@@ -81,12 +81,6 @@ angular.module('copay.network')
           break;
         case 'disconnect':
           _onClose(obj.sender);
-          $rootScope.connectedPeers = _arrayRemove(obj.sender, $rootScope.connectedPeers);
-          $rootScope.connectedTo = _arrayRemove(obj.sender, $rootScope.connectedTo);
-
-          _saveDataStorage();
-
-          $rootScope.$digest();
           break;
       }
     };
