@@ -6,6 +6,7 @@ angular.module('copay.network')
     $rootScope.connectedPeers = [];
     $rootScope.connectedTo = [];
     $rootScope.peerId = null;
+    $rootScope.publicKeyRing = [];
 
     // Array helpers
     var _arrayDiff = function(a, b) {

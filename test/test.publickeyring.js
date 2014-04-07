@@ -2,11 +2,11 @@
 
 var chai           = chai || require('chai');
 var should         = chai.should();
-var bitcore        = bitcore || require('../node_modules/bitcore');
+var bitcore        = bitcore || require('bitcore');
 var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
-var copay          = copay || {};
-var fakeStorage    = require('./FakeStorage');
+var copay          = copay || require('../copay');
+var fakeStorage    = copay.FakeStorage;
 var PublicKeyRing  = copay.PublicKeyRing || require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';

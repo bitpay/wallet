@@ -12,8 +12,6 @@ var Transaction = bitcore.Transaction;
 var buffertools = bitcore.buffertools;
 
 var Storage     = imports.Storage || require('./Storage');
-var log         = imports.log || console.log;
-
 var storage     = Storage.default();
 
 /*
@@ -52,12 +50,12 @@ PublicKeyRing.getRandomId = function () {
 };
 
 PublicKeyRing.decrypt = function (passphrase, encPayload) {
-  log('[wallet.js.35] TODO READ: passphrase IGNORED');
+  console.log('[wallet.js.35] TODO READ: passphrase IGNORED');
   return encPayload;
 };
 
 PublicKeyRing.encrypt = function (passphrase, payload) {
-  log('[wallet.js.92] TODO: passphrase IGNORED');
+  console.log('[wallet.js.92] TODO: passphrase IGNORED');
   return payload;
 };
 
@@ -188,7 +186,7 @@ PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
 PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
   if ( (isChange && index > this.changeAddressIndex) ||
       (!isChange && index > this.addressIndex)) {
-    log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
+    console.log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
     throw new Error('index out of bound');
   }
 };

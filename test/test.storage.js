@@ -2,7 +2,7 @@
 
 var chai     = chai || require('chai');
 var should   = chai.should();
-var copay    = copay || {};
+var copay    = copay || require('../copay');
 var Storage  = copay.Storage || require('../js/models/Storage');
 
 describe('Storage model', function() {
