@@ -6,11 +6,11 @@ function Storage() {
   this.data = {};
 }
 
-Storage.prototype.read = function(k) {
+Storage.prototype.get = function(k) {
   return this.data[k];
 };
 
-Storage.prototype.save = function(k,v) {
+Storage.prototype.set = function(k,v) {
   this.data[k]=v;
 };
 

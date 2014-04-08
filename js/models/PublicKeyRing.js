@@ -29,7 +29,7 @@ var CHANGE_BRANCH = 'm/1/';
 function PublicKeyRing(opts) {
   opts = opts || {};
 
-  this.network = opts.network === 'livenet' ? 
+  this.network = opts.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
 
   this.requiredCopayers = opts.requiredCopayers || 3;
@@ -60,7 +60,7 @@ PublicKeyRing.encrypt = function (passphrase, payload) {
 };
 
 PublicKeyRing.read = function (id, passphrase) {
-  var encPayload = storage.read(id);
+  var encPayload = storage.get(id);
   if (!encPayload) 
     throw new Error('Could not find wallet data');
   var data;
@@ -74,9 +74,7 @@ PublicKeyRing.read = function (id, passphrase) {
   if (data.id !== id) 
     throw new Error('Wrong id in data');
 
-  var config = { network: data.networkName === 'livenet' ? 
-      bitcore.networks.livenet : bitcore.networks.testnet
-  };
+  var config = { networkName: data.networkName };
 
   var w = new PublicKeyRing(config);
 
@@ -121,7 +119,7 @@ PublicKeyRing.prototype.store = function (passphrase) {
   if (!this.id) 
       throw new Error('wallet has no id');
 
-  storage.save(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
+  storage.set(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
   this.dirty = 0;
 
   return true;
@@ -134,7 +132,7 @@ PublicKeyRing.prototype.registeredCopayers = function () {
 
 
 PublicKeyRing.prototype.haveAllRequiredPubKeys = function () {
-  return this.registeredCopayers() === this.totalCopayers;
+  return this.registeredCopayers() >= this.totalCopayers;
 };
 
 PublicKeyRing.prototype._checkKeys = function() {
@@ -236,9 +234,16 @@ PublicKeyRing.prototype.getAddresses = function() {
   return ret;
 };
 
-PublicKeyRing.prototype._checkInPRK = function(inPKR) {
-  if (this.id !== inPKR.id)
+PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
+
+
+  if (!inPKR.ts) {
+    throw new Error('inPRK bad format: Did you use .toObj()?');
+  }
+
+  if (!ignoreId  && this.id !== inPKR.id) {
     throw new Error('inPRK id mismatch');
+  }
 
   if (this.network.name !== inPKR.networkName)
     throw new Error('inPRK network mismatch');
@@ -296,10 +301,10 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   return hasChanged;
 };
 
-PublicKeyRing.prototype.merge = function(inPKR) {
+PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   var hasChanged = false;
 
-  this._checkInPRK(inPKR);
+  this._checkInPRK(inPKR, ignoreId);
 
   if (this._mergeIndexes(inPKR))
     hasChanged = true;

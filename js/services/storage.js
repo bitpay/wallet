@@ -7,7 +7,7 @@ angular.module('copay.storage')
        return  JSON.parse(localStorage.getItem(key));
       },
 
-      save: function(key, data) {
+      set: function(key, data) {
        localStorage.setItem(key, JSON.stringify(data));
       },
 

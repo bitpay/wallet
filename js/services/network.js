@@ -4,9 +4,7 @@ angular.module('copay.network')
   .factory('Network', function($rootScope, Storage) {
     var peer;
     $rootScope.connectedPeers = [];
-    $rootScope.connectedTo = [];
     $rootScope.peerId = null;
-    $rootScope.publicKeyRing = [];
 
     // Array helpers
     var _arrayDiff = function(a, b) {
@@ -42,12 +40,11 @@ angular.module('copay.network')
     var _saveDataStorage = function() {
       Storage.save('peerData', {
         peerId: $rootScope.peerId,
-        connectedTo: $rootScope.connectedTo,
         connectedPeers: $rootScope.connectedPeers
       });
     };
 
-    var _sender = function(pid, data, cb) {
+    var _sendToOne = function(pid, data, cb) {
       if (pid !== $rootScope.peerId) {
         var conns = peer.connections[pid];
 
@@ -67,40 +64,79 @@ angular.module('copay.network')
       }
     };
 
-    var _onData = function(data) {
+    var _onData = function(data, isOutbound) {
       var obj = JSON.parse(data);
-
+      console.log('### RECEIVED TYPE: %s FROM %s', obj.data.type, obj.sender); 
       switch(obj.data.type) {
-        case 'connectedPeers':
-          _connectToPeers(obj.data.peers);
-          break;
-        case 'getPeers':
-          _send(obj.sender, {
-            type: 'connectToPeers',
-            peers: $rootScope.connectedPeers
-          });
+        case 'peerList':
+          if (_connectToPeers(obj.data.peers)) {
+            //TODO Remove log
+            console.log('### BROADCASTING PEER LIST');
+            _send( $rootScope.connectedPeers, { 
+                  type: 'peerList', 
+                  peers: $rootScope.connectedPeers,
+                  isBroadcast: 1,
+            });
+            $rootScope.$digest();
+          }
+          else if (!isOutbound && !obj.data.isBroadcast) {
+            // replying always to connecting peer
+            console.log('### REPLYING PEERLIST TO:', obj.sender );
+            _send( obj.sender, { 
+                  type: 'peerList', 
+                  peers: $rootScope.connectedPeers
+            });
+          }
           break;
         case 'disconnect':
           _onClose(obj.sender);
+          break;
+        case 'publicKeyRing':
+          console.log('### RECEIVED PKR FROM:', obj.sender); 
+
+          if ($rootScope.publicKeyRing.merge(obj.data.publicKeyRing, true)) { 
+            //TODO Remove log
+            console.log('### BROADCASTING PRK');
+            _send( $rootScope.connectedPeers, { 
+                  type: 'publicKeyRing', 
+                  publicKeyRing: $rootScope.publicKeyRing.toObj(),
+                  isBroadcast: 1,
+            });
+            $rootScope.$digest();
+          }
+          else if (!isOutbound && !obj.data.isBroadcast) {
+            // replying always to connecting peer
+            console.log('### REPLYING PRK TO:', obj.sender );
+            _send( obj.sender, { 
+                  type: 'publicKeyRing', 
+                  publicKeyRing: $rootScope.publicKeyRing.toObj(),
+            });
+ 
+          }
+
+          //TODO Remove log
+          console.log('*** PRK:', $rootScope.publicKeyRing.toObj());
           break;
       }
     };
 
     var _onClose = function(pid) {
       $rootScope.connectedPeers = _arrayRemove(pid, $rootScope.connectedPeers);
-      $rootScope.connectedTo = _arrayRemove(pid, $rootScope.connectedTo);
-
       _saveDataStorage();
 
       $rootScope.$digest();
     };
 
     var _connectToPeers = function(peers) {
-      var arrayDiff = _arrayDiff(peers, $rootScope.connectedTo);
-
+      var ret = false;
+      var arrayDiff1= _arrayDiff(peers, $rootScope.connectedPeers);
+      var arrayDiff = _arrayDiff(arrayDiff1, [$rootScope.peerId]);
       arrayDiff.forEach(function(pid) {
-        _connect(pid);
+        console.log('### CONNECTING TO:',pid);
+        ret = true;
+        connect(pid);
       });
+      return ret;
     };
 
     // public methods
@@ -110,41 +146,43 @@ angular.module('copay.network')
         debug: 3
       });
 
+
+      $rootScope.publicKeyRing = new copay.PublicKeyRing({
+        network: config.networkName,
+      });
+      $rootScope.publicKeyRing.addCopayer();
+      console.log('### PublicKeyRing Initialized');
+
+
       peer.on('open', function(pid) {
+        console.log('### PEER OPEN. I AM:' + pid);
         $rootScope.peerId = pid;
-        _arrayPushOnce(pid, $rootScope.connectedPeers);
         _saveDataStorage();
 
         cb();
-
         $rootScope.$digest();
       });
 
-      peer.on('connection', function(conn) {
-        if (conn.label === 'wallet') {
-          conn.on('open', function() {
-            if (!_inArray(conn.peer, $rootScope.connectedTo)) {
-              var c = peer.connect(conn.peer, {
-                label: 'wallet',
-                serialization: 'none',
-                reliable: false,
-                metadata: { message: 'hi copayer!' }
-              });
+      peer.on('connection', function(dataConn) {
+        if (dataConn.label === 'wallet') {
+          console.log('### NEW INBOUND CONNECTION'); //TODO
+          dataConn.on('open', function() {
+            if (!_inArray(dataConn.peer, $rootScope.connectedPeers)) {
+              console.log('### INBOUND DATA CONNECTION READY TO:' + dataConn.peer); //TODO
+              _arrayPushOnce(dataConn.peer, $rootScope.connectedPeers);
+              _saveDataStorage();
 
-              c.on('open', function() {
-                $rootScope.connectedTo.push(conn.peer);
-                _arrayPushOnce(conn.peer, $rootScope.connectedPeers);
-                _saveDataStorage();
-
-                $rootScope.$digest();
-              });
-
-              c.on('data', _onData);
-
-              c.on('close', function() {
-                _onClose(c.peer);
-              });
+              $rootScope.$digest();
             }
+          });
+
+          dataConn.on('data', _onData);
+          dataConn.on('error', function(e) {
+            console.log('### ## INBOUND DATA ERROR',e ); //TODO
+            _onClose(dataConn.peer);
+          });
+          dataConn.on('close', function() {
+            _onClose(dataConn.peer);
           });
         }
       });
@@ -152,29 +190,51 @@ angular.module('copay.network')
 
     var connect = function(pid, cb) {
       if (pid !== $rootScope.peerId) {
-        var c = peer.connect(pid, {
+
+        console.log('### STARTING CONNECT TO:' + pid );
+
+        var dataConn = peer.connect(pid, {
           label: 'wallet',
           serialization: 'none',
-          reliable: false,
+          reliable: true,
           metadata: { message: 'hi copayer!' }
         });
 
-        c.on('open', function() {
-          _arrayPushOnce(pid, $rootScope.connectedTo);
-          _arrayPushOnce(pid, $rootScope.connectedPeers);
+        dataConn.on('open', function() {
 
-          _send(pid, { type: 'getPeers' });
+          console.log('### OUTBOUND DATA CONN READY TO:' + pid );
+          _arrayPushOnce(pid, $rootScope.connectedPeers);
           _saveDataStorage();
+
+          console.log('#### SENDING PEER LIST: '  +$rootScope.connectedPeers);
+          _send(pid, {
+            type: 'peerList',
+            peers: $rootScope.connectedPeers
+          });
+ 
+
+          console.log('#### SENDING PKR ');
+          _send(dataConn.peer, { 
+            type: 'publicKeyRing', 
+            publicKeyRing: $rootScope.publicKeyRing.toObj(),
+          });
 
           if (typeof cb === 'function') cb();
           
           $rootScope.$digest();
         });
 
-        c.on('data', _onData);
+        dataConn.on('data', function(data) {
+          _onData(data,true);
+        });
 
-        c.on('close', function() {
-          _onClose(c.peer);
+        dataConn.on('error', function(e) {
+          console.log('### ## INBOUND DATA ERROR',e ); //TODO
+          _onClose(dataConn.peer);
+        });
+
+        dataConn.on('close', function() {
+          _onClose(dataConn.peer);
         });
       }
     };
@@ -182,32 +242,28 @@ angular.module('copay.network')
     var _send = function(pids, data, cb) {
       if (Array.isArray(pids))
         pids.forEach(function(pid) {
-          _sender(pid, data, cb);
+          _sendToOne(pid, data, cb);
         });
       else if (typeof pids === 'string')
-        _sender(pids, data, cb);
+        _sendToOne(pids, data, cb);
     };
 
     var disconnect = function(cb) {
+      Storage.remove('peerData');
       var conns = $rootScope.connectedPeers.length;
       var i = 1;
-
       _send($rootScope.connectedPeers, { type: 'disconnect' }, function() {
         i += 1;
 
         if (i === conns) {
+
+          $rootScope.connectedPeers = [];
+          $rootScope.peerId = null;
           peer.disconnect();
           peer.destroy();
-
           if (typeof cb === 'function') cb();
         }
       });
-
-      Storage.remove('peerData');
-
-      $rootScope.connectedPeers = [];
-      $rootScope.connectedTo = [];
-      $rootScope.peerId = null;
     }
 
     return {

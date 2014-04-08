@@ -85,6 +85,14 @@
       <div class="row" ng-controller="PeerController" ng-init="init()">
         <div class="large-6 columns">
           <h1>I am <p class="text-muted">{{$root.peerId}}</p></h1>
+
+          <ul class="no-bullet">
+            <li> [DEBUG] Pubkeys that you have: {{$root.publicKeyRing.registeredCopayers()}} 
+            <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.publicKeyRing.copayersBIP32">
+                ${{pub.extendedPublicKeyString()}}
+            </li>
+          </ul>
+          <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
         </div>
         <div class="large-6 columns">
           <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/5)</h3>
@@ -214,11 +222,12 @@
     <script src="lib/angular-foundation/mm-foundation-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>
     <script src="lib/bitcore.js"></script>
-    <script src="lib/copay.js"></script>
+    <script src="lib/copayBundle.js"></script>
 
 
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
+    <script src="js/routes.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/services/network.js"></script>

@@ -19,8 +19,6 @@ angular.module('copay.signin').controller('SigninController',
       $scope.loading = true;
 
       if (cid) {
-        $rootScope.connectedTo.push(cid);
-
         Network.init(function() {
           Network.connect(cid, function() {
             $location.path('peer');
@@ -29,11 +27,9 @@ angular.module('copay.signin').controller('SigninController',
       }
     };
 
-    if (peerData && peerData.peerId && peerData.connectedTo.length > 0) {
+    if (peerData && peerData.peerId && peerData.connectedPeers.length > 0) {
       $rootScope.peerId = peerData.peerId;
-      $rootScope.connectedPeers = peerData.connectedPeers;
-
-      $scope.join(peerData.connectedTo[0]);
+      $scope.join(peerData.connectedPeers);
     }
   });
 
