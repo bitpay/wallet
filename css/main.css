@@ -78,7 +78,7 @@ body {
 }
 
 .panel:hover {
-  background: #111;
+  background: #efefef;
 }
 
 .box-backup {
@@ -91,13 +91,22 @@ a.box-backup {
   color: #111;
 }
 
-a.panel:hover, a.panel:hover p {
-  color:#fff;
-}
-
 .box-backup i {
   margin-bottom: 2rem;
   display: block;
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
+
+.pending button {
+  margin: 0;
+}
+
+.line {
+  border-top: 1px solid #ccc;
+  padding-bottom: 1rem;
 }
 
 button.primary { background-color: #111; }
@@ -106,6 +115,7 @@ button.secondary { background-color: #FAE448 !important; }
 button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #D7C020 !important;}
 
+.m0 {margin: 0;}
 .db {display: block;}
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }

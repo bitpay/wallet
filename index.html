@@ -123,38 +123,68 @@
       </div>
     </script>
 
-
+    
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
       <div class="transactions" data-ng-controller="TransactionsController">
-      <h2>{{title}}</h2>
-      <div class="row">
-        <div class="large-6 columns">
-          <h3>Input</h3>
-          <accordion close-others="oneAtATime">
-            <accordion-group ng-repeat="tx in txsinput">
-              <accordion-heading>
-                {{tx.fromAddr}} -> {{tx.toAddr}} : {{tx.amount}}
-              </accordion-heading>
+      
+        <div class="row">
+          <div class="large-6 columns">
+            <h2>Output</h2>
+            <div class="panel pending">
               <div class="row">
-                <div class="col-xs-6 col-md-4">ignore</div>
-                <div class="col-xs-6 col-md-4">(Required 3 copay)</div>
-                <div class="col-xs-6 col-md-4">sign</div>
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+                <div class="large-12 columns m0">
+                  <div class="line"></div>
+                  <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
+                  <small class="large-4 columns text-center">Faltan 3 cosigners</small>
+                  <button class="secondary round large-4 columns"><i class="large-2 columns fi-check size-16 text-center"></i> Sign</button>
+                </div>
+              </div> <!-- end of row -->
+            </div> <!-- end of pending -->
+            <div class="line"></div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
               </div>
-            </accordion-group>
-          </accordion> 
-        </div>
-        <div class="large-6 columns">
-          <h3>Output</h3>
-          <accordion close-others="oneAtATime">
-            <accordion-group ng-repeat="tx in txsoutput">
-              <accordion-heading>
-                {{tx.fromAddr}} <- {{tx.toAddr}} : {{tx.amount}}
-              </accordion-heading>
-              Details...
-            </accordion-group>
-          </accordion>
-        </div>
+            </div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+          </div>
+          <div class="large-6 columns">
+            <h2>Input</h2>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+          </div>
+        </div>    
       </div>
    </script>
 
