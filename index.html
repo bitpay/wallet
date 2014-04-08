@@ -108,54 +108,91 @@
         </div>
       </div>
     </script>
+    
+    
 
     <!-- HOME -->
     <script type="text/ng-template" id="home.html">
       <div class="home" data-ng-controller="HomeController">
-      <h2>{{title}}</h2>
+        <h2>{{title}}</h2>
 
-      <accordion close-others="oneAtATime">
-        <accordion-group ng-repeat="addr in addrs">
-          <accordion-heading>
-            {{addr.addrStr}}
-          </accordion-heading>
-          <qrcode size="160" data="{{addr.addrStr}}"></qrcode>
-        </accordion-group>
-      </accordion>
+        <div class="row">
+          <div class="large-6 columns">
+            <a class="panel db"> Adress1 <span class="right"> &gt; </span> </a>
+            <a class="panel db"> Adress2 <span class="right"> &gt; </span> </a>
+            <a class="panel db"> Adress3 <span class="right"> &gt; </span> </a>
+            <a class="panel db"> Adress4 <span class="right"> &gt; </span> </a>
+          </div>
+          <div class="large-6 columns">
+            <qrcode size="160" data="n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb"></qrcode>
+            <p> 2.5432 BTC </p>
+          </div>
+        </div> 
       </div>
     </script>
 
+    
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
       <div class="transactions" data-ng-controller="TransactionsController">
-      <h2>{{title}}</h2>
-      <div class="row">
-        <div class="large-6 columns">
-          <h3>Input</h3>
-          <accordion close-others="oneAtATime">
-            <accordion-group ng-repeat="tx in txsinput">
-              <accordion-heading>
-                {{tx.fromAddr}} -> {{tx.toAddr}} : {{tx.amount}}
-              </accordion-heading>
+      
+        <div class="row">
+          <div class="large-6 columns">
+            <h2>Output</h2>
+            <div class="panel pending">
               <div class="row">
-                <div class="col-xs-6 col-md-4">ignore</div>
-                <div class="col-xs-6 col-md-4">(Required 3 copay)</div>
-                <div class="col-xs-6 col-md-4">sign</div>
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+                <div class="large-12 columns m0">
+                  <div class="line"></div>
+                  <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
+                  <small class="large-4 columns text-center">Faltan 3 cosigners</small>
+                  <button class="secondary round large-4 columns"><i class="large-2 columns fi-check size-16 text-center"></i> Sign</button>
+                </div>
+              </div> <!-- end of row -->
+            </div> <!-- end of pending -->
+            <div class="line"></div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
               </div>
-            </accordion-group>
-          </accordion> 
-        </div>
-        <div class="large-6 columns">
-          <h3>Output</h3>
-          <accordion close-others="oneAtATime">
-            <accordion-group ng-repeat="tx in txsoutput">
-              <accordion-heading>
-                {{tx.fromAddr}} <- {{tx.toAddr}} : {{tx.amount}}
-              </accordion-heading>
-              Details...
-            </accordion-group>
-          </accordion>
-        </div>
+            </div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+          </div>
+          <div class="large-6 columns">
+            <h2>Input</h2>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="row">
+                <p class="large-5 columns"> Address 1</p>
+                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2</p>
+              </div>
+            </div>
+          </div>
+        </div>    
       </div>
    </script>
 
@@ -185,19 +222,19 @@
         <h2>{{title}}</h2>
         <div class="row text-center">
           <div class="large-4 columns">
-            <a href="/" class="box-backup">
+            <a href="/" class="panel box-backup">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
           <div class="large-4 columns">
-            <a href="/" class="box-backup">
+            <a href="/" class="panel box-backup">
               <i class="fi-social-dropbox size-72"></i>
               <p> Backup to Dropbox </p>
             </a>
           </div>
           <div class="large-4 columns">
-            <a href="/" class="box-backup">
+            <a href="/" class="panel box-backup">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>
             </a>
