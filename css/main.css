@@ -73,12 +73,16 @@ body {
 
 .panel {
   background: #FFFFFF;
-  padding: 0.25rem 1rem;
+  padding: 0.7rem 1rem;
+  border:0;
+}
+
+.panel:hover {
+  background: #111;
 }
 
 .box-backup {
   margin: 2rem 0;
-  background: white;
   padding: 2rem 1rem;
 }
 
@@ -87,8 +91,8 @@ a.box-backup {
   color: #111;
 }
 
-a.box-backup:hover {
-  color:#666;
+a.panel:hover, a.panel:hover p {
+  color:#fff;
 }
 
 .box-backup i {
@@ -102,7 +106,7 @@ button.secondary { background-color: #FAE448 !important; }
 button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #D7C020 !important;}
 
-
+.db {display: block;}
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }

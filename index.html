@@ -100,22 +100,29 @@
         </div>
       </div>
     </script>
+    
+    
 
     <!-- HOME -->
     <script type="text/ng-template" id="home.html">
       <div class="home" data-ng-controller="HomeController">
-      <h2>{{title}}</h2>
+        <h2>{{title}}</h2>
 
-      <accordion close-others="oneAtATime">
-        <accordion-group ng-repeat="addr in addrs">
-          <accordion-heading>
-            {{addr.addrStr}}
-          </accordion-heading>
-          <qrcode size="160" data="{{addr.addrStr}}"></qrcode>
-        </accordion-group>
-      </accordion>
+        <div class="row">
+          <div class="large-6 columns">
+            <a class="panel db"> Adress1 <span class="right"> &gt; </span> </a>
+            <a class="panel db"> Adress2 <span class="right"> &gt; </span> </a>
+            <a class="panel db"> Adress3 <span class="right"> &gt; </span> </a>
+            <a class="panel db"> Adress4 <span class="right"> &gt; </span> </a>
+          </div>
+          <div class="large-6 columns">
+            <qrcode size="160" data="n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb"></qrcode>
+            <p> 2.5432 BTC </p>
+          </div>
+        </div> 
       </div>
     </script>
+
 
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
@@ -177,19 +184,19 @@
         <h2>{{title}}</h2>
         <div class="row text-center">
           <div class="large-4 columns">
-            <a href="/" class="box-backup">
+            <a href="/" class="panel box-backup">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
           <div class="large-4 columns">
-            <a href="/" class="box-backup">
+            <a href="/" class="panel box-backup">
               <i class="fi-social-dropbox size-72"></i>
               <p> Backup to Dropbox </p>
             </a>
           </div>
           <div class="large-4 columns">
-            <a href="/" class="box-backup">
+            <a href="/" class="panel box-backup">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>
             </a>
