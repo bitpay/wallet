@@ -12,6 +12,7 @@ angular.module('copay.signin').controller('SigninController',
 
       Network.init(function() {
         $location.path('peer');
+        $rootScope.$digest();
       });
     };
 
@@ -21,7 +22,9 @@ angular.module('copay.signin').controller('SigninController',
       if (cid) {
         Network.init(function() {
           Network.connect(cid, function() {
+console.log('[signin.js.26] REDIR'); //TODO
             $location.path('peer');
+            $rootScope.$digest();
           });
         });
       }
