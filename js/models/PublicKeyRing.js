@@ -14,17 +14,6 @@ var buffertools = bitcore.buffertools;
 var Storage     = imports.Storage || require('./Storage');
 var storage     = Storage.default();
 
-/*
- * This follow Electrum convetion, as described in
- * https://bitcointalk.org/index.php?topic=274182.0
- *
- * We should probably adopt the next standard once it's ready, as discussed in:
- * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
- *
- */
-
-var PUBLIC_BRANCH = 'm/0/';
-var CHANGE_BRANCH = 'm/1/';
 
 function PublicKeyRing(opts) {
   opts = opts || {};
@@ -44,6 +33,22 @@ function PublicKeyRing(opts) {
   this.addressIndex=0;
 }
 
+/*
+ * This follow Electrum convetion, as described in
+ * https://bitcointalk.org/index.php?topic=274182.0
+ *
+ * We should probably adopt the next standard once it's ready, as discussed in:
+ * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
+ *
+ */
+
+PublicKeyRing.PublicBranch = function (index) {
+  return 'm/0/'+index;
+};
+
+PublicKeyRing.ChangeBranch = function (index) {
+  return 'm/1/'+index;
+};
 
 PublicKeyRing.getRandomId = function () {
   return buffertools.toHex(coinUtil.generateNonce());
@@ -177,7 +182,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   var pubKeys = [];
   var l = this.copayersBIP32.length;
   for(var i=0; i<l; i++) {
-    var path = (isChange ? CHANGE_BRANCH : PUBLIC_BRANCH) + index;
+    var path = isChange ? PublicKeyRing.ChangeBranch(index) : PublicKeyRing.PublicBranch(index); 
     var bip32 = this.copayersBIP32[i].derive(path);
     pubKeys[i] = bip32.eckey.public;
   }
@@ -200,6 +205,7 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;
 };
+
 
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
   this._checkIndexRange(index, isChange);
@@ -237,6 +243,21 @@ PublicKeyRing.prototype.getAddresses = function() {
   }
   return ret;
 };
+
+PublicKeyRing.prototype.getRedeemScriptMap = function () {
+  var ret = {};
+
+  for (var i=0; i<this.changeAddressIndex; i++) {
+    ret[this.getAddress(i,true)] = this.getRedeemScript(i,true);
+  }
+
+  for (var i=0; i<this.addressIndex; i++) {
+    ret[this.getAddress(i)] = this.getRedeemScript(i);
+  }
+  return ret;
+};
+
+
 
 PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
 
