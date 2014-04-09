@@ -7,7 +7,9 @@ var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
 var copay          = copay || require('../copay');
 var fakeStorage    = copay.FakeStorage;
-var PublicKeyRing  = copay.PublicKeyRing || require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
+
+var PublicKeyRing  = (typeof process.versions === 'undefined') ? copay.PublicKeyRing :
+  require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';
 
@@ -17,7 +19,6 @@ var config = {
 };
 
 var createW = function (networkName) {
-
   var config = {
     networkName: networkName || 'livenet',
   };
@@ -27,7 +28,7 @@ var createW = function (networkName) {
 
   var copayers = [];
   for(var i=0; i<5; i++) {
-    w.haveAllRequiredPubKeys().should.equal(false);
+    w.isComplete().should.equal(false);
     var newEpk = w.addCopayer();
     copayers.push(newEpk);
   }
@@ -55,7 +56,7 @@ describe('PublicKeyRing model', function() {
     should.exist(w2);
 
     w2.registeredCopayers().should.equal(0); 
-    w2.haveAllRequiredPubKeys().should.equal(false);
+    w2.isComplete().should.equal(false);
 
     w2.getAddress.bind(false).should.throw();
   });
@@ -65,7 +66,7 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
     var copayers = k.copayers;
 
-    w.haveAllRequiredPubKeys().should.equal(true);
+    w.isComplete().should.equal(true);
     w.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
       w.addCopayer.bind(copayers[i]).should.throw();
@@ -86,7 +87,7 @@ describe('PublicKeyRing model', function() {
     w.store.bind().should.throw();
 
     var w2 = PublicKeyRing.read(ID);
-    w2.haveAllRequiredPubKeys().should.equal(true);
+    w2.isComplete().should.equal(true);
     w2.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
       w2.addCopayer.bind(copayers[i]).should.throw();
@@ -188,11 +189,7 @@ describe('PublicKeyRing model', function() {
     });
     (function() { w2.merge(w.toObj());}).should.throw();
     (function() { w2.merge(w,true);}).should.throw();
-
-console.log('[test.publickeyring.js.190]'); //TODO
     w2.merge(w.toObj(),true).should.equal(true);
-
-console.log('[test.publickeyring.js.193]'); //TODO
 
 
     var w3 = new PublicKeyRing({
@@ -232,7 +229,7 @@ console.log('[test.publickeyring.js.193]'); //TODO
     should.exist(w);
     var copayers = [];
     for(var i=0; i<2; i++) {
-      w.haveAllRequiredPubKeys().should.equal(false);
+      w.isComplete().should.equal(false);
       w.addCopayer();
     }
 
@@ -243,16 +240,16 @@ console.log('[test.publickeyring.js.193]'); //TODO
     should.exist(w);
     var copayers = [];
     for(var i=0; i<3; i++) {
-      w2.haveAllRequiredPubKeys().should.equal(false);
+      w2.isComplete().should.equal(false);
       w2.addCopayer();
     }
     w2.merge(w.toObj()).should.equal(true);
-    w2.haveAllRequiredPubKeys().should.equal(true);
+    w2.isComplete().should.equal(true);
     w2.merge(w.toObj()).should.equal(false);
 
-    w.haveAllRequiredPubKeys().should.equal(false);
+    w.isComplete().should.equal(false);
     w.merge(w2.toObj()).should.equal(true);
-    w.haveAllRequiredPubKeys().should.equal(true);
+    w.isComplete().should.equal(true);
     w.merge(w2.toObj()).should.equal(false);
   });
 
@@ -261,7 +258,7 @@ console.log('[test.publickeyring.js.193]'); //TODO
     should.exist(w);
 
     for(var i=0; i<5; i++) {
-      w.haveAllRequiredPubKeys().should.equal(false);
+      w.isComplete().should.equal(false);
       var w2 = new PublicKeyRing({
         networkName: 'livenet',
         id: w.id,
@@ -269,7 +266,7 @@ console.log('[test.publickeyring.js.193]'); //TODO
       w2.addCopayer();
       w.merge(w2.toObj()).should.equal(true);
     }
-    w.haveAllRequiredPubKeys().should.equal(true);
+    w.isComplete().should.equal(true);
   });
 });
 

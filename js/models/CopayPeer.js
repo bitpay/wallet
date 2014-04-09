@@ -236,7 +236,6 @@ CopayPeer.prototype.send = function(peerIds, data, cb) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
   }
-console.log('[CopayPeer.js.216:SENDD:]',data); //TODO
 
   if (Array.isArray(peerIds)) {
     var l = peerIds.length;
