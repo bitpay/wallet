@@ -12,6 +12,7 @@ var bignum         = bitcore.bignum;
 var networks         = bitcore.networks;
 var copay          = copay || require('../copay');
 var fakeStorage    = copay.FakeStorage;
+var PrivateKey    = copay.PrivateKey || require('../js/models/PrivateKey');
 var TxProposals    = copay.TxProposals || require('../js/models/TxProposal');
 var PublicKeyRing  = (typeof process.versions === 'undefined') ? copay.PublicKeyRing :
   require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
@@ -74,25 +75,21 @@ describe('TxProposals model', function() {
     unspentTest[0].address        = w.publicKeyRing.getAddress(1, true);
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getRedeemScript(1, true).getBuffer();
 
-    var txHex = w.create(
+    var tx = w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       bignum('123456789'), 
       unspentTest
     );
-    should.exist(txHex);
-
-    var t2=new Transaction();
-    t2.parse(txHex);
-    t2.isComplete().should.equal(false);
+    should.exist(tx);
+    tx.isComplete().should.equal(false);
   });
 
   it('#create. Singing with derivate keys', function () {
 
-    var oneBIP32 = new BIP32(config.networkName);
-
+    var priv = new PrivateKey(config);
     var w = new TxProposals({
       networkName: config.networkName,
-      publicKeyRing: createW([oneBIP32]),
+      publicKeyRing: createW([priv.getBIP32()]),
     });
     should.exist(w);
     w.network.name.should.equal('livenet');
@@ -103,22 +100,15 @@ describe('TxProposals model', function() {
         unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange);
         unspentTest[0].scriptPubKey   = w.publicKeyRing.getRedeemScript(index, isChange).getBuffer();
 
-        var derivedBip32 = oneBIP32.derive( isChange ? PublicKeyRing.ChangeBranch(index):PublicKeyRing.PublicBranch(index) );
-        var wk = new WalletKey({network: networks.livenet});
-        var p = derivedBip32.eckey.private.toString('hex');
-        wk.fromObj({priv: p});
-
-        var txHex = w.create(
+        var tx = w.create(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
           bignum('123456789'), 
           unspentTest,
-          wk
+          priv.get(index,isChange)
         );
-        should.exist(txHex);
-        var t2=new Transaction();
-        t2.parse(txHex);
-        t2.isComplete().should.equal(false);
-        t2.countInputMissingSignatures(0).should.equal(2);
+        should.exist(tx);
+        tx.isComplete().should.equal(false);
+        tx.countInputMissingSignatures(0).should.equal(2);
       }
     }
 
