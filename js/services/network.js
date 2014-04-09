@@ -97,14 +97,10 @@ angular.module('copay.network')
 
       switch(data.type) {
         case 'publicKeyRing':
-
-          console.log('[network.js.91:data:]',data); //TODO
-
           _checkWallet(data.publicKeyRing.id);
           var shouldSend = false;
 
           var recipients, pkr = $rootScope.publicKeyRing;
-          console.log('### RECEIVED PKR FROM:', senderId); 
           if (pkr.merge(data.publicKeyRing, true)  && !data.isBroadcast) { 
             console.log('### BROADCASTING PKR');
             recipients = null;
@@ -125,7 +121,6 @@ angular.module('copay.network')
             });
           }
 
-console.log('[network.js.126] END'); //TODO
           _refreshUx();
           break;
       }
@@ -142,6 +137,7 @@ console.log('[network.js.126] END'); //TODO
       var cp = $rootScope.cp = new copay.CopayPeer({
         apiKey: config.p2pApiKey,
         debug:  config.p2pDebug,
+        maxPeers: config.maxPeers,    // TODO: This should be on wallet configuration
       }); 
       _setupHandlers();
 
@@ -151,19 +147,24 @@ console.log('[network.js.126] END'); //TODO
       });
     };
 
-    var connect = function(peerId, cb) {
-      if ($rootScope.cp) {
-        $rootScope.cp.connectTo(peerId, cb);
-      }
-      else
-        return cb();
-    };
-
-    var disconnect = function(cb) {
+    var disconnect = function() {
       if ($rootScope.cp) {
         $rootScope.cp.disconnect();
       }
       Storage.remove('peerData'); 
+      $rootScope.isLogged = false;
+      _refreshUx();
+    };
+
+    var connect = function(peerId, openCallback, failCallBack) {
+      if ($rootScope.cp) {
+        $rootScope.cp.connectTo(peerId, openCallback, function () {
+          disconnect();
+          failCallBack();
+        });
+      }
+      else
+        return failCallBack();
     };
 
     return {

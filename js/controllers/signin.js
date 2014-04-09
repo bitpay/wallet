@@ -38,9 +38,16 @@ angular.module('copay.signin').controller('SigninController',
 
       if (cid) {
         Network.init(function() {
-          Network.connect(cid, function() {
-            $location.path('peer');
-            $rootScope.$digest();
+          Network.connect(cid, 
+            function() {
+              $location.path('peer');
+              $rootScope.$digest();
+            }, function() {
+
+console.log('[signin.js.46] SETTING MESSAGE'); //TODO
+              $rootScope.flashMessage = { message: 'Connection refussed', type: 'error'};
+              $location.path('home');
+              $rootScope.$digest();
           });
         });
       }

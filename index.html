@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div class="header" data-ng-init="init()" data-ng-controller="HeaderController">
+    <div data-ng-init="init()" data-ng-controller="HeaderController">
+      <div class="header"> 
         <div class="header-content">
           <figure class="left">
             <img src="./img/logo-negative.svg" alt="" width="130">
@@ -38,7 +39,16 @@
           </ul>
         </section>
       </nav>
+      
     </div>
+
+    <div ng-if='$root.flashMessage.message' class="panel callout radius" style="color:red" >
+      {{$root.flashMessage.type}}: 
+      {{$root.flashMessage.message}}
+      <a href="#" ng-click="clearFlashMessage()" class="button tiny">Dismiss</a>
+    </div>
+
+  </div>
 
   <div class="row">
     <div class="large-12 columns" ng-view></div>

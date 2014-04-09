@@ -16,10 +16,11 @@ var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
  */
 
 function CopayPeer(opts) {
-  opts = opts || {};
-  this.peerId = opts.peerId;
-  this.apiKey = opts.apiKey || 'lwjd5qra8257b9';
-  this.debug = opts.debug || 3;
+  opts                = opts || {};
+  this.peerId         = opts.peerId;
+  this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
+  this.debug          = opts.debug || 3;
+  this.maxPeers       = opts.maxPeers || 5;
   this.connectedPeers = [];
 }
 
@@ -84,7 +85,13 @@ CopayPeer.prototype._connectToPeers = function(peerIds) {
 };
 
 CopayPeer.prototype._onData = function(data, isInbound) {
-  var obj = JSON.parse(data);
+  var obj;
+  try { 
+    obj = JSON.parse(data);
+  } catch (e) {
+    console.log('### ERROR ON DATA: "%s" ', data, isInbound, e); 
+    return;
+  };
   console.log('### RECEIVED TYPE: %s FROM %s', obj.data.type, obj.sender); 
 
   switch(obj.data.type) {
@@ -101,7 +108,7 @@ CopayPeer.prototype._onData = function(data, isInbound) {
 };
 
 CopayPeer.prototype._sendPeers = function(peerIds) {
-  console.log('#### SENDING PEER LIST: ', this.connectedPeers, ' TO ', peerIds);
+  console.log('#### SENDING PEER LIST: ', this.connectedPeers, ' TO ', peerIds?peerIds: 'ALL');
   this.send(peerIds, {
     type: 'peerList',
     peers: this.connectedPeers,
@@ -123,7 +130,9 @@ CopayPeer.prototype._addPeer = function(peerId, isInbound) {
   }
 };
 
-CopayPeer.prototype._setupConnectionHandlers = function(dataConn, isInbound, openCallback) {
+CopayPeer.prototype._setupConnectionHandlers = function(
+  dataConn, isInbound, openCallback, closeCallback) {
+
   var self=this;
 
   dataConn.on('open', function() {
@@ -143,11 +152,13 @@ CopayPeer.prototype._setupConnectionHandlers = function(dataConn, isInbound, ope
   });
 
   dataConn.on('error', function(e) {
-    console.log('### ## INBOUND DATA ERROR',e ); //TODO
+    console.log('### DATA ERROR',e ); //TODO
   });
 
   dataConn.on('close', function() {
+    console.log('### CLOSE RECV FROM:', dataConn.peer); //TODO
     self._onClose(dataConn.peer);
+    if (typeof closeCallback === 'function') closeCallback();
   });
 };
 
@@ -174,8 +185,18 @@ CopayPeer.prototype._setupPeerHandlers = function(openCallback) {
   });
 
   p.on('connection', function(dataConn) {
-    console.log('### NEW INBOUND CONNECTION'); //TODO
-    self._setupConnectionHandlers(dataConn, true);
+
+    console.log('### NEW INBOUND CONNECTION %d/%d', self.connectedPeers.length, self.maxPeers);
+    if (self.connectedPeers.length >= self.maxPeers) {
+      console.log('### PEER REJECTED. PEER MAX LIMIT REACHED');
+      dataConn.on('open', function() {
+        console.log('###  CLOSING CONN FROM:' + dataConn.peer);
+        dataConn.close();
+      });
+    }
+    else {
+      self._setupConnectionHandlers(dataConn, true);
+    }
   });
 };
 
@@ -230,7 +251,7 @@ console.log('[CopayPeer.js.216:SENDD:]',data); //TODO
     self._sendToOne(peerIds, data, cb);
 };
 
-CopayPeer.prototype.connectTo = function(peerId, cb) {
+CopayPeer.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
   var self = this;
 
   console.log('### STARTING TO CONNECT TO:' + peerId );
@@ -242,7 +263,7 @@ CopayPeer.prototype.connectTo = function(peerId, cb) {
     metadata: { message: 'hi copayer!' }
   });
 
-  self._setupConnectionHandlers(dataConn, false, cb);
+  self._setupConnectionHandlers(dataConn, false, openCallback, closeCallback);
 };
 
 CopayPeer.prototype.disconnect = function(peerId, cb) {
