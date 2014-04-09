@@ -123,7 +123,6 @@ PublicKeyRing.prototype.store = function (passphrase) {
 
   if (!this.id) 
       throw new Error('wallet has no id');
-
   storage.set(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
   this.dirty = 0;
 
@@ -136,13 +135,13 @@ PublicKeyRing.prototype.registeredCopayers = function () {
 
 
 
-PublicKeyRing.prototype.haveAllRequiredPubKeys = function () {
+PublicKeyRing.prototype.isComplete = function () {
   return this.registeredCopayers() >= this.totalCopayers;
 };
 
 PublicKeyRing.prototype._checkKeys = function() {
 
-  if (!this.haveAllRequiredPubKeys())
+  if (!this.isComplete())
       throw new Error('dont have required keys yet');
 };
 
@@ -154,7 +153,7 @@ PublicKeyRing.prototype._newExtendedPublicKey = function () {
 
 PublicKeyRing.prototype.addCopayer = function (newEpk) {
 
-  if (this.haveAllRequiredPubKeys())
+  if (this.isComplete())
       throw new Error('already have all required key:' + this.totalCopayers);
 
   if (!newEpk) {
@@ -172,7 +171,7 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
 };
 
 
-PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
+PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   this._checkKeys();
 
   var pubKeys = [];
@@ -197,7 +196,7 @@ PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
-  var pubKeys = this.getCopayersPubKeys(index, isChange);
+  var pubKeys = this.getPubKeys(index, isChange);
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;
 };
