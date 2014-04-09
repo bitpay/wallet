@@ -1,0 +1,27 @@
+var imports = require('soop').imports();
+var Copay = imports.Copay || require('../Copay');
+var commander = imports.commander || require('commander');
+
+var main = function() {
+  var copay = new Copay();
+
+  commander
+      .version("0.0.1")
+      .option('-f, --file [file]', 'AES encrypted data file', 'copay.json.aes')
+      .option('-p, --pass [passphrase]', 'AES wallet passphrase')
+      .option('-c, --client', 'Issue command over RPC to copay daemon');
+      .option('-d, --daemon', 'Run as daemon accepting RPC commands')
+      .option('--rpcport [port]', 'RPC port [18332]', Number, 18332)
+      .option('--rpcuser [user]', 'RPC user [user]', String, 'user')
+      .option('--rpcpass [password]', 'RPC password [pass]', String, 'pass')
+      .parse(process.argv);
+
+  copay.init(commander);
+
+  var args = commander.args;
+  copay.command(args[1], args.slice(2));
+};
+
+if (require.main === module) {
+  main();
+}
