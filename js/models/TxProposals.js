@@ -12,17 +12,13 @@ var buffertools = bitcore.buffertools;
 var Storage     = imports.Storage || require('./Storage');
 var storage     = Storage.default();
 
-/*
- * This follow Electrum convetion, as described in
- * https://bitcointalk.org/index.php?topic=274182.0
- *
- * We should probably adopt the next standard once it's ready, as discussed in:
- * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
- *
- */
+function TxProposal(opts) {
+  this.tx = opts.tx;
+  this.seenBy   = {};
+  this.signedBy = {};
+};
+module.exports = require('soop')(TxProposal);
 
-var PUBLIC_BRANCH = 'm/0/';
-var CHANGE_BRANCH = 'm/1/';
 
 function TxProposals(opts) {
   opts = opts || {};
@@ -36,8 +32,8 @@ function TxProposals(opts) {
   this.dirty = 1;
 }
 
-
 TxProposals.prototype.list = function() {
+  var ret = [];
   var ret = [];
 
   this.txs.forEach(function(tx) {
@@ -66,9 +62,16 @@ TxProposals.prototype.create = function(toAddress, amountSat, utxos, onePrivKey)
   }
 
   var tx = b.build();
-  var txHex = tx.serialize();
-  this.txs.push(txHex);    
-  return txHex;
+  this.txs.push(
+    new TxProposal({
+      signedBy: {
+      },
+      seenBy: {
+      },
+      tx: tx
+    })
+  );
+  return tx;
 };
 
 TxProposals.prototype.sign = function(index) {
