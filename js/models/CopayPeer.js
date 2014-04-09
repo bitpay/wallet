@@ -2,6 +2,18 @@
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 
+/*
+ * Emits
+ *  'networkChange'
+ *    when network layout has change (new/lost peers, etc)
+ *
+ *  'data'
+ *    when an unknown data type arrives
+ *
+ * Provides
+ *  send(toPeerIds, {data}, cb?)  
+ *
+ */
 
 function CopayPeer(opts) {
   opts = opts || {};
@@ -63,7 +75,6 @@ CopayPeer.prototype._connectToPeers = function(peerIds) {
   var ret = false;
   var arrayDiff1= CopayPeer._arrayDiff(peerIds, this.connectedPeers);
   var arrayDiff = CopayPeer._arrayDiff(arrayDiff1, [this.peerId]);
-console.log('[CopayPeer.js.65:arrayDiff:] DIFFFFF',arrayDiff, this.connectedPeers); //TODO
   arrayDiff.forEach(function(peerId) {
     console.log('### CONNECTING TO:', peerId);
     self.connectTo(peerId);
@@ -78,29 +89,22 @@ CopayPeer.prototype._onData = function(data, isInbound) {
 
   switch(obj.data.type) {
     case 'peerList':
-      var hasChanged = this._connectToPeers(obj.data.peers);
-      // if (hasChanged && !obj.data.isBroadcast) {
-      // };
+      this._connectToPeers(obj.data.peers);
       this._notify();
       break;
     case 'disconnect':
       this._onClose(obj.sender);
-    break;
+      break;
+    default:
+      this.emit('data', obj.sender, obj.data, isInbound);
   }
 };
 
 CopayPeer.prototype._sendPeers = function(peerIds) {
-  var isBroadcast = false;
-  if (!peerIds) {
-    peerIds = this.connectedPeers;
-    isBroadcast = true;
-  };
-
   console.log('#### SENDING PEER LIST: ', this.connectedPeers, ' TO ', peerIds);
   this.send(peerIds, {
     type: 'peerList',
     peers: this.connectedPeers,
-    isBroadcast: isBroadcast,
   });
 };
 
@@ -119,7 +123,6 @@ CopayPeer.prototype._addPeer = function(peerId, isInbound) {
   }
 };
 
-
 CopayPeer.prototype._setupConnectionHandlers = function(dataConn, isInbound, openCallback) {
   var self=this;
 
@@ -130,7 +133,7 @@ CopayPeer.prototype._setupConnectionHandlers = function(dataConn, isInbound, ope
         dataConn.peer, isInbound);
 
       self._addPeer(dataConn.peer, isInbound);
-      self._notify();
+      self._notify( isInbound ? dataConn.peer : null);
       if (typeof openCallback === 'function') openCallback();
     }
   });
@@ -148,9 +151,9 @@ CopayPeer.prototype._setupConnectionHandlers = function(dataConn, isInbound, ope
   });
 };
 
-CopayPeer.prototype._notify = function() {
+CopayPeer.prototype._notify = function(newPeer) {
   this._showConnectedPeers();
-  this.emit('update');
+  this.emit('networkChange', newPeer);
 };
 
 CopayPeer.prototype._setupPeerHandlers = function(openCallback) {
@@ -205,9 +208,14 @@ CopayPeer.prototype._sendToOne = function(peerId, data, cb) {
   if (typeof cb === 'function') cb();
 };
 
-
 CopayPeer.prototype.send = function(peerIds, data, cb) {
   var self=this;
+
+  if (!peerIds) {
+    peerIds = this.connectedPeers;
+    data.isBroadcast = 1;
+  }
+console.log('[CopayPeer.js.216:SENDD:]',data); //TODO
 
   if (Array.isArray(peerIds)) {
     var l = peerIds.length;
@@ -240,7 +248,7 @@ CopayPeer.prototype.connectTo = function(peerId, cb) {
 CopayPeer.prototype.disconnect = function(peerId, cb) {
   var self = this;
 
-  this.send(this.connectedPeers, { type: 'disconnect' }, function() {
+  this.send(null, { type: 'disconnect' }, function() {
     self.connectedPeers = [];
     self.peerId = null;
     if (self.peer) {
@@ -251,6 +259,5 @@ CopayPeer.prototype.disconnect = function(peerId, cb) {
     if (typeof cb === 'function') cb();
   });
 };
-
 
 module.exports = require('soop')(CopayPeer);

@@ -61,7 +61,19 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="large-6 columns">
-              <h3>Join wallet</h3>
+              <h3>Open a Existing Wallet</h3>
+              <select class="form-control" >
+                <option data-ng-repeat="walletId in listWalletIds()" value="walletId">{{walletId}}</option>
+              </select>
+            </div>
+            <div class="large-3 columns">
+              <button class="button primary expand round" type="button" ng-click="open(walletId)">Open</button>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Join a Network Wallet</h3>
               <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
             </div>
             <div class="large-3 columns">
@@ -71,7 +83,7 @@
           <hr>
           <div class="row">
             <div class="large-6 columns">
-              <h3>Create a new wallet</h3>
+              <h3>Create a New Wallet</h3>
             </div>
             <div class="large-3 columns">
               <button class="button secondary expand round" ng-click="create()">Create</button>

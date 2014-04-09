@@ -2,18 +2,35 @@
 
 angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, Network, Storage) {
-    var peerData = Storage.get('peerData');
+
+    var peerData = Storage.get($rootScope.walletId, 'peerData');
 
     $scope.loading = false;
     $rootScope.peerId = peerData ? peerData.peerId : null;
 
+    $scope.listWalletIds = function() {
+      return Storage.getWalletIds();
+    };
+
     $scope.create = function() {
       $scope.loading = true;
 
+      Network.createWallet();
       Network.init(function() {
         $location.path('peer');
         $rootScope.$digest();
       });
+    };
+
+    $scope.open = function(walletId) {
+      $scope.loading = true;
+
+      if (Network.openWallet(walletId)) {
+        Network.init(function() {
+          $location.path('peer');
+          $rootScope.$digest();
+        });
+      }
     };
 
     $scope.join = function(cid) {
@@ -22,7 +39,6 @@ angular.module('copay.signin').controller('SigninController',
       if (cid) {
         Network.init(function() {
           Network.connect(cid, function() {
-console.log('[signin.js.26] REDIR'); //TODO
             $location.path('peer');
             $rootScope.$digest();
           });
