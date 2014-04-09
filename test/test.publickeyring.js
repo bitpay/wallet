@@ -268,6 +268,24 @@ describe('PublicKeyRing model', function() {
     }
     w.isComplete().should.equal(true);
   });
+
+
+  it('#getRedeemScriptMap check tests', function () {
+    var k = createW();
+    var w = k.w;
+
+    for(var i=0; i<2; i++)
+      w.generateAddress(true);
+    for(var i=0; i<3; i++)
+      w.generateAddress(false);
+
+    var m = w.getRedeemScriptMap();
+    Object.keys(m).length.should.equal(5);
+    Object.keys(m).forEach(function (k) {
+      should.exist(m[k]);
+    });
+  });
+
 });
 
 
