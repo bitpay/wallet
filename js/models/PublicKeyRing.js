@@ -26,7 +26,6 @@ function PublicKeyRing(opts) {
 
   this.id = opts.id || PublicKeyRing.getRandomId();
 
-  this.dirty = 1;
   this.copayersBIP32 = [];
 
   this.changeAddressIndex=0;
@@ -79,27 +78,21 @@ PublicKeyRing.fromObj = function (data) {
     return new BIP32(pk);
   });
 
-  w.dirty = 0;
-
   return w;
 };
 
-PublicKeyRing.read = function (id, passphrase) {
-  var encPayload = storage.get(id);
+PublicKeyRing.read = function (encPayload, id, passphrase) {
   if (!encPayload) 
     throw new Error('Could not find wallet data');
   var data;
   try {
     data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
   } catch (e) {
-    throw new Error('error in storage: '+ e.toString());
-    return;
-  };
+    throw new Error('error in read: '+ e.toString());
+  }
 
   if (data.id !== id) 
     throw new Error('Wrong id in data');
-
-
   return PublicKeyRing.fromObj(data);
 };
 
@@ -124,14 +117,11 @@ PublicKeyRing.prototype.serialize = function () {
 };
 
 
-PublicKeyRing.prototype.store = function (passphrase) {
-
+PublicKeyRing.prototype.toStore = function (passphrase) {
   if (!this.id) 
       throw new Error('wallet has no id');
-  storage.set(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
-  this.dirty = 0;
 
-  return true;
+  return PublicKeyRing.encrypt(passphrase,this.serialize());
 };
 
 PublicKeyRing.prototype.registeredCopayers = function () {
@@ -171,7 +161,6 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
   });
 
   this.copayersBIP32.push(new BIP32(newEpk));
-  this.dirty = 1;
   return newEpk;
 };
 

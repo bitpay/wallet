@@ -32,4 +32,17 @@ PrivateKey.prototype.get = function(index,isChange) {
   return wk;
 };
 
+PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
+  var ret = [];
+  for(var i=0;i<addressIndex; i++) {
+    ret.push(this.get(i,false));
+  }
+  for(var i=0; i<changeAddressIndex; i++) {
+    ret.push(this.get(i,true));
+  }
+  return ret;
+};
+
+
+
 module.exports = require('soop')(PrivateKey);

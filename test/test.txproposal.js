@@ -84,7 +84,7 @@ describe('TxProposals model', function() {
     tx.isComplete().should.equal(false);
   });
 
-  it('#create. Singing with derivate keys', function () {
+  it('#create. Signing with derivate keys', function () {
 
     var priv = new PrivateKey(config);
     var w = new TxProposals({
@@ -104,7 +104,37 @@ describe('TxProposals model', function() {
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
           bignum('123456789'), 
           unspentTest,
-          priv.get(index,isChange)
+          [priv.get(index,isChange)]
+        );
+        should.exist(tx);
+        tx.isComplete().should.equal(false);
+        tx.countInputMissingSignatures(0).should.equal(2);
+      }
+    }
+
+  });
+  it('#create. Signing with derivate keys block', function () {
+
+    var priv = new PrivateKey(config);
+
+    var privs = priv.getAll(3,3);
+
+    var w = new TxProposals({
+      networkName: config.networkName,
+      publicKeyRing: createW([priv.getBIP32()]),
+    });
+    should.exist(w);
+    w.network.name.should.equal('livenet');
+
+    for (var isChange=0; isChange<2; isChange++) {
+      for (var index=0; index<3; index++) {
+        unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange);
+        unspentTest[0].scriptPubKey   = w.publicKeyRing.getRedeemScript(index, isChange).getBuffer();
+        var tx = w.create(
+          '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
+          bignum('123456789'), 
+          unspentTest,
+          privs
         );
         should.exist(tx);
         tx.isComplete().should.equal(false);

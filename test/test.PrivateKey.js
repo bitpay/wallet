@@ -47,4 +47,24 @@ describe('PrivateKey model', function() {
       }
     }
   });
+  it('should derive priv keys array', function () {
+    var w = new PrivateKey(config);
+    var wks = w.getAll(2,3); 
+    wks.length.should.equal(5);
+    for(var j=0; j<wks.length; j++) {
+      var wk = wks[j];
+      should.exist(wk);
+      var o=wk.storeObj();
+      should.exist(o);
+      should.exist(o.priv);
+      should.exist(o.pub);
+      should.exist(o.addr);
+      var a = new Address(o.addr);
+      a.isValid().should.equal(true);
+      (function() {
+        var p = new PrivateKey(o.priv)
+      }).should.not.throw();
+    }
+  });
+
 });

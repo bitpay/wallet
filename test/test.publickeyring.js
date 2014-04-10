@@ -6,10 +6,7 @@ var bitcore        = bitcore || require('bitcore');
 var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
 var copay          = copay || require('../copay');
-var fakeStorage    = copay.FakeStorage;
-
-var PublicKeyRing  = (typeof process.versions === 'undefined') ? copay.PublicKeyRing :
-  require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
+var PublicKeyRing  = copay.PublicKeyRing;
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';
 
@@ -72,7 +69,7 @@ describe('PublicKeyRing model', function() {
       w.addCopayer.bind(copayers[i]).should.throw();
   });
 
-  it('show be able to store and retrieve', function () {
+  it('show be able to tostore and read', function () {
     var k = createW();
     var w = k.w;
     var copayers = k.copayers;
@@ -81,12 +78,12 @@ describe('PublicKeyRing model', function() {
     for(var i=0; i<5; i++)
       w.generateAddress(false);
 
-    w.store().should.equal(true);
-    var ID = w.id;
-    delete w['id'];
-    w.store.bind().should.throw();
+    var data = w.toStore();
+    should.exist(data);
 
-    var w2 = PublicKeyRing.read(ID);
+    var ID = w.id;
+
+    var w2 = PublicKeyRing.read(data, ID, 'dummy' );
     w2.isComplete().should.equal(true);
     w2.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
