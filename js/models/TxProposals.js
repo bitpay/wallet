@@ -40,7 +40,7 @@ TxProposals.prototype.list = function() {
   });
 };
 
-TxProposals.prototype.create = function(toAddress, amountSat, utxos, onePrivKey) {
+TxProposals.prototype.create = function(toAddress, amountSat, utxos, privs) {
   var pkr = this.publicKeyRing; 
 
   if (! pkr.isComplete() ) {
@@ -57,8 +57,8 @@ TxProposals.prototype.create = function(toAddress, amountSat, utxos, onePrivKey)
     .setOutputs([{address: toAddress, amountSat: amountSat}])
     ;
 
-  if (onePrivKey) {
-    b.sign([onePrivKey]);
+  if (privs) {
+    b.sign(privs);
   }
 
   var tx = b.build();
