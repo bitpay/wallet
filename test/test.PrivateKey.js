@@ -67,4 +67,25 @@ describe('PrivateKey model', function() {
     }
   });
 
+  it('should calculate .id', function () {
+    var w1 = new PrivateKey(config);
+    should.exist(w1.id);
+    w1.id.length.should.equal(40);
+  });
+  it('fromObj toObj roundtrip', function () {
+    var w1 = new PrivateKey(config);
+    var w2 = PrivateKey.fromObj(w1.toObj());
+
+    w2.getBIP32().extendedPrivateKeyString().should.equal(w1.getBIP32().extendedPrivateKeyString());
+    w2.getBIP32().extendedPublicKeyString().should.equal(w1.getBIP32().extendedPublicKeyString());
+    w2.id.should.equal(w1.id);
+
+
+    w2.getBIP32(1,1).extendedPrivateKeyString().should
+      .equal(w1.getBIP32(1,1).extendedPrivateKeyString());
+    w2.getBIP32(1,0).extendedPrivateKeyString().should
+      .equal(w1.getBIP32(1,0).extendedPrivateKeyString());
+  });
+ 
+
 });

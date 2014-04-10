@@ -42,30 +42,53 @@ angular.module('copay.network')
 
     // TODO -> probably not in network.js
     var createWallet = function(walletId) {
+
       console.log('### CREATING WALLET. ID:' + walletId);
+
+      var priv = new copay.PrivateKey({networkName: config.networkName});
+      console.log('\t### PrivateKey Initialized');
 
       //TODO create a wallet and WalletId, not only pkr
       var pkr = new copay.PublicKeyRing({
-         network: config.networkName,
+         networkName: config.networkName,
          id: walletId,
       });
-      pkr.addCopayer();
-      console.log('\t### PublicKeyRing Initialized:');
+
+      // Add self to the ring.
+      pkr.addCopayer(priv.getBIP32().extendedPublicKeyString());
+      console.log('\t### PublicKeyRing Initialized');
+
+      var txp = new copay.TxProposals({
+          networkName: config.networkName,
+          publicKeyRing: pkr,
+      });
+      console.log('\t### TxProposals Initialized');
+
       Storage.addWalletId(pkr.id);
       Storage.set(pkr.id, 'publicKeyRing', pkr.toObj());
+      Storage.set(pkr.id, 'privateKey', priv.toObj());
+      Storage.set(pkr.id, 'txProposals', txp.toObj());
+      console.log('\t### Wallet Stored');
 
+      // Store it on rootScope
+      $rootScope.priv = priv;             // TODO secure this.
       $rootScope.walletId = pkr.id; 
       $rootScope.publicKeyRing = pkr;
+      $rootScope.txProposals = txp;
     };
 
     var openWallet = function (walletId) {
       var ret = false;
       var pkr = Storage.get(walletId, 'publicKeyRing');
+      var priv = Storage.get(walletId, 'privateKey');
+      var txp = Storage.get(walletId, 'txProposals');
 
       if (pkr) {
         console.log('### WALLET OPENED:', walletId, pkr);
         $rootScope.walletId = walletId; 
         $rootScope.publicKeyRing = new copay.PublicKeyRing.fromObj(pkr);
+        $rootScope.txProposals = new copay.TxProposals.fromObj(txp);
+        $rootScope.priv  = new copay.PrivateKey.fromObj(priv); //TODO secure
         ret = true;
       }
       return ret;
@@ -133,7 +156,6 @@ angular.module('copay.network')
 
     // public methods
     var init = function(cb) {
-
       var cp = $rootScope.cp = new copay.CopayPeer({
         apiKey: config.p2pApiKey,
         debug:  config.p2pDebug,
@@ -141,7 +163,6 @@ angular.module('copay.network')
       }); 
       _setupHandlers();
 
-      // inicia session
       cp.start(function(peerId) {
         return cb();
       });
@@ -156,15 +177,15 @@ angular.module('copay.network')
       _refreshUx();
     };
 
-    var connect = function(peerId, openCallback, failCallBack) {
+    var connect = function(peerId, openCallback, failCallback) {
       if ($rootScope.cp) {
         $rootScope.cp.connectTo(peerId, openCallback, function () {
           disconnect();
-          failCallBack();
+          failCallback();
         });
       }
       else
-        return failCallBack();
+        return failCallback();
     };
 
     return {

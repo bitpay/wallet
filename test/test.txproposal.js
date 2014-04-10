@@ -44,11 +44,13 @@ var createW = function (bip32s) {
     else 
       w.addCopayer();
   }
-  w.generateAddress(true);
-  w.generateAddress(true);
-  w.generateAddress(true);
-  w.generateAddress(false);
-  w.generateAddress(false);
+   w.generateAddress(true);
+   w.generateAddress(true);
+   w.generateAddress(true);
+   w.generateAddress(false);
+   w.generateAddress(false);
+   w.generateAddress(false);
+   //3x3 indexes
   
   return w;
 };
@@ -91,57 +93,64 @@ describe('TxProposals model', function() {
       networkName: config.networkName,
       publicKeyRing: createW([priv.getBIP32()]),
     });
-    should.exist(w);
-    w.network.name.should.equal('livenet');
 
-
+    var ts = Date.now();
     for (var isChange=0; isChange<2; isChange++) {
       for (var index=0; index<3; index++) {
         unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange);
         unspentTest[0].scriptPubKey   = w.publicKeyRing.getRedeemScript(index, isChange).getBuffer();
-
         var tx = w.create(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
           bignum('123456789'), 
           unspentTest,
-          [priv.get(index,isChange)]
+          priv
         );
         should.exist(tx);
         tx.isComplete().should.equal(false);
         tx.countInputMissingSignatures(0).should.equal(2);
+        (w.txs[0].signedBy[priv.id] - ts > 0).should.equal(true);
+        (w.txs[0].seenBy[priv.id] - ts > 0).should.equal(true);
       }
     }
-
   });
-  it('#create. Signing with derivate keys block', function () {
+  it('#toObj #fromObj roundtrip', function () {
 
     var priv = new PrivateKey(config);
-
-    var privs = priv.getAll(3,3);
-
     var w = new TxProposals({
       networkName: config.networkName,
       publicKeyRing: createW([priv.getBIP32()]),
     });
-    should.exist(w);
-    w.network.name.should.equal('livenet');
+    var ts = Date.now();
+    var isChange=0; 
+    var index=0; 
 
-    for (var isChange=0; isChange<2; isChange++) {
-      for (var index=0; index<3; index++) {
-        unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange);
-        unspentTest[0].scriptPubKey   = w.publicKeyRing.getRedeemScript(index, isChange).getBuffer();
-        var tx = w.create(
-          '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-          bignum('123456789'), 
-          unspentTest,
-          privs
-        );
-        should.exist(tx);
-        tx.isComplete().should.equal(false);
-        tx.countInputMissingSignatures(0).should.equal(2);
-      }
-    }
+    unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange);
+    unspentTest[0].scriptPubKey   = w.publicKeyRing.getRedeemScript(index, isChange).getBuffer();
+    var tx = w.create(
+      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
+      bignum('123456789'), 
+      unspentTest,
+      priv
+    );
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
+    (w.txs[0].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txs[0].seenBy[priv.id] - ts > 0).should.equal(true);
 
+    var o = w.toObj();
+    should.exist(o);
+    o.txs.length.should.equal(1);
+    should.exist(o.txs[0].txHex);
+    should.exist(o.txs[0].signedBy);
+    should.exist(o.txs[0].seenBy);
+    should.exist(o.txs[0].signedBy[priv.id]);
+
+    var w2 = TxProposals.fromObj(o);
+    var tx2 = w2.txs[0].tx;
+    tx2.isComplete().should.equal(false);
+    tx2.countInputMissingSignatures(0).should.equal(2);
+    (w2.txs[0].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w2.txs[0].seenBy[priv.id] - ts > 0).should.equal(true);
   });
 });
  
