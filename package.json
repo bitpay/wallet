@@ -32,6 +32,8 @@
     "browserify": "~3.32.1",
     "browser-pack": "~2.0.1",
     "commander": "~2.1.0",
-    "uglifyify": "~1.2.3"
+    "uglifyify": "~1.2.3",
+    "soop": "~0.1.5",
+    "bitcore": "~0.1.11"
   }
 }
