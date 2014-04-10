@@ -63,7 +63,7 @@ if (require.main === module) {
     .option('-o, --stdout', 'Specify output as stdout')
     .parse(process.argv);
   var copayBundle = createBundle(program);
-  copayBundle.pipe(program.stdout ? process.stdout : fs.createWriteStream('lib/copayBundle.js'));
+  copayBundle.pipe(program.stdout ? process.stdout : fs.createWriteStream('js/copayBundle.js'));
 }
 
 module.exports.createBundle = createBundle;
