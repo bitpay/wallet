@@ -12,8 +12,6 @@ var Transaction = bitcore.Transaction;
 var buffertools = bitcore.buffertools;
 
 var Storage     = imports.Storage || require('./Storage');
-var log         = imports.log || console.log;
-
 var storage     = Storage.default();
 
 /*
@@ -31,7 +29,7 @@ var CHANGE_BRANCH = 'm/1/';
 function PublicKeyRing(opts) {
   opts = opts || {};
 
-  this.network = opts.network === 'livenet' ? 
+  this.network = opts.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
 
   this.requiredCopayers = opts.requiredCopayers || 3;
@@ -52,33 +50,17 @@ PublicKeyRing.getRandomId = function () {
 };
 
 PublicKeyRing.decrypt = function (passphrase, encPayload) {
-  log('[wallet.js.35] TODO READ: passphrase IGNORED');
+  console.log('[wallet.js.35] TODO READ: passphrase IGNORED');
   return encPayload;
 };
 
 PublicKeyRing.encrypt = function (passphrase, payload) {
-  log('[wallet.js.92] TODO: passphrase IGNORED');
+  console.log('[wallet.js.92] TODO: passphrase IGNORED');
   return payload;
 };
 
-PublicKeyRing.read = function (id, passphrase) {
-  var encPayload = storage.read(id);
-  if (!encPayload) 
-    throw new Error('Could not find wallet data');
-  var data;
-  try {
-    data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
-  } catch (e) {
-    throw new Error('error in storage: '+ e.toString());
-    return;
-  };
-
-  if (data.id !== id) 
-    throw new Error('Wrong id in data');
-
-  var config = { network: data.networkName === 'livenet' ? 
-      bitcore.networks.livenet : bitcore.networks.testnet
-  };
+PublicKeyRing.fromObj = function (data) {
+  var config = { networkName: data.networkName || 'livenet' };
 
   var w = new PublicKeyRing(config);
 
@@ -95,6 +77,25 @@ PublicKeyRing.read = function (id, passphrase) {
   w.dirty = 0;
 
   return w;
+};
+
+PublicKeyRing.read = function (id, passphrase) {
+  var encPayload = storage.get(id);
+  if (!encPayload) 
+    throw new Error('Could not find wallet data');
+  var data;
+  try {
+    data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
+  } catch (e) {
+    throw new Error('error in storage: '+ e.toString());
+    return;
+  };
+
+  if (data.id !== id) 
+    throw new Error('Wrong id in data');
+
+
+  return PublicKeyRing.fromObj(data);
 };
 
 PublicKeyRing.prototype.toObj = function() {
@@ -123,7 +124,7 @@ PublicKeyRing.prototype.store = function (passphrase) {
   if (!this.id) 
       throw new Error('wallet has no id');
 
-  storage.save(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
+  storage.set(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
   this.dirty = 0;
 
   return true;
@@ -136,7 +137,7 @@ PublicKeyRing.prototype.registeredCopayers = function () {
 
 
 PublicKeyRing.prototype.haveAllRequiredPubKeys = function () {
-  return this.registeredCopayers() === this.totalCopayers;
+  return this.registeredCopayers() >= this.totalCopayers;
 };
 
 PublicKeyRing.prototype._checkKeys = function() {
@@ -188,7 +189,7 @@ PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
 PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
   if ( (isChange && index > this.changeAddressIndex) ||
       (!isChange && index > this.addressIndex)) {
-    log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
+    console.log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
     throw new Error('index out of bound');
   }
 };
@@ -238,9 +239,16 @@ PublicKeyRing.prototype.getAddresses = function() {
   return ret;
 };
 
-PublicKeyRing.prototype._checkInPRK = function(inPKR) {
-  if (this.id !== inPKR.id)
+PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
+
+
+  if (!inPKR.ts) {
+    throw new Error('inPRK bad format: Did you use .toObj()?');
+  }
+
+  if (!ignoreId  && this.id !== inPKR.id) {
     throw new Error('inPRK id mismatch');
+  }
 
   if (this.network.name !== inPKR.networkName)
     throw new Error('inPRK network mismatch');
@@ -298,10 +306,10 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   return hasChanged;
 };
 
-PublicKeyRing.prototype.merge = function(inPKR) {
+PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   var hasChanged = false;
 
-  this._checkInPRK(inPKR);
+  this._checkInPRK(inPKR, ignoreId);
 
   if (this._mergeIndexes(inPKR))
     hasChanged = true;

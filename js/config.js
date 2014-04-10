@@ -1,45 +1,8 @@
 'use strict';
 
-//Setting up route
-angular
-  .module('copay')
-  .config(function($routeProvider) {
-
-    $routeProvider
-      .when('/', {
-        templateUrl: 'signin.html'
-      })
-      .when('/signin', {
-        templateUrl: 'signin.html' 
-      })
-      .when('/home', {
-        templateUrl: 'home.html'
-      })
-      .when('/join/:id', {
-        templateUrl: 'join.html'
-      })
-      .when('/peer', {
-        templateUrl: 'peer.html'
-      })
-      .when('/transactions', {
-        templateUrl: 'transactions.html' 
-      })
-      .when('/send', {
-        templateUrl: 'send.html' 
-      })
-      .when('/backup', {
-        templateUrl: 'backup.html' 
-      })
-      .otherwise({
-        templateUrl: '404.html'
-      });
-  });
-
-//Setting HTML5 Location Mode
-angular
-  .module('copay')
-  .config(function($locationProvider) {
-    $locationProvider
-      .html5Mode(false);
-      //.hashPrefix('!');
-  });
+var config = {
+  networkName: 'testnet',
+  p2pApiKey: 'lwjd5qra8257b9',
+  p2pDebug: 3,
+  maxPeers: 5,
+};

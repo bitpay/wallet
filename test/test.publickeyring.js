@@ -2,24 +2,24 @@
 
 var chai           = chai || require('chai');
 var should         = chai.should();
-var bitcore        = bitcore || require('../node_modules/bitcore');
+var bitcore        = bitcore || require('bitcore');
 var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
-var copay          = copay || {};
-var fakeStorage    = require('./FakeStorage');
+var copay          = copay || require('../copay');
+var fakeStorage    = copay.FakeStorage;
 var PublicKeyRing  = copay.PublicKeyRing || require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';
 
 
 var config = {
-  network:'livenet',
+  networkName:'livenet',
 };
 
-var createW = function (network) {
+var createW = function (networkName) {
 
   var config = {
-    network: network || 'livenet',
+    networkName: networkName || 'livenet',
   };
 
   var w = new PublicKeyRing(config);
@@ -39,7 +39,7 @@ describe('PublicKeyRing model', function() {
 
   it('should create an instance (livenet)', function () {
     var w = new PublicKeyRing({
-      network: config.network
+      networkName: config.networkName
     });
     should.exist(w);
     w.network.name.should.equal('livenet');
@@ -158,7 +158,7 @@ describe('PublicKeyRing model', function() {
       w.generateAddress(false);
 
     var w2 = new PublicKeyRing({
-      network: 'livenet',
+      networkName: 'livenet',
       id: w.id,
     });
     w2.merge(w.toObj()).should.equal(true);
@@ -182,33 +182,48 @@ describe('PublicKeyRing model', function() {
       w.generateAddress(false);
 
 
+
+    var w2 = new PublicKeyRing({
+      networkName: 'livenet',
+    });
+    (function() { w2.merge(w.toObj());}).should.throw();
+    (function() { w2.merge(w,true);}).should.throw();
+
+console.log('[test.publickeyring.js.190]'); //TODO
+    w2.merge(w.toObj(),true).should.equal(true);
+
+console.log('[test.publickeyring.js.193]'); //TODO
+
+
     var w3 = new PublicKeyRing({
-      network: 'livenet',
+      networkName: 'livenet',
       id: w.id,
       requiredCopayers: 2,
     });
     (function() { w3.merge(w.toObj());}).should.throw();
 
     var w4 = new PublicKeyRing({
-      network: 'testnet',
+      networkName: 'testnet',
       id: w.id,
     });
     (function() { w4.merge(w.toObj());}).should.throw();
 
     var w5 = new PublicKeyRing({
-      network: 'livenet',
+      networkName: 'livenet',
       id: w.id,
       totalCopayers: 4, 
     });
     (function() { w5.merge(w.toObj());}).should.throw();
 
     var w6 = new PublicKeyRing({
-      network: 'livenet',
+      networkName: 'livenet',
       id: w.id,
     });
     (function() { w6.merge(w);}).should.throw();
     w.networkName= 'livenet';
     (function() { w6.merge(w);}).should.throw();
+
+
   });
 
 
@@ -222,7 +237,7 @@ describe('PublicKeyRing model', function() {
     }
 
     var w2 = new PublicKeyRing({
-      network: 'livenet',
+      networkName: 'livenet',
       id: w.id,
     });
     should.exist(w);
@@ -248,17 +263,14 @@ describe('PublicKeyRing model', function() {
     for(var i=0; i<5; i++) {
       w.haveAllRequiredPubKeys().should.equal(false);
       var w2 = new PublicKeyRing({
-        network: 'livenet',
+        networkName: 'livenet',
         id: w.id,
       });
       w2.addCopayer();
-      w.merge(w2.toObj());
+      w.merge(w2.toObj()).should.equal(true);
     }
     w.haveAllRequiredPubKeys().should.equal(true);
   });
-
-
-
 });
 
 
