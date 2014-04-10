@@ -6,15 +6,19 @@ var bitcore     = require('bitcore');
 var BIP32       = bitcore.BIP32;
 var WalletKey   = bitcore.WalletKey;
 var networks    = bitcore.networks;
+var util        = bitcore.util;
 var PublicKeyRing  = require('./PublicKeyRing');
 
 function PrivateKey(opts) {
-  this.id    = opts.id;
   this.network = opts.networkName === 'testnet' ? 
     networks.testnet : networks.livenet;
-  this.BIP32 = opts.BIP32 || new BIP32(this.network.name);
+  this.BIP32 = opts.BIP32 || new BIP32(opts.extendedPrivateKeyString || this.network.name);
+  this._calcId();
 };
 
+PrivateKey.prototype._calcId = function() {
+  this.id = util.ripe160(this.BIP32.extendedPublicKey).toString('hex');
+};
 
 PrivateKey.prototype.getBIP32 = function(index,isChange) {
   if (typeof index === 'undefined') {
@@ -22,6 +26,21 @@ PrivateKey.prototype.getBIP32 = function(index,isChange) {
   }
   return this.BIP32.derive( isChange ? 
     PublicKeyRing.ChangeBranch(index):PublicKeyRing.PublicBranch(index) );
+};
+
+
+PrivateKey.fromObj = function(o) {
+  return new PrivateKey({
+    extendedPrivateKeyString: o.extendedPrivateKeyString,
+    networkName: o.networkName,
+  });
+};
+
+PrivateKey.prototype.toObj = function() {
+  return {
+    extendedPrivateKeyString: this.BIP32.extendedPrivateKeyString(),
+    networkName: this.network.name,
+  };
 };
 
 PrivateKey.prototype.get = function(index,isChange) {
@@ -34,6 +53,7 @@ PrivateKey.prototype.get = function(index,isChange) {
 
 PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
   var ret = [];
+
   for(var i=0;i<addressIndex; i++) {
     ret.push(this.get(i,false));
   }
