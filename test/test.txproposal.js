@@ -39,7 +39,7 @@ var createW = function (bip32s) {
   for(var i=0; i<5; i++) {
     if (bip32s) {
       var b=bip32s[i];
-      w.addCopayer(b?b.extendedPrivateKeyString():null);
+      w.addCopayer(b?b.extendedPublicKeyString():null);
     }
     else 
       w.addCopayer();
