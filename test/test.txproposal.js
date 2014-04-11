@@ -414,13 +414,25 @@ var _dumpChunks = function (scriptSig, label) {
     (w3.txps[0].seenBy[priv3.id] - ts > 0).should.equal(true);
 
     w.merge(w2);
+    w.txps.length.should.equal(1);
     w.txps[0].tx.isComplete().should.equal(false);
     w.txps[0].tx.countInputMissingSignatures(0).should.equal(1);
+    (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[0].signedBy[priv2.id] - ts > 0).should.equal(true);
 
 
     w.merge(w3);
     w.txps[0].tx.isComplete().should.equal(true);
     w.txps[0].tx.countInputMissingSignatures(0).should.equal(0);
+    w.txps.length.should.equal(1);
+    (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[0].seenBy[priv3.id] - ts > 0).should.equal(true);
+    (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[0].signedBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[0].signedBy[priv3.id] - ts > 0).should.equal(true);
   });
 
 
