@@ -6,6 +6,9 @@ angular.module('copay.header').controller('HeaderController',
       'title': 'Home',
       'link': '#/home'
     }, {
+      'title': 'Copayers',
+      'link': '#/peer'
+    }, {
       'title': 'Transactions',
       'link': '#/transactions'
     }, {

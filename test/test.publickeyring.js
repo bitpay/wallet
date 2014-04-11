@@ -158,63 +158,69 @@ describe('PublicKeyRing model', function() {
       networkName: 'livenet',
       id: w.id,
     });
-    w2.merge(w.toObj()).should.equal(true);
+    w2.merge(w).should.equal(true);
     w2.requiredCopayers.should.equal(3);   
     w2.totalCopayers.should.equal(5);   
     w2.changeAddressIndex.should.equal(2);   
     w2.addressIndex.should.equal(3); 
 
     //
-    w2.merge(w.toObj()).should.equal(false);
+    w2.merge(w).should.equal(false);
   });
 
 
   it('#merge check tests', function () {
-    var k = createW();
-    var w = k.w;
-
-    for(var i=0; i<2; i++)
-      w.generateAddress(true);
-    for(var i=0; i<3; i++)
-      w.generateAddress(false);
-
-
-
-    var w2 = new PublicKeyRing({
+    var config = {
       networkName: 'livenet',
-    });
-    (function() { w2.merge(w.toObj());}).should.throw();
-    (function() { w2.merge(w,true);}).should.throw();
-    w2.merge(w.toObj(),true).should.equal(true);
+    };
 
+    var w = new PublicKeyRing(config);
+    var w2 = new PublicKeyRing({
+      networkName: 'testnet',    //wrong
+      id: w.id,
+    });
+    (function() { w2.merge(w);}).should.throw();
 
     var w3 = new PublicKeyRing({
       networkName: 'livenet',
       id: w.id,
-      requiredCopayers: 2,
+      requiredCopayers: 2,      // wrong
     });
-    (function() { w3.merge(w.toObj());}).should.throw();
+    (function() { w3.merge(w);}).should.throw();
 
     var w4 = new PublicKeyRing({
-      networkName: 'testnet',
-      id: w.id,
-    });
-    (function() { w4.merge(w.toObj());}).should.throw();
-
-    var w5 = new PublicKeyRing({
       networkName: 'livenet',
       id: w.id,
-      totalCopayers: 4, 
+      totalCopayers: 3,      // wrong
     });
-    (function() { w5.merge(w.toObj());}).should.throw();
+    (function() { w4.merge(w);}).should.throw();
+
 
     var w6 = new PublicKeyRing({
       networkName: 'livenet',
-      id: w.id,
     });
     (function() { w6.merge(w);}).should.throw();
     w.networkName= 'livenet';
     (function() { w6.merge(w);}).should.throw();
+
+
+    var w0 = new PublicKeyRing({
+      networkName: 'livenet',
+    });
+    w0.addCopayer();
+    w0.addCopayer();
+    w0.addCopayer();
+    w0.addCopayer();
+    w0.addCopayer();
+    (function() { w0.merge(w);}).should.throw();
+    w.merge(w0,true).should.equal(true);
+    w.isComplete().should.equal(true);
+
+    var wx = new PublicKeyRing({
+      networkName: 'livenet',
+    });
+    wx.addCopayer();
+    (function() { w.merge(wx, true);}).should.throw();
 
 
   });
@@ -239,14 +245,14 @@ describe('PublicKeyRing model', function() {
       w2.isComplete().should.equal(false);
       w2.addCopayer();
     }
-    w2.merge(w.toObj()).should.equal(true);
+    w2.merge(w).should.equal(true);
     w2.isComplete().should.equal(true);
-    w2.merge(w.toObj()).should.equal(false);
+    w2.merge(w).should.equal(false);
 
     w.isComplete().should.equal(false);
-    w.merge(w2.toObj()).should.equal(true);
+    w.merge(w2).should.equal(true);
     w.isComplete().should.equal(true);
-    w.merge(w2.toObj()).should.equal(false);
+    w.merge(w2).should.equal(false);
   });
 
   it('#merge pubkey tests (case 2)', function () {
@@ -260,7 +266,7 @@ describe('PublicKeyRing model', function() {
         id: w.id,
       });
       w2.addCopayer();
-      w.merge(w2.toObj()).should.equal(true);
+      w.merge(w2).should.equal(true);
     }
     w.isComplete().should.equal(true);
   });

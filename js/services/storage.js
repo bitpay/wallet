@@ -41,6 +41,13 @@ angular.module('copay.storage')
       },
       addWalletId: function(walletId) {
         var ids = localStorage.getItem('walletIds');
+        if (ids) {
+          var list = ids.split(',');
+          var l = list.length;
+          for(var i=0; i<l; i++) 
+            if (walletId === list[i]) 
+              return;
+        }
         localStorage.setItem('walletIds', (ids?ids+',':'')  + walletId);
       },
       delWalletId: function(walletId) {

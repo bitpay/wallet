@@ -50,7 +50,8 @@ PublicKeyRing.ChangeBranch = function (index) {
 };
 
 PublicKeyRing.getRandomId = function () {
-  return buffertools.toHex(coinUtil.generateNonce());
+  var r = buffertools.toHex(coinUtil.generateNonce());
+  return r;
 };
 
 PublicKeyRing.decrypt = function (passphrase, encPayload) {
@@ -64,6 +65,9 @@ PublicKeyRing.encrypt = function (passphrase, payload) {
 };
 
 PublicKeyRing.fromObj = function (data) {
+  if (!data.ts) {
+    throw new Error('bad data format: Did you use .toObj()?');
+  }
   var config = { networkName: data.networkName || 'livenet' };
 
   var w = new PublicKeyRing(config);
@@ -73,11 +77,11 @@ PublicKeyRing.fromObj = function (data) {
   w.addressIndex = data.addressIndex;
   w.changeAddressIndex = data.changeAddressIndex;
 
-//  this.bip32 = ;
   w.copayersBIP32 = data.copayersExtPubKeys.map( function (pk) { 
     return new BIP32(pk);
   });
 
+  w.ts = data.ts;
   return w;
 };
 
@@ -258,16 +262,11 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
 
 PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
 
-
-  if (!inPKR.ts) {
-    throw new Error('inPRK bad format: Did you use .toObj()?');
-  }
-
   if (!ignoreId  && this.id !== inPKR.id) {
     throw new Error('inPRK id mismatch');
   }
 
-  if (this.network.name !== inPKR.networkName)
+  if (this.network.name !== inPKR.network.name)
     throw new Error('inPRK network mismatch');
 
   if (
@@ -279,9 +278,6 @@ PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
     this.totalCopayers && inPKR.totalCopayers &&
     (this.totalCopayers !== inPKR.totalCopayers))
     throw new Error('inPRK requiredCopayers mismatch');
-
-  if (! inPKR.ts)
-    throw new Error('no ts at inPRK');
 };
 
 
@@ -302,13 +298,13 @@ PublicKeyRing.prototype._mergeIndexes = function(inPKR) {
 };
 
 PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
-  var hasChanged = false;
-  var l= this.copayersBIP32.length;
-
   var self = this;
+  var hasChanged = false;
+  var l= self.copayersBIP32.length;
 
-  inPKR.copayersExtPubKeys.forEach( function(epk) {
+  inPKR.copayersBIP32.forEach( function(b) {
     var haveIt = false;
+    var epk = b.extendedPublicKeyString(); 
     for(var j=0; j<l; j++) {
       if (self.copayersBIP32[j].extendedPublicKeyString() === epk) {
         haveIt=true;
@@ -316,6 +312,10 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
       }
     }
     if (!haveIt) {
+      if (self.isComplete()) {
+        console.log('[PublicKeyRing.js.318] REPEATED KEY', epk); //TODO
+        throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
+      }
       self.copayersBIP32.push(new BIP32(epk));
       hasChanged=true;
     }
