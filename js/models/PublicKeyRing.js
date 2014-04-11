@@ -201,10 +201,18 @@ PublicKeyRing.prototype.getAddress = function (index, isChange) {
 
   var script  = this.getRedeemScript(index,isChange);
   var hash    = coinUtil.sha256ripe160(script.getBuffer());
-  var version = this.network.addressScript;
+  var version = this.network.P2SHVersion;
   var addr    = new Address(version, hash);
-  return addr.as('base58');
+  return addr;
 };
+
+PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
+  this._checkIndexRange(index, isChange);
+  var addr  = this.getAddress(index,isChange);
+  return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
+};
+
+
 
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange) {
@@ -237,11 +245,11 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
   var ret = {};
 
   for (var i=0; i<this.changeAddressIndex; i++) {
-    ret[this.getAddress(i,true)] = this.getRedeemScript(i,true);
+    ret[this.getAddress(i,true)] = this.getRedeemScript(i,true).getBuffer().toString('hex');
   }
 
   for (var i=0; i<this.addressIndex; i++) {
-    ret[this.getAddress(i)] = this.getRedeemScript(i);
+    ret[this.getAddress(i)] = this.getRedeemScript(i).getBuffer().toString('hex');
   }
   return ret;
 };
