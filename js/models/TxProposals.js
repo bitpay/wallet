@@ -23,6 +23,7 @@ module.exports = require('soop')(TxProposal);
 
 function TxProposals(opts) {
   opts = opts || {};
+  this.walletId = opts.walletId;
   this.network = opts.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
   this.publicKeyRing = opts.publicKeyRing;
@@ -32,10 +33,11 @@ function TxProposals(opts) {
 TxProposals.fromObj = function(o) {
   var ret = new TxProposals({
     networkName: o.networkName,
+    walletId: o.walletId,
   });
   o.txps.forEach(function(t) {
     var tx = new Transaction;
-    tx.parse(t.txHex);
+    tx.parse(new Buffer(t.txHex,'hex'));
     ret.txps.push({
       seenBy: t.seenBy,
       signedBy: t.signedBy,
@@ -44,6 +46,7 @@ TxProposals.fromObj = function(o) {
   });
   return ret;
 };
+
 
 TxProposals.prototype.toObj = function() {
   var ret = [];
@@ -56,6 +59,7 @@ TxProposals.prototype.toObj = function() {
   });
   return { 
     txps: ret, 
+    walletId: this.walletId,
     networkName: this.network.name,
   };
 };
@@ -140,7 +144,7 @@ TxProposals.prototype._chunkIsEmpty = function(chunk) {
 // this assumes that the same signature can not be v0 / v1 (which shouldnt be!)
 TxProposals.prototype._mergeInputSig = function(s0buf, s1buf) {
   if (buffertools.compare(s0buf,s1buf) === 0) {
-    console.log('BUFFERS .s MATCH'); //TODO
+//    console.log('BUFFERS .s MATCH'); //TODO
     return s0buf;
   }
   // Is multisig?
@@ -225,7 +229,7 @@ TxProposals.prototype._mergeSignatures = function(myTxps, theirTxps, mergeInfo) 
 
 TxProposals.prototype.merge = function(t) {
   if (this.network.name !== t.network.name) 
-    throw new Error('network mismatch');
+    throw new Error('network mismatch in:', t);
 
   var res = [];
 
@@ -244,9 +248,11 @@ TxProposals.prototype.merge = function(t) {
   return mergeInfo.stats;
 };
 
-TxProposals.prototype.create = function(toAddress, amountSat, utxos, priv, opts) {
+TxProposals.prototype.create = function(toAddress, amountSatStr, utxos, priv, opts) {
   var pkr = this.publicKeyRing; 
   opts = opts || {};
+
+  var amountSat = bitcore.bignum(amountSatStr);
 
   if (! pkr.isComplete() ) {
     throw new Error('publicKeyRing is not complete');

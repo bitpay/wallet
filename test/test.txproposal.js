@@ -81,7 +81,7 @@ describe('TxProposals model', function() {
 
     var tx = w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest
     );
     should.exist(tx);
@@ -105,7 +105,7 @@ describe('TxProposals model', function() {
     var priv = new PrivateKey(config);
     var tx = w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv
     );
@@ -131,7 +131,7 @@ describe('TxProposals model', function() {
         unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
         var tx = w.create(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-          bignum('123456789'), 
+          '123456789', 
           unspentTest,
           priv
         );
@@ -161,7 +161,7 @@ describe('TxProposals model', function() {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     var tx = w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv
     );
@@ -204,7 +204,7 @@ describe('TxProposals model', function() {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv2,
       opts
@@ -225,7 +225,7 @@ describe('TxProposals model', function() {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w2.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv,
       opts
@@ -274,7 +274,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv3,
       opts
@@ -295,7 +295,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w2.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv,
       opts
@@ -322,7 +322,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w3.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv2,
       opts
@@ -365,7 +365,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv,
       opts
@@ -384,7 +384,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w2.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv2,
       opts
@@ -403,7 +403,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     w3.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv3,
       opts
@@ -441,6 +441,7 @@ var _dumpChunks = function (scriptSig, label) {
 
     var priv = new PrivateKey(config);
     var w = new TxProposals({
+      walletId: 'qwerty',
       networkName: config.networkName,
       publicKeyRing: createPKR([priv.getBIP32()]),
     });
@@ -452,7 +453,7 @@ var _dumpChunks = function (scriptSig, label) {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
     var tx = w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      bignum('123456789'), 
+      '123456789', 
       unspentTest,
       priv
     );
@@ -470,11 +471,14 @@ var _dumpChunks = function (scriptSig, label) {
     should.exist(o.txps[0].signedBy[priv.id]);
 
     var w2 = TxProposals.fromObj(o);
+    w2.walletId.should.equal(w.walletId);
     var tx2 = w2.txps[0].tx;
     tx2.isComplete().should.equal(false);
     tx2.countInputMissingSignatures(0).should.equal(2);
     (w2.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
+
+    w2.merge(w);
   });
 
 });
