@@ -100,14 +100,13 @@ describe('PublicKeyRing model', function() {
 
     for(var isChange=0; isChange<2; isChange++) {
       for(var i=0; i<5; i++) {
-        var addr = w.generateAddress(isChange);
-        var a = new Address(addr);
+        var a = w.generateAddress(isChange);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
         if (i>1) {
-          w.getAddress(i-1,isChange).should
-            .not.equal(w.getAddress(i-2,isChange));
+          w.getAddress(i-1,isChange).toString().should
+            .not.equal(w.getAddress(i-2,isChange).toString());
         }
       }
     }
@@ -128,7 +127,7 @@ describe('PublicKeyRing model', function() {
     var as = w.getAddresses();
     as.length.should.equal(12);
     for(var j in as) {
-      var a = new Address(as[j]);
+      var a = as[j];
       a.isValid().should.equal(true);
     }
   });
