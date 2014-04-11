@@ -32,9 +32,12 @@ angular.module('copay.header').controller('HeaderController',
     };
 
     $scope.signout = function() {
-      $rootScope.isLogged = false;
       Network.disconnect(function() {
         $location.path('signin');
       });
+    };
+
+    $scope.clearFlashMessage = function() {
+      $rootScope.flashMessage = {};
     };
   });

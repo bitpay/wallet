@@ -59,22 +59,8 @@ PublicKeyRing.encrypt = function (passphrase, payload) {
   return payload;
 };
 
-PublicKeyRing.read = function (id, passphrase) {
-  var encPayload = storage.get(id);
-  if (!encPayload) 
-    throw new Error('Could not find wallet data');
-  var data;
-  try {
-    data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
-  } catch (e) {
-    throw new Error('error in storage: '+ e.toString());
-    return;
-  };
-
-  if (data.id !== id) 
-    throw new Error('Wrong id in data');
-
-  var config = { networkName: data.networkName };
+PublicKeyRing.fromObj = function (data) {
+  var config = { networkName: data.networkName || 'livenet' };
 
   var w = new PublicKeyRing(config);
 
@@ -91,6 +77,25 @@ PublicKeyRing.read = function (id, passphrase) {
   w.dirty = 0;
 
   return w;
+};
+
+PublicKeyRing.read = function (id, passphrase) {
+  var encPayload = storage.get(id);
+  if (!encPayload) 
+    throw new Error('Could not find wallet data');
+  var data;
+  try {
+    data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
+  } catch (e) {
+    throw new Error('error in storage: '+ e.toString());
+    return;
+  };
+
+  if (data.id !== id) 
+    throw new Error('Wrong id in data');
+
+
+  return PublicKeyRing.fromObj(data);
 };
 
 PublicKeyRing.prototype.toObj = function() {
