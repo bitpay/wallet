@@ -110,13 +110,13 @@ console.log('[network.js.97:priv:]',priv); //TODO
         $rootScope.txProposals   = new copay.TxProposals.fromObj(txp);
         $rootScope.PrivateKey    = new copay.PrivateKey.fromObj(priv); //TODO secure
 
-        // Add our key JIC
+        // JIC: Add our key
         try {
           $rootScope.publicKeyRing.addCopayer(
                 $rootScope.PrivateKey.getBIP32().extendedPublicKeyString()
           );
         } catch (e) {
-console.log('[network.js.103]', e); //TODO
+          console.log('NOT NECCESARY AN ERROR:', e); //TODO
         };
         ret = true;
       }
@@ -127,7 +127,8 @@ console.log('[network.js.103]', e); //TODO
       console.log('### CLOSING WALLET');
       $rootScope.walletId = null;
       $rootScope.publicKeyRing = null;
-      //TODO
+      $rootScope.privateKey = null;
+      $rootScope.txProposals = null;
     };
 
     var _checkWallet = function(walletId, allowChange) {
@@ -137,9 +138,6 @@ console.log('[network.js.103]', e); //TODO
           return;
 
       if ($rootScope.walletId && $rootScope.walletId !== walletId) {
-        if (allowChange)  
-          closeWallet();
-        else 
           throw new Error('message to wrong walletID');
       }
 
@@ -150,37 +148,9 @@ console.log('[network.js.103]', e); //TODO
     };
 
 
-    var _handlePublicKeyRing = function(senderId, data, isInbound) {
-      var cp  = $rootScope.cp;
-      _checkWallet(data.publicKeyRing.id, true);
-      var shouldSend = false;
-
-      var recipients, pkr = $rootScope.publicKeyRing;
-      var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
-      if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
-        console.log('### BROADCASTING PKR');
-        recipients = null;
-        shouldSend = true;
-      }
-      else if (isInbound  && !data.isBroadcast) {
-        // always replying  to connecting peer
-        console.log('### REPLYING PKR TO:', senderId);
-        recipients = senderId;
-        shouldSend = true;
-      }
-
-      if (shouldSend) {
-        console.log('### SENDING PKR TO:', recipients);
-        cp.send( recipients, { 
-          type: 'publicKeyRing', 
-          publicKeyRing: $rootScope.publicKeyRing.toObj(),
-        });
-      }
-    };
-
     var sendTxProposals = function(recipients) {
       var cp  = $rootScope.cp;
-      console.log('### SENDING txProposals TO:', recipients||'All');
+      console.log('### SENDING txProposals TO:', recipients||'All', $rootScope.txProposals);
       cp.send( recipients, { 
         type: 'txProposals', 
         txProposals: $rootScope.txProposals.toObj(),
@@ -197,9 +167,36 @@ console.log('[network.js.103]', e); //TODO
       });
     };
 
+    var _handlePublicKeyRing = function(senderId, data, isInbound) {
+      var cp  = $rootScope.cp;
+      _checkWallet(data.publicKeyRing.id);
+      var shouldSend = false;
+
+      var recipients, pkr = $rootScope.publicKeyRing;
+      var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
+console.log('[network.js.176:inPKR:]',inPKR); //TODO
+console.log('[network.js.178:pkr:]',pkr); //TODO
+      if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
+        console.log('### BROADCASTING PKR');
+        recipients = null;
+        shouldSend = true;
+      }
+      else if (isInbound  && !data.isBroadcast) {
+        // always replying  to connecting peer
+        console.log('### REPLYING PKR TO:', senderId);
+        recipients = senderId;
+        shouldSend = true;
+      }
+
+      console.log('[network.js.189:shouldSend:]',shouldSend); //TODO
+      if (shouldSend) {
+        sendPublicKeyRing(recipients);
+      }
+      _refreshUx();
+    };
     var _handleTxProposals = function(senderId, data, isInbound) {
       var cp  = $rootScope.cp;
-      _checkWallet(data.txProposals.walletId, false);
+      _checkWallet(data.txProposals.walletId);
 
       var shouldSend = false;
       console.log('RECV TXPROPOSAL:',data); //TODO
@@ -220,7 +217,7 @@ console.log('[network.js.103]', e); //TODO
       }
 
       if (shouldSend) {
-        this.sendTxProposals(recipients);
+        sendTxProposals(recipients);
       }
     };
 
@@ -233,9 +230,11 @@ console.log('[network.js.103]', e); //TODO
         case 'txProposals':
           _handleTxProposals(senderId, data, isInbound);
           break;
- 
+        case 'abort':
+          disconnect();
+          _refreshUx();
+          break;
       }
-      _refreshUx();
     };
     var _setupHandlers = function () {
       var cp = $rootScope.cp;
@@ -261,9 +260,9 @@ console.log('[network.js.103]', e); //TODO
       if ($rootScope.cp) {
         $rootScope.cp.disconnect();
       }
+      closeWallet();
       Storage.remove('peerData'); 
       $rootScope.isLogged = false;
-      _refreshUx();
     };
 
     var connect = function(peerId, openCallback, failCallback) {

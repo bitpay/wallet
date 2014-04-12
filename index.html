@@ -74,11 +74,11 @@
             <div class="large-6 columns">
               <h3>Open a Existing Wallet</h3>
               <select class="form-control" >
-                <option data-ng-repeat="walletId in listWalletIds()" value="walletId">{{walletId}}</option>
+                <option ng-repeat="walletId in listWalletIds()" ng-model="sel" value="walletId">{{walletId}}</option>
               </select>
             </div>
             <div class="large-3 columns">
-              <button class="button primary expand round" type="button" ng-click="open(walletId)">Open</button>
+              <button class="button primary expand round" type="button" ng-click="open(sel || $scope.sel)">Open</button>
             </div>
           </div>
           <hr>

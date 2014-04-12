@@ -72,6 +72,7 @@ PublicKeyRing.fromObj = function (data) {
 
   var w = new PublicKeyRing(config);
 
+  w.id               = data.id;
   w.requiredCopayers = data.requiredCopayers;
   w.totalCopayers = data.totalCopayers;
   w.addressIndex = data.addressIndex;
