@@ -79,11 +79,12 @@ describe('TxProposals model', function() {
     unspentTest[0].address        = w.publicKeyRing.getAddress(1, true).toString();
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
-    var tx = w.create(
+    w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       '123456789', 
       unspentTest
     );
+    var tx = w.txps[0].builder.build();
     should.exist(tx);
     tx.isComplete().should.equal(false);
     Object.keys(w.txps[0].signedBy).length.should.equal(0);
@@ -103,12 +104,13 @@ describe('TxProposals model', function() {
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
     var priv = new PrivateKey(config);
-    var tx = w.create(
+    w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       '123456789', 
       unspentTest,
       priv
     );
+    var tx = w.txps[0].builder.build();
     should.exist(tx);
     tx.isComplete().should.equal(false);
     Object.keys(w.txps[0].signedBy).length.should.equal(0);
@@ -129,12 +131,13 @@ describe('TxProposals model', function() {
       for (var index=0; index<3; index++) {
         unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange).toString();
         unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
-        var tx = w.create(
+        w.create(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
           '123456789', 
           unspentTest,
           priv
         );
+        var tx = w.txps[0].builder.build();
         should.exist(tx);
         tx.isComplete().should.equal(false);
 
@@ -159,13 +162,13 @@ describe('TxProposals model', function() {
 
     unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange).toString();
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
-    var tx = w.create(
+    w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       '123456789', 
       unspentTest,
       priv
     );
-
+    var tx = w.txps[0].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
@@ -210,8 +213,9 @@ describe('TxProposals model', function() {
       opts
     );
 
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(1);
+    var tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(1);
 
     Object.keys(w.txps[0].signedBy).length.should.equal(0);
     Object.keys(w.txps[0].seenBy).length.should.equal(1);
@@ -231,8 +235,9 @@ describe('TxProposals model', function() {
       opts
     );
 
-    w2.txps[0].tx.isComplete().should.equal(false);
-    w2.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    var tx = w2.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
 
     (w2.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
@@ -240,8 +245,9 @@ describe('TxProposals model', function() {
     w.merge(w2);
     w.txps.length.should.equal(1);
 
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    var tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
     (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
  
@@ -280,8 +286,9 @@ var _dumpChunks = function (scriptSig, label) {
       opts
     );
 
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(1);
+    var tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(1);
 
     Object.keys(w.txps[0].signedBy).length.should.equal(0);
     Object.keys(w.txps[0].seenBy).length.should.equal(1);
@@ -300,16 +307,19 @@ var _dumpChunks = function (scriptSig, label) {
       priv,
       opts
     );
-    w2.txps[0].tx.isComplete().should.equal(false);
-    w2.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    tx = w2.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
 
     (w2.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
 
     w.merge(w2);
     w.txps.length.should.equal(1);
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+
+    tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
     (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
 
@@ -327,8 +337,9 @@ var _dumpChunks = function (scriptSig, label) {
       priv2,
       opts
     );
-    w3.txps[0].tx.isComplete().should.equal(false);
-    w3.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    tx = w3.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
 
     (w3.txps[0].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w3.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
@@ -341,8 +352,9 @@ var _dumpChunks = function (scriptSig, label) {
     (w.txps[0].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
 
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(1);
+    tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(1);
   });
 
 
@@ -370,8 +382,9 @@ var _dumpChunks = function (scriptSig, label) {
       priv,
       opts
     );
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    var tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
     (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
 
@@ -389,8 +402,9 @@ var _dumpChunks = function (scriptSig, label) {
       priv2,
       opts
     );
-    w2.txps[0].tx.isComplete().should.equal(false);
-    w2.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    var tx = w2.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
     (w2.txps[0].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w2.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
 
@@ -408,15 +422,17 @@ var _dumpChunks = function (scriptSig, label) {
       priv3,
       opts
     );
-    w3.txps[0].tx.isComplete().should.equal(false);
-    w3.txps[0].tx.countInputMissingSignatures(0).should.equal(2);
+    var tx = w3.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(2);
     (w3.txps[0].signedBy[priv3.id] - ts > 0).should.equal(true);
     (w3.txps[0].seenBy[priv3.id] - ts > 0).should.equal(true);
 
     w.merge(w2);
     w.txps.length.should.equal(1);
-    w.txps[0].tx.isComplete().should.equal(false);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(1);
+    var tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(false);
+    tx.countInputMissingSignatures(0).should.equal(1);
     (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
     (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
@@ -424,8 +440,9 @@ var _dumpChunks = function (scriptSig, label) {
 
 
     w.merge(w3);
-    w.txps[0].tx.isComplete().should.equal(true);
-    w.txps[0].tx.countInputMissingSignatures(0).should.equal(0);
+    var tx = w.txps[0].builder.build();
+    tx.isComplete().should.equal(true);
+    tx.countInputMissingSignatures(0).should.equal(0);
     w.txps.length.should.equal(1);
     (w.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[0].seenBy[priv2.id] - ts > 0).should.equal(true);
@@ -451,12 +468,13 @@ var _dumpChunks = function (scriptSig, label) {
 
     unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange).toString();
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
-    var tx = w.create(
+    w.create(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       '123456789', 
       unspentTest,
       priv
     );
+    var tx = w.txps[0].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
     (w.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
@@ -465,19 +483,23 @@ var _dumpChunks = function (scriptSig, label) {
     var o = w.toObj();
     should.exist(o);
     o.txps.length.should.equal(1);
-    should.exist(o.txps[0].txHex);
+    should.exist(o.txps[0]);
     should.exist(o.txps[0].signedBy);
     should.exist(o.txps[0].seenBy);
+    should.exist(o.txps[0].builderObj);
+    should.exist(o.txps[0].builderObj.valueInSat);
     should.exist(o.txps[0].signedBy[priv.id]);
 
     var w2 = TxProposals.fromObj(o);
     w2.walletId.should.equal(w.walletId);
-    var tx2 = w2.txps[0].tx;
+    var tx2 = w2.txps[0].builder.build();
     tx2.isComplete().should.equal(false);
     tx2.countInputMissingSignatures(0).should.equal(2);
     (w2.txps[0].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[0].seenBy[priv.id] - ts > 0).should.equal(true);
-
+    should.exist(w2.txps[0].builder);
+    should.exist(w2.txps[0].builder.valueInSat);
+ 
     w2.merge(w);
   });
 
