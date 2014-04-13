@@ -14,9 +14,9 @@ var Storage     = imports.Storage || require('./Storage');
 var storage     = Storage.default();
 
 function TxProposal(opts) {
-  this.tx       = opts.tx;
   this.seenBy   = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
+  this.builder  = opts.builder;
 };
 module.exports = require('soop')(TxProposal);
 
@@ -36,12 +36,10 @@ TxProposals.fromObj = function(o) {
     walletId: o.walletId,
   });
   o.txps.forEach(function(t) {
-    var tx = new Transaction;
-    tx.parse(new Buffer(t.txHex,'hex'));
     ret.txps.push({
       seenBy: t.seenBy,
       signedBy: t.signedBy,
-      tx: tx,
+      builder: new Builder.fromObj(t.builderObj),
     });
   });
   return ret;
@@ -54,7 +52,7 @@ TxProposals.prototype.toObj = function() {
     ret.push({
       seenBy: t.seenBy,
       signedBy: t.signedBy,
-      txHex: t.tx.serialize(),
+      builderObj: t.builder.toObj(),
     });
   });
   return { 
@@ -68,7 +66,7 @@ TxProposals.prototype.toObj = function() {
 TxProposals.prototype._getNormHash = function(txps) {
   var ret = {};
   txps.forEach(function(txp) {
-    var hash = txp.tx.getNormalizedHash().toString('hex');
+    var hash = txp.builder.build().getNormalizedHash().toString('hex');
     ret[hash]=txp;
   });
   return ret;
@@ -126,106 +124,17 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 };
 
 
-TxProposals.prototype._chunkIsEmpty = function(chunk) {
-  return chunk === 0 ||  // when serializing and back, EMPTY_BUFFER becomes 0
-    buffertools.compare(chunk, util.EMPTY_BUFFER) === 0;
-};
-//
-// function d(s,l) {
-// console.log('DUMP'); //TODO
-//   for (var i=0; i<l; i++) {
-//     var k = s.chunks[i];
-//     console.log("0:", i, Buffer.isBuffer(k)? k.toString('hex'):k);
-//   }
-// };
-
-
-
-// this assumes that the same signature can not be v0 / v1 (which shouldnt be!)
-TxProposals.prototype._mergeInputSig = function(s0buf, s1buf) {
-  if (buffertools.compare(s0buf,s1buf) === 0) {
-//    console.log('BUFFERS .s MATCH'); //TODO
-    return s0buf;
-  }
-  // Is multisig?
-  var s0 = new Script(s0buf);
-  var s1 = new Script(s1buf);
-  var l0  = s0.chunks.length;
-  var l1 = s1.chunks.length;
-  var s0map = {};
-
-  if (l0 && l1 && l0 !== l1)
-    throw new Error('TX sig types mismatch in merge');
-
-  if (l0) {
-    for (var i=0; i<l0; i++) {
-      if (!this._chunkIsEmpty(s0.chunks[i]))
-        s0map[s0.chunks[i]] = 1;
-    };
-
-    var diff = []; 
-    for (var i=0; i<l1; i++) {
-      if ( !this._chunkIsEmpty(s1.chunks[i]) && !s0map[s1.chunks[i]]) {
-        diff.push(s1.chunks[i]);
-      }
-    };
-
-    if (!diff) {
-      console.log('[TxProposals.js.155] NO DIFF FOUND'); //TODO
-      return s0.getBuffer();
-    }
-  
-    var emptySlots = [];
-    for (var i=1; i<l0; i++) {
-      if (this._chunkIsEmpty(s0.chunks[i])) {
-        emptySlots.push(i);
-      }
-    }
-
-    if (emptySlots.length<diff.length) 
-      throw new Error('no enough empty slots to merge Txs');
-
-    for (var i=0;  i<diff.length; i++) {
-      s0.chunks[emptySlots[i]] = diff[i];
-    }
-    s0.updateBuffer();
-    return s0.getBuffer();
-  }
-  else {
-    return s1.getBuffer();
-  }
-
-};
-
-TxProposals.prototype._mergeSignatures = function(myTxps, theirTxps, mergeInfo) {
+TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
   var self = this;
   var toMerge = mergeInfo.toMerge;
 
   Object.keys(toMerge).forEach(function(hash) {
-    var v0 = myTxps[hash].tx;
-    var v1 = toMerge[hash].tx;
+    var v0 = myTxps[hash].builder;
+    var v1 = toMerge[hash].builder;
 
-    var l = v0.ins.length;
-    if (l !== v1.ins.length) 
-      throw new Error('TX in length mismatch in merge');
-
-    for(var i=0; i<l; i++) {
-      var i0 =  v0.ins[i];
-      var i1 =  v1.ins[i];
-
-      if (i0.q !==  i1.q)
-        throw new Error('TX sequence ins mismatch in merge. Input:',i);
-
-      if (buffertools.compare(i0.o,i1.o) !== 0) 
-        throw new Error('TX .o in mismatch in merge. Input:',i);
-      
-
-      i0.s=self._mergeInputSig(i0.s,i1.s);
-    }
+    v0.merge(v1);
   });
 };
-
-
 
 TxProposals.prototype.merge = function(t) {
   if (this.network.name !== t.network.name) 
@@ -238,7 +147,7 @@ TxProposals.prototype.merge = function(t) {
 
   var mergeInfo   = this._startMerge(myTxps, theirTxps);
   this._mergeMetadata(myTxps, theirTxps, mergeInfo);
-  this._mergeSignatures(myTxps, theirTxps, mergeInfo);
+  this._mergeBuilder(myTxps, theirTxps, mergeInfo);
 
   Object.keys(mergeInfo.toMerge).forEach(function(hash) {
     mergeInfo.ready.push(myTxps[hash]);
@@ -272,21 +181,17 @@ TxProposals.prototype.create = function(toAddress, amountSatStr, utxos, priv, op
   if (priv) {
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
-
-  var tx = b.build();
-
   var me = {};
-
   if (priv) me[priv.id] = Date.now();
 
   this.txps.push(
     new TxProposal({
       signedBy: priv && b.signaturesAdded ? me : {},
       seenBy:   priv ? me : {},
-      tx: tx,
+      builder: b,
     })
   );
-  return tx;
+  return 1;
 };
 
 TxProposals.prototype.sign = function(index) {
