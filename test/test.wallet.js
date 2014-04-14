@@ -54,7 +54,7 @@ describe('Wallet model', function() {
     var w = new Wallet();
     should.exist(w);
   });
-  it('should return array of unspent output', function(done) {
+  it.skip('should return array of unspent output', function(done) {
     var w = new Wallet();
     w.listUnspent(addresses, function(a) {
       should.exist(a);
@@ -67,7 +67,7 @@ describe('Wallet model', function() {
     should.exist(b);
     b.should.equal(91);
   });
-  it('should return txid', function (done) {
+  it.skip('should return txid', function (done) {
     var w = new Wallet();
     w.sendRawTransaction(rawtx, function(a) { 
       should.exist(a);
