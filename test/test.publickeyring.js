@@ -6,8 +6,7 @@ var bitcore        = bitcore || require('bitcore');
 var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
 var copay          = copay || require('../copay');
-var fakeStorage    = copay.FakeStorage;
-var PublicKeyRing  = copay.PublicKeyRing || require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
+var PublicKeyRing  = copay.PublicKeyRing;
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';
 
@@ -17,7 +16,6 @@ var config = {
 };
 
 var createW = function (networkName) {
-
   var config = {
     networkName: networkName || 'livenet',
   };
@@ -27,7 +25,7 @@ var createW = function (networkName) {
 
   var copayers = [];
   for(var i=0; i<5; i++) {
-    w.haveAllRequiredPubKeys().should.equal(false);
+    w.isComplete().should.equal(false);
     var newEpk = w.addCopayer();
     copayers.push(newEpk);
   }
@@ -55,7 +53,7 @@ describe('PublicKeyRing model', function() {
     should.exist(w2);
 
     w2.registeredCopayers().should.equal(0); 
-    w2.haveAllRequiredPubKeys().should.equal(false);
+    w2.isComplete().should.equal(false);
 
     w2.getAddress.bind(false).should.throw();
   });
@@ -65,13 +63,13 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
     var copayers = k.copayers;
 
-    w.haveAllRequiredPubKeys().should.equal(true);
+    w.isComplete().should.equal(true);
     w.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
       w.addCopayer.bind(copayers[i]).should.throw();
   });
 
-  it('show be able to store and retrieve', function () {
+  it('show be able to tostore and read', function () {
     var k = createW();
     var w = k.w;
     var copayers = k.copayers;
@@ -80,13 +78,13 @@ describe('PublicKeyRing model', function() {
     for(var i=0; i<5; i++)
       w.generateAddress(false);
 
-    w.store().should.equal(true);
-    var ID = w.id;
-    delete w['id'];
-    w.store.bind().should.throw();
+    var data = w.toStore();
+    should.exist(data);
 
-    var w2 = PublicKeyRing.read(ID);
-    w2.haveAllRequiredPubKeys().should.equal(true);
+    var ID = w.id;
+
+    var w2 = PublicKeyRing.read(data, ID, 'dummy' );
+    w2.isComplete().should.equal(true);
     w2.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
       w2.addCopayer.bind(copayers[i]).should.throw();
@@ -102,14 +100,13 @@ describe('PublicKeyRing model', function() {
 
     for(var isChange=0; isChange<2; isChange++) {
       for(var i=0; i<5; i++) {
-        var addr = w.generateAddress(isChange);
-        var a = new Address(addr);
+        var a = w.generateAddress(isChange);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
         if (i>1) {
-          w.getAddress(i-1,isChange).should
-            .not.equal(w.getAddress(i-2,isChange));
+          w.getAddress(i-1,isChange).toString().should
+            .not.equal(w.getAddress(i-2,isChange).toString());
         }
       }
     }
@@ -130,7 +127,7 @@ describe('PublicKeyRing model', function() {
     var as = w.getAddresses();
     as.length.should.equal(12);
     for(var j in as) {
-      var a = new Address(as[j]);
+      var a = as[j];
       a.isValid().should.equal(true);
     }
   });
@@ -161,67 +158,69 @@ describe('PublicKeyRing model', function() {
       networkName: 'livenet',
       id: w.id,
     });
-    w2.merge(w.toObj()).should.equal(true);
+    w2.merge(w).should.equal(true);
     w2.requiredCopayers.should.equal(3);   
     w2.totalCopayers.should.equal(5);   
     w2.changeAddressIndex.should.equal(2);   
     w2.addressIndex.should.equal(3); 
 
     //
-    w2.merge(w.toObj()).should.equal(false);
+    w2.merge(w).should.equal(false);
   });
 
 
   it('#merge check tests', function () {
-    var k = createW();
-    var w = k.w;
-
-    for(var i=0; i<2; i++)
-      w.generateAddress(true);
-    for(var i=0; i<3; i++)
-      w.generateAddress(false);
-
-
-
-    var w2 = new PublicKeyRing({
+    var config = {
       networkName: 'livenet',
+    };
+
+    var w = new PublicKeyRing(config);
+    var w2 = new PublicKeyRing({
+      networkName: 'testnet',    //wrong
+      id: w.id,
     });
-    (function() { w2.merge(w.toObj());}).should.throw();
-    (function() { w2.merge(w,true);}).should.throw();
-
-console.log('[test.publickeyring.js.190]'); //TODO
-    w2.merge(w.toObj(),true).should.equal(true);
-
-console.log('[test.publickeyring.js.193]'); //TODO
-
+    (function() { w2.merge(w);}).should.throw();
 
     var w3 = new PublicKeyRing({
       networkName: 'livenet',
       id: w.id,
-      requiredCopayers: 2,
+      requiredCopayers: 2,      // wrong
     });
-    (function() { w3.merge(w.toObj());}).should.throw();
+    (function() { w3.merge(w);}).should.throw();
 
     var w4 = new PublicKeyRing({
-      networkName: 'testnet',
-      id: w.id,
-    });
-    (function() { w4.merge(w.toObj());}).should.throw();
-
-    var w5 = new PublicKeyRing({
       networkName: 'livenet',
       id: w.id,
-      totalCopayers: 4, 
+      totalCopayers: 3,      // wrong
     });
-    (function() { w5.merge(w.toObj());}).should.throw();
+    (function() { w4.merge(w);}).should.throw();
+
 
     var w6 = new PublicKeyRing({
       networkName: 'livenet',
-      id: w.id,
     });
     (function() { w6.merge(w);}).should.throw();
     w.networkName= 'livenet';
     (function() { w6.merge(w);}).should.throw();
+
+
+    var w0 = new PublicKeyRing({
+      networkName: 'livenet',
+    });
+    w0.addCopayer();
+    w0.addCopayer();
+    w0.addCopayer();
+    w0.addCopayer();
+    w0.addCopayer();
+    (function() { w0.merge(w);}).should.throw();
+    w.merge(w0,true).should.equal(true);
+    w.isComplete().should.equal(true);
+
+    var wx = new PublicKeyRing({
+      networkName: 'livenet',
+    });
+    wx.addCopayer();
+    (function() { w.merge(wx, true);}).should.throw();
 
 
   });
@@ -232,7 +231,7 @@ console.log('[test.publickeyring.js.193]'); //TODO
     should.exist(w);
     var copayers = [];
     for(var i=0; i<2; i++) {
-      w.haveAllRequiredPubKeys().should.equal(false);
+      w.isComplete().should.equal(false);
       w.addCopayer();
     }
 
@@ -243,17 +242,17 @@ console.log('[test.publickeyring.js.193]'); //TODO
     should.exist(w);
     var copayers = [];
     for(var i=0; i<3; i++) {
-      w2.haveAllRequiredPubKeys().should.equal(false);
+      w2.isComplete().should.equal(false);
       w2.addCopayer();
     }
-    w2.merge(w.toObj()).should.equal(true);
-    w2.haveAllRequiredPubKeys().should.equal(true);
-    w2.merge(w.toObj()).should.equal(false);
+    w2.merge(w).should.equal(true);
+    w2.isComplete().should.equal(true);
+    w2.merge(w).should.equal(false);
 
-    w.haveAllRequiredPubKeys().should.equal(false);
-    w.merge(w2.toObj()).should.equal(true);
-    w.haveAllRequiredPubKeys().should.equal(true);
-    w.merge(w2.toObj()).should.equal(false);
+    w.isComplete().should.equal(false);
+    w.merge(w2).should.equal(true);
+    w.isComplete().should.equal(true);
+    w.merge(w2).should.equal(false);
   });
 
   it('#merge pubkey tests (case 2)', function () {
@@ -261,16 +260,34 @@ console.log('[test.publickeyring.js.193]'); //TODO
     should.exist(w);
 
     for(var i=0; i<5; i++) {
-      w.haveAllRequiredPubKeys().should.equal(false);
+      w.isComplete().should.equal(false);
       var w2 = new PublicKeyRing({
         networkName: 'livenet',
         id: w.id,
       });
       w2.addCopayer();
-      w.merge(w2.toObj()).should.equal(true);
+      w.merge(w2).should.equal(true);
     }
-    w.haveAllRequiredPubKeys().should.equal(true);
+    w.isComplete().should.equal(true);
   });
+
+
+  it('#getRedeemScriptMap check tests', function () {
+    var k = createW();
+    var w = k.w;
+
+    for(var i=0; i<2; i++)
+      w.generateAddress(true);
+    for(var i=0; i<3; i++)
+      w.generateAddress(false);
+
+    var m = w.getRedeemScriptMap();
+    Object.keys(m).length.should.equal(5);
+    Object.keys(m).forEach(function (k) {
+      should.exist(m[k]);
+    });
+  });
+
 });
 
 
