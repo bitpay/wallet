@@ -141,15 +141,13 @@
 
         <div class="row">
           <div class="large-6 columns">
-            <a class="panel db"> Adress1 <span class="right"> &gt; </span> </a>
-            <a class="panel db"> Adress2 <span class="right"> &gt; </span> </a>
-            <a class="panel db"> Adress3 <span class="right"> &gt; </span> </a>
-            <a class="panel db"> Adress4 <span class="right"> &gt; </span> </a>
+            <a class="panel db" ng-repeat="addr in addrs" ng-click="selectAddr(addr.addrStr)">{{addr.addrStr}} <span class="right"> &gt;</span></a>
           </div>
           <div class="large-6 columns">
-            <qrcode size="160" data="n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb"></qrcode>
+            <qrcode size="160" data="{{selectedAddr}}"></qrcode>
             <p> 2.5432 BTC </p>
           </div>
+          <button class="secondary round large-4 columns" ng-click="newAddr()"> New address</button>
         </div> 
       </div>
     </script>
