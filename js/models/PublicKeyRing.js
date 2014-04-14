@@ -14,17 +14,6 @@ var buffertools = bitcore.buffertools;
 var Storage     = imports.Storage || require('./Storage');
 var storage     = Storage.default();
 
-/*
- * This follow Electrum convetion, as described in
- * https://bitcointalk.org/index.php?topic=274182.0
- *
- * We should probably adopt the next standard once it's ready, as discussed in:
- * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
- *
- */
-
-var PUBLIC_BRANCH = 'm/0/';
-var CHANGE_BRANCH = 'm/1/';
 
 function PublicKeyRing(opts) {
   opts = opts || {};
@@ -37,16 +26,32 @@ function PublicKeyRing(opts) {
 
   this.id = opts.id || PublicKeyRing.getRandomId();
 
-  this.dirty = 1;
   this.copayersBIP32 = [];
 
   this.changeAddressIndex=0;
   this.addressIndex=0;
 }
 
+/*
+ * This follow Electrum convetion, as described in
+ * https://bitcointalk.org/index.php?topic=274182.0
+ *
+ * We should probably adopt the next standard once it's ready, as discussed in:
+ * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
+ *
+ */
+
+PublicKeyRing.PublicBranch = function (index) {
+  return 'm/0/'+index;
+};
+
+PublicKeyRing.ChangeBranch = function (index) {
+  return 'm/1/'+index;
+};
 
 PublicKeyRing.getRandomId = function () {
-  return buffertools.toHex(coinUtil.generateNonce());
+  var r = buffertools.toHex(coinUtil.generateNonce());
+  return r;
 };
 
 PublicKeyRing.decrypt = function (passphrase, encPayload) {
@@ -60,41 +65,39 @@ PublicKeyRing.encrypt = function (passphrase, payload) {
 };
 
 PublicKeyRing.fromObj = function (data) {
+  if (!data.ts) {
+    throw new Error('bad data format: Did you use .toObj()?');
+  }
   var config = { networkName: data.networkName || 'livenet' };
 
   var w = new PublicKeyRing(config);
 
+  w.id               = data.id;
   w.requiredCopayers = data.requiredCopayers;
   w.totalCopayers = data.totalCopayers;
   w.addressIndex = data.addressIndex;
   w.changeAddressIndex = data.changeAddressIndex;
 
-//  this.bip32 = ;
   w.copayersBIP32 = data.copayersExtPubKeys.map( function (pk) { 
     return new BIP32(pk);
   });
 
-  w.dirty = 0;
-
+  w.ts = data.ts;
   return w;
 };
 
-PublicKeyRing.read = function (id, passphrase) {
-  var encPayload = storage.get(id);
+PublicKeyRing.read = function (encPayload, id, passphrase) {
   if (!encPayload) 
     throw new Error('Could not find wallet data');
   var data;
   try {
     data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
   } catch (e) {
-    throw new Error('error in storage: '+ e.toString());
-    return;
-  };
+    throw new Error('error in read: '+ e.toString());
+  }
 
   if (data.id !== id) 
     throw new Error('Wrong id in data');
-
-
   return PublicKeyRing.fromObj(data);
 };
 
@@ -119,15 +122,11 @@ PublicKeyRing.prototype.serialize = function () {
 };
 
 
-PublicKeyRing.prototype.store = function (passphrase) {
-
+PublicKeyRing.prototype.toStore = function (passphrase) {
   if (!this.id) 
       throw new Error('wallet has no id');
 
-  storage.set(this.id, PublicKeyRing.encrypt(passphrase,this.serialize()));
-  this.dirty = 0;
-
-  return true;
+  return PublicKeyRing.encrypt(passphrase,this.serialize());
 };
 
 PublicKeyRing.prototype.registeredCopayers = function () {
@@ -136,13 +135,13 @@ PublicKeyRing.prototype.registeredCopayers = function () {
 
 
 
-PublicKeyRing.prototype.haveAllRequiredPubKeys = function () {
+PublicKeyRing.prototype.isComplete = function () {
   return this.registeredCopayers() >= this.totalCopayers;
 };
 
 PublicKeyRing.prototype._checkKeys = function() {
 
-  if (!this.haveAllRequiredPubKeys())
+  if (!this.isComplete())
       throw new Error('dont have required keys yet');
 };
 
@@ -154,7 +153,7 @@ PublicKeyRing.prototype._newExtendedPublicKey = function () {
 
 PublicKeyRing.prototype.addCopayer = function (newEpk) {
 
-  if (this.haveAllRequiredPubKeys())
+  if (this.isComplete())
       throw new Error('already have all required key:' + this.totalCopayers);
 
   if (!newEpk) {
@@ -167,18 +166,17 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
   });
 
   this.copayersBIP32.push(new BIP32(newEpk));
-  this.dirty = 1;
   return newEpk;
 };
 
 
-PublicKeyRing.prototype.getCopayersPubKeys = function (index, isChange) {
+PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   this._checkKeys();
 
   var pubKeys = [];
   var l = this.copayersBIP32.length;
   for(var i=0; i<l; i++) {
-    var path = (isChange ? CHANGE_BRANCH : PUBLIC_BRANCH) + index;
+    var path = isChange ? PublicKeyRing.ChangeBranch(index) : PublicKeyRing.PublicBranch(index); 
     var bip32 = this.copayersBIP32[i].derive(path);
     pubKeys[i] = bip32.eckey.public;
   }
@@ -197,20 +195,29 @@ PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
-  var pubKeys = this.getCopayersPubKeys(index, isChange);
+  var pubKeys = this.getPubKeys(index, isChange);
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;
 };
+
 
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
   var script  = this.getRedeemScript(index,isChange);
   var hash    = coinUtil.sha256ripe160(script.getBuffer());
-  var version = this.network.addressScript;
+  var version = this.network.P2SHVersion;
   var addr    = new Address(version, hash);
-  return addr.as('base58');
+  return addr;
 };
+
+PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
+  this._checkIndexRange(index, isChange);
+  var addr  = this.getAddress(index,isChange);
+  return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
+};
+
+
 
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange) {
@@ -239,18 +246,28 @@ PublicKeyRing.prototype.getAddresses = function() {
   return ret;
 };
 
-PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
+PublicKeyRing.prototype.getRedeemScriptMap = function () {
+  var ret = {};
 
-
-  if (!inPKR.ts) {
-    throw new Error('inPRK bad format: Did you use .toObj()?');
+  for (var i=0; i<this.changeAddressIndex; i++) {
+    ret[this.getAddress(i,true)] = this.getRedeemScript(i,true).getBuffer().toString('hex');
   }
+
+  for (var i=0; i<this.addressIndex; i++) {
+    ret[this.getAddress(i)] = this.getRedeemScript(i).getBuffer().toString('hex');
+  }
+  return ret;
+};
+
+
+
+PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
 
   if (!ignoreId  && this.id !== inPKR.id) {
     throw new Error('inPRK id mismatch');
   }
 
-  if (this.network.name !== inPKR.networkName)
+  if (this.network.name !== inPKR.network.name)
     throw new Error('inPRK network mismatch');
 
   if (
@@ -262,9 +279,6 @@ PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
     this.totalCopayers && inPKR.totalCopayers &&
     (this.totalCopayers !== inPKR.totalCopayers))
     throw new Error('inPRK requiredCopayers mismatch');
-
-  if (! inPKR.ts)
-    throw new Error('no ts at inPRK');
 };
 
 
@@ -285,13 +299,13 @@ PublicKeyRing.prototype._mergeIndexes = function(inPKR) {
 };
 
 PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
-  var hasChanged = false;
-  var l= this.copayersBIP32.length;
-
   var self = this;
+  var hasChanged = false;
+  var l= self.copayersBIP32.length;
 
-  inPKR.copayersExtPubKeys.forEach( function(epk) {
+  inPKR.copayersBIP32.forEach( function(b) {
     var haveIt = false;
+    var epk = b.extendedPublicKeyString(); 
     for(var j=0; j<l; j++) {
       if (self.copayersBIP32[j].extendedPublicKeyString() === epk) {
         haveIt=true;
@@ -299,6 +313,10 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
       }
     }
     if (!haveIt) {
+      if (self.isComplete()) {
+        console.log('[PublicKeyRing.js.318] REPEATED KEY', epk); //TODO
+        throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
+      }
       self.copayersBIP32.push(new BIP32(epk));
       hasChanged=true;
     }
