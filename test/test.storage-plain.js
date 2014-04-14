@@ -1,15 +1,16 @@
 'use strict';
 
-if (!process.version)  {
+if (typeof process === 'undefined' || !process.version)  {
+  // browser
   var chai     = chai || require('chai');
   var should   = chai.should();
   var copay    = copay || require('../copay');
-  var Plain    = copay.Storage;
+  var Plain    = copay.StoragePlain;
 
-  describe('Storage model', function() {
+  describe('Storage/Plain model', function() {
 
     it('should create an instance', function () {
-      var s = new Storage();
+      var s = new Plain();
       should.exist(s);
     });
   });
