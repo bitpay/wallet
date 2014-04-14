@@ -16,8 +16,9 @@ var copay          = copay || require('../copay');
 var fakeStorage    = copay.FakeStorage;
 var PrivateKey    = copay.PrivateKey || require('../js/models/PrivateKey');
 var TxProposals    = copay.TxProposals || require('../js/models/TxProposal');
-var PublicKeyRing  = (typeof process.versions === 'undefined') ? copay.PublicKeyRing :
-  require('soop').load('../js/models/PublicKeyRing', {Storage: fakeStorage});
+var PublicKeyRing  = is_browser ? copay.PublicKeyRing :
+  require('soop').load('../js/models/core/PublicKeyRing', {Storage: fakeStorage});
+var is_browser = (typeof process.versions === 'undefined') 
 
 var config = {
   networkName:'livenet',

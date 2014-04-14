@@ -11,7 +11,7 @@ var coinUtil    = bitcore.util;
 var Transaction = bitcore.Transaction;
 var buffertools = bitcore.buffertools;
 
-var Storage     = imports.Storage || require('./Storage');
+var Storage     = imports.Storage || require('../storage/Base.js');
 var storage     = Storage.default();
 
 

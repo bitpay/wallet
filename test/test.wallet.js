@@ -4,7 +4,7 @@ var chai           = chai || require('chai');
 var should         = chai.should();
 var bitcore        = bitcore || require('bitcore');
 var copay          = copay || require('../copay');
-var Wallet         = copay.Wallet || require('soop').load('../js/models/Wallet');
+var Wallet         = copay.Wallet || require('soop').load('../js/models/core/Wallet');
 
 var ID = '933bf321393459b7';
 var copayers = [
@@ -54,25 +54,25 @@ describe('Wallet model', function() {
     var w = new Wallet();
     should.exist(w);
   });
-  /*it('should return array of unspent output', function(done) {
+  it.skip('should return array of unspent output', function(done) {
     var w = new Wallet();
     w.listUnspent(addresses, function(a) {
       should.exist(a);
       done();
     });
-  });*/
+  });
   it('should return balance', function () {
     var w = new Wallet();
     var b = w.getBalance(unspent); 
     should.exist(b);
     b.should.equal(91);
   });
-  /*it('should return txid', function (done) {
+  it.skip('should return txid', function (done) {
     var w = new Wallet();
     w.sendRawTransaction(rawtx, function(a) { 
       should.exist(a);
       done();
     });
-  });*/
+  });
 });
   
