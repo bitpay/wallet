@@ -5,8 +5,14 @@ module.exports.TxProposals = require('./js/models/core/TxProposals');
 module.exports.PrivateKey = require('./js/models/core/PrivateKey');
 
 // components
-module.exports.Network = require('./js/models/network/WebRTC');
-module.exports.Storage = require('./js/models/storage/Plain');
+var WebRTC = require('./js/models/network/WebRTC');
+var Plain = require('./js/models/storage/Plain');
+var Insight = require('./js/models/blockchain/Insight');
 
-// test
-module.exports.FakeStorage = require('./test/FakeStorage');
+module.exports.Wallet = require('soop').load('./js/models/core/Wallet',{
+  Network: WebRTC,
+  Storage: Plain,
+  Blockchain: Insight,
+});
+
+
