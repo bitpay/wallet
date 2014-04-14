@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+var Copay = require('./Copay.js');
+var commander = require('commander');
+
+var main = function() {
+
+  commander
+      .version("0.0.1")
+      .option('-f, --file [file]', 'AES encrypted data file', 'copay.json.aes')
+      .option('-p, --pass [passphrase]', 'AES wallet passphrase')
+      .option('-c, --client', 'Issue command over RPC to copay daemon')
+      .option('-d, --daemon', 'Run as daemon accepting RPC commands')
+      .option('--rpcport [port]', 'RPC port [18332]', Number, 18332)
+      .option('--rpcuser [user]', 'RPC user [user]', String, 'user')
+      .option('--rpcpass [password]', 'RPC password [pass]', String, 'pass')
+      .parse(process.argv);
+
+  var copay = new Copay(commander);
+
+  var args = commander.args;
+
+  copay._command(args[0], args.slice(1), function(err, result) {
+    if (err)
+      return console.log("" + err);
+    
+    console.log(JSON.stringify(result, null, 2));
+  });
+};
+
+if (require.main === module) {
+  main();
+}
