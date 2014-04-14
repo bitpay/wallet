@@ -11,14 +11,7 @@ angular.module('copay.home').controller('HomeController',
       $location.path('signin');
     }
 
-//     $scope.addrs = [
-//       { addrStr: 'n3zUqNR7Bbbc4zJhPVj1vG2Lx66K3Xhzvb'},
-//       { addrStr: 'my9wnLwwUrwpNfEgSrWY62ymEGf1edKf4J'}
-//     ];
-
-    $scope.addrs = $rootScope.PublicKeyRing.getAddresses();
-    console.log('########################');
-    console.log($scope.addrs);
+    $scope.addrs = $rootScope.publicKeyRing.getAddresses();
 
     // by default select the first address
     $scope.selectedQR = $scope.addrs[0];
@@ -28,8 +21,7 @@ angular.module('copay.home').controller('HomeController',
     };
 
     $scope.newAddress = function() {
-      var a = $rootScope.PublicKeyRing.generateAddress();
-      console.log(a);
-      $scope.addrs.push({ addrStr: a });
+      var a = $rootScope.publicKeyRing.generateAddress();
+      $scope.addrs.push({ addrStr: a.toString('hex') });
     };
   });
