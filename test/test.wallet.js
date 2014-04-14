@@ -4,7 +4,7 @@ var chai           = chai || require('chai');
 var should         = chai.should();
 var bitcore        = bitcore || require('bitcore');
 var copay          = copay || require('../copay');
-var Wallet         = copay.Wallet || require('soop').load('../js/models/Wallet');
+var Wallet         = copay.Wallet || require('soop').load('../js/models/core/Wallet');
 
 var ID = '933bf321393459b7';
 var copayers = [

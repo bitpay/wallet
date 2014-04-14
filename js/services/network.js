@@ -244,7 +244,7 @@ console.log('[network.js.178:pkr:]',pkr); //TODO
 
     // public methods
     var init = function(cb) {
-      var cp = $rootScope.cp = new copay.CopayPeer({
+      var cp = $rootScope.cp = new copay.Network({
         apiKey: config.p2pApiKey,
         debug:  config.p2pDebug,
         maxPeers: config.maxPeers,    // TODO: This should be on wallet configuration

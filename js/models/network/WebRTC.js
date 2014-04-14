@@ -15,7 +15,7 @@ var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
  *
  */
 
-function CopayPeer(opts) {
+function Network(opts) {
   opts                = opts || {};
   this.peerId         = opts.peerId;
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
@@ -24,10 +24,10 @@ function CopayPeer(opts) {
   this.connectedPeers = [];
 }
 
-CopayPeer.parent=EventEmitter;
+Network.parent=EventEmitter;
 
 // Array helpers
-CopayPeer._arrayDiff = function(a, b) {
+Network._arrayDiff = function(a, b) {
   var seen = [];
   var diff = [];
 
@@ -41,20 +41,20 @@ CopayPeer._arrayDiff = function(a, b) {
   return diff;
 };
 
-CopayPeer._inArray = function(el, array) {
+Network._inArray = function(el, array) {
   return array.indexOf(el) > -1;
 };
 
-CopayPeer._arrayPushOnce = function(el, array) {
+Network._arrayPushOnce = function(el, array) {
   var ret = false;
-  if (!CopayPeer._inArray(el, array)) {
+  if (!Network._inArray(el, array)) {
     array.push(el);
     ret = true;
   }
   return ret;
 };
 
-CopayPeer._arrayRemove = function(el, array) {
+Network._arrayRemove = function(el, array) {
   var pos = array.indexOf(el);
   if (pos >= 0) array.splice(pos, 1);
 
@@ -62,21 +62,21 @@ CopayPeer._arrayRemove = function(el, array) {
 };
 
 // DEBUG
-CopayPeer.prototype._showConnectedPeers = function() {
+Network.prototype._showConnectedPeers = function() {
   console.log("### CONNECTED PEERS", this.connectedPeers);
 };
 
-CopayPeer.prototype._onClose = function(peerId) {
-  console.log('[CopayPeer.js.70] _onClose'); //TODO
-  this.connectedPeers = CopayPeer._arrayRemove(peerId, this.connectedPeers);
+Network.prototype._onClose = function(peerId) {
+  console.log('[Network.js.70] _onClose'); //TODO
+  this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
   this._notify();
 };
 
-CopayPeer.prototype._connectToPeers = function(peerIds) {
+Network.prototype._connectToPeers = function(peerIds) {
   var self = this;
   var ret = false;
-  var arrayDiff1= CopayPeer._arrayDiff(peerIds, this.connectedPeers);
-  var arrayDiff = CopayPeer._arrayDiff(arrayDiff1, [this.peerId]);
+  var arrayDiff1= Network._arrayDiff(peerIds, this.connectedPeers);
+  var arrayDiff = Network._arrayDiff(arrayDiff1, [this.peerId]);
   arrayDiff.forEach(function(peerId) {
     console.log('### CONNECTING TO:', peerId);
     self.connectTo(peerId);
@@ -85,7 +85,7 @@ CopayPeer.prototype._connectToPeers = function(peerIds) {
   return ret;
 };
 
-CopayPeer.prototype._onData = function(data, isInbound) {
+Network.prototype._onData = function(data, isInbound) {
   var obj;
   try { 
     obj = JSON.parse(data);
@@ -108,7 +108,7 @@ CopayPeer.prototype._onData = function(data, isInbound) {
   }
 };
 
-CopayPeer.prototype._sendPeers = function(peerIds) {
+Network.prototype._sendPeers = function(peerIds) {
   console.log('#### SENDING PEER LIST: ', this.connectedPeers, ' TO ', peerIds?peerIds: 'ALL');
   this.send(peerIds, {
     type: 'peerList',
@@ -116,9 +116,9 @@ CopayPeer.prototype._sendPeers = function(peerIds) {
   });
 };
 
-CopayPeer.prototype._addPeer = function(peerId, isInbound) {
+Network.prototype._addPeer = function(peerId, isInbound) {
 
-  var hasChanged = CopayPeer._arrayPushOnce(peerId, this.connectedPeers);
+  var hasChanged = Network._arrayPushOnce(peerId, this.connectedPeers);
 
 
   if (isInbound && hasChanged) {
@@ -131,13 +131,13 @@ CopayPeer.prototype._addPeer = function(peerId, isInbound) {
   }
 };
 
-CopayPeer.prototype._setupConnectionHandlers = function(
+Network.prototype._setupConnectionHandlers = function(
   dataConn, isInbound, openCallback, closeCallback) {
 
   var self=this;
 
   dataConn.on('open', function() {
-    if (!CopayPeer._inArray(dataConn.peer, self.connectedPeers)) {
+    if (!Network._inArray(dataConn.peer, self.connectedPeers)) {
 
       console.log('### DATA CONNECTION READY TO: ADDING PEER: %s (inbound: %s)',
         dataConn.peer, isInbound);
@@ -165,13 +165,13 @@ CopayPeer.prototype._setupConnectionHandlers = function(
   });
 };
 
-CopayPeer.prototype._notify = function(newPeer) {
-  console.log('[CopayPeer.js.168:_notify:]'); //TODO
+Network.prototype._notify = function(newPeer) {
+  console.log('[Network.js.168:_notify:]'); //TODO
   this._showConnectedPeers();
   this.emit('networkChange', newPeer);
 };
 
-CopayPeer.prototype._setupPeerHandlers = function(openCallback) {
+Network.prototype._setupPeerHandlers = function(openCallback) {
   var self=this;
   var p = this.peer;
 
@@ -208,7 +208,7 @@ CopayPeer.prototype._setupPeerHandlers = function(openCallback) {
   });
 };
 
-CopayPeer.prototype.start = function(openCallback) {
+Network.prototype.start = function(openCallback) {
   // Start PeerJS Peer
   this.peer = new Peer(this.peerId, {
     key: this.apiKey, // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
@@ -218,7 +218,7 @@ CopayPeer.prototype.start = function(openCallback) {
   this._setupPeerHandlers(openCallback);
 };
 
-CopayPeer.prototype._sendToOne = function(peerId, data, cb) {
+Network.prototype._sendToOne = function(peerId, data, cb) {
   if (peerId !== this.peerId) {
     var conns = this.peer.connections[peerId];
 
@@ -237,7 +237,7 @@ CopayPeer.prototype._sendToOne = function(peerId, data, cb) {
   if (typeof cb === 'function') cb();
 };
 
-CopayPeer.prototype.send = function(peerIds, data, cb) {
+Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
 
   if (!peerIds) {
@@ -258,7 +258,7 @@ CopayPeer.prototype.send = function(peerIds, data, cb) {
     self._sendToOne(peerIds, data, cb);
 };
 
-CopayPeer.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
+Network.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
   var self = this;
 
   console.log('### STARTING TO CONNECT TO:' + peerId );
@@ -273,14 +273,14 @@ CopayPeer.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
   self._setupConnectionHandlers(dataConn, false, openCallback, closeCallback);
 };
 
-CopayPeer.prototype.disconnect = function(peerId, cb) {
-  console.log('[CopayPeer.js.268:disconnect:]'); //TODO
+Network.prototype.disconnect = function(peerId, cb) {
+  console.log('[Network.js.268:disconnect:]'); //TODO
   var self = this;
   self.closing = 1;
 
   this.send(null, { type: 'disconnect' }, function() {
 
-console.log('[CopayPeer.js.273] disconnect CB'); //TODO
+console.log('[Network.js.273] disconnect CB'); //TODO
     self.connectedPeers = [];
     self.peerId = null;
     if (self.peer) {
@@ -293,4 +293,4 @@ console.log('[CopayPeer.js.273] disconnect CB'); //TODO
   });
 };
 
-module.exports = require('soop')(CopayPeer);
+module.exports = require('soop')(Network);
