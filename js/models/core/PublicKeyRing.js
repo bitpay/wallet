@@ -9,7 +9,6 @@ var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
 var Transaction = bitcore.Transaction;
-var buffertools = bitcore.buffertools;
 
 var Storage     = imports.Storage || require('../storage/Base.js');
 var storage     = Storage.default();
@@ -23,8 +22,6 @@ function PublicKeyRing(opts) {
 
   this.requiredCopayers = opts.requiredCopayers || 3;
   this.totalCopayers = opts.totalCopayers || 5;
-
-  this.id = opts.id || PublicKeyRing.getRandomId();
 
   this.copayersBIP32 = [];
 
@@ -47,11 +44,6 @@ PublicKeyRing.PublicBranch = function (index) {
 
 PublicKeyRing.ChangeBranch = function (index) {
   return 'm/1/'+index;
-};
-
-PublicKeyRing.getRandomId = function () {
-  var r = buffertools.toHex(coinUtil.generateNonce());
-  return r;
 };
 
 PublicKeyRing.decrypt = function (passphrase, encPayload) {
