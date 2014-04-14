@@ -5,9 +5,9 @@ var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
 var http        = require('http');
 
-var Storage     = imports.Storage     || require('FakeStorage');
-var Network     = imports.Network     || require('FakeNetwork');
-var Blockchain  = imports.Blockchain  || require('FakeBlockchain');
+var Storage     = imports.Storage;
+var Network     = imports.Network;
+var Blockchain  = imports.Blockchain;
 
 var copay = copay || require('../../../copay');
 
