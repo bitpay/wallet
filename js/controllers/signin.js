@@ -25,6 +25,7 @@ angular.module('copay.signin').controller('SigninController',
     $scope.open = function(walletId) {
       $scope.loading = true;
 
+console.log('[signin.js.28:walletId:]',walletId); //TODO
       if (Network.openWallet(walletId)) {
         Network.init(function() {
           $location.path('peer');
@@ -43,8 +44,6 @@ angular.module('copay.signin').controller('SigninController',
               $location.path('peer');
               $rootScope.$digest();
             }, function() {
-
-console.log('[signin.js.46] SETTING MESSAGE'); //TODO
               $rootScope.flashMessage = { message: 'Connection refussed', type: 'error'};
               $location.path('home');
               $rootScope.$digest();

@@ -67,6 +67,7 @@ CopayPeer.prototype._showConnectedPeers = function() {
 };
 
 CopayPeer.prototype._onClose = function(peerId) {
+  console.log('[CopayPeer.js.70] _onClose'); //TODO
   this.connectedPeers = CopayPeer._arrayRemove(peerId, this.connectedPeers);
   this._notify();
 };
@@ -92,7 +93,7 @@ CopayPeer.prototype._onData = function(data, isInbound) {
     console.log('### ERROR ON DATA: "%s" ', data, isInbound, e); 
     return;
   };
-  console.log('### RECEIVED TYPE: %s FROM %s', obj.data.type, obj.sender); 
+  console.log('### RECEIVED TYPE: %s FROM %s', obj.data.type, obj.sender, obj.data); 
 
   switch(obj.data.type) {
     case 'peerList':
@@ -156,13 +157,16 @@ CopayPeer.prototype._setupConnectionHandlers = function(
   });
 
   dataConn.on('close', function() {
-    console.log('### CLOSE RECV FROM:', dataConn.peer); //TODO
+    if (self.closing) return;
+    console.log('### CLOSE RECV FROM:', dataConn.peer); 
+
     self._onClose(dataConn.peer);
     if (typeof closeCallback === 'function') closeCallback();
   });
 };
 
 CopayPeer.prototype._notify = function(newPeer) {
+  console.log('[CopayPeer.js.168:_notify:]'); //TODO
   this._showConnectedPeers();
   this.emit('networkChange', newPeer);
 };
@@ -182,6 +186,10 @@ CopayPeer.prototype._setupPeerHandlers = function(openCallback) {
 
   p.on('error', function(err) {
     console.log('### PEER ERROR:', err);
+    self.peer.disconnect();
+    self.peer.destroy();
+    self.peer = null;
+    this.emit('abort');
   });
 
   p.on('connection', function(dataConn) {
@@ -236,7 +244,6 @@ CopayPeer.prototype.send = function(peerIds, data, cb) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
   }
-console.log('[CopayPeer.js.216:SENDD:]',data); //TODO
 
   if (Array.isArray(peerIds)) {
     var l = peerIds.length;
@@ -267,9 +274,13 @@ CopayPeer.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
 };
 
 CopayPeer.prototype.disconnect = function(peerId, cb) {
+  console.log('[CopayPeer.js.268:disconnect:]'); //TODO
   var self = this;
+  self.closing = 1;
 
   this.send(null, { type: 'disconnect' }, function() {
+
+console.log('[CopayPeer.js.273] disconnect CB'); //TODO
     self.connectedPeers = [];
     self.peerId = null;
     if (self.peer) {
@@ -277,6 +288,7 @@ CopayPeer.prototype.disconnect = function(peerId, cb) {
       self.peer.destroy();
       self.peer = null;
     }
+    self.closing = 0;
     if (typeof cb === 'function') cb();
   });
 };

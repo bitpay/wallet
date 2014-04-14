@@ -6,6 +6,9 @@ angular.module('copay.header').controller('HeaderController',
       'title': 'Home',
       'link': '#/home'
     }, {
+      'title': 'Copayers',
+      'link': '#/peer'
+    }, {
       'title': 'Transactions',
       'link': '#/transactions'
     }, {
@@ -32,8 +35,12 @@ angular.module('copay.header').controller('HeaderController',
     };
 
     $scope.signout = function() {
+      console.log('[header.js.37:signout:]'); //TODO
+
       Network.disconnect(function() {
+        console.log('[header.js.41] disconnect CB'); //TODO
         $location.path('signin');
+        $rootScope.$digest();
       });
     };
 
