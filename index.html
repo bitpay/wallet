@@ -158,13 +158,15 @@
       <div class="transactions" data-ng-controller="TransactionsController">
       
         <div class="row">
-          <div class="large-6 columns">
-            <h2>Output</h2>
-            <div class="panel pending">
+          <div class="large-12 columns">
+            <h2>Pending Transactions <small>({{txsoutput.length}})</small></h2>
+            <div class="panel pending" ng-repeat="txp in txsoutput ">
+              {{txp}}
               <div class="row">
                 <p class="large-5 columns"> Address 1</p>
                 <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
-                <p class="large-5 columns"> Adress 2</p>
+                <p class="large-5 columns"> Address 2</p>
+                <p>Transaction description</p>
                 <div class="large-12 columns m0">
                   <div class="line"></div>
                   <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
@@ -173,24 +175,9 @@
                 </div>
               </div> <!-- end of row -->
             </div> <!-- end of pending -->
-            <div class="line"></div>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1</p>
-                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
-                <p class="large-5 columns"> Adress 2</p>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1</p>
-                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
-                <p class="large-5 columns"> Adress 2</p>
-              </div>
-            </div>
           </div>
-          <div class="large-6 columns">
-            <h2>Input</h2>
+          <div class="large-12 columns">
+            <h2>Last Transactions</h2>
             <div class="panel">
               <div class="row">
                 <p class="large-5 columns"> Address 1</p>
