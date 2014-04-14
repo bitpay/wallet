@@ -18,7 +18,7 @@ describe('Wallet model', function() {
 
   it('should create an instance', function () {
     var opts = {};
-    var w = new Wallet(opts, config);
+    var w = new Wallet(config, opts);
     should.exist(w);
   });
 });
