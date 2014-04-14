@@ -13,7 +13,6 @@ function PrivateKey(opts) {
   this.network = opts.networkName === 'testnet' ? 
     networks.testnet : networks.livenet;
   var init = opts.extendedPrivateKeyString || this.network.name;
-console.log('[PrivateKey.js.15:init:]',init); //TODO
   this.BIP32 = opts.BIP32 || new BIP32(init);
   this._calcId();
 };
