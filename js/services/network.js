@@ -44,91 +44,39 @@ angular.module('copay.network')
     var storeOpenWallet = function() {
       var id = $rootScope.walletId;
       Storage.addWalletId(id);
-      Storage.set(id, 'publicKeyRing',$rootScope.publicKeyRing.toObj());
-      Storage.set(id, 'privateKey',   $rootScope.privateKey.toObj());
-      Storage.set(id, 'txProposals',  $rootScope.txProposals.toObj());
-      console.log('\t### Wallet Stored');
+      Storage.set(id, 'wallet',$rootScope.wallet.toObj());
+      console.log('\t### Wallet %s Stored', id);
     };
 
     // TODO -> probably not in network.js
     var createWallet = function(walletId) {
 
-      console.log('### CREATING WALLET. ID:' + walletId);
-
-      var priv = new copay.PrivateKey({networkName: config.networkName});
-      console.log('\t### PrivateKey Initialized');
-//TODO
-console.log('[PRIVATE]',priv.toObj()); //TODO
-      
-      //TODO create a wallet and WalletId, not only pkr
-      var pkr = new copay.PublicKeyRing({
-         networkName: config.networkName,
-         id: walletId,
-         requiredCopayers: config.requiredCopayers || 3,  // TODO set per wallet
-         totalCopayers: config.totalCopayers || 5,
-      });
-
-console.log('[network.js.70] WALLET ID IS:', pkr.id); //TODO
-
-      // Add self to the ring.
-      pkr.addCopayer(priv.getBIP32().extendedPublicKeyString());
-
-      console.log('\t### PublicKeyRing Initialized');
-
-      var txp = new copay.TxProposals({
-          networkName: config.networkName,
-          publicKeyRing: pkr,
-          walletId: pkr.id,
-      });
-      console.log('\t### TxProposals Initialized');
+      opts.walletId = walletId;
+      var w = new copay.Wallet(opts, config);
 
       // Store it on rootScope
-      $rootScope.walletId       = pkr.id; 
-      $rootScope.privateKey     = priv;             // TODO secure this.
-      $rootScope.publicKeyRing  = pkr;
-      $rootScope.txProposals    = txp;
+      $rootScope.walletId = pkr.id; 
+      $rootScope.wallet   = w;
 
-      storeOpenWallet();
+//TODO     
+//       w.store();
     };
 
     var openWallet = function (walletId) {
-console.log('[network.js.90:openWallet:]',walletId); //TODO
-
-      var ret = false;
-      var pkr  = Storage.get(walletId, 'publicKeyRing');
-      var priv = Storage.get(walletId, 'privateKey');
-      var txp  = Storage.get(walletId, 'txProposals');
-
-console.log('[network.js.96:pkr:]',pkr); //TODO
-console.log('[network.js.97:priv:]',priv); //TODO
 
 
-      if (pkr && pkr.copayersExtPubKeys.length && priv) {
-        console.log('### WALLET OPENED:', walletId, pkr);
-        $rootScope.walletId      = walletId; 
-        $rootScope.publicKeyRing = new copay.PublicKeyRing.fromObj(pkr);
-        $rootScope.txProposals   = new copay.TxProposals.fromObj(txp);
-        $rootScope.PrivateKey    = new copay.PrivateKey.fromObj(priv); //TODO secure
+      var w = Wallet.read(walletId);
 
-        // JIC: Add our key
-        try {
-          $rootScope.publicKeyRing.addCopayer(
-                $rootScope.PrivateKey.getBIP32().extendedPublicKeyString()
-          );
-        } catch (e) {
-          console.log('NOT NECCESARY AN ERROR:', e); //TODO
-        };
-        ret = true;
+      if (w && w.publicKeyRing.copayersExtPubKeys.length && w.privateKey) {
+        console.log('### WALLET OPENED:', w.walletId);
+        $rootScope.walletId = walletId; 
+        $rootScope.wallet   = w;
       }
-      return ret;
     };
-
     var closeWallet = function() {
       console.log('### CLOSING WALLET');
-      $rootScope.walletId = null;
-      $rootScope.publicKeyRing = null;
-      $rootScope.privateKey = null;
-      $rootScope.txProposals = null;
+      $rootScope.delete('walletId');
+      $rootScope.delete('w');
     };
 
     var _checkWallet = function(walletId, allowChange) {

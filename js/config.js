@@ -7,4 +7,8 @@ var config = {
   maxPeers: 5,
   requiredCopayers: 2,
   totalCopayers: 3
+  insight: {
+    host: 'localhost',
+    port: 3001
+  },
 };
