@@ -6,7 +6,7 @@ var config = {
   p2pDebug: 3,
   maxPeers: 5,
   requiredCopayers: 2,
-  totalCopayers: 3
+  totalCopayers: 3,
   insight: {
     host: 'localhost',
     port: 3001
