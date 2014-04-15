@@ -35,6 +35,7 @@ Wallet.prototype._startInterface = function(config) {
 
 
 Wallet.prototype.create = function(opts) {
+  opts = opts || {};
   this.id = opts.id || Wallet.getRandomId();
   this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
 
@@ -67,14 +68,6 @@ Wallet.prototype._checkLoad = function(walletId) {
     this.storage.get(walletId, 'txProposals')   &&
     this.storage.get(walletId, 'privateKey')
   ;
-
-console.log('[Wallet.js.71]',
-   this.storage.get(walletId, 'publicKeyRing'),
-    this.storage.get(walletId, 'txProposals'),
-    this.storage.get(walletId, 'privateKey'));
-
-console.log('[Wallet.js.73:ret:]',walletId, ret); //TODO
-
   return ret;
 }
 
@@ -167,6 +160,15 @@ Wallet.prototype.addSeenToTxProposals = function() {
     }
   });
   return ret;
+};
+
+
+Wallet.prototype.getAddresses = function() {
+  return this.publicKeyRing.getAddresses();
+};
+
+Wallet.prototype.listUnspent = function(cb) {
+  this.blockchain.listUnspent(this.getAddresses(), cb);
 };
 
 // // HERE? not sure

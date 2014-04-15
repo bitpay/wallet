@@ -9,6 +9,13 @@ var Wallet = require('soop').load('../js/models/core/Wallet', {
   Blockchain: copay.Insight
 });
 
+
+var addCopayers = function (w) {
+  for(var i=0; i<4; i++) {
+    w.publicKeyRing.addCopayer();
+  }
+};
+
 describe('Wallet model', function() {
   var config = {
     wallet: {
@@ -19,11 +26,42 @@ describe('Wallet model', function() {
   var opts = {};
 
 
-  it.skip('should create an instance', function () {
+  it('should create an instance', function () {
     var opts = {};
-    var w = Wallet.create(config, opts);
+    var w = new Wallet(config);
     should.exist(w);
   });
+
+
+  it('should fail to load', function () {
+    var opts = {};
+    var w = new Wallet(config);
+    w.load(123);
+    should.not.exist(w.id);
+  });
+
+
+  it('should create', function () {
+    var opts = {};
+    var w = new Wallet(config);
+    w.create();
+    should.exist(w.id);
+    should.exist(w.publicKeyRing);
+    should.exist(w.privateKey);
+    should.exist(w.txProposals);
+  });
+
+  it('should create', function () {
+    var opts = {};
+    var w = new Wallet(config);
+    w.create();
+    addCopayers(w);
+    w.publicKeyRing.generateAddress(false);
+
+    should.exist(w.id);
+    w.publicKeyRing.isComplete().should.equal(true);
+  });
+
 
 
   describe('factory', function() {
