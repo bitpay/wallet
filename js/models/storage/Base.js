@@ -6,15 +6,15 @@ function Storage() {
 }
 
 // get value by key
-Storage.prototype.get = function(k) {
+Storage.prototype.get = function(walletId,k) {
 };
 
 // set value for key
-Storage.prototype.set = function(k,v) {
+Storage.prototype.set = function(walletId,v) {
 };
 
 // remove value for key
-Storage.prototype.remove = function(k) {
+Storage.prototype.remove = function(walletId, k) {
 };
 
 // remove all values

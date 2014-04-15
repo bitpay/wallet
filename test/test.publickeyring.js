@@ -29,6 +29,7 @@ var createW = function (networkName) {
     var newEpk = w.addCopayer();
     copayers.push(newEpk);
   }
+  w.walletId = '1234567';
   
   return {w:w, copayers: copayers};
 };
@@ -72,19 +73,17 @@ describe('PublicKeyRing model', function() {
   it('show be able to tostore and read', function () {
     var k = createW();
     var w = k.w;
-    w.id = 'lwjd5qra8257b9';
     var copayers = k.copayers;
     for(var i=0; i<3; i++)
       w.generateAddress(true);
     for(var i=0; i<5; i++)
       w.generateAddress(false);
 
-    var data = w.toStore();
+    var data = w.toObj();
     should.exist(data);
 
-    var ID = w.id;
-
-    var w2 = PublicKeyRing.read(data, ID, 'dummy' );
+    var w2 = PublicKeyRing.fromObj(data);
+    w2.walletId.should.equal(w.walletId);
     w2.isComplete().should.equal(true);
     w2.addCopayer.bind().should.throw();
     for(var i =0; i<5; i++) 
@@ -157,7 +156,7 @@ describe('PublicKeyRing model', function() {
 
     var w2 = new PublicKeyRing({
       networkName: 'livenet',
-      id: w.id,
+      walletId: w.walletId,
     });
     w2.merge(w).should.equal(true);
     w2.requiredCopayers.should.equal(3);   
@@ -176,23 +175,23 @@ describe('PublicKeyRing model', function() {
     };
 
     var w = new PublicKeyRing(config);
-    w.id = 'lwjd5qra8257b9';
+    w.walletId = 'lwjd5qra8257b9';
     var w2 = new PublicKeyRing({
       networkName: 'testnet',    //wrong
-      id: w.id,
+      walletId: w.walletId,
     });
     (function() { w2.merge(w);}).should.throw();
 
     var w3 = new PublicKeyRing({
       networkName: 'livenet',
-      id: w.id,
+      walletId: w.walletId,
       requiredCopayers: 2,      // wrong
     });
     (function() { w3.merge(w);}).should.throw();
 
     var w4 = new PublicKeyRing({
       networkName: 'livenet',
-      id: w.id,
+      walletId: w.walletId,
       totalCopayers: 3,      // wrong
     });
     (function() { w4.merge(w);}).should.throw();

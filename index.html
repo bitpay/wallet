@@ -16,13 +16,13 @@
           <figure class="left">
             <img src="./img/logo-negative.svg" alt="" width="130">
           </figure>
-          <div class="text-right" ng-show="$root.peerId">
+          <div class="text-right" ng-show="$root.wallet">
             <h5>Company Funds</h5>
             <p>4.324 BTC</p>
           </div>
         </div>
 
-      <nav class="top-bar" data-topbar ng-show="$root.peerId">
+      <nav class="top-bar" data-topbar ng-show="$root.wallet">
         <ul class="title-area">
           <li class="name"></li>
           <li class="toggle-topbar menu-icon">
@@ -52,7 +52,7 @@
   <div class="row">
     <div class="large-12 columns" ng-view></div>
   </div>
-  <div ng-controller="HeaderController" ng-show="$root.peerId">
+  <div ng-controller="HeaderController" ng-show="$root.wallet">
     <hr>
     <div class="row">
       <div class="text-center large-12 columns">
@@ -105,18 +105,18 @@
     <script type="text/ng-template" id="peer.html">
       <div class="row" ng-controller="PeerController" ng-init="init()">
         <div class="large-6 columns">
-          <h1>I am <p class="text-muted">{{$root.peerId}}</p></h1>
+          <h1>I am <p class="text-muted">{{$root.wallet.network.peerId}}</p></h1>
 
           <ul class="no-bullet">
-            <li> [DEBUG] Pubkeys that you have: {{$root.publicKeyRing.registeredCopayers()}} 
-            <li> [DEBUG] WalletId: {{$root.walletId}} 
-            <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.publicKeyRing.copayersBIP32">
+            <li> [DEBUG] Pubkeys that you have: {{$root.wallet.publicKeyRing.registeredCopayers()}} 
+            <li> [DEBUG] WalletId: {{$root.wallet.id}} 
+            <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.wallet.publicKeyRing.copayersBIP32">
                 ${{pub.extendedPublicKeyString()}}
             </li>
           </ul>
         </div>
         <div class="large-6 columns">
-          <h3 class="panel-title">Copayers ({{$root.connectedPeers.length}}/{{$root.publicKeyRing.requiredCopayers}})</h3>
+          <h3 class="panel-title">Copayers ({{$root.wallet.network.connectedPeers.length}}/{{$root.wallet.publicKeyRing.requiredCopayers}})</h3>
           <ul class="no-bullet">
             <li class="panel" ng-repeat="copayer in $root.connectedPeers">
               <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
@@ -275,7 +275,6 @@
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/services/network.js"></script>
-    <script src="js/services/storage.js"></script>
 
     <script src="js/controllers/header.js"></script>
     <script src="js/controllers/home.js"></script>

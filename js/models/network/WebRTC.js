@@ -220,6 +220,8 @@ Network.prototype.start = function(openCallback) {
 
 Network.prototype._sendToOne = function(peerId, data, cb) {
   if (peerId !== this.peerId) {
+console.log('[WebRTC.js.222:peerId:]',peerId, data); //TODO
+
     var conns = this.peer.connections[peerId];
 
     if (conns) {
@@ -240,10 +242,12 @@ Network.prototype._sendToOne = function(peerId, data, cb) {
 Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
 
+console.log('[WebRTC.js.242:peerIds:]',peerIds); //TODO
   if (!peerIds) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
   }
+console.log('[WebRTC.js.246:peerIds:]',peerIds, data); //TODO
 
   if (Array.isArray(peerIds)) {
     var l = peerIds.length;
@@ -272,6 +276,7 @@ Network.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
 
   self._setupConnectionHandlers(dataConn, false, openCallback, closeCallback);
 };
+
 
 Network.prototype.disconnect = function(peerId, cb) {
   console.log('[Network.js.268:disconnect:]'); //TODO

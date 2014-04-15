@@ -1,15 +1,14 @@
 'use strict';
 
 angular.module('copay.signin').controller('SigninController',
-  function($scope, $rootScope, $location, Network, Storage) {
+  function($scope, $rootScope, $location, Network) {
 
-    var peerData = Storage.get($rootScope.walletId, 'peerData');
-
+//    var peerData = Storage.get($rootScope.walletId, 'peerData');
+//    $rootScope.peerId = peerData ? peerData.peerId : null;
     $scope.loading = false;
-    $rootScope.peerId = peerData ? peerData.peerId : null;
 
     $scope.listWalletIds = function() {
-      return Storage.getWalletIds();
+      return copay.Wallet.factory.getWalletIds();
     };
 
     $scope.create = function() {
@@ -24,8 +23,6 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.open = function(walletId) {
       $scope.loading = true;
-
-console.log('[signin.js.28:walletId:]',walletId); //TODO
       if (Network.openWallet(walletId)) {
         Network.init(function() {
           $location.path('peer');
@@ -52,9 +49,9 @@ console.log('[signin.js.28:walletId:]',walletId); //TODO
       }
     };
 
-    if (peerData && peerData.peerId && peerData.connectedPeers.length > 0) {
-      $rootScope.peerId = peerData.peerId;
-      $scope.join(peerData.connectedPeers);
-    }
+    // if (peerData && peerData.peerId && peerData.connectedPeers.length > 0) {
+    //   $rootScope.peerId = peerData.peerId;
+    //   $scope.join(peerData.connectedPeers);
+    // }
   });
 
