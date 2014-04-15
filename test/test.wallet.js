@@ -9,9 +9,6 @@ var Wallet = require('soop').load('../js/models/core/Wallet', {
   Blockchain: copay.Insight
 });
 
-console.log(Wallet);
-
-
 describe('Wallet model', function() {
   var config = {
     wallet: {

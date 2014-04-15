@@ -6,14 +6,13 @@ angular.module('copay.home').controller('HomeController',
 
     $scope.oneAtATime = true;
 
-    if (!$rootScope.wallet.id) {
+    if (!$rootScope.wallet || !$rootScope.wallet.id) {
       $location.path('signin');
     }
-
-
-
-    $scope.addrs = $rootScope.wallet.publicKeyRing.getAddresses();
-    $scope.selectedAddr = $scope.addrs[0];
+    else {
+      $scope.addrs = $rootScope.wallet.publicKeyRing.getAddresses();
+      $scope.selectedAddr = $scope.addrs[0];
+    }
 
     $scope.newAddr = function() {
       var a = $rootScope.wallet.publicKeyRing.generateAddress();

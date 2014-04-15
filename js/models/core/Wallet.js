@@ -17,26 +17,31 @@ function Wallet(config) {
   this._startInterface(config);
 }
 
+Wallet.prototype.log = function(){
+  if (!this.verbose) return;
+
+  console.this.log(arguments);
+}
+
 Wallet.prototype._startInterface = function(config) {
   this.storage = new Storage(config.storage);
   this.network = new Network(config.network);
   this.blockchain = new Blockchain(config.blockchain);
 
   this.networkName = config.networkName;
-  this.requiredCopayers = config.requiredCopayers;
-  this.totalCopayers = config.totalCopayers;
+  this.requiredCopayers = config.wallet.requiredCopayers;
+  this.totalCopayers = config.wallet.totalCopayers;
 };
 
 
 Wallet.prototype.create = function(opts) {
-
   this.id = opts.id || Wallet.getRandomId();
-  console.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
+  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
 
   this.privateKey = new copay.PrivateKey({
     networkName: this.networkName
   });
-  console.log('\t### PrivateKey Initialized');
+  this.log('\t### PrivateKey Initialized');
 
   this.publicKeyRing = new copay.PublicKeyRing({
     walletId: this.id,
@@ -46,14 +51,14 @@ Wallet.prototype.create = function(opts) {
   });
 
   this.publicKeyRing.addCopayer(this.privateKey.getBIP32().extendedPublicKeyString());
-  console.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.walletId);
+  this.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.walletId);
 
   this.txProposals = new copay.TxProposals({
     walletId: this.id,
     publicKeyRing: this.publicKeyRing,
     networkName: this.networkName,
   });
-  console.log('\t### TxProposals Initialized');
+  this.log('\t### TxProposals Initialized');
 };
 
 
@@ -86,7 +91,7 @@ Wallet.prototype.load = function(walletId) {
       this.privateKey.getBIP32().extendedPublicKeyString()
     );
   } catch (e) {
-    console.log('NOT NECCESARY AN ERROR:', e); //TODO
+    this.log('NOT NECCESARY AN ERROR:', e); //TODO
   };
 };
 
@@ -101,7 +106,7 @@ Wallet.prototype.store = function() {
 
 
 Wallet.prototype.sendTxProposals = function(recipients) {
-  console.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
+  this.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
 
   this.network.send( recipients, { 
     type: 'txProposals', 
@@ -111,7 +116,7 @@ Wallet.prototype.sendTxProposals = function(recipients) {
 };
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  console.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
+  this.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
 
   this.network.send(recipients, { 
     type: 'publicKeyRing', 
@@ -145,7 +150,6 @@ WalletFactory.prototype.create = function(config, opts) {
   var w = new Wallet(config);
   w.create(opts);
   w.store();
-  this.addWalletId(w.id);
   return w;
 };
 
@@ -160,21 +164,22 @@ WalletFactory.prototype.remove = function(walletId) {
 
 WalletFactory.prototype.addWalletId = function(walletId) {
   var ids = this.getWalletIds();
-  if (ids.indexOf(walletId) == -1) return;
-  storage.set('walletIds', (ids ? ids + ',' : '') + walletId);
+  if (ids.indexOf(walletId) !== -1) return;
+  ids.push(walletId);
+  this.storage.setGlobal('walletIds', ids);
 };
 
 WalletFactory.prototype._delWalletId = function(walletId) {
   var ids = this.getWalletIds();
   var index = ids.indexOf(walletId);
-  if (index == -1) return;
+  if (index === -1) return;
   ids.splice(index, 1); // removes walletId
-  this.storage.set('walletIds', ids.join(','));
+  this.storage.setGlobal('walletIds', ids);
 };
 
 WalletFactory.prototype.getWalletIds = function() {
-  var ids = this.storage.get('walletIds');
-  return ids ? ids.split(',') : [];
+  var ids = this.storage.getGlobal('walletIds');
+  return ids || [];
 };
 
 Wallet.factory = new WalletFactory();
