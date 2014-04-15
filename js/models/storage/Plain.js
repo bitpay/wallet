@@ -37,7 +37,7 @@ Storage.prototype._key = function(walletId, k) {
 };
 // get value by key
 Storage.prototype.get = function(walletId, k) {
-  return this._read(localStorage.getItem(this._key(walletId,k)));
+  return this._read(this._key(walletId,k));
 };
 
 // set value for key
