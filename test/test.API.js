@@ -46,4 +46,39 @@ describe('API', function() {
     }
   });
 
+  describe('#echo', function() {
+    it('should echo a string', function(done) {
+      var api = new API();
+      var str = 'mystr';
+      api.echo(str, function(err, result) {
+        result.should.equal(str);
+        done();
+      });
+    });
+  });
+
+  describe('#echoNumber', function() {
+    it('should echo a number', function(done) {
+      var api = new API();
+      var num = 500;
+      api.echo(num, function(err, result) {
+        result.should.equal(num);
+        (typeof result).should.equal('number');
+        done();
+      });
+    });
+  });
+
+  describe('#echoObject', function() {
+    it('should echo an object', function(done) {
+      var api = new API();
+      var obj = {test:'test'};
+      api.echo(obj, function(err, result) {
+        result.test.should.equal(obj.test);
+        (typeof result).should.equal('object');
+        done();
+      });
+    });
+  });
+
 });

@@ -1,6 +1,4 @@
 var imports = require('soop').imports();
-var PublicKeyRing = imports.PublicKeyRing || require('./js/models/core/PublicKeyRing');
-//var Wallet = imports.Wallet || require('../js/models/core/Wallet');
 
 var API = function(opts) {
   this._init(opts);
@@ -10,20 +8,25 @@ API.prototype._init = function(opts) {
   var self = this;
   
   opts = opts ? opts : {};
+  self.opts = opts;
 
-  self.optsList = [
-    'publicKeyRing',
-    'wallet'
-    ];
-
-  self.opts = {};
-  for (var a in self.optsList) {
-    if (opts.hasOwnProperty(a))
-      self.opts[a] = opts[a];
-  }
+  var Wallet = require('soop').load('./js/models/core/Wallet', {
+    Storage: opts.Storage ? opts.Storage : require('./test/FakeStorage'),
+    Network: opts.Network ? opts.Network : require('./js/models/Network/WebRTC'),
+    Blockchain: opts.Blockchain ? opts.Blockchain : require('./js/models/Blockchain/Insight')
+  });
   
-  self.publicKeyRing = self.opts.publicKeyRing ? self.opts.publicKeyRing : new PublicKeyRing();
-  //self.wallet = self.opts.wallet ? self.opts.wallet : new Wallet();
+  var config = {
+    wallet: {
+      requiredCopayers: opts.requiredCopayers ? opts.requiredCopayers : 3,
+      totalCopayers: opts.totalCopayers ? opts.totalCopayers : 5,
+    }
+  };
+
+  var walletConfig = opts.walletConfig ? opts.walletConfig : config;
+  var walletOpts = opts.walletOpts ? opts.walletOpts : {};
+  
+  self.wallet = self.opts.wallet ? self.opts.wallet : Wallet.factory.create(walletConfig, walletOpts);
 };
 
 API._coerceArgTypes = function(args, argTypes) {
@@ -174,7 +177,7 @@ API.prototype.getCommands.argTypes =
 API.prototype.getPublicKeyRingId = function getPublicKeyRingId(callback) {
   var self = this;
 
-  return callback(null, self.publicKeyRing.id);
+  return callback(null, self.wallet.publicKeyRing.walletId);
 };
 
 API.prototype.getPublicKeyRingId.argTypes =
