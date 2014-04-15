@@ -7,26 +7,26 @@ var API = function(opts) {
 API.prototype._init = function(opts) {
   var self = this;
   
-  opts = opts ? opts : {};
+  opts = opts || {};
   self.opts = opts;
 
   var Wallet = require('soop').load('./js/models/core/Wallet', {
-    Storage: opts.Storage ? opts.Storage : require('./test/FakeStorage'),
-    Network: opts.Network ? opts.Network : require('./js/models/Network/WebRTC'),
-    Blockchain: opts.Blockchain ? opts.Blockchain : require('./js/models/Blockchain/Insight')
+    Storage: opts.Storage || require('./test/FakeStorage'),
+    Network: opts.Network || require('./js/models/Network/WebRTC'),
+    Blockchain: opts.Blockchain || require('./js/models/Blockchain/Insight')
   });
   
   var config = {
     wallet: {
-      requiredCopayers: opts.requiredCopayers ? opts.requiredCopayers : 3,
-      totalCopayers: opts.totalCopayers ? opts.totalCopayers : 5,
+      requiredCopayers: opts.requiredCopayers || 3,
+      totalCopayers: opts.totalCopayers || 5,
     }
   };
 
-  var walletConfig = opts.walletConfig ? opts.walletConfig : config;
-  var walletOpts = opts.walletOpts ? opts.walletOpts : {};
+  var walletConfig = opts.walletConfig || config;
+  var walletOpts = opts.walletOpts || {};
   
-  self.wallet = self.opts.wallet ? self.opts.wallet : Wallet.factory.create(walletConfig, walletOpts);
+  self.wallet = self.opts.wallet || Wallet.factory.create(walletConfig, walletOpts);
 };
 
 API._coerceArgTypes = function(args, argTypes) {
