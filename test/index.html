@@ -10,14 +10,15 @@
     <div id="mocha"></div>
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
+    <script src="../lib/crypto-js/rollups/aes.js"></script>
     <script>mocha.setup('bdd')</script>
     <script src="../lib/bitcore.js"></script> 
     <script src="../js/copayBundle.js"></script>
     <script>
-
-    var copay = require('copay');
+      var copay = require('copay');
     </script>
     <script src="test.storage-plain.js"></script>
+    <script src="test.storage-encrypted.js"></script>
     <script src="test.Wallet.js"></script>
     <script src="test.PublicKeyRing.js"></script>
     <!--

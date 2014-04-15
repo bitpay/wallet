@@ -13,6 +13,9 @@ Storage.prototype._read = function(k) {
   return ret;
 };
 
+Storage.prototype._write = function(k,v) {
+  localStorage.setItem(k, JSON.stringify(v));
+};
 
 // get value by key
 Storage.prototype.getGlobal = function(k) {
@@ -21,7 +24,7 @@ Storage.prototype.getGlobal = function(k) {
 
 // set value for key
 Storage.prototype.setGlobal = function(k,v) {
-  localStorage.setItem(k, JSON.stringify(v));
+  this._write(k,v);
 };
 
 // remove value for key
@@ -36,7 +39,7 @@ Storage.prototype._key = function(walletId, k) {
 };
 // get value by key
 Storage.prototype.get = function(walletId, k) {
-  return this._read(this._key(walletId,k));
+  return this.getGlobal(this._key(walletId,k));
 };
 
 // set value for key

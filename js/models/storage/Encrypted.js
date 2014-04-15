@@ -1,70 +1,49 @@
 'use strict';
 
 var imports = require('soop').imports();
+//var buffertools = imports.buffertools || require('buffertools');
+var parent     = imports.parent || require('./Plain');
 
 function Storage() {
 }
+Storage.parent = parent;
 
-Storage.prototype._getPwd = function() {
-  var pwd = prompt('Please enter your password');  
-  return pwd;
+
+var passphrase = null;
+Storage.prototype._getPassphrase = function() {
+  return passphrase;
+}
+
+Storage.prototype._setPassphrase = function(password) {
+  passphrase = password;
 }
 
 Storage.prototype._encrypt = function(data) {
-  return CryptoJS.AES.encrypt("Message", "Secret Passphrase");
+  return CryptoJS.AES.encrypt(data, this._getPassphrase());
 };
 
 Storage.prototype._decrypt = function(encrypted) {
-  return CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");  
+  return CryptoJS.AES.decrypt(encrypted, this._getPassphrase());  
 };
 
 Storage.prototype._read = function(k) {
   var ret;
   try {
-    ret = JSON.parse(localStorage.getItem(k));
-  } catch (e) {};
+    ret = localStorage.getItem(k);
+    ret = this._decrypt(ret);
+    ret = ret.toString(CryptoJS.enc.Utf8);
+    ret = JSON.parse(ret);
+  } catch (e) {
+    console.log('Error while decrypting: '+e);
+    throw e;
+  };
   return ret;
 };
 
-
-// get value by key
-Storage.prototype.getGlobal = function(k) {
-  return this._read(k);
+Storage.prototype._write = function(k,v) {
+  v = JSON.stringify(v);
+  v = this._encrypt(v);
+  localStorage.setItem(k, v);
 };
-
-// set value for key
-Storage.prototype.setGlobal = function(k,v) {
-  localStorage.setItem(k, JSON.stringify(v));
-};
-
-// remove value for key
-Storage.prototype.removeGlobal = function(k) {
-  localStorage.removeItem(k);
-};
-
-
-
-Storage.prototype._key = function(walletId, k) {
-  return walletId + '::' + k;
-};
-// get value by key
-Storage.prototype.get = function(walletId, k) {
-  return this._read(localStorage.getItem(this._key(walletId,k)));
-};
-
-// set value for key
-Storage.prototype.set = function(walletId, k,v) {
-  this.setGlobal(this._key(walletId,k), v);
-};
-
-// remove value for key
-Storage.prototype.remove = function(walletId, k) {
-  localStorage.removeItem(this._key(walletId,k));
-};
-
-// remove all values
-Storage.prototype.clearAll = function() {
-  localStorage.clear();
-};     
 
 module.exports = require('soop')(Storage);
