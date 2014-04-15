@@ -2,12 +2,11 @@
 
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
-var http        = require('http');
 
 function Insight(opts) {
   opts = opts || {};
-  this.host = 'localhost';
-  this.port = '3001';
+  this.host = 'test.insight.is';
+  this.port = '80';
 }
 
 function _asyncForEach(array, fn, callback) {
@@ -83,31 +82,73 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
 };
 
 Insight.prototype._request = function(options, callback) {
-  var req = http.request(options, function(response) {
-    var ret;
-    if (response.statusCode == 200) {
-      response.on('data', function(chunk) {
-        try {
-          ret = JSON.parse(chunk);
-        } catch (e) {
-          callback({message: "Wrong response from insight"});
-          return;
+  if (typeof process === 'undefined' || !process.version) {
+    var request = new XMLHttpRequest();
+
+    // TODO: Normalize URL
+    var url = 'http://' + options.host;
+
+    if (options.port !== 80) {
+      url = url + ':' + options.port;
+    }
+
+    url = url + options.path;
+
+    if (options.data && options.method === 'GET') {
+      url = url + '?' + options.data;
+    }
+
+    request.open(options.method, url, true);
+    request.onreadystatechange = function() {
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+          try {
+            return callback(null, JSON.parse(request.responseText));
+          } catch (e) {
+            return callback({message: 'Wrong response from insight'});
+          }
+        } else {
+          return callback({message: 'Error ' + response.statusCode});
         }
-      });
-      response.on('end', function () {
-        callback(undefined, ret);   
+      }
+    };
+
+    if (options.method === 'POST') {
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.setRequestHeader('Content-length', options.data.length);
+      request.setRequestHeader('Connection', 'close');
+      request.send(options.data);
+    } else {
+      request.send(null);
+    }
+  } else {
+    var http = require('http');
+    var req = http.request(options, function(response) {
+      var ret;
+      if (response.statusCode == 200) {
+        response.on('data', function(chunk) {
+          try {
+            ret = JSON.parse(chunk);
+          } catch (e) {
+            callback({message: "Wrong response from insight"});
+            return;
+          }
+        });
+        response.on('end', function () {
+          callback(undefined, ret);   
+          return;
+        });
+      }
+      else {
+        callback({message: 'Error ' + response.statusCode}); 
         return;
-      });
+      }
+    });
+    if (options.data) {
+      req.write(options.data);
     }
-    else {
-      callback({message: 'Error ' + response.statusCode}); 
-      return;
-    }
-  });
-  if (options.data) {
-    req.write(options.data);
+    req.end();
   }
-  req.end();
 }
 
 
