@@ -77,7 +77,16 @@ body {
   border:0;
 }
 
-.panel:hover {
+.transactions .panel {
+  background: #ECECEC;
+}
+
+.transactions .panel.pending {
+  background-color: #fff; 
+  padding: 1rem;
+}
+
+.home .panel:hover {
   background: #efefef;
 }
 
@@ -105,8 +114,31 @@ h3 {
   border-right: 2px dashed #E3E3E3;
 }
 
+.line-dashed-h {
+  margin: 1rem 0;
+  border-bottom: 2px dashed #E3E3E3;
+}
+
 .panel p {
   margin-bottom: 0;
+}
+
+span.panel-res {
+  float: right;
+  width: 3%;
+  padding: 0.4rem 0.55rem;
+  margin: 0 1rem;
+  border-radius: 1rem;
+}
+
+.panel-sign {
+  color: #111;
+  background: #FAE448;
+}
+
+.panel-ignore {
+  color: #fff;
+  background: #111;
 }
 
 .pending button {
@@ -114,8 +146,8 @@ h3 {
 }
 
 .line {
-  border-top: 1px solid #ccc;
-  padding-bottom: 1rem;
+  border-top: 1px solid #f2f2f2;
+  margin: 0.5rem 0 1rem;
 }
 
 button.primary { background-color: #111; }
@@ -124,6 +156,7 @@ button.secondary { background-color: #FAE448 !important; }
 button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #FFDF00 !important;}
 
+.pr {position: relative;}
 .m0 {margin: 0;}
 .db {display: block;}
 .size-12 { font-size: 12px; }      
