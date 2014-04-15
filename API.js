@@ -54,9 +54,8 @@ API.prototype._command = function(command, args, callback) {
   if (!API._checkArgTypes(command, args)) {
     var argTypes = API.prototype[command].argTypes;
     API._coerceArgTypes(args, argTypes)
-    if (!API._checkArgTypes(command, args)) {
+    if (!API._checkArgTypes(command, args))
       throw new Error('Invalid arguments');
-    }
   }
 
   if (typeof self[command] == 'function') {
@@ -72,6 +71,14 @@ API.prototype._command = function(command, args, callback) {
 
 API._checkArgTypes = function(command, args) {
   var f = API.prototype[command];
+
+  if (f.argTypes.length != args.length) {
+    
+    //if the function doesn't have a callback
+    if (!(f.argTypes.length == args.length + 1 && f.argTypes[f.argTypes.length-1][1] == 'function'))
+      return false;
+  }
+
   for (var i in args) {
     if (typeof args[i] != f.argTypes[i][1])
       return false;
