@@ -72,6 +72,7 @@ describe('PublicKeyRing model', function() {
   it('show be able to tostore and read', function () {
     var k = createW();
     var w = k.w;
+    w.id = 'lwjd5qra8257b9';
     var copayers = k.copayers;
     for(var i=0; i<3; i++)
       w.generateAddress(true);
@@ -175,6 +176,7 @@ describe('PublicKeyRing model', function() {
     };
 
     var w = new PublicKeyRing(config);
+    w.id = 'lwjd5qra8257b9';
     var w2 = new PublicKeyRing({
       networkName: 'testnet',    //wrong
       id: w.id,
