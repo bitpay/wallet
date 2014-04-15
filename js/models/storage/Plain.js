@@ -6,19 +6,23 @@ function Storage() {
   this.data = {};
 }
 
+Storage.prototype._key = function(walletId, k) {
+  return walletId + '::' + k;
+};
 // get value by key
-Storage.prototype.get = function(k) {
-  return JSON.parse(localStorage.getItem(k));
+Storage.prototype.get = function(walletId, k) {
+  return JSON.parse(localStorage.getItem(this._key(walletId,k)));
 };
 
+
 // set value for key
-Storage.prototype.set = function(k,v) {
-  localStorage.setItem(k, JSON.stringify(v));
+Storage.prototype.set = function(walletId, k,v) {
+  localStorage.setItem(this._key(walletId,k), JSON.stringify(v));
 };
 
 // remove value for key
-Storage.prototype.remove = function(k) {
-  localStorage.removeItem(k);
+Storage.prototype.remove = function(walletId, k) {
+  localStorage.removeItem(this._key(walletId,k));
 };
 
 // remove all values

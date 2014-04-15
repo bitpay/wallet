@@ -6,7 +6,7 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.oneAtATime = true;
 
-    if (!$rootScope.peerId) {
+    if (!$rootScope.wallet.id) {
       $location.path('signin');
     }
 
@@ -23,5 +23,5 @@ angular.module('copay.transactions').controller('TransactionsController',
     }
     ];
 
-    $scope.txsoutput = $rootScope.txProposals.txps;
+    $scope.txsoutput = $rootScope.wallet.txProposals.txps;
   });
