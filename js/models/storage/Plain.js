@@ -23,8 +23,6 @@ Storage.prototype.getGlobal = function(k) {
 // set value for key
 Storage.prototype.setGlobal = function(k,v) {
   localStorage.setItem(k, JSON.stringify(v));
-console.log('[Plain.js.25]',k,v); //TODO
-
 };
 
 // remove value for key

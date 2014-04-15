@@ -17,6 +17,12 @@ function Wallet(config) {
   this._startInterface(config);
 }
 
+Wallet.prototype.log = function(){
+  if (!this.verbose) return;
+
+  console.this.log(arguments);
+}
+
 Wallet.prototype._startInterface = function(config) {
   this.storage = new Storage(config.storage);
   this.network = new Network(config.network);
@@ -31,12 +37,12 @@ Wallet.prototype._startInterface = function(config) {
 Wallet.prototype.create = function(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
-  console.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
+  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
 
   this.privateKey = new copay.PrivateKey({
     networkName: this.networkName
   });
-  console.log('\t### PrivateKey Initialized');
+  this.log('\t### PrivateKey Initialized');
 
   this.publicKeyRing = new copay.PublicKeyRing({
     walletId: this.id,
@@ -46,14 +52,14 @@ Wallet.prototype.create = function(opts) {
   });
 
   this.publicKeyRing.addCopayer(this.privateKey.getBIP32().extendedPublicKeyString());
-  console.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.walletId);
+  this.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.walletId);
 
   this.txProposals = new copay.TxProposals({
     walletId: this.id,
     publicKeyRing: this.publicKeyRing,
     networkName: this.networkName,
   });
-  console.log('\t### TxProposals Initialized');
+  this.log('\t### TxProposals Initialized');
 };
 
 
@@ -86,7 +92,7 @@ Wallet.prototype.load = function(walletId) {
       this.privateKey.getBIP32().extendedPublicKeyString()
     );
   } catch (e) {
-    console.log('NOT NECCESARY AN ERROR:', e); //TODO
+    this.log('NOT NECCESARY AN ERROR:', e); //TODO
   };
 };
 
@@ -101,7 +107,7 @@ Wallet.prototype.store = function() {
 
 
 Wallet.prototype.sendTxProposals = function(recipients) {
-  console.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
+  this.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
 
   this.network.send( recipients, { 
     type: 'txProposals', 
@@ -111,7 +117,7 @@ Wallet.prototype.sendTxProposals = function(recipients) {
 };
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  console.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
+  this.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
 
   this.network.send(recipients, { 
     type: 'publicKeyRing', 
