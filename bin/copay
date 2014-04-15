@@ -1,30 +1,51 @@
 #!/usr/bin/env node
-var Copay = require('./Copay.js');
+var API = require('../API.js');
 var commander = require('commander');
 
 var main = function() {
 
   commander
       .version("0.0.1")
-      .option('-f, --file [file]', 'AES encrypted data file', 'copay.json.aes')
+      .option('-f, --file [file]', 'AES encrypted data file', 'api.json.aes')
       .option('-p, --pass [passphrase]', 'AES wallet passphrase')
-      .option('-c, --client', 'Issue command over RPC to copay daemon')
+      .option('-c, --client', 'Issue command over RPC to api daemon')
       .option('-d, --daemon', 'Run as daemon accepting RPC commands')
       .option('--rpcport [port]', 'RPC port [18332]', Number, 18332)
       .option('--rpcuser [user]', 'RPC user [user]', String, 'user')
       .option('--rpcpass [password]', 'RPC password [pass]', String, 'pass')
       .parse(process.argv);
 
-  var copay = new Copay(commander);
+  var api = new API(commander);
 
   var args = commander.args;
 
-  copay._command(args[0], args.slice(1), function(err, result) {
-    if (err)
-      return console.log("" + err);
-    
-    console.log(JSON.stringify(result, null, 2));
-  });
+  try {
+    var command = args[0];
+    var commandArgs = args.slice(1);
+
+    if (command[0] == '_' || typeof api[command] != 'function')
+      throw new Error('invalid command');
+
+    api[command].apply(api, commandArgs.concat([function(err, result) {
+      if (err)
+        return console.log("" + err);
+      
+      console.log(JSON.stringify(result, null, 2));
+    }]));
+  } catch(err) {
+    if (err.toString() == 'Error: invalid command') {
+      console.log("" + err);
+    }
+    else if (err.toString() == 'Error: invalid arguments') {
+      console.log("" + err);
+      console.log('Arguments for ' + command + ':')
+      api.getArgTypes(command, function(err, result) {
+        console.log(JSON.stringify(result, null, 2));
+      });
+    }
+    else
+      throw (err);
+  }
 };
 
 if (require.main === module) {
