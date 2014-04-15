@@ -29,13 +29,12 @@ Wallet.prototype._startInterface = function(config) {
   this.blockchain = new Blockchain(config.blockchain);
 
   this.networkName = config.networkName;
-  this.requiredCopayers = config.requiredCopayers;
-  this.totalCopayers = config.totalCopayers;
+  this.requiredCopayers = config.wallet.requiredCopayers;
+  this.totalCopayers = config.wallet.totalCopayers;
 };
 
 
 Wallet.prototype.create = function(opts) {
-
   this.id = opts.id || Wallet.getRandomId();
   this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
 
