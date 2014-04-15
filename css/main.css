@@ -96,8 +96,17 @@ a.box-backup {
   display: block;
 }
 
-p {
-  margin-bottom: 0.5rem;
+h3 {
+  font-weight: 100;
+  font-size: 25px;  
+}
+
+.line-dashed-v {
+  border-right: 2px dashed #E3E3E3;
+}
+
+.panel p {
+  margin-bottom: 0;
 }
 
 .pending button {
