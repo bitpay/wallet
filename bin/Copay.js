@@ -84,6 +84,24 @@ Copay.prototype.getBalance.argTypes =
   ];
 */
 
+Copay.prototype.getArgTypes = function getArgTypes(command, callback) {
+  var self = this;
+  checkArgs(arguments.callee.name, arguments);
+
+  if (command[0] == '_' || typeof Copay.prototype[command] != 'function')
+    return callback(new Error('Invalid command'));
+  
+  var argTypes = Copay.prototype[command].argTypes;
+
+  return callback(null, argTypes);
+};
+
+Copay.prototype.getArgTypes.argTypes =
+  [
+  ['command', 'string'],
+  ['callback', 'function']
+  ];
+
 Copay.prototype.getCommands = function getCommands(callback) {
   var self = this;
   checkArgs(arguments.callee.name, arguments);
