@@ -22,18 +22,14 @@ angular.module('copay.header').controller('HeaderController',
       'title': 'Backup',
       'icon': 'fi-archive',
       'link': '#/backup'
-    }, {
-      'title': 'signout',
-      'icon': 'fi-power',
-      'link': '#/signout'
-    }]
+    }];
 
     if (!$rootScope.peerId) {
       $location.path('signin');
     }
 
     $scope.isActive = function(item) {
-      if (item.link.replace('#','') == $location.path()) {
+      if (item.link && item.link.replace('#','') == $location.path()) {
         return true;
       }
       return false;
@@ -44,8 +40,6 @@ angular.module('copay.header').controller('HeaderController',
     };
 
     $scope.signout = function() {
-      console.log('[header.js.37:signout:]'); //TODO
-
       Network.disconnect(function() {
         console.log('[header.js.41] disconnect CB'); //TODO
         $location.path('signin');

@@ -35,6 +35,9 @@
             <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="large-2 text-center" data-ng-class="{active: isActive(item)}">
               <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
             </li>
+            <li class="large-2 text-center">
+              <a href="#" ng-click="signout()"> <i class="fi-power"></i> Signout</a>
+            </li>
           </ul>
         </section>
       </nav>
@@ -51,14 +54,6 @@
 
   <div class="row">
     <div class="large-12 columns" ng-view></div>
-  </div>
-  <div ng-controller="HeaderController" ng-show="$root.wallet">
-    <hr>
-    <div class="row">
-      <div class="text-center large-12 columns">
-        <a href="#" ng-click="signout()" class="button tiny">Signout</a>
-      </div>
-    </div>
   </div>
 
     <!-- Templates -->
