@@ -1,6 +1,6 @@
 var imports = require('soop').imports();
 var PublicKeyRing = imports.PublicKeyRing || require('../js/models/core/PublicKeyRing');
-var Wallet = imports.Wallet || require('../js/models/core/Wallet');
+//var Wallet = imports.Wallet || require('../js/models/core/Wallet');
 
 var Copay = function(opts) {
   this._init(opts);
@@ -23,7 +23,7 @@ Copay.prototype._init = function(opts) {
   }
   
   self.publicKeyRing = self.opts.publicKeyRing ? self.opts.publicKeyRing : new PublicKeyRing();
-  self.wallet = self.opts.wallet ? self.opts.wallet : new Wallet();
+  //self.wallet = self.opts.wallet ? self.opts.wallet : new Wallet();
 };
 
 Copay.prototype._command = function(command, args, callback) {
@@ -57,9 +57,9 @@ function checkArgs(name, args) {
     throw new Error('Invalid arguments');
 }
 
-Copay.prototype.echo = function(str, callback) {
+Copay.prototype.echo = function echo(str, callback) {
   var self = this;
-  checkArgs('echo', arguments);
+  checkArgs(arguments.callee.name, arguments);
 
   return callback(null, str);
 };
@@ -70,6 +70,7 @@ Copay.prototype.echo.argTypes =
   ['callback', 'function']
   ];
 
+/*
 Copay.prototype.getBalance = function(callback) {
   var self = this;
   checkArgs('getBalance', arguments);
@@ -81,10 +82,11 @@ Copay.prototype.getBalance.argTypes =
   [
   ['callback', 'function']
   ];
+*/
 
-Copay.prototype.getCommands = function(callback) {
+Copay.prototype.getCommands = function getCommands(callback) {
   var self = this;
-  checkArgs('getCommands', arguments);
+  checkArgs(arguments.callee.name, arguments);
 
   var fs = [];
 
@@ -102,9 +104,9 @@ Copay.prototype.getCommands.argTypes =
   ['callback', 'function']
   ];
 
-Copay.prototype.getPublicKeyRingId = function(callback) {
+Copay.prototype.getPublicKeyRingId = function getPublicKeyRingId(callback) {
   var self = this;
-  checkArgs('getPublicKeyRingId', arguments);
+  checkArgs(arguments.callee.name, arguments);
 
   return callback(null, self.publicKeyRing.id);
 };
@@ -114,5 +116,13 @@ Copay.prototype.getPublicKeyRingId.argTypes =
   ['callback', 'function']
   ];
 
+Copay.prototype.help = function help(callback) {
+  this.getCommands.apply(this, arguments);
+};
+
+Copay.prototype.help.argTypes =
+  [
+  ['callback', 'function']
+  ];
 
 module.exports = require('soop')(Copay);

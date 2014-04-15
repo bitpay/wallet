@@ -19,12 +19,16 @@ var main = function() {
 
   var args = commander.args;
 
-  copay._command(args[0], args.slice(1), function(err, result) {
-    if (err)
-      return console.log("" + err);
-    
-    console.log(JSON.stringify(result, null, 2));
-  });
+  try {
+    copay._command(args[0], args.slice(1), function(err, result) {
+      if (err)
+        return console.log("" + err);
+      
+      console.log(JSON.stringify(result, null, 2));
+    });
+  } catch (err) {
+    console.log("" + err);
+  }
 };
 
 if (require.main === module) {
