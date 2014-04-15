@@ -41,7 +41,6 @@ angular.module('copay.header').controller('HeaderController',
 
     $scope.signout = function() {
       Network.disconnect(function() {
-        console.log('[header.js.41] disconnect CB'); //TODO
         $location.path('signin');
         $rootScope.$digest();
       });

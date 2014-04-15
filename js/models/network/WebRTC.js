@@ -63,7 +63,7 @@ Network._arrayRemove = function(el, array) {
 
 // DEBUG
 Network.prototype._showConnectedPeers = function() {
-  console.log("### CONNECTED PEERS", this.connectedPeers);
+//  console.log("### CONNECTED PEERS", this.connectedPeers);
 };
 
 Network.prototype._onClose = function(peerId) {
@@ -166,7 +166,6 @@ Network.prototype._setupConnectionHandlers = function(
 };
 
 Network.prototype._notify = function(newPeer) {
-  console.log('[Network.js.168:_notify:]'); //TODO
   this._showConnectedPeers();
   this.emit('networkChange', newPeer);
 };
@@ -177,7 +176,6 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 
 
   p.on('open', function(peerId) {
-    console.log('### PEER OPEN. I AM:' + peerId);
     self.peerId = peerId;
     self.connectedPeers = [peerId];
     self._notify();
@@ -241,13 +239,10 @@ console.log('[WebRTC.js.222:peerId:]',peerId, data); //TODO
 
 Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
-
-console.log('[WebRTC.js.242:peerIds:]',peerIds); //TODO
   if (!peerIds) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
   }
-console.log('[WebRTC.js.246:peerIds:]',peerIds, data); //TODO
 
   if (Array.isArray(peerIds)) {
     var l = peerIds.length;
@@ -279,13 +274,10 @@ Network.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
 
 
 Network.prototype.disconnect = function(peerId, cb) {
-  console.log('[Network.js.268:disconnect:]'); //TODO
   var self = this;
   self.closing = 1;
 
   this.send(null, { type: 'disconnect' }, function() {
-
-console.log('[Network.js.273] disconnect CB'); //TODO
     self.connectedPeers = [];
     self.peerId = null;
     if (self.peer) {

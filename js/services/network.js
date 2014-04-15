@@ -4,10 +4,9 @@ angular.module('copay.network')
   .factory('Network', function($rootScope) {
     var peer;
 
-
     var _refreshUx = function() {
       var net   = $rootScope.wallet.network;
-      console.log('*** UPDATING UX'); //TODO
+      log('*** UPDATING UX'); //TODO
       $rootScope.peedId = net.peerId;
       $rootScope.connectedPeers = net.connectedPeers;
       $rootScope.$digest();
@@ -16,7 +15,7 @@ angular.module('copay.network')
     // set new inbound connections
     var _setNewPeer = function(newPeer) {
       var w   = $rootScope.wallet;
-      console.log('#### Setting new PEER:', newPeer);
+      log('#### Setting new PEER:', newPeer);
       w.sendPublicKeyRing(newPeer);
       w.sendTxProposals(newPeer);
     };
@@ -34,7 +33,7 @@ angular.module('copay.network')
     var storeOpenWallet = function() {
       var w   = $rootScope.wallet;
       w.store();
-      console.log('\t### Wallet %s Stored', w.id);
+      log('\t### Wallet %s Stored', w.id);
     };
 
       // TODO -> probably not in network.js
@@ -43,14 +42,14 @@ angular.module('copay.network')
         w.create({id: walletId});
         w.store();
         $rootScope.wallet   = w;
-        console.log('createWallet ENDED'); //TODO
+        log('createWallet ENDED'); //TODO
       };
 
       var openWallet = function (walletId) {
         var w = $rootScope.wallet || new copay.Wallet(config);
         w.load(walletId);
         if (w && w.publicKeyRing && w.privateKey) {
-          console.log('### WALLET OPENED:', w.walletId);
+          log('### WALLET OPENED:', w.walletId);
           $rootScope.wallet   = w;
         }
       };
@@ -61,12 +60,12 @@ angular.module('copay.network')
         if (w && w.id)
           w.store();
 
-        console.log('### CLOSING WALLET');
+        log('### CLOSING WALLET');
         delete $rootScope['wallet'];
       };
 
       var _checkWallet = function(walletId) {
-        console.log('[network.js.79:_checkWallet:]',walletId); //TODO
+        log('[network.js.79:_checkWallet:]',walletId); //TODO
 
         if ($rootScope.wallet && $rootScope.wallet.id === walletId) 
             return;
@@ -88,13 +87,13 @@ angular.module('copay.network')
         var recipients, pkr = w.publicKeyRing;
         var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
         if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
-          console.log('### BROADCASTING PKR');
+          log('### BROADCASTING PKR');
           recipients = null;
           shouldSend = true;
         }
         else if (isInbound  && !data.isBroadcast) {
           // always replying  to connecting peer
-          console.log('### REPLYING PKR TO:', senderId);
+          log('### REPLYING PKR TO:', senderId);
           recipients = senderId;
           shouldSend = true;
         }
@@ -110,19 +109,19 @@ angular.module('copay.network')
 
         var shouldSend = false;
         var w   = $rootScope.wallet;
-        console.log('RECV TXPROPOSAL:',data); //TODO
+        log('RECV TXPROPOSAL:',data); //TODO
 
         var recipients;
         var inTxProposals = copay.TxProposals.fromObj(data.txProposals);
         var mergeInfo = w.txProposals.merge(inTxProposals, true);
         if ( mergeInfo.merged  && !data.isBroadcast) { 
-          console.log('### BROADCASTING txProposals');
+          log('### BROADCASTING txProposals');
           recipients = null;
           shouldSend = true;
         }
         else if (isInbound  && !data.isBroadcast) {
           // always replying  to connecting peer
-          console.log('### REPLYING txProposals TO:', senderId);
+          log('### REPLYING txProposals TO:', senderId);
           recipients = senderId;
           shouldSend = true;
         }
