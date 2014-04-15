@@ -26,7 +26,6 @@ function TxProposals(opts) {
   this.walletId = opts.walletId;
   this.network = opts.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
-  this.publicKeyRing = opts.publicKeyRing;
   this.txps = [];
 }
 
@@ -136,6 +135,10 @@ TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
   });
 };
 
+TxProposals.prototype.add = function(data) {
+  this.txps.push( new TxProposal(data) );
+};
+
 TxProposals.prototype.merge = function(t) {
   if (this.network.name !== t.network.name) 
     throw new Error('network mismatch in:', t);
@@ -157,44 +160,6 @@ TxProposals.prototype.merge = function(t) {
   return mergeInfo.stats;
 };
 
-TxProposals.prototype.create = function(toAddress, amountSatStr, utxos, priv, opts) {
-  var pkr = this.publicKeyRing; 
-  opts = opts || {};
 
-  var amountSat = bitcore.bignum(amountSatStr);
-
-  if (! pkr.isComplete() ) {
-    throw new Error('publicKeyRing is not complete');
-  }
-
-  var opts = {
-    remainderOut: opts.remainderOut || { address: pkr.generateAddress(true).toString() }
-  };
-
-  var b = new Builder(opts)
-    .setUnspent(utxos)
-    .setHashToScriptMap(pkr.getRedeemScriptMap())
-    .setOutputs([{address: toAddress, amountSat: amountSat}])
-    ;
-
-  var signRet;  
-  if (priv) {
-    b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
-  }
-  var me = {};
-  if (priv) me[priv.id] = Date.now();
-
-  this.txps.push(
-    new TxProposal({
-      signedBy: priv && b.signaturesAdded ? me : {},
-      seenBy:   priv ? me : {},
-      builder: b,
-    })
-  );
-  return 1;
-};
-
-TxProposals.prototype.sign = function(index) {
-};
 
 module.exports = require('soop')(TxProposals);

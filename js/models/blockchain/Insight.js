@@ -5,8 +5,9 @@ var bitcore     = require('bitcore');
 
 function Insight(opts) {
   opts = opts || {};
-  this.host = 'test.insight.is';
-  this.port = '80';
+  this.host = opts.host || 'localhost';
+  this.port = opts.port || '3001';
+  this.scheme = opts.scheme || 'http';
 }
 
 function _asyncForEach(array, fn, callback) {
@@ -40,7 +41,7 @@ Insight.prototype.getBalance = function(unspent) {
 Insight.prototype.listUnspent = function(addresses, cb) {
   var self = this;
   
-  if (!addresses || !addresses.length) return cb();
+  if (!addresses || !addresses.length) return cb([]);
 
   var all = [];
 
@@ -48,8 +49,11 @@ Insight.prototype.listUnspent = function(addresses, cb) {
     var options = {
       host: self.host,
       port: self.port,
+      scheme: self.scheme,
       method: 'GET',
-      path: '/api/addr/' + addr + '/utxo'
+      path: '/api/addr/' + addr + '/utxo',
+
+      headers: { 'Access-Control-Request-Headers' : '' }
     };
     
     self._request(options, function(err, res) {
@@ -74,7 +78,6 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
     data: 'rawtx='+rawtx,
     headers: { 'content-type' : 'application/x-www-form-urlencoded' }
   };
-
   this._request(options, function(err,res) {
     if (err) return cb();
     return cb(res.txid);

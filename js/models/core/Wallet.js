@@ -1,17 +1,18 @@
 'use strict';
 
-var imports = require('soop').imports();
+var imports     = require('soop').imports();
 
-var bitcore = require('bitcore');
-var coinUtil = bitcore.util;
+var bitcore     = require('bitcore');
+var coinUtil    = bitcore.util;
 var buffertools = bitcore.buffertools;
-var http = require('http');
+var Builder     = bitcore.TransactionBuilder;
+var http        = require('http');
 
-var Storage = imports.Storage;
-var Network = imports.Network;
-var Blockchain = imports.Blockchain;
+var Storage     = imports.Storage;
+var Network     = imports.Network;
+var Blockchain  = imports.Blockchain;
 
-var copay = copay || require('../../../copay');
+var copay       = copay || require('../../../copay');
 
 function Wallet(config) {
   this._startInterface(config);
@@ -56,7 +57,6 @@ Wallet.prototype.create = function(opts) {
 
   this.txProposals = new copay.TxProposals({
     walletId: this.id,
-    publicKeyRing: this.publicKeyRing,
     networkName: this.networkName,
   });
   this.log('\t### TxProposals Initialized');
@@ -167,8 +167,56 @@ Wallet.prototype.getAddresses = function() {
   return this.publicKeyRing.getAddresses();
 };
 
+Wallet.prototype.getAddressesStr = function() {
+  var ret = [];
+  this.publicKeyRing.getAddresses().forEach(function(a) {
+    ret.push(a.toString());
+  });
+  return ret;
+};
+
+
+
 Wallet.prototype.listUnspent = function(cb) {
-  this.blockchain.listUnspent(this.getAddresses(), cb);
+  this.blockchain.listUnspent(this.getAddressesStr(), cb);
+};
+
+Wallet.prototype.createTx = function(toAddress, amountSatStr, utxos, opts) {
+  var pkr  = this.publicKeyRing; 
+  var priv = this.privateKey;
+  opts = opts || {};
+
+  var amountSat = bitcore.bignum(amountSatStr);
+
+  if (! pkr.isComplete() ) {
+    throw new Error('publicKeyRing is not complete');
+  }
+
+  if (!opts.remainderOut) {
+    opts.remainderOut ={ address: pkr.generateAddress(true).toString() };
+  };
+
+  var b = new Builder(opts)
+    .setUnspent(utxos)
+    .setHashToScriptMap(pkr.getRedeemScriptMap())
+    .setOutputs([{address: toAddress, amountSat: amountSat}])
+    ;
+
+  var signRet;  
+  if (priv) {
+    b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
+  }
+  var me = {};
+  if (priv) me[priv.id] = Date.now();
+
+  this.txProposals.add({
+    signedBy: priv && b.signaturesAdded ? me : {},
+    seenBy:   priv ? me : {},
+    builder: b,
+  });
+};
+
+Wallet.prototype.sign = function(txp) {
 };
 
 // // HERE? not sure

@@ -11,9 +11,11 @@ var config = {
     requiredCopayers: 2,
     totalCopayers: 3,
   },
-  insight: {
-    host: 'localhost',
-    port: 3001
+  blockchain: {
+    host: 'test.insight.is',
+    port: 80
+    // host: 'localhost',
+    // port: 3001
   },
   verbose: 1,
 };
