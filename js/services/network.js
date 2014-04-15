@@ -20,7 +20,6 @@ angular.module('copay.network')
       });
     };
 
-
     // set new inbound connections
     var _setNewPeer = function(newPeer) {
       var cp = $rootScope.cp;
@@ -51,15 +50,12 @@ angular.module('copay.network')
     // TODO -> probably not in network.js
     var createWallet = function(walletId) {
 
-      opts.walletId = walletId;
-      var w = new copay.Wallet(opts, config);
+      var w = new copay.Wallet.create(config, {walletId: walletId});
 
       // Store it on rootScope
-      $rootScope.walletId = pkr.id; 
       $rootScope.wallet   = w;
-
-//TODO     
-//       w.store();
+      $rootScope.walletId = w.id; 
+      w.store();
     };
 
     var openWallet = function (walletId) {

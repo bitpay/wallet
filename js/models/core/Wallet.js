@@ -13,11 +13,9 @@ var Blockchain = imports.Blockchain;
 
 var copay = copay || require('../../../copay');
 
-
 function Wallet(config) {
   this._startInterface(config);
 }
-
 
 Wallet.prototype._startInterface = function(config) {
   this.storage = new Storage(config.storage);
@@ -77,6 +75,13 @@ Wallet.prototype._load = function(config, walletId) {
 };
 
 
+
+Wallet.prototype.store = function() {
+  this.storage.set(this.id,'publicKeyRing', this.publicKeyRing.toObj());
+  this.storage.set(this.id,'txProposals', this.txProposals.toObj());
+  this.storage.set(this.id,'privateKey', this.privateKey.toObj());
+};
+
 // CONSTRUCTORS
 Wallet.read = function(config, walletId) {
   var w = new Wallet(config);
@@ -92,6 +97,7 @@ Wallet.create = function(config, opts) {
   return w;
 };
 
+<<<<<<< HEAD
 Wallet.getRandomId = function() {
   var r = buffertools.toHex(coinUtil.generateNonce());
   return r;
@@ -121,6 +127,9 @@ WalletFactory.prototype.remove = function(walletId) {
   // TODO remove wallet contents, not only the id (Wallet.remove?)
   this._delWalletId(walletId);
 };
+=======
+module.exports = require('soop')(Wallet);
+>>>>>>> WIP wallet working again
 
 WalletFactory.prototype._addWalletId = function(walletId) {
   var ids = this._getWalletIds();
