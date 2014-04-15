@@ -12,7 +12,7 @@ API.prototype._init = function(opts) {
 
   var Wallet = require('soop').load('./js/models/core/Wallet', {
     Storage: opts.Storage || require('./test/mocks/FakeStorage'),
-    Network: opts.Network || require('./js/models/network/WebRTC'),
+    Network: opts.Network || require('./js/models/network/Base'),
     Blockchain: opts.Blockchain || require('./js/models/blockchain/Insight')
   });
   
