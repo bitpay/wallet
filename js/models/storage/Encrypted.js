@@ -3,27 +3,68 @@
 var imports = require('soop').imports();
 
 function Storage() {
-  // TODO
 }
 
+Storage.prototype._getPwd = function() {
+  var pwd = prompt('Please enter your password');  
+  return pwd;
+}
+
+Storage.prototype._encrypt = function(data) {
+  return CryptoJS.AES.encrypt("Message", "Secret Passphrase");
+};
+
+Storage.prototype._decrypt = function(encrypted) {
+  return CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");  
+};
+
+Storage.prototype._read = function(k) {
+  var ret;
+  try {
+    ret = JSON.parse(localStorage.getItem(k));
+  } catch (e) {};
+  return ret;
+};
+
+
 // get value by key
-Storage.prototype.get = function(k) {
-  // TODO
+Storage.prototype.getGlobal = function(k) {
+  return this._read(k);
 };
 
 // set value for key
-Storage.prototype.set = function(k,v) {
-  // TODO
+Storage.prototype.setGlobal = function(k,v) {
+  localStorage.setItem(k, JSON.stringify(v));
 };
 
 // remove value for key
-Storage.prototype.remove = function(k) {
-  // TODO
+Storage.prototype.removeGlobal = function(k) {
+  localStorage.removeItem(k);
+};
+
+
+
+Storage.prototype._key = function(walletId, k) {
+  return walletId + '::' + k;
+};
+// get value by key
+Storage.prototype.get = function(walletId, k) {
+  return this._read(localStorage.getItem(this._key(walletId,k)));
+};
+
+// set value for key
+Storage.prototype.set = function(walletId, k,v) {
+  this.setGlobal(this._key(walletId,k), v);
+};
+
+// remove value for key
+Storage.prototype.remove = function(walletId, k) {
+  localStorage.removeItem(this._key(walletId,k));
 };
 
 // remove all values
 Storage.prototype.clearAll = function() {
-  // TODO
+  localStorage.clear();
 };     
 
 module.exports = require('soop')(Storage);
