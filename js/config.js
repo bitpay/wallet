@@ -5,7 +5,7 @@ var config = {
   network: {
     apiKey: 'lwjd5qra8257b9',
     maxPeers: 3,
-    debug: 0,
+    debug: 3,
   },
   wallet: {
     requiredCopayers: 2,
@@ -15,7 +15,7 @@ var config = {
     host: 'localhost',
     port: 3001
   },
-  verbose: 0,
+  verbose: 1,
 };
 
 var log = function () {

@@ -23,5 +23,5 @@ angular.module('copay.transactions').controller('TransactionsController',
     }
     ];
 
-    $scope.txsoutput = $rootScope.wallet.txProposals.txps;
+    $scope.txsoutput = $rootScope.wallet.getTxProposals();
   });

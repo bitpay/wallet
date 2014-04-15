@@ -7,6 +7,8 @@ angular.module('copay.signin').controller('SigninController',
 //    $rootScope.peerId = peerData ? peerData.peerId : null;
     $scope.loading = false;
 
+    $scope.selectedWalletId = false;
+
     $scope.listWalletIds = function() {
       return copay.Wallet.factory.getWalletIds();
     };
@@ -23,11 +25,19 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.open = function(walletId) {
       $scope.loading = true;
-      if (Network.openWallet(walletId)) {
+
+      Network.openWallet(walletId);
+
+      if ($rootScope.wallet && $rootScope.wallet.id) {
         Network.init(function() {
           $location.path('peer');
           $rootScope.$digest();
         });
+      }
+      else {
+        $scope.loading = false;
+        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
+        $location.path('signin');
       }
     };
 

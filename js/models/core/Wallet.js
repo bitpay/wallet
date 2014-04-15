@@ -63,11 +63,19 @@ Wallet.prototype.create = function(opts) {
 
 
 Wallet.prototype._checkLoad = function(walletId) {
-  return (
-    this.storage.get(walletId, 'publicKeyRing') &&
+  var ret = this.storage.get(walletId, 'publicKeyRing') &&
     this.storage.get(walletId, 'txProposals')   &&
     this.storage.get(walletId, 'privateKey')
-  );
+  ;
+
+console.log('[Wallet.js.71]',
+   this.storage.get(walletId, 'publicKeyRing'),
+    this.storage.get(walletId, 'txProposals'),
+    this.storage.get(walletId, 'privateKey'));
+
+console.log('[Wallet.js.73:ret:]',walletId, ret); //TODO
+
+  return ret;
 }
 
 Wallet.prototype.load = function(walletId) {
@@ -136,6 +144,29 @@ Wallet.prototype.generateAddress = function() {
   });
 
   return addr;
+};
+
+Wallet.prototype.getTxProposals = function() {
+  var ret = [];
+  this.txProposals.txps.forEach(function(txp) {
+    var i = {txp:txp};
+    i.signedByUs = txp.signedBy[this.privateKey.id]?true:false;
+    ret.push(i);
+  });
+
+  return ret;
+};
+
+
+Wallet.prototype.addSeenToTxProposals = function() {
+  var ret=false;
+  this.txProposals.txps.forEach(function(txp) {
+    if (!txp.seenBy[this.privateKey.id]) {
+      txp.seenBy[this.privateKey.id] = Date.now();
+      ret = true;
+    }
+  });
+  return ret;
 };
 
 // // HERE? not sure
