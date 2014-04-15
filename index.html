@@ -22,7 +22,7 @@
           </div>
         </div>
 
-      <nav class="top-bar" data-topbar ng-show="$root.peerId">
+      <nav class="top-bar" data-topbar ><!-- ng-show="$root.peerId" -->
         <ul class="title-area">
           <li class="name"></li>
           <li class="toggle-topbar menu-icon">
@@ -32,8 +32,8 @@
 
         <section class="top-bar-section">
           <ul>
-            <li style="width:20%;" data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="text-center" data-ng-class="{active: isActive(item)}">
-              <a href="{{item.link}}"> <i class="fi-home size-16"></i> {{item.title}}</a>
+            <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="large-2 text-center" data-ng-class="{active: isActive(item)}">
+              <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
             </li>
           </ul>
         </section>
