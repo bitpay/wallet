@@ -16,7 +16,7 @@ if (typeof process === 'undefined' || !process.version) {
       var s = new Encrypted();
       should.exist(s);
     });
-    it.skip('should fail when encrypting without a password', function() {
+    it('should fail when encrypting without a password', function() {
       var s = new Encrypted();
       (function(){s.set(wid, 'x', 1);}).should.throw();
     });
