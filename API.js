@@ -26,11 +26,38 @@ API.prototype._init = function(opts) {
   //self.wallet = self.opts.wallet ? self.opts.wallet : new Wallet();
 };
 
+API._coerceArgTypes = function(args, argTypes) {
+  for (var i in args) {
+    var arg = args[i];
+    var argType = argTypes[i][1];
+    if (typeof arg == 'string') {
+      switch (argType) {
+        case 'object':
+          args[i] = JSON.parse(arg);
+          break;
+        case 'number':
+          args[i] = Number(arg);
+          break;
+      }
+    }
+  }
+
+  return args;
+};
+
 API.prototype._command = function(command, args, callback) {
   var self = this;
 
   if (!command || command[0] == "_")
     return callback(new Error('invalid command'));
+
+  if (!API._checkArgTypes(command, args)) {
+    var argTypes = API.prototype[command].argTypes;
+    API._coerceArgTypes(args, argTypes)
+    if (!API._checkArgTypes(command, args)) {
+      throw new Error('Invalid arguments');
+    }
+  }
 
   if (typeof self[command] == 'function') {
     var f = API.prototype[command];
@@ -52,14 +79,8 @@ API._checkArgTypes = function(command, args) {
   return true;
 };
 
-function checkArgs(name, args) {
-  if (!API._checkArgTypes(name, args))
-    throw new Error('Invalid arguments');
-}
-
 API.prototype.echo = function echo(str, callback) {
   var self = this;
-  checkArgs(arguments.callee.name, arguments);
 
   return callback(null, str);
 };
@@ -70,10 +91,33 @@ API.prototype.echo.argTypes =
   ['callback', 'function']
   ];
 
+API.prototype.echoNumber = function echoNumber(num, callback) {
+  var self = this;
+
+  return callback(null, num);
+};
+
+API.prototype.echoNumber.argTypes =
+  [
+  ['num', 'number'],
+  ['callback', 'function']
+  ];
+
+API.prototype.echoObject = function echoNumber(obj, callback) {
+  var self = this;
+
+  return callback(null, obj);
+};
+
+API.prototype.echoObject.argTypes =
+  [
+  ['obj', 'object'],
+  ['callback', 'function']
+  ];
+
 /*
 API.prototype.getBalance = function(callback) {
   var self = this;
-  checkArgs('getBalance', arguments);
 
   return callback(null, self.wallet.getBalance([]));
 };
@@ -86,7 +130,6 @@ API.prototype.getBalance.argTypes =
 
 API.prototype.getArgTypes = function getArgTypes(command, callback) {
   var self = this;
-  checkArgs(arguments.callee.name, arguments);
 
   if (command[0] == '_' || typeof API.prototype[command] != 'function')
     return callback(new Error('Invalid command'));
@@ -104,7 +147,6 @@ API.prototype.getArgTypes.argTypes =
 
 API.prototype.getCommands = function getCommands(callback) {
   var self = this;
-  checkArgs(arguments.callee.name, arguments);
 
   var fs = [];
 
@@ -124,7 +166,6 @@ API.prototype.getCommands.argTypes =
 
 API.prototype.getPublicKeyRingId = function getPublicKeyRingId(callback) {
   var self = this;
-  checkArgs(arguments.callee.name, arguments);
 
   return callback(null, self.publicKeyRing.id);
 };
