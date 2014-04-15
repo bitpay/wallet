@@ -113,7 +113,7 @@ button.primary { background-color: #111; }
 button.secondary { background-color: #FAE448 !important; }
 
 button.primary:hover { background-color: #333;}
-button.secondary:hover { background-color: #D7C020 !important;}
+button.secondary:hover { background-color: #FFDF00 !important;}
 
 .m0 {margin: 0;}
 .db {display: block;}

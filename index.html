@@ -23,19 +23,17 @@
         </div>
 
       <nav class="top-bar" data-topbar ng-show="$root.wallet">
-        <!-- TODO : porque el repeat en UL y no en LI?? -->
-        <ul class="title-area" data-ng-repeat="item in menu" ui-route="/{{item.link}}" data-ng-class="{active: isActive(item)}">
+        <ul class="title-area">
           <li class="name"></li>
           <li class="toggle-topbar menu-icon">
-            <a href="{{item.link}}">{{item.title}}</a>
+            <a href="#"> Menu</a>
           </li>
         </ul>
 
         <section class="top-bar-section">
-          <!-- Right Nav Section -->
           <ul>
             <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="large-2 text-center" data-ng-class="{active: isActive(item)}">
-              <a href="{{item.link}}"> <i class="fi-home size-16"></i> {{item.title}}</a>
+              <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
             </li>
           </ul>
         </section>
