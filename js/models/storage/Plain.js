@@ -16,12 +16,12 @@ Storage.prototype.get = function(walletId, k) {
 
 
 // set value for key
-Storage.prototype.set = function(k,v) {
+Storage.prototype.set = function(walletId, k,v) {
   localStorage.setItem(this._key(walletId,k), JSON.stringify(v));
 };
 
 // remove value for key
-Storage.prototype.remove = function(k) {
+Storage.prototype.remove = function(walletId, k) {
   localStorage.removeItem(this._key(walletId,k));
 };
 

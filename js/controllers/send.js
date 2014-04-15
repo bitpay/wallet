@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.send').controller('SendController',
-  function($scope, $rootScope, $location, Network, Storage) {
+  function($scope, $rootScope, $location, Network) {
     $scope.title = 'Send';
 
     if (!$rootScope.peerId) {

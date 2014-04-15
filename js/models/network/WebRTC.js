@@ -273,6 +273,7 @@ Network.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
   self._setupConnectionHandlers(dataConn, false, openCallback, closeCallback);
 };
 
+
 Network.prototype.disconnect = function(peerId, cb) {
   console.log('[Network.js.268:disconnect:]'); //TODO
   var self = this;

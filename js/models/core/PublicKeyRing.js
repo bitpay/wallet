@@ -17,6 +17,8 @@ var storage     = Storage.default();
 function PublicKeyRing(opts) {
   opts = opts || {};
 
+  this.walletId = opts.walletId;
+
   this.network = opts.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
 
@@ -46,16 +48,6 @@ PublicKeyRing.ChangeBranch = function (index) {
   return 'm/1/'+index;
 };
 
-PublicKeyRing.decrypt = function (passphrase, encPayload) {
-  console.log('[wallet.js.35] TODO READ: passphrase IGNORED');
-  return encPayload;
-};
-
-PublicKeyRing.encrypt = function (passphrase, payload) {
-  console.log('[wallet.js.92] TODO: passphrase IGNORED');
-  return payload;
-};
-
 PublicKeyRing.fromObj = function (data) {
   if (!data.ts) {
     throw new Error('bad data format: Did you use .toObj()?');
@@ -64,13 +56,12 @@ PublicKeyRing.fromObj = function (data) {
 
   var w = new PublicKeyRing(config);
 
-  w.id               = data.id;
-  w.requiredCopayers = data.requiredCopayers;
-  w.totalCopayers = data.totalCopayers;
-  w.addressIndex = data.addressIndex;
+  w.walletId           = data.walletId;
+  w.requiredCopayers   = data.requiredCopayers;
+  w.totalCopayers      = data.totalCopayers;
+  w.addressIndex       = data.addressIndex;
   w.changeAddressIndex = data.changeAddressIndex;
-
-  w.copayersBIP32 = data.copayersExtPubKeys.map( function (pk) { 
+  w.copayersBIP32      = data.copayersExtPubKeys.map( function (pk) {
     return new BIP32(pk);
   });
 
@@ -78,24 +69,9 @@ PublicKeyRing.fromObj = function (data) {
   return w;
 };
 
-PublicKeyRing.read = function (encPayload, id, passphrase) {
-  if (!encPayload) 
-    throw new Error('Could not find wallet data');
-  var data;
-  try {
-    data = JSON.parse( PublicKeyRing.decrypt( passphrase, encPayload ));
-  } catch (e) {
-    throw new Error('error in read: '+ e.toString());
-  }
-
-  if (data.id !== id) 
-    throw new Error('Wrong id in data');
-  return PublicKeyRing.fromObj(data);
-};
-
 PublicKeyRing.prototype.toObj = function() {
   return {
-    id: this.id,
+    walletId: this.walletId,
     networkName: this.network.name,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
@@ -113,13 +89,6 @@ PublicKeyRing.prototype.serialize = function () {
   return JSON.stringify(this.toObj());
 };
 
-
-PublicKeyRing.prototype.toStore = function (passphrase) {
-  if (!this.id) 
-      throw new Error('wallet has no id');
-
-  return PublicKeyRing.encrypt(passphrase,this.serialize());
-};
 
 PublicKeyRing.prototype.registeredCopayers = function () {
   return this.copayersBIP32.length;
@@ -255,8 +224,8 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
 
 PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
 
-  if (!ignoreId  && this.id !== inPKR.id) {
-    throw new Error('inPRK id mismatch');
+  if (!ignoreId  && this.walletId !== inPKR.walletId) {
+    throw new Error('inPRK walletId mismatch');
   }
 
   if (this.network.name !== inPKR.network.name)

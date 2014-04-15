@@ -52,7 +52,18 @@ Wallet.prototype._createNew = function(config, opts) {
 };
 
 
+Wallet.prototype._checkLoad = function(config, walletId) {
+  return (
+    this.storage.get(this.id, 'publicKeyRing') &&
+    this.storage.get(this.id, 'txProposals')   &&
+    this.storage.get(this.id, 'privateKey')
+  );
+}
+
 Wallet.prototype._load = function(config, walletId) {
+  if (! this._checkLoad(config,walletId)) return;
+
+
   this.id = walletId;
   this.publicKeyRing = new copay.PublicKeyRing.fromObj(
     this.storage.get(this.id, 'publicKeyRing')
@@ -77,16 +88,46 @@ Wallet.prototype._load = function(config, walletId) {
 
 
 Wallet.prototype.store = function() {
+  Wallet.factory.addWalletId(this.id);
   this.storage.set(this.id,'publicKeyRing', this.publicKeyRing.toObj());
   this.storage.set(this.id,'txProposals', this.txProposals.toObj());
   this.storage.set(this.id,'privateKey', this.privateKey.toObj());
 };
 
+
+Wallet.prototype.sendTxProposals = function(recipients) {
+  console.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
+
+  this.network.send( recipients, { 
+    type: 'txProposals', 
+    txProposals: this.txProposals.toObj(),
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendPublicKeyRing = function(recipients) {
+  console.log('### SENDING publicKeyRing TO:', recipients||'All');
+
+console.log('[Wallet.js.100]', this.publicKeyRing.toObj()); //TODO
+
+
+  this.network.send(recipients, { 
+    type: 'publicKeyRing', 
+    publicKeyRing: this.publicKeyRing.toObj(),
+    walletId: this.id,
+  });
+};
+
+
+// // HERE? not sure
+// Wallet.prototype.cleanPeers = function() {
+//   this.storage.remove('peerData'); 
+// };
+//
 // CONSTRUCTORS
 Wallet.read = function(config, walletId) {
   var w = new Wallet(config);
-  w._load(walletId);
-
+  w._load(config, walletId);
   return w;
 };
 
@@ -97,25 +138,24 @@ Wallet.create = function(config, opts) {
   return w;
 };
 
-<<<<<<< HEAD
 Wallet.getRandomId = function() {
   var r = buffertools.toHex(coinUtil.generateNonce());
   return r;
 };
 
-Wallet.prototype.store = function() {
-  // TODO store each variable
-};
+/*
+ * WalletFactory
+ *
+ */
 
 var WalletFactory = function() {
-  this.storage = Storage.
-  default ();
+  this.storage = Storage.default();
 };
 
 WalletFactory.prototype.create = function(config, opts) {
   var w = new Wallet.create(config, opts);
   w.store();
-  this._addWalletId(w.id);
+  this.addWalletId(w.id);
   return w;
 };
 
@@ -127,25 +167,22 @@ WalletFactory.prototype.remove = function(walletId) {
   // TODO remove wallet contents, not only the id (Wallet.remove?)
   this._delWalletId(walletId);
 };
-=======
-module.exports = require('soop')(Wallet);
->>>>>>> WIP wallet working again
 
-WalletFactory.prototype._addWalletId = function(walletId) {
-  var ids = this._getWalletIds();
+WalletFactory.prototype.addWalletId = function(walletId) {
+  var ids = this.getWalletIds();
   if (ids.indexOf(walletId) == -1) return;
   storage.set('walletIds', (ids ? ids + ',' : '') + walletId);
 };
 
 WalletFactory.prototype._delWalletId = function(walletId) {
-  var ids = this._getWalletIds();
+  var ids = this.getWalletIds();
   var index = ids.indexOf(walletId);
   if (index == -1) return;
   ids.splice(index, 1); // removes walletId
   this.storage.set('walletIds', ids.join(','));
 };
 
-WalletFactory.prototype._getWalletIds = function() {
+WalletFactory.prototype.getWalletIds = function() {
   var ids = this.storage.get('walletIds');
   return ids ? ids.split(',') : [];
 };

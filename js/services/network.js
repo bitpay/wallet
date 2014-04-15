@@ -1,32 +1,24 @@
 'use strict';
 
 angular.module('copay.network')
-  .factory('Network', function($rootScope, Storage) {
+  .factory('Network', function($rootScope) {
     var peer;
 
 
     var _refreshUx = function() {
-      var cp = $rootScope.cp;
+      var net   = $rootScope.wallet.network;
       console.log('*** UPDATING UX'); //TODO
-      $rootScope.peerId = cp.peerId;
-      $rootScope.connectedPeers = cp.connectedPeers;
+      $rootScope.peedId = net.peerId;
+      $rootScope.connectedPeers = net.connectedPeers;
       $rootScope.$digest();
-    };
-
-    var _store = function() {
-      Storage.set($rootScope.walletId, 'peerData', {
-        peerId: $rootScope.peerId,
-        connectedPeers: $rootScope.connectedPeers
-      });
     };
 
     // set new inbound connections
     var _setNewPeer = function(newPeer) {
-      var cp = $rootScope.cp;
+      var w   = $rootScope.wallet;
       console.log('#### Setting new PEER:', newPeer);
-      sendPublicKeyRing(newPeer);
-      sendTxProposals(newPeer);
- 
+      w.sendPublicKeyRing(newPeer);
+      w.sendTxProposals(newPeer);
     };
 
     var _handleNetworkChange = function(newPeer) {
@@ -35,183 +27,154 @@ angular.module('copay.network')
       if (newPeer) 
         _setNewPeer(newPeer);
      
-      _store();
       _refreshUx();
     };
 
     // TODO -> probably not in network.js
     var storeOpenWallet = function() {
-      var id = $rootScope.walletId;
-      Storage.addWalletId(id);
-      Storage.set(id, 'wallet',$rootScope.wallet.toObj());
-      console.log('\t### Wallet %s Stored', id);
-    };
-
-    // TODO -> probably not in network.js
-    var createWallet = function(walletId) {
-
-      var w = new copay.Wallet.create(config, {walletId: walletId});
-
-      // Store it on rootScope
-      $rootScope.wallet   = w;
-      $rootScope.walletId = w.id; 
+      var w   = $rootScope.wallet;
       w.store();
+      console.log('\t### Wallet %s Stored', w.id);
     };
 
-    var openWallet = function (walletId) {
-
-
-      var w = Wallet.read(walletId);
-
-      if (w && w.publicKeyRing.copayersExtPubKeys.length && w.privateKey) {
-        console.log('### WALLET OPENED:', w.walletId);
-        $rootScope.walletId = walletId; 
+      // TODO -> probably not in network.js
+      var createWallet = function(walletId) {
+console.log('[network.js.41:walletId:]',walletId); //TODO
+        var w = new copay.Wallet.create(config, {id: walletId});
+        w.store();
         $rootScope.wallet   = w;
-      }
-    };
-    var closeWallet = function() {
-      console.log('### CLOSING WALLET');
-      $rootScope.delete('walletId');
-      $rootScope.delete('w');
-    };
+        console.log('createWallet ENDED'); //TODO
+      };
 
-    var _checkWallet = function(walletId, allowChange) {
-      console.log('[network.js.79:_checkWallet:]',walletId); //TODO
+      var openWallet = function (walletId) {
 
-      if ($rootScope.walletId && $rootScope.walletId === walletId) 
-          return;
-
-      if ($rootScope.walletId && $rootScope.walletId !== walletId) {
-          throw new Error('message to wrong walletID');
-      }
-
-     
-      if (!openWallet(walletId)) {
-        createWallet(walletId);
-      }
-    };
+        var w = new copay.Wallet.read(config, walletId);
+        if (w && w.publicKeyRing && w.privateKey) {
+          console.log('### WALLET OPENED:', w.walletId);
+          $rootScope.wallet   = w;
+        }
+      };
 
 
-    var sendTxProposals = function(recipients) {
-      var cp  = $rootScope.cp;
-      console.log('### SENDING txProposals TO:', recipients||'All', $rootScope.txProposals);
-      cp.send( recipients, { 
-        type: 'txProposals', 
-        txProposals: $rootScope.txProposals.toObj(),
-        walletId: $rootScope.walletId,
-      });
-    };
-    var sendPublicKeyRing = function(recipients) {
-      var cp  = $rootScope.cp;
-      console.log('### SENDING publicKeyRing TO:', recipients||'All');
- 
-      cp.send(recipients, { 
-        type: 'publicKeyRing', 
-        publicKeyRing: $rootScope.publicKeyRing.toObj(),
-      });
-    };
+      var closeWallet = function() {
+        var w   = $rootScope.wallet;
+        w.store();
 
-    var _handlePublicKeyRing = function(senderId, data, isInbound) {
-      var cp  = $rootScope.cp;
-      _checkWallet(data.publicKeyRing.id);
-      var shouldSend = false;
+        console.log('### CLOSING WALLET');
+        delete $rootScope['wallet'];
+      };
 
-      var recipients, pkr = $rootScope.publicKeyRing;
-      var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
-console.log('[network.js.176:inPKR:]',inPKR); //TODO
-console.log('[network.js.178:pkr:]',pkr); //TODO
-      if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
-        console.log('### BROADCASTING PKR');
-        recipients = null;
-        shouldSend = true;
-      }
-      else if (isInbound  && !data.isBroadcast) {
-        // always replying  to connecting peer
-        console.log('### REPLYING PKR TO:', senderId);
-        recipients = senderId;
-        shouldSend = true;
-      }
+      var _checkWallet = function(walletId, allowChange) {
+        console.log('[network.js.79:_checkWallet:]',walletId); //TODO
 
-      console.log('[network.js.189:shouldSend:]',shouldSend); //TODO
-      if (shouldSend) {
-        sendPublicKeyRing(recipients);
-      }
-      _refreshUx();
-    };
-    var _handleTxProposals = function(senderId, data, isInbound) {
-      var cp  = $rootScope.cp;
-      _checkWallet(data.txProposals.walletId);
+        if ($rootScope.wallet && $rootScope.wallet.id === walletId) 
+            return;
 
-      var shouldSend = false;
-      console.log('RECV TXPROPOSAL:',data); //TODO
-      var recipients, pkr = $rootScope.txProposals;
+        if ($rootScope.wallet && $rootScope.wallet.id  && $rootScope.wallet.id !== walletId) {
+            throw new Error('message to wrong walletID');
+        }
 
-      var inTxProposals = copay.TxProposals.fromObj(data.txProposals);
-      var mergeInfo = pkr.merge(inTxProposals, true);
-      if ( mergeInfo.merged  && !data.isBroadcast) { 
-        console.log('### BROADCASTING txProposals');
-        recipients = null;
-        shouldSend = true;
-      }
-      else if (isInbound  && !data.isBroadcast) {
-        // always replying  to connecting peer
-        console.log('### REPLYING txProposals TO:', senderId);
-        recipients = senderId;
-        shouldSend = true;
-      }
+      
+        if (!openWallet(walletId)) {
+          createWallet(walletId);
+        }
+      };
 
-      if (shouldSend) {
-        sendTxProposals(recipients);
-      }
-    };
+      var _handlePublicKeyRing = function(senderId, data, isInbound) {
+        _checkWallet(data.walletId);
+        var shouldSend = false;
 
-    var _handleData = function(senderId, data, isInbound) {
+        var w   = $rootScope.wallet;
+        var recipients, pkr = w.publicKeyRing;
+        var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
+        if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
+          console.log('### BROADCASTING PKR');
+          recipients = null;
+          shouldSend = true;
+        }
+        else if (isInbound  && !data.isBroadcast) {
+          // always replying  to connecting peer
+          console.log('### REPLYING PKR TO:', senderId);
+          recipients = senderId;
+          shouldSend = true;
+        }
 
-      switch(data.type) {
-        case 'publicKeyRing':
-          _handlePublicKeyRing(senderId, data, isInbound);
-          break;
-        case 'txProposals':
-          _handleTxProposals(senderId, data, isInbound);
-          break;
-        case 'abort':
-          disconnect();
-          _refreshUx();
-          break;
-      }
-    };
-    var _setupHandlers = function () {
-      var cp = $rootScope.cp;
-      cp.on('networkChange', _handleNetworkChange);
-      cp.on('data', _handleData);
-    };
+        if (shouldSend) {
+          w.sendPublicKeyRing(recipients);
+        }
+        _refreshUx();
+      };
 
-    // public methods
-    var init = function(cb) {
-      var cp = $rootScope.cp = new copay.Network({
-        apiKey: config.p2pApiKey,
-        debug:  config.p2pDebug,
-        maxPeers: config.maxPeers,    // TODO: This should be on wallet configuration
-      }); 
-      _setupHandlers();
+      var _handleTxProposals = function(senderId, data, isInbound) {
+        _checkWallet(data.walletId);
 
-      cp.start(function(peerId) {
-        return cb();
-      });
+        var shouldSend = false;
+        var w   = $rootScope.wallet;
+        console.log('RECV TXPROPOSAL:',data); //TODO
+
+        var recipients;
+        var inTxProposals = copay.TxProposals.fromObj(data.txProposals);
+        var mergeInfo = w.txProposals.merge(inTxProposals, true);
+        if ( mergeInfo.merged  && !data.isBroadcast) { 
+          console.log('### BROADCASTING txProposals');
+          recipients = null;
+          shouldSend = true;
+        }
+        else if (isInbound  && !data.isBroadcast) {
+          // always replying  to connecting peer
+          console.log('### REPLYING txProposals TO:', senderId);
+          recipients = senderId;
+          shouldSend = true;
+        }
+
+        if (shouldSend) {
+          w.sendTxProposals(recipients);
+        }
+      };
+
+      var _handleData = function(senderId, data, isInbound) {
+
+        switch(data.type) {
+          case 'publicKeyRing':
+            _handlePublicKeyRing(senderId, data, isInbound);
+            break;
+          case 'txProposals':
+            _handleTxProposals(senderId, data, isInbound);
+            break;
+          case 'abort':
+            disconnect();
+            _refreshUx();
+            break;
+        }
+      };
+
+      // public methods
+      var init = function(cb) {
+        if (!$rootScope.wallet) {
+          // create an empty Wallet
+          $rootScope.wallet = new copay.Wallet(config);
+        }
+        var net = $rootScope.wallet.network;
+        net.on('networkChange', _handleNetworkChange);
+        net.on('data', _handleData);
+        net.start(function(peerId) {
+          return cb();
+        });
     };
 
     var disconnect = function() {
-      if ($rootScope.cp) {
-        $rootScope.cp.disconnect();
+      var w   = $rootScope.wallet;
+      var net = w.network;
+
+      if (net) {
+        net.disconnect();
       }
       closeWallet();
-      Storage.remove('peerData'); 
-      $rootScope.isLogged = false;
     };
 
     var connect = function(peerId, openCallback, failCallback) {
-      if ($rootScope.cp) {
-        $rootScope.cp.connectTo(peerId, openCallback, function () {
+      if ($rootScope.wallet.network) {
+        $rootScope.wallet.network.connectTo(peerId, openCallback, function () {
           disconnect();
           failCallback();
         });
@@ -220,16 +183,21 @@ console.log('[network.js.178:pkr:]',pkr); //TODO
         return failCallback();
     };
 
+    var sendTxProposals = function(recipients) {
+      var w   = $rootScope.wallet;
+      w.sendTxProposals(recipients);
+    };
+
     return {
       init: init,
       connect: connect,
       disconnect: disconnect,
-      sendTxProposals: sendTxProposals,
 
-// TODO Move to Wallet.
       createWallet: createWallet,
       openWallet: openWallet,
       storeOpenWallet: storeOpenWallet,
+
+      sendTxProposals: sendTxProposals,
     } 
   });
 
