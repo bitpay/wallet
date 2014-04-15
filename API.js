@@ -58,15 +58,15 @@ API.prototype._command = function(command, args, callback) {
     var argTypes = API.prototype[command].argTypes;
     API._coerceArgTypes(args, argTypes)
     if (!API._checkArgTypes(command, args))
-      throw new Error('Invalid arguments');
+      throw new Error('invalid arguments');
   }
 
-  if (typeof self[command] == 'function') {
+  if (typeof self["_cmd_" + command] == 'function') {
     var f = API.prototype[command];
     if (f.argTypes[f.argTypes.length-1][1] == 'function')
-      return self[command].apply(self, args.concat([callback]));
+      return self["_cmd_" + command].apply(self, args.concat([callback]));
     else
-      return callback(null, self[command].apply(self, args));
+      return callback(null, self["_cmd_" + command].apply(self, args));
   };
   
   return callback(new Error('invalid command'));
@@ -89,41 +89,48 @@ API._checkArgTypes = function(command, args) {
   return true;
 };
 
-API.prototype.echo = function echo(str, callback) {
+function decorate(command, argTypes) {
+  var d = function() {
+    API.prototype._command.call(this, command, Array.prototype.slice.call(arguments, 0));
+  };
+
+  d.argTypes = argTypes;
+
+  return d;
+};
+
+API.prototype._cmd_echo = function(str, callback) {
   var self = this;
 
   return callback(null, str);
 };
 
-API.prototype.echo.argTypes =
-  [
+API.prototype.echo = decorate('echo', [
   ['str', 'string'],
   ['callback', 'function']
-  ];
+  ]);
 
-API.prototype.echoNumber = function echoNumber(num, callback) {
+API.prototype._cmd_echoNumber = function(num, callback) {
   var self = this;
 
   return callback(null, num);
 };
 
-API.prototype.echoNumber.argTypes =
-  [
+API.prototype.echoNumber = decorate('echoNumber', [
   ['num', 'number'],
   ['callback', 'function']
-  ];
+  ]);
 
-API.prototype.echoObject = function echoNumber(obj, callback) {
+API.prototype._cmd_echoObject = function(obj, callback) {
   var self = this;
 
   return callback(null, obj);
 };
 
-API.prototype.echoObject.argTypes =
-  [
+API.prototype.echoObject = decorate('echoObject', [
   ['obj', 'object'],
   ['callback', 'function']
-  ];
+  ]);
 
 /*
 API.prototype.getBalance = function(callback) {
@@ -138,7 +145,7 @@ API.prototype.getBalance.argTypes =
   ];
 */
 
-API.prototype.getArgTypes = function getArgTypes(command, callback) {
+API.prototype._cmd_getArgTypes = function(command, callback) {
   var self = this;
 
   if (command[0] == '_' || typeof API.prototype[command] != 'function')
@@ -149,13 +156,12 @@ API.prototype.getArgTypes = function getArgTypes(command, callback) {
   return callback(null, argTypes);
 };
 
-API.prototype.getArgTypes.argTypes =
-  [
+API.prototype.getArgTypes = decorate('getArgTypes', [
   ['command', 'string'],
   ['callback', 'function']
-  ];
+  ]);
 
-API.prototype.getCommands = function getCommands(callback) {
+API.prototype._cmd_getCommands = function(callback) {
   var self = this;
 
   var fs = [];
@@ -169,29 +175,26 @@ API.prototype.getCommands = function getCommands(callback) {
   return callback(null, fs);
 };
 
-API.prototype.getCommands.argTypes =
-  [
+API.prototype.getCommands = decorate('getCommands', [
   ['callback', 'function']
-  ];
+  ]);
 
-API.prototype.getPublicKeyRingId = function getPublicKeyRingId(callback) {
+API.prototype._cmd_getPublicKeyRingId = function(callback) {
   var self = this;
 
   return callback(null, self.wallet.publicKeyRing.walletId);
 };
 
-API.prototype.getPublicKeyRingId.argTypes =
-  [
+API.prototype.getPublicKeyRingId = decorate('getPublicKeyRingId', [
   ['callback', 'function']
-  ];
+  ]);
 
-API.prototype.help = function help(callback) {
-  this.getCommands.apply(this, arguments);
+API.prototype._cmd_help = function(callback) {
+  this._cmd_getCommands.apply(this, arguments);
 };
 
-API.prototype.help.argTypes =
-  [
+API.prototype.help = decorate('help', [
   ['callback', 'function']
-  ];
+  ]);
 
 module.exports = require('soop')(API);
