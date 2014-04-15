@@ -4,18 +4,20 @@ var imports = require('soop').imports();
 //var buffertools = imports.buffertools || require('buffertools');
 var parent     = imports.parent || require('./Plain');
 
+var id = 0;
 function Storage() {
+  this.__uniqueid = ++id;
 }
 Storage.parent = parent;
 
 
-var passphrase = null;
+var pps = {};
 Storage.prototype._getPassphrase = function() {
-  return passphrase;
+  return pps[this.__uniqueid];
 }
 
 Storage.prototype._setPassphrase = function(password) {
-  passphrase = password;
+  pps[this.__uniqueid] = password;
 }
 
 Storage.prototype._encrypt = function(data) {
