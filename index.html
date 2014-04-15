@@ -152,14 +152,13 @@
       
         <div class="row">
           <div class="large-12 columns">
-            <h2>Pending Transactions <small>({{txsoutput.length}})</small></h2>
+            <h3>Pending Transactions <small>({{txsoutput.length}})</small></h3>
             <div class="panel pending" ng-repeat="txp in txsoutput ">
               {{txp}}
               <div class="row">
                 <p class="large-5 columns"> Address 1</p>
                 <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
                 <p class="large-5 columns"> Address 2</p>
-                <p>Transaction description</p>
                 <div class="large-12 columns m0">
                   <div class="line"></div>
                   <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
@@ -168,28 +167,39 @@
                 </div>
               </div> <!-- end of row -->
             </div> <!-- end of pending -->
+            <div class="line-dashed-h"></div>
           </div>
+
           <div class="large-12 columns">
-            <h2>Last Transactions</h2>
+            <h3>Last Transactions</h3>
             <div class="panel">
               <div class="row">
-                <p class="large-5 columns"> Address 1</p>
-                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Adress 2</p>
+                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
+                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2 <small class="right"> 1231 BTC </small></p>
+                <span class="panel-res panel-sign">
+                  <i class="fi-check size-16"></i>
+                </span>
               </div>
             </div>
             <div class="panel">
               <div class="row">
-                <p class="large-5 columns"> Address 1</p>
-                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Adress 2</p>
+                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
+                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2 <small class="right"> 1231 BTC </small></p>
+                <span class="panel-res panel-sign">
+                  <i class="fi-check size-16"></i>
+                </span>
               </div>
             </div>
             <div class="panel">
               <div class="row">
-                <p class="large-5 columns"> Address 1</p>
-                <i class="large-2 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Adress 2</p>
+                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
+                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
+                <p class="large-5 columns"> Adress 2 <small class="right"> 1231 BTC </small></p>
+                <span class="panel-res panel-ignore">
+                  <i class="fi-x size-16"></i>
+                </span>
               </div>
             </div>
           </div>
