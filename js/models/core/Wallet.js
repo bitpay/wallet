@@ -145,7 +145,6 @@ WalletFactory.prototype.create = function(config, opts) {
   var w = new Wallet(config);
   w.create(opts);
   w.store();
-  this.addWalletId(w.id);
   return w;
 };
 
@@ -160,21 +159,22 @@ WalletFactory.prototype.remove = function(walletId) {
 
 WalletFactory.prototype.addWalletId = function(walletId) {
   var ids = this.getWalletIds();
-  if (ids.indexOf(walletId) == -1) return;
-  storage.set('walletIds', (ids ? ids + ',' : '') + walletId);
+  if (ids.indexOf(walletId) !== -1) return;
+  ids.push(walletId);
+  this.storage.setGlobal('walletIds', ids);
 };
 
 WalletFactory.prototype._delWalletId = function(walletId) {
   var ids = this.getWalletIds();
   var index = ids.indexOf(walletId);
-  if (index == -1) return;
+  if (index === -1) return;
   ids.splice(index, 1); // removes walletId
-  this.storage.set('walletIds', ids.join(','));
+  this.storage.setGlobal('walletIds', ids);
 };
 
 WalletFactory.prototype.getWalletIds = function() {
-  var ids = this.storage.get('walletIds');
-  return ids ? ids.split(',') : [];
+  var ids = this.storage.getGlobal('walletIds');
+  return ids || [];
 };
 
 Wallet.factory = new WalletFactory();
