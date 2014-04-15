@@ -125,6 +125,18 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   });
 };
 
+Wallet.prototype.generateAddress = function() {
+  var addr = this.publicKeyRing.generateAddress();
+  this.store();
+
+  this.network.send(null, {
+    type: 'publicKeyRing',
+    publicKeyRing: this.publicKeyRing.toObj(),
+    walletId: this.id
+  });
+
+  return addr;
+};
 
 // // HERE? not sure
 // Wallet.prototype.cleanPeers = function() {

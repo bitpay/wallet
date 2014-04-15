@@ -15,7 +15,7 @@ angular.module('copay.home').controller('HomeController',
     }
 
     $scope.newAddr = function() {
-      var a = $rootScope.wallet.publicKeyRing.generateAddress();
+      var a = $rootScope.wallet.generateAddress();
       $scope.addrs.push({ addrStr: a.toString('hex') });
     };
 
