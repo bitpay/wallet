@@ -21,47 +21,52 @@ Wallet.prototype._startInterface = function(config) {
   this.storage = new Storage(config.storage);
   this.network = new Network(config.network);
   this.blockchain = new Blockchain(config.blockchain);
+
+  this.networkName = config.networkName;
+  this.requiredCopayers = config.requiredCopayers;
+  this.totalCopayers = config.totalCopayers;
 };
 
 
-Wallet.prototype._createNew = function(config, opts) {
+Wallet.prototype.create = function(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   console.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
 
   this.privateKey = new copay.PrivateKey({
-    networkName: config.networkName
+    networkName: this.networkName
   });
   console.log('\t### PrivateKey Initialized');
 
-  this.publicKeyRing = opts.publicKeyRing || new copay.PublicKeyRing({
-    id: this.id,
-    requiredCopayers: opts.requiredCopayers || config.wallet.requiredCopayers,
-    totalCopayers: opts.totalCopayers || config.wallet.totalCopayers,
-    networkName: config.networkName,
+  this.publicKeyRing = new copay.PublicKeyRing({
+    walletId: this.id,
+    requiredCopayers: opts.requiredCopayers || this.requiredCopayers,
+    totalCopayers: opts.totalCopayers       || this.totalCopayers,
+    networkName: this.networkName,
   });
-  this.publicKeyRing.addCopayer(this.privateKey.getBIP32().extendedPublicKeyString());
-  console.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.id);
 
-  this.txProposals = opts.txProposals || new copay.TxProposals({
+  this.publicKeyRing.addCopayer(this.privateKey.getBIP32().extendedPublicKeyString());
+  console.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.walletId);
+
+  this.txProposals = new copay.TxProposals({
     walletId: this.id,
     publicKeyRing: this.publicKeyRing,
-    networkName: config.networkName,
+    networkName: this.networkName,
   });
   console.log('\t### TxProposals Initialized');
 };
 
 
-Wallet.prototype._checkLoad = function(config, walletId) {
+Wallet.prototype._checkLoad = function(walletId) {
   return (
-    this.storage.get(this.id, 'publicKeyRing') &&
-    this.storage.get(this.id, 'txProposals')   &&
-    this.storage.get(this.id, 'privateKey')
+    this.storage.get(walletId, 'publicKeyRing') &&
+    this.storage.get(walletId, 'txProposals')   &&
+    this.storage.get(walletId, 'privateKey')
   );
 }
 
-Wallet.prototype._load = function(config, walletId) {
-  if (! this._checkLoad(config,walletId)) return;
+Wallet.prototype.load = function(walletId) {
+  if (! this._checkLoad(walletId)) return;
 
 
   this.id = walletId;
@@ -106,10 +111,7 @@ Wallet.prototype.sendTxProposals = function(recipients) {
 };
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  console.log('### SENDING publicKeyRing TO:', recipients||'All');
-
-console.log('[Wallet.js.100]', this.publicKeyRing.toObj()); //TODO
-
+  console.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
 
   this.network.send(recipients, { 
     type: 'publicKeyRing', 
@@ -124,19 +126,6 @@ console.log('[Wallet.js.100]', this.publicKeyRing.toObj()); //TODO
 //   this.storage.remove('peerData'); 
 // };
 //
-// CONSTRUCTORS
-Wallet.read = function(config, walletId) {
-  var w = new Wallet(config);
-  w._load(config, walletId);
-  return w;
-};
-
-Wallet.create = function(config, opts) {
-  var w = new Wallet(config);
-  w._createNew(config, opts);
-
-  return w;
-};
 
 Wallet.getRandomId = function() {
   var r = buffertools.toHex(coinUtil.generateNonce());
@@ -153,7 +142,8 @@ var WalletFactory = function() {
 };
 
 WalletFactory.prototype.create = function(config, opts) {
-  var w = new Wallet.create(config, opts);
+  var w = new Wallet(config);
+  w.create(opts);
   w.store();
   this.addWalletId(w.id);
   return w;

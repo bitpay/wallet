@@ -4,14 +4,15 @@ angular.module('copay.send').controller('SendController',
   function($scope, $rootScope, $location, Network) {
     $scope.title = 'Send';
 
-    if (!$rootScope.peerId) {
+    if (!$rootScope.wallet.id) {
       $location.path('signin');
     }
 
 
     $scope.sendTest = function() {
-      var pkr  = $rootScope.publicKeyRing;
-      var txp  = $rootScope.txProposals;
+      var w    = $rootScope.wallet;
+      var pkr  = w.publicKeyRing;
+      var txp  = w.txProposals;
       var opts = {remainderOut: { address: pkr.generateAddress(true).toString() }};
 
       // From @cmgustavo's wallet
@@ -31,7 +32,7 @@ console.log('[send.js.29:txp:] BEFORE',txp); //TODO
         '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
         '123456789', 
         unspentTest,
-        $rootScope.privateKey,
+        w.privateKey,
         opts
       );
 console.log('[send.js.29:txp:] READY:',txp); //TODO

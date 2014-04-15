@@ -39,16 +39,16 @@ angular.module('copay.network')
 
       // TODO -> probably not in network.js
       var createWallet = function(walletId) {
-console.log('[network.js.41:walletId:]',walletId); //TODO
-        var w = new copay.Wallet.create(config, {id: walletId});
+        var w =  $rootScope.wallet || new copay.Wallet(config);
+        w.create({id: walletId});
         w.store();
         $rootScope.wallet   = w;
         console.log('createWallet ENDED'); //TODO
       };
 
       var openWallet = function (walletId) {
-
-        var w = new copay.Wallet.read(config, walletId);
+        var w = $rootScope.wallet || new copay.Wallet(config);
+        w.load(walletId);
         if (w && w.publicKeyRing && w.privateKey) {
           console.log('### WALLET OPENED:', w.walletId);
           $rootScope.wallet   = w;
@@ -58,13 +58,14 @@ console.log('[network.js.41:walletId:]',walletId); //TODO
 
       var closeWallet = function() {
         var w   = $rootScope.wallet;
-        w.store();
+        if (w && w.id)
+          w.store();
 
         console.log('### CLOSING WALLET');
         delete $rootScope['wallet'];
       };
 
-      var _checkWallet = function(walletId, allowChange) {
+      var _checkWallet = function(walletId) {
         console.log('[network.js.79:_checkWallet:]',walletId); //TODO
 
         if ($rootScope.wallet && $rootScope.wallet.id === walletId) 
@@ -73,7 +74,6 @@ console.log('[network.js.41:walletId:]',walletId); //TODO
         if ($rootScope.wallet && $rootScope.wallet.id  && $rootScope.wallet.id !== walletId) {
             throw new Error('message to wrong walletID');
         }
-
       
         if (!openWallet(walletId)) {
           createWallet(walletId);

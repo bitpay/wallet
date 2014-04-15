@@ -23,8 +23,6 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.open = function(walletId) {
       $scope.loading = true;
-
-console.log('[signin.js.28:walletId:]',walletId); //TODO
       if (Network.openWallet(walletId)) {
         Network.init(function() {
           $location.path('peer');
