@@ -275,7 +275,7 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
     }
     if (!haveIt) {
       if (self.isComplete()) {
-        console.log('[PublicKeyRing.js.318] REPEATED KEY', epk); //TODO
+        //console.log('[PublicKeyRing.js.318] REPEATED KEY', epk); //TODO
         throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
       }
       self.copayersBIP32.push(new BIP32(epk));

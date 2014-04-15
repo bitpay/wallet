@@ -1,17 +1,18 @@
 'use strict';
 
-var imports = require('soop').imports();
+var imports     = require('soop').imports();
 
-var bitcore = require('bitcore');
-var coinUtil = bitcore.util;
+var bitcore     = require('bitcore');
+var coinUtil    = bitcore.util;
 var buffertools = bitcore.buffertools;
-var http = require('http');
+var Builder     = bitcore.TransactionBuilder;
+var http        = require('http');
 
-var Storage = imports.Storage;
-var Network = imports.Network;
-var Blockchain = imports.Blockchain;
+var Storage     = imports.Storage;
+var Network     = imports.Network;
+var Blockchain  = imports.Blockchain;
 
-var copay = copay || require('../../../copay');
+var copay       = copay || require('../../../copay');
 
 function Wallet(config) {
   this._startInterface(config);
@@ -35,6 +36,7 @@ Wallet.prototype._startInterface = function(config) {
 
 
 Wallet.prototype.create = function(opts) {
+  opts = opts || {};
   this.id = opts.id || Wallet.getRandomId();
   this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
 
@@ -55,7 +57,6 @@ Wallet.prototype.create = function(opts) {
 
   this.txProposals = new copay.TxProposals({
     walletId: this.id,
-    publicKeyRing: this.publicKeyRing,
     networkName: this.networkName,
   });
   this.log('\t### TxProposals Initialized');
@@ -63,11 +64,11 @@ Wallet.prototype.create = function(opts) {
 
 
 Wallet.prototype._checkLoad = function(walletId) {
-  return (
-    this.storage.get(walletId, 'publicKeyRing') &&
+  var ret = this.storage.get(walletId, 'publicKeyRing') &&
     this.storage.get(walletId, 'txProposals')   &&
     this.storage.get(walletId, 'privateKey')
-  );
+  ;
+  return ret;
 }
 
 Wallet.prototype.load = function(walletId) {
@@ -136,6 +137,86 @@ Wallet.prototype.generateAddress = function() {
   });
 
   return addr;
+};
+
+Wallet.prototype.getTxProposals = function() {
+  var ret = [];
+  this.txProposals.txps.forEach(function(txp) {
+    var i = {txp:txp};
+    i.signedByUs = txp.signedBy[this.privateKey.id]?true:false;
+    ret.push(i);
+  });
+
+  return ret;
+};
+
+
+Wallet.prototype.addSeenToTxProposals = function() {
+  var ret=false;
+  this.txProposals.txps.forEach(function(txp) {
+    if (!txp.seenBy[this.privateKey.id]) {
+      txp.seenBy[this.privateKey.id] = Date.now();
+      ret = true;
+    }
+  });
+  return ret;
+};
+
+
+Wallet.prototype.getAddresses = function() {
+  return this.publicKeyRing.getAddresses();
+};
+
+Wallet.prototype.getAddressesStr = function() {
+  var ret = [];
+  this.publicKeyRing.getAddresses().forEach(function(a) {
+    ret.push(a.toString());
+  });
+  return ret;
+};
+
+
+
+Wallet.prototype.listUnspent = function(cb) {
+  this.blockchain.listUnspent(this.getAddressesStr(), cb);
+};
+
+Wallet.prototype.createTx = function(toAddress, amountSatStr, utxos, opts) {
+  var pkr  = this.publicKeyRing; 
+  var priv = this.privateKey;
+  opts = opts || {};
+
+  var amountSat = bitcore.bignum(amountSatStr);
+
+  if (! pkr.isComplete() ) {
+    throw new Error('publicKeyRing is not complete');
+  }
+
+  if (!opts.remainderOut) {
+    opts.remainderOut ={ address: pkr.generateAddress(true).toString() };
+  };
+
+  var b = new Builder(opts)
+    .setUnspent(utxos)
+    .setHashToScriptMap(pkr.getRedeemScriptMap())
+    .setOutputs([{address: toAddress, amountSat: amountSat}])
+    ;
+
+  var signRet;  
+  if (priv) {
+    b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
+  }
+  var me = {};
+  if (priv) me[priv.id] = Date.now();
+
+  this.txProposals.add({
+    signedBy: priv && b.signaturesAdded ? me : {},
+    seenBy:   priv ? me : {},
+    builder: b,
+  });
+};
+
+Wallet.prototype.sign = function(txp) {
 };
 
 // // HERE? not sure

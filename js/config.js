@@ -5,17 +5,19 @@ var config = {
   network: {
     apiKey: 'lwjd5qra8257b9',
     maxPeers: 3,
-    debug: 0,
+    debug: 3,
   },
   wallet: {
     requiredCopayers: 2,
     totalCopayers: 3,
   },
-  insight: {
-    host: 'localhost',
-    port: 3001
+  blockchain: {
+    host: 'test.insight.is',
+    port: 80
+    // host: 'localhost',
+    // port: 3001
   },
-  verbose: 0,
+  verbose: 1,
 };
 
 var log = function () {

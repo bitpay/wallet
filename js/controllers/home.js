@@ -10,13 +10,13 @@ angular.module('copay.home').controller('HomeController',
       $location.path('signin');
     }
     else {
-      $scope.addrs = $rootScope.wallet.publicKeyRing.getAddresses();
+      $scope.addrs = $rootScope.wallet.getAddressesStr();
       $scope.selectedAddr = $scope.addrs[0];
     }
 
     $scope.newAddr = function() {
       var a = $rootScope.wallet.generateAddress();
-      $scope.addrs.push({ addrStr: a.toString('hex') });
+      $scope.addrs.push({ addrStr: a.toString() });
     };
 
     $scope.selectAddr = function(addr) {

@@ -114,8 +114,10 @@ angular.module('copay.network')
         var recipients;
         var inTxProposals = copay.TxProposals.fromObj(data.txProposals);
         var mergeInfo = w.txProposals.merge(inTxProposals, true);
-        if ( mergeInfo.merged  && !data.isBroadcast) { 
-          log('### BROADCASTING txProposals');
+
+        var addSeen = w.addSeenToTxProposals();
+        if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
+          log('### BROADCASTING txProposals. ' );
           recipients = null;
           shouldSend = true;
         }
