@@ -98,10 +98,17 @@
 
     <script type="text/ng-template" id="peer.html">
       <div class="row" ng-controller="PeerController" ng-init="init()">
-        <div class="large-6 columns">
-          <h1>I am <p class="text-muted">{{$root.wallet.network.peerId}}</p></h1>
-
-          <ul class="no-bullet">
+        <div class="large-6 columns p70r line-dashed-v">
+          <h3>I am </h3>
+          <div class="row">
+            <div class="large-10 columns p0r">
+              <p class="panel share-wallet">{{$root.wallet.network.peerId}}</p>
+            </div>
+            <div class="large-2 columns">
+              <p class="panel panel-sign"> <i class="fi-page-copy size-22"></i> </p>
+            </div>
+          </div>
+          <ul class="no-bullet" style="font-size: 0.7rem;">
             <li> [DEBUG] Pubkeys that you have: {{$root.wallet.publicKeyRing.registeredCopayers()}} 
             <li> [DEBUG] WalletId: {{$root.wallet.id}} 
             <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.wallet.publicKeyRing.copayersBIP32">
@@ -109,16 +116,19 @@
             </li>
           </ul>
         </div>
-        <div class="large-6 columns">
+        <div class="large-6 columns p70l">
           <h3 class="panel-title">Copayers ({{$root.wallet.network.connectedPeers.length}}/{{$root.wallet.publicKeyRing.requiredCopayers}})</h3>
           <ul class="no-bullet">
             <li class="panel" ng-repeat="copayer in $root.connectedPeers">
               <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
               <span ng-if="copayer != $root.peerId">{{copayer}}</span>
+              <span>
+                  <i class="fi-check size-16 panel-sign right p5h br100"></i>
+              </span>
             </li>
           </ul>
           <div class="text-center">
-            <button href="#/home" class="button secondary round large expand">Go to home</button>
+            <button href="#/home" class="button secondary round right">Go to home</button>
           </div>
         </div>
       </div>
