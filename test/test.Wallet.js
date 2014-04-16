@@ -4,7 +4,7 @@ var chai = chai || require('chai');
 var should = chai.should();
 var copay = copay || require('../copay');
 var Wallet = require('soop').load('../js/models/core/Wallet', {
-  Storage: require('./FakeStorage'),
+  Storage: require('./mocks/FakeStorage'),
   Network: copay.WebRTC,
   Blockchain: copay.Insight
 });
