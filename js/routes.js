@@ -12,6 +12,9 @@ angular
       .when('/signin', {
         templateUrl: 'signin.html' 
       })
+      .when('/setup', {
+        templateUrl: 'setup.html' 
+      })
       .when('/home', {
         templateUrl: 'home.html'
       })
