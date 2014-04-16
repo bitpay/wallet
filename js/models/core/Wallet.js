@@ -115,16 +115,15 @@ Wallet.prototype._handleNetworkChange = function(newPeer) {
   this.sendTxProposals(newPeer);
 };
 
-Wallet.prototype.netStart = function(cb) {
+Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
-  net.on('networkChange', function() { self._handleNetworkChange() } );
+  net.on('networkChange', function() { self._handleNetworkChange(); } );
   net.on('data',  function() { self._handleData();});
   net.on('open', function() {});  // TODO
   net.on('close', function() {}); // TODO
   net.start(function(peerId) {
     self.emit('created');
-    return cb();
   });
 };
 
