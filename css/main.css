@@ -72,6 +72,7 @@ body {
 }
 
 .panel {
+  color: #333;
   background: #FFFFFF;
   padding: 0.7rem 1rem;
   border:0;
@@ -79,6 +80,11 @@ body {
 
 .panel:hover {
   background: #efefef;
+  color: #111;
+}
+
+.home .panel {
+  font-size: 0.9rem;
 }
 
 .transactions .panel {
@@ -173,4 +179,4 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .size-48 { font-size: 48px; }
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
-
+.m10t {margin-top: 10px;}
