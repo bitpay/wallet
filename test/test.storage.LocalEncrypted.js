@@ -5,19 +5,19 @@ if (typeof process === 'undefined' || !process.version) {
   var chai = chai || require('chai');
   var should = chai.should();
   var copay = copay || require('../copay');
-  var Encrypted = copay.StorageEncrypted;
+  var LocalEncrypted = copay.StorageLocalEncrypted;
 
-  describe('Storage/Encrypted model', function() {
+  describe('Storage/LocalEncrypted model', function() {
     var wid = 'fake-wallet-id';
-    var s = new Encrypted();
+    var s = new LocalEncrypted();
     s._setPassphrase('mysupercoolpassword');
 
     it('should create an instance', function() {
-      var s = new Encrypted();
+      var s = new LocalEncrypted();
       should.exist(s);
     });
     it('should fail when encrypting without a password', function() {
-      var s = new Encrypted();
+      var s = new LocalEncrypted();
       (function(){s.set(wid, 'x', 1);}).should.throw();
     });
     it('should be able to encrypt and decrypt', function() {

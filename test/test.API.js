@@ -2,7 +2,8 @@
 
 var chai           = chai || require('chai');
 var should         = chai.should();
-var API            = API || require('../API');
+var copay          = copay || require('../copay');
+var API            = API || copay.API;
 
 describe('API', function() {
 
