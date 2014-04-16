@@ -14,7 +14,7 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     var _setupUxHandlers =  function(w) {
-      w.on('open', function(){
+      w.on('created', function(){
         $location.path('peer');
         $rootScope.wallet = w;
         $rootScope.$digest();
