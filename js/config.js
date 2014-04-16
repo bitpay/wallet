@@ -10,6 +10,8 @@ var config = {
   wallet: {
     requiredCopayers: 2,
     totalCopayers: 3,
+    spendUnconfirmed: 1,
+    verbose: 1,
   },
   blockchain: {
     host: 'test.insight.is',
