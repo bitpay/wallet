@@ -131,8 +131,7 @@ Network.prototype._addPeer = function(peerId, isInbound) {
   }
 };
 
-Network.prototype._setupConnectionHandlers = function(
-  dataConn, isInbound, openCallback, closeCallback) {
+Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
   var self=this;
 
@@ -144,7 +143,7 @@ Network.prototype._setupConnectionHandlers = function(
 
       self._addPeer(dataConn.peer, isInbound);
       self._notify( isInbound ? dataConn.peer : null);
-      if (typeof openCallback === 'function') openCallback();
+      this.emit('open');
     }
   });
 
@@ -161,7 +160,7 @@ Network.prototype._setupConnectionHandlers = function(
     console.log('### CLOSE RECV FROM:', dataConn.peer); 
 
     self._onClose(dataConn.peer);
-    if (typeof closeCallback === 'function') closeCallback();
+    this.emit('close');
   });
 };
 
@@ -173,7 +172,6 @@ Network.prototype._notify = function(newPeer) {
 Network.prototype._setupPeerHandlers = function(openCallback) {
   var self=this;
   var p = this.peer;
-
 
   p.on('open', function(peerId) {
     self.peerId = peerId;
@@ -218,8 +216,6 @@ Network.prototype.start = function(openCallback) {
 
 Network.prototype._sendToOne = function(peerId, data, cb) {
   if (peerId !== this.peerId) {
-console.log('[WebRTC.js.222:peerId:]',peerId, data); //TODO
-
     var conns = this.peer.connections[peerId];
 
     if (conns) {
@@ -257,7 +253,7 @@ Network.prototype.send = function(peerIds, data, cb) {
     self._sendToOne(peerIds, data, cb);
 };
 
-Network.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
+Network.prototype.connectTo = function(peerId) {
   var self = this;
 
   console.log('### STARTING TO CONNECT TO:' + peerId );
@@ -269,7 +265,7 @@ Network.prototype.connectTo = function(peerId, openCallback, closeCallback ) {
     metadata: { message: 'hi copayer!' }
   });
 
-  self._setupConnectionHandlers(dataConn, false, openCallback, closeCallback);
+  self._setupConnectionHandlers(dataConn, false);
 };
 
 

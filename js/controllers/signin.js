@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.signin').controller('SigninController',
-  function($scope, $rootScope, $location, Network) {
+  function($scope, $rootScope, $location, walletFactory) {
 
 //    var peerData = Storage.get($rootScope.walletId, 'peerData');
 //    $rootScope.peerId = peerData ? peerData.peerId : null;
@@ -10,42 +10,45 @@ angular.module('copay.signin').controller('SigninController',
     $scope.selectedWalletId = false;
 
     $scope.listWalletIds = function() {
-      return copay.Wallet.factory.getWalletIds();
+      return walletFactory.getWalletIds();
+    };
+
+    var _setupUxHandlers =  function(w) {
+      w.on('open', function(){
+        $location.path('peer');
+        $rootScope.wallet = w;
+        $rootScope.$digest();
+      });
+      w.on('openError', function(){
+        $scope.loading = false;
+        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
+        $location.path('signin');
+      });
     };
 
     $scope.create = function() {
+console.log('[signin.js.42:create:]'); //TODO
       $scope.loading = true;
 
-      Network.createWallet();
-      Network.init(function() {
-        $location.path('peer');
-        $rootScope.$digest();
-      });
+      var w = walletFactory.create();
+      _setupUxHandlers(w);
+      w.netStart();
     };
 
     $scope.open = function(walletId) {
       $scope.loading = true;
 
-      Network.openWallet(walletId);
-
-      if ($rootScope.wallet && $rootScope.wallet.id) {
-        Network.init(function() {
-          $location.path('peer');
-          $rootScope.$digest();
-        });
-      }
-      else {
-        $scope.loading = false;
-        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
-        $location.path('signin');
-      }
+      var w = walletFactory.open(walletId);
+      _setupUxHandlers(w);
+      w.netStart();
     };
 
     $scope.join = function(cid) {
+console.log('[signin.js.42:join:]'); //TODO
       $scope.loading = true;
 
       if (cid) {
-        Network.init(function() {
+        Network.init(null, function() {
           Network.connect(cid, 
             function() {
               $location.path('peer');

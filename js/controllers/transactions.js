@@ -24,4 +24,11 @@ angular.module('copay.transactions').controller('TransactionsController',
     ];
 
     $scope.txsoutput = $rootScope.wallet.getTxProposals();
+
+    $scope.sign = function (ntxid) {
+      var w = $rootScope.wallet;
+      var ret = w.sign(ntxid);
+console.log('[transactions.js.28:ret:]',ret); //TODO
+      $scope.txsoutput = $rootScope.wallet.getTxProposals();
+    };
   });
