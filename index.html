@@ -209,21 +209,25 @@
    <!-- SEND -->
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
-      <h2>{{title}}</h2>
-        <button class="button primary expand round" type="button" ng-click="sendTest()">sendTest</button>
-        <form>
-          <label for="address">To
-            <input type="text" id="address" placeholder="Send to">
-          </label>
-          <label for="amount">Amount
-            <input type="text" id="amount" placeholder="Amount">
-            <select class="form-control">
-              <option>mBTC</option>
-              <option>BTC</option>
-            </select>
-          </label>
-          <button type="submit" class="btn btn-default">send</button>
-        </form>
+      <h3>{{title}}</h3>
+        <div class="row">
+          <div class="large-8 columns">
+            <form>
+              <label for="address">To
+                <input type="text" id="address" placeholder="Send to">
+              </label>
+              <label for="amount">Amount
+                <input type="text" id="amount" placeholder="Amount">
+                <select class="form-control">
+                  <option>mBTC</option>
+                  <option>BTC</option>
+                </select>
+              </label>
+              <button class="button primary round" type="button" ng-click="sendTest()">sendTest</button>
+              <button type="submit" class="button secondary round right">send</button>
+            </form>
+          </div>
+        </div>
       </div>
     </script>
 

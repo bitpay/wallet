@@ -77,6 +77,10 @@ body {
   border:0;
 }
 
+.panel:hover {
+  background: #efefef;
+}
+
 .transactions .panel {
   background: #ECECEC;
 }
