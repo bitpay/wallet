@@ -18,8 +18,8 @@ describe('Storage/File', function() {
         callback();
       };
       var Storage = require('soop').load('../js/models/storage/File.js', {fs: fs});
-      var storage = new Storage({filename: 'myfilename', password: 'password'});
-      storage.load(function(err) {
+      var storage = new Storage({password: 'password'});
+      storage.load('myfilename', function(err) {
         done();
       });
     });
@@ -33,8 +33,8 @@ describe('Storage/File', function() {
         callback();
       };
       var Storage = require('soop').load('../js/models/storage/File.js', {fs: fs});
-      var storage = new Storage({filename: 'myfilename', password: 'password'});
-      storage.save(function(err) {
+      var storage = new Storage({password: 'password'});
+      storage.save('myfilename', function(err) {
         done();
       });
     });
@@ -43,45 +43,42 @@ describe('Storage/File', function() {
   describe('#_read', function() {
     it('should return the value of a key', function() {
       var storage = new Storage();
-      storage.data = {'test':'data'};
-      storage._read('test').should.equal('data');
+      storage.data = {'walletId':{'test':'data'}};
+      storage._read('walletId::test').should.equal('data');
     });
   });
 
   describe('#_write', function() {
     it('should save the value of a key and then run save', function(done) {
       var storage = new Storage();
-      storage.save = function(callback) {
-        storage.data['key'].should.equal('value');
+      storage.save = function(walletId, callback) {
+        storage.data[walletId]['key'].should.equal('value');
         callback();
       };
-      storage._write('key', 'value', function() {
+      storage._write('walletId::key', 'value', function() {
         done();
       });
     });
   });
 
   describe('#getGlobal', function() {
-    it('should store a global key', function(done) {
+    it('should call storage._read', function() {
       var storage = new Storage();
-      storage.save = function(callback) {
-        storage.data['key'].should.equal('value');
-        callback();
-      };
-      storage.setGlobal('key', 'value', function() {
-        done();
-      });
+      storage.data = {'walletId':{'test':'test'}};
+      storage._read = sinon.spy();
+      storage.getGlobal('walletId::test');
+      storage._read.calledOnce.should.equal(true);
     });
   });
 
   describe('#setGlobal', function() {
     it('should store a global key', function(done) {
       var storage = new Storage();
-      storage.save = function(callback) {
-        storage.data['key'].should.equal('value');
+      storage.save = function(walletId, callback) {
+        storage.data[walletId]['key'].should.equal('value');
         callback();
       };
-      storage.setGlobal('key', 'value', function() {
+      storage.setGlobal('walletId::key', 'value', function() {
         done();
       });
     });
@@ -90,12 +87,12 @@ describe('Storage/File', function() {
   describe('#removeGlobal', function() {
     it('should remove a global key', function(done) {
       var storage = new Storage();
-      storage.data.key = 'value';
-      storage.save = function(callback) {
-        should.not.exist(storage.data['key']);
+      storage.data = {'walletId':{'key':'value'}};
+      storage.save = function(walletId, callback) {
+        should.not.exist(storage.data[walletId]['key']);
         callback();
       };
-      storage.removeGlobal('key', function() {
+      storage.removeGlobal('walletId::key', function() {
         done();
       });
     });
