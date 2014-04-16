@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('copay.setup').controller('SetupController',
-  function($scope, $rootScope, $location, Network) {
+  function($scope, $rootScope, $location, walletFactory) {
 
     $scope.loading = false;
 
-    $scope.selectedWalletId = false;
     $scope.totalCopayers = config.wallet.totalCopayers;
     $scope.TCValues = [];
     for (var n = 1; n <= config.limits.totalCopayers; n++)
@@ -27,8 +26,18 @@ angular.module('copay.setup').controller('SetupController',
     })
 
     $scope.create = function(totalCopayers, requiredCopayers) {
-      alert(totalCopayers);
-      alert(requiredCopayers);
+      $scope.loading = true;
+      var opts = {
+        requiredCopayers: requiredCopayers,
+        totalCopayers: totalCopayers
+      };
+      var w = walletFactory.create();
+      w.on('open', function(){
+        $location.path('peer');
+        $rootScope.wallet = w;
+        $rootScope.$digest();
+      });
+      w.netStart();
     };
 
   });
