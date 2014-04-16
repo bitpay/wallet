@@ -39,7 +39,6 @@ Wallet.getRandomId = function() {
 };
 
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
-  this.openWalletId(data.walletId);
   this.log('RECV PUBLICKEYRING:',data); 
 
   var shouldSend = false;
@@ -66,7 +65,6 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
 
 Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
-  this.openWalletId(data.walletId);
   this.log('RECV TXPROPOSAL:',data); //TODO
 
   var shouldSend = false;
@@ -94,6 +92,11 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
+
+  if (this.id !== data.walletId) 
+    throw new Error('wrong message received: Bad wallet ID');
+
+
   switch(data.type) {
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
@@ -108,9 +111,13 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleNetworkChange = function(newPeer) {
+
+console.log('[Wallet.js.112:newPeer:]',newPeer); //TODO
   if (!newPeer) return;
 
+console.log('[Wallet.js.112:newPeer:]',newPeer); //TODO
   this.log('#### Setting new PEER:', newPeer);
+  this.sendWalletId(newPeer);
   this.sendPublicKeyRing(newPeer);
   this.sendTxProposals(newPeer);
 };
@@ -118,8 +125,8 @@ Wallet.prototype._handleNetworkChange = function(newPeer) {
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
-  net.on('networkChange', function() { self._handleNetworkChange(); } );
-  net.on('data',  function() { self._handleData();});
+  net.on('networkChange', self._handleNetworkChange.bind(self) );
+  net.on('data',  self._handleData.bind(self) );
   net.on('open', function() {});  // TODO
   net.on('close', function() {}); // TODO
   net.start(function(peerId) {
@@ -150,6 +157,17 @@ Wallet.prototype.sendTxProposals = function(recipients) {
   });
   this.emit('txProposalsUpdated', this.txProposals);
 };
+
+
+Wallet.prototype.sendWalletId = function(recipients) {
+  this.log('### SENDING walletId TO:', recipients||'All', this.walletId);
+
+  this.network.send(recipients, { 
+    type: 'walletId', 
+    walletId: this.id,
+  });
+};
+
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
   this.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
@@ -308,8 +326,13 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 };
 
 Wallet.prototype.connectTo = function(peerId) {
-  this.network.connectTo(peerId);
+  throw new Error('Wallet.connectTo.. not yet implemented!');
 };
+
+Wallet.prototype.disconnect = function() {
+  this.network.disconnect();
+};
+
 // // HERE? not sure
 // Wallet.prototype.cleanPeers = function() {
 //   this.storage.remove('peerData'); 

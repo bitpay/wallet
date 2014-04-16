@@ -5,7 +5,7 @@ var should = chai.should();
 
 var WebRTC = require('../js/models/network/WebRTC');
 var Insight = require('../js/models/blockchain/Insight');
-var FakeStorage = require('./FakeStorage');
+var FakeStorage = require('./mocks/FakeStorage');
 
 var WalletFactory = typeof copay === 'undefined' ? require('soop').load('../js/models/core/WalletFactory',{
   Network: WebRTC,

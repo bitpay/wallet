@@ -103,6 +103,9 @@ Network.prototype._onData = function(data, isInbound) {
     case 'disconnect':
       this._onClose(obj.sender);
       break;
+    case 'walletId':
+      this.emit('walletId', obj.data.walletId);
+      break;
     default:
       this.emit('data', obj.sender, obj.data, isInbound);
   }
@@ -158,7 +161,6 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   dataConn.on('close', function() {
     if (self.closing) return;
     console.log('### CLOSE RECV FROM:', dataConn.peer); 
-
     self._onClose(dataConn.peer);
     this.emit('close');
   });
@@ -166,6 +168,8 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
 Network.prototype._notify = function(newPeer) {
   this._showConnectedPeers();
+
+console.log('[WebRTC.js.172]', newPeer); //TODO
   this.emit('networkChange', newPeer);
 };
 
@@ -269,7 +273,7 @@ Network.prototype.connectTo = function(peerId) {
 };
 
 
-Network.prototype.disconnect = function(peerId, cb) {
+Network.prototype.disconnect = function(cb) {
   var self = this;
   self.closing = 1;
 

@@ -41,7 +41,6 @@ angular.module('copay.header').controller('HeaderController',
         w.disconnect();
         delete $rootScope['wallet'];
         $location.path('signin');
-        $rootScope.$digest();
       }
     };
 
