@@ -102,6 +102,7 @@
           Connecting to wallet...
         </div>
         <div ng-show="!loading">
+          <h2>Create new multisig wallet</h2>
           <div class="row">
             <div class="large-6 columns">
               <h3>Select total number of copayers</h3>
@@ -120,7 +121,9 @@
             </div>
             <div class="large-3 columns">
               <button class="button primary expand round" type="button"
-               ng-click="create(totalCopayers, requiredCopayers)">Create</button>
+               ng-click="create(totalCopayers, requiredCopayers)">
+               Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+              </button>
             </div>
           </div>
         </div>

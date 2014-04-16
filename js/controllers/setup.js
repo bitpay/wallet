@@ -31,11 +31,16 @@ angular.module('copay.setup').controller('SetupController',
         requiredCopayers: requiredCopayers,
         totalCopayers: totalCopayers
       };
-      var w = walletFactory.create();
-      w.on('open', function(){
+      var w = walletFactory.create(opts);
+      w.on('created', function(){
         $location.path('peer');
         $rootScope.wallet = w;
         $rootScope.$digest();
+      });
+      w.on('openError', function(){
+        $scope.loading = false;
+        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
+        $location.path('signin');
       });
       w.netStart();
     };

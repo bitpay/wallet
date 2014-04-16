@@ -22,6 +22,8 @@ function Wallet(opts) {
     self[k] = opts[k];
   });
 
+  console.log('creating '+opts.requiredCopayers+' of '+opts.totalCopayers+' wallet');
+
   this.id = opts.id || Wallet.getRandomId();
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
