@@ -20,6 +20,9 @@ API.prototype._init = function(opts) {
     wallet: {
       requiredCopayers: opts.requiredCopayers || 3,
       totalCopayers: opts.totalCopayers || 5,
+    },
+    storage: {
+      filename: 'copaywallet.json'
     }
   };
 
