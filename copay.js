@@ -16,3 +16,5 @@ module.exports.Wallet = require('soop').load('./js/models/core/Wallet',{
   Storage: StorageLocalPlain,
 });
 
+
+module.exports.API = require('./API');
