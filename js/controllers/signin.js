@@ -46,20 +46,22 @@ console.log('[signin.js.42:create:]'); //TODO
     $scope.join = function(cid) {
 console.log('[signin.js.42:join:]'); //TODO
       $scope.loading = true;
-
-      if (cid) {
-        Network.init(null, function() {
-          Network.connect(cid, 
-            function() {
-              $location.path('peer');
-              $rootScope.$digest();
-            }, function() {
-              $rootScope.flashMessage = { message: 'Connection refussed', type: 'error'};
-              $location.path('home');
-              $rootScope.$digest();
-          });
-        });
-      }
+//
+//       if (cid) {
+//         var w = walletFactory.(walletId);
+        //TODO
+        // Network.init(null, function() {
+        //   Network.connect(cid, 
+        //     function() {
+        //       $location.path('peer');
+        //       $rootScope.$digest();
+        //     }, function() {
+        //       $rootScope.flashMessage = { message: 'Connection refussed', type: 'error'};
+        //       $location.path('home');
+        //       $rootScope.$digest();
+        //   });
+        // });
+//      }
     };
 
     // if (peerData && peerData.peerId && peerData.connectedPeers.length > 0) {
