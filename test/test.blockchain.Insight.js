@@ -61,12 +61,6 @@ describe('Insight model', function() {
       done();
     });
   });
-  it('should return balance', function () {
-    var w = new Insight();
-    var b = w.getBalance(unspent); 
-    should.exist(b);
-    b.should.equal(91);
-  });
   it.skip('should return txid', function (done) {
     var w = new Insight();
     w.sendRawTransaction(rawtx, function(a) { 
