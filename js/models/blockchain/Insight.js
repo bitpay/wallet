@@ -109,8 +109,6 @@ Insight.prototype._request = function(options, callback) {
 
     if (options.method === 'POST') {
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      request.setRequestHeader('Content-length', options.data.length);
-      request.setRequestHeader('Connection', 'close');
       request.send(options.data);
     } else {
       request.send(null);

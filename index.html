@@ -237,8 +237,8 @@ missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerI
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h3>Pending Transactions <small>({{txsoutput.length}})</small></h3>
-            <div class="panel pending" ng-repeat="txp in txsoutput">
+            <h3>Pending Transactions <small>({{txs.length}})</small></h3>
+            <div class="panel pending" ng-repeat="txp in txs">
               {{txp}}
               <div class="row">
                 <p class="large-5 columns"> Address 1</p>

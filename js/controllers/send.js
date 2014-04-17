@@ -15,7 +15,7 @@ angular.module('copay.send').controller('SendController',
 
     $scope.sendTest = function() {
       var w    = $rootScope.wallet;
-      w.createTx( '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', '12345',function() {
+      w.createTx( 'mimoZNLcP2rrMRgdeX5PSnR7AjCqQveZZ4', '12345',function() {
         $rootScope.$digest();
       });
     };
