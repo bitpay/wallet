@@ -46,6 +46,14 @@ console.log('[signin.js.42:create:]'); //TODO
     $scope.join = function(cid) {
 console.log('[signin.js.42:join:]'); //TODO
       $scope.loading = true;
+      walletFactory.connectTo(cid, function(w) {
+console.log('[signin.js.50]'); //TODO
+        _setupUxHandlers(w);
+        w.netStart();
+      });
+    };
+
+
 //
 //       if (cid) {
 //         var w = walletFactory.(walletId);
@@ -62,7 +70,6 @@ console.log('[signin.js.42:join:]'); //TODO
         //   });
         // });
 //      }
-    };
 
     // if (peerData && peerData.peerId && peerData.connectedPeers.length > 0) {
     //   $rootScope.peerId = peerData.peerId;

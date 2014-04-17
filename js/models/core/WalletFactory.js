@@ -60,6 +60,7 @@ WalletFactory.prototype.read = function(walletId) {
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
+  opts.verbose = this.verbose;
 
   var w = new Wallet(opts);
 
@@ -102,6 +103,8 @@ WalletFactory.prototype.create = function(opts) {
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
+  opts.verbose = this.verbose;
+
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
@@ -112,9 +115,44 @@ WalletFactory.prototype.create = function(opts) {
 };
 
 WalletFactory.prototype.open = function(walletId) {
-  if(!WalletFactory.read(walletId)) {
-    WalletFactory.create({id: walletId});
-  }
+  var w = this.read(walletId) || this.create({id: walletId});
+  return w;
+};
+
+WalletFactory.prototype.openRemote = function(peedId) {
+  var s = WalletFactory.storage;
+  opts    = opts || {};
+  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
+
+  opts.privateKey = opts.privateKey ||  new PrivateKey({ networkName: this.networkName });
+  this.log('\t### PrivateKey Initialized');
+
+  var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
+  var totalCopayers =  opts.totalCopayers || this.walletDefaults.totalCopayers;
+
+  opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
+    networkName: this.networkName,
+    requiredCopayers: requiredCopayers,
+    totalCopayers: totalCopayers,
+  });
+  opts.publicKeyRing.addCopayer(opts.privateKey.getBIP32().extendedPublicKeyString());
+  this.log('\t### PublicKeyRing Initialized');
+
+  opts.txProposals = opts.txProposals || new TxProposals({
+    networkName: this.networkName,
+  });
+  this.log('\t### TxProposals Initialized');
+
+  opts.storage = this.storage;
+  opts.network = this.network;
+  opts.blockchain = this.blockchain;
+  opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
+  opts.requiredCopayers = requiredCopayers;
+  opts.totalCopayers = totalCopayers;
+  var w   = new Wallet(opts);
+  w.store();
+  this.addWalletId(w.id);
+  return w;
 };
 
 WalletFactory.prototype.getWalletIds = function() {
@@ -140,6 +178,18 @@ WalletFactory.prototype.addWalletId = function(walletId) {
   if (ids.indexOf(walletId) !== -1) return;
   ids.push(walletId);
   this.storage.setGlobal('walletIds', ids);
+};
+
+
+WalletFactory.prototype.connectTo = function(peerId, cb) {
+  var self=this;
+  self.network.start(function() {
+    self.network.connectTo(peerId)
+    self.network.on('walletId', function(walletId) {
+console.log('[WalletFactory.js.187]'); //TODO
+      return cb(self.open(walletId));
+    });
+  });
 };
 
 module.exports = require('soop')(WalletFactory);
