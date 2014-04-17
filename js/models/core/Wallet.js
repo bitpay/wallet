@@ -101,9 +101,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     this.log('badMessage FROM:', senderId); //TODO
     return;
   }
-
   this.log('[Wallet.js.98]' , data.type); //TODO
-
   switch(data.type) {
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
@@ -127,6 +125,7 @@ Wallet.prototype._handleNetworkChange = function(newPeer) {
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
+  net.removeAllListeners();
   net.on('networkChange', self._handleNetworkChange.bind(self) );
   net.on('data',  self._handleData.bind(self) );
   net.on('open', function() {});  // TODO
