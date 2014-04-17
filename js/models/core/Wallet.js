@@ -285,9 +285,9 @@ Wallet.prototype.getTotalBalance = function(cb) {
 
 Wallet.prototype.getBalance = function(addrs, cb) {
   var balance = 0;
-  this.listUnspent(addrs, function(unspent) {
-    for(var i=0;i<unspent.length; i++) {
-      balance = balance + unspent[i].amount;
+  this.listUnspent(addrs, function(utxos) {
+    for(var i=0;i<utxos.length; i++) {
+      balance = balance + utxos[i].amount;
     }
     if (balance) {
       if (balance === parseInt(balance)) {
@@ -302,11 +302,8 @@ Wallet.prototype.getBalance = function(addrs, cb) {
 };
 
 Wallet.prototype.listUnspent = function(addrs, cb) {
-  if (!addrs) {
-    addrs = this.getAddressesStr();
-  }
-  this.blockchain.listUnspent(addrs, function(unspent) {
-    return cb(unspent);
+  this.blockchain.listUnspent(addrs, function(utxos) {
+    return cb(utxos);
   });
 };
 
@@ -327,7 +324,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
     opts.remainderOut={ address: this.publicKeyRing.generateAddress(true).toString()};
   }
 
-  self.listUnspent(function(utxos) {
+  self.listUnspent(self.getAddressesStr(), function(utxos) {
     // TODO check enough funds, etc.
     self.createTxSync(toAddress, amountSatStr, utxos, opts);
     self.store();
