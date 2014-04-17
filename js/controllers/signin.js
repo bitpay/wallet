@@ -14,11 +14,17 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     var _setupUxHandlers =  function(w) {
-      w.on('created', function(){
+      w.on('created', function() {
         $location.path('peer');
         $rootScope.wallet = w;
         $rootScope.$digest();
       });
+      w.on('refresh', function() {
+
+console.log('[signin.js.23] RECEIVED REFRESH'); //TODO
+        $rootScope.$digest();
+      });
+ 
       w.on('openError', function(){
         $scope.loading = false;
         $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};

@@ -67,7 +67,6 @@ Network.prototype._showConnectedPeers = function() {
 };
 
 Network.prototype._onClose = function(peerId) {
-  console.log('[Network.js.70] _onClose'); //TODO
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
   this._notify();
 };
@@ -160,6 +159,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
   dataConn.on('close', function() {
     if (self.closing) return;
+    self.closing=1;
     console.log('### CLOSE RECV FROM:', dataConn.peer); 
     self._onClose(dataConn.peer);
     this.emit('close');
@@ -168,8 +168,6 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
 Network.prototype._notify = function(newPeer) {
   this._showConnectedPeers();
-
-console.log('[WebRTC.js.172]', newPeer); //TODO
   this.emit('networkChange', newPeer);
 };
 
@@ -210,6 +208,8 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 
 Network.prototype.start = function(openCallback) {
   // Start PeerJS Peer
+  if (this.peer) return openCallback();    // This is for connectTo-> peer is started before
+
   this.peer = new Peer(this.peerId, {
     key: this.apiKey, // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
     debug: this.debug, 

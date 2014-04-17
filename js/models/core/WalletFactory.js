@@ -114,7 +114,10 @@ WalletFactory.prototype.create = function(opts) {
 };
 
 WalletFactory.prototype.open = function(walletId) {
-  var w = this.read(walletId) || this.create({id: walletId});
+  var w = this.read(walletId) || this.create({
+    id: walletId,
+    verbose: this.verbose,
+  });
   return w;
 };
 
