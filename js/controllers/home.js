@@ -32,7 +32,6 @@ angular.module('copay.home').controller('HomeController',
     $scope.newAddr = function() {
       var a = $rootScope.wallet.generateAddress().toString();
       $scope.addrs.push(a);
-
       _getBalance();
       var socket = Socket($scope);
       socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
