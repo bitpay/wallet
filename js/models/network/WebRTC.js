@@ -16,17 +16,18 @@ var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
  */
 
 function Network(opts) {
+  var self = this;
   opts                = opts || {};
   this.peerId         = opts.peerId;
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 5;
+  this.opts = { key: opts.key };
 
   // For using your own peerJs server
-  this.port         = opts.port;
-  this.host         = opts.host;
-  this.path         = opts.path;
-
+  ['port', 'host', 'path', 'debug'].forEach(function(k) {
+    if (opts[k]) self.opts[k]=opts[k];
+  });
   this.connectedPeers = [];
 }
 
@@ -218,14 +219,7 @@ Network.prototype.start = function(openCallback) {
   // Start PeerJS Peer
   if (this.peer) return openCallback();    // This is for connectTo-> peer is started before
 
-  this.peer = new Peer(this.peerId, {
-    key: this.apiKey, // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
-    host: this.host,
-    port: this.port,
-    path: this.path,
-    debug: this.debug, 
-  });
-
+  this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
 };
 
