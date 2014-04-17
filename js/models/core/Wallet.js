@@ -166,7 +166,7 @@ Wallet.prototype.toObj = function() {
   var optsObj = this._optsToObj();
   var walletObj = {
     opts: optsObj,
-    publicKeyring: this.publicKeyRing.toObj(),
+    publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey.toObj()
   };
