@@ -69,7 +69,7 @@ WalletFactory.prototype.read = function(walletId) {
   // JIC: Add our key
   try {
     w.publicKeyRing.addCopayer(
-      w.privateKey.getBIP32().extendedPublicKeyString()
+      w.privateKey.getExtendedPublicKeyString()
     );
   } catch (e) {
     this.log('NOT NECCESARY AN ERROR:', e); //TODO
@@ -94,7 +94,7 @@ WalletFactory.prototype.create = function(opts) {
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getBIP32().extendedPublicKeyString());
+  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString());
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
@@ -110,7 +110,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
-  var w   = new Wallet(opts);
+  var w = new Wallet(opts);
   w.store();
   return w;
 };
@@ -139,7 +139,7 @@ WalletFactory.prototype.openRemote = function(peedId) {
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getBIP32().extendedPublicKeyString());
+  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString());
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({

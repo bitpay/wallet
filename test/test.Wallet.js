@@ -41,7 +41,7 @@ describe('Wallet model', function() {
       requiredCopayers: c.requiredCopayers,
       totalCopayers: c.totalCopayers,
     });
-    c.publicKeyRing.addCopayer(c.privateKey.getBIP32().extendedPublicKeyString());
+    c.publicKeyRing.addCopayer(c.privateKey.getExtendedPublicKeyString());
 
     c.txProposals = new copay.TxProposals({
       networkName: c.networkName,
@@ -87,16 +87,16 @@ describe('Wallet model', function() {
   }
   ];
 
-  var createW2 = function (bip32s) {
+  var createW2 = function (privateKeys) {
     var w = createW();
     should.exist(w);
 
     var pkr =  w.publicKeyRing;
 
     for(var i=0; i<4; i++) {
-      if (bip32s) {
-        var b=bip32s[i];
-        pkr.addCopayer(b?b.extendedPublicKeyString():null);
+      if (privateKeys) {
+        var k=privateKeys[i];
+        pkr.addCopayer(k?k.getExtendedPublicKeyString():null);
       }
       else 
         pkr.addCopayer();

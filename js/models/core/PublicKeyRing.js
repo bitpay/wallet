@@ -40,12 +40,8 @@ function PublicKeyRing(opts) {
  *
  */
 
-PublicKeyRing.PublicBranch = function (index) {
-  return 'm/0/'+index;
-};
-
-PublicKeyRing.ChangeBranch = function (index) {
-  return 'm/1/'+index;
+PublicKeyRing.Branch = function (index, isChange) {
+  return 'm/'+(isChange?1:0)+'/'+index;
 };
 
 PublicKeyRing.fromObj = function (data) {
@@ -137,7 +133,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   var pubKeys = [];
   var l = this.copayersBIP32.length;
   for(var i=0; i<l; i++) {
-    var path = isChange ? PublicKeyRing.ChangeBranch(index) : PublicKeyRing.PublicBranch(index); 
+    var path = PublicKeyRing.Branch(index, isChange); 
     var bip32 = this.copayersBIP32[i].derive(path);
     pubKeys[i] = bip32.eckey.public;
   }
