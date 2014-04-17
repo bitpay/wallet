@@ -9,10 +9,11 @@ angular.module('copay',[
   'copay.transactions',
   'copay.send',
   'copay.backup',
-  'copay.network',
+  'copay.walletFactory',
   'copay.signin',
-  'copay.peer',
-  'copay.socket'
+  'copay.socket',
+  'copay.setup',
+  'copay.peer'
 ]);
 
 angular.module('copay.header', []);
@@ -20,8 +21,9 @@ angular.module('copay.home', []);
 angular.module('copay.transactions', []);
 angular.module('copay.send', []);
 angular.module('copay.backup', []);
-angular.module('copay.network', []);
+angular.module('copay.walletFactory', []);
 angular.module('copay.signin', []);
+angular.module('copay.setup', []);
 angular.module('copay.peer', []);
 angular.module('copay.socket', []);
 

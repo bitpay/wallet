@@ -18,11 +18,10 @@ var main = function() {
   var api = new API(commander);
 
   var args = commander.args;
+  var command = args[0];
+  var commandArgs = args.slice(1);
 
   try {
-    var command = args[0];
-    var commandArgs = args.slice(1);
-
     if (command[0] == '_' || typeof api[command] != 'function')
       throw new Error('invalid command');
 

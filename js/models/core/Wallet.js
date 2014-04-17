@@ -7,102 +7,147 @@ var coinUtil    = bitcore.util;
 var buffertools = bitcore.buffertools;
 var Builder     = bitcore.TransactionBuilder;
 var http        = require('http');
-
-var Storage     = imports.Storage;
-var Network     = imports.Network;
-var Blockchain  = imports.Blockchain;
-
+var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 var copay       = copay || require('../../../copay');
 
-function Wallet(config) {
-  this._startInterface(config);
-}
+function Wallet(opts) {
+  var self = this;
 
-Wallet.prototype.log = function(){
-  if (!this.verbose) return;
+  //required params
+  ['storage', 'network', 'blockchain',
+    'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
+    'publicKeyRing', 'txProposals', 'privateKey'
+  ].forEach( function(k){
+    if (typeof opts[k] === 'undefined') throw new Error('missing key:' + k);
+    self[k] = opts[k];
+  });
 
-  console.this.log(arguments);
-}
+  console.log('creating '+opts.requiredCopayers+' of '+opts.totalCopayers+' wallet');
 
-Wallet.prototype._startInterface = function(config) {
-  this.storage = new Storage(config.storage);
-  this.network = new Network(config.network);
-  this.blockchain = new Blockchain(config.blockchain);
-
-  this.networkName = config.networkName;
-  this.requiredCopayers = config.wallet.requiredCopayers;
-  this.totalCopayers = config.wallet.totalCopayers;
-};
-
-
-Wallet.prototype.create = function(opts) {
-  opts = opts || {};
   this.id = opts.id || Wallet.getRandomId();
-  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
+  this.verbose = opts.verbose;
+  this.publicKeyRing.walletId = this.id;
+  this.txProposals.walletId = this.id;
 
-  this.privateKey = new copay.PrivateKey({
-    networkName: this.networkName
-  });
-  this.log('\t### PrivateKey Initialized');
-
-  this.publicKeyRing = new copay.PublicKeyRing({
-    walletId: this.id,
-    requiredCopayers: opts.requiredCopayers || this.requiredCopayers,
-    totalCopayers: opts.totalCopayers       || this.totalCopayers,
-    networkName: this.networkName,
-  });
-
-  this.publicKeyRing.addCopayer(this.privateKey.getBIP32().extendedPublicKeyString());
-  this.log('\t### PublicKeyRing Initialized WalletID: ' + this.publicKeyRing.walletId);
-
-  this.txProposals = new copay.TxProposals({
-    walletId: this.id,
-    networkName: this.networkName,
-  });
-  this.log('\t### TxProposals Initialized');
-};
-
-
-Wallet.prototype._checkLoad = function(walletId) {
-  var ret = this.storage.get(walletId, 'publicKeyRing') &&
-    this.storage.get(walletId, 'txProposals')   &&
-    this.storage.get(walletId, 'privateKey')
-  ;
-  return ret;
 }
 
-Wallet.prototype.load = function(walletId) {
-  if (! this._checkLoad(walletId)) return;
+Wallet.parent=EventEmitter;
+Wallet.prototype.log = function(){
+//  if (!this.verbose) return;
+  console.log(arguments);
+};
 
+Wallet.getRandomId = function() {
+  var r = buffertools.toHex(coinUtil.generateNonce());
+  return r;
+};
 
-  this.id = walletId;
-  this.publicKeyRing = new copay.PublicKeyRing.fromObj(
-    this.storage.get(this.id, 'publicKeyRing')
-  );
-  this.txProposals = new copay.TxProposals.fromObj(
-    this.storage.get(this.id, 'txProposals')
-  );
-  this.privateKey = new copay.PrivateKey.fromObj(
-    this.storage.get(this.id, 'privateKey')
-  ); //TODO secure
+Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
+  this.log('RECV PUBLICKEYRING:',data); 
 
-  // JIC: Add our key
-  try {
-    this.publicKeyRing.addCopayer(
-      this.privateKey.getBIP32().extendedPublicKeyString()
-    );
-  } catch (e) {
-    this.log('NOT NECCESARY AN ERROR:', e); //TODO
-  };
+  var shouldSend = false;
+  var recipients, pkr = this.publicKeyRing;
+  var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
+  if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
+    this.log('### BROADCASTING PKR');
+    recipients = null;
+    shouldSend = true;
+  }
+  else if (isInbound  && !data.isBroadcast) {
+    // always replying  to connecting peer
+    this.log('### REPLYING PKR TO:', senderId);
+    recipients = senderId;
+    shouldSend = true;
+  }
+
+  if (shouldSend) {
+    this.sendPublicKeyRing(recipients);
+  }
+  this.store();
 };
 
 
+Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
+  this.log('RECV TXPROPOSAL:',data); //TODO
+
+  var shouldSend = false;
+  var recipients;
+  var inTxp = copay.TxProposals.fromObj(data.txProposals);
+  var mergeInfo = this.txProposals.merge(inTxp, true);
+
+  var addSeen = this.addSeenToTxProposals();
+  if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
+    this.log('### BROADCASTING txProposals. ' );
+    recipients = null;
+    shouldSend = true;
+  }
+  else if (isInbound  && !data.isBroadcast) {
+    // always replying  to connecting peer
+    this.log('### REPLYING txProposals TO:', senderId);
+    recipients = senderId;
+    shouldSend = true;
+  }
+
+  if (shouldSend) 
+    this.sendTxProposals(recipients);
+  
+  this.store();
+};
+
+Wallet.prototype._handleData = function(senderId, data, isInbound) {
+
+  if (this.id !== data.walletId) 
+    throw new Error('wrong message received: Bad wallet ID');
+
+console.log('[Wallet.js.98]' , data.type); //TODO
+
+  switch(data.type) {
+    case 'publicKeyRing':
+      this._handlePublicKeyRing(senderId, data, isInbound);
+    break;
+    case 'txProposals':
+      this._handleTxProposals(senderId, data, isInbound);
+    break;
+    case 'abort':
+      this.emit('abort');
+    break;
+  }
+};
+
+Wallet.prototype._handleNetworkChange = function(newPeer) {
+  if (!newPeer) return;
+  this.log('#### Setting new PEER:', newPeer);
+  this.sendWalletId(newPeer);
+  this.sendPublicKeyRing(newPeer);
+  this.sendTxProposals(newPeer);
+};
+
+Wallet.prototype.netStart = function() {
+  var self = this;
+  var net = this.network;
+  net.on('networkChange', self._handleNetworkChange.bind(self) );
+  net.on('data',  self._handleData.bind(self) );
+  net.on('open', function() {});  // TODO
+  net.on('close', function() {}); // TODO
+  net.start(function(peerId) {
+    self.emit('created');
+  });
+};
 
 Wallet.prototype.store = function() {
-  Wallet.factory.addWalletId(this.id);
+console.log('[Wallet.js.135:store:]'); //TODO
+  this.storage.set(this.id,'opts', {
+    id: this.id,
+    spendUnconfirmed: this.spendUnconfirmed,
+    requiredCopayers: this.requiredCopayers,
+    totalCopayers: this.totalCopayers,
+  });
   this.storage.set(this.id,'publicKeyRing', this.publicKeyRing.toObj());
   this.storage.set(this.id,'txProposals', this.txProposals.toObj());
   this.storage.set(this.id,'privateKey', this.privateKey.toObj());
+
+console.log('[Wallet.js.146] EMIT REFRESH'); //TODO
+  this.emit('refresh');
 };
 
 
@@ -114,7 +159,19 @@ Wallet.prototype.sendTxProposals = function(recipients) {
     txProposals: this.txProposals.toObj(),
     walletId: this.id,
   });
+  this.emit('txProposalsUpdated', this.txProposals);
 };
+
+
+Wallet.prototype.sendWalletId = function(recipients) {
+  this.log('### SENDING walletId TO:', recipients||'All', this.walletId);
+
+  this.network.send(recipients, { 
+    type: 'walletId', 
+    walletId: this.id,
+  });
+};
+
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
   this.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
@@ -124,38 +181,82 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     publicKeyRing: this.publicKeyRing.toObj(),
     walletId: this.id,
   });
+  this.emit('publicKeyRingUpdated', this.publicKeyRing);
 };
 
 Wallet.prototype.generateAddress = function() {
   var addr = this.publicKeyRing.generateAddress();
   this.store();
-
-  this.network.send(null, {
-    type: 'publicKeyRing',
-    publicKeyRing: this.publicKeyRing.toObj(),
-    walletId: this.id
-  });
-
+  this.sendPublicKeyRing();
   return addr;
 };
 
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
-  this.txProposals.txps.forEach(function(txp) {
+  var self= this;
+  self.txProposals.txps.forEach(function(txp) {
     var i = {txp:txp};
-    i.signedByUs = txp.signedBy[this.privateKey.id]?true:false;
+    i.ntxid = txp.builder.build().getNormalizedHash();
+    i.signedByUs = txp.signedBy[self.privateKey.id]?true:false;
     ret.push(i);
   });
+  return ret;
+};
 
+// TODO: this can be precalculated.
+Wallet.prototype._findTxByNtxid = function(ntxid) {
+  var ret;
+  var l = this.txProposals.txps.length;
+  var id = ntxid.toString('hex');
+  for(var i=0; i<l; i++) {
+    var txp = this.txProposals.txps[i];
+    var id2 = txp.builder.build().getNormalizedHash().toString('hex');
+    if (id === id2 ) {
+      ret = txp;
+    }
+  }
+  return ret;
+};
+
+
+Wallet.prototype.sign = function(ntxid) {
+  var txp = this._findTxByNtxid(ntxid);
+  if (!txp) return;
+
+  var pkr = this.publicKeyRing;
+  var keys = this.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
+  var ret = txp.builder.sign(keys);
+
+  if (ret.signaturesAdded) {
+    txp.signedBy[this.privateKey.id] = Date.now();
+console.log('[Wallet.js.230:ret:]',ret); //TODO
+    if (ret.isFullySigned) {
+console.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+      var tx = txp.builder.build();
+      var txHex = tx.serialize().toString('hex');
+      this.blockchain.sendRawTransaction(txHex, function(txid) {
+console.log('[Wallet.js.235:txid:]',txid); //TODO
+        if (txid) {
+          this.store();
+        }
+      });
+    }
+    else {
+      this.sendTxProposals();
+      this.store();
+    }
+  }
   return ret;
 };
 
 
 Wallet.prototype.addSeenToTxProposals = function() {
   var ret=false;
+  var self=this;
+
   this.txProposals.txps.forEach(function(txp) {
-    if (!txp.seenBy[this.privateKey.id]) {
-      txp.seenBy[this.privateKey.id] = Date.now();
+    if (!txp.seenBy[self.privateKey.id]) {
+      txp.seenBy[self.privateKey.id] = Date.now();
       ret = true;
     }
   });
@@ -181,7 +282,33 @@ Wallet.prototype.listUnspent = function(cb) {
   this.blockchain.listUnspent(this.getAddressesStr(), cb);
 };
 
-Wallet.prototype.createTx = function(toAddress, amountSatStr, utxos, opts) {
+
+Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
+  var self = this;
+  if (typeof opts === 'function') {
+    cb = opts;
+    opts = {};
+  }
+  opts = opts || {};
+
+  if (typeof opts.spendUnconfirmed === 'undefined') {
+    opts.spendUnconfirmed = this.spendUnconfirmed;
+  }
+
+  if (!opts.remainderOut) {
+    opts.remainderOut={ address: this.publicKeyRing.generateAddress(true).toString()};
+  }
+
+  self.listUnspent(function(utxos) {
+    // TODO check enough funds, etc.
+    self.createTxSync(toAddress, amountSatStr, utxos, opts);
+    self.store();
+    self.sendTxProposals();
+    return cb();
+  });
+};
+
+Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   var pkr  = this.publicKeyRing; 
   var priv = this.privateKey;
   opts = opts || {};
@@ -216,7 +343,12 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, utxos, opts) {
   });
 };
 
-Wallet.prototype.sign = function(txp) {
+Wallet.prototype.connectTo = function(peerId) {
+  throw new Error('Wallet.connectTo.. not yet implemented!');
+};
+
+Wallet.prototype.disconnect = function() {
+  this.network.disconnect();
 };
 
 // // HERE? not sure
@@ -224,57 +356,6 @@ Wallet.prototype.sign = function(txp) {
 //   this.storage.remove('peerData'); 
 // };
 //
-
-Wallet.getRandomId = function() {
-  var r = buffertools.toHex(coinUtil.generateNonce());
-  return r;
-};
-
-/*
- * WalletFactory
- *
- */
-
-var WalletFactory = function() {
-  this.storage = Storage.default();
-};
-
-WalletFactory.prototype.create = function(config, opts) {
-  var w = new Wallet(config);
-  w.create(opts);
-  w.store();
-  return w;
-};
-
-WalletFactory.prototype.get = function(config, walletId) {
-  return Wallet.read(config, walletId);
-};
-
-WalletFactory.prototype.remove = function(walletId) {
-  // TODO remove wallet contents, not only the id (Wallet.remove?)
-  this._delWalletId(walletId);
-};
-
-WalletFactory.prototype.addWalletId = function(walletId) {
-  var ids = this.getWalletIds();
-  if (ids.indexOf(walletId) !== -1) return;
-  ids.push(walletId);
-  this.storage.setGlobal('walletIds', ids);
-};
-
-WalletFactory.prototype._delWalletId = function(walletId) {
-  var ids = this.getWalletIds();
-  var index = ids.indexOf(walletId);
-  if (index === -1) return;
-  ids.splice(index, 1); // removes walletId
-  this.storage.setGlobal('walletIds', ids);
-};
-
-WalletFactory.prototype.getWalletIds = function() {
-  var ids = this.storage.getGlobal('walletIds');
-  return ids || [];
-};
-
-Wallet.factory = new WalletFactory();
+;
 
 module.exports = require('soop')(Wallet);

@@ -42,7 +42,15 @@ var createBundle = function(opts) {
   b.require('./copay', {
     expose: 'copay'
   });
+  b.require('./js/models/core/WalletFactory');
   b.require('./js/models/core/Wallet');
+  b.require('./js/models/core/Wallet', {
+    expose: '../js/models/core/Wallet'
+  });
+  b.require('./test/mocks/FakeStorage', {
+    expose: './mocks/FakeStorage'
+  });
+
 
   if (!opts.dontminify) {
     b.transform({

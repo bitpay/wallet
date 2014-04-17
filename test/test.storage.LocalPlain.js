@@ -5,12 +5,12 @@ if (typeof process === 'undefined' || !process.version)  {
   var chai     = chai || require('chai');
   var should   = chai.should();
   var copay    = copay || require('../copay');
-  var Plain    = copay.StoragePlain;
+  var LocalPlain    = copay.StorageLocalPlain;
 
-  describe('Storage/Plain model', function() {
+  describe('Storage/LocalPlain model', function() {
 
     it('should create an instance', function () {
-      var s = new Plain();
+      var s = new LocalPlain();
       should.exist(s);
     });
   });

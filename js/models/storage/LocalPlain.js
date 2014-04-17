@@ -52,6 +52,21 @@ Storage.prototype.remove = function(walletId, k) {
   this.removeGlobal(this._key(walletId,k));
 };
 
+Storage.prototype.getWalletIds = function() {
+  var walletIds = [];
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    var split = key.split('::');
+    if (split.length == 2) {
+      var walletId = split[0];
+      walletIds.push(walletId);
+    }
+  } 
+
+  return walletIds;
+};
+
 // remove all values
 Storage.prototype.clearAll = function() {
   localStorage.clear();

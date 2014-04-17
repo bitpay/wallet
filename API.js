@@ -10,23 +10,13 @@ API.prototype._init = function(opts) {
   opts = opts || {};
   self.opts = opts;
 
-  var Wallet = require('soop').load('./js/models/core/Wallet', {
-    Storage: opts.Storage || require('./test/FakeStorage'),
-    Network: opts.Network || require('./js/models/network/WebRTC'),
+  var WalletFactory = require('soop').load('./js/models/core/WalletFactory', {
+    Storage: opts.Storage || require('./test/mocks/FakeStorage'),
+    Network: opts.Network || require('./js/models/network/Base'),
     Blockchain: opts.Blockchain || require('./js/models/blockchain/Insight')
   });
-  
-  var config = {
-    wallet: {
-      requiredCopayers: opts.requiredCopayers || 3,
-      totalCopayers: opts.totalCopayers || 5,
-    }
-  };
 
-  var walletConfig = opts.walletConfig || config;
-  var walletOpts = opts.walletOpts || {};
-  
-  self.wallet = self.opts.wallet || Wallet.factory.create(walletConfig, walletOpts);
+  this.walletFactory = new WalletFactory(opts);
 };
 
 API._coerceArgTypes = function(args, argTypes) {
@@ -179,13 +169,13 @@ API.prototype.getCommands = decorate('getCommands', [
   ['callback', 'function']
   ]);
 
-API.prototype._cmd_getPublicKeyRingId = function(callback) {
+API.prototype._cmd_getWalletIds = function(callback) {
   var self = this;
 
-  return callback(null, self.wallet.publicKeyRing.walletId);
+  return callback(null, self.walletFactory.getWalletIds());
 };
 
-API.prototype.getPublicKeyRingId = decorate('getPublicKeyRingId', [
+API.prototype.getWalletIds = decorate('getWalletIds', [
   ['callback', 'function']
   ]);
 

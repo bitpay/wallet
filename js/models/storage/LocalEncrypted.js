@@ -2,7 +2,7 @@
 
 var imports = require('soop').imports();
 //var buffertools = imports.buffertools || require('buffertools');
-var parent     = imports.parent || require('./Plain');
+var parent     = imports.parent || require('./LocalPlain');
 
 var id = 0;
 function Storage() {

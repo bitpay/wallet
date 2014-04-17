@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.signin').controller('SigninController',
-  function($scope, $rootScope, $location, Network) {
+  function($scope, $rootScope, $location, walletFactory) {
 
 //    var peerData = Storage.get($rootScope.walletId, 'peerData');
 //    $rootScope.peerId = peerData ? peerData.peerId : null;
@@ -10,54 +10,67 @@ angular.module('copay.signin').controller('SigninController',
     $scope.selectedWalletId = false;
 
     $scope.listWalletIds = function() {
-      return copay.Wallet.factory.getWalletIds();
+      return walletFactory.getWalletIds();
+    };
+
+    var _setupUxHandlers =  function(w) {
+      w.on('created', function() {
+        $location.path('peer');
+        $rootScope.wallet = w;
+        $rootScope.$digest();
+      });
+      w.on('refresh', function() {
+
+console.log('[signin.js.23] RECEIVED REFRESH'); //TODO
+        $rootScope.$digest();
+      });
+ 
+      w.on('openError', function(){
+        $scope.loading = false;
+        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
+        $location.path('signin');
+      });
     };
 
     $scope.create = function() {
-      $scope.loading = true;
-
-      Network.createWallet();
-      Network.init(function() {
-        $location.path('peer');
-        $rootScope.$digest();
-      });
+      $location.path('setup');
     };
 
     $scope.open = function(walletId) {
       $scope.loading = true;
 
-      Network.openWallet(walletId);
-
-      if ($rootScope.wallet && $rootScope.wallet.id) {
-        Network.init(function() {
-          $location.path('peer');
-          $rootScope.$digest();
-        });
-      }
-      else {
-        $scope.loading = false;
-        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
-        $location.path('signin');
-      }
+      var w = walletFactory.open(walletId);
+      _setupUxHandlers(w);
+      w.netStart();
     };
 
     $scope.join = function(cid) {
+console.log('[signin.js.42:join:]'); //TODO
       $scope.loading = true;
-
-      if (cid) {
-        Network.init(function() {
-          Network.connect(cid, 
-            function() {
-              $location.path('peer');
-              $rootScope.$digest();
-            }, function() {
-              $rootScope.flashMessage = { message: 'Connection refussed', type: 'error'};
-              $location.path('home');
-              $rootScope.$digest();
-          });
-        });
-      }
+      walletFactory.connectTo(cid, function(w) {
+console.log('[signin.js.50]'); //TODO
+        _setupUxHandlers(w);
+        w.netStart();
+      });
     };
+
+
+//
+//       if (cid) {
+//         var w = walletFactory.(walletId);
+        //TODO
+        // Network.init(null, function() {
+        //   Network.connect(cid, 
+        //     function() {
+        //       $location.path('peer');
+        //       $rootScope.$digest();
+        //     }, function() {
+        //       $rootScope.flashMessage = { message: 'Connection refussed', type: 'error'};
+        //       $location.path('home');
+        //       $rootScope.$digest();
+        //   });
+        // });
+//      }
 
     // if (peerData && peerData.peerId && peerData.connectedPeers.length > 0) {
     //   $rootScope.peerId = peerData.peerId;

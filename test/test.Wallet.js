@@ -3,12 +3,10 @@
 var chai = chai || require('chai');
 var should = chai.should();
 var copay = copay || require('../copay');
-var Wallet = require('soop').load('../js/models/core/Wallet', {
-  Storage: require('./FakeStorage'),
-  Network: copay.WebRTC,
-  Blockchain: copay.Insight
-});
-
+var Wallet = require('../js/models/core/Wallet');
+var Storage= require('./mocks/FakeStorage');
+var Network= copay.WebRTC;
+var Blockchain= copay.Insight;
 
 var addCopayers = function (w) {
   for(var i=0; i<4; i++) {
@@ -17,73 +15,65 @@ var addCopayers = function (w) {
 };
 
 describe('Wallet model', function() {
+
   var config = {
-    wallet: {
-      requiredCopayers: 3,
-      totalCopayers: 5,
-    },
+    requiredCopayers: 3,
+    totalCopayers: 5,
+    spendUnconfirmed: 1,
     blockchain: {
       host: 'test.insight.is',
       port: 80
     },
+    networkName: 'testnet',
   };
-  var opts = {};
 
+  it('should fail to create an instance', function () {
+    (function(){new Wallet(config)}).should.throw();
+  });
+
+  var createW = function () {
+    var c = JSON.parse(JSON.stringify(config));
+
+    c.privateKey = new copay.PrivateKey({ networkName: c.networkName });
+
+    c.publicKeyRing = new copay.PublicKeyRing({
+      networkName: c.networkName,
+      requiredCopayers: c.requiredCopayers,
+      totalCopayers: c.totalCopayers,
+    });
+    c.publicKeyRing.addCopayer(c.privateKey.getBIP32().extendedPublicKeyString());
+
+    c.txProposals = new copay.TxProposals({
+      networkName: c.networkName,
+    });
+    c.storage     = new Storage(config.storage);
+    c.network     = new Network(config.network);
+    c.blockchain  = new Blockchain(config.blockchain);
+
+    c.networkName = config.networkName;
+    c.verbose     = config.verbose;
+
+    return new Wallet(c);
+  }
 
   it('should create an instance', function () {
-    var opts = {};
-    var w = new Wallet(config);
+    var w = createW();
     should.exist(w);
-  });
-
-
-  it('should fail to load', function () {
-    var opts = {};
-    var w = new Wallet(config);
-    w.load(123);
-    should.not.exist(w.id);
-  });
-
-
-  it('should create', function () {
-    var opts = {};
-    var w = new Wallet(config);
-    w.create();
+    w.publicKeyRing.walletId.should.equal(w.id);
+    w.txProposals.walletId.should.equal(w.id);
+    w.requiredCopayers.should.equal(3);
     should.exist(w.id);
     should.exist(w.publicKeyRing);
     should.exist(w.privateKey);
     should.exist(w.txProposals);
   });
 
-  it('should list unspent', function (done) {
+  it('should provide some basic features', function () {
     var opts = {};
-    var w = new Wallet(config);
-    w.create();
+    var w = createW();
     addCopayers(w);
     w.publicKeyRing.generateAddress(false);
-
-    should.exist(w.id);
     w.publicKeyRing.isComplete().should.equal(true);
-
-    w.listUnspent(function(utxos) {
-      utxos.length.should.equal(0);
-      done();
-    });
-  });
-
-  describe('factory', function() {
-    it('should create the factory', function() {
-      should.exist(Wallet.factory);
-    });
-    it('should be able to create wallets', function() {
-      var w = Wallet.factory.create(config, opts);
-      should.exist(w);
-    });
-    it.skip('should be able to get wallets', function() {
-      var w = Wallet.factory.create(config, opts);
-      var v = Wallet.factory.get(config, w.id);
-      should.exist(w);
-    });
   });
 
   var unspentTest = [
@@ -97,9 +87,8 @@ describe('Wallet model', function() {
   }
   ];
 
-  var createWallet = function (bip32s) {
-    var w = new Wallet(config);
-    w.create();
+  var createW2 = function (bip32s) {
+    var w = createW();
     should.exist(w);
 
     var pkr =  w.publicKeyRing;
@@ -125,12 +114,12 @@ describe('Wallet model', function() {
 
   it('#create, 1 sign', function () {
 
-    var w = createWallet();
+    var w = createW2();
 
     unspentTest[0].address        = w.publicKeyRing.getAddress(1, true).toString();
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
-    w.createTx(
+    w.createTxSync(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       '123456789', 
       unspentTest
@@ -148,14 +137,14 @@ describe('Wallet model', function() {
 
   it('#create. Signing with derivate keys', function () {
 
-    var w = createWallet();
+    var w = createW2();
 
     var ts = Date.now();
     for (var isChange=0; isChange<2; isChange++) {
       for (var index=0; index<3; index++) {
         unspentTest[0].address        = w.publicKeyRing.getAddress(index, isChange).toString();
         unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
-        w.createTx(
+        w.createTxSync(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
           '123456789', 
           unspentTest
@@ -171,26 +160,5 @@ describe('Wallet model', function() {
       }
     }
   });
-
-  // TODO: when sign is implemented
-  it.skip('#create, signing with wrong key', function () {
-    var w1 = createWallet();
-
-    unspentTest[0].address        = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(1, true);
-
-    var priv = new PrivateKey(config);
-    w.create(
-      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
-      '123456789', 
-      unspentTest
-    );
-    var tx = w.txps[0].builder.build();
-    should.exist(tx);
-    tx.isComplete().should.equal(false);
-    Object.keys(w.txps[0].signedBy).length.should.equal(0);
-    Object.keys(w.txps[0].seenBy).length.should.equal(1);
-  });
-
 
 });
