@@ -84,6 +84,7 @@
               <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
             </div>
           </div>
+
           <hr>
           <div ng-show="!walletIds.length">
             <div class="row">
@@ -92,6 +93,12 @@
               </div>
               <div class="large-3 columns">
                 <button class="button secondary expand round" ng-click="create()">Create</button>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="text-center">
+                <a ng-click="import()">Import from file</a>
               </div>
             </div>
           </div>
@@ -108,7 +115,8 @@
             </div>
             <div class="row">
               <div class="text-center">
-                <a ng-click="create()">Or create a new wallet</a>
+                <a ng-click="create()">Create a new wallet</a>
+                &middot; <a ng-click="import()">Import from file</a>
               </div>
             </div>
           </div>
