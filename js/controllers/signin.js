@@ -10,7 +10,8 @@ angular.module('copay.signin').controller('SigninController',
     $scope.loading = false;
 
     $scope.walletIds = walletFactory.getWalletIds();
-    $scope.selectedWalletId = $scope.walletIds?$scope.walletIds.shift():null;
+
+    $scope.selectedWalletId = $scope.walletIds.length ? $scope.walletIds[0]:null;
 
     $scope.create = function() {
       $location.path('setup');
