@@ -6,11 +6,15 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     w.on('created', function() {
       $location.path('peer');
       $rootScope.wallet = w;
-      $rootScope.$digest();
+      
+      // Initial getBalance
+      $rootScope.wallet.getBalance(function(balance) {
+        $rootScope.totalBalance = balance;
+        $rootScope.$digest();
+      });
     });
     w.on('refresh', function() {
       console.log('[controllerUtils.js] RECEIVED REFRESH'); //TODO
-      $rootScope.$digest();
     });
 
     w.on('openError', function(){
