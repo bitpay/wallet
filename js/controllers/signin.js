@@ -17,6 +17,14 @@ angular.module('copay.signin').controller('SigninController',
       w.on('created', function() {
         $location.path('peer');
         $rootScope.wallet = w;
+       
+        // Initial getBalance
+        $rootScope.wallet.getBalance(function(balance) {
+          $scope.$apply(function() {
+            $rootScope.totalBalance = balance;
+          });
+        });
+
         $rootScope.$digest();
       });
       w.on('refresh', function() {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.header').controller('HeaderController',
-  function($scope, $rootScope, $location, walletFactory) {
+  function($scope, $rootScope, $location, walletFactory, Socket) {
     $scope.menu = [{
       'title': 'Home',
       'icon': 'fi-home',
@@ -24,7 +24,7 @@ angular.module('copay.header').controller('HeaderController',
       'link': '#/backup'
     }];
 
-    if (!$rootScope.peerId) {
+   if (!$rootScope.wallet || !$rootScope.wallet.id) {
       $location.path('signin');
     }
 
@@ -40,6 +40,8 @@ angular.module('copay.header').controller('HeaderController',
       if (w) {
         w.disconnect();
         delete $rootScope['wallet'];
+        var socket = Socket($scope);
+        socket.removeAllListeners();
         $location.path('signin');
       }
     };
@@ -47,4 +49,5 @@ angular.module('copay.header').controller('HeaderController',
     $scope.clearFlashMessage = function() {
       $rootScope.flashMessage = {};
     };
+
   });

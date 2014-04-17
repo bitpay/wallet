@@ -52,7 +52,8 @@ ScopedSocket.prototype.emit = function(event, data, callback) {
 
 angular.module('copay.socket').factory('Socket',
   function($rootScope) {
-    var socket = io.connect('http://localhost:3001', {
+    var server = 'http://' + config.socket.host + ':' + config.socket.port;
+    var socket = io.connect(server, {
       'reconnect': true,
       'reconnection delay': 500,
     });

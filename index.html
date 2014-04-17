@@ -18,7 +18,8 @@
           </figure>
           <div class="text-right" ng-show="$root.wallet">
             <h5>Company Funds</h5>
-            <p>4.324 BTC</p>
+            <p ng-show="totalBalance">{{totalBalance}} BTC</p>
+            <p ng-show="!totalBalance">0 BTC</p>
           </div>
         </div>
 

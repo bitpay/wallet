@@ -18,10 +18,12 @@ var config = {
     verbose: 1,
   },
   blockchain: {
-    host: 'test.insight.is',
-    port: 80
-    // host: 'localhost',
-    // port: 3001
+    host: 'localhost',
+    port: 3001
+  },
+  socket: {
+    host: 'localhost',
+    port: 3001
   },
   verbose: 1,
 };
