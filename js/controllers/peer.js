@@ -7,9 +7,9 @@ angular.module('copay.peer').controller('PeerController',
       //Network.connect($rootScope.masterId);
     };
 
-    var addrs = $rootScope.wallet.getAddressesStr();
     var socket = Socket($scope);
     socket.on('connect', function() {
+      var addrs = $rootScope.wallet.getAddressesStr();
       socket.emit('subscribe', 'inv');
       for(var i=0;i<addrs.length;i++) {
         socket.emit('subscribe', addrs[i]);
