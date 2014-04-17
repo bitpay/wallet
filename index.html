@@ -182,7 +182,7 @@
           </div>
           <div class="large-3 columns line-dashed-v text-center">
             <qrcode size="160" data="{{selectedAddr}}"></qrcode>
-            <p class="m10t"> <strong> 2.5432 BTC </strong> </p>
+            <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{addrBalance[addr]}} BTC </strong> </p>
           </div>
           <div class="large-1 columns"> </div>
           <div class="large-2 columns">
