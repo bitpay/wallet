@@ -59,7 +59,7 @@ Insight.prototype.listUnspent = function(addresses, cb) {
     self._request(options, function(err, res) {
       if (res && res.length > 0) { 
         all = all.concat(res);
-      }
+      } 
       callback();
     });
   }, function() {

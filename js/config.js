@@ -7,9 +7,15 @@ var config = {
     maxPeers: 3,
     debug: 3,
   },
+  limits: {
+    totalCopayers: 10,
+    mPlusN: 15
+  },
   wallet: {
     requiredCopayers: 2,
     totalCopayers: 3,
+    spendUnconfirmed: 1,
+    verbose: 1,
   },
   blockchain: {
     host: 'test.insight.is',

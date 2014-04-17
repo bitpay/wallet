@@ -17,6 +17,9 @@ Storage.prototype.set = function(walletId,v) {
 Storage.prototype.remove = function(walletId, k) {
 };
 
+Storage.prototype.getWalletIds = function() {
+};
+
 // remove all values
 Storage.prototype.clearAll = function() {
 };     

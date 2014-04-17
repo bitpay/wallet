@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.header').controller('HeaderController',
-  function($scope, $rootScope, $location, Network) {
+  function($scope, $rootScope, $location, walletFactory) {
     $scope.menu = [{
       'title': 'Home',
       'icon': 'fi-home',
@@ -35,15 +35,13 @@ angular.module('copay.header').controller('HeaderController',
       return false;
     };
     
-    $scope.init = function() {
-      $rootScope.isLogged = false;
-    };
-
     $scope.signout = function() {
-      Network.disconnect(function() {
+      var w = $rootScope.wallet;
+      if (w) {
+        w.disconnect();
+        delete $rootScope['wallet'];
         $location.path('signin');
-        $rootScope.$digest();
-      });
+      }
     };
 
     $scope.clearFlashMessage = function() {
