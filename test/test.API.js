@@ -110,11 +110,11 @@ describe('API', function() {
     });
   });
 
-  describe('#getPublicKeyRingId', function() {
-    it('should get a public key ring ID', function(done) {
+  describe('#getWalletIds', function() {
+    it('should get the wallet ids', function(done) {
       var api = new API({Storage: Storage});
-      api.getPublicKeyRingId(function(err, result) {
-        result.length.should.be.greaterThan(5);
+      api.getWalletIds(function(err, result) {
+        result.length.should.be.greaterThan(-1);
         done();
       });
     });

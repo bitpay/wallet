@@ -23,4 +23,8 @@ FakeStorage.prototype.clear = function() {
   delete this['storage'];
 }
 
+FakeStorage.prototype.getWalletIds = function() {
+  return [];
+};
+
 module.exports = require('soop')(FakeStorage);

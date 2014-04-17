@@ -110,7 +110,6 @@ WalletFactory.prototype.create = function(opts) {
   opts.totalCopayers = totalCopayers;
   var w   = new Wallet(opts);
   w.store();
-  this.addWalletId(w.id);
   return w;
 };
 
@@ -156,28 +155,11 @@ WalletFactory.prototype.openRemote = function(peedId) {
 };
 
 WalletFactory.prototype.getWalletIds = function() {
-  var ids = this.storage.getGlobal('walletIds');
-  return ids || [];
+  return this.storage.getWalletIds();
 }
 
-WalletFactory.prototype._delWalletId = function(walletId) {
-  var ids = this.getWalletIds();
-  var index = ids.indexOf(walletId);
-  if (index === -1) return;
-  ids.splice(index, 1); // removes walletId
-  this.storage.setGlobal('walletIds', ids);
-};
-
 WalletFactory.prototype.remove = function(walletId) {
-  WalletFactory._delWalletId(walletId);
-  // TODO remove wallet contents, not only the id (Wallet.remove?)
-};
-
-WalletFactory.prototype.addWalletId = function(walletId) {
-  var ids = this.getWalletIds();
-  if (ids.indexOf(walletId) !== -1) return;
-  ids.push(walletId);
-  this.storage.setGlobal('walletIds', ids);
+  // TODO remove wallet contents
 };
 
 

@@ -89,6 +89,10 @@ Storage.prototype.remove = function(walletId, k, callback) {
   this.removeGlobal(this._key(walletId, k), callback);
 };
 
+Storage.prototype.getWalletIds = function() {
+  return [];
+};
+
 // remove all values
 Storage.prototype.clearAll = function(callback) {
   this.data = {};
