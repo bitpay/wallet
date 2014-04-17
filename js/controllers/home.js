@@ -9,8 +9,7 @@ angular.module('copay.home').controller('HomeController',
     
     var _getBalance = function() {
       $scope.addrs.forEach(function(addr) {
-        $rootScope.wallet.blockchain.listUnspent([addr], function(unspent) {
-          var balance = $rootScope.wallet.blockchain.getBalance(unspent);
+        $rootScope.wallet.getBalance([addr], function(balance) {
           $scope.addrBalance[addr] = balance;
           $scope.$digest();
         });

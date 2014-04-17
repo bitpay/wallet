@@ -277,21 +277,37 @@ Wallet.prototype.getAddressesStr = function() {
   return ret;
 };
 
-Wallet.prototype.getBalance = function(cb) {
+Wallet.prototype.getTotalBalance = function(cb) {
+  this.getBalance(this.getAddressesStr(), function(balance) {
+    return cb(balance);
+  });
+};
+
+Wallet.prototype.getBalance = function(addrs, cb) {
   var balance = 0;
-  this.blockchain.listUnspent(this.getAddressesStr(), function(unspent) {
+  this.listUnspent(addrs, function(unspent) {
     for(var i=0;i<unspent.length; i++) {
       balance = balance + unspent[i].amount;
     }
     if (balance) {
-      balance = balance.toFixed(4);
+      if (balance === parseInt(balance)) {
+        balance = balance;
+      }
+      else {
+        balance = balance.toFixed(8);
+      }
     }
     return cb(balance);
   });
 };
 
-Wallet.prototype.listUnspent = function(cb) {
-  this.blockchain.listUnspent(this.getAddressesStr(), cb);
+Wallet.prototype.listUnspent = function(addrs, cb) {
+  if (!addrs) {
+    addrs = this.getAddressesStr();
+  }
+  this.blockchain.listUnspent(addrs, function(unspent) {
+    return cb(unspent);
+  });
 };
 
 

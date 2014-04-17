@@ -8,7 +8,7 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
       $rootScope.wallet = w;
       
       // Initial getBalance
-      $rootScope.wallet.getBalance(function(balance) {
+      $rootScope.wallet.getTotalBalance(function(balance) {
         $rootScope.totalBalance = balance;
         $rootScope.$digest();
       });
@@ -34,7 +34,7 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     addrs.forEach(function(addr) {
       socket.on(addr, function(txid) {
         console.log('Received!', txid);
-        $rootScope.wallet.getBalance(function(balance) {
+        $rootScope.wallet.getTotalBalance(function(balance) {
           scope.$apply(function() {
             $rootScope.totalBalance = balance;
           });
