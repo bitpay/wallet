@@ -19,7 +19,7 @@ angular.module('copay.home').controller('HomeController',
     if (!$rootScope.wallet || !$rootScope.wallet.id) {
       $location.path('signin');
     } else {
-      $scope.addrs = $rootScope.wallet.getAddressesStr();
+      $scope.addrs = $rootScope.wallet.getAddressesStr(true);
       $scope.selectedAddr = $scope.addrs[0];
 
       _getBalance();

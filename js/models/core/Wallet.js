@@ -194,7 +194,6 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 
 Wallet.prototype.generateAddress = function() {
   var addr = this.publicKeyRing.generateAddress();
-  this.store();
   this.sendPublicKeyRing();
   return addr;
 };
@@ -272,13 +271,13 @@ Wallet.prototype.addSeenToTxProposals = function() {
 };
 
 
-Wallet.prototype.getAddresses = function() {
-  return this.publicKeyRing.getAddresses();
+Wallet.prototype.getAddresses = function(onlyMain) {
+  return this.publicKeyRing.getAddresses(onlyMain);
 };
 
-Wallet.prototype.getAddressesStr = function() {
+Wallet.prototype.getAddressesStr = function(onlyMain) {
   var ret = [];
-  this.publicKeyRing.getAddresses().forEach(function(a) {
+  this.publicKeyRing.getAddresses(onlyMain).forEach(function(a) {
     ret.push(a.toString());
   });
   return ret;
@@ -334,8 +333,8 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   self.listUnspent(self.getAddressesStr(), function(utxos) {
     // TODO check enough funds, etc.
     self.createTxSync(toAddress, amountSatStr, utxos, opts);
-    self.store();
     self.sendTxProposals();
+    self.store();
     return cb();
   });
 };
