@@ -288,19 +288,19 @@
         <h2>{{title}}</h2>
         <div class="row text-center">
           <div class="large-4 columns">
-            <a href="/" class="panel box-backup">
+            <a class="panel box-backup" ng-click="download()">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
           <div class="large-4 columns">
-            <a href="/" class="panel box-backup">
+            <a class="panel box-backup" ng-click="dropbox()">
               <i class="fi-social-dropbox size-72"></i>
               <p> Backup to Dropbox </p>
             </a>
           </div>
           <div class="large-4 columns">
-            <a href="/" class="panel box-backup">
+            <a class="panel box-backup" ng-click="email()">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>
             </a>
@@ -326,6 +326,7 @@
     <script src="lib/peerjs/peer.js"></script>
     <script src="lib/bitcore.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
+    <script src="lib/file-saver/FileSaver.js"></script>
     <script src="js/copayBundle.js"></script>
 
 
