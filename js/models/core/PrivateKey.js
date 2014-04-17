@@ -10,45 +10,57 @@ var util        = bitcore.util;
 var PublicKeyRing  = require('./PublicKeyRing');
 
 function PrivateKey(opts) {
+  opts = opts || {};
   this.network = opts.networkName === 'testnet' ? 
     networks.testnet : networks.livenet;
   var init = opts.extendedPrivateKeyString || this.network.name;
-  this.BIP32 = opts.BIP32 || new BIP32(init);
+  this.bip = opts.BIP32 || new BIP32(init);
+  this.privateKeyCache = opts.privateKeyCache || {};
   this._calcId();
 };
 
 PrivateKey.prototype._calcId = function() {
-  this.id = util.ripe160(this.BIP32.extendedPublicKey).toString('hex');
+  this.id = util.ripe160(this.bip.extendedPublicKey).toString('hex');
 };
 
-PrivateKey.prototype.getBIP32 = function(index,isChange) {
-  if (typeof index === 'undefined') {
-    return this.BIP32;
-  }
-  return this.BIP32.derive( isChange ? 
-    PublicKeyRing.ChangeBranch(index):PublicKeyRing.PublicBranch(index) );
-};
-
-
-PrivateKey.fromObj = function(o) {
-  return new PrivateKey({
-    extendedPrivateKeyString: o.extendedPrivateKeyString,
-    networkName: o.networkName,
-  });
+PrivateKey.fromObj = function(obj) {
+  return new PrivateKey(obj);
 };
 
 PrivateKey.prototype.toObj = function() {
   return {
-    extendedPrivateKeyString: this.BIP32.extendedPrivateKeyString(),
+    extendedPrivateKeyString: this.getExtendedPrivateKeyString(),
     networkName: this.network.name,
+    privateKeyCache: this.privateKeyCache
   };
 };
 
+PrivateKey.prototype.getExtendedPublicKeyString = function() {
+  return this.bip.extendedPublicKeyString();
+};
+
+PrivateKey.prototype.getExtendedPrivateKeyString = function() {
+  return this.bip.extendedPrivateKeyString();
+};
+
+PrivateKey.prototype._getBIP32 = function(path) {
+  if (typeof path === 'undefined') {
+    return this.bip;
+  }
+  return this.bip.derive(path);
+};
+
 PrivateKey.prototype.get = function(index,isChange) {
-  var derivedBIP32 =  this.getBIP32(index,isChange);
+  var path = PublicKeyRing.Branch(index, isChange);
+  var pk = this.privateKeyCache[path];
+  if (!pk) {
+    var derivedBIP32 =  this._getBIP32(path);
+    pk = this.privateKeyCache[path] = derivedBIP32.eckey.private.toString('hex');
+  } else {
+    //console.log('cache hit!');
+  }
   var wk = new WalletKey({network: this.network});
-  var p = derivedBIP32.eckey.private.toString('hex');
-  wk.fromObj({priv: p});
+  wk.fromObj({priv: pk});
   return wk;
 };
 

@@ -24,8 +24,8 @@ describe('PrivateKey model', function() {
   it('should create an instance', function () {
     var w = new PrivateKey(config);
     should.exist(w);
-    should.exist(w.BIP32);
-    should.exist(w.BIP32.derive);
+    should.exist(w.bip);
+    should.exist(w.bip.derive);
   });
 
   it('should derive priv keys', function () {
@@ -76,15 +76,14 @@ describe('PrivateKey model', function() {
     var w1 = new PrivateKey(config);
     var w2 = PrivateKey.fromObj(w1.toObj());
 
-    w2.getBIP32().extendedPrivateKeyString().should.equal(w1.getBIP32().extendedPrivateKeyString());
-    w2.getBIP32().extendedPublicKeyString().should.equal(w1.getBIP32().extendedPublicKeyString());
+    w2.toObj().extendedPrivateKeyString.should.equal(w1.toObj().extendedPrivateKeyString);
     w2.id.should.equal(w1.id);
 
 
-    w2.getBIP32(1,1).extendedPrivateKeyString().should
-      .equal(w1.getBIP32(1,1).extendedPrivateKeyString());
-    w2.getBIP32(1,0).extendedPrivateKeyString().should
-      .equal(w1.getBIP32(1,0).extendedPrivateKeyString());
+    JSON.stringify(w2.get(1,1).storeObj()).should
+      .equal(JSON.stringify(w1.get(1,1).storeObj()));
+    JSON.stringify(w2.get(1,0).storeObj()).should
+      .equal(JSON.stringify(w1.get(1,0).storeObj()));
   });
  
 
