@@ -51,6 +51,17 @@
       <a href="#" ng-click="clearFlashMessage()" class="button tiny">Dismiss</a>
     </div>
 
+
+    <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' class="panel callout radius" >
+
+      <p class="panel panel-sign"> <i class="fi-alert size-40"></i> 
+        NOTE: Your wallet is not complete yet. 
+    {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerId}}</b>
+      
+      </p>
+    </div>
+
+
   </div>
 
   <div class="row">
@@ -158,16 +169,14 @@
               <p class="panel panel-sign"> <i class="fi-page-copy size-22"></i> </p>
             </div>
           </div>
-          <ul class="no-bullet" style="font-size: 0.7rem;">
-            <li> [DEBUG] Pubkeys that you have: {{$root.wallet.publicKeyRing.registeredCopayers()}} 
-            <li> [DEBUG] WalletId: {{$root.wallet.id}} 
-            <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.wallet.publicKeyRing.copayersBIP32">
-                ${{pub.extendedPublicKeyString()}}
-            </li>
-          </ul>
         </div>
         <div class="large-6 columns p70l">
           <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedPeers.length}}</h3>
+
+          <p class="panel panel-sign" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
+          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signning transactions
+
+
           <ul class="no-bullet">
             <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
               <span ng-if="copayer == $root.wallet.network.peerId"> You ({{copayer}})<i class="fi-check size-24"></i></span>
@@ -177,9 +186,6 @@
               </span>
             </li>
           </ul>
-          <div class="text-center">
-            <button href="#/home" class="button secondary round right">Go to home</button>
-          </div>
         </div>
       </div>
     </script>
@@ -324,6 +330,17 @@
         </div>
       </div>
     </script>
+    <div ng-show="$root.wallet"  style="margin-top:200px">
+      <hr>
+      <p> 
+        [DEBUG] WalletId: {{$root.wallet.id}} 
+        <ul class="no-bullet">
+          <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.wallet.publicKeyRing.copayersBIP32">
+          ${{pub.extendedPublicKeyString()}}
+        </ul>
+    </div>
+
+
 <!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
           // <div class="large-4 columns box-backup">Backup to email</div> -->
     <!-- NOT FOUND -->
