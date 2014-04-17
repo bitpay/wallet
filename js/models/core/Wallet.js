@@ -120,6 +120,7 @@ Wallet.prototype._handleNetworkChange = function(newPeer) {
   this.sendWalletId(newPeer);
   this.sendPublicKeyRing(newPeer);
   this.sendTxProposals(newPeer);
+  this.emit('refresh');
 };
 
 Wallet.prototype.netStart = function() {
