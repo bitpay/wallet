@@ -135,7 +135,6 @@ h3 {
 
 span.panel-res {
   float: right;
-  width: 3%;
   padding: 0.4rem 0.55rem;
   margin: 0 1rem;
   border-radius: 1rem;
@@ -160,6 +159,11 @@ span.panel-res {
   margin: 0.5rem 0 1rem;
 }
 
+.share-wallet.panel {
+  background-color: #111;
+  color: #FBE500;
+}
+
 button.primary { background-color: #111; }
 button.secondary { background-color: #FAE448 !important; }
 
@@ -180,3 +184,8 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
 .m10t {margin-top: 10px;}
+.p0r {padding-right: 0;}
+.p70r {padding-right: 70px;}
+.p70l {padding-left: 70px;}
+.p5h {padding: 0 5px;}
+.br100 {border-radius: 100%;}
