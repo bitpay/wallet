@@ -156,7 +156,6 @@ WalletFactory.prototype.openRemote = function(peedId) {
   opts.totalCopayers = totalCopayers;
   var w   = new Wallet(opts);
   w.store();
-  this.addWalletId(w.id);
   return w;
 };
 
