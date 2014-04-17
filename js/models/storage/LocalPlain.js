@@ -1,9 +1,11 @@
 'use strict';
 
 var imports = require('soop').imports();
+var parent = imports.parent || require('./Base');
 
 function Storage() {
 }
+Storage.parent = parent;
 
 Storage.prototype._read = function(k) {
   var ret;
@@ -15,6 +17,21 @@ Storage.prototype._read = function(k) {
 
 Storage.prototype._write = function(k,v) {
   localStorage.setItem(k, JSON.stringify(v));
+};
+
+Storage.prototype._getWalletKeys = function(walletId) {
+  var keys = [];
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    var split = key.split('::');
+    if (split.length == 2) {
+      if (walletId = split[0])
+        keys.push(split[1]);
+    }
+  } 
+
+  return keys;
 };
 
 // get value by key
@@ -69,6 +86,13 @@ Storage.prototype.getWalletIds = function() {
   } 
 
   return walletIds;
+};
+
+//obj contains keys to be set
+Storage.prototype.setFromObj = function(walletId, obj) {
+  for (var k in obj) {
+    this.set(walletId, k, obj[k]);
+  }
 };
 
 // remove all values

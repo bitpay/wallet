@@ -1,9 +1,11 @@
 'use strict';
 
-var chai           = chai || require('chai');
+var chai           = require('chai');
 var should         = chai.should();
-var Storage        = Storage || require('../js/models/storage/File.js');
-var sinon          = sinon || require('sinon');
+var Storage        = require('../js/models/storage/File.js');
+var sinon          = require('sinon');
+var crypto         = require('crypto');
+var CryptoJS       = require('node-cryptojs-aes').CryptoJS;
 
 describe('Storage/File', function() {
   it('should exist', function() {
@@ -132,6 +134,37 @@ describe('Storage/File', function() {
       storage.remove('wallet', 'key');
       storage.removeGlobal.calledOnce.should.equal(true);
       storage.removeGlobal.calledWith('wallet::key').should.equal(true);
+    });
+  });
+
+  describe('#setFromObj', function() {
+    it('should set this object for a wallet', function(done) {
+      var obj = {test:'testval'};
+      var storage = new Storage();
+      storage.save = function(walletId, callback) {
+        callback();
+      };
+      storage.setFromObj('walletId', obj, function() {
+        storage.data.walletId.test.should.equal('testval');
+        done();
+      });
+    });
+  });
+
+  describe('#getEncryptedObj', function() {
+    it('should give an encrypted object', function() {
+      var obj = {test:'testval'};
+      var data = JSON.stringify(obj);
+      var encrypted = CryptoJS.AES.encrypt(data, 'password');
+      var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(encrypted.toString()));
+
+      var storage = new Storage({password: 'password'});
+      storage.data['walletId'] = obj;
+
+      var enc = storage.getEncryptedObj('walletId');
+      enc.length.should.equal(96);
+      enc.slice(0,10).should.equal(hex.slice(0,10));
+      enc.slice(0,6).should.equal("53616c");
     });
   });
 

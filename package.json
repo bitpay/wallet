@@ -36,6 +36,7 @@
     "soop": "~0.1.5",
     "bitcore": "git://github.com/maraoz/bitcore.git#5e636f6b9c7f8e629b1a502025556e886c3b75e1",
     "chai": "~1.9.1",
-    "sinon": "~1.9.1"
+    "sinon": "~1.9.1",
+    "node-cryptojs-aes": "=0.4.0"
   }
 }
