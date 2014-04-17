@@ -22,7 +22,7 @@ function Wallet(opts) {
     self[k] = opts[k];
   });
 
-  console.log('creating '+opts.requiredCopayers+' of '+opts.totalCopayers+' wallet');
+  this.log('creating '+opts.requiredCopayers+' of '+opts.totalCopayers+' wallet');
 
   this.id = opts.id || Wallet.getRandomId();
   this.verbose = opts.verbose;
@@ -33,7 +33,7 @@ function Wallet(opts) {
 
 Wallet.parent=EventEmitter;
 Wallet.prototype.log = function(){
-//  if (!this.verbose) return;
+  if (!this.verbose) return;
   console.log(arguments);
 };
 
@@ -99,7 +99,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
   if (this.id !== data.walletId) 
     throw new Error('wrong message received: Bad wallet ID');
 
-console.log('[Wallet.js.98]' , data.type); //TODO
+  this.log('[Wallet.js.98]' , data.type); //TODO
 
   switch(data.type) {
     case 'publicKeyRing':
@@ -120,6 +120,7 @@ Wallet.prototype._handleNetworkChange = function(newPeer) {
   this.sendWalletId(newPeer);
   this.sendPublicKeyRing(newPeer);
   this.sendTxProposals(newPeer);
+  this.emit('refresh');
 };
 
 Wallet.prototype.netStart = function() {
@@ -135,7 +136,7 @@ Wallet.prototype.netStart = function() {
 };
 
 Wallet.prototype.store = function() {
-console.log('[Wallet.js.135:store:]'); //TODO
+  this.log('[Wallet.js.135:store:]'); //TODO
   this.storage.set(this.id,'opts', {
     id: this.id,
     spendUnconfirmed: this.spendUnconfirmed,
@@ -146,7 +147,7 @@ console.log('[Wallet.js.135:store:]'); //TODO
   this.storage.set(this.id,'txProposals', this.txProposals.toObj());
   this.storage.set(this.id,'privateKey', this.privateKey.toObj());
 
-console.log('[Wallet.js.146] EMIT REFRESH'); //TODO
+  this.log('[Wallet.js.146] EMIT REFRESH'); //TODO
   this.emit('refresh');
 };
 
@@ -229,13 +230,13 @@ Wallet.prototype.sign = function(ntxid) {
 
   if (ret.signaturesAdded) {
     txp.signedBy[this.privateKey.id] = Date.now();
-console.log('[Wallet.js.230:ret:]',ret); //TODO
+    this.log('[Wallet.js.230:ret:]',ret); //TODO
     if (ret.isFullySigned) {
-console.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+      this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
       var tx = txp.builder.build();
       var txHex = tx.serialize().toString('hex');
       this.blockchain.sendRawTransaction(txHex, function(txid) {
-console.log('[Wallet.js.235:txid:]',txid); //TODO
+        this.log('[Wallet.js.235:txid:]',txid); //TODO
         if (txid) {
           this.store();
         }

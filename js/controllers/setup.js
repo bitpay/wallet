@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.setup').controller('SetupController',
-  function($scope, $rootScope, $location, walletFactory) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils) {
 
     $scope.loading = false;
 
@@ -32,16 +32,7 @@ angular.module('copay.setup').controller('SetupController',
         totalCopayers: totalCopayers
       };
       var w = walletFactory.create(opts);
-      w.on('created', function(){
-        $location.path('peer');
-        $rootScope.wallet = w;
-        $rootScope.$digest();
-      });
-      w.on('openError', function(){
-        $scope.loading = false;
-        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
-        $location.path('signin');
-      });
+      controllerUtils.setupUxHandlers(w);
       w.netStart();
     };
 

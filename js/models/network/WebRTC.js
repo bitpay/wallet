@@ -61,14 +61,9 @@ Network._arrayRemove = function(el, array) {
   return array;
 };
 
-// DEBUG
-Network.prototype._showConnectedPeers = function() {
-//  console.log("### CONNECTED PEERS", this.connectedPeers);
-};
-
 Network.prototype._onClose = function(peerId) {
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
-  this._notify();
+  this._notifyNetworkChange();
 };
 
 Network.prototype._connectToPeers = function(peerIds) {
@@ -97,7 +92,7 @@ Network.prototype._onData = function(data, isInbound) {
   switch(obj.data.type) {
     case 'peerList':
       this._connectToPeers(obj.data.peers);
-      this._notify();
+      this._notifyNetworkChange();
       break;
     case 'disconnect':
       this._onClose(obj.sender);
@@ -144,7 +139,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
         dataConn.peer, isInbound);
 
       self._addPeer(dataConn.peer, isInbound);
-      self._notify( isInbound ? dataConn.peer : null);
+      self._notifyNetworkChange( isInbound ? dataConn.peer : null);
       this.emit('open');
     }
   });
@@ -166,8 +161,8 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   });
 };
 
-Network.prototype._notify = function(newPeer) {
-  this._showConnectedPeers();
+Network.prototype._notifyNetworkChange = function(newPeer) {
+  console.log('[WebRTC.js.164:_notifyNetworkChange:]', newPeer); //TODO
   this.emit('networkChange', newPeer);
 };
 
@@ -178,7 +173,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   p.on('open', function(peerId) {
     self.peerId = peerId;
     self.connectedPeers = [peerId];
-    self._notify();
+    self._notifyNetworkChange();
     return openCallback(peerId);
   });
 
@@ -263,7 +258,6 @@ Network.prototype.connectTo = function(peerId) {
   console.log('### STARTING TO CONNECT TO:' + peerId );
 
   var dataConn = this.peer.connect(peerId, {
-//    label: 'wallet',
     serialization: 'none',
     reliable: true,
     metadata: { message: 'hi copayer!' }
