@@ -19,6 +19,10 @@ FakeStorage.prototype.get = function(wid, id) {
   return this.storage[wid + '-' +id];
 }
 
+FakeStorage.prototype.setFromObj = function(id, wallet) {
+  // TODO
+};
+
 FakeStorage.prototype.clear = function() {
   delete this['storage'];
 }
