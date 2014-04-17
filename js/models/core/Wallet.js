@@ -130,7 +130,7 @@ Wallet.prototype.netStart = function() {
   net.on('data',  self._handleData.bind(self) );
   net.on('open', function() {});  // TODO
   net.on('openError', function() {
-console.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
+  this.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
     self.emit('openError');
   });
   net.on('close', function() {
