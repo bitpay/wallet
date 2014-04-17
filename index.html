@@ -52,11 +52,18 @@
     </div>
 
 
-    <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' class="panel callout radius" >
+    <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' class="panel radius" >
 
       <p class="panel panel-sign"> <i class="fi-alert size-40"></i> 
         NOTE: Your wallet is not complete yet. 
-    {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerId}}</b>
+<span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
+    {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
+</span>
+<span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+    One key is 
+</span>
+
+missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerId}}</b>
       
       </p>
     </div>
