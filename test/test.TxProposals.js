@@ -109,6 +109,7 @@ describe('TxProposals model', function() {
     var w = new TxProposals({
       networkName: config.networkName,
     });
+    var start = new Date().getTime();
     var pkr=createPKR([priv.getBIP32()]);
     var ts = Date.now();
     var isChange=0; 
