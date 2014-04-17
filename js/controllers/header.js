@@ -40,6 +40,7 @@ angular.module('copay.header').controller('HeaderController',
       if (w) {
         w.disconnect();
         delete $rootScope['wallet'];
+        $rootScope.totalBalance = 0;
         $location.path('signin');
       }
     };
