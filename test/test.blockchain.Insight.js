@@ -65,7 +65,7 @@ describe('Insight model', function() {
     var w = new Insight();
     var b = w.getBalance(unspent); 
     should.exist(b);
-    b.should.equal(91);
+    b.should.equal('91.0000');
   });
   it.skip('should return txid', function (done) {
     var w = new Insight();

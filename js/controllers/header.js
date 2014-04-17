@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.header').controller('HeaderController',
-  function($scope, $rootScope, $location, walletFactory) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils) {
     $scope.menu = [{
       'title': 'Home',
       'icon': 'fi-home',
@@ -39,9 +39,7 @@ angular.module('copay.header').controller('HeaderController',
       var w = $rootScope.wallet;
       if (w) {
         w.disconnect();
-        delete $rootScope['wallet'];
-        $rootScope.totalBalance = 0;
-        $location.path('signin');
+        controllerUtils.logout();
       }
     };
 
