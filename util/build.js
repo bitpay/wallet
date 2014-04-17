@@ -50,6 +50,15 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
   });
+  b.require('./js/models/network/WebRTC', {
+    expose: '../js/models/network/WebRTC' 
+  });
+  b.require('./js/models/blockchain/Insight', {
+    expose: '../js/models/blockchain/Insight'
+  });
+  b.require('./js/models/core/PrivateKey', {
+    expose: '../js/models/core/PrivateKey'
+  });
 
 
   if (!opts.dontminify) {

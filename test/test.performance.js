@@ -3,18 +3,6 @@
 var chai = chai || require('chai');
 var should = chai.should();
 
-var WebRTC = require('../js/models/network/WebRTC');
-var Insight = require('../js/models/blockchain/Insight');
-var FakeStorage = require('./mocks/FakeStorage');
-var PrivateKey = require('../js/models/core/PrivateKey');
-
-var WalletFactory = typeof copay === 'undefined' ? require('soop').load('../js/models/core/WalletFactory',{
-  Network: WebRTC,
-  Blockchain: Insight,
-  Storage: FakeStorage,
-}) : copay.WalletFactory;
-
-
 describe('Performance tests', function() {
   var config = {
     wallet: {
