@@ -148,7 +148,10 @@ WalletFactory.prototype.openRemote = function(peedId) {
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
-  opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
+
+  opts.spendUnconfirmed = typeof opts.spendUnconfirmed === undefined 
+      ?this.walletDefaults.spendUnconfirmed :   opts.spendUnconfirmed;
+
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
   var w   = new Wallet(opts);
