@@ -27,4 +27,10 @@ FakeStorage.prototype.getWalletIds = function() {
   return [];
 };
 
+FakeStorage.prototype.setFromObj = function(walletId, obj) {
+  for (var i in obj) {
+    this.storage[walletId + '-' + i] = obj[i];
+  };
+};
+
 module.exports = require('soop')(FakeStorage);

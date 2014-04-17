@@ -48,11 +48,13 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.read = function(walletId) {
-  if (! this._checkRead(walletId)) return false;
+  if (! this._checkRead(walletId))
+    throw Error('Check read failed');
 
   var s = this.storage;
   var opts = s.get(walletId, 'opts');
 
+  opts.id = walletId;
   opts.publicKeyRing = new PublicKeyRing.fromObj(s.get(walletId, 'publicKeyRing'));
   opts.txProposals   = new TxProposals.fromObj(s.get(walletId, 'txProposals'));
   opts.privateKey    = new PrivateKey.fromObj(s.get(walletId, 'privateKey'));
