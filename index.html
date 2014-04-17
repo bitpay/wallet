@@ -17,7 +17,7 @@
             <img src="./img/logo-negative.svg" alt="" width="130">
           </figure>
           <div class="text-right" ng-show="$root.wallet">
-            <h5>Company Funds</h5>
+            <h5 ng-show="$root.wallet.id">Wallet ID:{{$root.wallet.id}}</h5>
             <p ng-show="totalBalance">{{totalBalance}} BTC</p>
             <p ng-show="!totalBalance">0 BTC</p>
           </div>
@@ -345,16 +345,6 @@ missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerI
         </div>
       </div>
     </script>
-    <div ng-show="$root.wallet"  style="margin-top:200px">
-      <hr>
-      <p> 
-        [DEBUG] WalletId: {{$root.wallet.id}} 
-        <ul class="no-bullet">
-          <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.wallet.publicKeyRing.copayersBIP32">
-          ${{pub.extendedPublicKeyString()}}
-        </ul>
-    </div>
-
 
 <!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
           // <div class="large-4 columns box-backup">Backup to email</div> -->
