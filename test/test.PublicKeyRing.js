@@ -75,10 +75,15 @@ describe('PublicKeyRing model', function() {
     var k = createW();
     var w = k.w;
     var copayers = k.copayers;
-    for(var i=0; i<3; i++)
+    var changeN = 2;
+    var addressN = 2;
+    var start = new Date().getTime();
+    for(var i=0; i<changeN; i++) {
       w.generateAddress(true);
-    for(var i=0; i<5; i++)
+    }
+    for(var i=0; i<addressN; i++) {
       w.generateAddress(false);
+    }
 
     var data = w.toObj();
     should.exist(data);
@@ -91,8 +96,8 @@ describe('PublicKeyRing model', function() {
       (function() {w.addCopayer(copayers[i])}).should.throw();
     }
 
-    w2.changeAddressIndex.should.equal(3);   
-    w2.addressIndex.should.equal(5); 
+    w2.changeAddressIndex.should.equal(changeN);   
+    w2.addressIndex.should.equal(addressN); 
   });
 
 
@@ -101,7 +106,7 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for(var isChange=0; isChange<2; isChange++) {
-      for(var i=0; i<5; i++) {
+      for(var i=0; i<2; i++) {
         var a = w.generateAddress(isChange);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
@@ -123,11 +128,11 @@ describe('PublicKeyRing model', function() {
     a.length.should.equal(0);
 
     for(var isChange=0; isChange<2; isChange++) 
-      for(var i=0; i<6; i++) 
+      for(var i=0; i<2; i++) 
          w.generateAddress(isChange);
  
     var as = w.getAddresses();
-    as.length.should.equal(12);
+    as.length.should.equal(4);
     for(var j in as) {
       var a = as[j];
       a.isValid().should.equal(true);
@@ -140,11 +145,11 @@ describe('PublicKeyRing model', function() {
 
     for(var i=0; i<3; i++)
       w.generateAddress(true);
-    for(var i=0; i<5; i++)
+    for(var i=0; i<2; i++)
       w.generateAddress(false);
 
     w.changeAddressIndex.should.equal(3);   
-    w.addressIndex.should.equal(5); 
+    w.addressIndex.should.equal(2); 
   });
 
   it('#merge index tests', function () {
@@ -281,11 +286,11 @@ describe('PublicKeyRing model', function() {
 
     for(var i=0; i<2; i++)
       w.generateAddress(true);
-    for(var i=0; i<3; i++)
+    for(var i=0; i<2; i++)
       w.generateAddress(false);
 
     var m = w.getRedeemScriptMap();
-    Object.keys(m).length.should.equal(5);
+    Object.keys(m).length.should.equal(4);
     Object.keys(m).forEach(function (k) {
       should.exist(m[k]);
     });
