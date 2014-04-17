@@ -15,7 +15,9 @@ angular.module('copay.home').controller('HomeController',
     }
 
     $scope.newAddr = function() {
+console.log('[home.js.17:newAddr:]'); //TODO
       var a = $rootScope.wallet.generateAddress();
+console.log('[home.js.19]',a); //TODO
       $scope.addrs.push({ addrStr: a.toString() });
     };
 
