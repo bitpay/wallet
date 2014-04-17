@@ -1,36 +1,17 @@
 'use strict';
 
+
+
 angular.module('copay.signin').controller('SigninController',
-  function($scope, $rootScope, $location, walletFactory) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils) {
 
 //    var peerData = Storage.get($rootScope.walletId, 'peerData');
 //    $rootScope.peerId = peerData ? peerData.peerId : null;
     $scope.loading = false;
 
-    $scope.selectedWalletId = false;
+    $scope.walletIds = walletFactory.getWalletIds();
 
-    $scope.listWalletIds = function() {
-      return walletFactory.getWalletIds();
-    };
-
-    var _setupUxHandlers =  function(w) {
-      w.on('created', function() {
-        $location.path('peer');
-        $rootScope.wallet = w;
-        $rootScope.$digest();
-      });
-      w.on('refresh', function() {
-
-console.log('[signin.js.23] RECEIVED REFRESH'); //TODO
-        $rootScope.$digest();
-      });
- 
-      w.on('openError', function(){
-        $scope.loading = false;
-        $rootScope.flashMessage = {type:'error', message: 'Wallet not found'};
-        $location.path('signin');
-      });
-    };
+    $scope.selectedWalletId = $scope.walletIds.length ? $scope.walletIds[0]:null;
 
     $scope.create = function() {
       $location.path('setup');
@@ -40,16 +21,18 @@ console.log('[signin.js.23] RECEIVED REFRESH'); //TODO
       $scope.loading = true;
 
       var w = walletFactory.open(walletId);
-      _setupUxHandlers(w);
+      controllerUtils.setupUxHandlers(w);
       w.netStart();
     };
 
     $scope.join = function(cid) {
-console.log('[signin.js.42:join:]'); //TODO
       $scope.loading = true;
+      walletFactory.network.on('openError', function() {
+        controllerUtils.onError($scope); 
+        $rootScope.$digest();
+      });
       walletFactory.connectTo(cid, function(w) {
-console.log('[signin.js.50]'); //TODO
-        _setupUxHandlers(w);
+        controllerUtils.setupUxHandlers(w);
         w.netStart();
       });
     };

@@ -96,11 +96,12 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
-  if (this.id !== data.walletId) 
-    throw new Error('wrong message received: Bad wallet ID');
-
+  if (this.id !== data.walletId) {
+    this.emit('badMessage',senderId);
+    this.log('badMessage FROM:', senderId); //TODO
+    return;
+  }
   this.log('[Wallet.js.98]' , data.type); //TODO
-
   switch(data.type) {
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
@@ -108,18 +109,17 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     case 'txProposals':
       this._handleTxProposals(senderId, data, isInbound);
     break;
-    case 'abort':
-      this.emit('abort');
-    break;
   }
 };
 
 Wallet.prototype._handleNetworkChange = function(newPeer) {
-  if (!newPeer) return;
-  this.log('#### Setting new PEER:', newPeer);
-  this.sendWalletId(newPeer);
-  this.sendPublicKeyRing(newPeer);
-  this.sendTxProposals(newPeer);
+  if (newPeer) {
+    this.log('#### Setting new PEER:', newPeer);
+    this.sendWalletId(newPeer);
+    this.sendPublicKeyRing(newPeer);
+    this.sendTxProposals(newPeer);
+  }
+  this.emit('refresh');
 };
 
 Wallet.prototype._optsToObj = function () {
@@ -136,10 +136,17 @@ Wallet.prototype._optsToObj = function () {
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
+  net.removeAllListeners();
   net.on('networkChange', self._handleNetworkChange.bind(self) );
   net.on('data',  self._handleData.bind(self) );
   net.on('open', function() {});  // TODO
-  net.on('close', function() {}); // TODO
+  net.on('openError', function() {
+  this.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
+    self.emit('openError');
+  });
+  net.on('close', function() {
+    self.emit('close');
+  });
   net.start(function(peerId) {
     self.emit('created');
   });
@@ -210,6 +217,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   });
   this.emit('publicKeyRingUpdated', this.publicKeyRing);
 };
+
 
 Wallet.prototype.generateAddress = function() {
   var addr = this.publicKeyRing.generateAddress();
@@ -303,10 +311,34 @@ Wallet.prototype.getAddressesStr = function() {
   return ret;
 };
 
+Wallet.prototype.getTotalBalance = function(cb) {
+  this.getBalance(this.getAddressesStr(), function(balance) {
+    return cb(balance);
+  });
+};
 
+Wallet.prototype.getBalance = function(addrs, cb) {
+  var balance = 0;
+  this.listUnspent(addrs, function(utxos) {
+    for(var i=0;i<utxos.length; i++) {
+      balance = balance + utxos[i].amount;
+    }
+    if (balance) {
+      if (balance === parseInt(balance)) {
+        balance = balance;
+      }
+      else {
+        balance = balance.toFixed(8);
+      }
+    }
+    return cb(balance);
+  });
+};
 
-Wallet.prototype.listUnspent = function(cb) {
-  this.blockchain.listUnspent(this.getAddressesStr(), cb);
+Wallet.prototype.listUnspent = function(addrs, cb) {
+  this.blockchain.listUnspent(addrs, function(utxos) {
+    return cb(utxos);
+  });
 };
 
 
@@ -326,7 +358,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
     opts.remainderOut={ address: this.publicKeyRing.generateAddress(true).toString()};
   }
 
-  self.listUnspent(function(utxos) {
+  self.listUnspent(self.getAddressesStr(), function(utxos) {
     // TODO check enough funds, etc.
     self.createTxSync(toAddress, amountSatStr, utxos, opts);
     self.store();

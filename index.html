@@ -17,8 +17,9 @@
             <img src="./img/logo-negative.svg" alt="" width="130">
           </figure>
           <div class="text-right" ng-show="$root.wallet">
-            <h5>Company Funds</h5>
-            <p>4.324 BTC</p>
+            <h5 ng-show="$root.wallet.id">Wallet ID:{{$root.wallet.id}}</h5>
+            <p ng-show="totalBalance">{{totalBalance}} BTC</p>
+            <p ng-show="!totalBalance">0 BTC</p>
           </div>
         </div>
 
@@ -47,8 +48,26 @@
     <div ng-if='$root.flashMessage.message' class="panel callout radius" style="color:red" >
       {{$root.flashMessage.type}}: 
       {{$root.flashMessage.message}}
-      <a href="#" ng-click="clearFlashMessage()" class="button tiny">Dismiss</a>
+      <a ng-click="clearFlashMessage()" class="button tiny">Dismiss</a>
     </div>
+
+
+    <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' class="panel radius" >
+
+      <p class="panel panel-sign"> <i class="fi-alert size-40"></i> 
+        NOTE: Your wallet is not complete yet. 
+<span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
+    {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
+</span>
+<span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+    One key is 
+</span>
+
+missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerId}}</b>
+      
+      </p>
+    </div>
+
 
   </div>
 
@@ -65,17 +84,6 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="large-6 columns">
-              <h3>Open a Existing Wallet</h3>
-              <select class="form-control" ng-model="selectedWalletId" ng-options="walletId for walletId in listWalletIds()">
-              </select>
-            </div>
-            <div class="large-3 columns">
-              <button class="button primary expand round" type="button" ng-click="open(selectedWalletId)">Open</button>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="large-6 columns">
               <h3>Join a Network Wallet</h3>
               <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
             </div>
@@ -83,15 +91,44 @@
               <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
             </div>
           </div>
+
           <hr>
-          <div class="row">
-            <div class="large-6 columns">
-              <h3>Create a New Wallet</h3>
+          <div ng-show="!walletIds.length">
+            <div class="row">
+              <div class="large-6 columns">
+                <h3>Create a New Wallet</h3>
+              </div>
+              <div class="large-3 columns">
+                <button class="button secondary expand round" ng-click="create()">Create</button>
+              </div>
             </div>
-            <div class="large-3 columns">
-              <button class="button secondary expand round" ng-click="create()">Create</button>
+            <hr>
+            <div class="row">
+              <div class="text-center">
+                <a ng-click="import()">Import from file</a>
+              </div>
             </div>
           </div>
+          <div ng-show="walletIds.length>0">
+            <div class="row">
+              <div class="large-6 columns">
+                <h3>Open a Existing Wallet</h3>
+                <select class="form-control" ng-model="selectedWalletId" ng-options="walletId for walletId in walletIds">
+                </select>
+              </div>
+              <div class="large-3 columns">
+                <button class="button primary expand round" type="button" ng-click="open(selectedWalletId)">Open</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="text-center">
+                <a ng-click="create()">Create a new wallet</a>
+                &middot; <a ng-click="import()">Import from file</a>
+              </div>
+            </div>
+          </div>
+          <hr>
+
         </div>
       </div>
     </script>
@@ -126,6 +163,11 @@
               </button>
             </div>
           </div>
+          <div class="row">
+            <div class="text-center">
+              <a href="#signin">Go back</a>
+            </div>
+          </div>
         </div>
       </div>
     </script>
@@ -142,28 +184,23 @@
               <p class="panel panel-sign"> <i class="fi-page-copy size-22"></i> </p>
             </div>
           </div>
-          <ul class="no-bullet" style="font-size: 0.7rem;">
-            <li> [DEBUG] Pubkeys that you have: {{$root.wallet.publicKeyRing.registeredCopayers()}} 
-            <li> [DEBUG] WalletId: {{$root.wallet.id}} 
-            <li class="panel" style="word-wrap: break-word;" ng-repeat="pub in $root.wallet.publicKeyRing.copayersBIP32">
-                ${{pub.extendedPublicKeyString()}}
-            </li>
-          </ul>
         </div>
         <div class="large-6 columns p70l">
-          <h3 class="panel-title">Copayers ({{$root.wallet.network.connectedPeers.length}}/{{$root.wallet.publicKeyRing.requiredCopayers}})</h3>
+          <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedPeers.length}}</h3>
+
+          <p class="panel panel-sign" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
+          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signning transactions
+
+
           <ul class="no-bullet">
             <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
-              <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
-              <span ng-if="copayer != $root.peerId">{{copayer}}</span>
+              <span ng-if="copayer == $root.wallet.network.peerId"> You ({{copayer}})<i class="fi-check size-24"></i></span>
+              <span ng-if="copayer !== $root.wallet.network.peerId">{{copayer}}</span>
               <span>
                   <i class="fi-check size-16 panel-sign right p5h br100"></i>
               </span>
             </li>
           </ul>
-          <div class="text-center">
-            <button href="#/home" class="button secondary round right">Go to home</button>
-          </div>
         </div>
       </div>
     </script>
@@ -173,6 +210,7 @@
     <!-- HOME -->
     <script type="text/ng-template" id="home.html">
       <div class="home" data-ng-controller="HomeController">
+        <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
         <h3>Address</h3>
 
         <div class="row">
@@ -181,13 +219,14 @@
           </div>
           <div class="large-3 columns line-dashed-v text-center">
             <qrcode size="160" data="{{selectedAddr}}"></qrcode>
-            <p class="m10t"> <strong> 2.5432 BTC </strong> </p>
+            <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{addrBalance[addr]}} BTC </strong> </p>
           </div>
           <div class="large-1 columns"> </div>
           <div class="large-2 columns">
             <p> Create a New <strong> Address </strong> </p>
             <button class="secondary round expand" ng-click="newAddr()"> Create </button>
           </div>
+        </div> 
         </div> 
       </div>
     </script>
@@ -196,8 +235,7 @@
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
       <div class="transactions" data-ng-controller="TransactionsController">
-      
-        <div class="row">
+        <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
             <h3>Pending Transactions <small>({{txsoutput.length}})</small></h3>
             <div class="panel pending" ng-repeat="txp in txsoutput">
@@ -260,8 +298,7 @@
    <!-- SEND -->
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
-      <h3>{{title}}</h3>
-        <div class="row">
+        <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-8 columns">
             <form>
               <label for="address">To
@@ -308,6 +345,7 @@
         </div>
       </div>
     </script>
+
 <!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
           // <div class="large-4 columns box-backup">Backup to email</div> -->
     <!-- NOT FOUND -->
@@ -327,15 +365,17 @@
     <script src="lib/bitcore.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
     <script src="lib/file-saver/FileSaver.js"></script>
+    <script src="lib/socket.io.js"></script>
     <script src="js/copayBundle.js"></script>
-
 
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
     <script src="js/routes.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
+    <script src="js/services/socket.js"></script>
     <script src="js/services/walletFactory.js"></script>
+    <script src="js/services/controllerUtils.js"></script>
 
     <script src="js/controllers/header.js"></script>
     <script src="js/controllers/home.js"></script>

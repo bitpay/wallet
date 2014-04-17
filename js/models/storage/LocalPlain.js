@@ -54,13 +54,17 @@ Storage.prototype.remove = function(walletId, k) {
 
 Storage.prototype.getWalletIds = function() {
   var walletIds = [];
+  var uniq = {};
 
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     var split = key.split('::');
     if (split.length == 2) {
       var walletId = split[0];
-      walletIds.push(walletId);
+      if (typeof uniq[walletId] === 'undefined' ) {
+        walletIds.push(walletId);
+        uniq[walletId] = 1;
+      }
     }
   } 
 

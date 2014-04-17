@@ -29,15 +29,6 @@ function _asyncForEach(array, fn, callback) {
   }
 }; 
 
-Insight.prototype.getBalance = function(unspent) {
-  var balance = 0;
-  for(var i=0;i<unspent.length; i++) {
-    balance = balance + unspent[i].amount;
-  }
-
-  return balance;
-};
-
 Insight.prototype.listUnspent = function(addresses, cb) {
   var self = this;
   

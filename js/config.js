@@ -3,7 +3,12 @@
 var config = {
   networkName: 'testnet',
   network: {
-    apiKey: 'lwjd5qra8257b9',
+    key: 'lwjd5qra8257b9',
+    //   This is for running local peerJs with params: ./peerjs  -p 10009  -k 'sdfjhwefh'
+    // key: 'sdfjhwefh',
+    // host: 'localhost',
+    // port: 10009,
+    // path: '/',
     maxPeers: 3,
     debug: 3,
   },
@@ -18,10 +23,12 @@ var config = {
     verbose: 1,
   },
   blockchain: {
-    host: 'test.insight.is',
-    port: 80
-    // host: 'localhost',
-    // port: 3001
+    host: 'localhost',
+    port: 3001
+  },
+  socket: {
+    host: 'localhost',
+    port: 3001
   },
   verbose: 1,
 };

@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('copay.send').controller('SendController',
-  function($scope, $rootScope, $location) {
+  function($scope, $rootScope, $location, Socket, controllerUtils) {
     $scope.title = 'Send';
 
-    if (!$rootScope.wallet.id) {
+    if (!$rootScope.wallet || !$rootScope.wallet.id) {
       $location.path('signin');
     }
-
+    else {
+      var socket = Socket($scope);
+      socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
+   
+    }
 
     $scope.sendTest = function() {
       var w    = $rootScope.wallet;
