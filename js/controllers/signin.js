@@ -22,7 +22,6 @@ angular.module('copay.signin').controller('SigninController',
       w.on('refresh', function() {
 
 console.log('[signin.js.23] RECEIVED REFRESH'); //TODO
-        $rootScope.$digest();
       });
  
       w.on('openError', function(){
