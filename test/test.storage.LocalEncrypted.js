@@ -45,5 +45,17 @@ if (typeof process === 'undefined' || !process.version) {
         JSON.stringify(obj2).should.equal(JSON.stringify(obj));
       });
     });
+
+    describe('#getEncryptedObj', function() {
+      it('should encrypt the wallet', function() {
+        localStorage.clear();
+        var storage = new LocalEncrypted({password: 'password'});
+        storage.set('walletId', 'test', 'testval');
+        var obj = {test:'testval'};
+        var encrypted = storage.getEncryptedObj('walletId');
+        encrypted.length.should.equal(96);
+        encrypted.slice(0,6).should.equal("53616c");
+      });
+    });
   });
 }

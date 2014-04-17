@@ -5,8 +5,13 @@ var imports = require('soop').imports();
 var parent     = imports.parent || require('./LocalPlain');
 
 var id = 0;
-function Storage() {
+function Storage(opts) {
+  opts = opts || {};
+
   this.__uniqueid = ++id;
+
+  if (opts.password)
+    this._setPassphrase(opts.password);
 }
 Storage.parent = parent;
 
@@ -46,6 +51,20 @@ Storage.prototype._write = function(k,v) {
   v = JSON.stringify(v);
   v = this._encrypt(v);
   localStorage.setItem(k, v);
+};
+
+Storage.prototype.getEncryptedObj = function(walletId) {
+  var keys = this._getWalletKeys();
+  var obj = {};
+  for (var i in keys) {
+    var key = keys[0];
+    obj[key] = this.get(walletId, key);
+  }
+  
+  var str = JSON.stringify(obj);
+  var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(this._encrypt(str).toString()));
+
+  return hex;
 };
 
 module.exports = require('soop')(Storage);

@@ -1,12 +1,19 @@
 'use strict';
 var imports = require('soop').imports();
 var fs = imports.fs || require('fs');
+var parent = imports.parent || require('./Base');
+var crypto = imports.crypto || require('crypto');
+var CryptoJS = require('node-cryptojs-aes').CryptoJS;
+
+var passwords = [];
 
 function Storage(opts) {
   opts = opts || {};
 
   this.data = {};
+  passwords[0] = opts.password;
 }
+Storage.parent = parent;
 
 Storage.prototype.load = function(walletId, callback) {
   fs.readFile(walletId, function(err, data) {
@@ -91,6 +98,23 @@ Storage.prototype.remove = function(walletId, k, callback) {
 
 Storage.prototype.getWalletIds = function() {
   return [];
+};
+
+Storage.prototype.setFromObj = function(walletId, obj, callback) {
+  this.data[walletId] = obj;
+  this.save(walletId, callback);
+};
+
+Storage.prototype.setFromEncryptedObj = function(walletId) {
+  //TODO: implement
+};
+
+Storage.prototype.getEncryptedObj = function(walletId) {
+  var data = JSON.stringify(this.data[walletId]);
+  var encrypted = CryptoJS.AES.encrypt(data, passwords[0]);
+  var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(encrypted.toString()));
+
+  return hex;
 };
 
 // remove all values
