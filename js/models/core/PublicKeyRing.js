@@ -192,15 +192,17 @@ PublicKeyRing.prototype.generateAddress = function(isChange) {
 
 };
 
-PublicKeyRing.prototype.getAddresses = function() {
+PublicKeyRing.prototype.getAddresses = function(onlyMain) {
   var ret = [];
-
-  for (var i=0; i<this.changeAddressIndex; i++) {
-    ret.push(this.getAddress(i,true));
-  }
 
   for (var i=0; i<this.addressIndex; i++) {
     ret.push(this.getAddress(i,false));
+  }
+
+  if (!onlyMain) {
+    for (var i=0; i<this.changeAddressIndex; i++) {
+      ret.push(this.getAddress(i,true));
+    }
   }
   return ret;
 };
