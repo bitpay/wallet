@@ -66,17 +66,6 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="large-6 columns">
-              <h3>Open a Existing Wallet</h3>
-              <select class="form-control" ng-model="selectedWalletId" ng-options="walletId for walletId in listWalletIds()">
-              </select>
-            </div>
-            <div class="large-3 columns">
-              <button class="button primary expand round" type="button" ng-click="open(selectedWalletId)">Open</button>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="large-6 columns">
               <h3>Join a Network Wallet</h3>
               <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
             </div>
@@ -85,14 +74,35 @@
             </div>
           </div>
           <hr>
-          <div class="row">
-            <div class="large-6 columns">
-              <h3>Create a New Wallet</h3>
-            </div>
-            <div class="large-3 columns">
-              <button class="button secondary expand round" ng-click="create()">Create</button>
+          <div ng-show="walletIds.length === 0">
+            <div class="row">
+              <div class="large-6 columns">
+                <h3>Create a New Wallet</h3>
+              </div>
+              <div class="large-3 columns">
+                <button class="button secondary expand round" ng-click="create()">Create</button>
+              </div>
             </div>
           </div>
+          <div ng-show="walletIds.length>0">
+            <div class="row">
+              <div class="large-6 columns">
+                <h3>Open a Existing Wallet</h3>
+                <select class="form-control" ng-model="selectedWalletId" ng-options="walletId for walletId in walletIds">
+                </select>
+              </div>
+              <div class="large-3 columns">
+                <button class="button primary expand round" type="button" ng-click="open(selectedWalletId)">Open</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="text-center">
+                <a ng-click="create()">Or create a new wallet</a>
+              </div>
+            </div>
+          </div>
+          <hr>
+
         </div>
       </div>
     </script>
@@ -127,6 +137,11 @@
               </button>
             </div>
           </div>
+          <div class="row">
+            <div class="text-center">
+              <a href="#signin">Go back</a>
+            </div>
+          </div>
         </div>
       </div>
     </script>
@@ -152,11 +167,11 @@
           </ul>
         </div>
         <div class="large-6 columns p70l">
-          <h3 class="panel-title">Copayers ({{$root.wallet.network.connectedPeers.length}}/{{$root.wallet.publicKeyRing.requiredCopayers}})</h3>
+          <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedPeers.length}}</h3>
           <ul class="no-bullet">
             <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
-              <span ng-if="copayer == $root.peerId"> You ({{$root.peerId}})<i class="fi-check size-24"></i></span>
-              <span ng-if="copayer != $root.peerId">{{copayer}}</span>
+              <span ng-if="copayer == $root.wallet.network.peerId"> You ({{copayer}})<i class="fi-check size-24"></i></span>
+              <span ng-if="copayer !== $root.wallet.network.peerId">{{copayer}}</span>
               <span>
                   <i class="fi-check size-16 panel-sign right p5h br100"></i>
               </span>
