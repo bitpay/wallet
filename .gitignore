@@ -45,6 +45,7 @@ public/css/main.css
 
 README.html
 
-lib
+lib/*
+!lib/socket.io.js
 
 js/copayBundle.js
