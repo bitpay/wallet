@@ -59,6 +59,9 @@ var createBundle = function(opts) {
   b.require('./js/models/core/PrivateKey', {
     expose: '../js/models/core/PrivateKey'
   });
+  b.require('./js/models/core/PublicKeyRing', {
+    expose: '../js/models/core/PublicKeyRing'
+  });
 
 
   if (!opts.dontminify) {
