@@ -3,7 +3,12 @@
 var config = {
   networkName: 'testnet',
   network: {
-    apiKey: 'lwjd5qra8257b9',
+//    apiKey: 'lwjd5qra8257b9',
+    //   This is for running local peerJs with params: ./peerjs  -p 10009  -k 'sdfjhwefh'
+    apiKey: 'sdfjhwefh',
+    host: 'localhost',
+    port: 10009,
+    path: '/',
     maxPeers: 3,
     debug: 3,
   },

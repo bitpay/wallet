@@ -21,6 +21,12 @@ function Network(opts) {
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 5;
+
+  // For using your own peerJs server
+  this.port         = opts.port;
+  this.host         = opts.host;
+  this.path         = opts.path;
+
   this.connectedPeers = [];
 }
 
@@ -150,14 +156,17 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
   dataConn.on('error', function(e) {
     console.log('### DATA ERROR',e ); //TODO
+    self.emit('openError');
   });
 
   dataConn.on('close', function() {
     if (self.closing) return;
-    self.closing=1;
     console.log('### CLOSE RECV FROM:', dataConn.peer); 
     self._onClose(dataConn.peer);
-    this.emit('close');
+    if (! isInbound) {
+console.log('[WebRTC.js.163] EMIT openError'); //TODO
+      self.emit('openError');
+    }
   });
 };
 
@@ -182,7 +191,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
     self.peer.disconnect();
     self.peer.destroy();
     self.peer = null;
-    this.emit('abort');
+    self.emit('openError');
   });
 
   p.on('connection', function(dataConn) {
@@ -207,6 +216,9 @@ Network.prototype.start = function(openCallback) {
 
   this.peer = new Peer(this.peerId, {
     key: this.apiKey, // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
+    host: this.host,
+    port: this.port,
+    path: this.path,
     debug: this.debug, 
   });
 
@@ -234,6 +246,7 @@ Network.prototype._sendToOne = function(peerId, data, cb) {
 
 Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
+console.log('[WebRTC.js.242] SENDING ', data.type); //TODO
   if (!peerIds) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
@@ -270,7 +283,6 @@ Network.prototype.connectTo = function(peerId) {
 Network.prototype.disconnect = function(cb) {
   var self = this;
   self.closing = 1;
-
   this.send(null, { type: 'disconnect' }, function() {
     self.connectedPeers = [];
     self.peerId = null;
