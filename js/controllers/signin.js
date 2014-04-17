@@ -27,12 +27,7 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     $scope.create = function() {
-console.log('[signin.js.42:create:]'); //TODO
-      $scope.loading = true;
-
-      var w = walletFactory.create();
-      _setupUxHandlers(w);
-      w.netStart();
+      $location.path('setup');
     };
 
     $scope.open = function(walletId) {

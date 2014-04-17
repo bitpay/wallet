@@ -7,6 +7,10 @@ var config = {
     maxPeers: 3,
     debug: 3,
   },
+  limits: {
+    totalCopayers: 10,
+    mPlusN: 15
+  },
   wallet: {
     requiredCopayers: 2,
     totalCopayers: 3,

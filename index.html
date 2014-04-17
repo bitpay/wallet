@@ -96,6 +96,40 @@
       </div>
     </script>
 
+    <script type="text/ng-template" id="setup.html">
+      <div ng-controller="SetupController">
+        <div class="panel callout radius" ng-show="loading">
+          Connecting to wallet...
+        </div>
+        <div ng-show="!loading">
+          <h2>Create new multisig wallet</h2>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Select total number of copayers</h3>
+              <select ng-model="totalCopayers" 
+                ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="large-6 columns">
+              <h3>Select required number of copayers</h3>
+              <select ng-model="requiredCopayers" 
+                ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+              </select>
+            </div>
+            <div class="large-3 columns">
+              <button class="button primary expand round" type="button"
+               ng-click="create(totalCopayers, requiredCopayers)">
+               Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
     <script type="text/ng-template" id="peer.html">
       <div class="row" ng-controller="PeerController" ng-init="init()">
         <div class="large-6 columns">
@@ -298,6 +332,7 @@
     <script src="js/controllers/send.js"></script>
     <script src="js/controllers/backup.js"></script>
     <script src="js/controllers/signin.js"></script>
+    <script src="js/controllers/setup.js"></script>
     <script src="js/controllers/peer.js"></script>
 
     <script src="js/init.js"></script>
