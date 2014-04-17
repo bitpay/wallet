@@ -18,7 +18,8 @@
           </figure>
           <div class="text-right" ng-show="$root.wallet">
             <h5>Company Funds</h5>
-            <p>4.324 BTC</p>
+            <p ng-show="totalBalance">{{totalBalance}} BTC</p>
+            <p ng-show="!totalBalance">0 BTC</p>
           </div>
         </div>
 
@@ -181,7 +182,7 @@
           </div>
           <div class="large-3 columns line-dashed-v text-center">
             <qrcode size="160" data="{{selectedAddr}}"></qrcode>
-            <p class="m10t"> <strong> 2.5432 BTC </strong> </p>
+            <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{addrBalance[addr]}} BTC </strong> </p>
           </div>
           <div class="large-1 columns"> </div>
           <div class="large-2 columns">
@@ -326,14 +327,15 @@
     <script src="lib/peerjs/peer.js"></script>
     <script src="lib/bitcore.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
+    <script src="lib/socket.io.js"></script>
     <script src="js/copayBundle.js"></script>
-
 
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
     <script src="js/routes.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
+    <script src="js/services/socket.js"></script>
     <script src="js/services/walletFactory.js"></script>
     <script src="js/services/controllerUtils.js"></script>
 

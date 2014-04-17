@@ -24,7 +24,7 @@ angular.module('copay.header').controller('HeaderController',
       'link': '#/backup'
     }];
 
-    if (!$rootScope.peerId) {
+   if (!$rootScope.wallet || !$rootScope.wallet.id) {
       $location.path('signin');
     }
 
@@ -40,6 +40,7 @@ angular.module('copay.header').controller('HeaderController',
       if (w) {
         w.disconnect();
         delete $rootScope['wallet'];
+        $rootScope.totalBalance = 0;
         $location.path('signin');
       }
     };
@@ -47,4 +48,5 @@ angular.module('copay.header').controller('HeaderController',
     $scope.clearFlashMessage = function() {
       $rootScope.flashMessage = {};
     };
+
   });

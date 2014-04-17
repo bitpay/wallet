@@ -34,7 +34,9 @@ Insight.prototype.getBalance = function(unspent) {
   for(var i=0;i<unspent.length; i++) {
     balance = balance + unspent[i].amount;
   }
-
+  if (balance) {
+    balance = balance.toFixed(4);
+  }
   return balance;
 };
 

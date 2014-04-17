@@ -277,7 +277,18 @@ Wallet.prototype.getAddressesStr = function() {
   return ret;
 };
 
-
+Wallet.prototype.getBalance = function(cb) {
+  var balance = 0;
+  this.blockchain.listUnspent(this.getAddressesStr(), function(unspent) {
+    for(var i=0;i<unspent.length; i++) {
+      balance = balance + unspent[i].amount;
+    }
+    if (balance) {
+      balance = balance.toFixed(4);
+    }
+    return cb(balance);
+  });
+};
 
 Wallet.prototype.listUnspent = function(cb) {
   this.blockchain.listUnspent(this.getAddressesStr(), cb);
