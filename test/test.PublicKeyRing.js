@@ -56,7 +56,7 @@ describe('PublicKeyRing model', function() {
     w2.registeredCopayers().should.equal(0); 
     w2.isComplete().should.equal(false);
 
-    w2.getAddress.bind(false).should.throw();
+    (function() {w2.getAddress(0, false);}).should.throw();
   });
 
   it('should add and check when adding shared pub keys', function () {
@@ -65,9 +65,10 @@ describe('PublicKeyRing model', function() {
     var copayers = k.copayers;
 
     w.isComplete().should.equal(true);
-    w.addCopayer.bind().should.throw();
-    for(var i =0; i<5; i++) 
-      w.addCopayer.bind(copayers[i]).should.throw();
+    w.addCopayer.should.throw();
+    for(var i =0; i<5; i++) {
+      (function() {w.addCopayer(copayers[i])}).should.throw();
+    }
   });
 
   it('show be able to tostore and read', function () {
@@ -85,9 +86,10 @@ describe('PublicKeyRing model', function() {
     var w2 = PublicKeyRing.fromObj(data);
     w2.walletId.should.equal(w.walletId);
     w2.isComplete().should.equal(true);
-    w2.addCopayer.bind().should.throw();
-    for(var i =0; i<5; i++) 
-      w2.addCopayer.bind(copayers[i]).should.throw();
+    w2.addCopayer.should.throw();
+    for(var i =0; i<5; i++) {
+      (function() {w.addCopayer(copayers[i])}).should.throw();
+    }
 
     w2.changeAddressIndex.should.equal(3);   
     w2.addressIndex.should.equal(5); 
