@@ -26,10 +26,12 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     $scope.join = function(cid) {
-console.log('[signin.js.42:join:]'); //TODO
       $scope.loading = true;
+      walletFactory.network.on('openError', function() {
+        controllerUtils.onError($scope); 
+        $rootScope.$digest();
+      });
       walletFactory.connectTo(cid, function(w) {
-console.log('[signin.js.50]'); //TODO
         controllerUtils.setupUxHandlers(w);
         w.netStart();
       });

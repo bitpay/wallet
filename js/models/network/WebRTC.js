@@ -16,11 +16,18 @@ var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
  */
 
 function Network(opts) {
+  var self = this;
   opts                = opts || {};
   this.peerId         = opts.peerId;
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 5;
+  this.opts = { key: opts.key };
+
+  // For using your own peerJs server
+  ['port', 'host', 'path', 'debug'].forEach(function(k) {
+    if (opts[k]) self.opts[k]=opts[k];
+  });
   this.connectedPeers = [];
 }
 
@@ -128,6 +135,13 @@ Network.prototype._addPeer = function(peerId, isInbound) {
   }
 };
 
+Network.prototype._checkAnyPeer = function() {
+  if (!this.connectedPeers.length) {
+    console.log('EMIT openError: no more peers, not even you!'); 
+    this.emit('openError');
+  }
+}
+
 Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
   var self=this;
@@ -150,14 +164,14 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
   dataConn.on('error', function(e) {
     console.log('### DATA ERROR',e ); //TODO
+    self.emit('dataError');
   });
 
   dataConn.on('close', function() {
     if (self.closing) return;
-    self.closing=1;
     console.log('### CLOSE RECV FROM:', dataConn.peer); 
     self._onClose(dataConn.peer);
-    this.emit('close');
+    self._checkAnyPeer();
   });
 };
 
@@ -182,7 +196,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
     self.peer.disconnect();
     self.peer.destroy();
     self.peer = null;
-    this.emit('abort');
+    self._checkAnyPeer();
   });
 
   p.on('connection', function(dataConn) {
@@ -205,11 +219,7 @@ Network.prototype.start = function(openCallback) {
   // Start PeerJS Peer
   if (this.peer) return openCallback();    // This is for connectTo-> peer is started before
 
-  this.peer = new Peer(this.peerId, {
-    key: this.apiKey, // TODO: we need our own PeerServer KEY (http://peerjs.com/peerserver)
-    debug: this.debug, 
-  });
-
+  this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
 };
 
@@ -234,6 +244,7 @@ Network.prototype._sendToOne = function(peerId, data, cb) {
 
 Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
+console.log('[WebRTC.js.242] SENDING ', data.type); //TODO
   if (!peerIds) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
@@ -243,6 +254,7 @@ Network.prototype.send = function(peerIds, data, cb) {
     var l = peerIds.length;
     var i = 0;
     peerIds.forEach(function(peerId) {
+console.log('[WebRTC.js.258:peerId:]',peerId); //TODO
       self._sendToOne(peerId, data, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
@@ -270,7 +282,6 @@ Network.prototype.connectTo = function(peerId) {
 Network.prototype.disconnect = function(cb) {
   var self = this;
   self.closing = 1;
-
   this.send(null, { type: 'disconnect' }, function() {
     self.connectedPeers = [];
     self.peerId = null;
