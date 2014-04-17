@@ -122,6 +122,17 @@ Wallet.prototype._handleNetworkChange = function(newPeer) {
   this.emit('refresh');
 };
 
+Wallet.prototype._optsToObj = function () {
+  var obj = {
+    id: this.id,
+    spendUnconfirmed: this.spendUnconfirmed,
+    requiredCopayers: this.requiredCopayers,
+    totalCopayers: this.totalCopayers,
+  };
+
+  return obj;
+};
+
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
@@ -143,20 +154,36 @@ Wallet.prototype.netStart = function() {
 
 Wallet.prototype.store = function() {
   this.log('[Wallet.js.135:store:]'); //TODO
-  this.storage.set(this.id,'opts', {
-    id: this.id,
-    spendUnconfirmed: this.spendUnconfirmed,
-    requiredCopayers: this.requiredCopayers,
-    totalCopayers: this.totalCopayers,
-  });
-  this.storage.set(this.id,'publicKeyRing', this.publicKeyRing.toObj());
-  this.storage.set(this.id,'txProposals', this.txProposals.toObj());
-  this.storage.set(this.id,'privateKey', this.privateKey.toObj());
+  var wallet = this.toObj();
+  this.storage.setFromObj(this.id, wallet);
 
   this.log('[Wallet.js.146] EMIT REFRESH'); //TODO
   this.emit('refresh');
+
 };
 
+Wallet.prototype.toObj = function() {
+  var optsObj = this._optsToObj();
+  var walletObj = {
+    opts: optsObj,
+    publicKeyring: this.publicKeyRing.toObj(),
+    txProposals: this.txProposals.toObj(),
+    privateKey: this.privateKey.toObj()
+  };
+
+  return walletObj;
+};
+
+Wallet.fromObj = function(wallet) {
+  var opts = wallet.opts;
+  opts['publicKeyRing'] = this.publicKeyring.fromObj(wallet.publicKeyRing);
+  opts['txProposals'] = this.txProposal.fromObj(wallet.txProposals);
+  opts['privateKey'] = this.privateKey.fromObj(wallet.privateKey);
+
+  var w = new Wallet(opts);
+
+  return w;
+};
 
 Wallet.prototype.sendTxProposals = function(recipients) {
   this.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
