@@ -15,7 +15,6 @@ angular.module('copay.transactions').controller('TransactionsController',
         var b   = i.txp.builder;
         var tx  = b.build();
         var one = {
-          valueOutSat: b.valueOutSat,
           feeSat: b.feeSat,
         };
         var outs = [];
@@ -24,7 +23,10 @@ angular.module('copay.transactions').controller('TransactionsController',
           var s = o.getScript();
           var aStr = bitcore.Address.fromScript(s, config.networkName).toString();
           if (!w.addressIsOwn(aStr))
-            outs.push({address: aStr, value: bitcore.util.valueToBigInt(o.getValue())});
+            outs.push({
+              address: aStr, 
+              value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+            });
         });
         one.outs = outs;
         ts.push(one);

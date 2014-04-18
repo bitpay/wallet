@@ -32,35 +32,34 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
       $location.path('peer');
       $rootScope.wallet = w;
       
-      // Initial getBalance
-      $rootScope.wallet.getTotalBalance(function(balance) {
+      $rootScope.wallet.getBalance(function(balance) {
         $rootScope.totalBalance = balance;
         $rootScope.$digest();
       });
     });
     w.on('refresh', function() {
       console.log('[controllerUtils.js] Refreshing'); //TODO
-      // Do not use $digest() here.
+      $rootScope.$digest();
     });
     w.on('openError', root.onErrorDigest);
     w.on('close', root.onErrorDigest);
   };
 
-  root.handleTransactionByAddress = function(scope) {
+  root.handleTransactionByAddress = function(scope, cb) {
     var socket = Socket(scope);
     var addrs = $rootScope.wallet.getAddressesStr();
-    socket.emit('subscribe', 'inv');
     for(var i=0;i<addrs.length;i++) {
       socket.emit('subscribe', addrs[i]);
     }
     addrs.forEach(function(addr) {
       socket.on(addr, function(txid) {
         console.log('Received!', txid);
-        $rootScope.wallet.getTotalBalance(function(balance) {
+        $rootScope.wallet.getBalance(function(balance) {
           scope.$apply(function() {
             $rootScope.totalBalance = balance;
           });
           console.log('New balance:', balance);
+          if (typeof cb === 'function') return cb();
         });
       });
     });

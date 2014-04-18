@@ -29,7 +29,7 @@ function _asyncForEach(array, fn, callback) {
   }
 }; 
 
-Insight.prototype.listUnspent = function(addresses, cb) {
+Insight.prototype.getUnspent = function(addresses, cb) {
   var self = this;
   
   if (!addresses || !addresses.length) return cb([]);
