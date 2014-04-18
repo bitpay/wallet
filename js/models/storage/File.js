@@ -2,7 +2,6 @@
 var imports = require('soop').imports();
 var fs = imports.fs || require('fs');
 var parent = imports.parent || require('./Base');
-var crypto = imports.crypto || require('crypto');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 var passwords = [];
@@ -15,8 +14,33 @@ function Storage(opts) {
 }
 Storage.parent = parent;
 
+Storage.prototype._encrypt = function(string) {
+  var encrypted = CryptoJS.AES.encrypt(string, passwords[0]);
+  var encryptedBase64 = encrypted.toString();
+  return encryptedBase64;
+};
+
+Storage.prototype._encryptObj = function(obj) {
+  var string = JSON.stringify(obj);
+  return this._encrypt(string);
+};
+
+Storage.prototype._decrypt = function(base64) {
+  var decrypted = CryptoJS.AES.decrypt(base64, passwords[0]);
+  var decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+  return decryptedStr;
+};
+
+Storage.prototype._decryptObj = function(base64) {
+  var decryptedStr = this._decrypt(base64);
+  return JSON.parse(decryptedStr);
+};
+
 Storage.prototype.load = function(walletId, callback) {
-  fs.readFile(walletId, function(err, data) {
+  var self = this;
+  fs.readFile(walletId, function(err, base64) {
+    var data = self._decryptObj(base64);
+
     if (err) return callback(err);
 
     try {
@@ -32,10 +56,11 @@ Storage.prototype.load = function(walletId, callback) {
 };
 
 Storage.prototype.save = function(walletId, callback) {
-  var data = JSON.stringify(this.data[walletId]);
+  var obj = this.data[walletId];
+  var encryptedBase64 = this._encryptObj(obj);
 
   //TODO: update to use a queue to ensure that saves are made sequentially
-  fs.writeFile(walletId, data, function(err) {
+  fs.writeFile(walletId, encryptedBase64, function(err) {
     if (callback)
       return callback(err);
   });
@@ -105,16 +130,15 @@ Storage.prototype.setFromObj = function(walletId, obj, callback) {
   this.save(walletId, callback);
 };
 
-Storage.prototype.setFromEncryptedObj = function(walletId) {
-  //TODO: implement
+Storage.prototype.setFromEncryptedObj = function(walletId, base64, callback) {
+  var obj = this._decryptObj(base64);
+  this.setFromObj(walletId, obj, callback);
 };
 
 Storage.prototype.getEncryptedObj = function(walletId) {
-  var data = JSON.stringify(this.data[walletId]);
-  var encrypted = CryptoJS.AES.encrypt(data, passwords[0]);
-  var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(encrypted.toString()));
+  var encryptedBase64 = this._encryptObj(this.data[walletId]);
 
-  return hex;
+  return encryptedBase64;
 };
 
 // remove all values

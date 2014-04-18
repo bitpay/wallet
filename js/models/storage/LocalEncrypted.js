@@ -54,7 +54,7 @@ Storage.prototype._write = function(k,v) {
 };
 
 Storage.prototype.getEncryptedObj = function(walletId) {
-  var keys = this._getWalletKeys();
+  var keys = this._getWalletKeys(walletId);
   var obj = {};
   for (var i in keys) {
     var key = keys[0];
