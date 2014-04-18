@@ -54,7 +54,7 @@ Storage.prototype._write = function(k,v) {
 };
 
 Storage.prototype.getEncryptedObj = function(walletId) {
-  var keys = this._getWalletKeys(walletId);
+  var keys = this._getWalletKeys();
   var obj = {};
   for (var i in keys) {
     var key = keys[0];
@@ -62,9 +62,9 @@ Storage.prototype.getEncryptedObj = function(walletId) {
   }
   
   var str = JSON.stringify(obj);
-  var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(this._encrypt(str).toString()));
+  var base64 = this._encrypt(str).toString();
 
-  return hex;
+  return base64;
 };
 
 module.exports = require('soop')(Storage);
