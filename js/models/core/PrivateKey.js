@@ -16,12 +16,16 @@ function PrivateKey(opts) {
   var init = opts.extendedPrivateKeyString || this.network.name;
   this.bip = opts.BIP32 || new BIP32(init);
   this.privateKeyCache = opts.privateKeyCache || {};
-  this._calcId();
 };
 
-PrivateKey.prototype._calcId = function() {
-  this.id = util.ripe160(this.bip.extendedPublicKey).toString('hex');
+PrivateKey.prototype.getId = function(prefix) {
+  var buf = this.bip.extendedPublicKey;
+  if (prefix) {
+    buf = Buffer.concat([prefix, buf]);
+  }
+  return util.ripe160(buf).toString('hex');
 };
+
 
 PrivateKey.fromObj = function(obj) {
   return new PrivateKey(obj);

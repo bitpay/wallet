@@ -115,48 +115,12 @@ WalletFactory.prototype.create = function(opts) {
   return w;
 };
 
-WalletFactory.prototype.open = function(walletId) {
-  var w = this.read(walletId) || this.create({
-    id: walletId,
-    verbose: this.verbose,
-  });
-  return w;
-};
-
-WalletFactory.prototype.openRemote = function(peedId) {
-  var s = WalletFactory.storage;
-  opts    = opts || {};
-  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID'));
-
-  opts.privateKey = opts.privateKey ||  new PrivateKey({ networkName: this.networkName });
-  this.log('\t### PrivateKey Initialized');
-
-  var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
-  var totalCopayers =  opts.totalCopayers || this.walletDefaults.totalCopayers;
-
-  opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
-    networkName: this.networkName,
-    requiredCopayers: requiredCopayers,
-    totalCopayers: totalCopayers,
-  });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString());
-  this.log('\t### PublicKeyRing Initialized');
-
-  opts.txProposals = opts.txProposals || new TxProposals({
-    networkName: this.networkName,
-  });
-  this.log('\t### TxProposals Initialized');
-
-  opts.storage = this.storage;
-  opts.network = this.network;
-  opts.blockchain = this.blockchain;
-
-  opts.spendUnconfirmed = typeof opts.spendUnconfirmed === undefined 
-      ?this.walletDefaults.spendUnconfirmed :   opts.spendUnconfirmed;
-
-  opts.requiredCopayers = requiredCopayers;
-  opts.totalCopayers = totalCopayers;
-  var w   = new Wallet(opts);
+WalletFactory.prototype.open = function(walletId, opts) {
+  this.log('Opening walletId:' + walletId);
+  opts = opts || {};
+  opts.id = walletId;
+  opts.verbose = this.verbose;
+  var w = this.read(walletId) || this.create(opts);
   w.store();
   return w;
 };
@@ -174,9 +138,8 @@ WalletFactory.prototype.connectTo = function(peerId, cb) {
   var self=this;
   self.network.start(function() {
     self.network.connectTo(peerId)
-    self.network.on('walletId', function(walletId) {
-      self.log('Opening walletId:' + walletId);
-      return cb(self.open(walletId));
+    self.network.on('walletId', function(data) {
+      return cb(data);
     });
   });
 };

@@ -3,13 +3,13 @@
 var config = {
   networkName: 'testnet',
   network: {
-     key: 'lwjd5qra8257b9',
+    // key: 'lwjd5qra8257b9',
     //   This is for running local peerJs with params: ./peerjs  -p 10009  -k 'sdfjhwefh'
-    // key: 'sdfjhwefh',
-    // host: 'localhost',
-    // port: 10009,
-    // path: '/',
-    maxPeers: 3,
+     key: 'sdfjhwefh',
+     host: '192.168.1.100',
+     port: 10009,
+     path: '/',
+    maxPeers: 10,
     debug: 3,
   },
   limits: {
@@ -23,12 +23,12 @@ var config = {
     verbose: 1,
   },
   blockchain: {
-    host: 'localhost',
-    port: 3001
+    host: 'test.insight.is',
+    port: 80
   },
   socket: {
-    host: 'localhost',
-    port: 3001
+    host: 'test.insight.is',
+    port: 80
   },
   verbose: 1,
 };
