@@ -129,10 +129,9 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
       var bip32 = this.copayersBIP32[i].derive(path);
       pubKeys[i] = bip32.eckey.public;
     }
-    this.publicKeysCache[path] = pubKeys;
-    //console.log('cache fill['+path+']='+pubKeys.length);
+    this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex')});
   } else {
-    //console.log('cache hit!');
+    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')});
   }
 
   return pubKeys;
@@ -157,7 +156,6 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
 
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
   this._checkIndexRange(index, isChange);
-
   var script  = this.getRedeemScript(index,isChange);
   return Address.fromScript(script, this.network.name);
 };

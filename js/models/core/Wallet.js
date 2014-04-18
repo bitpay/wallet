@@ -222,6 +222,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 Wallet.prototype.generateAddress = function() {
   var addr = this.publicKeyRing.generateAddress();
   this.sendPublicKeyRing();
+  this.store();
   return addr;
 };
 
