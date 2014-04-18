@@ -70,7 +70,6 @@ Network._arrayRemove = function(el, array) {
 
 Network.prototype._onClose = function(peerId) {
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
-  console.log('on close peers:'+this.connectedPeers);
   this._notifyNetworkChange();
 };
 
@@ -184,7 +183,6 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   var p = this.peer;
 
   p.on('open', function(peerId) {
-    console.log('setup peer handlers open'+peerId);
     self.peerId = peerId;
     self.connectedPeers = [peerId];
     return openCallback(peerId);
@@ -213,17 +211,14 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 };
 
 Network.prototype.start = function(openCallback, opts) {
-  console.log('start start');
   opts = opts || {};
   // Start PeerJS Peer
   var self = this;
   if (this.started) {
     // network already started, restarting network layer
-    console.log('Restarting network layer');
     opts.connectedPeers = this.connectedPeers;
     Network._arrayRemove(this.peerId, opts.connectedPeers);
     this.disconnect(function() {
-      console.log('restart disconnect finished');
       self.start(openCallback, opts);
     }, true); // fast disconnect
     return;
@@ -234,11 +229,9 @@ Network.prototype.start = function(openCallback, opts) {
   opts = opts || {};
   opts.connectedPeers = opts.connectedPeers || [];
   this.peerId = this.peerId || opts.peerId;
-  console.log('setting up fresh network with id'+this.peerId);
 
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
-  console.log('connected peers'+opts.connectedPeers);
   for (var i = 0; i<opts.connectedPeers.length; i++) {
     var otherPeerId = opts.connectedPeers[i];
     this.connectTo(otherPeerId);
@@ -315,7 +308,6 @@ Network.prototype.disconnect = function(cb, forced) {
       self.peer = null;
     }
     self.closing = 0;
-    console.log('cleanup after disconnect finished');
     if (typeof cb === 'function') cb();
   };
   if (!forced) {

@@ -117,11 +117,8 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 Wallet.prototype._handleNetworkChange = function(newPeer) {
   if (newPeer) {
     this.log('#### Setting new PEER:', newPeer);
-    console.log('sending wallet id');
     this.sendWalletId(newPeer);
-    console.log('sending pubkeyring');
     this.sendPublicKeyRing(newPeer);
-    console.log('sending tx proposals');
     this.sendTxProposals(newPeer);
   }
   this.emit('refresh');
@@ -168,10 +165,8 @@ Wallet.prototype.netStart = function() {
   var startOpts = { 
     peerId: self.generatePeerId()
   }
-  console.log('STARTING NETWORK WITH PEER ID: '+startOpts.peerId);
   net.start(function(peerId) {
     self.emit('created');
-    console.log('CREATEEEEEEEEEEEEEEEEEEEEEEd');
     var myId = self.generatePeerId();
     for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
       var otherPeerId = self.generatePeerId(i);

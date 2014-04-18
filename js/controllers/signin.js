@@ -20,7 +20,6 @@ angular.module('copay.signin').controller('SigninController',
     $scope.open = function(walletId, opts) {
       $scope.loading = true;
 
-      console.log('OPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 '+walletId+' opts '+opts);
       var w = walletFactory.open(walletId, opts);
       controllerUtils.setupUxHandlers(w);
     };
