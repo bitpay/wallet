@@ -7,11 +7,6 @@ angular.module('copay.peer').controller('PeerController',
       //Network.connect($rootScope.masterId);
     };
 
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-    else {
-      controllerUtils.handleTransactionByAddress($scope);
-    }
+    controllerUtils.handleTransactionByAddress($scope);
   });
 

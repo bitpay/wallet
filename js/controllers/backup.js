@@ -2,12 +2,7 @@
 
 angular.module('copay.backup').controller('BackupController',
   function($scope, $rootScope, $location, $window, $timeout, Socket, controllerUtils) {
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-    else {
-      controllerUtils.handleTransactionByAddress($scope);
-    }
+    controllerUtils.handleTransactionByAddress($scope);
 
     $scope.title = 'Backup';
 

@@ -1,12 +1,12 @@
 'use strict';
 
-
-
 angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils) {
 
 //    var peerData = Storage.get($rootScope.walletId, 'peerData');
 //    $rootScope.peerId = peerData ? peerData.peerId : null;
+//
+
     $scope.loading = false;
 
     $scope.walletIds = walletFactory.getWalletIds();

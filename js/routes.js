@@ -45,4 +45,12 @@ angular
     $locationProvider
       .html5Mode(false);
       //.hashPrefix('!');
+  })
+  .run(function($rootScope, $location) {
+    $rootScope.$on('$routeChangeStart', function() {
+      if (!$rootScope.wallet || !$rootScope.wallet.id) {
+        console.log('############ no wallet');
+        $location.path('signin');
+      }
+    });
   });

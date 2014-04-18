@@ -24,10 +24,6 @@ angular.module('copay.header').controller('HeaderController',
       'link': '#/backup'
     }];
 
-   if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-
     $scope.isActive = function(item) {
       if (item.link && item.link.replace('#','') == $location.path()) {
         return true;

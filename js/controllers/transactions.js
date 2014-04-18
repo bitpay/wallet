@@ -34,15 +34,9 @@ angular.module('copay.transactions').controller('TransactionsController',
       $scope.txs = ts;
     };
 
-
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-    else {
-      _updateTxs();
-      var socket = Socket($scope);
-      socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
-    }
+    _updateTxs();
+    var socket = Socket($scope);
+    socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
 
     $scope.sign = function (ntxid) {
       var w = $rootScope.wallet;
