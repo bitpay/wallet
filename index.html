@@ -81,8 +81,9 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="large-6 columns">
-              <h3>Join a Network Wallet</h3>
-              <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
+              <h3>Join Wallet Creation</h3>
+              <input type="text" class="form-control" placeholder="Paste wallet ID here"
+                 ng-model="connectionId" autofocus>
             </div>
             <div class="large-3 columns">
               <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>

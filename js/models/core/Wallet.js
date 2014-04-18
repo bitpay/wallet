@@ -133,6 +133,13 @@ Wallet.prototype._optsToObj = function () {
   return obj;
 };
 
+
+Wallet.prototype.generatePeerId = function() {
+  var gen = this.privateKey.getId(new Buffer(this.id));
+  console.log(gen);
+  return gen;
+};
+
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
@@ -147,9 +154,12 @@ Wallet.prototype.netStart = function() {
   net.on('close', function() {
     self.emit('close');
   });
+  var startOpts = { 
+    peerId: this.generatePeerId()
+  }
   net.start(function(peerId) {
     self.emit('created');
-  });
+  }, startOpts);
 };
 
 Wallet.prototype.store = function(isSync) {
@@ -236,7 +246,7 @@ Wallet.prototype.getTxProposals = function() {
   self.txProposals.txps.forEach(function(txp) {
     var i = {txp:txp};
     i.ntxid = txp.builder.build().getNormalizedHash();
-    i.signedByUs = txp.signedBy[self.privateKey.id]?true:false;
+    i.signedByUs = txp.signedBy[self.privateKey.getId()]?true:false;
     ret.push(i);
   });
   return ret;
@@ -267,7 +277,7 @@ Wallet.prototype.sign = function(ntxid) {
   var ret = txp.builder.sign(keys);
 
   if (ret.signaturesAdded) {
-    txp.signedBy[this.privateKey.id] = Date.now();
+    txp.signedBy[this.privateKey.getId()] = Date.now();
     this.log('[Wallet.js.230:ret:]',ret); //TODO
     if (ret.isFullySigned) {
       this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
@@ -294,8 +304,8 @@ Wallet.prototype.addSeenToTxProposals = function() {
   var self=this;
 
   this.txProposals.txps.forEach(function(txp) {
-    if (!txp.seenBy[self.privateKey.id]) {
-      txp.seenBy[self.privateKey.id] = Date.now();
+    if (!txp.seenBy[self.privateKey.getId()]) {
+      txp.seenBy[self.privateKey.getId()] = Date.now();
       ret = true;
     }
   });

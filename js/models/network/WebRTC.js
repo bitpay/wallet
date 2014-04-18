@@ -29,6 +29,7 @@ function Network(opts) {
     if (opts[k]) self.opts[k]=opts[k];
   });
   this.connectedPeers = [];
+  this.started = false;
 }
 
 Network.parent=EventEmitter;
@@ -215,12 +216,16 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 };
 
-Network.prototype.start = function(openCallback) {
+Network.prototype.start = function(openCallback, opts) {
   // Start PeerJS Peer
-  if (this.peer) return openCallback();    // This is for connectTo-> peer is started before
+  if (this.started) return openCallback();    // This is for connectTo-> peer is started before
+
+  opts = opts || {};
+  this.peerId = this.peerId || opts.peerId;
 
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
+  this.started = true;
 };
 
 Network.prototype._sendToOne = function(peerId, data, cb) {

@@ -69,16 +69,15 @@ describe('PrivateKey model', function() {
 
   it('should calculate .id', function () {
     var w1 = new PrivateKey(config);
-    should.exist(w1.id);
-    w1.id.length.should.equal(40);
+    should.exist(w1.getId());
+    w1.getId().length.should.equal(40);
   });
   it('fromObj toObj roundtrip', function () {
     var w1 = new PrivateKey(config);
     var w2 = PrivateKey.fromObj(w1.toObj());
 
     w2.toObj().extendedPrivateKeyString.should.equal(w1.toObj().extendedPrivateKeyString);
-    w2.id.should.equal(w1.id);
-
+    w2.getId().should.equal(w1.getId());
 
     JSON.stringify(w2.get(1,1).storeObj()).should
       .equal(JSON.stringify(w1.get(1,1).storeObj()));
