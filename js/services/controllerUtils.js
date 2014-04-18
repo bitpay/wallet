@@ -43,6 +43,8 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     });
     w.on('openError', root.onErrorDigest);
     w.on('close', root.onErrorDigest);
+
+    w.netStart();
   };
 
   root.handleTransactionByAddress = function(scope, cb) {

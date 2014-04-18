@@ -21,7 +21,7 @@ function Network(opts) {
   this.peerId         = opts.peerId;
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
-  this.maxPeers       = opts.maxPeers || 5;
+  this.maxPeers       = opts.maxPeers || 10;
   this.opts = { key: opts.key };
 
   // For using your own peerJs server
@@ -65,12 +65,12 @@ Network._arrayPushOnce = function(el, array) {
 Network._arrayRemove = function(el, array) {
   var pos = array.indexOf(el);
   if (pos >= 0) array.splice(pos, 1);
-
   return array;
 };
 
 Network.prototype._onClose = function(peerId) {
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
+  console.log('on close peers:'+this.connectedPeers);
   this._notifyNetworkChange();
 };
 
@@ -106,7 +106,7 @@ Network.prototype._onData = function(data, isInbound) {
       this._onClose(obj.sender);
       break;
     case 'walletId':
-      this.emit('walletId', obj.data.walletId);
+      this.emit('walletId', obj.data);
       break;
     default:
       this.emit('data', obj.sender, obj.data, isInbound);
@@ -124,8 +124,6 @@ Network.prototype._sendPeers = function(peerIds) {
 Network.prototype._addPeer = function(peerId, isInbound) {
 
   var hasChanged = Network._arrayPushOnce(peerId, this.connectedPeers);
-
-
   if (isInbound && hasChanged) {
     this._sendPeers();              //broadcast peer list
   }
@@ -186,17 +184,15 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   var p = this.peer;
 
   p.on('open', function(peerId) {
+    console.log('setup peer handlers open'+peerId);
     self.peerId = peerId;
     self.connectedPeers = [peerId];
-    self._notifyNetworkChange();
     return openCallback(peerId);
   });
 
   p.on('error', function(err) {
     console.log('### PEER ERROR:', err);
-    self.peer.disconnect();
-    self.peer.destroy();
-    self.peer = null;
+    //self.disconnect(null, true); // force disconnect
     self._checkAnyPeer();
   });
 
@@ -217,14 +213,36 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 };
 
 Network.prototype.start = function(openCallback, opts) {
+  console.log('start start');
+  opts = opts || {};
   // Start PeerJS Peer
-  if (this.started) return openCallback();    // This is for connectTo-> peer is started before
+  var self = this;
+  if (this.started) {
+    // network already started, restarting network layer
+    console.log('Restarting network layer');
+    opts.connectedPeers = this.connectedPeers;
+    Network._arrayRemove(this.peerId, opts.connectedPeers);
+    this.disconnect(function() {
+      console.log('restart disconnect finished');
+      self.start(openCallback, opts);
+    }, true); // fast disconnect
+    return;
+  }
+
+
 
   opts = opts || {};
+  opts.connectedPeers = opts.connectedPeers || [];
   this.peerId = this.peerId || opts.peerId;
+  console.log('setting up fresh network with id'+this.peerId);
 
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
+  console.log('connected peers'+opts.connectedPeers);
+  for (var i = 0; i<opts.connectedPeers.length; i++) {
+    var otherPeerId = opts.connectedPeers[i];
+    this.connectTo(otherPeerId);
+  }
   this.started = true;
 };
 
@@ -284,11 +302,12 @@ Network.prototype.connectTo = function(peerId) {
 };
 
 
-Network.prototype.disconnect = function(cb) {
+Network.prototype.disconnect = function(cb, forced) {
   var self = this;
   self.closing = 1;
-  this.send(null, { type: 'disconnect' }, function() {
+  var cleanUp = function() {
     self.connectedPeers = [];
+    self.started = false;
     self.peerId = null;
     if (self.peer) {
       self.peer.disconnect();
@@ -296,8 +315,14 @@ Network.prototype.disconnect = function(cb) {
       self.peer = null;
     }
     self.closing = 0;
+    console.log('cleanup after disconnect finished');
     if (typeof cb === 'function') cb();
-  });
+  };
+  if (!forced) {
+    this.send(null, { type: 'disconnect' }, cleanUp);
+  } else {
+    cleanUp();
+  }
 };
 
 module.exports = require('soop')(Network);

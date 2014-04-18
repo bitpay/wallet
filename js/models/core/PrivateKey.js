@@ -21,7 +21,7 @@ function PrivateKey(opts) {
 PrivateKey.prototype.getId = function(prefix) {
   var buf = this.bip.extendedPublicKey;
   if (prefix) {
-    buf = Buffer.concat([prefix, this.bip.extendedPublicKey]);
+    buf = Buffer.concat([prefix, buf]);
   }
   return util.ripe160(buf).toString('hex');
 };

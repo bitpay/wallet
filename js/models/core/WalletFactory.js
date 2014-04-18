@@ -75,7 +75,6 @@ WalletFactory.prototype.read = function(walletId) {
     this.log('NOT NECCESARY AN ERROR:', e); //TODO
   }
   this.log('### WALLET OPENED:', w.id);
-  w.netStart();
   return w;
 };
 
@@ -113,16 +112,16 @@ WalletFactory.prototype.create = function(opts) {
   opts.totalCopayers = totalCopayers;
   var w = new Wallet(opts);
   w.store();
-  w.netStart();
   return w;
 };
 
-WalletFactory.prototype.open = function(walletId) {
+WalletFactory.prototype.open = function(walletId, opts) {
   this.log('Opening walletId:' + walletId);
-  var w = this.read(walletId) || this.create({
-    id: walletId,
-    verbose: this.verbose,
-  });
+  opts = opts || {};
+  opts.id = walletId;
+  opts.verbose = this.verbose;
+  var w = this.read(walletId) || this.create(opts);
+  w.store();
   return w;
 };
 
@@ -139,8 +138,8 @@ WalletFactory.prototype.connectTo = function(peerId, cb) {
   var self=this;
   self.network.start(function() {
     self.network.connectTo(peerId)
-    self.network.on('walletId', function(walletId) {
-      return cb(walletId);
+    self.network.on('walletId', function(data) {
+      return cb(data);
     });
   });
 };

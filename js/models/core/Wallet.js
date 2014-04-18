@@ -48,7 +48,9 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   var shouldSend = false;
   var recipients, pkr = this.publicKeyRing;
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
-  if (pkr.merge(inPKR, true)  && !data.isBroadcast) { 
+
+  var hasChanged = pkr.merge(inPKR, true);
+  if (hasChanged && !data.isBroadcast) { 
     this.log('### BROADCASTING PKR');
     recipients = null;
     shouldSend = true;
@@ -115,8 +117,11 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 Wallet.prototype._handleNetworkChange = function(newPeer) {
   if (newPeer) {
     this.log('#### Setting new PEER:', newPeer);
+    console.log('sending wallet id');
     this.sendWalletId(newPeer);
+    console.log('sending pubkeyring');
     this.sendPublicKeyRing(newPeer);
+    console.log('sending tx proposals');
     this.sendTxProposals(newPeer);
   }
   this.emit('refresh');
@@ -134,10 +139,16 @@ Wallet.prototype._optsToObj = function () {
 };
 
 
-Wallet.prototype.generatePeerId = function() {
-  var gen = this.privateKey.getId(new Buffer(this.id));
-  console.log(gen);
-  return gen;
+Wallet.prototype.generatePeerId = function(index) {
+  var idBuf = new Buffer(this.id);
+  if (typeof index === 'undefined') {
+    // return my own peerId
+    var gen = this.privateKey.getId(idBuf);
+    return gen;
+  }
+  // return peer number 'index' peerId
+  return this.publicKeyRing.getCopayerId(index, idBuf);
+
 };
 
 Wallet.prototype.netStart = function() {
@@ -148,17 +159,26 @@ Wallet.prototype.netStart = function() {
   net.on('data',  self._handleData.bind(self) );
   net.on('open', function() {});  // TODO
   net.on('openError', function() {
-  this.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
+    self.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
     self.emit('openError');
   });
   net.on('close', function() {
     self.emit('close');
   });
   var startOpts = { 
-    peerId: this.generatePeerId()
+    peerId: self.generatePeerId()
   }
+  console.log('STARTING NETWORK WITH PEER ID: '+startOpts.peerId);
   net.start(function(peerId) {
     self.emit('created');
+    console.log('CREATEEEEEEEEEEEEEEEEEEEEEEd');
+    var myId = self.generatePeerId();
+    for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
+      var otherPeerId = self.generatePeerId(i);
+      if (otherPeerId !== myId) {
+        net.connectTo(otherPeerId);
+      }
+    }
   }, startOpts);
 };
 
@@ -217,6 +237,7 @@ Wallet.prototype.sendWalletId = function(recipients) {
   this.network.send(recipients, { 
     type: 'walletId', 
     walletId: this.id,
+    opts: this._optsToObj()
   });
 };
 

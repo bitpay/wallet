@@ -9,6 +9,7 @@ var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
 var Transaction = bitcore.Transaction;
+var util        = bitcore.util;
 
 var Storage     = imports.Storage || require('../storage/Base.js');
 var storage     = Storage.default();
@@ -75,6 +76,14 @@ PublicKeyRing.prototype.toObj = function() {
 PublicKeyRing.prototype.serialize = function () {
   return JSON.stringify(this.toObj());
 };
+
+PublicKeyRing.prototype.getCopayerId = function(i, prefix) {
+  var buf = this.copayersBIP32[i].extendedPublicKey;
+  if (prefix) {
+    buf = Buffer.concat([prefix, buf]);
+  }
+  return util.ripe160(buf).toString('hex');
+}
 
 
 PublicKeyRing.prototype.registeredCopayers = function () {
@@ -225,12 +234,12 @@ PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
   if (
     this.requiredCopayers && inPKR.requiredCopayers &&
     (this.requiredCopayers !== inPKR.requiredCopayers))
-    throw new Error('inPRK requiredCopayers mismatch');
+    throw new Error('inPRK requiredCopayers mismatch '+this.requiredCopayers+'!='+inPKR.requiredCopayers);
 
   if (
     this.totalCopayers && inPKR.totalCopayers &&
     (this.totalCopayers !== inPKR.totalCopayers))
-    throw new Error('inPRK requiredCopayers mismatch');
+    throw new Error('inPRK totalCopayers mismatch'+this.totalCopayers+'!='+inPKR.requiredCopayers);
 };
 
 
