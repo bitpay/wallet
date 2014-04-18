@@ -152,13 +152,17 @@ Wallet.prototype.netStart = function() {
   });
 };
 
-Wallet.prototype.store = function() {
+Wallet.prototype.store = function(isSync) {
   this.log('[Wallet.js.135:store:]'); //TODO
   var wallet = this.toObj();
   this.storage.setFromObj(this.id, wallet);
 
-  this.log('[Wallet.js.146] EMIT REFRESH'); //TODO
-  this.emit('refresh');
+  if (isSync) {
+    this.log('Wallet stored.'); //TODO
+  } else {
+    this.log('Wallet stored. REFRESH Emitted'); //TODO
+    this.emit('refresh');
+  }
 
 };
 
@@ -222,7 +226,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 Wallet.prototype.generateAddress = function() {
   var addr = this.publicKeyRing.generateAddress();
   this.sendPublicKeyRing();
-  this.store();
+  this.store(true);
   return addr;
 };
 
@@ -272,13 +276,13 @@ Wallet.prototype.sign = function(ntxid) {
       this.blockchain.sendRawTransaction(txHex, function(txid) {
         this.log('[Wallet.js.235:txid:]',txid); //TODO
         if (txid) {
-          this.store();
+          this.store(true);
         }
       });
     }
     else {
       this.sendTxProposals();
-      this.store();
+      this.store(true);
     }
   }
   return ret;
@@ -311,7 +315,6 @@ Wallet.prototype.getAddressesStr = function(onlyMain) {
   return ret;
 };
 
-
 Wallet.prototype.addressIsOwn = function(addrStr) {
   var addrList = this.getAddressesStr();
   var l = addrList.length;
@@ -326,37 +329,34 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
   return ret;
 };
 
-
-Wallet.prototype.getTotalBalance = function(cb) {
-  this.getBalance(this.getAddressesStr(), function(balance) {
-    return cb(balance);
-  });
-};
-
-Wallet.prototype.getBalance = function(addrs, cb) {
+Wallet.prototype.getBalance = function(cb) {
   var balance = 0;
-  this.listUnspent(addrs, function(utxos) {
+  var balanceByAddr = {};
+  var COIN = bitcore.util.COIN;
+
+  // Prefill balanceByAddr with main address
+  this.getAddressesStr(true).forEach(function(a){
+    balanceByAddr[a]=0;
+  });
+  this.getUnspent(function(utxos) {
     for(var i=0;i<utxos.length; i++) {
-      balance = balance + utxos[i].amount;
+      var u= utxos[i];
+      var amt = u.amount * COIN;
+      balance = balance + amt;
+      balanceByAddr[u.address] = (balanceByAddr[u.address]||0) + amt;
     }
-    if (balance) {
-      if (balance === parseInt(balance)) {
-        balance = balance;
-      }
-      else {
-        balance = balance.toFixed(8);
-      }
-    }
-    return cb(balance);
+    Object.keys(balanceByAddr).forEach(function(a) {
+      balanceByAddr[a] = balanceByAddr[a]/COIN;
+    });
+    return cb(balance / COIN, balanceByAddr);
   });
 };
 
-Wallet.prototype.listUnspent = function(addrs, cb) {
-  this.blockchain.listUnspent(addrs, function(utxos) {
-    return cb(utxos);
+Wallet.prototype.getUnspent = function(cb) {
+  this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
+    return cb(unspentList);
   });
 };
-
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   var self = this;
@@ -374,9 +374,9 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
     opts.remainderOut={ address: this.publicKeyRing.generateAddress(true).toString()};
   }
 
-  self.listUnspent(self.getAddressesStr(), function(utxos) {
+  self.getUnspent(function(unspentList) {
     // TODO check enough funds, etc.
-    self.createTxSync(toAddress, amountSatStr, utxos, opts);
+    self.createTxSync(toAddress, amountSatStr, unspentList, opts);
     self.sendTxProposals();
     self.store();
     return cb();
@@ -425,12 +425,5 @@ Wallet.prototype.connectTo = function(peerId) {
 Wallet.prototype.disconnect = function() {
   this.network.disconnect();
 };
-
-// // HERE? not sure
-// Wallet.prototype.cleanPeers = function() {
-//   this.storage.remove('peerData'); 
-// };
-//
-;
 
 module.exports = require('soop')(Wallet);

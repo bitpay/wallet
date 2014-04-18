@@ -8,9 +8,7 @@ angular.module('copay.send').controller('SendController',
       $location.path('signin');
     }
     else {
-      var socket = Socket($scope);
-      socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
-   
+      controllerUtils.handleTransactionByAddress($scope); 
     }
 
     $scope.sendTest = function() {
