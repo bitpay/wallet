@@ -78,10 +78,10 @@ body {
   border:0;
 }
 
-.panel:hover {
+/*.panel:hover {
   background: #efefef;
   color: #111;
-}
+}*/
 
 .home .panel {
   font-size: 0.9rem;
@@ -164,6 +164,18 @@ span.panel-res {
   color: #FBE500;
 }
 
+.alert-box.warning {
+  background-color: #C0392A;
+  border-color: #C0392A;
+  color: #fff;
+}
+
+.text-warning {
+  color:#C0392A;
+}
+
+hr { margin: 2.25rem 0;}
+
 button.primary { background-color: #111; }
 button.secondary { background-color: #FAE448 !important; }
 
@@ -188,4 +200,7 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .p70r {padding-right: 70px;}
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
+.p20h {padding: 0 20px;}
+.m30v {margin: 30px 0;}
+.m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
