@@ -32,36 +32,39 @@ describe('Performance tests', function() {
     var maxN = 7;
     for (var n = 1; n < maxN; n++) {
       for (var m = 1; m <= n; m++) {
-        var M = m;
-        var N = n;
-        (function(M, N) {
-          it('should optimize BIP32 publickey gen time with cache for ' + M + '-of-' + N, function() {
-            var pkr1 = new PublicKeyRing({
-              totalCopayers: N,
-              requiredCopayers: M
+        if ((m === 3 && n === 5) ||
+          (m === 2 && n === 3)) {
+          var M = m;
+          var N = n;
+          (function(M, N) {
+            it('should optimize BIP32 publickey gen time with cache for ' + M + '-of-' + N, function() {
+              var pkr1 = new PublicKeyRing({
+                totalCopayers: N,
+                requiredCopayers: M
+              });
+              for (var i = 0; i < N; i++) {
+                pkr1.addCopayer(); // add new random ext public key
+              }
+              var generateN = 5;
+              var generated = [];
+              var start1 = new Date().getTime();
+              for (var i = 0; i < generateN; i++) {
+                var pubKeys = JSON.stringify(pkr1.getPubKeys(i, false));
+                generated.push(pubKeys);
+              }
+              var delta1 = new Date().getTime() - start1;
+              var backup = pkr1.toObj();
+              var pkr2 = PublicKeyRing.fromObj(backup);
+              var start2 = new Date().getTime();
+              for (var i = 0; i < generateN; i++) {
+                var pubKeys = JSON.stringify(pkr2.getPubKeys(i, false));
+                generated[i].should.equal(pubKeys);
+              }
+              var delta2 = new Date().getTime() - start2;
+              delta2.should.be.below(delta1);
             });
-            for (var i = 0; i < N; i++) {
-              pkr1.addCopayer(); // add new random ext public key
-            }
-            var generateN = 5;
-            var generated = [];
-            var start1 = new Date().getTime();
-            for (var i = 0; i < generateN; i++) {
-              var pubKeys = JSON.stringify(pkr1.getPubKeys(i, false));
-              generated.push(pubKeys);
-            }
-            var delta1 = new Date().getTime() - start1;
-            var backup = pkr1.toObj();
-            var pkr2 = PublicKeyRing.fromObj(backup);
-            var start2 = new Date().getTime();
-            for (var i = 0; i < generateN; i++) {
-              var pubKeys = JSON.stringify(pkr2.getPubKeys(i, false));
-              generated[i].should.equal(pubKeys);
-            }
-            var delta2 = new Date().getTime() - start2;
-            delta2.should.be.below(delta1);
-          });
-        })(M, N);
+          })(M, N);
+        }
       }
     }
 
