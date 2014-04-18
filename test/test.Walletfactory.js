@@ -39,6 +39,12 @@ describe('WalletFactory model', function() {
       var wf = new WalletFactory(config);
       should.exist(wf);
     });
+    it('#_checkRead should return false', function() {
+      var wf = new WalletFactory(config);
+      wf._checkRead('dummy').should.equal(false);
+      wf.read('dummy').should.equal(false);
+    });
+ 
     it('should be able to create wallets', function() {
       var wf = new WalletFactory(config);
       var w = wf.create();

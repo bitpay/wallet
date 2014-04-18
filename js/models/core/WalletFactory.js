@@ -44,12 +44,12 @@ WalletFactory.prototype._checkRead = function(walletId) {
     s.get(walletId, 'opts') &&
     s.get(walletId, 'privateKey')
   ;
-  return ret;
+  return ret?true:false;
 };
 
 WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
-    throw Error('Check read failed');
+    return false;
 
   var s = this.storage;
   var opts = s.get(walletId, 'opts');
@@ -175,7 +175,7 @@ WalletFactory.prototype.connectTo = function(peerId, cb) {
   self.network.start(function() {
     self.network.connectTo(peerId)
     self.network.on('walletId', function(walletId) {
-console.log('[WalletFactory.js.187]'); //TODO
+      self.log('Opening walletId:' + walletId);
       return cb(self.open(walletId));
     });
   });

@@ -3,7 +3,7 @@
 var config = {
   networkName: 'testnet',
   network: {
-    key: 'lwjd5qra8257b9',
+     key: 'lwjd5qra8257b9',
     //   This is for running local peerJs with params: ./peerjs  -p 10009  -k 'sdfjhwefh'
     // key: 'sdfjhwefh',
     // host: 'localhost',
