@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.home').controller('HomeController',
-  function($scope, $rootScope, $location, Socket, controllerUtils) {
+  function($scope, $rootScope, controllerUtils) {
     $scope.title = 'Home';
     $scope.oneAtATime = true;
     $scope.addrBalance = {};
@@ -10,18 +10,19 @@ angular.module('copay.home').controller('HomeController',
 
     var _updateBalance = function () {
       w.getBalance(function (balance, balanceByAddr) {
-        $scope.balanceByAddr = balanceByAddr;
-        $scope.addrs =  Object.keys(balanceByAddr);
-        $scope.selectedAddr = $scope.addrs[0];
-        $scope.$digest();
+        $rootScope.$apply(function() {
+          $rootScope.balanceByAddr = balanceByAddr;
+          $scope.addrs =  Object.keys(balanceByAddr);
+          $scope.selectedAddr = $scope.addrs[0];
+        });
       });
-      var socket = Socket($scope);
-      controllerUtils.handleTransactionByAddress($scope, _updateBalance);
     };
 
     $scope.newAddr = function() {
-      var a = w.generateAddress().toString();
+      w.generateAddress().toString();
       _updateBalance();
+
+      controllerUtils.setSocketHandlers();
     };
 
     $scope.selectAddr = function(addr) {

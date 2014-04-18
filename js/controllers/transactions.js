@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.transactions').controller('TransactionsController',
-  function($scope, $rootScope, $location, Socket, controllerUtils) {
+  function($scope, $rootScope, $location) {
     $scope.title = 'Transactions';
 
     $scope.oneAtATime = true;
@@ -35,8 +35,6 @@ angular.module('copay.transactions').controller('TransactionsController',
     };
 
     _updateTxs();
-    var socket = Socket($scope);
-    socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
 
     $scope.sign = function (ntxid) {
       var w = $rootScope.wallet;

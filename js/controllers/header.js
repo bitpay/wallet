@@ -24,6 +24,12 @@ angular.module('copay.header').controller('HeaderController',
       'link': '#/backup'
     }];
 
+    $rootScope.$watch('wallet', function(wallet) {
+      if (wallet) {
+        controllerUtils.setSocketHandlers(); 
+      }
+    });
+
     $scope.isActive = function(item) {
       if (item.link && item.link.replace('#','') == $location.path()) {
         return true;

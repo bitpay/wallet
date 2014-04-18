@@ -7,31 +7,40 @@ angular
 
     $routeProvider
       .when('/', {
-        templateUrl: 'signin.html'
+        templateUrl: 'signin.html',
+        validate: false
       })
       .when('/signin', {
-        templateUrl: 'signin.html' 
+        templateUrl: 'signin.html',
+        validate: false
       })
       .when('/setup', {
-        templateUrl: 'setup.html' 
+        templateUrl: 'setup.html',
+        validate: false
       })
       .when('/home', {
-        templateUrl: 'home.html'
+        templateUrl: 'home.html',
+        validate: true
       })
       .when('/join/:id', {
-        templateUrl: 'join.html'
+        templateUrl: 'join.html',
+        validate: true
       })
       .when('/peer', {
-        templateUrl: 'peer.html'
+        templateUrl: 'peer.html',
+        validate: true
       })
       .when('/transactions', {
-        templateUrl: 'transactions.html' 
+        templateUrl: 'transactions.html',
+        validate: true
       })
       .when('/send', {
-        templateUrl: 'send.html' 
+        templateUrl: 'send.html',
+        validate: true
       })
       .when('/backup', {
-        templateUrl: 'backup.html' 
+        templateUrl: 'backup.html',
+        validate: true
       })
       .otherwise({
         templateUrl: '404.html'
@@ -47,9 +56,8 @@ angular
       //.hashPrefix('!');
   })
   .run(function($rootScope, $location) {
-    $rootScope.$on('$routeChangeStart', function() {
-      if (!$rootScope.wallet || !$rootScope.wallet.id) {
-        console.log('############ no wallet');
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+      if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
         $location.path('signin');
       }
     });

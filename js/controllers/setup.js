@@ -24,7 +24,7 @@ angular.module('copay.setup').controller('SetupController',
 
     $scope.$watch('totalCopayers', function(tc) {
       updateRCSelect(tc);
-    })
+    });
 
     $scope.create = function(totalCopayers, requiredCopayers) {
       $scope.loading = true;
