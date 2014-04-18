@@ -133,7 +133,14 @@ describe('Wallet model', function() {
     Object.keys(t.txps[0].seenBy).length.should.equal(1);
   });
 
-
+  it('#addressIsOwn', function () {
+    var w = createW2();
+    var l = w.getAddressesStr();
+    for (var i=0; i<l.length; i++)
+      w.addressIsOwn(l[i]).should.equal(true);
+    w.addressIsOwn('mmHqhvTVbxgJTnePa7cfweSRjBCy9bQQXJ').should.equal(false);
+    w.addressIsOwn('mgtUfP9sTJ6vPLoBxZLPEccGpcjNVryaCX').should.equal(false);
+  });
 
   it('#create. Signing with derivate keys', function () {
 

@@ -310,6 +310,22 @@ Wallet.prototype.getAddressesStr = function(onlyMain) {
   return ret;
 };
 
+
+Wallet.prototype.addressIsOwn = function(addrStr) {
+  var addrList = this.getAddressesStr();
+  var l = addrList.length;
+  var ret = false;
+
+  for(var i=0; i<l; i++) {
+    if (addrList[i] === addrStr) {
+      ret = true; 
+      break;
+    }
+  }
+  return ret;
+};
+
+
 Wallet.prototype.getTotalBalance = function(cb) {
   this.getBalance(this.getAddressesStr(), function(balance) {
     return cb(balance);

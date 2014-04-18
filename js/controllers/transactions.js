@@ -7,11 +7,13 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.oneAtATime = true;
 
     var _updateTxs = function() {
-      var inT = $rootScope.wallet.getTxProposals();
-      var ts = [];
+      var w   =$rootScope.wallet;
+      var inT = w.getTxProposals();
+      var ts  = [];
+
       inT.forEach(function(i){
-        var b =i.txp.builder;
-        var tx = b.build();
+        var b   = i.txp.builder;
+        var tx  = b.build();
         var one = {
           valueOutSat: b.valueOutSat,
           feeSat: b.feeSat,
@@ -21,7 +23,8 @@ angular.module('copay.transactions').controller('TransactionsController',
         tx.outs.forEach(function(o) {
           var s = o.getScript();
           var aStr = bitcore.Address.fromScript(s, config.networkName).toString();
-          outs.push({address: aStr, value: bitcore.util.valueToBigInt(o.getValue())});
+          if (!w.addressIsOwn(aStr))
+            outs.push({address: aStr, value: bitcore.util.valueToBigInt(o.getValue())});
         });
         one.outs = outs;
         ts.push(one);
@@ -42,7 +45,6 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.sign = function (ntxid) {
       var w = $rootScope.wallet;
       var ret = w.sign(ntxid);
-console.log('[transactions.js.28:ret:]',ret); //TODO
       $rootScope.flashMessage = {type:'success', message: 'Transactions SEND! : ' + ret};
       _updateTxs();
     };
