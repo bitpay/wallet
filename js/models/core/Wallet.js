@@ -256,75 +256,82 @@ Wallet.prototype.generateAddress = function() {
   return addr;
 };
 
+// TODO : sort by time... / signed.
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
-  var self= this;
-  self.txProposals.txps.forEach(function(txp) {
+  for(var k in this.txProposals.txps) {
+    var txp = this.txProposals.txps[k];
     var i = {txp:txp};
-    i.ntxid = txp.builder.build().getNormalizedHash();
-    i.signedByUs = txp.signedBy[self.privateKey.getId()]?true:false;
+    i.ntxid = k;
+    i.signedByUs = txp.signedBy[this.privateKey.getId()]?true:false;
     ret.push(i);
-  });
-  return ret;
-};
-
-// TODO: this can be precalculated.
-Wallet.prototype._findTxByNtxid = function(ntxid) {
-  var ret;
-  var l = this.txProposals.txps.length;
-  var id = ntxid.toString('hex');
-  for(var i=0; i<l; i++) {
-    var txp = this.txProposals.txps[i];
-    var id2 = txp.builder.build().getNormalizedHash().toString('hex');
-    if (id === id2 ) {
-      ret = txp;
-    }
   }
   return ret;
 };
 
+Wallet.prototype.getTxProposal = function(ntxid) {
+  var txp = this.txProposals.txps[ntxid];
+  var i = {txp:txp};
+  i.ntxid = ntxid;
+  i.signedByUs = txp.signedBy[this.privateKey.getId()]?true:false;
+  return i;
+};
 
 Wallet.prototype.sign = function(ntxid) {
-  var txp = this._findTxByNtxid(ntxid);
+  var self = this;
+  var txp = self.txProposals.txps[ntxid];
   if (!txp) return;
 
-  var pkr = this.publicKeyRing;
-  var keys = this.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
-  var ret = txp.builder.sign(keys);
+  var pkr = self.publicKeyRing;
+  var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
 
-  if (ret.signaturesAdded) {
-    txp.signedBy[this.privateKey.getId()] = Date.now();
-    this.log('[Wallet.js.230:ret:]',ret); //TODO
-    if (ret.isFullySigned) {
-      this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
-      var tx = txp.builder.build();
-      var txHex = tx.serialize().toString('hex');
-      this.blockchain.sendRawTransaction(txHex, function(txid) {
-        this.log('[Wallet.js.235:txid:]',txid); //TODO
-        if (txid) {
-          this.store(true);
-        }
-      });
-    }
-    else {
-      this.sendTxProposals();
-      this.store(true);
-    }
+  var b = txp.builder;
+  var before = b.signaturesAdded;
+  b.sign(keys);
+
+  var ret = false;
+  if (b.signaturesAdded >  before) {
+    txp.signedBy[self.privateKey.getId()] = Date.now();
+    this.sendTxProposals();
+    this.store(true);
+    ret = true;
   }
   return ret;
 };
 
+Wallet.prototype.sendTx = function(ntxid) {
+  var txp = this.txProposals.txps[ntxid];
+  if (!txp) return;
+
+  var tx = txp.builder.build();
+  if (!tx.isComplete()) return;
+  this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+
+  var txHex = tx.serialize().toString('hex');
+  this.log('[Wallet.js.261:txHex:]',txHex); //TODO
+
+  var self = this;
+  this.blockchain.sendRawTransaction(txHex, function(txid) {
+    self.log('BITCOND txid:',txid); //TODO
+    if (txid) {
+      self.txProposals.remove(ntxid);
+      self.store(true);
+    }
+    return (txid);
+  });
+};
 
 Wallet.prototype.addSeenToTxProposals = function() {
   var ret=false;
   var self=this;
 
-  this.txProposals.txps.forEach(function(txp) {
+  for(var k in this.txProposals.txps) {
+    var txp = this.txProposals.txps[k];
     if (!txp.seenBy[self.privateKey.getId()]) {
       txp.seenBy[self.privateKey.getId()] = Date.now();
       ret = true;
     }
-  });
+  }
   return ret;
 };
 
@@ -359,9 +366,12 @@ Wallet.prototype.getBalance = function(cb) {
   var balance = 0;
   var balanceByAddr = {};
   var COIN = bitcore.util.COIN;
+  var addresses = this.getAddressesStr(true);
+
+  if (!addresses.length) return cb(0,[]);
 
   // Prefill balanceByAddr with main address
-  this.getAddressesStr(true).forEach(function(a){
+  addresses.forEach(function(a){
     balanceByAddr[a]=0;
   });
   this.getUnspent(function(utxos) {
@@ -371,9 +381,9 @@ Wallet.prototype.getBalance = function(cb) {
       balance = balance + amt;
       balanceByAddr[u.address] = (balanceByAddr[u.address]||0) + amt;
     }
-    Object.keys(balanceByAddr).forEach(function(a) {
+    for(var a in balanceByAddr){
       balanceByAddr[a] = balanceByAddr[a]/COIN;
-    });
+    };
     return cb(balance / COIN, balanceByAddr);
   });
 };
@@ -395,14 +405,10 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   if (typeof opts.spendUnconfirmed === 'undefined') {
     opts.spendUnconfirmed = this.spendUnconfirmed;
   }
-
-  if (!opts.remainderOut) {
-    opts.remainderOut={ address: this.publicKeyRing.generateAddress(true).toString()};
-  }
-
   self.getUnspent(function(unspentList) {
     // TODO check enough funds, etc.
     self.createTxSync(toAddress, amountSatStr, unspentList, opts);
+    self.sendPublicKeyRing();   // Change Address
     self.sendTxProposals();
     self.store();
     return cb();
@@ -440,6 +446,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   this.txProposals.add({
     signedBy: priv && b.signaturesAdded ? me : {},
     seenBy:   priv ? me : {},
+    creator: priv.id,
+    createdTs: Date.now(),
     builder: b,
   });
 };

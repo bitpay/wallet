@@ -1,4 +1,5 @@
 'use strict';
+var bitcore = require('bitcore');
 
 angular.module('copay.transactions').controller('TransactionsController',
   function($scope, $rootScope, $location, Socket, controllerUtils) {
@@ -9,7 +10,7 @@ angular.module('copay.transactions').controller('TransactionsController',
     var _updateTxs = function() {
       var w   =$rootScope.wallet;
       var inT = w.getTxProposals();
-      var ts  = [];
+      var txs  = [];
 
       inT.forEach(function(i){
         var b   = i.txp.builder;
@@ -18,20 +19,27 @@ angular.module('copay.transactions').controller('TransactionsController',
           feeSat: b.feeSat,
         };
         var outs = [];
-        var bitcore = require('bitcore');
+
         tx.outs.forEach(function(o) {
-          var s = o.getScript();
-          var aStr = bitcore.Address.fromScript(s, config.networkName).toString();
-          if (!w.addressIsOwn(aStr))
+          var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+          if (!w.addressIsOwn(addr)) {
             outs.push({
-              address: aStr, 
+              address: addr, 
               value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
             });
+          }
         });
         one.outs = outs;
-        ts.push(one);
+
+        // TOD: check missingSignatures === in al inputs?
+        one.missingSignatures = tx.countInputMissingSignatures(0);
+        one.signedByUs        = i.signedByUs;
+        one.ntxid             = i.ntxid;
+        one.creator           = i.txp.creator,
+        one.createdTs         = i.txp.createdTs;
+        txs.push(one);
       });
-      $scope.txs = ts;
+      $scope.txs = txs;
     };
 
 
@@ -40,6 +48,8 @@ angular.module('copay.transactions').controller('TransactionsController',
     }
     else {
       _updateTxs();
+      var w = $rootScope.wallet;
+      w.on('refresh',_updateTxs);
       var socket = Socket($scope);
       socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
     }
@@ -47,7 +57,23 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.sign = function (ntxid) {
       var w = $rootScope.wallet;
       var ret = w.sign(ntxid);
-      $rootScope.flashMessage = {type:'success', message: 'Transactions SEND! : ' + ret};
+      _updateTxs();
+
+      var p = w.getTxProposal(ntxid);
+      if (p.txp.builder.isFullySigned()) {
+        w.sendTx(ntxid, function(txid) {
+          $rootScope.flashMessage = txid
+            ? {type:'success', message: 'Transactions SENT! txid:' + txid}
+            : {type:'error', message: 'There was an error sending the Transaction'}
+            ;
+        });
+      }
+      else {
+        $rootScope.flashMessage = ret
+          ? {type:'success', message: 'Transactions signed'}
+          : {type:'error', message: 'There was an error signing the Transaction'}
+          ;
+      }
       _updateTxs();
     };
   });

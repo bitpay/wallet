@@ -126,11 +126,12 @@ describe('Wallet model', function() {
     );
 
     var t = w.txProposals;
-    var tx = t.txps[0].builder.build();
+    var k = Object.keys(t.txps)[0];
+    var tx = t.txps[k].builder.build();
     should.exist(tx);
     tx.isComplete().should.equal(false);
-    Object.keys(t.txps[0].signedBy).length.should.equal(1);
-    Object.keys(t.txps[0].seenBy).length.should.equal(1);
+    Object.keys(t.txps[k].signedBy).length.should.equal(1);
+    Object.keys(t.txps[k].seenBy).length.should.equal(1);
   });
 
   it('#addressIsOwn', function () {
@@ -157,13 +158,14 @@ describe('Wallet model', function() {
           unspentTest
         );
         var t = w.txProposals;
-        var tx = t.txps[0].builder.build();
+        var k = Object.keys(t.txps)[0];
+        var tx = t.txps[k].builder.build();
         should.exist(tx);
         tx.isComplete().should.equal(false);
         tx.countInputMissingSignatures(0).should.equal(2);
 
-        ( t.txps[0].signedBy[w.privateKey.id] - ts > 0).should.equal(true);
-        ( t.txps[0].seenBy[w.privateKey.id] - ts > 0).should.equal(true);
+        ( t.txps[k].signedBy[w.privateKey.id] - ts > 0).should.equal(true);
+        ( t.txps[k].seenBy[w.privateKey.id] - ts > 0).should.equal(true);
       }
     }
   });
