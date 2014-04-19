@@ -164,8 +164,8 @@ describe('Wallet model', function() {
         tx.isComplete().should.equal(false);
         tx.countInputMissingSignatures(0).should.equal(2);
 
-        ( t.txps[k].signedBy[w.privateKey.id] - ts > 0).should.equal(true);
-        ( t.txps[k].seenBy[w.privateKey.id] - ts > 0).should.equal(true);
+        ( t.txps[k].signedBy[w.privateKey.getId()] - ts > 0).should.equal(true);
+        ( t.txps[k].seenBy[w.privateKey.getId()] - ts > 0).should.equal(true);
       }
     }
   });
