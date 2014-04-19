@@ -441,12 +441,12 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
   var me = {};
-  if (priv) me[priv.id] = Date.now();
+  if (priv) me[priv.getId()] = Date.now();
 
   this.txProposals.add({
     signedBy: priv && b.signaturesAdded ? me : {},
     seenBy:   priv ? me : {},
-    creator: priv.id,
+    creator: priv.getId(),
     createdTs: Date.now(),
     builder: b,
   });
