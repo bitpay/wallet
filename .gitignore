@@ -28,15 +28,6 @@ npm-debug.log
 
 .DS_Store
 public/lib/*
-db/txs/*
-db/txs
-db/testnet/txs/*
-db/testnet/txs
-db/blocks/*
-db/blocks
-db/testnet/blocks/*
-db/testnet/blocks
-
 public/js/angularjs-all.js
 public/js/main.js
 public/js/vendors.js
@@ -49,3 +40,4 @@ lib/*
 !lib/socket.io.js
 
 js/copayBundle.js
+js/config.js
