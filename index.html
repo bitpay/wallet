@@ -45,11 +45,14 @@
       
     </div>
 
-    <div ng-if='$root.flashMessage.message' class="panel callout radius" style="color:red" >
-      {{$root.flashMessage.type}}: 
-      {{$root.flashMessage.message}}
-      <a ng-click="clearFlashMessage()" class="button tiny">Dismiss</a>
+  <div class="row" ng-if='$root.flashMessage.message'>
+    <div class="small-8 large-centered columns">
+      <div data-alert class="alert-box round {{$root.flashMessage.type}}">
+        {{$root.flashMessage.message}}
+        <a ng-click="clearFlashMessage()" class="close">&times;</a>
+      </div>
     </div>
+  </div>
 
     <div class="row">
       <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box warning round" >
@@ -68,7 +71,7 @@
 
   </div>
 
-  <div class="row m30a">
+  <div class="row">
     <div class="large-12 columns" ng-view></div>
   </div>
 
@@ -296,21 +299,51 @@
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
-          <div class="large-8 columns">
-            <form>
-              <label for="address">To
-                <input type="text" id="address" placeholder="Send to">
-              </label>
-              <label for="amount">Amount
-                <input type="text" id="amount" placeholder="Amount">
-                <select class="form-control">
-                  <option>mBTC</option>
-                  <option>BTC</option>
-                </select>
-              </label>
-              <button class="button primary round" type="button" ng-click="sendTest()">sendTest</button>
-              <button type="submit" class="button secondary round right">send</button>
+          <div class="small-6 large-centered columns">
+            <h1>{{title}}</h1>
+            <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="address">To address
+                    <small ng-hide="!sendForm.address.$pristine">required</small>
+                    <small class="is-valid" ng-show="!sendForm.address.$invalid && !sendForm.address.$pristine">is valid!</small>
+                    <small class="has-error" ng-show="sendForm.address.$invalid && !sendForm.address.$pristine">
+                    is not valid</small>
+                  </label>
+                  <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" ng-minlength="20" ng-maxlength="37" required>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="large-6 columns">
+                  <div class="row collapse">
+                    <label for="amount">Amount 
+                      <small ng-hide="!sendForm.amount.$pristine">required</small>
+                      <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">is valid!</small>
+                      <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine">
+                      is not valid</small>
+                    </label>
+                    <div class="small-9 columns">
+                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" required>
+                    </div>
+                    <div class="small-3 columns">
+                      <span class="postfix">BTC</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="large-4 columns">
+                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid">
+                    Send
+                  </button>                 
+                </div>
+              </div>
             </form>
+            <hr>
+            <div class="text-center">
+              <a ng-click="sendTest()">sendTest</a>
+            </div>
           </div>
         </div>
       </div>
