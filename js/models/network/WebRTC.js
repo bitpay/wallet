@@ -104,9 +104,6 @@ Network.prototype._onData = function(data, isInbound) {
     case 'disconnect':
       this._onClose(obj.sender);
       break;
-    case 'walletId':
-      this.emit('walletId', obj.data);
-      break;
     default:
       this.emit('data', obj.sender, obj.data, isInbound);
   }
