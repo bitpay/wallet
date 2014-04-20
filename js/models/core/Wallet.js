@@ -106,9 +106,11 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
   }
   this.log('[Wallet.js.98]' , data.type); //TODO
   switch(data.type) {
+    // This handler is repeaded on WalletFactory (#join). TODO
+    case 'walletId':
+      this.sendWalletReady(senderId);
+      break;
     case 'walletReady':
-
-console.log('[Wallet.js.109] RECV WALLETREADY'); //TODO
       this.sendPublicKeyRing(senderId);
       this.sendTxProposals(senderId);
       break;
@@ -189,6 +191,7 @@ console.log('[Wallet.js.177] NET START: emit CREATED'); //TODO
       if (otherPeerId !== myPeerId) {
         net.connectTo(otherPeerId);
       }
+    self.emit('refresh');
     }
   }, startOpts);
 };
