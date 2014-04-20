@@ -64,7 +64,7 @@
         <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
             One key is 
         </span>
-         missing. Share this secret with your other copayers for them to join your wallet: <b>{{$root.wallet.network.peerId}}</b>
+         missing. Share this secret with your other copayers for them to join your wallet: <b>{{$root.wallet.getMyPeerId()}}</b>
       </div>
     </div>
 

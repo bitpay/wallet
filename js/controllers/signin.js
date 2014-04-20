@@ -1,6 +1,3 @@
-'use strict';
-
-
 
 angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils) {
@@ -20,20 +17,27 @@ angular.module('copay.signin').controller('SigninController',
     $scope.open = function(walletId, opts) {
       $scope.loading = true;
 
+console.log('[signin.js.23:walletId:]',walletId); //TODO
       var w = walletFactory.open(walletId, opts);
       controllerUtils.setupUxHandlers(w);
+      w.netStart();
     };
 
-    $scope.join = function(cid) {
+    $scope.join = function(secret) {
       $scope.loading = true;
-      walletFactory.network.on('openError', function() {
-        controllerUtils.onError($scope); 
-        $rootScope.$digest();
+
+
+      walletFactory.network.on('joinError', function() {
+        controllerUtils.onErrorDigest($scope); 
       });
-      walletFactory.connectTo(cid, function(data) {
-        $scope.open(data.walletId, data.opts);
+
+      walletFactory.joinCreateSession(secret, function(w) {
+console.log('[signin.js.33] joinCreateSession RETURN', w); //TODO
+        controllerUtils.setupUxHandlers(w);
+        w.setupNetHandlers();
       });
     };
+
 
 
 //

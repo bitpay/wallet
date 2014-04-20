@@ -83,8 +83,11 @@ PublicKeyRing.prototype.getCopayerId = function(i, prefix) {
     buf = Buffer.concat([prefix, buf]);
   }
   return util.ripe160(buf).toString('hex');
-}
+};
 
+PublicKeyRing.prototype.myCopayerId = function(i, prefix) {
+  return this.getCopayerId(0,prefix);
+};
 
 PublicKeyRing.prototype.registeredCopayers = function () {
   return this.copayersBIP32.length;

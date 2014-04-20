@@ -182,10 +182,11 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   var self=this;
   var p = this.peer;
 
-  p.on('open', function(peerId) {
-    self.peerId = peerId;
-    self.connectedPeers = [peerId];
-    return openCallback(peerId);
+  p.on('open', function() {
+    self.connectedPeers = [self.peerId];
+
+console.log('[WebRTC.js.187] LENGTH', self.connectedPeers.length); //TODO
+    return openCallback();
   });
 
   p.on('error', function(err) {
@@ -210,23 +211,21 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 };
 
+Network.prototype.setPeerId = function(peerId) {
+  if (this.started) {
+    throw new Error ('network already started: can not change peerId')
+  }
+  this.peerId = peerId;
+};
+
+
 Network.prototype.start = function(openCallback, opts) {
   opts = opts || {};
   // Start PeerJS Peer
   var self = this;
-  if (this.started) {
-    // network already started, restarting network layer
-    opts.connectedPeers = this.connectedPeers;
-    Network._arrayRemove(this.peerId, opts.connectedPeers);
-    this.disconnect(function() {
-      self.start(openCallback, opts);
-    }, true); // fast disconnect
-    return;
-  }
 
+  if (this.started)  return openCallback();
 
-
-  opts = opts || {};
   opts.connectedPeers = opts.connectedPeers || [];
   this.peerId = this.peerId || opts.peerId;
 
@@ -237,6 +236,8 @@ Network.prototype.start = function(openCallback, opts) {
     this.connectTo(otherPeerId);
   }
   this.started = true;
+
+console.log('[WebRTC.js.237] started TRUE'); //TODO
 };
 
 Network.prototype._sendToOne = function(peerId, data, cb) {
@@ -283,7 +284,7 @@ console.log('[WebRTC.js.258:peerId:]',peerId); //TODO
 Network.prototype.connectTo = function(peerId) {
   var self = this;
 
-  console.log('### STARTING TO CONNECT TO:' + peerId );
+  console.log('### STARTING CONNECTION TO:' + peerId );
 
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',

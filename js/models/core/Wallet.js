@@ -97,6 +97,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
+console.log('_handleData: senderId:',senderId); //TODO
 
   if (this.id !== data.walletId) {
     this.emit('badMessage',senderId);
@@ -136,19 +137,27 @@ Wallet.prototype._optsToObj = function () {
 };
 
 
-Wallet.prototype.generatePeerId = function(index) {
-  var idBuf = new Buffer(this.id);
-  if (typeof index === 'undefined') {
-    // return my own peerId
-    var gen = this.privateKey.getId(idBuf);
-    return gen;
-  }
+Wallet.prototype.getPeerId = function(index) {
+  // if (typeof index === 'undefined') {
+  //   // return my own peerId
+  //   var gen = this.privateKey.getId(idBuf);
+  //   return gen;
+  // }
   // return peer number 'index' peerId
-  return this.publicKeyRing.getCopayerId(index, idBuf);
+  //
+  var idBuf;
+// TODO idBuf DISABLED FOR NOW
+//idBuf = new Buffer(this.id);
+  return this.publicKeyRing.getCopayerId(index || 0, idBuf);
+};
 
+
+Wallet.prototype.getMyPeerId = function() {
+  return this.getPeerId(0);
 };
 
 Wallet.prototype.netStart = function() {
+console.log('[Wallet.js.159:netStart:]'); //TODO
   var self = this;
   var net = this.network;
   net.removeAllListeners();
@@ -162,15 +171,17 @@ Wallet.prototype.netStart = function() {
   net.on('close', function() {
     self.emit('close');
   });
+
+  var myPeerId = self.getMyPeerId();
   var startOpts = { 
-    peerId: self.generatePeerId()
-  }
-  net.start(function(peerId) {
+    peerId: myPeerId
+  };
+  net.start(function() {
+console.log('[Wallet.js.177] NET START: emit CREATED'); //TODO
     self.emit('created');
-    var myId = self.generatePeerId();
     for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
-      var otherPeerId = self.generatePeerId(i);
-      if (otherPeerId !== myId) {
+      var otherPeerId = self.getPeerId(i);
+      if (otherPeerId !== myPeerId) {
         net.connectTo(otherPeerId);
       }
     }
