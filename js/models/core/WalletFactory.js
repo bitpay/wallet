@@ -33,7 +33,8 @@ function WalletFactory(config) {
 
 WalletFactory.prototype.log = function(){
   if (!this.verbose) return;
-  console.log(arguments);
+  if (console)
+        console.log.apply(console, arguments);
 };
 
 
@@ -152,7 +153,7 @@ WalletFactory.prototype.joinCreateSession = function(peerId, cb) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
         var w = self.open(data.walletId, data.opts);
-        w.sendWalletReady(peerId);
+        w.firstPeerId = peerId;
         return cb(w);
       }
     });

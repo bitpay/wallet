@@ -8,6 +8,7 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.oneAtATime = true;
 
     var _updateTxs = function() {
+console.log('[transactions.js.10:_updateTxs:]'); //TODO
       var w   =$rootScope.wallet;
       var inT = w.getTxProposals();
       var txs  = [];
@@ -35,11 +36,14 @@ angular.module('copay.transactions').controller('TransactionsController',
         one.missingSignatures = tx.countInputMissingSignatures(0);
         one.signedByUs        = i.signedByUs;
         one.ntxid             = i.ntxid;
-        one.creator           = i.txp.creator,
+        one.creator           = i.txp.creator;
         one.createdTs         = i.txp.createdTs;
+        one.sentTs            = i.txp.sentTs;
         txs.push(one);
       });
       $scope.txs = txs;
+console.log('[transactions.js.55] SET HANDL+'); //TODO
+      w.once('txProposalsUpdated',_updateTxs);
     };
 
 
@@ -49,7 +53,7 @@ angular.module('copay.transactions').controller('TransactionsController',
     else {
       _updateTxs();
       var w = $rootScope.wallet;
-      w.on('refresh',_updateTxs);
+
       var socket = Socket($scope);
       socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
     }
