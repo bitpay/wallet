@@ -38,10 +38,4 @@ angular.module('copay.send').controller('SendController',
       $rootScope.flashMessage = { message: 'You send a proposal transaction succefully', type: 'success'};
 		};
 
-    $scope.sendTest = function() {
-      var w    = $rootScope.wallet;
-      w.createTx( 'mimoZNLcP2rrMRgdeX5PSnR7AjCqQveZZ4', '12345',function() {
-        $rootScope.$digest();
-      });
-    };
   });
