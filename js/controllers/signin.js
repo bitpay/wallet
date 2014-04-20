@@ -16,7 +16,6 @@ angular.module('copay.signin').controller('SigninController',
 console.log('[signin.js.23:walletId:]',walletId); //TODO
       var w = walletFactory.open(walletId, opts);
       controllerUtils.setupUxHandlers(w);
-      w.netStart();
     };
 
     $scope.join = function(secret) {
@@ -29,7 +28,6 @@ console.log('[signin.js.23:walletId:]',walletId); //TODO
       walletFactory.joinCreateSession(secret, function(w) {
 console.log('[signin.js.33] joinCreateSession RETURN', w); //TODO
         controllerUtils.setupUxHandlers(w);
-        w.setupNetHandlers();
       });
     };
   });

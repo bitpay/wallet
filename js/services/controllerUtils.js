@@ -33,7 +33,6 @@ console.log('[controllerUtils.js.30:created:] RECV '); //TODO
       
       $rootScope.wallet.getBalance(function(balance) {
         $rootScope.totalBalance = balance;
-        $rootScope.$digest();
       });
     });
     w.on('refresh', function() {
@@ -42,6 +41,8 @@ console.log('[controllerUtils.js.30:created:] RECV '); //TODO
     });
     w.on('openError', root.onErrorDigest);
     w.on('close', root.onErrorDigest);
+
+console.log('[controllerUtils.js.45] CALLING NETSTART FROM setupUxHandlers'); //TODO
     w.netStart();
 console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
   };

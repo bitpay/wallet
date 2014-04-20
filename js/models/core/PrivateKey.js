@@ -32,6 +32,8 @@ PrivateKey.fromObj = function(obj) {
 };
 
 PrivateKey.prototype.toObj = function() {
+
+console.log('[PrivateKey.js.35] TODO TODO: PRIV: ', this.getExtendedPrivateKeyString()); //TODO
   return {
     extendedPrivateKeyString: this.getExtendedPrivateKeyString(),
     networkName: this.network.name,
