@@ -5,7 +5,7 @@ angular.module('copay',[
   'mm.foundation',
   'monospaced.qrcode',
   'copay.header',
-  'copay.home',
+  'copay.addresses',
   'copay.transactions',
   'copay.send',
   'copay.backup',
@@ -18,7 +18,7 @@ angular.module('copay',[
 ]);
 
 angular.module('copay.header', []);
-angular.module('copay.home', []);
+angular.module('copay.addresses', []);
 angular.module('copay.transactions', []);
 angular.module('copay.send', []);
 angular.module('copay.backup', []);

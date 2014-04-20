@@ -86,7 +86,7 @@ body {
   color: #111;
 }*/
 
-.home .panel {
+.addresses .panel {
   font-size: 0.9rem;
 }
 
@@ -118,7 +118,7 @@ body {
   border: none;
 }
 
-.home .panel:hover {
+.addresses .panel:hover {
   background: #efefef;
 }
 
