@@ -27,6 +27,7 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     });
 
     w.on('created', function() {
+console.log('[controllerUtils.js.30:created:] RECV '); //TODO
       $location.path('peer');
       $rootScope.wallet = w;
       
@@ -41,6 +42,8 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     });
     w.on('openError', root.onErrorDigest);
     w.on('close', root.onErrorDigest);
+    w.netStart();
+console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
   };
 
   root.setSocketHandlers = function(cb) {

@@ -3,12 +3,12 @@
 var chai = chai || require('chai');
 var should = chai.should();
 
-var WebRTC = require('../js/models/network/WebRTC');
+var FakeNetwork = require('./mocks/FakeNetwork');
 var Insight = require('../js/models/blockchain/Insight');
 var FakeStorage = require('./mocks/FakeStorage');
 
 var WalletFactory = typeof copay === 'undefined' ? require('soop').load('../js/models/core/WalletFactory',{
-  Network: WebRTC,
+  Network: FakeNetwork,
   Blockchain: Insight,
   Storage: FakeStorage,
 }) : copay.WalletFactory;

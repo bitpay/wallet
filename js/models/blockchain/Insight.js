@@ -102,7 +102,7 @@ Insight.prototype._request = function(options, callback) {
             return callback({message: 'Wrong response from insight'});
           }
         } else {
-          return callback({message: 'Error ' + response.statusCode});
+          return callback({message: 'Error ' + request.status});
         }
       }
     };

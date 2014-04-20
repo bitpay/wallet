@@ -58,7 +58,6 @@ body {
 .header {
   background: #111;
   color: white;
-  overflow: hidden;
   margin-bottom: 30px;
 }
 
@@ -69,6 +68,10 @@ body {
 
 .header h1, h5 {
   color: #fff;
+}
+
+.top-bar {
+  height: auto;
 }
 
 .panel {
@@ -164,7 +167,7 @@ span.panel-res {
   color: #FBE500;
 }
 
-.alert-box.warning {
+.alert-box.warning, .alert-box.error {
   background-color: #C0392A;
   border-color: #C0392A;
   color: #fff;
@@ -172,6 +175,14 @@ span.panel-res {
 
 .text-warning {
   color:#C0392A;
+}
+
+small.is-valid {
+  color: #04B404; 
+}
+
+small.has-error {
+  color: #f04124;
 }
 
 hr { margin: 2.25rem 0;}

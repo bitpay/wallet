@@ -45,11 +45,14 @@
       
     </div>
 
-    <div ng-if='$root.flashMessage.message' class="panel callout radius" style="color:red" >
-      {{$root.flashMessage.type}}: 
-      {{$root.flashMessage.message}}
-      <a ng-click="clearFlashMessage()" class="button tiny">Dismiss</a>
+  <div class="row" ng-if='$root.flashMessage.message'>
+    <div class="small-8 large-centered columns">
+      <div data-alert class="alert-box round {{$root.flashMessage.type}}">
+        {{$root.flashMessage.message}}
+        <a ng-click="clearFlashMessage()" class="close">&times;</a>
+      </div>
     </div>
+  </div>
 
     <div class="row">
       <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box warning round" >
@@ -61,14 +64,14 @@
         <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
             One key is 
         </span>
-         missing. Ask your copayers to join your session: <b>{{$root.wallet.network.peerId}}</b>
+         missing. Share this secret with your other copayers for them to join your wallet: <b>{{$root.wallet.getMyPeerId()}}</b>
       </div>
     </div>
 
 
   </div>
 
-  <div class="row m30a">
+  <div class="row">
     <div class="large-12 columns" ng-view></div>
   </div>
 
@@ -81,8 +84,9 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="large-6 columns">
-              <h3>Join a Network Wallet</h3>
-              <input type="text" class="form-control" placeholder="Peer ID" ng-model="connectionId" autofocus>
+              <h3>Join Wallet Creation</h3>
+              <input type="text" class="form-control" placeholder="Paste secret here"
+                 ng-model="connectionId" autofocus>
             </div>
             <div class="large-3 columns">
               <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
@@ -109,7 +113,7 @@
           <div ng-show="walletIds.length>0">
             <div class="row">
               <div class="large-6 columns">
-                <h3>Open a Existing Wallet</h3>
+                <h3>Open Existing Wallet</h3>
                 <select class="form-control" ng-model="selectedWalletId" ng-options="walletId for walletId in walletIds">
                 </select>
               </div>
@@ -234,20 +238,27 @@
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
             <h3>Pending Transactions <small>({{txs.length}})</small></h3>
-            <div class="panel pending" ng-repeat="txp in txs">
-              <div class="row" ng-repeat="o in txs.outs">
-                <p class="large-5 columns"> {{o.address}}</p>
-                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+            <div class="panel pending" ng-repeat="tx in txs">
+              NTXID: {{tx.ntxid}}
+              CREATOR: {{tx.creator}}
+              CREATED_TS: {{tx.createdTs}}
+              <div class="row" ng-repeat="o in tx.outs">
                 <p class="large-5 columns"> {{o.value}} BTC </p>
+                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
+                <p class="large-5 columns"> {{o.address}}</p>
               </div>
-              <div  class="large-12 columns m0 panel panel-sign" ng-show="txp.signedByUs"> 
-                <i class="fi-check size-40"></i> YOU SIGNED!
+              <div  class="large-12 columns m0 panel panel-sign" ng-show="tx.signedByUs"> 
+                <i class="fi-check size-40"></i> Signed by you already
               </div>
-              <div  class="large-12 columns m0" ng-show="!txp.signedByUs"> 
+              <div  class="large-12 columns m0" ng-show="!tx.signedByUs"> 
                 <div class="line"></div>
                 <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
-                <small class="large-4 columns text-center">Faltan 3 cosigners</small>
-                <button class="secondary round large-4 columns"  ng-click="sign(txp.ntxid)"><i class="large-2 columns fi-check size-16 text-center"></i> Sign</button>
+                <small class="large-4 columns text-center">
+<span ng-show="tx.missingSignatures==1"> One signature </span>
+<span ng-show="tx.missingSignatures>1"> {{tx.missingSignatures}} signatures </span>
+missing
+                </small>
+                <button class="secondary round large-4 columns"  ng-click="sign(tx.ntxid)"><i class="large-2 columns fi-check size-16 text-center"></i> Sign</button>
               </div>
               </div> <!-- end of row -->
             </div> <!-- end of pending -->
@@ -295,21 +306,51 @@
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
-          <div class="large-8 columns">
-            <form>
-              <label for="address">To
-                <input type="text" id="address" placeholder="Send to">
-              </label>
-              <label for="amount">Amount
-                <input type="text" id="amount" placeholder="Amount">
-                <select class="form-control">
-                  <option>mBTC</option>
-                  <option>BTC</option>
-                </select>
-              </label>
-              <button class="button primary round" type="button" ng-click="sendTest()">sendTest</button>
-              <button type="submit" class="button secondary round right">send</button>
+          <div class="small-6 large-centered columns">
+            <h1>{{title}}</h1>
+            <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="address">To address
+                    <small ng-hide="!sendForm.address.$pristine">required</small>
+                    <small class="is-valid" ng-show="!sendForm.address.$invalid && !sendForm.address.$pristine">is valid!</small>
+                    <small class="has-error" ng-show="sendForm.address.$invalid && !sendForm.address.$pristine">
+                    is not valid</small>
+                  </label>
+                  <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" ng-minlength="20" ng-maxlength="37" required>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="large-6 columns">
+                  <div class="row collapse">
+                    <label for="amount">Amount 
+                      <small ng-hide="!sendForm.amount.$pristine">required</small>
+                      <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">is valid!</small>
+                      <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine">
+                      is not valid</small>
+                    </label>
+                    <div class="small-9 columns">
+                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" required>
+                    </div>
+                    <div class="small-3 columns">
+                      <span class="postfix">BTC</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="large-4 columns">
+                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid">
+                    Send
+                  </button>                 
+                </div>
+              </div>
             </form>
+            <hr>
+            <div class="text-center">
+              <a ng-click="sendTest()">sendTest</a>
+            </div>
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@ function Network(opts) {
   this.peerId         = opts.peerId;
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
-  this.maxPeers       = opts.maxPeers || 5;
+  this.maxPeers       = opts.maxPeers || 10;
   this.opts = { key: opts.key };
 
   // For using your own peerJs server
@@ -29,6 +29,7 @@ function Network(opts) {
     if (opts[k]) self.opts[k]=opts[k];
   });
   this.connectedPeers = [];
+  this.started = false;
 }
 
 Network.parent=EventEmitter;
@@ -64,7 +65,6 @@ Network._arrayPushOnce = function(el, array) {
 Network._arrayRemove = function(el, array) {
   var pos = array.indexOf(el);
   if (pos >= 0) array.splice(pos, 1);
-
   return array;
 };
 
@@ -104,9 +104,6 @@ Network.prototype._onData = function(data, isInbound) {
     case 'disconnect':
       this._onClose(obj.sender);
       break;
-    case 'walletId':
-      this.emit('walletId', obj.data.walletId);
-      break;
     default:
       this.emit('data', obj.sender, obj.data, isInbound);
   }
@@ -123,8 +120,6 @@ Network.prototype._sendPeers = function(peerIds) {
 Network.prototype._addPeer = function(peerId, isInbound) {
 
   var hasChanged = Network._arrayPushOnce(peerId, this.connectedPeers);
-
-
   if (isInbound && hasChanged) {
     this._sendPeers();              //broadcast peer list
   }
@@ -184,18 +179,16 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   var self=this;
   var p = this.peer;
 
-  p.on('open', function(peerId) {
-    self.peerId = peerId;
-    self.connectedPeers = [peerId];
-    self._notifyNetworkChange();
-    return openCallback(peerId);
+  p.on('open', function() {
+    self.connectedPeers = [self.peerId];
+
+console.log('[WebRTC.js.187] LENGTH', self.connectedPeers.length); //TODO
+    return openCallback();
   });
 
   p.on('error', function(err) {
     console.log('### PEER ERROR:', err);
-    self.peer.disconnect();
-    self.peer.destroy();
-    self.peer = null;
+    //self.disconnect(null, true); // force disconnect
     self._checkAnyPeer();
   });
 
@@ -215,12 +208,33 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 };
 
-Network.prototype.start = function(openCallback) {
+Network.prototype.setPeerId = function(peerId) {
+  if (this.started) {
+    throw new Error ('network already started: can not change peerId')
+  }
+  this.peerId = peerId;
+};
+
+
+Network.prototype.start = function(openCallback, opts) {
+  opts = opts || {};
   // Start PeerJS Peer
-  if (this.peer) return openCallback();    // This is for connectTo-> peer is started before
+  var self = this;
+
+  if (this.started)  return openCallback();
+
+  opts.connectedPeers = opts.connectedPeers || [];
+  this.peerId = this.peerId || opts.peerId;
 
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
+  for (var i = 0; i<opts.connectedPeers.length; i++) {
+    var otherPeerId = opts.connectedPeers[i];
+    this.connectTo(otherPeerId);
+  }
+  this.started = true;
+
+console.log('[WebRTC.js.237] started TRUE'); //TODO
 };
 
 Network.prototype._sendToOne = function(peerId, data, cb) {
@@ -267,7 +281,7 @@ console.log('[WebRTC.js.258:peerId:]',peerId); //TODO
 Network.prototype.connectTo = function(peerId) {
   var self = this;
 
-  console.log('### STARTING TO CONNECT TO:' + peerId );
+  console.log('### STARTING CONNECTION TO:' + peerId );
 
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',
@@ -279,11 +293,12 @@ Network.prototype.connectTo = function(peerId) {
 };
 
 
-Network.prototype.disconnect = function(cb) {
+Network.prototype.disconnect = function(cb, forced) {
   var self = this;
   self.closing = 1;
-  this.send(null, { type: 'disconnect' }, function() {
+  var cleanUp = function() {
     self.connectedPeers = [];
+    self.started = false;
     self.peerId = null;
     if (self.peer) {
       self.peer.disconnect();
@@ -292,7 +307,12 @@ Network.prototype.disconnect = function(cb) {
     }
     self.closing = 0;
     if (typeof cb === 'function') cb();
-  });
+  };
+  if (!forced) {
+    this.send(null, { type: 'disconnect' }, cleanUp);
+  } else {
+    cleanUp();
+  }
 };
 
 module.exports = require('soop')(Network);

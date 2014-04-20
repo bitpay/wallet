@@ -17,7 +17,9 @@ describe('Storage/File', function() {
       var fs = {}
       fs.readFile = function(filename, callback) {
         filename.should.equal('myfilename');
-        callback();
+        var obj = {"test":"test"};
+        var encryptedStr = CryptoJS.AES.encrypt(JSON.stringify(obj), "password").toString();
+        callback(null, encryptedStr);
       };
       var Storage = require('soop').load('../js/models/storage/File.js', {fs: fs});
       var storage = new Storage({password: 'password'});
@@ -156,15 +158,16 @@ describe('Storage/File', function() {
       var obj = {test:'testval'};
       var data = JSON.stringify(obj);
       var encrypted = CryptoJS.AES.encrypt(data, 'password');
-      var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(encrypted.toString()));
+      var base64 = encrypted.toString();
 
       var storage = new Storage({password: 'password'});
       storage.data['walletId'] = obj;
 
       var enc = storage.getEncryptedObj('walletId');
-      enc.length.should.equal(96);
-      enc.slice(0,10).should.equal(hex.slice(0,10));
-      enc.slice(0,6).should.equal("53616c");
+      //enc.length.should.equal(96);
+      enc.length.should.be.greaterThan(10);
+      enc.slice(0,10).should.equal(base64.slice(0,10));
+      //enc.slice(0,6).should.equal("53616c");
     });
   });
 

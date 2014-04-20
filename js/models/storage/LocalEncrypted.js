@@ -25,12 +25,26 @@ Storage.prototype._setPassphrase = function(password) {
   pps[this.__uniqueid] = password;
 }
 
-Storage.prototype._encrypt = function(data) {
-  return CryptoJS.AES.encrypt(data, this._getPassphrase());
+Storage.prototype._encrypt = function(string) {
+  var encrypted = CryptoJS.AES.encrypt(string, this._getPassphrase());
+  var encryptedBase64 = encrypted.toString();
+  return encryptedBase64;
 };
 
-Storage.prototype._decrypt = function(encrypted) {
-  return CryptoJS.AES.decrypt(encrypted, this._getPassphrase());  
+Storage.prototype._encryptObj = function(obj) {
+  var string = JSON.stringify(obj);
+  return this._encrypt(string);
+};
+
+Storage.prototype._decrypt = function(base64) {
+  var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
+  var decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+  return decryptedStr;
+};
+
+Storage.prototype._decryptObj = function(base64) {
+  var decryptedStr = this._decrypt(base64);
+  return JSON.parse(decryptedStr);
 };
 
 Storage.prototype._read = function(k) {
@@ -53,6 +67,17 @@ Storage.prototype._write = function(k,v) {
   localStorage.setItem(k, v);
 };
 
+Storage.prototype.setFromObj = function(walletId, obj) {
+  for (var i in keys) {
+    var key = keys[0];
+    obj[key] = this.get(walletId, key);
+  }
+};
+
+Storage.prototype.setFromEncryptedObj = function(walletId, base64) {
+  
+};
+
 Storage.prototype.getEncryptedObj = function(walletId) {
   var keys = this._getWalletKeys();
   var obj = {};
@@ -62,9 +87,9 @@ Storage.prototype.getEncryptedObj = function(walletId) {
   }
   
   var str = JSON.stringify(obj);
-  var hex = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(this._encrypt(str).toString()));
+  var base64 = this._encrypt(str).toString();
 
-  return hex;
+  return base64;
 };
 
 module.exports = require('soop')(Storage);
