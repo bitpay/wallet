@@ -50,17 +50,17 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
 
   var hasChanged = pkr.merge(inPKR, true);
-  if (hasChanged && !data.isBroadcast) { 
+  if (hasChanged) { 
     this.log('### BROADCASTING PKR');
     recipients = null;
     shouldSend = true;
   }
-  else if (isInbound  && !data.isBroadcast) {
-    // always replying  to connecting peer
-    this.log('### REPLYING PKR TO:', senderId);
-    recipients = senderId;
-    shouldSend = true;
-  }
+  // else if (isInbound  && !data.isBroadcast) {
+  //   // always replying  to connecting peer
+  //   this.log('### REPLYING PKR TO:', senderId);
+  //   recipients = senderId;
+  //   shouldSend = true;
+  // }
 
   if (shouldSend) {
     this.sendPublicKeyRing(recipients);
@@ -78,17 +78,18 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   var mergeInfo = this.txProposals.merge(inTxp, true);
 
   var addSeen = this.addSeenToTxProposals();
-  if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
+//  if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
+  if (mergeInfo.merged  || addSeen) { 
     this.log('### BROADCASTING txProposals. ' );
     recipients = null;
     shouldSend = true;
   }
-  else if (isInbound  && !data.isBroadcast) {
-    // always replying  to connecting peer
-    this.log('### REPLYING txProposals TO:', senderId);
-    recipients = senderId;
-    shouldSend = true;
-  }
+  // else if (isInbound  && !data.isBroadcast) {
+  //   // always replying  to connecting peer
+  //   this.log('### REPLYING txProposals TO:', senderId);
+  //   recipients = senderId;
+  //   shouldSend = true;
+  // }
 
   if (shouldSend) 
     this.sendTxProposals(recipients);
