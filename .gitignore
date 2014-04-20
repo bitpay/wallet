@@ -40,4 +40,4 @@ lib/*
 !lib/socket.io.js
 
 js/copayBundle.js
-js/config.js
+config.js

@@ -3,12 +3,12 @@
 var config = {
   networkName: 'testnet',
   network: {
-//     key: 'lwjd5qra8257b9',
+     key: 'lwjd5qra8257b9', //Copay API key for public PeerJS server
     //   This is for running local peerJs with params: ./peerjs  -p 10009  -k 'sdfjhwefh'
-    key: 'sdfjhwefh',
-    host: 'localhost',
-    port: 10009,
-    path: '/',
+    //key: 'sdfjhwefh',
+    //host: 'localhost',
+    //port: 10009,
+    //path: '/',
     maxPeers: 3,
     debug: 3,
   },
