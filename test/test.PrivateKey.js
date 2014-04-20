@@ -74,7 +74,8 @@ describe('PrivateKey model', function() {
   });
   it('fromObj toObj roundtrip', function () {
     var w1 = new PrivateKey(config);
-    var w2 = PrivateKey.fromObj(w1.toObj());
+    var o = JSON.parse(JSON.stringify(w1.toObj()))
+    var w2 = PrivateKey.fromObj(o);
 
     w2.toObj().extendedPrivateKeyString.should.equal(w1.toObj().extendedPrivateKeyString);
     w2.getId().should.equal(w1.getId());
