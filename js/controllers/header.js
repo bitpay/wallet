@@ -47,4 +47,5 @@ angular.module('copay.header').controller('HeaderController',
       $rootScope.flashMessage = {};
     };
 
+    $rootScope.isCollapsed = true;
   });

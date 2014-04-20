@@ -204,6 +204,15 @@ small.has-error {
   color: #f04124;
 }
 
+@media (max-width: 641px) {
+  .hide_menu {
+    display: none;
+  }
+  .show_menu {
+    display: block;
+  }
+}
+
 hr { margin: 2.25rem 0;}
 
 button.primary { background-color: #111; }
