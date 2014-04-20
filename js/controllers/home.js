@@ -10,10 +10,12 @@ angular.module('copay.home').controller('HomeController',
 
     var _updateBalance = function () {
       w.getBalance(function (balance, balanceByAddr) {
-        $scope.balanceByAddr = balanceByAddr;
-        $scope.addrs =  Object.keys(balanceByAddr);
-        $scope.selectedAddr = $scope.addrs[0];
-        $scope.$digest();
+        if (balanceByAddr  && Object.keys(balanceByAddr).length) {
+          $scope.balanceByAddr = balanceByAddr;
+          $scope.addrs =  Object.keys(balanceByAddr);
+          $scope.selectedAddr = $scope.addrs[0];
+          $scope.$digest();
+        }
       });
       var socket = Socket($scope);
       controllerUtils.handleTransactionByAddress($scope, _updateBalance);
@@ -33,4 +35,5 @@ angular.module('copay.home').controller('HomeController',
       $location.path('signin');
     }
     _updateBalance();
+    w.on('refresh',_updateBalance);
   });

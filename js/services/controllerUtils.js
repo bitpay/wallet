@@ -23,7 +23,6 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
 
 
   root.setupUxHandlers =  function(w) {
-
     w.on('badMessage', function(peerId) {
       $rootScope.flashMessage = {type:'error', message: 'Received wrong message from peer id:' + peerId};
     });

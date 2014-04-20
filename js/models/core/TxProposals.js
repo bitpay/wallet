@@ -14,10 +14,27 @@ var Storage     = imports.Storage || require('../storage/Base');
 var storage     = Storage.default();
 
 function TxProposal(opts) {
+  this.creator      = opts.creator;
+  this.createdTs   = opts.createdTs;
   this.seenBy   = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
   this.builder  = opts.builder;
+}
+
+TxProposal.prototype.toObj = function() {
+  var o = JSON.parse(JSON.stringify(this));
+  delete o['builder'];
+  o.builderObj = this.builder.toObj();
+  return o;
 };
+
+TxProposal.fromObj = function(o) {
+  var t = new TxProposal(o);
+  var b = new Builder.fromObj(o.builderObj);
+  t.builder = b;
+  return t;
+};
+
 module.exports = require('soop')(TxProposal);
 
 
@@ -26,7 +43,7 @@ function TxProposals(opts) {
   this.walletId = opts.walletId;
   this.network = opts.networkName === 'livenet' ? 
       bitcore.networks.livenet : bitcore.networks.testnet;
-  this.txps = [];
+  this.txps = {};
 }
 
 TxProposals.fromObj = function(o) {
@@ -34,12 +51,10 @@ TxProposals.fromObj = function(o) {
     networkName: o.networkName,
     walletId: o.walletId,
   });
-  o.txps.forEach(function(t) {
-    ret.txps.push({
-      seenBy: t.seenBy,
-      signedBy: t.signedBy,
-      builder: new Builder.fromObj(t.builderObj),
-    });
+  o.txps.forEach(function(o2) {
+    var t = TxProposal.fromObj(o2);
+    var id = t.builder.build().getNormalizedHash().toString('hex');
+    ret.txps[id] = t;
   });
   return ret;
 };
@@ -47,13 +62,10 @@ TxProposals.fromObj = function(o) {
 
 TxProposals.prototype.toObj = function() {
   var ret = [];
-  this.txps.forEach(function(t) {
-    ret.push({
-      seenBy: t.seenBy,
-      signedBy: t.signedBy,
-      builderObj: t.builder.toObj(),
-    });
-  });
+  for(var id in this.txps){
+    var t = this.txps[id];
+    ret.push(t.toObj());
+  }
   return { 
     txps: ret, 
     walletId: this.walletId,
@@ -62,36 +74,27 @@ TxProposals.prototype.toObj = function() {
 };
 
 
-TxProposals.prototype._getNormHash = function(txps) {
-  var ret = {};
-  txps.forEach(function(txp) {
-    var hash = txp.builder.build().getNormalizedHash().toString('hex');
-    ret[hash]=txp;
-  });
-  return ret;
-};
-
 TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
   var fromUs=0, fromTheirs=0, merged =0;
-  var toMerge = {}, ready=[];
+  var toMerge = {}, ready={};
 
-  Object.keys(theirTxps).forEach(function(hash) {
+  for(var hash in theirTxps){
     if (!myTxps[hash]) {
-      ready.push(theirTxps[hash]);           // only in theirs;
+      ready[hash]=theirTxps[hash];           // only in theirs;
       fromTheirs++;
     }
     else {
       toMerge[hash]=theirTxps[hash];  // need Merging
       merged++;
     }
-  });
+  }
 
-  Object.keys(myTxps).forEach(function(hash) {
+  for(var hash in myTxps){
     if(!toMerge[hash]) {
-      ready.push(myTxps[hash]);   // only in myTxps;
+      ready[hash]=myTxps[hash];   // only in myTxps;
       fromUs++;
     }
-  });
+  }
 
   return {
     stats: {
@@ -124,20 +127,28 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
 
 TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
-  var self = this;
   var toMerge = mergeInfo.toMerge;
 
-  Object.keys(toMerge).forEach(function(hash) {
+  for(var hash in toMerge){
     var v0 = myTxps[hash].builder;
     var v1 = toMerge[hash].builder;
 
     v0.merge(v1);
-  });
+  };
 };
 
 TxProposals.prototype.add = function(data) {
-  this.txps.push( new TxProposal(data) );
+  var id = data.builder.build().getNormalizedHash().toString('hex');
+  this.txps[id] = new TxProposal(data);
 };
+
+
+TxProposals.prototype.remove = function(ntxid) {
+
+console.log('[TxProposals.js.147] DELETING:', ntxid); //TODO
+  delete this.txps[ntxid];
+};
+
 
 TxProposals.prototype.merge = function(t) {
   if (this.network.name !== t.network.name) 
@@ -145,21 +156,19 @@ TxProposals.prototype.merge = function(t) {
 
   var res = [];
 
-  var myTxps      = this._getNormHash(this.txps);
-  var theirTxps   = this._getNormHash(t.txps);
+  var myTxps      = this.txps;
+  var theirTxps   = t.txps;
 
   var mergeInfo   = this._startMerge(myTxps, theirTxps);
   this._mergeMetadata(myTxps, theirTxps, mergeInfo);
   this._mergeBuilder(myTxps, theirTxps, mergeInfo);
 
   Object.keys(mergeInfo.toMerge).forEach(function(hash) {
-    mergeInfo.ready.push(myTxps[hash]);
+    mergeInfo.ready[hash] = myTxps[hash];
   });
 
   this.txps=mergeInfo.ready;
   return mergeInfo.stats;
 };
-
-
 
 module.exports = require('soop')(TxProposals);
