@@ -92,11 +92,30 @@ body {
 
 .transactions .panel {
   background: #ECECEC;
+  border: 1px solid #eee;
 }
 
 .transactions .panel.pending {
   background-color: #fff; 
   padding: 1rem;
+}
+
+.pending .txheader {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.pending .txbottom {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 12px;
+}
+
+.pending table {
+  width: 100%;
+  border: none;
 }
 
 .home .panel:hover {

@@ -237,36 +237,72 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h3>Pending Transactions <small>({{txs.length}})</small></h3>
+            <h4>Pending transactions <small>({{txs.length}})</small></h4>
             <div class="panel pending" ng-repeat="tx in txs">
-              NTXID: {{tx.ntxid}}
-              CREATOR: {{tx.creator}}
-              CREATED_TS: {{tx.createdTs}}
-              <div class="row" ng-repeat="o in tx.outs">
-                <p class="large-5 columns"> {{o.value}} BTC </p>
-                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
-                <p class="large-5 columns"> {{o.address}}</p>
+              <div class="txheader">
+                <div class="row">
+                  <div class="large-8 columns">
+                    ntxid: {{tx.ntxid}}
+                  </div>
+                  <div class="large-4 columns text-right">
+                    created at {{tx.createdTs | date:'medium'}}
+                  </div>
+                </div>
               </div>
-              <div  class="large-12 columns m0 panel panel-sign" ng-show="tx.signedByUs"> 
-                <i class="fi-check size-40"></i> Signed by you already
+
+              <div class="row">
+                <div class="large-12 columns">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Creator</th>
+                        <th class="text-center"><i class="fi-arrow-right"></i></th>
+                        <th>To address</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="o in tx.outs">
+                        <td>{{tx.creator}}</td>
+                        <td class="text-center">{{o.value}} BTC</td>
+                        <td>{{o.address}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <div  class="large-12 columns m0" ng-show="!tx.signedByUs"> 
-                <div class="line"></div>
-                <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
-                <small class="large-4 columns text-center">
-<span ng-show="tx.missingSignatures==1"> One signature </span>
-<span ng-show="tx.missingSignatures>1"> {{tx.missingSignatures}} signatures </span>
-missing
-                </small>
-                <button class="secondary round large-4 columns"  ng-click="sign(tx.ntxid)"><i class="large-2 columns fi-check size-16 text-center"></i> Sign</button>
+
+              <div class="txbottom">
+                <div class="row">
+                  <div class="large-6 columns">
+                    <div ng-show="tx.signedByUs">
+                      <i class="fi-check size-40"></i> Signed by you already
+                    </div>
+                    <div ng-show="!tx.signedByUs"> 
+                      <button class="secondary round"  ng-click="sign(tx.ntxid)">
+                        <i class="fi-check"></i> Sign
+                      </button>
+                      <button class="primary round">
+                        <i class="fi-x"></i> Ignore
+                      </button>
+                    </div>
+                  </div>
+                  <div class="large-6 columns text-right">
+                    <span ng-show="!tx.missingSignatures">
+                      TODO: if tx was sent
+                    </span>
+                    <span ng-show="tx.missingSignatures==1"> 
+                      One signature missing
+                    </span>
+                    <span ng-show="tx.missingSignatures>1"> 
+                      {{tx.missingSignatures}} signatures missing</span>
+                  </div>
+                </div>
               </div>
-              </div> <!-- end of row -->
-            </div> <!-- end of pending -->
-            <div class="line-dashed-h"></div>
+            </div>
           </div>
 
           <div class="large-12 columns">
-            <h3>Last Transactions</h3>
+            <h4>Last transactions</h4>
             <div class="panel">
               <div class="row">
                 <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
