@@ -134,6 +134,7 @@ WalletFactory.prototype.getWalletIds = function() {
 
 WalletFactory.prototype.remove = function(walletId) {
   // TODO remove wallet contents
+  console.log('TODO: remove wallet contents');
 };
 
 
@@ -147,9 +148,13 @@ WalletFactory.prototype.joinCreateSession = function(peerId, cb) {
 
   self.network.start(function() {
     self.network.connectTo(peerId);
-    self.network.on('walletId', function(data) {
-      data.opts.privateKey = privateKey;
-      return cb(self.open(data.walletId, data.opts));
+    self.network.on('data', function(sender, data) {
+      if (data.type ==='walletId') {
+        data.opts.privateKey = privateKey;
+        var w = self.open(data.walletId, data.opts);
+        w.sendWalletReady(peerId);
+        return cb(w);
+      }
     });
   });
 };

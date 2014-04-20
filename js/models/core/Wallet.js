@@ -50,17 +50,17 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
 
   var hasChanged = pkr.merge(inPKR, true);
-  if (hasChanged && !data.isBroadcast) { 
+  if (hasChanged) { 
     this.log('### BROADCASTING PKR');
     recipients = null;
     shouldSend = true;
   }
-  else if (isInbound  && !data.isBroadcast) {
-    // always replying  to connecting peer
-    this.log('### REPLYING PKR TO:', senderId);
-    recipients = senderId;
-    shouldSend = true;
-  }
+  // else if (isInbound  && !data.isBroadcast) {
+  //   // always replying  to connecting peer
+  //   this.log('### REPLYING PKR TO:', senderId);
+  //   recipients = senderId;
+  //   shouldSend = true;
+  // }
 
   if (shouldSend) {
     this.sendPublicKeyRing(recipients);
@@ -78,17 +78,18 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   var mergeInfo = this.txProposals.merge(inTxp, true);
 
   var addSeen = this.addSeenToTxProposals();
-  if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
+//  if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
+  if (mergeInfo.merged  || addSeen) { 
     this.log('### BROADCASTING txProposals. ' );
     recipients = null;
     shouldSend = true;
   }
-  else if (isInbound  && !data.isBroadcast) {
-    // always replying  to connecting peer
-    this.log('### REPLYING txProposals TO:', senderId);
-    recipients = senderId;
-    shouldSend = true;
-  }
+  // else if (isInbound  && !data.isBroadcast) {
+  //   // always replying  to connecting peer
+  //   this.log('### REPLYING txProposals TO:', senderId);
+  //   recipients = senderId;
+  //   shouldSend = true;
+  // }
 
   if (shouldSend) 
     this.sendTxProposals(recipients);
@@ -97,8 +98,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
-console.log('_handleData: senderId:',senderId); //TODO
-
+  // TODO check message signature
   if (this.id !== data.walletId) {
     this.emit('badMessage',senderId);
     this.log('badMessage FROM:', senderId); //TODO
@@ -106,6 +106,12 @@ console.log('_handleData: senderId:',senderId); //TODO
   }
   this.log('[Wallet.js.98]' , data.type); //TODO
   switch(data.type) {
+    case 'walletReady':
+
+console.log('[Wallet.js.109] RECV WALLETREADY'); //TODO
+      this.sendPublicKeyRing(senderId);
+      this.sendTxProposals(senderId);
+      break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
     break;
@@ -115,15 +121,14 @@ console.log('_handleData: senderId:',senderId); //TODO
   }
 };
 
-Wallet.prototype._handleNetworkChange = function(newPeer) {
-  if (newPeer) {
-    this.log('#### Setting new PEER:', newPeer);
-    this.sendWalletId(newPeer);
-    this.sendPublicKeyRing(newPeer);
-    this.sendTxProposals(newPeer);
+Wallet.prototype._handleNetworkChange = function(newPeerId) {
+  if (newPeerId) {
+    this.log('#### Setting new PEER:', newPeerId);
+    this.sendWalletId(newPeerId);
   }
   this.emit('refresh');
 };
+
 
 Wallet.prototype._optsToObj = function () {
   var obj = {
@@ -236,6 +241,15 @@ Wallet.prototype.sendTxProposals = function(recipients) {
   this.emit('txProposalsUpdated', this.txProposals);
 };
 
+Wallet.prototype.sendWalletReady = function(recipients) {
+  this.log('### SENDING WalletReady TO:', recipients);
+
+  this.network.send( recipients, { 
+    type: 'walletReady', 
+    walletId: this.id,
+  });
+  this.emit('walletReady');
+};
 
 Wallet.prototype.sendWalletId = function(recipients) {
   this.log('### SENDING walletId TO:', recipients||'All', this.walletId);
