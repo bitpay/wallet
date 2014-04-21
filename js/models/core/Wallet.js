@@ -318,7 +318,7 @@ Wallet.prototype.sign = function(ntxid) {
 
   var pkr = self.publicKeyRing;
   var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
-console.log('[Wallet.js.329:keys:]',keys); //TODO
+console.log('[Wallet.js.329:keys:] LENGTH::',keys.length, pkr.addressIndex, pkr.changeAddressIndex); //TODO
 
   var b = txp.builder;
   var before = b.signaturesAdded;
@@ -497,8 +497,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var signRet;  
   if (priv) {
-console.log('[Wallet.js.486] aLL Priv', priv.getAll(pkr.addressIndex, pkr.changeAddressIndex)); //TODO
-    b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
+    var keys = priv.getAll(pkr.addressIndex, pkr.changeAddressIndex);
+console.log('[Wallet.js.329:keys:] LENGTH::',keys.length, pkr.addressIndex, pkr.changeAddressIndex); //TODO
+    b.sign( keys );
   }
 console.log('[Wallet.js.494]', b, b.build().serialize().toString('hex')); //TODO
   var me = {};

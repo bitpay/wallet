@@ -51,17 +51,20 @@ console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
     $scope.sign = function (ntxid) {
       var w = $rootScope.wallet;
       var ret = w.sign(ntxid);
-      _updateTxs();
 
+      if (!ret) {
+        $rootScope.flashMessage = {type:'error', message: 'There was an error signing the Transaction'};
+        _updateTxs();
+        $rootScope.$digest();    
+        return;
+      }
       var p = w.getTxProposal(ntxid);
       if (p.txp.builder.isFullySigned()) {
         $scope.send(ntxid);
+        _updateTxs();
+        $rootScope.$digest();    
       }
       else {
-        $rootScope.flashMessage = ret
-          ? {type:'success', message: 'Transactions signed'}
-          : {type:'error', message: 'There was an error signing the Transaction'}
-          ;
         _updateTxs();
         $rootScope.$digest();    
       }

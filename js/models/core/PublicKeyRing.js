@@ -162,6 +162,7 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
   var pubKeys = this.getPubKeys(index, isChange);
+console.log('[PublicKeyRing.js.164:index:] getRedeemScript: ',index, isChange); //TODO
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;
 };
