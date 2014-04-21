@@ -10,8 +10,7 @@ angular.module('copay.addresses').controller('AddressesController',
 
     var _updateBalance = function () {
       controllerUtils.setSocketHandlers();
-
-      w.getBalance(function (balance, balanceByAddr, isMain) {
+      w.getBalance(true, function (balance, balanceByAddr, isMain) {
         if (balanceByAddr  && Object.keys(balanceByAddr).length) {
           $rootScope.balanceByAddr = balanceByAddr;
           $scope.isMain = isMain;

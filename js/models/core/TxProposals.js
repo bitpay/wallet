@@ -181,6 +181,16 @@ TxProposals.prototype.setSent = function(ntxid,txid) {
   this.txps[ntxid].setSent(txid);
 };
 
+TxProposals.prototype.getUsedUnspent = function() {
+  var ret = [];
+  for(var i in this.txps) {
+    var u = this.txps[i].builder.getSelectedUnspent();
+    for (var j in u){
+      ret.push(u[j].txid);
+    }
+  }
+  return ret;
+};
 
 TxProposals.prototype.merge = function(t) {
   if (this.network.name !== t.network.name) 

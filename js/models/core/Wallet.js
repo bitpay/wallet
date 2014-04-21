@@ -400,7 +400,7 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
   return ret;
 };
 
-Wallet.prototype.getBalance = function(cb) {
+Wallet.prototype.getBalance = function(safe, cb) {
   var balance = 0;
   var balanceByAddr = {};
   var isMain = {};
@@ -414,7 +414,8 @@ Wallet.prototype.getBalance = function(cb) {
     balanceByAddr[a]=0;
     isMain[a]=1;
   });
-  this.getUnspent(function(utxos) {
+  var f = safe ?  this.getSafeUnspent.bind(this):this.getUnspent.bind(this);
+  f(function(utxos) {
     for(var i=0;i<utxos.length; i++) {
       var u= utxos[i];
       var amt = u.amount * COIN;
@@ -423,7 +424,7 @@ Wallet.prototype.getBalance = function(cb) {
     }
     for(var a in balanceByAddr){
       balanceByAddr[a] = balanceByAddr[a]/COIN;
-    };
+    }
     return cb(balance / COIN, balanceByAddr, isMain);
   });
 };
@@ -434,8 +435,24 @@ Wallet.prototype.getUnspent = function(cb) {
   });
 };
 
+Wallet.prototype.getSafeUnspent = function(cb) {
+  var self = this;
+  this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
+
+    var ret=[];
+    var uu = self.txProposals.getUsedUnspent();
+
+    for(var i in unspentList){
+      if (uu.indexOf(unspentList[i].txid) === -1) 
+        ret.push(unspentList[i]);
+    }
+
+    return cb(ret);
+  });
+};
+
+
 Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
-console.log('[Wallet.js.447:createTx:]'); //TODO
   var self = this;
   if (typeof opts === 'function') {
     cb = opts;
@@ -446,7 +463,8 @@ console.log('[Wallet.js.447:createTx:]'); //TODO
   if (typeof opts.spendUnconfirmed === 'undefined') {
     opts.spendUnconfirmed = this.spendUnconfirmed;
   }
-  self.getUnspent(function(unspentList) {
+
+  self.getSafeUnspent(function(unspentList) {
     // TODO check enough funds, etc.
     self.createTxSync(toAddress, amountSatStr, unspentList, opts);
     self.sendPublicKeyRing();   // Change Address
@@ -470,7 +488,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   if (!opts.remainderOut) {
     opts.remainderOut ={ address: this.generateAddress(true).toString() };
   }
-console.log('[Wallet.js.480:opts: CREATETXSYNC]',opts); //TODO
 
   var b = new Builder(opts)
     .setUnspent(utxos)
