@@ -34,7 +34,8 @@ function Wallet(opts) {
 Wallet.parent=EventEmitter;
 Wallet.prototype.log = function(){
   if (!this.verbose) return;
-  console.log(arguments);
+  if (console)
+        console.log.apply(console, arguments);
 };
 
 Wallet.getRandomId = function() {
@@ -76,10 +77,13 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   var recipients;
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
   var mergeInfo = this.txProposals.merge(inTxp, true);
+console.log('[Wallet.js.79:inTxp:]',inTxp); //TODO
 
   var addSeen = this.addSeenToTxProposals();
+
+console.log('[Wallet.js.81]', addSeen, mergeInfo); //TODO
 //  if ((mergeInfo.merged  && !data.isBroadcast) || addSeen) { 
-  if (mergeInfo.merged  || addSeen) { 
+  if (mergeInfo.hasChanged  || addSeen) { 
     this.log('### BROADCASTING txProposals. ' );
     recipients = null;
     shouldSend = true;
@@ -191,6 +195,8 @@ console.log('[Wallet.js.177] NET START: emit CREATED'); //TODO
       if (otherPeerId !== myPeerId) {
         net.connectTo(otherPeerId);
       }
+    self.sendWalletReady(self.firstPeerId);
+    self.firstPeerId = null;
     self.emit('refresh');
     }
   }, startOpts);
@@ -203,7 +209,8 @@ Wallet.prototype.store = function(isSync) {
 
   if (isSync) {
     this.log('Wallet stored.'); //TODO
-  } else {
+  } 
+  else {
     this.log('Wallet stored. REFRESH Emitted'); //TODO
     this.emit('refresh');
   }
@@ -291,7 +298,7 @@ Wallet.prototype.getTxProposals = function() {
     var txp = this.txProposals.txps[k];
     var i = {txp:txp};
     i.ntxid = k;
-    i.signedByUs = txp.signedBy[this.privateKey.getId()]?true:false;
+    i.signedByUs = txp.signedBy[this.getMyPeerId()]?true:false;
     ret.push(i);
   }
   return ret;
@@ -301,7 +308,7 @@ Wallet.prototype.getTxProposal = function(ntxid) {
   var txp = this.txProposals.txps[ntxid];
   var i = {txp:txp};
   i.ntxid = ntxid;
-  i.signedByUs = txp.signedBy[this.privateKey.getId()]?true:false;
+  i.signedByUs = txp.signedBy[this.getMyPeerId()]?true:false;
   return i;
 };
 
@@ -319,7 +326,7 @@ Wallet.prototype.sign = function(ntxid) {
 
   var ret = false;
   if (b.signaturesAdded >  before) {
-    txp.signedBy[self.privateKey.getId()] = Date.now();
+    txp.signedBy[self.getMyPeerId()] = Date.now();
     this.sendTxProposals();
     this.store(true);
     ret = true;
@@ -327,7 +334,7 @@ Wallet.prototype.sign = function(ntxid) {
   return ret;
 };
 
-Wallet.prototype.sendTx = function(ntxid) {
+Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.txps[ntxid];
   if (!txp) return;
 
@@ -342,21 +349,25 @@ Wallet.prototype.sendTx = function(ntxid) {
   this.blockchain.sendRawTransaction(txHex, function(txid) {
     self.log('BITCOND txid:',txid); //TODO
     if (txid) {
-      self.txProposals.remove(ntxid);
-      self.store(true);
+      self.txProposals.setSent(ntxid);
     }
-    return (txid);
+    self.sendTxProposals();
+    self.store();
+    return cb(txid);
   });
 };
 
 Wallet.prototype.addSeenToTxProposals = function() {
   var ret=false;
-  var self=this;
+  var myId=this.getMyPeerId();
 
   for(var k in this.txProposals.txps) {
     var txp = this.txProposals.txps[k];
-    if (!txp.seenBy[self.privateKey.getId()]) {
-      txp.seenBy[self.privateKey.getId()] = Date.now();
+console.log('[Wallet.js.364:txp:] ADD SEEN',txp); //TODO
+    if (!txp.seenBy[myId]) {
+
+console.log('[Wallet.js.367] ADDING'); //TODO
+      txp.seenBy[myId] = Date.now();
       ret = true;
     }
   }
@@ -435,9 +446,12 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   }
   self.getUnspent(function(unspentList) {
     // TODO check enough funds, etc.
+console.log('[Wallet.js.452]', self); //TODO
     self.createTxSync(toAddress, amountSatStr, unspentList, opts);
     self.sendPublicKeyRing();   // Change Address
     self.sendTxProposals();
+
+console.log('[Wallet.js.452]', self); //TODO
     self.store();
     return cb();
   });
@@ -469,15 +483,24 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
   var me = {};
-  if (priv) me[priv.getId()] = Date.now();
+  var myId = this.getMyPeerId();
+  var now = Date.now();
 
-  this.txProposals.add({
-    signedBy: priv && b.signaturesAdded ? me : {},
-    seenBy:   priv ? me : {},
-    creator: priv.getId(),
-    createdTs: Date.now(),
+  if (priv) me[myId] = now;
+
+console.log('[Wallet.js.485:me:]',myId, me); //TODO
+
+  var data = {
+    signedBy: (priv && b.signaturesAdded ? me : {}),
+    seenBy:   (priv ? me : {}),
+    creator:   myId,
+    createdTs: now,
     builder: b,
-  });
+  };
+
+console.log('[Wallet.js.499:data:]',data); //TODO
+
+  this.txProposals.add(data);
 };
 
 Wallet.prototype.connectTo = function(peerId) {

@@ -70,7 +70,10 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
     headers: { 'content-type' : 'application/x-www-form-urlencoded' }
   };
   this._request(options, function(err,res) {
+console.log('[Insight.js.73:err:]',err); //TODO
     if (err) return cb();
+
+console.log('[Insight.js.74]', res); //TODO
     return cb(res.txid);
   });
 };
@@ -95,13 +98,18 @@ Insight.prototype._request = function(options, callback) {
     request.open(options.method, url, true);
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
+console.log('[Insight.js.102]', request); //TODO
         if (request.status === 200) {
           try {
             return callback(null, JSON.parse(request.responseText));
           } catch (e) {
+
+console.log('[Insight.js.106]'); //TODO
             return callback({message: 'Wrong response from insight'});
           }
         } else {
+
+console.log('[Insight.js.111]'); //TODO
           return callback({message: 'Error ' + request.status});
         }
       }

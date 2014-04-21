@@ -18,9 +18,8 @@ angular
         templateUrl: 'setup.html',
         validate: false
       })
-      .when('/home', {
-        templateUrl: 'home.html',
-        validate: true
+      .when('/addresses', {
+        templateUrl: 'addresses.html'
       })
       .when('/join/:id', {
         templateUrl: 'join.html',

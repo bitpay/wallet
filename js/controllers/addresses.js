@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.home').controller('HomeController',
+angular.module('copay.addresses').controller('AddressesController',
   function($scope, $rootScope, controllerUtils) {
     $scope.title = 'Home';
     $scope.oneAtATime = true;

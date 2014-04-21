@@ -27,11 +27,11 @@
         <ul class="title-area">
           <li class="name"></li>
           <li class="toggle-topbar menu-icon">
-            <a href="#"> Menu</a>
+            <a ng-click="isCollapsed=!isCollapsed"> Menu</a>
           </li>
         </ul>
 
-        <section class="top-bar-section">
+        <section class="top-bar-section {{isCollapsed && 'hide_menu' || 'show_menu'}}">
           <ul>
             <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="large-2 text-center" data-ng-class="{active: isActive(item)}">
               <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
@@ -55,9 +55,9 @@
   </div>
 
     <div class="row">
-      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box warning round" >
+      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box info round" >
         <i class="fi-alert size-18"></i> 
-            NOTE: Your wallet is not complete yet. 
+            Note: Your wallet is not complete yet. 
         <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
             {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
         </span>
@@ -189,8 +189,8 @@
         <div class="large-6 columns p70l">
           <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedPeers.length}}</h3>
 
-          <p class="text-warning" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
-          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signning transactions
+          <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
+          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
 
 
           <ul class="no-bullet">
@@ -208,9 +208,9 @@
     
     
 
-    <!-- HOME -->
-    <script type="text/ng-template" id="home.html">
-      <div class="home" data-ng-controller="HomeController">
+    <!-- ADDRESS -->
+    <script type="text/ng-template" id="addresses.html">
+      <div class="addresses" data-ng-controller="AddressesController">
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
         <h3>Address</h3>
         <div class="row">
@@ -221,8 +221,7 @@
             <qrcode size="160" data="{{selectedAddr}}"></qrcode>
             <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{balanceByAddr[addr]}} BTC </strong> </p>
           </div>
-          <div class="large-1 columns"> </div>
-          <div class="large-2 columns">
+          <div class="large-3 columns text-center">
             <p> Create a New <strong> Address </strong> </p>
             <button class="secondary round expand" ng-click="newAddr()"> Create </button>
           </div>
@@ -237,36 +236,79 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h3>Pending Transactions <small>({{txs.length}})</small></h3>
+            <h4>Pending transactions <small>({{txs.length}})</small></h4>
             <div class="panel pending" ng-repeat="tx in txs">
-              NTXID: {{tx.ntxid}}
-              CREATOR: {{tx.creator}}
-              CREATED_TS: {{tx.createdTs}}
-              <div class="row" ng-repeat="o in tx.outs">
-                <p class="large-5 columns"> {{o.value}} BTC </p>
-                <i class="large-2 columns fi-arrow-right size-16 text-center"></i>
-                <p class="large-5 columns"> {{o.address}}</p>
+              <div class="txheader">
+                <div class="row">
+                  <div class="large-8 columns">
+                    ntxid: {{tx.ntxid}}
+                  </div>
+                  <div class="large-4 columns text-right">
+                    created at {{tx.createdTs | date:'medium'}}
+                  </div>
+                </div>
               </div>
-              <div  class="large-12 columns m0 panel panel-sign" ng-show="tx.signedByUs"> 
-                <i class="fi-check size-40"></i> Signed by you already
-              </div>
-              <div  class="large-12 columns m0" ng-show="!tx.signedByUs"> 
-                <div class="line"></div>
-                <button class="primary round large-4 columns"><i class="large-2 columns fi-x size-16 text-center"></i> Ignore</button>
-                <small class="large-4 columns text-center">
-<span ng-show="tx.missingSignatures==1"> One signature </span>
-<span ng-show="tx.missingSignatures>1"> {{tx.missingSignatures}} signatures </span>
-missing
-                </small>
-                <button class="secondary round large-4 columns"  ng-click="sign(tx.ntxid)"><i class="large-2 columns fi-check size-16 text-center"></i> Sign</button>
-              </div>
-              </div> <!-- end of row -->
-            </div> <!-- end of pending -->
-            <div class="line-dashed-h"></div>
-          </div>
 
+              <div class="row">
+                <div class="large-12 columns">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Creator</th>
+                        <th class="text-center"><i class="fi-arrow-right"></i></th>
+                        <th>To address</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="o in tx.outs">
+                        <td>{{tx.creator}}</td>
+                        <td class="text-center">{{o.value}} BTC</td>
+                        <td>{{o.address}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="txbottom">
+                <div class="row">
+                  <div class="large-6 columns">
+                    <div ng-show="tx.signedByUs">
+                      <i class="fi-check size-40"></i> Signed by you already
+                    </div>
+                    <div ng-show="!tx.signedByUs"> 
+                      <button class="secondary round"  ng-click="sign(tx.ntxid)">
+                        <i class="fi-check"></i> Sign
+                      </button>
+                      <button class="primary round">
+                        <i class="fi-x"></i> Ignore
+                      </button>
+                    </div>
+                  </div>
+                  <div class="large-6 columns text-right">
+                    <span ng-show="!tx.missingSignatures && !tx.sentTs">
+                      Transaction ready.
+                      <button class="secondary round"  ng-click="send(tx.ntxid)">
+                        Broadcast Transaction
+                      </button>
+                    </span>
+ 
+                    <span ng-show="!tx.missingSignatures && tx.sentTs">
+                      Sent at {{tx.sentTs | date:'medium'}}
+                    </span>
+                    <span ng-show="tx.missingSignatures==1"> 
+                      One signature missing
+                    </span>
+                    <span ng-show="tx.missingSignatures>1"> 
+                      {{tx.missingSignatures}} signatures missing</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="large-12 columns">
-            <h3>Last Transactions</h3>
+<!--
+            <h4>Last transactions</h4>
             <div class="panel">
               <div class="row">
                 <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
@@ -297,6 +339,7 @@ missing
                 </span>
               </div>
             </div>
+-->
           </div>
         </div>    
       </div>
@@ -307,7 +350,7 @@ missing
       <div class="send" data-ng-controller="SendController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="small-6 large-centered columns">
-            <h1>{{title}}</h1>
+            <h3>{{title}}</h3>
             <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
               <div class="row">
                 <div class="large-12 columns">
@@ -347,10 +390,6 @@ missing
                 </div>
               </div>
             </form>
-            <hr>
-            <div class="text-center">
-              <a ng-click="sendTest()">sendTest</a>
-            </div>
           </div>
         </div>
       </div>
@@ -359,7 +398,7 @@ missing
     <!-- BACKUP -->
     <script type="text/ng-template" id="backup.html">
       <div class="backup" data-ng-controller="BackupController">
-        <h2>{{title}}</h2>
+        <h3>{{title}}</h3>
         <div class="row text-center">
           <div class="large-4 columns">
             <a class="panel box-backup" ng-click="download()">
@@ -416,7 +455,7 @@ missing
     <script src="js/services/controllerUtils.js"></script>
 
     <script src="js/controllers/header.js"></script>
-    <script src="js/controllers/home.js"></script>
+    <script src="js/controllers/addresses.js"></script>
     <script src="js/controllers/transactions.js"></script>
     <script src="js/controllers/send.js"></script>
     <script src="js/controllers/backup.js"></script>

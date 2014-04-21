@@ -86,12 +86,13 @@ body {
   color: #111;
 }*/
 
-.home .panel {
+.addresses .panel {
   font-size: 0.9rem;
 }
 
 .transactions .panel {
   background: #ECECEC;
+  border: 1px solid #eee;
 }
 
 .transactions .panel.pending {
@@ -99,7 +100,25 @@ body {
   padding: 1rem;
 }
 
-.home .panel:hover {
+.pending .txheader {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.pending .txbottom {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 12px;
+}
+
+.pending table {
+  width: 100%;
+  border: none;
+}
+
+.addresses .panel:hover {
   background: #efefef;
 }
 
@@ -183,6 +202,15 @@ small.is-valid {
 
 small.has-error {
   color: #f04124;
+}
+
+@media (max-width: 641px) {
+  .hide_menu {
+    display: none;
+  }
+  .show_menu {
+    display: block;
+  }
 }
 
 hr { margin: 2.25rem 0;}

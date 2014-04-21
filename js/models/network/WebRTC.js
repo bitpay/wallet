@@ -23,6 +23,7 @@ function Network(opts) {
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
   this.opts = { key: opts.key };
+  this.connections = {};
 
   // For using your own peerJs server
   ['port', 'host', 'path', 'debug'].forEach(function(k) {
@@ -69,6 +70,9 @@ Network._arrayRemove = function(el, array) {
 };
 
 Network.prototype._onClose = function(peerId) {
+console.log('[WebRTC.js.72:_onClose:]');
+
+  delete this.connections[peerId];
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
   this._notifyNetworkChange();
 };
@@ -138,11 +142,11 @@ Network.prototype._checkAnyPeer = function() {
 }
 
 Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
-
   var self=this;
 
   dataConn.on('open', function() {
     if (!Network._inArray(dataConn.peer, self.connectedPeers)) {
+      self.connections[dataConn.peer] = dataConn;
 
       console.log('### DATA CONNECTION READY TO: ADDING PEER: %s (inbound: %s)',
         dataConn.peer, isInbound);
@@ -159,11 +163,14 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
 
   dataConn.on('error', function(e) {
     console.log('### DATA ERROR',e ); //TODO
+    self._onClose(dataConn.peer);
+    self._checkAnyPeer();
     self.emit('dataError');
   });
 
   dataConn.on('close', function() {
     if (self.closing) return;
+
     console.log('### CLOSE RECV FROM:', dataConn.peer); 
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
@@ -181,8 +188,6 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 
   p.on('open', function() {
     self.connectedPeers = [self.peerId];
-
-console.log('[WebRTC.js.187] LENGTH', self.connectedPeers.length); //TODO
     return openCallback();
   });
 
@@ -239,18 +244,16 @@ console.log('[WebRTC.js.237] started TRUE'); //TODO
 
 Network.prototype._sendToOne = function(peerId, data, cb) {
   if (peerId !== this.peerId) {
-    var conns = this.peer.connections[peerId];
-
-    if (conns) {
+    var dataConn = this.connections[peerId];
+    if (dataConn) {
       var str = JSON.stringify({
         sender: this.peerId,
         data: data
       });
-
-      for (var i = 0; i < conns.length; i++) {
-        var conn = conns[i];
-        conn.send(str);
-      }
+      dataConn.send(str);
+    }
+    else {
+console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
     }
   }
   if (typeof cb === 'function') cb();
