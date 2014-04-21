@@ -18,8 +18,8 @@
           </figure>
           <div class="text-right" ng-show="$root.wallet">
             <h5 ng-show="$root.wallet.id">Wallet ID: {{$root.wallet.id}}</h5>
-            <p ng-show="totalBalance">{{totalBalance}} BTC</p>
-            <p ng-show="!totalBalance">0 BTC</p>
+            <p ng-show="totalBalance">{{totalBalance}} <i class="fi-bitcoin"></i></p>
+            <p ng-show="!totalBalance">0 <i class="fi-bitcoin"></i></p>
           </div>
         </div>
 
@@ -215,11 +215,11 @@
         <h3>Address</h3>
         <div class="row">
           <div class="large-6 columns">
-            <a class="panel db" ng-repeat="addr in addrs" ng-click="selectAddr(addr)">{{addr}} <span class="right">{{$root.balanceByAddr[addr] || 0}} BTC &gt;</span></a>
+            <a class="panel db" ng-repeat="addr in addrs" ng-click="selectAddr(addr)">{{addr}} <span class="right">{{balanceByAddr[addr] || 0}} <i class="fi-bitcoin"></i></span></a>
           </div>
           <div class="large-3 columns line-dashed-v text-center">
             <qrcode size="160" data="{{selectedAddr}}"></qrcode>
-            <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{balanceByAddr[addr]}} BTC </strong> </p>
+            <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{balanceByAddr[addr]}} <i class="fi-bitcoin"></i> </strong> </p>
           </div>
           <div class="large-3 columns text-center">
             <p> Create a New <strong> Address </strong> </p>
@@ -241,7 +241,7 @@
               <div class="txheader">
                 <div class="row">
                   <div class="large-8 columns">
-                    ntxid: {{tx.ntxid}}
+                    Proposal ID: {{tx.ntxid}}
                   </div>
                   <div class="large-4 columns text-right">
                     created at {{tx.createdTs | date:'medium'}}
@@ -251,20 +251,23 @@
 
               <div class="row">
                 <div class="large-12 columns">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Creator</th>
-                        <th class="text-center"><i class="fi-arrow-right"></i></th>
-                        <th>To address</th>
-                      </tr>
-                    </thead>
+                  <table style="width:100%">
                     <tbody>
                       <tr ng-repeat="o in tx.outs">
-                        <td>{{tx.creator}}</td>
-                        <td class="text-center">{{o.value}} BTC</td>
-                        <td>{{o.address}}</td>
+                        <td class="text-right size-24">{{o.value}} <i class="fi-bitcoin"></i></td>
+                        <td class="text-center size-48"> <i class="fi-arrow-right size-40">
+                        <td class="text-left size-24">{{o.address}}</td>
                       </tr>
+                      <tr ng-repeat="(peer, actions) in tx.peerActions">
+                      <td colspan="3" >
+                        <span ng-if="peer == $root.wallet.network.peerId"> You</span>
+                        <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
+                        :
+                        <span ng-repeat="(action, ts) in actions">
+                            <a title="{{ts | date:'medium'}}"> {{action}}</a>
+                        </span>
+                        </tr>
+    
                     </tbody>
                   </table>
                 </div>
@@ -272,11 +275,11 @@
 
               <div class="txbottom">
                 <div class="row">
-                  <div class="large-6 columns">
+                  <div class="large-6 columns" ng-show="!tx.sentTs">
                     <div ng-show="tx.signedByUs">
                       <i class="fi-check size-40"></i> Signed by you already
                     </div>
-                    <div ng-show="!tx.signedByUs"> 
+                    <div ng-show="!tx.signedByUs && tx.missingSignatures"> 
                       <button class="secondary round"  ng-click="sign(tx.ntxid)">
                         <i class="fi-check"></i> Sign
                       </button>
@@ -294,7 +297,9 @@
                     </span>
  
                     <span ng-show="!tx.missingSignatures && tx.sentTs">
+                     <i class="fi-arrow-right size-40"></i>
                       Sent at {{tx.sentTs | date:'medium'}}
+                      TXID: {{tx.sentTxid}}
                     </span>
                     <span ng-show="tx.missingSignatures==1"> 
                       One signature missing

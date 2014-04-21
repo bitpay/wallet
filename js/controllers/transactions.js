@@ -14,11 +14,7 @@ console.log('[transactions.js.10:_updateTxs:]'); //TODO
       var txs  = [];
 
       inT.forEach(function(i){
-        var b   = i.txp.builder;
-        var tx  = b.build();
-        var one = {
-          feeSat: b.feeSat,
-        };
+        var tx  = i.builder.build();
         var outs = [];
 
         tx.outs.forEach(function(o) {
@@ -30,19 +26,13 @@ console.log('[transactions.js.10:_updateTxs:]'); //TODO
             });
           }
         });
-        one.outs = outs;
-
-        // TOD: check missingSignatures === in al inputs?
-        one.missingSignatures = tx.countInputMissingSignatures(0);
-        one.signedByUs        = i.signedByUs;
-        one.ntxid             = i.ntxid;
-        one.creator           = i.txp.creator;
-        one.createdTs         = i.txp.createdTs;
-        one.sentTs            = i.txp.sentTs;
-        txs.push(one);
+        // extra fields
+        i.outs = outs;
+        i.fee = i.feeSat/bitcore.util.COIN;
+        i.missingSignatures = tx.countInputMissingSignatures(0);
+        txs.push(i);
       });
       $scope.txs = txs;
-console.log('[transactions.js.55] SET HANDL+'); //TODO
       w.removeListener('txProposalsUpdated',_updateTxs)
       w.once('txProposalsUpdated',_updateTxs);
     };

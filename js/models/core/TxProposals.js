@@ -20,6 +20,7 @@ function TxProposal(opts) {
   this.signedBy = opts.signedBy || {};
   this.builder  = opts.builder;
   this.sentTs = opts.sentTs || null;
+  this.sentTxid = opts.sentTxid || null;
 }
 
 TxProposal.prototype.toObj = function() {
@@ -30,7 +31,8 @@ TxProposal.prototype.toObj = function() {
 };
 
 
-TxProposal.prototype.setSent = function() {
+TxProposal.prototype.setSent = function(sentTxid) {
+  this.sentTxid = txid;
   this.sentTs = Date.now();;
 };
 
@@ -64,7 +66,6 @@ TxProposals.fromObj = function(o) {
   o.txps.forEach(function(o2) {
     var t = TxProposal.fromObj(o2);
     var id = t.builder.build().getNormalizedHash().toString('hex');
-console.log('[TxProposals.js.65:id:]',id, o2); //TODO
     ret.txps[id] = t;
   });
   return ret;
@@ -127,7 +128,6 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
   Object.keys(toMerge).forEach(function(hash) {
     var v0 = myTxps[hash];
     var v1 = toMerge[hash];
-console.log('[TxProposals.js.127:v0:]',v0, v1); //TODO
 
     Object.keys(v1.seenBy).forEach(function(k) {
       if (!v0.seenBy[k] || v0.seenBy[k] !== v1.seenBy[k]) {
@@ -143,13 +143,13 @@ console.log('[TxProposals.js.127:v0:]',v0, v1); //TODO
       }
     });
 
-    if (!v0.sentTs && v1.sentTs) {
-      v0.sentTs = v1.sentTs;
+    if (!v0.sentTxid && v1.sentTxid) {
+      v0.sentTs   = v1.sentTs;
+      v0.sentTxid = v1.sentTxid;
       hasChanged++;
     }
 
   });
-console.log('[TxProposals.js.131:hasChanged:]',hasChanged); //TODO
   return hasChanged;
 };
 
@@ -168,20 +168,17 @@ TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
     var after = JSON.stringify(v0.toObj());
     if (after !== before) hasChanged ++;
   }
-console.log('[TxProposals.js.149:hasChanged:]',hasChanged); //TODO
 };
 
 TxProposals.prototype.add = function(data) {
   var id = data.builder.build().getNormalizedHash().toString('hex');
-console.log('[TxProposals.js.175:data: ADD]',data); //TODO
   this.txps[id] = new TxProposal(data);
 };
 
 
-TxProposals.prototype.setSent = function(ntxid) {
+TxProposals.prototype.setSent = function(ntxid,txid) {
   //sent TxProposals are local an not broadcasted.
-console.log('[TxProposals.js.147] SET SENT:', ntxid); //TODO
-  this.txps[ntxid].setSent();
+  this.txps[ntxid].setSent(txid);
 };
 
 
