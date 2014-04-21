@@ -18,8 +18,10 @@
           </figure>
           <div class="text-right" ng-show="$root.wallet">
             <h5 ng-show="$root.wallet.id">Wallet ID: {{$root.wallet.id}}</h5>
-            <p ng-show="totalBalance">{{totalBalance}} <i class="fi-bitcoin"></i></p>
-            <p ng-show="!totalBalance">0 <i class="fi-bitcoin"></i></p>
+            <p>
+                Balance: {{totalBalance || 0}} <i class="fi-bitcoin"></i><br>
+                Available to Spend:{{availableBalance || 0}} <i class="fi-bitcoin"></i>
+            </p>
           </div>
         </div>
 

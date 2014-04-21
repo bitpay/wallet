@@ -31,9 +31,13 @@ console.log('[controllerUtils.js.30:created:] RECV '); //TODO
       $location.path('peer');
       $rootScope.wallet = w;
       
-      $rootScope.wallet.getBalance(function(balance) {
+      $rootScope.wallet.getBalance(false,function(balance) {
         $rootScope.totalBalance = balance;
       });
+      $rootScope.wallet.getBalance(true,function(balance) {
+        $rootScope.availableBalance = balance;
+      });
+
     });
     w.on('refresh', function() {
       console.log('[controllerUtils.js] Refreshing'); //TODO
@@ -47,8 +51,9 @@ console.log('[controllerUtils.js.45] CALLING NETSTART FROM setupUxHandlers'); //
 console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
   };
 
-  root.setSocketHandlers = function(cb) {
+  root.setSocketHandlers = function() {
     Socket.removeAllListeners();
+    var w = $rootScope.wallet;
 
     var addrs = $rootScope.wallet.getAddressesStr();
     for(var i = 0; i < addrs.length; i++) {
@@ -59,14 +64,13 @@ console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
     addrs.forEach(function(addr) {
       Socket.on(addr, function(txid) {
         console.log('Received!', txid);
-        $rootScope.wallet.getBalance(function(balance, balanceByAddr) {
-          $rootScope.$apply(function() {
+        w.getBalance(false,function(balance, balanceByAddr) {
             $rootScope.totalBalance = balance;
             $rootScope.balanceByAddr = balanceByAddr;
+            console.log('New balance:', balance);
+            w.getBalance(true,function(balance) {
+              $rootScope.availableBalance = balance;
           });
-
-          console.log('New balance:', balance);
-          if (typeof cb === 'function') return cb();
         });
       });
     });

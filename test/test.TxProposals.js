@@ -128,9 +128,6 @@ describe('TxProposals model', function() {
     w.getUsedUnspent()[0].should.equal(unspentTest[0].txid);
   });
 
-
-
-
   it('#merge with self', function () {
     var priv = new PrivateKey(config);
     var w = new TxProposals({
