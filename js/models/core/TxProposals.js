@@ -29,15 +29,16 @@ TxProposal.prototype.toObj = function() {
   return o;
 };
 
+
+TxProposal.prototype.setSent = function() {
+  this.sentTs = Date.now();;
+};
+
 TxProposal.fromObj = function(o) {
   var t = new TxProposal(o);
   var b = new Builder.fromObj(o.builderObj);
   t.builder = b;
   return t;
-};
-
-TxProposal.setSent = function() {
-  this.sentTs = Date.now();;
 };
 
 TxProposal.getSentTs = function() {
