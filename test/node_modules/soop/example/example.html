@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>Soop browser example</title>
+
+<!-- This bundle is generated using ../browser/browserify.js -->
+<script src='./bundle.js'> </script>
+</head>
+<body>
+
+<h1> Soop Browser test</h1>
+
+<div id="content"></div>
+
+<script>
+  console.log = function(s){
+    var div = document.getElementById('content');
+    div.innerHTML += s + '<br />';
+  };
+
+
+    var soop = require('soop');
+    var Person = require('./Person');
+//    test.run();
+
+    // basic example
+    var john = new Person();
+    john.name('John');
+    john.print();
+
+
+    // example use of a default instance
+    Person.default().name('Jeff(default)');
+    Person.default().print();
+
+
+    // now let's use a substitute for Date
+    var MockDate = {
+        now: function() {return 'a split second ago'}
+    };
+    var MockPerson = soop.load('./Person', {Date: MockDate});
+    var jack = new MockPerson();
+    jack.name('Jack (MOCK)');
+    jack.print();
+
+    var Coder = require('Coder');
+    // an example employing inheritance
+    var coder = new Coder();
+    coder.name('Jennifer');
+    coder.print();
+
+    // an example employing inheritance
+    var Coder2 = soop.load('Coder', {parent: MockPerson});
+    var jenny = new Coder2();
+    jenny.name('Jennifer (MOCK)');
+    jenny.print();
+
+    // now let's use a substitute for Date
+    var MockDate2 = {
+        now: function() {return 'a lot time ago'}
+    };
+    var Person3 = soop.load('./Person', {Date: MockDate2});
+    var charly = new Person3();
+    charly.name('Charly (MOCK OLD)');
+
+    console.log('<hr>');
+
+    john.print();
+    Person.default().print();
+    coder.print();
+    jack.print();
+    charly.print();
+    jenny.print();
+    console.log('<hr>');
+
+    var LastPerson = require('./Person');
+    var last = new LastPerson();
+    last.name('Last');
+    last.print();
+      
+    Person.default().print();
+
+</script>
+</body>
+</html>

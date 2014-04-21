@@ -1,0 +1,8 @@
+{
+  "name": "soop-browserify",
+  "dependencies": {
+    "browser-pack": "*",
+    "browserify": "*"
+  },
+  "license": "MIT"
+}

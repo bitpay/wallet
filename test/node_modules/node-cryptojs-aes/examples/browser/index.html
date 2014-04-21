@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="lib/jquery-1.8.1.js" ></script>
+    <script type="text/javascript" src="lib/bootstrap.js"></script>
+    <script type="text/javascript" src="../../client/aes.js"></script>
+    <script type="text/javascript" src="../../client/jsonformatter.js"></script>  
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="css/cover.css" />
+  </head>
+  <body>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">node-cryptojs-aes</h3>
+              <ul class="nav masthead-nav">
+                <li class="active menu_item"><a href="#">Home</a></li>
+                <li class="menu_item"><a href="https://github.com/chengxianga2008/node-cryptojs-aes">Github</a></li>
+                <li class="menu_item"><a href="https://github.com/chengxianga2008/node-cryptojs-aes/issues">Issues</a></li>
+                <li class="menu_item"><a href="#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-2">
+              </div>
+              <div class="col-md-8">
+                <h1 id="passphrase_heading" class="cover-heading display_none"></h1>
+                <pre id="passphrase_data" class="display_none"></pre>
+                <h1 id="example_heading" class="cover-heading"></h1>
+                <pre id="example_data"></pre>
+                <p class="lead">
+                  <button id="decipher" type="button" class="btn btn-primary" disabled="disabled">Decipher</button>
+                </p>
+                <div id="data_store" style="display:none;">             
+                </div>
+              </div>
+              <div class="col-md-2">
+              </div>
+            </div>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </body>
+</html>

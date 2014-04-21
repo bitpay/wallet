@@ -1,0 +1,43 @@
+{
+  "name": "copay",
+  "version": "0.0.5",
+  "description": "A multisignature wallet",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bitpay/copay.git"
+  },
+  "keywords": [
+    "wallet",
+    "copay",
+    "multisignature",
+    "bitcoin"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitpay/copay/issues"
+  },
+  "homepage": "https://github.com/bitpay/copay",
+  "devDependencies": {
+    "express": "4.0.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-mocha-test": "~0.8.2",
+    "grunt-shell": "~0.6.4",
+    "grunt-browserify": "~2.0.0",
+    "grunt-markdown": "~0.5.0",
+    "karma": "~0.12.1",
+    "karma-chrome-launcher": "~0.1.2",
+    "mocha": "~1.18.2",
+    "karma-mocha": "~0.1.3",
+    "buffertools": "~2.0.1",
+    "browserify": "~3.32.1",
+    "browser-pack": "~2.0.1",
+    "commander": "~2.1.0",
+    "uglifyify": "~1.2.3",
+    "soop": "~0.1.5",
+    "bitcore": "git://github.com/maraoz/bitcore.git#5e636f6b9c7f8e629b1a502025556e886c3b75e1",
+    "chai": "~1.9.1",
+    "sinon": "~1.9.1",
+    "node-cryptojs-aes": "=0.4.0"
+  }
+}

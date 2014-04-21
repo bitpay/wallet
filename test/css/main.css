@@ -1,0 +1,252 @@
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Ubuntu Light'), local('Ubuntu-Light'), url(../font/ubuntu-light.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../font/ubuntu.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../font/ubuntu-bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url(../font/ubuntu-bold-italic.woff) format('woff');
+}
+
+* {
+  font-family: 'Ubuntu', Helvetica, sans-serif !important;
+}
+
+body {
+  background: #F5F5F5;
+}
+
+.top-bar-section li:not(.has-form) a:not(.button) {
+  line-height: 60px;
+  background: #FAE448;
+}
+
+.top-bar-section li.active:not(.has-form) a:not(.button) {
+  line-height: 60px;
+  background: #f5f5f5;
+  color: #111;
+  font-weight: 700;
+}
+
+.top-bar-section li.active:not(.has-form) a:not(.button):hover, .top-bar-section li:not(.has-form) a:not(.button):hover {
+  background: #111;
+  color: white;
+}
+
+.top-bar-section ul li>a {
+  color: #111;
+  text-transform: uppercase;
+  font-weight: 100;
+  font-size: 0.9rem;
+}
+
+.header {
+  background: #111;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.header-content {
+  padding: 1.5rem 3rem 1.5rem 0;
+  overflow: hidden;
+}
+
+.header h1, h5 {
+  color: #fff;
+}
+
+.top-bar {
+  height: auto;
+}
+
+.panel {
+  color: #333;
+  background: #FFFFFF;
+  padding: 0.7rem 1rem;
+  border:0;
+}
+
+/*.panel:hover {
+  background: #efefef;
+  color: #111;
+}*/
+
+.addresses .panel {
+  font-size: 0.9rem;
+}
+
+.transactions .panel {
+  background: #ECECEC;
+  border: 1px solid #eee;
+}
+
+.transactions .panel.pending {
+  background-color: #fff; 
+  padding: 1rem;
+}
+
+.pending .txheader {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.pending .txbottom {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 12px;
+}
+
+.pending table {
+  width: 100%;
+  border: none;
+}
+
+.addresses .panel:hover {
+  background: #efefef;
+}
+
+.box-backup {
+  margin: 2rem 0;
+  padding: 2rem 1rem;
+}
+
+a.box-backup {
+  display: block;
+  color: #111;
+}
+
+.box-backup i {
+  margin-bottom: 2rem;
+  display: block;
+}
+
+h3 {
+  font-weight: 100;
+  font-size: 25px;  
+}
+
+.line-dashed-v {
+  border-right: 2px dashed #E3E3E3;
+}
+
+.line-dashed-h {
+  margin: 1rem 0;
+  border-bottom: 2px dashed #E3E3E3;
+}
+
+.panel p {
+  margin-bottom: 0;
+}
+
+span.panel-res {
+  float: right;
+  padding: 0.4rem 0.55rem;
+  margin: 0 1rem;
+  border-radius: 1rem;
+}
+
+.panel-sign {
+  color: #111;
+  background: #FAE448;
+}
+
+.panel-ignore {
+  color: #fff;
+  background: #111;
+}
+
+.pending button {
+  margin: 0;
+}
+
+.line {
+  border-top: 1px solid #f2f2f2;
+  margin: 0.5rem 0 1rem;
+}
+
+.share-wallet.panel {
+  background-color: #111;
+  color: #FBE500;
+}
+
+.alert-box.warning, .alert-box.error {
+  background-color: #C0392A;
+  border-color: #C0392A;
+  color: #fff;
+}
+
+.text-warning {
+  color:#C0392A;
+}
+
+small.is-valid {
+  color: #04B404; 
+}
+
+small.has-error {
+  color: #f04124;
+}
+
+@media (max-width: 641px) {
+  .hide_menu {
+    display: none;
+  }
+  .show_menu {
+    display: block;
+  }
+}
+
+hr { margin: 2.25rem 0;}
+
+button.primary { background-color: #111; }
+button.secondary { background-color: #FAE448 !important; }
+
+button.primary:hover { background-color: #333;}
+button.secondary:hover { background-color: #FFDF00 !important;}
+
+.pr {position: relative;}
+.m0 {margin: 0;}
+.db {display: block;}
+.size-12 { font-size: 12px; }      
+.size-14 { font-size: 14px; }
+.size-16 { font-size: 16px; }
+.size-18 { font-size: 18px; }
+.size-21 { font-size: 21px; }
+.size-24 { font-size: 24px; }
+.size-36 { font-size: 36px; }
+.size-48 { font-size: 48px; }
+.size-60 { font-size: 60px; }
+.size-72 { font-size: 72px; }
+.m10t {margin-top: 10px;}
+.p0r {padding-right: 0;}
+.p70r {padding-right: 70px;}
+.p70l {padding-left: 70px;}
+.p5h {padding: 0 5px;}
+.p20h {padding: 0 20px;}
+.m30v {margin: 30px 0;}
+.m30a {margin: 30px auto;}
+.br100 {border-radius: 100%;}
+
+
+input.ng-dirty.ng-invalid { 
+  border: 2px red solid;
+}
+
+
