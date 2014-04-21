@@ -279,7 +279,7 @@
                     <div ng-show="tx.signedByUs">
                       <i class="fi-check size-40"></i> Signed by you already
                     </div>
-                    <div ng-show="!tx.signedByUs"> 
+                    <div ng-show="!tx.signedByUs && tx.missingSignatures"> 
                       <button class="secondary round"  ng-click="sign(tx.ntxid)">
                         <i class="fi-check"></i> Sign
                       </button>
@@ -299,7 +299,7 @@
                     <span ng-show="!tx.missingSignatures && tx.sentTs">
                      <i class="fi-arrow-right size-40"></i>
                       Sent at {{tx.sentTs | date:'medium'}}
-                      TXID: tx.sentTxid
+                      TXID: {{tx.sentTxid}}
                     </span>
                     <span ng-show="tx.missingSignatures==1"> 
                       One signature missing
