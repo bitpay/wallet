@@ -194,7 +194,7 @@
 
 
           <ul class="no-bullet">
-            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
+            <li class="panel copayers" ng-repeat="copayer in $root.wallet.network.connectedPeers">
               <span ng-if="copayer == $root.wallet.network.peerId"> You ({{copayer}})</span>
               <span ng-if="copayer !== $root.wallet.network.peerId">{{copayer}}</span>
               <span>

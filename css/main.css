@@ -181,9 +181,14 @@ span.panel-res {
   margin: 0.5rem 0 1rem;
 }
 
+.panel.copayers {
+  font-size: 0.8em;
+}
+
 .share-wallet.panel {
   background-color: #111;
   color: #FBE500;
+  font-size: 0.8em;
 }
 
 .alert-box.warning, .alert-box.error {
