@@ -55,9 +55,9 @@
   </div>
 
     <div class="row">
-      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box warning round" >
+      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box info round" >
         <i class="fi-alert size-18"></i> 
-            NOTE: Your wallet is not complete yet. 
+            Note: Your wallet is not complete yet. 
         <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
             {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
         </span>
@@ -189,8 +189,8 @@
         <div class="large-6 columns p70l">
           <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedPeers.length}}</h3>
 
-          <p class="text-warning" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
-          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signning transactions
+          <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
+          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
 
 
           <ul class="no-bullet">
