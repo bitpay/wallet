@@ -35,7 +35,7 @@ angular.module('copay.send').controller('SendController',
       form.amount.$pristine = true;
 
       // TODO: check if createTx has an error.
-      $rootScope.flashMessage = { message: 'You send a proposal transaction succefully', type: 'success'};
+      $rootScope.flashMessage = { message: 'Your transaction proposal has been sent successfully', type: 'success'};
 		};
 
   });
