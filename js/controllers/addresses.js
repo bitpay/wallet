@@ -9,21 +9,21 @@ angular.module('copay.addresses').controller('AddressesController',
     var w = $rootScope.wallet;
 
     var _updateBalance = function () {
+      controllerUtils.setSocketHandlers();
+
       w.getBalance(function (balance, balanceByAddr) {
         if (balanceByAddr  && Object.keys(balanceByAddr).length) {
-          $scope.balanceByAddr = balanceByAddr;
+          $rootScope.balanceByAddr = balanceByAddr;
           $scope.addrs =  Object.keys(balanceByAddr);
           $scope.selectedAddr = $scope.addrs[0];
-          $scope.$digest();
+          $rootScope.$digest();
         }
       });
     };
 
     $scope.newAddr = function() {
-      w.generateAddress().toString();
+      w.generateAddress();
       _updateBalance();
-
-      controllerUtils.setSocketHandlers();
     };
 
     $scope.selectAddr = function(addr) {
@@ -31,5 +31,5 @@ angular.module('copay.addresses').controller('AddressesController',
     };
 
     _updateBalance();
-    w.on('refresh',_updateBalance);
+    w.on('refresh', _updateBalance);
   });

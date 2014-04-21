@@ -19,7 +19,8 @@ angular
         validate: false
       })
       .when('/addresses', {
-        templateUrl: 'addresses.html'
+        templateUrl: 'addresses.html',
+        validate: true
       })
       .when('/join/:id', {
         templateUrl: 'join.html',
