@@ -81,6 +81,10 @@ body {
   border:0;
 }
 
+.panel.status {
+  margin: 0;
+}
+
 /*.panel:hover {
   background: #efefef;
   color: #111;
@@ -91,7 +95,7 @@ body {
 }
 
 .transactions .panel {
-  background: #ECECEC;
+  background: #f5f5f5;
   border: 1px solid #eee;
 }
 
@@ -213,6 +217,8 @@ small.has-error {
   }
 }
 
+tr { background: none !important;}
+
 hr { margin: 2.25rem 0;}
 
 button.primary { background-color: #111; }
@@ -221,6 +227,7 @@ button.secondary { background-color: #FAE448 !important; }
 button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #FFDF00 !important;}
 
+.text-gray { color: #999;}
 .pr {position: relative;}
 .m0 {margin: 0;}
 .db {display: block;}
@@ -241,6 +248,7 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
 .m30v {margin: 30px 0;}
+.m10h {margin:0 10px;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
 
