@@ -20,6 +20,11 @@ angular.module('copay.send').controller('SendController',
         return;
       }
 
+      if ($rootScope.totalBalance <= form.amount.$modelValue) {
+        $rootScope.flashMessage = { message: 'You have not enough amount to send', type: 'error'};
+        return;
+      }
+
       var address = form.address.$modelValue;
       var amount = (form.amount.$modelValue * 100000000).toString(); // satoshi to string
 
