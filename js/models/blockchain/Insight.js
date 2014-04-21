@@ -103,8 +103,9 @@ console.log('[Insight.js.102]', request); //TODO
           return callback(null, JSON.parse(request.responseText));
         } 
         else {
-console.log('[Insight.js.111]'); //TODO
-          return callback({message: 'Error ' + request.status});
+          return callback({
+            message: 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText
+          });
         }
       }
     };
