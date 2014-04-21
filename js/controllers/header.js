@@ -3,13 +3,13 @@
 angular.module('copay.header').controller('HeaderController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils) {
     $scope.menu = [{
-      'title': 'Home',
-      'icon': 'fi-home',
-      'link': '#/home'
-    }, {
       'title': 'Copayers',
       'icon': 'fi-torsos-all',
       'link': '#/peer'
+    }, {
+      'title': 'Addresses',
+      'icon': 'fi-address-book',
+      'link': '#/addresses'
     }, {
       'title': 'Transactions',
       'icon': 'fi-loop',

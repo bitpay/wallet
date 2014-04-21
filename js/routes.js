@@ -15,8 +15,8 @@ angular
       .when('/setup', {
         templateUrl: 'setup.html' 
       })
-      .when('/home', {
-        templateUrl: 'home.html'
+      .when('/addresses', {
+        templateUrl: 'addresses.html'
       })
       .when('/join/:id', {
         templateUrl: 'join.html'
