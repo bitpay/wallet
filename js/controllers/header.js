@@ -27,11 +27,7 @@ angular.module('copay.header').controller('HeaderController',
     $rootScope.$watch('wallet', function(wallet) {
       if (wallet) {
         controllerUtils.setSocketHandlers();
-        $rootScope.wallet.getBalance(function(balance) {
-          $rootScope.$apply(function() {
-            $rootScope.totalBalance = balance;
-          });
-        });
+        controllerUtils.updateBalance();
       }
     });
 

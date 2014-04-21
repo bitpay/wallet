@@ -27,33 +27,34 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     });
 
     w.on('created', function() {
-console.log('[controllerUtils.js.30:created:] RECV '); //TODO
       $location.path('peer');
       $rootScope.wallet = w;
-      
-      $rootScope.wallet.getBalance(false,function(balance) {
-        $rootScope.totalBalance = balance;
-      });
-      $rootScope.wallet.getBalance(true,function(balance) {
-        $rootScope.availableBalance = balance;
-      });
-
+      root.updateBalance();
     });
     w.on('refresh', function() {
       console.log('[controllerUtils.js] Refreshing'); //TODO
-      $rootScope.$digest();
+      root.updateBalance();
     });
     w.on('openError', root.onErrorDigest);
     w.on('close', root.onErrorDigest);
-
-console.log('[controllerUtils.js.45] CALLING NETSTART FROM setupUxHandlers'); //TODO
     w.netStart();
-console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
+  };
+
+  root.updateBalance = function() {
+    var w = $rootScope.wallet;
+    w.getBalance(false,function(balance, balanceByAddr) {
+      $rootScope.totalBalance = balance;
+      $rootScope.balanceByAddr = balanceByAddr;
+      console.log('New balance:', balance);
+      w.getBalance(true,function(balance) {
+        $rootScope.availableBalance = balance;
+        $rootScope.$digest();
+      });
+    });
   };
 
   root.setSocketHandlers = function() {
     Socket.removeAllListeners();
-    var w = $rootScope.wallet;
 
     var addrs = $rootScope.wallet.getAddressesStr();
     for(var i = 0; i < addrs.length; i++) {
@@ -64,14 +65,7 @@ console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
     addrs.forEach(function(addr) {
       Socket.on(addr, function(txid) {
         console.log('Received!', txid);
-        w.getBalance(false,function(balance, balanceByAddr) {
-            $rootScope.totalBalance = balance;
-            $rootScope.balanceByAddr = balanceByAddr;
-            console.log('New balance:', balance);
-            w.getBalance(true,function(balance) {
-              $rootScope.availableBalance = balance;
-          });
-        });
+        root.updateBalance();
       });
     });
   };

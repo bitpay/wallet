@@ -4,9 +4,6 @@ var bitcore = require('bitcore');
 angular.module('copay.transactions').controller('TransactionsController',
   function($scope, $rootScope, $location) {
     $scope.title = 'Transactions';
-
-    $scope.oneAtATime = true;
-
     var _updateTxs = function() {
 console.log('[transactions.js.10:_updateTxs:]'); //TODO
       var w   =$rootScope.wallet;
@@ -32,6 +29,7 @@ console.log('[transactions.js.10:_updateTxs:]'); //TODO
         i.missingSignatures = tx.countInputMissingSignatures(0);
         txs.push(i);
       });
+console.log('[transactions.js.35:txs:]',txs); //TODO
       $scope.txs = txs;
       w.removeListener('txProposalsUpdated',_updateTxs)
       w.once('txProposalsUpdated',_updateTxs);
@@ -69,4 +67,5 @@ console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
       }
     };
 
+    _updateTxs();
   });
