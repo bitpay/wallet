@@ -212,7 +212,6 @@ PublicKeyRing.prototype.getAddresses = function(onlyMain) {
 
 PublicKeyRing.prototype.getRedeemScriptMap = function () {
   var ret = {};
-console.log('[PublicKeyRing.js.216]', this.changeAddressIndex, this.addressIndex); //TODO
 
   for (var i=0; i<this.changeAddressIndex; i++) {
     ret[this.getAddress(i,true)] = this.getRedeemScript(i,true).getBuffer().toString('hex');

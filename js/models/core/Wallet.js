@@ -433,7 +433,7 @@ Wallet.prototype.getBalance = function(cb) {
     }
     for(var a in balanceByAddr){
       balanceByAddr[a] = balanceByAddr[a]/COIN;
-    };
+    }
     return cb(balance / COIN, balanceByAddr, isMain);
   });
 };

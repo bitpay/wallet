@@ -104,6 +104,33 @@ describe('TxProposals model', function() {
   };
 
 
+  it('#getUsedUnspend', function () {
+    var priv = new PrivateKey(config);
+    var w = new TxProposals({
+      networkName: config.networkName,
+    });
+    var start = new Date().getTime();
+    var pkr=createPKR([priv]);
+    var ts = Date.now();
+    var isChange=0; 
+    var index=0; 
+    unspentTest[0].address        = pkr.getAddress(index, isChange).toString();
+    unspentTest[0].scriptPubKey   = pkr.getScriptPubKeyHex(index, isChange);
+    w.add(createTx(
+      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
+      '123456789', 
+      unspentTest,
+      {},
+      priv,
+      pkr
+    ));
+    w.getUsedUnspent().length.should.equal(1);
+    w.getUsedUnspent()[0].should.equal(unspentTest[0].txid);
+  });
+
+
+
+
   it('#merge with self', function () {
     var priv = new PrivateKey(config);
     var w = new TxProposals({
@@ -472,8 +499,5 @@ var _dumpChunks = function (scriptSig, label) {
     w2.merge(w);
     Object.keys(w2.txps).length.should.equal(1);
   });
-
-
-
 });
  
