@@ -135,7 +135,7 @@ WalletFactory.prototype.getWalletIds = function() {
 
 WalletFactory.prototype.remove = function(walletId) {
   // TODO remove wallet contents
-  console.log('TODO: remove wallet contents');
+  this.log('TODO: remove wallet contents');
 };
 
 

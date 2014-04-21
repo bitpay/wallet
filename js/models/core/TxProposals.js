@@ -20,6 +20,7 @@ function TxProposal(opts) {
   this.signedBy = opts.signedBy || {};
   this.builder  = opts.builder;
   this.sentTs = opts.sentTs || null;
+  this.sentTxid = opts.sentTxid || null;
 }
 
 TxProposal.prototype.toObj = function() {
@@ -30,7 +31,8 @@ TxProposal.prototype.toObj = function() {
 };
 
 
-TxProposal.prototype.setSent = function() {
+TxProposal.prototype.setSent = function(sentTxid) {
+  this.sentTxid = txid;
   this.sentTs = Date.now();;
 };
 
@@ -143,8 +145,9 @@ console.log('[TxProposals.js.127:v0:]',v0, v1); //TODO
       }
     });
 
-    if (!v0.sentTs && v1.sentTs) {
-      v0.sentTs = v1.sentTs;
+    if (!v0.sentTxid && v1.sentTxid) {
+      v0.sentTs   = v1.sentTs;
+      v0.sentTxid = v1.sentTxid;
       hasChanged++;
     }
 
