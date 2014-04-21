@@ -334,7 +334,7 @@ Wallet.prototype.sign = function(ntxid) {
   return ret;
 };
 
-Wallet.prototype.sendTx = function(ntxid) {
+Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.txps[ntxid];
   if (!txp) return;
 
@@ -350,10 +350,10 @@ Wallet.prototype.sendTx = function(ntxid) {
     self.log('BITCOND txid:',txid); //TODO
     if (txid) {
       self.txProposals.setSent(ntxid);
-      self.sendTxProposals();
-      self.store();
     }
-    return (txid);
+    self.sendTxProposals();
+    self.store();
+    return cb(txid);
   });
 };
 
