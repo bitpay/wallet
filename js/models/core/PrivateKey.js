@@ -23,7 +23,8 @@ PrivateKey.prototype.getId = function(prefix) {
   if (prefix) {
     buf = Buffer.concat([prefix, buf]);
   }
-  return util.ripe160(buf).toString('hex');
+  var hash = util.sha256(buf).toString('hex');
+  return hash.substring(0, hash.length/2);
 };
 
 

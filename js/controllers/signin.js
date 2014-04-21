@@ -19,6 +19,9 @@ console.log('[signin.js.23:walletId:]',walletId); //TODO
     };
 
     $scope.join = function(secret) {
+      if (!secret || !secret.length) {
+        return;
+      }
       $scope.loading = true;
 
       walletFactory.network.on('joinError', function() {

@@ -245,3 +245,8 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .br100 {border-radius: 100%;}
 
 
+input.ng-dirty.ng-invalid { 
+  border: 2px red solid;
+}
+
+
