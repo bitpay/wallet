@@ -241,7 +241,7 @@
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
             <h4>Pending transactions <small>({{txs.length}})</small></h4>
-            <div class="panel pending" ng-repeat="tx in txs">
+            <div class="panel pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
               <div class="txheader">
                 <div class="row">
                   <div class="large-8 columns">
