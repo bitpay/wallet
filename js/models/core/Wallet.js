@@ -277,8 +277,9 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 };
 
 
-Wallet.prototype.generateAddress = function() {
-  var addr = this.publicKeyRing.generateAddress();
+Wallet.prototype.generateAddress = function(isChange) {
+  var addr = this.publicKeyRing.generateAddress(isChange);
+console.log('[Wallet.js.281:addr:]',addr, this.publicKeyRing.toObj(), this.getAddresses()); //TODO
   this.sendPublicKeyRing();
   this.store(true);
   return addr;
@@ -327,6 +328,7 @@ Wallet.prototype.sign = function(ntxid) {
 
   var pkr = self.publicKeyRing;
   var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
+console.log('[Wallet.js.329:keys:]',keys); //TODO
 
   var b = txp.builder;
   var before = b.signaturesAdded;
@@ -354,6 +356,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.log('[Wallet.js.261:txHex:]',txHex); //TODO
 
   var self = this;
+
   this.blockchain.sendRawTransaction(txHex, function(txid) {
     self.log('BITCOND txid:',txid); //TODO
     if (txid) {
@@ -410,6 +413,7 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
 Wallet.prototype.getBalance = function(cb) {
   var balance = 0;
   var balanceByAddr = {};
+  var isMain = {};
   var COIN = bitcore.util.COIN;
   var addresses = this.getAddressesStr(true);
 
@@ -418,6 +422,7 @@ Wallet.prototype.getBalance = function(cb) {
   // Prefill balanceByAddr with main address
   addresses.forEach(function(a){
     balanceByAddr[a]=0;
+    isMain[a]=1;
   });
   this.getUnspent(function(utxos) {
     for(var i=0;i<utxos.length; i++) {
@@ -429,7 +434,7 @@ Wallet.prototype.getBalance = function(cb) {
     for(var a in balanceByAddr){
       balanceByAddr[a] = balanceByAddr[a]/COIN;
     };
-    return cb(balance / COIN, balanceByAddr);
+    return cb(balance / COIN, balanceByAddr, isMain);
   });
 };
 
@@ -440,6 +445,7 @@ Wallet.prototype.getUnspent = function(cb) {
 };
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
+console.log('[Wallet.js.447:createTx:]'); //TODO
   var self = this;
   if (typeof opts === 'function') {
     cb = opts;
@@ -472,8 +478,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   }
 
   if (!opts.remainderOut) {
-    opts.remainderOut ={ address: pkr.generateAddress(true).toString() };
-  };
+    opts.remainderOut ={ address: this.generateAddress(true).toString() };
+  }
+console.log('[Wallet.js.480:opts: CREATETXSYNC]',opts); //TODO
 
   var b = new Builder(opts)
     .setUnspent(utxos)
@@ -483,8 +490,10 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var signRet;  
   if (priv) {
+console.log('[Wallet.js.486] aLL Priv', priv.getAll(pkr.addressIndex, pkr.changeAddressIndex)); //TODO
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
+console.log('[Wallet.js.494]', b, b.build().serialize().toString('hex')); //TODO
   var me = {};
   var myId = this.getMyPeerId();
   var now = Date.now();

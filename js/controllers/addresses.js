@@ -9,9 +9,10 @@ angular.module('copay.addresses').controller('AddressesController',
     var w = $rootScope.wallet;
 
     var _updateBalance = function () {
-      w.getBalance(function (balance, balanceByAddr) {
+      w.getBalance(function (balance, balanceByAddr, isMain) {
         if (balanceByAddr  && Object.keys(balanceByAddr).length) {
           $scope.balanceByAddr = balanceByAddr;
+          $scope.isMain = isMain;
           $scope.addrs =  Object.keys(balanceByAddr);
           $scope.selectedAddr = $scope.addrs[0];
           $scope.$digest();

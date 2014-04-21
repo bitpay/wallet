@@ -100,15 +100,9 @@ Insight.prototype._request = function(options, callback) {
       if (request.readyState === 4) {
 console.log('[Insight.js.102]', request); //TODO
         if (request.status === 200) {
-          try {
-            return callback(null, JSON.parse(request.responseText));
-          } catch (e) {
-
-console.log('[Insight.js.106]'); //TODO
-            return callback({message: 'Wrong response from insight'});
-          }
-        } else {
-
+          return callback(null, JSON.parse(request.responseText));
+        } 
+        else {
 console.log('[Insight.js.111]'); //TODO
           return callback({message: 'Error ' + request.status});
         }

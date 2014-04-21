@@ -32,8 +32,8 @@ TxProposal.prototype.toObj = function() {
 
 
 TxProposal.prototype.setSent = function(sentTxid) {
-  this.sentTxid = txid;
-  this.sentTs = Date.now();;
+  this.sentTxid = sentTxid;
+  this.sentTs = Date.now();
 };
 
 TxProposal.fromObj = function(o) {
