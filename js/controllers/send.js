@@ -1,18 +1,11 @@
 'use strict';
 
 angular.module('copay.send').controller('SendController',
-  function($scope, $rootScope, $location, Socket, controllerUtils) {
+  function($scope, $rootScope, $location) {
     $scope.title = 'Send';
 
     $scope.unitIds = ['BTC','mBTC'];
     $scope.selectedUnit = $scope.unitIds[0];
-
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-    else {
-      controllerUtils.handleTransactionByAddress($scope); 
-    }
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
@@ -37,5 +30,4 @@ angular.module('copay.send').controller('SendController',
       // TODO: check if createTx has an error.
       $rootScope.flashMessage = { message: 'Your transaction proposal has been sent successfully', type: 'success'};
 		};
-
   });

@@ -1,14 +1,7 @@
 'use strict';
 
 angular.module('copay.backup').controller('BackupController',
-  function($scope, $rootScope, $location, $window, $timeout, Socket, controllerUtils) {
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-    else {
-      controllerUtils.handleTransactionByAddress($scope);
-    }
-
+  function($scope, $rootScope, $location, $window, $timeout) {
     $scope.title = 'Backup';
 
     var filename = $rootScope.wallet.id + '.json.aes';

@@ -21,7 +21,6 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     $rootScope.$digest();
   }
 
-
   root.setupUxHandlers =  function(w) {
     w.on('badMessage', function(peerId) {
       $rootScope.flashMessage = {type:'error', message: 'Received wrong message from peer id:' + peerId};
@@ -48,19 +47,24 @@ console.log('[controllerUtils.js.45] CALLING NETSTART FROM setupUxHandlers'); //
 console.log('[controllerUtils.js.45] setupUxHandlers END'); //TODO
   };
 
-  root.handleTransactionByAddress = function(scope, cb) {
-    var socket = Socket(scope);
+  root.setSocketHandlers = function(cb) {
+    Socket.removeAllListeners();
+
     var addrs = $rootScope.wallet.getAddressesStr();
-    for(var i=0;i<addrs.length;i++) {
-      socket.emit('subscribe', addrs[i]);
+    for(var i = 0; i < addrs.length; i++) {
+      console.log('### SUBSCRIBE TO', addrs[i]);
+      Socket.emit('subscribe', addrs[i]);
     }
+
     addrs.forEach(function(addr) {
-      socket.on(addr, function(txid) {
+      Socket.on(addr, function(txid) {
         console.log('Received!', txid);
-        $rootScope.wallet.getBalance(function(balance) {
-          scope.$apply(function() {
+        $rootScope.wallet.getBalance(function(balance, balanceByAddr) {
+          $rootScope.$apply(function() {
             $rootScope.totalBalance = balance;
+            $rootScope.balanceByAddr = balanceByAddr;
           });
+
           console.log('New balance:', balance);
           if (typeof cb === 'function') return cb();
         });

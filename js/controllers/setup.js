@@ -19,11 +19,12 @@ angular.module('copay.setup').controller('SetupController',
         }
       }
     };
+
     updateRCSelect($scope.totalCopayers);
 
     $scope.$watch('totalCopayers', function(tc) {
       updateRCSelect(tc);
-    })
+    });
 
     $scope.create = function(totalCopayers, requiredCopayers) {
       $scope.loading = true;

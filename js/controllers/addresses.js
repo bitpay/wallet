@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.addresses').controller('AddressesController',
-  function($scope, $rootScope, $location, Socket, controllerUtils) {
+  function($scope, $rootScope, controllerUtils) {
     $scope.title = 'Home';
     $scope.oneAtATime = true;
     $scope.addrBalance = {};
@@ -9,21 +9,21 @@ angular.module('copay.addresses').controller('AddressesController',
     var w = $rootScope.wallet;
 
     var _updateBalance = function () {
+      controllerUtils.setSocketHandlers();
+
       w.getBalance(function (balance, balanceByAddr, isMain) {
         if (balanceByAddr  && Object.keys(balanceByAddr).length) {
-          $scope.balanceByAddr = balanceByAddr;
+          $rootScope.balanceByAddr = balanceByAddr;
           $scope.isMain = isMain;
           $scope.addrs =  Object.keys(balanceByAddr);
           $scope.selectedAddr = $scope.addrs[0];
-          $scope.$digest();
+          $rootScope.$digest();
         }
       });
-      var socket = Socket($scope);
-      controllerUtils.handleTransactionByAddress($scope, _updateBalance);
     };
 
     $scope.newAddr = function() {
-      var a = w.generateAddress().toString();
+      w.generateAddress();
       _updateBalance();
     };
 
@@ -31,10 +31,6 @@ angular.module('copay.addresses').controller('AddressesController',
       $scope.selectedAddr = addr;
     };
 
-    
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
     _updateBalance();
-    w.on('refresh',_updateBalance);
+    w.on('refresh', _updateBalance);
   });

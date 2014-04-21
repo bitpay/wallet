@@ -24,9 +24,16 @@ angular.module('copay.header').controller('HeaderController',
       'link': '#/backup'
     }];
 
-   if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
+    $rootScope.$watch('wallet', function(wallet) {
+      if (wallet) {
+        controllerUtils.setSocketHandlers();
+        $rootScope.wallet.getBalance(function(balance) {
+          $rootScope.$apply(function() {
+            $rootScope.totalBalance = balance;
+          });
+        });
+      }
+    });
 
     $scope.isActive = function(item) {
       if (item.link && item.link.replace('#','') == $location.path()) {

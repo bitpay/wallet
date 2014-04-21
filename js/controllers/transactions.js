@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copay.transactions').controller('TransactionsController',
-  function($scope, $rootScope, $location, Socket, controllerUtils) {
+  function($scope, $rootScope, $location) {
     $scope.title = 'Transactions';
 
     $scope.oneAtATime = true;
@@ -36,19 +36,6 @@ console.log('[transactions.js.10:_updateTxs:]'); //TODO
       w.removeListener('txProposalsUpdated',_updateTxs)
       w.once('txProposalsUpdated',_updateTxs);
     };
-
-
-    if (!$rootScope.wallet || !$rootScope.wallet.id) {
-      $location.path('signin');
-    }
-    else {
-      _updateTxs();
-      var w = $rootScope.wallet;
-
-      var socket = Socket($scope);
-      socket.on('connect', controllerUtils.handleTransactionByAddress($scope));
-    }
-
 
     $scope.send = function (ntxid) {
       var w = $rootScope.wallet;
