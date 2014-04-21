@@ -287,8 +287,8 @@
                     </div>
                   </div>
                   <div class="large-6 columns text-right">
-                    <span ng-show="!tx.missingSignatures">
-                      TODO: if tx was sent
+                    <span ng-show="!tx.missingSignatures && tx.sentTs">
+                      Sent at {{tx.sentTs | date:'medium'}}
                     </span>
                     <span ng-show="tx.missingSignatures==1"> 
                       One signature missing
