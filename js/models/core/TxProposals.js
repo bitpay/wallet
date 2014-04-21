@@ -19,7 +19,7 @@ function TxProposal(opts) {
   this.seenBy   = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
   this.builder  = opts.builder;
-  this.sentTs = null;
+  this.sentTs = opts.sentTs || null;
 }
 
 TxProposal.prototype.toObj = function() {

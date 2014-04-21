@@ -286,6 +286,13 @@
                     </div>
                   </div>
                   <div class="large-6 columns text-right">
+                    <span ng-show="!tx.missingSignatures && !tx.sentTs">
+                      Transaction ready.
+                      <button class="secondary round"  ng-click="send(tx.ntxid)">
+                        Broadcast Transaction
+                      </button>
+                    </span>
+ 
                     <span ng-show="!tx.missingSignatures && tx.sentTs">
                       Sent at {{tx.sentTs | date:'medium'}}
                     </span>
@@ -299,8 +306,8 @@
               </div>
             </div>
           </div>
-
           <div class="large-12 columns">
+<!--
             <h4>Last transactions</h4>
             <div class="panel">
               <div class="row">
@@ -332,6 +339,7 @@
                 </span>
               </div>
             </div>
+-->
           </div>
         </div>    
       </div>
