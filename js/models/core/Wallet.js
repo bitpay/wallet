@@ -357,7 +357,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.blockchain.sendRawTransaction(txHex, function(txid) {
     self.log('BITCOND txid:',txid); //TODO
     if (txid) {
-      self.txProposals.setSent(ntxid);
+      self.txProposals.setSent(ntxid, txid);
     }
     self.sendTxProposals();
     self.store();
