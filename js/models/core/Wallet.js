@@ -144,17 +144,7 @@ Wallet.prototype._optsToObj = function () {
 
 
 Wallet.prototype.getPeerId = function(index) {
-  // if (typeof index === 'undefined') {
-  //   // return my own peerId
-  //   var gen = this.privateKey.getId(idBuf);
-  //   return gen;
-  // }
-  // return peer number 'index' peerId
-  //
-  var idBuf;
-// TODO idBuf DISABLED FOR NOW
-//idBuf = new Buffer(this.id);
-  return this.publicKeyRing.getCopayerId(index || 0, idBuf);
+  return this.publicKeyRing.getCopayerId(index || 0);
 };
 
 

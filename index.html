@@ -14,7 +14,7 @@
       <div class="header"> 
         <div class="header-content">
           <figure class="left">
-            <img src="./img/logo-negative.svg" alt="" width="130">
+            <a href="#"><img src="./img/logo-negative.svg" alt="Copay" width="130" /></a>
           </figure>
           <div class="text-right" ng-show="$root.wallet">
             <h5 ng-show="$root.wallet.id">Wallet ID: {{$root.wallet.id}}</h5>
@@ -82,18 +82,6 @@
           Connecting to wallet...
         </div>
         <div ng-show="!loading">
-          <div class="row">
-            <div class="large-6 columns">
-              <h3>Join Wallet Creation</h3>
-              <input type="text" class="form-control" placeholder="Paste secret here"
-                 ng-model="connectionId" autofocus>
-            </div>
-            <div class="large-3 columns">
-              <button class="button primary expand round" type="button" ng-click="join(connectionId)">Join</button>
-            </div>
-          </div>
-
-          <hr>
           <div ng-show="!walletIds.length">
             <div class="row">
               <div class="large-6 columns">
@@ -104,29 +92,43 @@
               </div>
             </div>
             <hr>
-            <div class="row">
-              <div class="text-center">
-                <a ng-click="import()">Import from file</a>
-              </div>
-            </div>
           </div>
-          <div ng-show="walletIds.length>0">
+          <div ng-show="walletIds.length">
             <div class="row">
               <div class="large-6 columns">
-                <h3>Open Existing Wallet</h3>
-                <select class="form-control" ng-model="selectedWalletId" ng-options="walletId for walletId in walletIds">
+                <h3>Open Wallet</h3>
+                <select class="form-control" ng-model="selectedWalletId"
+                   ng-options="walletId for walletId in walletIds">
                 </select>
               </div>
               <div class="large-3 columns">
-                <button class="button secondary expand round" type="button" ng-click="open(selectedWalletId)">Open</button>
+                <button class="button secondary expand round" type="button"
+                   ng-click="open(selectedWalletId)">Open</button>
               </div>
             </div>
             <hr>
+          </div>
+          <div ng-show="true">
             <div class="row">
-              <div class="large-12 columns">
-                <a ng-click="create()">Create a new wallet</a>
-                <a class="right" ng-click="import()">Import from file</a>
+              <div class="large-6 columns">
+                <h3>Join a Wallet in Creation</h3>
+              <input type="text" class="form-control" placeholder="Paste wallet secret here"
+                 ng-model="connectionId" required ng-minlength="32" ng-maxlength="32" autofocus>
               </div>
+              <div class="large-3 columns">
+                <button class="button primary expand round"
+                  ng-click="join(connectionId)">Join</button>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="row">
+            <div class="large-12 columns">
+              <div ng-show="walletIds.length">
+                <a ng-click="create()">Create a new wallet</a>
+              </div>
+              <a class="right" ng-click="import()">Import from file</a>
             </div>
           </div>
           
