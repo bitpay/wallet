@@ -201,11 +201,13 @@ span.panel-res {
 }
 
 small.is-valid {
-  color: #04B404; 
+  color: #04B404;
+  font-weight: bold;
 }
 
 small.has-error {
   color: #f04124;
+  font-weight: bold;
 }
 
 @media (max-width: 641px) {
@@ -253,9 +255,7 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
 
-
-input.ng-dirty.ng-invalid { 
+.signin input.ng-dirty.ng-invalid { 
   border: 2px red solid;
 }
-
 
