@@ -25,6 +25,7 @@ describe('Wallet model', function() {
       port: 80
     },
     networkName: 'testnet',
+    verbose: 0,
   };
 
   it('should fail to create an instance', function () {
