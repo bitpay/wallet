@@ -249,10 +249,14 @@
               <div class="txheader">
                 <div class="row">
                   <div class="large-8 columns">
-                    Proposal ID: {{tx.ntxid}}
+                    <tr ng-repeat="o in tx.outs">
+                      <td class="text-right size-24">{{o.value}} <i class="fi-bitcoin"></i></td>
+                      <td class="text-center size-48"> <i class="fi-arrow-right size-40"> </i>
+                      <td class="text-left size-24">{{o.address}}</td>
+                    </tr>
                   </div>
                   <div class="large-4 columns text-right">
-                    created at {{tx.createdTs | date:'medium'}}
+                    <h6> created at {{tx.createdTs | date:'medium'}} </h6>
                   </div>
                 </div>
               </div>
@@ -261,21 +265,26 @@
                 <div class="large-12 columns">
                   <table style="width:100%">
                     <tbody>
-                      <tr ng-repeat="o in tx.outs">
-                        <td class="text-right size-24">{{o.value}} <i class="fi-bitcoin"></i></td>
-                        <td class="text-center size-48"> <i class="fi-arrow-right size-40">
-                        <td class="text-left size-24">{{o.address}}</td>
-                      </tr>
+                      <tr>
+                        <small class="right text-gray"> <strong> Proposal ID: </strong> {{tx.ntxid}} </small>
+                      </tr>                     
                       <tr ng-repeat="(peer, actions) in tx.peerActions">
-                      <td colspan="3" >
-                        <span ng-if="peer == $root.wallet.network.peerId"> You</span>
-                        <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
-                        :
-                        <span ng-repeat="(action, ts) in actions">
-                            <a title="{{ts | date:'medium'}}"> {{action}}</a>
-                        </span>
-                        </tr>
-    
+                        <td colspan="3">
+                          <div class="panel status">
+                            <span ng-if="peer == $root.wallet.network.peerId"> You
+                            </span>
+                            <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
+
+                            <span ng-repeat="(action, ts) in actions">
+                              <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
+                              <span ng-if="action == 'seen'" title="{{ts | date:'medium'}}" class="fi-eye size-18 right m10h"> </span>
+                              <span ng-if="action == 'sign'" title="{{ts | date:'medium'}}" class="fi-check size-18 right m10h"> </span>
+
+                              <a title="{{ts | date:'medium'}}"></a>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
