@@ -13,7 +13,7 @@ angular.module('copay.send').controller('SendController',
         return;
       }
 
-      if ($rootScope.totalBalance <= form.amount.$modelValue) {
+      if ($rootScope.availableBalance <= form.amount.$modelValue) {
         $rootScope.flashMessage = { message: 'You have not enough amount to send', type: 'error'};
         return;
       }
