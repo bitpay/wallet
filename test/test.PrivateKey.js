@@ -70,7 +70,7 @@ describe('PrivateKey model', function() {
   it('should calculate .id', function () {
     var w1 = new PrivateKey(config);
     should.exist(w1.getId());
-    w1.getId().length.should.equal(40);
+    w1.getId().length.should.equal(32);
   });
   it('fromObj toObj roundtrip', function () {
     var w1 = new PrivateKey(config);
