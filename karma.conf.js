@@ -19,6 +19,8 @@ module.exports = function(config) {
       'lib/angular/angular.min.js',
       'lib/angular-route/angular-route.js',
       'lib/angular-mocks/angular-mocks.js',
+      'lib/bitcore.js',
+      'lib/socket.io.js',
 
       //App-specific Code
       'js/*.js',
@@ -32,6 +34,9 @@ module.exports = function(config) {
       //Mocha stuff
       'test/mocha.conf.js',
 
+      //Configs
+      'config.js',
+
       //test files
       'test/unit/**/*.js'
     ],
@@ -39,9 +44,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      'js/copayBundle.js',
       'js/models/**/*.js',
-      'js/init.js'
       ],
 
 
