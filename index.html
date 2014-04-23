@@ -47,7 +47,7 @@
       
     </div>
 
-  <div class="row" ng-if='$root.flashMessage.message'>
+  <div class="row" ng-if='$root.flashMessage.message' notification>
     <div class="small-8 large-centered columns">
       <div data-alert class="alert-box round {{$root.flashMessage.type}}">
         {{$root.flashMessage.message}}
@@ -393,10 +393,11 @@
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
                       <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">valid!</small>
                       <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine">
-                      not valid</small>
+                      not valid.</small> 
+                      <small ng-show="notEnoughAmount">{{notEnoughAmount}}</small>
                     </label>
                     <div class="small-9 columns">
-                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" required>
+                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>
                     </div>
                     <div class="small-3 columns">
                       <span class="postfix">BTC</span>
