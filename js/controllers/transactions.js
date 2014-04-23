@@ -1,8 +1,9 @@
 'use strict';
-var bitcore = require('bitcore');
 
 angular.module('copay.transactions').controller('TransactionsController',
   function($scope, $rootScope, $location) {
+    var bitcore = require('bitcore');
+
     $scope.title = 'Transactions';
     var _updateTxs = function() {
       var w   =$rootScope.wallet;
