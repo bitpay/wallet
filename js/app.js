@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay',[
+var copay = window.copay = angular.module('copay',[
   'ngRoute',
   'mm.foundation',
   'monospaced.qrcode',
