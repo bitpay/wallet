@@ -35,7 +35,7 @@ Wallet.parent=EventEmitter;
 Wallet.prototype.log = function(){
   if (!this.verbose) return;
   if (console)
-        this.log.apply(console, arguments);
+        console.log.apply(console, arguments);
 };
 
 Wallet.getRandomId = function() {
