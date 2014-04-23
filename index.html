@@ -249,11 +249,13 @@
               <div class="txheader">
                 <div class="row">
                   <div class="large-8 columns">
-                    <tr ng-repeat="o in tx.outs">
-                      <td class="text-right size-24">{{o.value}} <i class="fi-bitcoin"></i></td>
-                      <td class="text-center size-48"> <i class="fi-arrow-right size-40"> </i>
-                      <td class="text-left size-24">{{o.address}}</td>
+                    <table style="width:100%">
+                    <tr ng-repeat="out in tx.outs">
+                      <td class="text-right size-24"> <i class="fi-bitcoin"></i> {{out.value}}</td>
+                      <td class="text-center size-48"> <i class="fi-arrow-right size-24"> </i></td>
+                      <td class="text-left size-24">{{out.address}}</td>
                     </tr>
+                    </table>
                   </div>
                   <div class="large-4 columns text-right">
                     <h6> created at {{tx.createdTs | date:'medium'}} </h6>
@@ -266,7 +268,10 @@
                   <table style="width:100%">
                     <tbody>
                       <tr>
-                        <small class="right text-gray"> <strong> Proposal ID: </strong> {{tx.ntxid}} </small>
+                        <small class="right text-gray"> 
+                           Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
+                          <strong> Proposal ID: </strong> {{tx.ntxid}} 
+                        </small>
                       </tr>                     
                       <tr ng-repeat="(peer, actions) in tx.peerActions">
                         <td colspan="3">
