@@ -117,6 +117,24 @@ body {
   font-size: 12px;
 }
 
+.btransactions .panel {
+  background: #fff;
+}
+
+.btransactions .txheader {
+  font-size: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.btransactions .txbottom {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 12px;
+}
+
 .pending table {
   width: 100%;
   border: none;

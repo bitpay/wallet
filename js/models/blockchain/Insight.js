@@ -27,7 +27,78 @@ function _asyncForEach(array, fn, callback) {
   } else {
     callback(); // Done!
   }
-}; 
+};
+
+function removeRepeatedElements(ar){ 
+  var ya=false,v="",aux=[].concat(ar),r=Array(); 
+  for (var i in aux){ // 
+    v=aux[i]; 
+    ya=false; 
+    for (var a in aux){ 
+      if (v==aux[a]){ 
+        if (ya==false){ 
+          ya=true; 
+        } 
+        else{ 
+          aux[a]=""; 
+        } 
+      } 
+    } 
+  } 
+  for (var a in aux){ 
+    if (aux[a]!=""){ 
+      r.push(aux[a]); 
+    } 
+  } 
+  return r; 
+}
+
+Insight.prototype.getTransactions = function(addresses, cb) {
+  var self = this;
+  
+  if (!addresses || !addresses.length) return cb([]);
+
+  var txids = [];
+  var txs = [];
+  
+  _asyncForEach(addresses, function(addr, callback) {
+    var options = {
+      host: self.host,
+      port: self.port,
+      scheme: self.scheme,
+      method: 'GET',
+      path: '/api/addr/' + addr,
+
+      headers: { 'Access-Control-Request-Headers' : '' }
+    };
+    
+    self._request(options, function(err, res) {
+      var txids_tmp = res.transactions;
+      for(var i=0; i<txids_tmp.length; i++) {
+        txids.push(txids_tmp[i]);
+      }
+      callback();
+    });
+  }, function() {
+    var clean_txids = removeRepeatedElements(txids);
+    _asyncForEach(clean_txids, function(txid, callback2) {
+      var options = {
+        host: self.host,
+        port: self.port,
+        scheme: self.scheme,
+        method: 'GET',
+        path: '/api/tx/' + txid,
+        headers: { 'Access-Control-Request-Headers' : '' }
+      };
+      self._request(options, function(err, res) {
+        txs.push(res);
+        callback2();
+      });
+    }, function() {
+      return cb(txs);
+    });
+  });
+};
 
 Insight.prototype.getUnspent = function(addresses, cb) {
   var self = this;
@@ -98,7 +169,6 @@ Insight.prototype._request = function(options, callback) {
     request.open(options.method, url, true);
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
-console.log('[Insight.js.102]', request); //TODO
         if (request.status === 200) {
           return callback(null, JSON.parse(request.responseText));
         } 

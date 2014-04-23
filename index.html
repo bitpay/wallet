@@ -338,40 +338,54 @@
               </div>
             </div>
           </div>
-          <div class="large-12 columns">
-<!--
-            <h4>Last transactions</h4>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
-                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Address 2 <small class="right"> 1231 BTC </small></p>
-                <span class="panel-res panel-sign">
-                  <i class="fi-check size-16"></i>
-                </span>
+          <div class="large-12 columns" ng-init="getTransactions()" ng-show="blockchain_txs[0].txid">
+            <h3>Last transactions</h3>
+            <div class="btransactions">
+              <div class="panel" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
+                <div class="txheader">
+                  <div class="row">
+                    <div class="large-8 columns">
+                      ID: {{btx.txid}}
+                    </div>
+                    <div class="large-4 columns text-right">
+                      {{btx.firstSeenTs * 1000 | date:'medium'}} </h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="large-5 columns">
+                    <div ng-repeat="vin in btx.vin">
+                      {{vin.addr}} 
+                      <small>{{vin.value}}</small>
+                    </div>
+                  </div>
+                  <div class="large-1 columns text-center">
+                    <i class="fi-arrow-right"></i>
+                  </div>
+                  <div class="large-6 columns">
+                    <div ng-repeat="vout in btx.vout">
+                      <div class="row">
+                        <div class="large-10 columns">
+                          <div ng-repeat="addr in vout.scriptPubKey.addresses">
+                            {{addr}}
+                          </div>
+                        </div>
+                        <div class="large-2 columns">
+                          <small>{{vout.value}}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="txbottom">
+                  <div class="row">
+                    <div class="large-4 columns">Fees: {{btx.fees}}</div>
+                    <div class="large-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
+                    <div class="large-4 columns text-right">Total: {{btx.valueOut}}</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
-                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Address 2 <small class="right"> 1231 BTC </small></p>
-                <span class="panel-res panel-sign">
-                  <i class="fi-check size-16"></i>
-                </span>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
-                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Address 2 <small class="right"> 1231 BTC </small></p>
-                <span class="panel-res panel-ignore">
-                  <i class="fi-x size-16"></i>
-                </span>
-              </div>
-            </div>
--->
           </div>
         </div>    
       </div>

@@ -70,6 +70,17 @@ angular.module('copay.transactions').controller('TransactionsController',
       }
     };
 
+    $scope.getTransactions = function() {
+      var w   =$rootScope.wallet;
+      var addresses = w.getAddressesStr();
+
+      if (addresses.length > 0) {
+        w.blockchain.getTransactions(addresses, function(txs) {
+          $scope.blockchain_txs = txs;
+          $rootScope.$digest();
+        });
+      }
+    };
 
     $scope.reject = function (ntxid) {
       var w = $rootScope.wallet;
