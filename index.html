@@ -328,10 +328,10 @@
               </div>
             </div>
           </div>
-          <div class="large-12 columns">
+          <div class="large-12 columns" ng-init="getTransactions()" ng-show="blockchain_txs[0].txid">
             <h3>Last transactions</h3>
-            <div class="btransactions" ng-init="getTransactions()">
-              <div class="panel" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true"">
+            <div class="btransactions">
+              <div class="panel" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
                 <div class="txheader">
                   <div class="row">
                     <div class="large-8 columns">

@@ -27,7 +27,31 @@ function _asyncForEach(array, fn, callback) {
   } else {
     callback(); // Done!
   }
-}; 
+};
+
+function removeRepeatedElements(ar){ 
+  var ya=false,v="",aux=[].concat(ar),r=Array(); 
+  for (var i in aux){ // 
+    v=aux[i]; 
+    ya=false; 
+    for (var a in aux){ 
+      if (v==aux[a]){ 
+        if (ya==false){ 
+          ya=true; 
+        } 
+        else{ 
+          aux[a]=""; 
+        } 
+      } 
+    } 
+  } 
+  for (var a in aux){ 
+    if (aux[a]!=""){ 
+      r.push(aux[a]); 
+    } 
+  } 
+  return r; 
+}
 
 Insight.prototype.getTransactions = function(addresses, cb) {
   var self = this;
@@ -56,7 +80,8 @@ Insight.prototype.getTransactions = function(addresses, cb) {
       callback();
     });
   }, function() {
-    _asyncForEach(txids, function(txid, callback2) {
+    var clean_txids = removeRepeatedElements(txids);
+    _asyncForEach(clean_txids, function(txid, callback2) {
       var options = {
         host: self.host,
         port: self.port,
