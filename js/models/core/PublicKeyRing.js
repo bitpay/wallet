@@ -142,7 +142,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
       var bip32 = this.copayersBIP32[i].derive(path);
       pubKeys[i] = bip32.eckey.public;
     }
-    this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex')});
+    this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
   } else {
     pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')});
   }
@@ -158,6 +158,7 @@ PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
   }
 };
 
+// TODO this could be cached
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
@@ -166,19 +167,26 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   return script;
 };
 
-
+// TODO this could be cached
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
   this._checkIndexRange(index, isChange);
   var script  = this.getRedeemScript(index,isChange);
   return Address.fromScript(script, this.network.name);
 };
 
+// TODO this could be cached
+PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
+  this._checkIndexRange(index, isChange);
+  var script  = this.getRedeemScript(index,isChange);
+  map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
+};
+
+// TODO this could be cached
 PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
   this._checkIndexRange(index, isChange);
   var addr  = this.getAddress(index,isChange);
   return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
 };
-
 
 
 //generate a new address, update index.
@@ -215,11 +223,10 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
   var ret = {};
 
   for (var i=0; i<this.changeAddressIndex; i++) {
-    ret[this.getAddress(i,true)] = this.getRedeemScript(i,true).getBuffer().toString('hex');
+    this._addScriptMap(ret,i,true);
   }
-
   for (var i=0; i<this.addressIndex; i++) {
-    ret[this.getAddress(i)] = this.getRedeemScript(i).getBuffer().toString('hex');
+    this._addScriptMap(ret,i,false);
   }
   return ret;
 };

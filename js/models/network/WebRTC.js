@@ -261,7 +261,6 @@ console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
 
 Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
-console.log('[WebRTC.js.242] SENDING ', data.type); //TODO
   if (!peerIds) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;

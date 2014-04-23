@@ -61,7 +61,7 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
       console.log('### SUBSCRIBE TO', addrs[i]);
       Socket.emit('subscribe', addrs[i]);
     }
-
+console.log('[controllerUtils.js.64]'); //TODO
     addrs.forEach(function(addr) {
       Socket.on(addr, function(txid) {
         console.log('Received!', txid);
