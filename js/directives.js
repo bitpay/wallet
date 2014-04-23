@@ -42,14 +42,14 @@ angular.module('copay')
           if (typeof vNum == "number" && vNum > 0) {
             if ($rootScope.availableBalance <= vNum) {
               ctrl.$setValidity('enoughAmount', false);
-              $rootScope.notEnoughAmount = 'Insufficient funds!';
+              scope.notEnoughAmount = 'Insufficient funds!';
             }
             else {
               ctrl.$setValidity('enoughAmount', true);
-              $rootScope.notEnoughAmount = null;
+              scope.notEnoughAmount = null;
             }
           } else {
-            $rootScope.notEnoughAmount = null;
+            scope.notEnoughAmount = null;
           }
           return value;
         }
