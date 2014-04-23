@@ -59,7 +59,7 @@ angular.module('copay.transactions').controller('TransactionsController',
         $rootScope.$digest();    
         return;
       }
-      var p = w.getTxProposal(ntxid);
+      var p = w.txProposals.getTxProposal(ntxid);
       if (p.txp.builder.isFullySigned()) {
         $scope.send(ntxid);
         _updateTxs();

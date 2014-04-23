@@ -91,28 +91,15 @@ console.log('[WebRTC.js.72:_onClose:]');
 
 Network.prototype._connectToCopayers = function(copayerIds) {
   var self = this;
-  var ret = false;
 
-  var peerIds = [];
-  for(var i in copayerIds) {
-    if (!copayerIds[i]) continue;
+console.log('[WebRTC.js.96] _connectToCopayers', copayerIds, this.connectedCopayers() ); //TODO
 
-    var peerId = this.peerFromCopayer(copayerIds[i]);
-    peerIds.push(peerId);
-
-    this.copayerForPeer[peerId] = copayerIds[i];
-  }
-
-console.log('[WebRTC.js.102] copayerForPeer:', this.copayerForPeer); //TODO
-
-  var arrayDiff1= Network._arrayDiff(peerIds, this.connectedPeers);
-  var arrayDiff = Network._arrayDiff(arrayDiff1, [this.peerId]);
-  arrayDiff.forEach(function(peerId) {
-    console.log('### CONNECTING TO:', peerId);
-    self.connectTo(peerId);
-    ret = true;
+  var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
+console.log('[WebRTC.js.99:arrayDiff:]',arrayDiff); //TODO
+  arrayDiff.forEach(function(copayerId) {
+    console.log('### CONNECTING TO:', copayerId);
+    self.connectTo(copayerId);
   });
-  return ret;
 };
 
 Network.prototype._sendCopayerId = function(copayerId) {
@@ -132,7 +119,9 @@ Network.prototype._sendCopayers = function(copayerIds) {
 };
 
 Network.prototype._addCopayer = function(copayerId, isInbound) {
-  var hasChanged = Network._arrayPushOnce(this.peerFromCopayer(copayerId), this.connectedPeers);
+  var peerId = this.peerFromCopayer(copayerId);
+  this._addCopayerMap(peerId,copayerId);
+  var hasChanged = Network._arrayPushOnce(peerId, this.connectedPeers);
   if (isInbound && hasChanged) {
     this._sendCopayers();              //broadcast peer list
   }
@@ -157,7 +146,6 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   if(obj.data.type === 'copayerId') {
       if (this.peerFromCopayer(obj.data.copayerId) === peerId) {
         console.log('#### Peer sent the right copayerId. Setting it up.'); //TODO
-        this.copayerForPeer[peerId]=obj.data.copayerId;
         this._addCopayer(obj.data.copayerId, isInbound);
         this._notifyNetworkChange( isInbound ? obj.data.copayerId : null);
         this.emit('open');
@@ -175,6 +163,7 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   
   switch(obj.data.type) {
     case 'copayers':
+      this._addCopayer(this.copayerForPeer[peerId], false);
       this._connectToCopayers(obj.data.copayers);
       this._notifyNetworkChange();
       break;
@@ -199,7 +188,9 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   var self=this;
 
   dataConn.on('open', function() {
-    if (!Network._inArray(dataConn.peer, self.connectedPeers)) {
+    if (!Network._inArray(dataConn.peer, self.connectedPeers)
+        && !  self.connections[dataConn.peer]) {
+
       self.connections[dataConn.peer] = dataConn;
 
       console.log('### DATA CONNECTION READY: ADDING PEER: %s (inbound: %s)',
@@ -242,6 +233,8 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 
   p.on('open', function() {
     self.connectedPeers = [self.peerId];
+    self.copayerForPeer[self.peerId]= self.copayerId;
+
     return openCallback();
   });
 
@@ -267,14 +260,21 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 };
 
+
+Network.prototype._addCopayerMap = function(peerId, copayerId) {
+  if (!this.copayerForPeer[peerId]) {
+    console.log('ADDING COPAYER MAPPING: %s => %s', peerId, copayerId); //TODO
+    this.copayerForPeer[peerId]=copayerId;
+  }
+};
+
 Network.prototype.setCopayerId = function(copayerId) {
   if (this.started) {
     throw new Error ('network already started: can not change peerId')
   }
   this.copayerId = copayerId;
   this.peerId = this.peerFromCopayer(this.copayerId);
-
-console.log('[WebRTC.js.275] setCopayerId', copayerId, this.peerId ); //TODO
+  this._addCopayerMap(this.peerId,copayerId);
 };
 
 Network.prototype.peerFromCopayer = function(hex) {
@@ -342,7 +342,8 @@ Network.prototype.send = function(copayerIds, data, cb) {
 Network.prototype.connectTo = function(copayerId) {
   var self = this;
   var peerId = this.peerFromCopayer(copayerId);
-  this.copayerForPeer[peerId] = copayerId;
+  this._addCopayerMap(peerId,copayerId);
+
   console.log('### STARTING CONNECTION TO:', peerId, copayerId);
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',
