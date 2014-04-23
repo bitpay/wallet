@@ -15,19 +15,34 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      //3rd Party Code
       'lib/angular/angular.min.js',
+      'lib/angular-route/angular-route.js',
       'lib/angular-mocks/angular-mocks.js',
-      'lib/chai/chai.js',
+
+      //App-specific Code
       'js/*.js',
       'js/**/*.js',
-      'test/test*.js',
+
+      //Test-Specific Code
+      'lib/chai/chai.js',
+      'test/lib/chai-should.js',
+      'test/lib/chai-expect.js',
+
+      //Mocha stuff
+      'test/mocha.conf.js',
+
+      //test files
+      'test/unit/**/*.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-
-    ],
+      'js/copayBundle.js',
+      'js/models/**/*.js',
+      'js/init.js'
+      ],
 
 
     // preprocess matching files before serving them to the browser
@@ -62,11 +77,14 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
+
+    // if browser doesn't capture output in given timeout (ms), kill it
+    captureTimeout: 60000
   });
 };
