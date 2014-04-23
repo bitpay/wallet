@@ -107,15 +107,14 @@ describe('TxProposals model', function() {
       verifyP2SH: true,
       dontVerifyStrictEnc: true
     }, function(err, results){
-      console.log('[test.TxProposals.js.106:err:]',err, results); //TODO
-      //      should.not.exist(err);
-      //      results.should.equal(true);
+         should.not.exist(err);
+         results.should.equal(true);
       done();
     });
   });
  
 
-  it.skip('should create an instance', function () {
+  it('should create an instance', function () {
     var w = new TxProposals({
       networkName: config.networkName
     });
@@ -157,7 +156,7 @@ describe('TxProposals model', function() {
   };
 
 
-  it.skip('#getUsedUnspend', function () {
+  it('#getUsedUnspend', function () {
     var priv = new PrivateKey(config);
     var w = new TxProposals({
       networkName: config.networkName,
@@ -181,7 +180,7 @@ describe('TxProposals model', function() {
     w.getUsedUnspent()[0].should.equal(unspentTest[0].txid);
   });
 
-  it.skip('#merge with self', function () {
+  it('#merge with self', function () {
     var priv = new PrivateKey(config);
     var w = new TxProposals({
       networkName: config.networkName,
@@ -222,7 +221,7 @@ describe('TxProposals model', function() {
 
 
 
-  it.skip('#merge, merge signatures case 1', function () {
+  it('#merge, merge signatures case 1', function () {
     var priv2 = new PrivateKey(config);
     var priv = new PrivateKey(config);
     var ts = Date.now();
@@ -297,7 +296,7 @@ var _dumpChunks = function (scriptSig, label) {
 };
 
 
-  it.skip('#merge, merge signatures case 2', function () {
+  it('#merge, merge signatures case 2', function () {
 
     var priv = new PrivateKey(config);
     var priv2 = new PrivateKey(config);
@@ -399,7 +398,7 @@ var _dumpChunks = function (scriptSig, label) {
   });
 
 
-  it.skip('#merge, merge signatures case 3', function () {
+  it('#merge, merge signatures case 3', function () {
 
     var priv = new PrivateKey(config);
     var priv2 = new PrivateKey(config);
@@ -496,7 +495,7 @@ var _dumpChunks = function (scriptSig, label) {
 
 
 
-  it.skip('#toObj #fromObj roundtrip', function () {
+  it('#toObj #fromObj roundtrip', function () {
 
     var priv = new PrivateKey(config);
     var pkr = createPKR([priv]);
