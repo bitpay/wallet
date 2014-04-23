@@ -59,8 +59,60 @@ var createPKR = function (bip32s) {
   return w;
 };
 
+var vopts =  {
+  verifyP2SH: true,
+  dontVerifyStrictEnc: true
+};
+
 
 describe('TxProposals model', function() {
+
+
+  it('verify TXs', function (done) {
+
+    var priv = new PrivateKey(config);
+    var priv2 = new PrivateKey(config);
+    var priv3 = new PrivateKey(config);
+   var ts = Date.now();
+    var isChange=0; 
+    var index=0; 
+    var pkr = createPKR([priv, priv2,  priv3]);
+    var opts = {remainderOut: { address: pkr.generateAddress(true).toString() }};
+
+    var w = new TxProposals({
+      networkName: config.networkName,
+    });
+    unspentTest[0].address        = pkr.getAddress(index, isChange).toString();
+    unspentTest[0].scriptPubKey   = pkr.getScriptPubKeyHex(index, isChange);
+    w.add(createTx(
+      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
+      '123456789', 
+      unspentTest,
+      opts,
+      priv,
+      pkr
+    ));
+    var k = Object.keys(w.txps)[0];
+    var b = w.txps[k].builder;
+    var tx = b.build();
+    tx.isComplete().should.equal(false);
+    b.sign( priv2.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
+    b.sign( priv3.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
+    tx = b.build();
+    tx.isComplete().should.equal(true);
+
+    var s = new Script(new Buffer(unspentTest[0].scriptPubKey,'hex'));
+
+    tx.verifyInput(0,s, {
+      verifyP2SH: true,
+      dontVerifyStrictEnc: true
+    }, function(err, results){
+         should.not.exist(err);
+         results.should.equal(true);
+      done();
+    });
+  });
+ 
 
   it('should create an instance', function () {
     var w = new TxProposals({
@@ -496,5 +548,6 @@ var _dumpChunks = function (scriptSig, label) {
     w2.merge(w);
     Object.keys(w2.txps).length.should.equal(1);
   });
+
+
 });
- 

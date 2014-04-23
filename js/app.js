@@ -13,8 +13,7 @@ angular.module('copay',[
   'copay.signin',
   'copay.socket',
   'copay.controllerUtils',
-  'copay.setup',
-  'copay.peer'
+  'copay.setup'
 ]);
 
 angular.module('copay.header', []);
@@ -26,6 +25,5 @@ angular.module('copay.walletFactory', []);
 angular.module('copay.controllerUtils', []);
 angular.module('copay.signin', []);
 angular.module('copay.setup', []);
-angular.module('copay.peer', []);
 angular.module('copay.socket', []);
 

@@ -71,7 +71,6 @@ PrivateKey.prototype.get = function(index,isChange) {
 
 PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
   var ret = [];
-
   for(var i=0;i<addressIndex; i++) {
     ret.push(this.get(i,false));
   }
