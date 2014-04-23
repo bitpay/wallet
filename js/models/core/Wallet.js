@@ -123,7 +123,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleNetworkChange = function(newCopayerId) {
-  if (newPeerId) {
+  if (newCopayerId) {
     this.log('#### Setting new PEER:', newCopayerId);
     this.sendWalletId(newCopayerId);
   }
