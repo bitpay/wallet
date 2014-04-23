@@ -269,7 +269,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 
 Wallet.prototype.generateAddress = function(isChange) {
   var addr = this.publicKeyRing.generateAddress(isChange);
-console.log('[Wallet.js.281:addr:]',addr, this.publicKeyRing.toObj(), this.getAddresses()); //TODO
+this.log('[Wallet.js.281:addr:]',addr, this.publicKeyRing.toObj(), this.getAddresses()); //TODO
   this.sendPublicKeyRing();
   this.store(true);
   return addr;
@@ -318,7 +318,7 @@ Wallet.prototype.sign = function(ntxid) {
 
   var pkr = self.publicKeyRing;
   var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
-console.log('[Wallet.js.329:keys:]',keys); //TODO
+this.log('[Wallet.js.329:keys:]',keys); //TODO
 
   var b = txp.builder;
   var before = b.signaturesAdded;
@@ -497,10 +497,10 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var signRet;  
   if (priv) {
-console.log('[Wallet.js.486] aLL Priv', priv.getAll(pkr.addressIndex, pkr.changeAddressIndex)); //TODO
+this.log('[Wallet.js.486] aLL Priv', priv.getAll(pkr.addressIndex, pkr.changeAddressIndex)); //TODO
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
-console.log('[Wallet.js.494]', b, b.build().serialize().toString('hex')); //TODO
+this.log('[Wallet.js.494]', b, b.build().serialize().toString('hex')); //TODO
   var me = {};
   var myId = this.getMyPeerId();
   var now = Date.now();
