@@ -244,7 +244,7 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4>Pending transactions <small>({{txs.length}})</small></h4>
+            <h4>Transactions proposals <small>({{txs.length}})</small></h4>
             <div class="panel pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
               <div class="txheader">
                 <div class="row">
@@ -284,6 +284,7 @@
                               <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
                               <span ng-if="action == 'seen'" title="{{ts | date:'medium'}}" class="fi-eye size-18 right m10h"> </span>
                               <span ng-if="action == 'sign'" title="{{ts | date:'medium'}}" class="fi-check size-18 right m10h"> </span>
+                              <span ng-if="action == 'rejected'" title="{{ts | date:'medium'}}" class="fi-x size-18 right m10h" style="color:red"> </span>
 
                               <a title="{{ts | date:'medium'}}"></a>
                             </span>
@@ -301,16 +302,20 @@
                     <div ng-show="tx.signedByUs">
                       <i class="fi-check size-40"></i> Signed by you already
                     </div>
-                    <div ng-show="!tx.signedByUs && tx.missingSignatures"> 
+                    <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
                       <button class="secondary round"  ng-click="sign(tx.ntxid)">
                         <i class="fi-check"></i> Sign
                       </button>
-                      <button class="primary round">
-                        <i class="fi-x"></i> Ignore
+                      <button class="primary round" ng-click="reject(tx.ntxid)">
+                        <i class="fi-x" ></i> Reject 
                       </button>
                     </div>
                   </div>
                   <div class="large-6 columns text-right">
+                    <span ng-show="tx.finallyRejected ">
+                      Transaction finally rejected
+                    </span>
+ 
                     <span ng-show="!tx.missingSignatures && !tx.sentTs">
                       Transaction ready.
                       <button class="secondary round"  ng-click="send(tx.ntxid)">
@@ -323,10 +328,10 @@
                       Sent at {{tx.sentTs | date:'medium'}}
                       TXID: {{tx.sentTxid}}
                     </span>
-                    <span ng-show="tx.missingSignatures==1"> 
+                    <span ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
                       One signature missing
                     </span>
-                    <span ng-show="tx.missingSignatures>1"> 
+                    <span ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
                       {{tx.missingSignatures}} signatures missing</span>
                   </div>
                 </div>

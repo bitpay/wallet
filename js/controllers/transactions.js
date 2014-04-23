@@ -70,5 +70,14 @@ angular.module('copay.transactions').controller('TransactionsController',
       }
     };
 
+
+    $scope.reject = function (ntxid) {
+      var w = $rootScope.wallet;
+      w.reject(ntxid);
+      $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};
+      _updateTxs();
+      $rootScope.$digest();    
+    };
+
     _updateTxs();
   });
