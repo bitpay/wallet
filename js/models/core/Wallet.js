@@ -122,10 +122,10 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._handleNetworkChange = function(newPeerId) {
+Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newPeerId) {
-    this.log('#### Setting new PEER:', newPeerId);
-    this.sendWalletId(newPeerId);
+    this.log('#### Setting new PEER:', newCopayerId);
+    this.sendWalletId(newCopayerId);
   }
   this.emit('refresh');
 };
@@ -143,13 +143,13 @@ Wallet.prototype._optsToObj = function () {
 };
 
 
-Wallet.prototype.getPeerId = function(index) {
+Wallet.prototype.getCopayerId = function(index) {
   return this.publicKeyRing.getCopayerId(index || 0);
 };
 
 
-Wallet.prototype.getMyPeerId = function() {
-  return this.getPeerId(0);
+Wallet.prototype.getMyCopayerId = function() {
+  return this.getCopayerId(0);
 };
 
 Wallet.prototype.netStart = function() {
@@ -167,19 +167,21 @@ Wallet.prototype.netStart = function() {
     self.emit('close');
   });
 
-  var myPeerId = self.getMyPeerId();
+  var myId = self.getMyCopayerId();
   var startOpts = { 
-    peerId: myPeerId
+    copayerId: myId
   };
   net.start(function() {
     self.emit('created');
     for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
-      var otherPeerId = self.getPeerId(i);
-      if (otherPeerId !== myPeerId) {
-        net.connectTo(otherPeerId);
+      var otherId = self.getCopayerId(i);
+      if (otherId !== myId) {
+        net.connectTo(otherId);
       }
-    self.sendWalletReady(self.firstPeerId);
-    self.firstPeerId = null;
+    if (self.firstCopayerId){  
+      self.sendWalletReady(self.firstCopayerId);
+      self.firstCopayerId = null;
+    }
     self.emit('refresh');
     }
   }, startOpts);
@@ -279,8 +281,8 @@ Wallet.prototype.getTxProposals = function() {
   var ret = [];
   for(var k in this.txProposals.txps) {
     var i = this.txProposals.getTxProposal(k);
-    i.signedByUs = i.signedBy[this.getMyPeerId()]?true:false;
-    i.rejectedByUs = i.rejectedBy[this.getMyPeerId()]?true:false;
+    i.signedByUs = i.signedBy[this.getMyCopayerId()]?true:false;
+    i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()]?true:false;
     if (this.totalCopayers-i.rejectCount < this.requiredCopayers)
       i.finallyRejected=true;
 
@@ -291,7 +293,7 @@ Wallet.prototype.getTxProposals = function() {
 
 
 Wallet.prototype.reject = function(ntxid) {
-  var myId=this.getMyPeerId();
+  var myId=this.getMyCopayerId();
   var txp = this.txProposals.txps[ntxid];
   if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
@@ -303,7 +305,7 @@ Wallet.prototype.reject = function(ntxid) {
 
 Wallet.prototype.sign = function(ntxid) {
   var self = this;
-  var myId=this.getMyPeerId();
+  var myId=this.getMyCopayerId();
   var txp = self.txProposals.txps[ntxid];
   if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
@@ -350,7 +352,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
 Wallet.prototype.addSeenToTxProposals = function() {
   var ret=false;
-  var myId=this.getMyPeerId();
+  var myId=this.getMyCopayerId();
 
   for(var k in this.txProposals.txps) {
     var txp = this.txProposals.txps[k];
@@ -489,7 +491,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   if (priv) {
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
-  var myId = this.getMyPeerId();
+  var myId = this.getMyCopayerId();
   var now = Date.now();
 
   var me = {};
