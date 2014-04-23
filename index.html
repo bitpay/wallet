@@ -57,16 +57,30 @@
   </div>
 
     <div class="row">
-      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box info round" >
-        <i class="fi-alert size-18"></i> 
-            Note: Your wallet is not complete yet. 
-        <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-            {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
-        </span>
-        <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
-            One key is 
-        </span>
-         missing. Share this secret with your other copayers for them to join your wallet: <b>{{$root.wallet.getMyPeerId()}}</b>
+      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box  warn round  size-18" >
+
+
+            <div style="float:left; margin:0 15px">
+                <i class="fi-alert size-60"></i> 
+            </div>
+            
+            <div class="size-18">
+                Note: Your wallet is not complete yet. 
+                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
+                {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
+                </span>
+                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+                One key is 
+                </span>
+                missing. 
+            </div>
+
+            <div class="size-18">
+                Share this secret with your other copayers for them to join your wallet <br>
+            </div>
+            <div class="size-24">
+            <b>{{$root.wallet.getMyCopayerId()}}</b>
+            </div>
       </div>
     </div>
 

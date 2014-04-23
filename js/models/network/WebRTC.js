@@ -1,6 +1,8 @@
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
+var bitcore     = require('bitcore');
+var util        = bitcore.util;
 
 /*
  * Emits
@@ -11,7 +13,6 @@ var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
  *    when an unknown data type arrives
  *
  * Provides
- *  send(toPeerIds, {data}, cb?)  
  *
  */
 
@@ -24,6 +25,7 @@ function Network(opts) {
   this.maxPeers       = opts.maxPeers || 10;
   this.opts = { key: opts.key };
   this.connections = {};
+  this.copayerForPeer = {};
 
   // For using your own peerJs server
   ['port', 'host', 'path', 'debug'].forEach(function(k) {
@@ -69,6 +71,16 @@ Network._arrayRemove = function(el, array) {
   return array;
 };
 
+
+Network.prototype.connectedCopayers = function() {
+  var ret =[];
+  for(var i in this.connectedPeers){
+    var copayerId =this.copayerForPeer[this.connectedPeers[i]];
+    if (copayerId) ret.push(copayerId);
+  }
+  return ret;
+};
+
 Network.prototype._onClose = function(peerId) {
 console.log('[WebRTC.js.72:_onClose:]');
 
@@ -77,9 +89,22 @@ console.log('[WebRTC.js.72:_onClose:]');
   this._notifyNetworkChange();
 };
 
-Network.prototype._connectToPeers = function(peerIds) {
+Network.prototype._connectToCopayers = function(copayerIds) {
   var self = this;
   var ret = false;
+
+  var peerIds = [];
+  for(var i in copayerIds) {
+    if (!copayerIds[i]) continue;
+
+    var peerId = this.peerFromCopayer(copayerIds[i]);
+    peerIds.push(peerId);
+
+    this.copayerForPeer[peerId] = copayerIds[i];
+  }
+
+console.log('[WebRTC.js.102] copayerForPeer:', this.copayerForPeer); //TODO
+
   var arrayDiff1= Network._arrayDiff(peerIds, this.connectedPeers);
   var arrayDiff = Network._arrayDiff(arrayDiff1, [this.peerId]);
   arrayDiff.forEach(function(peerId) {
@@ -90,7 +115,35 @@ Network.prototype._connectToPeers = function(peerIds) {
   return ret;
 };
 
-Network.prototype._onData = function(data, isInbound) {
+Network.prototype._sendCopayerId = function(copayerId) {
+  console.log('#### SENDING COPAYERID TO TO ', copayerId);
+  this.send(copayerId, {
+    type: 'copayerId',
+    copayerId: this.copayerId,
+  });
+};
+
+Network.prototype._sendCopayers = function(copayerIds) {
+  console.log('#### SENDING PEER LIST: ', this.connectedPeers,this.connectedCopayers(), ' TO ', copayerIds?copayerIds: 'ALL');
+  this.send(copayerIds, {
+    type: 'copayers',
+    copayers: this.connectedCopayers(),
+  });
+};
+
+Network.prototype._addCopayer = function(copayerId, isInbound) {
+  var hasChanged = Network._arrayPushOnce(this.peerFromCopayer(copayerId), this.connectedPeers);
+  if (isInbound && hasChanged) {
+    this._sendCopayers();              //broadcast peer list
+  }
+  else {
+    if (isInbound) {
+      this._sendCopayers(copayerId);
+    }
+  }
+};
+
+Network.prototype._onData = function(data, isInbound, peerId) {
   var obj;
   try { 
     obj = JSON.parse(data);
@@ -99,40 +152,41 @@ Network.prototype._onData = function(data, isInbound) {
     return;
   };
   console.log('### RECEIVED TYPE: %s FROM %s', obj.data.type, obj.sender, obj.data); 
+  var self=this;
 
+  if(obj.data.type === 'copayerId') {
+      if (this.peerFromCopayer(obj.data.copayerId) === peerId) {
+        console.log('#### Peer sent the right copayerId. Setting it up.'); //TODO
+        this.copayerForPeer[peerId]=obj.data.copayerId;
+        this._addCopayer(obj.data.copayerId, isInbound);
+        this._notifyNetworkChange( isInbound ? obj.data.copayerId : null);
+        this.emit('open');
+      }
+      else {
+        console.log('### RECEIVED WRONG COPAYER ID FROM:', peerId); //TODO
+      }
+      return;
+  }
+
+  if (!this.copayerForPeer[peerId]) {
+    console.log('### Discarting message from unknow peer: ', peerId); //TODO
+    return;
+  }
+  
   switch(obj.data.type) {
-    case 'peerList':
-      this._connectToPeers(obj.data.peers);
+    case 'copayers':
+      this._connectToCopayers(obj.data.copayers);
       this._notifyNetworkChange();
       break;
     case 'disconnect':
       this._onClose(obj.sender);
       break;
     default:
-      this.emit('data', obj.sender, obj.data, isInbound);
+      this.emit('data', self.copayerForPeer[obj.sender], obj.data, isInbound);
   }
 };
 
-Network.prototype._sendPeers = function(peerIds) {
-  console.log('#### SENDING PEER LIST: ', this.connectedPeers, ' TO ', peerIds?peerIds: 'ALL');
-  this.send(peerIds, {
-    type: 'peerList',
-    peers: this.connectedPeers,
-  });
-};
 
-Network.prototype._addPeer = function(peerId, isInbound) {
-
-  var hasChanged = Network._arrayPushOnce(peerId, this.connectedPeers);
-  if (isInbound && hasChanged) {
-    this._sendPeers();              //broadcast peer list
-  }
-  else {
-    if (isInbound) {
-      this._sendPeers(peerId);
-    }
-  }
-};
 
 Network.prototype._checkAnyPeer = function() {
   if (!this.connectedPeers.length) {
@@ -148,17 +202,17 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
     if (!Network._inArray(dataConn.peer, self.connectedPeers)) {
       self.connections[dataConn.peer] = dataConn;
 
-      console.log('### DATA CONNECTION READY TO: ADDING PEER: %s (inbound: %s)',
+      console.log('### DATA CONNECTION READY: ADDING PEER: %s (inbound: %s)',
         dataConn.peer, isInbound);
 
-      self._addPeer(dataConn.peer, isInbound);
-      self._notifyNetworkChange( isInbound ? dataConn.peer : null);
-      this.emit('open');
+      // The outbount send its copayerID
+      if(!isInbound) 
+        self._sendCopayerId(self.copayerForPeer[dataConn.peer]);      
     }
   });
 
   dataConn.on('data', function(data) { 
-    self._onData(data, isInbound);
+    self._onData(data, isInbound, dataConn.peer);
   });
 
   dataConn.on('error', function(e) {
@@ -177,9 +231,9 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   });
 };
 
-Network.prototype._notifyNetworkChange = function(newPeer) {
-  console.log('[WebRTC.js.164:_notifyNetworkChange:]', newPeer); //TODO
-  this.emit('networkChange', newPeer);
+Network.prototype._notifyNetworkChange = function(newCopayerId) {
+  console.log('[WebRTC.js.164:_notifyNetworkChange:]', newCopayerId); //TODO
+  this.emit('networkChange', newCopayerId);
 };
 
 Network.prototype._setupPeerHandlers = function(openCallback) {
@@ -213,24 +267,29 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 };
 
-Network.prototype.setPeerId = function(peerId) {
+Network.prototype.setCopayerId = function(copayerId) {
   if (this.started) {
     throw new Error ('network already started: can not change peerId')
   }
-  this.peerId = peerId;
+  this.copayerId = copayerId;
+  this.peerId = this.peerFromCopayer(this.copayerId);
+
+console.log('[WebRTC.js.275] setCopayerId', copayerId, this.peerId ); //TODO
 };
 
+Network.prototype.peerFromCopayer = function(hex) {
+  return util.sha256(new Buffer(hex,'hex')).toString('hex');
+};
 
 Network.prototype.start = function(openCallback, opts) {
   opts = opts || {};
-  // Start PeerJS Peer
   var self = this;
-
   if (this.started)  return openCallback();
 
   opts.connectedPeers = opts.connectedPeers || [];
-  this.peerId = this.peerId || opts.peerId;
 
+
+  this.setCopayerId(this.copayerId || opts.copayerId);
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
   for (var i = 0; i<opts.connectedPeers.length; i++) {
@@ -238,11 +297,12 @@ Network.prototype.start = function(openCallback, opts) {
     this.connectTo(otherPeerId);
   }
   this.started = true;
-
 console.log('[WebRTC.js.237] started TRUE'); //TODO
 };
 
-Network.prototype._sendToOne = function(peerId, data, cb) {
+Network.prototype._sendToOne = function(copayerId, data, cb) {
+
+  var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
@@ -259,36 +319,34 @@ console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
   if (typeof cb === 'function') cb();
 };
 
-Network.prototype.send = function(peerIds, data, cb) {
+Network.prototype.send = function(copayerIds, data, cb) {
   var self=this;
-  if (!peerIds) {
-    peerIds = this.connectedPeers;
+  if (!copayerIds) {
+    copayerIds = this.connectedCopayers();
     data.isBroadcast = 1;
   }
 
-  if (Array.isArray(peerIds)) {
-    var l = peerIds.length;
+  if (Array.isArray(copayerIds)) {
+    var l = copayerIds.length;
     var i = 0;
-    peerIds.forEach(function(peerId) {
-console.log('[WebRTC.js.258:peerId:]',peerId); //TODO
-      self._sendToOne(peerId, data, function () {
+    copayerIds.forEach(function(copayerId) {
+      self._sendToOne(copayerId, data, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
-  else if (typeof peerIds === 'string')
-    self._sendToOne(peerIds, data, cb);
+  else if (typeof copayerIds === 'string')
+    self._sendToOne(copayerIds, data, cb);
 };
 
-Network.prototype.connectTo = function(peerId) {
+Network.prototype.connectTo = function(copayerId) {
   var self = this;
-
-  console.log('### STARTING CONNECTION TO:' + peerId );
-
+  var peerId = this.peerFromCopayer(copayerId);
+  this.copayerForPeer[peerId] = copayerId;
+  console.log('### STARTING CONNECTION TO:', peerId, copayerId);
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',
     reliable: true,
-    metadata: { message: 'hi copayer!' }
   });
 
   self._setupConnectionHandlers(dataConn, false);

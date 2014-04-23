@@ -27,7 +27,6 @@ PrivateKey.prototype.getId = function(prefix) {
   return hash.substring(0, hash.length/2);
 };
 
-
 PrivateKey.fromObj = function(obj) {
   return new PrivateKey(obj);
 };
