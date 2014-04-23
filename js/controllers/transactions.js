@@ -67,5 +67,16 @@ console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
       }
     };
 
+    $scope.getTransactions = function() {
+      var w   =$rootScope.wallet;
+      var addresses = w.getAddressesStr(true);
+
+      w.blockchain.getTransactions(addresses, function(txs) {
+        $scope.blockchain_txs = txs;
+        $scope.$digest();
+      });
+      
+    };
+
     _updateTxs();
   });
