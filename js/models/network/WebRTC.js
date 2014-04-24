@@ -258,8 +258,8 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
     self._checkAnyPeer();
   });
 
-  p.on('connection', function(dataConn) {
 
+  p.on('connection', function(dataConn) {
     console.log('### NEW INBOUND CONNECTION %d/%d', self.connectedPeers.length, self.maxPeers);
     if (self.connectedPeers.length >= self.maxPeers) {
       console.log('### PEER REJECTED. PEER MAX LIMIT REACHED');
@@ -403,6 +403,7 @@ Network.prototype.connectTo = function(copayerId) {
 };
 
 Network.prototype._cleanUp = function() {
+  var self = this;
   self.connectedPeers = [];
   self.started = false;
   self.peerId = null;
@@ -421,9 +422,10 @@ Network.prototype._cleanUp = function() {
 Network.prototype.disconnect = function(cb, forced) {
   var self = this;
   self.closing = 1;
-  this.send(null, { type: 'disconnect' });
-  this._cleanUp();
-  if (typeof cb === 'function') cb();
+  self.send(null, { type: 'disconnect' }, function(){
+    self._cleanUp();
+    if (typeof cb === 'function') cb();
+  });
 };
 
 module.exports = require('soop')(Network);

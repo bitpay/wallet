@@ -4,6 +4,8 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
   var root = {};
 
   root.logout = function() {
+    console.log('### DELETING WALLET'); //TODO
+    $rootScope.wallet = null;
     delete $rootScope['wallet'];
     $rootScope.totalBalance = 0;
     $location.path('signin');
