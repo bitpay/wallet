@@ -139,21 +139,21 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(peerId, cb) {
+WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
   var self = this;
 
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
-  self.network.setPeerId(privateKey.getId());
-
-  self.network.start(function() {
-    self.network.connectTo(peerId);
+  self.network.setCopayerId(privateKey.getId());
+  self.network.setSigningKey(privateKey.getSigningKey());
+  self.network.start({}, function() {
+    self.network.connectTo(copayerId);
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
         var w = self.open(data.walletId, data.opts);
-        w.firstPeerId = peerId;
+        w.firstCopayerId = copayerId;
         return cb(w);
       }
     });
