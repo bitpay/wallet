@@ -9,7 +9,7 @@ var config = {
     //host: 'localhost',
     //port: 10009,
     //path: '/',
-    maxPeers: 3,
+    maxPeers: 15,
     debug: 3,
   },
   limits: {
