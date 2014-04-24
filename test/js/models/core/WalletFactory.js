@@ -73,7 +73,7 @@ WalletFactory.prototype.read = function(walletId) {
       w.privateKey.getExtendedPublicKeyString()
     );
   } catch (e) {
-    this.log('NOT NECCESARY AN ERROR:', e); //TODO
+    // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
   return w;
@@ -129,9 +129,13 @@ WalletFactory.prototype.open = function(walletId, opts) {
   return w;
 };
 
-WalletFactory.prototype.getWalletIds = function() {
-  return this.storage.getWalletIds();
-}
+WalletFactory.prototype.getWallets = function() {
+  var ret = this.storage.getWallets();
+  ret.forEach(function(i) {
+    i.show = i.name ? ( (i.name + ' <'+i.id+'>') ) : i.id;
+  });
+  return ret;
+};
 
 WalletFactory.prototype.remove = function(walletId) {
   // TODO remove wallet contents
@@ -139,21 +143,21 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(peerId, cb) {
+WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
   var self = this;
 
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
-  self.network.setPeerId(privateKey.getId());
-
-  self.network.start(function() {
-    self.network.connectTo(peerId);
+  self.network.setCopayerId(privateKey.getId());
+  self.network.setSigningKey(privateKey.getSigningKey());
+  self.network.start({}, function() {
+    self.network.connectTo(copayerId);
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
         var w = self.open(data.walletId, data.opts);
-        w.firstPeerId = peerId;
+        w.firstCopayerId = copayerId;
         return cb(w);
       }
     });

@@ -26,11 +26,12 @@ angular.module('copay.setup').controller('SetupController',
       updateRCSelect(tc);
     });
 
-    $scope.create = function(totalCopayers, requiredCopayers) {
+    $scope.create = function(totalCopayers, requiredCopayers, walletName) {
       $scope.loading = true;
       var opts = {
         requiredCopayers: requiredCopayers,
-        totalCopayers: totalCopayers
+        totalCopayers: totalCopayers,
+        name: walletName, 
       };
       var w = walletFactory.create(opts);
       controllerUtils.setupUxHandlers(w);
