@@ -4,7 +4,6 @@ var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 var bitcore     = require('bitcore');
 var util        = bitcore.util;
 var Key         = bitcore.Key;
-
 /*
  * Emits
  *  'networkChange'
@@ -83,8 +82,6 @@ Network.prototype.connectedCopayers = function() {
 };
 
 Network.prototype._onClose = function(peerId) {
-console.log('[WebRTC.js.72:_onClose:]');
-
   delete this.connections[peerId];
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
   this._notifyNetworkChange();
@@ -92,11 +89,7 @@ console.log('[WebRTC.js.72:_onClose:]');
 
 Network.prototype._connectToCopayers = function(copayerIds) {
   var self = this;
-
-console.log('[WebRTC.js.96] _connectToCopayers', copayerIds, this.connectedCopayers() ); //TODO
-
   var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
-console.log('[WebRTC.js.99:arrayDiff:]',arrayDiff); //TODO
   arrayDiff.forEach(function(copayerId) {
     console.log('### CONNECTING TO:', copayerId);
     self.connectTo(copayerId);
@@ -291,7 +284,6 @@ Network.prototype.setCopayerId = function(copayerId) {
   if (this.started) {
     throw new Error ('network already started: can not change peerId')
   }
-console.log('[WebRTC.js.295] SETING COPAYER ID:'  + copayerId); //TODO
   this.copayerId = copayerId;
   this.copayerIdBuf = new Buffer(copayerId,'hex');
   this.peerId = this.peerFromCopayer(this.copayerId);
@@ -331,7 +323,6 @@ Network.prototype.start = function(opts, openCallback) {
     this.connectTo(otherPeerId);
   }
   this.started = true;
-console.log('[WebRTC.js.237] started TRUE'); //TODO
 };
 
 
@@ -339,18 +330,15 @@ Network.prototype._sign = function(payload, copayerId) {
   var ret='';
   var str = JSON.stringify(payload);
   if (payload.type ==='hello') {
-console.log('[WebRTC.js.331] SIGNING WITH HMAC:', copayerId); //TODO
-    ret = CryptoJS.enc.Base64.stringify(
-      CryptoJS.HmacSHA256(
-      str, 
-      copayerId
-    ));
+    ret = (
+      util.sha512hmac(
+      new Buffer(str), 
+      new Buffer(copayerId,'hex')
+    )).toString('hex');
   }
   else {
     if (!this.signingKey)
       throw new Error ('no key to sign messages :(');
-
-console.log('[WebRTC.js.341] SIGNING WITH ECDSA'); //TODO
     ret = bitcore.Message.sign(
       str, 
       this.signingKey
@@ -371,7 +359,7 @@ Network.prototype._sendToOne = function(copayerId, payload, cb) {
       dataConn.send(str);
     }
     else {
-console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
+      console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
     }
   }
   if (typeof cb === 'function') cb();
