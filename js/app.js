@@ -13,7 +13,8 @@ var copayApp = window.copayApp = angular.module('copay',[
   'copay.signin',
   'copay.socket',
   'copay.controllerUtils',
-  'copay.setup'
+  'copay.setup',
+  'copay.directives'
 ]);
 
 angular.module('copay.header', []);
@@ -26,4 +27,5 @@ angular.module('copay.controllerUtils', []);
 angular.module('copay.signin', []);
 angular.module('copay.setup', []);
 angular.module('copay.socket', []);
+angular.module('copay.directives', []);
 
