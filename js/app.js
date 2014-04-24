@@ -14,7 +14,7 @@ var copayApp = window.copayApp = angular.module('copay',[
   'copay.socket',
   'copay.controllerUtils',
   'copay.setup',
-  'copay.directives'
+  'copay.directives',
   'copay.video'
 ]);
 
