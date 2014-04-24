@@ -205,20 +205,29 @@
     <script type="text/ng-template" id="peer.html">
       <div class="row">
         <div class="large-12 columns p70l">
-          <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedCopayers().length}}</h3>
-
           <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers >$root.wallet.network.connectedCopayers()"> <i class="fi-alert size-28"></i> 
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns p70l">
           {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
-
-          <ul class="no-bullet">
-            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
-              <video class="video-small" autoplay ng-show="$root.videoSrc[copayer]" 
-                ng-src="{{$root.getVideoURL(copayer)}}"
-                id="{{copayer + '-video'}}" muted="true"></video>
-              <img ng-show="!$root.videoSrc[copayer]" 
-                src="/img/satoshi.gif" title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
-            </li>
-          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-4 columns"
+          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
+          <video 
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+            class="video-small"
+            autoplay ng-show="$root.videoSrc[copayer]" 
+            ng-src="{{$root.getVideoURL(copayer)}}"
+            id="{{copayer + '-video'}}" muted="true"
+            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
+          <img ng-show="!$root.videoSrc[copayer]" 
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+            class="video-small"
+            src="/img/satoshi.gif" 
+            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
         </div>
       </div>
     </script>

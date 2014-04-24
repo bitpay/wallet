@@ -11,6 +11,7 @@ var Video = function() {
 Video.prototype.setOwnPeer = function(peer, wallet, cb) {
   var self = this;
 
+
   navigator.getUserMedia({
     audio: true,
     video: true

@@ -37,7 +37,6 @@ angular.module('copay.controllerUtils')
     root.setupUxHandlers = function(w) {
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
-          root.onErrorDigest(err);
           return;
         }
         $rootScope.videoSrc[peerID] = encodeURI(url);
