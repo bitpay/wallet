@@ -1712,8 +1712,6 @@ module.exports = require('soop')(Wallet);
 
 },{"../../../copay":"hxYaTp","bitcore":21,"events":27,"http":28,"soop":51}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
-},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -1883,7 +1881,9 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],15:[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
+},{}],15:[function(require,module,exports){
 var imports = require('soop').imports();
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
@@ -1926,7 +1926,9 @@ Network.prototype.disconnect = function(peerId, cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":27,"soop":51}],"7xJZlt":[function(require,module,exports){
+},{"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
+module.exports=require('7xJZlt');
+},{}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){
 
 var imports     = require('soop').imports();
@@ -2188,8 +2190,8 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
     self._checkAnyPeer();
   });
 
-  p.on('connection', function(dataConn) {
 
+  p.on('connection', function(dataConn) {
     console.log('### NEW INBOUND CONNECTION %d/%d', self.connectedPeers.length, self.maxPeers);
     if (self.connectedPeers.length >= self.maxPeers) {
       console.log('### PEER REJECTED. PEER MAX LIMIT REACHED');
@@ -2333,6 +2335,7 @@ Network.prototype.connectTo = function(copayerId) {
 };
 
 Network.prototype._cleanUp = function() {
+  var self = this;
   self.connectedPeers = [];
   self.started = false;
   self.peerId = null;
@@ -2351,17 +2354,16 @@ Network.prototype._cleanUp = function() {
 Network.prototype.disconnect = function(cb, forced) {
   var self = this;
   self.closing = 1;
-  this.send(null, { type: 'disconnect' });
-  this._cleanUp();
-  if (typeof cb === 'function') cb();
+  self.send(null, { type: 'disconnect' }, function(){
+    self._cleanUp();
+    if (typeof cb === 'function') cb();
+  });
 };
 
 module.exports = require('soop')(Network);
 
 }).call(this,require("buffer").Buffer)
-},{"bitcore":21,"buffer":24,"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
-module.exports=require('7xJZlt');
-},{}],18:[function(require,module,exports){
+},{"bitcore":21,"buffer":24,"events":27,"soop":51}],18:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
