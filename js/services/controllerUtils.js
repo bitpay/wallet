@@ -35,7 +35,7 @@ angular.module('copay.controllerUtils')
         if (err) {
           root.onErrorDigest(err);
         }
-        $sce.trustAsResourceUrl(url);
+        alert('add this video url='+url+' for peer '+peerID);
         $rootScope.videoSrc[peerID] = encodeURI(url);
         $rootScope.$apply();
       };
@@ -45,9 +45,8 @@ angular.module('copay.controllerUtils')
           message: 'Received wrong message from peer id:' + peerId
         };
       });
-
-      w.on('created', function(selfpeer) {
-        video.setOwnPeer(selfpeer, handlePeerVideo);
+      w.on('created', function(myPeerID) {
+        video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $location.path('peer');
         $rootScope.wallet = w;
         root.updateBalance();
@@ -58,7 +57,7 @@ angular.module('copay.controllerUtils')
       });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
-        video.addPeer(peerID, handlePeerVideo);
+        video.callPeer(peerID, handlePeerVideo);
       });
       w.on('close', root.onErrorDigest);
       w.netStart();

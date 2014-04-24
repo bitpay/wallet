@@ -127,8 +127,8 @@ Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new PEER:', newCopayerId);
     this.sendWalletId(newCopayerId);
+    this.emit('peer', newCopayerId);
   }
-  this.emit('peer', newPeerId);
   this.emit('refresh');
 };
 
@@ -178,10 +178,11 @@ Wallet.prototype.netStart = function() {
 
   net.start(function() {
     self.emit('created', net.getPeer());
-    for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
-      var otherId = self.getCopayerId(i);
-      if (otherId !== myId) {
-        net.connectTo(otherId);
+    var registered = self.getRegisteredPeerIds();
+    for (var i=0; i<registered.length; i++) {
+      var otherPeerId = registered[i];
+      if (otherPeerId !== myPeerId) {
+        net.connectTo(otherPeerId);
       }
     if (self.firstCopayerId){  
       self.sendWalletReady(self.firstCopayerId);
@@ -190,6 +191,18 @@ Wallet.prototype.netStart = function() {
     self.emit('refresh');
     }
   });
+};
+
+Wallet.prototype.getOnlinePeerIDs = function() {
+  return this.network.getOnlinePeerIDs();
+};
+
+Wallet.prototype.getRegisteredPeerIds = function() {
+  var ret = [];
+  for (var i=0; i<this.publicKeyRing.registeredCopayers(); i++) {
+    ret.push(this.getPeerId(i));
+  }
+  return ret;
 };
 
 Wallet.prototype.store = function(isSync) {

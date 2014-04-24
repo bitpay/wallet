@@ -6,46 +6,65 @@ var Video = function() {
     navigator.mozGetUserMedia;
 };
 
-Video.prototype.setOwnPeer = function(peer, cb) {
+Video.prototype.setOwnPeer = function(peer, wallet, cb) {
   var self = this;
 
   navigator.getUserMedia({
     audio: true,
     video: true
   }, function(stream) {
-    // Set your video displays
+    // This is called when user accepts using webcam
+    self.localStream = stream;
+    var online = wallet.getOnlinePeerIDs();
+    for (var i=0; i<online.length; i++) {
+      var o = online[i];
+      if (o !== peer.id) {
+        self.callPeer(o, cb);
+      }
+    } 
     cb(null, peer.id, URL.createObjectURL(stream));
-    window.localStream = stream;
   }, function() {
     cb(new Error('Failed to access the webcam and microphone.'));
   });
+
   // Receiving a call
-  peer.on('call', function(call) {
-    // Answer the call automatically (instead of prompting user) for demo purposes
-    call.answer(window.localStream);
-    self.addCall(call, cb);
+  peer.on('call', function(mediaConnection) {
+    alert('answering call from ' + mediaConnection.peer);
+    if (self.localStream) {
+      mediaConnection.answer(self.localStream);
+    } else {
+      mediaConnection.answer();
+    }
+    self._addCall(mediaConnection, cb);
   });
   peer.on('error', function(err) {
-    console.log('ERROR on video peer '+err);
+    alert('error on video peer '+err);
   });
   this.peer = peer;
 };
 
-Video.prototype.addPeer = function(peerID, cb) {
-  var call = this.peer.call(peerID, window.localStream);
-  this.addCall(call, cb);
+Video.prototype.callPeer = function(peerID, cb) {
+  if (this.localStream) {
+    var mediaConnection = this.peer.call(peerID, this.localStream);
+    this._addCall(mediaConnection, cb);
+  }
 };
 
-Video.prototype.addCall = function(call, cb) {
-  var peerID = call.id;
+Video.prototype._addCall = function(mediaConnection, cb) {
+  var peerID = mediaConnection.peer;
+  alert('_addCall ' + peerID);
 
   // Wait for stream on the call, then set peer video display
-  call.on('stream', function(stream) {
+  mediaConnection.on('stream', function(stream) {
+    alert('STREAM ON ADD CALL');
     cb(null, peerID, URL.createObjectURL(stream));
   });
 
-  call.on('close', function() {
-    // TODO: use peerID
+  mediaConnection.on('close', function() {
+    alert('CLOSEEEEEEEEEEEEEEE ON ADD CALL');
+  });
+  mediaConnection.on('error', function() {
+    alert('ERROR ON ADD CALL');
   });
 }
 

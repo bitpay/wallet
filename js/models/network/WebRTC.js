@@ -347,6 +347,13 @@ Network.prototype._sign = function(payload, copayerId) {
     ).toString('hex');
   }
   return ret;
+}
+Network.prototype.getOnlinePeerIDs = function() {
+  return this.connectedPeers;
+};
+
+Network.prototype.getPeer = function() {
+  return this.peer;
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, cb) {
