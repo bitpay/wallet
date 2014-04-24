@@ -3,7 +3,7 @@
 angular.module('copay.controllerUtils').factory('controllerUtils', function ($rootScope, $location, Socket) {
   var root = {};
 
-  root.logout = function(scope) {
+  root.logout = function() {
     delete $rootScope['wallet'];
     $rootScope.totalBalance = 0;
     $location.path('signin');
@@ -14,7 +14,6 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
     $rootScope.flashMessage = {type:'error', message: 'Could not connect to peer'};
     root.logout();
   }
-
 
   root.onErrorDigest = function(scope) {
     root.onError(scope);
@@ -31,10 +30,12 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
       $rootScope.wallet = w;
       root.updateBalance();
     });
+
     w.on('refresh', function() {
       console.log('[controllerUtils.js] Refreshing'); //TODO
       root.updateBalance();
     });
+
     w.on('openError', root.onErrorDigest);
     w.on('close', root.onErrorDigest);
     w.netStart();
@@ -61,7 +62,7 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
       console.log('### SUBSCRIBE TO', addrs[i]);
       Socket.emit('subscribe', addrs[i]);
     }
-
+console.log('[controllerUtils.js.64]'); //TODO
     addrs.forEach(function(addr) {
       Socket.on(addr, function(txid) {
         console.log('Received!', txid);

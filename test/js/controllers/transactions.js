@@ -1,12 +1,14 @@
 'use strict';
-var bitcore = require('bitcore');
 
 angular.module('copay.transactions').controller('TransactionsController',
   function($scope, $rootScope, $location) {
+    var bitcore = require('bitcore');
+
     $scope.title = 'Transactions';
     var _updateTxs = function() {
-console.log('[transactions.js.10:_updateTxs:]'); //TODO
       var w   =$rootScope.wallet;
+      if (!w) return;
+
       var inT = w.getTxProposals();
       var txs  = [];
 
@@ -25,11 +27,10 @@ console.log('[transactions.js.10:_updateTxs:]'); //TODO
         });
         // extra fields
         i.outs = outs;
-        i.fee = i.feeSat/bitcore.util.COIN;
+        i.fee = i.builder.feeSat/bitcore.util.COIN;
         i.missingSignatures = tx.countInputMissingSignatures(0);
         txs.push(i);
       });
-console.log('[transactions.js.35:txs:]',txs); //TODO
       $scope.txs = txs;
       w.removeListener('txProposalsUpdated',_updateTxs)
       w.once('txProposalsUpdated',_updateTxs);
@@ -38,7 +39,7 @@ console.log('[transactions.js.35:txs:]',txs); //TODO
     $scope.send = function (ntxid) {
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
-console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
+          console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
           $rootScope.flashMessage = txid
             ? {type:'success', message: 'Transactions SENT! txid:' + txid}
             : {type:'error', message: 'There was an error sending the Transaction'}
@@ -51,20 +52,43 @@ console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
     $scope.sign = function (ntxid) {
       var w = $rootScope.wallet;
       var ret = w.sign(ntxid);
-      _updateTxs();
 
+      if (!ret) {
+        $rootScope.flashMessage = {type:'error', message: 'There was an error signing the Transaction'};
+        _updateTxs();
+        $rootScope.$digest();    
+        return;
+      }
       var p = w.getTxProposal(ntxid);
       if (p.txp.builder.isFullySigned()) {
         $scope.send(ntxid);
-      }
-      else {
-        $rootScope.flashMessage = ret
-          ? {type:'success', message: 'Transactions signed'}
-          : {type:'error', message: 'There was an error signing the Transaction'}
-          ;
         _updateTxs();
         $rootScope.$digest();    
       }
+      else {
+        _updateTxs();
+        $rootScope.$digest();    
+      }
+    };
+
+    $scope.getTransactions = function() {
+      var w   =$rootScope.wallet;
+      var addresses = w.getAddressesStr();
+
+      if (addresses.length > 0) {
+        w.blockchain.getTransactions(addresses, function(txs) {
+          $scope.blockchain_txs = txs;
+          $rootScope.$digest();
+        });
+      }
+    };
+
+    $scope.reject = function (ntxid) {
+      var w = $rootScope.wallet;
+      w.reject(ntxid);
+      $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};
+      _updateTxs();
+      $rootScope.$digest();    
     };
 
     _updateTxs();

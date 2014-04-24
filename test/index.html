@@ -47,7 +47,7 @@
       
     </div>
 
-  <div class="row" ng-if='$root.flashMessage.message'>
+  <div class="row" ng-if='$root.flashMessage.message' notification>
     <div class="small-8 large-centered columns">
       <div data-alert class="alert-box round {{$root.flashMessage.type}}">
         {{$root.flashMessage.message}}
@@ -79,7 +79,7 @@
 
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
-      <div ng-controller="SigninController">
+      <div class="signin" ng-controller="SigninController">
         <div data-alert class="alert-box info round" ng-show="loading">
           Connecting to wallet...
         </div>
@@ -178,7 +178,7 @@
     </script>
 
     <script type="text/ng-template" id="peer.html">
-      <div class="row" ng-controller="PeerController">
+      <div class="row">
         <div class="large-6 columns p70r line-dashed-v">
           <h3>I am </h3>
           <div class="row">
@@ -244,15 +244,21 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4>Pending transactions <small>({{txs.length}})</small></h4>
+            <h4>Transactions proposals <small>({{txs.length}})</small></h4>
             <div class="panel pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
               <div class="txheader">
                 <div class="row">
                   <div class="large-8 columns">
-                    Proposal ID: {{tx.ntxid}}
+                    <table style="width:100%">
+                    <tr ng-repeat="out in tx.outs">
+                      <td class="text-right size-24"> <i class="fi-bitcoin"></i> {{out.value}}</td>
+                      <td class="text-center size-48"> <i class="fi-arrow-right size-24"> </i></td>
+                      <td class="text-left size-24">{{out.address}}</td>
+                    </tr>
+                    </table>
                   </div>
                   <div class="large-4 columns text-right">
-                    created at {{tx.createdTs | date:'medium'}}
+                    <h6> created at {{tx.createdTs | date:'medium'}} </h6>
                   </div>
                 </div>
               </div>
@@ -261,21 +267,30 @@
                 <div class="large-12 columns">
                   <table style="width:100%">
                     <tbody>
-                      <tr ng-repeat="o in tx.outs">
-                        <td class="text-right size-24">{{o.value}} <i class="fi-bitcoin"></i></td>
-                        <td class="text-center size-48"> <i class="fi-arrow-right size-40">
-                        <td class="text-left size-24">{{o.address}}</td>
-                      </tr>
+                      <tr>
+                        <small class="right text-gray"> 
+                           Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
+                          <strong> Proposal ID: </strong> {{tx.ntxid}} 
+                        </small>
+                      </tr>                     
                       <tr ng-repeat="(peer, actions) in tx.peerActions">
-                      <td colspan="3" >
-                        <span ng-if="peer == $root.wallet.network.peerId"> You</span>
-                        <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
-                        :
-                        <span ng-repeat="(action, ts) in actions">
-                            <a title="{{ts | date:'medium'}}"> {{action}}</a>
-                        </span>
-                        </tr>
-    
+                        <td colspan="3">
+                          <div class="panel status">
+                            <span ng-if="peer == $root.wallet.network.peerId"> You
+                            </span>
+                            <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
+
+                            <span ng-repeat="(action, ts) in actions">
+                              <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
+                              <span ng-if="action == 'seen'" title="{{ts | date:'medium'}}" class="fi-eye size-18 right m10h"> </span>
+                              <span ng-if="action == 'sign'" title="{{ts | date:'medium'}}" class="fi-check size-18 right m10h"> </span>
+                              <span ng-if="action == 'rejected'" title="{{ts | date:'medium'}}" class="fi-x size-18 right m10h" style="color:red"> </span>
+
+                              <a title="{{ts | date:'medium'}}"></a>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -287,16 +302,20 @@
                     <div ng-show="tx.signedByUs">
                       <i class="fi-check size-40"></i> Signed by you already
                     </div>
-                    <div ng-show="!tx.signedByUs && tx.missingSignatures"> 
+                    <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
                       <button class="secondary round"  ng-click="sign(tx.ntxid)">
                         <i class="fi-check"></i> Sign
                       </button>
-                      <button class="primary round">
-                        <i class="fi-x"></i> Ignore
+                      <button class="primary round" ng-click="reject(tx.ntxid)">
+                        <i class="fi-x" ></i> Reject 
                       </button>
                     </div>
                   </div>
                   <div class="large-6 columns text-right">
+                    <span ng-show="tx.finallyRejected ">
+                      Transaction finally rejected
+                    </span>
+ 
                     <span ng-show="!tx.missingSignatures && !tx.sentTs">
                       Transaction ready.
                       <button class="secondary round"  ng-click="send(tx.ntxid)">
@@ -309,50 +328,64 @@
                       Sent at {{tx.sentTs | date:'medium'}}
                       TXID: {{tx.sentTxid}}
                     </span>
-                    <span ng-show="tx.missingSignatures==1"> 
+                    <span ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
                       One signature missing
                     </span>
-                    <span ng-show="tx.missingSignatures>1"> 
+                    <span ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
                       {{tx.missingSignatures}} signatures missing</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="large-12 columns">
-<!--
-            <h4>Last transactions</h4>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
-                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Address 2 <small class="right"> 1231 BTC </small></p>
-                <span class="panel-res panel-sign">
-                  <i class="fi-check size-16"></i>
-                </span>
+          <div class="large-12 columns" ng-init="getTransactions()" ng-show="blockchain_txs[0].txid">
+            <h3>Last transactions</h3>
+            <div class="btransactions">
+              <div class="panel" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
+                <div class="txheader">
+                  <div class="row">
+                    <div class="large-8 columns">
+                      ID: {{btx.txid}}
+                    </div>
+                    <div class="large-4 columns text-right">
+                      {{btx.firstSeenTs * 1000 | date:'medium'}} </h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="large-5 columns">
+                    <div ng-repeat="vin in btx.vin">
+                      {{vin.addr}} 
+                      <small>{{vin.value}}</small>
+                    </div>
+                  </div>
+                  <div class="large-1 columns text-center">
+                    <i class="fi-arrow-right"></i>
+                  </div>
+                  <div class="large-6 columns">
+                    <div ng-repeat="vout in btx.vout">
+                      <div class="row">
+                        <div class="large-10 columns">
+                          <div ng-repeat="addr in vout.scriptPubKey.addresses">
+                            {{addr}}
+                          </div>
+                        </div>
+                        <div class="large-2 columns">
+                          <small>{{vout.value}}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="txbottom">
+                  <div class="row">
+                    <div class="large-4 columns">Fees: {{btx.fees}}</div>
+                    <div class="large-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
+                    <div class="large-4 columns text-right">Total: {{btx.valueOut}}</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
-                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Address 2 <small class="right"> 1231 BTC </small></p>
-                <span class="panel-res panel-sign">
-                  <i class="fi-check size-16"></i>
-                </span>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="row">
-                <p class="large-5 columns"> Address 1 <small class="right"> 1231 BTC </small></p>
-                <i class="large-1 columns fi-arrow-left size-16 text-center"></i>
-                <p class="large-5 columns"> Address 2 <small class="right"> 1231 BTC </small></p>
-                <span class="panel-res panel-ignore">
-                  <i class="fi-x size-16"></i>
-                </span>
-              </div>
-            </div>
--->
           </div>
         </div>    
       </div>
@@ -369,11 +402,11 @@
                 <div class="large-12 columns">
                   <label for="address">To address
                     <small ng-hide="!sendForm.address.$pristine">required</small>
-                    <small class="is-valid" ng-show="!sendForm.address.$invalid && !sendForm.address.$pristine">is valid!</small>
+                    <small class="is-valid" ng-show="!sendForm.address.$invalid && !sendForm.address.$pristine">valid!</small>
                     <small class="has-error" ng-show="sendForm.address.$invalid && !sendForm.address.$pristine">
-                    is not valid</small>
+                    not valid</small>
                   </label>
-                  <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" ng-minlength="20" ng-maxlength="37" required>
+                  <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" valid-address required>
                 </div>
               </div>
 
@@ -382,12 +415,13 @@
                   <div class="row collapse">
                     <label for="amount">Amount 
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
-                      <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">is valid!</small>
+                      <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">valid!</small>
                       <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine">
-                      is not valid</small>
+                      not valid.</small> 
+                      <small ng-show="notEnoughAmount">{{notEnoughAmount}}</small>
                     </label>
                     <div class="small-9 columns">
-                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" required>
+                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>
                     </div>
                     <div class="small-3 columns">
                       <span class="postfix">BTC</span>
@@ -474,7 +508,6 @@
     <script src="js/controllers/backup.js"></script>
     <script src="js/controllers/signin.js"></script>
     <script src="js/controllers/setup.js"></script>
-    <script src="js/controllers/peer.js"></script>
 
     <script src="js/init.js"></script>
   </body>

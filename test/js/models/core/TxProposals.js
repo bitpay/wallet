@@ -18,6 +18,7 @@ function TxProposal(opts) {
   this.createdTs   = opts.createdTs;
   this.seenBy   = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
+  this.rejectedBy = opts.rejectedBy || {};
   this.builder  = opts.builder;
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
@@ -120,6 +121,7 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
   };
 };
 
+// TODO add signatures.
 TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
   var toMerge = mergeInfo.toMerge;
@@ -130,7 +132,7 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
     var v1 = toMerge[hash];
 
     Object.keys(v1.seenBy).forEach(function(k) {
-      if (!v0.seenBy[k] || v0.seenBy[k] !== v1.seenBy[k]) {
+      if (!v0.seenBy[k]) {
         v0.seenBy[k] = v1.seenBy[k];
         hasChanged++;
       }
@@ -139,6 +141,13 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
     Object.keys(v1.signedBy).forEach(function(k) {
       if (!v0.signedBy[k]) {
         v0.signedBy[k] = v1.signedBy[k];
+        hasChanged++;
+      }
+    });
+
+    Object.keys(v1.rejectedBy).forEach(function(k) {
+      if (!v0.rejectedBy[k]) {
+        v0.rejectedBy[k] = v1.rejectedBy[k];
         hasChanged++;
       }
     });
@@ -181,10 +190,41 @@ TxProposals.prototype.setSent = function(ntxid,txid) {
   this.txps[ntxid].setSent(txid);
 };
 
-TxProposals.prototype.getUsedUnspent = function() {
+
+TxProposals.prototype.getTxProposal = function(ntxid) {
+  var txp = this.txps[ntxid];
+  var i = JSON.parse(JSON.stringify(txp));
+  i.builder = txp.builder;
+  i.ntxid = ntxid;
+  i.peerActions = {};
+  for(var p in txp.seenBy){
+    i.peerActions[p]={seen: txp.seenBy[p]};
+  }
+  for(var p in txp.signedBy){
+    i.peerActions[p]=  i.peerActions[p] || {};
+    i.peerActions[p].sign = txp.signedBy[p];
+  }
+  var r=0;
+  for(var p in txp.rejectedBy){
+    i.peerActions[p]=  i.peerActions[p] || {};
+    i.peerActions[p].rejected = txp.rejectedBy[p];
+    r++;
+  }
+  i.rejectCount=r;
+
+  var c = txp.creator;
+  i.peerActions[c] = i.peerActions[c] || {};
+  i.peerActions[c].create = txp.createdTs;
+  return i;
+};
+
+TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = [];
   for(var i in this.txps) {
     var u = this.txps[i].builder.getSelectedUnspent();
+    if (this.getTxProposal(i).rejectCount>maxRejectCount)
+      continue;
+
     for (var j in u){
       ret.push(u[j].txid);
     }

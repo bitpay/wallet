@@ -268,8 +268,6 @@ module.exports.API = require('./API');
 
 },{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":10,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":19,"./js/models/storage/LocalPlain":20,"soop":51}],"copay":[function(require,module,exports){
 module.exports=require('hxYaTp');
-},{}],"../js/models/blockchain/Insight":[function(require,module,exports){
-module.exports=require('N916Nn');
 },{}],"N916Nn":[function(require,module,exports){
 (function (process){
 'use strict';
@@ -301,7 +299,78 @@ function _asyncForEach(array, fn, callback) {
   } else {
     callback(); // Done!
   }
-}; 
+};
+
+function removeRepeatedElements(ar){ 
+  var ya=false,v="",aux=[].concat(ar),r=Array(); 
+  for (var i in aux){ // 
+    v=aux[i]; 
+    ya=false; 
+    for (var a in aux){ 
+      if (v==aux[a]){ 
+        if (ya==false){ 
+          ya=true; 
+        } 
+        else{ 
+          aux[a]=""; 
+        } 
+      } 
+    } 
+  } 
+  for (var a in aux){ 
+    if (aux[a]!=""){ 
+      r.push(aux[a]); 
+    } 
+  } 
+  return r; 
+}
+
+Insight.prototype.getTransactions = function(addresses, cb) {
+  var self = this;
+  
+  if (!addresses || !addresses.length) return cb([]);
+
+  var txids = [];
+  var txs = [];
+  
+  _asyncForEach(addresses, function(addr, callback) {
+    var options = {
+      host: self.host,
+      port: self.port,
+      scheme: self.scheme,
+      method: 'GET',
+      path: '/api/addr/' + addr,
+
+      headers: { 'Access-Control-Request-Headers' : '' }
+    };
+    
+    self._request(options, function(err, res) {
+      var txids_tmp = res.transactions;
+      for(var i=0; i<txids_tmp.length; i++) {
+        txids.push(txids_tmp[i]);
+      }
+      callback();
+    });
+  }, function() {
+    var clean_txids = removeRepeatedElements(txids);
+    _asyncForEach(clean_txids, function(txid, callback2) {
+      var options = {
+        host: self.host,
+        port: self.port,
+        scheme: self.scheme,
+        method: 'GET',
+        path: '/api/tx/' + txid,
+        headers: { 'Access-Control-Request-Headers' : '' }
+      };
+      self._request(options, function(err, res) {
+        txs.push(res);
+        callback2();
+      });
+    }, function() {
+      return cb(txs);
+    });
+  });
+};
 
 Insight.prototype.getUnspent = function(addresses, cb) {
   var self = this;
@@ -372,7 +441,6 @@ Insight.prototype._request = function(options, callback) {
     request.open(options.method, url, true);
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
-console.log('[Insight.js.102]', request); //TODO
         if (request.status === 200) {
           return callback(null, JSON.parse(request.responseText));
         } 
@@ -424,8 +492,12 @@ console.log('[Insight.js.102]', request); //TODO
 module.exports = require('soop')(Insight);
 
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bitcore":21,"http":28,"soop":51}],"41fjjN":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bitcore":21,"http":28,"soop":51}],"../js/models/blockchain/Insight":[function(require,module,exports){
+module.exports=require('N916Nn');
+},{}],"../js/models/core/PrivateKey":[function(require,module,exports){
+module.exports=require('41fjjN');
+},{}],"41fjjN":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -500,7 +572,6 @@ PrivateKey.prototype.get = function(index,isChange) {
 
 PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
   var ret = [];
-
   for(var i=0;i<addressIndex; i++) {
     ret.push(this.get(i,false));
   }
@@ -515,9 +586,7 @@ PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
 module.exports = require('soop')(PrivateKey);
 
 }).call(this,require("buffer").Buffer)
-},{"./PublicKeyRing":"6Bv3pA","bitcore":21,"buffer":24,"soop":51}],"../js/models/core/PrivateKey":[function(require,module,exports){
-module.exports=require('41fjjN');
-},{}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
+},{"./PublicKeyRing":"6Bv3pA","bitcore":21,"buffer":24,"soop":51}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
 module.exports=require('6Bv3pA');
 },{}],"6Bv3pA":[function(require,module,exports){
 (function (Buffer){
@@ -665,7 +734,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
       var bip32 = this.copayersBIP32[i].derive(path);
       pubKeys[i] = bip32.eckey.public;
     }
-    this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex')});
+    this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
   } else {
     pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')});
   }
@@ -681,6 +750,7 @@ PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
   }
 };
 
+// TODO this could be cached
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
 
@@ -689,19 +759,26 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   return script;
 };
 
-
+// TODO this could be cached
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
   this._checkIndexRange(index, isChange);
   var script  = this.getRedeemScript(index,isChange);
   return Address.fromScript(script, this.network.name);
 };
 
+// TODO this could be cached
+PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
+  this._checkIndexRange(index, isChange);
+  var script  = this.getRedeemScript(index,isChange);
+  map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
+};
+
+// TODO this could be cached
 PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
   this._checkIndexRange(index, isChange);
   var addr  = this.getAddress(index,isChange);
   return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
 };
-
 
 
 //generate a new address, update index.
@@ -738,11 +815,10 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
   var ret = {};
 
   for (var i=0; i<this.changeAddressIndex; i++) {
-    ret[this.getAddress(i,true)] = this.getRedeemScript(i,true).getBuffer().toString('hex');
+    this._addScriptMap(ret,i,true);
   }
-
   for (var i=0; i<this.addressIndex; i++) {
-    ret[this.getAddress(i)] = this.getRedeemScript(i).getBuffer().toString('hex');
+    this._addScriptMap(ret,i,false);
   }
   return ret;
 };
@@ -790,6 +866,8 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   var self = this;
   var hasChanged = false;
   var l= self.copayersBIP32.length;
+  if (self.isComplete()) 
+    return;
 
   inPKR.copayersBIP32.forEach( function(b) {
     var haveIt = false;
@@ -802,7 +880,6 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
     }
     if (!haveIt) {
       if (self.isComplete()) {
-        //console.log('[PublicKeyRing.js.318] REPEATED KEY', epk); //TODO
         throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
       }
       self.copayersBIP32.push(new BIP32(epk));
@@ -850,6 +927,7 @@ function TxProposal(opts) {
   this.createdTs   = opts.createdTs;
   this.seenBy   = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
+  this.rejectedBy = opts.rejectedBy || {};
   this.builder  = opts.builder;
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
@@ -952,6 +1030,7 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
   };
 };
 
+// TODO add signatures.
 TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
   var toMerge = mergeInfo.toMerge;
@@ -962,7 +1041,7 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
     var v1 = toMerge[hash];
 
     Object.keys(v1.seenBy).forEach(function(k) {
-      if (!v0.seenBy[k] || v0.seenBy[k] !== v1.seenBy[k]) {
+      if (!v0.seenBy[k]) {
         v0.seenBy[k] = v1.seenBy[k];
         hasChanged++;
       }
@@ -971,6 +1050,13 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
     Object.keys(v1.signedBy).forEach(function(k) {
       if (!v0.signedBy[k]) {
         v0.signedBy[k] = v1.signedBy[k];
+        hasChanged++;
+      }
+    });
+
+    Object.keys(v1.rejectedBy).forEach(function(k) {
+      if (!v0.rejectedBy[k]) {
+        v0.rejectedBy[k] = v1.rejectedBy[k];
         hasChanged++;
       }
     });
@@ -1013,10 +1099,41 @@ TxProposals.prototype.setSent = function(ntxid,txid) {
   this.txps[ntxid].setSent(txid);
 };
 
-TxProposals.prototype.getUsedUnspent = function() {
+
+TxProposals.prototype.getTxProposal = function(ntxid) {
+  var txp = this.txps[ntxid];
+  var i = JSON.parse(JSON.stringify(txp));
+  i.builder = txp.builder;
+  i.ntxid = ntxid;
+  i.peerActions = {};
+  for(var p in txp.seenBy){
+    i.peerActions[p]={seen: txp.seenBy[p]};
+  }
+  for(var p in txp.signedBy){
+    i.peerActions[p]=  i.peerActions[p] || {};
+    i.peerActions[p].sign = txp.signedBy[p];
+  }
+  var r=0;
+  for(var p in txp.rejectedBy){
+    i.peerActions[p]=  i.peerActions[p] || {};
+    i.peerActions[p].rejected = txp.rejectedBy[p];
+    r++;
+  }
+  i.rejectCount=r;
+
+  var c = txp.creator;
+  i.peerActions[c] = i.peerActions[c] || {};
+  i.peerActions[c].create = txp.createdTs;
+  return i;
+};
+
+TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = [];
   for(var i in this.txps) {
     var u = this.txps[i].builder.getSelectedUnspent();
+    if (this.getTxProposal(i).rejectCount>maxRejectCount)
+      continue;
+
     for (var j in u){
       ret.push(u[j].txid);
     }
@@ -1050,7 +1167,7 @@ TxProposals.prototype.merge = function(t) {
 
 module.exports = require('soop')(TxProposals);
 
-},{"../storage/Base":18,"bitcore":21,"soop":51}],"./js/models/core/Wallet":[function(require,module,exports){
+},{"../storage/Base":18,"bitcore":21,"soop":51}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
 },{}],"zfa+FW":[function(require,module,exports){
 'use strict';
@@ -1324,56 +1441,46 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 
 Wallet.prototype.generateAddress = function(isChange) {
   var addr = this.publicKeyRing.generateAddress(isChange);
-console.log('[Wallet.js.281:addr:]',addr, this.publicKeyRing.toObj(), this.getAddresses()); //TODO
   this.sendPublicKeyRing();
   this.store(true);
   return addr;
 };
 
-// TODO : sort by time... / signed.
+
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
   for(var k in this.txProposals.txps) {
-    var txp = this.txProposals.txps[k];
-    var i = JSON.parse(JSON.stringify(txp));
-    i.builder = txp.builder;
-    i.ntxid = k;
-    i.signedByUs = txp.signedBy[this.getMyPeerId()]?true:false;
-
-    i.peerActions = {};
-    for(var p in txp.seenBy){
-      i.peerActions[p]={seen: txp.seenBy[p]};
-    }
-    for(var p in txp.signedBy){
-      i.peerActions[p]=  i.peerActions[p] || {};
-      i.peerActions[p].sign = txp.signedBy[p];
-    }
-    var c = txp.creator;
-    i.peerActions[c] = i.peerActions[c] || {};
-    i.peerActions[c].create = txp.createdTs;
-
+    var i = this.txProposals.getTxProposal(k);
+    i.signedByUs = i.signedBy[this.getMyPeerId()]?true:false;
+    i.rejectedByUs = i.rejectedBy[this.getMyPeerId()]?true:false;
+    if (this.totalCopayers-i.rejectCount < this.requiredCopayers)
+      i.finallyRejected=true;
 
     ret.push(i);
   }
   return ret;
 };
 
-Wallet.prototype.getTxProposal = function(ntxid) {
+
+Wallet.prototype.reject = function(ntxid) {
+  var myId=this.getMyPeerId();
   var txp = this.txProposals.txps[ntxid];
-  var i = {txp:txp};
-  i.ntxid = ntxid;
-  i.signedByUs = txp.signedBy[this.getMyPeerId()]?true:false;
-  return i;
+  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
+
+  txp.rejectedBy[myId] = Date.now();
+  this.sendTxProposals();
+  this.store(true);
 };
+
 
 Wallet.prototype.sign = function(ntxid) {
   var self = this;
+  var myId=this.getMyPeerId();
   var txp = self.txProposals.txps[ntxid];
-  if (!txp) return;
+  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
   var pkr = self.publicKeyRing;
   var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
-console.log('[Wallet.js.329:keys:]',keys); //TODO
 
   var b = txp.builder;
   var before = b.signaturesAdded;
@@ -1381,7 +1488,7 @@ console.log('[Wallet.js.329:keys:]',keys); //TODO
 
   var ret = false;
   if (b.signaturesAdded >  before) {
-    txp.signedBy[self.getMyPeerId()] = Date.now();
+    txp.signedBy[myId] = Date.now();
     this.sendTxProposals();
     this.store(true);
     ret = true;
@@ -1427,7 +1534,6 @@ Wallet.prototype.addSeenToTxProposals = function() {
   }
   return ret;
 };
-
 
 Wallet.prototype.getAddresses = function(onlyMain) {
   return this.publicKeyRing.getAddresses(onlyMain);
@@ -1495,7 +1601,8 @@ Wallet.prototype.getSafeUnspent = function(cb) {
   this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
 
     var ret=[];
-    var uu = self.txProposals.getUsedUnspent();
+    var maxRejectCount = self.totalCopayers - self.requiredCopayers;
+    var uu = self.txProposals.getUsedUnspent(maxRejectCount);
 
     for(var i in unspentList){
       if (uu.indexOf(unspentList[i].txid) === -1) 
@@ -1520,11 +1627,11 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   }
 
   self.getSafeUnspent(function(unspentList) {
-    // TODO check enough funds, etc.
-    self.createTxSync(toAddress, amountSatStr, unspentList, opts);
-    self.sendPublicKeyRing();   // Change Address
-    self.sendTxProposals();
-    self.store();
+    if (self.createTxSync(toAddress, amountSatStr, unspentList, opts)) {
+      self.sendPublicKeyRing();   // Change Address
+      self.sendTxProposals();
+      self.store();
+    }
     return cb();
   });
 };
@@ -1552,25 +1659,27 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var signRet;  
   if (priv) {
-console.log('[Wallet.js.486] aLL Priv', priv.getAll(pkr.addressIndex, pkr.changeAddressIndex)); //TODO
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
-console.log('[Wallet.js.494]', b, b.build().serialize().toString('hex')); //TODO
-  var me = {};
   var myId = this.getMyPeerId();
   var now = Date.now();
 
-  if (priv) me[myId] = now;
+  var me = {};
+  if (priv && b.signaturesAdded) me[myId] = now;
+
+  var meSeen = {};
+  if (priv) meSeen[myId] = now;
 
   var data = {
-    signedBy: (priv && b.signaturesAdded ? me : {}),
-    seenBy:   (priv ? me : {}),
+    signedBy: me,
+    seenBy:   meSeen,
     creator:   myId,
     createdTs: now,
     builder: b,
   };
 
   this.txProposals.add(data);
+  return true;
 };
 
 Wallet.prototype.connectTo = function(peerId) {
@@ -1793,7 +1902,9 @@ Network.prototype.disconnect = function(peerId, cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":27,"soop":51}],"7xJZlt":[function(require,module,exports){
+},{"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
+module.exports=require('7xJZlt');
+},{}],"7xJZlt":[function(require,module,exports){
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
@@ -2057,7 +2168,6 @@ console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
 
 Network.prototype.send = function(peerIds, data, cb) {
   var self=this;
-console.log('[WebRTC.js.242] SENDING ', data.type); //TODO
   if (!peerIds) {
     peerIds = this.connectedPeers;
     data.isBroadcast = 1;
@@ -2116,9 +2226,7 @@ Network.prototype.disconnect = function(cb, forced) {
 
 module.exports = require('soop')(Network);
 
-},{"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
-module.exports=require('7xJZlt');
-},{}],18:[function(require,module,exports){
+},{"events":27,"soop":51}],18:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -2421,8 +2529,8 @@ if (typeof process.versions === 'undefined') {
 }
 
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bindings":22,"buffer":24}],22:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bindings":22,"buffer":24}],22:[function(require,module,exports){
 (function (process,__filename){
 
 /**
@@ -2584,8 +2692,8 @@ exports.getRoot = function getRoot (file) {
   }
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bitcore/node_modules/bindings/bindings.js")
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"fs":23,"path":34}],23:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bitcore/node_modules/bindings/bindings.js")
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"fs":23,"path":34}],23:[function(require,module,exports){
 
 },{}],24:[function(require,module,exports){
 /*!
@@ -5030,8 +5138,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33}],35:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33}],35:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6905,8 +7013,8 @@ function indexOf (xs, x) {
   return -1;
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./index.js":40,"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"buffer":24,"events":27,"inherits":32,"process/browser.js":41,"string_decoder":46}],44:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./index.js":40,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"buffer":24,"events":27,"inherits":32,"process/browser.js":41,"string_decoder":46}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8922,8 +9030,8 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":48,"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"inherits":32}],50:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":48,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"inherits":32}],50:[function(require,module,exports){
 
 module.exports = function(){
   var orig = Error.prepareStackTrace;
@@ -9030,8 +9138,8 @@ module.exports.imports = function() {
   return answer;
 };
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"callsite":50,"path":34}],"q/5+08":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"callsite":50,"path":34}],"q/5+08":[function(require,module,exports){
 
 var FakeStorage = function(){
   this.storage = {};

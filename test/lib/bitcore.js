@@ -171,8 +171,8 @@ if (typeof process.versions === 'undefined') {
 }
 
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bindings":65,"buffer":74}],"bitcore":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bindings":65,"buffer":74}],"bitcore":[function(require,module,exports){
 module.exports=require('tmvhGl');
 },{}],5:[function(require,module,exports){
 if ('undefined' === typeof window) window = this;
@@ -3051,8 +3051,6 @@ module.exports = {
 
 },{}],"./config":[function(require,module,exports){
 module.exports=require('4itQ50');
-},{}],"./const":[function(require,module,exports){
-module.exports=require('f08cvL');
 },{}],"f08cvL":[function(require,module,exports){
 
 MSG = {
@@ -3073,6 +3071,10 @@ MSG.to_str = function(t) {
 exports.MSG = MSG;
 
 
+},{}],"./const":[function(require,module,exports){
+module.exports=require('f08cvL');
+},{}],"./lib/Address":[function(require,module,exports){
+module.exports=require('G+CcXD');
 },{}],"G+CcXD":[function(require,module,exports){
 (function (Buffer){
 'use strict';
@@ -3210,8 +3212,8 @@ Address.prototype.isScript = function() {
 module.exports = require('soop')(Address);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":166,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":74,"soop":152}],"./lib/Address":[function(require,module,exports){
-module.exports=require('G+CcXD');
+},{"../networks":"ULNIu2","../util":166,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":74,"soop":152}],"./lib/BIP32":[function(require,module,exports){
+module.exports=require('Dad1wf');
 },{}],"Dad1wf":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
@@ -3563,11 +3565,7 @@ function u64(f) {return uint(f,8);}
 module.exports = require('soop')(BIP32);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":166,"./Key":"aEfkTx","./Point":"LK/jwR","base58-native":"xtP2pj","bignum":"J4nwo8","buffer":74,"crypto":78,"soop":152}],"./lib/BIP32":[function(require,module,exports){
-module.exports=require('Dad1wf');
-},{}],"./lib/Block":[function(require,module,exports){
-module.exports=require('pJEQEB');
-},{}],"pJEQEB":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":166,"./Key":"aEfkTx","./Point":"LK/jwR","base58-native":"xtP2pj","bignum":"J4nwo8","buffer":74,"crypto":78,"soop":152}],"pJEQEB":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -3871,7 +3869,9 @@ function getStandardizedObject(txs)
 module.exports = require('soop')(Block);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":166,"../util/error":165,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":"J4nwo8","binary":61,"buffer":74,"buffertools":"fugeBw","soop":152,"step":153}],"KifRG4":[function(require,module,exports){
+},{"../util":166,"../util/error":165,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":"J4nwo8","binary":61,"buffer":74,"buffertools":"fugeBw","soop":152,"step":153}],"./lib/Block":[function(require,module,exports){
+module.exports=require('pJEQEB');
+},{}],"KifRG4":[function(require,module,exports){
 var MAX_BLOOM_FILTER_SIZE = 36000;  // bytes
 var MAX_HASH_FUNCS = 50;
 var LN2SQUARED = 0.4804530139182014246671025263266649717305529515945455;
@@ -3986,6 +3986,8 @@ module.exports = require('soop')(Bloom);
 
 },{"soop":152}],"./lib/Bloom":[function(require,module,exports){
 module.exports=require('KifRG4');
+},{}],"./lib/Connection":[function(require,module,exports){
+module.exports=require('DB/p3X');
 },{}],"DB/p3X":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
@@ -4554,11 +4556,7 @@ Connection.prototype.parseMessage = function (command, payload) {
 module.exports = require('soop')(Connection);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":166,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./Transaction":"LJhYtm","buffer":74,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":83,"socks5-client":145,"soop":152}],"./lib/Connection":[function(require,module,exports){
-module.exports=require('DB/p3X');
-},{}],"./lib/Deserialize":[function(require,module,exports){
-module.exports=require('ez/meX');
-},{}],"ez/meX":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":166,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./Transaction":"LJhYtm","buffer":74,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":83,"socks5-client":145,"soop":152}],"ez/meX":[function(require,module,exports){
 
 exports.intFromCompact = function(c)
 {
@@ -4568,6 +4566,10 @@ exports.intFromCompact = function(c)
 }
 
 
+},{}],"./lib/Deserialize":[function(require,module,exports){
+module.exports=require('ez/meX');
+},{}],"./lib/Key":[function(require,module,exports){
+module.exports=require('aEfkTx');
 },{}],"aEfkTx":[function(require,module,exports){
 (function (process,Buffer){
 
@@ -4686,10 +4688,8 @@ if (process.versions) {
 
 
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../browser/vendor-bundle.js":5,"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bindings":65,"buffer":74,"buffertools":"fugeBw"}],"./lib/Key":[function(require,module,exports){
-module.exports=require('aEfkTx');
-},{}],"./lib/Message":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
+},{"../browser/vendor-bundle.js":5,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bindings":65,"buffer":74,"buffertools":"fugeBw"}],"./lib/Message":[function(require,module,exports){
 module.exports=require('CBDCgz');
 },{}],"CBDCgz":[function(require,module,exports){
 (function (Buffer){
@@ -4909,8 +4909,6 @@ module.exports = require('soop')(Opcode);
 
 },{"soop":152}],"./lib/Opcode":[function(require,module,exports){
 module.exports=require('Zm7/h9');
-},{}],"./lib/Peer":[function(require,module,exports){
-module.exports=require('oolY81');
 },{}],"oolY81":[function(require,module,exports){
 (function (Buffer){
 var imports     = require('soop').imports();
@@ -4973,7 +4971,9 @@ Peer.prototype.toBuffer = function () {
 module.exports = require('soop')(Peer);
 
 }).call(this,require("buffer").Buffer)
-},{"binary":61,"buffer":74,"buffertools":"fugeBw","net":70,"soop":152}],"./lib/PeerManager":[function(require,module,exports){
+},{"binary":61,"buffer":74,"buffertools":"fugeBw","net":70,"soop":152}],"./lib/Peer":[function(require,module,exports){
+module.exports=require('oolY81');
+},{}],"./lib/PeerManager":[function(require,module,exports){
 module.exports=require('nsqKeP');
 },{}],"nsqKeP":[function(require,module,exports){
 var imports         = require('soop').imports();
@@ -5427,8 +5427,8 @@ Point.prototype.toKey = function() {
 
 module.exports = require('soop')(Point);
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../browser/vendor-bundle.js":5,"./Key":"aEfkTx","/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"assert":71,"bignum":"J4nwo8","buffer":74,"chai":111,"soop":152}],"./lib/Point":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
+},{"../browser/vendor-bundle.js":5,"./Key":"aEfkTx","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"assert":71,"bignum":"J4nwo8","buffer":74,"chai":111,"soop":152}],"./lib/Point":[function(require,module,exports){
 module.exports=require('LK/jwR');
 },{}],"izTl9z":[function(require,module,exports){
 (function (Buffer){
@@ -5792,6 +5792,8 @@ module.exports = require('soop')(SIN);
 }).call(this,require("buffer").Buffer)
 },{"../util/VersionedData":"QLzNQg","buffer":74,"soop":152}],"./lib/SIN":[function(require,module,exports){
 module.exports=require('tBM27q');
+},{}],"./lib/SINKey":[function(require,module,exports){
+module.exports=require('EyghZQ');
 },{}],"EyghZQ":[function(require,module,exports){
 var coinUtil  = require('../util');
 var timeUtil  = require('../util/time');
@@ -5831,9 +5833,7 @@ SINKey.prototype.storeObj = function() {
 
 module.exports = require('soop')(SINKey);
 
-},{"../util":166,"../util/time":169,"./Key":"aEfkTx","./SIN":"tBM27q","soop":152}],"./lib/SINKey":[function(require,module,exports){
-module.exports=require('EyghZQ');
-},{}],"hQ0t76":[function(require,module,exports){
+},{"../util":166,"../util/time":169,"./Key":"aEfkTx","./SIN":"tBM27q","soop":152}],"hQ0t76":[function(require,module,exports){
 (function (Buffer){
 var imports     = require('soop').imports();
 var config      = imports.config || require('../config');
@@ -7543,8 +7543,8 @@ ScriptInterpreter.prototype.isCanonicalSignature = function(sig) {
 
 module.exports = require('soop')(ScriptInterpreter);
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../config":"4itQ50","../util":166,"../util/log":"AdF7pF","./Key":"aEfkTx","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bignum":"J4nwo8","buffer":74,"buffertools":"fugeBw","soop":152}],"./lib/ScriptInterpreter":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
+},{"../config":"4itQ50","../util":166,"../util/log":"AdF7pF","./Key":"aEfkTx","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bignum":"J4nwo8","buffer":74,"buffertools":"fugeBw","soop":152}],"./lib/ScriptInterpreter":[function(require,module,exports){
 module.exports=require('Q/ZWXW');
 },{}],"./lib/Sign":[function(require,module,exports){
 module.exports=require('V3JdDp');
@@ -8314,6 +8314,8 @@ module.exports = require('soop')(Transaction);
 }).call(this,require("buffer").Buffer)
 },{"../config":"4itQ50","../networks":"ULNIu2","../util":166,"../util/BinaryParser":"b3ZSD7","../util/error":165,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":74,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":152,"step":153}],"./lib/Transaction":[function(require,module,exports){
 module.exports=require('LJhYtm');
+},{}],"./lib/TransactionBuilder":[function(require,module,exports){
+module.exports=require('D1Ge6m');
 },{}],"D1Ge6m":[function(require,module,exports){
 (function (Buffer){
 
@@ -9255,9 +9257,7 @@ module.exports = require('soop')(TransactionBuilder);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":166,"./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":74,"buffertools":"fugeBw","soop":152}],"./lib/TransactionBuilder":[function(require,module,exports){
-module.exports=require('D1Ge6m');
-},{}],"yUY4WV":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":166,"./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":74,"buffertools":"fugeBw","soop":152}],"yUY4WV":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 
@@ -9403,6 +9403,8 @@ module.exports = require('soop')(Wallet);
 }).call(this,require("buffer").Buffer)
 },{"../networks":"ULNIu2","../util":166,"../util/EncFile":160,"./Address":"G+CcXD","buffer":74,"fs":70,"soop":152}],"./lib/Wallet":[function(require,module,exports){
 module.exports=require('yUY4WV');
+},{}],"./lib/WalletKey":[function(require,module,exports){
+module.exports=require('wWje7g');
 },{}],"wWje7g":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
@@ -9459,9 +9461,7 @@ WalletKey.prototype.fromObj = function(obj) {
 module.exports = require('soop')(WalletKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":166,"../util/time":169,"./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","buffer":74,"soop":152}],"./lib/WalletKey":[function(require,module,exports){
-module.exports=require('wWje7g');
-},{}],"ULNIu2":[function(require,module,exports){
+},{"../util":166,"../util/time":169,"./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","buffer":74,"soop":152}],"ULNIu2":[function(require,module,exports){
 (function (Buffer){
 var Put = require('bufferput');
 var buffertools = require('buffertools');
@@ -10485,8 +10485,8 @@ module.exports=require('ULNIu2');
 
 }());
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90}],"base58-native":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90}],"base58-native":[function(require,module,exports){
 module.exports=require('xtP2pj');
 },{}],"xtP2pj":[function(require,module,exports){
 (function (Buffer){
@@ -11187,8 +11187,8 @@ function upgradeChainsaw(saw) {
     };
 };
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"events":83,"traverse":64}],64:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"events":83,"traverse":64}],64:[function(require,module,exports){
 module.exports = Traverse;
 function Traverse (obj) {
     if (!(this instanceof Traverse)) return new Traverse(obj);
@@ -11674,8 +11674,10 @@ exports.getRoot = function getRoot (file) {
   }
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bindings/bindings.js")
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"fs":70,"path":91}],"J4nwo8":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bindings/bindings.js")
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"fs":70,"path":91}],"bignum":[function(require,module,exports){
+module.exports=require('J4nwo8');
+},{}],"J4nwo8":[function(require,module,exports){
 (function (Buffer){
 /* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
@@ -13800,9 +13802,7 @@ P['valueOf'] = function () {
 module.exports = BigNumber;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":74}],"bignum":[function(require,module,exports){
-module.exports=require('J4nwo8');
-},{}],"fugeBw":[function(require,module,exports){
+},{"buffer":74}],"fugeBw":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -15009,8 +15009,8 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":72,"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"inherits":89}],74:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":72,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"inherits":89}],74:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -17993,8 +17993,8 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90}],92:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90}],92:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -19921,8 +19921,8 @@ function indexOf (xs, x) {
   return -1;
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./index.js":97,"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"buffer":74,"events":83,"inherits":89,"process/browser.js":98,"string_decoder":103}],101:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./index.js":97,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"buffer":74,"events":83,"inherits":89,"process/browser.js":98,"string_decoder":103}],101:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21346,7 +21346,7 @@ function parseHost(host) {
 module.exports=require(72)
 },{}],106:[function(require,module,exports){
 module.exports=require(73)
-},{"./support/isBuffer":105,"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"inherits":89}],"aXRuS6":[function(require,module,exports){
+},{"./support/isBuffer":105,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"inherits":89}],"aXRuS6":[function(require,module,exports){
 (function (Buffer){
 function BufferPut () {
   this.words = [];
@@ -21454,6 +21454,8 @@ BufferPut.prototype.write = function(stream) {
 }).call(this,require("buffer").Buffer)
 },{"buffer":74}],"bufferput":[function(require,module,exports){
 module.exports=require('aXRuS6');
+},{}],"buffers":[function(require,module,exports){
+module.exports=require('OBo3aV');
 },{}],"OBo3aV":[function(require,module,exports){
 (function (Buffer){
 module.exports = Buffers;
@@ -21727,9 +21729,7 @@ Buffers.prototype.toString = function(encoding, start, end) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":74}],"buffers":[function(require,module,exports){
-module.exports=require('OBo3aV');
-},{}],111:[function(require,module,exports){
+},{"buffer":74}],111:[function(require,module,exports){
 module.exports = require('./lib/chai');
 
 },{"./lib/chai":112}],112:[function(require,module,exports){
@@ -29748,8 +29748,8 @@ module.exports.imports = function() {
   return answer;
 };
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"callsite":151,"path":91}],153:[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"callsite":151,"path":91}],153:[function(require,module,exports){
 (function (process){
 /*
 Copyright (c) 2011 Tim Caswell <tim@creationix.com>
@@ -29906,8 +29906,8 @@ if (typeof module !== 'undefined' && "exports" in module) {
   module.exports = Step;
 }
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90}],"./patches/Buffers.monkey":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90}],"./patches/Buffers.monkey":[function(require,module,exports){
 module.exports=require('kytKTK');
 },{}],"kytKTK":[function(require,module,exports){
 (function (Buffer){
@@ -29928,9 +29928,7 @@ exports.patch = function(Buffers) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":74}],"./patches/Number.monkey":[function(require,module,exports){
-module.exports=require('AwmEwz');
-},{}],"AwmEwz":[function(require,module,exports){
+},{"buffer":74}],"AwmEwz":[function(require,module,exports){
 exports.patch = function(Number) {
   //round to specified number of places
   Number.prototype.round = function(places) {
@@ -29940,6 +29938,8 @@ exports.patch = function(Number) {
   };
 };
 
+},{}],"./patches/Number.monkey":[function(require,module,exports){
+module.exports=require('AwmEwz');
 },{}],"./util/BinaryParser":[function(require,module,exports){
 module.exports=require('b3ZSD7');
 },{}],"b3ZSD7":[function(require,module,exports){
@@ -30317,7 +30317,9 @@ module.exports = require('soop')(EncodedData);
 
 
 }).call(this,require("buffer").Buffer)
-},{"base58-native":"xtP2pj","buffer":74,"soop":152}],"QLzNQg":[function(require,module,exports){
+},{"base58-native":"xtP2pj","buffer":74,"soop":152}],"./util/VersionedData":[function(require,module,exports){
+module.exports=require('QLzNQg');
+},{}],"QLzNQg":[function(require,module,exports){
 (function (Buffer){
 var imports    = require('soop').imports();
 var base58     = imports.base58 || require('base58-native').base58Check;
@@ -30359,9 +30361,7 @@ VersionedData.prototype.payload = function(data) {
 module.exports = require('soop')(VersionedData);
 
 }).call(this,require("buffer").Buffer)
-},{"./EncodedData":"eLfUFE","base58-native":"xtP2pj","buffer":74,"soop":152}],"./util/VersionedData":[function(require,module,exports){
-module.exports=require('QLzNQg');
-},{}],165:[function(require,module,exports){
+},{"./EncodedData":"eLfUFE","base58-native":"xtP2pj","buffer":74,"soop":152}],165:[function(require,module,exports){
 
 /**
  * Used during transcation verification when a source txout is missing.
@@ -30957,7 +30957,7 @@ exports.COIN = 100000000;
 
 var MAX_TARGET = exports.MAX_TARGET = new Buffer('00000000FFFF0000000000000000000000000000000000000000000000000000', 'hex');
 
-}).call(this,require("/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../browser/vendor-bundle.js":5,"/Users/colkito/Devel/BitPay/cosign/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bignum":"J4nwo8","binary":61,"buffer":74,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":78,"jssha":144}],"./util/util":[function(require,module,exports){
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
+},{"../browser/vendor-bundle.js":5,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":90,"bignum":"J4nwo8","binary":61,"buffer":74,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":78,"jssha":144}],"./util/util":[function(require,module,exports){
 module.exports=require('ACyo5H');
 },{}]},{},[])

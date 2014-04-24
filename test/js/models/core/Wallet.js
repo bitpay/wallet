@@ -269,56 +269,46 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 
 Wallet.prototype.generateAddress = function(isChange) {
   var addr = this.publicKeyRing.generateAddress(isChange);
-console.log('[Wallet.js.281:addr:]',addr, this.publicKeyRing.toObj(), this.getAddresses()); //TODO
   this.sendPublicKeyRing();
   this.store(true);
   return addr;
 };
 
-// TODO : sort by time... / signed.
+
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
   for(var k in this.txProposals.txps) {
-    var txp = this.txProposals.txps[k];
-    var i = JSON.parse(JSON.stringify(txp));
-    i.builder = txp.builder;
-    i.ntxid = k;
-    i.signedByUs = txp.signedBy[this.getMyPeerId()]?true:false;
-
-    i.peerActions = {};
-    for(var p in txp.seenBy){
-      i.peerActions[p]={seen: txp.seenBy[p]};
-    }
-    for(var p in txp.signedBy){
-      i.peerActions[p]=  i.peerActions[p] || {};
-      i.peerActions[p].sign = txp.signedBy[p];
-    }
-    var c = txp.creator;
-    i.peerActions[c] = i.peerActions[c] || {};
-    i.peerActions[c].create = txp.createdTs;
-
+    var i = this.txProposals.getTxProposal(k);
+    i.signedByUs = i.signedBy[this.getMyPeerId()]?true:false;
+    i.rejectedByUs = i.rejectedBy[this.getMyPeerId()]?true:false;
+    if (this.totalCopayers-i.rejectCount < this.requiredCopayers)
+      i.finallyRejected=true;
 
     ret.push(i);
   }
   return ret;
 };
 
-Wallet.prototype.getTxProposal = function(ntxid) {
+
+Wallet.prototype.reject = function(ntxid) {
+  var myId=this.getMyPeerId();
   var txp = this.txProposals.txps[ntxid];
-  var i = {txp:txp};
-  i.ntxid = ntxid;
-  i.signedByUs = txp.signedBy[this.getMyPeerId()]?true:false;
-  return i;
+  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
+
+  txp.rejectedBy[myId] = Date.now();
+  this.sendTxProposals();
+  this.store(true);
 };
+
 
 Wallet.prototype.sign = function(ntxid) {
   var self = this;
+  var myId=this.getMyPeerId();
   var txp = self.txProposals.txps[ntxid];
-  if (!txp) return;
+  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
   var pkr = self.publicKeyRing;
   var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
-console.log('[Wallet.js.329:keys:]',keys); //TODO
 
   var b = txp.builder;
   var before = b.signaturesAdded;
@@ -326,7 +316,7 @@ console.log('[Wallet.js.329:keys:]',keys); //TODO
 
   var ret = false;
   if (b.signaturesAdded >  before) {
-    txp.signedBy[self.getMyPeerId()] = Date.now();
+    txp.signedBy[myId] = Date.now();
     this.sendTxProposals();
     this.store(true);
     ret = true;
@@ -372,7 +362,6 @@ Wallet.prototype.addSeenToTxProposals = function() {
   }
   return ret;
 };
-
 
 Wallet.prototype.getAddresses = function(onlyMain) {
   return this.publicKeyRing.getAddresses(onlyMain);
@@ -440,7 +429,8 @@ Wallet.prototype.getSafeUnspent = function(cb) {
   this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
 
     var ret=[];
-    var uu = self.txProposals.getUsedUnspent();
+    var maxRejectCount = self.totalCopayers - self.requiredCopayers;
+    var uu = self.txProposals.getUsedUnspent(maxRejectCount);
 
     for(var i in unspentList){
       if (uu.indexOf(unspentList[i].txid) === -1) 
@@ -465,11 +455,11 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   }
 
   self.getSafeUnspent(function(unspentList) {
-    // TODO check enough funds, etc.
-    self.createTxSync(toAddress, amountSatStr, unspentList, opts);
-    self.sendPublicKeyRing();   // Change Address
-    self.sendTxProposals();
-    self.store();
+    if (self.createTxSync(toAddress, amountSatStr, unspentList, opts)) {
+      self.sendPublicKeyRing();   // Change Address
+      self.sendTxProposals();
+      self.store();
+    }
     return cb();
   });
 };
@@ -497,25 +487,27 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var signRet;  
   if (priv) {
-console.log('[Wallet.js.486] aLL Priv', priv.getAll(pkr.addressIndex, pkr.changeAddressIndex)); //TODO
     b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
   }
-console.log('[Wallet.js.494]', b, b.build().serialize().toString('hex')); //TODO
-  var me = {};
   var myId = this.getMyPeerId();
   var now = Date.now();
 
-  if (priv) me[myId] = now;
+  var me = {};
+  if (priv && b.signaturesAdded) me[myId] = now;
+
+  var meSeen = {};
+  if (priv) meSeen[myId] = now;
 
   var data = {
-    signedBy: (priv && b.signaturesAdded ? me : {}),
-    seenBy:   (priv ? me : {}),
+    signedBy: me,
+    seenBy:   meSeen,
     creator:   myId,
     createdTs: now,
     builder: b,
   };
 
   this.txProposals.add(data);
+  return true;
 };
 
 Wallet.prototype.connectTo = function(peerId) {

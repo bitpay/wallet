@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay',[
+var copayApp = window.copayApp = angular.module('copay',[
   'ngRoute',
   'mm.foundation',
   'monospaced.qrcode',
@@ -14,7 +14,7 @@ angular.module('copay',[
   'copay.socket',
   'copay.controllerUtils',
   'copay.setup',
-  'copay.peer'
+  'copay.directives'
 ]);
 
 angular.module('copay.header', []);
@@ -26,6 +26,6 @@ angular.module('copay.walletFactory', []);
 angular.module('copay.controllerUtils', []);
 angular.module('copay.signin', []);
 angular.module('copay.setup', []);
-angular.module('copay.peer', []);
 angular.module('copay.socket', []);
+angular.module('copay.directives', []);
 

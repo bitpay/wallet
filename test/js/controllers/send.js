@@ -13,26 +13,20 @@ angular.module('copay.send').controller('SendController',
         return;
       }
 
-      if ($rootScope.totalBalance <= form.amount.$modelValue) {
-        $rootScope.flashMessage = { message: 'You have not enough amount to send', type: 'error'};
-        return;
-      }
-
       var address = form.address.$modelValue;
       var amount = (form.amount.$modelValue * 100000000).toString(); // satoshi to string
 
       var w = $rootScope.wallet;
       w.createTx( address, amount,function() {
+
+        // reset fields
+        $scope.address = null;
+        $scope.amount = null;
+        form.address.$pristine = true;
+        form.amount.$pristine = true;
+        $rootScope.flashMessage = { message: 'The transaction proposal has been created', type: 'success'};
         $rootScope.$digest();
       });
      
-      // reset fields
-      $scope.address = null;
-      $scope.amount = null;
-      form.address.$pristine = true;
-      form.amount.$pristine = true;
-
-      // TODO: check if createTx has an error.
-      $rootScope.flashMessage = { message: 'Your transaction proposal has been sent successfully', type: 'success'};
 		};
   });
