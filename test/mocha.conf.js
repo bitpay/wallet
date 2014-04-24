@@ -1,1 +1,3 @@
-window.mocha.setup({ timeout: 5000 });
+if (typeof window != 'undefined') {
+  window.mocha.setup({ timeout: 5000 });
+}
