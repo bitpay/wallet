@@ -5,7 +5,7 @@ angular.module('copay.controllerUtils')
     var root = {};
     $rootScope.videoSrc = {};
     $rootScope.getVideoURL = function(copayer) {
-      return decodeURIComponent($rootScope.videoSrc[copayer]);
+      return $sce.trustAsResourceUrl(decodeURI($rootScope.videoSrc[copayer]));
     };
 
     root.logout = function() {
@@ -36,7 +36,7 @@ angular.module('copay.controllerUtils')
           root.onErrorDigest(err);
         }
         $sce.trustAsResourceUrl(url);
-        $rootScope.videoSrc[peerID] = encodeURIComponent(url);
+        $rootScope.videoSrc[peerID] = encodeURI(url);
         $rootScope.$apply();
       };
       w.on('badMessage', function(peerId) {
