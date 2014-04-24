@@ -3,8 +3,8 @@
 angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils) {
     $scope.loading = false;
-    $scope.walletIds = walletFactory.getWalletIds();
-    $scope.selectedWalletId = $scope.walletIds.length ? $scope.walletIds[0]:null;
+    $scope.wallets = walletFactory.getWallets();
+    $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
 
     $scope.create = function() {
       $location.path('setup');
@@ -12,14 +12,13 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.open = function(walletId, opts) {
       $scope.loading = true;
-
-console.log('[signin.js.23:walletId:]',walletId); //TODO
       var w = walletFactory.open(walletId, opts);
       controllerUtils.setupUxHandlers(w);
     };
 
     $scope.join = function(secret) {
-      if (!secret || !secret.length) {
+      if (!secret || secret.length !==66 || !secret.match(/^[0-9a-f]*$/) ) {
+        $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
         return;
       }
       $scope.loading = true;

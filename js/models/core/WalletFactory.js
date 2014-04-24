@@ -73,7 +73,7 @@ WalletFactory.prototype.read = function(walletId) {
       w.privateKey.getExtendedPublicKeyString()
     );
   } catch (e) {
-    this.log('NOT NECCESARY AN ERROR:', e); //TODO
+    // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
   return w;
@@ -129,9 +129,13 @@ WalletFactory.prototype.open = function(walletId, opts) {
   return w;
 };
 
-WalletFactory.prototype.getWalletIds = function() {
-  return this.storage.getWalletIds();
-}
+WalletFactory.prototype.getWallets = function() {
+  var ret = this.storage.getWallets();
+  ret.forEach(function(i) {
+    i.show = i.name ? ( (i.name + ' <'+i.id+'>') ) : i.id;
+  });
+  return ret;
+};
 
 WalletFactory.prototype.remove = function(walletId) {
   // TODO remove wallet contents
