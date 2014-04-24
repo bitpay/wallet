@@ -57,16 +57,30 @@
   </div>
 
     <div class="row">
-      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box info round" >
-        <i class="fi-alert size-18"></i> 
-            Note: Your wallet is not complete yet. 
-        <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-            {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
-        </span>
-        <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
-            One key is 
-        </span>
-         missing. Share this secret with your other copayers for them to join your wallet: <b>{{$root.wallet.getMyPeerId()}}</b>
+      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box  warn round  size-18" >
+
+
+            <div style="float:left; margin:0 15px">
+                <i class="fi-alert size-60"></i> 
+            </div>
+            
+            <div class="size-18">
+                Note: Your wallet is not complete yet. 
+                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
+                {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
+                </span>
+                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+                One key is 
+                </span>
+                missing. 
+            </div>
+
+            <div class="size-18">
+                Share this secret with your other copayers for them to join your wallet <br>
+            </div>
+            <div class="size-24">
+            <b>{{$root.wallet.getMyCopayerId()}}</b>
+            </div>
       </div>
     </div>
 
@@ -115,7 +129,7 @@
               <div class="large-6 columns">
                 <h3>Join a Wallet in Creation</h3>
               <input type="text" class="form-control" placeholder="Paste wallet secret here"
-                 ng-model="connectionId" required ng-minlength="32" ng-maxlength="32" autofocus>
+                 ng-model="connectionId" required autofocus>
               </div>
               <div class="large-3 columns">
                 <button class="button primary expand round"
@@ -179,28 +193,17 @@
 
     <script type="text/ng-template" id="peer.html">
       <div class="row">
-        <div class="large-6 columns p70r line-dashed-v">
-          <h3>I am </h3>
-          <div class="row">
-            <div class="large-10 columns p0r">
-              <p class="panel share-wallet">{{$root.wallet.network.peerId}}</p>
-            </div>
-            <div class="large-2 columns">
-              <p class="panel panel-sign"> <i class="fi-page-copy size-22"></i> </p>
-            </div>
-          </div>
-        </div>
-        <div class="large-6 columns p70l">
-          <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedPeers.length}}</h3>
+        <div class="large-12 columns p70l">
+          <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedCopayers().length}}</h3>
 
-          <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers > $root.wallet.network.connectedPeers.length"> <i class="fi-alert size-28"></i> 
+          <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers >$root.wallet.network.connectedCopayers()"> <i class="fi-alert size-28"></i> 
           {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
 
 
           <ul class="no-bullet">
-            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
-              <span ng-if="copayer == $root.wallet.network.peerId"> You ({{copayer}})</span>
-              <span ng-if="copayer !== $root.wallet.network.peerId">{{copayer}}</span>
+            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedCopayers()">
+              <span ng-if="copayer === $root.wallet.getMyCopayerId()"> You </span>
+              {{copayer}}
               <span>
                   <i class="fi-check size-16 panel-sign right p5h br100"></i>
               </span>
@@ -276,9 +279,8 @@
                       <tr ng-repeat="(peer, actions) in tx.peerActions">
                         <td colspan="3">
                           <div class="panel status">
-                            <span ng-if="peer == $root.wallet.network.peerId"> You
-                            </span>
-                            <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
+                            <span ng-if="peer === $root.wallet.getMyCopayerId()"> You</span>
+                             {{peer}}
 
                             <span ng-repeat="(action, ts) in actions">
                               <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
