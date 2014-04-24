@@ -39,7 +39,8 @@ Wallet.prototype.log = function(){
 };
 
 Wallet.getRandomId = function() {
-  return bitcore.SecureRandom.getPseudoRandomBuffer(8);
+  var r = bitcore.SecureRandom.getPseudoRandomBuffer(8).toString('hex');
+  return r;
 };
 
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
