@@ -268,6 +268,8 @@ module.exports.API = require('./API');
 
 },{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":10,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":19,"./js/models/storage/LocalPlain":20,"soop":51}],"copay":[function(require,module,exports){
 module.exports=require('hxYaTp');
+},{}],"../js/models/blockchain/Insight":[function(require,module,exports){
+module.exports=require('N916Nn');
 },{}],"N916Nn":[function(require,module,exports){
 (function (process){
 'use strict';
@@ -493,9 +495,7 @@ module.exports = require('soop')(Insight);
 
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bitcore":21,"http":28,"soop":51}],"../js/models/blockchain/Insight":[function(require,module,exports){
-module.exports=require('N916Nn');
-},{}],"../js/models/core/PrivateKey":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bitcore":21,"http":28,"soop":51}],"../js/models/core/PrivateKey":[function(require,module,exports){
 module.exports=require('41fjjN');
 },{}],"41fjjN":[function(require,module,exports){
 'use strict';
@@ -1179,9 +1179,7 @@ TxProposals.prototype.merge = function(t) {
 
 module.exports = require('soop')(TxProposals);
 
-},{"../storage/Base":18,"bitcore":21,"soop":51}],"./js/models/core/Wallet":[function(require,module,exports){
-module.exports=require('zfa+FW');
-},{}],"zfa+FW":[function(require,module,exports){
+},{"../storage/Base":18,"bitcore":21,"soop":51}],"zfa+FW":[function(require,module,exports){
 'use strict';
 
 var imports     = require('soop').imports();
@@ -1712,7 +1710,11 @@ console.log('[Wallet.js.524] DISC'); //TODO
 
 module.exports = require('soop')(Wallet);
 
-},{"../../../copay":"hxYaTp","bitcore":21,"events":27,"http":28,"soop":51}],"Pyh7xe":[function(require,module,exports){
+},{"../../../copay":"hxYaTp","bitcore":21,"events":27,"http":28,"soop":51}],"../js/models/core/Wallet":[function(require,module,exports){
+module.exports=require('zfa+FW');
+},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
+},{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
 var imports     = require('soop').imports();
@@ -1881,9 +1883,7 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
-},{}],15:[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],15:[function(require,module,exports){
 var imports = require('soop').imports();
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
@@ -2648,9 +2648,11 @@ requireWhenAccessed('buffertools', 'buffertools');
 requireWhenAccessed('Buffers.monkey', './patches/Buffers.monkey');
 requireWhenAccessed('config', './config');
 requireWhenAccessed('const', './const');
+requireWhenAccessed('Curve', './lib/Curve');
 requireWhenAccessed('Deserialize', './lib/Deserialize');
 requireWhenAccessed('log', './util/log');
 requireWhenAccessed('networks', './networks');
+requireWhenAccessed('SecureRandom', './lib/SecureRandom');
 requireWhenAccessed('util', './util/util');
 requireWhenAccessed('EncodedData', './util/EncodedData');
 requireWhenAccessed('VersionedData', './util/VersionedData');
@@ -2680,6 +2682,7 @@ requireWhenAccessed('Wallet', './lib/Wallet');
 requireWhenAccessed('WalletKey', './lib/WalletKey');
 requireWhenAccessed('PeerManager', './lib/PeerManager');
 requireWhenAccessed('Message', './lib/Message');
+requireWhenAccessed('Electrum', './lib/Electrum');
 module.exports.Buffer = Buffer;
 
 if (typeof process.versions === 'undefined') {
