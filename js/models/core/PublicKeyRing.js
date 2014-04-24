@@ -44,8 +44,11 @@ function PublicKeyRing(opts) {
  */
 
 PublicKeyRing.Branch = function (index, isChange) {
-  return 'm/'+(isChange?1:0)+'/'+index;
+  // first 0 is for future use: could be copayerId.
+  return 'm/0/'+(isChange?1:0)+'/'+index;
 };
+
+PublicKeyRing.SIGNING_BRANCH = 'm/100/0/0';
 
 PublicKeyRing.fromObj = function (data) {
   if (data instanceof PublicKeyRing) {
@@ -77,17 +80,20 @@ PublicKeyRing.prototype.serialize = function () {
   return JSON.stringify(this.toObj());
 };
 
-PublicKeyRing.prototype.getCopayerId = function(i, prefix) {
-  var buf = this.copayersBIP32[i].extendedPublicKey;
-  if (prefix) {
-    buf = Buffer.concat([prefix, buf]);
+PublicKeyRing.prototype.getCopayerId = function(i) {
+  this.copayerIds = this.copayerIds  || [];
+
+  if (!this.copayerIds[i]) {
+    var path = PublicKeyRing.SIGNING_BRANCH;
+    var bip32 = this.copayersBIP32[i].derive(path);
+    this.copayerIds[i]= bip32.eckey.public.toString('hex');
   }
-  var hash = util.sha256(buf).toString('hex');
-  return hash.substring(0, hash.length/2);
+
+  return this.copayerIds[i];
 };
 
-PublicKeyRing.prototype.myCopayerId = function(i, prefix) {
-  return this.getCopayerId(0,prefix);
+PublicKeyRing.prototype.myCopayerId = function(i) {
+  return this.getCopayerId(0);
 };
 
 PublicKeyRing.prototype.registeredCopayers = function () {

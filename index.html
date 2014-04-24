@@ -129,7 +129,7 @@
               <div class="large-6 columns">
                 <h3>Join a Wallet in Creation</h3>
               <input type="text" class="form-control" placeholder="Paste wallet secret here"
-                 ng-model="connectionId" required ng-minlength="32" ng-maxlength="32" autofocus>
+                 ng-model="connectionId" required autofocus>
               </div>
               <div class="large-3 columns">
                 <button class="button primary expand round"
@@ -202,8 +202,8 @@
 
           <ul class="no-bullet">
             <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedCopayers()">
-              <span ng-if="copayer === $root.wallet.getMyCopayerId()"> You ({{copayer}})</span>
-              <span ng-if="copayer !==  $root.wallet.getMyCopayerId()">{{copayer}}</span>
+              <span ng-if="copayer === $root.wallet.getMyCopayerId()"> You </span>
+              {{copayer}}
               <span>
                   <i class="fi-check size-16 panel-sign right p5h br100"></i>
               </span>
@@ -279,9 +279,8 @@
                       <tr ng-repeat="(peer, actions) in tx.peerActions">
                         <td colspan="3">
                           <div class="panel status">
-                            <span ng-if="peer == $root.wallet.network.peerId"> You
-                            </span>
-                            <span ng-if="peer != $root.wallet.network.peerId"> {{peer}}</span>
+                            <span ng-if="peer === $root.wallet.getMyCopayerId()"> You</span>
+                             {{peer}}
 
                             <span ng-repeat="(action, ts) in actions">
                               <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
@@ -492,6 +491,7 @@
     <script src="lib/peerjs/peer.js"></script>
     <script src="lib/bitcore.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
+    <script src="lib/crypto-js/rollups/hmac-sha256.js"></script>
     <script src="lib/file-saver/FileSaver.js"></script>
     <script src="lib/socket.io.js"></script>
     <script src="js/copayBundle.js"></script>
