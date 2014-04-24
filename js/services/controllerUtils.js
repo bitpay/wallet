@@ -43,6 +43,8 @@ angular.module('copay.controllerUtils').factory('controllerUtils', function ($ro
 
   root.updateBalance = function() {
     var w = $rootScope.wallet;
+    if (!w) return;
+
     w.getBalance(false,function(balance, balanceByAddr) {
       $rootScope.totalBalance = balance;
       $rootScope.balanceByAddr = balanceByAddr;

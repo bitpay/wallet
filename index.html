@@ -17,7 +17,13 @@
             <a href="#"><img src="./img/logo-negative.svg" alt="Copay" width="130" /></a>
           </figure>
           <div class="text-right" ng-show="$root.wallet">
-            <h5 ng-show="$root.wallet.id">Wallet ID: {{$root.wallet.id}}</h5>
+            <div ng-if="$root.wallet.name">
+              <h5>Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</h5>
+              <p> 
+            </div>
+            <div ng-if="!$root.wallet.name && $root.wallet.id">
+              <h5 >Wallet ID: {{$root.wallet.id}}</h5>
+            </div>
             <p>
                 Balance: {{totalBalance || 0}} <i class="fi-bitcoin"></i><br>
                 Available to Spend: {{availableBalance || 0}} <i class="fi-bitcoin"></i>
@@ -98,7 +104,7 @@
           Connecting to wallet...
         </div>
         <div ng-show="!loading">
-          <div ng-show="!walletIds.length">
+          <div ng-show="!wallets.length">
             <div class="row">
               <div class="large-6 columns">
                 <h3>Create a New Wallet</h3>
@@ -109,12 +115,12 @@
             </div>
             <hr>
           </div>
-          <div ng-show="walletIds.length">
+          <div ng-show="wallets.length">
             <div class="row">
               <div class="large-6 columns">
                 <h3>Open Wallet</h3>
                 <select class="form-control" ng-model="selectedWalletId"
-                   ng-options="walletId for walletId in walletIds">
+                   ng-options="w.id as w.show for w in wallets">
                 </select>
               </div>
               <div class="large-3 columns">
@@ -141,7 +147,7 @@
 
           <div class="row">
             <div class="large-12 columns">
-              <div ng-show="walletIds.length">
+              <div ng-show="wallets.length">
                 <a ng-click="create()">Create a new wallet</a>
               </div>
               <a class="right" ng-click="import()">Import from file</a>
@@ -176,10 +182,15 @@
                 ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
               </select>
             </div>
-            <div class="large-6 large-centered columns">
+            <div class="large-6 large-centered columns m30v">
+              <h6>Wallet name (optional)</h6>
+                <input ng-model="walletName" placeholder="wallet name" class="size-24" style="width:100%">
+            </div>
+ 
+            <div class="large-6 large-centered columns m30v">
               <hr>
               <button class="button primary round right" type="button"
-               ng-click="create(totalCopayers, requiredCopayers)">
+               ng-click="create(totalCopayers, requiredCopayers, walletName)">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
               <div class="left">

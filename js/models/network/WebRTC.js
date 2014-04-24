@@ -192,6 +192,7 @@ Network.prototype._onData = function(data, isInbound, peerId) {
 Network.prototype._checkAnyPeer = function() {
   if (!this.connectedPeers.length) {
     console.log('EMIT openError: no more peers, not even you!'); 
+    this._cleanUp();
     this.emit('openError');
   }
 }
@@ -251,8 +252,9 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 
   p.on('error', function(err) {
-    console.log('### PEER ERROR:', err);
-    //self.disconnect(null, true); // force disconnect
+    if (!err.message.match(/Could\snot\sconnect\sto peer/)) {
+      console.log('### PEER ERROR:', err);
+    }
     self._checkAnyPeer();
   });
 
@@ -311,11 +313,12 @@ Network.prototype.start = function(opts, openCallback) {
   if (this.started)  return openCallback();
   opts.connectedPeers = opts.connectedPeers || [];
 
-  if (!this.copayerId) 
+  if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
-  if (!this.signingKey) 
+  if (!this.signingKey)
     this.setSigningKey(opts.signingKeyHex);
 
+  console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
   for (var i = 0; i<opts.connectedPeers.length; i++) {
@@ -399,27 +402,28 @@ Network.prototype.connectTo = function(copayerId) {
   self._setupConnectionHandlers(dataConn, false);
 };
 
+Network.prototype._cleanUp = function() {
+  self.connectedPeers = [];
+  self.started = false;
+  self.peerId = null;
+  self.copayerId = null;
+  self.signingKey = null;
+  if (self.peer) {
+    console.log('## DESTROYING PEER INSTANCE'); //TODO
+    self.peer.disconnect();
+    self.peer.destroy();
+    self.peer = null;
+  }
+  self.closing = 0;
+};
+
 
 Network.prototype.disconnect = function(cb, forced) {
   var self = this;
   self.closing = 1;
-  var cleanUp = function() {
-    self.connectedPeers = [];
-    self.started = false;
-    self.peerId = null;
-    if (self.peer) {
-      self.peer.disconnect();
-      self.peer.destroy();
-      self.peer = null;
-    }
-    self.closing = 0;
-    if (typeof cb === 'function') cb();
-  };
-  if (!forced) {
-    this.send(null, { type: 'disconnect' }, cleanUp);
-  } else {
-    cleanUp();
-  }
+  this.send(null, { type: 'disconnect' });
+  this._cleanUp();
+  if (typeof cb === 'function') cb();
 };
 
 module.exports = require('soop')(Network);

@@ -25,6 +25,7 @@ function Wallet(opts) {
   this.log('creating '+opts.requiredCopayers+' of '+opts.totalCopayers+' wallet');
 
   this.id = opts.id || Wallet.getRandomId();
+  this.name = opts.name;
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
@@ -137,6 +138,7 @@ Wallet.prototype._optsToObj = function () {
     spendUnconfirmed: this.spendUnconfirmed,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
+    name: this.name,
   };
 
   return obj;
@@ -172,6 +174,7 @@ Wallet.prototype.netStart = function() {
     copayerId: myId,
     signingKeyHex: self.privateKey.getSigningKey(),
   };
+
   net.start(startOpts, function() {
     self.emit('created');
     for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
@@ -518,6 +521,8 @@ Wallet.prototype.connectTo = function(peerId) {
 };
 
 Wallet.prototype.disconnect = function() {
+
+console.log('[Wallet.js.524] DISC'); //TODO
   this.network.disconnect();
 };
 
