@@ -18,13 +18,22 @@ function PrivateKey(opts) {
   this.privateKeyCache = opts.privateKeyCache || {};
 };
 
-PrivateKey.prototype.getId = function(prefix) {
-  var buf = this.bip.extendedPublicKey;
-  if (prefix) {
-    buf = Buffer.concat([prefix, buf]);
+PrivateKey.prototype.getId = function() {
+  if (!this.id) {
+    var path = PublicKeyRing.SIGNING_BRANCH;
+    var bip32 = this.bip.derive(path);
+    this.id= bip32.eckey.public.toString('hex');
   }
-  var hash = util.sha256(buf).toString('hex');
-  return hash.substring(0, hash.length/2);
+  return this.id;
+};
+
+PrivateKey.prototype.getSigningKey = function() {
+  if (!this.sid) {
+    var path = PublicKeyRing.SIGNING_BRANCH;
+    var bip32 = this.bip.derive(path);
+    this.sid= bip32.eckey.private.toString('hex');
+  }
+  return this.sid;
 };
 
 PrivateKey.fromObj = function(obj) {

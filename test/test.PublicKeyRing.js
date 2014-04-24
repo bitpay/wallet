@@ -228,7 +228,7 @@ describe('PublicKeyRing model', function() {
       networkName: 'livenet',
     });
     wx.addCopayer();
-    (function() { w.merge(wx, true);}).should.throw();
+    (function() { w.merge(wx);}).should.throw();
 
 
   });

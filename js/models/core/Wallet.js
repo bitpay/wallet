@@ -169,9 +169,10 @@ Wallet.prototype.netStart = function() {
 
   var myId = self.getMyCopayerId();
   var startOpts = { 
-    copayerId: myId
+    copayerId: myId,
+    signingKeyHex: self.privateKey.getSigningKey(),
   };
-  net.start(function() {
+  net.start(startOpts, function() {
     self.emit('created');
     for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
@@ -184,7 +185,7 @@ Wallet.prototype.netStart = function() {
     }
     self.emit('refresh');
     }
-  }, startOpts);
+  });
 };
 
 Wallet.prototype.store = function(isSync) {

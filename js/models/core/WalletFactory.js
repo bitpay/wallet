@@ -146,8 +146,8 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
   self.network.setCopayerId(privateKey.getId());
-
-  self.network.start(function() {
+  self.network.setSigningKey(privateKey.getSigningKey());
+  self.network.start({}, function() {
     self.network.connectTo(copayerId);
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
