@@ -128,6 +128,7 @@ Wallet.prototype._handleNetworkChange = function(newCopayerId) {
     this.log('#### Setting new PEER:', newCopayerId);
     this.sendWalletId(newCopayerId);
   }
+  this.emit('peer', newPeerId);
   this.emit('refresh');
 };
 
@@ -175,8 +176,8 @@ Wallet.prototype.netStart = function() {
     signingKeyHex: self.privateKey.getSigningKey(),
   };
 
-  net.start(startOpts, function() {
-    self.emit('created');
+  net.start(function() {
+    self.emit('created', net.getPeer());
     for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
       if (otherId !== myId) {
@@ -243,7 +244,7 @@ Wallet.prototype.sendTxProposals = function(recipients) {
 Wallet.prototype.sendWalletReady = function(recipients) {
   this.log('### SENDING WalletReady TO:', recipients);
 
-  this.network.send( recipients, { 
+  this.network.send(recipients, { 
     type: 'walletReady', 
     walletId: this.id,
   });
@@ -524,6 +525,10 @@ Wallet.prototype.disconnect = function() {
 
 console.log('[Wallet.js.524] DISC'); //TODO
   this.network.disconnect();
+};
+
+Wallet.prototype.getNetwork = function() {
+  return this.network;
 };
 
 module.exports = require('soop')(Wallet);

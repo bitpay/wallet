@@ -210,14 +210,13 @@
           <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers >$root.wallet.network.connectedCopayers()"> <i class="fi-alert size-28"></i> 
           {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
 
-
           <ul class="no-bullet">
-            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedCopayers()">
-              <span ng-if="copayer === $root.wallet.getMyCopayerId()"> You </span>
-              {{copayer}}
-              <span>
-                  <i class="fi-check size-16 panel-sign right p5h br100"></i>
-              </span>
+            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedPeers">
+              <video class="video-small" autoplay ng-show="$root.videoSrc[copayer]" 
+                ng-src="{{$root.getVideoURL(copayer)}}"
+                id="{{copayer + '-video'}}" muted="true"></video>
+              <img ng-show="!$root.videoSrc[copayer]" 
+                src="/img/satoshi.gif" title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
             </li>
           </ul>
         </div>
@@ -511,6 +510,7 @@
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/services/socket.js"></script>
+    <script src="js/services/video.js"></script>
     <script src="js/services/walletFactory.js"></script>
     <script src="js/services/controllerUtils.js"></script>
 
