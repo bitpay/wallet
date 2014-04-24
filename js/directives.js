@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay')
+angular.module('copay.directives')
   .directive('validAddress', [function() {
 
     var bitcore = require('bitcore');
