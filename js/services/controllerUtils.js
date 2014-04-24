@@ -5,7 +5,11 @@ angular.module('copay.controllerUtils')
     var root = {};
     $rootScope.videoSrc = {};
     $rootScope.getVideoURL = function(copayer) {
-      return $sce.trustAsResourceUrl(decodeURI($rootScope.videoSrc[copayer]));
+      var encoded = $rootScope.videoSrc[copayer];
+      if (!encoded) return;
+      var url = decodeURI(encoded);
+      var trusted = $sce.trustAsResourceUrl(url);
+      return trusted;
     };
 
     root.logout = function() {
@@ -34,8 +38,8 @@ angular.module('copay.controllerUtils')
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
           root.onErrorDigest(err);
+          return;
         }
-        alert('add this video url='+url+' for peer '+peerID);
         $rootScope.videoSrc[peerID] = encodeURI(url);
         $rootScope.$apply();
       };
