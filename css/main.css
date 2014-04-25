@@ -25,64 +25,77 @@
 
 * {
   font-family: 'Ubuntu', Helvetica, sans-serif !important;
+  margin:0;
+  padding:0;
 }
 
-body {
-  background: #F5F5F5;
+html, body {height: 100%;}
+
+#wrap {min-height: 100%;}
+
+#main {overflow:auto;
+	padding-bottom: 20px;}  /* must be same height as the footer */
+
+#footer {position: relative;
+	margin-top: -20px; /* negative value of footer height */
+	height: 20px;
+	clear:both;
+}
+
+.logo {
+  display: block;
+  width: 130px;
+  height: 51px;
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
   line-height: 60px;
-  background: #FAE448;
 }
 
 .top-bar-section li.active:not(.has-form) a:not(.button) {
   line-height: 60px;
-  background: #f5f5f5;
-  color: #111;
   font-weight: 700;
 }
 
-.top-bar-section li.active:not(.has-form) a:not(.button):hover, .top-bar-section li:not(.has-form) a:not(.button):hover {
-  background: #111;
-  color: white;
-}
-
 .top-bar-section ul li>a {
-  color: #111;
   text-transform: uppercase;
   font-weight: 100;
   font-size: 0.9rem;
 }
 
+.top-bar-section ul li {
+  width: 20%;
+}
+
 .header {
-  background: #111;
-  color: white;
   margin-bottom: 30px;
 }
 
 .header-content {
-  padding: 1.5rem 3rem 1.5rem 0;
+  padding: 1.5rem;
   overflow: hidden;
-}
-
-.header h1, h5 {
-  color: #fff;
 }
 
 .top-bar {
   height: auto;
+  width: 100%;
 }
 
 .panel {
-  color: #333;
-  background: #FFFFFF;
   padding: 0.7rem 1rem;
   border:0;
 }
 
 .panel.status {
   margin: 0;
+}
+
+.connection-info {
+  margin-bottom: 10px;
+}
+
+.balance-info {
+  font-size: 14px;
 }
 
 /*.panel:hover {
@@ -95,12 +108,10 @@ body {
 }
 
 .transactions .panel {
-  background: #f5f5f5;
   border: 1px solid #eee;
 }
 
 .transactions .panel.pending {
-  background-color: #fff; 
   padding: 1rem;
 }
 
@@ -115,10 +126,6 @@ body {
   padding-top: 10px;
   border-top: 1px solid #eee;
   font-size: 12px;
-}
-
-.btransactions .panel {
-  background: #fff;
 }
 
 .btransactions .txheader {
@@ -140,10 +147,6 @@ body {
   border: none;
 }
 
-.addresses .panel:hover {
-  background: #efefef;
-}
-
 .box-backup {
   margin: 2rem 0;
   padding: 2rem 1rem;
@@ -151,7 +154,6 @@ body {
 
 a.box-backup {
   display: block;
-  color: #111;
 }
 
 .box-backup i {
@@ -184,16 +186,6 @@ span.panel-res {
   border-radius: 1rem;
 }
 
-.panel-sign {
-  color: #111;
-  background: #FAE448;
-}
-
-.panel-ignore {
-  color: #fff;
-  background: #111;
-}
-
 .pending button {
   margin: 0;
 }
@@ -203,28 +195,11 @@ span.panel-res {
   margin: 0.5rem 0 1rem;
 }
 
-.share-wallet.panel {
-  background-color: #111;
-  color: #FBE500;
-}
-
-.alert-box.warning, .alert-box.error {
-  background-color: #C0392A;
-  border-color: #C0392A;
-  color: #fff;
-}
-
-.text-warning {
-  color:#C0392A;
-}
-
 small.is-valid {
-  color: #04B404;
   font-weight: bold;
 }
 
 small.has-error {
-  color: #f04124;
   font-weight: bold;
 }
 
@@ -235,24 +210,23 @@ small.has-error {
   .show_menu {
     display: block;
   }
+  .top-bar-section ul li {
+    width: 100%;
+  }
 }
 
-tr { background: none !important;}
-table tr th, table tr td { padding: 0.5625rem 0rem; }
+@media (max-width: 750px) {
+  .top-bar-section ul li>a {
+    font-size: 70%;
+  }
+}
+
 hr { margin: 2.25rem 0;}
-table { margin-bottom: 0.25rem;}
-
-button.primary { background-color: #111; }
-button.secondary { background-color: #FAE448 !important; }
-
-button.primary:hover { background-color: #333;}
-button.secondary:hover { background-color: #FFDF00 !important;}
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
 .dn {display: none;}
-.text-gray { color: #999 !important;}
 .pr {position: relative;}
 .m0 {margin: 0;}
 .db {display: block;}

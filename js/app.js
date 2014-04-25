@@ -5,6 +5,7 @@ var copayApp = window.copayApp = angular.module('copay',[
   'mm.foundation',
   'monospaced.qrcode',
   'copay.header',
+  'copay.footer',
   'copay.addresses',
   'copay.transactions',
   'copay.send',
@@ -19,6 +20,7 @@ var copayApp = window.copayApp = angular.module('copay',[
 ]);
 
 angular.module('copay.header', []);
+angular.module('copay.footer', []);
 angular.module('copay.addresses', []);
 angular.module('copay.transactions', []);
 angular.module('copay.send', []);
