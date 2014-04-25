@@ -23,7 +23,7 @@ FakeStorage.prototype.clear = function() {
   delete this['storage'];
 }
 
-FakeStorage.prototype.getWalletIds = function() {
+FakeStorage.prototype.getWallets = function() {
   return [];
 };
 

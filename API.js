@@ -169,13 +169,13 @@ API.prototype.getCommands = decorate('getCommands', [
   ['callback', 'function']
   ]);
 
-API.prototype._cmd_getWalletIds = function(callback) {
+API.prototype._cmd_getWallets = function(callback) {
   var self = this;
 
-  return callback(null, self.walletFactory.getWalletIds());
+  return callback(null, self.walletFactory.getWallets());
 };
 
-API.prototype.getWalletIds = decorate('getWalletIds', [
+API.prototype.getWallets = decorate('getWallets', [
   ['callback', 'function']
   ]);
 
