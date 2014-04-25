@@ -201,6 +201,8 @@ console.log('[WebRTC.js.161:payload:]',payload); //TODO
   }
 
   var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
+
+console.log('[WebRTC.js.204] sig:', sig); //TODO
   if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
     new Buffer(sig,'hex'))) {
     console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO

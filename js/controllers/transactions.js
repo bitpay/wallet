@@ -6,6 +6,9 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.title = 'Transactions';
     $scope.loading = false;
+
+
+
     var _updateTxs = function() {
       var w   =$rootScope.wallet;
       if (!w) return;
@@ -99,4 +102,13 @@ angular.module('copay.transactions').controller('TransactionsController',
     };
 
     _updateTxs();
+
+    var w = $rootScope.wallet;
+    if (w) {
+      w.on('txProposalsUpdated', function() {
+        console.log('[transactions.js.108: txProposalsUpdated:]'); //TODO
+        _updateTxs();
+        $rootScope.$digest();    
+      });
+    }
   });

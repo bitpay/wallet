@@ -60,6 +60,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
       this._lockIncomming();
     }
   }
+  this.emit('publicKeyRingUpdated', this.publicKeyRing);
   this.store();
 };
 
@@ -76,6 +77,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
     recipients = null;
     this.sendTxProposals(recipients);
   }
+  this.emit('txProposalsUpdated', this.txProposals);
   this.store();
 };
 
@@ -242,7 +244,6 @@ Wallet.prototype.sendTxProposals = function(recipients) {
     txProposals: this.txProposals.toObj(),
     walletId: this.id,
   });
-  this.emit('txProposalsUpdated', this.txProposals);
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
@@ -274,7 +275,6 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     publicKeyRing: this.publicKeyRing.toObj(),
     walletId: this.id,
   });
-  this.emit('publicKeyRingUpdated', this.publicKeyRing);
 };
 
 
