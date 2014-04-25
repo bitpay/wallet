@@ -16,12 +16,14 @@ angular.module('copay.addresses').controller('AddressesController',
           $scope.isMain = isMain;
           $scope.addrs =  Object.keys(balanceByAddr);
           $scope.selectedAddr = $scope.addrs[0];
+          $scope.loading = false;
           $rootScope.$digest();
         }
       });
     };
 
     $scope.newAddr = function() {
+      $scope.loading = true;
       w.generateAddress();
       _updateBalance();
     };

@@ -93,7 +93,7 @@
 
   </div>
 
-  <div class="row">
+  <div class="row" ng-cloak class="ng-cloak">
     <div class="large-12 columns" ng-view></div>
   </div>
 
@@ -110,7 +110,7 @@
                 <h3>Create a New Wallet</h3>
               </div>
               <div class="large-3 columns">
-                <button class="button secondary expand round" ng-click="create()">Create</button>
+                <button class="button secondary expand round" ng-click="create()" ng-disabled="loading" loading="Creating">Create</button>
               </div>
             </div>
             <hr>
@@ -125,7 +125,7 @@
               </div>
               <div class="large-3 columns">
                 <button class="button secondary expand round" type="button"
-                   ng-click="open(selectedWalletId)">Open</button>
+                   ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
               </div>
             </div>
             <hr>
@@ -139,7 +139,7 @@
               </div>
               <div class="large-3 columns">
                 <button class="button primary expand round"
-                  ng-click="join(connectionId)">Join</button>
+                  ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
             <hr>
@@ -148,7 +148,7 @@
           <div class="row">
             <div class="large-12 columns">
               <div ng-show="wallets.length">
-                <a ng-click="create()">Create a new wallet</a>
+                <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a>
               </div>
               <a class="right" ng-click="import()">Import from file</a>
             </div>
@@ -253,7 +253,7 @@
           </div>
           <div class="large-3 columns text-center">
             <p> Create a New <strong> Address </strong> </p>
-            <button class="secondary round expand" ng-click="newAddr()"> Create </button>
+            <button class="secondary round expand" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
           </div>
         </div> 
         </div> 
@@ -324,10 +324,10 @@
                       <i class="fi-check size-40"></i> Signed by you already
                     </div>
                     <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
-                      <button class="secondary round"  ng-click="sign(tx.ntxid)">
+                      <button class="secondary round"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                         <i class="fi-check"></i> Sign
                       </button>
-                      <button class="primary round" ng-click="reject(tx.ntxid)">
+                      <button class="primary round" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading>
                         <i class="fi-x" ></i> Reject 
                       </button>
                     </div>
@@ -339,7 +339,7 @@
  
                     <span ng-show="!tx.missingSignatures && !tx.sentTs">
                       Transaction ready.
-                      <button class="secondary round"  ng-click="send(tx.ntxid)">
+                      <button class="secondary round"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting">
                         Broadcast Transaction
                       </button>
                     </span>
@@ -451,8 +451,8 @@
                 </div>
               </div>
               <div class="row">
-                <div class="large-4 columns">
-                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid">
+                <div class="large-5 columns">
+                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
                     Send
                   </button>                 
                 </div>
