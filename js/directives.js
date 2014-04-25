@@ -58,5 +58,22 @@ angular.module('copay.directives')
       }
     };
   }])
+  .directive('loading', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attr) {
+        var a = element.html();
+        var text = attr.loading;
+        scope.$watch('loading', function (val) {
+          if (val) {
+            element.html('<img src="img/loading.gif"> ' + text + '...' );
+          }
+          else {
+            element.html(a);
+          }
+        });
+      }
+    }
+  })
 ;
 
