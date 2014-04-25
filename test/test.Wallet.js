@@ -5,7 +5,7 @@ var should = chai.should();
 var copay = copay || require('../copay');
 var Wallet = require('../js/models/core/Wallet');
 var Storage= require('./mocks/FakeStorage');
-var Network= copay.WebRTC;
+var Network= require('./mocks/FakeNetwork');
 var Blockchain= copay.Insight;
 
 var addCopayers = function (w) {

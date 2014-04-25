@@ -110,10 +110,10 @@ describe('API', function() {
     });
   });
 
-  describe('#getWalletIds', function() {
+  describe('#getWallets', function() {
     it('should get the wallet ids', function(done) {
       var api = new API({Storage: Storage});
-      api.getWalletIds(function(err, result) {
+      api.getWallets(function(err, result) {
         result.length.should.be.greaterThan(-1);
         done();
       });

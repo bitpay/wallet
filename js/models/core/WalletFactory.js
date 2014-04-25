@@ -149,10 +149,16 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
-  self.network.setCopayerId(privateKey.getId());
-  self.network.setSigningKey(privateKey.getSigningKey());
-  self.network.start({}, function() {
+  var opts = {
+    copayerId: privateKey.getId(),
+    signingKeyHex: privateKey.getSigningKey(),
+  };
+  self.network.cleanUp();
+  self.network.start(opts, function() {
     self.network.connectTo(copayerId);
+    self.network.on('onlyYou', function(sender, data) {
+      return cb();
+    });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;

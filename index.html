@@ -17,12 +17,12 @@
             <a href="#"><img src="./img/logo-negative.svg" alt="Copay" width="130" /></a>
           </figure>
           <div class="text-right" ng-show="$root.wallet">
-            <div ng-if="$root.wallet.name">
-              <h5>Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</h5>
-              <p> 
-            </div>
-            <div ng-if="!$root.wallet.name && $root.wallet.id">
-              <h5 >Wallet ID: {{$root.wallet.id}}</h5>
+            <div>
+              <h5 >
+              <span ng-if="!$root.wallet.name && $root.wallet.id">Wallet ID: {{$root.wallet.id}}</span>
+              <span ng-if="$root.wallet.name">Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</span>
+              [{{$root.wallet.requiredCopayers}}-{{$root.wallet.totalCopayers}}]<br>
+            </h5>
             </div>
             <p>
                 Balance: {{totalBalance || 0}} <i class="fi-bitcoin"></i><br>
@@ -101,7 +101,7 @@
     <script type="text/ng-template" id="signin.html">
       <div class="signin" ng-controller="SigninController">
         <div data-alert class="alert-box info round" ng-show="loading">
-          Connecting to wallet...
+          Looking for peers...
         </div>
         <div ng-show="!loading">
           <div ng-show="!wallets.length">

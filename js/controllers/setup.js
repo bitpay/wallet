@@ -34,7 +34,7 @@ angular.module('copay.setup').controller('SetupController',
         name: walletName, 
       };
       var w = walletFactory.create(opts);
-      controllerUtils.setupUxHandlers(w);
+      controllerUtils.startNetwork(w);
     };
 
   });
