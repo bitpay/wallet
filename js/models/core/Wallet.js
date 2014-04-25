@@ -107,7 +107,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newCopayerId) {
-    this.log('#### Setting new PEER:', newCopayerId);
+    this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
     this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
@@ -256,7 +256,7 @@ Wallet.prototype.sendWalletReady = function(recipients) {
 };
 
 Wallet.prototype.sendWalletId = function(recipients) {
-  this.log('### SENDING walletId TO:', recipients || 'All', this.walletId);
+  this.log('### SENDING walletId TO:', recipients || 'All', this.id);
 
   this.network.send(recipients, {
     type: 'walletId',

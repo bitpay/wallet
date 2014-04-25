@@ -203,14 +203,10 @@
     </script>
 
     <script type="text/ng-template" id="peer.html">
-      <div class="row">
+      <div class="row"  ng-if="$root.wallet.requiredCopayers > $root.wallet.network.connectedCopayers().length">
         <div class="large-12 columns p70l">
-          <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers >$root.wallet.network.connectedCopayers()"> <i class="fi-alert size-28"></i> 
-        </div>
-      </div>
-      <div class="row">
-        <div class="large-12 columns p70l">
-          {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
+          <p class="text-info"> <i class="fi-alert size-28"></i> 
+          {{$root.wallet.requiredCopayers}} copayers needed for signing transactions
         </div>
       </div>
       <div class="row">
