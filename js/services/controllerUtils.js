@@ -58,6 +58,9 @@ angular.module('copay.controllerUtils')
       w.on('refresh', function() {
         root.updateBalance();
       });
+      w.on('publicKeyRingUpdated', function() {
+        root.setSocketHandlers();
+      });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
         video.callPeer(peerID, handlePeerVideo);
