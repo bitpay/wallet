@@ -5215,7 +5215,9 @@ if (process.versions) {
 module.exports = require('./browser/Point');
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Point":61,"./node/Point":65,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":101}],"izTl9z":[function(require,module,exports){
+},{"./browser/Point":61,"./node/Point":65,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":101}],"./lib/PrivateKey":[function(require,module,exports){
+module.exports=require('izTl9z');
+},{}],"izTl9z":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -5300,9 +5302,7 @@ PrivateKey.prototype.network = function() {
 module.exports = require('soop')(PrivateKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util/VersionedData":"QLzNQg","buffer":85,"soop":163}],"./lib/PrivateKey":[function(require,module,exports){
-module.exports=require('izTl9z');
-},{}],"./lib/RpcClient":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util/VersionedData":"QLzNQg","buffer":85,"soop":163}],"./lib/RpcClient":[function(require,module,exports){
 module.exports=require('7siE1N');
 },{}],"7siE1N":[function(require,module,exports){
 (function (Buffer){
@@ -7500,6 +7500,8 @@ exports.Transaction = function Transaction(tx, txInputs, network, keys, scripts)
 }).call(this,require("buffer").Buffer)
 },{"buffer":85}],"./lib/Sign":[function(require,module,exports){
 module.exports=require('V3JdDp');
+},{}],"./lib/Transaction":[function(require,module,exports){
+module.exports=require('LJhYtm');
 },{}],"LJhYtm":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
@@ -8135,9 +8137,7 @@ Transaction.prototype.isComplete = function() {
 module.exports = require('soop')(Transaction);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../util":177,"../util/BinaryParser":"b3ZSD7","../util/error":176,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":85,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":163,"step":164}],"./lib/Transaction":[function(require,module,exports){
-module.exports=require('LJhYtm');
-},{}],"./lib/TransactionBuilder":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util":177,"../util/BinaryParser":"b3ZSD7","../util/error":176,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":85,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":163,"step":164}],"./lib/TransactionBuilder":[function(require,module,exports){
 module.exports=require('D1Ge6m');
 },{}],"D1Ge6m":[function(require,module,exports){
 (function (Buffer){
@@ -9109,9 +9109,7 @@ TransactionBuilder.prototype.merge = function(b) {
 module.exports = require('soop')(TransactionBuilder);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":177,"../util/log":"AdF7pF","./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":85,"buffertools":"fugeBw","soop":163}],"./lib/Wallet":[function(require,module,exports){
-module.exports=require('yUY4WV');
-},{}],"yUY4WV":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":177,"../util/log":"AdF7pF","./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":"J4nwo8","buffer":85,"buffertools":"fugeBw","soop":163}],"yUY4WV":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 
@@ -9255,7 +9253,9 @@ module.exports = require('soop')(Wallet);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":177,"../util/EncFile":171,"./Address":"G+CcXD","buffer":85,"fs":81,"soop":163}],"wWje7g":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":177,"../util/EncFile":171,"./Address":"G+CcXD","buffer":85,"fs":81,"soop":163}],"./lib/Wallet":[function(require,module,exports){
+module.exports=require('yUY4WV');
+},{}],"wWje7g":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 
@@ -21532,7 +21532,9 @@ function parseHost(host) {
 module.exports=require(83)
 },{}],117:[function(require,module,exports){
 module.exports=require(84)
-},{"./support/isBuffer":116,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":101,"inherits":100}],"aXRuS6":[function(require,module,exports){
+},{"./support/isBuffer":116,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":101,"inherits":100}],"bufferput":[function(require,module,exports){
+module.exports=require('aXRuS6');
+},{}],"aXRuS6":[function(require,module,exports){
 (function (Buffer){
 function BufferPut () {
   this.words = [];
@@ -21638,11 +21640,7 @@ BufferPut.prototype.write = function(stream) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":85}],"bufferput":[function(require,module,exports){
-module.exports=require('aXRuS6');
-},{}],"buffers":[function(require,module,exports){
-module.exports=require('OBo3aV');
-},{}],"OBo3aV":[function(require,module,exports){
+},{"buffer":85}],"OBo3aV":[function(require,module,exports){
 (function (Buffer){
 module.exports = Buffers;
 
@@ -21915,7 +21913,9 @@ Buffers.prototype.toString = function(encoding, start, end) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":85}],122:[function(require,module,exports){
+},{"buffer":85}],"buffers":[function(require,module,exports){
+module.exports=require('OBo3aV');
+},{}],122:[function(require,module,exports){
 module.exports = require('./lib/chai');
 
 },{"./lib/chai":123}],123:[function(require,module,exports){
@@ -30114,6 +30114,8 @@ exports.patch = function(Buffers) {
 }).call(this,require("buffer").Buffer)
 },{"buffer":85}],"./patches/Buffers.monkey":[function(require,module,exports){
 module.exports=require('kytKTK');
+},{}],"./patches/Number.monkey":[function(require,module,exports){
+module.exports=require('AwmEwz');
 },{}],"AwmEwz":[function(require,module,exports){
 exports.patch = function(Number) {
   //round to specified number of places
@@ -30124,8 +30126,6 @@ exports.patch = function(Number) {
   };
 };
 
-},{}],"./patches/Number.monkey":[function(require,module,exports){
-module.exports=require('AwmEwz');
 },{}],"./util/BinaryParser":[function(require,module,exports){
 module.exports=require('b3ZSD7');
 },{}],"b3ZSD7":[function(require,module,exports){
@@ -30339,7 +30339,9 @@ exports.writeJFileSync = function(enc_method, enc_passphrase, filename, obj)
 };
 
 
-},{"crypto":89,"fs":81}],"eLfUFE":[function(require,module,exports){
+},{"crypto":89,"fs":81}],"./util/EncodedData":[function(require,module,exports){
+module.exports=require('eLfUFE');
+},{}],"eLfUFE":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 var base58 = imports.base58 || require('base58-native').base58Check;
@@ -30501,8 +30503,8 @@ module.exports = require('soop')(EncodedData);
 
 
 }).call(this,require("buffer").Buffer)
-},{"base58-native":"xtP2pj","buffer":85,"soop":163}],"./util/EncodedData":[function(require,module,exports){
-module.exports=require('eLfUFE');
+},{"base58-native":"xtP2pj","buffer":85,"soop":163}],"./util/VersionedData":[function(require,module,exports){
+module.exports=require('QLzNQg');
 },{}],"QLzNQg":[function(require,module,exports){
 (function (Buffer){
 var imports    = require('soop').imports();
@@ -30545,9 +30547,7 @@ VersionedData.prototype.payload = function(data) {
 module.exports = require('soop')(VersionedData);
 
 }).call(this,require("buffer").Buffer)
-},{"./EncodedData":"eLfUFE","base58-native":"xtP2pj","buffer":85,"soop":163}],"./util/VersionedData":[function(require,module,exports){
-module.exports=require('QLzNQg');
-},{}],176:[function(require,module,exports){
+},{"./EncodedData":"eLfUFE","base58-native":"xtP2pj","buffer":85,"soop":163}],176:[function(require,module,exports){
 
 /**
  * Used during transcation verification when a source txout is missing.

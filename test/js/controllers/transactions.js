@@ -5,6 +5,7 @@ angular.module('copay.transactions').controller('TransactionsController',
     var bitcore = require('bitcore');
 
     $scope.title = 'Transactions';
+    $scope.loading = false;
     var _updateTxs = function() {
       var w   =$rootScope.wallet;
       if (!w) return;
@@ -34,9 +35,11 @@ angular.module('copay.transactions').controller('TransactionsController',
       $scope.txs = txs;
       w.removeListener('txProposalsUpdated',_updateTxs)
       w.once('txProposalsUpdated',_updateTxs);
+      $scope.loading = false;
     };
 
     $scope.send = function (ntxid) {
+      $scope.loading = true;
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
           console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
@@ -50,6 +53,7 @@ angular.module('copay.transactions').controller('TransactionsController',
     };
 
     $scope.sign = function (ntxid) {
+      $scope.loading = true;
       var w = $rootScope.wallet;
       var ret = w.sign(ntxid);
 
@@ -73,17 +77,20 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.getTransactions = function() {
       var w   =$rootScope.wallet;
-      var addresses = w.getAddressesStr();
+      if (w) {
+        var addresses = w.getAddressesStr();
 
-      if (addresses.length > 0) {
-        w.blockchain.getTransactions(addresses, function(txs) {
-          $scope.blockchain_txs = txs;
-          $rootScope.$digest();
-        });
+        if (addresses.length > 0) {
+          w.blockchain.getTransactions(addresses, function(txs) {
+            $scope.blockchain_txs = txs;
+            $rootScope.$digest();
+          });
+        }
       }
     };
 
     $scope.reject = function (ntxid) {
+      $scope.loading = true;
       var w = $rootScope.wallet;
       w.reject(ntxid);
       $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};

@@ -17,12 +17,12 @@
             <a href="#"><img src="./img/logo-negative.svg" alt="Copay" width="130" /></a>
           </figure>
           <div class="text-right" ng-show="$root.wallet">
-            <div ng-if="$root.wallet.name">
-              <h5>Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</h5>
-              <p> 
-            </div>
-            <div ng-if="!$root.wallet.name && $root.wallet.id">
-              <h5 >Wallet ID: {{$root.wallet.id}}</h5>
+            <div>
+              <h5 >
+              <span ng-if="!$root.wallet.name && $root.wallet.id">Wallet ID: {{$root.wallet.id}}</span>
+              <span ng-if="$root.wallet.name">Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</span>
+              [{{$root.wallet.requiredCopayers}}-{{$root.wallet.totalCopayers}}]<br>
+            </h5>
             </div>
             <p>
                 Balance: {{totalBalance || 0}} <i class="fi-bitcoin"></i><br>
@@ -93,7 +93,7 @@
 
   </div>
 
-  <div class="row">
+  <div class="row" ng-cloak class="ng-cloak">
     <div class="large-12 columns" ng-view></div>
   </div>
 
@@ -101,7 +101,7 @@
     <script type="text/ng-template" id="signin.html">
       <div class="signin" ng-controller="SigninController">
         <div data-alert class="alert-box info round" ng-show="loading">
-          Connecting to wallet...
+          Looking for peers...
         </div>
         <div ng-show="!loading">
           <div ng-show="!wallets.length">
@@ -110,7 +110,7 @@
                 <h3>Create a New Wallet</h3>
               </div>
               <div class="large-3 columns">
-                <button class="button secondary expand round" ng-click="create()">Create</button>
+                <button class="button secondary expand round" ng-click="create()" ng-disabled="loading" loading="Creating">Create</button>
               </div>
             </div>
             <hr>
@@ -125,7 +125,7 @@
               </div>
               <div class="large-3 columns">
                 <button class="button secondary expand round" type="button"
-                   ng-click="open(selectedWalletId)">Open</button>
+                   ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
               </div>
             </div>
             <hr>
@@ -139,7 +139,7 @@
               </div>
               <div class="large-3 columns">
                 <button class="button primary expand round"
-                  ng-click="join(connectionId)">Join</button>
+                  ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
             <hr>
@@ -148,7 +148,7 @@
           <div class="row">
             <div class="large-12 columns">
               <div ng-show="wallets.length">
-                <a ng-click="create()">Create a new wallet</a>
+                <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a>
               </div>
               <a class="right" ng-click="import()">Import from file</a>
             </div>
@@ -205,21 +205,29 @@
     <script type="text/ng-template" id="peer.html">
       <div class="row">
         <div class="large-12 columns p70l">
-          <h3 class="panel-title">Online Copayers: {{$root.wallet.network.connectedCopayers().length}}</h3>
-
           <p class="text-info" ng-show="$root.wallet.publicKeyRing.requiredCopayers >$root.wallet.network.connectedCopayers()"> <i class="fi-alert size-28"></i> 
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns p70l">
           {{$root.wallet.publicKeyRing.requiredCopayers}} copayers needed for signing transactions
-
-
-          <ul class="no-bullet">
-            <li class="panel" ng-repeat="copayer in $root.wallet.network.connectedCopayers()">
-              <span ng-if="copayer === $root.wallet.getMyCopayerId()"> You </span>
-              {{copayer}}
-              <span>
-                  <i class="fi-check size-16 panel-sign right p5h br100"></i>
-              </span>
-            </li>
-          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-4 columns"
+          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
+          <video 
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+            class="video-small"
+            autoplay ng-show="$root.videoSrc[copayer]" 
+            ng-src="{{$root.getVideoURL(copayer)}}"
+            id="{{copayer + '-video'}}" muted="true"
+            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
+          <img ng-show="!$root.videoSrc[copayer]" 
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+            class="video-small"
+            src="./img/satoshi.gif" 
+            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
         </div>
       </div>
     </script>
@@ -245,7 +253,7 @@
           </div>
           <div class="large-3 columns text-center">
             <p> Create a New <strong> Address </strong> </p>
-            <button class="secondary round expand" ng-click="newAddr()"> Create </button>
+            <button class="secondary round expand" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
           </div>
         </div> 
         </div> 
@@ -316,10 +324,10 @@
                       <i class="fi-check size-40"></i> Signed by you already
                     </div>
                     <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
-                      <button class="secondary round"  ng-click="sign(tx.ntxid)">
+                      <button class="secondary round"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                         <i class="fi-check"></i> Sign
                       </button>
-                      <button class="primary round" ng-click="reject(tx.ntxid)">
+                      <button class="primary round" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading>
                         <i class="fi-x" ></i> Reject 
                       </button>
                     </div>
@@ -331,7 +339,7 @@
  
                     <span ng-show="!tx.missingSignatures && !tx.sentTs">
                       Transaction ready.
-                      <button class="secondary round"  ng-click="send(tx.ntxid)">
+                      <button class="secondary round"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting">
                         Broadcast Transaction
                       </button>
                     </span>
@@ -443,8 +451,8 @@
                 </div>
               </div>
               <div class="row">
-                <div class="large-4 columns">
-                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid">
+                <div class="large-5 columns">
+                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
                     Send
                   </button>                 
                 </div>
@@ -511,6 +519,7 @@
     <script src="js/directives.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/services/socket.js"></script>
+    <script src="js/services/video.js"></script>
     <script src="js/services/walletFactory.js"></script>
     <script src="js/services/controllerUtils.js"></script>
 

@@ -248,6 +248,10 @@ button.secondary { background-color: #FAE448 !important; }
 button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #FFDF00 !important;}
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+.dn {display: none;}
 .text-gray { color: #999 !important;}
 .pr {position: relative;}
 .m0 {margin: 0;}
@@ -276,4 +280,19 @@ button.secondary:hover { background-color: #FFDF00 !important;}
 .signin input.ng-dirty.ng-invalid { 
   border: 2px red solid;
 }
+
+.video-small {
+  width: 120px;
+  height: 120px;
+  margin: 20px;
+  display: inline;
+  float:left;
+}
+.online {
+  border: 10px solid green;
+}
+.offline {
+  border: 10px solid gray;
+}
+
 

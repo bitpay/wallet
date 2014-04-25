@@ -7,13 +7,14 @@ angular.module('copay.signin').controller('SigninController',
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
 
     $scope.create = function() {
+      $scope.loading = true;
       $location.path('setup');
     };
 
     $scope.open = function(walletId, opts) {
       $scope.loading = true;
       var w = walletFactory.open(walletId, opts);
-      controllerUtils.setupUxHandlers(w);
+      controllerUtils.startNetwork(w);
     };
 
     $scope.join = function(secret) {
@@ -28,8 +29,13 @@ angular.module('copay.signin').controller('SigninController',
       });
 
       walletFactory.joinCreateSession(secret, function(w) {
-console.log('[signin.js.33] joinCreateSession RETURN', w); //TODO
-        controllerUtils.setupUxHandlers(w);
+        if (w) {
+          controllerUtils.startNetwork(w);
+        }
+        else {
+          $scope.loading = false;
+          controllerUtils.onErrorDigest();
+        }
       });
     };
   });

@@ -223,13 +223,13 @@ API.prototype.getCommands = decorate('getCommands', [
   ['callback', 'function']
   ]);
 
-API.prototype._cmd_getWalletIds = function(callback) {
+API.prototype._cmd_getWallets = function(callback) {
   var self = this;
 
-  return callback(null, self.walletFactory.getWalletIds());
+  return callback(null, self.walletFactory.getWallets());
 };
 
-API.prototype.getWalletIds = decorate('getWalletIds', [
+API.prototype.getWallets = decorate('getWallets', [
   ['callback', 'function']
   ]);
 
@@ -690,17 +690,25 @@ PublicKeyRing.prototype.getCopayerId = function(i) {
   return this.copayerIds[i];
 };
 
-PublicKeyRing.prototype.myCopayerId = function(i) {
-  return this.getCopayerId(0);
-};
-
 PublicKeyRing.prototype.registeredCopayers = function () {
   return this.copayersBIP32.length;
 };
 
-
 PublicKeyRing.prototype.isComplete = function () {
-  return this.registeredCopayers() >= this.totalCopayers;
+  return this.registeredCopayers() === this.totalCopayers;
+};
+
+PublicKeyRing.prototype.getAllCopayerIds = function() {
+  var ret = [];
+  var l = this.registeredCopayers();
+  for(var i=0; i<l; i++) {
+    ret.push(this.getCopayerId(i));
+  }
+  return ret;
+};
+
+PublicKeyRing.prototype.myCopayerId = function(i) {
+  return this.getCopayerId(0);
 };
 
 PublicKeyRing.prototype._checkKeys = function() {
@@ -812,12 +820,12 @@ PublicKeyRing.prototype.getAddresses = function(onlyMain) {
   var ret = [];
 
   for (var i=0; i<this.addressIndex; i++) {
-    ret.push(this.getAddress(i,false));
+    ret.unshift(this.getAddress(i,false));
   }
 
   if (!onlyMain) {
     for (var i=0; i<this.changeAddressIndex; i++) {
-      ret.push(this.getAddress(i,true));
+      ret.unshift(this.getAddress(i,true));
     }
   }
   return ret;
@@ -1182,15 +1190,15 @@ module.exports = require('soop')(TxProposals);
 },{"../storage/Base":18,"bitcore":21,"soop":51}],"zfa+FW":[function(require,module,exports){
 'use strict';
 
-var imports     = require('soop').imports();
+var imports = require('soop').imports();
 
-var bitcore     = require('bitcore');
-var coinUtil    = bitcore.util;
+var bitcore = require('bitcore');
+var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
-var Builder     = bitcore.TransactionBuilder;
-var http        = require('http');
-var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
-var copay       = copay || require('../../../copay');
+var Builder = bitcore.TransactionBuilder;
+var http = require('http');
+var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var copay = copay || require('../../../copay');
 
 function Wallet(opts) {
   var self = this;
@@ -1199,12 +1207,12 @@ function Wallet(opts) {
   ['storage', 'network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey'
-  ].forEach( function(k){
+  ].forEach(function(k) {
     if (typeof opts[k] === 'undefined') throw new Error('missing key:' + k);
     self[k] = opts[k];
   });
 
-  this.log('creating '+opts.requiredCopayers+' of '+opts.totalCopayers+' wallet');
+  this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
@@ -1212,13 +1220,14 @@ function Wallet(opts) {
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
 
+  this.network.maxPeers = this.totalCopayers;
 }
 
-Wallet.parent=EventEmitter;
-Wallet.prototype.log = function(){
+Wallet.parent = EventEmitter;
+Wallet.prototype.log = function() {
   if (!this.verbose) return;
   if (console)
-        console.log.apply(console, arguments);
+    console.log.apply(console, arguments);
 };
 
 Wallet.getRandomId = function() {
@@ -1227,67 +1236,48 @@ Wallet.getRandomId = function() {
 };
 
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
-  this.log('RECV PUBLICKEYRING:',data); 
+  this.log('RECV PUBLICKEYRING:', data);
 
-  var shouldSend = false;
   var recipients, pkr = this.publicKeyRing;
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
 
   var hasChanged = pkr.merge(inPKR, true);
-  if (hasChanged) { 
+  if (hasChanged) {
     this.log('### BROADCASTING PKR');
     recipients = null;
-    shouldSend = true;
-  }
-  // else if (isInbound  && !data.isBroadcast) {
-  //   // always replying  to connecting peer
-  //   this.log('### REPLYING PKR TO:', senderId);
-  //   recipients = senderId;
-  //   shouldSend = true;
-  // }
-
-  if (shouldSend) {
     this.sendPublicKeyRing(recipients);
+    if (this.publicKeyRing.isComplete()) {
+      this._lockIncomming();
+    }
   }
   this.store();
 };
 
 
 Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
-  this.log('RECV TXPROPOSAL:',data); //TODO
+  this.log('RECV TXPROPOSAL:', data); 
 
-  var shouldSend = false;
   var recipients;
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
   var mergeInfo = this.txProposals.merge(inTxp, true);
   var addSeen = this.addSeenToTxProposals();
-  if (mergeInfo.hasChanged  || addSeen) { 
-    this.log('### BROADCASTING txProposals. ' );
+  if (mergeInfo.hasChanged || addSeen) {
+    this.log('### BROADCASTING txProposals. ');
     recipients = null;
-    shouldSend = true;
-  }
-  // else if (isInbound  && !data.isBroadcast) {
-  //   // always replying  to connecting peer
-  //   this.log('### REPLYING txProposals TO:', senderId);
-  //   recipients = senderId;
-  //   shouldSend = true;
-  // }
-
-  if (shouldSend) 
     this.sendTxProposals(recipients);
-  
+  }
   this.store();
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
   // TODO check message signature
   if (this.id !== data.walletId) {
-    this.emit('badMessage',senderId);
+    this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId); //TODO
     return;
   }
-  this.log('[Wallet.js.98]' , data.type); //TODO
-  switch(data.type) {
+  this.log('[Wallet.js.98]', data.type); //TODO
+  switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
       this.sendWalletReady(senderId);
@@ -1298,10 +1288,10 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
-    break;
+      break;
     case 'txProposals':
       this._handleTxProposals(senderId, data, isInbound);
-    break;
+      break;
   }
 };
 
@@ -1309,12 +1299,13 @@ Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new PEER:', newCopayerId);
     this.sendWalletId(newCopayerId);
+    this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
   this.emit('refresh');
 };
 
 
-Wallet.prototype._optsToObj = function () {
+Wallet.prototype._optsToObj = function() {
   var obj = {
     id: this.id,
     spendUnconfirmed: this.spendUnconfirmed,
@@ -1336,13 +1327,17 @@ Wallet.prototype.getMyCopayerId = function() {
   return this.getCopayerId(0);
 };
 
+Wallet.prototype._lockIncomming = function() {
+  this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+};
+
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
   net.removeAllListeners();
-  net.on('networkChange', self._handleNetworkChange.bind(self) );
-  net.on('data',  self._handleData.bind(self) );
-  net.on('open', function() {});  // TODO
+  net.on('networkChange', self._handleNetworkChange.bind(self));
+  net.on('data', self._handleData.bind(self));
+  net.on('open', function() {}); // TODO
   net.on('openError', function() {
     self.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
     self.emit('openError');
@@ -1352,36 +1347,54 @@ Wallet.prototype.netStart = function() {
   });
 
   var myId = self.getMyCopayerId();
-  var startOpts = { 
+  var startOpts = {
     copayerId: myId,
     signingKeyHex: self.privateKey.getSigningKey(),
+    maxPeers: self.totalCopayers,
   };
 
+  if (this.publicKeyRing.isComplete()) {
+    this._lockIncomming();
+  }
+
   net.start(startOpts, function() {
-    self.emit('created');
-    for (var i=0; i<self.publicKeyRing.registeredCopayers(); i++) {
+    self.emit('created', net.getPeer());
+    var registered = self.getRegisteredPeerIds();
+    for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
       if (otherId !== myId) {
         net.connectTo(otherId);
       }
-    if (self.firstCopayerId){  
-      self.sendWalletReady(self.firstCopayerId);
-      self.firstCopayerId = null;
-    }
-    self.emit('refresh');
+      if (self.firstCopayerId) {
+        self.sendWalletReady(self.firstCopayerId);
+        self.firstCopayerId = null;
+      }
+      self.emit('refresh');
     }
   });
 };
 
+Wallet.prototype.getOnlinePeerIDs = function() {
+  return this.network.getOnlinePeerIDs();
+};
+
+Wallet.prototype.getRegisteredPeerIds = function() {
+  var ret = [];
+  for (var i = 0; i < this.publicKeyRing.registeredCopayers(); i++) {
+    var cid = this.getCopayerId(i)
+    var pid = this.network.peerFromCopayer(cid);
+    ret.push(pid);
+  }
+  return ret;
+};
+
 Wallet.prototype.store = function(isSync) {
-  this.log('[Wallet.js.135:store:]'); //TODO
   var wallet = this.toObj();
   this.storage.setFromObj(this.id, wallet);
 
   if (isSync) {
     this.log('Wallet stored.'); //TODO
-  } 
-  else {
+  } else {
     this.log('Wallet stored. REFRESH Emitted'); //TODO
     this.emit('refresh');
   }
@@ -1412,10 +1425,10 @@ Wallet.fromObj = function(wallet) {
 };
 
 Wallet.prototype.sendTxProposals = function(recipients) {
-  this.log('### SENDING txProposals TO:', recipients||'All', this.txProposals);
+  this.log('### SENDING txProposals TO:', recipients || 'All', this.txProposals);
 
-  this.network.send( recipients, { 
-    type: 'txProposals', 
+  this.network.send(recipients, {
+    type: 'txProposals',
     txProposals: this.txProposals.toObj(),
     walletId: this.id,
   });
@@ -1425,18 +1438,18 @@ Wallet.prototype.sendTxProposals = function(recipients) {
 Wallet.prototype.sendWalletReady = function(recipients) {
   this.log('### SENDING WalletReady TO:', recipients);
 
-  this.network.send( recipients, { 
-    type: 'walletReady', 
+  this.network.send(recipients, {
+    type: 'walletReady',
     walletId: this.id,
   });
   this.emit('walletReady');
 };
 
 Wallet.prototype.sendWalletId = function(recipients) {
-  this.log('### SENDING walletId TO:', recipients||'All', this.walletId);
+  this.log('### SENDING walletId TO:', recipients || 'All', this.walletId);
 
-  this.network.send(recipients, { 
-    type: 'walletId', 
+  this.network.send(recipients, {
+    type: 'walletId',
     walletId: this.id,
     opts: this._optsToObj()
   });
@@ -1444,10 +1457,10 @@ Wallet.prototype.sendWalletId = function(recipients) {
 
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  this.log('### SENDING publicKeyRing TO:', recipients||'All', this.publicKeyRing.toObj());
+  this.log('### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
 
-  this.network.send(recipients, { 
-    type: 'publicKeyRing', 
+  this.network.send(recipients, {
+    type: 'publicKeyRing',
     publicKeyRing: this.publicKeyRing.toObj(),
     walletId: this.id,
   });
@@ -1465,12 +1478,12 @@ Wallet.prototype.generateAddress = function(isChange) {
 
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
-  for(var k in this.txProposals.txps) {
+  for (var k in this.txProposals.txps) {
     var i = this.txProposals.getTxProposal(k);
-    i.signedByUs = i.signedBy[this.getMyCopayerId()]?true:false;
-    i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()]?true:false;
-    if (this.totalCopayers-i.rejectCount < this.requiredCopayers)
-      i.finallyRejected=true;
+    i.signedByUs = i.signedBy[this.getMyCopayerId()] ? true : false;
+    i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()] ? true : false;
+    if (this.totalCopayers - i.rejectCount < this.requiredCopayers)
+      i.finallyRejected = true;
 
     ret.push(i);
   }
@@ -1479,7 +1492,7 @@ Wallet.prototype.getTxProposals = function() {
 
 
 Wallet.prototype.reject = function(ntxid) {
-  var myId=this.getMyCopayerId();
+  var myId = this.getMyCopayerId();
   var txp = this.txProposals.txps[ntxid];
   if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
@@ -1491,7 +1504,7 @@ Wallet.prototype.reject = function(ntxid) {
 
 Wallet.prototype.sign = function(ntxid) {
   var self = this;
-  var myId=this.getMyCopayerId();
+  var myId = this.getMyCopayerId();
   var txp = self.txProposals.txps[ntxid];
   if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
@@ -1503,7 +1516,7 @@ Wallet.prototype.sign = function(ntxid) {
   b.sign(keys);
 
   var ret = false;
-  if (b.signaturesAdded >  before) {
+  if (b.signaturesAdded > before) {
     txp.signedBy[myId] = Date.now();
     this.sendTxProposals();
     this.store(true);
@@ -1521,12 +1534,12 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
 
   var txHex = tx.serialize().toString('hex');
-  this.log('[Wallet.js.261:txHex:]',txHex); //TODO
+  this.log('[Wallet.js.261:txHex:]', txHex); //TODO
 
   var self = this;
 
   this.blockchain.sendRawTransaction(txHex, function(txid) {
-    self.log('BITCOND txid:',txid); //TODO
+    self.log('BITCOND txid:', txid); //TODO
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
     }
@@ -1537,10 +1550,10 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 };
 
 Wallet.prototype.addSeenToTxProposals = function() {
-  var ret=false;
-  var myId=this.getMyCopayerId();
+  var ret = false;
+  var myId = this.getMyCopayerId();
 
-  for(var k in this.txProposals.txps) {
+  for (var k in this.txProposals.txps) {
     var txp = this.txProposals.txps[k];
     if (!txp.seenBy[myId]) {
 
@@ -1568,9 +1581,9 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
   var l = addrList.length;
   var ret = false;
 
-  for(var i=0; i<l; i++) {
+  for (var i = 0; i < l; i++) {
     if (addrList[i] === addrStr) {
-      ret = true; 
+      ret = true;
       break;
     }
   }
@@ -1584,23 +1597,23 @@ Wallet.prototype.getBalance = function(safe, cb) {
   var COIN = bitcore.util.COIN;
   var addresses = this.getAddressesStr(true);
 
-  if (!addresses.length) return cb(0,[]);
+  if (!addresses.length) return cb(0, []);
 
   // Prefill balanceByAddr with main address
-  addresses.forEach(function(a){
-    balanceByAddr[a]=0;
-    isMain[a]=1;
+  addresses.forEach(function(a) {
+    balanceByAddr[a] = 0;
+    isMain[a] = 1;
   });
-  var f = safe ?  this.getSafeUnspent.bind(this):this.getUnspent.bind(this);
+  var f = safe ? this.getSafeUnspent.bind(this) : this.getUnspent.bind(this);
   f(function(utxos) {
-    for(var i=0;i<utxos.length; i++) {
-      var u= utxos[i];
+    for (var i = 0; i < utxos.length; i++) {
+      var u = utxos[i];
       var amt = u.amount * COIN;
       balance = balance + amt;
-      balanceByAddr[u.address] = (balanceByAddr[u.address]||0) + amt;
+      balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
     }
-    for(var a in balanceByAddr){
-      balanceByAddr[a] = balanceByAddr[a]/COIN;
+    for (var a in balanceByAddr) {
+      balanceByAddr[a] = balanceByAddr[a] / COIN;
     }
     return cb(balance / COIN, balanceByAddr, isMain);
   });
@@ -1616,12 +1629,12 @@ Wallet.prototype.getSafeUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
 
-    var ret=[];
+    var ret = [];
     var maxRejectCount = self.totalCopayers - self.requiredCopayers;
     var uu = self.txProposals.getUsedUnspent(maxRejectCount);
 
-    for(var i in unspentList){
-      if (uu.indexOf(unspentList[i].txid) === -1) 
+    for (var i in unspentList) {
+      if (uu.indexOf(unspentList[i].txid) === -1)
         ret.push(unspentList[i]);
     }
 
@@ -1644,7 +1657,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
 
   self.getSafeUnspent(function(unspentList) {
     if (self.createTxSync(toAddress, amountSatStr, unspentList, opts)) {
-      self.sendPublicKeyRing();   // Change Address
+      self.sendPublicKeyRing(); // Change Address
       self.sendTxProposals();
       self.store();
     }
@@ -1653,29 +1666,33 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
 };
 
 Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
-  var pkr  = this.publicKeyRing; 
+  var pkr = this.publicKeyRing;
   var priv = this.privateKey;
   opts = opts || {};
 
   var amountSat = bitcore.bignum(amountSatStr);
 
-  if (! pkr.isComplete() ) {
+  if (!pkr.isComplete()) {
     throw new Error('publicKeyRing is not complete');
   }
 
   if (!opts.remainderOut) {
-    opts.remainderOut ={ address: this.generateAddress(true).toString() };
+    opts.remainderOut = {
+      address: this.generateAddress(true).toString()
+    };
   }
 
   var b = new Builder(opts)
     .setUnspent(utxos)
     .setHashToScriptMap(pkr.getRedeemScriptMap())
-    .setOutputs([{address: toAddress, amountSat: amountSat}])
-    ;
+    .setOutputs([{
+      address: toAddress,
+      amountSat: amountSat
+    }]);
 
-  var signRet;  
+  var signRet;
   if (priv) {
-    b.sign( priv.getAll(pkr.addressIndex, pkr.changeAddressIndex) );
+    b.sign(priv.getAll(pkr.addressIndex, pkr.changeAddressIndex));
   }
   var myId = this.getMyCopayerId();
   var now = Date.now();
@@ -1688,8 +1705,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var data = {
     signedBy: me,
-    seenBy:   meSeen,
-    creator:   myId,
+    seenBy: meSeen,
+    creator: myId,
     createdTs: now,
     builder: b,
   };
@@ -1703,15 +1720,20 @@ Wallet.prototype.connectTo = function(peerId) {
 };
 
 Wallet.prototype.disconnect = function() {
-
-console.log('[Wallet.js.524] DISC'); //TODO
+  this.log('## DISCONNECTING');
   this.network.disconnect();
+};
+
+Wallet.prototype.getNetwork = function() {
+  return this.network;
 };
 
 module.exports = require('soop')(Wallet);
 
-},{"../../../copay":"hxYaTp","bitcore":21,"events":27,"http":28,"soop":51}],"../js/models/core/Wallet":[function(require,module,exports){
+},{"../../../copay":"hxYaTp","bitcore":21,"events":27,"http":28,"soop":51}],"./js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
+},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -1864,10 +1886,16 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
-  self.network.setCopayerId(privateKey.getId());
-  self.network.setSigningKey(privateKey.getSigningKey());
-  self.network.start({}, function() {
+  var opts = {
+    copayerId: privateKey.getId(),
+    signingKeyHex: privateKey.getSigningKey(),
+  };
+  self.network.cleanUp();
+  self.network.start(opts, function() {
     self.network.connectTo(copayerId);
+    self.network.on('onlyYou', function(sender, data) {
+      return cb();
+    });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
@@ -1881,9 +1909,7 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
-},{}],15:[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],15:[function(require,module,exports){
 var imports = require('soop').imports();
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
@@ -1926,9 +1952,7 @@ Network.prototype.disconnect = function(peerId, cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
-module.exports=require('7xJZlt');
-},{}],"7xJZlt":[function(require,module,exports){
+},{"events":27,"soop":51}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){
 
 var imports     = require('soop').imports();
@@ -1945,27 +1969,45 @@ var Key         = bitcore.Key;
  *    when an unknown data type arrives
  *
  * Provides
+ *  send(toPeerIds, {data}, cb?)
  *
  */
 
 function Network(opts) {
   var self = this;
   opts                = opts || {};
-  this.peerId         = opts.peerId;
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
-  this.opts = { key: opts.key };
-  this.connections = {};
-  this.copayerForPeer = {};
+  this.opts           = { key: opts.key };
 
   // For using your own peerJs server
   ['port', 'host', 'path', 'debug'].forEach(function(k) {
-    if (opts[k]) self.opts[k]=opts[k];
+    if (opts[k]) self.opts[k] = opts[k];
   });
-  this.connectedPeers = [];
-  this.started = false;
+  this.cleanUp();
 }
+
+Network.parent = EventEmitter;
+
+Network.prototype.cleanUp = function() {
+  this.started = false;
+  this.connectedPeers = [];
+  this.peerId = null;
+  this.copayerId = null;
+  this.signingKey = null;
+  this.allowedCopayerIds=null;
+  this.authenticatedPeers=[];
+  this.copayerForPeer={};
+  this.connections={};
+  if (this.peer) {
+    console.log('## DESTROYING PEER INSTANCE'); //TODO
+    this.peer.disconnect();
+    this.peer.destroy();
+    this.peer = null;
+  }
+  this.closing = 0;
+};
 
 Network.parent=EventEmitter;
 
@@ -2003,7 +2045,6 @@ Network._arrayRemove = function(el, array) {
   return array;
 };
 
-
 Network.prototype.connectedCopayers = function() {
   var ret =[];
   for(var i in this.connectedPeers){
@@ -2013,9 +2054,16 @@ Network.prototype.connectedCopayers = function() {
   return ret;
 };
 
-Network.prototype._onClose = function(peerId) {
+Network.prototype._deletePeer = function(peerId) {
+  if (this.connections[peerId]) {
+    this.connections[peerId].close();
+  }
   delete this.connections[peerId];
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
+};
+
+Network.prototype._onClose = function(peerId) {
+  this._deletePeer(peerId);
   this._notifyNetworkChange();
 };
 
@@ -2029,7 +2077,7 @@ Network.prototype._connectToCopayers = function(copayerIds) {
 };
 
 Network.prototype._sendHello = function(copayerId) {
-  console.log('#### SENDING HELLO TO ', copayerId);
+  console.log('### SENDING HELLO TO ', copayerId);
   this.send(copayerId, {
     type: 'hello',
     copayerId: this.copayerId,
@@ -2037,7 +2085,7 @@ Network.prototype._sendHello = function(copayerId) {
 };
 
 Network.prototype._sendCopayers = function(copayerIds) {
-  console.log('#### SENDING PEER LIST: ', this.connectedPeers,this.connectedCopayers(), ' TO ', copayerIds?copayerIds: 'ALL');
+  console.log('### SENDING PEER LIST: ', this.connectedPeers,this.connectedCopayers(), ' TO ', copayerIds?copayerIds: 'ALL');
   this.send(copayerIds, {
     type: 'copayers',
     copayers: this.connectedCopayers(),
@@ -2058,6 +2106,8 @@ Network.prototype._addCopayer = function(copayerId, isInbound) {
   }
 };
 
+
+
 Network.prototype._onData = function(data, isInbound, peerId) {
   var sig, payload;
   try { 
@@ -2066,45 +2116,53 @@ Network.prototype._onData = function(data, isInbound, peerId) {
     payload= dataObj.payload;
 
   } catch (e) {
-    console.log('### ERROR ON DATA: "%s" ', data, isInbound, e); 
+    console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
+    this._deletePeer(peerId);
     return;
   };
 
-  console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s: sig:%s', 
-              isInbound, payload.type, peerId, sig, payload); 
-  var self=this;
+  console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
+              isInbound, payload.type, peerId, payload); 
 
   // TODO _func
   if(payload.type === 'hello') {
-    var thisSig = this._sign(payload, this.copayerId);
+    var thisSig = this._signHMAC(payload, this.copayerId);
     if (thisSig !== sig) {
-      console.log('#### Peer sent WRONG hello. Closing connection.');
+      console.log('#### Peer sent WRONG hello signature. Closing connection.');
+      this._deletePeer(peerId);
       return;
     }
+    if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+      console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
+                  this.allowedCopayerIds, payload.copayerId);
+      this._deletePeer(peerId);
+      return;
+    }
+
     console.log('#### Peer sent signed hello. Setting it up.'); //TODO
     this._addCopayer(payload.copayerId, isInbound);
+    this._setPeerAuthenticated(peerId);
     this._notifyNetworkChange( isInbound ? payload.copayerId : null);
     this.emit('open');
     return;
   }
 
-  if (!this.copayerForPeer[peerId]) {
-    console.log('### Discarting message from unknow peer: ', peerId); //TODO
+  //copayerForPeer is populated also in 'copayers' message, so we need authenticatedPeer
+  if (isInbound && (!this.copayerForPeer[peerId] || !this.authenticatedPeers[peerId])) {
+    console.log('### Closing connection from unknown/unauthenticated peer: ', peerId);
+    this._deletePeer(peerId);
     return;
   }
 
-  // check sig
-  if (this.copayerForPeer[peerId]) {
-    var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
-    if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
-      new Buffer(sig,'hex'))) {
-
-      console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO
-      // TODO close connection
-      return;
-    }
+  var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
+  if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
+    new Buffer(sig,'hex'))) {
+    console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO
+    this._deletePeer(peerId);
+    return;
   }
   
+  var self=this;
   switch(payload.type) {
     case 'copayers':
       this._addCopayer(this.copayerForPeer[peerId], false);
@@ -2119,29 +2177,30 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   }
 };
 
-
-
 Network.prototype._checkAnyPeer = function() {
   if (!this.connectedPeers.length) {
     console.log('EMIT openError: no more peers, not even you!'); 
-    this._cleanUp();
+    this.cleanUp();
     this.emit('openError');
   }
-}
+  if (this.connectedPeers.length === 1) {
+    this.emit('onlyYou');
+  }
+};
 
 Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
-  var self=this;
+  var self = this;
 
   dataConn.on('open', function() {
     if (!Network._inArray(dataConn.peer, self.connectedPeers)
-        && !  self.connections[dataConn.peer]) {
+        && !self.connections[dataConn.peer]) {
 
       self.connections[dataConn.peer] = dataConn;
 
       console.log('### DATA CONNECTION READY: %s (inbound: %s) AUTHENTICATING...',
         dataConn.peer, isInbound);
 
-      // The connection peer send hello (with signature)
+      // The connecting peer send hello (with signature)
       if(!isInbound) 
         self._sendHello(self.copayerForPeer[dataConn.peer]);      
     }
@@ -2152,7 +2211,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   });
 
   dataConn.on('error', function(e) {
-    console.log('### DATA ERROR',e ); //TODO
+    console.log('### DATA ERROR', e); //TODO
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
     self.emit('dataError');
@@ -2161,19 +2220,18 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   dataConn.on('close', function() {
     if (self.closing) return;
 
-    console.log('### CLOSE RECV FROM:', dataConn.peer); 
+    console.log('### CLOSE RECV FROM:', dataConn.peer);
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
   });
 };
 
 Network.prototype._notifyNetworkChange = function(newCopayerId) {
-  console.log('[WebRTC.js.164:_notifyNetworkChange:]', newCopayerId); //TODO
   this.emit('networkChange', newCopayerId);
 };
 
 Network.prototype._setupPeerHandlers = function(openCallback) {
-  var self=this;
+  var self = this;
   var p = this.peer;
 
   p.on('open', function() {
@@ -2199,8 +2257,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
         console.log('###  CLOSING CONN FROM:' + dataConn.peer);
         dataConn.close();
       });
-    }
-    else {
+    } else {
       self._setupConnectionHandlers(dataConn, true);
     }
   });
@@ -2209,14 +2266,24 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
   if (!this.copayerForPeer[peerId]) {
-    console.log('ADDING COPAYER MAPPING: %s => %s', peerId, copayerId); //TODO
-    this.copayerForPeer[peerId]=copayerId;
+    if(Object.keys(this.copayerForPeer).length < this.maxPeers) {
+      console.log('Adding peer/copayer',  peerId, copayerId); //TODO
+      this.copayerForPeer[peerId]=copayerId;
+    }
+    else {
+      console.log('### maxPeerLimit of %d reached. Refusing to add more copayers.', this.maxPeers); //TODO
+    }
   }
+};
+
+
+Network.prototype._setPeerAuthenticated = function(peerId) {
+  this.authenticatedPeers[peerId] = 1;
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
   if (this.started) {
-    throw new Error ('network already started: can not change peerId')
+    throw new Error('network already started: can not change peerId')
   }
   this.copayerId = copayerId;
   this.copayerIdBuf = new Buffer(copayerId,'hex');
@@ -2236,14 +2303,16 @@ Network.prototype.setSigningKey = function(keyHex) {
 };
 
 Network.prototype.peerFromCopayer = function(hex) {
-  return util.sha256(new Buffer(hex,'hex')).toString('hex');
+  var SIN = bitcore.SIN;
+  return new SIN(new Buffer(hex,'hex')).toString();
 };
 
 Network.prototype.start = function(opts, openCallback) {
   opts = opts || {};
-  var self = this;
-  if (this.started)  return openCallback();
-  opts.connectedPeers = opts.connectedPeers || [];
+
+  if (this.started) return openCallback();
+
+  this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
@@ -2253,6 +2322,7 @@ Network.prototype.start = function(opts, openCallback) {
   console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
+  opts.connectedPeers = opts.connectedPeers || [];
   for (var i = 0; i<opts.connectedPeers.length; i++) {
     var otherPeerId = opts.connectedPeers[i];
     this.connectTo(otherPeerId);
@@ -2261,34 +2331,43 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 
-Network.prototype._sign = function(payload, copayerId) {
-  var ret='';
+Network.prototype._signHMAC = function(payload, copayerId) {
   var str = JSON.stringify(payload);
-  if (payload.type ==='hello') {
-    ret = (
-      util.sha512hmac(
-      new Buffer(str), 
-      new Buffer(copayerId,'hex')
-    )).toString('hex');
-  }
-  else {
-    if (!this.signingKey)
-      throw new Error ('no key to sign messages :(');
-    ret = bitcore.Message.sign(
-      str, 
-      this.signingKey
-    ).toString('hex');
-  }
-  return ret;
+  if (payload.type !=='hello') 
+    throw new Error ('HMAC only for hello messages')
+  return util.sha512hmac(
+    new Buffer(str), 
+    new Buffer(copayerId,'hex')
+  ).toString('hex');
 };
 
-Network.prototype._sendToOne = function(copayerId, payload, cb) {
+Network.prototype._signECDSA = function(payload) {
+  var ret='';
+  var str = JSON.stringify(payload);
+  if (!this.signingKey)
+    throw new Error ('no key to sign messages :(');
+
+  return bitcore.Message.sign(
+    str, 
+    this.signingKey
+  ).toString('hex');
+};
+
+Network.prototype.getOnlinePeerIDs = function() {
+  return this.connectedPeers;
+};
+
+Network.prototype.getPeer = function() {
+  return this.peer;
+};
+
+Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
       var str = JSON.stringify({
-        sig: this._sign(payload, copayerId),
+        sig: sig,
         payload: payload 
       });
       dataConn.send(str);
@@ -2307,17 +2386,26 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     payload.isBroadcast = 1;
   }
 
+  var sig;
+  if (payload.type === 'hello') {
+    var hisId = copayerIds; 
+    sig=this._signHMAC(payload,hisId);
+  }
+  else  {
+    sig=this._signECDSA(payload);
+  }
+
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, payload, function () {
+      self._sendToOne(copayerId, payload, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
   else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, payload, cb);
+    self._sendToOne(copayerIds, payload, sig, cb);
 };
 
 Network.prototype.connectTo = function(copayerId) {
@@ -2325,7 +2413,7 @@ Network.prototype.connectTo = function(copayerId) {
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId,copayerId);
 
-  console.log('### STARTING CONNECTION TO:', peerId, copayerId);
+  console.log('### STARTING CONNECTION TO:\n\t'+ peerId+"\n\t"+ copayerId);
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',
     reliable: true,
@@ -2334,28 +2422,21 @@ Network.prototype.connectTo = function(copayerId) {
   self._setupConnectionHandlers(dataConn, false);
 };
 
-Network.prototype._cleanUp = function() {
-  var self = this;
-  self.connectedPeers = [];
-  self.started = false;
-  self.peerId = null;
-  self.copayerId = null;
-  self.signingKey = null;
-  if (self.peer) {
-    console.log('## DESTROYING PEER INSTANCE'); //TODO
-    self.peer.disconnect();
-    self.peer.destroy();
-    self.peer = null;
+Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
+  if (!this.allowedCopayerIds) 
+    console.log('[webrtc] #### LOCKING INCOMMING CONNECTIONS'); 
+  
+  this.allowedCopayerIds={};
+  for(var i in allowedCopayerIdsArray) {
+    this.allowedCopayerIds[ allowedCopayerIdsArray[i] ] = 1;
   }
-  self.closing = 0;
 };
-
 
 Network.prototype.disconnect = function(cb, forced) {
   var self = this;
   self.closing = 1;
   self.send(null, { type: 'disconnect' }, function(){
-    self._cleanUp();
+    self.cleanUp();
     if (typeof cb === 'function') cb();
   });
 };
@@ -2363,7 +2444,9 @@ Network.prototype.disconnect = function(cb, forced) {
 module.exports = require('soop')(Network);
 
 }).call(this,require("buffer").Buffer)
-},{"bitcore":21,"buffer":24,"events":27,"soop":51}],18:[function(require,module,exports){
+},{"bitcore":21,"buffer":24,"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
+module.exports=require('7xJZlt');
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -9331,7 +9414,7 @@ FakeStorage.prototype.clear = function() {
   delete this['storage'];
 }
 
-FakeStorage.prototype.getWalletIds = function() {
+FakeStorage.prototype.getWallets = function() {
   return [];
 };
 
