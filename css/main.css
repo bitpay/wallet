@@ -277,3 +277,18 @@ button.secondary:hover { background-color: #FFDF00 !important;}
   border: 2px red solid;
 }
 
+.video-small {
+  width: 120px;
+  height: 120px;
+  margin: 20px;
+  display: inline;
+  float:left;
+}
+.online {
+  border: 10px solid green;
+}
+.offline {
+  border: 10px solid gray;
+}
+
+

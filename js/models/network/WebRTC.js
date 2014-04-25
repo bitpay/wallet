@@ -13,29 +13,32 @@ var Key         = bitcore.Key;
  *    when an unknown data type arrives
  *
  * Provides
+ *  send(toPeerIds, {data}, cb?)
  *
  */
 
 function Network(opts) {
   var self = this;
-  opts                = opts || {};
-  this.peerId         = opts.peerId;
-  this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
-  this.debug          = opts.debug || 3;
-  this.maxPeers       = opts.maxPeers || 10;
-  this.opts = { key: opts.key };
+  opts = opts || {};
+  this.peerId = opts.peerId;
+  this.apiKey = opts.apiKey || 'lwjd5qra8257b9';
+  this.debug = opts.debug || 3;
+  this.maxPeers = opts.maxPeers || 10;
+  this.opts = {
+    key: opts.key
+  };
   this.connections = {};
   this.copayerForPeer = {};
 
   // For using your own peerJs server
   ['port', 'host', 'path', 'debug'].forEach(function(k) {
-    if (opts[k]) self.opts[k]=opts[k];
+    if (opts[k]) self.opts[k] = opts[k];
   });
   this.connectedPeers = [];
   this.started = false;
 }
 
-Network.parent=EventEmitter;
+Network.parent = EventEmitter;
 
 // Array helpers
 Network._arrayDiff = function(a, b) {
@@ -70,7 +73,6 @@ Network._arrayRemove = function(el, array) {
   if (pos >= 0) array.splice(pos, 1);
   return array;
 };
-
 
 Network.prototype.connectedCopayers = function() {
   var ret =[];
@@ -134,7 +136,7 @@ Network.prototype._onData = function(data, isInbound, peerId) {
     payload= dataObj.payload;
 
   } catch (e) {
-    console.log('### ERROR ON DATA: "%s" ', data, isInbound, e); 
+    console.log('### ERROR ON DATA: "%s" ', data, isInbound, e);
     return;
   };
 
@@ -187,8 +189,6 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   }
 };
 
-
-
 Network.prototype._checkAnyPeer = function() {
   if (!this.connectedPeers.length) {
     console.log('EMIT openError: no more peers, not even you!'); 
@@ -198,7 +198,7 @@ Network.prototype._checkAnyPeer = function() {
 }
 
 Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
-  var self=this;
+  var self = this;
 
   dataConn.on('open', function() {
     if (!Network._inArray(dataConn.peer, self.connectedPeers)
@@ -220,7 +220,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   });
 
   dataConn.on('error', function(e) {
-    console.log('### DATA ERROR',e ); //TODO
+    console.log('### DATA ERROR', e); //TODO
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
     self.emit('dataError');
@@ -229,7 +229,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   dataConn.on('close', function() {
     if (self.closing) return;
 
-    console.log('### CLOSE RECV FROM:', dataConn.peer); 
+    console.log('### CLOSE RECV FROM:', dataConn.peer);
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
   });
@@ -241,7 +241,7 @@ Network.prototype._notifyNetworkChange = function(newCopayerId) {
 };
 
 Network.prototype._setupPeerHandlers = function(openCallback) {
-  var self=this;
+  var self = this;
   var p = this.peer;
 
   p.on('open', function() {
@@ -267,8 +267,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
         console.log('###  CLOSING CONN FROM:' + dataConn.peer);
         dataConn.close();
       });
-    }
-    else {
+    } else {
       self._setupConnectionHandlers(dataConn, true);
     }
   });
@@ -284,7 +283,7 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
 
 Network.prototype.setCopayerId = function(copayerId) {
   if (this.started) {
-    throw new Error ('network already started: can not change peerId')
+    throw new Error('network already started: can not change peerId')
   }
   this.copayerId = copayerId;
   this.copayerIdBuf = new Buffer(copayerId,'hex');
@@ -321,7 +320,7 @@ Network.prototype.start = function(opts, openCallback) {
   console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
   this._setupPeerHandlers(openCallback);
-  for (var i = 0; i<opts.connectedPeers.length; i++) {
+  for (var i = 0; i < opts.connectedPeers.length; i++) {
     var otherPeerId = opts.connectedPeers[i];
     this.connectTo(otherPeerId);
   }
@@ -348,6 +347,13 @@ Network.prototype._sign = function(payload, copayerId) {
     ).toString('hex');
   }
   return ret;
+}
+Network.prototype.getOnlinePeerIDs = function() {
+  return this.connectedPeers;
+};
+
+Network.prototype.getPeer = function() {
+  return this.peer;
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, cb) {
