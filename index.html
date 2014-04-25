@@ -162,6 +162,10 @@
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
         <h3>{{title}}</h3>
+
+        <div class="large-6 columns">
+          <input type="file" class="form-control" placeholder="Select a backup file" ng-model="backupFile" autofocus="" ng-file-select>
+        </div>
       </div>
     </script>
 
