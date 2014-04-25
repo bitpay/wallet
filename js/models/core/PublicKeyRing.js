@@ -92,17 +92,25 @@ PublicKeyRing.prototype.getCopayerId = function(i) {
   return this.copayerIds[i];
 };
 
-PublicKeyRing.prototype.myCopayerId = function(i) {
-  return this.getCopayerId(0);
-};
-
 PublicKeyRing.prototype.registeredCopayers = function () {
   return this.copayersBIP32.length;
 };
 
-
 PublicKeyRing.prototype.isComplete = function () {
-  return this.registeredCopayers() >= this.totalCopayers;
+  return this.registeredCopayers() === this.totalCopayers;
+};
+
+PublicKeyRing.prototype.getAllCopayerIds = function() {
+  var ret = [];
+  var l = this.registeredCopayers();
+  for(var i=0; i<l; i++) {
+    ret.push(this.getCopayerId(i));
+  }
+  return ret;
+};
+
+PublicKeyRing.prototype.myCopayerId = function(i) {
+  return this.getCopayerId(0);
 };
 
 PublicKeyRing.prototype._checkKeys = function() {

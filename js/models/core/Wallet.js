@@ -30,6 +30,7 @@ function Wallet(opts) {
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
 
+  this.network.maxPeers = this.totalCopayers;
 }
 
 Wallet.parent = EventEmitter;
@@ -47,7 +48,6 @@ Wallet.getRandomId = function() {
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
-  var shouldSend = false;
   var recipients, pkr = this.publicKeyRing;
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
 
@@ -55,26 +55,18 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   if (hasChanged) {
     this.log('### BROADCASTING PKR');
     recipients = null;
-    shouldSend = true;
-  }
-  // else if (isInbound  && !data.isBroadcast) {
-  //   // always replying  to connecting peer
-  //   this.log('### REPLYING PKR TO:', senderId);
-  //   recipients = senderId;
-  //   shouldSend = true;
-  // }
-
-  if (shouldSend) {
     this.sendPublicKeyRing(recipients);
+    if (this.publicKeyRing.isComplete()) {
+      this._lockIncomming();
+    }
   }
   this.store();
 };
 
 
 Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
-  this.log('RECV TXPROPOSAL:', data); //TODO
+  this.log('RECV TXPROPOSAL:', data); 
 
-  var shouldSend = false;
   var recipients;
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
   var mergeInfo = this.txProposals.merge(inTxp, true);
@@ -82,18 +74,8 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   if (mergeInfo.hasChanged || addSeen) {
     this.log('### BROADCASTING txProposals. ');
     recipients = null;
-    shouldSend = true;
-  }
-  // else if (isInbound  && !data.isBroadcast) {
-  //   // always replying  to connecting peer
-  //   this.log('### REPLYING txProposals TO:', senderId);
-  //   recipients = senderId;
-  //   shouldSend = true;
-  // }
-
-  if (shouldSend)
     this.sendTxProposals(recipients);
-
+  }
   this.store();
 };
 
@@ -155,6 +137,10 @@ Wallet.prototype.getMyCopayerId = function() {
   return this.getCopayerId(0);
 };
 
+Wallet.prototype._lockIncomming = function() {
+  this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+};
+
 Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
@@ -174,7 +160,12 @@ Wallet.prototype.netStart = function() {
   var startOpts = {
     copayerId: myId,
     signingKeyHex: self.privateKey.getSigningKey(),
+    maxPeers: self.totalCopayers,
   };
+
+  if (this.publicKeyRing.isComplete()) {
+    this._lockIncomming();
+  }
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
@@ -208,7 +199,6 @@ Wallet.prototype.getRegisteredPeerIds = function() {
 };
 
 Wallet.prototype.store = function(isSync) {
-  this.log('[Wallet.js.135:store:]'); //TODO
   var wallet = this.toObj();
   this.storage.setFromObj(this.id, wallet);
 
@@ -540,8 +530,7 @@ Wallet.prototype.connectTo = function(peerId) {
 };
 
 Wallet.prototype.disconnect = function() {
-
-  console.log('[Wallet.js.524] DISC'); //TODO
+  this.log('## DISCONNECTING');
   this.network.disconnect();
 };
 

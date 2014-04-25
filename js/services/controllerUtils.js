@@ -34,7 +34,8 @@ angular.module('copay.controllerUtils')
       root.onError(scope);
       $rootScope.$digest();
     }
-    root.setupUxHandlers = function(w) {
+
+    root.startNetwork = function(w) {
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
           return;
@@ -55,7 +56,6 @@ angular.module('copay.controllerUtils')
         root.updateBalance();
       });
       w.on('refresh', function() {
-        console.log('[controllerUtils.js] Refreshing'); //TODO
         root.updateBalance();
       });
       w.on('openError', root.onErrorDigest);
