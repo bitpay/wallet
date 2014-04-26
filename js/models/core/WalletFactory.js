@@ -51,16 +51,11 @@ WalletFactory.prototype._checkRead = function(walletId) {
   return ret?true:false;
 };
 
-WalletFactory.prototype.read = function(walletId) {
-  if (! this._checkRead(walletId))
-    return false;
-
-  var s = this.storage;
-  var opts = s.get(walletId, 'opts');
-  opts.id = walletId;
-  opts.publicKeyRing = new PublicKeyRing.fromObj(s.get(walletId, 'publicKeyRing'));
-  opts.txProposals   = new TxProposals.fromObj(s.get(walletId, 'txProposals'));
-  opts.privateKey    = new PrivateKey.fromObj(s.get(walletId, 'privateKey'));
+WalletFactory.prototype.fromObj = function(obj) {
+  var opts = obj.opts;
+  opts.publicKeyRing = new PublicKeyRing.fromObj(obj.publicKeyRing);
+  opts.txProposals   = new TxProposals.fromObj(obj.txProposals);
+  opts.privateKey    = new PrivateKey.fromObj(obj.privateKey);
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
@@ -76,6 +71,22 @@ WalletFactory.prototype.read = function(walletId) {
     // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
+
+  return w;
+};
+
+WalletFactory.prototype.read = function(walletId) {
+  if (! this._checkRead(walletId))
+    return false;
+
+  var s = this.storage;
+  var opts = s.get(walletId, 'opts');
+  opts.id = walletId;
+  opts.publicKeyRing = s.get(walletId, 'publicKeyRing');
+  opts.txProposals   = s.get(walletId, 'txProposals');
+  opts.privateKey    = s.get(walletId, 'privateKey');
+
+  w = this.formObj(opts);
   return w;
 };
 

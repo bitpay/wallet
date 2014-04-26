@@ -14,6 +14,10 @@ angular
         templateUrl: 'signin.html',
         validate: false
       })
+      .when('/import', {
+        templateUrl: 'import.html',
+        validate: false
+      })
       .when('/setup', {
         templateUrl: 'setup.html',
         validate: false

@@ -154,11 +154,21 @@
               <div ng-show="wallets.length">
                 <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a>
               </div>
-              <a class="right" ng-click="import()">Import from file</a>
+              <a class="right" ng-href="#import">Import from file</a>
             </div>
           </div>
           
 
+        </div>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="import.html">
+      <div ng-controller="ImportController">
+        <h3>{{title}}</h3>
+
+        <div class="large-6 columns">
+          <input type="file" class="form-control" placeholder="Select a backup file" ng-model="backupFile" autofocus="" ng-file-select>
         </div>
       </div>
     </script>
@@ -535,6 +545,7 @@
     <script src="js/controllers/backup.js"></script>
     <script src="js/controllers/signin.js"></script>
     <script src="js/controllers/setup.js"></script>
+    <script src="js/controllers/import.js"></script>
 
     <script src="js/init.js"></script>
   </body>
