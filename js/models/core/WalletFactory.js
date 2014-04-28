@@ -53,9 +53,9 @@ WalletFactory.prototype._checkRead = function(walletId) {
 
 WalletFactory.prototype.fromObj = function(obj) {
   var opts = obj.opts;
-  opts.publicKeyRing = new PublicKeyRing.fromObj(obj.publicKeyRing);
-  opts.txProposals   = new TxProposals.fromObj(obj.txProposals);
-  opts.privateKey    = new PrivateKey.fromObj(obj.privateKey);
+  opts['publicKeyRing'] = new PublicKeyRing.fromObj(obj.publicKeyRing);
+  opts['txProposals']   = new TxProposals.fromObj(obj.txProposals);
+  opts['privateKey']    = new PrivateKey.fromObj(obj.privateKey);
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
@@ -79,14 +79,16 @@ WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
     return false;
 
+  var obj = {};
   var s = this.storage;
-  var opts = s.get(walletId, 'opts');
-  opts.id = walletId;
-  opts.publicKeyRing = s.get(walletId, 'publicKeyRing');
-  opts.txProposals   = s.get(walletId, 'txProposals');
-  opts.privateKey    = s.get(walletId, 'privateKey');
 
-  w = this.formObj(opts);
+  obj.id = walletId;
+  obj.opts = s.get(walletId, 'opts');
+  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
+  obj.txProposals   = s.get(walletId, 'txProposals');
+  obj.privateKey    = s.get(walletId, 'privateKey');
+
+  var w = this.fromObj(obj);
   return w;
 };
 
