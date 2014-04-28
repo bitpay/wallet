@@ -6,11 +6,11 @@ var Video = function() {
     navigator.mozGetUserMedia;
 
   this.mediaConnections = {};
+  this.localStream = null;
 };
 
 Video.prototype.setOwnPeer = function(peer, wallet, cb) {
   var self = this;
-
 
   navigator.getUserMedia({
     audio: true,
@@ -21,7 +21,6 @@ Video.prototype.setOwnPeer = function(peer, wallet, cb) {
     var online = wallet.getOnlinePeerIDs();
     for (var i = 0; i < online.length; i++) {
       var o = online[i];
-      var mc = self.mediaConnections[o];
       if (o !== peer.id) {
         self.callPeer(o, cb);
       }
@@ -38,7 +37,6 @@ Video.prototype.setOwnPeer = function(peer, wallet, cb) {
     } else {
       mediaConnection.answer();
     }
-    self.mediaConnections[mediaConnection.peer] = mediaConnection;
     self._addCall(mediaConnection, cb);
   });
   this.peer = peer;
@@ -60,9 +58,26 @@ Video.prototype._addCall = function(mediaConnection, cb) {
   });
 
   mediaConnection.on('close', function() {
+    console.log('Media connection closed with ' + peerID);
+    cb(true, peerID, null); // ask to stop video streaming in UI
   });
-  mediaConnection.on('error', function() {
+  mediaConnection.on('error', function(e) {
+    console.log('Media connection error with ' + peerID);
+    cb(e, peerID, null);
   });
+  this.mediaConnections[peerID] = mediaConnection;
 }
+
+Video.prototype.close = function() {
+  this.localStream.stop();
+  this.localStream.mozSrcObject = null;
+  this.localStream.src = "";
+  this.localStream.src = null;
+  this.localStream = null;
+  for (var i = 0; this.mediaConnections.length; i++) {
+    this.mediaConnections[i].close();
+  }
+  this.mediaConnections = {};
+};
 
 angular.module('copay.video').value('video', new Video());

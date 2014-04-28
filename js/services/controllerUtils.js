@@ -17,6 +17,8 @@ angular.module('copay.controllerUtils')
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
       $rootScope.totalBalance = 0;
+      video.close();
+      $rootScope.videoSrc = {};
       $location.path('signin');
     };
 
@@ -38,6 +40,7 @@ angular.module('copay.controllerUtils')
     root.startNetwork = function(w) {
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
+          delete $rootScope.videoSrc[peerID];
           return;
         }
         $rootScope.videoSrc[peerID] = encodeURI(url);
