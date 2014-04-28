@@ -79,14 +79,16 @@ WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
     return false;
 
+  var obj = {};
   var s = this.storage;
-  var opts = s.get(walletId, 'opts');
-  opts.id = walletId;
-  opts.publicKeyRing = s.get(walletId, 'publicKeyRing');
-  opts.txProposals   = s.get(walletId, 'txProposals');
-  opts.privateKey    = s.get(walletId, 'privateKey');
 
-  w = this.formObj(opts);
+  obj.id = walletId;
+  obj.opts = s.get(walletId, 'opts');
+  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
+  obj.txProposals   = s.get(walletId, 'txProposals');
+  obj.privateKey    = s.get(walletId, 'privateKey');
+
+  var w = this.fromObj(obj);
   return w;
 };
 
