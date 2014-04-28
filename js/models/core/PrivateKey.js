@@ -20,20 +20,11 @@ function PrivateKey(opts) {
 
 PrivateKey.prototype.getId = function() {
   if (!this.id) {
-    var path = PublicKeyRing.SIGNING_BRANCH;
+    var path = PublicKeyRing.ID_BRANCH;
     var bip32 = this.bip.derive(path);
     this.id= bip32.eckey.public.toString('hex');
   }
   return this.id;
-};
-
-PrivateKey.prototype.getSigningKey = function() {
-  if (!this.sid) {
-    var path = PublicKeyRing.SIGNING_BRANCH;
-    var bip32 = this.bip.derive(path);
-    this.sid= bip32.eckey.private.toString('hex');
-  }
-  return this.sid;
 };
 
 PrivateKey.fromObj = function(obj) {

@@ -8,7 +8,7 @@ var BIP32       = bitcore.BIP32;
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
-var Transaction = bitcore.Transaction;
+var Transaction = bitcore.Transaction
 var util        = bitcore.util;
 
 var Storage     = imports.Storage || require('../storage/Base.js');
@@ -48,7 +48,7 @@ PublicKeyRing.Branch = function (index, isChange) {
   return 'm/0/'+(isChange?1:0)+'/'+index;
 };
 
-PublicKeyRing.SIGNING_BRANCH = 'm/100/0/0';
+PublicKeyRing.ID_BRANCH = 'm/100/0/0';
 
 PublicKeyRing.fromObj = function (data) {
   if (data instanceof PublicKeyRing) {
@@ -84,7 +84,7 @@ PublicKeyRing.prototype.getCopayerId = function(i) {
   this.copayerIds = this.copayerIds  || [];
 
   if (!this.copayerIds[i]) {
-    var path = PublicKeyRing.SIGNING_BRANCH;
+    var path = PublicKeyRing.ID_BRANCH;
     var bip32 = this.copayersBIP32[i].derive(path);
     this.copayerIds[i]= bip32.eckey.public.toString('hex');
   }
@@ -158,7 +158,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
     }
     this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
   } else {
-    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')});
+    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')}); 
   }
 
   return pubKeys;

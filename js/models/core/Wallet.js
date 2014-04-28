@@ -53,12 +53,12 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
-    this.log('### BROADCASTING PKR');
-    recipients = null;
-    this.sendPublicKeyRing(recipients);
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
+    this.log('### BROADCASTING PKR');
+    recipients = null;
+    this.sendPublicKeyRing(recipients);
   }
   this.emit('publicKeyRingUpdated', this.publicKeyRing);
   this.store();
@@ -161,7 +161,6 @@ Wallet.prototype.netStart = function() {
   var myId = self.getMyCopayerId();
   var startOpts = {
     copayerId: myId,
-    signingKeyHex: self.privateKey.getSigningKey(),
     maxPeers: self.totalCopayers,
   };
 
