@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/bitpay/copay/issues"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
     "express": "4.0.0",
