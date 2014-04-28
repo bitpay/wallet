@@ -35,7 +35,7 @@
     "commander": "~2.1.0",
     "uglifyify": "~1.2.3",
     "soop": "~0.1.5",
-    "bitcore": "https://github.com/bitpay/bitcore.git",
+    "bitcore": "git://github.com/bitpay/bitcore.git",
     "chai": "~1.9.1",
     "sinon": "~1.9.1",
     "node-cryptojs-aes": "=0.4.0"
