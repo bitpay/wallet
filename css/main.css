@@ -72,8 +72,13 @@ html, body {height: 100%;}
 }
 
 .header-content {
-  padding: 1.5rem;
+  padding: 2rem;
   overflow: hidden;
+}
+
+.header a.button.small-icon {
+  padding: 0.1rem 0.3rem;
+  font-size: 0.9rem;
 }
 
 .top-bar {
@@ -89,19 +94,6 @@ html, body {height: 100%;}
 .panel.status {
   margin: 0;
 }
-
-.connection-info {
-  margin-bottom: 10px;
-}
-
-.balance-info {
-  font-size: 14px;
-}
-
-/*.panel:hover {
-  background: #efefef;
-  color: #111;
-}*/
 
 .addresses .panel {
   font-size: 0.9rem;
@@ -241,6 +233,7 @@ hr { margin: 2.25rem 0;}
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
 .m10t {margin-top: 10px;}
+.p10t {padding-top: 10px;}
 .p0r {padding-right: 0;}
 .p70r {padding-right: 70px;}
 .p70l {padding-left: 70px;}

@@ -7,7 +7,8 @@ body {
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
-  background: #FAE448;
+  background: #1ABC9C;
+  color: #fff;
 }
 
 .top-bar-section li.active:not(.has-form) a:not(.button) {
@@ -16,7 +17,7 @@ body {
 }
 
 .top-bar-section li.active:not(.has-form) a:not(.button):hover, .top-bar-section li:not(.has-form) a:not(.button):hover {
-  background: #111;
+  background: #16A085;
   color: white;
 }
 
@@ -25,11 +26,36 @@ body {
 }
 
 .header {
-  background: #111;
+  background: #2C3E50;
   color: white;
 }
 
-.header h1, h5 {
+.header h1, h5, p {
+  color: #93A9BD;
+  font-weight: 100;
+  margin-bottom: 0;
+}
+
+.header button, .button {
+  margin-bottom: 0;
+}
+
+.header h6 {
+  color: #fff;
+  font-weight: 100;
+}
+
+.header .line-dashed-v {
+  border-right: 1px dashed #5A6B7D;
+}
+
+.header a.button.small-icon {
+  background: white;
+  color: #2C3E50;
+}
+
+.header a.button.small-icon:hover {
+  background: #16A085;
   color: #fff;
 }
 
