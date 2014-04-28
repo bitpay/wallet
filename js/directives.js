@@ -80,7 +80,6 @@ angular.module('copay.directives')
       link: function($scope, el) {
         el.bind('change', function(e) {
           $scope.file = (e.srcElement || e.target).files[0];
-          console.log('file directive', $scope.file);
           $scope.getFile();
         });
       }

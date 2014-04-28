@@ -225,14 +225,16 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
-Wallet.fromObj = function(wallet) {
-  var opts = wallet.opts;
-  opts['publicKeyRing'] = this.publicKeyring.fromObj(wallet.publicKeyRing);
-  opts['txProposals'] = this.txProposal.fromObj(wallet.txProposals);
-  opts['privateKey'] = this.privateKey.fromObj(wallet.privateKey);
+Wallet.fromObj = function(o, storage, network, blockchain) {
+  var opts           = JSON.parse(JSON.stringify(o.opts));
+  opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
+  opts.txProposals   = copay.TxProposals.fromObj(o.txProposals);
+  opts.privateKey    = copay.PrivateKey.fromObj(o.privateKey);
 
+  opts.storage       = storage;
+  opts.network       = network;
+  opts.blockchain    = blockchain;
   var w = new Wallet(opts);
-
   return w;
 };
 
