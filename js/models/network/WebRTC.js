@@ -156,11 +156,7 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   var sig, payload;
 
   try { 
-    var dataObj = JSON.parse(data);
-    sig = dataObj.sig;
-    payload=  JSON.parse(this._decPayload(dataObj.encPayloadStr));
-console.log('[WebRTC.js.161:payload:]',payload); //TODO
-
+    payload=  JSON.parse(data);
   } catch (e) {
     console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
     this._deletePeer(peerId);
@@ -172,22 +168,15 @@ console.log('[WebRTC.js.161:payload:]',payload); //TODO
 
   if(payload.type === 'hello' &&  !this.authenticatedPeers[peerId]) {
     var payloadStr = JSON.stringify(payload);
-    var thisSig = this._signHMAC(payloadStr, this.copayerId);
-    if (thisSig !== sig) {
-      console.log('#### Peer sent WRONG hello signature. Closing connection.');
-      this._deletePeer(peerId);
-      return;
-    }
     if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
       console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
                   this.allowedCopayerIds, payload.copayerId);
       this._deletePeer(peerId);
       return;
     }
-
-    console.log('#### Peer sent signed hello. Setting it up.'); //TODO
-    this._addCopayer(payload.copayerId, isInbound);
+    console.log('#### Peer sent hello. Setting it up.'); //TODO
     this._setPeerAuthenticated(peerId);
+    this._addCopayer(payload.copayerId, isInbound);
     this._notifyNetworkChange( isInbound ? payload.copayerId : null);
     this.emit('open');
     return;
@@ -201,15 +190,6 @@ console.log('[WebRTC.js.161:payload:]',payload); //TODO
   }
 
   var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
-
-console.log('[WebRTC.js.204] sig:', sig); //TODO
-  if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
-    new Buffer(sig,'hex'))) {
-    console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO
-    this._deletePeer(peerId);
-    return;
-  }
-  
   var self=this;
   switch(payload.type) {
     case 'copayers':
@@ -248,7 +228,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
       console.log('### DATA CONNECTION READY: %s (inbound: %s) AUTHENTICATING...',
         dataConn.peer, isInbound);
 
-      // The connecting peer send hello (with signature)
+      // The connecting peer send hello 
       if(!isInbound) 
         self._sendHello(self.copayerForPeer[dataConn.peer]);      
     }
@@ -340,16 +320,6 @@ Network.prototype.setCopayerId = function(copayerId) {
 };
 
 
-Network.prototype.setSigningKey = function(keyHex) {
-  if (this.started || this.signingKey) {
-    throw new Error ('network already started or key assigned: can not change key')
-  }
-  var k = new Key();
-  k.private = new Buffer(keyHex,'hex');
-  k.regenerateSync();
-  this.signingKey = k;
-};
-
 Network.prototype.peerFromCopayer = function(hex) {
   var SIN = bitcore.SIN;
   return new SIN(new Buffer(hex,'hex')).toString();
@@ -364,8 +334,6 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
-  if (!this.signingKey)
-    this.setSigningKey(opts.signingKeyHex);
 
   console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
@@ -379,26 +347,6 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 
-Network.prototype._signHMAC = function(payloadStr, copayerId) {
-
-console.log('[WebRTC.js.382] SIG HMAC', payloadStr, copayerId); //TODO
-  return util.sha512hmac(
-    new Buffer(payloadStr), 
-    new Buffer(copayerId,'hex')
-  ).toString('hex');
-};
-
-Network.prototype._signECDSA = function(payloadStr) {
-  var ret='';
-  if (!this.signingKey)
-    throw new Error ('no key to sign messages :(');
-
-  return bitcore.Message.sign(
-    payloadStr, 
-    this.signingKey
-  ).toString('hex');
-};
-
 Network.prototype.getOnlinePeerIDs = function() {
   return this.connectedPeers;
 };
@@ -408,32 +356,12 @@ Network.prototype.getPeer = function() {
 };
 
 
-Network.prototype._encPayload = function(payloadStr, copayerId) {
-  if (!copayerId || !payloadStr)
-    throw new Error('incomplete parameters to _encPayload'+':'+ payloadStr +':'+copayerId);
-
-  //console.log('[WebRTC.js.413] ENC:',payloadStr, copayerId); //TODO
-  // TODO replace with asymmetric encryption (copayerId is the pub key)
-  return CryptoJS.AES.encrypt(payloadStr, copayerId).toString();
-};
-
-Network.prototype._decPayload = function(payloadStr) {
-  // TODO replace with asymmetric encryption (decrypt using this.signingKey);
-  //console.log('[WebRTC.js.413] DEC:',payloadStr, this.copayerId); //TODO
-  return CryptoJS.AES.decrypt(payloadStr, this.copayerId).toString(CryptoJS.enc.Utf8);
-};
-
 Network.prototype._sendToOne = function(copayerId, payloadStr, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
-    var encPayloadStr = this._encPayload(payloadStr, copayerId);
     if (dataConn) {
-      var str = JSON.stringify({
-        sig: sig,
-        encPayloadStr: encPayloadStr,
-      });
-      dataConn.send(str);
+      dataConn.send(payloadStr);
     }
     else {
       console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
@@ -451,14 +379,6 @@ Network.prototype.send = function(copayerIds, payload, cb) {
 
   var sig;
   var payloadStr = JSON.stringify(payload);
-  if (payload.type === 'hello') {
-    var hisId = copayerIds; 
-    sig=this._signHMAC(payloadStr ,hisId);
-  }
-  else  {
-    sig=this._signECDSA(payloadStr);
-  }
-
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;

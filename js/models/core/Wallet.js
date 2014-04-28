@@ -161,7 +161,6 @@ Wallet.prototype.netStart = function() {
   var myId = self.getMyCopayerId();
   var startOpts = {
     copayerId: myId,
-    signingKeyHex: self.privateKey.getSigningKey(),
     maxPeers: self.totalCopayers,
   };
 

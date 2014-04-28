@@ -151,7 +151,6 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
-    signingKeyHex: privateKey.getSigningKey(),
   };
   self.network.cleanUp();
   self.network.start(opts, function() {
