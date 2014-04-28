@@ -60,6 +60,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
       this._lockIncomming();
     }
   }
+  this.emit('publicKeyRingUpdated', this.publicKeyRing);
   this.store();
 };
 
@@ -76,6 +77,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
     recipients = null;
     this.sendTxProposals(recipients);
   }
+  this.emit('txProposalsUpdated', this.txProposals);
   this.store();
 };
 
@@ -107,7 +109,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newCopayerId) {
-    this.log('#### Setting new PEER:', newCopayerId);
+    this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
     this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
@@ -242,7 +244,6 @@ Wallet.prototype.sendTxProposals = function(recipients) {
     txProposals: this.txProposals.toObj(),
     walletId: this.id,
   });
-  this.emit('txProposalsUpdated', this.txProposals);
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
@@ -256,7 +257,7 @@ Wallet.prototype.sendWalletReady = function(recipients) {
 };
 
 Wallet.prototype.sendWalletId = function(recipients) {
-  this.log('### SENDING walletId TO:', recipients || 'All', this.walletId);
+  this.log('### SENDING walletId TO:', recipients || 'All', this.id);
 
   this.network.send(recipients, {
     type: 'walletId',
@@ -274,7 +275,6 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     publicKeyRing: this.publicKeyRing.toObj(),
     walletId: this.id,
   });
-  this.emit('publicKeyRingUpdated', this.publicKeyRing);
 };
 
 

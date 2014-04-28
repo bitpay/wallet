@@ -154,23 +154,25 @@ Network.prototype._addCopayer = function(copayerId, isInbound) {
 
 Network.prototype._onData = function(data, isInbound, peerId) {
   var sig, payload;
+
   try { 
     var dataObj = JSON.parse(data);
     sig = dataObj.sig;
-    payload= dataObj.payload;
+    payload=  JSON.parse(this._decPayload(dataObj.encPayloadStr));
+console.log('[WebRTC.js.161:payload:]',payload); //TODO
 
   } catch (e) {
     console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
     this._deletePeer(peerId);
     return;
-  };
+  }
 
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  // TODO _func
-  if(payload.type === 'hello') {
-    var thisSig = this._signHMAC(payload, this.copayerId);
+  if(payload.type === 'hello' &&  !this.authenticatedPeers[peerId]) {
+    var payloadStr = JSON.stringify(payload);
+    var thisSig = this._signHMAC(payloadStr, this.copayerId);
     if (thisSig !== sig) {
       console.log('#### Peer sent WRONG hello signature. Closing connection.');
       this._deletePeer(peerId);
@@ -199,6 +201,8 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   }
 
   var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
+
+console.log('[WebRTC.js.204] sig:', sig); //TODO
   if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
     new Buffer(sig,'hex'))) {
     console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO
@@ -375,24 +379,22 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 
-Network.prototype._signHMAC = function(payload, copayerId) {
-  var str = JSON.stringify(payload);
-  if (payload.type !=='hello') 
-    throw new Error ('HMAC only for hello messages')
+Network.prototype._signHMAC = function(payloadStr, copayerId) {
+
+console.log('[WebRTC.js.382] SIG HMAC', payloadStr, copayerId); //TODO
   return util.sha512hmac(
-    new Buffer(str), 
+    new Buffer(payloadStr), 
     new Buffer(copayerId,'hex')
   ).toString('hex');
 };
 
-Network.prototype._signECDSA = function(payload) {
+Network.prototype._signECDSA = function(payloadStr) {
   var ret='';
-  var str = JSON.stringify(payload);
   if (!this.signingKey)
     throw new Error ('no key to sign messages :(');
 
   return bitcore.Message.sign(
-    str, 
+    payloadStr, 
     this.signingKey
   ).toString('hex');
 };
@@ -405,14 +407,31 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
-Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
+
+Network.prototype._encPayload = function(payloadStr, copayerId) {
+  if (!copayerId || !payloadStr)
+    throw new Error('incomplete parameters to _encPayload'+':'+ payloadStr +':'+copayerId);
+
+  //console.log('[WebRTC.js.413] ENC:',payloadStr, copayerId); //TODO
+  // TODO replace with asymmetric encryption (copayerId is the pub key)
+  return CryptoJS.AES.encrypt(payloadStr, copayerId).toString();
+};
+
+Network.prototype._decPayload = function(payloadStr) {
+  // TODO replace with asymmetric encryption (decrypt using this.signingKey);
+  //console.log('[WebRTC.js.413] DEC:',payloadStr, this.copayerId); //TODO
+  return CryptoJS.AES.decrypt(payloadStr, this.copayerId).toString(CryptoJS.enc.Utf8);
+};
+
+Network.prototype._sendToOne = function(copayerId, payloadStr, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
+    var encPayloadStr = this._encPayload(payloadStr, copayerId);
     if (dataConn) {
       var str = JSON.stringify({
         sig: sig,
-        payload: payload 
+        encPayloadStr: encPayloadStr,
       });
       dataConn.send(str);
     }
@@ -431,25 +450,26 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   }
 
   var sig;
+  var payloadStr = JSON.stringify(payload);
   if (payload.type === 'hello') {
     var hisId = copayerIds; 
-    sig=this._signHMAC(payload,hisId);
+    sig=this._signHMAC(payloadStr ,hisId);
   }
   else  {
-    sig=this._signECDSA(payload);
+    sig=this._signECDSA(payloadStr);
   }
 
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, payload, sig, function () {
+      self._sendToOne(copayerId, payloadStr, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
   else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, payload, sig, cb);
+    self._sendToOne(copayerIds, payloadStr, sig, cb);
 };
 
 Network.prototype.connectTo = function(copayerId) {
