@@ -52,15 +52,8 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
-  var opts = obj.opts;
-  opts.publicKeyRing = new PublicKeyRing.fromObj(obj.publicKeyRing);
-  opts.txProposals   = new TxProposals.fromObj(obj.txProposals);
-  opts.privateKey    = new PrivateKey.fromObj(obj.privateKey);
-  opts.storage = this.storage;
-  opts.network = this.network;
-  opts.blockchain = this.blockchain;
-  opts.verbose = this.verbose;
-  var w = new Wallet(opts);
+  var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
+  w.verbose = this.verbose;
 
   // JIC: Add our key
   try {

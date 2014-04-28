@@ -170,4 +170,22 @@ describe('Wallet model', function() {
     }
   });
 
+  it('#fromObj #toObj round trip', function () {
+
+    var w = createW2();
+
+    var o = w.toObj();
+    o = JSON.parse(JSON.stringify(o));
+
+    var w2 = Wallet.fromObj(o,
+       new Storage(config.storage),
+       new Network(config.network),
+       new Blockchain(config.blockchain));
+    should.exist(w2);
+    w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
+    should.exist(w2.publicKeyRing.getCopayerId);
+    should.exist(w2.txProposals.toObj);
+    should.exist(w2.privateKey.toObj);
+  });
+
 });
