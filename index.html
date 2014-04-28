@@ -19,9 +19,9 @@
             </div>
             <div class="right text-right" ng-show="$root.wallet">
               <div class="connection-info">
-                <span ng-if="!$root.wallet.name && $root.wallet.id">Wallet ID: {{$root.wallet.id}}</span>
+                <span ng-if="!$root.wallet.name && $root.wallet.id">{{$root.wallet.id}}</span>
                 <span ng-if="$root.wallet.name">Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</span> 
-                [{{$root.wallet.requiredCopayers}}/{{$root.wallet.totalCopayers}}]
+                ({{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}) 
                 <a href="#" ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="balance-info">
@@ -198,7 +198,7 @@
             </div>
             <div class="large-6 large-centered columns m30v">
               <h6>Wallet name (optional)</h6>
-                <input ng-model="walletName" placeholder="wallet name" class="size-24" style="width:100%">
+                <input ng-model="walletName" placeholder="My multisig wallet" class="size-24" style="width:100%">
             </div>
  
             <div class="large-6 large-centered columns m30v">
