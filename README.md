@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
+
 Copay
 =====
 
