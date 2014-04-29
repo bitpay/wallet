@@ -308,5 +308,27 @@ hr { margin: 2.25rem 0;}
   padding: 2.7px;
 }
 
+.tx-copayers {
+  background: #F8F8F8;
+  -moz-box-shadow:    inset 0px 0px 4px 0px rgba(0,0,0,0.05), inset 0px 1px 1px 0px rgba(0,0,0,0.05);
+  box-shadow:         inset 0px 0px 4px 0px rgba(0,0,0,0.05), inset 0px 1px 1px 0px rgba(0,0,0,0.05);
+}
 
+.box-copayers .icon-inactive {
+  color: #4C5B69;
+}
+
+.box-copayers .icon-active {
+  color: #fff;
+}
+
+.box-copayers .icon-active-check {
+  color: #fff;
+  background: #3FBC9C;
+}
+
+.box-copayers .icon-active-x {
+  color: #fff;
+  background: #C0392B;
+}
 
