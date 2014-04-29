@@ -112,13 +112,13 @@ html, body {height: 100%;}
 .pending .txheader {
   margin-bottom: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  /* border-bottom: 1px solid #eee; */
 }
 
 .pending .txbottom {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #eee;
+  /* border-top: 1px solid #eee; */
   font-size: 12px;
 }
 
@@ -250,7 +250,7 @@ hr { margin: 2.25rem 0;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
 .oh {overflow:hidden;}
-
+.lh {line-height: 0;}
 .signin input.ng-dirty.ng-invalid { 
   border: 2px red solid;
 }
@@ -268,5 +268,44 @@ hr { margin: 2.25rem 0;}
 .offline {
   border: 10px solid gray;
 }
+
+.tx-copayers {
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+.box-copayers {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  float: left;
+}
+
+.box-copayers figure {
+  width: 51px;
+  height: 55px;
+  border-top-left-radius: 4px 4px;
+  border-bottom-left-radius: 4px 4px;
+  overflow: hidden;
+  margin-right: 0.8px;
+}
+
+.box-status {
+  width: 16px;
+  height: 55px;
+  border-top-right-radius: 4px 4px;
+  border-bottom-right-radius: 4px 4px;
+  float: left;
+  overflow: hidden;
+}
+
+.icon-status {
+  background: #2C3E50;
+  width: 16px;
+  float: left;
+  text-align: center;
+  display: block;
+  margin: 0.8px;
+  padding: 2.7px;
+}
+
 
 
