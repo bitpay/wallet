@@ -25,7 +25,7 @@ function Network(opts) {
   this.maxPeers       = opts.maxPeers || 10;
   this.opts           = { key: opts.key };
   this.sjclParams     = opts.sjclParams || {
-    salt: 'f28bfb49ef70573c',
+    salt: 'f28bfb49ef70573c', 
     iter:500,
     mode:'ccm',
     ts:parseInt(64),   
@@ -50,6 +50,7 @@ Network.prototype.cleanUp = function() {
   this.authenticatedPeers=[];
   this.copayerForPeer={};
   this.connections={};
+  this.keyCache={};
   if (this.peer) {
     console.log('## DESTROYING PEER INSTANCE'); //TODO
     this.peer.disconnect();
@@ -362,12 +363,22 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
+
+Network.prototype._keyForCopayerId = function(copayerId) {
+  var key=this.keyCache[copayerId];
+  if (key) return key;
+
+  var cBuf = new Buffer(copayerId,'hex');
+  var key = bitcore.util.sha256(cBuf).toString('base64');
+  this.keyCache[copayerId] = key;
+  return key;
+};
+
 Network.prototype._encryptFor = function(copayerId, payloadStr) {
-  var cBits= sjcl.codec.hex.toBits(copayerId);
-  var pass64= sjcl.codec.base64.fromBits(cBits);
+  var key = this._keyForCopayerId(copayerId);
   var plainText = sjcl.codec.utf8String.toBits(payloadStr);
   var p = this.sjclParams;    // auth strength
-  ct = sjcl.encrypt(pass64, plainText, p);//,p, rp);
+  ct = sjcl.encrypt(key, plainText, p);//,p, rp);
   var c = JSON.parse(ct);
   var toSend = {
     iv: c.iv,
@@ -383,9 +394,8 @@ Network.prototype._decrypt = function(encStr) {
     i[k] = this.sjclParams[k];
   }
   var str= JSON.stringify(i);
-  var cBits= sjcl.codec.hex.toBits(this.copayerId);
-  var pass64= sjcl.codec.base64.fromBits(cBits);
-  var pt = sjcl.decrypt(pass64, str);
+  var key= this._keyForCopayerId(this.copayerId);
+  var pt = sjcl.decrypt(key, str);
   return pt;
 };
 
