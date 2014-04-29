@@ -169,7 +169,7 @@
         </div>
       </div>
     </script>
-
+ 
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
         <h3>{{title}}</h3>
@@ -276,7 +276,6 @@
         </div> 
       </div>
     </script>
-
     
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
@@ -288,13 +287,11 @@
               <div class="txheader">
                 <div class="row">
                   <div class="large-8 columns">
-                    <table style="width:100%">
-                    <tr ng-repeat="out in tx.outs">
-                      <td class="text-right size-24"> <i class="fi-bitcoin"></i> {{out.value}}</td>
-                      <td class="text-center size-48"> <i class="fi-arrow-right size-24"> </i></td>
-                      <td class="text-left size-24">{{out.address}}</td>
-                    </tr>
-                    </table>
+                    <div class="row" ng-repeat="out in tx.outs">
+                      <p class="large-3 columns"> {{out.value}} <i class="fi-bitcoin size-18"></i></p>
+                      <i class="large-1 columns fi-arrow-right size-24"> </i>
+                      <p class="large-8 columns"> {{out.address}} </p>
+                    </div>
                   </div>
                   <div class="large-4 columns text-right">
                     <h6> created at {{tx.createdTs | date:'medium'}} </h6>
@@ -302,19 +299,47 @@
                 </div>
               </div>
 
-              <div class="row">
-                <div class="large-12 columns">
-                  <table style="width:100%">
-                    <tbody>
-                      <tr>
-                        <small class="right text-gray"> 
-                           Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
-                          <strong> Proposal ID: </strong> {{tx.ntxid}} 
-                        </small>
-                      </tr>                     
+              <div class="tx-copayers"> 
+                <div class="box-copayers">
+                  <figure class="left">
+                      <img src="./img/avatar.jpg" alt="" width="200">
+                  </figure>
+                  <div class="box-status">
+                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
+                    <i class="fi-eye size-12 icon-active icon-status"></i>
+                    <i class="fi-check size-12 icon-active-check icon-status"></i>
+                  </div>
+                </div>
+
+                <div class="box-copayers">
+                  <figure class="left">
+                      <img src="./img/avatar.jpg" alt="" width="200">
+                  </figure>
+                  <div class="box-status">
+                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
+                    <i class="fi-eye size-12 icon-active icon-status"></i>
+                    <i class="fi-check size-12 icon-active-check icon-status"></i>
+                  </div>
+                </div>
+
+                <div class="box-copayers">
+                  <figure class="left">
+                      <img src="./img/avatar.jpg" alt="" width="200">
+                  </figure>
+                  <div class="box-status">
+                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
+                    <i class="fi-eye size-12 icon-active icon-status"></i>
+                    <i class="fi-check size-12 icon-active-check icon-status"></i>
+                  </div>
+                </div>
+                <small class="right text-gray"> 
+                  Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
+                  <strong> Proposal ID: </strong> {{tx.ntxid}} 
+                </small>
+                <!-- 
+                    <table>
                       <tr ng-repeat="(peer, actions) in tx.peerActions">
                         <td colspan="3">
-                          <div class="panel status">
                             <span ng-if="peer === $root.wallet.getMyCopayerId()"> You</span>
                              {{peer}}
 
@@ -326,12 +351,9 @@
 
                               <a title="{{ts | date:'medium'}}"></a>
                             </span>
-                          </div>
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                    </table>
+                 -->
               </div>
 
               <div class="txbottom">
