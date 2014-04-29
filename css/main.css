@@ -29,6 +29,13 @@ html, body {height: 100%;}
   height: 51px;
 }
 
+@media (max-width: 640px) {
+  .logo {
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+}
+
 .top-bar-section li:not(.has-form) a:not(.button) {
   line-height: 60px;
 }
@@ -60,6 +67,7 @@ html, body {height: 100%;}
 .header a.button.small-icon {
   padding: 0.1rem 0.3rem;
   font-size: 0.9rem;
+  margin-left: 5px;
 }
 
 .header h1, h5, p {
@@ -237,6 +245,7 @@ hr { margin: 2.25rem 0;}
 .m10h {margin:0 10px;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
+.oh {overflow:hidden;}
 
 .signin input.ng-dirty.ng-invalid { 
   border: 2px red solid;
