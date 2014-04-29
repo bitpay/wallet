@@ -43,7 +43,7 @@
 
           <section class="top-bar-section {{isCollapsed && 'hide_menu' || 'show_menu'}}">
             <ul>
-              <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="large-2 text-center" data-ng-class="{active: isActive(item)}">
+              <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="text-center" data-ng-class="{active: isActive(item)}">
                 <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
               </li>
             </ul>
@@ -242,17 +242,6 @@
         </div>
       </div>
     </script>
-
-    <script type="text/ng-template" id="peer.html">
-      <div class="row"  ng-if="$root.wallet.requiredCopayers > $root.wallet.network.connectedCopayers().length">
-        <div class="large-12 columns p70l">
-          <p class="text-info"> <i class="fi-alert size-28"></i> 
-          {{$root.wallet.requiredCopayers}} copayers needed for signing transactions
-        </div>
-      </div>
-    </script>
-    
-    
 
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">

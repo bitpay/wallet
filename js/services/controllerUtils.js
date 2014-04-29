@@ -59,7 +59,7 @@ angular.module('copay.controllerUtils')
       });
       w.on('created', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
-        $location.path('peer');
+        $location.path('addresses');
         $rootScope.wallet = w;
         root.updateBalance();
       });
