@@ -18,7 +18,8 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "postinstall": "cd lib/sjcl;./configure;make;cp sjcl.js ../"
   },
   "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
