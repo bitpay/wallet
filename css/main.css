@@ -14,12 +14,13 @@ html, body {height: 100%;}
 #wrap {min-height: 100%;}
 
 #main {overflow:auto;
-	padding-bottom: 20px;}  /* must be same height as the footer */
+	padding-bottom: 30px;}  /* must be same height as the footer */
 
 #footer {position: relative;
-	margin-top: -20px; /* negative value of footer height */
-	height: 20px;
+	margin-top: -30px; /* negative value of footer height */
+	height: 30px;
 	clear:both;
+  padding: 5px 2rem;
 }
 
 .logo {
