@@ -14,10 +14,10 @@
       <div data-ng-init="init()" data-ng-controller="HeaderController">
         <div class="header"> 
           <div class="header-content">
-            <div class="left large-3 columns">
+            <div class="large-3 columns">
               <a href="#" class="logo" title="copay"></a>
             </div>
-            <div class="right text-center large-9 columns m10t" ng-show="$root.wallet">
+            <div class="text-center large-9 columns m10t" ng-show="$root.wallet">
               <h6 class="large-6 columns line-dashed-v">
                 <span ng-if="!$root.wallet.name && $root.wallet.id">{{$root.wallet.id}}</span>
                 <span ng-if="$root.wallet.name">Wallet: {{$root.wallet.name}} &lt;{{$root.wallet.id}}&gt;</span> 

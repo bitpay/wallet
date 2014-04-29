@@ -1,3 +1,38 @@
+/*
+ *
+ * Copay Default Template
+ *
+ */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Ubuntu Light'), local('Ubuntu-Light'), url(../font/ubuntu-light.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../font/ubuntu.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../font/ubuntu-bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url(../font/ubuntu-bold-italic.woff) format('woff');
+}
+
+* {
+  font-family: 'Ubuntu', Helvetica, sans-serif !important;
+}
+
 body {
   background: #F5F5F5;
 }
@@ -32,17 +67,10 @@ body {
 
 .header h1, h5, p {
   color: #93A9BD;
-  font-weight: 100;
-  margin-bottom: 0;
-}
-
-.header button, .button {
-  margin-bottom: 0;
 }
 
 .header h6 {
   color: #fff;
-  font-weight: 100;
 }
 
 .header .line-dashed-v {
