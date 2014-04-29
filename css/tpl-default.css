@@ -38,7 +38,8 @@ body {
 }
 
 .logo {
-  background: transparent url('../img/logo-negative.png');
+  background: transparent url('../img/logo-negative.svg');
+  background-size: 131px 51px;
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
