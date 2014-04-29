@@ -18,7 +18,7 @@ var config = {
 //    debug: 3,
     sjclParams: {
       salt: 'mjuBtGybi/4=', // choose your own salt (base64)
-      iter:500,
+      iter:1000,
       mode:'ccm',
       ts:parseInt(64),   
     }
