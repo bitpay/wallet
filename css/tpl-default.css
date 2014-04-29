@@ -87,6 +87,10 @@ body {
   color: #fff;
 }
 
+.header-content a {
+  color: #fff;
+}
+
 .panel {
   color: #333;
   background: #FFFFFF;
