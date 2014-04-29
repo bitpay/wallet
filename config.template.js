@@ -17,7 +17,7 @@ var config = {
     maxPeers: 15,
 //    debug: 3,
     sjclParams: {
-      salt: 'cc295e13e14edcc0', // choose your own salt (hex string)
+      salt: 'mjuBtGybi/4=', // choose your own salt (base64)
       iter:500,
       mode:'ccm',
       ts:parseInt(64),   
