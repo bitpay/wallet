@@ -251,7 +251,7 @@ hr { margin: 2.25rem 0;}
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
 .oh {overflow:hidden;}
-
+.lh {line-height: 0;}
 .signin input.ng-dirty.ng-invalid { 
   border: 2px red solid;
 }
@@ -268,6 +268,11 @@ hr { margin: 2.25rem 0;}
 }
 .offline {
   border: 3px solid gray;
+}
+
+.tx-copayers {
+  overflow: hidden;
+  padding: 0.5rem;
 }
 
 .tx-copayers {
@@ -308,6 +313,7 @@ hr { margin: 2.25rem 0;}
   padding: 2.7px;
 }
 
+<<<<<<< HEAD
 .tx-copayers {
   background: #F8F8F8;
   -moz-box-shadow:    inset 0px 0px 4px 0px rgba(0,0,0,0.05), inset 0px 1px 1px 0px rgba(0,0,0,0.05);
@@ -331,4 +337,7 @@ hr { margin: 2.25rem 0;}
   color: #fff;
   background: #C0392B;
 }
+=======
+
+>>>>>>> item tx new style
 

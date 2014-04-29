@@ -19,8 +19,9 @@
             </div>
             <div class="large-9 medium-9 columns text-center p10t" ng-show="$root.wallet">
               <div class="large-4 medium-4 columns line-dashed-v">
-                <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
-                  <strong><span>{{$root.getWalletDisplay()}}</span></strong>
+                <a href="#/peer" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
+                  <span ng-if="!$root.wallet.name && $root.wallet.id">{{$root.wallet.id}}</span>
+                  <span ng-if="$root.wallet.name">{{$root.wallet.name}}</span>
                 </a> 
                 <a class="button radius small-icon" href="#" title="Signout" ng-click="signout()"><i class="fi-power"></i></a>
               </div>
@@ -43,7 +44,7 @@
 
           <section class="top-bar-section {{isCollapsed && 'hide_menu' || 'show_menu'}}">
             <ul>
-              <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="text-center" data-ng-class="{active: isActive(item)}">
+              <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="large-2 text-center" data-ng-class="{active: isActive(item)}">
                 <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
               </li>
             </ul>
@@ -98,34 +99,13 @@
 
   <div id="footer" data-ng-controller="FooterController" ng-show="$root.wallet">
     <link rel="stylesheet" ng-href="{{theme}}">
-    <div class="row">
-      <div class="large-2 columns">
-        <strong><div>{{$root.getWalletDisplay()}}</div></strong>
-        <span class="size-12">
-          {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
-        </span> 
-      </div>
-      <div class="large-2 columns" style="float:right;"
-          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
-        <video 
-          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
-          class="video-small"
-          autoplay ng-show="$root.videoSrc[copayer]" 
-          ng-src="{{$root.getVideoURL(copayer)}}"
-          id="{{copayer + '-video'}}" muted="true"
-          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
-        <img ng-show="!$root.videoSrc[copayer]" 
-          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
-          class="video-small"
-          src="./img/satoshi.gif" 
-          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
-      </div>
+    <div class="large-4 columns">
+      <span class="size-12">Copayers 
+        {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</span> 
     </div>
-    <!--
-    <div class="large-2 columns text-right">
+    <div class="large-8 columns text-right">
       <a class="size-12" ng-if="themes.length > 1" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
     </div>
-    -->
   </div>
 
     <!-- Templates -->
@@ -203,7 +183,7 @@
     <script type="text/ng-template" id="setup.html">
       <div ng-controller="SetupController">
         <div data-alert class="alert-box info round" ng-show="loading">
-          Creating new wallet...
+          Connecting to wallet...
         </div>
         <div ng-show="!loading">
           <div class="row">
@@ -242,6 +222,34 @@
         </div>
       </div>
     </script>
+
+    <script type="text/ng-template" id="peer.html">
+      <div class="row"  ng-if="$root.wallet.requiredCopayers > $root.wallet.network.connectedCopayers().length">
+        <div class="large-12 columns p70l">
+          <p class="text-info"> <i class="fi-alert size-28"></i> 
+          {{$root.wallet.requiredCopayers}} copayers needed for signing transactions
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-4 columns"
+          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
+          <video 
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+            class="video-small"
+            autoplay ng-show="$root.videoSrc[copayer]" 
+            ng-src="{{$root.getVideoURL(copayer)}}"
+            id="{{copayer + '-video'}}" muted="true"
+            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
+          <img ng-show="!$root.videoSrc[copayer]" 
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+            class="video-small"
+            src="./img/satoshi.gif" 
+            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
+        </div>
+      </div>
+    </script>
+    
+    
 
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
@@ -292,36 +300,60 @@
               </div>
 
               <div class="tx-copayers"> 
-
-                <div class="box-copayers" ng-repeat="(peer, actions) in tx.peerActions">
+                <div class="box-copayers">
                   <figure class="left">
-                    <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{peer === $root.wallet.getMyCopayerId() ? 'You' : peer}}">
-                      <img src="./img/satoshi.gif" alt="peer" width="200">
-                    </a>
+                      <img src="./img/avatar.jpg" alt="" width="200">
                   </figure>
                   <div class="box-status">
-                    <span ng-repeat="(action, ts) in actions">
-                      <a ng-if="action == 'create'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Created at {{ts | date:'medium'}}">
-                        <i class="fi-crown size-12 icon-status icon-active"></i>
-                      </a>
-                      <a ng-if="action == 'seen'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Seen at {{ts | date:'medium'}}">
-                        <i class="fi-eye size-12 icon-status icon-active"></i>
-                      </a>
-                      <a ng-if="action == 'sign'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Signed at {{ts | date:'medium'}}">
-                        <i class="fi-check size-12 icon-status icon-active-check"></i>
-                      </a>
-                      <a ng-if="action == 'rejected'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Rejected at {{ts | date:'medium'}}">
-                        <i class="fi-check size-12 icon-status icon-active-x"></i>
-                      </a>
-                    </span>
+                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
+                    <i class="fi-eye size-12 icon-active icon-status"></i>
+                    <i class="fi-check size-12 icon-active-check icon-status"></i>
                   </div>
                 </div>
-                
+
+                <div class="box-copayers">
+                  <figure class="left">
+                      <img src="./img/avatar.jpg" alt="" width="200">
+                  </figure>
+                  <div class="box-status">
+                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
+                    <i class="fi-eye size-12 icon-active icon-status"></i>
+                    <i class="fi-check size-12 icon-active-check icon-status"></i>
+                  </div>
+                </div>
+
+                <div class="box-copayers">
+                  <figure class="left">
+                      <img src="./img/avatar.jpg" alt="" width="200">
+                  </figure>
+                  <div class="box-status">
+                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
+                    <i class="fi-eye size-12 icon-active icon-status"></i>
+                    <i class="fi-check size-12 icon-active-check icon-status"></i>
+                  </div>
+                </div>
                 <small class="right text-gray"> 
                   Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
                   <strong> Proposal ID: </strong> {{tx.ntxid}} 
                 </small>
-                 
+                <!-- 
+                    <table>
+                      <tr ng-repeat="(peer, actions) in tx.peerActions">
+                        <td colspan="3">
+                            <span ng-if="peer === $root.wallet.getMyCopayerId()"> You</span>
+                             {{peer}}
+
+                            <span ng-repeat="(action, ts) in actions">
+                              <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
+                              <span ng-if="action == 'seen'" title="{{ts | date:'medium'}}" class="fi-eye size-18 right m10h"> </span>
+                              <span ng-if="action == 'sign'" title="{{ts | date:'medium'}}" class="fi-check size-18 right m10h"> </span>
+                              <span ng-if="action == 'rejected'" title="{{ts | date:'medium'}}" class="fi-x size-18 right m10h" style="color:red"> </span>
+
+                              <a title="{{ts | date:'medium'}}"></a>
+                            </span>
+                        </td>
+                    </table>
+                 -->
               </div>
 
               <div class="txbottom">
