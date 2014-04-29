@@ -2,11 +2,8 @@
 
 angular.module('copay.header').controller('HeaderController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils) {
-    $scope.menu = [{
-      'title': 'Copayers',
-      'icon': 'fi-torsos-all',
-      'link': '#/peer'
-    }, {
+    $scope.menu = [
+    {
       'title': 'Addresses',
       'icon': 'fi-address-book',
       'link': '#/addresses'
