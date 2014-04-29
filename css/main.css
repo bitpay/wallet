@@ -14,18 +14,26 @@ html, body {height: 100%;}
 #wrap {min-height: 100%;}
 
 #main {overflow:auto;
-	padding-bottom: 20px;}  /* must be same height as the footer */
+	padding-bottom: 30px;}  /* must be same height as the footer */
 
 #footer {position: relative;
-	margin-top: -20px; /* negative value of footer height */
-	height: 20px;
+	margin-top: -30px; /* negative value of footer height */
+	height: 30px;
 	clear:both;
+  padding: 5px 2rem;
 }
 
 .logo {
   display: block;
   width: 130px;
   height: 51px;
+}
+
+@media (max-width: 640px) {
+  .logo {
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
@@ -59,6 +67,7 @@ html, body {height: 100%;}
 .header a.button.small-icon {
   padding: 0.1rem 0.3rem;
   font-size: 0.9rem;
+  margin-left: 5px;
 }
 
 .header h1, h5, p {
@@ -206,6 +215,10 @@ small.has-error {
   }
 }
 
+.new-address {
+  width: 220px;
+}
+
 hr { margin: 2.25rem 0;}
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -237,6 +250,8 @@ hr { margin: 2.25rem 0;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
+.oh {overflow:hidden;}
+
 .signin input.ng-dirty.ng-invalid { 
   border: 2px red solid;
 }

@@ -87,6 +87,10 @@ body {
   color: #fff;
 }
 
+.header-content a {
+  color: #fff;
+}
+
 .panel {
   color: #333;
   background: #FFFFFF;
@@ -176,4 +180,9 @@ button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #FFDF00 !important;}
 
 .text-gray { color: #999;}
+
+#footer {
+  background: #2C3E50;
+  color: #fff;
+}
 
