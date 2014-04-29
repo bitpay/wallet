@@ -50,6 +50,12 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
   });
+  b.require('./js/models/core/Wallet', {
+    expose: '../js/models/core/Wallet'
+  });
+  b.require('./test/mocks/FakeNetwork', {
+    expose: './mocks/FakeNetwork'
+  });
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC' 
   });
