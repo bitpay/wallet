@@ -36,7 +36,7 @@ var config = {
     port: 3001
   },
   verbose: 1,
-  theme: ['default', 'clean']
+  themes: ['default']
 };
 
 var log = function () {
