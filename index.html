@@ -99,13 +99,33 @@
   <div id="footer" data-ng-controller="FooterController" ng-show="$root.wallet">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div class="row">
-      <span class="size-12">
-        {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
-      </span> 
+      <div class="large-2 columns">
+        <strong><div>{{$root.getWalletDisplay()}}</div></strong>
+        <span class="size-12">
+          {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
+        </span> 
+      </div>
+      <div class="large-2 columns" style="float:right;"
+          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
+        <video 
+          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+          class="video-small"
+          autoplay ng-show="$root.videoSrc[copayer]" 
+          ng-src="{{$root.getVideoURL(copayer)}}"
+          id="{{copayer + '-video'}}" muted="true"
+          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
+        <img ng-show="!$root.videoSrc[copayer]" 
+          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+          class="video-small"
+          src="./img/satoshi.gif" 
+          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
+      </div>
     </div>
-    <div class="large-8 columns text-right">
+    <!--
+    <div class="large-2 columns text-right">
       <a class="size-12" ng-if="themes.length > 1" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
     </div>
+    -->
   </div>
 
     <!-- Templates -->
@@ -228,23 +248,6 @@
         <div class="large-12 columns p70l">
           <p class="text-info"> <i class="fi-alert size-28"></i> 
           {{$root.wallet.requiredCopayers}} copayers needed for signing transactions
-        </div>
-      </div>
-      <div class="row">
-        <div class="large-4 columns"
-          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
-          <video 
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
-            class="video-small"
-            autoplay ng-show="$root.videoSrc[copayer]" 
-            ng-src="{{$root.getVideoURL(copayer)}}"
-            id="{{copayer + '-video'}}" muted="true"
-            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
-          <img ng-show="!$root.videoSrc[copayer]" 
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
-            class="video-small"
-            src="./img/satoshi.gif" 
-            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
         </div>
       </div>
     </script>

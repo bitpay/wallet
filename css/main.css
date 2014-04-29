@@ -14,11 +14,11 @@ html, body {height: 100%;}
 #wrap {min-height: 100%;}
 
 #main {overflow:auto;
-	padding-bottom: 30px;}  /* must be same height as the footer */
+	padding-bottom: 91px;}  /* must be same height as the footer */
 
 #footer {position: relative;
-	margin-top: -30px; /* negative value of footer height */
-	height: 30px;
+	margin-top: -91px; /* negative value of footer height */
+	height: 91px;
 	clear:both;
   padding: 5px 2rem;
 }
@@ -256,17 +256,17 @@ hr { margin: 2.25rem 0;}
 }
 
 .video-small {
-  width: 120px;
-  height: 120px;
-  margin: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 1rem;
   display: inline;
-  float:left;
+  float: right;
 }
 .online {
-  border: 10px solid green;
+  border: 3px solid green;
 }
 .offline {
-  border: 10px solid gray;
+  border: 3px solid gray;
 }
 
 .tx-copayers {
