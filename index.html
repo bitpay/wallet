@@ -292,60 +292,36 @@
               </div>
 
               <div class="tx-copayers"> 
-                <div class="box-copayers">
-                  <figure class="left">
-                      <img src="./img/avatar.jpg" alt="" width="200">
-                  </figure>
-                  <div class="box-status">
-                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
-                    <i class="fi-eye size-12 icon-active icon-status"></i>
-                    <i class="fi-check size-12 icon-active-check icon-status"></i>
-                  </div>
-                </div>
 
-                <div class="box-copayers">
+                <div class="box-copayers" ng-repeat="(peer, actions) in tx.peerActions">
                   <figure class="left">
-                      <img src="./img/avatar.jpg" alt="" width="200">
+                    <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{peer === $root.wallet.getMyCopayerId() ? 'You' : peer}}">
+                      <img src="./img/satoshi.gif" alt="peer" width="200">
+                    </a>
                   </figure>
                   <div class="box-status">
-                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
-                    <i class="fi-eye size-12 icon-active icon-status"></i>
-                    <i class="fi-check size-12 icon-active-check icon-status"></i>
+                    <span ng-repeat="(action, ts) in actions">
+                      <a ng-if="action == 'create'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Created at {{ts | date:'medium'}}">
+                        <i class="fi-crown size-12 icon-status icon-active"></i>
+                      </a>
+                      <a ng-if="action == 'seen'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Seen at {{ts | date:'medium'}}">
+                        <i class="fi-eye size-12 icon-status icon-active"></i>
+                      </a>
+                      <a ng-if="action == 'sign'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Signed at {{ts | date:'medium'}}">
+                        <i class="fi-check size-12 icon-status icon-active-check"></i>
+                      </a>
+                      <a ng-if="action == 'rejected'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Rejected at {{ts | date:'medium'}}">
+                        <i class="fi-check size-12 icon-status icon-active-x"></i>
+                      </a>
+                    </span>
                   </div>
                 </div>
-
-                <div class="box-copayers">
-                  <figure class="left">
-                      <img src="./img/avatar.jpg" alt="" width="200">
-                  </figure>
-                  <div class="box-status">
-                    <i class="fi-crown size-12 icon-inactive icon-status"></i>
-                    <i class="fi-eye size-12 icon-active icon-status"></i>
-                    <i class="fi-check size-12 icon-active-check icon-status"></i>
-                  </div>
-                </div>
+                
                 <small class="right text-gray"> 
                   Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
                   <strong> Proposal ID: </strong> {{tx.ntxid}} 
                 </small>
-                <!-- 
-                    <table>
-                      <tr ng-repeat="(peer, actions) in tx.peerActions">
-                        <td colspan="3">
-                            <span ng-if="peer === $root.wallet.getMyCopayerId()"> You</span>
-                             {{peer}}
-
-                            <span ng-repeat="(action, ts) in actions">
-                              <span ng-if="action == 'create'" title="{{ts | date:'medium'}}" class="fi-page-add size-18 right m10h"></span>
-                              <span ng-if="action == 'seen'" title="{{ts | date:'medium'}}" class="fi-eye size-18 right m10h"> </span>
-                              <span ng-if="action == 'sign'" title="{{ts | date:'medium'}}" class="fi-check size-18 right m10h"> </span>
-                              <span ng-if="action == 'rejected'" title="{{ts | date:'medium'}}" class="fi-x size-18 right m10h" style="color:red"> </span>
-
-                              <a title="{{ts | date:'medium'}}"></a>
-                            </span>
-                        </td>
-                    </table>
-                 -->
+                 
               </div>
 
               <div class="txbottom">
