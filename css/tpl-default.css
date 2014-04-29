@@ -1,3 +1,38 @@
+/*
+ *
+ * Copay Default Template
+ *
+ */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Ubuntu Light'), local('Ubuntu-Light'), url(../font/ubuntu-light.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../font/ubuntu.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../font/ubuntu-bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url(../font/ubuntu-bold-italic.woff) format('woff');
+}
+
+* {
+  font-family: 'Ubuntu', Helvetica, sans-serif !important;
+}
+
 body {
   background: #F5F5F5;
 }
@@ -7,7 +42,8 @@ body {
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
-  background: #FAE448;
+  background: #1ABC9C;
+  color: #fff;
 }
 
 .top-bar-section li.active:not(.has-form) a:not(.button) {
@@ -16,7 +52,7 @@ body {
 }
 
 .top-bar-section li.active:not(.has-form) a:not(.button):hover, .top-bar-section li:not(.has-form) a:not(.button):hover {
-  background: #111;
+  background: #16A085;
   color: white;
 }
 
@@ -25,11 +61,29 @@ body {
 }
 
 .header {
-  background: #111;
+  background: #2C3E50;
   color: white;
 }
 
-.header h1, h5 {
+.header h1, h5, p {
+  color: #93A9BD;
+}
+
+.header h6 {
+  color: #fff;
+}
+
+.header .line-dashed-v {
+  border-right: 1px dashed #5A6B7D;
+}
+
+.header a.button.small-icon {
+  background: white;
+  color: #2C3E50;
+}
+
+.header a.button.small-icon:hover {
+  background: #16A085;
   color: #fff;
 }
 
@@ -102,4 +156,9 @@ button.primary:hover { background-color: #333;}
 button.secondary:hover { background-color: #FFDF00 !important;}
 
 .text-gray { color: #999;}
+
+#footer {
+  background: #2C3E50;
+  color: #fff;
+}
 
