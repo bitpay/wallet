@@ -24,6 +24,12 @@ function Network(opts) {
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
   this.opts           = { key: opts.key };
+  this.sjclParams     = opts.sjclParams || {
+    salt: 'f28bfb49ef70573c',
+    iter:500,
+    mode:'ccm',
+    ts:parseInt(64),   
+  };
 
   // For using your own peerJs server
   ['port', 'host', 'path', 'debug'].forEach(function(k) {
@@ -152,10 +158,11 @@ Network.prototype._addCopayer = function(copayerId, isInbound) {
 
 
 
-Network.prototype._onData = function(data, isInbound, peerId) {
+Network.prototype._onData = function(encStr, isInbound, peerId) {
   var sig, payload;
 
   try { 
+    var data = this._decrypt(encStr);
     payload=  JSON.parse(data);
   } catch (e) {
     console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
@@ -355,13 +362,39 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
+Network.prototype._encryptFor = function(copayerId, payloadStr) {
+  var cBits= sjcl.codec.hex.toBits(copayerId);
+  var pass64= sjcl.codec.base64.fromBits(cBits);
+  var plainText = sjcl.codec.utf8String.toBits(payloadStr);
+  var p = this.sjclParams;    // auth strength
+  ct = sjcl.encrypt(pass64, plainText, p);//,p, rp);
+  var c = JSON.parse(ct);
+  var toSend = {
+    iv: c.iv,
+    ct: c.ct,
+  };
+  return JSON.stringify(toSend);
+};
+
+
+Network.prototype._decrypt = function(encStr) {
+  var i = JSON.parse(encStr);
+  for (var k in this.sjclParams) {
+    i[k] = this.sjclParams[k];
+  }
+  var str= JSON.stringify(i);
+  var cBits= sjcl.codec.hex.toBits(this.copayerId);
+  var pass64= sjcl.codec.base64.fromBits(cBits);
+  var pt = sjcl.decrypt(pass64, str);
+  return pt;
+};
 
 Network.prototype._sendToOne = function(copayerId, payloadStr, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
-      dataConn.send(payloadStr);
+      dataConn.send(this._encryptFor(copayerId, payloadStr));
     }
     else {
       console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
