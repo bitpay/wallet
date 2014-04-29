@@ -215,6 +215,10 @@ small.has-error {
   }
 }
 
+.new-address {
+  width: 220px;
+}
+
 hr { margin: 2.25rem 0;}
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {

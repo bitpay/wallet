@@ -255,24 +255,24 @@
     <script type="text/ng-template" id="addresses.html">
       <div class="addresses" data-ng-controller="AddressesController">
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
-        <h3>Addresses (available to spend)</h3>
-        <div class="row">
-          <div class="large-6 columns">
-            <a class="panel db" ng-repeat="addr in addrs" ng-click="selectAddr(addr)">{{addr}}
-
- <span ng-if="!isMain[addr]">(change)</span>
- <span class="right">({{balanceByAddr[addr] || 0}} <i class="fi-bitcoin"></i>)</span></a>
-           
-          </div>
-          <div class="large-3 columns line-dashed-v text-center">
-            <qrcode size="160" data="{{selectedAddr}}"></qrcode>
-            <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{balanceByAddr[addr]}} <i class="fi-bitcoin"></i> </strong> </p>
-          </div>
-          <div class="large-3 columns text-center">
-            <p> Create a New <strong> Address </strong> </p>
-            <button class="secondary round expand" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
-          </div>
-        </div> 
+          <div class="row">
+            <div class="large-9 columns" ng-if="addrs[0]">
+              <h3>Addresses (available to spend)</h3>
+              <div class="large-8 columns">
+                <a class="panel db" ng-repeat="addr in addrs" ng-click="selectAddr(addr)">{{addr}}
+                <span ng-if="!isMain[addr]">(change)</span>
+                <span class="right">({{balanceByAddr[addr] || 0}} <i class="fi-bitcoin"></i>)</span></a>
+              </div>
+              <div class="large-4 columns line-dashed-v text-center">
+                <qrcode size="160" data="{{selectedAddr}}"></qrcode>
+                <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{balanceByAddr[addr]}} <i class="fi-bitcoin"></i> </strong> </p>
+              </div>
+            </div>
+            <div class="columns text-center" ng-class="{'large-3' : addrs[0]}">
+              <p> Create a New <strong> Address </strong> </p>
+              <button class="secondary round expandi new-address" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
+            </div>
+          </div> 
         </div> 
       </div>
     </script>
