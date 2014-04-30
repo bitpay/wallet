@@ -12,6 +12,11 @@ angular.module('copay.controllerUtils')
       return trusted;
     };
 
+    $rootScope.getWalletDisplay = function() {
+      var w = $rootScope.wallet;
+      return w && (w.name || w.id);
+    };
+
     root.logout = function() {
       console.log('### DELETING WALLET'); //TODO
       $rootScope.wallet = null;
@@ -54,7 +59,7 @@ angular.module('copay.controllerUtils')
       });
       w.on('created', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
-        $location.path('peer');
+        $location.path('addresses');
         $rootScope.wallet = w;
         root.updateBalance();
       });
