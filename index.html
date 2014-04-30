@@ -232,7 +232,7 @@
             </div>
 
             <div class="large-6 large-centered columns m30v">
-              <h6>Your nickname (optional)</h6>
+              <h6>Your name (optional)</h6>
                 <input ng-model="myNickname" placeholder="" class="size-24" style="width:100%">
             </div>
  
@@ -302,10 +302,10 @@
 
               <div class="tx-copayers"> 
 
-                <div class="box-copayers" ng-repeat="(peer, actions) in tx.peerActions">
+                <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
                   <figure class="left">
-                    <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{peer === $root.wallet.getMyCopayerId() ? 'You' : peer}}">
-                      <img src="./img/satoshi.gif" alt="peer" width="200">
+                    <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
+                      <img src="./img/satoshi.gif" alt="cId" width="200">
                     </a>
                   </figure>
                   <div class="box-status">
@@ -323,6 +323,10 @@
                         <i class="fi-x size-12 icon-status icon-active-x"></i>
                       </a>
                     </span>
+                  </div>
+
+                  <div class="text-center" style="margin-right:16px; color:#999; font-size:12px">
+                    {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
                   </div>
                 </div> 
               </div>

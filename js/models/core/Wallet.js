@@ -418,8 +418,8 @@ Wallet.prototype.getAddressesStr = function(onlyMain) {
   return ret;
 };
 
-Wallet.prototype.addressIsOwn = function(addrStr) {
-  var addrList = this.getAddressesStr();
+Wallet.prototype.addressIsOwn = function(addrStr, onlyMain) {
+  var addrList = this.getAddressesStr(onlyMain);
   var l = addrList.length;
   var ret = false;
 
