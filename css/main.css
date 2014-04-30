@@ -106,20 +106,7 @@ html, body {height: 100%;}
 }
 
 .transactions .panel.pending {
-  padding: 1rem;
-}
-
-.pending .txheader {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  /* border-bottom: 1px solid #eee; */
-}
-
-.pending .txbottom {
-  margin-top: 10px;
-  padding-top: 10px;
-  /* border-top: 1px solid #eee; */
-  font-size: 12px;
+  padding: 0;
 }
 
 .btransactions .txheader {
@@ -181,7 +168,7 @@ span.panel-res {
 }
 
 .pending button {
-  margin: 0;
+  margin: 0 10px 0 0;
 }
 
 .line {
@@ -239,6 +226,9 @@ hr { margin: 2.25rem 0;}
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
 .m10t {margin-top: 10px;}
+.m10r {margin-right: 10px;}
+.m10 {margin: 10px !important;}
+.m15 {margin: 15px !important;}
 .p10t {padding-top: 10px;}
 .p0r {padding-right: 0;}
 .p70r {padding-right: 70px;}
