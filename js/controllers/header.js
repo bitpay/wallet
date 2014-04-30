@@ -40,7 +40,13 @@ angular.module('copay.header').controller('HeaderController',
         w.disconnect();
         controllerUtils.logout();
       }
-      $rootScope.flashMessage = {};
+      $scope.clearFlashMessage();
+    };
+
+    $scope.refresh = function() {
+      controllerUtils.updateBalance(function() {
+        $rootScope.$digest();
+      });
     };
 
     $scope.clearFlashMessage = function() {
