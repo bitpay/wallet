@@ -30,10 +30,6 @@ angular
         templateUrl: 'join.html',
         validate: true
       })
-      .when('/peer', {
-        templateUrl: 'peer.html',
-        validate: true
-      })
       .when('/transactions', {
         templateUrl: 'transactions.html',
         validate: true
