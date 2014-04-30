@@ -68,7 +68,9 @@ var createBundle = function(opts) {
   b.require('./js/models/core/PublicKeyRing', {
     expose: '../js/models/core/PublicKeyRing'
   });
-
+  b.require('./js/models/core/Passphrase', {
+    expose: '../js/models/core/Passphrase'
+  });
 
   if (!opts.dontminify) {
     b.transform({

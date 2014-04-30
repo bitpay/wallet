@@ -3,6 +3,8 @@
 module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
 module.exports.TxProposals = require('./js/models/core/TxProposals');
 module.exports.PrivateKey = require('./js/models/core/PrivateKey');
+module.exports.Passphrase = require('./js/models/core/Passphrase');
+
 
 // components
 var WebRTC = module.exports.WebRTC = require('./js/models/network/WebRTC');
