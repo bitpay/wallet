@@ -150,13 +150,35 @@ small.has-error {
   color: #f04124;
 }
 
-button.primary { background-color: #111; }
-button.secondary { background-color: #FAE448 !important; }
+.panel.radius {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
 
-button.primary:hover { background-color: #333;}
-button.secondary:hover { background-color: #FFDF00 !important;}
+.transactions button, .transactions .button {
+  padding: 0.5rem 2rem;
+}
+.small {
+  font-size: 60%;
+  line-height: inherit;
+}
 
-.text-gray { color: #999;}
+button.radius, .button.radius {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+button.primary, button.secondary, button.primary:hover, button.secondary:hover {color: #fff !important;} 
+
+button.primary { background-color: #E67E22; }
+button.secondary { background-color: #1ABC9C !important; }
+button.warning { background-color: #C0392A; }
+
+button.primary:hover { background-color: #D86601;}
+button.secondary:hover { background-color: #16A085 !important;}
+button.warning:hover { background-color: #82251A; }
+
+.text-gray { color: #999 !important;}
 
 #footer {
   background: #2C3E50;

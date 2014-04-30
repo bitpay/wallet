@@ -54,7 +54,7 @@
 
       <div class="row" ng-if='$root.flashMessage.message' notification>
         <div class="small-8 large-centered columns">
-          <div data-alert class="alert-box round {{$root.flashMessage.type}}">
+          <div data-alert class="alert-box radius {{$root.flashMessage.type}}">
             {{$root.flashMessage.message}}
             <a ng-click="clearFlashMessage()" class="close">&times;</a>
           </div>
@@ -62,7 +62,7 @@
       </div>
 
       <div class="row">
-        <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box  warn round  size-18" >
+        <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box  warn radius  size-18" >
 
 
               <div style="float:left; margin:0 15px">
@@ -131,7 +131,7 @@
     <!-- Templates -->
     <script type="text/ng-template" id="signin.html">
       <div class="signin" ng-controller="SigninController">
-        <div data-alert class="alert-box info round" ng-show="loading">
+        <div data-alert class="alert-box info radius" ng-show="loading">
           Looking for peers...
         </div>
         <div ng-show="!loading">
@@ -142,7 +142,7 @@
               <h3>Join a Wallet in Creation</h3>
               <input type="text" class="form-control" placeholder="Paste wallet secret here"
                ng-model="connectionId" required autofocus>
-              <button class="button primary expand round"
+              <button class="button primary expand radius"
                 ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
@@ -153,13 +153,13 @@
                 <select class="form-control" ng-model="selectedWalletId"
                   ng-options="w.id as w.show for w in wallets">
                 </select>
-                <button class="button secondary expand round" type="button"
+                <button class="button secondary expand radius" type="button"
                   ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
               </div>
               <div ng-show="!wallets.length">
                 <h3>Create a new wallet</h3>
                 <input type="text" class="form-control" ng-model="walletName" placeholder="Wallet name (optional)">
-                <button class="button secondary expand round" ng-click="create(walletName)" ng-disabled="loading" loading="Creating">Create</button>                
+                <button class="button secondary expand radius" ng-click="create(walletName)" ng-disabled="loading" loading="Creating">Create</button>                
               </div>
               </div>
             </div>
@@ -191,7 +191,7 @@
 
     <script type="text/ng-template" id="setup.html">
       <div ng-controller="SetupController">
-        <div data-alert class="alert-box info round" ng-show="loading">
+        <div data-alert class="alert-box info radius" ng-show="loading">
           Creating new wallet...
         </div>
         <div ng-show="!loading">
@@ -219,7 +219,7 @@
  
             <div class="large-6 large-centered columns m30v">
               <hr>
-              <button class="button primary round right" type="button"
+              <button class="button primary radius right" type="button"
                ng-click="create(totalCopayers, requiredCopayers, walletName)">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
@@ -251,7 +251,7 @@
             </div>
             <div class="columns text-center" ng-class="{'large-3' : addrs[0]}">
               <p> Create a New <strong> Address </strong> </p>
-              <button class="secondary round expandi new-address" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
+              <button class="secondary radius expandi new-address" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
             </div>
           </div> 
         </div> 
@@ -264,9 +264,9 @@
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
             <h4>Transactions proposals <small>({{txs.length}})</small></h4>
-            <div class="panel pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
+            <div class="panel radius pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
               <div class="txheader">
-                <div class="row">
+                <div class="row m10">
                   <div class="large-8 columns">
                     <div class="row" ng-repeat="out in tx.outs">
                       <p class="large-3 columns"> {{out.value}} <i class="fi-bitcoin size-18"></i></p>
@@ -300,57 +300,50 @@
                         <i class="fi-check size-12 icon-status icon-active-check"></i>
                       </a>
                       <a ng-if="action == 'rejected'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Rejected at {{ts | date:'medium'}}">
-                        <i class="fi-check size-12 icon-status icon-active-x"></i>
+                        <i class="fi-x size-12 icon-status icon-active-x"></i>
                       </a>
                     </span>
                   </div>
-                </div>
-                
-                <small class="right text-gray"> 
-                  Fee: <strong> <i class="fi-bitcoin"></i> {{tx.fee}}  </strong>
-                  <strong> Proposal ID: </strong> {{tx.ntxid}} 
-                </small>
-                 
+                </div> 
               </div>
 
-              <div class="txbottom">
-                <div class="row">
-                  <div class="large-6 columns" ng-show="!tx.sentTs">
-                    <div ng-show="tx.signedByUs">
-                      <i class="fi-check size-40"></i> Signed by you already
-                    </div>
-                    <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
-                      <button class="secondary round"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
-                        <i class="fi-check"></i> Sign
-                      </button>
-                      <button class="primary round" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading>
-                        <i class="fi-x" ></i> Reject 
-                      </button>
-                    </div>
+              <div class="row m15">
+                <div class="large-4 columns" ng-show="!tx.sentTs" style="padding-left: 5px;">
+                  <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
+                    <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+                      <i class="fi-check"></i> Sign
+                    </button>
+                    <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading>
+                      <i class="fi-x" ></i> Reject 
+                    </button>
                   </div>
-                  <div class="large-6 columns text-right">
-                    <span ng-show="tx.finallyRejected ">
-                      Transaction finally rejected
-                    </span>
- 
-                    <span ng-show="!tx.missingSignatures && !tx.sentTs">
-                      Transaction ready.
-                      <button class="secondary round"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting">
-                        Broadcast Transaction
-                      </button>
-                    </span>
- 
-                    <span ng-show="!tx.missingSignatures && tx.sentTs">
-                     <i class="fi-arrow-right size-40"></i>
+
+                  <span ng-show="!tx.missingSignatures && !tx.sentTs">
+                    <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
+                      Broadcast Transaction
+                    </button>
+                  </span>
+                </div>
+    
+                <div class="large-8 columns text-right">
+                  <span ng-show="tx.finallyRejected" class="text-warning">
+                    Transaction finally rejected
+                  </span>
+                  <p class="small" ng-show="!tx.missingSignatures && tx.sentTs">
+                    <a href="http://live.insight.is/tx/{{tx.sentTxid}}" target="blank">
+                      <i class="fi-arrow-right size-40"></i>
                       Sent at {{tx.sentTs | date:'medium'}}
-                      TXID: {{tx.sentTxid}}
-                    </span>
-                    <span ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
-                      One signature missing
-                    </span>
-                    <span ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
-                      {{tx.missingSignatures}} signatures missing</span>
-                  </div>
+                    </a>
+                  </p>
+                  <p class="text-gray" ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
+                    One signature missing
+                  </p>
+                  <p class="text-gray" ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
+                    {{tx.missingSignatures}} signatures missing</p>
+                  <small class="right text-gray"> 
+                    <strong>  Fee: </strong> <i class="fi-bitcoin"></i> {{tx.fee}}
+                    <strong> Proposal ID: </strong> {{tx.ntxid}} 
+                  </small>
                 </div>
               </div>
             </div>
@@ -358,8 +351,8 @@
           <div class="large-12 columns" ng-init="getTransactions()" ng-show="blockchain_txs[0].txid">
             <h3>Last transactions</h3>
             <div class="btransactions">
-              <div class="panel" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
-                <div class="txheader">
+              <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
+                <div class="m15">
                   <div class="row">
                     <div class="large-8 columns">
                       ID: {{btx.txid}}
@@ -369,11 +362,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="tx-copayers">
                   <div class="large-5 columns">
                     <div ng-repeat="vin in btx.vin">
-                      {{vin.addr}} 
-                      <small>{{vin.value}}</small>
+                      <p class="left text-gray size-12"> {{vin.addr}} </p>
+                      <small class="right">{{vin.value}}</small>
                     </div>
                   </div>
                   <div class="large-1 columns text-center">
@@ -384,7 +377,7 @@
                       <div class="row">
                         <div class="large-10 columns">
                           <div ng-repeat="addr in vout.scriptPubKey.addresses">
-                            {{addr}}
+                            <p class="text-gray size-12"> {{addr}} </p>
                           </div>
                         </div>
                         <div class="large-2 columns">
@@ -394,7 +387,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="txbottom">
+                <div class="m15 size-12 text-gray">
                   <div class="row">
                     <div class="large-4 columns">Fees: {{btx.fees}}</div>
                     <div class="large-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
@@ -448,7 +441,7 @@
               </div>
               <div class="row">
                 <div class="large-5 columns">
-                  <button type="submit" class="button secondary round text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
+                  <button type="submit" class="button secondary radius text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
                     Send
                   </button>                 
                 </div>
