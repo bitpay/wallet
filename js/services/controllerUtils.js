@@ -88,6 +88,7 @@ angular.module('copay.controllerUtils')
 
     root.setSocketHandlers = function() {
       Socket.removeAllListeners();
+      if (!$rootScope.wallet) return;
 
       var addrs = $rootScope.wallet.getAddressesStr();
       for (var i = 0; i < addrs.length; i++) {

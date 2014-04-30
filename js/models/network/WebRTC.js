@@ -174,13 +174,15 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  if(payload.type === 'hello' &&  !this.authenticatedPeers[peerId]) {
-    var payloadStr = JSON.stringify(payload);
-    if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-      console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
-                  this.allowedCopayerIds, payload.copayerId);
-      this._deletePeer(peerId);
-      return;
+  if(payload.type === 'hello' ) {
+    if (!this.authenticatedPeers[peerId]) {
+      var payloadStr = JSON.stringify(payload);
+      if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+        console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
+                    this.allowedCopayerIds, payload.copayerId);
+        this._deletePeer(peerId);
+        return;
+      }
     }
     console.log('#### Peer sent hello. Setting it up.'); //TODO
     this._setPeerAuthenticated(peerId);
