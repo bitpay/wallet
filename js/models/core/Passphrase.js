@@ -8,7 +8,7 @@ function Passphrase(config) {
 
 Passphrase.prototype.get = function(password) {
   var hash = CryptoJS.SHA256(CryptoJS.SHA256(password));
-  var salt = CryptoJS.enc.Hex.parse(this.salt);
+  var salt = CryptoJS.enc.Base64.parse(this.salt);
   var key512 = CryptoJS.PBKDF2(hash, salt, { keySize: 512/32, iterations: this.iterations });
 
   return key512;
