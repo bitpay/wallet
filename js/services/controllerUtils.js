@@ -29,11 +29,6 @@ angular.module('copay.controllerUtils')
 
     root.onError = function(scope) {
       if (scope) scope.loading = false;
-      $rootScope.flashMessage = {
-        type: 'error',
-        message: 'Could not connect to peer: ' +
-          scope
-      };
       root.logout();
     }
 
