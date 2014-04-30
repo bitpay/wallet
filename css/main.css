@@ -149,6 +149,12 @@ h3 {
   border-right: 2px dashed #E3E3E3;
 }
 
+@media (max-width: 1025px) {
+  .line-dashed-v {
+    border: none;
+  }
+}
+
 .line-dashed-h {
   margin: 1rem 0;
   border-bottom: 2px dashed #E3E3E3;
@@ -224,6 +230,7 @@ hr { margin: 2.25rem 0;}
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
 .m10t {margin-top: 10px;}
+.m10b {margin-bottom: 10px;}
 .m10r {margin-right: 10px;}
 .m10 {margin: 10px !important;}
 .m15 {margin: 15px !important;}
@@ -299,6 +306,63 @@ hr { margin: 2.25rem 0;}
   display: block;
   margin: 0.8px;
   padding: 2.7px;
+}
+
+.box-setup {
+  padding: 20px 30px;
+  border: 1px solid #eee;
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.box-setup-copayers {
+	position: relative;
+	background: #ffffff;
+	border: 2px solid #eee;
+}
+
+.box-setup-copayers:after, .box-setup-copayers:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.box-setup-copayers:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #ffffff;
+	border-width: 30px;
+	margin-left: -30px;
+}
+
+.box-setup-copayers:before {
+	border-color: rgba(238, 238, 238, 0);
+	border-bottom-color: #eee;
+	border-width: 33px;
+	margin-left: -33px;
+}
+
+.box-setup-copayers-fix {
+  overflow: hidden;
+  padding: 10px 10px 0 10px;
+}
+
+.box-setup-copay {
+  width: 60px;
+  height: 60px;
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 3px solid #eee;
+}
+
+.box-setup-copay-required {
+  border: 3px solid green;
 }
 
 .tx-copayers {

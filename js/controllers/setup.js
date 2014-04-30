@@ -5,6 +5,11 @@ angular.module('copay.setup').controller('SetupController',
 
     $scope.loading = false;
 
+    // ng-repeat defined number of times instead of repeating over array?
+    $scope.getNumber = function(num) {
+      return new Array(num);   
+    }
+
     $scope.totalCopayers = config.wallet.totalCopayers;
     $scope.TCValues = [];
     for (var n = 1; n <= config.limits.totalCopayers; n++)
