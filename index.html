@@ -106,19 +106,20 @@
         </span> 
       </div>
       <div class="large-2 columns" style="float:right;"
-          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
+          ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
         <video 
-          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
           class="video-small"
-          autoplay ng-show="$root.videoSrc[copayer]" 
-          ng-src="{{$root.getVideoURL(copayer)}}"
-          id="{{copayer + '-video'}}" muted="true"
-          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
-        <img ng-show="!$root.videoSrc[copayer]" 
-          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+          autoplay ng-show="$root.videoSrc[c.peerId]" 
+          ng-src="{{$root.getVideoURL(c.peerId)}}"
+          id="{{c.peerId + '-video'}}" muted="true"
+          title="{{c.peerId + (c.peerId == $root.wallet.network.peerId?' (You)':'')}}" ></video>
+        <img ng-show="!$root.videoSrc[c.peerId]" 
+          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
           class="video-small"
           src="./img/satoshi.gif" 
-          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
+          title="{{c.peerId + (c.peerId == $root.wallet.network.peerId?' (You)':'')}}" />
+        <div ng-if="c.nick" class="small-8 text-center" style="position:absolute; width:115%; bottom:-10px">{{c.nick}}</div>
       </div>
     </div>
     <!--
@@ -167,10 +168,12 @@
                 <h3>Join a Wallet in Creation</h3>
               <input type="text" class="form-control" placeholder="Paste wallet secret here"
                  ng-model="connectionId" required autofocus>
+              <input type="text" class="form-control" placeholder="Your name (optional)"
+                 ng-model="nickname">
               </div>
               <div class="large-3 columns">
                 <button class="button primary expand radius"
-                  ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
+                  ng-click="join(connectionId,nickname)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
             <hr>
@@ -225,13 +228,19 @@
             </div>
             <div class="large-6 large-centered columns m30v">
               <h6>Wallet name (optional)</h6>
-                <input ng-model="walletName" placeholder="My multisig wallet" class="size-24" style="width:100%">
+                <input ng-model="walletName" placeholder="" class="size-24" style="width:100%">
             </div>
+
+            <div class="large-6 large-centered columns m30v">
+              <h6>Your nickname (optional)</h6>
+                <input ng-model="myNickname" placeholder="" class="size-24" style="width:100%">
+            </div>
+ 
  
             <div class="large-6 large-centered columns m30v">
               <hr>
               <button class="button primary radius right" type="button"
-               ng-click="create(totalCopayers, requiredCopayers, walletName)">
+               ng-click="create(totalCopayers, requiredCopayers, walletName, myNickname)">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
               <div class="left">

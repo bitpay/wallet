@@ -32,6 +32,8 @@ function PublicKeyRing(opts) {
   this.addressIndex= opts.addressIndex || 0;
 
   this.publicKeysCache = opts.publicKeysCache || {};
+  this.nicknameFor = opts.nicknameFor || {};
+  this.copayerIds = [];
 }
 
 /*
@@ -54,10 +56,13 @@ PublicKeyRing.fromObj = function (data) {
   if (data instanceof PublicKeyRing) {
     throw new Error('bad data format: Did you use .toObj()?');
   }
-  data.copayersBIP32 = data.copayersExtPubKeys.map(function(pk) {
-    return new BIP32(pk);
-  });
-  return new PublicKeyRing(data);
+  var ret =  new PublicKeyRing(data);
+
+  for (var k in data.copayersExtPubKeys) {
+    ret.addCopayer(data.copayersExtPubKeys[k]);
+  }
+
+  return ret;
 };
 
 PublicKeyRing.prototype.toObj = function() {
@@ -72,23 +77,12 @@ PublicKeyRing.prototype.toObj = function() {
     copayersExtPubKeys: this.copayersBIP32.map( function (b) { 
       return b.extendedPublicKeyString(); 
     }),
+    nicknameFor: this.nicknameFor,
     publicKeysCache: this.publicKeysCache
   };
 };
 
-PublicKeyRing.prototype.serialize = function () {
-  return JSON.stringify(this.toObj());
-};
-
 PublicKeyRing.prototype.getCopayerId = function(i) {
-  this.copayerIds = this.copayerIds  || [];
-
-  if (!this.copayerIds[i]) {
-    var path = PublicKeyRing.ID_BRANCH;
-    var bip32 = this.copayersBIP32[i].derive(path);
-    this.copayerIds[i]= bip32.eckey.public.toString('hex');
-  }
-
   return this.copayerIds[i];
 };
 
@@ -101,12 +95,7 @@ PublicKeyRing.prototype.isComplete = function () {
 };
 
 PublicKeyRing.prototype.getAllCopayerIds = function() {
-  var ret = [];
-  var l = this.registeredCopayers();
-  for(var i=0; i<l; i++) {
-    ret.push(this.getCopayerId(i));
-  }
-  return ret;
+  return this.copayerIds;
 };
 
 PublicKeyRing.prototype.myCopayerId = function(i) {
@@ -119,14 +108,30 @@ PublicKeyRing.prototype._checkKeys = function() {
       throw new Error('dont have required keys yet');
 };
 
-
 PublicKeyRing.prototype._newExtendedPublicKey = function () {
   return new BIP32(this.network.name)
     .extendedPublicKeyString();
 };
 
-PublicKeyRing.prototype.addCopayer = function (newEpk) {
+PublicKeyRing.prototype._updateBip = function (index) {
+  var path = PublicKeyRing.ID_BRANCH;
+  var bip32 = this.copayersBIP32[index].derive(path);
+  this.copayerIds[index]= bip32.eckey.public.toString('hex');
+};
 
+PublicKeyRing.prototype._setNicknameForIndex = function (index, nickname) {
+  this.nicknameFor[this.copayerIds[index]] = nickname;
+};
+
+PublicKeyRing.prototype.nicknameForIndex = function (index) {
+  return this.nicknameFor[this.copayerIds[index]];
+};
+
+PublicKeyRing.prototype.nicknameForCopayer = function (copayerId) {
+  return this.nicknameFor[copayerId];
+};
+
+PublicKeyRing.prototype.addCopayer = function (newEpk, nickname) {
   if (this.isComplete())
       throw new Error('already have all required key:' + this.totalCopayers);
 
@@ -139,7 +144,13 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
       throw new Error('already have that key');
   });
 
-  this.copayersBIP32.push(new BIP32(newEpk));
+  var i=this.copayersBIP32.length;
+  var bip = new BIP32(newEpk);
+  this.copayersBIP32.push(bip);
+  this._updateBip(i);
+  if (nickname) { 
+    this._setNicknameForIndex(i,nickname);
+  }
   return newEpk;
 };
 
@@ -158,7 +169,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
     }
     this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
   } else {
-    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')}); 
+    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex');}); 
   }
 
   return pubKeys;
@@ -304,7 +315,11 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
       if (self.isComplete()) {
         throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
       }
+      var l2 = self.copayersBIP32.length;
       self.copayersBIP32.push(new BIP32(epk));
+      self._updateBip(l2);
+      if (inPKR.nicknameFor[self.getCopayerId(l2)])
+        self._setNicknameForIndex(l2,inPKR.nicknameFor[self.getCopayerId(l2)]);
       hasChanged=true;
     }
   });

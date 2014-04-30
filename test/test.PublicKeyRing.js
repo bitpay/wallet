@@ -280,6 +280,60 @@ describe('PublicKeyRing model', function() {
   });
 
 
+  it('#merge with nickname', function () {
+    var w = new PublicKeyRing(config);
+    should.exist(w);
+    for(var i=0; i<3; i++) {
+      w.addCopayer();
+    };
+    w._setNicknameForIndex(0,'pepe0');
+    w._setNicknameForIndex(1,'pepe1');
+
+    w.nicknameForIndex(0).should.equal('pepe0');
+    w.nicknameForIndex(1).should.equal('pepe1');
+    should.not.exist(w.nicknameForIndex(2));
+
+
+    for(var i=0; i<2; i++) {
+      w.isComplete().should.equal(false);
+      var w2 = new PublicKeyRing({
+        networkName: 'livenet',
+        id: w.id,
+      });
+      w2.addCopayer();
+      w2._setNicknameForIndex(0,'juan' + i);
+      w.merge(w2).should.equal(true);
+    }
+    w.isComplete().should.equal(true);
+
+    w.nicknameForIndex(0).should.equal('pepe0');
+    w.nicknameForIndex(1).should.equal('pepe1');
+    should.not.exist(w.nicknameForIndex(2));
+    w.nicknameForIndex(3).should.equal('juan0');
+    w.nicknameForIndex(4).should.equal('juan1');
+  });
+
+
+  it('#toObj #fromObj with nickname', function () {
+    var w = new PublicKeyRing(config);
+    should.exist(w);
+    for(var i=0; i<3; i++) {
+      w.addCopayer(null, 'tito'+i);
+    };
+    w.nicknameForIndex(0).should.equal('tito0');
+    w.nicknameForIndex(1).should.equal('tito1');
+    w.nicknameForIndex(2).should.equal('tito2');
+    should.not.exist(w.nicknameForIndex(3));
+
+    var o = JSON.parse(JSON.stringify(w.toObj()));
+    var w2 = PublicKeyRing.fromObj( o );
+    w2.nicknameForIndex(0).should.equal('tito0');
+    w2.nicknameForIndex(1).should.equal('tito1');
+    w2.nicknameForIndex(2).should.equal('tito2');
+    should.not.exist(w2.nicknameForIndex(3));
+  });
+
+
   it('#getRedeemScriptMap check tests', function () {
     var k = createW();
     var w = k.w;
