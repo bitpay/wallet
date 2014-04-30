@@ -325,3 +325,6 @@ hr { margin: 2.25rem 0;}
   background: #C0392B;
 }
 
+a.loading {
+  background: #fff;
+}

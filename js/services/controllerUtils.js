@@ -4,6 +4,8 @@ angular.module('copay.controllerUtils')
   .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
     var root = {};
     $rootScope.videoSrc = {};
+    $rootScope.loading = false;
+
     $rootScope.getVideoURL = function(copayer) {
       var encoded = $rootScope.videoSrc[copayer];
       if (!encoded) return;
@@ -43,7 +45,7 @@ angular.module('copay.controllerUtils')
           return;
         }
         $rootScope.videoSrc[peerID] = encodeURI(url);
-        $rootScope.$apply();
+        $rootScope.$digest();
       };
       w.on('badMessage', function(peerId) {
         $rootScope.flashMessage = {
@@ -53,11 +55,15 @@ angular.module('copay.controllerUtils')
       });
       w.on('created', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
-        $location.path('addresses');
         $rootScope.wallet = w;
+        $location.path('addresses');
       });
       w.on('refresh', function() {
-        root.updateBalance();
+        root.setSocketHandlers();
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+        $rootScope.$digest();
       });
       w.on('publicKeyRingUpdated', function() {
         root.setSocketHandlers();
@@ -70,23 +76,31 @@ angular.module('copay.controllerUtils')
       w.netStart();
     };
 
-    root.updateBalance = function() {
+    root.updateBalance = function(cb) {
+      root.setSocketHandlers();
+      $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
-      if (!w) return;
+      $rootScope.addrInfos = w.getAddressesInfo();
+      if ($rootScope.addrInfos.length === 0) return;
+      $rootScope.loading = true;
       w.getBalance(false, function(balance, balanceByAddr) {
+        console.log('New total balance:', balance);
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
-        $rootScope.$digest();
-        console.log('New total balance:', balance);
+        $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
+        $rootScope.loading = false;
+        if (cb) cb();
       });
       w.getBalance(true, function(balance) {
-        $rootScope.availableBalance = balance;
-        $rootScope.$digest();
         console.log('New available balance:', balance);
+        $rootScope.availableBalance = balance;
+        $rootScope.loading = false;
+        if (cb) cb();
       });
     };
 
     root.setSocketHandlers = function() {
+      // TODO: optimize this?
       Socket.removeAllListeners();
       if (!$rootScope.wallet) return;
 
@@ -98,10 +112,11 @@ angular.module('copay.controllerUtils')
       addrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance();
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
         });
       });
     };
-
     return root;
   });

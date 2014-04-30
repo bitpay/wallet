@@ -210,17 +210,29 @@ PublicKeyRing.prototype.generateAddress = function(isChange) {
 };
 
 PublicKeyRing.prototype.getAddresses = function(excludeChange) {
+  return this.getAddressesInfo(excludeChange).map(function(info) {
+    return info.address;
+  });
+};
+
+PublicKeyRing.prototype.getAddressesInfo = function(excludeChange) {
   var ret = [];
-
-  for (var i=0; i<this.addressIndex; i++) {
-    ret.unshift(this.getAddress(i,false));
-  }
-
   if (!excludeChange) {
     for (var i=0; i<this.changeAddressIndex; i++) {
-      ret.unshift(this.getAddress(i,true));
+      ret.unshift({
+        address: this.getAddress(i,true),
+        isChange: true
+      });
     }
   }
+
+  for (var i=0; i<this.addressIndex; i++) {
+    ret.unshift({
+      address: this.getAddress(i,false),
+      isChange: false
+    });
+  }
+
   return ret;
 };
 

@@ -401,6 +401,7 @@ Wallet.prototype.addSeenToTxProposals = function() {
   return ret;
 };
 
+// TODO: remove this method and use getAddressesInfo everywhere
 Wallet.prototype.getAddresses = function(excludeChange) {
   return this.publicKeyRing.getAddresses(excludeChange);
 };
@@ -409,6 +410,10 @@ Wallet.prototype.getAddressesStr = function(excludeChange) {
   return this.getAddresses(excludeChange).map(function(a) {
     return a.toString();
   });
+};
+
+Wallet.prototype.getAddressesInfo = function(excludeChange) {
+  return this.publicKeyRing.getAddressesInfo(excludeChange);
 };
 
 Wallet.prototype.addressIsOwn = function(addrStr) {
@@ -430,15 +435,6 @@ Wallet.prototype.getBalance = function(safe, cb) {
   var balanceByAddr = {};
   var isMain = {};
   var COIN = bitcore.util.COIN;
-  var addresses = this.getAddressesStr(true);
-
-  if (!addresses.length) return cb(0, []);
-
-  // Prefill balanceByAddr with main address
-  addresses.forEach(function(a) {
-    balanceByAddr[a] = 0;
-    isMain[a] = 1;
-  });
   var f = safe ? this.getSafeUnspent.bind(this) : this.getUnspent.bind(this);
   f(function(utxos) {
     for (var i = 0; i < utxos.length; i++) {
@@ -453,7 +449,6 @@ Wallet.prototype.getBalance = function(safe, cb) {
       balanceByAddr[a] = balanceByAddr[a] / COIN;
     }
     balance = balance / COIN;
-
     return cb(balance, balanceByAddr, isMain);
   });
 };
