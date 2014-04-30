@@ -3,7 +3,6 @@ var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 var bitcore     = require('bitcore');
 var util        = bitcore.util;
-var Key         = bitcore.Key;
 /*
  * Emits
  *  'networkChange'
@@ -18,15 +17,22 @@ var Key         = bitcore.Key;
  */
 
 function Network(opts) {
-  var self = this;
+  var self            = this;
   opts                = opts || {};
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
-  this.opts           = { key: opts.key };
+  this.sjclParams     = opts.sjclParams || {
+    salt: 'f28bfb49ef70573c', 
+    iter:500,
+    mode:'ccm',
+    ts:parseInt(64),   
+  };
+
 
   // For using your own peerJs server
-  ['port', 'host', 'path', 'debug'].forEach(function(k) {
+  self.opts = {};
+  ['port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
     if (opts[k]) self.opts[k] = opts[k];
   });
   this.cleanUp();
@@ -38,6 +44,7 @@ Network.prototype.cleanUp = function() {
   this.started = false;
   this.connectedPeers = [];
   this.peerId = null;
+  this.netKey = null;
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds=null;
@@ -152,10 +159,11 @@ Network.prototype._addCopayer = function(copayerId, isInbound) {
 
 
 
-Network.prototype._onData = function(data, isInbound, peerId) {
+Network.prototype._onData = function(encStr, isInbound, peerId) {
   var sig, payload;
 
   try { 
+    var data = this._decrypt(encStr);
     payload=  JSON.parse(data);
   } catch (e) {
     console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
@@ -166,13 +174,15 @@ Network.prototype._onData = function(data, isInbound, peerId) {
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  if(payload.type === 'hello' &&  !this.authenticatedPeers[peerId]) {
-    var payloadStr = JSON.stringify(payload);
-    if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-      console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
-                  this.allowedCopayerIds, payload.copayerId);
-      this._deletePeer(peerId);
-      return;
+  if(payload.type === 'hello' ) {
+    if (!this.authenticatedPeers[peerId]) {
+      var payloadStr = JSON.stringify(payload);
+      if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+        console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
+                    this.allowedCopayerIds, payload.copayerId);
+        this._deletePeer(peerId);
+        return;
+      }
     }
     console.log('#### Peer sent hello. Setting it up.'); //TODO
     this._setPeerAuthenticated(peerId);
@@ -330,6 +340,7 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (this.started) return openCallback();
 
+  this.netKey = opts.netKey;
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (!this.copayerId)
@@ -355,13 +366,35 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
+Network.prototype._encrypt = function(payloadStr) {
+  var plainText = sjcl.codec.utf8String.toBits(payloadStr);
+  var p = this.sjclParams;    
+  ct = sjcl.encrypt(this.netKey, plainText, p);//,p, rp);
+  var c = JSON.parse(ct);
+  var toSend = {
+    iv: c.iv,
+    ct: c.ct,
+  };
+  return JSON.stringify(toSend);
+};
 
-Network.prototype._sendToOne = function(copayerId, payloadStr, sig, cb) {
+
+Network.prototype._decrypt = function(encStr) {
+  var i = JSON.parse(encStr);
+  for (var k in this.sjclParams) {
+    i[k] = this.sjclParams[k];
+  }
+  var str= JSON.stringify(i);
+  var pt = sjcl.decrypt(this.netKey, str);
+  return pt;
+};
+
+Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
-      dataConn.send(payloadStr);
+      dataConn.send(payload);
     }
     else {
       console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
@@ -379,17 +412,18 @@ Network.prototype.send = function(copayerIds, payload, cb) {
 
   var sig;
   var payloadStr = JSON.stringify(payload);
+  var encPayload = this._encrypt(payloadStr);
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, payloadStr, sig, function () {
+      self._sendToOne(copayerId, encPayload, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
   else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, payloadStr, sig, cb);
+    self._sendToOne(copayerIds, encPayload, sig, cb);
 };
 
 Network.prototype.connectTo = function(copayerId) {
