@@ -31,9 +31,10 @@ describe('Wallet model', function() {
     (function(){new Wallet(config)}).should.throw();
   });
 
-  var createW = function () {
+  var createW = function (netKey) {
     var c = JSON.parse(JSON.stringify(config));
-
+    
+    if (netKey) c.netKey = netKey;
     c.privateKey = new copay.PrivateKey({ networkName: c.networkName });
 
     c.publicKeyRing = new copay.PublicKeyRing({
@@ -66,6 +67,9 @@ describe('Wallet model', function() {
     should.exist(w.publicKeyRing);
     should.exist(w.privateKey);
     should.exist(w.txProposals);
+    should.exist(w.netKey);
+    var b = new Buffer(w.netKey,'base64');
+    b.toString('hex').length.should.equal(16);
   });
 
   it('should provide some basic features', function () {
@@ -88,7 +92,8 @@ describe('Wallet model', function() {
   ];
 
   var createW2 = function (privateKeys) {
-    var w = createW();
+    var netKey = 'T0FbU2JLby0=';
+    var w = createW(netKey);
     should.exist(w);
 
     var pkr =  w.publicKeyRing;
@@ -188,4 +193,21 @@ describe('Wallet model', function() {
     should.exist(w2.privateKey.toObj);
   });
 
+  it('#getSecret decodeSecret', function () {
+    var w = createW2();
+    var id = w.getMyCopayerId();
+    var nk = w.netKey;
+
+    var sb= w.getSecret();
+    should.exist(sb);
+    var s = Wallet.decodeSecret(sb);
+    s.pubKey.should.equal(id);
+    s.netKey.should.equal(nk);
+
+  });
+  it('decodeSecret check', function () {
+    (function(){Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');}).should.not.throw();
+    (function(){Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');}).should.throw();
+    (function(){Wallet.decodeSecret('12345');}).should.throw();
+  });
 });

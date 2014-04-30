@@ -19,24 +19,26 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     $scope.join = function(secret) {
-      if (!secret || secret.length !==66 || !secret.match(/^[0-9a-f]*$/) ) {
-        $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
-        return;
-      }
       $scope.loading = true;
 
-      walletFactory.network.on('joinError', function() {
-        controllerUtils.onErrorDigest($scope); 
+      walletFactory.network.on('badSecret', function() {
       });
 
-      walletFactory.joinCreateSession(secret, function(w) {
-        if (w) {
-          controllerUtils.startNetwork(w);
+      walletFactory.joinCreateSession(secret, function(err,w) {
+        $scope.loading = false;
+console.log('[signin.js.27:err:]',err,w); //TODO
+
+        if (err || !w) {
+          if (err === 'joinError') 
+            $rootScope.flashMessage = { message: 'Can not find peer'};
+          else if (err === 'badSecret')  
+            $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
+          else 
+            $rootScope.flashMessage = { message: 'Unknown error', type: 'error'};
+            controllerUtils.onErrorDigest();
         }
-        else {
-          $scope.loading = false;
-          controllerUtils.onErrorDigest();
-        }
+        else
+            controllerUtils.startNetwork(w);
       });
     };
   });

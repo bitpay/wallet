@@ -149,27 +149,35 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
+WalletFactory.prototype.joinCreateSession = function(secret, cb) {
   var self = this;
+
+  var s;
+  try {
+    s=Wallet.decodeSecret(secret);
+  } catch (e) {
+    return cb('badSecret');
+  }
 
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
+    netKey: s.netKey,
   };
   self.network.cleanUp();
   self.network.start(opts, function() {
-    self.network.connectTo(copayerId);
+    self.network.connectTo(s.pubKey);
     self.network.on('onlyYou', function(sender, data) {
-      return cb();
+      return cb('joinError');
     });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
         var w = self.open(data.walletId, data.opts);
-        w.firstCopayerId = copayerId;
-        return cb(w);
+        w.firstCopayerId = s.pubKey;
+        return cb(null, w);
       }
     });
   });

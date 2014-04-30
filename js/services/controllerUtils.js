@@ -29,11 +29,6 @@ angular.module('copay.controllerUtils')
 
     root.onError = function(scope) {
       if (scope) scope.loading = false;
-      $rootScope.flashMessage = {
-        type: 'error',
-        message: 'Could not connect to peer: ' +
-          scope
-      };
       root.logout();
     }
 
@@ -93,6 +88,7 @@ angular.module('copay.controllerUtils')
 
     root.setSocketHandlers = function() {
       Socket.removeAllListeners();
+      if (!$rootScope.wallet) return;
 
       var addrs = $rootScope.wallet.getAddressesStr();
       for (var i = 0; i < addrs.length; i++) {

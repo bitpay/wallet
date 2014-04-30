@@ -7,7 +7,7 @@ var Video = function() {
 
   this.mediaConnections = {};
   this.localStream = null;
-  this.onlineSound = new Audio('./sound/online.wav');
+  this.onlineSound = new Audio('sound/online.wav');
 };
 
 Video.prototype.setOwnPeer = function(peer, wallet, cb) {
@@ -72,11 +72,13 @@ Video.prototype._addCall = function(mediaConnection, cb) {
 }
 
 Video.prototype.close = function() {
-  this.localStream.stop();
-  this.localStream.mozSrcObject = null;
-  this.localStream.src = "";
-  this.localStream.src = null;
-  this.localStream = null;
+  if (this.localStream){
+    this.localStream.stop();
+    this.localStream.mozSrcObject = null;
+    this.localStream.src = "";
+    this.localStream.src = null;
+    this.localStream = null;
+  }
   for (var i = 0; this.mediaConnections.length; i++) {
     this.mediaConnections[i].close();
   }
