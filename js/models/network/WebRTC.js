@@ -388,12 +388,12 @@ Network.prototype._decrypt = function(encStr) {
   return pt;
 };
 
-Network.prototype._sendToOne = function(copayerId, payloadStr, sig, cb) {
+Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
-      dataConn.send(this._encrypt(payloadStr));
+      dataConn.send(payload);
     }
     else {
       console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
@@ -411,17 +411,18 @@ Network.prototype.send = function(copayerIds, payload, cb) {
 
   var sig;
   var payloadStr = JSON.stringify(payload);
+  var encPayload = this._encrypt(payloadStr);
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, payloadStr, sig, function () {
+      self._sendToOne(copayerId, encPayload, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
   else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, payloadStr, sig, cb);
+    self._sendToOne(copayerIds, encPayload, sig, cb);
 };
 
 Network.prototype.connectTo = function(copayerId) {
