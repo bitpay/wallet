@@ -211,36 +211,44 @@
         </div>
         <div ng-show="!loading">
           <div class="row">
-            <div class="large-6 large-centered columns">
-              <h3>Create new multisig wallet</h3>
-              <hr>
+            <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
+            <div class="large-6 columns line-dashed-v">
               <h6>Select total number of copayers</h6>
               <select ng-model="totalCopayers" 
                 ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
               </select>
             </div>
-          </div>
-          <div class="row">
-            <div class="large-6 large-centered columns m30v">
+            <div class="large-6 columns">
               <h6>Select required number of signatures</h6>
               <select ng-model="requiredCopayers" 
                 ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
               </select>
             </div>
-            <div class="large-6 large-centered columns m30v">
-              <h6>Wallet name (optional)</h6>
-                <input ng-model="walletName" placeholder="My multisig wallet" class="size-24" style="width:100%">
             </div>
- 
-            <div class="large-6 large-centered columns m30v">
-              <hr>
+          </div>
+          <div class="row">
+            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
+              <div class="box-setup-copayers">
+                <div class="box-setup-copayers-fix">
+                  <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" alt="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
+              <h6>Wallet name (optional)</h6>
+                <input type="text" class="form-control" ng-model="walletName" placeholder="Enter wallet name">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="large-12 columns line-dashed">
               <button class="button primary radius right" type="button"
                ng-click="create(totalCopayers, requiredCopayers, walletName)">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
-              <div class="left">
-                <a href="#signin">Go back</a>
-              </div>
+              <a class="button secondary radius" href="#signin">Go back</a>
             </div>
           </div>
         </div>
