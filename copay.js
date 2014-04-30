@@ -15,7 +15,7 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js
 var WalletFactory = require('soop').load('./js/models/core/WalletFactory',{
   Network: WebRTC,
   Blockchain: Insight,
-  Storage: StorageLocalPlain,
+  Storage: StorageLocalEncrypted,
 });
 module.exports.WalletFactory = WalletFactory;
 
