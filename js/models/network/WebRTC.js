@@ -51,7 +51,6 @@ Network.prototype.cleanUp = function() {
   this.authenticatedPeers=[];
   this.copayerForPeer={};
   this.connections={};
-  this.keyCache={};
   if (this.peer) {
     console.log('## DESTROYING PEER INSTANCE'); //TODO
     this.peer.disconnect();
