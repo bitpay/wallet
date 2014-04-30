@@ -311,7 +311,7 @@
                         <i class="fi-check size-12 icon-status icon-active-check"></i>
                       </a>
                       <a ng-if="action == 'rejected'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Rejected at {{ts | date:'medium'}}">
-                        <i class="fi-check size-12 icon-status icon-active-x"></i>
+                        <i class="fi-x size-12 icon-status icon-active-x"></i>
                       </a>
                     </span>
                   </div>
@@ -335,9 +335,9 @@
                     </button>
                   </span>
                 </div>
-
+    
                 <div class="large-8 columns text-right">
-                  <span ng-show="tx.finallyRejected">
+                  <span ng-show="tx.finallyRejected" class="text-warning">
                     Transaction finally rejected
                   </span>
                   <p class="small" ng-show="!tx.missingSignatures && tx.sentTs">
@@ -362,8 +362,8 @@
           <div class="large-12 columns" ng-init="getTransactions()" ng-show="blockchain_txs[0].txid">
             <h3>Last transactions</h3>
             <div class="btransactions">
-              <div class="panel" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
-                <div class="txheader">
+              <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
+                <div class="m15">
                   <div class="row">
                     <div class="large-8 columns">
                       ID: {{btx.txid}}
@@ -373,11 +373,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="tx-copayers">
                   <div class="large-5 columns">
                     <div ng-repeat="vin in btx.vin">
-                      {{vin.addr}} 
-                      <small>{{vin.value}}</small>
+                      <p class="left text-gray size-12"> {{vin.addr}} </p>
+                      <small class="right">{{vin.value}}</small>
                     </div>
                   </div>
                   <div class="large-1 columns text-center">
@@ -388,7 +388,7 @@
                       <div class="row">
                         <div class="large-10 columns">
                           <div ng-repeat="addr in vout.scriptPubKey.addresses">
-                            {{addr}}
+                            <p class="text-gray size-12"> {{addr}} </p>
                           </div>
                         </div>
                         <div class="large-2 columns">
@@ -398,7 +398,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="txbottom">
+                <div class="m15 size-12 text-gray">
                   <div class="row">
                     <div class="large-4 columns">Fees: {{btx.fees}}</div>
                     <div class="large-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
