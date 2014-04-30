@@ -43,6 +43,8 @@ var config = {
   },
   verbose: 1,
   themes: ['default']
+  iterations: 1000,
+  storageSalt: 'mjuBtGybi/4=', // choose your own salt (base64)
 };
 
 var log = function () {
