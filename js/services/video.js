@@ -7,7 +7,7 @@ var Video = function() {
 
   this.mediaConnections = {};
   this.localStream = null;
-  this.onlineSound = new Audio('../../sound/online.wav');
+  this.onlineSound = new Audio('./sound/online.wav');
 };
 
 Video.prototype.setOwnPeer = function(peer, wallet, cb) {

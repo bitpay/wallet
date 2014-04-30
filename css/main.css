@@ -13,10 +13,12 @@ html, body {height: 100%;}
 
 #wrap {min-height: 100%;}
 
-#main {overflow:auto;
+#main {
+  overflow:auto;
 	padding-bottom: 91px;}  /* must be same height as the footer */
 
-#footer {position: relative;
+#footer {
+  position: relative;
 	margin-top: -91px; /* negative value of footer height */
 	height: 91px;
 	clear:both;
@@ -27,6 +29,7 @@ html, body {height: 100%;}
   display: block;
   width: 130px;
   height: 51px;
+  margin: 0 auto;
 }
 
 @media (max-width: 640px) {
@@ -189,6 +192,13 @@ span.panel-res {
   margin: 0.5rem 0 1rem;
 }
 
+.line-dashed {
+  border-top: 2px dashed #ccc;
+  margin: 3rem 0;
+  padding: 1rem 0;
+}
+
+
 small.is-valid {
   font-weight: bold;
 }
@@ -330,5 +340,22 @@ hr { margin: 2.25rem 0;}
 .box-copayers .icon-active-x {
   color: #fff;
   background: #C0392B;
+}
+
+.box-signin {
+  padding: 20px 40px;
+  border: 1px solid #eee;
+  background-color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.box-signin h3 {
+  margin-bottom: 20px;
+}
+
+.box-signin .button {
+  margin: 20px 0;
+  width: 200px;
 }
 
