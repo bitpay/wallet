@@ -17,15 +17,14 @@ angular.module('copay.signin').controller('SigninController',
       controllerUtils.startNetwork(w);
     };
 
-    $scope.join = function(secret) {
+    $scope.join = function(secret, nickname ) {
       $scope.loading = true;
 
       walletFactory.network.on('badSecret', function() {
       });
 
-      walletFactory.joinCreateSession(secret, function(err,w) {
+      walletFactory.joinCreateSession(secret, nickname, function(err,w) {
         $scope.loading = false;
-console.log('[signin.js.27:err:]',err,w); //TODO
 
         if (err || !w) {
           if (err === 'joinError') 

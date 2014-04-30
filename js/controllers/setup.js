@@ -26,13 +26,15 @@ angular.module('copay.setup').controller('SetupController',
       updateRCSelect(tc);
     });
 
-    $scope.create = function(totalCopayers, requiredCopayers, walletName) {
+    $scope.create = function(totalCopayers, requiredCopayers, walletName, myNickname) {
       $scope.loading = true;
       var opts = {
         requiredCopayers: requiredCopayers,
         totalCopayers: totalCopayers,
         name: walletName, 
+        nickname: myNickname,
       };
+console.log('[setup.js.31:opts:]',opts); //TODO
       var w = walletFactory.create(opts);
       controllerUtils.startNetwork(w);
     };
