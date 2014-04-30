@@ -143,7 +143,6 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
   return newEpk;
 };
 
-
 PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   this._checkKeys();
 
@@ -159,6 +158,7 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
     this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
   } else {
     pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')}); 
+    //console.log('public keys cache HIT');
   }
 
   return pubKeys;
@@ -183,21 +183,12 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
 
 // TODO this could be cached
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
-  this._checkIndexRange(index, isChange);
   var script  = this.getRedeemScript(index,isChange);
   return Address.fromScript(script, this.network.name);
 };
 
 // TODO this could be cached
-PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
-  this._checkIndexRange(index, isChange);
-  var script  = this.getRedeemScript(index,isChange);
-  map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
-};
-
-// TODO this could be cached
 PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
-  this._checkIndexRange(index, isChange);
   var addr  = this.getAddress(index,isChange);
   return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
 };
@@ -218,19 +209,25 @@ PublicKeyRing.prototype.generateAddress = function(isChange) {
 
 };
 
-PublicKeyRing.prototype.getAddresses = function(onlyMain) {
+PublicKeyRing.prototype.getAddresses = function(excludeChange) {
   var ret = [];
 
   for (var i=0; i<this.addressIndex; i++) {
     ret.unshift(this.getAddress(i,false));
   }
 
-  if (!onlyMain) {
+  if (!excludeChange) {
     for (var i=0; i<this.changeAddressIndex; i++) {
       ret.unshift(this.getAddress(i,true));
     }
   }
   return ret;
+};
+
+// TODO this could be cached
+PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
+  var script  = this.getRedeemScript(index,isChange);
+  map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
 };
 
 PublicKeyRing.prototype.getRedeemScriptMap = function () {

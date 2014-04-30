@@ -401,16 +401,14 @@ Wallet.prototype.addSeenToTxProposals = function() {
   return ret;
 };
 
-Wallet.prototype.getAddresses = function(onlyMain) {
-  return this.publicKeyRing.getAddresses(onlyMain);
+Wallet.prototype.getAddresses = function(excludeChange) {
+  return this.publicKeyRing.getAddresses(excludeChange);
 };
 
-Wallet.prototype.getAddressesStr = function(onlyMain) {
-  var ret = [];
-  this.publicKeyRing.getAddresses(onlyMain).forEach(function(a) {
-    ret.push(a.toString());
+Wallet.prototype.getAddressesStr = function(excludeChange) {
+  return this.getAddresses(excludeChange).map(function(a) {
+    return a.toString();
   });
-  return ret;
 };
 
 Wallet.prototype.addressIsOwn = function(addrStr) {
@@ -446,13 +444,17 @@ Wallet.prototype.getBalance = function(safe, cb) {
     for (var i = 0; i < utxos.length; i++) {
       var u = utxos[i];
       var amt = u.amount * COIN;
-      balance = balance + amt;
+      balance += amt;
       balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
     }
+
+    // we multiply and divide by COIN to avoid rounding errors when adding
     for (var a in balanceByAddr) {
       balanceByAddr[a] = balanceByAddr[a] / COIN;
     }
-    return cb(balance / COIN, balanceByAddr, isMain);
+    balance = balance / COIN;
+
+    return cb(balance, balanceByAddr, isMain);
   });
 };
 

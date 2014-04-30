@@ -18,7 +18,6 @@ angular.module('copay.controllerUtils')
     };
 
     root.logout = function() {
-      console.log('### DELETING WALLET'); //TODO
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
       $rootScope.totalBalance = 0;
@@ -56,7 +55,6 @@ angular.module('copay.controllerUtils')
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $location.path('addresses');
         $rootScope.wallet = w;
-        root.updateBalance();
       });
       w.on('refresh', function() {
         root.updateBalance();
@@ -78,11 +76,13 @@ angular.module('copay.controllerUtils')
       w.getBalance(false, function(balance, balanceByAddr) {
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
-        console.log('New balance:', balance);
-        w.getBalance(true, function(balance) {
-          $rootScope.availableBalance = balance;
-          $rootScope.$digest();
-        });
+        $rootScope.$digest();
+        console.log('New total balance:', balance);
+      });
+      w.getBalance(true, function(balance) {
+        $rootScope.availableBalance = balance;
+        $rootScope.$digest();
+        console.log('New available balance:', balance);
       });
     };
 
