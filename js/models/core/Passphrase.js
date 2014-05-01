@@ -2,7 +2,7 @@
 
 function Passphrase(config) {
  config = config || {};
- this.salt = config.storageSalt;
+ this.salt = config.storageSalt || 'mjuBtGybi/4=';
  this.iterations = config.iterations || 1000;
 };
 

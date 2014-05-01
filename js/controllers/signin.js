@@ -31,22 +31,19 @@ angular.module('copay.signin').controller('SigninController',
       walletFactory.network.on('badSecret', function() {
       });
 
-      walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, function(err,w) {
+      var passphrase = Passphrase.getBase64($scope.joinPassword);
+      walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, function(err,w) {
         $scope.loading = false;
 
-        if (err || !w || !$scope.joinPassword) {
+        if (err || !w) {
           if (err === 'joinError') 
             $rootScope.flashMessage = { message: 'Can not find peer'};
           else if (err === 'badSecret')  
             $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
-          else if (!$scope.joinPassword)
-            $rootScope.flashMessage = { message: 'Enter your wallet password', type: 'error' };
           else 
             $rootScope.flashMessage = { message: 'Unknown error', type: 'error'};
             controllerUtils.onErrorDigest();
         } else {
-            var passphrase = Passphrase.getBase64($scope.joinPassword);
-            w.storage._setPassphrase(passphrase);
             controllerUtils.startNetwork(w);
         }
       });
