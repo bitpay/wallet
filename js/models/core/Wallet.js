@@ -407,12 +407,12 @@ Wallet.prototype.addSeenToTxProposals = function() {
 };
 
 // TODO: remove this method and use getAddressesInfo everywhere
-Wallet.prototype.getAddresses = function(excludeChange) {
-  return this.publicKeyRing.getAddresses(excludeChange);
+Wallet.prototype.getAddresses = function(opts) {
+  return this.publicKeyRing.getAddresses(opts);
 };
 
-Wallet.prototype.getAddressesStr = function(excludeChange) {
-  return this.getAddresses(excludeChange).map(function(a) {
+Wallet.prototype.getAddressesStr = function(opts) {
+  return this.getAddresses(opts).map(function(a) {
     return a.toString();
   });
 };
@@ -422,7 +422,7 @@ Wallet.prototype.getAddressesInfo = function(excludeChange) {
 };
 
 Wallet.prototype.addressIsOwn = function(addrStr, excludeChange) {
-  var addrList = this.getAddressesStr(excludeChange);
+  var addrList = this.getAddressesStr({excludeMain:true});
   var l = addrList.length;
   var ret = false;
 

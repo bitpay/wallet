@@ -218,15 +218,17 @@ PublicKeyRing.prototype.generateAddress = function(isChange) {
   return ret;
 };
 
-PublicKeyRing.prototype.getAddresses = function(excludeChange) {
-  return this.getAddressesInfo(excludeChange).map(function(info) {
+PublicKeyRing.prototype.getAddresses = function(opts) {
+  return this.getAddressesInfo(opts).map(function(info) {
     return info.address;
   });
 };
 
-PublicKeyRing.prototype.getAddressesInfo = function(excludeChange) {
+PublicKeyRing.prototype.getAddressesInfo = function(opts) {
+  opts = opts || {};
+
   var ret = [];
-  if (!excludeChange) {
+  if (!opts.excludeChange) {
     for (var i=0; i<this.changeAddressIndex; i++) {
       ret.unshift({
         address: this.getAddress(i,true),
@@ -235,11 +237,13 @@ PublicKeyRing.prototype.getAddressesInfo = function(excludeChange) {
     }
   }
 
-  for (var i=0; i<this.addressIndex; i++) {
-    ret.unshift({
-      address: this.getAddress(i,false),
-      isChange: false
-    });
+  if (!opts.excludeMain) {
+    for (var i=0; i<this.addressIndex; i++) {
+      ret.unshift({
+        address: this.getAddress(i,false),
+        isChange: false
+      });
+    }
   }
 
   return ret;
