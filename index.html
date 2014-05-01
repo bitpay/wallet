@@ -139,58 +139,47 @@
           Looking for peers...
         </div>
         <div ng-show="!loading">
-          <div ng-show="!wallets.length">
-            <div class="row">
-              <div class="large-6 columns">
-                <h3>Create a New Wallet</h3>
-              </div>
-              <div class="large-3 columns">
-                <button class="button secondary expand radius" ng-click="create()" ng-disabled="loading" loading="Creating">Create</button>
+          
+          <div class="row">
+            <div class="large-6 columns">
+              <div class="box-signin">
+              <h3>Join a Wallet in Creation</h3>
+              <input type="text" class="form-control" placeholder="Paste wallet secret here"
+               ng-model="connectionId" required autofocus>
+              <button class="button primary expand radius"
+                ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
-            <hr>
-          </div>
-          <div ng-show="wallets.length">
-            <div class="row">
-              <div class="large-6 columns">
+            <div class="large-6 columns">
+              <div class="box-signin">
+              <div ng-show="wallets.length">
                 <h3>Open Wallet</h3>
                 <select class="form-control" ng-model="selectedWalletId"
-                   ng-options="w.id as w.show for w in wallets">
+                  ng-options="w.id as w.show for w in wallets">
                 </select>
-              </div>
-              <div class="large-3 columns">
                 <button class="button secondary expand radius" type="button"
-                   ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
+                  ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
+              </div>
+              <div ng-show="!wallets.length">
+                <h3>Create a new wallet</h3>
+                <input type="text" class="form-control" ng-model="walletName" placeholder="Wallet name (optional)">
+                <button class="button secondary expand radius" ng-click="create(walletName)" ng-disabled="loading" loading="Creating">Create</button> 
+              </div>
               </div>
             </div>
-            <hr>
-          </div>
-          <div ng-show="true">
-            <div class="row">
-              <div class="large-6 columns">
-                <h3>Join a Wallet in Creation</h3>
-              <input type="text" class="form-control" placeholder="Paste wallet secret here"
-                 ng-model="connectionId" required autofocus>
-              </div>
-              <div class="large-3 columns">
-                <button class="button primary expand radius"
-                  ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
-              </div>
-            </div>
-            <hr>
           </div>
 
           <div class="row">
-            <div class="large-12 columns">
-              <div ng-show="wallets.length">
-                <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a>
-              </div>
-              <a class="right" ng-href="#import">Import from file</a>
+            <div class="large-12 columns text-center line-dashed">
+              <span ng-show="wallets.length">
+                <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a> &middot;
+              </span>
+              <a ng-href="#import">Import from file</a>
             </div>
           </div>
           
 
-        </div>
+        </div> <!-- End !loading -->
       </div>
     </script>
  
