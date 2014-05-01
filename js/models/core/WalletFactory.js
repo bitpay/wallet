@@ -68,13 +68,12 @@ WalletFactory.prototype.fromObj = function(obj) {
   return w;
 };
 
-WalletFactory.prototype.read = function(walletId, passphrase) {
+WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
     return false;
 
   var obj = {};
   var s = this.storage;
-  s._setPassphrase(passphrase);
 
   obj.id = walletId;
   obj.opts = s.get(walletId, 'opts');
@@ -128,12 +127,15 @@ WalletFactory.prototype.create = function(opts) {
 };
 
 WalletFactory.prototype.open = function(walletId, opts) {
-  this.log('Opening walletId:' + walletId);
   opts = opts || {};
   opts.id = walletId;
   opts.verbose = this.verbose;
-  var w = this.read(walletId, opts.passphrase) || this.create(opts);
+
+  this.storage._setPassphrase(opts.passphrase);
+
+  var w = this.read(walletId) || this.create(opts);
   w.store();
+
   return w;
 };
 
