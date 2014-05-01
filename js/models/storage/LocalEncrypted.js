@@ -47,9 +47,11 @@ Storage.prototype._read = function(k) {
   var ret;
   try {
     ret = localStorage.getItem(k);
-    ret = this._decrypt(ret);
-    ret = ret.toString(CryptoJS.enc.Utf8);
-    ret = JSON.parse(ret);
+    if (ret){
+      ret = this._decrypt(ret);
+      ret = ret.toString(CryptoJS.enc.Utf8);
+      ret = JSON.parse(ret);
+    }
   } catch (e) {
     console.log('Error while decrypting: '+e);
     throw e;

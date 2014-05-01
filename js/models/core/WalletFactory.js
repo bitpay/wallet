@@ -153,7 +153,7 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(secret, nickname, cb) {
+WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
   var self = this;
 
   var s;
@@ -162,7 +162,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, cb) {
   } catch (e) {
     return cb('badSecret');
   }
-
+  
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
@@ -180,6 +180,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, cb) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
         data.opts.nickname =  nickname;
+        data.opts.passphrase = passphrase;
         var w = self.open(data.walletId, data.opts);
         w.firstCopayerId = s.pubKey;
         return cb(null, w);
