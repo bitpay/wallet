@@ -106,6 +106,11 @@ Network.prototype.connectedCopayers = function() {
 };
 
 Network.prototype._deletePeer = function(peerId) {
+  console.log('### Deleting connection from peer:', peerId);
+
+  this._setPeerAuthenticated(peerId, 0);
+  delete this.copayerForPeer[peerId];
+
   if (this.connections[peerId]) {
     this.connections[peerId].close();
   }
@@ -118,12 +123,20 @@ Network.prototype._onClose = function(peerId) {
   this._notifyNetworkChange();
 };
 
+// TODO RM THIS! (connect from pub key ring)
 Network.prototype._connectToCopayers = function(copayerIds) {
   var self = this;
   var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
+
   arrayDiff.forEach(function(copayerId) {
-    console.log('### CONNECTING TO:', copayerId);
-    self.connectTo(copayerId);
+    if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
+      console.log('### IGNORING STRANGE COPAYER:', copayerId);
+      this._deletePeer(this.peerFromCopayer(copayerId));
+    }
+    else {
+      console.log('### CONNECTING TO:', copayerId);
+      self.connectTo(copayerId);
+    }
   });
 };
 
@@ -174,18 +187,18 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  if(payload.type === 'hello' ) {
-    if (!this.authenticatedPeers[peerId]) {
-      var payloadStr = JSON.stringify(payload);
-      if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-        console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
-                    this.allowedCopayerIds, payload.copayerId);
-        this._deletePeer(peerId);
-        return;
-      }
+  if(payload.type === 'hello') {
+    var payloadStr = JSON.stringify(payload);
+
+    if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+      console.log('#### Peer sent HELLO but it is not on the allowedCopayerIds. Closing connection', 
+                  this.allowedCopayerIds, payload.copayerId);
+      this._deletePeer(peerId);
+      return;
     }
+
     console.log('#### Peer sent hello. Setting it up.'); //TODO
-    this._setPeerAuthenticated(peerId);
+    this._setPeerAuthenticated(peerId, 1);
     this._addCopayer(payload.copayerId, isInbound);
     this._notifyNetworkChange( isInbound ? payload.copayerId : null);
     this.emit('open');
@@ -194,7 +207,6 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
 
   //copayerForPeer is populated also in 'copayers' message, so we need authenticatedPeer
   if (isInbound && (!this.copayerForPeer[peerId] || !this.authenticatedPeers[peerId])) {
-    console.log('### Closing connection from unknown/unauthenticated peer: ', peerId);
     this._deletePeer(peerId);
     return;
   }
@@ -203,6 +215,7 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
   var self=this;
   switch(payload.type) {
     case 'copayers':
+//TODO is this really necesarry??? => NO connect from pubkeyring.
       this._addCopayer(this.copayerForPeer[peerId], false);
       this._connectToCopayers(payload.copayers);
       this._notifyNetworkChange();
@@ -230,6 +243,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   var self = this;
 
   dataConn.on('open', function() {
+    self._setPeerAuthenticated(dataConn.peer, 0);
     if (!Network._inArray(dataConn.peer, self.connectedPeers)
         && !self.connections[dataConn.peer]) {
 
@@ -296,6 +310,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
         dataConn.close();
       });
     } else {
+      self._setPeerAuthenticated(dataConn.peer, 0);
       self._setupConnectionHandlers(dataConn, true);
     }
   });
@@ -315,8 +330,8 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
 };
 
 
-Network.prototype._setPeerAuthenticated = function(peerId) {
-  this.authenticatedPeers[peerId] = 1;
+Network.prototype._setPeerAuthenticated = function(peerId, isAuthenticated) {
+  this.authenticatedPeers[peerId] = isAuthenticated;
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
