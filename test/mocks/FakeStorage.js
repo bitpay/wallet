@@ -3,6 +3,10 @@ var FakeStorage = function(){
   this.storage = {};
 }; 
 
+FakeStorage.prototype._setPassphrase = function (password) {
+  this.storage.passphrase = password;
+};
+
 FakeStorage.prototype.setGlobal = function (id, payload) {
   this.storage[id] = payload;
 };

@@ -32,6 +32,7 @@ describe('WalletFactory model', function() {
       port: 80
     },
     networkName: 'testnet',
+    passphrase: 'test',
   };
 
   it('should create the factory', function() {
