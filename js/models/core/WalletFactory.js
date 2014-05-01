@@ -104,7 +104,7 @@ WalletFactory.prototype.create = function(opts) {
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString());
+  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString(), opts.nickname);
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
@@ -149,7 +149,7 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(secret, cb) {
+WalletFactory.prototype.joinCreateSession = function(secret, nickname, cb) {
   var self = this;
 
   var s;
@@ -175,6 +175,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, cb) {
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
+        data.opts.nickname =  nickname;
         var w = self.open(data.walletId, data.opts);
         w.firstCopayerId = s.pubKey;
         return cb(null, w);

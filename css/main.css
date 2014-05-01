@@ -19,8 +19,8 @@ html, body {height: 100%;}
 
 #footer {
   position: relative;
-	margin-top: -91px; /* negative value of footer height */
-	height: 91px;
+	margin-top: -96px; /* negative value of footer height */
+	height: 96px;
 	clear:both;
   padding: 5px 2rem;
 }

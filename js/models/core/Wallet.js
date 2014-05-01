@@ -33,8 +33,8 @@ function Wallet(opts) {
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
-
   this.network.maxPeers = this.totalCopayers;
+  this.registeredPeerIds = [];
 }
 
 Wallet.parent = EventEmitter;
@@ -196,7 +196,6 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
-    var registered = self.getRegisteredPeerIds();
     for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
       if (otherId !== myId) {
@@ -216,13 +215,19 @@ Wallet.prototype.getOnlinePeerIDs = function() {
 };
 
 Wallet.prototype.getRegisteredPeerIds = function() {
-  var ret = [];
-  for (var i = 0; i < this.publicKeyRing.registeredCopayers(); i++) {
-    var cid = this.getCopayerId(i)
-    var pid = this.network.peerFromCopayer(cid);
-    ret.push(pid);
+  var l = this.publicKeyRing.registeredCopayers();
+  if (this.registeredPeerIds.length !== l) {
+    this.registeredPeerIds = [];
+    for (var i = 0; i < l; i++) {
+      var cid = this.getCopayerId(i);
+      var pid = this.network.peerFromCopayer(cid);
+      this.registeredPeerIds.push({
+        peerId: pid,
+        nick: this.publicKeyRing.nicknameForCopayer(cid)
+      });
+    }
   }
-  return ret;
+  return this.registeredPeerIds;
 };
 
 Wallet.prototype.store = function(isSync) {
@@ -416,8 +421,8 @@ Wallet.prototype.getAddressesInfo = function(excludeChange) {
   return this.publicKeyRing.getAddressesInfo(excludeChange);
 };
 
-Wallet.prototype.addressIsOwn = function(addrStr) {
-  var addrList = this.getAddressesStr();
+Wallet.prototype.addressIsOwn = function(addrStr, excludeChange) {
+  var addrList = this.getAddressesStr(excludeChange);
   var l = addrList.length;
   var ret = false;
 
