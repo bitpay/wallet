@@ -68,6 +68,12 @@ WalletFactory.prototype.fromObj = function(obj) {
   return w;
 };
 
+WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
+  this.storage._setPassphrase(password);
+  var walletObj = this.storage.import(base64);
+  return this.fromObj(walletObj);
+};
+
 WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
     return false;

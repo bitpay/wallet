@@ -157,4 +157,14 @@ Storage.prototype.clearAll = function() {
   localStorage.clear();
 };
 
+Storage.prototype.export = function(obj) {
+  var encryptedObj = this._encryptObj(obj);
+  return encryptedObj;
+};
+
+Storage.prototype.import = function(base64) {
+  var decryptedObj = this._decryptObj(base64);
+  return decryptedObj;
+};
+
 module.exports = require('soop')(Storage);
