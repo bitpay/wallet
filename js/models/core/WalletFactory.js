@@ -152,11 +152,9 @@ WalletFactory.prototype.remove = function(walletId) {
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, cb) {
   var self = this;
 
-console.log('[WalletFactory.js.154]'); //TODO
   var s;
   try {
     s=Wallet.decodeSecret(secret);
-console.log('[WalletFactory.js.157]',s); //TODO
   } catch (e) {
     return cb('badSecret');
   }
