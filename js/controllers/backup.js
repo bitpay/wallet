@@ -8,7 +8,7 @@ angular.module('copay.backup').controller('BackupController',
 
     // TODO: get the real encrypted wallet.
     var _getEncryptedWallet = function() {
-      var wallet = JSON.stringify($rootScope.wallet.toObj());
+      var wallet = $rootScope.wallet.toEncryptedObj();
       return wallet;
     };
 

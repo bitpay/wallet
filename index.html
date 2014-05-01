@@ -187,7 +187,9 @@
       <div ng-controller="ImportController">
         <h3>{{title}}</h3>
         <div class="large-6 columns">
-          <input type="file" class="form-control" placeholder="Select a backup file" ng-model="backupFile" autofocus="" ng-file-select>
+          <input type="password" class="form-control" placeholder="Your wallet password" ng-model="password" autofocus>
+          <input type="file" class="form-control" placeholder="Select a backup file" ng-model="backupFile"   ng-file-select>
+          <button class="button primary expand radius" ng-click="import()">Import backup</button>
         </div>
       </div>
     </script>
