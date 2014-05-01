@@ -4,6 +4,7 @@ angular.module('copay.setup').controller('SetupController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase) {
 
     $scope.loading = false;
+    $scope.walletPassword = $rootScope.walletPassword;
 
     // ng-repeat defined number of times instead of repeating over array?
     $scope.getNumber = function(num) {
@@ -31,15 +32,16 @@ angular.module('copay.setup').controller('SetupController',
       updateRCSelect(tc);
     });
 
-    $scope.create = function(totalCopayers, requiredCopayers, walletName, myNickname) {
+    $scope.create = function() {
       $scope.loading = true;
+
       var passphrase = Passphrase.getBase64($scope.walletPassword);
 
       var opts = {
-        requiredCopayers: requiredCopayers,
-        totalCopayers: totalCopayers,
-        name: walletName, 
-        nickname: myNickname,
+        requiredCopayers: $scope.requiredCopayers,
+        totalCopayers: $scope.totalCopayers,
+        name: $scope.walletName, 
+        nickname: $scope.myNickname,
         passphrase: passphrase,
       };
       var w = walletFactory.create(opts);
