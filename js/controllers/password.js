@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('copay.password').controller('PasswordController',
-  function($scope, $rootScope, Passphrase, walletFactory, controllerUtils) {
+  function($scope, $rootScope, $location, Passphrase, walletFactory, controllerUtils) {
     $scope.title = 'Password';
     $scope.loading = false;
+
+    if (!$rootScope.openedWalletId) {
+      $location.path('signin');
+    }
 
     $scope.getPassphrase = function() {
       $scope.loading = true;
