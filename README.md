@@ -73,13 +73,48 @@ find each other, a true p2p connection is established and there is no flow of in
 server, only between the peers.
 
 webRTC uses DTLS to secure communications between the peers, and each peer use a self-signed
-certificate. On top of that, *Copay* peers authenticate theyself by 2 factors: An identity key
-and a network key. The identity key is a ECDSA public key derived from the 
+certificate.
+
+Security model
+--------------
+On top of webRTC, *Copay* peers authenticate as part of the "wallet ring"(WR)  by 2 factors: An identity 
+key and a network key. 
+
+The *identity key* is a ECDSA public key derived from their extended public 
+key using a specific BIP32 branch. This special public key is never used for Bitcoin address creation, and
+should only be know by members of the WR. 
+In *Copay* this special public key is named *copayerId*.  To register into the peerjs server, while not
+reveling its copayerId to an entity outside the WR, each peer hash the copayerId and pass a SIN 
+to the server. peer discovery is then entirely done using peer's SINs. Note that all copayers in the WR
+know the complete copayerIDs of the peers.
+
+The *network key* is a random key generated when the wallet is created an shared in the initial 
+'secret string' that peers distribute while the wallet is been created. The network key is then stored 
+by each peer on the wallet configuration. The network key is used for establishing a CCM/AES 
+authenticated encrypted channel between all peers, on top of webRTC. The main reason of implementing
+the *network key* is to prevent man-in-the-middle attacks from a compromised peerjs server.
+
+Secret String
+-------------
+When a wallet is created, a secret string is provided to invite new peers to the new wallet. This string
+has the following format:
+
+  - CopayerId of the peer generating the string. This is a 33 bytes ECDSA public key, as explained above.
+This allow the receiving peer to locate the generating peer.
+  - Network Key. A 8 byte string to encrypt and sign the peers communication.
+
+The string is encoded using bitcoin's Base8Check encoding, to prevent transmision errors.
+
+Peer authentication
+-------------------
+
+It is important to note that all data in the wallet is shared between *all peers*, with the exception of each
+peer's private key, with are never transmited throught the network. There is not private messages or, in general,
+information that belongs to a subset of the WR. 
 
 
 
-wallet is created, the pubkey of the creator and a random 'network key' is created. This two parameters
-need to be securely shared between the peers, when setting up the wallet. 
+
 
 
 
