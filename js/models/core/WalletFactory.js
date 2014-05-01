@@ -86,7 +86,6 @@ WalletFactory.prototype.read = function(walletId) {
 };
 
 WalletFactory.prototype.create = function(opts) {
-  var s = WalletFactory.storage;
   opts    = opts || {};
   this.log('### CREATING NEW WALLET.' + 
            (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + 
@@ -112,6 +111,8 @@ WalletFactory.prototype.create = function(opts) {
   });
   this.log('\t### TxProposals Initialized');
 
+  this.storage._setPassphrase(opts.passphrase);
+
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
@@ -126,12 +127,15 @@ WalletFactory.prototype.create = function(opts) {
 };
 
 WalletFactory.prototype.open = function(walletId, opts) {
-  this.log('Opening walletId:' + walletId);
   opts = opts || {};
   opts.id = walletId;
   opts.verbose = this.verbose;
+
+  this.storage._setPassphrase(opts.passphrase);
+
   var w = this.read(walletId) || this.create(opts);
   w.store();
+
   return w;
 };
 

@@ -142,34 +142,31 @@
           Looking for peers...
         </div>
         <div ng-show="!loading">
-          
           <div class="row">
             <div class="large-6 columns">
               <div class="box-signin">
-              <h3>Join a Wallet in Creation</h3>
-              <input type="text" class="form-control" placeholder="Paste wallet secret here"
-               ng-model="connectionId" required autofocus>
-              <input type="text" class="form-control" placeholder="Your name (optional)"
-                 ng-model="nickname">
-              <button class="button primary expand radius"
-                ng-click="join(connectionId,nickname)" ng-disabled="loading" loading="Joining">Join</button>
+                <h3>Join a Wallet in Creation</h3>
+                <input type="text" class="form-control" placeholder="Paste wallet secret here" ng-model="connectionId" required autofocus>
+                <input type="password" class="form-control" placeholder="Your wallet password" ng-model="joinPassword">
+                <input type="text" class="form-control" placeholder="Your name (optional)" ng-model="nickname">
+                <button class="button primary expand radius" ng-click="join()" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
             <div class="large-6 columns">
               <div class="box-signin">
-              <div ng-show="wallets.length">
-                <h3>Open Wallet</h3>
-                <select class="form-control" ng-model="selectedWalletId"
-                  ng-options="w.id as w.show for w in wallets">
-                </select>
-                <button class="button secondary expand radius" type="button"
-                  ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
-              </div>
-              <div ng-show="!wallets.length">
-                <h3>Create a new wallet</h3>
-                <input type="text" class="form-control" ng-model="walletName" placeholder="Wallet name (optional)">
-                <button class="button secondary expand radius" ng-click="create(walletName)" ng-disabled="loading" loading="Creating">Create</button> 
-              </div>
+                <div ng-show="wallets.length">
+                  <h3>Open Wallet</h3>
+                  <select class="form-control" ng-model="selectedWalletId" ng-options="w.id as w.show for w in wallets">
+                  </select>
+                  <input type="password" class="form-control" placeholder="Your wallet password" ng-model="openPassword">
+                  <button class="button secondary expand radius" type="button" ng-click="open()" ng-disabled="loading" loading="Opening">Open</button>
+                </div>
+                <div ng-show="!wallets.length">
+                  <h3>Create a new wallet</h3>
+                  <input type="text" class="form-control" ng-model="walletName" placeholder="Wallet name (optional)">
+                  <input type="password" class="form-control" placeholder="Your wallet password" ng-model="createPassword">
+                  <button class="button secondary expand radius" ng-click="create()" ng-disabled="loading" loading="Creating">Create</button> 
+                </div>
               </div>
             </div>
           </div>
@@ -182,8 +179,6 @@
               <a ng-href="#import">Import from file</a>
             </div>
           </div>
-          
-
         </div> <!-- End !loading -->
       </div>
     </script>
@@ -191,7 +186,6 @@
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
         <h3>{{title}}</h3>
-
         <div class="large-6 columns">
           <input type="file" class="form-control" placeholder="Select a backup file" ng-model="backupFile" autofocus="" ng-file-select>
         </div>
@@ -206,18 +200,16 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
-            <div class="large-6 columns line-dashed-v">
-              <h6>Select total number of copayers</h6>
-              <select ng-model="totalCopayers" 
-                ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
-              </select>
-            </div>
-            <div class="large-6 columns">
-              <h6>Select required number of signatures</h6>
-              <select ng-model="requiredCopayers" 
-                ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
-              </select>
-            </div>
+              <div class="large-6 columns line-dashed-v">
+                <h6>Select total number of copayers</h6>
+                <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+                </select>
+              </div>
+              <div class="large-6 columns">
+                <h6>Select required number of signatures</h6>
+                <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+                </select>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -228,23 +220,23 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="row">
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
-              <h6>Wallet name (optional)</h6>
-                <input type="text" class="form-control" ng-model="walletName" placeholder="Enter wallet name">
+              <h6>Wallet Password</h6>
+              <input type="password" class="form-control" ng-model="walletPassword" required>
+            </div>
+            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
+              <h6>Wallet name <small>(optional)</small></h6>
+                <input type="text" class="form-control" ng-model="walletName">
             </div>
             <div class="large-6 large-centered columns m30v">
-              <h6>Your name (optional)</h6>
-                <input ng-model="myNickname" placeholder="" class="size-24" style="width:100%">
+              <h6>Your name <small>(optional)</small></h6>
+                <input type="text" class="form-control" ng-model="myNickname">
             </div>
           </div>
- 
           <div class="row">
             <div class="large-12 columns line-dashed">
               <button class="button primary radius right" type="button"
-               ng-click="create(totalCopayers, requiredCopayers, walletName, myNickname)">
+               ng-click="create()">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
               <a class="button secondary radius" href="#signin">Go back</a>
@@ -292,7 +284,7 @@
         </div> 
       </div>
     </script>
-    
+
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
       <div class="transactions" data-ng-controller="TransactionsController">
@@ -537,6 +529,8 @@
     <script src="lib/angular-foundation/mm-foundation-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>
     <script src="lib/bitcore.js"></script>
+    <script src="lib/crypto-js/rollups/sha256.js"></script>
+    <script src="lib/crypto-js/rollups/pbkdf2.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
     <script src="lib/file-saver/FileSaver.js"></script>
     <script src="lib/socket.io.js"></script>
@@ -551,6 +545,7 @@
     <script src="js/services/video.js"></script>
     <script src="js/services/walletFactory.js"></script>
     <script src="js/services/controllerUtils.js"></script>
+    <script src="js/services/passphrase.js"></script>
 
     <script src="js/controllers/header.js"></script>
     <script src="js/controllers/footer.js"></script>

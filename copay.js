@@ -3,6 +3,8 @@
 module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
 module.exports.TxProposals = require('./js/models/core/TxProposals');
 module.exports.PrivateKey = require('./js/models/core/PrivateKey');
+module.exports.Passphrase = require('./js/models/core/Passphrase');
+
 
 // components
 var WebRTC = module.exports.WebRTC = require('./js/models/network/WebRTC');
@@ -13,7 +15,7 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js
 var WalletFactory = require('soop').load('./js/models/core/WalletFactory',{
   Network: WebRTC,
   Blockchain: Insight,
-  Storage: StorageLocalPlain,
+  Storage: StorageLocalEncrypted,
 });
 module.exports.WalletFactory = WalletFactory;
 
