@@ -246,32 +246,6 @@
       </div>
     </script>
 
-    <script type="text/ng-template" id="peer.html">
-      <div class="row"  ng-if="$root.wallet.requiredCopayers > $root.wallet.network.connectedCopayers().length">
-        <div class="large-12 columns p70l">
-          <p class="text-info"> <i class="fi-alert size-28"></i> 
-          {{$root.wallet.requiredCopayers}} copayers needed for signing transactions
-        </div>
-      </div>
-      <div class="row">
-        <div class="large-4 columns"
-          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
-          <video 
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
-            class="video-small"
-            autoplay ng-show="$root.videoSrc[copayer]" 
-            ng-src="{{$root.getVideoURL(copayer)}}"
-            id="{{copayer + '-video'}}" muted="true"
-            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
-          <img ng-show="!$root.videoSrc[copayer]" 
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
-            class="video-small"
-            src="./img/satoshi.gif" 
-            title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
-        </div>
-      </div>
-    </script>
-
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
       <div class="addresses" data-ng-controller="AddressesController">
