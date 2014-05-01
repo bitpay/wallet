@@ -142,34 +142,28 @@
           Looking for peers...
         </div>
         <div ng-show="!loading">
-          
           <div class="row">
             <div class="large-6 columns">
               <div class="box-signin">
-              <h3>Join a Wallet in Creation</h3>
-              <input type="text" class="form-control" placeholder="Paste wallet secret here"
-               ng-model="connectionId" required autofocus>
-              <input type="text" class="form-control" placeholder="Your name (optional)"
-                 ng-model="nickname">
-              <button class="button primary expand radius"
-                ng-click="join(connectionId,nickname)" ng-disabled="loading" loading="Joining">Join</button>
+                <h3>Join a Wallet in Creation</h3>
+                <input type="text" class="form-control" placeholder="Paste wallet secret here" ng-model="connectionId" required autofocus>
+                <input type="text" class="form-control" placeholder="Your name (optional)" ng-model="nickname">
+                <button class="button primary expand radius" ng-click="join(connectionId,nickname)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
             <div class="large-6 columns">
               <div class="box-signin">
-              <div ng-show="wallets.length">
-                <h3>Open Wallet</h3>
-                <select class="form-control" ng-model="selectedWalletId"
-                  ng-options="w.id as w.show for w in wallets">
-                </select>
-                <button class="button secondary expand radius" type="button"
-                  ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
-              </div>
-              <div ng-show="!wallets.length">
-                <h3>Create a new wallet</h3>
-                <input type="text" class="form-control" ng-model="walletName" placeholder="Wallet name (optional)">
-                <button class="button secondary expand radius" ng-click="create(walletName)" ng-disabled="loading" loading="Creating">Create</button> 
-              </div>
+                <div ng-show="wallets.length">
+                  <h3>Open Wallet</h3>
+                  <select class="form-control" ng-model="selectedWalletId" ng-options="w.id as w.show for w in wallets">
+                  </select>
+                  <button class="button secondary expand radius" type="button" ng-click="open(selectedWalletId)" ng-disabled="loading" loading="Opening">Open</button>
+                </div>
+                <div ng-show="!wallets.length">
+                  <h3>Create a new wallet</h3>
+                  <input type="text" class="form-control" ng-model="walletName" placeholder="Wallet name (optional)">
+                  <button class="button secondary expand radius" ng-click="create(walletName)" ng-disabled="loading" loading="Creating">Create</button> 
+                </div>
               </div>
             </div>
           </div>
