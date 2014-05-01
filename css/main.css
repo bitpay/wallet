@@ -356,15 +356,15 @@ hr { margin: 2.25rem 0;}
 .box-setup-copayers:after {
 	border-color: rgba(255, 255, 255, 0);
 	border-bottom-color: #ffffff;
-	border-width: 30px;
-	margin-left: -30px;
+	border-width: 20px;
+	margin-left: -20px;
 }
 
 .box-setup-copayers:before {
 	border-color: rgba(238, 238, 238, 0);
 	border-bottom-color: #eee;
-	border-width: 33px;
-	margin-left: -33px;
+	border-width: 23px;
+	margin-left: -23px;
 }
 
 .box-setup-copayers-fix {
