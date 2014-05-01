@@ -22,7 +22,7 @@ angular.module('copay.transactions').controller('TransactionsController',
 
         tx.outs.forEach(function(o) {
           var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
-          if (!w.addressIsOwn(addr, true)) {
+          if (!w.addressIsOwn(addr, {excludeMain:true})) {
             outs.push({
               address: addr, 
               value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,

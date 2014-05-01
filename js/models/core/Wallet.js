@@ -417,12 +417,12 @@ Wallet.prototype.getAddressesStr = function(opts) {
   });
 };
 
-Wallet.prototype.getAddressesInfo = function(excludeChange) {
-  return this.publicKeyRing.getAddressesInfo(excludeChange);
+Wallet.prototype.getAddressesInfo = function(opts) {
+  return this.publicKeyRing.getAddressesInfo(opts);
 };
 
-Wallet.prototype.addressIsOwn = function(addrStr, excludeChange) {
-  var addrList = this.getAddressesStr({excludeMain:true});
+Wallet.prototype.addressIsOwn = function(addrStr, opts) {
+  var addrList = this.getAddressesStr(opts);
   var l = addrList.length;
   var ret = false;
 
