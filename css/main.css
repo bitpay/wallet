@@ -18,11 +18,21 @@ html, body {height: 100%;}
 	padding-bottom: 91px;}  /* must be same height as the footer */
 
 #footer {
-  position: relative;
+  position: fixed;
 	margin-top: -96px; /* negative value of footer height */
 	height: 96px;
 	clear:both;
   padding: 5px 2rem;
+  bottom: 0;
+  width: 100%;
+}
+
+.bottom-copay {
+  width: 80px;
+  text-align: center;
+  position: relative;
+  float: right;
+  margin-left: 15px;
 }
 
 .logo {
