@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.setup').controller('SetupController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase) {
 
     $scope.loading = false;
 
@@ -33,13 +33,15 @@ angular.module('copay.setup').controller('SetupController',
 
     $scope.create = function(totalCopayers, requiredCopayers, walletName, myNickname) {
       $scope.loading = true;
+      var passphrase = Passphrase.getBase64($scope.walletPassword);
+
       var opts = {
         requiredCopayers: requiredCopayers,
         totalCopayers: totalCopayers,
         name: walletName, 
         nickname: myNickname,
+        passphrase: passphrase,
       };
-console.log('[setup.js.31:opts:]',opts); //TODO
       var w = walletFactory.create(opts);
       controllerUtils.startNetwork(w);
     };

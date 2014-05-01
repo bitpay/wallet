@@ -12,10 +12,11 @@ angular.module('copay.signin').controller('SigninController',
       $location.path('setup');
     };
 
-    $scope.open = function(walletId, opts) {
+    $scope.open = function(walletId) {
       $scope.loading = true;
-      var w = walletFactory.open(walletId, opts);
-      controllerUtils.startNetwork(w);
+      $rootScope.openedWalletId = walletId;
+
+      $location.path('password');
     };
 
     $scope.join = function(secret, nickname ) {
