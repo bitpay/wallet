@@ -268,6 +268,11 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   return w;
 };
 
+Wallet.prototype.toEncryptedObj = function() {
+  var walletObj = this.toObj();
+  return this.storage.export(walletObj);
+};
+
 Wallet.prototype.sendTxProposals = function(recipients) {
   this.log('### SENDING txProposals TO:', recipients || 'All', this.txProposals);
 
