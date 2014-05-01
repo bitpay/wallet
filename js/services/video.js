@@ -72,7 +72,7 @@ Video.prototype._addCall = function(mediaConnection, cb) {
 }
 
 Video.prototype.close = function() {
-  if (this.localStream){
+  if (this.localStream) {
     this.localStream.stop();
     this.localStream.mozSrcObject = null;
     this.localStream.src = "";

@@ -18,11 +18,15 @@
               <span class="logo"></span>
             </div>
             <div class="large-9 medium-9 columns text-center p10t" ng-show="$root.wallet">
-              <div class="large-4 medium-4 columns line-dashed-v">
+              <div class="large-4 columns line-dashed-v">
                 <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
                   <strong><span>{{$root.getWalletDisplay()}}</span></strong>
                 </a> 
-                <a class="button radius small-icon" href="#" title="Signout" ng-click="signout()"><i class="fi-power"></i></a>
+                <a class="button radius small-icon" title="Manual Refresh"
+                  ng-disabled="$root.loading"
+                  ng-click="refresh()"><i class="fi-refresh"></i></a>
+                <a class="button radius small-icon" title="Signout" 
+                  ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
                 Balance: {{totalBalance || 0}} <i class="fi-bitcoin"></i><br>
@@ -196,36 +200,44 @@
         </div>
         <div ng-show="!loading">
           <div class="row">
-            <div class="large-6 large-centered columns">
-              <h3>Create new multisig wallet</h3>
-              <hr>
+            <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
+            <div class="large-6 columns line-dashed-v">
               <h6>Select total number of copayers</h6>
               <select ng-model="totalCopayers" 
                 ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
               </select>
             </div>
-          </div>
-          <div class="row">
-            <div class="large-6 large-centered columns m30v">
+            <div class="large-6 columns">
               <h6>Select required number of signatures</h6>
               <select ng-model="requiredCopayers" 
                 ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
               </select>
             </div>
-            <div class="large-6 large-centered columns m30v">
-              <h6>Wallet name (optional)</h6>
-                <input ng-model="walletName" placeholder="My multisig wallet" class="size-24" style="width:100%">
             </div>
- 
-            <div class="large-6 large-centered columns m30v">
-              <hr>
+          </div>
+          <div class="row">
+            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
+              <div class="box-setup-copayers">
+                <div class="box-setup-copayers-fix">
+                  <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" alt="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
+              <h6>Wallet name (optional)</h6>
+                <input type="text" class="form-control" ng-model="walletName" placeholder="Enter wallet name">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="large-12 columns line-dashed">
               <button class="button primary radius right" type="button"
                ng-click="create(totalCopayers, requiredCopayers, walletName)">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
-              <div class="left">
-                <a href="#signin">Go back</a>
-              </div>
+              <a class="button secondary radius" href="#signin">Go back</a>
             </div>
           </div>
         </div>
@@ -237,21 +249,34 @@
       <div class="addresses" data-ng-controller="AddressesController">
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="row">
-            <div class="large-9 columns" ng-if="addrs[0]">
-              <h3>Addresses (available to spend)</h3>
+            <div class="large-9 columns" ng-if="addrInfos[0]">
               <div class="large-8 columns">
-                <a class="panel db" ng-repeat="addr in addrs" ng-click="selectAddr(addr)">{{addr}}
-                <span ng-if="!isMain[addr]">(change)</span>
-                <span class="right">({{balanceByAddr[addr] || 0}} <i class="fi-bitcoin"></i>)</span></a>
+                <a class="panel db" ng-repeat="addrInfo in addrInfos"
+                  ng-click="selectAddr(addrInfo.address.toString())">
+                  <span>{{addrInfo.address.toString()}}</span>
+                  <span ng-if="addrInfo.isChange">(change)</span>
+                  <span class="right">
+                    <span ng-if="$root.loading">...</span>
+                    <span ng-if="!$root.loading">{{balanceByAddr[addrInfo.address.toString()] || 0}}</span>
+                    <i class="fi-bitcoin"></i>
+                  </span>
+                </a>
               </div>
               <div class="large-4 columns line-dashed-v text-center">
                 <qrcode size="160" data="{{selectedAddr}}"></qrcode>
-                <p class="m10t" ng-repeat="addr in addrs" ng-if="selectedAddr==addr"> <strong> {{balanceByAddr[addr]}} <i class="fi-bitcoin"></i> </strong> </p>
+                <p class="m10t">
+                  <strong>
+                    <span ng-if="$root.loading">...</span>
+                    <span ng-if="!$root.loading">{{balanceByAddr[selectedAddr] || 0}}</span>
+                    <i class="fi-bitcoin"></i>
+                  </strong>
+                </p>
               </div>
             </div>
-            <div class="columns text-center" ng-class="{'large-3' : addrs[0]}">
+            <div class="columns text-center" ng-class="{'large-3' : !!addrInfos[0]}">
               <p> Create a New <strong> Address </strong> </p>
-              <button class="secondary radius expandi new-address" ng-click="newAddr()" ng-disabled="loading" loading="Creating"> Create </button>
+              <button class="secondary radius expandi new-address" ng-click="newAddr()"
+                ng-disabled="loading" loading="Creating"> Create </button>
             </div>
           </div> 
         </div> 

@@ -1,5 +1,8 @@
 'use strict';
 
+
+var copay = require('copay');
+
 var copayApp = window.copayApp = angular.module('copay',[
   'ngRoute',
   'mm.foundation',
