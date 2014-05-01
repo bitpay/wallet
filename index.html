@@ -110,19 +110,20 @@
         </span> 
       </div>
       <div class="large-2 columns" style="float:right;"
-          ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
+          ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
         <video 
-          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
           class="video-small"
-          autoplay ng-show="$root.videoSrc[copayer]" 
-          ng-src="{{$root.getVideoURL(copayer)}}"
-          id="{{copayer + '-video'}}" muted="true"
-          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" ></video>
-        <img ng-show="!$root.videoSrc[copayer]" 
-          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(copayer) != -1) ? 'online' : 'offline'"
+          autoplay ng-show="$root.videoSrc[c.peerId]" 
+          ng-src="{{$root.getVideoURL(c.peerId)}}"
+          id="{{c.peerId + '-video'}}" muted="true"
+          title="{{c.peerId + (c.peerId == $root.wallet.network.peerId?' (You)':'')}}" ></video>
+        <img ng-show="!$root.videoSrc[c.peerId]" 
+          ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
           class="video-small"
           src="./img/satoshi.gif" 
-          title="{{copayer + (copayer == $root.wallet.network.peerId?' (You)':'')}}" />
+          title="{{c.peerId + (c.peerId == $root.wallet.network.peerId?' (You)':'')}}" />
+        <div ng-if="c.nick" class="small-8 text-center" style="position:absolute; width:115%; bottom:-10px">{{c.nick}}</div>
       </div>
     </div>
     <!--
@@ -146,8 +147,10 @@
               <h3>Join a Wallet in Creation</h3>
               <input type="text" class="form-control" placeholder="Paste wallet secret here"
                ng-model="connectionId" required autofocus>
+              <input type="text" class="form-control" placeholder="Your name (optional)"
+                 ng-model="nickname">
               <button class="button primary expand radius"
-                ng-click="join(connectionId)" ng-disabled="loading" loading="Joining">Join</button>
+                ng-click="join(connectionId,nickname)" ng-disabled="loading" loading="Joining">Join</button>
               </div>
             </div>
             <div class="large-6 columns">
@@ -224,17 +227,22 @@
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Wallet name (optional)</h6>
                 <input type="text" class="form-control" ng-model="walletName" placeholder="Enter wallet name">
             </div>
+            <div class="large-6 large-centered columns m30v">
+              <h6>Your name (optional)</h6>
+                <input ng-model="myNickname" placeholder="" class="size-24" style="width:100%">
+            </div>
           </div>
-
+ 
           <div class="row">
             <div class="large-12 columns line-dashed">
               <button class="button primary radius right" type="button"
-               ng-click="create(totalCopayers, requiredCopayers, walletName)">
+               ng-click="create(totalCopayers, requiredCopayers, walletName, myNickname)">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
               <a class="button secondary radius" href="#signin">Go back</a>
@@ -307,10 +315,10 @@
 
               <div class="tx-copayers"> 
 
-                <div class="box-copayers" ng-repeat="(peer, actions) in tx.peerActions">
+                <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
                   <figure class="left">
-                    <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{peer === $root.wallet.getMyCopayerId() ? 'You' : peer}}">
-                      <img src="./img/satoshi.gif" alt="peer" width="200">
+                    <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
+                      <img src="./img/satoshi.gif" alt="cId" width="200">
                     </a>
                   </figure>
                   <div class="box-status">
@@ -328,6 +336,10 @@
                         <i class="fi-x size-12 icon-status icon-active-x"></i>
                       </a>
                     </span>
+                  </div>
+
+                  <div class="text-center" style="margin-right:16px; color:#999; font-size:12px">
+                    {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
                   </div>
                 </div> 
               </div>

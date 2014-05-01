@@ -33,8 +33,8 @@ function Wallet(opts) {
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
-
   this.network.maxPeers = this.totalCopayers;
+  this.registeredPeerIds = [];
 }
 
 Wallet.parent = EventEmitter;
@@ -196,7 +196,6 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
-    var registered = self.getRegisteredPeerIds();
     for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
       if (otherId !== myId) {
@@ -216,13 +215,19 @@ Wallet.prototype.getOnlinePeerIDs = function() {
 };
 
 Wallet.prototype.getRegisteredPeerIds = function() {
-  var ret = [];
-  for (var i = 0; i < this.publicKeyRing.registeredCopayers(); i++) {
-    var cid = this.getCopayerId(i)
-    var pid = this.network.peerFromCopayer(cid);
-    ret.push(pid);
+  var l = this.publicKeyRing.registeredCopayers();
+  if (this.registeredPeerIds.length !== l) {
+    this.registeredPeerIds = [];
+    for (var i = 0; i < l; i++) {
+      var cid = this.getCopayerId(i);
+      var pid = this.network.peerFromCopayer(cid);
+      this.registeredPeerIds.push({
+        peerId: pid,
+        nick: this.publicKeyRing.nicknameForCopayer(cid)
+      });
+    }
   }
-  return ret;
+  return this.registeredPeerIds;
 };
 
 Wallet.prototype.store = function(isSync) {
@@ -402,22 +407,22 @@ Wallet.prototype.addSeenToTxProposals = function() {
 };
 
 // TODO: remove this method and use getAddressesInfo everywhere
-Wallet.prototype.getAddresses = function(excludeChange) {
-  return this.publicKeyRing.getAddresses(excludeChange);
+Wallet.prototype.getAddresses = function(opts) {
+  return this.publicKeyRing.getAddresses(opts);
 };
 
-Wallet.prototype.getAddressesStr = function(excludeChange) {
-  return this.getAddresses(excludeChange).map(function(a) {
+Wallet.prototype.getAddressesStr = function(opts) {
+  return this.getAddresses(opts).map(function(a) {
     return a.toString();
   });
 };
 
-Wallet.prototype.getAddressesInfo = function(excludeChange) {
-  return this.publicKeyRing.getAddressesInfo(excludeChange);
+Wallet.prototype.getAddressesInfo = function(opts) {
+  return this.publicKeyRing.getAddressesInfo(opts);
 };
 
-Wallet.prototype.addressIsOwn = function(addrStr) {
-  var addrList = this.getAddressesStr();
+Wallet.prototype.addressIsOwn = function(addrStr, opts) {
+  var addrList = this.getAddressesStr(opts);
   var l = addrList.length;
   var ret = false;
 

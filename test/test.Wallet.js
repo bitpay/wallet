@@ -144,6 +144,9 @@ describe('Wallet model', function() {
     var l = w.getAddressesStr();
     for (var i=0; i<l.length; i++)
       w.addressIsOwn(l[i]).should.equal(true);
+
+    w.addressIsOwn(l[0], {excludeMain:true}).should.equal(false);
+
     w.addressIsOwn('mmHqhvTVbxgJTnePa7cfweSRjBCy9bQQXJ').should.equal(false);
     w.addressIsOwn('mgtUfP9sTJ6vPLoBxZLPEccGpcjNVryaCX').should.equal(false);
   });
