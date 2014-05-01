@@ -21,7 +21,6 @@ var copayApp = window.copayApp = angular.module('copay',[
   'copay.directives',
   'copay.video',
   'copay.import',
-  'copay.password',
   'copay.passphrase'
 ]);
 
@@ -39,6 +38,5 @@ angular.module('copay.socket', []);
 angular.module('copay.directives', []);
 angular.module('copay.video', []);
 angular.module('copay.import', []);
-angular.module('copay.password', []);
 angular.module('copay.passphrase', []);
 

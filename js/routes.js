@@ -22,10 +22,6 @@ angular
         templateUrl: 'setup.html',
         validate: false
       })
-      .when('/password', {
-        templateUrl: 'password.html',
-        validate: false
-      })
       .when('/addresses', {
         templateUrl: 'addresses.html',
         validate: true
