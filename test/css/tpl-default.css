@@ -1,0 +1,187 @@
+/*
+ *
+ * Copay Default Template
+ *
+ */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Ubuntu Light'), local('Ubuntu-Light'), url(../font/ubuntu-light.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../font/ubuntu.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../font/ubuntu-bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url(../font/ubuntu-bold-italic.woff) format('woff');
+}
+
+* {
+  font-family: 'Ubuntu', Helvetica, sans-serif !important;
+}
+
+body {
+  background: #F5F5F5;
+}
+
+.logo {
+  background: transparent url('../img/logo-negative.svg');
+  background-size: 131px 51px;
+}
+
+.top-bar-section li:not(.has-form) a:not(.button) {
+  background: #1ABC9C;
+  color: #fff;
+}
+
+.top-bar-section li.active:not(.has-form) a:not(.button) {
+  background: #f5f5f5;
+  color: #111;
+}
+
+.top-bar-section li.active:not(.has-form) a:not(.button):hover, .top-bar-section li:not(.has-form) a:not(.button):hover {
+  background: #16A085;
+  color: white;
+}
+
+.top-bar-section ul li>a {
+  color: #111;
+}
+
+.header {
+  background: #2C3E50;
+  color: white;
+}
+
+.header h1, h5, p {
+  color: #93A9BD;
+}
+
+.header h6 {
+  color: #fff;
+}
+
+.header .line-dashed-v {
+  border-right: 1px dashed #5A6B7D;
+}
+
+.header a.button.small-icon {
+  background: white;
+  color: #2C3E50;
+}
+
+.header a.button.small-icon:hover {
+  background: #16A085;
+  color: #fff;
+}
+
+.header-content a {
+  color: #fff;
+}
+
+.panel {
+  color: #333;
+  background: #FFFFFF;
+}
+
+.transactions .panel {
+  background: #f5f5f5;
+}
+
+.transactions .panel.pending {
+  background-color: #fff; 
+}
+
+.btransactions .panel {
+  background: #fff;
+}
+
+.addresses .panel:hover {
+  background: #efefef;
+}
+
+a.box-backup {
+  color: #111;
+}
+
+.panel-sign {
+  color: #111;
+  background: #FAE448;
+}
+
+.panel-ignore {
+  color: #fff;
+  background: #111;
+}
+
+.share-wallet.panel {
+  background-color: #111;
+  color: #FBE500;
+}
+
+.alert-box.warning, .alert-box.error {
+  background-color: #C0392A;
+  border-color: #C0392A;
+  color: #fff;
+}
+
+.text-warning {
+  color:#C0392A;
+}
+
+small.is-valid {
+  color: #04B404;
+}
+
+small.has-error {
+  color: #f04124;
+}
+
+.panel.radius {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.transactions button, .transactions .button {
+  padding: 0.5rem 2rem;
+}
+.small {
+  font-size: 60%;
+  line-height: inherit;
+}
+
+button.radius, .button.radius {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+button.primary, button.secondary, button.primary:hover, button.secondary:hover {color: #fff !important;} 
+
+button.primary { background-color: #E67E22; }
+button.secondary { background-color: #1ABC9C !important; }
+button.warning { background-color: #C0392A; }
+
+button.primary:hover { background-color: #D86601;}
+button.secondary:hover { background-color: #16A085 !important;}
+button.warning:hover { background-color: #82251A; }
+
+.text-gray { color: #999 !important;}
+
+#footer {
+  background: #2C3E50;
+  color: #fff;
+}
+

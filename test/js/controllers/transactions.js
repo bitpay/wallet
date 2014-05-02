@@ -6,6 +6,9 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.title = 'Transactions';
     $scope.loading = false;
+
+
+
     var _updateTxs = function() {
       var w   =$rootScope.wallet;
       if (!w) return;
@@ -19,7 +22,7 @@ angular.module('copay.transactions').controller('TransactionsController',
 
         tx.outs.forEach(function(o) {
           var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
-          if (!w.addressIsOwn(addr)) {
+          if (!w.addressIsOwn(addr, {excludeMain:true})) {
             outs.push({
               address: addr, 
               value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
@@ -67,7 +70,7 @@ angular.module('copay.transactions').controller('TransactionsController',
       if (p.builder.isFullySigned()) {
         $scope.send(ntxid);
         _updateTxs();
-        $rootScope.$digest();    
+//        $rootScope.$digest();    
       }
       else {
         _updateTxs();
@@ -95,8 +98,17 @@ angular.module('copay.transactions').controller('TransactionsController',
       w.reject(ntxid);
       $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};
       _updateTxs();
-      $rootScope.$digest();    
+//      $rootScope.$digest();    
     };
 
     _updateTxs();
+
+    var w = $rootScope.wallet;
+    if (w) {
+      w.on('txProposalsUpdated', function() {
+        console.log('[transactions.js.108: txProposalsUpdated:]'); //TODO
+        _updateTxs();
+        $rootScope.$digest();    
+      });
+    }
   });

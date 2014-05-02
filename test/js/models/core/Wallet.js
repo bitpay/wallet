@@ -9,6 +9,8 @@ var Builder = bitcore.TransactionBuilder;
 var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var copay = copay || require('../../../copay');
+var SecureRandom  = bitcore.SecureRandom;
+var Base58Check   = bitcore.Base58.base58Check;
 
 function Wallet(opts) {
   var self = this;
@@ -26,11 +28,13 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
+  this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
+
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
-
   this.network.maxPeers = this.totalCopayers;
+  this.registeredPeerIds = [];
 }
 
 Wallet.parent = EventEmitter;
@@ -53,13 +57,14 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
-    this.log('### BROADCASTING PKR');
-    recipients = null;
-    this.sendPublicKeyRing(recipients);
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
+    this.log('### BROADCASTING PKR');
+    recipients = null;
+    this.sendPublicKeyRing(recipients);
   }
+  this.emit('publicKeyRingUpdated', this.publicKeyRing);
   this.store();
 };
 
@@ -76,6 +81,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
     recipients = null;
     this.sendTxProposals(recipients);
   }
+  this.emit('txProposalsUpdated', this.txProposals);
   this.store();
 };
 
@@ -107,7 +113,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newCopayerId) {
-    this.log('#### Setting new PEER:', newCopayerId);
+    this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
     this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
@@ -122,6 +128,7 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     name: this.name,
+    netKey: this.netKey,
   };
 
   return obj;
@@ -135,6 +142,26 @@ Wallet.prototype.getCopayerId = function(index) {
 
 Wallet.prototype.getMyCopayerId = function() {
   return this.getCopayerId(0);
+};
+
+
+Wallet.prototype.getSecret = function() {
+  var i = new Buffer(this.getMyCopayerId(),'hex');
+  var k = new Buffer(this.netKey,'base64');
+  var b = Buffer.concat([i,k]);
+  var str = Base58Check.encode(b);
+  return str;
+};
+
+
+Wallet.decodeSecret = function(secretB) {
+  var secret = Base58Check.decode(secretB);
+  var netKeyBuf = secret.slice(-8);
+  var pubKeyBuf = secret.slice(0,33);
+  return {
+    pubKey: pubKeyBuf.toString('hex'),
+    netKey: netKeyBuf.toString('base64'),
+  }
 };
 
 Wallet.prototype._lockIncomming = function() {
@@ -159,8 +186,8 @@ Wallet.prototype.netStart = function() {
   var myId = self.getMyCopayerId();
   var startOpts = {
     copayerId: myId,
-    signingKeyHex: self.privateKey.getSigningKey(),
     maxPeers: self.totalCopayers,
+    netKey: this.netKey,
   };
 
   if (this.publicKeyRing.isComplete()) {
@@ -169,7 +196,6 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
-    var registered = self.getRegisteredPeerIds();
     for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
       if (otherId !== myId) {
@@ -189,13 +215,19 @@ Wallet.prototype.getOnlinePeerIDs = function() {
 };
 
 Wallet.prototype.getRegisteredPeerIds = function() {
-  var ret = [];
-  for (var i = 0; i < this.publicKeyRing.registeredCopayers(); i++) {
-    var cid = this.getCopayerId(i)
-    var pid = this.network.peerFromCopayer(cid);
-    ret.push(pid);
+  var l = this.publicKeyRing.registeredCopayers();
+  if (this.registeredPeerIds.length !== l) {
+    this.registeredPeerIds = [];
+    for (var i = 0; i < l; i++) {
+      var cid = this.getCopayerId(i);
+      var pid = this.network.peerFromCopayer(cid);
+      this.registeredPeerIds.push({
+        peerId: pid,
+        nick: this.publicKeyRing.nicknameForCopayer(cid)
+      });
+    }
   }
-  return ret;
+  return this.registeredPeerIds;
 };
 
 Wallet.prototype.store = function(isSync) {
@@ -223,15 +255,22 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
-Wallet.fromObj = function(wallet) {
-  var opts = wallet.opts;
-  opts['publicKeyRing'] = this.publicKeyring.fromObj(wallet.publicKeyRing);
-  opts['txProposals'] = this.txProposal.fromObj(wallet.txProposals);
-  opts['privateKey'] = this.privateKey.fromObj(wallet.privateKey);
+Wallet.fromObj = function(o, storage, network, blockchain) {
+  var opts           = JSON.parse(JSON.stringify(o.opts));
+  opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
+  opts.txProposals   = copay.TxProposals.fromObj(o.txProposals);
+  opts.privateKey    = copay.PrivateKey.fromObj(o.privateKey);
 
+  opts.storage       = storage;
+  opts.network       = network;
+  opts.blockchain    = blockchain;
   var w = new Wallet(opts);
-
   return w;
+};
+
+Wallet.prototype.toEncryptedObj = function() {
+  var walletObj = this.toObj();
+  return this.storage.export(walletObj);
 };
 
 Wallet.prototype.sendTxProposals = function(recipients) {
@@ -242,7 +281,6 @@ Wallet.prototype.sendTxProposals = function(recipients) {
     txProposals: this.txProposals.toObj(),
     walletId: this.id,
   });
-  this.emit('txProposalsUpdated', this.txProposals);
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
@@ -256,7 +294,7 @@ Wallet.prototype.sendWalletReady = function(recipients) {
 };
 
 Wallet.prototype.sendWalletId = function(recipients) {
-  this.log('### SENDING walletId TO:', recipients || 'All', this.walletId);
+  this.log('### SENDING walletId TO:', recipients || 'All', this.id);
 
   this.network.send(recipients, {
     type: 'walletId',
@@ -274,7 +312,6 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     publicKeyRing: this.publicKeyRing.toObj(),
     walletId: this.id,
   });
-  this.emit('publicKeyRingUpdated', this.publicKeyRing);
 };
 
 
@@ -374,20 +411,23 @@ Wallet.prototype.addSeenToTxProposals = function() {
   return ret;
 };
 
-Wallet.prototype.getAddresses = function(onlyMain) {
-  return this.publicKeyRing.getAddresses(onlyMain);
+// TODO: remove this method and use getAddressesInfo everywhere
+Wallet.prototype.getAddresses = function(opts) {
+  return this.publicKeyRing.getAddresses(opts);
 };
 
-Wallet.prototype.getAddressesStr = function(onlyMain) {
-  var ret = [];
-  this.publicKeyRing.getAddresses(onlyMain).forEach(function(a) {
-    ret.push(a.toString());
+Wallet.prototype.getAddressesStr = function(opts) {
+  return this.getAddresses(opts).map(function(a) {
+    return a.toString();
   });
-  return ret;
 };
 
-Wallet.prototype.addressIsOwn = function(addrStr) {
-  var addrList = this.getAddressesStr();
+Wallet.prototype.getAddressesInfo = function(opts) {
+  return this.publicKeyRing.getAddressesInfo(opts);
+};
+
+Wallet.prototype.addressIsOwn = function(addrStr, opts) {
+  var addrList = this.getAddressesStr(opts);
   var l = addrList.length;
   var ret = false;
 
@@ -405,27 +445,21 @@ Wallet.prototype.getBalance = function(safe, cb) {
   var balanceByAddr = {};
   var isMain = {};
   var COIN = bitcore.util.COIN;
-  var addresses = this.getAddressesStr(true);
-
-  if (!addresses.length) return cb(0, []);
-
-  // Prefill balanceByAddr with main address
-  addresses.forEach(function(a) {
-    balanceByAddr[a] = 0;
-    isMain[a] = 1;
-  });
   var f = safe ? this.getSafeUnspent.bind(this) : this.getUnspent.bind(this);
   f(function(utxos) {
     for (var i = 0; i < utxos.length; i++) {
       var u = utxos[i];
       var amt = u.amount * COIN;
-      balance = balance + amt;
+      balance += amt;
       balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
     }
+
+    // we multiply and divide by COIN to avoid rounding errors when adding
     for (var a in balanceByAddr) {
       balanceByAddr[a] = balanceByAddr[a] / COIN;
     }
-    return cb(balance / COIN, balanceByAddr, isMain);
+    balance = balance / COIN;
+    return cb(balance, balanceByAddr, isMain);
   });
 };
 

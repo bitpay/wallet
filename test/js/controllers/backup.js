@@ -8,7 +8,7 @@ angular.module('copay.backup').controller('BackupController',
 
     // TODO: get the real encrypted wallet.
     var _getEncryptedWallet = function() {
-      var wallet = JSON.stringify($rootScope.wallet.toObj());
+      var wallet = $rootScope.wallet.toEncryptedObj();
       return wallet;
     };
 
@@ -40,11 +40,10 @@ angular.module('copay.backup').controller('BackupController',
       } else {
         if (email && email !== '') {
           var body = _getEncryptedWallet();
-          console.log(body);
           var subject = 'Copay Backup'; 
           var href = 'mailto:' + email + '?'
            + 'subject=' + subject + '&'
-           + 'body=' + 'body'; // TODO: Uncomment this when get the real encrypted wallet.
+           + 'body=' + body;
 
           var newWin = $window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
 

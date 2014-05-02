@@ -1,10 +1,14 @@
 'use strict';
 
+
+var copay = require('copay');
+
 var copayApp = window.copayApp = angular.module('copay',[
   'ngRoute',
   'mm.foundation',
   'monospaced.qrcode',
   'copay.header',
+  'copay.footer',
   'copay.addresses',
   'copay.transactions',
   'copay.send',
@@ -15,10 +19,13 @@ var copayApp = window.copayApp = angular.module('copay',[
   'copay.controllerUtils',
   'copay.setup',
   'copay.directives',
-  'copay.video'
+  'copay.video',
+  'copay.import',
+  'copay.passphrase'
 ]);
 
 angular.module('copay.header', []);
+angular.module('copay.footer', []);
 angular.module('copay.addresses', []);
 angular.module('copay.transactions', []);
 angular.module('copay.send', []);
@@ -30,4 +37,6 @@ angular.module('copay.setup', []);
 angular.module('copay.socket', []);
 angular.module('copay.directives', []);
 angular.module('copay.video', []);
+angular.module('copay.import', []);
+angular.module('copay.passphrase', []);
 

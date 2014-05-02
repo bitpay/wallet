@@ -51,21 +51,9 @@ WalletFactory.prototype._checkRead = function(walletId) {
   return ret?true:false;
 };
 
-WalletFactory.prototype.read = function(walletId) {
-  if (! this._checkRead(walletId))
-    return false;
-
-  var s = this.storage;
-  var opts = s.get(walletId, 'opts');
-  opts.id = walletId;
-  opts.publicKeyRing = new PublicKeyRing.fromObj(s.get(walletId, 'publicKeyRing'));
-  opts.txProposals   = new TxProposals.fromObj(s.get(walletId, 'txProposals'));
-  opts.privateKey    = new PrivateKey.fromObj(s.get(walletId, 'privateKey'));
-  opts.storage = this.storage;
-  opts.network = this.network;
-  opts.blockchain = this.blockchain;
-  opts.verbose = this.verbose;
-  var w = new Wallet(opts);
+WalletFactory.prototype.fromObj = function(obj) {
+  var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
+  w.verbose = this.verbose;
 
   // JIC: Add our key
   try {
@@ -76,11 +64,34 @@ WalletFactory.prototype.read = function(walletId) {
     // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
+
+  return w;
+};
+
+WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
+  this.storage._setPassphrase(password);
+  var walletObj = this.storage.import(base64);
+  return this.fromObj(walletObj);
+};
+
+WalletFactory.prototype.read = function(walletId) {
+  if (! this._checkRead(walletId))
+    return false;
+
+  var obj = {};
+  var s = this.storage;
+
+  obj.id = walletId;
+  obj.opts = s.get(walletId, 'opts');
+  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
+  obj.txProposals   = s.get(walletId, 'txProposals');
+  obj.privateKey    = s.get(walletId, 'privateKey');
+
+  var w = this.fromObj(obj);
   return w;
 };
 
 WalletFactory.prototype.create = function(opts) {
-  var s = WalletFactory.storage;
   opts    = opts || {};
   this.log('### CREATING NEW WALLET.' + 
            (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + 
@@ -98,13 +109,15 @@ WalletFactory.prototype.create = function(opts) {
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString());
+  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString(), opts.nickname);
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
     networkName: this.networkName,
   });
   this.log('\t### TxProposals Initialized');
+
+  this.storage._setPassphrase(opts.passphrase);
 
   opts.storage = this.storage;
   opts.network = this.network;
@@ -120,12 +133,15 @@ WalletFactory.prototype.create = function(opts) {
 };
 
 WalletFactory.prototype.open = function(walletId, opts) {
-  this.log('Opening walletId:' + walletId);
   opts = opts || {};
   opts.id = walletId;
   opts.verbose = this.verbose;
+
+  this.storage._setPassphrase(opts.passphrase);
+
   var w = this.read(walletId) || this.create(opts);
   w.store();
+
   return w;
 };
 
@@ -143,28 +159,37 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
+WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
   var self = this;
 
+  var s;
+  try {
+    s=Wallet.decodeSecret(secret);
+  } catch (e) {
+    return cb('badSecret');
+  }
+  
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
-    signingKeyHex: privateKey.getSigningKey(),
+    netKey: s.netKey,
   };
   self.network.cleanUp();
   self.network.start(opts, function() {
-    self.network.connectTo(copayerId);
+    self.network.connectTo(s.pubKey);
     self.network.on('onlyYou', function(sender, data) {
-      return cb();
+      return cb('joinError');
     });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
+        data.opts.nickname =  nickname;
+        data.opts.passphrase = passphrase;
         var w = self.open(data.walletId, data.opts);
-        w.firstCopayerId = copayerId;
-        return cb(w);
+        w.firstCopayerId = s.pubKey;
+        return cb(null, w);
       }
     });
   });

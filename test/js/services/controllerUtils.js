@@ -4,6 +4,8 @@ angular.module('copay.controllerUtils')
   .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
     var root = {};
     $rootScope.videoSrc = {};
+    $rootScope.loading = false;
+
     $rootScope.getVideoURL = function(copayer) {
       var encoded = $rootScope.videoSrc[copayer];
       if (!encoded) return;
@@ -12,21 +14,22 @@ angular.module('copay.controllerUtils')
       return trusted;
     };
 
+    $rootScope.getWalletDisplay = function() {
+      var w = $rootScope.wallet;
+      return w && (w.name || w.id);
+    };
+
     root.logout = function() {
-      console.log('### DELETING WALLET'); //TODO
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
       $rootScope.totalBalance = 0;
+      video.close();
+      $rootScope.videoSrc = {};
       $location.path('signin');
     };
 
     root.onError = function(scope) {
       if (scope) scope.loading = false;
-      $rootScope.flashMessage = {
-        type: 'error',
-        message: 'Could not connect to peer: ' +
-          scope
-      };
       root.logout();
     }
 
@@ -38,10 +41,11 @@ angular.module('copay.controllerUtils')
     root.startNetwork = function(w) {
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
+          delete $rootScope.videoSrc[peerID];
           return;
         }
         $rootScope.videoSrc[peerID] = encodeURI(url);
-        $rootScope.$apply();
+        $rootScope.$digest();
       };
       w.on('badMessage', function(peerId) {
         $rootScope.flashMessage = {
@@ -51,12 +55,18 @@ angular.module('copay.controllerUtils')
       });
       w.on('created', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
-        $location.path('peer');
         $rootScope.wallet = w;
-        root.updateBalance();
+        $location.path('addresses');
       });
       w.on('refresh', function() {
-        root.updateBalance();
+        root.setSocketHandlers();
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+        $rootScope.$digest();
+      });
+      w.on('publicKeyRingUpdated', function() {
+        root.setSocketHandlers();
       });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
@@ -66,36 +76,47 @@ angular.module('copay.controllerUtils')
       w.netStart();
     };
 
-    root.updateBalance = function() {
+    root.updateBalance = function(cb) {
+      root.setSocketHandlers();
+      $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
-      if (!w) return;
+      $rootScope.addrInfos = w.getAddressesInfo();
+      if ($rootScope.addrInfos.length === 0) return;
+      $rootScope.loading = true;
       w.getBalance(false, function(balance, balanceByAddr) {
+        console.log('New total balance:', balance);
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
-        console.log('New balance:', balance);
-        w.getBalance(true, function(balance) {
-          $rootScope.availableBalance = balance;
-          $rootScope.$digest();
-        });
+        $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
+        $rootScope.loading = false;
+        if (cb) cb();
+      });
+      w.getBalance(true, function(balance) {
+        console.log('New available balance:', balance);
+        $rootScope.availableBalance = balance;
+        $rootScope.loading = false;
+        if (cb) cb();
       });
     };
 
     root.setSocketHandlers = function() {
+      // TODO: optimize this?
       Socket.removeAllListeners();
+      if (!$rootScope.wallet) return;
 
       var addrs = $rootScope.wallet.getAddressesStr();
       for (var i = 0; i < addrs.length; i++) {
         console.log('### SUBSCRIBE TO', addrs[i]);
         Socket.emit('subscribe', addrs[i]);
       }
-      console.log('[controllerUtils.js.64]'); //TODO
       addrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance();
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
         });
       });
     };
-
     return root;
   });

@@ -3,7 +3,6 @@ var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 var bitcore     = require('bitcore');
 var util        = bitcore.util;
-var Key         = bitcore.Key;
 /*
  * Emits
  *  'networkChange'
@@ -18,15 +17,22 @@ var Key         = bitcore.Key;
  */
 
 function Network(opts) {
-  var self = this;
+  var self            = this;
   opts                = opts || {};
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
-  this.opts           = { key: opts.key };
+  this.sjclParams     = opts.sjclParams || {
+    salt: 'f28bfb49ef70573c', 
+    iter:500,
+    mode:'ccm',
+    ts:parseInt(64),   
+  };
+
 
   // For using your own peerJs server
-  ['port', 'host', 'path', 'debug'].forEach(function(k) {
+  self.opts = {};
+  ['port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
     if (opts[k]) self.opts[k] = opts[k];
   });
   this.cleanUp();
@@ -38,6 +44,7 @@ Network.prototype.cleanUp = function() {
   this.started = false;
   this.connectedPeers = [];
   this.peerId = null;
+  this.netKey = null;
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds=null;
@@ -99,6 +106,11 @@ Network.prototype.connectedCopayers = function() {
 };
 
 Network.prototype._deletePeer = function(peerId) {
+  console.log('### Deleting connection from peer:', peerId);
+
+  this._setPeerAuthenticated(peerId, 0);
+  delete this.copayerForPeer[peerId];
+
   if (this.connections[peerId]) {
     this.connections[peerId].close();
   }
@@ -111,12 +123,20 @@ Network.prototype._onClose = function(peerId) {
   this._notifyNetworkChange();
 };
 
+// TODO RM THIS! (connect from pub key ring)
 Network.prototype._connectToCopayers = function(copayerIds) {
   var self = this;
   var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
+
   arrayDiff.forEach(function(copayerId) {
-    console.log('### CONNECTING TO:', copayerId);
-    self.connectTo(copayerId);
+    if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
+      console.log('### IGNORING STRANGE COPAYER:', copayerId);
+      this._deletePeer(this.peerFromCopayer(copayerId));
+    }
+    else {
+      console.log('### CONNECTING TO:', copayerId);
+      self.connectTo(copayerId);
+    }
   });
 };
 
@@ -152,40 +172,34 @@ Network.prototype._addCopayer = function(copayerId, isInbound) {
 
 
 
-Network.prototype._onData = function(data, isInbound, peerId) {
+Network.prototype._onData = function(encStr, isInbound, peerId) {
   var sig, payload;
-  try { 
-    var dataObj = JSON.parse(data);
-    sig = dataObj.sig;
-    payload= dataObj.payload;
 
+  try { 
+    var data = this._decrypt(encStr);
+    payload=  JSON.parse(data);
   } catch (e) {
     console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
     this._deletePeer(peerId);
     return;
-  };
+  }
 
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  // TODO _func
   if(payload.type === 'hello') {
-    var thisSig = this._signHMAC(payload, this.copayerId);
-    if (thisSig !== sig) {
-      console.log('#### Peer sent WRONG hello signature. Closing connection.');
-      this._deletePeer(peerId);
-      return;
-    }
+    var payloadStr = JSON.stringify(payload);
+
     if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-      console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
+      console.log('#### Peer sent HELLO but it is not on the allowedCopayerIds. Closing connection', 
                   this.allowedCopayerIds, payload.copayerId);
       this._deletePeer(peerId);
       return;
     }
 
-    console.log('#### Peer sent signed hello. Setting it up.'); //TODO
+    console.log('#### Peer sent hello. Setting it up.'); //TODO
+    this._setPeerAuthenticated(peerId, 1);
     this._addCopayer(payload.copayerId, isInbound);
-    this._setPeerAuthenticated(peerId);
     this._notifyNetworkChange( isInbound ? payload.copayerId : null);
     this.emit('open');
     return;
@@ -193,22 +207,15 @@ Network.prototype._onData = function(data, isInbound, peerId) {
 
   //copayerForPeer is populated also in 'copayers' message, so we need authenticatedPeer
   if (isInbound && (!this.copayerForPeer[peerId] || !this.authenticatedPeers[peerId])) {
-    console.log('### Closing connection from unknown/unauthenticated peer: ', peerId);
     this._deletePeer(peerId);
     return;
   }
 
   var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
-  if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
-    new Buffer(sig,'hex'))) {
-    console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO
-    this._deletePeer(peerId);
-    return;
-  }
-  
   var self=this;
   switch(payload.type) {
     case 'copayers':
+//TODO is this really necesarry??? => NO connect from pubkeyring.
       this._addCopayer(this.copayerForPeer[peerId], false);
       this._connectToCopayers(payload.copayers);
       this._notifyNetworkChange();
@@ -236,6 +243,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   var self = this;
 
   dataConn.on('open', function() {
+    self._setPeerAuthenticated(dataConn.peer, 0);
     if (!Network._inArray(dataConn.peer, self.connectedPeers)
         && !self.connections[dataConn.peer]) {
 
@@ -244,7 +252,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
       console.log('### DATA CONNECTION READY: %s (inbound: %s) AUTHENTICATING...',
         dataConn.peer, isInbound);
 
-      // The connecting peer send hello (with signature)
+      // The connecting peer send hello 
       if(!isInbound) 
         self._sendHello(self.copayerForPeer[dataConn.peer]);      
     }
@@ -302,6 +310,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
         dataConn.close();
       });
     } else {
+      self._setPeerAuthenticated(dataConn.peer, 0);
       self._setupConnectionHandlers(dataConn, true);
     }
   });
@@ -321,8 +330,8 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
 };
 
 
-Network.prototype._setPeerAuthenticated = function(peerId) {
-  this.authenticatedPeers[peerId] = 1;
+Network.prototype._setPeerAuthenticated = function(peerId, isAuthenticated) {
+  this.authenticatedPeers[peerId] = isAuthenticated;
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
@@ -336,16 +345,6 @@ Network.prototype.setCopayerId = function(copayerId) {
 };
 
 
-Network.prototype.setSigningKey = function(keyHex) {
-  if (this.started || this.signingKey) {
-    throw new Error ('network already started or key assigned: can not change key')
-  }
-  var k = new Key();
-  k.private = new Buffer(keyHex,'hex');
-  k.regenerateSync();
-  this.signingKey = k;
-};
-
 Network.prototype.peerFromCopayer = function(hex) {
   var SIN = bitcore.SIN;
   return new SIN(new Buffer(hex,'hex')).toString();
@@ -356,12 +355,11 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (this.started) return openCallback();
 
+  this.netKey = opts.netKey;
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
-  if (!this.signingKey)
-    this.setSigningKey(opts.signingKeyHex);
 
   console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
@@ -375,28 +373,6 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 
-Network.prototype._signHMAC = function(payload, copayerId) {
-  var str = JSON.stringify(payload);
-  if (payload.type !=='hello') 
-    throw new Error ('HMAC only for hello messages')
-  return util.sha512hmac(
-    new Buffer(str), 
-    new Buffer(copayerId,'hex')
-  ).toString('hex');
-};
-
-Network.prototype._signECDSA = function(payload) {
-  var ret='';
-  var str = JSON.stringify(payload);
-  if (!this.signingKey)
-    throw new Error ('no key to sign messages :(');
-
-  return bitcore.Message.sign(
-    str, 
-    this.signingKey
-  ).toString('hex');
-};
-
 Network.prototype.getOnlinePeerIDs = function() {
   return this.connectedPeers;
 };
@@ -405,16 +381,35 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
+Network.prototype._encrypt = function(payloadStr) {
+  var plainText = sjcl.codec.utf8String.toBits(payloadStr);
+  var p = this.sjclParams;    
+  ct = sjcl.encrypt(this.netKey, plainText, p);//,p, rp);
+  var c = JSON.parse(ct);
+  var toSend = {
+    iv: c.iv,
+    ct: c.ct,
+  };
+  return JSON.stringify(toSend);
+};
+
+
+Network.prototype._decrypt = function(encStr) {
+  var i = JSON.parse(encStr);
+  for (var k in this.sjclParams) {
+    i[k] = this.sjclParams[k];
+  }
+  var str= JSON.stringify(i);
+  var pt = sjcl.decrypt(this.netKey, str);
+  return pt;
+};
+
 Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
-      var str = JSON.stringify({
-        sig: sig,
-        payload: payload 
-      });
-      dataConn.send(str);
+      dataConn.send(payload);
     }
     else {
       console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
@@ -431,25 +426,19 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   }
 
   var sig;
-  if (payload.type === 'hello') {
-    var hisId = copayerIds; 
-    sig=this._signHMAC(payload,hisId);
-  }
-  else  {
-    sig=this._signECDSA(payload);
-  }
-
+  var payloadStr = JSON.stringify(payload);
+  var encPayload = this._encrypt(payloadStr);
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, payload, sig, function () {
+      self._sendToOne(copayerId, encPayload, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
   else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, payload, sig, cb);
+    self._sendToOne(copayerIds, encPayload, sig, cb);
 };
 
 Network.prototype.connectTo = function(copayerId) {

@@ -243,12 +243,14 @@ API.prototype.help = decorate('help', [
 
 module.exports = require('soop')(API);
 
-},{"./js/models/blockchain/Insight":"N916Nn","./js/models/network/Base":15,"./test/mocks/FakeStorage":"q/5+08","soop":51}],"hxYaTp":[function(require,module,exports){
+},{"./js/models/blockchain/Insight":"N916Nn","./js/models/network/Base":17,"./test/mocks/FakeStorage":"q/5+08","soop":63}],"hxYaTp":[function(require,module,exports){
 
 // core
 module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
 module.exports.TxProposals = require('./js/models/core/TxProposals');
 module.exports.PrivateKey = require('./js/models/core/PrivateKey');
+module.exports.Passphrase = require('./js/models/core/Passphrase');
+
 
 // components
 var WebRTC = module.exports.WebRTC = require('./js/models/network/WebRTC');
@@ -259,14 +261,14 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js
 var WalletFactory = require('soop').load('./js/models/core/WalletFactory',{
   Network: WebRTC,
   Blockchain: Insight,
-  Storage: StorageLocalPlain,
+  Storage: StorageLocalEncrypted,
 });
 module.exports.WalletFactory = WalletFactory;
 
 
 module.exports.API = require('./API');
 
-},{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":10,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":19,"./js/models/storage/LocalPlain":20,"soop":51}],"copay":[function(require,module,exports){
+},{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/Passphrase":"07vXYZ","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":12,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":21,"./js/models/storage/LocalPlain":22,"soop":63}],"copay":[function(require,module,exports){
 module.exports=require('hxYaTp');
 },{}],"../js/models/blockchain/Insight":[function(require,module,exports){
 module.exports=require('N916Nn');
@@ -495,7 +497,35 @@ module.exports = require('soop')(Insight);
 
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bitcore":21,"http":28,"soop":51}],"../js/models/core/PrivateKey":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"bitcore":23,"http":40,"soop":63}],"07vXYZ":[function(require,module,exports){
+'use strict';
+
+function Passphrase(config) {
+ config = config || {};
+ this.salt = config.storageSalt || 'mjuBtGybi/4=';
+ this.iterations = config.iterations || 1000;
+};
+
+Passphrase.prototype.get = function(password) {
+  var hash = CryptoJS.SHA256(CryptoJS.SHA256(password));
+  var salt = CryptoJS.enc.Base64.parse(this.salt);
+  var key512 = CryptoJS.PBKDF2(hash, salt, { keySize: 512/32, iterations: this.iterations });
+
+  return key512;
+};
+
+Passphrase.prototype.getBase64 = function(password) {
+  var key512 = this.get(password);
+  var keyBase64 = key512.toString(CryptoJS.enc.Base64);
+
+  return keyBase64;
+};
+
+module.exports = Passphrase;
+
+},{}],"../js/models/core/Passphrase":[function(require,module,exports){
+module.exports=require('07vXYZ');
+},{}],"../js/models/core/PrivateKey":[function(require,module,exports){
 module.exports=require('41fjjN');
 },{}],"41fjjN":[function(require,module,exports){
 'use strict';
@@ -520,20 +550,11 @@ function PrivateKey(opts) {
 
 PrivateKey.prototype.getId = function() {
   if (!this.id) {
-    var path = PublicKeyRing.SIGNING_BRANCH;
+    var path = PublicKeyRing.ID_BRANCH;
     var bip32 = this.bip.derive(path);
     this.id= bip32.eckey.public.toString('hex');
   }
   return this.id;
-};
-
-PrivateKey.prototype.getSigningKey = function() {
-  if (!this.sid) {
-    var path = PublicKeyRing.SIGNING_BRANCH;
-    var bip32 = this.bip.derive(path);
-    this.sid= bip32.eckey.private.toString('hex');
-  }
-  return this.sid;
 };
 
 PrivateKey.fromObj = function(obj) {
@@ -592,9 +613,7 @@ PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
 
 module.exports = require('soop')(PrivateKey);
 
-},{"./PublicKeyRing":"6Bv3pA","bitcore":21,"soop":51}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
-module.exports=require('6Bv3pA');
-},{}],"6Bv3pA":[function(require,module,exports){
+},{"./PublicKeyRing":"6Bv3pA","bitcore":23,"soop":63}],"6Bv3pA":[function(require,module,exports){
 (function (Buffer){
 
 'use strict';
@@ -606,7 +625,7 @@ var BIP32       = bitcore.BIP32;
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
-var Transaction = bitcore.Transaction;
+var Transaction = bitcore.Transaction
 var util        = bitcore.util;
 
 var Storage     = imports.Storage || require('../storage/Base.js');
@@ -630,6 +649,8 @@ function PublicKeyRing(opts) {
   this.addressIndex= opts.addressIndex || 0;
 
   this.publicKeysCache = opts.publicKeysCache || {};
+  this.nicknameFor = opts.nicknameFor || {};
+  this.copayerIds = [];
 }
 
 /*
@@ -646,16 +667,19 @@ PublicKeyRing.Branch = function (index, isChange) {
   return 'm/0/'+(isChange?1:0)+'/'+index;
 };
 
-PublicKeyRing.SIGNING_BRANCH = 'm/100/0/0';
+PublicKeyRing.ID_BRANCH = 'm/100/0/0';
 
 PublicKeyRing.fromObj = function (data) {
   if (data instanceof PublicKeyRing) {
     throw new Error('bad data format: Did you use .toObj()?');
   }
-  data.copayersBIP32 = data.copayersExtPubKeys.map(function(pk) {
-    return new BIP32(pk);
-  });
-  return new PublicKeyRing(data);
+  var ret =  new PublicKeyRing(data);
+
+  for (var k in data.copayersExtPubKeys) {
+    ret.addCopayer(data.copayersExtPubKeys[k]);
+  }
+
+  return ret;
 };
 
 PublicKeyRing.prototype.toObj = function() {
@@ -670,23 +694,12 @@ PublicKeyRing.prototype.toObj = function() {
     copayersExtPubKeys: this.copayersBIP32.map( function (b) { 
       return b.extendedPublicKeyString(); 
     }),
+    nicknameFor: this.nicknameFor,
     publicKeysCache: this.publicKeysCache
   };
 };
 
-PublicKeyRing.prototype.serialize = function () {
-  return JSON.stringify(this.toObj());
-};
-
 PublicKeyRing.prototype.getCopayerId = function(i) {
-  this.copayerIds = this.copayerIds  || [];
-
-  if (!this.copayerIds[i]) {
-    var path = PublicKeyRing.SIGNING_BRANCH;
-    var bip32 = this.copayersBIP32[i].derive(path);
-    this.copayerIds[i]= bip32.eckey.public.toString('hex');
-  }
-
   return this.copayerIds[i];
 };
 
@@ -699,12 +712,7 @@ PublicKeyRing.prototype.isComplete = function () {
 };
 
 PublicKeyRing.prototype.getAllCopayerIds = function() {
-  var ret = [];
-  var l = this.registeredCopayers();
-  for(var i=0; i<l; i++) {
-    ret.push(this.getCopayerId(i));
-  }
-  return ret;
+  return this.copayerIds;
 };
 
 PublicKeyRing.prototype.myCopayerId = function(i) {
@@ -717,14 +725,30 @@ PublicKeyRing.prototype._checkKeys = function() {
       throw new Error('dont have required keys yet');
 };
 
-
 PublicKeyRing.prototype._newExtendedPublicKey = function () {
   return new BIP32(this.network.name)
     .extendedPublicKeyString();
 };
 
-PublicKeyRing.prototype.addCopayer = function (newEpk) {
+PublicKeyRing.prototype._updateBip = function (index) {
+  var path = PublicKeyRing.ID_BRANCH;
+  var bip32 = this.copayersBIP32[index].derive(path);
+  this.copayerIds[index]= bip32.eckey.public.toString('hex');
+};
 
+PublicKeyRing.prototype._setNicknameForIndex = function (index, nickname) {
+  this.nicknameFor[this.copayerIds[index]] = nickname;
+};
+
+PublicKeyRing.prototype.nicknameForIndex = function (index) {
+  return this.nicknameFor[this.copayerIds[index]];
+};
+
+PublicKeyRing.prototype.nicknameForCopayer = function (copayerId) {
+  return this.nicknameFor[copayerId];
+};
+
+PublicKeyRing.prototype.addCopayer = function (newEpk, nickname) {
   if (this.isComplete())
       throw new Error('already have all required key:' + this.totalCopayers);
 
@@ -737,10 +761,15 @@ PublicKeyRing.prototype.addCopayer = function (newEpk) {
       throw new Error('already have that key');
   });
 
-  this.copayersBIP32.push(new BIP32(newEpk));
+  var i=this.copayersBIP32.length;
+  var bip = new BIP32(newEpk);
+  this.copayersBIP32.push(bip);
+  this._updateBip(i);
+  if (nickname) { 
+    this._setNicknameForIndex(i,nickname);
+  }
   return newEpk;
 };
-
 
 PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   this._checkKeys();
@@ -755,8 +784,9 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
       pubKeys[i] = bip32.eckey.public;
     }
     this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
-  } else {
-    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex')});
+  } 
+  else {
+    pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex');}); 
   }
 
   return pubKeys;
@@ -781,25 +811,15 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
 
 // TODO this could be cached
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
-  this._checkIndexRange(index, isChange);
   var script  = this.getRedeemScript(index,isChange);
   return Address.fromScript(script, this.network.name);
 };
 
 // TODO this could be cached
-PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
-  this._checkIndexRange(index, isChange);
-  var script  = this.getRedeemScript(index,isChange);
-  map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
-};
-
-// TODO this could be cached
 PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
-  this._checkIndexRange(index, isChange);
   var addr  = this.getAddress(index,isChange);
   return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
 };
-
 
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange) {
@@ -813,22 +833,43 @@ PublicKeyRing.prototype.generateAddress = function(isChange) {
   }
 
   return ret;
-
 };
 
-PublicKeyRing.prototype.getAddresses = function(onlyMain) {
+PublicKeyRing.prototype.getAddresses = function(opts) {
+  return this.getAddressesInfo(opts).map(function(info) {
+    return info.address;
+  });
+};
+
+PublicKeyRing.prototype.getAddressesInfo = function(opts) {
+  opts = opts || {};
+
   var ret = [];
-
-  for (var i=0; i<this.addressIndex; i++) {
-    ret.unshift(this.getAddress(i,false));
-  }
-
-  if (!onlyMain) {
+  if (!opts.excludeChange) {
     for (var i=0; i<this.changeAddressIndex; i++) {
-      ret.unshift(this.getAddress(i,true));
+      ret.unshift({
+        address: this.getAddress(i,true),
+        isChange: true
+      });
     }
   }
+
+  if (!opts.excludeMain) {
+    for (var i=0; i<this.addressIndex; i++) {
+      ret.unshift({
+        address: this.getAddress(i,false),
+        isChange: false
+      });
+    }
+  }
+
   return ret;
+};
+
+// TODO this could be cached
+PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
+  var script  = this.getRedeemScript(index,isChange);
+  map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
 };
 
 PublicKeyRing.prototype.getRedeemScriptMap = function () {
@@ -842,8 +883,6 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
   }
   return ret;
 };
-
-
 
 PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
 
@@ -902,7 +941,11 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
       if (self.isComplete()) {
         throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
       }
+      var l2 = self.copayersBIP32.length;
       self.copayersBIP32.push(new BIP32(epk));
+      self._updateBip(l2);
+      if (inPKR.nicknameFor[self.getCopayerId(l2)])
+        self._setNicknameForIndex(l2,inPKR.nicknameFor[self.getCopayerId(l2)]);
       hasChanged=true;
     }
   });
@@ -926,7 +969,9 @@ PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
 module.exports = require('soop')(PublicKeyRing);
 
 }).call(this,require("buffer").Buffer)
-},{"../storage/Base.js":18,"bitcore":21,"buffer":24,"soop":51}],10:[function(require,module,exports){
+},{"../storage/Base.js":20,"bitcore":23,"buffer":30,"soop":63}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
+module.exports=require('6Bv3pA');
+},{}],12:[function(require,module,exports){
 
 'use strict';
 
@@ -1187,7 +1232,8 @@ TxProposals.prototype.merge = function(t) {
 
 module.exports = require('soop')(TxProposals);
 
-},{"../storage/Base":18,"bitcore":21,"soop":51}],"zfa+FW":[function(require,module,exports){
+},{"../storage/Base":20,"bitcore":23,"soop":63}],"zfa+FW":[function(require,module,exports){
+(function (Buffer){
 'use strict';
 
 var imports = require('soop').imports();
@@ -1199,6 +1245,8 @@ var Builder = bitcore.TransactionBuilder;
 var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var copay = copay || require('../../../copay');
+var SecureRandom  = bitcore.SecureRandom;
+var Base58Check   = bitcore.Base58.base58Check;
 
 function Wallet(opts) {
   var self = this;
@@ -1216,11 +1264,13 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
+  this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
+
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
-
   this.network.maxPeers = this.totalCopayers;
+  this.registeredPeerIds = [];
 }
 
 Wallet.parent = EventEmitter;
@@ -1243,13 +1293,14 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
-    this.log('### BROADCASTING PKR');
-    recipients = null;
-    this.sendPublicKeyRing(recipients);
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
+    this.log('### BROADCASTING PKR');
+    recipients = null;
+    this.sendPublicKeyRing(recipients);
   }
+  this.emit('publicKeyRingUpdated', this.publicKeyRing);
   this.store();
 };
 
@@ -1266,6 +1317,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
     recipients = null;
     this.sendTxProposals(recipients);
   }
+  this.emit('txProposalsUpdated', this.txProposals);
   this.store();
 };
 
@@ -1297,7 +1349,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleNetworkChange = function(newCopayerId) {
   if (newCopayerId) {
-    this.log('#### Setting new PEER:', newCopayerId);
+    this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
     this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
@@ -1312,6 +1364,7 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     name: this.name,
+    netKey: this.netKey,
   };
 
   return obj;
@@ -1325,6 +1378,26 @@ Wallet.prototype.getCopayerId = function(index) {
 
 Wallet.prototype.getMyCopayerId = function() {
   return this.getCopayerId(0);
+};
+
+
+Wallet.prototype.getSecret = function() {
+  var i = new Buffer(this.getMyCopayerId(),'hex');
+  var k = new Buffer(this.netKey,'base64');
+  var b = Buffer.concat([i,k]);
+  var str = Base58Check.encode(b);
+  return str;
+};
+
+
+Wallet.decodeSecret = function(secretB) {
+  var secret = Base58Check.decode(secretB);
+  var netKeyBuf = secret.slice(-8);
+  var pubKeyBuf = secret.slice(0,33);
+  return {
+    pubKey: pubKeyBuf.toString('hex'),
+    netKey: netKeyBuf.toString('base64'),
+  }
 };
 
 Wallet.prototype._lockIncomming = function() {
@@ -1349,8 +1422,8 @@ Wallet.prototype.netStart = function() {
   var myId = self.getMyCopayerId();
   var startOpts = {
     copayerId: myId,
-    signingKeyHex: self.privateKey.getSigningKey(),
     maxPeers: self.totalCopayers,
+    netKey: this.netKey,
   };
 
   if (this.publicKeyRing.isComplete()) {
@@ -1359,7 +1432,6 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
-    var registered = self.getRegisteredPeerIds();
     for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
       var otherId = self.getCopayerId(i);
       if (otherId !== myId) {
@@ -1379,13 +1451,19 @@ Wallet.prototype.getOnlinePeerIDs = function() {
 };
 
 Wallet.prototype.getRegisteredPeerIds = function() {
-  var ret = [];
-  for (var i = 0; i < this.publicKeyRing.registeredCopayers(); i++) {
-    var cid = this.getCopayerId(i)
-    var pid = this.network.peerFromCopayer(cid);
-    ret.push(pid);
+  var l = this.publicKeyRing.registeredCopayers();
+  if (this.registeredPeerIds.length !== l) {
+    this.registeredPeerIds = [];
+    for (var i = 0; i < l; i++) {
+      var cid = this.getCopayerId(i);
+      var pid = this.network.peerFromCopayer(cid);
+      this.registeredPeerIds.push({
+        peerId: pid,
+        nick: this.publicKeyRing.nicknameForCopayer(cid)
+      });
+    }
   }
-  return ret;
+  return this.registeredPeerIds;
 };
 
 Wallet.prototype.store = function(isSync) {
@@ -1413,15 +1491,22 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
-Wallet.fromObj = function(wallet) {
-  var opts = wallet.opts;
-  opts['publicKeyRing'] = this.publicKeyring.fromObj(wallet.publicKeyRing);
-  opts['txProposals'] = this.txProposal.fromObj(wallet.txProposals);
-  opts['privateKey'] = this.privateKey.fromObj(wallet.privateKey);
+Wallet.fromObj = function(o, storage, network, blockchain) {
+  var opts           = JSON.parse(JSON.stringify(o.opts));
+  opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
+  opts.txProposals   = copay.TxProposals.fromObj(o.txProposals);
+  opts.privateKey    = copay.PrivateKey.fromObj(o.privateKey);
 
+  opts.storage       = storage;
+  opts.network       = network;
+  opts.blockchain    = blockchain;
   var w = new Wallet(opts);
-
   return w;
+};
+
+Wallet.prototype.toEncryptedObj = function() {
+  var walletObj = this.toObj();
+  return this.storage.export(walletObj);
 };
 
 Wallet.prototype.sendTxProposals = function(recipients) {
@@ -1432,7 +1517,6 @@ Wallet.prototype.sendTxProposals = function(recipients) {
     txProposals: this.txProposals.toObj(),
     walletId: this.id,
   });
-  this.emit('txProposalsUpdated', this.txProposals);
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
@@ -1446,7 +1530,7 @@ Wallet.prototype.sendWalletReady = function(recipients) {
 };
 
 Wallet.prototype.sendWalletId = function(recipients) {
-  this.log('### SENDING walletId TO:', recipients || 'All', this.walletId);
+  this.log('### SENDING walletId TO:', recipients || 'All', this.id);
 
   this.network.send(recipients, {
     type: 'walletId',
@@ -1464,7 +1548,6 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     publicKeyRing: this.publicKeyRing.toObj(),
     walletId: this.id,
   });
-  this.emit('publicKeyRingUpdated', this.publicKeyRing);
 };
 
 
@@ -1564,20 +1647,23 @@ Wallet.prototype.addSeenToTxProposals = function() {
   return ret;
 };
 
-Wallet.prototype.getAddresses = function(onlyMain) {
-  return this.publicKeyRing.getAddresses(onlyMain);
+// TODO: remove this method and use getAddressesInfo everywhere
+Wallet.prototype.getAddresses = function(opts) {
+  return this.publicKeyRing.getAddresses(opts);
 };
 
-Wallet.prototype.getAddressesStr = function(onlyMain) {
-  var ret = [];
-  this.publicKeyRing.getAddresses(onlyMain).forEach(function(a) {
-    ret.push(a.toString());
+Wallet.prototype.getAddressesStr = function(opts) {
+  return this.getAddresses(opts).map(function(a) {
+    return a.toString();
   });
-  return ret;
 };
 
-Wallet.prototype.addressIsOwn = function(addrStr) {
-  var addrList = this.getAddressesStr();
+Wallet.prototype.getAddressesInfo = function(opts) {
+  return this.publicKeyRing.getAddressesInfo(opts);
+};
+
+Wallet.prototype.addressIsOwn = function(addrStr, opts) {
+  var addrList = this.getAddressesStr(opts);
   var l = addrList.length;
   var ret = false;
 
@@ -1595,27 +1681,21 @@ Wallet.prototype.getBalance = function(safe, cb) {
   var balanceByAddr = {};
   var isMain = {};
   var COIN = bitcore.util.COIN;
-  var addresses = this.getAddressesStr(true);
-
-  if (!addresses.length) return cb(0, []);
-
-  // Prefill balanceByAddr with main address
-  addresses.forEach(function(a) {
-    balanceByAddr[a] = 0;
-    isMain[a] = 1;
-  });
   var f = safe ? this.getSafeUnspent.bind(this) : this.getUnspent.bind(this);
   f(function(utxos) {
     for (var i = 0; i < utxos.length; i++) {
       var u = utxos[i];
       var amt = u.amount * COIN;
-      balance = balance + amt;
+      balance += amt;
       balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
     }
+
+    // we multiply and divide by COIN to avoid rounding errors when adding
     for (var a in balanceByAddr) {
       balanceByAddr[a] = balanceByAddr[a] / COIN;
     }
-    return cb(balance / COIN, balanceByAddr, isMain);
+    balance = balance / COIN;
+    return cb(balance, balanceByAddr, isMain);
   });
 };
 
@@ -1730,10 +1810,9 @@ Wallet.prototype.getNetwork = function() {
 
 module.exports = require('soop')(Wallet);
 
-},{"../../../copay":"hxYaTp","bitcore":21,"events":27,"http":28,"soop":51}],"./js/models/core/Wallet":[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"../../../copay":"hxYaTp","bitcore":23,"buffer":30,"events":39,"http":40,"soop":63}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
-},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -1788,21 +1867,9 @@ WalletFactory.prototype._checkRead = function(walletId) {
   return ret?true:false;
 };
 
-WalletFactory.prototype.read = function(walletId) {
-  if (! this._checkRead(walletId))
-    return false;
-
-  var s = this.storage;
-  var opts = s.get(walletId, 'opts');
-  opts.id = walletId;
-  opts.publicKeyRing = new PublicKeyRing.fromObj(s.get(walletId, 'publicKeyRing'));
-  opts.txProposals   = new TxProposals.fromObj(s.get(walletId, 'txProposals'));
-  opts.privateKey    = new PrivateKey.fromObj(s.get(walletId, 'privateKey'));
-  opts.storage = this.storage;
-  opts.network = this.network;
-  opts.blockchain = this.blockchain;
-  opts.verbose = this.verbose;
-  var w = new Wallet(opts);
+WalletFactory.prototype.fromObj = function(obj) {
+  var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
+  w.verbose = this.verbose;
 
   // JIC: Add our key
   try {
@@ -1813,11 +1880,34 @@ WalletFactory.prototype.read = function(walletId) {
     // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
+
+  return w;
+};
+
+WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
+  this.storage._setPassphrase(password);
+  var walletObj = this.storage.import(base64);
+  return this.fromObj(walletObj);
+};
+
+WalletFactory.prototype.read = function(walletId) {
+  if (! this._checkRead(walletId))
+    return false;
+
+  var obj = {};
+  var s = this.storage;
+
+  obj.id = walletId;
+  obj.opts = s.get(walletId, 'opts');
+  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
+  obj.txProposals   = s.get(walletId, 'txProposals');
+  obj.privateKey    = s.get(walletId, 'privateKey');
+
+  var w = this.fromObj(obj);
   return w;
 };
 
 WalletFactory.prototype.create = function(opts) {
-  var s = WalletFactory.storage;
   opts    = opts || {};
   this.log('### CREATING NEW WALLET.' + 
            (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + 
@@ -1835,13 +1925,15 @@ WalletFactory.prototype.create = function(opts) {
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString());
+  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString(), opts.nickname);
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
     networkName: this.networkName,
   });
   this.log('\t### TxProposals Initialized');
+
+  this.storage._setPassphrase(opts.passphrase);
 
   opts.storage = this.storage;
   opts.network = this.network;
@@ -1857,12 +1949,15 @@ WalletFactory.prototype.create = function(opts) {
 };
 
 WalletFactory.prototype.open = function(walletId, opts) {
-  this.log('Opening walletId:' + walletId);
   opts = opts || {};
   opts.id = walletId;
   opts.verbose = this.verbose;
+
+  this.storage._setPassphrase(opts.passphrase);
+
   var w = this.read(walletId) || this.create(opts);
   w.store();
+
   return w;
 };
 
@@ -1880,28 +1975,37 @@ WalletFactory.prototype.remove = function(walletId) {
 };
 
 
-WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
+WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
   var self = this;
 
+  var s;
+  try {
+    s=Wallet.decodeSecret(secret);
+  } catch (e) {
+    return cb('badSecret');
+  }
+  
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
-    signingKeyHex: privateKey.getSigningKey(),
+    netKey: s.netKey,
   };
   self.network.cleanUp();
   self.network.start(opts, function() {
-    self.network.connectTo(copayerId);
+    self.network.connectTo(s.pubKey);
     self.network.on('onlyYou', function(sender, data) {
-      return cb();
+      return cb('joinError');
     });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
         data.opts.privateKey = privateKey;
+        data.opts.nickname =  nickname;
+        data.opts.passphrase = passphrase;
         var w = self.open(data.walletId, data.opts);
-        w.firstCopayerId = copayerId;
-        return cb(w);
+        w.firstCopayerId = s.pubKey;
+        return cb(null, w);
       }
     });
   });
@@ -1909,7 +2013,9 @@ WalletFactory.prototype.joinCreateSession = function(copayerId, cb) {
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":10,"./Wallet":"zfa+FW","soop":51}],15:[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":63}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
+},{}],17:[function(require,module,exports){
 var imports = require('soop').imports();
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
@@ -1952,14 +2058,15 @@ Network.prototype.disconnect = function(peerId, cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":27,"soop":51}],"7xJZlt":[function(require,module,exports){
+},{"events":39,"soop":63}],"../js/models/network/WebRTC":[function(require,module,exports){
+module.exports=require('7xJZlt');
+},{}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 var bitcore     = require('bitcore');
 var util        = bitcore.util;
-var Key         = bitcore.Key;
 /*
  * Emits
  *  'networkChange'
@@ -1974,15 +2081,22 @@ var Key         = bitcore.Key;
  */
 
 function Network(opts) {
-  var self = this;
+  var self            = this;
   opts                = opts || {};
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
-  this.opts           = { key: opts.key };
+  this.sjclParams     = opts.sjclParams || {
+    salt: 'f28bfb49ef70573c', 
+    iter:500,
+    mode:'ccm',
+    ts:parseInt(64),   
+  };
+
 
   // For using your own peerJs server
-  ['port', 'host', 'path', 'debug'].forEach(function(k) {
+  self.opts = {};
+  ['port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
     if (opts[k]) self.opts[k] = opts[k];
   });
   this.cleanUp();
@@ -1994,6 +2108,7 @@ Network.prototype.cleanUp = function() {
   this.started = false;
   this.connectedPeers = [];
   this.peerId = null;
+  this.netKey = null;
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds=null;
@@ -2055,6 +2170,11 @@ Network.prototype.connectedCopayers = function() {
 };
 
 Network.prototype._deletePeer = function(peerId) {
+  console.log('### Deleting connection from peer:', peerId);
+
+  this._setPeerAuthenticated(peerId, 0);
+  delete this.copayerForPeer[peerId];
+
   if (this.connections[peerId]) {
     this.connections[peerId].close();
   }
@@ -2067,12 +2187,20 @@ Network.prototype._onClose = function(peerId) {
   this._notifyNetworkChange();
 };
 
+// TODO RM THIS! (connect from pub key ring)
 Network.prototype._connectToCopayers = function(copayerIds) {
   var self = this;
   var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
+
   arrayDiff.forEach(function(copayerId) {
-    console.log('### CONNECTING TO:', copayerId);
-    self.connectTo(copayerId);
+    if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
+      console.log('### IGNORING STRANGE COPAYER:', copayerId);
+      this._deletePeer(this.peerFromCopayer(copayerId));
+    }
+    else {
+      console.log('### CONNECTING TO:', copayerId);
+      self.connectTo(copayerId);
+    }
   });
 };
 
@@ -2108,40 +2236,34 @@ Network.prototype._addCopayer = function(copayerId, isInbound) {
 
 
 
-Network.prototype._onData = function(data, isInbound, peerId) {
+Network.prototype._onData = function(encStr, isInbound, peerId) {
   var sig, payload;
-  try { 
-    var dataObj = JSON.parse(data);
-    sig = dataObj.sig;
-    payload= dataObj.payload;
 
+  try { 
+    var data = this._decrypt(encStr);
+    payload=  JSON.parse(data);
   } catch (e) {
     console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
     this._deletePeer(peerId);
     return;
-  };
+  }
 
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  // TODO _func
   if(payload.type === 'hello') {
-    var thisSig = this._signHMAC(payload, this.copayerId);
-    if (thisSig !== sig) {
-      console.log('#### Peer sent WRONG hello signature. Closing connection.');
-      this._deletePeer(peerId);
-      return;
-    }
+    var payloadStr = JSON.stringify(payload);
+
     if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-      console.log('#### Peer is not on the allowedCopayerIds. Closing connection', 
+      console.log('#### Peer sent HELLO but it is not on the allowedCopayerIds. Closing connection', 
                   this.allowedCopayerIds, payload.copayerId);
       this._deletePeer(peerId);
       return;
     }
 
-    console.log('#### Peer sent signed hello. Setting it up.'); //TODO
+    console.log('#### Peer sent hello. Setting it up.'); //TODO
+    this._setPeerAuthenticated(peerId, 1);
     this._addCopayer(payload.copayerId, isInbound);
-    this._setPeerAuthenticated(peerId);
     this._notifyNetworkChange( isInbound ? payload.copayerId : null);
     this.emit('open');
     return;
@@ -2149,22 +2271,15 @@ Network.prototype._onData = function(data, isInbound, peerId) {
 
   //copayerForPeer is populated also in 'copayers' message, so we need authenticatedPeer
   if (isInbound && (!this.copayerForPeer[peerId] || !this.authenticatedPeers[peerId])) {
-    console.log('### Closing connection from unknown/unauthenticated peer: ', peerId);
     this._deletePeer(peerId);
     return;
   }
 
   var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
-  if (!bitcore.Message.verifyWithPubKey( copayerIdBuf, JSON.stringify(payload), 
-    new Buffer(sig,'hex'))) {
-    console.log('[WebRTC.js.152] SIGNATURE VERIFICATION FAILED!!'); //TODO
-    this._deletePeer(peerId);
-    return;
-  }
-  
   var self=this;
   switch(payload.type) {
     case 'copayers':
+//TODO is this really necesarry??? => NO connect from pubkeyring.
       this._addCopayer(this.copayerForPeer[peerId], false);
       this._connectToCopayers(payload.copayers);
       this._notifyNetworkChange();
@@ -2192,6 +2307,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
   var self = this;
 
   dataConn.on('open', function() {
+    self._setPeerAuthenticated(dataConn.peer, 0);
     if (!Network._inArray(dataConn.peer, self.connectedPeers)
         && !self.connections[dataConn.peer]) {
 
@@ -2200,7 +2316,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
       console.log('### DATA CONNECTION READY: %s (inbound: %s) AUTHENTICATING...',
         dataConn.peer, isInbound);
 
-      // The connecting peer send hello (with signature)
+      // The connecting peer send hello 
       if(!isInbound) 
         self._sendHello(self.copayerForPeer[dataConn.peer]);      
     }
@@ -2258,6 +2374,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
         dataConn.close();
       });
     } else {
+      self._setPeerAuthenticated(dataConn.peer, 0);
       self._setupConnectionHandlers(dataConn, true);
     }
   });
@@ -2277,8 +2394,8 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
 };
 
 
-Network.prototype._setPeerAuthenticated = function(peerId) {
-  this.authenticatedPeers[peerId] = 1;
+Network.prototype._setPeerAuthenticated = function(peerId, isAuthenticated) {
+  this.authenticatedPeers[peerId] = isAuthenticated;
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
@@ -2292,16 +2409,6 @@ Network.prototype.setCopayerId = function(copayerId) {
 };
 
 
-Network.prototype.setSigningKey = function(keyHex) {
-  if (this.started || this.signingKey) {
-    throw new Error ('network already started or key assigned: can not change key')
-  }
-  var k = new Key();
-  k.private = new Buffer(keyHex,'hex');
-  k.regenerateSync();
-  this.signingKey = k;
-};
-
 Network.prototype.peerFromCopayer = function(hex) {
   var SIN = bitcore.SIN;
   return new SIN(new Buffer(hex,'hex')).toString();
@@ -2312,12 +2419,11 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (this.started) return openCallback();
 
+  this.netKey = opts.netKey;
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
-  if (!this.signingKey)
-    this.setSigningKey(opts.signingKeyHex);
 
   console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
@@ -2331,28 +2437,6 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 
-Network.prototype._signHMAC = function(payload, copayerId) {
-  var str = JSON.stringify(payload);
-  if (payload.type !=='hello') 
-    throw new Error ('HMAC only for hello messages')
-  return util.sha512hmac(
-    new Buffer(str), 
-    new Buffer(copayerId,'hex')
-  ).toString('hex');
-};
-
-Network.prototype._signECDSA = function(payload) {
-  var ret='';
-  var str = JSON.stringify(payload);
-  if (!this.signingKey)
-    throw new Error ('no key to sign messages :(');
-
-  return bitcore.Message.sign(
-    str, 
-    this.signingKey
-  ).toString('hex');
-};
-
 Network.prototype.getOnlinePeerIDs = function() {
   return this.connectedPeers;
 };
@@ -2361,16 +2445,35 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
+Network.prototype._encrypt = function(payloadStr) {
+  var plainText = sjcl.codec.utf8String.toBits(payloadStr);
+  var p = this.sjclParams;    
+  ct = sjcl.encrypt(this.netKey, plainText, p);//,p, rp);
+  var c = JSON.parse(ct);
+  var toSend = {
+    iv: c.iv,
+    ct: c.ct,
+  };
+  return JSON.stringify(toSend);
+};
+
+
+Network.prototype._decrypt = function(encStr) {
+  var i = JSON.parse(encStr);
+  for (var k in this.sjclParams) {
+    i[k] = this.sjclParams[k];
+  }
+  var str= JSON.stringify(i);
+  var pt = sjcl.decrypt(this.netKey, str);
+  return pt;
+};
+
 Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
     if (dataConn) {
-      var str = JSON.stringify({
-        sig: sig,
-        payload: payload 
-      });
-      dataConn.send(str);
+      dataConn.send(payload);
     }
     else {
       console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
@@ -2387,25 +2490,19 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   }
 
   var sig;
-  if (payload.type === 'hello') {
-    var hisId = copayerIds; 
-    sig=this._signHMAC(payload,hisId);
-  }
-  else  {
-    sig=this._signECDSA(payload);
-  }
-
+  var payloadStr = JSON.stringify(payload);
+  var encPayload = this._encrypt(payloadStr);
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, payload, sig, function () {
+      self._sendToOne(copayerId, encPayload, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
     });
   }
   else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, payload, sig, cb);
+    self._sendToOne(copayerIds, encPayload, sig, cb);
 };
 
 Network.prototype.connectTo = function(copayerId) {
@@ -2444,9 +2541,7 @@ Network.prototype.disconnect = function(cb, forced) {
 module.exports = require('soop')(Network);
 
 }).call(this,require("buffer").Buffer)
-},{"bitcore":21,"buffer":24,"events":27,"soop":51}],"../js/models/network/WebRTC":[function(require,module,exports){
-module.exports=require('7xJZlt');
-},{}],18:[function(require,module,exports){
+},{"bitcore":23,"buffer":30,"events":39,"soop":63}],20:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -2486,12 +2581,10 @@ Storage.prototype.clearAll = function() {
 
 module.exports = require('soop')(Storage);
 
-},{"soop":51}],19:[function(require,module,exports){
+},{"soop":63}],21:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
-//var buffertools = imports.buffertools || require('buffertools');
-var parent     = imports.parent || require('./LocalPlain');
 
 var id = 0;
 function Storage(opts) {
@@ -2502,8 +2595,6 @@ function Storage(opts) {
   if (opts.password)
     this._setPassphrase(opts.password);
 }
-Storage.parent = parent;
-
 
 var pps = {};
 Storage.prototype._getPassphrase = function() {
@@ -2540,50 +2631,129 @@ Storage.prototype._read = function(k) {
   var ret;
   try {
     ret = localStorage.getItem(k);
-    ret = this._decrypt(ret);
-    ret = ret.toString(CryptoJS.enc.Utf8);
-    ret = JSON.parse(ret);
+    if (ret){
+      ret = this._decrypt(ret);
+      ret = ret.toString(CryptoJS.enc.Utf8);
+      ret = JSON.parse(ret);
+    }
   } catch (e) {
     console.log('Error while decrypting: '+e);
     throw e;
   };
+
   return ret;
 };
 
 Storage.prototype._write = function(k,v) {
   v = JSON.stringify(v);
   v = this._encrypt(v);
+
   localStorage.setItem(k, v);
 };
 
+// get value by key
+Storage.prototype.getGlobal = function(k) {
+  return  localStorage.getItem(k);
+};
+
+// set value for key
+Storage.prototype.setGlobal = function(k,v) {
+  localStorage.setItem(k, JSON.stringify(v));
+};
+
+// remove value for key
+Storage.prototype.removeGlobal = function(k) {
+  localStorage.removeItem(k);
+};
+
+Storage.prototype._key = function(walletId, k) {
+  return walletId + '::' + k;
+};
+// get value by key
+Storage.prototype.get = function(walletId, k) {
+  var ret = this._read(this._key(walletId,k));
+
+  return ret;
+};
+
+// set value for key
+Storage.prototype.set = function(walletId, k,v) {
+  this._write(this._key(walletId,k), v);
+};
+
+// remove value for key
+Storage.prototype.remove = function(walletId, k) {
+  this.removeGlobal(this._key(walletId,k));
+};
+
+Storage.prototype.setName = function(walletId, name) {
+  this.setGlobal('nameFor::'+walletId, name);
+};
+
+Storage.prototype.getName = function(walletId) {
+  return this.getGlobal('nameFor::'+walletId);
+};
+
+Storage.prototype.getWalletIds = function() {
+  var walletIds = [];
+  var uniq = {};
+  for (var i = 0; i < localStorage.length; i++) {
+     var key = localStorage.key(i);
+     var split = key.split('::');
+     if (split.length == 2) {
+      var walletId = split[0];
+
+      if (walletId === 'nameFor') continue;
+
+      if (typeof uniq[walletId] === 'undefined' ) {
+        walletIds.push(walletId);
+        uniq[walletId] = 1;
+      }
+     }
+   } 
+  return walletIds;
+};
+
+Storage.prototype.getWallets = function() {
+  var wallets = [];
+  var uniq = {};
+  var ids = this.getWalletIds();
+
+  for (var i in ids){
+    wallets.push({
+      id:ids[i],
+      name: this.getName(ids[i]),
+    });
+  }
+  return wallets;
+};
+
+//obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj) {
-  for (var i in keys) {
-    var key = keys[0];
-    obj[key] = this.get(walletId, key);
+  for (var k in obj) {
+    this.set(walletId, k, obj[k]);
   }
+  this.setName(walletId, obj.opts.name);
 };
 
-Storage.prototype.setFromEncryptedObj = function(walletId, base64) {
-  
+// remove all values
+Storage.prototype.clearAll = function() {
+  localStorage.clear();
 };
 
-Storage.prototype.getEncryptedObj = function(walletId) {
-  var keys = this._getWalletKeys();
-  var obj = {};
-  for (var i in keys) {
-    var key = keys[0];
-    obj[key] = this.get(walletId, key);
-  }
-  
-  var str = JSON.stringify(obj);
-  var base64 = this._encrypt(str).toString();
+Storage.prototype.export = function(obj) {
+  var encryptedObj = this._encryptObj(obj);
+  return encryptedObj;
+};
 
-  return base64;
+Storage.prototype.import = function(base64) {
+  var decryptedObj = this._decryptObj(base64);
+  return decryptedObj;
 };
 
 module.exports = require('soop')(Storage);
 
-},{"./LocalPlain":20,"soop":51}],20:[function(require,module,exports){
+},{"soop":63}],22:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -2712,8 +2882,8 @@ Storage.prototype.clearAll = function() {
 
 module.exports = require('soop')(Storage);
 
-},{"./Base":18,"soop":51}],21:[function(require,module,exports){
-(function (process,Buffer){
+},{"./Base":20,"soop":63}],23:[function(require,module,exports){
+(function (Buffer){
 /* 
 One way to require files is this simple way:
 module.exports.Address = require('./Address');
@@ -2726,8 +2896,16 @@ var requireWhenAccessed = function(name, file) {
   Object.defineProperty(module.exports, name, {get: function() {return require(file)}});
 };
 
-requireWhenAccessed('bignum', 'bignum');
-requireWhenAccessed('base58', 'base58-native');
+requireWhenAccessed('Bignum', './lib/Bignum');
+Object.defineProperty(module.exports, 'bignum', {get: function() {
+  console.log('bignum (with a lower-case "b") is deprecated. Use bitcore.Bignum (capital "B") instead.');
+  return require('./lib/Bignum');
+}});
+requireWhenAccessed('Base58', './lib/Base58');
+Object.defineProperty(module.exports, 'base58', {get: function() {
+  console.log('base58 (with a lower-case "b") is deprecated. Use bitcore.Base58 (capital "B") instead.');
+  return require('./lib/Base58');
+}});
 requireWhenAccessed('bufferput', 'bufferput');
 requireWhenAccessed('buffertools', 'buffertools');
 requireWhenAccessed('Buffers.monkey', './patches/Buffers.monkey');
@@ -2770,14 +2948,2702 @@ requireWhenAccessed('Message', './lib/Message');
 requireWhenAccessed('Electrum', './lib/Electrum');
 module.exports.Buffer = Buffer;
 
-if (typeof process.versions === 'undefined') {
-  // Browser specific
-  module.exports.bignum.config({EXPONENTIAL_AT: 9999999, DECIMAL_PLACES: 0, ROUNDING_MODE: 1});
+
+}).call(this,require("buffer").Buffer)
+},{"./lib/Base58":24,"./lib/Bignum":25,"bindings":28,"buffer":30}],24:[function(require,module,exports){
+(function (Buffer){
+var crypto = require('crypto');
+var bignum = require('./Bignum');
+
+var globalBuffer = new Buffer(1024);
+var zerobuf = new Buffer(0);
+var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+var ALPHABET_ZERO = ALPHABET[0];
+var ALPHABET_BUF = new Buffer(ALPHABET, 'ascii');
+var ALPHABET_INV = {};
+for(var i=0; i < ALPHABET.length; i++) {
+  ALPHABET_INV[ALPHABET[i]] = i;
+};
+
+// Vanilla Base58 Encoding
+var base58 = {
+  encode: function(buf) {
+    var str;
+    var x = bignum.fromBuffer(buf);
+    var r;
+
+    if(buf.length < 512) {
+      str = globalBuffer;
+    } else {
+      str = new Buffer(buf.length << 1);
+    }
+    var i = str.length - 1;
+    while(x.gt(0)) {
+      r = x.mod(58);
+      x = x.div(58);
+      str[i] = ALPHABET_BUF[r.toNumber()];
+      i--;
+    }
+
+    // deal with leading zeros
+    var j=0;
+    while(buf[j] == 0) {
+      str[i] = ALPHABET_BUF[0];
+      j++; i--;
+    }
+
+    return str.slice(i+1,str.length).toString('ascii');
+  },
+
+  decode: function(str) {
+    if(str.length == 0) return zerobuf;
+    var answer = bignum(0);
+    for(var i=0; i<str.length; i++) {
+    answer.mul(58)
+      answer = answer.mul(58);
+      answer = answer.add(ALPHABET_INV[str[i]]);
+    };
+    var i = 0;
+    while(i < str.length && str[i] == ALPHABET_ZERO) {
+      i++;
+    }
+    if(i > 0) {
+      var zb = new Buffer(i);
+      zb.fill(0);
+      if(i == str.length) return zb;
+      answer = answer.toBuffer();
+      return Buffer.concat([zb, answer], i+answer.length);
+    } else {
+      return answer.toBuffer();
+    }
+  },
+};
+
+// Base58Check Encoding
+function sha256(data) {
+  return new Buffer(crypto.createHash('sha256').update(data).digest('binary'), 'binary');
+};
+
+function doubleSHA256(data) {
+  return sha256(sha256(data));
+};
+
+var base58Check = {
+  encode: function(buf) {
+    var checkedBuf = new Buffer(buf.length + 4);
+    var hash = doubleSHA256(buf);
+    buf.copy(checkedBuf);
+    hash.copy(checkedBuf, buf.length);
+    return base58.encode(checkedBuf);
+  },
+
+  decode: function(s) {
+    var buf = base58.decode(s);
+    if (buf.length < 4) {
+      throw new Error("invalid input: too short");
+    }
+
+    var data = buf.slice(0, -4);
+    var csum = buf.slice(-4);
+
+    var hash = doubleSHA256(data);
+    var hash4 = hash.slice(0, 4);
+
+    if (csum.toString() != hash4.toString()) {
+      throw new Error("checksum mismatch");
+    }
+
+    return data;
+  },
+};
+
+// if you frequently do base58 encodings with data larger
+// than 512 bytes, you can use this method to expand the
+// size of the reusable buffer
+exports.setBuffer = function(buf) {
+  globalBuffer = buf;
+};
+
+exports.base58 = base58;
+exports.base58Check = base58Check;
+exports.encode = base58.encode;
+exports.decode = base58.decode;
+
+}).call(this,require("buffer").Buffer)
+},{"./Bignum":25,"buffer":30,"crypto":34}],25:[function(require,module,exports){
+(function (process){
+if (process.versions) {
+  module.exports = require('bignum');
+  return;
+}
+module.exports = require('./browser/Bignum');
+
+}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./browser/Bignum":26,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"bignum":27}],26:[function(require,module,exports){
+(function (Buffer){
+/* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
+
+/*jslint bitwise: true, eqeq: true, plusplus: true, sub: true, white: true, maxerr: 500 */
+/*global module */
+
+/*
+  bignumber.js v1.3.0
+  A JavaScript library for arbitrary-precision arithmetic.
+  https://github.com/MikeMcl/bignumber.js
+  Copyright (c) 2012 Michael Mclaughlin <M8ch88l@gmail.com>
+  MIT Expat Licence
+*/
+
+/*********************************** DEFAULTS ************************************/
+
+/*
+ * The default values below must be integers within the stated ranges (inclusive).
+ * Most of these values can be changed during run-time using BigNumber.config().
+ */
+
+/*
+ * The limit on the value of DECIMAL_PLACES, TO_EXP_NEG, TO_EXP_POS, MIN_EXP,
+ * MAX_EXP, and the argument to toFixed, toPrecision and toExponential, beyond
+ * which an exception is thrown (if ERRORS is true).
+ */
+var MAX = 1E9,                                   // 0 to 1e+9
+
+    // Limit of magnitude of exponent argument to toPower.
+    MAX_POWER = 1E6,                             // 1 to 1e+6
+
+    // The maximum number of decimal places for operations involving division.
+    DECIMAL_PLACES = 20,                         // 0 to MAX
+
+    /*
+     * The rounding mode used when rounding to the above decimal places, and when
+     * using toFixed, toPrecision and toExponential, and round (default value).
+     * UP         0 Away from zero.
+     * DOWN       1 Towards zero.
+     * CEIL       2 Towards +Infinity.
+     * FLOOR      3 Towards -Infinity.
+     * HALF_UP    4 Towards nearest neighbour. If equidistant, up.
+     * HALF_DOWN  5 Towards nearest neighbour. If equidistant, down.
+     * HALF_EVEN  6 Towards nearest neighbour. If equidistant, towards even neighbour.
+     * HALF_CEIL  7 Towards nearest neighbour. If equidistant, towards +Infinity.
+     * HALF_FLOOR 8 Towards nearest neighbour. If equidistant, towards -Infinity.
+     */
+    ROUNDING_MODE = 4,                           // 0 to 8
+
+    // EXPONENTIAL_AT : [TO_EXP_NEG , TO_EXP_POS]
+
+    // The exponent value at and beneath which toString returns exponential notation.
+    // Number type: -7
+    TO_EXP_NEG = -7,                             // 0 to -MAX
+
+    // The exponent value at and above which toString returns exponential notation.
+    // Number type: 21
+    TO_EXP_POS = 21,                             // 0 to MAX
+
+    // RANGE : [MIN_EXP, MAX_EXP]
+
+    // The minimum exponent value, beneath which underflow to zero occurs.
+    // Number type: -324  (5e-324)
+    MIN_EXP = -MAX,                              // -1 to -MAX
+
+    // The maximum exponent value, above which overflow to Infinity occurs.
+    // Number type:  308  (1.7976931348623157e+308)
+    MAX_EXP = MAX,                               // 1 to MAX
+
+    // Whether BigNumber Errors are ever thrown.
+    // CHANGE parseInt to parseFloat if changing ERRORS to false.
+    ERRORS = true,                               // true or false
+    parse = parseInt,                            // parseInt or parseFloat
+
+/***********************************************************************************/
+
+    P = BigNumber.prototype,
+    DIGITS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_',
+    outOfRange,
+    id = 0,
+    isValid = /^-?(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
+    trim = String.prototype.trim || function () {return this.replace(/^\s+|\s+$/g, '')},
+    ONE = BigNumber(1);
+
+
+// CONSTRUCTOR
+
+
+/*
+ * The exported function.
+ * Create and return a new instance of a BigNumber object.
+ *
+ * n {number|string|BigNumber} A numeric value.
+ * [b] {number} The base of n. Integer, 2 to 64 inclusive.
+ */
+function BigNumber( n, b ) {
+    var e, i, isNum, digits, valid, orig,
+        x = this;
+
+    // Enable constructor usage without new.
+    if ( !(x instanceof BigNumber) ) {
+        return new BigNumber( n, b )
+    }
+
+    // Duplicate.
+    if ( n instanceof BigNumber ) {
+        id = 0;
+
+        // e is undefined.
+        if ( b !== e ) {
+            n += ''
+        } else {
+            x['s'] = n['s'];
+            x['e'] = n['e'];
+            x['c'] = ( n = n['c'] ) ? n.slice() : n;
+            return;
+        }
+    }
+
+    // Accept empty string as zero
+    if (n === '') n = 0;
+
+    // If number, check if minus zero.
+    if ( typeof n != 'string' ) {
+        n = ( isNum = typeof n == 'number' ||
+            Object.prototype.toString.call(n) == '[object Number]' ) &&
+                n === 0 && 1 / n < 0 ? '-0' : n + '';
+    }
+
+    orig = n;
+
+    if ( b === e && isValid.test(n) ) {
+
+        // Determine sign.
+        x['s'] = n.charAt(0) == '-' ? ( n = n.slice(1), -1 ) : 1;
+
+    // Either n is not a valid BigNumber or a base has been specified.
+    } else {
+
+        // Enable exponential notation to be used with base 10 argument.
+        // Ensure return value is rounded to DECIMAL_PLACES as with other bases.
+        if ( b == 10 ) {
+
+            return setMode( n, DECIMAL_PLACES, ROUNDING_MODE );
+        }
+
+        n = trim.call(n).replace( /^\+(?!-)/, '' );
+
+        x['s'] = n.charAt(0) == '-' ? ( n = n.replace( /^-(?!-)/, '' ), -1 ) : 1;
+
+        if ( b != null ) {
+
+            if ( ( b == (b | 0) || !ERRORS ) &&
+              !( outOfRange = !( b >= 2 && b < 65 ) ) ) {
+
+                digits = '[' + DIGITS.slice( 0, b = b | 0 ) + ']+';
+
+                // Before non-decimal number validity test and base conversion
+                // remove the `.` from e.g. '1.', and replace e.g. '.1' with '0.1'.
+                n = n.replace( /\.$/, '' ).replace( /^\./, '0.' );
+
+                // Any number in exponential form will fail due to the e+/-.
+                if ( valid = new RegExp(
+                  '^' + digits + '(?:\\.' + digits + ')?$', b < 37 ? 'i' : '' ).test(n) ) {
+
+                    if ( isNum ) {
+
+                        if ( n.replace( /^0\.0*|\./, '' ).length > 15 ) {
+
+                            // 'new BigNumber() number type has more than 15 significant digits: {n}'
+                            ifExceptionsThrow( orig, 0 );
+                        }
+
+                        // Prevent later check for length on converted number.
+                        isNum = !isNum;
+                    }
+                    n = convert( n, 10, b, x['s'] );
+
+                } else if ( n != 'Infinity' && n != 'NaN' ) {
+
+                    // 'new BigNumber() not a base {b} number: {n}'
+                    ifExceptionsThrow( orig, 1, b );
+                    n = 'NaN';
+                }
+            } else {
+
+                // 'new BigNumber() base not an integer: {b}'
+                // 'new BigNumber() base out of range: {b}'
+                ifExceptionsThrow( b, 2 );
+
+                // Ignore base.
+                valid = isValid.test(n);
+            }
+        } else {
+            valid = isValid.test(n);
+        }
+
+        if ( !valid ) {
+
+            // Infinity/NaN
+            x['c'] = x['e'] = null;
+
+            // NaN
+            if ( n != 'Infinity' ) {
+
+                // No exception on NaN.
+                if ( n != 'NaN' ) {
+
+                    // 'new BigNumber() not a number: {n}'
+                    ifExceptionsThrow( orig, 3 );
+                }
+                x['s'] = null;
+            }
+            id = 0;
+
+            return;
+        }
+    }
+
+    // Decimal point?
+    if ( ( e = n.indexOf('.') ) > -1 ) {
+        n = n.replace( '.', '' );
+    }
+
+    // Exponential form?
+    if ( ( i = n.search( /e/i ) ) > 0 ) {
+
+        // Determine exponent.
+        if ( e < 0 ) {
+            e = i;
+        }
+        e += +n.slice( i + 1 );
+        n = n.substring( 0, i );
+
+    } else if ( e < 0 ) {
+
+        // Integer.
+        e = n.length;
+    }
+
+    // Determine leading zeros.
+    for ( i = 0; n.charAt(i) == '0'; i++ ) {
+    }
+
+    b = n.length;
+
+    // Disallow numbers with over 15 significant digits if number type.
+    if ( isNum && b > 15 && n.slice(i).length > 15 ) {
+
+        // 'new BigNumber() number type has more than 15 significant digits: {n}'
+        ifExceptionsThrow( orig, 0 );
+    }
+    id = 0;
+
+    // Overflow?
+    if ( ( e -= i + 1 ) > MAX_EXP ) {
+
+        // Infinity.
+        x['c'] = x['e'] = null;
+
+    // Zero or underflow?
+    } else if ( i == b || e < MIN_EXP ) {
+
+        // Zero.
+        x['c'] = [ x['e'] = 0 ];
+    } else {
+
+        // Determine trailing zeros.
+        for ( ; n.charAt(--b) == '0'; ) {
+        }
+
+        x['e'] = e;
+        x['c'] = [];
+
+        // Convert string to array of digits (without leading and trailing zeros).
+        for ( e = 0; i <= b; x['c'][e++] = +n.charAt(i++) ) {
+        }
+    }
 }
 
 
-}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"bindings":22,"buffer":24}],22:[function(require,module,exports){
+// CONSTRUCTOR PROPERTIES/METHODS
+
+
+BigNumber['ROUND_UP'] = 0;
+BigNumber['ROUND_DOWN'] = 1;
+BigNumber['ROUND_CEIL'] = 2;
+BigNumber['ROUND_FLOOR'] = 3;
+BigNumber['ROUND_HALF_UP'] = 4;
+BigNumber['ROUND_HALF_DOWN'] = 5;
+BigNumber['ROUND_HALF_EVEN'] = 6;
+BigNumber['ROUND_HALF_CEIL'] = 7;
+BigNumber['ROUND_HALF_FLOOR'] = 8;
+
+/*
+ * Create an instance from a Buffer
+ */
+BigNumber['fromBuffer'] = function (buf, opts) {
+
+    if (!opts) opts = {};
+
+    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
+        || opts.endian || 'big'
+    ;
+
+    var size = opts.size === 'auto' ? Math.ceil(buf.length) : (opts.size || 1);
+
+    if (buf.length % size !== 0) {
+        throw new RangeError('Buffer length (' + buf.length + ')'
+            + ' must be a multiple of size (' + size + ')'
+        );
+    }
+
+    var hex = [];
+    for (var i = 0; i < buf.length; i += size) {
+        var chunk = [];
+        for (var j = 0; j < size; j++) {
+            chunk.push(buf[
+                i + (endian === 'big' ? j : (size - j - 1))
+            ]);
+        }
+
+        hex.push(chunk
+            .map(function (c) {
+                return (c < 16 ? '0' : '') + c.toString(16);
+            })
+            .join('')
+        );
+    }
+
+    return BigNumber(hex.join(''), 16);
+
+};
+
+/*
+ * Configure infrequently-changing library-wide settings.
+ *
+ * Accept an object or an argument list, with one or many of the following
+ * properties or parameters respectively:
+ * [ DECIMAL_PLACES [, ROUNDING_MODE [, EXPONENTIAL_AT [, RANGE [, ERRORS ]]]]]
+ *
+ * E.g.
+ * BigNumber.config(20, 4) is equivalent to
+ * BigNumber.config({ DECIMAL_PLACES : 20, ROUNDING_MODE : 4 })
+ * Ignore properties/parameters set to null or undefined.
+ *
+ * Return an object with the properties current values.
+ */
+BigNumber['config'] = function () {
+    var v, p,
+        i = 0,
+        r = {},
+        a = arguments,
+        o = a[0],
+        c = 'config',
+        inRange = function ( n, lo, hi ) {
+          return !( ( outOfRange = n < lo || n > hi ) ||
+            parse(n) != n && n !== 0 );
+        },
+        has = o && typeof o == 'object'
+          ? function () {if ( o.hasOwnProperty(p) ) return ( v = o[p] ) != null}
+          : function () {if ( a.length > i ) return ( v = a[i++] ) != null};
+
+    // [DECIMAL_PLACES] {number} Integer, 0 to MAX inclusive.
+    if ( has( p = 'DECIMAL_PLACES' ) ) {
+
+        if ( inRange( v, 0, MAX ) ) {
+            DECIMAL_PLACES = v | 0;
+        } else {
+
+            // 'config() DECIMAL_PLACES not an integer: {v}'
+            // 'config() DECIMAL_PLACES out of range: {v}'
+            ifExceptionsThrow( v, p, c );
+        }
+    }
+    r[p] = DECIMAL_PLACES;
+
+    // [ROUNDING_MODE] {number} Integer, 0 to 8 inclusive.
+    if ( has( p = 'ROUNDING_MODE' ) ) {
+
+        if ( inRange( v, 0, 8 ) ) {
+            ROUNDING_MODE = v | 0;
+        } else {
+
+            // 'config() ROUNDING_MODE not an integer: {v}'
+            // 'config() ROUNDING_MODE out of range: {v}'
+            ifExceptionsThrow( v, p, c );
+        }
+    }
+    r[p] = ROUNDING_MODE;
+
+    /*
+     * [EXPONENTIAL_AT] {number|number[]} Integer, -MAX to MAX inclusive or
+     * [ integer -MAX to 0 inclusive, 0 to MAX inclusive ].
+     */
+    if ( has( p = 'EXPONENTIAL_AT' ) ) {
+
+        if ( inRange( v, -MAX, MAX ) ) {
+            TO_EXP_NEG = -( TO_EXP_POS = ~~( v < 0 ? -v : +v ) );
+        } else if ( !outOfRange && v && inRange( v[0], -MAX, 0 ) &&
+          inRange( v[1], 0, MAX ) ) {
+            TO_EXP_NEG = ~~v[0];
+            TO_EXP_POS = ~~v[1];
+        } else {
+
+            // 'config() EXPONENTIAL_AT not an integer or not [integer, integer]: {v}'
+            // 'config() EXPONENTIAL_AT out of range or not [negative, positive: {v}'
+            ifExceptionsThrow( v, p, c, 1 );
+        }
+    }
+    r[p] = [ TO_EXP_NEG, TO_EXP_POS ];
+
+    /*
+     * [RANGE][ {number|number[]} Non-zero integer, -MAX to MAX inclusive or
+     * [ integer -MAX to -1 inclusive, integer 1 to MAX inclusive ].
+     */
+    if ( has( p = 'RANGE' ) ) {
+
+        if ( inRange( v, -MAX, MAX ) && ~~v ) {
+            MIN_EXP = -( MAX_EXP = ~~( v < 0 ? -v : +v ) );
+        } else if ( !outOfRange && v && inRange( v[0], -MAX, -1 ) &&
+          inRange( v[1], 1, MAX ) ) {
+            MIN_EXP = ~~v[0], MAX_EXP = ~~v[1];
+        } else {
+
+            // 'config() RANGE not a non-zero integer or not [integer, integer]: {v}'
+            // 'config() RANGE out of range or not [negative, positive: {v}'
+            ifExceptionsThrow( v, p, c, 1, 1 );
+        }
+    }
+    r[p] = [ MIN_EXP, MAX_EXP ];
+
+    // [ERRORS] {boolean|number} true, false, 1 or 0.
+    if ( has( p = 'ERRORS' ) ) {
+
+        if ( v === !!v || v === 1 || v === 0 ) {
+            parse = ( outOfRange = id = 0, ERRORS = !!v )
+              ? parseInt
+              : parseFloat;
+        } else {
+
+            // 'config() ERRORS not a boolean or binary digit: {v}'
+            ifExceptionsThrow( v, p, c, 0, 0, 1 );
+        }
+    }
+    r[p] = ERRORS;
+
+    return r;
+};
+
+
+// PRIVATE FUNCTIONS
+
+
+// Assemble error messages. Throw BigNumber Errors.
+function ifExceptionsThrow( arg, i, j, isArray, isRange, isErrors) {
+
+    if ( ERRORS ) {
+        var error,
+            method = ['new BigNumber', 'cmp', 'div', 'eq', 'gt', 'gte', 'lt',
+                 'lte', 'minus', 'mod', 'plus', 'times', 'toFr'
+                ][ id ? id < 0 ? -id : id : 1 / id < 0 ? 1 : 0 ] + '()',
+            message = outOfRange ? ' out of range' : ' not a' +
+              ( isRange ? ' non-zero' : 'n' ) + ' integer';
+
+        message = ( [
+            method + ' number type has more than 15 significant digits',
+            method + ' not a base ' + j + ' number',
+            method + ' base' + message,
+            method + ' not a number' ][i] ||
+              j + '() ' + i + ( isErrors
+                ? ' not a boolean or binary digit'
+                : message + ( isArray
+                  ? ' or not [' + ( outOfRange
+                    ? ' negative, positive'
+                    : ' integer, integer' ) + ' ]'
+                  : '' ) ) ) + ': ' + arg;
+
+        outOfRange = id = 0;
+        error = new Error(message);
+        error['name'] = 'BigNumber Error';
+
+        throw error;
+    }
+}
+
+
+/*
+ * Convert a numeric string of baseIn to a numeric string of baseOut.
+ */
+function convert( nStr, baseOut, baseIn, sign ) {
+    var e, dvs, dvd, nArr, fracArr, fracBN;
+
+    // Convert string of base bIn to an array of numbers of baseOut.
+    // Eg. strToArr('255', 10) where baseOut is 16, returns [15, 15].
+    // Eg. strToArr('ff', 16)  where baseOut is 10, returns [2, 5, 5].
+    function strToArr( str, bIn ) {
+        var j,
+            i = 0,
+            strL = str.length,
+            arrL,
+            arr = [0];
+
+        for ( bIn = bIn || baseIn; i < strL; i++ ) {
+
+            for ( arrL = arr.length, j = 0; j < arrL; arr[j] *= bIn, j++ ) {
+            }
+
+            for ( arr[0] += DIGITS.indexOf( str.charAt(i) ), j = 0;
+                  j < arr.length;
+                  j++ ) {
+
+                if ( arr[j] > baseOut - 1 ) {
+
+                    if ( arr[j + 1] == null ) {
+                        arr[j + 1] = 0;
+                    }
+                    arr[j + 1] += arr[j] / baseOut ^ 0;
+                    arr[j] %= baseOut;
+                }
+            }
+        }
+
+        return arr.reverse();
+    }
+
+    // Convert array to string.
+    // E.g. arrToStr( [9, 10, 11] ) becomes '9ab' (in bases above 11).
+    function arrToStr( arr ) {
+        var i = 0,
+            arrL = arr.length,
+            str = '';
+
+        for ( ; i < arrL; str += DIGITS.charAt( arr[i++] ) ) {
+        }
+
+        return str;
+    }
+
+    if ( baseIn < 37 ) {
+        nStr = nStr.toLowerCase();
+    }
+
+    /*
+     * If non-integer convert integer part and fraction part separately.
+     * Convert the fraction part as if it is an integer than use division to
+     * reduce it down again to a value less than one.
+     */
+    if ( ( e = nStr.indexOf( '.' ) ) > -1 ) {
+
+        /*
+         * Calculate the power to which to raise the base to get the number
+         * to divide the fraction part by after it has been converted as an
+         * integer to the required base.
+         */
+        e = nStr.length - e - 1;
+
+        // Use toFixed to avoid possible exponential notation.
+        dvs = strToArr( new BigNumber(baseIn)['pow'](e)['toF'](), 10 );
+
+        nArr = nStr.split('.');
+
+        // Convert the base of the fraction part (as integer).
+        dvd = strToArr( nArr[1] );
+
+        // Convert the base of the integer part.
+        nArr = strToArr( nArr[0] );
+
+        // Result will be a BigNumber with a value less than 1.
+        fracBN = divide( dvd, dvs, dvd.length - dvs.length, sign, baseOut,
+          // Is least significant digit of integer part an odd number?
+          nArr[nArr.length - 1] & 1 );
+
+        fracArr = fracBN['c'];
+
+        // e can be <= 0  ( if e == 0, fracArr is [0] or [1] ).
+        if ( e = fracBN['e'] ) {
+
+            // Append zeros according to the exponent of the result.
+            for ( ; ++e; fracArr.unshift(0) ) {
+            }
+
+            // Append the fraction part to the converted integer part.
+            nStr = arrToStr(nArr) + '.' + arrToStr(fracArr);
+
+        // fracArr is [1].
+        // Fraction digits rounded up, so increment last digit of integer part.
+        } else if ( fracArr[0] ) {
+
+            if ( nArr[ e = nArr.length - 1 ] < baseOut - 1 ) {
+                ++nArr[e];
+                nStr = arrToStr(nArr);
+            } else {
+                nStr = new BigNumber( arrToStr(nArr),
+                  baseOut )['plus'](ONE)['toS'](baseOut);
+            }
+
+        // fracArr is [0]. No fraction digits.
+        } else {
+            nStr = arrToStr(nArr);
+        }
+    } else {
+
+        // Simple integer. Convert base.
+        nStr = arrToStr( strToArr(nStr) );
+    }
+
+    return nStr;
+}
+
+
+// Perform division in the specified base. Called by div and convert.
+function divide( dvd, dvs, exp, s, base, isOdd ) {
+    var dvsL, dvsT, next, cmp, remI,
+        dvsZ = dvs.slice(),
+        dvdI = dvsL = dvs.length,
+        dvdL = dvd.length,
+        rem = dvd.slice( 0, dvsL ),
+        remL = rem.length,
+        quo = new BigNumber(ONE),
+        qc = quo['c'] = [],
+        qi = 0,
+        dig = DECIMAL_PLACES + ( quo['e'] = exp ) + 1;
+
+    quo['s'] = s;
+    s = dig < 0 ? 0 : dig;
+
+    // Add zeros to make remainder as long as divisor.
+    for ( ; remL++ < dvsL; rem.push(0) ) {
+    }
+
+    // Create version of divisor with leading zero.
+    dvsZ.unshift(0);
+
+    do {
+
+        // 'next' is how many times the divisor goes into the current remainder.
+        for ( next = 0; next < base; next++ ) {
+
+            // Compare divisor and remainder.
+            if ( dvsL != ( remL = rem.length ) ) {
+                cmp = dvsL > remL ? 1 : -1;
+            } else {
+                for ( remI = -1, cmp = 0; ++remI < dvsL; ) {
+
+                    if ( dvs[remI] != rem[remI] ) {
+                        cmp = dvs[remI] > rem[remI] ? 1 : -1;
+                        break;
+                    }
+                }
+            }
+
+            // Subtract divisor from remainder (if divisor < remainder).
+            if ( cmp < 0 ) {
+
+                // Remainder cannot be more than one digit longer than divisor.
+                // Equalise lengths using divisor with extra leading zero?
+                for ( dvsT = remL == dvsL ? dvs : dvsZ; remL; ) {
+
+                    if ( rem[--remL] < dvsT[remL] ) {
+
+                        for ( remI = remL;
+                          remI && !rem[--remI];
+                            rem[remI] = base - 1 ) {
+                        }
+                        --rem[remI];
+                        rem[remL] += base;
+                    }
+                    rem[remL] -= dvsT[remL];
+                }
+                for ( ; !rem[0]; rem.shift() ) {
+                }
+            } else {
+                break;
+            }
+        }
+
+        // Add the 'next' digit to the result array.
+        qc[qi++] = cmp ? next : ++next;
+
+        // Update the remainder.
+        rem[0] && cmp
+          ? ( rem[remL] = dvd[dvdI] || 0 )
+          : ( rem = [ dvd[dvdI] ] );
+
+    } while ( ( dvdI++ < dvdL || rem[0] != null ) && s-- );
+
+    // Leading zero? Do not remove if result is simply zero (qi == 1).
+    if ( !qc[0] && qi != 1 ) {
+
+        // There can't be more than one zero.
+        --quo['e'];
+        qc.shift();
+    }
+
+    // Round?
+    if ( qi > dig ) {
+        rnd( quo, DECIMAL_PLACES, base, isOdd, rem[0] != null );
+    }
+
+    // Overflow?
+    if ( quo['e'] > MAX_EXP ) {
+
+        // Infinity.
+        quo['c'] = quo['e'] = null;
+
+    // Underflow?
+    } else if ( quo['e'] < MIN_EXP ) {
+
+        // Zero.
+        quo['c'] = [quo['e'] = 0];
+    }
+
+    return quo;
+}
+
+
+/*
+ * Return a string representing the value of BigNumber n in normal or
+ * exponential notation rounded to the specified decimal places or
+ * significant digits.
+ * Called by toString, toExponential (exp 1), toFixed, and toPrecision (exp 2).
+ * d is the index (with the value in normal notation) of the digit that may be
+ * rounded up.
+ */
+function format( n, d, exp ) {
+
+    // Initially, i is the number of decimal places required.
+    var i = d - (n = new BigNumber(n))['e'],
+        c = n['c'];
+
+    // +-Infinity or NaN?
+    if ( !c ) {
+        return n['toS']();
+    }
+
+    // Round?
+    if ( c.length > ++d ) {
+        rnd( n, i, 10 );
+    }
+
+    // Recalculate d if toFixed as n['e'] may have changed if value rounded up.
+    i = c[0] == 0 ? i + 1 : exp ? d : n['e'] + i + 1;
+
+    // Append zeros?
+    for ( ; c.length < i; c.push(0) ) {
+    }
+    i = n['e'];
+
+    /*
+     * toPrecision returns exponential notation if the number of significant
+     * digits specified is less than the number of digits necessary to
+     * represent the integer part of the value in normal notation.
+     */
+    return exp == 1 || exp == 2 && ( --d < i || i <= TO_EXP_NEG )
+
+      // Exponential notation.
+      ? ( n['s'] < 0 && c[0] ? '-' : '' ) + ( c.length > 1
+        ? ( c.splice( 1, 0, '.' ), c.join('') )
+        : c[0] ) + ( i < 0 ? 'e' : 'e+' ) + i
+
+      // Normal notation.
+      : n['toS']();
+}
+
+
+// Round if necessary.
+// Called by divide, format, setMode and sqrt.
+function rnd( x, dp, base, isOdd, r ) {
+    var xc = x['c'],
+        isNeg = x['s'] < 0,
+        half = base / 2,
+        i = x['e'] + dp + 1,
+
+        // 'next' is the digit after the digit that may be rounded up.
+        next = xc[i],
+
+        /*
+         * 'more' is whether there are digits after 'next'.
+         * E.g.
+         * 0.005 (e = -3) to be rounded to 0 decimal places (dp = 0) gives i = -2
+         * The 'next' digit is zero, and there ARE 'more' digits after it.
+         * 0.5 (e = -1) dp = 0 gives i = 0
+         * The 'next' digit is 5 and there are no 'more' digits after it.
+         */
+        more = r || i < 0 || xc[i + 1] != null;
+
+    r = ROUNDING_MODE < 4
+      ? ( next != null || more ) &&
+        ( ROUNDING_MODE == 0 ||
+           ROUNDING_MODE == 2 && !isNeg ||
+             ROUNDING_MODE == 3 && isNeg )
+      : next > half || next == half &&
+        ( ROUNDING_MODE == 4 || more ||
+
+          /*
+           * isOdd is used in base conversion and refers to the least significant
+           * digit of the integer part of the value to be converted. The fraction
+           * part is rounded by this method separately from the integer part.
+           */
+          ROUNDING_MODE == 6 && ( xc[i - 1] & 1 || !dp && isOdd ) ||
+            ROUNDING_MODE == 7 && !isNeg ||
+              ROUNDING_MODE == 8 && isNeg );
+
+    if ( i < 1 || !xc[0] ) {
+        xc.length = 0;
+        xc.push(0);
+
+        if ( r ) {
+
+            // 1, 0.1, 0.01, 0.001, 0.0001 etc.
+            xc[0] = 1;
+            x['e'] = -dp;
+        } else {
+
+            // Zero.
+            x['e'] = 0;
+        }
+
+        return x;
+    }
+
+    // Remove any digits after the required decimal places.
+    xc.length = i--;
+
+    // Round up?
+    if ( r ) {
+
+        // Rounding up may mean the previous digit has to be rounded up and so on.
+        for ( --base; ++xc[i] > base; ) {
+            xc[i] = 0;
+
+            if ( !i-- ) {
+                ++x['e'];
+                xc.unshift(1);
+            }
+        }
+    }
+
+    // Remove trailing zeros.
+    for ( i = xc.length; !xc[--i]; xc.pop() ) {
+    }
+
+    return x;
+}
+
+
+// Round after setting the appropriate rounding mode.
+// Handles ceil, floor and round.
+function setMode( x, dp, rm ) {
+    var r = ROUNDING_MODE;
+
+    ROUNDING_MODE = rm;
+    x = new BigNumber(x);
+    x['c'] && rnd( x, dp, 10 );
+    ROUNDING_MODE = r;
+
+    return x;
+}
+
+
+// PROTOTYPE/INSTANCE METHODS
+
+
+/*
+ * Return a new BigNumber whose value is the absolute value of this BigNumber.
+ */
+P['abs'] = P['absoluteValue'] = function () {
+    var x = new BigNumber(this);
+
+    if ( x['s'] < 0 ) {
+        x['s'] = 1;
+    }
+
+    return x;
+};
+
+/*
+ * Return the bit length of the number.
+ */
+P['bitLength'] = function () {
+    return this.toString(2).length;
+};
+
+
+/*
+ * Return a new BigNumber whose value is the value of this BigNumber
+ * rounded to a whole number in the direction of Infinity.
+ */
+P['ceil'] = function () {
+    return setMode( this, 0, 2 );
+};
+
+
+/*
+ * Return
+ * 1 if the value of this BigNumber is greater than the value of BigNumber(y, b),
+ * -1 if the value of this BigNumber is less than the value of BigNumber(y, b),
+ * 0 if they have the same value,
+ * or null if the value of either is NaN.
+ */
+P['comparedTo'] = P['cmp'] = function ( y, b ) {
+    var a,
+        x = this,
+        xc = x['c'],
+        yc = ( id = -id, y = new BigNumber( y, b ) )['c'],
+        i = x['s'],
+        j = y['s'],
+        k = x['e'],
+        l = y['e'];
+
+    // Either NaN?
+    if ( !i || !j ) {
+        return null;
+    }
+
+    a = xc && !xc[0], b = yc && !yc[0];
+
+    // Either zero?
+    if ( a || b ) {
+        return a ? b ? 0 : -j : i;
+    }
+
+    // Signs differ?
+    if ( i != j ) {
+        return i;
+    }
+
+    // Either Infinity?
+    if ( a = i < 0, b = k == l, !xc || !yc ) {
+        return b ? 0 : !xc ^ a ? 1 : -1;
+    }
+
+    // Compare exponents.
+    if ( !b ) {
+        return k > l ^ a ? 1 : -1;
+    }
+
+    // Compare digit by digit.
+    for ( i = -1,
+          j = ( k = xc.length ) < ( l = yc.length ) ? k : l;
+          ++i < j; ) {
+
+        if ( xc[i] != yc[i] ) {
+            return xc[i] > yc[i] ^ a ? 1 : -1;
+        }
+    }
+    // Compare lengths.
+    return k == l ? 0 : k > l ^ a ? 1 : -1;
+};
+
+
+/*
+ *  n / 0 = I
+ *  n / N = N
+ *  n / I = 0
+ *  0 / n = 0
+ *  0 / 0 = N
+ *  0 / N = N
+ *  0 / I = 0
+ *  N / n = N
+ *  N / 0 = N
+ *  N / N = N
+ *  N / I = N
+ *  I / n = I
+ *  I / 0 = I
+ *  I / N = N
+ *  I / I = N
+ *
+ * Return a new BigNumber whose value is the value of this BigNumber
+ * divided by the value of BigNumber(y, b), rounded according to
+ * DECIMAL_PLACES and ROUNDING_MODE.
+ */
+P['dividedBy'] = P['div'] = function ( y, b ) {
+    var xc = this['c'],
+        xe = this['e'],
+        xs = this['s'],
+        yc = ( id = 2, y = new BigNumber( y, b ) )['c'],
+        ye = y['e'],
+        ys = y['s'],
+        s = xs == ys ? 1 : -1;
+
+    // Either NaN/Infinity/0?
+    return !xe && ( !xc || !xc[0] ) || !ye && ( !yc || !yc[0] )
+
+      // Either NaN?
+      ? new BigNumber( !xs || !ys ||
+
+        // Both 0 or both Infinity?
+        ( xc ? yc && xc[0] == yc[0] : !yc )
+
+          // Return NaN.
+          ? NaN
+
+          // x is 0 or y is Infinity?
+          : xc && xc[0] == 0 || !yc
+
+            // Return +-0.
+            ? s * 0
+
+            // y is 0. Return +-Infinity.
+            : s / 0 )
+
+      : divide( xc, yc, xe - ye, s, 10 );
+};
+
+
+/*
+ * Return true if the value of this BigNumber is equal to the value of
+ * BigNumber(n, b), otherwise returns false.
+ */
+P['equals'] = P['eq'] = function ( n, b ) {
+    id = 3;
+    return this['cmp']( n, b ) === 0;
+};
+
+
+/*
+ * Return a new BigNumber whose value is the value of this BigNumber
+ * rounded to a whole number in the direction of -Infinity.
+ */
+P['floor'] = function () {
+    return setMode( this, 0, 3 );
+};
+
+
+/*
+ * Return true if the value of this BigNumber is greater than the value of
+ * BigNumber(n, b), otherwise returns false.
+ */
+P['greaterThan'] = P['gt'] = function ( n, b ) {
+    id = 4;
+    return this['cmp']( n, b ) > 0;
+};
+
+
+/*
+ * Return true if the value of this BigNumber is greater than or equal to
+ * the value of BigNumber(n, b), otherwise returns false.
+ */
+P['greaterThanOrEqualTo'] = P['gte'] = function ( n, b ) {
+    id = 5;
+    return ( b = this['cmp']( n, b ) ) == 1 || b === 0;
+};
+
+
+/*
+ * Return true if the value of this BigNumber is a finite number, otherwise
+ * returns false.
+ */
+P['isFinite'] = P['isF'] = function () {
+    return !!this['c'];
+};
+
+
+/*
+ * Return true if the value of this BigNumber is NaN, otherwise returns
+ * false.
+ */
+P['isNaN'] = function () {
+    return !this['s'];
+};
+
+
+/*
+ * Return true if the value of this BigNumber is negative, otherwise
+ * returns false.
+ */
+P['isNegative'] = P['isNeg'] = function () {
+    return this['s'] < 0;
+};
+
+
+/*
+ * Return true if the value of this BigNumber is 0 or -0, otherwise returns
+ * false.
+ */
+P['isZero'] = P['isZ'] = function () {
+    return !!this['c'] && this['c'][0] == 0;
+};
+
+
+/*
+ * Return true if the value of this BigNumber is less than the value of
+ * BigNumber(n, b), otherwise returns false.
+ */
+P['lessThan'] = P['lt'] = function ( n, b ) {
+    id = 6;
+    return this['cmp']( n, b ) < 0;
+};
+
+
+/*
+ * Return true if the value of this BigNumber is less than or equal to the
+ * value of BigNumber(n, b), otherwise returns false.
+ */
+P['lessThanOrEqualTo'] = P['lte'] = P['le'] = function ( n, b ) {
+    id = 7;
+    return ( b = this['cmp']( n, b ) ) == -1 || b === 0;
+};
+
+
+/*
+ *  n - 0 = n
+ *  n - N = N
+ *  n - I = -I
+ *  0 - n = -n
+ *  0 - 0 = 0
+ *  0 - N = N
+ *  0 - I = -I
+ *  N - n = N
+ *  N - 0 = N
+ *  N - N = N
+ *  N - I = N
+ *  I - n = I
+ *  I - 0 = I
+ *  I - N = N
+ *  I - I = N
+ *
+ * Return a new BigNumber whose value is the value of this BigNumber minus
+ * the value of BigNumber(y, b).
+ */
+P['minus'] = P['sub'] = function ( y, b ) {
+    var d, i, j, xLTy,
+        x = this,
+        a = x['s'];
+
+    b = ( id = 8, y = new BigNumber( y, b ) )['s'];
+
+    // Either NaN?
+    if ( !a || !b ) {
+        return new BigNumber(NaN);
+    }
+
+    // Signs differ?
+    if ( a != b ) {
+        return y['s'] = -b, x['plus'](y);
+    }
+
+    var xc = x['c'],
+        xe = x['e'],
+        yc = y['c'],
+        ye = y['e'];
+
+    if ( !xe || !ye ) {
+
+        // Either Infinity?
+        if ( !xc || !yc ) {
+            return xc ? ( y['s'] = -b, y ) : new BigNumber( yc ? x : NaN );
+        }
+
+        // Either zero?
+        if ( !xc[0] || !yc[0] ) {
+
+            // y is non-zero?
+            return yc[0]
+              ? ( y['s'] = -b, y )
+
+              // x is non-zero?
+              : new BigNumber( xc[0]
+                ? x
+
+                // Both are zero.
+                // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
+                : ROUNDING_MODE == 3 ? -0 : 0 );
+        }
+    }
+
+    // Determine which is the bigger number.
+    // Prepend zeros to equalise exponents.
+    if ( xc = xc.slice(), a = xe - ye ) {
+        d = ( xLTy = a < 0 ) ? ( a = -a, xc ) : ( ye = xe, yc );
+
+        for ( d.reverse(), b = a; b--; d.push(0) ) {
+        }
+        d.reverse();
+    } else {
+
+        // Exponents equal. Check digit by digit.
+        j = ( ( xLTy = xc.length < yc.length ) ? xc : yc ).length;
+
+        for ( a = b = 0; b < j; b++ ) {
+
+            if ( xc[b] != yc[b] ) {
+                xLTy = xc[b] < yc[b];
+                break;
+            }
+        }
+    }
+
+    // x < y? Point xc to the array of the bigger number.
+    if ( xLTy ) {
+        d = xc, xc = yc, yc = d;
+        y['s'] = -y['s'];
+    }
+
+    /*
+     * Append zeros to xc if shorter. No need to add zeros to yc if shorter
+     * as subtraction only needs to start at yc.length.
+     */
+    if ( ( b = -( ( j = xc.length ) - yc.length ) ) > 0 ) {
+
+        for ( ; b--; xc[j++] = 0 ) {
+        }
+    }
+
+    // Subtract yc from xc.
+    for ( b = yc.length; b > a; ){
+
+        if ( xc[--b] < yc[b] ) {
+
+            for ( i = b; i && !xc[--i]; xc[i] = 9 ) {
+            }
+            --xc[i];
+            xc[b] += 10;
+        }
+        xc[b] -= yc[b];
+    }
+
+    // Remove trailing zeros.
+    for ( ; xc[--j] == 0; xc.pop() ) {
+    }
+
+    // Remove leading zeros and adjust exponent accordingly.
+    for ( ; xc[0] == 0; xc.shift(), --ye ) {
+    }
+
+    /*
+     * No need to check for Infinity as +x - +y != Infinity && -x - -y != Infinity
+     * when neither x or y are Infinity.
+     */
+
+    // Underflow?
+    if ( ye < MIN_EXP || !xc[0] ) {
+
+        /*
+         * Following IEEE 754 (2008) 6.3,
+         * n - n = +0  but  n - n = -0 when rounding towards -Infinity.
+         */
+        if ( !xc[0] ) {
+            y['s'] = ROUNDING_MODE == 3 ? -1 : 1;
+        }
+
+        // Result is zero.
+        xc = [ye = 0];
+    }
+
+    return y['c'] = xc, y['e'] = ye, y;
+};
+
+
+/*
+ *   n % 0 =  N
+ *   n % N =  N
+ *   0 % n =  0
+ *  -0 % n = -0
+ *   0 % 0 =  N
+ *   0 % N =  N
+ *   N % n =  N
+ *   N % 0 =  N
+ *   N % N =  N
+ *
+ * Return a new BigNumber whose value is the value of this BigNumber modulo
+ * the value of BigNumber(y, b).
+ */
+P['modulo'] = P['mod'] = function ( y, b ) {
+    var x = this,
+        xc = x['c'],
+        yc = ( id = 9, y = new BigNumber( y, b ) )['c'],
+        i = x['s'],
+        j = y['s'];
+
+    // Is x or y NaN, or y zero?
+    b = !i || !j || yc && !yc[0];
+
+    if ( b || xc && !xc[0] ) {
+        return new BigNumber( b ? NaN : x );
+    }
+
+    x['s'] = y['s'] = 1;
+    b = y['cmp'](x) == 1;
+    x['s'] = i, y['s'] = j;
+
+    return b
+      ? new BigNumber(x)
+      : ( i = DECIMAL_PLACES, j = ROUNDING_MODE,
+        DECIMAL_PLACES = 0, ROUNDING_MODE = 1,
+          x = x['div'](y),
+            DECIMAL_PLACES = i, ROUNDING_MODE = j,
+              this['minus']( x['times'](y) ) );
+};
+
+
+/*
+ * Return a new BigNumber whose value is the value of this BigNumber
+ * negated, i.e. multiplied by -1.
+ */
+P['negated'] = P['neg'] = function () {
+    var x = new BigNumber(this);
+
+    return x['s'] = -x['s'] || null, x;
+};
+
+
+/*
+ *  n + 0 = n
+ *  n + N = N
+ *  n + I = I
+ *  0 + n = n
+ *  0 + 0 = 0
+ *  0 + N = N
+ *  0 + I = I
+ *  N + n = N
+ *  N + 0 = N
+ *  N + N = N
+ *  N + I = N
+ *  I + n = I
+ *  I + 0 = I
+ *  I + N = N
+ *  I + I = I
+ *
+ * Return a new BigNumber whose value is the value of this BigNumber plus
+ * the value of BigNumber(y, b).
+ */
+P['plus'] = P['add'] = function ( y, b ) {
+    var d,
+        x = this,
+        a = x['s'];
+
+    b = ( id = 10, y = new BigNumber( y, b ) )['s'];
+
+    // Either NaN?
+    if ( !a || !b ) {
+        return new BigNumber(NaN);
+    }
+
+    // Signs differ?
+    if ( a != b ) {
+        return y['s'] = -b, x['minus'](y);
+    }
+
+    var xe = x['e'],
+        xc = x['c'],
+        ye = y['e'],
+        yc = y['c'];
+
+    if ( !xe || !ye ) {
+
+        // Either Infinity?
+        if ( !xc || !yc ) {
+
+            // Return +-Infinity.
+            return new BigNumber( a / 0 );
+        }
+
+        // Either zero?
+        if ( !xc[0] || !yc[0] ) {
+
+            // y is non-zero?
+            return yc[0]
+              ? y
+
+              // x is non-zero?
+              : new BigNumber( xc[0]
+                ? x
+
+                // Both are zero. Return zero.
+                : a * 0 );
+        }
+    }
+
+    // Prepend zeros to equalise exponents.
+    // Note: Faster to use reverse then do unshifts.
+    if ( xc = xc.slice(), a = xe - ye ) {
+        d = a > 0 ? ( ye = xe, yc ) : ( a = -a, xc );
+
+        for ( d.reverse(); a--; d.push(0) ) {
+        }
+        d.reverse();
+    }
+
+    // Point xc to the longer array.
+    if ( xc.length - yc.length < 0 ) {
+        d = yc, yc = xc, xc = d;
+    }
+
+    /*
+     * Only start adding at yc.length - 1 as the
+     * further digits of xc can be left as they are.
+     */
+    for ( a = yc.length, b = 0; a;
+         b = ( xc[--a] = xc[a] + yc[a] + b ) / 10 ^ 0, xc[a] %= 10 ) {
+    }
+
+    // No need to check for zero, as +x + +y != 0 && -x + -y != 0
+
+    if ( b ) {
+        xc.unshift(b);
+
+        // Overflow? (MAX_EXP + 1 possible)
+        if ( ++ye > MAX_EXP ) {
+
+            // Infinity.
+            xc = ye = null;
+        }
+    }
+
+     // Remove trailing zeros.
+    for ( a = xc.length; xc[--a] == 0; xc.pop() ) {
+    }
+
+    return y['c'] = xc, y['e'] = ye, y;
+};
+
+
+/*
+ * Return a BigNumber whose value is the value of this BigNumber raised to
+ * the power e. If e is negative round according to DECIMAL_PLACES and
+ * ROUNDING_MODE.
+ *
+ * e {number} Integer, -MAX_POWER to MAX_POWER inclusive.
+ */
+P['toPower'] = P['pow'] = function ( e ) {
+
+    // e to integer, avoiding NaN or Infinity becoming 0.
+    var i = e * 0 == 0 ? e | 0 : e,
+        x = new BigNumber(this),
+        y = new BigNumber(ONE);
+
+    // Use Math.pow?
+    // Pass +-Infinity for out of range exponents.
+    if ( ( ( ( outOfRange = e < -MAX_POWER || e > MAX_POWER ) &&
+      (i = e * 1 / 0) ) ||
+
+         /*
+          * Any exponent that fails the parse becomes NaN.
+          *
+          * Include 'e !== 0' because on Opera -0 == parseFloat(-0) is false,
+          * despite -0 === parseFloat(-0) && -0 == parseFloat('-0') is true.
+          */
+         parse(e) != e && e !== 0 && !(i = NaN) ) &&
+
+          // 'pow() exponent not an integer: {e}'
+          // 'pow() exponent out of range: {e}'
+          !ifExceptionsThrow( e, 'exponent', 'pow' ) ||
+
+            // Pass zero to Math.pow, as any value to the power zero is 1.
+            !i ) {
+
+        // i is +-Infinity, NaN or 0.
+        return new BigNumber( Math.pow( x['toS'](), i ) );
+    }
+
+    for ( i = i < 0 ? -i : i; ; ) {
+
+        if ( i & 1 ) {
+            y = y['times'](x);
+        }
+        i >>= 1;
+
+        if ( !i ) {
+            break;
+        }
+        x = x['times'](x);
+    }
+
+    return e < 0 ? ONE['div'](y) : y;
+};
+
+
+/*
+ * Return a BigNumber whose value is the value of this BigNumber raised to
+ * the power m modulo n.
+ *
+ * m {BigNumber} the value to take the power of
+ * n {BigNumber} the value to modulo by
+ */
+P['powm'] = function ( m, n ) {
+    return this.pow(m).mod(n);
+};
+
+
+/*
+ * Return a new BigNumber whose value is the value of this BigNumber
+ * rounded to a maximum of dp decimal places using rounding mode rm, or to
+ * 0 and ROUNDING_MODE respectively if omitted.
+ *
+ * [dp] {number} Integer, 0 to MAX inclusive.
+ * [rm] {number} Integer, 0 to 8 inclusive.
+ */
+P['round'] = function ( dp, rm ) {
+
+    dp = dp == null || ( ( ( outOfRange = dp < 0 || dp > MAX ) ||
+      parse(dp) != dp ) &&
+
+        // 'round() decimal places out of range: {dp}'
+        // 'round() decimal places not an integer: {dp}'
+        !ifExceptionsThrow( dp, 'decimal places', 'round' ) )
+          ? 0
+          : dp | 0;
+
+    rm = rm == null || ( ( ( outOfRange = rm < 0 || rm > 8 ) ||
+
+      // Include '&& rm !== 0' because with Opera -0 == parseFloat(-0) is false.
+      parse(rm) != rm && rm !== 0 ) &&
+
+        // 'round() mode not an integer: {rm}'
+        // 'round() mode out of range: {rm}'
+        !ifExceptionsThrow( rm, 'mode', 'round' ) )
+          ? ROUNDING_MODE
+          : rm | 0;
+
+    return setMode( this, dp, rm );
+};
+
+
+/*
+ *  sqrt(-n) =  N
+ *  sqrt( N) =  N
+ *  sqrt(-I) =  N
+ *  sqrt( I) =  I
+ *  sqrt( 0) =  0
+ *  sqrt(-0) = -0
+ *
+ * Return a new BigNumber whose value is the square root of the value of
+ * this BigNumber, rounded according to DECIMAL_PLACES and ROUNDING_MODE.
+ */
+P['squareRoot'] = P['sqrt'] = function () {
+    var n, r, re, t,
+        x = this,
+        c = x['c'],
+        s = x['s'],
+        e = x['e'],
+        dp = DECIMAL_PLACES,
+        rm = ROUNDING_MODE,
+        half = new BigNumber('0.5');
+
+    // Negative/NaN/Infinity/zero?
+    if ( s !== 1 || !c || !c[0] ) {
+
+        return new BigNumber( !s || s < 0 && ( !c || c[0] )
+          ? NaN
+          : c ? x : 1 / 0 );
+    }
+
+    // Initial estimate.
+    s = Math.sqrt( x['toS']() );
+    ROUNDING_MODE = 1;
+
+    /*
+      Math.sqrt underflow/overflow?
+      Pass x to Math.sqrt as integer, then adjust the exponent of the result.
+     */
+    if ( s == 0 || s == 1 / 0 ) {
+        n = c.join('');
+
+        if ( !( n.length + e & 1 ) ) {
+            n += '0';
+        }
+        r = new BigNumber( Math.sqrt(n) + '' );
+
+        // r may still not be finite.
+        if ( !r['c'] ) {
+            r['c'] = [1];
+        }
+        r['e'] = ( ( ( e + 1 ) / 2 ) | 0 ) - ( e < 0 || e & 1 );
+    } else {
+        r = new BigNumber( n = s.toString() );
+    }
+    re = r['e'];
+    s = re + ( DECIMAL_PLACES += 4 );
+
+    if ( s < 3 ) {
+        s = 0;
+    }
+    e = s;
+
+    // Newton-Raphson iteration.
+    for ( ; ; ) {
+        t = r;
+        r = half['times']( t['plus']( x['div'](t) ) );
+
+        if ( t['c'].slice( 0, s ).join('') === r['c'].slice( 0, s ).join('') ) {
+            c = r['c'];
+
+            /*
+              The exponent of r may here be one less than the final result
+              exponent (re), e.g 0.0009999 (e-4) --> 0.001 (e-3), so adjust
+              s so the rounding digits are indexed correctly.
+             */
+            s = s - ( n && r['e'] < re );
+
+            /*
+              The 4th rounding digit may be in error by -1 so if the 4 rounding
+              digits are 9999 or 4999 (i.e. approaching a rounding boundary)
+              continue the iteration.
+             */
+            if ( c[s] == 9 && c[s - 1] == 9 && c[s - 2] == 9 &&
+                    ( c[s - 3] == 9 || n && c[s - 3] == 4 ) ) {
+
+                /*
+                  If 9999 on first run through, check to see if rounding up
+                  gives the exact result as the nines may infinitely repeat.
+                 */
+                if ( n && c[s - 3] == 9 ) {
+                    t = r['round']( dp, 0 );
+
+                    if ( t['times'](t)['eq'](x) ) {
+                        ROUNDING_MODE = rm;
+                        DECIMAL_PLACES = dp;
+
+                        return t;
+                    }
+                }
+                DECIMAL_PLACES += 4;
+                s += 4;
+                n = '';
+            } else {
+
+                /*
+                  If the rounding digits are null, 0000 or 5000, check for an
+                  exact result. If not, then there are further digits so
+                  increment the 1st rounding digit to ensure correct rounding.
+                 */
+                if ( !c[e] && !c[e - 1] && !c[e - 2] &&
+                        ( !c[e - 3] || c[e - 3] == 5 ) ) {
+
+                    // Truncate to the first rounding digit.
+                    if ( c.length > e - 2 ) {
+                        c.length = e - 2;
+                    }
+
+                    if ( !r['times'](r)['eq'](x) ) {
+
+                        while ( c.length < e - 3 ) {
+                            c.push(0);
+                        }
+                        c[e - 3]++;
+                    }
+                }
+                ROUNDING_MODE = rm;
+                rnd( r, DECIMAL_PLACES = dp, 10 );
+
+                return r;
+            }
+        }
+    }
+};
+
+
+/*
+ *  n * 0 = 0
+ *  n * N = N
+ *  n * I = I
+ *  0 * n = 0
+ *  0 * 0 = 0
+ *  0 * N = N
+ *  0 * I = N
+ *  N * n = N
+ *  N * 0 = N
+ *  N * N = N
+ *  N * I = N
+ *  I * n = I
+ *  I * 0 = N
+ *  I * N = N
+ *  I * I = I
+ *
+ * Return a new BigNumber whose value is the value of this BigNumber times
+ * the value of BigNumber(y, b).
+ */
+P['times'] = P['mul'] = function ( y, b ) {
+    var c,
+        x = this,
+        xc = x['c'],
+        yc = ( id = 11, y = new BigNumber( y, b ) )['c'],
+        i = x['e'],
+        j = y['e'],
+        a = x['s'];
+
+    y['s'] = a == ( b = y['s'] ) ? 1 : -1;
+
+    // Either NaN/Infinity/0?
+    if ( !i && ( !xc || !xc[0] ) || !j && ( !yc || !yc[0] ) ) {
+
+        // Either NaN?
+        return new BigNumber( !a || !b ||
+
+          // x is 0 and y is Infinity  or  y is 0 and x is Infinity?
+          xc && !xc[0] && !yc || yc && !yc[0] && !xc
+
+            // Return NaN.
+            ? NaN
+
+            // Either Infinity?
+            : !xc || !yc
+
+              // Return +-Infinity.
+              ? y['s'] / 0
+
+              // x or y is 0. Return +-0.
+              : y['s'] * 0 );
+    }
+    y['e'] = i + j;
+
+    if ( ( a = xc.length ) < ( b = yc.length ) ) {
+        c = xc, xc = yc, yc = c, j = a, a = b, b = j;
+    }
+
+    for ( j = a + b, c = []; j--; c.push(0) ) {
+    }
+
+    // Multiply!
+    for ( i = b - 1; i > -1; i-- ) {
+
+        for ( b = 0, j = a + i;
+              j > i;
+              b = c[j] + yc[i] * xc[j - i - 1] + b,
+              c[j--] = b % 10 | 0,
+              b = b / 10 | 0 ) {
+        }
+
+        if ( b ) {
+            c[j] = ( c[j] + b ) % 10;
+        }
+    }
+
+    b && ++y['e'];
+
+    // Remove any leading zero.
+    !c[0] && c.shift();
+
+    // Remove trailing zeros.
+    for ( j = c.length; !c[--j]; c.pop() ) {
+    }
+
+    // No zero check needed as only x * 0 == 0 etc.
+
+    // Overflow?
+    y['c'] = y['e'] > MAX_EXP
+
+      // Infinity.
+      ? ( y['e'] = null )
+
+      // Underflow?
+      : y['e'] < MIN_EXP
+
+        // Zero.
+        ? [ y['e'] = 0 ]
+
+        // Neither.
+        : c;
+
+    return y;
+};
+
+/*
+ * Return a buffer containing the 
+ */
+P['toBuffer'] = function ( opts ) {
+
+    if (typeof opts === 'string') {
+        if (opts !== 'mpint') return 'Unsupported Buffer representation';
+
+        var abs = this.abs();
+        var buf = abs.toBuffer({ size : 1, endian : 'big' });
+        var len = buf.length === 1 && buf[0] === 0 ? 0 : buf.length;
+        if (buf[0] & 0x80) len ++;
+
+        var ret = new Buffer(4 + len);
+        if (len > 0) buf.copy(ret, 4 + (buf[0] & 0x80 ? 1 : 0));
+        if (buf[0] & 0x80) ret[4] = 0;
+
+        ret[0] = len & (0xff << 24);
+        ret[1] = len & (0xff << 16);
+        ret[2] = len & (0xff << 8);
+        ret[3] = len & (0xff << 0);
+
+        // two's compliment for negative integers:
+        var isNeg = this.lt(0);
+        if (isNeg) {
+            for (var i = 4; i < ret.length; i++) {
+                ret[i] = 0xff - ret[i];
+            }
+        }
+        ret[4] = (ret[4] & 0x7f) | (isNeg ? 0x80 : 0);
+        if (isNeg) ret[ret.length - 1] ++;
+
+        return ret;
+    }
+
+    if (!opts) opts = {};
+
+    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
+        || opts.endian || 'big'
+    ;
+
+    var hex = this.toString(16);
+    if (hex.charAt(0) === '-') throw new Error(
+        'converting negative numbers to Buffers not supported yet'
+    );
+
+    var size = opts.size === 'auto' ? Math.ceil(hex.length / 2) : (opts.size || 1);
+
+    var len = Math.ceil(hex.length / (2 * size)) * size;
+    var buf = new Buffer(len);
+
+    // zero-pad the hex string so the chunks are all `size` long
+    while (hex.length < 2 * len) hex = '0' + hex;
+
+    var hx = hex
+        .split(new RegExp('(.{' + (2 * size) + '})'))
+        .filter(function (s) { return s.length > 0 })
+    ;
+
+    hx.forEach(function (chunk, i) {
+        for (var j = 0; j < size; j++) {
+            var ix = i * size + (endian === 'big' ? j : size - j - 1);
+            buf[ix] = parseInt(chunk.slice(j*2,j*2+2), 16);
+        }
+    });
+
+    return buf;
+};
+
+/*
+ * Return a string representing the value of this BigNumber in exponential
+ * notation to dp fixed decimal places and rounded using ROUNDING_MODE if
+ * necessary.
+ *
+ * [dp] {number} Integer, 0 to MAX inclusive.
+ */
+P['toExponential'] = P['toE'] = function ( dp ) {
+
+    return format( this,
+      ( dp == null || ( ( outOfRange = dp < 0 || dp > MAX ) ||
+
+        /*
+         * Include '&& dp !== 0' because with Opera -0 == parseFloat(-0) is
+         * false, despite -0 == parseFloat('-0') && 0 == -0 being true.
+         */
+        parse(dp) != dp && dp !== 0 ) &&
+
+          // 'toE() decimal places not an integer: {dp}'
+          // 'toE() decimal places out of range: {dp}'
+          !ifExceptionsThrow( dp, 'decimal places', 'toE' ) ) && this['c']
+            ? this['c'].length - 1
+            : dp | 0, 1 );
+};
+
+
+/*
+ * Return a string representing the value of this BigNumber in normal
+ * notation to dp fixed decimal places and rounded using ROUNDING_MODE if
+ * necessary.
+ *
+ * Note: as with JavaScript's number type, (-0).toFixed(0) is '0',
+ * but e.g. (-0.00001).toFixed(0) is '-0'.
+ *
+ * [dp] {number} Integer, 0 to MAX inclusive.
+ */
+P['toFixed'] = P['toF'] = function ( dp ) {
+    var n, str, d,
+        x = this;
+
+    if ( !( dp == null || ( ( outOfRange = dp < 0 || dp > MAX ) ||
+        parse(dp) != dp && dp !== 0 ) &&
+
+        // 'toF() decimal places not an integer: {dp}'
+        // 'toF() decimal places out of range: {dp}'
+        !ifExceptionsThrow( dp, 'decimal places', 'toF' ) ) ) {
+          d = x['e'] + ( dp | 0 );
+    }
+
+    n = TO_EXP_NEG, dp = TO_EXP_POS;
+    TO_EXP_NEG = -( TO_EXP_POS = 1 / 0 );
+
+    // Note: str is initially undefined.
+    if ( d == str ) {
+        str = x['toS']();
+    } else {
+        str = format( x, d );
+
+        // (-0).toFixed() is '0', but (-0.1).toFixed() is '-0'.
+        // (-0).toFixed(1) is '0.0', but (-0.01).toFixed(1) is '-0.0'.
+        if ( x['s'] < 0 && x['c'] ) {
+
+            // As e.g. -0 toFixed(3), will wrongly be returned as -0.000 from toString.
+            if ( !x['c'][0] ) {
+                str = str.replace(/^-/, '');
+
+            // As e.g. -0.5 if rounded to -0 will cause toString to omit the minus sign.
+            } else if ( str.indexOf('-') < 0 ) {
+                str = '-' + str;
+            }
+        }
+    }
+    TO_EXP_NEG = n, TO_EXP_POS = dp;
+
+    return str;
+};
+
+
+/*
+ * Return a string array representing the value of this BigNumber as a
+ * simple fraction with an integer numerator and an integer denominator.
+ * The denominator will be a positive non-zero value less than or equal to
+ * the specified maximum denominator. If a maximum denominator is not
+ * specified, the denominator will be the lowest value necessary to
+ * represent the number exactly.
+ *
+ * [maxD] {number|string|BigNumber} Integer >= 1 and < Infinity.
+ */
+P['toFraction'] = P['toFr'] = function ( maxD ) {
+    var q, frac, n0, d0, d2, n, e,
+        n1 = d0 = new BigNumber(ONE),
+        d1 = n0 = new BigNumber('0'),
+        x = this,
+        xc = x['c'],
+        exp = MAX_EXP,
+        dp = DECIMAL_PLACES,
+        rm = ROUNDING_MODE,
+        d = new BigNumber(ONE);
+
+    // NaN, Infinity.
+    if ( !xc ) {
+        return x['toS']();
+    }
+
+    e = d['e'] = xc.length - x['e'] - 1;
+
+    // If max denominator is undefined or null...
+    if ( maxD == null ||
+
+         // or NaN...
+         ( !( id = 12, n = new BigNumber(maxD) )['s'] ||
+
+           // or less than 1, or Infinity...
+           ( outOfRange = n['cmp'](n1) < 0 || !n['c'] ) ||
+
+             // or not an integer...
+             ( ERRORS && n['e'] < n['c'].length - 1 ) ) &&
+
+               // 'toFr() max denominator not an integer: {maxD}'
+               // 'toFr() max denominator out of range: {maxD}'
+               !ifExceptionsThrow( maxD, 'max denominator', 'toFr' ) ||
+
+                 // or greater than the maxD needed to specify the value exactly...
+                 ( maxD = n )['cmp'](d) > 0 ) {
+
+        // d is e.g. 10, 100, 1000, 10000... , n1 is 1.
+        maxD = e > 0 ? d : n1;
+    }
+
+    MAX_EXP = 1 / 0;
+    n = new BigNumber( xc.join('') );
+
+    for ( DECIMAL_PLACES = 0, ROUNDING_MODE = 1; ; )  {
+        q = n['div'](d);
+        d2 = d0['plus']( q['times'](d1) );
+
+        if ( d2['cmp'](maxD) == 1 ) {
+            break;
+        }
+
+        d0 = d1, d1 = d2;
+
+        n1 = n0['plus']( q['times']( d2 = n1 ) );
+        n0 = d2;
+
+        d = n['minus']( q['times']( d2 = d ) );
+        n = d2;
+    }
+
+    d2 = maxD['minus'](d0)['div'](d1);
+    n0 = n0['plus']( d2['times'](n1) );
+    d0 = d0['plus']( d2['times'](d1) );
+
+    n0['s'] = n1['s'] = x['s'];
+
+    DECIMAL_PLACES = e * 2;
+    ROUNDING_MODE = rm;
+
+    // Determine which fraction is closer to x, n0 / d0 or n1 / d1?
+    frac = n1['div'](d1)['minus'](x)['abs']()['cmp'](
+      n0['div'](d0)['minus'](x)['abs']() ) < 1
+      ? [ n1['toS'](), d1['toS']() ]
+      : [ n0['toS'](), d0['toS']() ];
+
+    return MAX_EXP = exp, DECIMAL_PLACES = dp, frac;
+};
+
+
+/*
+ * Return a string representing the value of this BigNumber to sd significant
+ * digits and rounded using ROUNDING_MODE if necessary.
+ * If sd is less than the number of digits necessary to represent the integer
+ * part of the value in normal notation, then use exponential notation.
+ *
+ * sd {number} Integer, 1 to MAX inclusive.
+ */
+P['toPrecision'] = P['toP'] = function ( sd ) {
+
+    /*
+     * ERRORS true: Throw if sd not undefined, null or an integer in range.
+     * ERRORS false: Ignore sd if not a number or not in range.
+     * Truncate non-integers.
+     */
+    return sd == null || ( ( ( outOfRange = sd < 1 || sd > MAX ) ||
+      parse(sd) != sd ) &&
+
+        // 'toP() precision not an integer: {sd}'
+        // 'toP() precision out of range: {sd}'
+        !ifExceptionsThrow( sd, 'precision', 'toP' ) )
+          ? this['toS']()
+          : format( this, --sd | 0, 2 );
+};
+
+
+/*
+ * Return a string representing the value of this BigNumber in base b, or
+ * base 10 if b is omitted. If a base is specified, including base 10,
+ * round according to DECIMAL_PLACES and ROUNDING_MODE.
+ * If a base is not specified, and this BigNumber has a positive exponent
+ * that is equal to or greater than TO_EXP_POS, or a negative exponent equal
+ * to or less than TO_EXP_NEG, return exponential notation.
+ *
+ * [b] {number} Integer, 2 to 64 inclusive.
+ */
+P['toString'] = P['toS'] = function ( b ) {
+    var u, str, strL,
+        x = this,
+        xe = x['e'];
+
+    // Infinity or NaN?
+    if ( xe === null ) {
+        str = x['s'] ? 'Infinity' : 'NaN';
+
+    // Exponential format?
+    } else if ( b === u && ( xe <= TO_EXP_NEG || xe >= TO_EXP_POS ) ) {
+        return format( x, x['c'].length - 1, 1 );
+    } else {
+        str = x['c'].join('');
+
+        // Negative exponent?
+        if ( xe < 0 ) {
+
+            // Prepend zeros.
+            for ( ; ++xe; str = '0' + str ) {
+            }
+            str = '0.' + str;
+
+        // Positive exponent?
+        } else if ( strL = str.length, xe > 0 ) {
+
+            if ( ++xe > strL ) {
+
+                // Append zeros.
+                for ( xe -= strL; xe-- ; str += '0' ) {
+                }
+            } else if ( xe < strL ) {
+                str = str.slice( 0, xe ) + '.' + str.slice(xe);
+            }
+
+        // Exponent zero.
+        } else {
+            if ( u = str.charAt(0), strL > 1 ) {
+                str = u + '.' + str.slice(1);
+
+            // Avoid '-0'
+            } else if ( u == '0' ) {
+                return u;
+            }
+        }
+
+        if ( b != null ) {
+
+            if ( !( outOfRange = !( b >= 2 && b < 65 ) ) &&
+              ( b == (b | 0) || !ERRORS ) ) {
+                str = convert( str, b | 0, 10, x['s'] );
+
+                // Avoid '-0'
+                if ( str == '0' ) {
+                    return str;
+                }
+            } else {
+
+                // 'toS() base not an integer: {b}'
+                // 'toS() base out of range: {b}'
+                ifExceptionsThrow( b, 'base', 'toS' );
+            }
+        }
+
+    }
+
+    return x['s'] < 0 ? '-' + str : str;
+};
+
+P['toNumber'] = function () {
+  return parseInt(this['toString'](), 10);
+};
+
+
+/*
+ * Return as toString, but do not accept a base argument.
+ */
+P['valueOf'] = function () {
+    return this['toS']();
+};
+
+
+// Add aliases for BigDecimal methods.
+//P['add'] = P['plus'];
+//P['subtract'] = P['minus'];
+//P['multiply'] = P['times'];
+//P['divide'] = P['div'];
+//P['remainder'] = P['mod'];
+//P['compareTo'] = P['cmp'];
+//P['negate'] = P['neg'];
+
+
+// EXPORT
+BigNumber.config({EXPONENTIAL_AT: 9999999, DECIMAL_PLACES: 0, ROUNDING_MODE: 1});
+module.exports = BigNumber;
+
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":30}],27:[function(require,module,exports){
+(function (Buffer){
+try {
+    var cc = new require('./build/Debug/bignum');
+} catch(e) {
+    var cc = new require('./build/Release/bignum');
+}
+var BigNum = cc.BigNum;
+
+module.exports = BigNum;
+
+BigNum.conditionArgs = function(num, base) {
+    if (typeof num !== 'string') num = num.toString(base || 10);
+
+    if (num.match(/e\+/)) { // positive exponent
+        if (!Number(num).toString().match(/e\+/)) {
+        return {
+            num: Math.floor(Number(num)).toString(),
+            base: 10
+        };
+    }
+    else {
+        var pow = Math.ceil(Math.log(num) / Math.log(2));
+        var n = (num / Math.pow(2, pow)).toString(2)
+            .replace(/^0/,'');
+        var i = n.length - n.indexOf('.');
+        n = n.replace(/\./,'');
+
+        for (; i <= pow; i++) n += '0';
+           return {
+               num : n,
+               base : 2,
+           };
+        }
+    }
+    else if (num.match(/e\-/)) { // negative exponent
+        return {
+            num : Math.floor(Number(num)).toString(),
+            base : base || 10
+        };
+    }
+    else {
+        return {
+            num : num,
+            base : base || 10,
+        };
+    }
+};
+
+cc.setJSConditioner(BigNum.conditionArgs);
+
+BigNum.prototype.inspect = function () {
+    return '<BigNum ' + this.toString(10) + '>';
+};
+
+BigNum.prototype.toString = function (base) {
+    var value;
+    if (base) {
+        value = this.tostring(base);
+    } else {
+        value = this.tostring();
+    }
+    if (base > 10 && "string" === typeof value) {
+      value = value.toLowerCase();
+    }
+    return value;
+};
+
+BigNum.prototype.toNumber = function () {
+    return parseInt(this.toString(), 10);
+};
+
+[ 'add', 'sub', 'mul', 'div', 'mod' ].forEach(function (op) {
+    BigNum.prototype[op] = function (num) {
+        if (num instanceof BigNum) {
+            return this['b'+op](num);
+        }
+        else if (typeof num === 'number') {
+            if (num >= 0) {
+                return this['u'+op](num);
+            }
+            else if (op === 'add') {
+                return this.usub(-num);
+            }
+            else if (op === 'sub') {
+                return this.uadd(-num);
+            }
+            else {
+                var x = BigNum(num);
+                return this['b'+op](x);
+            }
+        }
+        else if (typeof num === 'string') {
+            var x = BigNum(num);
+            return this['b'+op](x);
+        }
+        else {
+            throw new TypeError('Unspecified operation for type '
+                + (typeof num) + ' for ' + op);
+        }
+    };
+});
+
+BigNum.prototype.abs = function () {
+    return this.babs();
+};
+
+BigNum.prototype.neg = function () {
+    return this.bneg();
+};
+
+BigNum.prototype.powm = function (num, mod) {
+    var m, res;
+
+    if ((typeof mod) === 'number' || (typeof mod) === 'string') {
+        m = BigNum(mod);
+    }
+    else if (mod instanceof BigNum) {
+        m = mod;
+    }
+
+    if ((typeof num) === 'number') {
+        return this.upowm(num, m);
+    }
+    else if ((typeof num) === 'string') {
+        var n = BigNum(num);
+        return this.bpowm(n, m);
+    }
+    else if (num instanceof BigNum) {
+        return this.bpowm(num, m);
+    }
+};
+
+BigNum.prototype.mod = function (num, mod) {
+    var m, res;
+
+    if ((typeof mod) === 'number' || (typeof mod) === 'string') {
+        m = BigNum(mod);
+    }
+    else if (mod instanceof BigNum) {
+        m = mod;
+    }
+
+    if ((typeof num) === 'number') {
+        return this.umod(num, m);
+    }
+    else if ((typeof num) === 'string') {
+        var n = BigNum(num);
+        return this.bmod(n, m);
+    }
+    else if (num instanceof BigNum) {
+        return this.bmod(num, m);
+    }
+};
+
+
+BigNum.prototype.pow = function (num) {
+    if (typeof num === 'number') {
+        if (num >= 0) {
+            return this.upow(num);
+        }
+        else {
+            return BigNum.prototype.powm.call(this, num, this);
+        }
+    }
+    else {
+        var x = parseInt(num.toString(), 10);
+        return BigNum.prototype.pow.call(this, x);
+    }
+};
+
+BigNum.prototype.shiftLeft = function (num) {
+    if (typeof num === 'number') {
+        if (num >= 0) {
+            return this.umul2exp(num);
+        }
+        else {
+            return this.shiftRight(-num);
+        }
+    }
+    else {
+        var x = parseInt(num.toString(), 10);
+        return BigNum.prototype.shiftLeft.call(this, x);
+    }
+};
+
+BigNum.prototype.shiftRight = function (num) {
+    if (typeof num === 'number') {
+        if (num >= 0) {
+            return this.udiv2exp(num);
+        }
+        else {
+            return this.shiftLeft(-num);
+        }
+    }
+    else {
+        var x = parseInt(num.toString(), 10);
+        return BigNum.prototype.shiftRight.call(this, x);
+    }
+};
+
+BigNum.prototype.cmp = function (num) {
+    if (num instanceof BigNum) {
+        return this.bcompare(num);
+    }
+    else if (typeof num === 'number') {
+        if (num < 0) {
+            return this.scompare(num);
+        }
+        else {
+            return this.ucompare(num);
+        }
+    }
+    else {
+        var x = BigNum(num);
+        return this.bcompare(x);
+    }
+};
+
+BigNum.prototype.gt = function (num) {
+    return this.cmp(num) > 0;
+};
+
+BigNum.prototype.ge = function (num) {
+    return this.cmp(num) >= 0;
+};
+
+BigNum.prototype.eq = function (num) {
+    return this.cmp(num) === 0;
+};
+
+BigNum.prototype.ne = function (num) {
+    return this.cmp(num) !== 0;
+};
+
+BigNum.prototype.lt = function (num) {
+    return this.cmp(num) < 0;
+};
+
+BigNum.prototype.le = function (num) {
+    return this.cmp(num) <= 0;
+};
+
+'and or xor'.split(' ').forEach(function (name) {
+    BigNum.prototype[name] = function (num) {
+        if (num instanceof BigNum) {
+            return this['b' + name](num);
+        }
+        else {
+            var x = BigNum(num);
+            return this['b' + name](x);
+        }
+    };
+});
+
+BigNum.prototype.sqrt = function() {
+    return this.bsqrt();
+};
+
+BigNum.prototype.root = function(num) {
+    if (num instanceof BigNum) {
+        return this.broot(num);
+    }
+    else {
+        var x = BigNum(num);
+        return this.broot(num);
+    }
+};
+
+BigNum.prototype.rand = function (to) {
+    if (to === undefined) {
+        if (this.toString() === '1') {
+            return BigNum(0);
+        }
+        else {
+            return this.brand0();
+        }
+    }
+    else {
+        var x = to instanceof BigNum
+            ? to.sub(this)
+            : BigNum(to).sub(this);
+        return x.brand0().add(this);
+    }
+};
+
+BigNum.prototype.invertm = function (mod) {
+    if (mod instanceof BigNum) {
+        return this.binvertm(mod);
+    }
+    else {
+        var x = BigNum(mod);
+        return this.binvertm(x);
+    }
+};
+
+BigNum.prime = function (bits, safe) {
+  if ("undefined" === typeof safe) {
+    safe = true;
+  }
+
+  // Force uint32
+  bits >>>= 0;
+
+  return BigNum.uprime0(bits, !!safe);
+};
+
+BigNum.prototype.probPrime = function (reps) {
+    var n = this.probprime(reps || 10);
+    return { 1 : true, 0 : false }[n];
+};
+
+BigNum.prototype.nextPrime = function () {
+    var num = this;
+    do {
+        num = num.add(1);
+    } while (!num.probPrime());
+    return num;
+};
+
+BigNum.fromBuffer = function (buf, opts) {
+    if (!opts) opts = {};
+
+    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
+        || opts.endian || 'big'
+    ;
+
+    var size = opts.size === 'auto' ? Math.ceil(buf.length) : (opts.size || 1);
+
+    if (buf.length % size !== 0) {
+        throw new RangeError('Buffer length (' + buf.length + ')'
+            + ' must be a multiple of size (' + size + ')'
+        );
+    }
+
+    var hex = [];
+    for (var i = 0; i < buf.length; i += size) {
+        var chunk = [];
+        for (var j = 0; j < size; j++) {
+            chunk.push(buf[
+                i + (endian === 'big' ? j : (size - j - 1))
+            ]);
+        }
+
+        hex.push(chunk
+            .map(function (c) {
+                return (c < 16 ? '0' : '') + c.toString(16);
+            })
+            .join('')
+        );
+    }
+
+    return BigNum(hex.join(''), 16);
+};
+
+BigNum.prototype.toBuffer = function (opts) {
+    if (typeof opts === 'string') {
+        if (opts !== 'mpint') return 'Unsupported Buffer representation';
+
+        var abs = this.abs();
+        var buf = abs.toBuffer({ size : 1, endian : 'big' });
+        var len = buf.length === 1 && buf[0] === 0 ? 0 : buf.length;
+        if (buf[0] & 0x80) len ++;
+
+        var ret = new Buffer(4 + len);
+        if (len > 0) buf.copy(ret, 4 + (buf[0] & 0x80 ? 1 : 0));
+        if (buf[0] & 0x80) ret[4] = 0;
+
+        ret[0] = len & (0xff << 24);
+        ret[1] = len & (0xff << 16);
+        ret[2] = len & (0xff << 8);
+        ret[3] = len & (0xff << 0);
+
+        // two's compliment for negative integers:
+        var isNeg = this.lt(0);
+        if (isNeg) {
+            for (var i = 4; i < ret.length; i++) {
+                ret[i] = 0xff - ret[i];
+            }
+        }
+        ret[4] = (ret[4] & 0x7f) | (isNeg ? 0x80 : 0);
+        if (isNeg) ret[ret.length - 1] ++;
+
+        return ret;
+    }
+
+    if (!opts) opts = {};
+
+    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
+        || opts.endian || 'big'
+    ;
+
+    var hex = this.toString(16);
+    if (hex.charAt(0) === '-') throw new Error(
+        'converting negative numbers to Buffers not supported yet'
+    );
+
+    var size = opts.size === 'auto' ? Math.ceil(hex.length / 2) : (opts.size || 1);
+
+    var len = Math.ceil(hex.length / (2 * size)) * size;
+    var buf = new Buffer(len);
+
+    // zero-pad the hex string so the chunks are all `size` long
+    while (hex.length < 2 * len) hex = '0' + hex;
+
+    var hx = hex
+        .split(new RegExp('(.{' + (2 * size) + '})'))
+        .filter(function (s) { return s.length > 0 })
+    ;
+
+    hx.forEach(function (chunk, i) {
+        for (var j = 0; j < size; j++) {
+            var ix = i * size + (endian === 'big' ? j : size - j - 1);
+            buf[ix] = parseInt(chunk.slice(j*2,j*2+2), 16);
+        }
+    });
+
+    return buf;
+};
+
+Object.keys(BigNum.prototype).forEach(function (name) {
+    if (name === 'inspect' || name === 'toString') return;
+
+    BigNum[name] = function (num) {
+        var args = [].slice.call(arguments, 1);
+
+        if (num instanceof BigNum) {
+            return num[name].apply(num, args);
+        }
+        else {
+            var bigi = BigNum(num);
+            return bigi[name].apply(bigi, args);
+        }
+    };
+});
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":30}],28:[function(require,module,exports){
 (function (process,__filename){
 
 /**
@@ -2940,9 +5806,9 @@ exports.getRoot = function getRoot (file) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bitcore/node_modules/bindings/bindings.js")
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"fs":23,"path":34}],23:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"fs":29,"path":46}],29:[function(require,module,exports){
 
-},{}],24:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4053,7 +6919,7 @@ function assert (test, message) {
   if (!test) throw new Error(message || 'Failed assertion')
 }
 
-},{"base64-js":25,"ieee754":26}],25:[function(require,module,exports){
+},{"base64-js":31,"ieee754":32}],31:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -4176,7 +7042,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	module.exports.fromByteArray = uint8ToBase64
 }())
 
-},{}],26:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -4262,7 +7128,525 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],27:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
+var Buffer = require('buffer').Buffer;
+var intSize = 4;
+var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
+var chrsz = 8;
+
+function toArray(buf, bigEndian) {
+  if ((buf.length % intSize) !== 0) {
+    var len = buf.length + (intSize - (buf.length % intSize));
+    buf = Buffer.concat([buf, zeroBuffer], len);
+  }
+
+  var arr = [];
+  var fn = bigEndian ? buf.readInt32BE : buf.readInt32LE;
+  for (var i = 0; i < buf.length; i += intSize) {
+    arr.push(fn.call(buf, i));
+  }
+  return arr;
+}
+
+function toBuffer(arr, size, bigEndian) {
+  var buf = new Buffer(size);
+  var fn = bigEndian ? buf.writeInt32BE : buf.writeInt32LE;
+  for (var i = 0; i < arr.length; i++) {
+    fn.call(buf, arr[i], i * 4, true);
+  }
+  return buf;
+}
+
+function hash(buf, fn, hashSize, bigEndian) {
+  if (!Buffer.isBuffer(buf)) buf = new Buffer(buf);
+  var arr = fn(toArray(buf, bigEndian), buf.length * chrsz);
+  return toBuffer(arr, hashSize, bigEndian);
+}
+
+module.exports = { hash: hash };
+
+},{"buffer":30}],34:[function(require,module,exports){
+var Buffer = require('buffer').Buffer
+var sha = require('./sha')
+var sha256 = require('./sha256')
+var rng = require('./rng')
+var md5 = require('./md5')
+
+var algorithms = {
+  sha1: sha,
+  sha256: sha256,
+  md5: md5
+}
+
+var blocksize = 64
+var zeroBuffer = new Buffer(blocksize); zeroBuffer.fill(0)
+function hmac(fn, key, data) {
+  if(!Buffer.isBuffer(key)) key = new Buffer(key)
+  if(!Buffer.isBuffer(data)) data = new Buffer(data)
+
+  if(key.length > blocksize) {
+    key = fn(key)
+  } else if(key.length < blocksize) {
+    key = Buffer.concat([key, zeroBuffer], blocksize)
+  }
+
+  var ipad = new Buffer(blocksize), opad = new Buffer(blocksize)
+  for(var i = 0; i < blocksize; i++) {
+    ipad[i] = key[i] ^ 0x36
+    opad[i] = key[i] ^ 0x5C
+  }
+
+  var hash = fn(Buffer.concat([ipad, data]))
+  return fn(Buffer.concat([opad, hash]))
+}
+
+function hash(alg, key) {
+  alg = alg || 'sha1'
+  var fn = algorithms[alg]
+  var bufs = []
+  var length = 0
+  if(!fn) error('algorithm:', alg, 'is not yet supported')
+  return {
+    update: function (data) {
+      if(!Buffer.isBuffer(data)) data = new Buffer(data)
+        
+      bufs.push(data)
+      length += data.length
+      return this
+    },
+    digest: function (enc) {
+      var buf = Buffer.concat(bufs)
+      var r = key ? hmac(fn, key, buf) : fn(buf)
+      bufs = null
+      return enc ? r.toString(enc) : r
+    }
+  }
+}
+
+function error () {
+  var m = [].slice.call(arguments).join(' ')
+  throw new Error([
+    m,
+    'we accept pull requests',
+    'http://github.com/dominictarr/crypto-browserify'
+    ].join('\n'))
+}
+
+exports.createHash = function (alg) { return hash(alg) }
+exports.createHmac = function (alg, key) { return hash(alg, key) }
+exports.randomBytes = function(size, callback) {
+  if (callback && callback.call) {
+    try {
+      callback.call(this, undefined, new Buffer(rng(size)))
+    } catch (err) { callback(err) }
+  } else {
+    return new Buffer(rng(size))
+  }
+}
+
+function each(a, f) {
+  for(var i in a)
+    f(a[i], i)
+}
+
+// the least I can do is make error messages for the rest of the node.js/crypto api.
+each(['createCredentials'
+, 'createCipher'
+, 'createCipheriv'
+, 'createDecipher'
+, 'createDecipheriv'
+, 'createSign'
+, 'createVerify'
+, 'createDiffieHellman'
+, 'pbkdf2'], function (name) {
+  exports[name] = function () {
+    error('sorry,', name, 'is not implemented yet')
+  }
+})
+
+},{"./md5":35,"./rng":36,"./sha":37,"./sha256":38,"buffer":30}],35:[function(require,module,exports){
+/*
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+
+var helpers = require('./helpers');
+
+/*
+ * Perform a simple self-test to see if the VM is working
+ */
+function md5_vm_test()
+{
+  return hex_md5("abc") == "900150983cd24fb0d6963f7d28e17f72";
+}
+
+/*
+ * Calculate the MD5 of an array of little-endian words, and a bit length
+ */
+function core_md5(x, len)
+{
+  /* append padding */
+  x[len >> 5] |= 0x80 << ((len) % 32);
+  x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+  var a =  1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d =  271733878;
+
+  for(var i = 0; i < x.length; i += 16)
+  {
+    var olda = a;
+    var oldb = b;
+    var oldc = c;
+    var oldd = d;
+
+    a = md5_ff(a, b, c, d, x[i+ 0], 7 , -680876936);
+    d = md5_ff(d, a, b, c, x[i+ 1], 12, -389564586);
+    c = md5_ff(c, d, a, b, x[i+ 2], 17,  606105819);
+    b = md5_ff(b, c, d, a, x[i+ 3], 22, -1044525330);
+    a = md5_ff(a, b, c, d, x[i+ 4], 7 , -176418897);
+    d = md5_ff(d, a, b, c, x[i+ 5], 12,  1200080426);
+    c = md5_ff(c, d, a, b, x[i+ 6], 17, -1473231341);
+    b = md5_ff(b, c, d, a, x[i+ 7], 22, -45705983);
+    a = md5_ff(a, b, c, d, x[i+ 8], 7 ,  1770035416);
+    d = md5_ff(d, a, b, c, x[i+ 9], 12, -1958414417);
+    c = md5_ff(c, d, a, b, x[i+10], 17, -42063);
+    b = md5_ff(b, c, d, a, x[i+11], 22, -1990404162);
+    a = md5_ff(a, b, c, d, x[i+12], 7 ,  1804603682);
+    d = md5_ff(d, a, b, c, x[i+13], 12, -40341101);
+    c = md5_ff(c, d, a, b, x[i+14], 17, -1502002290);
+    b = md5_ff(b, c, d, a, x[i+15], 22,  1236535329);
+
+    a = md5_gg(a, b, c, d, x[i+ 1], 5 , -165796510);
+    d = md5_gg(d, a, b, c, x[i+ 6], 9 , -1069501632);
+    c = md5_gg(c, d, a, b, x[i+11], 14,  643717713);
+    b = md5_gg(b, c, d, a, x[i+ 0], 20, -373897302);
+    a = md5_gg(a, b, c, d, x[i+ 5], 5 , -701558691);
+    d = md5_gg(d, a, b, c, x[i+10], 9 ,  38016083);
+    c = md5_gg(c, d, a, b, x[i+15], 14, -660478335);
+    b = md5_gg(b, c, d, a, x[i+ 4], 20, -405537848);
+    a = md5_gg(a, b, c, d, x[i+ 9], 5 ,  568446438);
+    d = md5_gg(d, a, b, c, x[i+14], 9 , -1019803690);
+    c = md5_gg(c, d, a, b, x[i+ 3], 14, -187363961);
+    b = md5_gg(b, c, d, a, x[i+ 8], 20,  1163531501);
+    a = md5_gg(a, b, c, d, x[i+13], 5 , -1444681467);
+    d = md5_gg(d, a, b, c, x[i+ 2], 9 , -51403784);
+    c = md5_gg(c, d, a, b, x[i+ 7], 14,  1735328473);
+    b = md5_gg(b, c, d, a, x[i+12], 20, -1926607734);
+
+    a = md5_hh(a, b, c, d, x[i+ 5], 4 , -378558);
+    d = md5_hh(d, a, b, c, x[i+ 8], 11, -2022574463);
+    c = md5_hh(c, d, a, b, x[i+11], 16,  1839030562);
+    b = md5_hh(b, c, d, a, x[i+14], 23, -35309556);
+    a = md5_hh(a, b, c, d, x[i+ 1], 4 , -1530992060);
+    d = md5_hh(d, a, b, c, x[i+ 4], 11,  1272893353);
+    c = md5_hh(c, d, a, b, x[i+ 7], 16, -155497632);
+    b = md5_hh(b, c, d, a, x[i+10], 23, -1094730640);
+    a = md5_hh(a, b, c, d, x[i+13], 4 ,  681279174);
+    d = md5_hh(d, a, b, c, x[i+ 0], 11, -358537222);
+    c = md5_hh(c, d, a, b, x[i+ 3], 16, -722521979);
+    b = md5_hh(b, c, d, a, x[i+ 6], 23,  76029189);
+    a = md5_hh(a, b, c, d, x[i+ 9], 4 , -640364487);
+    d = md5_hh(d, a, b, c, x[i+12], 11, -421815835);
+    c = md5_hh(c, d, a, b, x[i+15], 16,  530742520);
+    b = md5_hh(b, c, d, a, x[i+ 2], 23, -995338651);
+
+    a = md5_ii(a, b, c, d, x[i+ 0], 6 , -198630844);
+    d = md5_ii(d, a, b, c, x[i+ 7], 10,  1126891415);
+    c = md5_ii(c, d, a, b, x[i+14], 15, -1416354905);
+    b = md5_ii(b, c, d, a, x[i+ 5], 21, -57434055);
+    a = md5_ii(a, b, c, d, x[i+12], 6 ,  1700485571);
+    d = md5_ii(d, a, b, c, x[i+ 3], 10, -1894986606);
+    c = md5_ii(c, d, a, b, x[i+10], 15, -1051523);
+    b = md5_ii(b, c, d, a, x[i+ 1], 21, -2054922799);
+    a = md5_ii(a, b, c, d, x[i+ 8], 6 ,  1873313359);
+    d = md5_ii(d, a, b, c, x[i+15], 10, -30611744);
+    c = md5_ii(c, d, a, b, x[i+ 6], 15, -1560198380);
+    b = md5_ii(b, c, d, a, x[i+13], 21,  1309151649);
+    a = md5_ii(a, b, c, d, x[i+ 4], 6 , -145523070);
+    d = md5_ii(d, a, b, c, x[i+11], 10, -1120210379);
+    c = md5_ii(c, d, a, b, x[i+ 2], 15,  718787259);
+    b = md5_ii(b, c, d, a, x[i+ 9], 21, -343485551);
+
+    a = safe_add(a, olda);
+    b = safe_add(b, oldb);
+    c = safe_add(c, oldc);
+    d = safe_add(d, oldd);
+  }
+  return Array(a, b, c, d);
+
+}
+
+/*
+ * These functions implement the four basic operations the algorithm uses.
+ */
+function md5_cmn(q, a, b, x, s, t)
+{
+  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
+}
+function md5_ff(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+}
+function md5_gg(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+}
+function md5_hh(a, b, c, d, x, s, t)
+{
+  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+}
+function md5_ii(a, b, c, d, x, s, t)
+{
+  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+}
+
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y)
+{
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+}
+
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function bit_rol(num, cnt)
+{
+  return (num << cnt) | (num >>> (32 - cnt));
+}
+
+module.exports = function md5(buf) {
+  return helpers.hash(buf, core_md5, 16);
+};
+
+},{"./helpers":33}],36:[function(require,module,exports){
+// Original code adapted from Robert Kieffer.
+// details at https://github.com/broofa/node-uuid
+(function() {
+  var _global = this;
+
+  var mathRNG, whatwgRNG;
+
+  // NOTE: Math.random() does not guarantee "cryptographic quality"
+  mathRNG = function(size) {
+    var bytes = new Array(size);
+    var r;
+
+    for (var i = 0, r; i < size; i++) {
+      if ((i & 0x03) == 0) r = Math.random() * 0x100000000;
+      bytes[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return bytes;
+  }
+
+  if (_global.crypto && crypto.getRandomValues) {
+    whatwgRNG = function(size) {
+      var bytes = new Uint8Array(size);
+      crypto.getRandomValues(bytes);
+      return bytes;
+    }
+  }
+
+  module.exports = whatwgRNG || mathRNG;
+
+}())
+
+},{}],37:[function(require,module,exports){
+/*
+ * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
+ * in FIPS PUB 180-1
+ * Version 2.1a Copyright Paul Johnston 2000 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for details.
+ */
+
+var helpers = require('./helpers');
+
+/*
+ * Calculate the SHA-1 of an array of big-endian words, and a bit length
+ */
+function core_sha1(x, len)
+{
+  /* append padding */
+  x[len >> 5] |= 0x80 << (24 - len % 32);
+  x[((len + 64 >> 9) << 4) + 15] = len;
+
+  var w = Array(80);
+  var a =  1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d =  271733878;
+  var e = -1009589776;
+
+  for(var i = 0; i < x.length; i += 16)
+  {
+    var olda = a;
+    var oldb = b;
+    var oldc = c;
+    var oldd = d;
+    var olde = e;
+
+    for(var j = 0; j < 80; j++)
+    {
+      if(j < 16) w[j] = x[i + j];
+      else w[j] = rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
+      var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
+                       safe_add(safe_add(e, w[j]), sha1_kt(j)));
+      e = d;
+      d = c;
+      c = rol(b, 30);
+      b = a;
+      a = t;
+    }
+
+    a = safe_add(a, olda);
+    b = safe_add(b, oldb);
+    c = safe_add(c, oldc);
+    d = safe_add(d, oldd);
+    e = safe_add(e, olde);
+  }
+  return Array(a, b, c, d, e);
+
+}
+
+/*
+ * Perform the appropriate triplet combination function for the current
+ * iteration
+ */
+function sha1_ft(t, b, c, d)
+{
+  if(t < 20) return (b & c) | ((~b) & d);
+  if(t < 40) return b ^ c ^ d;
+  if(t < 60) return (b & c) | (b & d) | (c & d);
+  return b ^ c ^ d;
+}
+
+/*
+ * Determine the appropriate additive constant for the current iteration
+ */
+function sha1_kt(t)
+{
+  return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
+         (t < 60) ? -1894007588 : -899497514;
+}
+
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y)
+{
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+}
+
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function rol(num, cnt)
+{
+  return (num << cnt) | (num >>> (32 - cnt));
+}
+
+module.exports = function sha1(buf) {
+  return helpers.hash(buf, core_sha1, 20, true);
+};
+
+},{"./helpers":33}],38:[function(require,module,exports){
+
+/**
+ * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
+ * in FIPS 180-2
+ * Version 2.2-beta Copyright Angel Marin, Paul Johnston 2000 - 2009.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ *
+ */
+
+var helpers = require('./helpers');
+
+var safe_add = function(x, y) {
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+};
+
+var S = function(X, n) {
+  return (X >>> n) | (X << (32 - n));
+};
+
+var R = function(X, n) {
+  return (X >>> n);
+};
+
+var Ch = function(x, y, z) {
+  return ((x & y) ^ ((~x) & z));
+};
+
+var Maj = function(x, y, z) {
+  return ((x & y) ^ (x & z) ^ (y & z));
+};
+
+var Sigma0256 = function(x) {
+  return (S(x, 2) ^ S(x, 13) ^ S(x, 22));
+};
+
+var Sigma1256 = function(x) {
+  return (S(x, 6) ^ S(x, 11) ^ S(x, 25));
+};
+
+var Gamma0256 = function(x) {
+  return (S(x, 7) ^ S(x, 18) ^ R(x, 3));
+};
+
+var Gamma1256 = function(x) {
+  return (S(x, 17) ^ S(x, 19) ^ R(x, 10));
+};
+
+var core_sha256 = function(m, l) {
+  var K = new Array(0x428A2F98,0x71374491,0xB5C0FBCF,0xE9B5DBA5,0x3956C25B,0x59F111F1,0x923F82A4,0xAB1C5ED5,0xD807AA98,0x12835B01,0x243185BE,0x550C7DC3,0x72BE5D74,0x80DEB1FE,0x9BDC06A7,0xC19BF174,0xE49B69C1,0xEFBE4786,0xFC19DC6,0x240CA1CC,0x2DE92C6F,0x4A7484AA,0x5CB0A9DC,0x76F988DA,0x983E5152,0xA831C66D,0xB00327C8,0xBF597FC7,0xC6E00BF3,0xD5A79147,0x6CA6351,0x14292967,0x27B70A85,0x2E1B2138,0x4D2C6DFC,0x53380D13,0x650A7354,0x766A0ABB,0x81C2C92E,0x92722C85,0xA2BFE8A1,0xA81A664B,0xC24B8B70,0xC76C51A3,0xD192E819,0xD6990624,0xF40E3585,0x106AA070,0x19A4C116,0x1E376C08,0x2748774C,0x34B0BCB5,0x391C0CB3,0x4ED8AA4A,0x5B9CCA4F,0x682E6FF3,0x748F82EE,0x78A5636F,0x84C87814,0x8CC70208,0x90BEFFFA,0xA4506CEB,0xBEF9A3F7,0xC67178F2);
+  var HASH = new Array(0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A, 0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19);
+    var W = new Array(64);
+    var a, b, c, d, e, f, g, h, i, j;
+    var T1, T2;
+  /* append padding */
+  m[l >> 5] |= 0x80 << (24 - l % 32);
+  m[((l + 64 >> 9) << 4) + 15] = l;
+  for (var i = 0; i < m.length; i += 16) {
+    a = HASH[0]; b = HASH[1]; c = HASH[2]; d = HASH[3]; e = HASH[4]; f = HASH[5]; g = HASH[6]; h = HASH[7];
+    for (var j = 0; j < 64; j++) {
+      if (j < 16) {
+        W[j] = m[j + i];
+      } else {
+        W[j] = safe_add(safe_add(safe_add(Gamma1256(W[j - 2]), W[j - 7]), Gamma0256(W[j - 15])), W[j - 16]);
+      }
+      T1 = safe_add(safe_add(safe_add(safe_add(h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
+      T2 = safe_add(Sigma0256(a), Maj(a, b, c));
+      h = g; g = f; f = e; e = safe_add(d, T1); d = c; c = b; b = a; a = safe_add(T1, T2);
+    }
+    HASH[0] = safe_add(a, HASH[0]); HASH[1] = safe_add(b, HASH[1]); HASH[2] = safe_add(c, HASH[2]); HASH[3] = safe_add(d, HASH[3]);
+    HASH[4] = safe_add(e, HASH[4]); HASH[5] = safe_add(f, HASH[5]); HASH[6] = safe_add(g, HASH[6]); HASH[7] = safe_add(h, HASH[7]);
+  }
+  return HASH;
+};
+
+module.exports = function sha256(buf) {
+  return helpers.hash(buf, core_sha256, 32, true);
+};
+
+},{"./helpers":33}],39:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4564,7 +7948,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],28:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var http = module.exports;
 var EventEmitter = require('events').EventEmitter;
 var Request = require('./lib/request');
@@ -4703,7 +8087,7 @@ http.STATUS_CODES = {
     510 : 'Not Extended',               // RFC 2774
     511 : 'Network Authentication Required' // RFC 6585
 };
-},{"./lib/request":29,"events":27,"url":47}],29:[function(require,module,exports){
+},{"./lib/request":41,"events":39,"url":59}],41:[function(require,module,exports){
 var Stream = require('stream');
 var Response = require('./response');
 var Base64 = require('Base64');
@@ -4894,7 +8278,7 @@ var indexOf = function (xs, x) {
     return -1;
 };
 
-},{"./response":30,"Base64":31,"inherits":32,"stream":40}],30:[function(require,module,exports){
+},{"./response":42,"Base64":43,"inherits":44,"stream":52}],42:[function(require,module,exports){
 var Stream = require('stream');
 var util = require('util');
 
@@ -5016,7 +8400,7 @@ var isArray = Array.isArray || function (xs) {
     return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{"stream":40,"util":49}],31:[function(require,module,exports){
+},{"stream":52,"util":61}],43:[function(require,module,exports){
 ;(function () {
 
   var object = typeof exports != 'undefined' ? exports : this; // #8: web workers
@@ -5078,7 +8462,7 @@ var isArray = Array.isArray || function (xs) {
 
 }());
 
-},{}],32:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -5103,7 +8487,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],33:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5158,7 +8542,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],34:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5386,7 +8770,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33}],35:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45}],47:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -5897,7 +9281,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],36:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -5983,7 +9367,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],37:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6070,13 +9454,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],38:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":36,"./encode":37}],39:[function(require,module,exports){
+},{"./decode":48,"./encode":49}],51:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6150,7 +9534,7 @@ function onend() {
   });
 }
 
-},{"./readable.js":43,"./writable.js":45,"inherits":32,"process/browser.js":41}],40:[function(require,module,exports){
+},{"./readable.js":55,"./writable.js":57,"inherits":44,"process/browser.js":53}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6279,9 +9663,9 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"./duplex.js":39,"./passthrough.js":42,"./readable.js":43,"./transform.js":44,"./writable.js":45,"events":27,"inherits":32}],41:[function(require,module,exports){
-module.exports=require(33)
-},{}],42:[function(require,module,exports){
+},{"./duplex.js":51,"./passthrough.js":54,"./readable.js":55,"./transform.js":56,"./writable.js":57,"events":39,"inherits":44}],53:[function(require,module,exports){
+module.exports=require(45)
+},{}],54:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6324,7 +9708,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./transform.js":44,"inherits":32}],43:[function(require,module,exports){
+},{"./transform.js":56,"inherits":44}],55:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -7261,7 +10645,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./index.js":40,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"buffer":24,"events":27,"inherits":32,"process/browser.js":41,"string_decoder":46}],44:[function(require,module,exports){
+},{"./index.js":52,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"buffer":30,"events":39,"inherits":44,"process/browser.js":53,"string_decoder":58}],56:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7467,7 +10851,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./duplex.js":39,"inherits":32}],45:[function(require,module,exports){
+},{"./duplex.js":51,"inherits":44}],57:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7855,7 +11239,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./index.js":40,"buffer":24,"inherits":32,"process/browser.js":41}],46:[function(require,module,exports){
+},{"./index.js":52,"buffer":30,"inherits":44,"process/browser.js":53}],58:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8048,7 +11432,7 @@ function base64DetectIncompleteChar(buffer) {
   return incomplete;
 }
 
-},{"buffer":24}],47:[function(require,module,exports){
+},{"buffer":30}],59:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -8681,14 +12065,14 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":35,"querystring":38}],48:[function(require,module,exports){
+},{"punycode":47,"querystring":50}],60:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],49:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -9278,7 +12662,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":48,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"inherits":32}],50:[function(require,module,exports){
+},{"./support/isBuffer":60,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"inherits":44}],62:[function(require,module,exports){
 
 module.exports = function(){
   var orig = Error.prepareStackTrace;
@@ -9290,7 +12674,7 @@ module.exports = function(){
   return stack;
 };
 
-},{}],51:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 (function (process,global){
 var path = require('path');
 var callsite = require('callsite');
@@ -9386,13 +12770,46 @@ module.exports.imports = function() {
 };
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":33,"callsite":50,"path":34}],"./mocks/FakeStorage":[function(require,module,exports){
-module.exports=require('q/5+08');
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"callsite":62,"path":46}],"6xZkYb":[function(require,module,exports){
+
+var imports     = require('soop').imports();
+var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
+
+function Network(opts) {
+}
+
+Network.parent=EventEmitter;
+
+Network.prototype.start = function(openCallback, opts) {
+  // start! :D
+};
+
+Network.prototype.send = function(peerIds, data, cb) {
+  // send! c:
+};
+
+Network.prototype.connectTo = function(peerId) {
+  // connect C:
+};
+
+
+Network.prototype.disconnect = function(cb) {
+  // disconect :c
+};
+
+module.exports = require('soop')(Network);
+
+},{"events":39,"soop":63}],"./mocks/FakeNetwork":[function(require,module,exports){
+module.exports=require('6xZkYb');
 },{}],"q/5+08":[function(require,module,exports){
 
 var FakeStorage = function(){
   this.storage = {};
 }; 
+
+FakeStorage.prototype._setPassphrase = function (password) {
+  this.storage.passphrase = password;
+};
 
 FakeStorage.prototype.setGlobal = function (id, payload) {
   this.storage[id] = payload;
@@ -9426,4 +12843,6 @@ FakeStorage.prototype.setFromObj = function(walletId, obj) {
 
 module.exports = require('soop')(FakeStorage);
 
-},{"soop":51}]},{},[])
+},{"soop":63}],"./mocks/FakeStorage":[function(require,module,exports){
+module.exports=require('q/5+08');
+},{}]},{},[])

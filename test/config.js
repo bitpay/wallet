@@ -10,12 +10,18 @@ var config = {
     //port: 10009,
     //path: '/',
      //
-    key: 'g23ihfh82h35rf',
-    host:'162.242.219.26',
+    key: 'g23ihfh82h35rf', // api key for the peerjs server
+    host:'162.242.219.26', // peerjs server
     port:10009,
     path: '/',
     maxPeers: 15,
-    debug: 3
+//    debug: 3,
+    sjclParams: {
+      salt: 'mjuBtGybi/4=', // choose your own salt (base64)
+      iter:1000,
+      mode:'ccm',
+      ts:parseInt(64),   
+    }
   },
   limits: {
     totalCopayers: 10,
@@ -36,6 +42,9 @@ var config = {
     port: 3001
   },
   verbose: 1,
+  themes: ['default'],
+  iterations: 1000,
+  storageSalt: 'mjuBtGybi/4=', // choose your own salt (base64)
 };
 
 var log = function () {
