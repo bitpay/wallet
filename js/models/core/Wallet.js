@@ -51,10 +51,8 @@ Wallet.getRandomId = function() {
 
 Wallet.prototype.connectToAll = function() {
   var all = this.publicKeyRing.getAllCopayerIds();
-console.log('[Wallet.js.52:connectToAll:]',all); //TODO
   this.network.connectToCopayers(all);
   if (this.firstCopayerId) {
-console.log('[Wallet.js.56:firstCopayerId:]',this.firstCopayerId); //TODO
     this.sendWalletReady(this.firstCopayerId);
     this.firstCopayerId = null;
   }
