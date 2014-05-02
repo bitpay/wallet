@@ -321,6 +321,7 @@ Network.prototype.setCopayerId = function(copayerId) {
 
 
 Network.prototype.peerFromCopayer = function(hex) {
+  // TODO cache this.
   var SIN = bitcore.SIN;
   return new SIN(new Buffer(hex,'hex')).toString();
 };
