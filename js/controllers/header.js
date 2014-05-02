@@ -45,6 +45,7 @@ angular.module('copay.header').controller('HeaderController',
 
     $scope.refresh = function() {
       controllerUtils.updateBalance(function() {
+        w.connectToAll();
         $rootScope.$digest();
       });
     };

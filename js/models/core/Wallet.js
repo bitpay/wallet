@@ -49,6 +49,18 @@ Wallet.getRandomId = function() {
   return r;
 };
 
+Wallet.prototype.connectToAll = function() {
+  var all = this.publicKeyRing.getAllCopayerIds();
+console.log('[Wallet.js.52:connectToAll:]',all); //TODO
+  this.network.connectToCopayers(all);
+  if (this.firstCopayerId) {
+console.log('[Wallet.js.56:firstCopayerId:]',this.firstCopayerId); //TODO
+    this.sendWalletReady(this.firstCopayerId);
+    this.firstCopayerId = null;
+  }
+  this.emit('refresh');
+};
+
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
@@ -57,10 +69,12 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
+    this.connectToAll();
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
     this.log('### BROADCASTING PKR');
+
     recipients = null;
     this.sendPublicKeyRing(recipients);
   }
@@ -92,7 +106,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     this.log('badMessage FROM:', senderId); //TODO
     return;
   }
-  this.log('[Wallet.js.98]', data.type); //TODO
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
@@ -196,17 +209,7 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
-    for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
-      var otherId = self.getCopayerId(i);
-      if (otherId !== myId) {
-        net.connectTo(otherId);
-      }
-      if (self.firstCopayerId) {
-        self.sendWalletReady(self.firstCopayerId);
-        self.firstCopayerId = null;
-      }
-      self.emit('refresh');
-    }
+    self.connectToAll();
   });
 };
 
@@ -552,10 +555,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   this.txProposals.add(data);
   return true;
-};
-
-Wallet.prototype.connectTo = function(peerId) {
-  throw new Error('Wallet.connectTo.. not yet implemented!');
 };
 
 Wallet.prototype.disconnect = function() {

@@ -130,7 +130,6 @@ WalletFactory.prototype.open = function(walletId, opts) {
   opts = opts || {};
   opts.id = walletId;
   opts.verbose = this.verbose;
-
   this.storage._setPassphrase(opts.passphrase);
 
   var w = this.read(walletId) || this.create(opts);
