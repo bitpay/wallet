@@ -3000,6 +3000,8 @@ module.exports = {
   logger: 'normal' // none, normal, debug
 };
 
+},{}],"./const":[function(require,module,exports){
+module.exports=require('f08cvL');
 },{}],"f08cvL":[function(require,module,exports){
 
 MSG = {
@@ -3020,8 +3022,6 @@ MSG.to_str = function(t) {
 exports.MSG = MSG;
 
 
-},{}],"./const":[function(require,module,exports){
-module.exports=require('f08cvL');
 },{}],"G+CcXD":[function(require,module,exports){
 (function (Buffer){
 'use strict';
@@ -3166,6 +3166,8 @@ module.exports = require('soop')(Address);
 }).call(this,require("buffer").Buffer)
 },{"../networks":"ULNIu2","../util":179,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":87,"soop":164}],"./lib/Address":[function(require,module,exports){
 module.exports=require('G+CcXD');
+},{}],"./lib/BIP32":[function(require,module,exports){
+module.exports=require('Dad1wf');
 },{}],"Dad1wf":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
@@ -3510,9 +3512,7 @@ function u64(f) {return uint(f,8);}
 module.exports = require('soop')(BIP32);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"./Base58":"6VqyzY","./Bignum":"9Sbj2J","./Key":"aEfkTx","./Point":"LK/jwR","./SecureRandom":"BaKCfn","buffer":87,"soop":164}],"./lib/BIP32":[function(require,module,exports){
-module.exports=require('Dad1wf');
-},{}],"./lib/Base58":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":179,"./Base58":"6VqyzY","./Bignum":"9Sbj2J","./Key":"aEfkTx","./Point":"LK/jwR","./SecureRandom":"BaKCfn","buffer":87,"soop":164}],"./lib/Base58":[function(require,module,exports){
 module.exports=require('6VqyzY');
 },{}],"6VqyzY":[function(require,module,exports){
 (function (Buffer){
@@ -3634,9 +3634,7 @@ exports.encode = base58.encode;
 exports.decode = base58.decode;
 
 }).call(this,require("buffer").Buffer)
-},{"./Bignum":"9Sbj2J","buffer":87,"crypto":91}],"./lib/Bignum":[function(require,module,exports){
-module.exports=require('9Sbj2J');
-},{}],"9Sbj2J":[function(require,module,exports){
+},{"./Bignum":"9Sbj2J","buffer":87,"crypto":91}],"9Sbj2J":[function(require,module,exports){
 (function (process){
 if (process.versions) {
   module.exports = require('bignum');
@@ -3645,7 +3643,9 @@ if (process.versions) {
 module.exports = require('./browser/Bignum');
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Bignum":64,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"bignum":75}],"./lib/Block":[function(require,module,exports){
+},{"./browser/Bignum":64,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"bignum":75}],"./lib/Bignum":[function(require,module,exports){
+module.exports=require('9Sbj2J');
+},{}],"./lib/Block":[function(require,module,exports){
 module.exports=require('pJEQEB');
 },{}],"pJEQEB":[function(require,module,exports){
 (function (Buffer){
@@ -4066,9 +4066,7 @@ Bloom.prototype.init = function(elements, FPRate) {
 
 module.exports = require('soop')(Bloom);
 
-},{"soop":164}],"./lib/Connection":[function(require,module,exports){
-module.exports=require('DB/p3X');
-},{}],"DB/p3X":[function(require,module,exports){
+},{"soop":164}],"DB/p3X":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -4637,7 +4635,9 @@ Connection.prototype.parseMessage = function (command, payload) {
 module.exports = require('soop')(Connection);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":179,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./SecureRandom":"BaKCfn","./Transaction":"LJhYtm","buffer":87,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":96,"socks5-client":157,"soop":164}],"./lib/Curve":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":179,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./SecureRandom":"BaKCfn","./Transaction":"LJhYtm","buffer":87,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":96,"socks5-client":157,"soop":164}],"./lib/Connection":[function(require,module,exports){
+module.exports=require('DB/p3X');
+},{}],"./lib/Curve":[function(require,module,exports){
 module.exports=require('Ynul1S');
 },{}],"Ynul1S":[function(require,module,exports){
 (function (Buffer){
@@ -4665,9 +4665,7 @@ Curve.getN = function() {
 module.exports = require('soop')(Curve);
 
 }).call(this,require("buffer").Buffer)
-},{"./Bignum":"9Sbj2J","./Point":"LK/jwR","buffer":87,"soop":164}],"./lib/Deserialize":[function(require,module,exports){
-module.exports=require('ez/meX');
-},{}],"ez/meX":[function(require,module,exports){
+},{"./Bignum":"9Sbj2J","./Point":"LK/jwR","buffer":87,"soop":164}],"ez/meX":[function(require,module,exports){
 
 exports.intFromCompact = function(c)
 {
@@ -4677,6 +4675,8 @@ exports.intFromCompact = function(c)
 }
 
 
+},{}],"./lib/Deserialize":[function(require,module,exports){
+module.exports=require('ez/meX');
 },{}],"hdzBvq":[function(require,module,exports){
 (function (Buffer){
 var Key = require('./Key'),
@@ -4797,9 +4797,7 @@ Message.magicHash = function(str) {
 module.exports = require('soop')(Message);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"./Key":"aEfkTx","buffer":87,"soop":164}],"./lib/Opcode":[function(require,module,exports){
-module.exports=require('Zm7/h9');
-},{}],"Zm7/h9":[function(require,module,exports){
+},{"../util":179,"./Key":"aEfkTx","buffer":87,"soop":164}],"Zm7/h9":[function(require,module,exports){
 var imports    = require('soop').imports();
 
 function Opcode(num) {
@@ -4969,7 +4967,9 @@ Opcode.asList = function() {
 
 module.exports = require('soop')(Opcode);
 
-},{"soop":164}],"./lib/Peer":[function(require,module,exports){
+},{"soop":164}],"./lib/Opcode":[function(require,module,exports){
+module.exports=require('Zm7/h9');
+},{}],"./lib/Peer":[function(require,module,exports){
 module.exports=require('oolY81');
 },{}],"oolY81":[function(require,module,exports){
 (function (Buffer){
@@ -5033,9 +5033,7 @@ Peer.prototype.toBuffer = function () {
 module.exports = require('soop')(Peer);
 
 }).call(this,require("buffer").Buffer)
-},{"binary":76,"buffer":87,"buffertools":"fugeBw","net":83,"soop":164}],"./lib/PeerManager":[function(require,module,exports){
-module.exports=require('nsqKeP');
-},{}],"nsqKeP":[function(require,module,exports){
+},{"binary":76,"buffer":87,"buffertools":"fugeBw","net":83,"soop":164}],"nsqKeP":[function(require,module,exports){
 var imports         = require('soop').imports();
 var _               = imports._ || require('underscore');
 var log             = imports.log || require('../util/log');
@@ -5346,7 +5344,11 @@ PeerManager.prototype.discover = function(options, callback) {
 
 module.exports = require('soop')(PeerManager);
 
-},{"../config":"4itQ50","../networks":"ULNIu2","../util/log":"AdF7pF","./Connection":"DB/p3X","./Peer":"oolY81","async":74,"dns":83,"events":96,"soop":164,"underscore":166}],"LK/jwR":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util/log":"AdF7pF","./Connection":"DB/p3X","./Peer":"oolY81","async":74,"dns":83,"events":96,"soop":164,"underscore":166}],"./lib/PeerManager":[function(require,module,exports){
+module.exports=require('nsqKeP');
+},{}],"./lib/Point":[function(require,module,exports){
+module.exports=require('LK/jwR');
+},{}],"LK/jwR":[function(require,module,exports){
 (function (process){
 if (process.versions) {
   module.exports = require('./node/Point');
@@ -5355,9 +5357,7 @@ if (process.versions) {
 module.exports = require('./browser/Point');
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Point":66,"./node/Point":70,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"./lib/Point":[function(require,module,exports){
-module.exports=require('LK/jwR');
-},{}],"izTl9z":[function(require,module,exports){
+},{"./browser/Point":66,"./node/Point":70,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"izTl9z":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -5658,8 +5658,6 @@ module.exports = require('soop')(RpcClient);
 }).call(this,require("buffer").Buffer)
 },{"../util/log":"AdF7pF","buffer":87,"http":97,"https":101,"soop":164}],"./lib/RpcClient":[function(require,module,exports){
 module.exports=require('7siE1N');
-},{}],"./lib/SIN":[function(require,module,exports){
-module.exports=require('tBM27q');
 },{}],"tBM27q":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
@@ -5719,7 +5717,9 @@ SIN.prototype.validate = function() {
 module.exports = require('soop')(SIN);
 
 }).call(this,require("buffer").Buffer)
-},{"../util/VersionedData":"QLzNQg","buffer":87,"soop":164}],"./lib/SINKey":[function(require,module,exports){
+},{"../util/VersionedData":"QLzNQg","buffer":87,"soop":164}],"./lib/SIN":[function(require,module,exports){
+module.exports=require('tBM27q');
+},{}],"./lib/SINKey":[function(require,module,exports){
 module.exports=require('EyghZQ');
 },{}],"EyghZQ":[function(require,module,exports){
 var coinUtil  = require('../util');
@@ -7516,7 +7516,9 @@ ScriptInterpreter.prototype.isCanonicalSignature = function(sig) {
 module.exports = require('soop')(ScriptInterpreter);
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../config":"4itQ50","../util":179,"../util/log":"AdF7pF","./Bignum":"9Sbj2J","./Key":"aEfkTx","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"buffer":87,"buffertools":"fugeBw","soop":164}],"BaKCfn":[function(require,module,exports){
+},{"../config":"4itQ50","../util":179,"../util/log":"AdF7pF","./Bignum":"9Sbj2J","./Key":"aEfkTx","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"buffer":87,"buffertools":"fugeBw","soop":164}],"./lib/SecureRandom":[function(require,module,exports){
+module.exports=require('BaKCfn');
+},{}],"BaKCfn":[function(require,module,exports){
 (function (process){
 if (process.versions) {
   module.exports = require('./node/SecureRandom');
@@ -7525,9 +7527,7 @@ if (process.versions) {
 module.exports = require('./browser/SecureRandom');
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/SecureRandom":67,"./node/SecureRandom":71,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"./lib/SecureRandom":[function(require,module,exports){
-module.exports=require('BaKCfn');
-},{}],"./lib/Sign":[function(require,module,exports){
+},{"./browser/SecureRandom":67,"./node/SecureRandom":71,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"./lib/Sign":[function(require,module,exports){
 module.exports=require('V3JdDp');
 },{}],"V3JdDp":[function(require,module,exports){
 (function (Buffer){
@@ -8303,7 +8303,9 @@ Transaction.prototype.isComplete = function() {
 module.exports = require('soop')(Transaction);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../util":179,"../util/BinaryParser":"b3ZSD7","../util/error":178,"../util/log":"AdF7pF","./Address":"G+CcXD","./Bignum":"9Sbj2J","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":164,"step":165}],"D1Ge6m":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util":179,"../util/BinaryParser":"b3ZSD7","../util/error":178,"../util/log":"AdF7pF","./Address":"G+CcXD","./Bignum":"9Sbj2J","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":164,"step":165}],"./lib/TransactionBuilder":[function(require,module,exports){
+module.exports=require('D1Ge6m');
+},{}],"D1Ge6m":[function(require,module,exports){
 (function (Buffer){
 
 // Creates a bitcore Transaction object
@@ -9349,9 +9351,7 @@ TransactionBuilder.prototype.merge = function(b) {
 module.exports = require('soop')(TransactionBuilder);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"../util/log":"AdF7pF","./Address":"G+CcXD","./Bignum":"9Sbj2J","./Key":"aEfkTx","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","buffer":87,"buffertools":"fugeBw","soop":164}],"./lib/TransactionBuilder":[function(require,module,exports){
-module.exports=require('D1Ge6m');
-},{}],"./lib/Wallet":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":179,"../util/log":"AdF7pF","./Address":"G+CcXD","./Bignum":"9Sbj2J","./Key":"aEfkTx","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","buffer":87,"buffertools":"fugeBw","soop":164}],"./lib/Wallet":[function(require,module,exports){
 module.exports=require('yUY4WV');
 },{}],"yUY4WV":[function(require,module,exports){
 (function (Buffer){
@@ -9497,9 +9497,7 @@ module.exports = require('soop')(Wallet);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"../util/EncFile":173,"./Address":"G+CcXD","buffer":87,"fs":83,"soop":164}],"./lib/WalletKey":[function(require,module,exports){
-module.exports=require('wWje7g');
-},{}],"wWje7g":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":179,"../util/EncFile":173,"./Address":"G+CcXD","buffer":87,"fs":83,"soop":164}],"wWje7g":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 
@@ -9555,7 +9553,9 @@ WalletKey.prototype.fromObj = function(obj) {
 module.exports = require('soop')(WalletKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"../util/time":182,"./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","buffer":87,"soop":164}],64:[function(require,module,exports){
+},{"../util":179,"../util/time":182,"./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","buffer":87,"soop":164}],"./lib/WalletKey":[function(require,module,exports){
+module.exports=require('wWje7g');
+},{}],64:[function(require,module,exports){
 (function (Buffer){
 /* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
@@ -14600,9 +14600,7 @@ exports.getRoot = function getRoot (file) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bindings/bindings.js")
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"fs":83,"path":104}],"buffertools":[function(require,module,exports){
-module.exports=require('fugeBw');
-},{}],"fugeBw":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"fs":83,"path":104}],"fugeBw":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -14847,7 +14845,9 @@ WritableBufferStream.prototype.toString = function() {
 exports.WritableBufferStream = WritableBufferStream;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"events":96,"util":119}],83:[function(require,module,exports){
+},{"buffer":87,"events":96,"util":119}],"buffertools":[function(require,module,exports){
+module.exports=require('fugeBw');
+},{}],83:[function(require,module,exports){
 
 },{}],84:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
@@ -31991,8 +31991,6 @@ exports.patch = function(Buffers) {
 }).call(this,require("buffer").Buffer)
 },{"buffer":87}],"./patches/Buffers.monkey":[function(require,module,exports){
 module.exports=require('kytKTK');
-},{}],"./patches/Number.monkey":[function(require,module,exports){
-module.exports=require('AwmEwz');
 },{}],"AwmEwz":[function(require,module,exports){
 exports.patch = function(Number) {
   //round to specified number of places
@@ -32003,6 +32001,10 @@ exports.patch = function(Number) {
   };
 };
 
+},{}],"./patches/Number.monkey":[function(require,module,exports){
+module.exports=require('AwmEwz');
+},{}],"./util/BinaryParser":[function(require,module,exports){
+module.exports=require('b3ZSD7');
 },{}],"b3ZSD7":[function(require,module,exports){
 (function (Buffer){
 /**
@@ -32153,9 +32155,7 @@ Parser.prototype.varStr = function () {
 module.exports = require('soop')(Parser);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"soop":164}],"./util/BinaryParser":[function(require,module,exports){
-module.exports=require('b3ZSD7');
-},{}],173:[function(require,module,exports){
+},{"buffer":87,"soop":164}],173:[function(require,module,exports){
 
 var fs = require('fs');
 var crypto = require('crypto');
@@ -32504,8 +32504,6 @@ exports.curtime = function curtime()
 }
 
 
-},{}],"./util/util":[function(require,module,exports){
-module.exports=require('ACyo5H');
 },{}],"ACyo5H":[function(require,module,exports){
 (function (process,Buffer){
 var crypto = require('crypto');
@@ -32992,4 +32990,6 @@ exports.COIN = 100000000;
 var MAX_TARGET = exports.MAX_TARGET = new Buffer('00000000FFFF0000000000000000000000000000000000000000000000000000', 'hex');
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../browser/vendor-bundle.js":3,"../lib/Bignum":"9Sbj2J","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"binary":76,"buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":91,"jssha":156}]},{},[])
+},{"../browser/vendor-bundle.js":3,"../lib/Bignum":"9Sbj2J","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"binary":76,"buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":91,"jssha":156}],"./util/util":[function(require,module,exports){
+module.exports=require('ACyo5H');
+},{}]},{},[])

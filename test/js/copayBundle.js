@@ -270,8 +270,6 @@ module.exports.API = require('./API');
 
 },{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/Passphrase":"07vXYZ","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":12,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":21,"./js/models/storage/LocalPlain":22,"soop":63}],"copay":[function(require,module,exports){
 module.exports=require('hxYaTp');
-},{}],"../js/models/blockchain/Insight":[function(require,module,exports){
-module.exports=require('N916Nn');
 },{}],"N916Nn":[function(require,module,exports){
 (function (process){
 'use strict';
@@ -497,7 +495,9 @@ module.exports = require('soop')(Insight);
 
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"bitcore":23,"http":40,"soop":63}],"07vXYZ":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"bitcore":23,"http":40,"soop":63}],"../js/models/blockchain/Insight":[function(require,module,exports){
+module.exports=require('N916Nn');
+},{}],"07vXYZ":[function(require,module,exports){
 'use strict';
 
 function Passphrase(config) {
@@ -525,8 +525,6 @@ module.exports = Passphrase;
 
 },{}],"../js/models/core/Passphrase":[function(require,module,exports){
 module.exports=require('07vXYZ');
-},{}],"../js/models/core/PrivateKey":[function(require,module,exports){
-module.exports=require('41fjjN');
 },{}],"41fjjN":[function(require,module,exports){
 'use strict';
 
@@ -613,7 +611,9 @@ PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
 
 module.exports = require('soop')(PrivateKey);
 
-},{"./PublicKeyRing":"6Bv3pA","bitcore":23,"soop":63}],"6Bv3pA":[function(require,module,exports){
+},{"./PublicKeyRing":"6Bv3pA","bitcore":23,"soop":63}],"../js/models/core/PrivateKey":[function(require,module,exports){
+module.exports=require('41fjjN');
+},{}],"6Bv3pA":[function(require,module,exports){
 (function (Buffer){
 
 'use strict';
@@ -1232,7 +1232,9 @@ TxProposals.prototype.merge = function(t) {
 
 module.exports = require('soop')(TxProposals);
 
-},{"../storage/Base":20,"bitcore":23,"soop":63}],"zfa+FW":[function(require,module,exports){
+},{"../storage/Base":20,"bitcore":23,"soop":63}],"../js/models/core/Wallet":[function(require,module,exports){
+module.exports=require('zfa+FW');
+},{}],"zfa+FW":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -1285,6 +1287,16 @@ Wallet.getRandomId = function() {
   return r;
 };
 
+Wallet.prototype.connectToAll = function() {
+  var all = this.publicKeyRing.getAllCopayerIds();
+  this.network.connectToCopayers(all);
+  if (this.firstCopayerId) {
+    this.sendWalletReady(this.firstCopayerId);
+    this.firstCopayerId = null;
+  }
+  this.emit('refresh');
+};
+
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
@@ -1293,10 +1305,12 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
+    this.connectToAll();
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
     this.log('### BROADCASTING PKR');
+
     recipients = null;
     this.sendPublicKeyRing(recipients);
   }
@@ -1328,7 +1342,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     this.log('badMessage FROM:', senderId); //TODO
     return;
   }
-  this.log('[Wallet.js.98]', data.type); //TODO
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
@@ -1432,17 +1445,7 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.emit('created', net.getPeer());
-    for (var i = 0; i < self.publicKeyRing.registeredCopayers(); i++) {
-      var otherId = self.getCopayerId(i);
-      if (otherId !== myId) {
-        net.connectTo(otherId);
-      }
-      if (self.firstCopayerId) {
-        self.sendWalletReady(self.firstCopayerId);
-        self.firstCopayerId = null;
-      }
-      self.emit('refresh');
-    }
+    self.connectToAll();
   });
 };
 
@@ -1795,10 +1798,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   return true;
 };
 
-Wallet.prototype.connectTo = function(peerId) {
-  throw new Error('Wallet.connectTo.. not yet implemented!');
-};
-
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
   this.network.disconnect();
@@ -1811,9 +1810,7 @@ Wallet.prototype.getNetwork = function() {
 module.exports = require('soop')(Wallet);
 
 }).call(this,require("buffer").Buffer)
-},{"../../../copay":"hxYaTp","bitcore":23,"buffer":30,"events":39,"http":40,"soop":63}],"../js/models/core/Wallet":[function(require,module,exports){
-module.exports=require('zfa+FW');
-},{}],"Pyh7xe":[function(require,module,exports){
+},{"../../../copay":"hxYaTp","bitcore":23,"buffer":30,"events":39,"http":40,"soop":63}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
 var imports     = require('soop').imports();
@@ -1952,7 +1949,6 @@ WalletFactory.prototype.open = function(walletId, opts) {
   opts = opts || {};
   opts.id = walletId;
   opts.verbose = this.verbose;
-
   this.storage._setPassphrase(opts.passphrase);
 
   var w = this.read(walletId) || this.create(opts);
@@ -2112,7 +2108,7 @@ Network.prototype.cleanUp = function() {
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds=null;
-  this.authenticatedPeers=[];
+  this.isInboundPeerAuth=[];
   this.copayerForPeer={};
   this.connections={};
   if (this.peer) {
@@ -2172,7 +2168,7 @@ Network.prototype.connectedCopayers = function() {
 Network.prototype._deletePeer = function(peerId) {
   console.log('### Deleting connection from peer:', peerId);
 
-  this._setPeerAuthenticated(peerId, 0);
+  delete this.isInboundPeerAuth[peerId];
   delete this.copayerForPeer[peerId];
 
   if (this.connections[peerId]) {
@@ -2187,8 +2183,7 @@ Network.prototype._onClose = function(peerId) {
   this._notifyNetworkChange();
 };
 
-// TODO RM THIS! (connect from pub key ring)
-Network.prototype._connectToCopayers = function(copayerIds) {
+Network.prototype.connectToCopayers = function(copayerIds) {
   var self = this;
   var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
 
@@ -2212,29 +2207,11 @@ Network.prototype._sendHello = function(copayerId) {
   });
 };
 
-Network.prototype._sendCopayers = function(copayerIds) {
-  console.log('### SENDING PEER LIST: ', this.connectedPeers,this.connectedCopayers(), ' TO ', copayerIds?copayerIds: 'ALL');
-  this.send(copayerIds, {
-    type: 'copayers',
-    copayers: this.connectedCopayers(),
-  });
-};
-
-Network.prototype._addCopayer = function(copayerId, isInbound) {
+Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId,copayerId);
-  var hasChanged = Network._arrayPushOnce(peerId, this.connectedPeers);
-  if (isInbound && hasChanged) {
-    this._sendCopayers();              //broadcast peer list
-  }
-  else {
-    if (isInbound) {
-      this._sendCopayers(copayerId);
-    }
-  }
+  Network._arrayPushOnce(peerId, this.connectedPeers);
 };
-
-
 
 Network.prototype._onData = function(encStr, isInbound, peerId) {
   var sig, payload;
@@ -2251,7 +2228,7 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
   console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
               isInbound, payload.type, peerId, payload); 
 
-  if(payload.type === 'hello') {
+  if(isInbound && payload.type === 'hello') {
     var payloadStr = JSON.stringify(payload);
 
     if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
@@ -2262,28 +2239,20 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
     }
 
     console.log('#### Peer sent hello. Setting it up.'); //TODO
-    this._setPeerAuthenticated(peerId, 1);
-    this._addCopayer(payload.copayerId, isInbound);
+    this._addConnectedCopayer(payload.copayerId, isInbound);
+    this._setInboundPeerAuth(peerId, true);
     this._notifyNetworkChange( isInbound ? payload.copayerId : null);
     this.emit('open');
     return;
   }
 
-  //copayerForPeer is populated also in 'copayers' message, so we need authenticatedPeer
-  if (isInbound && (!this.copayerForPeer[peerId] || !this.authenticatedPeers[peerId])) {
+  if ( !this.copayerForPeer[peerId] || (isInbound && !this.isInboundPeerAuth[peerId]) ) { 
     this._deletePeer(peerId);
     return;
   }
 
-  var copayerIdBuf = new Buffer(this.copayerForPeer[peerId],'hex');
   var self=this;
   switch(payload.type) {
-    case 'copayers':
-//TODO is this really necesarry??? => NO connect from pubkeyring.
-      this._addCopayer(this.copayerForPeer[peerId], false);
-      this._connectToCopayers(payload.copayers);
-      this._notifyNetworkChange();
-      break;
     case 'disconnect':
       this._onClose(peerId);
       break;
@@ -2303,13 +2272,14 @@ Network.prototype._checkAnyPeer = function() {
   }
 };
 
-Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
+Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
   var self = this;
 
+  var isInbound = toCopayerId ? false : true;
+
   dataConn.on('open', function() {
-    self._setPeerAuthenticated(dataConn.peer, 0);
-    if (!Network._inArray(dataConn.peer, self.connectedPeers)
-        && !self.connections[dataConn.peer]) {
+    if (!Network._inArray(dataConn.peer, self.connectedPeers) && 
+        !self.connections[dataConn.peer]) {
 
       self.connections[dataConn.peer] = dataConn;
 
@@ -2317,8 +2287,10 @@ Network.prototype._setupConnectionHandlers = function(dataConn, isInbound) {
         dataConn.peer, isInbound);
 
       // The connecting peer send hello 
-      if(!isInbound) 
-        self._sendHello(self.copayerForPeer[dataConn.peer]);      
+      if(toCopayerId) {
+        self._addConnectedCopayer(toCopayerId);
+        self._sendHello(toCopayerId);      
+      }
     }
   });
 
@@ -2353,7 +2325,6 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   p.on('open', function() {
     self.connectedPeers = [self.peerId];
     self.copayerForPeer[self.peerId]= self.copayerId;
-
     return openCallback();
   });
 
@@ -2374,8 +2345,8 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
         dataConn.close();
       });
     } else {
-      self._setPeerAuthenticated(dataConn.peer, 0);
-      self._setupConnectionHandlers(dataConn, true);
+      self._setInboundPeerAuth(dataConn.peer, false);
+      self._setupConnectionHandlers(dataConn);
     }
   });
 };
@@ -2394,8 +2365,8 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
 };
 
 
-Network.prototype._setPeerAuthenticated = function(peerId, isAuthenticated) {
-  this.authenticatedPeers[peerId] = isAuthenticated;
+Network.prototype._setInboundPeerAuth = function(peerId, isAuthenticated) {
+  this.isInboundPeerAuth[peerId] = isAuthenticated;
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
@@ -2410,6 +2381,7 @@ Network.prototype.setCopayerId = function(copayerId) {
 
 
 Network.prototype.peerFromCopayer = function(hex) {
+  // TODO cache this.
   var SIN = bitcore.SIN;
   return new SIN(new Buffer(hex,'hex')).toString();
 };
@@ -2427,13 +2399,8 @@ Network.prototype.start = function(opts, openCallback) {
 
   console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
-  this._setupPeerHandlers(openCallback);
-  opts.connectedPeers = opts.connectedPeers || [];
-  for (var i = 0; i<opts.connectedPeers.length; i++) {
-    var otherPeerId = opts.connectedPeers[i];
-    this.connectTo(otherPeerId);
-  }
   this.started = true;
+  this._setupPeerHandlers(openCallback);
 };
 
 
@@ -2505,18 +2472,17 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     self._sendToOne(copayerIds, encPayload, sig, cb);
 };
 
+
 Network.prototype.connectTo = function(copayerId) {
   var self = this;
-  var peerId = this.peerFromCopayer(copayerId);
-  this._addCopayerMap(peerId,copayerId);
 
+  var peerId = this.peerFromCopayer(copayerId);
   console.log('### STARTING CONNECTION TO:\n\t'+ peerId+"\n\t"+ copayerId);
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',
     reliable: true,
   });
-
-  self._setupConnectionHandlers(dataConn, false);
+  self._setupConnectionHandlers(dataConn, copayerId);
 };
 
 Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
