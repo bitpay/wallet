@@ -5,8 +5,11 @@ Copay
 
 Installation:
 
-Copy config.template.js to config.js and edit to suit your needs. (Defaults to
-public PeerJS and Insight servers)
+Copy config.template.js to config.js 
+
+and edit to suit your needs. (Defaults to public PeerJS and Insight servers)
+
+Copy bitcore/browser/bundle.js to copay/lib/bitcore.js
 
 Then execute these commands:
 ```
