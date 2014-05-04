@@ -37,9 +37,9 @@ General
 -------
 
 *Copay* implements a multisig wallet using p2sh addresses. It supports multiple wallet configurations, such as 3-of-5
-(3 required signatures from 5 participant peers) or 2-of-3.  To generate addresses to receive coins,
+(3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants,
 *Copay* needs the public keys of all the wallet participants. Those public keys are incorporated into the 
-wallet configuration and are combined to generate a single address to receive a payment into the shared wallet.  
+wallet configuration and are combined to generate a payment address with which funds can be sent into the wallet.  
 
 To unlock the payment and spend the wallet's funds, a quorum of participant signatures must be collected 
 and assembled in the transaction. The funds cannot be spent without at least the minimum number of
