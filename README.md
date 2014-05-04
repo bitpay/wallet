@@ -5,8 +5,11 @@ Copay
 
 Installation:
 
-Copy config.template.js to config.js and edit to suit your needs. (Defaults to
-public PeerJS and Insight servers)
+Copy config.template.js to config.js 
+
+and edit to suit your needs. (Defaults to public PeerJS and Insight servers)
+
+Copy bitcore/browser/bundle.js to copay/lib/bitcore.js
 
 Then execute these commands:
 ```
@@ -36,63 +39,66 @@ About Copay
 General
 -------
 
-*Copay* implements a multisig wallet using p2sh addresses. It support multiple wallet configurations, like 3-of-5
-(3 required signatures from 5 participant peers) or 2-of-3.  To generate addresses to receive coins,
-*Copay* needs the public keys of all the participat peers in  the wallet. Those public keys, among the 
-wallet configuration, are combined to generate a single address to receive a payment.  
+*Copay* implements a multisig wallet using p2sh addresses. It supports multiple wallet configurations, such as 3-of-5
+(3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants,
+*Copay* needs the public keys of all the wallet participants. Those public keys are incorporated into the 
+wallet configuration and are combined to generate a payment address with which funds can be sent into the wallet.  
 
-To unlock the payment, and spend the wallet's funds, the needed signatures need to be collected an put togheter
-in the transaction. Each peer manage her own private key, and that key is never transmited to other
-peers. Once a transaction proposal is created, the proposal is distributed among the peers and each peer
-can sign the transaction locally. Once the transaction is complete, the last signing peer will broadcast the 
-transaction to the bitcoin network, using a public API for that (Insight API by default in *Copay*)..
+To unlock the payment and spend the wallet's funds, a quorum of participant signatures must be collected 
+and assembled in the transaction. The funds cannot be spent without at least the minimum number of
+signatures required by the wallet configuration (2 of 3, 3 of 5, 6 of 6, etc). 
+Each participant manages their own private key, and that private key is never transmitted anywhere. 
+Once a transaction proposal is created, the proposal is distributed among the 
+wallet participants for each participant to sign the transaction locally. 
+Once the transaction is signed, the last signing participant will broadcast the 
+transaction to the Bitcoin network using a public API (defaults to the Insight API).
 
-*Copay* also implements BIP32 to generate new addresses for the peers. This mean that the actual piece of 
-information shared between the peers is an extended public key, from which is possible to derive more
-public keys so the wallet can use them. Each peer holds for himself his extended private key, to be able
-to sign the incoming transaction proposals.
+*Copay* also implements BIP32 to generate new addresses for the peers. The public key each participant contributes 
+to the wallet is a BIP32 extended public key. As additional public keys are needed for wallet operations (to produce 
+new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' 
+original extended public keys. Each participant keeps their own private keys locally. Private keys are not shared. 
+Private keys are used to sign transaction proposals to make a payment from the shared wallet.
 
 Serverless web
 --------------
 *Copay* software does not need an application server to run. All the software is implemented in client-side
-Javascript. For persistent storage, the client browser's *localStorage* is used. This information is
-stored encryped using the peer's password. Also it is possible (and recommended) to backup that information
-with using one of the options provided by *Copay*, like file downloading.  Without a proper backup, all 
-wallets funds can be lost if the browser's localStorage is deleted, or the browser installation deleted.
+JavaScript. For persistent storage, the client browser's *localStorage* is used. Locally stored data is
+encrypted using a password provided by the local user. Data kept in browser local storage should be
+backed up for safekeeping using one of the methods provided by *Copay*, such as downloading the data into a file.  
+Without a proper backup of the user's private key data, all funds stored in the 
+wallet may be lost or inaccessible if the browser's localStorage is deleted, the browser uninstalled, 
+the local hard disk fails, etc.
 
 Peer communications
 -------------------
-*Copay* use peer-to-peer (p2p) networking to comunicate the parties. Parties exchange transaction 
-proposals, public keys, nicknames and some wallet options. As mentioned above, private keys are *no*
-sent to the network. 
+*Copay* uses peer-to-peer (p2p) networking to communicate between wallet participants. Participants exchange transaction 
+proposals, public keys, nicknames and information about the wallet configuration. Private keys are *not* shared with anyone. 
 
-webRTC is the used protocol. A p2p facilitator server is needed to allow the peers to find each other.
- *Copay* uses the open-sourced *peerjs* 
-server implementation. Wallet participants can use a public peerjs server or install their own. Once the peers
-find each other, a true p2p connection is established and there is no flow of information to the
-server, only between the peers.
+*Copay* network communications use the webRTC protocol. A p2p facilitator server is needed to enable the peers to find each other.
+ *Copay* uses the open-sourced *peerjs* server implementation for p2p discovery. Wallet participants can use a 
+ public peerjs server or install their own. Once the peers find each other, a true p2p connection is established between the
+ peers and there is no further flow of information to the p2p discovery server.
 
-webRTC uses DTLS to secure communications between the peers, and each peer use a self-signed
+webRTC uses DTLS to secure communications between the peers, and each peer uses a self-signed
 certificate.
 
 Security model
 --------------
-On top of webRTC, *Copay* peers authenticate as part of the "wallet ring"(WR)  by 2 factors: An identity 
+On top of webRTC, *Copay* peers authenticate as part of the "wallet ring"(WR) using an identity 
 key and a network key. 
 
-The *identity key* is a ECDSA public key derived from their extended public 
+The *identity key* is a ECDSA public key derived from the participant's extended public 
 key using a specific BIP32 branch. This special public key is never used for Bitcoin address creation, and
-should only be know by members of the WR. 
-In *Copay* this special public key is named *copayerId*.  To register into the peerjs server, while not
-reveling its copayerId to an entity outside the WR, each peer hash the copayerId and pass a SIN 
-to the server. peer discovery is then entirely done using peer's SINs. Note that all copayers in the WR
-know the complete copayerIDs of the peers.
+should only be known by members of the WR. 
+In *Copay* this special public key is named *copayerId*.  The copayerId is hashed and the hash is used to 
+register with the peerjs server. Registering with a hash avoids disclosing the copayerId to parties outside of the WR.
+Peer discovery is accomplished using only the hashes of the WR members' copayerIds. All members of the WR
+know the full copayerIds of all the other members of the WR.
 
-The *network key* is a random key generated when the wallet is created an shared in the initial 
-'secret string' that peers distribute while the wallet is been created. The network key is then stored 
-by each peer on the wallet configuration. The network key is used for establishing a CCM/AES 
-authenticated encrypted channel between all peers, on top of webRTC. The main reason of implementing
-the *network key* is to prevent man-in-the-middle attacks from a compromised peerjs server.
+The *network key* is a random key generated and distributed among the wallet members during wallet creation. 
+The network key is stored by each peer in the wallet configuration. The network key is used in establishing a CCM/AES 
+authenticated encrypted channel between all members of the WR, on top of webRTC. Use of this
+*network key* prevents man-in-the-middle attacks from a compromised peerjs server.
 
 Secret String
 -------------
@@ -100,17 +106,17 @@ When a wallet is created, a secret string is provided to invite new peers to the
 has the following format:
 
   - CopayerId of the peer generating the string. This is a 33 bytes ECDSA public key, as explained above.
-This allow the receiving peer to locate the generating peer.
+This allows the receiving peer to locate the generating peer.
   - Network Key. A 8 byte string to encrypt and sign the peers communication.
 
-The string is encoded using bitcoin's Base8Check encoding, to prevent transmision errors.
+The string is encoded using Bitcoin's Base58Check encoding, to prevent transmission errors.
 
-Peer authentication
+Peer Authentication
 -------------------
 
-It is important to note that all data in the wallet is shared between *all peers*, with the exception of each
-peer's private key, with are never transmited throught the network. There is not private messages or, in general,
-information that belongs to a subset of the WR. 
+It is important to note that - except for private keys - *all data* in the wallet is shared with *all members of the wallet*. 
+Private keys are never shared with anyone and are never sent over the network. There are no *private* messages between 
+individual members of the wallet. All members of a wallet see everything that happens in that wallet.
 
 
 
