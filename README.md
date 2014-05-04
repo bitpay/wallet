@@ -105,7 +105,7 @@ Secret String
 When a wallet is created, a secret string is provided to invite new peers to the new wallet. This string
 has the following format:
 
-  - CopayerId of the peer generating the string. This is a 33 bytes ECDSA public key, as explained above.
+  - CopayerId of the peer generating the string. This is a 33 byte ECDSA public key, as explained above.
 This allows the receiving peer to locate the generating peer.
   - Network Key. A 8 byte string to encrypt and sign the peers communication.
 
