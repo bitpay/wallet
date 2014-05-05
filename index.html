@@ -185,19 +185,15 @@
  
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
-        <div class="large-6 large-centered medium-6 medium-centered columns">
+        <div class="large-6 large-centered medium-6 medium-centered columns" ng-init="choosefile=0; pastetext=0">
           <h2>{{title}}</h2>
           <form name="importForm" ng-submit="import(importForm)" novalidate>
             <fieldset>
-            <legend>Choose your backup file or paste plain text code</legend>
-            <accordion>
-              <accordion-group heading="Choose backup file from your computer" is-open="true">
-                <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
-              </accordion-group>
-              <accordion-group heading="Paste backup plain text code">
-                <textarea class="form-control" name="backupText" ng-model="backupText" rows="5"></textarea>
-              </accordion-group>
-            </accordion>
+            <legend>Select which method want to use to restore</legend>
+              <label for="backupFile" ng-click="choosefile=!choosefile" class="m10b">1-. Choose backup file from your computer</label>
+              <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select ng-show="choosefile">
+              <label for="backupText" ng-click="pastetext=!pastetext" class="m10b">2-. Paste backup plain text code</label>
+              <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
             </fieldset>
 
             <label for="password">Password <small>Required</small></label>
