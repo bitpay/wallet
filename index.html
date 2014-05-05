@@ -176,7 +176,7 @@
               <span ng-show="wallets.length">
                 <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a> &middot;
               </span>
-              <a ng-href="#import">Restore a backup</a>
+              <a ng-href="#import">Import a backup</a>
             </div>
           </div>
         </div> <!-- End !loading -->
@@ -190,9 +190,9 @@
           <form name="importForm" ng-submit="import(importForm)" novalidate>
             <fieldset>
             <legend>Select which method want to use to restore</legend>
-              <label for="backupFile" ng-click="choosefile=!choosefile" class="m10b">1-. Choose backup file from your computer</label>
+              <label for="backupFile" ng-click="choosefile=!choosefile" class="m10b"><i class="fi-upload"></i> Choose backup file from your computer</label>
               <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select ng-show="choosefile">
-              <label for="backupText" ng-click="pastetext=!pastetext" class="m10b">2-. Paste backup plain text code</label>
+              <label for="backupText" ng-click="pastetext=!pastetext" class="m10b"><i class="fi-paperclip"></i> Paste backup plain text code</label>
               <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
             </fieldset>
 
