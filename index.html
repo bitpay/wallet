@@ -176,7 +176,7 @@
               <span ng-show="wallets.length">
                 <a ng-click="create()" ng-disabled="loading" loading="Creating">Create a new wallet</a> &middot;
               </span>
-              <a ng-href="#import">Import from file</a>
+              <a ng-href="#import">Restore a backup</a>
             </div>
           </div>
         </div> <!-- End !loading -->
@@ -185,14 +185,27 @@
  
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
-        <h3>{{title}}</h3>
-        <div class="large-6 columns">
-          <input type="password" class="form-control" placeholder="Your wallet password" ng-model="password" autofocus required>
-          <h6>Select a backup file</h6>
-          <input type="file" class="form-control" placeholder="Select a backup file" ng-model="backupFile"   ng-file-select>
-          <h6>Or just paste the backup text here</h6>
-          <textarea class="form-control" ng-model="backupText"></textarea>
-          <button class="button primary expand radius" ng-click="import()">Import backup</button>
+        <div class="large-6 large-centered medium-6 medium-centered columns">
+          <h2>{{title}}</h2>
+          <form name="importForm" ng-submit="import(importForm)" novalidate>
+            <fieldset>
+            <legend>Choose your backup file or paste plain text code</legend>
+            <accordion>
+              <accordion-group heading="Choose backup file from your computer" is-open="true">
+                <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
+              </accordion-group>
+              <accordion-group heading="Paste backup plain text code">
+                <textarea class="form-control" name="backupText" ng-model="backupText" rows="5"></textarea>
+              </accordion-group>
+            </accordion>
+            </fieldset>
+
+            <label for="password">Password <small>Required</small></label>
+            <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
+            <button type="submit" class="button primary radius" ng-disabled="importForm.$invalid" loading="Importing">
+              Import backup
+            </button>
+          </form>
         </div>
       </div>
     </script>
