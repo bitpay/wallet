@@ -28,11 +28,8 @@ function Network(opts) {
     mode:'ccm',
     ts:parseInt(64),   
   };
-
-
-  // For using your own peerJs server
-  self.opts = {};
-  ['port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
+  this.opts = {};
+  ['config', 'port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
     if (opts[k]) self.opts[k] = opts[k];
   });
   this.cleanUp();

@@ -9,18 +9,29 @@ var config = {
     //host: 'localhost',
     //port: 10009,
     //path: '/',
-     //
+    //
     key: 'g23ihfh82h35rf', // api key for the peerjs server
-    host:'162.242.219.26', // peerjs server
-    port:10009,
+    host: '162.242.219.26', // peerjs server
+    port: 10009,
     path: '/',
     maxPeers: 15,
-//    debug: 3,
+    debug: 3,
     sjclParams: {
       salt: 'mjuBtGybi/4=', // choose your own salt (base64)
-      iter:1000,
-      mode:'ccm',
-      ts:parseInt(64),   
+      iter: 1000,
+      mode: 'ccm',
+      ts: parseInt(64),
+    },
+    config: {
+      'iceServers': [
+        // Pass in STUN and TURN server for maximum network compatibility
+        {
+          url: 'stun:stun.l.google.com:19302'
+        }, {
+          url: 'turn:homeo@turn.bistri.com:80',
+          credential: 'homeo'
+        }
+      ]
     }
   },
   limits: {
@@ -47,7 +58,6 @@ var config = {
   storageSalt: 'mjuBtGybi/4=', // choose your own salt (base64)
 };
 
-var log = function () {
+var log = function() {
   if (config.verbose) console.log(arguments);
 }
-
