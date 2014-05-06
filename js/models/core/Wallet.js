@@ -56,7 +56,6 @@ Wallet.prototype.connectToAll = function() {
     this.sendWalletReady(this.firstCopayerId);
     this.firstCopayerId = null;
   }
-  this.emit('refresh');
 };
 
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
@@ -206,8 +205,9 @@ Wallet.prototype.netStart = function() {
   }
 
   net.start(startOpts, function() {
-    self.emit('created', net.getPeer());
     self.connectToAll();
+    self.emit('created', net.getPeer());
+    self.emit('refresh');
   });
 };
 

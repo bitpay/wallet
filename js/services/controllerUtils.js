@@ -59,14 +59,12 @@ angular.module('copay.controllerUtils')
         $location.path('addresses');
       });
       w.on('refresh', function() {
-        alert('refresh');
         root.updateBalance(function() {
           $rootScope.$digest();
         });
         $rootScope.$digest();
       });
       w.on('publicKeyRingUpdated', function() {
-        alert('pkr updated');
         root.updateBalance(function() {
           $rootScope.$digest();
         });
@@ -80,7 +78,6 @@ angular.module('copay.controllerUtils')
     };
 
     root.updateBalance = function(cb) {
-      alert('update balance');
       root.setSocketHandlers();
       $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
