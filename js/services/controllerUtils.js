@@ -59,14 +59,17 @@ angular.module('copay.controllerUtils')
         $location.path('addresses');
       });
       w.on('refresh', function() {
-        root.setSocketHandlers();
+        alert('refresh');
         root.updateBalance(function() {
           $rootScope.$digest();
         });
         $rootScope.$digest();
       });
       w.on('publicKeyRingUpdated', function() {
-        root.setSocketHandlers();
+        alert('pkr updated');
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
       });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
@@ -77,6 +80,7 @@ angular.module('copay.controllerUtils')
     };
 
     root.updateBalance = function(cb) {
+      alert('update balance');
       root.setSocketHandlers();
       $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
