@@ -65,6 +65,8 @@ WalletFactory.prototype.fromObj = function(obj) {
   }
   this.log('### WALLET OPENED:', w.id);
 
+  // store imported wallet
+  w.store();
   return w;
 };
 

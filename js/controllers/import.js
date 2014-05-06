@@ -21,13 +21,31 @@ angular.module('copay.import').controller('ImportController',
       };
     };
 
-    $scope.import = function() {
-      if ($scope.password) {
-        if ($scope.backupText) {
-          _importBackup($scope.backupText);
-        } else {
-          reader.readAsBinaryString($scope.file);
-        }
+    $scope.import = function(form) {
+      if (form.$invalid) {
+        $rootScope.flashMessage = { message: 'There is an error in the form. Please, try again', type: 'error'};
+        return;
       }
+
+      var backupFile = $scope.file;
+      var backupText = form.backupText.$modelValue;
+      var password = form.password.$modelValue;
+
+      if (!backupFile && !backupText) {
+        $rootScope.flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
+        return;
+      }
+
+      $scope.loading = true;
+      
+      if (backupFile) {
+        reader.readAsBinaryString(backupFile);
+      }
+      else {
+        _importBackup(backupText);
+      }
+
+      $scope.loading = false;
+
     };
   });
