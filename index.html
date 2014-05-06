@@ -209,6 +209,7 @@
           Creating new wallet...
         </div>
         <div ng-show="!loading">
+          <form name="setupForm" ng-submit="create(setupForm)" novalidate>
           <div class="row">
             <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
               <div class="large-6 columns line-dashed-v">
@@ -232,27 +233,27 @@
               </div>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
-              <h6>Wallet Password</h6>
+              <h6>Wallet Password <small>Required</small></h6>
               <input type="password" class="form-control" ng-model="walletPassword" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
-              <h6>Wallet name <small>(optional)</small></h6>
+              <h6>Wallet name <small>Optional</small></h6>
                 <input type="text" class="form-control" ng-model="walletName">
             </div>
             <div class="large-6 large-centered columns m30v">
-              <h6>Your name <small>(optional)</small></h6>
+              <h6>Your name <small>Optional</small></h6>
                 <input type="text" class="form-control" ng-model="myNickname">
             </div>
           </div>
           <div class="row">
             <div class="large-12 columns line-dashed">
-              <button class="button primary radius right" type="button"
-               ng-click="create()">
+              <button type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
               <a class="button secondary radius" href="#signin">Go back</a>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </script>
