@@ -7,25 +7,37 @@ angular.module('copay.signin').controller('SigninController',
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
 
-    $scope.create = function() {
-      $scope.loading = true;
+    $scope.create = function(form) {
+      if (form) {
+        if (form.$invalid) {
+          $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+          return;
+        }
 
-      $rootScope.walletName = $scope.walletName;
-      $rootScope.walletPassword = $scope.createPassword;
+        $rootScope.walletName = form.walletName.$modelValue;
+        $rootScope.walletPassword = form.createPassword.$modelValue;
+      }
       $location.path('setup');
     };
 
-    $scope.open = function() {
-      if ($scope.openPassword != '') {
-        $scope.loading = true;
-
-        var passphrase = Passphrase.getBase64($scope.openPassword);
-        var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
-        controllerUtils.startNetwork(w);
+    $scope.open = function(form) {
+      if (form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
       }
+      $scope.loading = true;
+      var password = form.openPassword.$modelValue;
+
+      var passphrase = Passphrase.getBase64(password);
+      var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
+      controllerUtils.startNetwork(w);
     };
 
-    $scope.join = function() {
+    $scope.join = function(form) {
+      if (form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
+      }
       $scope.loading = true;
 
       walletFactory.network.on('badSecret', function() {
