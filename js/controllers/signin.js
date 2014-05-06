@@ -8,20 +8,18 @@ angular.module('copay.signin').controller('SigninController',
     $scope.openPassword = '';
 
     $scope.create = function(form) {
-      if (form) {
-        if (form.$invalid) {
-          $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
-          return;
-        }
-
-        $rootScope.walletName = form.walletName.$modelValue;
-        $rootScope.walletPassword = form.createPassword.$modelValue;
+      if (form && form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
       }
+
+      $rootScope.walletName = form.walletName.$modelValue;
+      $rootScope.walletPassword = form.createPassword.$modelValue;
       $location.path('setup');
     };
 
     $scope.open = function(form) {
-      if (form.$invalid) {
+      if (form && form.$invalid) {
         $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
         return;
       }
@@ -34,7 +32,7 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     $scope.join = function(form) {
-      if (form.$invalid) {
+      if (form && form.$invalid) {
         $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
         return;
       }
