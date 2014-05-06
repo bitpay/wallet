@@ -59,14 +59,15 @@ angular.module('copay.controllerUtils')
         $location.path('addresses');
       });
       w.on('refresh', function() {
-        root.setSocketHandlers();
         root.updateBalance(function() {
           $rootScope.$digest();
         });
         $rootScope.$digest();
       });
       w.on('publicKeyRingUpdated', function() {
-        root.setSocketHandlers();
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
       });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
