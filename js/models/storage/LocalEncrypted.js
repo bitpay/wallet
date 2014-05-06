@@ -54,7 +54,7 @@ Storage.prototype._read = function(k) {
     }
   } catch (e) {
     console.log('Error while decrypting: '+e);
-    throw e;
+    return null;
   };
 
   return ret;

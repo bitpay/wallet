@@ -21,6 +21,11 @@ angular.module('copay.signin').controller('SigninController',
 
         var passphrase = Passphrase.getBase64($scope.openPassword);
         var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
+        if (!w) {
+          $scope.loading = false;
+          $rootScope.flashMessage = { message: 'Bad password or connection error', type: 'error'};
+          return;
+        }
         controllerUtils.startNetwork(w);
       }
     };
