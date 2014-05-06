@@ -267,9 +267,6 @@ hr { margin: 2.25rem 0;}
 .lh {line-height: 0;}
 .oh {overflow:hidden;}
 .lh {line-height: 0;}
-.signin input.ng-dirty.ng-invalid { 
-  border: 2px red solid;
-}
 
 .video-small {
   width: 80px;

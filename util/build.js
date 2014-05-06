@@ -30,7 +30,7 @@ var createBundle = function(opts) {
   opts.dir = opts.dir || 'js/';
 
   // concat browser vendor files
-  exec('cd ' + opts.dir + 'browser; sh concat.sh', puts);
+  exec('sh concat.sh', puts);
 
   var bopts = {
     pack: pack,

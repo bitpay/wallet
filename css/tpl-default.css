@@ -168,17 +168,94 @@ button.radius, .button.radius {
   border-radius: 5px;
 }
 
-button.primary, button.secondary, button.primary:hover, button.secondary:hover {color: #fff !important;} 
+/* SECONDARY */
+button.secondary, 
+.button.secondary { 
+  background-color: #1ABC9C;
+  color: #fff;
+}
+button.secondary:hover, 
+button.secondary:focus, 
+.button.secondary:hover, 
+.button.secondary:focus {
+  background-color: #16A085;
+  color: #e6e6e6;
+}
+button.disabled.secondary, 
+button[disabled].secondary, 
+.button.disabled.secondary, 
+.button[disabled].secondary,
+button.disabled.secondary:hover, 
+button.disabled.secondary:focus, 
+button[disabled].secondary:hover, 
+button[disabled].secondary:focus, 
+.button.disabled.secondary:hover, 
+.button.disabled.secondary:focus, 
+.button[disabled].secondary:hover, 
+.button[disabled].secondary:focus {
+  background-color: #1ABC9C;
+  color: #E6E6E6;
+}
 
-button.primary { background-color: #E67E22; }
-button.secondary { background-color: #1ABC9C !important; }
-button.warning { background-color: #C0392A; }
+/* PRIMARY */
+button.primary, 
+.button.primary { 
+  background-color: #E67E22;
+  color: #fff;
+}
+button.primary:hover, 
+button.primary:focus, 
+.button.primary:hover, 
+.button.primary:focus {
+  background-color: #D86601;
+  color: #e6e6e6;
+}
+button.disabled.primary, 
+button[disabled].primary, 
+.button.disabled.primary, 
+.button[disabled].primary,
+button.disabled.primary:hover, 
+button.disabled.primary:focus, 
+button[disabled].primary:hover, 
+button[disabled].primary:focus, 
+.button.disabled.primary:hover, 
+.button.disabled.primary:focus, 
+.button[disabled].primary:hover, 
+.button[disabled].primary:focus {
+  background-color: #E67E22;
+  color: #E6E6E6;
+}
 
-button.primary:hover { background-color: #D86601;}
-button.secondary:hover { background-color: #16A085 !important;}
-button.warning:hover { background-color: #82251A; }
+/* WARNING */
+button.warning, 
+.button.warning { 
+  background-color: #C0392A;
+  color: #fff;
+}
+button.warning:hover, 
+button.warning:focus, 
+.button.warning:hover, 
+.button.warning:focus {
+  background-color: #82251A;
+  color: #e6e6e6;
+}
+button.disabled.warning, 
+button[disabled].warning, 
+.button.disabled.warning, 
+.button[disabled].warning,
+button.disabled.warning:hover, 
+button.disabled.warning:focus, 
+button[disabled].warning:hover, 
+button[disabled].warning:focus, 
+.button.disabled.warning:hover, 
+.button.disabled.warning:focus, 
+.button[disabled].warning:hover, 
+.button[disabled].warning:focus {
+  background-color: #C0392A;
+  color: #E6E6E6;
+}
 
-.text-gray { color: #999 !important;}
+.text-gray { color: #999;}
 
 #footer {
   background: #2C3E50;

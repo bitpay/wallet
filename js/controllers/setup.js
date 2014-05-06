@@ -32,7 +32,12 @@ angular.module('copay.setup').controller('SetupController',
       updateRCSelect(tc);
     });
 
-    $scope.create = function() {
+    $scope.create = function(form) {
+      if (form && form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
+      }
+
       $scope.loading = true;
 
       var passphrase = Passphrase.getBase64($scope.walletPassword);
