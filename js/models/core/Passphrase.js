@@ -21,4 +21,14 @@ Passphrase.prototype.getBase64 = function(password) {
   return keyBase64;
 };
 
+Passphrase.prototype.getBase64Async = function(password,cb) {
+  var self = this;
+  setTimeout(function() {
+    var ret = self.getBase64(password);
+    return cb(ret);
+  },10);
+};
+
+
+
 module.exports = Passphrase;

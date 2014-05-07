@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.setup').controller('SetupController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase) {
+  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase) {
 
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
@@ -38,19 +38,19 @@ angular.module('copay.setup').controller('SetupController',
         return;
       }
 
+
       $scope.loading = true;
-
-      var passphrase = Passphrase.getBase64($scope.walletPassword);
-
-      var opts = {
-        requiredCopayers: $scope.requiredCopayers,
-        totalCopayers: $scope.totalCopayers,
-        name: $scope.walletName, 
-        nickname: $scope.myNickname,
-        passphrase: passphrase,
-      };
-      var w = walletFactory.create(opts);
-      controllerUtils.startNetwork(w);
+      Passphrase.getBase64Async($scope.walletPassword, function(passphrase){
+        var opts = {
+          requiredCopayers: $scope.requiredCopayers,
+          totalCopayers: $scope.totalCopayers,
+          name: $scope.walletName, 
+          nickname: $scope.myNickname,
+          passphrase: passphrase,
+        };
+        var w = walletFactory.create(opts);
+        controllerUtils.startNetwork(w);
+      });
     };
 
   });
