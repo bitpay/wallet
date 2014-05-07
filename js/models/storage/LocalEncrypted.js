@@ -33,8 +33,12 @@ Storage.prototype._encryptObj = function(obj) {
 };
 
 Storage.prototype._decrypt = function(base64) {
+  var decryptedStr=null;
   var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
-  var decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+
+  if (decrypted)
+    decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+
   return decryptedStr;
 };
 
