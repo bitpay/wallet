@@ -25,6 +25,7 @@ html, body {height: 100%;}
   padding: 5px 2rem;
   bottom: 0;
   width: 100%;
+  z-index: 100;
 }
 
 .bottom-copay {
@@ -427,3 +428,8 @@ a.loading {
   background: #fff;
 }
 
+#qr-canvas { display: none; }
+#qrcode-scanner-video {
+  display: block;
+  margin: 0 auto;
+}
