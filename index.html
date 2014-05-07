@@ -455,9 +455,9 @@
                 <div class="large-12 columns">
                   <div class="row collapse">
                     <label for="address">To address
-                      <small ng-hide="!sendForm.address.$pristine">required</small>
-                      <small class="is-valid" ng-show="!sendForm.address.$invalid && !sendForm.address.$pristine">valid!</small>
-                      <small class="has-error" ng-show="sendForm.address.$invalid && !sendForm.address.$pristine">
+                      <small ng-hide="!sendForm.address.$pristine || address">required</small>
+                      <small class="is-valid" ng-show="!sendForm.address.$invalid && address">valid!</small>
+                      <small class="has-error" ng-show="sendForm.address.$invalid && address">
                       not valid</small>
                     </label>
                     <div class="small-10 columns">

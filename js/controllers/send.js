@@ -148,8 +148,9 @@ angular.module('copay.send').controller('SendController',
 
       var str = (data.indexOf('bitcoin:') === 0) ? data.substring(8) : data;
       console.log('QR code detected: ' + str);
-      $scope.address = str;
-      $scope.$digest();
+      $scope.$apply(function() {
+        $scope.address = str;
+      });
     };
 
     $scope.cancelScanner = function() {
