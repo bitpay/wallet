@@ -95,15 +95,21 @@
 
     </div>
 
-    <div id="main" class="row">
+    <div id="main" class="row" ng-class="{'main-home': !$root.wallet}">
       <div class="large-12 columns" ng-view></div>
     </div>
   </div>
 
-  <div id="footer" data-ng-controller="FooterController" ng-show="$root.wallet">
+  <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet}">
     <link rel="stylesheet" ng-href="{{theme}}">
-    <div class="row">
-      <div class="large-3 medium-3 columns m10t">
+    <div class="row" ng-show="!$root.wallet">
+      <div class="large-12 columns text-right">
+        Copay 
+        <small>v. 0.0.5</small>
+      </div>
+    </div>
+    <div class="row" ng-show="$root.wallet">
+      <div class="large-3 medium-3 small-3 columns m10t">
         <div>
           <strong>{{$root.getWalletDisplay()}}</strong>
         </div>
@@ -114,7 +120,7 @@
           <a class="size-12" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
         </div>
       </div>
-      <div class="large-9 medium-9 columns">
+      <div class="large-9 medium-9 small-9 columns">
         <div class="bottom-copay"
             ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
           <video 
@@ -272,8 +278,8 @@
       <div class="addresses" data-ng-controller="AddressesController">
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="row">
-            <div class="large-9 columns" ng-if="addrInfos[0]">
-              <div class="large-8 columns">
+            <div class="large-9 medium-12 columns" ng-if="addrInfos[0]">
+              <div class="large-8 medium-8 columns">
                 <a class="panel db" ng-repeat="addrInfo in addrInfos"
                   ng-click="selectAddr(addrInfo.address.toString())">
                   <span>{{addrInfo.address.toString()}}</span>
@@ -285,7 +291,7 @@
                   </span>
                 </a>
               </div>
-              <div class="large-4 columns line-dashed-v text-center">
+              <div class="large-4 medium-4 columns line-dashed-v text-center">
                 <qrcode size="160" data="{{selectedAddr}}"></qrcode>
                 <p class="m10t">
                   <strong>
@@ -296,7 +302,7 @@
                 </p>
               </div>
             </div>
-            <div class="columns text-center" ng-class="{'large-3' : !!addrInfos[0]}">
+            <div class="columns text-center m10t" ng-class="{'large-3' : !!addrInfos[0]}">
               <p> Create a New <strong> Address </strong> </p>
               <button class="secondary radius expandi new-address" ng-click="newAddr()"
                 ng-disabled="loading" loading="Creating"> Create </button>
@@ -457,7 +463,7 @@
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
-          <div class="small-6 large-centered columns">
+          <div class="medium-6 medium-centered large-6 large-centered columns">
             <h3>{{title}}</h3>
             <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
               <div class="row">
@@ -500,7 +506,7 @@
               </div>
 
               <div class="row">
-                <div class="large-6 columns">
+                <div class="large-6 medium-6 columns">
                   <div class="row collapse">
                     <label for="amount">Amount 
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
@@ -536,19 +542,19 @@
       <div class="backup" data-ng-controller="BackupController">
         <h3>{{title}}</h3>
         <div class="row text-center">
-          <div class="large-4 columns">
+          <div class="large-4 medium-4 columns">
             <a class="panel box-backup" ng-click="download()">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
-          <div class="large-4 columns">
+          <div class="large-4 medium-4 columns">
             <a class="panel box-backup" ng-click="dropbox()">
               <i class="fi-social-dropbox size-72"></i>
               <p> Backup to Dropbox </p>
             </a>
           </div>
-          <div class="large-4 columns">
+          <div class="large-4 medium-4 columns">
             <a class="panel box-backup" ng-click="email()">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>

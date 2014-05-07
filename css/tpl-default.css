@@ -117,6 +117,14 @@ a.box-backup {
   color: #111;
 }
 
+a.box-backup:hover {
+  background-color: #16A085;
+}
+
+a.box-backup:hover i, a.box-backup:hover p {
+  color: #fff;
+}
+
 .panel-sign {
   color: #111;
   background: #FAE448;
