@@ -145,6 +145,7 @@
     <script type="text/ng-template" id="signin.html">
       <div class="signin" ng-controller="SigninController">
         <div data-alert class="alert-box info radius" ng-show="loading">
+          <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
           Looking for peers...
         </div>
         <div ng-show="!loading">
@@ -197,7 +198,11 @@
  
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
-        <div class="large-6 large-centered medium-6 medium-centered columns" ng-init="choosefile=0; pastetext=0">
+        <div data-alert class="alert-box info radius" ng-show="loading">
+          <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
+          Importing wallet...
+        </div>
+        <div class="large-6 large-centered medium-6 medium-centered columns" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
           <h2>{{title}}</h2>
           <form name="importForm" ng-submit="import(importForm)" novalidate>
             <fieldset>
@@ -221,7 +226,8 @@
     <script type="text/ng-template" id="setup.html">
       <div ng-controller="SetupController">
         <div data-alert class="alert-box info radius" ng-show="loading">
-          Creating new wallet...
+          <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
+          Creating wallet...
         </div>
         <div ng-show="!loading">
           <form name="setupForm" ng-submit="create(setupForm)" novalidate>

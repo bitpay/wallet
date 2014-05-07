@@ -98,7 +98,7 @@ var config = {
     port: 3001
   },
   passphrase: {
-    iterations: 1,
+    iterations: 1000,
     storageSalt: 'mjuBtGybi/4=', 
   },
   themes: ['default'],
