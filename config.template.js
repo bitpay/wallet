@@ -97,10 +97,12 @@ var config = {
     host: 'test.insight.is',
     port: 3001
   },
-  verbose: 1,
+  passphrase: {
+    iterations: 1,
+    storageSalt: 'mjuBtGybi/4=', 
+  },
   themes: ['default'],
-  iterations: 1000,
-  storageSalt: 'mjuBtGybi/4=', // choose your own salt (base64)
+  verbose: 1,
 };
 
 var log = function() {
