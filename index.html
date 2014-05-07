@@ -382,7 +382,7 @@
                     Transaction finally rejected
                   </span>
                   <p class="small" ng-show="!tx.missingSignatures && tx.sentTs">
-                    <a href="http://live.insight.is/tx/{{tx.sentTxid}}" target="blank">
+                    <a href="http://{{$root.wallet.networkName === 'testnet' ? 'test':'live' }}.insight.is/tx/{{tx.sentTxid}}" target="blank">
                       <i class="fi-arrow-right size-40"></i>
                       Sent at {{tx.sentTs | date:'medium'}}
                     </a>
