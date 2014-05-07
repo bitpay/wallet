@@ -95,14 +95,20 @@
 
     </div>
 
-    <div id="main" class="row">
+    <div id="main" class="row" ng-class="{'main-home': !$root.wallet}">
       <div class="large-12 columns" ng-view></div>
     </div>
   </div>
 
-  <div id="footer" data-ng-controller="FooterController" ng-show="$root.wallet">
+  <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet}">
     <link rel="stylesheet" ng-href="{{theme}}">
-    <div class="row">
+    <div class="row" ng-show="!$root.wallet">
+      <div class="large-12 columns text-right">
+        Copay 
+        <small>v. 0.0.5</small>
+      </div>
+    </div>
+    <div class="row" ng-show="$root.wallet">
       <div class="large-3 medium-3 small-3 columns m10t">
         <div>
           <strong>{{$root.getWalletDisplay()}}</strong>

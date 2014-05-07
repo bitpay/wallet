@@ -17,6 +17,10 @@ html, body {height: 100%;}
   overflow:auto;
 	padding-bottom: 91px;}  /* must be same height as the footer */
 
+.main-home {
+  padding-bottom: 28px !important;
+}
+
 #footer {
   position: fixed;
 	margin-top: -96px; /* negative value of footer height */
@@ -26,6 +30,12 @@ html, body {height: 100%;}
   bottom: 0;
   width: 100%;
   z-index: 100;
+}
+
+.footer-home {
+  position: relative !important;
+  margin-top: -28px !important;
+	height: 28px !important;
 }
 
 .bottom-copay {
@@ -196,7 +206,7 @@ span.panel-res {
 
 .line-dashed {
   border-top: 2px dashed #ccc;
-  margin: 3rem 0;
+  margin: 1rem 0;
   padding: 1rem 0;
 }
 
