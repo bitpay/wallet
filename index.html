@@ -124,13 +124,14 @@
         <div class="bottom-copay"
             ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
           <video 
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+            ng-if="$root.videoInfo[c.peerId]" 
             class="video-small"
-            autoplay ng-show="$root.videoSrc[c.peerId]" 
+            autoplay
+            confvideo
+            peer="{{c.peerId}}"
             ng-src="{{$root.getVideoURL(c.peerId)}}"
-            id="{{c.peerId + '-video'}}" muted="true"
             title="{{c.peerId + (c.peerId == $root.wallet.network.peerId?' (You)':'')}}" ></video>
-          <img ng-show="!$root.videoSrc[c.peerId]" 
+          <img ng-if="!$root.videoInfo[c.peerId]" 
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             class="video-small"
             src="./img/satoshi.gif" 
