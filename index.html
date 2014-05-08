@@ -126,10 +126,12 @@
           <video ng-if="$root.videoInfo[c.peerId]" 
             avatar peer="{{c}}"
             autoplay
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             ng-src="{{$root.getVideoURL(c.peerId)}}"
           ></video>
           <img ng-if="!$root.videoInfo[c.peerId]" 
             avatar peer="{{c}}"
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             src="./img/satoshi.gif" 
           />
           <span ng-if="c.nick" style="position:absolute; bottom:-10px; width: 80px; overflow: hidden;">{{c.nick}}</span>
