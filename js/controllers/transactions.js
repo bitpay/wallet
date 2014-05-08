@@ -70,7 +70,6 @@ angular.module('copay.transactions').controller('TransactionsController',
       if (p.builder.isFullySigned()) {
         $scope.send(ntxid);
         _updateTxs();
-//        $rootScope.$digest();    
       }
       else {
         _updateTxs();
@@ -90,6 +89,10 @@ angular.module('copay.transactions').controller('TransactionsController',
           });
         }
       }
+    };
+
+    $scope.getShortNetworkName = function() {
+      return config.networkName.substring(0,4);
     };
 
     $scope.reject = function (ntxid) {

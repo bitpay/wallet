@@ -395,9 +395,11 @@
                     Transaction finally rejected
                   </span>
                   <p class="small" ng-show="!tx.missingSignatures && tx.sentTs">
-                    <a href="http://{{$root.wallet.networkName === 'testnet' ? 'test':'live' }}.insight.is/tx/{{tx.sentTxid}}" target="blank">
-                      <i class="fi-arrow-right size-40"></i>
-                      Sent at {{tx.sentTs | date:'medium'}}
+                    <i class="fi-arrow-right size-40"></i>
+                    Sent at {{tx.sentTs | date:'medium'}} |
+                    Transaction ID: 
+                    <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
+                        {{tx.sentTxid}}
                     </a>
                   </p>
                   <p class="text-gray" ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
@@ -420,7 +422,9 @@
                 <div class="m15">
                   <div class="row">
                     <div class="large-8 columns">
-                      ID: {{btx.txid}}
+                      <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
+                        {{btx.txid}}
+                      </a>
                     </div>
                     <div class="large-4 columns text-right">
                       {{btx.firstSeenTs * 1000 | date:'medium'}} </h6>
