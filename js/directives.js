@@ -72,7 +72,7 @@ angular.module('copay.directives')
         var text = attr.loading;
         scope.$watch('loading', function(val) {
           if (val) {
-            element.html('<img src="img/loading.gif"> ' + text + '...');
+            element.html('<i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> ' + text + '...');
           } else {
             element.html(a);
           }
