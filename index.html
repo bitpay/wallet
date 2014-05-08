@@ -486,10 +486,10 @@
                       <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" valid-address required>
                     </div>
                     <div class="small-2 columns" ng-hide="showScanner">
-                      <a class="postfix button" ng-click="openScanner()"><i class="fi-camera"></i></a>
+                      <a class="postfix button secondary" ng-click="openScanner()"><i class="fi-camera"></i></a>
                     </div>
                     <div class="small-2 columns" ng-show="showScanner">
-                      <a class="postfix button alert" ng-click="cancelScanner()">Cancel</a>
+                      <a class="postfix button warning" ng-click="cancelScanner()">Cancel</a>
                     </div>
                   </div>
                   <div id="scanner" class="row" ng-if="showScanner">
