@@ -140,7 +140,12 @@ a.box-backup:hover i, a.box-backup:hover p {
   color: #FBE500;
 }
 
-.alert-box.warning, .alert-box.error {
+.alert-box.success {
+  background-color: #1ABC9C;
+  border-color: #16A085;
+}
+
+.alert-box.error {
   background-color: #C0392A;
   border-color: #C0392A;
   color: #fff;

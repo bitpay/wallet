@@ -288,10 +288,14 @@ hr { margin: 2.25rem 0;}
 }
 .online {
   background-color: black;
-  border: 3px solid green;
+  border: 3px solid #1ABC9C;
+}
+.online:hover {
+  border-color: #16A085;
 }
 .offline {
   border: 3px solid gray;
+  opacity: 0.4;
 }
 
 .tx-copayers {
