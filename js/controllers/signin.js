@@ -31,6 +31,7 @@ angular.module('copay.signin').controller('SigninController',
         if (!w) {
           $scope.loading = false;
           $rootScope.flashMessage = { message: 'Bad password or connection error', type: 'error'};
+          $rootScope.$digest();
           return;
         }
         controllerUtils.startNetwork(w);
