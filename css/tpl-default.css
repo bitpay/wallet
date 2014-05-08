@@ -34,7 +34,7 @@
 }
 
 body {
-  background: #F5F5F5;
+  background: #F8F8FB;
 }
 
 .logo {
@@ -48,7 +48,7 @@ body {
 }
 
 .top-bar-section li.active:not(.has-form) a:not(.button) {
-  background: #f5f5f5;
+  background: #F8F8FB;
   color: #111;
 }
 
@@ -263,7 +263,7 @@ button[disabled].warning:focus,
   color: #E6E6E6;
 }
 
-.text-gray { color: #999;}
+.text-gray { color: #999 !important;}
 
 #footer {
   background: #2C3E50;

@@ -66,14 +66,11 @@
       </div>
 
       <div class="row">
-        <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading' data-alert class="alert-box  warn radius  size-18" >
-
-
-              <div style="float:left; margin:0 15px">
-                  <i class="fi-alert size-60"></i> 
-              </div>
+        <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
+            <div class="alert-box error radius" data-alert>
               
               <div class="size-18">
+                  <i class="fi-alert"></i> 
                   Note: Your wallet is not complete yet. 
                   <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
                   {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
@@ -83,13 +80,24 @@
                   </span>
                   missing. 
               </div>
+            </div>
 
-              <div class="size-18">
-                  Share this secret with your other copayers for them to join your wallet <br>
+            <div class="panel radius">
+              <h3 class="m15b">Share this secret with your other copayers
+                <small> for them to join your wallet</small>
+              </h3>
+              <div class="row">
+                <div class="large-9 columns line-dashed-v text-gray">
+                  <div class="panel input left">
+                    <p class="text-gray">{{$root.wallet.getSecret()}}</p>
+                  </div>
+                </div>
+                <div class="large-3 columns" ng-show="$root.wallet">
+                  <h5 class="m0">{{$root.getWalletDisplay()}}</h5>
+                  <p class="text-gray">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet</p>
+                </div>
               </div>
-              <div class="size-24">
-              <b>{{$root.wallet.getSecret()}}</b>
-              </div>
+            </div>
         </div>
       </div>
 
