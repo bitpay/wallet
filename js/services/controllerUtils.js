@@ -9,6 +9,15 @@ angular.module('copay.controllerUtils')
     $rootScope.getVideoURL = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) return;
+
+      //alert($rootScope.wallet.getOnlinePeerIDs());
+      //alert(copayer);
+      if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
+        // peer disconnected, remove his video
+        delete $rootScope.videoInfo[copayer]
+        return;
+      }
+
       var encoded = vi.url;
       var url = decodeURI(encoded);
       var trusted = $sce.trustAsResourceUrl(url);
