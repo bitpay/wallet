@@ -29,10 +29,16 @@
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
-                Balance: {{totalBalance || 0}} <i class="fi-bitcoin"></i><br>
+                Balance: 
+                <span ng-if="$root.loading">...</span>
+                <span ng-if="!$root.loading">{{totalBalance || 0}}</span>
+                <i class="fi-bitcoin"></i><br>
               </div>
               <div class="large-4 medium-4 columns">
-                Available to Spend: {{availableBalance || 0}} <i class="fi-bitcoin"></i>
+                Available to Spend:
+                <span ng-if="$root.loading">...</span>
+                <span ng-if="!$root.loading">{{availableBalance || 0}}</span>
+                <i class="fi-bitcoin"></i>
               </div>
             </div>
           </div>
