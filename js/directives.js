@@ -89,12 +89,16 @@ angular.module('copay.directives')
         });
       }
     }
-  }).directive('confvideo', function($rootScope) {
+  }).directive('avatar', function($rootScope) {
     return {
       link: function(scope, element, attrs) {
-        var peer = attrs.peer;
-        element.addClass(($rootScope.wallet.getOnlinePeerIDs().indexOf(peer) != -1) ? 'online' : 'offline');
-        var muted = $rootScope.getVideoMutedStatus(peer);
+        var peer = JSON.parse(attrs.peer)
+        var peerId = peer.peerId;
+        var nick = peer.nick;
+        element.addClass(($rootScope.wallet.getOnlinePeerIDs().indexOf(peerId) != -1) ? 'online' : 'offline');
+        element.addClass('video-small');
+        element.attr('title', peerId + (peerId == $rootScope.wallet.network.peerId?' (You)':''));
+        var muted = $rootScope.getVideoMutedStatus(peerId);
         if (muted) {
           element.attr("muted", true);
         }
