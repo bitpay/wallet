@@ -319,7 +319,6 @@ Wallet.prototype.generateAddress = function(isChange) {
   var addr = this.publicKeyRing.generateAddress(isChange);
   this.sendPublicKeyRing();
   this.store();
-  this.emit('refresh');
   return addr;
 };
 

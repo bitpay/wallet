@@ -80,7 +80,6 @@ angular.module('copay.controllerUtils')
       });
       w.on('refresh', function() {
         root.updateBalance(function() {
-          $rootScope.$digest();
         });
         $rootScope.$digest();
       });
@@ -111,6 +110,7 @@ angular.module('copay.controllerUtils')
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
         $rootScope.loading = false;
+        $rootScope.$digest();
         if (cb) cb();
       });
       w.getBalance(true, function(balance) {
@@ -135,7 +135,6 @@ angular.module('copay.controllerUtils')
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
           root.updateBalance(function() {
-            $rootScope.$digest();
           });
         });
       });

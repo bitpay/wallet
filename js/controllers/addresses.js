@@ -11,7 +11,6 @@ angular.module('copay.addresses').controller('AddressesController',
       w.generateAddress();
       controllerUtils.updateBalance(function() {
         $scope.loading = false;
-        $rootScope.$digest();
       });
     };
 
