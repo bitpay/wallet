@@ -79,7 +79,6 @@ angular.module('copay.controllerUtils')
         $rootScope.$digest();
       });
       w.on('refresh', function() {
-        alert('refresh');
         root.updateBalance();
         $rootScope.$digest();
       });
