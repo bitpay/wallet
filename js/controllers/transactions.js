@@ -47,7 +47,7 @@ angular.module('copay.transactions').controller('TransactionsController',
       w.sendTx(ntxid, function(txid) {
           console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
           $rootScope.flashMessage = txid
-            ? {type:'success', message: 'Transactions SENT! txid:' + txid}
+            ? {type:'success', message: 'Transaction broadcasted. txid: ' + txid}
             : {type:'error', message: 'There was an error sending the Transaction'}
             ;
           _updateTxs();
