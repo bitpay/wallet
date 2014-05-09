@@ -73,16 +73,16 @@
 
       <div class="row">
         <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
-            <div class="alert-box error radius" data-alert>
-              <i class="fi-alert"></i> 
-              Note: Your wallet is not complete yet. 
+            <div class="alert-box secondary radius" data-alert>
+              <i class="fi-info"></i> 
+              Not all copayers have joined your wallet yet. 
               <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-              {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
+              {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} people have 
               </span>
               <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
-              One key is 
+              One person has 
               </span>
-              missing. 
+              yet to join. 
             </div>
 
             <div class="panel radius">
