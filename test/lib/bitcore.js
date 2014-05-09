@@ -51,7 +51,9 @@ require=
     // Override the current require with this new one
     return newRequire;
 })
-({"tmvhGl":[function(require,module,exports){
+({"bitcore":[function(require,module,exports){
+module.exports=require('tmvhGl');
+},{}],"tmvhGl":[function(require,module,exports){
 (function (Buffer){
 /* 
 One way to require files is this simple way:
@@ -65,10 +67,10 @@ var requireWhenAccessed = function(name, file) {
   Object.defineProperty(module.exports, name, {get: function() {return require(file)}});
 };
 
-requireWhenAccessed('Bignum', './lib/Bignum');
+requireWhenAccessed('Bignum', 'bignum');
 Object.defineProperty(module.exports, 'bignum', {get: function() {
   console.log('bignum (with a lower-case "b") is deprecated. Use bitcore.Bignum (capital "B") instead.');
-  return require('./lib/Bignum');
+  return require('bignum');
 }});
 requireWhenAccessed('Base58', './lib/Base58');
 Object.defineProperty(module.exports, 'base58', {get: function() {
@@ -115,13 +117,12 @@ requireWhenAccessed('WalletKey', './lib/WalletKey');
 requireWhenAccessed('PeerManager', './lib/PeerManager');
 requireWhenAccessed('Message', './lib/Message');
 requireWhenAccessed('Electrum', './lib/Electrum');
+requireWhenAccessed('Armory', './lib/Armory');
 module.exports.Buffer = Buffer;
 
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/Base58":"6VqyzY","./lib/Bignum":"9Sbj2J","bindings":80,"buffer":87}],"bitcore":[function(require,module,exports){
-module.exports=require('tmvhGl');
-},{}],3:[function(require,module,exports){
+},{"./lib/Base58":"6VqyzY","bignum":58,"bindings":73,"buffer":80}],3:[function(require,module,exports){
 if ('undefined' === typeof window) window = this;
 Bitcoin = {};
 if (typeof navigator === 'undefined') {
@@ -2992,14 +2993,14 @@ Bitcoin.ECKey = (function () {
 
 module.exports.ECKey = Bitcoin.ECKey;
 
-},{}],"./config":[function(require,module,exports){
-module.exports=require('4itQ50');
 },{}],"4itQ50":[function(require,module,exports){
 module.exports = {
   network: 'livenet',
   logger: 'normal' // none, normal, debug
 };
 
+},{}],"./config":[function(require,module,exports){
+module.exports=require('4itQ50');
 },{}],"./const":[function(require,module,exports){
 module.exports=require('f08cvL');
 },{}],"f08cvL":[function(require,module,exports){
@@ -3022,8 +3023,41 @@ MSG.to_str = function(t) {
 exports.MSG = MSG;
 
 
+},{}],"./lib/Address":[function(require,module,exports){
+module.exports=require('G+CcXD');
 },{}],"G+CcXD":[function(require,module,exports){
 (function (Buffer){
+// Address
+// =======
+//
+// Handles a bitcoin address
+//
+//
+// Synopsis
+// --------
+// ```
+//     var address = new Address('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa');
+//     if (address.isValid()) {
+//        //...
+//     }
+//
+//     // Also an address can be created from 
+//     // public keys
+//     var address = Address.fromPubKey(myPubkey);
+//
+//     // Or from a ScriptPubKey (from a transaction output)
+//     var address  = Address.fromScriptPubKey(scriptPubKey);
+//
+//     // Multisig address p2sh handling
+//     var myPukeys = [pubkey0, pubkey1, pubkey2]; 
+//     var p2shAddress = Address.fromPubKeys(2, myPubkeys);
+//     if (p2shAddress.isScript()) { //true 
+//     }
+//
+//
+// ```
+
+
 'use strict';
 var imports = require('soop').imports();
 var coinUtil = imports.coinUtil || require('../util');
@@ -3057,7 +3091,7 @@ Address.fromKey = function(key, network) {
   return Address.fromPubKey(key.public, network);
 };
 
-//create a p2sh m-of-n multisig address
+// create a p2sh m-of-n multisig address
 Address.fromPubKeys = function(mReq, pubKeys, network, opts) {
   if (!network)
     network = 'livenet';
@@ -3069,7 +3103,6 @@ Address.fromPubKeys = function(mReq, pubKeys, network, opts) {
   }
 
   var script = Script.createMultisig(mReq, pubKeys, opts);
-
   return Address.fromScript(script, network);
 };
 
@@ -3127,7 +3160,7 @@ Address.fromScriptPubKey = function(scriptPubKey, network) {
   return ret;
 };
 
-
+// validates the address
 Address.prototype.validate = function() {
   this.doAsBinary(function() {
     Address.super(this, 'validate', arguments);
@@ -3141,6 +3174,7 @@ Address.prototype.isValid = function() {
   return answer;
 };
 
+// returns the network information (livenet or testnet, as described on networks.js) of the address
 Address.prototype.network = function() {
   var version = this.version();
 
@@ -3156,6 +3190,7 @@ Address.prototype.network = function() {
   return answer;
 };
 
+// returns true is the address is a pay-to-script (P2SH) address type.
 Address.prototype.isScript = function() {
   return this.isValid() && this.version() === this.network().P2SHVersion;
 };
@@ -3164,11 +3199,128 @@ Address.prototype.isScript = function() {
 module.exports = require('soop')(Address);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":87,"soop":164}],"./lib/Address":[function(require,module,exports){
-module.exports=require('G+CcXD');
-},{}],"./lib/BIP32":[function(require,module,exports){
-module.exports=require('Dad1wf');
-},{}],"Dad1wf":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":140,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":80,"soop":125}],"./lib/Armory":[function(require,module,exports){
+module.exports=require('YL/05i');
+},{}],"YL/05i":[function(require,module,exports){
+(function (Buffer){
+var Point = require('./Point'),
+  Key = require('./Key'),
+  sha256 = require('../util').sha256,
+  twoSha256 = require('../util').twoSha256;
+
+/**
+ * For now, this class can only supports derivation from public key
+ * It doesn't support private key derivation (TODO).
+ *
+ * @example examples/Armory.js
+ */
+function Armory (chaincode, pubkey) {
+  this.chaincode = new Buffer(chaincode, 'hex');
+  this.pubkey = new Buffer(pubkey, 'hex');
+}
+
+Armory.prototype.generatePubKey = function () {
+  var pubKey = this.pubkey;
+  var chainCode = this.chaincode;
+  var chainXor = twoSha256(pubKey);
+
+  for (var i = 0; i < 32; i++)
+    chainXor[i] ^= chainCode[i];
+
+  var pt = Point.fromUncompressedPubKey(pubKey);
+  pt = Point.multiply(pt, chainXor);
+
+  var new_pubkey = pt.toUncompressedPubKey();
+
+  return new_pubkey;
+};
+
+Armory.prototype.next = function () {
+  var next_pubkey = this.generatePubKey();
+  return new Armory(this.chaincode, next_pubkey);
+};
+
+/**
+ * PS: MPK here represents the pubkey concatenated
+ * with the chain code. It is an unofficial standard.
+ *
+ * Armory will soon release an officially supported
+ * format:
+ *
+ * https://github.com/etotheipi/BitcoinArmory/issues/204#issuecomment-42217801
+ */
+Armory.fromMasterPublicKey = function (mpk) {
+  var pubkey = mpk.substr(0, 130);
+  var chaincode = mpk.substr(130, mpk.length);
+  return new Armory(chaincode, pubkey);
+};
+
+function decode (str) {
+  var from = '0123456789abcdef';
+  var to = 'asdfghjkwertuion';
+  var res = '';
+  for (var i = 0; i < str.length; i++)
+    res += from.charAt(to.indexOf(str.charAt(i)));
+  return res;
+}
+
+Armory.decodeSeed = function (seed) {
+  var keys = seed.trim().split('\n');
+  var lines = [];
+
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i].replace(' ','');
+    var raw = new Buffer(decode(k), 'hex');
+    var data = raw.slice(0, 16);
+    lines.push(data);
+  }
+
+  var privKey = Buffer.concat([ lines[0], lines[1] ]);
+  var chainCode = (lines.length==4) ?
+    Buffer.concat([ lines[2], lines[3] ]) : Armory.deriveChaincode(privKey);
+
+  return {
+    privKey: privKey,
+    chainCode: chainCode
+  };
+};
+
+// Derive chain code from root key
+Armory.fromSeed = function (seed) {
+  var res = Armory.decodeSeed(seed);
+  // generate first public key
+  var key = new Key();
+  key.private = res.privKey;
+  key.compressed = false;
+  key.regenerateSync();
+
+  return new Armory(res.chainCode, key.public);
+};
+
+Armory.deriveChaincode = function (root) {
+  var msg = 'Derive Chaincode from Root Key';
+  var hash = twoSha256(root);
+
+  var okey = [];
+  var ikey = [];
+  for (var i = 0; i < hash.length; i++) {
+    okey.push(0x5c ^ hash[i]);
+    ikey.push(0x36 ^ hash[i]);
+  }
+
+  okey = new Buffer(okey);
+  ikey = new Buffer(ikey);
+
+  var m = new Buffer(msg, 'utf8');
+  var a = sha256(Buffer.concat([ ikey, m ]));
+  var b = sha256(Buffer.concat([ okey, a ]));
+  return b;
+};
+
+module.exports = Armory;
+
+}).call(this,require("buffer").Buffer)
+},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","buffer":80}],"Dad1wf":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 var base58 = imports.base58 || require('./Base58').base58;
@@ -3176,7 +3328,7 @@ var coinUtil = imports.coinUtil || require('../util');
 var Key = imports.Key || require('./Key');
 var Point = imports.Point || require('./Point');
 var SecureRandom = imports.SecureRandom || require('./SecureRandom');
-var bignum = imports.bignum || require('./Bignum');
+var bignum = imports.bignum || require('bignum');
 var networks = require('../networks');
 
 var secp256k1_n = new bignum('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141', 16);
@@ -3512,12 +3664,12 @@ function u64(f) {return uint(f,8);}
 module.exports = require('soop')(BIP32);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"./Base58":"6VqyzY","./Bignum":"9Sbj2J","./Key":"aEfkTx","./Point":"LK/jwR","./SecureRandom":"BaKCfn","buffer":87,"soop":164}],"./lib/Base58":[function(require,module,exports){
-module.exports=require('6VqyzY');
+},{"../networks":"ULNIu2","../util":140,"./Base58":"6VqyzY","./Key":"ALJ4PS","./Point":"6tXgqr","./SecureRandom":"p4SiC2","bignum":58,"buffer":80,"soop":125}],"./lib/BIP32":[function(require,module,exports){
+module.exports=require('Dad1wf');
 },{}],"6VqyzY":[function(require,module,exports){
 (function (Buffer){
 var crypto = require('crypto');
-var bignum = require('./Bignum');
+var bignum = require('bignum');
 
 var globalBuffer = new Buffer(1024);
 var zerobuf = new Buffer(0);
@@ -3634,17 +3786,8 @@ exports.encode = base58.encode;
 exports.decode = base58.decode;
 
 }).call(this,require("buffer").Buffer)
-},{"./Bignum":"9Sbj2J","buffer":87,"crypto":91}],"9Sbj2J":[function(require,module,exports){
-(function (process){
-if (process.versions) {
-  module.exports = require('bignum');
-  return;
-}
-module.exports = require('./browser/Bignum');
-
-}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Bignum":64,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"bignum":75}],"./lib/Bignum":[function(require,module,exports){
-module.exports=require('9Sbj2J');
+},{"bignum":58,"buffer":80,"crypto":84}],"./lib/Base58":[function(require,module,exports){
+module.exports=require('6VqyzY');
 },{}],"./lib/Block":[function(require,module,exports){
 module.exports=require('pJEQEB');
 },{}],"pJEQEB":[function(require,module,exports){
@@ -3654,7 +3797,7 @@ var imports            = require('soop').imports();
 var util              = imports.util || require('../util');
 var Debug1            = imports.Debug1 || function() {};
 var Script            = imports.Script || require('./Script');
-var Bignum            = imports.Bignum || require('./Bignum');
+var Bignum            = imports.Bignum || require('bignum');
 var Binary            = imports.Binary || require('binary');
 var Step              = imports.Step || require('step');
 var buffertools       = imports.buffertools || require('buffertools');
@@ -3951,9 +4094,7 @@ function getStandardizedObject(txs)
 module.exports = require('soop')(Block);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"../util/error":178,"./Bignum":"9Sbj2J","./Script":"hQ0t76","./Transaction":"LJhYtm","binary":76,"buffer":87,"buffertools":"fugeBw","soop":164,"step":165}],"./lib/Bloom":[function(require,module,exports){
-module.exports=require('KifRG4');
-},{}],"KifRG4":[function(require,module,exports){
+},{"../util":140,"../util/error":139,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":58,"binary":69,"buffer":80,"buffertools":"fugeBw","soop":125,"step":126}],"KifRG4":[function(require,module,exports){
 var MAX_BLOOM_FILTER_SIZE = 36000;  // bytes
 var MAX_HASH_FUNCS = 50;
 var LN2SQUARED = 0.4804530139182014246671025263266649717305529515945455;
@@ -4066,7 +4207,11 @@ Bloom.prototype.init = function(elements, FPRate) {
 
 module.exports = require('soop')(Bloom);
 
-},{"soop":164}],"DB/p3X":[function(require,module,exports){
+},{"soop":125}],"./lib/Bloom":[function(require,module,exports){
+module.exports=require('KifRG4');
+},{}],"./lib/Connection":[function(require,module,exports){
+module.exports=require('DB/p3X');
+},{}],"DB/p3X":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -4635,26 +4780,30 @@ Connection.prototype.parseMessage = function (command, payload) {
 module.exports = require('soop')(Connection);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":179,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./SecureRandom":"BaKCfn","./Transaction":"LJhYtm","buffer":87,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":96,"socks5-client":157,"soop":164}],"./lib/Connection":[function(require,module,exports){
-module.exports=require('DB/p3X');
-},{}],"./lib/Curve":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../patches/Buffers.monkey":"kytKTK","../util":140,"../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","./Block":"pJEQEB","./SecureRandom":"p4SiC2","./Transaction":"LJhYtm","buffer":80,"bufferput":"aXRuS6","buffers":"OBo3aV","buffertools":"fugeBw","events":89,"socks5-client":118,"soop":125}],"./lib/Curve":[function(require,module,exports){
 module.exports=require('Ynul1S');
 },{}],"Ynul1S":[function(require,module,exports){
 (function (Buffer){
 "use strict";
 var imports = require('soop');
-var bignum = imports.bignum || require('./Bignum');
+var bignum = imports.bignum || require('bignum');
 var Point = imports.Point || require('./Point');
 
 var n = bignum.fromBuffer(new Buffer("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", 'hex'), {size: 32});
-var G = new Point(bignum.fromBuffer(new Buffer("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 'hex'), {size: 32}),
-                  bignum.fromBuffer(new Buffer("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 'hex'), {size: 32}));
 
-/* secp256k1 curve */
+
 var Curve = function() {
 };
 
+/* secp256k1 curve */
+var G;
 Curve.getG = function() {
+  // don't use Point in top scope, causes exception in browser
+  // when Point is not loaded yet
+
+  // use cached version if available
+  G = G || new Point(bignum.fromBuffer(new Buffer("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 'hex'), {size: 32}),
+                  bignum.fromBuffer(new Buffer("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 'hex'), {size: 32}));
   return G;
 };
 
@@ -4665,7 +4814,9 @@ Curve.getN = function() {
 module.exports = require('soop')(Curve);
 
 }).call(this,require("buffer").Buffer)
-},{"./Bignum":"9Sbj2J","./Point":"LK/jwR","buffer":87,"soop":164}],"ez/meX":[function(require,module,exports){
+},{"./Point":"6tXgqr","bignum":58,"buffer":80,"soop":125}],"./lib/Deserialize":[function(require,module,exports){
+module.exports=require('ez/meX');
+},{}],"ez/meX":[function(require,module,exports){
 
 exports.intFromCompact = function(c)
 {
@@ -4675,15 +4826,15 @@ exports.intFromCompact = function(c)
 }
 
 
-},{}],"./lib/Deserialize":[function(require,module,exports){
-module.exports=require('ez/meX');
+},{}],"./lib/Electrum":[function(require,module,exports){
+module.exports=require('hdzBvq');
 },{}],"hdzBvq":[function(require,module,exports){
 (function (Buffer){
 var Key = require('./Key'),
   Point = require('./Point'),
   twoSha256 = require('../util').twoSha256,
   buffertools = require('buffertools'),
-  bignum = require('./Bignum');
+  bignum = require('bignum');
 
 /**
  * Pre-BIP32 Electrum public key derivation (electrum <2.0)
@@ -4736,20 +4887,7 @@ Electrum.prototype.generateChangePubKey = function (sequence) {
 module.exports = Electrum;
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"./Bignum":"9Sbj2J","./Key":"aEfkTx","./Point":"LK/jwR","buffer":87,"buffertools":"fugeBw"}],"./lib/Electrum":[function(require,module,exports){
-module.exports=require('hdzBvq');
-},{}],"aEfkTx":[function(require,module,exports){
-(function (process){
-if (process.versions) {
-  module.exports = require('./node/Key');
-  return;
-}
-module.exports = require('./browser/Key');
-
-}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Key":65,"./node/Key":69,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"./lib/Key":[function(require,module,exports){
-module.exports=require('aEfkTx');
-},{}],"./lib/Message":[function(require,module,exports){
+},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","bignum":58,"buffer":80,"buffertools":"fugeBw"}],"./lib/Message":[function(require,module,exports){
 module.exports=require('CBDCgz');
 },{}],"CBDCgz":[function(require,module,exports){
 (function (Buffer){
@@ -4797,7 +4935,9 @@ Message.magicHash = function(str) {
 module.exports = require('soop')(Message);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"./Key":"aEfkTx","buffer":87,"soop":164}],"Zm7/h9":[function(require,module,exports){
+},{"../util":140,"./Key":"ALJ4PS","buffer":80,"soop":125}],"./lib/Opcode":[function(require,module,exports){
+module.exports=require('Zm7/h9');
+},{}],"Zm7/h9":[function(require,module,exports){
 var imports    = require('soop').imports();
 
 function Opcode(num) {
@@ -4967,11 +5107,7 @@ Opcode.asList = function() {
 
 module.exports = require('soop')(Opcode);
 
-},{"soop":164}],"./lib/Opcode":[function(require,module,exports){
-module.exports=require('Zm7/h9');
-},{}],"./lib/Peer":[function(require,module,exports){
-module.exports=require('oolY81');
-},{}],"oolY81":[function(require,module,exports){
+},{"soop":125}],"oolY81":[function(require,module,exports){
 (function (Buffer){
 var imports     = require('soop').imports();
 
@@ -5033,7 +5169,11 @@ Peer.prototype.toBuffer = function () {
 module.exports = require('soop')(Peer);
 
 }).call(this,require("buffer").Buffer)
-},{"binary":76,"buffer":87,"buffertools":"fugeBw","net":83,"soop":164}],"nsqKeP":[function(require,module,exports){
+},{"binary":69,"buffer":80,"buffertools":"fugeBw","net":76,"soop":125}],"./lib/Peer":[function(require,module,exports){
+module.exports=require('oolY81');
+},{}],"./lib/PeerManager":[function(require,module,exports){
+module.exports=require('nsqKeP');
+},{}],"nsqKeP":[function(require,module,exports){
 var imports         = require('soop').imports();
 var _               = imports._ || require('underscore');
 var log             = imports.log || require('../util/log');
@@ -5344,20 +5484,7 @@ PeerManager.prototype.discover = function(options, callback) {
 
 module.exports = require('soop')(PeerManager);
 
-},{"../config":"4itQ50","../networks":"ULNIu2","../util/log":"AdF7pF","./Connection":"DB/p3X","./Peer":"oolY81","async":74,"dns":83,"events":96,"soop":164,"underscore":166}],"./lib/PeerManager":[function(require,module,exports){
-module.exports=require('nsqKeP');
-},{}],"./lib/Point":[function(require,module,exports){
-module.exports=require('LK/jwR');
-},{}],"LK/jwR":[function(require,module,exports){
-(function (process){
-if (process.versions) {
-  module.exports = require('./node/Point');
-  return;
-}
-module.exports = require('./browser/Point');
-
-}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Point":66,"./node/Point":70,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"izTl9z":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util/log":"AdF7pF","./Connection":"DB/p3X","./Peer":"oolY81","async":68,"dns":76,"events":89,"soop":125,"underscore":127}],"izTl9z":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -5442,7 +5569,7 @@ PrivateKey.prototype.network = function() {
 module.exports = require('soop')(PrivateKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util/VersionedData":"QLzNQg","buffer":87,"soop":164}],"./lib/PrivateKey":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util/VersionedData":"QLzNQg","buffer":80,"soop":125}],"./lib/PrivateKey":[function(require,module,exports){
 module.exports=require('izTl9z');
 },{}],"7siE1N":[function(require,module,exports){
 (function (Buffer){
@@ -5656,8 +5783,10 @@ module.exports = require('soop')(RpcClient);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../util/log":"AdF7pF","buffer":87,"http":97,"https":101,"soop":164}],"./lib/RpcClient":[function(require,module,exports){
+},{"../util/log":"AdF7pF","buffer":80,"http":90,"https":94,"soop":125}],"./lib/RpcClient":[function(require,module,exports){
 module.exports=require('7siE1N');
+},{}],"./lib/SIN":[function(require,module,exports){
+module.exports=require('tBM27q');
 },{}],"tBM27q":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
@@ -5717,11 +5846,7 @@ SIN.prototype.validate = function() {
 module.exports = require('soop')(SIN);
 
 }).call(this,require("buffer").Buffer)
-},{"../util/VersionedData":"QLzNQg","buffer":87,"soop":164}],"./lib/SIN":[function(require,module,exports){
-module.exports=require('tBM27q');
-},{}],"./lib/SINKey":[function(require,module,exports){
-module.exports=require('EyghZQ');
-},{}],"EyghZQ":[function(require,module,exports){
+},{"../util/VersionedData":"QLzNQg","buffer":80,"soop":125}],"EyghZQ":[function(require,module,exports){
 var coinUtil  = require('../util');
 var timeUtil  = require('../util/time');
 var Key = require('./Key');
@@ -5760,8 +5885,8 @@ SINKey.prototype.storeObj = function() {
 
 module.exports = require('soop')(SINKey);
 
-},{"../util":179,"../util/time":182,"./Key":"aEfkTx","./SIN":"tBM27q","soop":164}],"./lib/Script":[function(require,module,exports){
-module.exports=require('hQ0t76');
+},{"../util":140,"../util/time":143,"./Key":"ALJ4PS","./SIN":"tBM27q","soop":125}],"./lib/SINKey":[function(require,module,exports){
+module.exports=require('EyghZQ');
 },{}],"hQ0t76":[function(require,module,exports){
 (function (Buffer){
 var imports     = require('soop').imports();
@@ -5769,11 +5894,6 @@ var config      = imports.config || require('../config');
 var log         = imports.log || require('../util/log');
 var Opcode      = imports.Opcode || require('./Opcode');
 var buffertools = imports.buffertools || require('buffertools');
-
-// Make opcodes available as pseudo-constants
-for (var i in Opcode.map) {
-  eval(i + " = " + Opcode.map[i] + ";");
-}
 
 var util   = imports.util || require('../util/util');
 var Parser = imports.Parser || require('../util/BinaryParser');
@@ -5817,18 +5937,18 @@ Script.prototype.parse = function() {
     var opcode = parser.word8();
 
     var len, chunk;
-    if (opcode > 0 && opcode < OP_PUSHDATA1) {
+    if (opcode > 0 && opcode < Opcode.map.OP_PUSHDATA1) {
       // Read some bytes of data, opcode value is the length of data
       this.chunks.push(parser.buffer(opcode));
-    } else if (opcode === OP_PUSHDATA1) {
+    } else if (opcode === Opcode.map.OP_PUSHDATA1) {
       len = parser.word8();
       chunk = parser.buffer(len);
       this.chunks.push(chunk);
-    } else if (opcode === OP_PUSHDATA2) {
+    } else if (opcode === Opcode.map.OP_PUSHDATA2) {
       len = parser.word16le();
       chunk = parser.buffer(len);
       this.chunks.push(chunk);
-    } else if (opcode === OP_PUSHDATA4) {
+    } else if (opcode === Opcode.map.OP_PUSHDATA4) {
       len = parser.word32le();
       chunk = parser.buffer(len);
       this.chunks.push(chunk);
@@ -5841,7 +5961,7 @@ Script.prototype.parse = function() {
 Script.prototype.isPushOnly = function() {
   for (var i = 0; i < this.chunks.length; i++) {
     var op = this.chunks[i];
-    if (!Buffer.isBuffer(op) && op > OP_16) {
+    if (!Buffer.isBuffer(op) && op > Opcode.map.OP_16) {
       return false;
     }
   }
@@ -5851,38 +5971,38 @@ Script.prototype.isPushOnly = function() {
 
 Script.prototype.isP2SH = function() {
   return (this.chunks.length == 3 &&
-    this.chunks[0] == OP_HASH160 &&
+    this.chunks[0] == Opcode.map.OP_HASH160 &&
     Buffer.isBuffer(this.chunks[1]) &&
     this.chunks[1].length == 20 &&
-    this.chunks[2] == OP_EQUAL);
+    this.chunks[2] == Opcode.map.OP_EQUAL);
 };
 
 Script.prototype.isPubkey = function() {
   return (this.chunks.length == 2 &&
     Buffer.isBuffer(this.chunks[0]) &&
-    this.chunks[1] == OP_CHECKSIG);
+    this.chunks[1] == Opcode.map.OP_CHECKSIG);
 };
 
 Script.prototype.isPubkeyHash = function() {
   return (this.chunks.length == 5 &&
-    this.chunks[0] == OP_DUP &&
-    this.chunks[1] == OP_HASH160 &&
+    this.chunks[0] == Opcode.map.OP_DUP &&
+    this.chunks[1] == Opcode.map.OP_HASH160 &&
     Buffer.isBuffer(this.chunks[2]) &&
     this.chunks[2].length == 20 &&
-    this.chunks[3] == OP_EQUALVERIFY &&
-    this.chunks[4] == OP_CHECKSIG);
+    this.chunks[3] == Opcode.map.OP_EQUALVERIFY &&
+    this.chunks[4] == Opcode.map.OP_CHECKSIG);
 };
 
 function isSmallIntOp(opcode) {
-  return ((opcode == OP_0) ||
-    ((opcode >= OP_1) && (opcode <= OP_16)));
+  return ((opcode == Opcode.map.OP_0) ||
+    ((opcode >= Opcode.map.OP_1) && (opcode <= Opcode.map.OP_16)));
 };
 
 Script.prototype.isMultiSig = function() {
   return (this.chunks.length > 3 &&
     isSmallIntOp(this.chunks[0]) &&
     isSmallIntOp(this.chunks[this.chunks.length - 2]) &&
-    this.chunks[this.chunks.length - 1] == OP_CHECKMULTISIG);
+    this.chunks[this.chunks.length - 1] == Opcode.map.OP_CHECKMULTISIG);
 };
 
 Script.prototype.isP2shScriptSig = function() {
@@ -6150,13 +6270,13 @@ Script.prototype.writeN = function(n) {
     throw new Error("writeN: out of range value " + n);
 
   if (n == 0)
-    this.writeOp(OP_0);
+    this.writeOp(Opcode.map.OP_0);
   else
-    this.writeOp(OP_1 + n - 1);
+    this.writeOp(Opcode.map.OP_1 + n - 1);
 };
 
 function prefixSize(data_length) {
-  if (data_length < OP_PUSHDATA1) {
+  if (data_length < Opcode.map.OP_PUSHDATA1) {
     return 1;
   } else if (data_length <= 0xff) {
     return 1 + 1;
@@ -6169,20 +6289,20 @@ function prefixSize(data_length) {
 
 function encodeLen(data_length) {
   var buf = undefined;
-  if (data_length < OP_PUSHDATA1) {
+  if (data_length < Opcode.map.OP_PUSHDATA1) {
     buf = new Buffer(1);
     buf.writeUInt8(data_length, 0);
   } else if (data_length <= 0xff) {
     buf = new Buffer(1 + 1);
-    buf.writeUInt8(OP_PUSHDATA1, 0);
+    buf.writeUInt8(Opcode.map.OP_PUSHDATA1, 0);
     buf.writeUInt8(data_length, 1);
   } else if (data_length <= 0xffff) {
     buf = new Buffer(1 + 2);
-    buf.writeUInt8(OP_PUSHDATA2, 0);
+    buf.writeUInt8(Opcode.map.OP_PUSHDATA2, 0);
     buf.writeUInt16LE(data_length, 1);
   } else {
     buf = new Buffer(1 + 4);
-    buf.writeUInt8(OP_PUSHDATA4, 0);
+    buf.writeUInt8(Opcode.map.OP_PUSHDATA4, 0);
     buf.writeUInt32LE(data_length, 1);
   }
 
@@ -6235,7 +6355,7 @@ Script.prototype.findAndDelete = function(chunk) {
 Script.createPubKeyOut = function(pubkey) {
   var script = new Script();
   script.writeBytes(pubkey);
-  script.writeOp(OP_CHECKSIG);
+  script.writeOp(Opcode.map.OP_CHECKSIG);
   return script;
 };
 
@@ -6244,11 +6364,11 @@ Script.createPubKeyOut = function(pubkey) {
  */
 Script.createPubKeyHashOut = function(pubKeyHash) {
   var script = new Script();
-  script.writeOp(OP_DUP);
-  script.writeOp(OP_HASH160);
+  script.writeOp(Opcode.map.OP_DUP);
+  script.writeOp(Opcode.map.OP_HASH160);
   script.writeBytes(pubKeyHash);
-  script.writeOp(OP_EQUALVERIFY);
-  script.writeOp(OP_CHECKSIG);
+  script.writeOp(Opcode.map.OP_EQUALVERIFY);
+  script.writeOp(Opcode.map.OP_CHECKSIG);
   return script;
 };
 
@@ -6280,15 +6400,15 @@ Script.createMultisig = function(n_required, inKeys, opts) {
     script.writeBytes(key);
   });
   script.writeN(keys.length);
-  script.writeOp(OP_CHECKMULTISIG);
+  script.writeOp(Opcode.map.OP_CHECKMULTISIG);
   return script;
 };
 
 Script.createP2SH = function(scriptHash) {
   var script = new Script();
-  script.writeOp(OP_HASH160);
+  script.writeOp(Opcode.map.OP_HASH160);
   script.writeBytes(scriptHash);
-  script.writeOp(OP_EQUAL);
+  script.writeOp(Opcode.map.OP_EQUAL);
   return script;
 };
 
@@ -6392,16 +6512,16 @@ Script.chunksToBuffer = function(chunks) {
   for (var i = 0, l = chunks.length; i < l; i++) {
     var data = chunks[i];
     if (Buffer.isBuffer(data)) {
-      if (data.length < OP_PUSHDATA1) {
+      if (data.length < Opcode.map.OP_PUSHDATA1) {
         buf.word8(data.length);
       } else if (data.length <= 0xff) {
-        buf.word8(OP_PUSHDATA1);
+        buf.word8(Opcode.map.OP_PUSHDATA1);
         buf.word8(data.length);
       } else if (data.length <= 0xffff) {
-        buf.word8(OP_PUSHDATA2);
+        buf.word8(Opcode.map.OP_PUSHDATA2);
         buf.word16le(data.length);
       } else {
-        buf.word8(OP_PUSHDATA4);
+        buf.word8(Opcode.map.OP_PUSHDATA4);
         buf.word32le(data.length);
       }
       buf.put(data);
@@ -6419,7 +6539,9 @@ Script.chunksToBuffer = function(chunks) {
 module.exports = require('soop')(Script);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","../util/util":"ACyo5H","./Opcode":"Zm7/h9","buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":164}],"./lib/ScriptInterpreter":[function(require,module,exports){
+},{"../config":"4itQ50","../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","../util/util":"ACyo5H","./Opcode":"Zm7/h9","buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125}],"./lib/Script":[function(require,module,exports){
+module.exports=require('hQ0t76');
+},{}],"./lib/ScriptInterpreter":[function(require,module,exports){
 module.exports=require('Q/ZWXW');
 },{}],"Q/ZWXW":[function(require,module,exports){
 (function (process,Buffer){
@@ -6429,7 +6551,7 @@ var log = imports.log || require('../util/log');
 var util = imports.util || require('../util');
 var Opcode = imports.Opcode || require('./Opcode');
 var buffertools = imports.buffertools || require('buffertools');
-var bignum = imports.bignum || require('./Bignum');
+var bignum = imports.bignum || require('bignum');
 var Util = imports.Util || require('../util');
 var Script = require('./Script');
 var Key = require('./Key');
@@ -6438,11 +6560,6 @@ var SIGHASH_ALL = 1;
 var SIGHASH_NONE = 2;
 var SIGHASH_SINGLE = 3;
 var SIGHASH_ANYONECANPAY = 80;
-
-// Make opcodes available as pseudo-constants
-for (var i in Opcode.map) {
-  eval(i + " = " + Opcode.map[i] + ";");
-}
 
 var intToBufferSM = Util.intToBufferSM
 var bufferSMToInt = Util.bufferSMToInt;
@@ -6499,101 +6616,101 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
         throw new Error("Max push value size exceeded (>520)");
       }
 
-      if (opcode > OP_16 && ++opCount > 201) {
+      if (opcode > Opcode.map.OP_16 && ++opCount > 201) {
         throw new Error("Opcode limit exceeded (>200)");
       }
 
       if (this.disableUnsafeOpcodes &&
         "number" === typeof opcode &&
-        (opcode === OP_CAT ||
-          opcode === OP_SUBSTR ||
-          opcode === OP_LEFT ||
-          opcode === OP_RIGHT ||
-          opcode === OP_INVERT ||
-          opcode === OP_AND ||
-          opcode === OP_OR ||
-          opcode === OP_XOR ||
-          opcode === OP_2MUL ||
-          opcode === OP_2DIV ||
-          opcode === OP_MUL ||
-          opcode === OP_DIV ||
-          opcode === OP_MOD ||
-          opcode === OP_LSHIFT ||
-          opcode === OP_RSHIFT)) {
+        (opcode === Opcode.map.OP_CAT ||
+          opcode === Opcode.map.OP_SUBSTR ||
+          opcode === Opcode.map.OP_LEFT ||
+          opcode === Opcode.map.OP_RIGHT ||
+          opcode === Opcode.map.OP_INVERT ||
+          opcode === Opcode.map.OP_AND ||
+          opcode === Opcode.map.OP_OR ||
+          opcode === Opcode.map.OP_XOR ||
+          opcode === Opcode.map.OP_2MUL ||
+          opcode === Opcode.map.OP_2DIV ||
+          opcode === Opcode.map.OP_MUL ||
+          opcode === Opcode.map.OP_DIV ||
+          opcode === Opcode.map.OP_MOD ||
+          opcode === Opcode.map.OP_LSHIFT ||
+          opcode === Opcode.map.OP_RSHIFT)) {
         throw new Error("Encountered a disabled opcode");
       }
 
       if (exec && Buffer.isBuffer(opcode)) {
         this.stack.push(opcode);
-      } else if (exec || (OP_IF <= opcode && opcode <= OP_ENDIF))
+      } else if (exec || (Opcode.map.OP_IF <= opcode && opcode <= Opcode.map.OP_ENDIF))
         switch (opcode) {
-          case OP_0:
+          case Opcode.map.OP_0:
             this.stack.push(new Buffer([]));
             break;
 
-          case OP_1NEGATE:
-          case OP_1:
-          case OP_2:
-          case OP_3:
-          case OP_4:
-          case OP_5:
-          case OP_6:
-          case OP_7:
-          case OP_8:
-          case OP_9:
-          case OP_10:
-          case OP_11:
-          case OP_12:
-          case OP_13:
-          case OP_14:
-          case OP_15:
-          case OP_16:
-            var opint = opcode - OP_1 + 1;
+          case Opcode.map.OP_1NEGATE:
+          case Opcode.map.OP_1:
+          case Opcode.map.OP_2:
+          case Opcode.map.OP_3:
+          case Opcode.map.OP_4:
+          case Opcode.map.OP_5:
+          case Opcode.map.OP_6:
+          case Opcode.map.OP_7:
+          case Opcode.map.OP_8:
+          case Opcode.map.OP_9:
+          case Opcode.map.OP_10:
+          case Opcode.map.OP_11:
+          case Opcode.map.OP_12:
+          case Opcode.map.OP_13:
+          case Opcode.map.OP_14:
+          case Opcode.map.OP_15:
+          case Opcode.map.OP_16:
+            var opint = opcode - Opcode.map.OP_1 + 1;
             var opbuf = intToBufferSM(opint);
             this.stack.push(opbuf);
             break;
 
-          case OP_NOP:
-          case OP_NOP1:
-          case OP_NOP2:
-          case OP_NOP3:
-          case OP_NOP4:
-          case OP_NOP5:
-          case OP_NOP6:
-          case OP_NOP7:
-          case OP_NOP8:
-          case OP_NOP9:
-          case OP_NOP10:
+          case Opcode.map.OP_NOP:
+          case Opcode.map.OP_NOP1:
+          case Opcode.map.OP_NOP2:
+          case Opcode.map.OP_NOP3:
+          case Opcode.map.OP_NOP4:
+          case Opcode.map.OP_NOP5:
+          case Opcode.map.OP_NOP6:
+          case Opcode.map.OP_NOP7:
+          case Opcode.map.OP_NOP8:
+          case Opcode.map.OP_NOP9:
+          case Opcode.map.OP_NOP10:
             break;
 
-          case OP_IF:
-          case OP_NOTIF:
+          case Opcode.map.OP_IF:
+          case Opcode.map.OP_NOTIF:
             // <expression> if [statements] [else [statements]] endif
             var value = false;
             if (exec) {
               value = castBool(this.stackPop());
-              if (opcode === OP_NOTIF) {
+              if (opcode === Opcode.map.OP_NOTIF) {
                 value = !value;
               }
             }
             execStack.push(value);
             break;
 
-          case OP_ELSE:
+          case Opcode.map.OP_ELSE:
             if (execStack.length < 1) {
               throw new Error("Unmatched OP_ELSE");
             }
             execStack[execStack.length - 1] = !execStack[execStack.length - 1];
             break;
 
-          case OP_ENDIF:
+          case Opcode.map.OP_ENDIF:
             if (execStack.length < 1) {
               throw new Error("Unmatched OP_ENDIF");
             }
             execStack.pop();
             break;
 
-          case OP_VERIFY:
+          case Opcode.map.OP_VERIFY:
             var value = castBool(this.stackTop());
             if (value) {
               this.stackPop();
@@ -6602,27 +6719,27 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             }
             break;
 
-          case OP_RETURN:
+          case Opcode.map.OP_RETURN:
             throw new Error("OP_RETURN");
 
-          case OP_TOALTSTACK:
+          case Opcode.map.OP_TOALTSTACK:
             altStack.push(this.stackPop());
             break;
 
-          case OP_FROMALTSTACK:
+          case Opcode.map.OP_FROMALTSTACK:
             if (altStack.length < 1) {
               throw new Error("OP_FROMALTSTACK with alt stack empty");
             }
             this.stack.push(altStack.pop());
             break;
 
-          case OP_2DROP:
+          case Opcode.map.OP_2DROP:
             // (x1 x2 -- )
             this.stackPop();
             this.stackPop();
             break;
 
-          case OP_2DUP:
+          case Opcode.map.OP_2DUP:
             // (x1 x2 -- x1 x2 x1 x2)
             var v1 = this.stackTop(2);
             var v2 = this.stackTop(1);
@@ -6630,7 +6747,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(v2);
             break;
 
-          case OP_3DUP:
+          case Opcode.map.OP_3DUP:
             // (x1 x2 -- x1 x2 x1 x2)
             var v1 = this.stackTop(3);
             var v2 = this.stackTop(2);
@@ -6640,7 +6757,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(v3);
             break;
 
-          case OP_2OVER:
+          case Opcode.map.OP_2OVER:
             // (x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2)
             var v1 = this.stackTop(4);
             var v2 = this.stackTop(3);
@@ -6648,7 +6765,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(v2);
             break;
 
-          case OP_2ROT:
+          case Opcode.map.OP_2ROT:
             // (x1 x2 x3 x4 x5 x6 -- x3 x4 x5 x6 x1 x2)
             var v1 = this.stackTop(6);
             var v2 = this.stackTop(5);
@@ -6657,13 +6774,13 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(v2);
             break;
 
-          case OP_2SWAP:
+          case Opcode.map.OP_2SWAP:
             // (x1 x2 x3 x4 -- x3 x4 x1 x2)
             this.stackSwap(4, 2);
             this.stackSwap(3, 1);
             break;
 
-          case OP_IFDUP:
+          case Opcode.map.OP_IFDUP:
             // (x - 0 | x x)
             var value = this.stackTop();
             if (castBool(value)) {
@@ -6671,23 +6788,23 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             }
             break;
 
-          case OP_DEPTH:
+          case Opcode.map.OP_DEPTH:
             // -- stacksize
             var value = bignum(this.stack.length);
             this.stack.push(intToBufferSM(value));
             break;
 
-          case OP_DROP:
+          case Opcode.map.OP_DROP:
             // (x -- )
             this.stackPop();
             break;
 
-          case OP_DUP:
+          case Opcode.map.OP_DUP:
             // (x -- x x)
             this.stack.push(this.stackTop());
             break;
 
-          case OP_NIP:
+          case Opcode.map.OP_NIP:
             // (x1 x2 -- x2)
             if (this.stack.length < 2) {
               throw new Error("OP_NIP insufficient stack size");
@@ -6695,13 +6812,13 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.splice(this.stack.length - 2, 1);
             break;
 
-          case OP_OVER:
+          case Opcode.map.OP_OVER:
             // (x1 x2 -- x1 x2 x1)
             this.stack.push(this.stackTop(2));
             break;
 
-          case OP_PICK:
-          case OP_ROLL:
+          case Opcode.map.OP_PICK:
+          case Opcode.map.OP_ROLL:
             // (xn ... x2 x1 x0 n - xn ... x2 x1 x0 xn)
             // (xn ... x2 x1 x0 n - ... x2 x1 x0 xn)
             var n = castInt(this.stackPop());
@@ -6709,13 +6826,13 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
               throw new Error("OP_PICK/OP_ROLL insufficient stack size");
             }
             var value = this.stackTop(n + 1);
-            if (opcode === OP_ROLL) {
+            if (opcode === Opcode.map.OP_ROLL) {
               this.stack.splice(this.stack.length - n - 1, 1);
             }
             this.stack.push(value);
             break;
 
-          case OP_ROT:
+          case Opcode.map.OP_ROT:
             // (x1 x2 x3 -- x2 x3 x1)
             //  x2 x1 x3  after first swap
             //  x2 x3 x1  after second swap
@@ -6723,12 +6840,12 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stackSwap(2, 1);
             break;
 
-          case OP_SWAP:
+          case Opcode.map.OP_SWAP:
             // (x1 x2 -- x2 x1)
             this.stackSwap(2, 1);
             break;
 
-          case OP_TUCK:
+          case Opcode.map.OP_TUCK:
             // (x1 x2 -- x2 x1 x2)
             if (this.stack.length < 2) {
               throw new Error("OP_TUCK insufficient stack size");
@@ -6736,7 +6853,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.splice(this.stack.length - 2, 0, this.stackTop());
             break;
 
-          case OP_CAT:
+          case Opcode.map.OP_CAT:
             // (x1 x2 -- out)
             var v1 = this.stackTop(2);
             var v2 = this.stackTop(1);
@@ -6745,7 +6862,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(Buffer.concat([v1, v2]));
             break;
 
-          case OP_SUBSTR:
+          case Opcode.map.OP_SUBSTR:
             // (in begin size -- out)
             var buf = this.stackTop(3);
             var start = castInt(this.stackTop(2));
@@ -6761,8 +6878,8 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack[this.stack.length - 1] = buf.slice(start, start + len);
             break;
 
-          case OP_LEFT:
-          case OP_RIGHT:
+          case Opcode.map.OP_LEFT:
+          case Opcode.map.OP_RIGHT:
             // (in size -- out)
             var buf = this.stackTop(2);
             var size = castInt(this.stackTop(1));
@@ -6773,20 +6890,20 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
               size = buf.length;
             }
             this.stackPop();
-            if (opcode === OP_LEFT) {
+            if (opcode === Opcode.map.OP_LEFT) {
               this.stack[this.stack.length - 1] = buf.slice(0, size);
             } else {
               this.stack[this.stack.length - 1] = buf.slice(buf.length - size);
             }
             break;
 
-          case OP_SIZE:
+          case Opcode.map.OP_SIZE:
             // (in -- in size)
             var value = bignum(this.stackTop().length);
             this.stack.push(intToBufferSM(value));
             break;
 
-          case OP_INVERT:
+          case Opcode.map.OP_INVERT:
             // (in - out)
             var buf = this.stackTop();
             for (var i = 0, l = buf.length; i < l; i++) {
@@ -6794,24 +6911,24 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             }
             break;
 
-          case OP_AND:
-          case OP_OR:
-          case OP_XOR:
+          case Opcode.map.OP_AND:
+          case Opcode.map.OP_OR:
+          case Opcode.map.OP_XOR:
             // (x1 x2 - out)
             var v1 = this.stackTop(2);
             var v2 = this.stackTop(1);
             this.stackPop();
             this.stackPop();
             var out = new Buffer(Math.max(v1.length, v2.length));
-            if (opcode === OP_AND) {
+            if (opcode === Opcode.map.OP_AND) {
               for (var i = 0, l = out.length; i < l; i++) {
                 out[i] = v1[i] & v2[i];
               }
-            } else if (opcode === OP_OR) {
+            } else if (opcode === Opcode.map.OP_OR) {
               for (var i = 0, l = out.length; i < l; i++) {
                 out[i] = v1[i] | v2[i];
               }
-            } else if (opcode === OP_XOR) {
+            } else if (opcode === Opcode.map.OP_XOR) {
               for (var i = 0, l = out.length; i < l; i++) {
                 out[i] = v1[i] ^ v2[i];
               }
@@ -6819,8 +6936,8 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(out);
             break;
 
-          case OP_EQUAL:
-          case OP_EQUALVERIFY:
+          case Opcode.map.OP_EQUAL:
+          case Opcode.map.OP_EQUALVERIFY:
             //case OP_NOTEQUAL: // use OP_NUMNOTEQUAL
             // (x1 x2 - bool)
             var v1 = this.stackTop(2);
@@ -6837,7 +6954,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stackPop();
             this.stackPop();
             this.stack.push(new Buffer([value ? 1 : 0]));
-            if (opcode === OP_EQUALVERIFY) {
+            if (opcode === Opcode.map.OP_EQUALVERIFY) {
               if (value) {
                 this.stackPop();
               } else {
@@ -6846,136 +6963,136 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             }
             break;
 
-          case OP_1ADD:
-          case OP_1SUB:
-          case OP_2MUL:
-          case OP_2DIV:
-          case OP_NEGATE:
-          case OP_ABS:
-          case OP_NOT:
-          case OP_0NOTEQUAL:
+          case Opcode.map.OP_1ADD:
+          case Opcode.map.OP_1SUB:
+          case Opcode.map.OP_2MUL:
+          case Opcode.map.OP_2DIV:
+          case Opcode.map.OP_NEGATE:
+          case Opcode.map.OP_ABS:
+          case Opcode.map.OP_NOT:
+          case Opcode.map.OP_0NOTEQUAL:
             // (in -- out)
             var num = bufferSMToInt(this.stackTop());
             switch (opcode) {
-              case OP_1ADD:
+              case Opcode.map.OP_1ADD:
                 num = num.add(bignum(1));
                 break;
-              case OP_1SUB:
+              case Opcode.map.OP_1SUB:
                 num = num.sub(bignum(1));
                 break;
-              case OP_2MUL:
+              case Opcode.map.OP_2MUL:
                 num = num.mul(bignum(2));
                 break;
-              case OP_2DIV:
+              case Opcode.map.OP_2DIV:
                 num = num.div(bignum(2));
                 break;
-              case OP_NEGATE:
+              case Opcode.map.OP_NEGATE:
                 num = num.neg();
                 break;
-              case OP_ABS:
+              case Opcode.map.OP_ABS:
                 num = num.abs();
                 break;
-              case OP_NOT:
+              case Opcode.map.OP_NOT:
                 num = bignum(num.cmp(0) == 0 ? 1 : 0);
                 break;
-              case OP_0NOTEQUAL:
+              case Opcode.map.OP_0NOTEQUAL:
                 num = bignum(num.cmp(0) == 0 ? 0 : 1);
                 break;
             }
             this.stack[this.stack.length - 1] = intToBufferSM(num);
             break;
 
-          case OP_ADD:
-          case OP_SUB:
-          case OP_MUL:
-          case OP_DIV:
-          case OP_MOD:
-          case OP_LSHIFT:
-          case OP_RSHIFT:
-          case OP_BOOLAND:
-          case OP_BOOLOR:
-          case OP_NUMEQUAL:
-          case OP_NUMEQUALVERIFY:
-          case OP_NUMNOTEQUAL:
-          case OP_LESSTHAN:
-          case OP_GREATERTHAN:
-          case OP_LESSTHANOREQUAL:
-          case OP_GREATERTHANOREQUAL:
-          case OP_MIN:
-          case OP_MAX:
+          case Opcode.map.OP_ADD:
+          case Opcode.map.OP_SUB:
+          case Opcode.map.OP_MUL:
+          case Opcode.map.OP_DIV:
+          case Opcode.map.OP_MOD:
+          case Opcode.map.OP_LSHIFT:
+          case Opcode.map.OP_RSHIFT:
+          case Opcode.map.OP_BOOLAND:
+          case Opcode.map.OP_BOOLOR:
+          case Opcode.map.OP_NUMEQUAL:
+          case Opcode.map.OP_NUMEQUALVERIFY:
+          case Opcode.map.OP_NUMNOTEQUAL:
+          case Opcode.map.OP_LESSTHAN:
+          case Opcode.map.OP_GREATERTHAN:
+          case Opcode.map.OP_LESSTHANOREQUAL:
+          case Opcode.map.OP_GREATERTHANOREQUAL:
+          case Opcode.map.OP_MIN:
+          case Opcode.map.OP_MAX:
             // (x1 x2 -- out)
             var v1 = bufferSMToInt(this.stackTop(2));
             var v2 = bufferSMToInt(this.stackTop(1));
             var num;
             switch (opcode) {
-              case OP_ADD:
+              case Opcode.map.OP_ADD:
                 num = v1.add(v2);
                 break;
-              case OP_SUB:
+              case Opcode.map.OP_SUB:
                 num = v1.sub(v2);
                 break;
-              case OP_MUL:
+              case Opcode.map.OP_MUL:
                 num = v1.mul(v2);
                 break;
-              case OP_DIV:
+              case Opcode.map.OP_DIV:
                 num = v1.div(v2);
                 break;
-              case OP_MOD:
+              case Opcode.map.OP_MOD:
                 num = v1.mod(v2);
                 break;
 
-              case OP_LSHIFT:
+              case Opcode.map.OP_LSHIFT:
                 if (v2.cmp(0) < 0 || v2.cmp(2048) > 0) {
                   throw new Error("OP_LSHIFT parameter out of bounds");
                 }
                 num = v1.shiftLeft(v2);
                 break;
 
-              case OP_RSHIFT:
+              case Opcode.map.OP_RSHIFT:
                 if (v2.cmp(0) < 0 || v2.cmp(2048) > 0) {
                   throw new Error("OP_RSHIFT parameter out of bounds");
                 }
                 num = v1.shiftRight(v2);
                 break;
 
-              case OP_BOOLAND:
+              case Opcode.map.OP_BOOLAND:
                 num = bignum((v1.cmp(0) != 0 && v2.cmp(0) != 0) ? 1 : 0);
                 break;
 
-              case OP_BOOLOR:
+              case Opcode.map.OP_BOOLOR:
                 num = bignum((v1.cmp(0) != 0 || v2.cmp(0) != 0) ? 1 : 0);
                 break;
 
-              case OP_NUMEQUAL:
-              case OP_NUMEQUALVERIFY:
+              case Opcode.map.OP_NUMEQUAL:
+              case Opcode.map.OP_NUMEQUALVERIFY:
                 num = bignum(v1.cmp(v2) == 0 ? 1 : 0);
                 break;
 
-              case OP_NUMNOTEQUAL:
+              case Opcode.map.OP_NUMNOTEQUAL:
                 ;
                 num = bignum(v1.cmp(v2) != 0 ? 1 : 0);
                 break;
 
-              case OP_LESSTHAN:
+              case Opcode.map.OP_LESSTHAN:
                 num = bignum(v1.lt(v2) ? 1 : 0);
                 break;
 
-              case OP_GREATERTHAN:
+              case Opcode.map.OP_GREATERTHAN:
                 num = bignum(v1.gt(v2) ? 1 : 0);
                 break;
 
-              case OP_LESSTHANOREQUAL:
+              case Opcode.map.OP_LESSTHANOREQUAL:
                 num = bignum(v1.gt(v2) ? 0 : 1);
                 break;
 
-              case OP_GREATERTHANOREQUAL:
+              case Opcode.map.OP_GREATERTHANOREQUAL:
                 num = bignum(v1.lt(v2) ? 0 : 1);
                 break;
 
-              case OP_MIN:
+              case Opcode.map.OP_MIN:
                 num = (v1.lt(v2) ? v1 : v2);
                 break;
-              case OP_MAX:
+              case Opcode.map.OP_MAX:
                 num = (v1.gt(v2) ? v1 : v2);
                 break;
             }
@@ -6983,7 +7100,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stackPop();
             this.stack.push(intToBufferSM(num));
 
-            if (opcode === OP_NUMEQUALVERIFY) {
+            if (opcode === Opcode.map.OP_NUMEQUALVERIFY) {
               if (castBool(this.stackTop())) {
                 this.stackPop();
               } else {
@@ -6992,7 +7109,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             }
             break;
 
-          case OP_WITHIN:
+          case Opcode.map.OP_WITHIN:
             // (x min max -- out)
             var v1 = bufferSMToInt(this.stackTop(3));
             var v2 = bufferSMToInt(this.stackTop(2));
@@ -7004,35 +7121,35 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             this.stack.push(intToBufferSM(value ? 1 : 0));
             break;
 
-          case OP_RIPEMD160:
-          case OP_SHA1:
-          case OP_SHA256:
-          case OP_HASH160:
-          case OP_HASH256:
+          case Opcode.map.OP_RIPEMD160:
+          case Opcode.map.OP_SHA1:
+          case Opcode.map.OP_SHA256:
+          case Opcode.map.OP_HASH160:
+          case Opcode.map.OP_HASH256:
             // (in -- hash)
             var value = this.stackPop();
             var hash;
-            if (opcode === OP_RIPEMD160) {
+            if (opcode === Opcode.map.OP_RIPEMD160) {
               hash = Util.ripe160(value);
-            } else if (opcode === OP_SHA1) {
+            } else if (opcode === Opcode.map.OP_SHA1) {
               hash = Util.sha1(value);
-            } else if (opcode === OP_SHA256) {
+            } else if (opcode === Opcode.map.OP_SHA256) {
               hash = Util.sha256(value);
-            } else if (opcode === OP_HASH160) {
+            } else if (opcode === Opcode.map.OP_HASH160) {
               hash = Util.sha256ripe160(value);
-            } else if (opcode === OP_HASH256) {
+            } else if (opcode === Opcode.map.OP_HASH256) {
               hash = Util.twoSha256(value);
             }
             this.stack.push(hash);
             break;
 
-          case OP_CODESEPARATOR:
+          case Opcode.map.OP_CODESEPARATOR:
             // Hash starts after the code separator
             hashStart = pc;
             break;
 
-          case OP_CHECKSIG:
-          case OP_CHECKSIGVERIFY:
+          case Opcode.map.OP_CHECKSIG:
+          case Opcode.map.OP_CHECKSIGVERIFY:
             // (sig pubkey -- bool)
             var sig = this.stackTop(2);
             var pubkey = this.stackTop(1);
@@ -7065,7 +7182,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
               this.stackPop();
               this.stackPop();
               this.stack.push(new Buffer([success ? 1 : 0]));
-              if (opcode === OP_CHECKSIGVERIFY) {
+              if (opcode === Opcode.map.OP_CHECKSIGVERIFY) {
                 if (success) {
                   this.stackPop();
                 } else {
@@ -7081,8 +7198,8 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
             // the next opcode from being executed.
             return;
 
-          case OP_CHECKMULTISIG:
-          case OP_CHECKMULTISIGVERIFY:
+          case Opcode.map.OP_CHECKMULTISIG:
+          case Opcode.map.OP_CHECKMULTISIGVERIFY:
             // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
             var keysCount = castInt(this.stackPop());
             if (keysCount < 0 || keysCount > 20) {
@@ -7154,7 +7271,7 @@ ScriptInterpreter.prototype.eval = function eval(script, tx, inIndex, hashType, 
                 }.bind(this));
               } else {
                 this.stack.push(new Buffer([success ? 1 : 0]));
-                if (opcode === OP_CHECKMULTISIGVERIFY) {
+                if (opcode === Opcode.map.OP_CHECKMULTISIGVERIFY) {
                   if (success) {
                     this.stackPop();
                   } else {
@@ -7516,18 +7633,7 @@ ScriptInterpreter.prototype.isCanonicalSignature = function(sig) {
 module.exports = require('soop')(ScriptInterpreter);
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../config":"4itQ50","../util":179,"../util/log":"AdF7pF","./Bignum":"9Sbj2J","./Key":"aEfkTx","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"buffer":87,"buffertools":"fugeBw","soop":164}],"./lib/SecureRandom":[function(require,module,exports){
-module.exports=require('BaKCfn');
-},{}],"BaKCfn":[function(require,module,exports){
-(function (process){
-if (process.versions) {
-  module.exports = require('./node/SecureRandom');
-  return;
-}
-module.exports = require('./browser/SecureRandom');
-
-}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/SecureRandom":67,"./node/SecureRandom":71,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],"./lib/Sign":[function(require,module,exports){
+},{"../config":"4itQ50","../util":140,"../util/log":"AdF7pF","./Key":"ALJ4PS","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/Sign":[function(require,module,exports){
 module.exports=require('V3JdDp');
 },{}],"V3JdDp":[function(require,module,exports){
 (function (Buffer){
@@ -7666,9 +7772,7 @@ exports.Transaction = function Transaction(tx, txInputs, network, keys, scripts)
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87}],"./lib/Transaction":[function(require,module,exports){
-module.exports=require('LJhYtm');
-},{}],"LJhYtm":[function(require,module,exports){
+},{"buffer":80}],"LJhYtm":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 var config = imports.config || require('../config');
@@ -7677,7 +7781,7 @@ var Address = imports.Address || require('./Address');
 var Script = imports.Script || require('./Script');
 var ScriptInterpreter = imports.ScriptInterpreter || require('./ScriptInterpreter');
 var util = imports.util || require('../util');
-var bignum = imports.bignum || require('./Bignum');
+var bignum = imports.bignum || require('bignum');
 var Put = imports.Put || require('bufferput');
 var Parser = imports.Parser || require('../util/BinaryParser');
 var Step = imports.Step || require('step');
@@ -8303,11 +8407,15 @@ Transaction.prototype.isComplete = function() {
 module.exports = require('soop')(Transaction);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../util":179,"../util/BinaryParser":"b3ZSD7","../util/error":178,"../util/log":"AdF7pF","./Address":"G+CcXD","./Bignum":"9Sbj2J","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":164,"step":165}],"./lib/TransactionBuilder":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util":140,"../util/BinaryParser":"b3ZSD7","../util/error":139,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":58,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125,"step":126}],"./lib/Transaction":[function(require,module,exports){
+module.exports=require('LJhYtm');
+},{}],"./lib/TransactionBuilder":[function(require,module,exports){
 module.exports=require('D1Ge6m');
 },{}],"D1Ge6m":[function(require,module,exports){
 (function (Buffer){
-
+// TransactionBuilder
+// ==================
+//
 // Creates a bitcore Transaction object
 //
 //
@@ -8342,7 +8450,7 @@ module.exports=require('D1Ge6m');
 //     broadcast(tx.serialize());
 //
 //     //Searialize it and pass it around...
-//     var string = JSON.serialize(builder.toObj()); 
+//     var string = JSON.stringify(builder.toObj()); 
 //     // then...
 //     var builder = TransactionBuilder.fromObj(JSON.parse(str); 
 //     builder.sign(keys);
@@ -8363,7 +8471,7 @@ var imports = require('soop').imports();
 var Address = imports.Address || require('./Address');
 var Script = imports.Script || require('./Script');
 var util = imports.util || require('../util');
-var bignum = imports.bignum || require('./Bignum');
+var bignum = imports.bignum || require('bignum');
 var buffertools = imports.buffertools || require('buffertools');
 var networks = imports.networks || require('../networks');
 var WalletKey = imports.WalletKey || require('./WalletKey');
@@ -9235,6 +9343,7 @@ TransactionBuilder.prototype._checkMergeability = function(b) {
 
 };
 
+// TODO this could be on Script class
 TransactionBuilder.prototype._mergeInputSigP2sh = function(input,s0,s1) {
   var p2sh  = this._p2shInput(input);
   var redeemScript = new Script(p2sh.scriptBuf);
@@ -9272,6 +9381,7 @@ TransactionBuilder.prototype._mergeInputSigP2sh = function(input,s0,s1) {
   return s0.getBuffer();
 };
 
+// TODO this could be on Script class
 TransactionBuilder.prototype._mergeInputSig = function(index, s0buf, s1buf) {
   if (buffertools.compare(s0buf,s1buf) === 0)
     return s0buf;
@@ -9305,7 +9415,8 @@ TransactionBuilder.prototype._mergeInputSig = function(index, s0buf, s1buf) {
   return this._mergeInputSigP2sh(input,s0, s1);
 };
 
-TransactionBuilder.prototype._mergeTx = function(tx, ignoreConflictingSignatures) {
+// TODO this could be on Transaction class
+TransactionBuilder.prototype._mergeTx = function(tx) {
     var v0 = this.tx;
     var v1 = tx;
 
@@ -9351,7 +9462,7 @@ TransactionBuilder.prototype.merge = function(b) {
 module.exports = require('soop')(TransactionBuilder);
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"../util/log":"AdF7pF","./Address":"G+CcXD","./Bignum":"9Sbj2J","./Key":"aEfkTx","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","buffer":87,"buffertools":"fugeBw","soop":164}],"./lib/Wallet":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":140,"../util/log":"AdF7pF","./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","./Script":"hQ0t76","./Transaction":"LJhYtm","./WalletKey":"wWje7g","bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/Wallet":[function(require,module,exports){
 module.exports=require('yUY4WV');
 },{}],"yUY4WV":[function(require,module,exports){
 (function (Buffer){
@@ -9497,7 +9608,9 @@ module.exports = require('soop')(Wallet);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":179,"../util/EncFile":173,"./Address":"G+CcXD","buffer":87,"fs":83,"soop":164}],"wWje7g":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":140,"../util/EncFile":134,"./Address":"G+CcXD","buffer":80,"fs":76,"soop":125}],"./lib/WalletKey":[function(require,module,exports){
+module.exports=require('wWje7g');
+},{}],"wWje7g":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 
@@ -9553,9 +9666,7 @@ WalletKey.prototype.fromObj = function(obj) {
 module.exports = require('soop')(WalletKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"../util/time":182,"./Address":"G+CcXD","./Key":"aEfkTx","./PrivateKey":"izTl9z","buffer":87,"soop":164}],"./lib/WalletKey":[function(require,module,exports){
-module.exports=require('wWje7g');
-},{}],64:[function(require,module,exports){
+},{"../util":140,"../util/time":143,"./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","buffer":80,"soop":125}],58:[function(require,module,exports){
 (function (Buffer){
 /* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
@@ -11682,12 +11793,14 @@ module.exports = BigNumber;
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87}],65:[function(require,module,exports){
+},{"buffer":80}],"./lib/Key":[function(require,module,exports){
+module.exports=require('ALJ4PS');
+},{}],"ALJ4PS":[function(require,module,exports){
 (function (Buffer){
 var ECKey = require('../../browser/vendor-bundle.js').ECKey;
 var SecureRandom = require('../SecureRandom');
 var Curve = require('../Curve');
-var bignum = require('../Bignum');
+var bignum = require('bignum');
 
 var Key = function() {
   this._pub = null;
@@ -11785,7 +11898,7 @@ Key.prototype.signSync = function(hash) {
   rng.nextBytes = function(array) {
     var buf = SecureRandom.getRandomBuffer(array.length);
     var a = bufferToArray(SecureRandom.getRandomBuffer(array.length));
-    for (var i in array) {
+    for (var i in a) {
       array[i] = a[i];
     }
   };
@@ -11879,19 +11992,18 @@ Key.prototype.verifySignatureSync = function(hash, sig) {
 module.exports = Key;
 
 }).call(this,require("buffer").Buffer)
-},{"../../browser/vendor-bundle.js":3,"../Bignum":"9Sbj2J","../Curve":"Ynul1S","../SecureRandom":"BaKCfn","buffer":87}],66:[function(require,module,exports){
+},{"../../browser/vendor-bundle.js":3,"../Curve":"Ynul1S","../SecureRandom":"p4SiC2","bignum":58,"buffer":80}],"6tXgqr":[function(require,module,exports){
 (function (Buffer){
 "use strict";
 
 var imports = require('soop').imports();
 var Key = imports.Key || require('./Key'); 
-var bignum = imports.bignum || require('../Bignum');
+var bignum = imports.bignum || require('bignum');
 var assert = require('assert');
 var ECPointFp = require('../../browser/vendor-bundle.js').ECPointFp;
 var ECFieldElementFp = require('../../browser/vendor-bundle.js').ECFieldElementFp;
 var getSECCurveByName = require('../../browser/vendor-bundle.js').getSECCurveByName;
 var BigInteger = require('../../browser/vendor-bundle.js').BigInteger;
-var should = require('chai').should();
 
 //a point on the secp256k1 curve
 //x and y are bignums
@@ -11932,6 +12044,32 @@ Point.add = function(p1, p2) {
   return point;
 };
 
+Point.multiply = function(p1, x) {
+  var x = new BigInteger(x.toString('hex'), 16);
+
+  var ecparams = getSECCurveByName('secp256k1');
+
+  var p1xhex = p1.x.toBuffer({size: 32}).toString('hex');
+  var p1x = new BigInteger(p1xhex, 16);
+  var p1yhex = p1.y.toBuffer({size: 32}).toString('hex');
+  var p1y = new BigInteger(p1yhex, 16);
+  var p1px = new ECFieldElementFp(ecparams.getCurve().getQ(), p1x);
+  var p1py = new ECFieldElementFp(ecparams.getCurve().getQ(), p1y);
+  var p1p = new ECPointFp(ecparams.getCurve(), p1px, p1py);
+
+  var p = p1p.multiply(x);
+
+  var point = new Point();
+  var pointxbuf = new Buffer(p.getX().toBigInteger().toByteArrayUnsigned());
+  point.x = bignum.fromBuffer(pointxbuf, {size: pointxbuf.length});
+  assert(pointxbuf.length <= 32);
+  var pointybuf = new Buffer(p.getY().toBigInteger().toByteArrayUnsigned());
+  assert(pointybuf.length <= 32);
+  point.y = bignum.fromBuffer(pointybuf, {size: pointybuf.length});
+
+  return point;
+};
+
 //convert the public key of a Key into a Point
 Point.fromUncompressedPubKey = function(pubkey) {
   var point = new Point();
@@ -11952,7 +12090,9 @@ Point.prototype.toUncompressedPubKey = function() {
 module.exports = require('soop')(Point);
 
 }).call(this,require("buffer").Buffer)
-},{"../../browser/vendor-bundle.js":3,"../Bignum":"9Sbj2J","./Key":65,"assert":84,"buffer":87,"chai":124,"soop":164}],67:[function(require,module,exports){
+},{"../../browser/vendor-bundle.js":3,"./Key":"ALJ4PS","assert":77,"bignum":58,"buffer":80,"soop":125}],"./lib/Point":[function(require,module,exports){
+module.exports=require('6tXgqr');
+},{}],"p4SiC2":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop');
 
@@ -11979,7 +12119,9 @@ SecureRandom.getRandomBuffer = function(size) {
 module.exports = require('soop')(SecureRandom);
 
 }).call(this,require("buffer").Buffer)
-},{"../common/SecureRandom":68,"buffer":87,"soop":164}],68:[function(require,module,exports){
+},{"../common/SecureRandom":65,"buffer":80,"soop":125}],"./lib/SecureRandom":[function(require,module,exports){
+module.exports=require('p4SiC2');
+},{}],65:[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop');
 
@@ -12011,69 +12153,7 @@ SecureRandom.getPseudoRandomBuffer = function(size) {
 module.exports = require('soop')(SecureRandom);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"soop":164}],69:[function(require,module,exports){
-var Key = require('bindings')('KeyModule').Key;
-
-module.exports = Key;
-
-},{"bindings":80}],70:[function(require,module,exports){
-(function (Buffer){
-"use strict";
-
-var imports = require('soop').imports();
-var bignum = imports.bignum || require('../Bignum');
-var CPPKey = imports.CPPKey || require('bindings')('KeyModule').Key;
-var assert = require('assert');
-
-//a point on the secp256k1 curve
-//x and y are bignums
-var Point = function(x, y) {
-  this.x = x;
-  this.y = y;
-};
-
-Point.add = function(p1, p2) {
-  var u1 = p1.toUncompressedPubKey();
-  var u2 = p2.toUncompressedPubKey();
-  var pubKey = CPPKey.addUncompressed(u1, u2);
-  return Point.fromUncompressedPubKey(pubKey);
-};
-
-//convert the public key of a Key into a Point
-Point.fromUncompressedPubKey = function(pubkey) {
-  var point = new Point();
-  point.x = bignum.fromBuffer(pubkey.slice(1, 33), {size: 32});
-  point.y = bignum.fromBuffer(pubkey.slice(33, 65), {size: 32});
-  return point;
-};
-
-//convert the Point into the Key containing a compressed public key
-Point.prototype.toUncompressedPubKey = function() {
-  var xbuf = this.x.toBuffer({size: 32});
-  var ybuf = this.y.toBuffer({size: 32});
-  var prefix = new Buffer([0x04]);
-  var pubkey = Buffer.concat([prefix, xbuf, ybuf]);
-  return pubkey;
-};
-
-module.exports = require('soop')(Point);
-
-}).call(this,require("buffer").Buffer)
-},{"../Bignum":"9Sbj2J","assert":84,"bindings":80,"buffer":87,"soop":164}],71:[function(require,module,exports){
-var imports = require('soop');
-var crypto = imports.crypto || require('crypto');
-
-var SecureRandom = require('../common/SecureRandom');
-
-SecureRandom.getRandomBuffer = function(size) {
-  return crypto.randomBytes(size);
-}
-
-module.exports = require('soop')(SecureRandom);
-
-},{"../common/SecureRandom":68,"crypto":91,"soop":164}],"./networks":[function(require,module,exports){
-module.exports=require('ULNIu2');
-},{}],"ULNIu2":[function(require,module,exports){
+},{"buffer":80,"soop":125}],"ULNIu2":[function(require,module,exports){
 (function (Buffer){
 var Put = require('bufferput');
 var buffertools = require('buffertools');
@@ -12134,7 +12214,9 @@ exports.testnet = {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw"}],74:[function(require,module,exports){
+},{"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw"}],"./networks":[function(require,module,exports){
+module.exports=require('ULNIu2');
+},{}],68:[function(require,module,exports){
 (function (process){
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
@@ -13096,444 +13178,7 @@ exports.testnet = {
 }());
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],75:[function(require,module,exports){
-(function (Buffer){
-try {
-    var cc = new require('./build/Debug/bignum');
-} catch(e) {
-    var cc = new require('./build/Release/bignum');
-}
-var BigNum = cc.BigNum;
-
-module.exports = BigNum;
-
-BigNum.conditionArgs = function(num, base) {
-    if (typeof num !== 'string') num = num.toString(base || 10);
-
-    if (num.match(/e\+/)) { // positive exponent
-        if (!Number(num).toString().match(/e\+/)) {
-        return {
-            num: Math.floor(Number(num)).toString(),
-            base: 10
-        };
-    }
-    else {
-        var pow = Math.ceil(Math.log(num) / Math.log(2));
-        var n = (num / Math.pow(2, pow)).toString(2)
-            .replace(/^0/,'');
-        var i = n.length - n.indexOf('.');
-        n = n.replace(/\./,'');
-
-        for (; i <= pow; i++) n += '0';
-           return {
-               num : n,
-               base : 2,
-           };
-        }
-    }
-    else if (num.match(/e\-/)) { // negative exponent
-        return {
-            num : Math.floor(Number(num)).toString(),
-            base : base || 10
-        };
-    }
-    else {
-        return {
-            num : num,
-            base : base || 10,
-        };
-    }
-};
-
-cc.setJSConditioner(BigNum.conditionArgs);
-
-BigNum.prototype.inspect = function () {
-    return '<BigNum ' + this.toString(10) + '>';
-};
-
-BigNum.prototype.toString = function (base) {
-    var value;
-    if (base) {
-        value = this.tostring(base);
-    } else {
-        value = this.tostring();
-    }
-    if (base > 10 && "string" === typeof value) {
-      value = value.toLowerCase();
-    }
-    return value;
-};
-
-BigNum.prototype.toNumber = function () {
-    return parseInt(this.toString(), 10);
-};
-
-[ 'add', 'sub', 'mul', 'div', 'mod' ].forEach(function (op) {
-    BigNum.prototype[op] = function (num) {
-        if (num instanceof BigNum) {
-            return this['b'+op](num);
-        }
-        else if (typeof num === 'number') {
-            if (num >= 0) {
-                return this['u'+op](num);
-            }
-            else if (op === 'add') {
-                return this.usub(-num);
-            }
-            else if (op === 'sub') {
-                return this.uadd(-num);
-            }
-            else {
-                var x = BigNum(num);
-                return this['b'+op](x);
-            }
-        }
-        else if (typeof num === 'string') {
-            var x = BigNum(num);
-            return this['b'+op](x);
-        }
-        else {
-            throw new TypeError('Unspecified operation for type '
-                + (typeof num) + ' for ' + op);
-        }
-    };
-});
-
-BigNum.prototype.abs = function () {
-    return this.babs();
-};
-
-BigNum.prototype.neg = function () {
-    return this.bneg();
-};
-
-BigNum.prototype.powm = function (num, mod) {
-    var m, res;
-
-    if ((typeof mod) === 'number' || (typeof mod) === 'string') {
-        m = BigNum(mod);
-    }
-    else if (mod instanceof BigNum) {
-        m = mod;
-    }
-
-    if ((typeof num) === 'number') {
-        return this.upowm(num, m);
-    }
-    else if ((typeof num) === 'string') {
-        var n = BigNum(num);
-        return this.bpowm(n, m);
-    }
-    else if (num instanceof BigNum) {
-        return this.bpowm(num, m);
-    }
-};
-
-BigNum.prototype.mod = function (num, mod) {
-    var m, res;
-
-    if ((typeof mod) === 'number' || (typeof mod) === 'string') {
-        m = BigNum(mod);
-    }
-    else if (mod instanceof BigNum) {
-        m = mod;
-    }
-
-    if ((typeof num) === 'number') {
-        return this.umod(num, m);
-    }
-    else if ((typeof num) === 'string') {
-        var n = BigNum(num);
-        return this.bmod(n, m);
-    }
-    else if (num instanceof BigNum) {
-        return this.bmod(num, m);
-    }
-};
-
-
-BigNum.prototype.pow = function (num) {
-    if (typeof num === 'number') {
-        if (num >= 0) {
-            return this.upow(num);
-        }
-        else {
-            return BigNum.prototype.powm.call(this, num, this);
-        }
-    }
-    else {
-        var x = parseInt(num.toString(), 10);
-        return BigNum.prototype.pow.call(this, x);
-    }
-};
-
-BigNum.prototype.shiftLeft = function (num) {
-    if (typeof num === 'number') {
-        if (num >= 0) {
-            return this.umul2exp(num);
-        }
-        else {
-            return this.shiftRight(-num);
-        }
-    }
-    else {
-        var x = parseInt(num.toString(), 10);
-        return BigNum.prototype.shiftLeft.call(this, x);
-    }
-};
-
-BigNum.prototype.shiftRight = function (num) {
-    if (typeof num === 'number') {
-        if (num >= 0) {
-            return this.udiv2exp(num);
-        }
-        else {
-            return this.shiftLeft(-num);
-        }
-    }
-    else {
-        var x = parseInt(num.toString(), 10);
-        return BigNum.prototype.shiftRight.call(this, x);
-    }
-};
-
-BigNum.prototype.cmp = function (num) {
-    if (num instanceof BigNum) {
-        return this.bcompare(num);
-    }
-    else if (typeof num === 'number') {
-        if (num < 0) {
-            return this.scompare(num);
-        }
-        else {
-            return this.ucompare(num);
-        }
-    }
-    else {
-        var x = BigNum(num);
-        return this.bcompare(x);
-    }
-};
-
-BigNum.prototype.gt = function (num) {
-    return this.cmp(num) > 0;
-};
-
-BigNum.prototype.ge = function (num) {
-    return this.cmp(num) >= 0;
-};
-
-BigNum.prototype.eq = function (num) {
-    return this.cmp(num) === 0;
-};
-
-BigNum.prototype.ne = function (num) {
-    return this.cmp(num) !== 0;
-};
-
-BigNum.prototype.lt = function (num) {
-    return this.cmp(num) < 0;
-};
-
-BigNum.prototype.le = function (num) {
-    return this.cmp(num) <= 0;
-};
-
-'and or xor'.split(' ').forEach(function (name) {
-    BigNum.prototype[name] = function (num) {
-        if (num instanceof BigNum) {
-            return this['b' + name](num);
-        }
-        else {
-            var x = BigNum(num);
-            return this['b' + name](x);
-        }
-    };
-});
-
-BigNum.prototype.sqrt = function() {
-    return this.bsqrt();
-};
-
-BigNum.prototype.root = function(num) {
-    if (num instanceof BigNum) {
-        return this.broot(num);
-    }
-    else {
-        var x = BigNum(num);
-        return this.broot(num);
-    }
-};
-
-BigNum.prototype.rand = function (to) {
-    if (to === undefined) {
-        if (this.toString() === '1') {
-            return BigNum(0);
-        }
-        else {
-            return this.brand0();
-        }
-    }
-    else {
-        var x = to instanceof BigNum
-            ? to.sub(this)
-            : BigNum(to).sub(this);
-        return x.brand0().add(this);
-    }
-};
-
-BigNum.prototype.invertm = function (mod) {
-    if (mod instanceof BigNum) {
-        return this.binvertm(mod);
-    }
-    else {
-        var x = BigNum(mod);
-        return this.binvertm(x);
-    }
-};
-
-BigNum.prime = function (bits, safe) {
-  if ("undefined" === typeof safe) {
-    safe = true;
-  }
-
-  // Force uint32
-  bits >>>= 0;
-
-  return BigNum.uprime0(bits, !!safe);
-};
-
-BigNum.prototype.probPrime = function (reps) {
-    var n = this.probprime(reps || 10);
-    return { 1 : true, 0 : false }[n];
-};
-
-BigNum.prototype.nextPrime = function () {
-    var num = this;
-    do {
-        num = num.add(1);
-    } while (!num.probPrime());
-    return num;
-};
-
-BigNum.fromBuffer = function (buf, opts) {
-    if (!opts) opts = {};
-
-    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
-        || opts.endian || 'big'
-    ;
-
-    var size = opts.size === 'auto' ? Math.ceil(buf.length) : (opts.size || 1);
-
-    if (buf.length % size !== 0) {
-        throw new RangeError('Buffer length (' + buf.length + ')'
-            + ' must be a multiple of size (' + size + ')'
-        );
-    }
-
-    var hex = [];
-    for (var i = 0; i < buf.length; i += size) {
-        var chunk = [];
-        for (var j = 0; j < size; j++) {
-            chunk.push(buf[
-                i + (endian === 'big' ? j : (size - j - 1))
-            ]);
-        }
-
-        hex.push(chunk
-            .map(function (c) {
-                return (c < 16 ? '0' : '') + c.toString(16);
-            })
-            .join('')
-        );
-    }
-
-    return BigNum(hex.join(''), 16);
-};
-
-BigNum.prototype.toBuffer = function (opts) {
-    if (typeof opts === 'string') {
-        if (opts !== 'mpint') return 'Unsupported Buffer representation';
-
-        var abs = this.abs();
-        var buf = abs.toBuffer({ size : 1, endian : 'big' });
-        var len = buf.length === 1 && buf[0] === 0 ? 0 : buf.length;
-        if (buf[0] & 0x80) len ++;
-
-        var ret = new Buffer(4 + len);
-        if (len > 0) buf.copy(ret, 4 + (buf[0] & 0x80 ? 1 : 0));
-        if (buf[0] & 0x80) ret[4] = 0;
-
-        ret[0] = len & (0xff << 24);
-        ret[1] = len & (0xff << 16);
-        ret[2] = len & (0xff << 8);
-        ret[3] = len & (0xff << 0);
-
-        // two's compliment for negative integers:
-        var isNeg = this.lt(0);
-        if (isNeg) {
-            for (var i = 4; i < ret.length; i++) {
-                ret[i] = 0xff - ret[i];
-            }
-        }
-        ret[4] = (ret[4] & 0x7f) | (isNeg ? 0x80 : 0);
-        if (isNeg) ret[ret.length - 1] ++;
-
-        return ret;
-    }
-
-    if (!opts) opts = {};
-
-    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
-        || opts.endian || 'big'
-    ;
-
-    var hex = this.toString(16);
-    if (hex.charAt(0) === '-') throw new Error(
-        'converting negative numbers to Buffers not supported yet'
-    );
-
-    var size = opts.size === 'auto' ? Math.ceil(hex.length / 2) : (opts.size || 1);
-
-    var len = Math.ceil(hex.length / (2 * size)) * size;
-    var buf = new Buffer(len);
-
-    // zero-pad the hex string so the chunks are all `size` long
-    while (hex.length < 2 * len) hex = '0' + hex;
-
-    var hx = hex
-        .split(new RegExp('(.{' + (2 * size) + '})'))
-        .filter(function (s) { return s.length > 0 })
-    ;
-
-    hx.forEach(function (chunk, i) {
-        for (var j = 0; j < size; j++) {
-            var ix = i * size + (endian === 'big' ? j : size - j - 1);
-            buf[ix] = parseInt(chunk.slice(j*2,j*2+2), 16);
-        }
-    });
-
-    return buf;
-};
-
-Object.keys(BigNum.prototype).forEach(function (name) {
-    if (name === 'inspect' || name === 'toString') return;
-
-    BigNum[name] = function (num) {
-        var args = [].slice.call(arguments, 1);
-
-        if (num instanceof BigNum) {
-            return num[name].apply(num, args);
-        }
-        else {
-            var bigi = BigNum(num);
-            return bigi[name].apply(bigi, args);
-        }
-    };
-});
-
-}).call(this,require("buffer").Buffer)
-},{"buffer":87}],76:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96}],69:[function(require,module,exports){
 (function (Buffer){
 var Chainsaw = require('chainsaw');
 var EventEmitter = require('events').EventEmitter;
@@ -13934,7 +13579,7 @@ function words (decode) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/vars.js":77,"buffer":87,"buffers":"OBo3aV","chainsaw":78,"events":96,"stream":110}],77:[function(require,module,exports){
+},{"./lib/vars.js":70,"buffer":80,"buffers":"OBo3aV","chainsaw":71,"events":89,"stream":103}],70:[function(require,module,exports){
 module.exports = function (store) {
     function getset (name, value) {
         var node = vars.store;
@@ -13964,7 +13609,7 @@ module.exports = function (store) {
     return vars;
 };
 
-},{}],78:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 (function (process){
 var Traverse = require('traverse');
 var EventEmitter = require('events').EventEmitter;
@@ -14113,7 +13758,7 @@ function upgradeChainsaw(saw) {
 };
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"events":96,"traverse":79}],79:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"events":89,"traverse":72}],72:[function(require,module,exports){
 module.exports = Traverse;
 function Traverse (obj) {
     if (!(this instanceof Traverse)) return new Traverse(obj);
@@ -14437,7 +14082,7 @@ function copy (src) {
     else return src;
 }
 
-},{}],80:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 (function (process,__filename){
 
 /**
@@ -14600,7 +14245,9 @@ exports.getRoot = function getRoot (file) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bindings/bindings.js")
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"fs":83,"path":104}],"fugeBw":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"fs":76,"path":97}],"buffertools":[function(require,module,exports){
+module.exports=require('fugeBw');
+},{}],"fugeBw":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -14845,11 +14492,9 @@ WritableBufferStream.prototype.toString = function() {
 exports.WritableBufferStream = WritableBufferStream;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"events":96,"util":119}],"buffertools":[function(require,module,exports){
-module.exports=require('fugeBw');
-},{}],83:[function(require,module,exports){
+},{"buffer":80,"events":89,"util":112}],76:[function(require,module,exports){
 
-},{}],84:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
@@ -15211,14 +14856,14 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"util/":86}],85:[function(require,module,exports){
+},{"util/":79}],78:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],86:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -15808,7 +15453,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":85,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"inherits":102}],87:[function(require,module,exports){
+},{"./support/isBuffer":78,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"inherits":95}],80:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -16919,7 +16564,7 @@ function assert (test, message) {
   if (!test) throw new Error(message || 'Failed assertion')
 }
 
-},{"base64-js":88,"ieee754":89}],88:[function(require,module,exports){
+},{"base64-js":81,"ieee754":82}],81:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -17042,7 +16687,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	module.exports.fromByteArray = uint8ToBase64
 }())
 
-},{}],89:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -17128,7 +16773,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],90:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 var Buffer = require('buffer').Buffer;
 var intSize = 4;
 var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
@@ -17165,7 +16810,7 @@ function hash(buf, fn, hashSize, bigEndian) {
 
 module.exports = { hash: hash };
 
-},{"buffer":87}],91:[function(require,module,exports){
+},{"buffer":80}],84:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 var sha = require('./sha')
 var sha256 = require('./sha256')
@@ -17264,7 +16909,7 @@ each(['createCredentials'
   }
 })
 
-},{"./md5":92,"./rng":93,"./sha":94,"./sha256":95,"buffer":87}],92:[function(require,module,exports){
+},{"./md5":85,"./rng":86,"./sha":87,"./sha256":88,"buffer":80}],85:[function(require,module,exports){
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -17429,7 +17074,7 @@ module.exports = function md5(buf) {
   return helpers.hash(buf, core_md5, 16);
 };
 
-},{"./helpers":90}],93:[function(require,module,exports){
+},{"./helpers":83}],86:[function(require,module,exports){
 // Original code adapted from Robert Kieffer.
 // details at https://github.com/broofa/node-uuid
 (function() {
@@ -17462,7 +17107,7 @@ module.exports = function md5(buf) {
 
 }())
 
-},{}],94:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -17565,7 +17210,7 @@ module.exports = function sha1(buf) {
   return helpers.hash(buf, core_sha1, 20, true);
 };
 
-},{"./helpers":90}],95:[function(require,module,exports){
+},{"./helpers":83}],88:[function(require,module,exports){
 
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -17646,7 +17291,7 @@ module.exports = function sha256(buf) {
   return helpers.hash(buf, core_sha256, 32, true);
 };
 
-},{"./helpers":90}],96:[function(require,module,exports){
+},{"./helpers":83}],89:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -17948,7 +17593,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],97:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 var http = module.exports;
 var EventEmitter = require('events').EventEmitter;
 var Request = require('./lib/request');
@@ -18087,7 +17732,7 @@ http.STATUS_CODES = {
     510 : 'Not Extended',               // RFC 2774
     511 : 'Network Authentication Required' // RFC 6585
 };
-},{"./lib/request":98,"events":96,"url":117}],98:[function(require,module,exports){
+},{"./lib/request":91,"events":89,"url":110}],91:[function(require,module,exports){
 var Stream = require('stream');
 var Response = require('./response');
 var Base64 = require('Base64');
@@ -18278,7 +17923,7 @@ var indexOf = function (xs, x) {
     return -1;
 };
 
-},{"./response":99,"Base64":100,"inherits":102,"stream":110}],99:[function(require,module,exports){
+},{"./response":92,"Base64":93,"inherits":95,"stream":103}],92:[function(require,module,exports){
 var Stream = require('stream');
 var util = require('util');
 
@@ -18400,7 +18045,7 @@ var isArray = Array.isArray || function (xs) {
     return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{"stream":110,"util":119}],100:[function(require,module,exports){
+},{"stream":103,"util":112}],93:[function(require,module,exports){
 ;(function () {
 
   var object = typeof exports != 'undefined' ? exports : this; // #8: web workers
@@ -18462,7 +18107,7 @@ var isArray = Array.isArray || function (xs) {
 
 }());
 
-},{}],101:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 var http = require('http');
 
 var https = module.exports;
@@ -18477,7 +18122,7 @@ https.request = function (params, cb) {
     return http.request.call(this, params, cb);
 }
 
-},{"http":97}],102:[function(require,module,exports){
+},{"http":90}],95:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -18502,7 +18147,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],103:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -18564,7 +18209,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],104:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -18792,7 +18437,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],105:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96}],98:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -19303,7 +18948,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],106:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19389,7 +19034,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],107:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19476,13 +19121,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],108:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":106,"./encode":107}],109:[function(require,module,exports){
+},{"./decode":99,"./encode":100}],102:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19556,7 +19201,7 @@ function onend() {
   });
 }
 
-},{"./readable.js":113,"./writable.js":115,"inherits":102,"process/browser.js":111}],110:[function(require,module,exports){
+},{"./readable.js":106,"./writable.js":108,"inherits":95,"process/browser.js":104}],103:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19685,7 +19330,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"./duplex.js":109,"./passthrough.js":112,"./readable.js":113,"./transform.js":114,"./writable.js":115,"events":96,"inherits":102}],111:[function(require,module,exports){
+},{"./duplex.js":102,"./passthrough.js":105,"./readable.js":106,"./transform.js":107,"./writable.js":108,"events":89,"inherits":95}],104:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -19740,7 +19385,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],112:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19783,7 +19428,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./transform.js":114,"inherits":102}],113:[function(require,module,exports){
+},{"./transform.js":107,"inherits":95}],106:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -20720,7 +20365,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./index.js":110,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"buffer":87,"events":96,"inherits":102,"process/browser.js":111,"string_decoder":116}],114:[function(require,module,exports){
+},{"./index.js":103,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"buffer":80,"events":89,"inherits":95,"process/browser.js":104,"string_decoder":109}],107:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -20926,7 +20571,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./duplex.js":109,"inherits":102}],115:[function(require,module,exports){
+},{"./duplex.js":102,"inherits":95}],108:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21314,7 +20959,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./index.js":110,"buffer":87,"inherits":102,"process/browser.js":111}],116:[function(require,module,exports){
+},{"./index.js":103,"buffer":80,"inherits":95,"process/browser.js":104}],109:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21507,7 +21152,7 @@ function base64DetectIncompleteChar(buffer) {
   return incomplete;
 }
 
-},{"buffer":87}],117:[function(require,module,exports){
+},{"buffer":80}],110:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -22140,11 +21785,13 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":105,"querystring":108}],118:[function(require,module,exports){
-module.exports=require(85)
-},{}],119:[function(require,module,exports){
-module.exports=require(86)
-},{"./support/isBuffer":118,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"inherits":102}],"aXRuS6":[function(require,module,exports){
+},{"punycode":98,"querystring":101}],111:[function(require,module,exports){
+module.exports=require(78)
+},{}],112:[function(require,module,exports){
+module.exports=require(79)
+},{"./support/isBuffer":111,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"inherits":95}],"bufferput":[function(require,module,exports){
+module.exports=require('aXRuS6');
+},{}],"aXRuS6":[function(require,module,exports){
 (function (Buffer){
 function BufferPut () {
   this.words = [];
@@ -22250,11 +21897,7 @@ BufferPut.prototype.write = function(stream) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87}],"bufferput":[function(require,module,exports){
-module.exports=require('aXRuS6');
-},{}],"buffers":[function(require,module,exports){
-module.exports=require('OBo3aV');
-},{}],"OBo3aV":[function(require,module,exports){
+},{"buffer":80}],"OBo3aV":[function(require,module,exports){
 (function (Buffer){
 module.exports = Buffers;
 
@@ -22527,4541 +22170,9 @@ Buffers.prototype.toString = function(encoding, start, end) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87}],124:[function(require,module,exports){
-module.exports = require('./lib/chai');
-
-},{"./lib/chai":125}],125:[function(require,module,exports){
-/*!
- * chai
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var used = []
-  , exports = module.exports = {};
-
-/*!
- * Chai version
- */
-
-exports.version = '1.9.1';
-
-/*!
- * Assertion Error
- */
-
-exports.AssertionError = require('assertion-error');
-
-/*!
- * Utils for plugins (not exported)
- */
-
-var util = require('./chai/utils');
-
-/**
- * # .use(function)
- *
- * Provides a way to extend the internals of Chai
- *
- * @param {Function}
- * @returns {this} for chaining
- * @api public
- */
-
-exports.use = function (fn) {
-  if (!~used.indexOf(fn)) {
-    fn(this, util);
-    used.push(fn);
-  }
-
-  return this;
-};
-
-/*!
- * Configuration
- */
-
-var config = require('./chai/config');
-exports.config = config;
-
-/*!
- * Primary `Assertion` prototype
- */
-
-var assertion = require('./chai/assertion');
-exports.use(assertion);
-
-/*!
- * Core Assertions
- */
-
-var core = require('./chai/core/assertions');
-exports.use(core);
-
-/*!
- * Expect interface
- */
-
-var expect = require('./chai/interface/expect');
-exports.use(expect);
-
-/*!
- * Should interface
- */
-
-var should = require('./chai/interface/should');
-exports.use(should);
-
-/*!
- * Assert interface
- */
-
-var assert = require('./chai/interface/assert');
-exports.use(assert);
-
-},{"./chai/assertion":126,"./chai/config":127,"./chai/core/assertions":128,"./chai/interface/assert":129,"./chai/interface/expect":130,"./chai/interface/should":131,"./chai/utils":142,"assertion-error":151}],126:[function(require,module,exports){
-/*!
- * chai
- * http://chaijs.com
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var config = require('./config');
-
-module.exports = function (_chai, util) {
-  /*!
-   * Module dependencies.
-   */
-
-  var AssertionError = _chai.AssertionError
-    , flag = util.flag;
-
-  /*!
-   * Module export.
-   */
-
-  _chai.Assertion = Assertion;
-
-  /*!
-   * Assertion Constructor
-   *
-   * Creates object for chaining.
-   *
-   * @api private
-   */
-
-  function Assertion (obj, msg, stack) {
-    flag(this, 'ssfi', stack || arguments.callee);
-    flag(this, 'object', obj);
-    flag(this, 'message', msg);
-  }
-
-  Object.defineProperty(Assertion, 'includeStack', {
-    get: function() {
-      console.warn('Assertion.includeStack is deprecated, use chai.config.includeStack instead.');
-      return config.includeStack;
-    },
-    set: function(value) {
-      console.warn('Assertion.includeStack is deprecated, use chai.config.includeStack instead.');
-      config.includeStack = value;
-    }
-  });
-
-  Object.defineProperty(Assertion, 'showDiff', {
-    get: function() {
-      console.warn('Assertion.showDiff is deprecated, use chai.config.showDiff instead.');
-      return config.showDiff;
-    },
-    set: function(value) {
-      console.warn('Assertion.showDiff is deprecated, use chai.config.showDiff instead.');
-      config.showDiff = value;
-    }
-  });
-
-  Assertion.addProperty = function (name, fn) {
-    util.addProperty(this.prototype, name, fn);
-  };
-
-  Assertion.addMethod = function (name, fn) {
-    util.addMethod(this.prototype, name, fn);
-  };
-
-  Assertion.addChainableMethod = function (name, fn, chainingBehavior) {
-    util.addChainableMethod(this.prototype, name, fn, chainingBehavior);
-  };
-
-  Assertion.overwriteProperty = function (name, fn) {
-    util.overwriteProperty(this.prototype, name, fn);
-  };
-
-  Assertion.overwriteMethod = function (name, fn) {
-    util.overwriteMethod(this.prototype, name, fn);
-  };
-
-  Assertion.overwriteChainableMethod = function (name, fn, chainingBehavior) {
-    util.overwriteChainableMethod(this.prototype, name, fn, chainingBehavior);
-  };
-
-  /*!
-   * ### .assert(expression, message, negateMessage, expected, actual)
-   *
-   * Executes an expression and check expectations. Throws AssertionError for reporting if test doesn't pass.
-   *
-   * @name assert
-   * @param {Philosophical} expression to be tested
-   * @param {String} message to display if fails
-   * @param {String} negatedMessage to display if negated expression fails
-   * @param {Mixed} expected value (remember to check for negation)
-   * @param {Mixed} actual (optional) will default to `this.obj`
-   * @api private
-   */
-
-  Assertion.prototype.assert = function (expr, msg, negateMsg, expected, _actual, showDiff) {
-    var ok = util.test(this, arguments);
-    if (true !== showDiff) showDiff = false;
-    if (true !== config.showDiff) showDiff = false;
-
-    if (!ok) {
-      var msg = util.getMessage(this, arguments)
-        , actual = util.getActual(this, arguments);
-      throw new AssertionError(msg, {
-          actual: actual
-        , expected: expected
-        , showDiff: showDiff
-      }, (config.includeStack) ? this.assert : flag(this, 'ssfi'));
-    }
-  };
-
-  /*!
-   * ### ._obj
-   *
-   * Quick reference to stored `actual` value for plugin developers.
-   *
-   * @api private
-   */
-
-  Object.defineProperty(Assertion.prototype, '_obj',
-    { get: function () {
-        return flag(this, 'object');
-      }
-    , set: function (val) {
-        flag(this, 'object', val);
-      }
-  });
-};
-
-},{"./config":"4itQ50"}],127:[function(require,module,exports){
-module.exports = {
-
-  /**
-   * ### config.includeStack
-   *
-   * User configurable property, influences whether stack trace
-   * is included in Assertion error message. Default of false
-   * suppresses stack trace in the error message.
-   *
-   *     chai.config.includeStack = true;  // enable stack on error
-   *
-   * @param {Boolean}
-   * @api public
-   */
-
-   includeStack: false,
-
-  /**
-   * ### config.showDiff
-   *
-   * User configurable property, influences whether or not
-   * the `showDiff` flag should be included in the thrown
-   * AssertionErrors. `false` will always be `false`; `true`
-   * will be true when the assertion has requested a diff
-   * be shown.
-   *
-   * @param {Boolean}
-   * @api public
-   */
-
-  showDiff: true,
-
-  /**
-   * ### config.truncateThreshold
-   *
-   * User configurable property, sets length threshold for actual and
-   * expected values in assertion errors. If this threshold is exceeded,
-   * the value is truncated.
-   *
-   * Set it to zero if you want to disable truncating altogether.
-   *
-   *     chai.config.truncateThreshold = 0;  // disable truncating
-   *
-   * @param {Number}
-   * @api public
-   */
-
-  truncateThreshold: 40
-
-};
-
-},{}],128:[function(require,module,exports){
-/*!
- * chai
- * http://chaijs.com
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-module.exports = function (chai, _) {
-  var Assertion = chai.Assertion
-    , toString = Object.prototype.toString
-    , flag = _.flag;
-
-  /**
-   * ### Language Chains
-   *
-   * The following are provided as chainable getters to
-   * improve the readability of your assertions. They
-   * do not provide testing capabilities unless they
-   * have been overwritten by a plugin.
-   *
-   * **Chains**
-   *
-   * - to
-   * - be
-   * - been
-   * - is
-   * - that
-   * - and
-   * - has
-   * - have
-   * - with
-   * - at
-   * - of
-   * - same
-   *
-   * @name language chains
-   * @api public
-   */
-
-  [ 'to', 'be', 'been'
-  , 'is', 'and', 'has', 'have'
-  , 'with', 'that', 'at'
-  , 'of', 'same' ].forEach(function (chain) {
-    Assertion.addProperty(chain, function () {
-      return this;
-    });
-  });
-
-  /**
-   * ### .not
-   *
-   * Negates any of assertions following in the chain.
-   *
-   *     expect(foo).to.not.equal('bar');
-   *     expect(goodFn).to.not.throw(Error);
-   *     expect({ foo: 'baz' }).to.have.property('foo')
-   *       .and.not.equal('bar');
-   *
-   * @name not
-   * @api public
-   */
-
-  Assertion.addProperty('not', function () {
-    flag(this, 'negate', true);
-  });
-
-  /**
-   * ### .deep
-   *
-   * Sets the `deep` flag, later used by the `equal` and
-   * `property` assertions.
-   *
-   *     expect(foo).to.deep.equal({ bar: 'baz' });
-   *     expect({ foo: { bar: { baz: 'quux' } } })
-   *       .to.have.deep.property('foo.bar.baz', 'quux');
-   *
-   * @name deep
-   * @api public
-   */
-
-  Assertion.addProperty('deep', function () {
-    flag(this, 'deep', true);
-  });
-
-  /**
-   * ### .a(type)
-   *
-   * The `a` and `an` assertions are aliases that can be
-   * used either as language chains or to assert a value's
-   * type.
-   *
-   *     // typeof
-   *     expect('test').to.be.a('string');
-   *     expect({ foo: 'bar' }).to.be.an('object');
-   *     expect(null).to.be.a('null');
-   *     expect(undefined).to.be.an('undefined');
-   *
-   *     // language chain
-   *     expect(foo).to.be.an.instanceof(Foo);
-   *
-   * @name a
-   * @alias an
-   * @param {String} type
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function an (type, msg) {
-    if (msg) flag(this, 'message', msg);
-    type = type.toLowerCase();
-    var obj = flag(this, 'object')
-      , article = ~[ 'a', 'e', 'i', 'o', 'u' ].indexOf(type.charAt(0)) ? 'an ' : 'a ';
-
-    this.assert(
-        type === _.type(obj)
-      , 'expected #{this} to be ' + article + type
-      , 'expected #{this} not to be ' + article + type
-    );
-  }
-
-  Assertion.addChainableMethod('an', an);
-  Assertion.addChainableMethod('a', an);
-
-  /**
-   * ### .include(value)
-   *
-   * The `include` and `contain` assertions can be used as either property
-   * based language chains or as methods to assert the inclusion of an object
-   * in an array or a substring in a string. When used as language chains,
-   * they toggle the `contain` flag for the `keys` assertion.
-   *
-   *     expect([1,2,3]).to.include(2);
-   *     expect('foobar').to.contain('foo');
-   *     expect({ foo: 'bar', hello: 'universe' }).to.include.keys('foo');
-   *
-   * @name include
-   * @alias contain
-   * @param {Object|String|Number} obj
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function includeChainingBehavior () {
-    flag(this, 'contains', true);
-  }
-
-  function include (val, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    var expected = false;
-    if (_.type(obj) === 'array' && _.type(val) === 'object') {
-      for (var i in obj) {
-        if (_.eql(obj[i], val)) {
-          expected = true;
-          break;
-        }
-      }
-    } else if (_.type(val) === 'object') {
-      if (!flag(this, 'negate')) {
-        for (var k in val) new Assertion(obj).property(k, val[k]);
-        return;
-      }
-      var subset = {}
-      for (var k in val) subset[k] = obj[k]
-      expected = _.eql(subset, val);
-    } else {
-      expected = obj && ~obj.indexOf(val)
-    }
-    this.assert(
-        expected
-      , 'expected #{this} to include ' + _.inspect(val)
-      , 'expected #{this} to not include ' + _.inspect(val));
-  }
-
-  Assertion.addChainableMethod('include', include, includeChainingBehavior);
-  Assertion.addChainableMethod('contain', include, includeChainingBehavior);
-
-  /**
-   * ### .ok
-   *
-   * Asserts that the target is truthy.
-   *
-   *     expect('everthing').to.be.ok;
-   *     expect(1).to.be.ok;
-   *     expect(false).to.not.be.ok;
-   *     expect(undefined).to.not.be.ok;
-   *     expect(null).to.not.be.ok;
-   *
-   * @name ok
-   * @api public
-   */
-
-  Assertion.addProperty('ok', function () {
-    this.assert(
-        flag(this, 'object')
-      , 'expected #{this} to be truthy'
-      , 'expected #{this} to be falsy');
-  });
-
-  /**
-   * ### .true
-   *
-   * Asserts that the target is `true`.
-   *
-   *     expect(true).to.be.true;
-   *     expect(1).to.not.be.true;
-   *
-   * @name true
-   * @api public
-   */
-
-  Assertion.addProperty('true', function () {
-    this.assert(
-        true === flag(this, 'object')
-      , 'expected #{this} to be true'
-      , 'expected #{this} to be false'
-      , this.negate ? false : true
-    );
-  });
-
-  /**
-   * ### .false
-   *
-   * Asserts that the target is `false`.
-   *
-   *     expect(false).to.be.false;
-   *     expect(0).to.not.be.false;
-   *
-   * @name false
-   * @api public
-   */
-
-  Assertion.addProperty('false', function () {
-    this.assert(
-        false === flag(this, 'object')
-      , 'expected #{this} to be false'
-      , 'expected #{this} to be true'
-      , this.negate ? true : false
-    );
-  });
-
-  /**
-   * ### .null
-   *
-   * Asserts that the target is `null`.
-   *
-   *     expect(null).to.be.null;
-   *     expect(undefined).not.to.be.null;
-   *
-   * @name null
-   * @api public
-   */
-
-  Assertion.addProperty('null', function () {
-    this.assert(
-        null === flag(this, 'object')
-      , 'expected #{this} to be null'
-      , 'expected #{this} not to be null'
-    );
-  });
-
-  /**
-   * ### .undefined
-   *
-   * Asserts that the target is `undefined`.
-   *
-   *     expect(undefined).to.be.undefined;
-   *     expect(null).to.not.be.undefined;
-   *
-   * @name undefined
-   * @api public
-   */
-
-  Assertion.addProperty('undefined', function () {
-    this.assert(
-        undefined === flag(this, 'object')
-      , 'expected #{this} to be undefined'
-      , 'expected #{this} not to be undefined'
-    );
-  });
-
-  /**
-   * ### .exist
-   *
-   * Asserts that the target is neither `null` nor `undefined`.
-   *
-   *     var foo = 'hi'
-   *       , bar = null
-   *       , baz;
-   *
-   *     expect(foo).to.exist;
-   *     expect(bar).to.not.exist;
-   *     expect(baz).to.not.exist;
-   *
-   * @name exist
-   * @api public
-   */
-
-  Assertion.addProperty('exist', function () {
-    this.assert(
-        null != flag(this, 'object')
-      , 'expected #{this} to exist'
-      , 'expected #{this} to not exist'
-    );
-  });
-
-
-  /**
-   * ### .empty
-   *
-   * Asserts that the target's length is `0`. For arrays, it checks
-   * the `length` property. For objects, it gets the count of
-   * enumerable keys.
-   *
-   *     expect([]).to.be.empty;
-   *     expect('').to.be.empty;
-   *     expect({}).to.be.empty;
-   *
-   * @name empty
-   * @api public
-   */
-
-  Assertion.addProperty('empty', function () {
-    var obj = flag(this, 'object')
-      , expected = obj;
-
-    if (Array.isArray(obj) || 'string' === typeof object) {
-      expected = obj.length;
-    } else if (typeof obj === 'object') {
-      expected = Object.keys(obj).length;
-    }
-
-    this.assert(
-        !expected
-      , 'expected #{this} to be empty'
-      , 'expected #{this} not to be empty'
-    );
-  });
-
-  /**
-   * ### .arguments
-   *
-   * Asserts that the target is an arguments object.
-   *
-   *     function test () {
-   *       expect(arguments).to.be.arguments;
-   *     }
-   *
-   * @name arguments
-   * @alias Arguments
-   * @api public
-   */
-
-  function checkArguments () {
-    var obj = flag(this, 'object')
-      , type = Object.prototype.toString.call(obj);
-    this.assert(
-        '[object Arguments]' === type
-      , 'expected #{this} to be arguments but got ' + type
-      , 'expected #{this} to not be arguments'
-    );
-  }
-
-  Assertion.addProperty('arguments', checkArguments);
-  Assertion.addProperty('Arguments', checkArguments);
-
-  /**
-   * ### .equal(value)
-   *
-   * Asserts that the target is strictly equal (`===`) to `value`.
-   * Alternately, if the `deep` flag is set, asserts that
-   * the target is deeply equal to `value`.
-   *
-   *     expect('hello').to.equal('hello');
-   *     expect(42).to.equal(42);
-   *     expect(1).to.not.equal(true);
-   *     expect({ foo: 'bar' }).to.not.equal({ foo: 'bar' });
-   *     expect({ foo: 'bar' }).to.deep.equal({ foo: 'bar' });
-   *
-   * @name equal
-   * @alias equals
-   * @alias eq
-   * @alias deep.equal
-   * @param {Mixed} value
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertEqual (val, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    if (flag(this, 'deep')) {
-      return this.eql(val);
-    } else {
-      this.assert(
-          val === obj
-        , 'expected #{this} to equal #{exp}'
-        , 'expected #{this} to not equal #{exp}'
-        , val
-        , this._obj
-        , true
-      );
-    }
-  }
-
-  Assertion.addMethod('equal', assertEqual);
-  Assertion.addMethod('equals', assertEqual);
-  Assertion.addMethod('eq', assertEqual);
-
-  /**
-   * ### .eql(value)
-   *
-   * Asserts that the target is deeply equal to `value`.
-   *
-   *     expect({ foo: 'bar' }).to.eql({ foo: 'bar' });
-   *     expect([ 1, 2, 3 ]).to.eql([ 1, 2, 3 ]);
-   *
-   * @name eql
-   * @alias eqls
-   * @param {Mixed} value
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertEql(obj, msg) {
-    if (msg) flag(this, 'message', msg);
-    this.assert(
-        _.eql(obj, flag(this, 'object'))
-      , 'expected #{this} to deeply equal #{exp}'
-      , 'expected #{this} to not deeply equal #{exp}'
-      , obj
-      , this._obj
-      , true
-    );
-  }
-
-  Assertion.addMethod('eql', assertEql);
-  Assertion.addMethod('eqls', assertEql);
-
-  /**
-   * ### .above(value)
-   *
-   * Asserts that the target is greater than `value`.
-   *
-   *     expect(10).to.be.above(5);
-   *
-   * Can also be used in conjunction with `length` to
-   * assert a minimum length. The benefit being a
-   * more informative error message than if the length
-   * was supplied directly.
-   *
-   *     expect('foo').to.have.length.above(2);
-   *     expect([ 1, 2, 3 ]).to.have.length.above(2);
-   *
-   * @name above
-   * @alias gt
-   * @alias greaterThan
-   * @param {Number} value
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertAbove (n, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    if (flag(this, 'doLength')) {
-      new Assertion(obj, msg).to.have.property('length');
-      var len = obj.length;
-      this.assert(
-          len > n
-        , 'expected #{this} to have a length above #{exp} but got #{act}'
-        , 'expected #{this} to not have a length above #{exp}'
-        , n
-        , len
-      );
-    } else {
-      this.assert(
-          obj > n
-        , 'expected #{this} to be above ' + n
-        , 'expected #{this} to be at most ' + n
-      );
-    }
-  }
-
-  Assertion.addMethod('above', assertAbove);
-  Assertion.addMethod('gt', assertAbove);
-  Assertion.addMethod('greaterThan', assertAbove);
-
-  /**
-   * ### .least(value)
-   *
-   * Asserts that the target is greater than or equal to `value`.
-   *
-   *     expect(10).to.be.at.least(10);
-   *
-   * Can also be used in conjunction with `length` to
-   * assert a minimum length. The benefit being a
-   * more informative error message than if the length
-   * was supplied directly.
-   *
-   *     expect('foo').to.have.length.of.at.least(2);
-   *     expect([ 1, 2, 3 ]).to.have.length.of.at.least(3);
-   *
-   * @name least
-   * @alias gte
-   * @param {Number} value
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertLeast (n, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    if (flag(this, 'doLength')) {
-      new Assertion(obj, msg).to.have.property('length');
-      var len = obj.length;
-      this.assert(
-          len >= n
-        , 'expected #{this} to have a length at least #{exp} but got #{act}'
-        , 'expected #{this} to have a length below #{exp}'
-        , n
-        , len
-      );
-    } else {
-      this.assert(
-          obj >= n
-        , 'expected #{this} to be at least ' + n
-        , 'expected #{this} to be below ' + n
-      );
-    }
-  }
-
-  Assertion.addMethod('least', assertLeast);
-  Assertion.addMethod('gte', assertLeast);
-
-  /**
-   * ### .below(value)
-   *
-   * Asserts that the target is less than `value`.
-   *
-   *     expect(5).to.be.below(10);
-   *
-   * Can also be used in conjunction with `length` to
-   * assert a maximum length. The benefit being a
-   * more informative error message than if the length
-   * was supplied directly.
-   *
-   *     expect('foo').to.have.length.below(4);
-   *     expect([ 1, 2, 3 ]).to.have.length.below(4);
-   *
-   * @name below
-   * @alias lt
-   * @alias lessThan
-   * @param {Number} value
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertBelow (n, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    if (flag(this, 'doLength')) {
-      new Assertion(obj, msg).to.have.property('length');
-      var len = obj.length;
-      this.assert(
-          len < n
-        , 'expected #{this} to have a length below #{exp} but got #{act}'
-        , 'expected #{this} to not have a length below #{exp}'
-        , n
-        , len
-      );
-    } else {
-      this.assert(
-          obj < n
-        , 'expected #{this} to be below ' + n
-        , 'expected #{this} to be at least ' + n
-      );
-    }
-  }
-
-  Assertion.addMethod('below', assertBelow);
-  Assertion.addMethod('lt', assertBelow);
-  Assertion.addMethod('lessThan', assertBelow);
-
-  /**
-   * ### .most(value)
-   *
-   * Asserts that the target is less than or equal to `value`.
-   *
-   *     expect(5).to.be.at.most(5);
-   *
-   * Can also be used in conjunction with `length` to
-   * assert a maximum length. The benefit being a
-   * more informative error message than if the length
-   * was supplied directly.
-   *
-   *     expect('foo').to.have.length.of.at.most(4);
-   *     expect([ 1, 2, 3 ]).to.have.length.of.at.most(3);
-   *
-   * @name most
-   * @alias lte
-   * @param {Number} value
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertMost (n, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    if (flag(this, 'doLength')) {
-      new Assertion(obj, msg).to.have.property('length');
-      var len = obj.length;
-      this.assert(
-          len <= n
-        , 'expected #{this} to have a length at most #{exp} but got #{act}'
-        , 'expected #{this} to have a length above #{exp}'
-        , n
-        , len
-      );
-    } else {
-      this.assert(
-          obj <= n
-        , 'expected #{this} to be at most ' + n
-        , 'expected #{this} to be above ' + n
-      );
-    }
-  }
-
-  Assertion.addMethod('most', assertMost);
-  Assertion.addMethod('lte', assertMost);
-
-  /**
-   * ### .within(start, finish)
-   *
-   * Asserts that the target is within a range.
-   *
-   *     expect(7).to.be.within(5,10);
-   *
-   * Can also be used in conjunction with `length` to
-   * assert a length range. The benefit being a
-   * more informative error message than if the length
-   * was supplied directly.
-   *
-   *     expect('foo').to.have.length.within(2,4);
-   *     expect([ 1, 2, 3 ]).to.have.length.within(2,4);
-   *
-   * @name within
-   * @param {Number} start lowerbound inclusive
-   * @param {Number} finish upperbound inclusive
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('within', function (start, finish, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object')
-      , range = start + '..' + finish;
-    if (flag(this, 'doLength')) {
-      new Assertion(obj, msg).to.have.property('length');
-      var len = obj.length;
-      this.assert(
-          len >= start && len <= finish
-        , 'expected #{this} to have a length within ' + range
-        , 'expected #{this} to not have a length within ' + range
-      );
-    } else {
-      this.assert(
-          obj >= start && obj <= finish
-        , 'expected #{this} to be within ' + range
-        , 'expected #{this} to not be within ' + range
-      );
-    }
-  });
-
-  /**
-   * ### .instanceof(constructor)
-   *
-   * Asserts that the target is an instance of `constructor`.
-   *
-   *     var Tea = function (name) { this.name = name; }
-   *       , Chai = new Tea('chai');
-   *
-   *     expect(Chai).to.be.an.instanceof(Tea);
-   *     expect([ 1, 2, 3 ]).to.be.instanceof(Array);
-   *
-   * @name instanceof
-   * @param {Constructor} constructor
-   * @param {String} message _optional_
-   * @alias instanceOf
-   * @api public
-   */
-
-  function assertInstanceOf (constructor, msg) {
-    if (msg) flag(this, 'message', msg);
-    var name = _.getName(constructor);
-    this.assert(
-        flag(this, 'object') instanceof constructor
-      , 'expected #{this} to be an instance of ' + name
-      , 'expected #{this} to not be an instance of ' + name
-    );
-  };
-
-  Assertion.addMethod('instanceof', assertInstanceOf);
-  Assertion.addMethod('instanceOf', assertInstanceOf);
-
-  /**
-   * ### .property(name, [value])
-   *
-   * Asserts that the target has a property `name`, optionally asserting that
-   * the value of that property is strictly equal to  `value`.
-   * If the `deep` flag is set, you can use dot- and bracket-notation for deep
-   * references into objects and arrays.
-   *
-   *     // simple referencing
-   *     var obj = { foo: 'bar' };
-   *     expect(obj).to.have.property('foo');
-   *     expect(obj).to.have.property('foo', 'bar');
-   *
-   *     // deep referencing
-   *     var deepObj = {
-   *         green: { tea: 'matcha' }
-   *       , teas: [ 'chai', 'matcha', { tea: 'konacha' } ]
-   *     };
-
-   *     expect(deepObj).to.have.deep.property('green.tea', 'matcha');
-   *     expect(deepObj).to.have.deep.property('teas[1]', 'matcha');
-   *     expect(deepObj).to.have.deep.property('teas[2].tea', 'konacha');
-   *
-   * You can also use an array as the starting point of a `deep.property`
-   * assertion, or traverse nested arrays.
-   *
-   *     var arr = [
-   *         [ 'chai', 'matcha', 'konacha' ]
-   *       , [ { tea: 'chai' }
-   *         , { tea: 'matcha' }
-   *         , { tea: 'konacha' } ]
-   *     ];
-   *
-   *     expect(arr).to.have.deep.property('[0][1]', 'matcha');
-   *     expect(arr).to.have.deep.property('[1][2].tea', 'konacha');
-   *
-   * Furthermore, `property` changes the subject of the assertion
-   * to be the value of that property from the original object. This
-   * permits for further chainable assertions on that property.
-   *
-   *     expect(obj).to.have.property('foo')
-   *       .that.is.a('string');
-   *     expect(deepObj).to.have.property('green')
-   *       .that.is.an('object')
-   *       .that.deep.equals({ tea: 'matcha' });
-   *     expect(deepObj).to.have.property('teas')
-   *       .that.is.an('array')
-   *       .with.deep.property('[2]')
-   *         .that.deep.equals({ tea: 'konacha' });
-   *
-   * @name property
-   * @alias deep.property
-   * @param {String} name
-   * @param {Mixed} value (optional)
-   * @param {String} message _optional_
-   * @returns value of property for chaining
-   * @api public
-   */
-
-  Assertion.addMethod('property', function (name, val, msg) {
-    if (msg) flag(this, 'message', msg);
-
-    var descriptor = flag(this, 'deep') ? 'deep property ' : 'property '
-      , negate = flag(this, 'negate')
-      , obj = flag(this, 'object')
-      , value = flag(this, 'deep')
-        ? _.getPathValue(name, obj)
-        : obj[name];
-
-    if (negate && undefined !== val) {
-      if (undefined === value) {
-        msg = (msg != null) ? msg + ': ' : '';
-        throw new Error(msg + _.inspect(obj) + ' has no ' + descriptor + _.inspect(name));
-      }
-    } else {
-      this.assert(
-          undefined !== value
-        , 'expected #{this} to have a ' + descriptor + _.inspect(name)
-        , 'expected #{this} to not have ' + descriptor + _.inspect(name));
-    }
-
-    if (undefined !== val) {
-      this.assert(
-          val === value
-        , 'expected #{this} to have a ' + descriptor + _.inspect(name) + ' of #{exp}, but got #{act}'
-        , 'expected #{this} to not have a ' + descriptor + _.inspect(name) + ' of #{act}'
-        , val
-        , value
-      );
-    }
-
-    flag(this, 'object', value);
-  });
-
-
-  /**
-   * ### .ownProperty(name)
-   *
-   * Asserts that the target has an own property `name`.
-   *
-   *     expect('test').to.have.ownProperty('length');
-   *
-   * @name ownProperty
-   * @alias haveOwnProperty
-   * @param {String} name
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertOwnProperty (name, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    this.assert(
-        obj.hasOwnProperty(name)
-      , 'expected #{this} to have own property ' + _.inspect(name)
-      , 'expected #{this} to not have own property ' + _.inspect(name)
-    );
-  }
-
-  Assertion.addMethod('ownProperty', assertOwnProperty);
-  Assertion.addMethod('haveOwnProperty', assertOwnProperty);
-
-  /**
-   * ### .length(value)
-   *
-   * Asserts that the target's `length` property has
-   * the expected value.
-   *
-   *     expect([ 1, 2, 3]).to.have.length(3);
-   *     expect('foobar').to.have.length(6);
-   *
-   * Can also be used as a chain precursor to a value
-   * comparison for the length property.
-   *
-   *     expect('foo').to.have.length.above(2);
-   *     expect([ 1, 2, 3 ]).to.have.length.above(2);
-   *     expect('foo').to.have.length.below(4);
-   *     expect([ 1, 2, 3 ]).to.have.length.below(4);
-   *     expect('foo').to.have.length.within(2,4);
-   *     expect([ 1, 2, 3 ]).to.have.length.within(2,4);
-   *
-   * @name length
-   * @alias lengthOf
-   * @param {Number} length
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  function assertLengthChain () {
-    flag(this, 'doLength', true);
-  }
-
-  function assertLength (n, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    new Assertion(obj, msg).to.have.property('length');
-    var len = obj.length;
-
-    this.assert(
-        len == n
-      , 'expected #{this} to have a length of #{exp} but got #{act}'
-      , 'expected #{this} to not have a length of #{act}'
-      , n
-      , len
-    );
-  }
-
-  Assertion.addChainableMethod('length', assertLength, assertLengthChain);
-  Assertion.addMethod('lengthOf', assertLength, assertLengthChain);
-
-  /**
-   * ### .match(regexp)
-   *
-   * Asserts that the target matches a regular expression.
-   *
-   *     expect('foobar').to.match(/^foo/);
-   *
-   * @name match
-   * @param {RegExp} RegularExpression
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('match', function (re, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    this.assert(
-        re.exec(obj)
-      , 'expected #{this} to match ' + re
-      , 'expected #{this} not to match ' + re
-    );
-  });
-
-  /**
-   * ### .string(string)
-   *
-   * Asserts that the string target contains another string.
-   *
-   *     expect('foobar').to.have.string('bar');
-   *
-   * @name string
-   * @param {String} string
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('string', function (str, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    new Assertion(obj, msg).is.a('string');
-
-    this.assert(
-        ~obj.indexOf(str)
-      , 'expected #{this} to contain ' + _.inspect(str)
-      , 'expected #{this} to not contain ' + _.inspect(str)
-    );
-  });
-
-
-  /**
-   * ### .keys(key1, [key2], [...])
-   *
-   * Asserts that the target has exactly the given keys, or
-   * asserts the inclusion of some keys when using the
-   * `include` or `contain` modifiers.
-   *
-   *     expect({ foo: 1, bar: 2 }).to.have.keys(['foo', 'bar']);
-   *     expect({ foo: 1, bar: 2, baz: 3 }).to.contain.keys('foo', 'bar');
-   *
-   * @name keys
-   * @alias key
-   * @param {String...|Array} keys
-   * @api public
-   */
-
-  function assertKeys (keys) {
-    var obj = flag(this, 'object')
-      , str
-      , ok = true;
-
-    keys = keys instanceof Array
-      ? keys
-      : Array.prototype.slice.call(arguments);
-
-    if (!keys.length) throw new Error('keys required');
-
-    var actual = Object.keys(obj)
-      , len = keys.length;
-
-    // Inclusion
-    ok = keys.every(function(key){
-      return ~actual.indexOf(key);
-    });
-
-    // Strict
-    if (!flag(this, 'negate') && !flag(this, 'contains')) {
-      ok = ok && keys.length == actual.length;
-    }
-
-    // Key string
-    if (len > 1) {
-      keys = keys.map(function(key){
-        return _.inspect(key);
-      });
-      var last = keys.pop();
-      str = keys.join(', ') + ', and ' + last;
-    } else {
-      str = _.inspect(keys[0]);
-    }
-
-    // Form
-    str = (len > 1 ? 'keys ' : 'key ') + str;
-
-    // Have / include
-    str = (flag(this, 'contains') ? 'contain ' : 'have ') + str;
-
-    // Assertion
-    this.assert(
-        ok
-      , 'expected #{this} to ' + str
-      , 'expected #{this} to not ' + str
-    );
-  }
-
-  Assertion.addMethod('keys', assertKeys);
-  Assertion.addMethod('key', assertKeys);
-
-  /**
-   * ### .throw(constructor)
-   *
-   * Asserts that the function target will throw a specific error, or specific type of error
-   * (as determined using `instanceof`), optionally with a RegExp or string inclusion test
-   * for the error's message.
-   *
-   *     var err = new ReferenceError('This is a bad function.');
-   *     var fn = function () { throw err; }
-   *     expect(fn).to.throw(ReferenceError);
-   *     expect(fn).to.throw(Error);
-   *     expect(fn).to.throw(/bad function/);
-   *     expect(fn).to.not.throw('good function');
-   *     expect(fn).to.throw(ReferenceError, /bad function/);
-   *     expect(fn).to.throw(err);
-   *     expect(fn).to.not.throw(new RangeError('Out of range.'));
-   *
-   * Please note that when a throw expectation is negated, it will check each
-   * parameter independently, starting with error constructor type. The appropriate way
-   * to check for the existence of a type of error but for a message that does not match
-   * is to use `and`.
-   *
-   *     expect(fn).to.throw(ReferenceError)
-   *        .and.not.throw(/good function/);
-   *
-   * @name throw
-   * @alias throws
-   * @alias Throw
-   * @param {ErrorConstructor} constructor
-   * @param {String|RegExp} expected error message
-   * @param {String} message _optional_
-   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
-   * @returns error for chaining (null if no error)
-   * @api public
-   */
-
-  function assertThrows (constructor, errMsg, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    new Assertion(obj, msg).is.a('function');
-
-    var thrown = false
-      , desiredError = null
-      , name = null
-      , thrownError = null;
-
-    if (arguments.length === 0) {
-      errMsg = null;
-      constructor = null;
-    } else if (constructor && (constructor instanceof RegExp || 'string' === typeof constructor)) {
-      errMsg = constructor;
-      constructor = null;
-    } else if (constructor && constructor instanceof Error) {
-      desiredError = constructor;
-      constructor = null;
-      errMsg = null;
-    } else if (typeof constructor === 'function') {
-      name = constructor.prototype.name || constructor.name;
-      if (name === 'Error' && constructor !== Error) {
-        name = (new constructor()).name;
-      }
-    } else {
-      constructor = null;
-    }
-
-    try {
-      obj();
-    } catch (err) {
-      // first, check desired error
-      if (desiredError) {
-        this.assert(
-            err === desiredError
-          , 'expected #{this} to throw #{exp} but #{act} was thrown'
-          , 'expected #{this} to not throw #{exp}'
-          , (desiredError instanceof Error ? desiredError.toString() : desiredError)
-          , (err instanceof Error ? err.toString() : err)
-        );
-
-        flag(this, 'object', err);
-        return this;
-      }
-
-      // next, check constructor
-      if (constructor) {
-        this.assert(
-            err instanceof constructor
-          , 'expected #{this} to throw #{exp} but #{act} was thrown'
-          , 'expected #{this} to not throw #{exp} but #{act} was thrown'
-          , name
-          , (err instanceof Error ? err.toString() : err)
-        );
-
-        if (!errMsg) {
-          flag(this, 'object', err);
-          return this;
-        }
-      }
-
-      // next, check message
-      var message = 'object' === _.type(err) && "message" in err
-        ? err.message
-        : '' + err;
-
-      if ((message != null) && errMsg && errMsg instanceof RegExp) {
-        this.assert(
-            errMsg.exec(message)
-          , 'expected #{this} to throw error matching #{exp} but got #{act}'
-          , 'expected #{this} to throw error not matching #{exp}'
-          , errMsg
-          , message
-        );
-
-        flag(this, 'object', err);
-        return this;
-      } else if ((message != null) && errMsg && 'string' === typeof errMsg) {
-        this.assert(
-            ~message.indexOf(errMsg)
-          , 'expected #{this} to throw error including #{exp} but got #{act}'
-          , 'expected #{this} to throw error not including #{act}'
-          , errMsg
-          , message
-        );
-
-        flag(this, 'object', err);
-        return this;
-      } else {
-        thrown = true;
-        thrownError = err;
-      }
-    }
-
-    var actuallyGot = ''
-      , expectedThrown = name !== null
-        ? name
-        : desiredError
-          ? '#{exp}' //_.inspect(desiredError)
-          : 'an error';
-
-    if (thrown) {
-      actuallyGot = ' but #{act} was thrown'
-    }
-
-    this.assert(
-        thrown === true
-      , 'expected #{this} to throw ' + expectedThrown + actuallyGot
-      , 'expected #{this} to not throw ' + expectedThrown + actuallyGot
-      , (desiredError instanceof Error ? desiredError.toString() : desiredError)
-      , (thrownError instanceof Error ? thrownError.toString() : thrownError)
-    );
-
-    flag(this, 'object', thrownError);
-  };
-
-  Assertion.addMethod('throw', assertThrows);
-  Assertion.addMethod('throws', assertThrows);
-  Assertion.addMethod('Throw', assertThrows);
-
-  /**
-   * ### .respondTo(method)
-   *
-   * Asserts that the object or class target will respond to a method.
-   *
-   *     Klass.prototype.bar = function(){};
-   *     expect(Klass).to.respondTo('bar');
-   *     expect(obj).to.respondTo('bar');
-   *
-   * To check if a constructor will respond to a static function,
-   * set the `itself` flag.
-   *
-   *     Klass.baz = function(){};
-   *     expect(Klass).itself.to.respondTo('baz');
-   *
-   * @name respondTo
-   * @param {String} method
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('respondTo', function (method, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object')
-      , itself = flag(this, 'itself')
-      , context = ('function' === _.type(obj) && !itself)
-        ? obj.prototype[method]
-        : obj[method];
-
-    this.assert(
-        'function' === typeof context
-      , 'expected #{this} to respond to ' + _.inspect(method)
-      , 'expected #{this} to not respond to ' + _.inspect(method)
-    );
-  });
-
-  /**
-   * ### .itself
-   *
-   * Sets the `itself` flag, later used by the `respondTo` assertion.
-   *
-   *     function Foo() {}
-   *     Foo.bar = function() {}
-   *     Foo.prototype.baz = function() {}
-   *
-   *     expect(Foo).itself.to.respondTo('bar');
-   *     expect(Foo).itself.not.to.respondTo('baz');
-   *
-   * @name itself
-   * @api public
-   */
-
-  Assertion.addProperty('itself', function () {
-    flag(this, 'itself', true);
-  });
-
-  /**
-   * ### .satisfy(method)
-   *
-   * Asserts that the target passes a given truth test.
-   *
-   *     expect(1).to.satisfy(function(num) { return num > 0; });
-   *
-   * @name satisfy
-   * @param {Function} matcher
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('satisfy', function (matcher, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    this.assert(
-        matcher(obj)
-      , 'expected #{this} to satisfy ' + _.objDisplay(matcher)
-      , 'expected #{this} to not satisfy' + _.objDisplay(matcher)
-      , this.negate ? false : true
-      , matcher(obj)
-    );
-  });
-
-  /**
-   * ### .closeTo(expected, delta)
-   *
-   * Asserts that the target is equal `expected`, to within a +/- `delta` range.
-   *
-   *     expect(1.5).to.be.closeTo(1, 0.5);
-   *
-   * @name closeTo
-   * @param {Number} expected
-   * @param {Number} delta
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('closeTo', function (expected, delta, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-    this.assert(
-        Math.abs(obj - expected) <= delta
-      , 'expected #{this} to be close to ' + expected + ' +/- ' + delta
-      , 'expected #{this} not to be close to ' + expected + ' +/- ' + delta
-    );
-  });
-
-  function isSubsetOf(subset, superset, cmp) {
-    return subset.every(function(elem) {
-      if (!cmp) return superset.indexOf(elem) !== -1;
-
-      return superset.some(function(elem2) {
-        return cmp(elem, elem2);
-      });
-    })
-  }
-
-  /**
-   * ### .members(set)
-   *
-   * Asserts that the target is a superset of `set`,
-   * or that the target and `set` have the same strictly-equal (===) members.
-   * Alternately, if the `deep` flag is set, set members are compared for deep
-   * equality.
-   *
-   *     expect([1, 2, 3]).to.include.members([3, 2]);
-   *     expect([1, 2, 3]).to.not.include.members([3, 2, 8]);
-   *
-   *     expect([4, 2]).to.have.members([2, 4]);
-   *     expect([5, 2]).to.not.have.members([5, 2, 1]);
-   *
-   *     expect([{ id: 1 }]).to.deep.include.members([{ id: 1 }]);
-   *
-   * @name members
-   * @param {Array} set
-   * @param {String} message _optional_
-   * @api public
-   */
-
-  Assertion.addMethod('members', function (subset, msg) {
-    if (msg) flag(this, 'message', msg);
-    var obj = flag(this, 'object');
-
-    new Assertion(obj).to.be.an('array');
-    new Assertion(subset).to.be.an('array');
-
-    var cmp = flag(this, 'deep') ? _.eql : undefined;
-
-    if (flag(this, 'contains')) {
-      return this.assert(
-          isSubsetOf(subset, obj, cmp)
-        , 'expected #{this} to be a superset of #{act}'
-        , 'expected #{this} to not be a superset of #{act}'
-        , obj
-        , subset
-      );
-    }
-
-    this.assert(
-        isSubsetOf(obj, subset, cmp) && isSubsetOf(subset, obj, cmp)
-        , 'expected #{this} to have the same members as #{act}'
-        , 'expected #{this} to not have the same members as #{act}'
-        , obj
-        , subset
-    );
-  });
-};
-
-},{}],129:[function(require,module,exports){
-/*!
- * chai
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-
-module.exports = function (chai, util) {
-
-  /*!
-   * Chai dependencies.
-   */
-
-  var Assertion = chai.Assertion
-    , flag = util.flag;
-
-  /*!
-   * Module export.
-   */
-
-  /**
-   * ### assert(expression, message)
-   *
-   * Write your own test expressions.
-   *
-   *     assert('foo' !== 'bar', 'foo is not bar');
-   *     assert(Array.isArray([]), 'empty arrays are arrays');
-   *
-   * @param {Mixed} expression to test for truthiness
-   * @param {String} message to display on error
-   * @name assert
-   * @api public
-   */
-
-  var assert = chai.assert = function (express, errmsg) {
-    var test = new Assertion(null, null, chai.assert);
-    test.assert(
-        express
-      , errmsg
-      , '[ negation message unavailable ]'
-    );
-  };
-
-  /**
-   * ### .fail(actual, expected, [message], [operator])
-   *
-   * Throw a failure. Node.js `assert` module-compatible.
-   *
-   * @name fail
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @param {String} operator
-   * @api public
-   */
-
-  assert.fail = function (actual, expected, message, operator) {
-    message = message || 'assert.fail()';
-    throw new chai.AssertionError(message, {
-        actual: actual
-      , expected: expected
-      , operator: operator
-    }, assert.fail);
-  };
-
-  /**
-   * ### .ok(object, [message])
-   *
-   * Asserts that `object` is truthy.
-   *
-   *     assert.ok('everything', 'everything is ok');
-   *     assert.ok(false, 'this will fail');
-   *
-   * @name ok
-   * @param {Mixed} object to test
-   * @param {String} message
-   * @api public
-   */
-
-  assert.ok = function (val, msg) {
-    new Assertion(val, msg).is.ok;
-  };
-
-  /**
-   * ### .notOk(object, [message])
-   *
-   * Asserts that `object` is falsy.
-   *
-   *     assert.notOk('everything', 'this will fail');
-   *     assert.notOk(false, 'this will pass');
-   *
-   * @name notOk
-   * @param {Mixed} object to test
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notOk = function (val, msg) {
-    new Assertion(val, msg).is.not.ok;
-  };
-
-  /**
-   * ### .equal(actual, expected, [message])
-   *
-   * Asserts non-strict equality (`==`) of `actual` and `expected`.
-   *
-   *     assert.equal(3, '3', '== coerces values to strings');
-   *
-   * @name equal
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @api public
-   */
-
-  assert.equal = function (act, exp, msg) {
-    var test = new Assertion(act, msg, assert.equal);
-
-    test.assert(
-        exp == flag(test, 'object')
-      , 'expected #{this} to equal #{exp}'
-      , 'expected #{this} to not equal #{act}'
-      , exp
-      , act
-    );
-  };
-
-  /**
-   * ### .notEqual(actual, expected, [message])
-   *
-   * Asserts non-strict inequality (`!=`) of `actual` and `expected`.
-   *
-   *     assert.notEqual(3, 4, 'these numbers are not equal');
-   *
-   * @name notEqual
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notEqual = function (act, exp, msg) {
-    var test = new Assertion(act, msg, assert.notEqual);
-
-    test.assert(
-        exp != flag(test, 'object')
-      , 'expected #{this} to not equal #{exp}'
-      , 'expected #{this} to equal #{act}'
-      , exp
-      , act
-    );
-  };
-
-  /**
-   * ### .strictEqual(actual, expected, [message])
-   *
-   * Asserts strict equality (`===`) of `actual` and `expected`.
-   *
-   *     assert.strictEqual(true, true, 'these booleans are strictly equal');
-   *
-   * @name strictEqual
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @api public
-   */
-
-  assert.strictEqual = function (act, exp, msg) {
-    new Assertion(act, msg).to.equal(exp);
-  };
-
-  /**
-   * ### .notStrictEqual(actual, expected, [message])
-   *
-   * Asserts strict inequality (`!==`) of `actual` and `expected`.
-   *
-   *     assert.notStrictEqual(3, '3', 'no coercion for strict equality');
-   *
-   * @name notStrictEqual
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notStrictEqual = function (act, exp, msg) {
-    new Assertion(act, msg).to.not.equal(exp);
-  };
-
-  /**
-   * ### .deepEqual(actual, expected, [message])
-   *
-   * Asserts that `actual` is deeply equal to `expected`.
-   *
-   *     assert.deepEqual({ tea: 'green' }, { tea: 'green' });
-   *
-   * @name deepEqual
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @api public
-   */
-
-  assert.deepEqual = function (act, exp, msg) {
-    new Assertion(act, msg).to.eql(exp);
-  };
-
-  /**
-   * ### .notDeepEqual(actual, expected, [message])
-   *
-   * Assert that `actual` is not deeply equal to `expected`.
-   *
-   *     assert.notDeepEqual({ tea: 'green' }, { tea: 'jasmine' });
-   *
-   * @name notDeepEqual
-   * @param {Mixed} actual
-   * @param {Mixed} expected
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notDeepEqual = function (act, exp, msg) {
-    new Assertion(act, msg).to.not.eql(exp);
-  };
-
-  /**
-   * ### .isTrue(value, [message])
-   *
-   * Asserts that `value` is true.
-   *
-   *     var teaServed = true;
-   *     assert.isTrue(teaServed, 'the tea has been served');
-   *
-   * @name isTrue
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isTrue = function (val, msg) {
-    new Assertion(val, msg).is['true'];
-  };
-
-  /**
-   * ### .isFalse(value, [message])
-   *
-   * Asserts that `value` is false.
-   *
-   *     var teaServed = false;
-   *     assert.isFalse(teaServed, 'no tea yet? hmm...');
-   *
-   * @name isFalse
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isFalse = function (val, msg) {
-    new Assertion(val, msg).is['false'];
-  };
-
-  /**
-   * ### .isNull(value, [message])
-   *
-   * Asserts that `value` is null.
-   *
-   *     assert.isNull(err, 'there was no error');
-   *
-   * @name isNull
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNull = function (val, msg) {
-    new Assertion(val, msg).to.equal(null);
-  };
-
-  /**
-   * ### .isNotNull(value, [message])
-   *
-   * Asserts that `value` is not null.
-   *
-   *     var tea = 'tasty chai';
-   *     assert.isNotNull(tea, 'great, time for tea!');
-   *
-   * @name isNotNull
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotNull = function (val, msg) {
-    new Assertion(val, msg).to.not.equal(null);
-  };
-
-  /**
-   * ### .isUndefined(value, [message])
-   *
-   * Asserts that `value` is `undefined`.
-   *
-   *     var tea;
-   *     assert.isUndefined(tea, 'no tea defined');
-   *
-   * @name isUndefined
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isUndefined = function (val, msg) {
-    new Assertion(val, msg).to.equal(undefined);
-  };
-
-  /**
-   * ### .isDefined(value, [message])
-   *
-   * Asserts that `value` is not `undefined`.
-   *
-   *     var tea = 'cup of chai';
-   *     assert.isDefined(tea, 'tea has been defined');
-   *
-   * @name isDefined
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isDefined = function (val, msg) {
-    new Assertion(val, msg).to.not.equal(undefined);
-  };
-
-  /**
-   * ### .isFunction(value, [message])
-   *
-   * Asserts that `value` is a function.
-   *
-   *     function serveTea() { return 'cup of tea'; };
-   *     assert.isFunction(serveTea, 'great, we can have tea now');
-   *
-   * @name isFunction
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isFunction = function (val, msg) {
-    new Assertion(val, msg).to.be.a('function');
-  };
-
-  /**
-   * ### .isNotFunction(value, [message])
-   *
-   * Asserts that `value` is _not_ a function.
-   *
-   *     var serveTea = [ 'heat', 'pour', 'sip' ];
-   *     assert.isNotFunction(serveTea, 'great, we have listed the steps');
-   *
-   * @name isNotFunction
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotFunction = function (val, msg) {
-    new Assertion(val, msg).to.not.be.a('function');
-  };
-
-  /**
-   * ### .isObject(value, [message])
-   *
-   * Asserts that `value` is an object (as revealed by
-   * `Object.prototype.toString`).
-   *
-   *     var selection = { name: 'Chai', serve: 'with spices' };
-   *     assert.isObject(selection, 'tea selection is an object');
-   *
-   * @name isObject
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isObject = function (val, msg) {
-    new Assertion(val, msg).to.be.a('object');
-  };
-
-  /**
-   * ### .isNotObject(value, [message])
-   *
-   * Asserts that `value` is _not_ an object.
-   *
-   *     var selection = 'chai'
-   *     assert.isNotObject(selection, 'tea selection is not an object');
-   *     assert.isNotObject(null, 'null is not an object');
-   *
-   * @name isNotObject
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotObject = function (val, msg) {
-    new Assertion(val, msg).to.not.be.a('object');
-  };
-
-  /**
-   * ### .isArray(value, [message])
-   *
-   * Asserts that `value` is an array.
-   *
-   *     var menu = [ 'green', 'chai', 'oolong' ];
-   *     assert.isArray(menu, 'what kind of tea do we want?');
-   *
-   * @name isArray
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isArray = function (val, msg) {
-    new Assertion(val, msg).to.be.an('array');
-  };
-
-  /**
-   * ### .isNotArray(value, [message])
-   *
-   * Asserts that `value` is _not_ an array.
-   *
-   *     var menu = 'green|chai|oolong';
-   *     assert.isNotArray(menu, 'what kind of tea do we want?');
-   *
-   * @name isNotArray
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotArray = function (val, msg) {
-    new Assertion(val, msg).to.not.be.an('array');
-  };
-
-  /**
-   * ### .isString(value, [message])
-   *
-   * Asserts that `value` is a string.
-   *
-   *     var teaOrder = 'chai';
-   *     assert.isString(teaOrder, 'order placed');
-   *
-   * @name isString
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isString = function (val, msg) {
-    new Assertion(val, msg).to.be.a('string');
-  };
-
-  /**
-   * ### .isNotString(value, [message])
-   *
-   * Asserts that `value` is _not_ a string.
-   *
-   *     var teaOrder = 4;
-   *     assert.isNotString(teaOrder, 'order placed');
-   *
-   * @name isNotString
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotString = function (val, msg) {
-    new Assertion(val, msg).to.not.be.a('string');
-  };
-
-  /**
-   * ### .isNumber(value, [message])
-   *
-   * Asserts that `value` is a number.
-   *
-   *     var cups = 2;
-   *     assert.isNumber(cups, 'how many cups');
-   *
-   * @name isNumber
-   * @param {Number} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNumber = function (val, msg) {
-    new Assertion(val, msg).to.be.a('number');
-  };
-
-  /**
-   * ### .isNotNumber(value, [message])
-   *
-   * Asserts that `value` is _not_ a number.
-   *
-   *     var cups = '2 cups please';
-   *     assert.isNotNumber(cups, 'how many cups');
-   *
-   * @name isNotNumber
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotNumber = function (val, msg) {
-    new Assertion(val, msg).to.not.be.a('number');
-  };
-
-  /**
-   * ### .isBoolean(value, [message])
-   *
-   * Asserts that `value` is a boolean.
-   *
-   *     var teaReady = true
-   *       , teaServed = false;
-   *
-   *     assert.isBoolean(teaReady, 'is the tea ready');
-   *     assert.isBoolean(teaServed, 'has tea been served');
-   *
-   * @name isBoolean
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isBoolean = function (val, msg) {
-    new Assertion(val, msg).to.be.a('boolean');
-  };
-
-  /**
-   * ### .isNotBoolean(value, [message])
-   *
-   * Asserts that `value` is _not_ a boolean.
-   *
-   *     var teaReady = 'yep'
-   *       , teaServed = 'nope';
-   *
-   *     assert.isNotBoolean(teaReady, 'is the tea ready');
-   *     assert.isNotBoolean(teaServed, 'has tea been served');
-   *
-   * @name isNotBoolean
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.isNotBoolean = function (val, msg) {
-    new Assertion(val, msg).to.not.be.a('boolean');
-  };
-
-  /**
-   * ### .typeOf(value, name, [message])
-   *
-   * Asserts that `value`'s type is `name`, as determined by
-   * `Object.prototype.toString`.
-   *
-   *     assert.typeOf({ tea: 'chai' }, 'object', 'we have an object');
-   *     assert.typeOf(['chai', 'jasmine'], 'array', 'we have an array');
-   *     assert.typeOf('tea', 'string', 'we have a string');
-   *     assert.typeOf(/tea/, 'regexp', 'we have a regular expression');
-   *     assert.typeOf(null, 'null', 'we have a null');
-   *     assert.typeOf(undefined, 'undefined', 'we have an undefined');
-   *
-   * @name typeOf
-   * @param {Mixed} value
-   * @param {String} name
-   * @param {String} message
-   * @api public
-   */
-
-  assert.typeOf = function (val, type, msg) {
-    new Assertion(val, msg).to.be.a(type);
-  };
-
-  /**
-   * ### .notTypeOf(value, name, [message])
-   *
-   * Asserts that `value`'s type is _not_ `name`, as determined by
-   * `Object.prototype.toString`.
-   *
-   *     assert.notTypeOf('tea', 'number', 'strings are not numbers');
-   *
-   * @name notTypeOf
-   * @param {Mixed} value
-   * @param {String} typeof name
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notTypeOf = function (val, type, msg) {
-    new Assertion(val, msg).to.not.be.a(type);
-  };
-
-  /**
-   * ### .instanceOf(object, constructor, [message])
-   *
-   * Asserts that `value` is an instance of `constructor`.
-   *
-   *     var Tea = function (name) { this.name = name; }
-   *       , chai = new Tea('chai');
-   *
-   *     assert.instanceOf(chai, Tea, 'chai is an instance of tea');
-   *
-   * @name instanceOf
-   * @param {Object} object
-   * @param {Constructor} constructor
-   * @param {String} message
-   * @api public
-   */
-
-  assert.instanceOf = function (val, type, msg) {
-    new Assertion(val, msg).to.be.instanceOf(type);
-  };
-
-  /**
-   * ### .notInstanceOf(object, constructor, [message])
-   *
-   * Asserts `value` is not an instance of `constructor`.
-   *
-   *     var Tea = function (name) { this.name = name; }
-   *       , chai = new String('chai');
-   *
-   *     assert.notInstanceOf(chai, Tea, 'chai is not an instance of tea');
-   *
-   * @name notInstanceOf
-   * @param {Object} object
-   * @param {Constructor} constructor
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notInstanceOf = function (val, type, msg) {
-    new Assertion(val, msg).to.not.be.instanceOf(type);
-  };
-
-  /**
-   * ### .include(haystack, needle, [message])
-   *
-   * Asserts that `haystack` includes `needle`. Works
-   * for strings and arrays.
-   *
-   *     assert.include('foobar', 'bar', 'foobar contains string "bar"');
-   *     assert.include([ 1, 2, 3 ], 3, 'array contains value');
-   *
-   * @name include
-   * @param {Array|String} haystack
-   * @param {Mixed} needle
-   * @param {String} message
-   * @api public
-   */
-
-  assert.include = function (exp, inc, msg) {
-    new Assertion(exp, msg, assert.include).include(inc);
-  };
-
-  /**
-   * ### .notInclude(haystack, needle, [message])
-   *
-   * Asserts that `haystack` does not include `needle`. Works
-   * for strings and arrays.
-   *i
-   *     assert.notInclude('foobar', 'baz', 'string not include substring');
-   *     assert.notInclude([ 1, 2, 3 ], 4, 'array not include contain value');
-   *
-   * @name notInclude
-   * @param {Array|String} haystack
-   * @param {Mixed} needle
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notInclude = function (exp, inc, msg) {
-    new Assertion(exp, msg, assert.notInclude).not.include(inc);
-  };
-
-  /**
-   * ### .match(value, regexp, [message])
-   *
-   * Asserts that `value` matches the regular expression `regexp`.
-   *
-   *     assert.match('foobar', /^foo/, 'regexp matches');
-   *
-   * @name match
-   * @param {Mixed} value
-   * @param {RegExp} regexp
-   * @param {String} message
-   * @api public
-   */
-
-  assert.match = function (exp, re, msg) {
-    new Assertion(exp, msg).to.match(re);
-  };
-
-  /**
-   * ### .notMatch(value, regexp, [message])
-   *
-   * Asserts that `value` does not match the regular expression `regexp`.
-   *
-   *     assert.notMatch('foobar', /^foo/, 'regexp does not match');
-   *
-   * @name notMatch
-   * @param {Mixed} value
-   * @param {RegExp} regexp
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notMatch = function (exp, re, msg) {
-    new Assertion(exp, msg).to.not.match(re);
-  };
-
-  /**
-   * ### .property(object, property, [message])
-   *
-   * Asserts that `object` has a property named by `property`.
-   *
-   *     assert.property({ tea: { green: 'matcha' }}, 'tea');
-   *
-   * @name property
-   * @param {Object} object
-   * @param {String} property
-   * @param {String} message
-   * @api public
-   */
-
-  assert.property = function (obj, prop, msg) {
-    new Assertion(obj, msg).to.have.property(prop);
-  };
-
-  /**
-   * ### .notProperty(object, property, [message])
-   *
-   * Asserts that `object` does _not_ have a property named by `property`.
-   *
-   *     assert.notProperty({ tea: { green: 'matcha' }}, 'coffee');
-   *
-   * @name notProperty
-   * @param {Object} object
-   * @param {String} property
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notProperty = function (obj, prop, msg) {
-    new Assertion(obj, msg).to.not.have.property(prop);
-  };
-
-  /**
-   * ### .deepProperty(object, property, [message])
-   *
-   * Asserts that `object` has a property named by `property`, which can be a
-   * string using dot- and bracket-notation for deep reference.
-   *
-   *     assert.deepProperty({ tea: { green: 'matcha' }}, 'tea.green');
-   *
-   * @name deepProperty
-   * @param {Object} object
-   * @param {String} property
-   * @param {String} message
-   * @api public
-   */
-
-  assert.deepProperty = function (obj, prop, msg) {
-    new Assertion(obj, msg).to.have.deep.property(prop);
-  };
-
-  /**
-   * ### .notDeepProperty(object, property, [message])
-   *
-   * Asserts that `object` does _not_ have a property named by `property`, which
-   * can be a string using dot- and bracket-notation for deep reference.
-   *
-   *     assert.notDeepProperty({ tea: { green: 'matcha' }}, 'tea.oolong');
-   *
-   * @name notDeepProperty
-   * @param {Object} object
-   * @param {String} property
-   * @param {String} message
-   * @api public
-   */
-
-  assert.notDeepProperty = function (obj, prop, msg) {
-    new Assertion(obj, msg).to.not.have.deep.property(prop);
-  };
-
-  /**
-   * ### .propertyVal(object, property, value, [message])
-   *
-   * Asserts that `object` has a property named by `property` with value given
-   * by `value`.
-   *
-   *     assert.propertyVal({ tea: 'is good' }, 'tea', 'is good');
-   *
-   * @name propertyVal
-   * @param {Object} object
-   * @param {String} property
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.propertyVal = function (obj, prop, val, msg) {
-    new Assertion(obj, msg).to.have.property(prop, val);
-  };
-
-  /**
-   * ### .propertyNotVal(object, property, value, [message])
-   *
-   * Asserts that `object` has a property named by `property`, but with a value
-   * different from that given by `value`.
-   *
-   *     assert.propertyNotVal({ tea: 'is good' }, 'tea', 'is bad');
-   *
-   * @name propertyNotVal
-   * @param {Object} object
-   * @param {String} property
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.propertyNotVal = function (obj, prop, val, msg) {
-    new Assertion(obj, msg).to.not.have.property(prop, val);
-  };
-
-  /**
-   * ### .deepPropertyVal(object, property, value, [message])
-   *
-   * Asserts that `object` has a property named by `property` with value given
-   * by `value`. `property` can use dot- and bracket-notation for deep
-   * reference.
-   *
-   *     assert.deepPropertyVal({ tea: { green: 'matcha' }}, 'tea.green', 'matcha');
-   *
-   * @name deepPropertyVal
-   * @param {Object} object
-   * @param {String} property
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.deepPropertyVal = function (obj, prop, val, msg) {
-    new Assertion(obj, msg).to.have.deep.property(prop, val);
-  };
-
-  /**
-   * ### .deepPropertyNotVal(object, property, value, [message])
-   *
-   * Asserts that `object` has a property named by `property`, but with a value
-   * different from that given by `value`. `property` can use dot- and
-   * bracket-notation for deep reference.
-   *
-   *     assert.deepPropertyNotVal({ tea: { green: 'matcha' }}, 'tea.green', 'konacha');
-   *
-   * @name deepPropertyNotVal
-   * @param {Object} object
-   * @param {String} property
-   * @param {Mixed} value
-   * @param {String} message
-   * @api public
-   */
-
-  assert.deepPropertyNotVal = function (obj, prop, val, msg) {
-    new Assertion(obj, msg).to.not.have.deep.property(prop, val);
-  };
-
-  /**
-   * ### .lengthOf(object, length, [message])
-   *
-   * Asserts that `object` has a `length` property with the expected value.
-   *
-   *     assert.lengthOf([1,2,3], 3, 'array has length of 3');
-   *     assert.lengthOf('foobar', 5, 'string has length of 6');
-   *
-   * @name lengthOf
-   * @param {Mixed} object
-   * @param {Number} length
-   * @param {String} message
-   * @api public
-   */
-
-  assert.lengthOf = function (exp, len, msg) {
-    new Assertion(exp, msg).to.have.length(len);
-  };
-
-  /**
-   * ### .throws(function, [constructor/string/regexp], [string/regexp], [message])
-   *
-   * Asserts that `function` will throw an error that is an instance of
-   * `constructor`, or alternately that it will throw an error with message
-   * matching `regexp`.
-   *
-   *     assert.throw(fn, 'function throws a reference error');
-   *     assert.throw(fn, /function throws a reference error/);
-   *     assert.throw(fn, ReferenceError);
-   *     assert.throw(fn, ReferenceError, 'function throws a reference error');
-   *     assert.throw(fn, ReferenceError, /function throws a reference error/);
-   *
-   * @name throws
-   * @alias throw
-   * @alias Throw
-   * @param {Function} function
-   * @param {ErrorConstructor} constructor
-   * @param {RegExp} regexp
-   * @param {String} message
-   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
-   * @api public
-   */
-
-  assert.Throw = function (fn, errt, errs, msg) {
-    if ('string' === typeof errt || errt instanceof RegExp) {
-      errs = errt;
-      errt = null;
-    }
-
-    var assertErr = new Assertion(fn, msg).to.Throw(errt, errs);
-    return flag(assertErr, 'object');
-  };
-
-  /**
-   * ### .doesNotThrow(function, [constructor/regexp], [message])
-   *
-   * Asserts that `function` will _not_ throw an error that is an instance of
-   * `constructor`, or alternately that it will not throw an error with message
-   * matching `regexp`.
-   *
-   *     assert.doesNotThrow(fn, Error, 'function does not throw');
-   *
-   * @name doesNotThrow
-   * @param {Function} function
-   * @param {ErrorConstructor} constructor
-   * @param {RegExp} regexp
-   * @param {String} message
-   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error#Error_types
-   * @api public
-   */
-
-  assert.doesNotThrow = function (fn, type, msg) {
-    if ('string' === typeof type) {
-      msg = type;
-      type = null;
-    }
-
-    new Assertion(fn, msg).to.not.Throw(type);
-  };
-
-  /**
-   * ### .operator(val1, operator, val2, [message])
-   *
-   * Compares two values using `operator`.
-   *
-   *     assert.operator(1, '<', 2, 'everything is ok');
-   *     assert.operator(1, '>', 2, 'this will fail');
-   *
-   * @name operator
-   * @param {Mixed} val1
-   * @param {String} operator
-   * @param {Mixed} val2
-   * @param {String} message
-   * @api public
-   */
-
-  assert.operator = function (val, operator, val2, msg) {
-    if (!~['==', '===', '>', '>=', '<', '<=', '!=', '!=='].indexOf(operator)) {
-      throw new Error('Invalid operator "' + operator + '"');
-    }
-    var test = new Assertion(eval(val + operator + val2), msg);
-    test.assert(
-        true === flag(test, 'object')
-      , 'expected ' + util.inspect(val) + ' to be ' + operator + ' ' + util.inspect(val2)
-      , 'expected ' + util.inspect(val) + ' to not be ' + operator + ' ' + util.inspect(val2) );
-  };
-
-  /**
-   * ### .closeTo(actual, expected, delta, [message])
-   *
-   * Asserts that the target is equal `expected`, to within a +/- `delta` range.
-   *
-   *     assert.closeTo(1.5, 1, 0.5, 'numbers are close');
-   *
-   * @name closeTo
-   * @param {Number} actual
-   * @param {Number} expected
-   * @param {Number} delta
-   * @param {String} message
-   * @api public
-   */
-
-  assert.closeTo = function (act, exp, delta, msg) {
-    new Assertion(act, msg).to.be.closeTo(exp, delta);
-  };
-
-  /**
-   * ### .sameMembers(set1, set2, [message])
-   *
-   * Asserts that `set1` and `set2` have the same members.
-   * Order is not taken into account.
-   *
-   *     assert.sameMembers([ 1, 2, 3 ], [ 2, 1, 3 ], 'same members');
-   *
-   * @name sameMembers
-   * @param {Array} superset
-   * @param {Array} subset
-   * @param {String} message
-   * @api public
-   */
-
-  assert.sameMembers = function (set1, set2, msg) {
-    new Assertion(set1, msg).to.have.same.members(set2);
-  }
-
-  /**
-   * ### .includeMembers(superset, subset, [message])
-   *
-   * Asserts that `subset` is included in `superset`.
-   * Order is not taken into account.
-   *
-   *     assert.includeMembers([ 1, 2, 3 ], [ 2, 1 ], 'include members');
-   *
-   * @name includeMembers
-   * @param {Array} superset
-   * @param {Array} subset
-   * @param {String} message
-   * @api public
-   */
-
-  assert.includeMembers = function (superset, subset, msg) {
-    new Assertion(superset, msg).to.include.members(subset);
-  }
-
-  /*!
-   * Undocumented / untested
-   */
-
-  assert.ifError = function (val, msg) {
-    new Assertion(val, msg).to.not.be.ok;
-  };
-
-  /*!
-   * Aliases.
-   */
-
-  (function alias(name, as){
-    assert[as] = assert[name];
-    return alias;
-  })
-  ('Throw', 'throw')
-  ('Throw', 'throws');
-};
-
-},{}],130:[function(require,module,exports){
-/*!
- * chai
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-module.exports = function (chai, util) {
-  chai.expect = function (val, message) {
-    return new chai.Assertion(val, message);
-  };
-};
-
-
-},{}],131:[function(require,module,exports){
-/*!
- * chai
- * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-module.exports = function (chai, util) {
-  var Assertion = chai.Assertion;
-
-  function loadShould () {
-    // explicitly define this method as function as to have it's name to include as `ssfi`
-    function shouldGetter() {
-      if (this instanceof String || this instanceof Number) {
-        return new Assertion(this.constructor(this), null, shouldGetter);
-      } else if (this instanceof Boolean) {
-        return new Assertion(this == true, null, shouldGetter);
-      }
-      return new Assertion(this, null, shouldGetter);
-    }
-    function shouldSetter(value) {
-      // See https://github.com/chaijs/chai/issues/86: this makes
-      // `whatever.should = someValue` actually set `someValue`, which is
-      // especially useful for `global.should = require('chai').should()`.
-      //
-      // Note that we have to use [[DefineProperty]] instead of [[Put]]
-      // since otherwise we would trigger this very setter!
-      Object.defineProperty(this, 'should', {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    }
-    // modify Object.prototype to have `should`
-    Object.defineProperty(Object.prototype, 'should', {
-      set: shouldSetter
-      , get: shouldGetter
-      , configurable: true
-    });
-
-    var should = {};
-
-    should.equal = function (val1, val2, msg) {
-      new Assertion(val1, msg).to.equal(val2);
-    };
-
-    should.Throw = function (fn, errt, errs, msg) {
-      new Assertion(fn, msg).to.Throw(errt, errs);
-    };
-
-    should.exist = function (val, msg) {
-      new Assertion(val, msg).to.exist;
-    }
-
-    // negation
-    should.not = {}
-
-    should.not.equal = function (val1, val2, msg) {
-      new Assertion(val1, msg).to.not.equal(val2);
-    };
-
-    should.not.Throw = function (fn, errt, errs, msg) {
-      new Assertion(fn, msg).to.not.Throw(errt, errs);
-    };
-
-    should.not.exist = function (val, msg) {
-      new Assertion(val, msg).to.not.exist;
-    }
-
-    should['throw'] = should['Throw'];
-    should.not['throw'] = should.not['Throw'];
-
-    return should;
-  };
-
-  chai.should = loadShould;
-  chai.Should = loadShould;
-};
-
-},{}],132:[function(require,module,exports){
-/*!
- * Chai - addChainingMethod utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependencies
- */
-
-var transferFlags = require('./transferFlags');
-var flag = require('./flag');
-var config = require('../config');
-
-/*!
- * Module variables
- */
-
-// Check whether `__proto__` is supported
-var hasProtoSupport = '__proto__' in Object;
-
-// Without `__proto__` support, this module will need to add properties to a function.
-// However, some Function.prototype methods cannot be overwritten,
-// and there seems no easy cross-platform way to detect them (@see chaijs/chai/issues/69).
-var excludeNames = /^(?:length|name|arguments|caller)$/;
-
-// Cache `Function` properties
-var call  = Function.prototype.call,
-    apply = Function.prototype.apply;
-
-/**
- * ### addChainableMethod (ctx, name, method, chainingBehavior)
- *
- * Adds a method to an object, such that the method can also be chained.
- *
- *     utils.addChainableMethod(chai.Assertion.prototype, 'foo', function (str) {
- *       var obj = utils.flag(this, 'object');
- *       new chai.Assertion(obj).to.be.equal(str);
- *     });
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.addChainableMethod('foo', fn, chainingBehavior);
- *
- * The result can then be used as both a method assertion, executing both `method` and
- * `chainingBehavior`, or as a language chain, which only executes `chainingBehavior`.
- *
- *     expect(fooStr).to.be.foo('bar');
- *     expect(fooStr).to.be.foo.equal('foo');
- *
- * @param {Object} ctx object to which the method is added
- * @param {String} name of method to add
- * @param {Function} method function to be used for `name`, when called
- * @param {Function} chainingBehavior function to be called every time the property is accessed
- * @name addChainableMethod
- * @api public
- */
-
-module.exports = function (ctx, name, method, chainingBehavior) {
-  if (typeof chainingBehavior !== 'function') {
-    chainingBehavior = function () { };
-  }
-
-  var chainableBehavior = {
-      method: method
-    , chainingBehavior: chainingBehavior
-  };
-
-  // save the methods so we can overwrite them later, if we need to.
-  if (!ctx.__methods) {
-    ctx.__methods = {};
-  }
-  ctx.__methods[name] = chainableBehavior;
-
-  Object.defineProperty(ctx, name,
-    { get: function () {
-        chainableBehavior.chainingBehavior.call(this);
-
-        var assert = function assert() {
-          var old_ssfi = flag(this, 'ssfi');
-          if (old_ssfi && config.includeStack === false)
-            flag(this, 'ssfi', assert);
-          var result = chainableBehavior.method.apply(this, arguments);
-          return result === undefined ? this : result;
-        };
-
-        // Use `__proto__` if available
-        if (hasProtoSupport) {
-          // Inherit all properties from the object by replacing the `Function` prototype
-          var prototype = assert.__proto__ = Object.create(this);
-          // Restore the `call` and `apply` methods from `Function`
-          prototype.call = call;
-          prototype.apply = apply;
-        }
-        // Otherwise, redefine all properties (slow!)
-        else {
-          var asserterNames = Object.getOwnPropertyNames(ctx);
-          asserterNames.forEach(function (asserterName) {
-            if (!excludeNames.test(asserterName)) {
-              var pd = Object.getOwnPropertyDescriptor(ctx, asserterName);
-              Object.defineProperty(assert, asserterName, pd);
-            }
-          });
-        }
-
-        transferFlags(this, assert);
-        return assert;
-      }
-    , configurable: true
-  });
-};
-
-},{"../config":127,"./flag":135,"./transferFlags":149}],133:[function(require,module,exports){
-/*!
- * Chai - addMethod utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-var config = require('../config');
-
-/**
- * ### .addMethod (ctx, name, method)
- *
- * Adds a method to the prototype of an object.
- *
- *     utils.addMethod(chai.Assertion.prototype, 'foo', function (str) {
- *       var obj = utils.flag(this, 'object');
- *       new chai.Assertion(obj).to.be.equal(str);
- *     });
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.addMethod('foo', fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(fooStr).to.be.foo('bar');
- *
- * @param {Object} ctx object to which the method is added
- * @param {String} name of method to add
- * @param {Function} method function to be used for name
- * @name addMethod
- * @api public
- */
-var flag = require('./flag');
-
-module.exports = function (ctx, name, method) {
-  ctx[name] = function () {
-    var old_ssfi = flag(this, 'ssfi');
-    if (old_ssfi && config.includeStack === false)
-      flag(this, 'ssfi', ctx[name]);
-    var result = method.apply(this, arguments);
-    return result === undefined ? this : result;
-  };
-};
-
-},{"../config":127,"./flag":135}],134:[function(require,module,exports){
-/*!
- * Chai - addProperty utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### addProperty (ctx, name, getter)
- *
- * Adds a property to the prototype of an object.
- *
- *     utils.addProperty(chai.Assertion.prototype, 'foo', function () {
- *       var obj = utils.flag(this, 'object');
- *       new chai.Assertion(obj).to.be.instanceof(Foo);
- *     });
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.addProperty('foo', fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(myFoo).to.be.foo;
- *
- * @param {Object} ctx object to which the property is added
- * @param {String} name of property to add
- * @param {Function} getter function to be used for name
- * @name addProperty
- * @api public
- */
-
-module.exports = function (ctx, name, getter) {
-  Object.defineProperty(ctx, name,
-    { get: function () {
-        var result = getter.call(this);
-        return result === undefined ? this : result;
-      }
-    , configurable: true
-  });
-};
-
-},{}],135:[function(require,module,exports){
-/*!
- * Chai - flag utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### flag(object ,key, [value])
- *
- * Get or set a flag value on an object. If a
- * value is provided it will be set, else it will
- * return the currently set value or `undefined` if
- * the value is not set.
- *
- *     utils.flag(this, 'foo', 'bar'); // setter
- *     utils.flag(this, 'foo'); // getter, returns `bar`
- *
- * @param {Object} object (constructed Assertion
- * @param {String} key
- * @param {Mixed} value (optional)
- * @name flag
- * @api private
- */
-
-module.exports = function (obj, key, value) {
-  var flags = obj.__flags || (obj.__flags = Object.create(null));
-  if (arguments.length === 3) {
-    flags[key] = value;
-  } else {
-    return flags[key];
-  }
-};
-
-},{}],136:[function(require,module,exports){
-/*!
- * Chai - getActual utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * # getActual(object, [actual])
- *
- * Returns the `actual` value for an Assertion
- *
- * @param {Object} object (constructed Assertion)
- * @param {Arguments} chai.Assertion.prototype.assert arguments
- */
-
-module.exports = function (obj, args) {
-  return args.length > 4 ? args[4] : obj._obj;
-};
-
-},{}],137:[function(require,module,exports){
-/*!
- * Chai - getEnumerableProperties utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### .getEnumerableProperties(object)
- *
- * This allows the retrieval of enumerable property names of an object,
- * inherited or not.
- *
- * @param {Object} object
- * @returns {Array}
- * @name getEnumerableProperties
- * @api public
- */
-
-module.exports = function getEnumerableProperties(object) {
-  var result = [];
-  for (var name in object) {
-    result.push(name);
-  }
-  return result;
-};
-
-},{}],138:[function(require,module,exports){
-/*!
- * Chai - message composition utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependancies
- */
-
-var flag = require('./flag')
-  , getActual = require('./getActual')
-  , inspect = require('./inspect')
-  , objDisplay = require('./objDisplay');
-
-/**
- * ### .getMessage(object, message, negateMessage)
- *
- * Construct the error message based on flags
- * and template tags. Template tags will return
- * a stringified inspection of the object referenced.
- *
- * Message template tags:
- * - `#{this}` current asserted object
- * - `#{act}` actual value
- * - `#{exp}` expected value
- *
- * @param {Object} object (constructed Assertion)
- * @param {Arguments} chai.Assertion.prototype.assert arguments
- * @name getMessage
- * @api public
- */
-
-module.exports = function (obj, args) {
-  var negate = flag(obj, 'negate')
-    , val = flag(obj, 'object')
-    , expected = args[3]
-    , actual = getActual(obj, args)
-    , msg = negate ? args[2] : args[1]
-    , flagMsg = flag(obj, 'message');
-
-  msg = msg || '';
-  msg = msg
-    .replace(/#{this}/g, objDisplay(val))
-    .replace(/#{act}/g, objDisplay(actual))
-    .replace(/#{exp}/g, objDisplay(expected));
-
-  return flagMsg ? flagMsg + ': ' + msg : msg;
-};
-
-},{"./flag":135,"./getActual":136,"./inspect":143,"./objDisplay":144}],139:[function(require,module,exports){
-/*!
- * Chai - getName utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * # getName(func)
- *
- * Gets the name of a function, in a cross-browser way.
- *
- * @param {Function} a function (usually a constructor)
- */
-
-module.exports = function (func) {
-  if (func.name) return func.name;
-
-  var match = /^\s?function ([^(]*)\(/.exec(func);
-  return match && match[1] ? match[1] : "";
-};
-
-},{}],140:[function(require,module,exports){
-/*!
- * Chai - getPathValue utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * @see https://github.com/logicalparadox/filtr
- * MIT Licensed
- */
-
-/**
- * ### .getPathValue(path, object)
- *
- * This allows the retrieval of values in an
- * object given a string path.
- *
- *     var obj = {
- *         prop1: {
- *             arr: ['a', 'b', 'c']
- *           , str: 'Hello'
- *         }
- *       , prop2: {
- *             arr: [ { nested: 'Universe' } ]
- *           , str: 'Hello again!'
- *         }
- *     }
- *
- * The following would be the results.
- *
- *     getPathValue('prop1.str', obj); // Hello
- *     getPathValue('prop1.att[2]', obj); // b
- *     getPathValue('prop2.arr[0].nested', obj); // Universe
- *
- * @param {String} path
- * @param {Object} object
- * @returns {Object} value or `undefined`
- * @name getPathValue
- * @api public
- */
-
-var getPathValue = module.exports = function (path, obj) {
-  var parsed = parsePath(path);
-  return _getPathValue(parsed, obj);
-};
-
-/*!
- * ## parsePath(path)
- *
- * Helper function used to parse string object
- * paths. Use in conjunction with `_getPathValue`.
- *
- *      var parsed = parsePath('myobject.property.subprop');
- *
- * ### Paths:
- *
- * * Can be as near infinitely deep and nested
- * * Arrays are also valid using the formal `myobject.document[3].property`.
- *
- * @param {String} path
- * @returns {Object} parsed
- * @api private
- */
-
-function parsePath (path) {
-  var str = path.replace(/\[/g, '.[')
-    , parts = str.match(/(\\\.|[^.]+?)+/g);
-  return parts.map(function (value) {
-    var re = /\[(\d+)\]$/
-      , mArr = re.exec(value)
-    if (mArr) return { i: parseFloat(mArr[1]) };
-    else return { p: value };
-  });
-};
-
-/*!
- * ## _getPathValue(parsed, obj)
- *
- * Helper companion function for `.parsePath` that returns
- * the value located at the parsed address.
- *
- *      var value = getPathValue(parsed, obj);
- *
- * @param {Object} parsed definition from `parsePath`.
- * @param {Object} object to search against
- * @returns {Object|Undefined} value
- * @api private
- */
-
-function _getPathValue (parsed, obj) {
-  var tmp = obj
-    , res;
-  for (var i = 0, l = parsed.length; i < l; i++) {
-    var part = parsed[i];
-    if (tmp) {
-      if ('undefined' !== typeof part.p)
-        tmp = tmp[part.p];
-      else if ('undefined' !== typeof part.i)
-        tmp = tmp[part.i];
-      if (i == (l - 1)) res = tmp;
-    } else {
-      res = undefined;
-    }
-  }
-  return res;
-};
-
-},{}],141:[function(require,module,exports){
-/*!
- * Chai - getProperties utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### .getProperties(object)
- *
- * This allows the retrieval of property names of an object, enumerable or not,
- * inherited or not.
- *
- * @param {Object} object
- * @returns {Array}
- * @name getProperties
- * @api public
- */
-
-module.exports = function getProperties(object) {
-  var result = Object.getOwnPropertyNames(subject);
-
-  function addProperty(property) {
-    if (result.indexOf(property) === -1) {
-      result.push(property);
-    }
-  }
-
-  var proto = Object.getPrototypeOf(subject);
-  while (proto !== null) {
-    Object.getOwnPropertyNames(proto).forEach(addProperty);
-    proto = Object.getPrototypeOf(proto);
-  }
-
-  return result;
-};
-
-},{}],142:[function(require,module,exports){
-/*!
- * chai
- * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Main exports
- */
-
-var exports = module.exports = {};
-
-/*!
- * test utility
- */
-
-exports.test = require('./test');
-
-/*!
- * type utility
- */
-
-exports.type = require('./type');
-
-/*!
- * message utility
- */
-
-exports.getMessage = require('./getMessage');
-
-/*!
- * actual utility
- */
-
-exports.getActual = require('./getActual');
-
-/*!
- * Inspect util
- */
-
-exports.inspect = require('./inspect');
-
-/*!
- * Object Display util
- */
-
-exports.objDisplay = require('./objDisplay');
-
-/*!
- * Flag utility
- */
-
-exports.flag = require('./flag');
-
-/*!
- * Flag transferring utility
- */
-
-exports.transferFlags = require('./transferFlags');
-
-/*!
- * Deep equal utility
- */
-
-exports.eql = require('deep-eql');
-
-/*!
- * Deep path value
- */
-
-exports.getPathValue = require('./getPathValue');
-
-/*!
- * Function name
- */
-
-exports.getName = require('./getName');
-
-/*!
- * add Property
- */
-
-exports.addProperty = require('./addProperty');
-
-/*!
- * add Method
- */
-
-exports.addMethod = require('./addMethod');
-
-/*!
- * overwrite Property
- */
-
-exports.overwriteProperty = require('./overwriteProperty');
-
-/*!
- * overwrite Method
- */
-
-exports.overwriteMethod = require('./overwriteMethod');
-
-/*!
- * Add a chainable method
- */
-
-exports.addChainableMethod = require('./addChainableMethod');
-
-/*!
- * Overwrite chainable method
- */
-
-exports.overwriteChainableMethod = require('./overwriteChainableMethod');
-
-
-},{"./addChainableMethod":132,"./addMethod":133,"./addProperty":134,"./flag":135,"./getActual":136,"./getMessage":138,"./getName":139,"./getPathValue":140,"./inspect":143,"./objDisplay":144,"./overwriteChainableMethod":145,"./overwriteMethod":146,"./overwriteProperty":147,"./test":148,"./transferFlags":149,"./type":150,"deep-eql":152}],143:[function(require,module,exports){
-// This is (almost) directly from Node.js utils
-// https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
-
-var getName = require('./getName');
-var getProperties = require('./getProperties');
-var getEnumerableProperties = require('./getEnumerableProperties');
-
-module.exports = inspect;
-
-/**
- * Echos the value of a value. Trys to print the value out
- * in the best way possible given the different types.
- *
- * @param {Object} obj The object to print out.
- * @param {Boolean} showHidden Flag that shows hidden (not enumerable)
- *    properties of objects.
- * @param {Number} depth Depth in which to descend in object. Default is 2.
- * @param {Boolean} colors Flag to turn on ANSI escape codes to color the
- *    output. Default is false (no coloring).
- */
-function inspect(obj, showHidden, depth, colors) {
-  var ctx = {
-    showHidden: showHidden,
-    seen: [],
-    stylize: function (str) { return str; }
-  };
-  return formatValue(ctx, obj, (typeof depth === 'undefined' ? 2 : depth));
-}
-
-// https://gist.github.com/1044128/
-var getOuterHTML = function(element) {
-  if ('outerHTML' in element) return element.outerHTML;
-  var ns = "http://www.w3.org/1999/xhtml";
-  var container = document.createElementNS(ns, '_');
-  var elemProto = (window.HTMLElement || window.Element).prototype;
-  var xmlSerializer = new XMLSerializer();
-  var html;
-  if (document.xmlVersion) {
-    return xmlSerializer.serializeToString(element);
-  } else {
-    container.appendChild(element.cloneNode(false));
-    html = container.innerHTML.replace('><', '>' + element.innerHTML + '<');
-    container.innerHTML = '';
-    return html;
-  }
-};
-
-// Returns true if object is a DOM element.
-var isDOMElement = function (object) {
-  if (typeof HTMLElement === 'object') {
-    return object instanceof HTMLElement;
-  } else {
-    return object &&
-      typeof object === 'object' &&
-      object.nodeType === 1 &&
-      typeof object.nodeName === 'string';
-  }
-};
-
-function formatValue(ctx, value, recurseTimes) {
-  // Provide a hook for user-specified inspect functions.
-  // Check that value is an object with an inspect function on it
-  if (value && typeof value.inspect === 'function' &&
-      // Filter out the util module, it's inspect function is special
-      value.inspect !== exports.inspect &&
-      // Also filter out any prototype objects using the circular check.
-      !(value.constructor && value.constructor.prototype === value)) {
-    var ret = value.inspect(recurseTimes);
-    if (typeof ret !== 'string') {
-      ret = formatValue(ctx, ret, recurseTimes);
-    }
-    return ret;
-  }
-
-  // Primitive types cannot have properties
-  var primitive = formatPrimitive(ctx, value);
-  if (primitive) {
-    return primitive;
-  }
-
-  // If it's DOM elem, get outer HTML.
-  if (isDOMElement(value)) {
-    return getOuterHTML(value);
-  }
-
-  // Look up the keys of the object.
-  var visibleKeys = getEnumerableProperties(value);
-  var keys = ctx.showHidden ? getProperties(value) : visibleKeys;
-
-  // Some type of object without properties can be shortcutted.
-  // In IE, errors have a single `stack` property, or if they are vanilla `Error`,
-  // a `stack` plus `description` property; ignore those for consistency.
-  if (keys.length === 0 || (isError(value) && (
-      (keys.length === 1 && keys[0] === 'stack') ||
-      (keys.length === 2 && keys[0] === 'description' && keys[1] === 'stack')
-     ))) {
-    if (typeof value === 'function') {
-      var name = getName(value);
-      var nameSuffix = name ? ': ' + name : '';
-      return ctx.stylize('[Function' + nameSuffix + ']', 'special');
-    }
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    }
-    if (isDate(value)) {
-      return ctx.stylize(Date.prototype.toUTCString.call(value), 'date');
-    }
-    if (isError(value)) {
-      return formatError(value);
-    }
-  }
-
-  var base = '', array = false, braces = ['{', '}'];
-
-  // Make Array say that they are Array
-  if (isArray(value)) {
-    array = true;
-    braces = ['[', ']'];
-  }
-
-  // Make functions say that they are functions
-  if (typeof value === 'function') {
-    var name = getName(value);
-    var nameSuffix = name ? ': ' + name : '';
-    base = ' [Function' + nameSuffix + ']';
-  }
-
-  // Make RegExps say that they are RegExps
-  if (isRegExp(value)) {
-    base = ' ' + RegExp.prototype.toString.call(value);
-  }
-
-  // Make dates with properties first say the date
-  if (isDate(value)) {
-    base = ' ' + Date.prototype.toUTCString.call(value);
-  }
-
-  // Make error with message first say the error
-  if (isError(value)) {
-    return formatError(value);
-  }
-
-  if (keys.length === 0 && (!array || value.length == 0)) {
-    return braces[0] + base + braces[1];
-  }
-
-  if (recurseTimes < 0) {
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    } else {
-      return ctx.stylize('[Object]', 'special');
-    }
-  }
-
-  ctx.seen.push(value);
-
-  var output;
-  if (array) {
-    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
-  } else {
-    output = keys.map(function(key) {
-      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
-    });
-  }
-
-  ctx.seen.pop();
-
-  return reduceToSingleString(output, base, braces);
-}
-
-
-function formatPrimitive(ctx, value) {
-  switch (typeof value) {
-    case 'undefined':
-      return ctx.stylize('undefined', 'undefined');
-
-    case 'string':
-      var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
-                                               .replace(/'/g, "\\'")
-                                               .replace(/\\"/g, '"') + '\'';
-      return ctx.stylize(simple, 'string');
-
-    case 'number':
-      return ctx.stylize('' + value, 'number');
-
-    case 'boolean':
-      return ctx.stylize('' + value, 'boolean');
-  }
-  // For some reason typeof null is "object", so special case here.
-  if (value === null) {
-    return ctx.stylize('null', 'null');
-  }
-}
-
-
-function formatError(value) {
-  return '[' + Error.prototype.toString.call(value) + ']';
-}
-
-
-function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
-  var output = [];
-  for (var i = 0, l = value.length; i < l; ++i) {
-    if (Object.prototype.hasOwnProperty.call(value, String(i))) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          String(i), true));
-    } else {
-      output.push('');
-    }
-  }
-  keys.forEach(function(key) {
-    if (!key.match(/^\d+$/)) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          key, true));
-    }
-  });
-  return output;
-}
-
-
-function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
-  var name, str;
-  if (value.__lookupGetter__) {
-    if (value.__lookupGetter__(key)) {
-      if (value.__lookupSetter__(key)) {
-        str = ctx.stylize('[Getter/Setter]', 'special');
-      } else {
-        str = ctx.stylize('[Getter]', 'special');
-      }
-    } else {
-      if (value.__lookupSetter__(key)) {
-        str = ctx.stylize('[Setter]', 'special');
-      }
-    }
-  }
-  if (visibleKeys.indexOf(key) < 0) {
-    name = '[' + key + ']';
-  }
-  if (!str) {
-    if (ctx.seen.indexOf(value[key]) < 0) {
-      if (recurseTimes === null) {
-        str = formatValue(ctx, value[key], null);
-      } else {
-        str = formatValue(ctx, value[key], recurseTimes - 1);
-      }
-      if (str.indexOf('\n') > -1) {
-        if (array) {
-          str = str.split('\n').map(function(line) {
-            return '  ' + line;
-          }).join('\n').substr(2);
-        } else {
-          str = '\n' + str.split('\n').map(function(line) {
-            return '   ' + line;
-          }).join('\n');
-        }
-      }
-    } else {
-      str = ctx.stylize('[Circular]', 'special');
-    }
-  }
-  if (typeof name === 'undefined') {
-    if (array && key.match(/^\d+$/)) {
-      return str;
-    }
-    name = JSON.stringify('' + key);
-    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-      name = name.substr(1, name.length - 2);
-      name = ctx.stylize(name, 'name');
-    } else {
-      name = name.replace(/'/g, "\\'")
-                 .replace(/\\"/g, '"')
-                 .replace(/(^"|"$)/g, "'");
-      name = ctx.stylize(name, 'string');
-    }
-  }
-
-  return name + ': ' + str;
-}
-
-
-function reduceToSingleString(output, base, braces) {
-  var numLinesEst = 0;
-  var length = output.reduce(function(prev, cur) {
-    numLinesEst++;
-    if (cur.indexOf('\n') >= 0) numLinesEst++;
-    return prev + cur.length + 1;
-  }, 0);
-
-  if (length > 60) {
-    return braces[0] +
-           (base === '' ? '' : base + '\n ') +
-           ' ' +
-           output.join(',\n  ') +
-           ' ' +
-           braces[1];
-  }
-
-  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
-}
-
-function isArray(ar) {
-  return Array.isArray(ar) ||
-         (typeof ar === 'object' && objectToString(ar) === '[object Array]');
-}
-
-function isRegExp(re) {
-  return typeof re === 'object' && objectToString(re) === '[object RegExp]';
-}
-
-function isDate(d) {
-  return typeof d === 'object' && objectToString(d) === '[object Date]';
-}
-
-function isError(e) {
-  return typeof e === 'object' && objectToString(e) === '[object Error]';
-}
-
-function objectToString(o) {
-  return Object.prototype.toString.call(o);
-}
-
-},{"./getEnumerableProperties":137,"./getName":139,"./getProperties":141}],144:[function(require,module,exports){
-/*!
- * Chai - flag utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependancies
- */
-
-var inspect = require('./inspect');
-var config = require('../config');
-
-/**
- * ### .objDisplay (object)
- *
- * Determines if an object or an array matches
- * criteria to be inspected in-line for error
- * messages or should be truncated.
- *
- * @param {Mixed} javascript object to inspect
- * @name objDisplay
- * @api public
- */
-
-module.exports = function (obj) {
-  var str = inspect(obj)
-    , type = Object.prototype.toString.call(obj);
-
-  if (config.truncateThreshold && str.length >= config.truncateThreshold) {
-    if (type === '[object Function]') {
-      return !obj.name || obj.name === ''
-        ? '[Function]'
-        : '[Function: ' + obj.name + ']';
-    } else if (type === '[object Array]') {
-      return '[ Array(' + obj.length + ') ]';
-    } else if (type === '[object Object]') {
-      var keys = Object.keys(obj)
-        , kstr = keys.length > 2
-          ? keys.splice(0, 2).join(', ') + ', ...'
-          : keys.join(', ');
-      return '{ Object (' + kstr + ') }';
-    } else {
-      return str;
-    }
-  } else {
-    return str;
-  }
-};
-
-},{"../config":127,"./inspect":143}],145:[function(require,module,exports){
-/*!
- * Chai - overwriteChainableMethod utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### overwriteChainableMethod (ctx, name, fn)
- *
- * Overwites an already existing chainable method
- * and provides access to the previous function or
- * property.  Must return functions to be used for
- * name.
- *
- *     utils.overwriteChainableMethod(chai.Assertion.prototype, 'length',
- *       function (_super) {
- *       }
- *     , function (_super) {
- *       }
- *     );
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.overwriteChainableMethod('foo', fn, fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(myFoo).to.have.length(3);
- *     expect(myFoo).to.have.length.above(3);
- *
- * @param {Object} ctx object whose method / property is to be overwritten
- * @param {String} name of method / property to overwrite
- * @param {Function} method function that returns a function to be used for name
- * @param {Function} chainingBehavior function that returns a function to be used for property
- * @name overwriteChainableMethod
- * @api public
- */
-
-module.exports = function (ctx, name, method, chainingBehavior) {
-  var chainableBehavior = ctx.__methods[name];
-
-  var _chainingBehavior = chainableBehavior.chainingBehavior;
-  chainableBehavior.chainingBehavior = function () {
-    var result = chainingBehavior(_chainingBehavior).call(this);
-    return result === undefined ? this : result;
-  };
-
-  var _method = chainableBehavior.method;
-  chainableBehavior.method = function () {
-    var result = method(_method).apply(this, arguments);
-    return result === undefined ? this : result;
-  };
-};
-
-},{}],146:[function(require,module,exports){
-/*!
- * Chai - overwriteMethod utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### overwriteMethod (ctx, name, fn)
- *
- * Overwites an already existing method and provides
- * access to previous function. Must return function
- * to be used for name.
- *
- *     utils.overwriteMethod(chai.Assertion.prototype, 'equal', function (_super) {
- *       return function (str) {
- *         var obj = utils.flag(this, 'object');
- *         if (obj instanceof Foo) {
- *           new chai.Assertion(obj.value).to.equal(str);
- *         } else {
- *           _super.apply(this, arguments);
- *         }
- *       }
- *     });
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.overwriteMethod('foo', fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(myFoo).to.equal('bar');
- *
- * @param {Object} ctx object whose method is to be overwritten
- * @param {String} name of method to overwrite
- * @param {Function} method function that returns a function to be used for name
- * @name overwriteMethod
- * @api public
- */
-
-module.exports = function (ctx, name, method) {
-  var _method = ctx[name]
-    , _super = function () { return this; };
-
-  if (_method && 'function' === typeof _method)
-    _super = _method;
-
-  ctx[name] = function () {
-    var result = method(_super).apply(this, arguments);
-    return result === undefined ? this : result;
-  }
-};
-
-},{}],147:[function(require,module,exports){
-/*!
- * Chai - overwriteProperty utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### overwriteProperty (ctx, name, fn)
- *
- * Overwites an already existing property getter and provides
- * access to previous value. Must return function to use as getter.
- *
- *     utils.overwriteProperty(chai.Assertion.prototype, 'ok', function (_super) {
- *       return function () {
- *         var obj = utils.flag(this, 'object');
- *         if (obj instanceof Foo) {
- *           new chai.Assertion(obj.name).to.equal('bar');
- *         } else {
- *           _super.call(this);
- *         }
- *       }
- *     });
- *
- *
- * Can also be accessed directly from `chai.Assertion`.
- *
- *     chai.Assertion.overwriteProperty('foo', fn);
- *
- * Then can be used as any other assertion.
- *
- *     expect(myFoo).to.be.ok;
- *
- * @param {Object} ctx object whose property is to be overwritten
- * @param {String} name of property to overwrite
- * @param {Function} getter function that returns a getter function to be used for name
- * @name overwriteProperty
- * @api public
- */
-
-module.exports = function (ctx, name, getter) {
-  var _get = Object.getOwnPropertyDescriptor(ctx, name)
-    , _super = function () {};
-
-  if (_get && 'function' === typeof _get.get)
-    _super = _get.get
-
-  Object.defineProperty(ctx, name,
-    { get: function () {
-        var result = getter(_super).call(this);
-        return result === undefined ? this : result;
-      }
-    , configurable: true
-  });
-};
-
-},{}],148:[function(require,module,exports){
-/*!
- * Chai - test utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependancies
- */
-
-var flag = require('./flag');
-
-/**
- * # test(object, expression)
- *
- * Test and object for expression.
- *
- * @param {Object} object (constructed Assertion)
- * @param {Arguments} chai.Assertion.prototype.assert arguments
- */
-
-module.exports = function (obj, args) {
-  var negate = flag(obj, 'negate')
-    , expr = args[0];
-  return negate ? !expr : expr;
-};
-
-},{"./flag":135}],149:[function(require,module,exports){
-/*!
- * Chai - transferFlags utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/**
- * ### transferFlags(assertion, object, includeAll = true)
- *
- * Transfer all the flags for `assertion` to `object`. If
- * `includeAll` is set to `false`, then the base Chai
- * assertion flags (namely `object`, `ssfi`, and `message`)
- * will not be transferred.
- *
- *
- *     var newAssertion = new Assertion();
- *     utils.transferFlags(assertion, newAssertion);
- *
- *     var anotherAsseriton = new Assertion(myObj);
- *     utils.transferFlags(assertion, anotherAssertion, false);
- *
- * @param {Assertion} assertion the assertion to transfer the flags from
- * @param {Object} object the object to transfer the flags too; usually a new assertion
- * @param {Boolean} includeAll
- * @name getAllFlags
- * @api private
- */
-
-module.exports = function (assertion, object, includeAll) {
-  var flags = assertion.__flags || (assertion.__flags = Object.create(null));
-
-  if (!object.__flags) {
-    object.__flags = Object.create(null);
-  }
-
-  includeAll = arguments.length === 3 ? includeAll : true;
-
-  for (var flag in flags) {
-    if (includeAll ||
-        (flag !== 'object' && flag !== 'ssfi' && flag != 'message')) {
-      object.__flags[flag] = flags[flag];
-    }
-  }
-};
-
-},{}],150:[function(require,module,exports){
-/*!
- * Chai - type utility
- * Copyright(c) 2012-2014 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Detectable javascript natives
- */
-
-var natives = {
-    '[object Arguments]': 'arguments'
-  , '[object Array]': 'array'
-  , '[object Date]': 'date'
-  , '[object Function]': 'function'
-  , '[object Number]': 'number'
-  , '[object RegExp]': 'regexp'
-  , '[object String]': 'string'
-};
-
-/**
- * ### type(object)
- *
- * Better implementation of `typeof` detection that can
- * be used cross-browser. Handles the inconsistencies of
- * Array, `null`, and `undefined` detection.
- *
- *     utils.type({}) // 'object'
- *     utils.type(null) // `null'
- *     utils.type(undefined) // `undefined`
- *     utils.type([]) // `array`
- *
- * @param {Mixed} object to detect type of
- * @name type
- * @api private
- */
-
-module.exports = function (obj) {
-  var str = Object.prototype.toString.call(obj);
-  if (natives[str]) return natives[str];
-  if (obj === null) return 'null';
-  if (obj === undefined) return 'undefined';
-  if (obj === Object(obj)) return 'object';
-  return typeof obj;
-};
-
-},{}],151:[function(require,module,exports){
-/*!
- * assertion-error
- * Copyright(c) 2013 Jake Luer <jake@qualiancy.com>
- * MIT Licensed
- */
-
-/*!
- * Return a function that will copy properties from
- * one object to another excluding any originally
- * listed. Returned function will create a new `{}`.
- *
- * @param {String} excluded properties ...
- * @return {Function}
- */
-
-function exclude () {
-  var excludes = [].slice.call(arguments);
-
-  function excludeProps (res, obj) {
-    Object.keys(obj).forEach(function (key) {
-      if (!~excludes.indexOf(key)) res[key] = obj[key];
-    });
-  }
-
-  return function extendExclude () {
-    var args = [].slice.call(arguments)
-      , i = 0
-      , res = {};
-
-    for (; i < args.length; i++) {
-      excludeProps(res, args[i]);
-    }
-
-    return res;
-  };
-};
-
-/*!
- * Primary Exports
- */
-
-module.exports = AssertionError;
-
-/**
- * ### AssertionError
- *
- * An extension of the JavaScript `Error` constructor for
- * assertion and validation scenarios.
- *
- * @param {String} message
- * @param {Object} properties to include (optional)
- * @param {callee} start stack function (optional)
- */
-
-function AssertionError (message, _props, ssf) {
-  var extend = exclude('name', 'message', 'stack', 'constructor', 'toJSON')
-    , props = extend(_props || {});
-
-  // default values
-  this.message = message || 'Unspecified AssertionError';
-  this.showDiff = false;
-
-  // copy from properties
-  for (var key in props) {
-    this[key] = props[key];
-  }
-
-  // capture stack trace
-  ssf = ssf || arguments.callee;
-  if (ssf && Error.captureStackTrace) {
-    Error.captureStackTrace(this, ssf);
-  }
-}
-
-/*!
- * Inherit from Error.prototype
- */
-
-AssertionError.prototype = Object.create(Error.prototype);
-
-/*!
- * Statically set name
- */
-
-AssertionError.prototype.name = 'AssertionError';
-
-/*!
- * Ensure correct constructor
- */
-
-AssertionError.prototype.constructor = AssertionError;
-
-/**
- * Allow errors to be converted to JSON for static transfer.
- *
- * @param {Boolean} include stack (default: `true`)
- * @return {Object} object that can be `JSON.stringify`
- */
-
-AssertionError.prototype.toJSON = function (stack) {
-  var extend = exclude('constructor', 'toJSON', 'stack')
-    , props = extend({ name: this.name }, this);
-
-  // include stack if exists and not turned off
-  if (false !== stack && this.stack) {
-    props.stack = this.stack;
-  }
-
-  return props;
-};
-
-},{}],152:[function(require,module,exports){
-module.exports = require('./lib/eql');
-
-},{"./lib/eql":153}],153:[function(require,module,exports){
-/*!
- * deep-eql
- * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Module dependencies
- */
-
-var type = require('type-detect');
-
-/*!
- * Buffer.isBuffer browser shim
- */
-
-var Buffer;
-try { Buffer = require('buffer').Buffer; }
-catch(ex) {
-  Buffer = {};
-  Buffer.isBuffer = function() { return false; }
-}
-
-/*!
- * Primary Export
- */
-
-module.exports = deepEqual;
-
-/**
- * Assert super-strict (egal) equality between
- * two objects of any type.
- *
- * @param {Mixed} a
- * @param {Mixed} b
- * @param {Array} memoised (optional)
- * @return {Boolean} equal match
- */
-
-function deepEqual(a, b, m) {
-  if (sameValue(a, b)) {
-    return true;
-  } else if ('date' === type(a)) {
-    return dateEqual(a, b);
-  } else if ('regexp' === type(a)) {
-    return regexpEqual(a, b);
-  } else if (Buffer.isBuffer(a)) {
-    return bufferEqual(a, b);
-  } else if ('arguments' === type(a)) {
-    return argumentsEqual(a, b, m);
-  } else if (!typeEqual(a, b)) {
-    return false;
-  } else if (('object' !== type(a) && 'object' !== type(b))
-  && ('array' !== type(a) && 'array' !== type(b))) {
-    return sameValue(a, b);
-  } else {
-    return objectEqual(a, b, m);
-  }
-}
-
-/*!
- * Strict (egal) equality test. Ensures that NaN always
- * equals NaN and `-0` does not equal `+0`.
- *
- * @param {Mixed} a
- * @param {Mixed} b
- * @return {Boolean} equal match
- */
-
-function sameValue(a, b) {
-  if (a === b) return a !== 0 || 1 / a === 1 / b;
-  return a !== a && b !== b;
-}
-
-/*!
- * Compare the types of two given objects and
- * return if they are equal. Note that an Array
- * has a type of `array` (not `object`) and arguments
- * have a type of `arguments` (not `array`/`object`).
- *
- * @param {Mixed} a
- * @param {Mixed} b
- * @return {Boolean} result
- */
-
-function typeEqual(a, b) {
-  return type(a) === type(b);
-}
-
-/*!
- * Compare two Date objects by asserting that
- * the time values are equal using `saveValue`.
- *
- * @param {Date} a
- * @param {Date} b
- * @return {Boolean} result
- */
-
-function dateEqual(a, b) {
-  if ('date' !== type(b)) return false;
-  return sameValue(a.getTime(), b.getTime());
-}
-
-/*!
- * Compare two regular expressions by converting them
- * to string and checking for `sameValue`.
- *
- * @param {RegExp} a
- * @param {RegExp} b
- * @return {Boolean} result
- */
-
-function regexpEqual(a, b) {
-  if ('regexp' !== type(b)) return false;
-  return sameValue(a.toString(), b.toString());
-}
-
-/*!
- * Assert deep equality of two `arguments` objects.
- * Unfortunately, these must be sliced to arrays
- * prior to test to ensure no bad behavior.
- *
- * @param {Arguments} a
- * @param {Arguments} b
- * @param {Array} memoize (optional)
- * @return {Boolean} result
- */
-
-function argumentsEqual(a, b, m) {
-  if ('arguments' !== type(b)) return false;
-  a = [].slice.call(a);
-  b = [].slice.call(b);
-  return deepEqual(a, b, m);
-}
-
-/*!
- * Get enumerable properties of a given object.
- *
- * @param {Object} a
- * @return {Array} property names
- */
-
-function enumerable(a) {
-  var res = [];
-  for (var key in a) res.push(key);
-  return res;
-}
-
-/*!
- * Simple equality for flat iterable objects
- * such as Arrays or Node.js buffers.
- *
- * @param {Iterable} a
- * @param {Iterable} b
- * @return {Boolean} result
- */
-
-function iterableEqual(a, b) {
-  if (a.length !==  b.length) return false;
-
-  var i = 0;
-  var match = true;
-
-  for (; i < a.length; i++) {
-    if (a[i] !== b[i]) {
-      match = false;
-      break;
-    }
-  }
-
-  return match;
-}
-
-/*!
- * Extension to `iterableEqual` specifically
- * for Node.js Buffers.
- *
- * @param {Buffer} a
- * @param {Mixed} b
- * @return {Boolean} result
- */
-
-function bufferEqual(a, b) {
-  if (!Buffer.isBuffer(b)) return false;
-  return iterableEqual(a, b);
-}
-
-/*!
- * Block for `objectEqual` ensuring non-existing
- * values don't get in.
- *
- * @param {Mixed} object
- * @return {Boolean} result
- */
-
-function isValue(a) {
-  return a !== null && a !== undefined;
-}
-
-/*!
- * Recursively check the equality of two objects.
- * Once basic sameness has been established it will
- * defer to `deepEqual` for each enumerable key
- * in the object.
- *
- * @param {Mixed} a
- * @param {Mixed} b
- * @return {Boolean} result
- */
-
-function objectEqual(a, b, m) {
-  if (!isValue(a) || !isValue(b)) {
-    return false;
-  }
-
-  if (a.prototype !== b.prototype) {
-    return false;
-  }
-
-  var i;
-  if (m) {
-    for (i = 0; i < m.length; i++) {
-      if ((m[i][0] === a && m[i][1] === b)
-      ||  (m[i][0] === b && m[i][1] === a)) {
-        return true;
-      }
-    }
-  } else {
-    m = [];
-  }
-
-  try {
-    var ka = enumerable(a);
-    var kb = enumerable(b);
-  } catch (ex) {
-    return false;
-  }
-
-  ka.sort();
-  kb.sort();
-
-  if (!iterableEqual(ka, kb)) {
-    return false;
-  }
-
-  m.push([ a, b ]);
-
-  var key;
-  for (i = ka.length - 1; i >= 0; i--) {
-    key = ka[i];
-    if (!deepEqual(a[key], b[key], m)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-},{"buffer":87,"type-detect":154}],154:[function(require,module,exports){
-module.exports = require('./lib/type');
-
-},{"./lib/type":155}],155:[function(require,module,exports){
-/*!
- * type-detect
- * Copyright(c) 2013 jake luer <jake@alogicalparadox.com>
- * MIT Licensed
- */
-
-/*!
- * Primary Exports
- */
-
-var exports = module.exports = getType;
-
-/*!
- * Detectable javascript natives
- */
-
-var natives = {
-    '[object Array]': 'array'
-  , '[object RegExp]': 'regexp'
-  , '[object Function]': 'function'
-  , '[object Arguments]': 'arguments'
-  , '[object Date]': 'date'
-};
-
-/**
- * ### typeOf (obj)
- *
- * Use several different techniques to determine
- * the type of object being tested.
- *
- *
- * @param {Mixed} object
- * @return {String} object type
- * @api public
- */
-
-function getType (obj) {
-  var str = Object.prototype.toString.call(obj);
-  if (natives[str]) return natives[str];
-  if (obj === null) return 'null';
-  if (obj === undefined) return 'undefined';
-  if (obj === Object(obj)) return 'object';
-  return typeof obj;
-}
-
-exports.Library = Library;
-
-/**
- * ### Library
- *
- * Create a repository for custom type detection.
- *
- * ```js
- * var lib = new type.Library;
- * ```
- *
- */
-
-function Library () {
-  this.tests = {};
-}
-
-/**
- * #### .of (obj)
- *
- * Expose replacement `typeof` detection to the library.
- *
- * ```js
- * if ('string' === lib.of('hello world')) {
- *   // ...
- * }
- * ```
- *
- * @param {Mixed} object to test
- * @return {String} type
- */
-
-Library.prototype.of = getType;
-
-/**
- * #### .define (type, test)
- *
- * Add a test to for the `.test()` assertion.
- *
- * Can be defined as a regular expression:
- *
- * ```js
- * lib.define('int', /^[0-9]+$/);
- * ```
- *
- * ... or as a function:
- *
- * ```js
- * lib.define('bln', function (obj) {
- *   if ('boolean' === lib.of(obj)) return true;
- *   var blns = [ 'yes', 'no', 'true', 'false', 1, 0 ];
- *   if ('string' === lib.of(obj)) obj = obj.toLowerCase();
- *   return !! ~blns.indexOf(obj);
- * });
- * ```
- *
- * @param {String} type
- * @param {RegExp|Function} test
- * @api public
- */
-
-Library.prototype.define = function (type, test) {
-  if (arguments.length === 1) return this.tests[type];
-  this.tests[type] = test;
-  return this;
-};
-
-/**
- * #### .test (obj, test)
- *
- * Assert that an object is of type. Will first
- * check natives, and if that does not pass it will
- * use the user defined custom tests.
- *
- * ```js
- * assert(lib.test('1', 'int'));
- * assert(lib.test('yes', 'bln'));
- * ```
- *
- * @param {Mixed} object
- * @param {String} type
- * @return {Boolean} result
- * @api public
- */
-
-Library.prototype.test = function (obj, type) {
-  if (type === getType(obj)) return true;
-  var test = this.tests[type];
-
-  if (test && 'regexp' === getType(test)) {
-    return test.test(obj);
-  } else if (test && 'function' === getType(test)) {
-    return test(obj);
-  } else {
-    throw new ReferenceError('Type test "' + type + '" not defined or invalid.');
-  }
-};
-
-},{}],156:[function(require,module,exports){
+},{"buffer":80}],"buffers":[function(require,module,exports){
+module.exports=require('OBo3aV');
+},{}],117:[function(require,module,exports){
 /*
  A JavaScript implementation of the SHA family of hashes, as
  defined in FIPS PUB 180-2 as well as the corresponding HMAC implementation
@@ -27097,7 +22208,7 @@ d[2]),new e(355462360,d[3]),new e(1731405415,d[4]),new e(41048885895,d[5]),new e
 new e(a[m*x+p],a[m*x+p+1]):y(E(A[m-2]),A[m-7],D(A[m-15]),A[m-16]),v=C(u,G(l),H(l,r,t),k[m],A[m]),z=q(F(c),I(c,g,f)),u=t,t=r,r=l,l=q(h,v),h=f,f=g,g=c,c=q(v,z);d[0]=q(c,d[0]);d[1]=q(g,d[1]);d[2]=q(f,d[2]);d[3]=q(h,d[3]);d[4]=q(l,d[4]);d[5]=q(r,d[5]);d[6]=q(t,d[6]);d[7]=q(u,d[7])}if("SHA-224"===b)a=[d[0],d[1],d[2],d[3],d[4],d[5],d[6]];else if("SHA-256"===b)a=d;else if("SHA-384"===b)a=[d[0].a,d[0].b,d[1].a,d[1].b,d[2].a,d[2].b,d[3].a,d[3].b,d[4].a,d[4].b,d[5].a,d[5].b];else if("SHA-512"===b)a=[d[0].a,
 d[0].b,d[1].a,d[1].b,d[2].a,d[2].b,d[3].a,d[3].b,d[4].a,d[4].b,d[5].a,d[5].b,d[6].a,d[6].b,d[7].a,d[7].b];else throw"Unexpected error in SHA-2 implementation";return a}"function"===typeof define&&typeof define.amd?define(function(){return z}):"undefined"!==typeof exports?"undefined"!==typeof module&&module.exports?module.exports=exports=z:exports=z:T.jsSHA=z})(this);
 
-},{}],157:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 (function (Buffer){
 /**
  * @author Matthew Caruana Galizia <m@m.cg>
@@ -27428,9 +22539,9 @@ function getErrorMessage(code) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"events":96,"ipv6":158,"net":83,"network-byte-order":162,"util":119}],158:[function(require,module,exports){
+},{"buffer":80,"events":89,"ipv6":119,"net":76,"network-byte-order":123,"util":112}],119:[function(require,module,exports){
 exports = module.exports = require('./ipv6.js');
-},{"./ipv6.js":159}],159:[function(require,module,exports){
+},{"./ipv6.js":120}],120:[function(require,module,exports){
 if (typeof exports !== 'undefined') {
   var sprintf = require('sprintf').sprintf;
   var BigInteger = require('./lib/node/bigint').BigInteger;
@@ -28746,7 +23857,7 @@ v6.Address.prototype.six2four = function () {
   };
 };
 
-},{"./lib/node/bigint":160,"sprintf":161}],160:[function(require,module,exports){
+},{"./lib/node/bigint":121,"sprintf":122}],121:[function(require,module,exports){
 /**
  * copped from https://github.com/joyent/node/blob/master/deps/v8/benchmarks/crypto.js (under same license).
  * 
@@ -30002,7 +25113,7 @@ BigInteger.prototype.isProbablePrime = bnIsProbablePrime;
 BigInteger.prototype.am = am4;
 
 // end of stuff copied from github.
-},{}],161:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 /**
 sprintf() for JavaScript 0.7-beta1
 http://www.diveintojavascript.com/projects/javascript-sprintf
@@ -30255,7 +25366,7 @@ module.exports = sprintf;
 sprintf.sprintf = sprintf;
 sprintf.vsprintf = vsprintf;
 
-},{"util":119}],162:[function(require,module,exports){
+},{"util":112}],123:[function(require,module,exports){
 /* Copyright 2010 Membase, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30359,7 +25470,7 @@ exports.ntohlStr = function(s, i) {
 	       ((0xff & s.charCodeAt(i + 3)));
 };
 
-},{}],163:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 
 module.exports = function(){
   var orig = Error.prepareStackTrace;
@@ -30371,7 +25482,7 @@ module.exports = function(){
   return stack;
 };
 
-},{}],164:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 (function (process,global){
 var path = require('path');
 var callsite = require('callsite');
@@ -30467,7 +25578,7 @@ module.exports.imports = function() {
 };
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"callsite":163,"path":104}],165:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"callsite":124,"path":97}],126:[function(require,module,exports){
 (function (process){
 /*
 Copyright (c) 2011 Tim Caswell <tim@creationix.com>
@@ -30625,7 +25736,7 @@ if (typeof module !== 'undefined' && "exports" in module) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103}],166:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96}],127:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -31989,8 +27100,10 @@ exports.patch = function(Buffers) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87}],"./patches/Buffers.monkey":[function(require,module,exports){
+},{"buffer":80}],"./patches/Buffers.monkey":[function(require,module,exports){
 module.exports=require('kytKTK');
+},{}],"./patches/Number.monkey":[function(require,module,exports){
+module.exports=require('AwmEwz');
 },{}],"AwmEwz":[function(require,module,exports){
 exports.patch = function(Number) {
   //round to specified number of places
@@ -32001,8 +27114,6 @@ exports.patch = function(Number) {
   };
 };
 
-},{}],"./patches/Number.monkey":[function(require,module,exports){
-module.exports=require('AwmEwz');
 },{}],"./util/BinaryParser":[function(require,module,exports){
 module.exports=require('b3ZSD7');
 },{}],"b3ZSD7":[function(require,module,exports){
@@ -32155,7 +27266,7 @@ Parser.prototype.varStr = function () {
 module.exports = require('soop')(Parser);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":87,"soop":164}],173:[function(require,module,exports){
+},{"buffer":80,"soop":125}],134:[function(require,module,exports){
 
 var fs = require('fs');
 var crypto = require('crypto');
@@ -32216,9 +27327,7 @@ exports.writeJFileSync = function(enc_method, enc_passphrase, filename, obj)
 };
 
 
-},{"crypto":91,"fs":83}],"./util/EncodedData":[function(require,module,exports){
-module.exports=require('eLfUFE');
-},{}],"eLfUFE":[function(require,module,exports){
+},{"crypto":84,"fs":76}],"eLfUFE":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 var base58 = imports.base58 || require('../lib/Base58').base58Check;
@@ -32380,7 +27489,9 @@ module.exports = require('soop')(EncodedData);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../lib/Base58":"6VqyzY","buffer":87,"soop":164}],"./util/VersionedData":[function(require,module,exports){
+},{"../lib/Base58":"6VqyzY","buffer":80,"soop":125}],"./util/EncodedData":[function(require,module,exports){
+module.exports=require('eLfUFE');
+},{}],"./util/VersionedData":[function(require,module,exports){
 module.exports=require('QLzNQg');
 },{}],"QLzNQg":[function(require,module,exports){
 (function (Buffer){
@@ -32424,7 +27535,7 @@ VersionedData.prototype.payload = function(data) {
 module.exports = require('soop')(VersionedData);
 
 }).call(this,require("buffer").Buffer)
-},{"../lib/Base58":"6VqyzY","./EncodedData":"eLfUFE","buffer":87,"soop":164}],178:[function(require,module,exports){
+},{"../lib/Base58":"6VqyzY","./EncodedData":"eLfUFE","buffer":80,"soop":125}],139:[function(require,module,exports){
 
 /**
  * Used during transcation verification when a source txout is missing.
@@ -32470,7 +27581,7 @@ VerificationError.prototype.__proto__ = Error.prototype;
 
 exports.VerificationError = VerificationError;
 
-},{}],179:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 module.exports = require('./util');
 },{"./util":"ACyo5H"}],"AdF7pF":[function(require,module,exports){
 'use strict';
@@ -32495,7 +27606,7 @@ if(config.log) {
 
 },{"../config":"4itQ50"}],"./util/log":[function(require,module,exports){
 module.exports=require('AdF7pF');
-},{}],182:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 
 // current time, in seconds
 exports.curtime = function curtime()
@@ -32507,7 +27618,7 @@ exports.curtime = function curtime()
 },{}],"ACyo5H":[function(require,module,exports){
 (function (process,Buffer){
 var crypto = require('crypto');
-var bignum = require('../lib/Bignum');
+var bignum = require('bignum');
 var Binary = require('binary');
 var Put = require('bufferput');
 var buffertools = require('buffertools');
@@ -32990,6 +28101,6 @@ exports.COIN = 100000000;
 var MAX_TARGET = exports.MAX_TARGET = new Buffer('00000000FFFF0000000000000000000000000000000000000000000000000000', 'hex');
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../browser/vendor-bundle.js":3,"../lib/Bignum":"9Sbj2J","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":103,"binary":76,"buffer":87,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":91,"jssha":156}],"./util/util":[function(require,module,exports){
+},{"../browser/vendor-bundle.js":3,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"binary":69,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","crypto":84,"jssha":117}],"./util/util":[function(require,module,exports){
 module.exports=require('ACyo5H');
 },{}]},{},[])

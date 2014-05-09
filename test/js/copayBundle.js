@@ -243,7 +243,9 @@ API.prototype.help = decorate('help', [
 
 module.exports = require('soop')(API);
 
-},{"./js/models/blockchain/Insight":"N916Nn","./js/models/network/Base":17,"./test/mocks/FakeStorage":"q/5+08","soop":63}],"hxYaTp":[function(require,module,exports){
+},{"./js/models/blockchain/Insight":"N916Nn","./js/models/network/Base":17,"./test/mocks/FakeStorage":"q/5+08","soop":61}],"copay":[function(require,module,exports){
+module.exports=require('hxYaTp');
+},{}],"hxYaTp":[function(require,module,exports){
 
 // core
 module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
@@ -268,9 +270,7 @@ module.exports.WalletFactory = WalletFactory;
 
 module.exports.API = require('./API');
 
-},{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/Passphrase":"07vXYZ","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":12,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":21,"./js/models/storage/LocalPlain":22,"soop":63}],"copay":[function(require,module,exports){
-module.exports=require('hxYaTp');
-},{}],"N916Nn":[function(require,module,exports){
+},{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/Passphrase":"07vXYZ","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/TxProposals":12,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":21,"./js/models/storage/LocalPlain":22,"soop":61}],"N916Nn":[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -495,14 +495,14 @@ module.exports = require('soop')(Insight);
 
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"bitcore":23,"http":40,"soop":63}],"../js/models/blockchain/Insight":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"bitcore":23,"http":38,"soop":61}],"../js/models/blockchain/Insight":[function(require,module,exports){
 module.exports=require('N916Nn');
 },{}],"07vXYZ":[function(require,module,exports){
 'use strict';
 
 function Passphrase(config) {
  config = config || {};
- this.salt = config.storageSalt || 'mjuBtGybi/4=';
+ this.salt = config.salt || 'mjuBtGybi/4=';
  this.iterations = config.iterations || 1000;
 };
 
@@ -520,6 +520,16 @@ Passphrase.prototype.getBase64 = function(password) {
 
   return keyBase64;
 };
+
+Passphrase.prototype.getBase64Async = function(password,cb) {
+  var self = this;
+  setTimeout(function() {
+    var ret = self.getBase64(password);
+    return cb(ret);
+  },10);
+};
+
+
 
 module.exports = Passphrase;
 
@@ -611,8 +621,10 @@ PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
 
 module.exports = require('soop')(PrivateKey);
 
-},{"./PublicKeyRing":"6Bv3pA","bitcore":23,"soop":63}],"../js/models/core/PrivateKey":[function(require,module,exports){
+},{"./PublicKeyRing":"6Bv3pA","bitcore":23,"soop":61}],"../js/models/core/PrivateKey":[function(require,module,exports){
 module.exports=require('41fjjN');
+},{}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
+module.exports=require('6Bv3pA');
 },{}],"6Bv3pA":[function(require,module,exports){
 (function (Buffer){
 
@@ -969,9 +981,7 @@ PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
 module.exports = require('soop')(PublicKeyRing);
 
 }).call(this,require("buffer").Buffer)
-},{"../storage/Base.js":20,"bitcore":23,"buffer":30,"soop":63}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
-module.exports=require('6Bv3pA');
-},{}],12:[function(require,module,exports){
+},{"../storage/Base.js":20,"bitcore":23,"buffer":28,"soop":61}],12:[function(require,module,exports){
 
 'use strict';
 
@@ -1232,9 +1242,7 @@ TxProposals.prototype.merge = function(t) {
 
 module.exports = require('soop')(TxProposals);
 
-},{"../storage/Base":20,"bitcore":23,"soop":63}],"../js/models/core/Wallet":[function(require,module,exports){
-module.exports=require('zfa+FW');
-},{}],"zfa+FW":[function(require,module,exports){
+},{"../storage/Base":20,"bitcore":23,"soop":61}],"zfa+FW":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -1294,7 +1302,6 @@ Wallet.prototype.connectToAll = function() {
     this.sendWalletReady(this.firstCopayerId);
     this.firstCopayerId = null;
   }
-  this.emit('refresh');
 };
 
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
@@ -1444,8 +1451,9 @@ Wallet.prototype.netStart = function() {
   }
 
   net.start(startOpts, function() {
-    self.emit('created', net.getPeer());
     self.connectToAll();
+    self.emit('created', net.getPeer());
+    self.emit('refresh');
   });
 };
 
@@ -1810,7 +1818,9 @@ Wallet.prototype.getNetwork = function() {
 module.exports = require('soop')(Wallet);
 
 }).call(this,require("buffer").Buffer)
-},{"../../../copay":"hxYaTp","bitcore":23,"buffer":30,"events":39,"http":40,"soop":63}],"Pyh7xe":[function(require,module,exports){
+},{"../../../copay":"hxYaTp","bitcore":23,"buffer":28,"events":37,"http":38,"soop":61}],"../js/models/core/Wallet":[function(require,module,exports){
+module.exports=require('zfa+FW');
+},{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
 var imports     = require('soop').imports();
@@ -1878,6 +1888,8 @@ WalletFactory.prototype.fromObj = function(obj) {
   }
   this.log('### WALLET OPENED:', w.id);
 
+  // store imported wallet
+  w.store();
   return w;
 };
 
@@ -1951,8 +1963,11 @@ WalletFactory.prototype.open = function(walletId, opts) {
   opts.verbose = this.verbose;
   this.storage._setPassphrase(opts.passphrase);
 
-  var w = this.read(walletId) || this.create(opts);
-  w.store();
+  var w = this.read(walletId);
+ 
+  if (w) {
+    w.store();
+  }
 
   return w;
 };
@@ -1999,7 +2014,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.privateKey = privateKey;
         data.opts.nickname =  nickname;
         data.opts.passphrase = passphrase;
-        var w = self.open(data.walletId, data.opts);
+        data.opts.id = data.walletId;
+        var w = self.create(data.opts);
         w.firstCopayerId = s.pubKey;
         return cb(null, w);
       }
@@ -2009,7 +2025,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":63}],"./js/models/core/WalletFactory":[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":61}],"./js/models/core/WalletFactory":[function(require,module,exports){
 module.exports=require('Pyh7xe');
 },{}],17:[function(require,module,exports){
 var imports = require('soop').imports();
@@ -2054,9 +2070,7 @@ Network.prototype.disconnect = function(peerId, cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":39,"soop":63}],"../js/models/network/WebRTC":[function(require,module,exports){
-module.exports=require('7xJZlt');
-},{}],"7xJZlt":[function(require,module,exports){
+},{"events":37,"soop":61}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){
 
 var imports     = require('soop').imports();
@@ -2088,11 +2102,8 @@ function Network(opts) {
     mode:'ccm',
     ts:parseInt(64),   
   };
-
-
-  // For using your own peerJs server
-  self.opts = {};
-  ['port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
+  this.opts = {};
+  ['config', 'port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
     if (opts[k]) self.opts[k] = opts[k];
   });
   this.cleanUp();
@@ -2507,7 +2518,9 @@ Network.prototype.disconnect = function(cb, forced) {
 module.exports = require('soop')(Network);
 
 }).call(this,require("buffer").Buffer)
-},{"bitcore":23,"buffer":30,"events":39,"soop":63}],20:[function(require,module,exports){
+},{"bitcore":23,"buffer":28,"events":37,"soop":61}],"../js/models/network/WebRTC":[function(require,module,exports){
+module.exports=require('7xJZlt');
+},{}],20:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -2547,7 +2560,7 @@ Storage.prototype.clearAll = function() {
 
 module.exports = require('soop')(Storage);
 
-},{"soop":63}],21:[function(require,module,exports){
+},{"soop":61}],21:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -2583,8 +2596,12 @@ Storage.prototype._encryptObj = function(obj) {
 };
 
 Storage.prototype._decrypt = function(base64) {
+  var decryptedStr=null;
   var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
-  var decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+
+  if (decrypted)
+    decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+
   return decryptedStr;
 };
 
@@ -2604,7 +2621,7 @@ Storage.prototype._read = function(k) {
     }
   } catch (e) {
     console.log('Error while decrypting: '+e);
-    throw e;
+    return null;
   };
 
   return ret;
@@ -2719,7 +2736,7 @@ Storage.prototype.import = function(base64) {
 
 module.exports = require('soop')(Storage);
 
-},{"soop":63}],22:[function(require,module,exports){
+},{"soop":61}],22:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -2848,7 +2865,7 @@ Storage.prototype.clearAll = function() {
 
 module.exports = require('soop')(Storage);
 
-},{"./Base":20,"soop":63}],23:[function(require,module,exports){
+},{"./Base":20,"soop":61}],23:[function(require,module,exports){
 (function (Buffer){
 /* 
 One way to require files is this simple way:
@@ -2862,10 +2879,10 @@ var requireWhenAccessed = function(name, file) {
   Object.defineProperty(module.exports, name, {get: function() {return require(file)}});
 };
 
-requireWhenAccessed('Bignum', './lib/Bignum');
+requireWhenAccessed('Bignum', 'bignum');
 Object.defineProperty(module.exports, 'bignum', {get: function() {
   console.log('bignum (with a lower-case "b") is deprecated. Use bitcore.Bignum (capital "B") instead.');
-  return require('./lib/Bignum');
+  return require('bignum');
 }});
 requireWhenAccessed('Base58', './lib/Base58');
 Object.defineProperty(module.exports, 'base58', {get: function() {
@@ -2912,14 +2929,15 @@ requireWhenAccessed('WalletKey', './lib/WalletKey');
 requireWhenAccessed('PeerManager', './lib/PeerManager');
 requireWhenAccessed('Message', './lib/Message');
 requireWhenAccessed('Electrum', './lib/Electrum');
+requireWhenAccessed('Armory', './lib/Armory');
 module.exports.Buffer = Buffer;
 
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/Base58":24,"./lib/Bignum":25,"bindings":28,"buffer":30}],24:[function(require,module,exports){
+},{"./lib/Base58":24,"bignum":25,"bindings":26,"buffer":28}],24:[function(require,module,exports){
 (function (Buffer){
 var crypto = require('crypto');
-var bignum = require('./Bignum');
+var bignum = require('bignum');
 
 var globalBuffer = new Buffer(1024);
 var zerobuf = new Buffer(0);
@@ -3036,16 +3054,7 @@ exports.encode = base58.encode;
 exports.decode = base58.decode;
 
 }).call(this,require("buffer").Buffer)
-},{"./Bignum":25,"buffer":30,"crypto":34}],25:[function(require,module,exports){
-(function (process){
-if (process.versions) {
-  module.exports = require('bignum');
-  return;
-}
-module.exports = require('./browser/Bignum');
-
-}).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./browser/Bignum":26,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"bignum":27}],26:[function(require,module,exports){
+},{"bignum":25,"buffer":28,"crypto":32}],25:[function(require,module,exports){
 (function (Buffer){
 /* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
@@ -5172,444 +5181,7 @@ module.exports = BigNumber;
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":30}],27:[function(require,module,exports){
-(function (Buffer){
-try {
-    var cc = new require('./build/Debug/bignum');
-} catch(e) {
-    var cc = new require('./build/Release/bignum');
-}
-var BigNum = cc.BigNum;
-
-module.exports = BigNum;
-
-BigNum.conditionArgs = function(num, base) {
-    if (typeof num !== 'string') num = num.toString(base || 10);
-
-    if (num.match(/e\+/)) { // positive exponent
-        if (!Number(num).toString().match(/e\+/)) {
-        return {
-            num: Math.floor(Number(num)).toString(),
-            base: 10
-        };
-    }
-    else {
-        var pow = Math.ceil(Math.log(num) / Math.log(2));
-        var n = (num / Math.pow(2, pow)).toString(2)
-            .replace(/^0/,'');
-        var i = n.length - n.indexOf('.');
-        n = n.replace(/\./,'');
-
-        for (; i <= pow; i++) n += '0';
-           return {
-               num : n,
-               base : 2,
-           };
-        }
-    }
-    else if (num.match(/e\-/)) { // negative exponent
-        return {
-            num : Math.floor(Number(num)).toString(),
-            base : base || 10
-        };
-    }
-    else {
-        return {
-            num : num,
-            base : base || 10,
-        };
-    }
-};
-
-cc.setJSConditioner(BigNum.conditionArgs);
-
-BigNum.prototype.inspect = function () {
-    return '<BigNum ' + this.toString(10) + '>';
-};
-
-BigNum.prototype.toString = function (base) {
-    var value;
-    if (base) {
-        value = this.tostring(base);
-    } else {
-        value = this.tostring();
-    }
-    if (base > 10 && "string" === typeof value) {
-      value = value.toLowerCase();
-    }
-    return value;
-};
-
-BigNum.prototype.toNumber = function () {
-    return parseInt(this.toString(), 10);
-};
-
-[ 'add', 'sub', 'mul', 'div', 'mod' ].forEach(function (op) {
-    BigNum.prototype[op] = function (num) {
-        if (num instanceof BigNum) {
-            return this['b'+op](num);
-        }
-        else if (typeof num === 'number') {
-            if (num >= 0) {
-                return this['u'+op](num);
-            }
-            else if (op === 'add') {
-                return this.usub(-num);
-            }
-            else if (op === 'sub') {
-                return this.uadd(-num);
-            }
-            else {
-                var x = BigNum(num);
-                return this['b'+op](x);
-            }
-        }
-        else if (typeof num === 'string') {
-            var x = BigNum(num);
-            return this['b'+op](x);
-        }
-        else {
-            throw new TypeError('Unspecified operation for type '
-                + (typeof num) + ' for ' + op);
-        }
-    };
-});
-
-BigNum.prototype.abs = function () {
-    return this.babs();
-};
-
-BigNum.prototype.neg = function () {
-    return this.bneg();
-};
-
-BigNum.prototype.powm = function (num, mod) {
-    var m, res;
-
-    if ((typeof mod) === 'number' || (typeof mod) === 'string') {
-        m = BigNum(mod);
-    }
-    else if (mod instanceof BigNum) {
-        m = mod;
-    }
-
-    if ((typeof num) === 'number') {
-        return this.upowm(num, m);
-    }
-    else if ((typeof num) === 'string') {
-        var n = BigNum(num);
-        return this.bpowm(n, m);
-    }
-    else if (num instanceof BigNum) {
-        return this.bpowm(num, m);
-    }
-};
-
-BigNum.prototype.mod = function (num, mod) {
-    var m, res;
-
-    if ((typeof mod) === 'number' || (typeof mod) === 'string') {
-        m = BigNum(mod);
-    }
-    else if (mod instanceof BigNum) {
-        m = mod;
-    }
-
-    if ((typeof num) === 'number') {
-        return this.umod(num, m);
-    }
-    else if ((typeof num) === 'string') {
-        var n = BigNum(num);
-        return this.bmod(n, m);
-    }
-    else if (num instanceof BigNum) {
-        return this.bmod(num, m);
-    }
-};
-
-
-BigNum.prototype.pow = function (num) {
-    if (typeof num === 'number') {
-        if (num >= 0) {
-            return this.upow(num);
-        }
-        else {
-            return BigNum.prototype.powm.call(this, num, this);
-        }
-    }
-    else {
-        var x = parseInt(num.toString(), 10);
-        return BigNum.prototype.pow.call(this, x);
-    }
-};
-
-BigNum.prototype.shiftLeft = function (num) {
-    if (typeof num === 'number') {
-        if (num >= 0) {
-            return this.umul2exp(num);
-        }
-        else {
-            return this.shiftRight(-num);
-        }
-    }
-    else {
-        var x = parseInt(num.toString(), 10);
-        return BigNum.prototype.shiftLeft.call(this, x);
-    }
-};
-
-BigNum.prototype.shiftRight = function (num) {
-    if (typeof num === 'number') {
-        if (num >= 0) {
-            return this.udiv2exp(num);
-        }
-        else {
-            return this.shiftLeft(-num);
-        }
-    }
-    else {
-        var x = parseInt(num.toString(), 10);
-        return BigNum.prototype.shiftRight.call(this, x);
-    }
-};
-
-BigNum.prototype.cmp = function (num) {
-    if (num instanceof BigNum) {
-        return this.bcompare(num);
-    }
-    else if (typeof num === 'number') {
-        if (num < 0) {
-            return this.scompare(num);
-        }
-        else {
-            return this.ucompare(num);
-        }
-    }
-    else {
-        var x = BigNum(num);
-        return this.bcompare(x);
-    }
-};
-
-BigNum.prototype.gt = function (num) {
-    return this.cmp(num) > 0;
-};
-
-BigNum.prototype.ge = function (num) {
-    return this.cmp(num) >= 0;
-};
-
-BigNum.prototype.eq = function (num) {
-    return this.cmp(num) === 0;
-};
-
-BigNum.prototype.ne = function (num) {
-    return this.cmp(num) !== 0;
-};
-
-BigNum.prototype.lt = function (num) {
-    return this.cmp(num) < 0;
-};
-
-BigNum.prototype.le = function (num) {
-    return this.cmp(num) <= 0;
-};
-
-'and or xor'.split(' ').forEach(function (name) {
-    BigNum.prototype[name] = function (num) {
-        if (num instanceof BigNum) {
-            return this['b' + name](num);
-        }
-        else {
-            var x = BigNum(num);
-            return this['b' + name](x);
-        }
-    };
-});
-
-BigNum.prototype.sqrt = function() {
-    return this.bsqrt();
-};
-
-BigNum.prototype.root = function(num) {
-    if (num instanceof BigNum) {
-        return this.broot(num);
-    }
-    else {
-        var x = BigNum(num);
-        return this.broot(num);
-    }
-};
-
-BigNum.prototype.rand = function (to) {
-    if (to === undefined) {
-        if (this.toString() === '1') {
-            return BigNum(0);
-        }
-        else {
-            return this.brand0();
-        }
-    }
-    else {
-        var x = to instanceof BigNum
-            ? to.sub(this)
-            : BigNum(to).sub(this);
-        return x.brand0().add(this);
-    }
-};
-
-BigNum.prototype.invertm = function (mod) {
-    if (mod instanceof BigNum) {
-        return this.binvertm(mod);
-    }
-    else {
-        var x = BigNum(mod);
-        return this.binvertm(x);
-    }
-};
-
-BigNum.prime = function (bits, safe) {
-  if ("undefined" === typeof safe) {
-    safe = true;
-  }
-
-  // Force uint32
-  bits >>>= 0;
-
-  return BigNum.uprime0(bits, !!safe);
-};
-
-BigNum.prototype.probPrime = function (reps) {
-    var n = this.probprime(reps || 10);
-    return { 1 : true, 0 : false }[n];
-};
-
-BigNum.prototype.nextPrime = function () {
-    var num = this;
-    do {
-        num = num.add(1);
-    } while (!num.probPrime());
-    return num;
-};
-
-BigNum.fromBuffer = function (buf, opts) {
-    if (!opts) opts = {};
-
-    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
-        || opts.endian || 'big'
-    ;
-
-    var size = opts.size === 'auto' ? Math.ceil(buf.length) : (opts.size || 1);
-
-    if (buf.length % size !== 0) {
-        throw new RangeError('Buffer length (' + buf.length + ')'
-            + ' must be a multiple of size (' + size + ')'
-        );
-    }
-
-    var hex = [];
-    for (var i = 0; i < buf.length; i += size) {
-        var chunk = [];
-        for (var j = 0; j < size; j++) {
-            chunk.push(buf[
-                i + (endian === 'big' ? j : (size - j - 1))
-            ]);
-        }
-
-        hex.push(chunk
-            .map(function (c) {
-                return (c < 16 ? '0' : '') + c.toString(16);
-            })
-            .join('')
-        );
-    }
-
-    return BigNum(hex.join(''), 16);
-};
-
-BigNum.prototype.toBuffer = function (opts) {
-    if (typeof opts === 'string') {
-        if (opts !== 'mpint') return 'Unsupported Buffer representation';
-
-        var abs = this.abs();
-        var buf = abs.toBuffer({ size : 1, endian : 'big' });
-        var len = buf.length === 1 && buf[0] === 0 ? 0 : buf.length;
-        if (buf[0] & 0x80) len ++;
-
-        var ret = new Buffer(4 + len);
-        if (len > 0) buf.copy(ret, 4 + (buf[0] & 0x80 ? 1 : 0));
-        if (buf[0] & 0x80) ret[4] = 0;
-
-        ret[0] = len & (0xff << 24);
-        ret[1] = len & (0xff << 16);
-        ret[2] = len & (0xff << 8);
-        ret[3] = len & (0xff << 0);
-
-        // two's compliment for negative integers:
-        var isNeg = this.lt(0);
-        if (isNeg) {
-            for (var i = 4; i < ret.length; i++) {
-                ret[i] = 0xff - ret[i];
-            }
-        }
-        ret[4] = (ret[4] & 0x7f) | (isNeg ? 0x80 : 0);
-        if (isNeg) ret[ret.length - 1] ++;
-
-        return ret;
-    }
-
-    if (!opts) opts = {};
-
-    var endian = { 1 : 'big', '-1' : 'little' }[opts.endian]
-        || opts.endian || 'big'
-    ;
-
-    var hex = this.toString(16);
-    if (hex.charAt(0) === '-') throw new Error(
-        'converting negative numbers to Buffers not supported yet'
-    );
-
-    var size = opts.size === 'auto' ? Math.ceil(hex.length / 2) : (opts.size || 1);
-
-    var len = Math.ceil(hex.length / (2 * size)) * size;
-    var buf = new Buffer(len);
-
-    // zero-pad the hex string so the chunks are all `size` long
-    while (hex.length < 2 * len) hex = '0' + hex;
-
-    var hx = hex
-        .split(new RegExp('(.{' + (2 * size) + '})'))
-        .filter(function (s) { return s.length > 0 })
-    ;
-
-    hx.forEach(function (chunk, i) {
-        for (var j = 0; j < size; j++) {
-            var ix = i * size + (endian === 'big' ? j : size - j - 1);
-            buf[ix] = parseInt(chunk.slice(j*2,j*2+2), 16);
-        }
-    });
-
-    return buf;
-};
-
-Object.keys(BigNum.prototype).forEach(function (name) {
-    if (name === 'inspect' || name === 'toString') return;
-
-    BigNum[name] = function (num) {
-        var args = [].slice.call(arguments, 1);
-
-        if (num instanceof BigNum) {
-            return num[name].apply(num, args);
-        }
-        else {
-            var bigi = BigNum(num);
-            return bigi[name].apply(bigi, args);
-        }
-    };
-});
-
-}).call(this,require("buffer").Buffer)
-},{"buffer":30}],28:[function(require,module,exports){
+},{"buffer":28}],26:[function(require,module,exports){
 (function (process,__filename){
 
 /**
@@ -5772,9 +5344,9 @@ exports.getRoot = function getRoot (file) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/node_modules/bitcore/node_modules/bindings/bindings.js")
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"fs":29,"path":46}],29:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"fs":27,"path":44}],27:[function(require,module,exports){
 
-},{}],30:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -6885,7 +6457,7 @@ function assert (test, message) {
   if (!test) throw new Error(message || 'Failed assertion')
 }
 
-},{"base64-js":31,"ieee754":32}],31:[function(require,module,exports){
+},{"base64-js":29,"ieee754":30}],29:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -7008,7 +6580,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	module.exports.fromByteArray = uint8ToBase64
 }())
 
-},{}],32:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -7094,7 +6666,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],33:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var Buffer = require('buffer').Buffer;
 var intSize = 4;
 var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
@@ -7131,7 +6703,7 @@ function hash(buf, fn, hashSize, bigEndian) {
 
 module.exports = { hash: hash };
 
-},{"buffer":30}],34:[function(require,module,exports){
+},{"buffer":28}],32:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 var sha = require('./sha')
 var sha256 = require('./sha256')
@@ -7230,7 +6802,7 @@ each(['createCredentials'
   }
 })
 
-},{"./md5":35,"./rng":36,"./sha":37,"./sha256":38,"buffer":30}],35:[function(require,module,exports){
+},{"./md5":33,"./rng":34,"./sha":35,"./sha256":36,"buffer":28}],33:[function(require,module,exports){
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -7395,7 +6967,7 @@ module.exports = function md5(buf) {
   return helpers.hash(buf, core_md5, 16);
 };
 
-},{"./helpers":33}],36:[function(require,module,exports){
+},{"./helpers":31}],34:[function(require,module,exports){
 // Original code adapted from Robert Kieffer.
 // details at https://github.com/broofa/node-uuid
 (function() {
@@ -7428,7 +7000,7 @@ module.exports = function md5(buf) {
 
 }())
 
-},{}],37:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -7531,7 +7103,7 @@ module.exports = function sha1(buf) {
   return helpers.hash(buf, core_sha1, 20, true);
 };
 
-},{"./helpers":33}],38:[function(require,module,exports){
+},{"./helpers":31}],36:[function(require,module,exports){
 
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -7612,7 +7184,7 @@ module.exports = function sha256(buf) {
   return helpers.hash(buf, core_sha256, 32, true);
 };
 
-},{"./helpers":33}],39:[function(require,module,exports){
+},{"./helpers":31}],37:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7914,7 +7486,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 var http = module.exports;
 var EventEmitter = require('events').EventEmitter;
 var Request = require('./lib/request');
@@ -8053,7 +7625,7 @@ http.STATUS_CODES = {
     510 : 'Not Extended',               // RFC 2774
     511 : 'Network Authentication Required' // RFC 6585
 };
-},{"./lib/request":41,"events":39,"url":59}],41:[function(require,module,exports){
+},{"./lib/request":39,"events":37,"url":57}],39:[function(require,module,exports){
 var Stream = require('stream');
 var Response = require('./response');
 var Base64 = require('Base64');
@@ -8244,7 +7816,7 @@ var indexOf = function (xs, x) {
     return -1;
 };
 
-},{"./response":42,"Base64":43,"inherits":44,"stream":52}],42:[function(require,module,exports){
+},{"./response":40,"Base64":41,"inherits":42,"stream":50}],40:[function(require,module,exports){
 var Stream = require('stream');
 var util = require('util');
 
@@ -8366,7 +7938,7 @@ var isArray = Array.isArray || function (xs) {
     return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{"stream":52,"util":61}],43:[function(require,module,exports){
+},{"stream":50,"util":59}],41:[function(require,module,exports){
 ;(function () {
 
   var object = typeof exports != 'undefined' ? exports : this; // #8: web workers
@@ -8428,7 +8000,7 @@ var isArray = Array.isArray || function (xs) {
 
 }());
 
-},{}],44:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -8453,7 +8025,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],45:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -8508,7 +8080,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],46:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8736,7 +8308,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45}],47:[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43}],45:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -9247,7 +8819,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],48:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -9333,7 +8905,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],49:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -9420,13 +8992,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],50:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":48,"./encode":49}],51:[function(require,module,exports){
+},{"./decode":46,"./encode":47}],49:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -9500,7 +9072,7 @@ function onend() {
   });
 }
 
-},{"./readable.js":55,"./writable.js":57,"inherits":44,"process/browser.js":53}],52:[function(require,module,exports){
+},{"./readable.js":53,"./writable.js":55,"inherits":42,"process/browser.js":51}],50:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -9629,9 +9201,9 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"./duplex.js":51,"./passthrough.js":54,"./readable.js":55,"./transform.js":56,"./writable.js":57,"events":39,"inherits":44}],53:[function(require,module,exports){
-module.exports=require(45)
-},{}],54:[function(require,module,exports){
+},{"./duplex.js":49,"./passthrough.js":52,"./readable.js":53,"./transform.js":54,"./writable.js":55,"events":37,"inherits":42}],51:[function(require,module,exports){
+module.exports=require(43)
+},{}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -9674,7 +9246,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./transform.js":56,"inherits":44}],55:[function(require,module,exports){
+},{"./transform.js":54,"inherits":42}],53:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -10611,7 +10183,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./index.js":52,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"buffer":30,"events":39,"inherits":44,"process/browser.js":53,"string_decoder":58}],56:[function(require,module,exports){
+},{"./index.js":50,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"buffer":28,"events":37,"inherits":42,"process/browser.js":51,"string_decoder":56}],54:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -10817,7 +10389,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./duplex.js":51,"inherits":44}],57:[function(require,module,exports){
+},{"./duplex.js":49,"inherits":42}],55:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -11205,7 +10777,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./index.js":52,"buffer":30,"inherits":44,"process/browser.js":53}],58:[function(require,module,exports){
+},{"./index.js":50,"buffer":28,"inherits":42,"process/browser.js":51}],56:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -11398,7 +10970,7 @@ function base64DetectIncompleteChar(buffer) {
   return incomplete;
 }
 
-},{"buffer":30}],59:[function(require,module,exports){
+},{"buffer":28}],57:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -12031,14 +11603,14 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":47,"querystring":50}],60:[function(require,module,exports){
+},{"punycode":45,"querystring":48}],58:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],61:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -12628,7 +12200,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":60,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"inherits":44}],62:[function(require,module,exports){
+},{"./support/isBuffer":58,"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"inherits":42}],60:[function(require,module,exports){
 
 module.exports = function(){
   var orig = Error.prepareStackTrace;
@@ -12640,7 +12212,7 @@ module.exports = function(){
   return stack;
 };
 
-},{}],63:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 (function (process,global){
 var path = require('path');
 var callsite = require('callsite');
@@ -12736,7 +12308,9 @@ module.exports.imports = function() {
 };
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":45,"callsite":62,"path":46}],"6xZkYb":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"callsite":60,"path":44}],"./mocks/FakeNetwork":[function(require,module,exports){
+module.exports=require('6xZkYb');
+},{}],"6xZkYb":[function(require,module,exports){
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
@@ -12765,9 +12339,7 @@ Network.prototype.disconnect = function(cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":39,"soop":63}],"./mocks/FakeNetwork":[function(require,module,exports){
-module.exports=require('6xZkYb');
-},{}],"q/5+08":[function(require,module,exports){
+},{"events":37,"soop":61}],"q/5+08":[function(require,module,exports){
 
 var FakeStorage = function(){
   this.storage = {};
@@ -12809,6 +12381,6 @@ FakeStorage.prototype.setFromObj = function(walletId, obj) {
 
 module.exports = require('soop')(FakeStorage);
 
-},{"soop":63}],"./mocks/FakeStorage":[function(require,module,exports){
+},{"soop":61}],"./mocks/FakeStorage":[function(require,module,exports){
 module.exports=require('q/5+08');
 },{}]},{},[])

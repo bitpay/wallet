@@ -3,15 +3,33 @@
 angular.module('copay.controllerUtils')
   .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
     var root = {};
-    $rootScope.videoSrc = {};
+    $rootScope.videoInfo = {};
     $rootScope.loading = false;
 
     $rootScope.getVideoURL = function(copayer) {
-      var encoded = $rootScope.videoSrc[copayer];
-      if (!encoded) return;
+      var vi = $rootScope.videoInfo[copayer]
+      if (!vi) return;
+
+      //alert($rootScope.wallet.getOnlinePeerIDs());
+      //alert(copayer);
+      if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
+        // peer disconnected, remove his video
+        delete $rootScope.videoInfo[copayer]
+        return;
+      }
+
+      var encoded = vi.url;
       var url = decodeURI(encoded);
       var trusted = $sce.trustAsResourceUrl(url);
       return trusted;
+    };
+
+    $rootScope.getVideoMutedStatus = function(copayer) {
+      var vi = $rootScope.videoInfo[copayer]
+      if (!vi) {
+        return;
+      }
+      return vi.muted;
     };
 
     $rootScope.getWalletDisplay = function() {
@@ -24,7 +42,7 @@ angular.module('copay.controllerUtils')
       delete $rootScope['wallet'];
       $rootScope.totalBalance = 0;
       video.close();
-      $rootScope.videoSrc = {};
+      $rootScope.videoInfo = {};
       $location.path('signin');
     };
 
@@ -41,10 +59,13 @@ angular.module('copay.controllerUtils')
     root.startNetwork = function(w) {
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
-          delete $rootScope.videoSrc[peerID];
+          delete $rootScope.videoInfo[peerID];
           return;
         }
-        $rootScope.videoSrc[peerID] = encodeURI(url);
+        $rootScope.videoInfo[peerID] = {
+          url: encodeURI(url),
+          muted: peerID === w.network.peerId
+        };
         $rootScope.$digest();
       };
       w.on('badMessage', function(peerId) {
@@ -59,14 +80,15 @@ angular.module('copay.controllerUtils')
         $location.path('addresses');
       });
       w.on('refresh', function() {
-        root.setSocketHandlers();
         root.updateBalance(function() {
           $rootScope.$digest();
         });
         $rootScope.$digest();
       });
       w.on('publicKeyRingUpdated', function() {
-        root.setSocketHandlers();
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
       });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {

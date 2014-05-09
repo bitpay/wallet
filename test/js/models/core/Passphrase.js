@@ -2,7 +2,7 @@
 
 function Passphrase(config) {
  config = config || {};
- this.salt = config.storageSalt || 'mjuBtGybi/4=';
+ this.salt = config.salt || 'mjuBtGybi/4=';
  this.iterations = config.iterations || 1000;
 };
 
@@ -20,5 +20,15 @@ Passphrase.prototype.getBase64 = function(password) {
 
   return keyBase64;
 };
+
+Passphrase.prototype.getBase64Async = function(password,cb) {
+  var self = this;
+  setTimeout(function() {
+    var ret = self.getBase64(password);
+    return cb(ret);
+  },10);
+};
+
+
 
 module.exports = Passphrase;

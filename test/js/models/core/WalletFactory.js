@@ -65,6 +65,8 @@ WalletFactory.prototype.fromObj = function(obj) {
   }
   this.log('### WALLET OPENED:', w.id);
 
+  // store imported wallet
+  w.store();
   return w;
 };
 
@@ -138,8 +140,11 @@ WalletFactory.prototype.open = function(walletId, opts) {
   opts.verbose = this.verbose;
   this.storage._setPassphrase(opts.passphrase);
 
-  var w = this.read(walletId) || this.create(opts);
-  w.store();
+  var w = this.read(walletId);
+ 
+  if (w) {
+    w.store();
+  }
 
   return w;
 };
@@ -186,7 +191,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.privateKey = privateKey;
         data.opts.nickname =  nickname;
         data.opts.passphrase = passphrase;
-        var w = self.open(data.walletId, data.opts);
+        data.opts.id = data.walletId;
+        var w = self.create(data.opts);
         w.firstCopayerId = s.pubKey;
         return cb(null, w);
       }

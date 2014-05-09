@@ -7,45 +7,62 @@ angular.module('copay.signin').controller('SigninController',
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
 
-    $scope.create = function() {
-      $scope.loading = true;
+    $scope.create = function(form) {
+      if (form && form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
+      }
 
-      $rootScope.walletName = $scope.walletName;
-      $rootScope.walletPassword = $scope.createPassword;
+      $rootScope.walletName = form.walletName.$modelValue;
+      $rootScope.walletPassword = form.createPassword.$modelValue;
       $location.path('setup');
     };
 
-    $scope.open = function() {
-      if ($scope.openPassword != '') {
-        $scope.loading = true;
-
-        var passphrase = Passphrase.getBase64($scope.openPassword);
-        var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
-        controllerUtils.startNetwork(w);
+    $scope.open = function(form) {
+      if (form && form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
       }
+      
+      $scope.loading = true;
+      var password = form.openPassword.$modelValue;
+      Passphrase.getBase64Async(password, function(passphrase){
+        var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
+        if (!w) {
+          $scope.loading = false;
+          $rootScope.flashMessage = { message: 'Bad password or connection error', type: 'error'};
+          $rootScope.$digest();
+          return;
+        }
+        controllerUtils.startNetwork(w);
+      });
     };
 
-    $scope.join = function() {
-      $scope.loading = true;
+    $scope.join = function(form) {
+      if (form && form.$invalid) {
+        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        return;
+      }
 
+      $scope.loading = true;
       walletFactory.network.on('badSecret', function() {
       });
 
-      var passphrase = Passphrase.getBase64($scope.joinPassword);
-      walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, function(err,w) {
-        $scope.loading = false;
-
-        if (err || !w) {
-          if (err === 'joinError') 
-            $rootScope.flashMessage = { message: 'Can not find peer'};
-          else if (err === 'badSecret')  
-            $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
-          else 
-            $rootScope.flashMessage = { message: 'Unknown error', type: 'error'};
-            controllerUtils.onErrorDigest();
-        } else {
-            controllerUtils.startNetwork(w);
-        }
+      Passphrase.getBase64Async($scope.joinPassword, function(passphrase){
+        walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, function(err,w) {
+          $scope.loading = false;
+          if (err || !w) {
+            if (err === 'joinError') 
+              $rootScope.flashMessage = { message: 'Can not find peer'};
+            else if (err === 'badSecret')  
+              $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
+            else 
+              $rootScope.flashMessage = { message: 'Unknown error', type: 'error'};
+              controllerUtils.onErrorDigest();
+          } else {
+              controllerUtils.startNetwork(w);
+          }
+        });
       });
     };
   });

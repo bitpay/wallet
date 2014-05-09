@@ -2,6 +2,6 @@
 
 var passphrase;
 angular.module('copay.passphrase').factory('Passphrase', function($rootScope) {
-  passphrase = passphrase || new copay.Passphrase(config);
+  passphrase = passphrase || new copay.Passphrase(config.passphrase);
   return passphrase;
 });
