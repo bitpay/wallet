@@ -147,6 +147,7 @@ Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId,copayerId);
   Network._arrayPushOnce(peerId, this.connectedPeers);
+  this.emit('connect', copayerId);
 };
 
 Network.prototype._onData = function(encStr, isInbound, peerId) {
@@ -177,7 +178,6 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
     console.log('#### Peer sent hello. Setting it up.'); //TODO
     this._addConnectedCopayer(payload.copayerId, isInbound);
     this._setInboundPeerAuth(peerId, true);
-    this.emit('connect', payload.copayerId);
     return;
   }
 
@@ -223,9 +223,8 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
 
       // The connecting peer send hello 
       if(toCopayerId) {
-        self._addConnectedCopayer(toCopayerId);
         self._sendHello(toCopayerId);      
-        self.emit('connect', toCopayerId); // TODO: try to unify both 'connect' emits
+        self._addConnectedCopayer(toCopayerId);
       }
     }
   });
@@ -423,7 +422,7 @@ Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
   
   this.allowedCopayerIds={};
   for(var i in allowedCopayerIdsArray) {
-    this.allowedCopayerIds[ allowedCopayerIdsArray[i] ] = 1;
+    this.allowedCopayerIds[ allowedCopayerIdsArray[i] ] = true;
   }
 };
 

@@ -91,6 +91,7 @@ angular.module('copay.controllerUtils')
       });
       w.on('openError', root.onErrorDigest);
       w.on('connect', function(peerID) {
+        //alert(w.getRegisteredPeerIds());
         if (peerID) {
           video.callPeer(peerID, handlePeerVideo);
         }
