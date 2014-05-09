@@ -95,6 +95,7 @@ body {
 .panel {
   color: #333;
   background: #FFFFFF;
+  border: 1px solid #EFEFEF;
 }
 
 .transactions .panel {
@@ -141,14 +142,20 @@ a.box-backup:hover i, a.box-backup:hover p {
 }
 
 .alert-box.success {
-  background-color: #1ABC9C;
-  border-color: #16A085;
+  background-color: #CDEFE6;
+  color: #16A085;
+  border:none;
+}
+.alert-box.info {
+  background-color: #DEE6EF;
+  border:none;
+  color: #2C3E50;
 }
 
 .alert-box.error {
-  background-color: #C0392A;
-  border-color: #C0392A;
-  color: #fff;
+  background-color: #E8D7D7;
+  border:none;
+  color: #C0392B;
 }
 
 .text-warning {
@@ -163,7 +170,7 @@ small.has-error {
   color: #f04124;
 }
 
-.panel.radius {
+.radius {
   -webkit-border-radius: 10px;
   border-radius: 10px;
 }

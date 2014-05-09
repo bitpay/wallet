@@ -1820,6 +1820,8 @@ module.exports = require('soop')(Wallet);
 }).call(this,require("buffer").Buffer)
 },{"../../../copay":"hxYaTp","bitcore":23,"buffer":28,"events":37,"http":38,"soop":61}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
+},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -2025,9 +2027,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":61}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
-},{}],17:[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":61}],17:[function(require,module,exports){
 var imports = require('soop').imports();
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
@@ -12308,9 +12308,7 @@ module.exports.imports = function() {
 };
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"callsite":60,"path":44}],"./mocks/FakeNetwork":[function(require,module,exports){
-module.exports=require('6xZkYb');
-},{}],"6xZkYb":[function(require,module,exports){
+},{"/Users/colkito/Devel/BitPay/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":43,"callsite":60,"path":44}],"6xZkYb":[function(require,module,exports){
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
@@ -12339,7 +12337,9 @@ Network.prototype.disconnect = function(cb) {
 
 module.exports = require('soop')(Network);
 
-},{"events":37,"soop":61}],"q/5+08":[function(require,module,exports){
+},{"events":37,"soop":61}],"./mocks/FakeNetwork":[function(require,module,exports){
+module.exports=require('6xZkYb');
+},{}],"q/5+08":[function(require,module,exports){
 
 var FakeStorage = function(){
   this.storage = {};
