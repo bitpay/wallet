@@ -167,7 +167,7 @@
                   <form name="openForm" ng-submit="open(openForm)" novalidate>
                     <select class="form-control" ng-model="selectedWalletId" ng-options="w.id as w.show for w in wallets" required>
                     </select>
-                    <input type="password" class="form-control" placeholder="Your wallet password" name="openPassword" ng-model="openPassword" required>
+                    <input type="password" class="form-control" placeholder="Your password" name="openPassword" ng-model="openPassword" required>
                     <button type="submit" class="button secondary radius" ng-disabled="openForm.$invalid || loading" loading="Opening">Open</button>
                   </form>
                 </div>
@@ -175,7 +175,7 @@
                   <h3>Create a new wallet</h3>
                   <form name="createForm" ng-submit="create(createForm)" novalidate>
                     <input type="text" class="form-control" ng-model="walletName" name="walletName" placeholder="Wallet name (optional)">
-                    <input type="password" class="form-control" placeholder="Your wallet password" name="createPassword" ng-model="createPassword" required>
+                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" required>
                     <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button> 
                   </form>
                 </div>
@@ -186,7 +186,7 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" required>
-                  <input type="password" class="form-control" placeholder="Your wallet password" name="joinPassword" ng-model="joinPassword" required>
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
@@ -264,7 +264,7 @@
               </div>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
-              <h6>Wallet Password <small>Required</small></h6>
+              <h6>Your Wallet Password (you don't need to share this) <small>Required</small></h6>
               <input type="password" class="form-control" ng-model="walletPassword" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
