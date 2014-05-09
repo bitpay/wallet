@@ -80,6 +80,7 @@ angular.module('copay.controllerUtils')
         $location.path('addresses');
       });
       w.on('refresh', function() {
+        //alert('refresh');
         root.updateBalance(function() {
           $rootScope.$digest();
         });
@@ -93,6 +94,7 @@ angular.module('copay.controllerUtils')
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
         video.callPeer(peerID, handlePeerVideo);
+        $rootScope.$digest();
       });
       w.on('close', root.onErrorDigest);
       w.netStart();

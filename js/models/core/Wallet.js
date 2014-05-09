@@ -9,8 +9,8 @@ var Builder = bitcore.TransactionBuilder;
 var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var copay = copay || require('../../../copay');
-var SecureRandom  = bitcore.SecureRandom;
-var Base58Check   = bitcore.Base58.base58Check;
+var SecureRandom = bitcore.SecureRandom;
+var Base58Check = bitcore.Base58.base58Check;
 
 function Wallet(opts) {
   var self = this;
@@ -81,7 +81,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
 
 Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
-  this.log('RECV TXPROPOSAL:', data); 
+  this.log('RECV TXPROPOSAL:', data);
 
   var recipients;
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
@@ -127,7 +127,6 @@ Wallet.prototype._handleNetworkChange = function(newCopayerId) {
     this.sendWalletId(newCopayerId);
     this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
-  this.emit('refresh');
 };
 
 
@@ -156,9 +155,9 @@ Wallet.prototype.getMyCopayerId = function() {
 
 
 Wallet.prototype.getSecret = function() {
-  var i = new Buffer(this.getMyCopayerId(),'hex');
-  var k = new Buffer(this.netKey,'base64');
-  var b = Buffer.concat([i,k]);
+  var i = new Buffer(this.getMyCopayerId(), 'hex');
+  var k = new Buffer(this.netKey, 'base64');
+  var b = Buffer.concat([i, k]);
   var str = Base58Check.encode(b);
   return str;
 };
@@ -167,7 +166,7 @@ Wallet.prototype.getSecret = function() {
 Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
   var netKeyBuf = secret.slice(-8);
-  var pubKeyBuf = secret.slice(0,33);
+  var pubKeyBuf = secret.slice(0, 33);
   return {
     pubKey: pubKeyBuf.toString('hex'),
     netKey: netKeyBuf.toString('base64'),
@@ -231,17 +230,10 @@ Wallet.prototype.getRegisteredPeerIds = function() {
   return this.registeredPeerIds;
 };
 
-Wallet.prototype.store = function(isSync) {
+Wallet.prototype.store = function() {
   var wallet = this.toObj();
   this.storage.setFromObj(this.id, wallet);
-
-  if (isSync) {
-    this.log('Wallet stored.'); //TODO
-  } else {
-    this.log('Wallet stored. REFRESH Emitted'); //TODO
-    this.emit('refresh');
-  }
-
+  this.log('Wallet stored');
 };
 
 Wallet.prototype.toObj = function() {
@@ -257,14 +249,14 @@ Wallet.prototype.toObj = function() {
 };
 
 Wallet.fromObj = function(o, storage, network, blockchain) {
-  var opts           = JSON.parse(JSON.stringify(o.opts));
+  var opts = JSON.parse(JSON.stringify(o.opts));
   opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals   = copay.TxProposals.fromObj(o.txProposals);
-  opts.privateKey    = copay.PrivateKey.fromObj(o.privateKey);
+  opts.txProposals = copay.TxProposals.fromObj(o.txProposals);
+  opts.privateKey = copay.PrivateKey.fromObj(o.privateKey);
 
-  opts.storage       = storage;
-  opts.network       = network;
-  opts.blockchain    = blockchain;
+  opts.storage = storage;
+  opts.network = network;
+  opts.blockchain = blockchain;
   var w = new Wallet(opts);
   return w;
 };
@@ -319,7 +311,8 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 Wallet.prototype.generateAddress = function(isChange) {
   var addr = this.publicKeyRing.generateAddress(isChange);
   this.sendPublicKeyRing();
-  this.store(true);
+  this.store();
+  this.emit('refresh');
   return addr;
 };
 
@@ -346,7 +339,8 @@ Wallet.prototype.reject = function(ntxid) {
 
   txp.rejectedBy[myId] = Date.now();
   this.sendTxProposals();
-  this.store(true);
+  this.store();
+  this.emit('refresh');
 };
 
 
@@ -363,14 +357,14 @@ Wallet.prototype.sign = function(ntxid) {
   var before = b.signaturesAdded;
   b.sign(keys);
 
-  var ret = false;
   if (b.signaturesAdded > before) {
     txp.signedBy[myId] = Date.now();
     this.sendTxProposals();
-    this.store(true);
-    ret = true;
+    this.store();
+    this.emit('refresh');
+    return true;
   }
-  return ret;
+  return false;
 };
 
 Wallet.prototype.sendTx = function(ntxid, cb) {
