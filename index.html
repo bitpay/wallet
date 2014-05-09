@@ -74,18 +74,15 @@
       <div class="row">
         <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
             <div class="alert-box error radius" data-alert>
-              
-              <div class="size-18">
-                  <i class="fi-alert"></i> 
-                  Note: Your wallet is not complete yet. 
-                  <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-                  {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
-                  </span>
-                  <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
-                  One key is 
-                  </span>
-                  missing. 
-              </div>
+              <i class="fi-alert"></i> 
+              Note: Your wallet is not complete yet. 
+              <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
+              {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} keys are 
+              </span>
+              <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+              One key is 
+              </span>
+              missing. 
             </div>
 
             <div class="panel radius">
@@ -93,12 +90,12 @@
                 <small> for them to join your wallet</small>
               </h3>
               <div class="row">
-                <div class="large-9 columns line-dashed-v text-gray">
-                  <div class="panel input left">
+                <div class="large-9 medium-12 small-12 columns line-dashed-v text-gray">
+                  <div class="panel input">
                     <p class="text-gray">{{$root.wallet.getSecret()}}</p>
                   </div>
                 </div>
-                <div class="large-3 columns" ng-show="$root.wallet">
+                <div class="large-3 columns hide-for-medium hide-for-small" ng-show="$root.wallet">
                   <h5 class="m0">{{$root.getWalletDisplay()}}</h5>
                   <p class="text-gray">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet</p>
                 </div>
@@ -164,7 +161,7 @@
         <div ng-show="!loading">
           <div class="row">
             <div class="large-6 medium-6 columns">
-              <div class="box-signin">
+              <div class="box-signin radius">
                 <div ng-show="wallets.length">
                   <h3>Open Wallet</h3>
                   <form name="openForm" ng-submit="open(openForm)" novalidate>
@@ -185,7 +182,7 @@
               </div>
             </div>
             <div class="large-6 medium-6 columns">
-              <div class="box-signin">
+              <div class="box-signin radius">
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" required>
@@ -299,7 +296,7 @@
           <div class="row">
             <div class="large-9 medium-12 columns" ng-if="addrInfos[0]">
               <div class="large-8 medium-8 columns">
-                <a class="panel db" ng-repeat="addrInfo in addrInfos"
+                <a class="panel radius db" ng-repeat="addrInfo in addrInfos"
                   ng-click="selectAddr(addrInfo.address.toString())">
                   <span>{{addrInfo.address.toString()}}</span>
                   <span ng-if="addrInfo.isChange">(change)</span>
@@ -566,13 +563,13 @@
         <h3>{{title}}</h3>
         <div class="row text-center">
           <div class="large-6 medium-6 columns">
-            <a class="panel box-backup" ng-click="download()">
+            <a class="panel radius box-backup" ng-click="download()">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
           <div class="large-6 medium-6 columns">
-            <a class="panel box-backup" ng-click="email()">
+            <a class="panel radius box-backup" ng-click="email()">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>
             </a>
