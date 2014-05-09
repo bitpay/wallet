@@ -21,6 +21,15 @@ html, body {height: 100%;}
   padding-bottom: 28px !important;
 }
 
+.panel.input {
+  padding: 0.7rem 1rem;
+  margin-bottom: 0;
+  border-radius: 5px;
+  background: #F8F8F8;
+  -moz-box-shadow:    inset 0px 0px 3px 0px rgba(0,0,0,0.10);
+  box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10);
+}
+
 #footer {
   position: fixed;
 	margin-top: -96px; /* negative value of footer height */
@@ -113,7 +122,7 @@ html, body {height: 100%;}
 }
 
 .panel {
-  padding: 0.7rem 1rem;
+  /* padding: 0.7rem 1rem; */
   border:0;
 }
 
@@ -240,7 +249,8 @@ small.has-error {
 .new-address {
   width: 220px;
 }
-
+ 
+ 
 hr { margin: 2.25rem 0;}
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -248,7 +258,7 @@ hr { margin: 2.25rem 0;}
 }
 .dn {display: none;}
 .pr {position: relative;}
-.m0 {margin: 0;}
+.m0 {margin: 0 !important;}
 .db {display: block;}
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
@@ -262,6 +272,7 @@ hr { margin: 2.25rem 0;}
 .size-72 { font-size: 72px; }
 .m10t {margin-top: 10px;}
 .m10b {margin-bottom: 10px;}
+.m15b {margin-bottom: 20px !important;}
 .m10r {margin-right: 10px;}
 .m10 {margin: 10px !important;}
 .m15 {margin: 15px !important;}
