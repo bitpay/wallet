@@ -84,11 +84,6 @@ angular.module('copay.controllerUtils')
         });
         $rootScope.$digest();
       });
-      w.on('publicKeyRingUpdated', function() {
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
-      });
       w.on('openError', root.onErrorDigest);
       w.on('connect', function(peerID) {
         //alert(w.getRegisteredPeerIds());

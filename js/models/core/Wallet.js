@@ -79,7 +79,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
     recipients = null;
     this.sendPublicKeyRing(recipients);
   }
-  this.emit('publicKeyRingUpdated', this.publicKeyRing);
+  this.emit('refresh', this.publicKeyRing);
   this.store();
 };
 
