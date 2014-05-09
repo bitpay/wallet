@@ -96,6 +96,9 @@ angular.module('copay.controllerUtils')
         }
         $rootScope.$digest();
       });
+      w.on('disconnect', function(peerID) {
+        $rootScope.$digest();
+      });
       w.on('close', root.onErrorDigest);
       w.netStart();
     };

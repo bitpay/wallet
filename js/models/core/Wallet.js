@@ -134,7 +134,8 @@ Wallet.prototype._handleConnect = function(newCopayerId) {
   this.emit('connect', peerID);
 };
 
-Wallet.prototype._handleDisconnect = function(copayerID) {
+Wallet.prototype._handleDisconnect = function(peerID) {
+  this.emit('disconnect', peerID);
 };
 
 Wallet.prototype._optsToObj = function() {

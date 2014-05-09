@@ -115,9 +115,9 @@ Network.prototype._deletePeer = function(peerId) {
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
 };
 
-Network.prototype._onClose = function(peerId) {
-  this._deletePeer(peerId);
-  this.emit('disconnect');
+Network.prototype._onClose = function(peerID) {
+  this._deletePeer(peerID);
+  this.emit('disconnect', peerID);
 };
 
 Network.prototype.connectToCopayers = function(copayerIds) {
