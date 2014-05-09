@@ -5,7 +5,7 @@ var bitcore     = require('bitcore');
 var util        = bitcore.util;
 /*
  * Emits
- *  'networkChange'
+ *  'connect'
  *    when network layout has change (new/lost peers, etc)
  *
  *  'data'
@@ -117,7 +117,7 @@ Network.prototype._deletePeer = function(peerId) {
 
 Network.prototype._onClose = function(peerId) {
   this._deletePeer(peerId);
-  this._notifyNetworkChange();
+  this.emit('disconnect');
 };
 
 Network.prototype.connectToCopayers = function(copayerIds) {
@@ -128,8 +128,7 @@ Network.prototype.connectToCopayers = function(copayerIds) {
     if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
       console.log('### IGNORING STRANGE COPAYER:', copayerId);
       this._deletePeer(this.peerFromCopayer(copayerId));
-    }
-    else {
+    } else {
       console.log('### CONNECTING TO:', copayerId);
       self.connectTo(copayerId);
     }
@@ -178,8 +177,7 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
     console.log('#### Peer sent hello. Setting it up.'); //TODO
     this._addConnectedCopayer(payload.copayerId, isInbound);
     this._setInboundPeerAuth(peerId, true);
-    this._notifyNetworkChange( isInbound ? payload.copayerId : null);
-    this.emit('open');
+    this.emit('connect', payload.copayerId);
     return;
   }
 
@@ -227,6 +225,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
       if(toCopayerId) {
         self._addConnectedCopayer(toCopayerId);
         self._sendHello(toCopayerId);      
+        self.emit('connect', toCopayerId); // TODO: try to unify both 'connect' emits
       }
     }
   });
@@ -249,10 +248,6 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
   });
-};
-
-Network.prototype._notifyNetworkChange = function(newCopayerId) {
-  this.emit('networkChange', newCopayerId);
 };
 
 Network.prototype._setupPeerHandlers = function(openCallback) {

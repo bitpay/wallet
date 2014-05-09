@@ -49,12 +49,16 @@ Wallet.getRandomId = function() {
   return r;
 };
 
+Wallet.prototype.seedCopayer = function(pubKey) {
+  this.seededCopayerId = pubKey;
+};
+
 Wallet.prototype.connectToAll = function() {
   var all = this.publicKeyRing.getAllCopayerIds();
   this.network.connectToCopayers(all);
-  if (this.firstCopayerId) {
-    this.sendWalletReady(this.firstCopayerId);
-    this.firstCopayerId = null;
+  if (this.seededCopayerId) {
+    this.sendWalletReady(this.seededCopayerId);
+    this.seededCopayerId = null;
   }
 };
 
@@ -121,14 +125,17 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._handleNetworkChange = function(newCopayerId) {
+Wallet.prototype._handleConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
-    this.emit('peer', this.network.peerFromCopayer(newCopayerId));
   }
+  var peerID = this.network.peerFromCopayer(newCopayerId)
+  this.emit('connect', peerID);
 };
 
+Wallet.prototype._handleDisconnect = function(copayerID) {
+};
 
 Wallet.prototype._optsToObj = function() {
   var obj = {
@@ -181,9 +188,9 @@ Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
   net.removeAllListeners();
-  net.on('networkChange', self._handleNetworkChange.bind(self));
+  net.on('connect', self._handleConnect.bind(self));
+  net.on('disconnect', self._handleDisconnect.bind(self));
   net.on('data', self._handleData.bind(self));
-  net.on('open', function() {}); // TODO
   net.on('openError', function() {
     self.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
     self.emit('openError');
@@ -283,7 +290,6 @@ Wallet.prototype.sendWalletReady = function(recipients) {
     type: 'walletReady',
     walletId: this.id,
   });
-  this.emit('walletReady');
 };
 
 Wallet.prototype.sendWalletId = function(recipients) {

@@ -10,8 +10,6 @@ angular.module('copay.controllerUtils')
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) return;
 
-      //alert($rootScope.wallet.getOnlinePeerIDs());
-      //alert(copayer);
       if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
         // peer disconnected, remove his video
         delete $rootScope.videoInfo[copayer]
@@ -81,7 +79,6 @@ angular.module('copay.controllerUtils')
         $rootScope.$digest();
       });
       w.on('refresh', function() {
-        //alert('refresh');
         root.updateBalance(function() {
           $rootScope.$digest();
         });
@@ -93,9 +90,10 @@ angular.module('copay.controllerUtils')
         });
       });
       w.on('openError', root.onErrorDigest);
-      w.on('peer', function(peerID) {
-        //alert('peer');
-        video.callPeer(peerID, handlePeerVideo);
+      w.on('connect', function(peerID) {
+        if (peerID) {
+          video.callPeer(peerID, handlePeerVideo);
+        }
         $rootScope.$digest();
       });
       w.on('close', root.onErrorDigest);
