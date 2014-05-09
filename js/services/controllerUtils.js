@@ -79,8 +79,8 @@ angular.module('copay.controllerUtils')
         $rootScope.$digest();
       });
       w.on('refresh', function() {
-        root.updateBalance(function() {
-        });
+        alert('refresh');
+        root.updateBalance();
         $rootScope.$digest();
       });
       w.on('openError', root.onErrorDigest);
@@ -134,8 +134,7 @@ angular.module('copay.controllerUtils')
       addrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance(function() {
-          });
+          root.updateBalance();
         });
       });
     };

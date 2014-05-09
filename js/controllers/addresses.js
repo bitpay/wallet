@@ -9,9 +9,6 @@ angular.module('copay.addresses').controller('AddressesController',
     $scope.newAddr = function() {
       $scope.loading = true;
       w.generateAddress();
-      controllerUtils.updateBalance(function() {
-        $scope.loading = false;
-      });
     };
 
     $scope.selectAddr = function(addr) {
