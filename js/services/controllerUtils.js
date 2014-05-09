@@ -74,10 +74,11 @@ angular.module('copay.controllerUtils')
           message: 'Received wrong message from peer id:' + peerId
         };
       });
-      w.on('created', function(myPeerID) {
+      w.on('ready', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $rootScope.wallet = w;
         $location.path('addresses');
+        $rootScope.$digest();
       });
       w.on('refresh', function() {
         //alert('refresh');
@@ -93,6 +94,7 @@ angular.module('copay.controllerUtils')
       });
       w.on('openError', root.onErrorDigest);
       w.on('peer', function(peerID) {
+        //alert('peer');
         video.callPeer(peerID, handlePeerVideo);
         $rootScope.$digest();
       });

@@ -205,7 +205,7 @@ Wallet.prototype.netStart = function() {
 
   net.start(startOpts, function() {
     self.connectToAll();
-    self.emit('created', net.getPeer());
+    self.emit('ready', net.getPeer());
     self.emit('refresh');
   });
 };
