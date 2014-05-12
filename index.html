@@ -40,6 +40,7 @@
                 <span ng-if="!$root.loading">{{availableBalance || 0}}</span>
                 <i class="fi-bitcoin"></i>
               </div>
+     
             </div>
           </div>
 
@@ -578,8 +579,23 @@
       </div>
     </script>
 
-<!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
-          // <div class="large-4 columns box-backup">Backup to email</div> -->
+
+    <!-- UNSUPPORTED -->
+    <script type="text/ng-template" id="unsupported.html">
+      <h2 class="text-center">Browser unsupported</h2>
+      <h3 class="text-center">
+Copay uses webRTC for peer-to-peer communications, 
+but your browser does not support it. 
+Please use 
+  a current version of Google Chrome, Mozilla Firefox, or Opera. 
+<br><br>
+
+For more information
+on supported browsers please check <a href="http://www.webrtc.org/">http://www.webrtc.org/</a>
+      </h3>
+
+    </script>
+
     <!-- NOT FOUND -->
     <script type="text/ng-template" id="404.html">
       <h2 class="text-center">404</h2>
