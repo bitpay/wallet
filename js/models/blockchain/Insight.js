@@ -114,26 +114,22 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 
   var all = [];
 
-  _asyncForEach(addresses, function(addr, callback) {
-    var options = {
-      host: self.host,
-      port: self.port,
-      scheme: self.scheme,
-      method: 'GET',
-      path: '/api/addr/' + addr + '/utxo',
+  var options = {
+    host: self.host,
+    port: self.port,
+    scheme: self.scheme,
+    method: 'GET',
+    path: '/api/addrs/' + addresses.join(',') + '/utxo',
 
-      headers: {
-        'Access-Control-Request-Headers': ''
-      }
-    };
+    headers: {
+      'Access-Control-Request-Headers': ''
+    }
+  };
 
-    self._request(options, function(err, res) {
-      if (res && res.length > 0) {
-        all = all.concat(res);
-      }
-      callback();
-    });
-  }, function() {
+  self._request(options, function(err, res) {
+    if (res && res.length > 0) {
+      all = all.concat(res);
+    }
     return cb(all);
   });
 };
