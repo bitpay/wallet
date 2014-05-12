@@ -10,8 +10,6 @@ angular.module('copay.controllerUtils')
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) return;
 
-      //alert($rootScope.wallet.getOnlinePeerIDs());
-      //alert(copayer);
       if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
         // peer disconnected, remove his video
         delete $rootScope.videoInfo[copayer]
@@ -74,25 +72,25 @@ angular.module('copay.controllerUtils')
           message: 'Received wrong message from peer id:' + peerId
         };
       });
-      w.on('created', function(myPeerID) {
+      w.on('ready', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $rootScope.wallet = w;
         $location.path('addresses');
-      });
-      w.on('refresh', function() {
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
         $rootScope.$digest();
       });
-      w.on('publicKeyRingUpdated', function() {
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
+      w.on('refresh', function() {
+        root.updateBalance();
+        $rootScope.$digest();
       });
       w.on('openError', root.onErrorDigest);
-      w.on('peer', function(peerID) {
-        video.callPeer(peerID, handlePeerVideo);
+      w.on('connect', function(peerID) {
+        if (peerID) {
+          video.callPeer(peerID, handlePeerVideo);
+        }
+        $rootScope.$digest();
+      });
+      w.on('disconnect', function(peerID) {
+        $rootScope.$digest();
       });
       w.on('close', root.onErrorDigest);
       w.netStart();
@@ -111,6 +109,7 @@ angular.module('copay.controllerUtils')
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
         $rootScope.loading = false;
+        $rootScope.$digest();
         if (cb) cb();
       });
       w.getBalance(true, function(balance) {
@@ -134,9 +133,7 @@ angular.module('copay.controllerUtils')
       addrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
+          root.updateBalance();
         });
       });
     };
