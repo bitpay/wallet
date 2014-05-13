@@ -25,6 +25,8 @@
                 <a class="button radius small-icon" title="Manual Refresh"
                   ng-disabled="$root.loading"
                   ng-click="refresh()"><i class="fi-refresh"></i></a>
+                <a class="button radius small-icon" title="Settings"
+                  ng-disabled="$root.loading" href="#settings"><i class="fi-widget"></i></a>
                 <a class="button radius small-icon" title="Signout" 
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
@@ -199,6 +201,7 @@
 
           <div class="row">
             <div class="large-12 columns text-center line-dashed">
+              <a href="#settings">Settings</a> &middot;
               <span ng-show="wallets.length">
                 <a href="#/setup">Create a new wallet</a> &middot;
               </span>
@@ -562,7 +565,7 @@
 
     <!-- BACKUP -->
     <script type="text/ng-template" id="backup.html">
-      <div class="backup" data-ng-controller="BackupController">
+      <div class="backup" ng-controller="BackupController">
         <h3>{{title}}</h3>
         <div class="row text-center">
           <div class="large-6 medium-6 columns">
@@ -581,6 +584,49 @@
       </div>
     </script>
 
+    <!-- CONFIG -->
+    <script type="text/ng-template" id="settings.html">
+      <div class="settings" ng-controller="SettingsController">
+        <h3>{{title}}</h3>
+        <div class="small-12 medium-6 medium-centered large-6 large-centered columns">
+          <fieldset>
+            <legend>Network Name</legend>
+            <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="livenet" ng-false-value="testnet">
+            <label for="network-name">Livenet</label>
+          </fieldset>
+          <fieldset>
+            <legend>Blockchain</legend>
+            <div class="row">
+              <label for="blockchain-host">Host</label>
+              <input type="text" ng-model="blockchainHost">
+            </div>
+            <div class="row">
+              <label for="blockchain-port">Port</label>
+              <input type="number" ng-model="blockchainPort">
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Socket</legend>
+            <div class="row">
+              <label for="socket-host">Host</label>
+              <input type="text" ng-model="socketHost">
+            </div>
+            <div class="row">
+              <label for="socket-port">Port</label>
+              <input type="number" ng-model="socketPort">
+            </div>
+          </fieldset>
+        </div>
+        <div class="row">
+          <div class="large-12 columns line-dashed">
+            <button type="submit" class="button primary radius right ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+             Save
+            </button>
+            <a class="button secondary radius" href="#signin" ng-hide="$root.wallet">Signin</a>
+          </div>
+        </div>
+      </div>
+    </script>
 
     <!-- UNSUPPORTED -->
     <script type="text/ng-template" id="unsupported.html">
@@ -644,6 +690,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="js/controllers/signin.js"></script>
     <script src="js/controllers/setup.js"></script>
     <script src="js/controllers/import.js"></script>
+    <script src="js/controllers/settings.js"></script>
 
     <script src="js/init.js"></script>
   </body>
