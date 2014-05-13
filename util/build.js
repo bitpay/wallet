@@ -25,8 +25,6 @@ var pack = function (params) {
 };
 
 var createBundle = function(opts) {
-
-
   opts.dir = opts.dir || 'js/';
 
   // concat browser vendor files
@@ -39,10 +37,15 @@ var createBundle = function(opts) {
     insertGlobals: true
   };
   var b = browserify(bopts);
+
+  b.require('bitcore/node_modules/browserify-buffertools/buffertools.js', {
+    expose: 'buffertools'
+  });
+
   b.require('./copay', {
     expose: 'copay'
   });
-  b.external('bitcore');
+//  b.external('bitcore');
   b.require('./js/models/core/WalletFactory');
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {
