@@ -505,6 +505,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
       self.sendPublicKeyRing(); // Change Address
       self.sendTxProposals();
       self.store();
+      self.emit('txProposalsUpdated');
     }
     return cb();
   });
