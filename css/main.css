@@ -88,6 +88,11 @@ html, body {height: 100%;}
   width: 25%;
 }
 
+.top-bar-section .label.alert {
+  vertical-align: super;
+  margin-left: 5px;
+}
+
 .header {
   margin-bottom: 30px;
 }

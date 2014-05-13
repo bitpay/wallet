@@ -82,6 +82,10 @@ angular.module('copay.controllerUtils')
         root.updateBalance();
         $rootScope.$digest();
       });
+      w.on('txProposalsUpdated', function() {
+        root.updateTxs();
+        root.updateBalance();
+      });
       w.on('openError', root.onErrorDigest);
       w.on('connect', function(peerID) {
         if (peerID) {
@@ -104,7 +108,6 @@ angular.module('copay.controllerUtils')
       if ($rootScope.addrInfos.length === 0) return;
       $rootScope.loading = true;
       w.getBalance(false, function(balance, balanceByAddr) {
-        console.log('New total balance:', balance);
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
@@ -113,12 +116,52 @@ angular.module('copay.controllerUtils')
         if (cb) cb();
       });
       w.getBalance(true, function(balance) {
-        console.log('New available balance:', balance);
         $rootScope.availableBalance = balance;
         $rootScope.loading = false;
+        $rootScope.$digest();
         if (cb) cb();
       });
     };
+
+    root.updateTxs = function() {
+      var bitcore = require('bitcore');
+      var w = $rootScope.wallet;
+      if (!w) return;
+      
+      var inT = w.getTxProposals();
+      var txs  = [];
+
+      inT.forEach(function(i){
+        var tx  = i.builder.build();
+        var outs = [];
+
+        tx.outs.forEach(function(o) {
+          var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+          if (!w.addressIsOwn(addr, {excludeMain:true})) {
+            outs.push({
+              address: addr, 
+              value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+            });
+          }
+        });
+        // extra fields
+        i.outs = outs;
+        i.fee = i.builder.feeSat/bitcore.util.COIN;
+        i.missingSignatures = tx.countInputMissingSignatures(0);
+        txs.push(i);
+      });
+      $rootScope.txs = txs;
+      var pending = 0;
+      for(var i=0; i<txs.length;i++) {
+        if (!txs[i].finallyRejected && !txs[i].sentTs) {
+          pending++;
+        }
+      }
+      $rootScope.pendingTxCount = pending;
+      w.removeListener('txProposalsUpdated',root.updateTxs)
+      w.once('txProposalsUpdated',root.updateTxs);
+      $rootScope.loading = false;
+    };    
 
     root.setSocketHandlers = function() {
       // TODO: optimize this?
