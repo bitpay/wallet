@@ -83,7 +83,6 @@ angular.module('copay.controllerUtils')
         $rootScope.$digest();
       });
       w.on('txProposalsUpdated', function() {
-        console.log('[ txProposalsUpdated ]'); //TODO
         root.updateTxs();
         root.updateBalance();
       });
@@ -109,7 +108,6 @@ angular.module('copay.controllerUtils')
       if ($rootScope.addrInfos.length === 0) return;
       $rootScope.loading = true;
       w.getBalance(false, function(balance, balanceByAddr) {
-        console.log('New total balance:', balance);
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
@@ -118,7 +116,6 @@ angular.module('copay.controllerUtils')
         if (cb) cb();
       });
       w.getBalance(true, function(balance) {
-        console.log('New available balance:', balance);
         $rootScope.availableBalance = balance;
         $rootScope.loading = false;
         $rootScope.$digest();
@@ -154,13 +151,13 @@ angular.module('copay.controllerUtils')
         txs.push(i);
       });
       $rootScope.txs = txs;
-      var txps = 0;
+      var pending = 0;
       for(var i=0; i<txs.length;i++) {
         if (!txs[i].finallyRejected && !txs[i].sentTs) {
-          txps++;
+          pending++;
         }
       }
-      $rootScope.txslength = txps;
+      $rootScope.pendingTxCount = pending;
       w.removeListener('txProposalsUpdated',root.updateTxs)
       w.once('txProposalsUpdated',root.updateTxs);
       $rootScope.loading = false;
