@@ -85,6 +85,7 @@ angular.module('copay.controllerUtils')
       w.on('txProposalsUpdated', function() {
         console.log('[ txProposalsUpdated ]'); //TODO
         root.updateTxs();
+        root.updateBalance();
       });
       w.on('openError', root.onErrorDigest);
       w.on('connect', function(peerID) {
@@ -153,8 +154,13 @@ angular.module('copay.controllerUtils')
         txs.push(i);
       });
       $rootScope.txs = txs;
-console.log('[controllerUtils.js:155]',txs); //TODO
-      $rootScope.txslength = txs.length;
+      var txps = 0;
+      for(var i=0; i<txs.length;i++) {
+        if (!txs[i].finallyRejected && !txs[i].sentTs) {
+          txps++;
+        }
+      }
+      $rootScope.txslength = txps;
       w.removeListener('txProposalsUpdated',root.updateTxs)
       w.once('txProposalsUpdated',root.updateTxs);
       $rootScope.loading = false;

@@ -16,6 +16,7 @@ angular.module('copay.transactions').controller('TransactionsController',
             : {type:'error', message: 'There was an error sending the Transaction'}
             ;
           controllerUtils.updateTxs();
+          $scope.loading = false;
           $rootScope.$digest();    
       });
     };
@@ -28,15 +29,18 @@ angular.module('copay.transactions').controller('TransactionsController',
       if (!ret) {
         $rootScope.flashMessage = {type:'error', message: 'There was an error signing the Transaction'};
         controllerUtils.updateTxs();
-        $rootScope.$digest();    
+        $scope.loading = false;
+        $rootScope.$digest();
         return;
       }
       var p = w.txProposals.getTxProposal(ntxid);
       if (p.builder.isFullySigned()) {
         $scope.send(ntxid);
+        controllerUtils.updateTxs();
       }
       else {
         controllerUtils.updateTxs();
+        $scope.loading = false;
         $rootScope.$digest();    
       }
     };
@@ -64,8 +68,7 @@ angular.module('copay.transactions').controller('TransactionsController',
       var w = $rootScope.wallet;
       w.reject(ntxid);
       $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};
-      controllerUtils.updateTxs();
-//      $rootScope.$digest();    
+      $scope.loading = false;
     };
 
   });
