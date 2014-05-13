@@ -42,6 +42,7 @@ var createBundle = function(opts) {
   b.require('./copay', {
     expose: 'copay'
   });
+  b.external('bitcore');
   b.require('./js/models/core/WalletFactory');
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {

@@ -46,6 +46,9 @@ angular
         templateUrl: 'settings.html',
         validate: false
       })
+      .when('/unsupported', {
+        templateUrl: 'unsupported.html'
+      })
       .otherwise({
         templateUrl: '404.html'
       });
@@ -61,8 +64,14 @@ angular
   })
   .run(function($rootScope, $location) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
-        $location.path('signin');
+
+      if (!util.supports.data) {
+        $location.path('unsupported');
+      }  
+      else {
+        if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
+          $location.path('signin');
+        }
       }
     });
   });

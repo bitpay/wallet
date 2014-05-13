@@ -346,7 +346,7 @@ Wallet.prototype.reject = function(ntxid) {
   txp.rejectedBy[myId] = Date.now();
   this.sendTxProposals();
   this.store();
-  this.emit('refresh');
+  this.emit('txProposalsUpdated');
 };
 
 
@@ -367,7 +367,7 @@ Wallet.prototype.sign = function(ntxid) {
     txp.signedBy[myId] = Date.now();
     this.sendTxProposals();
     this.store();
-    this.emit('refresh');
+    this.emit('txProposalsUpdated');
     return true;
   }
   return false;
@@ -505,6 +505,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
       self.sendPublicKeyRing(); // Change Address
       self.sendTxProposals();
       self.store();
+      self.emit('txProposalsUpdated');
     }
     return cb();
   });
