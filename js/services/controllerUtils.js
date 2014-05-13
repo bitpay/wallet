@@ -101,7 +101,6 @@ angular.module('copay.controllerUtils')
     };
 
     root.updateBalance = function(cb) {
-      root.setSocketHandlers();
       $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
       $rootScope.addrInfos = w.getAddressesInfo();
@@ -121,6 +120,7 @@ angular.module('copay.controllerUtils')
         $rootScope.$digest();
         if (cb) cb();
       });
+      root.setSocketHandlers();
     };
 
     root.updateTxs = function() {
