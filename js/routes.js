@@ -42,6 +42,10 @@ angular
         templateUrl: 'backup.html',
         validate: true
       })
+      .when('/settings', {
+        templateUrl: 'settings.html',
+        validate: false
+      })
       .otherwise({
         templateUrl: '404.html'
       });
