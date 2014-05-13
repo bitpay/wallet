@@ -122,8 +122,8 @@
         <small>v. 0.0.5</small>
       </div>
     </div>
-    <div class="row" ng-show="$root.wallet">
-      <div class="large-3 medium-3 small-3 columns m10t">
+    <div class="row p10t" ng-show="$root.wallet">
+      <div class="large-3 medium-3 small-3 columns">
         <div>
           <strong>{{$root.getWalletDisplay()}}</strong>
         </div>
@@ -135,8 +135,9 @@
         </div>
       </div>
       <div class="large-9 medium-9 small-9 columns">
-        <div class="bottom-copay"
-            ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
+        <a href="#/addresses" > </a>
+        <div class="bottom-copay" 
+            ng-repeat="c in $root.wallet.getRegisteredPeerIds()" class="has-tip" tooltip-placement="top" tooltip="{{c.nick}}">
           <video ng-if="$root.videoInfo[c.peerId]" 
             avatar peer="{{c}}"
             autoplay
@@ -148,7 +149,6 @@
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             src="./img/satoshi.gif" 
           />
-          <span ng-if="c.nick" style="position:absolute; bottom:-10px; width: 80px; overflow: hidden;">{{c.nick}}</span>
         </div>
       </div>
     </div>
@@ -291,7 +291,7 @@
         </div>
       </div>
     </script>
-
+ 
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
       <div class="addresses" data-ng-controller="AddressesController">
