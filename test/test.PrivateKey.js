@@ -7,7 +7,6 @@ var Transaction        = bitcore.Transaction;
 var buffertools    = bitcore.buffertools;
 var WalletKey    = bitcore.WalletKey;
 var Key    = bitcore.Key;
-var BIP32    = bitcore.BIP32;
 var bignum         = bitcore.bignum;
 var networks         = bitcore.networks;
 var Address         = bitcore.Address;
