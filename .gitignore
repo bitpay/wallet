@@ -42,4 +42,4 @@ lib/*
 js/copayBundle.js
 config.js
 webapp
-
+chrome-extension
