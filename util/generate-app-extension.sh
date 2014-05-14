@@ -2,9 +2,12 @@
 
 #Description: A simple script to compile and copy only the needed files for the web app.
 
+# Moving to root path
+cd ../
+
 # Configs
-APPDIR="webapp"
-CHROMEDIR="chrome-extension"
+APPDIR="./webapp"
+CHROMEDIR="./chrome-extension"
 
 LIBDIR="$APPDIR/lib"
 DOWNLOADDIR="$APPDIR/download"
@@ -57,5 +60,6 @@ zip -r $CHROMEZIPFILE $CHROMEDIR
 mkdir -p $CHROMEDOWNLOADDIR
 mv $ZIPFILE $DOWNLOADDIR
 mv $CHROMEZIPFILE $CHROMEDOWNLOADDIR
+cp index-download-chrome.html $CHROMEDOWNLOADDIR/index.html
 
 echo -e "${OpenColor}${Yellow}\nAwesome! Now you have the webapp in ./webapp and the chrome extension files in ./webapp/download/.${CloseColor}"
