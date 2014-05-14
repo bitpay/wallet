@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Copay",
+  "description": "A multisignature bitcoin wallet",
+  "version": "0.0.1",
+  "homepage_url": "http://bitpay.github.io/copay",
+  "browser_action": {
+    "default_title": "Copay",
+    "default_icon": "img/icons/icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs", "storage" 
+  ],
+  "options_page": "index.html#/settings",
+  "icons": {
+    "128": "img/icons/icon.png"
+  }
+}
