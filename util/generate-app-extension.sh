@@ -8,6 +8,7 @@ CHROMEDIR="chrome-extension"
 
 LIBDIR="$APPDIR/lib"
 DOWNLOADDIR="$APPDIR/download"
+CHROMEDOWNLOADDIR="$DOWNLOADDIR/chrome"
 
 ZIPFILE="copay.zip"
 CHROMEZIPFILE="copay-chrome-extension.zip"
@@ -53,8 +54,8 @@ zip -r $ZIPFILE $APPDIR
 echo -e "${OpenColor}${Green}* Zipping all chrome-extension files...${CloseColor}"
 zip -r $CHROMEZIPFILE $CHROMEDIR
 
-mkdir -p $DOWNLOADDIR
+mkdir -p $CHROMEDOWNLOADDIR
 mv $ZIPFILE $DOWNLOADDIR
-mv $CHROMEZIPFILE $DOWNLOADDIR
+mv $CHROMEZIPFILE $CHROMEDOWNLOADDIR
 
 echo -e "${OpenColor}${Yellow}\nAwesome! Now you have the webapp in ./webapp and the chrome extension files in ./webapp/download/.${CloseColor}"
