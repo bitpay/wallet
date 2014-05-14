@@ -10,8 +10,6 @@ angular.module('copay.controllerUtils')
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) return;
 
-      //alert($rootScope.wallet.getOnlinePeerIDs());
-      //alert(copayer);
       if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
         // peer disconnected, remove his video
         delete $rootScope.videoInfo[copayer]
@@ -74,52 +72,96 @@ angular.module('copay.controllerUtils')
           message: 'Received wrong message from peer id:' + peerId
         };
       });
-      w.on('created', function(myPeerID) {
+      w.on('ready', function(myPeerID) {
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $rootScope.wallet = w;
         $location.path('addresses');
-      });
-      w.on('refresh', function() {
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
         $rootScope.$digest();
       });
-      w.on('publicKeyRingUpdated', function() {
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
+      w.on('refresh', function() {
+        root.updateBalance();
+        $rootScope.$digest();
+      });
+      w.on('txProposalsUpdated', function() {
+        root.updateTxs();
+        root.updateBalance();
       });
       w.on('openError', root.onErrorDigest);
-      w.on('peer', function(peerID) {
-        video.callPeer(peerID, handlePeerVideo);
+      w.on('connect', function(peerID) {
+        if (peerID) {
+          video.callPeer(peerID, handlePeerVideo);
+        }
+        $rootScope.$digest();
+      });
+      w.on('disconnect', function(peerID) {
+        $rootScope.$digest();
       });
       w.on('close', root.onErrorDigest);
       w.netStart();
     };
 
     root.updateBalance = function(cb) {
-      root.setSocketHandlers();
       $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
       $rootScope.addrInfos = w.getAddressesInfo();
       if ($rootScope.addrInfos.length === 0) return;
       $rootScope.loading = true;
       w.getBalance(false, function(balance, balanceByAddr) {
-        console.log('New total balance:', balance);
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
         $rootScope.loading = false;
+        $rootScope.$digest();
         if (cb) cb();
       });
       w.getBalance(true, function(balance) {
-        console.log('New available balance:', balance);
         $rootScope.availableBalance = balance;
         $rootScope.loading = false;
+        $rootScope.$digest();
         if (cb) cb();
       });
+      root.setSocketHandlers();
     };
+
+    root.updateTxs = function() {
+      var bitcore = require('bitcore');
+      var w = $rootScope.wallet;
+      if (!w) return;
+      
+      var inT = w.getTxProposals();
+      var txs  = [];
+
+      inT.forEach(function(i){
+        var tx  = i.builder.build();
+        var outs = [];
+
+        tx.outs.forEach(function(o) {
+          var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+          if (!w.addressIsOwn(addr, {excludeMain:true})) {
+            outs.push({
+              address: addr, 
+              value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+            });
+          }
+        });
+        // extra fields
+        i.outs = outs;
+        i.fee = i.builder.feeSat/bitcore.util.COIN;
+        i.missingSignatures = tx.countInputMissingSignatures(0);
+        txs.push(i);
+      });
+      $rootScope.txs = txs;
+      var pending = 0;
+      for(var i=0; i<txs.length;i++) {
+        if (!txs[i].finallyRejected && !txs[i].sentTs) {
+          pending++;
+        }
+      }
+      $rootScope.pendingTxCount = pending;
+      w.removeListener('txProposalsUpdated',root.updateTxs)
+      w.once('txProposalsUpdated',root.updateTxs);
+      $rootScope.loading = false;
+    };    
 
     root.setSocketHandlers = function() {
       // TODO: optimize this?
@@ -134,9 +176,7 @@ angular.module('copay.controllerUtils')
       addrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
+          root.updateBalance();
         });
       });
     };

@@ -21,7 +21,8 @@ var copayApp = window.copayApp = angular.module('copay',[
   'copay.directives',
   'copay.video',
   'copay.import',
-  'copay.passphrase'
+  'copay.passphrase',
+  'copay.settings'
 ]);
 
 angular.module('copay.header', []);
@@ -39,4 +40,5 @@ angular.module('copay.directives', []);
 angular.module('copay.video', []);
 angular.module('copay.import', []);
 angular.module('copay.passphrase', []);
+angular.module('copay.settings', []);
 

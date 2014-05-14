@@ -193,7 +193,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.passphrase = passphrase;
         data.opts.id = data.walletId;
         var w = self.create(data.opts);
-        w.firstCopayerId = s.pubKey;
+        w.seedCopayer(s.pubKey);
         return cb(null, w);
       }
     });

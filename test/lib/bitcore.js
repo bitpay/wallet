@@ -92,7 +92,11 @@ requireWhenAccessed('EncodedData', './util/EncodedData');
 requireWhenAccessed('VersionedData', './util/VersionedData');
 requireWhenAccessed('BinaryParser', './util/BinaryParser');
 requireWhenAccessed('Address', './lib/Address');
-requireWhenAccessed('BIP32', './lib/BIP32');
+requireWhenAccessed('HierarchicalKey', './lib/HierarchicalKey');
+Object.defineProperty(module.exports, 'BIP32', {get: function() {
+  console.log('BIP32 is deprecated. Use bitcore.HierarchicalKey instead.');
+  return require('./lib/HierarchicalKey');
+}});
 requireWhenAccessed('Point', './lib/Point');
 requireWhenAccessed('Opcode', './lib/Opcode');
 requireWhenAccessed('Script', './lib/Script');
@@ -122,7 +126,7 @@ module.exports.Buffer = Buffer;
 
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/Base58":"6VqyzY","bignum":58,"bindings":73,"buffer":80}],3:[function(require,module,exports){
+},{"./lib/Base58":"6VqyzY","./lib/HierarchicalKey":"x1O6JW","bignum":58,"bindings":73,"buffer":80}],3:[function(require,module,exports){
 if ('undefined' === typeof window) window = this;
 Bitcoin = {};
 if (typeof navigator === 'undefined') {
@@ -2993,14 +2997,16 @@ Bitcoin.ECKey = (function () {
 
 module.exports.ECKey = Bitcoin.ECKey;
 
+},{}],"./config":[function(require,module,exports){
+module.exports=require('4itQ50');
 },{}],"4itQ50":[function(require,module,exports){
 module.exports = {
   network: 'livenet',
   logger: 'normal' // none, normal, debug
 };
 
-},{}],"./config":[function(require,module,exports){
-module.exports=require('4itQ50');
+},{}],"./const":[function(require,module,exports){
+module.exports=require('f08cvL');
 },{}],"f08cvL":[function(require,module,exports){
 
 MSG = {
@@ -3021,8 +3027,6 @@ MSG.to_str = function(t) {
 exports.MSG = MSG;
 
 
-},{}],"./const":[function(require,module,exports){
-module.exports=require('f08cvL');
 },{}],"G+CcXD":[function(require,module,exports){
 (function (Buffer){
 // Address
@@ -3199,8 +3203,6 @@ module.exports = require('soop')(Address);
 }).call(this,require("buffer").Buffer)
 },{"../networks":"ULNIu2","../util":140,"../util/VersionedData":"QLzNQg","./Script":"hQ0t76","buffer":80,"soop":125}],"./lib/Address":[function(require,module,exports){
 module.exports=require('G+CcXD');
-},{}],"./lib/Armory":[function(require,module,exports){
-module.exports=require('YL/05i');
 },{}],"YL/05i":[function(require,module,exports){
 (function (Buffer){
 var Point = require('./Point'),
@@ -3320,352 +3322,10 @@ Armory.deriveChaincode = function (root) {
 module.exports = Armory;
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","buffer":80}],"Dad1wf":[function(require,module,exports){
-(function (Buffer){
-var imports = require('soop').imports();
-var base58 = imports.base58 || require('./Base58').base58;
-var coinUtil = imports.coinUtil || require('../util');
-var Key = imports.Key || require('./Key');
-var Point = imports.Point || require('./Point');
-var SecureRandom = imports.SecureRandom || require('./SecureRandom');
-var bignum = imports.bignum || require('bignum');
-var networks = require('../networks');
-
-var secp256k1_n = new bignum('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141', 16);
-var secp256k1_Gx = new bignum('79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798', 16);
-
-/*
-random new BIP32: new BIP32();
-from extended public or private key: new BIP32(str);
-new blank BIP32: new BIP32(null);
-*/
-var BIP32 = function(bytes) {
-  if (typeof bytes == 'undefined' || bytes == 'mainnet' || bytes == 'livenet') {
-    bytes = 'livenet';
-    this.version = networks['livenet'].bip32privateVersion;
-  }
-  else if (bytes == 'testnet') {
-    this.version = networks['testnet'].bip32privateVersion;
-  }
-  if (bytes == 'livenet' || bytes == 'testnet') {
-    this.depth = 0x00;
-    this.parentFingerprint = new Buffer([0, 0, 0, 0]);
-    this.childIndex = new Buffer([0, 0, 0, 0]);
-    this.chainCode = SecureRandom.getRandomBuffer(32);
-    this.eckey = Key.generateSync();
-    this.hasPrivateKey = true;
-    this.pubKeyHash = coinUtil.sha256ripe160(this.eckey.public);
-    this.buildExtendedPublicKey();
-    this.buildExtendedPrivateKey();
-    return;
-  }
-  
-  // decode base58
-  if (typeof bytes === 'string') {
-    var decoded = base58.decode(bytes);
-    if (decoded.length != 82)
-      throw new Error('Not enough data, expected 82 and received '+decoded.length);
-    var checksum = decoded.slice(78, 82);
-    bytes = decoded.slice(0, 78);
-
-    var hash = coinUtil.sha256(coinUtil.sha256(bytes));
-
-    if (hash[0] != checksum[0] || hash[1] != checksum[1] || hash[2] != checksum[2] || hash[3] != checksum[3]) {
-      throw new Error('Invalid checksum');
-    }
-  }
-
-  if (bytes !== undefined && bytes !== null) 
-    this.initFromBytes(bytes);
-}
-
-BIP32.seed = function(bytes, network) {
-  if (!network)
-    network = 'livenet';
-
-  if (!Buffer.isBuffer(bytes))
-    bytes = new Buffer(bytes, 'hex'); //if not buffer, assume hex
-  if (bytes.length < 128/8)
-    return false; //need more entropy
-  var hash = coinUtil.sha512hmac(bytes, new Buffer('Bitcoin seed'));
-
-  var bip32 = new BIP32(null);
-  bip32.depth = 0x00;
-  bip32.parentFingerprint = new Buffer([0, 0, 0, 0]);
-  bip32.childIndex = new Buffer([0, 0, 0, 0]);
-  bip32.chainCode = hash.slice(32, 64);
-  bip32.version = networks[network].bip32privateVersion;
-  bip32.eckey = new Key();
-  bip32.eckey.private = hash.slice(0, 32);
-  bip32.eckey.regenerateSync();
-  bip32.hasPrivateKey = true;
-  bip32.pubKeyHash = coinUtil.sha256ripe160(bip32.eckey.public);
-
-  bip32.buildExtendedPublicKey();
-  bip32.buildExtendedPrivateKey();
-
-  return bip32;
-};
-
-BIP32.prototype.initFromBytes = function(bytes) {
-  // Both pub and private extended keys are 78 bytes
-  if(bytes.length != 78) throw new Error('not enough data');
-
-  this.version      = u32(bytes.slice(0, 4));
-  this.depth        = u8(bytes.slice(4, 5));
-  this.parentFingerprint = bytes.slice(5, 9);
-  this.childIndex    = u32(bytes.slice(9, 13));
-  this.chainCode     = bytes.slice(13, 45);
-  
-  var keyBytes = bytes.slice(45, 78);
-
-  var isPrivate = 
-    (this.version == networks['livenet'].bip32privateVersion  ||
-     this.version == networks['testnet'].bip32privateVersion  );
-
-  var isPublic = 
-    (this.version == networks['livenet'].bip32publicVersion  ||
-     this.version == networks['testnet'].bip32publicVersion  );
-
-  if (isPrivate && keyBytes[0] == 0) {
-    this.eckey = new Key();
-    this.eckey.private = keyBytes.slice(1, 33);
-    this.eckey.compressed = true;
-    this.eckey.regenerateSync();
-    this.pubKeyHash = coinUtil.sha256ripe160(this.eckey.public);
-    this.hasPrivateKey = true;
-  } else if (isPublic && (keyBytes[0] == 0x02 || keyBytes[0] == 0x03)) {
-    this.eckey = new Key();
-    this.eckey.public = keyBytes;
-    this.pubKeyHash = coinUtil.sha256ripe160(this.eckey.public);
-    this.hasPrivateKey = false;
-  } else {
-    throw new Error('Invalid key');
-  }
-
-  this.buildExtendedPublicKey();
-  this.buildExtendedPrivateKey();
-}
-
-BIP32.prototype.buildExtendedPublicKey = function() {
-  this.extendedPublicKey = new Buffer([]);
-
-  var v = null;
-  switch(this.version) {
-  case networks['livenet'].bip32publicVersion:
-  case networks['livenet'].bip32privateVersion:
-    v = networks['livenet'].bip32publicVersion;
-    break;
-  case networks['testnet'].bip32publicVersion:
-  case networks['testnet'].bip32privateVersion:
-    v = networks['testnet'].bip32publicVersion;
-    break;
-   default:
-    throw new Error('Unknown version');
-  }
-
-  // Version
-  this.extendedPublicKey = Buffer.concat([
-    new Buffer([v >> 24]),
-    new Buffer([(v >> 16) & 0xff]),
-    new Buffer([(v >> 8) & 0xff]),
-    new Buffer([v & 0xff]),
-    new Buffer([this.depth]),
-    this.parentFingerprint,
-    new Buffer([this.childIndex >>> 24]),
-    new Buffer([(this.childIndex >>> 16) & 0xff]),
-    new Buffer([(this.childIndex >>> 8) & 0xff]),
-    new Buffer([this.childIndex & 0xff]),
-    this.chainCode,
-    this.eckey.public
-  ]);
-}
-
-BIP32.prototype.extendedPublicKeyString = function(format) {
-  if (format === undefined || format === 'base58') {
-    var hash = coinUtil.sha256(coinUtil.sha256(this.extendedPublicKey));
-    var checksum = hash.slice(0, 4);
-    var data = Buffer.concat([this.extendedPublicKey, checksum]);
-    return base58.encode(data);
-  } else if (format === 'hex') {
-    return this.extendedPublicKey.toString('hex');;
-  } else {
-    throw new Error('bad format');
-  }
-}
-
-BIP32.prototype.buildExtendedPrivateKey = function() {
-  if (!this.hasPrivateKey) return;
-  this.extendedPrivateKey = new Buffer([]);
-
-  var v = this.version;
-
-  this.extendedPrivateKey = Buffer.concat([
-    new Buffer([v >> 24]),
-    new Buffer([(v >> 16) & 0xff]),
-    new Buffer([(v >> 8) & 0xff]),
-    new Buffer([v & 0xff]),
-    new Buffer([this.depth]),
-    this.parentFingerprint,
-    new Buffer([this.childIndex >>> 24]),
-    new Buffer([(this.childIndex >>> 16) & 0xff]),
-    new Buffer([(this.childIndex >>> 8) & 0xff]),
-    new Buffer([this.childIndex & 0xff]),
-    this.chainCode,
-    new Buffer([0]),
-    this.eckey.private
-  ]);
-}
-
-BIP32.prototype.extendedPrivateKeyString = function(format) {
-  if (format === undefined || format === 'base58') {
-    var hash = coinUtil.sha256(coinUtil.sha256(this.extendedPrivateKey));
-    var checksum = hash.slice(0, 4);
-    var data = Buffer.concat([this.extendedPrivateKey, checksum]);
-    return base58.encode(data);
-  } else if (format === 'hex') {
-    return this.extendedPrivateKey.toString('hex');
-  } else {
-    throw new Error('bad format');
-  }
-}
-
-
-BIP32.prototype.derive = function(path) {
-  var e = path.split('/');
-
-  // Special cases:
-  if (path == 'm' || path == 'M' || path == 'm\'' || path == 'M\'')
-    return this;
-
-  var bip32 = this;
-  for (var i in e) {
-    var c = e[i];
-
-    if (i == 0 ) {
-      if (c != 'm') throw new Error('invalid path');
-      continue;
-    }
-
-    var usePrivate = (c.length > 1) && (c[c.length-1] == '\'');
-    var childIndex = parseInt(usePrivate ? c.slice(0, c.length - 1) : c) & 0x7fffffff;
-
-    if (usePrivate)
-      childIndex += 0x80000000;
-
-    bip32 = bip32.deriveChild(childIndex);
-  }
-
-  return bip32;
-}
-
-BIP32.prototype.deriveChild = function(i) {
-  var ib = [];
-  ib.push((i >> 24) & 0xff);
-  ib.push((i >> 16) & 0xff);
-  ib.push((i >>  8) & 0xff);
-  ib.push(i & 0xff);
-  ib = new Buffer(ib);
-
-  var usePrivate = (i & 0x80000000) != 0;
-
-  var isPrivate = 
-    (this.version == networks['livenet'].bip32privateVersion  ||
-     this.version == networks['testnet'].bip32privateVersion  );
-
-  if (usePrivate && (!this.hasPrivateKey || !isPrivate))
-    throw new Error('Cannot do private key derivation without private key');
-
-  var ret = null;
-  if (this.hasPrivateKey) {
-    var data = null;
-
-    if (usePrivate) {
-      data = Buffer.concat([new Buffer([0]), this.eckey.private, ib]);
-    } else {
-      data = Buffer.concat([this.eckey.public, ib]);
-    }
-
-    var hash = coinUtil.sha512hmac(data, this.chainCode);
-    var il = bignum.fromBuffer(hash.slice(0, 32), {size: 32});
-    var ir = hash.slice(32, 64);
-
-    // ki = IL + kpar (mod n).
-    var priv = bignum.fromBuffer(this.eckey.private, {size: 32});
-    var k = il.add(priv).mod(secp256k1_n);
-
-    ret = new BIP32(null);
-    ret.chainCode = ir;
-
-    ret.eckey = new Key();
-    ret.eckey.private = k.toBuffer({size: 32});
-    ret.eckey.regenerateSync();
-    ret.hasPrivateKey = true;
-
-  } else {
-    var data = Buffer.concat([this.eckey.public, ib]);
-    var hash = coinUtil.sha512hmac(data, this.chainCode);
-    var il = hash.slice(0, 32);
-    var ir = hash.slice(32, 64);
-
-    // Ki = (IL + kpar)*G = IL*G + Kpar
-    var ilGkey = new Key();
-    ilGkey.private = il;
-    ilGkey.regenerateSync();
-    ilGkey.compressed = false;
-    var ilG = Point.fromUncompressedPubKey(ilGkey.public);
-    var oldkey = new Key();
-    oldkey.public = this.eckey.public;
-    oldkey.compressed = false;
-    var Kpar = Point.fromUncompressedPubKey(oldkey.public);
-    var newpub = Point.add(ilG, Kpar).toUncompressedPubKey();
-
-    ret = new BIP32(null);
-    ret.chainCode = new Buffer(ir);
-
-    var eckey = new Key();
-    eckey.public = newpub; 
-    eckey.compressed = true;
-    ret.eckey = eckey;
-    ret.hasPrivateKey = false;
-  }
-
-  ret.childIndex = i;
-  ret.parentFingerprint = this.pubKeyHash.slice(0,4);
-  ret.version = this.version;
-  ret.depth = this.depth + 1;
-
-  ret.eckey.compressed = true;
-  ret.pubKeyHash = coinUtil.sha256ripe160(ret.eckey.public);
-
-  ret.buildExtendedPublicKey();
-  ret.buildExtendedPrivateKey();
-
-  return ret;
-}
-
-
-function uint(f, size) {
-  if (f.length < size)
-    throw new Error('not enough data');
-  var n = 0;
-  for (var i = 0; i < size; i++) {
-    n *= 256;
-    n += f[i];
-  }
-  return n;
-}
-
-function u8(f)  {return uint(f,1);}
-function u16(f) {return uint(f,2);}
-function u32(f) {return uint(f,4);}
-function u64(f) {return uint(f,8);}
-
-module.exports = require('soop')(BIP32);
-
-}).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":140,"./Base58":"6VqyzY","./Key":"ALJ4PS","./Point":"6tXgqr","./SecureRandom":"p4SiC2","bignum":58,"buffer":80,"soop":125}],"./lib/BIP32":[function(require,module,exports){
-module.exports=require('Dad1wf');
+},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","buffer":80}],"./lib/Armory":[function(require,module,exports){
+module.exports=require('YL/05i');
+},{}],"./lib/Base58":[function(require,module,exports){
+module.exports=require('6VqyzY');
 },{}],"6VqyzY":[function(require,module,exports){
 (function (Buffer){
 var crypto = require('crypto');
@@ -3786,9 +3446,7 @@ exports.encode = base58.encode;
 exports.decode = base58.decode;
 
 }).call(this,require("buffer").Buffer)
-},{"bignum":58,"buffer":80,"crypto":84}],"./lib/Base58":[function(require,module,exports){
-module.exports=require('6VqyzY');
-},{}],"./lib/Block":[function(require,module,exports){
+},{"bignum":58,"buffer":80,"crypto":84}],"./lib/Block":[function(require,module,exports){
 module.exports=require('pJEQEB');
 },{}],"pJEQEB":[function(require,module,exports){
 (function (Buffer){
@@ -4094,7 +3752,9 @@ function getStandardizedObject(txs)
 module.exports = require('soop')(Block);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"../util/error":139,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":58,"binary":69,"buffer":80,"buffertools":"fugeBw","soop":125,"step":126}],"KifRG4":[function(require,module,exports){
+},{"../util":140,"../util/error":139,"./Script":"hQ0t76","./Transaction":"LJhYtm","bignum":58,"binary":69,"buffer":80,"buffertools":"fugeBw","soop":125,"step":126}],"./lib/Bloom":[function(require,module,exports){
+module.exports=require('KifRG4');
+},{}],"KifRG4":[function(require,module,exports){
 var MAX_BLOOM_FILTER_SIZE = 36000;  // bytes
 var MAX_HASH_FUNCS = 50;
 var LN2SQUARED = 0.4804530139182014246671025263266649717305529515945455;
@@ -4207,9 +3867,7 @@ Bloom.prototype.init = function(elements, FPRate) {
 
 module.exports = require('soop')(Bloom);
 
-},{"soop":125}],"./lib/Bloom":[function(require,module,exports){
-module.exports=require('KifRG4');
-},{}],"./lib/Connection":[function(require,module,exports){
+},{"soop":125}],"./lib/Connection":[function(require,module,exports){
 module.exports=require('DB/p3X');
 },{}],"DB/p3X":[function(require,module,exports){
 (function (Buffer){
@@ -4814,9 +4472,7 @@ Curve.getN = function() {
 module.exports = require('soop')(Curve);
 
 }).call(this,require("buffer").Buffer)
-},{"./Point":"6tXgqr","bignum":58,"buffer":80,"soop":125}],"./lib/Deserialize":[function(require,module,exports){
-module.exports=require('ez/meX');
-},{}],"ez/meX":[function(require,module,exports){
+},{"./Point":"6tXgqr","bignum":58,"buffer":80,"soop":125}],"ez/meX":[function(require,module,exports){
 
 exports.intFromCompact = function(c)
 {
@@ -4826,8 +4482,8 @@ exports.intFromCompact = function(c)
 }
 
 
-},{}],"./lib/Electrum":[function(require,module,exports){
-module.exports=require('hdzBvq');
+},{}],"./lib/Deserialize":[function(require,module,exports){
+module.exports=require('ez/meX');
 },{}],"hdzBvq":[function(require,module,exports){
 (function (Buffer){
 var Key = require('./Key'),
@@ -4887,7 +4543,355 @@ Electrum.prototype.generateChangePubKey = function (sequence) {
 module.exports = Electrum;
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","bignum":58,"buffer":80,"buffertools":"fugeBw"}],"CBDCgz":[function(require,module,exports){
+},{"../util":140,"./Key":"ALJ4PS","./Point":"6tXgqr","bignum":58,"buffer":80,"buffertools":"fugeBw"}],"./lib/Electrum":[function(require,module,exports){
+module.exports=require('hdzBvq');
+},{}],"./lib/HierarchicalKey":[function(require,module,exports){
+module.exports=require('x1O6JW');
+},{}],"x1O6JW":[function(require,module,exports){
+(function (Buffer){
+var imports = require('soop').imports();
+var base58 = imports.base58 || require('./Base58').base58;
+var coinUtil = imports.coinUtil || require('../util');
+var Key = imports.Key || require('./Key');
+var Point = imports.Point || require('./Point');
+var SecureRandom = imports.SecureRandom || require('./SecureRandom');
+var bignum = imports.bignum || require('bignum');
+var networks = require('../networks');
+
+var secp256k1_n = new bignum('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141', 16);
+var secp256k1_Gx = new bignum('79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798', 16);
+
+/*
+random new HierarchicalKey: new HierarchicalKey();
+from extended public or private key: new HierarchicalKey(str);
+new blank HierarchicalKey: new HierarchicalKey(null);
+*/
+var HierarchicalKey = function(bytes) {
+  if (typeof bytes == 'undefined' || bytes == 'mainnet' || bytes == 'livenet') {
+    bytes = 'livenet';
+    this.version = networks['livenet'].hkeyPrivateVersion;
+  }
+  else if (bytes == 'testnet') {
+    this.version = networks['testnet'].hkeyPrivateVersion;
+  }
+  if (bytes == 'livenet' || bytes == 'testnet') {
+    this.depth = 0x00;
+    this.parentFingerprint = new Buffer([0, 0, 0, 0]);
+    this.childIndex = new Buffer([0, 0, 0, 0]);
+    this.chainCode = SecureRandom.getRandomBuffer(32);
+    this.eckey = Key.generateSync();
+    this.hasPrivateKey = true;
+    this.pubKeyHash = coinUtil.sha256ripe160(this.eckey.public);
+    this.buildExtendedPublicKey();
+    this.buildExtendedPrivateKey();
+    return;
+  }
+  
+  // decode base58
+  if (typeof bytes === 'string') {
+    var decoded = base58.decode(bytes);
+    if (decoded.length != 82)
+      throw new Error('Not enough data, expected 82 and received '+decoded.length);
+    var checksum = decoded.slice(78, 82);
+    bytes = decoded.slice(0, 78);
+
+    var hash = coinUtil.sha256(coinUtil.sha256(bytes));
+
+    if (hash[0] != checksum[0] || hash[1] != checksum[1] || hash[2] != checksum[2] || hash[3] != checksum[3]) {
+      throw new Error('Invalid checksum');
+    }
+  }
+
+  if (bytes !== undefined && bytes !== null) 
+    this.initFromBytes(bytes);
+}
+
+HierarchicalKey.seed = function(bytes, network) {
+  if (!network)
+    network = 'livenet';
+
+  if (!Buffer.isBuffer(bytes))
+    bytes = new Buffer(bytes, 'hex'); //if not buffer, assume hex
+  if (bytes.length < 128/8)
+    return false; //need more entropy
+  var hash = coinUtil.sha512hmac(bytes, new Buffer('Bitcoin seed'));
+
+  var hkey = new HierarchicalKey(null);
+  hkey.depth = 0x00;
+  hkey.parentFingerprint = new Buffer([0, 0, 0, 0]);
+  hkey.childIndex = new Buffer([0, 0, 0, 0]);
+  hkey.chainCode = hash.slice(32, 64);
+  hkey.version = networks[network].hkeyPrivateVersion;
+  hkey.eckey = new Key();
+  hkey.eckey.private = hash.slice(0, 32);
+  hkey.eckey.regenerateSync();
+  hkey.hasPrivateKey = true;
+  hkey.pubKeyHash = coinUtil.sha256ripe160(hkey.eckey.public);
+
+  hkey.buildExtendedPublicKey();
+  hkey.buildExtendedPrivateKey();
+
+  return hkey;
+};
+
+HierarchicalKey.prototype.initFromBytes = function(bytes) {
+  // Both pub and private extended keys are 78 bytes
+  if(bytes.length != 78) throw new Error('not enough data');
+
+  this.version      = u32(bytes.slice(0, 4));
+  this.depth        = u8(bytes.slice(4, 5));
+  this.parentFingerprint = bytes.slice(5, 9);
+  this.childIndex    = u32(bytes.slice(9, 13));
+  this.chainCode     = bytes.slice(13, 45);
+  
+  var keyBytes = bytes.slice(45, 78);
+
+  var isPrivate = 
+    (this.version == networks['livenet'].hkeyPrivateVersion  ||
+     this.version == networks['testnet'].hkeyPrivateVersion  );
+
+  var isPublic = 
+    (this.version == networks['livenet'].hkeyPublicVersion  ||
+     this.version == networks['testnet'].hkeyPublicVersion  );
+
+  if (isPrivate && keyBytes[0] == 0) {
+    this.eckey = new Key();
+    this.eckey.private = keyBytes.slice(1, 33);
+    this.eckey.compressed = true;
+    this.eckey.regenerateSync();
+    this.pubKeyHash = coinUtil.sha256ripe160(this.eckey.public);
+    this.hasPrivateKey = true;
+  } else if (isPublic && (keyBytes[0] == 0x02 || keyBytes[0] == 0x03)) {
+    this.eckey = new Key();
+    this.eckey.public = keyBytes;
+    this.pubKeyHash = coinUtil.sha256ripe160(this.eckey.public);
+    this.hasPrivateKey = false;
+  } else {
+    throw new Error('Invalid key');
+  }
+
+  this.buildExtendedPublicKey();
+  this.buildExtendedPrivateKey();
+}
+
+HierarchicalKey.prototype.buildExtendedPublicKey = function() {
+  this.extendedPublicKey = new Buffer([]);
+
+  var v = null;
+  switch(this.version) {
+  case networks['livenet'].hkeyPublicVersion:
+  case networks['livenet'].hkeyPrivateVersion:
+    v = networks['livenet'].hkeyPublicVersion;
+    break;
+  case networks['testnet'].hkeyPublicVersion:
+  case networks['testnet'].hkeyPrivateVersion:
+    v = networks['testnet'].hkeyPublicVersion;
+    break;
+   default:
+    throw new Error('Unknown version');
+  }
+
+  // Version
+  this.extendedPublicKey = Buffer.concat([
+    new Buffer([v >> 24]),
+    new Buffer([(v >> 16) & 0xff]),
+    new Buffer([(v >> 8) & 0xff]),
+    new Buffer([v & 0xff]),
+    new Buffer([this.depth]),
+    this.parentFingerprint,
+    new Buffer([this.childIndex >>> 24]),
+    new Buffer([(this.childIndex >>> 16) & 0xff]),
+    new Buffer([(this.childIndex >>> 8) & 0xff]),
+    new Buffer([this.childIndex & 0xff]),
+    this.chainCode,
+    this.eckey.public
+  ]);
+}
+
+HierarchicalKey.prototype.extendedPublicKeyString = function(format) {
+  if (format === undefined || format === 'base58') {
+    var hash = coinUtil.sha256(coinUtil.sha256(this.extendedPublicKey));
+    var checksum = hash.slice(0, 4);
+    var data = Buffer.concat([this.extendedPublicKey, checksum]);
+    return base58.encode(data);
+  } else if (format === 'hex') {
+    return this.extendedPublicKey.toString('hex');;
+  } else {
+    throw new Error('bad format');
+  }
+}
+
+HierarchicalKey.prototype.buildExtendedPrivateKey = function() {
+  if (!this.hasPrivateKey) return;
+  this.extendedPrivateKey = new Buffer([]);
+
+  var v = this.version;
+
+  this.extendedPrivateKey = Buffer.concat([
+    new Buffer([v >> 24]),
+    new Buffer([(v >> 16) & 0xff]),
+    new Buffer([(v >> 8) & 0xff]),
+    new Buffer([v & 0xff]),
+    new Buffer([this.depth]),
+    this.parentFingerprint,
+    new Buffer([this.childIndex >>> 24]),
+    new Buffer([(this.childIndex >>> 16) & 0xff]),
+    new Buffer([(this.childIndex >>> 8) & 0xff]),
+    new Buffer([this.childIndex & 0xff]),
+    this.chainCode,
+    new Buffer([0]),
+    this.eckey.private
+  ]);
+}
+
+HierarchicalKey.prototype.extendedPrivateKeyString = function(format) {
+  if (format === undefined || format === 'base58') {
+    var hash = coinUtil.sha256(coinUtil.sha256(this.extendedPrivateKey));
+    var checksum = hash.slice(0, 4);
+    var data = Buffer.concat([this.extendedPrivateKey, checksum]);
+    return base58.encode(data);
+  } else if (format === 'hex') {
+    return this.extendedPrivateKey.toString('hex');
+  } else {
+    throw new Error('bad format');
+  }
+}
+
+
+HierarchicalKey.prototype.derive = function(path) {
+  var e = path.split('/');
+
+  // Special cases:
+  if (path == 'm' || path == 'M' || path == 'm\'' || path == 'M\'')
+    return this;
+
+  var hkey = this;
+  for (var i in e) {
+    var c = e[i];
+
+    if (i == 0 ) {
+      if (c != 'm') throw new Error('invalid path');
+      continue;
+    }
+
+    var usePrivate = (c.length > 1) && (c[c.length-1] == '\'');
+    var childIndex = parseInt(usePrivate ? c.slice(0, c.length - 1) : c) & 0x7fffffff;
+
+    if (usePrivate)
+      childIndex += 0x80000000;
+
+    hkey = hkey.deriveChild(childIndex);
+  }
+
+  return hkey;
+}
+
+HierarchicalKey.prototype.deriveChild = function(i) {
+  var ib = [];
+  ib.push((i >> 24) & 0xff);
+  ib.push((i >> 16) & 0xff);
+  ib.push((i >>  8) & 0xff);
+  ib.push(i & 0xff);
+  ib = new Buffer(ib);
+
+  var usePrivate = (i & 0x80000000) != 0;
+
+  var isPrivate = 
+    (this.version == networks['livenet'].hkeyPrivateVersion  ||
+     this.version == networks['testnet'].hkeyPrivateVersion  );
+
+  if (usePrivate && (!this.hasPrivateKey || !isPrivate))
+    throw new Error('Cannot do private key derivation without private key');
+
+  var ret = null;
+  if (this.hasPrivateKey) {
+    var data = null;
+
+    if (usePrivate) {
+      data = Buffer.concat([new Buffer([0]), this.eckey.private, ib]);
+    } else {
+      data = Buffer.concat([this.eckey.public, ib]);
+    }
+
+    var hash = coinUtil.sha512hmac(data, this.chainCode);
+    var il = bignum.fromBuffer(hash.slice(0, 32), {size: 32});
+    var ir = hash.slice(32, 64);
+
+    // ki = IL + kpar (mod n).
+    var priv = bignum.fromBuffer(this.eckey.private, {size: 32});
+    var k = il.add(priv).mod(secp256k1_n);
+
+    ret = new HierarchicalKey(null);
+    ret.chainCode = ir;
+
+    ret.eckey = new Key();
+    ret.eckey.private = k.toBuffer({size: 32});
+    ret.eckey.regenerateSync();
+    ret.hasPrivateKey = true;
+
+  } else {
+    var data = Buffer.concat([this.eckey.public, ib]);
+    var hash = coinUtil.sha512hmac(data, this.chainCode);
+    var il = hash.slice(0, 32);
+    var ir = hash.slice(32, 64);
+
+    // Ki = (IL + kpar)*G = IL*G + Kpar
+    var ilGkey = new Key();
+    ilGkey.private = il;
+    ilGkey.regenerateSync();
+    ilGkey.compressed = false;
+    var ilG = Point.fromUncompressedPubKey(ilGkey.public);
+    var oldkey = new Key();
+    oldkey.public = this.eckey.public;
+    oldkey.compressed = false;
+    var Kpar = Point.fromUncompressedPubKey(oldkey.public);
+    var newpub = Point.add(ilG, Kpar).toUncompressedPubKey();
+
+    ret = new HierarchicalKey(null);
+    ret.chainCode = new Buffer(ir);
+
+    var eckey = new Key();
+    eckey.public = newpub; 
+    eckey.compressed = true;
+    ret.eckey = eckey;
+    ret.hasPrivateKey = false;
+  }
+
+  ret.childIndex = i;
+  ret.parentFingerprint = this.pubKeyHash.slice(0,4);
+  ret.version = this.version;
+  ret.depth = this.depth + 1;
+
+  ret.eckey.compressed = true;
+  ret.pubKeyHash = coinUtil.sha256ripe160(ret.eckey.public);
+
+  ret.buildExtendedPublicKey();
+  ret.buildExtendedPrivateKey();
+
+  return ret;
+}
+
+
+function uint(f, size) {
+  if (f.length < size)
+    throw new Error('not enough data');
+  var n = 0;
+  for (var i = 0; i < size; i++) {
+    n *= 256;
+    n += f[i];
+  }
+  return n;
+}
+
+function u8(f)  {return uint(f,1);}
+function u16(f) {return uint(f,2);}
+function u32(f) {return uint(f,4);}
+function u64(f) {return uint(f,8);}
+
+module.exports = require('soop')(HierarchicalKey);
+
+}).call(this,require("buffer").Buffer)
+},{"../networks":"ULNIu2","../util":140,"./Base58":"6VqyzY","./Key":"ALJ4PS","./Point":"6tXgqr","./SecureRandom":"p4SiC2","bignum":58,"buffer":80,"soop":125}],"CBDCgz":[function(require,module,exports){
 (function (Buffer){
 'use strict';
 var imports = require('soop').imports();
@@ -5171,8 +5175,6 @@ module.exports = require('soop')(Peer);
 }).call(this,require("buffer").Buffer)
 },{"binary":69,"buffer":80,"buffertools":"fugeBw","net":76,"soop":125}],"./lib/Peer":[function(require,module,exports){
 module.exports=require('oolY81');
-},{}],"./lib/PeerManager":[function(require,module,exports){
-module.exports=require('nsqKeP');
 },{}],"nsqKeP":[function(require,module,exports){
 var imports         = require('soop').imports();
 var _               = imports._ || require('underscore');
@@ -5484,7 +5486,9 @@ PeerManager.prototype.discover = function(options, callback) {
 
 module.exports = require('soop')(PeerManager);
 
-},{"../config":"4itQ50","../networks":"ULNIu2","../util/log":"AdF7pF","./Connection":"DB/p3X","./Peer":"oolY81","async":68,"dns":76,"events":89,"soop":125,"underscore":127}],"izTl9z":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util/log":"AdF7pF","./Connection":"DB/p3X","./Peer":"oolY81","async":68,"dns":76,"events":89,"soop":125,"underscore":127}],"./lib/PeerManager":[function(require,module,exports){
+module.exports=require('nsqKeP');
+},{}],"izTl9z":[function(require,module,exports){
 (function (Buffer){
 var imports            = require('soop').imports();
 
@@ -5571,6 +5575,8 @@ module.exports = require('soop')(PrivateKey);
 }).call(this,require("buffer").Buffer)
 },{"../networks":"ULNIu2","../util/VersionedData":"QLzNQg","buffer":80,"soop":125}],"./lib/PrivateKey":[function(require,module,exports){
 module.exports=require('izTl9z');
+},{}],"./lib/RpcClient":[function(require,module,exports){
+module.exports=require('7siE1N');
 },{}],"7siE1N":[function(require,module,exports){
 (function (Buffer){
 // RpcClient.js
@@ -5783,11 +5789,7 @@ module.exports = require('soop')(RpcClient);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../util/log":"AdF7pF","buffer":80,"http":90,"https":94,"soop":125}],"./lib/RpcClient":[function(require,module,exports){
-module.exports=require('7siE1N');
-},{}],"./lib/SIN":[function(require,module,exports){
-module.exports=require('tBM27q');
-},{}],"tBM27q":[function(require,module,exports){
+},{"../util/log":"AdF7pF","buffer":80,"http":90,"https":94,"soop":125}],"tBM27q":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 var parent  = imports.parent  || require('../util/VersionedData');
@@ -5846,7 +5848,9 @@ SIN.prototype.validate = function() {
 module.exports = require('soop')(SIN);
 
 }).call(this,require("buffer").Buffer)
-},{"../util/VersionedData":"QLzNQg","buffer":80,"soop":125}],"EyghZQ":[function(require,module,exports){
+},{"../util/VersionedData":"QLzNQg","buffer":80,"soop":125}],"./lib/SIN":[function(require,module,exports){
+module.exports=require('tBM27q');
+},{}],"EyghZQ":[function(require,module,exports){
 var coinUtil  = require('../util');
 var timeUtil  = require('../util/time');
 var Key = require('./Key');
@@ -6541,8 +6545,6 @@ module.exports = require('soop')(Script);
 }).call(this,require("buffer").Buffer)
 },{"../config":"4itQ50","../util/BinaryParser":"b3ZSD7","../util/log":"AdF7pF","../util/util":"ACyo5H","./Opcode":"Zm7/h9","buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125}],"./lib/Script":[function(require,module,exports){
 module.exports=require('hQ0t76');
-},{}],"./lib/ScriptInterpreter":[function(require,module,exports){
-module.exports=require('Q/ZWXW');
 },{}],"Q/ZWXW":[function(require,module,exports){
 (function (process,Buffer){
 var imports = require('soop').imports();
@@ -7633,7 +7635,9 @@ ScriptInterpreter.prototype.isCanonicalSignature = function(sig) {
 module.exports = require('soop')(ScriptInterpreter);
 
 }).call(this,require("/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),require("buffer").Buffer)
-},{"../config":"4itQ50","../util":140,"../util/log":"AdF7pF","./Key":"ALJ4PS","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/Sign":[function(require,module,exports){
+},{"../config":"4itQ50","../util":140,"../util/log":"AdF7pF","./Key":"ALJ4PS","./Opcode":"Zm7/h9","./Script":"hQ0t76","/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"bignum":58,"buffer":80,"buffertools":"fugeBw","soop":125}],"./lib/ScriptInterpreter":[function(require,module,exports){
+module.exports=require('Q/ZWXW');
+},{}],"./lib/Sign":[function(require,module,exports){
 module.exports=require('V3JdDp');
 },{}],"V3JdDp":[function(require,module,exports){
 (function (Buffer){
@@ -7772,7 +7776,9 @@ exports.Transaction = function Transaction(tx, txInputs, network, keys, scripts)
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80}],"LJhYtm":[function(require,module,exports){
+},{"buffer":80}],"./lib/Transaction":[function(require,module,exports){
+module.exports=require('LJhYtm');
+},{}],"LJhYtm":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 var config = imports.config || require('../config');
@@ -8407,9 +8413,7 @@ Transaction.prototype.isComplete = function() {
 module.exports = require('soop')(Transaction);
 
 }).call(this,require("buffer").Buffer)
-},{"../config":"4itQ50","../networks":"ULNIu2","../util":140,"../util/BinaryParser":"b3ZSD7","../util/error":139,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":58,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125,"step":126}],"./lib/Transaction":[function(require,module,exports){
-module.exports=require('LJhYtm');
-},{}],"./lib/TransactionBuilder":[function(require,module,exports){
+},{"../config":"4itQ50","../networks":"ULNIu2","../util":140,"../util/BinaryParser":"b3ZSD7","../util/error":139,"../util/log":"AdF7pF","./Address":"G+CcXD","./PrivateKey":"izTl9z","./Script":"hQ0t76","./ScriptInterpreter":"Q/ZWXW","./WalletKey":"wWje7g","bignum":58,"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw","soop":125,"step":126}],"./lib/TransactionBuilder":[function(require,module,exports){
 module.exports=require('D1Ge6m');
 },{}],"D1Ge6m":[function(require,module,exports){
 (function (Buffer){
@@ -8449,7 +8453,7 @@ module.exports=require('D1Ge6m');
 //     var tx = builder.build();
 //     broadcast(tx.serialize());
 //
-//     //Searialize it and pass it around...
+//     //Serialize it and pass it around...
 //     var string = JSON.stringify(builder.toObj()); 
 //     // then...
 //     var builder = TransactionBuilder.fromObj(JSON.parse(str); 
@@ -8604,7 +8608,7 @@ TransactionBuilder.infoForP2sh = function(opts, networkName) {
 //  ```
 //      [{
 //         address: "mqSjTad2TKbPcKQ3Jq4kgCkKatyN44UMgZ",
-//         hash: "2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1",
+//         txid: "2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1",
 //         scriptPubKey: "76a9146ce4e1163eb18939b1440c42844d5f0261c0338288ac",
 //         vout: 1,
 //         amount: 0.01,                
@@ -9608,7 +9612,9 @@ module.exports = require('soop')(Wallet);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../networks":"ULNIu2","../util":140,"../util/EncFile":134,"./Address":"G+CcXD","buffer":80,"fs":76,"soop":125}],"wWje7g":[function(require,module,exports){
+},{"../networks":"ULNIu2","../util":140,"../util/EncFile":134,"./Address":"G+CcXD","buffer":80,"fs":76,"soop":125}],"./lib/WalletKey":[function(require,module,exports){
+module.exports=require('wWje7g');
+},{}],"wWje7g":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop').imports();
 
@@ -9664,9 +9670,7 @@ WalletKey.prototype.fromObj = function(obj) {
 module.exports = require('soop')(WalletKey);
 
 }).call(this,require("buffer").Buffer)
-},{"../util":140,"../util/time":143,"./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","buffer":80,"soop":125}],"./lib/WalletKey":[function(require,module,exports){
-module.exports=require('wWje7g');
-},{}],58:[function(require,module,exports){
+},{"../util":140,"../util/time":143,"./Address":"G+CcXD","./Key":"ALJ4PS","./PrivateKey":"izTl9z","buffer":80,"soop":125}],58:[function(require,module,exports){
 (function (Buffer){
 /* bignumber.js v1.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
@@ -11992,6 +11996,8 @@ module.exports = Key;
 }).call(this,require("buffer").Buffer)
 },{"../../browser/vendor-bundle.js":3,"../Curve":"Ynul1S","../SecureRandom":"p4SiC2","bignum":58,"buffer":80}],"./lib/Key":[function(require,module,exports){
 module.exports=require('ALJ4PS');
+},{}],"./lib/Point":[function(require,module,exports){
+module.exports=require('6tXgqr');
 },{}],"6tXgqr":[function(require,module,exports){
 (function (Buffer){
 "use strict";
@@ -12090,9 +12096,7 @@ Point.prototype.toUncompressedPubKey = function() {
 module.exports = require('soop')(Point);
 
 }).call(this,require("buffer").Buffer)
-},{"../../browser/vendor-bundle.js":3,"./Key":"ALJ4PS","assert":77,"bignum":58,"buffer":80,"soop":125}],"./lib/Point":[function(require,module,exports){
-module.exports=require('6tXgqr');
-},{}],"p4SiC2":[function(require,module,exports){
+},{"../../browser/vendor-bundle.js":3,"./Key":"ALJ4PS","assert":77,"bignum":58,"buffer":80,"soop":125}],"p4SiC2":[function(require,module,exports){
 (function (Buffer){
 var imports = require('soop');
 
@@ -12153,7 +12157,9 @@ SecureRandom.getPseudoRandomBuffer = function(size) {
 module.exports = require('soop')(SecureRandom);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80,"soop":125}],"ULNIu2":[function(require,module,exports){
+},{"buffer":80,"soop":125}],"./networks":[function(require,module,exports){
+module.exports=require('ULNIu2');
+},{}],"ULNIu2":[function(require,module,exports){
 (function (Buffer){
 var Put = require('bufferput');
 var buffertools = require('buffertools');
@@ -12165,8 +12171,8 @@ exports.livenet = {
   addressVersion: 0x00,
   privKeyVersion: 128,
   P2SHVersion: 5,
-  bip32publicVersion: 0x0488b21e,
-  bip32privateVersion: 0x0488ade4,
+  hkeyPublicVersion: 0x0488b21e,
+  hkeyPrivateVersion: 0x0488ade4,
   genesisBlock: {
     hash: hex('6FE28C0AB6F1B372C1A6A246AE63F74F931E8365E15A089C68D6190000000000'),
     merkle_root: hex('3BA3EDFD7A7B12B27AC72C3E67768F617FC81BC3888A51323A9FB8AA4B1E5E4A'),
@@ -12194,8 +12200,8 @@ exports.testnet = {
   addressVersion: 0x6f,
   privKeyVersion: 239,
   P2SHVersion: 196,
-  bip32publicVersion: 0x043587cf,
-  bip32privateVersion: 0x04358394,
+  hkeyPublicVersion: 0x043587cf,
+  hkeyPrivateVersion: 0x04358394,
   genesisBlock: {
     hash: hex('43497FD7F826957108F4A30FD9CEC3AEBA79972084E90EAD01EA330900000000'),
     merkle_root: hex('3BA3EDFD7A7B12B27AC72C3E67768F617FC81BC3888A51323A9FB8AA4B1E5E4A'),
@@ -12214,9 +12220,7 @@ exports.testnet = {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw"}],"./networks":[function(require,module,exports){
-module.exports=require('ULNIu2');
-},{}],68:[function(require,module,exports){
+},{"buffer":80,"bufferput":"aXRuS6","buffertools":"fugeBw"}],68:[function(require,module,exports){
 (function (process){
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
@@ -17439,7 +17443,10 @@ EventEmitter.prototype.addListener = function(type, listener) {
                     'leak detected. %d listeners added. ' +
                     'Use emitter.setMaxListeners() to increase limit.',
                     this._events[type].length);
-      console.trace();
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
     }
   }
 
@@ -21789,9 +21796,7 @@ function parseHost(host) {
 module.exports=require(78)
 },{}],112:[function(require,module,exports){
 module.exports=require(79)
-},{"./support/isBuffer":111,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"inherits":95}],"bufferput":[function(require,module,exports){
-module.exports=require('aXRuS6');
-},{}],"aXRuS6":[function(require,module,exports){
+},{"./support/isBuffer":111,"/Users/colkito/Devel/BitPay/copay/node_modules/bitcore/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":96,"inherits":95}],"aXRuS6":[function(require,module,exports){
 (function (Buffer){
 function BufferPut () {
   this.words = [];
@@ -21897,7 +21902,9 @@ BufferPut.prototype.write = function(stream) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80}],"buffers":[function(require,module,exports){
+},{"buffer":80}],"bufferput":[function(require,module,exports){
+module.exports=require('aXRuS6');
+},{}],"buffers":[function(require,module,exports){
 module.exports=require('OBo3aV');
 },{}],"OBo3aV":[function(require,module,exports){
 (function (Buffer){
@@ -27081,8 +27088,6 @@ if (typeof module !== 'undefined' && "exports" in module) {
   }
 }).call(this);
 
-},{}],"./patches/Buffers.monkey":[function(require,module,exports){
-module.exports=require('kytKTK');
 },{}],"kytKTK":[function(require,module,exports){
 (function (Buffer){
 exports.patch = function(Buffers) {
@@ -27102,7 +27107,9 @@ exports.patch = function(Buffers) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80}],"AwmEwz":[function(require,module,exports){
+},{"buffer":80}],"./patches/Buffers.monkey":[function(require,module,exports){
+module.exports=require('kytKTK');
+},{}],"AwmEwz":[function(require,module,exports){
 exports.patch = function(Number) {
   //round to specified number of places
   Number.prototype.round = function(places) {
@@ -27114,6 +27121,8 @@ exports.patch = function(Number) {
 
 },{}],"./patches/Number.monkey":[function(require,module,exports){
 module.exports=require('AwmEwz');
+},{}],"./util/BinaryParser":[function(require,module,exports){
+module.exports=require('b3ZSD7');
 },{}],"b3ZSD7":[function(require,module,exports){
 (function (Buffer){
 /**
@@ -27264,9 +27273,7 @@ Parser.prototype.varStr = function () {
 module.exports = require('soop')(Parser);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":80,"soop":125}],"./util/BinaryParser":[function(require,module,exports){
-module.exports=require('b3ZSD7');
-},{}],134:[function(require,module,exports){
+},{"buffer":80,"soop":125}],134:[function(require,module,exports){
 
 var fs = require('fs');
 var crypto = require('crypto');
@@ -27491,7 +27498,9 @@ module.exports = require('soop')(EncodedData);
 
 
 }).call(this,require("buffer").Buffer)
-},{"../lib/Base58":"6VqyzY","buffer":80,"soop":125}],"QLzNQg":[function(require,module,exports){
+},{"../lib/Base58":"6VqyzY","buffer":80,"soop":125}],"./util/VersionedData":[function(require,module,exports){
+module.exports=require('QLzNQg');
+},{}],"QLzNQg":[function(require,module,exports){
 (function (Buffer){
 var imports    = require('soop').imports();
 var base58     = imports.base58 || require('../lib/Base58').base58Check;
@@ -27533,9 +27542,7 @@ VersionedData.prototype.payload = function(data) {
 module.exports = require('soop')(VersionedData);
 
 }).call(this,require("buffer").Buffer)
-},{"../lib/Base58":"6VqyzY","./EncodedData":"eLfUFE","buffer":80,"soop":125}],"./util/VersionedData":[function(require,module,exports){
-module.exports=require('QLzNQg');
-},{}],139:[function(require,module,exports){
+},{"../lib/Base58":"6VqyzY","./EncodedData":"eLfUFE","buffer":80,"soop":125}],139:[function(require,module,exports){
 
 /**
  * Used during transcation verification when a source txout is missing.
@@ -27583,7 +27590,9 @@ exports.VerificationError = VerificationError;
 
 },{}],140:[function(require,module,exports){
 module.exports = require('./util');
-},{"./util":"ACyo5H"}],"AdF7pF":[function(require,module,exports){
+},{"./util":"ACyo5H"}],"./util/log":[function(require,module,exports){
+module.exports=require('AdF7pF');
+},{}],"AdF7pF":[function(require,module,exports){
 'use strict';
 
 var noop = function() {};
@@ -27604,9 +27613,7 @@ if(config.log) {
   module.exports = loggers[config.logger || 'normal'];
 }
 
-},{"../config":"4itQ50"}],"./util/log":[function(require,module,exports){
-module.exports=require('AdF7pF');
-},{}],143:[function(require,module,exports){
+},{"../config":"4itQ50"}],143:[function(require,module,exports){
 
 // current time, in seconds
 exports.curtime = function curtime()

@@ -25,6 +25,8 @@
                 <a class="button radius small-icon" title="Manual Refresh"
                   ng-disabled="$root.loading"
                   ng-click="refresh()"><i class="fi-refresh"></i></a>
+                <a class="button radius small-icon" title="Settings"
+                  ng-disabled="$root.loading" href="#settings"><i class="fi-widget"></i></a>
                 <a class="button radius small-icon" title="Signout" 
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
@@ -40,6 +42,7 @@
                 <span ng-if="!$root.loading">{{availableBalance || 0}}</span>
                 <i class="fi-bitcoin"></i>
               </div>
+     
             </div>
           </div>
 
@@ -54,7 +57,9 @@
           <section class="top-bar-section {{isCollapsed && 'hide_menu' || 'show_menu'}}">
             <ul>
               <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="text-center" data-ng-class="{active: isActive(item)}">
-                <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}}</a>
+                <a href="{{item.link}}"> <i class="{{item.icon}}"></i> {{item.title}} 
+                  <span class="label alert round" ng-if="item.link=='#/transactions' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
+                </a>
               </li>
             </ul>
           </section>
@@ -119,8 +124,8 @@
         <small>v. 0.0.5</small>
       </div>
     </div>
-    <div class="row" ng-show="$root.wallet">
-      <div class="large-3 medium-3 small-3 columns m10t">
+    <div class="row p10t" ng-show="$root.wallet">
+      <div class="large-3 medium-3 small-3 columns">
         <div>
           <strong>{{$root.getWalletDisplay()}}</strong>
         </div>
@@ -132,8 +137,9 @@
         </div>
       </div>
       <div class="large-9 medium-9 small-9 columns">
-        <div class="bottom-copay"
-            ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
+        <a href="#/addresses" > </a>
+        <div class="bottom-copay" 
+            ng-repeat="c in $root.wallet.getRegisteredPeerIds()" class="has-tip" tooltip-placement="top" tooltip="{{c.nick}}">
           <video ng-if="$root.videoInfo[c.peerId]" 
             avatar peer="{{c}}"
             autoplay
@@ -145,7 +151,6 @@
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             src="./img/satoshi.gif" 
           />
-          <span ng-if="c.nick" style="position:absolute; bottom:-10px; width: 80px; overflow: hidden;">{{c.nick}}</span>
         </div>
       </div>
     </div>
@@ -167,7 +172,7 @@
                   <form name="openForm" ng-submit="open(openForm)" novalidate>
                     <select class="form-control" ng-model="selectedWalletId" ng-options="w.id as w.show for w in wallets" required>
                     </select>
-                    <input type="password" class="form-control" placeholder="Your wallet password" name="openPassword" ng-model="openPassword" required>
+                    <input type="password" class="form-control" placeholder="Your password" name="openPassword" ng-model="openPassword" required>
                     <button type="submit" class="button secondary radius" ng-disabled="openForm.$invalid || loading" loading="Opening">Open</button>
                   </form>
                 </div>
@@ -175,7 +180,7 @@
                   <h3>Create a new wallet</h3>
                   <form name="createForm" ng-submit="create(createForm)" novalidate>
                     <input type="text" class="form-control" ng-model="walletName" name="walletName" placeholder="Wallet name (optional)">
-                    <input type="password" class="form-control" placeholder="Your wallet password" name="createPassword" ng-model="createPassword" required>
+                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" required>
                     <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button> 
                   </form>
                 </div>
@@ -186,7 +191,7 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" required>
-                  <input type="password" class="form-control" placeholder="Your wallet password" name="joinPassword" ng-model="joinPassword" required>
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
@@ -196,6 +201,7 @@
 
           <div class="row">
             <div class="large-12 columns text-center line-dashed">
+              <a href="#settings">Settings</a> &middot;
               <span ng-show="wallets.length">
                 <a href="#/setup">Create a new wallet</a> &middot;
               </span>
@@ -264,7 +270,7 @@
               </div>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
-              <h6>Wallet Password <small>Required</small></h6>
+              <h6>Your Wallet Password (you don't need to share this) <small>Required</small></h6>
               <input type="password" class="form-control" ng-model="walletPassword" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
@@ -288,7 +294,7 @@
         </div>
       </div>
     </script>
-
+ 
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
       <div class="addresses" data-ng-controller="AddressesController">
@@ -384,10 +390,10 @@
               <div class="row m15">
                 <div class="large-4 columns" ng-show="!tx.sentTs" style="padding-left: 5px;">
                   <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
-                    <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+                    <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
                       <i class="fi-check"></i> Sign
                     </button>
-                    <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading>
+                    <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading">
                       <i class="fi-x" ></i> Reject 
                     </button>
                   </div>
@@ -559,7 +565,7 @@
 
     <!-- BACKUP -->
     <script type="text/ng-template" id="backup.html">
-      <div class="backup" data-ng-controller="BackupController">
+      <div class="backup" ng-controller="BackupController">
         <h3>{{title}}</h3>
         <div class="row text-center">
           <div class="large-6 medium-6 columns">
@@ -578,8 +584,66 @@
       </div>
     </script>
 
-<!-- / <div class="large-4 columns box-backup">Backup to Dropbox</div>
-          // <div class="large-4 columns box-backup">Backup to email</div> -->
+    <!-- CONFIG -->
+    <script type="text/ng-template" id="settings.html">
+      <div class="settings" ng-controller="SettingsController">
+        <h3>{{title}}</h3>
+        <div class="small-12 medium-6 medium-centered large-6 large-centered columns">
+          <fieldset>
+            <legend>Network Name</legend>
+            <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="livenet" ng-false-value="testnet">
+            <label for="network-name">Livenet</label>
+          </fieldset>
+          <fieldset>
+            <legend>Blockchain</legend>
+            <div class="row">
+              <label for="blockchain-host">Host</label>
+              <input type="text" ng-model="blockchainHost">
+            </div>
+            <div class="row">
+              <label for="blockchain-port">Port</label>
+              <input type="number" ng-model="blockchainPort">
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Socket</legend>
+            <div class="row">
+              <label for="socket-host">Host</label>
+              <input type="text" ng-model="socketHost">
+            </div>
+            <div class="row">
+              <label for="socket-port">Port</label>
+              <input type="number" ng-model="socketPort">
+            </div>
+          </fieldset>
+        </div>
+        <div class="row">
+          <div class="large-12 columns line-dashed">
+            <button type="submit" class="button primary radius right ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+             Save
+            </button>
+            <a class="button secondary radius" href="#signin" ng-hide="$root.wallet">Signin</a>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <!-- UNSUPPORTED -->
+    <script type="text/ng-template" id="unsupported.html">
+      <h2 class="text-center">Browser unsupported</h2>
+      <h3 class="text-center">
+Copay uses webRTC for peer-to-peer communications, 
+but your browser does not support it. 
+Please use 
+  a current version of Google Chrome, Mozilla Firefox, or Opera. 
+<br><br>
+
+For more information
+on supported browsers please check <a href="http://www.webrtc.org/">http://www.webrtc.org/</a>
+      </h3>
+
+    </script>
+
     <!-- NOT FOUND -->
     <script type="text/ng-template" id="404.html">
       <h2 class="text-center">404</h2>
@@ -626,6 +690,7 @@
     <script src="js/controllers/signin.js"></script>
     <script src="js/controllers/setup.js"></script>
     <script src="js/controllers/import.js"></script>
+    <script src="js/controllers/settings.js"></script>
 
     <script src="js/init.js"></script>
   </body>

@@ -23,6 +23,7 @@ angular.module('copay.header').controller('HeaderController',
 
     $rootScope.$watch('wallet', function(wallet) {
       if (wallet) {
+        controllerUtils.updateTxs();
       }
     });
 
@@ -46,7 +47,6 @@ angular.module('copay.header').controller('HeaderController',
       var w = $rootScope.wallet;
       w.connectToAll();
       controllerUtils.updateBalance(function() {
-        $rootScope.$digest();
       });
     };
 
