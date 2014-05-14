@@ -190,7 +190,7 @@
               <div class="box-signin radius">
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
-                  <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" required>
+                  <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
                   <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
