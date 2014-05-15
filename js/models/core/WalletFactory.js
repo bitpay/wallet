@@ -154,13 +154,12 @@ WalletFactory.prototype.open = function(walletId, opts) {
   this.storage._setPassphrase(opts.passphrase);
 
   var w = this.read(walletId);
-  this._checkVersion(w.version);
 
  
   if (w) {
+    this._checkVersion(w.version);
     w.store();
   }
-
   return w;
 };
 
