@@ -5,22 +5,29 @@ angular.module('copay.settings').controller('SettingsController',
     $scope.title = 'Settings';
 
     $scope.networkName = config.networkName;
-    $scope.blockchainHost = config.blockchain.host;
-    $scope.blockchainPort = config.blockchain.port;
-    $scope.socketHost = config.socket.host;
-    $scope.socketPort = config.socket.port;
+    $scope.insightHost = config.blockchain.host;
+    $scope.insightPort = config.blockchain.port;
+    $scope.networkKey = config.network.key;
+    $scope.networkHost = config.network.host;
+    $scope.networkPort = config.network.port;
 
     $scope.save = function() {
+      var network = config.network;
+      network.key = $scope.networkKey;
+      network.host = $scope.networkHost;
+      network.port = $scope.networkPort;
+
       localStorage.setItem('config', JSON.stringify({
           networkName: $scope.networkName,
           blockchain: {
-            host: $scope.blockchainHost,
-            port: $scope.blockchainPort
+            host: $scope.insightHost,
+            port: $scope.insightPort
           },
           socket: {
-            host: $scope.socketHost,
-            port: $scope.socketPort
-          }
+            host: $scope.insightHost,
+            port: $scope.insightPort
+          },
+          network: network
         })
       );
 

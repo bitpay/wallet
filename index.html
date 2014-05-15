@@ -598,25 +598,29 @@
             <label for="network-name">Livenet</label>
           </fieldset>
           <fieldset>
-            <legend>Blockchain</legend>
+            <legend>Insight API server</legend>
             <div class="row">
-              <label for="blockchain-host">Host</label>
-              <input type="text" ng-model="blockchainHost">
+              <label for="insight-host">Host</label>
+              <input type="text" ng-model="insightHost">
             </div>
             <div class="row">
-              <label for="blockchain-port">Port</label>
-              <input type="number" ng-model="blockchainPort">
+              <label for="insight-port">Port</label>
+              <input type="number" ng-model="insightPort">
             </div>
           </fieldset>
           <fieldset>
-            <legend>Socket</legend>
+            <legend>PeerJS server</legend>
             <div class="row">
-              <label for="socket-host">Host</label>
-              <input type="text" ng-model="socketHost">
+              <label for="peerjs-key">Host</label>
+              <input type="text" ng-model="networkKey">
+            </div>
+            <div class="row">
+              <label for="peerjs-host">Host</label>
+              <input type="text" ng-model="networkHost">
             </div>
             <div class="row">
               <label for="socket-port">Port</label>
-              <input type="number" ng-model="socketPort">
+              <input type="number" ng-model="networkPort">
             </div>
           </fieldset>
         </div>
