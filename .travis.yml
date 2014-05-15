@@ -2,4 +2,5 @@ language: node_js
 node_js:
   - "0.10"
 
+before_script: "grunt shell"
 script: "mocha"
