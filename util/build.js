@@ -24,6 +24,12 @@ var pack = function (params) {
   return browserPack(params);
 };
 
+var createVersion = function() {
+  var json = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+  var content = 'module.exports="' + json.version + '";';
+  fs.writeFileSync("./version.js", content);
+};
+
 var createBundle = function(opts) {
   opts.dir = opts.dir || 'js/';
 
@@ -45,6 +51,7 @@ var createBundle = function(opts) {
   b.require('./copay', {
     expose: 'copay'
   });
+  b.require('./version');
 //  b.external('bitcore');
   b.require('./js/models/core/WalletFactory');
   b.require('./js/models/core/Wallet');
@@ -95,6 +102,8 @@ if (require.main === module) {
     .option('-d, --dontminify', 'Don\'t minify the code.')
     .option('-o, --stdout', 'Specify output as stdout')
     .parse(process.argv);
+
+  createVersion();
   var copayBundle = createBundle(program);
   copayBundle.pipe(program.stdout ? process.stdout : fs.createWriteStream('js/copayBundle.js'));
 }

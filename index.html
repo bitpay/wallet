@@ -122,7 +122,7 @@
     <div class="row" ng-show="!$root.wallet">
       <div class="large-12 columns text-right">
         Copay 
-        <small>v. 0.0.5</small>
+        <small>v{{version}}</small>
       </div>
     </div>
     <div class="row p10t" ng-show="$root.wallet">
@@ -658,6 +658,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="lib/qrcode-generator/js/qrcode.js"></script>
     <script src="lib/angular-qrcode/qrcode.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>
+    <script src="lib/angular-resource/angular-resource.min.js"></script>
     <script src="lib/angular-foundation/mm-foundation.min.js"></script>
     <script src="lib/angular-foundation/mm-foundation-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>

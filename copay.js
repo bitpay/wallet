@@ -18,6 +18,5 @@ var WalletFactory = require('soop').load('./js/models/core/WalletFactory',{
   Storage: StorageLocalEncrypted,
 });
 module.exports.WalletFactory = WalletFactory;
-
-
+module.exports.version = require('./version');
 module.exports.API = require('./API');

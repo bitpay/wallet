@@ -53,6 +53,7 @@ describe('Wallet model', function() {
 
     c.networkName = config.networkName;
     c.verbose     = config.verbose;
+    c.version     = '0.0.1';
 
     return new Wallet(c);
   }

@@ -18,7 +18,7 @@ function Wallet(opts) {
   //required params
   ['storage', 'network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
-    'publicKeyRing', 'txProposals', 'privateKey'
+    'publicKeyRing', 'txProposals', 'privateKey', 'version'
   ].forEach(function(k) {
     if (typeof opts[k] === 'undefined') throw new Error('missing key:' + k);
     self[k] = opts[k];
@@ -146,6 +146,7 @@ Wallet.prototype._optsToObj = function() {
     totalCopayers: this.totalCopayers,
     name: this.name,
     netKey: this.netKey,
+    version: this.version,
   };
 
   return obj;
