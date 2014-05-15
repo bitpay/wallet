@@ -58,12 +58,12 @@ checkOK
 
 # Copy all app files
 echo -e "${OpenColor}${Green}* Copying all app files...${CloseColor}"
-cp -af {css,font,img,js,lib,sound,config.js,index.html} $APPDIR
+cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html} $APPDIR
 checkOK
 
 # Copy all chrome-extension files
 echo -e "${OpenColor}${Green}* Copying all chrome-extension files...${CloseColor}"
-cp -af {css,font,img,js,lib,sound,config.js,index.html,popup.html,manifest.json} $CHROMEDIR
+cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,popup.html,manifest.json} $CHROMEDIR
 checkOK
 
 # Zipping apps
