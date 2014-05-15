@@ -8,6 +8,7 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.send = function (ntxid) {
       $scope.loading = true;
+      $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
           console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
@@ -65,6 +66,7 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.reject = function (ntxid) {
       $scope.loading = true;
+      $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.reject(ntxid);
       $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};

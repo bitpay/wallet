@@ -180,8 +180,9 @@ TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
 };
 
 TxProposals.prototype.add = function(data) {
-  var id = data.builder.build().getNormalizedHash().toString('hex');
-  this.txps[id] = new TxProposal(data);
+  var ntxid = data.builder.build().getNormalizedHash().toString('hex');
+  this.txps[ntxid] = new TxProposal(data);
+  return ntxid;
 };
 
 
@@ -191,12 +192,20 @@ TxProposals.prototype.setSent = function(ntxid,txid) {
 };
 
 
-TxProposals.prototype.getTxProposal = function(ntxid) {
+TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   var txp = this.txps[ntxid];
   var i = JSON.parse(JSON.stringify(txp));
   i.builder = txp.builder;
   i.ntxid = ntxid;
   i.peerActions = {};
+
+  if (copayers) {
+    for(var j=0; j < copayers.length; j++) {
+      var p = copayers[j];
+      i.peerActions[p] = {};
+    }
+  }
+
   for(var p in txp.seenBy){
     i.peerActions[p]={seen: txp.seenBy[p]};
   }

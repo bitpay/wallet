@@ -128,6 +128,8 @@ angular.module('copay.controllerUtils')
       var w = $rootScope.wallet;
       if (!w) return;
       
+      var myCopayerId = w.getMyCopayerId();
+      var pending = 0;
       var inT = w.getTxProposals();
       var txs  = [];
 
@@ -149,13 +151,16 @@ angular.module('copay.controllerUtils')
         i.fee = i.builder.feeSat/bitcore.util.COIN;
         i.missingSignatures = tx.countInputMissingSignatures(0);
         txs.push(i);
-      });
-      $rootScope.txs = txs;
-      var pending = 0;
-      for(var i=0; i<txs.length;i++) {
-        if (!txs[i].finallyRejected && !txs[i].sentTs) {
+
+        if (myCopayerId != i.creator && !i.finallyRejected && !i.sentTs && !i.rejectedByUs && !i.signedByUs) {
           pending++;
         }
+
+      });
+      
+      $rootScope.txs = txs;
+      if ($rootScope.pendingTxCount < pending) {
+        $rootScope.txAlertCount = pending;
       }
       $rootScope.pendingTxCount = pending;
       w.removeListener('txProposalsUpdated',root.updateTxs)

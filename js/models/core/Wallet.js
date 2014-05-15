@@ -94,6 +94,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   if (mergeInfo.hasChanged || addSeen) {
     this.log('### BROADCASTING txProposals. ');
     recipients = null;
+    TODO: only diff
     this.sendTxProposals(recipients);
   }
   this.emit('txProposalsUpdated', this.txProposals);
@@ -114,7 +115,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
-      this.sendTxProposals(senderId);
+      this.sendTxProposals(senderId); // send old
       break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
@@ -223,12 +224,23 @@ Wallet.prototype.getOnlinePeerIDs = function() {
   return this.network.getOnlinePeerIDs();
 };
 
+Wallet.prototype.getRegisteredCopayerIds = function() {
+  var l = this.publicKeyRing.registeredCopayers();
+  var copayers = [];
+  for (var i = 0; i < l; i++) {
+    var cid = this.getCopayerId(i);
+    copayers.push(cid);
+  }
+  return copayers;
+};
+
 Wallet.prototype.getRegisteredPeerIds = function() {
   var l = this.publicKeyRing.registeredCopayers();
   if (this.registeredPeerIds.length !== l) {
     this.registeredPeerIds = [];
+    var copayers = this.getRegisteredCopayerIds();
     for (var i = 0; i < l; i++) {
-      var cid = this.getCopayerId(i);
+      var cid = copayers[i];
       var pid = this.network.peerFromCopayer(cid);
       this.registeredPeerIds.push({
         peerId: pid,
@@ -275,14 +287,18 @@ Wallet.prototype.toEncryptedObj = function() {
   return this.storage.export(walletObj);
 };
 
-Wallet.prototype.sendTxProposals = function(recipients) {
+Wallet.prototype.sendTxProposals = function(recipients, ntxid) {
   this.log('### SENDING txProposals TO:', recipients || 'All', this.txProposals);
 
-  this.network.send(recipients, {
-    type: 'txProposals',
-    txProposals: this.txProposals.toObj(),
-    walletId: this.id,
-  });
+  var toSend = ntxid ? [ntxid] : this.getTxProposals.getNtxids();
+  for(var i in toSend) {
+    var id = toSend[i];
+    this.network.send(recipients, {
+      type: 'txProposals',
+      txProposals: this.txProposals.toObj(id),
+      walletId: this.id,
+    });
+  }
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
@@ -326,8 +342,9 @@ Wallet.prototype.generateAddress = function(isChange) {
 
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
+  var copayers = this.getRegisteredCopayerIds();
   for (var k in this.txProposals.txps) {
-    var i = this.txProposals.getTxProposal(k);
+    var i = this.txProposals.getTxProposal(k, copayers);
     i.signedByUs = i.signedBy[this.getMyCopayerId()] ? true : false;
     i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()] ? true : false;
     if (this.totalCopayers - i.rejectCount < this.requiredCopayers)
@@ -345,7 +362,7 @@ Wallet.prototype.reject = function(ntxid) {
   if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
   txp.rejectedBy[myId] = Date.now();
-  this.sendTxProposals();
+  this.sendTxProposals(null, ntxid);
   this.store();
   this.emit('txProposalsUpdated');
 };
@@ -366,7 +383,7 @@ Wallet.prototype.sign = function(ntxid) {
 
   if (b.signaturesAdded > before) {
     txp.signedBy[myId] = Date.now();
-    this.sendTxProposals();
+    this.sendTxProposals(null, ntxid);
     this.store();
     this.emit('txProposalsUpdated');
     return true;
@@ -392,7 +409,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
     }
-    self.sendTxProposals();
+    self.sendTxProposals(null, ntxid);
     self.store();
     return cb(txid);
   });
@@ -502,9 +519,10 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   }
 
   self.getSafeUnspent(function(unspentList) {
-    if (self.createTxSync(toAddress, amountSatStr, unspentList, opts)) {
-      self.sendPublicKeyRing(); // Change Address
-      self.sendTxProposals();
+    var ntxid = self.createTxSync(toAddress, amountSatStr, unspentList, opts);
+    if (ntxid) {
+      self.sendPublicKeyRing(); // For the new change Address
+      self.sendTxProposals(null, ntxid);
       self.store();
       self.emit('txProposalsUpdated');
     }
@@ -558,8 +576,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
     builder: b,
   };
 
-  this.txProposals.add(data);
-  return true;
+  return this.txProposals.add(data);
 };
 
 Wallet.prototype.disconnect = function() {
