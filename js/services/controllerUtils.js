@@ -160,7 +160,7 @@ angular.module('copay.controllerUtils')
       
       $rootScope.txs = txs;
       if ($rootScope.pendingTxCount < pending) {
-        $rootScope.showTxAlert = pending;
+        $rootScope.txAlertCount = pending;
       }
       $rootScope.pendingTxCount = pending;
       w.removeListener('txProposalsUpdated',root.updateTxs)

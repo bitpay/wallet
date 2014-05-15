@@ -28,11 +28,11 @@ angular.module('copay.header').controller('HeaderController',
     });
 
     // Initialize alert notification (not show when init wallet)
-    $rootScope.showTxAlert = 0;
+    $rootScope.txAlertCount = 0;
     $notification.enableHtml5Mode(); // for chrome: if support, enable it
-    $rootScope.$watch('showTxAlert', function(showTxAlert) {
-      if (showTxAlert && showTxAlert > 0) {
-        $notification.info('New Transaction', ($rootScope.showTxAlert == 1) ? 'You have pending a transaction proposal' : 'You have pending ' + $rootScope.showTxAlert + ' transaction proposals', showTxAlert);
+    $rootScope.$watch('txAlertCount', function(txAlertCount) {
+      if (txAlertCount && txAlertCount > 0) {
+        $notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
       }
     });
 
