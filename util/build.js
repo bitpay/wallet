@@ -27,9 +27,6 @@ var pack = function (params) {
 var createBundle = function(opts) {
   opts.dir = opts.dir || 'js/';
 
-  // concat browser vendor files
-  exec('sh concat.sh', puts);
-
   var bopts = {
     pack: pack,
     debug: true,
