@@ -89,16 +89,26 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 
   var recipients;
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
+  var ids = inTxp.getNtxids();
+
+  if (ids.lenght>1) {
+    this.emit('badMessage', senderId);
+    this.log('Received BAD TxProposal messsage FROM:', senderId); //TODO
+    return;
+  }
+
+  var newId = ids[0];
   var mergeInfo = this.txProposals.merge(inTxp, true);
   var addSeen = this.addSeenToTxProposals();
   if (mergeInfo.hasChanged || addSeen) {
     this.log('### BROADCASTING txProposals. ');
     recipients = null;
-    TODO: only diff
-    this.sendTxProposals(recipients);
+    this.sendTxProposals(recipients, newId);
   }
-  this.emit('txProposalsUpdated', this.txProposals);
-  this.store();
+  if (data.lastInBatch) {
+    this.emit('txProposalsUpdated', this.txProposals);
+    this.store();
+  }
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
@@ -290,13 +300,18 @@ Wallet.prototype.toEncryptedObj = function() {
 Wallet.prototype.sendTxProposals = function(recipients, ntxid) {
   this.log('### SENDING txProposals TO:', recipients || 'All', this.txProposals);
 
-  var toSend = ntxid ? [ntxid] : this.getTxProposals.getNtxids();
+  var toSend = ntxid ? [ntxid] : this.txProposals.getNtxids();
+
+  var last = toSend[toSend];
+
   for(var i in toSend) {
     var id = toSend[i];
+    var lastInBatch = (i == toSend.length - 1);
     this.network.send(recipients, {
       type: 'txProposals',
       txProposals: this.txProposals.toObj(id),
       walletId: this.id,
+      lastInBatch: lastInBatch,
     });
   }
 };
@@ -459,15 +474,15 @@ Wallet.prototype.addressIsOwn = function(addrStr, opts) {
   return ret;
 };
 
-Wallet.prototype.getBalance = function(safe, cb) {
+Wallet.prototype.getBalance = function(cb) {
   var balance = 0;
+  var safeBalance = 0;
   var balanceByAddr = {};
-  var isMain = {};
   var COIN = bitcore.util.COIN;
-  var f = safe ? this.getSafeUnspent.bind(this) : this.getUnspent.bind(this);
-  f(function(utxos) {
-    for (var i = 0; i < utxos.length; i++) {
-      var u = utxos[i];
+
+  this.getUnspent(function(safeUnspent, unspent) {
+    for (var i = 0; i < unspent.length; i++) {
+      var u = unspent[i];
       var amt = u.amount * COIN;
       balance += amt;
       balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
@@ -478,30 +493,30 @@ Wallet.prototype.getBalance = function(safe, cb) {
       balanceByAddr[a] = balanceByAddr[a] / COIN;
     }
     balance = balance / COIN;
-    return cb(balance, balanceByAddr, isMain);
+
+    for (var i = 0; i < safeUnspent.length; i++) {
+      var u = safeUnspent[i];
+      var amt = u.amount * COIN;
+      safeBalance += amt;
+    }
+    safeBalance = safeBalance / COIN;
+    return cb(balance, balanceByAddr, safeBalance);
   });
 };
 
 Wallet.prototype.getUnspent = function(cb) {
-  this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
-    return cb(unspentList);
-  });
-};
-
-Wallet.prototype.getSafeUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
 
-    var ret = [];
+    var safeUnspendList = [];
     var maxRejectCount = self.totalCopayers - self.requiredCopayers;
     var uu = self.txProposals.getUsedUnspent(maxRejectCount);
 
     for (var i in unspentList) {
       if (uu.indexOf(unspentList[i].txid) === -1)
-        ret.push(unspentList[i]);
+        safeUnspendList.push(unspentList[i]);
     }
-
-    return cb(ret);
+    return cb(safeUnspendList, unspentList);
   });
 };
 
@@ -518,8 +533,8 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
     opts.spendUnconfirmed = this.spendUnconfirmed;
   }
 
-  self.getSafeUnspent(function(unspentList) {
-    var ntxid = self.createTxSync(toAddress, amountSatStr, unspentList, opts);
+  self.getUnspent(function(safeUnspent) {
+    var ntxid = self.createTxSync(toAddress, amountSatStr, safeUnspent, opts);
     if (ntxid) {
       self.sendPublicKeyRing(); // For the new change Address
       self.sendTxProposals(null, ntxid);
