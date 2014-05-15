@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.header').controller('HeaderController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils) {
+  function($scope, $rootScope, $location, $notification, walletFactory, controllerUtils) {
     $scope.menu = [
     {
       'title': 'Addresses',
@@ -24,6 +24,15 @@ angular.module('copay.header').controller('HeaderController',
     $rootScope.$watch('wallet', function(wallet) {
       if (wallet) {
         controllerUtils.updateTxs();
+      }
+    });
+
+    // Initialize alert notification (not show when init wallet)
+    $rootScope.showTxAlert = 0;
+    $notification.enableHtml5Mode(); // for chrome: if support, enable it
+    $rootScope.$watch('showTxAlert', function(showTxAlert) {
+      if (showTxAlert && showTxAlert > 0) {
+        $notification.info('New Transaction', ($rootScope.showTxAlert == 1) ? 'You have pending a transaction proposal' : 'You have pending ' + $rootScope.showTxAlert + ' transaction proposals', showTxAlert);
       }
     });
 

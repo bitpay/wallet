@@ -7,6 +7,7 @@ var copayApp = window.copayApp = angular.module('copay',[
   'ngRoute',
   'mm.foundation',
   'monospaced.qrcode',
+  'notifications',
   'copay.header',
   'copay.footer',
   'copay.addresses',
