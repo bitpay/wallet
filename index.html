@@ -342,7 +342,7 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4>Transactions proposals <small>({{txs.length}})</small></h4>
+            <h4>Transaction proposals <small>({{txs.length}})</small></h4>
             <div class="panel radius pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
               <div class="txheader">
                 <div class="row m10">
@@ -364,7 +364,7 @@
                 <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
                   <figure class="left">
                     <a href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
-                      <img src="./img/satoshi.gif" alt="cId" width="200">
+                      <img src="./img/satoshi.gif" alt="{{cId}}" width="200">
                     </a>
                   </figure>
                   <div class="box-status">
