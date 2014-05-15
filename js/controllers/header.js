@@ -44,11 +44,7 @@ angular.module('copay.header').controller('HeaderController',
     };
     
     $scope.signout = function() {
-      var w = $rootScope.wallet;
-      if (w) {
-        w.disconnect();
-        controllerUtils.logout();
-      }
+      logout();
       $scope.clearFlashMessage();
     };
 
@@ -64,4 +60,19 @@ angular.module('copay.header').controller('HeaderController',
     };
 
     $rootScope.isCollapsed = true;
+
+    function logout() {
+      var w = $rootScope.wallet;
+      if (w) {
+        w.disconnect();
+        controllerUtils.logout();
+      }
+    }
+
+    // Ensures a graceful disconnect
+    window.onbeforeunload = logout;
+
+    $scope.$on('$destroy', function() {
+      window.onbeforeunload = undefined;
+    });
   });
