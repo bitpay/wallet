@@ -222,12 +222,23 @@ Wallet.prototype.getOnlinePeerIDs = function() {
   return this.network.getOnlinePeerIDs();
 };
 
+Wallet.prototype.getRegisteredCopayerIds = function() {
+  var l = this.publicKeyRing.registeredCopayers();
+  var copayers = [];
+  for (var i = 0; i < l; i++) {
+    var cid = this.getCopayerId(i);
+    copayers.push(cid);
+  }
+  return copayers;
+};
+
 Wallet.prototype.getRegisteredPeerIds = function() {
   var l = this.publicKeyRing.registeredCopayers();
   if (this.registeredPeerIds.length !== l) {
     this.registeredPeerIds = [];
+    var copayers = this.getRegisteredCopayerIds();
     for (var i = 0; i < l; i++) {
-      var cid = this.getCopayerId(i);
+      var cid = copayers[i];
       var pid = this.network.peerFromCopayer(cid);
       this.registeredPeerIds.push({
         peerId: pid,
@@ -325,8 +336,9 @@ Wallet.prototype.generateAddress = function(isChange) {
 
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
+  var copayers = this.getRegisteredCopayerIds();
   for (var k in this.txProposals.txps) {
-    var i = this.txProposals.getTxProposal(k);
+    var i = this.txProposals.getTxProposal(k, copayers);
     i.signedByUs = i.signedBy[this.getMyCopayerId()] ? true : false;
     i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()] ? true : false;
     if (this.totalCopayers - i.rejectCount < this.requiredCopayers)
