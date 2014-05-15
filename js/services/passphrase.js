@@ -1,7 +1,3 @@
 'use strict';
 
-var passphrase;
-angular.module('copay.passphrase').factory('Passphrase', function($rootScope) {
-  passphrase = passphrase || new copay.Passphrase(config.passphrase);
-  return passphrase;
-});
+angular.module('copay.passphrase').value('Passphrase', new copay.Passphrase(config.passphrase));

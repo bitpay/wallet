@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copay.footer').controller('FooterController',
-  function($scope) {
+angular.module('copay.footer').controller('FooterController', function($scope, $http) {
 
     if (config.themes && Array.isArray(config.themes) && config.themes[0]) {
       $scope.themes = config.themes;
@@ -15,5 +14,5 @@ angular.module('copay.footer').controller('FooterController',
     $scope.change_theme = function(name) {
       $scope.theme = 'css/tpl-' + name + '.css';
     };
-
+    $scope.version = copay.version;
   });

@@ -101,23 +101,21 @@ angular.module('copay.controllerUtils')
     };
 
     root.updateBalance = function(cb) {
+
+      console.log('Updating balance...');
       $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
       $rootScope.addrInfos = w.getAddressesInfo();
       if ($rootScope.addrInfos.length === 0) return;
       $rootScope.loading = true;
-      w.getBalance(false, function(balance, balanceByAddr) {
+      w.getBalance(function(balance, balanceByAddr, safeBalance) {
+        $rootScope.loading = false;
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
-        $rootScope.loading = false;
+        $rootScope.availableBalance = safeBalance;
         $rootScope.$digest();
-        if (cb) cb();
-      });
-      w.getBalance(true, function(balance) {
-        $rootScope.availableBalance = balance;
-        $rootScope.loading = false;
-        $rootScope.$digest();
+        console.log('Done updating balance.'); //TODO
         if (cb) cb();
       });
       root.setSocketHandlers();

@@ -4,7 +4,7 @@
 
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
-var BIP32       = bitcore.BIP32;
+var HK          = bitcore.HierarchicalKey;
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
@@ -26,7 +26,7 @@ function PublicKeyRing(opts) {
   this.requiredCopayers = opts.requiredCopayers || 3;
   this.totalCopayers = opts.totalCopayers || 5;
 
-  this.copayersBIP32 = opts.copayersBIP32 || [];
+  this.copayersHK = opts.copayersHK || [];
 
   this.changeAddressIndex= opts.changeAddressIndex || 0;
   this.addressIndex= opts.addressIndex || 0;
@@ -74,7 +74,7 @@ PublicKeyRing.prototype.toObj = function() {
 
     changeAddressIndex: this.changeAddressIndex,
     addressIndex: this.addressIndex,
-    copayersExtPubKeys: this.copayersBIP32.map( function (b) { 
+    copayersExtPubKeys: this.copayersHK.map( function (b) { 
       return b.extendedPublicKeyString(); 
     }),
     nicknameFor: this.nicknameFor,
@@ -87,7 +87,7 @@ PublicKeyRing.prototype.getCopayerId = function(i) {
 };
 
 PublicKeyRing.prototype.registeredCopayers = function () {
-  return this.copayersBIP32.length;
+  return this.copayersHK.length;
 };
 
 PublicKeyRing.prototype.isComplete = function () {
@@ -109,14 +109,14 @@ PublicKeyRing.prototype._checkKeys = function() {
 };
 
 PublicKeyRing.prototype._newExtendedPublicKey = function () {
-  return new BIP32(this.network.name)
+  return new HK(this.network.name)
     .extendedPublicKeyString();
 };
 
 PublicKeyRing.prototype._updateBip = function (index) {
   var path = PublicKeyRing.ID_BRANCH;
-  var bip32 = this.copayersBIP32[index].derive(path);
-  this.copayerIds[index]= bip32.eckey.public.toString('hex');
+  var hk = this.copayersHK[index].derive(path);
+  this.copayerIds[index]= hk.eckey.public.toString('hex');
 };
 
 PublicKeyRing.prototype._setNicknameForIndex = function (index, nickname) {
@@ -139,14 +139,14 @@ PublicKeyRing.prototype.addCopayer = function (newEpk, nickname) {
     newEpk = this._newExtendedPublicKey();
   }
 
-  this.copayersBIP32.forEach(function(b){
+  this.copayersHK.forEach(function(b){
     if (b.extendedPublicKeyString() === newEpk)
       throw new Error('already have that key');
   });
 
-  var i=this.copayersBIP32.length;
-  var bip = new BIP32(newEpk);
-  this.copayersBIP32.push(bip);
+  var i=this.copayersHK.length;
+  var bip = new HK(newEpk);
+  this.copayersHK.push(bip);
   this._updateBip(i);
   if (nickname) { 
     this._setNicknameForIndex(i,nickname);
@@ -161,10 +161,10 @@ PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
   var pubKeys = this.publicKeysCache[path];
   if (!pubKeys) {
     pubKeys = [];
-    var l = this.copayersBIP32.length;
+    var l = this.copayersHK.length;
     for(var i=0; i<l; i++) {
-      var bip32 = this.copayersBIP32[i].derive(path);
-      pubKeys[i] = bip32.eckey.public;
+      var hk = this.copayersHK[i].derive(path);
+      pubKeys[i] = hk.eckey.public;
     }
     this.publicKeysCache[path] = pubKeys.map(function(pk){return pk.toString('hex');});
   } 
@@ -307,15 +307,15 @@ PublicKeyRing.prototype._mergeIndexes = function(inPKR) {
 PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   var self = this;
   var hasChanged = false;
-  var l= self.copayersBIP32.length;
+  var l= self.copayersHK.length;
   if (self.isComplete()) 
     return;
 
-  inPKR.copayersBIP32.forEach( function(b) {
+  inPKR.copayersHK.forEach( function(b) {
     var haveIt = false;
     var epk = b.extendedPublicKeyString(); 
     for(var j=0; j<l; j++) {
-      if (self.copayersBIP32[j].extendedPublicKeyString() === epk) {
+      if (self.copayersHK[j].extendedPublicKeyString() === epk) {
         haveIt=true;
         break;
       }
@@ -324,8 +324,8 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
       if (self.isComplete()) {
         throw new Error('trying to add more pubkeys, when PKR isComplete at merge');
       }
-      var l2 = self.copayersBIP32.length;
-      self.copayersBIP32.push(new BIP32(epk));
+      var l2 = self.copayersHK.length;
+      self.copayersHK.push(new HK(epk));
       self._updateBip(l2);
       if (inPKR.nicknameFor[self.getCopayerId(l2)])
         self._setNicknameForIndex(l2,inPKR.nicknameFor[self.getCopayerId(l2)]);
