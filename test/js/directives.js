@@ -64,6 +64,21 @@ angular.module('copay.directives')
       };
     }
   ])
+  .directive('walletSecret', ['walletFactory',
+    function(walletFactory) {
+      return {
+        require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+          var validator = function(value) {
+            ctrl.$setValidity('walletSecret',  Boolean(walletFactory.decodeSecret(value)));
+            return value;
+          };
+
+          ctrl.$parsers.unshift(validator);
+        }
+      };
+    }
+  ])
   .directive('loading', function() {
     return {
       restrict: 'A',

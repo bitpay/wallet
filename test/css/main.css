@@ -496,3 +496,6 @@ a.loading {
  vertical-align:middle
 }
 
+input.ng-invalid-wallet-secret {
+    background: #FFB6C1;
+}

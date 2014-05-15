@@ -162,16 +162,20 @@ WalletFactory.prototype.remove = function(walletId) {
   this.log('TODO: remove wallet contents');
 };
 
+WalletFactory.prototype.decodeSecret = function(secret) {
+  try {
+    return Wallet.decodeSecret(secret);
+  } catch (e) {
+    return false;
+  }
+}
+
 
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
   var self = this;
 
-  var s;
-  try {
-    s=Wallet.decodeSecret(secret);
-  } catch (e) {
-    return cb('badSecret');
-  }
+  var s = self.decodeSecret(secret);
+  if (!s) return cb('badSecret');
   
   //Create our PrivateK
   var privateKey = new PrivateKey({ networkName: this.networkName });

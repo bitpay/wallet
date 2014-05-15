@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-csp>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -7,6 +7,7 @@
     <title>Copay - Multisignature Wallet</title>
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/foundation-icons.css">
+    <link rel="stylesheet" href="lib/angular/angular-csp.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body ng-cloak class="ng-cloak">
@@ -190,7 +191,7 @@
               <div class="box-signin radius">
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
-                  <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" required>
+                  <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
                   <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
@@ -590,7 +591,7 @@
         <h3>{{title}}</h3>
         <div class="small-12 medium-6 medium-centered large-6 large-centered columns">
           <fieldset>
-            <legend>Network Name</legend>
+            <legend>Bitcoin Network</legend>
             <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="livenet" ng-false-value="testnet">
             <label for="network-name">Livenet</label>
           </fieldset>
@@ -660,7 +661,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="lib/angular-foundation/mm-foundation.min.js"></script>
     <script src="lib/angular-foundation/mm-foundation-tpls.min.js"></script>
     <script src="lib/peerjs/peer.js"></script>
-    <script src="lib/bitcore.js"></script>
+    <script src="lib/bitcore/browser/bundle.js"></script>
     <script src="lib/crypto-js/rollups/sha256.js"></script>
     <script src="lib/crypto-js/rollups/pbkdf2.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
