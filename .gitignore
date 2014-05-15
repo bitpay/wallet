@@ -43,3 +43,4 @@ js/copayBundle.js
 config.js
 webapp
 chrome-extension
+version.js

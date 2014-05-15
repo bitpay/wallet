@@ -3,7 +3,7 @@
 
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
-var BIP32       = bitcore.BIP32;
+var HK       = bitcore.HierarchicalKey;
 var WalletKey   = bitcore.WalletKey;
 var networks    = bitcore.networks;
 var util        = bitcore.util;
@@ -14,7 +14,7 @@ function PrivateKey(opts) {
   this.network = opts.networkName === 'testnet' ? 
     networks.testnet : networks.livenet;
   var init = opts.extendedPrivateKeyString || this.network.name;
-  this.bip = opts.BIP32 || new BIP32(init);
+  this.bip = opts.HK || new HK(init);
   this.privateKeyCache = opts.privateKeyCache || {};
 };
 
@@ -47,7 +47,7 @@ PrivateKey.prototype.getExtendedPrivateKeyString = function() {
   return this.bip.extendedPrivateKeyString();
 };
 
-PrivateKey.prototype._getBIP32 = function(path) {
+PrivateKey.prototype._getHK = function(path) {
   if (typeof path === 'undefined') {
     return this.bip;
   }
@@ -58,8 +58,8 @@ PrivateKey.prototype.get = function(index,isChange) {
   var path = PublicKeyRing.Branch(index, isChange);
   var pk = this.privateKeyCache[path];
   if (!pk) {
-    var derivedBIP32 =  this._getBIP32(path);
-    pk = this.privateKeyCache[path] = derivedBIP32.eckey.private.toString('hex');
+    var derivedHK =  this._getHK(path);
+    pk = this.privateKeyCache[path] = derivedHK.eckey.private.toString('hex');
   } else {
     //console.log('cache hit!');
   }
