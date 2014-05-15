@@ -221,22 +221,33 @@
           <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
           Importing wallet...
         </div>
-        <div class="large-6 large-centered medium-6 medium-centered columns" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
-          <h2>{{title}}</h2>
+        <div ng-init="choosefile=0; pastetext=0" ng-show="!loading">
+          <h3>{{title}}</h3>
           <form name="importForm" ng-submit="import(importForm)" novalidate>
-            <fieldset>
-            <legend>Select which method want to use to restore</legend>
-              <label for="backupFile" ng-click="choosefile=!choosefile" class="m10b"><i class="fi-upload"></i> Choose backup file from your computer</label>
-              <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select ng-show="choosefile">
-              <label for="backupText" ng-click="pastetext=!pastetext" class="m10b"><i class="fi-paperclip"></i> Paste backup plain text code</label>
-              <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
-            </fieldset>
+            <div class="row">
+              <div class="large-6 large-centered medium-6 medium-centered columns">
+                <fieldset>
+                  <legend>Select which method want to use to restore</legend>
+                  <label for="backupFile" ng-click="choosefile=!choosefile" class="m10b">&middot; Choose backup file from your computer <i class="fi-laptop"></i></label>
+                  <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select ng-show="choosefile">
+                  <label for="backupText" ng-click="pastetext=!pastetext" class="m10b">&middot; Paste backup plain text code <i class="fi-clipboard"></i></label>
+                  <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
+                </fieldset>
 
-            <label for="password">Password <small>Required</small></label>
-            <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
-            <button type="submit" class="button primary radius" ng-disabled="importForm.$invalid" loading="Importing">
-              Import backup
-            </button>
+                <div class="large-8 medium-8 columns">
+                  <label for="password">Password <small>Required</small></label>
+                  <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 columns line-dashed">
+                <button type="submit" class="button primary radius right" ng-disabled="importForm.$invalid" loading="Importing">
+                  Import backup
+                </button>
+                <a class="button secondary radius" href="#signin">Go back</a>
+              </div>
+            </div>
           </form>
         </div>
       </div>
