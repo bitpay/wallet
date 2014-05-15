@@ -73,7 +73,8 @@ Storage.prototype._write = function(k,v) {
 
 // get value by key
 Storage.prototype.getGlobal = function(k) {
-  return  localStorage.getItem(k);
+  var item = localStorage.getItem(k);
+  return item == 'undefined' ? undefined : item;
 };
 
 // set value for key

@@ -2,8 +2,13 @@
 
 angular.module('copay.signin').controller('SigninController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase) {
+    var cmp = function(o1, o2){
+      var v1 = o1.show.toLowerCase(), v2 = o2.show.toLowerCase();
+      return v1 > v2 ? 1 : ( v1 < v2 ) ? -1 : 0;
+    };
+
     $scope.loading = false;
-    $scope.wallets = walletFactory.getWallets();
+    $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
 
