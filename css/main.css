@@ -631,3 +631,7 @@ p.dr-notification-text {
   margin-top: -5px;
   font-size: 12px;
 }
+
+input.ng-invalid-wallet-secret {
+  background: #FFB6C1;
+}
