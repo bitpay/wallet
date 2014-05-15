@@ -101,23 +101,21 @@ angular.module('copay.controllerUtils')
     };
 
     root.updateBalance = function(cb) {
+
+      console.log('Updating balance...');
       $rootScope.balanceByAddr = {};
       var w = $rootScope.wallet;
       $rootScope.addrInfos = w.getAddressesInfo();
       if ($rootScope.addrInfos.length === 0) return;
       $rootScope.loading = true;
-      w.getBalance(false, function(balance, balanceByAddr) {
+      w.getBalance(function(balance, balanceByAddr, safeBalance) {
+        $rootScope.loading = false;
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
-        $rootScope.loading = false;
+        $rootScope.availableBalance = safeBalance;
         $rootScope.$digest();
-        if (cb) cb();
-      });
-      w.getBalance(true, function(balance) {
-        $rootScope.availableBalance = balance;
-        $rootScope.loading = false;
-        $rootScope.$digest();
+        console.log('Done updating balance.'); //TODO
         if (cb) cb();
       });
       root.setSocketHandlers();
@@ -128,6 +126,8 @@ angular.module('copay.controllerUtils')
       var w = $rootScope.wallet;
       if (!w) return;
       
+      var myCopayerId = w.getMyCopayerId();
+      var pending = 0;
       var inT = w.getTxProposals();
       var txs  = [];
 
@@ -149,13 +149,16 @@ angular.module('copay.controllerUtils')
         i.fee = i.builder.feeSat/bitcore.util.COIN;
         i.missingSignatures = tx.countInputMissingSignatures(0);
         txs.push(i);
-      });
-      $rootScope.txs = txs;
-      var pending = 0;
-      for(var i=0; i<txs.length;i++) {
-        if (!txs[i].finallyRejected && !txs[i].sentTs) {
+
+        if (myCopayerId != i.creator && !i.finallyRejected && !i.sentTs && !i.rejectedByUs && !i.signedByUs) {
           pending++;
         }
+
+      });
+      
+      $rootScope.txs = txs;
+      if ($rootScope.pendingTxCount < pending) {
+        $rootScope.txAlertCount = pending;
       }
       $rootScope.pendingTxCount = pending;
       w.removeListener('txProposalsUpdated',root.updateTxs)

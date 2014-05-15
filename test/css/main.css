@@ -149,18 +149,6 @@ html, body {height: 100%;}
   padding: 0;
 }
 
-/*.btransactions .txheader {
-  font-size: 12px;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-}
-
-.btransactions .txbottom {
-  margin-top: 10px;
-  padding-top: 10px;
-  font-size: 12px;
-}*/
-
 .pending table {
   width: 100%;
   border: none;
@@ -496,6 +484,126 @@ a.loading {
  vertical-align:middle
 }
 
-input.ng-invalid-wallet-secret {
-    background: #FFB6C1;
+fieldset {
+  border: 1px solid #eee;
+  padding: 1.11111rem;
+  margin: 1rem 0;
 }
+
+fieldset legend {
+  font-weight: bold;
+  padding: 0 0.16667rem;
+  margin: 0;
+  margin-left: -0.16667rem;
+}
+
+/* notifications */
+
+.dr-notification-container {
+  position: absolute;
+  z-index: 10000;
+}
+
+.dr-notification-container.bottom {
+  bottom: 20px;
+}
+
+.dr-notification-container.right {
+  right: 20px;
+}
+
+.dr-notification-container.left {
+  left: 20px;
+}
+
+.dr-notification-container.top {
+  top: 20px;
+}
+
+.dr-notification-container.center {
+  left: 50%;
+  margin-left: -190px;
+}
+
+.dr-notification-wrapper {
+  width: 380px;
+  position: relative;
+  margin: 10px 0;
+}
+
+.dr-notification {
+  width: 380px;
+  clear: both;
+  min-height: 80px;
+  max-height: 90px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.dr-notification-close-btn {
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  border-radius: 20px;
+  display: inline-block;
+  padding: 3px;
+  font-size: 14px;
+  position: absolute;
+  right: -11px;
+  top: 5px;
+  -webkit-transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
+  -moz-transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
+  transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
+  cursor: pointer;
+}
+.dr-notification-close-btn i {
+  padding-left: 3px;
+}
+.dr-notification-close-btn:hover {
+  -webkit-transform: scale3d(1.25, 1.25, 1);
+  -moz-transform: scale3d(1.25, 1.25, 1);
+  -ms-transform: scale3d(1.25, 1.25, 1);
+  transform: scale3d(1.25, 1.25, 1);
+}
+
+.dr-notification-image {
+  width: 80px;
+  height: 80px;
+  border-right: 1px solid rgba(4, 94, 123, 0.85);
+  float: left;
+  display: block;
+  font-size: 40px;
+  color: white;
+  text-align: center;
+}
+.dr-notification-image i {
+  display: block;
+  width: 100%;
+  padding-top: 25px;
+}
+.dr-notification-image img {
+  margin: 15px;
+  max-width: 70px;
+  min-width: 48px;
+}
+
+.dr-notification-content {
+  padding-left: 100px;
+  padding-right: 15px;
+  padding-top: 10px;
+}
+
+.dr-notification-title {
+  color: white;
+  padding: 0px;
+  font-size: 20px;
+}
+
+p.dr-notification-text {
+  margin-top: -5px;
+  font-size: 12px;
+}
+
