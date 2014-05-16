@@ -17,13 +17,13 @@ angular.module('notifications', []).
       details: true,
       localStorage: false,
       html5Mode: false,
-      html5DefaultIcon: '../img/satoshi.gif'
+      html5DefaultIcon: 'img/favicon.ico'
     };
 
     function html5Notify(icon, title, content, ondisplay, onclose){
       if(window.webkitNotifications.checkPermission() === 0){
         if(!icon){
-          icon = '../img/favicon.ico';
+          icon = 'img/favicon.ico';
         }
         var noti = window.webkitNotifications.createNotification(icon, title, content);
         if(typeof ondisplay === 'function'){
@@ -113,7 +113,7 @@ angular.module('notifications', []).
 
       info: function(title, content, userData){
         console.log(title, content);
-        return this.awesomeNotify('info','info', title, content, userData);
+        return this.awesomeNotify('info','loop', title, content, userData);
       },
 
       error: function(title, content, userData){
@@ -220,7 +220,7 @@ angular.module('notifications', []).
         '</div>' +
         '<div class="dr-notification">' +
           '<div class="dr-notification-image dr-notification-type-{{noti.type}}" ng-switch on="noti.image">' +
-            '<i class="icon-{{noti.icon}}" ng-switch-when="false"></i>' +
+            '<i class="fi-{{noti.icon}}" ng-switch-when="false"></i>' +
             '<img ng-src="{{noti.image}}" ng-switch-default />' +
           '</div>' +
           '<div class="dr-notification-content">' +
