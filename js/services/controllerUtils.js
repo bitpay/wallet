@@ -3,26 +3,8 @@
 angular.module('copay.controllerUtils')
   .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
     var root = {};
-    $rootScope.videoInfo = {};
-    $rootScope.loading = false;
 
-    $rootScope.getVideoURL = function(copayer) {
-      var vi = $rootScope.videoInfo[copayer]
-      if (!vi) return;
-
-      if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
-        // peer disconnected, remove his video
-        delete $rootScope.videoInfo[copayer]
-        return;
-      }
-
-      var encoded = vi.url;
-      var url = decodeURI(encoded);
-      var trusted = $sce.trustAsResourceUrl(url);
-      return trusted;
-    };
-
-    $rootScope.getVideoMutedStatus = function(copayer) {
+    root.getVideoMutedStatus = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) {
         return;
@@ -30,17 +12,17 @@ angular.module('copay.controllerUtils')
       return vi.muted;
     };
 
-    $rootScope.getWalletDisplay = function() {
-      var w = $rootScope.wallet;
-      return w && (w.name || w.id);
-    };
-
     root.logout = function() {
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
-      $rootScope.totalBalance = 0;
       video.close();
-      $rootScope.videoInfo = {};
+      // Clear rootScope
+      for (var i in $rootScope) {
+        if (i.charAt(0) != '$') {
+          delete $rootScope[i];
+        }
+      }
+
       $location.path('signin');
     };
 
@@ -73,18 +55,22 @@ angular.module('copay.controllerUtils')
         };
       });
       w.on('ready', function(myPeerID) {
+        console.log('## RECEIVED READY.');
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $rootScope.wallet = w;
         $location.path('addresses');
         $rootScope.$digest();
       });
-      w.on('refresh', function() {
-        root.updateBalance();
+      w.on('publicKeyRingUpdated', function() {
+        root.setSocketHandlers();
+        root.updateAddressList();
         $rootScope.$digest();
       });
       w.on('txProposalsUpdated', function() {
         root.updateTxs();
-        root.updateBalance();
+        root.updateBalance(function(){
+          $rootScope.$digest();
+        });
       });
       w.on('openError', root.onErrorDigest);
       w.on('connect', function(peerID) {
@@ -100,25 +86,28 @@ angular.module('copay.controllerUtils')
       w.netStart();
     };
 
-    root.updateBalance = function(cb) {
-
-      console.log('Updating balance...');
-      $rootScope.balanceByAddr = {};
+    root.updateAddressList = function() {
       var w = $rootScope.wallet;
       $rootScope.addrInfos = w.getAddressesInfo();
+    };
+
+    root.updateBalance = function(cb) {
+      console.log('Updating balance...');
+      root.updateAddressList();
+      var w = $rootScope.wallet;
       if ($rootScope.addrInfos.length === 0) return;
-      $rootScope.loading = true;
+
+      $rootScope.balanceByAddr = {};
+      $rootScope.updatingBalance = true;
       w.getBalance(function(balance, balanceByAddr, safeBalance) {
-        $rootScope.loading = false;
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
         $rootScope.availableBalance = safeBalance;
-        $rootScope.$digest();
+        $rootScope.updatingBalance = false;
         console.log('Done updating balance.'); //TODO
         if (cb) cb();
       });
-      root.setSocketHandlers();
     };
 
     root.updateTxs = function() {
@@ -163,23 +152,30 @@ angular.module('copay.controllerUtils')
       $rootScope.pendingTxCount = pending;
       w.removeListener('txProposalsUpdated',root.updateTxs)
       w.once('txProposalsUpdated',root.updateTxs);
-      $rootScope.loading = false;
     };    
 
     root.setSocketHandlers = function() {
-      // TODO: optimize this?
-      Socket.removeAllListeners();
       if (!$rootScope.wallet) return;
 
+      var currentAddrs=  Socket.getListeners();
       var addrs = $rootScope.wallet.getAddressesStr();
-      for (var i = 0; i < addrs.length; i++) {
-        console.log('### SUBSCRIBE TO', addrs[i]);
-        Socket.emit('subscribe', addrs[i]);
+
+      var newAddrs=[];
+      for(var i in addrs){
+        var a=addrs[i];
+        if (!currentAddrs[a])
+          newAddrs.push(a);
       }
-      addrs.forEach(function(addr) {
+      for (var i = 0; i < newAddrs.length; i++) {
+        console.log('### SUBSCRIBE TO', newAddrs[i]);
+        Socket.emit('subscribe', newAddrs[i]);
+      }
+      newAddrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance();
+          root.updateBalance(function(){
+            $rootScope.$digest();
+          });
         });
       });
     };

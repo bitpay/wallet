@@ -23,7 +23,7 @@ angular.module('copay.directives')
       };
     }
   ])
-  .directive('notification', ['$rootScope',
+  .directive('notification', ['$rootScope', 
     function($rootScope) {
       return {
         restrict: 'A',
@@ -82,13 +82,14 @@ angular.module('copay.directives')
   .directive('loading', function() {
     return {
       restrict: 'A',
-      link: function(scope, element, attr) {
+      link: function($scope, element, attr) {
         var a = element.html();
         var text = attr.loading;
-        scope.$watch('loading', function(val) {
-          if (val) {
+        element.on('click', function() {
             element.html('<i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> ' + text + '...');
-          } else {
+        });
+        $scope.$watch('loading', function(val) {
+          if (!val) {
             element.html(a);
           }
         });
@@ -104,14 +105,14 @@ angular.module('copay.directives')
         });
       }
     }
-  }).directive('avatar', function($rootScope) {
+  }).directive('avatar', function($rootScope, controllerUtils) {
     return {
       link: function(scope, element, attrs) {
         var peer = JSON.parse(attrs.peer)
         var peerId = peer.peerId;
         var nick = peer.nick;
         element.addClass('video-small');
-        var muted = $rootScope.getVideoMutedStatus(peerId);
+        var muted = controllerUtils.getVideoMutedStatus(peerId);
         if (muted) {
           element.attr("muted", true);
         }
