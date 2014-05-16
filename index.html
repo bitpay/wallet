@@ -468,7 +468,7 @@
                 </div>
                 <div class="tx-copayers">
                   <div class="large-5 columns">
-                    <div ng-repeat="vin in btx.vin">
+                    <div ng-repeat="vin in btx.vin | groupByAddress">
                       <p class="left text-gray size-12"> {{vin.addr}} </p>
                       <small class="right">{{vin.value}}</small>
                     </div>
