@@ -427,14 +427,18 @@
                   <span ng-show="tx.finallyRejected" class="text-warning">
                     Transaction finally rejected
                   </span>
-                  <p class="small" ng-show="!tx.missingSignatures && tx.sentTs">
-                    <i class="fi-arrow-right size-40"></i>
-                    Sent at {{tx.sentTs | date:'medium'}} |
-                    Transaction ID: 
+                  <div ng-show="!tx.missingSignatures && tx.sentTs">
+                  <span>
+                    Sent
+                  </span>
+                  <p class="text-gray small">
+                    {{tx.sentTs | date:'medium'}}.
+                    ID: 
                     <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
                         {{tx.sentTxid}}
                     </a>
                   </p>
+                  </div>
                   <p class="text-gray" ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
                     One signature missing
                   </p>
