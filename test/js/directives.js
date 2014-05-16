@@ -111,7 +111,6 @@ angular.module('copay.directives')
         var peerId = peer.peerId;
         var nick = peer.nick;
         element.addClass('video-small');
-        element.attr('title', peerId + (peerId == $rootScope.wallet.network.peerId ? ' (You)' : ''));
         var muted = $rootScope.getVideoMutedStatus(peerId);
         if (muted) {
           element.attr("muted", true);
