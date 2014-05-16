@@ -26,8 +26,6 @@
                 <a class="button radius small-icon" title="Manual Refresh"
                   ng-disabled="$root.loading"
                   ng-click="refresh()"><i class="fi-refresh"></i></a>
-                <a class="button radius small-icon" title="Settings"
-                  ng-disabled="$root.loading" href="#settings"><i class="fi-widget"></i></a>
                 <a class="button radius small-icon" title="Signout" 
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
@@ -649,7 +647,7 @@
               <button type="submit" class="button primary radius right ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
                Save
               </button>
-              <a class="button secondary radius" href="#signin" ng-hide="$root.wallet">Signin</a>
+              <a class="button secondary radius" href="#signin" ng-hide="$root.wallet">Home</a>
             </div>
           </div>
         </form>
