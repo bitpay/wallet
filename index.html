@@ -368,7 +368,7 @@
                     </div>
                   </div>
                   <div class="large-4 columns text-right">
-                    <h6> created at {{tx.createdTs | date:'medium'}} </h6>
+                    <h6>{{tx.createdTs | amCalendar}}</h6>
                   </div>
                 </div>
               </div>
@@ -383,16 +383,16 @@
                   </figure>
                   <div class="box-status">
                     <span ng-repeat="(action, ts) in actions">
-                      <a ng-if="action == 'create'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Created at {{ts | date:'medium'}}">
+                      <a ng-if="action == 'create'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Created {{ts | amTimeAgo}}">
                         <i class="fi-crown size-12 icon-status icon-active"></i>
                       </a>
-                      <a ng-if="action == 'seen'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Seen at {{ts | date:'medium'}}">
+                      <a ng-if="action == 'seen'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Seen {{ts | amTimeAgo}}">
                         <i class="fi-eye size-12 icon-status icon-active"></i>
                       </a>
-                      <a ng-if="action == 'sign'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Signed at {{ts | date:'medium'}}">
+                      <a ng-if="action == 'sign'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Signed {{ts | amTimeAgo}}">
                         <i class="fi-check size-12 icon-status icon-active-check"></i>
                       </a>
-                      <a ng-if="action == 'rejected'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Rejected at {{ts | date:'medium'}}">
+                      <a ng-if="action == 'rejected'" href="#/transactions" class="has-tip" tooltip-popup-delay='1000' tooltip="Rejected {{ts | amTimeAgo}}">
                         <i class="fi-x size-12 icon-status icon-active-x"></i>
                       </a>
                     </span>
@@ -430,7 +430,7 @@
                     Sent
                   </span>
                   <p class="text-gray small">
-                    {{tx.sentTs | date:'medium'}}.
+                    <span am-time-ago="tx.sentTs"></span>.
                     ID: 
                     <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
                         {{tx.sentTxid}}
@@ -462,7 +462,7 @@
                       </a>
                     </div>
                     <div class="large-4 columns text-right">
-                      {{btx.firstSeenTs * 1000 | date:'medium'}} </h6>
+                      {{btx.firstSeenTs * 1000 | amCalendar}} </h6>
                     </div>
                   </div>
                 </div>
@@ -680,6 +680,8 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="config.js"></script>
 
     <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/moment/moment.js"></script>
+    <script src="lib/angular-moment/angular-moment.js"></script>
     <script src="lib/qrcode-generator/js/qrcode.js"></script>
     <script src="lib/angular-qrcode/qrcode.js"></script>
     <script src="lib/angular-route/angular-route.min.js"></script>

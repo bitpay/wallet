@@ -18,6 +18,7 @@
     "sjcl": "1.0.0",
     "file-saver": "*",
     "qrcode-decoder-js": "*",
-    "bitcore": "~0.1.19"
+    "bitcore": "~0.1.19",
+    "angular-moment": "~0.7.1"
   }
 }
