@@ -18,8 +18,6 @@ angular.module('copay.footer').controller('FooterController', function($rootScop
 
     $scope.getVideoURL = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
-
-console.log('[footer.js.21]', vi); //TODO
       if (!vi) return;
 
       if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
@@ -31,7 +29,6 @@ console.log('[footer.js.21]', vi); //TODO
       var encoded = vi.url;
       var url = decodeURI(encoded);
       var trusted = $sce.trustAsResourceUrl(url);
-console.log('[footer.js.31:trusted:]',trusted); //TODO
       return trusted;
     };
   });

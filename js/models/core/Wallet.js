@@ -225,7 +225,9 @@ Wallet.prototype.netStart = function() {
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
     setTimeout(function(){
+console.log('[EMIT publicKeyRingUpdated:]'); //TODO
       self.emit('publicKeyRingUpdated');
+console.log('[CONNECT:]'); //TODO
       self.connectToAll();
       self.emit('txProposalsUpdated');
     },10);

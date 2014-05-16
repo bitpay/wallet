@@ -85,7 +85,6 @@ angular.module('copay.signin').controller('SigninController',
         $scope.failure = true;
       });
       wallet.on('ready', function() {
-        console.log('## RECEIVED READY2');
         $scope.loading = false;
       });
     }

@@ -55,12 +55,11 @@ angular.module('copay.controllerUtils')
         };
       });
       w.on('ready', function(myPeerID) {
-        console.log('## RECEIVED READY.');
-        video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $rootScope.wallet = w;
         $location.path('addresses');
-        $rootScope.$digest();
+        video.setOwnPeer(myPeerID, w, handlePeerVideo);
       });
+
       w.on('publicKeyRingUpdated', function() {
         root.setSocketHandlers();
         root.updateAddressList();
