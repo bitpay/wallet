@@ -22,7 +22,7 @@
             <div class="large-9 medium-9 columns text-center p10t" ng-show="$root.wallet">
               <div class="large-4 medium-4 columns line-dashed-v">
                 <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
-                  <strong><span>{{$root.getWalletDisplay()}}</span></strong>
+                  <strong><span>{{$root.wallet.getName()}}</span></strong>
                 </a> 
                 <a class="button radius small-icon" title="Manual Refresh"
                   ng-disabled="$root.loading"
@@ -32,14 +32,14 @@
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
                 Balance: 
-                <span ng-if="$root.loading">...</span>
-                <span ng-if="!$root.loading">{{totalBalance || 0}}</span>
+                <span ng-if="$root.updatingBalance">...</span>
+                <span ng-if="!$root.updatingBalance">{{totalBalance || 0}}</span>
                 <i class="fi-bitcoin"></i><br>
               </div>
               <div class="large-4 medium-4 columns">
                 Available to Spend:
-                <span ng-if="$root.loading">...</span>
-                <span ng-if="!$root.loading">{{availableBalance || 0}}</span>
+                <span ng-if="$root.updatingBalance">...</span>
+                <span ng-if="!$root.updatingBalance">{{availableBalance || 0}}</span>
                 <i class="fi-bitcoin"></i>
               </div>
      
@@ -101,7 +101,7 @@
                   </div>
                 </div>
                 <div class="large-3 columns hide-for-medium hide-for-small" ng-show="$root.wallet">
-                  <h5 class="m0">{{$root.getWalletDisplay()}}</h5>
+                  <h5 class="m0">{{$root.wallet.getName()}}</h5>
                   <p class="text-gray">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet</p>
                 </div>
               </div>
@@ -129,7 +129,7 @@
     <div class="row p10t" ng-show="$root.wallet">
       <div class="large-3 medium-3 small-3 columns">
         <div>
-          <strong>{{$root.getWalletDisplay()}}</strong>
+          <strong>{{$root.wallet.getName()}}</strong>
         </div>
         <div class="size-12 m10t">
           {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
@@ -146,7 +146,7 @@
             avatar peer="{{c}}"
             autoplay
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
-            ng-src="{{$root.getVideoURL(c.peerId)}}"
+            ng-src="{{getVideoURL(c.peerId)}}"
           ></video>
           <img ng-if="!$root.videoInfo[c.peerId]" 
             avatar peer="{{c}}"
@@ -324,8 +324,8 @@
                   <span>{{addrInfo.address.toString()}}</span>
                   <span ng-if="addrInfo.isChange">(change)</span>
                   <span class="right">
-                    <span ng-if="$root.loading">...</span>
-                    <span ng-if="!$root.loading">{{balanceByAddr[addrInfo.address.toString()] || 0}}</span>
+                    <span ng-if="$root.updatingBalance">...</span>
+                    <span ng-if="!$root.updatingBalance">{{balanceByAddr[addrInfo.address.toString()] || 0}}</span>
                     <i class="fi-bitcoin"></i>
                   </span>
                 </a>
@@ -334,8 +334,8 @@
                 <qrcode size="160" data="{{selectedAddr}}"></qrcode>
                 <p class="m10t">
                   <strong>
-                    <span ng-if="$root.loading">...</span>
-                    <span ng-if="!$root.loading">{{balanceByAddr[selectedAddr] || 0}}</span>
+                    <span ng-if="$root.updatingBalance">...</span>
+                    <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr] || 0}}</span>
                     <i class="fi-bitcoin"></i>
                   </strong>
                 </p>
@@ -405,16 +405,15 @@
               </div>
 
               <div class="row m15">
-                <div class="large-4 columns" ng-show="!tx.sentTs" style="padding-left: 5px;">
+                <div class="large-5 columns" ng-show="!tx.sentTs" style="padding-left: 5px;">
                   <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
-                    <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
+                    <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                       <i class="fi-check"></i> Sign
                     </button>
-                    <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading">
+                    <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
                       <i class="fi-x" ></i> Reject 
                     </button>
                   </div>
-
                   <span ng-show="!tx.missingSignatures && !tx.sentTs">
                     <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
                       Broadcast Transaction
@@ -422,7 +421,7 @@
                   </span>
                 </div>
     
-                <div class="large-8 columns text-right">
+                <div class="large-7 columns text-right">
                   <span ng-show="tx.finallyRejected" class="text-warning">
                     Transaction finally rejected
                   </span>
