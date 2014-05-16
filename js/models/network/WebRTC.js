@@ -262,6 +262,7 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   p.on('error', function(err) {
     if (!err.message.match(/Could\snot\sconnect\sto peer/)) {
       console.log('### PEER ERROR:', err);
+      self.emit('error', err);
     }
     self._checkAnyPeer();
   });
