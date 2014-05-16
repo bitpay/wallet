@@ -7,7 +7,7 @@ angular.module('copay.signin').controller('SigninController',
       return v1 > v2 ? 1 : ( v1 < v2 ) ? -1 : 0;
     };
 
-    $scope.loading = false;
+    $scope.loading = $scope.failure = false;
     $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
@@ -34,12 +34,13 @@ angular.module('copay.signin').controller('SigninController',
       Passphrase.getBase64Async(password, function(passphrase){
         var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
         if (!w) {
-          $scope.loading = false;
+          $scope.loading = $scope.failure = false;
           $rootScope.flashMessage = { message: 'Bad password or connection error', type: 'error'};
           $rootScope.$digest();
           return;
         }
         controllerUtils.startNetwork(w);
+        listenErrors(w);
       });
     };
 
@@ -66,8 +67,16 @@ angular.module('copay.signin').controller('SigninController',
               controllerUtils.onErrorDigest();
           } else {
               controllerUtils.startNetwork(w);
+              listenErrors(w);
           }
         });
       });
     };
+
+    function listenErrors(wallet) {
+      wallet.network.on('error', function(err) {
+        $scope.failure = true;
+      });
+    }
+
   });
