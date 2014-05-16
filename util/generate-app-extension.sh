@@ -8,12 +8,11 @@ BASENAME=`basename $ROOTDIR`
 if [ $BASENAME = "util" ]; then
   # Moving to root path
   cd ../
-  ROOTDIR=`pwd`
 fi
 
 # Configs
-APPDIR="$ROOTDIR/webapp"
-CHROMEDIR="$ROOTDIR/chrome-extension"
+APPDIR="./webapp"
+CHROMEDIR="./chrome-extension"
 
 LIBDIR="$APPDIR/lib"
 DOWNLOADDIR="$APPDIR/download"
