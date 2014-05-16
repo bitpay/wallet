@@ -1,6 +1,4 @@
 'use strict';
-
-var localConfig = JSON.parse(localStorage.getItem('config'));
 var defaultConfig = {
   networkName: 'testnet',
   network: {
@@ -99,25 +97,9 @@ var defaultConfig = {
     port: 3001
   },
   passphrase: {
-    iterations: 1000,
+    iterations: 100,
     storageSalt: 'mjuBtGybi/4=', 
   },
   themes: ['default'],
   verbose: 1,
 };
-
-var config = defaultConfig;
-
-// Merge localConfig
-if (localConfig) {
-  var count = 0;
-  for (name in localConfig) {
-    if (localConfig.hasOwnProperty(name)) {
-      config[name] = localConfig[name];
-    }
-  }
-}
-
-var log = function() {
-  if (config.verbose) console.log(arguments);
-}
