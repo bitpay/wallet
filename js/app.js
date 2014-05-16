@@ -20,9 +20,11 @@ var copay = require('copay');
 
 var copayApp = window.copayApp = angular.module('copay',[
   'ngRoute',
+  'angularMoment',
   'mm.foundation',
   'monospaced.qrcode',
   'notifications',
+  'copay.filters',
   'copay.header',
   'copay.footer',
   'copay.addresses',
