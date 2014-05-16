@@ -10,7 +10,7 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "tabs", "storage" 
+    "tabs", "storage", "notifications" 
   ],
   "options_page": "index.html#/settings",
   "icons": {
