@@ -5,11 +5,38 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.title = 'Transactions';
     $scope.loading = false;
+    $scope.onlyPending = true;
+    $scope.lastShowed = false;
 
     $scope.update = function () {
       $scope.loading = false;
-      controllerUtils.updateTxs();
+      controllerUtils.updateTxs({onlyPending:$scope.onlyPending});
       $rootScope.$digest();
+    };
+
+    $scope.show = function (onlyPending) {
+      $scope.loading=true;
+      $scope.onlyPending = onlyPending;
+      setTimeout(function(){
+        $scope.update();
+      }, 10);
+    };
+
+    $scope.toogleLast = function () {
+      console.log('[toogleLast]');
+      $scope.loading=true;
+      $scope.lastShowed = !$scope.lastShowed;
+      if ($scope.lastShowed) {
+        $scope.getTransactions(function(txs){
+          $scope.loading=false;
+          $scope.blockchain_txs = txs;
+          $rootScope.$digest();
+        });
+      }
+      else {
+        $scope.loading=false;
+        $rootScope.$digest();
+      }
     };
 
     $scope.send = function (ntxid,cb) {
@@ -36,32 +63,31 @@ angular.module('copay.transactions').controller('TransactionsController',
             type:'error',
             message: 'There was an error signing the Transaction',
           };
-          $scope.update();
-        }
-        else {
+            $scope.update();
+        } else {
           var p = w.txProposals.getTxProposal(ntxid);
           if (p.builder.isFullySigned()) {
             $scope.send(ntxid, function() {
               $scope.update();
             });
           }
-          else $scope.update();
+          else 
+            $scope.update();
         }
       });
     };
 
-    $scope.getTransactions = function() {
+    $scope.getTransactions = function(cb) {
       var w   =$rootScope.wallet;
       if (w) {
-        var addresses = w.getAddressesStr();
 
+        console.log('### Querying last transactions...'); //TODO
+        var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
-          w.blockchain.getTransactions(addresses, function(txs) {
-            $scope.blockchain_txs = txs;
-            $rootScope.$digest();
-          });
+          return w.blockchain.getTransactions(addresses, cb);
         }
       }
+      return cb();
     };
 
     $scope.getShortNetworkName = function() {

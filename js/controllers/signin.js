@@ -6,9 +6,7 @@ angular.module('copay.signin').controller('SigninController',
       var v1 = o1.show.toLowerCase(), v2 = o2.show.toLowerCase();
       return v1 > v2 ? 1 : ( v1 < v2 ) ? -1 : 0;
     };
-
     $rootScope.videoInfo = {};
-
     $scope.loading = $scope.failure = false;
     $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
@@ -46,7 +44,9 @@ angular.module('copay.signin').controller('SigninController',
           $rootScope.$digest();
           return;
         }
+        console.log('[signin.js.49]'); //TODO
         installStartupHandlers(w);
+        console.log('[signin.js.52]'); //TODO
         controllerUtils.startNetwork(w);
       });
     };

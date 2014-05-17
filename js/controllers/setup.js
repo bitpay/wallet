@@ -3,6 +3,7 @@
 angular.module('copay.setup').controller('SetupController',
   function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase) {
 
+    $rootScope.videoInfo = {};
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
 
@@ -37,8 +38,6 @@ angular.module('copay.setup').controller('SetupController',
         $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
         return;
       }
-
-
       $scope.loading = true;
       Passphrase.getBase64Async($scope.walletPassword, function(passphrase){
         var opts = {

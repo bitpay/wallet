@@ -355,7 +355,12 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4>Transaction proposals <small>({{txs.length}})</small></h4>
+            <h4> Transaction proposals <span ng-if="onlyPending">[Pending]</span>  <small>({{txs.length}})</small></h4>
+
+            <ul class="button-group">
+            <li> <button  ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
+            <li> <button  ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
+            </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
               <div class="txheader">
                 <div class="row m10">
@@ -449,9 +454,15 @@
               </div>
             </div>
           </div>
-          <div class="large-12 columns" ng-init="getTransactions()" ng-show="blockchain_txs[0].txid">
-            <h3>Last transactions</h3>
-            <div class="btransactions">
+          <div class="large-12 columns">
+            <h4>Last transactions</h4>
+            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating"> 
+              Show
+            </button>
+            <div class="btransactions" ng-if="lastShowed">
+              <div ng-if="!blockchain_txs[0].txid && !loading">
+                No transactions yet.
+              </div>
               <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
                 <div class="m15">
                   <div class="row">
