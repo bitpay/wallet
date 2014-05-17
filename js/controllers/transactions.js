@@ -34,8 +34,10 @@ angular.module('copay.transactions').controller('TransactionsController',
         });
       }
       else {
-        $scope.loading=false;
-        $rootScope.$digest();
+        setTimeout(function(){
+          $scope.loading=false;
+          $rootScope.$digest();
+        });
       }
     };
 
