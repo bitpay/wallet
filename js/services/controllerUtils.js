@@ -3,6 +3,7 @@
 angular.module('copay.controllerUtils')
   .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
     var root = {};
+    var bitcore = require('bitcore');
 
     root.getVideoMutedStatus = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
@@ -58,17 +59,27 @@ angular.module('copay.controllerUtils')
         $rootScope.wallet = w;
         $location.path('addresses');
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
+        console.log('# Done ready handler'); 
       });
 
-      w.on('publicKeyRingUpdated', function() {
+      w.on('publicKeyRingUpdated', function(dontDigest) {
+        console.log('[start publicKeyRing handler]'); //TODO
         root.setSocketHandlers();
         root.updateAddressList();
-        $rootScope.$digest();
-      });
-      w.on('txProposalsUpdated', function() {
-        root.updateTxs();
-        root.updateBalance(function(){
+        if (!dontDigest) {
+          console.log('[pkr digest]');
           $rootScope.$digest();
+          console.log('[done digest]');
+        }
+      });
+      w.on('txProposalsUpdated', function(dontDigest) {
+        root.updateTxs({onlyPending:true});
+        root.updateBalance(function(){
+          if (!dontDigest) {
+            console.log('[txp digest]');
+            $rootScope.$digest();
+            console.log('[done digest]');
+          }
         });
       });
       w.on('openError', root.onErrorDigest);
@@ -76,6 +87,7 @@ angular.module('copay.controllerUtils')
         if (peerID) {
           video.callPeer(peerID, handlePeerVideo);
         }
+        console.log('[digest]');
         $rootScope.$digest();
       });
       w.on('disconnect', function(peerID) {
@@ -94,7 +106,8 @@ angular.module('copay.controllerUtils')
       console.log('Updating balance...');
       root.updateAddressList();
       var w = $rootScope.wallet;
-      if ($rootScope.addrInfos.length === 0) return;
+      if ($rootScope.addrInfos.length === 0) 
+        return cb?cb():null;
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
@@ -105,52 +118,56 @@ angular.module('copay.controllerUtils')
         $rootScope.availableBalance = safeBalance;
         $rootScope.updatingBalance = false;
         console.log('Done updating balance.'); //TODO
-        if (cb) cb();
+        return cb?cb():null;
       });
     };
 
-    root.updateTxs = function() {
-      var bitcore = require('bitcore');
+    root.updateTxs = function(opts) {
       var w = $rootScope.wallet;
       if (!w) return;
+      opts = opts || {};
       
+      console.log('## updating tx proposals', opts); //TODO
       var myCopayerId = w.getMyCopayerId();
-      var pending = 0;
+      var pendingForUs = 0;
       var inT = w.getTxProposals();
       var txs  = [];
 
+      console.log('[START LOOP]'); //TODO
       inT.forEach(function(i){
-        var tx  = i.builder.build();
-        var outs = [];
-
-        tx.outs.forEach(function(o) {
-          var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
-          if (!w.addressIsOwn(addr, {excludeMain:true})) {
-            outs.push({
-              address: addr, 
-              value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
-            });
-          }
-        });
-        // extra fields
-        i.outs = outs;
-        i.fee = i.builder.feeSat/bitcore.util.COIN;
-        i.missingSignatures = tx.countInputMissingSignatures(0);
-        txs.push(i);
-
         if (myCopayerId != i.creator && !i.finallyRejected && !i.sentTs && !i.rejectedByUs && !i.signedByUs) {
-          pending++;
+          pendingForUs++;
         }
-
+        if (!i.finallyRejected && !i.sentTs) {
+          i.isPending=1;
+        }
+        if (!opts.onlyPending || i.isPending) {
+          console.log('tx:',i); //TODO
+          var tx  = i.builder.build();
+          var outs = [];
+          tx.outs.forEach(function(o) {
+            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+            if (!w.addressIsOwn(addr, {excludeMain:true})) {
+              outs.push({
+                address: addr, 
+                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+              });
+            }
+          });
+          // extra fields
+          i.outs = outs;
+          i.fee = i.builder.feeSat/bitcore.util.COIN;
+          i.missingSignatures = tx.countInputMissingSignatures(0);
+          txs.push(i);
+        }
       });
       
-      $rootScope.txs = txs;
-      if ($rootScope.pendingTxCount < pending) {
-        $rootScope.txAlertCount = pending;
+      $rootScope.txs = txs; //.some(function(i) {return i.isPending; } );
+      if ($rootScope.pendingTxCount < pendingForUs) {
+        $rootScope.txAlertCount = pendingForUs;
       }
-      $rootScope.pendingTxCount = pending;
-      w.removeListener('txProposalsUpdated',root.updateTxs)
-      w.once('txProposalsUpdated',root.updateTxs);
+      $rootScope.pendingTxCount = pendingForUs;
+      console.log('## Done updating tx proposals'); //TODO
     };    
 
     root.setSocketHandlers = function() {

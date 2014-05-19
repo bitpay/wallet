@@ -48,9 +48,9 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
+  console.log('## Decrypting'); //TODO
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   w.verbose = this.verbose;
-
   // JIC: Add our key
   try {
     w.publicKeyRing.addCopayer(
@@ -60,16 +60,15 @@ WalletFactory.prototype.fromObj = function(obj) {
     // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
-
-  // store imported wallet
-  w.store();
   return w;
 };
 
 WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   this.storage._setPassphrase(password);
   var walletObj = this.storage.import(base64);
-  return this.fromObj(walletObj);
+  var w= this.fromObj(walletObj);
+  w.store();
+  return w;
 };
 
 WalletFactory.prototype.read = function(walletId) {

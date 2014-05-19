@@ -21,12 +21,6 @@ angular.module('copay.header').controller('HeaderController',
       'link': '#/backup'
     }];
 
-    $rootScope.$watch('wallet', function(wallet) {
-      if (wallet) {
-        controllerUtils.updateTxs();
-      }
-    });
-
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
     $notification.enableHtml5Mode(); // for chrome: if support, enable it
