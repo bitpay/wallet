@@ -110,7 +110,7 @@ body {
   background: #fff;
 }
 
-.addresses .panel:hover {
+.addresses .panel:hover, .addresses .panel.selected {
   background: #efefef;
 }
 

@@ -314,13 +314,12 @@
  
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
-      <div class="addresses" data-ng-controller="AddressesController">
+      <div class="addresses" ng-controller="AddressesController">
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="row">
             <div class="large-9 medium-12 columns" ng-if="addrInfos[0]">
               <div class="large-8 medium-8 columns">
-                <a class="panel radius db" ng-repeat="addrInfo in addrInfos"
-                  ng-click="selectAddr(addrInfo.address.toString())">
+                <a class="panel radius db" ng-repeat="addrInfo in addrInfos" ng-click="$root.selectedAddr = addrInfo.address.toString()" ng-class="selectAddr('{{addrInfo.address.toString()}}')">
                   <span>{{addrInfo.address.toString()}}</span>
                   <span ng-if="addrInfo.isChange">(change)</span>
                   <span class="right">
