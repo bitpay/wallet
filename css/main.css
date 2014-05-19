@@ -223,6 +223,11 @@ small.has-error {
   font-weight: bold;
 }
 
+.small {
+  font-size: 60%;
+  line-height: inherit;
+}
+
 @media (max-width: 641px) {
   .hide_menu {
     display: none;
@@ -265,7 +270,9 @@ hr { margin: 2.25rem 0;}
 .size-48 { font-size: 48px; }
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
+.m5t {margin-top: 5px;}
 .m10t {margin-top: 10px;}
+.m5b {margin-bottom: 5px;}
 .m10b {margin-bottom: 10px;}
 .m15b {margin-bottom: 20px !important;}
 .m10r {margin-right: 10px;}
@@ -605,5 +612,12 @@ fieldset legend {
 p.dr-notification-text {
   margin-top: -5px;
   font-size: 12px;
+}
+
+.ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 

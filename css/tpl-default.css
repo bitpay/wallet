@@ -178,10 +178,6 @@ small.has-error {
 .transactions button, .transactions .button {
   padding: 0.5rem 2rem;
 }
-.small {
-  font-size: 60%;
-  line-height: inherit;
-}
 
 button.radius, .button.radius {
   -webkit-border-radius: 5px;
@@ -319,5 +315,9 @@ input.ng-invalid-wallet-secret {
 
 .dr-notification-image.success {
   color: #B4D455;
+}
+
+.success {
+  color: #3FBC9C;
 }
 
