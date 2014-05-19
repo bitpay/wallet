@@ -1322,7 +1322,11 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 };
 
 Wallet.prototype.connectToAll = function() {
+
+console.log('[Wallet.js.57]'); //TODO
   var all = this.publicKeyRing.getAllCopayerIds();
+
+console.log('[Wallet.js.58] connecting'); //TODO
   this.network.connectToCopayers(all);
   if (this.seededCopayerId) {
     this.sendWalletReady(this.seededCopayerId);
@@ -1347,7 +1351,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
     recipients = null;
     this.sendPublicKeyRing(recipients);
   }
-  this.emit('refresh', this.publicKeyRing);
+  this.emit('publicKeyRingUpdated');
   this.store();
 };
 
@@ -1374,7 +1378,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
     this.sendTxProposals(recipients, newId);
   }
   if (data.lastInBatch) {
-    this.emit('txProposalsUpdated', this.txProposals);
+    this.emit('txProposalsUpdated');
     this.store();
   }
 };
@@ -1490,11 +1494,16 @@ Wallet.prototype.netStart = function() {
   if (this.publicKeyRing.isComplete()) {
     this._lockIncomming();
   }
-
   net.start(startOpts, function() {
-    self.connectToAll();
     self.emit('ready', net.getPeer());
-    self.emit('refresh');
+    setTimeout(function(){
+      console.log('[EMIT publicKeyRingUpdated:]'); //TODO
+      self.emit('publicKeyRingUpdated', true);
+      console.log('[CONNECT:]'); //TODO
+      self.connectToAll();
+      console.log('[EMIT TxProposal]'); //TODO
+      self.emit('txProposalsUpdated');
+    },10);
   });
 };
 
@@ -1614,11 +1623,20 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   });
 };
 
+Wallet.prototype.getName = function() {
+  return this.name || this.id;
+};
 
-Wallet.prototype.generateAddress = function(isChange) {
-  var addr = this.publicKeyRing.generateAddress(isChange);
+Wallet.prototype._doGenerateAddress = function(isChange) {
+  return this.publicKeyRing.generateAddress(isChange);
+};
+
+
+Wallet.prototype.generateAddress = function(isChange, cb) {
+  var addr = this._doGenerateAddress(isChange);
   this.sendPublicKeyRing();
   this.store();
+  if (cb) return cb(addr);
   return addr;
 };
 
@@ -1651,27 +1669,30 @@ Wallet.prototype.reject = function(ntxid) {
 };
 
 
-Wallet.prototype.sign = function(ntxid) {
+Wallet.prototype.sign = function(ntxid, cb) {
   var self = this;
-  var myId = this.getMyCopayerId();
-  var txp = self.txProposals.txps[ntxid];
-  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
+  setTimeout(function() {
+    var myId = self.getMyCopayerId();
+    var txp = self.txProposals.txps[ntxid];
+    if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
 
-  var pkr = self.publicKeyRing;
-  var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
+    var pkr = self.publicKeyRing;
+    var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
 
-  var b = txp.builder;
-  var before = b.signaturesAdded;
-  b.sign(keys);
+    var b = txp.builder;
+    var before = b.signaturesAdded;
+    b.sign(keys);
 
-  if (b.signaturesAdded > before) {
-    txp.signedBy[myId] = Date.now();
-    this.sendTxProposals(null, ntxid);
-    this.store();
-    this.emit('txProposalsUpdated');
-    return true;
-  }
-  return false;
+    var ret = false;
+    if (b.signaturesAdded > before) {
+      txp.signedBy[myId] = Date.now();
+      self.sendTxProposals(null, ntxid);
+      self.store();
+      self.emit('txProposalsUpdated');
+      ret = true;
+    }
+    if (cb) return cb(ret);
+  },10);
 };
 
 Wallet.prototype.sendTx = function(ntxid, cb) {
@@ -1691,9 +1712,9 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     self.log('BITCOND txid:', txid); //TODO
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
+      self.sendTxProposals(null, ntxid);
+      self.store();
     }
-    self.sendTxProposals(null, ntxid);
-    self.store();
     return cb(txid);
   });
 };
@@ -1804,7 +1825,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   self.getUnspent(function(safeUnspent) {
     var ntxid = self.createTxSync(toAddress, amountSatStr, safeUnspent, opts);
     if (ntxid) {
-      self.sendPublicKeyRing(); // For the new change Address
+      self.sendPublicKeyRing();
       self.sendTxProposals(null, ntxid);
       self.store();
       self.emit('txProposalsUpdated');
@@ -1826,7 +1847,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   if (!opts.remainderOut) {
     opts.remainderOut = {
-      address: this.generateAddress(true).toString()
+      address: this._doGenerateAddress(true).toString()
     };
   }
 
@@ -1876,6 +1897,8 @@ module.exports = require('soop')(Wallet);
 }).call(this,require("buffer").Buffer)
 },{"../../../copay":"hxYaTp","bitcore":23,"buffer":52,"events":61,"http":62,"soop":85}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
+},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -1927,9 +1950,9 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
+  console.log('## Decrypting'); //TODO
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   w.verbose = this.verbose;
-
   // JIC: Add our key
   try {
     w.publicKeyRing.addCopayer(
@@ -1939,16 +1962,15 @@ WalletFactory.prototype.fromObj = function(obj) {
     // No really an error, just to be sure.
   }
   this.log('### WALLET OPENED:', w.id);
-
-  // store imported wallet
-  w.store();
   return w;
 };
 
 WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   this.storage._setPassphrase(password);
   var walletObj = this.storage.import(base64);
-  return this.fromObj(walletObj);
+  var w= this.fromObj(walletObj);
+  w.store();
+  return w;
 };
 
 WalletFactory.prototype.read = function(walletId) {
@@ -2099,9 +2121,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":85}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
-},{}],17:[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":12,"./Wallet":"zfa+FW","soop":85}],17:[function(require,module,exports){
 var imports = require('soop').imports();
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 

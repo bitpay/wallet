@@ -1,13 +1,30 @@
 'use strict';
 
+var config = defaultConfig;
+var localConfig = JSON.parse(localStorage.getItem('config'));
+
+if (localConfig) {
+  var count = 0;
+  for (name in localConfig) {
+    if (localConfig.hasOwnProperty(name)) {
+      config[name] = localConfig[name];
+    }
+  }
+}
+
+var log = function() {
+  if (config.verbose) console.log(arguments);
+}
 
 var copay = require('copay');
 
 var copayApp = window.copayApp = angular.module('copay',[
   'ngRoute',
+  'angularMoment',
   'mm.foundation',
   'monospaced.qrcode',
   'notifications',
+  'copay.filters',
   'copay.header',
   'copay.footer',
   'copay.addresses',

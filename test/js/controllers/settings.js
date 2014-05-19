@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.settings').controller('SettingsController',
-  function($scope, $rootScope, $window) {
+  function($scope, $rootScope, $window, $location) {
     $scope.title = 'Settings';
 
     $scope.networkName = config.networkName;
@@ -31,6 +31,6 @@ angular.module('copay.settings').controller('SettingsController',
         })
       );
 
-      $window.location.reload();
+      $window.location.href= $window.location.origin + $window.location.pathname;
     };
   });

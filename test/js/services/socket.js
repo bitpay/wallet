@@ -19,13 +19,20 @@ angular.module('copay.socket').factory('Socket',
         };
 
         socket.on(event, wrappedCallback);
-
         if (event !== 'connect') {
           listeners.push({
             event: event,
             fn: wrappedCallback
           });
         }
+      },
+      getListeners: function() {
+        var ret = {};
+        var addrList = listeners.map(function(i) {return i.event;});
+        for (var i in addrList) {
+          ret[addrList[i]] = 1;
+        }
+        return ret;
       },
       emit: function(event, data, callback) {
         socket.emit(event, data, function() {

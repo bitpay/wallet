@@ -3,26 +3,9 @@
 angular.module('copay.controllerUtils')
   .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
     var root = {};
-    $rootScope.videoInfo = {};
-    $rootScope.loading = false;
+    var bitcore = require('bitcore');
 
-    $rootScope.getVideoURL = function(copayer) {
-      var vi = $rootScope.videoInfo[copayer]
-      if (!vi) return;
-
-      if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
-        // peer disconnected, remove his video
-        delete $rootScope.videoInfo[copayer]
-        return;
-      }
-
-      var encoded = vi.url;
-      var url = decodeURI(encoded);
-      var trusted = $sce.trustAsResourceUrl(url);
-      return trusted;
-    };
-
-    $rootScope.getVideoMutedStatus = function(copayer) {
+    root.getVideoMutedStatus = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) {
         return;
@@ -30,17 +13,17 @@ angular.module('copay.controllerUtils')
       return vi.muted;
     };
 
-    $rootScope.getWalletDisplay = function() {
-      var w = $rootScope.wallet;
-      return w && (w.name || w.id);
-    };
-
     root.logout = function() {
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
-      $rootScope.totalBalance = 0;
       video.close();
-      $rootScope.videoInfo = {};
+      // Clear rootScope
+      for (var i in $rootScope) {
+        if (i.charAt(0) != '$') {
+          delete $rootScope[i];
+        }
+      }
+
       $location.path('signin');
     };
 
@@ -73,24 +56,38 @@ angular.module('copay.controllerUtils')
         };
       });
       w.on('ready', function(myPeerID) {
-        video.setOwnPeer(myPeerID, w, handlePeerVideo);
         $rootScope.wallet = w;
         $location.path('addresses');
-        $rootScope.$digest();
+        video.setOwnPeer(myPeerID, w, handlePeerVideo);
+        console.log('# Done ready handler'); 
       });
-      w.on('refresh', function() {
-        root.updateBalance();
-        $rootScope.$digest();
+
+      w.on('publicKeyRingUpdated', function(dontDigest) {
+        console.log('[start publicKeyRing handler]'); //TODO
+        root.setSocketHandlers();
+        root.updateAddressList();
+        if (!dontDigest) {
+          console.log('[pkr digest]');
+          $rootScope.$digest();
+          console.log('[done digest]');
+        }
       });
-      w.on('txProposalsUpdated', function() {
-        root.updateTxs();
-        root.updateBalance();
+      w.on('txProposalsUpdated', function(dontDigest) {
+        root.updateTxs({onlyPending:true});
+        root.updateBalance(function(){
+          if (!dontDigest) {
+            console.log('[txp digest]');
+            $rootScope.$digest();
+            console.log('[done digest]');
+          }
+        });
       });
       w.on('openError', root.onErrorDigest);
       w.on('connect', function(peerID) {
         if (peerID) {
           video.callPeer(peerID, handlePeerVideo);
         }
+        console.log('[digest]');
         $rootScope.$digest();
       });
       w.on('disconnect', function(peerID) {
@@ -100,86 +97,101 @@ angular.module('copay.controllerUtils')
       w.netStart();
     };
 
-    root.updateBalance = function(cb) {
-
-      console.log('Updating balance...');
-      $rootScope.balanceByAddr = {};
+    root.updateAddressList = function() {
       var w = $rootScope.wallet;
       $rootScope.addrInfos = w.getAddressesInfo();
-      if ($rootScope.addrInfos.length === 0) return;
-      $rootScope.loading = true;
+    };
+
+    root.updateBalance = function(cb) {
+      console.log('Updating balance...');
+      root.updateAddressList();
+      var w = $rootScope.wallet;
+      if ($rootScope.addrInfos.length === 0) 
+        return cb?cb():null;
+
+      $rootScope.balanceByAddr = {};
+      $rootScope.updatingBalance = true;
       w.getBalance(function(balance, balanceByAddr, safeBalance) {
-        $rootScope.loading = false;
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
         $rootScope.availableBalance = safeBalance;
-        $rootScope.$digest();
+        $rootScope.updatingBalance = false;
         console.log('Done updating balance.'); //TODO
-        if (cb) cb();
+        return cb?cb():null;
       });
-      root.setSocketHandlers();
     };
 
-    root.updateTxs = function() {
-      var bitcore = require('bitcore');
+    root.updateTxs = function(opts) {
       var w = $rootScope.wallet;
       if (!w) return;
+      opts = opts || {};
       
+      console.log('## updating tx proposals', opts); //TODO
       var myCopayerId = w.getMyCopayerId();
-      var pending = 0;
+      var pendingForUs = 0;
       var inT = w.getTxProposals();
       var txs  = [];
 
+      console.log('[START LOOP]'); //TODO
       inT.forEach(function(i){
-        var tx  = i.builder.build();
-        var outs = [];
-
-        tx.outs.forEach(function(o) {
-          var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
-          if (!w.addressIsOwn(addr, {excludeMain:true})) {
-            outs.push({
-              address: addr, 
-              value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
-            });
-          }
-        });
-        // extra fields
-        i.outs = outs;
-        i.fee = i.builder.feeSat/bitcore.util.COIN;
-        i.missingSignatures = tx.countInputMissingSignatures(0);
-        txs.push(i);
-
         if (myCopayerId != i.creator && !i.finallyRejected && !i.sentTs && !i.rejectedByUs && !i.signedByUs) {
-          pending++;
+          pendingForUs++;
         }
-
+        if (!i.finallyRejected && !i.sentTs) {
+          i.isPending=1;
+        }
+        if (!opts.onlyPending || i.isPending) {
+          console.log('tx:',i); //TODO
+          var tx  = i.builder.build();
+          var outs = [];
+          tx.outs.forEach(function(o) {
+            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+            if (!w.addressIsOwn(addr, {excludeMain:true})) {
+              outs.push({
+                address: addr, 
+                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+              });
+            }
+          });
+          // extra fields
+          i.outs = outs;
+          i.fee = i.builder.feeSat/bitcore.util.COIN;
+          i.missingSignatures = tx.countInputMissingSignatures(0);
+          txs.push(i);
+        }
       });
       
-      $rootScope.txs = txs;
-      if ($rootScope.pendingTxCount < pending) {
-        $rootScope.txAlertCount = pending;
+      $rootScope.txs = txs; //.some(function(i) {return i.isPending; } );
+      if ($rootScope.pendingTxCount < pendingForUs) {
+        $rootScope.txAlertCount = pendingForUs;
       }
-      $rootScope.pendingTxCount = pending;
-      w.removeListener('txProposalsUpdated',root.updateTxs)
-      w.once('txProposalsUpdated',root.updateTxs);
-      $rootScope.loading = false;
+      $rootScope.pendingTxCount = pendingForUs;
+      console.log('## Done updating tx proposals'); //TODO
     };    
 
     root.setSocketHandlers = function() {
-      // TODO: optimize this?
-      Socket.removeAllListeners();
       if (!$rootScope.wallet) return;
 
+      var currentAddrs=  Socket.getListeners();
       var addrs = $rootScope.wallet.getAddressesStr();
-      for (var i = 0; i < addrs.length; i++) {
-        console.log('### SUBSCRIBE TO', addrs[i]);
-        Socket.emit('subscribe', addrs[i]);
+
+      var newAddrs=[];
+      for(var i in addrs){
+        var a=addrs[i];
+        if (!currentAddrs[a])
+          newAddrs.push(a);
       }
-      addrs.forEach(function(addr) {
+      for (var i = 0; i < newAddrs.length; i++) {
+        console.log('### SUBSCRIBE TO', newAddrs[i]);
+        Socket.emit('subscribe', newAddrs[i]);
+      }
+      newAddrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
-          root.updateBalance();
+          root.updateBalance(function(){
+            $rootScope.$digest();
+          });
         });
       });
     };

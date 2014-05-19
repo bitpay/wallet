@@ -6,7 +6,7 @@ angular.module('copay.signin').controller('SigninController',
       var v1 = o1.show.toLowerCase(), v2 = o2.show.toLowerCase();
       return v1 > v2 ? 1 : ( v1 < v2 ) ? -1 : 0;
     };
-
+    $rootScope.videoInfo = {};
     $scope.loading = $scope.failure = false;
     $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
@@ -20,6 +20,8 @@ angular.module('copay.signin').controller('SigninController',
 
       $rootScope.walletName = form.walletName.$modelValue;
       $rootScope.walletPassword = form.createPassword.$modelValue;
+
+
       $location.path('setup');
     };
 
@@ -31,7 +33,10 @@ angular.module('copay.signin').controller('SigninController',
       
       $scope.loading = true;
       var password = form.openPassword.$modelValue;
+
+      console.log('## Obtaining passphrase...'); 
       Passphrase.getBase64Async(password, function(passphrase){
+        console.log('## Done.');
         var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
         if (!w) {
           $scope.loading = $scope.failure = false;
@@ -39,8 +44,10 @@ angular.module('copay.signin').controller('SigninController',
           $rootScope.$digest();
           return;
         }
+        console.log('[signin.js.49]'); //TODO
+        installStartupHandlers(w);
+        console.log('[signin.js.52]'); //TODO
         controllerUtils.startNetwork(w);
-        listenErrors(w);
       });
     };
 
@@ -67,15 +74,18 @@ angular.module('copay.signin').controller('SigninController',
               controllerUtils.onErrorDigest();
           } else {
               controllerUtils.startNetwork(w);
-              listenErrors(w);
+              installStartupHandlers(w);
           }
         });
       });
     };
 
-    function listenErrors(wallet) {
+    function installStartupHandlers(wallet) {
       wallet.network.on('error', function(err) {
         $scope.failure = true;
+      });
+      wallet.on('ready', function() {
+        $scope.loading = false;
       });
     }
 
