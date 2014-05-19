@@ -67,6 +67,8 @@ angular.module('copay.signin').controller('SigninController',
           if (err || !w) {
             if (err === 'joinError') 
               $rootScope.flashMessage = { message: 'Can not find peer'};
+            else if (err === 'walletFull')
+              $rootScope.flashMessage = { message: 'The wallet is full'};
             else if (err === 'badSecret')  
               $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
             else 
