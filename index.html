@@ -363,18 +363,16 @@
             <li> <button  ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
-              <div class="txheader">
-                <div class="row m10">
-                  <div class="large-8 medium-8 small-12 columns">
-                    <div class="row" ng-repeat="out in tx.outs">
-                      <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value}} <i class="fi-bitcoin size-18"></i></div>
-                      <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
-                      <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
-                    </div>
+              <div class="txheader row m10">
+                <div class="large-8 medium-8 small-12 columns">
+                  <div class="row" ng-repeat="out in tx.outs">
+                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value}} <i class="fi-bitcoin size-18"></i></div>
+                    <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
+                    <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
                   </div>
-                  <div class="large-4 medium-4 small-12 columns text-right">
-                    <h6>{{tx.createdTs | amCalendar}}</h6>
-                  </div>
+                </div>
+                <div class="large-4 medium-4 small-12 columns text-right">
+                  <h6>{{tx.createdTs | amCalendar}}</h6>
                 </div>
               </div>
 
@@ -410,7 +408,7 @@
               </div>
 
               <div class="row m10">
-                <div class="large-5 columns" ng-show="!tx.sentTs" style="padding-left: 5px;">
+                <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
                   <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
                     <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                       <i class="fi-check"></i> Sign
@@ -419,14 +417,14 @@
                       <i class="fi-x" ></i> Reject 
                     </button>
                   </div>
-                  <span ng-show="!tx.missingSignatures && !tx.sentTs">
+                  <div ng-show="!tx.missingSignatures && !tx.sentTs">
                     <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
                       Broadcast Transaction
                     </button>
-                  </span>
+                  </div>
                 </div>
     
-                <div class="large-7 columns text-right">
+                <div class="large-7 medium-7 columns text-right">
                   <div ng-show="tx.finallyRejected" class="text-warning m10b">
                     Transaction finally rejected
                   </div>
