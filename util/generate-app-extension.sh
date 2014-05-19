@@ -13,10 +13,12 @@ fi
 # Configs
 APPDIR="./webapp"
 CHROMEDIR="./chrome-extension"
+FIREFOXDIR="./firefox-addon"
 
 LIBDIR="$APPDIR/lib"
 DOWNLOADDIR="$APPDIR/download"
 CHROMEDOWNLOADDIR="$DOWNLOADDIR/chrome"
+FIREFOXDOWNLOADDIR="$DOWNLOADDIR/firefox"
 
 ZIPFILE="copay.zip"
 CHROMEZIPFILE="copay-chrome-extension.zip"
@@ -50,6 +52,13 @@ fi
 
 mkdir -p $CHROMEDIR
 
+# Create/Clean chrome-extension dir
+if [ -d $FIREFOXDIR ]; then
+  rm -rf $FIREFOXDIR
+fi
+
+mkdir -p $FIREFOXDIR
+
 # Re-compile copayBundle.js
 echo -e "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
 grunt --target=dev shell
@@ -65,6 +74,11 @@ echo -e "${OpenColor}${Green}* Copying all chrome-extension files...${CloseColor
 cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,popup.html,manifest.json} $CHROMEDIR
 checkOK
 
+# Copy all firefox-addon files
+echo -e "${OpenColor}${Green}* Copying all firefox-addon files...${CloseColor}"
+cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,popup.html} $FIREFOXDIR
+checkOK
+
 # Zipping apps
 echo -e "${OpenColor}${Green}* Zipping all app files...${CloseColor}"
 zip -r $ZIPFILE $APPDIR
@@ -76,8 +90,10 @@ zip -r $CHROMEZIPFILE $CHROMEDIR
 checkOK
 
 mkdir -p $CHROMEDOWNLOADDIR
+mkdir -p $FIREFOXDOWNLOADDIR
 mv $ZIPFILE $DOWNLOADDIR
 mv $CHROMEZIPFILE $CHROMEDOWNLOADDIR
 cp index-download-chrome.html $CHROMEDOWNLOADDIR/index.html
+cp index-download-firefox.html $FIREFOXDOWNLOADDIR/index.html
 
 echo -e "${OpenColor}${Yellow}\nAwesome! Now you have the webapp in ./webapp and the chrome extension files in ./webapp/download/.${CloseColor}"
