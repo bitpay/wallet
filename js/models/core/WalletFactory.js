@@ -200,8 +200,14 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   self.network.cleanUp();
   self.network.start(opts, function() {
     self.network.connectTo(s.pubKey);
+
+    // This is a hack to reconize if the connection was rejected or the peer wasn't there.
+    var connectedOnce = false;
+    self.network.on('connected', function(sender, data) {
+      connectedOnce = true;
+    });
     self.network.on('onlyYou', function(sender, data) {
-      return cb('joinError');
+      return cb(connectedOnce ? 'walletFull' : 'joinError');
     });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
