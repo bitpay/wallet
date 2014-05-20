@@ -19,4 +19,13 @@ angular.module('copay.filters', [])
         return { addr: key, value: dic[key] };
       });
     };
+  })
+  .filter('paged', function() {
+    return function(elements, page, pageSize, disable) {
+      if (disable) return elements;
+
+      var from = (page - 1) * pageSize;
+      var to = from + pageSize;
+      return elements.slice(from, to);;
+    };
   });
