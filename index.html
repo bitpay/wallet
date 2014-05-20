@@ -67,10 +67,10 @@
         
       </div>
 
-      <div class="row" ng-if='$root.flashMessage.message' notification>
+      <div class="row" ng-if='$root.$flashMessage.message' notification>
         <div class="small-8 large-centered columns">
-          <div data-alert class="alert-box radius {{$root.flashMessage.type}}">
-            {{$root.flashMessage.message}}
+          <div data-alert class="alert-box radius {{$root.$flashMessage.type}}">
+            {{$root.$flashMessage.message}}
             <a ng-click="clearFlashMessage()" class="close">&times;</a>
           </div>
         </div>

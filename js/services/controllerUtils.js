@@ -19,7 +19,7 @@ angular.module('copay.controllerUtils')
       video.close();
       // Clear rootScope
       for (var i in $rootScope) {
-        if (i.charAt(0) != '$' && i != 'flashMessage') {
+        if (i.charAt(0) != '$') {
           delete $rootScope[i];
         }
       }
@@ -50,7 +50,7 @@ angular.module('copay.controllerUtils')
         $rootScope.$digest();
       };
       w.on('badMessage', function(peerId) {
-        $rootScope.flashMessage = {
+        $rootScope.$flashMessage = {
           type: 'error',
           message: 'Received wrong message from peer id:' + peerId
         };

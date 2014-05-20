@@ -30,7 +30,7 @@ angular.module('copay.directives')
         link: function(scope, element, attrs, ctrl) {
           setTimeout(function() {
             scope.$apply(function() {
-              $rootScope.flashMessage = {};
+              $rootScope.$flashMessage = {};
             });
           }, 5000);
         }
