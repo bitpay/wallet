@@ -63,6 +63,7 @@ angular.module('copay.header').controller('HeaderController',
       var w = $rootScope.wallet;
       w.connectToAll();
       controllerUtils.updateBalance(function() {
+        $rootScope.$digest();
       });
     };
 
