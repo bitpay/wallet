@@ -9,6 +9,7 @@ angular.module('notifications', []).
 
     var settings = {
       info: { duration: 5000, enabled: true },
+      funds: { duration: 5000, enabled: true },
       warning: { duration: 5000, enabled: true },
       error: { duration: 5000, enabled: true },
       success: { duration: 5000, enabled: true },
@@ -114,6 +115,11 @@ angular.module('notifications', []).
       info: function(title, content, userData){
         console.log(title, content);
         return this.awesomeNotify('info','loop', title, content, userData);
+      },
+      
+      funds: function(title, content, userData){
+        console.log(title, content);
+        return this.awesomeNotify('funds','bitcoin', title, content, userData);
       },
 
       error: function(title, content, userData){

@@ -192,6 +192,7 @@ angular.module('copay.controllerUtils')
       newAddrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           console.log('Received!', txid);
+          $rootScope.receivedFund = [txid, addr];
           root.updateBalance(function(){
             $rootScope.$digest();
           });

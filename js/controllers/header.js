@@ -29,6 +29,12 @@ angular.module('copay.header').controller('HeaderController',
       }
     });
 
+    $rootScope.$watch('receivedFund', function(receivedFund) {
+      if (receivedFund) {
+        $notification.funds('Received fund', 'on ' + receivedFund[1], receivedFund);
+      }
+    });
+
     $scope.isActive = function(item) {
       if (item.link && item.link.replace('#','') == $location.path()) {
         return true;
