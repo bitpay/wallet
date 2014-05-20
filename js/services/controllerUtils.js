@@ -19,7 +19,7 @@ angular.module('copay.controllerUtils')
       video.close();
       // Clear rootScope
       for (var i in $rootScope) {
-        if (i.charAt(0) != '$') {
+        if (i.charAt(0) != '$' && i != 'flashMessage') {
           delete $rootScope[i];
         }
       }

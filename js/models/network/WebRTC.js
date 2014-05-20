@@ -223,6 +223,7 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
 
       // The connecting peer send hello 
       if(toCopayerId) {
+        self.emit('connected');
         self._sendHello(toCopayerId);      
         self._addConnectedCopayer(toCopayerId);
       }
