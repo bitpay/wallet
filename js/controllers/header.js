@@ -31,7 +31,17 @@ angular.module('copay.header').controller('HeaderController',
 
     $rootScope.$watch('receivedFund', function(receivedFund) {
       if (receivedFund) {
-        $notification.funds('Received fund', 'on ' + receivedFund[1], receivedFund);
+        var currentAddr;
+        for(var i=0;i<$rootScope.addrInfos.length;i++) {
+          var addrinfo = $rootScope.addrInfos[i];
+          if (addrinfo.address.toString() == receivedFund[1] && !addrinfo.isChange) {
+            currentAddr = addrinfo.address.toString();
+            break;
+          }
+        }
+        if (currentAddr) {
+          $notification.funds('Received fund', currentAddr, receivedFund);
+        }
       }
     });
 

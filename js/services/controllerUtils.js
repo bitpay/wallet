@@ -117,7 +117,6 @@ angular.module('copay.controllerUtils')
       w.getBalance(function(balance, balanceByAddr, safeBalance) {
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
-        $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
         $rootScope.availableBalance = safeBalance;
         $rootScope.updatingBalance = false;
         console.log('Done updating balance.'); //TODO
