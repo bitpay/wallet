@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.controllerUtils')
-  .factory('controllerUtils', function($rootScope, $sce, $location, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, Socket, video) {
     var root = {};
     var bitcore = require('bitcore');
 
@@ -49,6 +49,9 @@ angular.module('copay.controllerUtils')
         };
         $rootScope.$digest();
       };
+
+      $notification.enableHtml5Mode(); // for chrome: if support, enable it
+
       w.on('badMessage', function(peerId) {
         $rootScope.flashMessage = {
           type: 'error',

@@ -3,7 +3,7 @@
 angular.module('notifications', []).
   factory('$notification', ['$timeout',function($timeout){
 
-    console.log('notification service online');
+//    console.log('notification service online');
     var notifications = JSON.parse(localStorage.getItem('$notifications')) || [],
         queue = [];
 
