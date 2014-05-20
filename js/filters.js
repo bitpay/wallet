@@ -21,11 +21,7 @@ angular.module('copay.filters', [])
     };
   })
   .filter('paged', function() {
-    return function(elements, page, pageSize, disable) {
-      if (disable) return elements;
-
-      var from = (page - 1) * pageSize;
-      var to = from + pageSize;
-      return elements.slice(from, to);;
+    return function(elements) {
+      return elements.filter(Boolean);
     };
   });

@@ -132,11 +132,15 @@ angular.module('copay.controllerUtils')
       console.log('## updating tx proposals', opts); //TODO
       var myCopayerId = w.getMyCopayerId();
       var pendingForUs = 0;
-      var inT = w.getTxProposals();
+      var inT = w.getTxProposals().sort(function(t1, t2) { return t1.createdTs < t2.createdTs });
       var txs  = [];
 
       console.log('[START LOOP]'); //TODO
-      inT.forEach(function(i){
+      inT.forEach(function(i, index){
+        if (opts.skip && (index < opts.skip[0] || index >= opts.skip[1])) {
+          return txs.push(null);
+        }
+
         if (myCopayerId != i.creator && !i.finallyRejected && !i.sentTs && !i.rejectedByUs && !i.signedByUs) {
           pendingForUs++;
         }

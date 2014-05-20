@@ -388,7 +388,7 @@
             <li> <button  ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
             <li> <button  ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
             </ul>
-            <div class="panel radius pending" ng-repeat="tx in txs | orderBy: 'createdTs':true | paged:txpCurrentPage:txpItemsPerPage:onlyPending">
+            <div class="panel radius pending" ng-repeat="tx in txs | paged">
               <div class="txheader row m10">
                 <div class="large-8 medium-8 small-12 columns">
                   <div class="row" ng-repeat="out in tx.outs">
@@ -477,7 +477,7 @@
                 </div>
               </div>
             </div>
-            <pagination ng-show="!onlyPending" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" class="pagination-small"></pagination>
+            <pagination ng-show="!onlyPending" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small"></pagination>
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
