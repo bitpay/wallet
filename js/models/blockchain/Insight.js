@@ -108,25 +108,23 @@ Insight.prototype.getTransactions = function(addresses, cb) {
 };
 
 Insight.prototype.getUnspent = function(addresses, cb) {
-  var self = this;
-
   if (!addresses || !addresses.length) return cb([]);
 
   var all = [];
 
   var options = {
-    host: self.host,
-    port: self.port,
-    scheme: self.scheme,
-    method: 'GET',
-    path: '/api/addrs/' + addresses.join(',') + '/utxo',
-
+    host: this.host,
+    port: this.port,
+    scheme: this.scheme,
+    method: 'POST',
+    data: 'addrs=' + addresses.join(','),
+    path: '/api/addrs/utxo',
     headers: {
       'Access-Control-Request-Headers': ''
     }
   };
 
-  self._request(options, function(err, res) {
+  this._request(options, function(err, res) {
     if (res && res.length > 0) {
       all = all.concat(res);
     }
