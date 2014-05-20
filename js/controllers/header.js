@@ -50,7 +50,7 @@ angular.module('copay.header').controller('HeaderController',
     };
 
     $scope.clearFlashMessage = function() {
-      $rootScope.flashMessage = {};
+      $rootScope.$flashMessage = {};
     };
 
     $rootScope.isCollapsed = true;

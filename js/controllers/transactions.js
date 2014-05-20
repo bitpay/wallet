@@ -47,7 +47,7 @@ angular.module('copay.transactions').controller('TransactionsController',
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
           console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
-          $rootScope.flashMessage = txid
+          $rootScope.$flashMessage = txid
             ? {type:'success', message: 'Transaction broadcasted. txid: ' + txid}
             : {type:'error', message: 'There was an error sending the Transaction'}
             ;
@@ -61,7 +61,7 @@ angular.module('copay.transactions').controller('TransactionsController',
       var w = $rootScope.wallet;
       w.sign(ntxid, function(ret){
         if (!ret) {
-          $rootScope.flashMessage = {
+          $rootScope.$flashMessage = {
             type:'error',
             message: 'There was an error signing the Transaction',
           };
@@ -101,7 +101,7 @@ angular.module('copay.transactions').controller('TransactionsController',
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.reject(ntxid);
-      $rootScope.flashMessage = {type:'warning', message: 'Transaction rejected by you'};
+      $rootScope.$flashMessage = {type:'warning', message: 'Transaction rejected by you'};
       $scope.loading = false;
     };
 

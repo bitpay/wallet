@@ -14,7 +14,7 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.create = function(form) {
       if (form && form.$invalid) {
-        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        $rootScope.$flashMessage = { message: 'Please, enter required fields', type: 'error'};
         return;
       }
 
@@ -27,7 +27,7 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.open = function(form) {
       if (form && form.$invalid) {
-        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        $rootScope.$flashMessage = { message: 'Please, enter required fields', type: 'error'};
         return;
       }
       
@@ -40,7 +40,7 @@ angular.module('copay.signin').controller('SigninController',
         var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
         if (!w) {
           $scope.loading = $scope.failure = false;
-          $rootScope.flashMessage = { message: 'Bad password or connection error', type: 'error'};
+          $rootScope.$flashMessage = { message: 'Bad password or connection error', type: 'error'};
           $rootScope.$digest();
           return;
         }
@@ -53,7 +53,7 @@ angular.module('copay.signin').controller('SigninController',
 
     $scope.join = function(form) {
       if (form && form.$invalid) {
-        $rootScope.flashMessage = { message: 'Please, enter required fields', type: 'error'};
+        $rootScope.$flashMessage = { message: 'Please, enter required fields', type: 'error'};
         return;
       }
 
@@ -66,13 +66,13 @@ angular.module('copay.signin').controller('SigninController',
           $scope.loading = false;
           if (err || !w) {
             if (err === 'joinError') 
-              $rootScope.flashMessage = { message: 'Can not find peer'};
+              $rootScope.$flashMessage = { message: 'Can not find peer'};
             else if (err === 'walletFull')
-              $rootScope.flashMessage = { message: 'The wallet is full'};
+              $rootScope.$flashMessage = { message: 'The wallet is full', type: 'error'};
             else if (err === 'badSecret')  
-              $rootScope.flashMessage = { message: 'Bad secret secret string', type: 'error'};
+              $rootScope.$flashMessage = { message: 'Bad secret secret string', type: 'error'};
             else 
-              $rootScope.flashMessage = { message: 'Unknown error', type: 'error'};
+              $rootScope.$flashMessage = { message: 'Unknown error', type: 'error'};
               controllerUtils.onErrorDigest();
           } else {
               controllerUtils.startNetwork(w);

@@ -23,7 +23,7 @@ angular.module('copay.import').controller('ImportController',
 
     $scope.import = function(form) {
       if (form.$invalid) {
-        $rootScope.flashMessage = { message: 'There is an error in the form. Please, try again', type: 'error'};
+        $rootScope.$flashMessage = { message: 'There is an error in the form. Please, try again', type: 'error'};
         return;
       }
 
@@ -32,7 +32,7 @@ angular.module('copay.import').controller('ImportController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
-        $rootScope.flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
+        $rootScope.$flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
         return;
       }
 

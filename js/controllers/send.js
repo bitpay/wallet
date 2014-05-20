@@ -42,7 +42,7 @@ angular.module('copay.send').controller('SendController',
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
-        $rootScope.flashMessage = { message: 'You can not send a proposal transaction. Please, try again', type: 'error'};
+        $rootScope.$flashMessage = { message: 'You can not send a proposal transaction. Please, try again', type: 'error'};
         return;
       }
 
@@ -55,7 +55,7 @@ angular.module('copay.send').controller('SendController',
       w.createTx( address, amount,function() {
 
         $scope.loading = false;
-        $rootScope.flashMessage = { message: 'The transaction proposal has been created', type: 'success'};
+        $rootScope.$flashMessage = { message: 'The transaction proposal has been created', type: 'success'};
         $rootScope.$digest();
       });
 
