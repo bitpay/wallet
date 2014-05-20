@@ -13,10 +13,18 @@ var Video = function() {
 Video.prototype.setOwnPeer = function(peer, wallet, cb) {
   var self = this;
 
-  navigator.getUserMedia({
+  var VWIDTH = 320;
+  var VHEIGHT = 320;
+  var constraints = {
     audio: true,
-    video: true
-  }, function(stream) {
+    video: {
+      mandatory: {
+        maxWidth: VWIDTH,
+        maxHeight: VHEIGHT,
+      }
+    }
+  };
+  navigator.getUserMedia(constraints, function(stream) {
     // This is called when user accepts using webcam
     self.localStream = stream;
     var online = wallet.getOnlinePeerIDs();
