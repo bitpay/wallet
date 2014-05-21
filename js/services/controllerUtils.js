@@ -114,7 +114,19 @@ angular.module('copay.controllerUtils')
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
-      w.getBalance(function(balance, balanceByAddr, safeBalance) {
+      w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+        if (err) {
+          $rootScope.$flashMessage = {
+            type: 'error',
+            message: 'Error: ' + err.message
+          };
+
+          $rootScope.$digest();
+          console.error('Error: ' + err.message); //TODO
+
+          return null;
+        }
+
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.availableBalance = safeBalance;
