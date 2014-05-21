@@ -96,7 +96,7 @@ angular.module('copay.send').controller('SendController',
                   //alert(JSON.stringify(qrcode.process(context)));
                   qrcode.decode();
                 } catch (e) {
-                  alert(e);
+                  console.log('error decoding QR: '+e);
                 }
               }, 1500);
             };

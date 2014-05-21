@@ -3,6 +3,7 @@
 var imports = require('soop').imports();
 
 var bitcore = require('bitcore');
+var bignum = bitcore.Bignum;
 var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
 var Builder = bitcore.TransactionBuilder;
@@ -571,7 +572,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   var priv = this.privateKey;
   opts = opts || {};
 
-  var amountSat = bitcore.bignum(amountSatStr);
+  var amountSat = bignum(amountSatStr);
 
   if (!pkr.isComplete()) {
     throw new Error('publicKeyRing is not complete');
