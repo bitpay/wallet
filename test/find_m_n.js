@@ -19,10 +19,11 @@ var WalletFactory = require('soop').load('../js/models/core/WalletFactory', {
 var Key = bitcore.Key;
 
 
-var N_LIMIT = 16;
+var N_LIMIT = 20;
 var nn = 'livenet';
 
-for (var n = 1; n < N_LIMIT; n++) {
+for (var n = 1; n <= N_LIMIT; n++) {
+  var end = false;
   for (var m = 1; m <= n; m++) {
     // case m-of-n
     console.log('case ' + m + '-of-' + n);
@@ -64,28 +65,26 @@ for (var n = 1; n < N_LIMIT; n++) {
     // create fake utxo
     var utxos = [{
       'address': addr,
-      'txid': '659e4e6d9c840e57aee6ebe35f2511cdeb848d786938f0b6b4f1b00de09b29da',
+      'txid': '82a974b72d3135152043989652e687e2966c651ba4822274926221017ea072d2',
       'vout': 1,
-      'ts': 1400682132,
-      'scriptPubKey': 'a914e4a6744eeed5571cff9e427cbb5dd5e1a2d1b2fa87',
-      'amount': 10.000,
-      'confirmations': 100
+      'ts': 1400696213,
+      'scriptPubKey': 'a914b2562c950498ff48ad3479ca1c2dfda2b0273e2287',
+      'amount': 10.0,
+      'confirmations': 2
     }];
     var ntxid = w.createTxSync(toAddress, amount, utxos);
     console.log('\t ntxid =' + ntxid);
-    var sign = function(pk, cb) {
-      w.sign(ntxid, cb);
-    }
-    async.each(pks, sign, function(err) {
-      if (err) {
-        throw new Error(err);
-      }
-    });
     var txp = w.txProposals.txps[ntxid];
     var tx = txp.builder.build();
-    console.log(tx.isComplete());
     var scriptSig = tx.ins[0].getScript();
-    console.log(scriptSig.toHumanReadable());
-    console.log(scriptSig.serialize().length);
+    var size = scriptSig.serialize().length;
+    console.log('\t scriptSig size: '+size);
+    if (size > 500) {
+      if (m === 1) {
+        end = true;
+      }
+      break;
+    }
   }
+  if (end) break;
 }
