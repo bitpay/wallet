@@ -41,6 +41,7 @@
     "bitcore": "git://github.com/bitpay/bitcore.git",
     "chai": "~1.9.1",
     "sinon": "~1.9.1",
-    "node-cryptojs-aes": "=0.4.0"
+    "node-cryptojs-aes": "=0.4.0",
+    "async": "~0.9.0"
   }
 }

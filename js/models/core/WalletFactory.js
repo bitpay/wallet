@@ -17,6 +17,8 @@ var Wallet = require('./Wallet');
 
 function WalletFactory(config, version) {
   var self = this;
+  config = config || {};
+
   this.storage = new Storage(config.storage);
   this.network = new Network(config.network);
   this.blockchain = new Blockchain(config.blockchain);
@@ -97,7 +99,6 @@ WalletFactory.prototype.create = function(opts) {
 
   opts.privateKey = opts.privateKey ||  new PrivateKey({ networkName: this.networkName });
 
-
   var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
   var totalCopayers =  opts.totalCopayers || this.walletDefaults.totalCopayers;
 
@@ -124,7 +125,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
-  opts.version       = this.version;
+  opts.version       = opts.version || this.version;
   var w = new Wallet(opts);
   w.store();
   return w;

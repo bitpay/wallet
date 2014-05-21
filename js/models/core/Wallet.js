@@ -3,6 +3,7 @@
 var imports = require('soop').imports();
 
 var bitcore = require('bitcore');
+var bignum = bitcore.Bignum;
 var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
 var Builder = bitcore.TransactionBuilder;
@@ -20,7 +21,8 @@ function Wallet(opts) {
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey', 'version'
   ].forEach(function(k) {
-    if (typeof opts[k] === 'undefined') throw new Error('missing key:' + k);
+    if (typeof opts[k] === 'undefined')
+      throw new Error('missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
 
@@ -439,9 +441,8 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.log('[Wallet.js.261:txHex:]', txHex); //TODO
 
   var self = this;
-
   this.blockchain.sendRawTransaction(txHex, function(txid) {
-    self.log('BITCOND txid:', txid); //TODO
+    self.log('BITCOIND txid:', txid); //TODO
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
       self.sendTxProposals(null, ntxid);
@@ -562,7 +563,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
       self.store();
       self.emit('txProposalsUpdated');
     }
-    return cb();
+    return cb(ntxid);
   });
 };
 
@@ -571,7 +572,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   var priv = this.privateKey;
   opts = opts || {};
 
-  var amountSat = bitcore.bignum(amountSatStr);
+  var amountSat = bignum(amountSatStr);
 
   if (!pkr.isComplete()) {
     throw new Error('publicKeyRing is not complete');
