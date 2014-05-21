@@ -52,8 +52,7 @@ angular.module('copay.send').controller('SendController',
       var amount = (form.amount.$modelValue * 100000000).toString(); // satoshi to string
 
       var w = $rootScope.wallet;
-      w.createTx( address, amount,function() {
-
+      w.createTx(address, amount,function() {
         $scope.loading = false;
         $rootScope.$flashMessage = { message: 'The transaction proposal has been created', type: 'success'};
         $rootScope.$digest();

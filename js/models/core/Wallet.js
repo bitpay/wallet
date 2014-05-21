@@ -20,7 +20,8 @@ function Wallet(opts) {
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey', 'version'
   ].forEach(function(k) {
-    if (typeof opts[k] === 'undefined') throw new Error('missing key:' + k);
+    if (typeof opts[k] === 'undefined')
+      throw new Error('missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
 
@@ -544,6 +545,8 @@ Wallet.prototype.getUnspent = function(cb) {
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   var self = this;
+  alert(amountSatStr);
+  alert(JSON.stringify(opts));
   if (typeof opts === 'function') {
     cb = opts;
     opts = {};
