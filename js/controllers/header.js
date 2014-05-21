@@ -20,6 +20,8 @@ angular.module('copay.header').controller('HeaderController',
       'icon': 'fi-archive',
       'link': '#/backup'
     }];
+          
+    var beep = new Audio('sound/transaction.mp3');
 
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
@@ -41,7 +43,6 @@ angular.module('copay.header').controller('HeaderController',
         }
         if (currentAddr) {
           $notification.funds('Received fund', currentAddr, receivedFund);
-          var beep = new Audio('sound/transaction.mp3');
           beep.play();
         }
       }
