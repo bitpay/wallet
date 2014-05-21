@@ -11,14 +11,32 @@ angular.module('copay.addresses').controller('AddressesController',
         $timeout(function() {
           controllerUtils.setSocketHandlers();
           controllerUtils.updateAddressList();
-          $rootScope.selectedAddr = $rootScope.addrInfos[0].address.toString();
           $scope.loading = false;
-          $rootScope.$digest();
         },1);
       });
     };
 
-    $scope.selectAddr = function (addr) {
-      return addr === $rootScope.selectedAddr ? 'selected' : '';
+    $scope.selectAddress = function (addr) {
+      $scope.selectedAddr = addr;
     };
+
+    $rootScope.$watch('addrInfos', function(addrInfos) {
+      $scope.addressList(addrInfos);
+    });   
+
+    $scope.addressList = function (addrInfos) {
+      $scope.addresses = [];
+      if (addrInfos) {
+        for(var i=0;i<addrInfos.length;i++) {
+          var addrinfo = addrInfos[i];
+          $scope.addresses.push({ 
+            'address' : addrinfo.address.toString(),
+            'balance' : $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.address.toString()] : 0,
+            'isChange': addrinfo.isChange
+          });
+        }
+        $scope.selectedAddr = $scope.addresses[0];
+      }
+    }
+
   });

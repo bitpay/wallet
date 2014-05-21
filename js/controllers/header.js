@@ -20,13 +20,31 @@ angular.module('copay.header').controller('HeaderController',
       'icon': 'fi-archive',
       'link': '#/backup'
     }];
+          
+    var beep = new Audio('sound/transaction.mp3');
 
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
-    $notification.enableHtml5Mode(); // for chrome: if support, enable it
     $rootScope.$watch('txAlertCount', function(txAlertCount) {
       if (txAlertCount && txAlertCount > 0) {
         $notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
+      }
+    });
+
+    $rootScope.$watch('receivedFund', function(receivedFund) {
+      if (receivedFund) {
+        var currentAddr;
+        for(var i=0;i<$rootScope.addrInfos.length;i++) {
+          var addrinfo = $rootScope.addrInfos[i];
+          if (addrinfo.address.toString() == receivedFund[1] && !addrinfo.isChange) {
+            currentAddr = addrinfo.address.toString();
+            break;
+          }
+        }
+        if (currentAddr) {
+          $notification.funds('Received fund', currentAddr, receivedFund);
+          beep.play();
+        }
       }
     });
 
@@ -46,6 +64,7 @@ angular.module('copay.header').controller('HeaderController',
       var w = $rootScope.wallet;
       w.connectToAll();
       controllerUtils.updateBalance(function() {
+        $rootScope.$digest();
       });
     };
 

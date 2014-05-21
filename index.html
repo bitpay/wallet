@@ -32,15 +32,21 @@
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
                 Balance: 
-                <span ng-if="$root.updatingBalance">...</span>
-                <span ng-if="!$root.updatingBalance">{{totalBalance || 0}}</span>
-                <i class="fi-bitcoin"></i><br>
+                <span ng-if="$root.updatingBalance">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                </span>
+                <span ng-if="!$root.updatingBalance">{{totalBalance || 0}}
+                  <i class="fi-bitcoin"></i>
+                </span>
               </div>
               <div class="large-4 medium-4 columns">
                 Available to Spend:
-                <span ng-if="$root.updatingBalance">...</span>
-                <span ng-if="!$root.updatingBalance">{{availableBalance || 0}}</span>
-                <i class="fi-bitcoin"></i>
+                <span ng-if="$root.updatingBalance">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                </span>
+                <span ng-if="!$root.updatingBalance">{{availableBalance || 0}}
+                  <i class="fi-bitcoin"></i>
+                </span>
               </div>
      
             </div>
@@ -317,37 +323,58 @@
       <div class="addresses" ng-controller="AddressesController">
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="row">
-            <div class="large-9 medium-12 columns" ng-if="addrInfos[0]">
+            <div class="large-9 medium-12 columns" ng-if="addresses[0]">
               <div class="large-8 medium-8 columns">
-                <a class="panel radius db" ng-repeat="addrInfo in addrInfos" ng-click="$root.selectedAddr = addrInfo.address.toString()" ng-class="selectAddr('{{addrInfo.address.toString()}}')">
-                  <span>{{addrInfo.address.toString()}}</span>
-                  <span ng-if="addrInfo.isChange">(change)</span>
+                <a class="panel radius db" ng-repeat="addr in addresses" 
+                  ng-click="selectAddress(addr)" 
+                  ng-class="{selected : addr.address == selectedAddr.address}">
+                  <span>{{addr.address}}</span>
+                  <span ng-if="addr.isChange">(change)</span>
                   <span class="right">
-                    <span ng-if="$root.updatingBalance">...</span>
-                    <span ng-if="!$root.updatingBalance">{{balanceByAddr[addrInfo.address.toString()] || 0}}</span>
-                    <i class="fi-bitcoin"></i>
+                    <span ng-if="$root.receivedFund[1] == addr.address">
+                      <span ng-if="$root.updatingBalance">
+                        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                      </span>
+                      <span ng-if="!$root.updatingBalance">
+                        {{$root.balanceByAddr[addr.address]}}
+                        <i class="fi-bitcoin"></i>
+                      </span>
+                    </span>
+                    <span ng-if="$root.receivedFund[1] != addr.address">
+                      {{addr.balance || 0}}
+                      <i class="fi-bitcoin"></i>
+                    </span>
                   </span>
                 </a>
               </div>
-              <div class="large-4 medium-4 columns line-dashed-v text-center">
-                <qrcode size="160" data="{{selectedAddr}}"></qrcode>
+              <div class="large-4 medium-4 columns line-dashed-v text-center" ng-show="selectedAddr">
+                <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
                 <p class="m10t">
                   <strong>
-                    <span ng-if="$root.updatingBalance">...</span>
-                    <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr] || 0}}</span>
-                    <i class="fi-bitcoin"></i>
+                    <span ng-if="$root.receivedFund[1] == selectedAddr.address">
+                      <span ng-if="$root.updatingBalance">
+                        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                      </span>
+                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0}}
+                        <i class="fi-bitcoin"></i>
+                      </span>
+                    </span>
+                    <span ng-if="$root.receivedFund[1] != selectedAddr.address">
+                      {{selectedAddr.balance || 0}}
+                      <i class="fi-bitcoin"></i>
+                    </span>
                   </strong>
                 </p>
               </div>
             </div>
-            <div class="columns text-center m10t" ng-class="{'large-3' : !!addrInfos[0]}">
+            <div class="columns text-center m10t" ng-class="{'large-3' : !!addresses[0]}">
               <p> Create a New <strong> Address </strong> </p>
               <button class="secondary radius expandi new-address" ng-click="newAddr()"
                 ng-disabled="loading" loading="Creating"> Create </button>
             </div>
           </div> 
         </div> 
-      </div>
+      </div>  
     </script>
 
     <!-- TRANSACTIONS -->
@@ -362,18 +389,16 @@
             <li> <button  ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | orderBy: 'createdTs':true">
-              <div class="txheader">
-                <div class="row m10">
-                  <div class="large-8 medium-8 small-12 columns">
-                    <div class="row" ng-repeat="out in tx.outs">
-                      <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value}} <i class="fi-bitcoin size-18"></i></div>
-                      <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
-                      <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
-                    </div>
+              <div class="txheader row m10">
+                <div class="large-8 medium-8 small-12 columns">
+                  <div class="row" ng-repeat="out in tx.outs">
+                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value}} <i class="fi-bitcoin size-18"></i></div>
+                    <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
+                    <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
                   </div>
-                  <div class="large-4 medium-4 small-12 columns text-right">
-                    <h6>{{tx.createdTs | amCalendar}}</h6>
-                  </div>
+                </div>
+                <div class="large-4 medium-4 small-12 columns text-right">
+                  <h6>{{tx.createdTs | amCalendar}}</h6>
                 </div>
               </div>
 
@@ -409,7 +434,7 @@
               </div>
 
               <div class="row m10">
-                <div class="large-5 columns" ng-show="!tx.sentTs" style="padding-left: 5px;">
+                <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
                   <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
                     <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                       <i class="fi-check"></i> Sign
@@ -418,14 +443,14 @@
                       <i class="fi-x" ></i> Reject 
                     </button>
                   </div>
-                  <span ng-show="!tx.missingSignatures && !tx.sentTs">
+                  <div ng-show="!tx.missingSignatures && !tx.sentTs">
                     <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
                       Broadcast Transaction
                     </button>
-                  </span>
+                  </div>
                 </div>
     
-                <div class="large-7 columns text-right">
+                <div class="large-7 medium-7 columns text-right">
                   <div ng-show="tx.finallyRejected" class="text-warning m10b">
                     Transaction finally rejected
                   </div>
