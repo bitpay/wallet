@@ -440,9 +440,8 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.log('[Wallet.js.261:txHex:]', txHex); //TODO
 
   var self = this;
-
   this.blockchain.sendRawTransaction(txHex, function(txid) {
-    self.log('BITCOND txid:', txid); //TODO
+    self.log('BITCOIND txid:', txid); //TODO
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
       self.sendTxProposals(null, ntxid);
@@ -545,8 +544,6 @@ Wallet.prototype.getUnspent = function(cb) {
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   var self = this;
-  alert(amountSatStr);
-  alert(JSON.stringify(opts));
   if (typeof opts === 'function') {
     cb = opts;
     opts = {};
@@ -565,7 +562,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
       self.store();
       self.emit('txProposalsUpdated');
     }
-    return cb();
+    return cb(ntxid);
   });
 };
 
