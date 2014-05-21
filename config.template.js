@@ -79,8 +79,8 @@ var defaultConfig = {
     }
   },
   limits: {
-    totalCopayers: 10,
-    mPlusN: 15
+    totalCopayers: 12,
+    mPlusN: 100
   },
   wallet: {
     requiredCopayers: 2,
