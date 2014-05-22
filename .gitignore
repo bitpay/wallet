@@ -45,3 +45,6 @@ webapp
 chrome-extension
 firefox-addon
 version.js
+
+android/package
+android/*.apk
