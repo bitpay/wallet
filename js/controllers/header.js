@@ -63,9 +63,11 @@ angular.module('copay.header').controller('HeaderController',
     $scope.refresh = function() {
       var w = $rootScope.wallet;
       w.connectToAll();
-      controllerUtils.updateBalance(function() {
-        $rootScope.$digest();
-      });
+      if ($rootScope.addrInfos.length > 0 ) {
+        controllerUtils.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      }
     };
 
     $scope.clearFlashMessage = function() {
