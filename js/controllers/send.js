@@ -28,10 +28,7 @@ angular.module('copay.send').controller('SendController',
     };
 
     // Detect protocol
-    $scope.isHttp = function() {
-      var protocol = $window.location.protocol;
-      return (protocol.indexOf('http') === 0);
-    };
+    $scope.isHttp = ($window.location.protocol.indexOf('http') === 0);
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;

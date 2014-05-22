@@ -559,10 +559,10 @@
                     <div class="small-10 columns">
                       <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" valid-address required>
                     </div>
-                    <div class="small-2 columns" ng-hide="showScanner">
+                    <div class="small-2 columns" ng-hide="showScanner || !isHttp">
                       <a class="postfix button secondary" ng-click="openScanner()"><i class="fi-camera"></i></a>
                     </div>
-                    <div class="small-2 columns" ng-show="showScanner">
+                    <div class="small-2 columns" ng-show="showScanner && isHttp">
                       <a class="postfix button warning" ng-click="cancelScanner()">Cancel</a>
                     </div>
                   </div>
