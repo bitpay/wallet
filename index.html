@@ -331,16 +331,16 @@
                   <span>{{addr.address}}</span>
                   <span ng-if="addr.isChange">(change)</span>
                   <span class="right">
-                    <span ng-if="$root.receivedFund[1] == addr.address">
+                    <span ng-if="addrWithFund == addr.address">
                       <span ng-if="$root.updatingBalance">
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
                       <span ng-if="!$root.updatingBalance">
-                        {{$root.balanceByAddr[addr.address]}}
+                        {{$root.balanceByAddr[addr.address] || 0}}
                         <i class="fi-bitcoin"></i>
                       </span>
                     </span>
-                    <span ng-if="$root.receivedFund[1] != addr.address">
+                    <span ng-if="addrWithFund != addr.address">
                       {{addr.balance || 0}}
                       <i class="fi-bitcoin"></i>
                     </span>
@@ -351,7 +351,7 @@
                 <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
                 <p class="m10t">
                   <strong>
-                    <span ng-if="$root.receivedFund[1] == selectedAddr.address">
+                    <span ng-if="addrWithFund == selectedAddr.address">
                       <span ng-if="$root.updatingBalance">
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
@@ -359,7 +359,7 @@
                         <i class="fi-bitcoin"></i>
                       </span>
                     </span>
-                    <span ng-if="$root.receivedFund[1] != selectedAddr.address">
+                    <span ng-if="addrWithFund != selectedAddr.address">
                       {{selectedAddr.balance || 0}}
                       <i class="fi-bitcoin"></i>
                     </span>

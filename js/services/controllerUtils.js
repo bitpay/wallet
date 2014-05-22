@@ -107,10 +107,7 @@ angular.module('copay.controllerUtils')
 
     root.updateBalance = function(cb) {
       console.log('Updating balance...');
-      root.updateAddressList();
       var w = $rootScope.wallet;
-      if ($rootScope.addrInfos.length === 0) 
-        return cb?cb():null;
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
@@ -130,6 +127,7 @@ angular.module('copay.controllerUtils')
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.availableBalance = safeBalance;
+        root.updateAddressList();
         $rootScope.updatingBalance = false;
         console.log('Done updating balance.'); //TODO
         return cb?cb():null;

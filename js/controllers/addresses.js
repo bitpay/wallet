@@ -20,12 +20,13 @@ angular.module('copay.addresses').controller('AddressesController',
       $scope.selectedAddr = addr;
     };
 
-    $rootScope.$watch('addrInfos', function(addrInfos) {
-      $scope.addressList(addrInfos);
+    $rootScope.$watch('addrInfos', function() {
+      $scope.addressList();
     });   
 
-    $scope.addressList = function (addrInfos) {
+    $scope.addressList = function () {
       $scope.addresses = [];
+      var addrInfos = $rootScope.addrInfos;
       if (addrInfos) {
         for(var i=0;i<addrInfos.length;i++) {
           var addrinfo = addrInfos[i];
@@ -36,6 +37,8 @@ angular.module('copay.addresses').controller('AddressesController',
           });
         }
         $scope.selectedAddr = $scope.addresses[0];
+        $scope.addrWithFund = $rootScope.receivedFund ? $rootScope.receivedFund[1] : null;
+        $rootScope.receivedFund = null;
       }
     }
 
