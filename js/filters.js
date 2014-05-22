@@ -19,4 +19,9 @@ angular.module('copay.filters', [])
         return { addr: key, value: dic[key] };
       });
     };
+  })
+  .filter('paged', function() {
+    return function(elements) {
+      return elements.filter(Boolean);
+    };
   });

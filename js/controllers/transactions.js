@@ -8,9 +8,17 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.onlyPending = true;
     $scope.lastShowed = false;
 
+    $scope.txpCurrentPage = 1;
+    $scope.txpItemsPerPage = 4;
+
     $scope.update = function () {
       $scope.loading = false;
-      controllerUtils.updateTxs({onlyPending:$scope.onlyPending});
+      var from = ($scope.txpCurrentPage-1) * $scope.txpItemsPerPage;
+      var opts = {
+        onlyPending: $scope.onlyPending,
+        skip: !$scope.onlyPending ? [from, from + $scope.txpItemsPerPage] : null
+      };
+      controllerUtils.updateTxs(opts);
       $rootScope.$digest();
     };
 
