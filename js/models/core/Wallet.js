@@ -502,7 +502,11 @@ Wallet.prototype.getBalance = function(cb) {
   var balanceByAddr = {};
   var COIN = bitcore.util.COIN;
 
-  this.getUnspent(function(safeUnspent, unspent) {
+  this.getUnspent(function(err, safeUnspent, unspent) {
+    if (err) {
+      return cb(err);
+    }
+
     for (var i = 0; i < unspent.length; i++) {
       var u = unspent[i];
       var amt = u.amount * COIN;
@@ -521,14 +525,19 @@ Wallet.prototype.getBalance = function(cb) {
       var amt = u.amount * COIN;
       safeBalance += amt;
     }
+
     safeBalance = safeBalance / COIN;
-    return cb(balance, balanceByAddr, safeBalance);
+    return cb(null, balance, balanceByAddr, safeBalance);
   });
 };
 
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
-  this.blockchain.getUnspent(this.getAddressesStr(), function(unspentList) {
+  this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
+
+    if (err) {
+      return cb(err);
+    }
 
     var safeUnspendList = [];
     var maxRejectCount = self.totalCopayers - self.requiredCopayers;
@@ -538,7 +547,8 @@ Wallet.prototype.getUnspent = function(cb) {
       if (uu.indexOf(unspentList[i].txid) === -1)
         safeUnspendList.push(unspentList[i]);
     }
-    return cb(safeUnspendList, unspentList);
+
+    return cb(null, safeUnspendList, unspentList);
   });
 };
 
@@ -555,7 +565,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
     opts.spendUnconfirmed = this.spendUnconfirmed;
   }
 
-  self.getUnspent(function(safeUnspent) {
+  this.getUnspent(function(err, safeUnspent) {
     var ntxid = self.createTxSync(toAddress, amountSatStr, safeUnspent, opts);
     if (ntxid) {
       self.sendPublicKeyRing();

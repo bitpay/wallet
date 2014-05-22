@@ -71,7 +71,6 @@ Insight.prototype.getTransactions = function(addresses, cb) {
       scheme: self.scheme,
       method: 'GET',
       path: '/api/addr/' + addr,
-
       headers: {
         'Access-Control-Request-Headers': ''
       }
@@ -108,7 +107,7 @@ Insight.prototype.getTransactions = function(addresses, cb) {
 };
 
 Insight.prototype.getUnspent = function(addresses, cb) {
-  if (!addresses || !addresses.length) return cb([]);
+  if (!addresses || !addresses.length) return cb(null, []);
 
   var all = [];
 
@@ -125,10 +124,15 @@ Insight.prototype.getUnspent = function(addresses, cb) {
   };
 
   this._request(options, function(err, res) {
+    if (err) {
+      return cb(err);
+    }
+
     if (res && res.length > 0) {
       all = all.concat(res);
     }
-    return cb(all);
+
+    return cb(null, all);
   });
 };
 
@@ -142,7 +146,7 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
     path: '/api/tx/send',
     data: 'rawtx=' + rawtx,
     headers: {
-      'content-type': 'application/x-www-form-urlencoded'
+      'Access-Control-Request-Headers': ''
     }
   };
   this._request(options, function(err, res) {
@@ -172,10 +176,24 @@ Insight.prototype._request = function(options, callback) {
     }
 
     request.open(options.method, url, true);
+    request.timeout = 10000;
+    request.ontimeout = function() {
+      return callback({
+        message: 'Insight request timeout. Please check your Insight settings or the Insight server status.'
+      });
+    };
+
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
-        if (request.status === 200) {
-          return callback(null, JSON.parse(request.responseText));
+        if (request.status === 200 || request.status === 304 || request.status === 0) {
+          try {
+            var ret = JSON.parse(request.responseText);
+            return callback(null, ret);
+          } catch (e) {
+            return callback({
+              message: 'Wrong response from insight'
+            });
+          }
         } else {
           return callback({
             message: 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText
@@ -186,42 +204,39 @@ Insight.prototype._request = function(options, callback) {
 
     if (options.method === 'POST') {
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      request.send(options.data);
-    } else {
-      request.send(null);
     }
+
+    request.send(options.data || null);
   } else {
     var http = require('http');
     var req = http.request(options, function(response) {
       var ret;
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.status === 304) {
         response.on('data', function(chunk) {
           try {
             ret = JSON.parse(chunk);
           } catch (e) {
-            callback({
-              message: "Wrong response from insight"
+            return callback({
+              message: 'Wrong response from insight'
             });
-            return;
           }
         });
         response.on('end', function() {
-          callback(undefined, ret);
-          return;
+          return callback(null, ret);
         });
       } else {
-        callback({
+        return callback({
           message: 'Error ' + response.statusCode
         });
-        return;
       }
     });
+
     if (options.data) {
       req.write(options.data);
     }
+
     req.end();
   }
-}
-
+};
 
 module.exports = require('soop')(Insight);
