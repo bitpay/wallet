@@ -426,7 +426,10 @@ Wallet.prototype.sign = function(ntxid, cb) {
   setTimeout(function() {
     var myId = self.getMyCopayerId();
     var txp = self.txProposals.txps[ntxid];
-    if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
+    if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
+      if (cb) cb(false);
+      return;
+    }
 
     var pkr = self.publicKeyRing;
     var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
@@ -454,6 +457,10 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   var tx = txp.builder.build();
   if (!tx.isComplete()) return;
   this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+
+  var scriptSig = tx.ins[0].getScript();
+  var size = scriptSig.serialize().length;
+  alert('\t scriptSig size: '+size);
 
   var txHex = tx.serialize().toString('hex');
   this.log('[Wallet.js.261:txHex:]', txHex); //TODO
