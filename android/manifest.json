@@ -1,6 +1,6 @@
 {
   "name": "Copay",
-  "version": "0.0.0.1",
+  "version": "APP_VERSION",
   "app": {
     "launch":{
       "local_path": "index.html"

@@ -19,9 +19,7 @@ checkOK() {
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPDIR="$BUILDDIR/package"
-
-echo $BUILDDIR
-echo $APPDIR
+VERSION=`git describe --tags --abbrev=0 | cut -c 2-`
 
 # Move to the build directory
 cd $BUILDDIR
@@ -43,8 +41,9 @@ checkOK
 
 # Copy all app files
 echo "${OpenColor}${Green}* Copying all app files...${CloseColor}"
+sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,./android/icon.png,./android/manifest.json} $APPDIR
+cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,./android/icon.png} $APPDIR
 checkOK
 
 # Building the APK
