@@ -168,11 +168,14 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     name: this.name,
-    token: this.token,
-    tokenTime: new Date().getTime(),
     netKey: this.netKey,
     version: this.version,
   };
+
+  if (this.token){
+    obj.token = this.token;
+    obj.tokenTime = new Date().getTime();
+  }
 
   return obj;
 };
