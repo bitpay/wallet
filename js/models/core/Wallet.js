@@ -222,6 +222,9 @@ Wallet.prototype.netStart = function() {
     self.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
     self.emit('openError');
   });
+  net.on('error', function(){
+    self.emit('connectionError'); // Bubble the error
+  });
   net.on('close', function() {
     self.emit('close');
   });

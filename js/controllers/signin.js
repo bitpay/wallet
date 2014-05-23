@@ -83,7 +83,7 @@ angular.module('copay.signin').controller('SigninController',
     };
 
     function installStartupHandlers(wallet) {
-      wallet.network.on('error', function(err) {
+      wallet.on('connectionError', function(err) {
         $scope.failure = true;
       });
       wallet.on('ready', function() {
