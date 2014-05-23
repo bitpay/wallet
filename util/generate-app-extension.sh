@@ -12,6 +12,7 @@ fi
 
 # Configs
 APPDIR="./webapp"
+VERSION=`git describe --tags --abbrev=0 | cut -c 2-`
 CHROMEDIR="./chrome-extension"
 FIREFOXDIR="./firefox-addon"
 
@@ -71,7 +72,8 @@ checkOK
 
 # Copy all chrome-extension files
 echo -e "${OpenColor}${Green}* Copying all chrome-extension files...${CloseColor}"
-cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,popup.html,manifest.json} $CHROMEDIR
+sed "s/APP_VERSION/$VERSION/g" manifest.json > $CHROMEDIR/manifest.json
+cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,popup.html} $CHROMEDIR
 checkOK
 
 # Copy all firefox-addon files
