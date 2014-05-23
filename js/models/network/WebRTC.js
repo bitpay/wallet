@@ -3,6 +3,7 @@ var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
 var bitcore     = require('bitcore');
 var util        = bitcore.util;
+var extend      = require('util')._extend;
 /*
  * Emits
  *  'connect'
@@ -326,6 +327,9 @@ Network.prototype.start = function(opts, openCallback) {
 
   this.netKey = opts.netKey;
   this.maxPeers = opts.maxPeers || this.maxPeers;
+
+  if (opts.token)
+    this.opts.token = opts.token;
 
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
