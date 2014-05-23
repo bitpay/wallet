@@ -324,12 +324,14 @@
         <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="row">
             <div class="large-9 medium-12 columns" ng-if="addresses[0]">
-              <div class="large-8 medium-8 columns">
-                <a class="panel radius db" ng-repeat="addr in addresses" 
+              <div class="large-8 medium-8 columns" ng-init="showAll=0">
+                <a class="panel radius db" ng-repeat="addr in addresses | limitAddress:showAll" 
                   ng-click="selectAddress(addr)" 
                   ng-class="{selected : addr.address == selectedAddr.address}">
-                  <span>{{addr.address}}</span>
-                  <span ng-if="addr.isChange">(change)</span>
+                  
+                  <span>{{addr.address}}</span> 
+                  <small ng-if="addr.isChange">change</small>
+
                   <span class="right">
                     <span ng-if="addrWithFund == addr.address">
                       <span ng-if="$root.updatingBalance">
@@ -345,7 +347,13 @@
                       <i class="fi-bitcoin"></i>
                     </span>
                   </span>
+
                 </a>
+
+                <button class="button small secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1"> 
+                  <span ng-if="!showAll">Show all</span>
+                  <span ng-if="showAll">Show less</span>
+                </button>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v text-center" ng-show="selectedAddr">
                 <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
