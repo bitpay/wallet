@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title> Cosign </title>
-    <meta name="description" content="Cosign : A secure command-line tool for multisignature and other advanced bitcoin transactions">
+    <meta name="description" content="Cosign : A secure command-line tool for multisignature and other advanced bitcoin transactions.">
     <meta property="og:site_name" content="Cosign">
     <meta property="og:url" content="http://cosign.io/">
     <meta property="og:title" content="Cosign">
-    <meta property="og:description" content="Bitcore is a complete, native interface to the Bitcoin network, and provides the core functionality needed to develop apps for bitcoin.">
+    <meta property="og:description" content="A secure command-line tool for multisignature and other advanced bitcoin transactions.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:image" content="http://cosign.io/images/og.png">
     <meta property="og:type" content="website">
@@ -26,31 +26,31 @@
 <body>
     <header class="bg-black text-center">
         <div class="ribbon hidden-xs">
-            <a href="https://github.com/bitpay/bitcore">View on GitHub</a>
+            <a href="https://github.com/bitpay/copay">View on GitHub</a>
         </div>
-        <a href="http://bitcore.io/" id="logo">
+        <a href="https://github.com/bitpay/copay" id="logo">
             <img src="images/logo-negative.svg" alt="Bitcore">
         </a>
         <div class="ribbon-phone visible-xs">
-            <a href="https://github.com/bitpay/bitcore">View on GitHub</a>
+            <a href="https://github.com/bitpay/copay">View on GitHub</a>
         </div>
         <div class="black-text">
-            <h3 class="hidden-xs">A secure command-line tool for multisignature and other advanced bitcoin transactions</h3>
-            <h4 class="visible-xs">A secure command-line tool for multisignature and other advanced bitcoin transactions</h4>
-            <p class="lead hidden-xs">For organizations with security and functionality needs beyond a basic bitcoin wallet, cosign allows users to create, share, and broadcast custom transactions</p>
+            <h3 class="hidden-xs">A secure command-line tool for multisignature and other advanced bitcoin transactions.</h3>
+            <h4 class="visible-xs">A secure command-line tool for multisignature and other advanced bitcoin transactions.</h4>
+            <p class="lead hidden-xs">For organizations with security and functionality needs beyond a basic bitcoin wallet, cosign allows users to create, share, and broadcast custom transactions.</p>
         </div>
-        <a href="#started" class="btn btn-default" id="cta">Get Started</a>
-    </header>   
+        <a href="#started" class="btn btn-default" id="cta">Get Started &raquo;</a>
+    </header>
     <div class="container">
         <h2>Principles</h2>
         <p>Bitcoin is a powerful new peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services.</p>
-        <p>Bitcore unchains developers from fallible, centralized APIs, and provides the tools to interact with the real Bitcoin network.</p>
+        <p><strong>Copay</strong> provides users with a way to share funds with one another without fear of theft, thanks to cryptographically-secure multi-signature technology, available only in Bitcoin.</p>
 
         <h2 id="started">Get Started</h2>
         <p>Cosign runs on <a href="http://nodejs.org/">node</a>, and can be installed via <a href="https://npmjs.org/">npm:</a></p>
 <pre>
 npm install cosign
-</pre>  
+</pre>
         <h2>Examples</h2>
         <h3 class="text-info">Tx-signing</h3>
         <p>In this example, someone has emailed the raw hex data for a bitcoin
@@ -88,7 +88,7 @@ $ ./cosign pubkey.get mr3q8AeyLX53h9JctDAbVfWDYkiW52PRSP
         <p>And we see the database has been updated with our three public keys:</p>
 <pre>
 $ ./cosign dump
-{ pubkeys: 
+{ pubkeys:
    [ '02affe9b8160e2d2b492389501407355cc19603ed99bbe542a6799447ea735b453',
      '02c2f5e2c376d0e0963f0a3a798877788f94c440f621a6493582b63f08bb55d1da',
      '025fcbc602f0f6ef5a488362e76e4a1ce15eb0a16921c050741831348190369ab5' ] }
@@ -96,7 +96,7 @@ $ ./cosign dump
         <p class="h4">4) Set number of signatures required.</p>
 <pre>
 $ ./cosign nreq 2
-</pre> 
+</pre>
         <p class="h4">5) Use this data to add a multisig payment address to bitcoind's wallet.</p>
 <pre>
 $ ./cosign wallet.msig
@@ -130,12 +130,12 @@ $ ./cosign raw.create
         "raw" contains the serialized, unsigned transaction.</p>
 <pre>
 $ ./cosign dump
-{ pubkeys: 
+{ pubkeys:
    [ '02affe9b8160e2d2b492389501407355cc19603ed99bbe542a6799447ea735b453',
      '02c2f5e2c376d0e0963f0a3a798877788f94c440f621a6493582b63f08bb55d1da',
      '025fcbc602f0f6ef5a488362e76e4a1ce15eb0a16921c050741831348190369ab5' ],
   n_required: 2,
-  inputs: 
+  inputs:
    [ { txid: 'ad39b5d53230af4784fb46720e5bc474f16a97a2fc6e85eed5fd3ef423e97885',
        vout: 0 } ],
   outputs: { mftotywBYNSHjYCL1x4XWTkoac3t71UYL1: 1.5 },
@@ -162,7 +162,7 @@ ca02bc7bdaf8a79b150e825e3d528620092ed42d68d649738381102aa1f0d9fe
 
     <footer>
         <div class="copyright">
-            <div class="container"> 
+            <div class="container">
                 <div class="row text-center hidden-sm">
                     <div class="col-md-8">
                         <img src="images/logo-negative.svg" alt="" class="pull-left" width="70">
@@ -170,13 +170,13 @@ ca02bc7bdaf8a79b150e825e3d528620092ed42d68d649738381102aa1f0d9fe
                     </div>
                     <div class="col-md-4 row">
                         <div class="col-md-4 tex-center">
-                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&repo=bitcore&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&repo=copay&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
                         </div>
                         <div class="col-md-4 tex-center">
-                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&repo=bitcore&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&repo=copay&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
                         </div>
                         <div class="col-md-4 tex-center">
-                            <iframe src="http://ghbtns.com/github-btn.html?user=Bitpay&type=follow&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="165" height="20"></iframe>
+                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&type=follow&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="165" height="20"></iframe>
                         </div>
                     </div>
                 </div>
