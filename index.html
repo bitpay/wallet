@@ -565,7 +565,8 @@
                       not valid</small>
                     </label>
                     <div class="small-10 columns">
-                      <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" valid-address required>
+                      <input type="text" id="address" name="address" ng-disabled="loading"
+                      placeholder="Send to" ng-model="address" valid-address required>
                     </div>
                     <div class="small-2 columns" ng-hide="showScanner || !isHttp">
                       <a class="postfix button secondary" ng-click="openScanner()"><i class="fi-camera"></i></a>
@@ -605,7 +606,9 @@
                       <small ng-show="notEnoughAmount">{{notEnoughAmount}}</small>
                     </label>
                     <div class="small-9 columns">
-                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>
+                      <input type="number" id="amount" ng-disabled="loading"
+                      name="amount" placeholder="Amount" ng-model="amount"
+                      min="0.0001" max="10000000" enough-amount required>
                     </div>
                     <div class="small-3 columns">
                       <span class="postfix">BTC</span>
