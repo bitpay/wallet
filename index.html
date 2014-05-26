@@ -16,10 +16,10 @@
       <div data-ng-init="init()" data-ng-controller="HeaderController">
         <div class="header"> 
           <div class="header-content">
-            <div class="large-3 medium-3 columns">
+            <div class="large-3 medium-3 small-3 columns">
               <span class="logo"></span>
             </div>
-            <div class="large-9 medium-9 columns text-center p10t" ng-show="$root.wallet">
+            <div class="large-9 medium-9 small-9 columns text-center p10t" ng-show="$root.wallet">
               <div class="large-4 medium-4 columns line-dashed-v">
                 <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
                   <strong><span>{{$root.wallet.getName()}}</span></strong>
@@ -56,7 +56,7 @@
           <ul class="title-area">
             <li class="name"></li>
             <li class="toggle-topbar menu-icon">
-              <a ng-click="isCollapsed=!isCollapsed"> Menu</a>
+              <a ng-click="isCollapsed=!isCollapsed"></a>
             </li>
           </ul>
 
@@ -133,7 +133,7 @@
       </div>
     </div>
     <div class="row p10t" ng-show="$root.wallet">
-      <div class="large-3 medium-3 small-3 columns">
+      <div class="large-3 medium-3 hide-for-small columns">
         <div>
           <strong>{{$root.wallet.getName()}}</strong>
         </div>
@@ -347,7 +347,6 @@
                       <i class="fi-bitcoin"></i>
                     </span>
                   </span>
-
                 </a>
 
                 <button class="button small secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1"> 
