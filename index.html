@@ -489,9 +489,8 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating"> 
-              Show
-            </button>
+            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</button>
+            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</button>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
@@ -511,7 +510,7 @@
                 </div>
                 <div class="tx-copayers">
                   <div class="large-5 columns">
-                    <div ng-repeat="vin in btx.vin | groupByAddress">
+                    <div ng-repeat="vin in btx.vin track by $index | groupByAddress">
                       <p class="left text-gray size-12"> {{vin.addr}} </p>
                       <small class="right">{{vin.value}}</small>
                     </div>
