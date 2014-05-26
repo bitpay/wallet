@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.transactions').controller('TransactionsController',
-  function($scope, $rootScope, controllerUtils) {
+  function($scope, $rootScope, $timeout, controllerUtils) {
 
     $scope.title = 'Transactions';
     $scope.loading = false;
@@ -31,21 +31,21 @@ angular.module('copay.transactions').controller('TransactionsController',
     };
 
     $scope.toogleLast = function () {
-      console.log('[toogleLast]');
-      $scope.loading=true;
+      $scope.loading = true;
       $scope.lastShowed = !$scope.lastShowed;
       if ($scope.lastShowed) {
         $scope.getTransactions(function(txs){
-          $scope.loading=false;
-          $scope.blockchain_txs = txs;
-          $rootScope.$digest();
+          $timeout(function() {
+            $scope.loading = false;
+            $scope.blockchain_txs = txs;
+            $scope.$digest();
+          }, 10);
         });
-      }
-      else {
-        setTimeout(function(){
-          $scope.loading=false;
+      } else {
+        $timeout(function(){
+          $scope.loading = false;
           $rootScope.$digest();
-        });
+        }, 10);
       }
     };
 
@@ -90,7 +90,6 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.getTransactions = function(cb) {
       var w   =$rootScope.wallet;
       if (w) {
-
         console.log('### Querying last transactions...'); //TODO
         var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
