@@ -77,19 +77,18 @@ console.log('[Wallet.js.58] connecting'); //TODO
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
-  var recipients, pkr = this.publicKeyRing;
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
+  var wasIncomplete = !this.publicKeyRing.isComplete();
+  var hasChanged = this.publicKeyRing.merge(inPKR, true);
 
-  var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
-    this.connectToAll();
+    if (wasIncomplete) {
+      this.sendPublicKeyRing();
+      this.connectToAll();
+    }
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
-    this.log('### BROADCASTING PKR');
-
-    recipients = null;
-    this.sendPublicKeyRing(recipients);
   }
   this.emit('publicKeyRingUpdated');
   this.store();
