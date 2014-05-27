@@ -320,7 +320,7 @@ hr { margin: 2.25rem 0;}
 
 .box-copayers figure {
   width: 51px;
-  height: 55px;
+  height: 63px;
   border-top-left-radius: 4px 4px;
   border-bottom-left-radius: 4px 4px;
   overflow: hidden;
@@ -613,7 +613,21 @@ p.dr-notification-text {
   white-space: nowrap;
 }
 
+ul.pagination li.current a {
+  background: #1ABC9C;
+}
+
+ul.pagination li.current a:hover, ul.pagination li.current a:focus {
+  background: #16A085;
+}
+
 @media only screen and (max-width: 40em) { 
+
+  #main, .header-content {
+    font-size: 80%;
+    line-height: 140%;
+  }
+
   .top-bar {
     background: #1ABC9C;
   }
@@ -636,11 +650,6 @@ p.dr-notification-text {
     border: none !important;  
   }
 
-  .header-content {
-    font-size: 80%;
-    line-height: 140%;
-  }
-
   .box-backup {
     margin: 0.6rem 0;
   }
@@ -648,6 +657,15 @@ p.dr-notification-text {
   #footer {
     font-size: 80%;
     padding: 0.2rem 0.5rem;
+  }
+
+  .box-status {
+    height: 71px;
+  }
+
+  .box-copayers figure {
+    height: 71px;
+    width: 71px;
   }
 
 }
