@@ -192,8 +192,8 @@
                   <h3>Create a new wallet</h3>
                   <form name="createForm" ng-submit="create(createForm)" novalidate>
                     <input type="text" class="form-control" ng-model="walletName" name="walletName" placeholder="Wallet name (optional)">
-                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" required>
-                    <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button> 
+                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" check-strength="createPassword" required>
+                    <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button>
                   </form>
                 </div>
               </div>
@@ -203,7 +203,7 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" required>
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" check-strength="joinPassword" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
@@ -294,7 +294,7 @@
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Your Wallet Password (you don't need to share this) <small>Required</small></h6>
-              <input type="password" class="form-control" ng-model="walletPassword" required>
+              <input type="password" class="form-control" ng-model="walletPassword" check-strength="walletPassword" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Wallet name <small>Optional</small></h6>
