@@ -46,7 +46,6 @@ webapp/webapp
 chrome/copay-chrome-extension
 chrome/copay-chrome-extension.zip
 firefox/firefox-addon
-
 version.js
 
 android/package
