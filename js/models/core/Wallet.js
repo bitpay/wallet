@@ -82,14 +82,9 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var hasChanged = pkr.merge(inPKR, true);
   if (hasChanged) {
-    this.connectToAll();
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
-    this.log('### BROADCASTING PKR');
-
-    recipients = null;
-    this.sendPublicKeyRing(recipients);
   }
   this.emit('publicKeyRingUpdated');
   this.store();
