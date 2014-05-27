@@ -15,7 +15,7 @@ function isNumber(n) {
 var args = process.argv.slice(2);
 var n_str = args[0];
 if (!isNumber(n_str)) {
-  console.log('Program requires one numeric argument');
+  console.log('Program requires one numeric argument for the amount of copayers');
   process.exit(1);
 }
 
