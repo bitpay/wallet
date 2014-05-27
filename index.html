@@ -391,9 +391,9 @@
           <div class="large-12 columns">
             <h4> Transaction proposals <span ng-if="onlyPending">[Pending]</span>  <small>({{txs.length}})</small></h4>
 
-            <ul class="button-group">
-            <li> <button  ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
-            <li> <button  ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
+            <ul class="button-group radius">
+            <li> <button class="secondary" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
+            <li> <button class="secondary" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | paged">
               <div class="txheader row m10">
@@ -484,7 +484,7 @@
                 </div>
               </div>
             </div>
-            <pagination ng-show="!onlyPending" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small"></pagination>
+            <pagination ng-show="!onlyPending" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
@@ -499,7 +499,7 @@
                 <div class="m15">
                   <div class="row">
                     <div class="large-8 columns">
-                      <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
+                      <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
                         {{btx.txid}}
                       </a>
                     </div>
@@ -509,24 +509,24 @@
                   </div>
                 </div>
                 <div class="tx-copayers">
-                  <div class="large-5 columns">
+                  <div class="large-5 small-5 columns">
                     <div ng-repeat="vin in btx.vin | groupByAddress">
-                      <p class="left text-gray size-12"> {{vin.addr}} </p>
-                      <small class="right">{{vin.value}}</small>
+                      <p class="small-8 ellipsis left text-gray size-12"> {{vin.addr}} </p>
+                      <small class="small-4 right">{{vin.value}}</small>
                     </div>
                   </div>
-                  <div class="large-1 columns text-center">
+                  <div class="large-1 small-1 columns text-center">
                     <i class="fi-arrow-right"></i>
                   </div>
-                  <div class="large-6 columns">
+                  <div class="large-6 small-6 columns">
                     <div ng-repeat="vout in btx.vout">
                       <div class="row">
-                        <div class="large-10 columns">
+                        <div class="large-10 small-8 columns">
                           <div ng-repeat="addr in vout.scriptPubKey.addresses">
-                            <p class="text-gray size-12"> {{addr}} </p>
+                            <p class="ellipsis text-gray size-12"> {{addr}} </p>
                           </div>
                         </div>
-                        <div class="large-2 columns">
+                        <div class="large-2 small-4 columns">
                           <small>{{vout.value}}</small>
                         </div>
                       </div>
@@ -535,9 +535,9 @@
                 </div>
                 <div class="m15 size-12 text-gray">
                   <div class="row">
-                    <div class="large-4 columns">Fees: {{btx.fees}}</div>
-                    <div class="large-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
-                    <div class="large-4 columns text-right">Total: {{btx.valueOut}}</div>
+                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees}}</div>
+                    <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
+                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut}}</div>
                   </div>
                 </div>
               </div>
