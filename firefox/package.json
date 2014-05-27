@@ -1,0 +1,10 @@
+{
+  "name": "copay-addon",
+  "title": "Copay",
+  "id": "jid1-shqjFWBfQ0pYhQ",
+  "description": "A multisignature Bitcoin wallet",
+  "author": "",
+  "license": "MIT",
+  "version": "APP_VERSION"
+}
+
