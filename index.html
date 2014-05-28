@@ -192,8 +192,8 @@
                   <h3>Create a new wallet</h3>
                   <form name="createForm" ng-submit="create(createForm)" novalidate>
                     <input type="text" class="form-control" ng-model="walletName" name="walletName" placeholder="Wallet name (optional)">
-                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" required>
-                    <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button> 
+                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" check-strength="createPassword" required>
+                    <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button>
                   </form>
                 </div>
               </div>
@@ -203,7 +203,7 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" required>
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" check-strength="joinPassword" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
@@ -294,7 +294,7 @@
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Your Wallet Password (you don't need to share this) <small>Required</small></h6>
-              <input type="password" class="form-control" ng-model="walletPassword" required>
+              <input type="password" class="form-control" ng-model="walletPassword" check-strength="walletPassword" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Wallet name <small>Optional</small></h6>
@@ -488,9 +488,8 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating"> 
-              Show
-            </button>
+            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</button>
+            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</button>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
@@ -510,7 +509,7 @@
                 </div>
                 <div class="tx-copayers">
                   <div class="large-5 small-5 columns">
-                    <div ng-repeat="vin in btx.vin | groupByAddress">
+                    <div ng-repeat="vin in btx.vin track by $index | groupByAddress">
                       <p class="small-8 ellipsis left text-gray size-12"> {{vin.addr}} </p>
                       <small class="small-4 right">{{vin.value}}</small>
                     </div>
@@ -564,7 +563,8 @@
                       not valid</small>
                     </label>
                     <div class="small-10 columns">
-                      <input type="text" id="address" name="address" placeholder="Send to" ng-model="address" valid-address required>
+                      <input type="text" id="address" name="address" ng-disabled="loading"
+                      placeholder="Send to" ng-model="address" valid-address required>
                     </div>
                     <div class="small-2 columns" ng-hide="showScanner || !isHttp">
                       <a class="postfix button secondary" ng-click="openScanner()"><i class="fi-camera"></i></a>
@@ -604,7 +604,9 @@
                       <small ng-show="notEnoughAmount">{{notEnoughAmount}}</small>
                     </label>
                     <div class="small-9 columns">
-                      <input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>
+                      <input type="number" id="amount" ng-disabled="loading"
+                      name="amount" placeholder="Amount" ng-model="amount"
+                      min="0.0001" max="10000000" enough-amount required>
                     </div>
                     <div class="small-3 columns">
                       <span class="postfix">BTC</span>

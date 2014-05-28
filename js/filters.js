@@ -14,15 +14,22 @@ angular.module('copay.filters', [])
         return dic;
       }
 
-      var dic = inputs.reduce(reduce, {});
-      return Object.keys(dic).map(function(key) {
-        return { addr: key, value: dic[key] };
-      });
+      var dic;
+      if (inputs) {
+        dic = inputs.reduce(reduce, {});
+        return Object.keys(dic).map(function(key) {
+          return { addr: key, value: dic[key] };
+        });
+      }
     };
   })
   .filter('paged', function() {
     return function(elements) {
-      return elements.filter(Boolean);
+      if (elements) {
+        return elements.filter(Boolean);
+      }
+
+      return false;
     };
   })
   .filter('limitAddress', function() {

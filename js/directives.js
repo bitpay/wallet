@@ -105,7 +105,8 @@ angular.module('copay.directives')
         });
       }
     }
-  }).directive('avatar', function($rootScope, controllerUtils) {
+  })
+  .directive('avatar', function($rootScope, controllerUtils) {
     return {
       link: function(scope, element, attrs) {
         var peer = JSON.parse(attrs.peer)
@@ -118,4 +119,75 @@ angular.module('copay.directives')
         }
       }
     }
+  })
+  .directive('checkStrength', function() {
+    return {
+      replace: false,
+      restrict: 'EACM',
+      scope: { model: '=checkStrength' },
+      link: function(scope, element, attrs) {
+        var _grep = function(elems, callback, invert) {
+          var callbackInverse,
+              matches = [],
+              i = 0,
+              length = elems.length,
+              callbackExpect = !invert;
+
+          // Go through the array, only saving the items
+          // that pass the validator function
+          for (; i < length; i++) {
+            callbackInverse = !callback(elems[i], i);
+            if (callbackInverse !== callbackExpect) {
+              matches.push(elems[i]);
+            }
+          }
+
+          return matches;
+        };
+
+        var strength = {
+          colors: ['#c0392b', '#e74c3c', '#d35400', '#f39c12', '#27ae60'],
+          mesureStrength: function (p) {
+            var _force = 0;
+            var _regex = /[$-/:-?{-~!"^_`\[\]]/g;
+            var _lowerLetters = /[a-z]+/.test(p);
+            var _upperLetters = /[A-Z]+/.test(p);
+            var _numbers = /[0-9]+/.test(p);
+            var _symbols = _regex.test(p);
+            var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];
+            var _passedMatches = _grep(_flags, function (el) { return el === true; }).length;
+            
+            _force += 2 * p.length + ((p.length >= 10) ? 1 : 0);
+            _force += _passedMatches * 10;
+            
+            // penality (short password)
+            _force = (p.length <= 6) ? Math.min(_force, 10) : _force;
+            
+            // penality (poor variety of characters)
+            _force = (_passedMatches == 1) ? Math.min(_force, 10) : _force;
+            _force = (_passedMatches == 2) ? Math.min(_force, 20) : _force;
+            _force = (_passedMatches == 3) ? Math.min(_force, 40) : _force;
+            return _force;
+          },
+          getColor: function (s) {
+            var idx = 0;
+            
+            if (s <= 10) { idx = 0; }
+            else if (s <= 20) { idx = 1; }
+            else if (s <= 30) { idx = 2; }
+            else if (s <= 40) { idx = 3; }
+            else { idx = 4; }
+            
+            return { idx: idx + 1, col: this.colors[idx] };
+          }
+        };
+          
+        scope.$watch('model', function (newValue, oldValue) {
+          if (newValue && newValue !== '') {
+            var c = strength.getColor(strength.mesureStrength(newValue));
+            element.css({ 'border-color': c.col })
+          }
+        });
+      }
+    };
   });
