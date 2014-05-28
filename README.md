@@ -5,19 +5,31 @@ Copay
 
 Installation:
 
-Copy config.template.js to config.js 
+```
+git clone https://github.com/bitpay/copay.git
+cd copay
+```
 
-and edit to suit your needs. (Defaults to public PeerJS and Insight servers)
+Install bower and grunt if you haven't already:
+```
+npm install -g bower
+npm install -g grunt-cli
+```
 
-Copy bitcore/browser/bundle.js to copay/lib/bitcore.js
-
-Then execute these commands:
+Build Copay:
 ```
 npm install
 bower install
-grunt --target=dev shell
+grunt shell --target=dev
+cp config.template.js config.js
+```
+
+Open Copay:
+```
 node app.js
 ```
+
+Then visit localhost:3000 in your browser.
 
 To run on a different port:
 ```
