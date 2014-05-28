@@ -20,12 +20,19 @@ function PrivateKey(opts) {
 
 PrivateKey.prototype.getId = function() {
   if (!this.id) {
-    var path = PublicKeyRing.ID_BRANCH;
-    var bip32 = this.bip.derive(path);
-    this.id= bip32.eckey.public.toString('hex');
+    var path = PublicKeyRing.IdFullBranch();
+    var idhk = this.bip.derive(path);
+    this.id= idhk.eckey.public.toString('hex');
   }
   return this.id;
 };
+
+PrivateKey.prototype.deriveBIP45Branch = function() {
+  if (!this.bip45Branch) {
+    this.bip45Branch = this.bip.derive(PublicKeyRing.BIP45_PUBLIC_PREFIX);
+  }
+  return this.bip45Branch;
+}
 
 PrivateKey.fromObj = function(obj) {
   return new PrivateKey(obj);
@@ -55,13 +62,11 @@ PrivateKey.prototype._getHK = function(path) {
 };
 
 PrivateKey.prototype.get = function(index,isChange) {
-  var path = PublicKeyRing.Branch(index, isChange);
+  var path = PublicKeyRing.FullBranch(index, isChange);
   var pk = this.privateKeyCache[path];
   if (!pk) {
     var derivedHK =  this._getHK(path);
     pk = this.privateKeyCache[path] = derivedHK.eckey.private.toString('hex');
-  } else {
-    //console.log('cache hit!');
   }
   var wk = new WalletKey({network: this.network});
   wk.fromObj({priv: pk});
