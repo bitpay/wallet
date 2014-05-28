@@ -191,9 +191,11 @@
                 <div ng-show="!wallets.length">
                   <h3>Create a new wallet</h3>
                   <form name="createForm" ng-submit="create(createForm)" novalidate>
-                    <input type="text" class="form-control" ng-model="walletName" name="walletName" placeholder="Wallet name (optional)">
-                    <input type="password" class="form-control" placeholder="Choose your password" name="createPassword" ng-model="createPassword" check-strength="createPassword" required>
-                    <button type="submit" class="button secondary radius" ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button>
+                    <p class="text-gray">
+                    Copay is a free, open-source, multisignature bitcoin wallet. A single-owner bitcoin wallet's security depends on carefully securing the private keys. With copay you can have multiple people controlling the funds, using bitcoin's multisignature functionality, requiring no trust in any third party.
+                    </p>
+                    <button type="submit" class="button secondary radius"
+                      ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button>
                   </form>
                 </div>
               </div>
@@ -271,6 +273,7 @@
         <div ng-show="!loading">
           <form name="setupForm" ng-submit="create(setupForm)" novalidate>
           <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
+            <h3>Create new wallet</h3>
             <div class="large-6 columns line-dashed-v">
               <h6>Select total number of copayers</h6>
               <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
@@ -291,16 +294,17 @@
               </div>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
-              <h6>Your Wallet Password (you don't need to share this) <small>Required</small></h6>
-              <input type="password" class="form-control" ng-model="walletPassword" check-strength="walletPassword" required>
+              <h6>Your Wallet Password<small>(doesn't need to be shared) Required</small></h6>
+              <input type="password" placeholder="Choose your password" class="form-control"
+                ng-model="walletPassword" check-strength="walletPassword" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Wallet name <small>Optional</small></h6>
-                <input type="text" class="form-control" ng-model="walletName">
+                <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Your name <small>Optional</small></h6>
-                <input type="text" class="form-control" ng-model="myNickname">
+                <input type="text" placeholder="Bob" class="form-control" ng-model="myNickname">
             </div>
           </div>
           <div class="large-12 columns line-dashed">
