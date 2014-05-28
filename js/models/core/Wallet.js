@@ -460,7 +460,6 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
-  alert('\t scriptSig size: '+size);
 
   var txHex = tx.serialize().toString('hex');
   this.log('[Wallet.js.261:txHex:]', txHex); //TODO
