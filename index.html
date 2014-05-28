@@ -270,18 +270,16 @@
         </div>
         <div ng-show="!loading">
           <form name="setupForm" ng-submit="create(setupForm)" novalidate>
-          <div class="row">
-            <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
-              <div class="large-6 columns line-dashed-v">
-                <h6>Select total number of copayers</h6>
-                <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
-                </select>
-              </div>
-              <div class="large-6 columns">
-                <h6>Select required signatures</h6>
-                <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
-                </select>
-              </div>
+          <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
+            <div class="large-6 columns line-dashed-v">
+              <h6>Select total number of copayers</h6>
+              <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+              </select>
+            </div>
+            <div class="large-6 columns">
+              <h6>Select required signatures</h6>
+              <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+              </select>
             </div>
           </div>
           <div class="row">
@@ -300,18 +298,16 @@
               <h6>Wallet name <small>Optional</small></h6>
                 <input type="text" class="form-control" ng-model="walletName">
             </div>
-            <div class="large-6 large-centered columns m30v">
+            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Your name <small>Optional</small></h6>
                 <input type="text" class="form-control" ng-model="myNickname">
             </div>
           </div>
-          <div class="row">
-            <div class="large-12 columns line-dashed">
-              <button type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
-               Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
-              </button>
-              <a class="button secondary radius" href="#signin">Go back</a>
-            </div>
+          <div class="large-12 columns line-dashed">
+            <button type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
+             Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+            </button>
+            <a class="button secondary radius" href="#signin">Go back</a>
           </div>
           </form>
         </div>
@@ -349,10 +345,10 @@
                   </span>
                 </a>
 
-                <button class="button small secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1"> 
+                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1"> 
                   <span ng-if="!showAll">Show all</span>
                   <span ng-if="showAll">Show less</span>
-                </button>
+                </a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v text-center" ng-show="selectedAddr">
                 <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
@@ -488,8 +484,8 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</button>
-            <button ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</button>
+            <a ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</a>
+            <a ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</a>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
