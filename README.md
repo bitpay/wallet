@@ -45,6 +45,12 @@ PORT=3004 node app.js
 PORT=3005 node app.js
 ```
 
+To open n different instances just run:
+```
+node launch.js n
+```
+
+
 About Copay
 ===========
 
