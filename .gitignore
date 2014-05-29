@@ -41,9 +41,11 @@ lib/*
 
 js/copayBundle.js
 config.js
-webapp
-chrome-extension
-firefox-addon
+
+webapp/webapp
+chrome/copay-chrome-extension
+chrome/copay-chrome-extension.zip
+firefox/firefox-addon
 version.js
 
 android/package
