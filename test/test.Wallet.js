@@ -42,7 +42,8 @@ describe('Wallet model', function() {
       requiredCopayers: c.requiredCopayers,
       totalCopayers: c.totalCopayers,
     });
-    c.publicKeyRing.addCopayer(c.privateKey.getExtendedPublicKeyString());
+    var copayerEPK = c.privateKey.deriveBIP45Branch().extendedPublicKeyString()
+    c.publicKeyRing.addCopayer(copayerEPK);
 
     c.txProposals = new copay.TxProposals({
       networkName: c.networkName,
@@ -102,10 +103,10 @@ describe('Wallet model', function() {
     for(var i=0; i<4; i++) {
       if (privateKeys) {
         var k=privateKeys[i];
-        pkr.addCopayer(k?k.getExtendedPublicKeyString():null);
-      }
-      else 
+        pkr.addCopayer(k?k.deriveBIP45Branch().extendedPublicKeyString():null);
+      } else {
         pkr.addCopayer();
+      }
     }
     pkr.generateAddress(true);
     pkr.generateAddress(true);
@@ -125,20 +126,19 @@ describe('Wallet model', function() {
     unspentTest[0].address        = w.publicKeyRing.getAddress(1, true).toString();
     unspentTest[0].scriptPubKey   = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
-    w.createTxSync(
+    var ntxid = w.createTxSync(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt', 
       '123456789', 
       unspentTest
     );
 
     var t = w.txProposals;
-    console.log(t);
-    var k = Object.keys(t.txps)[0];
-    var tx = t.txps[k].builder.build();
+    var txp = t.txps[ntxid];
+    var tx = txp.builder.build();
     should.exist(tx);
     tx.isComplete().should.equal(false);
-    Object.keys(t.txps[k].signedBy).length.should.equal(1);
-    Object.keys(t.txps[k].seenBy).length.should.equal(1);
+    Object.keys(txp.seenBy).length.should.equal(1);
+    Object.keys(txp.signedBy).length.should.equal(1);
   });
 
   it('#addressIsOwn', function () {
