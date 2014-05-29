@@ -22,10 +22,10 @@ angular.module('copay.backup').controller('BackupController',
       var email = prompt('Please enter your email addres.');
       var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-      if (!email.match(mailformat)) {
-        alert('Enter a valid email address');
-      } else {
-        if (email && email !== '') {
+      if (email && email !== '') {
+        if (!email.match(mailformat)) {
+          alert('Enter a valid email address');
+        } else {
           var body = _getEncryptedWallet();
           var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id; 
           var href = 'mailto:' + email + '?'
