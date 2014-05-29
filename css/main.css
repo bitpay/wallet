@@ -54,7 +54,7 @@ html, body {height: 100%;}
   position: relative;
   float: right;
   margin-left: 15px;
-  height: 62px;
+  /* height: 551px; */
 }
 
 .logo {
@@ -62,13 +62,6 @@ html, body {height: 100%;}
   width: 130px;
   height: 51px;
   margin: 0 auto;
-}
-
-@media (max-width: 640px) {
-  .logo {
-    margin: 0 auto;
-    margin-bottom: 10px;
-  }
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
@@ -129,7 +122,6 @@ html, body {height: 100%;}
 }
 
 .panel {
-  /* padding: 0.7rem 1rem; */
   border:0;
 }
 
@@ -155,7 +147,7 @@ html, body {height: 100%;}
 }
 
 .box-backup {
-  margin: 2rem 0;
+  margin: 0.6rem 0;
   padding: 2rem 1rem;
 }
 
@@ -328,7 +320,7 @@ hr { margin: 2.25rem 0;}
 
 .box-copayers figure {
   width: 51px;
-  height: 55px;
+  height: 63px;
   border-top-left-radius: 4px 4px;
   border-bottom-left-radius: 4px 4px;
   overflow: hidden;
@@ -621,3 +613,59 @@ p.dr-notification-text {
   white-space: nowrap;
 }
 
+ul.pagination li.current a {
+  background: #1ABC9C;
+}
+
+ul.pagination li.current a:hover, ul.pagination li.current a:focus {
+  background: #16A085;
+}
+
+@media only screen and (max-width: 40em) { 
+
+  #main, .header-content {
+    font-size: 80%;
+    line-height: 140%;
+  }
+
+  .top-bar {
+    background: #1ABC9C;
+  }
+
+  .header-content {
+    padding: 0.3rem 0rem 1rem 0.4rem;
+  }
+
+  .logo {
+    background-size: 90px 44px !important;
+    float: left;
+    margin-top: 0.7rem;
+  }
+
+  .header-content .small-9 {
+    text-align: right !important;
+  }
+
+  .header-content .line-dashed-v {
+    border: none !important;  
+  }
+
+  .box-backup {
+    margin: 0.6rem 0;
+  }
+
+  #footer {
+    font-size: 80%;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .box-status {
+    height: 71px;
+  }
+
+  .box-copayers figure {
+    height: 71px;
+    width: 71px;
+  }
+
+}
