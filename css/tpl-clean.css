@@ -1,5 +1,5 @@
 .logo {
-  background: transparent url('../img/logo.png');
+  background: transparent url('../img/logo.png') no-repeat;
 }
 
 #footer {
