@@ -157,6 +157,10 @@ PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
       throw new Error('PKR already has that key');
   });
 
+  if (!newEpk) {
+    newEpk = this._newExtendedPublicKey();
+  }
+
   var i = this.copayersHK.length;
   var bip = new HK(newEpk);
   this.copayersHK.push(bip);
