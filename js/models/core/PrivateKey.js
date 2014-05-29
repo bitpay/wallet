@@ -7,7 +7,7 @@ var HK       = bitcore.HierarchicalKey;
 var WalletKey   = bitcore.WalletKey;
 var networks    = bitcore.networks;
 var util        = bitcore.util;
-var PublicKeyRing  = require('./PublicKeyRing');
+var PublicKeyRing = require('./PublicKeyRing');
 
 function PrivateKey(opts) {
   opts = opts || {};
@@ -62,6 +62,7 @@ PrivateKey.prototype._getHK = function(path) {
 };
 
 PrivateKey.prototype.get = function(index,isChange) {
+  console.log(PublicKeyRing);
   var path = PublicKeyRing.FullBranch(index, isChange);
   var pk = this.privateKeyCache[path];
   if (!pk) {

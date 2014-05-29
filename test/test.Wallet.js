@@ -132,6 +132,7 @@ describe('Wallet model', function() {
     );
 
     var t = w.txProposals;
+    console.log(t);
     var k = Object.keys(t.txps)[0];
     var tx = t.txps[k].builder.build();
     should.exist(tx);

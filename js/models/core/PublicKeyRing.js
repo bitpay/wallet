@@ -5,6 +5,7 @@
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
 var HK          = bitcore.HierarchicalKey;
+var PrivateKey  = require('./PrivateKey');
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
@@ -127,7 +128,8 @@ PublicKeyRing.prototype._checkKeys = function() {
 };
 
 PublicKeyRing.prototype._newExtendedPublicKey = function () {
-  return new HK(this.network.name)
+  return new PrivateKey({networkName: this.network.name})
+    .deriveBIP45Branch()
     .extendedPublicKeyString();
 };
 
