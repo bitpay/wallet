@@ -668,8 +668,4 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
     width: 71px;
   }
 
-  .alert-box.secondary {
-    margin: 0 1rem;
-  }
-
 }
