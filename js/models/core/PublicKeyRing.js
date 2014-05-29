@@ -6,6 +6,7 @@ var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
 var HK          = bitcore.HierarchicalKey;
 var PrivateKey  = require('./PrivateKey');
+var Structure  = require('./Structure');
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
@@ -36,40 +37,6 @@ function PublicKeyRing(opts) {
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
 }
-
-
-/*
- * Based on https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki
- * m / purpose' / cosigner_index / change / address_index 
- */
-var PURPOSE = 45;
-var MAX_NON_HARDENED = 0x8000000 - 1;
-
-var SHARED_INDEX = MAX_NON_HARDENED - 0;
-var ID_INDEX = MAX_NON_HARDENED - 1;
-
-var BIP45_PUBLIC_PREFIX = 'm/'+ PURPOSE+'\'';
-PublicKeyRing.BIP45_PUBLIC_PREFIX = BIP45_PUBLIC_PREFIX;
-
-
-PublicKeyRing.Branch = function(address_index, isChange, cosigner_index) {
-  var ret = 'm/'+
-    (typeof cosigner_index !== 'undefined'? cosigner_index: SHARED_INDEX)+'/'+
-    (isChange?1:0)+'/'+
-    address_index;
-  return ret;
-};
-
-PublicKeyRing.FullBranch = function(address_index, isChange, cosigner_index) {
-  var sub = PublicKeyRing.Branch(address_index, isChange, cosigner_index);
-  sub = sub.substring(2);
-  return BIP45_PUBLIC_PREFIX + '/' + sub;
-};
-PublicKeyRing.IdFullBranch = function() {
-  return PublicKeyRing.FullBranch(0, 0, ID_INDEX);
-};
-
-
 
 PublicKeyRing.fromObj = function (data) {
   if (data instanceof PublicKeyRing) {
@@ -134,7 +101,7 @@ PublicKeyRing.prototype._newExtendedPublicKey = function () {
 };
 
 PublicKeyRing.prototype._updateBip = function (index) {
-  var hk = this.copayersHK[index].derive(PublicKeyRing.Branch(0, 0, ID_INDEX));
+  var hk = this.copayersHK[index].derive(Structure.IdBranch);
   this.copayerIds[index]= hk.eckey.public.toString('hex');
 };
 
@@ -176,7 +143,7 @@ PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
 PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
   this._checkKeys();
 
-  var path = PublicKeyRing.Branch(index, isChange); 
+  var path = Structure.Branch(index, isChange); 
   var pubKeys = this.publicKeysCache[path];
   if (!pubKeys) {
     pubKeys = [];

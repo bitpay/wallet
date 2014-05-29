@@ -3,11 +3,11 @@
 
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
-var HK       = bitcore.HierarchicalKey;
+var HK          = bitcore.HierarchicalKey;
 var WalletKey   = bitcore.WalletKey;
 var networks    = bitcore.networks;
 var util        = bitcore.util;
-var PublicKeyRing = require('./PublicKeyRing');
+var Structure   = require('./Structure');
 
 function PrivateKey(opts) {
   opts = opts || {};
@@ -20,7 +20,7 @@ function PrivateKey(opts) {
 
 PrivateKey.prototype.getId = function() {
   if (!this.id) {
-    var path = PublicKeyRing.IdFullBranch();
+    var path = Structure.IdFullBranch;
     var idhk = this.bip.derive(path);
     this.id= idhk.eckey.public.toString('hex');
   }
@@ -29,7 +29,7 @@ PrivateKey.prototype.getId = function() {
 
 PrivateKey.prototype.deriveBIP45Branch = function() {
   if (!this.bip45Branch) {
-    this.bip45Branch = this.bip.derive(PublicKeyRing.BIP45_PUBLIC_PREFIX);
+    this.bip45Branch = this.bip.derive(Structure.BIP45_PUBLIC_PREFIX);
   }
   return this.bip45Branch;
 }
@@ -62,8 +62,7 @@ PrivateKey.prototype._getHK = function(path) {
 };
 
 PrivateKey.prototype.get = function(index,isChange) {
-  console.log(PublicKeyRing);
-  var path = PublicKeyRing.FullBranch(index, isChange);
+  var path = Structure.FullBranch(index, isChange);
   var pk = this.privateKeyCache[path];
   if (!pk) {
     var derivedHK =  this._getHK(path);

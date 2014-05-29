@@ -28,10 +28,10 @@ describe('PrivateKey model', function() {
   });
 
   it('should derive priv keys', function () {
-    var w = new PrivateKey(config);
+    var pk = new PrivateKey(config);
     for(var j=0; j<2; j++) {
       for(var i=0; i<3; i++) {
-        var wk = w.get(i,j); 
+        var wk = pk.get(i,j); 
         should.exist(wk);
         var o=wk.storeObj();
         should.exist(o);
