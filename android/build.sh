@@ -19,7 +19,7 @@ checkOK() {
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPDIR="$BUILDDIR/package"
-VERSION=`git describe --tags --abbrev=0 | cut -c 2-`
+VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 
 # Move to the build directory
 cd $BUILDDIR
