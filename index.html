@@ -4,18 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title> Cosign </title>
-    <meta name="description" content="Cosign : A secure command-line tool for multisignature and other advanced bitcoin transactions.">
+    <meta name="description" content="Cosign : A secure command-line tool for multisignature and other advanced bitcoin transactions">
     <meta property="og:site_name" content="Cosign">
     <meta property="og:url" content="http://cosign.io/">
     <meta property="og:title" content="Cosign">
-    <meta property="og:description" content="A secure command-line tool for multisignature and other advanced bitcoin transactions.">
+    <meta property="og:description" content="Bitcore is a complete, native interface to the Bitcoin network, and provides the core functionality needed to develop apps for bitcoin.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:image" content="http://cosign.io/images/og.png">
     <meta property="og:type" content="website">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="img/x-icon">
     <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu:300,400,500,700,400italic" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/normalize.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/foundation-icons.css">
+
     <link rel="stylesheet" href="css/common.css">
     <script type="text/javascript">
     window.analytics||(window.analytics=[]),window.analytics.methods=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)}window.analytics.load=function(t){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)},window.analytics.SNIPPET_VERSION="2.0.8",
@@ -24,169 +26,115 @@
     </script>
 </head>
 <body>
-    <header class="bg-black text-center">
-        <div class="ribbon hidden-xs">
-            <a href="https://github.com/bitpay/copay">View on GitHub</a>
-        </div>
-        <a href="https://github.com/bitpay/copay" id="logo">
-            <img src="images/logo-negative.svg" alt="Bitcore">
+  <header class="bg">
+    <div class="ribbon">
+      <a href="https://github.com/bitpay/bitcore"><i class="fi-social-github"></i> View on GitHub</a>
+    </div>
+    <div class="large-6 columns row">
+      <figure class="bg-logo">
+        <a href="http://bitcore.io/" id="logo">
+          <img src="img/logo-negative.svg" alt="Bitcore">
         </a>
-        <div class="ribbon-phone visible-xs">
-            <a href="https://github.com/bitpay/copay">View on GitHub</a>
-        </div>
-        <div class="black-text">
-            <h3 class="hidden-xs">A secure command-line tool for multisignature and other advanced bitcoin transactions.</h3>
-            <h4 class="visible-xs">A secure command-line tool for multisignature and other advanced bitcoin transactions.</h4>
-            <p class="lead hidden-xs">For organizations with security and functionality needs beyond a basic bitcoin wallet, cosign allows users to create, share, and broadcast custom transactions.</p>
-        </div>
-        <a href="#started" class="btn btn-default" id="cta">Get Started &raquo;</a>
-    </header>
-    <div class="container">
-        <h2>Principles</h2>
-        <p>Bitcoin is a powerful new peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services.</p>
-        <p><strong>Copay</strong> provides users with a way to share funds with one another without fear of theft, thanks to cryptographically-secure multi-signature technology, available only in Bitcoin.</p>
-
-        <h2 id="started">Get Started</h2>
-        <p>Cosign runs on <a href="http://nodejs.org/">node</a>, and can be installed via <a href="https://npmjs.org/">npm:</a></p>
-<pre>
-npm install cosign
-</pre>
-        <h2>Examples</h2>
-        <h3 class="text-info">Tx-signing</h3>
-        <p>In this example, someone has emailed the raw hex data for a bitcoin
-        transaction, UNSIGNED.TXT.  The user signs the transaction, and then
-        emails SIGNED.TXT to another party.</p>
-<pre>
-$ ./cosign init
-$ ./cosign raw.read UNSIGNED.TXT
-$ ./cosign raw.sign
-$ ./cosign raw.write SIGNED.TXT
-</pre>
-        <p>Additionally, if the transaction is complete -- raw.sign reports
-        "sigs:complete" -- then the transaction may be broadcast on the network.</p>
-<pre>
-$ ./cosign raw.send
-</pre><br>
-        <h3 class="text-info line-negative-t">Multisig</h3>
-        <p class="h4">1) Initialize db.</p>
-<pre>
-$ ./cosign init
-</pre>
-        <ul class="list-unstyled"> <p class="h4">2)  Obtain three bitcoin addresses:</p>
-            <li>smallmxDoMG9BogJ6kmgiTJNxhaAUUh11j3HWHr</li>
-            <li>myGFNvUkRL3DTWHgKvuv29JW1TkcaihsSN</li>
-            <li>mr3q8AeyLX53h9JctDAbVfWDYkiW52PRSP</li>
-        </ul>
+      </figure>
+      <h3>A secure bitcoin wallet for <b>friends</b> and <b>companies.</b></h3>
+      <p class="size-16 m4b">Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.</p>
+      <button href="#started" class="button primary radius m2r">
+        <i class="fi-download icon-button"></i>
+        <p class="btn-download">
+          <small>DOWNLOAD</small> <br>
+          Chrome Extension
         </p>
-        <p class="h4">3)  Communicate with the local bitcoind associated with each
-        address, and obtain the full public keys:</p>
-<pre>
-$ ./cosign pubkey.get mxDoMG9BogJ6kmgiTJNxhaAUUh11j3HWHr
-$ ./cosign pubkey.get myGFNvUkRL3DTWHgKvuv29JW1TkcaihsSN
-$ ./cosign pubkey.get mr3q8AeyLX53h9JctDAbVfWDYkiW52PRSP
-</pre>
-        <p>And we see the database has been updated with our three public keys:</p>
-<pre>
-$ ./cosign dump
-{ pubkeys:
-   [ '02affe9b8160e2d2b492389501407355cc19603ed99bbe542a6799447ea735b453',
-     '02c2f5e2c376d0e0963f0a3a798877788f94c440f621a6493582b63f08bb55d1da',
-     '025fcbc602f0f6ef5a488362e76e4a1ce15eb0a16921c050741831348190369ab5' ] }
-</pre>
-        <p class="h4">4) Set number of signatures required.</p>
-<pre>
-$ ./cosign nreq 2
-</pre>
-        <p class="h4">5) Use this data to add a multisig payment address to bitcoind's wallet.</p>
-<pre>
-$ ./cosign wallet.msig
-2MsfxrcnDNF1kHJRxXT11TnAgDvVHkEvzSd
-</pre>
-        <p class="h4">6) Send bitcoins to the multisig address.</p>
-<pre>
-$ ./bitcoind -testnet sendtoaddress 2MsfxrcnDNF1kHJRxXT11TnAgDvVHkEvzSd 1.5
-ad39b5d53230af4784fb46720e5bc474f16a97a2fc6e85eed5fd3ef423e97885
-</pre>
-        <p>Inspect the transaction, if you're curious:</p>
-<pre>
-$ ./bitcoind -testnet getrawtransaction ad39b5d53230af4784fb46720e5bc474f16a97a2fc6e85eed5fd3ef423e97885 1
-</pre>
-        <p class="h4">7) Time passes.  Now, at least two parties are happy, and want
-        to spend the bitcoins.</p> <br>
-        <p class="h4">8) Create inputs for the spend-bitcoins transactions.</p>
-<pre>
-$ ./cosign inputs ad39b5d53230af4784fb46720e5bc474f16a97a2fc6e85eed5fd3ef423e97885 0
-</pre>
-        <p class="h4">9) Create outputs for the spend-bitcoins transactions.
-        mftotywBYNSHjYCL1x4XWTkoac3t71UYL1 is the recipient in this example.</p>
-<pre>
-$ ./cosign outputs mftotywBYNSHjYCL1x4XWTkoac3t71UYL1 1.5
-</pre>
-        <p class="h4">10) Serialize the inputs and outputs into a raw transaction.</p>
-<pre>
-$ ./cosign raw.create
-</pre>
-        <p>Inspecting the database demonstrates the fruit of all our labors:
-        "raw" contains the serialized, unsigned transaction.</p>
-<pre>
-$ ./cosign dump
-{ pubkeys:
-   [ '02affe9b8160e2d2b492389501407355cc19603ed99bbe542a6799447ea735b453',
-     '02c2f5e2c376d0e0963f0a3a798877788f94c440f621a6493582b63f08bb55d1da',
-     '025fcbc602f0f6ef5a488362e76e4a1ce15eb0a16921c050741831348190369ab5' ],
-  n_required: 2,
-  inputs:
-   [ { txid: 'ad39b5d53230af4784fb46720e5bc474f16a97a2fc6e85eed5fd3ef423e97885',
-       vout: 0 } ],
-  outputs: { mftotywBYNSHjYCL1x4XWTkoac3t71UYL1: 1.5 },
-  raw: '01000000018578e923f43efdd5ee856efca2976af174c45b0e7246fb8447af3032d5b539ad0000000000ffffffff0180d1f008000000001976a9140422241b3efea67ae03dfec9a389d06e4550d28288ac00000000' }
-</pre>
-        <p class="h4">11) Sign the raw transaction.</p>
-<pre>
-$ ./cosign raw.sign
-sigs:complete
-raw:updated
-</pre>
-        <p>In this simple example, all keys were in one bitcoind, and the
-        transaction is now fully signed ("sigs:complete").  A more realistic
-        example will use "raw.read" and "raw.write" to exchange partially
-        signed raw transactions among multiple parties.</p> <br>
-        <p class="h4">12) Broadcast the signed transaction to the network</p>
-<pre>
-$ ./cosign raw.send
-ca02bc7bdaf8a79b150e825e3d528620092ed42d68d649738381102aa1f0d9fe
-</pre>
+      </button>
+      <button href="#started" class="button secondary radius">
+        <i class="fi-download icon-button"></i>
+        <p class="btn-download">
+          <small>DOWNLOAD</small> <br>
+          Chrome Extension
+        </p>
+      </button>
+    </div>
+  </header>   
 
+  <div class="source">
+    <a class="large-4 column text-center">
+      <img src="img/logo-github.svg" alt="Bitcore">
+    </a>
+    <a class="large-4 column text-center">
+      <img src="img/logo-bitcore.svg" alt="Bitcore">
+    </a>
+    <a class="large-4 column text-center">
+      <img src="img/logo-insight.svg" alt="Bitcore">
+    </a>
+  </div>
 
-    </div> <!-- end of Container -->
+  <div class="container">
+    <div class="row feature">
+      <div class="large-4 columns p5t">
+        <h2>Extra Security</h2>
+        <p>When friends or company executives join a Copay wallet, more than one person must sign every transaction. If your computer is compromised and your private keys are stolen, <b> the bitcoins are still safe.</b> This is in addition to state-of-the-art encrypted storage and communication.</p>
+      </div>
+      <figure class="large-8 columns text-right">
+        <img src="img/feature1.png" alt="Bitcore" width="80%">
+      </figure>
+    </div>
 
-    <footer>
-        <div class="copyright">
-            <div class="container">
-                <div class="row text-center hidden-sm">
-                    <div class="col-md-8">
-                        <img src="images/logo-negative.svg" alt="" class="pull-left" width="70">
-                        <p class="pull-left"><small> maintained by <a href="https://github.com/bitpay">bitpay</a></small></p>
-                    </div>
-                    <div class="col-md-4 row">
-                        <div class="col-md-4 tex-center">
-                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&repo=copay&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-                        </div>
-                        <div class="col-md-4 tex-center">
-                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&repo=copay&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
-                        </div>
-                        <div class="col-md-4 tex-center">
-                            <iframe src="http://ghbtns.com/github-btn.html?user=bitpay&type=follow&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="165" height="20"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div class="row feature">
+      <figure class="large-7 columns text-left">
+        <img src="img/feature1.png" alt="Bitcore" width="80%">
+      </figure>
+      <div class="large-5 columns p5t">
+        <h2>Decentralized</h2>
+        <p>You shouldn’t have to depend on a central organization to use bitcoin. Copay has almost no dependence on servers, and the servers it does use are open-source and can be run by anybody. As web browsers become capable, eventually the servers stop being necessary altogether.</p>
+      </div>
+    </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" language="JavaScript"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/a.js"></script>
+    <div class="row feature">
+      <div class="large-5 columns p5t">
+        <h2>Advanced Technology</h2>
+        <p>Copay is possible due to recent advances in web technology that allow your bitcoins to be stored locally and not on a server, and for the copayers to communicate peer-to-peer rather than through a server. We also use the most modern bitcoin protocols that allow you to backup your wallet once, and you never have to worry about backing it up again.</p>
+      </div>
+      <figure class="large-7 columns text-right">
+        <img src="img/feature1.png" alt="Bitcore" width="80%">
+      </figure>
+    </div>
+
+    <div class="row feature">
+      <figure class="large-7 columns text-left">
+        <img src="img/feature1.png" alt="Bitcore" width="80%">
+      </figure>
+      <div class="large-5 columns p5t">
+        <h2>Open-Source</h2>
+        <p>Copay is completely open-source and has been since day 1. We welcome other people to copy and give back to Copay. We developed Copay for internal use at BitPay, but we all win if everybody has secure bitcoins, which is best made possible with open-source.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-footer">
+    <a class="large-4 column text-center">
+      <img src="img/logo-github.svg" alt="Bitcore">
+    </a>
+    <a class="large-4 column text-center">
+      <img src="img/logo-bitcore.svg" alt="Bitcore">
+    </a>
+    <a class="large-4 column text-center">
+      <img src="img/logo-insight.svg" alt="Bitcore">
+    </a>
+  </div>
+
+  <footer>
+    <div class="row">
+      <figure class="left">
+        <a href="http://bitcore.io/" id="logo">
+          <img src="img/logo-negative.svg" alt="Bitcore" width="50">
+        </a>
+      </figure>
+    </div>
+  </footer>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" language="JavaScript"></script>
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/a.js"></script>
 </body>
 </html>
