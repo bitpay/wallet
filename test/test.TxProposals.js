@@ -42,7 +42,7 @@ var createPKR = function (bip32s) {
   for(var i=0; i<5; i++) {
     if (bip32s) {
       var b=bip32s[i];
-      w.addCopayer(b?b.getExtendedPublicKeyString():null);
+      w.addCopayer(b?b.deriveBIP45Branch().extendedPublicKeyString():null);
     }
     else 
       w.addCopayer();
@@ -72,7 +72,7 @@ describe('TxProposals model', function() {
     var priv = new PrivateKey(config);
     var priv2 = new PrivateKey(config);
     var priv3 = new PrivateKey(config);
-   var ts = Date.now();
+    var ts = Date.now();
     var isChange=0; 
     var index=0; 
     var pkr = createPKR([priv, priv2,  priv3]);
