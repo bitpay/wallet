@@ -628,7 +628,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   var signRet;
   if (priv) {
-    b.sign(priv.getAll(pkr.addressIndex, pkr.changeAddressIndex));
+    var signed = b.sign(priv.getAll(pkr.addressIndex, pkr.changeAddressIndex));
   }
   var myId = this.getMyCopayerId();
   var now = Date.now();
