@@ -1,5 +1,5 @@
 body {
-  letter-spacing: normal;
+  letter-spacing: normal !important;
 }
 
 figure.bg-logo {
@@ -30,10 +30,13 @@ p {
   overflow: hidden; 
   margin: 0px; 
   padding: 0px; 
-  height: 700px; 
-  width: 1440px; 
+  width: 100%; 
   z-index: -999998; 
   position: absolute;
+}
+
+.backstretch img {
+  min-width: 1440px;
 }
 
 .size-12 { font-size: 12px; }      
@@ -112,13 +115,12 @@ button small {
   padding: 9px 83px;
 }
 
-header {display: none;}
-
 header { 
-  background-size: 100%;
-  height: 100%;
+  height: 81%;
   overflow: hidden;
   position: relative;
+  min-height: 700px;
+  display: block;
 }
 
 header h3, header p, header h4 {
