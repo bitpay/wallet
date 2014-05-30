@@ -1,3 +1,7 @@
+body {
+  letter-spacing: normal;
+}
+
 figure.bg-logo {
   height: 170px;
   width: 166px;
@@ -18,6 +22,18 @@ p {
   font-weight: 100;
   color: #95A5A6;
   font-size: 1.2rem;
+}
+
+.backstretch {
+  left: 0px;
+  top: 0px; 
+  overflow: hidden; 
+  margin: 0px; 
+  padding: 0px; 
+  height: 700px; 
+  width: 1440px; 
+  z-index: -999998; 
+  position: absolute;
 }
 
 .size-12 { font-size: 12px; }      
@@ -45,29 +61,6 @@ p {
   padding-top: 150px;
 }
 
-.ribbon-phone a {
-  background: #FAE448;
-  display: block;
-  font-weight: 100;
-  font-size: 20px;
-  width: 60%;
-  padding: 8px;
-  margin: 40px auto;
-  border-radius: 5px;
-}
-
-.ribbon-phone a:hover, .ribbon a:hover {
-  background: #fff;
-  color: #2C3E50;
-  font-weight: 300;
-}
-
-.btn-download {
-  margin-left: 50px;
-  text-align: left;
-  line-height: 20px;
-}
-
 button {
   padding: 0.7rem 2rem !important;
 }
@@ -90,7 +83,7 @@ button small {
 
 .icon-button {
   font-size: 2rem;
-  padding: 6% 0%;
+  padding: 12% 0%;
   opacity: 0.2;
   height: 100%;
   width: 3.5rem;
@@ -102,7 +95,7 @@ button small {
 
 .ribbon a {
   -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
+  -moz-trans`form: rotate(45deg);
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
@@ -121,23 +114,28 @@ button small {
 
 header {display: none;}
 
-header.bg {
-  background: url('../img/bg-header.jpg') no-repeat top; 
+header { 
   background-size: 100%;
   height: 100%;
   overflow: hidden;
   position: relative;
 }
 
-.bg h3, .bg p, .bg h4 {
+header h3, header p, header h4 {
   color: #fff;
   font-weight: 100;
 }
 
-.bg h3 {
+header h3 {
   font-size: 2.7rem;
   line-height: 3.2rem;
   text-transform: uppercase;
+}
+
+.btn-download {
+    text-align: left;
+    line-height: 20px;
+    margin: 0 2rem 0 50px;
 }
 
 .source {
@@ -148,6 +146,7 @@ header.bg {
   border-top: 2px solid #fff;
   background: #DFDFDF;
   padding: 1.5rem 0;
+  height: 76px;
 }
 
 .source a:hover {
@@ -166,4 +165,56 @@ figure {
 footer {
   background-color: #2C3E50;
   overflow: hidden;
+}
+
+
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) { 
+  header h3 {
+    font-size: 2.5rem;
+    line-height: 1.4;
+  }
+}
+
+@media only screen and (max-width: 40em) {
+
+  figure.bg-logo {
+    margin: 0 auto 8rem;
+  }
+
+  header h3 {
+    font-size: 1.7rem;
+    line-height: 1.4;
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+
+  .ribbon-phone a {
+    background: #fff;
+    color: #2C3E50;
+    display: block;
+    font-weight: 300;
+    font-size: 20px;
+    width: 60%;
+    padding: 8px;
+    margin: 40px auto;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .ribbon-phone a:hover, .ribbon a:hover {
+    background: #2C3E50;
+    color: #fff;
+    font-weight: 300;
+  }
+
+  .download {
+    text-align: center;
+  }
+
+  .btn-download {
+    text-align: left;
+    line-height: 20px;
+    margin: 0 0 0 45px;
+  }
 }
