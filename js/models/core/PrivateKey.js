@@ -61,8 +61,11 @@ PrivateKey.prototype._getHK = function(path) {
   return this.bip.derive(path);
 };
 
-PrivateKey.prototype.get = function(index,isChange) {
-  var path = Structure.FullBranch(index, isChange);
+PrivateKey.prototype.getForPaths = function(paths) {
+  return paths.map(this.getForPath.bind(this));
+};
+
+PrivateKey.prototype.getForPath = function(path) {
   var pk = this.privateKeyCache[path];
   if (!pk) {
     var derivedHK =  this._getHK(path);
@@ -71,6 +74,11 @@ PrivateKey.prototype.get = function(index,isChange) {
   var wk = new WalletKey({network: this.network});
   wk.fromObj({priv: pk});
   return wk;
+};
+
+PrivateKey.prototype.get = function(index,isChange) {
+  var path = Structure.FullBranch(index, isChange);
+  return this.getForPath(path);
 };
 
 PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
