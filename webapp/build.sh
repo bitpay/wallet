@@ -18,11 +18,11 @@ checkOK() {
 
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-APPDIR="$BUILDDIR/webapp"
+APPDIR="$BUILDDIR/copay-webapp"
 ZIPFILE="copay.zip"
-VERSION=`git describe --tags --abbrev=0 | cut -c 2-`
+VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 
-DOWNLOADDIR="$APPDIR/download"
+DOWNLOADDIR="$BUILDDIR/download"
 CHROMEDOWNLOADDIR="$DOWNLOADDIR/chrome"
 FIREFOXDOWNLOADDIR="$DOWNLOADDIR/firefox"
 ZIPFILE="copay.zip"
@@ -61,5 +61,6 @@ mkdir -p $FIREFOXDOWNLOADDIR
 mv $ZIPFILE $DOWNLOADDIR
 cp "$BUILDDIR/index-download-chrome.html" $CHROMEDOWNLOADDIR/index.html
 cp "$BUILDDIR/index-download-firefox.html" $FIREFOXDOWNLOADDIR/index.html
+cp "$BUILDDIR/index-download.html" $DOWNLOADDIR/index.html
 
 echo "${OpenColor}${Yellow}\nAwesome! We have a brand new Webapp, enjoy it!${CloseColor}"
