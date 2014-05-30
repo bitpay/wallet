@@ -5,6 +5,8 @@
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
 var HK          = bitcore.HierarchicalKey;
+var PrivateKey  = require('./PrivateKey');
+var Structure  = require('./Structure');
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
@@ -35,22 +37,6 @@ function PublicKeyRing(opts) {
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
 }
-
-/*
- * This follow Electrum convetion, as described in
- * https://bitcointalk.org/index.php?topic=274182.0
- *
- * We should probably adopt the next standard once it's ready, as discussed in:
- * http://sourceforge.net/p/bitcoin/mailman/message/32148600/
- *
- */
-
-PublicKeyRing.Branch = function (index, isChange) {
-  // first 0 is for future use: could be copayerId.
-  return 'm/0/'+(isChange?1:0)+'/'+index;
-};
-
-PublicKeyRing.ID_BRANCH = 'm/100/0/0';
 
 PublicKeyRing.fromObj = function (data) {
   if (data instanceof PublicKeyRing) {
@@ -109,13 +95,13 @@ PublicKeyRing.prototype._checkKeys = function() {
 };
 
 PublicKeyRing.prototype._newExtendedPublicKey = function () {
-  return new HK(this.network.name)
+  return new PrivateKey({networkName: this.network.name})
+    .deriveBIP45Branch()
     .extendedPublicKeyString();
 };
 
 PublicKeyRing.prototype._updateBip = function (index) {
-  var path = PublicKeyRing.ID_BRANCH;
-  var hk = this.copayersHK[index].derive(path);
+  var hk = this.copayersHK[index].derive(Structure.IdBranch);
   this.copayerIds[index]= hk.eckey.public.toString('hex');
 };
 
@@ -123,41 +109,41 @@ PublicKeyRing.prototype._setNicknameForIndex = function (index, nickname) {
   this.nicknameFor[this.copayerIds[index]] = nickname;
 };
 
-PublicKeyRing.prototype.nicknameForIndex = function (index) {
+PublicKeyRing.prototype.nicknameForIndex = function(index) {
   return this.nicknameFor[this.copayerIds[index]];
 };
 
-PublicKeyRing.prototype.nicknameForCopayer = function (copayerId) {
+PublicKeyRing.prototype.nicknameForCopayer = function(copayerId) {
   return this.nicknameFor[copayerId];
 };
 
-PublicKeyRing.prototype.addCopayer = function (newEpk, nickname) {
+PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
   if (this.isComplete())
-      throw new Error('already have all required key:' + this.totalCopayers);
+      throw new Error('PKR already has all required key:' + this.totalCopayers);
+
+  this.copayersHK.forEach(function(b){
+    if (b.extendedPublicKeyString() === newEpk)
+      throw new Error('PKR already has that key');
+  });
 
   if (!newEpk) {
     newEpk = this._newExtendedPublicKey();
   }
 
-  this.copayersHK.forEach(function(b){
-    if (b.extendedPublicKeyString() === newEpk)
-      throw new Error('already have that key');
-  });
-
-  var i=this.copayersHK.length;
+  var i = this.copayersHK.length;
   var bip = new HK(newEpk);
   this.copayersHK.push(bip);
   this._updateBip(i);
   if (nickname) { 
-    this._setNicknameForIndex(i,nickname);
+    this._setNicknameForIndex(i, nickname);
   }
   return newEpk;
 };
 
-PublicKeyRing.prototype.getPubKeys = function (index, isChange) {
+PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
   this._checkKeys();
 
-  var path = PublicKeyRing.Branch(index, isChange); 
+  var path = Structure.Branch(index, isChange); 
   var pubKeys = this.publicKeysCache[path];
   if (!pubKeys) {
     pubKeys = [];

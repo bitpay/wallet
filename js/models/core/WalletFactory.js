@@ -53,14 +53,6 @@ WalletFactory.prototype.fromObj = function(obj) {
   console.log('## Decrypting'); //TODO
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   w.verbose = this.verbose;
-  // JIC: Add our key
-  try {
-    w.publicKeyRing.addCopayer(
-      w.privateKey.getExtendedPublicKeyString()
-    );
-  } catch (e) {
-    // No really an error, just to be sure.
-  }
   this.log('### WALLET OPENED:', w.id);
   return w;
 };
@@ -107,7 +99,9 @@ WalletFactory.prototype.create = function(opts) {
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
-  opts.publicKeyRing.addCopayer(opts.privateKey.getExtendedPublicKeyString(), opts.nickname);
+  opts.publicKeyRing.addCopayer(
+    opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
+    opts.nickname);
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
