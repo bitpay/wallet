@@ -12,7 +12,7 @@ function Structure() {
  * m / purpose' / cosigner_index / change / address_index 
  */
 var PURPOSE = 45;
-var MAX_NON_HARDENED = 0x8000000 - 1;
+var MAX_NON_HARDENED = 0x80000000 - 1;
 
 var SHARED_INDEX = MAX_NON_HARDENED - 0;
 var ID_INDEX = MAX_NON_HARDENED - 1;
@@ -35,6 +35,9 @@ Structure.FullBranch = function(address_index, isChange, cosigner_index) {
 };
 Structure.IdFullBranch = Structure.FullBranch(0, 0, ID_INDEX);
 Structure.IdBranch = Structure.Branch(0, 0, ID_INDEX);
-
+Structure.PURPOSE = PURPOSE;
+Structure.MAX_NON_HARDENED = MAX_NON_HARDENED;
+Structure.SHARED_INDEX = SHARED_INDEX;
+Structure.ID_INDEX = ID_INDEX;
 
 module.exports = require('soop')(Structure);
