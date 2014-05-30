@@ -42,7 +42,7 @@ lib/*
 js/copayBundle.js
 config.js
 
-webapp/webapp
+webapp/copay-webapp
 webapp/download
 chrome/copay-chrome-extension
 chrome/copay-chrome-extension.zip
