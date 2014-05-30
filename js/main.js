@@ -1,3 +1,5 @@
-$(document).ready(function() {
-	$('header').fadeIn('slow');
-});
+$(document)
+  .foundation()
+  .ready(function() {
+	  $('header').fadeIn('slow');
+  });

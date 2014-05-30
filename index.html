@@ -17,18 +17,25 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/foundation-icons.css">
-
     <link rel="stylesheet" href="css/common.css">
-    <script type="text/javascript">
-    window.analytics||(window.analytics=[]),window.analytics.methods=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)}window.analytics.load=function(t){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)},window.analytics.SNIPPET_VERSION="2.0.8",
-    window.analytics.load("yc2e6mxne0");
-    window.analytics.page("index");
-    </script>
 </head>
 <body>
+  <div id="downloadModal" class="reveal-modal" data-reveal>
+    <h2>Download Copay</h2>
+    <p>
+      <ol>
+        <li>Download the <a href="https://bitpay.github.io/copay/download/copay.zip">ZIP</a></li>
+        <li>Unpack the ZIP file</li>
+        <li>Enter to "copay" folder</li>
+        <li>Open the index.html with your browser (Chrome, Firefox, Opera)</li>
+        <li>Enjoy Copay!</li>
+      </ol>
+    </p>
+    <a class="close-reveal-modal">&#215;</a>
+  </div>
   <header class="bg">
     <div class="ribbon">
-      <a href="https://github.com/bitpay/bitcore"><i class="fi-social-github"></i> View on GitHub</a>
+      <a href="https://github.com/bitpay/copay" target="_blank"><i class="fi-social-github"></i> View on GitHub</a>
     </div>
     <div class="large-6 columns row">
       <figure class="bg-logo">
@@ -38,7 +45,7 @@
       </figure>
       <h3>A secure bitcoin wallet for <b>friends</b> and <b>companies.</b></h3>
       <p class="size-16 m4b">Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.</p>
-      <a href="#started" class="button primary radius m2r">
+      <a href="#" class="button primary radius m2r" data-reveal-id="downloadModal">
         <i class="fi-download icon-button"></i>
         <p class="btn-download">
           <small>DOWNLOAD</small><br>
@@ -132,7 +139,14 @@
   </footer>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="js/foundation.min.js"></script>
+  <script src="js/foundation/foundation.js"></script>
+  <script src="js/foundation/foundation.reveal.js"></script>
   <script src="js/main.js"></script>
+
+  <script type="text/javascript">
+    window.analytics||(window.analytics=[]),window.analytics.methods=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)}window.analytics.load=function(t){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)},window.analytics.SNIPPET_VERSION="2.0.8",
+    window.analytics.load("yc2e6mxne0");
+    window.analytics.page("index");
+  </script>
 </body>
 </html>
