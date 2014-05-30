@@ -22,6 +22,7 @@ function TxProposal(opts) {
   this.builder  = opts.builder;
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
+  this.inputChainPaths = opts.inputChainPaths || [];
 }
 
 TxProposal.prototype.toObj = function() {

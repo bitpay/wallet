@@ -432,7 +432,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
     }
 
     var pkr = self.publicKeyRing;
-    var keys = self.privateKey.getAll(pkr.addressIndex, pkr.changeAddressIndex);
+    var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
     var before = b.signaturesAdded;
@@ -626,9 +626,15 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
       amountSat: amountSat
     }]);
 
-  var signRet;
+  var selectedUtxos = b.getSelectedUnspent();
+  
+  var inputChainPaths = selectedUtxos.map(function(utxo) {
+    return pkr.pathForAddress(utxo.address);
+  });
+
   if (priv) {
-    var signed = b.sign(priv.getAll(pkr.addressIndex, pkr.changeAddressIndex));
+    var keys = priv.getForPaths(inputChainPaths);
+    var signed = b.sign(keys);
   }
   var myId = this.getMyCopayerId();
   var now = Date.now();
@@ -640,6 +646,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
   if (priv) meSeen[myId] = now;
 
   var data = {
+    inputChainPaths: inputChainPaths,
     signedBy: me,
     seenBy: meSeen,
     creator: myId,
@@ -647,7 +654,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
     builder: b,
   };
 
-  return this.txProposals.add(data);
+  var ntxid = this.txProposals.add(data);
+  return ntxid;
 };
 
 Wallet.prototype.disconnect = function() {

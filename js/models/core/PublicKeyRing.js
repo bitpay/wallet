@@ -36,6 +36,7 @@ function PublicKeyRing(opts) {
   this.publicKeysCache = opts.publicKeysCache || {};
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
+  this.addressToPath = {};
 }
 
 PublicKeyRing.fromObj = function (data) {
@@ -181,7 +182,15 @@ PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
 // TODO this could be cached
 PublicKeyRing.prototype.getAddress = function (index, isChange) {
   var script  = this.getRedeemScript(index,isChange);
-  return Address.fromScript(script, this.network.name);
+  var address = Address.fromScript(script, this.network.name);
+  this.addressToPath[address.toString()] = Structure.FullBranch(index, isChange);
+  return address;
+};
+
+PublicKeyRing.prototype.pathForAddress = function(address) {
+  var path = this.addressToPath[address];
+  if (!path) throw new Error('Couldn\'t find path for address '+address);
+  return path;
 };
 
 // TODO this could be cached
