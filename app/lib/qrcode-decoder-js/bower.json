@@ -1,0 +1,27 @@
+{
+  "name": "jsqrcode",
+  "version": "0.0.1",
+  "homepage": "https://github.com/colkito/qrcode-decoder-js",
+  "authors": [
+    "Lazar Laszlo",
+    "Mario Colque <colquemario@gmail.com>"
+  ],
+  "description": "JS QR code decoder",
+  "main": "lib/qrcode-decoder.js",
+  "keywords": [
+    "qr",
+    "code",
+    "scanner",
+    "decoder",
+    "js"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "component",
+    "test",
+    "tests"
+  ]
+}
