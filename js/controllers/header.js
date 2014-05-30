@@ -76,6 +76,10 @@ angular.module('copay.header').controller('HeaderController',
 
     $rootScope.isCollapsed = true;
 
+    $scope.toggleCollapse = function() {
+      $rootScope.isCollapsed = !$rootScope.isCollapsed;
+    };
+
     function logout() {
       var w = $rootScope.wallet;
       if (w) {
