@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.header').controller('HeaderController',
-  function($scope, $rootScope, $location, $notification, walletFactory, controllerUtils) {
+  function($scope, $rootScope, $location, $notification, $http, walletFactory, controllerUtils) {
     $scope.menu = [
     {
       'title': 'Addresses',
@@ -22,6 +22,18 @@ angular.module('copay.header').controller('HeaderController',
     }];
           
     var beep = new Audio('sound/transaction.mp3');
+
+    $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data){
+      var toInt = function (s) { return parseInt(s); };
+      var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
+      var currentVersion = copay.version.split('.').map(toInt);
+
+      if (currentVersion[0] < latestVersion[0]){
+        $scope.updateVersion = 'error';
+      } else if (currentVersion[0] == latestVersion[0] && currentVersion[1] < latestVersion[1]) {
+        $scope.updateVersion = 'info';
+      }
+    });
 
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
