@@ -124,7 +124,7 @@ angular.module('copay.directives')
     return {
       replace: false,
       restrict: 'EACM',
-      scope: { model: '=checkStrength' },
+      require: 'ngModel',
       link: function(scope, element, attrs) {
         var _grep = function(elems, callback, invert) {
           var callbackInverse,
@@ -146,6 +146,7 @@ angular.module('copay.directives')
         };
 
         var strength = {
+          messages: ['too weak', 'weak', 'weak', 'medium', 'strong'],
           colors: ['#c0392b', '#e74c3c', '#d35400', '#f39c12', '#27ae60'],
           mesureStrength: function (p) {
             var _force = 0;
@@ -178,14 +179,15 @@ angular.module('copay.directives')
             else if (s <= 40) { idx = 3; }
             else { idx = 4; }
             
-            return { idx: idx + 1, col: this.colors[idx] };
+            return { idx: idx + 1, col: this.colors[idx], message: this.messages[idx] };
           }
         };
-          
-        scope.$watch('model', function (newValue, oldValue) {
+
+        scope.$watch(attrs.ngModel, function (newValue, oldValue) {
           if (newValue && newValue !== '') {
             var c = strength.getColor(strength.mesureStrength(newValue));
-            element.css({ 'border-color': c.col })
+            element.css({ 'border-color': c.col });
+            scope[attrs.checkStrength] = c.message;
           }
         });
       }
