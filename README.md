@@ -1,9 +1,8 @@
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
 
-Copay
-=====
+# Copay
 
-Installation:
+## Installation:
 
 ```
 git clone https://github.com/bitpay/copay.git
@@ -31,6 +30,8 @@ node app.js
 
 Then visit localhost:3000 in your browser.
 
+
+## Running copay
 To run on a different port:
 ```
 PORT=3001 node app.js
@@ -45,14 +46,22 @@ PORT=3004 node app.js
 PORT=3005 node app.js
 ```
 
-To open n different instances just run:
+To open n different instances more easily, just run:
 ```
-node launch.js n
+n=5
+node launch.js $n &
 ```
 
+## Configuration
+Default configuration can be found in the config.template.js file.
+If you want to configure Copay differently, you can copy that file
+to config.js and change the values. 
 
-About Copay
-===========
+See config.template.js for more info on configuration options.
+
+
+
+# About Copay
 
 General
 -------
