@@ -269,7 +269,6 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
     self._checkAnyPeer();
   });
 
-
   p.on('connection', function(dataConn) {
     console.log('### NEW INBOUND CONNECTION %d/%d', self.connectedPeers.length, self.maxPeers);
     if (self.connectedPeers.length >= self.maxPeers) {
