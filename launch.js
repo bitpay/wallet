@@ -26,7 +26,6 @@ var DEFAULT_PORT = process.env.DEFAULT_PORT || 3000;
 for (var i=0; i<N; i++) {
   var port =(i+DEFAULT_PORT);
   console.log('Simulating copayer #'+(i+1)+' at http://localhost:'+port);
-  var command = 'PORT='+port+' node app.js &'
+  var command = 'PORT='+port+' npm start &'
   exec(command, puts);
 }
-

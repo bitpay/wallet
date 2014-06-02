@@ -59,4 +59,3 @@ angular.module('copay.video', []);
 angular.module('copay.import', []);
 angular.module('copay.passphrase', []);
 angular.module('copay.settings', []);
-
