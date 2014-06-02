@@ -1,9 +1,8 @@
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
 
-Copay
-=====
+# Copay
 
-Installation:
+## Installation:
 
 ```
 git clone https://github.com/bitpay/copay.git
@@ -21,7 +20,6 @@ Build Copay:
 npm install
 bower install
 grunt shell --target=dev
-cp config.template.js config.js
 ```
 
 Open Copay:
@@ -31,6 +29,8 @@ npm start
 
 Then visit localhost:3000 in your browser.
 
+
+## Running copay
 To run on a different port:
 ```
 PORT=3001 npm start
@@ -45,9 +45,10 @@ PORT=3004 npm start
 PORT=3005 npm start
 ```
 
-To open n different instances just run:
+To open n different instances more easily, just run:
 ```
-node launch.js n
+n=5
+node launch.js $n &
 ```
 
 To require Copay as a module for use within you application:
@@ -59,8 +60,14 @@ require('copay').start(3000, function(location) {
 
 ```
 
-About Copay
-===========
+
+## Configuration
+
+Default configuration can be found in the config.js file.
+See config.js for more info on configuration options.
+
+
+# About Copay
 
 General
 -------
