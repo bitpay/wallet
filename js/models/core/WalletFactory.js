@@ -39,14 +39,11 @@ WalletFactory.prototype.log = function(){
 WalletFactory.prototype._checkRead = function(walletId) {
   var s = this.storage;
   var ret = 
-    (
       s.get(walletId, 'publicKeyRing') &&
       s.get(walletId, 'txProposals')   &&
       s.get(walletId, 'opts') &&
-      s.get(walletId, 'privateKey')
-    )?true:false;
-  ;
-  return ret?true:false;
+      s.get(walletId, 'privateKey');
+  return ret;
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
@@ -60,14 +57,15 @@ WalletFactory.prototype.fromObj = function(obj) {
 WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   this.storage._setPassphrase(password);
   var walletObj = this.storage.import(base64);
-  var w= this.fromObj(walletObj);
-  w.store();
+  if (!walletObj) return null;
+  var w = this.fromObj(walletObj);
+  if (!w) return null;
   return w;
 };
 
 WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
-    return false;
+    return null;
 
   var obj = {};
   var s = this.storage;
@@ -149,7 +147,6 @@ WalletFactory.prototype.open = function(walletId, opts) {
 
   var w = this.read(walletId);
 
- 
   if (w) {
     this._checkVersion(w.version);
     w.store();
