@@ -14,7 +14,7 @@
   <body ng-cloak class="ng-cloak">
     <div id="wrap">
       <div data-ng-init="init()" data-ng-controller="HeaderController">
-        <div class="header"> 
+        <div class="header">
           <div class="header-content">
             <div class="large-3 medium-3 small-3 columns">
               <span class="logo"></span>
@@ -23,15 +23,15 @@
               <div class="large-4 medium-4 columns line-dashed-v">
                 <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
                   <strong><span>{{$root.wallet.getName()}}</span></strong>
-                </a> 
+                </a>
                 <a class="button radius small-icon" title="Manual Refresh"
                   ng-disabled="$root.loading"
                   ng-click="refresh()"><i class="fi-refresh"></i></a>
-                <a class="button radius small-icon" title="Signout" 
+                <a class="button radius small-icon" title="Signout"
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
-                Balance: 
+                Balance:
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
@@ -48,7 +48,7 @@
                   <i class="fi-bitcoin"></i>
                 </span>
               </div>
-     
+
             </div>
           </div>
 
@@ -63,14 +63,14 @@
           <section class="top-bar-section {{isCollapsed && 'hide_menu' || 'show_menu'}}">
             <ul>
               <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="text-center" data-ng-class="{active: isActive(item)}">
-                <a href="{{item.link}}" ng-click="toggleCollapse()"> <i class="{{item.icon}}"></i> {{item.title}} 
+                <a href="{{item.link}}" ng-click="toggleCollapse()"> <i class="{{item.icon}}"></i> {{item.title}}
                   <span class="label alert round" ng-if="item.link=='#/transactions' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
                 </a>
               </li>
             </ul>
           </section>
         </nav>
-        
+
       </div>
 
       <div class="row" ng-if="updateVersion">
@@ -95,19 +95,19 @@
         <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
           <div class="medium-12 small-12 columns">
             <div class="alert-box secondary radius" data-alert>
-              <i class="fi-info"></i> 
-              Not all copayers have joined your wallet yet. 
+              <i class="fi-info"></i>
+              Not all copayers have joined your wallet yet.
               <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-              {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} people have 
+              {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} people have
               </span>
               <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
-              One person has 
+              One person has
               </span>
-              yet to join. 
+              yet to join.
             </div>
           </div>
-                      
-            <div class="medium-12 small-12 columns "> 
+
+            <div class="medium-12 small-12 columns ">
               <div class="panel radius m30v">
                 <h3 class="m15b">Share this secret with your other copayers
                   <small> for them to join your wallet</small>
@@ -141,7 +141,7 @@
     <link rel="stylesheet" ng-href="{{theme}}">
     <div class="row" ng-show="!$root.wallet">
       <div class="large-12 columns text-right">
-        Copay 
+        Copay
         <small>v{{version}}</small>
       </div>
     </div>
@@ -159,18 +159,18 @@
       </div>
       <div class="large-9 medium-9 small-9 columns">
         <a href="#/addresses" > </a>
-        <div class="bottom-copay" 
+        <div class="bottom-copay"
             ng-repeat="c in $root.wallet.getRegisteredPeerIds()" class="has-tip" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="{{c.nick}}">
-          <video ng-if="$root.videoInfo[c.peerId]" 
+          <video ng-if="$root.videoInfo[c.peerId]"
             avatar peer="{{c}}"
             autoplay
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             ng-src="{{getVideoURL(c.peerId)}}"
           ></video>
-          <img ng-if="!$root.videoInfo[c.peerId]" 
+          <img ng-if="!$root.videoInfo[c.peerId]"
             avatar peer="{{c}}"
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
-            src="./img/satoshi.gif" 
+            src="./img/satoshi.gif"
           />
         </div>
       </div>
@@ -238,7 +238,7 @@
         </div> <!-- End !loading -->
       </div>
     </script>
- 
+
     <script type="text/ng-template" id="import.html">
       <div ng-controller="ImportController">
         <div data-alert class="alert-box info radius" ng-show="loading">
@@ -330,7 +330,7 @@
         </div>
       </div>
     </script>
- 
+
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
       <div class="addresses" ng-controller="AddressesController">
@@ -338,11 +338,11 @@
           <div class="row">
             <div class="large-9 medium-12 columns" ng-if="addresses[0]">
               <div class="large-8 medium-8 columns" ng-init="showAll=0">
-                <a class="panel radius db" ng-repeat="addr in addresses | limitAddress:showAll" 
-                  ng-click="selectAddress(addr)" 
+                <a class="panel radius db" ng-repeat="addr in addresses | limitAddress:showAll"
+                  ng-click="selectAddress(addr)"
                   ng-class="{selected : addr.address == selectedAddr.address}">
-                  
-                  <span>{{addr.address}}</span> 
+
+                  <span>{{addr.address}}</span>
                   <small ng-if="addr.isChange">change</small>
 
                   <span class="right">
@@ -362,7 +362,7 @@
                   </span>
                 </a>
 
-                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1"> 
+                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1">
                   <span ng-if="!showAll">Show all</span>
                   <span ng-if="showAll">Show less</span>
                 </a>
@@ -392,9 +392,9 @@
               <button class="secondary radius expandi new-address" ng-click="newAddr()"
                 ng-disabled="loading" loading="Creating"> Create </button>
             </div>
-          </div> 
-        </div> 
-      </div>  
+          </div>
+        </div>
+      </div>
     </script>
 
     <!-- TRANSACTIONS -->
@@ -422,7 +422,7 @@
                 </div>
               </div>
 
-              <div class="tx-copayers"> 
+              <div class="tx-copayers">
 
                 <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
                   <figure class="left">
@@ -450,17 +450,17 @@
                   <div class="text-center" style="margin-right:16px; color:#999; font-size:12px">
                     {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
                   </div>
-                </div> 
+                </div>
               </div>
 
               <div class="row m10">
                 <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
-                  <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures"> 
+                  <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
                     <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                       <i class="fi-check"></i> Sign
                     </button>
                     <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
-                      <i class="fi-x" ></i> Reject 
+                      <i class="fi-x" ></i> Reject
                     </button>
                   </div>
                   <div ng-show="!tx.missingSignatures && !tx.sentTs">
@@ -469,7 +469,7 @@
                     </button>
                   </div>
                 </div>
-    
+
                 <div class="large-7 medium-7 columns text-right">
                   <div ng-show="tx.finallyRejected" class="text-warning m10b">
                     Transaction finally rejected
@@ -479,20 +479,20 @@
                       <strong>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
                     </div>
                     <div class="ellipsis small">
-                      Transaction ID: 
+                      Transaction ID:
                       <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
                         {{tx.sentTxid}}
                       </a>
                     </div>
                   </div>
-                  <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1"> 
+                  <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
                     One signature missing
                   </p>
-                  <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
+                  <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
                     {{tx.missingSignatures}} signatures missing</p>
-                  <div class="ellipsis small text-gray"> 
+                  <div class="ellipsis small text-gray">
                     <strong>Fee:</strong> <i class="fi-bitcoin"></i> {{tx.fee}}
-                    <strong>Proposal ID:</strong> {{tx.ntxid}} 
+                    <strong>Proposal ID:</strong> {{tx.ntxid}}
                   </div>
                 </div>
               </div>
@@ -555,7 +555,7 @@
               </div>
             </div>
           </div>
-        </div>    
+        </div>
       </div>
    </script>
 
@@ -609,11 +609,11 @@
               <div class="row">
                 <div class="large-6 medium-6 columns">
                   <div class="row collapse">
-                    <label for="amount">Amount 
+                    <label for="amount">Amount
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
                       <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">valid!</small>
                       <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine">
-                      not valid.</small> 
+                      not valid.</small>
                       <small ng-show="notEnoughAmount">{{notEnoughAmount}}</small>
                     </label>
                     <div class="small-9 columns">
@@ -631,7 +631,7 @@
                 <div class="large-5 columns">
                   <button type="submit" class="button secondary radius text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
                     Send
-                  </button>                 
+                  </button>
                 </div>
               </div>
             </form>
@@ -715,10 +715,10 @@
     <script type="text/ng-template" id="unsupported.html">
       <h2 class="text-center">Browser unsupported</h2>
       <h3 class="text-center">
-Copay uses webRTC for peer-to-peer communications, 
-but your browser does not support it. 
-Please use 
-  a current version of Google Chrome, Mozilla Firefox, or Opera. 
+Copay uses webRTC for peer-to-peer communications,
+but your browser does not support it.
+Please use
+  a current version of Google Chrome, Mozilla Firefox, or Opera.
 <br><br>
 
 For more information
@@ -736,7 +736,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
 
 
     <script src="config.js"></script>
-
+    <script src="js/shell.js"></script>
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/angular-moment/angular-moment.js"></script>
