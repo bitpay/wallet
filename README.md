@@ -50,6 +50,14 @@ To open n different instances just run:
 node launch.js n
 ```
 
+To require Copay as a module for use within you application:
+
+```js
+require('copay').start(3000, function(location) {
+  console.log('Copay server running at: ' + location);
+});
+
+```
 
 About Copay
 ===========
