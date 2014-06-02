@@ -43,7 +43,7 @@ WalletFactory.prototype._checkRead = function(walletId) {
       s.get(walletId, 'txProposals')   &&
       s.get(walletId, 'opts') &&
       s.get(walletId, 'privateKey');
-  return ret;
+  return !!ret;
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
@@ -57,15 +57,15 @@ WalletFactory.prototype.fromObj = function(obj) {
 WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   this.storage._setPassphrase(password);
   var walletObj = this.storage.import(base64);
-  if (!walletObj) return null;
+  if (!walletObj) return false;
   var w = this.fromObj(walletObj);
-  if (!w) return null;
+  if (!w) return false;
   return w;
 };
 
 WalletFactory.prototype.read = function(walletId) {
   if (! this._checkRead(walletId))
-    return null;
+    return false;
 
   var obj = {};
   var s = this.storage;
