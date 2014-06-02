@@ -40,7 +40,6 @@ lib/*
 !lib/socket.io.js
 
 js/copayBundle.js
-config.js
 
 webapp/copay-webapp
 webapp/download

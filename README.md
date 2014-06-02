@@ -20,7 +20,6 @@ Build Copay:
 npm install
 bower install
 grunt shell --target=dev
-cp config.template.js config.js
 ```
 
 Open Copay:
@@ -53,11 +52,8 @@ node launch.js $n &
 ```
 
 ## Configuration
-Default configuration can be found in the config.template.js file.
-If you want to configure Copay differently, you can copy that file
-to config.js and change the values. 
-
-See config.template.js for more info on configuration options.
+Default configuration can be found in the config.js file.
+See config.js for more info on configuration options.
 
 
 
