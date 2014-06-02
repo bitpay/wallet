@@ -9,9 +9,9 @@ var defaultConfig = {
     //port: 10009,
     //path: '/',
     //
-    key: 'g23ihfh82h35rf', // api key for the peerjs server
-    host: '162.242.245.33', // peerjs server
-    port: 10009,
+    key: 'satoshirocks',    // api key for the peerjs server
+    host: '162.242.219.26', // peerjs server
+    port: 80,
     path: '/',
     maxPeers: 15,
     debug: 3,
