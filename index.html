@@ -194,13 +194,10 @@
                 </div>
                 <div ng-show="!wallets.length">
                   <h3>Create a new wallet</h3>
-                  <form name="createForm" ng-submit="create(createForm)" novalidate>
                     <p class="text-gray">
                     Copay is a free, open-source, multisignature bitcoin wallet. A single-owner bitcoin wallet's security depends on carefully securing the private keys. With copay you can have multiple people controlling the funds, using bitcoin's multisignature functionality, requiring no trust in any third party.
                     </p>
-                    <button type="submit" class="button secondary radius"
-                      ng-disabled="createForm.$invalid || loading" loading="Creating">Create</button>
-                  </form>
+                    <a href="#setup" class="button secondary radius">Create</a>
                 </div>
               </div>
             </div>
