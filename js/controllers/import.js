@@ -23,6 +23,7 @@ angular.module('copay.import').controller('ImportController',
 
     $scope.import = function(form) {
       if (form.$invalid) {
+        $scope.loading = false;
         $rootScope.$flashMessage = { message: 'There is an error in the form. Please, try again', type: 'error'};
         return;
       }
@@ -33,6 +34,7 @@ angular.module('copay.import').controller('ImportController',
 
       if (!backupFile && !backupText) {
         $rootScope.$flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
+        $scope.loading = false;
         return;
       }
 

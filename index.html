@@ -248,19 +248,21 @@
                   <label for="backupText" ng-click="pastetext=!pastetext" class="m10b">&middot; Paste backup plain text code <i class="fi-clipboard"></i></label>
                   <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
                 </fieldset>
+              </div>
 
-                <div class="large-8 medium-8 columns">
+                <div class="large-6 large-centered medium-6 medium-centered columns">
                   <label for="password">Password <small>Required</small></label>
                   <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
                 </div>
-              </div>
             </div>
-            <div class="row">
-              <div class="large-12 columns line-dashed">
+            <div class="row line-dashed">
+              <div class="large-6 medium-6 small-5 columns text-left">
+                <a class="button secondary radius" href="#signin">Go back</a>
+              </div>
+              <div class="large-6 medium-6 small-5 columns text-right">
                 <button type="submit" class="button primary radius right" ng-disabled="importForm.$invalid" loading="Importing">
                   Import backup
                 </button>
-                <a class="button secondary radius" href="#signin">Go back</a>
               </div>
             </div>
           </form>
