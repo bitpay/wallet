@@ -19,7 +19,8 @@ function Wallet(opts) {
   //required params
   ['storage', 'network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
-    'publicKeyRing', 'txProposals', 'privateKey', 'version'
+    'publicKeyRing', 'txProposals', 'privateKey', 'version',
+    'reconnectDelay'
   ].forEach(function(k) {
     if (typeof opts[k] === 'undefined')
       throw new Error('missing required option for Wallet: ' + k);
@@ -247,13 +248,22 @@ Wallet.prototype.netStart = function() {
       console.log('[EMIT publicKeyRingUpdated:]'); //TODO
       self.emit('publicKeyRingUpdated', true);
       console.log('[CONNECT:]'); //TODO
-      self.connectToAll();
+      self.scheduleConnect();
       console.log('[EMIT TxProposal]'); //TODO
       self.emit('txProposalsUpdated');
       self.store();
     },10);
   });
 };
+
+Wallet.prototype.scheduleConnect = function() {
+  var self = this;
+  self.connectToAll();
+  setTimeout(function() {
+    self.scheduleConnect();
+  },
+  self.reconnectDelay);
+}
 
 Wallet.prototype.getOnlinePeerIDs = function() {
   return this.network.getOnlinePeerIDs();
