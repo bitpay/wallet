@@ -169,7 +169,7 @@ h3 {
   border-right: 2px dashed #E3E3E3;
 }
 
-@media (max-width: 1025px) {
+@media (max-width: 640px) {
   .line-dashed-v {
     border: none;
   }
@@ -347,11 +347,7 @@ hr { margin: 2.25rem 0;}
 }
 
 .box-setup {
-  padding: 20px 30px;
-  border: 1px solid #eee;
-  background: #fff;
-  overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .box-setup-copayers {
@@ -481,19 +477,6 @@ a.loading {
  text-align:center; 
  line-height:1em; 
  vertical-align:middle
-}
-
-fieldset {
-  border: 1px solid #eee;
-  padding: 1.11111rem;
-  margin: 1rem 0;
-}
-
-fieldset legend {
-  font-weight: bold;
-  padding: 0 0.16667rem;
-  margin: 0;
-  margin-left: -0.16667rem;
 }
 
 /* notifications */
