@@ -10,6 +10,9 @@ angular.module('copay.transactions').controller('TransactionsController',
 
     $scope.txpCurrentPage = 1;
     $scope.txpItemsPerPage = 4;
+  
+    var COIN = 100000000;
+    $scope.blockchain_txs = [];
 
     $scope.update = function () {
       $scope.loading = false;
@@ -30,22 +33,71 @@ angular.module('copay.transactions').controller('TransactionsController',
       }, 10);
     };
 
+    var _aggregateItems = function(items) {
+      if (!items) return [];
+
+      var l = items.length;
+
+      var ret = [];
+      var tmp = {};
+      var u = 0;
+
+      for(var i=0; i < l; i++) {
+
+        var notAddr = false;
+        // non standard input
+        if (items[i].scriptSig && !items[i].addr) {
+          items[i].addr = 'Unparsed address [' + u++ + ']';
+          items[i].notAddr = true;
+          notAddr = true;
+        }
+
+        // non standard output
+        if (items[i].scriptPubKey && !items[i].scriptPubKey.addresses) {
+          items[i].scriptPubKey.addresses = ['Unparsed address [' + u++ + ']'];
+          items[i].notAddr = true;
+          notAddr = true;
+        }
+
+        // multiple addr at output
+        if (items[i].scriptPubKey && items[i].scriptPubKey.addresses.length > 1) {
+          items[i].addr = items[i].scriptPubKey.addresses.join(',');
+          ret.push(items[i]);
+          continue;
+        }
+
+        var addr = items[i].addr || (items[i].scriptPubKey && items[i].scriptPubKey.addresses[0]);
+
+        if (!tmp[addr]) {
+          tmp[addr] = {};
+          tmp[addr].valueSat = 0;
+          tmp[addr].count = 0;
+          tmp[addr].addr = addr;
+          tmp[addr].items = [];
+        }
+        tmp[addr].isSpent = items[i].spentTxId;
+
+        tmp[addr].doubleSpentTxID = tmp[addr].doubleSpentTxID   || items[i].doubleSpentTxID;
+        tmp[addr].doubleSpentIndex = tmp[addr].doubleSpentIndex || items[i].doubleSpentIndex;
+        tmp[addr].unconfirmedInput += items[i].unconfirmedInput;
+        tmp[addr].dbError = tmp[addr].dbError || items[i].dbError;
+        tmp[addr].valueSat += Math.round(items[i].value * COIN);
+        tmp[addr].items.push(items[i]);
+        tmp[addr].notAddr = notAddr;
+        tmp[addr].count++;
+      }
+
+      angular.forEach(tmp, function(v) {
+        v.value    = v.value || parseInt(v.valueSat) / COIN;
+        ret.push(v);
+      });
+      return ret;
+    };
+
     $scope.toogleLast = function () {
-      $scope.loading = true;
       $scope.lastShowed = !$scope.lastShowed;
       if ($scope.lastShowed) {
-        $scope.getTransactions(function(txs){
-          $timeout(function() {
-            $scope.loading = false;
-            $scope.blockchain_txs = txs;
-            $scope.$digest();
-          }, 10);
-        });
-      } else {
-        $timeout(function(){
-          $scope.loading = false;
-          $rootScope.$digest();
-        }, 10);
+        $scope.getTransactions();
       }
     };
 
@@ -87,16 +139,26 @@ angular.module('copay.transactions').controller('TransactionsController',
       });
     };
 
-    $scope.getTransactions = function(cb) {
-      var w   =$rootScope.wallet;
+    $scope.getTransactions = function() {
+      var w = $rootScope.wallet;
+      $scope.loading = true;
       if (w) {
         console.log('### Querying last transactions...'); //TODO
         var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
-          return w.blockchain.getTransactions(addresses, cb);
+          $scope.blockchain_txs = [];
+          w.blockchain.getTransactions(addresses, function(txs) { 
+            $timeout(function() {
+              for (var i=0; i<txs.length;i++) {
+                txs[i].vinSimple = _aggregateItems(txs[i].vin);
+                txs[i].voutSimple = _aggregateItems(txs[i].vout);
+                $scope.blockchain_txs.push(txs[i]);
+              }
+              $scope.loading = false;
+            }, 10);
+          });
         }
       }
-      return cb();
     };
 
     $scope.getShortNetworkName = function() {
