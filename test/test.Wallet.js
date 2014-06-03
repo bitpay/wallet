@@ -20,6 +20,7 @@ describe('Wallet model', function() {
     requiredCopayers: 3,
     totalCopayers: 5,
     spendUnconfirmed: 1,
+    reconnectDelay: 100,
     blockchain: {
       host: 'test.insight.is',
       port: 80
