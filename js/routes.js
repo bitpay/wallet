@@ -2,7 +2,7 @@
 
 //Setting up route
 angular
-  .module('copay')
+  .module('copayApp')
   .config(function($routeProvider) {
 
     $routeProvider
@@ -56,7 +56,7 @@ angular
 
 //Setting HTML5 Location Mode
 angular
-  .module('copay')
+  .module('copayApp')
   .config(function($locationProvider) {
     $locationProvider
       .html5Mode(false);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.controllerUtils')
+angular.module('copayApp.services')
   .factory('controllerUtils', function($rootScope, $sce, $location, $notification, Socket, video) {
     var root = {};
     var bitcore = require('bitcore');

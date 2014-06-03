@@ -30,6 +30,11 @@ html, body {height: 100%;}
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10);
 }
 
+.text-gray.active {
+  color: #111 !important;
+  font-weight: 700;
+}
+
 #footer {
   position: fixed;
 	margin-top: -96px; /* negative value of footer height */
@@ -59,7 +64,6 @@ html, body {height: 100%;}
 
 .logo {
   display: block;
-  width: 130px;
   height: 51px;
   margin: 0 auto;
 }
@@ -618,6 +622,7 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
     background-size: 90px 44px !important;
     float: left;
     margin-top: 0.7rem;
+    width: 130px;
   }
 
   .header-content .small-9 {

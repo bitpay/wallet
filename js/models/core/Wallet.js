@@ -19,7 +19,8 @@ function Wallet(opts) {
   //required params
   ['storage', 'network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
-    'publicKeyRing', 'txProposals', 'privateKey', 'version'
+    'publicKeyRing', 'txProposals', 'privateKey', 'version',
+    'reconnectDelay'
   ].forEach(function(k) {
     if (typeof opts[k] === 'undefined')
       throw new Error('missing required option for Wallet: ' + k);
@@ -64,7 +65,6 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 Wallet.prototype.connectToAll = function() {
 
   var all = this.publicKeyRing.getAllCopayerIds();
-console.log('[Wallet.js.58] connecting'); //TODO
   this.network.connectToCopayers(all);
   if (this.seededCopayerId) {
     this.sendWalletReady(this.seededCopayerId);
@@ -100,7 +100,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
   var ids = inTxp.getNtxids();
 
-  if (ids.lenght>1) {
+  if (ids.lenght > 1) {
     this.emit('badMessage', senderId);
     this.log('Received BAD TxProposal messsage FROM:', senderId); //TODO
     return;
@@ -164,12 +164,13 @@ Wallet.prototype._optsToObj = function() {
     spendUnconfirmed: this.spendUnconfirmed,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
+    reconnectDelay: this.reconnectDelay,
     name: this.name,
     netKey: this.netKey,
     version: this.version,
   };
 
-  if (this.token){
+  if (this.token) {
     obj.token = this.token;
     obj.tokenTime = new Date().getTime();
   }
@@ -243,17 +244,25 @@ Wallet.prototype.netStart = function() {
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
     self.token = net.peer.options.token;
-    setTimeout(function(){
+    setTimeout(function() {
       console.log('[EMIT publicKeyRingUpdated:]'); //TODO
       self.emit('publicKeyRingUpdated', true);
       console.log('[CONNECT:]'); //TODO
-      self.connectToAll();
+      self.scheduleConnect();
       console.log('[EMIT TxProposal]'); //TODO
       self.emit('txProposalsUpdated');
       self.store();
-    },10);
+    }, 10);
   });
 };
+
+Wallet.prototype.scheduleConnect = function() {
+  var self = this;
+  if (self.network.isOnline()) {
+    self.connectToAll();
+    setTimeout(self.scheduleConnect.bind(self), self.reconnectDelay);
+  }
+}
 
 Wallet.prototype.getOnlinePeerIDs = function() {
   return this.network.getOnlinePeerIDs();
@@ -331,7 +340,7 @@ Wallet.prototype.sendTxProposals = function(recipients, ntxid) {
 
   var last = toSend[toSend];
 
-  for(var i in toSend) {
+  for (var i in toSend) {
     var id = toSend[i];
     var lastInBatch = (i == toSend.length - 1);
     this.network.send(recipients, {
@@ -445,7 +454,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
       ret = true;
     }
     if (cb) return cb(ret);
-  },10);
+  }, 10);
 };
 
 Wallet.prototype.sendTx = function(ntxid, cb) {
@@ -625,7 +634,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
     }]);
 
   var selectedUtxos = b.getSelectedUnspent();
-  
+
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
