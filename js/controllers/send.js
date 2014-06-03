@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.send').controller('SendController',
+angular.module('copayApp.send').controller('SendController',
   function($scope, $rootScope, $window, $location, $timeout) {
     $scope.title = 'Send';
     $scope.loading = false;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.settings').controller('SettingsController',
+angular.module('copayApp.settings').controller('SettingsController',
   function($scope, $rootScope, $window, $location) {
     $scope.title = 'Settings';
 

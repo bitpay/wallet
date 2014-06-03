@@ -93,4 +93,4 @@ Video.prototype.close = function() {
   this.mediaConnections = {};
 };
 
-angular.module('copay.video').value('video', new Video());
+angular.module('copayApp.video').value('video', new Video());

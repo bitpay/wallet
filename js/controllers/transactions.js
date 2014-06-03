@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.transactions').controller('TransactionsController',
+angular.module('copayApp.transactions').controller('TransactionsController',
   function($scope, $rootScope, $timeout, controllerUtils) {
 
     $scope.title = 'Transactions';

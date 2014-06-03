@@ -1,4 +1,4 @@
 'use strict';
 
-angular.module('copay.walletFactory').value('walletFactory', new copay.WalletFactory(config, copay.version));
+angular.module('copayApp.walletFactory').value('walletFactory', new copay.WalletFactory(config, copay.version));
 

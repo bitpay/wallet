@@ -16,46 +16,47 @@ var log = function() {
   if (config.verbose) console.log(arguments);
 }
 
+// From the bundle
 var copay = require('copay');
 
-var copayApp = window.copayApp = angular.module('copay',[
+var copayApp = window.copayApp = angular.module('copayApp',[
   'ngRoute',
   'angularMoment',
   'mm.foundation',
   'monospaced.qrcode',
   'notifications',
-  'copay.filters',
-  'copay.header',
-  'copay.footer',
-  'copay.addresses',
-  'copay.transactions',
-  'copay.send',
-  'copay.backup',
-  'copay.walletFactory',
-  'copay.signin',
-  'copay.socket',
-  'copay.controllerUtils',
-  'copay.setup',
-  'copay.directives',
-  'copay.video',
-  'copay.import',
-  'copay.passphrase',
-  'copay.settings'
+  'copayApp.filters',
+  'copayApp.header',
+  'copayApp.footer',
+  'copayApp.addresses',
+  'copayApp.transactions',
+  'copayApp.send',
+  'copayApp.backup',
+  'copayApp.walletFactory',
+  'copayApp.signin',
+  'copayApp.socket',
+  'copayApp.controllerUtils',
+  'copayApp.setup',
+  'copayApp.directives',
+  'copayApp.video',
+  'copayApp.import',
+  'copayApp.passphrase',
+  'copayApp.settings'
 ]);
 
-angular.module('copay.header', []);
-angular.module('copay.footer', []);
-angular.module('copay.addresses', []);
-angular.module('copay.transactions', []);
-angular.module('copay.send', []);
-angular.module('copay.backup', []);
-angular.module('copay.walletFactory', []);
-angular.module('copay.controllerUtils', []);
-angular.module('copay.signin', []);
-angular.module('copay.setup', []);
-angular.module('copay.socket', []);
-angular.module('copay.directives', []);
-angular.module('copay.video', []);
-angular.module('copay.import', []);
-angular.module('copay.passphrase', []);
-angular.module('copay.settings', []);
+angular.module('copayApp.header', []);
+angular.module('copayApp.footer', []);
+angular.module('copayApp.addresses', []);
+angular.module('copayApp.transactions', []);
+angular.module('copayApp.send', []);
+angular.module('copayApp.backup', []);
+angular.module('copayApp.walletFactory', []);
+angular.module('copayApp.controllerUtils', []);
+angular.module('copayApp.signin', []);
+angular.module('copayApp.setup', []);
+angular.module('copayApp.socket', []);
+angular.module('copayApp.directives', []);
+angular.module('copayApp.video', []);
+angular.module('copayApp.import', []);
+angular.module('copayApp.passphrase', []);
+angular.module('copayApp.settings', []);

@@ -32,7 +32,7 @@ var valid_pairs = {
   '1,12': 489
 };
 
-angular.module('copay.setup').controller('SetupController',
+angular.module('copayApp.setup').controller('SetupController',
   function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase) {
 
     $rootScope.videoInfo = {};
