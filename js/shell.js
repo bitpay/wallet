@@ -26,52 +26,53 @@
     ).scope();
   };
 
+  function needsWalletLogin(ipc) {
+    ipc.send('alert', 'info', 'Please select a wallet.');
+  };
+
   function initCopayShellBindings() {
 
     var ipc = require('ipc');
 
     ipc.on('address:create', function(data) {
       var ctrl = controller('AddressesController');
-      if (ctrl) {
-        location.href = '#/addresses';
-        ctrl.newAddr();
-      }
+      if (!ctrl) return needsWalletLogin(ipc);
+      location.href = '#/addresses';
+      ctrl.newAddr();
     });
 
     ipc.on('transactions:send', function(data) {
+      var ctrl = controller('SendController');
+      if (!ctrl) return needsWalletLogin(ipc);
       location.href = '#/send';
     });
 
     ipc.on('transactions:all', function(data) {
       var ctrl = controller('TransactionsController');
-      if (ctrl) {
-        location.href = '#/transactions';
-        ctrl.show();
-      }
+      if (!ctrl) return needsWalletLogin(ipc);
+      location.href = '#/transactions';
+      ctrl.show();
     });
 
     ipc.on('transactions:pending', function(data) {
       var ctrl = controller('TransactionsController');
-      if (ctrl) {
-        location.href = '#/transactions';
-        ctrl.show(true);
-      }
+      if (!ctrl) return needsWalletLogin(ipc);
+      location.href = '#/transactions';
+      ctrl.show(true);
     });
 
     ipc.on('backup:download', function(data) {
       var ctrl = controller('BackupController');
-      if (ctrl) {
-        location.href = '#/backup';
-        ctrl.download();
-      }
+      if (!ctrl) return needsWalletLogin(ipc);
+      location.href = '#/backup';
+      ctrl.download();
     });
 
     ipc.on('backup:email', function(data) {
       var ctrl = controller('BackupController');
-      if (ctrl) {
-        location.href = '#/backup';
-        ctrl.email();
-      }
+      if (!ctrl) return needsWalletLogin(ipc);
+      location.href = '#/backup';
+      ctrl.email();
     });
 
     return ipc;
