@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copay.backup').controller('BackupController',
-  function($scope, $rootScope, $location, $window, $timeout) {
+  function($scope, $rootScope, $location, $window, $timeout, $modal) {
     $scope.title = 'Backup';
 
     var _getEncryptedWallet = function() {
@@ -18,29 +18,40 @@ angular.module('copay.backup').controller('BackupController',
       saveAs(blob, filename);
     };
 
-    $scope.email = function() {
-      var email = prompt('Please enter your email addres.');
-      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-      if (email && email !== '') {
-        if (!email.match(mailformat)) {
-          alert('Enter a valid email address');
-        } else {
-          var body = _getEncryptedWallet();
-          var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id; 
-          var href = 'mailto:' + email + '?'
-           + 'subject=[Copay Backup] ' + subject + '&'
-           + 'body=' + body;
+  $scope.openModal = function () {
+    var modalInstance = $modal.open({
+      templateUrl: 'backupModal.html',
+      controller: ModalInstanceCtrl,
+    });
 
-          var newWin = $window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
+    modalInstance.result.then(sendEmail);
+  };
 
-          if (newWin) {
-            $timeout(function() {
-              newWin.close();
-            }, 1000);
-          }
-        }
-      }
-    };
-  
-  });
+  var sendEmail = function(email) {
+    var body = _getEncryptedWallet();
+    var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id;
+    var href = 'mailto:' + email + '?'
+     + 'subject=[Copay Backup] ' + subject + '&'
+     + 'body=' + body;
+
+    var newWin = $window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
+
+    if (newWin) {
+      $timeout(function() {
+        newWin.close();
+      }, 1000);
+    }
+  };
+});
+
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
+
+  $scope.submit = function (form) {
+    $modalInstance.close($scope.email);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};

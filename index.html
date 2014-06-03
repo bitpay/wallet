@@ -669,13 +669,22 @@
             </a>
           </div>
           <div class="large-6 medium-6 columns">
-            <a class="panel radius box-backup" ng-click="email()">
+            <a class="panel radius box-backup" ng-click="openModal()">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>
             </a>
           </div>
         </div>
       </div>
+    </script>
+
+    <script type="text/ng-template" id="backupModal.html">
+      <h3>Insert your email</h3>
+      <form name="emailForm" ng-submit="submit(emailForm)">
+        <p><input type="email" ng-model="$parent.email" placeholder="your@email.com" required/></p>
+        <input type="submit" class="button" value="Send" ng-disabled="emailForm.$invalid"/>
+      </form>
+      <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
     </script>
 
     <!-- CONFIG -->
