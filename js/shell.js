@@ -14,7 +14,7 @@
   if (typeof module !== 'undefined') module = { exports: null };
 
   // are we running in copay shell?
-  if (process && process.type === 'renderer') initCopayShellBindings();
+  if (window.process && process.type === 'renderer') initCopayShellBindings();
 
   function controller(name) {
     return angular.element(
