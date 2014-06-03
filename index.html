@@ -402,11 +402,11 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4> Transaction proposals <span ng-if="onlyPending">[Pending]</span>  <small>({{txs.length}})</small></h4>
+            <h4> Transaction proposals <small>({{txs.length}})</small></h4>
 
-            <ul class="button-group radius">
-            <li> <button class="secondary" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
-            <li> <button class="secondary" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
+            <ul class="inline-list">
+              <li> <a class="text-gray" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> [ Pending ] </a> 
+              <li> <a class="text-gray" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> [ All ] </a> </li>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | paged">
               <div class="txheader row m10">
