@@ -62,35 +62,29 @@ angular.module('copay.controllerUtils')
         $rootScope.wallet = w;
         $location.path('addresses');
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
-        console.log('# Done ready handler'); 
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        console.log('[start publicKeyRing handler]'); //TODO
         root.setSocketHandlers();
         root.updateAddressList();
         if (!dontDigest) {
-          console.log('[pkr digest]');
           $rootScope.$digest();
-          console.log('[done digest]');
         }
       });
       w.on('txProposalsUpdated', function(dontDigest) {
         root.updateTxs({onlyPending:true});
         root.updateBalance(function(){
           if (!dontDigest) {
-            console.log('[txp digest]');
             $rootScope.$digest();
-            console.log('[done digest]');
           }
         });
       });
       w.on('openError', root.onErrorDigest);
+      w.on('connectionError', root.onErrorDigest);
       w.on('connect', function(peerID) {
         if (peerID) {
           video.callPeer(peerID, handlePeerVideo);
         }
-        console.log('[digest]');
         $rootScope.$digest();
       });
       w.on('disconnect', function(peerID) {
@@ -129,7 +123,6 @@ angular.module('copay.controllerUtils')
         $rootScope.availableBalance = safeBalance;
         root.updateAddressList();
         $rootScope.updatingBalance = false;
-        console.log('Done updating balance.'); //TODO
         return cb?cb():null;
       });
     };
@@ -145,7 +138,6 @@ angular.module('copay.controllerUtils')
       var inT = w.getTxProposals().sort(function(t1, t2) { return t1.createdTs < t2.createdTs });
       var txs  = [];
 
-      console.log('[START LOOP]'); //TODO
       inT.forEach(function(i, index){
         if (opts.skip && (index < opts.skip[0] || index >= opts.skip[1])) {
           return txs.push(null);
