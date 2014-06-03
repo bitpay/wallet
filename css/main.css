@@ -30,6 +30,11 @@ html, body {height: 100%;}
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10);
 }
 
+.text-gray.active {
+  color: #111 !important;
+  font-weight: 700;
+}
+
 #footer {
   position: fixed;
 	margin-top: -96px; /* negative value of footer height */

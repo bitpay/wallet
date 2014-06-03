@@ -405,8 +405,8 @@
             <h4> Transaction proposals <small>({{txs.length}})</small></h4>
 
             <ul class="inline-list">
-              <li> <a class="text-gray" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> [ Pending ] </a> 
-              <li> <a class="text-gray" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> [ All ] </a> </li>
+              <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
+              <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | paged">
               <div class="txheader row m10">
@@ -501,8 +501,8 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <a ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</a>
-            <a ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</a>
+            <a class="size-12" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</a>
+            <a class="size-12" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</a>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
