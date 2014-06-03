@@ -139,13 +139,13 @@
 
   <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet}">
     <link rel="stylesheet" ng-href="{{theme}}">
-    <div class="row" ng-show="!$root.wallet">
+    <div ng-show="!$root.wallet">
       <div class="large-12 columns text-right">
         Copay
         <small>v{{version}}</small>
       </div>
     </div>
-    <div class="row p10t" ng-show="$root.wallet">
+    <div class="p10t" ng-show="$root.wallet">
       <div class="large-3 medium-3 hide-for-small columns">
         <div>
           <strong>{{$root.wallet.getName()}}</strong>
@@ -419,11 +419,11 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4> Transaction proposals <span ng-if="onlyPending">[Pending]</span>  <small>({{txs.length}})</small></h4>
+            <h4> Transaction proposals <small>({{txs.length}})</small></h4>
 
-            <ul class="button-group radius">
-            <li> <button class="secondary" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
-            <li> <button class="secondary" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
+            <ul class="inline-list">
+              <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
+              <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | paged">
               <div class="txheader row m10">
@@ -518,8 +518,8 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <a ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</a>
-            <a ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</a>
+            <a class="size-12" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</a>
+            <a class="size-12" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</a>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
