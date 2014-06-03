@@ -10,9 +10,6 @@ var Builder     = bitcore.TransactionBuilder;
 var Script      = bitcore.Script;
 var buffertools = bitcore.buffertools;
 
-var Storage     = imports.Storage || require('../storage/Base');
-var storage     = Storage.default();
-
 function TxProposal(opts) {
   this.creator      = opts.creator;
   this.createdTs   = opts.createdTs;
