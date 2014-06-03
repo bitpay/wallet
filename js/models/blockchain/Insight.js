@@ -150,10 +150,8 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
     }
   };
   this._request(options, function(err, res) {
-    console.log('[Insight.js.73:err:]', err); //TODO
     if (err) return cb();
 
-    console.log('[Insight.js.74]', res); //TODO
     return cb(res.txid);
   });
 };

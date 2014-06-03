@@ -1,7 +1,6 @@
 'use strict';
 var imports = require('soop').imports();
 var fs = imports.fs || require('fs');
-var parent = imports.parent || require('./Base');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 var passwords = [];
@@ -12,7 +11,6 @@ function Storage(opts) {
   this.data = {};
   passwords[0] = opts.password;
 }
-Storage.parent = parent;
 
 Storage.prototype._encrypt = function(string) {
   var encrypted = CryptoJS.AES.encrypt(string, passwords[0]);
