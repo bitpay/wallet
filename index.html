@@ -218,7 +218,7 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="joinPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="$parent.joinPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
@@ -309,7 +309,7 @@
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Your Wallet Password<small>(doesn't need to be shared) Required</small></h6>
               <input type="password" placeholder="Choose your password" class="form-control"
-                ng-model="walletPassword" check-strength="passwordStrength" tooltip-trigger="focus" required>
+                ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
             </div>
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m30v">
               <h6>Wallet name <small>Optional</small></h6>
