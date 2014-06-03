@@ -20,8 +20,6 @@ angular.module('copay.header').controller('HeaderController',
       'icon': 'fi-archive',
       'link': '#/backup'
     }];
-          
-    var beep = new Audio('sound/transaction.mp3');
 
     $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data){
       var toInt = function (s) { return parseInt(s); };
@@ -54,6 +52,7 @@ angular.module('copay.header').controller('HeaderController',
           }
         }
         if (currentAddr) {
+          var beep = new Audio('sound/transaction.mp3');
           $notification.funds('Received fund', currentAddr, receivedFund);
           beep.play();
         }

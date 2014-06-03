@@ -43,6 +43,7 @@ angular.module('copay.import').controller('ImportController',
       if (!backupFile && !backupText) {
         $scope.loading = false;
         $rootScope.$flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
+        $scope.loading = false;
         return;
       }
 
