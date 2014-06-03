@@ -30,6 +30,11 @@ html, body {height: 100%;}
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10);
 }
 
+.text-gray.active {
+  color: #111 !important;
+  font-weight: 700;
+}
+
 #footer {
   position: fixed;
 	margin-top: -96px; /* negative value of footer height */
@@ -59,7 +64,6 @@ html, body {height: 100%;}
 
 .logo {
   display: block;
-  width: 130px;
   height: 51px;
   margin: 0 auto;
 }
@@ -169,7 +173,7 @@ h3 {
   border-right: 2px dashed #E3E3E3;
 }
 
-@media (max-width: 1025px) {
+@media (max-width: 640px) {
   .line-dashed-v {
     border: none;
   }
@@ -347,11 +351,7 @@ hr { margin: 2.25rem 0;}
 }
 
 .box-setup {
-  padding: 20px 30px;
-  border: 1px solid #eee;
-  background: #fff;
-  overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .box-setup-copayers {
@@ -481,19 +481,6 @@ a.loading {
  text-align:center; 
  line-height:1em; 
  vertical-align:middle
-}
-
-fieldset {
-  border: 1px solid #eee;
-  padding: 1.11111rem;
-  margin: 1rem 0;
-}
-
-fieldset legend {
-  font-weight: bold;
-  padding: 0 0.16667rem;
-  margin: 0;
-  margin-left: -0.16667rem;
 }
 
 /* notifications */
@@ -640,6 +627,7 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
     background-size: 90px 44px !important;
     float: left;
     margin-top: 0.7rem;
+    width: 130px;
   }
 
   .header-content .small-9 {
