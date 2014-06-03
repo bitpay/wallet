@@ -17,6 +17,9 @@
   if (window.process && process.type === 'renderer') {
     window.cshell = initCopayShellBindings();
   }
+  else {
+    return;
+  }
 
   function controller(name) {
     return angular.element(
@@ -35,45 +38,50 @@
     var ipc = require('ipc');
 
     ipc.on('address:create', function(data) {
+      location.href = '#/addresses';
       var ctrl = controller('AddressesController');
       if (!ctrl) return needsWalletLogin(ipc);
-      location.href = '#/addresses';
       ctrl.newAddr();
     });
 
     ipc.on('transactions:send', function(data) {
+      location.href = '#/send';
       var ctrl = controller('SendController');
       if (!ctrl) return needsWalletLogin(ipc);
-      location.href = '#/send';
     });
 
     ipc.on('transactions:all', function(data) {
+      location.href = '#/transactions';
       var ctrl = controller('TransactionsController');
       if (!ctrl) return needsWalletLogin(ipc);
-      location.href = '#/transactions';
       ctrl.show();
     });
 
     ipc.on('transactions:pending', function(data) {
+      location.href = '#/transactions';
       var ctrl = controller('TransactionsController');
       if (!ctrl) return needsWalletLogin(ipc);
-      location.href = '#/transactions';
       ctrl.show(true);
     });
 
     ipc.on('backup:download', function(data) {
+      location.href = '#/backup';
       var ctrl = controller('BackupController');
       if (!ctrl) return needsWalletLogin(ipc);
-      location.href = '#/backup';
       ctrl.download();
     });
 
     ipc.on('backup:email', function(data) {
+      location.href = '#/backup';
       var ctrl = controller('BackupController');
       if (!ctrl) return needsWalletLogin(ipc);
-      location.href = '#/backup';
       ctrl.email();
     });
+
+    // let the shell know when an error occurs
+    window.onerror = function(err) {
+      ipc.send('error', err);
+    };
 
     return ipc;
 

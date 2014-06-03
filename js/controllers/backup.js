@@ -15,6 +15,15 @@ angular.module('copay.backup').controller('BackupController',
       var filename = walletName + '-' + timestamp + '.json.aes';
       var wallet = _getEncryptedWallet();
       var blob = new Blob([wallet], {type: 'text/plain;charset=utf-8'});
+      // show a native save dialog if we are in the shell
+      // and pass the wallet to the shell to convert to node Buffer
+      if (window.cshell) {
+        return window.cshell.send('backup:download', {
+          name: walletName,
+          wallet: wallet
+        });
+      }
+      // otherwise lean on the browser implementation
       saveAs(blob, filename);
     };
 
@@ -27,7 +36,7 @@ angular.module('copay.backup').controller('BackupController',
           alert('Enter a valid email address');
         } else {
           var body = _getEncryptedWallet();
-          var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id; 
+          var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id;
           var href = 'mailto:' + email + '?'
            + 'subject=[Copay Backup] ' + subject + '&'
            + 'body=' + body;
@@ -42,5 +51,5 @@ angular.module('copay.backup').controller('BackupController',
         }
       }
     };
-  
+
   });
