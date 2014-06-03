@@ -15,37 +15,68 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      //3rd Party Code
-      'lib/angular/angular.min.js',
-      'lib/angular-route/angular-route.js',
-      'lib/angular-mocks/angular-mocks.js',
-      'lib/bitcore.js',
-      'lib/socket.io.js',
+      //Configs
+      'config.js',
 
-      //App-specific Code
-      'js/*.js',
-      'js/**/*.js',
+      'lib/angular/angular.min.js',
+      'lib/angular-mocks/angular-mocks.js',
+      'lib/moment/moment.js',
+      'lib/angular-moment/angular-moment.js',
+      'lib/qrcode-generator/js/qrcode.js',
+      'lib/angular-qrcode/qrcode.js',
+      'lib/angular-route/angular-route.min.js',
+      'lib/angular-foundation/mm-foundation.min.js',
+      'lib/angular-foundation/mm-foundation-tpls.min.js',
+      'lib/peer.js',
+      'lib/bitcore/browser/bundle.js',
+      'lib/crypto-js/rollups/sha256.js',
+      'lib/crypto-js/rollups/pbkdf2.js',
+      'lib/crypto-js/rollups/aes.js',
+      'lib/file-saver/FileSaver.js',
+      'lib/socket.io.js',
+      'lib/sjcl.js',
+      'lib/ios-imagefile-megapixel/megapix-image.js',
+      'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
+      'js/copayBundle.js',
 
       //Test-Specific Code
       'lib/chai/chai.js',
       'test/lib/chai-should.js',
       'test/lib/chai-expect.js',
-
+      
       //Mocha stuff
       'test/mocha.conf.js',
 
-      //Configs
-      'config.js',
-
       //test files
-      'test/unit/**/*.js'
+      'test/unit/**/*.js',
+
+      //App-specific Code
+      'js/app.js',
+      'js/routes.js',
+      'js/directives.js',
+      'js/filters.js',
+      'js/services/socket.js',
+      'js/services/video.js',
+      'js/services/walletFactory.js',
+      'js/services/controllerUtils.js',
+      'js/services/passphrase.js',
+      'js/services/notifications.js',
+      'js/controllers/header.js',
+      'js/controllers/footer.js',
+      'js/controllers/addresses.js',
+      'js/controllers/transactions.js',
+      'js/controllers/send.js',
+      'js/controllers/backup.js',
+      'js/controllers/signin.js',
+      'js/controllers/setup.js',
+      'js/controllers/import.js',
+      'js/controllers/settings.js',
+      'js/init.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-      'js/models/**/*.js',
-      ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
