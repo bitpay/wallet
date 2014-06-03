@@ -17,10 +17,11 @@ describe("Unit: Testing Services", function() {
   }));
 
 
-  beforeEach(angular.mock.module('copay.controllerUtils'));
+  // TODO
+  /*beforeEach(angular.mock.module('copay.controllerUtils'));
 
   it('should contain a controllerUtils service', inject(function(controllerUtils) {
     expect(controllerUtils).not.to.equal(null);
   }));
-
+*/
 });

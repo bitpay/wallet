@@ -321,3 +321,7 @@ input.ng-invalid-wallet-secret {
   color: #3FBC9C;
 }
 
+.box-setup fieldset {
+  background: #fff;
+}
+

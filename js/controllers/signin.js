@@ -12,10 +12,6 @@ angular.module('copay.signin').controller('SigninController',
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
 
-    $scope.create = function(form) {
-      $location.path('setup');
-    };
-
     $scope.open = function(form) {
       if (form && form.$invalid) {
         $rootScope.$flashMessage = { message: 'Please, enter required fields', type: 'error'};
