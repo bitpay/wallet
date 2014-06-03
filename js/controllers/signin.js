@@ -27,17 +27,15 @@ angular.module('copay.signin').controller('SigninController',
 
       console.log('## Obtaining passphrase...'); 
       Passphrase.getBase64Async(password, function(passphrase){
-        console.log('## Done.');
+        console.log('## Passphrase obtained');
         var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
         if (!w) {
           $scope.loading = $scope.failure = false;
-          $rootScope.$flashMessage = { message: 'Bad password or connection error', type: 'error'};
+          $rootScope.$flashMessage = { message: 'Wrong password', type: 'error'};
           $rootScope.$digest();
           return;
         }
-        console.log('[signin.js.49]'); //TODO
         installStartupHandlers(w);
-        console.log('[signin.js.52]'); //TODO
         controllerUtils.startNetwork(w);
       });
     };

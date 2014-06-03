@@ -3,6 +3,7 @@
 var imports = require('soop').imports();
 
 var id = 0;
+
 function Storage(opts) {
   opts = opts || {};
 
@@ -33,12 +34,16 @@ Storage.prototype._encryptObj = function(obj) {
 };
 
 Storage.prototype._decrypt = function(base64) {
-  var decryptedStr=null;
-  var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
+  var decryptedStr = null;
+  try {
+    var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
 
-  if (decrypted)
-    decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
-
+    if (decrypted)
+      decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
+  } catch (e) {
+    console.log('Error while decrypting ' + base64);
+    return null;
+  }
   return decryptedStr;
 };
 
@@ -49,22 +54,16 @@ Storage.prototype._decryptObj = function(base64) {
 
 Storage.prototype._read = function(k) {
   var ret;
-  try {
-    ret = localStorage.getItem(k);
-    if (ret){
-      ret = this._decrypt(ret);
-      ret = ret.toString(CryptoJS.enc.Utf8);
-      ret = JSON.parse(ret);
-    }
-  } catch (e) {
-    console.log('Error while decrypting: '+e);
-    return null;
-  };
-
+  ret = localStorage.getItem(k);
+  if (!ret) return null;
+  ret = this._decrypt(ret);
+  if (!ret) return null;
+  ret = ret.toString(CryptoJS.enc.Utf8);
+  ret = JSON.parse(ret);
   return ret;
 };
 
-Storage.prototype._write = function(k,v) {
+Storage.prototype._write = function(k, v) {
   v = JSON.stringify(v);
   v = this._encrypt(v);
 
@@ -78,7 +77,7 @@ Storage.prototype.getGlobal = function(k) {
 };
 
 // set value for key
-Storage.prototype.setGlobal = function(k,v) {
+Storage.prototype.setGlobal = function(k, v) {
   localStorage.setItem(k, JSON.stringify(v));
 };
 
@@ -92,46 +91,45 @@ Storage.prototype._key = function(walletId, k) {
 };
 // get value by key
 Storage.prototype.get = function(walletId, k) {
-  var ret = this._read(this._key(walletId,k));
-
+  var ret = this._read(this._key(walletId, k));
   return ret;
 };
 
 // set value for key
-Storage.prototype.set = function(walletId, k,v) {
-  this._write(this._key(walletId,k), v);
+Storage.prototype.set = function(walletId, k, v) {
+  this._write(this._key(walletId, k), v);
 };
 
 // remove value for key
 Storage.prototype.remove = function(walletId, k) {
-  this.removeGlobal(this._key(walletId,k));
+  this.removeGlobal(this._key(walletId, k));
 };
 
 Storage.prototype.setName = function(walletId, name) {
-  this.setGlobal('nameFor::'+walletId, name);
+  this.setGlobal('nameFor::' + walletId, name);
 };
 
 Storage.prototype.getName = function(walletId) {
-  return this.getGlobal('nameFor::'+walletId);
+  return this.getGlobal('nameFor::' + walletId);
 };
 
 Storage.prototype.getWalletIds = function() {
   var walletIds = [];
   var uniq = {};
   for (var i = 0; i < localStorage.length; i++) {
-     var key = localStorage.key(i);
-     var split = key.split('::');
-     if (split.length == 2) {
+    var key = localStorage.key(i);
+    var split = key.split('::');
+    if (split.length == 2) {
       var walletId = split[0];
 
       if (walletId === 'nameFor') continue;
 
-      if (typeof uniq[walletId] === 'undefined' ) {
+      if (typeof uniq[walletId] === 'undefined') {
         walletIds.push(walletId);
         uniq[walletId] = 1;
       }
-     }
-   } 
+    }
+  }
   return walletIds;
 };
 
@@ -140,9 +138,9 @@ Storage.prototype.getWallets = function() {
   var uniq = {};
   var ids = this.getWalletIds();
 
-  for (var i in ids){
+  for (var i in ids) {
     wallets.push({
-      id:ids[i],
+      id: ids[i],
       name: this.getName(ids[i]),
     });
   }

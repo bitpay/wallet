@@ -6,7 +6,15 @@ angular.module('copay.import').controller('ImportController',
     var reader = new FileReader();
     var _importBackup = function(encryptedObj) {
       Passphrase.getBase64Async($scope.password, function(passphrase){
-        $rootScope.wallet = walletFactory.fromEncryptedObj(encryptedObj, passphrase);
+        var w = walletFactory.fromEncryptedObj(encryptedObj, passphrase);
+        if (!w) {
+          $scope.loading = false;
+          $rootScope.$flashMessage = { message: 'Wrong password', type: 'error'};
+          $rootScope.$digest();
+          return;
+        }
+        $rootScope.wallet = w;
+
         controllerUtils.startNetwork($rootScope.wallet);
       });
     };
@@ -23,6 +31,7 @@ angular.module('copay.import').controller('ImportController',
 
     $scope.import = function(form) {
       if (form.$invalid) {
+        $scope.loading = false;
         $rootScope.$flashMessage = { message: 'There is an error in the form. Please, try again', type: 'error'};
         return;
       }
@@ -32,6 +41,7 @@ angular.module('copay.import').controller('ImportController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
+        $scope.loading = false;
         $rootScope.$flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
         return;
       }
