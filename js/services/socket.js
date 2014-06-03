@@ -7,6 +7,11 @@ angular.module('copay.socket').factory('Socket',
     var socket = io.connect(url, {
       'reconnect': true,
       'reconnection delay': 500,
+      'force new connection': true,
+    });
+
+    socket.on('error', function(a,b){
+      alert('Could not connect to Insight. Please check your settings.');
     });
 
     return {
