@@ -63,9 +63,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 
 Wallet.prototype.connectToAll = function() {
 
-console.log('[Wallet.js.57]'); //TODO
   var all = this.publicKeyRing.getAllCopayerIds();
-
 console.log('[Wallet.js.58] connecting'); //TODO
   this.network.connectToCopayers(all);
   if (this.seededCopayerId) {
@@ -224,8 +222,8 @@ Wallet.prototype.netStart = function() {
     self.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
     self.emit('openError');
   });
-  net.on('error', function(){
-    self.emit('connectionError'); // Bubble the error
+  net.on('error', function() {
+    self.emit('connectionError');
   });
   net.on('close', function() {
     self.emit('close');
