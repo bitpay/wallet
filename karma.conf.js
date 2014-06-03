@@ -47,8 +47,6 @@ module.exports = function(config) {
       //Mocha stuff
       'test/mocha.conf.js',
 
-      //test files
-      'test/unit/**/*.js',
 
       //App-specific Code
       'js/app.js',
@@ -57,7 +55,11 @@ module.exports = function(config) {
       'js/filters.js',
       'js/services/*.js',
       'js/controllers/*.js',
-      'js/init.js'
+      'js/init.js',
+
+
+      //test files
+      'test/unit/**/*.js'
     ],
 
 

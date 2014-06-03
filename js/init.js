@@ -2,5 +2,5 @@
 
 angular.element(document).ready(function() {
   // Init the app
-  angular.bootstrap(document, ['copay']);
+  angular.bootstrap(document, ['copayApp']);
 });
