@@ -75,16 +75,20 @@
       location.href = '#/backup';
       var ctrl = controller('BackupController');
       if (!ctrl) return needsWalletLogin(ipc);
-      ctrl.email();
+      ctrl.openModal();
     });
 
-    ipc.on('backup:import', function(data) {
+    ipc.on('backup:import:data', function(data) {
       location.href = '#/import';
       var ctrl = controller('ImportController');
       if (!ctrl) return;
       ctrl.backupText = data;
       ctrl.openPasteArea();
       ctrl.$apply();
+    });
+
+    ipc.on('backup:import', function(data) {
+      location.href = '#/import';
     });
 
     // let the shell know when an error occurs
