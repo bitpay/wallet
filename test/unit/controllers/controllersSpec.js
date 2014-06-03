@@ -33,4 +33,9 @@ describe("Unit: Testing Controllers", function() {
     expect(copayApp.TransactionsController).not.to.equal(null);
   });
 
+  beforeEach(angular.mock.module('copay.walletFactory'));
+  it('should display a link to create a new wallet if no wallets in localStorage', inject(function(walletFactory) {
+    expect(walletFactory.storage.getWalletIds()).to.be.empty;
+  }));
+
 });
