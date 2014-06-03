@@ -6,7 +6,7 @@ describe("Unit: Testing Directives", function() {
 
   var $scope, form;
 
-  beforeEach(module('copay.directives'));
+  beforeEach(module('copayApp.directives'));
 
   describe('Validate Address', function() {
     beforeEach(inject(function($compile, $rootScope) {

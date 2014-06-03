@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.header').controller('HeaderController',
+angular.module('copayApp.controllers').controller('HeaderController',
   function($scope, $rootScope, $location, $notification, $http, walletFactory, controllerUtils) {
     $scope.menu = [
     {

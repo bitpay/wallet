@@ -26,37 +26,13 @@ var copayApp = window.copayApp = angular.module('copayApp',[
   'monospaced.qrcode',
   'notifications',
   'copayApp.filters',
-  'copayApp.header',
-  'copayApp.footer',
-  'copayApp.addresses',
-  'copayApp.transactions',
-  'copayApp.send',
-  'copayApp.backup',
-  'copayApp.walletFactory',
-  'copayApp.signin',
-  'copayApp.socket',
-  'copayApp.controllerUtils',
-  'copayApp.setup',
+  'copayApp.controllers',
   'copayApp.directives',
-  'copayApp.video',
-  'copayApp.import',
-  'copayApp.passphrase',
-  'copayApp.settings'
+  'copayApp.services',
 ]);
 
-angular.module('copayApp.header', []);
-angular.module('copayApp.footer', []);
-angular.module('copayApp.addresses', []);
-angular.module('copayApp.transactions', []);
-angular.module('copayApp.send', []);
-angular.module('copayApp.backup', []);
-angular.module('copayApp.walletFactory', []);
-angular.module('copayApp.controllerUtils', []);
-angular.module('copayApp.signin', []);
-angular.module('copayApp.setup', []);
-angular.module('copayApp.socket', []);
+angular.module('copayApp.filters', []);
+angular.module('copayApp.controllers', []);
 angular.module('copayApp.directives', []);
-angular.module('copayApp.video', []);
-angular.module('copayApp.import', []);
-angular.module('copayApp.passphrase', []);
-angular.module('copayApp.settings', []);
+angular.module('copayApp.services', []);
+
