@@ -301,7 +301,7 @@
                 <div class="small-12 medium-6 large-6 columns">
                   <label>Your Wallet Password <small class="has-tip" tooltip="doesn't need to be shared">Required</small>
                   <input type="password" placeholder="Choose your password" class="form-control"
-                    ng-model="walletPassword" required>
+                    ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
                   </label>
                 </div>
               </div>
