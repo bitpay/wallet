@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.addresses').controller('AddressesController',
+angular.module('copayApp.controllers').controller('AddressesController',
   function($scope, $rootScope, $timeout, controllerUtils) {
     $scope.loading = false;
     var w = $rootScope.wallet;

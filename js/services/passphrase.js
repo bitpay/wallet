@@ -1,3 +1,4 @@
 'use strict';
 
-angular.module('copayApp.passphrase').value('Passphrase', new copay.Passphrase(config.passphrase));
+angular.module('copayApp.services')
+  .value('Passphrase', new copay.Passphrase(config.passphrase));

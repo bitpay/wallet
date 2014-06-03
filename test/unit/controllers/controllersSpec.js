@@ -3,13 +3,31 @@
 //
 describe("Unit: Testing Controllers", function() {
 
-//  beforeEach(module('copay'));
-  beforeEach(module('copay.signin'));
-  
+    beforeEach(module('notifications'));
+    beforeEach(module('copayApp.services'));
+    beforeEach(module('copayApp.controllers'));
+
+    var scope, addressCtrl;
+//
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      addressCtrl = $controller('AddressesController', {
+        $scope: scope,
+      });
+    }));
+ 
+
+
    it('should have a AddressesController controller', function() {
-console.log('[controllersSpec.js.10:copayApp:]',copayApp.controller); //TODO
-     expect(copayApp.AddressesController).not.to.equal(null);
+     expect(scope.loading).equal(false);
    });
+
+   it('selectedAddr should modify scope', function() {
+     expect(scope.selectedAddress).equal(undefined);
+     scope.selectAddress('hola');
+     expect(scope.selectedAddr).equal('hola');
+   });
+
 //
 //   it('should have a BackupController controller', function() {
 //     expect(copayApp.Backupcontroller).not.to.equal(null);

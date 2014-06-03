@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.footer').controller('FooterController', function($rootScope, $sce, $scope, $http) {
+angular.module('copayApp.controllers').controller('FooterController', function($rootScope, $sce, $scope, $http) {
 
     if (config.themes && Array.isArray(config.themes) && config.themes[0]) {
       $scope.themes = config.themes;
