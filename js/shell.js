@@ -14,7 +14,9 @@
   if (typeof module !== 'undefined') module = { exports: null };
 
   // are we running in copay shell?
-  if (window.process && process.type === 'renderer') initCopayShellBindings();
+  if (window.process && process.type === 'renderer') {
+    window.cshell = initCopayShellBindings();
+  }
 
   function controller(name) {
     return angular.element(
@@ -29,8 +31,11 @@
     var ipc = require('ipc');
 
     ipc.on('address:create', function(data) {
-      location.href = '#/addresses';
-      controller('AddressesController').newAddr();
+      var ctrl = controller('AddressesController');
+      if (ctrl) {
+        location.href = '#/addresses';
+        ctrl.newAddr();
+      }
     });
 
     ipc.on('transactions:send', function(data) {
@@ -38,22 +43,38 @@
     });
 
     ipc.on('transactions:all', function(data) {
-      location.href = '#/transactions';
-      controller('TransactionsController').show();
+      var ctrl = controller('TransactionsController');
+      if (ctrl) {
+        location.href = '#/transactions';
+        ctrl.show();
+      }
     });
 
     ipc.on('transactions:pending', function(data) {
-      location.href = '#/transactions';
-      controller('TransactionsController').show(true);
+      var ctrl = controller('TransactionsController');
+      if (ctrl) {
+        location.href = '#/transactions';
+        ctrl.show(true);
+      }
     });
 
     ipc.on('backup:download', function(data) {
-
+      var ctrl = controller('BackupController');
+      if (ctrl) {
+        location.href = '#/backup';
+        ctrl.download();
+      }
     });
 
     ipc.on('backup:email', function(data) {
-
+      var ctrl = controller('BackupController');
+      if (ctrl) {
+        location.href = '#/backup';
+        ctrl.email();
+      }
     });
+
+    return ipc;
 
   };
 
