@@ -7,8 +7,14 @@ function Network(opts) {
 
 Network.parent=EventEmitter;
 
-Network.prototype.start = function(openCallback, opts) {
+Network.prototype.start = function(opts, cb) {
   // start! :D
+  this.peer = {
+    options: {
+      token: "asd"
+    }
+  };
+  if (cb) cb();
 };
 
 Network.prototype.send = function(peerIds, data, cb) {
@@ -22,6 +28,18 @@ Network.prototype.connectTo = function(peerId) {
 
 Network.prototype.disconnect = function(cb) {
   // disconect :c
+};
+
+Network.prototype.lockIncommingConnections = function() {
+
+};
+
+Network.prototype.getPeer = function() {
+};
+Network.prototype.connectToCopayers = function(cps) {
+};
+Network.prototype.isOnline = function() {
+  return true;
 };
 
 module.exports = require('soop')(Network);

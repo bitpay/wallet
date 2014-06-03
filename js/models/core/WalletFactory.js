@@ -115,6 +115,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.verbose = this.verbose;
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
+  opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
   opts.version       = opts.version || this.version;
@@ -146,7 +147,6 @@ WalletFactory.prototype.open = function(walletId, opts) {
   this.storage._setPassphrase(opts.passphrase);
 
   var w = this.read(walletId);
-
   if (w) {
     this._checkVersion(w.version);
     w.store();
