@@ -65,7 +65,6 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 Wallet.prototype.connectToAll = function() {
 
   var all = this.publicKeyRing.getAllCopayerIds();
-  console.log('[Wallet.js.58] connecting'); //TODO
   this.network.connectToCopayers(all);
   if (this.seededCopayerId) {
     this.sendWalletReady(this.seededCopayerId);
