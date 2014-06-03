@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.socket').factory('Socket',
+angular.module('copayApp.socket').factory('Socket',
   function($rootScope) {
     var listeners = [];
     var url = 'http://' + config.socket.host + ':' + config.socket.port;

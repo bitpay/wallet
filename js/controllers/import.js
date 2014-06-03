@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.import').controller('ImportController',
+angular.module('copayApp.import').controller('ImportController',
   function($scope, $rootScope, walletFactory, controllerUtils, Passphrase) {
     $scope.title = 'Import a backup';
     var reader = new FileReader();

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.backup').controller('BackupController',
+angular.module('copayApp.backup').controller('BackupController',
   function($scope, $rootScope, $location, $window, $timeout, $modal) {
     $scope.title = 'Backup';
 
