@@ -139,13 +139,13 @@
 
   <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet}">
     <link rel="stylesheet" ng-href="{{theme}}">
-    <div class="row" ng-show="!$root.wallet">
+    <div ng-show="!$root.wallet">
       <div class="large-12 columns text-right">
         Copay
         <small>v{{version}}</small>
       </div>
     </div>
-    <div class="row p10t" ng-show="$root.wallet">
+    <div class="p10t" ng-show="$root.wallet">
       <div class="large-3 medium-3 hide-for-small columns">
         <div>
           <strong>{{$root.wallet.getName()}}</strong>
@@ -301,7 +301,7 @@
                 <div class="small-12 medium-6 large-6 columns">
                   <label>Your Wallet Password <small class="has-tip" tooltip="doesn't need to be shared">Required</small>
                   <input type="password" placeholder="Choose your password" class="form-control"
-                    ng-model="walletPassword" required>
+                    ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
                   </label>
                 </div>
               </div>
@@ -419,11 +419,11 @@
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
           <div class="large-12 columns">
-            <h4> Transaction proposals <span ng-if="onlyPending">[Pending]</span>  <small>({{txs.length}})</small></h4>
+            <h4> Transaction proposals <small>({{txs.length}})</small></h4>
 
-            <ul class="button-group radius">
-            <li> <button class="secondary" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating"> Pending </button>
-            <li> <button class="secondary" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating"> All </button>
+            <ul class="inline-list">
+              <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
+              <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
             </ul>
             <div class="panel radius pending" ng-repeat="tx in txs | paged">
               <div class="txheader row m10">
@@ -673,13 +673,22 @@
             </a>
           </div>
           <div class="large-6 medium-6 columns">
-            <a class="panel radius box-backup" ng-click="email()">
+            <a class="panel radius box-backup" ng-click="openModal()">
               <i class="fi-mail size-72"></i>
               <p> Backup to email </p>
             </a>
           </div>
         </div>
       </div>
+    </script>
+
+    <script type="text/ng-template" id="backupModal.html">
+      <h3>Insert your email</h3>
+      <form name="emailForm" ng-submit="submit(emailForm)">
+        <p><input type="email" ng-model="$parent.email" placeholder="your@email.com" required/></p>
+        <input type="submit" class="button" value="Send" ng-disabled="emailForm.$invalid"/>
+      </form>
+      <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
     </script>
 
     <!-- CONFIG -->

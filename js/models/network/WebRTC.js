@@ -313,8 +313,8 @@ Network.prototype.setCopayerId = function(copayerId) {
 };
 
 
+// TODO cache this.
 Network.prototype.peerFromCopayer = function(hex) {
-  // TODO cache this.
   var SIN = bitcore.SIN;
   return new SIN(new Buffer(hex,'hex')).toString();
 };
@@ -408,6 +408,10 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     self._sendToOne(copayerIds, encPayload, sig, cb);
 };
 
+
+Network.prototype.isOnline = function() {
+  return !!this.peer;
+};
 
 Network.prototype.connectTo = function(copayerId) {
   var self = this;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.filters', [])
+angular.module('copayApp.filters', [])
 	.filter('amTimeAgo', ['amMoment', function(amMoment) {
     return function(input) {
       return amMoment.preprocessDate(input).fromNow();
