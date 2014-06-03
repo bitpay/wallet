@@ -78,6 +78,15 @@
       ctrl.email();
     });
 
+    ipc.on('backup:import', function(data) {
+      location.href = '#/import';
+      var ctrl = controller('ImportController');
+      if (!ctrl) return;
+      ctrl.backupText = data;
+      ctrl.openPasteArea();
+      ctrl.$apply();
+    });
+
     // let the shell know when an error occurs
     window.onerror = function(err) {
       ipc.send('error', err);
