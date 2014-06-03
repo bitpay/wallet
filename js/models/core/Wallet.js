@@ -261,10 +261,7 @@ Wallet.prototype.scheduleConnect = function() {
   var self = this;
   if (self.network.isOnline()) {
     self.connectToAll();
-    setTimeout(function() {
-        self.scheduleConnect();
-      },
-      self.reconnectDelay);
+    setTimeout(self.scheduleConnect.bind(self), self.reconnectDelay);
   }
 }
 
