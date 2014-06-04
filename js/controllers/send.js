@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('SendController',
                   //alert(JSON.stringify(qrcode.process(context)));
                   qrcode.decode();
                 } catch (e) {
-                  console.log('error decoding QR: '+e);
+                  // error decoding QR
                 }
               }, 1500);
             };
@@ -135,7 +135,6 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     var _videoError = function(err) {
-      console.log('Video Error: ' + JSON.stringify(err));
       _scanStop();
     };
 
@@ -143,7 +142,6 @@ angular.module('copayApp.controllers').controller('SendController',
       _scanStop();
 
       var str = (data.indexOf('bitcoin:') === 0) ? data.substring(8) : data;
-      console.log('QR code detected: ' + str);
       $scope.$apply(function() {
         $scope.address = str;
       });

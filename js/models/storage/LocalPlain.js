@@ -1,11 +1,9 @@
 'use strict';
 
 var imports = require('soop').imports();
-var parent = imports.parent || require('./Base');
 
 function Storage() {
 }
-Storage.parent = parent;
 
 Storage.prototype._read = function(k) {
   var ret;

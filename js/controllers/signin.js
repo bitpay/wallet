@@ -21,16 +21,13 @@ angular.module('copayApp.controllers').controller('SigninController',
       $scope.loading = true;
       var password = form.openPassword.$modelValue;
 
-      console.log('## Obtaining passphrase...'); 
       Passphrase.getBase64Async(password, function(passphrase){
-        console.log('## Passphrase obtained');
         var w, errMsg;
         try{
           var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
         } catch (e){
           errMsg = e.message;
         };
-
         if (!w) {
           $scope.loading = $scope.failure = false;
           $rootScope.$flashMessage = { message: errMsg || 'Wrong password', type: 'error'};
