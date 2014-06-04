@@ -6,7 +6,8 @@ var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
 var HK          = bitcore.HierarchicalKey;
 var PrivateKey  = require('./PrivateKey');
-var Structure  = require('./Structure');
+var Structure   = require('./Structure');
+var AddressIndex= require('./AddressIndex');
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
 var coinUtil    = bitcore.util;
@@ -26,8 +27,7 @@ function PublicKeyRing(opts) {
 
   this.copayersHK = opts.copayersHK || [];
 
-  this.changeAddressIndex= opts.changeAddressIndex || 0;
-  this.addressIndex= opts.addressIndex || 0;
+  this.indexes = opts.indexes || new ;
 
   this.publicKeysCache = opts.publicKeysCache || {};
   this.nicknameFor = opts.nicknameFor || {};
@@ -54,9 +54,8 @@ PublicKeyRing.prototype.toObj = function() {
     networkName: this.network.name,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
+    indexes: this.indexes.toObj(),
 
-    changeAddressIndex: this.changeAddressIndex,
-    addressIndex: this.addressIndex,
     copayersExtPubKeys: this.copayersHK.map( function (b) { 
       return b.extendedPublicKeyString(); 
     }),
@@ -158,13 +157,6 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
   return pubKeys;
 };
 
-PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
-  if ( (isChange && index > this.changeAddressIndex) ||
-      (!isChange && index > this.addressIndex)) {
-    throw new Error('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
-  }
-};
-
 // TODO this could be cached
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
   this._checkIndexRange(index, isChange);
@@ -197,14 +189,9 @@ PublicKeyRing.prototype.getScriptPubKeyHex = function (index, isChange) {
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange) {
 
-  var ret =  
-    this.getAddress(isChange ? this.changeAddressIndex : this.addressIndex, isChange);
-  if (isChange) {
-    this.changeAddressIndex++;
-  } else { 
-    this.addressIndex++;
-  }
-
+  var index = isChange ? this.indexes.getChangeIndex() : this.indexes.getReceiveIndex();
+  var ret = this.getAddress(index, isChange);
+  this.indexes.increment(isChange);
   return ret;
 };
 
@@ -219,7 +206,7 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts) {
 
   var ret = [];
   if (!opts.excludeChange) {
-    for (var i=0; i<this.changeAddressIndex; i++) {
+    for (var i=0; i<this.indexes.getChangeIndex(); i++) {
       ret.unshift({
         address: this.getAddress(i,true),
         isChange: true
@@ -228,7 +215,7 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts) {
   }
 
   if (!opts.excludeMain) {
-    for (var i=0; i<this.addressIndex; i++) {
+    for (var i=0; i<this.indexes.getReceiveIndex(); i++) {
       ret.unshift({
         address: this.getAddress(i,false),
         isChange: false
@@ -248,10 +235,10 @@ PublicKeyRing.prototype._addScriptMap = function (map, index, isChange) {
 PublicKeyRing.prototype.getRedeemScriptMap = function () {
   var ret = {};
 
-  for (var i=0; i<this.changeAddressIndex; i++) {
+  for (var i=0; i<this.indexes.getChangeIndex(); i++) {
     this._addScriptMap(ret,i,true);
   }
-  for (var i=0; i<this.addressIndex; i++) {
+  for (var i=0; i<this.indexes.getReceiveIndex(); i++) {
     this._addScriptMap(ret,i,false);
   }
   return ret;
@@ -277,22 +264,6 @@ PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
     throw new Error('inPRK totalCopayers mismatch'+this.totalCopayers+'!='+inPKR.requiredCopayers);
 };
 
-
-PublicKeyRing.prototype._mergeIndexes = function(inPKR) {
-  var hasChanged = false;
-
-  // Indexes
-  if (inPKR.changeAddressIndex > this.changeAddressIndex) {
-    this.changeAddressIndex = inPKR.changeAddressIndex;
-    hasChanged = true;
-  }
-
-  if (inPKR.addressIndex > this.addressIndex) {
-    this.addressIndex = inPKR.addressIndex;
-    hasChanged = true;
-  }
-  return hasChanged;
-};
 
 PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   var self = this;
@@ -330,7 +301,7 @@ PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
 
   this._checkInPRK(inPKR, ignoreId);
 
-  if (this._mergeIndexes(inPKR))
+  if (this.indexes.merge(inPKR.indexes))
     hasChanged = true;
 
   if (this._mergePubkeys(inPKR))
