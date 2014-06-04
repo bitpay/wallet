@@ -1,4 +1,4 @@
-System Requirements
+Development
 
 * Just run:
 
@@ -6,4 +6,4 @@ System Requirements
 $ sh chrome/build.sh
 ```
 
-* The copay-chrome-extension.zip is into ./chrome folder
+* The ZIP file is *chrome/copay-chrome-extension.zip*

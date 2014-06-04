@@ -9,5 +9,5 @@ Run
 $ sh firefox/build.sh
 ```
 
-- Copy the content of firefox/firefox-addon (lib, data, package.json) to your development path.
+- Copy the content of *firefox/firefox-addon* (lib, data, package.json) to your development path.
 - Compile the XPI file [Mozilla Docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Getting_started)
