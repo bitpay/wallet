@@ -67,6 +67,44 @@ Default configuration can be found in the config.js file.
 See config.js for more info on configuration options.
 
 
+# Development
+
+## Google Chrome Extension
+When you need to compile a *Chrome Extension* of Copay, you only need to run:
+```
+$ sh chrome/build.sh
+```
+
+- The ZIP file is *chrome/copay-chrome-extension.zip*
+
+## Firefox Add-on
+System Requirements
+
+* Download [Add-on SDK](https://addons.mozilla.org/en-US/developers/builder)
+* Install it. [Mozilla Docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
+
+Run
+
+```
+$ sh firefox/build.sh
+```
+
+- Copy the content of *firefox/firefox-addon* (lib, data, package.json) to your development path.
+- Compile the XPI file. [Mozilla Docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Getting_started)
+
+##Web App
+The Web App is a clean version of Copay, only the neededs files (html, css, js)
+for run Copay locally or in your own server.
+
+In order to get the ZIP file of Copay, you just need to run:
+```
+$ sh webapp/build.sh
+```
+
+- The ZIP file is *webapp/download/copay.zip*
+- The *webapp/copay-webapp* is the unzipped version
+
+
 # About Copay
 
 General
