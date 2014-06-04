@@ -43,11 +43,9 @@ describe("Unit: Testing Controllers", function() {
       expect(scope.loading).equal(false);
     });
 
-    it('should return an empty array of tx', function() {
+    it('should return an empty array of tx from insight', function() {
       scope.getTransactions();
       expect(scope.blockchain_txs).to.be.empty;
-      console.log('asdfasdf', scope.blockchain_txs);
     });
-
   });
 });
