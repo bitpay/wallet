@@ -81,12 +81,12 @@ PrivateKey.prototype.get = function(index,isChange) {
   return this.getForPath(path);
 };
 
-PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
+PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
   var ret = [];
-  for(var i=0;i<addressIndex; i++) {
+  for(var i=0;i<receiveIndex; i++) {
     ret.push(this.get(i,false));
   }
-  for(var i=0; i<changeAddressIndex; i++) {
+  for(var i=0; i<changeIndex; i++) {
     ret.push(this.get(i,true));
   }
   return ret;
