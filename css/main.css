@@ -309,12 +309,7 @@ hr { margin: 2.25rem 0;}
 
 .tx-copayers {
   overflow: hidden;
-  padding: 0.5rem;
-}
-
-.tx-copayers {
-  overflow: hidden;
-  padding: 0.5rem;
+  padding: 10px;
 }
 
 .box-copayers {
