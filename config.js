@@ -109,12 +109,12 @@ var defaultConfig = {
   // blockchain service API config
   blockchain: {
     host: 'test.insight.is',
-    port: 3001
+    port: 80
   },
   // socket service API config
   socket: {
     host: 'test.insight.is',
-    port: 3001
+    port: 80
   },
 
   // local encryption/security config

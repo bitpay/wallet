@@ -65,7 +65,6 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 Wallet.prototype.connectToAll = function() {
 
   var all = this.publicKeyRing.getAllCopayerIds();
-  console.log('[Wallet.js.58] connecting'); //TODO
   this.network.connectToCopayers(all);
   if (this.seededCopayerId) {
     this.sendWalletReady(this.seededCopayerId);
@@ -246,11 +245,8 @@ Wallet.prototype.netStart = function() {
     self.emit('ready', net.getPeer());
     self.token = net.peer.options.token;
     setTimeout(function() {
-      console.log('[EMIT publicKeyRingUpdated:]'); //TODO
       self.emit('publicKeyRingUpdated', true);
-      console.log('[CONNECT:]'); //TODO
       self.scheduleConnect();
-      console.log('[EMIT TxProposal]'); //TODO
       self.emit('txProposalsUpdated');
       self.store();
     }, 10);
