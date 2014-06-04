@@ -10,7 +10,7 @@ angular.module('notifications', []).
       info: { duration: 5000, enabled: true },
       funds: { duration: 5000, enabled: true },
       warning: { duration: 5000, enabled: true },
-      error: { duration: 5000, enabled: true },
+      error: { duration: 1e10, enabled: true },
       success: { duration: 5000, enabled: true },
       progress: { duration: 0, enabled: true },
       custom: { duration: 35000, enabled: true },
