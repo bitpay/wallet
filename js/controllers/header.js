@@ -33,13 +33,27 @@ angular.module('copayApp.controllers').controller('HeaderController',
       }
     });
 
+
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
-    $rootScope.$watch('txAlertCount', function(txAlertCount) {
-      if (txAlertCount && txAlertCount > 0) {
-        $notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
-      }
+
+    $rootScope.$watch('blockChainStatus', function(status) {
+      var h = config.blockchain.host + ':' +  config.blockchain.port;
+      if (status === 'error')
+          $rootScope.insightError = 1;
+        else 
+        if (status === 'restored') {
+          $rootScope.insightError = 0;
+          $rootScope.$flashMessage = {
+            type: 'success',
+            message: 'Networking Restored',
+          };
+        }
     });
+
+
+    // Init socket handlers (with no wallet yet)
+    controllerUtils.setSocketHandlers();
 
     $rootScope.$watch('receivedFund', function(receivedFund) {
       if (receivedFund) {
@@ -58,6 +72,14 @@ angular.module('copayApp.controllers').controller('HeaderController',
         }
       }
     });
+
+    $rootScope.$watch('txAlertCount', function(txAlertCount) {
+      if (txAlertCount && txAlertCount > 0) {
+        $notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
+      }
+    });
+
+
 
     $scope.isActive = function(item) {
       if (item.link && item.link.replace('#','') == $location.path()) {

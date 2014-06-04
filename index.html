@@ -82,6 +82,16 @@
         </div>
       </div>
 
+      <div class="row" ng-if='$root.insightError'>
+        <div class="small-8 large-centered columns">
+          <div data-alert class="alert-box radius error">
+            Error connecting to Insight server.  Check
+            you settings and Internet connection.
+            Trying to reconnect...
+          </div>
+        </div>
+      </div>
+
       <div class="row" ng-if='$root.$flashMessage.message' notification>
         <div class="small-8 large-centered columns">
           <div data-alert class="alert-box radius {{$root.$flashMessage.type}}">
@@ -782,7 +792,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="lib/crypto-js/rollups/pbkdf2.js"></script>
     <script src="lib/crypto-js/rollups/aes.js"></script>
     <script src="lib/file-saver/FileSaver.js"></script>
-    <script src="lib/socket.io.js"></script>
+    <script src="lib//socket.io-client/socket.io.js"></script>
     <script src="lib/sjcl.js"></script>
     <script src="lib/ios-imagefile-megapixel/megapix-image.js"></script>
     <script src="lib/qrcode-decoder-js/lib/qrcode-decoder.min.js"></script>
