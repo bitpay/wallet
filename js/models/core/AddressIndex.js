@@ -14,7 +14,6 @@ var util = bitcore.util;
 
 function AddressIndex(opts) {
   opts = opts || {};
-
   this.walletId = opts.walletId;
 
   this.changeIndex = opts.changeIndex || 0;
