@@ -517,12 +517,11 @@
             <pagination ng-show="!onlyPending" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
           </div>
           <div class="large-12 columns">
-            <h4>Last transactions
-              <small>
-                <a ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">Show</a>
-                <a ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">Hide</a>
-              </small>
-            </h4>
+            <h4>Last transactions</h4>
+            <div class="m10b size-12">
+              <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
+              <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
+            </div>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
