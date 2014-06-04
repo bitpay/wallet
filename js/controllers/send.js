@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = (form.amount.$modelValue * 100000000).toString(); // satoshi to string
+      var amount = (form.amount.$modelValue * 100000000).toFixed(); // satoshi to string
 
       var w = $rootScope.wallet;
       w.createTx(address, amount,function() {
