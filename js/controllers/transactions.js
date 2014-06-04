@@ -158,6 +158,12 @@ angular.module('copayApp.controllers').controller('TransactionsController',
             }, 10);
           });
         }
+        else {
+          $timeout(function() {
+            $scope.loading = false;
+            $scope.lastShowed = false;
+          }, 1);
+        }
       }
     };
 
