@@ -438,7 +438,9 @@ Wallet.prototype.getTxProposals = function() {
 Wallet.prototype.reject = function(ntxid) {
   var myId = this.getMyCopayerId();
   var txp = this.txProposals.txps[ntxid];
-  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) return;
+  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
+    throw new Error('Invalid transaction to reject: '+ntxid);
+  }
 
   txp.rejectedBy[myId] = Date.now();
   this.sendTxProposals(null, ntxid);
@@ -454,7 +456,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
     var txp = self.txProposals.txps[ntxid];
     if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
       if (cb) cb(false);
-      return;
+      throw new Error('Invalid transaction to sign: '+ntxid);
     }
 
     var pkr = self.publicKeyRing;
