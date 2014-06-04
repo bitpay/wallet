@@ -10,9 +10,6 @@ var Structure   = require('./Structure');
 var AddressIndex= require('./AddressIndex');
 var Address     = bitcore.Address;
 var Script      = bitcore.Script;
-var coinUtil    = bitcore.util;
-var Transaction = bitcore.Transaction
-var util        = bitcore.util;
 
 function PublicKeyRing(opts) {
   opts = opts || {};
