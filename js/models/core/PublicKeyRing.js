@@ -13,10 +13,6 @@ var coinUtil    = bitcore.util;
 var Transaction = bitcore.Transaction
 var util        = bitcore.util;
 
-var Storage     = imports.Storage || require('../storage/Base.js');
-var storage     = Storage.default();
-
-
 function PublicKeyRing(opts) {
   opts = opts || {};
 
@@ -165,8 +161,7 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
 PublicKeyRing.prototype._checkIndexRange = function (index, isChange) {
   if ( (isChange && index > this.changeAddressIndex) ||
       (!isChange && index > this.addressIndex)) {
-    console.log('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
-    throw new Error('index out of bound');
+    throw new Error('Out of bounds at getAddress: Index %d isChange: %d', index, isChange);
   }
 };
 

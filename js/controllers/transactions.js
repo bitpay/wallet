@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.transactions').controller('TransactionsController',
+angular.module('copayApp.controllers').controller('TransactionsController',
   function($scope, $rootScope, $timeout, controllerUtils) {
 
     $scope.title = 'Transactions';
@@ -54,7 +54,6 @@ angular.module('copay.transactions').controller('TransactionsController',
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
-          console.log('[transactions.js.68:txid:] SENTTX CALLBACK',txid); //TODO
           $rootScope.$flashMessage = txid
             ? {type:'success', message: 'Transaction broadcasted. txid: ' + txid}
             : {type:'error', message: 'There was an error sending the Transaction'}
@@ -90,7 +89,6 @@ angular.module('copay.transactions').controller('TransactionsController',
     $scope.getTransactions = function(cb) {
       var w   =$rootScope.wallet;
       if (w) {
-        console.log('### Querying last transactions...'); //TODO
         var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
           return w.blockchain.getTransactions(addresses, cb);

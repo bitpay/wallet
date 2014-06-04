@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.signin').controller('SigninController',
+angular.module('copayApp.controllers').controller('SigninController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase) {
     var cmp = function(o1, o2){
       var v1 = o1.show.toLowerCase(), v2 = o2.show.toLowerCase();
@@ -21,13 +21,16 @@ angular.module('copay.signin').controller('SigninController',
       $scope.loading = true;
       var password = form.openPassword.$modelValue;
 
-      console.log('## Obtaining passphrase...'); 
       Passphrase.getBase64Async(password, function(passphrase){
-        console.log('## Passphrase obtained');
-        var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
+        var w, errMsg;
+        try{
+          var w = walletFactory.open($scope.selectedWalletId, { passphrase: passphrase});
+        } catch (e){
+          errMsg = e.message;
+        };
         if (!w) {
           $scope.loading = $scope.failure = false;
-          $rootScope.$flashMessage = { message: 'Wrong password', type: 'error'};
+          $rootScope.$flashMessage = { message: errMsg || 'Wrong password', type: 'error'};
           $rootScope.$digest();
           return;
         }

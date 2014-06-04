@@ -50,7 +50,6 @@ Network.prototype.cleanUp = function() {
   this.copayerForPeer={};
   this.connections={};
   if (this.peer) {
-    console.log('## DESTROYING PEER INSTANCE'); //TODO
     this.peer.disconnect();
     this.peer.destroy();
     this.peer = null;
@@ -104,7 +103,6 @@ Network.prototype.connectedCopayers = function() {
 };
 
 Network.prototype._deletePeer = function(peerId) {
-  console.log('### Deleting connection from peer:', peerId);
 
   delete this.isInboundPeerAuth[peerId];
   delete this.copayerForPeer[peerId];
@@ -127,17 +125,14 @@ Network.prototype.connectToCopayers = function(copayerIds) {
 
   arrayDiff.forEach(function(copayerId) {
     if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
-      console.log('### IGNORING STRANGE COPAYER:', copayerId);
       this._deletePeer(this.peerFromCopayer(copayerId));
     } else {
-      console.log('### CONNECTING TO:', copayerId);
       self.connectTo(copayerId);
     }
   });
 };
 
 Network.prototype._sendHello = function(copayerId) {
-  console.log('### SENDING HELLO TO ', copayerId);
   this.send(copayerId, {
     type: 'hello',
     copayerId: this.copayerId,
@@ -158,25 +153,18 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
     var data = this._decrypt(encStr);
     payload=  JSON.parse(data);
   } catch (e) {
-    console.log('### ERROR IN DATA: "%s" ', data, isInbound, e); 
     this._deletePeer(peerId);
     return;
   }
-
-  console.log('### RECEIVED INBOUND?:%s TYPE: %s FROM %s', 
-              isInbound, payload.type, peerId, payload); 
 
   if(isInbound && payload.type === 'hello') {
     var payloadStr = JSON.stringify(payload);
 
     if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-      console.log('#### Peer sent HELLO but it is not on the allowedCopayerIds. Closing connection', 
-                  this.allowedCopayerIds, payload.copayerId);
       this._deletePeer(peerId);
       return;
     }
 
-    console.log('#### Peer sent hello. Setting it up.'); //TODO
     this._addConnectedCopayer(payload.copayerId, isInbound);
     this._setInboundPeerAuth(peerId, true);
     return;
@@ -199,7 +187,6 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
 
 Network.prototype._checkAnyPeer = function() {
   if (!this.connectedPeers.length) {
-    console.log('EMIT openError: no more peers, not even you!'); 
     this.cleanUp();
     this.emit('openError');
   }
@@ -219,9 +206,6 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
 
       self.connections[dataConn.peer] = dataConn;
 
-      console.log('### DATA CONNECTION READY: %s (inbound: %s) AUTHENTICATING...',
-        dataConn.peer, isInbound);
-
       // The connecting peer send hello 
       if(toCopayerId) {
         self.emit('connected');
@@ -236,7 +220,6 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
   });
 
   dataConn.on('error', function(e) {
-    console.log('### DATA ERROR', e); //TODO
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
     self.emit('dataError');
@@ -245,7 +228,6 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
   dataConn.on('close', function() {
     if (self.closing) return;
 
-    console.log('### CLOSE RECV FROM:', dataConn.peer);
     self._onClose(dataConn.peer);
     self._checkAnyPeer();
   });
@@ -263,18 +245,14 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 
   p.on('error', function(err) {
     if (!err.message.match(/Could\snot\sconnect\sto peer/)) {
-      console.log('### PEER ERROR:', err);
       self.emit('error', err);
     }
     self._checkAnyPeer();
   });
 
   p.on('connection', function(dataConn) {
-    console.log('### NEW INBOUND CONNECTION %d/%d', self.connectedPeers.length, self.maxPeers);
     if (self.connectedPeers.length >= self.maxPeers) {
-      console.log('### PEER REJECTED. PEER MAX LIMIT REACHED');
       dataConn.on('open', function() {
-        console.log('###  CLOSING CONN FROM:' + dataConn.peer);
         dataConn.close();
       });
     } else {
@@ -288,11 +266,9 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
   if (!this.copayerForPeer[peerId]) {
     if(Object.keys(this.copayerForPeer).length < this.maxPeers) {
-      console.log('Adding peer/copayer',  peerId, copayerId); //TODO
       this.copayerForPeer[peerId]=copayerId;
     }
     else {
-      console.log('### maxPeerLimit of %d reached. Refusing to add more copayers.', this.maxPeers); //TODO
     }
   }
 };
@@ -333,7 +309,6 @@ Network.prototype.start = function(opts, openCallback) {
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
 
-  console.log('CREATING PEER INSTANCE:', this.peerId); //TODO
   this.peer = new Peer(this.peerId, this.opts);
   this.started = true;
   this._setupPeerHandlers(openCallback);
@@ -378,9 +353,6 @@ Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
     if (dataConn) {
       dataConn.send(payload);
     }
-    else {
-      console.log('[WebRTC.js.255] WARN: NO CONNECTION TO:', peerId); //TODO
-    }
   }
   if (typeof cb === 'function') cb();
 };
@@ -417,7 +389,6 @@ Network.prototype.connectTo = function(copayerId) {
   var self = this;
 
   var peerId = this.peerFromCopayer(copayerId);
-  console.log('### STARTING CONNECTION TO:\n\t'+ peerId+"\n\t"+ copayerId);
   var dataConn = this.peer.connect(peerId, {
     serialization: 'none',
     reliable: true,
@@ -426,9 +397,6 @@ Network.prototype.connectTo = function(copayerId) {
 };
 
 Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
-  if (!this.allowedCopayerIds) 
-    console.log('[webrtc] #### LOCKING INCOMMING CONNECTIONS'); 
-  
   this.allowedCopayerIds={};
   for(var i in allowedCopayerIdsArray) {
     this.allowedCopayerIds[ allowedCopayerIdsArray[i] ] = true;

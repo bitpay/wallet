@@ -31,8 +31,9 @@ function WalletFactory(config, version) {
 
 WalletFactory.prototype.log = function(){
   if (!this.verbose) return;
-  if (console)
-        console.log.apply(console, arguments);
+  if (console) {
+    console.log.apply(console, arguments);
+  }
 };
 
 
@@ -47,10 +48,8 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
-  console.log('## Decrypting'); //TODO
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   w.verbose = this.verbose;
-  this.log('### WALLET OPENED:', w.id);
   return w;
 };
 
