@@ -82,6 +82,9 @@ PrivateKey.prototype.get = function(index,isChange) {
 };
 
 PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
+  if (typeof receiveIndex === 'undefined' || typeof changeIndex === 'undefined')
+    throw new Error('Invalid parameters');
+
   var ret = [];
   for(var i=0;i<receiveIndex; i++) {
     ret.push(this.get(i,false));

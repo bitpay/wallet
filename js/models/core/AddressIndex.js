@@ -37,7 +37,7 @@ AddressIndex.prototype.toObj = function() {
   };
 };
 
-AddressIndex.prototype._checkIndexRange = function(index, isChange) {
+AddressIndex.prototype.checkRange = function(index, isChange) {
   if ((isChange && index > this.changeIndex) ||
     (!isChange && index > this.receiveIndex)) {
     throw new Error('Out of bounds at index %d isChange: %d', index, isChange);
@@ -45,10 +45,10 @@ AddressIndex.prototype._checkIndexRange = function(index, isChange) {
 };
 
 
-AddressIndex.prorotype.getChangeIndex = function() {
+AddressIndex.prototype.getChangeIndex = function() {
   return this.changeIndex;
 };
-AddressIndex.prorotype.getReceiveIndex = function() {
+AddressIndex.prototype.getReceiveIndex = function() {
   return this.receiveIndex;
 };
 

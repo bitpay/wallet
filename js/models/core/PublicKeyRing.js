@@ -27,7 +27,7 @@ function PublicKeyRing(opts) {
 
   this.copayersHK = opts.copayersHK || [];
 
-  this.indexes = opts.indexes || new ;
+  this.indexes = AddressIndex.fromObj(opts.indexes) || new AddressIndex(opts);
 
   this.publicKeysCache = opts.publicKeysCache || {};
   this.nicknameFor = opts.nicknameFor || {};
@@ -159,7 +159,7 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
 
 // TODO this could be cached
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
-  this._checkIndexRange(index, isChange);
+  this.indexes.checkRange(index, isChange);
 
   var pubKeys = this.getPubKeys(index, isChange);
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
