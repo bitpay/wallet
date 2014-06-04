@@ -245,11 +245,8 @@ Wallet.prototype.netStart = function() {
     self.emit('ready', net.getPeer());
     self.token = net.peer.options.token;
     setTimeout(function() {
-      console.log('[EMIT publicKeyRingUpdated:]'); //TODO
       self.emit('publicKeyRingUpdated', true);
-      console.log('[CONNECT:]'); //TODO
       self.scheduleConnect();
-      console.log('[EMIT TxProposal]'); //TODO
       self.emit('txProposalsUpdated');
       self.store();
     }, 10);
