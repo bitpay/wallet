@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.directives')
+angular.module('copayApp.directives')
   .directive('validAddress', [
 
     function() {

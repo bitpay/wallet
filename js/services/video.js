@@ -69,11 +69,9 @@ Video.prototype._addCall = function(mediaConnection, cb) {
   });
 
   mediaConnection.on('close', function() {
-    console.log('Media connection closed with ' + peerID);
     cb(true, peerID, null); // ask to stop video streaming in UI
   });
   mediaConnection.on('error', function(e) {
-    console.log('Media connection error with ' + peerID);
     cb(e, peerID, null);
   });
   this.mediaConnections[peerID] = mediaConnection;
@@ -93,4 +91,4 @@ Video.prototype.close = function() {
   this.mediaConnections = {};
 };
 
-angular.module('copay.video').value('video', new Video());
+angular.module('copayApp.services').value('video', new Video());
