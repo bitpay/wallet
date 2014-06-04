@@ -2,15 +2,6 @@
 
 
 var imports = require('soop').imports();
-var bitcore = require('bitcore');
-var HK = bitcore.HierarchicalKey;
-var PrivateKey = require('./PrivateKey');
-var Structure = require('./Structure');
-var Address = bitcore.Address;
-var Script = bitcore.Script;
-var coinUtil = bitcore.util;
-var Transaction = bitcore.Transaction
-var util = bitcore.util;
 
 function AddressIndex(opts) {
   opts = opts || {};
