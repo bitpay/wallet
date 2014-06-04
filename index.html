@@ -520,14 +520,16 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <a class="size-12" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">Show</a>
-            <a class="size-12" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">Hide</a>
+            <div class="m10b size-12">
+              <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
+              <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
+            </div>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
               </div>
               <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
-                <div class="m15">
+                <div class="m10 size-12">
                   <div class="row">
                     <div class="large-8 columns">
                       <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
@@ -535,36 +537,37 @@
                       </a>
                     </div>
                     <div class="large-4 columns text-right">
-                      {{btx.firstSeenTs * 1000 | amCalendar}} </h6>
-                    </div>
-                  </div>
-                </div>
-                <div class="tx-copayers">
-                  <div class="large-5 small-5 columns">
-                    <div ng-repeat="vin in btx.vin track by $index | groupByAddress">
-                      <p class="small-8 ellipsis left text-gray size-12"> {{vin.addr}} </p>
-                      <small class="small-4 right">{{vin.value}}</small>
-                    </div>
-                  </div>
-                  <div class="large-1 small-1 columns text-center">
-                    <i class="fi-arrow-right"></i>
-                  </div>
-                  <div class="large-6 small-6 columns">
-                    <div ng-repeat="vout in btx.vout">
-                      <div class="row">
-                        <div class="large-10 small-8 columns">
-                          <div ng-repeat="addr in vout.scriptPubKey.addresses">
-                            <p class="ellipsis text-gray size-12"> {{addr}} </p>
-                          </div>
-                        </div>
-                        <div class="large-2 small-4 columns">
-                          <small>{{vout.value}}</small>
-                        </div>
+                      <div data-ng-show="btx.firstSeenTs">
+                        first seen at 
+                        <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+                      </div>
+                      <div data-ng-show="btx.time && !btx.firstSeenTs">
+                        mined at
+                        <time>{{btx.time * 1000 | amCalendar}}</time>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="m15 size-12 text-gray">
+                <div class="tx-copayers">
+                  <div class="row">
+                    <div class="large-5 medium-5 small-5 columns">
+                      <div ng-repeat="vin in btx.vinSimple">
+                        <small class="right m5t">{{vin.value}}</small>
+                        <p class="ellipsis text-gray size-12"> {{vin.addr}} </p>
+                      </div>
+                    </div>
+                    <div class="large-1 medium-1 small-1 columns text-center">
+                      <i class="fi-arrow-right"></i>
+                    </div>
+                    <div class="large-6 medium-6 small-6 columns">
+                      <div ng-repeat="vout in btx.voutSimple">
+                        <small class="right m5t">{{vout.value}}</small>
+                        <p class="ellipsis text-gray size-12"> {{vout.addr}} </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="m10 size-12 text-gray">
                   <div class="row">
                     <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees}}</div>
                     <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
