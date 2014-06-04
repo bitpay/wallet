@@ -72,6 +72,16 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
+Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
+  this.log('RECV INDEXES:', data);
+  var inIndexes = copay.AddressIndex.fromObj(data.indexes);
+  var hasChanged = this.publicKeyRing.indexes.merge(inIndexes);
+  if (hasChanged) {
+    this.emit('publicKeyRingUpdated');
+    this.store();
+  }
+};
+
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
@@ -87,9 +97,9 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
+    this.emit('publicKeyRingUpdated');
+    this.store();
   }
-  this.emit('publicKeyRingUpdated');
-  this.store();
 };
 
 
@@ -141,6 +151,9 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'txProposals':
       this._handleTxProposals(senderId, data, isInbound);
+      break;
+    case 'indexes':
+      this._handleIndexes(senderId, data, isInbound);
       break;
   }
 };
@@ -378,6 +391,15 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     walletId: this.id,
   });
 };
+Wallet.prototype.sendIndexes = function(recipients) {
+  this.log('### INDEXES TO:', recipients || 'All', this.publicKeyRing.indexes.toObj());
+
+  this.network.send(recipients, {
+    type: 'indexes',
+    indexes: this.publicKeyRing.indexes.toObj(),
+    walletId: this.id,
+  });
+};
 
 Wallet.prototype.getName = function() {
   return this.name || this.id;
@@ -390,7 +412,7 @@ Wallet.prototype._doGenerateAddress = function(isChange) {
 
 Wallet.prototype.generateAddress = function(isChange, cb) {
   var addr = this._doGenerateAddress(isChange);
-  this.sendPublicKeyRing();
+  this.sendIndexes();
   this.store();
   if (cb) return cb(addr);
   return addr;
@@ -596,7 +618,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   this.getUnspent(function(err, safeUnspent) {
     var ntxid = self.createTxSync(toAddress, amountSatStr, safeUnspent, opts);
     if (ntxid) {
-      self.sendPublicKeyRing();
+      self.sendIndexes();
       self.sendTxProposals(null, ntxid);
       self.store();
       self.emit('txProposalsUpdated');

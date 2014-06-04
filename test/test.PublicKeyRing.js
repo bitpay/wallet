@@ -96,8 +96,8 @@ describe('PublicKeyRing model', function() {
       (function() {w.addCopayer(copayers[i])}).should.throw();
     }
 
-    w2.changeAddressIndex.should.equal(changeN);   
-    w2.addressIndex.should.equal(addressN); 
+    w2.indexes.getChangeIndex().should.equal(changeN);   
+    w2.indexes.getReceiveIndex().should.equal(addressN); 
   });
 
 
@@ -148,8 +148,8 @@ describe('PublicKeyRing model', function() {
     for(var i=0; i<2; i++)
       w.generateAddress(false);
 
-    w.changeAddressIndex.should.equal(3);   
-    w.addressIndex.should.equal(2); 
+    w.indexes.getChangeIndex().should.equal(3);   
+    w.indexes.getReceiveIndex().should.equal(2); 
   });
 
   it('#merge index tests', function () {
@@ -168,8 +168,8 @@ describe('PublicKeyRing model', function() {
     w2.merge(w).should.equal(true);
     w2.requiredCopayers.should.equal(3);   
     w2.totalCopayers.should.equal(5);   
-    w2.changeAddressIndex.should.equal(2);   
-    w2.addressIndex.should.equal(3); 
+    w2.indexes.getChangeIndex().should.equal(2);   
+    w2.indexes.getReceiveIndex().should.equal(3); 
 
     //
     w2.merge(w).should.equal(false);
