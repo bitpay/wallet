@@ -33,7 +33,7 @@ module.exports = function(config) {
       'lib/crypto-js/rollups/pbkdf2.js',
       'lib/crypto-js/rollups/aes.js',
       'lib/file-saver/FileSaver.js',
-      'lib/socket.io.js',
+      'lib/socket.io-client/socket.io.js',
       'lib/sjcl.js',
       'lib/ios-imagefile-megapixel/megapix-image.js',
       'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
