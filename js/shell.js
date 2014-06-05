@@ -14,7 +14,12 @@
   if (typeof module !== 'undefined') module = { exports: null };
 
   // are we running in copay shell?
-  if (process && process.type === 'renderer') initCopayShellBindings();
+  if (window.process && process.type === 'renderer') {
+    window.cshell = initCopayShellBindings();
+  }
+  else {
+    return;
+  }
 
   function controller(name) {
     return angular.element(
@@ -24,37 +29,74 @@
     ).scope();
   };
 
+  function needsWalletLogin(ipc) {
+    ipc.send('alert', 'info', 'Please select a wallet.');
+  };
+
   function initCopayShellBindings() {
 
     var ipc = require('ipc');
 
     ipc.on('address:create', function(data) {
       location.href = '#/addresses';
-      controller('AddressesController').newAddr();
+      var ctrl = controller('AddressesController');
+      if (!ctrl) return needsWalletLogin(ipc);
+      ctrl.newAddr();
     });
 
     ipc.on('transactions:send', function(data) {
       location.href = '#/send';
+      var ctrl = controller('SendController');
+      if (!ctrl) return needsWalletLogin(ipc);
     });
 
     ipc.on('transactions:all', function(data) {
       location.href = '#/transactions';
-      controller('TransactionsController').show();
+      var ctrl = controller('TransactionsController');
+      if (!ctrl) return needsWalletLogin(ipc);
+      ctrl.show();
     });
 
     ipc.on('transactions:pending', function(data) {
       location.href = '#/transactions';
-      controller('TransactionsController').show(true);
+      var ctrl = controller('TransactionsController');
+      if (!ctrl) return needsWalletLogin(ipc);
+      ctrl.show(true);
     });
 
     ipc.on('backup:download', function(data) {
-
+      location.href = '#/backup';
+      var ctrl = controller('BackupController');
+      if (!ctrl) return needsWalletLogin(ipc);
+      ctrl.download();
     });
 
     ipc.on('backup:email', function(data) {
-
+      location.href = '#/backup';
+      var ctrl = controller('BackupController');
+      if (!ctrl) return needsWalletLogin(ipc);
+      ctrl.openModal();
     });
 
+    ipc.on('backup:import:data', function(data) {
+      location.href = '#/import';
+      var ctrl = controller('ImportController');
+      if (!ctrl) return;
+      ctrl.backupText = data;
+      ctrl.openPasteArea();
+      ctrl.$apply();
+    });
+
+    ipc.on('backup:import', function(data) {
+      location.href = '#/import';
+    });
+
+    // let the shell know when an error occurs
+    window.onerror = function(err) {
+      ipc.send('error', err);
+    };
+
+    return ipc;
   };
 
 })();

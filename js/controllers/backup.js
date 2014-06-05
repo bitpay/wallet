@@ -15,9 +15,17 @@ angular.module('copayApp.controllers').controller('BackupController',
       var filename = walletName + '-' + timestamp + '.json.aes';
       var wallet = _getEncryptedWallet();
       var blob = new Blob([wallet], {type: 'text/plain;charset=utf-8'});
+      // show a native save dialog if we are in the shell
+      // and pass the wallet to the shell to convert to node Buffer
+      if (window.cshell) {
+        return window.cshell.send('backup:download', {
+          name: walletName,
+          wallet: wallet
+        });
+      }
+      // otherwise lean on the browser implementation
       saveAs(blob, filename);
     };
-
 
   $scope.openModal = function () {
     var modalInstance = $modal.open({
@@ -34,6 +42,10 @@ angular.module('copayApp.controllers').controller('BackupController',
     var href = 'mailto:' + email + '?'
      + 'subject=[Copay Backup] ' + subject + '&'
      + 'body=' + body;
+
+    if (window.cshell) {
+      return window.cshell.send('backup:email', href);
+    }
 
     var newWin = $window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
 
