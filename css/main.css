@@ -603,6 +603,10 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   background: #16A085;
 }
 
+.alert-box a { 
+  color:white;
+}
+
 @media only screen and (max-width: 40em) { 
 
   #main, .header-content {

@@ -75,9 +75,9 @@
 
       <div class="row" ng-if="updateVersion">
         <div class="small-9 large-centered columns">
-          <div data-alert class="alert-box radius {{updateVersion}}">
-            A newer version of Copay is now available, please update your wallet to a latest version.
-            Please check <a href="http://www.copay.io">Copay.io</a>.
+          <div data-alert class="alert-box radius {{updateVersion.class}}">
+            A newer version of Copay is now available ({{updateVersion.version}}), please update your wallet.
+            Check <a href="http://www.copay.io">Copay.io</a> for details.
           </div>
         </div>
       </div>
