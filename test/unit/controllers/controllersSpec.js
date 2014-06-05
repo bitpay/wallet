@@ -50,12 +50,7 @@ describe("Unit: Controllers", function() {
   });
 
   describe("Unit: Header Controller", function() {
-    beforeEach(module('notifications'));
-    beforeEach(module('copayApp.services'));
-    beforeEach(module('copayApp.controllers'));
-
     var scope, $httpBackendOut;
-//
     var GH = 'https://api.github.com/repos/bitpay/copay/tags';
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
@@ -121,33 +116,4 @@ describe("Unit: Controllers", function() {
   });
 
 });
-//
-//   it('should have a BackupController controller', function() {
-//     expect(copayApp.Backupcontroller).not.to.equal(null);
-//   });
-//
-//   it('should have a HeaderController controller', function() {
-//     expect(copayApp.HeaderController).not.to.equal(null);
-//   });
-//
-//   it('should have a SendController controller', function() {
-//     expect(copayApp.SendController).not.to.equal(null);
-//   });
-//
-//   it('should have a SetupController controller', function() {
-//     expect(copayApp.SetupController).not.to.equal(null);
-//   });
-//
-//   it('should have a SigninController controller', function() {
-//     expect(copayApp.SigninController).not.to.equal(null);
-// console.log('[controllersSpec.js.30:copayApp:]',copayApp); //TODO
-//   });
-//
-//   it('should have a TransactionsController controller', function() {
-//     expect(copayApp.TransactionsController).not.to.equal(null);
-//   });
-//
-//   beforeEach(angular.mock.module('copay.walletFactory'));
-//   it('should display a link to create a new wallet if no wallets in localStorage', inject(function(walletFactory) {
-//     expect(walletFactory.storage.getWalletIds()).to.be.empty;
-//   }));
+
