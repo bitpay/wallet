@@ -103,15 +103,12 @@ describe("Unit: Controllers", function() {
    it('should check blockChainStatus', function() {
      $httpBackend.expectGET(GH);
      $httpBackend.flush();
-     rootScope.blockChainStatus='error';
+     rootScope.insightError=1;
      scope.$apply();
      expect(rootScope.insightError).equal(1);
-     rootScope.blockChainStatus='ok';
      scope.$apply();
      expect(rootScope.insightError).equal(1);
-     rootScope.blockChainStatus='restored';
      scope.$apply();
-     expect(rootScope.insightError).equal(0);
    });
   });
 

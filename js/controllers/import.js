@@ -9,6 +9,8 @@ angular.module('copayApp.controllers').controller('ImportController',
         var w, errMsg;
         try {
           w = walletFactory.fromEncryptedObj(encryptedObj, passphrase);
+
+console.log('[import.js.12]',w.toObj()); //TODO
         } catch(e) {
           errMsg = e.message;
         }
