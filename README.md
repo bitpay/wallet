@@ -1,6 +1,10 @@
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
 
 # Copay
+Copay is a secure multisignature bitcoin wallet for friends and companies.
+
+When friends or company executives join a Copay wallet, more than one person must sign every transaction. If your computer is compromised and your private keys are stolen, the bitcoins are still safe. This is in addition to state-of-the-art encrypted storage and communication.
+
 
 ## Installation:
 
