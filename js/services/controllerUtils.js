@@ -174,7 +174,6 @@ angular.module('copayApp.services')
     };    
 
     root._setCommError = function(e) {
-      // first error ever?
       if ($rootScope.insightError<0) 
         $rootScope.insightError=0;
       $rootScope.insightError++;
@@ -182,7 +181,10 @@ angular.module('copayApp.services')
 
 
     root._clearCommError = function(e) {
-      $rootScope.insightError=0;
+      if ($rootScope.insightError>0)
+        $rootScope.insightError=-1;
+      else
+        $rootScope.insightError=0;
     };
 
     root.setSocketHandlers = function() {
