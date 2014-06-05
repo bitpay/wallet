@@ -174,8 +174,11 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    w.getUsedUnspent().length.should.equal(1);
-    w.getUsedUnspent()[0].should.equal(unspentTest[0].txid);
+    console.log(w.getUsedUnspent());
+    var uu = w.getUsedUnspent();
+    var uuk = Object.keys(uu);
+    uuk.length.should.equal(1);
+    uuk[0].split(',')[0].should.equal(unspentTest[0].txid);
   });
 
   it('#merge with self', function () {
