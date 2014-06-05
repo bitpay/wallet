@@ -50,3 +50,6 @@ version.js
 
 android/package
 android/*.apk
+
+
+coverage/
