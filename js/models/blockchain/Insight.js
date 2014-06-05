@@ -182,7 +182,7 @@ Insight.prototype._request = function(options, callback) {
     request.open(options.method, url, true);
     request.timeout = 5000;
     request.ontimeout = function() {
-      console.log('Insight timeout...retrying', err, self.retryDelay); //TODO
+      console.log('Insight timeout...retrying');
       setTimeout(function() {
         return self._request(options,callback);
       }, self.retryDelay);
