@@ -24,6 +24,31 @@ p {
   font-size: 1.2rem;
 }
 
+.line-dashed-v {
+  border-right: 1px dashed #E3E3E3;
+}
+
+.header-modal {
+  background: #2C3E50;
+  margin-bottom: 20px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+button.warning, 
+.button.warning { 
+  background-color: #C0392A;
+  color: #fff;
+}
+
+.box-download {
+  border: 1px solid #f2f2f2;
+  border-radius: 5px;
+  background: #f8f8f8;
+  padding: 5rem 0;
+  margin: 0;
+}
+
 .backstretch {
   left: 0px;
   top: 0px; 
