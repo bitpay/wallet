@@ -1,7 +1,7 @@
 //
 // test/unit/controllers/controllersSpec.js
 //
-describe("Unit: Testing Controllers", function() {
+describe("Unit: Controllers", function() {
 
   var scope;
 
@@ -48,4 +48,105 @@ describe("Unit: Testing Controllers", function() {
       expect(scope.blockchain_txs).to.be.empty;
     });
   });
+
+  describe("Unit: Header Controller", function() {
+    beforeEach(module('notifications'));
+    beforeEach(module('copayApp.services'));
+    beforeEach(module('copayApp.controllers'));
+
+    var scope, $httpBackendOut;
+//
+    var GH = 'https://api.github.com/repos/bitpay/copay/tags';
+    beforeEach(inject(function($controller, $injector) {
+      $httpBackend = $injector.get('$httpBackend');
+      $httpBackend.when('GET', GH)
+      .respond( [{
+        name: "v100.1.6",
+        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+        commit: {
+          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+        }
+      }]);
+    }));
+
+    var rootScope;
+    beforeEach(inject(function($controller, $rootScope) {
+      rootScope = $rootScope;
+      scope = $rootScope.$new();
+      headerCtrl = $controller('HeaderController', {
+        $scope: scope,
+      });
+    }));
+
+
+    afterEach(function() {
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should have a txAlertCount', function() {
+      expect(scope.txAlertCount).equal(0);
+      $httpBackend.flush();
+    });
+
+   it('should hit github for version', function() {
+     $httpBackend.expectGET(GH);
+     scope.$apply();
+     $httpBackend.flush();
+   });
+
+   it('should check version ', function() {
+     $httpBackend.expectGET(GH);
+     scope.$apply();
+     $httpBackend.flush();
+     expect(scope.updateVersion).equal('error');
+   });
+
+   it('should check blockChainStatus', function() {
+     $httpBackend.expectGET(GH);
+     $httpBackend.flush();
+     rootScope.blockChainStatus='error';
+     scope.$apply();
+     expect(rootScope.insightError).equal(1);
+     rootScope.blockChainStatus='ok';
+     scope.$apply();
+     expect(rootScope.insightError).equal(1);
+     rootScope.blockChainStatus='restored';
+     scope.$apply();
+     expect(rootScope.insightError).equal(0);
+   });
+  });
+
 });
+//
+//   it('should have a BackupController controller', function() {
+//     expect(copayApp.Backupcontroller).not.to.equal(null);
+//   });
+//
+//   it('should have a HeaderController controller', function() {
+//     expect(copayApp.HeaderController).not.to.equal(null);
+//   });
+//
+//   it('should have a SendController controller', function() {
+//     expect(copayApp.SendController).not.to.equal(null);
+//   });
+//
+//   it('should have a SetupController controller', function() {
+//     expect(copayApp.SetupController).not.to.equal(null);
+//   });
+//
+//   it('should have a SigninController controller', function() {
+//     expect(copayApp.SigninController).not.to.equal(null);
+// console.log('[controllersSpec.js.30:copayApp:]',copayApp); //TODO
+//   });
+//
+//   it('should have a TransactionsController controller', function() {
+//     expect(copayApp.TransactionsController).not.to.equal(null);
+//   });
+//
+//   beforeEach(angular.mock.module('copay.walletFactory'));
+//   it('should display a link to create a new wallet if no wallets in localStorage', inject(function(walletFactory) {
+//     expect(walletFactory.storage.getWalletIds()).to.be.empty;
+//   }));

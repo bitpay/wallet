@@ -25,12 +25,12 @@ angular.module('copayApp.controllers').controller('HeaderController',
       var toInt = function (s) { return parseInt(s); };
       var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
       var currentVersion = copay.version.split('.').map(toInt);
-
       if (currentVersion[0] < latestVersion[0]){
         $scope.updateVersion = 'error';
       } else if (currentVersion[0] == latestVersion[0] && currentVersion[1] < latestVersion[1]) {
         $scope.updateVersion = 'info';
-      }
+      } else 
+        $scope.updateVersion = 'ok';
     });
 
 
