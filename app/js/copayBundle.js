@@ -18657,8 +18657,8 @@ module.exports = require('soop')(FakeStorage);
 
 },{"soop":83}],"./mocks/FakeStorage":[function(require,module,exports){
 module.exports=require('q/5+08');
+},{}],"RvaLt1":[function(require,module,exports){
+module.exports="0.1.0";
 },{}],"./version":[function(require,module,exports){
 module.exports=require('RvaLt1');
-},{}],"RvaLt1":[function(require,module,exports){
-module.exports="0.0.6";
 },{}]},{},[])
