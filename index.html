@@ -82,12 +82,12 @@
         </div>
       </div>
 
-      <div class="row" ng-if='$root.insightError'>
+      <div class="row" ng-if='$root.insightError>1'>
         <div class="small-8 large-centered columns">
           <div data-alert class="alert-box radius error">
-            Error connecting to Insight server.  Check
-            you settings and Internet connection.
-            Trying to reconnect...
+            Having troubles connecting to Insight server.  Check
+            you settings and Internet connection.<br>
+            Reconnect Atempt #{{$root.insightError}}
           </div>
         </div>
       </div>

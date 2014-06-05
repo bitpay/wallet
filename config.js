@@ -109,12 +109,15 @@ var defaultConfig = {
   // blockchain service API config
   blockchain: {
     host: 'test.insight.is',
-    port: 80
+    port: 80,
+    retryDelay: 1000,
   },
   // socket service API config
   socket: {
     host: 'test.insight.is',
-    port: 80
+    port: 80,
+    // will duplicate itself after each try
+    reconnectDelay: 500,
   },
 
   // local encryption/security config
