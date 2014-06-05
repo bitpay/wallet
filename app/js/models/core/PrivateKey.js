@@ -3,11 +3,11 @@
 
 var imports     = require('soop').imports();
 var bitcore     = require('bitcore');
-var HK       = bitcore.HierarchicalKey;
+var HK          = bitcore.HierarchicalKey;
 var WalletKey   = bitcore.WalletKey;
 var networks    = bitcore.networks;
 var util        = bitcore.util;
-var PublicKeyRing  = require('./PublicKeyRing');
+var Structure   = require('./Structure');
 
 function PrivateKey(opts) {
   opts = opts || {};
@@ -20,12 +20,19 @@ function PrivateKey(opts) {
 
 PrivateKey.prototype.getId = function() {
   if (!this.id) {
-    var path = PublicKeyRing.ID_BRANCH;
-    var bip32 = this.bip.derive(path);
-    this.id= bip32.eckey.public.toString('hex');
+    var path = Structure.IdFullBranch;
+    var idhk = this.bip.derive(path);
+    this.id= idhk.eckey.public.toString('hex');
   }
   return this.id;
 };
+
+PrivateKey.prototype.deriveBIP45Branch = function() {
+  if (!this.bip45Branch) {
+    this.bip45Branch = this.bip.derive(Structure.BIP45_PUBLIC_PREFIX);
+  }
+  return this.bip45Branch;
+}
 
 PrivateKey.fromObj = function(obj) {
   return new PrivateKey(obj);
@@ -54,26 +61,35 @@ PrivateKey.prototype._getHK = function(path) {
   return this.bip.derive(path);
 };
 
-PrivateKey.prototype.get = function(index,isChange) {
-  var path = PublicKeyRing.Branch(index, isChange);
+PrivateKey.prototype.getForPaths = function(paths) {
+  return paths.map(this.getForPath.bind(this));
+};
+
+PrivateKey.prototype.getForPath = function(path) {
   var pk = this.privateKeyCache[path];
   if (!pk) {
     var derivedHK =  this._getHK(path);
     pk = this.privateKeyCache[path] = derivedHK.eckey.private.toString('hex');
-  } else {
-    //console.log('cache hit!');
   }
   var wk = new WalletKey({network: this.network});
   wk.fromObj({priv: pk});
   return wk;
 };
 
-PrivateKey.prototype.getAll = function(addressIndex, changeAddressIndex) {
+PrivateKey.prototype.get = function(index,isChange) {
+  var path = Structure.FullBranch(index, isChange);
+  return this.getForPath(path);
+};
+
+PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
+  if (typeof receiveIndex === 'undefined' || typeof changeIndex === 'undefined')
+    throw new Error('Invalid parameters');
+
   var ret = [];
-  for(var i=0;i<addressIndex; i++) {
+  for(var i=0;i<receiveIndex; i++) {
     ret.push(this.get(i,false));
   }
-  for(var i=0; i<changeAddressIndex; i++) {
+  for(var i=0; i<changeIndex; i++) {
     ret.push(this.get(i,true));
   }
   return ret;

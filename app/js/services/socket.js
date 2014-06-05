@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('copay.socket').factory('Socket',
+angular.module('copayApp.services').factory('Socket',
   function($rootScope) {
     var listeners = [];
     var url = 'http://' + config.socket.host + ':' + config.socket.port;
-    var socket = io.connect(url, {
-      'reconnect': true,
-      'reconnection delay': 500,
+    var socket = io(url, {
+      'reconnection': true,
+      'reconnectionDelay': config.socket.reconnectDelay || 500,
     });
 
     return {
@@ -17,7 +17,6 @@ angular.module('copay.socket').factory('Socket',
             callback.apply(socket, args);
           });
         };
-
         socket.on(event, wrappedCallback);
         if (event !== 'connect') {
           listeners.push({
@@ -26,9 +25,21 @@ angular.module('copay.socket').factory('Socket',
           });
         }
       },
+      sysOn: function(event, callback) {
+        var wrappedCallback = function() {
+          var args = arguments;
+          $rootScope.$apply(function() {
+            callback.apply(socket, args);
+          });
+        };
+        socket.io.on(event, wrappedCallback);
+      },
       getListeners: function() {
         var ret = {};
-        var addrList = listeners.map(function(i) {return i.event;});
+
+        var addrList = listeners
+          .map(function(i) {return i.event;});
+
         for (var i in addrList) {
           ret[addrList[i]] = 1;
         }

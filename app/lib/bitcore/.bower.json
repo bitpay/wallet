@@ -1,7 +1,7 @@
 {
   "name": "bitcore",
   "main": "browser/bundle.js",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "homepage": "http://bitcore.io",
   "authors": [
     "Ryan X. Charles (<ryan@bitpay.com>)"
@@ -23,11 +23,11 @@
     "bower_components",
     "tests"
   ],
-  "_release": "0.1.19",
+  "_release": "0.1.20",
   "_resolution": {
     "type": "version",
-    "tag": "v0.1.19",
-    "commit": "4348228c2e388f13f3153c5276d6d5cf9aacb80f"
+    "tag": "v0.1.20",
+    "commit": "a679235e462779910b787f0d2d72213a144c21ee"
   },
   "_source": "git://github.com/bitpay/bitcore.git",
   "_target": "~0.1.19",
