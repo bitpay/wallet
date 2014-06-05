@@ -35,14 +35,15 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
-    $rootScope.insightError = -1;
+    $rootScope.insightError = 0;
 
     $rootScope.$watch('insightError', function(status) {
-      if (status === 0) {
+      if (status === -1) {
         $rootScope.$flashMessage = {
           type: 'success',
           message: 'Networking Restored :)',
         };
+        $rootScope.insightError = 0;
       }
     });
 

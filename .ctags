@@ -1,0 +1,2 @@
+--exclude=js/copayBundle.js
+--exclude=lib/bitcore/browser/bundle.js

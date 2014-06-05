@@ -231,15 +231,17 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   return i;
 };
 
+//returns the unspent txid-vout used in PENDING Txs
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
-  var ret = [];
+  var ret = {};
   for(var i in this.txps) {
     var u = this.txps[i].builder.getSelectedUnspent();
-    if (this.getTxProposal(i).rejectCount>maxRejectCount)
+    var p = this.getTxProposal(i);
+    if (p.rejectCount>maxRejectCount || p.sentTxid)
       continue;
 
-    for (var j in u){
-      ret.push(u[j].txid);
+    for (var j in u) {
+      ret[u[j].txid + ',' + u[j].vout]=1;
     }
   }
   return ret;
