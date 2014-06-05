@@ -26,11 +26,10 @@ angular.module('copayApp.controllers').controller('HeaderController',
       var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
       var currentVersion = copay.version.split('.').map(toInt);
       if (currentVersion[0] < latestVersion[0]){
-        $scope.updateVersion = 'error';
+        $scope.updateVersion = {class: 'error', version:data[0].name};
       } else if (currentVersion[0] == latestVersion[0] && currentVersion[1] < latestVersion[1]) {
-        $scope.updateVersion = 'info';
-      } else 
-        $scope.updateVersion = 'ok';
+        $scope.updateVersion = {class: 'info', version:data[0].name};
+      } 
     });
 
 

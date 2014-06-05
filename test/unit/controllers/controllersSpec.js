@@ -101,7 +101,8 @@ describe("Unit: Controllers", function() {
      $httpBackend.expectGET(GH);
      scope.$apply();
      $httpBackend.flush();
-     expect(scope.updateVersion).equal('error');
+     expect(scope.updateVersion.class).equal('error');
+     expect(scope.updateVersion.version).equal('v100.1.6');
    });
 
    it('should check blockChainStatus', function() {
