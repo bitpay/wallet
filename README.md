@@ -1,5 +1,5 @@
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
-[![Coverage Status](https://img.shields.io/coveralls/bitpay/copay.svg)](https://coveralls.io/r/bitpay/copay)
+[![Coverage Status](https://coveralls.io/repos/bitpay/copay/badge.png?branch=)](https://coveralls.io/r/bitpay/copay?branch=)
 
 # Copay
 Copay is a secure bitcoin wallet for friends and companies.
