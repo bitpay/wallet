@@ -174,7 +174,6 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    console.log(w.getUsedUnspent());
     var uu = w.getUsedUnspent();
     var uuk = Object.keys(uu);
     uuk.length.should.equal(1);
