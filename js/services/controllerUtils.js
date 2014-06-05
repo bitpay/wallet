@@ -174,12 +174,30 @@ angular.module('copayApp.services')
       $rootScope.pendingTxCount = pendingForUs;
     };    
 
+    root._setCommError = function(e) {
+      $rootScope.blockChainStatus='error';
+    };
+
+
+    root._clearCommError = function(e) {
+      if ($rootScope.blockChainStatus==='error')
+        $rootScope.blockChainStatus='restored';
+    };
+
     root.setSocketHandlers = function() {
+      if (!Socket.sysEventsSet) {
+        Socket.sysOn('error', root._setCommError);
+        Socket.sysOn('reconnect_error', root._setCommError);
+        Socket.sysOn('reconnect_failed', root._setCommError);
+        Socket.sysOn('connect', root._clearCommError);
+        Socket.sysOn('reconnect', root._clearCommError);
+        Socket.sysEventsSet=true;
+      }
       if (!$rootScope.wallet) return;
 
       var currentAddrs=  Socket.getListeners();
       var addrs = $rootScope.wallet.getAddressesStr();
-
+      
       var newAddrs=[];
       for(var i in addrs){
         var a=addrs[i];

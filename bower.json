@@ -19,6 +19,7 @@
     "file-saver": "*",
     "qrcode-decoder-js": "*",
     "bitcore": "~0.1.19",
-    "angular-moment": "~0.7.1"
+    "angular-moment": "~0.7.1",
+    "socket.io-client": ">=1.0.0"
   }
 }
