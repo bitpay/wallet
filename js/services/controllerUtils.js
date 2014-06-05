@@ -101,22 +101,21 @@ angular.module('copayApp.services')
 
     root.updateBalance = function(cb) {
       var w = $rootScope.wallet;
+      if (!w) return root.onErrorDigest();
+
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
         if (err) {
-          $rootScope.$flashMessage = {
-            type: 'error',
-            message: 'Error: ' + err.message
-          };
-
-          $rootScope.$digest();
           console.error('Error: ' + err.message); //TODO
-
+          root._setCommError();
           return null;
         }
-
+        else {
+          root._clearCommError();
+        }
+        
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.availableBalance = safeBalance;
@@ -175,13 +174,15 @@ angular.module('copayApp.services')
     };    
 
     root._setCommError = function(e) {
-      $rootScope.blockChainStatus='error';
+      // first error ever?
+      if ($rootScope.insightError<0) 
+        $rootScope.insightError=0;
+      $rootScope.insightError++;
     };
 
 
     root._clearCommError = function(e) {
-      if ($rootScope.blockChainStatus==='error')
-        $rootScope.blockChainStatus='restored';
+      $rootScope.insightError=0;
     };
 
     root.setSocketHandlers = function() {
