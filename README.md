@@ -104,6 +104,31 @@ $ sh webapp/build.sh
 - The ZIP file is *webapp/download/copay.zip*
 - The *webapp/copay-webapp* is the unzipped version
 
+## Android APK
+System Requirements
+
+* Download [Android SDK](http://developer.android.com/sdk/index.html)
+* Download and install [Crosswalk](https://crosswalk-project.org/#documentation/getting_started) (Use Linux setup for OSX)
+
+Add to your ~/.bash_profile or ~/.bashrc
+
+```
+export CROSSWALK="<path to Crosswalk directory>"
+```
+
+To build the APK run the script:
+
+```
+sh android/build.sh
+```
+- The APK file is in **android/Copay_VERSION_arm.apk**
+
+To install the APK in your device run:
+
+```
+adb install -r Copay_VERSION_arm.apk
+```
+
 
 # About Copay
 
