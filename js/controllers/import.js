@@ -24,6 +24,17 @@ angular.module('copayApp.controllers').controller('ImportController',
       });
     };
 
+    $scope.openFileDialog = function() {
+      if (window.cshell) {
+        return cshell.send('backup:import');
+      }
+      $scope.choosefile = !$scope.choosefile;
+    };
+
+    $scope.openPasteArea = function() {
+      $scope.pastetext = !$scope.pastetext;
+    };
+
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
@@ -53,7 +64,7 @@ angular.module('copayApp.controllers').controller('ImportController',
       }
 
       $scope.loading = true;
-      
+
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       }

@@ -259,9 +259,9 @@
               <div class="large-6 large-centered medium-6 medium-centered columns">
                 <fieldset>
                   <legend>Select which method want to use to restore</legend>
-                  <label for="backupFile" ng-click="choosefile=!choosefile" class="m10b">&middot; Choose backup file from your computer <i class="fi-laptop"></i></label>
+                  <label for="backupFile" ng-click="openFileDialog()" class="m10b">&middot; Choose backup file from your computer <i class="fi-laptop"></i></label>
                   <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select ng-show="choosefile">
-                  <label for="backupText" ng-click="pastetext=!pastetext" class="m10b">&middot; Paste backup plain text code <i class="fi-clipboard"></i></label>
+                  <label for="backupText" ng-click="openPasteArea()" class="m10b">&middot; Paste backup plain text code <i class="fi-clipboard"></i></label>
                   <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
                 </fieldset>
               </div>
@@ -342,7 +342,7 @@
               </div>
             </div>
           </div>
- 
+
           <div class="row line-dashed">
             <div class="large-6 medium-6 small-5 columns text-left">
               <a class="button secondary radius" href="#signin">Go back</a>
@@ -777,7 +777,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
 
 
     <script src="config.js"></script>
-    <!-- <script src="js/shell.js"></script> -->
+    <script src="js/shell.js"></script>
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/angular-moment/angular-moment.js"></script>
