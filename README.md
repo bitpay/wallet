@@ -1,6 +1,12 @@
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
+[![Coverage Status](https://img.shields.io/coveralls/bitpay/copay.svg)](https://coveralls.io/r/bitpay/copay)
 
 # Copay
+Copay is a secure bitcoin wallet for friends and companies.
+Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.
+
+When friends or company executives join a Copay wallet, more than one person must sign every transaction. If your computer is compromised and your private keys are stolen, the bitcoins are still safe. This is in addition to state-of-the-art encrypted storage and communication.
+
 
 ## Installation:
 
