@@ -6,6 +6,10 @@ var copay          = copay || require('../copay');
 var API            = API || copay.API;
 var Storage        = Storage || require('../test/mocks/FakeStorage');
 
+var blanket = require("blanket")({
+  "pattern": "/js/"
+});
+
 describe('API', function() {
 
   it('should have a command called "echo"', function() {
