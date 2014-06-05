@@ -596,8 +596,9 @@ Wallet.prototype.getUnspent = function(cb) {
     var uu = self.txProposals.getUsedUnspent(maxRejectCount);
 
     for (var i in unspentList) {
-      if (uu.indexOf(unspentList[i].txid) === -1)
-        safeUnspendList.push(unspentList[i]);
+      var u=unspentList[i];
+      if (! uu[u.txid +','+u.vout])
+        safeUnspendList.push(u);
     }
 
     return cb(null, safeUnspendList, unspentList);

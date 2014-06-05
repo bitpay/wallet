@@ -23,12 +23,12 @@ var defaultConfig = {
     // Use this to connect to bitpay's PeerJS server
     key: 'satoshirocks', 
     host: '162.242.219.26',
-    port: 80,
+    port: 10000,
     path: '/',
 
     // other PeerJS config
     maxPeers: 15,
-    debug: 3,
+    debug: 1,
 
     // Network encryption config
     sjclParams: {
