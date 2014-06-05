@@ -548,7 +548,7 @@
                     </div>
                     <div class="large-4 columns text-right">
                       <div data-ng-show="btx.firstSeenTs">
-                        first seen at 
+                        first seen at
                         <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
                       </div>
                       <div data-ng-show="btx.time && !btx.firstSeenTs">
@@ -777,6 +777,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
 
 
     <script src="config.js"></script>
+    <script src="lib/mousetrap/mousetrap.min.js"></script>
     <script src="js/shell.js"></script>
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/moment/moment.js"></script>

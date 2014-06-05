@@ -35,8 +35,34 @@
 
   function initCopayShellBindings() {
 
-    var ipc = require('ipc');
+    var ipc   = require('ipc');
+    var clipb = require('clipboard');
 
+    // atom shell forces to implement the clipboard on our own - thanks obama.
+
+    Mousetrap.stopCallback = function() { return false };
+
+    Mousetrap.bind('ctrl+c', function(e) {
+      clipb.writeText(window.getSelection().toString());
+    });
+
+    Mousetrap.bind('ctrl+v', function(e) {
+      if (document.activeElement) {
+        document.activeElement.value = clipb.readText();
+      }
+    });
+
+    Mousetrap.bind('command+c', function(e) {
+      clipb.writeText(window.getSelection().toString());
+    });
+
+    Mousetrap.bind('command+v', function(e) {
+      if (document.activeElement) {
+        document.activeElement.value = clipb.readText();
+      }
+    });
+
+    // handle messages
     ipc.on('address:create', function(data) {
       location.href = '#/addresses';
       var ctrl = controller('AddressesController');
