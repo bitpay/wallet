@@ -35,19 +35,15 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;
+    $rootScope.insightError = -1;
 
-    $rootScope.$watch('blockChainStatus', function(status) {
-      var h = config.blockchain.host + ':' +  config.blockchain.port;
-      if (status === 'error')
-          $rootScope.insightError = 1;
-        else 
-        if (status === 'restored') {
-          $rootScope.insightError = 0;
-          $rootScope.$flashMessage = {
-            type: 'success',
-            message: 'Networking Restored',
-          };
-        }
+    $rootScope.$watch('insightError', function(status) {
+      if (status === 0) {
+        $rootScope.$flashMessage = {
+          type: 'success',
+          message: 'Networking Restored :)',
+        };
+      }
     });
 
 

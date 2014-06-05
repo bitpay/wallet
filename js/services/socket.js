@@ -6,7 +6,7 @@ angular.module('copayApp.services').factory('Socket',
     var url = 'http://' + config.socket.host + ':' + config.socket.port;
     var socket = io(url, {
       'reconnection': true,
-      'reconnectionDelay': 500,
+      'reconnectionDelay': config.socket.reconnectDelay || 500,
     });
 
     return {
