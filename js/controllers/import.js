@@ -21,6 +21,10 @@ angular.module('copayApp.controllers').controller('ImportController',
         $rootScope.wallet = w;
 
         controllerUtils.startNetwork($rootScope.wallet);
+        $rootScope.wallet.on('connectionError', function() {
+          var message = "Looks like you are already connected to this wallet, please logout from it and try importing it again.";
+          $rootScope.$flashMessage = { message: message, type: 'error'};
+        });
       });
     };
 
