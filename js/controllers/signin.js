@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('SigninController',
               $rootScope.$flashMessage = { message: 'Bad secret secret string', type: 'error'};
             else 
               $rootScope.$flashMessage = { message: 'Unknown error', type: 'error'};
-              controllerUtils.onErrorDigest();
+            controllerUtils.onErrorDigest();
           } else {
               controllerUtils.startNetwork(w);
               installStartupHandlers(w);
@@ -76,6 +76,10 @@ angular.module('copayApp.controllers').controller('SigninController',
       });
       wallet.on('ready', function() {
         $scope.loading = false;
+      });
+      wallet.on('serverError', function() {
+        $rootScope.$flashMessage = { message: 'The PeerJS server is not responding, please try again', type: 'error'};
+        controllerUtils.onErrorDigest($scope);
       });
     }
 

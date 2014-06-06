@@ -52,9 +52,11 @@ Network.prototype.cleanUp = function() {
   if (this.peer) {
     this.peer.disconnect();
     this.peer.destroy();
+    this.peer.removeAllListeners();
     this.peer = null;
   }
   this.closing = 0;
+  this.tries = 0;
 };
 
 Network.parent=EventEmitter;
@@ -309,11 +311,31 @@ Network.prototype.start = function(opts, openCallback) {
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
 
-  this.peer = new Peer(this.peerId, this.opts);
-  this.started = true;
-  this._setupPeerHandlers(openCallback);
-};
+  var self = this;
+  var setupPeer = function () {
+    if (self.connectedPeers.length > 0) return; // Already connected!
+    if (self.peer) {
+      self.peer.destroy();
+      self.peer.removeAllListeners();
+    }
 
+    if (self.tries < 2) {
+      self.tries++;
+      self.peer = new Peer(self.peerId, self.opts);
+      self.started = true;
+      self._setupPeerHandlers(openCallback);
+
+      setTimeout(setupPeer, 3000); // Schedule retry
+      return;
+    }
+
+    self.emit('serverError');
+    self.cleanUp();
+  }
+
+  this.tries = 0;
+  setupPeer();
+};
 
 Network.prototype.getOnlinePeerIDs = function() {
   return this.connectedPeers;

@@ -242,6 +242,9 @@ Wallet.prototype.netStart = function() {
   net.on('close', function() {
     self.emit('close');
   });
+  net.on('serverError', function() {
+    self.emit('serverError');
+  });
 
   var myId = self.getMyCopayerId();
   var startOpts = {
