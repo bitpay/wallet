@@ -11,7 +11,7 @@ var spawn    = require('child_process').spawn;
 // update execPath with platform specific binary locations
 switch (process.platform) {
   case 'linux':
-    execPath += '/atom-shell/atom';
+    execPath += '/atom';
     break;
   case 'darwin':
     execPath += '/Atom.app/Contents/MacOS/Atom';
