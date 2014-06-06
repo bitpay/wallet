@@ -21,7 +21,9 @@
   "scripts": {
     "start": "node server.js",
     "test": "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test"
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
+    "shell": "node shell/scripts/launch.js",
+    "setup-shell": "node shell/scripts/download-atom-shell.js"
   },
   "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
@@ -50,7 +52,9 @@
     "sinon": "~1.9.1",
     "soop": "~0.1.5",
     "travis-cov": "^0.2.5",
-    "uglifyify": "~1.2.3"
+    "uglifyify": "~1.2.3",
+    "github-releases": "~0.2.0",
+    "cli-color": "~0.3.2"
   },
   "dependencies": {
     "mocha": "^1.18.2"
