@@ -13,3 +13,8 @@ app.start = function(port, callback) {
 };
 
 module.exports = app;
+
+// if we are running in the copay shell context, initialize the shell bindings
+if (process.versions && process.versions['atom-shell']) {
+  require('./shell')(app);
+}
