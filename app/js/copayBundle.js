@@ -271,8 +271,6 @@ module.exports.API = require('./API');
 
 },{"./API":1,"./js/models/blockchain/Insight":"N916Nn","./js/models/core/AddressIndex":6,"./js/models/core/Passphrase":"07vXYZ","./js/models/core/PrivateKey":"41fjjN","./js/models/core/PublicKeyRing":"6Bv3pA","./js/models/core/Structure":13,"./js/models/core/TxProposals":14,"./js/models/network/WebRTC":"7xJZlt","./js/models/storage/LocalEncrypted":21,"./js/models/storage/LocalPlain":22,"./version":"RvaLt1","soop":83}],"copay":[function(require,module,exports){
 module.exports=require('hxYaTp');
-},{}],"../js/models/blockchain/Insight":[function(require,module,exports){
-module.exports=require('N916Nn');
 },{}],"N916Nn":[function(require,module,exports){
 (function (process){
 'use strict';
@@ -459,7 +457,7 @@ Insight.prototype._request = function(options, callback) {
     request.open(options.method, url, true);
     request.timeout = 5000;
     request.ontimeout = function() {
-      console.log('Insight timeout...retrying', err, self.retryDelay); //TODO
+      console.log('Insight timeout...retrying');
       setTimeout(function() {
         return self._request(options,callback);
       }, self.retryDelay);
@@ -535,7 +533,9 @@ Insight.prototype._request = function(options, callback) {
 module.exports = require('soop')(Insight);
 
 }).call(this,require("/Users/gustavo/Documents/github/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/Users/gustavo/Documents/github/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":65,"bitcore":23,"http":60,"soop":83}],6:[function(require,module,exports){
+},{"/Users/gustavo/Documents/github/copay/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":65,"bitcore":23,"http":60,"soop":83}],"../js/models/blockchain/Insight":[function(require,module,exports){
+module.exports=require('N916Nn');
+},{}],6:[function(require,module,exports){
 'use strict';
 
 
