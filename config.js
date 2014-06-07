@@ -43,8 +43,32 @@ var defaultConfig = {
       'iceServers': [
         // Pass in STUN and TURN servers for maximum network compatibility
         {
-          url: 'stun:stun01.sipphone.com'
-        },
+          url: 'stun:stun.l.google.com:19302'
+        }, {
+          url: 'stun:stun1.l.google.com:19302'
+        }, {
+          url: 'stun:stun2.l.google.com:19302'
+        }, {
+          url: 'stun:stun3.l.google.com:19302'
+        }, {
+          url: 'stun:stun4.l.google.com:19302'
+        }, {
+          url: 'stun:stunserver.org'
+        }
+        // Options fot TURN servers with p2p communications are not possible.
+        // {
+        //   url: 'turn:numb.viagenie.ca',
+        //   credential: 'muazkh',
+        //   username: 'webrtc@live.com'
+        // }, {
+        //   url: 'turn:192.158.29.39:3478?transport=udp',
+        //   credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+        //   username: '28224511:1379330808'
+        // }, {
+        //   url: 'turn:192.158.29.39:3478?transport=tcp',
+        //   credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+        //   username: '28224511:1379330808'
+        // }
       ]
     }
   },
@@ -55,7 +79,7 @@ var defaultConfig = {
     totalCopayers: 3,
     spendUnconfirmed: 1,
     verbose: 1,
-    reconnectDelay: 5000,
+    reconnectDelay: 500,
   },
 
   // blockchain service API config
