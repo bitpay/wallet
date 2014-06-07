@@ -23,6 +23,7 @@ function Network(opts) {
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
+  this.reconnectAttempts = opts.reconnectAttempts || 3;
   this.sjclParams     = opts.sjclParams || {
     salt: 'f28bfb49ef70573c', 
     iter:500,
@@ -49,6 +50,7 @@ Network.prototype.cleanUp = function() {
   this.isInboundPeerAuth=[];
   this.copayerForPeer={};
   this.connections={};
+  this.criticalErr='';
   if (this.peer) {
     this.peer.disconnect();
     this.peer.destroy();
@@ -187,11 +189,7 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
   }
 };
 
-Network.prototype._checkAnyPeer = function() {
-  if (!this.connectedPeers.length) {
-    this.cleanUp();
-    this.emit('openError');
-  }
+Network.prototype._checkAnyPeer = function(msg) {
   if (this.connectedPeers.length === 1) {
     this.emit('onlyYou');
   }
@@ -246,10 +244,10 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 
   p.on('error', function(err) {
-    if (!err.message.match(/Could\snot\sconnect\sto peer/)) {
-      self.emit('error', err);
+    console.log('RECV ERROR: ', err); //TODO
+    if (!err.message.match(/Could\snot\sconnect\sto peer/) ) {
+      self.criticalError=err.message;
     }
-    self._checkAnyPeer();
   });
 
   p.on('connection', function(dataConn) {
@@ -319,17 +317,18 @@ Network.prototype.start = function(opts, openCallback) {
       self.peer.removeAllListeners();
     }
 
-    if (self.tries < 2) {
+    if (!self.criticalError && self.tries < self.reconnectAttempts) {
       self.tries++;
       self.peer = new Peer(self.peerId, self.opts);
       self.started = true;
       self._setupPeerHandlers(openCallback);
-
       setTimeout(setupPeer, 3000); // Schedule retry
       return;
     }
-
-    self.emit('serverError');
+    if (self.criticalError && self.criticalError.match(/taken/)) {
+      self.criticalError=' Looks like you are already connected to this wallet please close all other Copay Wallets '
+    }
+    self.emit('serverError', self.criticalError);
     self.cleanUp();
   }
 
