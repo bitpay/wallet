@@ -73,6 +73,20 @@ Default configuration can be found in the config.js file.
 See config.js for more info on configuration options.
 
 
+## Troubleshooting
+
+### Building on Ubuntu 14.04, gyp, Python
+
+  ```
+  gyp_main.py: error: no such option: --no-parallel
+  gyp ERR! configure error 
+  gyp ERR! stack Error: `gyp` failed with exit code: 2
+  ```
+
+Ubuntu 14.04 has Python 2.7, but gyp requires Python 2.6 (http://stackoverflow.com/questions/21155922/error-installing-node-gyp-on-ubuntu)
+
+One solution is to use Copay with a Python version manager for 2.6.
+
 # Development
 
 ## Google Chrome Extension
