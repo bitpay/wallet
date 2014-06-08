@@ -38,7 +38,7 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
-  this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
+  //this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -216,7 +216,7 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     name: this.name,
-    netKey: this.netKey,
+    //netKey: this.netKey,
     version: this.version,
   };
 
@@ -240,21 +240,21 @@ Wallet.prototype.getMyCopayerId = function() {
 
 
 Wallet.prototype.getSecret = function() {
-  var i = new Buffer(this.getMyCopayerId(), 'hex');
-  var k = new Buffer(this.netKey, 'base64');
-  var b = Buffer.concat([i, k]);
-  var str = Base58Check.encode(b);
+  var pubkeybuf = new Buffer(this.getMyCopayerId(), 'hex');
+  //var k = new Buffer(this.netKey, 'base64');
+  //var b = Buffer.concat([i, k]);
+  var str = Base58Check.encode(pubkeybuf);
   return str;
 };
 
 
 Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
-  var netKeyBuf = secret.slice(-8);
+  //var netKeyBuf = secret.slice(-8);
   var pubKeyBuf = secret.slice(0, 33);
   return {
-    pubKey: pubKeyBuf.toString('hex'),
-    netKey: netKeyBuf.toString('base64'),
+    pubKey: pubKeyBuf.toString('hex')//,
+    //netKey: netKeyBuf.toString('base64'),
   }
 };
 
@@ -280,8 +280,8 @@ Wallet.prototype.netStart = function() {
   var startOpts = {
     copayerId: myId,
     token: self.token,
-    maxPeers: self.totalCopayers,
-    netKey: this.netKey,
+    maxPeers: self.totalCopayers//,
+    //netKey: this.netKey,
   };
 
   if (this.publicKeyRing.isComplete()) {

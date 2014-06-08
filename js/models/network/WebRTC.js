@@ -43,7 +43,8 @@ Network.prototype.cleanUp = function() {
   this.started = false;
   this.connectedPeers = [];
   this.peerId = null;
-  this.netKey = null;
+  //this.netKey = null;
+  this.privkey = null; //TODO: hide privkey in a closure
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds=null;
@@ -150,11 +151,14 @@ Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
   this.emit('connect', copayerId);
 };
 
-Network.prototype._onData = function(encStr, isInbound, peerId) {
+Network.prototype._onData = function(enchex, isInbound, peerId) {
   var sig, payload;
+  var encbuf = new Buffer(enchex, 'hex');
+
+  var privkey = this.privkey;
 
   try { 
-    var data = this._decrypt(encStr);
+    var data = this._decrypt(privkey, encbuf);
     payload=  JSON.parse(data);
   } catch (e) {
     this._deletePeer(peerId);
@@ -300,7 +304,8 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (this.started) return openCallback();
 
-  this.netKey = opts.netKey;
+  //this.netKey = opts.netKey;
+  this.privkey = opts.privkey;
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (opts.token)
@@ -344,7 +349,11 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
-Network.prototype._encrypt = function(payloadStr) {
+Network.prototype._encrypt = function(pubkey, payload) {
+  var encrypted = bitcore.ECIES.encrypt(pubkey, payload);
+  return encrypted;
+
+  /*
   var plainText = sjcl.codec.utf8String.toBits(payloadStr);
   var p = this.sjclParams;    
   ct = sjcl.encrypt(this.netKey, plainText, p);//,p, rp);
@@ -354,10 +363,15 @@ Network.prototype._encrypt = function(payloadStr) {
     ct: c.ct,
   };
   return JSON.stringify(toSend);
+  */
 };
 
 
-Network.prototype._decrypt = function(encStr) {
+Network.prototype._decrypt = function(privkey, encrypted) {
+  var decrypted = bitcore.ECIES.decrypt(privkey, encrypted);
+  return decrypted;
+
+  /*
   var i = JSON.parse(encStr);
   for (var k in this.sjclParams) {
     i[k] = this.sjclParams[k];
@@ -365,6 +379,7 @@ Network.prototype._decrypt = function(encStr) {
   var str= JSON.stringify(i);
   var pt = sjcl.decrypt(this.netKey, str);
   return pt;
+  */
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
@@ -379,7 +394,8 @@ Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
 };
 
 Network.prototype.send = function(copayerIds, payload, cb) {
-  if (!payload || !this.netKey) return cb();
+  //if (!payload || !this.netKey) return cb();
+  if (!payload) return cb();
 
   var self=this;
   if (!copayerIds) {
@@ -389,11 +405,14 @@ Network.prototype.send = function(copayerIds, payload, cb) {
 
   var sig;
   var payloadStr = JSON.stringify(payload);
-  var encPayload = this._encrypt(payloadStr);
+  var payloadBuf = new Buffer(payloadStr);
+  //var encPayload = this._encrypt(payloadStr);
   if (Array.isArray(copayerIds)) {
     var l = copayerIds.length;
     var i = 0;
     copayerIds.forEach(function(copayerId) {
+      var copayerIdBuf = new Buffer(copayerId, 'hex');
+      var encPayload = self._encrypt(copayerIdBuf, payloadBuf);
       self._sendToOne(copayerId, encPayload, sig, function () {
         if (++i === l && typeof cb === 'function') cb();
       });
