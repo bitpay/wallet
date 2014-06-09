@@ -20,7 +20,7 @@ function Wallet(opts) {
   ['storage', 'network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
-    'reconnectDelay'
+    'reconnectDelay', 'networkName'
   ].forEach(function(k) {
     if (typeof opts[k] === 'undefined')
       throw new Error('missing required option for Wallet: ' + k);
@@ -181,6 +181,7 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     reconnectDelay: this.reconnectDelay,
+    networkName: this.networkName,
     name: this.name,
     netKey: this.netKey,
     version: this.version,
