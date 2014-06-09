@@ -86,7 +86,7 @@ WalletFactory.prototype.create = function(opts) {
            (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey')
           );
 
-  opts.privateKey = opts.privateKey ||  new PrivateKey({ retworkName: this.networkName });
+  opts.privateKey = opts.privateKey ||  new PrivateKey({ networkName: this.networkName });
 
   var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
   var totalCopayers =  opts.totalCopayers || this.walletDefaults.totalCopayers;
