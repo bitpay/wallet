@@ -114,7 +114,7 @@ angular.module('copayApp.directives')
         var nick = peer.nick;
         element.addClass('video-small');
         var muted = controllerUtils.getVideoMutedStatus(peerId);
-        if (muted) {
+        if (true || muted) { // mute everyone for now
           element.attr("muted", true);
         }
       }

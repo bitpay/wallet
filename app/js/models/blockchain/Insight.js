@@ -140,7 +140,7 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 };
 
 Insight.prototype.sendRawTransaction = function(rawtx, cb) {
-  if (!rawtx) return callback();
+  if (!rawtx) throw new Error('rawtx must be set');
 
   var options = {
     host: this.host,
