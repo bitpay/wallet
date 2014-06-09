@@ -32,6 +32,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
   this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
+  this.networkName = opts.networkName;
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -318,7 +319,7 @@ Wallet.prototype.toObj = function() {
     opts: optsObj,
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
-    privateKey: this.privateKey.toObj()
+    privateKey: this.privateKey?this.privateKey.toObj():undefined
   };
 
   return walletObj;
@@ -459,7 +460,6 @@ Wallet.prototype.sign = function(ntxid, cb) {
     var txp = self.txProposals.txps[ntxid];
     if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
       if (cb) cb(false);
-      throw new Error('Invalid transaction to sign: '+ntxid);
     }
 
     var pkr = self.publicKeyRing;

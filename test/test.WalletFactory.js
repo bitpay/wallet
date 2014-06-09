@@ -13,6 +13,10 @@ var WalletFactory = typeof copay === 'undefined' ? require('soop').load('../js/m
   Storage: FakeStorage,
 }) : copay.WalletFactory;
 
+var blanket = require("blanket")({
+  "pattern": "/js/"
+});
+
 
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {

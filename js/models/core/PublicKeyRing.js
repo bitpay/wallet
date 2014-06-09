@@ -241,24 +241,26 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
   return ret;
 };
 
-PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
+PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
 
   if (!ignoreId  && this.walletId !== inPKR.walletId) {
-    throw new Error('inPRK walletId mismatch');
+    throw new Error('inPKR walletId mismatch');
   }
 
-  if (this.network.name !== inPKR.network.name)
-    throw new Error('inPRK network mismatch');
+  if (this.network.name !== inPKR.network.name) {
+    throw new Error('inPKR network mismatch. Should be '+this.network.name +
+        ' and found '+inPKR.network.name);
+  }
 
   if (
     this.requiredCopayers && inPKR.requiredCopayers &&
     (this.requiredCopayers !== inPKR.requiredCopayers))
-    throw new Error('inPRK requiredCopayers mismatch '+this.requiredCopayers+'!='+inPKR.requiredCopayers);
+    throw new Error('inPKR requiredCopayers mismatch '+this.requiredCopayers+'!='+inPKR.requiredCopayers);
 
   if (
     this.totalCopayers && inPKR.totalCopayers &&
     (this.totalCopayers !== inPKR.totalCopayers))
-    throw new Error('inPRK totalCopayers mismatch'+this.totalCopayers+'!='+inPKR.requiredCopayers);
+    throw new Error('inPKR totalCopayers mismatch'+this.totalCopayers+'!='+inPKR.requiredCopayers);
 };
 
 
@@ -296,7 +298,7 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
 PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   var hasChanged = false;
 
-  this._checkInPRK(inPKR, ignoreId);
+  this._checkInPKR(inPKR, ignoreId);
 
   if (this.indexes.merge(inPKR.indexes))
     hasChanged = true;
