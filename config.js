@@ -28,7 +28,7 @@ var defaultConfig = {
 
     // other PeerJS config
     maxPeers: 15,
-    debug: 3,
+    debug: 2,
 
     // Network encryption config
     sjclParams: {
@@ -86,7 +86,7 @@ var defaultConfig = {
     totalCopayers: 3,
     spendUnconfirmed: 1,
     verbose: 1,
-    reconnectDelay: 500,
+    reconnectDelay: 5000,
   },
 
   // blockchain service API config

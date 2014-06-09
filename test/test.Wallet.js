@@ -200,6 +200,9 @@ describe('Wallet model', function() {
     var o = w.toObj();
     o = JSON.parse(JSON.stringify(o));
 
+    // non stored options
+    o.opts.reconnectDelay=100;
+
     var w2 = Wallet.fromObj(o,
       new Storage(config.storage),
       new Network(config.network),
@@ -273,7 +276,7 @@ describe('Wallet model', function() {
 
   it('handle network pubKeyRings correctly', function() {
     var w = createW();
-    w.networkName.should.equal('testnet');
+    w.getNetworkName().should.equal('testnet');
     var cepk = [
       w.publicKeyRing.toObj().copayersExtPubKeys[0],
       'tpubDEqHs8LoCB1MDfXs1y2WaLJqPkKsgt8mDoQUFsQ4aKHvho5oFJkF7UrZnfFXKMhA1MuVPwq8a5VhFHvCquYcCVHeCrW4ZCWoDDE9K95e8rP',
