@@ -18,7 +18,6 @@ var Wallet = require('./Wallet');
 function WalletFactory(config, version) {
   var self = this;
   config = config || {};
-  console.log('asd');
 
   this.storage = new Storage(config.storage);
   this.network = new Network(config.network);

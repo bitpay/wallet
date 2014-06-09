@@ -487,17 +487,17 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var tx = txp.builder.build();
   if (!tx.isComplete()) return;
-  this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+  this.log('Broadcasting Transaction');
 
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
 
   var txHex = tx.serialize().toString('hex');
-  this.log('[Wallet.js.261:txHex:]', txHex); //TODO
+  this.log('Raw transaction: ', txHex);
 
   var self = this;
   this.blockchain.sendRawTransaction(txHex, function(txid) {
-    self.log('BITCOIND txid:', txid); //TODO
+    self.log('BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
       self.sendTxProposals(null, ntxid);
