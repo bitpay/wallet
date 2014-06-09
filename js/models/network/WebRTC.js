@@ -379,6 +379,8 @@ Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
 };
 
 Network.prototype.send = function(copayerIds, payload, cb) {
+  if (!payload || !this.netKey) return cb();
+
   var self=this;
   if (!copayerIds) {
     copayerIds = this.connectedCopayers();
