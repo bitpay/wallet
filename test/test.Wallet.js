@@ -231,6 +231,7 @@ describe('Wallet model', function() {
     }).should.
     throw ();
   });
+
   it('call reconnect after interval', function(done) {
     var w = createW2();
     var spy = sinon.spy(w, 'scheduleConnect');
@@ -239,5 +240,47 @@ describe('Wallet model', function() {
       sinon.assert.callCount(spy, 10);
       done();
     }, 1000);
+  });
+
+  it('handle network indexes correctly', function() {
+    var w = createW();
+    var aiObj = {
+      walletId: w.id,
+      changeIndex: 3,
+      receiveIndex: 2
+    };
+    w._handleIndexes('senderID', aiObj, true);
+    w.publicKeyRing.indexes.getReceiveIndex(2);
+    w.publicKeyRing.indexes.getChangeIndex(3);
+  });
+
+  it('handle network indexes correctly', function() {
+    var w = createW();
+    var cepk = [
+      w.publicKeyRing.toObj().copayersExtPubKeys[0],
+      'xpub68cA58zTvAve3wDNS7UkY3zaS45iAsqtg6Syxcf4jDR7JtsX4EarofaRHCHqJZJbfyDS1dxuinMTBNiJ6Rx4YEtAvo8StqGGCNa1AV9Zeh9',
+      'xpub695Ak6GSoEtCQJbwpw17sEPSNqecs15m6FAu7kFk12MCpWyCeMCQ8RmUcCwyfP1KhENZidA6s8nhBWaT1x5n9L8KZshLUscckwbZhSNQtYq',
+    ];
+    var pkrObj = {
+      walletId: w.id,
+      networkName: w.networkName,
+      requiredCopayers: w.requiredCopayers,
+      totalCopayers: w.totalCopayers,
+      indexes: {
+        walletId: undefined,
+        changeIndex: 2,
+        receiveIndex: 3
+      },
+      copayersExtPubKeys: cepk,
+      nicknameFor: {},
+    };
+    w._handlePublicKeyRing('senderID', {
+      publicKeyRing: pkrObj
+    }, true);
+    w.publicKeyRing.indexes.getReceiveIndex(2);
+    w.publicKeyRing.indexes.getChangeIndex(3);
+    for (var i = 0; i < w.requiredCopayers; i++) {
+      w.publicKeyRing.toObj().copayersExtPubKeys[i].should.equal(cepk[i]);
+    }
   });
 });
