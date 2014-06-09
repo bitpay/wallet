@@ -161,6 +161,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 Wallet.prototype._handleConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
+    this.currentDelay = null;
     this.sendWalletId(newCopayerId);
   }
   var peerID = this.network.peerFromCopayer(newCopayerId)
@@ -232,15 +233,11 @@ Wallet.prototype.netStart = function() {
   net.on('connect', self._handleConnect.bind(self));
   net.on('disconnect', self._handleDisconnect.bind(self));
   net.on('data', self._handleData.bind(self));
-  net.on('openError', function() {
-    self.log('[Wallet.js.132:openError:] GOT  openError'); //TODO
-    self.emit('openError');
-  });
-  net.on('error', function() {
-    self.emit('connectionError');
-  });
   net.on('close', function() {
     self.emit('close');
+  });
+  net.on('serverError', function(msg) {
+    self.emit('serverError', msg);
   });
 
   var myId = self.getMyCopayerId();
@@ -254,6 +251,7 @@ Wallet.prototype.netStart = function() {
   if (this.publicKeyRing.isComplete()) {
     this._lockIncomming();
   }
+
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
     self.token = net.peer.options.token;
@@ -270,7 +268,8 @@ Wallet.prototype.scheduleConnect = function() {
   var self = this;
   if (self.network.isOnline()) {
     self.connectToAll();
-    setTimeout(self.scheduleConnect.bind(self), self.reconnectDelay);
+    self.currentDelay = self.currentDelay*2 ||  self.reconnectDelay;
+    setTimeout(self.scheduleConnect.bind(self), self.currentDelay);
   }
 }
 
@@ -384,10 +383,12 @@ Wallet.prototype.sendWalletId = function(recipients) {
 
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
   this.log('### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
+  var publicKeyRing = this.publicKeyRing.toObj();
+  delete publicKeyRing.publicKeysCache; // exclude publicKeysCache from network obj
 
   this.network.send(recipients, {
     type: 'publicKeyRing',
-    publicKeyRing: this.publicKeyRing.toObj(),
+    publicKeyRing: publicKeyRing,
     walletId: this.id,
   });
 };
