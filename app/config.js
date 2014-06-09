@@ -80,7 +80,7 @@ var defaultConfig = {
     totalCopayers: 3,
     spendUnconfirmed: 1,
     verbose: 1,
-    reconnectDelay: 500,
+    reconnectDelay: 5000,
   },
 
   // blockchain service API config
