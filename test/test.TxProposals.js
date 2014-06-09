@@ -395,6 +395,7 @@ var _dumpChunks = function (scriptSig, label) {
     tx = w.txps[k].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(1);
+
   });
 
 

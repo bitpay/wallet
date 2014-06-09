@@ -32,6 +32,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
   this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
+  this.networkName = opts.networkName;
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -318,7 +319,7 @@ Wallet.prototype.toObj = function() {
     opts: optsObj,
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
-    privateKey: this.privateKey.toObj()
+    privateKey: this.privateKey?this.privateKey.toObj():undefined
   };
 
   return walletObj;
@@ -459,7 +460,6 @@ Wallet.prototype.sign = function(ntxid, cb) {
     var txp = self.txProposals.txps[ntxid];
     if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
       if (cb) cb(false);
-      throw new Error('Invalid transaction to sign: '+ntxid);
     }
 
     var pkr = self.publicKeyRing;
@@ -487,17 +487,17 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var tx = txp.builder.build();
   if (!tx.isComplete()) return;
-  this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+  this.log('Broadcasting Transaction');
 
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
 
   var txHex = tx.serialize().toString('hex');
-  this.log('[Wallet.js.261:txHex:]', txHex); //TODO
+  this.log('Raw transaction: ', txHex);
 
   var self = this;
   this.blockchain.sendRawTransaction(txHex, function(txid) {
-    self.log('BITCOIND txid:', txid); //TODO
+    self.log('BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
       self.sendTxProposals(null, ntxid);
