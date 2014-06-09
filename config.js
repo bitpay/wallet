@@ -104,7 +104,6 @@ var defaultConfig = {
 
   // theme list
   themes: ['default'],
-
-
+  disableVideo: 1,
   verbose: 1,
 };

@@ -54,11 +54,11 @@ html, body {height: 100%;}
 }
 
 .bottom-copay {
-  width: 56px;
+  width: 50px;
   text-align: center;
   position: relative;
   float: right;
-  margin-left: 15px;
+  margin-left: 20px;
   /* height: 551px; */
 }
 
