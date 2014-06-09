@@ -1,0 +1,13 @@
+#!/bin/bash
+cd /tmp
+# download pre-built pacakge to tmp
+wget https://github.com/bitpay/copay/releases/download/v0.1.0/Copay-linux-x64.tar.gz
+# extract archive
+tar -xvf /tmp/Copay-linux-x64.tar.gz
+# move the package to opt
+mv /tmp/Copay /opt/Copay
+# symlink `copay` to user path
+ln -s /opt/Copay/copay /usr/local/bin/copay
+cd /usr/share/applications
+# download desktop entry
+wget https://raw.githubusercontent.com/bitpay/copay-shell/master/assets/linux/Copay.desktop
