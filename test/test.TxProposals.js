@@ -66,7 +66,7 @@ var vopts =  {
 
 describe('TxProposals model', function() {
 
-  it('verify TXs', function (done) {
+  it.skip('verify TXs', function (done) {
 
     var priv = new PrivateKey(config);
     var priv2 = new PrivateKey(config);
