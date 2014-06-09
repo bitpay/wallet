@@ -11,6 +11,12 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
 
+
+
+    $scope.$watch('networkName', function(net) {
+      $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is'; 
+    });
+
     $scope.save = function() {
       var network = config.network;
       network.key = $scope.networkKey;
