@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('SigninController',
       return v1 > v2 ? 1 : ( v1 < v2 ) ? -1 : 0;
     };
     $rootScope.videoInfo = {};
-    $scope.loading = false;
+    $scope.loading = $scope.failure = false;
     $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('SigninController',
           errMsg = e.message;
         };
         if (!w) {
-          $scope.loading = false;
+          $scope.loading = $scope.failure = false;
           $rootScope.$flashMessage = { message: errMsg || 'Wrong password', type: 'error'};
           $rootScope.$digest();
           return;
@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('SigninController',
               $rootScope.$flashMessage = { message: 'Bad secret secret string', type: 'error'};
             else 
               $rootScope.$flashMessage = { message: 'Unknown error', type: 'error'};
-            controllerUtils.onErrorDigest();
+              controllerUtils.onErrorDigest();
           } else {
               controllerUtils.startNetwork(w);
               installStartupHandlers(w);
@@ -71,13 +71,8 @@ angular.module('copayApp.controllers').controller('SigninController',
     };
 
     function installStartupHandlers(wallet) {
-      wallet.on('serverError', function(msg) {
-          $rootScope.$flashMessage = { 
-            message: 'There was an error connecting to the PeerJS server.'
-              +(msg||'Check you settings and Internet connection.'),
-            type: 'error',
-          };
-          controllerUtils.onErrorDigest($scope);
+      wallet.on('connectionError', function(err) {
+        $scope.failure = true;
       });
       wallet.on('ready', function() {
         $scope.loading = false;

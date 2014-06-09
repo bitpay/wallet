@@ -23,7 +23,6 @@ function Network(opts) {
   this.apiKey         = opts.apiKey || 'lwjd5qra8257b9';
   this.debug          = opts.debug || 3;
   this.maxPeers       = opts.maxPeers || 10;
-  this.reconnectAttempts = opts.reconnectAttempts || 3;
   this.sjclParams     = opts.sjclParams || {
     salt: 'f28bfb49ef70573c', 
     iter:500,
@@ -50,15 +49,12 @@ Network.prototype.cleanUp = function() {
   this.isInboundPeerAuth=[];
   this.copayerForPeer={};
   this.connections={};
-  this.criticalErr='';
   if (this.peer) {
     this.peer.disconnect();
     this.peer.destroy();
-    this.peer.removeAllListeners();
     this.peer = null;
   }
   this.closing = 0;
-  this.tries = 0;
 };
 
 Network.parent=EventEmitter;
@@ -189,7 +185,11 @@ Network.prototype._onData = function(encStr, isInbound, peerId) {
   }
 };
 
-Network.prototype._checkAnyPeer = function(msg) {
+Network.prototype._checkAnyPeer = function() {
+  if (!this.connectedPeers.length) {
+    this.cleanUp();
+    this.emit('openError');
+  }
   if (this.connectedPeers.length === 1) {
     this.emit('onlyYou');
   }
@@ -244,10 +244,10 @@ Network.prototype._setupPeerHandlers = function(openCallback) {
   });
 
   p.on('error', function(err) {
-    console.log('RECV ERROR: ', err); //TODO
-    if (!err.message.match(/Could\snot\sconnect\sto peer/) ) {
-      self.criticalError=err.message;
+    if (!err.message.match(/Could\snot\sconnect\sto peer/)) {
+      self.emit('error', err);
     }
+    self._checkAnyPeer();
   });
 
   p.on('connection', function(dataConn) {
@@ -309,32 +309,11 @@ Network.prototype.start = function(opts, openCallback) {
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
 
-  var self = this;
-  var setupPeer = function () {
-    if (self.connectedPeers.length > 0) return; // Already connected!
-    if (self.peer) {
-      self.peer.destroy();
-      self.peer.removeAllListeners();
-    }
-
-    if (!self.criticalError && self.tries < self.reconnectAttempts) {
-      self.tries++;
-      self.peer = new Peer(self.peerId, self.opts);
-      self.started = true;
-      self._setupPeerHandlers(openCallback);
-      setTimeout(setupPeer, 3000); // Schedule retry
-      return;
-    }
-    if (self.criticalError && self.criticalError.match(/taken/)) {
-      self.criticalError=' Looks like you are already connected to this wallet please close all other Copay Wallets '
-    }
-    self.emit('serverError', self.criticalError);
-    self.cleanUp();
-  }
-
-  this.tries = 0;
-  setupPeer();
+  this.peer = new Peer(this.peerId, this.opts);
+  this.started = true;
+  this._setupPeerHandlers(openCallback);
 };
+
 
 Network.prototype.getOnlinePeerIDs = function() {
   return this.connectedPeers;

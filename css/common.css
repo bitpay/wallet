@@ -206,13 +206,13 @@ footer {
 @media only screen and (max-width: 40em) {
 
   figure.bg-logo {
-    margin: 0 auto 5rem;
+    margin: 0 auto 8rem;
   }
 
   header h3 {
     font-size: 1.7rem;
     line-height: 1.4;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
     text-align: center;
   }
 
@@ -235,11 +235,6 @@ footer {
     font-weight: 300;
   }
 
-  .icon-button {
-    padding: 0.5rem 0;
-    width: 4.5rem;
-  }
-
   .download {
     text-align: center;
   }
@@ -247,6 +242,6 @@ footer {
   .btn-download {
     text-align: left;
     line-height: 20px;
-    margin: 0 0 0 7rem;
+    margin: 0 0 0 45px;
   }
 }
