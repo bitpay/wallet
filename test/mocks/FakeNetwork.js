@@ -41,5 +41,8 @@ Network.prototype.connectToCopayers = function(cps) {
 Network.prototype.isOnline = function() {
   return true;
 };
+Network.prototype.peerFromCopayer = function(copayerId) {
+  return copayerId;
+};
 
 module.exports = require('soop')(Network);

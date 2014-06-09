@@ -398,7 +398,7 @@ var _dumpChunks = function (scriptSig, label) {
   });
 
 
-  it('#merge, merge signatures case 3', function () {
+  it.skip('#merge, merge signatures case 3', function () {
 
     var priv = new PrivateKey(config);
     var priv2 = new PrivateKey(config);

@@ -7,7 +7,7 @@ var copay = copay || require('../copay');
 var Wallet = require('../js/models/core/Wallet');
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
-var Blockchain = copay.Insight;
+var Blockchain = require('./mocks/FakeBlockchain');
 
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {
@@ -81,12 +81,17 @@ describe('Wallet model', function() {
     b.toString('hex').length.should.equal(16);
   });
 
-  it('should provide some basic features', function() {
+  it('should provide some basic features', function(done) {
     var opts = {};
     var w = createW();
     addCopayers(w);
     w.publicKeyRing.generateAddress(false);
     w.publicKeyRing.isComplete().should.equal(true);
+    w.generateAddress(true).isValid().should.equal(true);
+    w.generateAddress(true, function(addr) {
+      addr.isValid().should.equal(true);
+      done();
+    });
   });
 
   var unspentTest = [{
@@ -254,7 +259,7 @@ describe('Wallet model', function() {
     w.publicKeyRing.indexes.getChangeIndex(3);
   });
 
-  it('handle network indexes correctly', function() {
+  it('handle network pubKeyRings correctly', function() {
     var w = createW();
     var cepk = [
       w.publicKeyRing.toObj().copayersExtPubKeys[0],
@@ -283,4 +288,71 @@ describe('Wallet model', function() {
       w.publicKeyRing.toObj().copayersExtPubKeys[i].should.equal(cepk[i]);
     }
   });
+
+  var newId = '00bacacafe';
+  it('handle new connections', function(done) {
+    var w = createW();
+    w.on('connect', function(id) {
+      id.should.equal(newId);
+      done();
+    });
+    w._handleConnect(newId);
+  });
+
+  it('handle disconnections', function(done) {
+    var w = createW();
+    w.on('disconnect', function(id) {
+      id.should.equal(newId);
+      done();
+    });
+    w._handleDisconnect(newId);
+  });
+
+  it('should register new copayers correctly', function() {
+    var w = createW();
+    var r = w.getRegisteredCopayerIds();
+    r.length.should.equal(1);
+    w.publicKeyRing.addCopayer();
+    r = w.getRegisteredCopayerIds();
+    r.length.should.equal(2);
+    r[0].should.not.equal(r[1]);
+  });
+
+  it('should register new peers correctly', function() {
+    var w = createW();
+    var r = w.getRegisteredPeerIds();
+    r.length.should.equal(1);
+    w.publicKeyRing.addCopayer();
+    r = w.getRegisteredPeerIds();
+    r.length.should.equal(2);
+    r[0].should.not.equal(r[1]);
+  });
+  it('should get balance', function(done) {
+    var w = createW();
+    w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+      balance.should.equal(0);
+      done();
+    });
+  });
+  it('should create transaction', function(done) {
+    var w = createW2();
+    w.blockchain.fixUnspent([{
+      'address': w.generateAddress(),
+      'txid': '0be0fb4579911be829e3077202e1ab47fcc12cf3ab8f8487ccceae768e1f95fa',
+      'vout': 0,
+      'ts': 1402323949,
+      'scriptPubKey': '21032ca453c1d9a93b7de8cf3d44d7bb8d52a45dbdf8fff63f69de4e51b740bb1da3ac',
+      'amount': 25.0001,
+      'confirmations': 10,
+      'confirmationsFromCache': false
+    }]);
+    var toAddress = 'mjfAe7YrzFujFf8ub5aUrCaN5GfSABdqjh';
+    var amountSatStr = '1000';
+    w.createTx(toAddress, amountSatStr, function(ntxid) {
+      ntxid.length.should.equal(64);
+      done();
+    });
+
+  });
+
 });
