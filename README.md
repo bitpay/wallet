@@ -139,8 +139,9 @@ export CROSSWALK="<path to Crosswalk directory>"
 To build the APK run the script:
 
 ```
-sh android/build.sh
+sh android/build.sh [-d]
 ```
+- The -d flag will package the apk in debug mode, allowing [remote debugging chrome](https://developer.chrome.com/devtools/docs/remote-debugging)
 - The APK file is in **android/Copay_VERSION_arm.apk**
 
 To install the APK in your device run:
