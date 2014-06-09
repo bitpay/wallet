@@ -237,20 +237,18 @@ describe('Wallet model', function() {
     throw ();
   });
 
-  it.only('call reconnect after interval', function(done) {
+  it('call reconnect after interval', function(done) {
     var w = createW2();
     var testTime = 1000;
     var callCount = 0;
     var cT=w.reconnectDelay;
-console.log('[test.Wallet.js.238:cT:]',cT); //TODO
     var t=0;
+
     do {
       callCount++;
       t += cT;
       cT *= 2;
-console.log('[test.Wallet.js.242]',t, callCount); //TODO
     } while (t<testTime);
-console.log('[test.Wallet.js.241:callCount:]',callCount); //TODO
 
     var spy = sinon.spy(w, 'scheduleConnect');
     w.netStart();
