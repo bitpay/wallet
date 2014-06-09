@@ -751,7 +751,9 @@ PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
 
 module.exports = require('soop')(PrivateKey);
 
-},{"./Structure":13,"bitcore":23,"soop":83}],"6Bv3pA":[function(require,module,exports){
+},{"./Structure":13,"bitcore":23,"soop":83}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
+module.exports=require('6Bv3pA');
+},{}],"6Bv3pA":[function(require,module,exports){
 (function (Buffer){
 
 'use strict';
@@ -996,24 +998,26 @@ PublicKeyRing.prototype.getRedeemScriptMap = function () {
   return ret;
 };
 
-PublicKeyRing.prototype._checkInPRK = function(inPKR, ignoreId) {
+PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
 
   if (!ignoreId  && this.walletId !== inPKR.walletId) {
-    throw new Error('inPRK walletId mismatch');
+    throw new Error('inPKR walletId mismatch');
   }
 
-  if (this.network.name !== inPKR.network.name)
-    throw new Error('inPRK network mismatch');
+  if (this.network.name !== inPKR.network.name) {
+    throw new Error('inPKR network mismatch. Should be '+this.network.name +
+        ' and found '+inPKR.network.name);
+  }
 
   if (
     this.requiredCopayers && inPKR.requiredCopayers &&
     (this.requiredCopayers !== inPKR.requiredCopayers))
-    throw new Error('inPRK requiredCopayers mismatch '+this.requiredCopayers+'!='+inPKR.requiredCopayers);
+    throw new Error('inPKR requiredCopayers mismatch '+this.requiredCopayers+'!='+inPKR.requiredCopayers);
 
   if (
     this.totalCopayers && inPKR.totalCopayers &&
     (this.totalCopayers !== inPKR.totalCopayers))
-    throw new Error('inPRK totalCopayers mismatch'+this.totalCopayers+'!='+inPKR.requiredCopayers);
+    throw new Error('inPKR totalCopayers mismatch'+this.totalCopayers+'!='+inPKR.requiredCopayers);
 };
 
 
@@ -1051,7 +1055,7 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
 PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   var hasChanged = false;
 
-  this._checkInPRK(inPKR, ignoreId);
+  this._checkInPKR(inPKR, ignoreId);
 
   if (this.indexes.merge(inPKR.indexes))
     hasChanged = true;
@@ -1065,9 +1069,7 @@ PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
 module.exports = require('soop')(PublicKeyRing);
 
 }).call(this,require("buffer").Buffer)
-},{"./AddressIndex":6,"./PrivateKey":"41fjjN","./Structure":13,"bitcore":23,"buffer":50,"soop":83}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
-module.exports=require('6Bv3pA');
-},{}],13:[function(require,module,exports){
+},{"./AddressIndex":6,"./PrivateKey":"41fjjN","./Structure":13,"bitcore":23,"buffer":50,"soop":83}],13:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -1422,6 +1424,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
   this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
+  this.networkName = opts.networkName;
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -1562,6 +1565,11 @@ Wallet.prototype._handleConnect = function(newCopayerId) {
 
 Wallet.prototype._handleDisconnect = function(peerID) {
   this.emit('disconnect', peerID);
+};
+
+
+Wallet.prototype.getNetworkName = function() {
+  return this.publicKeyRing.network.name;
 };
 
 Wallet.prototype._optsToObj = function() {
@@ -1708,7 +1716,7 @@ Wallet.prototype.toObj = function() {
     opts: optsObj,
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
-    privateKey: this.privateKey.toObj()
+    privateKey: this.privateKey?this.privateKey.toObj():undefined
   };
 
   return walletObj;
@@ -1849,7 +1857,6 @@ Wallet.prototype.sign = function(ntxid, cb) {
     var txp = self.txProposals.txps[ntxid];
     if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
       if (cb) cb(false);
-      throw new Error('Invalid transaction to sign: '+ntxid);
     }
 
     var pkr = self.publicKeyRing;
@@ -1877,17 +1884,17 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var tx = txp.builder.build();
   if (!tx.isComplete()) return;
-  this.log('[Wallet.js.231] BROADCASTING TX!!!'); //TODO
+  this.log('Broadcasting Transaction');
 
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
 
   var txHex = tx.serialize().toString('hex');
-  this.log('[Wallet.js.261:txHex:]', txHex); //TODO
+  this.log('Raw transaction: ', txHex);
 
   var self = this;
   this.blockchain.sendRawTransaction(txHex, function(txid) {
-    self.log('BITCOIND txid:', txid); //TODO
+    self.log('BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
       self.sendTxProposals(null, ntxid);
@@ -2122,10 +2129,10 @@ function WalletFactory(config, version) {
   this.network = new Network(config.network);
   this.blockchain = new Blockchain(config.blockchain);
 
-  this.networkName = config.networkName;
-  this.verbose     = config.verbose;
+  this.networkName    = config.networkName;
+  this.verbose        = config.verbose;
   this.walletDefaults = config.wallet;
-  this.version     = version;
+  this.version        = version;
 }
 
 WalletFactory.prototype.log = function(){
@@ -2238,6 +2245,20 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   }
 };
 
+
+WalletFactory.prototype._checkNetwork = function(inNetworkName) {
+  if( this.networkName !== inNetworkName ) {
+    throw new Error('This Wallet is configured for '
+                    + inNetworkName 
+                    + ' while currently Copay is configured for: '
+                    + this.networkName 
+                    + '. Check your settings.' 
+                   );
+  }
+};
+
+
+
 WalletFactory.prototype.open = function(walletId, opts) {
   opts = opts || {};
   opts.id = walletId;
@@ -2247,6 +2268,7 @@ WalletFactory.prototype.open = function(walletId, opts) {
   var w = this.read(walletId);
   if (w) {
     this._checkVersion(w.version);
+    this._checkNetwork(w.getNetworkName());
     w.store();
   }
   return w;
@@ -2271,8 +2293,7 @@ WalletFactory.prototype.decodeSecret = function(secret) {
   } catch (e) {
     return false;
   }
-}
-
+};
 
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
   var self = this;
@@ -2700,6 +2721,8 @@ Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
 };
 
 Network.prototype.send = function(copayerIds, payload, cb) {
+  if (!payload || !this.netKey) return cb();
+
   var self=this;
   if (!copayerIds) {
     copayerIds = this.connectedCopayers();
