@@ -131,8 +131,6 @@ Network.prototype.connectToCopayers = function(copayerIds) {
     if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
       this._deletePeer(this.peerFromCopayer(copayerId));
     } else {
-
-console.log('[WebRTC.js.134] CONNECT TO', copayerId); //TODO
       self.connectTo(copayerId);
     }
   });
