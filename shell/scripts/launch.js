@@ -17,7 +17,7 @@ switch (process.platform) {
     execPath += '/Atom.app/Contents/MacOS/Atom';
     break;
   case 'win32':
-    execPath += '\\atom-shell\\atom.exe'
+    execPath += '\\atom.exe'
     break;
   default:
     console.log('Platform not supported.');
