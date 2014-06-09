@@ -62,9 +62,9 @@ angular.module('copayApp.controllers').controller('HeaderController',
           }
         }
         if (currentAddr) {
-          var beep = new Audio('sound/transaction.mp3');
+          //var beep = new Audio('sound/transaction.mp3');
           $notification.funds('Received fund', currentAddr, receivedFund);
-          beep.play();
+          //beep.play();
         }
       }
     });
