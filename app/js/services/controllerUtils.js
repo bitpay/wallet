@@ -79,8 +79,9 @@ angular.module('copayApp.services')
           }
         });
       });
-      w.on('openError', root.onErrorDigest);
-      w.on('connectionError', root.onErrorDigest);
+      w.on('connectionError', function(msg) {
+        root.onErrorDigest(msg);
+      });
       w.on('connect', function(peerID) {
         if (peerID) {
           video.callPeer(peerID, handlePeerVideo);
