@@ -175,6 +175,11 @@ Wallet.prototype._handleDisconnect = function(peerID) {
   this.emit('disconnect', peerID);
 };
 
+
+Wallet.prototype.getNetworkName = function() {
+  return this.publicKeyRing.network.name;
+};
+
 Wallet.prototype._optsToObj = function() {
   var obj = {
     id: this.id,

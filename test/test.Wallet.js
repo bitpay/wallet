@@ -474,5 +474,9 @@ describe('Wallet model', function() {
       });
     });
   });
-
+  it('#getNetworkName', function() {
+    var w = createW();
+    w.getNetworkName().should.equal('testnet');
+  });
+ 
 });
