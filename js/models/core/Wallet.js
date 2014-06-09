@@ -131,8 +131,10 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
+
   // TODO check message signature
-  if (this.id !== data.walletId) {
+  
+  if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId); //TODO
     return;
