@@ -37,6 +37,7 @@ Then visit localhost:3000 in your browser.
 
 
 ## Running copay
+
 To run on a different port:
 ```
 PORT=3001 npm start
@@ -66,6 +67,25 @@ require('copay').start(3000, function(location) {
 
 ```
 
+## Running in the Native Shell
+
+Copay can be executed from within a "native" application shell, providing some
+additional features such as native menus, notifications, tray integration, etc.
+This is accomplished using [Atom Shell](https://github.com/atom/atom-shell).
+
+To run and test Copay from within this context, first download the atom-shell
+package to `shell/bin/{platform}` (ignored by git), by running:
+
+```
+npm run setup-shell
+```
+
+Once this script has completed, you can launch the shell-based Copay by running:
+
+```
+npm run shell
+```
+
 
 ## Configuration
 
@@ -75,7 +95,36 @@ See config.js for more info on configuration options.
 
 # Development
 
+## Native Shell
+
+To add features that enhance the native experience of Copay, first follow the
+directions above under "Running in the Native Shell". It's important to ensure
+that functionality within this context should either hook into existing features
+or supplement the experience of those features. Copay should continue to operate
+full-featured from within a modern web browser.
+
+Shell functionality works by sending and receiving messages between the Copay
+application and the shell wrapper. Native functionality should be handled mostly
+from within `shell/lib/message-handler.js`, which receives messages conditionally
+from the front-end Angular controllers.
+
+Look at `js/shell.js` to see how we determine if Copay is running from within the
+native shell context. If we are running within the shell, Copay has access to the
+global variable `window.cshell`, which provides access to the messenger. For
+instance, to Copay might want to use a native dialog alert in favor of a regular
+one if running in this context. You would do this like so:
+
+```js
+if (window.cshell) {
+  window.cshell.send('alert', 'info', 'Please select a wallet.');
+}
+else {
+  window.alert('Please select a wallet.');
+}
+```
+
 ## Google Chrome Extension
+
 When you need to compile a *Chrome Extension* of Copay, you only need to run:
 ```
 $ sh chrome/build.sh
@@ -84,6 +133,7 @@ $ sh chrome/build.sh
 - The ZIP file is *chrome/copay-chrome-extension.zip*
 
 ## Firefox Add-on
+
 System Requirements
 
 * Download [Add-on SDK](https://addons.mozilla.org/en-US/developers/builder)
@@ -98,7 +148,8 @@ $ sh firefox/build.sh
 - Copy the content of *firefox/firefox-addon* (lib, data, package.json) to your development path.
 - Compile the XPI file. [Mozilla Docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Getting_started)
 
-##Web App
+## Web App
+
 The Web App is a clean version of Copay, only the neededs files (html, css, js)
 for run Copay locally or in your own server.
 
@@ -111,6 +162,7 @@ $ sh webapp/build.sh
 - The *webapp/copay-webapp* is the unzipped version
 
 ## Android APK
+
 System Requirements
 
 * Download [Android SDK](http://developer.android.com/sdk/index.html)
