@@ -43,19 +43,26 @@ var defaultConfig = {
       'iceServers': [
         // Pass in STUN and TURN servers for maximum network compatibility
         {
-          url: 'stun:stun.l.google.com:19302'
+          url: 'stun:162.242.219.26'
         }, {
-          url: 'stun:stun1.l.google.com:19302'
-        }, {
-          url: 'stun:stun2.l.google.com:19302'
-        }, {
-          url: 'stun:stun3.l.google.com:19302'
-        }, {
-          url: 'stun:stun4.l.google.com:19302'
-        }, {
-          url: 'stun:stunserver.org'
+          url: 'turn:162.242.219.26',
+          username: 'bitcore',
+          credential: 'bitcore',
         }
-        // Options fot TURN servers with p2p communications are not possible.
+        // {
+        //   url: 'stun:stun.l.google.com:19302'
+        // }, {
+        //   url: 'stun:stun1.l.google.com:19302'
+        // }, {
+        //   url: 'stun:stun2.l.google.com:19302'
+        // }, {
+        //   url: 'stun:stun3.l.google.com:19302'
+        // }, {
+        //   url: 'stun:stun4.l.google.com:19302'
+        // }, {
+        //   url: 'stun:stunserver.org'
+        // }
+        // // Options fot TURN servers with p2p communications are not possible.
         // {
         //   url: 'turn:numb.viagenie.ca',
         //   credential: 'muazkh',
@@ -104,7 +111,6 @@ var defaultConfig = {
 
   // theme list
   themes: ['default'],
-
-
+  disableVideo: 1,
   verbose: 1,
 };

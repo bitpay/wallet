@@ -150,7 +150,7 @@
   <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet}">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div ng-show="!$root.wallet">
-      <div class="large-12 columns text-right">
+      <div class="large-12 columns text-left">
         Copay
         <small>v{{version}}</small>
       </div>
@@ -163,14 +163,18 @@
         <div class="size-12 m10t">
           {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
         </div>
+        <div class="text-gray size-12" style="margin-top:5px">
+          Copay v{{version}}
+        </div>
+  
         <div class="size-12 m10t" ng-if="themes.length > 1">
           <a class="size-12" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
         </div>
       </div>
       <div class="large-9 medium-9 small-9 columns">
         <a href="#/addresses" > </a>
-        <div class="bottom-copay"
-            ng-repeat="c in $root.wallet.getRegisteredPeerIds()" class="has-tip" tooltip-popup-delay="1000" tooltip-placement="top" tooltip="{{c.nick}}">
+        <!-- <div class="bottom&#45;copay" ng&#45;repeat="c in $root.wallet.getRegisteredPeerIds()" class="has&#45;tip" tooltip&#45;popup&#45;delay="1000" tooltip&#45;placement="top" tooltip="{{c.nick}}"> -->
+        <div class="bottom-copay" ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
           <video ng-if="$root.videoInfo[c.peerId]"
             avatar peer="{{c}}"
             autoplay
@@ -182,6 +186,9 @@
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             src="./img/satoshi.gif"
           />
+          <div class="size-12 text-center text-gray" stype="margin-top:4px">
+          {{c.nick || 'NN'}}
+          </div>
         </div>
       </div>
     </div>
