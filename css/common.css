@@ -206,13 +206,13 @@ footer {
 @media only screen and (max-width: 40em) {
 
   figure.bg-logo {
-    margin: 0 auto 8rem;
+    margin: 0 auto 5rem;
   }
 
   header h3 {
     font-size: 1.7rem;
     line-height: 1.4;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     text-align: center;
   }
 
@@ -229,6 +229,11 @@ footer {
     text-align: center;
   }
 
+  .icon-button {
+    padding: 0.5rem 0;
+    width: 4.5rem;
+  }
+
   .ribbon-phone a:hover, .ribbon a:hover {
     background: #2C3E50;
     color: #fff;
@@ -242,6 +247,6 @@ footer {
   .btn-download {
     text-align: left;
     line-height: 20px;
-    margin: 0 0 0 45px;
+    margin: 0 0 0 7rem;
   }
 }
