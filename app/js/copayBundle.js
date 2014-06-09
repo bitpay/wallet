@@ -1424,7 +1424,6 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
   this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
-  this.networkName = opts.networkName;
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -1485,7 +1484,6 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   if (hasChanged) {
     if (wasIncomplete) {
       this.sendPublicKeyRing();
-      this.connectToAll();
     }
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
@@ -1556,7 +1554,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 Wallet.prototype._handleConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
-    this.currentDelay = null;
     this.sendWalletId(newCopayerId);
   }
   var peerID = this.network.peerFromCopayer(newCopayerId)
@@ -1564,6 +1561,7 @@ Wallet.prototype._handleConnect = function(newCopayerId) {
 };
 
 Wallet.prototype._handleDisconnect = function(peerID) {
+  this.currentDelay = null;
   this.emit('disconnect', peerID);
 };
 
@@ -1578,7 +1576,6 @@ Wallet.prototype._optsToObj = function() {
     spendUnconfirmed: this.spendUnconfirmed,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
-    reconnectDelay: this.reconnectDelay,
     name: this.name,
     netKey: this.netKey,
     version: this.version,
@@ -2101,8 +2098,6 @@ module.exports = require('soop')(Wallet);
 }).call(this,require("buffer").Buffer)
 },{"../../../copay":"hxYaTp","bitcore":23,"buffer":50,"events":59,"http":60,"soop":83}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
-},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -2154,6 +2149,10 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
+
+  // not stored options
+  obj.opts.reconnectDelay  = this.walletDefaults.reconnectDelay;
+
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   w.verbose = this.verbose;
   return w;
@@ -2176,10 +2175,10 @@ WalletFactory.prototype.read = function(walletId) {
   var s = this.storage;
 
   obj.id = walletId;
-  obj.opts = s.get(walletId, 'opts');
-  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
-  obj.txProposals   = s.get(walletId, 'txProposals');
-  obj.privateKey    = s.get(walletId, 'privateKey');
+  obj.opts           = s.get(walletId, 'opts');
+  obj.publicKeyRing  = s.get(walletId, 'publicKeyRing');
+  obj.txProposals    = s.get(walletId, 'txProposals');
+  obj.privateKey     = s.get(walletId, 'privateKey');
 
   var w = this.fromObj(obj);
   return w;
@@ -2220,10 +2219,10 @@ WalletFactory.prototype.create = function(opts) {
   opts.verbose = this.verbose;
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
-  opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
+  opts.reconnectDelay   = opts.reconnectDelay   || this.walletDefaults.reconnectDelay;
   opts.requiredCopayers = requiredCopayers;
-  opts.totalCopayers = totalCopayers;
-  opts.version       = opts.version || this.version;
+  opts.totalCopayers    = totalCopayers;
+  opts.version          = opts.version || this.version;
   var w = new Wallet(opts);
   w.store();
   return w;
@@ -2336,7 +2335,9 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":14,"./Wallet":"zfa+FW","soop":83}],"../js/models/network/WebRTC":[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":14,"./Wallet":"zfa+FW","soop":83}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
+},{}],"../js/models/network/WebRTC":[function(require,module,exports){
 module.exports=require('7xJZlt');
 },{}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){

@@ -28,7 +28,7 @@ var defaultConfig = {
 
     // other PeerJS config
     maxPeers: 15,
-    debug: 3,
+    debug: 2,
 
     // Network encryption config
     sjclParams: {
@@ -42,12 +42,18 @@ var defaultConfig = {
     config: {
       'iceServers': [
         // Pass in STUN and TURN servers for maximum network compatibility
-
-         {
-           url: 'stun:stun.l.google.com:19302'
-         }, {
-           url: 'stun:stun1.l.google.com:19302'
-         }// {
+        {
+          url: 'stun:162.242.219.26'
+        }, {
+          url: 'turn:162.242.219.26',
+          username: 'bitcore',
+          credential: 'bitcore',
+        }
+        // {
+        //   url: 'stun:stun.l.google.com:19302'
+        // }, {
+        //   url: 'stun:stun1.l.google.com:19302'
+        // }, {
         //   url: 'stun:stun2.l.google.com:19302'
         // }, {
         //   url: 'stun:stun3.l.google.com:19302'
