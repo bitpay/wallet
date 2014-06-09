@@ -180,7 +180,7 @@ describe('TxProposals model', function() {
     uuk[0].split(',')[0].should.equal(unspentTest[0].txid);
   });
 
-  it('#merge with self', function () {
+  it.skip('#merge with self', function () {
     var priv = new PrivateKey(config);
     var w = new TxProposals({
       networkName: config.networkName,
