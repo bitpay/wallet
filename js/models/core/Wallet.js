@@ -164,7 +164,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 Wallet.prototype._handleConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
-    this.currentDelay = null;
     this.sendWalletId(newCopayerId);
   }
   var peerID = this.network.peerFromCopayer(newCopayerId)
@@ -276,8 +275,7 @@ Wallet.prototype.scheduleConnect = function() {
   var self = this;
   if (self.network.isOnline()) {
     self.connectToAll();
-    self.currentDelay = self.currentDelay*2 ||  self.reconnectDelay;
-    setTimeout(self.scheduleConnect.bind(self), self.currentDelay);
+    setTimeout(self.scheduleConnect.bind(self), self.reconnectDelay);
   }
 }
 
