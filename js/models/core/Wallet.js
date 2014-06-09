@@ -20,7 +20,7 @@ function Wallet(opts) {
   ['storage', 'network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
-    'reconnectDelay', 'networkName'
+    'reconnectDelay'
   ].forEach(function(k) {
     if (typeof opts[k] === 'undefined')
       throw new Error('missing required option for Wallet: ' + k);
@@ -174,6 +174,11 @@ Wallet.prototype._handleDisconnect = function(peerID) {
   this.emit('disconnect', peerID);
 };
 
+
+Wallet.prototype.getNetworkName = function() {
+  return this.publicKeyRing.network.name;
+};
+
 Wallet.prototype._optsToObj = function() {
   var obj = {
     id: this.id,
@@ -181,7 +186,6 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     reconnectDelay: this.reconnectDelay,
-    networkName: this.networkName,
     name: this.name,
     netKey: this.netKey,
     version: this.version,
