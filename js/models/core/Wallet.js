@@ -131,8 +131,10 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
+
   // TODO check message signature
-  if (this.id !== data.walletId) {
+  
+  if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId); //TODO
     return;
@@ -569,7 +571,7 @@ Wallet.prototype.getBalance = function(cb) {
 
     // we multiply and divide by COIN to avoid rounding errors when adding
     for (var a in balanceByAddr) {
-      balanceByAddr[a] = balanceByAddr[a] / COIN;
+      balanceByAddr[a] = balanceByAddr[a].toFixed(0) / COIN;
     }
     balance = balance / COIN;
 
@@ -579,7 +581,7 @@ Wallet.prototype.getBalance = function(cb) {
       safeBalance += amt;
     }
 
-    safeBalance = safeBalance / COIN;
+    safeBalance = safeBalance.toFixed(0) / COIN;
     return cb(null, balance, balanceByAddr, safeBalance);
   });
 };
