@@ -28,7 +28,7 @@ var defaultConfig = {
 
     // other PeerJS config
     maxPeers: 15,
-    debug: 3,
+    debug: 2,
 
     // Network encryption config
     sjclParams: {

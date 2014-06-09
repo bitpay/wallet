@@ -126,12 +126,13 @@ Network.prototype._onClose = function(peerID) {
 Network.prototype.connectToCopayers = function(copayerIds) {
   var self = this;
   var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
-console.log('[WebRTC.js.128:arrayDiff:]',arrayDiff); //TODO
 
   arrayDiff.forEach(function(copayerId) {
     if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
       this._deletePeer(this.peerFromCopayer(copayerId));
     } else {
+
+console.log('[WebRTC.js.134] CONNECT TO', copayerId); //TODO
       self.connectTo(copayerId);
     }
   });

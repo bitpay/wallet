@@ -200,6 +200,9 @@ describe('Wallet model', function() {
     var o = w.toObj();
     o = JSON.parse(JSON.stringify(o));
 
+    // non stored options
+    o.opts.reconnectDelay=100;
+
     var w2 = Wallet.fromObj(o,
       new Storage(config.storage),
       new Network(config.network),
@@ -238,13 +241,23 @@ describe('Wallet model', function() {
     throw ();
   });
 
-  it.only('call reconnect after interval', function(done) {
+  it('call reconnect after interval', function(done) {
     var w = createW2();
     var testTime = 1000;
+    var callCount = 0;
+    var cT = w.reconnectDelay;
+    var t = 0;
+
+    do {
+      callCount++;
+      t += cT;
+      cT *= 2;
+    } while (t < testTime);
+
     var spy = sinon.spy(w, 'scheduleConnect');
     w.netStart();
     setTimeout(function() {
-      sinon.assert.callCount(spy, 10);
+      sinon.assert.callCount(spy, callCount);
       done();
     }, testTime);
   });
@@ -263,7 +276,7 @@ describe('Wallet model', function() {
 
   it('handle network pubKeyRings correctly', function() {
     var w = createW();
-    w.networkName.should.equal('testnet');
+    w.getNetworkName().should.equal('testnet');
     var cepk = [
       w.publicKeyRing.toObj().copayersExtPubKeys[0],
       'tpubDEqHs8LoCB1MDfXs1y2WaLJqPkKsgt8mDoQUFsQ4aKHvho5oFJkF7UrZnfFXKMhA1MuVPwq8a5VhFHvCquYcCVHeCrW4ZCWoDDE9K95e8rP',

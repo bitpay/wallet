@@ -158,10 +158,12 @@
     <div class="p10t" ng-show="$root.wallet">
       <div class="large-3 medium-3 hide-for-small columns">
         <div>
-          <strong>{{$root.wallet.getName()}}</strong>
+          <strong>{{$root.wallet.getName()}}</strong> 
         </div>
         <div class="size-12 m10t">
           {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
+          <span ng-if="$root.wallet.getNetworkName()=='livenet'">[LIVENET]</span>
+          <span ng-if="$root.wallet.getNetworkName()=='testnet'">[TESTNET]</span>
         </div>
         <div class="text-gray size-12" style="margin-top:5px">
           Copay v{{version}}
