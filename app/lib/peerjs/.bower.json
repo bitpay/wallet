@@ -28,6 +28,6 @@
     "commit": "0680a0c344ae558ded971921299a063da950c578"
   },
   "_source": "git://github.com/peers/bower-peerjs.git",
-  "_target": "~0.3.8",
+  "_target": "=0.3.8",
   "_originalSource": "peerjs"
 }
