@@ -1,0 +1,11 @@
+{
+    "author": {
+        "name": "https://github.com/madmimi/angular-foundation/graphs/contributors"
+    },
+    "name": "angular-foundation",
+    "version": "0.2.2",
+    "main": ["./mm-foundation-tpls.js"],
+    "dependencies": {
+        "angular": ">=1"
+    }    
+}

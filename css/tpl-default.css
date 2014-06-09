@@ -1,0 +1,327 @@
+/*
+ *
+ * Copay Default Template
+ *
+ */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Ubuntu Light'), local('Ubuntu-Light'), url(../font/ubuntu-light.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../font/ubuntu.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../font/ubuntu-bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url(../font/ubuntu-bold-italic.woff) format('woff');
+}
+
+* {
+  font-family: 'Ubuntu', Helvetica, sans-serif !important;
+}
+
+body {
+  background: #F8F8FB;
+}
+
+.logo {
+  background: transparent url('../img/logo-negative-beta.svg') no-repeat;
+  background-size: 130px 51px;
+}
+
+.top-bar-section li:not(.has-form) a:not(.button) {
+  background: #1ABC9C;
+  color: #fff;
+}
+
+.top-bar-section li.active:not(.has-form) a:not(.button) {
+  background: #F8F8FB;
+  color: #111;
+}
+
+.top-bar-section li.active:not(.has-form) a:not(.button):hover, .top-bar-section li:not(.has-form) a:not(.button):hover {
+  background: #16A085;
+  color: white;
+}
+
+.top-bar-section ul li>a {
+  color: #111;
+}
+
+.header {
+  background: #2C3E50;
+  color: white;
+}
+
+.header h1, h5, p {
+  color: #93A9BD;
+}
+
+.header h6 {
+  color: #fff;
+}
+
+.header .line-dashed-v {
+  border-right: 1px dashed #5A6B7D;
+}
+
+.header a.button.small-icon {
+  background: white;
+  color: #2C3E50;
+}
+
+.header a.button.small-icon:hover {
+  background: #16A085;
+  color: #fff;
+}
+
+.header-content a {
+  color: #fff;
+}
+
+.panel {
+  color: #333;
+  background: #FFFFFF;
+  border: 1px solid #EFEFEF;
+}
+
+.transactions .panel {
+  background: #f5f5f5;
+}
+
+.transactions .panel.pending {
+  background-color: #fff; 
+}
+
+.btransactions .panel {
+  background: #fff;
+}
+
+.addresses .panel:hover, .addresses .panel.selected {
+  background: #efefef;
+}
+
+a.box-backup {
+  color: #111;
+}
+
+a.box-backup:hover {
+  background-color: #16A085;
+}
+
+a.box-backup:hover i, a.box-backup:hover p {
+  color: #fff;
+}
+
+.panel-sign {
+  color: #111;
+  background: #FAE448;
+}
+
+.panel-ignore {
+  color: #fff;
+  background: #111;
+}
+
+.share-wallet.panel {
+  background-color: #111;
+  color: #FBE500;
+}
+
+.alert-box.success {
+  background-color: #CDEFE6;
+  color: #16A085;
+  border:none;
+}
+.alert-box.info {
+  background-color: #DEE6EF;
+  border:none;
+  color: #2C3E50;
+}
+
+.alert-box.error {
+  background-color: #E8D7D7;
+  border:none;
+  color: #C0392B;
+}
+
+.text-warning {
+  color:#C0392A;
+}
+
+small.is-valid {
+  color: #04B404;
+}
+
+small.has-error {
+  color: #f04124;
+}
+
+.radius {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.transactions button, .transactions .button {
+  padding: 0.5rem 2rem;
+}
+
+button.radius, .button.radius {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/* SECONDARY */
+button.secondary, 
+.button.secondary { 
+  background-color: #1ABC9C;
+  color: #fff;
+}
+button.secondary:hover, 
+button.secondary:focus, 
+.button.secondary:hover, 
+.button.secondary:focus {
+  background-color: #16A085;
+  color: #e6e6e6;
+}
+button.disabled.secondary, 
+button[disabled].secondary, 
+.button.disabled.secondary, 
+.button[disabled].secondary,
+button.disabled.secondary:hover, 
+button.disabled.secondary:focus, 
+button[disabled].secondary:hover, 
+button[disabled].secondary:focus, 
+.button.disabled.secondary:hover, 
+.button.disabled.secondary:focus, 
+.button[disabled].secondary:hover, 
+.button[disabled].secondary:focus {
+  background-color: #1ABC9C;
+  color: #E6E6E6;
+}
+
+/* PRIMARY */
+button.primary, 
+.button.primary { 
+  background-color: #E67E22;
+  color: #fff;
+}
+button.primary:hover, 
+button.primary:focus, 
+.button.primary:hover, 
+.button.primary:focus {
+  background-color: #D86601;
+  color: #e6e6e6;
+}
+button.disabled.primary, 
+button[disabled].primary, 
+.button.disabled.primary, 
+.button[disabled].primary,
+button.disabled.primary:hover, 
+button.disabled.primary:focus, 
+button[disabled].primary:hover, 
+button[disabled].primary:focus, 
+.button.disabled.primary:hover, 
+.button.disabled.primary:focus, 
+.button[disabled].primary:hover, 
+.button[disabled].primary:focus {
+  background-color: #E67E22;
+  color: #E6E6E6;
+}
+
+/* WARNING */
+button.warning, 
+.button.warning { 
+  background-color: #C0392A;
+  color: #fff;
+}
+button.warning:hover, 
+button.warning:focus, 
+.button.warning:hover, 
+.button.warning:focus {
+  background-color: #82251A;
+  color: #e6e6e6;
+}
+button.disabled.warning, 
+button[disabled].warning, 
+.button.disabled.warning, 
+.button[disabled].warning,
+button.disabled.warning:hover, 
+button.disabled.warning:focus, 
+button[disabled].warning:hover, 
+button[disabled].warning:focus, 
+.button.disabled.warning:hover, 
+.button.disabled.warning:focus, 
+.button[disabled].warning:hover, 
+.button[disabled].warning:focus {
+  background-color: #C0392A;
+  color: #E6E6E6;
+}
+
+.text-gray { color: #999 !important;}
+
+#footer {
+  background: #2C3E50;
+  color: #fff;
+}
+
+fieldset legend {
+  background: #F8F8FB;
+}
+
+input.ng-invalid-wallet-secret {
+  background: #FFB6C1;
+}
+
+.dr-notification {
+  background-color: #2C3E50;
+  color: #bfe2de;
+  border: 1px solid rgba(4, 94, 123, 0.85);
+}
+.dr-notification-close-btn {
+  background-color: #2C3E50;
+  color: #adfaff;
+  border: 1px solid rgba(4, 94, 123, 0.85);
+}
+
+.dr-notification-image.dr-notification-type-info {
+  color: #FFF;
+}
+
+.dr-notification-image.dr-notification-type-warning {
+  color: #FFA226;
+}
+
+.dr-notification-image.dr-notification-type-error {
+  color: #FF4B4F;
+}
+
+.dr-notification-image.dr-notification-type-success {
+  color: #B4D455;
+}
+
+.dr-notification-image.success {
+  color: #B4D455;
+}
+
+.success {
+  color: #3FBC9C;
+}
+
+.box-setup fieldset {
+  background: #fff;
+}
+
