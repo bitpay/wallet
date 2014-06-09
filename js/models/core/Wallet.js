@@ -569,7 +569,7 @@ Wallet.prototype.getBalance = function(cb) {
 
     // we multiply and divide by COIN to avoid rounding errors when adding
     for (var a in balanceByAddr) {
-      balanceByAddr[a] = balanceByAddr[a] / COIN;
+      balanceByAddr[a] = balanceByAddr[a].toFixed(0) / COIN;
     }
     balance = balance / COIN;
 
@@ -579,7 +579,7 @@ Wallet.prototype.getBalance = function(cb) {
       safeBalance += amt;
     }
 
-    safeBalance = safeBalance / COIN;
+    safeBalance = safeBalance.toFixed(0) / COIN;
     return cb(null, balance, balanceByAddr, safeBalance);
   });
 };
