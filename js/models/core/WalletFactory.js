@@ -23,10 +23,10 @@ function WalletFactory(config, version) {
   this.network = new Network(config.network);
   this.blockchain = new Blockchain(config.blockchain);
 
-  this.networkName = config.networkName;
-  this.verbose     = config.verbose;
+  this.networkName    = config.networkName;
+  this.verbose        = config.verbose;
   this.walletDefaults = config.wallet;
-  this.version     = version;
+  this.version        = version;
 }
 
 WalletFactory.prototype.log = function(){
@@ -115,6 +115,7 @@ WalletFactory.prototype.create = function(opts) {
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
+  opts.networkName    = opts.networkName || this.networkName;
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
   opts.version       = opts.version || this.version;
@@ -139,6 +140,20 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   }
 };
 
+
+WalletFactory.prototype._checkNetwork = function(inNetworkName) {
+  if( this.networkName !== inNetworkName ) {
+    throw new Error('This Wallet is configured for '
+                    + inNetworkName 
+                    + ' while currently Copay is configured for: '
+                    + this.networkName 
+                    + '. Check your settings.' 
+                   );
+  }
+};
+
+
+
 WalletFactory.prototype.open = function(walletId, opts) {
   opts = opts || {};
   opts.id = walletId;
@@ -148,6 +163,7 @@ WalletFactory.prototype.open = function(walletId, opts) {
   var w = this.read(walletId);
   if (w) {
     this._checkVersion(w.version);
+    this._checkNetwork(w.networkName);
     w.store();
   }
   return w;
