@@ -8,6 +8,7 @@ function Insight(opts) {
   this.host = opts.host || 'localhost';
   this.port = opts.port || '3001';
   this.scheme = opts.scheme || 'http';
+  this.retryDelay = opts.retryDelay || 5000;
 }
 
 function _asyncForEach(array, fn, callback) {
@@ -123,10 +124,12 @@ Insight.prototype.getUnspent = function(addresses, cb) {
     }
   };
 
+  var self = this;
   this._request(options, function(err, res) {
     if (err) {
       return cb(err);
     }
+
 
     if (res && res.length > 0) {
       all = all.concat(res);
@@ -150,15 +153,16 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
     }
   };
   this._request(options, function(err, res) {
-    console.log('[Insight.js.73:err:]', err); //TODO
     if (err) return cb();
 
-    console.log('[Insight.js.74]', res); //TODO
     return cb(res.txid);
   });
 };
 
 Insight.prototype._request = function(options, callback) {
+
+
+  var self = this;
   if (typeof process === 'undefined' || !process.version) {
     var request = new XMLHttpRequest();
 
@@ -176,28 +180,38 @@ Insight.prototype._request = function(options, callback) {
     }
 
     request.open(options.method, url, true);
-    request.timeout = 10000;
+    request.timeout = 5000;
     request.ontimeout = function() {
-      return callback({
-        message: 'Insight request timeout. Please check your Insight settings or the Insight server status.'
-      });
+      console.log('Insight timeout...retrying');
+      setTimeout(function() {
+        return self._request(options,callback);
+      }, self.retryDelay);
+      return callback(new Error('Insight request timeout'));
     };
 
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
-        if (request.status === 200 || request.status === 304 || request.status === 0) {
+        if (request.status === 200 || request.status === 304) {
           try {
             var ret = JSON.parse(request.responseText);
             return callback(null, ret);
           } catch (e) {
-            return callback({
-              message: 'Wrong response from insight'
-            });
+            return callback(new Error('CRITICAL: Wrong response from insight'));
           }
-        } else {
-          return callback({
-            message: 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText
-          });
+        } 
+        // User error
+        else if (request.status >= 400 && request.status < 499) {
+            return callback(new Error('CRITICAL: Bad request to insight. Probably wrong transaction to broadcast?.'));
+        }
+        else {
+          var err= 'Error code: ' + request.status + ' - Status: ' + request.statusText
+            + ' - Description: ' + request.responseText;
+          console.log('Insight Temporary error (will retry):', err); 
+          setTimeout(function() {
+            console.log('### Retrying Insight Request....'); //TODO
+            return self._request(options,callback);
+          }, self.retryDelay);
+          return callback(new Error(err));
         }
       }
     };
@@ -207,7 +221,9 @@ Insight.prototype._request = function(options, callback) {
     }
 
     request.send(options.data || null);
-  } else {
+  } 
+  
+  else {
     var http = require('http');
     var req = http.request(options, function(response) {
       var ret;

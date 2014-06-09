@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copay.controllerUtils')
+angular.module('copayApp.services')
   .factory('controllerUtils', function($rootScope, $sce, $location, $notification, Socket, video) {
     var root = {};
     var bitcore = require('bitcore');
@@ -62,35 +62,29 @@ angular.module('copay.controllerUtils')
         $rootScope.wallet = w;
         $location.path('addresses');
         video.setOwnPeer(myPeerID, w, handlePeerVideo);
-        console.log('# Done ready handler'); 
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        console.log('[start publicKeyRing handler]'); //TODO
         root.setSocketHandlers();
         root.updateAddressList();
         if (!dontDigest) {
-          console.log('[pkr digest]');
           $rootScope.$digest();
-          console.log('[done digest]');
         }
       });
       w.on('txProposalsUpdated', function(dontDigest) {
         root.updateTxs({onlyPending:true});
         root.updateBalance(function(){
           if (!dontDigest) {
-            console.log('[txp digest]');
             $rootScope.$digest();
-            console.log('[done digest]');
           }
         });
       });
       w.on('openError', root.onErrorDigest);
+      w.on('connectionError', root.onErrorDigest);
       w.on('connect', function(peerID) {
         if (peerID) {
           video.callPeer(peerID, handlePeerVideo);
         }
-        console.log('[digest]');
         $rootScope.$digest();
       });
       w.on('disconnect', function(peerID) {
@@ -106,30 +100,27 @@ angular.module('copay.controllerUtils')
     };
 
     root.updateBalance = function(cb) {
-      console.log('Updating balance...');
       var w = $rootScope.wallet;
+      if (!w) return root.onErrorDigest();
+
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
         if (err) {
-          $rootScope.$flashMessage = {
-            type: 'error',
-            message: 'Error: ' + err.message
-          };
-
-          $rootScope.$digest();
           console.error('Error: ' + err.message); //TODO
-
+          root._setCommError();
           return null;
         }
-
+        else {
+          root._clearCommError();
+        }
+        
         $rootScope.totalBalance = balance;
         $rootScope.balanceByAddr = balanceByAddr;
         $rootScope.availableBalance = safeBalance;
         root.updateAddressList();
         $rootScope.updatingBalance = false;
-        console.log('Done updating balance.'); //TODO
         return cb?cb():null;
       });
     };
@@ -139,13 +130,11 @@ angular.module('copay.controllerUtils')
       if (!w) return;
       opts = opts || {};
       
-      console.log('## updating tx proposals', opts); //TODO
       var myCopayerId = w.getMyCopayerId();
       var pendingForUs = 0;
       var inT = w.getTxProposals().sort(function(t1, t2) { return t1.createdTs < t2.createdTs });
       var txs  = [];
 
-      console.log('[START LOOP]'); //TODO
       inT.forEach(function(i, index){
         if (opts.skip && (index < opts.skip[0] || index >= opts.skip[1])) {
           return txs.push(null);
@@ -158,7 +147,6 @@ angular.module('copay.controllerUtils')
           i.isPending=1;
         }
         if (!opts.onlyPending || i.isPending) {
-          console.log('tx:',i); //TODO
           var tx  = i.builder.build();
           var outs = [];
           tx.outs.forEach(function(o) {
@@ -183,15 +171,36 @@ angular.module('copay.controllerUtils')
         $rootScope.txAlertCount = pendingForUs;
       }
       $rootScope.pendingTxCount = pendingForUs;
-      console.log('## Done updating tx proposals'); //TODO
     };    
 
+    root._setCommError = function(e) {
+      if ($rootScope.insightError<0) 
+        $rootScope.insightError=0;
+      $rootScope.insightError++;
+    };
+
+
+    root._clearCommError = function(e) {
+      if ($rootScope.insightError>0)
+        $rootScope.insightError=-1;
+      else
+        $rootScope.insightError=0;
+    };
+
     root.setSocketHandlers = function() {
+      if (!Socket.sysEventsSet) {
+        Socket.sysOn('error', root._setCommError);
+        Socket.sysOn('reconnect_error', root._setCommError);
+        Socket.sysOn('reconnect_failed', root._setCommError);
+        Socket.sysOn('connect', root._clearCommError);
+        Socket.sysOn('reconnect', root._clearCommError);
+        Socket.sysEventsSet=true;
+      }
       if (!$rootScope.wallet) return;
 
       var currentAddrs=  Socket.getListeners();
       var addrs = $rootScope.wallet.getAddressesStr();
-
+      
       var newAddrs=[];
       for(var i in addrs){
         var a=addrs[i];
@@ -199,12 +208,10 @@ angular.module('copay.controllerUtils')
           newAddrs.push(a);
       }
       for (var i = 0; i < newAddrs.length; i++) {
-        console.log('### SUBSCRIBE TO', newAddrs[i]);
         Socket.emit('subscribe', newAddrs[i]);
       }
       newAddrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
-          console.log('Received!', txid);
           $rootScope.receivedFund = [txid, addr];
           root.updateBalance(function(){
             $rootScope.$digest();

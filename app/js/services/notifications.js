@@ -3,7 +3,6 @@
 angular.module('notifications', []).
   factory('$notification', ['$timeout',function($timeout){
 
-//    console.log('notification service online');
     var notifications = JSON.parse(localStorage.getItem('$notifications')) || [],
         queue = [];
 
@@ -11,7 +10,7 @@ angular.module('notifications', []).
       info: { duration: 5000, enabled: true },
       funds: { duration: 5000, enabled: true },
       warning: { duration: 5000, enabled: true },
-      error: { duration: 5000, enabled: true },
+      error: { duration: 1e10, enabled: true },
       success: { duration: 5000, enabled: true },
       progress: { duration: 0, enabled: true },
       custom: { duration: 35000, enabled: true },
@@ -76,7 +75,6 @@ angular.module('notifications', []).
 
       requestHtml5ModePermissions: function(){
         if (window.webkitNotifications){
-          console.log('notifications are available');
           if (window.webkitNotifications.checkPermission() === 0) {
             return true;
           }
@@ -93,7 +91,6 @@ angular.module('notifications', []).
           }
         }
         else{
-          console.log('notifications are not supported');
           return false;
         }
       },
@@ -113,12 +110,10 @@ angular.module('notifications', []).
       /* ============== NOTIFICATION METHODS ==============*/
 
       info: function(title, content, userData){
-        console.log(title, content);
         return this.awesomeNotify('info','loop', title, content, userData);
       },
       
       funds: function(title, content, userData){
-        console.log(title, content);
         return this.awesomeNotify('funds','bitcoin', title, content, userData);
       },
 
@@ -168,9 +163,9 @@ angular.module('notifications', []).
 
         if(settings.html5Mode){
           html5Notify(image, title, content, function(){
-            console.log("inner on display function");
+            // inner on display function
           }, function(){
-            console.log("inner on close function");
+            // inner on close function
           });
         }
         else{
@@ -190,11 +185,9 @@ angular.module('notifications', []).
 
       save: function(){
         // Save all the notifications into localStorage
-        // console.log(JSON);
         if(settings.localStorage){
           localStorage.setItem('$notifications', JSON.stringify(notifications));
         }
-        // console.log(localStorage.getItem('$notifications'));
       },
 
       restore: function(){
@@ -218,7 +211,6 @@ angular.module('notifications', []).
      * Finally, the directive should have its own controller for
      * handling all of the notifications from the notification service
      */
-//    console.log('this is a new directive');
     var html =
       '<div class="dr-notification-wrapper" ng-repeat="noti in queue">' +
         '<div class="dr-notification-close-btn" ng-click="removeNotification(noti)">' +

@@ -2,7 +2,7 @@
  * angular-mm-foundation
  * http://madmimi.github.io/angular-foundation/
 
- * Version: 0.2.1 - 2014-05-20
+ * Version: 0.2.2 - 2014-05-28
  * License: MIT
  */
 angular.module("mm.foundation", ["mm.foundation.tpls", "mm.foundation.accordion","mm.foundation.alert","mm.foundation.bindHtml","mm.foundation.buttons","mm.foundation.position","mm.foundation.dropdownToggle","mm.foundation.transition","mm.foundation.modal","mm.foundation.offcanvas","mm.foundation.pagination","mm.foundation.tooltip","mm.foundation.popover","mm.foundation.progressbar","mm.foundation.rating","mm.foundation.tabs","mm.foundation.tour","mm.foundation.typeahead"]);
@@ -2104,7 +2104,7 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
   };
 }])
 
-.directive( 'stepPopup', ['$tour', function ( $tour ) {
+.directive( 'stepTextPopup', ['$tour', function ( $tour ) {
   return {
     restrict: 'EA',
     replace: true,
@@ -2155,11 +2155,11 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
         return true;
       }
     }
-
+    
     return false;
   }
 
-  return $tooltip( 'step', 'step', show );
+  return $tooltip( 'stepText', 'step', show );
 }]);
 
 angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundation.bindHtml'])
