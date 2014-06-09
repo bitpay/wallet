@@ -79,6 +79,7 @@ button.warning,
 .m2r {margin-right: 2rem;}
 .m4b {margin-bottom: 4rem;}
 .p5t {padding-top: 5rem;}
+.p5b {padding-bottom: 5rem;}
 
 .row {
   max-width: 100%;
@@ -86,7 +87,8 @@ button.warning,
 }
 
 .feature {
-  padding-top: 150px;
+  padding-top: 70px;
+  padding-bottom: 70px;
 }
 
 button {
@@ -206,14 +208,19 @@ footer {
 @media only screen and (max-width: 40em) {
 
   figure.bg-logo {
-    margin: 0 auto 8rem;
+    margin: 0 auto 5rem;
   }
 
   header h3 {
     font-size: 1.7rem;
     line-height: 1.4;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     text-align: center;
+  }
+
+  .icon-button {
+    padding: 0.5rem 0;
+    width: 4.5rem;
   }
 
   .ribbon-phone a {
@@ -242,6 +249,6 @@ footer {
   .btn-download {
     text-align: left;
     line-height: 20px;
-    margin: 0 0 0 45px;
+    margin: 0 0 0 7rem;
   }
 }
