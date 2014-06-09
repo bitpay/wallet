@@ -1,0 +1,10 @@
+{
+  "window": {
+    "height": 720,
+    "width": 880
+  },
+  "copay": {
+    "port": 3000
+  },
+  "debug": true
+}

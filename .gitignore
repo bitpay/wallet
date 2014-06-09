@@ -51,5 +51,8 @@ version.js
 android/package
 android/*.apk
 
-
 coverage/
+
+shell/bin/linux
+shell/bin/darwin
+shell/bin/win32
