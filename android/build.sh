@@ -20,6 +20,11 @@ checkOK() {
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPDIR="$BUILDDIR/package"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
+DEBUG=""
+if [[ $1 = "-d" ]]
+then
+  DEBUG="--enable-remote-debugging"
+fi
 
 # Move to the build directory
 cd $BUILDDIR
@@ -49,7 +54,7 @@ checkOK
 # Building the APK
 echo "${OpenColor}${Green}* Building APK file...${CloseColor}"
 cd $CROSSWALK
-python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR --arch=arm
+python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR --arch=arm $DEBUG
 checkOK
 cd $BUILDDIR
 
