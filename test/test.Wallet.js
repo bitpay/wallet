@@ -239,12 +239,23 @@ describe('Wallet model', function() {
 
   it('call reconnect after interval', function(done) {
     var w = createW2();
+    var testTime = 1000;
+    var callCount = 0;
+    var cT=w.reconnectDelay;
+    var t=0;
+
+    do {
+      callCount++;
+      t += cT;
+      cT *= 2;
+    } while (t<testTime);
+
     var spy = sinon.spy(w, 'scheduleConnect');
     w.netStart();
     setTimeout(function() {
-      sinon.assert.callCount(spy, 10);
+      sinon.assert.callCount(spy, callCount);
       done();
-    }, 1000);
+    }, testTime);
   });
 
   it('handle network indexes correctly', function() {
