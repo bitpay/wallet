@@ -32,7 +32,6 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
   this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
-  this.networkName = opts.networkName;
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -93,7 +92,6 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   if (hasChanged) {
     if (wasIncomplete) {
       this.sendPublicKeyRing();
-      this.connectToAll();
     }
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
@@ -164,7 +162,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 Wallet.prototype._handleConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
-    this.currentDelay = null;
     this.sendWalletId(newCopayerId);
   }
   var peerID = this.network.peerFromCopayer(newCopayerId)
@@ -172,6 +169,7 @@ Wallet.prototype._handleConnect = function(newCopayerId) {
 };
 
 Wallet.prototype._handleDisconnect = function(peerID) {
+  this.currentDelay = null;
   this.emit('disconnect', peerID);
 };
 
@@ -186,7 +184,6 @@ Wallet.prototype._optsToObj = function() {
     spendUnconfirmed: this.spendUnconfirmed,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
-    reconnectDelay: this.reconnectDelay,
     name: this.name,
     netKey: this.netKey,
     version: this.version,

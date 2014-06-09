@@ -48,6 +48,10 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 WalletFactory.prototype.fromObj = function(obj) {
+
+  // not stored options
+  obj.opts.reconnectDelay  = this.walletDefaults.reconnectDelay;
+
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   w.verbose = this.verbose;
   return w;
@@ -70,10 +74,10 @@ WalletFactory.prototype.read = function(walletId) {
   var s = this.storage;
 
   obj.id = walletId;
-  obj.opts = s.get(walletId, 'opts');
-  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
-  obj.txProposals   = s.get(walletId, 'txProposals');
-  obj.privateKey    = s.get(walletId, 'privateKey');
+  obj.opts           = s.get(walletId, 'opts');
+  obj.publicKeyRing  = s.get(walletId, 'publicKeyRing');
+  obj.txProposals    = s.get(walletId, 'txProposals');
+  obj.privateKey     = s.get(walletId, 'privateKey');
 
   var w = this.fromObj(obj);
   return w;
@@ -114,10 +118,10 @@ WalletFactory.prototype.create = function(opts) {
   opts.verbose = this.verbose;
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
-  opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
+  opts.reconnectDelay   = opts.reconnectDelay   || this.walletDefaults.reconnectDelay;
   opts.requiredCopayers = requiredCopayers;
-  opts.totalCopayers = totalCopayers;
-  opts.version       = opts.version || this.version;
+  opts.totalCopayers    = totalCopayers;
+  opts.version          = opts.version || this.version;
   var w = new Wallet(opts);
   w.store();
   return w;
