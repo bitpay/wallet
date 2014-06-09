@@ -34,8 +34,10 @@ describe('Wallet model', function() {
     throw ();
   });
 
-  var createW = function(netKey) {
+  var createW = function(netKey, N) {
+
     var c = JSON.parse(JSON.stringify(config));
+    if (!N) N = c.totalCopayers;
 
     if (netKey) c.netKey = netKey;
     c.privateKey = new copay.PrivateKey({
@@ -44,8 +46,8 @@ describe('Wallet model', function() {
 
     c.publicKeyRing = new copay.PublicKeyRing({
       networkName: c.networkName,
-      requiredCopayers: c.requiredCopayers,
-      totalCopayers: c.totalCopayers,
+      requiredCopayers: Math.min(N, c.requiredCopayers),
+      totalCopayers: N,
     });
     var copayerEPK = c.privateKey.deriveBIP45Branch().extendedPublicKeyString()
     c.publicKeyRing.addCopayer(copayerEPK);
@@ -101,14 +103,15 @@ describe('Wallet model', function() {
     "confirmations": 7
   }];
 
-  var createW2 = function(privateKeys) {
+  var createW2 = function(privateKeys, N) {
+    if (!N) N = 3;
     var netKey = 'T0FbU2JLby0=';
-    var w = createW(netKey);
+    var w = createW(netKey, N);
     should.exist(w);
 
     var pkr = w.publicKeyRing;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < N-1; i++) {
       if (privateKeys) {
         var k = privateKeys[i];
         pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : null);
@@ -457,6 +460,18 @@ describe('Wallet model', function() {
         done();
       });
       w.reject(ntxid);
+    });
+  });
+  it('should create & sign & send a transaction', function(done) {
+
+    var w = createW2(null, 1);
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+    w.createTx(toAddress, amountSatStr, function(ntxid) {
+      w.sendTx(ntxid, function(txid) {
+        txid.length.should.equal(64);
+        done();
+      });
     });
   });
 
