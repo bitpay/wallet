@@ -61,7 +61,8 @@ angular.module('copayApp.services')
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
         $location.path('addresses');
-        video.setOwnPeer(myPeerID, w, handlePeerVideo);
+        if (!config.disableVideo)
+          video.setOwnPeer(myPeerID, w, handlePeerVideo);
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
@@ -83,7 +84,7 @@ angular.module('copayApp.services')
         root.onErrorDigest(msg);
       });
       w.on('connect', function(peerID) {
-        if (peerID) {
+        if (peerID && !config.disableVideo) {
           video.callPeer(peerID, handlePeerVideo);
         }
         $rootScope.$digest();

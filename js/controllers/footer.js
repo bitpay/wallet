@@ -17,6 +17,8 @@ angular.module('copayApp.controllers').controller('FooterController', function($
     $scope.version = copay.version;
 
     $scope.getVideoURL = function(copayer) {
+      if (config.disableVideo) return;
+      
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) return;
 
