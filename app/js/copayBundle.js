@@ -2387,7 +2387,7 @@ function Network(opts) {
     ts:parseInt(64),   
   };
   this.opts = {};
-  ['config', 'port', 'host', 'path', 'debug', 'key'].forEach(function(k) {
+  ['config', 'port', 'host', 'path', 'debug', 'key', 'secure'].forEach(function(k) {
     if (opts[k]) self.opts[k] = opts[k];
   });
   this.cleanUp();

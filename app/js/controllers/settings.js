@@ -10,8 +10,8 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkKey = config.network.key;
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
-
-
+    $scope.networkSecure = config.network.secure || false;
+    $scope.disableVideo  = config.disableVideo || true;
 
     $scope.$watch('networkName', function(net) {
       $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is'; 
@@ -22,6 +22,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
       network.key = $scope.networkKey;
       network.host = $scope.networkHost;
       network.port = $scope.networkPort;
+      network.secure = $scope.networkSecure;
 
       localStorage.setItem('config', JSON.stringify({
           networkName: $scope.networkName,
@@ -33,7 +34,8 @@ angular.module('copayApp.controllers').controller('SettingsController',
             host: $scope.insightHost,
             port: $scope.insightPort
           },
-          network: network
+          network: network,
+          disableVideo: $scope.disableVideo,
         })
       );
 
