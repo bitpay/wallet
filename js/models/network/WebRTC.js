@@ -32,7 +32,7 @@ function Network(opts) {
   };
   this.opts = {};
   ['config', 'port', 'host', 'path', 'debug', 'key', 'secure'].forEach(function(k) {
-    if (opts[k]) self.opts[k] = opts[k];
+    if (opts.hasOwnProperty(k)) self.opts[k] = opts[k];
   });
   this.cleanUp();
 }
