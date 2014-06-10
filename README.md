@@ -86,6 +86,11 @@ Once this script has completed, you can launch the shell-based Copay by running:
 npm run shell
 ```
 
+## Tests
+
+Open test/index.html in your browser to test the models. Install and run karma
+to test the services and controllers.
+
 
 ## Configuration
 
