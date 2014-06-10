@@ -751,9 +751,7 @@ PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
 
 module.exports = require('soop')(PrivateKey);
 
-},{"./Structure":13,"bitcore":23,"soop":83}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
-module.exports=require('6Bv3pA');
-},{}],"6Bv3pA":[function(require,module,exports){
+},{"./Structure":13,"bitcore":23,"soop":83}],"6Bv3pA":[function(require,module,exports){
 (function (Buffer){
 
 'use strict';
@@ -1005,7 +1003,7 @@ PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
   }
 
   if (this.network.name !== inPKR.network.name) {
-    throw new Error('inPKR network mismatch. Should be '+this.network.name +
+    throw new Error('Network mismatch. Should be '+this.network.name +
         ' and found '+inPKR.network.name);
   }
 
@@ -1069,7 +1067,9 @@ PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
 module.exports = require('soop')(PublicKeyRing);
 
 }).call(this,require("buffer").Buffer)
-},{"./AddressIndex":6,"./PrivateKey":"41fjjN","./Structure":13,"bitcore":23,"buffer":50,"soop":83}],13:[function(require,module,exports){
+},{"./AddressIndex":6,"./PrivateKey":"41fjjN","./Structure":13,"bitcore":23,"buffer":50,"soop":83}],"../js/models/core/PublicKeyRing":[function(require,module,exports){
+module.exports=require('6Bv3pA');
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();
@@ -1479,7 +1479,15 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
-  var hasChanged = this.publicKeyRing.merge(inPKR, true);
+  var hasChanged;
+
+  try{
+    hasChanged = this.publicKeyRing.merge(inPKR, true);
+  } catch (e){
+    console.log('## WALLET ERROR', e); //TODO
+    this.emit('connectionError', e.message);
+    return;
+  }
 
   if (hasChanged) {
     if (wasIncomplete) {
@@ -1773,7 +1781,8 @@ Wallet.prototype.sendWalletId = function(recipients) {
   this.network.send(recipients, {
     type: 'walletId',
     walletId: this.id,
-    opts: this._optsToObj()
+    opts: this._optsToObj(),
+    networkName: this.getNetworkName(),
   });
 };
 
@@ -2098,6 +2107,8 @@ module.exports = require('soop')(Wallet);
 }).call(this,require("buffer").Buffer)
 },{"../../../copay":"hxYaTp","bitcore":23,"buffer":50,"events":59,"http":60,"soop":83}],"../js/models/core/Wallet":[function(require,module,exports){
 module.exports=require('zfa+FW');
+},{}],"./js/models/core/WalletFactory":[function(require,module,exports){
+module.exports=require('Pyh7xe');
 },{}],"Pyh7xe":[function(require,module,exports){
 'use strict';
 
@@ -2321,6 +2332,12 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
+
+console.log('[WalletFactory.js.223]', data.networkName, self.networkName); //TODO
+        if (data.networkName !== self.networkName ){
+          return cb('badNetwork');
+        }
+
         data.opts.privateKey = privateKey;
         data.opts.nickname =  nickname;
         data.opts.passphrase = passphrase;
@@ -2335,9 +2352,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":14,"./Wallet":"zfa+FW","soop":83}],"./js/models/core/WalletFactory":[function(require,module,exports){
-module.exports=require('Pyh7xe');
-},{}],"../js/models/network/WebRTC":[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":14,"./Wallet":"zfa+FW","soop":83}],"../js/models/network/WebRTC":[function(require,module,exports){
 module.exports=require('7xJZlt');
 },{}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){
