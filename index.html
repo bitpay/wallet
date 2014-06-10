@@ -720,30 +720,29 @@
             </fieldset>
             <fieldset>
               <legend>Insight API server</legend>
-              <div class="row">
                 <label for="insight-host">Host</label>
                 <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
-              </div>
-              <div class="row">
                 <label for="insight-port">Port</label>
                 <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
-              </div>
             </fieldset>
             <fieldset>
               <legend>PeerJS server</legend>
-              <div class="row">
                 <label for="peerjs-key">Key</label>
                 <input type="text" ng-model="networkKey" class="form-control" name="peerjs-key">
-              </div>
-              <div class="row">
                 <label for="peerjs-host">Host</label>
                 <input type="text" ng-model="networkHost" class="form-control" name="peerjs-host">
-              </div>
-              <div class="row">
                 <label for="peerjs-port">Port</label>
                 <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
-              </div>
+                <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control" disabled="disabled">
+                <label for="peerjs-secure">Use SSL (disabled)</label>
             </fieldset>
+            <fieldset>
+              <legend>Videoconferencing</legend>
+                <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
+                <label for="disableVideo-opt">Enable videoconferencing (only for fast Networks)</label>
+            </fieldset>
+
+
           </div>
           <div class="row">
             <div class="large-12 columns line-dashed">
