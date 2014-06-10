@@ -32,8 +32,12 @@ angular.module('copayApp.services')
       root.logout();
     }
 
-    root.onErrorDigest = function(scope) {
+    root.onErrorDigest = function(scope, msg) {
       root.onError(scope);
+      if (msg) $rootScope.$flashMessage = {
+        type: 'error',
+        message: msg 
+      };
       $rootScope.$digest();
     }
 
@@ -81,7 +85,7 @@ angular.module('copayApp.services')
         });
       });
       w.on('connectionError', function(msg) {
-        root.onErrorDigest(msg);
+        root.onErrorDigest(null, msg);
       });
       w.on('connect', function(peerID) {
         if (peerID && !config.disableVideo) {
