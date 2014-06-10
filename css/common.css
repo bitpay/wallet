@@ -41,6 +41,10 @@ button.warning,
   color: #fff;
 }
 
+.text-warning {
+  color: #C0392A;
+}
+
 .box-download {
   border: 1px solid #f2f2f2;
   border-radius: 5px;
