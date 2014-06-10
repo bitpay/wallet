@@ -57,6 +57,8 @@ angular.module('copayApp.controllers').controller('SigninController',
               $rootScope.$flashMessage = { message: 'Can not find peer'};
             else if (err === 'walletFull')
               $rootScope.$flashMessage = { message: 'The wallet is full', type: 'error'};
+            else if (err === 'badNetwork')
+              $rootScope.$flashMessage = { message: 'The wallet your are trying to join uses a different Bitcoin Network. Check your settings.', type: 'error'};
             else if (err === 'badSecret')  
               $rootScope.$flashMessage = { message: 'Bad secret secret string', type: 'error'};
             else 
