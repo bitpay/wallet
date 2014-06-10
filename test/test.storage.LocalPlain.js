@@ -17,7 +17,7 @@ if (typeof process === 'undefined' || !process.version)  {
     describe('#setFromObj', function() {
       it('should set keys from an object', function() {
         localStorage.clear();
-        var obj = {test:'testval'};
+        var obj = {test:'testval', opts: {name: 'testname'}};
         var storage = new LocalPlain();
         storage.setFromObj('walletId', obj);
         storage.get('walletId', 'test').should.equal('testval');
