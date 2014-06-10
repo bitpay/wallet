@@ -2350,9 +2350,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
 module.exports = require('soop')(WalletFactory);
 
-},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":14,"./Wallet":"zfa+FW","soop":83}],"../js/models/network/WebRTC":[function(require,module,exports){
-module.exports=require('7xJZlt');
-},{}],"7xJZlt":[function(require,module,exports){
+},{"./PrivateKey":"41fjjN","./PublicKeyRing":"6Bv3pA","./TxProposals":14,"./Wallet":"zfa+FW","soop":83}],"7xJZlt":[function(require,module,exports){
 (function (Buffer){
 
 var imports     = require('soop').imports();
@@ -2388,7 +2386,7 @@ function Network(opts) {
   };
   this.opts = {};
   ['config', 'port', 'host', 'path', 'debug', 'key', 'secure'].forEach(function(k) {
-    if (opts[k]) self.opts[k] = opts[k];
+    if (opts.hasOwnProperty(k)) self.opts[k] = opts[k];
   });
   this.cleanUp();
 }
@@ -2675,7 +2673,6 @@ Network.prototype.start = function(opts, openCallback) {
 
     if (!self.criticalError && self.tries < self.reconnectAttempts) {
       self.tries++;
-      console.log(self.opts);
       self.peer = new Peer(self.peerId, self.opts);
       self.started = true;
       self._setupPeerHandlers(openCallback);
@@ -2795,7 +2792,9 @@ Network.prototype.disconnect = function(cb, forced) {
 module.exports = require('soop')(Network);
 
 }).call(this,require("buffer").Buffer)
-},{"bitcore":23,"buffer":50,"events":59,"soop":83,"util":81}],21:[function(require,module,exports){
+},{"bitcore":23,"buffer":50,"events":59,"soop":83,"util":81}],"../js/models/network/WebRTC":[function(require,module,exports){
+module.exports=require('7xJZlt');
+},{}],21:[function(require,module,exports){
 'use strict';
 
 var imports = require('soop').imports();

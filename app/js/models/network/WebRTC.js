@@ -32,7 +32,7 @@ function Network(opts) {
   };
   this.opts = {};
   ['config', 'port', 'host', 'path', 'debug', 'key', 'secure'].forEach(function(k) {
-    if (opts[k]) self.opts[k] = opts[k];
+    if (opts.hasOwnProperty(k)) self.opts[k] = opts[k];
   });
   this.cleanUp();
 }
@@ -319,7 +319,6 @@ Network.prototype.start = function(opts, openCallback) {
 
     if (!self.criticalError && self.tries < self.reconnectAttempts) {
       self.tries++;
-      console.log(self.opts);
       self.peer = new Peer(self.peerId, self.opts);
       self.started = true;
       self._setupPeerHandlers(openCallback);
