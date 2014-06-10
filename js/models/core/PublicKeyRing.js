@@ -248,7 +248,7 @@ PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
   }
 
   if (this.network.name !== inPKR.network.name) {
-    throw new Error('inPKR network mismatch. Should be '+this.network.name +
+    throw new Error('Network mismatch. Should be '+this.network.name +
         ' and found '+inPKR.network.name);
   }
 

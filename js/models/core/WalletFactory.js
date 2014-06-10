@@ -220,6 +220,12 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     });
     self.network.on('data', function(sender, data) {
       if (data.type ==='walletId') {
+
+console.log('[WalletFactory.js.223]', data.networkName, self.networkName); //TODO
+        if (data.networkName !== self.networkName ){
+          return cb('badNetwork');
+        }
+
         data.opts.privateKey = privateKey;
         data.opts.nickname =  nickname;
         data.opts.passphrase = passphrase;
