@@ -25,6 +25,7 @@ var defaultConfig = {
     host: '162.242.219.26',
     port: 10000,
     path: '/',
+    secure: false,
 
     // other PeerJS config
     maxPeers: 15,
