@@ -87,7 +87,15 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
   var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
-  var hasChanged = this.publicKeyRing.merge(inPKR, true);
+  var hasChanged;
+
+  try{
+    hasChanged = this.publicKeyRing.merge(inPKR, true);
+  } catch (e){
+    console.log('## WALLET ERROR', e); //TODO
+    this.emit('connectionError', e.message);
+    return;
+  }
 
   if (hasChanged) {
     if (wasIncomplete) {
@@ -381,7 +389,8 @@ Wallet.prototype.sendWalletId = function(recipients) {
   this.network.send(recipients, {
     type: 'walletId',
     walletId: this.id,
-    opts: this._optsToObj()
+    opts: this._optsToObj(),
+    networkName: this.getNetworkName(),
   });
 };
 
