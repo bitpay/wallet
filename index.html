@@ -399,7 +399,7 @@
                   <span ng-if="showAll">Show less</span>
                 </a>
               </div>
-              <div class="large-4 medium-4 columns line-dashed-v text-center" ng-show="selectedAddr">
+              <div class="large-4 medium-4 columns line-dashed-v text-center" highlight-on-change="selectedAddr" ng-show="selectedAddr">
                 <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
                 <p class="m10t">
                   <strong>
@@ -411,7 +411,8 @@
                         <i class="fi-bitcoin"></i>
                       </span>
                     </span>
-                    <span ng-if="addrWithFund != selectedAddr.address">
+                    <span ng-if="addrWithFund != selectedAddr.address" style="word-wrap: break-word;">
+                      {{selectedAddr.address}}<br/>
                       {{selectedAddr.balance || 0}}
                       <i class="fi-bitcoin"></i>
                     </span>

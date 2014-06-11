@@ -486,6 +486,32 @@ a.loading {
  vertical-align:middle
 }
 
+@-webkit-keyframes yellow-flash {
+    0% {
+        background-color: #FFFFE0;
+        opacity:1;
+    }
+    22% {
+        background-color: #FFFFE0;
+    }
+    100% {
+        background-color: none;
+    }
+}
+
+.highlight{
+  -webkit-animation-name: yellow-flash;
+    -webkit-animation-duration: 400ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+  -moz-animation-name: yellow-flash;
+    -moz-animation-duration: 400ms;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: linear;
+}
+
+
+
 /* notifications */
 
 .dr-notification-container {
