@@ -23,7 +23,7 @@ var PublicKeyRing = is_browser ? copay.PublicKeyRing :
 var is_browser = (typeof process.versions === 'undefined')
 
 var config = {
-  networkName: 'livenet',
+  networkName: 'testnet',
 };
 
 var unspentTest = [{
@@ -40,20 +40,13 @@ var createPKR = function(bip32s) {
   should.exist(w);
 
   for (var i = 0; i < 5; i++) {
-    if (bip32s) {
+    if (bip32s && i < bip32s.length) {
       var b = bip32s[i];
-      w.addCopayer(b ? b.deriveBIP45Branch().extendedPublicKeyString() : null);
-    } else
+      w.addCopayer(b.deriveBIP45Branch().extendedPublicKeyString());
+    } else {
       w.addCopayer();
+    }
   }
-  w.generateAddress(true);
-  w.generateAddress(true);
-  w.generateAddress(true);
-  w.generateAddress(false);
-  w.generateAddress(false);
-  w.generateAddress(false);
-  //3x3 indexes
-
   return w;
 };
 
@@ -149,6 +142,7 @@ describe('TxProposals model', function() {
     var signRet;
     if (priv) {
       b.sign(priv.getAll(pkr.indexes.getReceiveIndex(), pkr.indexes.getChangeIndex()));
+      console.log('signed with priv');
     }
     var me = {};
     if (priv) me[priv.id] = Date.now();
@@ -316,15 +310,18 @@ describe('TxProposals model', function() {
     var pkr = createPKR([priv, priv2]);
     var opts = {
       remainderOut: {
-        address: pkr.generateAddress(true).toString()
+        address: '2MxK2m7cPtEwjZBB8Ksq7ppjkgJyFPJGemr'
       }
     };
+    var addressToSign = pkr.generateAddress(false);
+    unspentTest[0].address = addressToSign.toString();
+    unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
+    var tx, txb;
 
+    /*
     var w = new TxProposals({
       networkName: config.networkName,
     });
-    unspentTest[0].address = pkr.getAddress(index, isChange).toString();
-    unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
 
     w.add(createTx(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
@@ -336,7 +333,11 @@ describe('TxProposals model', function() {
     ));
 
     var ntxid = Object.keys(w.txps)[0];
-    var tx = w.txps[ntxid].builder.build();
+    txb = w.txps[ntxid].builder;
+    console.log('new should A');
+    txb.signaturesAdded.should.equal(0);
+    tx = txb.build();
+
     console.log('first should');
     tx.isComplete().should.equal(false);
     console.log('2 should');
@@ -346,14 +347,12 @@ describe('TxProposals model', function() {
     Object.keys(w.txps[ntxid].signedBy).length.should.equal(0);
     console.log('4 should');
     Object.keys(w.txps[ntxid].seenBy).length.should.equal(1);
-
+    */
 
     var w2 = new TxProposals({
       networkName: config.networkName,
     });
 
-    unspentTest[0].address = pkr.getAddress(index, isChange).toString();
-    unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
     w2.add(createTx(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
       '123456789',
@@ -362,17 +361,22 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    var k = Object.keys(w2.txps)[0];
-    tx = w2.txps[k].builder.build();
+    var ntxid = Object.keys(w2.txps)[0];
+    txb = w2.txps[ntxid].builder;
+    tx = txb.build();
+
+    console.log('new should B');
+    txb.signaturesAdded.should.equal(1);
     console.log('5 should');
     tx.isComplete().should.equal(false);
     console.log('6 should');
     tx.countInputMissingSignatures(0).should.equal(2);
+    return;
 
     console.log('7 should');
-    (w2.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     console.log('8 should');
-    (w2.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     w.merge(w2);
     console.log('9 should');
@@ -393,8 +397,6 @@ describe('TxProposals model', function() {
       networkName: config.networkName,
       publicKeyRing: pkr,
     });
-    unspentTest[0].address = pkr.getAddress(index, isChange).toString();
-    unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
     w3.add(createTx(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
       '123456789',
