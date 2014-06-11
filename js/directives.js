@@ -120,6 +120,17 @@ angular.module('copayApp.directives')
       }
     }
   })
+  .directive('highlightOnChange', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        scope.$watch(attrs.highlightOnChange, function (newValue, oldValue) {
+          element.addClass('highlight');
+          setTimeout(function() { element.removeClass('highlight'); }, 500);
+        });
+      }
+    }
+  })
   .directive('checkStrength', function() {
     return {
       replace: false,
