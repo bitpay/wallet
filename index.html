@@ -649,9 +649,10 @@
                     <label for="amount">Amount
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
                       <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">valid!</small>
-                      <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine">
-                      not valid.</small>
-                      <small ng-show="notEnoughAmount">{{notEnoughAmount}}</small>
+                      <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount">
+                        not valid
+                      </small>
+                      <small ng-show="notEnoughAmount">Insufficient funds!</small>
                     </label>
                     <div class="small-9 columns">
                       <input type="number" id="amount" ng-disabled="loading"
