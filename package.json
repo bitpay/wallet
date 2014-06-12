@@ -52,7 +52,6 @@
     "mocha": "1.18.2",
     "mocha-lcov-reporter": "0.0.1",
     "node-cryptojs-aes": "0.4.0",
-    "sinon": "1.9.1",
     "soop": "0.1.5",
     "travis-cov": "0.2.5",
     "uglifyify": "1.2.3"
@@ -60,6 +59,7 @@
   "dependencies": {
     "mocha": "^1.18.2",
     "mocha-lcov-reporter": "0.0.1",
-    "preconditions": "^1.0.7"
+    "preconditions": "^1.0.7",
+    "sinon": "1.9.1"
   }
 }
