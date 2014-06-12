@@ -151,6 +151,7 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
     pubKeys = pubKeys.map(function(s){return new Buffer(s,'hex');}); 
   }
 
+
   return pubKeys;
 };
 

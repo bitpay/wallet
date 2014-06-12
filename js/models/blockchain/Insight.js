@@ -182,7 +182,6 @@ Insight.prototype._request = function(options, callback) {
     request.open(options.method, url, true);
     request.timeout = 5000;
     request.ontimeout = function() {
-      console.log('Insight timeout...retrying');
       setTimeout(function() {
         return self._request(options,callback);
       }, self.retryDelay);
@@ -206,9 +205,7 @@ Insight.prototype._request = function(options, callback) {
         else {
           var err= 'Error code: ' + request.status + ' - Status: ' + request.statusText
             + ' - Description: ' + request.responseText;
-          console.log('Insight Temporary error (will retry):', err); 
           setTimeout(function() {
-            console.log('### Retrying Insight Request....'); //TODO
             return self._request(options,callback);
           }, self.retryDelay);
           return callback(new Error(err));
