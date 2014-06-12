@@ -58,7 +58,8 @@ PrivateKey.prototype._getHK = function(path) {
   if (typeof path === 'undefined') {
     return this.bip;
   }
-  return this.bip.derive(path);
+  var ret = this.bip.derive(path);
+  return ret;
 };
 
 PrivateKey.prototype.getForPaths = function(paths) {
