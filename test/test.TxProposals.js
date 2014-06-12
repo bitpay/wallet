@@ -47,6 +47,13 @@ var createPKR = function(bip32s) {
       w.addCopayer();
     }
   }
+  w.generateAddress(false);
+  w.generateAddress(false);
+  w.generateAddress(false);
+  w.generateAddress(true);
+  w.generateAddress(true);
+  w.generateAddress(true);
+
   return w;
 };
 
@@ -113,7 +120,7 @@ describe('TxProposals model', function() {
       networkName: config.networkName
     });
     should.exist(w);
-    w.network.name.should.equal('livenet');
+    w.network.name.should.equal(config.networkName);
   });
 
   var createTx = function(toAddress, amountSatStr, utxos, opts, priv, pkr) {
