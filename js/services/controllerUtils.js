@@ -39,9 +39,37 @@ angular.module('copayApp.services')
         message: msg 
       };
       $rootScope.$digest();
-    }
+    };
 
-    root.startNetwork = function(w) {
+    root.installStartupHandlers = function(wallet, $scope) {
+      wallet.on('serverError', function(msg) {
+          $rootScope.$flashMessage = { 
+            message: 'There was an error connecting to the PeerJS server.'
+              +(msg||'Check you settings and Internet connection.'),
+            type: 'error',
+          };
+          root.onErrorDigest($scope);
+          $location.path('addresses');
+      });
+      wallet.on('connectionError', function() {
+        var message = "Looks like you are already connected to this wallet, please logout from it and try importing it again.";
+        $rootScope.$flashMessage = { message: message, type: 'error'};
+        root.onErrorDigest($scope);
+      });
+      wallet.on('serverError', function() {
+        $rootScope.$flashMessage = { message: 'The PeerJS server is not responding, please try again', type: 'error'};
+        root.onErrorDigest($scope);
+      });
+      wallet.on('ready', function() {
+        $scope.loading = false;
+      });
+    };
+
+
+    root.startNetwork = function(w, $scope) {
+
+      root.installStartupHandlers(w, $scope);
+
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
           delete $rootScope.videoInfo[peerID];
