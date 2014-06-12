@@ -84,7 +84,7 @@ angular.module('copayApp.controllers').controller('SetupController',
           passphrase: passphrase,
         };
         var w = walletFactory.create(opts);
-        controllerUtils.startNetwork(w);
+        controllerUtils.startNetwork(w, $scope);
       });
     };
 
