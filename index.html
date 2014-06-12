@@ -31,21 +31,19 @@
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
-                Balance:
+                Balance<br>
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="!$root.updatingBalance">{{totalBalance || 0}}
-                  <i class="fi-bitcoin"></i>
+                <span ng-if="!$root.updatingBalance" tooltip="{{totalBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |number}} bits 
                 </span>
               </div>
               <div class="large-4 medium-4 columns">
-                Available to Spend:
+                Available to Spend<br>
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="!$root.updatingBalance">{{availableBalance || 0}}
-                  <i class="fi-bitcoin"></i>
+                <span ng-show="!$root.updatingBalance" tooltip="{{availableBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{availableBalance || 0|number}} bits 
                 </span>
               </div>
 
@@ -383,13 +381,11 @@
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
                       <span ng-if="!$root.updatingBalance">
-                        {{$root.balanceByAddr[addr.address] || 0}}
-                        <i class="fi-bitcoin"></i>
+                        {{$root.balanceByAddr[addr.address] || 0|number}} bits 
                       </span>
                     </span>
                     <span ng-if="addrWithFund != addr.address">
-                      {{addr.balance || 0}}
-                      <i class="fi-bitcoin"></i>
+                      {{addr.balance || 0|number}} bits
                     </span>
                   </span>
                 </a>
@@ -407,14 +403,12 @@
                       <span ng-if="$root.updatingBalance">
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
-                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0}}
-                        <i class="fi-bitcoin"></i>
+                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | number}}
                       </span>
                     </span>
                     <span ng-if="addrWithFund != selectedAddr.address" style="word-wrap: break-word;">
                       {{selectedAddr.address}}<br/>
-                      {{selectedAddr.balance || 0}}
-                      <i class="fi-bitcoin"></i>
+                      {{selectedAddr.balance || 0|number}} bits
                     </span>
                   </strong>
                 </p>
@@ -445,7 +439,7 @@
               <div class="txheader row m10">
                 <div class="large-8 medium-8 small-12 columns">
                   <div class="row" ng-repeat="out in tx.outs">
-                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value}} <i class="fi-bitcoin size-18"></i></div>
+                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value | number}} bits</div>
                     <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
                     <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
                   </div>
@@ -527,7 +521,7 @@
                   <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
                     {{tx.missingSignatures}} signatures missing</p>
                   <div class="ellipsis small text-gray">
-                    <strong>Fee:</strong> <i class="fi-bitcoin"></i> {{tx.fee}}
+                    <strong>Fee:</strong> {{tx.fee|number}} bits
                     <strong>Proposal ID:</strong> {{tx.ntxid}}
                   </div>
                 </div>
@@ -571,7 +565,7 @@
                   <div class="row">
                     <div class="large-5 medium-5 small-5 columns">
                       <div ng-repeat="vin in btx.vinSimple">
-                        <small class="right m5t">{{vin.value}}</small>
+                        <small class="right m5t">{{vin.value| number}} bits</small>
                         <p class="ellipsis text-gray size-12"> {{vin.addr}} </p>
                       </div>
                     </div>
@@ -580,7 +574,7 @@
                     </div>
                     <div class="large-6 medium-6 small-6 columns">
                       <div ng-repeat="vout in btx.voutSimple">
-                        <small class="right m5t">{{vout.value}}</small>
+                        <small class="right m5t">{{vout.value| number}} bits</small>
                         <p class="ellipsis text-gray size-12"> {{vout.addr}} </p>
                       </div>
                     </div>
@@ -588,9 +582,9 @@
                 </div>
                 <div class="m10 size-12 text-gray">
                   <div class="row">
-                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees}}</div>
+                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | number}} bits</div>
                     <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
-                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut}}</div>
+                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut| number}} bits</div>
                   </div>
                 </div>
               </div>
@@ -661,12 +655,25 @@
                     <div class="small-9 columns">
                       <input type="number" id="amount" ng-disabled="loading"
                       name="amount" placeholder="Amount" ng-model="amount"
-                      min="0.0001" max="10000000" enough-amount required>
+                      min="0.0001" max="10000000" enough-amount required
+                      autocomplete="off"
+                      >
                     </div>
                     <div class="small-3 columns">
-                      <span class="postfix">BTC</span>
+                      <span class="postfix">bits</span>
                     </div>
                   </div>
+                </div>
+                <div class="large-6 medium-6 columns m10t" ng-show="amount>0">
+                  <small>
+                  Total amount for this transaction: 
+                  </small>
+                  <div class="totalAmount">
+                    {{amount + defaultFee |number}}</b> bits
+                  </div>
+                  <small>
+                  Including fee of {{defaultFee|number}} bits 
+                  </small>
                 </div>
               </div>
 

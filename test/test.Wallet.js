@@ -440,9 +440,65 @@ describe('Wallet model', function() {
     r.length.should.equal(2);
     r[0].should.not.equal(r[1]);
   });
+
+  it('#getBalance should call #getUnspent', function(done) {
+    var w = createW2();
+    var spy = sinon.spy(w.blockchain, 'getUnspent');
+    w.generateAddress();
+    w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+      sinon.assert.callCount(spy, 1);
+      done();
+    });
+  });
+  it('#getBalance should return values in bits', function(done) {
+    var w = createW2();
+    w.generateAddress();
+    w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+      balance.should.equal(25000100.00);
+      safeBalance.should.equal(25000100.00);
+      balanceByAddr.mji7zocy8QzYywQakwWf99w9bCT6orY1C1.should.equal(25000100.00);
+      Object.keys(balanceByAddr).length.should.equal(1);
+      done();
+    });
+  });
+
+  var roundErrorChecks=[
+    { unspent: [ 1.0001 ],
+      balance: 1000100
+    },
+    { unspent: [ 1.0002 , 1.0003 , 1.0004 ],
+      balance: 3000900
+    },
+    { unspent: [ 0.000002 , 1.000003 , 2.000004 ],
+      balance: 3000009
+    },
+    { unspent: [ 0.0001 , 0.0003 ],
+      balance: 400 
+    },
+     { unspent: [ 0.0001 , 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002 ],
+      balance: 1100 
+    },
+ 
+  ];
+
+  roundErrorChecks.forEach(function(c){
+    it('check rounding errors '+ c.unspent[0], function(done) {
+      var w = createW2();
+      w.generateAddress();
+      w.blockchain.fixUnspent(c.unspent.map(function(u){return {amount:u}}));
+      w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+        balance.should.equal(c.balance);
+        done();
+      });
+    });
+  });
+
+
   it('should get balance', function(done) {
     var w = createW();
+    var spy = sinon.spy(w.blockchain, 'getUnspent');
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+      sinon.assert.callCount(spy, 1);
       balance.should.equal(0);
       done();
     });
