@@ -1,9 +1,9 @@
 'use strict';
+var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, $timeout, Socket, video) {
     var root = {};
-    var bitcore = require('bitcore');
 
     root.getVideoMutedStatus = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
@@ -39,9 +39,37 @@ angular.module('copayApp.services')
         message: msg 
       };
       $rootScope.$digest();
-    }
+    };
 
-    root.startNetwork = function(w) {
+    root.installStartupHandlers = function(wallet, $scope) {
+      wallet.on('serverError', function(msg) {
+          $rootScope.$flashMessage = { 
+            message: 'There was an error connecting to the PeerJS server.'
+              +(msg||'Check you settings and Internet connection.'),
+            type: 'error',
+          };
+          root.onErrorDigest($scope);
+          $location.path('addresses');
+      });
+      wallet.on('connectionError', function() {
+        var message = "Looks like you are already connected to this wallet, please logout from it and try importing it again.";
+        $rootScope.$flashMessage = { message: message, type: 'error'};
+        root.onErrorDigest($scope);
+      });
+      wallet.on('serverError', function() {
+        $rootScope.$flashMessage = { message: 'The PeerJS server is not responding, please try again', type: 'error'};
+        root.onErrorDigest($scope);
+      });
+      wallet.on('ready', function() {
+        $scope.loading = false;
+      });
+    };
+
+
+    root.startNetwork = function(w, $scope) {
+
+      root.installStartupHandlers(w, $scope);
+
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
           delete $rootScope.videoInfo[peerID];
@@ -78,11 +106,14 @@ angular.module('copayApp.services')
       });
       w.on('txProposalsUpdated', function(dontDigest) {
         root.updateTxs({onlyPending:true});
-        root.updateBalance(function(){
-          if (!dontDigest) {
-            $rootScope.$digest();
-          }
-        });
+        // give sometime to the tx to propagate.
+        $timeout(function() {
+          root.updateBalance(function(){
+            if (!dontDigest) {
+              $rootScope.$digest();
+            }
+          });
+        },3000);
       });
       w.on('connectionError', function(msg) {
         root.onErrorDigest(null, msg);
@@ -109,7 +140,6 @@ angular.module('copayApp.services')
       var w = $rootScope.wallet;
       if (!w) return root.onErrorDigest();
 
-
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
@@ -123,8 +153,10 @@ angular.module('copayApp.services')
         }
         
         $rootScope.totalBalance = balance;
-        $rootScope.balanceByAddr = balanceByAddr;
+        $rootScope.totalBalanceBTC = (balance / 1e6).toFixed(3) ;
         $rootScope.availableBalance = safeBalance;
+        $rootScope.availableBalanceBTC = (safeBalance / 1e6).toFixed(3);
+        $rootScope.balanceByAddr = balanceByAddr;
         root.updateAddressList();
         $rootScope.updatingBalance = false;
         return cb?cb():null;
@@ -160,13 +192,13 @@ angular.module('copayApp.services')
             if (!w.addressIsOwn(addr, {excludeMain:true})) {
               outs.push({
                 address: addr, 
-                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.BIT,
               });
             }
           });
           // extra fields
           i.outs = outs;
-          i.fee = i.builder.feeSat/bitcore.util.COIN;
+          i.fee = i.builder.feeSat/bitcore.util.BIT;
           i.missingSignatures = tx.countInputMissingSignatures(0);
           txs.push(i);
         }

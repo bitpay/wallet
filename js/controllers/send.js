@@ -1,10 +1,13 @@
 'use strict';
+var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $location, $timeout) {
     $scope.title = 'Send';
     $scope.loading = false;
+    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT / bitcore.util.BIT;
 
+    // TODO this shouldnt be on a particular controller.
     // Detect mobile devices
     var isMobile = {
       Android: function() {
@@ -32,10 +35,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-
     $scope.isMobile = isMobile.any();
-    $scope.unitIds = ['BTC','mBTC'];
-    $scope.selectedUnit = $scope.unitIds[0];
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = (form.amount.$modelValue * 100000000).toFixed(); // satoshi to string
+      var amount = (form.amount.$modelValue * 100)|0; 
 
       var w = $rootScope.wallet;
       w.createTx(address, amount,function() {

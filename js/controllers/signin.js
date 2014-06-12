@@ -34,8 +34,7 @@ angular.module('copayApp.controllers').controller('SigninController',
           $rootScope.$digest();
           return;
         }
-        installStartupHandlers(w);
-        controllerUtils.startNetwork(w);
+        controllerUtils.startNetwork(w, $scope);
       });
     };
 
@@ -65,25 +64,9 @@ angular.module('copayApp.controllers').controller('SigninController',
               $rootScope.$flashMessage = { message: 'Unknown error', type: 'error'};
             controllerUtils.onErrorDigest();
           } else {
-              controllerUtils.startNetwork(w);
-              installStartupHandlers(w);
+              controllerUtils.startNetwork(w, $scope);
           }
         });
       });
-    };
-
-    function installStartupHandlers(wallet) {
-      wallet.on('serverError', function(msg) {
-          $rootScope.$flashMessage = { 
-            message: 'There was an error connecting to the PeerJS server.'
-              +(msg||'Check you settings and Internet connection.'),
-            type: 'error',
-          };
-          controllerUtils.onErrorDigest($scope);
-      });
-      wallet.on('ready', function() {
-        $scope.loading = false;
-      });
     }
-
   });
