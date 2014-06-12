@@ -219,6 +219,14 @@ small.has-error {
   font-weight: bold;
 }
 
+
+.totalAmount {
+  font-weight: bold;
+  line-height: 120%;
+  margin-top:2px;
+}
+
+
 .small {
   font-size: 60%;
   line-height: inherit;

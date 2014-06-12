@@ -566,7 +566,8 @@ Wallet.prototype.getBalance = function(cb) {
   var balance = 0;
   var safeBalance = 0;
   var balanceByAddr = {};
-  var COIN = bitcore.util.COIN;
+  var BIT = coinUtil.BIT;
+  var COIN = coinUtil.COIN;
 
   this.getUnspent(function(err, safeUnspent, unspent) {
     if (err) {
@@ -580,11 +581,11 @@ Wallet.prototype.getBalance = function(cb) {
       balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
     }
 
-    // we multiply and divide by COIN to avoid rounding errors when adding
+    // we multiply and divide by BIT to avoid rounding errors when adding
     for (var a in balanceByAddr) {
-      balanceByAddr[a] = balanceByAddr[a].toFixed(0) / COIN;
+      balanceByAddr[a] = balanceByAddr[a].toFixed(0) / BIT;
     }
-    balance = balance / COIN;
+    balance = balance.toFixed(0) / BIT;
 
     for (var i = 0; i < safeUnspent.length; i++) {
       var u = safeUnspent[i];
@@ -592,7 +593,7 @@ Wallet.prototype.getBalance = function(cb) {
       safeBalance += amt;
     }
 
-    safeBalance = safeBalance.toFixed(0) / COIN;
+    safeBalance = safeBalance.toFixed(0) /BIT ;
     return cb(null, balance, balanceByAddr, safeBalance);
   });
 };
