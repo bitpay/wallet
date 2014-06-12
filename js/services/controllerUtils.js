@@ -1,9 +1,9 @@
 'use strict';
+var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, $timeout, Socket, video) {
     var root = {};
-    var bitcore = require('bitcore');
 
     root.getVideoMutedStatus = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
@@ -106,11 +106,14 @@ angular.module('copayApp.services')
       });
       w.on('txProposalsUpdated', function(dontDigest) {
         root.updateTxs({onlyPending:true});
-        root.updateBalance(function(){
-          if (!dontDigest) {
-            $rootScope.$digest();
-          }
-        });
+        // give sometime to the tx to propagate.
+        $timeout(function() {
+          root.updateBalance(function(){
+            if (!dontDigest) {
+              $rootScope.$digest();
+            }
+          });
+        },3000);
       });
       w.on('connectionError', function(msg) {
         root.onErrorDigest(null, msg);
@@ -137,7 +140,6 @@ angular.module('copayApp.services')
       var w = $rootScope.wallet;
       if (!w) return root.onErrorDigest();
 
-
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
@@ -151,8 +153,10 @@ angular.module('copayApp.services')
         }
         
         $rootScope.totalBalance = balance;
-        $rootScope.balanceByAddr = balanceByAddr;
+        $rootScope.totalBalanceBTC = (balance / 1e6).toFixed(3) ;
         $rootScope.availableBalance = safeBalance;
+        $rootScope.availableBalanceBTC = (safeBalance / 1e6).toFixed(3);
+        $rootScope.balanceByAddr = balanceByAddr;
         root.updateAddressList();
         $rootScope.updatingBalance = false;
         return cb?cb():null;
@@ -188,13 +192,13 @@ angular.module('copayApp.services')
             if (!w.addressIsOwn(addr, {excludeMain:true})) {
               outs.push({
                 address: addr, 
-                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.BIT,
               });
             }
           });
           // extra fields
           i.outs = outs;
-          i.fee = i.builder.feeSat/bitcore.util.COIN;
+          i.fee = i.builder.feeSat/bitcore.util.BIT;
           i.missingSignatures = tx.countInputMissingSignatures(0);
           txs.push(i);
         }

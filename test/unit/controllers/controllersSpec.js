@@ -110,6 +110,7 @@ describe("Unit: Controllers", function() {
      expect(rootScope.insightError).equal(1);
      scope.$apply();
    });
+
   });
 
 });

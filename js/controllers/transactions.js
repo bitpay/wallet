@@ -1,4 +1,5 @@
 'use strict';
+var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('TransactionsController',
   function($scope, $rootScope, $timeout, controllerUtils) {
@@ -10,8 +11,6 @@ angular.module('copayApp.controllers').controller('TransactionsController',
 
     $scope.txpCurrentPage = 1;
     $scope.txpItemsPerPage = 4;
-  
-    var COIN = 100000000;
     $scope.blockchain_txs = [];
 
     $scope.update = function () {
@@ -81,14 +80,14 @@ angular.module('copayApp.controllers').controller('TransactionsController',
         tmp[addr].doubleSpentIndex = tmp[addr].doubleSpentIndex || items[i].doubleSpentIndex;
         tmp[addr].unconfirmedInput += items[i].unconfirmedInput;
         tmp[addr].dbError = tmp[addr].dbError || items[i].dbError;
-        tmp[addr].valueSat += Math.round(items[i].value * COIN);
+        tmp[addr].valueSat += (items[i].value * bitcore.util.COIN)|0;
         tmp[addr].items.push(items[i]);
         tmp[addr].notAddr = notAddr;
         tmp[addr].count++;
       }
 
       angular.forEach(tmp, function(v) {
-        v.value    = v.value || parseInt(v.valueSat) / COIN;
+        v.value    = (v.valueSat|0) / bitcore.util.BIT;
         ret.push(v);
       });
       return ret;
@@ -150,6 +149,8 @@ angular.module('copayApp.controllers').controller('TransactionsController',
               for (var i=0; i<txs.length;i++) {
                 txs[i].vinSimple = _aggregateItems(txs[i].vin);
                 txs[i].voutSimple = _aggregateItems(txs[i].vout);
+                txs[i].valueOut = ((txs[i].valueOut * bitcore.util.COIN)|0)  / bitcore.util.BIT;
+                txs[i].fees = ((txs[i].fees * bitcore.util.COIN)|0)  / bitcore.util.BIT;
                 $scope.blockchain_txs.push(txs[i]);
               }
               $scope.loading = false;
