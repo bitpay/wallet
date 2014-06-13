@@ -92,7 +92,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   try{
     hasChanged = this.publicKeyRing.merge(inPKR, true);
   } catch (e){
-    console.log('## WALLET ERROR', e); //TODO
+    this.log('## WALLET ERROR', e); //TODO
     this.emit('connectionError', e.message);
     return;
   }
