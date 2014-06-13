@@ -572,6 +572,10 @@ Wallet.prototype.getBalance = function(cb) {
   if (!BIT)
     throw new Error('BIT not defined. A newer version of bitcore is needed');
 
+  console.log('[Wallet.js.574] getBalance'); //TODO
+
+
+
   this.getUnspent(function(err, safeUnspent, unspent) {
     if (err) {
       return cb(err);
@@ -604,6 +608,7 @@ Wallet.prototype.getBalance = function(cb) {
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
+    console.log('[Wallet.js.606:unspentList:]', unspentList); //TODO
 
     if (err) {
       return cb(err);
@@ -637,6 +642,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   }
 
   this.getUnspent(function(err, safeUnspent) {
+    console.log('[Wallet.js.639:safeUnspent:]', safeUnspent); //TODO
     var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
     if (ntxid) {
       self.sendIndexes();

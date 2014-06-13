@@ -50,9 +50,11 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var address = form.address.$modelValue;
       var amount = (form.amount.$modelValue * 100) | 0;
+      var commentText = form.comment.$modelValue;
 
       var w = $rootScope.wallet;
-      w.createTx(address, amount, comment, function() {
+
+      w.createTx(address, amount, commentText, function() {
         $scope.loading = false;
         $rootScope.$flashMessage = {
           message: 'The transaction proposal has been created',

@@ -108,6 +108,8 @@ angular.module('copayApp.services')
         root.updateTxs({onlyPending:true});
         // give sometime to the tx to propagate.
         $timeout(function() {
+
+console.log('[controllerUtils.js.111] UPDATE BALANCE'); //TODO
           root.updateBalance(function(){
             if (!dontDigest) {
               $rootScope.$digest();
@@ -142,7 +144,11 @@ angular.module('copayApp.services')
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
+
+console.log('[controllerUtils.js.147] GET'); //TODO
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+
+console.log('[controllerUtils.js.150]', err, balance); //TODO
         if (err) {
           console.error('Error: ' + err.message); //TODO
           root._setCommError();
