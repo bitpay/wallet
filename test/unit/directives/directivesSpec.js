@@ -65,4 +65,39 @@ describe("Unit: Testing Directives", function() {
     });
   });
 
+  describe('Password strength', function() {
+      beforeEach(inject(function($compile, $rootScope) {
+      $scope = $rootScope;
+      var element = angular.element(
+        '<input type="password" name="password" ng-model="password" check-strength="passwordStrength" value="asd" required>'
+        );
+      $compile(element)($scope);
+      $scope.$digest();
+    }));
+
+    it('should check very weak password', function() {
+      $scope.password = 'asd';
+      $scope.$digest();
+      expect($scope.passwordStrength).to.equal('very weak');
+    });
+
+    it('should check weak password', function() {
+      $scope.password = 'asdasdASDASD';
+      $scope.$digest();
+      expect($scope.passwordStrength).to.equal('weak');
+    });
+
+    it('should check medium password', function() {
+      $scope.password = 'asdasdASDASD1';
+      $scope.$digest();
+      expect($scope.passwordStrength).to.equal('medium');
+    });
+
+    it('should check strong password', function() {
+      $scope.password = 'asdasdASDASD1{';
+      $scope.$digest();
+      expect($scope.passwordStrength).to.equal('strong');
+    });
+
+  });
 });
