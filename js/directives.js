@@ -39,16 +39,18 @@ angular.module('copayApp.directives')
   ])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
+      var bitcore = require('bitcore');
+      var feeSat = bitcore.TransactionBuilder.FEE_PER_1000B_SAT;
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var vStr = new String(value);
-            var vNum = Number(vStr);
+            var availableBalanceNum = ($rootScope.availableBalance * bitcore.util.COIN).toFixed(0);
+            var vNum = Number((value * bitcore.util.COIN).toFixed(0)) + feeSat;
             if (typeof vNum == "number" && vNum > 0) {
-              if ($rootScope.availableBalance <= vNum) {
+              if (availableBalanceNum < vNum) {
                 ctrl.$setValidity('enoughAmount', false);
-                scope.notEnoughAmount = 'Insufficient funds!';
+                scope.notEnoughAmount = true;
               } else {
                 ctrl.$setValidity('enoughAmount', true);
                 scope.notEnoughAmount = null;

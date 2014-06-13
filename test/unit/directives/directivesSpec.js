@@ -35,7 +35,7 @@ describe("Unit: Testing Directives", function() {
   describe('Validate Amount', function() {
     beforeEach(inject(function($compile, $rootScope) {
       $scope = $rootScope;
-      $rootScope.availableBalance = 2;
+      $rootScope.availableBalance = 0.101;
       var element = angular.element(
         '<form name="form">' +
         '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
@@ -47,18 +47,20 @@ describe("Unit: Testing Directives", function() {
       form = $scope.form;
     }));
 
-    it('should validate between min and max value', function() {
-      form.amount.$setViewValue(1.2);
+    it('should validate', function() {
+      form.amount.$setViewValue(0.1);
+      expect(form.amount.$invalid).to.equal(false);
+      form.amount.$setViewValue(0.1009);
       expect(form.amount.$invalid).to.equal(false);
     });
-    it('should not validate between min and max value', function() {
+    it('should not validate', function() {
       form.amount.$setViewValue(0);
       expect(form.amount.$invalid).to.equal(true);
-      form.amount.$setViewValue(9999999999999);
+      form.amount.$setViewValue(9999999999);
       expect(form.amount.$invalid).to.equal(true);
-    });
-    it('should not validate because not enough amount', function() {
       form.amount.$setViewValue(2.1);
+      expect(form.amount.$invalid).to.equal(true);
+      form.amount.$setViewValue(0.10091);
       expect(form.amount.$invalid).to.equal(true);
     });
   });
