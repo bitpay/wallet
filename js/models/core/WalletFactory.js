@@ -53,7 +53,10 @@ WalletFactory.prototype.fromObj = function(obj) {
   obj.opts.reconnectDelay  = this.walletDefaults.reconnectDelay;
 
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
+  if (!w) return false;
   w.verbose = this.verbose;
+  this._checkVersion(w.version);
+  this._checkNetwork(w.getNetworkName());
   return w;
 };
 
@@ -62,7 +65,6 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
   var w = this.fromObj(walletObj);
-  if (!w) return false;
   return w;
 };
 
@@ -165,8 +167,6 @@ WalletFactory.prototype.open = function(walletId, opts) {
 
   var w = this.read(walletId);
   if (w) {
-    this._checkVersion(w.version);
-    this._checkNetwork(w.getNetworkName());
     w.store();
   }
   return w;
