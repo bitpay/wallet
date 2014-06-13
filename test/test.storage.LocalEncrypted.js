@@ -46,13 +46,13 @@ if (typeof process === 'undefined' || !process.version) {
       });
     });
 
-    describe('#getEncryptedObj', function() {
-      it('should encrypt the wallet', function() {
+    describe('#export', function() {
+      it('should export the encrypted wallet', function() {
         localStorage.clear();
         var storage = new LocalEncrypted({password: 'password'});
         storage.set('walletId', 'test', 'testval');
         var obj = {test:'testval'};
-        var encrypted = storage.getEncryptedObj('walletId');
+        var encrypted = storage.export(obj);
         encrypted.length.should.be.greaterThan(10);
         //encrypted.slice(0,6).should.equal("53616c");
       });

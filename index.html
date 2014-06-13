@@ -189,7 +189,7 @@
             src="./img/satoshi.gif"
           />
           <div class="size-12 text-center text-gray" stype="margin-top:4px">
-          {{c.nick || 'NN'}}
+          {{c.nick}}
           </div>
         </div>
       </div>
@@ -230,7 +230,7 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="$parent.joinPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="$parent.joinPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
@@ -316,7 +316,7 @@
                 <div class="small-12 medium-6 large-6 columns">
                   <label>Your Wallet Password <small class="has-tip" tooltip="doesn't need to be shared">Required</small>
                   <input type="password" placeholder="Choose your password" class="form-control"
-                    ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip="Password strength: {{passwordStrength}}" tooltip-trigger="focus" required>
+                    ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
                   </label>
                 </div>
               </div>
@@ -399,7 +399,7 @@
                   <span ng-if="showAll">Show less</span>
                 </a>
               </div>
-              <div class="large-4 medium-4 columns line-dashed-v text-center" ng-show="selectedAddr">
+              <div class="large-4 medium-4 columns line-dashed-v text-center" highlight-on-change="selectedAddr" ng-show="selectedAddr">
                 <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
                 <p class="m10t">
                   <strong>
@@ -411,7 +411,8 @@
                         <i class="fi-bitcoin"></i>
                       </span>
                     </span>
-                    <span ng-if="addrWithFund != selectedAddr.address">
+                    <span ng-if="addrWithFund != selectedAddr.address" style="word-wrap: break-word;">
+                      {{selectedAddr.address}}<br/>
                       {{selectedAddr.balance || 0}}
                       <i class="fi-bitcoin"></i>
                     </span>
@@ -455,6 +456,9 @@
               </div>
 
               <div class="tx-copayers">
+                <div class="box-note large-12" ng-show="tx.comment">
+                  "{{tx.comment}}" - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
+                </div>
 
                 <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
                   <figure class="left">
@@ -665,6 +669,23 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="large-12 medium-6 columns">
+                  <div class="row collapse">
+                    <label for="comment">Note
+                      <small ng-hide="!sendForm.comment.$pristine">optional</small>
+                      <small class="is-valid" ng-show="!sendForm.comment.$invalid && !sendForm.comment.$pristine">valid!</small>
+                      <small class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+                    </label>
+                    <div class="small-12 columns">
+                      <textarea id="comment" ng-disabled="loading"
+                      name="comment" placeholder="Leave a private message to your copayers" ng-model="comment" ng-maxlength="100"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="row">
                 <div class="large-5 columns">
                   <button type="submit" class="button secondary radius text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
