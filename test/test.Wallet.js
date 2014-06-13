@@ -31,7 +31,7 @@ describe('Wallet model', function() {
     (function() {
       new Wallet(config)
     }).should.
-    throw ();
+    throw();
   });
 
   var createW = function(netKey, N) {
@@ -111,7 +111,7 @@ describe('Wallet model', function() {
 
     var pkr = w.publicKeyRing;
 
-    for (var i = 0; i < N-1; i++) {
+    for (var i = 0; i < N - 1; i++) {
       if (privateKeys) {
         var k = privateKeys[i];
         pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : null);
@@ -246,7 +246,7 @@ describe('Wallet model', function() {
     o = JSON.parse(JSON.stringify(o));
 
     // non stored options
-    o.opts.reconnectDelay=100;
+    o.opts.reconnectDelay = 100;
 
     var w2 = Wallet.fromObj(o,
       new Storage(config.storage),
@@ -275,15 +275,15 @@ describe('Wallet model', function() {
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
     }).should.not.
-    throw ();
+    throw();
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     }).should.
-    throw ();
+    throw();
     (function() {
       Wallet.decodeSecret('12345');
     }).should.
-    throw ();
+    throw();
   });
 
   it('call reconnect after interval', function(done) {
@@ -462,30 +462,34 @@ describe('Wallet model', function() {
     });
   });
 
-  var roundErrorChecks=[
-    { unspent: [ 1.0001 ],
+  var roundErrorChecks = [{
+      unspent: [1.0001],
       balance: 1000100
-    },
-    { unspent: [ 1.0002 , 1.0003 , 1.0004 ],
+    }, {
+      unspent: [1.0002, 1.0003, 1.0004],
       balance: 3000900
-    },
-    { unspent: [ 0.000002 , 1.000003 , 2.000004 ],
+    }, {
+      unspent: [0.000002, 1.000003, 2.000004],
       balance: 3000009
+    }, {
+      unspent: [0.0001, 0.0003],
+      balance: 400
+    }, {
+      unspent: [0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002],
+      balance: 1100
     },
-    { unspent: [ 0.0001 , 0.0003 ],
-      balance: 400 
-    },
-     { unspent: [ 0.0001 , 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002 ],
-      balance: 1100 
-    },
- 
+
   ];
 
-  roundErrorChecks.forEach(function(c){
-    it('check rounding errors '+ c.unspent[0], function(done) {
+  roundErrorChecks.forEach(function(c) {
+    it('check rounding errors ' + c.unspent[0], function(done) {
       var w = createW2();
       w.generateAddress();
-      w.blockchain.fixUnspent(c.unspent.map(function(u){return {amount:u}}));
+      w.blockchain.fixUnspent(c.unspent.map(function(u) {
+        return {
+          amount: u
+        }
+      }));
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
         balance.should.equal(c.balance);
         done();
@@ -582,5 +586,5 @@ describe('Wallet model', function() {
     var w = createW();
     w.getNetworkName().should.equal('testnet');
   });
- 
+
 });
