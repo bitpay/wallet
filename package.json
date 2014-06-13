@@ -28,7 +28,7 @@
   "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
     "async": "0.9.0",
-    "bitcore": "git://github.com/bitpay/bitcore.git#e71cdb3bb2b7cd9dea69046d275ecc34ff3dd838",
+    "bitcore": "0.1.24",
     "blanket": "1.1.6",
     "browser-pack": "2.0.1",
     "browserify": "3.32.1",
