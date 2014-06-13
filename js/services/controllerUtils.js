@@ -170,7 +170,7 @@ angular.module('copayApp.services')
       
       var myCopayerId = w.getMyCopayerId();
       var pendingForUs = 0;
-      var inT = w.getTxProposals().sort(function(t1, t2) { return t1.createdTs < t2.createdTs });
+      var inT = w.getTxProposals().sort(function(t1, t2) { return t2.createdTs - t1.createdTs });
       var txs  = [];
 
       inT.forEach(function(i, index){

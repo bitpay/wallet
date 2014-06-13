@@ -47,19 +47,18 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var address = form.address.$modelValue;
       var amount = (form.amount.$modelValue * 100)|0; 
+      var comment = form.comment.$modelValue;
 
       var w = $rootScope.wallet;
-      w.createTx(address, amount,function() {
+      w.createTx(address, amount, comment, function() {
         $scope.loading = false;
         $rootScope.$flashMessage = { message: 'The transaction proposal has been created', type: 'success'};
         $rootScope.$digest();
       });
 
       // reset fields
-      $scope.address = null;
-      $scope.amount = null;
-      form.address.$pristine = true;
-      form.amount.$pristine = true;
+      $scope.address = $scope.amount = $scope.comment = null;
+      form.address.$pristine = form.amount.$pristine = form.comment.$pristine = true;
     };
 
     // QR code Scanner

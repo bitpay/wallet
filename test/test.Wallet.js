@@ -140,6 +140,7 @@ describe('Wallet model', function() {
     var ntxid = w.createTxSync(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
       '123456789',
+      null,
       unspentTest
     );
 
@@ -147,9 +148,52 @@ describe('Wallet model', function() {
     var txp = t.txps[ntxid];
     var tx = txp.builder.build();
     should.exist(tx);
+    chai.expect(txp.comment).to.be.null;
     tx.isComplete().should.equal(false);
     Object.keys(txp.seenBy).length.should.equal(1);
     Object.keys(txp.signedBy).length.should.equal(1);
+  });
+
+  it('#create with comment', function() {
+
+    var w = createW2();
+    var comment = 'This is a comment';
+
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+
+    var ntxid = w.createTxSync(
+      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+      '123456789',
+      comment,
+      unspentTest
+    );
+
+    var t = w.txProposals;
+    var txp = t.txps[ntxid];
+    var tx = txp.builder.build();
+    should.exist(tx);
+    txp.comment.should.equal(comment);
+  });
+
+  it('#create throw exception on long comment', function() {
+
+    var w = createW2();
+    var comment = 'Lorem ipsum dolor sit amet, suas euismod vis te, velit deleniti vix an. Pri ex suscipit similique, inermis per';
+
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+
+    var badCreate = function() {
+      w.createTxSync(
+        '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+        '123456789',
+        comment,
+        unspentTest
+      );
+    }
+
+    chai.expect(badCreate).to.throw(Error);
   });
 
   it('#addressIsOwn', function() {
@@ -178,6 +222,7 @@ describe('Wallet model', function() {
         w.createTxSync(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
           '123456789',
+          null,
           unspentTest
         );
         var t = w.txProposals;
@@ -484,7 +529,7 @@ describe('Wallet model', function() {
     var w = createW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
       ntxid.length.should.equal(64);
       done();
     });
@@ -495,7 +540,7 @@ describe('Wallet model', function() {
     w.privateKey = null;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
       w.on('txProposalsUpdated', function() {
         w.getTxProposals()[0].signedByUs.should.equal(true);
         w.getTxProposals()[0].rejectedByUs.should.equal(false);
@@ -512,7 +557,7 @@ describe('Wallet model', function() {
     w.privateKey = null;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
       w.on('txProposalsUpdated', function() {
         w.getTxProposals()[0].signedByUs.should.equal(false);
         w.getTxProposals()[0].rejectedByUs.should.equal(true);
@@ -526,7 +571,7 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
       w.sendTx(ntxid, function(txid) {
         txid.length.should.equal(64);
         done();
