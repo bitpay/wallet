@@ -13,7 +13,7 @@ var puts = function(error, stdout, stderr) {
   //sys.puts(stderr);
 };
 
-var pack = function (params) {
+var pack = function(params) {
   var file = require.resolve('soop');
   var dir = file.substr(0, file.length - String('soop.js').length);
   var preludePath = dir + 'example/custom_prelude.js';
@@ -49,7 +49,7 @@ var createBundle = function(opts) {
     expose: 'copay'
   });
   b.require('./version');
-//  b.external('bitcore');
+  //  b.external('bitcore');
   b.require('./js/models/core/WalletFactory');
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {
@@ -65,7 +65,7 @@ var createBundle = function(opts) {
     expose: './mocks/FakeNetwork'
   });
   b.require('./js/models/network/WebRTC', {
-    expose: '../js/models/network/WebRTC' 
+    expose: '../js/models/network/WebRTC'
   });
   b.require('./js/models/blockchain/Insight', {
     expose: '../js/models/blockchain/Insight'

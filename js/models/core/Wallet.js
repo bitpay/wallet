@@ -89,9 +89,9 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   var wasIncomplete = !this.publicKeyRing.isComplete();
   var hasChanged;
 
-  try{
+  try {
     hasChanged = this.publicKeyRing.merge(inPKR, true);
-  } catch (e){
+  } catch (e) {
     this.log('## WALLET ERROR', e); //TODO
     this.emit('connectionError', e.message);
     return;
@@ -140,7 +140,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
   // TODO check message signature
-  
+
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId); //TODO
@@ -281,7 +281,7 @@ Wallet.prototype.scheduleConnect = function() {
   var self = this;
   if (self.network.isOnline()) {
     self.connectToAll();
-    self.currentDelay = self.currentDelay*2 ||  self.reconnectDelay;
+    self.currentDelay = self.currentDelay * 2 || self.reconnectDelay;
     setTimeout(self.scheduleConnect.bind(self), self.currentDelay);
   }
 }
@@ -329,7 +329,7 @@ Wallet.prototype.toObj = function() {
     opts: optsObj,
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
-    privateKey: this.privateKey?this.privateKey.toObj():undefined
+    privateKey: this.privateKey ? this.privateKey.toObj() : undefined
   };
 
   return walletObj;
@@ -454,7 +454,7 @@ Wallet.prototype.reject = function(ntxid) {
   var myId = this.getMyCopayerId();
   var txp = this.txProposals.txps[ntxid];
   if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
-    throw new Error('Invalid transaction to reject: '+ntxid);
+    throw new Error('Invalid transaction to reject: ' + ntxid);
   }
 
   txp.rejectedBy[myId] = Date.now();
@@ -610,8 +610,8 @@ Wallet.prototype.getUnspent = function(cb) {
     var uu = self.txProposals.getUsedUnspent(maxRejectCount);
 
     for (var i in unspentList) {
-      var u=unspentList[i];
-      if (! uu[u.txid +','+u.vout])
+      var u = unspentList[i];
+      if (!uu[u.txid + ',' + u.vout])
         safeUnspendList.push(u);
     }
 

@@ -1,17 +1,17 @@
 'use strict';
 
 
-var imports     = require('soop').imports();
-var bitcore     = require('bitcore');
-var HK          = bitcore.HierarchicalKey;
-var WalletKey   = bitcore.WalletKey;
-var networks    = bitcore.networks;
-var util        = bitcore.util;
-var Structure   = require('./Structure');
+var imports = require('soop').imports();
+var bitcore = require('bitcore');
+var HK = bitcore.HierarchicalKey;
+var WalletKey = bitcore.WalletKey;
+var networks = bitcore.networks;
+var util = bitcore.util;
+var Structure = require('./Structure');
 
 function PrivateKey(opts) {
   opts = opts || {};
-  this.network = opts.networkName === 'testnet' ? 
+  this.network = opts.networkName === 'testnet' ?
     networks.testnet : networks.livenet;
   var init = opts.extendedPrivateKeyString || this.network.name;
   this.bip = opts.HK || new HK(init);
@@ -22,7 +22,7 @@ PrivateKey.prototype.getId = function() {
   if (!this.id) {
     var path = Structure.IdFullBranch;
     var idhk = this.bip.derive(path);
-    this.id= idhk.eckey.public.toString('hex');
+    this.id = idhk.eckey.public.toString('hex');
   }
   return this.id;
 };
@@ -69,15 +69,19 @@ PrivateKey.prototype.getForPaths = function(paths) {
 PrivateKey.prototype.getForPath = function(path) {
   var pk = this.privateKeyCache[path];
   if (!pk) {
-    var derivedHK =  this._getHK(path);
+    var derivedHK = this._getHK(path);
     pk = this.privateKeyCache[path] = derivedHK.eckey.private.toString('hex');
   }
-  var wk = new WalletKey({network: this.network});
-  wk.fromObj({priv: pk});
+  var wk = new WalletKey({
+    network: this.network
+  });
+  wk.fromObj({
+    priv: pk
+  });
   return wk;
 };
 
-PrivateKey.prototype.get = function(index,isChange) {
+PrivateKey.prototype.get = function(index, isChange) {
   var path = Structure.FullBranch(index, isChange);
   return this.getForPath(path);
 };
@@ -87,11 +91,11 @@ PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
     throw new Error('Invalid parameters');
 
   var ret = [];
-  for(var i=0;i<receiveIndex; i++) {
-    ret.push(this.get(i,false));
+  for (var i = 0; i < receiveIndex; i++) {
+    ret.push(this.get(i, false));
   }
-  for(var i=0; i<changeIndex; i++) {
-    ret.push(this.get(i,true));
+  for (var i = 0; i < changeIndex; i++) {
+    ret.push(this.get(i, true));
   }
   return ret;
 };

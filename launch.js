@@ -6,7 +6,10 @@
 
 var sys = require('sys')
 var exec = require('child_process').exec;
-function puts(error, stdout, stderr) { sys.puts(stdout) }
+
+function puts(error, stdout, stderr) {
+  sys.puts(stdout)
+}
 
 function isNumber(n) {
   return !isNaN(parseInt(n)) && isFinite(n);
@@ -23,9 +26,9 @@ var N = parseInt(n_str);
 var DEFAULT_PORT = process.env.DEFAULT_PORT || 3000;
 
 
-for (var i=0; i<N; i++) {
-  var port =(i+DEFAULT_PORT);
-  console.log('Simulating copayer #'+(i+1)+' at http://localhost:'+port);
-  var command = 'PORT='+port+' npm start &'
+for (var i = 0; i < N; i++) {
+  var port = (i + DEFAULT_PORT);
+  console.log('Simulating copayer #' + (i + 1) + ' at http://localhost:' + port);
+  var command = 'PORT=' + port + ' npm start &'
   exec(command, puts);
 }

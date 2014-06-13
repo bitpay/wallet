@@ -38,7 +38,9 @@ angular.module('copayApp.services').factory('Socket',
         var ret = {};
 
         var addrList = listeners
-          .map(function(i) {return i.event;});
+          .map(function(i) {
+            return i.event;
+          });
 
         for (var i in addrList) {
           ret[addrList[i]] = 1;

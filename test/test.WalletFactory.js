@@ -75,7 +75,7 @@ describe('WalletFactory model', function() {
     should.exist(w.publicKeyRing.getCopayerId);
     should.exist(w.txProposals.toObj);
     should.exist(w.privateKey.toObj);
-    
+
     JSON.stringify(w.toObj()).should.equal(o);
   });
 
@@ -98,7 +98,7 @@ describe('WalletFactory model', function() {
       "wallet": {
         "requiredCopayers": 2,
         "totalCopayers": 3,
-        "reconnectDelay":100,
+        "reconnectDelay": 100,
         "spendUnconfirmed": 1,
         "verbose": 0
       },

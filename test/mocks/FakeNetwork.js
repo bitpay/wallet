@@ -1,14 +1,11 @@
+var imports = require('soop').imports();
+var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
-var imports     = require('soop').imports();
-var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
+function Network(opts) {}
 
-function Network(opts) {
-}
-
-Network.parent=EventEmitter;
+Network.parent = EventEmitter;
 
 Network.prototype.start = function(opts, cb) {
-  // start! :D
   this.peer = {
     options: {
       token: "asd"
@@ -17,27 +14,19 @@ Network.prototype.start = function(opts, cb) {
   if (cb) cb();
 };
 
-Network.prototype.send = function(peerIds, data, cb) {
-  // send! c:
-};
+Network.prototype.send = function(peerIds, data, cb) {};
 
-Network.prototype.connectTo = function(peerId) {
-  // connect C:
-};
+Network.prototype.connectTo = function(peerId) {};
 
 
-Network.prototype.disconnect = function(cb) {
-  // disconect :c
-};
+Network.prototype.disconnect = function(cb) {};
 
 Network.prototype.lockIncommingConnections = function() {
 
 };
 
-Network.prototype.getPeer = function() {
-};
-Network.prototype.connectToCopayers = function(cps) {
-};
+Network.prototype.getPeer = function() {};
+Network.prototype.connectToCopayers = function(cps) {};
 Network.prototype.isOnline = function() {
   return true;
 };

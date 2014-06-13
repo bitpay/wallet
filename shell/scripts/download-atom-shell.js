@@ -1,19 +1,21 @@
 /*
-** copay-shell - atom shell downloader
-*/
+ ** copay-shell - atom shell downloader
+ */
 
-var path    = require('path');
-var fs      = require('fs');
-var GitHub  = require('github-releases');
-var async   = require('async');
-var readl   = require('readline');
-var color   = require('cli-color');
-var github  = new GitHub({ repo: 'atom/atom-shell' });
-var exec    = require('child_process').exec;
-var os      = require('os');
+var path = require('path');
+var fs = require('fs');
+var GitHub = require('github-releases');
+var async = require('async');
+var readl = require('readline');
+var color = require('cli-color');
+var github = new GitHub({
+  repo: 'atom/atom-shell'
+});
+var exec = require('child_process').exec;
+var os = require('os');
 
 var version = 'v0.13.0';
-var target  = path.normalize(__dirname + '/../bin/' + process.platform);
+var target = path.normalize(__dirname + '/../bin/' + process.platform);
 
 
 console.log(color.blue('{copay}'), 'ensuring existence of output directory');
@@ -22,7 +24,9 @@ ensureOutputTargets();
 
 console.log(color.blue('{copay}'), 'getting atom-shell release ' + version);
 
-github.getReleases({ tag_name: version }, function(err, releases) {
+github.getReleases({
+  tag_name: version
+}, function(err, releases) {
 
   if (err || !releases.length) {
     return console.log('Release not found');
@@ -68,7 +72,10 @@ github.getReleases({ tag_name: version }, function(err, releases) {
         var bytes = 0;
 
         inStream.on('data', function(chunk) {
-          rl.write(null, { ctrl: true, name: 'u' });
+          rl.write(null, {
+            ctrl: true,
+            name: 'u'
+          });
           rl.write('      bytes received: ' + (bytes + chunk.length));
           bytes += chunk.length;
         });
@@ -79,8 +86,8 @@ github.getReleases({ tag_name: version }, function(err, releases) {
           console.log(color.blue('{copay}'), 'downloaded!');
         });
 
-        var out       = target;
-        var tmp       = os.tmpDir() + '/atom-shell.zip';
+        var out = target;
+        var tmp = os.tmpDir() + '/atom-shell.zip';
         var outStream = fs.createWriteStream(tmp);
 
         outStream.on('finish', function() {

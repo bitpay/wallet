@@ -1,12 +1,12 @@
 /*
-** copay-shell - initilization
-*/
+ ** copay-shell - initilization
+ */
 
-var config        = require('./config');
-var app           = require('app');
+var config = require('./config');
+var app = require('app');
 var BrowserWindow = require('browser-window');
-var Menu          = require('menu');
-var mainWindow    = null;
+var Menu = require('menu');
+var mainWindow = null;
 
 module.exports = function(copay) {
 

@@ -34,7 +34,7 @@ for (var n = 1; n <= N_LIMIT; n++) {
     // case m-of-n
     console.log('case ' + m + '-of-' + n);
     var pair = [m, n];
-    for (var iter = 0; iter <= ITERS*n; iter++) {
+    for (var iter = 0; iter <= ITERS * n; iter++) {
       // create full pkr
       var publicKeyRing = new PublicKeyRing({
         networkName: nn,
@@ -108,11 +108,11 @@ for (var n = 1; n <= N_LIMIT; n++) {
 
     }
     var size = maxs[pair];
-    console.log('\tmax size: '+size);
+    console.log('\tmax size: ' + size);
     var m_valid = false;
     if (size < 500) {
       m_valid = true;
-      valid[[m,n]] = size;
+      valid[[m, n]] = size;
     }
     if (!m_valid) break;
   }

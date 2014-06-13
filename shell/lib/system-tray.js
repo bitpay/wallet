@@ -1,6 +1,6 @@
 /*
-** copay-shell - system tray integration
-*/
+ ** copay-shell - system tray integration
+ */
 
 var Menu = require('menu');
 var Tray = require('tray');

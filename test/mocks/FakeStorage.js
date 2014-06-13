@@ -1,13 +1,12 @@
-
-var FakeStorage = function(){
+var FakeStorage = function() {
   this.storage = {};
-}; 
+};
 
-FakeStorage.prototype._setPassphrase = function (password) {
+FakeStorage.prototype._setPassphrase = function(password) {
   this.storage.passphrase = password;
 };
 
-FakeStorage.prototype.setGlobal = function (id, payload) {
+FakeStorage.prototype.setGlobal = function(id, payload) {
   this.storage[id] = payload;
 };
 
@@ -15,12 +14,12 @@ FakeStorage.prototype.getGlobal = function(id) {
   return this.storage[id];
 }
 
-FakeStorage.prototype.set = function (wid, id, payload) {
+FakeStorage.prototype.set = function(wid, id, payload) {
   this.storage[wid + '-' + id] = payload;
 };
 
 FakeStorage.prototype.get = function(wid, id) {
-  return this.storage[wid + '-' +id];
+  return this.storage[wid + '-' + id];
 }
 
 FakeStorage.prototype.clear = function() {

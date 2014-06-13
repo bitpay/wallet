@@ -31,7 +31,7 @@ describe('Wallet model', function() {
     (function() {
       new Wallet(config)
     }).should.
-    throw ();
+    throw();
   });
 
   var createW = function(netKey, N) {
@@ -111,7 +111,7 @@ describe('Wallet model', function() {
 
     var pkr = w.publicKeyRing;
 
-    for (var i = 0; i < N-1; i++) {
+    for (var i = 0; i < N - 1; i++) {
       if (privateKeys) {
         var k = privateKeys[i];
         pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : null);
@@ -246,7 +246,7 @@ describe('Wallet model', function() {
     o = JSON.parse(JSON.stringify(o));
 
     // non stored options
-    o.opts.reconnectDelay=100;
+    o.opts.reconnectDelay = 100;
 
     var w2 = Wallet.fromObj(o,
       new Storage(config.storage),
@@ -275,15 +275,15 @@ describe('Wallet model', function() {
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
     }).should.not.
-    throw ();
+    throw();
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     }).should.
-    throw ();
+    throw();
     (function() {
       Wallet.decodeSecret('12345');
     }).should.
-    throw ();
+    throw();
   });
 
   it('call reconnect after interval', function(done) {
@@ -526,5 +526,5 @@ describe('Wallet model', function() {
     var w = createW();
     w.getNetworkName().should.equal('testnet');
   });
- 
+
 });
