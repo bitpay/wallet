@@ -19,7 +19,7 @@ var log = function() {
 // From the bundle
 var copay = require('copay');
 
-var copayApp = window.copayApp = angular.module('copayApp',[
+var copayApp = window.copayApp = angular.module('copayApp', [
   'ngRoute',
   'angularMoment',
   'mm.foundation',
@@ -35,4 +35,3 @@ angular.module('copayApp.filters', []);
 angular.module('copayApp.controllers', []);
 angular.module('copayApp.directives', []);
 angular.module('copayApp.services', []);
-

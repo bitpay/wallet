@@ -55,15 +55,15 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)
-      .respond( [{
-        name: "v100.1.6",
-        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
-        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
-        commit: {
-          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
-          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
-        }
-      }]);
+        .respond([{
+          name: "v100.1.6",
+          zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+          tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+          commit: {
+            sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+            url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+          }
+        }]);
     }));
 
     var rootScope;
@@ -86,31 +86,30 @@ describe("Unit: Controllers", function() {
       $httpBackend.flush();
     });
 
-   it('should hit github for version', function() {
-     $httpBackend.expectGET(GH);
-     scope.$apply();
-     $httpBackend.flush();
-   });
+    it('should hit github for version', function() {
+      $httpBackend.expectGET(GH);
+      scope.$apply();
+      $httpBackend.flush();
+    });
 
-   it('should check version ', function() {
-     $httpBackend.expectGET(GH);
-     scope.$apply();
-     $httpBackend.flush();
-     expect(scope.updateVersion.class).equal('error');
-     expect(scope.updateVersion.version).equal('v100.1.6');
-   });
+    it('should check version ', function() {
+      $httpBackend.expectGET(GH);
+      scope.$apply();
+      $httpBackend.flush();
+      expect(scope.updateVersion.class).equal('error');
+      expect(scope.updateVersion.version).equal('v100.1.6');
+    });
 
-   it('should check blockChainStatus', function() {
-     $httpBackend.expectGET(GH);
-     $httpBackend.flush();
-     rootScope.insightError=1;
-     scope.$apply();
-     expect(rootScope.insightError).equal(1);
-     scope.$apply();
-     expect(rootScope.insightError).equal(1);
-     scope.$apply();
-   });
+    it('should check blockChainStatus', function() {
+      $httpBackend.expectGET(GH);
+      $httpBackend.flush();
+      rootScope.insightError = 1;
+      scope.$apply();
+      expect(rootScope.insightError).equal(1);
+      scope.$apply();
+      expect(rootScope.insightError).equal(1);
+      scope.$apply();
+    });
   });
 
 });
-

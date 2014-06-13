@@ -11,10 +11,10 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
     $scope.networkSecure = config.network.secure || false;
-    $scope.disableVideo  = config.disableVideo || true;
+    $scope.disableVideo = config.disableVideo || true;
 
     $scope.$watch('networkName', function(net) {
-      $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is'; 
+      $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is';
     });
 
     $scope.save = function() {
@@ -25,20 +25,19 @@ angular.module('copayApp.controllers').controller('SettingsController',
       network.secure = $scope.networkSecure;
 
       localStorage.setItem('config', JSON.stringify({
-          networkName: $scope.networkName,
-          blockchain: {
-            host: $scope.insightHost,
-            port: $scope.insightPort
-          },
-          socket: {
-            host: $scope.insightHost,
-            port: $scope.insightPort
-          },
-          network: network,
-          disableVideo: $scope.disableVideo,
-        })
-      );
+        networkName: $scope.networkName,
+        blockchain: {
+          host: $scope.insightHost,
+          port: $scope.insightPort
+        },
+        socket: {
+          host: $scope.insightHost,
+          port: $scope.insightPort
+        },
+        network: network,
+        disableVideo: $scope.disableVideo,
+      }));
 
-      $window.location.href= $window.location.origin + $window.location.pathname;
+      $window.location.href = $window.location.origin + $window.location.pathname;
     };
   });

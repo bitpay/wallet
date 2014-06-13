@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('SetupController',
 
     var updateRCSelect = function(n) {
       $scope.requiredCopayers = (valid_pairs[[parseInt(n / 2 + 1), n]] > 0 || config.networkName === 'testnet') ?
-          parseInt(n / 2 + 1) : 1;
+        parseInt(n / 2 + 1) : 1;
       $scope.RCValues = [];
       for (var m = 1; m <= n; m++) {
         if (valid_pairs[[m, n]] > 0 || config.networkName === 'testnet') {

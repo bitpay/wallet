@@ -21,9 +21,9 @@ describe("Unit: Testing Services", function() {
 
 
   it('Socket should add handlers with #on', inject(function(Socket) {
-    Socket.on('a', function (){});
-    Socket.on('b', function (){});
-    Socket.sysOn('c', function (){});
+    Socket.on('a', function() {});
+    Socket.on('b', function() {});
+    Socket.sysOn('c', function() {});
     var ret = Socket.getListeners();
     expect(ret.a).to.be.equal(1);
     expect(ret.b).to.be.equal(1);
@@ -31,9 +31,9 @@ describe("Unit: Testing Services", function() {
   }));
 
   it('Socket should support #removeAllListeners', inject(function(Socket) {
-    Socket.on('a', function (){});
-    Socket.on('b', function (){});
-    Socket.sysOn('c', function (){});
+    Socket.on('a', function() {});
+    Socket.on('b', function() {});
+    Socket.sysOn('c', function() {});
     var ret = Socket.getListeners();
     expect(Object.keys(ret)).to.have.length(2);
     Socket.removeAllListeners();

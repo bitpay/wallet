@@ -1,14 +1,14 @@
 /*
-** copay-shell - message handler
-*/
+ ** copay-shell - message handler
+ */
 
-var ipc     = require('ipc');
-var dialog  = require('dialog');
-var config  = require('../config');
+var ipc = require('ipc');
+var dialog = require('dialog');
+var config = require('../config');
 var windows = (process.platform === 'win32');
-var HOME    = process.env[windows ? 'USERPROFILE' : 'HOME'];
-var fs      = require('fs');
-var shell   = require('shell');
+var HOME = process.env[windows ? 'USERPROFILE' : 'HOME'];
+var fs = require('fs');
+var shell = require('shell');
 
 module.exports = function(renderer) {
 
@@ -24,7 +24,7 @@ module.exports = function(renderer) {
 
   // handle saving a wallet backup
   ipc.on('backup:download', function(e, data) {
-    var backup   = new Buffer(data.wallet);
+    var backup = new Buffer(data.wallet);
     var filename = data.name + '-' + (+(new Date)) + '.json.aes';
     // open save dialog
     dialog.showSaveDialog(renderer, {

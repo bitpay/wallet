@@ -308,15 +308,21 @@ describe('TxProposals model', function() {
 
   it('#merge, merge signatures case 2', function() {
 
-    var o1 ={ extendedPrivateKeyString: 'tprv8ZgxMBicQKsPdSF1avR6mXyDj5Uv1XY2UyUHSDpAXQ5TvPN7prGeDppjy4562rBB9gMMAhRfFdJrNDpQ4t69kkqHNEEen3PX1zBJqSehJDH',
-        networkName: 'testnet',
-      privateKeyCache: {} };
-    var o2 ={ extendedPrivateKeyString: 'tprv8ZgxMBicQKsPdVeB5RzuxS9JQcACueZYgUaM5eWzaEBkHjW5Pg6Mqez1APSqoUP1jUdbT8WVG7ZJYTXvUL7XtPzFYBXjmdKuwSor1dcNQ8j',
-        networkName: 'testnet',
-      privateKeyCache: {} };
-    var o3 ={ extendedPrivateKeyString: 'tprv8ZgxMBicQKsPeHWNrPVZtQVgcCtXBr5TACNbDQ56rwqNJce9MEc64US6DJKxpWsrebEomxxWZFDtkvkZGkzA43uLvdF4XHiWqoNaL6Dq2Gd',
-        networkName: 'testnet',
-      privateKeyCache: {} };
+    var o1 = {
+      extendedPrivateKeyString: 'tprv8ZgxMBicQKsPdSF1avR6mXyDj5Uv1XY2UyUHSDpAXQ5TvPN7prGeDppjy4562rBB9gMMAhRfFdJrNDpQ4t69kkqHNEEen3PX1zBJqSehJDH',
+      networkName: 'testnet',
+      privateKeyCache: {}
+    };
+    var o2 = {
+      extendedPrivateKeyString: 'tprv8ZgxMBicQKsPdVeB5RzuxS9JQcACueZYgUaM5eWzaEBkHjW5Pg6Mqez1APSqoUP1jUdbT8WVG7ZJYTXvUL7XtPzFYBXjmdKuwSor1dcNQ8j',
+      networkName: 'testnet',
+      privateKeyCache: {}
+    };
+    var o3 = {
+      extendedPrivateKeyString: 'tprv8ZgxMBicQKsPeHWNrPVZtQVgcCtXBr5TACNbDQ56rwqNJce9MEc64US6DJKxpWsrebEomxxWZFDtkvkZGkzA43uLvdF4XHiWqoNaL6Dq2Gd',
+      networkName: 'testnet',
+      privateKeyCache: {}
+    };
 
 
     var priv = PrivateKey.fromObj(o1);

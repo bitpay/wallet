@@ -1,12 +1,12 @@
 /*
-** copay-shell - launch
-*/
+ ** copay-shell - launch
+ */
 
-var color    = require('cli-color');
-var path     = require('path');
-var appPath  = path.normalize(__dirname + '/../../');
+var color = require('cli-color');
+var path = require('path');
+var appPath = path.normalize(__dirname + '/../../');
 var execPath = path.normalize(__dirname + '/../bin/' + process.platform);
-var spawn    = require('child_process').spawn;
+var spawn = require('child_process').spawn;
 
 // update execPath with platform specific binary locations
 switch (process.platform) {
@@ -26,14 +26,14 @@ switch (process.platform) {
 
 var copay = spawn(execPath, [appPath]);
 
-copay.stdout.on('data', function (data) {
+copay.stdout.on('data', function(data) {
   console.log(data);
 });
 
-copay.stderr.on('data', function (data) {
+copay.stderr.on('data', function(data) {
   console.log(color.red(data));
 });
 
-copay.on('close', function (code) {
+copay.on('close', function(code) {
   console.log('child process exited with code ' + code);
 });

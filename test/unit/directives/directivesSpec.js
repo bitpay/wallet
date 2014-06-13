@@ -15,8 +15,10 @@ describe("Unit: Testing Directives", function() {
         '<form name="form">' +
         '<input type="text" id="address" name="address" placeholder="Send to" ng-model="address" valid-address required>' +
         '</form>'
-        );
-      $scope.model = { address: null };
+      );
+      $scope.model = {
+        address: null
+      };
       $compile(element)($scope);
       $scope.$digest();
       form = $scope.form;
@@ -40,8 +42,10 @@ describe("Unit: Testing Directives", function() {
         '<form name="form">' +
         '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
         '</form>'
-        );
-      $scope.model = { amount: null };
+      );
+      $scope.model = {
+        amount: null
+      };
       $compile(element)($scope);
       $scope.$digest();
       form = $scope.form;
@@ -66,11 +70,11 @@ describe("Unit: Testing Directives", function() {
   });
 
   describe('Password strength', function() {
-      beforeEach(inject(function($compile, $rootScope) {
+    beforeEach(inject(function($compile, $rootScope) {
       $scope = $rootScope;
       var element = angular.element(
         '<input type="password" name="password" ng-model="password" check-strength="passwordStrength" value="asd" required>'
-        );
+      );
       $compile(element)($scope);
       $scope.$digest();
     }));

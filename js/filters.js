@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('copayApp.filters', [])
-	.filter('amTimeAgo', ['amMoment', function(amMoment) {
-    return function(input) {
-      return amMoment.preprocessDate(input).fromNow();
-    };
-  }])
+  .filter('amTimeAgo', ['amMoment',
+    function(amMoment) {
+      return function(input) {
+        return amMoment.preprocessDate(input).fromNow();
+      };
+    }
+  ])
   .filter('paged', function() {
     return function(elements) {
       if (elements) {
@@ -24,21 +26,20 @@ angular.module('copayApp.filters', [])
         }
         if (elements.length == 1) {
           return elements;
-        }
-        else {
-          for (var i=0;i<elements.length;i++) {
+        } else {
+          for (var i = 0; i < elements.length; i++) {
             if (!elements[i].isChange && (!elements[i].balance || elements[i].balance == 0)) {
               addrs.push(elements[i]);
               break;
             }
           }
-          
-          for (var i=0;i<elements.length;i++) {
+
+          for (var i = 0; i < elements.length; i++) {
             if (elements[i].balance && elements[i].balance > 0) {
               addrs.push(elements[i]);
             }
           }
-          return addrs; 
+          return addrs;
         }
       }
     };
@@ -46,12 +47,11 @@ angular.module('copayApp.filters', [])
   .filter('withoutFunds', function() {
     return function(elements) {
       var len = 0;
-      for (var i=0;i<elements.length;i++) {
+      for (var i = 0; i < elements.length; i++) {
         if (!elements[i].balance || elements[i].balance == 0) {
           len++;
         }
       }
       return len;
     };
-  })
-;
+  });

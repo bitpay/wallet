@@ -1,10 +1,10 @@
 'use strict';
 
-var chai           = chai || require('chai');
-var should         = chai.should();
-var copay          = copay || require('../copay');
-var API            = API || copay.API;
-var Storage        = Storage || require('../test/mocks/FakeStorage');
+var chai = chai || require('chai');
+var should = chai.should();
+var copay = copay || require('../copay');
+var API = API || copay.API;
+var Storage = Storage || require('../test/mocks/FakeStorage');
 
 var blanket = require("blanket")({
   "pattern": "/js/"
@@ -13,8 +13,10 @@ var blanket = require("blanket")({
 describe('API', function() {
 
   it('should have a command called "echo"', function() {
-    
-    var api = new API({Storage: Storage});
+
+    var api = new API({
+      Storage: Storage
+    });
     should.exist(api.echo);
   });
 
@@ -28,7 +30,9 @@ describe('API', function() {
   })
 
   it('should throw an error for all commands when called with wrong number of arguments', function() {
-    var api = new API({Storage: Storage});
+    var api = new API({
+      Storage: Storage
+    });
     for (var i in API.prototype) {
       var f = API.prototype[i];
       if (i[0] != '_' && typeof f == 'function') {
@@ -47,15 +51,17 @@ describe('API', function() {
     for (var i in API.prototype) {
       var f = API.prototype[i];
       if (i[0] != '_' && typeof f == 'function') {
-        f.argTypes[f.argTypes.length-1][0].should.equal('callback');
-        f.argTypes[f.argTypes.length-1][1].should.equal('function');
+        f.argTypes[f.argTypes.length - 1][0].should.equal('callback');
+        f.argTypes[f.argTypes.length - 1][1].should.equal('function');
       }
     }
   });
 
   describe('#echo', function() {
     it('should echo a string', function(done) {
-      var api = new API({Storage: Storage});
+      var api = new API({
+        Storage: Storage
+      });
       var str = 'mystr';
       api.echo(str, function(err, result) {
         result.should.equal(str);
@@ -66,7 +72,9 @@ describe('API', function() {
 
   describe('#echoNumber', function() {
     it('should echo a number', function(done) {
-      var api = new API({Storage: Storage});
+      var api = new API({
+        Storage: Storage
+      });
       var num = 500;
       api.echoNumber(num, function(err, result) {
         result.should.equal(num);
@@ -78,8 +86,12 @@ describe('API', function() {
 
   describe('#echoObject', function() {
     it('should echo an object', function(done) {
-      var api = new API({Storage: Storage});
-      var obj = {test:'test'};
+      var api = new API({
+        Storage: Storage
+      });
+      var obj = {
+        test: 'test'
+      };
       api.echoObject(obj, function(err, result) {
         result.test.should.equal(obj.test);
         (typeof result).should.equal('object');
@@ -90,7 +102,9 @@ describe('API', function() {
 
   describe('#getArgTypes', function() {
     it('should get the argTypes of echo', function(done) {
-      var api = new API({Storage: Storage});
+      var api = new API({
+        Storage: Storage
+      });
       api.getArgTypes('echo', function(err, result) {
         result[0][1].should.equal('string');
         done();
@@ -100,7 +114,9 @@ describe('API', function() {
 
   describe('#getCommands', function() {
     it('should get all the commands', function(done) {
-      var api = new API({Storage: Storage});
+      var api = new API({
+        Storage: Storage
+      });
       var n = 0;
 
       for (var i in api)
@@ -116,7 +132,9 @@ describe('API', function() {
 
   describe('#getWallets', function() {
     it('should get the wallet ids', function(done) {
-      var api = new API({Storage: Storage});
+      var api = new API({
+        Storage: Storage
+      });
       api.getWallets(function(err, result) {
         result.length.should.be.greaterThan(-1);
         done();
@@ -126,7 +144,9 @@ describe('API', function() {
 
   describe('#help', function() {
     it('should call _cmd_getCommands', function(done) {
-      var api = new API({Storage: Storage});
+      var api = new API({
+        Storage: Storage
+      });
       api._cmd_getCommands = function(callback) {
         (typeof arguments[0]).should.equal('function');
         callback(null, ['item']);

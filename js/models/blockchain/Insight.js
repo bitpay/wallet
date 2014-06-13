@@ -183,7 +183,7 @@ Insight.prototype._request = function(options, callback) {
     request.timeout = 5000;
     request.ontimeout = function() {
       setTimeout(function() {
-        return self._request(options,callback);
+        return self._request(options, callback);
       }, self.retryDelay);
       return callback(new Error('Insight request timeout'));
     };
@@ -197,16 +197,14 @@ Insight.prototype._request = function(options, callback) {
           } catch (e) {
             return callback(new Error('CRITICAL: Wrong response from insight'));
           }
-        } 
+        }
         // User error
         else if (request.status >= 400 && request.status < 499) {
-            return callback(new Error('CRITICAL: Bad request to insight. Probably wrong transaction to broadcast?.'));
-        }
-        else {
-          var err= 'Error code: ' + request.status + ' - Status: ' + request.statusText
-            + ' - Description: ' + request.responseText;
+          return callback(new Error('CRITICAL: Bad request to insight. Probably wrong transaction to broadcast?.'));
+        } else {
+          var err = 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText;
           setTimeout(function() {
-            return self._request(options,callback);
+            return self._request(options, callback);
           }, self.retryDelay);
           return callback(new Error(err));
         }
@@ -218,9 +216,7 @@ Insight.prototype._request = function(options, callback) {
     }
 
     request.send(options.data || null);
-  } 
-  
-  else {
+  } else {
     var http = require('http');
     var req = http.request(options, function(response) {
       var ret;
