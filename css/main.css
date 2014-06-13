@@ -422,6 +422,14 @@ hr { margin: 2.25rem 0;}
   background: #C0392B;
 }
 
+.box-note {
+  text-align: center;
+  clear: both;
+  font-style: italic;
+  color: gray;
+  margin-bottom: 10px;
+}
+
 .box-signin {
   padding: 20px 40px;
   border: 1px solid #eee;

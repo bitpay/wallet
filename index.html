@@ -189,7 +189,7 @@
             src="./img/satoshi.gif"
           />
           <div class="size-12 text-center text-gray" stype="margin-top:4px">
-          {{c.nick || 'NN'}}
+          {{c.nick}}
           </div>
         </div>
       </div>
@@ -456,6 +456,9 @@
               </div>
 
               <div class="tx-copayers">
+                <div class="box-note large-12" ng-show="tx.comment">
+                  "{{tx.comment}}" - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
+                </div>
 
                 <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
                   <figure class="left">
@@ -665,6 +668,23 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="large-12 medium-6 columns">
+                  <div class="row collapse">
+                    <label for="comment">Note
+                      <small ng-hide="!sendForm.comment.$pristine">optional</small>
+                      <small class="is-valid" ng-show="!sendForm.comment.$invalid && !sendForm.comment.$pristine">valid!</small>
+                      <small class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+                    </label>
+                    <div class="small-12 columns">
+                      <textarea id="comment" ng-disabled="loading"
+                      name="comment" placeholder="Leave a private message to your copayers" ng-model="comment" ng-maxlength="100"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="row">
                 <div class="large-5 columns">
                   <button type="submit" class="button secondary radius text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
