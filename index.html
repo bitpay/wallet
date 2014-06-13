@@ -21,7 +21,7 @@
             </div>
             <div class="large-9 medium-9 small-9 columns text-center p10t" ng-show="$root.wallet">
               <div class="large-4 medium-4 columns line-dashed-v">
-                <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
+                <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
                   <strong><span>{{$root.wallet.getName()}}</span></strong>
                 </a>
                 <a class="button radius small-icon" title="Manual Refresh"
@@ -655,7 +655,7 @@
                     <div class="small-9 columns">
                       <input type="number" id="amount" ng-disabled="loading"
                       name="amount" placeholder="Amount" ng-model="amount"
-                      min="0.0001" max="10000000" enough-amount required
+                      min="1" max="10000000000" enough-amount required
                       autocomplete="off"
                       >
                     </div>
@@ -669,7 +669,10 @@
                   Total amount for this transaction: 
                   </small>
                   <div class="totalAmount">
-                    {{amount + defaultFee |number}}</b> bits
+                    <b>{{amount + defaultFee |number}}</b> bits
+                    <small>
+                    {{((amount + defaultFee)/1e6).toFixed(3) |number}} BTC
+                    </small>
                   </div>
                   <small>
                   Including fee of {{defaultFee|number}} bits 
@@ -687,7 +690,7 @@
                     </label>
                     <div class="small-12 columns">
                       <textarea id="comment" ng-disabled="loading"
-                      name="comment" placeholder="Leave a private message to your copayers" ng-model="comment" ng-maxlength="100"></textarea>
+                      name="comment" placeholder="Leave a private message to your copayers" ng-model="commentText" ng-maxlength="100"></textarea>
                     </div>
                   </div>
                 </div>
