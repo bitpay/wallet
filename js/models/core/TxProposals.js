@@ -20,6 +20,7 @@ function TxProposal(opts) {
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
   this.inputChainPaths = opts.inputChainPaths || [];
+  this.comment = opts.comment || null;
 }
 
 TxProposal.prototype.toObj = function() {

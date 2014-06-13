@@ -620,7 +620,7 @@ Wallet.prototype.getUnspent = function(cb) {
 };
 
 
-Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
+Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
   if (typeof opts === 'function') {
     cb = opts;
@@ -633,7 +633,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   }
 
   this.getUnspent(function(err, safeUnspent) {
-    var ntxid = self.createTxSync(toAddress, amountSatStr, safeUnspent, opts);
+    var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposals(null, ntxid);
@@ -644,7 +644,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, opts, cb) {
   });
 };
 
-Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
+Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos, opts) {
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;
   opts = opts || {};
@@ -653,6 +653,10 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
 
   if (!pkr.isComplete()) {
     throw new Error('publicKeyRing is not complete');
+  }
+
+  if (comment && comment.length > 100) {
+    throw new Error("comment can't be longer that 100 characters");
   }
 
   if (!opts.remainderOut) {
@@ -695,6 +699,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, utxos, opts) {
     creator: myId,
     createdTs: now,
     builder: b,
+    comment: comment
   };
 
   var ntxid = this.txProposals.add(data);
