@@ -107,7 +107,7 @@ PublicKeyRing.prototype.nicknameForIndex = function(index) {
 };
 
 PublicKeyRing.prototype.nicknameForCopayer = function(copayerId) {
-  return this.nicknameFor[copayerId];
+  return this.nicknameFor[copayerId] || 'NN';
 };
 
 PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {

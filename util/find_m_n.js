@@ -80,7 +80,7 @@ for (var n = 1; n <= N_LIMIT; n++) {
         'amount': 10.0,
         'confirmations': 2
       }];
-      var ntxid = w.createTxSync(toAddress, amount, utxos);
+      var ntxid = w.createTxSync(toAddress, amount, null, utxos);
       var txp = w.txProposals.txps[ntxid];
 
       var signTx = function(pk, cb) {
