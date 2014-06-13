@@ -215,7 +215,9 @@ describe('TxProposals model', function() {
     (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    w.merge(w);
+    var info = w.merge(w);
+    info.events.length.should.equal(0);
+
     Object.keys(w.txps).length.should.equal(1);
 
     tx.isComplete().should.equal(false);
@@ -287,7 +289,10 @@ describe('TxProposals model', function() {
     (w2.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    w.merge(w2);
+    var info = w.merge(w2);
+    info.events.length.should.equal(1);
+    info.events[0].type.should.equal('signed');
+
     Object.keys(w.txps).length.should.equal(1);
 
     var tx = w.txps[k].builder.build();
@@ -392,8 +397,9 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    w.merge(w2);
-    Object.keys(w.txps).length.should.equal(1);
+    var info = w.merge(w2);
+    info.events.length.should.equal(1);
+    info.events[0].type.should.equal('signed');
 
     tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
@@ -421,7 +427,9 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
 
-    w.merge(w3);
+    var info = w.merge(w3);
+    info.events.length.should.equal(0);
+
     Object.keys(w.txps).length.should.equal(1);
 
     (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
@@ -510,7 +518,9 @@ describe('TxProposals model', function() {
     (w3.txps[k].signedBy[priv3.id] - ts > 0).should.equal(true);
     (w3.txps[k].seenBy[priv3.id] - ts > 0).should.equal(true);
 
-    w.merge(w2);
+    var info = w.merge(w2);
+    info.events.length.should.equal(0);
+
     Object.keys(w.txps).length.should.equal(1);
     var tx = w.txps[k].builder.build();
     tx.isComplete().should.equal(false);
@@ -521,7 +531,9 @@ describe('TxProposals model', function() {
     (w.txps[k].signedBy[priv2.id] - ts > 0).should.equal(true);
 
 
-    w.merge(w3);
+    var info = w.merge(w3);
+    info.events.length.should.equal(0);
+
     var tx = w.txps[k].builder.build();
     tx.isComplete().should.equal(true);
     tx.countInputMissingSignatures(0).should.equal(0);

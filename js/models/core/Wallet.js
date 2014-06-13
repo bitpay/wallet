@@ -117,7 +117,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   var inTxp = copay.TxProposals.fromObj(data.txProposals);
   var ids = inTxp.getNtxids();
 
-  if (ids.lenght > 1) {
+  if (ids.length > 1) {
     this.emit('badMessage', senderId);
     this.log('Received BAD TxProposal messsage FROM:', senderId); //TODO
     return;
@@ -134,6 +134,9 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   if (data.lastInBatch) {
     this.emit('txProposalsUpdated');
     this.store();
+  }
+  for (var i = 0; i < mergeInfo.events.length; i++) {
+    this.emit('txProposalEvent', mergeInfo.events[i]);
   }
 };
 
