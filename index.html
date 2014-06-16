@@ -529,7 +529,7 @@
             </div>
             <p ng-show="onlyPending && txs.length == 0">No pending transactions proposals.</p>
             <p ng-show="!onlyPending && txs.length == 0">No transactions proposals yet.</p>
-            <pagination ng-show="!onlyPending && txs.length > 0" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
+            <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
