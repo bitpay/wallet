@@ -10,7 +10,7 @@ BackupService.prototype.download = function(wallet) {
   var ew = wallet.toEncryptedObj();
   var timestamp = +(new Date());
   var walletName = this.getName(wallet);
-  var filename = walletName + '-' + timestamp + '.json.aes';
+  var filename = walletName + '-' + timestamp + '-keybackup.json.aes';
   var blob = new Blob([ew], {
     type: 'text/plain;charset=utf-8'
   });
