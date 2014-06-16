@@ -14,10 +14,6 @@ try {
 }
 var WalletFactory = require('../js/models/core/WalletFactory');
 
-var blanket = require("blanket")({
-  "pattern": "/js/"
-});
-
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {
     w.publicKeyRing.addCopayer();
