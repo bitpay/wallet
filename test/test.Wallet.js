@@ -97,10 +97,7 @@ describe('Wallet model', function() {
     should.exist(w.publicKeyRing);
     should.exist(w.privateKey);
     should.exist(w.txProposals);
-    should.exist(w.netKey);
     should.exist(w.addressBook);
-    var b = new bitcore.Buffer(w.netKey, 'base64');
-    b.toString('hex').length.should.equal(16);
   });
 
   it('should provide some basic features', function(done) {
@@ -284,13 +281,11 @@ describe('Wallet model', function() {
   it('#getSecret decodeSecret', function() {
     var w = createW2();
     var id = w.getMyCopayerId();
-    var nk = w.netKey;
 
     var sb = w.getSecret();
     should.exist(sb);
     var s = Wallet.decodeSecret(sb);
     s.pubKey.should.equal(id);
-    s.netKey.should.equal(nk);
 
   });
   it('decodeSecret check', function() {
