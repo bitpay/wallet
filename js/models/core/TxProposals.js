@@ -97,11 +97,13 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
     fromTheirs = 0,
     merged = 0;
   var toMerge = {},
-    ready = {};
+    ready = {},
+    events = [];
 
   for (var hash in theirTxps) {
     if (!myTxps[hash]) {
       ready[hash] = theirTxps[hash]; // only in theirs;
+      events.push({type: 'new', cid: theirTxps[hash].creator, tx: hash});
       fromTheirs++;
     } else {
       toMerge[hash] = theirTxps[hash]; // need Merging
@@ -124,6 +126,7 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
     },
     ready: ready,
     toMerge: toMerge,
+    events: events
   };
 };
 
@@ -132,6 +135,7 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
   var toMerge = mergeInfo.toMerge;
   var hasChanged = 0;
+  var events = [];
 
   Object.keys(toMerge).forEach(function(hash) {
     var v0 = myTxps[hash];
@@ -140,32 +144,36 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
     Object.keys(v1.seenBy).forEach(function(k) {
       if (!v0.seenBy[k]) {
         v0.seenBy[k] = v1.seenBy[k];
-        hasChanged++;
+        events.push({type: 'seen', cId: k, txId: hash});
       }
     });
 
     Object.keys(v1.signedBy).forEach(function(k) {
       if (!v0.signedBy[k]) {
         v0.signedBy[k] = v1.signedBy[k];
-        hasChanged++;
+        events.push({type: 'signed', cId: k, txId: hash});
       }
     });
 
     Object.keys(v1.rejectedBy).forEach(function(k) {
       if (!v0.rejectedBy[k]) {
         v0.rejectedBy[k] = v1.rejectedBy[k];
-        hasChanged++;
+        events.push({type: 'rejected', cId: k, txId: hash});
       }
     });
 
     if (!v0.sentTxid && v1.sentTxid) {
       v0.sentTs = v1.sentTs;
       v0.sentTxid = v1.sentTxid;
-      hasChanged++;
+      events.push({type: 'broadcast', txId: hash});
     }
 
   });
-  return hasChanged;
+
+  return {
+    events: events.concat(mergeInfo.events),
+    hasChanged: events.length
+  };
 };
 
 
@@ -255,21 +263,19 @@ TxProposals.prototype.merge = function(t) {
   if (this.network.name !== t.network.name)
     throw new Error('network mismatch in:', t);
 
-  var res = [];
-  var hasChanged = 0;
-
   var myTxps = this.txps;
   var theirTxps = t.txps;
 
   var mergeInfo = this._startMerge(myTxps, theirTxps);
-  hasChanged += this._mergeMetadata(myTxps, theirTxps, mergeInfo);
-  hasChanged += this._mergeBuilder(myTxps, theirTxps, mergeInfo);
+  var result = this._mergeMetadata(myTxps, theirTxps, mergeInfo);
+  result.hasChanged += this._mergeBuilder(myTxps, theirTxps, mergeInfo);
 
   Object.keys(mergeInfo.toMerge).forEach(function(hash) {
     mergeInfo.ready[hash] = myTxps[hash];
   });
 
-  mergeInfo.stats.hasChanged = hasChanged;
+  mergeInfo.stats.hasChanged = result.hasChanged;
+  mergeInfo.stats.events = result.events;
 
   this.txps = mergeInfo.ready;
   return mergeInfo.stats;
