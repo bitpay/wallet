@@ -3,7 +3,11 @@
 var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
-var copay = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var Wallet = require('../js/models/core/Wallet');
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');

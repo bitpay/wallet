@@ -1,14 +1,16 @@
 'use strict';
 
 var imports     = require('soop').imports();
-var Storage     = imports.Storage;
-var Network     = imports.Network;
-var Blockchain  = imports.Blockchain;
 
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
+
+var WebRTC = module.exports.WebRTC = require('../network/WebRTC');
+var Insight = module.exports.Insight = require('../blockchain/Insight');
+//var StorageLocalPlain = module.exports.StorageLocalPlain = require('../storage/LocalPlain');
+var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
 
 /*
  * WalletFactory
@@ -19,9 +21,13 @@ function WalletFactory(config, version) {
   var self = this;
   config = config || {};
 
-  this.storage = new Storage(config.storage);
-  this.network = new Network(config.network);
-  this.blockchain = new Blockchain(config.blockchain);
+  this.Storage = config.Storage || StorageLocalEncrypted;
+  this.Network = config.Network || WebRTC;
+  this.Blockchain = config.Blockchain || Insight;
+
+  this.storage = new this.Storage(config.storage);
+  this.network = new this.Network(config.network);
+  this.blockchain = new this.Blockchain(config.blockchain);
 
   this.networkName    = config.networkName;
   this.verbose        = config.verbose;

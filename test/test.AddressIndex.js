@@ -5,7 +5,11 @@ var should         = chai.should();
 var bitcore        = bitcore || require('bitcore');
 var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
-var copay          = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var PublicKeyRing  = copay.PublicKeyRing;
 var AddressIndex   = copay.AddressIndex;
 
