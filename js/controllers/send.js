@@ -5,7 +5,9 @@ angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $location, $timeout) {
     $scope.title = 'Send';
     $scope.loading = false;
-    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT / bitcore.util.BIT;
+    var satToUnit = 1 / config.unitToSatoshi;
+    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
+    $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
 
     // TODO this shouldnt be on a particular controller.
     // Detect mobile devices
@@ -49,7 +51,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = (form.amount.$modelValue * 100) | 0;
+      var amount = (form.amount.$modelValue * config.unitToSatoshi) | 0;
       var commentText = form.comment.$modelValue;
 
       var w = $rootScope.wallet;

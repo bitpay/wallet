@@ -1,22 +1,21 @@
-
 'use strict';
 
 
-var imports     = require('soop').imports();
-var bitcore     = require('bitcore');
-var util        = bitcore.util;
+var imports = require('soop').imports();
+var bitcore = require('bitcore');
+var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var Builder     = bitcore.TransactionBuilder;
-var Script      = bitcore.Script;
+var Builder = bitcore.TransactionBuilder;
+var Script = bitcore.Script;
 var buffertools = bitcore.buffertools;
 
 function TxProposal(opts) {
-  this.creator      = opts.creator;
-  this.createdTs   = opts.createdTs;
-  this.seenBy   = opts.seenBy || {};
+  this.creator = opts.creator;
+  this.createdTs = opts.createdTs;
+  this.seenBy = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
   this.rejectedBy = opts.rejectedBy || {};
-  this.builder  = opts.builder;
+  this.builder = opts.builder;
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
   this.inputChainPaths = opts.inputChainPaths || [];
@@ -53,8 +52,8 @@ module.exports = require('soop')(TxProposal);
 function TxProposals(opts) {
   opts = opts || {};
   this.walletId = opts.walletId;
-  this.network = opts.networkName === 'livenet' ? 
-      bitcore.networks.livenet : bitcore.networks.testnet;
+  this.network = opts.networkName === 'livenet' ?
+    bitcore.networks.livenet : bitcore.networks.testnet;
   this.txps = {};
 }
 
@@ -77,7 +76,7 @@ TxProposals.prototype.getNtxids = function() {
 
 TxProposals.prototype.toObj = function(onlyThisNtxid) {
   var ret = [];
-  for(var id in this.txps){
+  for (var id in this.txps) {
 
     if (onlyThisNtxid && id != onlyThisNtxid)
       continue;
@@ -86,31 +85,33 @@ TxProposals.prototype.toObj = function(onlyThisNtxid) {
     if (!t.sent)
       ret.push(t.toObj());
   }
-  return { 
-    txps: ret, 
+  return {
+    txps: ret,
     walletId: this.walletId,
     networkName: this.network.name,
   };
 };
 
 TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
-  var fromUs=0, fromTheirs=0, merged =0;
-  var toMerge = {}, ready={};
+  var fromUs = 0,
+    fromTheirs = 0,
+    merged = 0;
+  var toMerge = {},
+    ready = {};
 
-  for(var hash in theirTxps){
+  for (var hash in theirTxps) {
     if (!myTxps[hash]) {
-      ready[hash]=theirTxps[hash];           // only in theirs;
+      ready[hash] = theirTxps[hash]; // only in theirs;
       fromTheirs++;
-    }
-    else {
-      toMerge[hash]=theirTxps[hash];  // need Merging
+    } else {
+      toMerge[hash] = theirTxps[hash]; // need Merging
       merged++;
     }
   }
 
-  for(var hash in myTxps){
-    if(!toMerge[hash]) {
-      ready[hash]=myTxps[hash];   // only in myTxps;
+  for (var hash in myTxps) {
+    if (!toMerge[hash]) {
+      ready[hash] = myTxps[hash]; // only in myTxps;
       fromUs++;
     }
   }
@@ -130,7 +131,7 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
 TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
   var toMerge = mergeInfo.toMerge;
-  var hasChanged =0;
+  var hasChanged = 0;
 
   Object.keys(toMerge).forEach(function(hash) {
     var v0 = myTxps[hash];
@@ -158,7 +159,7 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
     });
 
     if (!v0.sentTxid && v1.sentTxid) {
-      v0.sentTs   = v1.sentTs;
+      v0.sentTs = v1.sentTs;
       v0.sentTxid = v1.sentTxid;
       hasChanged++;
     }
@@ -170,9 +171,9 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
 TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
   var toMerge = mergeInfo.toMerge;
-  var hasChanged=0;
+  var hasChanged = 0;
 
-  for(var hash in toMerge){
+  for (var hash in toMerge) {
     var v0 = myTxps[hash].builder;
     var v1 = toMerge[hash].builder;
 
@@ -180,7 +181,7 @@ TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
     var before = JSON.stringify(v0.toObj());
     v0.merge(v1);
     var after = JSON.stringify(v0.toObj());
-    if (after !== before) hasChanged ++;
+    if (after !== before) hasChanged++;
   }
 };
 
@@ -191,7 +192,7 @@ TxProposals.prototype.add = function(data) {
 };
 
 
-TxProposals.prototype.setSent = function(ntxid,txid) {
+TxProposals.prototype.setSent = function(ntxid, txid) {
   //sent TxProposals are local an not broadcasted.
   this.txps[ntxid].setSent(txid);
 };
@@ -205,26 +206,28 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   i.peerActions = {};
 
   if (copayers) {
-    for(var j=0; j < copayers.length; j++) {
+    for (var j = 0; j < copayers.length; j++) {
       var p = copayers[j];
       i.peerActions[p] = {};
     }
   }
 
-  for(var p in txp.seenBy){
-    i.peerActions[p]={seen: txp.seenBy[p]};
+  for (var p in txp.seenBy) {
+    i.peerActions[p] = {
+      seen: txp.seenBy[p]
+    };
   }
-  for(var p in txp.signedBy){
-    i.peerActions[p]=  i.peerActions[p] || {};
+  for (var p in txp.signedBy) {
+    i.peerActions[p] = i.peerActions[p] || {};
     i.peerActions[p].sign = txp.signedBy[p];
   }
-  var r=0;
-  for(var p in txp.rejectedBy){
-    i.peerActions[p]=  i.peerActions[p] || {};
+  var r = 0;
+  for (var p in txp.rejectedBy) {
+    i.peerActions[p] = i.peerActions[p] || {};
     i.peerActions[p].rejected = txp.rejectedBy[p];
     r++;
   }
-  i.rejectCount=r;
+  i.rejectCount = r;
 
   var c = txp.creator;
   i.peerActions[c] = i.peerActions[c] || {};
@@ -235,30 +238,30 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
 //returns the unspent txid-vout used in PENDING Txs
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
-  for(var i in this.txps) {
+  for (var i in this.txps) {
     var u = this.txps[i].builder.getSelectedUnspent();
     var p = this.getTxProposal(i);
-    if (p.rejectCount>maxRejectCount || p.sentTxid)
+    if (p.rejectCount > maxRejectCount || p.sentTxid)
       continue;
 
     for (var j in u) {
-      ret[u[j].txid + ',' + u[j].vout]=1;
+      ret[u[j].txid + ',' + u[j].vout] = 1;
     }
   }
   return ret;
 };
 
 TxProposals.prototype.merge = function(t) {
-  if (this.network.name !== t.network.name) 
+  if (this.network.name !== t.network.name)
     throw new Error('network mismatch in:', t);
 
   var res = [];
   var hasChanged = 0;
 
-  var myTxps      = this.txps;
-  var theirTxps   = t.txps;
+  var myTxps = this.txps;
+  var theirTxps = t.txps;
 
-  var mergeInfo   = this._startMerge(myTxps, theirTxps);
+  var mergeInfo = this._startMerge(myTxps, theirTxps);
   hasChanged += this._mergeMetadata(myTxps, theirTxps, mergeInfo);
   hasChanged += this._mergeBuilder(myTxps, theirTxps, mergeInfo);
 
@@ -268,7 +271,7 @@ TxProposals.prototype.merge = function(t) {
 
   mergeInfo.stats.hasChanged = hasChanged;
 
-  this.txps=mergeInfo.ready;
+  this.txps = mergeInfo.ready;
   return mergeInfo.stats;
 };
 

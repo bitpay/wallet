@@ -13,9 +13,11 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     $scope.txpItemsPerPage = 4;
     $scope.blockchain_txs = [];
 
-    $scope.update = function () {
+    var satToUnit = 1 / config.unitToSatoshi;
+
+    $scope.update = function() {
       $scope.loading = false;
-      var from = ($scope.txpCurrentPage-1) * $scope.txpItemsPerPage;
+      var from = ($scope.txpCurrentPage - 1) * $scope.txpItemsPerPage;
       var opts = {
         onlyPending: $scope.onlyPending,
         skip: !$scope.onlyPending ? [from, from + $scope.txpItemsPerPage] : null
@@ -24,10 +26,10 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       $rootScope.$digest();
     };
 
-    $scope.show = function (onlyPending) {
-      $scope.loading=true;
+    $scope.show = function(onlyPending) {
+      $scope.loading = true;
       $scope.onlyPending = onlyPending;
-      setTimeout(function(){
+      setTimeout(function() {
         $scope.update();
       }, 10);
     };
@@ -41,19 +43,19 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       var tmp = {};
       var u = 0;
 
-      for(var i=0; i < l; i++) {
+      for (var i = 0; i < l; i++) {
 
         var notAddr = false;
         // non standard input
         if (items[i].scriptSig && !items[i].addr) {
-          items[i].addr = 'Unparsed address [' + u++ + ']';
+          items[i].addr = 'Unparsed address [' + u+++']';
           items[i].notAddr = true;
           notAddr = true;
         }
 
         // non standard output
         if (items[i].scriptPubKey && !items[i].scriptPubKey.addresses) {
-          items[i].scriptPubKey.addresses = ['Unparsed address [' + u++ + ']'];
+          items[i].scriptPubKey.addresses = ['Unparsed address [' + u+++']'];
           items[i].notAddr = true;
           notAddr = true;
         }
@@ -76,62 +78,64 @@ angular.module('copayApp.controllers').controller('TransactionsController',
         }
         tmp[addr].isSpent = items[i].spentTxId;
 
-        tmp[addr].doubleSpentTxID = tmp[addr].doubleSpentTxID   || items[i].doubleSpentTxID;
+        tmp[addr].doubleSpentTxID = tmp[addr].doubleSpentTxID || items[i].doubleSpentTxID;
         tmp[addr].doubleSpentIndex = tmp[addr].doubleSpentIndex || items[i].doubleSpentIndex;
         tmp[addr].unconfirmedInput += items[i].unconfirmedInput;
         tmp[addr].dbError = tmp[addr].dbError || items[i].dbError;
-        tmp[addr].valueSat += (items[i].value * bitcore.util.COIN)|0;
+        tmp[addr].valueSat += parseInt((items[i].value * bitcore.util.COIN).toFixed(0));
         tmp[addr].items.push(items[i]);
         tmp[addr].notAddr = notAddr;
         tmp[addr].count++;
       }
 
       angular.forEach(tmp, function(v) {
-        v.value    = (v.valueSat|0) / bitcore.util.BIT;
+        v.value = (parseInt(v.valueSat || 0).toFixed(0)) * satToUnit;
         ret.push(v);
       });
       return ret;
     };
 
-    $scope.toogleLast = function () {
+    $scope.toogleLast = function() {
       $scope.lastShowed = !$scope.lastShowed;
       if ($scope.lastShowed) {
         $scope.getTransactions();
       }
     };
 
-    $scope.send = function (ntxid,cb) {
+    $scope.send = function(ntxid, cb) {
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
-          $rootScope.$flashMessage = txid
-            ? {type:'success', message: 'Transaction broadcasted. txid: ' + txid}
-            : {type:'error', message: 'There was an error sending the Transaction'}
-            ;
-          if (cb) return cb();
-          else $scope.update();
+        $rootScope.$flashMessage = txid ? {
+          type: 'success',
+          message: 'Transaction broadcasted. txid: ' + txid
+        } : {
+          type: 'error',
+          message: 'There was an error sending the Transaction'
+        };
+        if (cb) return cb();
+        else $scope.update();
       });
     };
 
-    $scope.sign = function (ntxid) {
+    $scope.sign = function(ntxid) {
       $scope.loading = true;
       var w = $rootScope.wallet;
-      w.sign(ntxid, function(ret){
+      w.sign(ntxid, function(ret) {
         if (!ret) {
           $rootScope.$flashMessage = {
-            type:'error',
+            type: 'error',
             message: 'There was an error signing the Transaction',
           };
-            $scope.update();
+          $scope.update();
         } else {
           var p = w.txProposals.getTxProposal(ntxid);
           if (p.builder.isFullySigned()) {
             $scope.send(ntxid, function() {
               $scope.update();
             });
-          }
-          else 
+          } else
             $scope.update();
         }
       });
@@ -144,20 +148,19 @@ angular.module('copayApp.controllers').controller('TransactionsController',
         var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
           $scope.blockchain_txs = [];
-          w.blockchain.getTransactions(addresses, function(txs) { 
+          w.blockchain.getTransactions(addresses, function(txs) {
             $timeout(function() {
-              for (var i=0; i<txs.length;i++) {
+              for (var i = 0; i < txs.length; i++) {
                 txs[i].vinSimple = _aggregateItems(txs[i].vin);
                 txs[i].voutSimple = _aggregateItems(txs[i].vout);
-                txs[i].valueOut = ((txs[i].valueOut * bitcore.util.COIN)|0)  / bitcore.util.BIT;
-                txs[i].fees = ((txs[i].fees * bitcore.util.COIN)|0)  / bitcore.util.BIT;
+                txs[i].valueOut = ((txs[i].valueOut * bitcore.util.COIN).toFixed(0)) * satToUnit;
+                txs[i].fees = ((txs[i].fees * bitcore.util.COIN).toFixed(0)) * satToUnit;
                 $scope.blockchain_txs.push(txs[i]);
               }
               $scope.loading = false;
             }, 10);
           });
-        }
-        else {
+        } else {
           $timeout(function() {
             $scope.loading = false;
             $scope.lastShowed = false;
@@ -167,15 +170,18 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     };
 
     $scope.getShortNetworkName = function() {
-      return config.networkName.substring(0,4);
+      return config.networkName.substring(0, 4);
     };
 
-    $scope.reject = function (ntxid) {
+    $scope.reject = function(ntxid) {
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.reject(ntxid);
-      $rootScope.$flashMessage = {type:'warning', message: 'Transaction rejected by you'};
+      $rootScope.$flashMessage = {
+        type: 'warning',
+        message: 'Transaction rejected by you'
+      };
       $scope.loading = false;
     };
 

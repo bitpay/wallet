@@ -450,13 +450,13 @@ describe('Wallet model', function() {
       done();
     });
   });
-  it('#getBalance should return values in bits', function(done) {
+  it('#getBalance should return values in satoshis', function(done) {
     var w = createW2();
     w.generateAddress();
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
-      balance.should.equal(25000100.00);
-      safeBalance.should.equal(25000100.00);
-      balanceByAddr.mji7zocy8QzYywQakwWf99w9bCT6orY1C1.should.equal(25000100.00);
+      balance.should.equal(2500010000);
+      safeBalance.should.equal(2500010000);
+      balanceByAddr.mji7zocy8QzYywQakwWf99w9bCT6orY1C1.should.equal(2500010000);
       Object.keys(balanceByAddr).length.should.equal(1);
       done();
     });
@@ -464,19 +464,19 @@ describe('Wallet model', function() {
 
   var roundErrorChecks = [{
       unspent: [1.0001],
-      balance: 1000100
+      balance: 100010000
     }, {
       unspent: [1.0002, 1.0003, 1.0004],
-      balance: 3000900
+      balance: 300090000
     }, {
       unspent: [0.000002, 1.000003, 2.000004],
-      balance: 3000009
+      balance: 300000900
     }, {
       unspent: [0.0001, 0.0003],
-      balance: 400
+      balance: 40000
     }, {
       unspent: [0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002],
-      balance: 1100
+      balance: 110000
     },
 
   ];
