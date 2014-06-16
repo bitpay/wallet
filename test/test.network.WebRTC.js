@@ -5,11 +5,6 @@ var should         = chai.should();
 var expect         = chai.expect;
 var sinon          = sinon || require('sinon');
 var bitcore        = bitcore || require('bitcore');
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
 var WebRTC = require('../js/models/network/WebRTC');
 
 describe('Network / WebRTC', function() {
