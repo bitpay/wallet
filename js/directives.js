@@ -23,7 +23,7 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('notification', ['$rootScope', 
+  .directive('notification', ['$rootScope',
     function($rootScope) {
       return {
         restrict: 'A',
@@ -45,8 +45,8 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var availableBalanceNum = ($rootScope.availableBalance * bitcore.util.COIN).toFixed(0);
-            var vNum = Number((value * bitcore.util.COIN).toFixed(0)) + feeSat;
+            var availableBalanceNum = ($rootScope.availableBalance * config.unitToSatoshi).toFixed(0);
+            var vNum = Number((value * config.unitToSatoshi).toFixed(0)) + feeSat;
             if (typeof vNum == "number" && vNum > 0) {
               if (availableBalanceNum < vNum) {
                 ctrl.$setValidity('enoughAmount', false);
@@ -72,7 +72,7 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
-            ctrl.$setValidity('walletSecret',  Boolean(walletFactory.decodeSecret(value)));
+            ctrl.$setValidity('walletSecret', Boolean(walletFactory.decodeSecret(value)));
             return value;
           };
 
@@ -88,7 +88,7 @@ angular.module('copayApp.directives')
         var a = element.html();
         var text = attr.loading;
         element.on('click', function() {
-            element.html('<i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> ' + text + '...');
+          element.html('<i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> ' + text + '...');
         });
         $scope.$watch('loading', function(val) {
           if (!val) {
@@ -126,9 +126,11 @@ angular.module('copayApp.directives')
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
-        scope.$watch(attrs.highlightOnChange, function (newValue, oldValue) {
+        scope.$watch(attrs.highlightOnChange, function(newValue, oldValue) {
           element.addClass('highlight');
-          setTimeout(function() { element.removeClass('highlight'); }, 500);
+          setTimeout(function() {
+            element.removeClass('highlight');
+          }, 500);
         });
       }
     }
@@ -142,7 +144,7 @@ angular.module('copayApp.directives')
         var strength = {
           messages: ['very weak', 'weak', 'weak', 'medium', 'strong'],
           colors: ['#c0392b', '#e74c3c', '#d35400', '#f39c12', '#27ae60'],
-          mesureStrength: function (p) {
+          mesureStrength: function(p) {
             var force = 0;
             var regex = /[$-/:-?{-~!"^_`\[\]]/g;
             var lowerLetters = /[a-z]+/.test(p);
@@ -150,37 +152,51 @@ angular.module('copayApp.directives')
             var numbers = /[0-9]+/.test(p);
             var symbols = regex.test(p);
             var flags = [lowerLetters, upperLetters, numbers, symbols];
-            var passedMatches = flags.filter(function (el) { return !!el; }).length;
-            
+            var passedMatches = flags.filter(function(el) {
+              return !!el;
+            }).length;
+
             force = 2 * p.length + (p.length >= 10 ? 1 : 0);
             force += passedMatches * 10;
-            
+
             // penality (short password)
             force = (p.length <= 6) ? Math.min(force, 10) : force;
-            
+
             // penality (poor variety of characters)
             force = (passedMatches == 1) ? Math.min(force, 10) : force;
             force = (passedMatches == 2) ? Math.min(force, 20) : force;
             force = (passedMatches == 3) ? Math.min(force, 40) : force;
             return force;
           },
-          getColor: function (s) {
+          getColor: function(s) {
             var idx = 0;
-            
-            if (s <= 10) { idx = 0; }
-            else if (s <= 20) { idx = 1; }
-            else if (s <= 30) { idx = 2; }
-            else if (s <= 40) { idx = 3; }
-            else { idx = 4; }
-            
-            return { idx: idx + 1, col: this.colors[idx], message: this.messages[idx] };
+
+            if (s <= 10) {
+              idx = 0;
+            } else if (s <= 20) {
+              idx = 1;
+            } else if (s <= 30) {
+              idx = 2;
+            } else if (s <= 40) {
+              idx = 3;
+            } else {
+              idx = 4;
+            }
+
+            return {
+              idx: idx + 1,
+              col: this.colors[idx],
+              message: this.messages[idx]
+            };
           }
         };
 
-        scope.$watch(attrs.ngModel, function (newValue, oldValue) {
+        scope.$watch(attrs.ngModel, function(newValue, oldValue) {
           if (newValue && newValue !== '') {
             var c = strength.getColor(strength.mesureStrength(newValue));
-            element.css({ 'border-color': c.col });
+            element.css({
+              'border-color': c.col
+            });
             scope[attrs.checkStrength] = c.message;
           }
         });

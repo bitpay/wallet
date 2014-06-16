@@ -11,10 +11,35 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
     $scope.networkSecure = config.network.secure || false;
-    $scope.disableVideo  = config.disableVideo || true;
+    $scope.disableVideo = config.disableVideo || true;
+
+    $scope.unitOpts = [{
+      name: 'Satoshis (100,000,000 bits = 1BTC)',
+      shortName: 'SAT',
+      value: 1
+    }, {
+      name: 'bits (1,000,000 bits = 1BTC)',
+      shortName: 'bits',
+      value: 100
+    }, {
+      name: 'mBTC (1,000 mBTC = 1BTC)',
+      shortName: 'mBTC',
+      value: 100000
+    }, {
+      name: 'BTC',
+      shortName: 'BTC',
+      value: 100000000
+    }];
+
+    for (var ii in $scope.unitOpts) {
+      if (config.unitName === $scope.unitOpts[ii].shortName) {
+        $scope.selectedUnit = $scope.unitOpts[ii];
+        break;
+      }
+    }
 
     $scope.$watch('networkName', function(net) {
-      $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is'; 
+      $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is';
     });
 
     $scope.save = function() {
@@ -25,20 +50,21 @@ angular.module('copayApp.controllers').controller('SettingsController',
       network.secure = $scope.networkSecure;
 
       localStorage.setItem('config', JSON.stringify({
-          networkName: $scope.networkName,
-          blockchain: {
-            host: $scope.insightHost,
-            port: $scope.insightPort
-          },
-          socket: {
-            host: $scope.insightHost,
-            port: $scope.insightPort
-          },
-          network: network,
-          disableVideo: $scope.disableVideo,
-        })
-      );
+        networkName: $scope.networkName,
+        blockchain: {
+          host: $scope.insightHost,
+          port: $scope.insightPort
+        },
+        socket: {
+          host: $scope.insightHost,
+          port: $scope.insightPort
+        },
+        network: network,
+        disableVideo: $scope.disableVideo,
+        unitName: $scope.selectedUnit.shortName,
+        unitToSatoshi: $scope.selectedUnit.value,
+      }));
 
-      $window.location.href= $window.location.origin + $window.location.pathname;
+      $window.location.href = $window.location.origin + $window.location.pathname;
     };
   });

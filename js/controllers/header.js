@@ -32,6 +32,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
       } 
     });
 
+    $rootScope.unitName = config.unitName;
 
     // Initialize alert notification (not show when init wallet)
     $rootScope.txAlertCount = 0;

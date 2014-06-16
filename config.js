@@ -1,7 +1,11 @@
 'use strict';
 var defaultConfig = {
-  // livenet or testnet
+  // DEFAULT network (livenet or testnet)
   networkName: 'testnet',
+
+  // DEFAULT unit: Bit
+  unitName: 'bits',
+  unitToSatoshi: 100,
 
   // wallet limits
   limits: {
@@ -21,7 +25,7 @@ var defaultConfig = {
     */
 
     // Use this to connect to bitpay's PeerJS server
-    key: 'satoshirocks', 
+    key: 'satoshirocks',
     host: '162.242.219.26',
     port: 10000,
     path: '/',
@@ -107,7 +111,7 @@ var defaultConfig = {
   // local encryption/security config
   passphrase: {
     iterations: 100,
-    storageSalt: 'mjuBtGybi/4=', 
+    storageSalt: 'mjuBtGybi/4=',
   },
 
   // theme list

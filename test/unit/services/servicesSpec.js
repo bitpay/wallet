@@ -1,6 +1,16 @@
 //
 // test/unit/services/servicesSpec.js
 //
+//
+//
+describe('Check config', function() {
+  it('unit should be set to BITS in config.js', function() {
+    expect(config.unitToSatoshi).to.equal(100);
+    expect(config.unitName).to.equal('bits');
+  });
+});
+
+
 describe("Unit: Socket Service", function() {
   beforeEach(angular.mock.module('copayApp.services'));
 
@@ -20,9 +30,9 @@ describe("Unit: Socket Service", function() {
 
 
   it('Socket should add handlers with #on', inject(function(Socket) {
-    Socket.on('a', function (){});
-    Socket.on('b', function (){});
-    Socket.sysOn('c', function (){});
+    Socket.on('a', function() {});
+    Socket.on('b', function() {});
+    Socket.sysOn('c', function() {});
     var ret = Socket.getListeners();
     expect(ret.a).to.be.equal(1);
     expect(ret.b).to.be.equal(1);
@@ -30,9 +40,9 @@ describe("Unit: Socket Service", function() {
   }));
 
   it('Socket should support #removeAllListeners', inject(function(Socket) {
-    Socket.on('a', function (){});
-    Socket.on('b', function (){});
-    Socket.sysOn('c', function (){});
+    Socket.on('a', function() {});
+    Socket.on('b', function() {});
+    Socket.sysOn('c', function() {});
     var ret = Socket.getListeners();
     expect(Object.keys(ret)).to.have.length(2);
     Socket.removeAllListeners();
@@ -57,16 +67,19 @@ describe("Unit: controllerUtils", function() {
     expect(controllerUtils.updateBalance).not.to.equal(null);
     scope = $rootScope.$new();
 
-    $rootScope.wallet=new FakeWallet();
+    $rootScope.wallet = new FakeWallet();
     var addr = '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC';
-    var a = {}; a[addr]=100;
-    $rootScope.wallet.set(1000000,900000,a);
+    var a = {};
+    a[addr] = 100;
+    //SATs 
+    $rootScope.wallet.set(100000001, 90000002, a);
 
+    //retuns values in DEFAULT UNIT(bits)
     controllerUtils.updateBalance(function() {
-      expect($rootScope.totalBalance).to.be.equal(1000000);
-      expect($rootScope.totalBalanceBTC).to.be.equal('1.000');
-      expect($rootScope.availableBalance).to.be.equal(900000);
-      expect($rootScope.availableBalanceBTC).to.be.equal('0.900');
+      expect($rootScope.totalBalanceBTC).to.be.equal('1.0000');
+      expect($rootScope.availableBalanceBTC).to.be.equal('0.9000');
+      expect($rootScope.totalBalance).to.be.equal(1000000.01);
+      expect($rootScope.availableBalance).to.be.equal(900000.02);
       expect($rootScope.addrInfos).not.to.equal(null);
       expect($rootScope.addrInfos[0].address).to.equal(addr);
     });
@@ -74,4 +87,3 @@ describe("Unit: controllerUtils", function() {
 
 
 });
-
