@@ -75,7 +75,7 @@ describe('WalletFactory model', function() {
     should.exist(w.publicKeyRing.getCopayerId);
     should.exist(w.txProposals.toObj);
     should.exist(w.privateKey.toObj);
-    
+
     JSON.stringify(w.toObj()).should.equal(o);
   });
 
@@ -98,7 +98,7 @@ describe('WalletFactory model', function() {
       "wallet": {
         "requiredCopayers": 2,
         "totalCopayers": 3,
-        "reconnectDelay":100,
+        "reconnectDelay": 100,
         "spendUnconfirmed": 1,
         "verbose": 0
       },
@@ -120,6 +120,30 @@ describe('WalletFactory model', function() {
     };
     var w = wf.create(opts);
 
+  });
+
+  it('should be able to get current wallets', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    var w = wf.create({
+      name: 'test wallet'
+    });
+    var ws = wf.getWallets();
+    ws.length.should.equal(1);
+    ws[0].name.should.equal('test wallet');
+  });
+
+  it('should be able to delete wallet', function(done) {
+    var wf = new WalletFactory(config, '0.0.1');
+    var w = wf.create({
+      name: 'test wallet'
+    });
+    var ws = wf.getWallets();
+    ws.length.should.equal(1);
+    wf.delete(ws[0].id, function() {
+      ws = wf.getWallets();
+      ws.length.should.equal(0);
+      done();
+    });
   });
 
 });

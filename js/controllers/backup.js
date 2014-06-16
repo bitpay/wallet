@@ -39,9 +39,9 @@ angular.module('copayApp.controllers').controller('BackupController',
     };
 
     $scope.deleteWallet = function() {
-      var w=$rootScope.wallet;
+      var w = $rootScope.wallet;
       w.disconnect();
-      walletFactory.remove(w.id, function() {
+      walletFactory.delete(w.id, function() {
         controllerUtils.logout();
       });
     };

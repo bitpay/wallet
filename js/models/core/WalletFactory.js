@@ -177,10 +177,10 @@ WalletFactory.prototype.getWallets = function() {
   return ret;
 };
 
-WalletFactory.prototype.remove = function(walletId, cb) {
+WalletFactory.prototype.delete = function(walletId, cb) {
   var s = this.storage;
-  this.log('## DELETING WALLET ID:'+ walletId); //TODO
-  s.get(walletId, 'opts');
+  this.log('## DELETING WALLET ID:' + walletId); //TODO
+  s.deleteWallet(walletId);
   return cb();
 };
 
