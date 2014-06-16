@@ -219,6 +219,21 @@ small.has-error {
   font-weight: bold;
 }
 
+
+.totalAmount {
+  line-height: 120%;
+  margin-top:2px;
+}
+
+
+/* Turn Off Number Input Spinners */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+
 .small {
   font-size: 60%;
   line-height: inherit;

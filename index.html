@@ -21,7 +21,7 @@
             </div>
             <div class="large-9 medium-9 small-9 columns text-center p10t" ng-show="$root.wallet">
               <div class="large-4 medium-4 columns line-dashed-v">
-                <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="{{$root.wallet.id}}">
+                <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
                   <strong><span>{{$root.wallet.getName()}}</span></strong>
                 </a>
                 <a class="button radius small-icon" title="Manual Refresh"
@@ -31,21 +31,19 @@
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
-                Balance:
+                Balance<br>
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="!$root.updatingBalance">{{totalBalance || 0}}
-                  <i class="fi-bitcoin"></i>
+                <span ng-if="!$root.updatingBalance" tooltip="{{totalBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |number}} {{$root.unitName}} 
                 </span>
               </div>
               <div class="large-4 medium-4 columns">
-                Available to Spend:
+                Available to Spend<br>
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="!$root.updatingBalance">{{availableBalance || 0}}
-                  <i class="fi-bitcoin"></i>
+                <span ng-show="!$root.updatingBalance" tooltip="{{availableBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{availableBalance || 0|number}} {{$root.unitName}} 
                 </span>
               </div>
 
@@ -383,13 +381,11 @@
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
                       <span ng-if="!$root.updatingBalance">
-                        {{$root.balanceByAddr[addr.address] || 0}}
-                        <i class="fi-bitcoin"></i>
+                        {{$root.balanceByAddr[addr.address] || 0|number}} {{$root.unitName}} 
                       </span>
                     </span>
                     <span ng-if="addrWithFund != addr.address">
-                      {{addr.balance || 0}}
-                      <i class="fi-bitcoin"></i>
+                      {{addr.balance || 0|number}} {{$root.unitName}}
                     </span>
                   </span>
                 </a>
@@ -407,14 +403,12 @@
                       <span ng-if="$root.updatingBalance">
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
-                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0}}
-                        <i class="fi-bitcoin"></i>
+                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | number}}
                       </span>
                     </span>
                     <span ng-if="addrWithFund != selectedAddr.address" style="word-wrap: break-word;">
                       {{selectedAddr.address}}<br/>
-                      {{selectedAddr.balance || 0}}
-                      <i class="fi-bitcoin"></i>
+                      {{selectedAddr.balance || 0|number}} {{$root.unitName}}
                     </span>
                   </strong>
                 </p>
@@ -445,7 +439,7 @@
               <div class="txheader row m10">
                 <div class="large-8 medium-8 small-12 columns">
                   <div class="row" ng-repeat="out in tx.outs">
-                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value}} <i class="fi-bitcoin size-18"></i></div>
+                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value | number}} {{$root.unitName}}</div>
                     <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
                     <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
                   </div>
@@ -527,7 +521,7 @@
                   <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
                     {{tx.missingSignatures}} signatures missing</p>
                   <div class="ellipsis small text-gray">
-                    <strong>Fee:</strong> <i class="fi-bitcoin"></i> {{tx.fee}}
+                    <strong>Fee:</strong> {{tx.fee|number}} {{$root.unitName}}
                     <strong>Proposal ID:</strong> {{tx.ntxid}}
                   </div>
                 </div>
@@ -571,7 +565,7 @@
                   <div class="row">
                     <div class="large-5 medium-5 small-5 columns">
                       <div ng-repeat="vin in btx.vinSimple">
-                        <small class="right m5t">{{vin.value}}</small>
+                        <small class="right m5t">{{vin.value| number}} {{$root.unitName}}</small>
                         <p class="ellipsis text-gray size-12"> {{vin.addr}} </p>
                       </div>
                     </div>
@@ -580,7 +574,7 @@
                     </div>
                     <div class="large-6 medium-6 small-6 columns">
                       <div ng-repeat="vout in btx.voutSimple">
-                        <small class="right m5t">{{vout.value}}</small>
+                        <small class="right m5t">{{vout.value| number}} {{$root.unitName}}</small>
                         <p class="ellipsis text-gray size-12"> {{vout.addr}} </p>
                       </div>
                     </div>
@@ -588,9 +582,9 @@
                 </div>
                 <div class="m10 size-12 text-gray">
                   <div class="row">
-                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees}}</div>
+                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | number}} {{$root.unitName}}</div>
                     <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
-                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut}}</div>
+                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut| number}} {{$root.unitName}}</div>
                   </div>
                 </div>
               </div>
@@ -652,21 +646,37 @@
                   <div class="row collapse">
                     <label for="amount">Amount
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
-                      <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">valid!</small>
+                      <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">Valid</small>
                       <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount">
-                        not valid
+                        Not valid
                       </small>
-                      <small ng-show="notEnoughAmount">Insufficient funds!</small>
+                      <small ng-show="notEnoughAmount" class="has-error">Insufficient funds</small>
                     </label>
                     <div class="small-9 columns">
                       <input type="number" id="amount" ng-disabled="loading"
                       name="amount" placeholder="Amount" ng-model="amount"
-                      min="0.0001" max="10000000" enough-amount required>
+                      min="1" max="10000000000" enough-amount required
+                      autocomplete="off"
+                      >
                     </div>
                     <div class="small-3 columns">
-                      <span class="postfix">BTC</span>
+                      <span class="postfix">{{$root.unitName}}</span>
                     </div>
                   </div>
+                </div>
+                <div class="large-6 medium-6 columns m10t" ng-show="amount>0">
+                  <small>
+                  Total amount for this transaction: 
+                  </small>
+                  <div class="totalAmount">
+                    <b>{{amount + defaultFee |number}}</b> {{$root.unitName}}
+                    <small>
+                    {{ ((amount + defaultFee) * unitToBtc) |number}} BTC
+                    </small>
+                  </div>
+                  <small>
+                  Including fee of {{defaultFee|number}} {{$root.unitName}} 
+                  </small>
                 </div>
               </div>
 
@@ -680,7 +690,7 @@
                     </label>
                     <div class="small-12 columns">
                       <textarea id="comment" ng-disabled="loading"
-                      name="comment" placeholder="Leave a private message to your copayers" ng-model="comment" ng-maxlength="100"></textarea>
+                      name="comment" placeholder="Leave a private message to your copayers" ng-model="commentText" ng-maxlength="100"></textarea>
                     </div>
                   </div>
                 </div>
@@ -741,6 +751,17 @@
               <label for="network-name">Livenet</label>
             </fieldset>
             <fieldset>
+              <legend>Wallet Unit</legend>
+                <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
+                </select>
+                <label for="settingsUnit">Prefered Unit for Wallet</label>
+            </fieldset>
+            <fieldset>
+              <legend>Videoconferencing</legend>
+                <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
+                <label for="disableVideo-opt">Enable videoconferencing (only for fast Networks)</label>
+            </fieldset>
+            <fieldset>
               <legend>Insight API server</legend>
                 <label for="insight-host">Host</label>
                 <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
@@ -758,13 +779,6 @@
                 <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control" disabled="disabled">
                 <label for="peerjs-secure">Use SSL (disabled)</label>
             </fieldset>
-            <fieldset>
-              <legend>Videoconferencing</legend>
-                <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
-                <label for="disableVideo-opt">Enable videoconferencing (only for fast Networks)</label>
-            </fieldset>
-
-
           </div>
           <div class="row">
             <div class="large-12 columns line-dashed">
