@@ -1,3 +1,4 @@
+'use strict';
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
