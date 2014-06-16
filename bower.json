@@ -18,7 +18,7 @@
     "sjcl": "1.0.0",
     "file-saver": "*",
     "qrcode-decoder-js": "*",
-    "bitcore": "git://github.com/bitpay/bitcore.git#c94d2789582a481db19955f9e5df0129ffcc9e92",
+    "bitcore": "0.1.24",
     "angular-moment": "~0.7.1",
     "socket.io-client": ">=1.0.0",
     "mousetrap": "1.4.6"
