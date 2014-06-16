@@ -3,6 +3,7 @@ var FakeWallet = function(){
   this.balance=10000;
   this.safeBalance=1000;
   this.balanceByAddr={'1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000};
+  this.name = 'myTESTwullet';
 };
 
 FakeWallet.prototype.set = function(balance, safeBalance, balanceByAddr){
@@ -26,6 +27,11 @@ FakeWallet.prototype.getAddressesInfo=function(){
 
 FakeWallet.prototype.getBalance=function(cb){
   return cb(null, this.balance, this.balanceByAddr, this.safeBalance);
+};
+
+
+FakeWallet.prototype.toEncryptedObj = function() {
+  return 'SUPERENCRYPTEDSICRITSTUFF';
 };
 
 // This mock is meant for karma, module.exports is not necesary.

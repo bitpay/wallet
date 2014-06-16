@@ -80,6 +80,11 @@ var createBundle = function(opts) {
     expose: '../js/models/core/Passphrase'
   });
 
+  if (opts.dontminify) {
+    b.require('sinon', {
+      expose: '../sinon'
+    });
+  }
   if (!opts.dontminify) {
     b.transform({
       global: true
