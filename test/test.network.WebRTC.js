@@ -103,6 +103,29 @@ describe('Network / WebRTC', function() {
 
     });
 
+    it('should call _sendToOne with encrypted data for a copayer', function(done) {
+      var n = new WebRTC();
+
+      var data = new bitcore.Buffer('my data to send');
+
+      var privkeystr = new bitcore.Buffer('test privkey');
+      var privkey = bitcore.util.sha256(privkeystr);
+      var key = new bitcore.Key();
+      key.private = privkey;
+      key.regenerateSync();
+
+      var copayerId = key.public.toString('hex');
+      n._sendToOne = function(a1, encPayload, a3, cb) {
+        encPayload.length.should.be.greaterThan(0);
+        cb();
+      };
+      var sig = undefined;
+      n.send(copayerId, data, function() {
+        done();
+      });
+
+    });
+
     it('should call _sendToOne for a list of copayers', function(done) {
       var n = new WebRTC();
 
