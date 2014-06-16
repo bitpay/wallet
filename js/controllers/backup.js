@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('BackupController',
-  function($scope, $rootScope, $location, $window, $timeout, $modal) {
+  function($scope, $rootScope, $location, $window, $timeout, $modal, controllerUtils, walletFactory) {
     $scope.title = 'Backup';
 
     var _getEncryptedWallet = function() {
@@ -11,10 +11,12 @@ angular.module('copayApp.controllers').controller('BackupController',
 
     $scope.download = function() {
       var timestamp = +(new Date);
-      var walletName = ($rootScope.wallet.name ? $rootScope.wallet.name : '') + '-' + $rootScope.wallet.id ;
+      var walletName = ($rootScope.wallet.name ? $rootScope.wallet.name : '') + '-' + $rootScope.wallet.id;
       var filename = walletName + '-' + timestamp + '.json.aes';
       var wallet = _getEncryptedWallet();
-      var blob = new Blob([wallet], {type: 'text/plain;charset=utf-8'});
+      var blob = new Blob([wallet], {
+        type: 'text/plain;charset=utf-8'
+      });
       // show a native save dialog if we are in the shell
       // and pass the wallet to the shell to convert to node Buffer
       if (window.cshell) {
@@ -27,43 +29,49 @@ angular.module('copayApp.controllers').controller('BackupController',
       saveAs(blob, filename);
     };
 
-  $scope.openModal = function () {
-    var modalInstance = $modal.open({
-      templateUrl: 'backupModal.html',
-      controller: ModalInstanceCtrl,
-    });
+    $scope.openModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'backupModal.html',
+        controller: ModalInstanceCtrl,
+      });
 
-    modalInstance.result.then(sendEmail);
-  };
+      modalInstance.result.then(sendEmail);
+    };
 
-  var sendEmail = function(email) {
-    var body = _getEncryptedWallet();
-    var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id;
-    var href = 'mailto:' + email + '?'
-     + 'subject=[Copay Backup] ' + subject + '&'
-     + 'body=' + body;
+    $scope.deleteWallet = function() {
+      var w=$rootScope.wallet;
+      w.disconnect();
+      walletFactory.remove(w.id, function() {
+        controllerUtils.logout();
+      });
+    };
 
-    if (window.cshell) {
-      return window.cshell.send('backup:email', href);
-    }
+    var sendEmail = function(email) {
+      var body = _getEncryptedWallet();
+      var subject = ($rootScope.wallet.name ? $rootScope.wallet.name + ' - ' : '') + $rootScope.wallet.id;
+      var href = 'mailto:' + email + '?' + 'subject=[Copay Backup] ' + subject + '&' + 'body=' + body;
 
-    var newWin = $window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
+      if (window.cshell) {
+        return window.cshell.send('backup:email', href);
+      }
 
-    if (newWin) {
-      $timeout(function() {
-        newWin.close();
-      }, 1000);
-    }
-  };
-});
+      var newWin = $window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
 
-var ModalInstanceCtrl = function ($scope, $modalInstance) {
+      if (newWin) {
+        $timeout(function() {
+          newWin.close();
+        }, 1000);
+      }
+    };
+  });
 
-  $scope.submit = function (form) {
+var ModalInstanceCtrl = function($scope, $modalInstance) {
+
+  $scope.submit = function(form) {
     $modalInstance.close($scope.email);
   };
 
-  $scope.cancel = function () {
+  $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 };

@@ -147,6 +147,27 @@ Storage.prototype.getWallets = function() {
   return wallets;
 };
 
+Storage.prototype.deleteWallet = function(walletId) {
+  var walletIds = [];
+  var uniq = {};
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    var split = key.split('::');
+    if (split.length == 2) {
+      var walletId = split[0];
+
+      if (walletId === 'nameFor') continue;
+
+      if (typeof uniq[walletId] === 'undefined') {
+        walletIds.push(walletId);
+        uniq[walletId] = 1;
+      }
+    }
+  }
+ 
+};
+
+
 //obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj) {
   for (var k in obj) {
