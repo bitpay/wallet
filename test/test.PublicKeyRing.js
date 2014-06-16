@@ -5,7 +5,11 @@ var should         = chai.should();
 var bitcore        = bitcore || require('bitcore');
 var Address        = bitcore.Address;
 var buffertools    = bitcore.buffertools;
-var copay          = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var PublicKeyRing  = copay.PublicKeyRing;
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';

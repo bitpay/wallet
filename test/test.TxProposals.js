@@ -12,7 +12,11 @@ var Script = bitcore.Script;
 var Builder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
-var copay = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var fakeStorage = copay.FakeStorage;
 var PrivateKey = copay.PrivateKey || require('../js/models/PrivateKey');
 var TxProposals = copay.TxProposals || require('../js/models/TxProposal');
@@ -126,7 +130,7 @@ describe('TxProposals model', function() {
   var createTx = function(toAddress, amountSatStr, utxos, opts, priv, pkr) {
     opts = opts || {};
 
-    var amountSat = bitcore.bignum(amountSatStr);
+    var amountSat = bitcore.Bignum(amountSatStr);
 
     if (!pkr.isComplete()) {
       throw new Error('publicKeyRing is not complete');
