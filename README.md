@@ -1,7 +1,7 @@
-[![Stories in Ready](https://badge.waffle.io/bitpay/copay.png?label=ready&title=Ready)](https://waffle.io/bitpay/copay)
 # Copay
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.png)](http://travis-ci.org/bitpay/copay)
 [![Coverage Status](https://coveralls.io/repos/bitpay/copay/badge.png?branch=)](https://coveralls.io/r/bitpay/copay?branch=)
+[![Stories in Ready](https://badge.waffle.io/bitpay/copay.png?label=ready&title=Ready)](https://waffle.io/bitpay/copay)
 
 Copay is a secure bitcoin wallet for friends and companies.
 Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.
