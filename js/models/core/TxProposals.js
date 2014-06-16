@@ -24,8 +24,6 @@ function TxProposal(opts) {
 }
 
 TxProposal.prototype.toObj = function() {
-
-console.log('[TxProposals.js.27]',this); //TODO
   var o = JSON.parse(JSON.stringify(this));
   delete o['builder'];
   o.builderObj = this.builder.toObj();
