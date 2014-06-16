@@ -404,23 +404,22 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     payload.isBroadcast = 1;
   }
 
+  if (typeof copayerIds === 'string')
+    copayerIds = [copayerIds];
+
   var sig;
   var payloadStr = JSON.stringify(payload);
   var payloadBuf = new Buffer(payloadStr);
-  //var encPayload = this._encrypt(payloadStr);
-  if (Array.isArray(copayerIds)) {
-    var l = copayerIds.length;
-    var i = 0;
-    copayerIds.forEach(function(copayerId) {
-      var copayerIdBuf = new Buffer(copayerId, 'hex');
-      var encPayload = self._encrypt(copayerIdBuf, payloadBuf);
-      self._sendToOne(copayerId, encPayload, sig, function () {
-        if (++i === l && typeof cb === 'function') cb();
-      });
+
+  var l = copayerIds.length;
+  var i = 0;
+  copayerIds.forEach(function(copayerId) {
+    var copayerIdBuf = new Buffer(copayerId, 'hex');
+    var encPayload = self._encrypt(copayerIdBuf, payloadBuf);
+    self._sendToOne(copayerId, encPayload, sig, function () {
+      if (++i === l && typeof cb === 'function') cb();
     });
-  }
-  else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, encPayload, sig, cb);
+  });
 };
 
 
