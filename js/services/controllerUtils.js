@@ -1,9 +1,9 @@
 'use strict';
+var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, $timeout, Socket, video) {
     var root = {};
-    var bitcore = require('bitcore');
 
     root.getVideoMutedStatus = function(copayer) {
       var vi = $rootScope.videoInfo[copayer]
@@ -36,12 +36,45 @@ angular.module('copayApp.services')
       root.onError(scope);
       if (msg) $rootScope.$flashMessage = {
         type: 'error',
-        message: msg 
+        message: msg
       };
       $rootScope.$digest();
-    }
+    };
 
-    root.startNetwork = function(w) {
+    root.installStartupHandlers = function(wallet, $scope) {
+      wallet.on('serverError', function(msg) {
+        $rootScope.$flashMessage = {
+          message: 'There was an error connecting to the PeerJS server.' + (msg || 'Check you settings and Internet connection.'),
+          type: 'error',
+        };
+        root.onErrorDigest($scope);
+        $location.path('addresses');
+      });
+      wallet.on('connectionError', function() {
+        var message = "Looks like you are already connected to this wallet, please logout from it and try importing it again.";
+        $rootScope.$flashMessage = {
+          message: message,
+          type: 'error'
+        };
+        root.onErrorDigest($scope);
+      });
+      wallet.on('serverError', function() {
+        $rootScope.$flashMessage = {
+          message: 'The PeerJS server is not responding, please try again',
+          type: 'error'
+        };
+        root.onErrorDigest($scope);
+      });
+      wallet.on('ready', function() {
+        $scope.loading = false;
+      });
+    };
+
+
+    root.startNetwork = function(w, $scope) {
+
+      root.installStartupHandlers(w, $scope);
+
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
           delete $rootScope.videoInfo[peerID];
@@ -77,12 +110,17 @@ angular.module('copayApp.services')
         }
       });
       w.on('txProposalsUpdated', function(dontDigest) {
-        root.updateTxs({onlyPending:true});
-        root.updateBalance(function(){
-          if (!dontDigest) {
-            $rootScope.$digest();
-          }
+        root.updateTxs({
+          onlyPending: true
         });
+        // give sometime to the tx to propagate.
+        $timeout(function() {
+          root.updateBalance(function() {
+            if (!dontDigest) {
+              $rootScope.$digest();
+            }
+          });
+        }, 3000);
       });
       w.on('connectionError', function(msg) {
         root.onErrorDigest(null, msg);
@@ -109,25 +147,33 @@ angular.module('copayApp.services')
       var w = $rootScope.wallet;
       if (!w) return root.onErrorDigest();
 
-
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
-      w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+
+      w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
         if (err) {
           console.error('Error: ' + err.message); //TODO
           root._setCommError();
           return null;
-        }
-        else {
+        } else {
           root._clearCommError();
         }
-        
-        $rootScope.totalBalance = balance;
+
+        var satToUnit = 1 / config.unitToSatoshi;
+        var COIN = bitcore.util.COIN;
+
+        $rootScope.totalBalance = balanceSat * satToUnit;
+        $rootScope.totalBalanceBTC = (balanceSat / COIN).toFixed(4);
+        $rootScope.availableBalance = safeBalanceSat * satToUnit;
+        $rootScope.availableBalanceBTC = (safeBalanceSat / COIN).toFixed(4);
+        var balanceByAddr = {};
+        for (var ii in balanceByAddrSat) {
+          balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
+        }
         $rootScope.balanceByAddr = balanceByAddr;
-        $rootScope.availableBalance = safeBalance;
         root.updateAddressList();
         $rootScope.updatingBalance = false;
-        return cb?cb():null;
+        return cb ? cb() : null;
       });
     };
 
@@ -135,13 +181,16 @@ angular.module('copayApp.services')
       var w = $rootScope.wallet;
       if (!w) return;
       opts = opts || {};
-      
+
+      var satToUnit = 1 / config.unitToSatoshi;
       var myCopayerId = w.getMyCopayerId();
       var pendingForUs = 0;
-      var inT = w.getTxProposals().sort(function(t1, t2) { return t2.createdTs - t1.createdTs });
-      var txs  = [];
+      var inT = w.getTxProposals().sort(function(t1, t2) {
+        return t2.createdTs - t1.createdTs
+      });
+      var txs = [];
 
-      inT.forEach(function(i, index){
+      inT.forEach(function(i, index) {
         if (opts.skip && (index < opts.skip[0] || index >= opts.skip[1])) {
           return txs.push(null);
         }
@@ -150,47 +199,49 @@ angular.module('copayApp.services')
           pendingForUs++;
         }
         if (!i.finallyRejected && !i.sentTs) {
-          i.isPending=1;
+          i.isPending = 1;
         }
         if (!opts.onlyPending || i.isPending) {
-          var tx  = i.builder.build();
+          var tx = i.builder.build();
           var outs = [];
           tx.outs.forEach(function(o) {
             var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
-            if (!w.addressIsOwn(addr, {excludeMain:true})) {
+            if (!w.addressIsOwn(addr, {
+              excludeMain: true
+            })) {
               outs.push({
-                address: addr, 
-                value: bitcore.util.valueToBigInt(o.getValue())/bitcore.util.COIN,
+                address: addr,
+                value: bitcore.util.valueToBigInt(o.getValue()) * satToUnit,
               });
             }
           });
           // extra fields
           i.outs = outs;
-          i.fee = i.builder.feeSat/bitcore.util.COIN;
+          i.fee = i.builder.feeSat * satToUnit;
           i.missingSignatures = tx.countInputMissingSignatures(0);
           txs.push(i);
         }
       });
-      
+
       $rootScope.txs = txs; //.some(function(i) {return i.isPending; } );
       if ($rootScope.pendingTxCount < pendingForUs) {
         $rootScope.txAlertCount = pendingForUs;
       }
       $rootScope.pendingTxCount = pendingForUs;
-    };    
+    };
 
     root._setCommError = function(e) {
-      if ($rootScope.insightError<0) 
-        $rootScope.insightError=0;
+      if ($rootScope.insightError < 0)
+        $rootScope.insightError = 0;
       $rootScope.insightError++;
     };
 
 
     root._clearCommError = function(e) {
-      if ($rootScope.insightError>0)
-        $rootScope.insightError=-1;
+      if ($rootScope.insightError > 0)
+        $rootScope.insightError = -1;
       else
-        $rootScope.insightError=0;
+        $rootScope.insightError = 0;
     };
 
     root.setSocketHandlers = function() {
@@ -200,16 +251,16 @@ angular.module('copayApp.services')
         Socket.sysOn('reconnect_failed', root._setCommError);
         Socket.sysOn('connect', root._clearCommError);
         Socket.sysOn('reconnect', root._clearCommError);
-        Socket.sysEventsSet=true;
+        Socket.sysEventsSet = true;
       }
       if (!$rootScope.wallet) return;
 
-      var currentAddrs=  Socket.getListeners();
+      var currentAddrs = Socket.getListeners();
       var addrs = $rootScope.wallet.getAddressesStr();
-      
-      var newAddrs=[];
-      for(var i in addrs){
-        var a=addrs[i];
+
+      var newAddrs = [];
+      for (var i in addrs) {
+        var a = addrs[i];
         if (!currentAddrs[a])
           newAddrs.push(a);
       }
@@ -219,7 +270,7 @@ angular.module('copayApp.services')
       newAddrs.forEach(function(addr) {
         Socket.on(addr, function(txid) {
           $rootScope.receivedFund = [txid, addr];
-          root.updateBalance(function(){
+          root.updateBalance(function() {
             $rootScope.$digest();
           });
         });

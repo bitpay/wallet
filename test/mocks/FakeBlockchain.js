@@ -14,7 +14,7 @@ FakeBlockchain.prototype.getTransactions = function(addresses, cb) {
 
 FakeBlockchain.prototype.fixUnspent = function(u) {
   this.u = u;
-}
+};
 
 FakeBlockchain.prototype.getUnspent = function(addresses, cb) {
   if (!addresses || !addresses.length) return cb(null, []);

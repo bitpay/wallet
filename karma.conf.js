@@ -43,10 +43,10 @@ module.exports = function(config) {
       'lib/chai/chai.js',
       'test/lib/chai-should.js',
       'test/lib/chai-expect.js',
+      'test/mocks/FakeWallet.js',
       
       //Mocha stuff
       'test/mocha.conf.js',
-
 
       //App-specific Code
       'js/app.js',

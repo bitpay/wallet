@@ -183,34 +183,35 @@ Insight.prototype._request = function(options, callback) {
     request.timeout = 5000;
     request.ontimeout = function() {
       setTimeout(function() {
-        return self._request(options,callback);
+        return self._request(options, callback);
       }, self.retryDelay);
       return callback(new Error('Insight request timeout'));
     };
 
     request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        if (request.status === 200 || request.status === 304) {
-          try {
-            var ret = JSON.parse(request.responseText);
-            return callback(null, ret);
-          } catch (e) {
-            return callback(new Error('CRITICAL: Wrong response from insight'));
-          }
-        } 
-        // User error
-        else if (request.status >= 400 && request.status < 499) {
-            return callback(new Error('CRITICAL: Bad request to insight. Probably wrong transaction to broadcast?.'));
+      if (request.readyState !== 4) return;
+      var ret, errTxt, e;
+
+      if (request.status === 200 || request.status === 304) {
+        try {
+          ret = JSON.parse(request.responseText);
+        } catch (e2) {
+          errTxt = 'CRITICAL:  Wrong response from insight' + e2;
         }
-        else {
-          var err= 'Error code: ' + request.status + ' - Status: ' + request.statusText
-            + ' - Description: ' + request.responseText;
-          setTimeout(function() {
-            return self._request(options,callback);
-          }, self.retryDelay);
-          return callback(new Error(err));
-        }
+      } else if (request.status >= 400 && request.status < 499) {
+        errTxt = 'CRITICAL: Bad request to insight. Probably wrong transaction to broadcast?.';
+      } else {
+        errTxt = 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText;
+        setTimeout(function() {
+          console.log('### Retrying Insight Request....');
+          return self._request(options, callback);
+        }, self.retryDelay);
       }
+      if (errTxt) {
+        console.log("INSIGHT ERROR:", e);
+        e = new Error(errTxt);
+      }
+      return callback(e, ret);
     };
 
     if (options.method === 'POST') {
@@ -218,9 +219,7 @@ Insight.prototype._request = function(options, callback) {
     }
 
     request.send(options.data || null);
-  } 
-  
-  else {
+  } else {
     var http = require('http');
     var req = http.request(options, function(response) {
       var ret;
