@@ -121,7 +121,6 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL:', data);
 
   var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
-
   var mergeInfo = this.txProposals.merge(inTxp);
   var added = this.addSeenToTxProposals();
 
