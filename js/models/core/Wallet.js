@@ -447,13 +447,14 @@ Wallet.prototype.getTxProposals = function() {
   var ret = [];
   var copayers = this.getRegisteredCopayerIds();
   for (var k in this.txProposals.txps) {
-    var i = this.txProposals.getTxProposal(k, copayers);
-    i.signedByUs = i.signedBy[this.getMyCopayerId()] ? true : false;
-    i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()] ? true : false;
-    if (this.totalCopayers - i.rejectCount < this.requiredCopayers)
-      i.finallyRejected = true;
+    var txp = this.txProposals.getTxProposal(k, copayers);
+    txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
+    txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
+    if (this.totalCopayers - txp.rejectCount < this.requiredCopayers) {
+      txp.finallyRejected = true;
+    }
 
-    ret.push(i);
+    ret.push(txp);
   }
   return ret;
 };
