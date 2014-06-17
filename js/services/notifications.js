@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('notifications', []).
-  factory('$notification', ['$timeout',function($timeout, $rootScope){
+  factory('$notification', ['$timeout',function($timeout){
 
     var notifications = JSON.parse(localStorage.getItem('$notifications')) || [],
         queue = [];
@@ -197,9 +197,7 @@ angular.module('notifications', []).
       clear: function(){
         notifications = [];
         this.save();
-      },
-
-      init: function() {}
+      }
 
     };
   }]).
