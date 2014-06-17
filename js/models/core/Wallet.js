@@ -120,17 +120,10 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   this.log('RECV TXPROPOSAL:', data);
 
   var recipients;
-  var inTxp = TxProposals.fromObj(data.txProposals);
-  var ids = inTxp.getNtxids();
+  var inTxp = TxProposal.fromObj(data.txProposal);
 
-  if (ids.length > 1) {
-    this.emit('badMessage', senderId);
-    this.log('Received BAD TxProposal messsage FROM:', senderId); //TODO
-    return;
-  }
-
-  var newId = ids[0];
-  var mergeInfo = this.txProposals.merge(inTxp, true);
+  var newId = inTxp.getID();
+  var mergeInfo = this.txProposals.merge(inTxp);
   var addSeen = this.addSeenToTxProposals();
   if (mergeInfo.hasChanged || addSeen) {
     this.log('### BROADCASTING txProposals. ');
