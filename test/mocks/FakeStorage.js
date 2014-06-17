@@ -1,4 +1,9 @@
 var FakeStorage = function() {
+  this.reset();
+};
+
+
+FakeStorage.prototype.reset = function(password) {
   this.storage = {};
 };
 
