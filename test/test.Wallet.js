@@ -3,7 +3,11 @@
 var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
-var copay = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var Wallet = require('../js/models/core/Wallet');
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
@@ -77,7 +81,7 @@ describe('Wallet model', function() {
     should.exist(w.privateKey);
     should.exist(w.txProposals);
     should.exist(w.netKey);
-    var b = new Buffer(w.netKey, 'base64');
+    var b = new bitcore.Buffer(w.netKey, 'base64');
     b.toString('hex').length.should.equal(16);
   });
 
@@ -287,6 +291,7 @@ describe('Wallet model', function() {
   });
 
   it('call reconnect after interval', function(done) {
+    this.timeout(10000);
     var w = createW2();
     var testTime = 1000;
     var callCount = 0;
@@ -539,6 +544,7 @@ describe('Wallet model', function() {
     });
   });
   it('should create & sign transaction from received funds', function(done) {
+    this.timeout(10000);
     var w = createW2();
     var pk = w.privateKey;
     w.privateKey = null;

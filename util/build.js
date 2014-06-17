@@ -50,13 +50,18 @@ var createBundle = function(opts) {
   });
   b.require('./version');
 //  b.external('bitcore');
-  b.require('./js/models/core/WalletFactory');
+  b.require('./js/models/core/WalletFactory', {
+    expose: '../js/models/core/WalletFactory'
+  });
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {
     expose: '../js/models/core/Wallet'
   });
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
+  });
+  b.require('./test/mocks/FakeBlockchain', {
+    expose: './mocks/FakeBlockchain'
   });
   b.require('./js/models/core/Wallet', {
     expose: '../js/models/core/Wallet'
@@ -80,6 +85,13 @@ var createBundle = function(opts) {
     expose: '../js/models/core/Passphrase'
   });
 
+  if (opts.dontminify) {
+    //include dev dependencies
+    b.require('sinon');
+    b.require('blanket');
+    b.require('soop');
+  }
+
   if (!opts.dontminify) {
     b.transform({
       global: true
@@ -96,7 +108,7 @@ if (require.main === module) {
   var program = require('commander');
   program
     .version('0.0.1')
-    .option('-d, --dontminify', 'Don\'t minify the code.')
+    .option('-d, --dontminify', 'Development. Don\'t minify the code.')
     .option('-o, --stdout', 'Specify output as stdout')
     .parse(process.argv);
 

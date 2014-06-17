@@ -87,3 +87,24 @@ describe("Unit: controllerUtils", function() {
 
 
 });
+
+
+describe("Unit: Backup Service", function() {
+  var sinon = require('sinon');
+  beforeEach(angular.mock.module('copayApp.services'));
+  it('should contain a backup service', inject(function(backupService) {
+    expect(backupService).not.to.equal(null);
+  }));
+  it('should backup in file', inject(function(backupService) {
+    var mock = sinon.mock(window);
+    var expectation = mock.expects('saveAs');
+    backupService.download(new FakeWallet());
+    expectation.once();
+  }));
+  it('should backup by email', inject(function(backupService) {
+    var mock = sinon.mock(window);
+    var expectation = mock.expects('open');
+    backupService.sendEmail('fake@test.com', new FakeWallet());
+    expectation.once();
+  }));
+});

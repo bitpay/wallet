@@ -7,8 +7,10 @@ if (typeof process === 'undefined' || !process.version) {
   var copay = copay || require('../copay');
   var LocalEncrypted = copay.StorageLocalEncrypted;
 
+  var fakeWallet = 'fake-wallet-id';
+  var timeStamp = Date.now();
+
   describe('Storage/LocalEncrypted model', function() {
-    var wid = 'fake-wallet-id';
     var s = new LocalEncrypted();
     s._setPassphrase('mysupercoolpassword');
 
@@ -18,14 +20,19 @@ if (typeof process === 'undefined' || !process.version) {
     });
     it('should fail when encrypting without a password', function() {
       var s = new LocalEncrypted();
-      (function(){s.set(wid, 'x', 1);}).should.throw();
+      (function(){
+        s.set(fakeWallet, timeStamp, 1);
+        localStorage.removeItem(fakeWallet +'::'+ timeStamp);
+      }).should.throw();
     });
     it('should be able to encrypt and decrypt', function() {
-      s._write('key', 'value');
-      s._read('key').should.equal('value');
+      s._write(fakeWallet+timeStamp, 'value');
+      s._read(fakeWallet+timeStamp).should.equal('value');
+      localStorage.removeItem(fakeWallet+timeStamp);
     });
     it('should be able to set a value', function() {
-      s.set(wid, 'x', 1);
+      s.set(fakeWallet, timeStamp, 1);
+      localStorage.removeItem(fakeWallet +'::'+ timeStamp);
     });
     var getSetData = [
       1,1000,-15, -1000,
@@ -40,22 +47,24 @@ if (typeof process === 'undefined' || !process.version) {
     ];
     getSetData.forEach(function(obj) {
       it('should be able to set a value and get it for '+JSON.stringify(obj), function() {
-        s.set(wid, 'x', obj);
-        var obj2 = s.get(wid, 'x');
+        s.set(fakeWallet, timeStamp, obj);
+        var obj2 = s.get(fakeWallet, timeStamp);
         JSON.stringify(obj2).should.equal(JSON.stringify(obj));
+        localStorage.removeItem(fakeWallet +'::'+ timeStamp);
       });
     });
 
     describe('#export', function() {
       it('should export the encrypted wallet', function() {
-        localStorage.clear();
         var storage = new LocalEncrypted({password: 'password'});
-        storage.set('walletId', 'test', 'testval');
+        storage.set(fakeWallet, timeStamp, 'testval');
         var obj = {test:'testval'};
         var encrypted = storage.export(obj);
         encrypted.length.should.be.greaterThan(10);
+        localStorage.removeItem(fakeWallet +'::'+ timeStamp);
         //encrypted.slice(0,6).should.equal("53616c");
       });
     });
+
   });
 }

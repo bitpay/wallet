@@ -5,6 +5,7 @@ var FakeWallet = function() {
   this.balanceByAddr = {
     '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000
   };
+  this.name = 'myTESTwullet';
 };
 
 FakeWallet.prototype.set = function(balance, safeBalance, balanceByAddr) {
