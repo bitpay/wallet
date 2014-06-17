@@ -1,6 +1,8 @@
 'use strict';
 
-var BackupService = function() {};
+var BackupService = function($notification) {
+  this.notifications = $notification;
+};
 
 BackupService.prototype.getName = function(wallet) {
   return (wallet.name ? (wallet.name+'-') : '') + wallet.id;
@@ -11,6 +13,7 @@ BackupService.prototype.download = function(wallet) {
   var timestamp = +(new Date());
   var walletName = this.getName(wallet);
   var filename = walletName + '-' + timestamp + '-keybackup.json.aes';
+  this.notifications.success('Backup created', 'Encrypted backup file saved.');
   var blob = new Blob([ew], {
     type: 'text/plain;charset=utf-8'
   });
@@ -44,4 +47,4 @@ BackupService.prototype.sendEmail = function(email, wallet) {
   }
 };
 
-angular.module('copayApp.services').value('backupService', new BackupService());
+angular.module('copayApp.services').service('backupService', BackupService);
