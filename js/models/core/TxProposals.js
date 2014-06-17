@@ -46,6 +46,68 @@ TxProposal.getSentTs = function() {
   return this.sentTs;
 };
 
+TxProposal.prototype.mergeBuilder = function(other) {
+
+  var v0 = this.builder;
+  var v1 = other.builder;
+
+  // TODO: enhance this
+  var before = JSON.stringify(v0.toObj());
+  v0.merge(v1);
+  var after = JSON.stringify(v0.toObj());
+  if (after !== before) hasChanged++;
+};
+
+TxProposal.prototype.mergeMetadata = function(v1) {
+
+  var events = [];
+  var v0 = this;
+  Object.keys(v1.seenBy).forEach(function(k) {
+    if (!v0.seenBy[k]) {
+      v0.seenBy[k] = v1.seenBy[k];
+      events.push({
+        type: 'seen',
+        cId: k,
+        txId: hash
+      });
+    }
+  });
+
+  Object.keys(v1.signedBy).forEach(function(k) {
+    if (!v0.signedBy[k]) {
+      v0.signedBy[k] = v1.signedBy[k];
+      events.push({
+        type: 'signed',
+        cId: k,
+        txId: hash
+      });
+    }
+  });
+
+  Object.keys(v1.rejectedBy).forEach(function(k) {
+    if (!v0.rejectedBy[k]) {
+      v0.rejectedBy[k] = v1.rejectedBy[k];
+      events.push({
+        type: 'rejected',
+        cId: k,
+        txId: hash
+      });
+    }
+  });
+
+  if (!v0.sentTxid && v1.sentTxid) {
+    v0.sentTs = v1.sentTs;
+    v0.sentTxid = v1.sentTxid;
+    events.push({
+      type: 'broadcast',
+      txId: hash
+    });
+  }
+
+  return events;
+
+};
+
 module.exports = require('soop')(TxProposal);
 
 
@@ -103,7 +165,11 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
   for (var hash in theirTxps) {
     if (!myTxps[hash]) {
       ready[hash] = theirTxps[hash]; // only in theirs;
-      events.push({type: 'new', cid: theirTxps[hash].creator, tx: hash});
+      events.push({
+        type: 'new',
+        cid: theirTxps[hash].creator,
+        tx: hash
+      });
       fromTheirs++;
     } else {
       toMerge[hash] = theirTxps[hash]; // need Merging
@@ -132,42 +198,14 @@ TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
 
 // TODO add signatures.
 TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
-
   var toMerge = mergeInfo.toMerge;
-  var hasChanged = 0;
   var events = [];
 
   Object.keys(toMerge).forEach(function(hash) {
     var v0 = myTxps[hash];
     var v1 = toMerge[hash];
-
-    Object.keys(v1.seenBy).forEach(function(k) {
-      if (!v0.seenBy[k]) {
-        v0.seenBy[k] = v1.seenBy[k];
-        events.push({type: 'seen', cId: k, txId: hash});
-      }
-    });
-
-    Object.keys(v1.signedBy).forEach(function(k) {
-      if (!v0.signedBy[k]) {
-        v0.signedBy[k] = v1.signedBy[k];
-        events.push({type: 'signed', cId: k, txId: hash});
-      }
-    });
-
-    Object.keys(v1.rejectedBy).forEach(function(k) {
-      if (!v0.rejectedBy[k]) {
-        v0.rejectedBy[k] = v1.rejectedBy[k];
-        events.push({type: 'rejected', cId: k, txId: hash});
-      }
-    });
-
-    if (!v0.sentTxid && v1.sentTxid) {
-      v0.sentTs = v1.sentTs;
-      v0.sentTxid = v1.sentTxid;
-      events.push({type: 'broadcast', txId: hash});
-    }
-
+    var newEvents = v0.mergeMetadata(v1);
+    events.concat(newEvents);
   });
 
   return {
@@ -179,18 +217,36 @@ TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
 
 TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
   var toMerge = mergeInfo.toMerge;
-  var hasChanged = 0;
 
   for (var hash in toMerge) {
-    var v0 = myTxps[hash].builder;
-    var v1 = toMerge[hash].builder;
+    var v0 = myTxps[hash];
+    var v1 = myTxps[hash];
 
-    // TODO: enhance this
-    var before = JSON.stringify(v0.toObj());
-    v0.merge(v1);
-    var after = JSON.stringify(v0.toObj());
-    if (after !== before) hasChanged++;
+    v0.mergeBuilder(v1);
   }
+
+};
+
+TxProposals.prototype.merge = function(t) {
+  if (this.network.name !== t.network.name)
+    throw new Error('network mismatch in:', t);
+
+  var myTxps = this.txps;
+  var theirTxps = t.txps;
+
+  var mergeInfo = this._startMerge(myTxps, theirTxps);
+  var result = this._mergeMetadata(myTxps, theirTxps, mergeInfo);
+  result.hasChanged += this._mergeBuilder(myTxps, theirTxps, mergeInfo);
+
+  Object.keys(mergeInfo.toMerge).forEach(function(hash) {
+    mergeInfo.ready[hash] = myTxps[hash];
+  });
+
+  mergeInfo.stats.hasChanged = result.hasChanged;
+  mergeInfo.stats.events = result.events;
+
+  this.txps = mergeInfo.ready;
+  return mergeInfo.stats;
 };
 
 TxProposals.prototype.add = function(data) {
@@ -259,26 +315,5 @@ TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   return ret;
 };
 
-TxProposals.prototype.merge = function(t) {
-  if (this.network.name !== t.network.name)
-    throw new Error('network mismatch in:', t);
-
-  var myTxps = this.txps;
-  var theirTxps = t.txps;
-
-  var mergeInfo = this._startMerge(myTxps, theirTxps);
-  var result = this._mergeMetadata(myTxps, theirTxps, mergeInfo);
-  result.hasChanged += this._mergeBuilder(myTxps, theirTxps, mergeInfo);
-
-  Object.keys(mergeInfo.toMerge).forEach(function(hash) {
-    mergeInfo.ready[hash] = myTxps[hash];
-  });
-
-  mergeInfo.stats.hasChanged = result.hasChanged;
-  mergeInfo.stats.events = result.events;
-
-  this.txps = mergeInfo.ready;
-  return mergeInfo.stats;
-};
 
 module.exports = require('soop')(TxProposals);
