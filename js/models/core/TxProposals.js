@@ -51,27 +51,38 @@ TxProposal.getSentTs = function() {
   return this.sentTs;
 };
 
-TxProposal.prototype.mergeBuilder = function(other) {
-  var v0 = this.builder;
-  var v1 = other.builder;
+TxProposal.prototype.merge = function(other) {
+  var ret = {};
+  ret.events = this.mergeMetadata(other);
+  ret.hasChanged = this.mergeBuilder(other); // TODO: use this?
 
-  // TODO: enhance this
-  var before = JSON.stringify(v0.toObj());
-  v0.merge(v1);
-  var after = JSON.stringify(v0.toObj());
-  if (after !== before) hasChanged++;
+  return ret;
+};
+
+TxProposal.prototype.mergeBuilder = function(other) {
+  var b0 = this.builder;
+  var b1 = other.builder;
+
+  // TODO: improve this comparison
+  var before = JSON.stringify(b0.toObj());
+  b0.merge(b1);
+  var after = JSON.stringify(b0.toObj());
+  return after !== before;
 };
 
 TxProposal.prototype.mergeMetadata = function(v1) {
   var events = [];
   var v0 = this;
+
+  var ntxid = this.getID();
+
   Object.keys(v1.seenBy).forEach(function(k) {
     if (!v0.seenBy[k]) {
       v0.seenBy[k] = v1.seenBy[k];
       events.push({
         type: 'seen',
         cId: k,
-        txId: hash
+        txId: ntxid
       });
     }
   });
@@ -82,7 +93,7 @@ TxProposal.prototype.mergeMetadata = function(v1) {
       events.push({
         type: 'signed',
         cId: k,
-        txId: hash
+        txId: ntxid
       });
     }
   });
@@ -93,7 +104,7 @@ TxProposal.prototype.mergeMetadata = function(v1) {
       events.push({
         type: 'rejected',
         cId: k,
-        txId: hash
+        txId: ntxid
       });
     }
   });
@@ -103,7 +114,7 @@ TxProposal.prototype.mergeMetadata = function(v1) {
     v0.sentTxid = v1.sentTxid;
     events.push({
       type: 'broadcast',
-      txId: hash
+      txId: ntxid
     });
   }
 
@@ -157,99 +168,39 @@ TxProposals.prototype.toObj = function(onlyThisNtxid) {
   };
 };
 
-TxProposals.prototype._startMerge = function(myTxps, theirTxps) {
-  var fromUs = 0,
-    fromTheirs = 0,
-    merged = 0;
-  var toMerge = {},
-    ready = {},
-    events = [];
-
-  for (var hash in theirTxps) {
-    if (!myTxps[hash]) {
-      ready[hash] = theirTxps[hash]; // only in theirs;
-      events.push({
-        type: 'new',
-        cid: theirTxps[hash].creator,
-        tx: hash
-      });
-      fromTheirs++;
-    } else {
-      toMerge[hash] = theirTxps[hash]; // need Merging
-      merged++;
-    }
-  }
-
-  for (var hash in myTxps) {
-    if (!toMerge[hash]) {
-      ready[hash] = myTxps[hash]; // only in myTxps;
-      fromUs++;
-    }
-  }
-
+TxProposals.prototype._startMerge = function(inTxp) {
   return {
-    stats: {
-      fromUs: fromUs,
-      fromTheirs: fromTheirs,
-      merged: merged,
-    },
-    ready: ready,
-    toMerge: toMerge,
     events: events
   };
 };
 
-// TODO add signatures.
-TxProposals.prototype._mergeMetadata = function(myTxps, theirTxps, mergeInfo) {
-  var toMerge = mergeInfo.toMerge;
-  var events = [];
-
-  Object.keys(toMerge).forEach(function(hash) {
-    var v0 = myTxps[hash];
-    var v1 = toMerge[hash];
-    var newEvents = v0.mergeMetadata(v1);
-    events.concat(newEvents);
-  });
-
-  return {
-    events: events.concat(mergeInfo.events),
-    hasChanged: events.length
-  };
-};
-
-
 TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
   var toMerge = mergeInfo.toMerge;
 
-  for (var hash in toMerge) {
-    var v0 = myTxps[hash];
-    var v1 = myTxps[hash];
-
-    v0.mergeBuilder(v1);
-  }
+  for (var ntxid in toMerge) {}
 
 };
 
-TxProposals.prototype.merge = function(t) {
-  if (this.network.name !== t.network.name)
-    throw new Error('network mismatch in:', t);
-
+TxProposals.prototype.merge = function(inTxp) {
   var myTxps = this.txps;
-  var theirTxps = t.txps;
 
-  var mergeInfo = this._startMerge(myTxps, theirTxps);
-  var result = this._mergeMetadata(myTxps, theirTxps, mergeInfo);
-  result.hasChanged += this._mergeBuilder(myTxps, theirTxps, mergeInfo);
+  var ntxid = inTxp.getID();
+  var ret;
 
-  Object.keys(mergeInfo.toMerge).forEach(function(hash) {
-    mergeInfo.ready[hash] = myTxps[hash];
-  });
-
-  mergeInfo.stats.hasChanged = result.hasChanged;
-  mergeInfo.stats.events = result.events;
-
-  this.txps = mergeInfo.ready;
-  return mergeInfo.stats;
+  if (myTxps[ntxid]) {
+    var v0 = myTxps[ntxid];
+    var v1 = inTxp;
+    ret = v0.merge(v1);
+  } else {
+    ret.events = {};
+    ret.hasChanged = true;
+    ret.events.push({
+      type: 'new',
+      cid: inTxp.creator,
+      tx: ntxid
+    });
+  }
+  return ret;
 };
 
 TxProposals.prototype.add = function(data) {
