@@ -116,24 +116,22 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
+Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL:', data);
 
-  var recipients;
-  var inTxp = TxProposal.fromObj(data.txProposal);
+  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
 
-  var newId = inTxp.getID();
   var mergeInfo = this.txProposals.merge(inTxp);
-  var addSeen = this.addSeenToTxProposals();
-  if (mergeInfo.hasChanged || addSeen) {
+  var added = this.addSeenToTxProposals();
+
+  if (mergeInfo.hasChanged || added) {
     this.log('### BROADCASTING txProposals. ');
-    recipients = null;
-    this.sendTxProposals(recipients, newId);
+    this.sendTxProposals(null, inTxp.getID());
   }
-  if (data.lastInBatch) {
-    this.emit('txProposalsUpdated');
-    this.store();
-  }
+
+  this.emit('txProposalsUpdated');
+  this.store();
+
   for (var i = 0; i < mergeInfo.events.length; i++) {
     this.emit('txProposalEvent', mergeInfo.events[i]);
   }
@@ -160,8 +158,8 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
       break;
-    case 'txProposals':
-      this._handleTxProposals(senderId, data, isInbound);
+    case 'txProposal':
+      this._handleTxProposal(senderId, data, isInbound);
       break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
@@ -357,23 +355,14 @@ Wallet.prototype.toEncryptedObj = function() {
   return this.storage.export(walletObj);
 };
 
-Wallet.prototype.sendTxProposals = function(recipients, ntxid) {
+Wallet.prototype.sendTxProposal = function(recipients, ntxid) {
   this.log('### SENDING txProposals TO:', recipients || 'All', this.txProposals);
-
-  var toSend = ntxid ? [ntxid] : this.txProposals.getNtxids();
-
-  var last = toSend[toSend];
-
-  for (var i in toSend) {
-    var id = toSend[i];
-    var lastInBatch = (i == toSend.length - 1);
-    this.network.send(recipients, {
-      type: 'txProposals',
-      txProposals: this.txProposals.toObj(id),
-      walletId: this.id,
-      lastInBatch: lastInBatch,
-    });
-  }
+  var id = toSend[i];
+  this.network.send(recipients, {
+    type: 'txProposal',
+    txProposals: this.txProposals.toObj(id),
+    walletId: this.id,
+  });
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
