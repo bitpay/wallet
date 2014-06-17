@@ -1,4 +1,3 @@
-
 // core
 module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
 module.exports.TxProposals = require('./js/models/core/TxProposals');
@@ -14,11 +13,6 @@ var Insight = module.exports.Insight = require('./js/models/blockchain/Insight')
 var StorageLocalPlain = module.exports.StorageLocalPlain = require('./js/models/storage/LocalPlain');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js/models/storage/LocalEncrypted');
 
-var WalletFactory = require('soop').load('./js/models/core/WalletFactory',{
-  Network: WebRTC,
-  Blockchain: Insight,
-  Storage: StorageLocalEncrypted,
-});
-module.exports.WalletFactory = WalletFactory;
+module.exports.WalletFactory = require('./js/models/core/WalletFactory');
 module.exports.version = require('./version');
 module.exports.API = require('./API');

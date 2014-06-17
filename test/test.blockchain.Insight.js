@@ -3,7 +3,11 @@
 var chai           = chai || require('chai');
 var should         = chai.should();
 var bitcore        = bitcore || require('bitcore');
-var copay          = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var Insight        = copay.Insight || require('../js/models/blockchain/Insight');
 
 var ID = '933bf321393459b7';

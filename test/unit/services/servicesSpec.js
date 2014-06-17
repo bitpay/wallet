@@ -90,7 +90,7 @@ describe("Unit: controllerUtils", function() {
 
 
 describe("Unit: Backup Service", function() {
-  var sinon = require('../sinon');
+  var sinon = require('sinon');
   beforeEach(angular.mock.module('copayApp.services'));
   it('should contain a backup service', inject(function(backupService) {
     expect(backupService).not.to.equal(null);

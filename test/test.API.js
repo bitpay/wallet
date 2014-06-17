@@ -2,7 +2,11 @@
 
 var chai           = chai || require('chai');
 var should         = chai.should();
-var copay          = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var API            = API || copay.API;
 var Storage        = Storage || require('../test/mocks/FakeStorage');
 
