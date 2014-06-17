@@ -7,11 +7,15 @@ var Transaction        = bitcore.Transaction;
 var buffertools    = bitcore.buffertools;
 var WalletKey    = bitcore.WalletKey;
 var Key    = bitcore.Key;
-var bignum         = bitcore.bignum;
+var bignum         = bitcore.Bignum;
 var networks         = bitcore.networks;
 var Address         = bitcore.Address;
 var BitcorePrivateKey         = bitcore.PrivateKey;
-var copay          = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var PrivateKey     = copay.PrivateKey || require('../js/models/core/PrivateKey');
 
 var config = {

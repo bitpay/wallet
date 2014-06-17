@@ -10,13 +10,17 @@ var FakeBlockchain = require('./mocks/FakeBlockchain');
 var FakeStorage = require('./mocks/FakeStorage');
 var WalletFactory = require('../js/models/core/WalletFactory');
 
-describe.only('WalletFactory model', function() {
+describe('WalletFactory model', function() {
   var config = {
+    Network: FakeNetwork,
+    Blockchain: FakeBlockchain,
+    Storage: FakeStorage,
     wallet: {
       requiredCopayers: 3,
       totalCopayers: 5,
       spendUnconfirmed: 1,
       reconnectDelay: 100,
+
     },
     blockchain: {
       host: 'test.insight.is',
@@ -90,6 +94,9 @@ describe.only('WalletFactory model', function() {
 
   it('BIP32 length problem', function() {
     var sconfig = {
+      Network: FakeNetwork,
+      Blockchain: FakeBlockchain,
+      Storage: FakeStorage,
       "networkName": "testnet",
       "network": {
         "key": "g23ihfh82h35rf",

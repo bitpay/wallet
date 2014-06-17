@@ -26,13 +26,13 @@ var copayApp = window.copayApp = angular.module('copayApp',[
   'monospaced.qrcode',
   'notifications',
   'copayApp.filters',
+  'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
-  'copayApp.services',
 ]);
 
 angular.module('copayApp.filters', []);
+angular.module('copayApp.services', []);
 angular.module('copayApp.controllers', []);
 angular.module('copayApp.directives', []);
-angular.module('copayApp.services', []);
 
