@@ -7,7 +7,7 @@ if (typeof process === 'undefined' || !process.version) {
   var copay = copay || require('../copay');
   var LocalPlain = copay.StorageLocalPlain;
 
-  describe.skip('Storage/LocalPlain model', function() {
+  describe('Storage/LocalPlain model', function() {
 
     it('should create an instance', function() {
       var s = new LocalPlain();
@@ -16,7 +16,9 @@ if (typeof process === 'undefined' || !process.version) {
 
     describe('#setFromObj', function() {
       it('should set keys from an object', function() {
-        localStorage.clear();
+        var fakeWallet = 'fake-wallet-id';
+        var timeStamp = Date.now();
+
         var obj = {
           test: 'testval',
           opts: {
@@ -24,8 +26,13 @@ if (typeof process === 'undefined' || !process.version) {
           }
         };
         var storage = new LocalPlain();
-        storage.setFromObj('walletId', obj);
-        storage.get('walletId', 'test').should.equal('testval');
+        storage.setFromObj(fakeWallet+timeStamp, obj);
+        storage.get(fakeWallet+timeStamp, 'test').should.equal('testval');
+
+        // Clean data used in localstorage
+        localStorage.removeItem(fakeWallet+timeStamp+'::test');
+        localStorage.removeItem(fakeWallet+timeStamp+'::opts');
+        localStorage.removeItem('nameFor::'+fakeWallet+timeStamp);
       });
     });
   });
