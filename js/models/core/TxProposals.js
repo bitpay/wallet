@@ -168,19 +168,6 @@ TxProposals.prototype.toObj = function(onlyThisNtxid) {
   };
 };
 
-TxProposals.prototype._startMerge = function(inTxp) {
-  return {
-    events: events
-  };
-};
-
-TxProposals.prototype._mergeBuilder = function(myTxps, theirTxps, mergeInfo) {
-  var toMerge = mergeInfo.toMerge;
-
-  for (var ntxid in toMerge) {}
-
-};
-
 TxProposals.prototype.merge = function(inTxp) {
   var myTxps = this.txps;
 
