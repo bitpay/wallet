@@ -15,10 +15,6 @@ var PublicKeyRing  = copay.PublicKeyRing;
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';
 
 
-var config = {
-  networkName:'livenet',
-};
-
 var createW = function (networkName) {
   var config = {
     networkName: networkName || 'livenet',
@@ -41,6 +37,10 @@ var createW = function (networkName) {
 describe('PublicKeyRing model', function() {
 
   it('should create an instance (livenet)', function () {
+    var config = {
+      networkName:'livenet',
+    };
+
     var w = new PublicKeyRing({
       networkName: config.networkName
     });
@@ -54,6 +54,9 @@ describe('PublicKeyRing model', function() {
   });
 
   it('should fail to generate shared pub keys wo extended key', function () {
+    var config = {
+      networkName:'livenet',
+    };
     var w2 = new PublicKeyRing(config);
     should.exist(w2);
 
@@ -239,6 +242,9 @@ describe('PublicKeyRing model', function() {
 
 
   it('#merge pubkey tests', function () {
+    var config = {
+      networkName:'livenet',
+    };
     var w = new PublicKeyRing(config);
     should.exist(w);
     var copayers = [];
@@ -268,6 +274,9 @@ describe('PublicKeyRing model', function() {
   });
 
   it('#merge pubkey tests (case 2)', function () {
+    var config = {
+      networkName:'livenet',
+    };
     var w = new PublicKeyRing(config);
     should.exist(w);
 
@@ -285,6 +294,9 @@ describe('PublicKeyRing model', function() {
 
 
   it('#merge with nickname', function () {
+    var config = {
+      networkName:'livenet',
+    };
     var w = new PublicKeyRing(config);
     should.exist(w);
     for(var i=0; i<3; i++) {
@@ -319,6 +331,9 @@ describe('PublicKeyRing model', function() {
 
 
   it('#toObj #fromObj with nickname', function () {
+    var config = {
+      networkName:'livenet',
+    };
     var w = new PublicKeyRing(config);
     should.exist(w);
     for(var i=0; i<3; i++) {
