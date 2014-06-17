@@ -7,20 +7,24 @@ var Transaction = bitcore.Transaction;
 var buffertools = bitcore.buffertools;
 var WalletKey = bitcore.WalletKey;
 var Key = bitcore.Key;
-var bignum = bitcore.bignum;
+var bignum = bitcore.Bignum;
 var Script = bitcore.Script;
 var Builder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
-var copay = copay || require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 var fakeStorage = copay.FakeStorage;
 var PrivateKey = copay.PrivateKey || require('../js/models/PrivateKey');
 var TxProposals = copay.TxProposals || require('../js/models/TxProposal');
+var is_browser = (typeof process == 'undefined' || typeof process.versions === 'undefined')
 var PublicKeyRing = is_browser ? copay.PublicKeyRing :
   require('soop').load('../js/models/core/PublicKeyRing', {
     Storage: fakeStorage
   });
-var is_browser = (typeof process.versions === 'undefined')
 
 var config = {
   networkName: 'testnet',
@@ -102,7 +106,7 @@ describe('TxProposals model', function() {
     tx = b.build();
     tx.isComplete().should.equal(true);
 
-    var s = new Script(new Buffer(unspentTest[0].scriptPubKey, 'hex'));
+    var s = new Script(new bitcore.Buffer(unspentTest[0].scriptPubKey, 'hex'));
 
     tx.verifyInput(0, s, {
       verifyP2SH: true,
@@ -126,7 +130,7 @@ describe('TxProposals model', function() {
   var createTx = function(toAddress, amountSatStr, utxos, opts, priv, pkr) {
     opts = opts || {};
 
-    var amountSat = bitcore.bignum(amountSatStr);
+    var amountSat = bitcore.Bignum(amountSatStr);
 
     if (!pkr.isComplete()) {
       throw new Error('publicKeyRing is not complete');

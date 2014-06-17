@@ -7,16 +7,12 @@ var FakeNetwork = require('./mocks/FakeNetwork');
 var Insight = require('../js/models/blockchain/Insight');
 var FakeStorage = require('./mocks/FakeStorage');
 
-var WalletFactory = typeof copay === 'undefined' ? require('soop').load('../js/models/core/WalletFactory', {
-  Network: FakeNetwork,
-  Blockchain: Insight,
-  Storage: FakeStorage,
-}) : copay.WalletFactory;
-
-var blanket = require("blanket")({
-  "pattern": "/js/"
-});
-
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
+var WalletFactory = require('../js/models/core/WalletFactory');
 
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {
@@ -26,11 +22,15 @@ var addCopayers = function(w) {
 
 describe('WalletFactory model', function() {
   var config = {
+    Network: FakeNetwork,
+    Blockchain: Insight,
+    Storage: FakeStorage,
     wallet: {
       requiredCopayers: 3,
       totalCopayers: 5,
       spendUnconfirmed: 1,
       reconnectDelay: 100,
+
     },
     blockchain: {
       host: 'test.insight.is',
@@ -82,6 +82,9 @@ describe('WalletFactory model', function() {
 
   it('BIP32 length problem', function() {
     var sconfig = {
+      Network: FakeNetwork,
+      Blockchain: Insight,
+      Storage: FakeStorage,
       "networkName": "testnet",
       "network": {
         "key": "g23ihfh82h35rf",
