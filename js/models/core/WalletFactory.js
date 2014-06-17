@@ -19,9 +19,9 @@ function WalletFactory(config, version) {
   var self = this;
   config = config || {};
 
-  this.storage = new Storage(config.storage);
-  this.network = new Network(config.network);
-  this.blockchain = new Blockchain(config.blockchain);
+  this.storage = config.storageObj || new Storage(config.storage);
+  this.network = config.networkObj || new Network(config.network);
+  this.blockchain = config.blockchainObj || new Blockchain(config.blockchain);
 
   this.networkName = config.networkName;
   this.verbose = config.verbose;

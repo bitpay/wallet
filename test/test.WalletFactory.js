@@ -3,28 +3,14 @@
 var chai = chai || require('chai');
 var should = chai.should();
 
+var copay = copay || require('../copay');
+var sinon = require('sinon');
 var FakeNetwork = require('./mocks/FakeNetwork');
-var Insight = require('../js/models/blockchain/Insight');
+var FakeBlockchain = require('./mocks/FakeBlockchain');
 var FakeStorage = require('./mocks/FakeStorage');
+var WalletFactory = require('../js/models/core/WalletFactory');
 
-var WalletFactory = typeof copay === 'undefined' ? require('soop').load('../js/models/core/WalletFactory', {
-  Network: FakeNetwork,
-  Blockchain: Insight,
-  Storage: FakeStorage,
-}) : copay.WalletFactory;
-
-var blanket = require("blanket")({
-  "pattern": "/js/"
-});
-
-
-var addCopayers = function(w) {
-  for (var i = 0; i < 4; i++) {
-    w.publicKeyRing.addCopayer();
-  }
-};
-
-describe('WalletFactory model', function() {
+describe.only('WalletFactory model', function() {
   var config = {
     wallet: {
       requiredCopayers: 3,
@@ -38,12 +24,34 @@ describe('WalletFactory model', function() {
     },
     networkName: 'testnet',
     passphrase: 'test',
+    storageObj: new FakeStorage(),
+    networkObj: new FakeNetwork(),
+    blockchainObj: new FakeBlockchain(),
   };
 
-  it('should create the factory', function() {
-    var wf = new WalletFactory(config);
-    should.exist(wf);
+  beforeEach(function() {
+    config.storageObj.reset();
   });
+
+  it('should create the factory', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    should.exist(wf);
+    wf.networkName.should.equal(config.networkName);
+    wf.walletDefaults.should.deep.equal(config.wallet);
+    wf.version.should.equal('0.0.1');
+  });
+
+  it('should log', function() {
+    var c2 = JSON.parse(JSON.stringify(config));
+    c2.verbose = 1;
+    var wf = new WalletFactory(c2, '0.0.1');
+    var spy = sinon.spy(console, 'log');
+    wf.log('ok');
+    sinon.assert.callCount(spy, 1);
+    spy.getCall(0).args[0].should.equal('ok');
+  });
+
+
   it('#_checkRead should return false', function() {
     var wf = new WalletFactory(config);
     wf._checkRead('dummy').should.equal(false);
@@ -111,7 +119,10 @@ describe('WalletFactory model', function() {
         "port": 3001
       },
       "verbose": 0,
-      "themes": ["default"]
+      "themes": ["default"],
+      storageObj: new FakeStorage(),
+      networkObj: new FakeNetwork(),
+      blockchainObj: new FakeBlockchain(),
     };
     var wf = new WalletFactory(sconfig, '0.0.1');
     var opts = {
@@ -124,6 +135,8 @@ describe('WalletFactory model', function() {
 
   it('should be able to get current wallets', function() {
     var wf = new WalletFactory(config, '0.0.1');
+    var ws = wf.getWallets();
+
     var w = wf.create({
       name: 'test wallet'
     });
