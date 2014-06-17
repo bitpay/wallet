@@ -2,17 +2,22 @@
 
 var imports = require('soop').imports();
 
+var http = require('http');
+var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var async = require('async');
+
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
 var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
 var Builder = bitcore.TransactionBuilder;
-var http = require('http');
-var async = require('async');
-var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
-var copay = copay || require('../../../copay');
 var SecureRandom = bitcore.SecureRandom;
 var Base58Check = bitcore.Base58.base58Check;
+
+var AddressIndex = require('./AddressIndex');
+var PublicKeyRing = require('./PublicKeyRing');
+var TxProposals = require('./TxProposals');
+var PrivateKey = require('./PrivateKey');
 
 function Wallet(opts) {
   var self = this;
@@ -75,7 +80,7 @@ Wallet.prototype.connectToAll = function() {
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
-  var inIndexes = copay.AddressIndex.fromObj(data.indexes);
+  var inIndexes = AddressIndex.fromObj(data.indexes);
   var hasChanged = this.publicKeyRing.indexes.merge(inIndexes);
   if (hasChanged) {
     this.emit('publicKeyRingUpdated');
@@ -86,7 +91,7 @@ Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
-  var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
+  var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
   var hasChanged;
 
@@ -115,7 +120,7 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   this.log('RECV TXPROPOSAL:', data);
 
   var recipients;
-  var inTxp = copay.TxProposals.fromObj(data.txProposals);
+  var inTxp = TxProposals.fromObj(data.txProposals);
   var ids = inTxp.getNtxids();
 
   if (ids.length > 1) {
@@ -341,9 +346,9 @@ Wallet.prototype.toObj = function() {
 
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
-  opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = copay.TxProposals.fromObj(o.txProposals);
-  opts.privateKey = copay.PrivateKey.fromObj(o.privateKey);
+  opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
+  opts.txProposals = TxProposals.fromObj(o.txProposals);
+  opts.privateKey = PrivateKey.fromObj(o.privateKey);
 
   opts.storage = storage;
   opts.network = network;
