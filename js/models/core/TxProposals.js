@@ -22,6 +22,11 @@ function TxProposal(opts) {
   this.comment = opts.comment || null;
 }
 
+TxProposal.prototype.getID = function() {
+  var ntxid = this.builder.build().getNormalizedHash().toString('hex');
+  return ntxid;
+};
+
 TxProposal.prototype.toObj = function() {
   var o = JSON.parse(JSON.stringify(this));
   delete o['builder'];
@@ -47,7 +52,6 @@ TxProposal.getSentTs = function() {
 };
 
 TxProposal.prototype.mergeBuilder = function(other) {
-
   var v0 = this.builder;
   var v1 = other.builder;
 
@@ -59,7 +63,6 @@ TxProposal.prototype.mergeBuilder = function(other) {
 };
 
 TxProposal.prototype.mergeMetadata = function(v1) {
-
   var events = [];
   var v0 = this;
   Object.keys(v1.seenBy).forEach(function(k) {
@@ -250,11 +253,11 @@ TxProposals.prototype.merge = function(t) {
 };
 
 TxProposals.prototype.add = function(data) {
-  var ntxid = data.builder.build().getNormalizedHash().toString('hex');
-  this.txps[ntxid] = new TxProposal(data);
+  var txp = new TxProposal(data);
+  var ntxid = txp.getID();
+  this.txps[ntxid] = txp;
   return ntxid;
 };
-
 
 TxProposals.prototype.setSent = function(ntxid, txid) {
   //sent TxProposals are local an not broadcasted.
