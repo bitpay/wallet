@@ -135,7 +135,6 @@ Storage.prototype.getWalletIds = function() {
 
 Storage.prototype.getWallets = function() {
   var wallets = [];
-  var uniq = {};
   var ids = this.getWalletIds();
 
   for (var i in ids) {
@@ -146,6 +145,23 @@ Storage.prototype.getWallets = function() {
   }
   return wallets;
 };
+
+Storage.prototype.deleteWallet = function(walletId) {
+  var toDelete = {};
+  toDelete['nameFor::' + walletId] = 1;
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    var split = key.split('::');
+    if (split.length == 2 && split[0] === walletId) {
+      toDelete[key] = 1;
+    }
+  }
+  for (var i in toDelete) {
+    this.removeGlobal(i);
+  }
+};
+
 
 //obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('BackupController',
-  function($scope, $rootScope, $location, $window, $timeout, $modal, backupService) {
+  function($scope, $rootScope, $location, $window, $timeout, $modal, backupService, walletFactory, controllerUtils) {
     $scope.title = 'Backup';
 
     $scope.download = function() {
@@ -16,6 +16,14 @@ angular.module('copayApp.controllers').controller('BackupController',
 
       modalInstance.result.then(function(email) {
         backupService.sendEmail(email, $rootScope.wallet);
+      });
+    };
+
+    $scope.deleteWallet = function() {
+      var w = $rootScope.wallet;
+      w.disconnect();
+      walletFactory.delete(w.id, function() {
+        controllerUtils.logout();
       });
     };
 

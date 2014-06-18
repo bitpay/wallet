@@ -1,6 +1,14 @@
 //
 // test/unit/controllers/controllersSpec.js
 //
+
+// Replace saveAs plugin
+saveAsLastCall = null;
+saveAs = function(o) {
+  saveAsLastCall = o;
+};
+
+
 describe("Unit: Controllers", function() {
 
   var scope;
@@ -8,6 +16,47 @@ describe("Unit: Controllers", function() {
   beforeEach(module('notifications'));
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
+
+  var config = {
+    requiredCopayers: 3,
+    totalCopayers: 5,
+    spendUnconfirmed: 1,
+    reconnectDelay: 100,
+    networkName: 'testnet',
+  };
+
+
+
+  describe('Backup Controller', function() {
+    var ctrl;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+
+      $rootScope.wallet = new FakeWallet(config);
+      ctrl = $controller('BackupController', {
+        $scope: scope,
+        $modal: {},
+      });
+    }));
+
+    it('Should have a Backup controller', function() {
+      expect(scope.title).equal('Backup');
+    });
+
+    it('Backup controller #download', function() {
+      scope.wallet.setEnc('1234567');
+      expect(saveAsLastCall).equal(null);
+      scope.download();
+      expect(saveAsLastCall.size).equal(7);
+      expect(saveAsLastCall.type).equal('text/plain;charset=utf-8');
+    });
+
+    it('Backup controller #delete', function() {
+      expect(scope.wallet).not.equal(undefined);
+      scope.deleteWallet();
+      expect(scope.wallet).equal(undefined);
+    });
+  });
 
   describe('Address Controller', function() {
     var addressCtrl;
@@ -55,15 +104,15 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)
-      .respond( [{
-        name: "v100.1.6",
-        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
-        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
-        commit: {
-          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
-          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
-        }
-      }]);
+        .respond([{
+          name: "v100.1.6",
+          zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+          tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+          commit: {
+            sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+            url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+          }
+        }]);
     }));
 
     var rootScope;
@@ -86,32 +135,31 @@ describe("Unit: Controllers", function() {
       $httpBackend.flush();
     });
 
-   it('should hit github for version', function() {
-     $httpBackend.expectGET(GH);
-     scope.$apply();
-     $httpBackend.flush();
-   });
+    it('should hit github for version', function() {
+      $httpBackend.expectGET(GH);
+      scope.$apply();
+      $httpBackend.flush();
+    });
 
-   it('should check version ', function() {
-     $httpBackend.expectGET(GH);
-     scope.$apply();
-     $httpBackend.flush();
-     expect(scope.updateVersion.class).equal('error');
-     expect(scope.updateVersion.version).equal('v100.1.6');
-   });
+    it('should check version ', function() {
+      $httpBackend.expectGET(GH);
+      scope.$apply();
+      $httpBackend.flush();
+      expect(scope.updateVersion.class).equal('error');
+      expect(scope.updateVersion.version).equal('v100.1.6');
+    });
 
-   it('should check blockChainStatus', function() {
-     $httpBackend.expectGET(GH);
-     $httpBackend.flush();
-     rootScope.insightError=1;
-     scope.$apply();
-     expect(rootScope.insightError).equal(1);
-     scope.$apply();
-     expect(rootScope.insightError).equal(1);
-     scope.$apply();
-   });
+    it('should check blockChainStatus', function() {
+      $httpBackend.expectGET(GH);
+      $httpBackend.flush();
+      rootScope.insightError = 1;
+      scope.$apply();
+      expect(rootScope.insightError).equal(1);
+      scope.$apply();
+      expect(rootScope.insightError).equal(1);
+      scope.$apply();
+    });
 
   });
 
 });
-
