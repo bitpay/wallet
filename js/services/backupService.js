@@ -1,7 +1,8 @@
 'use strict';
 
-var BackupService = function($notification) {
-  this.notifications = $notification;
+
+var BackupService = function(notification) {
+  this.notifications = notification;
 };
 
 BackupService.prototype.getName = function(wallet) {

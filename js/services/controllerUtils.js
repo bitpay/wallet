@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, $notification, $timeout, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video) {
     var root = {};
 
     root.getVideoMutedStatus = function(copayer) {
@@ -87,7 +87,7 @@ angular.module('copayApp.services')
         $rootScope.$digest();
       };
 
-      $notification.enableHtml5Mode(); // for chrome: if support, enable it
+      notification.enableHtml5Mode(); // for chrome: if support, enable it
 
       w.on('badMessage', function(peerId) {
         $rootScope.$flashMessage = {
@@ -126,11 +126,11 @@ angular.module('copayApp.services')
         switch (e.type) {
           case 'signed':
             var user = w.publicKeyRing.nicknameForCopayer(e.cId);
-            $notification.info('Transaction Update', 'A transaction was signed by ' + user);
+            notification.info('Transaction Update', 'A transaction was signed by ' + user);
             break;
           case 'rejected':
             var user = w.publicKeyRing.nicknameForCopayer(e.cId);
-            $notification.info('Transaction Update', 'A transaction was rejected by ' + user);
+            notification.info('Transaction Update', 'A transaction was rejected by ' + user);
             break;
         }
       });
