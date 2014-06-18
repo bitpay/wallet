@@ -361,7 +361,7 @@ describe('Wallet model', function() {
 
   it('handle network txProposals correctly', function() {
     var w = createW();
-    var txps = {
+    var txp = {
       'txProposal': {
         "seenBy": {
           "undefined": 1402337282806
@@ -403,7 +403,7 @@ describe('Wallet model', function() {
         }
       }
     };
-    w._handleTxProposal('senderID', txps, true);
+    w._handleTxProposal('senderID', txp, true);
     Object.keys(w.txProposals.txps).length.should.equal(1);
     w.getTxProposals().length.should.equal(1);
   });
@@ -592,9 +592,21 @@ describe('Wallet model', function() {
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
-      w.sendTxProposal.should.throw('Illegal Argument.');
+      w.sendTxProposal.bind(w).should.throw('Illegal Argument.');
       (function() {
-        w.sendTxProposal(ntxid)
+        w.sendTxProposal(ntxid);
+      }).should.not.throw();
+      done();
+    });
+  });
+  it('should send all TxProposal', function(done) {
+    var w = createW2();
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      w.sendAllTxProposals.bind(w).should.not.throw();
+      (function() {
+        w.sendAllTxProposals();
       }).should.not.throw();
       done();
     });

@@ -181,6 +181,7 @@ TxProposals.prototype.merge = function(inTxp) {
     var v1 = inTxp;
     ret = v0.merge(v1);
   } else {
+    this.txps[ntxid] = inTxp;
     ret.hasChanged = true;
     ret.events.push({
       type: 'new',
