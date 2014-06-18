@@ -49,10 +49,13 @@ describe('WalletFactory model', function() {
     var c2 = JSON.parse(JSON.stringify(config));
     c2.verbose = 1;
     var wf = new WalletFactory(c2, '0.0.1');
+    var save_console_log = console.log;
+    console.log = function() {};
     var spy = sinon.spy(console, 'log');
     wf.log('ok');
     sinon.assert.callCount(spy, 1);
     spy.getCall(0).args[0].should.equal('ok');
+    console.log = save_console_log;
   });
 
 
