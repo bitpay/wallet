@@ -71,6 +71,11 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
   var w = this.fromObj(walletObj);
+  var self = this;
+  w.updateIndexes(function(err) {
+    if (err) throw err;
+    self.log('Indexes updated');
+  });
   return w;
 };
 
