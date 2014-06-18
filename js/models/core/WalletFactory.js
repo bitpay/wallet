@@ -160,8 +160,6 @@ WalletFactory.prototype._checkNetwork = function(inNetworkName) {
   }
 };
 
-
-
 WalletFactory.prototype.open = function(walletId, opts) {
   opts = opts || {};
   opts.id = walletId;
