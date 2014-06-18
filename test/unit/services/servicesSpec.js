@@ -61,7 +61,6 @@ describe("Unit: Walletfactory Service", function() {
 
 describe("Unit: controllerUtils", function() {
   beforeEach(angular.mock.module('copayApp.services'));
-  beforeEach(angular.mock.module('notifications'));
 
   it('should updateBalance in bits', inject(function(controllerUtils, $rootScope) {
     expect(controllerUtils.updateBalance).not.to.equal(null);
