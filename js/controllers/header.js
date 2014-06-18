@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeaderController',
-  function($scope, $rootScope, $location, $notification, $http, controllerUtils) {
+  function($scope, $rootScope, $location, notification, $http, controllerUtils) {
     $scope.menu = [
     {
       'title': 'Addresses',
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
         }
         if (currentAddr) {
           //var beep = new Audio('sound/transaction.mp3');
-          $notification.funds('Received fund', currentAddr, receivedFund);
+          notification.funds('Received fund', currentAddr, receivedFund);
           //beep.play();
         }
       }
@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $rootScope.$watch('txAlertCount', function(txAlertCount) {
       if (txAlertCount && txAlertCount > 0) {
-        $notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
+        notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
       }
     });
 
