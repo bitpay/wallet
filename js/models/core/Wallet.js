@@ -125,11 +125,6 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   var mergeInfo = this.txProposals.merge(inTxp);
   var added = this.addSeenToTxProposals();
 
-  if (mergeInfo.hasChanged || added) {
-    this.log('### BROADCASTING txProposals. ');
-    this.sendTxProposal(inTxp.getID());
-  }
-
   this.emit('txProposalsUpdated');
   this.store();
 
