@@ -44,7 +44,7 @@ function Wallet(opts) {
   this.txProposals.walletId = this.id;
   this.network.maxPeers = this.totalCopayers;
   this.registeredPeerIds = [];
-  this.addressBook = opts.addressBook || [];
+  this.addressBook = opts.addressBook || {};
 }
 
 Wallet.parent = EventEmitter;
@@ -141,6 +141,28 @@ Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
   }
 };
 
+Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
+  this.log('RECV ADDRESSBOOK:', data);
+  var rcv = data.addressBook;
+  var hasChange;
+  for(var key in rcv) {
+    if (!this.addressBook[key]) {
+      this.addressBook[key] = rcv[key];
+      hasChange = true;
+    }
+    else {
+      if (rcv[key].createdTs > this.addressBook[key].createdTs) {
+        this.addressBook[key] = rcv[key];
+        hasChange = true;
+      }
+    }
+  }
+  if (hasChange) {
+    this.emit('addressBookUpdated');
+    this.store();
+  }
+};
+
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
   // TODO check message signature
@@ -158,6 +180,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
       this.sendTxProposals(senderId); // send old
+      this.sendAddressBook(senderId);
       break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
@@ -167,6 +190,9 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
+      break;
+    case 'addressbook':
+      this._handleAddressBook(senderId, data, isInbound);
       break;
   }
 };
@@ -418,6 +444,15 @@ Wallet.prototype.sendIndexes = function(recipients) {
   this.network.send(recipients, {
     type: 'indexes',
     indexes: this.publicKeyRing.indexes.toObj(),
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendAddressBook = function(recipients) {
+  this.log('### SENDING addressBook TO:', recipients || 'All', this.addressBook);
+  this.network.send(recipients, {
+    type: 'addressbook',
+    addressBook: this.addressBook,
     walletId: this.id,
   });
 };
@@ -723,24 +758,29 @@ Wallet.prototype.getNetwork = function() {
   return this.network;
 };
 
-Wallet.prototype._checkAddressBook = function(address) {
-  for(var i=0;i<this.addressBook.length; i++) {
-    if (this.addressBook[i].address == address) {
-      throw new Error('This address already exists in your Address Book: ' + address);
-    }
+Wallet.prototype._checkAddressBook = function(key) {
+  if (this.addressBook[key] && this.addressBook[key].copayerId != -1) {
+    throw new Error('This address already exists in your Address Book: ' + address);
   }
 };
 
-Wallet.prototype.setAddressBook = function(addressBook) {
-  this._checkAddressBook(addressBook.address);
-  this.addressBook.push(addressBook);
+Wallet.prototype.setAddressBook = function(key, label) {
+  this._checkAddressBook(key);
+  var addressbook = {
+    createdTs: Date.now(),
+    copayerId: this.getMyCopayerId(),
+    label: label
+  };
+  this.addressBook[key] = addressbook;
+  this.sendAddressBook();
   this.store();
 };
 
-Wallet.prototype.deleteAddressBook = function(addressBook) {
-  var index = this.addressBook.indexOf(addressBook);
-  if (index > -1) {
-    this.addressBook.splice(index, 1);
+Wallet.prototype.deleteAddressBook = function(key) {
+  if (key) {
+    this.addressBook[key].copayerId = -1;
+    this.addressBook[key].createdTs = Date.now();
+    this.sendAddressBook();
     this.store();
   }
 };

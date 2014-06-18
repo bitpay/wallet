@@ -9,6 +9,20 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
 
+    $scope.showAddressBook = function() {
+      var w = $rootScope.wallet;
+      var flag;
+      if (w) {
+        for (var k in w.addressBook) {
+          if (w.addressBook[k].copayerId != -1) {
+            flag = true;
+            break;
+          }
+        }
+      }
+      return flag;
+    };
+
     // TODO this shouldnt be on a particular controller.
     // Detect mobile devices
     var isMobile = {
@@ -246,7 +260,7 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.loading = false;
           var errorMsg;
           try {
-            w.setAddressBook(entry);
+            w.setAddressBook(entry.address, entry.label);
           } catch (e) {
             errorMsg = e.message;
           }
