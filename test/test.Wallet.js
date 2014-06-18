@@ -593,4 +593,48 @@ describe('Wallet model', function() {
     w.getNetworkName().should.equal('testnet');
   });
 
+  var mockFakeActivity = function(w, isChange, f) {
+    var ADDRESSES = w.deriveAddresses(0, 20, isChange);
+    w.blockchain.checkActivity = function(addresses, cb) {
+      var activity = new Array(addresses.length);
+      for(var i=0; i<addresses.length; i++) activity[i] = f(ADDRESSES.indexOf(addresses[i]));
+      cb(null, activity);
+    }
+  }
+
+  it('#indexDiscovery should work without found activities', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, false, function(index) { return false });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(-1);
+      done();
+    });
+  });
+
+  it('#indexDiscovery should continue scanning', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, false, function(index) { return index <= 7 });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(7);
+      done();
+    });
+  });
+
+  it('#indexDiscovery should not found beyond the scannWindow', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, false, function(index) { return index <= 10 || index == 17 });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(10);
+      done();
+    });
+  });
+
+  it('#indexDiscovery should look for activity along the scannWindow', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, false, function(index) { return index <= 14  && index % 2 == 0 });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(14);
+      done();
+    });
+  });
 });

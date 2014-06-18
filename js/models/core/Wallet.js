@@ -8,6 +8,7 @@ var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
 var Builder = bitcore.TransactionBuilder;
 var http = require('http');
+var async = require('async');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var copay = copay || require('../../../copay');
 var SecureRandom = bitcore.SecureRandom;
@@ -710,6 +711,71 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var ntxid = this.txProposals.add(data);
   return ntxid;
 };
+
+Wallet.prototype.updateIndexes = function(callback) {
+  var self = this;
+  var start = self.publicKeyRing.indexes.changeIndex;
+  self.indexDiscovery(start, true, 20, function(err, changeIndex) {
+    if (err) return callback(err);
+    if (changeIndex != -1)
+      self.publicKeyRing.indexes.changeIndex = changeIndex + 1;
+
+    start = self.publicKeyRing.indexes.receiveIndex;
+    self.indexDiscovery(start, false, 20, function(err, receiveIndex) {
+      if (err) return callback(err);
+      if (receiveIndex != -1)
+        self.publicKeyRing.indexes.receiveIndex = receiveIndex + 1;
+
+      self.emit('publicKeyRingUpdated');
+      self.store();
+      callback();
+    });
+  });
+}
+
+Wallet.prototype.deriveAddresses = function(index, amout, isChange) {
+  var ret = new Array(amout);
+  for(var i = 0; i < amout; i++) {
+    ret[i] = this.publicKeyRing.getAddress(index + i, isChange).toString();
+  }
+  return ret;
+}
+
+// This function scans the publicKeyRing branch starting at index @start and reports the index with last activity,
+// using a scan window of @gap. The argument @change defines the branch to scan: internal or external.
+// Returns -1 if no activity is found in range.
+Wallet.prototype.indexDiscovery = function(start, change, gap, cb) {
+  var scanIndex = start;
+  var lastActive = -1;
+  var hasActivity = false;
+
+  var self = this;
+  async.doWhilst(
+    function _do(next) {
+      // Optimize window to minimize the derivations.
+      var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
+      var addresses = self.deriveAddresses(scanIndex, scanWindow, change);
+      self.blockchain.checkActivity(addresses, function(err, actives){
+        if (err) throw err;
+
+        // Check for new activities in the newlly scanned addresses
+        var recentActive = actives.reduce(function(r, e, i) {
+          return e ? scanIndex + i : r;
+        }, lastActive);
+        hasActivity = lastActive != recentActive;
+        lastActive = recentActive;
+        scanIndex += scanWindow;
+        next();
+      });
+    },
+    function _while() { return hasActivity; },
+    function _finnaly(err) {
+      if (err) return cb(err);
+      cb(null, lastActive);
+    }
+  );
+}
+
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
