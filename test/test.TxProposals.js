@@ -97,8 +97,8 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    var k = Object.keys(w.txps)[0];
-    var b = w.txps[k].builder;
+    var ntxid = Object.keys(w.txps)[0];
+    var b = w.txps[ntxid].builder;
     var tx = b.build();
     tx.isComplete().should.equal(false);
     b.sign(priv2.getAll(pkr.indexes.getReceiveIndex(), pkr.indexes.getChangeIndex()));
@@ -211,15 +211,15 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    var k = Object.keys(w.txps)[0];
-    var tx = w.txps[k].builder.build();
+    var ntxid = Object.keys(w.txps)[0];
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w);
+    var info = w.merge(w.txps[0]);
     info.events.length.should.equal(0);
 
     Object.keys(w.txps).length.should.equal(1);
@@ -227,8 +227,8 @@ describe('TxProposals model', function() {
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
   });
 
 
@@ -261,13 +261,13 @@ describe('TxProposals model', function() {
       pkr
     ));
 
-    var k = Object.keys(w.txps)[0];
-    var tx = w.txps[k].builder.build();
+    var ntxid = Object.keys(w.txps)[0];
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(1);
 
-    Object.keys(w.txps[k].signedBy).length.should.equal(0);
-    Object.keys(w.txps[k].seenBy).length.should.equal(1);
+    Object.keys(w.txps[ntxid].signedBy).length.should.equal(0);
+    Object.keys(w.txps[ntxid].seenBy).length.should.equal(1);
 
 
     var w2 = new TxProposals({
@@ -285,13 +285,13 @@ describe('TxProposals model', function() {
       pkr
     ));
 
-    var k = Object.keys(w.txps)[0];
-    var tx = w2.txps[k].builder.build();
+    var ntxid = Object.keys(w.txps)[0];
+    var tx = w2.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
-    (w2.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w2.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     var info = w.merge(w2);
     info.events.length.should.equal(1);
@@ -299,11 +299,11 @@ describe('TxProposals model', function() {
 
     Object.keys(w.txps).length.should.equal(1);
 
-    var tx = w.txps[k].builder.build();
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
   });
 
@@ -475,12 +475,12 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    var k = Object.keys(w.txps)[0];
-    var tx = w.txps[k].builder.build();
+    var ntxid = Object.keys(w.txps)[0];
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
 
     var w2 = new TxProposals({
@@ -496,11 +496,11 @@ describe('TxProposals model', function() {
       priv2,
       pkr
     ));
-    var tx = w2.txps[k].builder.build();
+    var tx = w2.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
-    (w2.txps[k].signedBy[priv2.id] - ts > 0).should.equal(true);
-    (w2.txps[k].seenBy[priv2.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
 
 
     var w3 = new TxProposals({
@@ -516,38 +516,38 @@ describe('TxProposals model', function() {
       priv3,
       pkr
     ));
-    var tx = w3.txps[k].builder.build();
+    var tx = w3.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
-    (w3.txps[k].signedBy[priv3.id] - ts > 0).should.equal(true);
-    (w3.txps[k].seenBy[priv3.id] - ts > 0).should.equal(true);
+    (w3.txps[ntxid].signedBy[priv3.id] - ts > 0).should.equal(true);
+    (w3.txps[ntxid].seenBy[priv3.id] - ts > 0).should.equal(true);
 
     var info = w.merge(w2);
     info.events.length.should.equal(0);
 
     Object.keys(w.txps).length.should.equal(1);
-    var tx = w.txps[k].builder.build();
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(1);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv2.id] - ts > 0).should.equal(true);
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].signedBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
 
 
     var info = w.merge(w3);
     info.events.length.should.equal(0);
 
-    var tx = w.txps[k].builder.build();
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(true);
     tx.countInputMissingSignatures(0).should.equal(0);
     Object.keys(w.txps).length.should.equal(1);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv2.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv3.id] - ts > 0).should.equal(true);
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].signedBy[priv2.id] - ts > 0).should.equal(true);
-    (w.txps[k].signedBy[priv3.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv3.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv3.id] - ts > 0).should.equal(true);
   });
 
 
@@ -573,12 +573,12 @@ describe('TxProposals model', function() {
       priv,
       pkr
     ));
-    var k = Object.keys(w.txps)[0];
-    var tx = w.txps[k].builder.build();
+    var ntxid = Object.keys(w.txps)[0];
+    var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
-    (w.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     var o = w.toObj();
     should.exist(o);
@@ -593,13 +593,13 @@ describe('TxProposals model', function() {
     var o2 = JSON.parse(JSON.stringify(o));
     var w2 = TxProposals.fromObj(o2);
     w2.walletId.should.equal(w.walletId);
-    var tx2 = w2.txps[k].builder.build();
+    var tx2 = w2.txps[ntxid].builder.build();
     tx2.isComplete().should.equal(false);
     tx2.countInputMissingSignatures(0).should.equal(2);
-    (w2.txps[k].signedBy[priv.id] - ts > 0).should.equal(true);
-    (w2.txps[k].seenBy[priv.id] - ts > 0).should.equal(true);
-    should.exist(w2.txps[k].builder);
-    should.exist(w2.txps[k].builder.valueInSat);
+    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
+    should.exist(w2.txps[ntxid].builder);
+    should.exist(w2.txps[ntxid].builder.valueInSat);
 
     w2.merge(w);
     Object.keys(w2.txps).length.should.equal(1);
