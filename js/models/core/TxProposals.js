@@ -54,8 +54,7 @@ TxProposal.getSentTs = function() {
 TxProposal.prototype.merge = function(other) {
   var ret = {};
   ret.events = this.mergeMetadata(other);
-  ret.hasChanged = this.mergeBuilder(other); // TODO: use this?
-
+  ret.hasChanged = this.mergeBuilder(other);
   return ret;
 };
 
@@ -151,6 +150,7 @@ TxProposals.prototype.getNtxids = function() {
 };
 
 TxProposals.prototype.toObj = function(onlyThisNtxid) {
+  if (onlyThisNtxid) throw new Error();
   var ret = [];
   for (var id in this.txps) {
 
@@ -172,14 +172,15 @@ TxProposals.prototype.merge = function(inTxp) {
   var myTxps = this.txps;
 
   var ntxid = inTxp.getID();
-  var ret;
+  var ret = {};
+  ret.events = [];
+  ret.events.hasChanged = false;
 
   if (myTxps[ntxid]) {
     var v0 = myTxps[ntxid];
     var v1 = inTxp;
     ret = v0.merge(v1);
   } else {
-    ret.events = {};
     ret.hasChanged = true;
     ret.events.push({
       type: 'new',
