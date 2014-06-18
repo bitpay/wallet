@@ -753,6 +753,12 @@ describe('Wallet model', function() {
     data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].createdTs = 1403102215;
     w._handleAddressBook('senderID', data, true);
     Object.keys(w.addressBook).length.should.equal(3);
+      w.sendTxProposal.should.throw('Illegal Argument.');
+      (function() {
+        w.sendTxProposal(ntxid)
+      }).should.not.throw();
+      done();
+    });
   });
 
   it('#getNetworkName', function() {
