@@ -366,6 +366,7 @@ Wallet.prototype.sendAllTxProposals = function(recipients) {
 
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
+  preconditions.checkState(this.txProposals.txps[ntxid]);
   this.log('### SENDING txProposal '+ntxid+' TO:', recipients || 'All', this.txProposals);
   this.network.send(recipients, {
     type: 'txProposal',
@@ -437,8 +438,8 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
   var copayers = this.getRegisteredCopayerIds();
-  for (var k in this.txProposals.txps) {
-    var txp = this.txProposals.getTxProposal(k, copayers);
+  for (var ntxid in this.txProposals.txps) {
+    var txp = this.txProposals.getTxProposal(ntxid, copayers);
     txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
     txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
     if (this.totalCopayers - txp.rejectCount < this.requiredCopayers) {
