@@ -51,9 +51,9 @@ TxProposal.getSentTs = function() {
   return this.sentTs;
 };
 
-TxProposal.prototype.merge = function(other) {
+TxProposal.prototype.merge = function(other, author) {
   var ret = {};
-  ret.events = this.mergeMetadata(other);
+  ret.events = this.mergeMetadata(other, author);
   ret.hasChanged = this.mergeBuilder(other);
   return ret;
 };
@@ -69,7 +69,7 @@ TxProposal.prototype.mergeBuilder = function(other) {
   return after !== before;
 };
 
-TxProposal.prototype.mergeMetadata = function(v1) {
+TxProposal.prototype.mergeMetadata = function(v1, author) {
   var events = [];
   var v0 = this;
 
@@ -77,6 +77,7 @@ TxProposal.prototype.mergeMetadata = function(v1) {
 
   Object.keys(v1.seenBy).forEach(function(k) {
     if (!v0.seenBy[k]) {
+      if (k != author) throw new Error('Non authoritative seenBy change by '+author);
       v0.seenBy[k] = v1.seenBy[k];
       events.push({
         type: 'seen',
@@ -88,6 +89,7 @@ TxProposal.prototype.mergeMetadata = function(v1) {
 
   Object.keys(v1.signedBy).forEach(function(k) {
     if (!v0.signedBy[k]) {
+      if (k != author) throw new Error('Non authoritative signedBy change by '+author);
       v0.signedBy[k] = v1.signedBy[k];
       events.push({
         type: 'signed',
@@ -99,6 +101,7 @@ TxProposal.prototype.mergeMetadata = function(v1) {
 
   Object.keys(v1.rejectedBy).forEach(function(k) {
     if (!v0.rejectedBy[k]) {
+      if (k != author) throw new Error('Non authoritative rejectedBy change by '+author);
       v0.rejectedBy[k] = v1.rejectedBy[k];
       events.push({
         type: 'rejected',
@@ -168,7 +171,7 @@ TxProposals.prototype.toObj = function(onlyThisNtxid) {
   };
 };
 
-TxProposals.prototype.merge = function(inTxp) {
+TxProposals.prototype.merge = function(inTxp, author) {
   var myTxps = this.txps;
 
   var ntxid = inTxp.getID();
@@ -179,7 +182,7 @@ TxProposals.prototype.merge = function(inTxp) {
   if (myTxps[ntxid]) {
     var v0 = myTxps[ntxid];
     var v1 = inTxp;
-    ret = v0.merge(v1);
+    ret = v0.merge(v1, author);
   } else {
     this.txps[ntxid] = inTxp;
     ret.hasChanged = true;
@@ -192,7 +195,13 @@ TxProposals.prototype.merge = function(inTxp) {
   return ret;
 };
 
+var preconditions = require('preconditions').instance();
 TxProposals.prototype.add = function(data) {
+  preconditions.checkArgument(data.inputChainPaths);
+  preconditions.checkArgument(data.signedBy);
+  preconditions.checkArgument(data.creator);
+  preconditions.checkArgument(data.createdTs);
+  preconditions.checkArgument(data.builder);
   var txp = new TxProposal(data);
   var ntxid = txp.getID();
   this.txps[ntxid] = txp;
