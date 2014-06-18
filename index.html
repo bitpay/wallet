@@ -704,21 +704,27 @@
                 </div>
               </div>
             </form>
+          </div>
+          <div class="medium-8 medium-centered large-8 large-centered columns">
             <hr>
             <h3>Address Book</h3>
-            <p class="text-gray" ng-hide="$root.wallet.addressBook[0]">Empry. Create some alias for addresses</p>
-            <table ng-show="$root.wallet.addressBook[0]">
+            <p class="text-gray" ng-hide="showAddressBook()">Empry. Create some alias for addresses</p>
+            <table ng-show="showAddressBook()">
               <thead>
               <tr>
                 <th>Label</td>
                 <th>Address</td>
+                <th>Creator</td>
+                <th>Date</td>
                 <th>&nbsp;</td>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="addr in $root.wallet.addressBook track by $index">
-                <td><a ng-click="copyAddress(addr.address)" title="Copy address">{{addr.label}}</a></td>
-                <td width="200">{{addr.address}}</td>
+              <tr ng-repeat="(addr, info) in $root.wallet.addressBook" ng-if="info.copayerId != -1">
+                <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
+                <td>{{addr}}</td>
+                <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
+                <td><time>{{info.createdTs | amCalendar}}</time></td>
                 <td><a ng-click="deleteAddressBook(addr)"><i class="fi-trash"></i></a></td>
               </tr>
               </tbody>
