@@ -118,10 +118,11 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
 
 Wallet.prototype._handleTxProposal = function(senderId, data) {
+  preconditions.checkArgument(senderId);
   this.log('RECV TXPROPOSAL:', data);
 
   var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
-  var mergeInfo = this.txProposals.merge(inTxp);
+  var mergeInfo = this.txProposals.merge(inTxp, senderId);
   var added = this.addSeenToTxProposals();
 
   this.emit('txProposalsUpdated');
@@ -498,6 +499,7 @@ Wallet.prototype.reject = function(ntxid) {
 
 
 Wallet.prototype.sign = function(ntxid, cb) {
+  preconditions.checkState(typeof this.getMyCopayerId() !== 'undefined');
   var self = this;
   setTimeout(function() {
     var myId = self.getMyCopayerId();
@@ -709,7 +711,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     }]);
 
   var selectedUtxos = b.getSelectedUnspent();
-
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
