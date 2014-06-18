@@ -256,5 +256,5 @@ TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   return ret;
 };
 
-
+TxProposals.TxProposal = TxProposal;
 module.exports = require('soop')(TxProposals);
