@@ -704,9 +704,51 @@
                 </div>
               </div>
             </form>
+            <hr>
+            <h3>Address Book</h3>
+            <p class="text-gray" ng-hide="$root.wallet.addressBook[0]">Empry. Create some alias for addresses</p>
+            <table ng-show="$root.wallet.addressBook[0]">
+              <thead>
+              <tr>
+                <th>Label</td>
+                <th>Address</td>
+                <th>&nbsp;</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="addr in $root.wallet.addressBook track by $index">
+                <td><a ng-click="copyAddress(addr.address)" title="Copy address">{{addr.label}}</a></td>
+                <td width="200">{{addr.address}}</td>
+                <td><a ng-click="deleteAddressBook(addr)"><i class="fi-trash"></i></a></td>
+              </tr>
+              </tbody>
+            </table>
+            <button class="m10t button tiny secondary radius text-center" ng-click="openAddressBookModal()">Add New Entry</button>
           </div>
         </div>
       </div>
+    </script>
+
+    <script type="text/ng-template" id="addressBookModal.html">
+      <h3>Add Address Book Entry</h3>
+      <form name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
+      <label for="newaddress">Address
+        <small ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
+        <small class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
+        <small class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+          Not valid</small>
+        <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
+        placeholder="Address" ng-model="newaddress" valid-address required>
+      </label>
+      <label for="newlabel">Label
+        <small ng-hide="!addressBookForm.newlabel.$pristine || newlabel">required</small>
+        <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
+        placeholder="Label" ng-model="newlabel" required>
+      </label>
+      <a class="button small default radius" ng-click="cancel()">Cancel</a>
+      <input type="submit" class="button small secondary radius right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
+    </form> 
+    <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
     </script>
 
     <!-- BACKUP -->

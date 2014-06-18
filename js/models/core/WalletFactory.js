@@ -86,6 +86,7 @@ WalletFactory.prototype.read = function(walletId) {
   obj.publicKeyRing  = s.get(walletId, 'publicKeyRing');
   obj.txProposals    = s.get(walletId, 'txProposals');
   obj.privateKey     = s.get(walletId, 'privateKey');
+  obj.addressBook    = s.get(walletId, 'addressBook');
 
   var w = this.fromObj(obj);
   return w;

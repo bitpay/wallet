@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $location, $timeout) {
+  function($scope, $rootScope, $window, $location, $timeout, $anchorScroll, $modal) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
@@ -187,4 +187,80 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       }, 500);
     };
+
+    $scope.deleteAddressBook = function(addressBook) {
+      var w = $rootScope.wallet;
+      $timeout(function() {
+        var errorMsg;
+        try {
+          w.deleteAddressBook(addressBook);
+        } catch (e) {
+          errorMsg = e.message;
+        }
+
+        $rootScope.$flashMessage = {
+          message: errorMsg ? errorMsg : 'Entry removed successful',
+          type: errorMsg ? 'error' : 'success'
+        };
+        $rootScope.$digest();
+      }, 500);
+    };
+
+    $scope.copyAddress = function(address) {
+      $scope.address = address;
+      $anchorScroll();
+    };
+
+    $scope.openAddressBookModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'addressBookModal.html',
+        windowClass: 'tiny',
+        controller: function($scope, $modalInstance) {
+          
+          $scope.submitAddressBook = function(form) {
+            if (form.$invalid) {
+              $rootScope.$flashMessage = {
+                message: 'Complete required fields, please',
+                type: 'error'
+              };
+              return;
+            }
+            var entry = {
+              "address": form.newaddress.$modelValue,
+              "label": form.newlabel.$modelValue
+            };
+            form.newaddress.$pristine = form.newlabel.$pristine = true;
+            $modalInstance.close(entry);
+          };
+
+          $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+          };
+        },
+      });
+
+      modalInstance.result.then(function(entry) {
+        var w = $rootScope.wallet;
+
+        $timeout(function() {
+          $scope.loading = false;
+          var errorMsg;
+          try {
+            w.setAddressBook(entry);
+          } catch (e) {
+            errorMsg = e.message;
+          }
+
+          $rootScope.$flashMessage = {
+            message: errorMsg ? errorMsg : 'New entry has been created',
+            type: errorMsg ? 'error' : 'success'
+          };
+          $rootScope.$digest();
+        }, 500);
+        $anchorScroll();
+        // reset fields
+        $scope.newaddress = $scope.newlabel = null;
+      });
+    };
+
   });

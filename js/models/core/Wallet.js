@@ -38,12 +38,13 @@ function Wallet(opts) {
     this.token = opts.token;
     this.tokenTime = opts.tokenTime;
   }
-
+  
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
   this.network.maxPeers = this.totalCopayers;
   this.registeredPeerIds = [];
+  this.addressBook = opts.addressBook || [];
 }
 
 Wallet.parent = EventEmitter;
@@ -332,7 +333,8 @@ Wallet.prototype.toObj = function() {
     opts: optsObj,
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
-    privateKey: this.privateKey ? this.privateKey.toObj() : undefined
+    privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
+    addressBook: this.addressBook
   };
 
   return walletObj;
@@ -343,6 +345,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
   opts.txProposals = copay.TxProposals.fromObj(o.txProposals);
   opts.privateKey = copay.PrivateKey.fromObj(o.privateKey);
+  opts.addressBook = o.addressBook;
 
   opts.storage = storage;
   opts.network = network;
@@ -718,6 +721,28 @@ Wallet.prototype.disconnect = function() {
 
 Wallet.prototype.getNetwork = function() {
   return this.network;
+};
+
+Wallet.prototype._checkAddressBook = function(address) {
+  for(var i=0;i<this.addressBook.length; i++) {
+    if (this.addressBook[i].address == address) {
+      throw new Error('This address already exists in your Address Book: ' + address);
+    }
+  }
+};
+
+Wallet.prototype.setAddressBook = function(addressBook) {
+  this._checkAddressBook(addressBook.address);
+  this.addressBook.push(addressBook);
+  this.store();
+};
+
+Wallet.prototype.deleteAddressBook = function(addressBook) {
+  var index = this.addressBook.indexOf(addressBook);
+  if (index > -1) {
+    this.addressBook.splice(index, 1);
+    this.store();
+  }
 };
 
 module.exports = require('soop')(Wallet);

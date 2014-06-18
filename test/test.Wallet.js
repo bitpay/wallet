@@ -81,6 +81,7 @@ describe('Wallet model', function() {
     should.exist(w.privateKey);
     should.exist(w.txProposals);
     should.exist(w.netKey);
+    should.exist(w.addressBook);
     var b = new bitcore.Buffer(w.netKey, 'base64');
     b.toString('hex').length.should.equal(16);
   });
@@ -591,6 +592,41 @@ describe('Wallet model', function() {
   it('#getNetworkName', function() {
     var w = createW();
     w.getNetworkName().should.equal('testnet');
+  });
+
+  var contacts = [{
+    address: '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ',
+    label: 'John'
+  }, {
+    address: '2MtP8WyiwG7ZdVWM96CVsk2M1N8zyfiVQsY',
+    label: 'Jennifer'
+  }];
+
+  it('should create new entry for address book', function() {
+    var w = createW();
+    contacts.forEach(function(c) {
+      w.setAddressBook(c);
+    });
+    w.addressBook.length.should.equal(2);
+  });
+
+  it('should fail if create a duplicate address', function() {
+    var w = createW();
+    w.setAddressBook(contacts[0]);
+    (function() {
+      w.setAddressBook(contacts[0]);
+    }).should.
+    throw();
+  });
+  
+  it('should delete an entry for address book', function() {
+    var w = createW();
+    contacts.forEach(function(c) {
+      w.setAddressBook(c);
+    });
+    w.addressBook.length.should.equal(2);
+    w.deleteAddressBook(contacts[0]);
+    w.addressBook.length.should.equal(1);
   });
 
 });
