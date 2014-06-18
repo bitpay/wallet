@@ -219,7 +219,7 @@ describe('TxProposals model', function() {
     (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w.txps[0]);
+    var info = w.merge(w.txps[ntxid]);
     info.events.length.should.equal(0);
 
     Object.keys(w.txps).length.should.equal(1);
@@ -293,7 +293,7 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2);
+    var info = w.merge(w2.txps[ntxid]);
     info.events.length.should.equal(1);
     info.events[0].type.should.equal('signed');
 
@@ -401,7 +401,7 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2);
+    var info = w.merge(w2.txps[ntxid]);
     info.events.length.should.equal(1);
     info.events[0].type.should.equal('signed');
 
@@ -431,7 +431,7 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w3);
+    var info = w.merge(w3.txps[ntxid]);
     info.events.length.should.equal(0);
 
     Object.keys(w.txps).length.should.equal(1);
@@ -522,7 +522,7 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv3.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv3.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2);
+    var info = w.merge(w2.txps[ntxid]);
     info.events.length.should.equal(0);
 
     Object.keys(w.txps).length.should.equal(1);
@@ -535,7 +535,7 @@ describe('TxProposals model', function() {
     (w.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
 
 
-    var info = w.merge(w3);
+    var info = w.merge(w3.txps[ntxid]);
     info.events.length.should.equal(0);
 
     var tx = w.txps[ntxid].builder.build();
@@ -601,7 +601,7 @@ describe('TxProposals model', function() {
     should.exist(w2.txps[ntxid].builder);
     should.exist(w2.txps[ntxid].builder.valueInSat);
 
-    w2.merge(w);
+    w2.merge(w.txps[ntxid]);
     Object.keys(w2.txps).length.should.equal(1);
   });
 
