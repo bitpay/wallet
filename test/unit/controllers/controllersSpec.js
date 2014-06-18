@@ -13,7 +13,6 @@ describe("Unit: Controllers", function() {
 
   var scope;
 
-  beforeEach(module('notifications'));
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
 
