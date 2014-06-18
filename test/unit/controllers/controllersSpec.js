@@ -27,7 +27,7 @@ describe("Unit: Controllers", function() {
 
 
 
-  describe.only('Backup Controller', function() {
+  describe('Backup Controller', function() {
     var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
@@ -39,11 +39,11 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it('should have a Backup controller', function() {
+    it('Should have a Backup controller', function() {
       expect(scope.title).equal('Backup');
     });
 
-    it(' Backup controller #download', function() {
+    it('Backup controller #download', function() {
       scope.wallet.setEnc('1234567');
       expect(saveAsLastCall).equal(null);
       scope.download();
@@ -51,8 +51,7 @@ describe("Unit: Controllers", function() {
       expect(saveAsLastCall.type).equal('text/plain;charset=utf-8');
     });
 
-
-    it(' Backup controller #delete', function() {
+    it('Backup controller #delete', function() {
       expect(scope.wallet).not.equal(undefined);
       scope.deleteWallet();
       expect(scope.wallet).equal(undefined);
