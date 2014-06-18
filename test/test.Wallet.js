@@ -297,23 +297,13 @@ describe('Wallet model', function() {
   it('call reconnect after interval', function(done) {
     this.timeout(10000);
     var w = createW2();
-    var testTime = 1000;
-    var callCount = 0;
-    var cT = w.reconnectDelay;
-    var t = 0;
-
-    do {
-      callCount++;
-      t += cT;
-      cT *= 2;
-    } while (t < testTime);
-
     var spy = sinon.spy(w, 'scheduleConnect');
+    var callCount = 3;
     w.netStart();
     setTimeout(function() {
       sinon.assert.callCount(spy, callCount);
       done();
-    }, testTime);
+    }, w.reconnectDelay*callCount*(callCount+1)/2);
   });
 
   it('handle network indexes correctly', function() {
