@@ -593,4 +593,88 @@ describe('Wallet model', function() {
     w.getNetworkName().should.equal('testnet');
   });
 
+  var mockFakeActivity = function(w, f) {
+    var ADDRESSES_CHANGE = w.deriveAddresses(0, 20, true);
+    var ADDRESSES_RECEIVE = w.deriveAddresses(0, 20, false);
+    w.blockchain.checkActivity = function(addresses, cb) {
+      var activity = new Array(addresses.length);
+      for(var i=0; i<addresses.length; i++) {
+        var a1 = ADDRESSES_CHANGE.indexOf(addresses[i]);
+        var a2 = ADDRESSES_RECEIVE.indexOf(addresses[i]);
+        activity[i] = f(Math.max(a1, a2));
+      }
+      cb(null, activity);
+    }
+  }
+
+  it('#indexDiscovery should work without found activities', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, function(index) { return false });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(-1);
+      done();
+    });
+  });
+
+  it('#indexDiscovery should continue scanning', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, function(index) { return index <= 7 });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(7);
+      done();
+    });
+  });
+
+  it('#indexDiscovery should not found beyond the scannWindow', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, function(index) { return index <= 10 || index == 17 });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(10);
+      done();
+    });
+  });
+
+  it('#indexDiscovery should look for activity along the scannWindow', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, function(index) { return index <= 14  && index % 2 == 0 });
+    w.indexDiscovery(0, false, 5, function(e, lastActive){
+      lastActive.should.equal(14);
+      done();
+    });
+  });
+
+  it('#updateIndexes should update correctly', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, function(index) { return index <= 14  && index % 2 == 0 });
+    w.updateIndexes(function(err) {
+      w.publicKeyRing.indexes.receiveIndex.should.equal(15);
+      w.publicKeyRing.indexes.changeIndex.should.equal(15);
+      done();
+    });
+  });
+
+  it('#updateIndexes should store and emit event', function(done) {
+    var w = createW2();
+    mockFakeActivity(w, function(index) { return index <= 14  && index % 2 == 0 });
+    var spyStore = sinon.spy(w, 'store');
+    var spyEmit = sinon.spy(w, 'emit');
+    w.updateIndexes(function(err) {
+      sinon.assert.callCount(spyStore, 1);
+      sinon.assert.callCount(spyEmit, 1);
+      done();
+    });
+  });
+
+  it('#deriveAddresses', function(done) {
+    var w = createW2();
+    var addresses1 = w.deriveAddresses(0, 5, false);
+    var addresses2 = w.deriveAddresses(4, 5, false);
+
+    addresses1.length.should.equal(5);
+    addresses2.length.should.equal(5);
+
+    addresses1[4].should.equal(addresses2[0]);
+    done();
+  });
+
 });

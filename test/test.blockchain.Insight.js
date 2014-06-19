@@ -72,5 +72,35 @@ describe('Insight model', function() {
       done();
     });
   });
+  it('#checkActivity for innactive addreses', function(done) {
+    var w = new Insight();
+    w.getTransactions = function(addresses, cb) {
+      cb([]);
+    };
+
+    w.checkActivity(addresses, function(err, actives){
+      console.log(err);
+      actives.length.should.equal(addresses.length);
+      actives.filter(function(i) { return i }).length.should.equal(0);
+      done();
+    });
+  });
+  it('#checkActivity for active addreses', function(done) {
+    var w = new Insight();
+    w.getTransactions = function(addresses, cb) {
+      cb([
+        {vin: [{ addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'}], vout: []},
+        {vin: [{ addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'}], vout: []},
+        {vin: [{ addr: '2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x'}], vout: []},
+        {vin: [], vout: [{scriptPubKey: {addresses: ['2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY']}}]}
+      ]);
+    };
+
+    w.checkActivity(addresses, function(err, actives){
+      actives.length.should.equal(addresses.length);
+      actives.filter(function(i) { return i }).length.should.equal(3);
+      done();
+    });
+  });
 });
   
