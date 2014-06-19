@@ -126,11 +126,11 @@ Network.prototype._onClose = function(peerID) {
 
 Network.prototype.connectToCopayers = function(copayerIds) {
   var self = this;
-  var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
+  var arrayDiff= Network._arrayDiff(copayerIds, self.connectedCopayers());
 
   arrayDiff.forEach(function(copayerId) {
-    if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
-      this._deletePeer(this.peerFromCopayer(copayerId));
+    if (self.allowedCopayerIds && !self.allowedCopayerIds[copayerId]) {
+      self._deletePeer(self.peerFromCopayer(copayerId));
     } else {
       self.connectTo(copayerId);
     }
