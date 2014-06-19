@@ -236,6 +236,10 @@ Wallet.prototype.getMyCopayerId = function() {
   return this.getCopayerId(0);
 };
 
+Wallet.prototype.getMyCopayerIdPriv = function() {
+  return this.privateKey.getIdPriv();
+};
+
 
 Wallet.prototype.getSecret = function() {
   var pubkeybuf = new Buffer(this.getMyCopayerId(), 'hex');
@@ -271,8 +275,10 @@ Wallet.prototype.netStart = function() {
   });
 
   var myId = self.getMyCopayerId();
+  var myIdPriv = self.getMyCopayerIdPriv();
   var startOpts = {
     copayerId: myId,
+    privkey: myIdPriv,
     token: self.token,
     maxPeers: self.totalCopayers
   };

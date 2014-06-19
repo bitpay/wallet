@@ -153,7 +153,8 @@ Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
 
 Network.prototype._onData = function(enchex, isInbound, peerId) {
   var sig, payload;
-  var encbuf = new Buffer(enchex, 'hex');
+  var encUint8Array = new Uint8Array(enchex);
+  var encbuf = new Buffer(encUint8Array);
 
   var privkey = this.privkey;
 
@@ -304,7 +305,9 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (this.started) return openCallback();
 
-  this.privkey = opts.privkey;
+  if (!this.privkey)
+    this.privkey = opts.privkey;
+
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (opts.token)
