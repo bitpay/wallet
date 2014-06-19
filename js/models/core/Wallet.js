@@ -233,11 +233,11 @@ Wallet.prototype.getCopayerId = function(index) {
 
 
 Wallet.prototype.getMyCopayerId = function() {
-  return this.getCopayerId(0);
+  return this.getCopayerId(0); //copayer id is hex of a public key
 };
 
 Wallet.prototype.getMyCopayerIdPriv = function() {
-  return this.privateKey.getIdPriv();
+  return this.privateKey.getIdPriv(); //copayer idpriv is hex of a private key
 };
 
 
@@ -260,7 +260,7 @@ Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
 
-Wallet.prototype.netStart = function() {
+Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
   net.removeAllListeners();
