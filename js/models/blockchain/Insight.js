@@ -195,6 +195,8 @@ Insight.prototype._requestNode = function(options, callback) {
       return callback(e, ret);
     });
     response.on('error', function(e) {
+
+      console.log('[Insight.js.201]'); //TODO
       return callback(e, ret);
     });
   });
