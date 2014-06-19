@@ -30,7 +30,7 @@ AddressIndex.prototype.toObj = function() {
 AddressIndex.prototype.checkRange = function(index, isChange) {
   if ((isChange && index > this.changeIndex) ||
     (!isChange && index > this.receiveIndex)) {
-    throw new Error('Out of bounds at index %d isChange: %d', index, isChange);
+    throw new Error('Out of bounds at index ' + index + ' isChange: ' + isChange);
   }
 };
 
