@@ -100,10 +100,4 @@ describe("Unit: Backup Service", function() {
     backupService.download(new FakeWallet());
     expectation.once();
   }));
-  it('should backup by email', inject(function(backupService) {
-    var mock = sinon.mock(window);
-    var expectation = mock.expects('open');
-    backupService.sendEmail('fake@test.com', new FakeWallet());
-    expectation.once();
-  }));
 });

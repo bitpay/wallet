@@ -29,22 +29,4 @@ BackupService.prototype.download = function(wallet) {
   saveAs(blob, filename);
 };
 
-BackupService.prototype.sendEmail = function(email, wallet) {
-  var ew = wallet.toEncryptedObj();
-  var body = ew;
-  var subject = this.getName(wallet);
-  var href = 'mailto:' + email + '?' + 'subject=[Copay Backup] ' + subject + '&' + 'body=' + body;
-
-  if (window.cshell) {
-    return window.cshell.send('backup:email', href);
-  }
-
-  var newWin = window.open(href, '_blank', 'scrollbars=yes,resizable=yes,width=10,height=10');
-  if (newWin) {
-    setTimeout(function() {
-      newWin.close();
-    }, 1000);
-  }
-};
-
 angular.module('copayApp.services').service('backupService', BackupService);
