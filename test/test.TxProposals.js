@@ -302,8 +302,9 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
-    info.events.length.should.equal(1);
-    info.events[0].type.should.equal('signed');
+    info.events.length.should.equal(2);
+    info.events[0].type.should.equal('seen');
+    info.events[1].type.should.equal('signed');
 
     Object.keys(w.txps).length.should.equal(1);
 
@@ -410,8 +411,9 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
-    info.events.length.should.equal(1);
-    info.events[0].type.should.equal('signed');
+    info.events.length.should.equal(2);
+    info.events[0].type.should.equal('seen');
+    info.events[1].type.should.equal('signed');
 
     tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
@@ -439,8 +441,7 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w3.txps[ntxid], pkr.getCopayerId(0));
-    info.events.length.should.equal(0);
+    var info = w.merge(w3.txps[ntxid], pkr.getCopayerId(1));
 
     Object.keys(w.txps).length.should.equal(1);
 
@@ -530,8 +531,7 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv3.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv3.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
-    info.events.length.should.equal(0);
+    var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(1));
 
     Object.keys(w.txps).length.should.equal(1);
     var tx = w.txps[ntxid].builder.build();
@@ -543,8 +543,7 @@ describe('TxProposals model', function() {
     (w.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
 
 
-    var info = w.merge(w3.txps[ntxid], pkr.getCopayerId(0));
-    info.events.length.should.equal(0);
+    var info = w.merge(w3.txps[ntxid], pkr.getCopayerId(2));
 
     var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(true);
