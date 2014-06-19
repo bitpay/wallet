@@ -134,6 +134,11 @@ angular.module('copayApp.services')
             break;
         }
       });
+      w.on('addressBookUpdated', function(dontDigest) {
+        if (!dontDigest) {
+          $rootScope.$digest();
+        }
+      });
       w.on('connectionError', function(msg) {
         root.onErrorDigest(null, msg);
       });

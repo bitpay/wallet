@@ -67,6 +67,19 @@ describe('Wallet model', function() {
     c.network = new Network(config.network);
     c.blockchain = new Blockchain(config.blockchain);
 
+    c.addressBook =  { 
+      '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ' : {
+        label: 'John',
+        copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+        createdTs: 1403102115,
+      }, 
+      '2MtP8WyiwG7ZdVWM96CVsk2M1N8zyfiVQsY' : {
+        label: 'Jennifer',
+        copayerId: '032991f836543a492bd6d0bb112552bfc7c5f3b7d5388fcbcbf2fbb893b44770d7',
+        createdTs: 1403103115,
+      }
+    };
+
     c.networkName = config.networkName;
     c.verbose = config.verbose;
     c.version = '0.0.1';
@@ -85,6 +98,7 @@ describe('Wallet model', function() {
     should.exist(w.privateKey);
     should.exist(w.txProposals);
     should.exist(w.netKey);
+    should.exist(w.addressBook);
     var b = new bitcore.Buffer(w.netKey, 'base64');
     b.toString('hex').length.should.equal(16);
   });
@@ -684,6 +698,66 @@ describe('Wallet model', function() {
 
     addresses1[4].should.equal(addresses2[0]);
     done();
+  });
+
+  var contacts = [ 
+    {
+      label: 'Charles',
+      address: '2N8pJWpXCAxmNLHKVEhz3TtTcYCtHd43xWU ',
+    }, 
+    {
+      label: 'Linda',
+      address: '2N4Zq92goYGrf5J4F4SZZq7jnPYbCiyRYT2 ',
+    }
+  ];
+
+  it('should create new entry for address book', function() {
+    var w = createW();
+    contacts.forEach(function(c) {
+      w.setAddressBook(c.address, c.label);
+    });
+    Object.keys(w.addressBook).length.should.equal(4);
+  });
+
+  it('should fail if create a duplicate address', function() {
+    var w = createW();
+    w.setAddressBook(contacts[0].address, contacts[0].label);
+    (function() {
+      w.setAddressBook(contacts[0].address, contacts[0].label);
+    }).should.
+    throw();
+  });
+  
+  it('should delete an entry for address book', function() {
+    var w = createW();
+    contacts.forEach(function(c) {
+      w.setAddressBook(c.address, c.label);
+    });
+    Object.keys(w.addressBook).length.should.equal(4);
+    var key = contacts[0].address;
+    w.deleteAddressBook(key);
+    w.addressBook[key].copayerId.should.equal(-1);
+  });
+
+  it('handle network addressBook correctly', function() {
+    var w = createW();
+    var data = {
+      walletId: w.id,
+      addressBook: { 
+        'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx' : {
+          label: 'Faucet',
+          copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+          createdTs: 1403102115,
+        }
+      },
+      type: 'addressbook'
+    };
+    Object.keys(w.addressBook).length.should.equal(2);
+    w._handleAddressBook('senderID', data, true);
+    Object.keys(w.addressBook).length.should.equal(3);
+    data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].createdTs = 1403102215;
+    w._handleAddressBook('senderID', data, true);
+    Object.keys(w.addressBook).length.should.equal(3);
   });
 
 });
