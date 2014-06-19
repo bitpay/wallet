@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $location, $timeout, $anchorScroll, $modal) {
+  function($scope, $rootScope, $window, $location, $timeout, $anchorScroll, $modal, isMobile) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
@@ -21,29 +21,6 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       }
       return flag;
-    };
-
-    // TODO this shouldnt be on a particular controller.
-    // Detect mobile devices
-    var isMobile = {
-      Android: function() {
-        return navigator.userAgent.match(/Android/i);
-      },
-      BlackBerry: function() {
-        return navigator.userAgent.match(/BlackBerry/i);
-      },
-      iOS: function() {
-        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-      },
-      Opera: function() {
-        return navigator.userAgent.match(/Opera Mini/i);
-      },
-      Windows: function() {
-        return navigator.userAgent.match(/IEMobile/i);
-      },
-      any: function() {
-        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-      }
     };
 
     // Detect protocol

@@ -214,4 +214,18 @@ describe("Unit: Controllers", function() {
 
   });
 
+  describe('Send Controller', function() {
+    var sendCtrl;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      sendCtrl = $controller('SendController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should have a SendController', function() {
+      expect(scope.isMobile).not.to.equal(null);
+    });
+  });
+
 });
