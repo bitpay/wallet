@@ -2,16 +2,23 @@
 
 var imports = require('soop').imports();
 
+var http = require('http');
+var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var async = require('async');
+var preconditions = require('preconditions').instance();
+
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
 var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
 var Builder = bitcore.TransactionBuilder;
-var http = require('http');
-var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
-var copay = copay || require('../../../copay');
 var SecureRandom = bitcore.SecureRandom;
 var Base58Check = bitcore.Base58.base58Check;
+
+var AddressIndex = require('./AddressIndex');
+var PublicKeyRing = require('./PublicKeyRing');
+var TxProposals = require('./TxProposals');
+var PrivateKey = require('./PrivateKey');
 
 function Wallet(opts) {
   var self = this;
@@ -75,7 +82,7 @@ Wallet.prototype.connectToAll = function() {
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
-  var inIndexes = copay.AddressIndex.fromObj(data.indexes);
+  var inIndexes = AddressIndex.fromObj(data.indexes);
   var hasChanged = this.publicKeyRing.indexes.merge(inIndexes);
   if (hasChanged) {
     this.emit('publicKeyRingUpdated');
@@ -86,7 +93,7 @@ Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
 Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
-  var inPKR = copay.PublicKeyRing.fromObj(data.publicKeyRing);
+  var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
   var hasChanged;
 
@@ -111,31 +118,17 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-Wallet.prototype._handleTxProposals = function(senderId, data, isInbound) {
+Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL:', data);
 
-  var recipients;
-  var inTxp = copay.TxProposals.fromObj(data.txProposals);
-  var ids = inTxp.getNtxids();
+  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
 
-  if (ids.length > 1) {
-    this.emit('badMessage', senderId);
-    this.log('Received BAD TxProposal messsage FROM:', senderId); //TODO
-    return;
-  }
+  var mergeInfo = this.txProposals.merge(inTxp);
+  var added = this.addSeenToTxProposals();
 
-  var newId = ids[0];
-  var mergeInfo = this.txProposals.merge(inTxp, true);
-  var addSeen = this.addSeenToTxProposals();
-  if (mergeInfo.hasChanged || addSeen) {
-    this.log('### BROADCASTING txProposals. ');
-    recipients = null;
-    this.sendTxProposals(recipients, newId);
-  }
-  if (data.lastInBatch) {
-    this.emit('txProposalsUpdated');
-    this.store();
-  }
+  this.emit('txProposalsUpdated');
+  this.store();
+
   for (var i = 0; i < mergeInfo.events.length; i++) {
     this.emit('txProposalEvent', mergeInfo.events[i]);
   }
@@ -179,14 +172,14 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
-      this.sendTxProposals(senderId); // send old
       this.sendAddressBook(senderId);
+      this.sendAllTxProposals(senderId); // send old txps
       break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
       break;
-    case 'txProposals':
-      this._handleTxProposals(senderId, data, isInbound);
+    case 'txProposal':
+      this._handleTxProposal(senderId, data, isInbound);
       break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
@@ -368,10 +361,10 @@ Wallet.prototype.toObj = function() {
 
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
-  opts.publicKeyRing = copay.PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = copay.TxProposals.fromObj(o.txProposals);
-  opts.privateKey = copay.PrivateKey.fromObj(o.privateKey);
   opts.addressBook = o.addressBook;
+  opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
+  opts.txProposals = TxProposals.fromObj(o.txProposals);
+  opts.privateKey = PrivateKey.fromObj(o.privateKey);
 
   opts.storage = storage;
   opts.network = network;
@@ -387,23 +380,23 @@ Wallet.prototype.toEncryptedObj = function() {
   return this.storage.export(walletObj);
 };
 
-Wallet.prototype.sendTxProposals = function(recipients, ntxid) {
-  this.log('### SENDING txProposals TO:', recipients || 'All', this.txProposals);
-
-  var toSend = ntxid ? [ntxid] : this.txProposals.getNtxids();
-
-  var last = toSend[toSend];
-
-  for (var i in toSend) {
-    var id = toSend[i];
-    var lastInBatch = (i == toSend.length - 1);
-    this.network.send(recipients, {
-      type: 'txProposals',
-      txProposals: this.txProposals.toObj(id),
-      walletId: this.id,
-      lastInBatch: lastInBatch,
-    });
+Wallet.prototype.sendAllTxProposals = function(recipients) {
+  var ntxids = this.txProposals.getNtxids();
+  for (var i in ntxids) {
+    var ntxid = ntxids[i];
+    this.sendTxProposal(ntxid, recipients);
   }
+};
+
+Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
+  preconditions.checkArgument(ntxid);
+  preconditions.checkState(this.txProposals.txps[ntxid]);
+  this.log('### SENDING txProposal '+ntxid+' TO:', recipients || 'All', this.txProposals);
+  this.network.send(recipients, {
+    type: 'txProposal',
+    txProposal: this.txProposals.txps[ntxid].toObj(),
+    walletId: this.id,
+  });
 };
 
 Wallet.prototype.sendWalletReady = function(recipients) {
@@ -478,14 +471,15 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
   var copayers = this.getRegisteredCopayerIds();
-  for (var k in this.txProposals.txps) {
-    var i = this.txProposals.getTxProposal(k, copayers);
-    i.signedByUs = i.signedBy[this.getMyCopayerId()] ? true : false;
-    i.rejectedByUs = i.rejectedBy[this.getMyCopayerId()] ? true : false;
-    if (this.totalCopayers - i.rejectCount < this.requiredCopayers)
-      i.finallyRejected = true;
+  for (var ntxid in this.txProposals.txps) {
+    var txp = this.txProposals.getTxProposal(ntxid, copayers);
+    txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
+    txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
+    if (this.totalCopayers - txp.rejectCount < this.requiredCopayers) {
+      txp.finallyRejected = true;
+    }
 
-    ret.push(i);
+    ret.push(txp);
   }
   return ret;
 };
@@ -499,7 +493,7 @@ Wallet.prototype.reject = function(ntxid) {
   }
 
   txp.rejectedBy[myId] = Date.now();
-  this.sendTxProposals(null, ntxid);
+  this.sendTxProposal(ntxid);
   this.store();
   this.emit('txProposalsUpdated');
 };
@@ -524,7 +518,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
     var ret = false;
     if (b.signaturesAdded > before) {
       txp.signedBy[myId] = Date.now();
-      self.sendTxProposals(null, ntxid);
+      self.sendTxProposal(ntxid);
       self.store();
       self.emit('txProposalsUpdated');
       ret = true;
@@ -552,7 +546,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     self.log('BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.setSent(ntxid, txid);
-      self.sendTxProposals(null, ntxid);
+      self.sendTxProposal(ntxid);
       self.store();
     }
     return cb(txid);
@@ -679,7 +673,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
     if (ntxid) {
       self.sendIndexes();
-      self.sendTxProposals(null, ntxid);
+      self.sendTxProposal(ntxid);
       self.store();
       self.emit('txProposalsUpdated');
     }
@@ -748,6 +742,71 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var ntxid = this.txProposals.add(data);
   return ntxid;
 };
+
+Wallet.prototype.updateIndexes = function(callback) {
+  var self = this;
+  var start = self.publicKeyRing.indexes.changeIndex;
+  self.indexDiscovery(start, true, 20, function(err, changeIndex) {
+    if (err) return callback(err);
+    if (changeIndex != -1)
+      self.publicKeyRing.indexes.changeIndex = changeIndex + 1;
+
+    start = self.publicKeyRing.indexes.receiveIndex;
+    self.indexDiscovery(start, false, 20, function(err, receiveIndex) {
+      if (err) return callback(err);
+      if (receiveIndex != -1)
+        self.publicKeyRing.indexes.receiveIndex = receiveIndex + 1;
+
+      self.emit('publicKeyRingUpdated');
+      self.store();
+      callback();
+    });
+  });
+}
+
+Wallet.prototype.deriveAddresses = function(index, amout, isChange) {
+  var ret = new Array(amout);
+  for(var i = 0; i < amout; i++) {
+    ret[i] = this.publicKeyRing.getAddress(index + i, isChange).toString();
+  }
+  return ret;
+}
+
+// This function scans the publicKeyRing branch starting at index @start and reports the index with last activity,
+// using a scan window of @gap. The argument @change defines the branch to scan: internal or external.
+// Returns -1 if no activity is found in range.
+Wallet.prototype.indexDiscovery = function(start, change, gap, cb) {
+  var scanIndex = start;
+  var lastActive = -1;
+  var hasActivity = false;
+
+  var self = this;
+  async.doWhilst(
+    function _do(next) {
+      // Optimize window to minimize the derivations.
+      var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
+      var addresses = self.deriveAddresses(scanIndex, scanWindow, change);
+      self.blockchain.checkActivity(addresses, function(err, actives){
+        if (err) throw err;
+
+        // Check for new activities in the newlly scanned addresses
+        var recentActive = actives.reduce(function(r, e, i) {
+          return e ? scanIndex + i : r;
+        }, lastActive);
+        hasActivity = lastActive != recentActive;
+        lastActive = recentActive;
+        scanIndex += scanWindow;
+        next();
+      });
+    },
+    function _while() { return hasActivity; },
+    function _finnaly(err) {
+      if (err) return cb(err);
+      cb(null, lastActive);
+    }
+  );
+}
+
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');

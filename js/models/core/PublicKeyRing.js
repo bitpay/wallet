@@ -157,8 +157,6 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange) {
 
 // TODO this could be cached
 PublicKeyRing.prototype.getRedeemScript = function (index, isChange) {
-  this.indexes.checkRange(index, isChange);
-
   var pubKeys = this.getPubKeys(index, isChange);
   var script  = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;

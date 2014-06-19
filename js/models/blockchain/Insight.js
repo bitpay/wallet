@@ -159,6 +159,27 @@ Insight.prototype.sendRawTransaction = function(rawtx, cb) {
   });
 };
 
+Insight.prototype.checkActivity = function(addresses, cb) {
+  if (!addresses) throw new Error('address must be set');
+
+  this.getTransactions(addresses, function onResult(txs) {
+    var flatArray =  function (xss) { return xss.reduce(function(r, xs) { return r.concat(xs); }, []); };
+    var getInputs = function (t) { return t.vin.map(function (vin) { return vin.addr }); };
+    var getOutputs = function (t) { return flatArray(
+      t.vout.map(function (vout) { return vout.scriptPubKey.addresses; })
+    );};
+
+    var activityMap = new Array(addresses.length);
+    var activeAddress = flatArray(txs.map(function(t) { return getInputs(t).concat(getOutputs(t)); }));
+    activeAddress.forEach(function (addr) {
+      var index = addresses.indexOf(addr);
+      if (index != -1) activityMap[index] = true;
+    });
+
+    cb(null, activityMap);
+  });
+};
+
 Insight.prototype._request = function(options, callback) {
 
 

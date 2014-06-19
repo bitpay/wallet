@@ -6,21 +6,16 @@ angular.module('copayApp.controllers').controller('ImportController',
     var reader = new FileReader();
     var _importBackup = function(encryptedObj) {
       Passphrase.getBase64Async($scope.password, function(passphrase){
-        var w, errMsg;
-        try {
-          w = walletFactory.fromEncryptedObj(encryptedObj, passphrase);
-        } catch(e) {
-          errMsg = e.message;
-        }
-        if (!w) {
-          $scope.loading = false;
-          $rootScope.$flashMessage = { message: errMsg || 'Wrong password', type: 'error'};
-          $rootScope.$digest();
-          return;
-        }
-        $rootScope.wallet = w;
-
-        controllerUtils.startNetwork($rootScope.wallet, $scope);
+        walletFactory.import(encryptedObj, passphrase, function(err, w) {
+          if (err) {
+            $scope.loading = false;
+            $rootScope.$flashMessage = { message: err.errMsg || 'Wrong password', type: 'error'};
+            $rootScope.$digest();
+            return;
+          }
+          $rootScope.wallet = w;
+          controllerUtils.startNetwork($rootScope.wallet, $scope);
+        });
       });
     };
 

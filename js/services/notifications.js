@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.services').
-  factory('$notification', ['$timeout',function($timeout){
+  factory('notification', ['$timeout',function($timeout){
 
-    var notifications = JSON.parse(localStorage.getItem('$notifications')) || [],
+    var notifications = JSON.parse(localStorage.getItem('notifications')) || [],
         queue = [];
 
     var settings = {
@@ -186,7 +186,7 @@ angular.module('copayApp.services').
       save: function(){
         // Save all the notifications into localStorage
         if(settings.localStorage){
-          localStorage.setItem('$notifications', JSON.stringify(notifications));
+          localStorage.setItem('notifications', JSON.stringify(notifications));
         }
       },
 
@@ -201,7 +201,7 @@ angular.module('copayApp.services').
 
     };
   }]).
-  directive('notifications', ['$notification', '$compile', function($notification, $compile){
+  directive('notifications', function(notification, $compile){
     /**
      *
      * It should also parse the arguments passed to it that specify
@@ -245,7 +245,7 @@ angular.module('copayApp.services').
       template: html,
       link: link,
       controller: ['$scope', function NotificationsCtrl( $scope ){
-        $scope.queue = $notification.getQueue();
+        $scope.queue = notification.getQueue();
 
         $scope.removeNotification = function(noti){
           $scope.queue.splice($scope.queue.indexOf(noti), 1);
@@ -254,4 +254,9 @@ angular.module('copayApp.services').
     ]
 
     };
-  }]);
+  });
+
+
+
+
+
