@@ -254,4 +254,7 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
+    $scope.topAmount = function() {
+      alert('hello');
+    };
   });

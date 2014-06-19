@@ -646,6 +646,7 @@
                   <div class="row collapse">
                     <label for="amount">Amount
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
+                      <i class="fi-arrow-up" ng-click="topAmount()"></i>
                       <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">Valid</small>
                       <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount">
                         Not valid
