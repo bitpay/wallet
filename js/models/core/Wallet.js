@@ -45,12 +45,13 @@ function Wallet(opts) {
     this.token = opts.token;
     this.tokenTime = opts.tokenTime;
   }
-
+  
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
   this.network.maxPeers = this.totalCopayers;
   this.registeredPeerIds = [];
+  this.addressBook = opts.addressBook || {};
 }
 
 Wallet.parent = EventEmitter;
@@ -133,6 +134,28 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   }
 };
 
+Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
+  this.log('RECV ADDRESSBOOK:', data);
+  var rcv = data.addressBook;
+  var hasChange;
+  for(var key in rcv) {
+    if (!this.addressBook[key]) {
+      this.addressBook[key] = rcv[key];
+      hasChange = true;
+    }
+    else {
+      if (rcv[key].createdTs > this.addressBook[key].createdTs) {
+        this.addressBook[key] = rcv[key];
+        hasChange = true;
+      }
+    }
+  }
+  if (hasChange) {
+    this.emit('addressBookUpdated');
+    this.store();
+  }
+};
+
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
   // TODO check message signature
@@ -149,6 +172,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
+      this.sendAddressBook(senderId);
       this.sendAllTxProposals(senderId); // send old txps
       break;
     case 'publicKeyRing':
@@ -159,6 +183,9 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
+      break;
+    case 'addressbook':
+      this._handleAddressBook(senderId, data, isInbound);
       break;
   }
 };
@@ -325,7 +352,8 @@ Wallet.prototype.toObj = function() {
     opts: optsObj,
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
-    privateKey: this.privateKey ? this.privateKey.toObj() : undefined
+    privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
+    addressBook: this.addressBook
   };
 
   return walletObj;
@@ -333,6 +361,7 @@ Wallet.prototype.toObj = function() {
 
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
+  opts.addressBook = o.addressBook;
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
   opts.txProposals = TxProposals.fromObj(o.txProposals);
   opts.privateKey = PrivateKey.fromObj(o.privateKey);
@@ -408,6 +437,15 @@ Wallet.prototype.sendIndexes = function(recipients) {
   this.network.send(recipients, {
     type: 'indexes',
     indexes: this.publicKeyRing.indexes.toObj(),
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendAddressBook = function(recipients) {
+  this.log('### SENDING addressBook TO:', recipients || 'All', this.addressBook);
+  this.network.send(recipients, {
+    type: 'addressbook',
+    addressBook: this.addressBook,
     walletId: this.id,
   });
 };
@@ -777,6 +815,33 @@ Wallet.prototype.disconnect = function() {
 
 Wallet.prototype.getNetwork = function() {
   return this.network;
+};
+
+Wallet.prototype._checkAddressBook = function(key) {
+  if (this.addressBook[key] && this.addressBook[key].copayerId != -1) {
+    throw new Error('This address already exists in your Address Book: ' + address);
+  }
+};
+
+Wallet.prototype.setAddressBook = function(key, label) {
+  this._checkAddressBook(key);
+  var addressbook = {
+    createdTs: Date.now(),
+    copayerId: this.getMyCopayerId(),
+    label: label
+  };
+  this.addressBook[key] = addressbook;
+  this.sendAddressBook();
+  this.store();
+};
+
+Wallet.prototype.deleteAddressBook = function(key) {
+  if (key) {
+    this.addressBook[key].copayerId = -1;
+    this.addressBook[key].createdTs = Date.now();
+    this.sendAddressBook();
+    this.store();
+  }
 };
 
 module.exports = require('soop')(Wallet);
