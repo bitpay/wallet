@@ -3,6 +3,8 @@
 //
 //
 //
+var sinon = require('sinon');
+
 describe('Check config', function() {
   it('unit should be set to BITS in config.js', function() {
     expect(config.unitToSatoshi).to.equal(100);
@@ -87,9 +89,14 @@ describe("Unit: controllerUtils", function() {
 
 });
 
+describe("Unit: Notification Service", function() {
+  beforeEach(angular.mock.module('copayApp.services'));
+  it('should contain a notification service', inject(function(notification) {
+    expect(notification).not.to.equal(null);
+  }));
+});
 
 describe("Unit: Backup Service", function() {
-  var sinon = require('sinon');
   beforeEach(angular.mock.module('copayApp.services'));
   it('should contain a backup service', inject(function(backupService) {
     expect(backupService).not.to.equal(null);
