@@ -6,6 +6,13 @@ var FakeWallet = function() {
     '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000
   };
   this.name = 'myTESTwullet';
+  this.addressBook = { 
+    '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ' : {
+      label: 'John',
+      copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+      createdTs: 1403102115,
+    }
+  };
 };
 
 FakeWallet.prototype.set = function(balance, safeBalance, balanceByAddr) {

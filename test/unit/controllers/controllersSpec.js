@@ -21,10 +21,8 @@ describe("Unit: Controllers", function() {
     totalCopayers: 5,
     spendUnconfirmed: 1,
     reconnectDelay: 100,
-    networkName: 'testnet',
+    networkName: 'testnet' 
   };
-
-
 
   describe('Backup Controller', function() {
     var ctrl;
@@ -79,7 +77,7 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Transactions Controller', function() {
-    var transactionCtrl;
+    var transactionsCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
       transactionsCtrl = $controller('TransactionsController', {
@@ -95,6 +93,61 @@ describe("Unit: Controllers", function() {
       scope.getTransactions();
       expect(scope.blockchain_txs).to.be.empty;
     });
+  });
+
+  describe('Send Controller', function() {
+    var scope, form;
+    beforeEach(angular.mock.module('copayApp'));
+    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller){
+      scope = $rootScope.$new();
+      $rootScope.wallet = new FakeWallet(config);
+      var element = angular.element(
+        '<form name="form">' +
+        '<input type="text" id="newaddress" name="newaddress" ng-disabled="loading" placeholder="Address" ng-model="newaddress" valid-address required>' +
+        '<input type="text" id="newlabel" name="newlabel" ng-disabled="loading" placeholder="Label" ng-model="newlabel" required>' +
+        '</form>'
+      );
+      scope.model = {
+        newaddress: null,
+        newlabel: null
+      };
+      $compile(element)(scope);
+      $controller('SendController', {$scope: scope});
+      scope.$digest();
+      form = scope.form;
+    }));
+
+    it('should have a SendController controller', function() {
+      expect(scope.loading).equal(false);
+    });
+
+    it('should have a title', function() {
+      expect(scope.title).equal('Send');
+    });
+
+    it('should return true if wallet has addressBook', function() {
+      expect(scope.showAddressBook()).equal(true);
+    });
+
+    it('should validate address', function() {
+      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      expect(form.newaddress.$invalid).to.equal(false);
+    });
+
+    it('should not validate address', function() {
+      form.newaddress.$setViewValue('thisisaninvalidaddress');
+      expect(form.newaddress.$invalid).to.equal(true);
+    });
+
+    it('should validate label', function() {
+      form.newlabel.$setViewValue('John');
+      expect(form.newlabel.$invalid).to.equal(false);
+    });
+
+    it('should not validate label', function() {
+      expect(form.newlabel.$invalid).to.equal(true);
+    });
+
   });
 
   describe("Unit: Header Controller", function() {
