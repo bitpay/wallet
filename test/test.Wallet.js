@@ -646,4 +646,25 @@ describe('Wallet model', function() {
     w.addressBook[key].copayerId.should.equal(-1);
   });
 
+  it('handle network addressBook correctly', function() {
+    var w = createW();
+    var data = {
+      walletId: w.id,
+      addressBook: { 
+        'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx' : {
+          label: 'Faucet',
+          copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+          createdTs: 1403102115,
+        }
+      },
+      type: 'addressbook'
+    };
+    Object.keys(w.addressBook).length.should.equal(2);
+    w._handleAddressBook('senderID', data, true);
+    Object.keys(w.addressBook).length.should.equal(3);
+    data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].createdTs = 1403102215;
+    w._handleAddressBook('senderID', data, true);
+    Object.keys(w.addressBook).length.should.equal(3);
+  });
+
 });
