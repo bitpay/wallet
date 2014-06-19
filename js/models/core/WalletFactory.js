@@ -71,13 +71,18 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
   var w = this.fromObj(walletObj);
-  var self = this;
-  w.updateIndexes(function(err) {
-    if (err) throw err;
-    self.log('Indexes updated');
-  });
   return w;
 };
+
+WalletFactory.prototype.import = function(base64, password, cb) {
+  var self = this;
+  var w = self.fromEncryptedObj(base64, password);
+  w.updateIndexes(function(err) {
+    if (err) return cb(err);
+    self.log('Indexes updated');
+    cb(null, w);
+  });
+}
 
 WalletFactory.prototype.read = function(walletId) {
   if (!this._checkRead(walletId))
