@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('notifications', []).
+angular.module('copayApp.services').
   factory('$notification', ['$timeout',function($timeout){
 
     var notifications = JSON.parse(localStorage.getItem('$notifications')) || [],
