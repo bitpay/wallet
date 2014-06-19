@@ -58,64 +58,71 @@ describe('Insight model', function() {
     var i = new Insight();
     should.exist(i);
   });
-  it.skip('should return array of unspent output', function(done) {
-    var i = new Insight();
+
+  // Tests for Node
+  if (process.version) {
+    it('should return array of unspent output', function(done) {
+      var i = new Insight();
 
 
-    var http = require('http');
-    var request = {
-      statusCode: 200
-    };
-
-    request.on = function(event, cb) {
-      if (event === 'error') return;
-      if (event === 'data') return {
-        hola: 'chau'
+      var http = require('http');
+      var request = {
+        statusCode: 200
       };
-      return cb();
-    };
 
-    var req = {};
-    req.write = function() {};
-    req.end = function() {};
-
-
-    sinon
-      .stub(http, 'request')
-      .returns(req)
-      .yields(request);
-
-    i.getUnspent(['2MuD5LnZSViZZYwZbpVsagwrH8WWvCztdmV', '2NBSLoMvsHsf2Uv3LA17zV4beH6Gze6RovA'], function(e, ret) {
-      should.not.exist(e);
-      should.exist(ret);
-      done();
-    });
-  });
-
-  it.skip('should return txid', function(done) {
-    var i = new Insight();
-
-    var http = require('http');
-    var request = {
-      statusCode: 200
-    };
-
-    request.on = function(event, cb) {
-      if (event === 'error') return;
-      if (event === 'data') return {
-        hola: 'chau'
+      request.on = function(event, cb) {
+        if (event === 'error') return;
+        if (event === 'data') return cb(JSON.stringify(unspent));
+        return cb();
       };
-      return cb();
-    };
 
-    var req = {};
-    req.write = function() {};
-    req.end = function() {};
+      var req = {};
+      req.write = function() {};
+      req.end = function() {};
 
 
-    i.sendRawTransaction(rawtx, function(a) {
-      should.exist(a);
-      done();
+      sinon
+        .stub(http, 'request')
+        .returns(req)
+        .yields(request);
+
+      i.getUnspent(['2MuD5LnZSViZZYwZbpVsagwrH8WWvCztdmV', '2NBSLoMvsHsf2Uv3LA17zV4beH6Gze6RovA'], function(e, ret) {
+        should.not.exist(e);
+        ret.should.deep.equal(unspent);
+        http.request.restore();
+        done();
+      });
     });
-  });
+
+    it('should return txid', function(done) {
+      var i = new Insight();
+
+      var http = require('http');
+      var request = {
+        statusCode: 200
+      };
+
+      request.on = function(event, cb) {
+        if (event === 'error') return;
+        if (event === 'data') return cb('{ "txid": "1234" }');
+        return cb();
+      };
+
+      var req = {};
+      req.write = function() {};
+      req.end = function() {};
+
+      sinon
+        .stub(http, 'request')
+        .returns(req)
+        .yields(request);
+
+      i.sendRawTransaction(rawtx, function(a) {
+        should.exist(a);
+        a.should.equal('1234');
+        http.request.restore();
+        done();
+      });
+    });
+  }
 });
