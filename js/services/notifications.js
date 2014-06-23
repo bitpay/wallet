@@ -110,23 +110,23 @@ angular.module('copayApp.services').
       /* ============== NOTIFICATION METHODS ==============*/
 
       info: function(title, content, userData){
-        return this.awesomeNotify('info','loop', title, content, userData);
+        return this.awesomeNotify('info', 'info', title, content, userData);
       },
       
       funds: function(title, content, userData){
-        return this.awesomeNotify('funds','bitcoin', title, content, userData);
+        return this.awesomeNotify('funds', 'bitcoin', title, content, userData);
       },
 
       error: function(title, content, userData){
-        return this.awesomeNotify('error', 'remove', title, content, userData);
+        return this.awesomeNotify('error', 'x', title, content, userData);
       },
 
       success: function(title, content, userData){
-        return this.awesomeNotify('success', 'ok', title, content, userData);
+        return this.awesomeNotify('success', 'check', title, content, userData);
       },
 
       warning: function(title, content, userData){
-        return this.awesomeNotify('warning', 'exclamation', title, content, userData);
+        return this.awesomeNotify('warning', 'alert', title, content, userData);
       },
 
       awesomeNotify: function(type, icon, title, content, userData){

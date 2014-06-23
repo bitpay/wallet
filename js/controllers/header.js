@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
       'link': '#/addresses'
     }, {
       'title': 'Transactions',
-      'icon': 'fi-loop',
+      'icon': 'fi-clipboard-pencil',
       'link': '#/transactions'
     }, {
       'title': 'Send',
