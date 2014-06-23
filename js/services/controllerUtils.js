@@ -292,6 +292,15 @@ angular.module('copayApp.services')
           });
         });
       });
+
+      if (!$rootScope.wallet.spendUnconfirmed && !Socket.isListeningBlocks()) {
+        Socket.emit('subscribe', 'inv');
+        Socket.on('block', function(block) {
+          root.updateBalance(function() {
+              $rootScope.$digest();
+          });
+        });
+      }
     };
     return root;
   });
