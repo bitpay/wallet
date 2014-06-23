@@ -41,6 +41,14 @@ describe("Unit: Socket Service", function() {
     expect(Object.keys(ret)).to.have.length(2);
   }));
 
+  it('Socket should support block event', inject(function(Socket) {
+    expect(Socket.isListeningBlocks()).to.be.false;
+    Socket.on('block', function() {});
+    expect(Socket.isListeningBlocks()).to.be.true;
+    Socket.removeAllListeners();
+    expect(Socket.isListeningBlocks()).to.be.false;
+  }));
+
   it('Socket should support #removeAllListeners', inject(function(Socket) {
     Socket.on('a', function() {});
     Socket.on('b', function() {});
