@@ -647,7 +647,8 @@ Wallet.prototype.getUnspent = function(cb) {
 
     for (var i in unspentList) {
       var u = unspentList[i];
-      if (!uu[u.txid + ',' + u.vout])
+      var name = u.txid + ',' + u.vout;
+      if (!uu[name] && (self.spendUnconfirmed || u.confirmations >= 1))
         safeUnspendList.push(u);
     }
 
