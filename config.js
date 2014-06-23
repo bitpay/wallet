@@ -89,7 +89,7 @@ var defaultConfig = {
   wallet: {
     requiredCopayers: 2,
     totalCopayers: 3,
-    spendUnconfirmed: 1,
+    spendUnconfirmed: true,
     verbose: 1,
     reconnectDelay: 5000,
   },

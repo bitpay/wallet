@@ -26,7 +26,7 @@ describe('Wallet model', function() {
   var config = {
     requiredCopayers: 3,
     totalCopayers: 5,
-    spendUnconfirmed: 1,
+    spendUnconfirmed: true,
     reconnectDelay: 100,
     networkName: 'testnet',
   };
@@ -42,9 +42,9 @@ describe('Wallet model', function() {
     w.getNetworkName().should.equal('testnet');
   });
 
-  var createW = function(netKey, N) {
+  var createW = function(netKey, N, conf) {
 
-    var c = JSON.parse(JSON.stringify(config));
+    var c = JSON.parse(JSON.stringify(conf || config));
     if (!N) N = c.totalCopayers;
 
     if (netKey) c.netKey = netKey;
@@ -122,10 +122,10 @@ describe('Wallet model', function() {
     "confirmations": 7
   }];
 
-  var createW2 = function(privateKeys, N) {
+  var createW2 = function(privateKeys, N, conf) {
     if (!N) N = 3;
     var netKey = 'T0FbU2JLby0=';
-    var w = createW(netKey, N);
+    var w = createW(netKey, N, conf);
     should.exist(w);
 
     var pkr = w.publicKeyRing;
@@ -463,6 +463,31 @@ describe('Wallet model', function() {
       safeBalance.should.equal(2500010000);
       balanceByAddr.mji7zocy8QzYywQakwWf99w9bCT6orY1C1.should.equal(2500010000);
       Object.keys(balanceByAddr).length.should.equal(1);
+      done();
+    });
+  });
+
+  it('#getUnspent should honor spendUnconfirmed = false', function(done) {
+    var conf = JSON.parse(JSON.stringify(config));
+    conf.spendUnconfirmed = false;
+    var w = createW2(null, null, conf);
+    w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+      balance.should.equal(2500010000);
+      safeBalance.should.equal(0);
+      balanceByAddr.mji7zocy8QzYywQakwWf99w9bCT6orY1C1.should.equal(2500010000);
+      done();
+    });
+  });
+
+  it('#getUnspent and spendUnconfirmed should count transactions with 1 confirmations', function(done) {
+    var conf = JSON.parse(JSON.stringify(config));
+    conf.spendUnconfirmed = false;
+    var w = createW2(null, null, conf);
+    w.blockchain.getUnspent = w.blockchain.getUnspent2;
+    w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
+      balance.should.equal(2500010000);
+      safeBalance.should.equal(2500010000);
+      balanceByAddr.mji7zocy8QzYywQakwWf99w9bCT6orY1C1.should.equal(2500010000);
       done();
     });
   });
