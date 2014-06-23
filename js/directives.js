@@ -122,6 +122,23 @@ angular.module('copayApp.directives')
       }
     }
   })
+  .directive('contact', function() {
+    return {
+      restrict: 'E',
+      link:function(scope, element, attrs) {
+        if (!scope.wallet) return;
+
+        var address = attrs.address;
+        var contact = scope.wallet.addressBook[address];
+        if (contact) {
+          element.append(contact.label);
+          attrs['tooltip'] = attrs.address;
+        } else {
+          element.append(address);
+        }
+      }
+   };
+  })
   .directive('highlightOnChange', function() {
     return {
       restrict: 'A',
