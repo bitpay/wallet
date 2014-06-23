@@ -220,6 +220,7 @@ describe("Unit: Controllers", function() {
     var sendCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
+      $rootScope.availableBalance = 123456;
       sendCtrl = $controller('SendController', {
         $scope: scope,
         $modal: {},
@@ -228,6 +229,10 @@ describe("Unit: Controllers", function() {
 
     it('should have a SendController', function() {
       expect(scope.isMobile).not.to.equal(null);
+    });
+    it('should autotop balance correctly', function() {
+      scope.topAmount();
+      expect(scope.amount).to.equal(123356);
     });
   });
 
