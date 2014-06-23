@@ -784,16 +784,16 @@
     <script type="text/ng-template" id="backup.html">
       <div class="backup" ng-controller="BackupController">
         <h3>{{title}}</h3>
-        <div class="row text-center">
-          <div class="large-6 medium-6 columns">
-            <a class="panel radius box-backup" ng-click="download()">
+        <div class="row">
+          <div class="large-4 medium-6 columns large-centered medium-centered">
+            <a class="panel radius box-backup text-center" ng-click="download()">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
-          <div class="row text-center small" style="margin-top:70px">
-            <div class="button  radius warning" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()">Delete this wallet from this computer</div>
-          </div>
+        </div>
+        <div class="row text-center">
+          <div class="button radius warning small m30v" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()">Delete this wallet from this computer</div>
         </div>
       </div>
     </script>
