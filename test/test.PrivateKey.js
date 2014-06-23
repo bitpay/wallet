@@ -70,11 +70,6 @@ describe('PrivateKey model', function() {
     }
   });
 
-  it('should calculate .id', function () {
-    var w1 = new PrivateKey(config);
-    should.exist(w1.getId());
-    w1.getId().length.should.equal(66);
-  });
   it('fromObj toObj roundtrip', function () {
     var w1 = new PrivateKey(config);
     var o = JSON.parse(JSON.stringify(w1.toObj()))
@@ -89,5 +84,45 @@ describe('PrivateKey model', function() {
       .equal(JSON.stringify(w1.get(1,0).storeObj()));
   });
  
+  describe('#getId', function() {
+    it('should calculate the copayerId', function() {
+      var w1 = new PrivateKey(config);
+      should.exist(w1.getId());
+      w1.getId().length.should.equal(33*2);
+    });
+  });
+
+  describe('#getIdPriv', function() {
+    it('should calculate .id', function() {
+      var w1 = new PrivateKey(config);
+      should.exist(w1.getIdPriv());
+      w1.getIdPriv().length.should.equal(32*2);
+    });
+  });
+
+  describe('#cacheId', function() {
+    it('should set .id and .idpriv', function() {
+      var w1 = new PrivateKey(config);
+      w1.cacheId();
+      var pub = w1.id;
+      var priv = w1.idpriv;
+      pub.length.should.equal(33*2);
+      priv.length.should.equal(32*2);
+    });
+
+    it('should set the id equal to the public key of the idpriv private key', function() {
+      var w1 = new PrivateKey(config);
+      w1.cacheId();
+      var pub = w1.id;
+      var priv = w1.idpriv;
+      pub.length.should.equal(33*2);
+      priv.length.should.equal(32*2);
+
+      var key1 = new bitcore.Key();
+      key1.private = new bitcore.Buffer(priv, 'hex');
+      key1.regenerateSync();
+      key1.public.toString('hex').should.equal(pub);
+    });
+  });
 
 });
