@@ -38,12 +38,16 @@ angular.module('copayApp.services').factory('Socket',
         var ret = {};
 
         var addrList = listeners
+          .filter(function(i) { return i.event != 'block'; })
           .map(function(i) {return i.event;});
 
         for (var i in addrList) {
           ret[addrList[i]] = 1;
         }
         return ret;
+      },
+      isListeningBlocks: function() {
+        return listeners.filter(function(i) { return i.event == 'block'; }).length > 0;
       },
       emit: function(event, data, callback) {
         socket.emit(event, data, function() {
