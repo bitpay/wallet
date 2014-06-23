@@ -220,6 +220,7 @@ describe("Unit: Controllers", function() {
       scope = $rootScope.$new();
       sendCtrl = $controller('SendController', {
         $scope: scope,
+        $modal: {},
       });
     }));
 
