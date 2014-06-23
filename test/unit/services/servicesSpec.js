@@ -108,3 +108,19 @@ describe("Unit: Backup Service", function() {
     expectation.once();
   }));
 });
+
+describe("Unit: isMobile Service", function() {
+  beforeEach(angular.mock.module('copayApp.services'));
+  it('should contain a isMobile service', inject(function(isMobile) {
+    expect(isMobile).not.to.equal(null);
+  }));
+  it('should not detect mobile by default', inject(function(isMobile) {
+    isMobile.any().should.equal(false);
+  }));
+  it('should detect mobile if user agent is Android', inject(function(isMobile) {
+    navigator.__defineGetter__('userAgent', function(){
+      return 'Android 2.2.3';
+    });
+    isMobile.any().should.equal(true);
+  }));
+});
