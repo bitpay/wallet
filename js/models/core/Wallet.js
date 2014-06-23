@@ -38,7 +38,6 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
-  this.netKey = opts.netKey || SecureRandom.getRandomBuffer(8).toString('base64');
 
   // Renew token every 24hs
   if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
@@ -216,7 +215,6 @@ Wallet.prototype._optsToObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     name: this.name,
-    netKey: this.netKey,
     version: this.version,
   };
 
@@ -235,26 +233,26 @@ Wallet.prototype.getCopayerId = function(index) {
 
 
 Wallet.prototype.getMyCopayerId = function() {
-  return this.getCopayerId(0);
+  return this.getCopayerId(0); //copayer id is hex of a public key
+};
+
+Wallet.prototype.getMyCopayerIdPriv = function() {
+  return this.privateKey.getIdPriv(); //copayer idpriv is hex of a private key
 };
 
 
 Wallet.prototype.getSecret = function() {
-  var i = new Buffer(this.getMyCopayerId(), 'hex');
-  var k = new Buffer(this.netKey, 'base64');
-  var b = Buffer.concat([i, k]);
-  var str = Base58Check.encode(b);
+  var pubkeybuf = new Buffer(this.getMyCopayerId(), 'hex');
+  var str = Base58Check.encode(pubkeybuf);
   return str;
 };
 
 
 Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
-  var netKeyBuf = secret.slice(-8);
   var pubKeyBuf = secret.slice(0, 33);
   return {
-    pubKey: pubKeyBuf.toString('hex'),
-    netKey: netKeyBuf.toString('base64'),
+    pubKey: pubKeyBuf.toString('hex')
   }
 };
 
@@ -262,7 +260,7 @@ Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
 
-Wallet.prototype.netStart = function() {
+Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
   net.removeAllListeners();
@@ -277,11 +275,12 @@ Wallet.prototype.netStart = function() {
   });
 
   var myId = self.getMyCopayerId();
+  var myIdPriv = self.getMyCopayerIdPriv();
   var startOpts = {
     copayerId: myId,
+    privkey: myIdPriv,
     token: self.token,
-    maxPeers: self.totalCopayers,
-    netKey: this.netKey,
+    maxPeers: self.totalCopayers
   };
 
   if (this.publicKeyRing.isComplete()) {

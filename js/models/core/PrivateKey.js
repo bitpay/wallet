@@ -20,11 +20,23 @@ function PrivateKey(opts) {
 
 PrivateKey.prototype.getId = function() {
   if (!this.id) {
-    var path = Structure.IdFullBranch;
-    var idhk = this.bip.derive(path);
-    this.id= idhk.eckey.public.toString('hex');
+    this.cacheId();
   }
   return this.id;
+};
+
+PrivateKey.prototype.getIdPriv = function() {
+  if (!this.idpriv) {
+    this.cacheId();
+  }
+  return this.idpriv;
+};
+
+PrivateKey.prototype.cacheId = function() {
+  var path = Structure.IdFullBranch;
+  var idhk = this.bip.derive(path);
+  this.id = idhk.eckey.public.toString('hex');
+  this.idpriv = idhk.eckey.private.toString('hex');
 };
 
 PrivateKey.prototype.deriveBIP45Branch = function() {

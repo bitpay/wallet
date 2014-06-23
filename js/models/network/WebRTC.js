@@ -1,3 +1,4 @@
+'use strict';
 
 var imports     = require('soop').imports();
 var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
@@ -43,7 +44,7 @@ Network.prototype.cleanUp = function() {
   this.started = false;
   this.connectedPeers = [];
   this.peerId = null;
-  this.netKey = null;
+  this.privkey = null; //TODO: hide privkey in a closure
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds=null;
@@ -125,11 +126,11 @@ Network.prototype._onClose = function(peerID) {
 
 Network.prototype.connectToCopayers = function(copayerIds) {
   var self = this;
-  var arrayDiff= Network._arrayDiff(copayerIds, this.connectedCopayers());
+  var arrayDiff= Network._arrayDiff(copayerIds, self.connectedCopayers());
 
   arrayDiff.forEach(function(copayerId) {
-    if (this.allowedCopayerIds && !this.allowedCopayerIds[copayerId]) {
-      this._deletePeer(this.peerFromCopayer(copayerId));
+    if (self.allowedCopayerIds && !self.allowedCopayerIds[copayerId]) {
+      self._deletePeer(self.peerFromCopayer(copayerId));
     } else {
       self.connectTo(copayerId);
     }
@@ -150,11 +151,15 @@ Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
   this.emit('connect', copayerId);
 };
 
-Network.prototype._onData = function(encStr, isInbound, peerId) {
+Network.prototype._onData = function(enchex, isInbound, peerId) {
   var sig, payload;
+  var encUint8Array = new Uint8Array(enchex);
+  var encbuf = new Buffer(encUint8Array);
+
+  var privkey = this.privkey;
 
   try { 
-    var data = this._decrypt(encStr);
+    var data = this._decrypt(privkey, encbuf);
     payload=  JSON.parse(data);
   } catch (e) {
     this._deletePeer(peerId);
@@ -300,7 +305,9 @@ Network.prototype.start = function(opts, openCallback) {
 
   if (this.started) return openCallback();
 
-  this.netKey = opts.netKey;
+  if (!this.privkey)
+    this.privkey = opts.privkey;
+
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   if (opts.token)
@@ -344,27 +351,15 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
-Network.prototype._encrypt = function(payloadStr) {
-  var plainText = sjcl.codec.utf8String.toBits(payloadStr);
-  var p = this.sjclParams;    
-  ct = sjcl.encrypt(this.netKey, plainText, p);//,p, rp);
-  var c = JSON.parse(ct);
-  var toSend = {
-    iv: c.iv,
-    ct: c.ct,
-  };
-  return JSON.stringify(toSend);
+Network.prototype._encrypt = function(pubkey, payload) {
+  var encrypted = bitcore.ECIES.encrypt(pubkey, payload);
+  return encrypted;
 };
 
 
-Network.prototype._decrypt = function(encStr) {
-  var i = JSON.parse(encStr);
-  for (var k in this.sjclParams) {
-    i[k] = this.sjclParams[k];
-  }
-  var str= JSON.stringify(i);
-  var pt = sjcl.decrypt(this.netKey, str);
-  return pt;
+Network.prototype._decrypt = function(privkey, encrypted) {
+  var decrypted = bitcore.ECIES.decrypt(privkey, encrypted);
+  return decrypted;
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
@@ -379,7 +374,7 @@ Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
 };
 
 Network.prototype.send = function(copayerIds, payload, cb) {
-  if (!payload || !this.netKey) return cb();
+  if (!payload) return cb();
 
   var self=this;
   if (!copayerIds) {
@@ -387,20 +382,22 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     payload.isBroadcast = 1;
   }
 
+  if (typeof copayerIds === 'string')
+    copayerIds = [copayerIds];
+
   var sig;
   var payloadStr = JSON.stringify(payload);
-  var encPayload = this._encrypt(payloadStr);
-  if (Array.isArray(copayerIds)) {
-    var l = copayerIds.length;
-    var i = 0;
-    copayerIds.forEach(function(copayerId) {
-      self._sendToOne(copayerId, encPayload, sig, function () {
-        if (++i === l && typeof cb === 'function') cb();
-      });
+  var payloadBuf = new Buffer(payloadStr);
+
+  var l = copayerIds.length;
+  var i = 0;
+  copayerIds.forEach(function(copayerId) {
+    var copayerIdBuf = new Buffer(copayerId, 'hex');
+    var encPayload = self._encrypt(copayerIdBuf, payloadBuf);
+    self._sendToOne(copayerId, encPayload, sig, function () {
+      if (++i === l && typeof cb === 'function') cb();
     });
-  }
-  else if (typeof copayerIds === 'string')
-    self._sendToOne(copayerIds, encPayload, sig, cb);
+  });
 };
 
 
