@@ -21,6 +21,10 @@ angular.module('copayApp.controllers').controller('HeaderController',
       'link': '#/backup'
     }];
 
+    $scope.getNumber = function(num) {
+      return new Array(num);
+    }
+
     $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data){
       var toInt = function (s) { return parseInt(s); };
       var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
