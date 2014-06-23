@@ -3,6 +3,7 @@
 
 
 var imports     = require('soop').imports();
+var preconditions = require('preconditions').instance();
 var bitcore     = require('bitcore');
 var HK          = bitcore.HierarchicalKey;
 var PrivateKey  = require('./PrivateKey');
@@ -62,6 +63,7 @@ PublicKeyRing.prototype.toObj = function() {
 };
 
 PublicKeyRing.prototype.getCopayerId = function(i) {
+  preconditions.checkArgument(typeof i !== 'undefined');
   return this.copayerIds[i];
 };
 

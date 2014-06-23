@@ -67,13 +67,13 @@ describe('Wallet model', function() {
     c.network = new Network(config.network);
     c.blockchain = new Blockchain(config.blockchain);
 
-    c.addressBook =  { 
-      '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ' : {
+    c.addressBook = {
+      '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
         label: 'John',
         copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
         createdTs: 1403102115,
-      }, 
-      '2MtP8WyiwG7ZdVWM96CVsk2M1N8zyfiVQsY' : {
+      },
+      '2MtP8WyiwG7ZdVWM96CVsk2M1N8zyfiVQsY': {
         label: 'Jennifer',
         copayerId: '032991f836543a492bd6d0bb112552bfc7c5f3b7d5388fcbcbf2fbb893b44770d7',
         createdTs: 1403103115,
@@ -312,7 +312,7 @@ describe('Wallet model', function() {
     setTimeout(function() {
       sinon.assert.callCount(spy, callCount);
       done();
-    }, w.reconnectDelay*callCount*(callCount+1)/2);
+    }, w.reconnectDelay * callCount * (callCount + 1) / 2);
   });
 
   it('handle network indexes correctly', function() {
@@ -641,7 +641,7 @@ describe('Wallet model', function() {
     var ADDRESSES_RECEIVE = w.deriveAddresses(0, 20, false);
     w.blockchain.checkActivity = function(addresses, cb) {
       var activity = new Array(addresses.length);
-      for(var i=0; i<addresses.length; i++) {
+      for (var i = 0; i < addresses.length; i++) {
         var a1 = ADDRESSES_CHANGE.indexOf(addresses[i]);
         var a2 = ADDRESSES_RECEIVE.indexOf(addresses[i]);
         activity[i] = f(Math.max(a1, a2));
@@ -652,8 +652,10 @@ describe('Wallet model', function() {
 
   it('#indexDiscovery should work without found activities', function(done) {
     var w = createW2();
-    mockFakeActivity(w, function(index) { return false });
-    w.indexDiscovery(0, false, 5, function(e, lastActive){
+    mockFakeActivity(w, function(index) {
+      return false
+    });
+    w.indexDiscovery(0, false, 5, function(e, lastActive) {
       lastActive.should.equal(-1);
       done();
     });
@@ -661,8 +663,10 @@ describe('Wallet model', function() {
 
   it('#indexDiscovery should continue scanning', function(done) {
     var w = createW2();
-    mockFakeActivity(w, function(index) { return index <= 7 });
-    w.indexDiscovery(0, false, 5, function(e, lastActive){
+    mockFakeActivity(w, function(index) {
+      return index <= 7
+    });
+    w.indexDiscovery(0, false, 5, function(e, lastActive) {
       lastActive.should.equal(7);
       done();
     });
@@ -670,8 +674,10 @@ describe('Wallet model', function() {
 
   it('#indexDiscovery should not found beyond the scannWindow', function(done) {
     var w = createW2();
-    mockFakeActivity(w, function(index) { return index <= 10 || index == 17 });
-    w.indexDiscovery(0, false, 5, function(e, lastActive){
+    mockFakeActivity(w, function(index) {
+      return index <= 10 || index == 17
+    });
+    w.indexDiscovery(0, false, 5, function(e, lastActive) {
       lastActive.should.equal(10);
       done();
     });
@@ -679,8 +685,10 @@ describe('Wallet model', function() {
 
   it('#indexDiscovery should look for activity along the scannWindow', function(done) {
     var w = createW2();
-    mockFakeActivity(w, function(index) { return index <= 14  && index % 2 == 0 });
-    w.indexDiscovery(0, false, 5, function(e, lastActive){
+    mockFakeActivity(w, function(index) {
+      return index <= 14 && index % 2 == 0
+    });
+    w.indexDiscovery(0, false, 5, function(e, lastActive) {
       lastActive.should.equal(14);
       done();
     });
@@ -688,7 +696,9 @@ describe('Wallet model', function() {
 
   it('#updateIndexes should update correctly', function(done) {
     var w = createW2();
-    mockFakeActivity(w, function(index) { return index <= 14  && index % 2 == 0 });
+    mockFakeActivity(w, function(index) {
+      return index <= 14 && index % 2 == 0
+    });
     w.updateIndexes(function(err) {
       w.publicKeyRing.indexes.receiveIndex.should.equal(15);
       w.publicKeyRing.indexes.changeIndex.should.equal(15);
@@ -698,7 +708,9 @@ describe('Wallet model', function() {
 
   it('#updateIndexes should store and emit event', function(done) {
     var w = createW2();
-    mockFakeActivity(w, function(index) { return index <= 14  && index % 2 == 0 });
+    mockFakeActivity(w, function(index) {
+      return index <= 14 && index % 2 == 0
+    });
     var spyStore = sinon.spy(w, 'store');
     var spyEmit = sinon.spy(w, 'emit');
     w.updateIndexes(function(err) {
@@ -720,16 +732,13 @@ describe('Wallet model', function() {
     done();
   });
 
-  var contacts = [ 
-    {
-      label: 'Charles',
-      address: '2N8pJWpXCAxmNLHKVEhz3TtTcYCtHd43xWU ',
-    }, 
-    {
-      label: 'Linda',
-      address: '2N4Zq92goYGrf5J4F4SZZq7jnPYbCiyRYT2 ',
-    }
-  ];
+  var contacts = [{
+    label: 'Charles',
+    address: '2N8pJWpXCAxmNLHKVEhz3TtTcYCtHd43xWU ',
+  }, {
+    label: 'Linda',
+    address: '2N4Zq92goYGrf5J4F4SZZq7jnPYbCiyRYT2 ',
+  }];
 
   it('should create new entry for address book', function() {
     var w = createW();
@@ -747,7 +756,7 @@ describe('Wallet model', function() {
     }).should.
     throw();
   });
-  
+
   it('should delete an entry for address book', function() {
     var w = createW();
     contacts.forEach(function(c) {
@@ -763,8 +772,8 @@ describe('Wallet model', function() {
     var w = createW();
     var data = {
       walletId: w.id,
-      addressBook: { 
-        'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx' : {
+      addressBook: {
+        'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx': {
           label: 'Faucet',
           copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
           createdTs: 1403102115,

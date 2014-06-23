@@ -149,16 +149,23 @@ describe('TxProposals model', function() {
         address: toAddress,
         amountSat: amountSat
       }]);
+    var selectedUtxos = b.getSelectedUnspent();
+    var inputChainPaths = selectedUtxos.map(function(utxo) {
+      return pkr.pathForAddress(utxo.address);
+    });
 
     var signRet;
     if (priv) {
-      var pkeys = priv.getAll(pkr.indexes.getReceiveIndex(), pkr.indexes.getChangeIndex());
+      var pkeys = priv.getForPaths(inputChainPaths);
       b.sign(pkeys);
     }
     var me = {};
-    if (priv) me[priv.id] = Date.now();
+    if (priv) me[priv.getId()] = Date.now();
 
     return {
+      inputChainPaths: inputChainPaths,
+      creator: priv.getId(),
+      createdTs: new Date(),
       signedBy: priv && b.signaturesAdded ? me : {},
       seenBy: priv ? me : {},
       builder: b,
@@ -216,10 +223,11 @@ describe('TxProposals model', function() {
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
-    (w.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+    var x = priv.getId();
+    (w.txps[ntxid].signedBy[priv.getId()] - ts > 0).should.equal(true);
     (w.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w.txps[ntxid]);
+    var info = w.merge(w.txps[ntxid], pkr.getCopayerId(0));
     info.events.length.should.equal(0);
 
     Object.keys(w.txps).length.should.equal(1);
@@ -293,9 +301,10 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2.txps[ntxid]);
-    info.events.length.should.equal(1);
-    info.events[0].type.should.equal('signed');
+    var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
+    info.events.length.should.equal(2);
+    info.events[0].type.should.equal('seen');
+    info.events[1].type.should.equal('signed');
 
     Object.keys(w.txps).length.should.equal(1);
 
@@ -401,9 +410,10 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2.txps[ntxid]);
-    info.events.length.should.equal(1);
-    info.events[0].type.should.equal('signed');
+    var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
+    info.events.length.should.equal(2);
+    info.events[0].type.should.equal('seen');
+    info.events[1].type.should.equal('signed');
 
     tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
@@ -431,8 +441,7 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w3.txps[ntxid]);
-    info.events.length.should.equal(0);
+    var info = w.merge(w3.txps[ntxid], pkr.getCopayerId(1));
 
     Object.keys(w.txps).length.should.equal(1);
 
@@ -522,8 +531,7 @@ describe('TxProposals model', function() {
     (w3.txps[ntxid].signedBy[priv3.id] - ts > 0).should.equal(true);
     (w3.txps[ntxid].seenBy[priv3.id] - ts > 0).should.equal(true);
 
-    var info = w.merge(w2.txps[ntxid]);
-    info.events.length.should.equal(0);
+    var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(1));
 
     Object.keys(w.txps).length.should.equal(1);
     var tx = w.txps[ntxid].builder.build();
@@ -535,8 +543,7 @@ describe('TxProposals model', function() {
     (w.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
 
 
-    var info = w.merge(w3.txps[ntxid]);
-    info.events.length.should.equal(0);
+    var info = w.merge(w3.txps[ntxid], pkr.getCopayerId(2));
 
     var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(true);
@@ -601,7 +608,7 @@ describe('TxProposals model', function() {
     should.exist(w2.txps[ntxid].builder);
     should.exist(w2.txps[ntxid].builder.valueInSat);
 
-    w2.merge(w.txps[ntxid]);
+    w2.merge(w.txps[ntxid], pkr.getCopayerId(0));
     Object.keys(w2.txps).length.should.equal(1);
   });
 
