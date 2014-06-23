@@ -109,10 +109,12 @@ describe("Unit: Controllers", function() {
       );
       scope.model = {
         newaddress: null,
-        newlabel: null
+        newlabel: null,
       };
       $compile(element)(scope);
-      $controller('SendController', {$scope: scope});
+      $controller('SendController', {$scope: scope,
+        $modal: {},
+      });
       scope.$digest();
       form = scope.form;
     }));
