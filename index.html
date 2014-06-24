@@ -675,6 +675,7 @@
                   <div class="row collapse">
                     <label for="amount">Amount
                       <small ng-hide="!sendForm.amount.$pristine">required</small>
+                      <i class="fi-arrow-up" title="Send all funds" ng-click="topAmount()"></i>
                       <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">Valid</small>
                       <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount">
                         Not valid
@@ -717,7 +718,7 @@
                       <small class="is-valid" ng-show="!sendForm.comment.$invalid && !sendForm.comment.$pristine">valid!</small>
                       <small class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
                     </label>
-                    <div class="small-12 columns">
+                    <div class="large-12 columns">
                       <textarea id="comment" ng-disabled="loading"
                       name="comment" placeholder="Leave a private message to your copayers" ng-model="commentText" ng-maxlength="100"></textarea>
                     </div>
