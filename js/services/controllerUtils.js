@@ -14,6 +14,8 @@ angular.module('copayApp.services')
     };
 
     root.logout = function() {
+      Socket.removeAllListeners();
+
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
       video.close();
@@ -70,10 +72,35 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setupRootVariables = function() {
+      $rootScope.unitName = config.unitName;
+      $rootScope.txAlertCount = 0;
+      $rootScope.insightError = 0;
+      $rootScope.isCollapsed = true;
+      $rootScope.$watch('insightError', function(status) {
+        if (status === -1) {
+          $rootScope.$flashMessage = {
+            type: 'success',
+            message: 'Networking Restored :)',
+          };
+          $rootScope.insightError = 0;
+        }
+      });
+
+      $rootScope.$watch('txAlertCount', function(txAlertCount) {
+        if (txAlertCount && txAlertCount > 0) {
+          notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
+        }
+      });
+    };
+
 
     root.startNetwork = function(w, $scope) {
+      Socket.removeAllListeners();
 
+      root.setupRootVariables();
       root.installStartupHandlers(w, $scope);
+      root.setSocketHandlers();
 
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
@@ -103,8 +130,8 @@ angular.module('copayApp.services')
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.setSocketHandlers();
         root.updateAddressList();
+        root.setSocketHandlers();
         if (!dontDigest) {
           $rootScope.$digest();
         }
@@ -122,7 +149,7 @@ angular.module('copayApp.services')
           });
         }, 3000);
       });
-      w.on('txProposalEvent', function(e){
+      w.on('txProposalEvent', function(e) {
         switch (e.type) {
           case 'signed':
             var user = w.publicKeyRing.nicknameForCopayer(e.cId);
@@ -273,20 +300,23 @@ angular.module('copayApp.services')
       if (!$rootScope.wallet) return;
 
       var currentAddrs = Socket.getListeners();
-      var addrs = $rootScope.wallet.getAddressesStr();
+      var allAddrs = $rootScope.addrInfos;
 
       var newAddrs = [];
-      for (var i in addrs) {
-        var a = addrs[i];
-        if (!currentAddrs[a])
+      for (var i in allAddrs) {
+        var a = allAddrs[i];
+        if (!currentAddrs[a.addressStr])
           newAddrs.push(a);
       }
       for (var i = 0; i < newAddrs.length; i++) {
-        Socket.emit('subscribe', newAddrs[i]);
+        Socket.emit('subscribe', newAddrs[i].addressStr);
       }
-      newAddrs.forEach(function(addr) {
-        Socket.on(addr, function(txid) {
-          $rootScope.receivedFund = [txid, addr];
+      newAddrs.forEach(function(a) {
+        Socket.on(a.addressStr, function(txid) {
+
+          if (!a.isChange)
+            notification.funds('Received fund', a.addressStr);
+
           root.updateBalance(function() {
             $rootScope.$digest();
           });
@@ -297,7 +327,7 @@ angular.module('copayApp.services')
         Socket.emit('subscribe', 'inv');
         Socket.on('block', function(block) {
           root.updateBalance(function() {
-              $rootScope.$digest();
+            $rootScope.$digest();
           });
         });
       }
