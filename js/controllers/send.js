@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.submitForm = function(form) {
       if (form.$invalid) {
         $rootScope.$flashMessage = {
-          message: 'You can not send a proposal transaction. Please, try again',
+          message: 'Unable to send a transaction proposal. Please, try again',
           type: 'error'
         };
         return;
@@ -254,4 +254,9 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
+    $scope.topAmount = function() {
+      var maxSat = ($rootScope.availableBalance * config.unitToSatoshi).toFixed(0)
+         - bitcore.TransactionBuilder.FEE_PER_1000B_SAT;
+      $scope.amount = maxSat / config.unitToSatoshi;
+    };
   });
