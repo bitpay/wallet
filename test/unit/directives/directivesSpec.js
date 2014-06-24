@@ -80,6 +80,31 @@ describe("Unit: Testing Directives", function() {
     });
   });
 
+  describe('Contact directive', function() {
+    var element1, element2;
+
+    beforeEach(inject(function($compile, $rootScope) {
+      $rootScope.wallet = {
+        addressBook: {'2MtBXKLtZuXGDshUcyH6yq7aZ33Snbb49pT': {label: ':)'}}
+      }
+      element1 = angular.element(
+        '<contact address="2MtBXKLtZuXGDshUcyH6yq7aZ33Snbb49pT" />'
+      );
+      element2 = angular.element(
+        '<contact address="2MvCKdnwEMiaexi247gi738U6pwUFZxbhXn" />'
+      );
+      $compile(element1)($rootScope);
+      $compile(element2)($rootScope);
+      $rootScope.$digest();
+    }));
+
+    it('should replace the content', function() {
+      expect(element1.html()).to.equal(':)');
+      expect(element2.html()).to.equal('2MvCKdnwEMiaexi247gi738U6pwUFZxbhXn');
+    });
+
+  });
+
   describe('Password strength', function() {
     beforeEach(inject(function($compile, $rootScope) {
       $scope = $rootScope;

@@ -372,7 +372,7 @@
                   ng-click="selectAddress(addr)"
                   ng-class="{selected : addr.address == selectedAddr.address}">
 
-                  <span>{{addr.address}}</span>
+                  <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
                   <small ng-if="addr.isChange">change</small>
 
                   <span class="right">
@@ -441,7 +441,9 @@
                   <div class="row" ng-repeat="out in tx.outs">
                     <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value | number}} {{$root.unitName}}</div>
                     <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
-                    <div class="large-8 medium-8 small-7 columns ellipsis"> {{out.address}} </div>
+                    <div class="large-8 medium-8 small-7 columns ellipsis">
+                     <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                    </div>
                   </div>
                 </div>
                 <div class="large-4 medium-4 small-12 columns text-right">
@@ -566,7 +568,9 @@
                     <div class="large-5 medium-5 small-5 columns">
                       <div ng-repeat="vin in btx.vinSimple">
                         <small class="right m5t">{{vin.value| number}} {{$root.unitName}}</small>
-                        <p class="ellipsis text-gray size-12"> {{vin.addr}} </p>
+                        <p class="ellipsis text-gray size-12">
+                          <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                        </p>
                       </div>
                     </div>
                     <div class="large-1 medium-1 small-1 columns text-center">
@@ -575,7 +579,9 @@
                     <div class="large-6 medium-6 small-6 columns">
                       <div ng-repeat="vout in btx.voutSimple">
                         <small class="right m5t">{{vout.value| number}} {{$root.unitName}}</small>
-                        <p class="ellipsis text-gray size-12"> {{vout.addr}} </p>
+                        <p class="ellipsis text-gray size-12">
+                          <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                        </p>
                       </div>
                     </div>
                   </div>
