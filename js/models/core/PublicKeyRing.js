@@ -233,19 +233,17 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts) {
 };
 
 // TODO this could be cached
-PublicKeyRing.prototype._addScriptMap = function(map, index, isChange) {
-  var script = this.getRedeemScript(index, isChange);
+PublicKeyRing.prototype._addScriptMap = function(map, path) {
+  var p = Structure.indicesForPath(path);
+  var script = this.getRedeemScript(p.index, p.isChange);
   map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
 };
 
-PublicKeyRing.prototype.getRedeemScriptMap = function() {
+PublicKeyRing.prototype.getRedeemScriptMap = function(paths) {
   var ret = {};
-
-  for (var i = 0; i < this.indexes.getChangeIndex(); i++) {
-    this._addScriptMap(ret, i, true);
-  }
-  for (var i = 0; i < this.indexes.getReceiveIndex(); i++) {
-    this._addScriptMap(ret, i, false);
+  for (var i = 0; i < paths.length; i++) {
+    var path = paths[i];
+    this._addScriptMap(ret, path);
   }
   return ret;
 };
