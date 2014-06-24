@@ -121,7 +121,7 @@ describe('PublicKeyRing model', function() {
     var k = createW();
     var w = k.w;
 
-    for (var isChange = 0; isChange < 2; isChange++) {
+    [true, false].forEach(function(isChange){
       for (var i = 0; i < 2; i++) {
         var a = w.generateAddress(isChange);
         a.isValid().should.equal(true);
@@ -132,7 +132,7 @@ describe('PublicKeyRing model', function() {
             .not.equal(w.getAddress(i - 2, isChange).toString());
         }
       }
-    }
+    });
   });
 
   it('should return PublicKeyRing addresses', function() {
@@ -143,9 +143,11 @@ describe('PublicKeyRing model', function() {
     var a = w.getAddresses();
     a.length.should.equal(0);
 
-    for (var isChange = 0; isChange < 2; isChange++)
-      for (var i = 0; i < 2; i++)
+    [true, false].forEach(function(isChange){
+      for (var i = 0; i < 2; i++) {
         w.generateAddress(isChange);
+      }
+    });
 
     var as = w.getAddressesInfo();
     as.length.should.equal(4);
