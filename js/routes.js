@@ -60,15 +60,14 @@ angular
   .config(function($locationProvider) {
     $locationProvider
       .html5Mode(false);
-      //.hashPrefix('!');
+    //.hashPrefix('!');
   })
   .run(function($rootScope, $location) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
 
       if (!util.supports.data) {
         $location.path('unsupported');
-      }  
-      else {
+      } else {
         if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
           $location.path('signin');
         }

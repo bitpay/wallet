@@ -21,7 +21,7 @@ describe("Unit: Controllers", function() {
     totalCopayers: 5,
     spendUnconfirmed: 1,
     reconnectDelay: 100,
-    networkName: 'testnet' 
+    networkName: 'testnet'
   };
 
   describe('Backup Controller', function() {
@@ -117,7 +117,7 @@ describe("Unit: Controllers", function() {
   describe('Send Controller', function() {
     var scope, form;
     beforeEach(angular.mock.module('copayApp'));
-    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller){
+    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
       $rootScope.wallet = new FakeWallet(config);
       var element = angular.element(
@@ -131,7 +131,8 @@ describe("Unit: Controllers", function() {
         newlabel: null,
       };
       $compile(element)(scope);
-      $controller('SendController', {$scope: scope,
+      $controller('SendController', {
+        $scope: scope,
         $modal: {},
       });
       scope.$digest();

@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('copayApp.filters', [])
-	.filter('amTimeAgo', ['amMoment', function(amMoment) {
-    return function(input) {
-      return amMoment.preprocessDate(input).fromNow();
-    };
-  }])
+  .filter('amTimeAgo', ['amMoment',
+    function(amMoment) {
+      return function(input) {
+        return amMoment.preprocessDate(input).fromNow();
+      };
+    }
+  ])
   .filter('paged', function() {
     return function(elements) {
       if (elements) {
@@ -28,5 +30,4 @@ angular.module('copayApp.filters', [])
 
       return addrs;
     };
-  })
-;
+  });

@@ -126,7 +126,7 @@ describe("Unit: isMobile Service", function() {
     isMobile.any().should.equal(false);
   }));
   it('should detect mobile if user agent is Android', inject(function(isMobile) {
-    navigator.__defineGetter__('userAgent', function(){
+    navigator.__defineGetter__('userAgent', function() {
       return 'Android 2.2.3';
     });
     isMobile.any().should.equal(true);
