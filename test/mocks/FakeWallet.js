@@ -2,6 +2,8 @@ var FakeWallet = function() {
   this.id = 'testID';
   this.balance = 10000;
   this.safeBalance = 1000;
+  this.totalCopayers = 2;
+  this.requiredCopayers = 2;
   this.balanceByAddr = {
     '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000
   };
@@ -14,6 +16,15 @@ var FakeWallet = function() {
     }
   };
 };
+
+FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
+  var callback = cb || opts;
+  callback({});
+}
+
+FakeWallet.prototype.sendTx = function(ntxid, cb) {
+  cb(8);
+}
 
 FakeWallet.prototype.set = function(balance, safeBalance, balanceByAddr) {
   this.balance = balance;
