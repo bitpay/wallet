@@ -1,23 +1,24 @@
 /*
-** copay-shell integration
-*/
+ ** copay-shell integration
+ */
 (function() {
   /*
-  ** This is a monkey patch for when Copay is running from
-  ** within Copay-Shell (atom-shell). Since the renderer (the frontend)
-  ** receives context from Node.js, we get a `module.exports` contruct
-  ** available to us. Because of this, some libs (specifically Moment.js)
-  ** attempt to assume their CommonJS form and bind to this. This causes
-  ** there to be no references in the window to these libs, so let's trick
-  ** the renderer into thinking that we are _not_ in a CommonJS environment.
-  */
-  if (typeof module !== 'undefined') module = { exports: null };
+   ** This is a monkey patch for when Copay is running from
+   ** within Copay-Shell (atom-shell). Since the renderer (the frontend)
+   ** receives context from Node.js, we get a `module.exports` contruct
+   ** available to us. Because of this, some libs (specifically Moment.js)
+   ** attempt to assume their CommonJS form and bind to this. This causes
+   ** there to be no references in the window to these libs, so let's trick
+   ** the renderer into thinking that we are _not_ in a CommonJS environment.
+   */
+  if (typeof module !== 'undefined') module = {
+    exports: null
+  };
 
   // are we running in copay shell?
   if (window.process && process.type === 'renderer') {
     window.cshell = initCopayShellBindings();
-  }
-  else {
+  } else {
     return;
   }
 
@@ -35,12 +36,14 @@
 
   function initCopayShellBindings() {
 
-    var ipc   = require('ipc');
+    var ipc = require('ipc');
     var clipb = require('clipboard');
 
     // atom shell forces to implement the clipboard on our own - thanks obama.
 
-    Mousetrap.stopCallback = function() { return false };
+    Mousetrap.stopCallback = function() {
+      return false
+    };
 
     Mousetrap.bind('ctrl+c', function(e) {
       clipb.writeText(window.getSelection().toString());

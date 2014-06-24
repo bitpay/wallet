@@ -5,11 +5,14 @@ angular.module('copayApp.controllers').controller('ImportController',
     $scope.title = 'Import a backup';
     var reader = new FileReader();
     var _importBackup = function(encryptedObj) {
-      Passphrase.getBase64Async($scope.password, function(passphrase){
+      Passphrase.getBase64Async($scope.password, function(passphrase) {
         walletFactory.import(encryptedObj, passphrase, function(err, w) {
           if (err) {
             $scope.loading = false;
-            $rootScope.$flashMessage = { message: err.errMsg || 'Wrong password', type: 'error'};
+            $rootScope.$flashMessage = {
+              message: err.errMsg || 'Wrong password',
+              type: 'error'
+            };
             $rootScope.$digest();
             return;
           }
@@ -43,7 +46,10 @@ angular.module('copayApp.controllers').controller('ImportController',
     $scope.import = function(form) {
       if (form.$invalid) {
         $scope.loading = false;
-        $rootScope.$flashMessage = { message: 'There is an error in the form. Please, try again', type: 'error'};
+        $rootScope.$flashMessage = {
+          message: 'There is an error in the form. Please, try again',
+          type: 'error'
+        };
         return;
       }
 
@@ -53,7 +59,10 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (!backupFile && !backupText) {
         $scope.loading = false;
-        $rootScope.$flashMessage = { message: 'Please, select your backup file or paste the text', type: 'error'};
+        $rootScope.$flashMessage = {
+          message: 'Please, select your backup file or paste the text',
+          type: 'error'
+        };
         $scope.loading = false;
         return;
       }
@@ -62,8 +71,7 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
-      }
-      else {
+      } else {
         _importBackup(backupText);
       }
     };

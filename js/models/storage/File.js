@@ -111,7 +111,7 @@ Storage.prototype.get = function(walletId, k) {
 
 // set value for key
 Storage.prototype.set = function(walletId, k, v, callback) {
-  this.setGlobal(this._key(walletId,k), v, callback);
+  this.setGlobal(this._key(walletId, k), v, callback);
 };
 
 // remove value for key
@@ -143,6 +143,6 @@ Storage.prototype.getEncryptedObj = function(walletId) {
 Storage.prototype.clearAll = function(callback) {
   this.data = {};
   this.save(callback);
-};     
+};
 
 module.exports = require('soop')(Storage);
