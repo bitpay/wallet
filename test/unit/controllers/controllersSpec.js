@@ -64,10 +64,12 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it('should return an array of n undefined elements', function() {
-      var n = 5;
-      var array = scope.getNumber(n);
-      expect(array.length).equal(n);
+    describe('#getNumber', function() {
+      it('should return an array of n undefined elements', function() {
+        var n = 5;
+        var array = scope.getNumber(n);
+        expect(array.length).equal(n);
+      });
     });
 
   });
