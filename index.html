@@ -413,7 +413,7 @@
                   </span>
                 </a>
 
-                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|withoutFunds) > 1">
+                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="addresses.length != (addresses|limitAddress).length">
                   <span ng-if="!showAll">Show all</span>
                   <span ng-if="showAll">Show less</span>
                 </a>
