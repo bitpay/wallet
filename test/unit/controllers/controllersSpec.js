@@ -2,6 +2,8 @@
 // test/unit/controllers/controllersSpec.js
 //
 
+var sinon = require('sinon');
+
 // Replace saveAs plugin
 saveAsLastCall = null;
 saveAs = function(o) {
@@ -115,7 +117,7 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Send Controller', function() {
-    var scope, form;
+    var scope, form, sendForm;
     beforeEach(angular.mock.module('copayApp'));
     beforeEach(angular.mock.inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
@@ -129,14 +131,27 @@ describe("Unit: Controllers", function() {
       scope.model = {
         newaddress: null,
         newlabel: null,
+        address: null,
+        amount: null
       };
       $compile(element)(scope);
+
+      var element2 = angular.element(
+        '<form name="form2">' +
+        '<input type="text" id="address" name="address" ng-model="address" valid-address required>' +
+        '<input type="number" id="amount" name="amount" ng-model="amount" min="1" max="10000000000" required>' +
+        '<textarea id="comment" name="comment" ng-model="commentText" ng-maxlength="100"></textarea>' +
+        '</form>'
+      );
+      $compile(element2)(scope);
       $controller('SendController', {
         $scope: scope,
         $modal: {},
       });
+
       scope.$digest();
       form = scope.form;
+      sendForm = scope.form2;
     }));
 
     it('should have a SendController controller', function() {
@@ -168,6 +183,31 @@ describe("Unit: Controllers", function() {
 
     it('should not validate label', function() {
       expect(form.newlabel.$invalid).to.equal(true);
+    });
+
+    it('should create a transaction proposal', function() {
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.amount.$setViewValue(1000);
+
+      var spy = sinon.spy(scope.wallet, 'createTx');
+      var spy2 = sinon.spy(scope.wallet, 'sendTx');
+      scope.submitForm(sendForm);
+      sinon.assert.callCount(spy, 1);
+      sinon.assert.callCount(spy2, 0);
+    });
+
+    it('should create and send a transaction proposal', function() {
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.amount.$setViewValue(1000);
+
+      scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
+      var spy = sinon.spy(scope.wallet, 'createTx');
+      var spy2 = sinon.spy(scope.wallet, 'sendTx');
+      scope.update = function() {};
+
+      scope.submitForm(sendForm);
+      sinon.assert.callCount(spy, 1);
+      sinon.assert.callCount(spy2, 1);
     });
 
   });

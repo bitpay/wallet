@@ -451,7 +451,7 @@
     <script type="text/ng-template" id="transactions.html">
       <div class="transactions" data-ng-controller="TransactionsController">
         <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
-          <div class="large-12 columns">
+          <div class="large-12 columns" ng-show="wallet.totalCopayers > 1">
             <h4> Transaction proposals <small>({{txs.length}})</small></h4>
 
             <ul class="inline-list">
@@ -558,15 +558,18 @@
           </div>
           <div class="large-12 columns">
             <h4>Last transactions</h4>
-            <div class="m10b size-12">
+            <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
               <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
               <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
+            </div>
+            <div class="m10b size-12" ng-hide="wallet.totalCopayers > 1 || !loading">
+              <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> Loading...
             </div>
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
               </div>
-              <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'firstSeenTs':true">
+              <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
                 <div class="m10 size-12">
                   <div class="row">
                     <div class="large-8 columns">
@@ -710,7 +713,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" ng-show="wallet.totalCopayers > 1">
                 <div class="large-12 columns">
                   <div class="row collapse">
                     <label for="comment">Note

@@ -47,13 +47,27 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
 
-      w.createTx(address, amount, commentText, function() {
-        $scope.loading = false;
-        $rootScope.$flashMessage = {
-          message: 'The transaction proposal has been created',
-          type: 'success'
-        };
-        $rootScope.$digest();
+      w.createTx(address, amount, commentText, function(ntxid) {
+        if (w.totalCopayers > 1) {
+          $scope.loading = false;
+          $rootScope.$flashMessage = {
+            message: 'The transaction proposal has been created',
+            type: 'success'
+          };
+          $rootScope.$digest();
+        } else {
+          w.sendTx(ntxid, function(txid) {
+            $rootScope.$flashMessage = txid ? {
+              type: 'success',
+              message: 'Transaction broadcasted. txid: ' + txid
+            } : {
+              type: 'error',
+              message: 'There was an error sending the Transaction'
+            };
+            $scope.loading = false;
+            $scope.update();
+          });
+        }
       });
 
       // reset fields
