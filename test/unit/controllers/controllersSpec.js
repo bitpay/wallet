@@ -55,6 +55,25 @@ describe("Unit: Controllers", function() {
     });
   });
 
+  describe('Setup Controller', function() {
+    var setupCtrl;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      setupCtrl = $controller('SetupController', {
+        $scope: scope,
+      });
+    }));
+
+    describe('#getNumber', function() {
+      it('should return an array of n undefined elements', function() {
+        var n = 5;
+        var array = scope.getNumber(n);
+        expect(array.length).equal(n);
+      });
+    });
+
+  });
+
   describe('Address Controller', function() {
     var addressCtrl;
     beforeEach(inject(function($controller, $rootScope) {
@@ -210,6 +229,13 @@ describe("Unit: Controllers", function() {
       scope.$apply();
       expect(rootScope.insightError).equal(1);
       scope.$apply();
+    });
+
+    it('should return an array of n undefined elements', function() {
+      $httpBackend.flush(); // need flush
+      var n = 5;
+      var array = scope.getNumber(n);
+      expect(array.length).equal(n);
     });
 
   });

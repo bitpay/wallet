@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/foundation-icons.css">
     <link rel="stylesheet" href="lib/angular/angular-csp.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="shortcut icon" href="img/favicon.ico">
   </head>
   <body ng-cloak class="ng-cloak">
@@ -16,10 +17,10 @@
       <div data-ng-init="init()" data-ng-controller="HeaderController">
         <div class="header">
           <div class="header-content">
-            <div class="large-3 medium-3 small-3 columns">
+            <div class="large-3 medium-3 small-5 columns">
               <span class="logo"></span>
             </div>
-            <div class="large-9 medium-9 small-9 columns text-center p10t" ng-show="$root.wallet">
+            <div class="large-9 medium-9 small-7 columns text-center p10t" ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
               <div class="large-4 medium-4 columns line-dashed-v">
                 <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
                   <strong><span>{{$root.wallet.getName()}}</span></strong>
@@ -31,26 +32,26 @@
                   ng-click="signout()"><i class="fi-power"></i></a>
               </div>
               <div class="large-4 medium-4 columns line-dashed-v">
-                Balance<br>
+                Balance<br class="hide-for-small">
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="!$root.updatingBalance" tooltip="{{totalBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |number}} {{$root.unitName}} 
+                <span ng-if="!$root.updatingBalance" data-options="disable_for_touch:true" tooltip="{{totalBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |number}} {{$root.unitName}} 
                 </span>
               </div>
               <div class="large-4 medium-4 columns">
-                Available to Spend<br>
+                Available to Spend<br class="hide-for-small">
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-show="!$root.updatingBalance" tooltip="{{availableBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{availableBalance || 0|number}} {{$root.unitName}} 
+                <span ng-show="!$root.updatingBalance" data-options="disable_for_touch:true" tooltip="{{availableBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{availableBalance || 0|number}} {{$root.unitName}} 
                 </span>
               </div>
 
             </div>
           </div>
 
-        <nav class="top-bar" data-topbar ng-show="$root.wallet">
+        <nav class="top-bar" data-topbar ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
           <ul class="title-area">
             <li class="name"></li>
             <li class="toggle-topbar menu-icon">
@@ -99,9 +100,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
-          <div class="medium-12 small-12 columns">
+      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
+        <div class="row">
+          <div class="large-12 medium-12 small-12 columns">
             <div class="alert-box secondary radius" data-alert>
               <i class="fi-info"></i>
               Not all copayers have joined your wallet yet.
@@ -114,25 +115,36 @@
               yet to join.
             </div>
           </div>
+        </div>
 
-            <div class="medium-12 small-12 columns ">
-              <div class="panel radius m30v">
-                <h3 class="m15b">Share this secret with your other copayers
-                  <small> for them to join your wallet</small>
-                </h3>
-                <div class="row">
-                  <div class="large-9 medium-12 small-12 columns line-dashed-v text-gray">
-                    <div class="panel input">
-                      <p class="ellipsis text-gray">{{$root.wallet.getSecret()}}</p>
-                    </div>
+        <div class="row">
+          <div class="large-12 medium-12 small-12 columns ">
+            <div class="panel radius m30v">
+              <h3 class="m15b">Share this secret with your other copayers
+                <small> for them to join your wallet</small>
+              </h3>
+              <div class="row">
+                <div class="large-9 medium-12 small-12 columns line-dashed-v text-gray">
+                  <div class="panel input">
+                    <p class="ellipsis text-gray">{{$root.wallet.getSecret()}}</p>
                   </div>
-                  <div class="large-3 columns hide-for-medium hide-for-small" ng-show="$root.wallet">
-                    <h5 class="m0">{{$root.wallet.getName()}}</h5>
-                    <p class="text-gray">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet</p>
-                  </div>
+                </div>
+                <div class="large-3 columns hide-for-medium hide-for-small" ng-show="$root.wallet">
+                  <h5 class="m0">{{$root.wallet.getName()}}</h5>
+                  <p class="text-gray">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet</p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-12 medium-12 small-12 columns ">
+            <div class="box-setup-copayers">
+              <div class="box-setup-copayers-fix">
+                <img class="box-setup-copay" ng-repeat="i in getNumber($root.wallet.totalCopayers) track by $index" src="./img/satoshi.gif" alt="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= $root.wallet.publicKeyRing.registeredCopayers()}">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -140,12 +152,12 @@
 
     <div notifications="middle right"></div>
 
-    <div id="main" class="row" ng-class="{'main-home': !$root.wallet}">
+    <div id="main" class="row" ng-class="{'main-home': !$root.wallet || !$root.wallet.publicKeyRing.isComplete()}">
       <div class="large-12 columns" ng-view></div>
     </div>
   </div>
 
-  <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet}">
+  <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet || !$root.wallet.publicKeyRing.isComplete()}">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div ng-show="!$root.wallet">
       <div class="large-12 columns text-left">
@@ -153,8 +165,20 @@
         <small>v{{version}}</small>
       </div>
     </div>
-    <div class="p10t" ng-show="$root.wallet">
-      <div class="large-3 medium-3 hide-for-small columns">
+    <div ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
+      <div class="large-6 medium-6 small-6 columns">
+        <strong>{{$root.wallet.getName()}}</strong> 
+        {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} 
+        <small ng-if="$root.wallet.getNetworkName()=='livenet'">[LIVENET]</small>
+        <small ng-if="$root.wallet.getNetworkName()=='testnet'">[TESTNET]</small>
+      </div>
+      <div class="large-6 medium-6 small-6 columns text-right">
+        Copay
+        <small>v{{version}}</small>
+      </div>
+    </div>
+    <div ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
+      <div class="large-3 medium-4 hide-for-small columns">
         <div>
           <strong>{{$root.wallet.getName()}}</strong> 
         </div>
@@ -171,8 +195,7 @@
           <a class="size-12" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
         </div>
       </div>
-      <div class="large-9 medium-9 small-9 columns">
-        <a href="#/addresses" > </a>
+      <div class="large-9 medium-8 small-12 columns">
         <!-- <div class="bottom&#45;copay" ng&#45;repeat="c in $root.wallet.getRegisteredPeerIds()" class="has&#45;tip" tooltip&#45;popup&#45;delay="1000" tooltip&#45;placement="top" tooltip="{{c.nick}}"> -->
         <div class="bottom-copay" ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
           <video ng-if="$root.videoInfo[c.peerId]"
@@ -312,7 +335,7 @@
                   </label>
                 </div>
                 <div class="small-12 medium-6 large-6 columns">
-                  <label>Your Wallet Password <small class="has-tip" tooltip="doesn't need to be shared">Required</small>
+                  <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
                   <input type="password" placeholder="Choose your password" class="form-control"
                     ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
                   </label>
@@ -687,7 +710,7 @@
               </div>
 
               <div class="row">
-                <div class="large-12 medium-6 columns">
+                <div class="large-12 columns">
                   <div class="row collapse">
                     <label for="comment">Note
                       <small ng-hide="!sendForm.comment.$pristine">optional</small>
@@ -714,7 +737,7 @@
           <div class="medium-8 medium-centered large-8 large-centered columns">
             <hr>
             <h3>Address Book</h3>
-            <p class="text-gray" ng-hide="showAddressBook()">Empry. Create some alias for addresses</p>
+            <p class="text-gray" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
             <table ng-show="showAddressBook()">
               <thead>
               <tr>
@@ -767,16 +790,16 @@
     <script type="text/ng-template" id="backup.html">
       <div class="backup" ng-controller="BackupController">
         <h3>{{title}}</h3>
-        <div class="row text-center">
-          <div class="large-6 medium-6 columns">
-            <a class="panel radius box-backup" ng-click="download()">
+        <div class="row">
+          <div class="large-4 medium-6 columns large-centered medium-centered">
+            <a class="panel radius box-backup text-center" ng-click="download()">
               <i class="fi-download size-72"></i>
               <p> Download File </p>
             </a>
           </div>
-          <div class="row text-center small" style="margin-top:70px">
-            <div class="button  radius warning" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()">Delete this wallet from this computer</div>
-          </div>
+        </div>
+        <div class="row text-center">
+          <div class="button radius warning small m30v" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()">Delete this wallet from this computer</div>
         </div>
       </div>
     </script>

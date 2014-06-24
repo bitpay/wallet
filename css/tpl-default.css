@@ -175,10 +175,6 @@ small.has-error {
   border-radius: 10px;
 }
 
-.transactions button, .transactions .button {
-  padding: 0.5rem 2rem;
-}
-
 button.radius, .button.radius {
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -323,5 +319,30 @@ input.ng-invalid-wallet-secret {
 
 .box-setup fieldset {
   background: #fff;
+}
+
+.tooltip { 
+  background: #16A085; 
+  color: #fff; 
+  font-weight: normal; 
+  font-size: 12px; 
+  padding: 3px 5px;
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px; 
+  border-radius: 3px; 
+  border: 1px solid #16A085; 
+}
+
+.tooltip>.nub {
+  border-color:transparent transparent #16A085 transparent;
+}
+.tooltip.tip-top>.nub {
+  border-color:#16A085 transparent transparent transparent;
+}
+.tooltip.tip-right>.nub {
+  border-color:transparent #16A085 transparent transparent;
+}
+.tooltip.tip-left>.nub {
+  border-color:transparent transparent transparent #16A085;
 }
 
