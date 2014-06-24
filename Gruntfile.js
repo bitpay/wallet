@@ -15,7 +15,7 @@ module.exports = function(grunt) {
           stderr: true
         },
         command: grunt.option('target') === 'dev' ?
-            'node ./util/build.js -d ' : 'node ./util/build.js '
+          'node ./util/build.js -d ' : 'node ./util/build.js '
       }
     },
     watch: {
@@ -46,6 +46,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['shell','watch']);
+  grunt.registerTask('default', ['shell', 'watch']);
 
 };

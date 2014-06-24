@@ -6,7 +6,7 @@ var BackupService = function(notification) {
 };
 
 BackupService.prototype.getName = function(wallet) {
-  return (wallet.name ? (wallet.name+'-') : '') + wallet.id;
+  return (wallet.name ? (wallet.name + '-') : '') + wallet.id;
 };
 
 BackupService.prototype.download = function(wallet) {

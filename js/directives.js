@@ -125,7 +125,7 @@ angular.module('copayApp.directives')
   .directive('contact', function() {
     return {
       restrict: 'E',
-      link:function(scope, element, attrs) {
+      link: function(scope, element, attrs) {
         if (!scope.wallet) return;
 
         var address = attrs.address;
@@ -137,7 +137,7 @@ angular.module('copayApp.directives')
           element.append(address);
         }
       }
-   };
+    };
   })
   .directive('highlightOnChange', function() {
     return {

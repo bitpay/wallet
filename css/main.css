@@ -15,7 +15,7 @@ html, body {height: 100%;}
 
 #main {
   overflow:auto;
-	padding-bottom: 91px;}  /* must be same height as the footer */
+	padding-bottom: 80px;}  /* must be same height as the footer */
 
 .main-home {
   padding-bottom: 28px !important;
@@ -37,9 +37,8 @@ html, body {height: 100%;}
 
 #footer {
   position: fixed;
-	margin-top: -96px; /* negative value of footer height */
-	
-  height: 80px;
+	margin-top: -80px; /* negative value of footer height */
+  height: 70px;
 	clear:both;
   padding: 5px 2rem;
   bottom: 0;
@@ -65,7 +64,6 @@ html, body {height: 100%;}
 .logo {
   display: block;
   height: 51px;
-  margin: 0 auto;
 }
 
 .top-bar-section li:not(.has-form) a:not(.button) {
@@ -173,12 +171,6 @@ h3 {
   border-right: 2px dashed #E3E3E3;
 }
 
-@media (max-width: 640px) {
-  .line-dashed-v {
-    border: none;
-  }
-}
-
 .line-dashed-h {
   margin: 1rem 0;
   border-bottom: 2px dashed #E3E3E3;
@@ -238,28 +230,13 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: inherit;
 }
 
-@media (max-width: 641px) {
-  .hide_menu {
-    display: none;
-  }
-  .show_menu {
-    display: block;
-  }
-  .top-bar-section ul li {
-    width: 100%;
-  }
-}
-
-@media (max-width: 750px) {
-  .top-bar-section ul li>a {
-    font-size: 70%;
-  }
-}
-
 .new-address {
   width: 220px;
 }
  
+.transactions button, .transactions .button {
+  padding: 0.5rem 2rem;
+}
  
 hr { margin: 2.25rem 0;}
 
@@ -406,10 +383,13 @@ hr { margin: 2.25rem 0;}
   margin-right: 10px;
   margin-bottom: 10px;
   border: 3px solid #eee;
+  opacity: 0.3;
+  border-radius: 0.3rem;
 }
 
 .box-setup-copay-required {
-  border: 3px solid green;
+  border: 3px solid #1ABC9C;
+  opacity: 1;
 }
 
 .tx-copayers {
@@ -655,52 +635,3 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   color:white;
 }
 
-@media only screen and (max-width: 40em) { 
-
-  #main, .header-content {
-    font-size: 80%;
-    line-height: 140%;
-  }
-
-  .top-bar {
-    background: #1ABC9C;
-  }
-
-  .header-content {
-    padding: 0.3rem 0rem 1rem 0.4rem;
-  }
-
-  .logo {
-    background-size: 90px 44px !important;
-    float: left;
-    margin-top: 0.7rem;
-    width: 130px;
-  }
-
-  .header-content .small-9 {
-    text-align: right !important;
-  }
-
-  .header-content .line-dashed-v {
-    border: none !important;  
-  }
-
-  .box-backup {
-    margin: 0.6rem 0;
-  }
-
-  #footer {
-    font-size: 80%;
-    padding: 0.2rem 0.5rem;
-  }
-
-  .box-status {
-    height: 71px;
-  }
-
-  .box-copayers figure {
-    height: 71px;
-    width: 71px;
-  }
-
-}

@@ -21,7 +21,7 @@ describe("Unit: Controllers", function() {
     totalCopayers: 5,
     spendUnconfirmed: 1,
     reconnectDelay: 100,
-    networkName: 'testnet' 
+    networkName: 'testnet'
   };
 
   describe('Backup Controller', function() {
@@ -53,6 +53,25 @@ describe("Unit: Controllers", function() {
       scope.deleteWallet();
       expect(scope.wallet).equal(undefined);
     });
+  });
+
+  describe('Setup Controller', function() {
+    var setupCtrl;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      setupCtrl = $controller('SetupController', {
+        $scope: scope,
+      });
+    }));
+
+    describe('#getNumber', function() {
+      it('should return an array of n undefined elements', function() {
+        var n = 5;
+        var array = scope.getNumber(n);
+        expect(array.length).equal(n);
+      });
+    });
+
   });
 
   describe('Address Controller', function() {
@@ -98,7 +117,7 @@ describe("Unit: Controllers", function() {
   describe('Send Controller', function() {
     var scope, form;
     beforeEach(angular.mock.module('copayApp'));
-    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller){
+    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
       $rootScope.wallet = new FakeWallet(config);
       var element = angular.element(
@@ -109,10 +128,13 @@ describe("Unit: Controllers", function() {
       );
       scope.model = {
         newaddress: null,
-        newlabel: null
+        newlabel: null,
       };
       $compile(element)(scope);
-      $controller('SendController', {$scope: scope});
+      $controller('SendController', {
+        $scope: scope,
+        $modal: {},
+      });
       scope.$digest();
       form = scope.form;
     }));
@@ -212,12 +234,20 @@ describe("Unit: Controllers", function() {
       scope.$apply();
     });
 
+    it('should return an array of n undefined elements', function() {
+      $httpBackend.flush(); // need flush
+      var n = 5;
+      var array = scope.getNumber(n);
+      expect(array.length).equal(n);
+    });
+
   });
 
   describe('Send Controller', function() {
     var sendCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
+      $rootScope.availableBalance = 123456;
       sendCtrl = $controller('SendController', {
         $scope: scope,
         $modal: {},
@@ -226,6 +256,10 @@ describe("Unit: Controllers", function() {
 
     it('should have a SendController', function() {
       expect(scope.isMobile).not.to.equal(null);
+    });
+    it('should autotop balance correctly', function() {
+      scope.topAmount();
+      expect(scope.amount).to.equal(123356);
     });
   });
 
