@@ -68,7 +68,7 @@ angular.module('copayApp.services').factory('Socket',
       removeAllListeners: function() {
         for (var i = 0; i < listeners.length; i++) {
           var details = listeners[i];
-          socket.removeListener(details.event, details.fn);
+          socket.removeAllListeners(details.event);
         }
 
         listeners = [];

@@ -147,11 +147,13 @@ describe('PublicKeyRing model', function() {
       for (var i = 0; i < 2; i++)
         w.generateAddress(isChange);
 
-    var as = w.getAddresses();
+    var as = w.getAddressesInfo();
     as.length.should.equal(4);
     for (var j in as) {
       var a = as[j];
-      a.isValid().should.equal(true);
+      a.address.isValid().should.equal(true);
+      a.addressStr.should.equal(a.address.toString());
+      a.isChange.should.equal([false, false, true, true][j]);
     }
   });
 
