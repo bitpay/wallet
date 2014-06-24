@@ -209,8 +209,10 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts) {
   var ret = [];
   if (!opts.excludeChange) {
     for (var i = 0; i < this.indexes.getChangeIndex(); i++) {
+      var a = this.getAddress(i, true);
       ret.unshift({
         address: this.getAddress(i, true),
+        addressStr: a.toString(),
         isChange: true
       });
     }
@@ -218,8 +220,10 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts) {
 
   if (!opts.excludeMain) {
     for (var i = 0; i < this.indexes.getReceiveIndex(); i++) {
+      var a = this.getAddress(i, false);
       ret.unshift({
-        address: this.getAddress(i, false),
+        address: a,
+        addressStr: a.toString(),
         isChange: false
       });
     }

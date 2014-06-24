@@ -31,8 +31,8 @@ angular.module('copayApp.controllers').controller('AddressesController',
         for (var i = 0; i < addrInfos.length; i++) {
           var addrinfo = addrInfos[i];
           $scope.addresses.push({
-            'address': addrinfo.address.toString(),
-            'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.address.toString()] : 0,
+            'address': addrinfo.addressStr,
+            'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
             'isChange': addrinfo.isChange
           });
         }
@@ -41,5 +41,4 @@ angular.module('copayApp.controllers').controller('AddressesController',
         $rootScope.receivedFund = null;
       }
     }
-
   });
