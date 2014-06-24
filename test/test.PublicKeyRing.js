@@ -381,13 +381,19 @@ describe('PublicKeyRing model', function() {
   it('#getRedeemScriptMap check tests', function() {
     var k = createW();
     var w = k.w;
+    var amount = 2;
 
-    for (var i = 0; i < 2; i++)
+    for (var i = 0; i < amount; i++)
       w.generateAddress(true);
-    for (var i = 0; i < 2; i++)
+    for (var i = 0; i < amount; i++)
       w.generateAddress(false);
 
-    var m = w.getRedeemScriptMap();
+    var m = w.getRedeemScriptMap([
+      'm/45\'/2147483647/1/0',
+      'm/45\'/2147483647/1/1',
+      'm/45\'/2147483647/0/0',
+      'm/45\'/2147483647/0/1'
+    ]);
     Object.keys(m).length.should.equal(4);
     Object.keys(m).forEach(function(k) {
       should.exist(m[k]);

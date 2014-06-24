@@ -17,7 +17,6 @@ FakeBlockchain.prototype.fixUnspent = function(u) {
 };
 
 FakeBlockchain.prototype.getUnspent = function(addresses, cb) {
-  if (!addresses || !addresses.length) return cb(null, []);
   return cb(null, this.u || [{
     'address': 'mji7zocy8QzYywQakwWf99w9bCT6orY1C1',
     'txid': '0be0fb4579911be829e3077202e1ab47fcc12cf3ab8f8487ccceae768e1f95fa',
@@ -31,7 +30,6 @@ FakeBlockchain.prototype.getUnspent = function(addresses, cb) {
 };
 
 FakeBlockchain.prototype.getUnspent2 = function(addresses, cb) {
-  if (!addresses || !addresses.length) return cb(null, []);
   return cb(null, this.u || [{
     'address': 'mji7zocy8QzYywQakwWf99w9bCT6orY1C1',
     'txid': '0be0fb4579911be829e3077202e1ab47fcc12cf3ab8f8487ccceae768e1f95fa',

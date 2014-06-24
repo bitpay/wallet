@@ -709,7 +709,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   var b = new Builder(opts)
     .setUnspent(utxos)
-    .setHashToScriptMap(pkr.getRedeemScriptMap())
     .setOutputs([{
       address: toAddress,
       amountSat: amountSat
@@ -719,6 +718,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
+
+  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
 
   if (priv) {
     var keys = priv.getForPaths(inputChainPaths);

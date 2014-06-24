@@ -4,7 +4,6 @@ var imports = require('soop').imports();
 
 function Structure() {}
 
-
 /*
  * Based on https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki
  * m / purpose' / cosigner_index / change / address_index
@@ -31,6 +30,15 @@ Structure.FullBranch = function(address_index, isChange, cosigner_index) {
   sub = sub.substring(2);
   return BIP45_PUBLIC_PREFIX + '/' + sub;
 };
+
+Structure.indicesForPath = function(path) {
+  var s = path.split('/');
+  return {
+    isChange: s[3] === '1',
+    index: parseInt(s[4]),
+  };
+};
+
 Structure.IdFullBranch = Structure.FullBranch(0, 0, ID_INDEX);
 Structure.IdBranch = Structure.Branch(0, 0, ID_INDEX);
 Structure.PURPOSE = PURPOSE;
