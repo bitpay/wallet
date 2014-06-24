@@ -26,13 +26,13 @@ if (typeof process === 'undefined' || !process.version) {
           }
         };
         var storage = new LocalPlain();
-        storage.setFromObj(fakeWallet+timeStamp, obj);
-        storage.get(fakeWallet+timeStamp, 'test').should.equal('testval');
+        storage.setFromObj(fakeWallet + timeStamp, obj);
+        storage.get(fakeWallet + timeStamp, 'test').should.equal('testval');
 
         // Clean data used in localstorage
-        localStorage.removeItem(fakeWallet+timeStamp+'::test');
-        localStorage.removeItem(fakeWallet+timeStamp+'::opts');
-        localStorage.removeItem('nameFor::'+fakeWallet+timeStamp);
+        localStorage.removeItem(fakeWallet + timeStamp + '::test');
+        localStorage.removeItem(fakeWallet + timeStamp + '::opts');
+        localStorage.removeItem('nameFor::' + fakeWallet + timeStamp);
       });
     });
   });

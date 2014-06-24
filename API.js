@@ -6,7 +6,7 @@ var API = function(opts) {
 
 API.prototype._init = function(opts) {
   var self = this;
-  
+
   opts = opts || {};
   self.opts = opts;
 
@@ -53,12 +53,12 @@ API.prototype._command = function(command, args, callback) {
 
   if (typeof self["_cmd_" + command] == 'function') {
     var f = API.prototype[command];
-    if (f.argTypes[f.argTypes.length-1][1] == 'function')
+    if (f.argTypes[f.argTypes.length - 1][1] == 'function')
       return self["_cmd_" + command].apply(self, args.concat([callback]));
     else
       return callback(null, self["_cmd_" + command].apply(self, args));
   };
-  
+
   return callback(new Error('invalid command'));
 };
 
@@ -66,9 +66,9 @@ API._checkArgTypes = function(command, args) {
   var f = API.prototype[command];
 
   if (f.argTypes.length != args.length) {
-    
+
     //if the function doesn't have a callback
-    if (!(f.argTypes.length == args.length + 1 && f.argTypes[f.argTypes.length-1][1] == 'function'))
+    if (!(f.argTypes.length == args.length + 1 && f.argTypes[f.argTypes.length - 1][1] == 'function'))
       return false;
   }
 
@@ -98,7 +98,7 @@ API.prototype._cmd_echo = function(str, callback) {
 API.prototype.echo = decorate('echo', [
   ['str', 'string'],
   ['callback', 'function']
-  ]);
+]);
 
 API.prototype._cmd_echoNumber = function(num, callback) {
   var self = this;
@@ -109,7 +109,7 @@ API.prototype._cmd_echoNumber = function(num, callback) {
 API.prototype.echoNumber = decorate('echoNumber', [
   ['num', 'number'],
   ['callback', 'function']
-  ]);
+]);
 
 API.prototype._cmd_echoObject = function(obj, callback) {
   var self = this;
@@ -120,7 +120,7 @@ API.prototype._cmd_echoObject = function(obj, callback) {
 API.prototype.echoObject = decorate('echoObject', [
   ['obj', 'object'],
   ['callback', 'function']
-  ]);
+]);
 
 /*
 API.prototype.getBalance = function(callback) {
@@ -140,7 +140,7 @@ API.prototype._cmd_getArgTypes = function(command, callback) {
 
   if (command[0] == '_' || typeof API.prototype[command] != 'function')
     return callback(new Error('Invalid command'));
-  
+
   var argTypes = API.prototype[command].argTypes;
 
   return callback(null, argTypes);
@@ -149,7 +149,7 @@ API.prototype._cmd_getArgTypes = function(command, callback) {
 API.prototype.getArgTypes = decorate('getArgTypes', [
   ['command', 'string'],
   ['callback', 'function']
-  ]);
+]);
 
 API.prototype._cmd_getCommands = function(callback) {
   var self = this;
@@ -167,7 +167,7 @@ API.prototype._cmd_getCommands = function(callback) {
 
 API.prototype.getCommands = decorate('getCommands', [
   ['callback', 'function']
-  ]);
+]);
 
 API.prototype._cmd_getWallets = function(callback) {
   var self = this;
@@ -177,7 +177,7 @@ API.prototype._cmd_getWallets = function(callback) {
 
 API.prototype.getWallets = decorate('getWallets', [
   ['callback', 'function']
-  ]);
+]);
 
 API.prototype._cmd_help = function(callback) {
   this._cmd_getCommands.apply(this, arguments);
@@ -185,6 +185,6 @@ API.prototype._cmd_help = function(callback) {
 
 API.prototype.help = decorate('help', [
   ['callback', 'function']
-  ]);
+]);
 
 module.exports = require('soop')(API);

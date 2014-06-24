@@ -1,11 +1,11 @@
 'use strict';
 
-var chai           = require('chai');
-var should         = chai.should();
-var Storage        = require('../js/models/storage/File.js');
-var sinon          = require('sinon');
-var crypto         = require('crypto');
-var CryptoJS       = require('node-cryptojs-aes').CryptoJS;
+var chai = require('chai');
+var should = chai.should();
+var Storage = require('../js/models/storage/File.js');
+var sinon = require('sinon');
+var crypto = require('crypto');
+var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 describe('Storage/File', function() {
   it('should exist', function() {
@@ -17,12 +17,18 @@ describe('Storage/File', function() {
       var fs = {}
       fs.readFile = function(filename, callback) {
         filename.should.equal('myfilename');
-        var obj = {"test":"test"};
+        var obj = {
+          "test": "test"
+        };
         var encryptedStr = CryptoJS.AES.encrypt(JSON.stringify(obj), "password").toString();
         callback(null, encryptedStr);
       };
-      var Storage = require('soop').load('../js/models/storage/File.js', {fs: fs});
-      var storage = new Storage({password: 'password'});
+      var Storage = require('soop').load('../js/models/storage/File.js', {
+        fs: fs
+      });
+      var storage = new Storage({
+        password: 'password'
+      });
       storage.load('myfilename', function(err) {
         done();
       });
@@ -36,8 +42,12 @@ describe('Storage/File', function() {
         filename.should.equal('myfilename');
         callback();
       };
-      var Storage = require('soop').load('../js/models/storage/File.js', {fs: fs});
-      var storage = new Storage({password: 'password'});
+      var Storage = require('soop').load('../js/models/storage/File.js', {
+        fs: fs
+      });
+      var storage = new Storage({
+        password: 'password'
+      });
       storage.save('myfilename', function(err) {
         done();
       });
@@ -47,7 +57,11 @@ describe('Storage/File', function() {
   describe('#_read', function() {
     it('should return the value of a key', function() {
       var storage = new Storage();
-      storage.data = {'walletId':{'test':'data'}};
+      storage.data = {
+        'walletId': {
+          'test': 'data'
+        }
+      };
       storage._read('walletId::test').should.equal('data');
     });
   });
@@ -68,7 +82,11 @@ describe('Storage/File', function() {
   describe('#getGlobal', function() {
     it('should call storage._read', function() {
       var storage = new Storage();
-      storage.data = {'walletId':{'test':'test'}};
+      storage.data = {
+        'walletId': {
+          'test': 'test'
+        }
+      };
       storage._read = sinon.spy();
       storage.getGlobal('walletId::test');
       storage._read.calledOnce.should.equal(true);
@@ -91,7 +109,11 @@ describe('Storage/File', function() {
   describe('#removeGlobal', function() {
     it('should remove a global key', function(done) {
       var storage = new Storage();
-      storage.data = {'walletId':{'key':'value'}};
+      storage.data = {
+        'walletId': {
+          'key': 'value'
+        }
+      };
       storage.save = function(walletId, callback) {
         should.not.exist(storage.data[walletId]['key']);
         callback();
@@ -141,7 +163,9 @@ describe('Storage/File', function() {
 
   describe('#setFromObj', function() {
     it('should set this object for a wallet', function(done) {
-      var obj = {test:'testval'};
+      var obj = {
+        test: 'testval'
+      };
       var storage = new Storage();
       storage.save = function(walletId, callback) {
         callback();
@@ -155,25 +179,29 @@ describe('Storage/File', function() {
 
   describe('#getEncryptedObj', function() {
     it('should give an encrypted object', function() {
-      var obj = {test:'testval'};
+      var obj = {
+        test: 'testval'
+      };
       var data = JSON.stringify(obj);
       var encrypted = CryptoJS.AES.encrypt(data, 'password');
       var base64 = encrypted.toString();
 
-      var storage = new Storage({password: 'password'});
+      var storage = new Storage({
+        password: 'password'
+      });
       storage.data['walletId'] = obj;
 
       var enc = storage.getEncryptedObj('walletId');
       //enc.length.should.equal(96);
       enc.length.should.be.greaterThan(10);
-      enc.slice(0,10).should.equal(base64.slice(0,10));
+      enc.slice(0, 10).should.equal(base64.slice(0, 10));
       //enc.slice(0,6).should.equal("53616c");
     });
   });
 
   describe('#clearAll', function() {
     it('should set data to {}', function() {
-      
+
     });
   });
 

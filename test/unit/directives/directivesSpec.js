@@ -85,7 +85,11 @@ describe("Unit: Testing Directives", function() {
 
     beforeEach(inject(function($compile, $rootScope) {
       $rootScope.wallet = {
-        addressBook: {'2MtBXKLtZuXGDshUcyH6yq7aZ33Snbb49pT': {label: ':)'}}
+        addressBook: {
+          '2MtBXKLtZuXGDshUcyH6yq7aZ33Snbb49pT': {
+            label: ':)'
+          }
+        }
       }
       element1 = angular.element(
         '<contact address="2MtBXKLtZuXGDshUcyH6yq7aZ33Snbb49pT" />'

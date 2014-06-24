@@ -2,8 +2,7 @@
 
 angular.module('copayApp.controllers').controller('HeaderController',
   function($scope, $rootScope, $location, notification, $http, controllerUtils) {
-    $scope.menu = [
-    {
+    $scope.menu = [{
       'title': 'Addresses',
       'icon': 'fi-address-book',
       'link': '#/addresses'
@@ -25,15 +24,23 @@ angular.module('copayApp.controllers').controller('HeaderController',
       return new Array(num);
     }
 
-    $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data){
-      var toInt = function (s) { return parseInt(s); };
+    $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data) {
+      var toInt = function(s) {
+        return parseInt(s);
+      };
       var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
       var currentVersion = copay.version.split('.').map(toInt);
-      if (currentVersion[0] < latestVersion[0]){
-        $scope.updateVersion = {class: 'error', version:data[0].name};
+      if (currentVersion[0] < latestVersion[0]) {
+        $scope.updateVersion = {
+          class: 'error',
+          version: data[0].name
+        };
       } else if (currentVersion[0] == latestVersion[0] && currentVersion[1] < latestVersion[1]) {
-        $scope.updateVersion = {class: 'info', version:data[0].name};
-      } 
+        $scope.updateVersion = {
+          class: 'info',
+          version: data[0].name
+        };
+      }
     });
 
     $rootScope.unitName = config.unitName;
@@ -59,7 +66,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $rootScope.$watch('receivedFund', function(receivedFund) {
       if (receivedFund) {
         var currentAddr;
-        for(var i=0;i<$rootScope.addrInfos.length;i++) {
+        for (var i = 0; i < $rootScope.addrInfos.length; i++) {
           var addrinfo = $rootScope.addrInfos[i];
           if (addrinfo.address.toString() == receivedFund[1] && !addrinfo.isChange) {
             currentAddr = addrinfo.address.toString();
@@ -83,12 +90,12 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
 
     $scope.isActive = function(item) {
-      if (item.link && item.link.replace('#','') == $location.path()) {
+      if (item.link && item.link.replace('#', '') == $location.path()) {
         return true;
       }
       return false;
     };
-    
+
     $scope.signout = function() {
       logout();
       $scope.clearFlashMessage();
@@ -97,7 +104,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $scope.refresh = function() {
       var w = $rootScope.wallet;
       w.connectToAll();
-      if ($rootScope.addrInfos.length > 0 ) {
+      if ($rootScope.addrInfos.length > 0) {
         controllerUtils.updateBalance(function() {
           $rootScope.$digest();
         });
