@@ -38,4 +38,22 @@ describe('Structure model', function() {
     Structure.FullBranch(10, true, 7).should.equal('m/45\'/7/1/10');
   });
 
+  [
+    ['m/45\'/0/0/0', {index: 0, isChange: false}],
+    ['m/45\'/0/0/1', {index: 1, isChange: false}],
+    ['m/45\'/0/0/2', {index: 2, isChange: false}],
+    ['m/45\'/0/1/0', {index: 0, isChange: true}],
+    ['m/45\'/0/1/1', {index: 1, isChange: true}],
+    ['m/45\'/0/1/2', {index: 2, isChange: true}],
+    ['m/45\'/0/0/900', {index: 900, isChange: false}],
+  ].forEach(function(datum) {
+    var path = datum[0];
+    var result = datum[1];
+    it('should get the correct indices for path ' + path, function() {
+      var i = Structure.indicesForPath(path);
+      i.index.should.equal(result.index);
+      i.isChange.should.equal(result.isChange);
+    });
+  });
+
 });
