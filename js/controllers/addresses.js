@@ -12,27 +12,27 @@ angular.module('copayApp.controllers').controller('AddressesController',
           controllerUtils.setSocketHandlers();
           controllerUtils.updateAddressList();
           $scope.loading = false;
-        },1);
+        }, 1);
       });
     };
 
-    $scope.selectAddress = function (addr) {
+    $scope.selectAddress = function(addr) {
       $scope.selectedAddr = addr;
     };
 
     $rootScope.$watch('addrInfos', function() {
       $scope.addressList();
-    });   
+    });
 
-    $scope.addressList = function () {
+    $scope.addressList = function() {
       $scope.addresses = [];
       var addrInfos = $rootScope.addrInfos;
       if (addrInfos) {
-        for(var i=0;i<addrInfos.length;i++) {
+        for (var i = 0; i < addrInfos.length; i++) {
           var addrinfo = addrInfos[i];
-          $scope.addresses.push({ 
-            'address' : addrinfo.address.toString(),
-            'balance' : $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.address.toString()] : 0,
+          $scope.addresses.push({
+            'address': addrinfo.addressStr,
+            'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
             'isChange': addrinfo.isChange
           });
         }
@@ -41,5 +41,4 @@ angular.module('copayApp.controllers').controller('AddressesController',
         $rootScope.receivedFund = null;
       }
     }
-
   });
