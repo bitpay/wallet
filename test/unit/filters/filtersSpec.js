@@ -22,16 +22,31 @@ describe('Unit: Testing Filters', function() {
 
     it('should filter correctly', inject(function($filter) {
       var limitAddress = $filter('limitAddress');
-      var addresses = [
-        {isChange: true, balance: 0},
-        {isChange: false, balance: 0},
-        {isChange: true, balance: 0},
-        {isChange: false, balance: 0},
-        {isChange: true, balance: 0},
-        {isChange: false, balance: 0},
-        {isChange: true, balance: 0},
-        {isChange: false, balance: 0}
-      ];
+      var addresses = [{
+        isChange: true,
+        balance: 0
+      }, {
+        isChange: false,
+        balance: 0
+      }, {
+        isChange: true,
+        balance: 0
+      }, {
+        isChange: false,
+        balance: 0
+      }, {
+        isChange: true,
+        balance: 0
+      }, {
+        isChange: false,
+        balance: 0
+      }, {
+        isChange: true,
+        balance: 0
+      }, {
+        isChange: false,
+        balance: 0
+      }];
       expect(limitAddress(addresses, false).length).to.equal(1);
 
       addresses[0].isChange = false;

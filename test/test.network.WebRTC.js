@@ -1,15 +1,15 @@
 'use strict';
 
-var chai           = chai || require('chai');
-var should         = chai.should();
-var expect         = chai.expect;
-var sinon          = sinon || require('sinon');
-var bitcore        = bitcore || require('bitcore');
+var chai = chai || require('chai');
+var should = chai.should();
+var expect = chai.expect;
+var sinon = sinon || require('sinon');
+var bitcore = bitcore || require('bitcore');
 var WebRTC = require('../js/models/network/WebRTC');
 
 describe('Network / WebRTC', function() {
 
-  it('should create an instance', function () {
+  it('should create an instance', function() {
     var n = new WebRTC();
     should.exist(n);
   });
@@ -28,7 +28,7 @@ describe('Network / WebRTC', function() {
       n.cleanUp.calledOnce.should.equal(true);
       WebRTC.prototype.cleanUp = save;
     });
-    
+
   });
 
   describe('#cleanUp', function() {
@@ -95,7 +95,9 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerId = key.public.toString('hex');
-      n._sendToOne = function(a1, a2, a3, cb) {cb();};
+      n._sendToOne = function(a1, a2, a3, cb) {
+        cb();
+      };
       var sig = undefined;
       n.send(copayerId, data, function() {
         done();
@@ -138,7 +140,9 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerIds = [key.public.toString('hex')];
-      n._sendToOne = function(a1, a2, a3, cb) {cb();};
+      n._sendToOne = function(a1, a2, a3, cb) {
+        cb();
+      };
       var sig = undefined;
       n.send(copayerIds, data, function() {
         done();

@@ -1,11 +1,9 @@
+var imports = require('soop').imports();
+var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 
-var imports     = require('soop').imports();
-var EventEmitter= imports.EventEmitter || require('events').EventEmitter;
+function Network(opts) {}
 
-function Network(opts) {
-}
-
-Network.parent=EventEmitter;
+Network.parent = EventEmitter;
 
 Network.prototype.start = function(opts, cb) {
   // start! :D
@@ -34,10 +32,8 @@ Network.prototype.lockIncommingConnections = function() {
 
 };
 
-Network.prototype.getPeer = function() {
-};
-Network.prototype.connectToCopayers = function(cps) {
-};
+Network.prototype.getPeer = function() {};
+Network.prototype.connectToCopayers = function(cps) {};
 Network.prototype.isOnline = function() {
   return true;
 };

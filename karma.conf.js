@@ -53,7 +53,7 @@ module.exports = function(config) {
       'test/lib/chai-should.js',
       'test/lib/chai-expect.js',
       'test/mocks/FakeWallet.js',
-      
+
       'test/mocha.conf.js',
 
       //test files

@@ -207,7 +207,7 @@ angular.module('copayApp.controllers').controller('SendController',
         templateUrl: 'addressBookModal.html',
         windowClass: 'tiny',
         controller: function($scope, $modalInstance) {
-          
+
           $scope.submitAddressBook = function(form) {
             if (form.$invalid) {
               $rootScope.$flashMessage = {
@@ -255,8 +255,7 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.topAmount = function() {
-      var maxSat = ($rootScope.availableBalance * config.unitToSatoshi).toFixed(0)
-         - bitcore.TransactionBuilder.FEE_PER_1000B_SAT;
+      var maxSat = ($rootScope.availableBalance * config.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT;
       $scope.amount = maxSat / config.unitToSatoshi;
     };
   });

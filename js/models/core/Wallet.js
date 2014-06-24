@@ -44,7 +44,7 @@ function Wallet(opts) {
     this.token = opts.token;
     this.tokenTime = opts.tokenTime;
   }
-  
+
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
@@ -142,12 +142,11 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   this.log('RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
   var hasChange;
-  for(var key in rcv) {
+  for (var key in rcv) {
     if (!this.addressBook[key]) {
       this.addressBook[key] = rcv[key];
       hasChange = true;
-    }
-    else {
+    } else {
       if (rcv[key].createdTs > this.addressBook[key].createdTs) {
         this.addressBook[key] = rcv[key];
         hasChange = true;
@@ -395,7 +394,7 @@ Wallet.prototype.sendAllTxProposals = function(recipients) {
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
   preconditions.checkState(this.txProposals.txps[ntxid]);
-  this.log('### SENDING txProposal '+ntxid+' TO:', recipients || 'All', this.txProposals);
+  this.log('### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
   this.network.send(recipients, {
     type: 'txProposal',
     txProposal: this.txProposals.txps[ntxid].toObj(),
@@ -771,7 +770,7 @@ Wallet.prototype.updateIndexes = function(callback) {
 
 Wallet.prototype.deriveAddresses = function(index, amout, isChange) {
   var ret = new Array(amout);
-  for(var i = 0; i < amout; i++) {
+  for (var i = 0; i < amout; i++) {
     ret[i] = this.publicKeyRing.getAddress(index + i, isChange).toString();
   }
   return ret;
@@ -791,7 +790,7 @@ Wallet.prototype.indexDiscovery = function(start, change, gap, cb) {
       // Optimize window to minimize the derivations.
       var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
       var addresses = self.deriveAddresses(scanIndex, scanWindow, change);
-      self.blockchain.checkActivity(addresses, function(err, actives){
+      self.blockchain.checkActivity(addresses, function(err, actives) {
         if (err) throw err;
 
         // Check for new activities in the newlly scanned addresses
@@ -804,7 +803,9 @@ Wallet.prototype.indexDiscovery = function(start, change, gap, cb) {
         next();
       });
     },
-    function _while() { return hasActivity; },
+    function _while() {
+      return hasActivity;
+    },
     function _finnaly(err) {
       if (err) return cb(err);
       cb(null, lastActive);

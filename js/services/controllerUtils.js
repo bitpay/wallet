@@ -122,7 +122,7 @@ angular.module('copayApp.services')
           });
         }, 3000);
       });
-      w.on('txProposalEvent', function(e){
+      w.on('txProposalEvent', function(e) {
         switch (e.type) {
           case 'signed':
             var user = w.publicKeyRing.nicknameForCopayer(e.cId);
@@ -297,7 +297,7 @@ angular.module('copayApp.services')
         Socket.emit('subscribe', 'inv');
         Socket.on('block', function(block) {
           root.updateBalance(function() {
-              $rootScope.$digest();
+            $rootScope.$digest();
           });
         });
       }
