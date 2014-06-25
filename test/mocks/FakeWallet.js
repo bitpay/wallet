@@ -38,6 +38,7 @@ FakeWallet.prototype.getAddressesInfo = function() {
   for (var ii in this.balanceByAddr) {
     ret.push({
       address: ii,
+      addressStr: ii,
       isChange: false,
     });
   }

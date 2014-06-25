@@ -130,7 +130,6 @@ angular.module('copayApp.services')
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.updateAddressList();
         root.setSocketHandlers();
         if (!dontDigest) {
           $rootScope.$digest();
@@ -184,7 +183,8 @@ angular.module('copayApp.services')
 
     root.updateAddressList = function() {
       var w = $rootScope.wallet;
-      $rootScope.addrInfos = w.getAddressesInfo();
+      if (w)
+        $rootScope.addrInfos = w.getAddressesInfo();
     };
 
     root.updateBalance = function(cb) {
@@ -289,6 +289,7 @@ angular.module('copayApp.services')
     };
 
     root.setSocketHandlers = function() {
+      root.updateAddressList();
       if (!Socket.sysEventsSet) {
         Socket.sysOn('error', root._setCommError);
         Socket.sysOn('reconnect_error', root._setCommError);
@@ -315,7 +316,7 @@ angular.module('copayApp.services')
         Socket.on(a.addressStr, function(txid) {
 
           if (!a.isChange)
-            notification.funds('Received fund', a.addressStr);
+            notification.funds('Funds received!', a.addressStr);
 
           root.updateBalance(function() {
             $rootScope.$digest();
