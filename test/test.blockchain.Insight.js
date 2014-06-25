@@ -60,7 +60,7 @@ describe('Insight model', function() {
   });
 
   // Tests for Node
-  if (process.version) {
+  if (typeof process !== 'undefined' && process.version) {
     it('should return array of unspent output', function(done) {
       var i = new Insight();
 
