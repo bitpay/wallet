@@ -20,7 +20,7 @@
             <div class="large-3 medium-3 small-5 columns">
               <span class="logo"></span>
             </div>
-            <div class="large-9 medium-9 small-7 columns text-center p10t" ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
+            <div class="large-9 medium-9 small-7 columns text-center p10t" ng-show="$root.wallet && $root.wallet.isReady()">
               <div class="large-4 medium-4 columns line-dashed-v">
                 <a href="#/addresses" class="has-tip" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
                   <strong><span>{{$root.wallet.getName()}}</span></strong>
@@ -51,7 +51,7 @@
             </div>
           </div>
 
-        <nav class="top-bar" data-topbar ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
+        <nav class="top-bar" data-topbar ng-show="$root.wallet && $root.wallet.isReady()">
           <ul class="title-area">
             <li class="name"></li>
             <li class="toggle-topbar menu-icon">
@@ -100,10 +100,10 @@
         </div>
       </div>
 
-      <div ng-if='$root.wallet && !$root.wallet.publicKeyRing.isComplete() && !loading'>
+      <div ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
         <div class="row">
           <div class="large-12 medium-12 small-12 columns">
-            <div class="alert-box secondary radius" data-alert>
+            <div class="alert-box secondary radius" ng-if="!$root.wallet.publicKeyRing.isComplete()" data-alert>
               <i class="fi-info"></i>
               Not all copayers have joined your wallet yet.
               <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
@@ -114,10 +114,14 @@
               </span>
               yet to join.
             </div>
+            <div class="alert-box success radius" ng-if="$root.wallet.publicKeyRing.isComplete()" data-alert>
+              <i class="fi-check"></i>
+              All copayers have joined the wallet, it's ready for use!
+            </div>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-if="!$root.wallet.publicKeyRing.isComplete()">
           <div class="large-12 medium-12 small-12 columns ">
             <div class="panel radius m30v">
               <h3 class="m15b">Share this secret with your other copayers
@@ -141,7 +145,18 @@
           <div class="large-12 medium-12 small-12 columns ">
             <div class="box-setup-copayers">
               <div class="box-setup-copayers-fix">
-                <img class="box-setup-copay" ng-repeat="i in getNumber($root.wallet.totalCopayers) track by $index" src="./img/satoshi.gif" alt="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= $root.wallet.publicKeyRing.registeredCopayers()}">
+                <img class="box-setup-copay"
+                ng-repeat="i in getNumber($root.wallet.totalCopayers) track by $index"
+                src="./img/satoshi.gif"
+                title="Copayer {{$index+1}}-{{totalCopayers}}"
+                ng-class="{'box-setup-copay-required': ($index+1) <= $root.wallet.publicKeyRing.registeredCopayers()}">
+
+                <button class="button primary radius right"
+                  ng-click="backupAndOpen()"
+                  ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+                  Backup keys and continue
+                </button>
+
               </div>
             </div>
           </div>
@@ -152,12 +167,12 @@
 
     <div notifications="middle right"></div>
 
-    <div id="main" class="row" ng-class="{'main-home': !$root.wallet || !$root.wallet.publicKeyRing.isComplete()}">
+    <div id="main" class="row" ng-class="{'main-home': !$root.wallet || !$root.wallet.isReady()}">
       <div class="large-12 columns" ng-view></div>
     </div>
   </div>
 
-  <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet || !$root.wallet.publicKeyRing.isComplete()}">
+  <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet || !$root.wallet.isReady()}">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div ng-show="!$root.wallet">
       <div class="large-12 columns text-left">
@@ -165,7 +180,7 @@
         <small>v{{version}}</small>
       </div>
     </div>
-    <div ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
+    <div ng-show="$root.wallet && !$root.wallet.isReady()">
       <div class="large-6 medium-6 small-6 columns">
         <strong>{{$root.wallet.getName()}}</strong> 
         {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} 
@@ -177,7 +192,7 @@
         <small>v{{version}}</small>
       </div>
     </div>
-    <div ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
+    <div ng-show="$root.wallet && $root.wallet.isReady()">
       <div class="large-3 medium-4 hide-for-small columns">
         <div>
           <strong>{{$root.wallet.getName()}}</strong> 
@@ -363,7 +378,10 @@
             <div class="small-12 medium-6 medium-centered large-6 large-centered columns m10b">
               <div class="box-setup-copayers">
                 <div class="box-setup-copayers-fix">
-                  <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" alt="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
+                  <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
+                    src="./img/satoshi.gif"
+                    title="Copayer {{$index+1}}-{{totalCopayers}}"
+                    ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
                 </div>
               </div>
             </div>
@@ -387,7 +405,7 @@
     <!-- ADDRESS -->
     <script type="text/ng-template" id="addresses.html">
       <div class="addresses" ng-controller="AddressesController">
-        <div ng-show='$root.wallet.publicKeyRing.isComplete()'>
+        <div ng-show='$root.wallet.isReady()'>
           <div class="row">
             <div class="large-9 medium-12 columns" ng-if="addresses[0]">
               <div class="large-8 medium-8 columns" ng-init="showAll=0">
@@ -450,7 +468,7 @@
     <!-- TRANSACTIONS -->
     <script type="text/ng-template" id="transactions.html">
       <div class="transactions" data-ng-controller="TransactionsController">
-        <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
+        <div class="row" ng-show='$root.wallet.isReady()'>
           <div class="large-12 columns" ng-show="wallet.totalCopayers > 1">
             <h4> Transaction proposals <small>({{txs.length}})</small></h4>
 
@@ -629,7 +647,7 @@
    <!-- SEND -->
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
-        <div class="row" ng-show='$root.wallet.publicKeyRing.isComplete()'>
+        <div class="row" ng-show='$root.wallet.isReady()'>
           <div class="medium-6 medium-centered large-6 large-centered columns">
             <h3>{{title}}</h3>
             <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
