@@ -755,6 +755,7 @@ Wallet.prototype.updateIndexes = function(callback) {
     if (changeIndex != -1)
       self.publicKeyRing.indexes.changeIndex = changeIndex + 1;
 
+    self.emit('updatingIndexes');
     start = self.publicKeyRing.indexes.receiveIndex;
     self.indexDiscovery(start, false, 20, function(err, receiveIndex) {
       if (err) return callback(err);

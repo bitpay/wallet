@@ -743,7 +743,7 @@ describe('Wallet model', function() {
       var spyEmit = sinon.spy(w, 'emit');
       w.updateIndexes(function(err) {
         sinon.assert.callCount(spyStore, 1);
-        sinon.assert.callCount(spyEmit, 1);
+        sinon.assert.callCount(spyEmit, 2);
         done();
       });
     });

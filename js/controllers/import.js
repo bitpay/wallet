@@ -3,10 +3,19 @@
 angular.module('copayApp.controllers').controller('ImportController',
   function($scope, $rootScope, walletFactory, controllerUtils, Passphrase) {
     $scope.title = 'Import a backup';
+    $scope.importStatus = 'Importing wallet - Reading backup...';
+
     var reader = new FileReader();
+
+    var updateStatus = function(status) {
+      $scope.importStatus = status;
+      $scope.$digest();
+    }
+
     var _importBackup = function(encryptedObj) {
       Passphrase.getBase64Async($scope.password, function(passphrase) {
-        walletFactory.import(encryptedObj, passphrase, function(err, w) {
+        updateStatus('Importing wallet - Setting things up...');
+        var w = walletFactory.import(encryptedObj, passphrase, function(err, w) {
           if (err) {
             $scope.loading = false;
             $rootScope.$flashMessage = {
@@ -18,6 +27,10 @@ angular.module('copayApp.controllers').controller('ImportController',
           }
           $rootScope.wallet = w;
           controllerUtils.startNetwork($rootScope.wallet, $scope);
+        });
+
+        w.on('updatingIndexes', function(){
+          updateStatus('Importing wallet - We are almost there...');
         });
       });
     };

@@ -276,7 +276,7 @@
       <div ng-controller="ImportController">
         <div data-alert class="alert-box info radius" ng-show="loading">
           <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
-          Importing wallet...
+          {{ importStatus }}
         </div>
         <div ng-init="choosefile=0; pastetext=0" ng-show="!loading">
           <h3>{{title}}</h3>
