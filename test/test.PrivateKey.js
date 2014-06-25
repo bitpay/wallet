@@ -33,7 +33,7 @@ describe('PrivateKey model', function() {
 
   it('should derive priv keys', function() {
     var pk = new PrivateKey(config);
-    for (var j = 0; j < 2; j++) {
+    for (var j = false; !j; j=true) {
       for (var i = 0; i < 3; i++) {
         var wk = pk.get(i, j);
         should.exist(wk);
@@ -78,10 +78,10 @@ describe('PrivateKey model', function() {
     w2.toObj().extendedPrivateKeyString.should.equal(w1.toObj().extendedPrivateKeyString);
     w2.getId().should.equal(w1.getId());
 
-    JSON.stringify(w2.get(1, 1).storeObj()).should
-      .equal(JSON.stringify(w1.get(1, 1).storeObj()));
-    JSON.stringify(w2.get(1, 0).storeObj()).should
-      .equal(JSON.stringify(w1.get(1, 0).storeObj()));
+    JSON.stringify(w2.get(1, true).storeObj()).should
+      .equal(JSON.stringify(w1.get(1, true).storeObj()));
+    JSON.stringify(w2.get(1, false).storeObj()).should
+      .equal(JSON.stringify(w1.get(1, false).storeObj()));
   });
 
   describe('#getId', function() {

@@ -69,14 +69,15 @@ var vopts = {
 
 describe('TxProposals model', function() {
 
+  var isChange = false;
+  var index = 0;
+
   it('verify TXs', function(done) {
 
     var priv = new PrivateKey(config);
     var priv2 = new PrivateKey(config);
     var priv3 = new PrivateKey(config);
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
     var pkr = createPKR([priv, priv2, priv3]);
     var opts = {
       remainderOut: {
@@ -186,8 +187,6 @@ describe('TxProposals model', function() {
     var start = new Date().getTime();
     var pkr = createPKR([priv]);
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
     unspentTest[0].address = pkr.getAddress(index, isChange).toString();
     unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
     w.add(createTx(
@@ -211,8 +210,6 @@ describe('TxProposals model', function() {
     var start = new Date().getTime();
     var pkr = createPKR([priv]);
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
 
     unspentTest[0].address = pkr.getAddress(index, isChange).toString();
     unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
@@ -250,8 +247,6 @@ describe('TxProposals model', function() {
     var priv2 = new PrivateKey(config);
     var priv = new PrivateKey(config);
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
     var pkr = createPKR([priv]);
     var opts = {
       remainderOut: {
@@ -353,8 +348,6 @@ describe('TxProposals model', function() {
     var priv3 = PrivateKey.fromObj(o3);
 
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
     var pkr = createPKR([priv, priv2]);
     var opts = {
       remainderOut: {
@@ -467,8 +460,6 @@ describe('TxProposals model', function() {
     var priv2 = new PrivateKey(config);
     var priv3 = new PrivateKey(config);
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
     var pkr = createPKR([priv, priv2, priv3]);
     var opts = {
       remainderOut: {
@@ -573,8 +564,6 @@ describe('TxProposals model', function() {
       networkName: config.networkName,
     });
     var ts = Date.now();
-    var isChange = 0;
-    var index = 0;
 
     unspentTest[0].address = pkr.getAddress(index, isChange).toString();
     unspentTest[0].scriptPubKey = pkr.getScriptPubKeyHex(index, isChange);
