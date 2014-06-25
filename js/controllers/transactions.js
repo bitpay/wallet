@@ -147,9 +147,10 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       if (w) {
         var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
-          $scope.blockchain_txs = [];
+          $scope.blockchain_txs = $scope.wallet.txCache || [];
           w.blockchain.getTransactions(addresses, function(txs) {
             $timeout(function() {
+              $scope.blockchain_txs = [];
               for (var i = 0; i < txs.length; i++) {
                 txs[i].vinSimple = _aggregateItems(txs[i].vin);
                 txs[i].voutSimple = _aggregateItems(txs[i].vout);
@@ -157,6 +158,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
                 txs[i].fees = ((txs[i].fees * bitcore.util.COIN).toFixed(0)) * satToUnit;
                 $scope.blockchain_txs.push(txs[i]);
               }
+              $scope.wallet.txCache = $scope.blockchain_txs;
               $scope.loading = false;
             }, 10);
           });
@@ -184,5 +186,11 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       };
       $scope.loading = false;
     };
+
+    // Autoload transactions on 1-of-1
+    if ($rootScope.wallet && $rootScope.wallet.totalCopayers == 1) {
+      $scope.lastShowed = true;
+      $scope.getTransactions();
+    }
 
   });
