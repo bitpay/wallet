@@ -5,7 +5,7 @@ var imports = require('soop').imports();
 var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var async = require('async');
-var preconditions = require('preconditions').instance();
+var preconditions = require('preconditions').singleton();
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;

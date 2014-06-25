@@ -190,7 +190,7 @@ PublicKeyRing.prototype.getScriptPubKeyHex = function(index, isChange) {
 
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange) {
-
+  isChange = !!isChange;
   var index = isChange ? this.indexes.getChangeIndex() : this.indexes.getReceiveIndex();
   var ret = this.getAddress(index, isChange);
   this.indexes.increment(isChange);

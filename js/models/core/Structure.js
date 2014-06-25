@@ -1,6 +1,7 @@
 'use strict';
 
 var imports = require('soop').imports();
+var preconditions = require('preconditions').singleton();
 
 function Structure() {}
 
@@ -18,6 +19,8 @@ var BIP45_PUBLIC_PREFIX = 'm/' + PURPOSE + '\'';
 Structure.BIP45_PUBLIC_PREFIX = BIP45_PUBLIC_PREFIX;
 
 Structure.Branch = function(address_index, isChange, cosigner_index) {
+  preconditions.shouldBeNumber(address_index);
+  preconditions.shouldBeBoolean(isChange);
   var ret = 'm/' +
     (typeof cosigner_index !== 'undefined' ? cosigner_index : SHARED_INDEX) + '/' +
     (isChange ? 1 : 0) + '/' +
@@ -32,6 +35,7 @@ Structure.FullBranch = function(address_index, isChange, cosigner_index) {
 };
 
 Structure.indicesForPath = function(path) {
+  preconditions.shouldBeString(path);
   var s = path.split('/');
   return {
     isChange: s[3] === '1',
@@ -39,8 +43,8 @@ Structure.indicesForPath = function(path) {
   };
 };
 
-Structure.IdFullBranch = Structure.FullBranch(0, 0, ID_INDEX);
-Structure.IdBranch = Structure.Branch(0, 0, ID_INDEX);
+Structure.IdFullBranch = Structure.FullBranch(0, false, ID_INDEX);
+Structure.IdBranch = Structure.Branch(0, false, ID_INDEX);
 Structure.PURPOSE = PURPOSE;
 Structure.MAX_NON_HARDENED = MAX_NON_HARDENED;
 Structure.SHARED_INDEX = SHARED_INDEX;
