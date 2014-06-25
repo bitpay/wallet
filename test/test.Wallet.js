@@ -38,7 +38,7 @@ describe('Wallet model', function() {
     throw();
   });
   it('should getNetworkName', function() {
-    var w = createW();
+    var w = cachedCreateW();
     w.getNetworkName().should.equal('testnet');
   });
 
@@ -87,8 +87,20 @@ describe('Wallet model', function() {
     return new Wallet(c);
   }
 
+  var cachedW = null;
+  var cachedWobj = null;
+  var cachedCreateW = function() {
+    if (!cachedW) {
+      cachedW = createW();
+      cachedWobj = cachedW.toObj();
+      cachedWobj.opts.reconnectDelay = 100;
+    }
+    var w = Wallet.fromObj(cachedWobj, cachedW.storage, cachedW.network, cachedW.blockchain);
+    return w;
+  };
+
   it('should create an instance', function() {
-    var w = createW();
+    var w = cachedCreateW();
     should.exist(w);
     w.publicKeyRing.walletId.should.equal(w.id);
     w.txProposals.walletId.should.equal(w.id);
@@ -102,7 +114,7 @@ describe('Wallet model', function() {
 
   it('should provide some basic features', function(done) {
     var opts = {};
-    var w = createW();
+    var w = cachedCreateW();
     addCopayers(w);
     w.publicKeyRing.generateAddress(false);
     w.publicKeyRing.isComplete().should.equal(true);
@@ -149,9 +161,21 @@ describe('Wallet model', function() {
     return w;
   };
 
+  var cachedW2 = null;
+  var cachedW2obj = null;
+  var cachedCreateW2 = function() {
+    if (!cachedW2) {
+      cachedW2 = createW2();
+      cachedW2obj = cachedW2.toObj();
+      cachedW2obj.opts.reconnectDelay = 100;
+    }
+    var w = Wallet.fromObj(cachedW2obj, cachedW2.storage, cachedW2.network, cachedW2.blockchain);
+    return w;
+  };
+
   it('#create, 1 sign', function() {
 
-    var w = createW2();
+    var w = cachedCreateW2();
 
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
@@ -175,7 +199,7 @@ describe('Wallet model', function() {
 
   it('#create with comment', function() {
 
-    var w = createW2();
+    var w = cachedCreateW2();
     var comment = 'This is a comment';
 
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
@@ -197,7 +221,7 @@ describe('Wallet model', function() {
 
   it('#create throw exception on long comment', function() {
 
-    var w = createW2();
+    var w = cachedCreateW2();
     var comment = 'Lorem ipsum dolor sit amet, suas euismod vis te, velit deleniti vix an. Pri ex suscipit similique, inermis per';
 
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
@@ -216,7 +240,7 @@ describe('Wallet model', function() {
   });
 
   it('#addressIsOwn', function() {
-    var w = createW2();
+    var w = cachedCreateW2();
     var l = w.getAddressesStr();
     for (var i = 0; i < l.length; i++)
       w.addressIsOwn(l[i]).should.equal(true);
@@ -231,7 +255,7 @@ describe('Wallet model', function() {
 
   it('#create. Signing with derivate keys', function() {
 
-    var w = createW2();
+    var w = cachedCreateW2();
 
     var ts = Date.now();
     for (var isChange = 0; isChange < 2; isChange++) {
@@ -259,7 +283,7 @@ describe('Wallet model', function() {
 
   it('#fromObj #toObj round trip', function() {
 
-    var w = createW2();
+    var w = cachedCreateW2();
 
     var o = w.toObj();
     o = JSON.parse(JSON.stringify(o));
@@ -279,7 +303,7 @@ describe('Wallet model', function() {
   });
 
   it('#getSecret decodeSecret', function() {
-    var w = createW2();
+    var w = cachedCreateW2();
     var id = w.getMyCopayerId();
 
     var sb = w.getSecret();
@@ -305,7 +329,7 @@ describe('Wallet model', function() {
 
   it('call reconnect after interval', function(done) {
     this.timeout(10000);
-    var w = createW2();
+    var w = cachedCreateW2();
     var spy = sinon.spy(w, 'scheduleConnect');
     var callCount = 3;
     w.netStart();
@@ -447,7 +471,7 @@ describe('Wallet model', function() {
   });
 
   it('#getBalance should call #getUnspent', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     var spy = sinon.spy(w.blockchain, 'getUnspent');
     w.generateAddress();
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
@@ -456,7 +480,7 @@ describe('Wallet model', function() {
     });
   });
   it('#getBalance should return values in satoshis', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     w.generateAddress();
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
       balance.should.equal(2500010000);
@@ -482,7 +506,7 @@ describe('Wallet model', function() {
   it('#getUnspent and spendUnconfirmed should count transactions with 1 confirmations', function(done) {
     var conf = JSON.parse(JSON.stringify(config));
     conf.spendUnconfirmed = false;
-    var w = createW2(null, null, conf);
+    var w = cachedCreateW2(null, null, conf);
     w.blockchain.getUnspent = w.blockchain.getUnspent2;
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
       balance.should.equal(2500010000);
@@ -513,7 +537,7 @@ describe('Wallet model', function() {
 
   roundErrorChecks.forEach(function(c) {
     it('check rounding errors ' + c.unspent[0], function(done) {
-      var w = createW2();
+      var w = cachedCreateW2();
       w.generateAddress();
       w.blockchain.fixUnspent(c.unspent.map(function(u) {
         return {
@@ -559,7 +583,7 @@ describe('Wallet model', function() {
   var amountSatStr = '1000';
 
   it('should create transaction', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
@@ -569,7 +593,7 @@ describe('Wallet model', function() {
   });
   it('should create & sign transaction from received funds', function(done) {
     this.timeout(10000);
-    var w = createW2();
+    var w = cachedCreateW2();
     var pk = w.privateKey;
     w.privateKey = null;
     var utxo = createUTXO(w);
@@ -587,7 +611,7 @@ describe('Wallet model', function() {
     });
   });
   it('should create & reject transaction', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     w.privateKey = null;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
@@ -612,7 +636,7 @@ describe('Wallet model', function() {
     });
   });
   it('should send TxProposal', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
@@ -624,7 +648,7 @@ describe('Wallet model', function() {
     });
   });
   it('should send all TxProposal', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
@@ -651,7 +675,7 @@ describe('Wallet model', function() {
   }
 
   it('#indexDiscovery should work without found activities', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     mockFakeActivity(w, function(index) {
       return false
     });
@@ -662,7 +686,7 @@ describe('Wallet model', function() {
   });
 
   it('#indexDiscovery should continue scanning', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     mockFakeActivity(w, function(index) {
       return index <= 7
     });
@@ -673,7 +697,7 @@ describe('Wallet model', function() {
   });
 
   it('#indexDiscovery should not found beyond the scannWindow', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     mockFakeActivity(w, function(index) {
       return index <= 10 || index == 17
     });
@@ -684,7 +708,7 @@ describe('Wallet model', function() {
   });
 
   it('#indexDiscovery should look for activity along the scannWindow', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     mockFakeActivity(w, function(index) {
       return index <= 14 && index % 2 == 0
     });
@@ -695,7 +719,7 @@ describe('Wallet model', function() {
   });
 
   it('#updateIndexes should update correctly', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     mockFakeActivity(w, function(index) {
       return index <= 14 && index % 2 == 0
     });
@@ -707,7 +731,7 @@ describe('Wallet model', function() {
   });
 
   it('#updateIndexes should store and emit event', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     mockFakeActivity(w, function(index) {
       return index <= 14 && index % 2 == 0
     });
@@ -721,7 +745,7 @@ describe('Wallet model', function() {
   });
 
   it('#deriveAddresses', function(done) {
-    var w = createW2();
+    var w = cachedCreateW2();
     var addresses1 = w.deriveAddresses(0, 5, false);
     var addresses2 = w.deriveAddresses(4, 5, false);
 
@@ -797,7 +821,7 @@ describe('Wallet model', function() {
   describe('#getMyCopayerId', function() {
     it('should call getCopayerId', function() {
       //this.timeout(10000);
-      var w = createW2();
+      var w = cachedCreateW2();
       w.getCopayerId = sinon.spy();
       w.getMyCopayerId();
       w.getCopayerId.calledOnce.should.equal(true);
@@ -807,7 +831,7 @@ describe('Wallet model', function() {
   describe('#getMyCopayerIdPriv', function() {
     it('should call privateKey.getIdPriv', function() {
       //this.timeout(10000);
-      var w = createW2();
+      var w = cachedCreateW2();
       w.privateKey.getIdPriv = sinon.spy();
       w.getMyCopayerIdPriv();
       w.privateKey.getIdPriv.calledOnce.should.equal(true);
@@ -818,7 +842,7 @@ describe('Wallet model', function() {
 
     it('should call Network.start', function() {
       //this.timeout(10000);
-      var w = createW2();
+      var w = cachedCreateW2();
       w.network.start = sinon.spy();
       w.netStart();
       w.network.start.calledOnce.should.equal(true);
@@ -826,7 +850,7 @@ describe('Wallet model', function() {
 
     it('should call Network.start with a private key', function() {
       //this.timeout(10000);
-      var w = createW2();
+      var w = cachedCreateW2();
       w.network.start = sinon.spy();
       w.netStart();
       w.network.start.getCall(0).args[0].privkey.length.should.equal(64);
