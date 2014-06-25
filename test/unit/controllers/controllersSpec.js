@@ -203,7 +203,6 @@ describe("Unit: Controllers", function() {
       scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
       var spy = sinon.spy(scope.wallet, 'createTx');
       var spy2 = sinon.spy(scope.wallet, 'sendTx');
-      scope.update = function() {};
 
       scope.submitForm(sendForm);
       sinon.assert.callCount(spy, 1);
