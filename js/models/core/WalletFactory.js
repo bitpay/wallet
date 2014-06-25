@@ -84,6 +84,7 @@ WalletFactory.prototype.import = function(base64, password, cb) {
     self.log('Indexes updated');
     cb(null, w);
   });
+  return w;
 }
 
 WalletFactory.prototype.read = function(walletId) {
