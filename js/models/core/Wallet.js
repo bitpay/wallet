@@ -50,6 +50,7 @@ function Wallet(opts) {
   this.network.maxPeers = this.totalCopayers;
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
+  this.backupOffered = opts.backupOffered || false;
 }
 
 Wallet.parent = EventEmitter;
@@ -355,7 +356,8 @@ Wallet.prototype.toObj = function() {
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
-    addressBook: this.addressBook
+    addressBook: this.addressBook,
+    backupOffered: this.backupOffered,
   };
 
   return walletObj;
@@ -364,6 +366,8 @@ Wallet.prototype.toObj = function() {
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
+  opts.backupOffered = o.backupOffered;
+
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
   opts.txProposals = TxProposals.fromObj(o.txProposals);
   opts.privateKey = PrivateKey.fromObj(o.privateKey);
@@ -848,6 +852,16 @@ Wallet.prototype.deleteAddressBook = function(key) {
     this.sendAddressBook();
     this.store();
   }
+};
+
+Wallet.prototype.isReady = function() {
+  var ret = this.publicKeyRing.isComplete() && this.backupOffered;
+  return ret;
+};
+
+Wallet.prototype.offerBackup = function() {
+  this.backupOffered = true;
+  this.store();
 };
 
 module.exports = require('soop')(Wallet);
