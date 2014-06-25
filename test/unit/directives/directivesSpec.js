@@ -8,6 +8,10 @@ describe("Unit: Testing Directives", function() {
 
   beforeEach(module('copayApp.directives'));
 
+  beforeEach(function() {
+    config.unitToSatoshi = 100;
+    config.unitName = 'bits';
+  });
 
   describe('Check config', function() {
     it('unit should be set to BITS in config.js', function() {
@@ -43,41 +47,89 @@ describe("Unit: Testing Directives", function() {
   });
 
   describe('Validate Amount', function() {
-    beforeEach(inject(function($compile, $rootScope) {
-      $scope = $rootScope;
-      $rootScope.availableBalance = 1000;
-      var element = angular.element(
-        '<form name="form">' +
-        '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
-        '</form>'
-      );
-      $scope.model = {
-        amount: null
-      };
-      $compile(element)($scope);
-      $scope.$digest();
-      form = $scope.form;
-    }));
+    describe('Unit: bits', function() {
+      beforeEach(inject(function($compile, $rootScope) {
+        $scope = $rootScope;
+        $rootScope.availableBalance = 1000;
+        var element = angular.element(
+          '<form name="form">' +
+          '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
+          '</form>'
+        );
+        $scope.model = {
+          amount: null
+        };
+        $compile(element)($scope);
+        $scope.$digest();
+        form = $scope.form;
+      }));
+      it('should validate', function() {
+        form.amount.$setViewValue(100);
+        expect(form.amount.$invalid).to.equal(false);
+        form.amount.$setViewValue(800);
+        expect(form.amount.$invalid).to.equal(false);
+        form.amount.$setViewValue(900);
+        expect($scope.notEnoughAmount).to.equal(null);
+      });
 
-
-
-    it('should validate', function() {
-      form.amount.$setViewValue(100);
-      expect(form.amount.$invalid).to.equal(false);
-      form.amount.$setViewValue(900);
-      expect(form.amount.$invalid).to.equal(false);
+      it('should not validate', function() {
+        form.amount.$setViewValue(0);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(9999999999);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(901);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(1000);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(901);
+        expect($scope.notEnoughAmount).to.equal(true);
+      });
     });
 
-    it('should not validate', function() {
-      form.amount.$setViewValue(0);
-      expect(form.amount.$invalid).to.equal(true);
-      form.amount.$setViewValue(9999999999);
-      expect(form.amount.$invalid).to.equal(true);
-      form.amount.$setViewValue(901);
-      expect(form.amount.$invalid).to.equal(true);
-      form.amount.$setViewValue(1000);
-      expect(form.amount.$invalid).to.equal(true);
+    describe('Unit: BTC', function() {
+      beforeEach(inject(function($compile, $rootScope) {
+        config.unitToSatoshi = 100000000;
+        config.unitName = 'BTC';
+        $scope = $rootScope;
+        $rootScope.availableBalance = 0.04;
+        var element = angular.element(
+          '<form name="form">' +
+          '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
+          '</form>'
+        );
+        $scope.model = {
+          amount: null
+        };
+        $compile(element)($scope);
+        $scope.$digest();
+        form = $scope.form;
+      }));
+
+      it('should validate', function() {
+        form.amount.$setViewValue(0.01);
+        expect($scope.notEnoughAmount).to.equal(null);
+        expect(form.amount.$invalid).to.equal(false);
+        form.amount.$setViewValue(0.039);
+        expect($scope.notEnoughAmount).to.equal(null);
+        expect(form.amount.$invalid).to.equal(false);
+      });
+
+      it('should not validate', function() {
+        form.amount.$setViewValue(0.03999);
+        expect($scope.notEnoughAmount).to.equal(true);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(0);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(0.0);
+        expect(form.amount.$invalid).to.equal(true);
+        form.amount.$setViewValue(0.05);
+        expect($scope.notEnoughAmount).to.equal(true);
+        expect(form.amount.$invalid).to.equal(true);
+
+      });
+
     });
+
   });
 
   describe('Contact directive', function() {
