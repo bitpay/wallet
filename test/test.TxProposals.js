@@ -144,7 +144,6 @@ describe('TxProposals model', function() {
 
     var b = new Builder(opts)
       .setUnspent(utxos)
-      .setHashToScriptMap(pkr.getRedeemScriptMap())
       .setOutputs([{
         address: toAddress,
         amountSat: amountSat
@@ -153,6 +152,12 @@ describe('TxProposals model', function() {
     var inputChainPaths = selectedUtxos.map(function(utxo) {
       return pkr.pathForAddress(utxo.address);
     });
+
+    var selectedUtxos = b.getSelectedUnspent();
+    var inputChainPaths = selectedUtxos.map(function(utxo) {
+      return pkr.pathForAddress(utxo.address);
+    });
+    b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
 
     var signRet;
     if (priv) {

@@ -232,8 +232,6 @@ Insight.prototype._requestNode = function(options, callback) {
       return callback(e, ret);
     });
     response.on('error', function(e) {
-
-      console.log('[Insight.js.201]'); //TODO
       return callback(e, ret);
     });
   });
@@ -284,7 +282,6 @@ Insight.prototype._requestBrowser = function(options, callback) {
     } else {
       errTxt = 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText;
       setTimeout(function() {
-        console.log('### Retrying Insight Request....');
         return self._request(options, callback);
       }, self.retryDelay);
     }
