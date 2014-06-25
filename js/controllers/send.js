@@ -65,7 +65,6 @@ angular.module('copayApp.controllers').controller('SendController',
               message: 'There was an error sending the Transaction'
             };
             $scope.loading = false;
-            $scope.update();
           });
         }
       });
