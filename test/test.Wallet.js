@@ -331,7 +331,6 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var spy = sinon.spy(w, 'scheduleConnect');
     var callCount = 3;
-    w.reconnectDelay = 25;
     w.netStart();
     setTimeout(function() {
       sinon.assert.callCount(spy, callCount);
