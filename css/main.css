@@ -635,3 +635,9 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   color:white;
 }
 
+.input-note {
+  margin-top: -10px;
+  display: block;
+  margin-bottom: 1rem;
+}
+
