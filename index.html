@@ -688,7 +688,7 @@
                     <div class="small-9 columns">
                       <input type="number" id="amount" ng-disabled="loading"
                       name="amount" placeholder="Amount" ng-model="amount"
-                      min="1" max="10000000000" enough-amount required
+                      min="0.0001" max="10000000000" enough-amount required
                       autocomplete="off"
                       >
                     </div>
@@ -702,13 +702,13 @@
                   Total amount for this transaction: 
                   </small>
                   <div class="totalAmount">
-                    <b>{{amount + defaultFee |number}}</b> {{$root.unitName}}
+                    <b>{{amount + defaultFee |number:4}}</b> {{$root.unitName}}
                     <small>
-                    {{ ((amount + defaultFee) * unitToBtc) |number}} BTC
+                    {{ ((amount + defaultFee) * unitToBtc) |number:4}} BTC
                     </small>
                   </div>
                   <small>
-                  Including fee of {{defaultFee|number}} {{$root.unitName}} 
+                  Including fee of {{defaultFee |number:4}} {{$root.unitName}} 
                   </small>
                 </div>
               </div>
