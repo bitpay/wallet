@@ -42,30 +42,36 @@ describe('Wallet model', function() {
     w.getNetworkName().should.equal('testnet');
   });
 
+
   var createW = function(netKey, N, conf) {
 
     var c = JSON.parse(JSON.stringify(conf || config));
     if (!N) N = c.totalCopayers;
 
     if (netKey) c.netKey = netKey;
-    c.privateKey = new copay.PrivateKey({
-      networkName: c.networkName
+    var mainPrivateKey = new copay.PrivateKey({
+      networkName: config.networkName
     });
+    var mainCopayerEPK = mainPrivateKey.deriveBIP45Branch().extendedPublicKeyString();
+    c.privateKey = mainPrivateKey;
 
     c.publicKeyRing = new copay.PublicKeyRing({
       networkName: c.networkName,
       requiredCopayers: Math.min(N, c.requiredCopayers),
       totalCopayers: N,
     });
-    var copayerEPK = c.privateKey.deriveBIP45Branch().extendedPublicKeyString()
-    c.publicKeyRing.addCopayer(copayerEPK);
+    c.publicKeyRing.addCopayer(mainCopayerEPK);
 
     c.txProposals = new copay.TxProposals({
       networkName: c.networkName,
     });
-    c.storage = new Storage(config.storage);
-    c.network = new Network(config.network);
-    c.blockchain = new Blockchain(config.blockchain);
+
+    var storage = new Storage(config.storage);
+    var network = new Network(config.network);
+    var blockchain = new Blockchain(config.blockchain);
+    c.storage = storage;
+    c.network = network;
+    c.blockchain = blockchain;
 
     c.addressBook = {
       '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
@@ -138,13 +144,6 @@ describe('Wallet model', function() {
         pkr.addCopayer();
       }
     }
-    pkr.generateAddress(true);
-    pkr.generateAddress(true);
-    pkr.generateAddress(true);
-    pkr.generateAddress(false);
-    pkr.generateAddress(false);
-    pkr.generateAddress(false);
-    //3x3 indexes
 
     return w;
   };
@@ -234,7 +233,7 @@ describe('Wallet model', function() {
     var w = createW2();
 
     var ts = Date.now();
-    for (var isChange = 0; isChange < 2; isChange++) {
+    for (var isChange = false; !isChange; isChange = true) {
       for (var index = 0; index < 3; index++) {
         unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange).toString();
         unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
@@ -531,6 +530,7 @@ describe('Wallet model', function() {
   it('should get balance', function(done) {
     var w = createW();
     var spy = sinon.spy(w.blockchain, 'getUnspent');
+    w.blockchain.fixUnspent([]);
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
       sinon.assert.callCount(spy, 1);
       balance.should.equal(0);
