@@ -133,7 +133,6 @@ describe('Insight model', function() {
     };
 
     w.checkActivity(addresses, function(err, actives) {
-      console.log(err);
       actives.length.should.equal(addresses.length);
       actives.filter(function(i) {
         return i
