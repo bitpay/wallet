@@ -12,7 +12,7 @@ function Insight(opts) {
   opts = opts || {};
   this.host = opts.host || 'localhost';
   this.port = opts.port || '3001';
-  this.scheme = opts.scheme || 'http';
+  this.schema = opts.schema || 'http';
   this.retryDelay = opts.retryDelay || 5000;
 }
 
@@ -62,6 +62,21 @@ function removeRepeatedElements(ar) {
   return r;
 }
 
+
+Insight.prototype._getOptions = function(method, path, data) {
+  return {
+    host: this.host,
+    port: this.port,
+    schema: this.schema,
+    method: method,
+    path: path,
+    data: data,
+    headers: {
+      'Access-Control-Request-Headers': ''
+    }
+  };
+};
+
 Insight.prototype.getTransactions = function(addresses, cb) {
   var self = this;
 
@@ -71,17 +86,7 @@ Insight.prototype.getTransactions = function(addresses, cb) {
   var txs = [];
 
   _asyncForEach(addresses, function(addr, callback) {
-    var options = {
-      host: self.host,
-      port: self.port,
-      scheme: self.scheme,
-      method: 'GET',
-      path: '/api/addr/' + addr,
-      headers: {
-        'Access-Control-Request-Headers': ''
-      }
-    };
-
+    var options = self._getOptions('GET', '/api/addr/' + addr);
     self._request(options, function(err, res) {
       var txids_tmp = res.transactions;
       for (var i = 0; i < txids_tmp.length; i++) {
@@ -92,16 +97,7 @@ Insight.prototype.getTransactions = function(addresses, cb) {
   }, function() {
     var clean_txids = removeRepeatedElements(txids);
     _asyncForEach(clean_txids, function(txid, callback2) {
-      var options = {
-        host: self.host,
-        port: self.port,
-        scheme: self.scheme,
-        method: 'GET',
-        path: '/api/tx/' + txid,
-        headers: {
-          'Access-Control-Request-Headers': ''
-        }
-      };
+      var options = self._getOptions('GET', '/api/tx/' + txid);
       self._request(options, function(err, res) {
         txs.push(res);
         callback2();
@@ -117,17 +113,7 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 
   var all = [];
 
-  var options = {
-    host: this.host,
-    port: this.port,
-    scheme: this.scheme,
-    method: 'POST',
-    data: 'addrs=' + addresses.join(','),
-    path: '/api/addrs/utxo',
-    headers: {
-      'Access-Control-Request-Headers': ''
-    }
-  };
+  var options = this._getOptions('POST', '/api/addrs/utxo', 'addrs=' + addresses.join(','));
 
   var self = this;
   this._request(options, function(err, res) {
@@ -146,16 +132,7 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 Insight.prototype.sendRawTransaction = function(rawtx, cb) {
   if (!rawtx) throw new Error('rawtx must be set');
 
-  var options = {
-    host: this.host,
-    port: this.port,
-    method: 'POST',
-    path: '/api/tx/send',
-    data: 'rawtx=' + rawtx,
-    headers: {
-      'Access-Control-Request-Headers': ''
-    }
-  };
+  var options = this._getOptions('POST', '/api/tx/send', 'rawtx=' + rawtx);
   this._request(options, function(err, res) {
     if (err) return cb();
 
@@ -244,9 +221,10 @@ Insight.prototype._requestNode = function(options, callback) {
 
 Insight.prototype._requestBrowser = function(options, callback) {
   var request = new XMLHttpRequest();
+  console.log('[Insight.js.225:options:]', options); //TODO
 
-  // TODO: Normalize URL
-  var url = 'http://' + options.host;
+  var url = (options.schema || 'http') + '://' + options.host;
+  console.log('[Insight.js.226:url:]', url); //TODO
 
   if (options.port !== 80) {
     url = url + ':' + options.port;

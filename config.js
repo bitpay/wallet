@@ -1,7 +1,7 @@
 'use strict';
 var defaultConfig = {
   // DEFAULT network (livenet or testnet)
-  networkName: 'testnet',
+  networkName: 'livenet',
 
   // DEFAULT unit: Bit
   unitName: 'bits',
@@ -96,14 +96,16 @@ var defaultConfig = {
 
   // blockchain service API config
   blockchain: {
-    host: 'test.insight.is',
-    port: 80,
+    schema: 'https',
+    host: 'insight.bitpay.com',
+    port: 443,
     retryDelay: 1000,
   },
   // socket service API config
   socket: {
-    host: 'test.insight.is',
-    port: 80,
+    schema: 'https',
+    host: 'insight.bitpay.com',
+    port: 443,
     // will duplicate itself after each try
     reconnectDelay: 500,
   },
