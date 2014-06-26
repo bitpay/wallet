@@ -5,6 +5,7 @@ var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var extend = require('util')._extend;
+var Message = require('../core/Message');
 /*
  * Emits
  *  'connect'
@@ -45,6 +46,7 @@ Network.prototype.cleanUp = function() {
   this.connectedPeers = [];
   this.peerId = null;
   this.privkey = null; //TODO: hide privkey in a closure
+  this.key = null;
   this.copayerId = null;
   this.signingKey = null;
   this.allowedCopayerIds = null;
@@ -151,16 +153,30 @@ Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
   this.emit('connect', copayerId);
 };
 
+Network.prototype.getKey = function() {
+  if (!this.key) {
+    var key = new bitcore.Key();
+    key.private = new Buffer(this.privkey, 'hex');
+    key.regenerateSync();
+    this.key = key;
+  }
+  return this.key;
+};
+
 Network.prototype._onData = function(enchex, isInbound, peerId) {
   var sig, payload;
   var encUint8Array = new Uint8Array(enchex);
   var encbuf = new Buffer(encUint8Array);
+  var encstr = encbuf.toString();
 
   var privkey = this.privkey;
+  var key = this.getKey();
 
   try {
-    var data = this._decrypt(privkey, encbuf);
-    payload = JSON.parse(data);
+    var encoded = JSON.parse(encstr);
+    var databuf = this._decode(key, encoded);
+    var datastr = databuf.toString();
+    payload = JSON.parse(datastr);
   } catch (e) {
     this._deletePeer(peerId);
     return;
@@ -349,18 +365,19 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
-Network.prototype._encrypt = function(pubkey, payload) {
-  var encrypted = bitcore.ECIES.encrypt(pubkey, payload);
-  return encrypted;
+Network.prototype._encode = function(topubkey, fromkey, payload) {
+  var encoded = Message.encode(topubkey, fromkey, payload);
+  return encoded;
 };
 
 
-Network.prototype._decrypt = function(privkey, encrypted) {
-  var decrypted = bitcore.ECIES.decrypt(privkey, encrypted);
-  return decrypted;
+Network.prototype._decode = function(key, encoded) {
+  var payload = Message.decode(key, encoded);
+  return payload;
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
+  console.log('payload: ' + payload);
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
@@ -391,7 +408,7 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   var i = 0;
   copayerIds.forEach(function(copayerId) {
     var copayerIdBuf = new Buffer(copayerId, 'hex');
-    var encPayload = self._encrypt(copayerIdBuf, payloadBuf);
+    var encPayload = self._encode(copayerIdBuf, self.getKey(), payloadBuf);
     self._sendToOne(copayerId, encPayload, sig, function() {
       if (++i === l && typeof cb === 'function') cb();
     });
