@@ -12,6 +12,9 @@ saveAs = function(o) {
 
 
 describe("Unit: Controllers", function() {
+  var invalidForm = {
+    $invalid: true
+  };
 
   var scope;
 
@@ -75,10 +78,7 @@ describe("Unit: Controllers", function() {
     });
     describe('#create', function() {
       it('should work with invalid form', function() {
-        var form = {
-          $invalid: true
-        };
-        scope.create(form);
+        scope.create(invalidForm);
       });
     });
 
@@ -321,7 +321,30 @@ describe("Unit: Controllers", function() {
     it('should exist', function() {
       should.exist(what);
     });
+  });
 
+  describe('Signin Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('SigninController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
+    });
+    describe('#open', function() {
+      it('should work with invalid form', function() {
+        scope.open(invalidForm);
+      });
+    });
+    describe('#join', function() {
+      it('should work with invalid form', function() {
+        scope.join(invalidForm);
+      });
+    });
   });
 
 });
