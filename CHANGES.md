@@ -14,7 +14,7 @@ New features
  
 Security
 --------
- * Asymetric encryption and signing using ECIES. Detals at https://gist.github.com/ryanxcharles/c29fc94d31de7c8c89d
+ * Asymetric encryption and signing using ECIES. Details at https://gist.github.com/ryanxcharles/c29fc94d31de7c8c89dc
  * Default SSL connection to Insight servers 
   
 Code quality
