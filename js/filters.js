@@ -30,4 +30,28 @@ angular.module('copayApp.filters', [])
 
       return addrs;
     };
-  });
+  })
+  .filter('noFractionNumber',
+  [ '$filter', '$locale',
+  function(filter, locale) {
+    var numberFilter = filter('number');
+    var formats = locale.NUMBER_FORMATS;
+    return function(amount, fraction) {
+      var value = numberFilter(amount, fraction);
+      var sep = value.indexOf(formats.DECIMAL_SEP);
+      var group = value.indexOf(formats.GROUP_SEP);
+      if(amount >= 0) {
+        if (group > 0) {
+          return value.substring(0, sep);
+        }
+        else {
+          value = parseFloat(value);
+          if(value % 1 === 0) {
+            value = value.toFixed(0);
+          }
+          return value;
+        }
+      }
+      return 0;
+    };
+  } ]);
