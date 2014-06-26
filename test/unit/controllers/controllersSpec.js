@@ -73,6 +73,14 @@ describe("Unit: Controllers", function() {
         expect(array.length).equal(n);
       });
     });
+    describe('#create', function() {
+      it('should work with invalid form', function() {
+        var form = {
+          $invalid: true
+        };
+        scope.create(form);
+      });
+    });
 
   });
 
