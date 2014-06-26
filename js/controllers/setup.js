@@ -68,10 +68,7 @@ angular.module('copayApp.controllers').controller('SetupController',
 
     $scope.create = function(form) {
       if (form && form.$invalid) {
-        $rootScope.$flashMessage = {
-          message: 'Please, enter required fields',
-          type: 'error'
-        };
+        notification.error('Error', 'Please enter the required fields');
         return;
       }
       $scope.loading = true;
