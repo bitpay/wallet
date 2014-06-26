@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('TransactionsController',
-  function($scope, $rootScope, $timeout, controllerUtils) {
+  function($scope, $rootScope, $timeout, controllerUtils, notification) {
 
     $scope.title = 'Transactions';
     $scope.loading = false;
