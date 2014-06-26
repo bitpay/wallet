@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeaderController',
-  function($scope, $rootScope, $location, notification, $http, controllerUtils) {
+  function($scope, $rootScope, $location, notification, $http, controllerUtils, backupService) {
     $scope.menu = [{
       'title': 'Addresses',
       'icon': 'fi-address-book',
@@ -135,4 +135,11 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $scope.$on('$destroy', function() {
       window.onbeforeunload = undefined;
     });
+
+    $scope.backupAndOpen = function() {
+      var w = $rootScope.wallet;
+      w.offerBackup();
+      backupService.download(w);
+    };
+
   });
