@@ -301,4 +301,19 @@ describe("Unit: Controllers", function() {
     });
   });
 
+  describe('Import Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('ImportController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
+    });
+
+  });
+
 });
