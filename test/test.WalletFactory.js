@@ -94,6 +94,29 @@ describe('WalletFactory model', function() {
     JSON.stringify(w.toObj()).should.equal(o);
   });
 
+  it('should create wallet from encrypted object', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    wf.storage._setPassphrase = sinon.spy();
+    wf.storage.import = sinon.spy();
+
+    var w = wf.fromEncryptedObj("encrypted object", "password");
+    should.exist(w);
+    wf.storage._setPassphrase.called.should.be.true;
+    wf.storage.import.called.should.be.true;
+  });
+
+  it('should import and update indexes', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    var wallet = {id: "fake wallet", updateIndexes: function(cb) { cb(); }};
+    wf.fromEncryptedObj = sinon.stub().returns(wallet);
+    var callback = sinon.spy();
+
+    var w = wf.import("encrypted", "password", callback);
+
+    should.exist(w);
+    wallet.should.equal(w);
+    sinon.assert.callCount(callback, 1);
+  });
 
   it('BIP32 length problem', function() {
     var sconfig = {
