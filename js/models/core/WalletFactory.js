@@ -99,6 +99,7 @@ WalletFactory.prototype.read = function(walletId) {
   obj.txProposals = s.get(walletId, 'txProposals');
   obj.privateKey = s.get(walletId, 'privateKey');
   obj.addressBook = s.get(walletId, 'addressBook');
+  obj.backupOffered = s.get(walletId, 'backupOffered');
 
   var w = this.fromObj(obj);
   return w;

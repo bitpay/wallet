@@ -237,7 +237,6 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();

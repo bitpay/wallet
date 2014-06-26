@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('SigninController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, backupService) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase) {
     var cmp = function(o1, o2) {
       var v1 = o1.show.toLowerCase(),
         v2 = o2.show.toLowerCase();
@@ -89,7 +89,6 @@ angular.module('copayApp.controllers').controller('SigninController',
               };
             controllerUtils.onErrorDigest();
           } else {
-            backupService.download(w);
             controllerUtils.startNetwork(w, $scope);
           }
         });

@@ -826,7 +826,6 @@ describe('Wallet model', function() {
 
   describe('#getMyCopayerId', function() {
     it('should call getCopayerId', function() {
-      //this.timeout(10000);
       var w = cachedCreateW2();
       w.getCopayerId = sinon.spy();
       w.getMyCopayerId();
@@ -836,7 +835,6 @@ describe('Wallet model', function() {
 
   describe('#getMyCopayerIdPriv', function() {
     it('should call privateKey.getIdPriv', function() {
-      //this.timeout(10000);
       var w = cachedCreateW2();
       w.privateKey.getIdPriv = sinon.spy();
       w.getMyCopayerIdPriv();
@@ -845,9 +843,7 @@ describe('Wallet model', function() {
   });
 
   describe('#netStart', function() {
-
     it('should call Network.start', function() {
-      //this.timeout(10000);
       var w = cachedCreateW2();
       w.network.start = sinon.spy();
       w.netStart();
@@ -855,13 +851,21 @@ describe('Wallet model', function() {
     });
 
     it('should call Network.start with a private key', function() {
-      //this.timeout(10000);
       var w = cachedCreateW2();
       w.network.start = sinon.spy();
       w.netStart();
       w.network.start.getCall(0).args[0].privkey.length.should.equal(64);
     });
+  });
 
+  describe('#offerBackup', function() {
+    it('should work', function() {
+      var w = cachedCreateW2();
+      w.store = sinon.spy();
+      w.offerBackup();
+      w.backupOffered.should.equal(true);
+      w.store.calledOnce.should.equal(true);
+    });
   });
 
 });
