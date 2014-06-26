@@ -331,7 +331,6 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var spy = sinon.spy(w, 'scheduleConnect');
     var callCount = 3;
-    w.reconnectDelay = 25;
     w.netStart();
     setTimeout(function() {
       sinon.assert.callCount(spy, callCount);
@@ -743,7 +742,7 @@ describe('Wallet model', function() {
       var spyEmit = sinon.spy(w, 'emit');
       w.updateIndexes(function(err) {
         sinon.assert.callCount(spyStore, 1);
-        sinon.assert.callCount(spyEmit, 1);
+        sinon.assert.callCount(spyEmit, 2);
         done();
       });
     });
