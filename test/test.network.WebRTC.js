@@ -98,7 +98,7 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerId = key.public.toString('hex');
-      n._sendToOne = function(a1, a2, a3, cb) {
+      n._sendToOne = function(a1, a2, cb) {
         cb();
       };
       var sig = undefined;
@@ -121,7 +121,7 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerId = key.public.toString('hex');
-      n._sendToOne = function(a1, encPayload, a3, cb) {
+      n._sendToOne = function(a1, encPayload, cb) {
         encPayload.sig.length.should.be.greaterThan(0);
         cb();
       };
@@ -145,7 +145,7 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerIds = [key.public.toString('hex')];
-      n._sendToOne = function(a1, a2, a3, cb) {
+      n._sendToOne = function(a1, a2, cb) {
         cb();
       };
       var sig = undefined;
@@ -154,6 +154,75 @@ describe('Network / WebRTC', function() {
       });
 
     });
+  });
+
+  describe('#_onData', function() {
+    var privkey1 = bitcore.util.sha256('test privkey 1');
+    var privkey2 = bitcore.util.sha256('test privkey 2');
+    var privkey3 = bitcore.util.sha256('test privkey 2');
+
+    var key1 = new bitcore.Key();
+    key1.private = privkey1;
+    key1.regenerateSync();
+
+    var key2 = new bitcore.Key();
+    key2.private = privkey2;
+    key2.regenerateSync();
+
+    var key3 = new bitcore.Key();
+    key3.private = privkey3;
+    key3.regenerateSync();
+
+    it('should not reject data sent from a peer with hijacked pubkey', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+
+      var message = {
+        type: 'hello',
+        copayerId: key1.public.toString('hex')
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var encoded = n._encode(key2.public, key1, messagebuf);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(false);
+    });
+
+    it('should reject data sent from a peer with hijacked pubkey', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+
+      var message = {
+        type: 'hello',
+        copayerId: key3.public.toString('hex') //MITM pubkey 3
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var encoded = n._encode(key2.public, key1, messagebuf);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(true);
+      n._deletePeer.getCall(0).args[0].should.equal(peerId);
+      n._deletePeer.getCall(0).args[1].should.equal('incorrect pubkey for peerId');
+    });
+
   });
 
 });
