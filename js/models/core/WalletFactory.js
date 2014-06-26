@@ -222,7 +222,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
-    privkey: privateKey.getIdPriv()
+    privkey: privateKey.getIdPriv(),
+    key: privateKey.getIdKey()
   };
   self.network.cleanUp();
   self.network.start(opts, function() {

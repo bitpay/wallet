@@ -279,6 +279,7 @@ Wallet.prototype.netStart = function(callback) {
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
+
   var startOpts = {
     copayerId: myId,
     privkey: myIdPriv,

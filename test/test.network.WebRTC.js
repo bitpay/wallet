@@ -46,26 +46,28 @@ describe('Network / WebRTC', function() {
 
   });
 
-  describe('#_encrypt', function() {
+  describe('#_encode', function() {
 
-    it('should encrypt data successfully', function() {
+    it('should encode data successfully', function() {
       var n = new WebRTC();
-      var data = new bitcore.Buffer('my data to encrypt');
+      var data = new bitcore.Buffer('my data to encode');
       var privkeystr = new bitcore.Buffer('test privkey');
       var privkey = bitcore.util.sha256(privkeystr);
       var key = new bitcore.Key();
       key.private = privkey;
       key.regenerateSync();
-      var encrypted = n._encrypt(key.public, data);
-      encrypted.length.should.not.equal(0);
-      encrypted.length.should.equal(145);
+      var encoded = n._encode(key.public, key, data);
+      should.exist(encoded);
+      encoded.sig.length.should.not.equal(0);
+      encoded.pubkey.length.should.not.equal(0);
+      encoded.encrypted.length.should.not.equal(0);
     });
 
   });
 
-  describe('#_decrypt', function() {
+  describe('#_decode', function() {
 
-    it('should decrypt that which was encrypted', function() {
+    it('should decode that which was encoded', function() {
       var n = new WebRTC();
       var data = new bitcore.Buffer('my data to encrypt');
       var privkeystr = new bitcore.Buffer('test privkey');
@@ -73,10 +75,10 @@ describe('Network / WebRTC', function() {
       var key = new bitcore.Key();
       key.private = privkey;
       key.regenerateSync();
-      var encrypted = n._encrypt(key.public, data);
-      var decrypted = n._decrypt(key.private, encrypted);
-      encrypted.length.should.not.equal(0);
-      decrypted.toString().should.equal('my data to encrypt');
+      var encoded = n._encode(key.public, key, data);
+      var decoded = n._decode(key, encoded);
+      encoded.sig.should.not.equal(0);
+      decoded.toString().should.equal('my data to encrypt');
     });
 
   });
@@ -85,6 +87,7 @@ describe('Network / WebRTC', function() {
 
     it('should call _sendToOne for a copayer', function(done) {
       var n = new WebRTC();
+      n.privkey = bitcore.util.sha256('test');
 
       var data = new bitcore.Buffer('my data to send');
 
@@ -107,6 +110,7 @@ describe('Network / WebRTC', function() {
 
     it('should call _sendToOne with encrypted data for a copayer', function(done) {
       var n = new WebRTC();
+      n.privkey = bitcore.util.sha256('test');
 
       var data = new bitcore.Buffer('my data to send');
 
@@ -118,7 +122,7 @@ describe('Network / WebRTC', function() {
 
       var copayerId = key.public.toString('hex');
       n._sendToOne = function(a1, encPayload, a3, cb) {
-        encPayload.length.should.be.greaterThan(0);
+        encPayload.sig.length.should.be.greaterThan(0);
         cb();
       };
       var sig = undefined;
@@ -130,6 +134,7 @@ describe('Network / WebRTC', function() {
 
     it('should call _sendToOne for a list of copayers', function(done) {
       var n = new WebRTC();
+      n.privkey = bitcore.util.sha256('test');
 
       var data = new bitcore.Buffer('my data to send');
 
