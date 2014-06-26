@@ -36,4 +36,7 @@ Next steps
  * Implement Copay 2.0 design: http://invis.io/FWZGJWUS  (please take a look at leave comments)
 
 
+Please check https://github.com/bitpay/copay/wiki/Copay-Known-issues before using Copay.
+
+
 (1) not including Karma tests, not included on Coveralls yet.
