@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkName = config.networkName;
     $scope.insightHost = config.blockchain.host;
     $scope.insightPort = config.blockchain.port;
+    $scope.insightSecure = config.blockchain.schema === 'https';
     $scope.networkKey = config.network.key;
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
@@ -39,8 +40,14 @@ angular.module('copayApp.controllers').controller('SettingsController',
     }
 
     $scope.$watch('networkName', function(net) {
-      $scope.insightHost = net === 'testnet' ? 'test.insight.is' : 'live.insight.is';
+      $scope.insightHost = net === 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
     });
+
+
+    $scope.$watch('insightSecure', function(ssl) {
+      $scope.insightPort = ssl ? 443 : 80;
+    });
+
 
     $scope.save = function() {
       var network = config.network;
@@ -53,11 +60,13 @@ angular.module('copayApp.controllers').controller('SettingsController',
         networkName: $scope.networkName,
         blockchain: {
           host: $scope.insightHost,
-          port: $scope.insightPort
+          port: $scope.insightPort,
+          schema: $scope.insightSecure ? 'https' : 'http',
         },
         socket: {
           host: $scope.insightHost,
-          port: $scope.insightPort
+          port: $scope.insightPort,
+          schema: $scope.insightSecure ? 'https' : 'http',
         },
         network: network,
         disableVideo: $scope.disableVideo,

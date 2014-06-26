@@ -3,11 +3,14 @@
 angular.module('copayApp.services').factory('Socket',
   function($rootScope) {
     var listeners = [];
-    var url = 'http://' + config.socket.host + ':' + config.socket.port;
-    var socket = io(url, {
+    var url = (config.socket.schema || 'http') + '://' + config.socket.host + ':' + config.socket.port;
+    var opts = {
       'reconnection': true,
       'reconnectionDelay': config.socket.reconnectDelay || 500,
-    });
+      'secure': config.socket.schema === 'https' ? true : false,
+    };
+
+    var socket = io(url, opts);
 
     return {
       on: function(event, callback) {
