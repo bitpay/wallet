@@ -533,11 +533,12 @@ describe('Wallet model', function() {
     },
 
   ];
+  var roundWallet = cachedCreateW2();
 
   roundErrorChecks.forEach(function(c) {
-    it('check rounding errors ' + c.unspent[0], function(done) {
-      var w = cachedCreateW2();
-      w.generateAddress();
+    it('#getBalance should handle rounding errors: ' + c.unspent[0], function(done) {
+      var w = roundWallet;
+      //w.generateAddress();
       w.blockchain.fixUnspent(c.unspent.map(function(u) {
         return {
           amount: u
