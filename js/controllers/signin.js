@@ -15,10 +15,7 @@ angular.module('copayApp.controllers').controller('SigninController',
 
     $scope.open = function(form) {
       if (form && form.$invalid) {
-        $rootScope.$flashMessage = {
-          message: 'Please, enter required fields',
-          type: 'error'
-        };
+        notification.error('Error', 'Please enter the required fields');
         return;
       }
 
@@ -36,10 +33,7 @@ angular.module('copayApp.controllers').controller('SigninController',
         };
         if (!w) {
           $scope.loading = false;
-          $rootScope.$flashMessage = {
-            message: errMsg || 'Wrong password',
-            type: 'error'
-          };
+          notification.error('Error', errMsg || 'Wrong password');
           $rootScope.$digest();
           return;
         }
@@ -49,10 +43,7 @@ angular.module('copayApp.controllers').controller('SigninController',
 
     $scope.join = function(form) {
       if (form && form.$invalid) {
-        $rootScope.$flashMessage = {
-          message: 'Please, enter required fields',
-          type: 'error'
-        };
+        notification.error('Error', 'Please enter the required fields');
         return;
       }
 
@@ -64,29 +55,15 @@ angular.module('copayApp.controllers').controller('SigninController',
           $scope.loading = false;
           if (err || !w) {
             if (err === 'joinError')
-              $rootScope.$flashMessage = {
-                message: 'Can\'t find peer'
-              };
+              notification.error('Can\'t find peer.');
             else if (err === 'walletFull')
-              $rootScope.$flashMessage = {
-                message: 'The wallet is full',
-                type: 'error'
-              };
+              notification.error('The wallet is full');
             else if (err === 'badNetwork')
-              $rootScope.$flashMessage = {
-                message: 'The wallet your are trying to join uses a different Bitcoin Network. Check your settings.',
-                type: 'error'
-              };
+              notification.error('Network Error', 'The wallet your are trying to join uses a different Bitcoin Network. Check your settings.');
             else if (err === 'badSecret')
-              $rootScope.$flashMessage = {
-                message: 'Bad secret secret string',
-                type: 'error'
-              };
+              notification.error('Bad secret', 'The secret string you entered is invalid');
             else
-              $rootScope.$flashMessage = {
-                message: 'Unknown error',
-                type: 'error'
-              };
+              notification.error('Unknown error');
             controllerUtils.onErrorDigest();
           } else {
             controllerUtils.startNetwork(w, $scope);
