@@ -138,8 +138,8 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $scope.backupAndOpen = function() {
       var w = $rootScope.wallet;
-      backupService.download(w);
       w.offerBackup();
+      backupService.download(w);
     };
 
   });
