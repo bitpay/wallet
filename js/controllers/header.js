@@ -51,10 +51,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $rootScope.$watch('insightError', function(status) {
       if (status === -1) {
-        $rootScope.$flashMessage = {
-          type: 'success',
-          message: 'Networking Restored :)',
-        };
+        notification.success('Networking restored', 'Connection to insight restored');
         $rootScope.insightError = 0;
       }
     });
@@ -98,7 +95,6 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $scope.signout = function() {
       logout();
-      $scope.clearFlashMessage();
     };
 
     $scope.refresh = function() {
@@ -109,10 +105,6 @@ angular.module('copayApp.controllers').controller('HeaderController',
           $rootScope.$digest();
         });
       }
-    };
-
-    $scope.clearFlashMessage = function() {
-      $rootScope.$flashMessage = {};
     };
 
     $rootScope.isCollapsed = true;
