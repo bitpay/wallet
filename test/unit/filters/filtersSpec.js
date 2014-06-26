@@ -68,4 +68,16 @@ describe('Unit: Testing Filters', function() {
       expect(limitAddress(addresses, false).length).to.equal(4);
     }));
   });
+
+  describe('noFractionNumber', function() {
+    it('should format number to display correctly', inject(function($filter) {
+      var noFraction = $filter('noFractionNumber');
+      var fraction = 4;
+      expect(noFraction(3100, fraction)).to.equal('3,100');
+      expect(noFraction(3100200, fraction)).to.equal('3,100,200');
+      expect(noFraction(3, fraction)).to.equal('3');
+      expect(noFraction(0.3, fraction)).to.equal(0.3);
+    }));
+  });
+
 });
