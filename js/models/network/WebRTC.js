@@ -163,9 +163,8 @@ Network.prototype.getKey = function() {
   return this.key;
 };
 
-Network.prototype._onData = function(enchex, isInbound, peerId) {
-  var sig, payload;
-  var encUint8Array = new Uint8Array(enchex);
+Network.prototype._onData = function(enc, isInbound, peerId) {
+  var encUint8Array = new Uint8Array(enc);
   var encbuf = new Buffer(encUint8Array);
   var encstr = encbuf.toString();
 
@@ -176,7 +175,7 @@ Network.prototype._onData = function(enchex, isInbound, peerId) {
     var encoded = JSON.parse(encstr);
     var databuf = this._decode(key, encoded);
     var datastr = databuf.toString();
-    payload = JSON.parse(datastr);
+    var payload = JSON.parse(datastr);
   } catch (e) {
     this._deletePeer(peerId);
     return;
@@ -184,6 +183,13 @@ Network.prototype._onData = function(enchex, isInbound, peerId) {
 
   if (isInbound && payload.type === 'hello') {
     var payloadStr = JSON.stringify(payload);
+
+    //ensure claimed public key is actually the public key of the peer
+    //e.g., their public key should hash to be their peerId
+    if (peerId.toString() !== this.peerFromCopayer(payload.copayerId) || peerId.toString() !== this.peerFromCopayer(encoded.pubkey)) {
+      this._deletePeer(peerId, 'incorrect pubkey for peerId');
+      return;
+    }
 
     if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
       this._deletePeer(peerId);
@@ -376,8 +382,7 @@ Network.prototype._decode = function(key, encoded) {
   return payload;
 };
 
-Network.prototype._sendToOne = function(copayerId, payload, sig, cb) {
-  console.log('payload: ' + payload);
+Network.prototype._sendToOne = function(copayerId, payload, cb) {
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
@@ -400,7 +405,6 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   if (typeof copayerIds === 'string')
     copayerIds = [copayerIds];
 
-  var sig;
   var payloadStr = JSON.stringify(payload);
   var payloadBuf = new Buffer(payloadStr);
 
@@ -409,7 +413,7 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   copayerIds.forEach(function(copayerId) {
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var encPayload = self._encode(copayerIdBuf, self.getKey(), payloadBuf);
-    self._sendToOne(copayerId, encPayload, sig, function() {
+    self._sendToOne(copayerId, encPayload, function() {
       if (++i === l && typeof cb === 'function') cb();
     });
   });

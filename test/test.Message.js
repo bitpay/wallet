@@ -29,13 +29,31 @@ describe('Message model', function() {
   });
 
   describe('#decode', function() {
-    var message = new Buffer('message');
-    var messagehex = message.toString('hex');
-    var encoded = Message.encode(key2.public, key, message);
-    
+
     it('should decode an encoded message', function() {
+      var message = new Buffer('message');
+      var messagehex = message.toString('hex');
+      var encoded = Message.encode(key2.public, key, message);
+    
       var decoded = Message.decode(key2, encoded);
       decoded.toString('hex').should.equal(messagehex);
+    });
+
+    it('should fail if the version number is incorrect', function() {
+      var payload = new Buffer('message');
+      var fromkey = key;
+      var topubkey = key2.public;
+      var version = new Buffer([1]);
+      var toencrypt = Buffer.concat([version, payload]);
+      var encrypted = Message._encrypt(topubkey, toencrypt);
+      var sig = Message._sign(fromkey, encrypted);
+      var encoded = {
+        pubkey: fromkey.public.toString('hex'),
+        sig: sig.toString('hex'),
+        encrypted: encrypted.toString('hex')
+      };
+    
+      (function() {Message.decode(key2, encoded);}).should.throw('Invalid version number');
     });
 
   });
