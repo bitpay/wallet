@@ -121,7 +121,8 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerId = key.public.toString('hex');
-      n._sendToOne = function(a1, encPayload, cb) {
+      n._sendToOne = function(a1, enc, cb) {
+        var encPayload = JSON.parse(enc.toString());
         encPayload.sig.length.should.be.greaterThan(0);
         cb();
       };

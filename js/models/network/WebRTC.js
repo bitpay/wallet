@@ -383,6 +383,8 @@ Network.prototype._decode = function(key, encoded) {
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, cb) {
+  if (!Buffer.isBuffer(payload))
+    throw new Error('payload must be a buffer');
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
@@ -413,7 +415,8 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   copayerIds.forEach(function(copayerId) {
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var encPayload = self._encode(copayerIdBuf, self.getKey(), payloadBuf);
-    self._sendToOne(copayerId, encPayload, function() {
+    var enc = new Buffer(JSON.stringify(encPayload));
+    self._sendToOne(copayerId, enc, function() {
       if (++i === l && typeof cb === 'function') cb();
     });
   });
