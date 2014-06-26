@@ -18,10 +18,7 @@ angular.module('copayApp.controllers').controller('ImportController',
         var w = walletFactory.import(encryptedObj, passphrase, function(err, w) {
           if (err) {
             $scope.loading = false;
-            $rootScope.$flashMessage = {
-              message: err.errMsg || 'Wrong password',
-              type: 'error'
-            };
+            notification.error('Error', err.errMsg || 'Wrong password');
             $rootScope.$digest();
             return;
           }
@@ -59,10 +56,7 @@ angular.module('copayApp.controllers').controller('ImportController',
     $scope.import = function(form) {
       if (form.$invalid) {
         $scope.loading = false;
-        $rootScope.$flashMessage = {
-          message: 'There is an error in the form. Please, try again',
-          type: 'error'
-        };
+        notification.error('Error', 'There is an error in the form.');
         return;
       }
 
@@ -72,10 +66,7 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (!backupFile && !backupText) {
         $scope.loading = false;
-        $rootScope.$flashMessage = {
-          message: 'Please, select your backup file or paste the text',
-          type: 'error'
-        };
+        notification.error('Error', 'Please, select your backup file or paste the file contents');
         $scope.loading = false;
         return;
       }
