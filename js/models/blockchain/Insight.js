@@ -221,10 +221,7 @@ Insight.prototype._requestNode = function(options, callback) {
 
 Insight.prototype._requestBrowser = function(options, callback) {
   var request = new XMLHttpRequest();
-  console.log('[Insight.js.225:options:]', options); //TODO
-
   var url = (options.schema || 'http') + '://' + options.host;
-  console.log('[Insight.js.226:url:]', url); //TODO
 
   if (options.port !== 80) {
     url = url + ':' + options.port;
