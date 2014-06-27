@@ -118,6 +118,6 @@ var defaultConfig = {
 
   // theme list
   themes: ['default'],
-  disableVideo: 1,
+  disableVideo: true,
   verbose: 1,
 };
