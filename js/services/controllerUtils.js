@@ -69,13 +69,6 @@ angular.module('copayApp.services')
       $rootScope.txAlertCount = 0;
       $rootScope.insightError = 0;
       $rootScope.isCollapsed = true;
-      $rootScope.$watch('insightError', function(status) {
-        if (status === -1) {
-          notification.success('Networking restored', 'Connection to Insight re-established');
-          $rootScope.insightError = 0;
-        }
-      });
-
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
         if (txAlertCount && txAlertCount > 0) {
           notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
