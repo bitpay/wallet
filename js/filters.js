@@ -36,13 +36,29 @@ angular.module('copayApp.filters', [])
   function(filter, locale) {
     var numberFilter = filter('number');
     var formats = locale.NUMBER_FORMATS;
-    return function(amount, fraction) {
-      var value = numberFilter(amount, fraction);
+    return function(amount, n) {
+      var fractionSize = (typeof(n) != 'undefined') ? n : config.unitToSatoshi.toString().length - 1;
+      var value = numberFilter(amount, fractionSize);
       var sep = value.indexOf(formats.DECIMAL_SEP);
       var group = value.indexOf(formats.GROUP_SEP);
       if(amount >= 0) {
         if (group > 0) {
-          return value.substring(0, sep);
+          if (sep < 0) {
+            return value;
+          }
+          var intValue = value.substring(0, sep);
+          var floatValue = parseFloat(value.substring(sep));
+          if (floatValue === 0) {
+            floatValue = '';
+          }
+          else {
+            if(floatValue % 1 === 0) {
+              floatValue = floatValue.toFixed(0);
+            }
+            floatValue = floatValue.toString().substring(1);
+          }
+          var finalValue = intValue + floatValue;
+          return finalValue;
         }
         else {
           value = parseFloat(value);
