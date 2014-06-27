@@ -3,7 +3,6 @@
 angular.module('copayApp.controllers').controller('SettingsController',
   function($scope, $rootScope, $window, $location) {
     $scope.title = 'Settings';
-
     $scope.networkName = config.networkName;
     $scope.insightHost = config.blockchain.host;
     $scope.insightPort = config.blockchain.port;
@@ -39,16 +38,14 @@ angular.module('copayApp.controllers').controller('SettingsController',
       }
     }
 
-    $scope.$watch('networkName', function(net) {
-      if (net !== config.networkName)
-        $scope.insightHost = net === 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
-    });
+    $scope.changeNetwork = function() {
+      $scope.insightHost = $scope.networkName === 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
+    };
 
 
-    var l2 = $scope.$watch('insightSecure', function(ssl) {
-      if (ssl !== config.insightSecure)
-        $scope.insightPort = ssl ? 443 : 80;
-    });
+    $scope.changeInsightSSL = function() {
+      $scope.insightPort = $scope.insightSecure ? 443 : 80;
+    };
 
 
     $scope.save = function() {
