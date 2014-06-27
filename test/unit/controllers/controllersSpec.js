@@ -261,13 +261,14 @@ describe("Unit: Controllers", function() {
       $httpBackend.flush();
     });
 
-    it('should check version ', function() {
+    it('should check version ', inject(function($injector) {
+      notification = $injector.get('notification');
+      var spy = sinon.spy(notification, 'version');
       $httpBackend.expectGET(GH);
       scope.$apply();
       $httpBackend.flush();
-      expect(scope.updateVersion.class).equal('error');
-      expect(scope.updateVersion.version).equal('v100.1.6');
-    });
+      spy.calledOnce.should.equal(true);
+    }));
 
     it('should check blockChainStatus', function() {
       $httpBackend.expectGET(GH);
