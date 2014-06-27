@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.disableVideo = config.disableVideo || true;
 
     $scope.unitOpts = [{
-      name: 'Satoshis (100,000,000 bits = 1BTC)',
+      name: 'Satoshis (100,000,000 satoshis = 1BTC)',
       shortName: 'SAT',
       value: 1
     }, {
