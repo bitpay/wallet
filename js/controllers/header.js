@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
       if (status === -1) {
         notification.success('Networking restored', 'Connection to Insight re-established');
         //$rootScope.insightError = 0;
-      } else {
+      } else if (status !== 0) {
         notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number '+status+')');
       }
     });
