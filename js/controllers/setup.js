@@ -33,7 +33,7 @@ var valid_pairs = {
 };
 
 angular.module('copayApp.controllers').controller('SetupController',
-  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService) {
+  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification) {
 
     $rootScope.videoInfo = {};
     $scope.loading = false;
@@ -68,10 +68,7 @@ angular.module('copayApp.controllers').controller('SetupController',
 
     $scope.create = function(form) {
       if (form && form.$invalid) {
-        $rootScope.$flashMessage = {
-          message: 'Please, enter required fields',
-          type: 'error'
-        };
+        notification.error('Error', 'Please enter the required fields');
         return;
       }
       $scope.loading = true;
@@ -84,7 +81,6 @@ angular.module('copayApp.controllers').controller('SetupController',
           passphrase: passphrase,
         };
         var w = walletFactory.create(opts);
-        backupService.download(w);
         controllerUtils.startNetwork(w, $scope);
       });
     };

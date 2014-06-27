@@ -12,6 +12,9 @@ saveAs = function(o) {
 
 
 describe("Unit: Controllers", function() {
+  var invalidForm = {
+    $invalid: true
+  };
 
   var scope;
 
@@ -71,6 +74,11 @@ describe("Unit: Controllers", function() {
         var n = 5;
         var array = scope.getNumber(n);
         expect(array.length).equal(n);
+      });
+    });
+    describe('#create', function() {
+      it('should work with invalid form', function() {
+        scope.create(invalidForm);
       });
     });
 
@@ -237,7 +245,6 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
@@ -283,10 +290,23 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Send Controller', function() {
-    var sendCtrl;
-    beforeEach(inject(function($controller, $rootScope) {
+    var sendCtrl, form;
+    beforeEach(inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
       $rootScope.availableBalance = 123456;
+
+      var element = angular.element(
+        '<form name="form">' +
+        '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
+        '</form>'
+        );
+      scope.model = {
+        amount: null
+      };
+      $compile(element)(scope);
+      scope.$digest();
+      form = scope.form;
+
       sendCtrl = $controller('SendController', {
         $scope: scope,
         $modal: {},
@@ -297,8 +317,53 @@ describe("Unit: Controllers", function() {
       expect(scope.isMobile).not.to.equal(null);
     });
     it('should autotop balance correctly', function() {
-      scope.topAmount();
+      scope.topAmount(form);
+      form.amount.$setViewValue(123356);
       expect(scope.amount).to.equal(123356);
+      expect(form.amount.$invalid).to.equal(false);
+      expect(form.amount.$pristine).to.equal(false);
+    });
+    it('should return available amount', function() {
+      var amount = scope.getAvailableAmount();
+      expect(amount).to.equal(123356);
+    });
+  });
+
+  describe('Import Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('ImportController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
+    });
+  });
+
+  describe('Signin Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('SigninController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
+    });
+    describe('#open', function() {
+      it('should work with invalid form', function() {
+        scope.open(invalidForm);
+      });
+    });
+    describe('#join', function() {
+      it('should work with invalid form', function() {
+        scope.join(invalidForm);
+      });
     });
   });
 

@@ -84,6 +84,7 @@ WalletFactory.prototype.import = function(base64, password, cb) {
     self.log('Indexes updated');
     cb(null, w);
   });
+  return w;
 }
 
 WalletFactory.prototype.read = function(walletId) {
@@ -99,6 +100,7 @@ WalletFactory.prototype.read = function(walletId) {
   obj.txProposals = s.get(walletId, 'txProposals');
   obj.privateKey = s.get(walletId, 'privateKey');
   obj.addressBook = s.get(walletId, 'addressBook');
+  obj.backupOffered = s.get(walletId, 'backupOffered');
 
   var w = this.fromObj(obj);
   return w;
@@ -222,7 +224,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
-    privkey: privateKey.getIdPriv()
+    privkey: privateKey.getIdPriv(),
+    key: privateKey.getIdKey()
   };
   self.network.cleanUp();
   self.network.start(opts, function() {

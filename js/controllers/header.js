@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeaderController',
-  function($scope, $rootScope, $location, notification, $http, controllerUtils) {
+  function($scope, $rootScope, $location, notification, $http, controllerUtils, backupService) {
     $scope.menu = [{
       'title': 'Addresses',
       'icon': 'fi-address-book',
@@ -51,10 +51,7 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $rootScope.$watch('insightError', function(status) {
       if (status === -1) {
-        $rootScope.$flashMessage = {
-          type: 'success',
-          message: 'Networking Restored :)',
-        };
+        notification.success('Networking restored', 'Connection to insight restored');
         $rootScope.insightError = 0;
       }
     });
@@ -98,7 +95,6 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $scope.signout = function() {
       logout();
-      $scope.clearFlashMessage();
     };
 
     $scope.refresh = function() {
@@ -109,10 +105,6 @@ angular.module('copayApp.controllers').controller('HeaderController',
           $rootScope.$digest();
         });
       }
-    };
-
-    $scope.clearFlashMessage = function() {
-      $rootScope.$flashMessage = {};
     };
 
     $rootScope.isCollapsed = true;
@@ -135,4 +127,11 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $scope.$on('$destroy', function() {
       window.onbeforeunload = undefined;
     });
+
+    $scope.backupAndOpen = function() {
+      var w = $rootScope.wallet;
+      w.offerBackup();
+      backupService.download(w);
+    };
+
   });
