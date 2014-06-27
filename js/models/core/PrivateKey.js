@@ -32,9 +32,17 @@ PrivateKey.prototype.getIdPriv = function() {
   return this.idpriv;
 };
 
+PrivateKey.prototype.getIdKey = function() {
+  if (!this.idkey) {
+    this.cacheId();
+  }
+  return this.idkey;
+};
+
 PrivateKey.prototype.cacheId = function() {
   var path = Structure.IdFullBranch;
   var idhk = this.bip.derive(path);
+  this.idkey = idhk.eckey;
   this.id = idhk.eckey.public.toString('hex');
   this.idpriv = idhk.eckey.private.toString('hex');
 };
