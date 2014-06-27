@@ -26,10 +26,13 @@ var defaultConfig = {
 
     // Use this to connect to bitpay's PeerJS server
     key: 'satoshirocks',
-    host: 'copay.io',
-    port: 9000,
+    host: '162.242.219.26',
+    port: 10000,
+    secure: false,
+    // host: 'copay.io',
+    // port: 9000,
+    // secure: true,
     path: '/',
-    secure: true,
 
     // other PeerJS config
     maxPeers: 15,
