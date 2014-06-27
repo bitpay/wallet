@@ -44,8 +44,7 @@ angular.module('copayApp.services')
 
     root.installStartupHandlers = function(wallet, $scope) {
       wallet.on('serverError', function(msg) {
-        notification.error('PeerJS Error', 'There was an error connecting to the PeerJS server.'
-          + (msg || 'Check you settings and Internet connection.'));
+        notification.error('PeerJS Error', 'There was an error connecting to the PeerJS server.' + (msg || 'Check you settings and Internet connection.'));
         root.onErrorDigest($scope);
         $location.path('addresses');
       });
