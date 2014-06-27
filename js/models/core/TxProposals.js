@@ -77,7 +77,8 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 
   Object.keys(v1.seenBy).forEach(function(k) {
     if (!v0.seenBy[k]) {
-      if (k != author) throw new Error('Non authoritative seenBy change by ' + author);
+      // TODO: uncomment below and change protocol to make this work
+      //if (k != author) throw new Error('Non authoritative seenBy change by ' + author);
       v0.seenBy[k] = v1.seenBy[k];
       events.push({
         type: 'seen',
@@ -89,7 +90,8 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 
   Object.keys(v1.signedBy).forEach(function(k) {
     if (!v0.signedBy[k]) {
-      if (k != author) throw new Error('Non authoritative signedBy change by ' + author);
+      // TODO: uncomment below and change protocol to make this work
+      //if (k != author) throw new Error('Non authoritative signedBy change by ' + author);
       v0.signedBy[k] = v1.signedBy[k];
       events.push({
         type: 'signed',
@@ -101,7 +103,8 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 
   Object.keys(v1.rejectedBy).forEach(function(k) {
     if (!v0.rejectedBy[k]) {
-      if (k != author) throw new Error('Non authoritative rejectedBy change by ' + author);
+      // TODO: uncomment below and change protocol to make this work
+      //if (k != author) throw new Error('Non authoritative rejectedBy change by ' + author);
       v0.rejectedBy[k] = v1.rejectedBy[k];
       events.push({
         type: 'rejected',
