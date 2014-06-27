@@ -84,6 +84,9 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Passphrase', {
     expose: '../js/models/core/Passphrase'
   });
+  b.require('./js/models/core/Message', {
+    expose: '../js/models/core/Message'
+  });
 
   if (opts.dontminify) {
     //include dev dependencies

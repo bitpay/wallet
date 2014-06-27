@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('TransactionsController',
-  function($scope, $rootScope, $timeout, controllerUtils) {
+  function($scope, $rootScope, $timeout, controllerUtils, notification) {
 
     $scope.title = 'Transactions';
     $scope.loading = false;
@@ -107,13 +107,11 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.sendTx(ntxid, function(txid) {
-        $rootScope.$flashMessage = txid ? {
-          type: 'success',
-          message: 'Transaction broadcasted. txid: ' + txid
-        } : {
-          type: 'error',
-          message: 'There was an error sending the Transaction'
-        };
+        if (!txid) {
+          notification.error('Error', 'There was an error sending the transaction');
+        } else {
+          notification.success('Transaction broadcast', 'Transaction id: '+txid);
+        }
         if (cb) return cb();
         else $scope.update();
       });
@@ -124,10 +122,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       var w = $rootScope.wallet;
       w.sign(ntxid, function(ret) {
         if (!ret) {
-          $rootScope.$flashMessage = {
-            type: 'error',
-            message: 'There was an error signing the Transaction',
-          };
+          notification.error('Error', 'There was an error signing the transaction');
           $scope.update();
         } else {
           var p = w.txProposals.getTxProposal(ntxid);
@@ -180,10 +175,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
       w.reject(ntxid);
-      $rootScope.$flashMessage = {
-        type: 'warning',
-        message: 'Transaction rejected by you'
-      };
+      notification.warning('Transaction rejected', 'You rejected the transaction successfully');
       $scope.loading = false;
     };
 
