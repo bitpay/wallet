@@ -36,7 +36,12 @@
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="!$root.updatingBalance" data-options="disable_for_touch:true" tooltip="{{totalBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |number}} {{$root.unitName}} 
+                <span ng-if="!$root.updatingBalance"
+                  data-options="disable_for_touch:true"
+                  tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
+                  tooltip-trigger="mouseenter"
+                  tooltip-placement="bottom">{{totalBalance || 0
+                  |noFractionNumber}} {{$root.unitName}} 
                 </span>
               </div>
               <div class="large-4 medium-4 columns">
@@ -44,7 +49,11 @@
                 <span ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-show="!$root.updatingBalance" data-options="disable_for_touch:true" tooltip="{{availableBalanceBTC}} BTC" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{availableBalance || 0|number}} {{$root.unitName}} 
+                <span ng-show="!$root.updatingBalance"
+                  data-options="disable_for_touch:true"
+                  tooltip="{{availableBalanceBTC || 0 |noFractionNumber:8}} BTC"
+                  tooltip-trigger="mouseenter"
+                  tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
                 </span>
               </div>
 
@@ -173,8 +182,8 @@
     </div>
     <div ng-show="$root.wallet && !$root.wallet.isReady()">
       <div class="large-6 medium-6 small-6 columns">
-        <strong>{{$root.wallet.getName()}}</strong> 
-        {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} 
+        <strong>{{$root.wallet.getName()}}</strong>
+        {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}
         <small ng-if="$root.wallet.getNetworkName()=='livenet'">[LIVENET]</small>
         <small ng-if="$root.wallet.getNetworkName()=='testnet'">[TESTNET]</small>
       </div>
@@ -186,7 +195,7 @@
     <div ng-show="$root.wallet && $root.wallet.isReady()">
       <div class="large-3 medium-4 hide-for-small columns">
         <div>
-          <strong>{{$root.wallet.getName()}}</strong> 
+          <strong>{{$root.wallet.getName()}}</strong>
         </div>
         <div class="size-12 m10t">
           {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
@@ -196,7 +205,7 @@
         <div class="text-gray size-12" style="margin-top:5px">
           Copay v{{version}}
         </div>
-  
+
         <div class="size-12 m10t" ng-if="themes.length > 1">
           <a class="size-12" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
         </div>
@@ -413,11 +422,11 @@
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
                       <span ng-if="!$root.updatingBalance">
-                        {{$root.balanceByAddr[addr.address] || 0|number}} {{$root.unitName}} 
+                        {{$root.balanceByAddr[addr.address] || 0|noFractionNumber}} {{$root.unitName}}
                       </span>
                     </span>
                     <span ng-if="addrWithFund != addr.address">
-                      {{addr.balance || 0|number}} {{$root.unitName}}
+                      {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
                     </span>
                   </span>
                 </a>
@@ -435,12 +444,12 @@
                       <span ng-if="$root.updatingBalance">
                         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                       </span>
-                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | number}}
+                      <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | noFractionNumber}}
                       </span>
                     </span>
                     <span ng-if="addrWithFund != selectedAddr.address" style="word-wrap: break-word;">
                       {{selectedAddr.address}}<br/>
-                      {{selectedAddr.balance || 0|number}} {{$root.unitName}}
+                      {{selectedAddr.balance || 0|noFractionNumber}} {{$root.unitName}}
                     </span>
                   </strong>
                 </p>
@@ -471,7 +480,8 @@
               <div class="txheader row m10">
                 <div class="large-8 medium-8 small-12 columns">
                   <div class="row" ng-repeat="out in tx.outs">
-                    <div class="large-3 medium-3 small-3 columns ellipsis"> {{out.value | number}} {{$root.unitName}}</div>
+                    <div class="large-3 medium-3 small-3 columns ellipsis">
+                      {{out.value | noFractionNumber}} {{$root.unitName}}</div>
                     <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
                     <div class="large-8 medium-8 small-7 columns ellipsis">
                      <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
@@ -555,7 +565,7 @@
                   <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
                     {{tx.missingSignatures}} signatures missing</p>
                   <div class="ellipsis small text-gray">
-                    <strong>Fee:</strong> {{tx.fee|number}} {{$root.unitName}}
+                    <strong>Fee:</strong> {{tx.fee|noFractionNumber}} {{$root.unitName}}
                     <strong>Proposal ID:</strong> {{tx.ntxid}}
                   </div>
                 </div>
@@ -602,7 +612,7 @@
                   <div class="row">
                     <div class="large-5 medium-5 small-5 columns">
                       <div ng-repeat="vin in btx.vinSimple">
-                        <small class="right m5t">{{vin.value| number}} {{$root.unitName}}</small>
+                        <small class="right m5t">{{vin.value| noFractionNumber}} {{$root.unitName}}</small>
                         <p class="ellipsis text-gray size-12">
                           <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
                         </p>
@@ -613,7 +623,7 @@
                     </div>
                     <div class="large-6 medium-6 small-6 columns">
                       <div ng-repeat="vout in btx.voutSimple">
-                        <small class="right m5t">{{vout.value| number}} {{$root.unitName}}</small>
+                        <small class="right m5t">{{vout.value| noFractionNumber}} {{$root.unitName}}</small>
                         <p class="ellipsis text-gray size-12">
                           <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
                         </p>
@@ -623,9 +633,9 @@
                 </div>
                 <div class="m10 size-12 text-gray">
                   <div class="row">
-                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | number}} {{$root.unitName}}</div>
+                    <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | noFractionNumber}} {{$root.unitName}}</div>
                     <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
-                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut| number}} {{$root.unitName}}</div>
+                    <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut| noFractionNumber}} {{$root.unitName}}</div>
                   </div>
                 </div>
               </div>
@@ -712,16 +722,16 @@
                 </div>
                 <div class="large-6 medium-6 columns m10t" ng-show="amount>0">
                   <small>
-                  Total amount for this transaction: 
+                  Total amount for this transaction:
                   </small>
                   <div class="totalAmount">
-                    <b>{{amount + defaultFee |number:4}}</b> {{$root.unitName}}
+                    <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
                     <small>
-                    {{ ((amount + defaultFee) * unitToBtc) |number:4}} BTC
+                    {{ ((amount + defaultFee) * unitToBtc)|noFractionNumber:8}} BTC
                     </small>
                   </div>
                   <small>
-                  Including fee of {{defaultFee |number:4}} {{$root.unitName}} 
+                    Including fee of {{defaultFee|noFractionNumber}} {{$root.unitName}}
                   </small>
                 </div>
               </div>
@@ -784,23 +794,23 @@
     <script type="text/ng-template" id="addressBookModal.html">
       <h3>Add Address Book Entry</h3>
       <form name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
-      <label for="newaddress">Address
-        <small ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
-        <small class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
-        <small class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">
-          Not valid</small>
-        <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
-        placeholder="Address" ng-model="newaddress" valid-address required>
-      </label>
-      <label for="newlabel">Label
-        <small ng-hide="!addressBookForm.newlabel.$pristine || newlabel">required</small>
-        <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
-        placeholder="Label" ng-model="newlabel" required>
-      </label>
-      <a class="button small default radius" ng-click="cancel()">Cancel</a>
-      <input type="submit" class="button small secondary radius right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
-    </form> 
-    <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+        <label for="newaddress">Address
+          <small ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
+          <small class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
+          <small class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+            Not valid</small>
+          <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
+          placeholder="Address" ng-model="newaddress" valid-address required>
+        </label>
+        <label for="newlabel">Label
+          <small ng-hide="!addressBookForm.newlabel.$pristine || newlabel">required</small>
+          <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
+          placeholder="Label" ng-model="newlabel" required>
+        </label>
+        <a class="button small default radius" ng-click="cancel()">Cancel</a>
+        <input type="submit" class="button small secondary radius right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
+      </form>
+      <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
     </script>
 
     <!-- BACKUP -->

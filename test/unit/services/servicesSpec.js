@@ -91,8 +91,8 @@ describe("Unit: controllerUtils", function() {
 
     //retuns values in DEFAULT UNIT(bits)
     controllerUtils.updateBalance(function() {
-      expect($rootScope.totalBalanceBTC).to.be.equal('1.0000');
-      expect($rootScope.availableBalanceBTC).to.be.equal('0.9000');
+      expect($rootScope.totalBalanceBTC).to.be.equal(1.00000001);
+      expect($rootScope.availableBalanceBTC).to.be.equal(0.90000002);
       expect($rootScope.totalBalance).to.be.equal(1000000.01);
       expect($rootScope.availableBalance).to.be.equal(900000.02);
       expect($rootScope.addrInfos).not.to.equal(null);
