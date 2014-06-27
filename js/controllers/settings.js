@@ -40,12 +40,14 @@ angular.module('copayApp.controllers').controller('SettingsController',
     }
 
     $scope.$watch('networkName', function(net) {
-      $scope.insightHost = net === 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
+      if (net !== config.networkName)
+        $scope.insightHost = net === 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
     });
 
 
-    $scope.$watch('insightSecure', function(ssl) {
-      $scope.insightPort = ssl ? 443 : 80;
+    var l2 = $scope.$watch('insightSecure', function(ssl) {
+      if (ssl !== config.insightSecure)
+        $scope.insightPort = ssl ? 443 : 80;
     });
 
 
