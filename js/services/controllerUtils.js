@@ -193,9 +193,9 @@ angular.module('copayApp.services')
         var COIN = bitcore.util.COIN;
 
         $rootScope.totalBalance = balanceSat * satToUnit;
-        $rootScope.totalBalanceBTC = (balanceSat / COIN).toFixed(4);
+        $rootScope.totalBalanceBTC = (balanceSat / COIN);
         $rootScope.availableBalance = safeBalanceSat * satToUnit;
-        $rootScope.availableBalanceBTC = (safeBalanceSat / COIN).toFixed(4);
+        $rootScope.availableBalanceBTC = (safeBalanceSat / COIN);
         var balanceByAddr = {};
         for (var ii in balanceByAddrSat) {
           balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
