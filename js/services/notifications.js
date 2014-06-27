@@ -16,6 +16,10 @@ factory('notification', ['$timeout',
         duration: 5000,
         enabled: true
       },
+      version: {
+        duration: 60000,
+        enabled: true
+      },
       warning: {
         duration: 5000,
         enabled: true
@@ -133,6 +137,10 @@ factory('notification', ['$timeout',
 
       funds: function(title, content, userData) {
         return this.awesomeNotify('funds', 'bitcoin', title, content, userData);
+      },
+
+      version: function(title, content, severe) {
+        return this.awesomeNotify('version', severe ? 'alert' : 'flag', title, content);
       },
 
       error: function(title, content, userData) {

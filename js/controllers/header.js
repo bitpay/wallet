@@ -30,16 +30,14 @@ angular.module('copayApp.controllers').controller('HeaderController',
       };
       var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
       var currentVersion = copay.version.split('.').map(toInt);
+      var title = 'Copay '+data[0].name+' available.';
+      var content;
       if (currentVersion[0] < latestVersion[0]) {
-        $scope.updateVersion = {
-          class: 'error',
-          version: data[0].name
-        };
+        content = 'It\'s important that you update your wallet at https://copay.io';
+        notification.version(title, content, true);
       } else if (currentVersion[0] == latestVersion[0] && currentVersion[1] < latestVersion[1]) {
-        $scope.updateVersion = {
-          class: 'info',
-          version: data[0].name
-        };
+        var content = 'Please update your wallet at https://copay.io';
+        notification.version(title, content, false);
       }
     });
 
