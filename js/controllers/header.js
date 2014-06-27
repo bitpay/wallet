@@ -30,16 +30,14 @@ angular.module('copayApp.controllers').controller('HeaderController',
       };
       var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
       var currentVersion = copay.version.split('.').map(toInt);
+      var title = 'Copay '+data[0].name+' available.';
+      var content;
       if (currentVersion[0] < latestVersion[0]) {
-        $scope.updateVersion = {
-          class: 'error',
-          version: data[0].name
-        };
+        content = 'It\'s important that you update your wallet at https://copay.io';
+        notification.version(title, content, true);
       } else if (currentVersion[0] == latestVersion[0] && currentVersion[1] < latestVersion[1]) {
-        $scope.updateVersion = {
-          class: 'info',
-          version: data[0].name
-        };
+        var content = 'Please update your wallet at https://copay.io';
+        notification.version(title, content, false);
       }
     });
 
@@ -49,13 +47,15 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $rootScope.txAlertCount = 0;
     $rootScope.insightError = 0;
 
+
     $rootScope.$watch('insightError', function(status) {
       if (status === -1) {
-        notification.success('Networking restored', 'Connection to insight restored');
-        $rootScope.insightError = 0;
+        notification.success('Networking restored', 'Connection to Insight re-established');
+        //$rootScope.insightError = 0;
+      } else if (status !== 0) {
+        notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number '+status+')');
       }
     });
-
 
     // Init socket handlers (with no wallet yet)
     controllerUtils.setSocketHandlers();
