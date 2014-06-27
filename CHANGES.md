@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-v0.2.1 (DRAFT!)
+v0.2.1 
 ------
 
 New features
