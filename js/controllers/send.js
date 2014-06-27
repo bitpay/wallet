@@ -267,8 +267,12 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
-    $scope.topAmount = function() {
-      var maxSat = ($rootScope.availableBalance * config.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT;
-      $scope.amount = maxSat / config.unitToSatoshi;
+    $scope.getAvailableAmount = function() {
+      return ((($rootScope.availableBalance * config.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / config.unitToSatoshi);
+    };
+
+    $scope.topAmount = function(form) {
+      $scope.amount = $scope.getAvailableAmount();      
+      form.amount.$pristine = false;
     };
   });
