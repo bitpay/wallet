@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-v0.2.1 
+v0.2.1
 ------
 
 New features
@@ -16,11 +16,11 @@ New features
 Security
 --------
  * Asymetric encryption and signing using ECIES. Details at https://gist.github.com/ryanxcharles/c29fc94d31de7c8c89dc
- * Default SSL connection to Insight servers 
+ * Default SSL connection to Insight and PeerJs servers 
   
 Code quality
 ------------
- * Test coverage from  60.9% to 72% (1) (thanks Ryan for insisting on this)
+ * Test coverage from  60.9% to 74% (1) (thanks Ryan for insisting on this)
  * Mayor refactoring of Angular servicies (backupService, controllerUtils, wallet's Indexes handling, txProposal merge related functions, 
  * Add +30 karma tests for Angular controllers and services
  * Unified js-beautifier format throw all the code
