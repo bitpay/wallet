@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $location, $timeout, $anchorScroll, $modal, isMobile) {
+  function($scope, $rootScope, $window, $location, $timeout, $anchorScroll, $modal, isMobile, notification) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
@@ -32,10 +32,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
-        $rootScope.$flashMessage = {
-          message: 'Unable to send a transaction proposal. Please, try again',
-          type: 'error'
-        };
+        var message = 'Unable to send transaction proposal.';
+        notification.error('Error', message);
         return;
       }
 
@@ -50,20 +48,16 @@ angular.module('copayApp.controllers').controller('SendController',
       w.createTx(address, amount, commentText, function(ntxid) {
         if (w.totalCopayers > 1) {
           $scope.loading = false;
-          $rootScope.$flashMessage = {
-            message: 'The transaction proposal has been created',
-            type: 'success'
-          };
+          var message = 'The transaction proposal has been created';
+          notification.success('Success!', message);
           $rootScope.$digest();
         } else {
           w.sendTx(ntxid, function(txid) {
-            $rootScope.$flashMessage = txid ? {
-              type: 'success',
-              message: 'Transaction broadcasted. txid: ' + txid
-            } : {
-              type: 'error',
-              message: 'There was an error sending the Transaction'
-            };
+            if (txid) {
+              notification.success('Transaction broadcast', 'Transaction id: ' + txid);
+            } else {
+              notification.error('Error', 'There was an error sending the transaction.');
+            }
             $scope.loading = false;
           });
         }
@@ -202,10 +196,11 @@ angular.module('copayApp.controllers').controller('SendController',
           errorMsg = e.message;
         }
 
-        $rootScope.$flashMessage = {
-          message: errorMsg ? errorMsg : 'Entry removed successful',
-          type: errorMsg ? 'error' : 'success'
-        };
+        if (errorMsg) {
+          notification.error('Error', errorMsg);
+        } else {
+          notification.success('Success', 'Entry removed successfully');
+        }
         $rootScope.$digest();
       }, 500);
     };
@@ -223,10 +218,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
           $scope.submitAddressBook = function(form) {
             if (form.$invalid) {
-              $rootScope.$flashMessage = {
-                message: 'Complete required fields, please',
-                type: 'error'
-              };
+              notification.error('Form Error', 'Please complete required fields');
               return;
             }
             var entry = {
@@ -255,10 +247,11 @@ angular.module('copayApp.controllers').controller('SendController',
             errorMsg = e.message;
           }
 
-          $rootScope.$flashMessage = {
-            message: errorMsg ? errorMsg : 'New entry has been created',
-            type: errorMsg ? 'error' : 'success'
-          };
+          if (errorMsg) {
+            notification.error('Error', errorMsg);
+          } else {
+            notification.success('Success', 'New entry has been created');
+          }
           $rootScope.$digest();
         }, 500);
         $anchorScroll();

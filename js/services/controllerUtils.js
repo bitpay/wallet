@@ -36,35 +36,27 @@ angular.module('copayApp.services')
 
     root.onErrorDigest = function(scope, msg) {
       root.onError(scope);
-      if (msg) $rootScope.$flashMessage = {
-        type: 'error',
-        message: msg
-      };
+      if (msg) {
+        notification.error('Error', msg);
+      }
       $rootScope.$digest();
     };
 
     root.installStartupHandlers = function(wallet, $scope) {
       wallet.on('serverError', function(msg) {
-        $rootScope.$flashMessage = {
-          message: 'There was an error connecting to the PeerJS server.' + (msg || 'Check you settings and Internet connection.'),
-          type: 'error',
-        };
+        notification.error('PeerJS Error', 'There was an error connecting to the PeerJS server.'
+          + (msg || 'Check you settings and Internet connection.'));
         root.onErrorDigest($scope);
         $location.path('addresses');
       });
       wallet.on('connectionError', function() {
-        var message = "Looks like you are already connected to this wallet, please logout from it and try importing it again.";
-        $rootScope.$flashMessage = {
-          message: message,
-          type: 'error'
-        };
+        var message = "Looks like you are already connected to this wallet, please logout and try importing it again.";
+        notification.error('PeerJS Error', message);
         root.onErrorDigest($scope);
       });
       wallet.on('serverError', function() {
-        $rootScope.$flashMessage = {
-          message: 'The PeerJS server is not responding, please try again',
-          type: 'error'
-        };
+        var message = 'The PeerJS server is not responding, please try again';
+        notification.error('PeerJS Error', message);
         root.onErrorDigest($scope);
       });
       wallet.on('ready', function() {
@@ -79,10 +71,7 @@ angular.module('copayApp.services')
       $rootScope.isCollapsed = true;
       $rootScope.$watch('insightError', function(status) {
         if (status === -1) {
-          $rootScope.$flashMessage = {
-            type: 'success',
-            message: 'Networking Restored :)',
-          };
+          notification.success('Networking restored', 'Connection to Insight re-established');
           $rootScope.insightError = 0;
         }
       });
@@ -117,10 +106,7 @@ angular.module('copayApp.services')
       notification.enableHtml5Mode(); // for chrome: if support, enable it
 
       w.on('badMessage', function(peerId) {
-        $rootScope.$flashMessage = {
-          type: 'error',
-          message: 'Received wrong message from peer id:' + peerId
-        };
+        notification.error('Error', 'Received wrong message from peer ' + peerId);
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
