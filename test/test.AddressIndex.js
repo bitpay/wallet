@@ -23,6 +23,7 @@ var createAI = function() {
   should.exist(i);
 
   i.walletId = '1234567';
+  i.cosigner = 1;
 
   return i;
 };
@@ -34,7 +35,7 @@ describe('AddressIndex model', function() {
     should.exist(i);
   });
 
-  it('show be able to tostore and read', function() {
+  it('show be able to store and read', function() {
     var i = createAI();
     var changeN = 2;
     var addressN = 2;
@@ -50,6 +51,7 @@ describe('AddressIndex model', function() {
 
     var i2 = AddressIndex.fromObj(data);
     i2.walletId.should.equal(i.walletId);
+    i2.cosigner.should.equal(i.cosigner);
 
     i2.getChangeIndex().should.equal(changeN);
     i2.getReceiveIndex().should.equal(addressN);
@@ -75,6 +77,7 @@ describe('AddressIndex model', function() {
       j.increment(false);
     var j2 = new AddressIndex({
       walletId: j.walletId,
+      cosigner: j.cosigner,
     });
     j2.merge(j).should.equal(true);
     j2.changeIndex.should.equal(15);
@@ -82,5 +85,21 @@ describe('AddressIndex model', function() {
 
     j2.merge(j).should.equal(false);
   });
+
+  it('#merge should fail with different walletId', function() {
+    var j1 = new AddressIndex({ walletId: '1234' });
+    var j2 = new AddressIndex({ walletId: '4321' });
+
+    var merge = function() { j2.merge(j1); };
+    merge.should.throw(Error);
+  })
+
+  it('#merge should fail with different cosigner index', function() {
+    var j1 = new AddressIndex({ walletId: '1234', cosigner: 2 });
+    var j2 = new AddressIndex({ walletId: '1234', cosigner: 3 });
+
+    var merge = function() { j2.merge(j1); };
+    merge.should.throw(Error);
+  })
 
 });
