@@ -28,8 +28,11 @@ var defaultConfig = {
     key: 'satoshirocks',
     host: '162.242.219.26',
     port: 10000,
-    path: '/',
     secure: false,
+    // host: 'copay.io',
+    // port: 9000,
+    // secure: true,
+    path: '/',
 
     // other PeerJS config
     maxPeers: 15,
@@ -118,6 +121,6 @@ var defaultConfig = {
 
   // theme list
   themes: ['default'],
-  disableVideo: 1,
+  disableVideo: true,
   verbose: 1,
 };
