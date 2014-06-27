@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
     $scope.networkSecure = config.network.secure || false;
-    $scope.disableVideo = config.disableVideo || true;
+    $scope.disableVideo = typeof config.disableVideo === undefined ?  true : config.disableVideo;
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -39,12 +39,12 @@ angular.module('copayApp.controllers').controller('SettingsController',
     }
 
     $scope.changeNetwork = function() {
-      $scope.insightHost = $scope.networkName === 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
+      $scope.insightHost = $scope.networkName !== 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
     };
 
 
     $scope.changeInsightSSL = function() {
-      $scope.insightPort = $scope.insightSecure ? 443 : 80;
+      $scope.insightPort = $scope.insightSecure ? 80 : 443;
     };
 
 
