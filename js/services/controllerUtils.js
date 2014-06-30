@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video, uriHandler) {
     var root = {};
 
     root.getVideoMutedStatus = function(copayer) {
@@ -64,6 +64,7 @@ angular.module('copayApp.services')
     };
 
     root.setupRootVariables = function() {
+      uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
       $rootScope.insightError = 0;
