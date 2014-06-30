@@ -252,6 +252,16 @@ angular.module('copayApp.services')
       $rootScope.pendingTxCount = pendingForUs;
     };
 
+    $rootScope.$watch('insightError', function(status) {
+      if (status) {
+        if (status === -1) {
+          notification.success('Networking restored', 'Connection to Insight re-established');
+        } else if (!isNaN(status)) {
+          notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number ' + status + ')');
+        }
+      }
+    });
+
     root._setCommError = function(e) {
       if ($rootScope.insightError < 0)
         $rootScope.insightError = 0;
