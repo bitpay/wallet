@@ -48,16 +48,6 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $rootScope.insightError = 0;
 
 
-    $rootScope.$watch('insightError', function(status) {
-      if (status) {
-        if (status === -1) {
-          notification.success('Networking restored', 'Connection to Insight re-established');
-        } else if (!isNaN(status)) {
-          notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number ' + status + ')');
-        }
-      }
-    });
-
     // Init socket handlers (with no wallet yet)
     controllerUtils.setSocketHandlers();
 
