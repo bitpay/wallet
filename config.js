@@ -94,6 +94,7 @@ var defaultConfig = {
     totalCopayers: 3,
     spendUnconfirmed: true,
     verbose: 1,
+    // will duplicate itself after each try
     reconnectDelay: 5000,
   },
 
@@ -109,8 +110,7 @@ var defaultConfig = {
     schema: 'https',
     host: 'insight.bitpay.com',
     port: 443,
-    // will duplicate itself after each try
-    reconnectDelay: 500,
+    reconnectDelay: 1000,
   },
 
   // local encryption/security config
