@@ -81,8 +81,8 @@ Wallet.prototype.connectToAll = function() {
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
-  var inIndexes = AddressIndex.fromObj(data.indexes);
-  var hasChanged = this.publicKeyRing.indexes.merge(inIndexes);
+  var inIndexes = AddressIndex.fromList(data.indexes);
+  var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
     this.emit('publicKeyRingUpdated');
     this.store();
@@ -439,11 +439,11 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   });
 };
 Wallet.prototype.sendIndexes = function(recipients) {
-  this.log('### INDEXES TO:', recipients || 'All', this.publicKeyRing.indexes.toObj());
+  this.log('### INDEXES TO:', recipients || 'All', this.publicKeyRing.getIndexesObj());
 
   this.network.send(recipients, {
     type: 'indexes',
-    indexes: this.publicKeyRing.indexes.toObj(),
+    indexes: this.publicKeyRing.getIndexesObj(),
     walletId: this.id,
   });
 };
@@ -752,20 +752,21 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   return ntxid;
 };
 
+// TODO: Updetear todos los indices
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
-  var start = self.publicKeyRing.indexes.changeIndex;
+  var start = self.publicKeyRing.getSharedIndex().changeIndex;
   self.log('Updating indexes...');
   self.indexDiscovery(start, true, 20, function(err, changeIndex) {
     if (err) return callback(err);
     if (changeIndex != -1)
-      self.publicKeyRing.indexes.changeIndex = changeIndex + 1;
+      self.publicKeyRing.getSharedIndex().changeIndex = changeIndex + 1;
 
-    start = self.publicKeyRing.indexes.receiveIndex;
+    start = self.publicKeyRing.getSharedIndex().receiveIndex;
     self.indexDiscovery(start, false, 20, function(err, receiveIndex) {
       if (err) return callback(err);
       if (receiveIndex != -1)
-        self.publicKeyRing.indexes.receiveIndex = receiveIndex + 1;
+        self.publicKeyRing.getSharedIndex().receiveIndex = receiveIndex + 1;
 
       self.log('Indexes updated');
       self.emit('publicKeyRingUpdated');

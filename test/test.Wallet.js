@@ -9,6 +9,7 @@ try {
   var copay = require('../copay'); //node
 }
 var Wallet = require('../js/models/core/Wallet');
+var Structure = require('../js/models/core/Structure');
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
@@ -341,13 +342,15 @@ describe('Wallet model', function() {
   it('handle network indexes correctly', function() {
     var w = createW();
     var aiObj = {
-      walletId: w.id,
-      changeIndex: 3,
-      receiveIndex: 2
+      indexes: [{
+        cosigner: Structure.SHARED_INDEX,
+        changeIndex: 3,
+        receiveIndex: 2
+      }]
     };
     w._handleIndexes('senderID', aiObj, true);
-    w.publicKeyRing.indexes.getReceiveIndex(2);
-    w.publicKeyRing.indexes.getChangeIndex(3);
+    w.publicKeyRing.getSharedIndex().getReceiveIndex(2);
+    w.publicKeyRing.getSharedIndex().getChangeIndex(3);
   });
 
   it('handle network pubKeyRings correctly', function() {
@@ -363,19 +366,19 @@ describe('Wallet model', function() {
       networkName: w.networkName,
       requiredCopayers: w.requiredCopayers,
       totalCopayers: w.totalCopayers,
-      indexes: {
-        walletId: undefined,
+      indexes: [{
+        cosigner: Structure.SHARED_INDEX,
         changeIndex: 2,
         receiveIndex: 3
-      },
+      }],
       copayersExtPubKeys: cepk,
       nicknameFor: {},
     };
     w._handlePublicKeyRing('senderID', {
       publicKeyRing: pkrObj
     }, true);
-    w.publicKeyRing.indexes.getReceiveIndex(2);
-    w.publicKeyRing.indexes.getChangeIndex(3);
+    w.publicKeyRing.getSharedIndex().getReceiveIndex(2);
+    w.publicKeyRing.getSharedIndex().getChangeIndex(3);
     for (var i = 0; i < w.requiredCopayers; i++) {
       w.publicKeyRing.toObj().copayersExtPubKeys[i].should.equal(cepk[i]);
     }
@@ -729,8 +732,8 @@ describe('Wallet model', function() {
       });
 
       w.updateIndexes(function(err) {
-        w.publicKeyRing.indexes.receiveIndex.should.equal(15);
-        w.publicKeyRing.indexes.changeIndex.should.equal(15);
+        w.publicKeyRing.getSharedIndex().receiveIndex.should.equal(15);
+        w.publicKeyRing.getSharedIndex().changeIndex.should.equal(15);
         done();
       });
     });

@@ -102,8 +102,8 @@ describe('TxProposals model', function() {
     var b = w.txps[ntxid].builder;
     var tx = b.build();
     tx.isComplete().should.equal(false);
-    b.sign(priv2.getAll(pkr.indexes.getReceiveIndex(), pkr.indexes.getChangeIndex()));
-    b.sign(priv3.getAll(pkr.indexes.getReceiveIndex(), pkr.indexes.getChangeIndex()));
+    b.sign(priv2.getAll(pkr.getSharedIndex().getReceiveIndex(), pkr.getSharedIndex().getChangeIndex()));
+    b.sign(priv3.getAll(pkr.getSharedIndex().getReceiveIndex(), pkr.getSharedIndex().getChangeIndex()));
     tx = b.build();
     tx.isComplete().should.equal(true);
 
