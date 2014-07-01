@@ -5,6 +5,9 @@ var should = chai.should();
 var bitcore = bitcore || require('bitcore');
 var Address = bitcore.Address;
 var buffertools = bitcore.buffertools;
+
+var Structure = require('../js/models/core/Structure');
+
 try {
   var copay = require('copay'); //browser
 } catch (e) {
@@ -85,7 +88,7 @@ describe('PublicKeyRing model', function() {
     }
   });
 
-  it('show be able to tostore and read', function() {
+  it('show be able to to store and read', function() {
     var k = createW();
     var w = k.w;
     var copayers = k.copayers;
@@ -112,8 +115,8 @@ describe('PublicKeyRing model', function() {
       }).should.throw();
     }
 
-    w2.indexes.getChangeIndex().should.equal(changeN);
-    w2.indexes.getReceiveIndex().should.equal(addressN);
+    w2.getSharedIndex().getChangeIndex().should.equal(changeN);
+    w2.getSharedIndex().getReceiveIndex().should.equal(addressN);
   });
 
 
@@ -168,8 +171,8 @@ describe('PublicKeyRing model', function() {
     for (var i = 0; i < 2; i++)
       w.generateAddress(false);
 
-    w.indexes.getChangeIndex().should.equal(3);
-    w.indexes.getReceiveIndex().should.equal(2);
+    w.getSharedIndex().getChangeIndex().should.equal(3);
+    w.getSharedIndex().getReceiveIndex().should.equal(2);
   });
 
   it('#merge index tests', function() {
@@ -188,8 +191,8 @@ describe('PublicKeyRing model', function() {
     w2.merge(w).should.equal(true);
     w2.requiredCopayers.should.equal(3);
     w2.totalCopayers.should.equal(5);
-    w2.indexes.getChangeIndex().should.equal(2);
-    w2.indexes.getReceiveIndex().should.equal(3);
+    w2.getSharedIndex().getChangeIndex().should.equal(2);
+    w2.getSharedIndex().getReceiveIndex().should.equal(3);
 
     //
     w2.merge(w).should.equal(false);
