@@ -6,9 +6,22 @@ var Structure = require('./Structure');
 
 function AddressIndex(opts) {
   opts = opts || {};
-  this.cosigner = opts.cosigner || Structure.SHARED_INDEX;
+  this.cosigner = opts.cosigner
   this.changeIndex = opts.changeIndex || 0;
   this.receiveIndex = opts.receiveIndex || 0;
+
+  if (typeof this.cosigner === 'undefined') {
+    this.cosigner = Structure.SHARED_INDEX;
+  }
+}
+
+AddressIndex.init = function(totalCopayers) {
+  preconditions.shouldBeNumber(totalCopayers);
+  var indexes = [new AddressIndex()];
+  for (var i = 0 ; i < totalCopayers ; i++) {
+    indexes.push(new AddressIndex({cosigner: i}));
+  }
+  return indexes;
 }
 
 AddressIndex.fromList = function(indexes) {

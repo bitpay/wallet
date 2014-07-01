@@ -383,6 +383,29 @@ describe('PublicKeyRing model', function() {
   });
 
 
+  it('#getIndex should return the right one', function() {
+    var config = {
+      networkName: 'livenet',
+    };
+    var p = new PublicKeyRing(config);
+    var i = p.getIndex(Structure.SHARED_INDEX);
+    should.exist(i);
+    i.cosigner.should.equal(Structure.SHARED_INDEX);
+    var shared = p.getSharedIndex();
+    shared.should.equal(i);
+  });
+
+  it('#getIndex should throw error', function() {
+    var config = {
+      networkName: 'livenet',
+    };
+    var p = new PublicKeyRing(config);
+
+    (function badCosigner() {
+      return p.getIndex(54);
+    }).should.throw();
+  });
+
   it('#getRedeemScriptMap check tests', function() {
     var k = createW();
     var w = k.w;

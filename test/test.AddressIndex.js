@@ -12,6 +12,7 @@ try {
 }
 var PublicKeyRing = copay.PublicKeyRing;
 var AddressIndex = copay.AddressIndex;
+var Structure = copay.Structure;
 
 
 var config = {
@@ -32,6 +33,18 @@ describe('AddressIndex model', function() {
   it('should create an instance (livenet)', function() {
     var i = new AddressIndex();
     should.exist(i);
+  });
+
+  it('should init indexes', function() {
+    var is = AddressIndex.init(2);
+    should.exist(is);
+    is.length.should.equal(3);
+
+    var cosigners = is.map(function(i) { return i.cosigner; });
+    cosigners.indexOf(Structure.SHARED_INDEX).should.not.equal(-1);
+    cosigners.indexOf(0).should.not.equal(-1);
+    cosigners.indexOf(1).should.not.equal(-1);
+    cosigners.indexOf(2).should.equal(-1);
   });
 
   it('show be able to store and read', function() {
