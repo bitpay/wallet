@@ -24,7 +24,8 @@ function PublicKeyRing(opts) {
 
   this.copayersHK = opts.copayersHK || [];
 
-  this.indexes = opts.indexes ? AddressIndex.fromList(opts.indexes) : [new AddressIndex()];
+  this.indexes = opts.indexes ? AddressIndex.fromList(opts.indexes)
+                              : AddressIndex.init(this.totalCopayers);
 
   this.publicKeysCache = opts.publicKeysCache || {};
   this.nicknameFor = opts.nicknameFor || {};
