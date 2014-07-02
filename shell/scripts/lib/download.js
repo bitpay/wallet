@@ -26,6 +26,7 @@ var Static = function() {
       } else {
         console.log(color.blue('{copay}'), platform + '-' + arch + ' ' + ' already downloaded');
         callback.call(this, null);
+        return;
       }
       
       
@@ -36,6 +37,7 @@ var Static = function() {
         var filename = 'atom-shell-' + version + '-' + platform + '-' + arch + '.zip';
 
         if (err || !releases.length) {
+          console.log(err);
           return console.log(color.blue('{copay}'), 'Release not found');
         }
 

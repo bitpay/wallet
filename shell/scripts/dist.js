@@ -15,9 +15,17 @@ var darwin_app_dir = '/Copay.app/Contents/Resources/app';
 var linux_app_dir = '/resources/app';
 var windows_app_dir = '/resources/app';
 
-rm('-rf', build_dir);
-rm('-rf', dist_dir);
+console.log(color.blue('{copay}'), '');
+console.log(color.blue('{copay}'), 'Preparing to build Copay binaries');
+console.log(color.blue('{copay}'), '');
 
+/* Clean up before the build */
+rm('-rf', build_dir);
+rm(dist_dir + '/Copay*');
+rm('-rf', dist_dir + '/darwin', dist_dir + '/linux', dist_dir + '/windows');
+
+// Download the atom shell binaries.  If you exceed your download quota,
+// just download the zips manually and unpack them into shell/scripts/bin/<platform>
 async.series([
   function(callback) {
     download.atom(atom_version, 'darwin', 'x64', callback);
@@ -65,6 +73,7 @@ function runBuild() {
   cp(app_root + '*.json', build_dir + darwin_app_dir);
   cp(app_root + '*.html', build_dir + darwin_app_dir);
 
+  // Copay needs express, put other node deps here if you need any
   cp('-r', app_root + '/node_modules/express', build_dir + darwin_app_dir + "/node_modules");
 
   // Clean up extra Atom sources
@@ -146,8 +155,12 @@ function runBuild() {
 
   cp(app_root + "/shell/assets/win32/*", build_dir);
 
+  rm('-r', build_dir + windows_app_dir + '/../default_app');
+
   mkdir('-p', app_root + '/dist/windows');
   cp('-r', app_root + build_dir + '/*', app_root + '/dist/windows/');
+
+  rm('-rf', app_root + build_dir + '/*');
 
   console.log(color.blue('{copay}'), 'Copied files to ' + 'dist/windows');
 
@@ -156,10 +169,10 @@ function runBuild() {
   // install on OSX with "brew install makensis"
   if (which('makensis') != null) {
     console.log(color.blue('{copay}'), 'Running NSIS to generate win32 installer');
-    cd(build_dir);
+    cd('dist/windows');
     exec('makensis -V2 build-installer.nsi');
-    cd("../../..");
-    cp(build_dir + '/copay-setup.exe', app_root + '/dist/Copay-setup-win32.exe')
+    cd("../../");
+    cp('dist/windows/copay-setup.exe', app_root + '/dist/Copay-setup-win32.exe')
   }
 
   console.log(color.blue('{copay}'));

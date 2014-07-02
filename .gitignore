@@ -56,3 +56,13 @@ coverage/
 shell/bin/linux
 shell/bin/darwin
 shell/bin/win32
+
+shell/scripts/bin
+shell/scripts/build
+
+dist/darwin
+dist/linux
+dist/windows
+dist/*.dmg
+dist/*.tar.gz
+dist/*.exe
