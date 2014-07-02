@@ -109,13 +109,16 @@ describe('WalletFactory model', function() {
     var wf = new WalletFactory(config, '0.0.1');
     var wallet = {id: "fake wallet", updateIndexes: function(cb) { cb(); }};
     wf.fromEncryptedObj = sinon.stub().returns(wallet);
-    var callback = sinon.spy();
 
-    var w = wf.import("encrypted", "password", callback);
+    var w = wf.import("encrypted", "password");
 
     should.exist(w);
     wallet.should.equal(w);
-    sinon.assert.callCount(callback, 1);
+
+    wf.fromEncryptedObj = sinon.stub().returns(null);
+    (function() {
+      wf.import("encrypted", "password")
+    }).should.throw();
   });
 
   it('BIP32 length problem', function() {
