@@ -735,15 +735,13 @@ describe('Wallet model', function() {
       });
     });
 
-    it('#updateIndexes should store and emit event', function(done) {
+    it('#updateIndexes should store wallet', function(done) {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
       var spyStore = sinon.spy(w, 'store');
-      var spyEmit = sinon.spy(w, 'emit');
       w.updateIndexes(function(err) {
         sinon.assert.callCount(spyStore, 1);
-        sinon.assert.callCount(spyEmit, 2);
         done();
       });
     });
