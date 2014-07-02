@@ -15,20 +15,32 @@ angular.module('copayApp.controllers').controller('ImportController',
     var _importBackup = function(encryptedObj) {
       Passphrase.getBase64Async($scope.password, function(passphrase) {
         updateStatus('Importing wallet - Setting things up...');
-        var w = walletFactory.import(encryptedObj, passphrase, function(err, w) {
+        var w, errMsg;
+
+        try {
+          w = walletFactory.import(encryptedObj, passphrase);
+          
+        } catch (e) {
+          errMsg = e.message;
+        }
+
+        if (!w) {
+          $scope.loading = false;
+          notification.error('Error', errMsg || 'Wrong password');
+          $rootScope.$digest();
+          return;
+        }
+
+        w.updateIndexes(function(err) {
+          updateStatus('Importing wallet - We are almost there...');
           if (err) {
             $scope.loading = false;
-            notification.error('Error', err.errMsg || 'Wrong password');
-            $rootScope.$digest();
-            return;
+            notification.error('Error', 'Error updating indexes: ' + err);
           }
           $rootScope.wallet = w;
           controllerUtils.startNetwork($rootScope.wallet, $scope);
         });
-
-        w.on('updatingIndexes', function(){
-          updateStatus('Importing wallet - We are almost there...');
-        });
+        
       });
     };
 
@@ -54,6 +66,8 @@ angular.module('copayApp.controllers').controller('ImportController',
     };
 
     $scope.import = function(form) {
+      $scope.loading = true;
+
       if (form.$invalid) {
         $scope.loading = false;
         notification.error('Error', 'There is an error in the form.');
@@ -70,8 +84,6 @@ angular.module('copayApp.controllers').controller('ImportController',
         $scope.loading = false;
         return;
       }
-
-      $scope.loading = true;
 
       if (backupFile) {
         reader.readAsBinaryString(backupFile);

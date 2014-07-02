@@ -755,18 +755,19 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
   var start = self.publicKeyRing.indexes.changeIndex;
+  self.log('Updating indexes...');
   self.indexDiscovery(start, true, 20, function(err, changeIndex) {
     if (err) return callback(err);
     if (changeIndex != -1)
       self.publicKeyRing.indexes.changeIndex = changeIndex + 1;
 
-    self.emit('updatingIndexes');
     start = self.publicKeyRing.indexes.receiveIndex;
     self.indexDiscovery(start, false, 20, function(err, receiveIndex) {
       if (err) return callback(err);
       if (receiveIndex != -1)
         self.publicKeyRing.indexes.receiveIndex = receiveIndex + 1;
 
+      self.log('Indexes updated');
       self.emit('publicKeyRingUpdated');
       self.store();
       callback();
