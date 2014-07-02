@@ -103,7 +103,11 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
-        $location.path('addresses');
+        if ($rootScope.pendingPayment) {
+          $location.path('send');
+        } else {
+          $location.path('addresses');
+        }
         if (!config.disableVideo)
           video.setOwnPeer(myPeerID, w, handlePeerVideo);
       });
