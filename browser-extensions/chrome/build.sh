@@ -47,7 +47,7 @@ checkOK
 INCLUDE=`cat ../include`
 cd $BUILDDIR/../..
 LIBS=`cat index.html |grep -o -E 'src="([^"#]+)"' | cut -d'"' -f2|grep lib`
-echo "LIBS $LIBS"
+echo "LIBS: $LIBS"
 
 CMD="rsync -rLRv --exclude-from $BUILDDIR/../exclude  $INCLUDE $LIBS  $APPDIR"
 echo $CMD
