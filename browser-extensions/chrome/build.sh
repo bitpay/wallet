@@ -43,9 +43,13 @@ echo "${OpenColor}${Green}* Copying all chrome-extension files...${CloseColor}"
 sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 checkOK
 
+ 
 INCLUDE=`cat ../include`
 cd $BUILDDIR/../..
-CMD="rsync -rLRv --exclude-from $BUILDDIR/../exclude  $INCLUDE   $APPDIR"
+LIBS=`cat index.html |grep -o -E 'src="([^"#]+)"' | cut -d'"' -f2|grep lib`
+echo "LIBS $LIBS"
+
+CMD="rsync -rLRv --exclude-from $BUILDDIR/../exclude  $INCLUDE $LIBS  $APPDIR"
 echo $CMD
 $CMD
 checkOK
