@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('UriPaymentController', function($rootScope, $scope, $routeParams) {
+angular.module('copayApp.controllers').controller('UriPaymentController', function($rootScope, $scope, $routeParams, $timeout, $location) {
   var data = decodeURIComponent($routeParams.data);
   var splitDots = data.split(':');
   $scope.protocol = splitDots[0];
@@ -12,7 +12,19 @@ angular.module('copayApp.controllers').controller('UriPaymentController', functi
     function(key, value) {
       return key === "" ? value : decodeURIComponent(value);
     });
-  $scope.amount = parseInt(data.amount);
+  $scope.amount = parseFloat(data.amount);
   $scope.message = data.message;
+
+  $rootScope.pendingPayment = {
+    protocol: $scope.protocol,
+    address: $scope.address,
+    amount: $scope.amount,
+    message: $scope.message
+  };
+
+  $timeout(function() {
+    $location.path('signin');
+  }, 1000);
+
 
 });
