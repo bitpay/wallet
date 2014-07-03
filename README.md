@@ -168,7 +168,7 @@ System Requirements
 Run
 
 ```
-$ sh firefox/build.sh
+$ npm run-script firefox
 ```
 
 - Copy the content of *firefox/firefox-addon* (lib, data, package.json) to your development path.

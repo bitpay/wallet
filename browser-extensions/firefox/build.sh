@@ -18,7 +18,7 @@ checkOK() {
 
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-APPDIR="$BUILDDIR/browser-extensions/firefox/firefox-addon"
+APPDIR="$BUILDDIR/firefox-addon"
 ZIPFILE="copay-firefox-addon.zip"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../../version.js`
 
@@ -30,8 +30,7 @@ echo "${OpenColor}${Green}* Checking temp dir...${CloseColor}"
 if [ -d $APPDIR ]; then
   rm -rf $APPDIR
 fi
-
-mkdir -p "$APPDIR/data"
+mkdir -p $APPDIR
 
 # Re-compile copayBundle.js
 echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
@@ -40,10 +39,12 @@ checkOK
 
 # Copy all chrome-extension files
 echo "${OpenColor}${Green}* Copying all firefox-addon files...${CloseColor}"
-sed "s/APP_VERSION/$VERSION/g" package.json > $APPDIR/package.json
+
+sed "s/APP_VERSION/$VERSION/g" "$BUILDDIR/../../package.json" > $APPDIR/package.json
 checkOK
 
-INCLUDE=`cat ../../include`
+INCLUDE=`cat ../include`
+echo $INCLUDE
 cd $BUILDDIR/../..
 LIBS=`cat index.html |grep -o -E 'src="([^"#]+)"' | cut -d'"' -f2|grep lib`
 echo "LIBS: $LIBS"
@@ -53,4 +54,4 @@ echo $CMD
 $CMD
 checkOK
 
-echo "${OpenColor}${Yellow}\nAwesome! We have a brand new Firefox Addon, enjoy it!${CloseColor}"
+echo "${OpenColor}${Yellow}\nThe Firefox add-on is ready at $BUILDDIR!${CloseColor}"
