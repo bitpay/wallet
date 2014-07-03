@@ -197,9 +197,9 @@ span.panel-res {
 }
 
 .line-dashed {
-  border-top: 2px dashed #ccc;
+  border-top: 1px dashed #ccc;
   margin: 1rem 0;
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
 }
 
 
@@ -271,7 +271,7 @@ hr { margin: 2.25rem 0;}
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
-.m30v {margin: 30px 0;}
+.m30v {/* margin: 30px 0; */}
 .m10h {margin:0 10px;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
