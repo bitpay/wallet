@@ -16,6 +16,7 @@ function PrivateKey(opts) {
   var init = opts.extendedPrivateKeyString || this.network.name;
   this.bip = opts.HK || new HK(init);
   this.privateKeyCache = opts.privateKeyCache || {};
+  this.publicHex = this.deriveBIP45Branch().eckey.public.toString('hex');
 };
 
 PrivateKey.prototype.getId = function() {
@@ -101,21 +102,21 @@ PrivateKey.prototype.getForPath = function(path) {
   return wk;
 };
 
-PrivateKey.prototype.get = function(index, isChange) {
-  var path = Structure.FullBranch(index, isChange);
+PrivateKey.prototype.get = function(index, isChange, cosigner) {
+  var path = Structure.FullBranch(index, isChange, cosigner);
   return this.getForPath(path);
 };
 
-PrivateKey.prototype.getAll = function(receiveIndex, changeIndex) {
+PrivateKey.prototype.getAll = function(receiveIndex, changeIndex, cosigner) {
   if (typeof receiveIndex === 'undefined' || typeof changeIndex === 'undefined')
     throw new Error('Invalid parameters');
 
   var ret = [];
   for (var i = 0; i < receiveIndex; i++) {
-    ret.push(this.get(i, false));
+    ret.push(this.get(i, false, cosigner));
   }
   for (var i = 0; i < changeIndex; i++) {
-    ret.push(this.get(i, true));
+    ret.push(this.get(i, true, cosigner));
   }
   return ret;
 };

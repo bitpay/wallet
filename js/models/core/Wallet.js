@@ -51,6 +51,7 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.backupOffered = opts.backupOffered || false;
+  this.publicKey = this.privateKey.publicHex;
 }
 
 Wallet.parent = EventEmitter;
@@ -462,7 +463,7 @@ Wallet.prototype.getName = function() {
 };
 
 Wallet.prototype._doGenerateAddress = function(isChange) {
-  return this.publicKeyRing.generateAddress(isChange);
+  return this.publicKeyRing.generateAddress(isChange, this.publicKey);
 };
 
 
@@ -516,7 +517,6 @@ Wallet.prototype.sign = function(ntxid, cb) {
       if (cb) cb(false);
     }
 
-    var pkr = self.publicKeyRing;
     var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
