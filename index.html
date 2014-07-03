@@ -122,7 +122,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row m10t">
           <div class="large-12 medium-12 small-12 columns ">
             <div class="box-setup-copayers">
               <div class="box-setup-copayers-fix">
@@ -131,15 +131,17 @@
                 src="./img/satoshi.gif"
                 title="Copayer {{$index+1}}-{{totalCopayers}}"
                 ng-class="{'box-setup-copay-required': ($index+1) <= $root.wallet.publicKeyRing.registeredCopayers()}">
-
-                <button class="button primary radius right"
-                  ng-click="backupAndOpen()"
-                  ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-                  Backup keys and continue
-                </button>
-
               </div>
             </div>
+          </div>
+          <div class="large-12 columns">
+            <div class="line-dashed"></div>
+            <button class="button primary radius right"
+              ng-click="backupAndOpen()"
+              ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+              Backup keys and continue
+            </button>
+            <!-- <a href="" class="db p10t left" ng-disabled="!$root.wallet.publicKeyRing.isComplete()">Skip Backup</a> -->
           </div>
         </div>
       </div>
@@ -247,8 +249,8 @@
                 <h3>Join a Wallet in Creation</h3>
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="$parent.joinPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
+                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="$parent.joinPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
               </div>
@@ -314,70 +316,67 @@
           <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
           Creating wallet...
         </div>
-        <div ng-show="!loading">
+        <div ng-show="!loading" class="large-8 medium-12 small-12 columns large-centered">
           <form name="setupForm" ng-submit="create(setupForm)" novalidate>
           <h3>Create new wallet</h3>
-          <div class="row">
-            <div class="small-12 medium-8 medium-centered large-8 large-centered columns">
-              <label>Wallet name <small>Optional</small>
-                <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
-              </label>
-            </div>
-            <div class="small-12 medium-8 medium-centered large-8 large-centered columns">
-              <div class="row">
-                <div class="small-12 medium-6 large-6 columns">
-                  <label>Your name <small>Optional</small>
-                  <input type="text" placeholder="Name" class="form-control" ng-model="myNickname">
-                  </label>
-                </div>
-                <div class="small-12 medium-6 large-6 columns">
-                  <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
-                  <input type="password" placeholder="Choose your password" class="form-control"
-                    ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
-                  </label>
-                </div>
+          <div>
+            <label>Wallet name <small>Optional</small>
+              <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
+            </label>
+          </div>
+          <div>
+            <div class="row">
+              <div class="small-12 medium-6 large-6 columns">
+                <label>Your name <small>Optional</small>
+                <input type="text" placeholder="Name" class="form-control" ng-model="myNickname">
+                </label>
+              </div>
+              <div class="small-12 medium-6 large-6 columns">
+                <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
+                <input type="password" placeholder="Choose your password" class="form-control"
+                  ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
+                </label>
               </div>
             </div>
-            <div class="small-12 medium-8 medium-centered large-8 large-centered columns box-setup">
-              <fieldset>
-              <div class="row">
-                <div class="large-6 medium-6 columns line-dashed-v">
-                  <label>Select total number of copayers
-                  <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
-                  </select>
-                  </label>
-                </div>
-                <div class="large-6 medium-6 columns">
-                  <label>Select required signatures
-                  <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
-                  </select>
-                  </label>
-                </div>
+          </div>
+          <div class="box-setup">
+            <fieldset>
+            <div class="row">
+              <div class="large-6 medium-6 columns line-dashed-v">
+                <label>Select total number of copayers
+                <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+                </select>
+                </label>
               </div>
-              </fieldset>
+              <div class="large-6 medium-6 columns">
+                <label>Select required signatures
+                <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+                </select>
+                </label>
+              </div>
             </div>
-            <div class="small-12 medium-6 medium-centered large-6 large-centered columns m10b">
-              <div class="box-setup-copayers">
-                <div class="box-setup-copayers-fix">
-                  <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
-                    src="./img/satoshi.gif"
-                    title="Copayer {{$index+1}}-{{totalCopayers}}"
-                    ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
-                </div>
-              </div>
+            </fieldset>
+          </div>
+          <div class="box-setup-copayers">
+            <div class="box-setup-copayers-fix">
+              <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
+                src="./img/satoshi.gif"
+                title="Copayer {{$index+1}}-{{totalCopayers}}"
+                ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
             </div>
           </div>
 
-          <div class="row line-dashed">
-            <div class="large-6 medium-6 small-5 columns text-left">
-              <a class="button secondary radius" href="#signin">Go back</a>
+            <div class="row">
+              <div class="line-dashed"></div>
+              <div class="large-6 medium-6 small-5 columns text-left">
+                <a class="button secondary radius" href="#signin">Go back</a>
+              </div>
+              <div class="large-6 medium-6 small-7 columns text-right">
+                <button type="submit" class="button primary radius" ng-disabled="setupForm.$invalid || loading">
+                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+                </button>
+              </div>
             </div>
-            <div class="large-6 medium-6 small-7 columns text-right">
-              <button type="submit" class="button primary radius" ng-disabled="setupForm.$invalid || loading">
-              Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
-              </button>
-            </div>
-          </div>
           </form>
         </div>
       </div>
