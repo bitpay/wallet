@@ -48,7 +48,6 @@ Network.prototype.cleanUp = function() {
   this.privkey = null; //TODO: hide privkey in a closure
   this.key = null;
   this.copayerId = null;
-  this.signingKey = null;
   this.allowedCopayerIds = null;
   this.isInboundPeerAuth = [];
   this.copayerForPeer = {};

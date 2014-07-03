@@ -2,6 +2,8 @@
 
 angular.module('copayApp.controllers').controller('FooterController', function($rootScope, $sce, $scope, $http) {
 
+    $scope.networkName = config.networkName;
+
   if (config.themes && Array.isArray(config.themes) && config.themes[0]) {
     $scope.themes = config.themes;
   } else {
