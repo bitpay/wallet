@@ -440,11 +440,12 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   });
 };
 Wallet.prototype.sendIndexes = function(recipients) {
-  this.log('### INDEXES TO:', recipients || 'All', this.publicKeyRing.getIndexesObj());
+  var indexes = AddressIndex.serialize(this.publicKeyRing.indexes);
+  this.log('### INDEXES TO:', recipients || 'All', indexes);
 
   this.network.send(recipients, {
     type: 'indexes',
-    indexes: this.publicKeyRing.getIndexesObj(),
+    indexes: indexes,
     walletId: this.id,
   });
 };
@@ -752,34 +753,45 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   return ntxid;
 };
 
-// TODO: Updetear todos los indices
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
-  var start = self.publicKeyRing.getSharedIndex().changeIndex;
   self.log('Updating indexes...');
-  self.indexDiscovery(start, true, 20, function(err, changeIndex) {
+
+  var tasks = this.publicKeyRing.indexes.map(function(index) {
+    return function(callback) {
+      self.updateIndex(index, callback);
+    };
+  });
+
+  async.parallel(tasks, function(err) {
+    if (err) callback(err);
+    self.log('Indexes updated');
+    self.emit('publicKeyRingUpdated');
+    self.store();
+    callback();
+  });
+}
+
+Wallet.prototype.updateIndex = function(index, callback) {
+  var self = this;
+  self.indexDiscovery(index.changeIndex, true, index.cosigner, 20, function(err, changeIndex) {
     if (err) return callback(err);
     if (changeIndex != -1)
-      self.publicKeyRing.getSharedIndex().changeIndex = changeIndex + 1;
+      index.changeIndex = changeIndex + 1;
 
-    start = self.publicKeyRing.getSharedIndex().receiveIndex;
-    self.indexDiscovery(start, false, 20, function(err, receiveIndex) {
+    self.indexDiscovery(index.receiveIndex, false, index.cosigner, 20, function(err, receiveIndex) {
       if (err) return callback(err);
       if (receiveIndex != -1)
-        self.publicKeyRing.getSharedIndex().receiveIndex = receiveIndex + 1;
-
-      self.log('Indexes updated');
-      self.emit('publicKeyRingUpdated');
-      self.store();
+        index.receiveIndex = receiveIndex + 1;
       callback();
     });
   });
 }
 
-Wallet.prototype.deriveAddresses = function(index, amout, isChange) {
+Wallet.prototype.deriveAddresses = function(index, amout, isChange, cosigner) {
   var ret = new Array(amout);
   for (var i = 0; i < amout; i++) {
-    ret[i] = this.publicKeyRing.getAddress(index + i, isChange).toString();
+    ret[i] = this.publicKeyRing.getAddress(index + i, isChange, cosigner).toString();
   }
   return ret;
 }
@@ -787,7 +799,7 @@ Wallet.prototype.deriveAddresses = function(index, amout, isChange) {
 // This function scans the publicKeyRing branch starting at index @start and reports the index with last activity,
 // using a scan window of @gap. The argument @change defines the branch to scan: internal or external.
 // Returns -1 if no activity is found in range.
-Wallet.prototype.indexDiscovery = function(start, change, gap, cb) {
+Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
   var scanIndex = start;
   var lastActive = -1;
   var hasActivity = false;
@@ -797,7 +809,7 @@ Wallet.prototype.indexDiscovery = function(start, change, gap, cb) {
     function _do(next) {
       // Optimize window to minimize the derivations.
       var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
-      var addresses = self.deriveAddresses(scanIndex, scanWindow, change);
+      var addresses = self.deriveAddresses(scanIndex, scanWindow, change, cosigner);
       self.blockchain.checkActivity(addresses, function(err, actives) {
         if (err) throw err;
 

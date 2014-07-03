@@ -35,6 +35,17 @@ AddressIndex.fromObj = function(data) {
   return new AddressIndex(data);
 };
 
+AddressIndex.serialize = function(indexes) {
+  return indexes.map(function(i) { return i.toObj(); });
+}
+
+AddressIndex.update = function(shared, totalCopayers) {
+  var indexes = this.init(totalCopayers);
+  indexes[0].changeIndex = shared.changeIndex;
+  indexes[0].receiveIndex = shared.receiveIndex;
+  return this.serialize(indexes);
+};
+
 AddressIndex.prototype.toObj = function() {
   return {
     cosigner: this.cosigner,

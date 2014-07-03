@@ -670,8 +670,8 @@ describe('Wallet model', function() {
 
     before(function() {
       w = cachedCreateW2();
-      ADDRESSES_CHANGE = w.deriveAddresses(0, 20, true);
-      ADDRESSES_RECEIVE = w.deriveAddresses(0, 20, false);
+      ADDRESSES_CHANGE = w.deriveAddresses(0, 20, true, 0);
+      ADDRESSES_RECEIVE = w.deriveAddresses(0, 20, false, 0);
     });
 
     var mockFakeActivity = function(f) {
@@ -690,7 +690,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return false;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(-1);
         done();
       });
@@ -700,7 +700,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 7;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(7);
         done();
       });
@@ -710,7 +710,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 10 || index == 17;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(10);
         done();
       });
@@ -720,7 +720,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(14);
         done();
       });
@@ -732,8 +732,11 @@ describe('Wallet model', function() {
       });
 
       w.updateIndexes(function(err) {
-        w.publicKeyRing.getSharedIndex().receiveIndex.should.equal(15);
-        w.publicKeyRing.getSharedIndex().changeIndex.should.equal(15);
+        w.publicKeyRing.getIndex(0).receiveIndex.should.equal(15);
+        w.publicKeyRing.getIndex(0).changeIndex.should.equal(15);
+
+        w.publicKeyRing.getIndex(1).receiveIndex.should.equal(0);
+        w.publicKeyRing.getIndex(1).changeIndex.should.equal(0);
         done();
       });
     });
@@ -753,8 +756,8 @@ describe('Wallet model', function() {
 
   it('#deriveAddresses', function(done) {
     var w = cachedCreateW2();
-    var addresses1 = w.deriveAddresses(0, 5, false);
-    var addresses2 = w.deriveAddresses(4, 5, false);
+    var addresses1 = w.deriveAddresses(0, 5, false, 0);
+    var addresses2 = w.deriveAddresses(4, 5, false, 0);
 
     addresses1.length.should.equal(5);
     addresses2.length.should.equal(5);
