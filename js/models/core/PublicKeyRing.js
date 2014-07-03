@@ -40,8 +40,7 @@ PublicKeyRing.fromObj = function(data) {
 
   // Support old indexes schema
   if (!Array.isArray(data.indexes)) {
-    data.indexes.cosigner = Structure.SHARED_INDEX;
-    data.indexes = [data.indexes];
+    data.indexes = AddressIndex.update(data.indexes, data.totalCopayers);
   }
 
   var ret = new PublicKeyRing(data);
@@ -59,7 +58,7 @@ PublicKeyRing.prototype.toObj = function() {
     networkName: this.network.name,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
-    indexes: this.getIndexesObj(),
+    indexes: AddressIndex.serialize(this.indexes),
 
     copayersExtPubKeys: this.copayersHK.map(function(b) {
       return b.extendedPublicKeyString();
@@ -68,10 +67,6 @@ PublicKeyRing.prototype.toObj = function() {
     publicKeysCache: this.publicKeysCache
   };
 };
-
-PublicKeyRing.prototype.getIndexesObj = function(i) {
-  return this.indexes.map(function(i) { return i.toObj(); });
-}
 
 PublicKeyRing.prototype.getCopayerId = function(i) {
   preconditions.checkArgument(typeof i !== 'undefined');
