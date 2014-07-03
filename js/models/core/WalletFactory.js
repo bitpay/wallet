@@ -74,16 +74,11 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
   return w;
 };
 
-WalletFactory.prototype.import = function(base64, password, cb) {
+WalletFactory.prototype.import = function(base64, password) {
   var self = this;
   var w = self.fromEncryptedObj(base64, password);
 
-  if (!w) return cb(new Error('wrong password'));
-  w.updateIndexes(function(err) {
-    if (err) return cb(err);
-    self.log('Indexes updated');
-    cb(null, w);
-  });
+  if (!w) throw new Error('Wrong password');
   return w;
 }
 
