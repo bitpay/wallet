@@ -146,12 +146,17 @@ else {
 
 ## Google Chrome Extension
 
-When you need to compile a *Chrome Extension* of Copay, you only need to run:
+To build Copay's  *Chrome Extension*, run:
 ```
-$ sh chrome/build.sh
+$ npm run-script chrome
 ```
 
-- The ZIP file is *chrome/copay-chrome-extension.zip*
+- On sucess, the chrome extension is located at:
+`
+  browser-extensions/chrome/copay-chrome-extension
+`
+
+To install it go to  `chrome://extensions/` at your chrome browser, make sure you have 'developer mode' option checked at your Chrome settings. Click on "Load unpacked chrome extension" and choose the directory mentioned above. 
 
 ## Firefox Add-on
 
@@ -163,7 +168,7 @@ System Requirements
 Run
 
 ```
-$ sh firefox/build.sh
+$ npm run-script firefox
 ```
 
 - Copy the content of *firefox/firefox-addon* (lib, data, package.json) to your development path.

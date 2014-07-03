@@ -20,7 +20,7 @@ checkOK() {
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPDIR="$BUILDDIR/copay-chrome-extension"
 ZIPFILE="copay-chrome-extension.zip"
-VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
+VERSION=`cut -d '"' -f2 $BUILDDIR/../../version.js`
 
 # Move to the build directory
 cd $BUILDDIR
@@ -43,14 +43,21 @@ echo "${OpenColor}${Green}* Copying all chrome-extension files...${CloseColor}"
 sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 checkOK
 
-cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,./popup.html} $APPDIR
+ 
+INCLUDE=`cat ../include`
+cd $BUILDDIR/../..
+LIBS=`cat index.html |grep -o -E 'src="([^"#]+)"' | cut -d'"' -f2|grep lib`
+echo "LIBS: $LIBS"
+
+CMD="rsync -rLRv --exclude-from $BUILDDIR/../exclude  $INCLUDE $LIBS  $APPDIR"
+echo $CMD
+$CMD
 checkOK
 
 # Zipping chrome-extension
 echo "${OpenColor}${Green}* Zipping all chrome-extension files...${CloseColor}"
 cd $BUILDDIR
-zip -r $ZIPFILE "`basename $APPDIR`"
+zip -qr $ZIPFILE "`basename $APPDIR`"
 checkOK
 
-echo "${OpenColor}${Yellow}\nAwesome! We have a brand new Chome Extension, enjoy it!${CloseColor}"
+echo "${OpenColor}${Yellow}\nThe Chrome Extension is ready at $BUILDDIR.${CloseColor}"
