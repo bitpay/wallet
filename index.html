@@ -883,6 +883,21 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
 
     </script>
 
+    <!-- URI PAYMENT -->
+    <script type="text/ng-template" id="uri_payment.html">
+      <h3 class="text-center">
+        Preparing payment...
+      </h3>
+      <div data-ng-init="" data-ng-controller="UriPaymentController">
+        <p>Protocol: {{protocol}}</p>
+        <p>To: {{address}}</p>
+        <p>Amount: {{amount}}</p>
+        <p>Message:</p>
+        <div class="alert-box secondary radius">{{message}}</div>
+      </div>
+
+    </script>
+
     <!-- NOT FOUND -->
     <script type="text/ng-template" id="404.html">
       <h2 class="text-center">404</h2>
@@ -925,6 +940,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="js/services/notifications.js"></script>
     <script src="js/services/backupService.js"></script>
     <script src="js/services/isMobile.js"></script>
+    <script src="js/services/uriHandler.js"></script>
 
     <script src="js/controllers/header.js"></script>
     <script src="js/controllers/footer.js"></script>
@@ -936,6 +952,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="js/controllers/setup.js"></script>
     <script src="js/controllers/import.js"></script>
     <script src="js/controllers/settings.js"></script>
+    <script src="js/controllers/uriPayment.js"></script>
 
     <script src="js/init.js"></script>
   </body>

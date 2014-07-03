@@ -71,7 +71,9 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $rootScope.$watch('txAlertCount', function(txAlertCount) {
       if (txAlertCount && txAlertCount > 0) {
-        notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
+        notification.info('New Transaction', ($rootScope.txAlertCount == 1) ?
+          'You have a pending transaction proposal' :
+          'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
       }
     });
 
