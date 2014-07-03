@@ -8,4 +8,5 @@ using [Atom Shell](https://github.com/atom/atom-shell).
 
 ## Building
 
-Automated build scripts are currently being developed.
+Run from the top level (copay) directory:
+npm run dist
