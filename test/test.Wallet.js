@@ -123,7 +123,7 @@ describe('Wallet model', function() {
     var opts = {};
     var w = cachedCreateW();
     addCopayers(w);
-    w.publicKeyRing.generateAddress(false);
+    w.publicKeyRing.generateAddress(false, w.publicKey);
     w.publicKeyRing.isComplete().should.equal(true);
     w.generateAddress(true).isValid().should.equal(true);
     w.generateAddress(true, function(addr) {
@@ -177,8 +177,8 @@ describe('Wallet model', function() {
 
     var w = cachedCreateW2();
 
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     var ntxid = w.createTxSync(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
@@ -202,8 +202,8 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var comment = 'This is a comment';
 
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     var ntxid = w.createTxSync(
       '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
@@ -224,8 +224,8 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var comment = 'Lorem ipsum dolor sit amet, suas euismod vis te, velit deleniti vix an. Pri ex suscipit similique, inermis per';
 
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     var badCreate = function() {
       w.createTxSync(
@@ -260,8 +260,8 @@ describe('Wallet model', function() {
     var ts = Date.now();
     for (var isChange = false; !isChange; isChange = true) {
       for (var index = 0; index < 3; index++) {
-        unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange).toString();
-        unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
+        unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange, w.publicKey).toString();
+        unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange, w.publicKey);
         w.createTxSync(
           '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
           '123456789',
