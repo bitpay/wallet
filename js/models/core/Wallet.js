@@ -588,7 +588,7 @@ Wallet.prototype.getAddressesStr = function(opts) {
 };
 
 Wallet.prototype.getAddressesInfo = function(opts) {
-  return this.publicKeyRing.getAddressesInfo(opts);
+  return this.publicKeyRing.getAddressesInfo(opts, this.publicKey);
 };
 
 Wallet.prototype.addressIsOwn = function(addrStr, opts) {

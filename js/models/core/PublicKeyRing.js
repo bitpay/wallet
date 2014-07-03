@@ -246,17 +246,21 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
 }
 
 
-PublicKeyRing.prototype.getAddressesInfo = function(opts) {
+PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
   var ret = [];
   var self = this;
+  var cosigner = pubkey && this.getCosigner(pubkey);
   this.indexes.forEach(function(index) {
-    ret = ret.concat(self.getAddressesInfoForIndex(index, opts));
+    ret = ret.concat(self.getAddressesInfoForIndex(index, opts, cosigner));
   });
   return ret;
 }
 
-PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts) {
+PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, cosigner) {
   opts = opts || {};
+
+  var isOwned = index.cosigner == Structure.SHARED_INDEX
+             || index.cosigner == cosigner;
 
   var ret = [];
   if (!opts.excludeChange) {
@@ -265,7 +269,8 @@ PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts) {
       ret.unshift({
         address: a,
         addressStr: a.toString(),
-        isChange: true
+        isChange: true,
+        owned: isOwned
       });
     }
   }
@@ -276,7 +281,8 @@ PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts) {
       ret.unshift({
         address: a,
         addressStr: a.toString(),
-        isChange: false
+        isChange: false,
+        owned: isOwned
       });
     }
   }
