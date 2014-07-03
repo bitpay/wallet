@@ -42,7 +42,7 @@ describe("Unit: Controllers", function() {
     }));
 
     it('Should have a Backup controller', function() {
-      expect(scope.title).equal('Backup');
+      expect(scope.title).equal('Settings');
     });
 
     it('Backup controller #download', function() {
