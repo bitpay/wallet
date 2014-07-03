@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('BackupController',
   function($scope, $rootScope, $location, $window, $timeout, $modal, backupService, walletFactory, controllerUtils) {
-    $scope.title = 'Backup';
+    $scope.title = 'Settings';
 
     $scope.download = function() {
       backupService.download($rootScope.wallet);
