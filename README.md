@@ -88,6 +88,19 @@ Once this script has completed, you can launch the shell-based Copay by running:
 npm run shell
 ```
 
+## Building Native Shell Binaries/Installers (OSX)
+
+```
+npm run dist
+```
+
+This script will download atom shell binaries and combine them with Copay sources
+to build a DMG for osx-x64, an installer EXE for win32, and a .tar.gz for linux-x64.
+It was developed to be run on OSX.  The outputs are copied to the dist directory.
+
+DMG is created with hdiutil
+EXE is created with makensis (brew install makensis)
+
 ## Tests
 
 Open test/index.html in your browser to test the models. Install and run karma
