@@ -24,7 +24,7 @@
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
     "shell": "node shell/scripts/launch.js",
     "setup-shell": "node shell/scripts/download-atom-shell.js",
-    "chrome": "source browser-extensions/chrome/build.sh"
+    "chrome": "source browser-extensions/chrome/build.sh",
     "firefox": "source browser-extensions/firefox/build.sh"
   },
   "homepage": "https://github.com/bitpay/copay",
