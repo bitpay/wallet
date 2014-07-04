@@ -158,10 +158,20 @@
   <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet || !$root.wallet.isReady()}">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div ng-show="!$root.wallet">
-      <div class="large-12 columns text-left">
+      <div class="large-4 columns text-left">
         Copay
         <small>v{{version}}</small>
+        <small ng-if="networkName==='testnet'">[TESTNET]</small>
       </div>
+      <div class="large-4 columns text-center">
+        <small>
+          <A href="https://copay.io" target="_blank">Copay Project Homapage</a>
+        </small>
+      </div>
+      <div class="large-4 columns">
+      </div>
+
+
     </div>
     <div ng-show="$root.wallet && !$root.wallet.isReady()">
       <div class="large-6 medium-6 small-6 columns">
@@ -237,6 +247,7 @@
                 </div>
                 <div ng-show="!wallets.length">
                   <h3>Create a new wallet</h3>
+
                     <p class="text-gray">
                     Copay is a free, open-source, multisignature bitcoin wallet. A single-owner bitcoin wallet's security depends on carefully securing the private keys. With copay you can have multiple people controlling the funds, using bitcoin's multisignature functionality, requiring no trust in any third party.
                     </p>
@@ -826,7 +837,6 @@
               <legend>Wallet Unit</legend>
                 <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
                 </select>
-                <label for="settingsUnit">Prefered Unit for Wallet</label>
             </fieldset>
             <fieldset>
               <legend>Videoconferencing</legend>
@@ -842,6 +852,9 @@
                 <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
                 <label for="insight-secure">Use SSL</label>
 
+                <p class="small">
+                Insight API server is open-source software.  You can run your own instance, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
+
             </fieldset>
             <fieldset>
               <legend>PeerJS server</legend>
@@ -853,6 +866,10 @@
                 <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
                 <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control">
                 <label for="peerjs-secure">Use SSL</label>
+
+
+                <p class="small">
+                PeerJS Server is open-source software.  You can run your own instance, or use PeerJS Server cloud. Check <a href="http://peerjs.com" target="_blank">PeerJS Server</a>
             </fieldset>
           </div>
           <div class="row">
