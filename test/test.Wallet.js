@@ -343,14 +343,14 @@ describe('Wallet model', function() {
     var w = createW();
     var aiObj = {
       indexes: [{
-        cosigner: Structure.SHARED_INDEX,
+        cosigner: 0,
         changeIndex: 3,
         receiveIndex: 2
       }]
     };
     w._handleIndexes('senderID', aiObj, true);
-    w.publicKeyRing.getSharedIndex().getReceiveIndex(2);
-    w.publicKeyRing.getSharedIndex().getChangeIndex(3);
+    w.publicKeyRing.getIndex(0).getReceiveIndex(2);
+    w.publicKeyRing.getIndex(0).getChangeIndex(3);
   });
 
   it('handle network pubKeyRings correctly', function() {
@@ -367,7 +367,7 @@ describe('Wallet model', function() {
       requiredCopayers: w.requiredCopayers,
       totalCopayers: w.totalCopayers,
       indexes: [{
-        cosigner: Structure.SHARED_INDEX,
+        cosigner: 0,
         changeIndex: 2,
         receiveIndex: 3
       }],
@@ -377,8 +377,8 @@ describe('Wallet model', function() {
     w._handlePublicKeyRing('senderID', {
       publicKeyRing: pkrObj
     }, true);
-    w.publicKeyRing.getSharedIndex().getReceiveIndex(2);
-    w.publicKeyRing.getSharedIndex().getChangeIndex(3);
+    w.publicKeyRing.getIndex(0).getReceiveIndex(2);
+    w.publicKeyRing.getIndex(0).getChangeIndex(3);
     for (var i = 0; i < w.requiredCopayers; i++) {
       w.publicKeyRing.toObj().copayersExtPubKeys[i].should.equal(cepk[i]);
     }
