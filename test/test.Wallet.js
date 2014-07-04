@@ -172,6 +172,24 @@ describe('Wallet model', function() {
     return w;
   };
 
+  it('#create, fail for network', function() {
+
+    var w = cachedCreateW2();
+
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+
+    var f = function() {
+      var ntxid = w.createTxSync(
+        '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+        '123456789',
+        null,
+        unspentTest
+      );
+    };
+    f.should.throw(Error);
+  });
+
   it('#create, 1 sign', function() {
 
     var w = cachedCreateW2();
@@ -180,7 +198,7 @@ describe('Wallet model', function() {
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
     var ntxid = w.createTxSync(
-      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+      'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
       null,
       unspentTest
@@ -205,7 +223,7 @@ describe('Wallet model', function() {
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
     var ntxid = w.createTxSync(
-      '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+      'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
       comment,
       unspentTest
@@ -228,7 +246,7 @@ describe('Wallet model', function() {
 
     var badCreate = function() {
       w.createTxSync(
-        '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+        'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
         '123456789',
         comment,
         unspentTest
@@ -262,7 +280,7 @@ describe('Wallet model', function() {
         unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange).toString();
         unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
         w.createTxSync(
-          '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+          'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
           '123456789',
           null,
           unspentTest
