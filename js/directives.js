@@ -13,7 +13,7 @@ angular.module('copayApp.directives')
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
             var a = new Address(value);
-            ctrl.$setValidity('validAddress', a.isValid());
+            ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
             return value;
           };
 
