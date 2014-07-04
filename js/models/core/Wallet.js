@@ -260,6 +260,7 @@ Wallet.decodeSecret = function(secretB) {
   }
 };
 
+
 Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
