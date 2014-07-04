@@ -697,8 +697,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   opts = opts || {};
 
   var amountSat = bignum(amountSatStr);
-  preconditions.checkArgument(new Address(toAddress).network().name === this.networkName);
-
+  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
   if (!pkr.isComplete()) {
     throw new Error('publicKeyRing is not complete');
   }

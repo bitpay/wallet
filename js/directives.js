@@ -29,8 +29,7 @@ angular.module('copayApp.directives')
         restrict: 'A',
         link: function(scope, element, attrs, ctrl) {
           setTimeout(function() {
-            scope.$apply(function() {
-            });
+            scope.$apply(function() {});
           }, 5000);
         }
       };
