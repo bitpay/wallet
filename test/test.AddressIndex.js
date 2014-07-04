@@ -47,6 +47,18 @@ describe('AddressIndex model', function() {
     cosigners.indexOf(2).should.equal(-1);
   });
 
+  it('should serialize to object list and back', function() {
+    var is = AddressIndex.init(3);
+    should.exist(is);
+    is.length.should.equal(4);
+
+    var list = AddressIndex.serialize(is);
+    list.length.should.equal(4);
+
+    var is2 = AddressIndex.fromList(list);
+    is2.length.should.equal(4);
+  });
+
   it('show be able to store and read', function() {
     var i = createAI();
     var changeN = 2;

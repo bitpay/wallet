@@ -177,22 +177,16 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, cosigner) {
 
 // TODO this could be cached
 PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
-  var cosigner = typeof id === 'string' ? this.getCosigner(id) : id;
-
+  var cosigner = this.getCosigner(id);
   var script = this.getRedeemScript(index, isChange, cosigner);
   var address = Address.fromScript(script, this.network.name);
   this.addressToPath[address.toString()] = Structure.FullBranch(index, isChange, cosigner);
   return address;
 };
 
-PublicKeyRing.prototype.getSharedIndex = function() {
-  return this.getIndex(Structure.SHARED_INDEX);
-};
-
 // Overloaded to receive a PubkeyString or a consigner index
 PublicKeyRing.prototype.getIndex = function(id) {
-  var cosigner = typeof id === 'string' ? this.getCosigner(id) : id;
-
+  var cosigner = this.getCosigner(id);
   var index = this.indexes.filter(function(i) { return i.cosigner == cosigner });
   if (index.length != 1) throw new Error('no index for cosigner');
   return index[0];
@@ -214,10 +208,9 @@ PublicKeyRing.prototype.getScriptPubKeyHex = function(index, isChange, pubkey) {
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange, pubkey) {
   isChange = !!isChange;
-  var cosigner = this.getCosigner(pubkey);
-  var addrIndex = this.getIndex(cosigner);
+  var addrIndex = this.getIndex(pubkey);
   var index = isChange ? addrIndex.getChangeIndex() : addrIndex.getReceiveIndex();
-  var ret = this.getAddress(index, isChange, cosigner);
+  var ret = this.getAddress(index, isChange, addrIndex.cosigner);
   addrIndex.increment(isChange);
   return ret;
 };
@@ -229,7 +222,9 @@ PublicKeyRing.prototype.getAddresses = function(opts) {
 };
 
 PublicKeyRing.prototype.getCosigner = function(pubKey) {
-  preconditions.checkArgument(pubKey);
+  if (typeof pubKey == 'undefined') return Structure.SHARED_INDEX;
+  if (typeof pubKey == 'number') return pubKey;
+
   var sorted = this.copayersHK.map(function(h, i){
     return h.eckey.public.toString('hex');
   }).sort(function(h1, h2){ return h1.localeCompare(h2); });
