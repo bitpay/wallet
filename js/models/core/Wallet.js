@@ -879,13 +879,13 @@ Wallet.prototype.toggleAddressBookEntry = function(key) {
 };
 
 Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && this.backupOffered;
+  var ret = this.publicKeyRing.isComplete() && this.publicKeyRing.isFullyBackup();
   return ret;
 };
 
-Wallet.prototype.offerBackup = function() {
-  this.backupOffered = true;
-  this.store();
+Wallet.prototype.setBackupReady = function() {
+  this.publicKeyRing.setBackupReady();
+  this.emit('publicKeyRingUpdated', false);
 };
 
 Wallet.prototype.signJson = function(payload) {
