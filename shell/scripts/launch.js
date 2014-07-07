@@ -27,7 +27,7 @@ switch (process.platform) {
 var copay = spawn(execPath, [appPath]);
 
 copay.stdout.on('data', function(data) {
-  console.log(data);
+  console.log("STDOUT:" + data);
 });
 
 copay.stderr.on('data', function(data) {
