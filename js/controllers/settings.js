@@ -73,6 +73,8 @@ angular.module('copayApp.controllers').controller('SettingsController',
         unitToSatoshi: $scope.selectedUnit.value,
       }));
 
-      $window.location.href = $window.location.origin + $window.location.pathname;
+      var target = ($window.location.origin !== 'null' ? $window.location.origin : '') + $window.location.pathname;
+
+      $window.location.href = target;
     };
   });
