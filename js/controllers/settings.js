@@ -74,9 +74,6 @@ angular.module('copayApp.controllers').controller('SettingsController',
       }));
 
       var target = ($window.location.origin !== 'null' ? $window.location.origin : '') + $window.location.pathname;
-      console.log('[settings.js.76:target:]', target); //TODO
-
-
 
       $window.location.href = target;
     };
