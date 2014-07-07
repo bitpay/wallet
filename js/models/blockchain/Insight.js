@@ -90,8 +90,9 @@ Insight.prototype.getTransactions = function(addresses, cb) {
 
   _asyncForEach(addresses, function(addr, callback) {
     var options = self._getOptions('GET', '/api/addr/' + addr);
+
     self._request(options, function(err, res) {
-      if (res.transactions) {
+      if (res && res.transactions) {
         var txids_tmp = res.transactions;
         for (var i = 0; i < txids_tmp.length; i++) {
           txids.push(txids_tmp[i]);
