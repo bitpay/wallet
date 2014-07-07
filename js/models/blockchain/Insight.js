@@ -2,6 +2,7 @@
 
 var imports = require('soop').imports();
 var bitcore = require('bitcore');
+var preconditions = require('preconditions').singleton();
 
 var http;
 if (process.version) {
@@ -78,8 +79,10 @@ Insight.prototype._getOptions = function(method, path, data) {
 };
 
 Insight.prototype.getTransactions = function(addresses, cb) {
-  var self = this;
+  preconditions.shouldBeArray(addresses);
+  preconditions.shouldBeFunction(cb);
 
+  var self = this;
   if (!addresses || !addresses.length) return cb([]);
 
   var txids = [];
@@ -87,10 +90,13 @@ Insight.prototype.getTransactions = function(addresses, cb) {
 
   _asyncForEach(addresses, function(addr, callback) {
     var options = self._getOptions('GET', '/api/addr/' + addr);
+
     self._request(options, function(err, res) {
-      var txids_tmp = res.transactions;
-      for (var i = 0; i < txids_tmp.length; i++) {
-        txids.push(txids_tmp[i]);
+      if (res && res.transactions) {
+        var txids_tmp = res.transactions;
+        for (var i = 0; i < txids_tmp.length; i++) {
+          txids.push(txids_tmp[i]);
+        }
       }
       callback();
     });

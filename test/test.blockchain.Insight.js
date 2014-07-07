@@ -126,6 +126,8 @@ describe('Insight model', function() {
     });
   }
 
+
+
   it('#checkActivity for innactive addreses', function(done) {
     var w = new Insight();
     w.getTransactions = function(addresses, cb) {
@@ -176,4 +178,27 @@ describe('Insight model', function() {
       done();
     });
   });
+
+
+  it('should handle getTransaction null response', function(done) {
+    var w = new Insight();
+    w._request = sinon.stub().yields();
+    w.getTransactions(['asdasd'], function(ret) {
+      ret.length.should.equal(0);
+      done();
+    });
+  });
+
+
+
+  it('should handle getTransaction empty response', function(done) {
+    var w = new Insight();
+    w._request = sinon.stub().yields([]);
+    w.getTransactions(['asdasd'], function(ret) {
+      ret.length.should.equal(0);
+      done();
+    });
+  });
+
+
 });
