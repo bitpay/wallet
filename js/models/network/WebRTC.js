@@ -48,7 +48,6 @@ Network.prototype.cleanUp = function() {
   this.privkey = null; //TODO: hide privkey in a closure
   this.key = null;
   this.copayerId = null;
-  this.signingKey = null;
   this.allowedCopayerIds = null;
   this.isInboundPeerAuth = [];
   this.copayerForPeer = {};
@@ -346,6 +345,7 @@ Network.prototype.start = function(opts, openCallback) {
 
     if (!self.criticalError && self.tries < self.reconnectAttempts) {
       self.tries++;
+      self.opts.token = util.sha256(self.peerId).toString('hex');
       self.peer = new Peer(self.peerId, self.opts);
       self.started = true;
       self._setupPeerHandlers(openCallback);

@@ -36,11 +36,17 @@ describe("Unit: Testing Directives", function() {
       form = $scope.form;
     }));
 
-    it('should validate', function() {
+    it('should validate with network', function() {
+      config.networkName = 'testnet';
       form.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       expect(form.address.$invalid).to.equal(false);
     });
-    it('should not validate', function() {
+    it('should not validate with other network', function() {
+      config.networkName = 'livenet';
+      form.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      expect(form.address.$invalid).to.equal(true);
+    });
+    it('should not validate random', function() {
       form.address.$setViewValue('thisisaninvalidaddress');
       expect(form.address.$invalid).to.equal(true);
     });

@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkHost = config.network.host;
     $scope.networkPort = config.network.port;
     $scope.networkSecure = config.network.secure || false;
-    $scope.disableVideo = typeof config.disableVideo === undefined ?  true : config.disableVideo;
+    $scope.disableVideo = typeof config.disableVideo === undefined ? true : config.disableVideo;
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -73,6 +73,8 @@ angular.module('copayApp.controllers').controller('SettingsController',
         unitToSatoshi: $scope.selectedUnit.value,
       }));
 
-      $window.location.href = $window.location.origin + $window.location.pathname;
+      var target = ($window.location.origin !== 'null' ? $window.location.origin : '') + $window.location.pathname;
+
+      $window.location.href = target;
     };
   });

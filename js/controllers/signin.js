@@ -13,6 +13,10 @@ angular.module('copayApp.controllers').controller('SigninController',
     $scope.selectedWalletId = $scope.wallets.length ? $scope.wallets[0].id : null;
     $scope.openPassword = '';
 
+    if ($rootScope.pendingPayment) {
+      notification.info('Login Required', 'Please open wallet to complete payment');
+    }
+
     $scope.open = function(form) {
       if (form && form.$invalid) {
         notification.error('Error', 'Please enter the required fields');

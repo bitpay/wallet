@@ -12,7 +12,7 @@
    ** the renderer into thinking that we are _not_ in a CommonJS environment.
    */
   if (typeof module !== 'undefined') module = {
-    exports: null
+    exports: false
   };
 
   // are we running in copay shell?
@@ -39,21 +39,11 @@
     var ipc = require('ipc');
     var clipb = require('clipboard');
 
-    // atom shell forces to implement the clipboard on our own - thanks obama.
+    // atom shell forces to implement the clipboard (on osx) on our own - thanks obama.
 
     Mousetrap.stopCallback = function() {
       return false
     };
-
-    Mousetrap.bind('ctrl+c', function(e) {
-      clipb.writeText(window.getSelection().toString());
-    });
-
-    Mousetrap.bind('ctrl+v', function(e) {
-      if (document.activeElement) {
-        document.activeElement.value = clipb.readText();
-      }
-    });
 
     Mousetrap.bind('command+c', function(e) {
       clipb.writeText(window.getSelection().toString());
@@ -62,6 +52,7 @@
     Mousetrap.bind('command+v', function(e) {
       if (document.activeElement) {
         document.activeElement.value = clipb.readText();
+        document.activeElement.dispatchEvent(new Event('change'));
       }
     });
 

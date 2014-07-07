@@ -23,6 +23,13 @@ angular.module('copayApp.controllers').controller('SendController',
       return flag;
     };
 
+    if ($rootScope.pendingPayment) {
+      var pp = $rootScope.pendingPayment;
+      $scope.address = pp.address;
+      var amount = pp.amount / config.unitToSatoshi * 100000000;
+      $scope.amount = amount;
+    }
+
     // Detect protocol
     $scope.isHttp = ($window.location.protocol.indexOf('http') === 0);
 
@@ -61,6 +68,7 @@ angular.module('copayApp.controllers').controller('SendController',
             $scope.loading = false;
           });
         }
+        $rootScope.pendingPayment = null;
       });
 
       // reset fields
@@ -250,7 +258,7 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.topAmount = function(form) {
-      $scope.amount = $scope.getAvailableAmount();      
+      $scope.amount = $scope.getAvailableAmount();
       form.amount.$pristine = false;
     };
   });

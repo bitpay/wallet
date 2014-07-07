@@ -40,6 +40,7 @@ Structure.indicesForPath = function(path) {
   return {
     isChange: s[3] === '1',
     index: parseInt(s[4]),
+    cosigner: parseInt(s[2])
   };
 };
 
@@ -49,5 +50,24 @@ Structure.PURPOSE = PURPOSE;
 Structure.MAX_NON_HARDENED = MAX_NON_HARDENED;
 Structure.SHARED_INDEX = SHARED_INDEX;
 Structure.ID_INDEX = ID_INDEX;
+
+Structure.parseBitcoinURI = function(uri) {
+  var ret = {};
+  var data = decodeURIComponent(uri);
+  var splitDots = data.split(':');
+  ret.protocol = splitDots[0];
+  data = splitDots[1];
+  var splitQuestion = data.split('?');
+  ret.address = splitQuestion[0];
+  var search = splitQuestion[1];
+  data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+    function(key, value) {
+      return key === "" ? value : decodeURIComponent(value);
+    });
+  ret.amount = parseFloat(data.amount);
+  ret.message = data.message;
+
+  return ret;
+};
 
 module.exports = require('soop')(Structure);

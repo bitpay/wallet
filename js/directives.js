@@ -13,7 +13,7 @@ angular.module('copayApp.directives')
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
             var a = new Address(value);
-            ctrl.$setValidity('validAddress', a.isValid());
+            ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
             return value;
           };
 
@@ -29,8 +29,7 @@ angular.module('copayApp.directives')
         restrict: 'A',
         link: function(scope, element, attrs, ctrl) {
           setTimeout(function() {
-            scope.$apply(function() {
-            });
+            scope.$apply(function() {});
           }, 5000);
         }
       };

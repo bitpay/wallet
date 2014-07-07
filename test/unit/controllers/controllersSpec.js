@@ -42,7 +42,7 @@ describe("Unit: Controllers", function() {
     }));
 
     it('Should have a Backup controller', function() {
-      expect(scope.title).equal('Backup');
+      expect(scope.title).equal('Settings');
     });
 
     it('Backup controller #download', function() {
@@ -174,12 +174,17 @@ describe("Unit: Controllers", function() {
       expect(scope.showAddressBook()).equal(true);
     });
 
-    it('should validate address', function() {
-      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+    it('should validate address with network', function() {
+      form.newaddress.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       expect(form.newaddress.$invalid).to.equal(false);
     });
 
-    it('should not validate address', function() {
+    it('should not validate address with other network', function() {
+      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      expect(form.newaddress.$invalid).to.equal(true);
+    });
+
+    it('should not validate random address', function() {
       form.newaddress.$setViewValue('thisisaninvalidaddress');
       expect(form.newaddress.$invalid).to.equal(true);
     });
@@ -194,7 +199,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should create a transaction proposal', function() {
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       sendForm.amount.$setViewValue(1000);
 
       var spy = sinon.spy(scope.wallet, 'createTx');
@@ -205,7 +210,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should create and send a transaction proposal', function() {
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       sendForm.amount.$setViewValue(1000);
 
       scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
@@ -300,7 +305,7 @@ describe("Unit: Controllers", function() {
         '<form name="form">' +
         '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
         '</form>'
-        );
+      );
       scope.model = {
         amount: null
       };
@@ -365,6 +370,32 @@ describe("Unit: Controllers", function() {
       it('should work with invalid form', function() {
         scope.join(invalidForm);
       });
+    });
+  });
+
+  describe('UriPayment Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      var routeParams = {
+        data: 'bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8%3Famount=0.1&message=a%20bitcoin%20donation'
+      };
+      what = $controller('UriPaymentController', {
+        $scope: scope,
+        $routeParams: routeParams
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
+    });
+
+    it('should parse url correctly', function() {
+      should.exist(what);
+      scope.protocol.should.equal('bitcoin');
+      scope.address.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
+      scope.amount.should.equal(0.1);
+      scope.message.should.equal('a bitcoin donation');
     });
   });
 
