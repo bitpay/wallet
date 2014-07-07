@@ -396,7 +396,7 @@
           <div class="row">
             <div class="large-9 medium-12 columns" ng-if="addresses[0]">
               <div class="large-8 medium-8 columns" ng-init="showAll=0">
-                <a class="panel radius db" ng-repeat="addr in addresses | limitAddress:showAll"
+                <a class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll"
                   ng-click="selectAddress(addr)"
                   ng-class="{selected : addr.address == selectedAddr.address}">
 
@@ -418,7 +418,7 @@
                   </span>
                 </a>
 
-                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="addresses.length != (addresses|limitAddress).length">
+                <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
                   <span ng-if="!showAll">Show all</span>
                   <span ng-if="showAll">Show less</span>
                 </a>

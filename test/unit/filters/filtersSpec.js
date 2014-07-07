@@ -69,6 +69,35 @@ describe('Unit: Testing Filters', function() {
     }));
   });
 
+  describe('removeEmpty addresses', function() {
+    it('should work with empty lists', inject(function($filter) {
+      var removeEmpty = $filter('removeEmpty');
+      expect(removeEmpty([]).length).to.equal(0);
+    }));
+
+    it('should filter empty addresses from other copayers', inject(function($filter) {
+      var removeEmpty = $filter('removeEmpty');
+      var addresses = [{
+        owned: true,
+        balance: 0
+      }, {
+        owned: false,
+        balance: 0
+      }, {
+        owned: true,
+        balance: 0
+      }, {
+        owned: false,
+        balance: 0
+      }];
+      expect(removeEmpty(addresses).length).to.equal(2);
+      addresses[1].owned = true;
+      expect(removeEmpty(addresses).length).to.equal(3);
+      addresses[3].balance = 10;
+      expect(removeEmpty(addresses).length).to.equal(4);
+    }));
+  });
+
   describe('noFractionNumber bits', function() {
     beforeEach(function() {
       config.unitToSatoshi = 100;

@@ -1,29 +1,56 @@
 'use strict';
 
-
 var imports = require('soop').imports();
+var preconditions = require('preconditions').singleton();
+var Structure = require('./Structure');
 
 function AddressIndex(opts) {
   opts = opts || {};
-  this.walletId = opts.walletId;
-
+  this.cosigner = opts.cosigner
   this.changeIndex = opts.changeIndex || 0;
   this.receiveIndex = opts.receiveIndex || 0;
+
+  if (typeof this.cosigner === 'undefined') {
+    this.cosigner = Structure.SHARED_INDEX;
+  }
+}
+
+AddressIndex.init = function(totalCopayers) {
+  preconditions.shouldBeNumber(totalCopayers);
+  var indexes = [new AddressIndex()];
+  for (var i = 0 ; i < totalCopayers ; i++) {
+    indexes.push(new AddressIndex({cosigner: i}));
+  }
+  return indexes;
+}
+
+AddressIndex.fromList = function(indexes) {
+  return indexes.map(function(i) { return AddressIndex.fromObj(i); });
 }
 
 AddressIndex.fromObj = function(data) {
   if (data instanceof AddressIndex) {
     throw new Error('bad data format: Did you use .toObj()?');
   }
-  var ret = new AddressIndex(data);
-  return ret;
+  return new AddressIndex(data);
+};
+
+AddressIndex.serialize = function(indexes) {
+  return indexes.map(function(i) { return i.toObj(); });
+}
+
+AddressIndex.update = function(shared, totalCopayers) {
+  var indexes = this.init(totalCopayers);
+  indexes[0].changeIndex = shared.changeIndex;
+  indexes[0].receiveIndex = shared.receiveIndex;
+  return this.serialize(indexes);
 };
 
 AddressIndex.prototype.toObj = function() {
   return {
-    walletId: this.walletId,
+    cosigner: this.cosigner,
     changeIndex: this.changeIndex,
-    receiveIndex: this.receiveIndex,
+    receiveIndex: this.receiveIndex
   };
 };
 
@@ -34,10 +61,10 @@ AddressIndex.prototype.checkRange = function(index, isChange) {
   }
 };
 
-
 AddressIndex.prototype.getChangeIndex = function() {
   return this.changeIndex;
 };
+
 AddressIndex.prototype.getReceiveIndex = function() {
   return this.receiveIndex;
 };
@@ -51,6 +78,9 @@ AddressIndex.prototype.increment = function(isChange) {
 };
 
 AddressIndex.prototype.merge = function(inAddressIndex) {
+  preconditions.shouldBeObject(inAddressIndex)
+    .checkArgument(this.cosigner == inAddressIndex.cosigner);
+
   var hasChanged = false;
 
   // Indexes
