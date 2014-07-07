@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('SendController',
       var flag;
       if (w) {
         for (var k in w.addressBook) {
-          if (w.addressBook[k].copayerId != -1) {
+          if (w.addressBook[k]) {
             flag = true;
             break;
           }
@@ -186,16 +186,6 @@ angular.module('copayApp.controllers').controller('SendController',
       }, 500);
     };
 
-    $scope.verifyAddressbookSignature = function(key) {
-      $timeout(function() {
-        var w = $rootScope.wallet;
-        var isValid = w.verfifyAddressbookSignature(key);
-        if (!isValid) {
-          notification.error('Wrong signature', 'Entry of Addressbooks was deleted');
-        }
-      }, 10);
-    };
-
     $scope.toggleAddressBookEntry = function(key) {
       var w = $rootScope.wallet;
       w.toggleAddressBookEntry(key);
@@ -246,7 +236,6 @@ angular.module('copayApp.controllers').controller('SendController',
           if (errorMsg) {
             notification.error('Error', errorMsg);
           } else {
-            $scope.verifyAddressbookSignature(entry.address);
             notification.success('Success', 'New entry has been created');
           }
           $rootScope.$digest();

@@ -802,23 +802,36 @@ describe('Wallet model', function() {
 
     it('handle network addressBook correctly', function() {
       var w = createW();
+      var pk = '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03';
       var data = {
         walletId: w.id,
         addressBook: {
           'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx': {
             label: 'Faucet',
-            copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+            copayerId: pk,
             createdTs: 1403102115,
           }
         },
         type: 'addressbook'
       };
+      var payload = {
+        address: 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx',
+        label: 'Faucet',
+        copayerId: pk,
+        createdTs: 1403102115,
+      };
+      data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].signature = w.signJson(payload);
+      
       Object.keys(w.addressBook).length.should.equal(2);
       // New address
-      w._handleAddressBook('senderID', data, true);
+      w._handleAddressBook(pk, data, true);
       Object.keys(w.addressBook).length.should.equal(3);
       // Existent address
-      w._handleAddressBook('senderID', data, true);
+      w._handleAddressBook(pk, data, true);
+      Object.keys(w.addressBook).length.should.equal(3);
+      // Address with wrong signature (do nothing)
+      data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].label = 'Bad'
+      w._handleAddressBook(pk, data, true);
       Object.keys(w.addressBook).length.should.equal(3);
     }); 
 
@@ -835,26 +848,28 @@ describe('Wallet model', function() {
 
     it('should verify signed object', function() {
       var w = createW();
+      var pk = '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03';
       var data = {
         address: 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx',
         label: 'Faucet',
-        copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+        copayerId: pk,
         createdTs: 1403102115,
       };
       var signature = w.signJson(data);
 
-      w.verifySignedObject(data, signature).should.equal(true);
+      w.verifySignedJson(pk, data, signature).should.equal(true);
       data.label = 'Another';
-      w.verifySignedObject(data, signature).should.equal(false);
+      w.verifySignedJson(pk, data, signature).should.equal(false);
     });
 
     it('should verify signed addressbook entry', function() {
       var w = createW();
       var key = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
+      var pk = '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03';
       var payload = {
         address: key,
         label: 'Faucet',
-        copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+        copayerId: pk,
         createdTs: 1403102115,
       };
 
@@ -867,11 +882,11 @@ describe('Wallet model', function() {
       };
       w.addressBook[key] = addressbook;
 
-      w.verfifyAddressbookSignature(key).should.equal(true);
+      w.verifyAddressbookSignature(pk, key).should.equal(true);
       w.addressBook[key].label = 'Another';
-      w.verfifyAddressbookSignature(key).should.equal(false);
+      w.verifyAddressbookSignature(pk, key).should.equal(false);
       (function() { 
-        w.verfifyAddressbookSignature();
+        w.verifyAddressbookSignature();
       }).should.throw();
     });
 
