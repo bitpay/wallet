@@ -30,6 +30,7 @@ function PublicKeyRing(opts) {
   this.publicKeysCache = opts.publicKeysCache || {};
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
+  this.copayersBackup = opts.copayersBackup || [];
   this.addressToPath = {};
 }
 
@@ -59,6 +60,7 @@ PublicKeyRing.prototype.toObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     indexes: AddressIndex.serialize(this.indexes),
+    copayersBackup: this.copayersBackup,
 
     copayersExtPubKeys: this.copayersHK.map(function(b) {
       return b.extendedPublicKeyString();
@@ -350,12 +352,30 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   return hasChanged;
 };
 
+PublicKeyRing.prototype.setBackupReady = function(copayerId) {
+  if (this.isBackupReady()) return false;
+
+  var cid = this.myCopayerId();
+  this.copayersBackup.push(cid);
+  return true;
+}
+
+PublicKeyRing.prototype.isBackupReady = function(copayerId) {
+  var cid = this.myCopayerId();
+  return this.copayersBackup.indexOf(cid) != -1;
+}
+
+PublicKeyRing.prototype.isFullyBackup = function(copayerId) {
+  return this.copayersBackup.length == this.totalCopayers;
+}
+
 PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   this._checkInPKR(inPKR, ignoreId);
 
   var hasChanged = false;
   hasChanged |= this.mergeIndexes(inPKR.indexes);
   hasChanged |= this._mergePubkeys(inPKR);
+  hasChanged |= this.mergeBackups(inPKR.copayersBackup);
 
   return !!hasChanged;
 };
@@ -371,5 +391,19 @@ PublicKeyRing.prototype.mergeIndexes = function(indexes) {
 
   return !!hasChanged
 }
+
+PublicKeyRing.prototype.mergeBackups = function(backups) {
+  var self = this;
+  var hasChanged = false;
+
+  backups.forEach(function(cid) {
+    var isNew = self.copayersBackup.indexOf(cid) == -1;
+    if (isNew) self.copayersBackup.push(cid);
+    hasChanged |= isNew;
+  });
+
+  return !!hasChanged
+}
+
 
 module.exports = require('soop')(PublicKeyRing);

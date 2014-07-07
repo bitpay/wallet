@@ -140,10 +140,11 @@
           <div class="large-12 columns">
             <div class="line-dashed"></div>
             <button class="button primary radius right"
-              ng-click="backupAndOpen()"
+              ng-click="backup()"
+              ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
               ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
               <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
-                Backup keys and continue
+                Backup keys
               </span>
               <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
                 <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
@@ -154,10 +155,12 @@
                 </span>
                 yet to join.
               </span>
-
-
             </button>
-            <!-- <a href="" class="db p10t left" ng-disabled="!$root.wallet.publicKeyRing.isComplete()">Skip Backup</a> -->
+            <button class="button primary radius right"
+              disabled="disabled"
+              ng-show="$root.wallet.publicKeyRing.isBackupReady()">
+              Waiting for copayers to backup
+            </button>
           </div>
         </div>
       </div>
