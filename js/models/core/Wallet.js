@@ -146,11 +146,6 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
     if (!this.addressBook[key]) {
       this.addressBook[key] = rcv[key];
       hasChange = true;
-    } else {
-      if (rcv[key].createdTs > this.addressBook[key].createdTs) {
-        this.addressBook[key] = rcv[key];
-        hasChange = true;
-      }
     }
   }
   if (hasChange) {
@@ -243,7 +238,6 @@ Wallet.prototype.getMyCopayerId = function() {
 Wallet.prototype.getMyCopayerIdPriv = function() {
   return this.privateKey.getIdPriv(); //copayer idpriv is hex of a private key
 };
-
 
 Wallet.prototype.getSecret = function() {
   var pubkeybuf = new Buffer(this.getMyCopayerId(), 'hex');
@@ -838,21 +832,42 @@ Wallet.prototype._checkAddressBook = function(key) {
 
 Wallet.prototype.setAddressBook = function(key, label) {
   this._checkAddressBook(key);
+  var copayerId = this.getMyCopayerId();
+  var ts = Date.now();
+  var payload = {
+    address: key,
+    label: label,
+    copayerId: copayerId,
+    createdTs: ts
+  };
   var addressbook = {
-    createdTs: Date.now(),
-    copayerId: this.getMyCopayerId(),
-    label: label
+    hidden: false,
+    createdTs: ts,
+    copayerId: copayerId,
+    label: label,
+    signature: this.signObject(payload)
   };
   this.addressBook[key] = addressbook;
   this.sendAddressBook();
   this.store();
 };
 
-Wallet.prototype.deleteAddressBook = function(key) {
+Wallet.prototype.verifySignAddressBook = function(key) {
   if (key) {
-    this.addressBook[key].copayerId = -1;
-    this.addressBook[key].createdTs = Date.now();
-    this.sendAddressBook();
+    var signature = this.addressBook[key].signature;
+    var payload = {
+      address: key,
+      label: this.addressBook[key].label,
+      copayerId: this.addressBook[key].copayerId,
+      createdTs: this.addressBook[key].createdTs
+    };
+    return this.verifySignedObject(payload, signature);
+  }
+}
+
+Wallet.prototype.toggleAddressBookEntry = function(key) {
+  if (key) {
+    this.addressBook[key].hidden = !this.addressBook[key].hidden;
     this.store();
   }
 };
@@ -866,5 +881,20 @@ Wallet.prototype.offerBackup = function() {
   this.backupOffered = true;
   this.store();
 };
+
+Wallet.prototype.signObject = function(payload) {
+  var key = new bitcore.Key();
+  key.private = new Buffer(this.getMyCopayerIdPriv(), 'hex');
+  key.regenerateSync();
+  var sign = bitcore.Message.sign(JSON.stringify(payload), key);
+  return sign.toString('hex');
+}
+
+Wallet.prototype.verifySignedObject = function(payload, signature) {
+  var pubkey = new Buffer(this.getMyCopayerId(), 'hex');
+  var sign = new Buffer(signature, 'hex');
+  var v = bitcore.Message.verifyWithPubKey(pubkey, JSON.stringify(payload), sign);
+  return v;
+}
 
 module.exports = require('soop')(Wallet);
