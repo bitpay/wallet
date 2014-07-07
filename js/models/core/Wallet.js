@@ -326,7 +326,8 @@ Wallet.prototype.getRegisteredPeerIds = function() {
       var pid = this.network.peerFromCopayer(cid);
       this.registeredPeerIds.push({
         peerId: pid,
-        nick: this.publicKeyRing.nicknameForCopayer(cid)
+        nick: this.publicKeyRing.nicknameForCopayer(cid),
+        index: i,
       });
     }
   }

@@ -286,6 +286,11 @@ hr { margin: 2.25rem 0;}
   display: inline;
   float: right;
 }
+
+.setup .video-small {
+  float: none !important;
+}
+
 .online {
   background-color: black;
   border: 3px solid #1ABC9C;
