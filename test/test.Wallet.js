@@ -826,36 +826,26 @@ describe('Wallet model', function() {
 
     it('handle network addressBook correctly', function() {
       var w = createW();
-      var pk = '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03';
+
       var data = {
-        walletId: w.id,
+        type: "addressbook", 
         addressBook: {
-          'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx': {
-            label: 'Faucet',
-            copayerId: pk,
-            createdTs: 1403102115,
+          "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z" : {
+            copayerId: "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb",
+            createdTs: 1404769393509,
+            hidden: false,
+            label: "adsf",
+            signature: "3046022100d4cdefef66ab8cea26031d5df03a38fc9ec9b09b0fb31d3a26b6e204918e9e78022100ecdbbd889ec99ea1bfd471253487af07a7fa7c0ac6012ca56e10e66f335e4586"
           }
-        },
-        type: 'addressbook'
+        }, 
+        walletId: "11d23e638ed84c06", 
+        isBroadcast: 1
       };
-      var payload = {
-        address: 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx',
-        label: 'Faucet',
-        copayerId: pk,
-        createdTs: 1403102115,
-      };
-      data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].signature = w.signJson(payload);
-      
+
+      var senderId = "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb";
+ 
       Object.keys(w.addressBook).length.should.equal(2);
-      // New address
-      w._handleAddressBook(pk, data, true);
-      Object.keys(w.addressBook).length.should.equal(3);
-      // Existent address
-      w._handleAddressBook(pk, data, true);
-      Object.keys(w.addressBook).length.should.equal(3);
-      // Address with wrong signature (do nothing)
-      data.addressBook['msj42CCGruhRsFrGATiUuh25dtxYtnpbTx'].label = 'Bad'
-      w._handleAddressBook(pk, data, true);
+      w._handleAddressBook(senderId, data, true);
       Object.keys(w.addressBook).length.should.equal(3);
     }); 
 
@@ -872,43 +862,38 @@ describe('Wallet model', function() {
 
     it('should verify signed object', function() {
       var w = createW();
-      var pk = '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03';
-      var data = {
-        address: 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx',
-        label: 'Faucet',
-        copayerId: pk,
-        createdTs: 1403102115,
-      };
-      var signature = w.signJson(data);
 
-      w.verifySignedJson(pk, data, signature).should.equal(true);
-      data.label = 'Another';
-      w.verifySignedJson(pk, data, signature).should.equal(false);
+      var payload = {
+        address: "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z",
+        label: "adsf",
+        copayerId: "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb",
+        createdTs: 1404769393509
+      }
+
+      var signature = "3046022100d4cdefef66ab8cea26031d5df03a38fc9ec9b09b0fb31d3a26b6e204918e9e78022100ecdbbd889ec99ea1bfd471253487af07a7fa7c0ac6012ca56e10e66f335e4586";
+
+      var pubKey = "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb";
+
+      w.verifySignedJson(pubKey, payload, signature).should.equal(true);
+      payload.label = 'Another';
+      w.verifySignedJson(pubKey, payload, signature).should.equal(false);
     });
 
     it('should verify signed addressbook entry', function() {
       var w = createW();
-      var key = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
-      var pk = '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03';
-      var payload = {
-        address: key,
-        label: 'Faucet',
-        copayerId: pk,
-        createdTs: 1403102115,
-      };
-
-      var addressbook = { 
+      var key = "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z";
+      var pubKey = "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb";
+      w.addressBook[key] = {
+        copayerId: pubKey,
+        createdTs: 1404769393509,
         hidden: false,
-        createdTs: payload.createdTs,
-        copayerId: payload.copayerId,
-        label: payload.label,
-        signature: w.signJson(payload)
+        label: "adsf",
+        signature: "3046022100d4cdefef66ab8cea26031d5df03a38fc9ec9b09b0fb31d3a26b6e204918e9e78022100ecdbbd889ec99ea1bfd471253487af07a7fa7c0ac6012ca56e10e66f335e4586"
       };
-      w.addressBook[key] = addressbook;
 
-      w.verifyAddressbookSignature(pk, key).should.equal(true);
+      w.verifyAddressbookSignature(pubKey, key).should.equal(true);
       w.addressBook[key].label = 'Another';
-      w.verifyAddressbookSignature(pk, key).should.equal(false);
+      w.verifyAddressbookSignature(pubKey, key).should.equal(false);
       (function() { 
         w.verifyAddressbookSignature();
       }).should.throw();
