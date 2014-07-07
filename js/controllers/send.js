@@ -186,23 +186,23 @@ angular.module('copayApp.controllers').controller('SendController',
       }, 500);
     };
 
-    $scope.deleteAddressBook = function(addressBook) {
-      var w = $rootScope.wallet;
-      $timeout(function() {
-        var errorMsg;
-        try {
-          w.deleteAddressBook(addressBook);
-        } catch (e) {
-          errorMsg = e.message;
-        }
+    $scope.signAddressBook = {};
 
-        if (errorMsg) {
-          notification.error('Error', errorMsg);
-        } else {
-          notification.success('Success', 'Entry removed successfully');
-        }
-        $rootScope.$digest();
-      }, 500);
+    $scope.checkSignAddressBook = function(key) {
+      if (key) {
+        $timeout(function() {
+          var w = $rootScope.wallet;
+          var sign = w.verifySignAddressBook(key);
+          $scope.signAddressBook[key] = sign;
+        }, 10);
+      }
+    };
+
+    $scope.toggleAddressBookEntry = function(key) {
+      if (key) {
+        var w = $rootScope.wallet;
+        w.toggleAddressBookEntry(key);
+      }
     };
 
     $scope.copyAddress = function(address) {
@@ -250,11 +250,11 @@ angular.module('copayApp.controllers').controller('SendController',
           if (errorMsg) {
             notification.error('Error', errorMsg);
           } else {
+            $scope.checkSignAddressBook(entry.address);
             notification.success('Success', 'New entry has been created');
           }
           $rootScope.$digest();
         }, 500);
-        $anchorScroll();
         // reset fields
         $scope.newaddress = $scope.newlabel = null;
       });
