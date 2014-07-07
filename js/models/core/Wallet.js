@@ -774,12 +774,13 @@ Wallet.prototype.updateIndexes = function(callback) {
 
 Wallet.prototype.updateIndex = function(index, callback) {
   var self = this;
-  self.indexDiscovery(index.changeIndex, true, index.cosigner, 20, function(err, changeIndex) {
+  var SCANN_WINDOW = 20;
+  self.indexDiscovery(index.changeIndex, true, index.cosigner, SCANN_WINDOW, function(err, changeIndex) {
     if (err) return callback(err);
     if (changeIndex != -1)
       index.changeIndex = changeIndex + 1;
 
-    self.indexDiscovery(index.receiveIndex, false, index.cosigner, 20, function(err, receiveIndex) {
+    self.indexDiscovery(index.receiveIndex, false, index.cosigner, SCANN_WINDOW, function(err, receiveIndex) {
       if (err) return callback(err);
       if (receiveIndex != -1)
         index.receiveIndex = receiveIndex + 1;
