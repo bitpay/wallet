@@ -82,31 +82,10 @@
       </div>
 
       <div ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
-        <div class="row">
-          <div class="large-12 medium-12 small-12 columns">
-            <div class="alert-box secondary radius" ng-if="!$root.wallet.publicKeyRing.isComplete()" data-alert>
-              <i class="fi-info"></i>
-              Not all copayers have joined your wallet yet.
-              <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-              {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} people have
-              </span>
-              <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
-              One person has
-              </span>
-              yet to join.
-            </div>
-            <div class="alert-box success radius" ng-if="$root.wallet.publicKeyRing.isComplete()" data-alert>
-              <i class="fi-check"></i>
-              All copayers have joined the wallet, it's ready for use!
-            </div>
-          </div>
-        </div>
-
         <div class="row" ng-if="!$root.wallet.publicKeyRing.isComplete()">
           <div class="large-12 medium-12 small-12 columns ">
             <div class="panel radius m30v">
               <h3 class="m15b">Share this secret with your other copayers
-                <small> for them to join your wallet</small>
               </h3>
               <div class="row">
                 <div class="large-9 medium-12 small-12 columns line-dashed-v text-gray">
@@ -126,11 +105,34 @@
           <div class="large-12 medium-12 small-12 columns ">
             <div class="box-setup-copayers">
               <div class="box-setup-copayers-fix">
-                <img class="box-setup-copay"
-                ng-repeat="i in getNumber($root.wallet.totalCopayers) track by $index"
-                src="./img/satoshi.gif"
-                title="Copayer {{$index+1}}-{{totalCopayers}}"
-                ng-class="{'box-setup-copay-required': ($index+1) <= $root.wallet.publicKeyRing.registeredCopayers()}">
+  <h5>People on this wallet</h5>
+
+       <div class="setup" ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
+          <video ng-if="$root.videoInfo[c.peerId]"
+            avatar peer="{{c}}"
+            autoplay
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+            ng-src="{{getVideoURL(c.peerId)}}"
+          ></video>
+          <img ng-if="!$root.videoInfo[c.peerId]"
+            avatar peer="{{c}}"
+            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+            src="./img/satoshi.gif"
+          />
+          <span ng-show="c.index==0">
+            you
+          </span>
+          <span ng-show="c.index>0">
+            {{c.nick}}
+            [SIN: {{c.peerId}}]
+          </span>
+        </div>
+
+        <div  class="m10" ng-if="!$root.wallet.publicKeyRing.isComplete()">
+          <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
+          Waiting for other copayers to join
+        </div>
+
               </div>
             </div>
           </div>
@@ -139,7 +141,20 @@
             <button class="button primary radius right"
               ng-click="backupAndOpen()"
               ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-              Backup keys and continue
+              <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
+                Backup keys and continue
+              </span>
+              <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
+                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
+                {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} people have
+                </span>
+                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+                One person has
+                </span>
+                yet to join.
+              </span>
+
+
             </button>
             <!-- <a href="" class="db p10t left" ng-disabled="!$root.wallet.publicKeyRing.isComplete()">Skip Backup</a> -->
           </div>
