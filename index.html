@@ -758,8 +758,7 @@
               </thead>
               <tbody>
               <tr 
-                ng-repeat="(addr, info) in $root.wallet.addressBook track by $index" 
-                ng-if="info.copayerId != -1"
+                ng-repeat="(addr, info) in $root.wallet.addressBook
                 ng-class="{'addressbook-disabled': info.hidden}">
                 <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
                 <td>{{addr}}</td>

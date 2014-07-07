@@ -145,6 +145,7 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   for (var key in rcv) {
     if (!this.addressBook[key]) {
       this.addressBook[key] = rcv[key];
+      var isVerified = this.verifyAddressbookSignature(senderId, key);
       hasChange = true;
     }
   }
@@ -852,8 +853,8 @@ Wallet.prototype.setAddressBook = function(key, label) {
   this.store();
 };
 
-Wallet.prototype.verfifyAddressbookSignature = function(key) {
-  if (!key) throw new Error('Key is required');
+Wallet.prototype.verifyAddressbookSignature = function(senderId, key) {
+  if (!key) throw new Error('Keys are required');
   var signature = this.addressBook[key].signature;
   var payload = {
     address: key,
@@ -861,7 +862,7 @@ Wallet.prototype.verfifyAddressbookSignature = function(key) {
     copayerId: this.addressBook[key].copayerId,
     createdTs: this.addressBook[key].createdTs
   };
-  var isVerified = this.verifySignedObject(payload, signature);
+  var isVerified = this.verifySignedJson(senderId, payload, signature);
   if (!isVerified) {
     // remove wrong signed entry
     delete this.addressBook[key];
@@ -894,8 +895,8 @@ Wallet.prototype.signJson = function(payload) {
   return sign.toString('hex');
 }
 
-Wallet.prototype.verifySignedObject = function(payload, signature) {
-  var pubkey = new Buffer(this.getMyCopayerId(), 'hex');
+Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
+  var pubkey = new Buffer(senderId, 'hex');
   var sign = new Buffer(signature, 'hex');
   var v = bitcore.Message.verifyWithPubKey(pubkey, JSON.stringify(payload), sign);
   return v;
