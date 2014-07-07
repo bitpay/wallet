@@ -774,7 +774,7 @@
                 <th>Address</td>
                 <th>Creator</td>
                 <th>Date</td>
-                <th>Hidden</td>
+                <th></td>
               </tr>
               </thead>
               <tbody>
@@ -785,7 +785,8 @@
                 <td>{{addr}}</td>
                 <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
                 <td><time>{{info.createdTs | amCalendar}}</time></td>
-                <td><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden}}</a></td>
+                <td><a style="text-decoration: initial;" ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
+                'Enable' : 'Disable'}}</a></td>
               </tr>
               </tbody>
             </table>
