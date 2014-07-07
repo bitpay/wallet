@@ -853,35 +853,27 @@ Wallet.prototype.setAddressBook = function(key, label) {
 };
 
 Wallet.prototype.verfifyAddressbookSignature = function(key) {
-  if (key) {
-    var signature = this.addressBook[key].signature;
-    var payload = {
-      address: key,
-      label: this.addressBook[key].label,
-      copayerId: this.addressBook[key].copayerId,
-      createdTs: this.addressBook[key].createdTs
-    };
-    var isVerified = this.verifySignedObject(payload, signature);
-    if (!isVerified) {
-      // remove wrong signed entry
-      delete this.addressBook[key];
-      this.store();
-    }
-    return isVerified;
+  if (!key) throw new Error('Key is required');
+  var signature = this.addressBook[key].signature;
+  var payload = {
+    address: key,
+    label: this.addressBook[key].label,
+    copayerId: this.addressBook[key].copayerId,
+    createdTs: this.addressBook[key].createdTs
+  };
+  var isVerified = this.verifySignedObject(payload, signature);
+  if (!isVerified) {
+    // remove wrong signed entry
+    delete this.addressBook[key];
+    this.store();
   }
-  else {
-    throw new Error('Key is required');
-  }
+  return isVerified;
 }
 
 Wallet.prototype.toggleAddressBookEntry = function(key) {
-  if (key) {
-    this.addressBook[key].hidden = !this.addressBook[key].hidden;
-    this.store();
-  }
-  else {
-    throw new Error('Key is required');
-  }
+  if (!key) throw new Error('Key is required');
+  this.addressBook[key].hidden = !this.addressBook[key].hidden;
+  this.store();
 };
 
 Wallet.prototype.isReady = function() {
