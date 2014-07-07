@@ -9,6 +9,7 @@ try {
   var copay = require('../copay'); //node
 }
 var Wallet = require('../js/models/core/Wallet');
+var Structure = copay.Structure;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
@@ -122,7 +123,7 @@ describe('Wallet model', function() {
     var opts = {};
     var w = cachedCreateW();
     addCopayers(w);
-    w.publicKeyRing.generateAddress(false);
+    w.publicKeyRing.generateAddress(false, w.publicKey);
     w.publicKeyRing.isComplete().should.equal(true);
     w.generateAddress(true).isValid().should.equal(true);
     w.generateAddress(true, function(addr) {
@@ -194,8 +195,8 @@ describe('Wallet model', function() {
 
     var w = cachedCreateW2();
 
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     var ntxid = w.createTxSync(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
@@ -219,8 +220,8 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var comment = 'This is a comment';
 
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     var ntxid = w.createTxSync(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
@@ -241,8 +242,8 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var comment = 'Lorem ipsum dolor sit amet, suas euismod vis te, velit deleniti vix an. Pri ex suscipit similique, inermis per';
 
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     var badCreate = function() {
       w.createTxSync(
@@ -277,8 +278,8 @@ describe('Wallet model', function() {
     var ts = Date.now();
     for (var isChange = false; !isChange; isChange = true) {
       for (var index = 0; index < 3; index++) {
-        unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange).toString();
-        unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange);
+        unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange, w.publicKey).toString();
+        unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange, w.publicKey);
         w.createTxSync(
           'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
           '123456789',
@@ -359,13 +360,15 @@ describe('Wallet model', function() {
   it('handle network indexes correctly', function() {
     var w = createW();
     var aiObj = {
-      walletId: w.id,
-      changeIndex: 3,
-      receiveIndex: 2
+      indexes: [{
+        cosigner: 0,
+        changeIndex: 3,
+        receiveIndex: 2
+      }]
     };
     w._handleIndexes('senderID', aiObj, true);
-    w.publicKeyRing.indexes.getReceiveIndex(2);
-    w.publicKeyRing.indexes.getChangeIndex(3);
+    w.publicKeyRing.getIndex(0).getReceiveIndex(2);
+    w.publicKeyRing.getIndex(0).getChangeIndex(3);
   });
 
   it('handle network pubKeyRings correctly', function() {
@@ -381,19 +384,19 @@ describe('Wallet model', function() {
       networkName: w.networkName,
       requiredCopayers: w.requiredCopayers,
       totalCopayers: w.totalCopayers,
-      indexes: {
-        walletId: undefined,
+      indexes: [{
+        cosigner: 0,
         changeIndex: 2,
         receiveIndex: 3
-      },
+      }],
       copayersExtPubKeys: cepk,
       nicknameFor: {},
     };
     w._handlePublicKeyRing('senderID', {
       publicKeyRing: pkrObj
     }, true);
-    w.publicKeyRing.indexes.getReceiveIndex(2);
-    w.publicKeyRing.indexes.getChangeIndex(3);
+    w.publicKeyRing.getIndex(0).getReceiveIndex(2);
+    w.publicKeyRing.getIndex(0).getChangeIndex(3);
     for (var i = 0; i < w.requiredCopayers; i++) {
       w.publicKeyRing.toObj().copayersExtPubKeys[i].should.equal(cepk[i]);
     }
@@ -685,8 +688,8 @@ describe('Wallet model', function() {
 
     before(function() {
       w = cachedCreateW2();
-      ADDRESSES_CHANGE = w.deriveAddresses(0, 20, true);
-      ADDRESSES_RECEIVE = w.deriveAddresses(0, 20, false);
+      ADDRESSES_CHANGE = w.deriveAddresses(0, 20, true, 0);
+      ADDRESSES_RECEIVE = w.deriveAddresses(0, 20, false, 0);
     });
 
     var mockFakeActivity = function(f) {
@@ -705,7 +708,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return false;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(-1);
         done();
       });
@@ -715,7 +718,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 7;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(7);
         done();
       });
@@ -725,7 +728,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 10 || index == 17;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(10);
         done();
       });
@@ -735,7 +738,7 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
-      w.indexDiscovery(0, false, 5, function(e, lastActive) {
+      w.indexDiscovery(0, false, 0, 5, function(e, lastActive) {
         lastActive.should.equal(14);
         done();
       });
@@ -747,8 +750,11 @@ describe('Wallet model', function() {
       });
 
       w.updateIndexes(function(err) {
-        w.publicKeyRing.indexes.receiveIndex.should.equal(15);
-        w.publicKeyRing.indexes.changeIndex.should.equal(15);
+        w.publicKeyRing.getIndex(0).receiveIndex.should.equal(15);
+        w.publicKeyRing.getIndex(0).changeIndex.should.equal(15);
+
+        w.publicKeyRing.getIndex(1).receiveIndex.should.equal(0);
+        w.publicKeyRing.getIndex(1).changeIndex.should.equal(0);
         done();
       });
     });
@@ -768,8 +774,8 @@ describe('Wallet model', function() {
 
   it('#deriveAddresses', function(done) {
     var w = cachedCreateW2();
-    var addresses1 = w.deriveAddresses(0, 5, false);
-    var addresses2 = w.deriveAddresses(4, 5, false);
+    var addresses1 = w.deriveAddresses(0, 5, false, 0);
+    var addresses2 = w.deriveAddresses(4, 5, false, 0);
 
     addresses1.length.should.equal(5);
     addresses2.length.should.equal(5);

@@ -33,7 +33,8 @@ angular.module('copayApp.controllers').controller('AddressesController',
           $scope.addresses.push({
             'address': addrinfo.addressStr,
             'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
-            'isChange': addrinfo.isChange
+            'isChange': addrinfo.isChange,
+            'owned': addrinfo.owned
           });
         }
         $scope.selectedAddr = $scope.addresses[0];
