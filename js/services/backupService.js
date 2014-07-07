@@ -11,10 +11,12 @@ BackupService.prototype.getName = function(wallet) {
 
 BackupService.prototype.download = function(wallet) {
   var ew = wallet.toEncryptedObj();
-  var timestamp = +(new Date());
-  var walletName = this.getName(wallet);
-  var filename = walletName + '-' + timestamp + '-keybackup.json.aes';
-  this.notifications.success('Backup created', 'Encrypted backup file saved.');
+  var partial = !wallet.publicKeyRing.isComplete();
+  var walletName = this.getName(wallet) + (partial ? '-Partial' : '');
+  var filename = walletName + '-keybackup.json.aes';
+
+  var notify = partial ? 'Partial backup created' : 'Backup created';
+  this.notifications.success(notify, 'Encrypted backup file saved.');
   var blob = new Blob([ew], {
     type: 'text/plain;charset=utf-8'
   });
