@@ -891,11 +891,11 @@ describe('Wallet model', function() {
         signature: "3046022100d4cdefef66ab8cea26031d5df03a38fc9ec9b09b0fb31d3a26b6e204918e9e78022100ecdbbd889ec99ea1bfd471253487af07a7fa7c0ac6012ca56e10e66f335e4586"
       };
 
-      w.verifyAddressbookSignature(pubKey, key).should.equal(true);
+      w.verifyAddressbookEntry(w.addressBook[key], pubKey, key).should.equal(true);
       w.addressBook[key].label = 'Another';
-      w.verifyAddressbookSignature(pubKey, key).should.equal(false);
+      w.verifyAddressbookEntry(w.addressBook[key], pubKey, key).should.equal(false);
       (function() { 
-        w.verifyAddressbookSignature();
+        w.verifyAddressbookEntry();
       }).should.throw();
     });
 

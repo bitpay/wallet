@@ -140,9 +140,11 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   var hasChange;
   for (var key in rcv) {
     if (!this.addressBook[key]) {
-      this.addressBook[key] = rcv[key];
-      var isVerified = this.verifyAddressbookSignature(senderId, key);
-      hasChange = true;
+      var isVerified = this.verifyAddressbookEntry(rcv[key], senderId, key);
+      if (isVerified) {
+        this.addressBook[key] = rcv[key];
+        hasChange = true;
+      }
     }
   }
   if (hasChange) {
@@ -854,22 +856,16 @@ Wallet.prototype.setAddressBook = function(key, label) {
   this.store();
 };
 
-Wallet.prototype.verifyAddressbookSignature = function(senderId, key) {
+Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
   if (!key) throw new Error('Keys are required');
-  var signature = this.addressBook[key].signature;
+  var signature = rcvEntry.signature;
   var payload = {
     address: key,
-    label: this.addressBook[key].label,
-    copayerId: this.addressBook[key].copayerId,
-    createdTs: this.addressBook[key].createdTs
+    label: rcvEntry.label,
+    copayerId: rcvEntry.copayerId,
+    createdTs: rcvEntry.createdTs
   };
-  var isVerified = this.verifySignedJson(senderId, payload, signature);
-  if (!isVerified) {
-    // remove wrong signed entry
-    delete this.addressBook[key];
-    this.store();
-  }
-  return isVerified;
+  return this.verifySignedJson(senderId, payload, signature);
 }
 
 Wallet.prototype.toggleAddressBookEntry = function(key) {
