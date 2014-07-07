@@ -24,7 +24,8 @@ module.exports = function(copay) {
       // create the main window
       mainWindow = new BrowserWindow({
         width: config.window.width,
-        height: config.window.height
+        height: config.window.height,
+        "node-integration": "disable"
       });
 
       // hide the empty window
@@ -52,7 +53,7 @@ module.exports = function(copay) {
         mainWindow = null;
       });
 
-      // mainWindow.toggleDevTools();
+      //mainWindow.toggleDevTools();
 
     });
 
