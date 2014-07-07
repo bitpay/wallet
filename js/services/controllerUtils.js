@@ -4,8 +4,9 @@ var bitcore = require('bitcore');
 angular.module('copayApp.services')
   .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video, uriHandler) {
     var root = {};
-
     root.getVideoMutedStatus = function(copayer) {
+      if (!$rootScope.videoInfo) return;
+
       var vi = $rootScope.videoInfo[copayer]
       if (!vi) {
         return;
