@@ -795,6 +795,9 @@ describe('Wallet model', function() {
       w.addressBook[key].hidden.should.equal(true);
       w.toggleAddressBookEntry(key);
       w.addressBook[key].hidden.should.equal(false);
+      (function() { 
+        w.toggleAddressBookEntry();
+      }).should.throw();
     });
 
     it('handle network addressBook correctly', function() {
@@ -827,7 +830,7 @@ describe('Wallet model', function() {
         copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
         createdTs: 1403102115
       };
-      should.exist(w.signObject(payload));
+      should.exist(w.signJson(payload));
     });
 
     it('should verify signed object', function() {
@@ -838,7 +841,7 @@ describe('Wallet model', function() {
         copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
         createdTs: 1403102115,
       };
-      var signature = w.signObject(data);
+      var signature = w.signJson(data);
 
       w.verifySignedObject(data, signature).should.equal(true);
       data.label = 'Another';
@@ -860,13 +863,16 @@ describe('Wallet model', function() {
         createdTs: payload.createdTs,
         copayerId: payload.copayerId,
         label: payload.label,
-        signature: w.signObject(payload)
+        signature: w.signJson(payload)
       };
       w.addressBook[key] = addressbook;
 
-      w.verifySignAddressBook(key).should.equal(true);
+      w.verfifyAddressbookSignature(key).should.equal(true);
       w.addressBook[key].label = 'Another';
-      w.verifySignAddressBook(key).should.equal(false);
+      w.verfifyAddressbookSignature(key).should.equal(false);
+      (function() { 
+        w.verfifyAddressbookSignature();
+      }).should.throw();
     });
 
   });

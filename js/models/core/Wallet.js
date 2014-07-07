@@ -840,19 +840,19 @@ Wallet.prototype.setAddressBook = function(key, label) {
     copayerId: copayerId,
     createdTs: ts
   };
-  var addressbook = {
+  var newEntry = {
     hidden: false,
     createdTs: ts,
     copayerId: copayerId,
     label: label,
-    signature: this.signObject(payload)
+    signature: this.signJson(payload)
   };
-  this.addressBook[key] = addressbook;
+  this.addressBook[key] = newEntry;
   this.sendAddressBook();
   this.store();
 };
 
-Wallet.prototype.verifySignAddressBook = function(key) {
+Wallet.prototype.verfifyAddressbookSignature = function(key) {
   if (key) {
     var signature = this.addressBook[key].signature;
     var payload = {
@@ -861,13 +861,16 @@ Wallet.prototype.verifySignAddressBook = function(key) {
       copayerId: this.addressBook[key].copayerId,
       createdTs: this.addressBook[key].createdTs
     };
-    var sign = this.verifySignedObject(payload, signature);
-    if (!sign) {
+    var isVerified = this.verifySignedObject(payload, signature);
+    if (!isVerified) {
       // remove wrong signed entry
       delete this.addressBook[key];
       this.store();
     }
-    return sign;
+    return isVerified;
+  }
+  else {
+    throw new Error('Key is required');
   }
 }
 
@@ -875,6 +878,9 @@ Wallet.prototype.toggleAddressBookEntry = function(key) {
   if (key) {
     this.addressBook[key].hidden = !this.addressBook[key].hidden;
     this.store();
+  }
+  else {
+    throw new Error('Key is required');
   }
 };
 
@@ -888,7 +894,7 @@ Wallet.prototype.offerBackup = function() {
   this.store();
 };
 
-Wallet.prototype.signObject = function(payload) {
+Wallet.prototype.signJson = function(payload) {
   var key = new bitcore.Key();
   key.private = new Buffer(this.getMyCopayerIdPriv(), 'hex');
   key.regenerateSync();
