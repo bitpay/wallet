@@ -140,10 +140,8 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   var hasChange;
   for (var key in rcv) {
     if (!this.addressBook[key]) {
-      this.addressBook[key] = rcv[key];
-      hasChange = true;
-    } else {
-      if (rcv[key].createdTs > this.addressBook[key].createdTs) {
+      var isVerified = this.verifyAddressbookEntry(rcv[key], senderId, key);
+      if (isVerified) {
         this.addressBook[key] = rcv[key];
         hasChange = true;
       }
@@ -234,7 +232,6 @@ Wallet.prototype.getMyCopayerId = function() {
 Wallet.prototype.getMyCopayerIdPriv = function() {
   return this.privateKey.getIdPriv(); //copayer idpriv is hex of a private key
 };
-
 
 Wallet.prototype.getSecret = function() {
   var pubkeybuf = new Buffer(this.getMyCopayerId(), 'hex');
@@ -839,23 +836,42 @@ Wallet.prototype._checkAddressBook = function(key) {
 
 Wallet.prototype.setAddressBook = function(key, label) {
   this._checkAddressBook(key);
-  var addressbook = {
-    createdTs: Date.now(),
-    copayerId: this.getMyCopayerId(),
-    label: label
+  var copayerId = this.getMyCopayerId();
+  var ts = Date.now();
+  var payload = {
+    address: key,
+    label: label,
+    copayerId: copayerId,
+    createdTs: ts
   };
-  this.addressBook[key] = addressbook;
+  var newEntry = {
+    hidden: false,
+    createdTs: ts,
+    copayerId: copayerId,
+    label: label,
+    signature: this.signJson(payload)
+  };
+  this.addressBook[key] = newEntry;
   this.sendAddressBook();
   this.store();
 };
 
-Wallet.prototype.deleteAddressBook = function(key) {
-  if (key) {
-    this.addressBook[key].copayerId = -1;
-    this.addressBook[key].createdTs = Date.now();
-    this.sendAddressBook();
-    this.store();
-  }
+Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
+  if (!key) throw new Error('Keys are required');
+  var signature = rcvEntry.signature;
+  var payload = {
+    address: key,
+    label: rcvEntry.label,
+    copayerId: rcvEntry.copayerId,
+    createdTs: rcvEntry.createdTs
+  };
+  return this.verifySignedJson(senderId, payload, signature);
+}
+
+Wallet.prototype.toggleAddressBookEntry = function(key) {
+  if (!key) throw new Error('Key is required');
+  this.addressBook[key].hidden = !this.addressBook[key].hidden;
+  this.store();
 };
 
 Wallet.prototype.isReady = function() {
@@ -867,5 +883,20 @@ Wallet.prototype.offerBackup = function() {
   this.backupOffered = true;
   this.store();
 };
+
+Wallet.prototype.signJson = function(payload) {
+  var key = new bitcore.Key();
+  key.private = new Buffer(this.getMyCopayerIdPriv(), 'hex');
+  key.regenerateSync();
+  var sign = bitcore.Message.sign(JSON.stringify(payload), key);
+  return sign.toString('hex');
+}
+
+Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
+  var pubkey = new Buffer(senderId, 'hex');
+  var sign = new Buffer(signature, 'hex');
+  var v = bitcore.Message.verifyWithPubKey(pubkey, JSON.stringify(payload), sign);
+  return v;
+}
 
 module.exports = require('soop')(Wallet);
