@@ -5,6 +5,9 @@ var should = chai.should();
 var bitcore = bitcore || require('bitcore');
 var Address = bitcore.Address;
 var buffertools = bitcore.buffertools;
+
+var Structure = require('../js/models/core/Structure');
+
 try {
   var copay = require('copay'); //browser
 } catch (e) {
@@ -33,7 +36,8 @@ var createW = function(networkName) {
 
   return {
     w: w,
-    copayers: copayers
+    copayers: copayers,
+    pub: w.copayersHK[0].eckey.public.toString('hex')
   };
 };
 
@@ -85,7 +89,7 @@ describe('PublicKeyRing model', function() {
     }
   });
 
-  it('show be able to tostore and read', function() {
+  it('should be able to to store and read', function() {
     var k = createW();
     var w = k.w;
     var copayers = k.copayers;
@@ -93,10 +97,10 @@ describe('PublicKeyRing model', function() {
     var addressN = 2;
     var start = new Date().getTime();
     for (var i = 0; i < changeN; i++) {
-      w.generateAddress(true);
+      w.generateAddress(true, k.pub);
     }
     for (var i = 0; i < addressN; i++) {
-      w.generateAddress(false);
+      w.generateAddress(false, k.pub);
     }
 
     var data = w.toObj();
@@ -112,8 +116,8 @@ describe('PublicKeyRing model', function() {
       }).should.throw();
     }
 
-    w2.indexes.getChangeIndex().should.equal(changeN);
-    w2.indexes.getReceiveIndex().should.equal(addressN);
+    w2.getIndex(k.pub).getChangeIndex().should.equal(changeN);
+    w2.getIndex(k.pub).getReceiveIndex().should.equal(addressN);
   });
 
 
@@ -123,7 +127,7 @@ describe('PublicKeyRing model', function() {
 
     [true, false].forEach(function(isChange){
       for (var i = 0; i < 2; i++) {
-        var a = w.generateAddress(isChange);
+        var a = w.generateAddress(isChange, k.pub);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
@@ -145,7 +149,7 @@ describe('PublicKeyRing model', function() {
 
     [true, false].forEach(function(isChange){
       for (var i = 0; i < 2; i++) {
-        w.generateAddress(isChange);
+        w.generateAddress(isChange, k.pub);
       }
     });
 
@@ -164,12 +168,12 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for (var i = 0; i < 3; i++)
-      w.generateAddress(true);
+      w.generateAddress(true, k.pub);
     for (var i = 0; i < 2; i++)
-      w.generateAddress(false);
+      w.generateAddress(false, k.pub);
 
-    w.indexes.getChangeIndex().should.equal(3);
-    w.indexes.getReceiveIndex().should.equal(2);
+    w.getIndex(k.pub).getChangeIndex().should.equal(3);
+    w.getIndex(k.pub).getReceiveIndex().should.equal(2);
   });
 
   it('#merge index tests', function() {
@@ -177,9 +181,9 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for (var i = 0; i < 2; i++)
-      w.generateAddress(true);
+      w.generateAddress(true, k.pub);
     for (var i = 0; i < 3; i++)
-      w.generateAddress(false);
+      w.generateAddress(false, k.pub);
 
     var w2 = new PublicKeyRing({
       networkName: 'livenet',
@@ -188,8 +192,8 @@ describe('PublicKeyRing model', function() {
     w2.merge(w).should.equal(true);
     w2.requiredCopayers.should.equal(3);
     w2.totalCopayers.should.equal(5);
-    w2.indexes.getChangeIndex().should.equal(2);
-    w2.indexes.getReceiveIndex().should.equal(3);
+    w2.getIndex(k.pub).getChangeIndex().should.equal(2);
+    w2.getIndex(k.pub).getReceiveIndex().should.equal(3);
 
     //
     w2.merge(w).should.equal(false);
@@ -380,15 +384,36 @@ describe('PublicKeyRing model', function() {
   });
 
 
+  it('#getIndex should return the right one', function() {
+    var config = {
+      networkName: 'livenet',
+    };
+    var p = new PublicKeyRing(config);
+    var i = p.getIndex(Structure.SHARED_INDEX);
+    should.exist(i);
+    i.cosigner.should.equal(Structure.SHARED_INDEX);
+  });
+
+  it('#getIndex should throw error', function() {
+    var config = {
+      networkName: 'livenet',
+    };
+    var p = new PublicKeyRing(config);
+
+    (function badCosigner() {
+      return p.getIndex(54);
+    }).should.throw();
+  });
+
   it('#getRedeemScriptMap check tests', function() {
     var k = createW();
     var w = k.w;
     var amount = 2;
 
     for (var i = 0; i < amount; i++)
-      w.generateAddress(true);
+      w.generateAddress(true, k.pub);
     for (var i = 0; i < amount; i++)
-      w.generateAddress(false);
+      w.generateAddress(false, k.pub);
 
     var m = w.getRedeemScriptMap([
       'm/45\'/2147483647/1/0',

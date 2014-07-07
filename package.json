@@ -1,6 +1,6 @@
 {
   "name": "copay",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "A multisignature wallet",
   "repository": {
     "type": "git",
@@ -25,12 +25,13 @@
     "shell": "node shell/scripts/launch.js",
     "setup-shell": "node shell/scripts/download-atom-shell.js",
     "chrome": "source browser-extensions/chrome/build.sh",
-    "firefox": "source browser-extensions/firefox/build.sh"
+    "firefox": "source browser-extensions/firefox/build.sh",
+    "dist": "node shell/scripts/dist.js"
   },
   "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
     "async": "0.9.0",
-    "bitcore": "0.1.24",
+    "bitcore": "0.1.25",
     "blanket": "1.1.6",
     "browser-pack": "2.0.1",
     "browserify": "3.32.1",

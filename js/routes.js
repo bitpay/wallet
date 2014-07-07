@@ -26,10 +26,6 @@ angular
         templateUrl: 'addresses.html',
         validate: true
       })
-      .when('/join/:id', {
-        templateUrl: 'join.html',
-        validate: true
-      })
       .when('/transactions', {
         templateUrl: 'transactions.html',
         validate: true
@@ -49,6 +45,9 @@ angular
       .when('/unsupported', {
         templateUrl: 'unsupported.html'
       })
+      .when('/uri_payment/:data', {
+        templateUrl: 'uri_payment.html'
+      })
       .otherwise({
         templateUrl: '404.html'
       });
@@ -64,7 +63,6 @@ angular
   })
   .run(function($rootScope, $location) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-
       if (!util.supports.data) {
         $location.path('unsupported');
       } else {

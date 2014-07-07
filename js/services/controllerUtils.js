@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video, uriHandler) {
     var root = {};
 
     root.getVideoMutedStatus = function(copayer) {
@@ -43,20 +43,15 @@ angular.module('copayApp.services')
     };
 
     root.installStartupHandlers = function(wallet, $scope) {
-      wallet.on('serverError', function(msg) {
-        notification.error('PeerJS Error', 'There was an error connecting to the PeerJS server.' + (msg || 'Check you settings and Internet connection.'));
-        root.onErrorDigest($scope);
-        $location.path('addresses');
-      });
       wallet.on('connectionError', function() {
         var message = "Looks like you are already connected to this wallet, please logout and try importing it again.";
         notification.error('PeerJS Error', message);
         root.onErrorDigest($scope);
       });
-      wallet.on('serverError', function() {
-        var message = 'The PeerJS server is not responding, please try again';
-        notification.error('PeerJS Error', message);
-        root.onErrorDigest($scope);
+      wallet.on('serverError', function(m) {
+        var message = m || 'The PeerJS server is not responding, please try again';
+        $location.path('addresses');
+        root.onErrorDigest($scope, message);
       });
       wallet.on('ready', function() {
         $scope.loading = false;
@@ -64,6 +59,7 @@ angular.module('copayApp.services')
     };
 
     root.setupRootVariables = function() {
+      uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
       $rootScope.insightError = 0;
@@ -102,7 +98,11 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
-        $location.path('addresses');
+        if ($rootScope.pendingPayment) {
+          $location.path('send');
+        } else {
+          $location.path('addresses');
+        }
         if (!config.disableVideo)
           video.setOwnPeer(myPeerID, w, handlePeerVideo);
       });
