@@ -28,6 +28,18 @@ p {
   border-right: 1px dashed #E3E3E3;
 }
 
+.supported-link {
+  color: white;
+  font-weight: 100;
+  position: absolute;
+  right: 100px;
+  top: 131px;
+}
+
+.supported-link:hover {
+  color: white;
+}
+
 .header-modal {
   background: #2C3E50;
   margin-bottom: 20px;
