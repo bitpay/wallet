@@ -38,12 +38,6 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
 
-  // Renew token every 24hs
-  if (opts.tokenTime && new Date().getTime() - opts.tokenTime < 86400000) {
-    this.token = opts.token;
-    this.tokenTime = opts.tokenTime;
-  }
-
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
@@ -222,11 +216,6 @@ Wallet.prototype._optsToObj = function() {
     version: this.version,
   };
 
-  if (this.token) {
-    obj.token = this.token;
-    obj.tokenTime = new Date().getTime();
-  }
-
   return obj;
 };
 
@@ -284,7 +273,6 @@ Wallet.prototype.netStart = function(callback) {
   var startOpts = {
     copayerId: myId,
     privkey: myIdPriv,
-    token: self.token,
     maxPeers: self.totalCopayers
   };
 
@@ -294,7 +282,6 @@ Wallet.prototype.netStart = function(callback) {
 
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
-    self.token = net.peer.options.token;
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
       self.scheduleConnect();
@@ -382,8 +369,6 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
 
 Wallet.prototype.toEncryptedObj = function() {
   var walletObj = this.toObj();
-  delete walletObj.opts.token;
-  delete walletObj.opts.tokenTime;
   return this.storage.export(walletObj);
 };
 
