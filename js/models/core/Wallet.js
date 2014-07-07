@@ -301,7 +301,6 @@ Wallet.prototype.netStart = function(callback) {
       self.emit('publicKeyRingUpdated', true);
       self.scheduleConnect();
       self.emit('txProposalsUpdated');
-      self.store();
     }, 10);
   });
 };
