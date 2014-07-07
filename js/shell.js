@@ -39,21 +39,11 @@
     var ipc = require('ipc');
     var clipb = require('clipboard');
 
-    // atom shell forces to implement the clipboard on our own - thanks obama.
+    // atom shell forces to implement the clipboard (on osx) on our own - thanks obama.
 
     Mousetrap.stopCallback = function() {
       return false
     };
-
-    Mousetrap.bind('ctrl+c', function(e) {
-      clipb.writeText(window.getSelection().toString());
-    });
-
-    Mousetrap.bind('ctrl+v', function(e) {
-      if (document.activeElement) {
-        document.activeElement.value = clipb.readText();
-      }
-    });
 
     Mousetrap.bind('command+c', function(e) {
       clipb.writeText(window.getSelection().toString());
@@ -62,6 +52,7 @@
     Mousetrap.bind('command+v', function(e) {
       if (document.activeElement) {
         document.activeElement.value = clipb.readText();
+        document.activeElement.dispatchEvent(new Event('change'));
       }
     });
 
