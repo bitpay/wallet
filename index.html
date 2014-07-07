@@ -103,35 +103,36 @@
         </div>
         <div class="row m10t">
           <div class="large-12 medium-12 small-12 columns ">
-            <div class="box-setup-copayers">
-              <div class="box-setup-copayers-fix">
-  <h5>People on this wallet</h5>
+            <div class="box-setup-copayers panel">
+              <div class="oh">
+                <h6 class="size-18 m15b">People on this wallet</h6>
 
-       <div class="setup" ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
-          <video ng-if="$root.videoInfo[c.peerId]"
-            avatar peer="{{c}}"
-            autoplay
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
-            ng-src="{{getVideoURL(c.peerId)}}"
-          ></video>
-          <img ng-if="!$root.videoInfo[c.peerId]"
-            avatar peer="{{c}}"
-            ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
-            src="./img/satoshi.gif"
-          />
-          <span ng-show="c.index==0">
-            you
-          </span>
-          <span ng-show="c.index>0">
-            {{c.nick}}
-            [SIN: {{c.peerId}}]
-          </span>
-        </div>
+                <div class="large-6 columns setup m15b" ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
+                  <video ng-if="$root.videoInfo[c.peerId]"
+                    avatar peer="{{c}}"
+                    autoplay
+                    ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+                    ng-src="{{getVideoURL(c.peerId)}}"
+                  ></video>
+                  <span class="left m10r">
+                    <img ng-if="!$root.videoInfo[c.peerId]"
+                      avatar peer="{{c}}"
+                      ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+                      src="./img/satoshi.gif"
+                    />
+                  </span>
+                  <span ng-show="c.index==0">
+                    <p><b>you</b></p>
+                  </span>
+                  <span ng-show="c.index>0">
+                    <p><b>{{c.nick}}</b></p>
+                    <small>[SIN: {{c.peerId}}]</small>
+                  </span>
+                </div>
 
-        <div  class="m10" ng-if="!$root.wallet.publicKeyRing.isComplete()">
-          <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
-          Waiting for other copayers to join
-        </div>
+                  <div  class="m10" ng-if="!$root.wallet.publicKeyRing.isComplete()">
+                    <p> <i class="size-60 text-gray fi-bitcoin-circle icon-rotate spinner"></i>Waiting for other copayers to join</p>
+                  </div>
 
               </div>
             </div>
