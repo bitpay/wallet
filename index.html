@@ -742,7 +742,7 @@
               </div>
             </form>
           </div>
-          <div class="medium-8 medium-centered large-8 large-centered columns">
+          <div class="medium-9 medium-centered large-9 large-centered columns">
             <hr>
             <h3>Address Book</h3>
             <p class="text-gray" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
@@ -753,18 +753,18 @@
                 <th>Address</td>
                 <th>Creator</td>
                 <th>Date</td>
-                <th>Signature</td>
                 <th>Hidden</td>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="(addr, info) in $root.wallet.addressBook track by $index" ng-if="info.copayerId != -1">
+              <tr 
+                ng-repeat="(addr, info) in $root.wallet.addressBook track by $index" 
+                ng-if="info.copayerId != -1"
+                ng-class="{'addressbook-disabled': info.hidden}">
                 <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
                 <td>{{addr}}</td>
                 <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
                 <td><time>{{info.createdTs | amCalendar}}</time></td>
-                <td
-                ng-init="checkSignAddressBook(addr)">{{signAddressBook[addr]}}</td>
                 <td><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden}}</a></td>
               </tr>
               </tbody>

@@ -129,7 +129,7 @@ angular.module('copayApp.directives')
 
         var address = attrs.address;
         var contact = scope.wallet.addressBook[address];
-        if (contact) {
+        if (contact && !contact.hidden) {
           element.append(contact.label);
           attrs['tooltip'] = attrs.address;
         } else {
