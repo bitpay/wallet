@@ -163,12 +163,12 @@
         <small>v{{version}}</small>
         <small ng-if="networkName==='testnet'">[TESTNET]</small>
       </div>
-      <div class="large-4 columns text-center">
-        <small>
-          <A href="https://copay.io" target="_blank">Copay Project Homapage</a>
-        </small>
-      </div>
       <div class="large-4 columns">
+      </div>
+      <div class="large-4 columns text-right">
+        <small>
+          <a class="text-gray" href="https://copay.io" target="_blank"><b>Copay </b> Project Homapage</a>
+        </small>
       </div>
 
 
@@ -288,29 +288,25 @@
           {{ importStatus }}
         </div>
         <div ng-init="choosefile=0; pastetext=0" ng-show="!loading">
-          <h3>{{title}}</h3>
           <form name="importForm" ng-submit="import(importForm)" novalidate>
             <div class="row">
-              <div class="large-6 large-centered medium-6 medium-centered columns">
+              <div class="large-6 large-centered medium-8 medium-centered columns">
+                <h3 style="margin-bottom: 50px;">{{title}}</h3>
                 <fieldset>
-                  <legend>Select which method want to use to restore</legend>
-                  <label for="backupFile" ng-click="openFileDialog()" class="m10b">&middot; Choose backup file from your computer <i class="fi-laptop"></i></label>
-                  <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select ng-show="choosefile">
-                  <label for="backupText" ng-click="openPasteArea()" class="m10b">&middot; Paste backup plain text code <i class="fi-clipboard"></i></label>
-                  <textarea class="form-control" name="backupText" ng-model="backupText" rows="5" ng-show="pastetext"></textarea>
+                  <legend for="backupFile" class="m10b"> Choose backup file from your computer <i class="fi-laptop"></i></legend>
+                    <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
                 </fieldset>
               </div>
 
-                <div class="large-6 large-centered medium-6 medium-centered columns">
-                  <label for="password">Password <small>Required</small></label>
-                  <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
-                </div>
-            </div>
-            <div class="row line-dashed">
-              <div class="large-6 medium-6 small-5 columns text-left">
-                <a class="button secondary radius" href="#signin">Go back</a>
+              <div class="large-6 large-centered medium-8 medium-centered columns">
+                <label for="password">Password <small>Required</small></label>
+                <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
               </div>
-              <div class="large-6 medium-6 small-5 columns text-right">
+            </div>
+            <div class="row m15b">
+              <div class="large-6 columns large-centered">
+                <div class="line-dashed"></div>
+                <a class="button secondary radius left" href="#signin">Go back</a>
                 <button type="submit" class="button primary radius right" ng-disabled="importForm.$invalid" loading="Importing">
                   Import backup
                 </button>

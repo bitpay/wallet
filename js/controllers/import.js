@@ -75,10 +75,9 @@ angular.module('copayApp.controllers').controller('ImportController',
       }
 
       var backupFile = $scope.file;
-      var backupText = form.backupText.$modelValue;
       var password = form.password.$modelValue;
 
-      if (!backupFile && !backupText) {
+      if (!backupFile) {
         $scope.loading = false;
         notification.error('Error', 'Please, select your backup file or paste the file contents');
         $scope.loading = false;
@@ -87,8 +86,6 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
-      } else {
-        _importBackup(backupText);
-      }
+      } 
     };
   });
