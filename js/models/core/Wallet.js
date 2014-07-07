@@ -861,7 +861,13 @@ Wallet.prototype.verifySignAddressBook = function(key) {
       copayerId: this.addressBook[key].copayerId,
       createdTs: this.addressBook[key].createdTs
     };
-    return this.verifySignedObject(payload, signature);
+    var sign = this.verifySignedObject(payload, signature);
+    if (!sign) {
+      // remove wrong signed entry
+      delete this.addressBook[key];
+      this.store();
+    }
+    return sign;
   }
 }
 

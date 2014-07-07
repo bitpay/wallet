@@ -194,6 +194,9 @@ angular.module('copayApp.controllers').controller('SendController',
           var w = $rootScope.wallet;
           var sign = w.verifySignAddressBook(key);
           $scope.signAddressBook[key] = sign;
+          if (!sign) {
+            notification.error('Wrong signature', 'Entry of Addressbooks was deleted');
+          }
         }, 10);
       }
     };
