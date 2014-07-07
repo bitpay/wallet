@@ -186,26 +186,19 @@ angular.module('copayApp.controllers').controller('SendController',
       }, 500);
     };
 
-    $scope.addressbook = {};
-
     $scope.verifyAddressbookSignature = function(key) {
-      if (key) {
-        $timeout(function() {
-          var w = $rootScope.wallet;
-          var signature = w.verfifyAddressbookSignature(key);
-          $scope.addressbook[key] = signature;
-          if (!signature) {
-            notification.error('Wrong signature', 'Entry of Addressbooks was deleted');
-          }
-        }, 10);
-      }
+      $timeout(function() {
+        var w = $rootScope.wallet;
+        var isValid = w.verfifyAddressbookSignature(key);
+        if (!isValid) {
+          notification.error('Wrong signature', 'Entry of Addressbooks was deleted');
+        }
+      }, 10);
     };
 
     $scope.toggleAddressBookEntry = function(key) {
-      if (key) {
-        var w = $rootScope.wallet;
-        w.toggleAddressBookEntry(key);
-      }
+      var w = $rootScope.wallet;
+      w.toggleAddressBookEntry(key);
     };
 
     $scope.copyAddress = function(address) {
