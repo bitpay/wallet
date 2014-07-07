@@ -25,7 +25,8 @@
     "shell": "node shell/scripts/launch.js",
     "setup-shell": "node shell/scripts/download-atom-shell.js",
     "chrome": "source browser-extensions/chrome/build.sh",
-    "firefox": "source browser-extensions/firefox/build.sh"
+    "firefox": "source browser-extensions/firefox/build.sh",
+    "dist": "node shell/scripts/dist.js"
   },
   "homepage": "https://github.com/bitpay/copay",
   "devDependencies": {
