@@ -595,7 +595,7 @@ describe('Wallet model', function() {
     }];
     var addr = w.generateAddress().toString();
     utxo[0].address = addr;
-    utxo[0].scriptPubKey = TransactionBuilder.scriptForAddress(addr).serialize().toString('hex');
+    utxo[0].scriptPubKey = (new bitcore.Address(addr)).getScriptPubKey().serialize().toString('hex');
     return utxo;
   };
   var toAddress = 'mjfAe7YrzFujFf8ub5aUrCaN5GfSABdqjh';
