@@ -126,6 +126,8 @@ describe('Insight model', function() {
     });
   }
 
+
+
   it('#checkActivity for innactive addreses', function(done) {
     var w = new Insight();
     w.getTransactions = function(addresses, cb) {
@@ -176,4 +178,36 @@ describe('Insight model', function() {
       done();
     });
   });
+
+
+  it('should handle getTransaction errors', function(done) {
+
+    var http = require('http');
+    var request = {
+      statusCode: 200
+    };
+
+    request.on = function(event, cb) {
+      if (event === 'error') return;
+      if (event === 'data') return cb('{ "txid": "1234" }');
+      return cb();
+    };
+
+    var req = {};
+    req.write = function() {};
+    req.end = function() {};
+
+    sinon
+      .stub(http, 'request')
+      .returns(req)
+      .yields(request);
+
+    var w = new Insight();
+    w.getTransactions(['asdasd'], function(ret) {
+      ret.length.should.equal(0);
+      done();
+    });
+  });
+
+
 });
