@@ -640,4 +640,11 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   display: block;
   margin-bottom: 1rem;
 }
+.addressbook-disabled td {
+  color: #ccc;
+  text-decoration: line-through;
+}
+.addressbook-disabled a {
+  color: #7A9FB6;
+}
 
