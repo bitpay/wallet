@@ -226,6 +226,7 @@ Insight.prototype._requestNode = function(options, callback) {
 };
 
 Insight.prototype._requestBrowser = function(options, callback) {
+  var self = this;
   var request = new XMLHttpRequest();
   var url = (options.schema || 'http') + '://' + options.host;
 
@@ -247,6 +248,7 @@ Insight.prototype._requestBrowser = function(options, callback) {
     }, self.retryDelay);
     return callback(new Error('Insight request timeout'));
   };
+
 
   request.onreadystatechange = function() {
     if (request.readyState !== 4) return;
