@@ -919,6 +919,9 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     </script>
 
     <script src="lib/mousetrap/mousetrap.min.js"></script>
+    <!-- shell must be loaded before moment due to the way moment loads in a commonjs env -->
+    <script src="js/shell.js"></script>
+
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/moment/min/moment.min.js"></script>
     <script src="lib/angular-moment/angular-moment.js"></script>
@@ -939,7 +942,6 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="lib/qrcode-decoder-js/lib/qrcode-decoder.min.js"></script>
 
     <script src="config.js"></script>
-    <script src="js/shell.js"></script>
     <script src="js/copayBundle.js"></script>
     <script src="js/app.js"></script>
     <script src="js/routes.js"></script>

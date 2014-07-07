@@ -12,7 +12,7 @@
    ** the renderer into thinking that we are _not_ in a CommonJS environment.
    */
   if (typeof module !== 'undefined') module = {
-    exports: null
+    exports: false
   };
 
   // are we running in copay shell?
