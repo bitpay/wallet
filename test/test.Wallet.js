@@ -9,7 +9,7 @@ try {
   var copay = require('../copay'); //node
 }
 var Wallet = require('../js/models/core/Wallet');
-var Structure = require('../js/models/core/Structure');
+var Structure = copay.Structure;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
