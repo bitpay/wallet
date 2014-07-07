@@ -24,8 +24,7 @@ module.exports = function(copay) {
       // create the main window
       mainWindow = new BrowserWindow({
         width: config.window.width,
-        height: config.window.height,
-        "node-integration": "disable"
+        height: config.window.height
       });
 
       // hide the empty window
