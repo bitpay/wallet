@@ -13,6 +13,7 @@ var buffertools = bitcore.buffertools;
 var Builder = bitcore.TransactionBuilder;
 var SecureRandom = bitcore.SecureRandom;
 var Base58Check = bitcore.Base58.base58Check;
+var Address = bitcore.Address;
 
 var AddressIndex = require('./AddressIndex');
 var PublicKeyRing = require('./PublicKeyRing');
@@ -697,7 +698,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   opts = opts || {};
 
   var amountSat = bignum(amountSatStr);
-
+  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
   if (!pkr.isComplete()) {
     throw new Error('publicKeyRing is not complete');
   }
