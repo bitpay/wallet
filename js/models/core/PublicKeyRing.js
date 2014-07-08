@@ -80,7 +80,11 @@ PublicKeyRing.prototype.registeredCopayers = function() {
 };
 
 PublicKeyRing.prototype.isComplete = function() {
-  return this.registeredCopayers() === this.totalCopayers;
+  return this.remainingCopayers() == 0;
+};
+
+PublicKeyRing.prototype.remainingCopayers = function() {
+  return this.totalCopayers - this.registeredCopayers();
 };
 
 PublicKeyRing.prototype.getAllCopayerIds = function() {
@@ -361,13 +365,17 @@ PublicKeyRing.prototype.setBackupReady = function(copayerId) {
 }
 
 PublicKeyRing.prototype.isBackupReady = function(copayerId) {
-  var cid = this.myCopayerId();
+  var cid = copayerId || this.myCopayerId();
   return this.copayersBackup.indexOf(cid) != -1;
 }
 
 PublicKeyRing.prototype.isFullyBackup = function(copayerId) {
-  return this.copayersBackup.length == this.totalCopayers;
+  return this.remainingBackups() == 0;
 }
+
+PublicKeyRing.prototype.remainingBackups = function() {
+  return this.totalCopayers - this.copayersBackup.length;
+};
 
 PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   this._checkInPKR(inPKR, ignoreId);
