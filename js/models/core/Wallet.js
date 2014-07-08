@@ -327,6 +327,7 @@ Wallet.prototype.getRegisteredPeerIds = function() {
       var pid = this.network.peerFromCopayer(cid);
       this.registeredPeerIds.push({
         peerId: pid,
+        copayerId: cid,
         nick: this.publicKeyRing.nicknameForCopayer(cid),
         index: i,
       });
@@ -885,7 +886,8 @@ Wallet.prototype.isReady = function() {
 
 Wallet.prototype.setBackupReady = function() {
   this.publicKeyRing.setBackupReady();
-  this.emit('publicKeyRingUpdated', false);
+  this.sendPublicKeyRing();
+  this.store();
 };
 
 Wallet.prototype.signJson = function(payload) {
