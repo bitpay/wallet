@@ -15,6 +15,9 @@ function Storage(opts) {
 
 var pps = {};
 Storage.prototype._getPassphrase = function() {
+  if (!pps[this.__uniqueid])
+    throw new Error('No passprase set');
+
   return pps[this.__uniqueid];
 }
 
@@ -37,7 +40,6 @@ Storage.prototype._decrypt = function(base64) {
   var decryptedStr = null;
   try {
     var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
-
     if (decrypted)
       decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
   } catch (e) {
@@ -78,7 +80,7 @@ Storage.prototype.getGlobal = function(k) {
 
 // set value for key
 Storage.prototype.setGlobal = function(k, v) {
-  localStorage.setItem(k, JSON.stringify(v));
+  localStorage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v);
 };
 
 // remove value for key
@@ -110,12 +112,15 @@ Storage.prototype.setName = function(walletId, name) {
 };
 
 Storage.prototype.getName = function(walletId) {
-  return this.getGlobal('nameFor::' + walletId);
+  var ret = this.getGlobal('nameFor::' + walletId);
+
+  return ret;
 };
 
 Storage.prototype.getWalletIds = function() {
   var walletIds = [];
   var uniq = {};
+
   for (var i = 0; i < localStorage.length; i++) {
     var key = localStorage.key(i);
     var split = key.split('::');

@@ -10,7 +10,6 @@ module.exports.AddressIndex = require('./js/models/core/AddressIndex');
 // components
 var WebRTC = module.exports.WebRTC = require('./js/models/network/WebRTC');
 var Insight = module.exports.Insight = require('./js/models/blockchain/Insight');
-var StorageLocalPlain = module.exports.StorageLocalPlain = require('./js/models/storage/LocalPlain');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js/models/storage/LocalEncrypted');
 
 module.exports.WalletFactory = require('./js/models/core/WalletFactory');
