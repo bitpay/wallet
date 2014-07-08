@@ -75,6 +75,11 @@ describe('Unit: Testing Filters', function() {
       expect(removeEmpty([]).length).to.equal(0);
     }));
 
+    it('should work with undefined', inject(function($filter) {
+      var removeEmpty = $filter('removeEmpty');
+      expect(removeEmpty(undefined).length).to.equal(0);
+    }));
+
     it('should filter empty addresses from other copayers', inject(function($filter) {
       var removeEmpty = $filter('removeEmpty');
       var addresses = [{
