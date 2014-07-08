@@ -49,7 +49,6 @@ function Wallet(opts) {
   this.network.maxPeers = this.totalCopayers;
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
-  this.backupOffered = opts.backupOffered || false;
   this.publicKey = this.privateKey.publicHex;
 }
 
@@ -350,7 +349,6 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
-    backupOffered: this.backupOffered,
   };
 
   return walletObj;
@@ -359,7 +357,6 @@ Wallet.prototype.toObj = function() {
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
-  opts.backupOffered = o.backupOffered;
 
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
   opts.txProposals = TxProposals.fromObj(o.txProposals);

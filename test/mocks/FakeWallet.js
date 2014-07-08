@@ -15,6 +15,7 @@ var FakeWallet = function() {
       createdTs: 1403102115,
     }
   };
+  this.publicKeyRing = {isComplete: function(){ return true; }};
 };
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {

@@ -941,16 +941,6 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('#offerBackup', function() {
-    it('should work', function() {
-      var w = cachedCreateW2();
-      w.store = sinon.spy();
-      w.offerBackup();
-      w.backupOffered.should.equal(true);
-      w.store.calledOnce.should.equal(true);
-    });
-  });
-
   describe('#forceNetwork in config', function() {
     it('should throw if network is different', function() {
       var backup = copayConfig.forceNetwork;
@@ -960,5 +950,4 @@ describe('Wallet model', function() {
       copayConfig.forceNetwork = backup;
     });
   });
-
 });
