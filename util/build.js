@@ -63,6 +63,9 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeBlockchain', {
     expose: './mocks/FakeBlockchain'
   });
+  b.require('./test/mocks/FakeLocalStorage', {
+    expose: './mocks/FakeLocalStorage'
+  });
   b.require('./js/models/core/Wallet', {
     expose: '../js/models/core/Wallet'
   });

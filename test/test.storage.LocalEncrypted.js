@@ -15,29 +15,6 @@ CryptoJS.AES.decrypt = function(a) {
 
 
 
-//localstorage Mock
-ls = {};
-localStorage = {};
-localStorage.length = 0;
-localStorage.removeItem = function(key) {
-  delete ls[key];
-  this.length = Object.keys(ls).length;
-};
-
-localStorage.getItem = function(k) {
-  return ls[k];
-};
-
-
-localStorage.key = function(i) {
-  return Object.keys(ls)[i];
-};
-
-localStorage.setItem = function(k, v) {
-  ls[k] = v;
-  this.key[this.length] = k;
-  this.length = Object.keys(ls).length;
-};
 
 'use strict';
 var chai = chai || require('chai');
@@ -47,19 +24,25 @@ var LocalEncrypted = copay.StorageLocalEncrypted;
 
 var fakeWallet = 'fake-wallet-id';
 var timeStamp = Date.now();
-
+var localMock = require('./mocks/FakeLocalStorage');
 
 
 describe('Storage/LocalEncrypted model', function() {
-  var s = new LocalEncrypted();
+  var s = new LocalEncrypted({
+    localStorage: localMock,
+  });
   s._setPassphrase('mysupercoolpassword');
 
   it('should create an instance', function() {
-    var s2 = new LocalEncrypted();
+    var s2 = new LocalEncrypted({
+      localStorage: localMock,
+    });
     should.exist(s2);
   });
   it('should fail when encrypting without a password', function() {
-    var s2 = new LocalEncrypted();
+    var s2 = new LocalEncrypted({
+      localStorage: localMock,
+    });
     (function() {
       s2.set(fakeWallet, timeStamp, 1);
     }).should.throw();
@@ -67,11 +50,11 @@ describe('Storage/LocalEncrypted model', function() {
   it('should be able to encrypt and decrypt', function() {
     s._write(fakeWallet + timeStamp, 'value');
     s._read(fakeWallet + timeStamp).should.equal('value');
-    localStorage.removeItem(fakeWallet + timeStamp);
+    localMock.removeItem(fakeWallet + timeStamp);
   });
   it('should be able to set a value', function() {
     s.set(fakeWallet, timeStamp, 1);
-    localStorage.removeItem(fakeWallet + '::' + timeStamp);
+    localMock.removeItem(fakeWallet + '::' + timeStamp);
   });
   var getSetData = [
     1, 1000, -15, -1000,
@@ -95,14 +78,15 @@ describe('Storage/LocalEncrypted model', function() {
       s.set(fakeWallet, timeStamp, obj);
       var obj2 = s.get(fakeWallet, timeStamp);
       JSON.stringify(obj2).should.equal(JSON.stringify(obj));
-      localStorage.removeItem(fakeWallet + '::' + timeStamp);
+      localMock.removeItem(fakeWallet + '::' + timeStamp);
     });
   });
 
   describe('#export', function() {
     it('should export the encrypted wallet', function() {
       var storage = new LocalEncrypted({
-        password: 'password'
+        localStorage: localMock,
+        password: 'password',
       });
       storage.set(fakeWallet, timeStamp, 'testval');
       var obj = {
@@ -110,14 +94,15 @@ describe('Storage/LocalEncrypted model', function() {
       };
       var encrypted = storage.export(obj);
       encrypted.length.should.be.greaterThan(10);
-      localStorage.removeItem(fakeWallet + '::' + timeStamp);
+      localMock.removeItem(fakeWallet + '::' + timeStamp);
       //encrypted.slice(0,6).should.equal("53616c");
     });
   });
   describe('#_decryptObj', function() {
     it('should decrypt and Obj', function() {
       var storage = new LocalEncrypted({
-        password: 'password'
+        password: 'password',
+        localStorage: localMock,
       });
       storage._decryptObj('{"a":"2"}').should.deep.equal({
         a: "2"
@@ -129,6 +114,7 @@ describe('Storage/LocalEncrypted model', function() {
   describe('#remove', function() {
     it('should remove an item', function() {
       var s = new LocalEncrypted({
+        localStorage: localMock,
         password: 'password'
       });
       s.set('1', "hola", 'juan');
@@ -143,6 +129,7 @@ describe('Storage/LocalEncrypted model', function() {
   describe('#getWalletIds', function() {
     it('should get wallet ids', function() {
       var s = new LocalEncrypted({
+        localStorage: localMock,
         password: 'password'
       });
       s.set('1', "hola", 'juan');
@@ -154,79 +141,84 @@ describe('Storage/LocalEncrypted model', function() {
   describe('#getName #setName', function() {
     it('should get/set names', function() {
       var s = new LocalEncrypted({
+        localStorage: localMock,
         password: 'password'
       });
       s.setName(1, 'hola');
       s.getName(1).should.equal('hola');
     });
   });
-    describe('#getWallets', function() {
-      it('should retreive wallets from storage', function() {
-        var s = new LocalEncrypted({
-          password: 'password'
-        });
-        s.set('1', "hola", 'juan');
-        s.set('2', "hola", 'juan');
-        s.setName(1, 'hola');
-        s.getWallets()[0].should.deep.equal({
-          id: '1',
-          name: 'hola',
-        });
-        s.getWallets()[1].should.deep.equal({
-          id: '2',
-          name: undefined
-        });
+  describe('#getWallets', function() {
+    it('should retreive wallets from storage', function() {
+      var s = new LocalEncrypted({
+        localStorage: localMock,
+        password: 'password'
       });
-    });
-    describe('#deleteWallet', function() {
-      it('should delete a wallet', function() {
-        var s = new LocalEncrypted({
-          password: 'password'
-        });
-        s.set('1', "hola", 'juan');
-        s.set('2', "hola", 'juan');
-        s.setName(1, 'hola');
-
-        s.deleteWallet('1');
-        s.getWallets().length.should.equal(1);
-        s.getWallets()[0].should.deep.equal({
-          id: '2',
-          name: undefined
-        });
+      s.set('1', "hola", 'juan');
+      s.set('2', "hola", 'juan');
+      s.setName(1, 'hola');
+      s.getWallets()[0].should.deep.equal({
+        id: '1',
+        name: 'hola',
       });
-    });
-
-    describe('#setFromObj', function() {
-      it('set localstorage from an object', function() {
-        var s = new LocalEncrypted({
-          password: 'password'
-        });
-        s.setFromObj('id1', {
-          'key': 'val',
-          'opts': {
-            'name': 'nameid1'
-          },
-        });
-
-        s.get('id1', 'key').should.equal('val');
-
-      });
-    });
-
-
-    describe('#globals', function() {
-      it('should set, get and remove keys', function() {
-        var s = new LocalEncrypted({
-          password: 'password'
-        });
-        s.setGlobal('a', {
-          b: 1
-        });
-        JSON.parse(s.getGlobal('a')).should.deep.equal({
-          b: 1
-        });
-        s.removeGlobal('a');
-        should.not.exist(s.getGlobal('a'));
+      s.getWallets()[1].should.deep.equal({
+        id: '2',
+        name: undefined
       });
     });
   });
+  describe('#deleteWallet', function() {
+    it('should delete a wallet', function() {
+      var s = new LocalEncrypted({
+        localStorage: localMock,
+        password: 'password'
+      });
+      s.set('1', "hola", 'juan');
+      s.set('2', "hola", 'juan');
+      s.setName(1, 'hola');
+
+      s.deleteWallet('1');
+      s.getWallets().length.should.equal(1);
+      s.getWallets()[0].should.deep.equal({
+        id: '2',
+        name: undefined
+      });
+    });
+  });
+
+  describe('#setFromObj', function() {
+    it('set localstorage from an object', function() {
+      var s = new LocalEncrypted({
+        localStorage: localMock,
+        password: 'password'
+      });
+      s.setFromObj('id1', {
+        'key': 'val',
+        'opts': {
+          'name': 'nameid1'
+        },
+      });
+
+      s.get('id1', 'key').should.equal('val');
+
+    });
+  });
+
+
+  describe('#globals', function() {
+    it('should set, get and remove keys', function() {
+      var s = new LocalEncrypted({
+        localStorage: localMock,
+        password: 'password'
+      });
+      s.setGlobal('a', {
+        b: 1
+      });
+      JSON.parse(s.getGlobal('a')).should.deep.equal({
+        b: 1
+      });
+      s.removeGlobal('a');
+      should.not.exist(s.getGlobal('a'));
+    });
+  });
+});
