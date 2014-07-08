@@ -159,8 +159,8 @@ a.box-backup {
 
 .box-backup i {
   margin-bottom: 2rem;
-  display: block;
-}
+/*  display: block;
+*/}
 
 h3 {
   font-weight: 100;
