@@ -87,6 +87,12 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Message', {
     expose: '../js/models/core/Message'
   });
+  b.require('./config', {
+    expose: '../config'
+  }); 
+  b.require('./js/models/core/Structure', {
+    expose: '../js/models/core/Structure'
+  }); 
 
   if (opts.dontminify) {
     //include dev dependencies
