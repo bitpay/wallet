@@ -3,6 +3,7 @@
 var chai = chai || require('chai');
 var should = chai.should();
 
+var FakeStorage = require('./mocks/FakeLocalStorage');
 var copay = copay || require('../copay');
 var sinon = require('sinon');
 var FakeNetwork = require('./mocks/FakeNetwork');
@@ -50,6 +51,7 @@ describe('WalletFactory model', function() {
   it('should log', function() {
     var c2 = JSON.parse(JSON.stringify(config));
     c2.verbose = 1;
+    c2.Storage= FakeStorage;
     var wf = new WalletFactory(c2, '0.0.1');
     var save_console_log = console.log;
     console.log = function() {};
@@ -140,7 +142,12 @@ describe('WalletFactory model', function() {
 
   it('should import and update indexes', function() {
     var wf = new WalletFactory(config, '0.0.1');
-    var wallet = {id: "fake wallet", updateIndexes: function(cb) { cb(); }};
+    var wallet = {
+      id: "fake wallet",
+      updateIndexes: function(cb) {
+        cb();
+      }
+    };
     wf.fromEncryptedObj = sinon.stub().returns(wallet);
 
     var w = wf.import("encrypted", "password");
@@ -247,7 +254,7 @@ describe('WalletFactory model', function() {
     var wf = new WalletFactory(config, '0.0.1');
     var w = wf.create(opts);
     var walletId = w.id;
-    
+
     wf.read = sinon.stub().withArgs(walletId).returns(w);
     var wo = wf.open(walletId, opts);
     should.exist(wo);
@@ -261,7 +268,7 @@ describe('WalletFactory model', function() {
     };
     var wf = new WalletFactory(config, '0.0.1');
     var w = wf.create(opts);
-    (function() { 
+    (function() {
       wf._checkNetwork('livenet');
     }).should.throw();
   });
