@@ -9,9 +9,10 @@ Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to 
 
 When friends or company executives join a Copay wallet, more than one person must sign every transaction. If your computer is compromised and your private keys are stolen, the bitcoins are still safe. This is in addition to state-of-the-art encrypted storage and communication.
 
-## Disclosure
+## Before you start
 
-Please check 
+Please check [Copay Known Issues](https://github.com/bitpay/copay/wiki/Copay-Known-issues) before using Copay
+with real Bitcoins. 
 
 
 ## Installation
