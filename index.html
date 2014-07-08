@@ -823,16 +823,20 @@
     <script type="text/ng-template" id="backup.html">
       <div class="backup" ng-controller="BackupController">
         <h3>{{title}}</h3>
-        <div class="row">
-          <div class="large-4 medium-6 columns large-centered medium-centered">
-            <a class="panel radius box-backup text-center" ng-click="download()">
-              <i class="fi-download size-72"></i>
-              <p> Download File </p>
-            </a>
+        <div class="oh large-8 columns large-centered medium-centered panel radius box-backup">
+          <h4 class="large-12 columns"><i class="fi-download m10r"></i> Backup </h4>
+          <p class="large-8 columns text-gray"> Its important to back up your wallet so that you can recover your wallet in case of disaster </p>
+          <div class="large-4 columns">
+            <a class="button radius secondary expand" ng-click="download()">Download File</a>
           </div>
         </div>
-        <div class="row text-center">
-          <div class="button radius warning small m30v" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()"><i class="fi-minus-circle large"></i> Delete this wallet from this computer</div>
+        <div class="large-8 columns large-centered line-dashed"> </div>
+        <div class="oh large-8 columns large-centered medium-centered panel radius box-backup">
+          <h4 class="large-12 columns"><i class="fi-minus-circle m10r"></i> Delete Wallet </h4>
+          <p class="large-8 columns text-gray"> If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet. </p>
+          <div class="large-4 columns">
+            <a class="button radius warning expand" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()"> Delete</a>
+          </div>
         </div>
       </div>
     </script>
