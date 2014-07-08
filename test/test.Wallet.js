@@ -360,6 +360,20 @@ describe('Wallet model', function() {
     }, w.reconnectDelay * callCount * (callCount + 1) / 2);
   });
 
+  it('#isReady', function() {
+    var w = createW();
+    w.publicKeyRing.isComplete().should.equal(false);
+    w.isReady().should.equal(false);
+
+    var w2 = createW2();
+    w2.publicKeyRing.isComplete().should.equal(true);
+    w2.isReady().should.equal(false);
+
+    w2.publicKeyRing.copayersBackup = ["a", "b", "c"];
+    w2.publicKeyRing.isFullyBackup().should.equal(true);
+    w2.isReady().should.equal(true);
+  });
+
   it('handle network indexes correctly', function() {
     var w = createW();
     var aiObj = {
