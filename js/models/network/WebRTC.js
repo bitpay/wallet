@@ -288,9 +288,9 @@ Network.prototype._handlePeerConnection = function(dataConn) {
 
 Network.prototype._setupPeerHandlers = function(openCallback) {
   var p = this.peer;
-  p.on('open', this._handlePeerOpen.bind(openCallback));
-  p.on('error', this._handlePeerError);
-  p.on('connection', this._handlePeerConnection);
+  p.on('open', this._handlePeerOpen.bind(this, openCallback));
+  p.on('error', this._handlePeerError.bind(this));
+  p.on('connection', this._handlePeerConnection.bind(this));
 };
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
