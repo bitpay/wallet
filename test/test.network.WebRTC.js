@@ -28,7 +28,6 @@ describe('Network / WebRTC', function() {
       n.cleanUp.calledOnce.should.equal(true);
       WebRTC.prototype.cleanUp = save;
     });
-
   });
 
   describe('#cleanUp', function() {
@@ -44,7 +43,78 @@ describe('Network / WebRTC', function() {
       expect(n.privkey).to.equal(null);
     });
 
+    it('should remove handlers', function() {
+      var n = new WebRTC();
+      var save = WebRTC.prototype.removeAllListeners;
+      var spy = WebRTC.prototype.removeAllListeners = sinon.spy();
+      n.cleanUp();
+      spy.calledOnce.should.equal(true);
+      WebRTC.prototype.removeAllListeners = save;
+    });
   });
+
+
+  describe('#_setupPeerHandlers', function() {
+    var n = new WebRTC();
+    n.peer = {};
+    var spy = n.peer.on = sinon.spy();
+    it('should setup handlers', function() {
+      n._setupPeerHandlers();
+      spy.calledWith('connection').should.equal(true);
+      spy.calledWith('open').should.equal(true);
+      spy.calledWith('error').should.equal(true);
+    });
+  });
+
+  describe('#_handlePeerOpen', function() {
+    var n = new WebRTC();
+    it('should call openCallback handler', function(done) {
+      n.peerId = 1;
+      n.copayerId = 2;
+      n._handlePeerOpen(function() {
+        n.connectedPeers.should.deep.equal([1]);
+        n.copayerForPeer.should.deep.equal({
+          1: 2
+        });
+        done();
+      });
+    });
+  });
+
+  describe('#_handlePeerError', function() {
+    var log = console.log;
+    var n = new WebRTC();
+    it('should call _checkAnyPeer on could not connect error', function() {
+      var save = n._checkAnyPeer;
+      var spy = n._checkAnyPeer = sinon.spy();
+      var logSpy = console.log = sinon.spy();
+      n._handlePeerError({
+        message: 'Could not connect to peer xxx'
+      });
+      console.log = log;
+      spy.called.should.equal(true);
+      logSpy.called.should.equal(true);
+      n._checkAnyPeer = save;
+    });
+
+    it('should call not call _checkAnyPeer other error', function() {
+      var save = n._checkAnyPeer;
+      var spy = n._checkAnyPeer = sinon.spy();
+      var otherMessage = 'Could connect to peer xxx';
+      var logSpy = console.log = sinon.spy();
+      n._handlePeerError({
+        message: otherMessage,
+      });
+      console.log = log;
+      spy.called.should.equal(false);
+      n.criticalError.should.equal(otherMessage);
+      logSpy.called.should.equal(true);
+      n._checkAnyPeer = save;
+    });
+
+  });
+
+
 
   describe('#_encode', function() {
 
