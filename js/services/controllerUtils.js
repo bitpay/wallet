@@ -67,9 +67,30 @@ angular.module('copayApp.services')
       $rootScope.isCollapsed = true;
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
         if (txAlertCount && txAlertCount > 0) {
+
           notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
         }
       });
+
+
+      $rootScope.$watch('receivedFund', function(receivedFund) {
+        if (receivedFund) {
+          var currentAddr;
+          for (var i = 0; i < $rootScope.addrInfos.length; i++) {
+            var addrinfo = $rootScope.addrInfos[i];
+            if (addrinfo.address.toString() == receivedFund[1] && !addrinfo.isChange) {
+              currentAddr = addrinfo.address.toString();
+              break;
+            }
+          }
+          if (currentAddr) {
+            //var beep = new Audio('sound/transaction.mp3');
+            notification.funds('Received fund', currentAddr, receivedFund);
+            //beep.play();
+          }
+        }
+      });
+
     };
 
 
