@@ -125,4 +125,5 @@ var defaultConfig = {
   disableVideo: true,
   verbose: 1,
 };
-module.exports = defaultConfig;
+if (typeof module !== 'undefined')
+  module.exports = defaultConfig;
