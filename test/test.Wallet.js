@@ -360,6 +360,20 @@ describe('Wallet model', function() {
     }, w.reconnectDelay * callCount * (callCount + 1) / 2);
   });
 
+  it('#isReady', function() {
+    var w = createW();
+    w.publicKeyRing.isComplete().should.equal(false);
+    w.isReady().should.equal(false);
+
+    var w2 = createW2();
+    w2.publicKeyRing.isComplete().should.equal(true);
+    w2.isReady().should.equal(false);
+
+    w2.publicKeyRing.copayersBackup = ["a", "b", "c"];
+    w2.publicKeyRing.isFullyBackup().should.equal(true);
+    w2.isReady().should.equal(true);
+  });
+
   it('handle network indexes correctly', function() {
     var w = createW();
     var aiObj = {
@@ -941,16 +955,6 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('#offerBackup', function() {
-    it('should work', function() {
-      var w = cachedCreateW2();
-      w.store = sinon.spy();
-      w.offerBackup();
-      w.backupOffered.should.equal(true);
-      w.store.calledOnce.should.equal(true);
-    });
-  });
-
   describe('#forceNetwork in config', function() {
     it('should throw if network is different', function() {
       var backup = copayConfig.forceNetwork;
@@ -960,5 +964,4 @@ describe('Wallet model', function() {
       copayConfig.forceNetwork = backup;
     });
   });
-
 });

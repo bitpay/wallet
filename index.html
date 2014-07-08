@@ -121,12 +121,10 @@
                       src="./img/satoshi.gif"
                     />
                   </span>
-                  <span ng-show="c.index==0">
-                    <p><b>you</b></p>
-                  </span>
-                  <span ng-show="c.index>0">
-                    <p><b>{{c.nick}}</b></p>
-                    <small>[SIN: {{c.peerId}}]</small>
+                  <span>
+                    <p><b ng-show="c.index==0">you</b><b ng-show="c.index>0">{{c.nick}}</b>
+                    <span class="success label" ng-show="$root.wallet.publicKeyRing.isBackupReady(c.copayerId)">Backup ready</span></p>
+                    <small>[ID: {{c.peerId}}]</small>
                   </span>
                 </div>
 
@@ -140,24 +138,34 @@
           <div class="large-12 columns">
             <div class="line-dashed"></div>
             <button class="button primary radius right"
-              ng-click="backupAndOpen()"
+              ng-click="backup()"
+              ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
               ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
               <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
-                Backup keys and continue
+                Backup wallet
               </span>
               <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
-                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()>1">
-                {{$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers() }} people have
+                <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
+                {{ $root.wallet.publicKeyRing.remainingCopayers() }} people have
                 </span>
-                <span ng-show="$root.wallet.publicKeyRing.totalCopayers - $root.wallet.publicKeyRing.registeredCopayers()==1">
+                <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
                 One person has
                 </span>
                 yet to join.
               </span>
-
-
             </button>
-            <!-- <a href="" class="db p10t left" ng-disabled="!$root.wallet.publicKeyRing.isComplete()">Skip Backup</a> -->
+            <button class="button primary radius right"
+              disabled="disabled"
+              ng-show="$root.wallet.publicKeyRing.isBackupReady()">
+              <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
+                {{ $root.wallet.publicKeyRing.remainingBackups() }} people have
+                </span>
+                <span ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
+                One person has
+                </span>
+                yet to backup the wallet.
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -221,7 +229,7 @@
       </div>
       <div class="large-9 medium-8 small-12 columns">
         <!-- <div class="bottom&#45;copay" ng&#45;repeat="c in $root.wallet.getRegisteredPeerIds()" class="has&#45;tip" tooltip&#45;popup&#45;delay="1000" tooltip&#45;placement="top" tooltip="{{c.nick}}"> -->
-        <div class="bottom-copay" ng-repeat="c in $root.wallet.getRegisteredPeerIds()" tooltip="SIN: {{c.peerId}}" tooltip-placement="left">
+        <div class="bottom-copay" ng-repeat="c in $root.wallet.getRegisteredPeerIds()" tooltip="ID: {{c.peerId}}" tooltip-placement="left">
           <video ng-if="$root.videoInfo[c.peerId]"
             avatar peer="{{c}}"
             autoplay

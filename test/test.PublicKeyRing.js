@@ -29,9 +29,11 @@ var createW = function(networkName) {
   var copayers = [];
   for (var i = 0; i < 5; i++) {
     w.isComplete().should.equal(false);
+    w.remainingCopayers().should.equal(5-i);
     var newEpk = w.addCopayer();
     copayers.push(newEpk);
   }
+  w.isComplete().should.equal(true);
   w.walletId = '1234567';
 
   return {
@@ -176,6 +178,63 @@ describe('PublicKeyRing model', function() {
     w.getIndex(k.pub).getReceiveIndex().should.equal(2);
   });
 
+  it('should set backup ready', function() {
+    var w = createW().w;
+    w.isBackupReady().should.equal(false);
+    w.setBackupReady();
+    w.isBackupReady().should.equal(true);
+  });
+
+  it('should set backup ready', function() {
+    var w = createW().w;
+    w.isBackupReady().should.equal(false);
+    w.setBackupReady();
+    w.isBackupReady().should.equal(true);
+  });
+
+  it('should check for other backups', function() {
+    var w = createW().w;
+    w.remainingBackups().should.equal(5);
+    w.isFullyBackup().should.equal(false);
+
+    w.setBackupReady();
+    w.remainingBackups().should.equal(4);
+    w.isFullyBackup().should.equal(false);
+
+    w.copayersBackup = ["a", "b", "c", "d", "e"];
+    w.remainingBackups().should.equal(0);
+    w.isFullyBackup().should.equal(true);
+  });
+
+  it('should merge backup', function() {
+    var w = createW().w;
+
+    w.copayersBackup = ["a", "b"];
+    var hasChanged = w.mergeBackups(["b", "c"]);
+    w.copayersBackup.length.should.equal(3);
+    hasChanged.should.equal(true);
+
+    w.copayersBackup = ["a", "b", "c"];
+    var hasChanged = w.mergeBackups(["b", "c"]);
+    w.copayersBackup.length.should.equal(3);
+    hasChanged.should.equal(false);
+  });
+
+  it('should merge backup tests', function() {
+    var w = createW().w;
+
+    var w2 = new PublicKeyRing({
+      networkName: 'livenet',
+      walletId: w.walletId,
+    });
+    w.merge(w2).should.equal(false);
+    w.remainingBackups().should.equal(5);
+
+    w2.setBackupReady();
+    w.merge(w2).should.equal(true);
+    w.remainingBackups().should.equal(4);
+  });
+
   it('#merge index tests', function() {
     var k = createW();
     var w = k.w;
@@ -195,7 +254,6 @@ describe('PublicKeyRing model', function() {
     w2.getIndex(k.pub).getChangeIndex().should.equal(2);
     w2.getIndex(k.pub).getReceiveIndex().should.equal(3);
 
-    //
     w2.merge(w).should.equal(false);
   });
 
@@ -267,8 +325,6 @@ describe('PublicKeyRing model', function() {
     (function() {
       w.merge(wx);
     }).should.throw();
-
-
   });
 
 

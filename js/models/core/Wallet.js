@@ -49,7 +49,6 @@ function Wallet(opts) {
   this.network.maxPeers = this.totalCopayers;
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
-  this.backupOffered = opts.backupOffered || false;
   this.publicKey = this.privateKey.publicHex;
 }
 
@@ -327,6 +326,7 @@ Wallet.prototype.getRegisteredPeerIds = function() {
       var pid = this.network.peerFromCopayer(cid);
       this.registeredPeerIds.push({
         peerId: pid,
+        copayerId: cid,
         nick: this.publicKeyRing.nicknameForCopayer(cid),
         index: i,
       });
@@ -349,7 +349,6 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
-    backupOffered: this.backupOffered,
   };
 
   return walletObj;
@@ -358,7 +357,6 @@ Wallet.prototype.toObj = function() {
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
-  opts.backupOffered = o.backupOffered;
 
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
   opts.txProposals = TxProposals.fromObj(o.txProposals);
@@ -879,12 +877,13 @@ Wallet.prototype.toggleAddressBookEntry = function(key) {
 };
 
 Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && this.backupOffered;
+  var ret = this.publicKeyRing.isComplete() && this.publicKeyRing.isFullyBackup();
   return ret;
 };
 
-Wallet.prototype.offerBackup = function() {
-  this.backupOffered = true;
+Wallet.prototype.setBackupReady = function() {
+  this.publicKeyRing.setBackupReady();
+  this.sendPublicKeyRing();
   this.store();
 };
 
