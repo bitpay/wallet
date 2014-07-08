@@ -56,3 +56,34 @@ To install the APK in your device run:
 ```
 adb install -r Copay_VERSION_arm.apk
 ```
+
+
+# Development
+
+## Native Shell
+
+To add features that enhance the native experience of Copay, first follow the
+directions above under "Running in the Native Shell". It's important to ensure
+that functionality within this context should either hook into existing features
+or supplement the experience of those features. Copay should continue to operate
+full-featured from within a modern web browser.
+
+Shell functionality works by sending and receiving messages between the Copay
+application and the shell wrapper. Native functionality should be handled mostly
+from within `shell/lib/message-handler.js`, which receives messages conditionally
+from the front-end Angular controllers.
+
+Look at `js/shell.js` to see how we determine if Copay is running from within the
+native shell context. If we are running within the shell, Copay has access to the
+global variable `window.cshell`, which provides access to the messenger. For
+instance, to Copay might want to use a native dialog alert in favor of a regular
+one if running in this context. You would do this like so:
+
+```js
+if (window.cshell) {
+  window.cshell.send('alert', 'info', 'Please select a wallet.');
+}
+else {
+  window.alert('Please select a wallet.');
+}
+```
