@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeaderController',
-  function($scope, $rootScope, $location, notification, $http, controllerUtils, backupService) {
+  function($scope, $rootScope, $location, notification, $http, $sce, controllerUtils, backupService) {
     $scope.menu = [{
       'title': 'Addresses',
       'icon': 'fi-address-book',
@@ -91,6 +91,24 @@ angular.module('copayApp.controllers').controller('HeaderController',
       var w = $rootScope.wallet;
       w.offerBackup();
       backupService.download(w);
+    };
+
+    $scope.getVideoURL = function(copayer) {
+      if (config.disableVideo) return;
+
+      var vi = $rootScope.videoInfo[copayer]
+      if (!vi) return;
+
+      if ($rootScope.wallet.getOnlinePeerIDs().indexOf(copayer) === -1) {
+        // peer disconnected, remove his video
+        delete $rootScope.videoInfo[copayer]
+        return;
+      }
+
+      var encoded = vi.url;
+      var url = decodeURI(encoded);
+      var trusted = $sce.trustAsResourceUrl(url);
+      return trusted;
     };
 
   });
