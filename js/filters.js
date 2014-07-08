@@ -19,6 +19,7 @@ angular.module('copayApp.filters', [])
   })
   .filter('removeEmpty', function() {
     return function(elements) {
+      elements = elements || [];
       // Hide empty addresses from other copayers
       return elements.filter(function(e) {
         return e.owned || e.balance > 0;
