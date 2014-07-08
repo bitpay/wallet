@@ -172,6 +172,9 @@ new addresses to receive payments into the wallet, for example) new public keys 
 original extended public keys. Each participant keeps their own private keys locally. Private keys are not shared.
 Private keys are used to sign transaction proposals to make a payment from the shared wallet.
 
+Addresses are generated using the procedure described on [https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki].
+
+
 Serverless web
 --------------
 *Copay* software does not need an application server to run. All the software is implemented in client-side
@@ -197,36 +200,28 @@ certificate.
 
 Security model
 --------------
-On top of webRTC, *Copay* peers authenticate as part of the "wallet ring"(WR) using an identity
-key and a network key.
+On top of webRTC, *Copay* peers encrypt and sign each message using 
+ECIES (a.k.a. asynchronous encryptio) as decribed on
+[http://en.wikipedia.org/wiki/Integrated_Encryption_Scheme].
+
 
 The *identity key* is a ECDSA public key derived from the participant's extended public
 key using a specific BIP32 branch. This special public key is never used for Bitcoin address creation, and
 should only be known by members of the WR.
 In *Copay* this special public key is named *copayerId*.  The copayerId is hashed and the hash is used to
-register with the peerjs server. Registering with a hash avoids disclosing the copayerId to parties outside of the WR.
+register with the peerjs server (See SINs at https://en.bitcoin.it/wiki/Identity_protocol_v1). This hash
+is named *peerId*.
+
+Registering with a hash avoids disclosing the copayerId to parties outside of the WR.
 Peer discovery is accomplished using only the hashes of the WR members' copayerIds. All members of the WR
 know the full copayerIds of all the other members of the WR.
 
-The *network key* is a random key generated and distributed among the wallet members during wallet creation.
-The network key is stored by each peer in the wallet configuration. The network key is used in establishing a CCM/AES
-authenticated encrypted channel between all members of the WR, on top of webRTC. Use of this
-*network key* prevents man-in-the-middle attacks from a compromised peerjs server.
-
 Secret String
 -------------
-When a wallet is created, a secret string is provided to invite new peers to the new wallet. This string
-has the following format:
+When a wallet is been created, a secret string is provided to invite new peers to the new wallet. This string
+is the *peerId* of the wallet creator, and it is necessary for the other peers to find the wallet. Once
+the other peers join, all public keys (*copayerId*s) are stored by each peer, so peers can find each other
+with out sharing extra information.
 
-  - CopayerId of the peer generating the string. This is a 33 byte ECDSA public key, as explained above.
-This allows the receiving peer to locate the generating peer.
-  - Network Key. A 8 byte string to encrypt and sign the peers communication.
+For added security and to prevent Man-on-the-middle Attacks on the peerJS server, peers should check each other's IDs (*peerIDs*), during wallet creation. That information is shown on the setup screen.
 
-The string is encoded using Bitcoin's Base58Check encoding, to prevent transmission errors.
-
-Peer Authentication
--------------------
-
-It is important to note that - except for private keys - *all data* in the wallet is shared with *all members of the wallet*.
-Private keys are never shared with anyone and are never sent over the network. There are no *private* messages between
-individual members of the wallet. All members of a wallet see everything that happens in that wallet.
