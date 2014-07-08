@@ -8,9 +8,14 @@ function Storage(opts) {
   opts = opts || {};
 
   this.__uniqueid = ++id;
-
   if (opts.password)
     this._setPassphrase(opts.password);
+
+  if (opts.localStorage) {
+    this.localStorage = opts.localStorage;
+  } else if (localStorage) {
+  this.localStorage = localStorage;
+}
 }
 
 var pps = {};
@@ -56,7 +61,7 @@ Storage.prototype._decryptObj = function(base64) {
 
 Storage.prototype._read = function(k) {
   var ret;
-  ret = localStorage.getItem(k);
+  ret = this.localStorage.getItem(k);
   if (!ret) return null;
   ret = this._decrypt(ret);
   if (!ret) return null;
@@ -69,23 +74,23 @@ Storage.prototype._write = function(k, v) {
   v = JSON.stringify(v);
   v = this._encrypt(v);
 
-  localStorage.setItem(k, v);
+  this.localStorage.setItem(k, v);
 };
 
 // get value by key
 Storage.prototype.getGlobal = function(k) {
-  var item = localStorage.getItem(k);
+  var item = this.localStorage.getItem(k);
   return item == 'undefined' ? undefined : item;
 };
 
 // set value for key
 Storage.prototype.setGlobal = function(k, v) {
-  localStorage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v);
+  this.localStorage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v);
 };
 
 // remove value for key
 Storage.prototype.removeGlobal = function(k) {
-  localStorage.removeItem(k);
+  this.localStorage.removeItem(k);
 };
 
 Storage.prototype._key = function(walletId, k) {
@@ -121,8 +126,8 @@ Storage.prototype.getWalletIds = function() {
   var walletIds = [];
   var uniq = {};
 
-  for (var i = 0; i < localStorage.length; i++) {
-    var key = localStorage.key(i);
+  for (var i = 0; i < this.localStorage.length; i++) {
+    var key = this.localStorage.key(i);
     var split = key.split('::');
     if (split.length == 2) {
       var walletId = split[0];
@@ -155,8 +160,8 @@ Storage.prototype.deleteWallet = function(walletId) {
   var toDelete = {};
   toDelete['nameFor::' + walletId] = 1;
 
-  for (var i = 0; i < localStorage.length; i++) {
-    var key = localStorage.key(i);
+  for (var i = 0; i < this.localStorage.length; i++) {
+    var key = this.localStorage.key(i);
     var split = key.split('::');
     if (split.length == 2 && split[0] === walletId) {
       toDelete[key] = 1;
@@ -178,7 +183,7 @@ Storage.prototype.setFromObj = function(walletId, obj) {
 
 // remove all values
 Storage.prototype.clearAll = function() {
-  localStorage.clear();
+  this.localStorage.clear();
 };
 
 Storage.prototype.export = function(obj) {

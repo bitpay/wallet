@@ -9,7 +9,6 @@ var Wallet = require('./Wallet');
 
 var WebRTC = module.exports.WebRTC = require('../network/WebRTC');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
-//var StorageLocalPlain = module.exports.StorageLocalPlain = require('../storage/LocalPlain');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
 
 /*
