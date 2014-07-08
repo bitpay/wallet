@@ -89,8 +89,8 @@ angular.module('copayApp.controllers').controller('HeaderController',
 
     $scope.backup = function() {
       var w = $rootScope.wallet;
-      backupService.download(w);
       w.setBackupReady();
+      backupService.download(w);
     };
 
     $scope.getVideoURL = function(copayer) {
