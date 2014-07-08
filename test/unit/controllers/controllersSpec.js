@@ -41,10 +41,6 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it('Should have a Backup controller', function() {
-      expect(scope.title).equal('Settings');
-    });
-
     it('Backup controller #download', function() {
       scope.wallet.setEnc('1234567');
       expect(saveAsLastCall).equal(null);

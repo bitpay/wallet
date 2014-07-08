@@ -15,8 +15,8 @@ angular.module('copayApp.controllers').controller('HeaderController',
       'icon': 'fi-arrow-right',
       'link': '#/send'
     }, {
-      'title': 'Settings',
-      'icon': 'fi-wrench',
+      'title': 'More...',
+      'icon': 'fi-download',
       'link': '#/backup'
     }];
 
