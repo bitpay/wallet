@@ -72,14 +72,17 @@ require('copay').start(3000, function(location) {
 
 ## Tests
 
-Open test/index.html in your browser to test the models. Install and run karma
+Open test/index.html in your browser to test models. Install and run karma
 to test the services and controllers.
 
 
 ## Configuration
 
-Default configuration can be found in the config.js file.
-See config.js for more info on configuration options.
+The default configuration can be found in the config.js file.
+See config.js for more info. This
+configuration could be partially overidden with the options set at
+the "Settings" tab.
+
 
 
 ## Troubleshooting
@@ -98,33 +101,6 @@ One solution is to use Copay with a Python version manager for 2.6.
 
 # Development
 
-## Native Shell
-
-To add features that enhance the native experience of Copay, first follow the
-directions above under "Running in the Native Shell". It's important to ensure
-that functionality within this context should either hook into existing features
-or supplement the experience of those features. Copay should continue to operate
-full-featured from within a modern web browser.
-
-Shell functionality works by sending and receiving messages between the Copay
-application and the shell wrapper. Native functionality should be handled mostly
-from within `shell/lib/message-handler.js`, which receives messages conditionally
-from the front-end Angular controllers.
-
-Look at `js/shell.js` to see how we determine if Copay is running from within the
-native shell context. If we are running within the shell, Copay has access to the
-global variable `window.cshell`, which provides access to the messenger. For
-instance, to Copay might want to use a native dialog alert in favor of a regular
-one if running in this context. You would do this like so:
-
-```js
-if (window.cshell) {
-  window.cshell.send('alert', 'info', 'Please select a wallet.');
-}
-else {
-  window.alert('Please select a wallet.');
-}
-```
 
 ## Google Chrome Extension
 
@@ -169,32 +145,6 @@ $ sh webapp/build.sh
 - The ZIP file is *webapp/download/copay.zip*
 - The *webapp/copay-webapp* is the unzipped version
 
-## Android APK
-
-System Requirements
-
-* Download [Android SDK](http://developer.android.com/sdk/index.html)
-* Download and install [Crosswalk](https://crosswalk-project.org/#documentation/getting_started) (Use Linux setup for OSX)
-
-Add to your ~/.bash_profile or ~/.bashrc
-
-```
-export CROSSWALK="<path to Crosswalk directory>"
-```
-
-To build the APK run the script:
-
-```
-sh android/build.sh [-d]
-```
-- The -d flag will package the apk in debug mode, allowing [remote debugging chrome](https://developer.chrome.com/devtools/docs/remote-debugging)
-- The APK file is in **android/Copay_VERSION_arm.apk**
-
-To install the APK in your device run:
-
-```
-adb install -r Copay_VERSION_arm.apk
-```
 
 
 # About Copay
