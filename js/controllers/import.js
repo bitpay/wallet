@@ -31,6 +31,12 @@ angular.module('copayApp.controllers').controller('ImportController',
           return;
         }
 
+        if (!w.isReady()) {
+          $rootScope.wallet = w;
+          controllerUtils.startNetwork($rootScope.wallet, $scope);
+          return;
+        }
+
         w.updateIndexes(function(err) {
           updateStatus('Importing wallet - We are almost there...');
           if (err) {
