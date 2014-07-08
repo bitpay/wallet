@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
     $scope.networkPort = config.network.port;
     $scope.networkSecure = config.network.secure || false;
     $scope.disableVideo = typeof config.disableVideo === undefined ? true : config.disableVideo;
+    $scope.forceNetwork = config.forceNetwork;
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
