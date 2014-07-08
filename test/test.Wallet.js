@@ -8,6 +8,7 @@ try {
 } catch (e) {
   var copay = require('../copay'); //node
 }
+var copayConfig = require('../config');
 var Wallet = require('../js/models/core/Wallet');
 var Structure = copay.Structure;
 var Storage = require('./mocks/FakeStorage');
@@ -947,6 +948,16 @@ describe('Wallet model', function() {
       w.offerBackup();
       w.backupOffered.should.equal(true);
       w.store.calledOnce.should.equal(true);
+    });
+  });
+
+  describe('#forceNetwork in config', function() {
+    it('should throw if network is different', function() {
+      var backup = copayConfig.forceNetwork;
+      copayConfig.forceNetwork = true;
+      config.networkName = 'livenet';
+      cachedCreateW2.should.throw(Error);
+      copayConfig.forceNetwork = backup;
     });
   });
 
