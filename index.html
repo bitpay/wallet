@@ -845,8 +845,15 @@
           <div class="small-12 medium-6 medium-centered large-6 large-centered columns">
             <fieldset>
               <legend>Bitcoin Network</legend>
-              <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()">
-              <label for="network-name">Livenet</label>
+              <div ng-if="!forceNetwork">
+                <input id="network-name" type="checkbox" ng-model="networkName"
+                 ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()">
+                <label for="network-name">Livenet</label>
+              </div>
+              <div ng-if="forceNetwork">
+                Network has been fixed to <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a>
+                 for options to use Copay on both livenet and testnet.
+              </div>
             </fieldset>
             <fieldset>
               <legend>Wallet Unit</legend>
