@@ -61,6 +61,7 @@ Network.prototype.cleanUp = function() {
   }
   this.closing = 0;
   this.tries = 0;
+  this.removeAllListeners();
 };
 
 Network.parent = EventEmitter;
@@ -259,35 +260,38 @@ Network.prototype._setupConnectionHandlers = function(dataConn, toCopayerId) {
   });
 };
 
-Network.prototype._setupPeerHandlers = function(openCallback) {
-  var self = this;
-  var p = this.peer;
-
-  p.on('open', function() {
-    self.connectedPeers = [self.peerId];
-    self.copayerForPeer[self.peerId] = self.copayerId;
-    return openCallback();
-  });
-
-  p.on('error', function(err) {
-    console.log('RECV ERROR: ', err); //TODO
-    if (!err.message.match(/Could\snot\sconnect\sto peer/)) {
-      self.criticalError = err.message;
-    }
-  });
-
-  p.on('connection', function(dataConn) {
-    if (self.connectedPeers.length >= self.maxPeers) {
-      dataConn.on('open', function() {
-        dataConn.close();
-      });
-    } else {
-      self._setInboundPeerAuth(dataConn.peer, false);
-      self._setupConnectionHandlers(dataConn);
-    }
-  });
+Network.prototype._handlePeerOpen = function(openCallback) {
+  this.connectedPeers = [this.peerId];
+  this.copayerForPeer[this.peerId] = this.copayerId;
+  return openCallback();
 };
 
+Network.prototype._handlePeerError = function(err) {
+  console.log('RECV ERROR: ', err);
+  if (err.message.match(/Could\snot\sconnect\sto peer/)) {
+    this._checkAnyPeer();
+  } else {
+    this.criticalError = err.message;
+  }
+};
+
+Network.prototype._handlePeerConnection = function(dataConn) {
+  if (this.connectedPeers.length >= self.maxPeers) {
+    dataConn.on('open', function() {
+      dataConn.close();
+    });
+  } else {
+    this._setInboundPeerAuth(dataConn.peer, false);
+    this._setupConnectionHandlers(dataConn);
+  }
+};
+
+Network.prototype._setupPeerHandlers = function(openCallback) {
+  var p = this.peer;
+  p.on('open', this._handlePeerOpen.bind(openCallback));
+  p.on('error', this._handlePeerError);
+  p.on('connection', this._handlePeerConnection);
+};
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
   if (!this.copayerForPeer[peerId]) {
@@ -296,7 +300,6 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
     } else {}
   }
 };
-
 
 Network.prototype._setInboundPeerAuth = function(peerId, isAuthenticated) {
   this.isInboundPeerAuth[peerId] = isAuthenticated;
@@ -349,12 +352,14 @@ Network.prototype.start = function(opts, openCallback) {
       self.peer = new Peer(self.peerId, self.opts);
       self.started = true;
       self._setupPeerHandlers(openCallback);
+
       setTimeout(setupPeer, 3000); // Schedule retry
       return;
     }
     if (self.criticalError && self.criticalError.match(/taken/)) {
       self.criticalError = ' Looks like you are already connected to this wallet please close all other Copay Wallets '
     }
+
     self.emit('serverError', self.criticalError);
     self.cleanUp();
   }
