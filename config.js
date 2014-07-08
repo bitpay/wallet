@@ -2,6 +2,7 @@
 var defaultConfig = {
   // DEFAULT network (livenet or testnet)
   networkName: 'livenet',
+  forceNetwork: false,
 
   // DEFAULT unit: Bit
   unitName: 'bits',
@@ -124,3 +125,5 @@ var defaultConfig = {
   disableVideo: true,
   verbose: 1,
 };
+if (typeof module !== 'undefined')
+  module.exports = defaultConfig;

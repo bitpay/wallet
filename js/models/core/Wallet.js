@@ -19,6 +19,7 @@ var AddressIndex = require('./AddressIndex');
 var PublicKeyRing = require('./PublicKeyRing');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
+var copayConfig = require('../../../config');
 
 function Wallet(opts) {
   var self = this;
@@ -33,6 +34,9 @@ function Wallet(opts) {
       throw new Error('missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
+  if (copayConfig.forceNetwork && opts.networkName !== copayConfig.networkName)
+    throw new Error('Network forced to '+copayConfig.networkName+
+        ' and tried to create a Wallet with network '+opts.networkName);
 
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
