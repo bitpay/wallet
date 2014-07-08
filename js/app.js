@@ -7,6 +7,9 @@ if (localConfig) {
   var count = 0;
   for (name in localConfig) {
     if (localConfig.hasOwnProperty(name)) {
+      if (name === 'networkName' && config['forceNetwork']) {
+        continue;
+      }
       config[name] = localConfig[name];
     }
   }
