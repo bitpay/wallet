@@ -87,9 +87,9 @@ angular.module('copayApp.controllers').controller('HeaderController',
       window.onbeforeunload = undefined;
     });
 
-    $scope.backupAndOpen = function() {
+    $scope.backup = function() {
       var w = $rootScope.wallet;
-      w.offerBackup();
+      w.setBackupReady();
       backupService.download(w);
     };
 
