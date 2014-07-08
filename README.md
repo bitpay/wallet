@@ -9,8 +9,12 @@ Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to 
 
 When friends or company executives join a Copay wallet, more than one person must sign every transaction. If your computer is compromised and your private keys are stolen, the bitcoins are still safe. This is in addition to state-of-the-art encrypted storage and communication.
 
+## Disclosure
 
-## Installation:
+Please check 
+
+
+## Installation
 
 ```
 git clone https://github.com/bitpay/copay.git
@@ -225,3 +229,10 @@ with out sharing extra information.
 
 For added security and to prevent Man-on-the-middle Attacks on the peerJS server, peers should check each other's IDs (*peerIDs*), during wallet creation. That information is shown on the setup screen.
 
+
+Wallet backups
+--------------
+Wallet funds can be restored using an old backups, since new addresses are
+scanned in the blockchain for transactions. The scan window is set to 20. 
+However, if address bookmarks were created after the backup, or new transaction proposal were created, 
+they will only be restored is one peer participating the wallet have them.
