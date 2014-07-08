@@ -24,7 +24,7 @@ p {
   font-size: 1.2rem;
 }
 
-.line-dashed-v {
+.reveal-modal.line-dashed-v {
   border-right: 1px dashed #E3E3E3;
 }
 
@@ -93,9 +93,14 @@ button.warning,
 
 .p5h {padding: 0 5rem;}
 .m2r {margin-right: 2rem;}
+.p2r {padding-right: 2rem;}
 .m4b {margin-bottom: 4rem;}
 .p5t {padding-top: 5rem;}
 .p5b {padding-bottom: 5rem;}
+.m10t {margin-top: 10px;}
+.p20t {padding-top: 20px !important;}
+.p1l {padding-right: 5rem;}
+
 
 .row {
   max-width: 100%;
@@ -129,7 +134,7 @@ button small {
 
 .icon-button {
   font-size: 2rem;
-  padding: 12% 0%;
+  padding: 7% 0%;
   opacity: 0.2;
   height: 100%;
   width: 3.5rem;
@@ -266,5 +271,9 @@ footer {
     text-align: left;
     line-height: 20px;
     margin: 0 0 0 7rem;
+  }
+
+  .reveal-modal .line-dashed-v {
+    border: none;
   }
 }

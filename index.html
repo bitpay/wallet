@@ -20,7 +20,41 @@
     <link rel="stylesheet" href="css/common.css">
 </head>
 <body>
-  <div id="downloadModal" class="reveal-modal" data-reveal>
+  <div id="extensionsModal" class="reveal-modal" data-reveal>
+    <div class="large-6 columns">
+      <div class="line-dashed-v">
+        <h2 class="panel m2r">Chrome Extension</h2>
+        <h4>
+          Instructions:
+          <small>If you are updating check here.</small>
+        </h4>
+        <ul class="size-16" style="line-height: 35px;">
+          <li>Download ZIP.</li>
+          <li>Unpack the ZIP file.</li>
+          <li>Navigate to <b>"chrome://extensions"</b> in your browser.</li>
+          <li>Enable Developer Mode.</li>
+          <li>Click "Load unpacked extension" and select the unzipped folder.</li>
+          <li><b>Copay</b> is installed!</li>
+        </ul>   
+      </div>   
+    </div>
+    <div class="large-6 columns">
+      <h2 class="panel">Firefox Add-on</h2>
+      <h4>
+        Instructions:
+        <small>If you are updating check here.</small>
+      </h4>
+      <ul class="size-16" style="line-height: 35px;">
+        <li>Download ZIP.</li>
+        <li>Unpack the ZIP file.</li>
+        <li>Navigate to <b>"chrome://extensions"</b> in your browser.</li>
+        <li>Enable Developer Mode.</li>
+        <li>Click "Load unpacked extension" and select the unzipped folder.</li>
+        <li><b>Copay</b> is installed!</li>
+      </ul>    
+    </div>
+  </div>
+  <!-- <div id="downloadModal" class="reveal-modal" data-reveal>
     <div class="text-center">
       <div class="large-4 columns line-dashed-v">
         <h1><i class="fi-social-apple"></i></h1>
@@ -42,7 +76,7 @@
       </div>
     </div>
     <a class="close-reveal-modal">&#215;</a>
-  </div>
+  </div> -->
   <header>
     <div class="ribbon hide-for-small-only">
       <a href="https://github.com/bitpay/copay/" target="_blank"><i class="fi-social-github"></i> View on GitHub</a>
@@ -59,32 +93,41 @@
       <h3>A secure bitcoin wallet for <br> <b>friends</b> and <b>companies.</b></h3>
       <p class="size-16 m4b hide-for-small-only">Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.</p>
       <div class="download hide-for-small-only">
-        <a href="#" class="button primary radius m2r small" data-reveal-id="downloadModal">
+        <a href="#" class="button primary radius m2r small" data-reveal-id="extensionsModal">
+          <i class="fi-download icon-button"></i>
+          <p class="btn-download">
+            <small>DOWNLOAD</small><br>
+            Browser Extensions
+          </p>
+        </a>
+        <!-- <a href="#" class="button primary radius m2r small" data-reveal-id="downloadModal">
           <i class="fi-download icon-button"></i>
           <p class="btn-download">
             <small>DOWNLOAD</small><br>
             Desktop Version 
           </p>
-        </a>
+        </a> -->
         <a href="app/" target="_blank" class="button secondary radius">
-          <i class="fi-monitor icon-button"></i>
+          <i class="fi-monitor icon-button p20t"></i>
           <p class="btn-download">
-            <small>TRY IT</small><br>
+            <small>TRY ON TESNET</small><br>
             Web Version
           </p>
         </a>
       </div>
       <div class="download show-for-small-only">
-        <a href="#" class="button primary radius expand" data-reveal-id="downloadModal">
+        <a href="#" class="button primary radius m2r expand" data-reveal-id="extensionsModal">
           <i class="fi-download icon-button"></i>
           <p class="btn-download">
-           DOWNLOAD | <b>ZIP File </b>
+            <small>DOWNLOAD</small><br>
+            Browser Extensions
           </p>
         </a>
-        <a href="app/" target="_blank" class="button secondary large radius expand">
-          <i class="fi-monitor icon-button"></i>
+        <a href="app/" target="_blank" class="button secondary radius expand">
+          <i class="fi-monitor icon-button p20t"></i>
           <p class="btn-download">
-           TRY IT  |  <b>Web App </b>
+            <small>TRY ON TESNET</small><br>
+            Web Version
           </p>
         </a>
       </div>
