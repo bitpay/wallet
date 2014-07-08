@@ -255,10 +255,7 @@ describe("Unit: Controllers", function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should have a txAlertCount', function() {
-      expect(scope.txAlertCount).equal(0);
-      $httpBackend.flush();
-    });
+
 
     it('should hit github for version', function() {
       $httpBackend.expectGET(GH);
