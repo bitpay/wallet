@@ -124,7 +124,7 @@
                   <span>
                     <p><b ng-show="c.index==0">you</b><b ng-show="c.index>0">{{c.nick}}</b>
                     <span class="success label" ng-show="$root.wallet.publicKeyRing.isBackupReady(c.copayerId)">Backup ready</span></p>
-                    <small>[SIN: {{c.peerId}}]</small>
+                    <small>[ID: {{c.peerId}}]</small>
                   </span>
                 </div>
 
@@ -229,7 +229,7 @@
       </div>
       <div class="large-9 medium-8 small-12 columns">
         <!-- <div class="bottom&#45;copay" ng&#45;repeat="c in $root.wallet.getRegisteredPeerIds()" class="has&#45;tip" tooltip&#45;popup&#45;delay="1000" tooltip&#45;placement="top" tooltip="{{c.nick}}"> -->
-        <div class="bottom-copay" ng-repeat="c in $root.wallet.getRegisteredPeerIds()" tooltip="SIN: {{c.peerId}}" tooltip-placement="left">
+        <div class="bottom-copay" ng-repeat="c in $root.wallet.getRegisteredPeerIds()" tooltip="ID: {{c.peerId}}" tooltip-placement="left">
           <video ng-if="$root.videoInfo[c.peerId]"
             avatar peer="{{c}}"
             autoplay
