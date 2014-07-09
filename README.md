@@ -133,9 +133,10 @@ Run
 ```
 $ npm run-script firefox
 ```
+- On sucess, the firefox add-on is located at:
+  browser-extensions/firefox/copay.xpi
+`
 
-- Copy the content of *firefox/firefox-addon* (lib, data, package.json) to your development path.
-- Compile the XPI file. [Mozilla Docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Getting_started)
 
 ## Web App
 
