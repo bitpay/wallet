@@ -16,3 +16,4 @@ lib/bitcore/coverage
 lib/bitcore/build
 .git
 tests
+.*
