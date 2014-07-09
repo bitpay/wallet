@@ -82,8 +82,8 @@
       </div>
 
       <div ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
-        <div class="row" ng-if="!$root.wallet.publicKeyRing.isComplete()">
-          <div class="large-12 medium-12 small-12 columns ">
+        <div class="row m10b" ng-if="!$root.wallet.publicKeyRing.isComplete()">
+          <div class="large-12 medium-12 small-12 columns">
             <div class="panel radius m30v">
               <h3 class="m15b">Share this secret with your other copayers
               </h3>
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <div class="row m10t">
+        <div class="row">
           <div class="large-12 medium-12 small-12 columns ">
             <div class="box-setup-copayers panel">
               <div class="oh">
@@ -135,37 +135,38 @@
               </div>
             </div>
           </div>
-          <div class="large-12 columns">
-            <div class="line-dashed"></div>
-            <button class="button primary radius right"
-              ng-click="backup()"
-              ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
-              ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-              <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
-                Backup wallet
-              </span>
-              <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
-                <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
-                {{ $root.wallet.publicKeyRing.remainingCopayers() }} people have
+          <div class="large-12 medium-12 small-12 columns">
+            <div class="line-dashed">
+              <button class="button primary radius right"
+                ng-click="backup()"
+                ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+                ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+                <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
+                  Backup wallet
                 </span>
-                <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
-                One person has
+                <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
+                  <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
+                  {{ $root.wallet.publicKeyRing.remainingCopayers() }} people have
+                  </span>
+                  <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
+                  One person has
+                  </span>
+                  yet to join.
                 </span>
-                yet to join.
-              </span>
-            </button>
-            <button class="button primary radius right"
-              disabled="disabled"
-              ng-show="$root.wallet.publicKeyRing.isBackupReady()">
-              <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
-                {{ $root.wallet.publicKeyRing.remainingBackups() }} people have
+              </button>
+              <button class="button primary radius right"
+                disabled="disabled"
+                ng-show="$root.wallet.publicKeyRing.isBackupReady()">
+                <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
+                  {{ $root.wallet.publicKeyRing.remainingBackups() }} people have
+                  </span>
+                  <span ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
+                  One person has
+                  </span>
+                  yet to backup the wallet.
                 </span>
-                <span ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
-                One person has
-                </span>
-                yet to backup the wallet.
-              </span>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -182,20 +183,16 @@
   <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet || !$root.wallet.isReady()}">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div ng-show="!$root.wallet">
-      <div class="large-4 columns text-left">
+      <div class="large-4 medium-6 small-6 columns text-left">
         Copay
         <small>v{{version}}</small>
         <small ng-if="networkName==='testnet'">[TESTNET]</small>
       </div>
-      <div class="large-4 columns">
-      </div>
-      <div class="large-4 columns text-right">
+      <div class="large-4 medium-6 small-6 columns text-right">
         <small>
           <a class="text-gray" href="https://copay.io" target="_blank"><b>Copay </b> Project Homapage</a>
         </small>
       </div>
-
-
     </div>
     <div ng-show="$root.wallet && !$root.wallet.isReady()">
       <div class="large-6 medium-6 small-6 columns">
@@ -285,7 +282,13 @@
                 <form name="joinForm" ng-submit="join(joinForm)" novalidate>
                   <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
                   <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
-                  <input type="password" class="form-control" placeholder="Choose your password" name="joinPassword" ng-model="$parent.joinPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
+                  <input type="password" class="form-control"
+                  placeholder="Choose your password" name="joinPassword"
+                  ng-model="$parent.joinPassword"
+                  check-strength="passwordStrength"
+                  tooltip-html-unsafe="Password strength: 
+                  <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
+                  numbers and symbols</span>" tooltip-trigger="focus" required>
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
               </div>
@@ -315,7 +318,7 @@
           <form name="importForm" ng-submit="import(importForm)" novalidate>
             <div class="row">
               <div class="large-6 large-centered medium-8 medium-centered columns">
-                <h3 style="margin-bottom: 50px;">{{title}}</h3>
+                <h3>{{title}}</h3>
                 <fieldset>
                   <legend for="backupFile" class="m10b"> Choose backup file from your computer <i class="fi-laptop"></i></legend>
                     <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
@@ -327,13 +330,14 @@
                 <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
               </div>
             </div>
-            <div class="row m15b">
-              <div class="large-6 columns large-centered">
-                <div class="line-dashed"></div>
-                <a class="button secondary radius left" href="#signin">Go back</a>
+            <div class="row">
+              <div class="large-6 medium-8 columns large-centered medium-centered">
+                <div class="line-dashed">
+                <a class="back-button" href="#signin">&laquo; Back</a>
                 <button type="submit" class="button primary radius right" ng-disabled="importForm.$invalid" loading="Importing">
                   Import backup
                 </button>
+                </div>
               </div>
             </div>
           </form>
@@ -347,65 +351,63 @@
           <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
           Creating wallet...
         </div>
-        <div ng-show="!loading" class="large-8 medium-12 small-12 columns large-centered">
+        <div ng-show="!loading">
           <form name="setupForm" ng-submit="create(setupForm)" novalidate>
-          <h3>Create new wallet</h3>
-          <div>
-            <label>Wallet name <small>Optional</small>
-              <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
-            </label>
-          </div>
-          <div>
             <div class="row">
-              <div class="small-12 medium-6 large-6 columns">
-                <label>Your name <small>Optional</small>
-                <input type="text" placeholder="Name" class="form-control" ng-model="myNickname">
+              <div class="large-8 medium-12 columns large-centered medium-centered">
+                <h3>Create new wallet</h3>
+                <label>Wallet name <small>Optional</small>
+                  <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
                 </label>
-              </div>
-              <div class="small-12 medium-6 large-6 columns">
-                <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
-                <input type="password" placeholder="Choose your password" class="form-control"
-                  ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
-                </label>
+                <div class="row">
+                  <div class="small-12 medium-6 large-6 columns">
+                    <label>Your name <small>Optional</small>
+                    <input type="text" placeholder="Name" class="form-control" ng-model="myNickname">
+                    </label>
+                  </div>
+                  <div class="small-12 medium-6 large-6 columns">
+                    <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
+                    <input type="password" placeholder="Choose your password" class="form-control"
+                      ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
+                    </label>
+                  </div>
+                </div>
+                <div class="box-setup">
+                  <fieldset>
+                  <div class="row">
+                    <div class="large-6 medium-6 columns line-dashed-v">
+                      <label>Select total number of copayers
+                      <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+                      </select>
+                      </label>
+                    </div>
+                    <div class="large-6 medium-6 columns">
+                      <label>Select required signatures
+                      <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+                      </select>
+                      </label>
+                    </div>
+                  </div>
+                  </fieldset>
+                </div>
+                <div class="box-setup-copayers">
+                  <div class="box-setup-copayers-fix">
+                    <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
+                      src="./img/satoshi.gif"
+                      title="Copayer {{$index+1}}-{{totalCopayers}}"
+                      ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="box-setup">
-            <fieldset>
             <div class="row">
-              <div class="large-6 medium-6 columns line-dashed-v">
-                <label>Select total number of copayers
-                <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
-                </select>
-                </label>
-              </div>
-              <div class="large-6 medium-6 columns">
-                <label>Select required signatures
-                <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
-                </select>
-                </label>
-              </div>
-            </div>
-            </fieldset>
-          </div>
-          <div class="box-setup-copayers">
-            <div class="box-setup-copayers-fix">
-              <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
-                src="./img/satoshi.gif"
-                title="Copayer {{$index+1}}-{{totalCopayers}}"
-                ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
-            </div>
-          </div>
-
-            <div class="row">
-              <div class="line-dashed"></div>
-              <div class="large-6 medium-6 small-5 columns text-left">
-                <a class="button secondary radius" href="#signin">Go back</a>
-              </div>
-              <div class="large-6 medium-6 small-7 columns text-right">
-                <button type="submit" class="button primary radius" ng-disabled="setupForm.$invalid || loading">
-                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
-                </button>
+              <div class="large-8 medium-12 columns large-centered medium-centered">
+                <div class="line-dashed">
+                  <a class="back-button" href="#signin">&laquo; Back</a>
+                  <button type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
+                  Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+                  </button>
+                </div>
               </div>
             </div>
           </form>
@@ -586,15 +588,19 @@
             <p ng-show="!onlyPending && txs.length == 0">No transactions proposals yet.</p>
             <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
           </div>
+          <div class="large-12 columns line-dashed-h" ng-hide="wallet.totalCopayers == 1"></div>
           <div class="large-12 columns">
-            <h4>Last transactions</h4>
+            <h4>
+              Last transactions 
+              <small ng-hide="wallet.totalCopayers > 1 || !loading">
+                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+              </small>   
+            </h4>
             <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
               <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
               <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
             </div>
-            <div class="m10b size-12" ng-hide="wallet.totalCopayers > 1 || !loading">
-              <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> Loading...
-            </div>
+            
             <div class="btransactions" ng-if="lastShowed">
               <div ng-if="!blockchain_txs[0].txid && !loading">
                 No transactions yet.
@@ -660,7 +666,7 @@
     <script type="text/ng-template" id="send.html">
       <div class="send" data-ng-controller="SendController">
         <div class="row" ng-show='$root.wallet.isReady()'>
-          <div class="medium-8 medium-centered large-8 large-centered columns">
+          <div class="medium-8 medium-centered large-6 large-centered columns">
             <h3>{{title}}</h3>
             <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
               <div class="row">
@@ -772,8 +778,8 @@
               </div>
             </form>
           </div>
-          <div class="medium-9 medium-centered large-9 large-centered columns">
-            <hr>
+          <div class="large-6 medium-8 columns large-centered medium-centered line-dashed-h"> </div>
+          <div class="medium-8 medium-centered large-6 large-centered columns">
             <h3>Address Book</h3>
             <p class="text-gray" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
             <table ng-show="showAddressBook()">
@@ -791,7 +797,7 @@
                 ng-repeat="(addr, info) in $root.wallet.addressBook" 
                 ng-class="{'addressbook-disabled': info.hidden}">
                 <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
-                <td>{{addr}}</td>
+                <td width="100" class="ellipsis">{{addr}}</td>
                 <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
                 <td><time>{{info.createdTs | amCalendar}}</time></td>
                 <td><a style="text-decoration: initial;" ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
@@ -838,7 +844,7 @@
             <a class="button radius secondary expand" ng-click="download()">Download File</a>
           </div>
         </div>
-        <div class="large-8 columns large-centered line-dashed"> </div>
+        <div class="large-8 columns large-centered line-dashed-h"> </div>
         <div class="oh large-8 columns large-centered medium-centered panel radius box-backup">
           <h4 class="large-12 columns"><i class="fi-minus-circle m10r"></i> Delete Wallet </h4>
           <p class="large-8 columns text-gray"> If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet. </p>
@@ -852,67 +858,71 @@
     <!-- CONFIG -->
     <script type="text/ng-template" id="settings.html">
       <div class="settings" ng-controller="SettingsController">
-        <h3>{{title}}</h3>
         <form name="settingsForm">
-          <div class="small-12 medium-6 medium-centered large-6 large-centered columns">
-            <fieldset>
-              <legend>Bitcoin Network</legend>
-                <input id="network-name" type="checkbox" ng-model="networkName"
-                 ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()"
-                 ng-disabled="forceNetwork" 
-                 ng-checked="networkName == 'livenet' ? true : false">
-                <label for="network-name">Livenet</label>
-              <div ng-show="forceNetwork">
-                Network has been fixed to
-                <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a>
-                 for options to use Copay on both livenet and testnet.
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>Wallet Unit</legend>
-                <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
-                </select>
-            </fieldset>
-            <fieldset>
-              <legend>Videoconferencing</legend>
-                <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
-                <label for="disableVideo-opt">Disable videoconferencing (for slow networks)</label>
-            </fieldset>
-            <fieldset>
-              <legend>Insight API server</legend>
-                <label for="insight-host">Host</label>
-                <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
-                <label for="insight-port">Port</label>
-                <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
-                <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
-                <label for="insight-secure">Use SSL</label>
+          <div class="row">
+            <div class="small-12 medium-8 medium-centered large-6 large-centered columns">
+              <h3>{{title}}</h3>
+              <fieldset>
+                <legend>Bitcoin Network</legend>
+                  <input id="network-name" type="checkbox" ng-model="networkName"
+                   ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()"
+                   ng-disabled="forceNetwork" 
+                   ng-checked="networkName == 'livenet' ? true : false">
+                  <label for="network-name">Livenet</label>
+                <div ng-show="forceNetwork">
+                  Network has been fixed to
+                  <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a>
+                   for options to use Copay on both livenet and testnet.
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Wallet Unit</legend>
+                  <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
+                  </select>
+              </fieldset>
+              <fieldset>
+                <legend>Videoconferencing</legend>
+                  <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
+                  <label for="disableVideo-opt">Disable videoconferencing (for slow networks)</label>
+              </fieldset>
+              <fieldset>
+                <legend>Insight API server</legend>
+                  <label for="insight-host">Host</label>
+                  <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
+                  <label for="insight-port">Port</label>
+                  <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
+                  <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
+                  <label for="insight-secure">Use SSL</label>
 
-                <p class="small">
-                Insight API server is open-source software.  You can run your own instance, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
+                  <p class="small">
+                  Insight API server is open-source software.  You can run your own instance, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
 
-            </fieldset>
-            <fieldset>
-              <legend>PeerJS server</legend>
-                <label for="peerjs-key">Key</label>
-                <input type="text" ng-model="networkKey" class="form-control" name="peerjs-key">
-                <label for="peerjs-host">Host</label>
-                <input type="text" ng-model="networkHost" class="form-control" name="peerjs-host">
-                <label for="peerjs-port">Port</label>
-                <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
-                <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control">
-                <label for="peerjs-secure">Use SSL</label>
+              </fieldset>
+              <fieldset>
+                <legend>PeerJS server</legend>
+                  <label for="peerjs-key">Key</label>
+                  <input type="text" ng-model="networkKey" class="form-control" name="peerjs-key">
+                  <label for="peerjs-host">Host</label>
+                  <input type="text" ng-model="networkHost" class="form-control" name="peerjs-host">
+                  <label for="peerjs-port">Port</label>
+                  <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
+                  <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control">
+                  <label for="peerjs-secure">Use SSL</label>
 
 
-                <p class="small">
-                PeerJS Server is open-source software.  You can run your own instance, or use PeerJS Server cloud. Check <a href="http://peerjs.com" target="_blank">PeerJS Server</a>
-            </fieldset>
+                  <p class="small">
+                  PeerJS Server is open-source software.  You can run your own instance, or use PeerJS Server cloud. Check <a href="http://peerjs.com" target="_blank">PeerJS Server</a>
+              </fieldset>
+            </div>
           </div>
           <div class="row">
-            <div class="large-12 columns line-dashed">
-              <button type="submit" class="button primary radius right ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
-               Save
-              </button>
-              <a class="button secondary radius" href="#signin" ng-hide="$root.wallet">Home</a>
+            <div class="large-6 medium-8 small-12 large-centered medium-centered columns">
+              <div class="line-dashed">
+                <a class="back-button" href="#signin" ng-hide="$root.wallet">&laquo; Back</a>
+                <button type="submit" class="button primary radius right ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+                 Save
+                </button>
+              </div>
             </div>
           </div>
         </form>
