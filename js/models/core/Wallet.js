@@ -50,6 +50,11 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
+
+  //network nonces are 8 byte buffers, representing a big endian number
+  //one nonce for oneself, and then one nonce for each copayer
+  this.network.setHexNonce(opts.networkNonce);
+  this.network.setHexNonces(opts.networkNonces);
 }
 
 Wallet.parent = EventEmitter;
@@ -343,8 +348,14 @@ Wallet.prototype.store = function() {
 
 Wallet.prototype.toObj = function() {
   var optsObj = this._optsToObj();
+
+  var networkNonce = this.network.getHexNonce();
+  var networkNonces = this.network.getHexNonces();
+
   var walletObj = {
     opts: optsObj,
+    networkNonce: networkNonce, //yours
+    networkNonces: networkNonces, //copayers
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
@@ -374,6 +385,10 @@ Wallet.prototype.toEncryptedObj = function() {
   return this.storage.export(walletObj);
 };
 
+Wallet.prototype.send = function(recipients, obj) {
+  this.network.send(recipients, obj);
+};
+
 Wallet.prototype.sendAllTxProposals = function(recipients) {
   var ntxids = this.txProposals.getNtxids();
   for (var i in ntxids) {
@@ -386,7 +401,7 @@ Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
   preconditions.checkState(this.txProposals.txps[ntxid]);
   this.log('### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
-  this.network.send(recipients, {
+  this.send(recipients, {
     type: 'txProposal',
     txProposal: this.txProposals.txps[ntxid].toObj(),
     walletId: this.id,
@@ -396,7 +411,7 @@ Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
 Wallet.prototype.sendWalletReady = function(recipients) {
   this.log('### SENDING WalletReady TO:', recipients);
 
-  this.network.send(recipients, {
+  this.send(recipients, {
     type: 'walletReady',
     walletId: this.id,
   });
@@ -405,7 +420,7 @@ Wallet.prototype.sendWalletReady = function(recipients) {
 Wallet.prototype.sendWalletId = function(recipients) {
   this.log('### SENDING walletId TO:', recipients || 'All', this.id);
 
-  this.network.send(recipients, {
+  this.send(recipients, {
     type: 'walletId',
     walletId: this.id,
     opts: this._optsToObj(),
@@ -419,7 +434,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   var publicKeyRing = this.publicKeyRing.toObj();
   delete publicKeyRing.publicKeysCache; // exclude publicKeysCache from network obj
 
-  this.network.send(recipients, {
+  this.send(recipients, {
     type: 'publicKeyRing',
     publicKeyRing: publicKeyRing,
     walletId: this.id,
@@ -429,7 +444,7 @@ Wallet.prototype.sendIndexes = function(recipients) {
   var indexes = AddressIndex.serialize(this.publicKeyRing.indexes);
   this.log('### INDEXES TO:', recipients || 'All', indexes);
 
-  this.network.send(recipients, {
+  this.send(recipients, {
     type: 'indexes',
     indexes: indexes,
     walletId: this.id,
@@ -438,7 +453,7 @@ Wallet.prototype.sendIndexes = function(recipients) {
 
 Wallet.prototype.sendAddressBook = function(recipients) {
   this.log('### SENDING addressBook TO:', recipients || 'All', this.addressBook);
-  this.network.send(recipients, {
+  this.send(recipients, {
     type: 'addressbook',
     addressBook: this.addressBook,
     walletId: this.id,

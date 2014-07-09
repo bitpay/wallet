@@ -687,6 +687,7 @@ describe('Wallet model', function() {
       done();
     });
   });
+
   it('should send all TxProposal', function(done) {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
@@ -700,6 +701,16 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#send', function() {
+    it('should call this.network.send', function () {
+      var w = cachedCreateW2();
+      var save = w.network.send;
+      w.network.send = sinon.spy();
+      w.send();
+      w.network.send.calledOnce.should.equal(true);
+      w.network.send = save;
+    });
+  });
 
   describe('#indexDiscovery', function() {
     var ADDRESSES_CHANGE, ADDRESSES_RECEIVE, w;
