@@ -21,7 +21,8 @@ Message.encode = function(topubkey, fromkey, payload, opts) {
   }
 
   var toencrypt = Buffer.concat([version1, version2, nonce, payload]);
-  var encrypted = Message._encrypt(topubkey, toencrypt);
+  var toencrypthexbuf = new Buffer(toencrypt.toString('hex')); //due to bug in sjcl/bitcore, must use hex string
+  var encrypted = Message._encrypt(topubkey, toencrypthexbuf);
   var sig = Message._sign(fromkey, encrypted);
   var encoded = {
     pubkey: fromkey.public.toString('hex'),
@@ -63,7 +64,8 @@ Message.decode = function(key, encoded, opts) {
   }
 
   try {
-    var decrypted = Message._decrypt(key.private, encrypted);
+    var decryptedhexbuf = Message._decrypt(key.private, encrypted);
+    var decrypted = new Buffer(decryptedhexbuf.toString(), 'hex'); //workaround for bug in bitcore/sjcl
   } catch (e) {
     throw new Error('Cannot decrypt data: ' + e);
   }

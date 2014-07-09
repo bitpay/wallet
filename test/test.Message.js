@@ -100,7 +100,8 @@ describe('Message model', function() {
       var version2 = new Buffer([0]);
       var nonce = new Buffer([0, 0, 0, 0, 0, 0, 0, 0]);
       var toencrypt = Buffer.concat([version1, version2, nonce, payload]);
-      var encrypted = Message._encrypt(topubkey, toencrypt);
+      var toencrypt_workaround = new Buffer(toencrypt.toString('hex'));
+      var encrypted = Message._encrypt(topubkey, toencrypt_workaround);
       var sig = Message._sign(fromkey, encrypted);
       var encoded = {
         pubkey: fromkey.public.toString('hex'),
