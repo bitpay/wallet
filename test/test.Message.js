@@ -36,15 +36,70 @@ describe('Message model', function() {
       var encoded = Message.encode(key2.public, key, message);
     
       var decoded = Message.decode(key2, encoded);
-      decoded.toString('hex').should.equal(messagehex);
+      var payload = decoded.payload;
+      payload.toString('hex').should.equal(messagehex);
+    });
+
+    it('should decode an encoded message with proper prevnonce', function() {
+      var message = new Buffer('message');
+      var messagehex = message.toString('hex');
+      var nonce = new Buffer([0, 0, 0, 0, 0, 0, 0, 2]);
+      var opts = {nonce: nonce};
+      var encoded = Message.encode(key2.public, key, message, opts);
+    
+      var prevnonce = new Buffer([0, 0, 0, 0, 0, 0, 0, 1]);
+      opts = {prevnonce: prevnonce};
+      var decoded = Message.decode(key2, encoded, opts);
+      var payload = decoded.payload;
+      payload.toString('hex').should.equal(messagehex);
+    });
+
+    it('should decode an encoded message with proper prevnonce - for first part', function() {
+      var message = new Buffer('message');
+      var messagehex = message.toString('hex');
+      var nonce = new Buffer([0, 0, 0, 2, 0, 0, 0, 0]);
+      var opts = {nonce: nonce};
+      var encoded = Message.encode(key2.public, key, message, opts);
+    
+      var prevnonce = new Buffer([0, 0, 0, 1, 0, 0, 0, 0]);
+      opts = {prevnonce: prevnonce};
+      var decoded = Message.decode(key2, encoded, opts);
+      var payload = decoded.payload;
+      payload.toString('hex').should.equal(messagehex);
+    });
+
+    it('should fail if prevnonce is too high', function() {
+      var message = new Buffer('message');
+      var messagehex = message.toString('hex');
+      var nonce = new Buffer([0, 0, 0, 0, 0, 0, 0, 1]);
+      var opts = {nonce: nonce};
+      var encoded = Message.encode(key2.public, key, message, opts);
+    
+      var prevnonce = new Buffer([0, 0, 0, 0, 0, 0, 0, 1]);
+      opts = {prevnonce: prevnonce};
+      (function() {Message.decode(key2, encoded, opts)}).should.throw('Nonce not equal to zero and not greater than the previous nonce');
+    });
+
+    it('should fail if prevnonce is too high - for first part', function() {
+      var message = new Buffer('message');
+      var messagehex = message.toString('hex');
+      var nonce = new Buffer([0, 0, 0, 1, 0, 0, 0, 0]);
+      var opts = {nonce: nonce};
+      var encoded = Message.encode(key2.public, key, message, opts);
+    
+      var prevnonce = new Buffer([0, 0, 0, 1, 0, 0, 0, 0]);
+      opts = {prevnonce: prevnonce};
+      (function() {Message.decode(key2, encoded, opts)}).should.throw('Nonce not equal to zero and not greater than the previous nonce');
     });
 
     it('should fail if the version number is incorrect', function() {
       var payload = new Buffer('message');
       var fromkey = key;
       var topubkey = key2.public;
-      var version = new Buffer([1]);
-      var toencrypt = Buffer.concat([version, payload]);
+      var version1 = new Buffer([2]);
+      var version2 = new Buffer([0]);
+      var nonce = new Buffer([0, 0, 0, 0, 0, 0, 0, 0]);
+      var toencrypt = Buffer.concat([version1, version2, nonce, payload]);
       var encrypted = Message._encrypt(topubkey, toencrypt);
       var sig = Message._sign(fromkey, encrypted);
       var encoded = {

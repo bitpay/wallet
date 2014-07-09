@@ -376,18 +376,19 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
-Network.prototype._encode = function(topubkey, fromkey, payload) {
-  var encoded = Message.encode(topubkey, fromkey, payload);
+Network.prototype._encode = function(topubkey, fromkey, payload, opts) {
+  var encoded = Message.encode(topubkey, fromkey, payload, opts);
   return encoded;
 };
 
 
-Network.prototype._decode = function(key, encoded) {
-  var payload = Message.decode(key, encoded);
+Network.prototype._decode = function(key, encoded, opts) {
+  var decoded = Message.decode(key, encoded, opts);
+  var payload = decoded.payload;
   return payload;
 };
 
-Network.prototype._sendToOne = function(copayerId, payload, cb) {
+Network.prototype._sendToOne = function(copayerId, payload, opts, cb) {
   if (!Buffer.isBuffer(payload))
     throw new Error('payload must be a buffer');
   var peerId = this.peerFromCopayer(copayerId);
@@ -400,7 +401,7 @@ Network.prototype._sendToOne = function(copayerId, payload, cb) {
   if (typeof cb === 'function') cb();
 };
 
-Network.prototype.send = function(copayerIds, payload, cb) {
+Network.prototype.send = function(copayerIds, payload, opts, cb) {
   if (!payload) return cb();
 
   var self = this;
@@ -421,7 +422,7 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var encPayload = self._encode(copayerIdBuf, self.getKey(), payloadBuf);
     var enc = new Buffer(JSON.stringify(encPayload));
-    self._sendToOne(copayerId, enc, function() {
+    self._sendToOne(copayerId, enc, opts, function() {
       if (++i === l && typeof cb === 'function') cb();
     });
   });
