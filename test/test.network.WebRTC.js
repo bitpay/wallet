@@ -168,11 +168,11 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerId = key.public.toString('hex');
-      n._sendToOne = function(a1, a2, cb) {
+      n._sendToOne = function(a1, a2, a3, cb) {
         cb();
       };
-      var sig = undefined;
-      n.send(copayerId, data, function() {
+      var opts = {};
+      n.send(copayerId, data, opts, function() {
         done();
       });
 
@@ -191,13 +191,13 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerId = key.public.toString('hex');
-      n._sendToOne = function(a1, enc, cb) {
+      n._sendToOne = function(a1, enc, opts, cb) {
         var encPayload = JSON.parse(enc.toString());
         encPayload.sig.length.should.be.greaterThan(0);
         cb();
       };
-      var sig = undefined;
-      n.send(copayerId, data, function() {
+      var opts = {};
+      n.send(copayerId, data, opts, function() {
         done();
       });
 
@@ -216,11 +216,11 @@ describe('Network / WebRTC', function() {
       key.regenerateSync();
 
       var copayerIds = [key.public.toString('hex')];
-      n._sendToOne = function(a1, a2, cb) {
+      n._sendToOne = function(a1, a2, a3, cb) {
         cb();
       };
-      var sig = undefined;
-      n.send(copayerIds, data, function() {
+      var opts = {};
+      n.send(copayerIds, data, opts, function() {
         done();
       });
 
