@@ -23,35 +23,48 @@
   <div id="extensionsModal" class="reveal-modal" data-reveal>
     <div class="large-6 columns">
       <div class="line-dashed-v">
-        <h2 class="panel m2r">Chrome Extension</h2>
+        <h2 class="panel m2r">
+          <img src="img/logo-chrome.svg" alt="" style="margin-top:-6px;">
+          Chrome Extension</h2>
         <h4>
-          Instructions:
-          <small>If you are updating check here.</small>
+          Instructions
+          <!-- <small>If you are updating check here.</small> -->
         </h4>
         <ul class="size-16" style="line-height: 35px;">
-          <li>Download ZIP.</li>
-          <li>Unpack the ZIP file.</li>
-          <li>Navigate to <b>"chrome://extensions"</b> in your browser.</li>
-          <li>Enable Developer Mode.</li>
-          <li>Click "Load unpacked extension" and select the unzipped folder.</li>
-          <li><b>Copay</b> is installed!</li>
+          <li>Download the ZIP file:<br>
+            <a href="copay-chrome-extension-3.2.0.zip">Copay v3.2.0</a>
+            </li>
+          <li>[optional] Check signature (*)<br>
+            <a href="copay-chrome-extension-3.2.0.zip.sig">Signature</a>
+            </li>
+          <li>Unpack the ZIP file</li>
+          <li>Open to <a href="chrome://extensions">"chrome://extensions"</a> at your browser</li> 
+          <li>Enable Developer Mode</li>
+          <li>Click on "Load unpacked extension" and select the unzipped folder</li>
         </ul>   
       </div>   
     </div>
     <div class="large-6 columns">
-      <h2 class="panel">Firefox Add-on</h2>
+      <h2 class="panel">
+        <img src="img/logo-firefox.svg" alt="" style="margin-top:-6px;">
+        Firefox Add-on</h2>
       <h4>
-        Instructions:
-        <small>If you are updating check here.</small>
+        Instructions
       </h4>
       <ul class="size-16" style="line-height: 35px;">
-        <li>Download ZIP.</li>
-        <li>Unpack the ZIP file.</li>
-        <li>Navigate to <b>"chrome://extensions"</b> in your browser.</li>
-        <li>Enable Developer Mode.</li>
-        <li>Click "Load unpacked extension" and select the unzipped folder.</li>
-        <li><b>Copay</b> is installed!</li>
+        <li>Download XPI
+            <a href="copay-3.2.0.xpi">Copay v3.2.0</a>
+        </li>
+          <li>[optional] Check signature (*)<br>
+            <a href="copay-3.2.0.xpi.sig">Signature</a>
+            </li>
+        <li>Open <a href="about:addons">"about:addons"</a> at your browser</li>
+        <li>Click "Install Add-on from File" (at the settings menu) and select the XPI file.</li>
       </ul>    
+    </div>
+    <div class="large-12 columns"> <small>
+    (*) Copays downloads are signed with key copay@bitpay.com (ID:1112CFA1) at keys.gnupg.net. 
+</small>
     </div>
   </div>
   <!-- <div id="downloadModal" class="reveal-modal" data-reveal>
@@ -59,24 +72,21 @@
       <div class="large-4 columns line-dashed-v">
         <h1><i class="fi-social-apple"></i></h1>
         <h4> Download for Mac</h4>
-        <p>Version 0.1.1 | beta</p>
         <div href="https://github.com/bitpay/copay/releases/download/v0.1.1/Copay-darwin-x64.zip" class="size-12 text-warning">[ Coming Soon ]</div>
       </div>
       <div class="large-4 columns line-dashed-v">
         <h1><i class="fi-social-windows"></i></h1>
         <h4> Download for Windows</h4>
-        <p>Version 0.1.1 | beta</p>
         <div href="https://github.com/bitpay/copay/releases/download/v0.1.1/Copay-win32-x86.zip" class="size-12 text-warning">[ Coming Soon ]</div>
       </div>
       <div class="large-4 columns">
         <h1><img src="img/logo-linux.svg" alt=""></h1>
         <h4> Download for Linux</h4>
-        <p>Version 0.1.1 | beta</p>
         <div class="size-12 text-warning" href="https://github.com/bitpay/copay/releases/download/v0.1.1/Copay-linux-x64.tar.gz"> [ Coming Soon ]</div>
       </div>
     </div>
     <a class="close-reveal-modal">&#215;</a>
-  </div> -->
+  </div>  -->
   <header>
     <div class="ribbon hide-for-small-only">
       <a href="https://github.com/bitpay/copay/" target="_blank"><i class="fi-social-github"></i> View on GitHub</a>
@@ -91,7 +101,8 @@
         <a href="https://github.com/bitpay/copay/"><i class="fi-social-github"></i> View on GitHub</a>
       </div>
       <h3>A secure bitcoin wallet for <br> <b>friends</b> and <b>companies.</b></h3>
-      <p class="size-16 m4b hide-for-small-only">Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.</p>
+      <p class="size-16 hide-for-small-only">Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.</p>
+      <p class="size-16 m4b"><b>Comming Soon:</b> [ Desktop APP ] - [ Mobile Apps ] </p>
       <div class="download hide-for-small-only">
         <a href="#" class="button primary radius m2r small" data-reveal-id="extensionsModal">
           <i class="fi-download icon-button"></i>
@@ -100,17 +111,10 @@
             Browser Extensions
           </p>
         </a>
-        <!-- <a href="#" class="button primary radius m2r small" data-reveal-id="downloadModal">
-          <i class="fi-download icon-button"></i>
-          <p class="btn-download">
-            <small>DOWNLOAD</small><br>
-            Desktop Version 
-          </p>
-        </a> -->
-        <a href="app/" target="_blank" class="button secondary radius">
+       <a href="app/" target="_blank" class="button secondary radius">
           <i class="fi-monitor icon-button p20t"></i>
           <p class="btn-download">
-            <small>TRY ON TESNET</small><br>
+            <small>TRY IT ON TESNET</small><br>
             Web Version
           </p>
         </a>
