@@ -31,11 +31,19 @@
           <!-- <small>If you are updating check here.</small> -->
         </h4>
         <ul class="size-16" style="line-height: 35px;">
-          <li>Download the ZIP file:<br>
-            <a href="copay-chrome-extension-0.3.2.zip">Copay v0.3.2</a>
+          <li>Download the ZIP file: <a href="copay-chrome-extension-0.3.2.zip">Copay v0.3.2</a>
             </li>
-          <li>[optional] Check signature (*)<br>
-            <a href="copay-chrome-extension-0.3.2.zip.sig">Signature</a>
+          <li>[Optional] Check  <a href="copay-chrome-extension-0.3.2.zip.sig">signature</a> (<a href="#" onclick="$('#chrome-txt').slideToggle()">Show me how</a>)
+ <br>
+            <ol style="display:none" id="chrome-txt">
+            <li>Download signature file  
+            <li>Check it by running: 
+            <pre>
+$ gpg --verify \
+copay-chrome-extension-0.3.2.zip.sig \
+copay-chrome-extension-0.3.2.zip
+            </pre>
+            </ol>
             </li>
           <li>Unpack the ZIP file</li>
           <li>Open to <a href="chrome://extensions">"chrome://extensions"</a> at your browser</li> 
@@ -55,9 +63,19 @@
         <li>Download XPI
             <a href="copay-0.3.2.xpi">Copay v0.3.2</a>
         </li>
-          <li>[optional] Check signature (*)<br>
-            <a href="copay-0.3.2.xpi.sig">Signature</a>
-            </li>
+
+          <li>[Optional] Check  <a href="copay-0.3.2.xpi.sig">signature</a> (<a href="#" onclick="$('#ff-txt').slideToggle()">Show me how</a>)
+ <br>
+            <ol style="display:none" id="ff-txt">
+            <li>Download signature file  
+            <li>Check it by running: 
+            <pre>
+$ gpg --verify \
+copay-0.3.2.xpi.sig \
+copay-0.3.2.xpi
+            </pre>
+            </ol>
+ 
         <li>Open <a href="about:addons">"about:addons"</a> at your browser</li>
         <li>Click "Install Add-on from File" (at the settings menu) and select the XPI file.</li>
       </ul>    
