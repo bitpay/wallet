@@ -60,4 +60,4 @@ cd $BUILDDIR
 zip -qr $ZIPFILE "`basename $APPDIR`"
 checkOK
 
-echo "${OpenColor}${Yellow}\nThe Chrome Extension is ready at $BUILDDIR.${CloseColor}"
+echo "${OpenColor}${Yellow}\nThe Chrome Extension is ready at $BUILDDIR/copay-chrome-extension.zip${CloseColor}"

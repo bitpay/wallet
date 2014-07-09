@@ -22,6 +22,10 @@ APPDIR="$BUILDDIR/firefox-addon"
 ZIPFILE="copay-firefox-addon.zip"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../../version.js`
 
+
+cfx >/dev/null
+checkOK
+
 # Move to the build directory
 cd $BUILDDIR
 
@@ -54,4 +58,12 @@ echo $CMD
 $CMD
 checkOK
 
-echo "${OpenColor}${Yellow}\nThe Firefox add-on is ready at $BUILDDIR!${CloseColor}"
+rm -Rf $BUILDDIR/data
+mv $APPDIR/data $BUILDDIR
+checkOK
+
+cd $BUILDDIR
+cfx xpi
+checkOK
+
+echo "${OpenColor}${Yellow}\nThe Firefox add-on is ready at $BUILDDIR/copay.xpi!${CloseColor}"
