@@ -173,7 +173,7 @@ h3 {
 
 .line-dashed-h {
   margin: 1rem 0;
-  border-bottom: 2px dashed #E3E3E3;
+  border-bottom: 1px dashed #E3E3E3;
 }
 
 .panel p {
@@ -199,7 +199,8 @@ span.panel-res {
 .line-dashed {
   border-top: 1px dashed #ccc;
   margin: 1rem 0;
-  /* padding: 1rem 0; */
+  padding: 1rem 0;
+  overflow: hidden;
 }
 
 
@@ -478,11 +479,11 @@ a.loading {
 }
 
 .spinner {
- display:inline-block; 
- width: 1em; 
- text-align:center; 
- line-height:1em; 
- vertical-align:middle
+  display:inline-block; 
+  width: 1em; 
+  text-align:center; 
+  line-height:1em; 
+  vertical-align:middle;
 }
 
 @-webkit-keyframes yellow-flash {
@@ -564,14 +565,15 @@ a.loading {
   border-radius: 20px;
   display: inline-block;
   padding: 3px;
-  font-size: 14px;
+  font-size: 12px;
   position: absolute;
-  right: -11px;
-  top: 5px;
+  right: -8px;
+  top: -8px;
   -webkit-transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
   -moz-transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
   transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
   cursor: pointer;
+  z-index: 10;
 }
 .dr-notification-close-btn i {
   padding-left: 3px;
@@ -596,7 +598,7 @@ a.loading {
 .dr-notification-image i {
   display: block;
   width: 100%;
-  padding-top: 25px;
+  padding-top: 20px;
 }
 .dr-notification-image img {
   margin: 15px;
@@ -605,15 +607,15 @@ a.loading {
 }
 
 .dr-notification-content {
-  padding-left: 100px;
-  padding-right: 15px;
-  padding-top: 10px;
+  padding-left: 90px;
+  padding-right: 10px;
+  padding-top: 5px;
 }
 
 .dr-notification-title {
   color: white;
   padding: 0px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 p.dr-notification-text {
@@ -650,5 +652,11 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 }
 .addressbook-disabled td a {
   color: #7A9FB6;
+}
+
+.back-button {
+  padding-top: 15px;
+  display: block;
+  float: left;
 }
 

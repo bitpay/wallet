@@ -286,10 +286,11 @@ input.ng-invalid-wallet-secret {
   background-color: #2C3E50;
   color: #bfe2de;
   border: 1px solid rgba(4, 94, 123, 0.85);
+  opacity: 0.9;
 }
 .dr-notification-close-btn {
   background-color: #2C3E50;
-  color: #adfaff;
+  color: #fff;
   border: 1px solid rgba(4, 94, 123, 0.85);
 }
 
@@ -325,7 +326,7 @@ input.ng-invalid-wallet-secret {
   background: #16A085; 
   color: #fff; 
   font-weight: normal; 
-  font-size: 12px; 
+  font-size: 14px; 
   padding: 3px 5px;
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 
