@@ -148,7 +148,7 @@ describe('Network / WebRTC', function() {
       var encoded = n._encode(key.public, key, data);
       var decoded = n._decode(key, encoded);
       encoded.sig.should.not.equal(0);
-      decoded.toString().should.equal('my data to encrypt');
+      decoded.payload.toString().should.equal('my data to encrypt');
     });
 
   });
@@ -171,7 +171,7 @@ describe('Network / WebRTC', function() {
       n._sendToOne = function(a1, a2, cb) {
         cb();
       };
-      var sig = undefined;
+      var opts = {};
       n.send(copayerId, data, function() {
         done();
       });
@@ -196,7 +196,7 @@ describe('Network / WebRTC', function() {
         encPayload.sig.length.should.be.greaterThan(0);
         cb();
       };
-      var sig = undefined;
+      var opts = {};
       n.send(copayerId, data, function() {
         done();
       });
@@ -219,7 +219,7 @@ describe('Network / WebRTC', function() {
       n._sendToOne = function(a1, a2, cb) {
         cb();
       };
-      var sig = undefined;
+      var opts = {};
       n.send(copayerIds, data, function() {
         done();
       });
@@ -292,6 +292,214 @@ describe('Network / WebRTC', function() {
       n._deletePeer.calledOnce.should.equal(true);
       n._deletePeer.getCall(0).args[0].should.equal(peerId);
       n._deletePeer.getCall(0).args[1].should.equal('incorrect pubkey for peerId');
+    });
+
+    it('should not reject data sent from a peer with no previously set nonce but who is setting one now', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+      //n.networkNonces = {};
+      //n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('0000000000000001', 'hex'); //previously used nonce
+
+      var message = {
+        type: 'hello',
+        copayerId: key1.public.toString('hex')
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var opts = {nonce: new Buffer('0000000000000001', 'hex')}; //message send with new nonce
+      var encoded = n._encode(key2.public, key1, messagebuf, opts);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(false);
+      n.getHexNonces()[(new bitcore.SIN(key1.public)).toString()].toString('hex').should.equal('0000000000000001');
+    });
+
+    it('should not reject data sent from a peer with a really big new nonce', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+      n.networkNonces = {};
+      n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000001', 'hex'); //previously used nonce
+
+      var message = {
+        type: 'hello',
+        copayerId: key1.public.toString('hex')
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var opts = {nonce: new Buffer('5000000000000002', 'hex')}; //message send with new nonce
+      var encoded = n._encode(key2.public, key1, messagebuf, opts);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(false);
+    });
+
+    it('should not reject data sent from a peer with a really big new nonce', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+      n.networkNonces = {};
+      n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000001', 'hex'); //previously used nonce
+
+      var message = {
+        type: 'hello',
+        copayerId: key1.public.toString('hex')
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var opts = {nonce: new Buffer('5000000000000002', 'hex')}; //message send with new nonce
+      var encoded = n._encode(key2.public, key1, messagebuf, opts);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(false);
+    });
+
+    it('should reject data sent from a peer with an outdated nonce', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+      n.networkNonces = {};
+      n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('0000000000000002', 'hex'); //previously used nonce
+
+      var message = {
+        type: 'hello',
+        copayerId: key1.public.toString('hex')
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var opts = {nonce: new Buffer('0000000000000001', 'hex')}; //message send with old nonce
+      var encoded = n._encode(key2.public, key1, messagebuf, opts);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(true);
+    });
+
+    it('should reject data sent from a peer with a really big outdated nonce', function() {
+      var n = new WebRTC();
+      n.privkey = key2.private.toString('hex');
+      n.networkNonces = {};
+      n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000002', 'hex'); //previously used nonce
+
+      var message = {
+        type: 'hello',
+        copayerId: key1.public.toString('hex')
+      };
+      var messagestr = JSON.stringify(message);
+      var messagebuf = new Buffer(messagestr);
+
+      var opts = {nonce: new Buffer('5000000000000001', 'hex')}; //message send with old nonce
+      var encoded = n._encode(key2.public, key1, messagebuf, opts);
+      var encodedstr = JSON.stringify(encoded);
+      var encodeduint = new Buffer(encodedstr);
+
+      var isInbound = true;
+      var peerId = new bitcore.SIN(key1.public);
+
+      n._deletePeer = sinon.spy();
+
+      n._onData(encodeduint, isInbound, peerId);
+      n._deletePeer.calledOnce.should.equal(true);
+    });
+
+  });
+
+  describe('#setHexNonce', function() {
+    
+    it('should set a nonce from a hex value', function() {
+      var hex = '0000000000000000';
+      var n = new WebRTC();
+      n.setHexNonce(hex);
+      n.getHexNonce().should.equal(hex);
+      n.networkNonce.toString('hex').should.equal(hex);
+    });
+
+  });
+
+  describe('#setHexNonces', function() {
+    
+    it('should set a nonce from a hex value', function() {
+      var hex = '0000000000000000';
+      var n = new WebRTC();
+      n.setHexNonces({fakeid: hex});
+      n.getHexNonces().fakeid.should.equal(hex);
+    });
+
+  });
+
+  describe('#getHexNonce', function() {
+    
+    it('should get a nonce hex value', function() {
+      var hex = '0000000000000000';
+      var n = new WebRTC();
+      n.setHexNonce(hex);
+      n.getHexNonce().should.equal(hex);
+    });
+
+  });
+
+  describe('#getHexNonces', function() {
+    
+    it('should get a nonce from a hex value', function() {
+      var hex = '0000000000000000';
+      var n = new WebRTC();
+      n.setHexNonces({fakeid: hex});
+      n.getHexNonces().fakeid.should.equal(hex);
+    });
+
+  });
+
+  describe('#iterateNonce', function() {
+
+    it('should set a nonce not already set', function() {
+      var n = new WebRTC();
+      n.iterateNonce();
+      n.networkNonce.slice(4, 8).toString('hex').should.equal('00000001');
+      n.networkNonce.slice(0, 4).toString('hex').should.not.equal('00000000');
+    });
+
+    it('called twice should increment', function() {
+      var n = new WebRTC();
+      n.iterateNonce();
+      n.networkNonce.slice(4, 8).toString('hex').should.equal('00000001');
+      n.iterateNonce();
+      n.networkNonce.slice(4, 8).toString('hex').should.equal('00000002');
+    });
+
+    it('should set the first byte to the most significant "now" digit', function() {
+      var n = new WebRTC();
+      n.iterateNonce();
+      var buf = new Buffer(4);
+      buf.writeUInt32BE(Math.floor(Date.now()/1000), 0);
+      n.networkNonce[0].should.equal(buf[0]);
     });
 
   });

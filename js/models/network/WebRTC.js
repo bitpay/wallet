@@ -163,6 +163,57 @@ Network.prototype.getKey = function() {
   return this.key;
 };
 
+//hex version of one's own nonce
+Network.prototype.setHexNonce = function(networkNonce) {
+  if (networkNonce) {
+    if (networkNonce.length !== 16)
+      throw new Error('incorrect length of hex nonce');
+    this.networkNonce = new Buffer(networkNonce, 'hex');
+  }
+  else
+    this.iterateNonce();
+};
+
+//hex version of copayers' nonces
+Network.prototype.setHexNonces = function(networkNonces) {
+  for (var i in networkNonces) {
+    if (!this.networkNonces)
+      this.networkNonces = {};
+    if (networkNonces[i].length === 16)
+      this.networkNonces[i] = new Buffer(networkNonces[i], 'hex');
+  }
+};
+
+//for oneself
+Network.prototype.getHexNonce = function() {
+  return this.networkNonce.toString('hex');
+};
+
+//for copayers
+Network.prototype.getHexNonces = function() {
+  var networkNoncesHex = [];
+  for (var i in this.networkNonces) {
+    networkNoncesHex[i] = this.networkNonces[i].toString('hex');
+  }
+  return networkNoncesHex;
+};
+
+Network.prototype.iterateNonce = function() {
+  if (!this.networkNonce || this.networkNonce.length !== 8) {
+    this.networkNonce = new Buffer(8);
+    this.networkNonce.fill(0);
+  }
+  //the first 4 bytes of a nonce is a unix timestamp in seconds
+  //the second 4 bytes is just an iterated "sub" nonce
+  //the whole thing is interpreted as one big endian number
+  var noncep1 = this.networkNonce.slice(0, 4);
+  noncep1.writeUInt32BE(Math.floor(Date.now()/1000), 0);
+  var noncep2uint = this.networkNonce.slice(4, 8).readUInt32BE(0);
+  var noncep2 = this.networkNonce.slice(4, 8);
+  noncep2.writeUInt32BE(noncep2uint + 1, 0);
+  return this.networkNonce;
+};
+
 Network.prototype._onData = function(enc, isInbound, peerId) {
   var encUint8Array = new Uint8Array(enc);
   var encbuf = new Buffer(encUint8Array);
@@ -173,7 +224,16 @@ Network.prototype._onData = function(enc, isInbound, peerId) {
 
   try {
     var encoded = JSON.parse(encstr);
-    var databuf = this._decode(key, encoded);
+    var prevnonce = this.networkNonces ? this.networkNonces[peerId] : undefined;
+    var opts = {prevnonce: prevnonce};
+    var decoded = this._decode(key, encoded, opts);
+
+    //if no error thrown in the last step, we can set the copayer's nonce
+    if (!this.networkNonces)
+      this.networkNonces = {};
+    this.networkNonces[peerId] = decoded.nonce;
+
+    var databuf = decoded.payload;
     var datastr = databuf.toString();
     var payload = JSON.parse(datastr);
   } catch (e) {
@@ -376,20 +436,21 @@ Network.prototype.getPeer = function() {
   return this.peer;
 };
 
-Network.prototype._encode = function(topubkey, fromkey, payload) {
-  var encoded = Message.encode(topubkey, fromkey, payload);
+Network.prototype._encode = function(topubkey, fromkey, payload, opts) {
+  var encoded = Message.encode(topubkey, fromkey, payload, opts);
   return encoded;
 };
 
 
-Network.prototype._decode = function(key, encoded) {
-  var payload = Message.decode(key, encoded);
-  return payload;
+Network.prototype._decode = function(key, encoded, opts) {
+  var decoded = Message.decode(key, encoded, opts);
+  return decoded;
 };
 
 Network.prototype._sendToOne = function(copayerId, payload, cb) {
   if (!Buffer.isBuffer(payload))
     throw new Error('payload must be a buffer');
+
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
     var dataConn = this.connections[peerId];
@@ -418,8 +479,10 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   var l = copayerIds.length;
   var i = 0;
   copayerIds.forEach(function(copayerId) {
+    self.iterateNonce();
+    var opts = {nonce: self.networkNonce};
     var copayerIdBuf = new Buffer(copayerId, 'hex');
-    var encPayload = self._encode(copayerIdBuf, self.getKey(), payloadBuf);
+    var encPayload = self._encode(copayerIdBuf, self.getKey(), payloadBuf, opts);
     var enc = new Buffer(JSON.stringify(encPayload));
     self._sendToOne(copayerId, enc, function() {
       if (++i === l && typeof cb === 'function') cb();
