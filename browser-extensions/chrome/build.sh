@@ -57,6 +57,7 @@ checkOK
 # Zipping chrome-extension
 echo "${OpenColor}${Green}* Zipping all chrome-extension files...${CloseColor}"
 cd $BUILDDIR
+rm $ZIPFILE
 zip -qr $ZIPFILE "`basename $APPDIR`"
 checkOK
 
