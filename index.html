@@ -368,7 +368,13 @@
                   <div class="small-12 medium-6 large-6 columns">
                     <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
                     <input type="password" placeholder="Choose your password" class="form-control"
-                      ng-model="$parent.walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: {{passwordStrength}}<br/><small>Tip: Use lower and uppercase, numbers and symbols</small>" tooltip-trigger="focus" required>
+                      ng-model="$parent.walletPassword" 
+                      check-strength="passwordStrength" 
+                      tooltip-html-unsafe="Password strength: 
+                      <i>{{passwordStrength}}</i><br/><span
+                      class='size-12'>Tip: Use lower and uppercase, numbers and
+                      symbols</span>" 
+                      tooltip-trigger="focus" required>
                     </label>
                   </div>
                 </div>
