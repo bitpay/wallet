@@ -93,6 +93,11 @@ angular.module('copayApp.controllers').controller('HeaderController',
       backupService.download(w);
     };
 
+    $scope.dowloadBackup = function() {
+      var w = $rootScope.wallet;
+      backupService.download(w);
+    }
+
     $scope.getVideoURL = function(copayer) {
       if (config.disableVideo) return;
 

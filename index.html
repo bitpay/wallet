@@ -137,6 +137,8 @@
           </div>
           <div class="large-12 medium-12 small-12 columns">
             <div class="line-dashed">
+              <a ng-click="dowloadBackup()"
+                 ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a>
               <button class="button primary radius right"
                 ng-click="backup()"
                 ng-show="!$root.wallet.publicKeyRing.isBackupReady()"

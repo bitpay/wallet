@@ -70,7 +70,6 @@ angular.module('copayApp.controllers').controller('SigninController',
               notification.error('Unknown error');
             controllerUtils.onErrorDigest();
           } else {
-            backupService.download(w);
             controllerUtils.startNetwork(w, $scope);
           }
         });
