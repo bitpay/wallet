@@ -778,20 +778,49 @@ describe('Wallet model', function() {
         return index <= 14 && index % 2 == 0;
       });
 
-      w.updateIndexes(function(err) {
-        w.publicKeyRing.getIndex(0).receiveIndex.should.equal(15);
-        w.publicKeyRing.getIndex(0).changeIndex.should.equal(15);
+      var updateIndex = sinon.stub(w, 'updateIndex', function(i, cb) { cb(); });
 
-        w.publicKeyRing.getIndex(1).receiveIndex.should.equal(0);
-        w.publicKeyRing.getIndex(1).changeIndex.should.equal(0);
+      w.updateIndexes(function(err) {
+        // check updated all indexes
+        var cosignersChecked = []
+        updateIndex.args.forEach(function(i){
+          cosignersChecked.indexOf(i[0].cosigner).should.equal(-1);
+          cosignersChecked.push(i[0].cosigner);
+        });
+
+        sinon.assert.callCount(updateIndex, 4);
+        w.updateIndex.restore();
         done();
       });
     });
+
+    it('#updateIndex should update correctly', function(done) {
+      mockFakeActivity(function(index) {
+        return index <= 14 && index % 2 == 0;
+      });
+
+
+      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) { cb(null, 8); });
+      var index = {
+        changeIndex: 1,
+        receiveIndex: 2,
+        cosigner: 2,
+      }
+      w.updateIndex(index, function(err) {
+        index.receiveIndex.should.equal(9);
+        index.changeIndex.should.equal(9);
+        indexDiscovery.callCount.should.equal(2);
+        w.indexDiscovery.restore();
+        done();
+      });
+    });
+
 
     it('#updateIndexes should store wallet', function(done) {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
+      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) { cb(null, 8); });
       var spyStore = sinon.spy(w, 'store');
       w.updateIndexes(function(err) {
         sinon.assert.callCount(spyStore, 1);
