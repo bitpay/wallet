@@ -45,6 +45,9 @@ webapp
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip
 browser-extensions/firefox/firefox-addon
+browser-extensions/firefox/data
+browser-extensions/firefox/copay.xpi
+
 version.js
 
 android/package
