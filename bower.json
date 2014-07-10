@@ -6,7 +6,7 @@
     "multisignature"
   ],
   "dependencies": {
-    "angular": "=1.2.16", // our coustom noFractionNumber filter is not compatible with higher versions.
+    "angular": "=1.2.19",
     "angular-foundation": "*",
     "angular-route": "~1.2.14",
     "angular-qrcode": "~3.1.0",
