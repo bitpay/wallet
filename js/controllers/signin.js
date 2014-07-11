@@ -67,7 +67,7 @@ angular.module('copayApp.controllers').controller('SigninController',
             else if (err === 'badSecret')
               notification.error('Bad secret', 'The secret string you entered is invalid');
             else
-              notification.error('Unknown error');
+              notification.error('Wallet error', err);
             controllerUtils.onErrorDigest();
           } else {
             controllerUtils.startNetwork(w, $scope);
