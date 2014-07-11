@@ -55,6 +55,9 @@ function Wallet(opts) {
   //one nonce for oneself, and then one nonce for each copayer
   this.network.setHexNonce(opts.networkNonce);
   this.network.setHexNonces(opts.networkNonces);
+
+  this.processId = Math.random();
+  this.lockPeriod = 10000;
 }
 
 Wallet.parent = EventEmitter;
@@ -247,6 +250,27 @@ Wallet.prototype.getSecret = function() {
   return str;
 };
 
+Wallet.prototype._checkLocked = function() {
+    var walletId = this.id;
+    var currentLockTime = window.localStorage.getItem(walletId+"::lockTime");
+    var currentLockProcessId =  window.localStorage.getItem(walletId+"::lockProcessId");
+    var time = Date.now();
+
+    if (currentLockTime > time - this.lockPeriod && currentLockProcessId != this.processId) {
+      throw new Error('You already have opened this Wallet. Try to open with another browser or on private mode.');
+    }
+    window.localStorage.setItem(walletId+"::lockTime", Date.now());
+    window.localStorage.setItem(walletId+"::lockProcessId", this.processId);
+    this._checkLockInterval();
+};
+
+Wallet.prototype._checkLockInterval = function () {
+  var self = this;
+  setInterval(function() {
+    self._checkLocked();
+  }, 5000);
+};
+
 
 Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
@@ -265,6 +289,7 @@ Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
   net.removeAllListeners();
+ 
   net.on('connect', self._handleConnect.bind(self));
   net.on('disconnect', self._handleDisconnect.bind(self));
   net.on('data', self._handleData.bind(self));
@@ -342,6 +367,7 @@ Wallet.prototype.getRegisteredPeerIds = function() {
 
 Wallet.prototype.store = function() {
   var wallet = this.toObj();
+  this._checkLocked();
   this.storage.setFromObj(this.id, wallet);
   this.log('Wallet stored');
 };

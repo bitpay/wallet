@@ -250,7 +250,16 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.nickname = nickname;
         data.opts.passphrase = passphrase;
         data.opts.id = data.walletId;
-        var w = self.create(data.opts);
+        
+        var errMsg;
+        try {
+          var w = self.create(data.opts);
+        } catch(e) {
+          errMsg = e.message;
+        };
+        if (errMsg) {
+          return cb(errMsg);
+        }
         w.seedCopayer(s.pubKey);
         return cb(null, w);
       }
