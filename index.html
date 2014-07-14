@@ -114,18 +114,22 @@
                     ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
                     ng-src="{{getVideoURL(c.peerId)}}"
                   ></video>
-                  <span class="left m10r">
+                  <div class="left m10r">
                     <img ng-if="!$root.videoInfo[c.peerId]"
                       avatar peer="{{c}}"
                       ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
                       src="./img/satoshi.gif"
+                      alt="{{c}}"
                     />
-                  </span>
-                  <span>
-                    <p><b ng-show="c.index==0">you</b><b ng-show="c.index>0">{{c.nick}}</b>
-                    <span class="success label" ng-show="$root.wallet.publicKeyRing.isBackupReady(c.copayerId)">Backup ready</span></p>
+                  </div>
+                  <div>
+                    <span ng-show="c.index==0">you</span>
+                    <span ng-show="c.index>0">{{c.nick}}</span>
+                    <span class="success label" ng-show="$root.wallet.publicKeyRing.isBackupReady(c.copayerId)">
+                      Backup ready
+                    </span>
                     <small>[ID: {{c.peerId}}]</small>
-                  </span>
+                  </div>
                 </div>
 
                   <div  class="m10" ng-if="!$root.wallet.publicKeyRing.isComplete()">
@@ -161,7 +165,6 @@
                 ng-show="$root.wallet.publicKeyRing.isBackupReady()">
                 <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
                   {{ $root.wallet.publicKeyRing.remainingBackups() }} people have
-                  </span>
                   <span ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
                   One person has
                   </span>
@@ -218,12 +221,13 @@
           <span ng-if="$root.wallet.getNetworkName()=='livenet'">[LIVENET]</span>
           <span ng-if="$root.wallet.getNetworkName()=='testnet'">[TESTNET]</span>
         </div>
-        <div class="text-gray size-12" style="margin-top:5px">
-          Copay v{{version}}
-        </div>
-
-        <div class="size-12 m10t" ng-if="themes.length > 1">
-          <a class="size-12" ng-click="change_theme(th)" ng-repeat="th in themes">{{th}} {{$last ? '' : '&middot; '}}</a>
+        <div class="text-gray size-12 m5t">
+          Copay v{{version}} - 
+          <span ng-if="themes.length > 1">
+            <a class="size-12" ng-click="change_theme(th)" ng-repeat="th in themes">
+              {{th}} {{$last ? '' : '&middot; '}}
+            </a>
+          </span>
         </div>
       </div>
       <div class="large-9 medium-8 small-12 columns">
@@ -239,8 +243,9 @@
             avatar peer="{{c}}"
             ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
             src="./img/satoshi.gif"
+            alt="{{c}}"
           />
-          <div class="size-12 text-center text-gray" stype="margin-top:4px">
+          <div class="size-12 text-center text-gray">
           {{c.nick}}
           </div>
         </div>
@@ -468,7 +473,7 @@
                       <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | noFractionNumber}}
                       </span>
                     </span>
-                    <span ng-if="addrWithFund != selectedAddr.address" style="word-wrap: break-word;">
+                    <span ng-if="addrWithFund != selectedAddr.address">
                       {{selectedAddr.address}}<br/>
                       {{selectedAddr.balance || 0|noFractionNumber}} {{$root.unitName}}
                     </span>
@@ -542,7 +547,7 @@
                     </span>
                   </div>
 
-                  <div class="text-center" style="margin-right:16px; color:#999; font-size:12px">
+                  <div class="text-center">
                     {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
                   </div>
                 </div>
@@ -808,7 +813,7 @@
                 <td width="100" class="ellipsis">{{addr}}</td>
                 <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
                 <td><time>{{info.createdTs | amCalendar}}</time></td>
-                <td><a style="text-decoration: initial;" ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
+                <td><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
                 'Enable' : 'Disable'}}</a></td>
               </tr>
               </tbody>
