@@ -1,0 +1,60 @@
+<div class="signin" ng-controller="SigninController">
+  <div data-alert class="alert-box info radius" ng-show="loading && !failure">
+    <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
+    Authenticating and looking for peers...
+  </div>
+  <div ng-show="!loading">
+    <div class="row">
+      <div class="large-6 medium-6 columns">
+        <div class="box-signin radius">
+          <div ng-show="wallets.length">
+            <h3>Open Wallet</h3>
+            <form name="openForm" ng-submit="open(openForm)" novalidate>
+              <select class="form-control" ng-model="selectedWalletId" ng-options="w.id as w.show for w in wallets" required>
+              </select>
+              <input type="password" class="form-control" placeholder="Your password" name="openPassword" ng-model="openPassword" required>
+              <button type="submit" class="button secondary radius" ng-disabled="openForm.$invalid || loading" loading="Opening">Open</button>
+            </form>
+          </div>
+          <div ng-show="!wallets.length">
+            <h3>Create a new wallet</h3>
+
+            <p class="text-gray">
+            Copay is a free, open-source, multisignature bitcoin wallet. A single-owner bitcoin wallet's security depends on carefully securing the private keys. With copay you can have multiple people controlling the funds, using bitcoin's multisignature functionality, requiring no trust in any third party.
+            </p>
+            <a href="/setup" class="button secondary radius">Create</a>
+          </div>
+        </div>
+      </div>
+      <div class="large-6 medium-6 columns">
+        <div class="box-signin radius">
+          <h3>Join a Wallet in Creation</h3>
+          <form name="joinForm" ng-submit="join(joinForm)" novalidate>
+            <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
+            <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
+            <input type="password" class="form-control"
+            placeholder="Choose your password" name="joinPassword"
+            ng-model="$parent.joinPassword"
+            check-strength="passwordStrength"
+            tooltip-html-unsafe="Password strength: 
+            <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
+              numbers and symbols</span>" tooltip-trigger="focus" required>
+            <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns text-center line-dashed">
+        <a href="/settings">Settings</a> &middot;
+        <span ng-show="wallets.length">
+          <a href="/setup">Create a new wallet</a> &middot;
+        </span>
+        <a href="/import">Import a backup</a>
+      </div>
+    </div>
+  </div> <!-- End !loading -->
+</div>
+
+

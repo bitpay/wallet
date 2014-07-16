@@ -7,49 +7,50 @@ angular
 
     $routeProvider
       .when('/', {
-        templateUrl: 'signin.html',
+        templateUrl: 'views/signin.html',
         validate: false
       })
       .when('/signin', {
-        templateUrl: 'signin.html',
+        templateUrl: 'views/signin.html',
         validate: false
       })
       .when('/import', {
-        templateUrl: 'import.html',
+        templateUrl: 'views/import.html',
         validate: false
       })
       .when('/setup', {
-        templateUrl: 'setup.html',
+        templateUrl: 'views/setup.html',
         validate: false
       })
       .when('/addresses', {
-        templateUrl: 'addresses.html',
+        templateUrl: 'views/addresses.html',
         validate: true
       })
       .when('/transactions', {
-        templateUrl: 'transactions.html',
+        templateUrl: 'views/transactions.html',
         validate: true
       })
       .when('/send', {
-        templateUrl: 'send.html',
+        templateUrl: 'views/send.html',
         validate: true
       })
       .when('/backup', {
-        templateUrl: 'backup.html',
+        templateUrl: 'views/backup.html',
         validate: true
       })
       .when('/settings', {
-        templateUrl: 'settings.html',
+        templateUrl: 'views/settings.html',
         validate: false
       })
       .when('/unsupported', {
-        templateUrl: 'unsupported.html'
+        templateUrl: 'views/unsupported.html'
       })
       .when('/uri_payment/:data', {
-        templateUrl: 'uri_payment.html'
+        templateUrl: 'views/uri_payment.html'
       })
       .otherwise({
-        templateUrl: '404.html'
+        templateUrl: 'views/errors/404.html',
+        title: 'Error'
       });
   });
 
@@ -58,8 +59,8 @@ angular
   .module('copayApp')
   .config(function($locationProvider) {
     $locationProvider
-      .html5Mode(false);
-    //.hashPrefix('!');
+      .html5Mode(true)
+      .hashPrefix('!');
   })
   .run(function($rootScope, $location) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
