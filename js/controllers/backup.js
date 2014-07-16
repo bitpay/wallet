@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('BackupController',
       backupService.download(w);
     };
 
-    $scope.dowloadBackup = function() {
+    $scope.downloadBackup = function() {
       var w = $rootScope.wallet;
       backupService.download(w);
     }

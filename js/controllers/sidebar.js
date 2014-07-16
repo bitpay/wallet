@@ -53,6 +53,11 @@ angular.module('copayApp.controllers').controller('SidebarController',
       }
     }
 
+    // ng-repeat defined number of times instead of repeating over array?
+    $scope.getNumber = function(num) {
+      return new Array(num);
+    }
+
     $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data) {
       var toInt = function(s) {
         return parseInt(s);
