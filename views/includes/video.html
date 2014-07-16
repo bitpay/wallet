@@ -1,0 +1,28 @@
+<div 
+  class="bottom-copay" 
+  ng-controller="VideoController"
+  ng-repeat="c in $root.wallet.getRegisteredPeerIds()" 
+  tooltip="ID: {{c.peerId}}" 
+  tooltip-placement="left">
+  <video ng-if="$root.videoInfo[c.peerId]"
+    avatar peer="{{c}}"
+    autoplay
+    ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+    ng-src="{{getVideoURL(c.peerId)}}"
+    ></video>
+  <img ng-if="!$root.videoInfo[c.peerId]"
+  avatar peer="{{c}}"
+  ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
+  src="./img/satoshi.gif"
+  alt="{{c}}"
+  />
+  <div class="size-12 text-center text-gray">
+    <span ng-show="c.index==0">you</span>
+    <span ng-show="c.index>0">{{c.nick}}</span>
+    <span class="success label" ng-show="$root.wallet.publicKeyRing.isBackupReady(c.copayerId)">
+      Backup ready
+    </span>
+    <small>[ID: {{c.peerId}}]</small>
+  </div>
+</div>
+
