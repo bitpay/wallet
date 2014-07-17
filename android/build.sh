@@ -48,13 +48,13 @@ checkOK
 echo "${OpenColor}${Green}* Copying all app files...${CloseColor}"
 sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,./android/icon.png} $APPDIR
+cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,./android/icon.png,./android/logo.png} $APPDIR
 checkOK
 
 # Building the APK
 echo "${OpenColor}${Green}* Building APK file...${CloseColor}"
 cd $CROSSWALK
-python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR --arch=arm $DEBUG
+python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR $DEBUG
 checkOK
 cd $BUILDDIR
 
