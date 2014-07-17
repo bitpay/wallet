@@ -85,4 +85,10 @@ angular.module('copayApp.controllers').controller('SetupController',
       });
     };
 
+    $scope.isSetupWalletPage = 0;
+
+    $scope.setupWallet = function() {
+      $scope.isSetupWalletPage = !$scope.isSetupWalletPage;
+    };
+
   });

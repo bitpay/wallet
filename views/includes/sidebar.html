@@ -1,0 +1,63 @@
+<div ng-controller="SidebarController">
+  <span class="logo"></span>
+  Copay <small>v{{version}}</small>
+  <small>
+    <a class="text-gray" href="https://copay.io" target="_blank">Project Homapage</a>
+  </small>
+  <div>
+    <strong>{{$root.wallet.getName()}}</strong>
+  </div>
+  <div class="size-12 m10t">
+    {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
+    <span ng-if="$root.wallet.getNetworkName()=='livenet'">[LIVENET]</span>
+    <span ng-if="$root.wallet.getNetworkName()=='testnet'">[TESTNET]</span>
+  </div>
+
+  <div>
+    <a href="/addresses" class="has-tip" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
+      <strong><span>{{$root.wallet.getName()}}</span></strong>
+    </a>
+    <a title="Manual Refresh"
+      ng-disabled="$root.loading"
+      ng-click="refresh()"><i class="fi-refresh"></i></a>
+    <a title="Signout"
+      ng-click="signout()"><i class="fi-power"></i></a>
+  </div>
+  <div>
+    Balance<br class="hide-for-small">
+    <span ng-if="$root.updatingBalance">
+      <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+    </span>
+    <span ng-if="!$root.updatingBalance"
+      data-options="disable_for_touch:true"
+      tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
+      tooltip-trigger="mouseenter"
+      tooltip-placement="bottom">{{totalBalance || 0
+      |noFractionNumber}} {{$root.unitName}} 
+    </span>
+  </div>
+  <div>
+    Available to Spend<br class="hide-for-small">
+    <span ng-if="$root.updatingBalance">
+      <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+    </span>
+    <span ng-show="!$root.updatingBalance"
+      data-options="disable_for_touch:true"
+      tooltip="{{availableBalanceBTC || 0 |noFractionNumber:8}} BTC"
+      tooltip-trigger="mouseenter"
+      tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
+    </span>
+  </div>
+
+  <ul class="side-nav">
+    <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="text-center" data-ng-class="{active: isActive(item)}">
+    <a href="{{item.link}}" ng-click="toggleCollapse()"> <i class="{{item.icon}}"></i> {{item.title}}
+      <span class="label alert round" ng-if="item.link=='#/transactions' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
+    </a>
+    </li>
+  </ul>
+
+  <div ng-include="'views/includes/video.html'"></div>
+
+</div>
+

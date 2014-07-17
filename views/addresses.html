@@ -1,0 +1,60 @@
+<div class="addresses" ng-controller="AddressesController">
+  <div ng-show='$root.wallet.isReady()'>
+    <div class="row">
+      <div class="large-9 medium-12 columns" ng-if="!!(addresses|removeEmpty).length">
+        <div class="large-8 medium-8 columns" ng-init="showAll=0">
+          <a class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll"
+            ng-click="selectAddress(addr)"
+            ng-class="{selected : addr.address == selectedAddr.address}">
+
+            <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
+            <small ng-if="addr.isChange">change</small>
+
+            <span class="right">
+              <span ng-if="addrWithFund == addr.address">
+                <span ng-if="$root.updatingBalance">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                </span>
+                <span ng-if="!$root.updatingBalance">
+                  {{$root.balanceByAddr[addr.address] || 0|noFractionNumber}} {{$root.unitName}}
+                </span>
+              </span>
+              <span ng-if="addrWithFund != addr.address">
+                {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
+              </span>
+            </span>
+          </a>
+
+          <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
+            <span ng-if="!showAll">Show all</span>
+            <span ng-if="showAll">Show less</span>
+          </a>
+        </div>
+        <div class="large-4 medium-4 columns line-dashed-v text-center" highlight-on-change="selectedAddr" ng-show="selectedAddr">
+          <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
+          <p class="m10t">
+          <strong>
+            <span ng-if="addrWithFund == selectedAddr.address">
+              <span ng-if="$root.updatingBalance">
+                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+              </span>
+              <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | noFractionNumber}}
+              </span>
+            </span>
+            <span ng-if="addrWithFund != selectedAddr.address">
+              {{selectedAddr.address}}<br/>
+              {{selectedAddr.balance || 0|noFractionNumber}} {{$root.unitName}}
+            </span>
+          </strong>
+          </p>
+        </div>
+      </div>
+      <div class="columns text-center m10t" ng-class="{'large-3' : !!(addresses|removeEmpty).length}">
+        <p> Create a New <strong> Address </strong> </p>
+        <button class="secondary radius expandi new-address" ng-click="newAddr()"
+          ng-disabled="loading" loading="Creating"> Create </button>
+      </div>
+    </div>
+  </div>
+</div>
+
