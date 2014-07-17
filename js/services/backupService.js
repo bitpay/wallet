@@ -9,7 +9,7 @@ BackupService.prototype.getName = function(wallet) {
   return (wallet.name ? (wallet.name + '-') : '') + wallet.id;
 };
 
-BackupService.prototype.download = function(wallet) {
+BackupService.prototype.download = function(wallet, scope) {
   var ew = wallet.toEncryptedObj();
   var partial = !wallet.publicKeyRing.isComplete();
   var walletName = this.getName(wallet) + (partial ? '-Partial' : '');
@@ -28,6 +28,17 @@ BackupService.prototype.download = function(wallet) {
       wallet: ew
     });
   }
+
+  // throw an email intent if we are in the mobile version
+  if (window.xwalk && scope) {
+    var name = wallet.name ? wallet.name + ' ' : '';
+    var partial = partial ? 'Partial ' : '';
+    var subject = 'Copay - ' + name + 'Wallet ' + partial + 'Backup';
+    var body = 'This is the encrypted backup of the wallet ' + wallet.id + ':\n\n' + ew;
+    scope.mobileBackupURI = encodeURI('mailto:?subject=' + subject + '&body=' + body);
+    return;
+  }
+
   // otherwise lean on the browser implementation
   saveAs(blob, filename);
 };

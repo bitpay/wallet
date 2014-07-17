@@ -139,7 +139,7 @@
           <div class="large-12 medium-12 small-12 columns">
             <div class="line-dashed">
               <a ng-click="dowloadBackup()"
-                 ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a>
+                 ng-show="!$root.wallet.publicKeyRing.isComplete()">Save seed backup</a>
               <button class="button primary radius right"
                 ng-click="backup()"
                 ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
@@ -183,6 +183,7 @@
     </div>
   </div>
 
+  <iframe ng-src="{{mobileBackupURI}}" style="width: 0px; height: 0px; margin:0px; border: 0px"></iframe>
   <div id="footer" data-ng-controller="FooterController" ng-class="{'footer-home': !$root.wallet || !$root.wallet.isReady()}">
     <link rel="stylesheet" ng-href="{{theme}}">
     <div ng-show="!$root.wallet">
@@ -850,7 +851,7 @@
           <h4 class="large-12 columns"><i class="fi-download m10r"></i> Backup </h4>
           <p class="large-8 columns text-gray"> Its important to back up your wallet so that you can recover your wallet in case of disaster </p>
           <div class="large-4 columns">
-            <a class="button radius secondary expand" ng-click="download()">Download File</a>
+            <a class="button radius secondary expand" ng-click="download()">Save Backup</a>
           </div>
         </div>
         <div class="large-8 columns large-centered line-dashed-h"> </div>

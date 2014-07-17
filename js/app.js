@@ -33,6 +33,13 @@ var copayApp = window.copayApp = angular.module('copayApp', [
   'copayApp.directives',
 ]);
 
+copayApp.config(function($sceDelegateProvider) {
+ $sceDelegateProvider.resourceUrlWhitelist([
+   'self',
+   'mailto:**'
+  ]);
+});
+
 angular.module('copayApp.filters', []);
 angular.module('copayApp.services', []);
 angular.module('copayApp.controllers', []);
