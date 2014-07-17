@@ -198,7 +198,12 @@ factory('notification', ['$timeout',
           $timeout(function removeFromQueueTimeout() {
             queue.splice(queue.indexOf(notification), 1);
           }, settings[type].duration);
+        }
 
+        // Movile notification
+        window.navigator.vibrate([200,100,200]);
+        if (document.hidden && (type == 'info' || type == 'funds')) {
+          new window.Notification(title, {body: content});
         }
 
         this.save();
