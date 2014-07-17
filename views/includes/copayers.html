@@ -1,0 +1,62 @@
+<div ng-controller="BackupController" ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
+  <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
+    <h2>Share this secret with your other copayers</h2>
+    <div class="panel input">
+      <p class="ellipsis text-gray">{{$root.wallet.getSecret()}}</p>
+    </div>
+  </div>
+  <h2 ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
+    New Wallet Created
+  </h2>
+  <h3 ng-show="!$root.wallet.publicKeyRing.isComplete()">Waiting Copayers for {{$root.wallet.getName()}}</h3>
+  <h4
+    ng-show="$root.wallet.publicKeyRing.isComplete()">
+    {{$root.wallet.getName()}} - 
+    {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}
+  </h4>
+  <span ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
+    {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
+  </span>
+  <div ng-include="'views/includes/video.html'"></div> 
+  
+  <div  ng-if="!$root.wallet.publicKeyRing.isComplete()">
+    <i class="fi-bitcoin-circle icon-rotate spinner"></i> Waiting for other copayers to join
+  </div>
+
+  <div  ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
+    <i class="fi-bitcoin-circle icon-rotate spinner"></i> Waiting for other
+    copayers to make a Backup
+  </div>
+
+  <a ng-click="dowloadBackup()"
+    ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a>
+  <button class="button primary radius right"
+    ng-click="backup()"
+    ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+    ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+    <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
+      Backup wallet
+    </span>
+    <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
+      <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
+        {{ $root.wallet.publicKeyRing.remainingCopayers() }} people have
+      </span>
+      <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
+        One person has
+      </span>
+      yet to join.
+    </span>
+  </button>
+  <button class="button primary radius right"
+    disabled="disabled"
+    ng-show="$root.wallet.publicKeyRing.isBackupReady()">
+    <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
+      {{ $root.wallet.publicKeyRing.remainingBackups() }} people have
+      <span ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
+        One person has
+      </span>
+      yet to backup the wallet.
+    </span>
+  </button>
+</div>
+

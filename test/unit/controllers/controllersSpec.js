@@ -44,7 +44,7 @@ describe("Unit: Controllers", function() {
     it('Backup controller #download', function() {
       scope.wallet.setEnc('1234567');
       expect(saveAsLastCall).equal(null);
-      scope.download();
+      scope.downloadBackup();
       expect(saveAsLastCall.size).equal(7);
       expect(saveAsLastCall.type).equal('text/plain;charset=utf-8');
     });
@@ -220,7 +220,7 @@ describe("Unit: Controllers", function() {
 
   });
 
-  describe("Unit: Header Controller", function() {
+  describe("Unit: Sidebar Controller", function() {
     var scope, $httpBackendOut;
     var GH = 'https://api.github.com/repos/bitpay/copay/tags';
     beforeEach(inject(function($controller, $injector) {
@@ -241,7 +241,7 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $rootScope) {
       rootScope = $rootScope;
       scope = $rootScope.$new();
-      headerCtrl = $controller('HeaderController', {
+      headerCtrl = $controller('SidebarController', {
         $scope: scope,
       });
     }));

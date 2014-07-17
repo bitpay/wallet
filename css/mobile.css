@@ -1,50 +1,7 @@
-@media (max-width: 1024px) {
-  .logo {
-    background-size: 90px 44px !important;
-    height: 41px;
-  }
-  
-  .header-content {
-    font-size: 70%;
-    line-height: 120%;
-    font-weight: normal;
-  }
-  
-  .line-dashed-v {
-    border: none !important;  
-  }
+/*
+ *
+ * Copay mobile CSS
+ *
+ */
 
-  .top-bar-section ul li>a {
-    font-size: 70%;
-  }  
-}
 
-@media (max-width: 640px) {
-  .hide_menu {
-    display: none;
-  }
-  .show_menu {
-    display: block;
-  }
-  .top-bar-section ul li {
-    width: 100%;
-  }
-  .top-bar-section ul li>a {
-    padding: 0 0 0 15px;
-  }
-  
-  .top-bar {
-    background: #1ABC9C;
-  }  
-
-  .header-content .small-7 {
-    text-align: right !important;
-    padding-top: 0;
-  }
-  
-  .box-copayers figure {
-    height: 71px;
-    width: 71px;
-  }
-
-}

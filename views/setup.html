@@ -1,0 +1,78 @@
+<div ng-controller="SetupController">
+  <div data-alert class="alert-box info radius" ng-show="loading">
+    <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
+    Creating wallet...
+  </div>
+  <div ng-show="!loading">
+    <form name="setupForm" ng-submit="create(setupForm)" novalidate>
+      <div class="row">
+        <div class="large-8 medium-12 columns large-centered medium-centered">
+          <h3>Create new wallet</h3>
+          <label ng-show="!isSetupWalletPage">Wallet name <small>Optional</small>
+            <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
+          </label>
+          <div class="row" ng-show="isSetupWalletPage">
+            <div class="small-12 medium-6 large-6 columns">
+              <label>Your name <small>Optional</small>
+                <input type="text" placeholder="Name" class="form-control" ng-model="myNickname">
+              </label>
+            </div>
+            <div class="small-12 medium-6 large-6 columns">
+              <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
+                <input type="password" placeholder="Choose your password" class="form-control"
+                ng-model="$parent.walletPassword" 
+                check-strength="passwordStrength" 
+                tooltip-html-unsafe="Password strength: 
+                <i>{{passwordStrength}}</i><br/><span
+                  class='size-12'>Tip: Use lower and uppercase, numbers and
+                  symbols</span>" 
+                tooltip-trigger="focus" required>
+              </label>
+            </div>
+          </div>
+          <div class="box-setup" ng-show="!isSetupWalletPage">
+            <fieldset>
+              <div class="row">
+                <div class="large-6 medium-6 columns line-dashed-v">
+                  <label>Select total number of copayers
+                    <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+                    </select>
+                  </label>
+                </div>
+                <div class="large-6 medium-6 columns">
+                  <label>Select required signatures
+                    <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="box-setup-copayers" ng-show="!isSetupWalletPage">
+            <div class="box-setup-copayers-fix">
+              <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
+              src="./img/satoshi.gif"
+              title="Copayer {{$index+1}}-{{totalCopayers}}"
+              ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-8 medium-12 columns large-centered medium-centered">
+          <div class="line-dashed">
+            <a ng-show="!isSetupWalletPage" class="back-button" href="/signin">&laquo; Back</a>
+            <a ng-show="isSetupWalletPage" class="back-button"
+              ng-click="setupWallet()">&laquo; Back</a>
+            <button ng-show="isSetupWalletPage" type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
+              Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+            </button>
+            <a class="button primary radius right" ng-show="!isSetupWalletPage"
+              ng-click="setupWallet()">Next</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

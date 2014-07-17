@@ -1,0 +1,20 @@
+<h3>Add Address Book Entry</h3>
+<form name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
+  <label for="newaddress">Address
+    <small ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
+    <small class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
+    <small class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+      Not valid</small>
+    <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
+    placeholder="Address" ng-model="newaddress" valid-address required>
+  </label>
+  <label for="newlabel">Label
+    <small ng-hide="!addressBookForm.newlabel.$pristine || newlabel">required</small>
+    <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
+    placeholder="Label" ng-model="newlabel" required>
+  </label>
+  <a class="button small default radius" ng-click="cancel()">Cancel</a>
+  <input type="submit" class="button small secondary radius right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
+</form>
+<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+
