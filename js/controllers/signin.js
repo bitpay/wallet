@@ -75,4 +75,26 @@ angular.module('copayApp.controllers').controller('SigninController',
         });
       });
     }
+
+    $scope.isHome = 1;
+    $scope.isJoin = 0;
+    $scope.isOpen = 0;
+
+    $scope.backWallet = function() {
+      $scope.isHome = 1;
+      $scope.isJoin = 0;
+      $scope.isOpen = 0;
+    };
+
+    $scope.openWallet = function() {
+      $scope.isHome = 0;
+      $scope.isJoin = 0;
+      $scope.isOpen = 1;
+    };
+    
+    $scope.joinWallet = function() {
+      $scope.isHome = 0;
+      $scope.isOpen = 0;
+      $scope.isJoin = 1;
+    };
   });

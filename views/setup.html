@@ -8,10 +8,10 @@
       <div class="row">
         <div class="large-8 medium-12 columns large-centered medium-centered">
           <h3>Create new wallet</h3>
-          <label>Wallet name <small>Optional</small>
+          <label ng-show="!isSetupWalletPage">Wallet name <small>Optional</small>
             <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
           </label>
-          <div class="row">
+          <div class="row" ng-show="isSetupWalletPage">
             <div class="small-12 medium-6 large-6 columns">
               <label>Your name <small>Optional</small>
                 <input type="text" placeholder="Name" class="form-control" ng-model="myNickname">
@@ -30,7 +30,7 @@
               </label>
             </div>
           </div>
-          <div class="box-setup">
+          <div class="box-setup" ng-show="!isSetupWalletPage">
             <fieldset>
               <div class="row">
                 <div class="large-6 medium-6 columns line-dashed-v">
@@ -48,7 +48,7 @@
               </div>
             </fieldset>
           </div>
-          <div class="box-setup-copayers">
+          <div class="box-setup-copayers" ng-show="!isSetupWalletPage">
             <div class="box-setup-copayers-fix">
               <img class="box-setup-copay" ng-repeat="i in getNumber(totalCopayers) track by $index"
               src="./img/satoshi.gif"
@@ -61,10 +61,14 @@
       <div class="row">
         <div class="large-8 medium-12 columns large-centered medium-centered">
           <div class="line-dashed">
-            <a class="back-button" href="/signin">&laquo; Back</a>
-            <button type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
+            <a ng-show="!isSetupWalletPage" class="back-button" href="/signin">&laquo; Back</a>
+            <a ng-show="isSetupWalletPage" class="back-button"
+              ng-click="setupWallet()">&laquo; Back</a>
+            <button ng-show="isSetupWalletPage" type="submit" class="button primary radius right" ng-disabled="setupForm.$invalid || loading">
               Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
             </button>
+            <a class="button primary radius right" ng-show="!isSetupWalletPage"
+              ng-click="setupWallet()">Next</a>
           </div>
         </div>
       </div>
