@@ -75,13 +75,18 @@ body, html{
 .sidebar {
   position: fixed;
   width: 250px;
-  padding: 15px;
+  padding: 20px;
   background-color: #2C3E50;
   color: #fff;
+  line-height: 24px;
 }
 
 .sidebar a {
   color: #fff;
+}
+
+.button.small.side-bar {
+  padding: 0.2rem 0.4rem;
 }
 
 .main {
@@ -95,7 +100,7 @@ body, html{
 .dn {display: none;}
 .pr {position: relative;}
 .m0 {margin: 0;}
-.db {display: block;}
+.db {display: block;}  
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }
@@ -112,6 +117,7 @@ body, html{
 .m10b {margin-bottom: 10px;}
 .m15b {margin-bottom: 20px;}
 .m10r {margin-right: 10px;}
+.m20r {margin-right: 20px;}
 .m10 {margin: 10px;}
 .m15 {margin: 15px;}
 .p10t {padding-top: 10px;}
@@ -122,6 +128,7 @@ body, html{
 .p20h {padding: 0 20px;}
 .m30v {margin: 30px 0;}
 .m10h {margin:0 10px;}
+.m10v {margin:10px 0;}
 .m30a {margin: 30px auto;}
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
@@ -141,11 +148,33 @@ body, html{
   margin: 0.5rem 0 1rem;
 }
 
+.line-sidebar {
+  border-top: 1px solid #34495E;
+  margin: 1.4rem 0;
+}
+
 .line-dashed {
   border-top: 1px dashed #ccc;
   margin: 1rem 0;
   padding: 1rem 0;
   overflow: hidden;
+}
+
+.name-wallet {
+  font-size: 16px;
+  color: #D4D4D4;
+  line-height: 16px;
+}
+
+.box-livenet {
+  background: #213140;
+  padding: 0rem 0.5rem 0.2rem;
+  color: #7A8C9E;
+}
+
+.founds {
+  font-weight: 100;
+  color: #7A8C9E;
 }
 
 /* Turn Off Number Input Spinners */
@@ -467,5 +496,27 @@ button[disabled].warning:focus,
 }
 
 .text-gray { color: #999 !important;}
+
+.side-nav li {
+  font-size: 16px;
+  line-height: 40px;
+}
+
+.side-nav li a {
+  color: #FFFFFF !important;
+  font-weight: 100;
+}
+
+.side-nav li.active a {
+  background-color: #1ABC9C;
+}
+
+.side-nav li:hover a {
+  background-color: #3C4E60;
+}
+
+
+
+
 
 /*-----------------------------------------------------------------*/
