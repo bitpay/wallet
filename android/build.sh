@@ -54,7 +54,7 @@ checkOK
 # Building the APK
 echo "${OpenColor}${Green}* Building APK file...${CloseColor}"
 cd $CROSSWALK
-python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR $DEBUG
+python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR $DEBUG --package=com.bitpay.copay
 checkOK
 cd $BUILDDIR
 
