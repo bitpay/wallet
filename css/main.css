@@ -62,6 +62,12 @@
   font-family: 'Ubuntu', Helvetica, sans-serif !important;
 }
 
+h3 {
+  font-weight: 100;
+  font-size: 22px;
+  color: #2C3E50;
+}
+
 body, html{
   height:100%;
   width:100%;
@@ -91,6 +97,7 @@ body, html{
 
 .main {
   margin-left: 250px;
+  padding: 1.5rem
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -479,6 +486,7 @@ button.warning:focus,
   background-color: #82251A;
   color: #e6e6e6;
 }
+
 button.disabled.warning, 
 button[disabled].warning, 
 .button.disabled.warning, 
@@ -513,6 +521,10 @@ button[disabled].warning:focus,
 
 .side-nav li:hover a {
   background-color: #3C4E60;
+}
+
+.addresses ul {
+  margin-left: 0;
 }
 
 
