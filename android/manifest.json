@@ -14,5 +14,8 @@
   },
   "icons": {
     "128": "icon.png"
-  }
+  },
+  "xwalk_hosts": [
+    "https://*"
+  ]
 }
