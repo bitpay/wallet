@@ -540,4 +540,8 @@ button[disabled].warning:focus,
   height: 50px;
 }
 
+input.ng-invalid-match, input.ng-invalid-match:focus {
+  border-color: red;
+}
+
 /*-----------------------------------------------------------------*/
