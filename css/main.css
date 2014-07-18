@@ -66,6 +66,11 @@ h3 {
   font-weight: 100;
   font-size: 22px;
   color: #2C3E50;
+  margin-bottom: 2rem;
+}
+
+h4 {
+  font-size: 0.875rem;
 }
 
 body, html{
@@ -149,6 +154,7 @@ body, html{
 .m10b {margin-bottom: 10px;}
 .m15b {margin-bottom: 20px;}
 .m10r {margin-right: 10px;}
+.m15l {margin-left: 15px;}
 .m20r {margin-right: 20px;}
 .m10 {margin: 10px;}
 .m15 {margin: 15px;}
@@ -563,6 +569,41 @@ button[disabled].warning:focus,
 .video-small {
   width: 50px;
   height: 50px;
+}
+
+.icon-input {
+  position: absolute;
+  top: 11px;
+  right: 20px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.icon-input .fi-check {
+  background-color: #1ABC9C;
+  padding: 0.2rem 0.4rem;
+}
+
+.icon-input .fi-x {
+  background-color: #C0392A;
+  padding: 0.2rem 0.4rem;
+}
+
+.send-bar {
+  background-color: #EDEDF5;
+  padding: 1.5rem;
+}
+
+.row {
+  margin-left: -0.9375rem;
+}
+
+.has-error {
+  color: #C0392A;
+}
+
+.is-valid {
+  color: #1ABC9C;
 }
 
 input.ng-invalid-match, input.ng-invalid-match:focus {
