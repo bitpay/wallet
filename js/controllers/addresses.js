@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
       };
 
       $modal.open({
-        templateUrl: 'addressModal.html',
+        templateUrl: 'views/modals/qr-address.html',
         controller: ModalInstanceCtrl,
         resolve: {
           address: function() { return address; }

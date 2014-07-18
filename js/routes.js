@@ -45,8 +45,8 @@ angular
       .when('/unsupported', {
         templateUrl: 'views/unsupported.html'
       })
-      .when('/uri_payment/:data', {
-        templateUrl: 'views/uri_payment.html'
+      .when('/uri-payment/:data', {
+        templateUrl: 'views/uri-payment.html'
       })
       .otherwise({
         templateUrl: 'views/errors/404.html',

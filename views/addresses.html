@@ -5,44 +5,32 @@
       <span class="button small side-bar" ng-click="newAddr()" ng-disabled="loading" loading="Creating"><i class="fi-plus"></i></span>
     </h3> 
     
-      <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
-        <div class="large-12 medium-12" ng-init="showAll=0">
-          <ul>
-            <li class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
+    <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
+      <div class="large-12 medium-12" ng-init="showAll=0">
+        <ul>
+          <li class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
 
-              <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
-              <small ng-if="addr.isChange">change</small>
-              <a href="#" ng-click="openAddressModal(addr)">Show QR</a>
+            <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
+            <small ng-if="addr.isChange">change</small>
+            <a href="#" ng-click="openAddressModal(addr)">Show QR</a>
 
-              <span class="right">
-                <span ng-if="$root.updatingBalance">
-                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-                </span>
-                <span ng-if="!$root.updatingBalance">
-                  {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
-                </span>
-              </span>
-            </li>
-          </ul>
-
-          <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
-            <span ng-if="!showAll">Show all</span>
-            <span ng-if="showAll">Show less</span>
-          </a>
-        </div>
-
-        <script type="text/ng-template" id="addressModal.html">
-          <qrcode size="160" data="{{address.address}}"></qrcode>
-          Address: {{address.address}}<br/>
-          <span ng-if="$root.updatingBalance">
+            <span class="right">
+              <span ng-if="$root.updatingBalance">
                 <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-          </span>
-          <span ng-if="!$root.updatingBalance">
-            Balance: {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
-          </span>
-          <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
-        </script>
+              </span>
+              <span ng-if="!$root.updatingBalance">
+                {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
+              </span>
+            </span>
+          </li>
+        </ul>
+
+        <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
+          <span ng-if="!showAll">Show all</span>
+          <span ng-if="showAll">Show less</span>
+        </a>
       </div>
+    </div>
   </div>
 </div>
 

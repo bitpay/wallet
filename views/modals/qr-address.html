@@ -1,0 +1,9 @@
+<qrcode size="160" data="{{address.address}}"></qrcode>
+Address: {{address.address}}<br/>
+<span ng-if="$root.updatingBalance">
+      <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+</span>
+<span ng-if="!$root.updatingBalance">
+  Balance: {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
+</span>
+<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
