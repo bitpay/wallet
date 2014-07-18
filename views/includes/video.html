@@ -1,30 +1,27 @@
-<div 
-  class="video-box"
-  ng-controller="VideoController"
-  ng-repeat="c in $root.wallet.getRegisteredPeerIds()">
-  <video 
-    ng-if="$root.videoInfo[c.peerId]"
-    avatar 
-    peer="{{c}}"
-    autoplay
-    ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
-    ng-src="{{getVideoURL(c.peerId)}}"
-    ></video>
-  <img 
-    class="no-video"
-    ng-if="!$root.videoInfo[c.peerId]"
-    avatar 
-    peer="{{c}}"
-    ng-class="($root.wallet.getOnlinePeerIDs().indexOf(c.peerId) != -1) ? 'online' : 'offline'"
-    src="./img/satoshi.gif"
-    alt="{{c}}">
-  <div 
-    tooltip="ID: {{c.peerId}}" 
-    tooltip-placement="bottom">
-    <span ng-show="c.index==0">you</span>
-    <span ng-show="c.index>0">{{c.nick}}</span>
-  </div>
-  <div class="success label" ng-show="$root.wallet.publicKeyRing.isBackupReady(c.copayerId)">
-    Backup ready
+<div ng-controller="VideoController">
+  <div  class="video-box" ng-repeat="copayer in copayersList()">
+    <video
+      ng-if="hasVideo(copayer)"
+      peer="{{copayer}}" avatar autoplay
+      ng-class="isConnected(copayer) ? 'online' : 'offline'"
+      ng-src="{{getVideoURL(copayer)}}"></video>
+
+    <img
+      class="no-video"
+      ng-if="!hasVideo(copayer)"
+      ng-class="isConnected(copayer) ? 'online' : 'offline'"
+      src="./img/satoshi.gif"
+      alt="{{copayer}}">
+
+    <div
+      tooltip="ID: {{copayer.peerId}}"
+      tooltip-placement="bottom">
+      <span ng-show="copayer.index == 0">you</span>
+      <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
+    </div>
+
+    <div class="success label" ng-show="isBackupReady(copayer)">
+      Backup ready
+    </div>
   </div>
 </div>

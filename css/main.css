@@ -75,7 +75,9 @@ body, html{
 }
 
 .page, .main, .sidebar {
-  height:100%;   
+  height:100%;
+  overflow-y: auto;
+  overflow-x: none;
 }
 
 .sidebar {
@@ -91,8 +93,31 @@ body, html{
   color: #fff;
 }
 
+.sidebar ul.copayer-list {
+  list-style-type: none;
+  padding:0; margin:0;
+}
+
+.sidebar ul.copayer-list li {
+  margin-top: 15px;
+}
+
+.sidebar ul.copayer-list img {
+  width: 30px;
+  height: 30px;
+}
+
 .button.small.side-bar {
   padding: 0.2rem 0.4rem;
+}
+
+.online {
+  border: 3px solid #1ABC9C;
+}
+
+.offline {
+  border: 3px solid gray;
+  opacity: 0.4;
 }
 
 .main {
