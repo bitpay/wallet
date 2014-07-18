@@ -49,6 +49,7 @@ version.js
 
 android/package
 android/*.apk
+android/*.keystore
 
 coverage/
 
