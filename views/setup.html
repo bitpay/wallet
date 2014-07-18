@@ -21,12 +21,21 @@
               <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
                 <input type="password" placeholder="Choose your password" class="form-control"
                 ng-model="$parent.walletPassword" 
+                name="walletPassword"
                 check-strength="passwordStrength" 
                 tooltip-html-unsafe="Password strength: 
                 <i>{{passwordStrength}}</i><br/><span
                   class='size-12'>Tip: Use lower and uppercase, numbers and
                   symbols</span>" 
                 tooltip-trigger="focus" required>
+
+                <input type="password" 
+                placeholder="Repeat password"
+                name="walletPasswordConfirm"
+                ng-model="walletPasswordConfirm" 
+                match="walletPassword" 
+                required>
+
               </label>
             </div>
           </div>

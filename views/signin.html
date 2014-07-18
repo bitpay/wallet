@@ -34,6 +34,13 @@
         tooltip-html-unsafe="Password strength: 
         <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
           numbers and symbols</span>" tooltip-trigger="focus" required>
+
+        <input type="password" 
+        placeholder="Repeat password"
+        name="joinPasswordConfirm"
+        ng-model="joinPasswordConfirm" 
+        match="joinPassword" required>
+
         <a class="back-button" ng-click="backWallet()">&laquo; Back</a>
         <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
       </form>
