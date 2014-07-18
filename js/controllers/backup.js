@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('BackupController',
   function($scope, $rootScope, backupService, walletFactory, controllerUtils) {
     $scope.download = function() {
-      backupService.download($rootScope.wallet, $rootScope);
+      backupService.download($rootScope.wallet);
     };
 
     $scope.deleteWallet = function() {
