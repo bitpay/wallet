@@ -7,7 +7,8 @@ var util = bitcore.util;
 var extend = require('util')._extend;
 var Message = require('../core/Message');
 
-var STOMP_PATH = 'copay/'
+var STOMP_PATH = 'copay/';
+var STOMP_POSTFIX = '?consumer.retroactive=true';
 
 // TODO only if now browserify
 // if (process.version) {
@@ -59,7 +60,6 @@ Network.prototype._deletePeer = function(peerId) {
 };
 
 Network.prototype._onClose = function(peerID) {
-  this._deletePeer(peerID);
   this.emit('disconnect', peerID);
 };
 
@@ -139,11 +139,13 @@ Network.prototype.iterateNonce = function() {
 
 
 Network.prototype.lockPeers = function(allowedCopayerIdsArray) {
-
   console.log('[Stomp.js.140] LOCKING PEERS!'); //TODO
   this.allowedCopayerIds = {};
   for (var i in allowedCopayerIdsArray) {
-    this.allowedCopayerIds[allowedCopayerIdsArray[i]] = true;
+    var copayerId = allowedCopayerIdsArray[i];
+    this.allowedCopayerIds[copayerId] = true;
+    var peerId = this.peerFromCopayer(copayerId);
+    this._addCopayerMap(peerId, copayerId);
   }
 };
 
@@ -206,10 +208,7 @@ Network.prototype._onData = function(message) {
   }
   //
   if (!this.copayerForPeer[peerId]) {
-
     console.log('[Stomp.js.198] UNKNOW PEER: ', peerId, this.copayerForPeer); //TODO
-
-
     this._deletePeer(peerId);
     return;
   }
@@ -253,17 +252,12 @@ Network.prototype.greet = function(copayerId) {
 };
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
-  console.log('[Stomp.js.242:_addCopayerMap:]', peerId, copayerId); //TODO
   if (!this.copayerForPeer[peerId]) {
-
-    console.log('[Stomp.js.245]', this.opts.maxPeers); //TODO
     if (Object.keys(this.copayerForPeer).length < this.opts.maxPeers) {
-
-      console.log('[Stomp.js.244]'); //TODO
       this.copayerForPeer[peerId] = copayerId;
     }
   }
-  console.log('[Stomp.js.249]', this.copayerForPeer); //TODO
+  console.log('[Stomp.js.242:_addCopayerMap:]', peerId, copayerId, this.copayerForPeer); //TODO
 };
 
 Network.prototype._setPeerAuth = function(peerId, isAuthenticated) {
@@ -299,7 +293,13 @@ Network.prototype._handleOpen = function(openCallback) {
   this.started = true;
   this.copayerForPeer[this.peerId] = this.copayerId;
 
-  this.stompSub = this.client.subscribe(STOMP_PATH + this.peerId, this._onData.bind(this));
+  this.stompSub = this.client.subscribe(
+    STOMP_PATH + this.peerId + STOMP_POSTFIX,
+    this._onData.bind(this), {
+      "activemq.dispatchAsync": true,
+      "activemq.exclusive": true,
+      "activemq.retroactive": true,
+    });
   return openCallback();
 };
 
@@ -324,14 +324,18 @@ Network.prototype.start = function(opts, openCallback) {
     this.client.heartbeat.outgoing = 0;
     this.client.heartbeat.incoming = 0;
   }
-  this.client.connect(
-    this.opts.headers, this._handleOpen.bind(this, openCallback), this._handleFailedOpen.bind(this));
+
+  var headers = JSON.parse(JSON.stringify(this.opts.headers));
+  headers['client-id'] = STOMP_PATH + this.peerId;
+  console.log('[Stomp.js.330:headers:]', headers); //TODO
+
+  this.client.connect(headers, this._handleOpen.bind(this, openCallback), this._handleFailedOpen.bind(this));
 };
 
 Network.prototype.getOnlinePeerIDs = function() {
-  console.log('[Stomp.js.329:getOnlinePeerIDs:] IS NOT IMPLEMENTED YET'); //TODO
-  return [];
+  // TODO
   //  return this.connectedPeers;
+  return [];
 };
 
 Network.prototype.getPeer = function() {
@@ -355,9 +359,10 @@ Network.prototype._sendToOne = function(copayerId, payload, cb) {
 
   var peerId = this.peerFromCopayer(copayerId);
   if (peerId !== this.peerId) {
-    this.client.send(STOMP_PATH + peerId, {
+    this.client.send(STOMP_PATH + peerId + STOMP_POSTFIX, {
       'reply-to': this.peerId,
-      'persistent': 1
+      'persistent': 1,
+      //      'expires': 0,
     }, payload);
   }
   if (typeof cb === 'function') cb();

@@ -276,7 +276,6 @@ Wallet.prototype.netStart = function(callback) {
   };
 
   this._lockPeersIf();
-  console.log('[Wallet.js.281:startOpts:]', startOpts); //TODO
 
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
@@ -313,7 +312,6 @@ Wallet.prototype.getRegisteredCopayerIds = function() {
 
 Wallet.prototype.getRegisteredPeerIds = function() {
   var l = this.publicKeyRing.registeredCopayers();
-  console.log('[Wallet.js.326]', l, this.registeredPeerIds); //TODO
   if (this.registeredPeerIds.length !== l) {
     this.registeredPeerIds = [];
     var copayers = this.getRegisteredCopayerIds();

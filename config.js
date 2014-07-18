@@ -1,7 +1,7 @@
 'use strict';
 var defaultConfig = {
   // DEFAULT network (livenet or testnet)
-  networkName: 'livenet',
+  networkName: 'testnet',
   forceNetwork: false,
 
   // DEFAULT unit: Bit
@@ -17,7 +17,10 @@ var defaultConfig = {
   // network layer config
   network: {
     url: 'ws://localhost:61614/stomp',
-    headers: {},
+    headers: {
+      retroactive: true,
+      dispatchAsync: true,
+    },
     disableHearbeat: true,
     maxPeers: 12,
   },
@@ -35,14 +38,14 @@ var defaultConfig = {
   // blockchain service API config
   blockchain: {
     schema: 'https',
-    host: 'insight.bitpay.com',
+    host: 'test-insight.bitpay.com',
     port: 443,
     retryDelay: 1000,
   },
   // socket service API config
   socket: {
     schema: 'https',
-    host: 'insight.bitpay.com',
+    host: 'test-insight.bitpay.com',
     port: 443,
     reconnectDelay: 1000,
   },
