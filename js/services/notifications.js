@@ -203,7 +203,7 @@ factory('notification', ['$timeout',
         // Movile notification
         window.navigator.vibrate([200,100,200]);
         if (document.hidden && (type == 'info' || type == 'funds')) {
-          new window.Notification(title, {body: content});
+          new window.Notification(title, {body: content, icon:'img/notification.png'});
         }
 
         this.save();
