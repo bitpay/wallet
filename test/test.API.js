@@ -14,7 +14,7 @@ var blanket = require("blanket")({
   "pattern": "/js/"
 });
 
-describe('API', function() {
+describe.skip('API', function() {
 
   it('should have a command called "echo"', function() {
 

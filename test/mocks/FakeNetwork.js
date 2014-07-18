@@ -23,6 +23,8 @@ Network.prototype.connectTo = function(peerId) {
   // connect C:
 };
 
+Network.prototype.lockPeers = function() {
+};
 
 Network.prototype.disconnect = function(cb) {
   // disconect :c

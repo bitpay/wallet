@@ -18,7 +18,6 @@ var STOMP_POSTFIX = '?consumer.retroactive=true';
 function Network(opts) {
   var self = this;
   opts = opts || {};
-  console.log('[Stomp.js.17:opts:]', opts); //TODO
   this.opts = {};
   ['url', 'headers', 'disableHearbeat', 'maxPeers'].forEach(function(k) {
     if (opts.hasOwnProperty(k)) self.opts[k] = opts[k];
