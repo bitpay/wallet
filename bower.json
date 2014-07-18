@@ -21,6 +21,7 @@
     "bitcore": "0.1.25",
     "angular-moment": "~0.7.1",
     "socket.io-client": ">=1.0.0",
+    "stomp-websocket": "2.3.3",
     "mousetrap": "1.4.6"
   }
 }

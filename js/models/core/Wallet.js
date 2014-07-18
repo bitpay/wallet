@@ -35,8 +35,8 @@ function Wallet(opts) {
     self[k] = opts[k];
   });
   if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
-    throw new Error('Network forced to '+copayConfig.networkName+
-        ' and tried to create a Wallet with network '+ this.getNetworkName());
+    throw new Error('Network forced to ' + copayConfig.networkName +
+      ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
@@ -69,19 +69,9 @@ Wallet.getRandomId = function() {
   return r;
 };
 
-Wallet.prototype.seedCopayer = function(pubKey) {
-  this.seededCopayerId = pubKey;
-};
-
-Wallet.prototype.connectToAll = function() {
-
-  var all = this.publicKeyRing.getAllCopayerIds();
-  this.network.connectToCopayers(all);
-  if (this.seededCopayerId) {
-    this.sendWalletReady(this.seededCopayerId);
-    this.seededCopayerId = null;
-  }
-};
+// Wallet.prototype.seedCopayer = function(pubKey) {
+//   this.seededCopayerId = pubKey;
+// };
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
@@ -112,9 +102,8 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
     if (wasIncomplete) {
       this.sendPublicKeyRing();
     }
-    if (this.publicKeyRing.isComplete()) {
-      this._lockIncomming();
-    }
+
+    this._lockPeersIf();
     this.emit('publicKeyRingUpdated');
     this.store();
   }
@@ -176,6 +165,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
+      this._lockPeersIf();
       this.sendPublicKeyRing(senderId);
       this.sendAddressBook(senderId);
       this.sendAllTxProposals(senderId); // send old txps
@@ -257,8 +247,9 @@ Wallet.decodeSecret = function(secretB) {
 };
 
 
-Wallet.prototype._lockIncomming = function() {
-  this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+Wallet.prototype._lockPeersIf = function() {
+  if (this.publicKeyRing.isComplete())
+    this.network.lockPeers(this.publicKeyRing.getAllCopayerIds());
 };
 
 Wallet.prototype.netStart = function(callback) {
@@ -284,28 +275,27 @@ Wallet.prototype.netStart = function(callback) {
     maxPeers: self.totalCopayers
   };
 
-  if (this.publicKeyRing.isComplete()) {
-    this._lockIncomming();
-  }
+  this._lockPeersIf();
+  console.log('[Wallet.js.281:startOpts:]', startOpts); //TODO
 
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
-      self.scheduleConnect();
+      // self.scheduleConnect();
       self.emit('txProposalsUpdated');
     }, 10);
   });
 };
 
-Wallet.prototype.scheduleConnect = function() {
-  var self = this;
-  if (self.network.isOnline()) {
-    self.connectToAll();
-    self.currentDelay = self.currentDelay * 2 || self.reconnectDelay;
-    setTimeout(self.scheduleConnect.bind(self), self.currentDelay);
-  }
-}
+// Wallet.prototype.scheduleConnect = function() {
+//   var self = this;
+//   if (self.network.isOnline()) {
+//     self.connectToAll();
+//     self.currentDelay = self.currentDelay * 2 || self.reconnectDelay;
+//     setTimeout(self.scheduleConnect.bind(self), self.currentDelay);
+//   }
+// }
 
 Wallet.prototype.getOnlinePeerIDs = function() {
   return this.network.getOnlinePeerIDs();
@@ -323,6 +313,7 @@ Wallet.prototype.getRegisteredCopayerIds = function() {
 
 Wallet.prototype.getRegisteredPeerIds = function() {
   var l = this.publicKeyRing.registeredCopayers();
+  console.log('[Wallet.js.326]', l, this.registeredPeerIds); //TODO
   if (this.registeredPeerIds.length !== l) {
     this.registeredPeerIds = [];
     var copayers = this.getRegisteredCopayerIds();

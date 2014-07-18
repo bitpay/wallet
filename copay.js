@@ -8,10 +8,10 @@ module.exports.AddressIndex = require('./js/models/core/AddressIndex');
 
 
 // components
-var WebRTC = module.exports.WebRTC = require('./js/models/network/WebRTC');
+var STOMP = module.exports.STOMP = require('./js/models/network/STOMP');
 var Insight = module.exports.Insight = require('./js/models/blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js/models/storage/LocalEncrypted');
 
 module.exports.WalletFactory = require('./js/models/core/WalletFactory');
 module.exports.version = require('./version');
-module.exports.API = require('./API');
+//module.exports.API = require('./API');

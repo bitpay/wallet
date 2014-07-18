@@ -10,6 +10,9 @@ if (localConfig) {
       if (name === 'networkName' && config['forceNetwork']) {
         continue;
       }
+      // ignore non stomp network config
+      if (name=='network' && !localConfig.network.url)
+        continue;
       config[name] = localConfig[name];
     }
   }

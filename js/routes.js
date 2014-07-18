@@ -63,12 +63,8 @@ angular
   })
   .run(function($rootScope, $location) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if (!util.supports.data) {
-        $location.path('unsupported');
-      } else {
-        if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
-          $location.path('signin');
-        }
+      if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
+        $location.path('signin');
       }
     });
   })

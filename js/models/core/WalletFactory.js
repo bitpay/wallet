@@ -7,7 +7,7 @@ var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 
-var WebRTC = module.exports.WebRTC = require('../network/WebRTC');
+var Stomp = module.exports.Stomp = require('../network/Stomp');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
 
@@ -21,7 +21,7 @@ function WalletFactory(config, version) {
   config = config || {};
 
   this.Storage = config.Storage || StorageLocalEncrypted;
-  this.Network = config.Network || WebRTC;
+  this.Network = config.Network || Stomp;
   this.Blockchain = config.Blockchain || Insight;
 
   this.storage = new this.Storage(config.storage);
@@ -238,7 +238,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 
   self.network.start(opts, function() {
-    self.network.connectTo(s.pubKey);
+    self.network.greet(s.pubKey);
 
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
@@ -251,7 +251,10 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.passphrase = passphrase;
         data.opts.id = data.walletId;
         var w = self.create(data.opts);
-        w.seedCopayer(s.pubKey);
+        // w.seedCopayer(s.pubKey);
+        w.sendWalletReady(s.pubKey);
+
+
         return cb(null, w);
       }
     });
