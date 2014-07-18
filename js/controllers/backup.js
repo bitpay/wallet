@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('BackupController',
-  function($scope, $rootScope, $location, $window, $timeout, $modal, backupService, walletFactory, controllerUtils) {
+  function($scope, $rootScope, backupService, walletFactory, controllerUtils) {
     $scope.download = function() {
       backupService.download($rootScope.wallet);
     };
