@@ -206,7 +206,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.openAddressBookModal = function() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/modals/addressbook.html',
+        templateUrl: 'views/modals/address-book.html',
         windowClass: 'tiny',
         controller: function($scope, $modalInstance) {
 
