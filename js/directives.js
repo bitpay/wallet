@@ -244,11 +244,11 @@ angular.module('copayApp.directives')
           match: '='
       },
       link: function(scope, elem, attrs, ctrl) {
-          scope.$watch(function() {
-              return (ctrl.$pristine && angular.isUndefined(ctrl.$modelValue)) || scope.match === ctrl.$modelValue;
-          }, function(currentValue) {
-              ctrl.$setValidity('match', currentValue);
-          });
+        scope.$watch(function() {
+          return (ctrl.$pristine && angular.isUndefined(ctrl.$modelValue)) || scope.match === ctrl.$modelValue;
+        }, function(currentValue) {
+          ctrl.$setValidity('match', currentValue);
+        });
       }
     };
   })

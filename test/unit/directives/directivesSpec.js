@@ -202,4 +202,37 @@ describe("Unit: Testing Directives", function() {
     });
 
   });
+
+  describe('Match Password Inputs', function() {
+    beforeEach(inject(function($compile, $rootScope) {
+      $scope = $rootScope;
+      $rootScope.availableBalance = 1000;
+      var element = angular.element(
+        '<form name="form">' +
+        '<input type="password" ng-model="walletPassword" name="walletPassword" required>' +
+        '<input type="password" ng-model="walletPasswordConfirm" name="walletPasswordConfirm" match="walletPassword" required>' +
+        '</form>'
+      );
+      $scope.model = {
+        walletPassword: null,
+        walletPasswordConfirm: null
+      };
+      $compile(element)($scope);
+      $scope.$digest();
+      form = $scope.form;
+    }));
+    it('should not validate', function() {
+      form.walletPassword.$setViewValue('mysecretpassword');
+      form.walletPasswordConfirm.$setViewValue('mySecretPassword');
+      $scope.$digest();
+      expect(form.walletPasswordConfirm.$invalid).to.equal(true);
+    });
+    it('should validate', function() {
+      form.walletPassword.$setViewValue('mysecretpassword123');
+      form.walletPasswordConfirm.$setViewValue('mysecretpassword123');
+      $scope.$digest();
+      expect(form.walletPasswordConfirm.$invalid).to.equal(false);
+    });
+  });
+
 });
