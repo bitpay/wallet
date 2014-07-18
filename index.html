@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
     <title>Copay - Multisignature Wallet</title>
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/foundation-icons.css">
@@ -138,7 +139,7 @@
           <div class="large-12 medium-12 small-12 columns">
             <div class="line-dashed">
               <a ng-click="dowloadBackup()"
-                 ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a>
+                 ng-show="!$root.wallet.publicKeyRing.isComplete()">Save seed backup</a>
               <button class="button primary radius right"
                 ng-click="backup()"
                 ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
@@ -849,7 +850,7 @@
           <h4 class="large-12 columns"><i class="fi-download m10r"></i> Backup </h4>
           <p class="large-8 columns text-gray"> Its important to back up your wallet so that you can recover your wallet in case of disaster </p>
           <div class="large-4 columns">
-            <a class="button radius secondary expand" ng-click="download()">Download File</a>
+            <a class="button radius secondary expand" ng-click="download()">Save Backup</a>
           </div>
         </div>
         <div class="large-8 columns large-centered line-dashed-h"> </div>
