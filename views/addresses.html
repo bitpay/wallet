@@ -8,53 +8,40 @@
       <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
         <div class="large-12 medium-12" ng-init="showAll=0">
           <ul>
-            <li class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll"
-              ng-click="selectAddress(addr)"
-              ng-class="{selected : addr.address == selectedAddr.address}">
+            <li class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
 
               <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
               <small ng-if="addr.isChange">change</small>
+              <a href="#" ng-click="openAddressModal(addr)">Show QR</a>
 
               <span class="right">
-                <span ng-if="addrWithFund == addr.address">
-                  <span ng-if="$root.updatingBalance">
-                    <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-                  </span>
-                  <span ng-if="!$root.updatingBalance">
-                    {{$root.balanceByAddr[addr.address] || 0|noFractionNumber}} {{$root.unitName}}
-                  </span>
+                <span ng-if="$root.updatingBalance">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <span ng-if="addrWithFund != addr.address">
+                <span ng-if="!$root.updatingBalance">
                   {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
                 </span>
               </span>
-              <a href="#" data-reveal-id="view-qr">Click Me For A Modal</a>
             </li>
           </ul>
+
           <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
             <span ng-if="!showAll">Show all</span>
             <span ng-if="showAll">Show less</span>
           </a>
         </div>
 
-        <div id="view-qr" class="reveal-modal" data-reveal>
-          <qrcode size="160" data="{{selectedAddr.address}}"></qrcode>
-          <p class="m10t">
-          <strong>
-            <span ng-if="addrWithFund == selectedAddr.address">
-              <span ng-if="$root.updatingBalance">
+        <script type="text/ng-template" id="addressModal.html">
+          <qrcode size="160" data="{{address.address}}"></qrcode>
+          Address: {{address.address}}<br/>
+          <span ng-if="$root.updatingBalance">
                 <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-              </span>
-              <span ng-if="!$root.updatingBalance">{{balanceByAddr[selectedAddr.address] || 0 | noFractionNumber}}
-              </span>
-            </span>
-            <span ng-if="addrWithFund != selectedAddr.address">
-              {{selectedAddr.address}}<br/>
-              {{selectedAddr.balance || 0|noFractionNumber}} {{$root.unitName}}
-            </span>
-          </strong>
-          </p>
-        </div>
+          </span>
+          <span ng-if="!$root.updatingBalance">
+            Balance: {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
+          </span>
+          <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+        </script>
       </div>
   </div>
 </div>
