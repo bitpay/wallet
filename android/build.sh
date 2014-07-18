@@ -26,6 +26,16 @@ then
   DEBUG="--enable-remote-debugging"
 fi
 
+if [[ $# -eq 1 && ! $1 = "-d" ]]
+then
+  if [ ! -f $BUILDDIR/copay.keystore ]
+    then
+    echo "${OpenColor}${Red}* Can't build production app without a keystore${CloseColor}"
+    exit 1
+  fi
+  PRODUCTION="--keystore-path=$BUILDDIR/copay.keystore --keystore-alias=copay_play --keystore-passcode=$1"
+fi
+
 # Move to the build directory
 cd $BUILDDIR
 
@@ -54,7 +64,7 @@ checkOK
 # Building the APK
 echo "${OpenColor}${Green}* Building APK file...${CloseColor}"
 cd $CROSSWALK
-python make_apk.py --manifest=$APPDIR/manifest.json --target-dir=$BUILDDIR $DEBUG --package=com.bitpay.copay
+python make_apk.py --manifest=$APPDIR/manifest.json --package=com.bitpay.copay --arch=arm --target-dir=$BUILDDIR $DEBUG $PRODUCTION
 checkOK
 cd $BUILDDIR
 
