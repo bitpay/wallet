@@ -97,7 +97,7 @@ a:hover {
   color: #2980b9;
 }
 
-input {
+.signin input, .setup input  {
   background: #2C3E50 !important;
   -moz-box-shadow:    inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
@@ -105,7 +105,7 @@ input {
   color: #7A8C9E !important;
 }
 
-select {
+.signin select, .setup select {
   background: #2C3E50 !important;
   border: 0 !important;
   color: #7A8C9E !important;
@@ -821,6 +821,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   background: #2C3E50;
   -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
   box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
+  margin-bottom: 20px;
 }
 
 /*-----------------------------------------------------------------*/
