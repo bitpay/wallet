@@ -4,70 +4,84 @@
     Authenticating and looking for peers...
   </div>
   <div class="row signin" ng-show="!loading">
-    <div class="large-4 columns logo-setup">
+    <div class="large-4 columns logo-setup text-center">
       <img src="../img/logo-negative-beta.svg" alt="Copay">
-      <p class="size-12 m10t">
-      Copay is a free, open-source, multisignature bitcoin wallet. A single-owner bitcoin wallet's security depends on carefully securing the private keys. With copay you can have multiple people controlling the funds, using bitcoin's multisignature functionality, requiring no trust in any third party.
-      </p>
     </div>
-    <div class="large-8 columns content-setup">
-      <div ng-show="!isHome && isOpen">
-        <h3>Open Wallet</h3>
+    <div class="large-8 columns line-dashed-setup-v">
+      <div class="box-setup" ng-show="!isHome && isOpen">
+        <h1 class="text-white line-sidebar-b">Open Wallet</h1>
         <form name="openForm" ng-submit="open(openForm)" novalidate>
           <select class="form-control" ng-model="selectedWalletId" ng-options="w.id as w.show for w in wallets" required>
           </select>
           <input type="password" class="form-control" placeholder="Your password" name="openPassword" ng-model="openPassword" required>
-          <a class="back-button" ng-click="backWallet()">&laquo; Back</a>
-          <button type="submit" class="button secondary radius" ng-disabled="openForm.$invalid || loading" loading="Opening">Open</button>
+          <div class="text-right">
+            <a class="back-button text-white m20r" ng-click="backWallet()">&laquo; Back</a>
+            <button type="submit" class="button white m0" ng-disabled="openForm.$invalid || loading" loading="Opening">Open</button>
+          </div>
         </form>
       </div>
       <div ng-show="isHome && wallets.length">
         <div class="button-setup">
-          <a ng-click="openWallet()">Open a wallet</a>
+          <a ng-click="openWallet()">
+            <h1 class="text-white">Open a wallet</h1>
+            <p class="text-gray m0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, non.</p>
+          </a>
         </div>
       </div>
       <div ng-show="isHome && !wallets.length">
         <div class="button-setup">
-          <a href="/setup">Create a new wallet</a>
+          <a href="/setup">
+            <h1 class="text-secondary">Create a new wallet</h1>
+            <p class="text-gray m0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, non.</p>
+          </a>
+
         </div>
       </div>
       <div ng-show="!isHome && isJoin">
-        <h3>Join a Wallet in Creation</h3>
-        <form name="joinForm" ng-submit="join(joinForm)" novalidate>
-          <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-          <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
-          <input type="password" class="form-control"
-          placeholder="Choose your password" name="joinPassword"
-          ng-model="$parent.joinPassword"
-          check-strength="passwordStrength"
-          tooltip-html-unsafe="Password strength: 
-          <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
-            numbers and symbols</span>" tooltip-trigger="focus" required>
+        <div class="box-setup">
+        <h1 class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
+          <form name="joinForm" ng-submit="join(joinForm)" novalidate>
+            <h4>Wallet Setting</h4>
+            <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
+            <h4>User info</h4>
+            <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
+            <input type="password" class="form-control"
+            placeholder="Choose your password" name="joinPassword"
+            ng-model="$parent.joinPassword"
+            check-strength="passwordStrength"
+            tooltip-html-unsafe="Password strength: 
+            <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
+              numbers and symbols</span>" tooltip-trigger="focus" required>
 
-          <input type="password" 
-          placeholder="Repeat password"
-          name="joinPasswordConfirm"
-          ng-model="joinPasswordConfirm" 
-          match="joinPassword" required>
-
-          <a class="back-button" ng-click="backWallet()">&laquo; Back</a>
-          <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
-        </form>
+            <input type="password" 
+            placeholder="Repeat password"
+            name="joinPasswordConfirm"
+            ng-model="joinPasswordConfirm" 
+            match="joinPassword" required>
+            <div class="text-right">
+              <a class="back-button text-primary m20r" ng-click="backWallet()">&laquo; Back</a>
+              <button type="submit" class="button primary radius m0" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div ng-show="isHome && !isJoin">
         <div class="button-setup">
-          <a ng-click="joinWallet()">Join a Wallet in Creation</a>
+          <a ng-click="joinWallet()">
+            <h1 class="text-primary">Join a Wallet in Creation</h1>
+            <p class="text-gray m0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, non.</p>
+          </a>
         </div>
       </div>
       <div ng-show="isHome && wallets.length">
         <div class="button-setup">
-          <a href="/setup">Create a wallet</a>
+          <a href="/setup"><h1 class="text-secondary">Create a wallet</h1></a>
         </div>
       </div>
 
       <div class="footer-setup" ng-show="isHome">
-        <a class="right size-12" href="/settings">Settings</a>
-        <a class="size-12" href="/import">Import a backup</a>
+        <a class="right size-12 text-gray" href="/settings"><i class="m10r size-14 fi-wrench"></i>Settings</a>
+        <a class="left size-12 text-gray" href="/import"><i class="m10r size-14 fi-upload"></i>Import a backup</a>
       </div>
     </div>
   </div> <!-- End !loading -->
