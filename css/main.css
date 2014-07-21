@@ -77,6 +77,7 @@ h2 {
 h3 {
   font-weight: 300;
   font-size: 16px;
+  color: #fff;
 }
 
 h4 {
@@ -86,10 +87,17 @@ h4 {
 body, html{
   height:100%;
   width:100%;
-  background: #F8F8FB;
 }
 
-.page, .main, .sidebar {
+.page, .main {
+  height:100%;
+  overflow-y: auto;
+  overflow-x: none;
+  background-color: #2C3E50;
+  color: #fff;
+}
+
+.sidebar {
   height:100%;
   overflow-y: auto;
   overflow-x: none;
@@ -139,7 +147,38 @@ body, html{
 
 .main {
   margin-left: 250px;
-  padding: 1.5rem
+  padding: 1.5rem;
+  background-color: #F8F8FB;
+}
+
+.signin, .setup {
+  margin-top: 10%;
+}
+
+.logo-setup {
+  height: 100%;
+}
+
+.content-setup {
+  height: 100%;
+  border-left: 1px dashed #ccc;
+}
+
+.button-setup a {
+  display: block;
+  padding: 30px 20px;
+  background: #384D6B;
+  color: #eee;
+  margin-bottom: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  border-radius: 20px;
+
+}
+
+.footer-setup {
+  overflow: hidden;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -214,7 +253,6 @@ body, html{
 
 .name-wallet {
   font-size: 16px;
-  color: #D4D4D4;
   line-height: 16px;
 }
 
@@ -548,8 +586,6 @@ button[disabled].warning:focus,
   color: #E6E6E6;
 }
 
-.text-gray { color: #999 !important;}
-
 .side-nav li {
   font-size: 16px;
   line-height: 40px;
@@ -610,10 +646,6 @@ button[disabled].warning:focus,
 .send-bar {
   background-color: #EDEDF5;
   padding: 1.5rem;
-}
-
-.row {
-  margin-left: -0.9375rem;
 }
 
 .has-error {

@@ -3,10 +3,16 @@
     <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
     Creating wallet...
   </div>
-  <div ng-show="!loading">
+  <div class="setup" ng-show="!loading">
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
       <div class="row">
-        <div class="large-8 medium-12 columns large-centered medium-centered">
+        <div class="large-4 columns logo-setup">
+          <img src="../img/logo-negative-beta.svg" alt="Copay">
+          <p class="size-12 m10t">
+          Copay is a free, open-source, multisignature bitcoin wallet. A single-owner bitcoin wallet's security depends on carefully securing the private keys. With copay you can have multiple people controlling the funds, using bitcoin's multisignature functionality, requiring no trust in any third party.
+          </p>
+        </div>
+        <div class="large-8 columns content-setup">
           <h3>Create new wallet</h3>
           <label ng-show="!isSetupWalletPage">Wallet name <small>Optional</small>
             <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
@@ -65,11 +71,6 @@
               ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}">
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="large-8 medium-12 columns large-centered medium-centered">
-          <div class="line-dashed">
             <a ng-show="!isSetupWalletPage" class="back-button" href="/signin">&laquo; Back</a>
             <a ng-show="isSetupWalletPage" class="back-button"
               ng-click="setupWallet()">&laquo; Back</a>
@@ -78,7 +79,6 @@
             </button>
             <a class="button primary radius right" ng-show="!isSetupWalletPage"
               ng-click="setupWallet()">Next</a>
-          </div>
         </div>
       </div>
     </form>
