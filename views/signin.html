@@ -41,10 +41,10 @@
         <div class="box-setup">
         <h1 class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
           <form name="joinForm" ng-submit="join(joinForm)" novalidate>
-            <h4>Wallet Setting</h4>
-            <input type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
-            <h4>User info</h4>
-            <input type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
+            <label for="connectionId"> Wallet Setting </label>
+            <input id="connectionId" type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
+            <label for="joinPassword"> User info</label>
+            <input id="joinPassword" type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
             <input type="password" class="form-control"
             placeholder="Choose your password" name="joinPassword"
             ng-model="$parent.joinPassword"
