@@ -35,6 +35,7 @@
         "bitcoin"
     ], 
     "devDependencies": {
+        "stompjs": "2.3.3",
         "mocha-lcov-reporter": "0.0.1", 
         "travis-cov": "0.2.5", 
         "chai": "1.9.1", 

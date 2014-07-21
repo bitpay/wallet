@@ -13,7 +13,7 @@ var puts = function(error, stdout, stderr) {
   //sys.puts(stderr);
 };
 
-var pack = function (params) {
+var pack = function(params) {
   var file = require.resolve('soop');
   var dir = file.substr(0, file.length - String('soop.js').length);
   var preludePath = dir + 'example/custom_prelude.js';
@@ -49,7 +49,8 @@ var createBundle = function(opts) {
     expose: 'copay'
   });
   b.require('./version');
-//  b.external('bitcore');
+  b.external('Stomp');
+  //  b.external('bitcore');
   b.require('./js/models/core/WalletFactory', {
     expose: '../js/models/core/WalletFactory'
   });
@@ -72,8 +73,8 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeNetwork', {
     expose: './mocks/FakeNetwork'
   });
-  b.require('./js/models/network/WebRTC', {
-    expose: '../js/models/network/WebRTC' 
+  b.require('./js/models/network/Stomp', {
+    expose: '../js/models/network/Stomp'
   });
   b.require('./js/models/blockchain/Insight', {
     expose: '../js/models/blockchain/Insight'
@@ -92,10 +93,10 @@ var createBundle = function(opts) {
   });
   b.require('./config', {
     expose: '../config'
-  }); 
+  });
   b.require('./js/models/core/Structure', {
     expose: '../js/models/core/Structure'
-  }); 
+  });
 
   if (opts.dontminify) {
     //include dev dependencies

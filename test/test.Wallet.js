@@ -702,7 +702,7 @@ describe('Wallet model', function() {
   });
 
   describe('#send', function() {
-    it('should call this.network.send', function () {
+    it('should call this.network.send', function() {
       var w = cachedCreateW2();
       var save = w.network.send;
       w.network.send = sinon.spy();
@@ -778,12 +778,14 @@ describe('Wallet model', function() {
         return index <= 14 && index % 2 == 0;
       });
 
-      var updateIndex = sinon.stub(w, 'updateIndex', function(i, cb) { cb(); });
+      var updateIndex = sinon.stub(w, 'updateIndex', function(i, cb) {
+        cb();
+      });
 
       w.updateIndexes(function(err) {
         // check updated all indexes
         var cosignersChecked = []
-        updateIndex.args.forEach(function(i){
+        updateIndex.args.forEach(function(i) {
           cosignersChecked.indexOf(i[0].cosigner).should.equal(-1);
           cosignersChecked.push(i[0].cosigner);
         });
@@ -800,7 +802,9 @@ describe('Wallet model', function() {
       });
 
 
-      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) { cb(null, 8); });
+      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) {
+        cb(null, 8);
+      });
       var index = {
         changeIndex: 1,
         receiveIndex: 2,
@@ -820,7 +824,9 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
-      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) { cb(null, 8); });
+      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) {
+        cb(null, 8);
+      });
       var spyStore = sinon.spy(w, 'store');
       w.updateIndexes(function(err) {
         sinon.assert.callCount(spyStore, 1);
@@ -875,7 +881,7 @@ describe('Wallet model', function() {
       w.addressBook[key].hidden.should.equal(true);
       w.toggleAddressBookEntry(key);
       w.addressBook[key].hidden.should.equal(false);
-      (function() { 
+      (function() {
         w.toggleAddressBookEntry();
       }).should.throw();
     });
@@ -884,26 +890,26 @@ describe('Wallet model', function() {
       var w = createW();
 
       var data = {
-        type: "addressbook", 
+        type: "addressbook",
         addressBook: {
-          "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z" : {
+          "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z": {
             copayerId: "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb",
             createdTs: 1404769393509,
             hidden: false,
             label: "adsf",
             signature: "3046022100d4cdefef66ab8cea26031d5df03a38fc9ec9b09b0fb31d3a26b6e204918e9e78022100ecdbbd889ec99ea1bfd471253487af07a7fa7c0ac6012ca56e10e66f335e4586"
           }
-        }, 
-        walletId: "11d23e638ed84c06", 
+        },
+        walletId: "11d23e638ed84c06",
         isBroadcast: 1
       };
 
       var senderId = "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb";
- 
+
       Object.keys(w.addressBook).length.should.equal(2);
       w._handleAddressBook(senderId, data, true);
       Object.keys(w.addressBook).length.should.equal(3);
-    }); 
+    });
 
     it('should return signed object', function() {
       var w = createW();
@@ -950,7 +956,7 @@ describe('Wallet model', function() {
       w.verifyAddressbookEntry(w.addressBook[key], pubKey, key).should.equal(true);
       w.addressBook[key].label = 'Another';
       w.verifyAddressbookEntry(w.addressBook[key], pubKey, key).should.equal(false);
-      (function() { 
+      (function() {
         w.verifyAddressbookEntry();
       }).should.throw();
     });
@@ -998,9 +1004,10 @@ describe('Wallet model', function() {
 
   describe('#forceNetwork in config', function() {
     it('should throw if network is different', function() {
+      cachedW2 = null;
       var backup = copayConfig.forceNetwork;
       copayConfig.forceNetwork = true;
-      config.networkName = 'livenet';
+      config.networkName = copayConfig.networkName == 'livenet' ? 'testnet' : 'livenet';
       cachedCreateW2.should.throw(Error);
       copayConfig.forceNetwork = backup;
     });

@@ -8,6 +8,8 @@ lib-cov
 *.pid
 *.gz
 *.swp
+*.sig
+*.xpi
 tags
 pids
 logs
@@ -45,6 +47,7 @@ webapp
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip
 browser-extensions/firefox/firefox-addon
+browser-extensions/firefox/data/
 version.js
 
 android/package
