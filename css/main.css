@@ -98,7 +98,6 @@ body, html{
 .sidebar {
   position: fixed;
   width: 250px;
-  padding: 20px;
   background-color: #2C3E50;
   color: #fff;
   line-height: 24px;
@@ -115,6 +114,9 @@ body, html{
 
 .sidebar ul.copayer-list li {
   margin-top: 15px;
+  font-weight: 100;
+  font-size: 12px;
+  color: #C9C9C9;
 }
 
 .sidebar ul.copayer-list img {
@@ -127,11 +129,11 @@ body, html{
 }
 
 .online {
-  border: 3px solid #1ABC9C;
+  border: 2px solid #1ABC9C;
 }
 
 .offline {
-  border: 3px solid gray;
+  border: 2px solid gray;
   opacity: 0.4;
 }
 
@@ -174,10 +176,12 @@ body, html{
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
+.p20 {padding:20px;}
 .m30v {margin: 30px 0;}
 .m10h {margin:0 10px;}
 .m10v {margin:10px 0;}
 .m30a {margin: 30px auto;}
+.m-negative-l {margin-left: -0.9375rem;}
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
 .oh {overflow:hidden;}
@@ -549,14 +553,18 @@ button[disabled].warning:focus,
 .side-nav li {
   font-size: 16px;
   line-height: 40px;
+  font-weight: 100;
 }
 
 .side-nav li a {
   color: #FFFFFF !important;
-  font-weight: 100;
 }
 
 .side-nav li.active a {
+  background-color: #1ABC9C;
+}
+
+.side-nav li.active:hover a {
   background-color: #1ABC9C;
 }
 
@@ -619,5 +627,20 @@ button[disabled].warning:focus,
 input.ng-invalid-match, input.ng-invalid-match:focus {
   border-color: red;
 }
+
+.copayers h3 {
+  color: #fff;
+}
+
+.copayers {
+  width: 100%;
+  background-color: #213140;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  border-top: 1px solid #475065;
+}
+
 
 /*-----------------------------------------------------------------*/

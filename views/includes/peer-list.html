@@ -1,9 +1,17 @@
-<div ng-controller="VideoController">
-  Icon Copayers
-  {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}}
+<div ng-controller="VideoController" class="copayers">
+  <div>
+    <h3>
+      <i class="fi-torsos-all size-24 m20r"></i>
+      Copayers
+      <small class="m15l">
+        {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}}
+      </small>
+    </h3>
+  </div>
+  
 
   <ul class="copayer-list" ng-repeat="copayer in copayers">
-    <li>
+    <li tooltip="ID: {{copayer.peerId}}" tooltip-placement="top">
       <video
         ng-if="hasVideo(copayer)"
         peer="{{copayer}}" avatar autoplay
@@ -11,15 +19,13 @@
         ng-src="{{getVideoURL(copayer)}}"></video>
 
       <img 
-        class="no-video"
+        class="br100 oh no-video m20r"
         ng-if="!hasVideo(copayer)"
         ng-class="isConnected(copayer) ? 'online' : 'offline'"
         src="./img/satoshi.gif"
         alt="{{copayer}}">
 
-      <span
-        tooltip="ID: {{copayer.peerId}}" 
-        tooltip-placement="bottom">
+      <span>
         <span ng-show="copayer.index == 0">you</span>
         <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
       </span>
