@@ -138,10 +138,10 @@
           </div>
           <div class="large-12 medium-12 small-12 columns">
             <div class="line-dashed">
-              <div ng-show="!$root.wallet.publicKeyRing.isComplete()">
+              <span ng-show="!$root.wallet.publicKeyRing.isComplete()">
               <a ng-click="dowloadBackup()">Save seed backup</a>
               |
-              </div>
+              </span>
               <a ng-really-click="deleteWallet()"
                 ng-really-message="Are you sure to delete this wallet from this computer?">Delete wallet</a>
               <button class="button primary radius right"
