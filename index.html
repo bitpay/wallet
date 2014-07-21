@@ -138,8 +138,11 @@
           </div>
           <div class="large-12 medium-12 small-12 columns">
             <div class="line-dashed">
-              <a ng-click="dowloadBackup()"
-                 ng-show="!$root.wallet.publicKeyRing.isComplete()">Save seed backup</a>
+              <div ng-show="!$root.wallet.publicKeyRing.isComplete()">
+              <a ng-click="dowloadBackup()">Save seed backup</a>
+              |
+              <a ng-click="deleteWallet()">Delete wallet</a>
+              </div>
               <button class="button primary radius right"
                 ng-click="backup()"
                 ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
