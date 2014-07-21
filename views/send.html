@@ -54,7 +54,7 @@
               Use all funds ({{getAvailableAmount()}} {{$root.unitName}})
             </a>
             <div for="amount">
-              <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">Valid</small>
+              <small class="is-valid" ng-show="!sendForm.amount.$invalid">Valid</small>
               <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount">Not valid</small>
               <small ng-show="notEnoughAmount" class="has-error">Insufficient funds</small>
               <small class="icon-input" ng-show="!sendForm.amount.$invalid && amount"><i class="fi-check"></i></small>
@@ -78,21 +78,19 @@
 
       <div class="send-bar large-4 columns left">
         <h6>Send to</h6>
-        <p class="text-gray">address</p>
-        <div class="large-6 medium-6 columns m10t" ng-show="amount>0">
-          <h6>
-            Total amount for this transaction:
-          </h6>
-          <div class="totalAmount">
-            <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
-            <small>
-              {{ ((amount + defaultFee) * unitToBtc)|noFractionNumber:8}} BTC
-            </small>
-          </div>
+        <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}">
+          {{address}}&nbsp;
+        </p>
+        <h6>Total amount for this transaction:</h6>
+        <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
+          <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
           <small>
+            {{ ((amount + defaultFee) * unitToBtc)|noFractionNumber:8}} BTC <br/>
             Including fee of {{defaultFee|noFractionNumber}} {{$root.unitName}}
           </small>
-        </div>
+        </p>
+        <h6>Note</h6>
+        <p ng-class="{'hidden': !commentText}">{{commentText}}&nbsp;</p>
         <div>
           <button type="submit" class="button secondary expand text-center m0" ng-disabled="sendForm.$invalid || loading" loading="Sending">
             Send
