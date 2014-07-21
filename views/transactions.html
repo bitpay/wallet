@@ -1,14 +1,14 @@
 <div class="transactions" data-ng-controller="TransactionsController">
   <div class="row" ng-show='$root.wallet.isReady()'>
     <div class="large-12 columns" ng-show="wallet.totalCopayers > 1">
-      <h4> Transaction proposals <small>({{txs.length}})</small></h4>
+      <h1> Transaction proposals <small>({{txs.length}})</small></h1>
 
       <ul class="inline-list">
         <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
         <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
       </ul>
-      <div class="panel radius pending" ng-repeat="tx in txs | paged">
-        <div class="txheader row m10">
+      <div class="last-transactions" ng-repeat="tx in txs | paged">
+        <div class="last-transactions-header row">
           <div class="large-8 medium-8 small-12 columns">
             <div class="row" ng-repeat="out in tx.outs">
               <div class="large-3 medium-3 small-3 columns ellipsis">
@@ -24,30 +24,28 @@
           </div>
         </div>
 
-        <div class="tx-copayers">
+        <div class="last-transactions-content">
           <div class="box-note large-12" ng-show="tx.comment">
             "{{tx.comment}}" - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
           </div>
 
-          <div class="box-copayers" ng-repeat="(cId, actions) in tx.peerActions">
-            <figure class="left">
+          <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
               <a href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
-                <img src="./img/satoshi.gif" alt="{{cId}}" width="200">
+                <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
               </a>
-            </figure>
             <div class="box-status">
               <span ng-repeat="(action, ts) in actions">
-                <a ng-if="action == 'create'" href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
-                  <i class="fi-crown size-12 icon-status icon-active"></i>
+                <a ng-if="action == 'create'" href="/transactions" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
+                  <i class="fi-crown icon-status icon-active"></i>
                 </a>
-                <a ng-if="action == 'seen'" href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
-                  <i class="fi-eye size-12 icon-status icon-active"></i>
+                <a ng-if="action == 'seen'" href="/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
+                  <i class="fi-eye icon-status icon-active"></i>
                 </a>
-                <a ng-if="action == 'sign'" href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
-                  <i class="fi-check size-12 icon-status icon-active-check"></i>
+                <a ng-if="action == 'sign'" href="/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
+                  <i class="fi-check icon-status icon-active-check"></i>
                 </a>
-                <a ng-if="action == 'rejected'" href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
-                  <i class="fi-x size-12 icon-status icon-active-x"></i>
+                <a ng-if="action == 'rejected'" href="/transactions" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
+                  <i class="fi-x icon-status icon-active-x"></i>
                 </a>
               </span>
             </div>
@@ -58,7 +56,7 @@
           </div>
         </div>
 
-        <div class="row m10">
+        <div class="row last-transactions-footer">
           <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
             <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
               <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
