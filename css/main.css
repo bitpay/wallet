@@ -267,6 +267,10 @@ body, html{
   color: #7A8C9E;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 /* Turn Off Number Input Spinners */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
