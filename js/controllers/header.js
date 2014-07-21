@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeaderController',
-  function($scope, $rootScope, $location, notification, $http, $sce, controllerUtils, backupService) {
+  function($scope, $rootScope, $location, notification, $http, $sce, controllerUtils, backupService, walletFactory) {
     $scope.menu = [{
       'title': 'Addresses',
       'icon': 'fi-address-book',
@@ -96,7 +96,16 @@ angular.module('copayApp.controllers').controller('HeaderController',
     $scope.dowloadBackup = function() {
       var w = $rootScope.wallet;
       backupService.download(w);
-    }
+    };
+    
+    $scope.deleteWallet = function() {
+      alert('delete');
+      var w = $rootScope.wallet;
+      w.disconnect();
+      walletFactory.delete(w.id, function() {
+        controllerUtils.logout();
+      });
+    };
 
     $scope.getVideoURL = function(copayer) {
       if (config.disableVideo) return;
