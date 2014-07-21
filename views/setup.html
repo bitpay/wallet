@@ -1,5 +1,5 @@
 <div ng-controller="SetupController">
-  <div data-alert class="alert-box info radius" ng-show="loading">
+  <div data-alert class="alert-box info" ng-show="loading">
     <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
     Creating wallet...
   </div>
@@ -66,14 +66,14 @@
                 width="50px">
               </div>
             </div>
-            <div class="m20t text-right">
+            <div class="text-right">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="/signin">&laquo; Back</a>
               <a ng-show="isSetupWalletPage" class="back-button m20r"
                 ng-click="setupWallet()">&laquo; Back</a>
-              <button ng-show="isSetupWalletPage" type="submit" class="button secondary radius right m0" ng-disabled="setupForm.$invalid || loading">
+              <button ng-show="isSetupWalletPage" type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
-              <a class="button secondary radius right m0" ng-show="!isSetupWalletPage"
+              <a class="button secondary m0" ng-show="!isSetupWalletPage"
                 ng-click="setupWallet()">Next</a>
             </div>
           </div>
