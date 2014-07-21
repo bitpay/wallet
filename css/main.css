@@ -94,7 +94,6 @@ body, html{
   overflow-y: auto;
   overflow-x: none;
   background-color: #2C3E50;
-  color: #fff;
 }
 
 .sidebar {
@@ -162,6 +161,30 @@ body, html{
 .content-setup {
   height: 100%;
   border-left: 1px dashed #ccc;
+}
+
+.last-transactions {
+  border: 1px solid #eee;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  margin-bottom: 1.25rem;
+  background-color: #fff;
+}
+
+.last-transactions-header {
+  padding: 10px;
+}
+
+.last-transactions-footer {
+  padding: 10px;
+}
+
+.last-transactions-content {
+  background-color: #FDFCFC;
+  overflow: hidden;
+  padding: 10px;
 }
 
 .button-setup a {

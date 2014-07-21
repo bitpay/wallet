@@ -106,14 +106,16 @@
       <p ng-show="!onlyPending && txs.length == 0">No transactions proposals yet.</p>
       <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
+    
     <div class="large-12 columns line-dashed-h" ng-hide="wallet.totalCopayers == 1"></div>
+    
     <div class="large-12 columns">
-      <h4>
+      <h1>
         Last transactions 
         <small ng-hide="wallet.totalCopayers > 1 || !loading">
           <i class="fi-bitcoin-circle icon-rotate spinner"></i>
         </small>   
-      </h4>
+      </h1>
       <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
         <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
         <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
@@ -123,8 +125,8 @@
         <div ng-if="!blockchain_txs[0].txid && !loading">
           No transactions yet.
         </div>
-        <div class="panel radius" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
-          <div class="m10 size-12">
+        <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
+          <div class="last-transactions-header">
             <div class="row">
               <div class="large-8 columns">
                 <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
@@ -143,7 +145,7 @@
               </div>
             </div>
           </div>
-          <div class="tx-copayers">
+          <div class="last-transactions-content">
             <div class="row">
               <div class="large-5 medium-5 small-5 columns">
                 <div ng-repeat="vin in btx.vinSimple">
@@ -166,7 +168,7 @@
               </div>
             </div>
           </div>
-          <div class="m10 size-12 text-gray">
+          <div class="last-transactions-footer">
             <div class="row">
               <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | noFractionNumber}} {{$root.unitName}}</div>
               <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
