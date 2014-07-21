@@ -187,6 +187,41 @@ body, html{
   padding: 10px;
 }
 
+.last-transactions-content .box-status {
+  text-align: center;
+  font-size: 14;
+}
+
+.last-transactions-content .box-copayer {
+  width: 80px;
+  margin-right: 20px;
+  float: left;
+}
+
+.last-transactions-content .box-copayer .icon-inactive {
+  color: #4C5B69;
+}
+
+.last-transactions-content .box-copayer .icon-active {
+  color: #ccc;
+}
+
+.last-transactions-content .box-copayer .icon-active-check {
+  color: #3FBC9C;
+}
+
+.last-transactions-content .box-copayer .icon-active-x {
+  color: #C0392B;
+}
+
+.box-note {
+  text-align: center;
+  clear: both;
+  font-style: italic;
+  color: gray;
+  margin-bottom: 10px;
+}
+
 .button-setup a {
   display: block;
   padding: 30px 20px;
