@@ -93,6 +93,13 @@ a {
   color: #3498DB;
 }
 
+.signin label, .setup label {
+  font-size: 0.875rem;
+  color: #fff;
+  font-weight: 100;
+  margin-bottom: 0.5rem;
+}
+
 a:hover {
   color: #2980b9;
 }
