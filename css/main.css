@@ -472,7 +472,9 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 
   border-radius: 3px; 
-  border: 1px solid #16A085; 
+  border: 1px solid #16A085;
+  text-overflow: ellipsis;
+  overflow-y: hidden;
 }
 
 .tooltip>.nub {
@@ -672,6 +674,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   left: 0;
   padding: 20px;
   border-top: 1px solid #475065;
+  overflow-y: hidden;
 }
 
 
