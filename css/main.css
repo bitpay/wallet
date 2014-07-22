@@ -178,8 +178,22 @@ a:hover {
   background-color: #F8F8FB;
 }
 
-.signin, .setup {
+.signin, .setup, .import, .settings {
   margin-top: 15%;
+}
+
+.import fieldset {
+  border: 1px solid #3C5269;
+}
+
+.import fieldset legend {
+  background: transparent;
+  color: #fff;
+  font-weight: normal;
+}
+
+.import input[type="file"], .import label, .import label small {
+  color: #fff;
 }
 
 .logo-setup {
