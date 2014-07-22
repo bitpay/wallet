@@ -103,7 +103,10 @@ a:hover {
   color: #2980b9;
 }
 
-.signin input, .setup input  {
+.signin input, 
+.setup input,
+.import input,
+.settings input {
   background: #2C3E50 !important;
   -moz-box-shadow:    inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
@@ -111,7 +114,10 @@ a:hover {
   color: #7A8C9E !important;
 }
 
-.signin select, .setup select {
+.signin select, 
+.setup select,
+.import select,
+.settings select {
   background: #2C3E50 !important;
   border: 0 !important;
   color: #7A8C9E !important;
@@ -180,19 +186,24 @@ a:hover {
 
 .signin, .setup, .import, .settings {
   margin-top: 15%;
+  color: #fff;
 }
 
-.import fieldset {
+.import fieldset, .settings fieldset {
   border: 1px solid #3C5269;
 }
 
-.import fieldset legend {
+.import fieldset legend, .settings fieldset legend {
   background: transparent;
   color: #fff;
   font-weight: normal;
 }
 
-.import input[type="file"], .import label, .import label small {
+.import input[type="file"], 
+.import label, 
+.import label small,
+.settings label, 
+.settings label small {
   color: #fff;
 }
 
