@@ -1,9 +1,13 @@
-<qrcode size="160" data="{{address.address}}"></qrcode>
-Address: {{address.address}}<br/>
-<span ng-if="$root.updatingBalance">
+<div class="text-center">
+  <qrcode size="160" data="{{address.address}}"></qrcode>
+  <h2>{{address.address}}</h2>
+  <div>
+    <span ng-if="$root.updatingBalance">
       <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-</span>
-<span ng-if="!$root.updatingBalance">
-  Balance: {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
-</span>
+    </span>
+    <span ng-if="!$root.updatingBalance">
+      {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
+    </span>
+  </div>
+</div>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
