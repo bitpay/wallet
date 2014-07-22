@@ -17,7 +17,7 @@ checkOK() {
 }
 
 # Configs
-BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BUILDDIR="$( cd "$( dirname "$0" )" && pwd )"
 APPDIR="$BUILDDIR/package"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 DEBUG=""
