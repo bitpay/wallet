@@ -3,16 +3,20 @@
     <a href="/" class="db">
       <img src="../img/logo-negative-beta.svg" alt="" width="100">
     </a>
+    <div>
     <small>v{{version}}</small>
+    <small ng-if="$root.wallet.getNetworkName()=='livenet'">LIVENET</small>
+    <small ng-if="$root.wallet.getNetworkName()=='testnet'">TESTNET</small>
+    </div>
     <div class="line-sidebar"></div>
     <div>
       <a href="/addresses" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
         <span>{{$root.wallet.getName()}}</span>
       </a>
-      <a class="button small side-bar" title="Manual Refresh"
+      <a class="button primary small side-bar" title="Manual Refresh"
       ng-disabled="$root.loading"
       ng-click="refresh()"><i class="size-16 fi-refresh"></i></a>
-      <a class="button small side-bar" title="Signout"
+      <a class="button primary small side-bar" title="Signout"
       ng-click="signout()"><i class="size-16 fi-power"></i></a>
     </div>
     <div class="founds size-12">
@@ -39,10 +43,7 @@
         tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
       </span>
     </div>
-    <div class="m10t box-livenet">
-      <small ng-if="$root.wallet.getNetworkName()=='livenet'">LIVENET</small>
-      <small ng-if="$root.wallet.getNetworkName()=='testnet'">TESTNET</small>
-    </div>
+    <div class="line-sidebar"></div>
   </header>
   <ul class="side-nav">
     <li data-ng-repeat="item in menu" ui-route="/{{item.link}}" class="nav-item" data-ng-class="{active: isActive(item)}">

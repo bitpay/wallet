@@ -392,7 +392,7 @@ a:hover {
 
 .line-sidebar {
   border-top: 1px solid #34495E;
-  margin: 1.4rem 0;
+  margin: 1rem 0;
 }
 
 .line-sidebar-b {
@@ -780,22 +780,25 @@ button[disabled].white:focus,
   color: #E6E6E6;
 }
 
+.side-nav {padding: 0;}
+
 .side-nav li {
   font-size: 16px;
   line-height: 40px;
   font-weight: 100;
 }
 
-.side-nav li a {
-  color: #FFFFFF !important;
+.side-nav li.active>a:first-child:not(.button) {
+  color: #2C3E50;
+  background-color: #F8F8FB;
 }
 
-.side-nav li.active a {
-  background-color: #1ABC9C;
+.side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
+  color: #fff;
 }
 
 .side-nav li.active:hover a {
-  background-color: #1ABC9C;
+  background-color: #F8F8FB;
 }
 
 .side-nav li:hover a {
