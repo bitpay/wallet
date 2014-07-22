@@ -1,35 +1,33 @@
 <div ng-controller="ImportController">
-  <div data-alert class="alert-box info radius" ng-show="loading">
-    <i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i>
+  <div data-alert class="loading-screen" ng-show="loading">
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
     {{ importStatus }}
   </div>
-  <div ng-init="choosefile=0; pastetext=0" ng-show="!loading">
-    <form name="importForm" ng-submit="import(importForm)" novalidate>
-      <div class="row">
-        <div class="large-6 large-centered medium-8 medium-centered columns">
-          <h3>{{title}}</h3>
+  <div class="row import" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
+    <div class="large-4 columns logo-setup text-center">
+      <img src="../img/logo-negative-beta.svg" alt="Copay">
+    </div>
+    <div class="large-8 columns line-dashed-setup-v">
+      <div class="box-setup">
+        <h1 class="text-white line-sidebar-b">{{title}}</h1>
+        <form name="importForm" ng-submit="import(importForm)" novalidate>
           <fieldset>
             <legend for="backupFile" class="m10b"> Choose backup file from your computer <i class="fi-laptop"></i></legend>
             <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
           </fieldset>
-        </div>
 
-        <div class="large-6 large-centered medium-8 medium-centered columns">
           <label for="password">Password <small>Required</small></label>
           <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
-        </div>
-      </div>
-      <div class="row">
-        <div class="large-6 medium-8 columns large-centered medium-centered">
-          <div class="line-dashed">
-            <a class="back-button" href="/signin">&laquo; Back</a>
-            <button type="submit" class="button primary radius right" ng-disabled="importForm.$invalid" loading="Importing">
+
+          <div class="text-right">
+            <a class="back-button m20r" href="/signin">&laquo; Back</a>
+            <button type="submit" class="button primary m0" ng-disabled="importForm.$invalid" loading="Importing">
               Import backup
             </button>
           </div>
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 
