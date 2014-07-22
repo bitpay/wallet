@@ -245,12 +245,18 @@ a:hover {
   color: #C0392B;
 }
 
+.input-note {
+  margin-top: -10px;
+  display: block;
+  margin-bottom: 1rem;
+}
+
 .box-note {
-  text-align: center;
-  clear: both;
   font-style: italic;
   color: gray;
-  margin-bottom: 10px;
+  background-color: #EDEDF5;
+  padding: 1.5rem;
+  width: 400px;
 }
 
 .button-setup a {
@@ -321,6 +327,10 @@ a:hover {
 .oh {overflow:hidden;}
 .lh {line-height: 0;}
 
+.small {
+  font-size: 60%;
+  line-height: inherit;
+}
 
 .line-dashed-setup-v {
   border-left: 1px dashed #415970;
@@ -785,11 +795,6 @@ button[disabled].white:focus,
   padding: 0.2rem 0.4rem;
 }
 
-.send-bar {
-  background-color: #EDEDF5;
-  padding: 1.5rem;
-}
-
 .has-error {
   color: #C0392A;
 }
@@ -802,7 +807,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-color: red;
 }
 
-.copayers h3,h4 {
+.copayers h3, .copayers h4 {
   color: #fff;
   font-weight: 100;
 }
