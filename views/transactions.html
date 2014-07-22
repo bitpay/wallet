@@ -1,176 +1,178 @@
 <div class="transactions" data-ng-controller="TransactionsController">
-  <div class="row" ng-show='$root.wallet.isReady()'>
-    <div class="large-12 columns" ng-show="wallet.totalCopayers > 1">
-      <h1> Transaction proposals <small>({{txs.length}})</small></h1>
-
-      <ul class="inline-list">
-        <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
-        <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
-      </ul>
-      <div class="last-transactions" ng-repeat="tx in txs | paged">
-        <div class="last-transactions-header row">
-          <div class="large-8 medium-8 small-12 columns">
-            <div class="row" ng-repeat="out in tx.outs">
-              <div class="large-3 medium-3 small-3 columns ellipsis">
-                {{out.value | noFractionNumber}} {{$root.unitName}}</div>
-              <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
-              <div class="large-8 medium-8 small-7 columns ellipsis">
-                <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+  <div ng-show='$root.wallet.isReady()'>
+    <h1 ng-show="wallet.totalCopayers > 1"> Transaction proposals <small>({{txs.length}})</small></h1>
+    <div class="row">
+      <div class="large-12 columns" ng-show="wallet.totalCopayers > 1">
+        <ul class="inline-list">
+          <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
+          <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
+        </ul>
+        <div class="last-transactions" ng-repeat="tx in txs | paged">
+          <div class="last-transactions-header row">
+            <div class="large-8 medium-8 small-12 columns">
+              <div class="row" ng-repeat="out in tx.outs">
+                <div class="large-3 medium-3 small-3 columns ellipsis">
+                  {{out.value | noFractionNumber}} {{$root.unitName}}</div>
+                <div class="large-1 medium-1 small-2 columns fi-arrow-right size-24"> </div>
+                <div class="large-8 medium-8 small-7 columns ellipsis">
+                  <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="large-4 medium-4 small-12 columns text-right">
-            <h6>{{tx.createdTs | amCalendar}}</h6>
-          </div>
-        </div>
-
-        <div class="last-transactions-content">
-          <div class="box-note large-12" ng-show="tx.comment">
-            "{{tx.comment}}" - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
+            <div class="large-4 medium-4 small-12 columns text-right">
+              <h6>{{tx.createdTs | amCalendar}}</h6>
+            </div>
           </div>
 
-          <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
+          <div class="last-transactions-content">
+            <div class="box-note large-12" ng-show="tx.comment">
+              "{{tx.comment}}" - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
+            </div>
+
+            <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
               <a href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
                 <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
               </a>
-            <div class="box-status">
-              <span ng-repeat="(action, ts) in actions">
-                <a ng-if="action == 'create'" href="/transactions" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
-                  <i class="fi-crown icon-status icon-active"></i>
-                </a>
-                <a ng-if="action == 'seen'" href="/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
-                  <i class="fi-eye icon-status icon-active"></i>
-                </a>
-                <a ng-if="action == 'sign'" href="/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
-                  <i class="fi-check icon-status icon-active-check"></i>
-                </a>
-                <a ng-if="action == 'rejected'" href="/transactions" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
-                  <i class="fi-x icon-status icon-active-x"></i>
-                </a>
-              </span>
+              <div class="box-status">
+                <span ng-repeat="(action, ts) in actions">
+                  <a ng-if="action == 'create'" href="/transactions" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
+                    <i class="fi-crown icon-status icon-active"></i>
+                  </a>
+                  <a ng-if="action == 'seen'" href="/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
+                    <i class="fi-eye icon-status icon-active"></i>
+                  </a>
+                  <a ng-if="action == 'sign'" href="/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
+                    <i class="fi-check icon-status icon-active-check"></i>
+                  </a>
+                  <a ng-if="action == 'rejected'" href="/transactions" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
+                    <i class="fi-x icon-status icon-active-x"></i>
+                  </a>
+                </span>
+              </div>
+
+              <div class="text-center">
+                {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+              </div>
+            </div>
+          </div>
+
+          <div class="row last-transactions-footer">
+            <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
+              <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
+                <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+                  <i class="fi-check"></i> Sign
+                </button>
+                <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
+                  <i class="fi-x" ></i> Reject
+                </button>
+              </div>
+              <div ng-show="!tx.missingSignatures && !tx.sentTs">
+                <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
+                  Broadcast Transaction
+                </button>
+              </div>
             </div>
 
-            <div class="text-center">
-              {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+            <div class="large-7 medium-7 columns text-right">
+              <div ng-show="tx.finallyRejected" class="text-warning m10b">
+                Transaction finally rejected
+              </div>
+              <div ng-show="!tx.missingSignatures && tx.sentTs">
+                <div class="success m10b">
+                  <strong>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
+                </div>
+                <div class="ellipsis small">
+                  Transaction ID:
+                  <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
+                    {{tx.sentTxid}}
+                  </a>
+                </div>
+              </div>
+              <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
+              One signature missing
+              </p>
+              <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
+              {{tx.missingSignatures}} signatures missing</p>
+              <div class="ellipsis small text-gray">
+                <strong>Fee:</strong> {{tx.fee|noFractionNumber}} {{$root.unitName}}
+                <strong>Proposal ID:</strong> {{tx.ntxid}}
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="row last-transactions-footer">
-          <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
-            <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
-              <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
-                <i class="fi-check"></i> Sign
-              </button>
-              <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
-                <i class="fi-x" ></i> Reject
-              </button>
-            </div>
-            <div ng-show="!tx.missingSignatures && !tx.sentTs">
-              <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
-                Broadcast Transaction
-              </button>
-            </div>
-          </div>
-
-          <div class="large-7 medium-7 columns text-right">
-            <div ng-show="tx.finallyRejected" class="text-warning m10b">
-              Transaction finally rejected
-            </div>
-            <div ng-show="!tx.missingSignatures && tx.sentTs">
-              <div class="success m10b">
-                <strong>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
-              </div>
-              <div class="ellipsis small">
-                Transaction ID:
-                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
-                  {{tx.sentTxid}}
-                </a>
-              </div>
-            </div>
-            <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
-            One signature missing
-            </p>
-            <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
-            {{tx.missingSignatures}} signatures missing</p>
-            <div class="ellipsis small text-gray">
-              <strong>Fee:</strong> {{tx.fee|noFractionNumber}} {{$root.unitName}}
-              <strong>Proposal ID:</strong> {{tx.ntxid}}
-            </div>
-          </div>
-        </div>
+        <p ng-show="onlyPending && txs.length == 0">No pending transactions proposals.</p>
+        <p ng-show="!onlyPending && txs.length == 0">No transactions proposals yet.</p>
+        <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
       </div>
-      <p ng-show="onlyPending && txs.length == 0">No pending transactions proposals.</p>
-      <p ng-show="!onlyPending && txs.length == 0">No transactions proposals yet.</p>
-      <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
-    
-    <div class="large-12 columns line-dashed-h" ng-hide="wallet.totalCopayers == 1"></div>
-    
-    <div class="large-12 columns">
-      <h1>
-        Last transactions 
-        <small ng-hide="wallet.totalCopayers > 1 || !loading">
-          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-        </small>   
-      </h1>
-      <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
-        <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
-        <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
-      </div>
 
-      <div class="btransactions" ng-if="lastShowed">
-        <div ng-if="!blockchain_txs[0].txid && !loading">
-          No transactions yet.
+    <h1 ng-class="{'line-dashed': wallet.totalCopayers > 1}">
+      Last transactions 
+      <small ng-hide="wallet.totalCopayers > 1 || !loading">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+      </small>   
+    </h1>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
+          <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
+          <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
         </div>
-        <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
-          <div class="last-transactions-header">
-            <div class="row">
-              <div class="large-8 columns">
-                <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
-                  {{btx.txid}}
-                </a>
-              </div>
-              <div class="large-4 columns text-right">
-                <div data-ng-show="btx.firstSeenTs">
-                  first seen at
-                  <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+
+        <div class="btransactions" ng-if="lastShowed">
+          <div ng-if="!blockchain_txs[0].txid && !loading">
+            No transactions yet.
+          </div>
+          <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
+            <div class="last-transactions-header">
+              <div class="row">
+                <div class="large-8 columns">
+                  <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
+                    {{btx.txid}}
+                  </a>
                 </div>
-                <div data-ng-show="btx.time && !btx.firstSeenTs">
-                  mined at
-                  <time>{{btx.time * 1000 | amCalendar}}</time>
+                <div class="large-4 columns text-right">
+                  <div data-ng-show="btx.firstSeenTs">
+                    first seen at
+                    <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+                  </div>
+                  <div data-ng-show="btx.time && !btx.firstSeenTs">
+                    mined at
+                    <time>{{btx.time * 1000 | amCalendar}}</time>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="last-transactions-content">
-            <div class="row">
-              <div class="large-5 medium-5 small-5 columns">
-                <div ng-repeat="vin in btx.vinSimple">
-                  <small class="right m5t">{{vin.value| noFractionNumber}} {{$root.unitName}}</small>
-                  <p class="ellipsis text-gray size-12">
-                  <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
-                  </p>
+            <div class="last-transactions-content">
+              <div class="row">
+                <div class="large-5 medium-5 small-5 columns">
+                  <div ng-repeat="vin in btx.vinSimple">
+                    <small class="right m5t">{{vin.value| noFractionNumber}} {{$root.unitName}}</small>
+                    <p class="ellipsis text-gray size-12">
+                    <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div class="large-1 medium-1 small-1 columns text-center">
-                <i class="fi-arrow-right"></i>
-              </div>
-              <div class="large-6 medium-6 small-6 columns">
-                <div ng-repeat="vout in btx.voutSimple">
-                  <small class="right m5t">{{vout.value| noFractionNumber}} {{$root.unitName}}</small>
-                  <p class="ellipsis text-gray size-12">
-                  <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
-                  </p>
+                <div class="large-1 medium-1 small-1 columns text-center">
+                  <i class="fi-arrow-right"></i>
+                </div>
+                <div class="large-6 medium-6 small-6 columns">
+                  <div ng-repeat="vout in btx.voutSimple">
+                    <small class="right m5t">{{vout.value| noFractionNumber}} {{$root.unitName}}</small>
+                    <p class="ellipsis text-gray size-12">
+                    <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="last-transactions-footer">
-            <div class="row">
-              <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | noFractionNumber}} {{$root.unitName}}</div>
-              <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
-              <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut| noFractionNumber}} {{$root.unitName}}</div>
+            <div class="last-transactions-footer">
+              <div class="row">
+                <div class="large-4 medium-4 small-4 columns">Fees: {{btx.fees | noFractionNumber}} {{$root.unitName}}</div>
+                <div class="large-4 medium-4 small-4 columns text-center">Confirmations: {{btx.confirmations || 0}}</div>
+                <div class="large-4 medium-4 small-4 columns text-right">Total: {{btx.valueOut| noFractionNumber}} {{$root.unitName}}</div>
+              </div>
             </div>
           </div>
         </div>

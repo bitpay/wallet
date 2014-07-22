@@ -251,12 +251,20 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.box-note {
+.send-note {
   font-style: italic;
   color: gray;
   background-color: #EDEDF5;
   padding: 1.5rem;
   width: 400px;
+}
+
+.box-note {
+  text-align: center;
+  clear: both;
+  font-style: italic;
+  color: gray;
+  margin-bottom: 10px;  
 }
 
 .button-setup a {
