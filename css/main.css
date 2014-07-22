@@ -169,6 +169,11 @@ a:hover {
   padding: 0.2rem 0.4rem;
 }
 
+.waiting {
+  border: 2px solid #fff;
+}
+
+
 .online {
   border: 2px solid #1ABC9C;
 }
@@ -302,11 +307,7 @@ a:hover {
 }
 
 .button-setup a:hover {
-  background: #fff;
-}
-
-.button-setup a:hover h1 {
-  color: #34495E;
+  background: #3C4E60;
 }
 
 .footer-setup {
@@ -319,6 +320,7 @@ a:hover {
 
 .dn {display: none;}
 .pr {position: relative;}
+.pa {position: absolute;}
 .m0 {margin: 0;}
 .db {display: block;}  
 .size-12 { font-size: 12px; }      
@@ -334,20 +336,25 @@ a:hover {
 .m5t {margin-top: 5px;}
 .m10t {margin-top: 10px;}
 .m5b {margin-bottom: 5px;}
+.m5r {margin-right: 5px;}
 .m10b {margin-bottom: 10px;}
 .m15b {margin-bottom: 20px;}
 .m10r {margin-right: 10px;}
 .m15l {margin-left: 15px;}
+.m15t {margin-top: 15px;}
 .m20r {margin-right: 20px;}
+.m15r {margin-right: 15px;}
 .m20t {margin-top: 20px;}
 .m10 {margin: 10px;}
 .m15 {margin: 15px;}
+.m15h {margin: 0 15px;}
 .p10t {padding-top: 10px;}
 .p0r {padding-right: 0;}
 .p70r {padding-right: 70px;}
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
+.p15 {padding:15px;}
 .p20 {padding:20px;}
 .p10 {padding:10px;}
 .m30v {margin: 30px 0;}
@@ -596,6 +603,8 @@ input[type=number]::-webkit-outer-spin-button {
   color: #B4D455;
 }
 
+.success {background-color: #1ABC9C !important;}
+
 p.dr-notification-text {
   margin-top: -5px;
   font-size: 12px;
@@ -798,9 +807,9 @@ button[disabled].white:focus,
 }
 
 .video-box {
-  width: 90px;
+  width: 70px;
   text-align: center;
-  margin-right: 10px;
+  margin-right: 20px;
   padding-bottom: 5px;
   float: left;
 }
@@ -856,7 +865,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   overflow-y: hidden;
 }
 
-.text-gray {color: #8597A7;}
+.text-light {font-weight: 100;}
+.text-gray {color: #8597A7 !important;}
 .text-primary {color: #1ABC9C;}
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
@@ -884,6 +894,12 @@ a.text-white:hover {color: #ccc;}
   width: 100%;
   position: absolute;
   top: 40%;
+}
+
+.box-setup .panel {
+  background-color: #2C3E50;
+  padding: 0.5rem;
+  border: 0;
 }
 
 /*-----------------------------------------------------------------*/
