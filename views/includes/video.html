@@ -1,5 +1,5 @@
 <div ng-controller="VideoController">
-  <div  class="video-box" ng-repeat="copayer in copayersList()">
+  <div class="video-box" ng-repeat="copayer in copayersList()">
     <video
       ng-if="hasVideo(copayer)"
       peer="{{copayer}}" avatar autoplay
