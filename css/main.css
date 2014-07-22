@@ -848,6 +848,11 @@ a.text-white:hover {color: #ccc;}
   margin-bottom: 20px;
 }
 
+.box-setup-copay-required {
+  border: 3px solid #1ABC9C;
+  opacity: 1;
+}
+
 .loading-screen {
   text-align: center;
   background-color: #1ABC9C;
