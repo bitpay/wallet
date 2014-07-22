@@ -97,7 +97,6 @@ a {
   font-size: 0.875rem;
   color: #fff;
   font-weight: 100;
-  margin-bottom: 0.5rem;
 }
 
 a:hover {
@@ -824,11 +823,24 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
 
+a.text-gray:hover {color: #fff;}
+a.text-primary:hover {color: #50E3C2;}
+a.text-secondary:hover {color: #4A90E2;}
+a.text-white:hover {color: #ccc;}
+
 .box-setup-copayers {
   background: #2C3E50;
   -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
   box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
   margin-bottom: 20px;
+}
+
+.loading-screen {
+  text-align: center;
+  background-color: #1ABC9C;
+  width: 100%;
+  position: absolute;
+  top: 40%;
 }
 
 /*-----------------------------------------------------------------*/
