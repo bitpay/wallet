@@ -7,11 +7,15 @@ angular
 
     $routeProvider
       .when('/', {
-        templateUrl: 'views/signin.html',
+        templateUrl: 'views/home.html',
         validate: false
       })
-      .when('/signin', {
-        templateUrl: 'views/signin.html',
+      .when('/open', {
+        templateUrl: 'views/open.html',
+        validate: false
+      })
+      .when('/join', {
+        templateUrl: 'views/join.html',
         validate: false
       })
       .when('/import', {
@@ -68,7 +72,7 @@ angular
         $location.path('unsupported');
       } else {
         if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
-          $location.path('signin');
+          $location.path('/');
         }
       }
     });

@@ -1,73 +1,75 @@
-<div class="row settings" ng-controller="SettingsController">
-  <div class="large-4 columns logo-setup text-center">
-    <img src="../img/logo-negative-beta.svg" alt="Copay">
-  </div>
-  <div class="large-8 columns line-dashed-setup-v">
-    <div class="box-setup">
-      <h1 class="text-white line-sidebar-b">{{title}}</h1>
-      <form name="settingsForm">
-        <fieldset>
-          <legend>Bitcoin Network</legend>
-          <input id="network-name" type="checkbox" ng-model="networkName"
-          ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()"
-          ng-disabled="forceNetwork" 
-          ng-checked="networkName == 'livenet' ? true : false">
-          <label for="network-name">Livenet</label>
-          <div ng-show="forceNetwork">
-            Network has been fixed to
-            <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a>
-            for options to use Copay on both livenet and testnet.
+<div class="settings" ng-controller="SettingsController">
+  <div class="row">
+    <div class="large-4 columns logo-setup">
+      <img src="../img/logo-negative-beta.svg" alt="Copay">
+    </div>
+    <div class="large-8 columns line-dashed-setup-v">
+      <div class="box-setup">
+        <h1 class="text-white line-sidebar-b">{{title}}</h1>
+        <form name="settingsForm">
+          <fieldset>
+            <legend>Bitcoin Network</legend>
+            <input id="network-name" type="checkbox" ng-model="networkName"
+            ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()"
+            ng-disabled="forceNetwork" 
+            ng-checked="networkName == 'livenet' ? true : false">
+            <label for="network-name">Livenet</label>
+            <div ng-show="forceNetwork">
+              Network has been fixed to
+              <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a>
+              for options to use Copay on both livenet and testnet.
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Wallet Unit</legend>
+            <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
+            </select>
+          </fieldset>
+          <fieldset>
+            <legend>Videoconferencing</legend>
+            <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
+            <label for="disableVideo-opt">Disable videoconferencing (for slow networks)</label>
+          </fieldset>
+          <fieldset>
+            <legend>Insight API server</legend>
+            <label for="insight-host">Host</label>
+            <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
+            <label for="insight-port">Port</label>
+            <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
+            <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
+            <label for="insight-secure">Use SSL</label>
+
+            <p class="small">
+            Insight API server is open-source software.  You can run your own
+            instance, check <a href="http://insight.is" target="_blank">Insight
+              API Homepage</a></p>
+
+          </fieldset>
+
+          <fieldset>
+            <legend>PeerJS server</legend>
+            <label for="peerjs-key">Key</label>
+            <input type="text" ng-model="networkKey" class="form-control" name="peerjs-key">
+            <label for="peerjs-host">Host</label>
+            <input type="text" ng-model="networkHost" class="form-control" name="peerjs-host">
+            <label for="peerjs-port">Port</label>
+            <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
+            <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control">
+            <label for="peerjs-secure">Use SSL</label>
+
+            <p class="small">
+            PeerJS Server is open-source software.  You can run your own instance, or use PeerJS Server cloud. Check <a href="http://peerjs.com" target="_blank">PeerJS Server</a>
+            </p>
+          </fieldset>
+
+          <div class="text-right">
+            <a class="back-button text-white m20r" href="/" ng-hide="$root.wallet">&laquo; Back</a>
+            <button type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+              Save
+            </button>
           </div>
-        </fieldset>
-        <fieldset>
-          <legend>Wallet Unit</legend>
-          <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
-          </select>
-        </fieldset>
-        <fieldset>
-          <legend>Videoconferencing</legend>
-          <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
-          <label for="disableVideo-opt">Disable videoconferencing (for slow networks)</label>
-        </fieldset>
-        <fieldset>
-          <legend>Insight API server</legend>
-          <label for="insight-host">Host</label>
-          <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
-          <label for="insight-port">Port</label>
-          <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
-          <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
-          <label for="insight-secure">Use SSL</label>
-
-          <p class="small">
-          Insight API server is open-source software.  You can run your own
-          instance, check <a href="http://insight.is" target="_blank">Insight
-            API Homepage</a></p>
-
-        </fieldset>
-
-        <fieldset>
-          <legend>PeerJS server</legend>
-          <label for="peerjs-key">Key</label>
-          <input type="text" ng-model="networkKey" class="form-control" name="peerjs-key">
-          <label for="peerjs-host">Host</label>
-          <input type="text" ng-model="networkHost" class="form-control" name="peerjs-host">
-          <label for="peerjs-port">Port</label>
-          <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
-          <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control">
-          <label for="peerjs-secure">Use SSL</label>
-
-          <p class="small">
-          PeerJS Server is open-source software.  You can run your own instance, or use PeerJS Server cloud. Check <a href="http://peerjs.com" target="_blank">PeerJS Server</a>
-          </p>
-        </fieldset>
-
-        <div class="text-right">
-          <a class="back-button text-white m20r" href="/signin" ng-hide="$root.wallet">&laquo; Back</a>
-          <button type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
-            Save
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>

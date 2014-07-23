@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('VideoController', 
   function($scope, $rootScope, $sce) {
 
+  $rootScope.videoInfo = {};
+  
   // Cached list of copayers
   $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
 
