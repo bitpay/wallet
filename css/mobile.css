@@ -20,4 +20,65 @@
     margin-top: 0;
   }
 
+  .sidebar {
+    display: none;
+  }
+
+  .page, .main {
+    height: auto;
+  }
+
+  .main {
+    height: 100%;
+    margin-top: 40px;
+    margin-left: 0;
+    margin-bottom: -40px;
+    padding-bottom: 60px;
+  }
+
+  .tab-bar {
+    display: block;
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    background: #3C4E60;
+  }
+
+  .left-off-canvas-menu {
+    background: #3C4E60;
+  }
+
+  .off-canvas-wrap,.inner-wrap{
+    height:100%;   
+  }
+
+  .page{
+    height:100%;   
+  }
+  
+  .copayers {
+    position: relative;
+    padding: 0;
+    overflow-y: none;
+  }
+
+  ul.copayer-list img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .tab-bar-section {
+    text-align: left;
+  }
+
+  .setup-page {
+    height: 100%;
+  }
+
+  .hide-tab-bar {
+    display: none;
+  }
+
+
 }
+

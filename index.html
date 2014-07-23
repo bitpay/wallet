@@ -14,17 +14,44 @@
 </head>
 <body ng-cloak class="ng-cloak">
   <div class="page">
-    <div notifications="middle right"></div>
+    <div class="off-canvas-wrap">
+      <div class="inner-wrap">
 
-    <div ng-include="'views/includes/copayers.html'"></div>
-    
-    <div 
-      ng-class="{'sidebar' : $root.wallet && $root.wallet.isReady()}"
-      ng-include="'views/includes/sidebar.html'" 
-      role='navigation'
-      ng-if="$root.wallet && $root.wallet.isReady()"></div>
+        <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet && !$root.wallet.isReady()}">
+            <section class="left-small">
+                <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+            </section>
 
-    <section ng-class="{'main' : $root.wallet && $root.wallet.isReady()}" ng-view></section>
+            <section class="middle tab-bar-section">
+                <h1 class="right">
+                  {{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
+                </h1>
+                <h1 class="title ellipsis">
+                  {{$root.wallet.getName()}}
+                </h1>
+            </section>
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+          <div ng-include="'views/includes/sidebar-mobile.html'"></div>
+        </aside>
+
+        <div notifications="middle right"></div>
+
+        <div ng-include="'views/includes/copayers.html'"></div>
+
+        <div 
+          ng-class="{'sidebar' : $root.wallet && $root.wallet.isReady()}"
+          ng-include="'views/includes/sidebar.html'" 
+          role='navigation'
+          ng-if="$root.wallet && $root.wallet.isReady()"></div>
+
+        <section ng-class="{'main' : $root.wallet && $root.wallet.isReady()}" ng-view></section>
+
+        <a class="exit-off-canvas"></a>
+
+      </div>
+    </div>
   </div>
 
   <script src="lib/mousetrap/mousetrap.min.js"></script>

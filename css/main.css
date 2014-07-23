@@ -105,6 +105,14 @@ body, html{
   width:100%;
 }
 
+.off-canvas-wrap, .inner-wrap{
+    height:100%;   
+}
+
+.tab-bar {
+  display: none;
+}
+
 a {
   color: #3498DB;
 }
@@ -415,6 +423,11 @@ a:hover {
 .line-sidebar {
   border-top: 1px solid #34495E;
   margin: 1rem 0;
+}
+
+.line-sidebar-t {
+  border-top: 1px solid #3C5269;
+  padding-top: 0.5rem;
 }
 
 .line-sidebar-b {
