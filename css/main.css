@@ -93,6 +93,11 @@ a {
   color: #3498DB;
 }
 
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
 .signin label, .setup label {
   font-size: 0.875rem;
   color: #fff;
@@ -780,6 +785,36 @@ button[disabled].white:focus,
   color: #E6E6E6;
 }
 
+/* BLACK */
+button.black, 
+.button.black { 
+  background-color: #2C3E50;
+  color: #fff;
+}
+button.black:hover, 
+button.black:focus, 
+.button.black:hover, 
+.button.black:focus {
+  background-color: #213140;
+  color: #fff;
+}
+
+button.disabled.black, 
+button[disabled].black, 
+.button.disabled.black, 
+.button[disabled].black,
+button.disabled.black:hover, 
+button.disabled.black:focus, 
+button[disabled].black:hover, 
+button[disabled].black:focus, 
+.button.disabled.black:hover, 
+.button.disabled.black:focus, 
+.button[disabled].black:hover, 
+.button[disabled].black:focus {
+  background-color: #95a5a6;
+  color: #E6E6E6;
+}
+
 .side-nav {padding: 0;}
 
 .side-nav li {
@@ -795,6 +830,14 @@ button[disabled].white:focus,
 
 .side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
   color: #fff;
+}
+
+.side-nav li>a:first-child:not(.button) i {
+  opacity: 0.6;
+}
+
+.side-nav li.active>a:first-child:not(.button) i {
+  opacity: 1;
 }
 
 .side-nav li.active:hover a {
@@ -866,6 +909,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   padding: 20px;
   border-top: 1px solid #475065;
   overflow-y: hidden;
+}
+
+.copayers i {
+  opacity: 0.6;
 }
 
 .text-light {font-weight: 100;}

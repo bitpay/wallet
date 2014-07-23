@@ -19,7 +19,7 @@
                 <small class="icon-input" ng-show="sendForm.address.$invalid && address"><i class="fi-x"></i></small>
               </div>
               <div class="small-2 columns" ng-hide="showScanner || !isHttp">
-                <a class="postfix button secondary" ng-click="openScanner()"><i class="fi-camera"></i></a>
+                <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera"></i></a>
               </div>
               <div class="small-2 columns" ng-show="showScanner && isHttp">
                 <a class="postfix button warning" ng-click="cancelScanner()">Cancel</a>
@@ -94,7 +94,7 @@
 
         <div class="row">
           <div class="large-5 columns">
-            <button type="submit" class="button secondary expand text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
+            <button type="submit" class="button primary expand text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
               Send
             </button>
           </div>
@@ -149,7 +149,7 @@
           </tr>
           </tbody>
         </table>
-        <button class="button tiny secondary text-center" ng-click="openAddressBookModal()">Add New Entry</button>
+        <button class="button tiny primary text-center" ng-click="openAddressBookModal()">Add New Entry</button>
       </div>
   </div>
 </div>
