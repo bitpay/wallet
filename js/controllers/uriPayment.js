@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('UriPaymentController', functi
   $scope.message = $rootScope.pendingPayment.message;
 
   $timeout(function() {
-    $location.path('signin');
+    $location.path('/');
   }, 1000);
 
 

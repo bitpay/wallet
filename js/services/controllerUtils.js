@@ -27,7 +27,7 @@ angular.module('copayApp.services')
         }
       }
 
-      $location.path('signin');
+      $location.path('/');
     };
 
     root.onError = function(scope) {

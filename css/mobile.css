@@ -4,4 +4,20 @@
  *
  */
 
+@media (max-width: 1024px) {
 
+  .line-dashed-setup-v, 
+  .line-dashed-v,
+  .line-dashed-h {
+    border: none;
+  }
+
+  .logo-setup {
+    margin: 10px 0;
+  }
+
+  .home, .open, .join, .waiting-copayers, .setup, .import, .settings {
+    margin-top: 0;
+  }
+
+}

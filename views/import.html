@@ -1,10 +1,10 @@
-<div ng-controller="ImportController">
+<div class="import" ng-controller="ImportController">
   <div data-alert class="loading-screen" ng-show="loading">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
     {{ importStatus }}
   </div>
-  <div class="row import" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
-    <div class="large-4 columns logo-setup text-center">
+  <div class="row" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
+    <div class="large-4 columns logo-setup">
       <img src="../img/logo-negative-beta.svg" alt="Copay">
     </div>
     <div class="large-8 columns line-dashed-setup-v">
@@ -20,7 +20,7 @@
           <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
 
           <div class="text-right">
-            <a class="back-button text-white m20r" href="/signin">&laquo; Back</a>
+            <a class="back-button text-white m20r" href="/">&laquo; Back</a>
             <button type="submit" class="button primary m0" ng-disabled="importForm.$invalid" loading="Importing">
               Import backup
             </button>

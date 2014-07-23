@@ -52,6 +52,22 @@
   }
 }
 
+::-webkit-input-placeholder {
+   color: #7A8C9E;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #7A8C9E;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #7A8C9E;
+}
+
+:-ms-input-placeholder {  
+   color: #7A8C9E;
+}
+
 #qr-canvas { display: none; }
 #qrcode-scanner-video {
   display: block;
@@ -93,12 +109,13 @@ a {
   color: #3498DB;
 }
 
-
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-.signin label, .setup label {
+.join label, 
+.open label, 
+.setup label {
   font-size: 0.875rem;
   color: #fff;
   font-weight: 100;
@@ -108,7 +125,8 @@ a:hover {
   color: #2980b9;
 }
 
-.signin input, 
+.open input, 
+.join input, 
 .setup input,
 .import input,
 .settings input {
@@ -119,7 +137,8 @@ a:hover {
   color: #7A8C9E !important;
 }
 
-.signin select, 
+.open select, 
+.join select, 
 .setup select,
 .import select,
 .settings select {
@@ -194,7 +213,7 @@ a:hover {
   background-color: #F8F8FB;
 }
 
-.signin, .setup, .import, .settings {
+.home, .open, .join, .waiting-copayers, .setup, .import, .settings {
   margin-top: 15%;
   color: #fff;
 }
@@ -218,9 +237,8 @@ a:hover {
 }
 
 .logo-setup {
-  position:  absolute;
-  top: 45%;
-  left: 8%;
+  text-align: center;
+  margin-top: 9%;
 }
 
 .box-setup {
@@ -306,9 +324,9 @@ a:hover {
   display: block;
   padding: 20px 30px;
   background: #34495E;
-  color: #fff;
   margin-bottom: 20px;
   font-weight: 100;
+  font-size: 24px;
 }
 
 .button-setup a:hover {
@@ -379,7 +397,6 @@ a:hover {
 
 .line-dashed-setup-v {
   border-left: 1px dashed #415970;
-  padding-left: 3rem;
 }
 
 .line-dashed-v {
@@ -895,7 +912,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-color: red;
 }
 
-.copayers h3, .copayers h4 {
+.copayers h3, .copayers h4, .waiting-copayers h4 {
   color: #fff;
   font-weight: 100;
 }
@@ -916,7 +933,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .text-light {font-weight: 100;}
-.text-gray {color: #8597A7 !important;}
+.text-gray {color: #8597A7;}
 .text-primary {color: #1ABC9C;}
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
