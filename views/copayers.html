@@ -16,24 +16,30 @@
         </div>
         <h1 class="text-white line-sidebar-b" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">New Wallet Created </h1>
         <div class="row" ng-show="$root.wallet.publicKeyRing.isComplete()">
-          <div class="large-6 columns text-left">
+          <div class="large-4 small-6 columns text-left">
             <h3>Download Backup</h3>
           </div>
-          <div class="large-6 columns text-right">
-            <small class="text-gray">
-              <b>{{$root.wallet.getName()}}</b> : 
-              {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}
-            </small>
+          <div class="large-8 small-6 columns text-right">
+            <h3 class="ellipsis">
+              <small class="text-gray">
+                <b>{{$root.wallet.getName()}}</b> : 
+                {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}
+              </small>
+            </h3>
           </div>
         </div>
         <div class="row">
-          <div class="large-10 columns text-left">
-            <h4 ng-show="!$root.wallet.publicKeyRing.isComplete()">Waiting Copayers for {{$root.wallet.getName()}}</h4>
+          <div class="large-10 small-9 columns text-left">
+            <h4 class="ellipsis" ng-show="!$root.wallet.publicKeyRing.isComplete()">
+              Waiting Copayers for {{$root.wallet.getName()}}
+            </h4>
           </div>
-          <div class="large-2 columns text-right">
-            <small class="text-gray" ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
-              {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
-            </small>
+          <div class="large-2 small-3 columns text-right">
+            <h4 ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
+              <small class="text-gray">
+                {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
+              </small>
+            </h4>
           </div>
         </div>
 
@@ -53,10 +59,12 @@
               </p>
             </div>
           </div>
+          <div ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
           <div class="line-sidebar-b" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()"></div>
           <div class="text-gray m10t" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
             <i class="text-white fi-loop icon-rotate spinner"></i> Waiting for other
             copayers to make a Backup
+          </div>
           </div>
         </div>
 
