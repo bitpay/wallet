@@ -511,7 +511,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-container.right {
-  right: 20px;
+  right: 0;
 }
 
 .dr-notification-container.left {
@@ -528,20 +528,15 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-wrapper {
-  width: 380px;
+  width: 360px;
   position: relative;
   margin: 10px 0;
 }
 
 .dr-notification {
-  width: 380px;
+  width: 360px;
   clear: both;
-  min-height: 80px;
-  max-height: 90px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  border-radius: 5px;
+  height: 90px;
   overflow: hidden;
 }
 
@@ -551,19 +546,13 @@ input[type=number]::-webkit-outer-spin-button {
   -ms-border-radius: 20px;
   border-radius: 20px;
   display: inline-block;
-  padding: 3px;
+  padding: 5px;
   font-size: 12px;
   position: absolute;
-  right: -8px;
+  right: 350px;
   top: -8px;
-  -webkit-transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
-  -moz-transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
-  transition: all 0.35s cubic-bezier(0.31, 0.39, 0.21, 1.65);
   cursor: pointer;
   z-index: 10;
-}
-.dr-notification-close-btn i {
-  padding-left: 3px;
 }
 
 .dr-notification-close-btn:hover {
@@ -575,13 +564,13 @@ input[type=number]::-webkit-outer-spin-button {
 
 .dr-notification-image {
   width: 80px;
-  height: 80px;
-  border-right: 1px solid rgba(4, 94, 123, 0.85);
+  height: 90px;
   float: left;
   display: block;
   font-size: 40px;
   color: white;
   text-align: center;
+  border-right: 1px dashed #415970;
 }
 .dr-notification-image i {
   display: block;
@@ -603,19 +592,21 @@ input[type=number]::-webkit-outer-spin-button {
 .dr-notification-title {
   color: white;
   padding: 0px;
-  font-size: 16px;
+  font-size: 18px;
+  margin-top: 0;
 }
 
 .dr-notification {
-  background-color: #2C3E50;
-  color: #bfe2de;
-  border: 1px solid rgba(4, 94, 123, 0.85);
+  background-color: #34495E;
+  color: #eee;
+  border: 1px solid #2C3E50;
   opacity: 0.9;
+
 }
 .dr-notification-close-btn {
-  background-color: #2C3E50;
+  background-color: #34495E;
   color: #fff;
-  border: 1px solid rgba(4, 94, 123, 0.85);
+  border: 1px solid #3C5269;
 }
 
 .dr-notification-image.dr-notification-type-info {
@@ -640,9 +631,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .success {background-color: #1ABC9C !important;}
 
-p.dr-notification-text {
-  margin-top: -5px;
+.dr-notification-text {
   font-size: 12px;
+  line-height: 120%;
 }
 
 .ellipsis {
