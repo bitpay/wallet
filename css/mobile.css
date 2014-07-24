@@ -45,7 +45,7 @@
   }
 
   .left-off-canvas-menu {
-    background: #3C4E60;
+    background: #2C3E50;
   }
 
   .off-canvas-wrap,.inner-wrap{
@@ -79,6 +79,24 @@
     display: none;
   }
 
+
+  .tab-bar h1 {
+    font-weight: 100;
+  }
+
+  ul.off-canvas-list li a {
+    border-bottom: 1px solid #425568;
+    padding: 0.66667rem 1rem;
+    color: #fff;
+  }
+
+  ul.off-canvas-list li a i {
+    opacity: 0.6;
+  }
+
+  .box-founds {
+    background-color: #213140;
+  }
 
 }
 
