@@ -149,14 +149,16 @@ angular.module('copayApp.services')
         }, 3000);
       });
       w.on('txProposalEvent', function(e) {
+        var user = w.publicKeyRing.nicknameForCopayer(e.cId);
         switch (e.type) {
           case 'signed':
-            var user = w.publicKeyRing.nicknameForCopayer(e.cId);
             notification.info('Transaction Update', 'A transaction was signed by ' + user);
             break;
           case 'rejected':
-            var user = w.publicKeyRing.nicknameForCopayer(e.cId);
             notification.info('Transaction Update', 'A transaction was rejected by ' + user);
+            break;
+          case 'corrupt':
+            notification.error('Transaction Error', 'Received corrupt transaction from '+user);
             break;
         }
       });
