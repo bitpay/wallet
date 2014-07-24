@@ -25,11 +25,11 @@ factory('notification', ['$timeout',
         enabled: true
       },
       error: {
-        duration: 50000000,
+        duration: 5000,
         enabled: true
       },
       success: {
-        duration: 50000000,
+        duration: 5000,
         enabled: true
       },
       progress: {
