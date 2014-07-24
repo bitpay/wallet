@@ -1,0 +1,16 @@
+<div class="dr-notification-wrapper" ng-repeat="noti in queue">
+  <div class="dr-notification-close-btn" ng-click="removeNotification(noti)">
+    <i class="fi-x"></i>
+  </div>
+  <div class="dr-notification">
+    <div class="dr-notification-image dr-notification-type-{{noti.type}}" ng-switch on="noti.image">
+      <i class="fi-{{noti.icon}}" ng-switch-when="false"></i>
+      <img ng-src="{{noti.image}}" ng-switch-default />
+    </div>
+    <div class="dr-notification-content">
+      <h3 class="dr-notification-title">{{noti.title}}</h3>
+      <div class="dr-notification-text">{{noti.content}}</div>
+    </div>
+  </div>
+</div>
+
