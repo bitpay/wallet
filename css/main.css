@@ -266,17 +266,19 @@ a:hover {
 }
 
 .last-transactions-header {
-  padding: 10px;
+  padding: 10px 0;
+  overflow: hidden;
 }
 
 .last-transactions-footer {
-  padding: 10px;
+  padding: 10px 0;
+  overflow: hidden;
 }
 
 .last-transactions-content {
   background-color: #FDFCFC;
   overflow: hidden;
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .last-transactions-content .box-status {
@@ -285,9 +287,15 @@ a:hover {
 }
 
 .last-transactions-content .box-copayer {
-  width: 80px;
+  width: 60px;
   margin-right: 20px;
   float: left;
+  text-align: center;
+}
+
+.last-transactions-content .copayer-ico {
+  width: 30px;
+  height: 30px;
 }
 
 .last-transactions-content .box-copayer .icon-inactive {
@@ -629,7 +637,9 @@ input[type=number]::-webkit-outer-spin-button {
   color: #B4D455;
 }
 
-.success {background-color: #1ABC9C !important;}
+.success { 
+  color: #1ABC9C;
+}
 
 .dr-notification-text {
   font-size: 12px;
