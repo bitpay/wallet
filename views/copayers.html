@@ -1,7 +1,8 @@
-<div class="waiting-copayers" ng-controller="BackupController" ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
-  <div class="row">
-     <div class="large-4 columns logo-setup">
-        <img src="../img/logo-negative-beta.svg" alt="Copay">
+<div class="waiting-copayers" ng-controller="CopayersController">
+  <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
+  <div class="row" ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
+    <div class="large-4 columns logo-setup">
+      <img src="../img/logo-negative-beta.svg" alt="Copay">
     </div>
     <div class="large-8 columns line-dashed-setup-v">
       <div class="box-setup oh">
@@ -44,7 +45,7 @@
               class="waiting br100 no-video"
               ng-if="!hasVideo(copayer)"
               src="./img/satoshi.gif"
-              alt="{{copayer.nick}}"
+              alt="Waiting Copayer"
               width="70">
               <p class="size-12 text-white text-light m0">
               <i class="fi-loop icon-rotate spinner"></i>
@@ -60,7 +61,7 @@
         </div>
 
         <div class="text-right">
-          <a class="text-primary m20r" ng-click="dowloadBackup()"
+          <a class="text-primary m20r" ng-click="downloadBackup()"
             ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a>
           <button class="button primary m0"
             ng-click="backup()"

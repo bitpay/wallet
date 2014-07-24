@@ -26,6 +26,10 @@ angular
         templateUrl: 'views/setup.html',
         validate: false
       })
+      .when('/copayers', {
+        templateUrl: 'views/copayers.html',
+        validate: true
+      })
       .when('/addresses', {
         templateUrl: 'views/addresses.html',
         validate: true
@@ -73,6 +77,9 @@ angular
       } else {
         if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
           $location.path('/');
+        }
+        if ($rootScope.wallet && !$rootScope.wallet.isReady()) {
+          $location.path('/copayers');
         }
       }
     });
