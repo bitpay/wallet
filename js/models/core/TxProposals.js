@@ -60,6 +60,13 @@ TxProposal.prototype.isValid = function() {
   if (this.builder.signhash !== Transaction.SIGHASH_ALL) {
     return false;
   }
+  var tx = this.builder.build();
+  for (var i = 0; i < tx.ins.length; i++) {
+    var hashType = tx.getHashType(i);
+    if (hashType !== Transaction.SIGHASH_ALL) {
+      return false;
+    }
+  }
   return true;
 };
 

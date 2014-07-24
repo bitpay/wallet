@@ -1083,5 +1083,59 @@ describe('Wallet model', function() {
       var signhash = Transaction.SIGHASH_ANYONECANPAY;
       testValidate(signhash, result, done);
     });
+    it('should validate for a SIGHASH_NONE tx in builder', function(done) {
+      var raw = '010000000145c3bf51ced6cefaea8c6578a645316270dbf8600f46969d31136e1e06829598000000007000483045022100877c715e0f3bd6377086c96d4757b2c983682a1934d9e3f894941f4f1e18d4710220272ed81758d7a391ee4c15a29246f3fe75efbddeaf1118e4c0d3bb14f57cdba601255121022f58491a833933a9bea80d8e820e66bee91bd8c71bfa972fe70482360b48129951aeffffffff01706f9800000000001976a91408328947f0caf8728729d740cbecdfe3c2327db588ac00000000';
+      var tx = new Transaction();
+      tx.parse(new Buffer(raw, 'hex'));
+      var w = cachedCreateW();
+      var spy = sinon.spy();
+      w.on('txProposalEvent', spy);
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('new');
+        done();
+      });
+      var txb = new TransactionBuilder()
+        .setUnspent(utxos)
+        .setOutputs(outs)
+        .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
+          'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
+        ]);
+      txb.tx = tx;
+      var txp = {
+        'txProposal': {
+          'builderObj': txb.toObj()
+        }
+      };
+      w._handleTxProposal('senderID', txp, true);
+      spy.callCount.should.equal(1);
+
+    })
+    it('should not validate for a non SIGHASH_NONE tx in builder', function(done) {
+      var raw = '0100000001eaf08f93f895127fbf000128ac74f6e8c7f003854e5ee1f02a5fd820cb689beb00000000fdfe00004730440220778f3174393e9ee6b0bfa876b4150db6f12a4da9715044ead5e345c2781ceee002203aab31f1e1d3dcf77ca780d9af798139719891917c9a09123dba54483ef462bc02493046022100dd93b64b30580029605dbba09d7fa34194d9ff38fda0c4fa187c52bf7f79ae98022100dd7b056762087b9aa8ccfde328d7067fa1753b78c0ee25577122569ff9de1d57024c695221039f847c24f09d7299c10bba4e41b24dc78e47bbb05fd7c1d209c994899d6881062103d363476e634fc5cdc11e9330c05a141c1e0c7f8b616817bdb83e7579bbf870942103fb2072953ceab87c6da450ac661685a881ddb661002d2ec1d60bfd33e3ec807d53aeffffffff01d06bf5050000000017a914db682f579cf6ca483880460fcf4ab63e223dc07e8700000000';
+      var tx = new Transaction();
+      tx.parse(new Buffer(raw, 'hex'));
+      var w = cachedCreateW();
+      var spy = sinon.spy();
+      w.on('txProposalEvent', spy);
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('corrupt');
+        done();
+      });
+      var txb = new TransactionBuilder()
+        .setUnspent(utxos)
+        .setOutputs(outs)
+        .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
+          'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
+        ]);
+      txb.tx = tx;
+      var txp = {
+        'txProposal': {
+          'builderObj': txb.toObj()
+        }
+      };
+      w._handleTxProposal('senderID', txp, true);
+      spy.callCount.should.equal(1);
+
+    })
   });
 });
