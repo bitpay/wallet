@@ -1,34 +1,41 @@
 <div ng-controller="SidebarController">
   <header class="text-center">
     <div class="text-white m10v">
-      Copay 
+      <a href="/" class="db">
+        <img src="../img/logo-negative-beta.svg" alt="" width="80">
+      </a>
       <small>v{{version}}</small>
       <small ng-if="$root.wallet.getNetworkName()=='livenet'">LIVENET</small>
       <small ng-if="$root.wallet.getNetworkName()=='testnet'">TESTNET</small>
     </div>
-    <div class="founds size-12">
-      Balance
-      <span ng-if="$root.updatingBalance">
-        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-      </span>
-      <span ng-if="!$root.updatingBalance"
-        data-options="disable_for_touch:true"
-        tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
-        tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{totalBalance || 0
-        |noFractionNumber}} {{$root.unitName}} 
-      </span> 
-      &middot; 
-      Available
-      <span ng-if="$root.updatingBalance">
-        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-      </span>
-      <span ng-show="!$root.updatingBalance"
-        data-options="disable_for_touch:true"
-        tooltip="{{availableBalanceBTC || 0 |noFractionNumber:8}} BTC"
-        tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
-      </span>
+    <div class="line-sidebar-b"></div>
+    <div class="founds size-12 text-center box-founds p10t">
+      <div class="m10b">
+        Balance
+        <span ng-if="$root.updatingBalance">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        </span>
+        <span ng-if="!$root.updatingBalance"
+          data-options="disable_for_touch:true"
+          tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
+          tooltip-trigger="mouseenter"
+          tooltip-placement="bottom">{{totalBalance || 0
+          |noFractionNumber}} {{$root.unitName}} 
+        </span>
+      </div> 
+      <div>
+        Available
+        <span ng-if="$root.updatingBalance">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        </span>
+        <span ng-show="!$root.updatingBalance"
+          data-options="disable_for_touch:true"
+          tooltip="{{availableBalanceBTC || 0 |noFractionNumber:8}} BTC"
+          tooltip-trigger="mouseenter"
+          tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
+        </span>
+      </div>
+      <div class="line-sidebar-b"></div>
     </div>
   </header>
   <ul class="off-canvas-list">
