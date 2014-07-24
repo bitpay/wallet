@@ -125,6 +125,15 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL:', data);
 
   var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
+  var valid = inTxp.isValid();
+  if (!valid) {
+    var corruptEvent = {
+      type: 'corrupt',
+      cId: inTxp.creator
+    };
+    this.emit('txProposalEvent', corruptEvent);
+    return;
+  }
   var mergeInfo = this.txProposals.merge(inTxp, senderId);
   var added = this.addSeenToTxProposals();
 
