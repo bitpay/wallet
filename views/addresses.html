@@ -8,20 +8,25 @@
     <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
       <div class="large-12 medium-12" ng-init="showAll=0">
         <ul>
-          <li class="panel radius db" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
+          <li class="panel radius oh" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
 
-            <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
-            <small ng-if="addr.isChange">change</small>
-            <a href="#" ng-click="openAddressModal(addr)">Show QR</a>
-
-            <span class="right">
+            <div class="large-8 small-6 column">
+              <div class="ellipsis">
+                <a href="#" ng-click="openAddressModal(addr)"><i
+                class="fi-thumbnails">&nbsp;</i></a>
+                <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
+                <small ng-if="addr.isChange">change</small>
+              </div>
+            </div>
+            
+            <div class="large-4 small-6 column text-right">
               <span ng-if="$root.updatingBalance">
                 <i class="fi-bitcoin-circle icon-rotate spinner"></i>
               </span>
               <span ng-if="!$root.updatingBalance">
                 {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
               </span>
-            </span>
+            </div>
           </li>
         </ul>
 
