@@ -17,7 +17,7 @@
     <div class="off-canvas-wrap">
       <div class="inner-wrap">
 
-        <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet && !$root.wallet.isReady()}">
+        <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet || !$root.wallet.isReady()}">
             <section class="left-small">
                 <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
