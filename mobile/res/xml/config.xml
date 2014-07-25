@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bitpay.copay" version="2.0.0" xmlns="http://www.w3.org/ns/widgets">
+    <name>Copay</name>
+    <description>
+      A secure bitcoin wallet for friends and companies
+    </description>
+    <author email="support@bitpay.com" href="http://copay.io">
+        Bitpay Inc.
+    </author>
+    <access origin="*" />
+    <content src="index.html" />
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="splashscreen" value="screen" />
+    <preference name="splashScreenDelay" value="10000" />
+    <preference name="backgroundColor" value="0x2C3E50" />
+    <feature name="App">
+        <param name="android-package" value="com.bitpay.copay" />
+    </feature>
+    <feature name="Vibration">
+        <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
+    </feature>
+    <feature name="BarcodeScanner">
+        <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
+    </feature>
+    <feature name="EmailComposer">
+        <param name="android-package" value="de.appplant.cordova.plugin.emailcomposer.EmailComposer" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
+</widget>
