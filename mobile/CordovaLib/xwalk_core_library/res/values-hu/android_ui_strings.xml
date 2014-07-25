@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Az előző műveletet memóriahiány miatt nem lehet elvégezni"</string>
+<string name="opening_file_error">"A fájl megnyitása sikertelen"</string>
+<string name="color_picker_button_more">"Hosszabban"</string>
+<string name="color_picker_hue">"Színárnyalat"</string>
+<string name="color_picker_saturation">"Telítettség"</string>
+<string name="color_picker_value">"Érték"</string>
+<string name="color_picker_button_set">"Beállítás"</string>
+<string name="color_picker_button_cancel">"Mégse"</string>
+<string name="color_picker_dialog_title">"Szín kiválasztása"</string>
+<string name="color_picker_button_red">"Piros"</string>
+<string name="color_picker_button_cyan">"Cián"</string>
+<string name="color_picker_button_blue">"Kék"</string>
+<string name="color_picker_button_green">"Zöld"</string>
+<string name="color_picker_button_magenta">"Magenta"</string>
+<string name="color_picker_button_yellow">"Sárga"</string>
+<string name="color_picker_button_black">"Fekete"</string>
+<string name="color_picker_button_white">"Fehér"</string>
+<string name="copy_to_clipboard_failure_message">"Nem sikerült a vágólapra másolni"</string>
+</resources>

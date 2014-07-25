@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="xwalk_resources_list">
+<item>icudtl.dat</item>
+<item>xwalk.pak</item>
+</string-array>
+</resources>

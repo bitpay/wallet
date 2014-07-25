@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"メモリ不足のため直前の操作を完了できません"</string>
+<string name="opening_file_error">"選択したファイルを開けません"</string>
+<string name="color_picker_button_more">"詳細表示"</string>
+<string name="color_picker_hue">"色調"</string>
+<string name="color_picker_saturation">"彩度"</string>
+<string name="color_picker_value">"値"</string>
+<string name="color_picker_button_set">"設定"</string>
+<string name="color_picker_button_cancel">"キャンセル"</string>
+<string name="color_picker_dialog_title">"色の選択"</string>
+<string name="color_picker_button_red">"赤"</string>
+<string name="color_picker_button_cyan">"シアン"</string>
+<string name="color_picker_button_blue">"青"</string>
+<string name="color_picker_button_green">"緑"</string>
+<string name="color_picker_button_magenta">"マゼンタ"</string>
+<string name="color_picker_button_yellow">"黄"</string>
+<string name="color_picker_button_black">"黒"</string>
+<string name="color_picker_button_white">"白"</string>
+<string name="copy_to_clipboard_failure_message">"クリップボードにコピーできませんでした"</string>
+</resources>

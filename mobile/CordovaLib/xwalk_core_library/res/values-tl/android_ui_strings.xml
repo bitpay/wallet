@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Hindi makumpleto ang nakaraang operasyon dahil sa mababang memory"</string>
+<string name="opening_file_error">"Hindi mabuksan ang napiling file"</string>
+<string name="color_picker_button_more">"Higit pa"</string>
+<string name="color_picker_hue">"Hue"</string>
+<string name="color_picker_saturation">"Saturation"</string>
+<string name="color_picker_value">"Value"</string>
+<string name="color_picker_button_set">"Itakda"</string>
+<string name="color_picker_button_cancel">"Kanselahin"</string>
+<string name="color_picker_dialog_title">"Pumili ng kulay"</string>
+<string name="color_picker_button_red">"Pula"</string>
+<string name="color_picker_button_cyan">"Cyan"</string>
+<string name="color_picker_button_blue">"Asul"</string>
+<string name="color_picker_button_green">"Berde"</string>
+<string name="color_picker_button_magenta">"Magenta"</string>
+<string name="color_picker_button_yellow">"Dilaw"</string>
+<string name="color_picker_button_black">"Itim"</string>
+<string name="color_picker_button_white">"Puti"</string>
+<string name="copy_to_clipboard_failure_message">"Nabigong kopyahin sa clipboard"</string>
+</resources>

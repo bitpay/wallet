@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"No se ha podido completar la operación anterior por falta de memoria"</string>
+<string name="opening_file_error">"Error abrir archivo seleccionado"</string>
+<string name="color_picker_button_more">"Más"</string>
+<string name="color_picker_hue">"Matiz"</string>
+<string name="color_picker_saturation">"Saturación"</string>
+<string name="color_picker_value">"Valor"</string>
+<string name="color_picker_button_set">"Establecer"</string>
+<string name="color_picker_button_cancel">"Cancelar"</string>
+<string name="color_picker_dialog_title">"Seleccionar color"</string>
+<string name="color_picker_button_red">"Rojo"</string>
+<string name="color_picker_button_cyan">"Cian"</string>
+<string name="color_picker_button_blue">"Azul"</string>
+<string name="color_picker_button_green">"Verde"</string>
+<string name="color_picker_button_magenta">"Magenta"</string>
+<string name="color_picker_button_yellow">"Amarillo"</string>
+<string name="color_picker_button_black">"Negro"</string>
+<string name="color_picker_button_white">"Blanco"</string>
+<string name="copy_to_clipboard_failure_message">"Error al copiar en el portapapeles"</string>
+</resources>

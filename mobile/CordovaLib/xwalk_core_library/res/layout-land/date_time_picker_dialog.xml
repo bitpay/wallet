@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2012 The Chromium Authors. All rights reserved.
+
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnersShown="true"
+        android:calendarViewShown="false"
+        android:contentDescription="@string/accessibility_datetime_picker_date"
+        />
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/accessibility_datetime_picker_time"
+        />
+
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Unable to complete previous operation due to low memory"</string>
+<string name="opening_file_error">"Failed to open selected file"</string>
+<string name="color_picker_button_more">"More"</string>
+<string name="color_picker_hue">"Hue"</string>
+<string name="color_picker_saturation">"Saturation"</string>
+<string name="color_picker_value">"Value"</string>
+<string name="color_picker_button_set">"Set"</string>
+<string name="color_picker_button_cancel">"Cancel"</string>
+<string name="color_picker_dialog_title">"Select color"</string>
+<string name="color_picker_button_red">"Red"</string>
+<string name="color_picker_button_cyan">"Cyan"</string>
+<string name="color_picker_button_blue">"Blue"</string>
+<string name="color_picker_button_green">"Green"</string>
+<string name="color_picker_button_magenta">"Magenta"</string>
+<string name="color_picker_button_yellow">"Yellow"</string>
+<string name="color_picker_button_black">"Black"</string>
+<string name="color_picker_button_white">"White"</string>
+<string name="copy_to_clipboard_failure_message">"Failed to copy to the clipboard"</string>
+</resources>

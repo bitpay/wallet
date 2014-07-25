@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Impossibile completare l\'operazione precedente. Memoria insufficiente."</string>
+<string name="opening_file_error">"Impossibile aprire file selez."</string>
+<string name="color_picker_button_more">"Più"</string>
+<string name="color_picker_hue">"Tonalità"</string>
+<string name="color_picker_saturation">"Saturazione"</string>
+<string name="color_picker_value">"Valore"</string>
+<string name="color_picker_button_set">"Imposta"</string>
+<string name="color_picker_button_cancel">"Annulla"</string>
+<string name="color_picker_dialog_title">"Seleziona colore"</string>
+<string name="color_picker_button_red">"Rosso"</string>
+<string name="color_picker_button_cyan">"Ciano"</string>
+<string name="color_picker_button_blue">"Blu"</string>
+<string name="color_picker_button_green">"Verde"</string>
+<string name="color_picker_button_magenta">"Magenta"</string>
+<string name="color_picker_button_yellow">"Giallo"</string>
+<string name="color_picker_button_black">"Nero"</string>
+<string name="color_picker_button_white">"Bianco"</string>
+<string name="copy_to_clipboard_failure_message">"Impossibile copiare negli appunti"</string>
+</resources>

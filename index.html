@@ -1028,6 +1028,15 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="js/controllers/settings.js"></script>
     <script src="js/controllers/uriPayment.js"></script>
 
+    <!-- PLACEHOLDER: CORDOVA SRIPT -->
+    <script type="text/javascript" charset="utf-8">
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        navigator.splashscreen.hide();
+      }
+    </script>
+
     <script src="js/init.js"></script>
   </body>
 </html>
