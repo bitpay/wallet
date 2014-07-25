@@ -20,28 +20,17 @@ checkOK() {
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPDIR="$BUILDDIR/assets/www"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
-DEBUG=""
+RELEASE=false
 RUN=false
 
-if [[ $1 = "-d" ]]
+if [[ $1 = "--release" ]]
 then
-  DEBUG="--enable-remote-debugging"
+  RELEASE=true
 fi
 
 if [[ $1 = "-r" ]]
 then
   RUN=true
-fi
-
-
-if [[ $# -eq 1 && ! $1 = "-d" && ! $1 = "-r" ]]
-then
-  if [ ! -f $BUILDDIR/copay.keystore ]
-    then
-    echo "${OpenColor}${Red}* Can't build production app without a keystore${CloseColor}"
-    exit 1
-  fi
-  PRODUCTION="--keystore-path=$BUILDDIR/copay.keystore --keystore-alias=copay_play --keystore-passcode=$1"
 fi
 
 # Move to the build directory
@@ -64,7 +53,6 @@ checkOK
 
 # Copy all app files
 echo "${OpenColor}${Green}* Copying all app files...${CloseColor}"
-# sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 cd $BUILDDIR/..
 cp -af {css,font,img,js,lib,sound,config.js,version.js,$BUILDDIR/cordova.js,$BUILDDIR/cordova_plugins.js,$BUILDDIR/plugins} $APPDIR
 checkOK
@@ -77,6 +65,9 @@ cd $BUILDDIR
 if [[ $RUN == true ]]
 then
   ./cordova/run
+elif [[ $RELEASE == true ]]
+then
+  ./cordova/build --release
 else
   ./cordova/build
 fi
