@@ -9,7 +9,7 @@
     "bugs": {
         "url": "https://github.com/bitpay/copay/issues"
     }, 
-    "version": "0.3.2", 
+    "version": "0.4.1", 
     "dependencies": {
         "preconditions": "^1.0.7", 
         "sinon": "1.9.1", 
