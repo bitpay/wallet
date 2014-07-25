@@ -25,8 +25,7 @@ function TxProposal(opts) {
 }
 
 TxProposal.prototype.getID = function() {
-  var ntxid = this.builder.build().getNormalizedHash().toString('hex');
-  return ntxid;
+  return this.builder.build().getNormalizedHash().toString('hex');
 };
 
 TxProposal.prototype.toObj = function() {
@@ -42,16 +41,23 @@ TxProposal.prototype.setSent = function(sentTxid) {
   this.sentTs = Date.now();
 };
 
-TxProposal.fromObj = function(o) {
+TxProposal.fromObj = function(o, forceOpts) {
   var t = new TxProposal(o);
+
   try {
-    t.builder = new TransactionBuilder.fromObj(o.builderObj);
+    // force opts is requested.
+    for (var k in forceOpts) {
+      o.builderObj.opts[k] = forceOpts[k];
+    }
+    t.builder = TransactionBuilder.fromObj(o.builderObj);
+
   } catch (e) {
     if (!o.version) {
       t.builder = new BuilderMockV0(o.builderObj);
       t.readonly = 1;
     };
   }
+
   return t;
 };
 
@@ -172,15 +178,16 @@ function TxProposals(opts) {
   this.txps = {};
 }
 
-TxProposals.fromObj = function(o) {
+TxProposals.fromObj = function(o, forceOpts) {
   var ret = new TxProposals({
     networkName: o.networkName,
     walletId: o.walletId,
   });
+
   o.txps.forEach(function(o2) {
-    var t = TxProposal.fromObj(o2);
+    var t = TxProposal.fromObj(o2, forceOpts);
     if (t.builder) {
-      var id = t.builder.build().getNormalizedHash().toString('hex');
+      var id = t.getID();
       ret.txps[id] = t;
     }
   });
