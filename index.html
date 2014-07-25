@@ -1036,7 +1036,7 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
       document.addEventListener("deviceready", onDeviceReady, false);
 
       function onDeviceReady() {
-        navigator.splashscreen.hide();
+        setTimeout(function(){ navigator.splashscreen.hide(); }, 2000);
       }
     </script>
 
