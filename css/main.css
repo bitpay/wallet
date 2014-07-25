@@ -198,7 +198,7 @@ a:hover {
 }
 
 .button.small.side-bar {
-  padding: 0.2rem 0.4rem;
+  padding: 0rem 0.4rem;
 }
 
 .waiting {
@@ -844,6 +844,20 @@ button[disabled].black:focus,
 .button[disabled].black:focus {
   background-color: #95a5a6;
   color: #E6E6E6;
+}
+
+/* GRAY */
+button.gray, 
+.button.gray { 
+  background-color: #A9B2B8;
+  color: #2C3E50;
+}
+button.gray:hover, 
+button.gray:focus, 
+.button.gray:hover, 
+.button.gray:focus {
+  background-color: #E0E5E5;
+  color: #2C3E50;
 }
 
 .side-nav {padding: 0;}
