@@ -711,7 +711,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     .setUnspent(utxos)
     .setOutputs([{
       address: toAddress,
-      amountSatStr: amountSatStr,
+      amountSat: amountSatStr,
     }]);
 
   var selectedUtxos = b.getSelectedUnspent();
