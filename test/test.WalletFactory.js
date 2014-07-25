@@ -302,7 +302,7 @@ describe('WalletFactory model', function() {
       should.exist(w.txProposals.toObj());
       should.exist(w.privateKey.toObj());
 
-      JSON.stringify(w.toObj()).should.equal(o);
+      JSON.stringify(w.toObj()).should.equal(legacyO);
     });
     it.skip('should be able to import encrypted legacy wallet', function(done) {
       var pp = new Passphrase(config.passphrase);
