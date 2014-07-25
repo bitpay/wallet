@@ -47,7 +47,6 @@ TxProposal.fromObj = function(o) {
     t.builder = new Builder.fromObj(o.builderObj);
   } catch (e) {
     if (!o.version) {
-      console.log('Importing old TxProposal V0' + JSON.stringify(o.builderObj));
       t.builder = new BuilderMockV0(o.builderObj);
       t.readonly = 1;
     };
