@@ -45,7 +45,8 @@ TxProposal.fromObj = function(o) {
   try {
     t.builder = new Builder.fromObj(o.builderObj);
   } catch (e) {
-    console.log('Ignoring incompatible stored TxProposal:' + JSON.stringify(o.builderObj));
+    if (!process.version)
+      console.log('Ignoring incompatible stored TxProposal:' + JSON.stringify(o.builderObj));
   }
   return t;
 };
