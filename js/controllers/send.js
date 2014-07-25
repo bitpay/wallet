@@ -72,8 +72,8 @@ angular.module('copayApp.controllers').controller('SendController',
       });
 
       // reset fields
-      $scope.address = $scope.amount = $scope.comment = null;
-      form.address.$pristine = form.amount.$pristine = form.comment.$pristine = true;
+      $scope.address = $scope.amount = $scope.commentText = null;
+      form.address.$pristine = form.amount.$pristine = true;
     };
 
     // QR code Scanner
