@@ -642,11 +642,23 @@ describe('TxProposals model', function() {
       return txp;
     };
 
+    it('should validate for no signatures yet in tx', function() {
+      // taken from https://gist.github.com/gavinandresen/3966071
+      var raw = '010000000189632848f99722915727c5c75da8db2dbf194342a0429828f66ff88fab2af7d60000000000ffffffff0140420f000000000017a914f815b036d9bbbce5e9f2a00abd1bf3dc91e955108700000000';
+      var txp = createMockTxp(raw);
+      txp.isValid().should.equal(true);
+    });
+    it('should validate for no signatures yet in copay generated tx', function() {
+      // taken from copay incomplete tx proposal
+      var raw = '0100000001e205297fd05e4504d72761dc7a16e5cc9f4ab89877f28aee97c1cc66b3f07d690100000000ffffffff01706f9800000000001976a91473707e88f79c9c616b44bc766a25efcb9f49346688ac00000000';
+      var txp = createMockTxp(raw);
+      txp.isValid().should.equal(true);
+    });
     it('should validate for a SIGHASH_NONE tx in builder', function() {
       var raw = '010000000145c3bf51ced6cefaea8c6578a645316270dbf8600f46969d31136e1e06829598000000007000483045022100877c715e0f3bd6377086c96d4757b2c983682a1934d9e3f894941f4f1e18d4710220272ed81758d7a391ee4c15a29246f3fe75efbddeaf1118e4c0d3bb14f57cdba601255121022f58491a833933a9bea80d8e820e66bee91bd8c71bfa972fe70482360b48129951aeffffffff01706f9800000000001976a91408328947f0caf8728729d740cbecdfe3c2327db588ac00000000';
       var txp = createMockTxp(raw);
       txp.isValid().should.equal(true);
-    })
+    });
     it('should not validate for a non SIGHASH_NONE tx in builder with 1 input', function() {
       var raw = '0100000001eaf08f93f895127fbf000128ac74f6e8c7f003854e5ee1f02a5fd820cb689beb00000000fdfe00004730440220778f3174393e9ee6b0bfa876b4150db6f12a4da9715044ead5e345c2781ceee002203aab31f1e1d3dcf77ca780d9af798139719891917c9a09123dba54483ef462bc02493046022100dd93b64b30580029605dbba09d7fa34194d9ff38fda0c4fa187c52bf7f79ae98022100dd7b056762087b9aa8ccfde328d7067fa1753b78c0ee25577122569ff9de1d57024c695221039f847c24f09d7299c10bba4e41b24dc78e47bbb05fd7c1d209c994899d6881062103d363476e634fc5cdc11e9330c05a141c1e0c7f8b616817bdb83e7579bbf870942103fb2072953ceab87c6da450ac661685a881ddb661002d2ec1d60bfd33e3ec807d53aeffffffff01d06bf5050000000017a914db682f579cf6ca483880460fcf4ab63e223dc07e8700000000';
       var txp = createMockTxp(raw);
