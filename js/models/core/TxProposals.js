@@ -44,12 +44,11 @@ TxProposal.prototype.setSent = function(sentTxid) {
 TxProposal.fromObj = function(o, forceOpts) {
   var t = new TxProposal(o);
 
-  // force opts is requested.
-  for (var k in forceOpts) {
-    o.builderObj.opts[k] = forceOpts[k];
-  }
-
   try {
+    // force opts is requested.
+    for (var k in forceOpts) {
+      o.builderObj.opts[k] = forceOpts[k];
+    }
     t.builder = TransactionBuilder.fromObj(o.builderObj);
 
   } catch (e) {
