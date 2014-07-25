@@ -6,6 +6,7 @@ var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var Builder = bitcore.TransactionBuilder;
+var BuilderMockV0 = require('./BuilderMockV0');;
 var Script = bitcore.Script;
 var buffertools = bitcore.buffertools;
 
@@ -42,8 +43,14 @@ TxProposal.prototype.setSent = function(sentTxid) {
 
 TxProposal.fromObj = function(o) {
   var t = new TxProposal(o);
-  var b = new Builder.fromObj(o.builderObj);
-  t.builder = b;
+  try {
+    t.builder = new Builder.fromObj(o.builderObj);
+  } catch (e) {
+    if (!o.version) {
+      t.builder = new BuilderMockV0(o.builderObj);
+      t.readonly = 1;
+    };
+  }
   return t;
 };
 
@@ -127,6 +134,17 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 
 };
 
+//This should be on bitcore / Transaction
+TxProposal.prototype.countSignatures = function() {
+  var tx = this.builder.build();
+
+  var ret = 0;
+  for (var i in tx.ins) {
+    ret += tx.countInputSignatures(i);
+  }
+  return ret;
+};
+
 module.exports = require('soop')(TxProposal);
 
 
@@ -145,8 +163,10 @@ TxProposals.fromObj = function(o) {
   });
   o.txps.forEach(function(o2) {
     var t = TxProposal.fromObj(o2);
-    var id = t.builder.build().getNormalizedHash().toString('hex');
-    ret.txps[id] = t;
+    if (t.builder) {
+      var id = t.builder.build().getNormalizedHash().toString('hex');
+      ret.txps[id] = t;
+    }
   });
   return ret;
 };

@@ -139,7 +139,6 @@ describe('TxProposals model', function() {
   var createTx = function(toAddress, amountSatStr, utxos, opts, priv, pkr) {
     opts = opts || {};
 
-    var amountSat = bitcore.Bignum(amountSatStr);
     var pub = priv.publicHex;
 
     if (!pkr.isComplete()) {
@@ -156,7 +155,7 @@ describe('TxProposals model', function() {
       .setUnspent(utxos)
       .setOutputs([{
         address: toAddress,
-        amountSat: amountSat
+        amountSatStr: amountSatStr,
       }]);
     var selectedUtxos = b.getSelectedUnspent();
     var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -177,11 +176,13 @@ describe('TxProposals model', function() {
     var me = {};
     if (priv) me[priv.getId()] = Date.now();
 
+    var tx = b.build();
+
     return {
       inputChainPaths: inputChainPaths,
       creator: priv.getId(),
       createdTs: new Date(),
-      signedBy: priv && b.signaturesAdded ? me : {},
+      signedBy: priv && tx.countInputSignatures(0) ? me : {},
       seenBy: priv ? me : {},
       builder: b,
     };
@@ -287,6 +288,7 @@ describe('TxProposals model', function() {
     var ntxid = Object.keys(w.txps)[0];
     var tx = w.txps[ntxid].builder.build();
     tx.isComplete().should.equal(false);
+    tx.countInputSignatures(0).should.equal(0);
     tx.countInputMissingSignatures(0).should.equal(1);
 
     Object.keys(w.txps[ntxid].signedBy).length.should.equal(0);
@@ -313,7 +315,8 @@ describe('TxProposals model', function() {
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
-    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true);
+
+    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true, 'asdsd');
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
@@ -390,7 +393,6 @@ describe('TxProposals model', function() {
 
     var ntxid = Object.keys(w.txps)[0];
     txb = w.txps[ntxid].builder;
-    txb.signaturesAdded.should.equal(0);
     tx = txb.build();
 
     tx.isComplete().should.equal(false);
@@ -417,7 +419,6 @@ describe('TxProposals model', function() {
     txb = w2.txps[ntxid].builder;
     tx = txb.build();
 
-    txb.signaturesAdded.should.equal(1);
     tx.isComplete().should.equal(false);
     tx.countInputMissingSignatures(0).should.equal(2);
 
@@ -526,7 +527,6 @@ describe('TxProposals model', function() {
     (w2.txps[ntxid].signedBy[priv2.id] - ts > 0).should.equal(true);
     (w2.txps[ntxid].seenBy[priv2.id] - ts > 0).should.equal(true);
 
-
     var w3 = new TxProposals({
       networkName: config.networkName,
     });
@@ -605,16 +605,17 @@ describe('TxProposals model', function() {
     var o = w.toObj();
     should.exist(o);
     o.txps.length.should.equal(1);
+
     should.exist(o.txps[0]);
     should.exist(o.txps[0].signedBy);
     should.exist(o.txps[0].seenBy);
     should.exist(o.txps[0].builderObj);
-    should.exist(o.txps[0].builderObj.valueInSat);
     should.exist(o.txps[0].signedBy[priv.id]);
 
     var o2 = JSON.parse(JSON.stringify(o));
     var w2 = TxProposals.fromObj(o2);
     w2.walletId.should.equal(w.walletId);
+
     var tx2 = w2.txps[ntxid].builder.build();
     tx2.isComplete().should.equal(false);
     tx2.countInputMissingSignatures(0).should.equal(2);

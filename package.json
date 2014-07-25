@@ -9,7 +9,7 @@
     "bugs": {
         "url": "https://github.com/bitpay/copay/issues"
     }, 
-    "version": "0.3.2", 
+    "version": "0.4.1", 
     "dependencies": {
         "preconditions": "^1.0.7", 
         "sinon": "1.9.1", 
@@ -48,7 +48,7 @@
         "github-releases": "0.2.0", 
         "grunt-markdown": "0.5.0", 
         "browser-pack": "2.0.1", 
-        "bitcore": "0.1.31",
+        "bitcore": "0.1.33",
         "node-cryptojs-aes": "0.4.0", 
         "blanket": "1.1.6", 
         "express": "4.0.0", 
