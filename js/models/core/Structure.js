@@ -59,13 +59,16 @@ Structure.parseBitcoinURI = function(uri) {
   data = splitDots[1];
   var splitQuestion = data.split('?');
   ret.address = splitQuestion[0];
-  var search = splitQuestion[1];
-  data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-    function(key, value) {
-      return key === "" ? value : decodeURIComponent(value);
-    });
-  ret.amount = parseFloat(data.amount);
-  ret.message = data.message;
+
+  if (splitQuestion.length > 1) {
+    var search = splitQuestion[1];
+    data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+      function(key, value) {
+        return key === "" ? value : decodeURIComponent(value);
+      });
+    ret.amount = parseFloat(data.amount);
+    ret.message = data.message;
+  }
 
   return ret;
 };

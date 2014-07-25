@@ -32,6 +32,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     // Detect protocol
     $scope.isHttp = ($window.location.protocol.indexOf('http') === 0);
+    $scope.isCordova = typeof(window.cordova) != 'undefined';
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
@@ -193,6 +194,25 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       }, 500);
     };
+
+    $scope.scannerIntent = function() {
+      cordova.plugins.barcodeScanner.scan(
+        function onSuccess(result) {
+          if (result.cancelled) return;
+
+          var bip21 = copay.Structure.parseBitcoinURI(result.text);
+          $scope.address = bip21.address;
+
+          if (bip21.amount) {
+            $scope.amount = bip21.amount * bitcore.util.COIN * satToUnit;
+          }
+
+          $rootScope.$digest();
+        },
+        function onError(error) {
+          alert('Scanning error');
+        });
+    }
 
     $scope.toggleAddressBookEntry = function(key) {
       var w = $rootScope.wallet;

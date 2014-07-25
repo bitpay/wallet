@@ -692,6 +692,9 @@
                       <input type="text" id="address" name="address" ng-disabled="loading"
                       placeholder="Send to" ng-model="address" valid-address required>
                     </div>
+                    <div class="small-2 columns" ng-hide="!isCordova">
+                      <a class="postfix button secondary" ng-click="scannerIntent()"><i class="fi-camera"></i></a>
+                    </div>
                     <div class="small-2 columns" ng-hide="showScanner || !isHttp">
                       <a class="postfix button secondary" ng-click="openScanner()"><i class="fi-camera"></i></a>
                     </div>
@@ -1027,6 +1030,15 @@ on supported browsers please check <a href="http://www.webrtc.org/">http://www.w
     <script src="js/controllers/import.js"></script>
     <script src="js/controllers/settings.js"></script>
     <script src="js/controllers/uriPayment.js"></script>
+
+    <!-- PLACEHOLDER: CORDOVA SRIPT -->
+    <script type="text/javascript" charset="utf-8">
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        setTimeout(function(){ navigator.splashscreen.hide(); }, 2000);
+      }
+    </script>
 
     <script src="js/init.js"></script>
   </body>
