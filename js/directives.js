@@ -156,63 +156,55 @@ angular.module('copayApp.directives')
       restrict: 'EACM',
       require: 'ngModel',
       link: function(scope, element, attrs) {
-        var strength = {
-          messages: ['very weak', 'weak', 'weak', 'medium', 'strong'],
-          colors: ['#c0392b', '#e74c3c', '#d35400', '#f39c12', '#27ae60'],
-          mesureStrength: function(p) {
-            var force = 0;
-            var regex = /[$-/:-?{-~!"^_`\[\]]/g;
-            var lowerLetters = /[a-z]+/.test(p);
-            var upperLetters = /[A-Z]+/.test(p);
-            var numbers = /[0-9]+/.test(p);
-            var symbols = regex.test(p);
-            var flags = [lowerLetters, upperLetters, numbers, symbols];
-            var passedMatches = flags.filter(function(el) {
-              return !!el;
-            }).length;
 
-            force = 2 * p.length + (p.length >= 10 ? 1 : 0);
-            force += passedMatches * 10;
+        var MIN_LENGTH = 8;
+        var MESSAGES = ['Very Weak', 'Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
+        var COLOR = ['#dd514c', '#dd514c', '#faa732', '#faa732', '#5eb95e', '#5eb95e'];
 
-            // penality (short password)
-            force = (p.length <= 6) ? Math.min(force, 10) : force;
-
-            // penality (poor variety of characters)
-            force = (passedMatches == 1) ? Math.min(force, 10) : force;
-            force = (passedMatches == 2) ? Math.min(force, 20) : force;
-            force = (passedMatches == 3) ? Math.min(force, 40) : force;
-            return force;
-          },
-          getColor: function(s) {
-            var idx = 0;
-
-            if (s <= 10) {
-              idx = 0;
-            } else if (s <= 20) {
-              idx = 1;
-            } else if (s <= 30) {
-              idx = 2;
-            } else if (s <= 40) {
-              idx = 3;
+        function evaluateMeter(password) {
+          var passwordStrength = 0;
+          var text;
+          if (password.length > 0) passwordStrength = 1;
+          if (password.length >= MIN_LENGTH) {
+            if ((password.match(/[a-z]/)) && (password.match(/[A-Z]/))) {
+              passwordStrength++;
             } else {
-              idx = 4;
+              text = ', add mixed case';
             }
-
-            return {
-              idx: idx + 1,
-              col: this.colors[idx],
-              message: this.messages[idx]
-            };
+            if (password.match(/\d+/)) {
+              passwordStrength++;
+            } else {
+              if (!text) text = ', add numerals';
+            }
+            if (password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)) {
+              passwordStrength++;
+            } else {
+              if (!text) text = ', add punctuation';
+            }
+            if (password.length > 12) {
+              passwordStrength++;
+            } else {
+              if (!text) text = ', add characters';
+            }
+          } else {
+            text = ', that\'s short';
           }
-        };
+          if (!text) text = '';
+
+          return {
+            strength: passwordStrength,
+            message: MESSAGES[passwordStrength] + text,
+            color: COLOR[passwordStrength]
+          }
+        }
 
         scope.$watch(attrs.ngModel, function(newValue, oldValue) {
           if (newValue && newValue !== '') {
-            var c = strength.getColor(strength.mesureStrength(newValue));
+            var info = evaluateMeter(newValue);
             element.css({
-              'border-color': c.col
+              'border-color': info.color
             });
-            scope[attrs.checkStrength] = c.message;
+            scope[attrs.checkStrength] = info.message;
           }
         });
       }

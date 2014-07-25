@@ -289,9 +289,8 @@
                   placeholder="Choose your password" name="joinPassword"
                   ng-model="$parent.joinPassword"
                   check-strength="passwordStrength"
-                  tooltip-html-unsafe="Password strength: 
-                  <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
-                  numbers and symbols</span>" tooltip-trigger="focus" required>
+                  tooltip-html-unsafe="Strength:
+                  <i>{{passwordStrength}}</i>" tooltip-trigger="focus" required>
                   <button type="submit" class="button primary radius" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
                 </form>
               </div>
@@ -372,11 +371,9 @@
                     <label>Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip" tooltip="doesn't need to be shared">Required</small>
                     <input type="password" placeholder="Choose your password" class="form-control"
                       ng-model="$parent.walletPassword" 
-                      check-strength="passwordStrength" 
-                      tooltip-html-unsafe="Password strength: 
-                      <i>{{passwordStrength}}</i><br/><span
-                      class='size-12'>Tip: Use lower and uppercase, numbers and
-                      symbols</span>" 
+                      check-strength="passwordStrength"
+                      tooltip-html-unsafe="Strength:
+                      <i>{{passwordStrength}}</i>"
                       tooltip-trigger="focus" required>
                     </label>
                   </div>
