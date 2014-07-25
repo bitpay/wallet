@@ -13,8 +13,8 @@
     <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
     placeholder="Label" ng-model="newlabel" required>
   </label>
-  <a class="button small default radius" ng-click="cancel()">Cancel</a>
-  <input type="submit" class="button small secondary radius right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
+  <a class="button warning small default" ng-click="cancel()">Cancel</a>
+  <input type="submit" class="button small primary right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
 </form>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 

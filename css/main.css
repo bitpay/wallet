@@ -966,7 +966,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
 
-a.text-gray:hover {color: #fff;}
+
+.footer-setup a.text-gray:hover {color: #fff;}
+a.text-gray:hover {color: #2C3E50;}
 a.text-primary:hover {color: #50E3C2;}
 a.text-secondary:hover {color: #4A90E2;}
 a.text-white:hover {color: #ccc;}
