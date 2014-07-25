@@ -20,14 +20,18 @@ angular.module('copayApp.filters', [])
   .filter('removeEmpty', function() {
     return function(elements) {
       elements = elements || [];
-      // Hide empty addresses from other copayers
+      // Hide empty change addresses from other copayers
       return elements.filter(function(e) {
-        return e.owned || e.balance > 0;
+        return !e.isChange || e.balance > 0;
       });
     }
   })
   .filter('limitAddress', function() {
     return function(elements, showAll) {
+      var elements = elements.sort(function(a, b) {
+        return (+b.owned) - (+a.owned);
+      });
+
       if (elements.length <= 1 || showAll) {
         return elements;
       }
