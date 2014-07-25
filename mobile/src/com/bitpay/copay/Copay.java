@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.bipay.copay;
+package com.bitpay.copay;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

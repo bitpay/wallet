@@ -61,7 +61,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<provider android:authorities=\"com.bipay.copay.plugin.emailcomposer.attachmentprovider\" android:name=\"de.appplant.cordova.plugin.emailcomposer.AttachmentProvider\"></provider>",
+                            "xml": "<provider android:authorities=\"com.bitpay.copay.plugin.emailcomposer.attachmentprovider\" android:name=\"de.appplant.cordova.plugin.emailcomposer.AttachmentProvider\"></provider>",
                             "count": 1
                         }
                     ]
@@ -553,16 +553,16 @@
     },
     "installed_plugins": {
         "org.apache.cordova.vibration": {
-            "PACKAGE_NAME": "com.bipay.copay"
+            "PACKAGE_NAME": "com.bitpay.copay"
         },
         "com.phonegap.plugins.barcodescanner": {
-            "PACKAGE_NAME": "com.bipay.copay"
+            "PACKAGE_NAME": "com.bitpay.copay"
         },
         "de.appplant.cordova.plugin.email-composer": {
-            "PACKAGE_NAME": "com.bipay.copay"
+            "PACKAGE_NAME": "com.bitpay.copay"
         },
         "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "com.bipay.copay"
+            "PACKAGE_NAME": "com.bitpay.copay"
         }
     },
     "dependent_plugins": {}
