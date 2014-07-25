@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Predchádzajúca operácia sa nedokončila z dôvodu nedostatku pamäte"</string>
+<string name="opening_file_error">"Vybr. súbor sa nepodar. otvoriť"</string>
+<string name="color_picker_button_more">"Viac"</string>
+<string name="color_picker_hue">"Odtieň"</string>
+<string name="color_picker_saturation">"Sýtosť"</string>
+<string name="color_picker_value">"Hodnota"</string>
+<string name="color_picker_button_set">"Nastaviť"</string>
+<string name="color_picker_button_cancel">"Zrušiť"</string>
+<string name="color_picker_dialog_title">"Výber farby"</string>
+<string name="color_picker_button_red">"Červená"</string>
+<string name="color_picker_button_cyan">"Azúrová"</string>
+<string name="color_picker_button_blue">"Modrá"</string>
+<string name="color_picker_button_green">"Zelená"</string>
+<string name="color_picker_button_magenta">"Purpurová"</string>
+<string name="color_picker_button_yellow">"Žltá"</string>
+<string name="color_picker_button_black">"Čierna"</string>
+<string name="color_picker_button_white">"Biela"</string>
+<string name="copy_to_clipboard_failure_message">"Skopírovanie do schránky sa nepodarilo"</string>
+</resources>

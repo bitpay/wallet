@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"በአነስተኛ ማህደረ ትውስታ ምክንያት ቀዳሚውን ክወና ማጠናቀቅ አልተቻለም"</string>
+<string name="opening_file_error">"የተመረጠውን ፋይል መክፈት አልተሳካም"</string>
+<string name="color_picker_button_more">"ተጨማሪ"</string>
+<string name="color_picker_hue">"ለይ ቀለም"</string>
+<string name="color_picker_saturation">"የቀለም ሙሌት"</string>
+<string name="color_picker_value">"እሴት"</string>
+<string name="color_picker_button_set">"አዘጋጅ"</string>
+<string name="color_picker_button_cancel">"ይቅር"</string>
+<string name="color_picker_dialog_title">"ቀለም ይምረጡ"</string>
+<string name="color_picker_button_red">"ቀይ"</string>
+<string name="color_picker_button_cyan">"ውሃ ሰማያዊ"</string>
+<string name="color_picker_button_blue">"ሰማያዊ"</string>
+<string name="color_picker_button_green">"አረንጓዴ"</string>
+<string name="color_picker_button_magenta">"ሮዝ"</string>
+<string name="color_picker_button_yellow">"ቢጫ"</string>
+<string name="color_picker_button_black">"ጥቁር"</string>
+<string name="color_picker_button_white">"ነጭ"</string>
+<string name="copy_to_clipboard_failure_message">"ወደ ቅንጥብ ሰሌዳው መቅዳት አልተሳካም"</string>
+</resources>

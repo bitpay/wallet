@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2013 The Chromium Authors. All rights reserved.
+
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bubble">
+
+    <LinearLayout
+        android:id="@+id/top_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/icon_view"
+        android:layout_alignEnd="@+id/text_wrapper"
+        android:weightSum="1">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/arrow_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="7dp"
+            android:src="@drawable/bubble_arrow_up" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@id/icon_view"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/top_view"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/pageinfo_warning_major" />
+
+    <LinearLayout
+        android:id="@id/text_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_view"
+        android:layout_toEndOf="@id/icon_view"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/main_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="300dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/sub_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="300dp"
+            android:textColor="#444"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

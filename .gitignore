@@ -54,6 +54,14 @@ android/package
 android/*.apk
 android/*.keystore
 
+mobile/assets/www
+mobile/bin
+mobile/gen
+mobile/CordovaLib/bin
+mobile/CordovaLib/gen
+mobile/CordovaLib/xwalk_core_library/bin
+mobile/CordovaLib/xwalk_core_library/gen
+
 coverage/
 
 shell/bin/linux

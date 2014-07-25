@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="de.appplant.cordova.plugin.email-composer"
+        version="0.8.2dev">
+
+    <name>EmailComposer</name>
+
+    <description>Provides access to the standard interface that manages the editing and sending an email message</description>
+    <repo>https://github.com/katzer/cordova-plugin-email-composer.git</repo>
+    <keywords>email, ios, android, windows phone, wp8</keywords>
+    <license>Apache 2.0</license>
+
+    <author>Sebastián Katzer</author>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <!-- interface -->
+    <js-module src="www/email_composer.js" name="EmailComposer">
+        <clobbers target="plugin.email" />
+    </js-module>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="ios-package" value="APPEmailComposer"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/APPEmailComposer.h" />
+        <source-file src="src/ios/APPEmailComposer.m" />
+
+        <framework src="MessageUI.framework" weak="true" />
+    </platform>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="android-package" value="de.appplant.cordova.plugin.emailcomposer.EmailComposer"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider"
+                android:authorities="$PACKAGE_NAME.plugin.emailcomposer.attachmentprovider">
+            </provider>
+        </config-file>
+
+        <source-file src="src/android/EmailComposer.java"      target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
+        <source-file src="src/android/AttachmentProvider.java" target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
+    </platform>
+
+	<!-- amazon-fireos -->
+    <platform name="amazon-fireos">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="android-package" value="de.appplant.cordova.plugin.emailcomposer.EmailComposer"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <provider android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider"
+                android:authorities="$PACKAGE_NAME.plugin.emailcomposer.attachmentprovider">
+            </provider>
+        </config-file>
+
+        <source-file src="src/android/EmailComposer.java"      target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
+        <source-file src="src/android/AttachmentProvider.java" target-dir="src/de/appplant/cordova/plugin/emailcomposer" />
+    </platform>
+
+    <!-- wp8 -->
+    <platform name="wp8">
+        <config-file target="config.xml" parent="/*">
+            <feature name="EmailComposer">
+                <param name="wp-package" value="EmailComposer"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/wp8/EmailComposer.cs" />
+        <source-file src="src/wp8/Options.cs" />
+    </platform>
+</plugin>

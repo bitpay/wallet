@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Den tidligerere handling kunne ikke fuldføres på grund af manglende hukommelse"</string>
+<string name="opening_file_error">"Den valgte fil kunne ikke åbnes"</string>
+<string name="color_picker_button_more">"Mere"</string>
+<string name="color_picker_hue">"Farvetone"</string>
+<string name="color_picker_saturation">"Mætning"</string>
+<string name="color_picker_value">"Værdi"</string>
+<string name="color_picker_button_set">"Angiv"</string>
+<string name="color_picker_button_cancel">"Annuller"</string>
+<string name="color_picker_dialog_title">"Vælg farve"</string>
+<string name="color_picker_button_red">"Rød"</string>
+<string name="color_picker_button_cyan">"Cyan"</string>
+<string name="color_picker_button_blue">"Blå"</string>
+<string name="color_picker_button_green">"Grøn"</string>
+<string name="color_picker_button_magenta">"Magenta"</string>
+<string name="color_picker_button_yellow">"Gul"</string>
+<string name="color_picker_button_black">"Sort"</string>
+<string name="color_picker_button_white">"Hvid"</string>
+<string name="copy_to_clipboard_failure_message">"Der kunne ikke kopieres til udklipsholder"</string>
+</resources>

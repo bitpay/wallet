@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<string name="low_memory_error">"Imeshindwa kukamilisha jukumu lililotangulia kwa sababu ya nafasi ndogo ya hifadhi"</string>
+<string name="opening_file_error">"Imeshindwa kufungua faili iliyochaguliwa"</string>
+<string name="color_picker_button_more">"Zaidi"</string>
+<string name="color_picker_hue">"Rangi"</string>
+<string name="color_picker_saturation">"Kukolea"</string>
+<string name="color_picker_value">"Thamani"</string>
+<string name="color_picker_button_set">"Weka"</string>
+<string name="color_picker_button_cancel">"Ghairi"</string>
+<string name="color_picker_dialog_title">"Chagua rangi"</string>
+<string name="color_picker_button_red">"Nyekundu"</string>
+<string name="color_picker_button_cyan">"Samawati-Kijani"</string>
+<string name="color_picker_button_blue">"Samawati"</string>
+<string name="color_picker_button_green">"Kijani"</string>
+<string name="color_picker_button_magenta">"Rangi ya damu ya mzee"</string>
+<string name="color_picker_button_yellow">"Manjano"</string>
+<string name="color_picker_button_black">"Nyeusi"</string>
+<string name="color_picker_button_white">"Nyeupe"</string>
+<string name="copy_to_clipboard_failure_message">"Ilishindwa kunakiliwa kwenda kwenye ubao klipu."</string>
+</resources>
