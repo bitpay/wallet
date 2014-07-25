@@ -316,7 +316,7 @@ describe('TxProposals model', function() {
     tx.countInputMissingSignatures(0).should.equal(2);
 
 
-    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true,'asdsd');
+    (w2.txps[ntxid].signedBy[priv.id] - ts > 0).should.equal(true, 'asdsd');
     (w2.txps[ntxid].seenBy[priv.id] - ts > 0).should.equal(true);
 
     var info = w.merge(w2.txps[ntxid], pkr.getCopayerId(0));
