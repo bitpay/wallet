@@ -54,6 +54,7 @@ android/package
 android/*.apk
 android/*.keystore
 
+mobile/*.keystore
 mobile/assets/www
 mobile/bin
 mobile/gen
