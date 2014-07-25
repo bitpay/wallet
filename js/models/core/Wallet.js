@@ -57,6 +57,14 @@ function Wallet(opts) {
   this.network.setHexNonces(opts.networkNonces);
 }
 
+
+Wallet.builderOpts =  {
+    lockTime: null,
+    signhash: bitcore.Transaction.SIGNHASH_ALL,
+    fee: null,
+    feeSat: null,
+};
+
 Wallet.parent = EventEmitter;
 Wallet.prototype.log = function() {
   if (!this.verbose) return;
@@ -121,10 +129,11 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-Wallet.prototype._handleTxProposal = function(senderId, data) {
-  this.log('RECV TXPROPOSAL:', data);
 
-  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
+Wallet.prototype._handleTxProposal = function(senderId, data) {
+  this.log('RECV TXPROPOSAL: ', data);
+
+  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal, Wallet.builderOpts);
   var valid = inTxp.isValid();
   if (!valid) {
     var corruptEvent = {
@@ -378,7 +387,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.addressBook = o.addressBook;
 
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = TxProposals.fromObj(o.txProposals);
+  opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
   opts.privateKey = PrivateKey.fromObj(o.privateKey);
 
   opts.storage = storage;
@@ -497,8 +506,7 @@ Wallet.prototype.getTxProposals = function() {
       txp.finallyRejected = true;
     }
 
-    if (txp.readonly && !txp.finallyRejected && !txp.sentTs) {
-    } else {
+    if (txp.readonly && !txp.finallyRejected && !txp.sentTs) {} else {
       ret.push(txp);
     }
   }
@@ -717,6 +725,10 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts.remainderOut = {
       address: this._doGenerateAddress(true).toString()
     };
+  }
+
+  for (var k in Wallet.builderOpts){
+    opts[k] = Wallet.builderOpts[k];
   }
 
   var b = new Builder(opts)

@@ -573,6 +573,13 @@ describe('TxProposals model', function() {
   });
 
 
+  it('#fromObj stored (hardcoded) data', function() {
+    var txp = TxProposals.TxProposal.fromObj(txpv1);
+    txp.getID().should.equal('5cae6e225335acd2725856c71ef1ca61c42f118967102c5d0ed6710343e4a19f');
+    var tx = txp.builder.build();
+    tx.countInputSignatures(0).should.equal(2);
+    tx.countInputMissingSignatures(0).should.equal(0);
+  });
 
   it('#toObj #fromObj roundtrip', function() {
 
@@ -628,7 +635,7 @@ describe('TxProposals model', function() {
     Object.keys(w2.txps).length.should.equal(1);
   });
 
-  describe('TxProposals model', function() {
+  describe('TxProposal model', function() {
     var createMockTxp = function(raw) {
       var tx = new Transaction();
       tx.parse(new Buffer(raw, 'hex'));
@@ -670,4 +677,51 @@ describe('TxProposals model', function() {
       txp.isValid().should.equal(false);
     });
   });
+
 });
+
+
+var txpv1 = {
+    "creator": "0361fb4252367715405a0d27f99cc74a671133292e8d725e009536d7257c8c01b0",
+    "createdTs": 1406310417996,
+    "seenBy": {
+      "0361fb4252367715405a0d27f99cc74a671133292e8d725e009536d7257c8c01b0": 1406310417996,
+      "02ba1599c64da4d80e25985be46c50e944b65f02e2b48c930528ce763d6710158f": 1406310418162
+    },
+    "signedBy": {
+      "0361fb4252367715405a0d27f99cc74a671133292e8d725e009536d7257c8c01b0": 1406310417996,
+      "02ba1599c64da4d80e25985be46c50e944b65f02e2b48c930528ce763d6710158f": 1406310645549
+    },
+    "rejectedBy": {},
+    "sentTs": 1406310645873,
+    "sentTxid": "87296c50e8601437d63d556afb27c3b8e3819214be0a9d756d401a8286c0ec43",
+    "inputChainPaths": ["m/45'/0/1/1"],
+    "comment": "test 6",
+    "builderObj": {
+      "version": 1,
+      "outs": [{
+        "address": "mph66bnLvcn9KUSMrpikUBUZZkN2C1Z5tg",
+        "amountSatStr": 100
+      }],
+      "utxos": [{
+        "address": "2NEodmgBa4SH3VwE2asgW34vMYe8VThBZNo",
+        "txid": "8f8deda12dad6248e655054632a27f6891ebb37e8d2b3dd1bff87e71fd451ac7",
+        "vout": 1,
+        "ts": 1406312717,
+        "scriptPubKey": "a914ec7bce12d0e82a7d2b5431f6d89ca70af317f5a187",
+        "amount": 0.009798,
+        "confirmations": 0,
+        "confirmationsFromCache": false
+      }],
+      "opts": {
+        "spendUnconfirmed": true,
+        "remainderOut": {
+          "address": "2N74XAozMH3JB3XgeBkRvRw1J8TtfLTtvny"
+        }
+      },
+      "scriptSig": ["00483045022100f167ad33b8bef4c65af8d19c1a849d1770cc8d1e35bffebe6b5459dcbe655c7802207b37370b308ba668fe19f8e8bc462c9fbdc6c67f79900670758d228d83ea96da014730440220038ad3f4cc7b0738b593454ec189913ae4b442bc83da153d68d9a0077bd1b09102202b5728a08f302e97de61ea37280b48ccdd575f0d235c22f5e0ecac6a4ab0f46401475221024739614847d5233a46913482c17c6860194ad78abb3bf47de46223047d8a0b5821024c6dc65a52c5eaaa080b96888091544f8ab8712caa7e0b69ea4b45f6f059557452ae"],
+      "hashToScriptMap": {
+        "2NEodmgBa4SH3VwE2asgW34vMYe8VThBZNo": "5221024739614847d5233a46913482c17c6860194ad78abb3bf47de46223047d8a0b5821024c6dc65a52c5eaaa080b96888091544f8ab8712caa7e0b69ea4b45f6f059557452ae"
+      }
+    }
+  };
