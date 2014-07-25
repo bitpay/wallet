@@ -159,7 +159,7 @@ TxProposals.fromObj = function(o) {
   });
   o.txps.forEach(function(o2) {
     var t = TxProposal.fromObj(o2);
-    if (id) {
+    if (t.builder) {
       var id = t.builder.build().getNormalizedHash().toString('hex');
       ret.txps[id] = t;
     }
