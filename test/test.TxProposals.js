@@ -615,6 +615,7 @@ describe('TxProposals model', function() {
     var o2 = JSON.parse(JSON.stringify(o));
     var w2 = TxProposals.fromObj(o2);
     w2.walletId.should.equal(w.walletId);
+
     var tx2 = w2.txps[ntxid].builder.build();
     tx2.isComplete().should.equal(false);
     tx2.countInputMissingSignatures(0).should.equal(2);
