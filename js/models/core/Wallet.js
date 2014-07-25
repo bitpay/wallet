@@ -488,7 +488,10 @@ Wallet.prototype.getTxProposals = function() {
       txp.finallyRejected = true;
     }
 
-    ret.push(txp);
+    if (txp.readonly && !txp.finallyRejected && !txp.sentTs) {
+    } else {
+      ret.push(txp);
+    }
   }
   return ret;
 };

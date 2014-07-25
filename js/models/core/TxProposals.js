@@ -6,6 +6,7 @@ var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var Builder = bitcore.TransactionBuilder;
+var BuilderMockV0 = require('./BuilderMockV0');;
 var Script = bitcore.Script;
 var buffertools = bitcore.buffertools;
 
@@ -45,8 +46,11 @@ TxProposal.fromObj = function(o) {
   try {
     t.builder = new Builder.fromObj(o.builderObj);
   } catch (e) {
-    if (!process.version)
-      console.log('Ignoring incompatible stored TxProposal:' + JSON.stringify(o.builderObj));
+    if (!o.version) {
+      console.log('Importing old TxProposal V0' + JSON.stringify(o.builderObj));
+      t.builder = new BuilderMockV0(o.builderObj);
+      t.readonly = 1;
+    };
   }
   return t;
 };
