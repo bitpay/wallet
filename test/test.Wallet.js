@@ -1063,6 +1063,11 @@ describe('Wallet model', function() {
       spy.callCount.should.equal(1);
     };
 
+    it('should validate for undefined', function(done) {
+      var result = 'new';
+      var signhash;
+      testValidate(signhash, result, done);
+    });
     it('should validate for SIGHASH_ALL', function(done) {
       var result = 'new';
       var signhash = Transaction.SIGHASH_ALL;
