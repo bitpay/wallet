@@ -707,7 +707,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     };
   }
 
-console.log('[Wallet.js.714:amountSatStr:]',amountSatStr); //TODO
   var b = new Builder(opts)
     .setUnspent(utxos)
     .setOutputs([{
