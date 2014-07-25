@@ -42,8 +42,11 @@ TxProposal.prototype.setSent = function(sentTxid) {
 
 TxProposal.fromObj = function(o) {
   var t = new TxProposal(o);
-  var b = new Builder.fromObj(o.builderObj);
-  t.builder = b;
+  try {
+    t.builder = new Builder.fromObj(o.builderObj);
+  } catch (e) {
+    console.log('Ignoring incompatible stored TxProposal:' + JSON.stringify(o.builderObj));
+  }
   return t;
 };
 
@@ -131,8 +134,8 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 TxProposal.prototype.countSignatures = function() {
   var tx = this.builder.build();
 
-  var ret=0;
-  for(var i in tx.ins) {
+  var ret = 0;
+  for (var i in tx.ins) {
     ret += tx.countInputSignatures(i);
   }
   return ret;
@@ -156,8 +159,10 @@ TxProposals.fromObj = function(o) {
   });
   o.txps.forEach(function(o2) {
     var t = TxProposal.fromObj(o2);
-    var id = t.builder.build().getNormalizedHash().toString('hex');
-    ret.txps[id] = t;
+    if (id) {
+      var id = t.builder.build().getNormalizedHash().toString('hex');
+      ret.txps[id] = t;
+    }
   });
   return ret;
 };
