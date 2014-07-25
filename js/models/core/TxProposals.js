@@ -127,6 +127,17 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 
 };
 
+//This should be on bitcore / Transaction
+TxProposal.prototype.countSignatures = function() {
+  var tx = this.builder.build();
+
+  var ret=0;
+  for(var i in tx.ins) {
+    ret += tx.countInputSignatures(i);
+  }
+  return ret;
+};
+
 module.exports = require('soop')(TxProposal);
 
 
