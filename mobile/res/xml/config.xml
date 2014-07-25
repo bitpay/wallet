@@ -11,6 +11,7 @@
     <content src="index.html" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="splashscreen" value="screen" />
+    <preference name="splashScreenDelay" value="10000" />
     <preference name="backgroundColor" value="0x2C3E50" />
     <feature name="App">
         <param name="android-package" value="com.bitpay.copay" />
