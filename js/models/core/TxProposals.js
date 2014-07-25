@@ -5,10 +5,11 @@ var imports = require('soop').imports();
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var Builder = bitcore.TransactionBuilder;
 var BuilderMockV0 = require('./BuilderMockV0');;
+var TransactionBuilder = bitcore.TransactionBuilder;
 var Script = bitcore.Script;
 var buffertools = bitcore.buffertools;
+var preconditions = require('preconditions').instance();
 
 function TxProposal(opts) {
   this.creator = opts.creator;
@@ -44,7 +45,7 @@ TxProposal.prototype.setSent = function(sentTxid) {
 TxProposal.fromObj = function(o) {
   var t = new TxProposal(o);
   try {
-    t.builder = new Builder.fromObj(o.builderObj);
+    t.builder = new TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
     if (!o.version) {
       t.builder = new BuilderMockV0(o.builderObj);
@@ -52,6 +53,21 @@ TxProposal.fromObj = function(o) {
     };
   }
   return t;
+};
+
+
+TxProposal.prototype.isValid = function() {
+  if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
+    return false;
+  }
+  var tx = this.builder.build();
+  for (var i = 0; i < tx.ins.length; i++) {
+    var hashType = tx.getHashType(i);
+    if (hashType && hashType !== Transaction.SIGHASH_ALL) {
+      return false;
+    }
+  }
+  return true;
 };
 
 TxProposal.getSentTs = function() {
@@ -218,7 +234,6 @@ TxProposals.prototype.merge = function(inTxp, author) {
   return ret;
 };
 
-var preconditions = require('preconditions').instance();
 TxProposals.prototype.add = function(data) {
   preconditions.checkArgument(data.inputChainPaths);
   preconditions.checkArgument(data.signedBy);
