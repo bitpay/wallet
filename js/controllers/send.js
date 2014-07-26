@@ -68,9 +68,10 @@ angular.module('copayApp.controllers').controller('SendController',
           notification.success('Success!', message);
           $scope.loadTxs();
         } else {
-          w.sendTx(ntxid, function(txid) {
+          w.sendTx(ntxid, function(txid, ca) {
             if (txid) {
               notification.success('Transaction broadcast', 'Transaction id: ' + txid);
+              if (ca) notification.success('Root Certificate', ca);
             } else {
               notification.error('Error', 'There was an error sending the transaction.');
             }
