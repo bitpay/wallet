@@ -733,10 +733,10 @@ Wallet.prototype.sign = function(ntxid, cb) {
 Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
 
-  if (txp.merchant) {
-    return this.sendTxToMerchant(ntxid,
-      { uri: txp.merchant, txp: txp }, cb);
-  }
+  // if (txp.merchant) {
+  //   return this.createPaymentTx(ntxid,
+  //     { uri: txp.merchant, txp: txp }, cb);
+  // }
 
   var tx = txp.builder.build();
   if (!tx.isComplete())
@@ -773,24 +773,12 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 // because the tx outputs are given to us by the server in the payment details.
 // This is just preliminary code, not meant to be used.
 
-Wallet.prototype.sendTxToMerchant = function(ntxid, options, cb) {
+Wallet.prototype.createPaymentTx = function(ntxid, options, cb) {
   var self = this;
 
   if (typeof options === 'string') {
     options = { uri: options };
   }
-
-  var txp = this.txProposals.txps[ntxid];
-  if (!txp) return;
-
-  var tx = txp.builder.build();
-  if (!tx.isComplete()) return;
-  this.log('Sending transaction to merchant');
-
-  tx = tx.serialize();
-
-  var txHex = tx.toString('hex');
-  this.log('Raw transaction: ', txHex);
 
   return $http({
     method: options.method || 'POST',
@@ -807,14 +795,14 @@ Wallet.prototype.sendTxToMerchant = function(ntxid, options, cb) {
     data = PayPro.PaymentRequest.decode(data);
     var pr = new PayPro();
     pr = pr.makePaymentRequest(data);
-    return self._receivePaymentRequest(tx, options, pr, cb);
+    return self.receivePaymentRequest(tx, options, pr, cb);
   })
   .error(function(data, status, headers, config) {
     return cb(new Error('Status: ' + JSON.stringify(status)));
   });
 };
 
-Wallet.prototype._receivePaymentRequest = function(tx, options, pr, cb) {
+Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   var self = this;
 
   var ver = pr.get('payment_details_version');
@@ -856,60 +844,78 @@ Wallet.prototype._receivePaymentRequest = function(tx, options, pr, cb) {
   var payment_url = pd.get('payment_url');
   var merchant_data = pd.get('merchant_data');
 
-  return this._createPaymentTx(outputs, function(err, tx) {
-    if (err) return cb(err);
+  return this.getUnspent(function(err, unpsent) {
+    var ntxid = self.createPaymentTxSync(options, outputs, unspent);
+    if (ntxid) {
+      self.sendIndexes();
+      self.sendTxProposal(ntxid);
+      self.store();
+      self.emit('txProposalsUpdated');
+    }
 
     self.log('You are currently on this BTC network:');
     self.log(network);
     self.log('The server sent you a message:');
     self.log(memo);
 
-    var refund_outputs = [];
-
-    options.refund_to = options.refund_to || self.getAddresses()[0];
-
-    if (options.refund_to) {
-      var rpo = new PayPro();
-      rpo = rpo.makeOutput();
-      rpo.set('amount', 0);
-      rpo.set('script',
-        Buffer.concat(
-          new Buffer([
-            118, // OP_DUP
-            169, // OP_HASH160
-            76, // OP_PUSHDATA1
-            20, // number of bytes
-          ]),
-          options.refund_to,
-          new Buffer([
-            136, // OP_EQUALVERIFY
-            172  // OP_CHECKSIG
-          ])
-        )
-      );
-      refund_outputs.push(rpo.message);
-    }
-
-    // We send this to the serve after receiving a PaymentRequest
-    var pay = new PayPro();
-    pay = pay.makePayment();
-    pay.set('merchant_data', merchant_data);
-    pay.set('transactions', [tx.serialize()]);
-    pay.set('refund_to', refund_outputs);
-
-    options.memo = options.memo || options.comment
-      || 'Hi server, I would like to give you some money.';
-
-    pay.set('memo', options.memo);
-
-    options.payment_url = options.payment_url || payment_url;
-
-    return self._sendPayment(tx, options, pay, cb);
+    return cb(ntxid);
   });
 };
 
-Wallet.prototype._sendPayment = function(tx, options, pay, cb) {
+Wallet.prototype.sendPaymentTx = function(ntxid, options, pay, cb) {
   var self = this;
+
+  var txp = this.txProposals.txps[ntxid];
+  if (!txp) return;
+
+  var tx = txp.builder.build();
+  if (!tx.isComplete()) return;
+  this.log('Sending Transaction');
+
+  var refund_outputs = [];
+
+  options.refund_to = options.refund_to || self.getAddresses()[0];
+
+  if (options.refund_to) {
+    var total = 0;
+    for (var i = 0; i < tx.outs.length - 1; i++) {
+      total += tx.outs[i].v;
+    }
+    var rpo = new PayPro();
+    rpo = rpo.makeOutput();
+    rpo.set('amount', total);
+    rpo.set('script',
+      Buffer.concat([
+        new Buffer([
+          118, // OP_DUP
+          169, // OP_HASH160
+          76, // OP_PUSHDATA1
+          20, // number of bytes
+        ]),
+        options.refund_to,
+        new Buffer([
+          136, // OP_EQUALVERIFY
+          172  // OP_CHECKSIG
+        ])
+      ])
+    );
+    refund_outputs.push(rpo.message);
+  }
+
+  // We send this to the serve after receiving a PaymentRequest
+  var pay = new PayPro();
+  pay = pay.makePayment();
+  pay.set('merchant_data', merchant_data);
+  pay.set('transactions', [tx.serialize()]);
+  pay.set('refund_to', refund_outputs);
+
+  options.memo = options.memo || options.comment
+    || 'Hi server, I would like to give you some money.';
+
+  pay.set('memo', options.memo);
+
+  options.payment_url = options.payment_url || payment_url;
+
   return $http({
     method: 'POST',
     url: options.payment_url,
@@ -929,14 +935,14 @@ Wallet.prototype._sendPayment = function(tx, options, pay, cb) {
     data = PayPro.PaymentACK.decode(data);
     var ack = new PayPro();
     ack = ack.makePaymentACK(data);
-    return self._receivePaymentRequestACK(tx, options, ack, cb);
+    return self.receivePaymentRequestACK(tx, options, ack, cb);
   })
   .error(function(data, status, headers, config) {
     return cb(new Error('Status: ' + JSON.stringify(status)));
   });
 };
 
-Wallet.prototype._receivePaymentRequestACK = function(tx, options, ack, cb) {
+Wallet.prototype.receivePaymentRequestACK = function(tx, options, ack, cb) {
   var self = this;
   var payment = ack.get('payment');
   var memo = ack.get('memo');
@@ -956,67 +962,85 @@ Wallet.prototype._receivePaymentRequestACK = function(tx, options, ack, cb) {
   return cb(txid, ca);
 };
 
-Wallet.prototype._createPaymentTx = function(outputs, cb) {
+Wallet.prototype.createPaymentTxSync = function(options, outputs, unspent) {
   var self = this;
-  return this.getUnspent(function(err, unspent) {
-    if (err) return cb(err);
 
-    var outs = [];
-    outputs.forEach(function(output) {
-      outs.push({
-        address: self.getAddressesStr()[0], // dummy address
-        amount: 0 // dummy value
-      });
+  var outs = [];
+  outputs.forEach(function(output) {
+    outs.push({
+      address: self.getAddressesStr()[0], // dummy address
+      amount: 0 // dummy value
     });
-
-    var opts = {
-      remainderOut: {
-        address: self._doGenerateAddress(true).toString()
-      }
-    };
-
-    var tx = new Builder(opts)
-      .setUnspent(unspent)
-      .setOutputs(outs);
-
-    var priv = self.privateKey;
-    var pkr = self.publicKeyRing;
-    var selectedUtxos = tx.getSelectedUnspent();
-    var inputChainPaths = selectedUtxos.map(function(utxo) {
-      return pkr.pathForAddress(utxo.address);
-    });
-    if (priv) {
-      var keys = priv.getForPaths(inputChainPaths);
-      var signed = tx.sign(keys);
-    }
-
-    tx = tx.sign(keys);
-    tx = tx.build();
-
-    outputs.forEach(function(output, i) {
-      var value = output.get('amount');
-      var script = output.get('script');
-      var v = new Buffer(8);
-      v[0] = (value.low >> 0) & 0xff;
-      v[1] = (value.low >> 8) & 0xff;
-      v[2] = (value.low >> 16) & 0xff;
-      v[3] = (value.low >> 24) & 0xff;
-      v[4] = (value.high >> 0) & 0xff;
-      v[5] = (value.high >> 8) & 0xff;
-      v[6] = (value.high >> 16) & 0xff;
-      v[7] = (value.high >> 24) & 0xff;
-      var s = script.buffer.slice(script.offset, script.limit);
-      tx.outs[i].v = v;
-      tx.outs[i].s = s;
-    });
-
-    self.log('');
-    self.log('Created transaction:');
-    self.log(tx.getStandardizedObject());
-    self.log('');
-
-    return cb(null, tx);
   });
+
+  var opts = {
+    remainderOut: {
+      address: this._doGenerateAddress(true).toString()
+    }
+  };
+
+  var b = new Builder(opts)
+    .setUnspent(unspent)
+    .setOutputs(outs);
+
+  var priv = this.privateKey;
+  var pkr = this.publicKeyRing;
+  var selectedUtxos = b.getSelectedUnspent();
+  var inputChainPaths = selectedUtxos.map(function(utxo) {
+    return pkr.pathForAddress(utxo.address);
+  });
+  if (priv) {
+    var keys = priv.getForPaths(inputChainPaths);
+    var signed = b.sign(keys);
+  }
+
+  b = b.sign(keys);
+
+  outputs.forEach(function(output, i) {
+    var value = output.get('amount');
+    var script = output.get('script');
+    var v = new Buffer(8);
+    v[0] = (value.low >> 0) & 0xff;
+    v[1] = (value.low >> 8) & 0xff;
+    v[2] = (value.low >> 16) & 0xff;
+    v[3] = (value.low >> 24) & 0xff;
+    v[4] = (value.high >> 0) & 0xff;
+    v[5] = (value.high >> 8) & 0xff;
+    v[6] = (value.high >> 16) & 0xff;
+    v[7] = (value.high >> 24) & 0xff;
+    var s = script.buffer.slice(script.offset, script.limit);
+    b.tx.outs[i].v = v;
+    b.tx.outs[i].s = s;
+  });
+
+  this.log('');
+  this.log('Created transaction:');
+  this.log(tx.getStandardizedObject());
+  this.log('');
+
+  var myId = this.getMyCopayerId();
+  var now = Date.now();
+
+  var me = {};
+
+  var tx = b.build();
+  if (priv && tx.countInputSignatures(0)) me[myId] = now;
+
+  var meSeen = {};
+  if (priv) meSeen[myId] = now;
+
+  var data = {
+    inputChainPaths: inputChainPaths,
+    signedBy: me,
+    seenBy: meSeen,
+    creator: myId,
+    createdTs: now,
+    builder: b,
+    comment: options.memo
+  };
+
+  var ntxid = this.txProposals.add(data);
+  return ntxid;
 };
 
 Wallet.prototype.addSeenToTxProposals = function() {
