@@ -28,6 +28,18 @@ BackupService.prototype.download = function(wallet) {
       wallet: ew
     });
   }
+
+  // throw an email intent if we are in the mobile version
+  if (window.cordova) {
+    var name = wallet.name ? wallet.name + ' ' : '';
+    var partial = partial ? 'Partial ' : '';
+    return window.plugin.email.open({
+      subject: 'Copay - ' + name + 'Wallet ' + partial + 'Backup',
+      body: 'Here is the encrypted backup of the wallet ' + wallet.id,
+      attachments: ['base64:' + filename + '//' + btoa(ew)]
+    });
+  }
+
   // otherwise lean on the browser implementation
   saveAs(blob, filename);
 };
