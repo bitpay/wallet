@@ -733,10 +733,10 @@ Wallet.prototype.sign = function(ntxid, cb) {
 Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
 
-  // if (txp.merchant) {
-  //   return this.createPaymentTx(ntxid,
-  //     { uri: txp.merchant, txp: txp }, cb);
-  // }
+  if (txp.merchant) {
+    return this.sendPaymentTx(ntxid,
+      { uri: txp.merchant.uri, txp: txp }, cb);
+  }
 
   var tx = txp.builder.build();
   if (!tx.isComplete())
@@ -767,11 +767,6 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     }
   });
 };
-
-// NOTE:
-// This process is currently backwards. This is really awkward to handle
-// because the tx outputs are given to us by the server in the payment details.
-// This is just preliminary code, not meant to be used.
 
 Wallet.prototype.createPaymentTx = function(ntxid, options, cb) {
   var self = this;
@@ -836,6 +831,7 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   details = PayPro.PaymentDetails.decode(details);
   var pd = new PayPro();
   pd = pd.makePaymentDetails(details);
+
   var network = pd.get('network');
   var outputs = pd.get('outputs');
   var time = pd.get('time');
@@ -844,8 +840,29 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   var payment_url = pd.get('payment_url');
   var merchant_data = pd.get('merchant_data');
 
+  var merchantData = {
+    pr: {
+      ver: ver,
+      pki_type: pki_type,
+      pki_data: pki_data,
+      details: details,
+      pd: {
+        network: network,
+        outputs: outputs,
+        time: time,
+        expires: expires,
+        memo: memo,
+        payment_url: payment_url,
+        merchant_data: merchant_data
+      },
+      sig: signature,
+      certs: certs,
+      ca: ca
+    }
+  };
+
   return this.getUnspent(function(err, unpsent) {
-    var ntxid = self.createPaymentTxSync(options, outputs, unspent);
+    var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
@@ -862,7 +879,7 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   });
 };
 
-Wallet.prototype.sendPaymentTx = function(ntxid, options, pay, cb) {
+Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   var self = this;
 
   var txp = this.txProposals.txps[ntxid];
@@ -905,16 +922,16 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, pay, cb) {
   // We send this to the serve after receiving a PaymentRequest
   var pay = new PayPro();
   pay = pay.makePayment();
-  pay.set('merchant_data', merchant_data);
+  pay.set('merchant_data', txp.merchant.pd.merchant_data);
   pay.set('transactions', [tx.serialize()]);
   pay.set('refund_to', refund_outputs);
 
-  options.memo = options.memo || options.comment
+  txp.merchant.memo = txp.merchant.memo || txp.merchant.comment
     || 'Hi server, I would like to give you some money.';
 
-  pay.set('memo', options.memo);
+  pay.set('memo', txp.merchant.memo);
 
-  options.payment_url = options.payment_url || payment_url;
+  options.payment_url = options.payment_url || txp.merchant.payment_url;
 
   return $http({
     method: 'POST',
@@ -959,14 +976,14 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, options, ack, cb) {
     tx = ptx;
   }
   var txid = tx.getHash().toString('hex');
-  return cb(txid, ca);
+  return cb(txid, options.txp.pr.ca);
 };
 
-Wallet.prototype.createPaymentTxSync = function(options, outputs, unspent) {
+Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
   var self = this;
 
   var outs = [];
-  outputs.forEach(function(output) {
+  merchantData.pr.pd.outputs.forEach(function(output) {
     outs.push({
       address: self.getAddressesStr()[0], // dummy address
       amount: 0 // dummy value
@@ -994,9 +1011,7 @@ Wallet.prototype.createPaymentTxSync = function(options, outputs, unspent) {
     var signed = b.sign(keys);
   }
 
-  b = b.sign(keys);
-
-  outputs.forEach(function(output, i) {
+  merchantData.pr.pd.outputs.forEach(function(output, i) {
     var value = output.get('amount');
     var script = output.get('script');
     var v = new Buffer(8);
@@ -1037,7 +1052,7 @@ Wallet.prototype.createPaymentTxSync = function(options, outputs, unspent) {
     createdTs: now,
     builder: b,
     comment: options.memo,
-    merchant: options.uri
+    merchant: merchantData
   };
 
   var ntxid = this.txProposals.add(data);
@@ -1156,6 +1171,11 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     opts = {};
   }
   opts = opts || {};
+
+  if (opts.merchant) {
+    return this.createPaymentTx(ntxid,
+      { uri: opts.merchant }, cb);
+  }
 
   if (typeof opts.spendUnconfirmed === 'undefined') {
     opts.spendUnconfirmed = this.spendUnconfirmed;
