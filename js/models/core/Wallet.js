@@ -1036,7 +1036,8 @@ Wallet.prototype.createPaymentTxSync = function(options, outputs, unspent) {
     creator: myId,
     createdTs: now,
     builder: b,
-    comment: options.memo
+    comment: options.memo,
+    merchant: options.uri
   };
 
   var ntxid = this.txProposals.add(data);
