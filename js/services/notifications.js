@@ -254,7 +254,7 @@ directive('notifications', function(notification, $compile) {
   return {
     restrict: 'A',
     scope: {},
-    template: '<div ng-include="\'views/includes/notifications.html\'"></div>',
+    templateUrl: 'views/includes/notifications.html',
     link: link,
     controller: ['$scope',
       function NotificationsCtrl($scope) {
