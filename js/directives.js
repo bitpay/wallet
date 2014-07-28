@@ -23,18 +23,6 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('notification', ['$rootScope',
-    function($rootScope) {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attrs, ctrl) {
-          setTimeout(function() {
-            scope.$apply(function() {});
-          }, 5000);
-        }
-      };
-    }
-  ])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var bitcore = require('bitcore');
@@ -228,4 +216,20 @@ angular.module('copayApp.directives')
   }
 ])
 
+  .directive('match', function () {
+    return {
+      require: 'ngModel',
+      restrict: 'A',
+      scope: {
+          match: '='
+      },
+      link: function(scope, elem, attrs, ctrl) {
+        scope.$watch(function() {
+          return (ctrl.$pristine && angular.isUndefined(ctrl.$modelValue)) || scope.match === ctrl.$modelValue;
+        }, function(currentValue) {
+          ctrl.$setValidity('match', currentValue);
+        });
+      }
+    };
+  })
 ;

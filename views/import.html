@@ -1,0 +1,33 @@
+<div class="import" ng-controller="ImportController">
+  <div data-alert class="loading-screen" ng-show="loading">
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
+    {{ importStatus }}
+  </div>
+  <div class="row" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
+    <div class="large-4 columns logo-setup">
+      <img src="../img/logo-negative-beta.svg" alt="Copay">
+    </div>
+    <div class="large-8 columns line-dashed-setup-v">
+      <div class="box-setup">
+        <h1 class="text-white line-sidebar-b">{{title}}</h1>
+        <form name="importForm" ng-submit="import(importForm)" novalidate>
+          <fieldset>
+            <legend for="backupFile" class="m10b"> Choose backup file from your computer <i class="fi-laptop"></i></legend>
+            <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
+          </fieldset>
+
+          <label for="password">Password <small>Required</small></label>
+          <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
+
+          <div class="text-right">
+            <a class="back-button text-white m20r" href="/">&laquo; Back</a>
+            <button type="submit" class="button primary m0" ng-disabled="importForm.$invalid" loading="Importing">
+              Import backup
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

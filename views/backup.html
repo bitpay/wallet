@@ -1,0 +1,21 @@
+<div class="backup" ng-controller="BackupController">
+  <h1>Backup & Delete </h1>
+    <div class="oh large-12 columns panel">
+      <h3><i class="fi-download m10r"></i> Backup </h3>
+      <p class="large-8 columns text-gray"> Its important to back up your wallet so that you can recover your wallet in case of disaster </p>
+      <div class="large-4 columns">
+        <a class="button primary expand" ng-click="downloadBackup()">Download File</a>
+      </div>
+    </div>
+  <div class="large-12 columns line-dashed-h m15b"> </div>
+  <div>
+    <div class="oh large-12 columns panel">
+      <h3><i class="fi-minus-circle m10r"></i> Delete Wallet </h3>
+      <p class="large-8 columns text-gray"> If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet. </p>
+      <div class="large-4 columns">
+        <a class="button warning expand" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()"> Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+

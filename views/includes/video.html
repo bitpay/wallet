@@ -1,0 +1,29 @@
+<div ng-controller="VideoController">
+  <div class="video-box" ng-repeat="copayer in copayersList()">
+    <video
+      ng-if="hasVideo(copayer)"
+      peer="{{copayer}}" avatar autoplay
+      ng-class="isConnected(copayer) ? 'online' : 'offline'"
+      ng-src="{{getVideoURL(copayer)}}"></video>
+
+    <img
+      class="br100 no-video"
+      ng-if="!hasVideo(copayer)"
+      ng-class="isConnected(copayer) ? 'online' : 'offline'"
+      src="./img/satoshi.gif"
+      alt="{{copayer}}"
+      width="70">
+
+    <div
+      class="ellipsis"
+      tooltip="ID: {{copayer.peerId}}"
+      tooltip-placement="bottom">
+      <small class="text-gray" ng-show="copayer.index == 0"><i class="fi-check m5r"></i>you</small>
+      <small class="text-gray" ng-show="copayer.index > 0"><i class="fi-check m5r"></i>{{copayer.nick}}</small>
+    </div>
+
+    <div class="success label m10t" ng-show="isBackupReady(copayer)">
+      Backup ready
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="home" ng-controller="HomeController">
+  <div class="row">
+    <div class="large-4 columns logo-setup">
+      <img src="../img/logo-negative-beta.svg" alt="Copay">
+    </div>
+    <div class="large-8 columns line-dashed-setup-v">
+      <div class="button-setup" ng-show="hasWallets">
+        <a class="text-white" href="/open">Open a wallet</a>
+      </div>
+      <div class="button-setup" ng-show="!hasWallets">
+        <a class="text-secondary" href="/setup">Create a new wallet</a>
+      </div>
+      <div class="button-setup">
+        <a class="text-primary" href="/join">Join a Wallet in Creation</a>
+      </div>
+      <div class="button-setup" ng-show="hasWallets">
+        <a class="text-secondary" href="/setup">Create a wallet</a>
+      </div>
+
+      <div class="footer-setup">
+        <a class="right size-12 text-gray" href="/settings"><i class="m10r size-14 fi-wrench"></i>Settings</a>
+        <a class="left size-12 text-gray" href="/import"><i class="m10r size-14 fi-upload"></i>Import a backup</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+

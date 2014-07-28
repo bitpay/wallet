@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('AddressesController',
-  function($scope, $rootScope, $timeout, controllerUtils) {
+  function($scope, $rootScope, $timeout, $modal, controllerUtils) {
     $scope.loading = false;
     var w = $rootScope.wallet;
 
@@ -16,8 +16,22 @@ angular.module('copayApp.controllers').controller('AddressesController',
       });
     };
 
-    $scope.selectAddress = function(addr) {
-      $scope.selectedAddr = addr;
+    $scope.openAddressModal = function(address) {
+      var ModalInstanceCtrl = function ($scope, $modalInstance, address) {
+        $scope.address = address;
+        $scope.cancel = function () {
+          $modalInstance.dismiss('cancel');
+        };
+      };
+
+      $modal.open({
+        templateUrl: 'views/modals/qr-address.html',
+        windowClass: 'tiny',
+        controller: ModalInstanceCtrl,
+        resolve: {
+          address: function() { return address; }
+        }
+      });
     };
 
     $rootScope.$watch('addrInfos', function() {
@@ -37,9 +51,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
             'owned': addrinfo.owned
           });
         }
-        $scope.selectedAddr = $scope.addresses[0];
-        $scope.addrWithFund = $rootScope.receivedFund ? $rootScope.receivedFund[1] : null;
-        $rootScope.receivedFund = null;
       }
     }
-  });
+  }
+);
