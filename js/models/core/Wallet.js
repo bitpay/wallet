@@ -815,7 +815,10 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   });
 
   if (!trusted.length) {
-    return cb(new Error('Not a trusted certificate.'));
+    var G = typeof window !== 'undefined' ? window : global;
+    if (!G.SSL_UNTRUSTED) {
+      return cb(new Error('Not a trusted certificate.'));
+    }
   }
 
   // Verify Signature
@@ -849,7 +852,11 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
         outputs: outputs.map(function(output) {
           return {
             amount: output.get('amount'),
-            script: output.get('script').toString('hex')
+            script: {
+              offset: output.get('script').offset,
+              limit: output.get('script').limit,
+              buffer: output.get('script').buffer.toString('hex')
+            }
           };
         }),
         time: time,
@@ -877,7 +884,7 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
     self.log('The server sent you a message:');
     self.log(memo);
 
-    return cb(ntxid);
+    return cb(ntxid, ca);
   });
 };
 
@@ -1021,8 +1028,14 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   }
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
-    var amount = output.get ? output.get('amount') : output.amount;
-    var script = output.get ? output.get('script') : new Buffer(output.script, 'hex');
+    var amount = output.get
+      ? output.get('amount')
+      : output.amount;
+
+    var script = output.get
+      ? output.get('script')
+      : new Buffer(output.script, 'hex');
+
     var v = new Buffer(8);
     v[0] = (amount.low >> 0) & 0xff;
     v[1] = (amount.low >> 8) & 0xff;
@@ -1032,7 +1045,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     v[5] = (amount.high >> 8) & 0xff;
     v[6] = (amount.high >> 16) & 0xff;
     v[7] = (amount.high >> 24) & 0xff;
+
     var s = script.buffer.slice(script.offset, script.limit);
+
     b.tx.outs[i].v = v;
     b.tx.outs[i].s = s;
   });
@@ -1176,10 +1191,17 @@ Wallet.prototype.getUnspent = function(cb) {
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
 
-  if (typeof comment === 'undefined') {
+  if (typeof amountSatStr === 'function') {
     var cb = amountSatStr;
     var merchant = toAddress;
     return this.createPaymentTx({ uri: merchant }, cb);
+  }
+
+  if (typeof comment === 'function') {
+    var cb = comment;
+    var merchant = toAddress;
+    var comment = amountSatStr;
+    return this.createPaymentTx({ uri: merchant, memo: comment }, cb);
   }
 
   if (typeof opts === 'function') {

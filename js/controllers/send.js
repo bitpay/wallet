@@ -61,10 +61,14 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
 
-      w.createTx(address, amount, commentText, function(ntxid) {
+      function done(ntxid, ca) {
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
+          if (ca) {
+            message += '.\nThis payment protocol transaction
+              + 'has been verified through ' + ca;
+          }
           notification.success('Success!', message);
           $scope.loadTxs();
         } else {
@@ -80,7 +84,13 @@ angular.module('copayApp.controllers').controller('SendController',
           });
         }
         $rootScope.pendingPayment = null;
-      });
+      }
+
+      if (~address.indexOf('://')) {
+        w.createTx(address, commentText, done);
+      } else {
+        w.createTx(address, amount, commentText, done);
+      }
 
       // reset fields
       $scope.address = $scope.amount = $scope.commentText = null;
