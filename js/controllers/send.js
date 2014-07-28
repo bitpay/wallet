@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $location, $timeout, $anchorScroll, $modal, isMobile, notification) {
+  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
