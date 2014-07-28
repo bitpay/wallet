@@ -734,8 +734,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
 
   if (txp.merchant) {
-    return this.sendPaymentTx(ntxid,
-      { uri: txp.merchant.uri, txp: txp }, cb);
+    return this.sendPaymentTx(ntxid, cb);
   }
 
   var tx = txp.builder.build();
@@ -768,7 +767,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   });
 };
 
-Wallet.prototype.createPaymentTx = function(ntxid, options, cb) {
+Wallet.prototype.createPaymentTx = function(options, cb) {
   var self = this;
 
   if (typeof options === 'string') {
@@ -809,13 +808,13 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   var certs = PayPro.X509Certificates.decode(pki_data);
   certs = certs.certificate;
 
-  var trusted = certs.every(function(cert) {
+  var trusted = certs.map(function(cert) {
     var der = cert.toString('hex');
     var pem = PayPro.prototype._DERtoPEM(der, 'CERTIFICATE');
     return RootCerts.getTrusted(pem);
   });
 
-  if (!trusted) {
+  if (!trusted.length) {
     return cb(new Error('Not a trusted certificate.'));
   }
 
@@ -826,7 +825,7 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
     return cb(new Error('Server sent a bad signature.'));
   }
 
-  options.ca = trusted[0];
+  var ca = trusted[0];
 
   details = PayPro.PaymentDetails.decode(details);
   var pd = new PayPro();
@@ -842,21 +841,28 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
 
   var merchantData = {
     pr: {
-      ver: ver,
+      payment_details_version: ver,
       pki_type: pki_type,
-      pki_data: pki_data,
-      details: details,
+      // pki_data: pki_data.toString('hex'),
+      pki_data: certs,
+      // serialized_payment_details: details.serialize().toString('hex'),
       pd: {
         network: network,
-        outputs: outputs,
+        // outputs: outputs,
+        outputs: outputs.map(function(output) {
+          return {
+            amount: output.get('amount'),
+            script: output.get('script').toString('hex')
+          };
+        }),
         time: time,
         expires: expires,
         memo: memo,
         payment_url: payment_url,
-        merchant_data: merchant_data
+        merchant_data: merchant_data.toString('hex')
       },
-      sig: signature,
-      certs: certs,
+      signature: sig,
+      // certs: certs,
       ca: ca
     }
   };
@@ -881,6 +887,11 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
 
 Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   var self = this;
+
+  if (!cb) {
+    cb = options;
+    options = {};
+  }
 
   var txp = this.txProposals.txps[ntxid];
   if (!txp) return;
@@ -922,20 +933,26 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   // We send this to the serve after receiving a PaymentRequest
   var pay = new PayPro();
   pay = pay.makePayment();
-  pay.set('merchant_data', txp.merchant.pd.merchant_data);
+  var merchant_data = txp.merchant.pd.merchant_data;
+  if (typeof merchant_data === 'string') {
+    merchant_data = new Buffer(merchant_data, 'hex');
+  }
+  pay.set('merchant_data', merchant_data);
   pay.set('transactions', [tx.serialize()]);
   pay.set('refund_to', refund_outputs);
 
-  txp.merchant.memo = txp.merchant.memo || txp.merchant.comment
+  // XXX This is actually the server memo - change!
+  // txp.merchant.pr.pd.memo = txp.merchant.pr.pd.memo
+  //   || 'Hi server, I would like to give you some money.';
+
+  options.memo = options.memo || options.comment
     || 'Hi server, I would like to give you some money.';
 
-  pay.set('memo', txp.merchant.memo);
-
-  options.payment_url = options.payment_url || txp.merchant.payment_url;
+  pay.set('memo', txp.merchant.pr.pd.memo);
 
   return $http({
     method: 'POST',
-    url: options.payment_url,
+    url: txp.merchant.pr.pd.payment_url,
     headers: {
       // BIP-71
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
@@ -952,14 +969,14 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     data = PayPro.PaymentACK.decode(data);
     var ack = new PayPro();
     ack = ack.makePaymentACK(data);
-    return self.receivePaymentRequestACK(tx, options, ack, cb);
+    return self.receivePaymentRequestACK(tx, txp, ack, cb);
   })
   .error(function(data, status, headers, config) {
     return cb(new Error('Status: ' + JSON.stringify(status)));
   });
 };
 
-Wallet.prototype.receivePaymentRequestACK = function(tx, options, ack, cb) {
+Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
   var self = this;
   var payment = ack.get('payment');
   var memo = ack.get('memo');
@@ -976,7 +993,7 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, options, ack, cb) {
     tx = ptx;
   }
   var txid = tx.getHash().toString('hex');
-  return cb(txid, options.txp.pr.ca);
+  return cb(txid, txp.pr.ca);
 };
 
 Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
@@ -986,7 +1003,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.pr.pd.outputs.forEach(function(output) {
     outs.push({
       address: self.getAddressesStr()[0], // dummy address
-      amount: 0 // dummy value
+      amount: 0 // dummy amount
     });
   });
 
@@ -1012,17 +1029,17 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   }
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
-    var value = output.get('amount');
-    var script = output.get('script');
+    var amount = output.get ? output.get('amount') : output.amount;
+    var script = output.get ? output.get('script') : new Buffer(output.script, 'hex');
     var v = new Buffer(8);
-    v[0] = (value.low >> 0) & 0xff;
-    v[1] = (value.low >> 8) & 0xff;
-    v[2] = (value.low >> 16) & 0xff;
-    v[3] = (value.low >> 24) & 0xff;
-    v[4] = (value.high >> 0) & 0xff;
-    v[5] = (value.high >> 8) & 0xff;
-    v[6] = (value.high >> 16) & 0xff;
-    v[7] = (value.high >> 24) & 0xff;
+    v[0] = (amount.low >> 0) & 0xff;
+    v[1] = (amount.low >> 8) & 0xff;
+    v[2] = (amount.low >> 16) & 0xff;
+    v[3] = (amount.low >> 24) & 0xff;
+    v[4] = (amount.high >> 0) & 0xff;
+    v[5] = (amount.high >> 8) & 0xff;
+    v[6] = (amount.high >> 16) & 0xff;
+    v[7] = (amount.high >> 24) & 0xff;
     var s = script.buffer.slice(script.offset, script.limit);
     b.tx.outs[i].v = v;
     b.tx.outs[i].s = s;
@@ -1166,16 +1183,18 @@ Wallet.prototype.getUnspent = function(cb) {
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
+
+  if (typeof comment === 'undefined') {
+    var cb = amountSatStr;
+    var merchant = toAddress;
+    return this.createPaymentTx({ uri: merchant }, cb);
+  }
+
   if (typeof opts === 'function') {
     cb = opts;
     opts = {};
   }
   opts = opts || {};
-
-  if (opts.merchant) {
-    return this.createPaymentTx(ntxid,
-      { uri: opts.merchant }, cb);
-  }
 
   if (typeof opts.spendUnconfirmed === 'undefined') {
     opts.spendUnconfirmed = this.spendUnconfirmed;
