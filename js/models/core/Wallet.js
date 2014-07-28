@@ -832,7 +832,7 @@ Wallet.prototype._receivePaymentRequest = function(tx, options, pr, cb) {
     return RootCerts.getTrusted(pem);
   });
 
-  if (!trusted.length) {
+  if (!trusted) {
     return cb(new Error('Not a trusted certificate.'));
   }
 
