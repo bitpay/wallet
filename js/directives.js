@@ -23,18 +23,6 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('notification', ['$rootScope',
-    function($rootScope) {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attrs, ctrl) {
-          setTimeout(function() {
-            scope.$apply(function() {});
-          }, 5000);
-        }
-      };
-    }
-  ])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var bitcore = require('bitcore');
