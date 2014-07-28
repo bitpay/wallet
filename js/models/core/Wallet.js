@@ -843,12 +843,9 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
     pr: {
       payment_details_version: ver,
       pki_type: pki_type,
-      // pki_data: pki_data.toString('hex'),
       pki_data: certs,
-      // serialized_payment_details: details.serialize().toString('hex'),
       pd: {
         network: network,
-        // outputs: outputs,
         outputs: outputs.map(function(output) {
           return {
             amount: output.get('amount'),
@@ -862,7 +859,6 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
         merchant_data: merchant_data.toString('hex')
       },
       signature: sig,
-      // certs: certs,
       ca: ca
     }
   };
@@ -940,10 +936,6 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   pay.set('merchant_data', merchant_data);
   pay.set('transactions', [tx.serialize()]);
   pay.set('refund_to', refund_outputs);
-
-  // XXX This is actually the server memo - change!
-  // txp.merchant.pr.pd.memo = txp.merchant.pr.pd.memo
-  //   || 'Hi server, I would like to give you some money.';
 
   options.memo = options.memo || options.comment
     || 'Hi server, I would like to give you some money.';
