@@ -5,9 +5,11 @@ var imports = require('soop').imports();
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var Builder = bitcore.TransactionBuilder;
+var BuilderMockV0 = require('./BuilderMockV0');;
+var TransactionBuilder = bitcore.TransactionBuilder;
 var Script = bitcore.Script;
 var buffertools = bitcore.buffertools;
+var preconditions = require('preconditions').instance();
 
 function TxProposal(opts) {
   this.creator = opts.creator;
@@ -23,8 +25,7 @@ function TxProposal(opts) {
 }
 
 TxProposal.prototype.getID = function() {
-  var ntxid = this.builder.build().getNormalizedHash().toString('hex');
-  return ntxid;
+  return this.builder.build().getNormalizedHash().toString('hex');
 };
 
 TxProposal.prototype.toObj = function() {
@@ -40,11 +41,39 @@ TxProposal.prototype.setSent = function(sentTxid) {
   this.sentTs = Date.now();
 };
 
-TxProposal.fromObj = function(o) {
+TxProposal.fromObj = function(o, forceOpts) {
   var t = new TxProposal(o);
-  var b = new Builder.fromObj(o.builderObj);
-  t.builder = b;
+
+  try {
+    // force opts is requested.
+    for (var k in forceOpts) {
+      o.builderObj.opts[k] = forceOpts[k];
+    }
+    t.builder = TransactionBuilder.fromObj(o.builderObj);
+
+  } catch (e) {
+    if (!o.version) {
+      t.builder = new BuilderMockV0(o.builderObj);
+      t.readonly = 1;
+    };
+  }
+
   return t;
+};
+
+
+TxProposal.prototype.isValid = function() {
+  if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
+    return false;
+  }
+  var tx = this.builder.build();
+  for (var i = 0; i < tx.ins.length; i++) {
+    var hashType = tx.getHashType(i);
+    if (hashType && hashType !== Transaction.SIGHASH_ALL) {
+      return false;
+    }
+  }
+  return true;
 };
 
 TxProposal.getSentTs = function() {
@@ -127,6 +156,17 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
 
 };
 
+//This should be on bitcore / Transaction
+TxProposal.prototype.countSignatures = function() {
+  var tx = this.builder.build();
+
+  var ret = 0;
+  for (var i in tx.ins) {
+    ret += tx.countInputSignatures(i);
+  }
+  return ret;
+};
+
 module.exports = require('soop')(TxProposal);
 
 
@@ -138,15 +178,18 @@ function TxProposals(opts) {
   this.txps = {};
 }
 
-TxProposals.fromObj = function(o) {
+TxProposals.fromObj = function(o, forceOpts) {
   var ret = new TxProposals({
     networkName: o.networkName,
     walletId: o.walletId,
   });
+
   o.txps.forEach(function(o2) {
-    var t = TxProposal.fromObj(o2);
-    var id = t.builder.build().getNormalizedHash().toString('hex');
-    ret.txps[id] = t;
+    var t = TxProposal.fromObj(o2, forceOpts);
+    if (t.builder) {
+      var id = t.getID();
+      ret.txps[id] = t;
+    }
   });
   return ret;
 };
@@ -198,7 +241,6 @@ TxProposals.prototype.merge = function(inTxp, author) {
   return ret;
 };
 
-var preconditions = require('preconditions').instance();
 TxProposals.prototype.add = function(data) {
   preconditions.checkArgument(data.inputChainPaths);
   preconditions.checkArgument(data.signedBy);

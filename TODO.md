@@ -30,33 +30,6 @@ It was developed to be run on OSX.  The outputs are copied to the dist directory
 DMG is created with hdiutil
 EXE is created with makensis (brew install makensis)
 
-## Android APK
-
-System Requirements
-
-* Download [Android SDK](http://developer.android.com/sdk/index.html)
-* Download and install [Crosswalk](https://crosswalk-project.org/#documentation/getting_started) (Use Linux setup for OSX)
-
-Add to your ~/.bash_profile or ~/.bashrc
-
-```
-export CROSSWALK="<path to Crosswalk directory>"
-```
-
-To build the APK run the script:
-
-```
-sh android/build.sh [-d]
-```
-- The -d flag will package the apk in debug mode, allowing [remote debugging chrome](https://developer.chrome.com/devtools/docs/remote-debugging)
-- The APK file is in **android/Copay_VERSION_arm.apk**
-
-To install the APK in your device run:
-
-```
-adb install -r Copay_VERSION_arm.apk
-```
-
 
 # Development
 

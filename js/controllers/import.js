@@ -17,9 +17,9 @@ angular.module('copayApp.controllers').controller('ImportController',
         updateStatus('Importing wallet - Setting things up...');
         var w, errMsg;
 
+        // try to import encrypted wallet with passphrase
         try {
           w = walletFactory.import(encryptedObj, passphrase);
-          
         } catch (e) {
           errMsg = e.message;
         }
@@ -31,12 +31,14 @@ angular.module('copayApp.controllers').controller('ImportController',
           return;
         }
 
+        // if wallet was never used, we're done
         if (!w.isReady()) {
           $rootScope.wallet = w;
           controllerUtils.startNetwork($rootScope.wallet, $scope);
           return;
         }
 
+        // if it was used, we need to scan for indices
         w.updateIndexes(function(err) {
           updateStatus('Importing wallet - We are almost there...');
           if (err) {

@@ -35,8 +35,8 @@ function Wallet(opts) {
     self[k] = opts[k];
   });
   if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
-    throw new Error('Network forced to '+copayConfig.networkName+
-        ' and tried to create a Wallet with network '+ this.getNetworkName());
+    throw new Error('Network forced to ' + copayConfig.networkName +
+      ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
@@ -56,6 +56,14 @@ function Wallet(opts) {
   this.network.setHexNonce(opts.networkNonce);
   this.network.setHexNonces(opts.networkNonces);
 }
+
+
+Wallet.builderOpts =  {
+    lockTime: null,
+    signhash: bitcore.Transaction.SIGNHASH_ALL,
+    fee: null,
+    feeSat: null,
+};
 
 Wallet.parent = EventEmitter;
 Wallet.prototype.log = function() {
@@ -121,11 +129,20 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-Wallet.prototype._handleTxProposal = function(senderId, data) {
-  preconditions.checkArgument(senderId);
-  this.log('RECV TXPROPOSAL:', data);
 
-  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal);
+Wallet.prototype._handleTxProposal = function(senderId, data) {
+  this.log('RECV TXPROPOSAL: ', data);
+
+  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal, Wallet.builderOpts);
+  var valid = inTxp.isValid();
+  if (!valid) {
+    var corruptEvent = {
+      type: 'corrupt',
+      cId: inTxp.creator
+    };
+    this.emit('txProposalEvent', corruptEvent);
+    return;
+  }
   var mergeInfo = this.txProposals.merge(inTxp, senderId);
   var added = this.addSeenToTxProposals();
 
@@ -370,7 +387,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.addressBook = o.addressBook;
 
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = TxProposals.fromObj(o.txProposals);
+  opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
   opts.privateKey = PrivateKey.fromObj(o.privateKey);
 
   opts.storage = storage;
@@ -489,7 +506,9 @@ Wallet.prototype.getTxProposals = function() {
       txp.finallyRejected = true;
     }
 
-    ret.push(txp);
+    if (txp.readonly && !txp.finallyRejected && !txp.sentTs) {} else {
+      ret.push(txp);
+    }
   }
   return ret;
 };
@@ -509,6 +528,7 @@ Wallet.prototype.reject = function(ntxid) {
 };
 
 
+
 Wallet.prototype.sign = function(ntxid, cb) {
   preconditions.checkState(typeof this.getMyCopayerId() !== 'undefined');
   var self = this;
@@ -522,11 +542,11 @@ Wallet.prototype.sign = function(ntxid, cb) {
     var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
-    var before = b.signaturesAdded;
+    var before = txp.countSignatures();
     b.sign(keys);
 
     var ret = false;
-    if (b.signaturesAdded > before) {
+    if (txp.countSignatures() > before) {
       txp.signedBy[myId] = Date.now();
       self.sendTxProposal(ntxid);
       self.store();
@@ -697,15 +717,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var priv = this.privateKey;
   opts = opts || {};
 
-  var amountSat = bignum(amountSatStr);
   preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
-  if (!pkr.isComplete()) {
-    throw new Error('publicKeyRing is not complete');
-  }
-
-  if (comment && comment.length > 100) {
-    throw new Error("comment can't be longer that 100 characters");
-  }
+  preconditions.checkState(pkr.isComplete());
+  if (comment) preconditions.checkArgument(comment.length <= 100);
 
   if (!opts.remainderOut) {
     opts.remainderOut = {
@@ -713,11 +727,15 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     };
   }
 
+  for (var k in Wallet.builderOpts){
+    opts[k] = Wallet.builderOpts[k];
+  }
+
   var b = new Builder(opts)
     .setUnspent(utxos)
     .setOutputs([{
       address: toAddress,
-      amountSat: amountSat
+      amountSatStr: amountSatStr,
     }]);
 
   var selectedUtxos = b.getSelectedUnspent();
@@ -735,7 +753,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var now = Date.now();
 
   var me = {};
-  if (priv && b.signaturesAdded) me[myId] = now;
+
+  var tx = b.build();
+  if (priv && tx.countInputSignatures(0)) me[myId] = now;
 
   var meSeen = {};
   if (priv) meSeen[myId] = now;

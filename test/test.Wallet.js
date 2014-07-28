@@ -16,6 +16,8 @@ var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
 var bitcore = bitcore || require('bitcore');
 var TransactionBuilder = bitcore.TransactionBuilder;
+var Transaction = bitcore.Transaction;
+var Address = bitcore.Address;
 
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {
@@ -424,46 +426,46 @@ describe('Wallet model', function() {
     var w = createW();
     var txp = {
       'txProposal': {
-        "seenBy": {
-          "undefined": 1402337282806
+        creator: '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96',
+        createdTs: '2014-07-24T23:54:26.682Z',
+        seenBy: {
+          '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96': 1406246066682
         },
-        "signedBy": {
-          "undefined": 1402337282841
+        signedBy: {
+          '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96': 1406246066682
         },
-        "rejectedBy": {},
-        "sentTs": null,
-        "sentTxid": null,
-        "inputChainPaths": [],
-        "builderObj": {
-          "valueInSat": "1000000000",
-          "valueOutSat": "123456789",
-          "feeSat": "10000",
-          "remainderSat": "876533211",
-          "hashToScriptMap": {
-            "3QjgeBsNeiDkoVQxDAw4sSEe9BVaqhmpnd": "5321025c2951a7e94e39f2c3210fb2d71b7d79044f7daa6b007556a6feb4b2059091e921026c56eea4ef632b24c4efe9d5391ea0e15e306450e5b7db26cd1a7a33d9d4e82821026d06e532385186793121633fb365fa2f0c7246b30590db78cba795641c94734521035051d2b742263bc5257c5a4461e1a6fa32c3f1965f5ab5e8b0f0f80c9e28bc702103ddb0d39c1cd88295e7b81050dcab11ca4419bf64fba3ef9d9130ea64d6604ab055ae",
-            "365dPtmHPAdUUNvPBcnfidYt2Snyaka7AH": "5321020faaf739abda51e822621d42062470c5743a127186369a67fd3303f71727fb1d210237063d3b27c21767054dad203298bfed90cb08dca371950a08b88aa979c33bd22102a3780cb275b6dcb8b379514679387d4578068745f08c5799e4ee1a90aa3a70922102f4fea0cd5bc2418892278f480682690857f4d963deeb95d88febfa255e4ce0b821035d53fa74fee26873c3f5a4acf4dce53ff9d50db59e1ca4acddb82168dd429a3355ae",
-            "372DueknmmjVR3zcWfEfADp8FwJ3ARhGaN": "532102666c2873c9e6f58ca594cd6c8327a1515db32ebadbaff4fe75e63b917560b7d021031ca2d159ae8868a5eef6d67a5a8a5bcc6fb2e8b711669f1c1e8b05327236a3cf2103798a4ce34929cb450bf88557dd90cae538c67f9d0c76314ae18679200be9c17021039624dec23dc1bb628cea55e949ea26225949a3349346a0732fef9def6f1f75292103d1edaadb8555012b752dd7a5c6672c379ce827e4bc0d4e992ee1ab3488b445b255ae",
-            "3GLJbHv7RqPeFk2SqWapqJ3XibVibiKi8f": "5321021a33d48b9f5d3adc41004709313277d4c6969268cf41e3f5b695a934c676829a21031b87321307db7a0f6ea22847a538505188f1a2231eba68867e17c5f0e4434c0721035dee0a6e1df66a6c9c7592ef03aa02bba9b06742134d27bd08f356e33f21259c2103768a109d682a76c09f865912e9e64a8689b03c1a231c613d87ec9bd535fd74c22103911038638b9fc52b2d375ce207c8388bd5ee7f2d54ab9b4148bd406c6d7dcad355ae",
-            "3E1d1z7gJSFeZM2d3k12MJ1jGwrBRy1YTw": "5321027da98ce0407138461f4ad803a1fb67afa4246f06ad0e1256a087daeffd82a8642102e7f87f2b094ec322be2fb99d3ca81fd6ac0ab26ce081e51ab18c507f8b6d1d162102ed5d256036e10568c33e0a15021cc1806e04d7d24c8f020aaae23ec2deecb4302103b6f88231bb5a5f4629e4d097492321f86968c6aeb012196a1fe3b217fe4ae0ac2103f6b5e2c1db3124a5058a0e3e83d5d0c412b9a5b50e2ef97e2b7e1c0af57ab3e355ae",
-            "3QYueyPXq2QDRQCDo7agTimz9673NKV25E": "5321021543292c2942708ccc83354ebf507044b310ed0d33a19e2327a49be53e0f314221024a1a83f8c50f6cad7c134b9cded509dabf196ae49eca157a39ad95798943dc95210292698fbb97e8f6e67296b22b36367ba85c8101fcbc27bb4b00b43623639212ac2102d86980796027a00ba7aa9b53671762c908962654f969f5dec340071bb30e8d7621038fb3fa5e77dafd24c09d819dbdc7c11dca55b350511bf3bc499c09316a89286e55ae",
-            "372BzC1GGjziT8zGYbryja3kF2KaTeobRK": "53210214ec25e5cb42e51883d4e615316748feefe91133fcfc0f93f0b5a24a55e0a347210262336210b3173aa4ca90d292990f463e42bdeb2e73112925dc712c5a2e749bcb210277517855f512564f225e63c650dad7720565aa563901d50743be4b0f0267dcc72102d2777a9faf5d2e2b2363e1270d61021bc2e36e8cb19ca9d29dedbba9a0348b532103a57db80b6ae573e5cef2115e36e73e5ef41f8a099bfb5087d80320c04a7db72e55ae"
-          },
-          "selectedUtxos": [{
-            "address": "3E1d1z7gJSFeZM2d3k12MJ1jGwrBRy1YTw",
-            "scriptPubKey": "a91487264aa41e3df76f3156c7fa587fd7d5b1f7b96b87",
-            "txid": "2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1",
-            "vout": 1,
-            "amount": 10,
-            "confirmations": 7
+        rejectedBy: {},
+        sentTs: null,
+        sentTxid: null,
+        inputChainPaths: ['m/45\'/2/0/0'],
+        comment: null,
+        builderObj: {
+          version: 1,
+          outs: [{
+            address: '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+            amountSatStr: '123456789'
           }],
-          "inputsSigned": 0,
-          "signaturesAdded": 1,
-          "signhash": 1,
-          "spendUnconfirmed": false,
-          "tx": "0100000001c1cf12ab89729d19d3cdec8ae531b5038d56c741006a105d532b3a7afa65c12a01000000fd40010047304402201aad0ea92f929be21d60afb741b76bfcf2aa9614079cb9da76b15b3a1210f07b02205bc5c1895105da3ee682e532d2d49dfd1214fa6123fb9c9d552336f135c77eff0147304402203f02f15bb4ad4bc7d0ca4612fd9e9ae05a1331f3d62f302cf08dba56695f5dcf0220700110562fe228ebba324b120de64a7bbaddf049d67a313f749e9b32ee88787d014cad5321027da98ce0407138461f4ad803a1fb67afa4246f06ad0e1256a087daeffd82a8642102e7f87f2b094ec322be2fb99d3ca81fd6ac0ab26ce081e51ab18c507f8b6d1d162102ed5d256036e10568c33e0a15021cc1806e04d7d24c8f020aaae23ec2deecb4302103b6f88231bb5a5f4629e4d097492321f86968c6aeb012196a1fe3b217fe4ae0ac2103f6b5e2c1db3124a5058a0e3e83d5d0c412b9a5b50e2ef97e2b7e1c0af57ab3e355aeffffffff0215cd5b07000000001976a91434f8e0c5be216025a52addf18a987543cad23f7a88acdbd53e340000000017a914a09f10bc42b61ecf9d3d09550765c228f1cb808a8700000000"
+          utxos: [{
+            address: '2N6fdPg2QL7V36XKe7a8wkkA5HCy7fNYmZF',
+            scriptPubKey: 'a91493372782bab70f4eefdefefea8ece0df44f9596887',
+            txid: '2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1',
+            vout: 1,
+            amount: 10,
+            confirmations: 7
+          }],
+          opts: {
+            remainderOut: {
+              address: '2N7BLvdrxJ4YzDtb3hfgt6CMY5rrw5kNT1H'
+            }
+          },
+          scriptSig: ['00493046022100b8249a4fc326c4c33882e9d5468a1c6faa01e8c6cef0a24970122e804abdd860022100dbf6ee3b07d3aad8f73997e62ad20654a08aa63a7609792d02f3d5d088e69ad9014cad5321027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d5092102ab32ba51402a139873aeb919c738f5a945f3956f8f8c6ba296677bd29e85d7e821036f119b72e09f76c11ebe2cf754d64eac2cb42c9e623455d54aaa89d70c11f9c82103bcbd3f8ab2c849ea9eae434733cee8b75120d26233def56011b3682ca12081d72103f37f81dc534163b9f73ecf36b91e6c3fb8ae370c24618f91bb1d972e86ceeee255ae'],
+          hashToScriptMap: {
+            '2N6fdPg2QL7V36XKe7a8wkkA5HCy7fNYmZF': '5321027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d5092102ab32ba51402a139873aeb919c738f5a945f3956f8f8c6ba296677bd29e85d7e821036f119b72e09f76c11ebe2cf754d64eac2cb42c9e623455d54aaa89d70c11f9c82103bcbd3f8ab2c849ea9eae434733cee8b75120d26233def56011b3682ca12081d72103f37f81dc534163b9f73ecf36b91e6c3fb8ae370c24618f91bb1d972e86ceeee255ae'
+          }
         }
       }
     };
+
     w._handleTxProposal('senderID', txp, true);
     Object.keys(w.txProposals.txps).length.should.equal(1);
     w.getTxProposals().length.should.equal(1);
@@ -702,7 +704,7 @@ describe('Wallet model', function() {
   });
 
   describe('#send', function() {
-    it('should call this.network.send', function () {
+    it('should call this.network.send', function() {
       var w = cachedCreateW2();
       var save = w.network.send;
       w.network.send = sinon.spy();
@@ -778,12 +780,14 @@ describe('Wallet model', function() {
         return index <= 14 && index % 2 == 0;
       });
 
-      var updateIndex = sinon.stub(w, 'updateIndex', function(i, cb) { cb(); });
+      var updateIndex = sinon.stub(w, 'updateIndex', function(i, cb) {
+        cb();
+      });
 
       w.updateIndexes(function(err) {
         // check updated all indexes
         var cosignersChecked = []
-        updateIndex.args.forEach(function(i){
+        updateIndex.args.forEach(function(i) {
           cosignersChecked.indexOf(i[0].cosigner).should.equal(-1);
           cosignersChecked.push(i[0].cosigner);
         });
@@ -800,7 +804,9 @@ describe('Wallet model', function() {
       });
 
 
-      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) { cb(null, 8); });
+      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) {
+        cb(null, 8);
+      });
       var index = {
         changeIndex: 1,
         receiveIndex: 2,
@@ -820,7 +826,9 @@ describe('Wallet model', function() {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
-      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) { cb(null, 8); });
+      var indexDiscovery = sinon.stub(w, 'indexDiscovery', function(a, b, c, d, cb) {
+        cb(null, 8);
+      });
       var spyStore = sinon.spy(w, 'store');
       w.updateIndexes(function(err) {
         sinon.assert.callCount(spyStore, 1);
@@ -875,7 +883,7 @@ describe('Wallet model', function() {
       w.addressBook[key].hidden.should.equal(true);
       w.toggleAddressBookEntry(key);
       w.addressBook[key].hidden.should.equal(false);
-      (function() { 
+      (function() {
         w.toggleAddressBookEntry();
       }).should.throw();
     });
@@ -884,26 +892,26 @@ describe('Wallet model', function() {
       var w = createW();
 
       var data = {
-        type: "addressbook", 
+        type: "addressbook",
         addressBook: {
-          "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z" : {
+          "3Ae1ieAYNXznm7NkowoFTu5MkzgrTfDz8Z": {
             copayerId: "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb",
             createdTs: 1404769393509,
             hidden: false,
             label: "adsf",
             signature: "3046022100d4cdefef66ab8cea26031d5df03a38fc9ec9b09b0fb31d3a26b6e204918e9e78022100ecdbbd889ec99ea1bfd471253487af07a7fa7c0ac6012ca56e10e66f335e4586"
           }
-        }, 
-        walletId: "11d23e638ed84c06", 
+        },
+        walletId: "11d23e638ed84c06",
         isBroadcast: 1
       };
 
       var senderId = "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb";
- 
+
       Object.keys(w.addressBook).length.should.equal(2);
       w._handleAddressBook(senderId, data, true);
       Object.keys(w.addressBook).length.should.equal(3);
-    }); 
+    });
 
     it('should return signed object', function() {
       var w = createW();
@@ -950,7 +958,7 @@ describe('Wallet model', function() {
       w.verifyAddressbookEntry(w.addressBook[key], pubKey, key).should.equal(true);
       w.addressBook[key].label = 'Another';
       w.verifyAddressbookEntry(w.addressBook[key], pubKey, key).should.equal(false);
-      (function() { 
+      (function() {
         w.verifyAddressbookEntry();
       }).should.throw();
     });
@@ -1003,6 +1011,82 @@ describe('Wallet model', function() {
       config.networkName = 'livenet';
       cachedCreateW2.should.throw(Error);
       copayConfig.forceNetwork = backup;
+    });
+  });
+
+  describe('validate txProposals', function() {
+    var a1 = 'n1pKARYYUnZwxBuGj3y7WqVDu6VLN7n971';
+    var a2 = 'mtxYYJXZJmQc2iJRHQ4RZkfxU5K7TE2qMJ';
+    var utxos = [{
+      address: a1,
+      txid: '2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1',
+      vout: 1,
+      scriptPubKey: Address.getScriptPubKeyFor(a1).serialize().toString('hex'),
+      amount: 0.5,
+      confirmations: 200
+    }, {
+      address: a2,
+      txid: '88c4520ffd97ea565578afe0b40919120be704b36561c71ba4e450e83cb3c9fd',
+      vout: 1,
+      scriptPubKey: Address.getScriptPubKeyFor(a2).serialize().toString('hex'),
+      amount: 0.5001,
+      confirmations: 200
+    }];
+    var destAddress = 'myuAQcCc1REUgXGsCTiYhZvPPc3XxZ36G1';
+    var outs = [{
+      address: destAddress,
+      amount: 1.0
+    }];
+
+    var testValidate = function(signhash, result, done) {
+      var w = cachedCreateW();
+      var spy = sinon.spy();
+      w.on('txProposalEvent', spy);
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal(result);
+        done();
+      });
+      var opts = {};
+      opts.signhash = signhash;
+      var txb = new TransactionBuilder(opts)
+        .setUnspent(utxos)
+        .setOutputs(outs)
+        .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
+          'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
+        ]);
+      var txp = {
+        'txProposal': {
+          'builderObj': txb.toObj()
+        }
+      };
+      w._handleTxProposal('senderID', txp, true);
+      spy.callCount.should.equal(1);
+    };
+
+    it('should validate for undefined', function(done) {
+      var result = 'new';
+      var signhash;
+      testValidate(signhash, result, done);
+    });
+    it('should validate for SIGHASH_ALL', function(done) {
+      var result = 'new';
+      var signhash = Transaction.SIGHASH_ALL;
+      testValidate(signhash, result, done);
+    });
+    it('should not validate for different SIGHASH_NONE', function(done) {
+      var result = 'corrupt';
+      var signhash = Transaction.SIGHASH_NONE;
+      testValidate(signhash, result, done);
+    });
+    it('should not validate for different SIGHASH_SINGLE', function(done) {
+      var result = 'corrupt';
+      var signhash = Transaction.SIGHASH_SINGLE;
+      testValidate(signhash, result, done);
+    });
+    it('should not validate for different SIGHASH_ANYONECANPAY', function(done) {
+      var result = 'corrupt';
+      var signhash = Transaction.SIGHASH_ANYONECANPAY;
+      testValidate(signhash, result, done);
     });
   });
 });
