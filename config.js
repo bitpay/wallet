@@ -120,8 +120,6 @@ var defaultConfig = {
     storageSalt: 'mjuBtGybi/4=',
   },
 
-  // theme list
-  themes: ['default'],
   disableVideo: true,
   verbose: 1,
 };

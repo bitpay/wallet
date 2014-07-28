@@ -1,50 +1,106 @@
+/*
+ *
+ * Copay mobile CSS
+ *
+ */
+
 @media (max-width: 1024px) {
-  .logo {
-    background-size: 90px 44px !important;
-    height: 41px;
-  }
-  
-  .header-content {
-    font-size: 70%;
-    line-height: 120%;
-    font-weight: normal;
-  }
-  
-  .line-dashed-v {
-    border: none !important;  
+
+  .line-dashed-setup-v, 
+  .line-dashed-v,
+  .line-dashed-h {
+    border: none;
   }
 
-  .top-bar-section ul li>a {
-    font-size: 70%;
-  }  
-}
+  .logo-setup {
+    margin: 20px 0;
+  }
 
-@media (max-width: 640px) {
-  .hide_menu {
+  .home, .open, .join, .waiting-copayers, .setup, .import, .settings {
+    margin-top: 0;
+  }
+
+  .sidebar {
     display: none;
   }
-  .show_menu {
-    display: block;
-  }
-  .top-bar-section ul li {
-    width: 100%;
-  }
-  .top-bar-section ul li>a {
-    padding: 0 0 0 15px;
-  }
-  
-  .top-bar {
-    background: #1ABC9C;
-  }  
 
-  .header-content .small-7 {
-    text-align: right !important;
-    padding-top: 0;
+  .page, .main {
+    height: auto;
+  }
+
+  .main {
+    height: 100%;
+    margin-top: 40px;
+    margin-left: 0;
+    margin-bottom: -40px;
+    padding-bottom: 60px;
+  }
+
+  .tab-bar {
+    display: block;
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    background: #3C4E60;
+  }
+
+  .left-off-canvas-menu {
+    background: #2C3E50;
+  }
+
+  .off-canvas-wrap,.inner-wrap{
+    height:100%;   
+  }
+
+  .page{
+    height:100%;   
   }
   
-  .box-copayers figure {
-    height: 71px;
-    width: 71px;
+  .copayers {
+    position: relative;
+    padding: 0;
+    overflow-y: none;
+  }
+
+  ul.copayer-list img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .tab-bar-section {
+    text-align: left;
+  }
+
+  .setup-page {
+    height: 100%;
+  }
+
+  .hide-tab-bar {
+    display: none;
+  }
+
+
+  .tab-bar h1 {
+    font-weight: 100;
+  }
+
+  ul.off-canvas-list li a {
+    border-bottom: 1px solid #425568;
+    padding: 0.66667rem 1rem;
+    color: #fff;
+  }
+
+  ul.off-canvas-list li a i {
+    opacity: 0.6;
+  }
+
+  .box-founds {
+    background-color: #213140;
+  }
+
+  .left-small {
+    border-right: 1px solid #425568;
   }
 
 }
+

@@ -1,0 +1,41 @@
+<div class="join" ng-controller="JoinController">
+  <div data-alert class="loading-screen" ng-show="loading && !failure">
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
+    Authenticating and looking for peers...
+  </div>
+  <div class="row" ng-show="!loading">
+    <div class="large-4 columns logo-setup">
+      <img src="../img/logo-negative-beta.svg" alt="Copay">
+    </div>
+    <div class="large-8 columns line-dashed-setup-v">
+        <div class="box-setup">
+        <h1 class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
+          <form name="joinForm" ng-submit="join(joinForm)" novalidate>
+            <label for="connectionId"> Wallet Setting </label>
+            <input id="connectionId" type="text" class="form-control" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
+            <label for="joinPassword"> User info</label>
+            <input id="joinPassword" type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
+            <input type="password" class="form-control"
+            placeholder="Choose your password" name="joinPassword"
+            ng-model="$parent.joinPassword"
+            check-strength="passwordStrength"
+            tooltip-html-unsafe="Password strength: 
+            <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
+              numbers and symbols</span>" tooltip-trigger="focus" required>
+
+            <input type="password" 
+            placeholder="Repeat password"
+            name="joinPasswordConfirm"
+            ng-model="joinPasswordConfirm" 
+            match="joinPassword" required>
+            <div class="text-right">
+              <a href="/" class="back-button text-primary m20r">&laquo; Back</a>
+              <button type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
+            </div>
+          </form>
+        </div>
+    </div>
+  </div> <!-- End !loading -->
+</div>
+
+

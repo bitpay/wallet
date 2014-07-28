@@ -242,24 +242,6 @@ directive('notifications', function(notification, $compile) {
    * Finally, the directive should have its own controller for
    * handling all of the notifications from the notification service
    */
-  var html =
-    '<div class="dr-notification-wrapper" ng-repeat="noti in queue">' +
-    '<div class="dr-notification-close-btn" ng-click="removeNotification(noti)">' +
-    '<i class="fi-x"></i>' +
-    '</div>' +
-    '<div class="dr-notification">' +
-    '<div class="dr-notification-image dr-notification-type-{{noti.type}}" ng-switch on="noti.image">' +
-    '<i class="fi-{{noti.icon}}" ng-switch-when="false"></i>' +
-    '<img ng-src="{{noti.image}}" ng-switch-default />' +
-    '</div>' +
-    '<div class="dr-notification-content">' +
-    '<h3 class="dr-notification-title">{{noti.title}}</h3>' +
-    '<p class="dr-notification-text">{{noti.content}}</p>' +
-    '</div>' +
-    '</div>' +
-    '</div>';
-
-
   function link(scope, element, attrs) {
     var position = attrs.notifications;
     position = position.split(' ');
@@ -269,11 +251,10 @@ directive('notifications', function(notification, $compile) {
     }
   }
 
-
   return {
     restrict: 'A',
     scope: {},
-    template: html,
+    templateUrl: 'views/includes/notifications.html',
     link: link,
     controller: ['$scope',
       function NotificationsCtrl($scope) {

@@ -1,0 +1,41 @@
+<div class="addresses" ng-controller="AddressesController">
+  <div ng-show='$root.wallet.isReady()'>
+    <h1>
+      Addresses
+      <span class="button primary small side-bar" ng-click="newAddr()" ng-disabled="loading" loading="Creating"><i class="fi-plus"></i></span>
+    </h1> 
+    
+    <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
+      <div class="large-12 medium-12" ng-init="showAll=0">
+        <ul>
+          <li class="panel radius oh" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
+
+            <div class="large-8 small-6 column">
+              <div class="ellipsis">
+                <a href="#" ng-click="openAddressModal(addr)"><i
+                class="fi-thumbnails">&nbsp;</i></a>
+                <span><contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/></span>
+                <small ng-if="addr.isChange">change</small>
+              </div>
+            </div>
+            
+            <div class="large-4 small-6 column text-right">
+              <span ng-if="$root.updatingBalance">
+                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+              </span>
+              <span ng-if="!$root.updatingBalance">
+                {{addr.balance || 0|noFractionNumber}} {{$root.unitName}}
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
+          <span ng-if="!showAll">Show all</span>
+          <span ng-if="showAll">Show less</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
