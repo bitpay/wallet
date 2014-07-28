@@ -98,5 +98,9 @@
     background-color: #213140;
   }
 
+  .left-small {
+    border-right: 1px solid #425568;
+  }
+
 }
 
