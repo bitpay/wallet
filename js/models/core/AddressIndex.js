@@ -1,6 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
 var preconditions = require('preconditions').singleton();
 var Structure = require('./Structure');
 
@@ -96,4 +95,4 @@ AddressIndex.prototype.merge = function(inAddressIndex) {
   return hasChanged;
 };
 
-module.exports = require('soop')(AddressIndex);
+module.exports = AddressIndex;
