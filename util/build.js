@@ -93,8 +93,8 @@ var createBundle = function(opts) {
   b.require('./config', {
     expose: '../config'
   }); 
-  b.require('./js/models/core/Structure', {
-    expose: '../js/models/core/Structure'
+  b.require('./js/models/core/HDPath', {
+    expose: '../js/models/core/HDPath'
   }); 
 
   if (opts.dontminify) {

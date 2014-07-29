@@ -1,13 +1,12 @@
 'use strict';
 
 
-var imports = require('soop').imports();
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;
 var WalletKey = bitcore.WalletKey;
 var networks = bitcore.networks;
 var util = bitcore.util;
-var Structure = require('./Structure');
+var HDPath = require('./HDPath');
 
 function PrivateKey(opts) {
   opts = opts || {};
@@ -41,7 +40,7 @@ PrivateKey.prototype.getIdKey = function() {
 };
 
 PrivateKey.prototype.cacheId = function() {
-  var path = Structure.IdFullBranch;
+  var path = HDPath.IdFullBranch;
   var idhk = this.bip.derive(path);
   this.idkey = idhk.eckey;
   this.id = idhk.eckey.public.toString('hex');
@@ -50,7 +49,7 @@ PrivateKey.prototype.cacheId = function() {
 
 PrivateKey.prototype.deriveBIP45Branch = function() {
   if (!this.bip45Branch) {
-    this.bip45Branch = this.bip.derive(Structure.BIP45_PUBLIC_PREFIX);
+    this.bip45Branch = this.bip.derive(HDPath.BIP45_PUBLIC_PREFIX);
   }
   return this.bip45Branch;
 }
@@ -103,7 +102,7 @@ PrivateKey.prototype.getForPath = function(path) {
 };
 
 PrivateKey.prototype.get = function(index, isChange, cosigner) {
-  var path = Structure.FullBranch(index, isChange, cosigner);
+  var path = HDPath.FullBranch(index, isChange, cosigner);
   return this.getForPath(path);
 };
 
@@ -123,4 +122,4 @@ PrivateKey.prototype.getAll = function(receiveIndex, changeIndex, cosigner) {
 
 
 
-module.exports = require('soop')(PrivateKey);
+module.exports = PrivateKey;
