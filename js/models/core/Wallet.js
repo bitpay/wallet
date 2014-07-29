@@ -5,6 +5,7 @@ var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
+var parseBitcoinURI = require('./Structure').parseBitcoinURI;
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -772,6 +773,13 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
 
   if (typeof options === 'string') {
     options = { uri: options };
+  }
+
+  if (options.uri.indexOf('bitcoin:') === 0) {
+    options.uri = parseBitcoinURI(options.uri).merchant;
+    if (!options.uri) {
+      return cb(new Error('No URI.'));
+    }
   }
 
   return $http({
