@@ -67,7 +67,7 @@ angular
   .module('copayApp')
   .config(function($locationProvider) {
     $locationProvider
-      .html5Mode(true)
+      .html5Mode(false)
       .hashPrefix('!');
   })
   .run(function($rootScope, $location) {

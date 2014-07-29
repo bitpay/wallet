@@ -54,7 +54,7 @@ checkOK
 # Copy all app files
 echo "${OpenColor}${Green}* Copying all app files...${CloseColor}"
 cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,config.js,version.js,$BUILDDIR/cordova.js,$BUILDDIR/cordova_plugins.js,$BUILDDIR/plugins} $APPDIR
+cp -af {css,font,img,js,lib,sound,views,config.js,version.js,$BUILDDIR/cordova.js,$BUILDDIR/cordova_plugins.js,$BUILDDIR/plugins} $APPDIR
 checkOK
 sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' charset='utf-8' src='cordova.js'><\/script>/g" index.html > $APPDIR/index.html
 checkOK
