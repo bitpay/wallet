@@ -971,7 +971,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       // BIP-71
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
         + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
-      'Content-Type': 'application/bitcoin-payment',
+      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE,
       'Content-Length': pay.length + '',
       'Content-Transfer-Encoding': 'binary'
     },
