@@ -789,14 +789,14 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     data = PayPro.PaymentRequest.decode(data);
     var pr = new PayPro();
     pr = pr.makePaymentRequest(data);
-    return self.receivePaymentRequest(tx, options, pr, cb);
+    return self.receivePaymentRequest(options, pr, cb);
   })
   .error(function(data, status, headers, config) {
     return cb(new Error('Status: ' + JSON.stringify(status)));
   });
 };
 
-Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
+Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var self = this;
 
   var ver = pr.get('payment_details_version');
@@ -808,15 +808,21 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
   var certs = PayPro.X509Certificates.decode(pki_data);
   certs = certs.certificate;
 
+  // XXX Temporary fix for tests
+  if (!PayPro.RootCerts) {
+    PayPro.RootCerts = {
+      getTrusted: function() {}
+    };
+  }
+
   var trusted = certs.map(function(cert) {
     var der = cert.toString('hex');
     var pem = PayPro.prototype._DERtoPEM(der, 'CERTIFICATE');
-    return RootCerts.getTrusted(pem);
+    return PayPro.RootCerts.getTrusted(pem);
   });
 
   if (!trusted.length) {
-    var G = typeof window !== 'undefined' ? window : global;
-    if (!G.SSL_UNTRUSTED) {
+    if (typeof SSL_UNTRUSTED === 'undefined') {
       return cb(new Error('Not a trusted certificate.'));
     }
   }
@@ -870,7 +876,7 @@ Wallet.prototype.receivePaymentRequest = function(tx, options, pr, cb) {
     }
   };
 
-  return this.getUnspent(function(err, unpsent) {
+  return this.getUnspent(function(err, unspent) {
     var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
     if (ntxid) {
       self.sendIndexes();
@@ -905,7 +911,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   var refund_outputs = [];
 
-  options.refund_to = options.refund_to || self.getAddresses()[0];
+  options.refund_to = options.refund_to || self.getPubKeys()[0];
 
   if (options.refund_to) {
     var total = 0;
@@ -997,14 +1003,12 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
 
 Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
   var self = this;
+  var priv = this.privateKey;
+  var pkr = this.publicKeyRing;
 
-  var outs = [];
-  merchantData.pr.pd.outputs.forEach(function(output) {
-    outs.push({
-      address: self.getAddressesStr()[0], // dummy address
-      amount: 0 // dummy amount
-    });
-  });
+  // preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
+  preconditions.checkState(pkr.isComplete());
+  if (options.memo) preconditions.checkArgument(options.memo.length <= 100);
 
   var opts = {
     remainderOut: {
@@ -1012,16 +1016,25 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     }
   };
 
+  var outs = [];
+  merchantData.pr.pd.outputs.forEach(function(output) {
+    outs.push({
+      address: self.getAddressesStr()[0] || '1NGYre1pSqTnCXaqN5gLQ1e2KNTJXjDhtF', // dummy address
+      amountSatStr: '0' // dummy amount
+    });
+  });
+
   var b = new Builder(opts)
     .setUnspent(unspent)
     .setOutputs(outs);
 
-  var priv = this.privateKey;
-  var pkr = this.publicKeyRing;
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
+
+  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
+
   if (priv) {
     var keys = priv.getForPaths(inputChainPaths);
     var signed = b.sign(keys);
@@ -1034,7 +1047,11 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
     var script = output.get
       ? output.get('script')
-      : new Buffer(output.script, 'hex');
+      : {
+        offset: output.script.offset,
+        limit: output.script.limit,
+        buffer: new Buffer(output.script.buffer, 'hex')
+      };
 
     var v = new Buffer(8);
     v[0] = (amount.low >> 0) & 0xff;
@@ -1054,7 +1071,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   this.log('');
   this.log('Created transaction:');
-  this.log(tx.getStandardizedObject());
+  this.log(b.tx.getStandardizedObject());
   this.log('');
 
   var myId = this.getMyCopayerId();
