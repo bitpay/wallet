@@ -18,15 +18,15 @@ function HDParams(opts) {
 
 HDParams.init = function(totalCopayers) {
   preconditions.shouldBeNumber(totalCopayers);
-  var indexes = [new HDParams()];
+  var ret = [new HDParams()];
   for (var i = 0 ; i < totalCopayers ; i++) {
-    indexes.push(new HDParams({copayerIndex: i}));
+    ret.push(new HDParams({copayerIndex: i}));
   }
-  return indexes;
+  return ret;
 }
 
-HDParams.fromList = function(indexes) {
-  return indexes.map(function(i) { return HDParams.fromObj(i); });
+HDParams.fromList = function(hdParams) {
+  return hdParams.map(function(i) { return HDParams.fromObj(i); });
 }
 
 HDParams.fromObj = function(data) {
@@ -36,15 +36,15 @@ HDParams.fromObj = function(data) {
   return new HDParams(data);
 };
 
-HDParams.serialize = function(indexes) {
-  return indexes.map(function(i) { return i.toObj(); });
+HDParams.serialize = function(hdParams) {
+  return hdParams.map(function(i) { return i.toObj(); });
 }
 
 HDParams.update = function(shared, totalCopayers) {
-  var indexes = this.init(totalCopayers);
-  indexes[0].changeIndex = shared.changeIndex;
-  indexes[0].receiveIndex = shared.receiveIndex;
-  return this.serialize(indexes);
+  var hdParams = this.init(totalCopayers);
+  hdParams[0].changeIndex = shared.changeIndex;
+  hdParams[0].receiveIndex = shared.receiveIndex;
+  return this.serialize(hdParams);
 };
 
 HDParams.prototype.toObj = function() {
@@ -84,7 +84,6 @@ HDParams.prototype.merge = function(inHDParams) {
 
   var hasChanged = false;
 
-  // Indexes
   if (inHDParams.changeIndex > this.changeIndex) {
     this.changeIndex = inHDParams.changeIndex;
     hasChanged = true;
