@@ -1,6 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
 var preconditions = require('preconditions').singleton();
 
 function Structure() {}
@@ -63,14 +62,14 @@ Structure.parseBitcoinURI = function(uri) {
   if (splitQuestion.length > 1) {
     var search = splitQuestion[1];
     data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-      function(key, value) {
-        return key === "" ? value : decodeURIComponent(value);
-      });
-    ret.amount = parseFloat(data.amount);
-    ret.message = data.message;
+                      function(key, value) {
+                        return key === "" ? value : decodeURIComponent(value);
+                      });
+                      ret.amount = parseFloat(data.amount);
+                      ret.message = data.message;
   }
 
   return ret;
 };
 
-module.exports = require('soop')(Structure);
+module.exports = Structure;
