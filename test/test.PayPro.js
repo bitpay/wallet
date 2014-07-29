@@ -187,7 +187,7 @@ describe('PayPro (in Wallet) model', function() {
     return w;
   };
 
-  it('should start the example server', function(done) {
+  it('#start the example server', function(done) {
     startServer(function(err, s) {
       if (err) return done(err);
       server = s;
@@ -196,28 +196,7 @@ describe('PayPro (in Wallet) model', function() {
     });
   });
 
-  it('#create a payment transaction', function() {
-    var w = cachedCreateW2();
-    var comment = 'This is a comment';
-
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
-
-    var ntxid = w.createTxSync(
-      'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
-      '123456789',
-      comment,
-      unspentTest
-    );
-
-    var t = w.txProposals;
-    var txp = t.txps[ntxid];
-    var tx = txp.builder.build();
-    should.exist(tx);
-    txp.comment.should.equal(comment);
-  });
-
-  it('should send a payment request', function(done) {
+  it('#send a payment request', function(done) {
     var w = cachedCreateW2();
     should.exist(w);
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
