@@ -78,10 +78,13 @@
   font-family: 'Ubuntu', Helvetica, sans-serif !important;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  color: #2C3E50;
+}
+
 h1 {
   font-weight: 100;
   font-size: 24px;
-  color: #2C3E50;
   margin-bottom: 1rem;
 }
 
@@ -93,7 +96,6 @@ h2 {
 h3 {
   font-weight: 300;
   font-size: 16px;
-  color: #fff;
 }
 
 h4 {
@@ -103,6 +105,7 @@ h4 {
 body, html{
   height:100%;
   width:100%;
+  color: #2C3E50;
 }
 
 .off-canvas-wrap, .inner-wrap{
@@ -256,34 +259,29 @@ a:hover {
 }
 
 .last-transactions {
-  border: 1px solid #eee;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
-  margin-bottom: 1.25rem;
-  background-color: #fff;
+  margin-bottom: 2rem;
+  background-color: #E8EAEF;
 }
 
 .last-transactions-header {
-  padding: 10px 0;
-  overflow: hidden;
+  padding: 1rem 0;
+  height: 50px;
 }
 
 .last-transactions-footer {
-  padding: 10px 0;
+  padding: 1rem 0;
   overflow: hidden;
 }
 
 .last-transactions-content {
-  background-color: #FDFCFC;
   overflow: hidden;
-  padding: 10px 0;
+  padding: 1rem;
+  background: #CED3DB;
 }
 
 .last-transactions-content .box-status {
   text-align: center;
-  font-size: 14;
+  font-size: 14px;
 }
 
 .last-transactions-content .box-copayer {
@@ -645,6 +643,12 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #1ABC9C;
 }
 
+.label.alert {
+  background-color: #C0392A;
+  padding: 0.3rem 0.4rem;
+  font-weight: 700;
+}
+
 .dr-notification-text {
   font-size: 12px;
   line-height: 120%;
@@ -864,6 +868,10 @@ button.gray:focus,
   color: #2C3E50;
 }
 
+button, .button, p {
+  margin: 0;
+}
+
 .side-nav {padding: 0;}
 
 .side-nav li {
@@ -966,6 +974,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .text-light {font-weight: 100;}
 .text-gray {color: #8597A7;}
+.text-black {color: #2C3E50;}
 .text-primary {color: #1ABC9C;}
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
@@ -973,6 +982,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .footer-setup a.text-gray:hover {color: #fff;}
 a.text-gray:hover {color: #2C3E50;}
+a.text-black:hover {color: #213140;}
 a.text-primary:hover {color: #50E3C2;}
 a.text-secondary:hover {color: #4A90E2;}
 a.text-white:hover {color: #ccc;}

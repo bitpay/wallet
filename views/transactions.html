@@ -8,7 +8,13 @@
       </ul>
       <div class="last-transactions" ng-repeat="tx in txs | paged">
         <div class="last-transactions-header">
-          <div class="large-8 medium-8 small-12 columns">
+          <a class="db large-1 columns text-black" ng-show="tx.comment">
+            <i class="fi-comment-quotes size-24" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right"></i>
+          </a>
+          <a class="db large-1 columns disable" ng-show="!tx.comment">
+            <i class="fi-comment-quotes size-24 text-gray"></i>
+          </a>
+          <div class="large-7 medium-8 small-12 columns">
             <div ng-repeat="out in tx.outs">
               <div class="large-3 medium-3 small-3 columns">
                 {{out.value | noFractionNumber}} {{$root.unitName}}</div>
@@ -19,15 +25,11 @@
             </div>
           </div>
           <div class="large-4 medium-4 small-12 columns text-right">
-            {{tx.createdTs | amCalendar}}
+            <p class="size-14 m0">{{tx.createdTs | amCalendar}}</p>
           </div>
         </div>
 
         <div class="last-transactions-content">
-          <div class="box-note large-12" ng-show="tx.comment">
-            "{{tx.comment}}" - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
-          </div>
-
           <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
             <a href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
               <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
@@ -50,7 +52,9 @@
             </div>
 
             <div class="text-center">
-              {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+              <p class="size-12 text-gray">
+                {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+              </p>
             </div>
           </div>
         </div>
@@ -58,15 +62,15 @@
         <div class="last-transactions-footer">
           <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
             <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
-              <button class="secondary radius m10r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+              <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
                 <i class="fi-check"></i> Sign
               </button>
-              <button class="warning radius" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
+              <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
                 <i class="fi-x" ></i> Reject
               </button>
             </div>
             <div ng-show="!tx.missingSignatures && !tx.sentTs">
-              <button class="primary radius"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
+              <button class="primary"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
                 Broadcast Transaction
               </button>
             </div>
