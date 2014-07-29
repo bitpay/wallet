@@ -630,15 +630,19 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-image.dr-notification-type-success {
-  color: #B4D455;
+  color: #1ABC9C;
 }
 
 .dr-notification-image.success {
-  color: #B4D455;
+  color: #1ABC9C;
 }
 
 .success { 
   color: #1ABC9C;
+}
+
+.label.success { 
+  background-color: #1ABC9C;
 }
 
 .dr-notification-text {
@@ -662,7 +666,7 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 }
 
 .tooltip { 
-  background: #16A085; 
+  background: #1ABC9C; 
   color: #fff; 
   font-weight: normal; 
   font-size: 14px; 
@@ -670,7 +674,7 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 
   border-radius: 3px; 
-  border: 1px solid #16A085;
+  border: 1px solid #1ABC9C;
   text-overflow: ellipsis;
   overflow-y: hidden;
 }
