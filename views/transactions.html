@@ -29,21 +29,21 @@
           </div>
 
           <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
-            <a href="/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
+            <a href="#!/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
               <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
             </a>
             <div class="box-status">
               <span ng-repeat="(action, ts) in actions">
-                <a ng-if="action == 'create'" href="/transactions" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
+                <a ng-if="action == 'create'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
                   <i class="fi-crown icon-status icon-active"></i>
                 </a>
-                <a ng-if="action == 'seen'" href="/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
+                <a ng-if="action == 'seen'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
                   <i class="fi-eye icon-status icon-active"></i>
                 </a>
-                <a ng-if="action == 'sign'" href="/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
+                <a ng-if="action == 'sign'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
                   <i class="fi-check icon-status icon-active-check"></i>
                 </a>
-                <a ng-if="action == 'rejected'" href="/transactions" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
+                <a ng-if="action == 'rejected'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
                   <i class="fi-x icon-status icon-active-x"></i>
                 </a>
               </span>
@@ -82,7 +82,7 @@
               </div>
               <div class="ellipsis small">
                 Transaction ID:
-                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="blank">
+                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="_blank">
                   {{tx.sentTxid}}
                 </a>
               </div>
@@ -124,7 +124,7 @@
         <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
           <div class="last-transactions-header">
             <div class="large-8 columns">
-              <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="blank">
+              <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank">
                 {{btx.txid}}
               </a>
             </div>
