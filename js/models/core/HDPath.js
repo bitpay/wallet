@@ -2,7 +2,7 @@
 
 var preconditions = require('preconditions').singleton();
 
-function Structure() {}
+function HDPath() {}
 
 /*
  * Based on https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki
@@ -15,9 +15,9 @@ var SHARED_INDEX = MAX_NON_HARDENED - 0;
 var ID_INDEX = MAX_NON_HARDENED - 1;
 
 var BIP45_PUBLIC_PREFIX = 'm/' + PURPOSE + '\'';
-Structure.BIP45_PUBLIC_PREFIX = BIP45_PUBLIC_PREFIX;
+HDPath.BIP45_PUBLIC_PREFIX = BIP45_PUBLIC_PREFIX;
 
-Structure.Branch = function(addressIndex, isChange, copayerIndex) {
+HDPath.Branch = function(addressIndex, isChange, copayerIndex) {
   preconditions.shouldBeNumber(addressIndex);
   preconditions.shouldBeBoolean(isChange);
   var ret = 'm/' +
@@ -27,13 +27,13 @@ Structure.Branch = function(addressIndex, isChange, copayerIndex) {
   return ret;
 };
 
-Structure.FullBranch = function(addressIndex, isChange, copayerIndex) {
-  var sub = Structure.Branch(addressIndex, isChange, copayerIndex);
+HDPath.FullBranch = function(addressIndex, isChange, copayerIndex) {
+  var sub = HDPath.Branch(addressIndex, isChange, copayerIndex);
   sub = sub.substring(2);
   return BIP45_PUBLIC_PREFIX + '/' + sub;
 };
 
-Structure.indicesForPath = function(path) {
+HDPath.indicesForPath = function(path) {
   preconditions.shouldBeString(path);
   var s = path.split('/');
   return {
@@ -43,14 +43,14 @@ Structure.indicesForPath = function(path) {
   };
 };
 
-Structure.IdFullBranch = Structure.FullBranch(0, false, ID_INDEX);
-Structure.IdBranch = Structure.Branch(0, false, ID_INDEX);
-Structure.PURPOSE = PURPOSE;
-Structure.MAX_NON_HARDENED = MAX_NON_HARDENED;
-Structure.SHARED_INDEX = SHARED_INDEX;
-Structure.ID_INDEX = ID_INDEX;
+HDPath.IdFullBranch = HDPath.FullBranch(0, false, ID_INDEX);
+HDPath.IdBranch = HDPath.Branch(0, false, ID_INDEX);
+HDPath.PURPOSE = PURPOSE;
+HDPath.MAX_NON_HARDENED = MAX_NON_HARDENED;
+HDPath.SHARED_INDEX = SHARED_INDEX;
+HDPath.ID_INDEX = ID_INDEX;
 
-Structure.parseBitcoinURI = function(uri) {
+HDPath.parseBitcoinURI = function(uri) {
   var ret = {};
   var data = decodeURIComponent(uri);
   var splitDots = data.split(':');
@@ -72,4 +72,4 @@ Structure.parseBitcoinURI = function(uri) {
   return ret;
 };
 
-module.exports = Structure;
+module.exports = HDPath;

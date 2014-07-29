@@ -6,7 +6,7 @@ var bitcore = bitcore || require('bitcore');
 var Address = bitcore.Address;
 var buffertools = bitcore.buffertools;
 
-var Structure = require('../js/models/core/Structure');
+var HDPath = require('../js/models/core/HDPath');
 
 try {
   var copay = require('copay'); //browser
@@ -135,7 +135,7 @@ describe('PublicKeyRing model', function() {
         a.network().name.should.equal('livenet');
         if (i > 1) {
           w.getAddress(i - 1, isChange).toString().should
-            .not.equal(w.getAddress(i - 2, isChange).toString());
+          .not.equal(w.getAddress(i - 2, isChange).toString());
         }
       }
     });
@@ -170,9 +170,9 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for (var i = 0; i < 3; i++)
-      w.generateAddress(true, k.pub);
+    w.generateAddress(true, k.pub);
     for (var i = 0; i < 2; i++)
-      w.generateAddress(false, k.pub);
+    w.generateAddress(false, k.pub);
 
     w.getIndex(k.pub).getChangeIndex().should.equal(3);
     w.getIndex(k.pub).getReceiveIndex().should.equal(2);
@@ -240,9 +240,9 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for (var i = 0; i < 2; i++)
-      w.generateAddress(true, k.pub);
+    w.generateAddress(true, k.pub);
     for (var i = 0; i < 3; i++)
-      w.generateAddress(false, k.pub);
+    w.generateAddress(false, k.pub);
 
     var w2 = new PublicKeyRing({
       networkName: 'livenet',
@@ -445,9 +445,9 @@ describe('PublicKeyRing model', function() {
       networkName: 'livenet',
     };
     var p = new PublicKeyRing(config);
-    var i = p.getIndex(Structure.SHARED_INDEX);
+    var i = p.getIndex(HDPath.SHARED_INDEX);
     should.exist(i);
-    i.cosigner.should.equal(Structure.SHARED_INDEX);
+    i.copayerIndex.should.equal(HDPath.SHARED_INDEX);
   });
 
   it('#getIndex should throw error', function() {
@@ -467,9 +467,9 @@ describe('PublicKeyRing model', function() {
     var amount = 2;
 
     for (var i = 0; i < amount; i++)
-      w.generateAddress(true, k.pub);
+    w.generateAddress(true, k.pub);
     for (var i = 0; i < amount; i++)
-      w.generateAddress(false, k.pub);
+    w.generateAddress(false, k.pub);
 
     var m = w.getRedeemScriptMap([
       'm/45\'/2147483647/1/0',
