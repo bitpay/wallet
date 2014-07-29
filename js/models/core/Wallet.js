@@ -911,7 +911,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   var refund_outputs = [];
 
-  options.refund_to = options.refund_to || self.getPubKeys()[0];
+  options.refund_to = options.refund_to
+    || self.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
     var total = 0;
@@ -942,7 +943,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   // We send this to the serve after receiving a PaymentRequest
   var pay = new PayPro();
   pay = pay.makePayment();
-  var merchant_data = txp.merchant.pd.merchant_data;
+  var merchant_data = txp.merchant.pr.pd.merchant_data;
   if (typeof merchant_data === 'string') {
     merchant_data = new Buffer(merchant_data, 'hex');
   }
