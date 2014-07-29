@@ -190,12 +190,12 @@ PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
 };
 
 // Overloaded to receive a PubkeyString or a consigner index
-PublicKeyRing.prototype.getIndex = function(id) {
+PublicKeyRing.prototype.getHDParams = function(id) {
   var copayerIndex = this.getCosigner(id);
   var index = this.indexes.filter(function(i) { return i.copayerIndex == copayerIndex });
-    if (index.length != 1) throw new Error('no index for copayerIndex');
+  if (index.length != 1) throw new Error('no index for copayerIndex');
 
-    return index[0];
+  return index[0];
 };
 
 PublicKeyRing.prototype.pathForAddress = function(address) {
@@ -214,10 +214,10 @@ PublicKeyRing.prototype.getScriptPubKeyHex = function(index, isChange, pubkey) {
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange, pubkey) {
   isChange = !!isChange;
-  var addrIndex = this.getIndex(pubkey);
-  var index = isChange ? addrIndex.getChangeIndex() : addrIndex.getReceiveIndex();
-  var ret = this.getAddress(index, isChange, addrIndex.copayerIndex);
-  addrIndex.increment(isChange);
+  var HDParams = this.getHDParams(pubkey);
+  var index = isChange ? HDParams.getChangeIndex() : HDParams.getReceiveIndex();
+  var ret = this.getAddress(index, isChange, HDParams.copayerIndex);
+  HDParams.increment(isChange);
   return ret;
 };
 
@@ -393,7 +393,7 @@ PublicKeyRing.prototype.mergeIndexes = function(indexes) {
   var hasChanged = false;
 
   indexes.forEach(function(theirs) {
-    var mine = self.getIndex(theirs.copayerIndex);
+    var mine = self.getHDParams(theirs.copayerIndex);
     hasChanged |= mine.merge(theirs);
   });
 

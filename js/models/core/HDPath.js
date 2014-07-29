@@ -39,7 +39,7 @@ HDPath.indicesForPath = function(path) {
   return {
     isChange: s[3] === '1',
     index: parseInt(s[4]),
-    cosigner: parseInt(s[2])
+    copayerIndex: parseInt(s[2])
   };
 };
 
