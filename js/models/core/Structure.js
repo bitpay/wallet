@@ -7,7 +7,7 @@ function Structure() {}
 
 /*
  * Based on https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki
- * m / purpose' / cosigner_index / change / address_index
+ * m / purpose' / copayerIndex / change / addressIndex
  */
 var PURPOSE = 45;
 var MAX_NON_HARDENED = 0x80000000 - 1;
@@ -18,18 +18,18 @@ var ID_INDEX = MAX_NON_HARDENED - 1;
 var BIP45_PUBLIC_PREFIX = 'm/' + PURPOSE + '\'';
 Structure.BIP45_PUBLIC_PREFIX = BIP45_PUBLIC_PREFIX;
 
-Structure.Branch = function(address_index, isChange, cosigner_index) {
-  preconditions.shouldBeNumber(address_index);
+Structure.Branch = function(addressIndex, isChange, copayerIndex) {
+  preconditions.shouldBeNumber(addressIndex);
   preconditions.shouldBeBoolean(isChange);
   var ret = 'm/' +
-    (typeof cosigner_index !== 'undefined' ? cosigner_index : SHARED_INDEX) + '/' +
+    (typeof copayerIndex !== 'undefined' ? copayerIndex : SHARED_INDEX) + '/' +
     (isChange ? 1 : 0) + '/' +
-    address_index;
+    addressIndex;
   return ret;
 };
 
-Structure.FullBranch = function(address_index, isChange, cosigner_index) {
-  var sub = Structure.Branch(address_index, isChange, cosigner_index);
+Structure.FullBranch = function(addressIndex, isChange, copayerIndex) {
+  var sub = Structure.Branch(addressIndex, isChange, copayerIndex);
   sub = sub.substring(2);
   return BIP45_PUBLIC_PREFIX + '/' + sub;
 };
