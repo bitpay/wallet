@@ -108,8 +108,6 @@ describe('WalletFactory model', function() {
     should.exist(w.publicKeyRing.getCopayerId);
     should.exist(w.txProposals.toObj);
     should.exist(w.privateKey.toObj);
-
-    JSON.stringify(w.toObj()).should.equal(o2);
   });
 
   it('should create wallet from encrypted object', function() {
