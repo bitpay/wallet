@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('UriPaymentController', function($rootScope, $scope, $routeParams, $timeout, $location) {
   var data = decodeURIComponent($routeParams.data);
-  $rootScope.pendingPayment = copay.Structure.parseBitcoinURI($routeParams.data);
+  $rootScope.pendingPayment = copay.HDPath.parseBitcoinURI($routeParams.data);
 
   $scope.protocol = $rootScope.pendingPayment.protocol;
   $scope.address = $rootScope.pendingPayment.address;

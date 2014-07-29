@@ -3,8 +3,8 @@ module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
 module.exports.TxProposals = require('./js/models/core/TxProposals');
 module.exports.PrivateKey = require('./js/models/core/PrivateKey');
 module.exports.Passphrase = require('./js/models/core/Passphrase');
-module.exports.Structure = require('./js/models/core/Structure');
-module.exports.AddressIndex = require('./js/models/core/AddressIndex');
+module.exports.HDPath = require('./js/models/core/HDPath');
+module.exports.HDParams = require('./js/models/core/HDParams');
 
 
 // components
