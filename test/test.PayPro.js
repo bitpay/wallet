@@ -37,6 +37,12 @@ if (!is_browser) {
       error: function(cb) {
         this._error = cb;
         return this;
+      },
+      _success: function() {
+        ;
+      },
+      _error: function(_, err) {
+        throw err;
       }
     };
     if (options.responseType === 'arraybuffer') {
@@ -44,7 +50,7 @@ if (!is_browser) {
       options.encoding = null;
     }
     _request(options, function(err, res, body) {
-      if (err) return ret._error(null, null, null, options);
+      if (err) return ret._error(null, err, null, options);
       return ret._success(body, res.statusCode, res.headers, options);
     });
     return ret;
@@ -62,6 +68,7 @@ function startServer(cb) {
 
   var path = require('path');
   var bc = path.dirname(require.resolve(__dirname + '/../../bitcore/package.json'));
+  //var bc = path.dirname(require.resolve('bitcore/package.json'));
   var example = bc + '/examples/PayPro/server.js';
   var server = require(example);
 
@@ -206,7 +213,7 @@ describe('PayPro (in Wallet) model', function() {
         return cb(null, unspentTest, []);
       }, 1);
     };
-    var address = server.uri + '/request';
+    var address = 'bitcoin:mq7se9wy2egettFxPbmn99cK8v5AFq55Lx?amount=0.11&r=' + server.uri + '/request';
     var commentText = 'Hello, server. I\'d like to make a payment.';
     w.createTx(address, commentText, function(ntxid, ca) {
       if (w.totalCopayers > 1) {
