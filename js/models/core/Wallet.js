@@ -979,7 +979,6 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     responseType: 'arraybuffer'
   })
   .success(function(data, status, headers, config) {
-    if (err) return cb(err);
     data = PayPro.PaymentACK.decode(data);
     var ack = new PayPro();
     ack = ack.makePaymentACK(data);
@@ -1007,7 +1006,7 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
     tx = ptx;
   }
   var txid = tx.getHash().toString('hex');
-  return cb(txid, txp.pr.ca);
+  return cb(txid, txp.merchant.pr.ca);
 };
 
 Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
