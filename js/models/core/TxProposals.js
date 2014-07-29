@@ -8,8 +8,12 @@ var Transaction = bitcore.Transaction;
 var BuilderMockV0 = require('./BuilderMockV0');;
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Script = bitcore.Script;
+var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
+var COPAY_EPOCH = 1400000000000;
+
+
 
 function TxProposal(opts) {
   this.creator = opts.creator;
@@ -73,6 +77,21 @@ TxProposal.prototype.isValid = function() {
       return false;
     }
   }
+
+  // Check that has valid signatures
+  var tx = this.builder.build();
+
+  for (var i = 0; i < tx.ins.length; i++) {
+
+    var txSigHash = this.tx.hashForSignature(
+      this.builder.inputMap[i].scriptPubKey, i, Transaction.SIGHASH_ALL);
+
+
+    return false;
+  }
+
+
+
   return true;
 };
 
@@ -80,9 +99,9 @@ TxProposal.getSentTs = function() {
   return this.sentTs;
 };
 
-TxProposal.prototype.merge = function(other, author) {
+TxProposal.prototype.merge = function(incoming, author) {
   var ret = {};
-  ret.events = this.mergeMetadata(other, author);
+  ret.events = this.mergeMetadata(incoming, author);
   ret.hasChanged = this.mergeBuilder(other);
   return ret;
 };
@@ -91,49 +110,86 @@ TxProposal.prototype.mergeBuilder = function(other) {
   var b0 = this.builder;
   var b1 = other.builder;
 
-  // TODO: improve this comparison
   var before = JSON.stringify(b0.toObj());
   b0.merge(b1);
   var after = JSON.stringify(b0.toObj());
   return after !== before;
 };
 
-TxProposal.prototype.mergeMetadata = function(v1, author) {
+
+TxProposal.prototype._verifyTimestamp = function(ts, limits) {
+  if (ts < limits.min || ts > limits.max)
+    throw new Error('Invalid metadata at transaction proposal: skiping');
+  return true;
+};
+
+TxProposal.prototype._isSignedBy = function(incoming,author) {
+  var status = false;;
+
+  var builder = incoming.builder.clone();
+  var sHex = builder.vanilla.scriptSig[0];
+  if (!sHex) return ret;
+
+  var sBuf = new Buffer(sHex,'hex');
+  var s = new Script(new Buffer(sHex,'hex'));
+
+  var k = new Key();
+  k.public = author;
+
+
+  console.log('[TxProposals.js.124]', builder.vanilla); //TODO
+
+  for (var i = 1; i <= s.countSignatures(); i++) {
+    var chunk = s.chunks[i];
+
+    var txSigHash = builder.build().hashForSignature(builder.vanilla, i-1, Transaction.SIGHASH_ALL);
+
+    var sigRaw = new Buffer(chunk.slice(0, chunk.length - 1));
+    if (k.verifySignatureSync(txSigHash, sigRaw)) {
+      ret = true;
+      break;
+    }
+  }
+  return ret;
+};
+
+TxProposal.prototype.mergeMetadata = function(incoming, author) {
   var events = [];
-  var v0 = this;
 
   var ntxid = this.getID();
+  var limits = {
+    min: COPAY_EPOCH,
+    max: Date.now(),
+  };
+  var status = this._isSignedBy(incoming, author);
 
-  Object.keys(v1.seenBy).forEach(function(k) {
-    if (!v0.seenBy[k]) {
-      // TODO: uncomment below and change protocol to make this work
-      //if (k != author) throw new Error('Non authoritative seenBy change by ' + author);
-      v0.seenBy[k] = v1.seenBy[k];
-      events.push({
-        type: 'seen',
-        cId: k,
-        txId: ntxid
-      });
-    }
-  });
+  // Only use author's metadata
+  if (!this.seenBy[author] && incoming.seenBy[k]) {
+    this._validateTimestamp(incoming.seenBy[k], limits);
+    this.seenBy[author] = incoming.seenBy[author];
+    events.push({
+      type: 'seen',
+      cId: k,
+      txId: ntxid
+    });
+  };
 
-  Object.keys(v1.signedBy).forEach(function(k) {
-    if (!v0.signedBy[k]) {
-      // TODO: uncomment below and change protocol to make this work
-      //if (k != author) throw new Error('Non authoritative signedBy change by ' + author);
-      v0.signedBy[k] = v1.signedBy[k];
+
+  if (this.seenBy[author]) {
+    limits.min = this.seenBy[author];
+
+
+    if (!this.signedBy[author] && incoming.signedBy[author]) {
+      this._validateTimestamp(incoming.seenBy[k], this.seenBy[author], now);
+      this.signedBy[k] = incoming.signedBy[k];
       events.push({
         type: 'signed',
         cId: k,
         txId: ntxid
       });
     }
-  });
-
-  Object.keys(v1.rejectedBy).forEach(function(k) {
-    if (!v0.rejectedBy[k]) {
-      // TODO: uncomment below and change protocol to make this work
-      //if (k != author) throw new Error('Non authoritative rejectedBy change by ' + author);
+    if (!this.rejectedBy[author] && incoming.signedBy[author]) {
+      this._validateTimestamp(incoming.rejectedBy[k], this.seenBy[author], now);
       v0.rejectedBy[k] = v1.rejectedBy[k];
       events.push({
         type: 'rejected',
@@ -141,7 +197,7 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
         txId: ntxid
       });
     }
-  });
+  }
 
   if (!v0.sentTxid && v1.sentTxid) {
     v0.sentTs = v1.sentTs;
@@ -151,7 +207,6 @@ TxProposal.prototype.mergeMetadata = function(v1, author) {
       txId: ntxid
     });
   }
-
   return events;
 
 };
