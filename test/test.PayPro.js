@@ -21,62 +21,8 @@ var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 
-var G = typeof window !== 'undefined' ? window : global;
+var G = is_browser ? window : global;
 G.SSL_UNTRUSTED = true;
-
-if (!is_browser) {
-  // Disable strictSSL
-  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-
-  var _request = require('request');
-  G.$http = function(options) {
-    var ret = {
-      success: function(cb) {
-        this._success = cb;
-        return this;
-      },
-      error: function(cb) {
-        this._error = cb;
-        return this;
-      },
-      _success: function() {
-        ;
-      },
-      _error: function(_, err) {
-        throw err;
-      }
-    };
-    if (options.responseType === 'arraybuffer') {
-      delete options.responseType;
-      options.encoding = null;
-    }
-    _request(options, function(err, res, body) {
-      if (err) return ret._error(null, err, null, options);
-      return ret._success(body, res.statusCode, res.headers, options);
-    });
-    return ret;
-  };
-}
-
-function startServer_(cb) {
-  if (is_browser) {
-    return cb(null, {
-      close: function() {
-        ;
-      }
-    });
-  }
-
-  var path = require('path');
-  var bc = path.dirname(require.resolve(__dirname + '/../../bitcore/package.json'));
-  //var bc = path.dirname(require.resolve('bitcore/package.json'));
-  var example = bc + '/examples/PayPro/server.js';
-  var server = require(example);
-
-  server.listen(8080, function(addr) {
-    return cb(null, server);
-  });
-}
 
 var x509 = {
   priv: ''
