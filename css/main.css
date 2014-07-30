@@ -897,6 +897,10 @@ button.gray:focus,
   margin-left: 0;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .video-box {
   width: 70px;
   text-align: center;
