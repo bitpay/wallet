@@ -93,11 +93,16 @@ x509.der = new Buffer(x509.der, 'base64');
 x509.pem = new Buffer(x509.pem, 'base64');
 
 function startServer(cb) {
-  if (G.$http.__server) {
+  if (G.$http && G.$http.__server) {
     setTimeout(function() {
       return cb(null, G.$http.__server);
     }, 1);
     return;
+  }
+
+  var old;
+  if (G.$http) {
+    old = G.$http;
   }
 
   var server = {
@@ -271,9 +276,12 @@ function startServer(cb) {
         return cb(null, res, res.body);
       }
     },
-    listen: function() {
+    listen: function(port, cb) {
+      if (cb) return cb();
     },
-    close: function() {
+    close: function(cb) {
+      if (old) G.$http = old;
+      return cb();
     }
   };
 

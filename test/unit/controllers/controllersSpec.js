@@ -10,6 +10,7 @@ saveAs = function(o) {
   saveAsLastCall = o;
 };
 
+var startServer = require('../../mocks/FakePayProServer');
 
 describe("Unit: Controllers", function() {
   var invalidForm = {
@@ -17,6 +18,8 @@ describe("Unit: Controllers", function() {
   };
 
   var scope;
+
+  var server;
 
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
@@ -217,6 +220,15 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(scope.loadTxs, 1);
     });
 
+    it('#start the example server', function(done) {
+      startServer(function(err, s) {
+        if (err) return done(err);
+        server = s;
+        server.uri = 'https://localhost:8080/-';
+        done();
+      });
+    });
+
     it('should create a payment protocol transaction proposal', function() {
       var uri = 'bitcoin:1JqniWpWNA6Yvdivg3y9izLidETnurxRQm?amount=0.00001000&r=https://localhost:8080/-/request';
       sendForm.address.$setViewValue(uri);
@@ -242,6 +254,12 @@ describe("Unit: Controllers", function() {
       scope.submitForm(sendForm);
       sinon.assert.callCount(spy, 1);
       sinon.assert.callCount(spy2, 1);
+    });
+
+    it('#stop the example server', function(done) {
+      server.close(function() {
+        done();
+      });
     });
   });
 
