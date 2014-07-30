@@ -1003,6 +1003,11 @@ a.text-white:hover {color: #ccc;}
   border: 0;
 }
 
+.box-setup label small.has-error {
+  font-size: 11px;
+  color: #FFA59B;
+}
+
 .panel qrcode {
   float: left;
   width: 260px;
