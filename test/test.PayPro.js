@@ -20,6 +20,7 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
+var startServer = require('./mocks/FakePayProServer');
 
 var G = is_browser ? window : global;
 G.SSL_UNTRUSTED = true;

@@ -1027,7 +1027,8 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   var outs = [];
   merchantData.pr.pd.outputs.forEach(function(output) {
     outs.push({
-      address: self.getAddressesStr()[0] || '1NGYre1pSqTnCXaqN5gLQ1e2KNTJXjDhtF', // dummy address
+      address: self.getAddressesStr()[0]
+        || 'mfWxJ45yp2SFn7UciZyNpvDKrzbhyfKrY8', // dummy address (testnet 0 * hash160)
       amountSatStr: '0' // dummy amount
     });
   });
