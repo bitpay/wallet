@@ -67,6 +67,7 @@ HDPath.parseBitcoinURI = function(uri) {
                       });
                       ret.amount = parseFloat(data.amount);
                       ret.message = data.message;
+    ret.merchant = data.r;
   }
 
   return ret;
