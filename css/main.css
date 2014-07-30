@@ -972,6 +972,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   opacity: 0.6;
 }
 
+.black {
+  background-color: #2C3E50;
+}
+
 .text-light {font-weight: 100;}
 .text-gray {color: #8597A7;}
 .text-black {color: #2C3E50;}
@@ -1015,6 +1019,31 @@ a.text-white:hover {color: #ccc;}
 
 .box-setup h3 {
   color: #fff;
+}
+
+.joyride-tip-guide {
+  width: 150px;
+  background: #213140;
+  top: -20px !important;
+  left: 50px !important;
+  -moz-box-shadow:    1px 1px 3px 0px rgba(0,0,0,0.40);
+  box-shadow:         1px 1px 3px 0px rgba(0,0,0,0.40);
+}
+
+.joyride-tip-guide .joyride-nub.left {
+  border-color: #213140 !important;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.joyride-content-wrapper {
+  padding: 0.8rem
+}
+
+.joyride-tip-guide p {
+  margin: 0;
+  color: #8597A7;
 }
 
 /*-----------------------------------------------------------------*/
