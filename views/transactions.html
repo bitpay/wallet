@@ -8,24 +8,34 @@
       </ul>
       <div class="last-transactions" ng-repeat="tx in txs | paged">
         <div class="last-transactions-header">
-          <a class="db large-1 columns text-black" ng-show="tx.comment">
-            <i class="fi-comment-quotes size-24" Popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
-          </a>
-          <a class="db large-1 columns disable" ng-show="!tx.comment">
-            <i class="fi-comment-quotes size-24 text-gray"></i>
-          </a>
-          <div class="large-7 medium-8 small-12 columns">
+          <div class="hide-for-small-only large-1 medium-1 columns">
+            <a class="text-black" ng-show="tx.comment">
+              <i class="fi-comment-quotes size-24" Popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
+            </a>
+            <a class="disable" ng-show="!tx.comment">
+              <i class="fi-comment-quotes size-24 text-gray"></i>
+            </a>
+          </div>
+          <div class="show-for-small-only small-12 columns m10b" ng-show="tx.comment">
+            <p class="size-14 label" >
+              {{tx.comment}} - 
+              {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
+            </p>
+          </div>
+          <div class="large-8 medium-8 small-8 columns">
             <div ng-repeat="out in tx.outs">
               <div class="large-3 medium-3 small-3 columns">
-                {{out.value | noFractionNumber}} {{$root.unitName}}</div>
+                <p class="size-14 hide-for-small-only">{{out.value | noFractionNumber}} {{$root.unitName}}</p>
+                <p class="size-12 show-for-small-only">{{out.value | noFractionNumber}} {{$root.unitName}}</p>
+              </div>
               <div class="large-1 medium-1 small-2 columns fi-arrow-right"> </div>
               <div class="large-8 medium-8 small-7 columns ellipsis">
                 <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
               </div>
             </div>
           </div>
-          <div class="large-4 medium-4 small-12 columns text-right">
-            <p class="size-14 m0">{{tx.createdTs | amCalendar}}</p>
+          <div class="large-3 medium-3 small-4 columns text-right">
+            <p class="size-12">{{tx.createdTs | amCalendar}}</p>
           </div>
         </div>
 
@@ -60,14 +70,24 @@
         </div>
 
         <div class="last-transactions-footer">
-          <div class="large-5 medium-5 columns" ng-show="!tx.sentTs">
+          <div class="large-5 medium-7 small-12 columns" ng-show="!tx.sentTs">
             <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
-              <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
-                <i class="fi-check"></i> Sign
-              </button>
-              <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
-                <i class="fi-x" ></i> Reject
-              </button>
+              <div class="hide-for-small-only">
+                <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+                  <i class="fi-check"></i> Sign
+                </button>
+                <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
+                  <i class="fi-x" ></i> Reject
+                </button>
+              </div>
+              <div class="show-for-small-only row m10b">
+                <button class="primary small-5 columns"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+                  <i class="fi-check"></i> Sign
+                </button>
+                <button class="warning small-5 columns" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
+                  <i class="fi-x" ></i> Reject
+                </button>
+              </div>
             </div>
             <div ng-show="!tx.missingSignatures && !tx.sentTs">
               <button class="primary"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
@@ -76,12 +96,12 @@
             </div>
           </div>
 
-          <div class="large-7 medium-7 columns text-right">
-            <div ng-show="tx.finallyRejected" class="text-warning m10b">
+          <div class="large-7 medium-5 small-12 columns text-right">
+            <div ng-show="tx.finallyRejected" class="has-error m10b">
               Transaction finally rejected
             </div>
             <div ng-show="!tx.missingSignatures && tx.sentTs">
-              <div class="success m10b">
+              <div class="is-valid m10b">
                 <strong>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
               </div>
               <div class="ellipsis small">
