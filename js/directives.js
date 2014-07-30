@@ -13,9 +13,10 @@ angular.module('copayApp.directives')
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
             // Is payment protocol address?
-            if (value.indexOf('bitcoin:') === 0 && /r=/.test(value)) {
+            var uri = copay.HDPath.parseBitcoinURI(value);
+            if (uri && uri.merchant) {
               ctrl.$setValidity('validAddress', true);
-              return value;
+              return 'Merchant: '+ uri.merchant;
             }
             var a = new Address(value);
             ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
