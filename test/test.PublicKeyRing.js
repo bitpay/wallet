@@ -489,4 +489,27 @@ describe('PublicKeyRing model', function() {
     });
   });
 
+  it('#getForPath should return 5 pubkeys', function() {
+    var w = getCachedW().w;
+    var pubkeys = w.getForPath('m/45\'/2147483647/1/0');
+    pubkeys.length.should.equal(5);
+  });
+
+  it('#getForPaths should return 2 arrays of 5 pubkey ', function() {
+    var w = getCachedW().w;
+    var pubkeys = w.getForPaths([ 'm/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1'] );
+    pubkeys.length.should.equal(2);
+    pubkeys[0].length.should.equal(5);
+    pubkeys[1].length.should.equal(5);
+  });
+
+  it('#forPaths should return copayers and pubkeys ', function() {
+    var w = getCachedW().w;
+    var ret = w.forPaths([ 'm/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1'] );
+    ret.copayerIds.length.should.equal(5);
+    ret.pubKeys.length.should.equal(2);
+    ret.pubKeys[0].length.should.equal(5);
+    ret.pubKeys[1].length.should.equal(5);
+  });
+
 });
