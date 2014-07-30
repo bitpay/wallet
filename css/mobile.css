@@ -102,5 +102,18 @@
     border-right: 1px solid #425568;
   }
 
+  .panel .secret {
+    padding-top: 0.5rem;
+    display: block;
+    width: 100%;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .panel qrcode {
+    display: block;
+    float: none;
+    margin: 0 auto;
+  }
 }
 
