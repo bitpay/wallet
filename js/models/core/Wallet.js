@@ -881,7 +881,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       },
       signature: sig,
       ca: ca,
-      total: 0
+      total: bignum('0')
     }
   };
 
@@ -924,13 +924,13 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     || self.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
-    var total = 0;
+    var total = bignum('0');
     for (var i = 0; i < tx.outs.length - 1; i++) {
-      total += tx.outs[i].v;
+      total = total.add(bignum.fromBuffer(tx.outs[i].v));
     }
     var rpo = new PayPro();
     rpo = rpo.makeOutput();
-    rpo.set('amount', total);
+    rpo.set('amount', +total.toString(10));
     rpo.set('script',
       Buffer.concat([
         new Buffer([
@@ -1078,8 +1078,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     b.tx.outs[i].v = v;
     b.tx.outs[i].s = s;
 
-    merchantData.total += v;
+    merchantData.total = merchantData.total.add(bignum.fromBuffer(v));
   });
+
+  merchantData.total = merchantData.total.toString(10);
 
   this.log('');
   this.log('Created transaction:');
