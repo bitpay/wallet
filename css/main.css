@@ -1013,7 +1013,7 @@ a.text-white:hover {color: #ccc;}
 
 .box-setup .panel {
   background-color: #2C3E50;
-  padding: 0.5rem;
+  padding: 1rem;
   border: 0;
 }
 
@@ -1024,18 +1024,25 @@ a.text-white:hover {color: #ccc;}
 
 .panel qrcode {
   float: left;
-  width: 260px;
-  height: 260px;
+  width: 160px;
+  height: 160px;
   padding: 5px 0 0 5px;
   background-color: white;
 }
 
+.panel qrcode canvas {
+  width: 150px;
+  height: 150px;
+}
+
 .panel .secret {
+  line-height: 1.3rem;
+  padding-top: 4rem;
   float: left;
-  margin-left: 10px;
+  margin-left: 2rem;
   overflow-wrap: break-word;
-  width: 50%;
-  text-align: center;
+  width: 55%;
+  text-align: left;
 }
 
 /*-----------------------------------------------------------------*/
