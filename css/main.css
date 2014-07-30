@@ -999,4 +999,20 @@ a.text-white:hover {color: #ccc;}
   border: 0;
 }
 
+.panel qrcode {
+  float: left;
+  width: 260px;
+  height: 260px;
+  padding: 5px 0 0 5px;
+  background-color: white;
+}
+
+.panel .secret {
+  float: left;
+  margin-left: 10px;
+  overflow-wrap: break-word;
+  width: 50%;
+  text-align: center;
+}
+
 /*-----------------------------------------------------------------*/
