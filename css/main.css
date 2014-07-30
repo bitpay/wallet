@@ -1045,4 +1045,8 @@ a.text-white:hover {color: #ccc;}
   text-align: left;
 }
 
+.box-setup h3 {
+  color: #fff;
+}
+
 /*-----------------------------------------------------------------*/
