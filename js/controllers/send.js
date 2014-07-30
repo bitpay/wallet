@@ -87,7 +87,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       var uri = address.indexOf('bitcoin:') === 0
-        && copay.Structure.parseBitcoinURI(address);
+        && copay.HDPath.parseBitcoinURI(address);
       if (uri && uri.merchant) {
         w.createTx(uri.merchant, commentText, done);
       } else {
