@@ -66,7 +66,7 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
           if (ca) {
-            message += '.\nThis payment protocol transaction
+            message += '.\nThis payment protocol transaction'
               + 'has been verified through ' + ca;
           }
           notification.success('Success!', message);
