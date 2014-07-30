@@ -59,6 +59,7 @@ HDPath.parseBitcoinURI = function(uri) {
   var splitQuestion = data.split('?');
   ret.address = splitQuestion[0];
 
+/*
   if (splitQuestion.length > 1) {
     var search = splitQuestion[1];
     data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
@@ -67,6 +68,26 @@ HDPath.parseBitcoinURI = function(uri) {
                       });
                       ret.amount = parseFloat(data.amount);
                       ret.message = data.message;
+    ret.merchant = data.r;
+  }
+*/
+
+  if (splitQuestion.length > 1) {
+    var data = {};
+    var search = splitQuestion[1];
+    var parts = search.split('&');
+    var part;
+    var i = 0;
+    for (; i < parts.length; i++) {
+      part = parts[i].split('=');
+      if (part[0] === '') {
+        data[part[1]] = part[1];
+      } else {
+        data[part[0]] = decodeURIComponent(part[1]);
+      }
+    }
+    ret.amount = parseFloat(data.amount);
+    ret.message = data.message;
     ret.merchant = data.r;
   }
 

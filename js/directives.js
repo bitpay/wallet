@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('copayApp.directives')
+  //.directive('validAddress', ['$rootScope',
+    //function($rootScope) {
   .directive('validAddress', [
-
     function() {
 
       var bitcore = require('bitcore');
@@ -15,6 +16,17 @@ angular.module('copayApp.directives')
             // Is payment protocol address?
             var uri = copay.HDPath.parseBitcoinURI(value);
             if (uri && uri.merchant) {
+              scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
+                var txp = scope.wallet.txProposals.txps[ntxid];
+                if (!txp) return;
+                var total = txp.merchant.total;
+                console.log('TOTAL:');
+                console.log(total);
+                var sendForm = angular.element(document).find('[name=sendForm]');
+                var amount = angular.element(sendForm).find('#amount')
+                amount.prop('disabled', true);
+                amount.val(total);
+              });
               ctrl.$setValidity('validAddress', true);
               return 'Merchant: '+ uri.merchant;
             }
