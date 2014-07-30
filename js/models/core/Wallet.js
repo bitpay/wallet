@@ -881,8 +881,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       },
       signature: sig,
       ca: ca,
-      total: bignum('0')
-    }
+    },
+    total: bignum('0').toString(10)
   };
 
   return this.getUnspent(function(err, unspent) {
@@ -1048,6 +1048,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   if (priv) {
     var keys = priv.getForPaths(inputChainPaths);
     var signed = b.sign(keys);
+  }
+
+  if (typeof merchantData.total === 'string') {
+    merchantData.total = bignum(merchantData.total, 10);
   }
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
