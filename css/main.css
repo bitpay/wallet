@@ -1090,4 +1090,32 @@ a.text-white:hover {color: #ccc;}
   color: #8597A7;
 }
 
+.box-setup label small.has-error {
+  font-size: 11px;
+  color: #FFA59B;
+}
+
+.panel qrcode {
+  float: left;
+  width: 160px;
+  height: 160px;
+  padding: 5px 0 0 5px;
+  background-color: white;
+}
+
+.panel qrcode canvas {
+  width: 150px;
+  height: 150px;
+}
+
+.panel .secret {
+  line-height: 1.3rem;
+  padding-top: 4rem;
+  float: left;
+  margin-left: 2rem;
+  overflow-wrap: break-word;
+  width: 55%;
+  text-align: left;
+}
+
 /*-----------------------------------------------------------------*/
