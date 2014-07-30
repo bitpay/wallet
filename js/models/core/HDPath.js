@@ -55,7 +55,7 @@ HDPath.parseBitcoinURI = function(uri) {
   var data = decodeURIComponent(uri);
   var splitDots = data.split(':');
   ret.protocol = splitDots[0];
-  data = splitDots[1];
+  data = splitDots.slice(1).join(':');
   var splitQuestion = data.split('?');
   ret.address = splitQuestion[0];
 
