@@ -298,6 +298,15 @@ PublicKeyRing.prototype.getForPaths = function(paths) {
   return paths.map(this.getForPath.bind(this));
 };
 
+
+PublicKeyRing.prototype.forPaths = function(paths) {
+  return {
+    pubKeys: paths.map(this.getForPath.bind(this)),
+    copayerIds: this.copayerIds,
+  }
+};
+
+
 // TODO this could be cached
 PublicKeyRing.prototype._addScriptMap = function(map, path) {
   var p = HDPath.indexesForPath(path);
