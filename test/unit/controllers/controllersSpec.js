@@ -217,6 +217,32 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(scope.loadTxs, 1);
     });
 
+    it('should create a payment protocol transaction proposal', function() {
+      var uri = 'bitcoin:1JqniWpWNA6Yvdivg3y9izLidETnurxRQm?amount=0.00001000&r=https://localhost:8080/-/request';
+      sendForm.address.$setViewValue(uri);
+      sendForm.amount.$setViewValue(1000);
+
+      scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 3;
+      var spy = sinon.spy(scope.wallet, 'createTx');
+      var spy2 = sinon.spy(scope.wallet, 'sendTx');
+      scope.submitForm(sendForm);
+      sinon.assert.callCount(spy, 1);
+      sinon.assert.callCount(spy2, 0);
+    });
+
+    it('should create and send a payment protocol transaction proposal', function() {
+      var uri = 'bitcoin:1JqniWpWNA6Yvdivg3y9izLidETnurxRQm?amount=0.00001000&r=https://localhost:8080/-/request';
+      sendForm.address.$setViewValue(uri);
+      sendForm.amount.$setViewValue(1000);
+
+      scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
+      var spy = sinon.spy(scope.wallet, 'createTx');
+      var spy2 = sinon.spy(scope.wallet, 'sendTx');
+
+      scope.submitForm(sendForm);
+      sinon.assert.callCount(spy, 1);
+      sinon.assert.callCount(spy2, 1);
+    });
   });
 
   describe("Unit: Version Controller", function() {
