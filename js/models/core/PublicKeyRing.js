@@ -288,16 +288,15 @@ PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayer
   return ret;
 };
 
-PublicKeyRing.prototype.getForPaths = function(paths) {
-  return paths.map(this.getForPath.bind(this));
-};
-
 PublicKeyRing.prototype.getForPath = function(path) {
   var p = HDPath.indexesForPath(path);
   var pubKeys = this.getPubKeys(p.addressIndex, p.isChange, p.copayerIndex);
   return pubKeys;
 };
 
+PublicKeyRing.prototype.getForPaths = function(paths) {
+  return paths.map(this.getForPath.bind(this));
+};
 
 // TODO this could be cached
 PublicKeyRing.prototype._addScriptMap = function(map, path) {
