@@ -12,6 +12,11 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
+            // Is payment protocol address?
+            if (value.indexOf('bitcoin:') === 0 && /r=/.test(value)) {
+              ctrl.$setValidity('validAddress', true);
+              return value;
+            }
             var a = new Address(value);
             ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
             return value;
