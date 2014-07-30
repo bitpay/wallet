@@ -65,10 +65,13 @@ angular
 //Setting HTML5 Location Mode
 angular
   .module('copayApp')
-  .config(function($locationProvider) {
+  .config(function($locationProvider, $idleProvider) {
     $locationProvider
       .html5Mode(false)
       .hashPrefix('!');
+    // IDLE timeout
+    $idleProvider.idleDuration(15 * 60); // in seconds
+    $idleProvider.warningDuration(10); // in seconds
   })
   .run(function($rootScope, $location) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
