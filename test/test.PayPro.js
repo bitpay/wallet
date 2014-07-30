@@ -168,8 +168,9 @@ describe('PayPro (in Wallet) model', function() {
         should.exist(ntxid);
         console.log('Sent TX proposal to other copayers:');
         console.log([ntxid, ca]);
-        server.close();
-        done();
+        server.close(function() {
+          done();
+        });
       } else {
         console.log('Sending TX to merchant server:');
         console.log(ntxid);
@@ -177,8 +178,9 @@ describe('PayPro (in Wallet) model', function() {
           should.exist(txid);
           console.log('TX sent:');
           console.log([ntxid, ca]);
-          server.close();
-          done();
+          server.close(function() {
+            done();
+          });
         });
       }
     });
