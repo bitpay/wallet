@@ -9,7 +9,7 @@
       <div class="last-transactions" ng-repeat="tx in txs | paged">
         <div class="last-transactions-header">
           <a class="db large-1 columns text-black" ng-show="tx.comment">
-            <i class="fi-comment-quotes size-24" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right"></i>
+            <i class="fi-comment-quotes size-24" Popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
           </a>
           <a class="db large-1 columns disable" ng-show="!tx.comment">
             <i class="fi-comment-quotes size-24 text-gray"></i>
