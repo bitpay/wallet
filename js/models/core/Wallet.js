@@ -5,7 +5,7 @@ var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
-var parseBitcoinURI = require('./Structure').parseBitcoinURI;
+var parseBitcoinURI = require('./HDPath').parseBitcoinURI;
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
