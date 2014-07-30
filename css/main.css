@@ -138,7 +138,7 @@ a:hover {
 .setup input,
 .import input,
 .settings input {
-  background: #2C3E50 !important;
+  background-color: #2C3E50 !important;
   -moz-box-shadow:    inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
   border: 0 !important;
@@ -150,7 +150,7 @@ a:hover {
 .setup select,
 .import select,
 .settings select {
-  background: #2C3E50 !important;
+  background-color: #2C3E50 !important;
   border: 0 !important;
   color: #7A8C9E !important;
 }
