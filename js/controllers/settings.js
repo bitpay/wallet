@@ -74,6 +74,6 @@ angular.module('copayApp.controllers').controller('SettingsController',
         unitToSatoshi: $scope.selectedUnit.value,
       }));
 
-      $location.path('/copayers');
+      window.location.reload();
     };
   });
