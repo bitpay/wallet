@@ -8,6 +8,11 @@
     <span ng-if="!$root.updatingBalance">
       {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
     </span>
+    <div style="margin-top:10px;">
+      <span class="label pointer" ng-click="openExternal(address.address)">
+        <i class="fi-link">&nbsp;</i> Open in external aplication
+      </span>
+    </div>
   </div>
 </div>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
