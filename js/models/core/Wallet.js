@@ -25,6 +25,91 @@ var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
 
+if (typeof angular !== 'undefined') {
+  var $http = angular.bootstrap().get('$http');
+}
+
+var $http = function $http(options, callback) {
+  if (typeof options === 'string') {
+    options = { uri: options };
+  }
+
+  options.method = options.method || 'GET';
+  options.headers = options.headers || {};
+
+  var ret = {
+    success: function(cb) {
+      this._success = cb;
+      return this;
+    },
+    error: function(cb) {
+      this._error = cb;
+      return this;
+    },
+    _success: function() {
+      ;
+    },
+    _error: function(_, err) {
+      throw err;
+    }
+  };
+
+  var method = (options.method || 'GET').toUpperCase();
+  var uri = options.uri || options.url;
+  var req = options;
+
+  req.headers = req.headers || {};
+  req.body = req.body || {};
+
+  if (typeof XMLHttpRequest !== 'undefined') {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, uri, true);
+
+    Object.keys(options.headers).forEach(function(key) {
+      var val = options.headers[key];
+      if (key === 'Content-Length') return;
+      if (key === 'Content-Transfer-Encoding') return;
+      xhr.setRequestHeader(key, val);
+    });
+
+    // For older browsers:
+    // xhr.overrideMimeType('text/plain; charset=x-user-defined');
+
+    // Newer browsers:
+    xhr.responseType = 'arraybuffer';
+
+    xhr.onload = function(event) {
+      var response = xhr.response;
+      var buf = new Uint8Array(response);
+      // return callback(null, xhr, buf);
+      var headers = {};
+      (xhr.getAllResponseHeaders() || '').replace(
+        /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
+        function($0, $1, $2) {
+          headers[$1.toLowerCase()] = $2;
+        }
+      );
+      return ret._success(buf, xhr.status, headers, options);
+    };
+
+    xhr.onerror = function(event) {
+      return ret._error(null, event, null, options);
+    };
+
+    if (options.body) {
+      xhr.send(options.body);
+    } else {
+      xhr.send(null);
+    }
+
+    return ret;
+  }
+
+  // require('request')(options, callback);
+
+  return ret;
+}
+
 function Wallet(opts) {
   var self = this;
 
