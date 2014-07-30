@@ -880,7 +880,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         merchant_data: merchant_data.toString('hex')
       },
       signature: sig,
-      ca: ca
+      ca: ca,
+      total: 0
     }
   };
 
@@ -1076,6 +1077,8 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
     b.tx.outs[i].v = v;
     b.tx.outs[i].s = s;
+
+    merchantData.total += v;
   });
 
   this.log('');
