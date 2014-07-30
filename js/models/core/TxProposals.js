@@ -87,7 +87,7 @@ TxProposal.prototype.isValid = function() {
       this.builder.inputMap[i].scriptPubKey, i, Transaction.SIGHASH_ALL);
 
 
-    return false;
+      return false;
   }
 
 
@@ -101,7 +101,27 @@ TxProposal.getSentTs = function() {
 
 TxProposal.prototype.merge = function(incoming, author) {
   var ret = {};
+
+  /* TODO */
+
+  /*
+    events.push({
+      type: 'seen',
+      cId: k,
+      txId: ntxid
+    });
+      events.push({
+        type: 'signed',
+        cId: k,
+        txId: ntxid
+      });
+      events.push({
+        type: 'rejected',
+        cId: k,
+        txId: ntxid
+      });
   ret.events = this.mergeMetadata(incoming, author);
+   */
   ret.hasChanged = this.mergeBuilder(other);
   return ret;
 };
@@ -116,100 +136,6 @@ TxProposal.prototype.mergeBuilder = function(other) {
   return after !== before;
 };
 
-
-TxProposal.prototype._verifyTimestamp = function(ts, limits) {
-  if (ts < limits.min || ts > limits.max)
-    throw new Error('Invalid metadata at transaction proposal: skiping');
-  return true;
-};
-
-TxProposal.prototype._isSignedBy = function(incoming,author) {
-  var status = false;;
-
-  var builder = incoming.builder.clone();
-  var sHex = builder.vanilla.scriptSig[0];
-  if (!sHex) return ret;
-
-  var sBuf = new Buffer(sHex,'hex');
-  var s = new Script(new Buffer(sHex,'hex'));
-
-  var k = new Key();
-  k.public = author;
-
-
-  console.log('[TxProposals.js.124]', builder.vanilla); //TODO
-
-  for (var i = 1; i <= s.countSignatures(); i++) {
-    var chunk = s.chunks[i];
-
-    var txSigHash = builder.build().hashForSignature(builder.vanilla, i-1, Transaction.SIGHASH_ALL);
-
-    var sigRaw = new Buffer(chunk.slice(0, chunk.length - 1));
-    if (k.verifySignatureSync(txSigHash, sigRaw)) {
-      ret = true;
-      break;
-    }
-  }
-  return ret;
-};
-
-TxProposal.prototype.mergeMetadata = function(incoming, author) {
-  var events = [];
-
-  var ntxid = this.getID();
-  var limits = {
-    min: COPAY_EPOCH,
-    max: Date.now(),
-  };
-  var status = this._isSignedBy(incoming, author);
-
-  // Only use author's metadata
-  if (!this.seenBy[author] && incoming.seenBy[k]) {
-    this._validateTimestamp(incoming.seenBy[k], limits);
-    this.seenBy[author] = incoming.seenBy[author];
-    events.push({
-      type: 'seen',
-      cId: k,
-      txId: ntxid
-    });
-  };
-
-
-  if (this.seenBy[author]) {
-    limits.min = this.seenBy[author];
-
-
-    if (!this.signedBy[author] && incoming.signedBy[author]) {
-      this._validateTimestamp(incoming.seenBy[k], this.seenBy[author], now);
-      this.signedBy[k] = incoming.signedBy[k];
-      events.push({
-        type: 'signed',
-        cId: k,
-        txId: ntxid
-      });
-    }
-    if (!this.rejectedBy[author] && incoming.signedBy[author]) {
-      this._validateTimestamp(incoming.rejectedBy[k], this.seenBy[author], now);
-      v0.rejectedBy[k] = v1.rejectedBy[k];
-      events.push({
-        type: 'rejected',
-        cId: k,
-        txId: ntxid
-      });
-    }
-  }
-
-  if (!v0.sentTxid && v1.sentTxid) {
-    v0.sentTs = v1.sentTs;
-    v0.sentTxid = v1.sentTxid;
-    events.push({
-      type: 'broadcast',
-      txId: ntxid
-    });
-  }
-  return events;
-
-};
 
 //This should be on bitcore / Transaction
 TxProposal.prototype.countSignatures = function() {
