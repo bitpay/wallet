@@ -27,6 +27,7 @@ var copayApp = window.copayApp = angular.module('copayApp', [
   'angularMoment',
   'mm.foundation',
   'monospaced.qrcode',
+  'ngIdle',
   'copayApp.filters',
   'copayApp.services',
   'copayApp.controllers',
@@ -39,6 +40,7 @@ copayApp.config(function($sceDelegateProvider) {
    'mailto:**'
   ]);
 });
+
 
 angular.module('copayApp.filters', []);
 angular.module('copayApp.services', []);
