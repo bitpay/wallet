@@ -2,7 +2,7 @@
 
 var imports = require('soop').imports();
 
-var TxProposals = require('./TxProposals');
+var TxProposalsSet = require('./TxProposalsSet');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
@@ -124,10 +124,10 @@ WalletFactory.prototype.create = function(opts) {
     opts.nickname);
   this.log('\t### PublicKeyRing Initialized');
 
-  opts.txProposals = opts.txProposals || new TxProposals({
+  opts.txProposals = opts.txProposals || new TxProposalsSet({
     networkName: this.networkName,
   });
-  this.log('\t### TxProposals Initialized');
+  this.log('\t### TxProposalsSet Initialized');
 
   this.storage._setPassphrase(opts.passphrase);
 
