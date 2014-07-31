@@ -132,7 +132,7 @@ describe('TxProposal', function() {
 
 
   describe('Signature verification', function() {
-    var validScriptSig = new bitcore.Script(new Buffer('00483045022100a35a5cbe37e39caa62bf1c347eae9c72be827c190b31494b184943b3012757a8022008a1ff72a34a5bf2fc955aa5b6f8a4c32cb0fab7e54c212a5f6f645bb95b8ef10149304602210092347916c3c3e6f1692bf9447b973779c28ce9985baaa3940b483af573f464b4022100ab91062796ab8acb32a0fa90e00627db5be77d9722400b3ecfd9c5f34a8092b1014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae', 'hex'));
+    var validScriptSig = new bitcore.Script(FakeBuilder.VALID_SCRIPTSIG_BUF);
 
     var pubkeys = [
       '03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d',
@@ -167,15 +167,86 @@ describe('TxProposal', function() {
     it('#_verifyScriptSig, two signatures', function() {
       // Data taken from bitcore's TransactionBuilder test
       var txp = dummyProposal;
-      var ret = TxProposal._verifySignatures(pubkeys,validScriptSig, new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
+      var tx = dummyProposal.builder.build();
+      var ret = TxProposal._verifySignatures(pubkeys,validScriptSig, tx.hashForSignature());
       ret.should.deep.equal([0, 3]);
     });
-    it('#_keysFromRedeemScript', function() {
-      var keys = TxProposal._keysFromRedeemScript(validScriptSig);
+    it('#_infoFromRedeemScript', function() {
+      var info = TxProposal._infoFromRedeemScript(validScriptSig);
+      var keys = info.keys;
       keys.length.should.equal(5);
       for(var i in keys){
         keys[i].toString('hex').should.equal(pubkeys[i].toString('hex'));
       }
+      Buffer.isBuffer(info.scriptBuf).should.equal(true);
     });
+    it('#_updateSignedBy', function() {
+      var txp = dummyProposal;
+      txp._inputSignatures.should.deep.equal([]);
+      txp._updateSignedBy();
+      txp._inputSignatures.should.deep.equal([[ '03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3' ]]);
+    });
+    describe('#_check', function() {
+      var txp = dummyProposal;
+      var backup = txp.builder.tx.ins;
+
+      it('OK', function() {
+        txp._check();
+      });
+      it('FAIL ins', function() {
+        txp.builder.tx.ins = [];
+        (function() { txp._check();} ).should.throw('no ins');
+        txp.builder.tx.ins = backup;
+      });
+      it('FAIL signhash', function() {
+        sinon.stub(txp.builder.tx,'getHashType').returns(2);
+        (function() { txp._check();} ).should.throw('signatures');
+        txp.builder.tx.getHashType.restore();
+      });
+      it('FAIL no signatures', function() {
+        var backup = txp.builder.vanilla.scriptSigs;
+        txp.builder.vanilla.scriptSigs = [];
+        (function() { txp._check();} ).should.throw('no signatures');
+        txp.builder.vanilla.scriptSigs = backup;
+      });
+    });
+    describe('#merge', function() {
+      var txp = dummyProposal;
+      var backup = txp.builder.tx.ins;
+      it('with self', function() {
+        var ret = txp.merge(txp);
+        ret.newSignatures.length.should.equal(0);
+        ret.hasChanged.should.equal(false);
+      });
+
+      it('with less signatures', function() {
+        var backup = txp.builder.vanilla.scriptSigs[0];
+        txp.builder.merge = function() {
+          // 3 signatures.
+          this.vanilla.scriptSigs=['0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
+          this.tx.ins[0].s=new Buffer(this.vanilla.scriptSigs[0],'hex');
+        };
+        var ret = txp.merge(txp);
+        ret.hasChanged.should.equal(true);
+        ret.newSignatures.length.should.equal(0);
+
+        txp.builder.vanilla.scriptSigs = [backup];
+        txp.builder.tx.ins[0].s = new Buffer(backup,'hex');
+      });
+
+
+      it('with more signatures', function() {
+        txp.builder.merge = function() {
+          // 3 signatures.
+          this.vanilla.scriptSigs=['00483045022100f75bd3eb92d8c9be9a94d848bbd1985fc0eaf4c47fb470a0b222881802a1f03802204eb239ae3082779b1ec4f2e69baa0362494071e707e1696c14ad23c8f2e184e20148304502201981482db0f369ce943293b6fec06a0347918663c766a79d4cbd0457801768d1022100aedf8d7c51d55a9ddbdcc0067ed6b648b77ce9660447bbcf4e2c209698efa0a30148304502203f0ddad47757f8705cb40e7c706590d2e2028a7027ffdb26dd208fd6155e0d28022100ccd206f9b969ab7f88ee4c5c6cee48c800a62dda024c5a8de7eb8612b833a0c0014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
+          this.tx.ins[0].s=new Buffer(this.vanilla.scriptSigs[0],'hex');
+        };
+        var ret = txp.merge(txp);
+        ret.hasChanged.should.equal(true);
+        ret.newSignatures.length.should.equal(1);
+        ret.newSignatures[0].should.equal('0392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed03');
+      });
+    });
+
   });
 });
