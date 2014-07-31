@@ -150,6 +150,8 @@ function Wallet(opts) {
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
 
+  this.paymentRequests = opts.paymentRequests || {};
+
   //network nonces are 8 byte buffers, representing a big endian number
   //one nonce for oneself, and then one nonce for each copayer
   this.network.setHexNonce(opts.networkNonce);
@@ -899,12 +901,30 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
 };
 
 Wallet.prototype.fetchPaymentTx = function(options, cb) {
+  var self = this;
   options = options || {};
   if (typeof options === 'string') {
     options = { uri: options };
   }
   options.fetch = true;
-  return this.createPaymentTx(options, cb);
+  return this.createPaymentTx(options, function(err, merchantData, options, pr) {
+    var id = self.hashMerchantData(merchantData);
+    self.paymentRequests[id] = {
+      id: id,
+      merchantData: merchantData,
+      options: options,
+      pr: pr
+    };
+    return cb(null, merchantData);
+  });
+};
+
+Wallet.hashMerchantData =
+Wallet.prototype.hashMerchantData = function(merchantData) {
+  return merchantData.request_url
+    + ':' + merchantData.pr.payment_url
+    + ':' + merchantData.total
+    + ':' + merchantData.pr.pd.merchant_data;
 };
 
 Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
@@ -989,11 +1009,12 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     total: bignum('0', 10).toString(10)
   };
 
-  if (options.fetch) {
-    return cb(null, merchantData);
-  }
-
   return this.getUnspent(function(err, unspent) {
+    if (options.fetch) {
+      self.createPaymentTxSync(options, merchantData, unspent);
+      return cb(null, merchantData, options, pr);
+    }
+
     var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
     if (ntxid) {
       self.sendIndexes();
@@ -1194,6 +1215,8 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   });
 
   merchantData.total = merchantData.total.toString(10);
+
+  if (options.fetch) return;
 
   this.log('');
   this.log('Created transaction:');
