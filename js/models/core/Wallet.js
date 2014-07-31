@@ -879,9 +879,18 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     }
   }
 
+  var req = this.paymentRequests[options.uri];
+  if (req) {
+    req.options.memo = options.memo;
+    req.options.fetch = false;
+    delete this.paymentRequests[options.uri];
+    this.receivePaymentRequest(req.options, req.pr, cb);
+    return;
+  }
+
   return $http({
     method: options.method || 'POST',
-    url: options.uri || options.url,
+    url: options.uri,
     headers: {
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
         + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
@@ -903,15 +912,19 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
 
 Wallet.prototype.fetchPaymentTx = function(options, cb) {
   var self = this;
+
   options = options || {};
   if (typeof options === 'string') {
     options = { uri: options };
   }
   options.uri = options.uri || options.url;
   options.fetch = true;
-  if (this.paymentRequests[options.uri]) {
-    return cb(null, this.paymentRequests[options.uri].merchantData);
+
+  var req = this.paymentRequests[options.uri];
+  if (req) {
+    return cb(null, req.merchantData);
   }
+
   return this.createPaymentTx(options, function(err, merchantData, options, pr) {
     self.paymentRequests[options.uri] = {
       merchantData: merchantData,
@@ -924,10 +937,6 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
 
 Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var self = this;
-
-  if (this.paymentRequests[options.uri]) {
-    delete this.paymentRequests[options.uri];
-  }
 
   var ver = pr.get('payment_details_version');
   var pki_type = pr.get('pki_type');

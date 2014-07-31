@@ -94,18 +94,10 @@ angular.module('copayApp.controllers').controller('SendController',
         && copay.HDPath.parseBitcoinURI(address);
 
       if (uri && uri.merchant) {
-        var req = w.paymentRequests[uri.merchant];
-        if (req) {
-          if (commentText) {
-            req.options.memo = commentText;
-          }
-          w.receivePaymentRequest(req.options, req.pr, done);
-        } else {
-          w.createPaymentTx({
-            uri: uri.merchant,
-            memo: commentText
-          }, done);
-        }
+        w.createPaymentTx({
+          uri: uri.merchant,
+          memo: commentText
+        }, done);
       } else {
         w.createTx(address, amount, commentText, done);
       }
