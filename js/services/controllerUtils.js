@@ -185,13 +185,14 @@ angular.module('copayApp.services')
 
     root.updateAddressList = function() {
       var w = $rootScope.wallet;
-      if (w)
+      if (w && w.isReady())
         $rootScope.addrInfos = w.getAddressesInfo();
     };
 
     root.updateBalance = function(cb) {
       var w = $rootScope.wallet;
       if (!w) return root.onErrorDigest();
+      if (!w.isReady()) return;
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
