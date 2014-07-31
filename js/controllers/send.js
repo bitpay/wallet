@@ -62,12 +62,14 @@ angular.module('copayApp.controllers').controller('SendController',
       var w = $rootScope.wallet;
 
       function done(ntxid, ca) {
+        var txp = w.txProposals.txps[ntxid];
+        var merchantData = txp.merchant;
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
           if (ca) {
             message += '.\nThis payment protocol transaction'
-              + 'has been verified through ' + ca;
+              + 'has been verified through ' + ca + '.';
           }
           notification.success('Success!', message);
           $scope.loadTxs();
@@ -75,7 +77,9 @@ angular.module('copayApp.controllers').controller('SendController',
           w.sendTx(ntxid, function(txid, ca) {
             if (txid) {
               notification.success('Transaction broadcast', 'Transaction id: ' + txid);
-              if (ca) notification.success('Root Certificate', ca);
+              if (ca) {
+                notification.success('Root Certificate', ca);
+              }
             } else {
               notification.error('Error', 'There was an error sending the transaction.');
             }
@@ -88,8 +92,12 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var uri = address.indexOf('bitcoin:') === 0
         && copay.HDPath.parseBitcoinURI(address);
-      if (uri.merchant) {
-        w.createTx(uri.merchant, commentText, done);
+
+      if (uri && uri.merchant) {
+        w.createPaymentTx({
+          uri: uri.merchant,
+          memo: commentText
+        }, done);
       } else {
         w.createTx(address, amount, commentText, done);
       }
