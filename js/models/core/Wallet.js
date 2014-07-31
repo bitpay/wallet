@@ -17,7 +17,7 @@ var Address = bitcore.Address;
 
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
-var TxProposals = require('./TxProposals');
+var TxProposalsSet = require('./TxProposalsSet');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
 
@@ -36,7 +36,7 @@ function Wallet(opts) {
   });
   if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
     throw new Error('Network forced to ' + copayConfig.networkName +
-      ' and tried to create a Wallet with network ' + this.getNetworkName());
+                    ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
@@ -59,10 +59,10 @@ function Wallet(opts) {
 
 
 Wallet.builderOpts =  {
-    lockTime: null,
-    signhash: bitcore.Transaction.SIGNHASH_ALL,
-    fee: null,
-    feeSat: null,
+  lockTime: null,
+  signhash: bitcore.Transaction.SIGNHASH_ALL,
+  fee: null,
+  feeSat: null,
 };
 
 Wallet.parent = EventEmitter;
@@ -129,28 +129,25 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-
 Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL: ', data);
-  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal, Wallet.builderOpts);
+  var mergeInfo;
 
-
-
-  var valid = inTxp.isValid();
-  if (!valid) {
+  try {
+    mergeInfo = this.txProposals.mergeFromObj(data.txProposal, senderId, Wallet.builderOpts);
+  } catch (e) {
     var corruptEvent = {
       type: 'corrupt',
-      cId: inTxp.creator
+      cId: mergeInfo.inTxp.creator
     };
     this.emit('txProposalEvent', corruptEvent);
     return;
   }
-  var mergeInfo = this.txProposals.merge(inTxp, senderId);
-  var added = this.addSeenToTxProposals();
 
+  var added = this.addSeenToTxProposals();
   if (added) {
     this.log('### BROADCASTING txProposals with my seenBy updated.');
-    this.sendTxProposal(inTxp.getID());
+    this.sendTxProposal(mergeInfo.inTxp.getID());
   }
 
   this.emit('txProposalsUpdated');
@@ -193,24 +190,24 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
       this.sendWalletReady(senderId);
-      break;
+    break;
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
-      this.sendAddressBook(senderId);
-      this.sendAllTxProposals(senderId); // send old txps
-      break;
+    this.sendAddressBook(senderId);
+    this.sendAllTxProposals(senderId); // send old txps
+    break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
-      break;
+    break;
     case 'txProposal':
       this._handleTxProposal(senderId, data, isInbound);
-      break;
+    break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
-      break;
+    break;
     case 'addressbook':
       this._handleAddressBook(senderId, data, isInbound);
-      break;
+    break;
   }
 };
 
@@ -389,7 +386,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.addressBook = o.addressBook;
 
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
+  opts.txProposals = TxProposalsSet.fromObj(o.txProposals, Wallet.builderOpts);
   opts.privateKey = PrivateKey.fromObj(o.privateKey);
 
   opts.storage = storage;
@@ -497,7 +494,7 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
 };
 
 
-Wallet.prototype.getTxProposals = function() {
+Wallet.prototype.getTxProposalsSet = function() {
   var ret = [];
   var copayers = this.getRegisteredCopayerIds();
   for (var ntxid in this.txProposals.txps) {
@@ -734,11 +731,11 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   }
 
   var b = new Builder(opts)
-    .setUnspent(utxos)
-    .setOutputs([{
-      address: toAddress,
-      amountSatStr: amountSatStr,
-    }]);
+  .setUnspent(utxos)
+  .setOutputs([{
+    address: toAddress,
+    amountSatStr: amountSatStr,
+  }]);
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -831,29 +828,29 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
   var self = this;
   async.doWhilst(
     function _do(next) {
-      // Optimize window to minimize the derivations.
-      var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
-      var addresses = self.deriveAddresses(scanIndex, scanWindow, change, cosigner);
-      self.blockchain.checkActivity(addresses, function(err, actives) {
-        if (err) throw err;
+    // Optimize window to minimize the derivations.
+    var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
+    var addresses = self.deriveAddresses(scanIndex, scanWindow, change, cosigner);
+    self.blockchain.checkActivity(addresses, function(err, actives) {
+      if (err) throw err;
 
-        // Check for new activities in the newlly scanned addresses
-        var recentActive = actives.reduce(function(r, e, i) {
-          return e ? scanIndex + i : r;
-        }, lastActive);
-        hasActivity = lastActive != recentActive;
-        lastActive = recentActive;
-        scanIndex += scanWindow;
-        next();
-      });
-    },
-    function _while() {
-      return hasActivity;
-    },
-    function _finnaly(err) {
-      if (err) return cb(err);
-      cb(null, lastActive);
-    }
+      // Check for new activities in the newlly scanned addresses
+      var recentActive = actives.reduce(function(r, e, i) {
+        return e ? scanIndex + i : r;
+      }, lastActive);
+      hasActivity = lastActive != recentActive;
+      lastActive = recentActive;
+      scanIndex += scanWindow;
+      next();
+    });
+  },
+  function _while() {
+    return hasActivity;
+  },
+  function _finnaly(err) {
+    if (err) return cb(err);
+    cb(null, lastActive);
+  }
   );
 }
 
