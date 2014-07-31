@@ -84,6 +84,12 @@ var $http = G.$http || function $http(options, callback) {
     // Newer browsers:
     xhr.responseType = 'arraybuffer';
 
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        ;
+      }
+    };
+
     xhr.onload = function(event) {
       var response = xhr.response;
       var buf = new Uint8Array(response);
