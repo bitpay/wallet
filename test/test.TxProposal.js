@@ -171,15 +171,11 @@ describe('TxProposal', function() {
       ret.should.deep.equal([0, 3]);
     });
     it('#_keysFromRedeemScript', function() {
-      var txp = dummyProposal;
-      var keys = 
-      // Data taken from bitcore's TransactionBuilder test
-      var txp = dummyProposal;
-      var ret = txp._updateSignedBy(pubkeys, new bitcore.Script(new Buffer(validScriptSig, 'hex')), new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
-      ret.should.deep.equal([0, 3]);
+      var keys = TxProposal._keysFromRedeemScript(validScriptSig);
+      keys.length.should.equal(5);
+      for(var i in keys){
+        keys[i].toString('hex').should.equal(pubkeys[i].toString('hex'));
+      }
     });
-
-
-
   });
 });
