@@ -881,10 +881,8 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
 
   var req = this.paymentRequests[options.uri];
   if (req) {
-    req.options.memo = options.memo;
-    req.options.fetch = false;
     delete this.paymentRequests[options.uri];
-    this.receivePaymentRequest(req.options, req.pr, cb);
+    this.receivePaymentRequest(options, req.pr, cb);
     return;
   }
 
@@ -925,10 +923,10 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
     return cb(null, req.merchantData);
   }
 
-  return this.createPaymentTx(options, function(err, merchantData, options, pr) {
+  return this.createPaymentTx(options, function(err, merchantData, pr) {
+    if (err) return cb(err);
     self.paymentRequests[options.uri] = {
       merchantData: merchantData,
-      options: options,
       pr: pr
     };
     return cb(null, merchantData);
@@ -1020,7 +1018,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   return this.getUnspent(function(err, unspent) {
     if (options.fetch) {
       self.createPaymentTxSync(options, merchantData, unspent);
-      return cb(null, merchantData, options, pr);
+      return cb(null, merchantData, pr);
     }
 
     var ntxid = self.createPaymentTxSync(options, merchantData, unspent);

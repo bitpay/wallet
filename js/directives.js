@@ -1,8 +1,6 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  //.directive('validAddress', ['$rootScope',
-    //function($rootScope) {
   .directive('validAddress', [
     function() {
 
@@ -13,17 +11,20 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
-            // Is payment protocol address?
             var uri = copay.HDPath.parseBitcoinURI(value);
 
+            // Is this a payment protocol URI (BIP-72)?
             if (uri && uri.merchant) {
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-                var txp = { merchant: merchantData };
+                if (err) {
+                  // XXX where would we send this error?
+                  return;
+                }
 
-                var expires = new Date(txp.merchant.pr.expires * 1000);
-                var memo = txp.merchant.pr.memo;
-                var payment_url = txp.merchant.pr.payment_url;
-                var total = txp.merchant.total;
+                var expires = new Date(merchantData.pr.expires * 1000);
+                var memo = merchantData.pr.memo;
+                var payment_url = merchantData.pr.payment_url;
+                var total = merchantData.total;
 
                 if (typeof total === 'string') {
                   total = bitcore.bignum(total, 10).toBuffer();
@@ -46,14 +47,15 @@ angular.module('copayApp.directives')
                 var tamount = angular.element(
                   document.querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
                 tamount.attr('class',
-                  tamount.attr('class').replace(' hidden', ''))
+                  tamount.attr('class').replace('hidden', '').trim())
                 tamount.text(total + ' (CA: ' + ca
                   + '. Expires: '
                   + expires.toISOString()
                   + '): ' + memo);
+
+                ctrl.$setValidity('validAddress', true);
               });
 
-              ctrl.$setValidity('validAddress', true);
               return 'Merchant: '+ uri.merchant;
             }
 

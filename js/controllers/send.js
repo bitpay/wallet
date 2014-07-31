@@ -64,27 +64,42 @@ angular.module('copayApp.controllers').controller('SendController',
       function done(ntxid, ca) {
         var txp = w.txProposals.txps[ntxid];
         var merchantData = txp.merchant;
+        var amt = angular.element(document.querySelector('input#amount'));
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
           if (ca) {
-            message += '.\nThis payment protocol transaction'
-              + 'has been verified through ' + ca + '.';
+            message += '\nThis payment protocol transaction'
+              + ' has been verified through ' + ca + '.';
+          }
+          if (merchantData) {
+            message += '\nFor merchant: ' + merchantData.pr.payment_url;
           }
           notification.success('Success!', message);
           $scope.loadTxs();
+          if (merchantData) {
+            amt.attr('disabled', false);
+          }
         } else {
           w.sendTx(ntxid, function(txid, ca) {
             if (txid) {
-              notification.success('Transaction broadcast', 'Transaction id: ' + txid);
+              var message = 'Transaction id: ' + txid;
               if (ca) {
-                notification.success('Root Certificate', ca);
+                message += '\nThis payment protocol transaction'
+                  + ' has been verified through ' + ca + '.';
               }
+              if (merchantData) {
+                message += '\nFor merchant: ' + merchantData.pr.payment_url;
+              }
+              notification.success('Transaction broadcast', message);
             } else {
               notification.error('Error', 'There was an error sending the transaction.');
             }
             $scope.loading = false;
             $scope.loadTxs();
+            if (merchantData) {
+              amt.attr('disabled', false);
+            }
           });
         }
         $rootScope.pendingPayment = null;
