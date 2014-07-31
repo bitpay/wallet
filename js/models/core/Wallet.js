@@ -32,10 +32,10 @@ if (typeof window !== 'undefined') {
 }
 
 if (typeof angular !== 'undefined') {
-  var $http = G.$http || angular.bootstrap().get('$http');
+  G.$http = G.$http || angular.bootstrap().get('$http');
 }
 
-var $http = G.$http || function $http(options, callback) {
+G.$http = function $http(options, callback) {
   if (typeof options === 'string') {
     options = { uri: options };
   }
@@ -84,11 +84,11 @@ var $http = G.$http || function $http(options, callback) {
     // Newer browsers:
     xhr.responseType = 'arraybuffer';
 
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
-        ;
-      }
-    };
+    // xhr.onreadystatechange = function() {
+    //   if (xhr.readyState == 4) {
+    //     ;
+    //   }
+    // };
 
     xhr.onload = function(event) {
       var response = xhr.response;

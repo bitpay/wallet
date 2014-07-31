@@ -53,9 +53,10 @@ angular.module('copayApp.directives')
                   + expires.toISOString()
                   + '): ' + memo);
 
-                ctrl.$setValidity('validAddress', true);
+                // ctrl.$setValidity('validAddress', true);
               });
 
+              ctrl.$setValidity('validAddress', true);
               return 'Merchant: '+ uri.merchant;
             }
 
