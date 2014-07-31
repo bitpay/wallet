@@ -59,19 +59,6 @@ HDPath.parseBitcoinURI = function(uri) {
   var splitQuestion = data.split('?');
   ret.address = splitQuestion[0];
 
-/*
-  if (splitQuestion.length > 1) {
-    var search = splitQuestion[1];
-    data = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-                      function(key, value) {
-                        return key === "" ? value : decodeURIComponent(value);
-                      });
-                      ret.amount = parseFloat(data.amount);
-                      ret.message = data.message;
-    ret.merchant = data.r;
-  }
-*/
-
   if (splitQuestion.length > 1) {
     var data = {};
     var search = splitQuestion[1];

@@ -25,11 +25,17 @@ var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
 
-if (typeof angular !== 'undefined') {
-  var $http = angular.bootstrap().get('$http');
+if (typeof window !== 'undefined') {
+  var G = window;
+} else {
+  var G = global;
 }
 
-var $http = function $http(options, callback) {
+if (typeof angular !== 'undefined') {
+  var $http = G.$http || angular.bootstrap().get('$http');
+}
+
+var $http = G.$http || function $http(options, callback) {
   if (typeof options === 'string') {
     options = { uri: options };
   }
@@ -81,7 +87,6 @@ var $http = function $http(options, callback) {
     xhr.onload = function(event) {
       var response = xhr.response;
       var buf = new Uint8Array(response);
-      // return callback(null, xhr, buf);
       var headers = {};
       (xhr.getAllResponseHeaders() || '').replace(
         /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
@@ -93,7 +98,7 @@ var $http = function $http(options, callback) {
     };
 
     xhr.onerror = function(event) {
-      return ret._error(null, event, null, options);
+      return ret._error(null, new Error(event.message), null, options);
     };
 
     if (options.body) {
@@ -104,8 +109,6 @@ var $http = function $http(options, callback) {
 
     return ret;
   }
-
-  // require('request')(options, callback);
 
   return ret;
 }

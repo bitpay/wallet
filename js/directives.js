@@ -15,6 +15,12 @@ angular.module('copayApp.directives')
           var validator = function(value) {
             // Is payment protocol address?
             var uri = copay.HDPath.parseBitcoinURI(value);
+            var total = '00001000';
+            console.log('TOTAL:');
+            console.log(total);
+            var amount = angular.element(document).find('#amount');
+            amount.prop('disabled', true);
+            amount.val(total);
             if (uri && uri.merchant) {
               scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
                 var txp = scope.wallet.txProposals.txps[ntxid];
@@ -22,8 +28,7 @@ angular.module('copayApp.directives')
                 var total = txp.merchant.total;
                 console.log('TOTAL:');
                 console.log(total);
-                var sendForm = angular.element(document).find('[name=sendForm]');
-                var amount = angular.element(sendForm).find('#amount')
+                var amount = angular.element(document).find('#amount');
                 amount.prop('disabled', true);
                 amount.val(total);
               });
