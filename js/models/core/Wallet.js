@@ -870,6 +870,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
   if (typeof options === 'string') {
     options = { uri: options };
   }
+  options.uri = options.uri || options.url;
 
   if (options.uri.indexOf('bitcoin:') === 0) {
     options.uri = parseBitcoinURI(options.uri).merchant;
@@ -906,11 +907,13 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
   if (typeof options === 'string') {
     options = { uri: options };
   }
+  options.uri = options.uri || options.url;
   options.fetch = true;
+  if (this.paymentRequests[options.uri]) {
+    return cb(null, this.paymentRequests[options.uri].merchantData);
+  }
   return this.createPaymentTx(options, function(err, merchantData, options, pr) {
-    var id = self.hashMerchantData(merchantData);
-    self.paymentRequests[id] = {
-      id: id,
+    self.paymentRequests[options.uri] = {
       merchantData: merchantData,
       options: options,
       pr: pr
@@ -919,16 +922,12 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
   });
 };
 
-Wallet.hashMerchantData =
-Wallet.prototype.hashMerchantData = function(merchantData) {
-  return merchantData.request_url
-    + ':' + merchantData.pr.payment_url
-    + ':' + merchantData.total
-    + ':' + merchantData.pr.pd.merchant_data;
-};
-
 Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var self = this;
+
+  if (this.paymentRequests[options.uri]) {
+    delete this.paymentRequests[options.uri];
+  }
 
   var ver = pr.get('payment_details_version');
   var pki_type = pr.get('pki_type');
