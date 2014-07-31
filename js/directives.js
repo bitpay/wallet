@@ -17,59 +17,59 @@ angular.module('copayApp.directives')
             var uri = copay.HDPath.parseBitcoinURI(value);
 
             if (uri && uri.merchant) {
-              var total = bitcore
-                .bignum('1000')
-                .div(config.unitToSatoshi)
-                .toString(10);
+              // XXX This might be unwise, it might be better to
+              // create a tentative TX proposal here.
+              scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+              // scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
+                // var txp = scope.wallet.txProposals.txps[ntxid];
+                // if (!txp) return;
+                var txp = { merchant: merchantData };
 
-              var amount = angular.element(angular
-                .element(document)
-                .find('form')
-                .find('input')[1]);
-              amount.val(total);
-              amount.attr('disabled', true);
-
-              var tamount = angular.element(angular
-                .element(document)
-                .find('section')
-                .find('p')[1]);
-              tamount.attr('class',
-                tamount.attr('class').replace(' hidden', ''));
-              tamount.text(total
-                + ' (CA: Internet Widgets Pty Ltd. Expires: '
-                + new Date().toISOString()
-                + '): Hi, we\'d like some bitcoin.');
-
-              scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
-                var txp = scope.wallet.txProposals.txps[ntxid];
-                if (!txp) return;
-
-                var expires = txp.merchant.pr.expires;
+                var expires = new Date(txp.merchant.pr.expires * 1000);
                 var memo = txp.merchant.pr.memo;
                 var payment_url = txp.merchant.pr.payment_url;
                 var total = txp.merchant.total;
 
-                var total = bitcore
-                  .bignum.fromBuffer(txp.merchant.total)
+                if (typeof total === 'string') {
+                  total = bitcore.bignum(total, 10).toBuffer();
+                }
+
+                total = bitcore
+                  .bignum.fromBuffer(total)
                   .div(config.unitToSatoshi)
                   .toString(10);
 
-                var amount = angular.element(angular
-                  .element(document)
-                  .find('form')
-                  .find('input')[1]);
+                // var amount = angular.element(angular
+                //   .element(document)
+                //   .find('form')
+                //   .find('input')[1]);
+
+                var amount = angular.element(
+                  document.querySelector('input#amount'));
                 amount.val(total);
                 amount.attr('disabled', true);
 
-                var tamount = angular.element(angular
-                  .element(document)
-                  .find('section')
-                  .find('p')[1]);
+                // var sendto = angular.element(angular
+                //   .element(document)
+                //   .find('section')
+                //   .find('p')[0]);
+
+                var sendto = angular.element(
+                  document.querySelector('div.send-note > p[ng-class]:first-of-type'));
+                sendto.html(sendto.html() + '<br><b>Server:</b> ' + memo);
+
+                // var tamount = angular.element(angular
+                //   .element(document)
+                //   .find('section')
+                //   .find('p')[1]);
+
+                var tamount = angular.element(
+                  document.querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
                 tamount.attr('class',
                   tamount.attr('class').replace(' hidden', ''))
                 tamount.text(total + ' (CA: ' + ca
                   + '. Expires: '
-                  + new Date(expires * 1000).toISOString()
+                  + expires.toISOString()
                   + '): ' + memo);
               });
 

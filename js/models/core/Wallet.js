@@ -898,6 +898,15 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
   });
 };
 
+Wallet.prototype.fetchPaymentTx = function(options, cb) {
+  options = options || {};
+  if (typeof options === 'string') {
+    options = { uri: options };
+  }
+  options.fetch = true;
+  return this.createPaymentTx(options, cb);
+};
+
 Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var self = this;
 
@@ -977,8 +986,12 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       ca: ca,
     },
     request_url: options.uri || options.url,
-    total: bignum('0').toString(10)
+    total: bignum('0', 10).toString(10)
   };
+
+  if (options.fetch) {
+    return cb(null, merchantData);
+  }
 
   return this.getUnspent(function(err, unspent) {
     var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
@@ -1019,7 +1032,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     || self.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
-    var total = bignum('0');
+    var total = bignum('0', 10);
     for (var i = 0; i < tx.outs.length - 1; i++) {
       total = total.add(bignum.fromBuffer(tx.outs[i].v));
     }
