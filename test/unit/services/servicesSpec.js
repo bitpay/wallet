@@ -93,8 +93,12 @@ describe("Unit: controllerUtils", function() {
     controllerUtils.updateBalance(function() {
       expect($rootScope.totalBalanceBTC).to.be.equal(1.00000001);
       expect($rootScope.availableBalanceBTC).to.be.equal(0.90000002);
+      expect($rootScope.lockedBalanceBTC).to.be.equal(0.09999999);
+
       expect($rootScope.totalBalance).to.be.equal(1000000.01);
       expect($rootScope.availableBalance).to.be.equal(900000.02);
+      expect($rootScope.lockedBalance).to.be.equal(99999.99);
+
       expect($rootScope.addrInfos).not.to.equal(null);
       expect($rootScope.addrInfos[0].address).to.equal(Waddr);
     });
