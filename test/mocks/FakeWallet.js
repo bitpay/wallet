@@ -46,6 +46,10 @@ FakeWallet.prototype.getAddressesInfo = function() {
   return ret;
 };
 
+FakeWallet.prototype.isReady = function() {
+  return true;
+}
+
 
 FakeWallet.prototype.getBalance = function(cb) {
   return cb(null, this.balance, this.balanceByAddr, this.safeBalance);
