@@ -17,8 +17,6 @@ angular.module('copayApp.directives')
             var uri = copay.HDPath.parseBitcoinURI(value);
 
             if (uri && uri.merchant) {
-              // XXX This might be unwise, it might be better to
-              // create a tentative TX proposal here.
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
                 var txp = { merchant: merchantData };
 
