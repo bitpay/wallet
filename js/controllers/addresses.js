@@ -19,6 +19,14 @@ angular.module('copayApp.controllers').controller('AddressesController',
     $scope.openAddressModal = function(address) {
       var ModalInstanceCtrl = function ($scope, $modalInstance, address) {
         $scope.address = address;
+
+        $scope.openExternal = function(address) {
+          var url = 'bitcoin:' + address;
+          if (window.cordova) return window.open(url, '_blank');
+
+          window.location = url;
+        }
+
         $scope.cancel = function () {
           $modalInstance.dismiss('cancel');
         };

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Copay - Multisignature Wallet</title>
   <link rel="stylesheet" href="css/foundation.min.css">
   <link rel="stylesheet" href="css/foundation-icons.css">
@@ -105,6 +105,24 @@
   <script src="js/controllers/import.js"></script>
   <script src="js/controllers/settings.js"></script>
   <script src="js/controllers/uriPayment.js"></script>
+
+  <!-- PLACEHOLDER: CORDOVA SRIPT -->
+  <script type="text/javascript" charset="utf-8">
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+      setTimeout(function(){ navigator.splashscreen.hide(); }, 2000);
+
+      document.addEventListener("menubutton", function() {
+        var nav = document.getElementsByTagName('nav')[0];
+        if (!nav) return;
+
+        var menu = nav.getElementsByTagName('section')[0].getElementsByTagName('a')[0];
+        if (menu.offsetParent) menu.click();
+
+      }, false);
+    }
+  </script>
 
   <script src="js/init.js"></script>
 </body>

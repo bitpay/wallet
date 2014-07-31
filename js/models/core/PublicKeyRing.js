@@ -1,13 +1,12 @@
 'use strict';
 
 
-var imports = require('soop').imports();
 var preconditions = require('preconditions').instance();
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;
 var PrivateKey = require('./PrivateKey');
-var Structure = require('./Structure');
-var AddressIndex = require('./AddressIndex');
+var HDPath = require('./HDPath');
+var HDParams = require('./HDParams');
 var Address = bitcore.Address;
 var Script = bitcore.Script;
 
@@ -24,14 +23,14 @@ function PublicKeyRing(opts) {
 
   this.copayersHK = opts.copayersHK || [];
 
-  this.indexes = opts.indexes ? AddressIndex.fromList(opts.indexes)
-                              : AddressIndex.init(this.totalCopayers);
+  this.indexes = opts.indexes ? HDParams.fromList(opts.indexes)
+    : HDParams.init(this.totalCopayers);
 
-  this.publicKeysCache = opts.publicKeysCache || {};
-  this.nicknameFor = opts.nicknameFor || {};
-  this.copayerIds = [];
-  this.copayersBackup = opts.copayersBackup || [];
-  this.addressToPath = {};
+    this.publicKeysCache = opts.publicKeysCache || {};
+    this.nicknameFor = opts.nicknameFor || {};
+    this.copayerIds = [];
+    this.copayersBackup = opts.copayersBackup || [];
+    this.addressToPath = {};
 }
 
 PublicKeyRing.fromObj = function(data) {
@@ -41,7 +40,7 @@ PublicKeyRing.fromObj = function(data) {
 
   // Support old indexes schema
   if (!Array.isArray(data.indexes)) {
-    data.indexes = AddressIndex.update(data.indexes, data.totalCopayers);
+    data.indexes = HDParams.update(data.indexes, data.totalCopayers);
   }
 
   var ret = new PublicKeyRing(data);
@@ -59,7 +58,7 @@ PublicKeyRing.prototype.toObj = function() {
     networkName: this.network.name,
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
-    indexes: AddressIndex.serialize(this.indexes),
+    indexes: HDParams.serialize(this.indexes),
     copayersBackup: this.copayersBackup,
 
     copayersExtPubKeys: this.copayersHK.map(function(b) {
@@ -103,14 +102,14 @@ PublicKeyRing.prototype._checkKeys = function() {
 
 PublicKeyRing.prototype._newExtendedPublicKey = function() {
   return new PrivateKey({
-      networkName: this.network.name
-    })
-    .deriveBIP45Branch()
-    .extendedPublicKeyString();
+    networkName: this.network.name
+  })
+  .deriveBIP45Branch()
+  .extendedPublicKeyString();
 };
 
 PublicKeyRing.prototype._updateBip = function(index) {
-  var hk = this.copayersHK[index].derive(Structure.IdBranch);
+  var hk = this.copayersHK[index].derive(HDPath.IdBranch);
   this.copayerIds[index] = hk.eckey.public.toString('hex');
 };
 
@@ -149,10 +148,10 @@ PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
   return newEpk;
 };
 
-PublicKeyRing.prototype.getPubKeys = function(index, isChange, cosigner) {
+PublicKeyRing.prototype.getPubKeys = function(index, isChange, copayerIndex) {
   this._checkKeys();
 
-  var path = Structure.Branch(index, isChange, cosigner);
+  var path = HDPath.Branch(index, isChange, copayerIndex);
   var pubKeys = this.publicKeysCache[path];
   if (!pubKeys) {
     pubKeys = [];
@@ -175,26 +174,27 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange, cosigner) {
 };
 
 // TODO this could be cached
-PublicKeyRing.prototype.getRedeemScript = function(index, isChange, cosigner) {
-  var pubKeys = this.getPubKeys(index, isChange, cosigner);
+PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex) {
+  var pubKeys = this.getPubKeys(index, isChange, copayerIndex);
   var script = Script.createMultisig(this.requiredCopayers, pubKeys);
   return script;
 };
 
 // TODO this could be cached
 PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
-  var cosigner = this.getCosigner(id);
-  var script = this.getRedeemScript(index, isChange, cosigner);
+  var copayerIndex = this.getCosigner(id);
+  var script = this.getRedeemScript(index, isChange, copayerIndex);
   var address = Address.fromScript(script, this.network.name);
-  this.addressToPath[address.toString()] = Structure.FullBranch(index, isChange, cosigner);
+  this.addressToPath[address.toString()] = HDPath.FullBranch(index, isChange, copayerIndex);
   return address;
 };
 
 // Overloaded to receive a PubkeyString or a consigner index
-PublicKeyRing.prototype.getIndex = function(id) {
-  var cosigner = this.getCosigner(id);
-  var index = this.indexes.filter(function(i) { return i.cosigner == cosigner });
-  if (index.length != 1) throw new Error('no index for cosigner');
+PublicKeyRing.prototype.getHDParams = function(id) {
+  var copayerIndex = this.getCosigner(id);
+  var index = this.indexes.filter(function(i) { return i.copayerIndex == copayerIndex });
+  if (index.length != 1) throw new Error('no index for copayerIndex');
+
   return index[0];
 };
 
@@ -206,18 +206,18 @@ PublicKeyRing.prototype.pathForAddress = function(address) {
 
 // TODO this could be cached
 PublicKeyRing.prototype.getScriptPubKeyHex = function(index, isChange, pubkey) {
-  var cosigner = this.getCosigner(pubkey);
-  var addr = this.getAddress(index, isChange, cosigner);
+  var copayerIndex = this.getCosigner(pubkey);
+  var addr = this.getAddress(index, isChange, copayerIndex);
   return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
 };
 
 //generate a new address, update index.
 PublicKeyRing.prototype.generateAddress = function(isChange, pubkey) {
   isChange = !!isChange;
-  var addrIndex = this.getIndex(pubkey);
-  var index = isChange ? addrIndex.getChangeIndex() : addrIndex.getReceiveIndex();
-  var ret = this.getAddress(index, isChange, addrIndex.cosigner);
-  addrIndex.increment(isChange);
+  var HDParams = this.getHDParams(pubkey);
+  var index = isChange ? HDParams.getChangeIndex() : HDParams.getReceiveIndex();
+  var ret = this.getAddress(index, isChange, HDParams.copayerIndex);
+  HDParams.increment(isChange);
   return ret;
 };
 
@@ -228,7 +228,7 @@ PublicKeyRing.prototype.getAddresses = function(opts) {
 };
 
 PublicKeyRing.prototype.getCosigner = function(pubKey) {
-  if (typeof pubKey == 'undefined') return Structure.SHARED_INDEX;
+  if (typeof pubKey == 'undefined') return HDPath.SHARED_INDEX;
   if (typeof pubKey == 'number') return pubKey;
 
   var sorted = this.copayersHK.map(function(h, i){
@@ -245,51 +245,51 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
 PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
   var ret = [];
   var self = this;
-  var cosigner = pubkey && this.getCosigner(pubkey);
+  var copayerIndex = pubkey && this.getCosigner(pubkey);
   this.indexes.forEach(function(index) {
-    ret = ret.concat(self.getAddressesInfoForIndex(index, opts, cosigner));
+    ret = ret.concat(self.getAddressesInfoForIndex(index, opts, copayerIndex));
   });
   return ret;
 }
 
-PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, cosigner) {
+PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayerIndex) {
   opts = opts || {};
 
-  var isOwned = index.cosigner == Structure.SHARED_INDEX
-             || index.cosigner == cosigner;
+  var isOwned = index.copayerIndex == HDPath.SHARED_INDEX
+    || index.copayerIndex == copayerIndex;
 
-  var ret = [];
-  if (!opts.excludeChange) {
-    for (var i = 0; i < index.changeIndex; i++) {
-      var a = this.getAddress(i, true, index.cosigner);
-      ret.unshift({
-        address: a,
-        addressStr: a.toString(),
-        isChange: true,
-        owned: isOwned
-      });
+    var ret = [];
+    if (!opts.excludeChange) {
+      for (var i = 0; i < index.changeIndex; i++) {
+        var a = this.getAddress(i, true, index.copayerIndex);
+        ret.unshift({
+          address: a,
+          addressStr: a.toString(),
+          isChange: true,
+          owned: isOwned
+        });
+      }
     }
-  }
 
-  if (!opts.excludeMain) {
-    for (var i = 0; i < index.receiveIndex; i++) {
-      var a = this.getAddress(i, false, index.cosigner);
-      ret.unshift({
-        address: a,
-        addressStr: a.toString(),
-        isChange: false,
-        owned: isOwned
-      });
+    if (!opts.excludeMain) {
+      for (var i = 0; i < index.receiveIndex; i++) {
+        var a = this.getAddress(i, false, index.copayerIndex);
+        ret.unshift({
+          address: a,
+          addressStr: a.toString(),
+          isChange: false,
+          owned: isOwned
+        });
+      }
     }
-  }
 
-  return ret;
+    return ret;
 };
 
 // TODO this could be cached
 PublicKeyRing.prototype._addScriptMap = function(map, path) {
-  var p = Structure.indicesForPath(path);
-  var script = this.getRedeemScript(p.index, p.isChange, p.cosigner);
+  var p = HDPath.indicesForPath(path);
+  var script = this.getRedeemScript(p.index, p.isChange, p.copayerIndex);
   map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
 };
 
@@ -310,18 +310,18 @@ PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
 
   if (this.network.name !== inPKR.network.name) {
     throw new Error('Network mismatch. Should be ' + this.network.name +
-      ' and found ' + inPKR.network.name);
+                    ' and found ' + inPKR.network.name);
   }
 
   if (
     this.requiredCopayers && inPKR.requiredCopayers &&
-    (this.requiredCopayers !== inPKR.requiredCopayers))
-    throw new Error('inPKR requiredCopayers mismatch ' + this.requiredCopayers + '!=' + inPKR.requiredCopayers);
+      (this.requiredCopayers !== inPKR.requiredCopayers))
+        throw new Error('inPKR requiredCopayers mismatch ' + this.requiredCopayers + '!=' + inPKR.requiredCopayers);
 
-  if (
-    this.totalCopayers && inPKR.totalCopayers &&
-    (this.totalCopayers !== inPKR.totalCopayers))
-    throw new Error('inPKR totalCopayers mismatch' + this.totalCopayers + '!=' + inPKR.requiredCopayers);
+      if (
+        this.totalCopayers && inPKR.totalCopayers &&
+          (this.totalCopayers !== inPKR.totalCopayers))
+            throw new Error('inPKR totalCopayers mismatch' + this.totalCopayers + '!=' + inPKR.requiredCopayers);
 };
 
 
@@ -393,7 +393,7 @@ PublicKeyRing.prototype.mergeIndexes = function(indexes) {
   var hasChanged = false;
 
   indexes.forEach(function(theirs) {
-    var mine = self.getIndex(theirs.cosigner);
+    var mine = self.getHDParams(theirs.copayerIndex);
     hasChanged |= mine.merge(theirs);
   });
 
@@ -414,4 +414,4 @@ PublicKeyRing.prototype.mergeBackups = function(backups) {
 }
 
 
-module.exports = require('soop')(PublicKeyRing);
+module.exports = PublicKeyRing;

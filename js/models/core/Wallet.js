@@ -15,7 +15,7 @@ var SecureRandom = bitcore.SecureRandom;
 var Base58Check = bitcore.Base58.base58Check;
 var Address = bitcore.Address;
 
-var AddressIndex = require('./AddressIndex');
+var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
@@ -93,7 +93,7 @@ Wallet.prototype.connectToAll = function() {
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
-  var inIndexes = AddressIndex.fromList(data.indexes);
+  var inIndexes = HDParams.fromList(data.indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
     this.emit('publicKeyRingUpdated');
@@ -132,8 +132,10 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL: ', data);
-
   var inTxp = TxProposals.TxProposal.fromObj(data.txProposal, Wallet.builderOpts);
+
+
+
   var valid = inTxp.isValid();
   if (!valid) {
     var corruptEvent = {
@@ -458,7 +460,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
   });
 };
 Wallet.prototype.sendIndexes = function(recipients) {
-  var indexes = AddressIndex.serialize(this.publicKeyRing.indexes);
+  var indexes = HDParams.serialize(this.publicKeyRing.indexes);
   this.log('### INDEXES TO:', recipients || 'All', indexes);
 
   this.send(recipients, {
