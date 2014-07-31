@@ -115,5 +115,10 @@
     float: none;
     margin: 0 auto;
   }
+
+  .btn-copy {
+    display: none;
+  }
+
 }
 
