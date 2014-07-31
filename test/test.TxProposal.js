@@ -29,7 +29,7 @@ var dummyProposal = new TxProposal({
   inputChainPaths: ['m/1'],
 });
 
-var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5","022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
+var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
 
 describe('TxProposal', function() {
   describe('new', function() {
@@ -63,7 +63,7 @@ describe('TxProposal', function() {
     });
   });
   describe('#getId', function() {
-    it('should return id',function() {
+    it('should return id', function() {
       var b = new FakeBuilder();
       var spy = sinon.spy(b.tx, 'getNormalizedHash');
       var txp = new TxProposal({
@@ -73,11 +73,11 @@ describe('TxProposal', function() {
         inputChainPaths: 'm/1',
       });
       txp.getId().should.equal('123456');;
-      sinon.assert.callCount(spy,1);
+      sinon.assert.callCount(spy, 1);
     });
   });
   describe('#toObj', function() {
-    it('should return an object and remove builder',function() {
+    it('should return an object and remove builder', function() {
       var b = new FakeBuilder();
       var txp = new TxProposal({
         creator: 1,
@@ -93,33 +93,35 @@ describe('TxProposal', function() {
     });
   });
   describe('#fromObj', function() {
-    it.skip('should create from Object',function() {
+    it.skip('should create from Object', function() {
       var b = new FakeBuilder();
       var txp = TxProposal.fromObj({
         creator: 1,
         createdTs: 1,
         builderObj: b.toObj(),
-        inputChainPaths: ['m/1'] ,
+        inputChainPaths: ['m/1'],
       });
       should.exist(txp);
     });
 
 
-    it('should fail to create from wrong object',function() {
+    it('should fail to create from wrong object', function() {
       var b = new FakeBuilder();
-      (function(){var txp = TxProposal.fromObj({
-        creator: 1,
-        createdTs: 1,
-        builderObj: b.toObj(),
-        inputChainPaths: ['m/1'] ,
-      });}).should.throw('Invalid');
+      (function() {
+        var txp = TxProposal.fromObj({
+          creator: 1,
+          createdTs: 1,
+          builderObj: b.toObj(),
+          inputChainPaths: ['m/1'],
+        });
+      }).should.throw('Invalid');
     });
 
 
   });
 
   describe('#setSent', function() {
-    it('should set txid and timestamp',function() {
+    it('should set txid and timestamp', function() {
       var now = Date.now();
       var txp = dummyProposal;
       txp.setSent('3a42');
@@ -132,38 +134,47 @@ describe('TxProposal', function() {
   describe('Signature verification', function() {
     var validScriptSig = '00483045022100a35a5cbe37e39caa62bf1c347eae9c72be827c190b31494b184943b3012757a8022008a1ff72a34a5bf2fc955aa5b6f8a4c32cb0fab7e54c212a5f6f645bb95b8ef10149304602210092347916c3c3e6f1692bf9447b973779c28ce9985baaa3940b483af573f464b4022100ab91062796ab8acb32a0fa90e00627db5be77d9722400b3ecfd9c5f34a8092b1014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae';
 
-    var keyBuf = someKeys.map(function(hex){
-      return new Buffer(hex,'hex');
+    var pubkeys = [
+      '03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d',
+      '0380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127',
+      '0392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed03',
+      '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3',
+      '03e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e4'
+    ].map(function(hex) {
+      return new Buffer(hex, 'hex');
     });
-    it('#_formatKeys',function() {
+    var keyBuf = someKeys.map(function(hex) {
+      return new Buffer(hex, 'hex');
+    });
+    it('#_formatKeys', function() {
       var txp = dummyProposal;
-      (function(){txp._formatKeys(someKeys);}).should.throw('buffers');
+      (function() {
+        txp._formatKeys(someKeys);
+      }).should.throw('buffers');
       var res = txp._formatKeys(keyBuf);
     });
-    it('#_verifyScriptSig arg checks',function() {
+    it('#_verifyScriptSig arg checks', function() {
       var txp = dummyProposal;
-      ( function() { txp._verifySignatures(
-        keyBuf,
-        new bitcore.Script(new Buffer('112233','hex')),
-        new Buffer('1a','hex')); } ).should.throw('script');
+      (function() {
+        txp._verifySignatures(
+          keyBuf,
+          new bitcore.Script(new Buffer('112233', 'hex')),
+          new Buffer('1a', 'hex'));
+      }).should.throw('script');
     });
-    it('#_verifyScriptSig, no signatures',function() {
+    it('#_verifyScriptSig, no signatures', function() {
       var txp = dummyProposal;
-      var ret =  txp._verifySignatures(
-        keyBuf,
-        new bitcore.Script(new Buffer(validScriptSig,'hex')),
-        new Buffer('1a','hex')
-      );
+      var ret = txp._verifySignatures( keyBuf, new bitcore.Script(new Buffer(validScriptSig, 'hex')), new Buffer(32));
       ret.length.should.equal(0);
     });
-    it('#_verifyScriptSig, one signature',function() {
+    it('#_verifyScriptSig, one signature', function() {
+      // Data taken from bitcore's TransactionBuilder test
       var txp = dummyProposal;
-      var ret =  txp._verifySignatures(
-        [new Buffer('0380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127','hex')],
-        new bitcore.Script(new Buffer(validScriptSig,'hex')),
-        new Buffer('1a','hex')
-      );
-      ret.length.should.equal(0);
+      var ret = txp._verifySignatures(pubkeys,
+                                      new bitcore.Script(new Buffer(validScriptSig, 'hex')),
+                                      new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex')
+                                     );
+                                     ret.should.deep.equal([0, 3]);
     });
 
   });
