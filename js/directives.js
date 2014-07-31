@@ -20,9 +20,6 @@ angular.module('copayApp.directives')
               // XXX This might be unwise, it might be better to
               // create a tentative TX proposal here.
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-              // scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
-                // var txp = scope.wallet.txProposals.txps[ntxid];
-                // if (!txp) return;
                 var txp = { merchant: merchantData };
 
                 var expires = new Date(txp.merchant.pr.expires * 1000);
@@ -39,29 +36,14 @@ angular.module('copayApp.directives')
                   .div(config.unitToSatoshi)
                   .toString(10);
 
-                // var amount = angular.element(angular
-                //   .element(document)
-                //   .find('form')
-                //   .find('input')[1]);
-
                 var amount = angular.element(
                   document.querySelector('input#amount'));
                 amount.val(total);
                 amount.attr('disabled', true);
 
-                // var sendto = angular.element(angular
-                //   .element(document)
-                //   .find('section')
-                //   .find('p')[0]);
-
                 var sendto = angular.element(
                   document.querySelector('div.send-note > p[ng-class]:first-of-type'));
                 sendto.html(sendto.html() + '<br><b>Server:</b> ' + memo);
-
-                // var tamount = angular.element(angular
-                //   .element(document)
-                //   .find('section')
-                //   .find('p')[1]);
 
                 var tamount = angular.element(
                   document.querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
