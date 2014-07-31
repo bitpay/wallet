@@ -19,7 +19,7 @@ try {
 }
 var fakeStorage = copay.FakeStorage;
 var PrivateKey = copay.PrivateKey || require('../js/models/PrivateKey');
-var TxProposals = copay.TxProposals || require('../js/models/TxProposal');
+var TxProposalsSet = copay.TxProposalsSet || require('../js/models/TxProposalsSet');
 var is_browser = (typeof process == 'undefined' || typeof process.versions === 'undefined')
 var PublicKeyRing = is_browser ? copay.PublicKeyRing :
   require('soop').load('../js/models/core/PublicKeyRing', {
@@ -117,7 +117,7 @@ var createTx = function(toAddress, amountSatStr, utxos, opts, priv, pkr) {
     inputChainPaths: inputChainPaths,
     creator: priv.getId(),
     createdTs: new Date(),
-    signedBy: priv && tx.countInputSignatures(0) ? {priv.getId(): true} : {},
+    signedBy: priv && tx.countInputSignatures(0) ? me : {},
     seenBy: priv ? me : {},
     builder: b,
   };

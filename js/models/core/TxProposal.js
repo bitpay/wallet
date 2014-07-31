@@ -32,7 +32,7 @@ function TxProposal(opts) {
   this.sentTxid = opts.sentTxid || null;
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
-  this._updateSignedBy();
+  //  this._updateSignedBy();
 }
 
 TxProposal.prototype.getId = function() {
@@ -84,33 +84,37 @@ TxProposal.prototype._formatKeys = function(allowedPubKeys) {
 
     var k = new Key();
     k.public = allowedPubKeys[i];
-    keys.push[k];
+    keys.push(k);
   };
+
+  return keys;
 };
 
 TxProposal.prototype._verifySignatures = function(inKeys, scriptSig, txSigHash) {
   preconditions.checkArgument(Buffer.isBuffer(txSigHash));
+  preconditions.checkArgument(inKeys);
+  preconditions.checkState(Buffer.isBuffer(inKeys[0]));
 
   if (scriptSig.chunks[0] !== 0)
     throw new Error('Invalid scriptSig');
-
   var keys = this._formatKeys(inKeys);
   var ret = [];
-  for (var i = 1; typeof ret === 'undefined' && i <= scriptSig.countSignatures(); i++) {
+  for (var i = 1; i <= scriptSig.countSignatures(); i++) {
     var chunk = scriptSig.chunks[i];
     var sigRaw = new Buffer(chunk.slice(0, chunk.length - 1));
     for (var j in keys) {
       var k = keys[j];
       if (k.verifySignatureSync(txSigHash, sigRaw)) {
-        ret.push(j);
-      }
+        ret.push(parseInt(j));
+        break;
+      } 
     }
   }
   return ret;
 };
 
 TxProposal.prototype._keysFromRedeemScript = function(s) {
-  var redeemScript =  new Script(s.chunks[s.chunks.length-1]);
+  var redeemScript = new Script(s.chunks[s.chunks.length - 1]);
   if (!redeemScript)
     throw new Error('Bad scriptSig');
   var pubkeys = redeemScript.capture();
