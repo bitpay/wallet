@@ -33,12 +33,21 @@ angular.module('copayApp.directives')
                 .element(document)
                 .find('section')
                 .find('p')[1]);
-              tamount.attr('class', tamount.attr('class').replace(' hidden', ''))
-              tamount.text(total + ' (CA: Internet Widgets Pty Ltd)')
+              tamount.attr('class',
+                tamount.attr('class').replace(' hidden', ''));
+              tamount.text(total
+                + ' (CA: Internet Widgets Pty Ltd. Expires: '
+                + new Date().toISOString()
+                + '): Hi, we\'d like some bitcoin.');
 
               scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
                 var txp = scope.wallet.txProposals.txps[ntxid];
                 if (!txp) return;
+
+                var expires = txp.merchant.pr.expires;
+                var memo = txp.merchant.pr.memo;
+                var payment_url = txp.merchant.pr.payment_url;
+                var total = txp.merchant.total;
 
                 var total = bitcore
                   .bignum.fromBuffer(txp.merchant.total)
@@ -56,9 +65,14 @@ angular.module('copayApp.directives')
                   .element(document)
                   .find('section')
                   .find('p')[1]);
-                tamount.attr('class', tamount.attr('class').replace(' hidden', ''))
-                tamount.text(total + ' (CA: ' + ca + ')')
+                tamount.attr('class',
+                  tamount.attr('class').replace(' hidden', ''))
+                tamount.text(total + ' (CA: ' + ca
+                  + '. Expires: '
+                  + new Date(expires * 1000).toISOString()
+                  + '): ' + memo);
               });
+
               ctrl.$setValidity('validAddress', true);
               return 'Merchant: '+ uri.merchant;
             }
