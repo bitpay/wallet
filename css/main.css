@@ -671,8 +671,6 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   -moz-border-radius: 3px; 
   border-radius: 3px; 
   border: 1px solid #16A085;
-  text-overflow: ellipsis;
-  overflow-y: hidden;
 }
 
 .tooltip>.nub {
@@ -686,6 +684,11 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 }
 .tooltip.tip-left>.nub {
   border-color:transparent transparent transparent #16A085;
+}
+
+.has-tip {
+  color: #7A8C9E;
+  border-color: #7A8C9E;
 }
 
 .logo {
