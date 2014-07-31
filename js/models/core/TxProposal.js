@@ -76,7 +76,7 @@ TxProposal.fromObj = function(o, forceOpts) {
 
 
 
-TxProposal.prototype._formatKeys = function(allowedPubKeys) {
+TxProposal._formatKeys = function(allowedPubKeys) {
   var keys = [];
   for (var i in allowedPubKeys) {
     if (!Buffer.isBuffer(allowedPubKeys[i]))
@@ -97,7 +97,7 @@ TxProposal.prototype._verifySignatures = function(inKeys, scriptSig, txSigHash) 
 
   if (scriptSig.chunks[0] !== 0)
     throw new Error('Invalid scriptSig');
-  var keys = this._formatKeys(inKeys);
+  var keys = TxProposal._formatKeys(inKeys);
   var ret = [];
   for (var i = 1; i <= scriptSig.countSignatures(); i++) {
     var chunk = scriptSig.chunks[i];
@@ -113,7 +113,7 @@ TxProposal.prototype._verifySignatures = function(inKeys, scriptSig, txSigHash) 
   return ret;
 };
 
-TxProposal.prototype._keysFromRedeemScript = function(s) {
+TxProposal._keysFromRedeemScript = function(s) {
   var redeemScript = new Script(s.chunks[s.chunks.length - 1]);
   if (!redeemScript)
     throw new Error('Bad scriptSig');
@@ -131,7 +131,7 @@ TxProposal.prototype._updateSignedBy = function() {
   for (var i in tx.ins) {
     var scriptSig = new Script(tx.ins[i].s);
 
-    var keys = this._keysFromRedeemScript(scriptSig);
+    var keys = TxProposal._keysFromRedeemScript(scriptSig);
     var txSigHash = tx.hashForSignature(this.builder.inputMap[i].scriptPubKey, i, Transaction.SIGHASH_ALL);
     var copayerIndex = this._verifySignatures(keys, scriptSig, txSigHash);
     if (typeof copayerIndex === 'undefined')

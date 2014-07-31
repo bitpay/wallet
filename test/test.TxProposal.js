@@ -132,7 +132,7 @@ describe('TxProposal', function() {
 
 
   describe('Signature verification', function() {
-    var validScriptSig = '00483045022100a35a5cbe37e39caa62bf1c347eae9c72be827c190b31494b184943b3012757a8022008a1ff72a34a5bf2fc955aa5b6f8a4c32cb0fab7e54c212a5f6f645bb95b8ef10149304602210092347916c3c3e6f1692bf9447b973779c28ce9985baaa3940b483af573f464b4022100ab91062796ab8acb32a0fa90e00627db5be77d9722400b3ecfd9c5f34a8092b1014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae';
+    var validScriptSig = new bitcore.Script(new Buffer('00483045022100a35a5cbe37e39caa62bf1c347eae9c72be827c190b31494b184943b3012757a8022008a1ff72a34a5bf2fc955aa5b6f8a4c32cb0fab7e54c212a5f6f645bb95b8ef10149304602210092347916c3c3e6f1692bf9447b973779c28ce9985baaa3940b483af573f464b4022100ab91062796ab8acb32a0fa90e00627db5be77d9722400b3ecfd9c5f34a8092b1014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae', 'hex'));
 
     var pubkeys = [
       '03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d',
@@ -147,35 +147,39 @@ describe('TxProposal', function() {
       return new Buffer(hex, 'hex');
     });
     it('#_formatKeys', function() {
-      var txp = dummyProposal;
       (function() {
-        txp._formatKeys(someKeys);
+        TxProposal._formatKeys(someKeys);
       }).should.throw('buffers');
-      var res = txp._formatKeys(keyBuf);
+      var res = TxProposal._formatKeys(keyBuf);
     });
     it('#_verifyScriptSig arg checks', function() {
-      var txp = dummyProposal;
       (function() {
-        txp._verifySignatures(
+        TxProposal._verifySignatures(
           keyBuf,
           new bitcore.Script(new Buffer('112233', 'hex')),
           new Buffer('1a', 'hex'));
       }).should.throw('script');
     });
     it('#_verifyScriptSig, no signatures', function() {
-      var txp = dummyProposal;
-      var ret = txp._verifySignatures( keyBuf, new bitcore.Script(new Buffer(validScriptSig, 'hex')), new Buffer(32));
+      var ret = TxProposal._verifySignatures( keyBuf, validScriptSig, new Buffer(32));
       ret.length.should.equal(0);
     });
-    it('#_verifyScriptSig, one signature', function() {
+    it('#_verifyScriptSig, two signatures', function() {
       // Data taken from bitcore's TransactionBuilder test
       var txp = dummyProposal;
-      var ret = txp._verifySignatures(pubkeys,
-                                      new bitcore.Script(new Buffer(validScriptSig, 'hex')),
-                                      new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex')
-                                     );
-                                     ret.should.deep.equal([0, 3]);
+      var ret = TxProposal._verifySignatures(pubkeys,validScriptSig, new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
+      ret.should.deep.equal([0, 3]);
     });
+    it('#_keysFromRedeemScript', function() {
+      var txp = dummyProposal;
+      var keys = 
+      // Data taken from bitcore's TransactionBuilder test
+      var txp = dummyProposal;
+      var ret = txp._updateSignedBy(pubkeys, new bitcore.Script(new Buffer(validScriptSig, 'hex')), new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
+      ret.should.deep.equal([0, 3]);
+    });
+
+
 
   });
 });
