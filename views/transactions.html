@@ -52,6 +52,9 @@
                 <a ng-if="action == 'seen'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
                   <i class="fi-eye icon-status icon-active"></i>
                 </a>
+                <a ng-if="action == 'asd'" href="#!/transactions" class="icon-status">
+                  <i class="fi-loop icon-rotate"></i>
+                </a>
                 <a ng-if="action == 'sign'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
                   <i class="fi-check icon-status icon-active-check"></i>
                 </a>
@@ -62,7 +65,7 @@
             </div>
 
             <div class="text-center">
-              <p class="size-12 text-gray">
+              <p class="size-12 text-gray ellipsis">
                 {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
               </p>
             </div>

@@ -280,36 +280,35 @@ a:hover {
 }
 
 .last-transactions-content .box-status {
-  text-align: center;
-  font-size: 14px;
+  font-size: 13px;
+  width: 35px;
 }
 
 .last-transactions-content .box-copayer {
-  width: 60px;
+  width: 100px;
   margin-right: 20px;
   float: left;
   text-align: center;
 }
 
 .last-transactions-content .copayer-ico {
-  width: 30px;
-  height: 30px;
-}
-
-.last-transactions-content .box-copayer .icon-inactive {
-  color: #4C5B69;
+  width: 45px;
+  height: 45px;
+  border: 2px solid #7A8C9B;
 }
 
 .last-transactions-content .box-copayer .icon-active {
-  color: #ccc;
+  color: #fff;
 }
 
 .last-transactions-content .box-copayer .icon-active-check {
-  color: #3FBC9C;
+  background-color: #3FBC9C;
+  color: #fff;
 }
 
 .last-transactions-content .box-copayer .icon-active-x {
-  color: #C0392B;
+  background-color: #C0392B;
+  color: #fff;
 }
 
 .input-note {
@@ -942,6 +941,19 @@ button, .button, p {
 .icon-input .fi-x {
   background-color: #C0392A;
   padding: 0.2rem 0.4rem;
+}
+
+.box-status {
+  float: right;
+}
+
+.icon-status { 
+  background-color: #34495E;
+  color: #7A8C9E;
+  border-radius: 100%;
+  padding: 0.17rem 0.3rem;
+  float: left;
+  margin-bottom: 0.2rem;
 }
 
 .has-error {
