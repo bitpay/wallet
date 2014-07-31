@@ -45,23 +45,27 @@
               <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
             </a>
             <div class="box-status">
-              <span ng-repeat="(action, ts) in actions">
-                <a ng-if="action == 'create'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
+              <a ng-if="actions.create" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
                   <i class="fi-crown icon-status icon-active"></i>
-                </a>
-                <a ng-if="action == 'seen'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
+              </a>
+              <a ng-if="!actions.create"><i class="fi-crown icon-status"></i></a>
+
+              <a ng-if="actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
                   <i class="fi-eye icon-status icon-active"></i>
-                </a>
-                <a ng-if="action == 'asd'" href="#!/transactions" class="icon-status">
-                  <i class="fi-loop icon-rotate"></i>
-                </a>
-                <a ng-if="action == 'sign'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
-                  <i class="fi-check icon-status icon-active-check"></i>
-                </a>
-                <a ng-if="action == 'rejected'" href="#!/transactions" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
+              </a>
+              <a ng-if="!actions.seen"><i class="fi-eye icon-status"></i></a>
+
+              <a ng-if="actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
                   <i class="fi-x icon-status icon-active-x"></i>
-                </a>
-              </span>
+              </a>
+
+              <a ng-if="actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
+                  <i class="fi-check icon-status icon-active-check"></i>
+              </a>
+
+              <a ng-if="!actions.sign && !actions.rejected" href="#!/transactions" class="icon-status">
+                  <i class="fi-loop icon-rotate"></i>
+              </a>
             </div>
 
             <div class="text-center">
