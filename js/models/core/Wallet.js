@@ -1004,16 +1004,19 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         }),
         time: time,
         expires: expires,
-        memo: memo,
+        memo: memo || 'No Message',
         payment_url: payment_url,
         merchant_data: merchant_data.toString('hex')
       },
       signature: sig,
       ca: ca,
     },
-    request_url: options.uri || options.url,
+    request_url: options.uri,
     total: bignum('0', 10).toString(10)
   };
+
+  console.log('receivePaymentRequest');
+  console.log(merchantData);
 
   return this.getUnspent(function(err, unspent) {
     if (options.fetch) {
@@ -1059,10 +1062,12 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     || self.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
-    var total = bignum('0', 10);
-    for (var i = 0; i < tx.outs.length - 1; i++) {
-      total = total.add(bignum.fromBuffer(tx.outs[i].v));
-    }
+    var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
+      return total.add(bignum.fromBuffer(tx.outs[i].v, {
+        endian: 'little',
+        size: 1
+      }));
+    }, bugnum('0', 10));
     var rpo = new PayPro();
     rpo = rpo.makeOutput();
     rpo.set('amount', +total.toString(10));
@@ -1164,7 +1169,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.pr.pd.outputs.forEach(function(output) {
     outs.push({
       address: self.getAddressesStr()[0]
-        || 'mfWxJ45yp2SFn7UciZyNpvDKrzbhyfKrY8', // dummy address (testnet 0 * hash160)
+        || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A', // dummy address (testnet 0 * hash160)
       amountSatStr: '0' // dummy amount
     });
   });
@@ -1184,6 +1189,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     var keys = priv.getForPaths(inputChainPaths);
     var signed = b.sign(keys);
   }
+
+  console.log('createPaymentTxSync:1');
+  console.log(merchantData);
 
   if (typeof merchantData.total === 'string') {
     merchantData.total = bignum(merchantData.total, 10);
@@ -1217,10 +1225,16 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     b.tx.outs[i].v = v;
     b.tx.outs[i].s = s;
 
-    merchantData.total = merchantData.total.add(bignum.fromBuffer(v));
+    merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
+      endian: 'little',
+      size: 1
+    }));
   });
 
   merchantData.total = merchantData.total.toString(10);
+
+  console.log('createPaymentTxSync:2');
+  console.log(merchantData);
 
   if (options.fetch) return;
 

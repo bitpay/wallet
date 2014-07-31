@@ -65,6 +65,8 @@ angular.module('copayApp.controllers').controller('SendController',
         var txp = w.txProposals.txps[ntxid];
         var merchantData = txp.merchant;
         var amt = angular.element(document.querySelector('input#amount'));
+        var submit = angular.element(document.querySelector('button[type=submit]'));
+        var sendall = angular.element(document.querySelector('[title="Send all funds"]'));
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
@@ -79,6 +81,8 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.loadTxs();
           if (merchantData) {
             amt.attr('disabled', false);
+            submit.attr('disabled', true);
+            sendall.attr('class', sendall.attr('class').replace(' hidden', ''));
           }
         } else {
           w.sendTx(ntxid, function(txid, ca) {
@@ -99,6 +103,8 @@ angular.module('copayApp.controllers').controller('SendController',
             $scope.loadTxs();
             if (merchantData) {
               amt.attr('disabled', false);
+              submit.attr('disabled', true);
+              sendall.attr('class', sendall.attr('class').replace(' hidden', ''));
             }
           });
         }
