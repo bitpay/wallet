@@ -2,7 +2,7 @@
   <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
   <div class="row" ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
     <div class="large-4 columns logo-setup">
-      <img src="../img/logo-negative-beta.svg" alt="Copay">
+      <img src="img/logo-negative-beta.svg" alt="Copay">
     </div>
     <div class="large-8 columns line-dashed-setup-v">
       <div class="box-setup oh">
@@ -10,8 +10,9 @@
           <h1 class="text-primary line-sidebar-b">Waiting copayers</h1>
           <h3>Share this secret with your other copayers</h3>
           <div class="panel">
-            <div class="ellipsis text-gray
-              size-14">{{$root.wallet.getSecret()}}</div>
+            <qrcode size="250" data="{{$root.wallet.getSecret()}}"></qrcode>
+            <div class="secret text-gray size-14">{{$root.wallet.getSecret()}}</div>
+            <div style="clear:both;"></div>
           </div>
         </div>
         <h1 class="text-white line-sidebar-b" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">New Wallet Created </h1>

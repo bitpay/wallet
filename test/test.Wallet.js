@@ -39,7 +39,7 @@ describe('Wallet model', function() {
     (function() {
       new Wallet(config)
     }).should.
-    throw();
+      throw();
   });
   it('should getNetworkName', function() {
     var w = cachedCreateW();
@@ -266,7 +266,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var l = w.getAddressesStr();
     for (var i = 0; i < l.length; i++)
-      w.addressIsOwn(l[i]).should.equal(true);
+    w.addressIsOwn(l[i]).should.equal(true);
 
     w.addressIsOwn(l[0], {
       excludeMain: true
@@ -315,14 +315,14 @@ describe('Wallet model', function() {
     o.opts.reconnectDelay = 100;
 
     var w2 = Wallet.fromObj(o,
-      new Storage(config.storage),
-      new Network(config.network),
-      new Blockchain(config.blockchain));
-    should.exist(w2);
-    w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
-    should.exist(w2.publicKeyRing.getCopayerId);
-    should.exist(w2.txProposals.toObj);
-    should.exist(w2.privateKey.toObj);
+                            new Storage(config.storage),
+                            new Network(config.network),
+                            new Blockchain(config.blockchain));
+                            should.exist(w2);
+                            w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
+                            should.exist(w2.publicKeyRing.getCopayerId);
+                            should.exist(w2.txProposals.toObj);
+                            should.exist(w2.privateKey.toObj);
   });
 
   it('#getSecret decodeSecret', function() {
@@ -339,15 +339,15 @@ describe('Wallet model', function() {
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
     }).should.not.
-    throw();
+      throw();
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     }).should.
-    throw();
+      throw();
     (function() {
       Wallet.decodeSecret('12345');
     }).should.
-    throw();
+      throw();
   });
 
   //this test fails randomly
@@ -381,14 +381,14 @@ describe('Wallet model', function() {
     var w = createW();
     var aiObj = {
       indexes: [{
-        cosigner: 0,
+        copayerIndex: 0,
         changeIndex: 3,
         receiveIndex: 2
       }]
     };
     w._handleIndexes('senderID', aiObj, true);
-    w.publicKeyRing.getIndex(0).getReceiveIndex(2);
-    w.publicKeyRing.getIndex(0).getChangeIndex(3);
+    w.publicKeyRing.getHDParams(0).getReceiveIndex(2);
+    w.publicKeyRing.getHDParams(0).getChangeIndex(3);
   });
 
   it('handle network pubKeyRings correctly', function() {
@@ -405,7 +405,7 @@ describe('Wallet model', function() {
       requiredCopayers: w.requiredCopayers,
       totalCopayers: w.totalCopayers,
       indexes: [{
-        cosigner: 0,
+        copayerIndex: 0,
         changeIndex: 2,
         receiveIndex: 3
       }],
@@ -415,8 +415,8 @@ describe('Wallet model', function() {
     w._handlePublicKeyRing('senderID', {
       publicKeyRing: pkrObj
     }, true);
-    w.publicKeyRing.getIndex(0).getReceiveIndex(2);
-    w.publicKeyRing.getIndex(0).getChangeIndex(3);
+    w.publicKeyRing.getHDParams(0).getReceiveIndex(2);
+    w.publicKeyRing.getHDParams(0).getChangeIndex(3);
     for (var i = 0; i < w.requiredCopayers; i++) {
       w.publicKeyRing.toObj().copayersExtPubKeys[i].should.equal(cepk[i]);
     }
@@ -557,21 +557,21 @@ describe('Wallet model', function() {
   });
 
   var roundErrorChecks = [{
-      unspent: [1.0001],
-      balance: 100010000
-    }, {
-      unspent: [1.0002, 1.0003, 1.0004],
-      balance: 300090000
-    }, {
-      unspent: [0.000002, 1.000003, 2.000004],
-      balance: 300000900
-    }, {
-      unspent: [0.0001, 0.0003],
-      balance: 40000
-    }, {
-      unspent: [0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002],
-      balance: 110000
-    },
+    unspent: [1.0001],
+    balance: 100010000
+  }, {
+    unspent: [1.0002, 1.0003, 1.0004],
+    balance: 300090000
+  }, {
+    unspent: [0.000002, 1.000003, 2.000004],
+    balance: 300000900
+  }, {
+    unspent: [0.0001, 0.0003],
+    balance: 40000
+  }, {
+    unspent: [0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002],
+    balance: 110000
+  },
 
   ];
   var roundWallet = cachedCreateW2();
@@ -788,8 +788,8 @@ describe('Wallet model', function() {
         // check updated all indexes
         var cosignersChecked = []
         updateIndex.args.forEach(function(i) {
-          cosignersChecked.indexOf(i[0].cosigner).should.equal(-1);
-          cosignersChecked.push(i[0].cosigner);
+          cosignersChecked.indexOf(i[0].copayerIndex).should.equal(-1);
+          cosignersChecked.push(i[0].copayerIndex);
         });
 
         sinon.assert.callCount(updateIndex, 4);
@@ -810,7 +810,7 @@ describe('Wallet model', function() {
       var index = {
         changeIndex: 1,
         receiveIndex: 2,
-        cosigner: 2,
+        copayerIndex: 2,
       }
       w.updateIndex(index, function(err) {
         index.receiveIndex.should.equal(9);
@@ -873,7 +873,7 @@ describe('Wallet model', function() {
       (function() {
         w.setAddressBook(contacts[0].address, contacts[0].label);
       }).should.
-      throw();
+        throw();
     });
 
     it('should show/hide everywhere', function() {
@@ -1049,11 +1049,11 @@ describe('Wallet model', function() {
       var opts = {};
       opts.signhash = signhash;
       var txb = new TransactionBuilder(opts)
-        .setUnspent(utxos)
-        .setOutputs(outs)
-        .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
-          'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
-        ]);
+      .setUnspent(utxos)
+      .setOutputs(outs)
+      .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
+            'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
+      ]);
       var txp = {
         'txProposal': {
           'builderObj': txb.toObj()
