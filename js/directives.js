@@ -6,6 +6,7 @@ angular.module('copayApp.directives')
 
       var bitcore = require('bitcore');
       var Address = bitcore.Address;
+      var bignum = bitcore.Bignum;
 
       return {
         require: 'ngModel',
@@ -21,17 +22,23 @@ angular.module('copayApp.directives')
                   return;
                 }
 
-                var expires = new Date(merchantData.pr.expires * 1000);
-                var memo = merchantData.pr.memo;
-                var payment_url = merchantData.pr.payment_url;
+                var expires = new Date(merchantData.pr.pd.expires * 1000);
+                var memo = merchantData.pr.pd.memo;
+                var payment_url = merchantData.pr.pd.payment_url;
                 var total = merchantData.total;
 
                 if (typeof total === 'string') {
-                  total = bitcore.bignum(total, 10).toBuffer();
+                  total = bignum(total, 10).toBuffer({
+                    endian: 'little',
+                    size: 1
+                  });
                 }
 
-                total = bitcore
-                  .bignum.fromBuffer(total)
+                total = bignum
+                  .fromBuffer(total, {
+                    endian: 'little',
+                    size: 1
+                  })
                   .div(config.unitToSatoshi)
                   .toString(10);
 
@@ -47,11 +54,19 @@ angular.module('copayApp.directives')
                 var tamount = angular.element(
                   document.querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
                 tamount.attr('class',
-                  tamount.attr('class').replace('hidden', '').trim())
-                tamount.text(total + ' (CA: ' + ca
+                  tamount.attr('class').replace(' hidden', ''))
+                tamount.text(total + ' (CA: ' + merchantData.pr.ca
                   + '. Expires: '
                   + expires.toISOString()
                   + '): ' + memo);
+
+                var submit = angular.element(
+                  document.querySelector('button[type=submit]'));
+                submit.attr('disabled', false);
+
+                var sendall = angular.element(
+                  document.querySelector('[title="Send all funds"]'));
+                sendall.attr('class', sendall.attr('class') + ' hidden');
 
                 // ctrl.$setValidity('validAddress', true);
               });
