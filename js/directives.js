@@ -198,24 +198,31 @@ angular.module('copayApp.directives')
       }
     };
   })
-// From https://gist.github.com/asafge/7430497
-.directive('ngReallyClick', [
-
-  function() {
+  .directive('openExternal', function() {
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
         element.bind('click', function() {
-          var message = attrs.ngReallyMessage;
-          if (message && confirm(message)) {
-            scope.$apply(attrs.ngReallyClick);
-          }
+          window.open('bitcoin:'+attrs.address, '_blank');
         });
       }
     }
-  }
-])
-
+  })
+  // From https://gist.github.com/asafge/7430497
+  .directive('ngReallyClick', [function() {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          element.bind('click', function() {
+            var message = attrs.ngReallyMessage;
+            if (message && confirm(message)) {
+              scope.$apply(attrs.ngReallyClick);
+            }
+          });
+        }
+      }
+    }
+  ])
   .directive('match', function () {
     return {
       require: 'ngModel',
@@ -231,5 +238,4 @@ angular.module('copayApp.directives')
         });
       }
     };
-  })
-;
+  });

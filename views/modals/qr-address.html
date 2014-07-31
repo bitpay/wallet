@@ -9,8 +9,8 @@
       {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
     </span>
     <div style="margin-top:10px;">
-      <span class="label pointer" ng-click="openExternal(address.address)">
-        <i class="fi-link">&nbsp;</i> Open in external aplication
+      <span class="label pointer" open-external address="{{address.address}}">
+        <i class="fi-link">&nbsp;</i> Open in external application
       </span>
     </div>
   </div>
