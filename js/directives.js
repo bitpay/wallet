@@ -47,15 +47,17 @@ angular.module('copayApp.directives')
                 amount.val(total);
                 amount.attr('disabled', true);
 
-                var sendto = angular.element(
-                  document.querySelector('div.send-note > p[ng-class]:first-of-type'));
+                var sendto = angular.element(document
+                  .querySelector('div.send-note > p[ng-class]:first-of-type'));
                 sendto.html(sendto.html() + '<br><b>Server:</b> ' + memo);
 
-                var tamount = angular.element(
-                  document.querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
+                var tamount = angular.element(document
+                  .querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
+                var ca = merchantData.pr.ca
+                  || '<span style="color:red;">Untrusted</span>';
                 tamount.attr('class',
                   tamount.attr('class').replace(' hidden', ''))
-                tamount.text(total + ' (CA: ' + merchantData.pr.ca
+                tamount.html(total + ' (CA: ' + ca
                   + '. Expires: '
                   + expires.toISOString()
                   + '): ' + memo);
@@ -72,6 +74,7 @@ angular.module('copayApp.directives')
               });
 
               ctrl.$setValidity('validAddress', true);
+
               return 'Merchant: '+ uri.merchant;
             }
 
