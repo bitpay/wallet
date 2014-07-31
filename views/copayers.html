@@ -11,7 +11,10 @@
           <h3>Share this secret with your other copayers</h3>
           <div class="panel">
             <qrcode size="250" data="{{$root.wallet.getSecret()}}"></qrcode>
-            <div class="secret text-gray size-14">{{$root.wallet.getSecret()}}</div>
+            <div class="secret text-gray size-14">
+              {{$root.wallet.getSecret()}} 
+              <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
+            </div>
             <div style="clear:both;"></div>
           </div>
         </div>
