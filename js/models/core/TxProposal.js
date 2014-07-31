@@ -24,7 +24,7 @@ function TxProposal(opts) {
   this.builder = opts.builder;
   this.inputChainPaths = opts.inputChainPaths;
 
-  this._inputSignedBy = [];
+  this._inputSignatures = [];
   this.seenBy = opts.seenBy || {};
   this.signedBy = opts.signedBy || {};
   this.rejectedBy = opts.rejectedBy || {};
@@ -69,25 +69,24 @@ TxProposal.fromObj = function(o, forceOpts) {
     };
   }
   var t = new TxProposal(o);
-  t._throwIfInvalid();
+  t._check();
   t._updateSignedBy();
   return t;
 };
 
 
 
-TxProposal._formatKeys = function(allowedPubKeys) {
-  var keys = [];
-  for (var i in allowedPubKeys) {
-    if (!Buffer.isBuffer(allowedPubKeys[i]))
-      throw new Error('allowedPubKeys must be buffers');
+TxProposal._formatKeys = function(keys) {
+  var ret = [];
+  for (var i in keys) {
+    if (!Buffer.isBuffer(keys[i]))
+      throw new Error('keys must be buffers');
 
     var k = new Key();
-    k.public = allowedPubKeys[i];
-    keys.push(k);
+    k.public = keys[i];
+    ret.push(k);
   };
-
-  return keys;
+  return ret;
 };
 
 TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
@@ -107,13 +106,13 @@ TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
       if (k.verifySignatureSync(txSigHash, sigRaw)) {
         ret.push(parseInt(j));
         break;
-      } 
+      }
     }
   }
   return ret;
 };
 
-TxProposal._keysFromRedeemScript = function(s) {
+TxProposal._infoFromRedeemScript = function(s) {
   var redeemScript = new Script(s.chunks[s.chunks.length - 1]);
   if (!redeemScript)
     throw new Error('Bad scriptSig');
@@ -121,71 +120,66 @@ TxProposal._keysFromRedeemScript = function(s) {
   if (!pubkeys || !pubkeys.length)
     throw new Error('Bad scriptSig');
 
-  return pubkeys;
+  return {
+    keys: pubkeys,
+    scriptBuf: redeemScript.getBuffer()
+  };
 };
 
 TxProposal.prototype._updateSignedBy = function() {
-  this._inputSignedBy = [];
+  this._inputSignatures = [];
 
   var tx = this.builder.build();
   for (var i in tx.ins) {
     var scriptSig = new Script(tx.ins[i].s);
-
-    var keys = TxProposal._keysFromRedeemScript(scriptSig);
-    var txSigHash = tx.hashForSignature(this.builder.inputMap[i].scriptPubKey, i, Transaction.SIGHASH_ALL);
-    var copayerIndex = this._verifySignatures(keys, scriptSig, txSigHash);
-    if (typeof copayerIndex === 'undefined')
+    var signatureCount = scriptSig.countSignatures();
+    var info = TxProposal._infoFromRedeemScript(scriptSig);
+    var txSigHash = tx.hashForSignature(info.scriptBuf, i, Transaction.SIGHASH_ALL);
+    var signatureIndexes = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
+    if (signatureIndexes.length !== signatureCount)
       throw new Error('Invalid signature');
-    this._inputSignedBy[i] = this._inputSignedBy[i] || {};
-    this._inputSignedBy[i][copayerIndex] = true;
+    this._inputSignatures[i] = signatureIndexes.map(function(i) {
+      return info.keys[i].toString('hex');
+    });
   };
 };
 
-TxProposal.prototype.isValid = function() {
+TxProposal.prototype._check = function() {
 
   if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
-    return false;
+    throw new Error('Invalid tx proposal');
   }
 
   var tx = this.builder.build();
   if (!tx.ins.length)
-    return false;
+    throw new Error('Invalid tx proposal: no ins');
+
+  var scriptSigs = this.builder.vanilla.scriptSigs;
+  if (!scriptSigs || !scriptSigs.length) {
+    throw new Error('Invalid tx proposal: no signatures');
+  }
 
   for (var i = 0; i < tx.ins.length; i++) {
     var hashType = tx.getHashType(i);
-    if (hashType && hashType !== Transaction.SIGHASH_ALL) {
-      return false;
-    }
+    if (hashType && hashType !== Transaction.SIGHASH_ALL) 
+      throw new Error('Invalid tx proposal: bad signatures');
   }
-
-  console.log('[TxProposal.js.145]'); //TODO
-
-  //Should be signed
-  var scriptSigs = this.builder.vanilla.scriptSigs;
-  if (!scriptSigs)
-    return false;
-
-
-  console.log('[TxProposal.js.153]'); //TODO
-  return true;
 };
 
 
-TxProposal.prototype._throwIfInvalid = function(allowedPubKeys) {
-  if (!this.isValid(allowedPubKeys))
-    throw new Error('Invalid tx proposal');
+TxProposal.prototype.mergeBuilder = function(incoming) {
+  var b0 = this.builder;
+  var b1 = incoming.builder;
+
+  var before = JSON.stringify(b0.toObj());
+  b0.merge(b1);
+  var after = JSON.stringify(b0.toObj());
+  return after !== before;
 };
 
 
-TxProposal.prototype.merge = function(incoming, allowedPubKeys) {
-  var ret = {};
-  ret.events = [];
-  incoming._throwIfInvalid(allowedPubKeys);
-
-  /* TODO */
-
-  /*
-     events.push({
+/* OTDO
+   events.push({
 type: 'seen',
 cId: k,
 txId: ntxid
@@ -202,29 +196,48 @@ txId: ntxid
 });
 ret.events = this.mergeMetadata(incoming);
 */
-  ret.hasChanged = this.mergeBuilder(incoming);
+
+
+TxProposal.prototype._allSignatures = function() {
+  var ret = {};
+  for(var i in this._inputSignatures) 
+    for (var j in this._inputSignatures[i])
+      ret[this._inputSignatures[i][j]] = true;
+
   return ret;
 };
 
-TxProposal.prototype.mergeBuilder = function(incoming) {
-  var b0 = this.builder;
-  var b1 = incoming.builder;
+TxProposal.prototype.merge = function(incoming) {
+  var ret = {};
+  var newSignatures = [];
 
-  var before = JSON.stringify(b0.toObj());
-  b0.merge(b1);
-  var after = JSON.stringify(b0.toObj());
-  return after !== before;
+  incoming._check();
+  incoming._updateSignedBy();
+
+  var prevInputSignatures = this._allSignatures();
+
+  ret.hasChanged = this.mergeBuilder(incoming);
+  this._updateSignedBy();
+
+  if (ret.hasChanged) 
+    for(var i in this._inputSignatures) 
+      for (var j in this._inputSignatures[i])
+        if (!prevInputSignatures[this._inputSignatures[i][j]])
+          newSignatures.push(this._inputSignatures[i][j]);
+
+  ret.newSignatures = newSignatures;
+
+  return ret;
 };
-
 
 //This should be on bitcore / Transaction
 TxProposal.prototype.countSignatures = function() {
   var tx = this.builder.build();
-
   var ret = 0;
   for (var i in tx.ins) {
     ret += tx.countInputSignatures(i);
   }
   return ret;
 };
+
 module.exports = TxProposal;
