@@ -15,26 +15,54 @@ angular.module('copayApp.directives')
           var validator = function(value) {
             // Is payment protocol address?
             var uri = copay.HDPath.parseBitcoinURI(value);
-            var total = '00001000';
-            console.log('TOTAL:');
-            console.log(total);
-            var amount = angular.element(document).find('#amount');
-            amount.prop('disabled', true);
-            amount.val(total);
+
             if (uri && uri.merchant) {
+              var total = bitcore
+                .bignum('1000')
+                .div(config.unitToSatoshi)
+                .toString(10);
+
+              var amount = angular.element(angular
+                .element(document)
+                .find('form')
+                .find('input')[1]);
+              amount.val(total);
+              amount.attr('disabled', true);
+
+              var tamount = angular.element(angular
+                .element(document)
+                .find('section')
+                .find('p')[1]);
+              tamount.attr('class', tamount.attr('class').replace(' hidden', ''))
+              tamount.text(total + ' (CA: Internet Widgets Pty Ltd)')
+
               scope.wallet.createPaymentTx(uri.merchant, function(ntxid, ca) {
                 var txp = scope.wallet.txProposals.txps[ntxid];
                 if (!txp) return;
-                var total = txp.merchant.total;
-                console.log('TOTAL:');
-                console.log(total);
-                var amount = angular.element(document).find('#amount');
-                amount.prop('disabled', true);
+
+                var total = bitcore
+                  .bignum.fromBuffer(txp.merchant.total)
+                  .div(config.unitToSatoshi)
+                  .toString(10);
+
+                var amount = angular.element(angular
+                  .element(document)
+                  .find('form')
+                  .find('input')[1]);
                 amount.val(total);
+                amount.attr('disabled', true);
+
+                var tamount = angular.element(angular
+                  .element(document)
+                  .find('section')
+                  .find('p')[1]);
+                tamount.attr('class', tamount.attr('class').replace(' hidden', ''))
+                tamount.text(total + ' (CA: ' + ca + ')')
               });
               ctrl.$setValidity('validAddress', true);
               return 'Merchant: '+ uri.merchant;
             }
+
             var a = new Address(value);
             ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
             return value;

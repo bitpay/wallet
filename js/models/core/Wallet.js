@@ -111,7 +111,7 @@ var $http = G.$http || function $http(options, callback) {
   }
 
   return ret;
-}
+};
 
 function Wallet(opts) {
   var self = this;
