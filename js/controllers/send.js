@@ -88,8 +88,31 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var uri = address.indexOf('bitcoin:') === 0
         && copay.HDPath.parseBitcoinURI(address);
-      if (uri && uri.merchant) {
-        w.createTx(uri.merchant, commentText, done);
+      if (uri.merchant) {
+        var existing;
+
+        Object.keys(w.txProposals.txps).forEach(function(ntxid, i, obj) {
+          var txp = w.txProposals.txps[ntxid];
+          if (!txp) return;
+          var total = typeof txp.merchant.total !== 'string'
+            ? txp.merchant.total.toString(10)
+            : txp.merchant.total;
+          if (txp.merchant.request_url === uri.merchant && total === amount) {
+            existing = txp;
+            obj.length = 0;
+          }
+        });
+
+        if (existing) {
+          var tx = existing.builder.build();
+          if (!tx.isComplete()) {
+            $scope.sign(existing.getID());
+          } else {
+            done(existing.getID(), existing.merchant.pr.ca);
+          }
+        } else {
+          w.createTx(uri.merchant, commentText, done);
+        }
       } else {
         w.createTx(address, amount, commentText, done);
       }

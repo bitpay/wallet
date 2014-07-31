@@ -976,6 +976,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       signature: sig,
       ca: ca,
     },
+    request_url: options.uri || options.url,
     total: bignum('0').toString(10)
   };
 
