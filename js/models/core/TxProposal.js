@@ -90,7 +90,7 @@ TxProposal._formatKeys = function(allowedPubKeys) {
   return keys;
 };
 
-TxProposal.prototype._verifySignatures = function(inKeys, scriptSig, txSigHash) {
+TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
   preconditions.checkArgument(Buffer.isBuffer(txSigHash));
   preconditions.checkArgument(inKeys);
   preconditions.checkState(Buffer.isBuffer(inKeys[0]));
