@@ -25,7 +25,9 @@
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
       <span ng-if="!$root.updatingBalance"
+        class="has-tip"
         data-options="disable_for_touch:true"
+        tooltip-popup-delay='500'
         tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{totalBalance || 0
@@ -37,7 +39,9 @@
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
       <span ng-show="!$root.updatingBalance"
+        class="has-tip"
         data-options="disable_for_touch:true"
+        tooltip-popup-delay='500'
         tooltip="{{availableBalanceBTC || 0 |noFractionNumber:8}} BTC"
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
