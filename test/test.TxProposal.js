@@ -204,10 +204,10 @@ describe('TxProposal', function() {
         txp.builder.tx.getHashType.restore();
       });
       it('FAIL no signatures', function() {
-        var backup = txp.builder.vanilla.scriptSigs;
-        txp.builder.vanilla.scriptSigs = [];
+        var backup = txp.builder.vanilla.scriptSig;
+        txp.builder.vanilla.scriptSig = [];
         (function() { txp._check();} ).should.throw('no signatures');
-        txp.builder.vanilla.scriptSigs = backup;
+        txp.builder.vanilla.scriptSig = backup;
       });
     });
     describe('#merge', function() {
@@ -220,17 +220,17 @@ describe('TxProposal', function() {
       });
 
       it('with less signatures', function() {
-        var backup = txp.builder.vanilla.scriptSigs[0];
+        var backup = txp.builder.vanilla.scriptSig[0];
         txp.builder.merge = function() {
           // 3 signatures.
-          this.vanilla.scriptSigs=['0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
-          this.tx.ins[0].s=new Buffer(this.vanilla.scriptSigs[0],'hex');
+          this.vanilla.scriptSig=['0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
+          this.tx.ins[0].s=new Buffer(this.vanilla.scriptSig[0],'hex');
         };
         var ret = txp.merge(txp);
         ret.hasChanged.should.equal(true);
         ret.newSignatures.length.should.equal(0);
 
-        txp.builder.vanilla.scriptSigs = [backup];
+        txp.builder.vanilla.scriptSig = [backup];
         txp.builder.tx.ins[0].s = new Buffer(backup,'hex');
       });
 
@@ -238,8 +238,8 @@ describe('TxProposal', function() {
       it('with more signatures', function() {
         txp.builder.merge = function() {
           // 3 signatures.
-          this.vanilla.scriptSigs=['00483045022100f75bd3eb92d8c9be9a94d848bbd1985fc0eaf4c47fb470a0b222881802a1f03802204eb239ae3082779b1ec4f2e69baa0362494071e707e1696c14ad23c8f2e184e20148304502201981482db0f369ce943293b6fec06a0347918663c766a79d4cbd0457801768d1022100aedf8d7c51d55a9ddbdcc0067ed6b648b77ce9660447bbcf4e2c209698efa0a30148304502203f0ddad47757f8705cb40e7c706590d2e2028a7027ffdb26dd208fd6155e0d28022100ccd206f9b969ab7f88ee4c5c6cee48c800a62dda024c5a8de7eb8612b833a0c0014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
-          this.tx.ins[0].s=new Buffer(this.vanilla.scriptSigs[0],'hex');
+          this.vanilla.scriptSig=['00483045022100f75bd3eb92d8c9be9a94d848bbd1985fc0eaf4c47fb470a0b222881802a1f03802204eb239ae3082779b1ec4f2e69baa0362494071e707e1696c14ad23c8f2e184e20148304502201981482db0f369ce943293b6fec06a0347918663c766a79d4cbd0457801768d1022100aedf8d7c51d55a9ddbdcc0067ed6b648b77ce9660447bbcf4e2c209698efa0a30148304502203f0ddad47757f8705cb40e7c706590d2e2028a7027ffdb26dd208fd6155e0d28022100ccd206f9b969ab7f88ee4c5c6cee48c800a62dda024c5a8de7eb8612b833a0c0014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
+          this.tx.ins[0].s=new Buffer(this.vanilla.scriptSig[0],'hex');
         };
         var ret = txp.merge(txp);
         ret.hasChanged.should.equal(true);

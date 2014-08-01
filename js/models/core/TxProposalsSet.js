@@ -5,6 +5,7 @@ var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var BuilderMockV0 = require('./BuilderMockV0');;
+var TxProposal = require('./TxProposal');;
 var Script = bitcore.Script;
 var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
@@ -28,7 +29,7 @@ TxProposalsSet.fromObj = function(o, forceOpts) {
   o.txps.forEach(function(o2) {
     var t = TxProposal.fromObj(o2, forceOpts);
     if (t.builder) {
-      var id = t.getID();
+      var id = t.getId();
       ret.txps[id] = t;
     }
   });
@@ -39,14 +40,9 @@ TxProposalsSet.prototype.getNtxids = function() {
   return Object.keys(this.txps);
 };
 
-TxProposalsSet.prototype.toObj = function(onlyThisNtxid) {
-  if (onlyThisNtxid) throw new Error();
+TxProposalsSet.prototype.toObj = function() {
   var ret = [];
   for (var id in this.txps) {
-
-    if (onlyThisNtxid && id != onlyThisNtxid)
-      continue;
-
     var t = this.txps[id];
     if (!t.sent)
       ret.push(t.toObj());
@@ -70,7 +66,7 @@ TxProposalsSet.prototype.mergeFromObj = function(txProposalObj, allowedPubKeys, 
 TxProposalsSet.prototype.merge = function(inTxp, allowedPubKeys) {
   var myTxps = this.txps;
 
-  var ntxid = inTxp.getID();
+  var ntxid = inTxp.getId();
   var ret = {};
   ret.events = [];
   ret.events.hasChanged = false;
@@ -94,7 +90,7 @@ TxProposalsSet.prototype.merge = function(inTxp, allowedPubKeys) {
 // Add a LOCALLY CREATED (trusted) tx proposal
 TxProposalsSet.prototype.add = function(data) {
   var txp = new TxProposal(data);
-  var ntxid = txp.getID();
+  var ntxid = txp.getId();
   this.txps[ntxid] = txp;
   return ntxid;
 };
@@ -158,3 +154,4 @@ TxProposalsSet.prototype.getUsedUnspent = function(maxRejectCount) {
   return ret;
 };
 
+module.exports = TxProposalsSet;

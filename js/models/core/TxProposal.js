@@ -96,6 +96,7 @@ TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
 
   if (scriptSig.chunks[0] !== 0)
     throw new Error('Invalid scriptSig');
+
   var keys = TxProposal._formatKeys(inKeys);
   var ret = [];
   for (var i = 1; i <= scriptSig.countSignatures(); i++) {
@@ -116,13 +117,14 @@ TxProposal._infoFromRedeemScript = function(s) {
   var redeemScript = new Script(s.chunks[s.chunks.length - 1]);
   if (!redeemScript)
     throw new Error('Bad scriptSig');
+
   var pubkeys = redeemScript.capture();
   if (!pubkeys || !pubkeys.length)
     throw new Error('Bad scriptSig');
 
   return {
     keys: pubkeys,
-    scriptBuf: redeemScript.getBuffer()
+    script: redeemScript,
   };
 };
 
@@ -134,7 +136,7 @@ TxProposal.prototype._updateSignedBy = function() {
     var scriptSig = new Script(tx.ins[i].s);
     var signatureCount = scriptSig.countSignatures();
     var info = TxProposal._infoFromRedeemScript(scriptSig);
-    var txSigHash = tx.hashForSignature(info.scriptBuf, i, Transaction.SIGHASH_ALL);
+    var txSigHash = tx.hashForSignature(info.script, parseInt(i), Transaction.SIGHASH_ALL);
     var signatureIndexes = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
     if (signatureIndexes.length !== signatureCount)
       throw new Error('Invalid signature');
@@ -154,8 +156,8 @@ TxProposal.prototype._check = function() {
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
-  var scriptSigs = this.builder.vanilla.scriptSigs;
-  if (!scriptSigs || !scriptSigs.length) {
+  var scriptSig = this.builder.vanilla.scriptSig;
+  if (!scriptSig || !scriptSig.length) {
     throw new Error('Invalid tx proposal: no signatures');
   }
 
