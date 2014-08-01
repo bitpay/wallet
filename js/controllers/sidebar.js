@@ -84,7 +84,7 @@ angular.module('copayApp.controllers').controller('SidebarController',
 
     if ($rootScope.wallet) {
       $scope.$on('$idleStart', function(a) {
-        notification.warning('Timing', 'You were enought time in inactivity. This session will be closed in 10 seconds if continues without activity');
+        notification.warning('Session will be closed', 'Your session is about to expire due to inactivity');
       });
 
       $scope.$on('$idleTimeout', function() {
