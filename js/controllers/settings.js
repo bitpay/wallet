@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('SettingsController',
   function($scope, $rootScope, $window, $location) {
     $scope.title = 'Settings';
+    $scope.loading = false;
     $scope.networkName = config.networkName;
     $scope.insightHost = config.blockchain.host;
     $scope.insightPort = config.blockchain.port;
@@ -49,7 +50,12 @@ angular.module('copayApp.controllers').controller('SettingsController',
     };
 
 
-    $scope.save = function() {
+    $scope.save = function(form) {
+      if (form && form.$invalid) {
+        notification.error('Error', 'There is an error in the form');
+        return;
+      }
+
       var network = config.network;
       network.key = $scope.networkKey;
       network.host = $scope.networkHost;
@@ -74,6 +80,7 @@ angular.module('copayApp.controllers').controller('SettingsController',
         unitToSatoshi: $scope.selectedUnit.value,
       }));
 
-      window.location.reload();
+      var target = ($window.location.origin !== 'null' ? $window.location.origin : '');
+      $window.location.href = target;
     };
   });

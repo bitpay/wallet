@@ -6,7 +6,7 @@
     <div class="large-8 columns line-dashed-setup-v">
       <div class="box-setup">
         <h1 class="text-white line-sidebar-b">{{title}}</h1>
-        <form name="settingsForm">
+        <form name="settingsForm" ng-submit="save(openForm)" novalidate>
           <fieldset>
             <legend>Bitcoin Network</legend>
             <input id="network-name" type="checkbox" ng-model="networkName"
@@ -64,7 +64,7 @@
 
           <div class="text-right">
             <a class="back-button text-white m20r" href="#!/">&laquo; Back</a>
-            <button type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+            <button type="submit" class="button primary m0" ng-disabled="setupForm.$invalid || loading">
               Save
             </button>
           </div>
