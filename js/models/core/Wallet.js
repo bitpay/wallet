@@ -874,11 +874,9 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     return PayPro.RootCerts.getTrusted(pem);
   }).filter(Boolean);
 
-  if (!trusted.length) {
-    if (typeof SSL_UNTRUSTED === 'undefined') {
-      return cb(new Error('Not a trusted certificate.'));
-    }
-  }
+  // if (!trusted.length) {
+  //   return cb(new Error('Not a trusted certificate.'));
+  // }
 
   // Verify Signature
   var verified = pr.verify();
@@ -928,7 +926,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         merchant_data: merchant_data.toString('hex')
       },
       signature: sig,
-      ca: ca
+      ca: ca,
+      untrusted: !ca
     },
     request_url: options.uri,
     total: bignum('0', 10).toString(10)
