@@ -159,9 +159,11 @@ TxProposal.prototype._check = function() {
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
-  var scriptSig = this.builder.vanilla.scriptSig;
-  if (!scriptSig || !scriptSig.length) {
-    throw new Error('Invalid tx proposal: no signatures');
+  for(var i in tx.ins){
+    var scriptSig = tx.ins[i].s;
+    if (!scriptSig || !scriptSig.length) {
+      throw new Error('Invalid tx proposal: no signatures');
+    }
   }
 
   for (var i = 0; i < tx.ins.length; i++) {

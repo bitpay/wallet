@@ -214,10 +214,10 @@ describe('TxProposal', function() {
         txp.builder.tx.getHashType.restore();
       });
       it('FAIL no signatures', function() {
-        var backup = txp.builder.vanilla.scriptSig;
-        txp.builder.vanilla.scriptSig = [];
+        var backup = txp.builder.tx.ins[0].s;
+        txp.builder.tx.ins[0].s = undefined;
         (function() { txp._check();} ).should.throw('no signatures');
-        txp.builder.vanilla.scriptSig = backup;
+        txp.builder.tx.ins[0].s = backup;
       });
     });
     describe('#merge', function() {
