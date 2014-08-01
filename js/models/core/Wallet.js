@@ -135,7 +135,6 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   try {
     mergeInfo = this.txProposals.mergeFromObj(data.txProposal, senderId, Wallet.builderOpts);
   } catch (e) {
-console.log('[Wallet.js.141]',e); //TODO
     var corruptEvent = {
       type: 'corrupt',
       cId: senderId,

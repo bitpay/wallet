@@ -1023,30 +1023,7 @@ describe('Wallet model', function() {
   });
 
   describe('validate txProposals', function() {
-    var a1 = 'n1pKARYYUnZwxBuGj3y7WqVDu6VLN7n971';
-    var a2 = 'mtxYYJXZJmQc2iJRHQ4RZkfxU5K7TE2qMJ';
-    var utxos = [{
-      address: a1,
-      txid: '2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1',
-      vout: 1,
-      scriptPubKey: Address.getScriptPubKeyFor(a1).serialize().toString('hex'),
-      amount: 0.5,
-      confirmations: 200
-    }, {
-      address: a2,
-      txid: '88c4520ffd97ea565578afe0b40919120be704b36561c71ba4e450e83cb3c9fd',
-      vout: 1,
-      scriptPubKey: Address.getScriptPubKeyFor(a2).serialize().toString('hex'),
-      amount: 0.5001,
-      confirmations: 200
-    }];
-    var destAddress = 'myuAQcCc1REUgXGsCTiYhZvPPc3XxZ36G1';
-    var outs = [{
-      address: destAddress,
-      amount: 1.0
-    }];
-
-    var testValidate = function(signhash, result, done) {
+    var testValidate = function(shouldThrow, result, done) {
       var w = cachedCreateW();
       var spy = sinon.spy();
       w.on('txProposalEvent', spy);
@@ -1054,50 +1031,26 @@ describe('Wallet model', function() {
         e.type.should.equal(result);
         done();
       });
-      var opts = {};
-      opts.signhash = signhash;
-      var txb = new TransactionBuilder(opts)
-      .setUnspent(utxos)
-      .setOutputs(outs)
-      .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
-            'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
-      ]);
       var txp = {
-        'txProposal': {
-          builderObj: txb.toObj(),
-          inputChainPaths: 'm/1',
-          creator: '1234',
-          createdTs: Date.now(),
-        }
+        'txProposal': { dummy: 1}
       };
+      var merge = sinon.stub(w.txProposals, 'mergeFromObj', function() {
+        if (shouldThrow) throw new Error();
+        return {events: [{type:'new'}]};
+      });
+
       w._handleTxProposal('senderID', txp, true);
       spy.callCount.should.equal(1);
+      merge.restore();
     };
 
     it('should validate for undefined', function(done) {
       var result = 'corrupt';
-      var signhash;
-      testValidate(signhash, result, done);
+      testValidate(1, result, done);
     });
-    it.only('should validate for SIGHASH_ALL', function(done) {
+    it('should validate for SIGHASH_ALL', function(done) {
       var result = 'new';
-      var signhash = Transaction.SIGHASH_ALL;
-      testValidate(signhash, result, done);
-    });
-    it('should not validate for different SIGHASH_NONE', function(done) {
-      var result = 'corrupt';
-      var signhash = Transaction.SIGHASH_NONE;
-      testValidate(signhash, result, done);
-    });
-    it('should not validate for different SIGHASH_SINGLE', function(done) {
-      var result = 'corrupt';
-      var signhash = Transaction.SIGHASH_SINGLE;
-      testValidate(signhash, result, done);
-    });
-    it('should not validate for different SIGHASH_ANYONECANPAY', function(done) {
-      var result = 'corrupt';
-      var signhash = Transaction.SIGHASH_ANYONECANPAY;
-      testValidate(signhash, result, done);
+      testValidate(0, result, done);
     });
   });
 });

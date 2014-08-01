@@ -198,8 +198,18 @@ describe('TxProposal', function() {
         (function() { txp._check();} ).should.throw('no ins');
         txp.builder.tx.ins = backup;
       });
-      it('FAIL signhash', function() {
-        sinon.stub(txp.builder.tx,'getHashType').returns(2);
+      it('FAIL signhash SINGLE', function() {
+        sinon.stub(txp.builder.tx,'getHashType').returns(Transaction.SIGHASH_SINGLE);
+        (function() { txp._check();} ).should.throw('signatures');
+        txp.builder.tx.getHashType.restore();
+      });
+      it('FAIL signhash NONE', function() {
+        sinon.stub(txp.builder.tx,'getHashType').returns(Transaction.SIGHASH_NONE);
+        (function() { txp._check();} ).should.throw('signatures');
+        txp.builder.tx.getHashType.restore();
+      });
+      it('FAIL signhash ANYONECANPAY', function() {
+        sinon.stub(txp.builder.tx,'getHashType').returns(Transaction.SIGHASH_ANYONECANPAY);
         (function() { txp._check();} ).should.throw('signatures');
         txp.builder.tx.getHashType.restore();
       });
