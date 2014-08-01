@@ -17,16 +17,16 @@ checkOK() {
 }
 
 # Configs
-BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BUILDDIR="$( cd "$( dirname "$0" )" && pwd )"
 APPDIR="$BUILDDIR/package"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 DEBUG=""
-if [[ $1 = "-d" ]]
+if [ "$1" = "-d" ];
 then
   DEBUG="--enable-remote-debugging"
 fi
 
-if [[ $# -eq 1 && ! $1 = "-d" ]]
+if [ $# -eq 1 ] && [ $1 != "-d" ];
 then
   if [ ! -f $BUILDDIR/copay.keystore ]
     then
@@ -58,7 +58,9 @@ checkOK
 echo "${OpenColor}${Green}* Copying all app files...${CloseColor}"
 sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,config.js,version.js,index.html,./android/icon.png,./android/logo.png} $APPDIR
+pwd
+echo $APPDIR
+cp -af css font img js lib sound config.js version.js index.html ./android/icon.png ./android/logo.png $APPDIR
 checkOK
 
 # Building the APK
