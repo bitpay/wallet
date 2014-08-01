@@ -107,22 +107,7 @@
   <script src="js/controllers/uriPayment.js"></script>
 
   <!-- PLACEHOLDER: CORDOVA SRIPT -->
-  <script type="text/javascript" charset="utf-8">
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    function onDeviceReady() {
-      setTimeout(function(){ navigator.splashscreen.hide(); }, 2000);
-
-      document.addEventListener("menubutton", function() {
-        var nav = document.getElementsByTagName('nav')[0];
-        if (!nav) return;
-
-        var menu = nav.getElementsByTagName('section')[0].getElementsByTagName('a')[0];
-        if (menu.offsetParent) menu.click();
-
-      }, false);
-    }
-  </script>
+  <script src="js/mobile.js"></script>
 
   <script src="js/init.js"></script>
 </body>
