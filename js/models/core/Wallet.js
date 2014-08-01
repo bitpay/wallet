@@ -975,7 +975,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   var refund_outputs = [];
 
   options.refund_to = options.refund_to
-    || self.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
+    || this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
     // pubkey needs to be ripesha'd
