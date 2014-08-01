@@ -34,13 +34,24 @@ angular.module('copayApp.directives')
                   });
                 }
 
+                // XXX good
+                // total = bignum
+                //   .fromBuffer(total, {
+                //     endian: 'little',
+                //     size: 1
+                //   })
+                //   .div(config.unitToSatoshi)
+                //   .toString(10);
+
                 total = bignum
                   .fromBuffer(total, {
                     endian: 'little',
                     size: 1
                   })
-                  .div(config.unitToSatoshi)
                   .toString(10);
+
+                // XXX bad
+                total = +total / config.unitToSatoshi;
 
                 var amount = angular.element(
                   document.querySelector('input#amount'));
@@ -60,7 +71,7 @@ angular.module('copayApp.directives')
                 tamount.html(total + ' (CA: ' + ca
                   + '. Expires: '
                   + expires.toISOString()
-                  + '): ' + memo);
+                  + ')');
 
                 var submit = angular.element(
                   document.querySelector('button[type=submit]'));
