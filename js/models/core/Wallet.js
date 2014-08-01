@@ -1020,7 +1020,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   options.memo = options.memo || options.comment
     || 'Hi server, I would like to give you some money.';
 
-  pay.set('memo', txp.merchant.pr.pd.memo);
+  pay.set('memo', options.memo);
 
   return $http({
     method: 'POST',
