@@ -1012,9 +1012,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   var pay = new PayPro();
   pay = pay.makePayment();
   var merchant_data = txp.merchant.pr.pd.merchant_data;
-  if (typeof merchant_data === 'string') {
-    merchant_data = new Buffer(merchant_data, 'hex');
-  }
+  merchant_data = new Buffer(merchant_data, 'hex');
   pay.set('merchant_data', merchant_data);
   pay.set('transactions', [tx.serialize()]);
   pay.set('refund_to', refund_outputs);
