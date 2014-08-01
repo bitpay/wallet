@@ -1064,7 +1064,10 @@ describe('Wallet model', function() {
       ]);
       var txp = {
         'txProposal': {
-          'builderObj': txb.toObj()
+          builderObj: txb.toObj(),
+          inputChainPaths: 'm/1',
+          creator: '1234',
+          createdTs: Date.now(),
         }
       };
       w._handleTxProposal('senderID', txp, true);
@@ -1072,11 +1075,11 @@ describe('Wallet model', function() {
     };
 
     it('should validate for undefined', function(done) {
-      var result = 'new';
+      var result = 'corrupt';
       var signhash;
       testValidate(signhash, result, done);
     });
-    it('should validate for SIGHASH_ALL', function(done) {
+    it.only('should validate for SIGHASH_ALL', function(done) {
       var result = 'new';
       var signhash = Transaction.SIGHASH_ALL;
       testValidate(signhash, result, done);

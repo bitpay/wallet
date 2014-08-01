@@ -13,10 +13,10 @@ var preconditions = require('preconditions').instance();
 
 function TxProposal(opts) {
   preconditions.checkArgument(opts);
-  preconditions.checkArgument(opts.inputChainPaths);
-  preconditions.checkArgument(opts.creator);
-  preconditions.checkArgument(opts.createdTs);
-  preconditions.checkArgument(opts.builder);
+  preconditions.checkArgument(opts.inputChainPaths,'no inputChainPaths');
+  preconditions.checkArgument(opts.creator,'no creator');
+  preconditions.checkArgument(opts.createdTs,'no createdTs');
+  preconditions.checkArgument(opts.builder,'no builder');
 
 
   this.creator = opts.creator;
@@ -53,9 +53,14 @@ TxProposal.prototype.setSent = function(sentTxid) {
 };
 
 TxProposal.fromObj = function(o, forceOpts) {
+
+  console.log('[TxProposal.js.56]'); //TODO
   preconditions.checkArgument(o.builderObj);
+
+  console.log('[TxProposal.js.59]'); //TODO
   delete o['builder'];
 
+  console.log('[TxProposal.js.62]'); //TODO
   try {
     // force opts is requested.
     for (var k in forceOpts) {
@@ -63,14 +68,20 @@ TxProposal.fromObj = function(o, forceOpts) {
     }
     o.builder = TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
+
+    console.log('[TxProposal.js.71]'); //TODO
     if (!o.version) {
       o.builder = new BuilderMockV0(o.builderObj);
       o.readonly = 1;
     };
   }
+
+  console.log('[TxProposal.js.78]', o); //TODO
   var t = new TxProposal(o);
   t._check();
   t._updateSignedBy();
+
+  console.log('[TxProposal.js.78]'); //TODO
   return t;
 };
 
@@ -114,13 +125,14 @@ TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
 };
 
 TxProposal._infoFromRedeemScript = function(s) {
+  console.log('[TxProposal.js.127]',s.getBuffer().toString('hex')); //TODO
   var redeemScript = new Script(s.chunks[s.chunks.length - 1]);
   if (!redeemScript)
-    throw new Error('Bad scriptSig');
+    throw new Error('Bad scriptSig (no redeemscript)');
 
   var pubkeys = redeemScript.capture();
   if (!pubkeys || !pubkeys.length)
-    throw new Error('Bad scriptSig');
+    throw new Error('Bad scriptSig (no pubkeys)');
 
   return {
     keys: pubkeys,

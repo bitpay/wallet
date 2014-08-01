@@ -178,7 +178,7 @@ describe('TxProposal', function() {
       for(var i in keys){
         keys[i].toString('hex').should.equal(pubkeys[i].toString('hex'));
       }
-      Buffer.isBuffer(info.scriptBuf).should.equal(true);
+      Buffer.isBuffer(info.script.getBuffer()).should.equal(true);
     });
     it('#_updateSignedBy', function() {
       var txp = dummyProposal;

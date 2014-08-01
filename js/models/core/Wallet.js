@@ -17,7 +17,7 @@ var Address = bitcore.Address;
 
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
-var TxProposalsSet = require('./TxProposalsSet');
+var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
 
@@ -132,13 +132,14 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL: ', data);
   var mergeInfo;
-
   try {
     mergeInfo = this.txProposals.mergeFromObj(data.txProposal, senderId, Wallet.builderOpts);
   } catch (e) {
+console.log('[Wallet.js.141]',e); //TODO
     var corruptEvent = {
       type: 'corrupt',
-      cId: mergeInfo.inTxp.creator
+      cId: senderId,
+      error: e,
     };
     this.emit('txProposalEvent', corruptEvent);
     return;
@@ -386,7 +387,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.addressBook = o.addressBook;
 
   opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = TxProposalsSet.fromObj(o.txProposals, Wallet.builderOpts);
+  opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
   opts.privateKey = PrivateKey.fromObj(o.privateKey);
 
   opts.storage = storage;
@@ -494,7 +495,7 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
 };
 
 
-Wallet.prototype.getTxProposalsSet = function() {
+Wallet.prototype.getTxProposals = function() {
   var ret = [];
   var copayers = this.getRegisteredCopayerIds();
   for (var ntxid in this.txProposals.txps) {

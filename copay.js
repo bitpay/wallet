@@ -1,7 +1,7 @@
 // core
 module.exports.PublicKeyRing = require('./js/models/core/PublicKeyRing');
 module.exports.TxProposal = require('./js/models/core/TxProposal');
-module.exports.TxProposalsSet = require('./js/models/core/TxProposalsSet');
+module.exports.TxProposals = require('./js/models/core/TxProposals');
 module.exports.PrivateKey = require('./js/models/core/PrivateKey');
 module.exports.Passphrase = require('./js/models/core/Passphrase');
 module.exports.HDPath = require('./js/models/core/HDPath');

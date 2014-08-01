@@ -21,7 +21,7 @@ try {
 
 var FakeBuilder = require('./mocks/FakeBuilder');
 var TxProposal = copay.TxProposal;
-var TxProposalsSet = copay.TxProposalsSet;
+var TxProposals = copay.TxProposals;
 
 var dummyProposal = new TxProposal({
   creator: 1,
@@ -32,17 +32,17 @@ var dummyProposal = new TxProposal({
 
 var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
 
-describe('TxProposalsSet', function() {
+describe('TxProposals', function() {
   describe('constructor', function() {
     it('should create an instance', function() {
-      var txps = new TxProposalsSet();
+      var txps = new TxProposals();
       should.exist(txps);
       txps.network.name.should.equal('testnet');
     });
   });
   describe('#fromObj', function() {
     it('should create an instance from an Object', function() {
-      var txps = TxProposalsSet.fromObj({
+      var txps = TxProposals.fromObj({
         networkName:'livenet',
         walletId: '123a12',
         txps: [],
@@ -51,7 +51,7 @@ describe('TxProposalsSet', function() {
       txps.network.name.should.equal('livenet');
     });
     it('should fail create an instance from an Object with errors', function() {
-      (function() {var txps = TxProposalsSet.fromObj({
+      (function() {var txps = TxProposals.fromObj({
         networkName:'livenet',
         walletId: '123a12',
         txps: [ { a: 1 }],
@@ -60,14 +60,14 @@ describe('TxProposalsSet', function() {
   });
   describe('#getNtxids', function() {
     it('should return keys', function() {
-      var txps = new TxProposalsSet();
+      var txps = new TxProposals();
       txps.txps = {a:1, b:2};
       txps.getNtxids().should.deep.equal(['a','b']);
     });
   });
   describe('#toObj', function() {
     it('should an object', function() {
-      var txps = TxProposalsSet.fromObj({
+      var txps = TxProposals.fromObj({
         networkName:'livenet',
         walletId: '123a12',
         txps: [],
@@ -77,7 +77,7 @@ describe('TxProposalsSet', function() {
       o.networkName.should.equal('livenet');
     });
     it('should export txps', function() {
-      var txps = TxProposalsSet.fromObj({
+      var txps = TxProposals.fromObj({
         networkName:'livenet',
         walletId: '123a12',
         txps: [],
@@ -90,7 +90,7 @@ describe('TxProposalsSet', function() {
       o.txps.length.should.equal(2);
     });
     it('should filter sent txp', function() {
-      var txps = TxProposalsSet.fromObj({
+      var txps = TxProposals.fromObj({
         networkName:'livenet',
         walletId: '123a12',
         txps: [],
@@ -103,6 +103,12 @@ describe('TxProposalsSet', function() {
       };
       var o = txps.toObj();
       o.txps.length.should.equal(1);
+    });
+  });
+  describe.skip('#merge', function() {
+    it('mergeFromObj', function() {
+      var txps = new TxProposals();
+      txps.mergeFromObj(dummyProposal.toObj());
     });
   });
 });
