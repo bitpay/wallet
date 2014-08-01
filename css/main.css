@@ -682,9 +682,7 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 
   border-radius: 3px; 
-  border: 1px solid #1ABC9C;
-  text-overflow: ellipsis;
-  overflow-y: hidden;
+  border: 1px solid #16A085;
 }
 
 .tooltip>.nub {
@@ -698,6 +696,11 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 }
 .tooltip.tip-left>.nub {
   border-color:transparent transparent transparent #16A085;
+}
+
+.has-tip {
+  color: #7A8C9E;
+  border-color: #7A8C9E;
 }
 
 .logo {
@@ -1090,12 +1093,34 @@ a.text-white:hover {color: #ccc;}
   text-align: left;
 }
 
+/**** Copy to clipboard ****/
+
+.btn-copy {
+  color: #9b9b9b;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  outline: none;
+  vertical-align: sub;
+  background: transparent url('../img/icons/copy.png') center center no-repeat;
+}
+
+.btn-copied {
+  display: inline-block;
+  width: auto;
+  color: #16A085; 
+  font-weight: bold; 
+  font-size: 11px; 
+}
+
+.btn-copy.zeroclipboard-is-hover { color: #000; }
+.btn-copy.zeroclipboard-is-active { opacity: 1; }
+
 @media only screen and (min-width: 40.063em) {
   dialog.tiny, .reveal-modal.tiny {
     width: 50%;
     margin-left: -25%;
   }
 }
-
 
 /*-----------------------------------------------------------------*/

@@ -2,7 +2,7 @@
   <qrcode size="250" data="{{address.address}}"></qrcode>
 
   <div class="m10t">
-    <h4>{{address.address}}</h4>
+    <h4>{{address.address}} <span class="btn-copy" clip-copy="address.address"></span></h4>
     <span ng-if="$root.updatingBalance">
       <i class="fi-bitcoin-circle icon-rotate spinner"></i>
     </span>

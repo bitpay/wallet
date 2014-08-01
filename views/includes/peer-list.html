@@ -11,7 +11,7 @@
   
 
   <ul class="copayer-list" ng-repeat="copayer in copayers">
-    <li tooltip="ID: {{copayer.peerId}}" tooltip-placement="top">
+    <li class="ellipsis">
       <video
         ng-if="hasVideo(copayer)"
         peer="{{copayer}}" avatar autoplay
@@ -25,10 +25,9 @@
         src="./img/satoshi.gif"
         alt="{{copayer}}">
 
-      <span>
-        <span ng-show="copayer.index == 0">you</span>
-        <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
-      </span>
+      <span ng-show="copayer.index == 0">you</span>
+      <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
+      <span class="btn-copy" clip-copy="copayer.peerId"></span>
     </li>
   </ul>
 </div>
