@@ -22,15 +22,10 @@ var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var startServer = require('./mocks/FakePayProServer');
 
-var G = is_browser ? window : global;
-G.SSL_UNTRUSTED = true;
-
 var server;
 
 describe('PayPro (in Wallet) model', function() {
   var config = {
-    // requiredCopayers: 3,
-    // totalCopayers: 5,
     requiredCopayers: 1,
     totalCopayers: 1,
     spendUnconfirmed: true,
