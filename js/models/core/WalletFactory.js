@@ -2,7 +2,7 @@
 
 var imports = require('soop').imports();
 
-var TxProposalsSet = require('./TxProposalsSet');
+var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');

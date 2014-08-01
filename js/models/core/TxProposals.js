@@ -12,7 +12,7 @@ var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
 
-function TxProposalsSet(opts) {
+function TxProposals(opts) {
   opts = opts || {};
   this.walletId = opts.walletId;
   this.network = opts.networkName === 'livenet' ?
@@ -20,8 +20,8 @@ function TxProposalsSet(opts) {
   this.txps = {};
 }
 
-TxProposalsSet.fromObj = function(o, forceOpts) {
-  var ret = new TxProposalsSet({
+TxProposals.fromObj = function(o, forceOpts) {
+  var ret = new TxProposals({
     networkName: o.networkName,
     walletId: o.walletId,
   });
@@ -36,11 +36,11 @@ TxProposalsSet.fromObj = function(o, forceOpts) {
   return ret;
 };
 
-TxProposalsSet.prototype.getNtxids = function() {
+TxProposals.prototype.getNtxids = function() {
   return Object.keys(this.txps);
 };
 
-TxProposalsSet.prototype.toObj = function() {
+TxProposals.prototype.toObj = function() {
   var ret = [];
   for (var id in this.txps) {
     var t = this.txps[id];
@@ -55,15 +55,7 @@ TxProposalsSet.prototype.toObj = function() {
 };
 
 
-TxProposalsSet.prototype.mergeFromObj = function(txProposalObj, allowedPubKeys, opts) {
-  var inTxp = TxProposal.fromObj(txProposalObj, opts);
-  var mergeInfo = this.txProposals.merge(inTxp, allowedPubKeys);
-  mergeInfo.inTxp = inTxp;
-  return mergeInfo;
-};
-
-
-TxProposalsSet.prototype.merge = function(inTxp, allowedPubKeys) {
+TxProposals.prototype.merge = function(inTxp, allowedPubKeys) {
   var myTxps = this.txps;
 
   var ntxid = inTxp.getId();
@@ -75,7 +67,8 @@ TxProposalsSet.prototype.merge = function(inTxp, allowedPubKeys) {
     var v0 = myTxps[ntxid];
     var v1 = inTxp;
     ret = v0.merge(v1, allowedPubKeys);
-  } else {
+  } 
+  else {
     this.txps[ntxid] = inTxp;
     ret.hasChanged = true;
     ret.events.push({
@@ -87,21 +80,31 @@ TxProposalsSet.prototype.merge = function(inTxp, allowedPubKeys) {
   return ret;
 };
 
+TxProposals.prototype.mergeFromObj = function(txProposalObj, allowedPubKeys, opts) {
+  var inTxp = TxProposal.fromObj(txProposalObj, opts);
+  var mergeInfo = this.merge(inTxp, allowedPubKeys);
+  mergeInfo.inTxp = inTxp;
+  return mergeInfo;
+};
+
+
+
+
 // Add a LOCALLY CREATED (trusted) tx proposal
-TxProposalsSet.prototype.add = function(data) {
+TxProposals.prototype.add = function(data) {
   var txp = new TxProposal(data);
   var ntxid = txp.getId();
   this.txps[ntxid] = txp;
   return ntxid;
 };
 
-TxProposalsSet.prototype.setSent = function(ntxid, txid) {
-  //sent TxProposalsSet are local an not broadcasted.
+TxProposals.prototype.setSent = function(ntxid, txid) {
+  //sent TxProposals are local an not broadcasted.
   this.txps[ntxid].setSent(txid);
 };
 
 
-TxProposalsSet.prototype.getTxProposal = function(ntxid, copayers) {
+TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   var txp = this.txps[ntxid];
   var i = JSON.parse(JSON.stringify(txp));
   i.builder = txp.builder;
@@ -139,7 +142,7 @@ TxProposalsSet.prototype.getTxProposal = function(ntxid, copayers) {
 };
 
 //returns the unspent txid-vout used in PENDING Txs
-TxProposalsSet.prototype.getUsedUnspent = function(maxRejectCount) {
+TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
   for (var i in this.txps) {
     var u = this.txps[i].builder.getSelectedUnspent();
@@ -154,4 +157,4 @@ TxProposalsSet.prototype.getUsedUnspent = function(maxRejectCount) {
   return ret;
 };
 
-module.exports = TxProposalsSet;
+module.exports = TxProposals;
