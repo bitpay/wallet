@@ -43,7 +43,7 @@ describe('TxProposal', function() {
         var txp = new TxProposal({
           creator: 1
         });
-      }).should.throw('Illegal Argument');
+      }).should.throw('no inputChainPaths');
 
     });
 
