@@ -11,7 +11,15 @@
         <div class="box-setup">
           <h1 class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
           <form name="joinForm" ng-submit="join(joinForm)" novalidate>
-            <label for="connectionId"> Wallet Setting </label>
+
+            <label for="connectionId"> Wallet Setting 
+              <small class="has-error" ng-show="joinForm.connectionId.$invalid
+                && !joinForm.connectionId.$pristine">Wallet Secret is not valid!</small>
+              <small data-options="disable_for_touch:true"
+                ng-show="joinForm.connectionId.$pristine" class="has-tip
+                text-gray" tooltip="Paste wallet secret here" >Required</small>
+            </label>
+
             <input id="connectionId" type="text" class="small-9 columns" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required style="width:85%;">
             <div class="small-2 columns" style="padding:0px;width:15%;" ng-hide="showScanner">
                 <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
