@@ -258,6 +258,11 @@ a:hover {
   margin-bottom: 20px;
 }
 
+.box-setup label small.has-error {
+  font-size: 11px;
+  color: #FFA59B;
+}
+
 .last-transactions {
   margin-bottom: 2rem;
   background-color: #E8EAEF;
