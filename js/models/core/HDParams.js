@@ -18,7 +18,7 @@ function HDParams(opts) {
 
 HDParams.init = function(totalCopayers) {
   preconditions.shouldBeNumber(totalCopayers);
-  var ret = [new HDParams()];
+  var ret = [new HDParams({receiveIndex: 1})];
   for (var i = 0 ; i < totalCopayers ; i++) {
     ret.push(new HDParams({copayerIndex: i}));
   }

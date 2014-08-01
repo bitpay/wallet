@@ -185,13 +185,14 @@ angular.module('copayApp.services')
 
     root.updateAddressList = function() {
       var w = $rootScope.wallet;
-      if (w)
+      if (w && w.isReady())
         $rootScope.addrInfos = w.getAddressesInfo();
     };
 
     root.updateBalance = function(cb) {
       var w = $rootScope.wallet;
       if (!w) return root.onErrorDigest();
+      if (!w.isReady()) return;
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
@@ -212,6 +213,10 @@ angular.module('copayApp.services')
         $rootScope.totalBalanceBTC = (balanceSat / COIN);
         $rootScope.availableBalance = safeBalanceSat * satToUnit;
         $rootScope.availableBalanceBTC = (safeBalanceSat / COIN);
+
+        $rootScope.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
+        $rootScope.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
+
         var balanceByAddr = {};
         for (var ii in balanceByAddrSat) {
           balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
