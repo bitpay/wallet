@@ -914,6 +914,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
             script: {
               offset: output.get('script').offset,
               limit: output.get('script').limit,
+              // NOTE: For some reason output.script.buffer
+              // is only an ArrayBuffer
               buffer: new Buffer(new Uint8Array(
                 output.get('script').buffer)).toString('hex')
             }
@@ -921,12 +923,12 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         }),
         time: time,
         expires: expires,
-        memo: memo || 'No Message',
+        memo: memo || 'This server would like some BTC from you.',
         payment_url: payment_url,
         merchant_data: merchant_data.toString('hex')
       },
       signature: sig,
-      ca: ca,
+      ca: ca
     },
     request_url: options.uri,
     total: bignum('0', 10).toString(10)
@@ -984,6 +986,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     }, bugnum('0', 10));
     var rpo = new PayPro();
     rpo = rpo.makeOutput();
+    // XXX Bad - the amount *has* to be a Number in protobufjs
     rpo.set('amount', +total.toString(10));
     rpo.set('script',
       Buffer.concat([
@@ -1046,13 +1049,17 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
 Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
   var self = this;
+
   var payment = ack.get('payment');
   var memo = ack.get('memo');
+
   this.log('Our payment was acknowledged!');
   this.log('Message from Merchant: %s', memo);
+
   payment = PayPro.Payment.decode(payment);
   var pay = new PayPro();
   payment = pay.makePayment(payment);
+
   var tx = payment.message.transactions[0];
   if (tx.buffer) {
     tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
@@ -1060,6 +1067,7 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
     ptx.parse(tx.buffer);
     tx = ptx;
   }
+
   var txid = tx.getHash().toString('hex');
   return cb(txid, txp.merchant.pr.ca);
 };
@@ -1069,9 +1077,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   var priv = this.privateKey;
   var pkr = this.publicKeyRing;
 
-  // preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
   preconditions.checkState(pkr.isComplete());
-  if (options.memo) preconditions.checkArgument(options.memo.length <= 100);
+  if (options.memo) {
+    preconditions.checkArgument(options.memo.length <= 100);
+  }
 
   var opts = {
     remainderOut: {
@@ -1083,7 +1092,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.pr.pd.outputs.forEach(function(output) {
     outs.push({
       address: self.getAddressesStr()[0]
-        || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A', // dummy address (testnet 0 * hash160)
+        || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A', // dummy address
       amountSatStr: '0' // dummy amount
     });
   });
@@ -1104,22 +1113,15 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     var signed = b.sign(keys);
   }
 
-  if (typeof merchantData.total === 'string') {
-    merchantData.total = bignum(merchantData.total, 10);
-  }
+  merchantData.total = bignum(merchantData.total, 10);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
-    var amount = output.get
-      ? output.get('amount')
-      : output.amount;
-
-    var script = output.get
-      ? output.get('script')
-      : {
-        offset: output.script.offset,
-        limit: output.script.limit,
-        buffer: new Buffer(output.script.buffer, 'hex')
-      };
+    var amount = output.amount;
+    var script = {
+      offset: output.script.offset,
+      limit: output.script.limit,
+      buffer: new Buffer(output.script.buffer, 'hex')
+    };
 
     var v = new Buffer(8);
     v[0] = (amount.low >> 0) & 0xff;
