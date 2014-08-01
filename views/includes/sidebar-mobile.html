@@ -24,16 +24,16 @@
         </span>
       </div> 
       <div>
-        Available
+        Locked 
         <span ng-if="$root.updatingBalance">
           <i class="fi-bitcoin-circle icon-rotate spinner"></i>
         </span>
         <span ng-show="!$root.updatingBalance"
           data-options="disable_for_touch:true"
-          tooltip="{{availableBalanceBTC || 0 |noFractionNumber:8}} BTC"
+          tooltip="{{lockedBalanceBTC || 0 |noFractionNumber:8}} BTC"
           tooltip-trigger="mouseenter"
-          tooltip-placement="bottom">{{availableBalance || 0|noFractionNumber}} {{$root.unitName}}
-        </span>
+          tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
+        </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
       </div>
       <div class="line-sidebar-b"></div>
     </div>

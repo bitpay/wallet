@@ -212,6 +212,10 @@ angular.module('copayApp.services')
         $rootScope.totalBalanceBTC = (balanceSat / COIN);
         $rootScope.availableBalance = safeBalanceSat * satToUnit;
         $rootScope.availableBalanceBTC = (safeBalanceSat / COIN);
+
+        $rootScope.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
+        $rootScope.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
+
         var balanceByAddr = {};
         for (var ii in balanceByAddrSat) {
           balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
