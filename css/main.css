@@ -158,14 +158,12 @@ a:hover {
 .page, .main {
   height:100%;
   overflow-y: auto;
-  overflow-x: none;
   background-color: #2C3E50;
 }
 
 .sidebar {
   height:100%;
   overflow-y: auto;
-  overflow-x: none;
 }
 
 .sidebar {
@@ -283,7 +281,7 @@ a:hover {
 
 .last-transactions-content .box-status {
   text-align: center;
-  font-size: 14;
+  font-size: 14px;
 }
 
 .last-transactions-content .box-copayer {

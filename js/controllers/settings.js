@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('SettingsController',
   function($scope, $rootScope, $window, $location) {
     $scope.title = 'Settings';
+    $scope.loading = false;
     $scope.networkName = config.networkName;
     $scope.insightHost = config.blockchain.host;
     $scope.insightPort = config.blockchain.port;
@@ -51,7 +52,6 @@ angular.module('copayApp.controllers').controller('SettingsController',
 
     $scope.save = function(form) {
       if (form && form.$invalid) {
-        console.log('no valido???');
         notification.error('Error', 'There is an error in the form');
         return;
       }
