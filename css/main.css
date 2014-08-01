@@ -1116,5 +1116,11 @@ a.text-white:hover {color: #ccc;}
 .btn-copy.zeroclipboard-is-hover { color: #000; }
 .btn-copy.zeroclipboard-is-active { opacity: 1; }
 
+@media only screen and (min-width: 40.063em) {
+  dialog.tiny, .reveal-modal.tiny {
+    width: 50%;
+    margin-left: -25%;
+  }
+}
 
 /*-----------------------------------------------------------------*/
