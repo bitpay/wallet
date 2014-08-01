@@ -914,7 +914,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
             script: {
               offset: output.get('script').offset,
               limit: output.get('script').limit,
-              buffer: new Buffer(output.get('script').buffer).toString('hex')
+              buffer: new Buffer(new Uint8Array(
+                output.get('script').buffer)).toString('hex')
             }
           };
         }),
