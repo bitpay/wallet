@@ -123,34 +123,34 @@
       </div>
     </div>
 
-      <div class="large-12 columns line-dashed">
-        <h2>Address Book</h2>
-        <p class="text-gray" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
-        <table ng-show="showAddressBook()">
-          <thead>
-            <tr>
-              <th>Label</th>
-              <th>Address</th>
-              <th>Creator</th>
-              <th>Date</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr 
-            ng-repeat="(addr, info) in $root.wallet.addressBook" 
-            ng-class="{'addressbook-disabled': info.hidden}">
-            <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
-            <td width="100" class="ellipsis">{{addr}}</td>
-            <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
-            <td><time>{{info.createdTs | amCalendar}}</time></td>
-            <td><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
-                'Enable' : 'Disable'}}</a></td>
+    <div class="large-12 columns line-dashed">
+      <h2>Address Book</h2>
+      <p class="text-gray" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
+      <table class="large-12 medium-12 small-12" ng-show="showAddressBook()">
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Creator</th>
+            <th>Date</th>
+            <th>&nbsp;</th>
           </tr>
-          </tbody>
-        </table>
-        <button class="button tiny primary text-center" ng-click="openAddressBookModal()">Add New Entry</button>
-      </div>
+        </thead>
+        <tbody>
+        <tr 
+          ng-repeat="(addr, info) in $root.wallet.addressBook" 
+          ng-class="{'addressbook-disabled': info.hidden}">
+          <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
+          <td class="ellipsis">{{addr}} <span class="btn-copy" clip-copy="addr"></span></td>
+          <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
+          <td><time>{{info.createdTs | amCalendar}}</time></td>
+          <td width="5"><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
+              'Enable' : 'Disable'}}</a></td>
+        </tr>
+        </tbody>
+      </table>
+      <button class="button tiny primary text-center" ng-click="openAddressBookModal()">Add New Entry</button>
+    </div>
   </div>
 </div>
 

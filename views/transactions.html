@@ -154,12 +154,13 @@
         </div>
         <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
           <div class="last-transactions-header">
-            <div class="large-8 columns">
-              <a class="ellipsis" href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank">
-                {{btx.txid}}
-              </a>
+            <div class="large-8 medium-7 small-3 columns ellipsis">
+              <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank">
+                {{btx.txid}} 
+              </a> 
+              <span class="btn-copy" clip-copy="btx.txid"></span>
             </div>
-            <div class="large-4 columns text-right">
+            <div class="large-4 medium-5 small-9 columns text-right">
               <div data-ng-show="btx.firstSeenTs">
                 first seen at
                 <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>

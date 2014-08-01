@@ -238,4 +238,38 @@ angular.module('copayApp.directives')
         });
       }
     };
+  })
+  .directive('clipCopy', function() {
+    ZeroClipboard.config({
+      moviePath: '/lib/zeroclipboard/dist/ZeroClipboard.swf',
+      trustedDomains: ['*'],
+      allowScriptAccess: 'always',
+      forceHandCursor: true
+    });
+
+    return {
+      restric: 'A',
+      scope: { clipCopy: '=clipCopy' },
+      link: function(scope, elm) {
+        var client = new ZeroClipboard(elm);
+
+        client.on( 'ready', function(event) {
+          client.on( 'copy', function(event) {
+            event.clipboardData.setData('text/plain', scope.clipCopy);
+          });
+
+          client.on( 'aftercopy', function(event) {
+            elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');
+            setTimeout(function() {
+              elm.addClass('btn-copy').removeClass('btn-copied').html('');
+            }, 1000);
+          });
+        });
+
+        client.on( 'error', function(event) {
+          console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+          ZeroClipboard.destroy();
+        });
+      }
+    };
   });
