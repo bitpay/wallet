@@ -18,7 +18,7 @@ angular.module('copayApp.directives')
             if (uri && uri.merchant) {
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
                 if (err) {
-                  // XXX where would we send this error?
+                  ctrl.$setValidity('validAddress', false);
                   return;
                 }
 
@@ -72,7 +72,7 @@ angular.module('copayApp.directives')
                   document.querySelector('[title="Send all funds"]'));
                 sendall.attr('class', sendall.attr('class') + ' hidden');
 
-                // ctrl.$setValidity('validAddress', true);
+                ctrl.$setValidity('validAddress', true);
               });
 
               ctrl.$setValidity('validAddress', true);
