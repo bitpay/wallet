@@ -978,6 +978,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     || self.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
+    // pubkey needs to be ripesha'd
+    options.refund_to = bitcore.sha256ripe160(options.refund_to);
     var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
       return total.add(bignum.fromBuffer(tx.outs[i].v, {
         endian: 'little',
