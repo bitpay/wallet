@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('SidebarController', 
-    function($scope, $rootScope, $sce, $location, $http, $idle, notification, controllerUtils) {
+    function($scope, $rootScope, $sce, $location, $http, notification, controllerUtils) {
 
     $scope.version = copay.version;
     $scope.networkName = config.networkName;
@@ -83,14 +83,11 @@ angular.module('copayApp.controllers').controller('SidebarController',
     controllerUtils.setSocketHandlers();
 
     if ($rootScope.wallet) {
-      $idle.watch();
-      
       $scope.$on('$idleStart', function(a) {
         notification.warning('Timing', 'You were enought time in inactivity. This session will be closed in 10 seconds if continues without activity');
       });
 
       $scope.$on('$idleTimeout', function() {
-        $idle.unwatch();
         $scope.signout();
         notification.warning('Session closed', 'Session closed for a long time of inactivity');
       });
