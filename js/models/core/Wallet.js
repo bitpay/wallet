@@ -1015,6 +1015,9 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     total: bignum('0', 10).toString(10)
   };
 
+  console.log('receivePaymentRequest');
+  console.log(merchantData);
+
   return this.getUnspent(function(err, unspent) {
     if (options.fetch) {
       self.createPaymentTxSync(options, merchantData, unspent);
@@ -1187,6 +1190,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     var signed = b.sign(keys);
   }
 
+  console.log('createPaymentTxSync:1');
+  console.log(merchantData);
+
   if (typeof merchantData.total === 'string') {
     merchantData.total = bignum(merchantData.total, 10);
   }
@@ -1226,6 +1232,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   });
 
   merchantData.total = merchantData.total.toString(10);
+
+  console.log('createPaymentTxSync:2');
+  console.log(merchantData);
 
   if (options.fetch) return;
 
