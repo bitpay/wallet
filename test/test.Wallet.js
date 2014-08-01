@@ -594,7 +594,7 @@ describe('Wallet model', function() {
 
 
   it('should get balance', function(done) {
-    var w = createW();
+    var w = createW2();
     var spy = sinon.spy(w.blockchain, 'getUnspent');
     w.blockchain.fixUnspent([]);
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
