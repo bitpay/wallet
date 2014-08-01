@@ -114,13 +114,13 @@
     display: block;
     float: none;
     margin: 0 auto;
-    width: 280px;
-    height: 280px;
+    width: 210px;
+    height: 210px;
   }
 
   .panel qrcode canvas {
-    width: 270px;
-    height: 270px;
+    width: 200px;
+    height: 200px;
   }
 }
 
