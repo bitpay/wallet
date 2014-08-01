@@ -44,6 +44,9 @@ angular.module('copayApp.directives')
                 // XXX There needs to be a better way to do this:
                 total = +total / config.unitToSatoshi;
 
+                var address = angular.element(
+                  document.querySelector('input#address'));
+
                 var amount = angular.element(
                   document.querySelector('input#amount'));
                 amount.val(total);
@@ -71,6 +74,23 @@ angular.module('copayApp.directives')
                 var sendall = angular.element(
                   document.querySelector('[title="Send all funds"]'));
                 sendall.attr('class', sendall.attr('class') + ' hidden');
+
+                address.on('change', function(ev) {
+                  var val = address.val();
+                  var uri = copay.HDPath.parseBitcoinURI(val || '');
+                  if (!uri || !uri.merchant) {
+                    if (amount.attr('disabled') === true) {
+                      amount.attr('disabled', false);
+                    }
+                    if (amount.attr('disabled') === false) {
+                      submit.attr('disabled', true);
+                    }
+                    if (/ hidden$/.test(sendall.attr('class'))) {
+                      sendall.attr('class',
+                        sendall.attr('class').replace(' hidden', ''));
+                    }
+                  }
+                });
 
                 ctrl.$setValidity('validAddress', true);
               });
