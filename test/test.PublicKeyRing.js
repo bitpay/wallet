@@ -145,9 +145,8 @@ describe('PublicKeyRing model', function() {
     var k = createW();
     var w = k.w;
 
-
     var a = w.getAddresses();
-    a.length.should.equal(0);
+    a.length.should.equal(1);
 
     [true, false].forEach(function(isChange){
       for (var i = 0; i < 2; i++) {
@@ -156,13 +155,20 @@ describe('PublicKeyRing model', function() {
     });
 
     var as = w.getAddressesInfo();
-    as.length.should.equal(4);
+    as.length.should.equal(5); // include pre-generated shared one
     for (var j in as) {
       var a = as[j];
       a.address.isValid().should.equal(true);
       a.addressStr.should.equal(a.address.toString());
-      a.isChange.should.equal([false, false, true, true][j]);
+      a.isChange.should.equal([false, false, false, true, true][j]);
     }
+  });
+
+
+  it('should start with one shared address', function() {
+    var k = createW();
+    var a = k.w.getAddresses();
+    a.length.should.equal(1);
   });
 
   it('should count generation indexes', function() {

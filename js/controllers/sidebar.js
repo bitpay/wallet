@@ -82,4 +82,15 @@ angular.module('copayApp.controllers').controller('SidebarController',
     // Init socket handlers (with no wallet yet)
     controllerUtils.setSocketHandlers();
 
+    if ($rootScope.wallet) {
+      $scope.$on('$idleStart', function(a) {
+        notification.warning('Session will be closed', 'Your session is about to expire due to inactivity');
+      });
+
+      $scope.$on('$idleTimeout', function() {
+        $scope.signout();
+        notification.warning('Session closed', 'Session closed because a long time of inactivity');
+      });
+    }
+
   });
