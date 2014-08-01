@@ -872,7 +872,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     var der = cert.toString('hex');
     var pem = PayPro.prototype._DERtoPEM(der, 'CERTIFICATE');
     return PayPro.RootCerts.getTrusted(pem);
-  });
+  }).filter(Boolean);
 
   if (!trusted.length) {
     if (typeof SSL_UNTRUSTED === 'undefined') {
