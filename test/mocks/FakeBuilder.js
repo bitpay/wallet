@@ -31,7 +31,7 @@ function FakeBuilder() {
     i: 0 }];
 
     this.vanilla = {
-      scriptSigs: [VALID_SCRIPTSIG_BUF],
+      scriptSig: [VALID_SCRIPTSIG_BUF],
     }    
 }
 
