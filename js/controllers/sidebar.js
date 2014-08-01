@@ -89,7 +89,7 @@ angular.module('copayApp.controllers').controller('SidebarController',
 
       $scope.$on('$idleTimeout', function() {
         $scope.signout();
-        notification.warning('Session closed', 'Session closed for a long time of inactivity');
+        notification.warning('Session closed', 'Session closed because a long time of inactivity');
       });
     }
 
