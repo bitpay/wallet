@@ -173,7 +173,6 @@ TxProposal.prototype._check = function() {
   }
 };
 
-
 TxProposal.prototype.mergeBuilder = function(incoming) {
   var b0 = this.builder;
   var b1 = incoming.builder;
