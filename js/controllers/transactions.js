@@ -166,6 +166,10 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       }
     };
 
+    $scope.hasAction = function(actions, action) {
+      return actions.hasOwnProperty('create');
+    }
+
     $scope.getShortNetworkName = function() {
       return config.networkName.substring(0, 4);
     };
