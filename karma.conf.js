@@ -21,6 +21,7 @@ module.exports = function(config) {
       'lib/angular/angular.min.js',
       'lib/angular-mocks/angular-mocks.js',
       'lib/moment/moment.js',
+      'lib/ng-idle/angular-idle.min.js',
       'lib/angular-moment/angular-moment.js',
       'lib/qrcode-generator/js/qrcode.js',
       'lib/angular-qrcode/qrcode.js',
