@@ -34,15 +34,6 @@ angular.module('copayApp.directives')
                   });
                 }
 
-                // XXX good
-                // total = bignum
-                //   .fromBuffer(total, {
-                //     endian: 'little',
-                //     size: 1
-                //   })
-                //   .div(config.unitToSatoshi)
-                //   .toString(10);
-
                 total = bignum
                   .fromBuffer(total, {
                     endian: 'little',
@@ -50,7 +41,7 @@ angular.module('copayApp.directives')
                   })
                   .toString(10);
 
-                // XXX bad
+                // XXX There needs to be a better way to do this:
                 total = +total / config.unitToSatoshi;
 
                 var amount = angular.element(
