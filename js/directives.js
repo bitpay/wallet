@@ -18,6 +18,7 @@ angular.module('copayApp.directives')
             if (uri && uri.merchant) {
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
                 if (err) {
+                  if (scope._resetPayPro) scope._resetPayPro();
                   ctrl.$setValidity('validAddress', false);
                   return;
                 }
@@ -80,10 +81,10 @@ angular.module('copayApp.directives')
                 sendall.attr('class', sendall.attr('class') + ' hidden');
 
                 // Reset all the changes from the payment protocol weirdness.
-                // XXX Bad hook.
-                if (!scope.__watchingAddress) {
-                  scope.__watchingAddress = true;
-                  scope.$watch('address', function(newValue, oldValue) {
+                // XXX Bad hook. Find a better more angular-y way of doing this.
+                // This will also closure scope every variable above forever.
+                if (!scope._resetPayPro) {
+                  scope._resetPayPro = function() {
                     var val = address.val();
                     var uri = copay.HDPath.parseBitcoinURI(val || '');
                     if (!uri || !uri.merchant) {
@@ -108,11 +109,15 @@ angular.module('copayApp.directives')
                     }
                     // TODO: Check paymentRequest expiration,
                     // delete if beyond expiration date.
-                  });
+                  };
+                  scope.$watch('address',scope._resetPayPro);
                 }
 
                 ctrl.$setValidity('validAddress', true);
 
+                // XXX With PayPro, since amount is already filled in among
+                // other field oddities, the form is always invalid. Make it
+                // valid.
                 scope.sendForm.$valid = true;
                 scope.sendForm.$invalid = false;
                 scope.sendForm.$pristine = true;
