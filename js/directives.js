@@ -14,6 +14,8 @@ angular.module('copayApp.directives')
           var validator = function(value) {
             var uri = copay.HDPath.parseBitcoinURI(value);
 
+            window._rootScope = scope;
+
             // Is this a payment protocol URI (BIP-72)?
             if (uri && uri.merchant) {
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
@@ -43,6 +45,9 @@ angular.module('copayApp.directives')
 
                 // XXX There needs to be a better way to do this:
                 total = +total / config.unitToSatoshi;
+
+                var sendForm = angular.element(
+                  document.getElementsByName('sendForm')[0]);
 
                 var address = angular.element(
                   document.querySelector('input#address'));
@@ -75,7 +80,13 @@ angular.module('copayApp.directives')
                   document.querySelector('[title="Send all funds"]'));
                 sendall.attr('class', sendall.attr('class') + ' hidden');
 
-                address.on('change', function(ev) {
+                // Reset all the changes from the payment protocol weirdness.
+                // XXX use ng-change attr instead
+                //address.attr('ng-change', 'ppChange()');
+                //scope.ppChange = scope.ppChange || function() {
+                //address.on('change', function(ev) {
+                scope.$on('change', function(ev) {
+                //scope.$watch('address', function(newValue, oldValue) {
                   var val = address.val();
                   var uri = copay.HDPath.parseBitcoinURI(val || '');
                   if (!uri || !uri.merchant) {
@@ -85,6 +96,13 @@ angular.module('copayApp.directives')
                     if (amount.attr('disabled') === false) {
                       submit.attr('disabled', true);
                     }
+                    sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
+                    if (!/hidden/.test(tamount.attr('class'))) {
+                      tamount.attr(tamount.attr('class') + ' hidden');
+                    }
+                    if (submit.attr('disabled') === false) {
+                      submit.attr('disabled', true);
+                    }
                     if (/ hidden$/.test(sendall.attr('class'))) {
                       sendall.attr('class',
                         sendall.attr('class').replace(' hidden', ''));
@@ -92,9 +110,22 @@ angular.module('copayApp.directives')
                   }
                   // TODO: Check paymentRequest expiration,
                   // delete if beyond expiration date.
+                //};
+                //});
                 });
+                //scope.$apply(); // scope.$digest();
 
                 ctrl.$setValidity('validAddress', true);
+
+                scope.sendForm.$valid = true;
+                scope.sendForm.$invalid = false;
+                scope.sendForm.$pristine = true;
+                scope.sendForm.address.$valid = true;
+                scope.sendForm.address.$invalid = false;
+                scope.sendForm.address.$pristine = true;
+                scope.sendForm.amount.$valid = true;
+                scope.sendForm.amount.$invalid = false;
+                scope.sendForm.amount.$pristine = true;
               });
 
               ctrl.$setValidity('validAddress', true);

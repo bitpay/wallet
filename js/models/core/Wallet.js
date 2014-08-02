@@ -25,15 +25,9 @@ var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
 
-if (typeof window !== 'undefined') {
-  var G = window;
-} else {
-  var G = global;
-}
-
-if (typeof angular !== 'undefined') {
-  G.$http = G.$http || angular.bootstrap().get('$http');
-}
+var G = typeof window !== 'undefined'
+  ? window
+  : global;
 
 function Wallet(opts) {
   var self = this;
@@ -808,8 +802,9 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     headers: {
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
         + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
-      'Content-Type': 'application/octet-stream',
-      'Content-Length': 0
+      'Content-Type': 'application/octet-stream'
+      // XHR does not allow these:
+      // 'Content-Length': 0
     },
     responseType: 'arraybuffer'
   })
@@ -978,13 +973,13 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   if (options.refund_to) {
     // pubkey needs to be ripesha'd
-    options.refund_to = bitcore.sha256ripe160(options.refund_to);
+    options.refund_to = bitcore.util.sha256ripe160(options.refund_to);
     var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
       return total.add(bignum.fromBuffer(tx.outs[i].v, {
         endian: 'little',
         size: 1
       }));
-    }, bugnum('0', 10));
+    }, bignum('0', 10));
     var rpo = new PayPro();
     rpo = rpo.makeOutput();
     // XXX Bad - the amount *has* to be a Number in protobufjs
@@ -1021,6 +1016,29 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   pay.set('memo', options.memo);
 
+  pay = pay.serialize();
+
+  this.log(pay);
+  this.log(pay.toString('hex'));
+
+  // https://www.google.com/search?q=angular+%24http+ArrayBuffer+in+body
+  // https://github.com/feross/buffer/blob/master/index.js
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+
+  // var view = new Uint8Array(new ArrayBuffer(pay.length));
+  // Buffer._augment(view);
+  // pay = pay.copy(view);
+
+  // var view = new Uint8Array(new ArrayBuffer(pay.length));
+  // view.set(Array.prototype.slice.call(pay), 0);
+  // pay = view;
+
+  var buf = new ArrayBuffer(pay.length);
+  var view = new Uint8Array(buf);
+  for (var i = 0; i < pay.length; i++) {
+    view[i] = pay[i];
+  }
+
   return $http({
     method: 'POST',
     url: txp.merchant.pr.pd.payment_url,
@@ -1028,11 +1046,16 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       // BIP-71
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
         + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
-      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE,
-      'Content-Length': pay.length + '',
-      'Content-Transfer-Encoding': 'binary'
+      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
+      // XHR does not allow these:
+      // 'Content-Length': (pay.byteLength || pay.length) + '',
+      // 'Content-Transfer-Encoding': 'binary'
     },
-    body: pay.serialize(),
+    // data: pay,
+    // data: pay,
+    // data: view,
+    data: buf, // Technically how this should be done.
+    // requestType: 'arraybuffer',
     responseType: 'arraybuffer'
   })
   .success(function(data, status, headers, config) {
@@ -1060,7 +1083,13 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
   payment = pay.makePayment(payment);
 
   var tx = payment.message.transactions[0];
+
+  if (!tx) {
+    return cb();
+  }
+
   if (tx.buffer) {
+    tx.buffer = new Buffer(new Uint8Array(tx.buffer));
     tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
     var ptx = new bitcore.Transaction();
     ptx.parse(tx.buffer);
@@ -1550,5 +1579,101 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
   var v = bitcore.Message.verifyWithPubKey(pubkey, JSON.stringify(payload), sign);
   return v;
 }
+
+// NOTE: Angular $http module does not send ArrayBuffers correctly, so we're
+// not going to use it. We'll have to write our own. Otherwise, we could
+// hex-encoded our messages and decode them on the other side, but that
+// deviates from BIP-70 slightly.
+// if (typeof angular !== 'undefined') {
+//   G.$http = G.$http || angular.bootstrap().get('$http');
+// }
+
+G.$http = G.$http || function $http(options, callback) {
+  if (typeof options === 'string') {
+    options = { uri: options };
+  }
+
+  options.method = options.method || 'GET';
+  options.headers = options.headers || {};
+
+  var ret = {
+    success: function(cb) {
+      this._success = cb;
+      return this;
+    },
+    error: function(cb) {
+      this._error = cb;
+      return this;
+    },
+    _success: function() {
+      ;
+    },
+    _error: function(_, err) {
+      throw err;
+    }
+  };
+
+  var method = (options.method || 'GET').toUpperCase();
+  var uri = options.uri || options.url;
+  var req = options;
+
+  req.headers = req.headers || {};
+  req.body = req.body || {};
+
+  if (typeof XMLHttpRequest !== 'undefined') {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, uri, true);
+
+    Object.keys(options.headers).forEach(function(key) {
+      var val = options.headers[key];
+      if (key === 'Content-Length') return;
+      if (key === 'Content-Transfer-Encoding') return;
+      xhr.setRequestHeader(key, val);
+    });
+
+    // For older browsers (binary data):
+    // xhr.overrideMimeType('text/plain; charset=x-user-defined');
+
+    // Newer browsers (binary data):
+    // xhr.responseType = 'arraybuffer';
+
+    if (options.responseType) {
+      xhr.responseType = options.responseType;
+    }
+
+    // xhr.onreadystatechange = function() {
+    //   if (xhr.readyState == 4) {
+    //     ;
+    //   }
+    // };
+
+    xhr.onload = function(event) {
+      var response = xhr.response;
+      var buf = new Uint8Array(response);
+      var headers = {};
+      (xhr.getAllResponseHeaders() || '').replace(
+        /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
+        function($0, $1, $2) {
+          headers[$1.toLowerCase()] = $2;
+        }
+      );
+      return ret._success(buf, xhr.status, headers, options);
+    };
+
+    xhr.onerror = function(event) {
+      return ret._error(null, new Error(event.message), null, options);
+    };
+
+    if (options.data || options.body) {
+      xhr.send(options.data || options.body);
+    } else {
+      xhr.send(null);
+    }
+
+    return ret;
+  }
+
+  return ret;
+};
 
 module.exports = require('soop')(Wallet);
