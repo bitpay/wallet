@@ -90,6 +90,8 @@ angular.module('copayApp.directives')
                         sendall.attr('class').replace(' hidden', ''));
                     }
                   }
+                  // TODO: Check paymentRequest expiration,
+                  // delete if beyond expiration date.
                 });
 
                 ctrl.$setValidity('validAddress', true);
