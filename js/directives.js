@@ -86,12 +86,15 @@ angular.module('copayApp.directives')
                     if (amount.attr('disabled') === true) {
                       amount.attr('disabled', false);
                     }
-                    if (amount.attr('disabled') === false) {
+                    if (submit.attr('disabled') === false) {
                       submit.attr('disabled', true);
                     }
                     sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
                     if (!/hidden/.test(tamount.attr('class'))) {
                       tamount.attr(tamount.attr('class') + ' hidden');
+                    }
+                    if (~tamount.html().indexOf('(CA: ')) {
+                      tamount.html('');
                     }
                     if (submit.attr('disabled') === false) {
                       submit.attr('disabled', true);
