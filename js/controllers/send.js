@@ -65,6 +65,10 @@ angular.module('copayApp.controllers').controller('SendController',
         var txp = w.txProposals.txps[ntxid];
         var merchantData = txp.merchant;
         var amt = angular.element(document.querySelector('input#amount'));
+        var sendto = angular.element(document
+          .querySelector('div.send-note > p[ng-class]:first-of-type'));
+        var tamount = angular.element(document
+          .querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
         var submit = angular.element(document.querySelector('button[type=submit]'));
         var sendall = angular.element(document.querySelector('[title="Send all funds"]'));
         if (w.isShared()) {
@@ -81,6 +85,8 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.loadTxs();
           if (merchantData) {
             amt.attr('disabled', false);
+            sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
+            tamount.html('');
             submit.attr('disabled', true);
             sendall.attr('class', sendall.attr('class').replace(' hidden', ''));
           }
@@ -103,6 +109,8 @@ angular.module('copayApp.controllers').controller('SendController',
             $scope.loadTxs();
             if (merchantData) {
               amt.attr('disabled', false);
+              sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
+              tamount.html('');
               submit.attr('disabled', true);
               sendall.attr('class', sendall.attr('class').replace(' hidden', ''));
             }
