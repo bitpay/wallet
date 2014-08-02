@@ -20,6 +20,7 @@ function TxProposals(opts) {
   this.txps = {};
 }
 
+// fromObj => from a trusted source
 TxProposals.fromObj = function(o, forceOpts) {
   var ret = new TxProposals({
     networkName: o.networkName,
@@ -60,8 +61,6 @@ TxProposals.prototype.merge = function(inTxp, allowedPubKeys) {
 
   var ntxid = inTxp.getId();
   var ret = {};
-  ret.events = [];
-  ret.events.hasChanged = false;
 
   if (myTxps[ntxid]) {
     var v0 = myTxps[ntxid];
@@ -70,12 +69,7 @@ TxProposals.prototype.merge = function(inTxp, allowedPubKeys) {
   } 
   else {
     this.txps[ntxid] = inTxp;
-    ret.hasChanged = true;
-    ret.events.push({
-      type: 'new',
-      cid: inTxp.creator,
-      tx: ntxid
-    });
+    ret.new = 1;
   }
   return ret;
 };
@@ -88,21 +82,13 @@ TxProposals.prototype.mergeFromObj = function(txProposalObj, allowedPubKeys, opt
 };
 
 
-
-
 // Add a LOCALLY CREATED (trusted) tx proposal
-TxProposals.prototype.add = function(data) {
-  var txp = new TxProposal(data);
+TxProposals.prototype.add = function(txp) {
+  txp.sync();
   var ntxid = txp.getId();
   this.txps[ntxid] = txp;
   return ntxid;
 };
-
-TxProposals.prototype.setSent = function(ntxid, txid) {
-  //sent TxProposals are local an not broadcasted.
-  this.txps[ntxid].setSent(txid);
-};
-
 
 TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   var txp = this.txps[ntxid];

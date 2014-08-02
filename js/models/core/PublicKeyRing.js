@@ -99,14 +99,6 @@ PublicKeyRing.prototype._checkKeys = function() {
     throw new Error('dont have required keys yet');
 };
 
-PublicKeyRing.prototype._newExtendedPublicKey = function() {
-  return new PrivateKey({
-    networkName: this.network.name
-  })
-  .deriveBIP45Branch()
-  .extendedPublicKeyString();
-};
-
 PublicKeyRing.prototype._updateBip = function(index) {
   var hk = this.copayersHK[index].derive(HDPath.IdBranch);
   this.copayerIds[index] = hk.eckey.public.toString('hex');
@@ -125,6 +117,8 @@ PublicKeyRing.prototype.nicknameForCopayer = function(copayerId) {
 };
 
 PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
+  preconditions.checkArgument(newEpk);
+
   if (this.isComplete())
     throw new Error('PKR already has all required key:' + this.totalCopayers);
 
@@ -132,10 +126,6 @@ PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
     if (b.extendedPublicKeyString() === newEpk)
       throw new Error('PKR already has that key');
   });
-
-  if (!newEpk) {
-    newEpk = this._newExtendedPublicKey();
-  }
 
   var i = this.copayersHK.length;
   var bip = new HK(newEpk);
@@ -304,6 +294,30 @@ PublicKeyRing.prototype.forPaths = function(paths) {
     pubKeys: paths.map(this.getForPath.bind(this)),
     copayerIds: this.copayerIds,
   }
+};
+
+
+PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
+
+  var inKeyMap = {}, ret = [];
+  for(var i in pubkeys ){
+    inKeyMap[pubkeys[i]] = 1;
+  };
+
+  var keys = this.getForPaths(paths);
+  for(var i in keys ){
+    for(var copayerIndex in keys[i] ){
+      var kHex = keys[i][copayerIndex].toString('hex');
+      if (inKeyMap[kHex]) {
+        ret.push(this.copayerIds[copayerIndex]);
+        delete inKeyMap[kHex];
+      }
+    }
+  }
+  for(var i in inKeyMap)
+    throw new Error('Pubkey not identified')
+
+  return ret;
 };
 
 

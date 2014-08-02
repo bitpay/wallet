@@ -10,7 +10,7 @@ try {
 }
 var copayConfig = require('../config');
 var Wallet = require('../js/models/core/Wallet');
-var Structure = copay.Structure;
+var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
@@ -19,21 +19,29 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 
+var config = {
+  requiredCopayers: 3,
+  totalCopayers: 5,
+  spendUnconfirmed: true,
+  reconnectDelay: 100,
+  networkName: 'testnet',
+};
+
+var getNewEpk = function() {
+  return new PrivateKey({
+    networkName: config.networkName,
+  })
+  .deriveBIP45Branch()
+  .extendedPublicKeyString();
+}
+
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {
-    w.publicKeyRing.addCopayer();
+    w.publicKeyRing.addCopayer(getNewEpk());
   }
 };
 
 describe('Wallet model', function() {
-
-  var config = {
-    requiredCopayers: 3,
-    totalCopayers: 5,
-    spendUnconfirmed: true,
-    reconnectDelay: 100,
-    networkName: 'testnet',
-  };
 
   it('should fail to create an instance', function() {
     (function() {
@@ -47,12 +55,11 @@ describe('Wallet model', function() {
   });
 
 
-  var createW = function(netKey, N, conf) {
+  var createW = function(N, conf) {
 
     var c = JSON.parse(JSON.stringify(conf || config));
     if (!N) N = c.totalCopayers;
 
-    if (netKey) c.netKey = netKey;
     var mainPrivateKey = new copay.PrivateKey({
       networkName: config.networkName
     });
@@ -148,8 +155,7 @@ describe('Wallet model', function() {
 
   var createW2 = function(privateKeys, N, conf) {
     if (!N) N = 3;
-    var netKey = 'T0FbU2JLby0=';
-    var w = createW(netKey, N, conf);
+    var w = createW(N, conf);
     should.exist(w);
 
     var pkr = w.publicKeyRing;
@@ -157,9 +163,9 @@ describe('Wallet model', function() {
     for (var i = 0; i < N - 1; i++) {
       if (privateKeys) {
         var k = privateKeys[i];
-        pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : null);
+        pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : getNewEpk());
       } else {
-        pkr.addCopayer();
+        pkr.addCopayer(getNewEpk());
       }
     }
 
@@ -212,12 +218,12 @@ describe('Wallet model', function() {
 
     var t = w.txProposals;
     var txp = t.txps[ntxid];
+    Object.keys(txp._inputSignatures).length.should.equal(1);
     var tx = txp.builder.build();
     should.exist(tx);
     chai.expect(txp.comment).to.be.null;
     tx.isComplete().should.equal(false);
     Object.keys(txp.seenBy).length.should.equal(1);
-    Object.keys(txp.signedBy).length.should.equal(1);
   });
 
   it('#create with comment', function() {
@@ -502,7 +508,8 @@ describe('Wallet model', function() {
     var w = createW();
     var r = w.getRegisteredCopayerIds();
     r.length.should.equal(1);
-    w.publicKeyRing.addCopayer();
+    w.publicKeyRing.addCopayer(getNewEpk());
+
     r = w.getRegisteredCopayerIds();
     r.length.should.equal(2);
     r[0].should.not.equal(r[1]);
@@ -512,7 +519,7 @@ describe('Wallet model', function() {
     var w = createW();
     var r = w.getRegisteredPeerIds();
     r.length.should.equal(1);
-    w.publicKeyRing.addCopayer();
+    w.publicKeyRing.addCopayer(getNewEpk());
     r = w.getRegisteredPeerIds();
     r.length.should.equal(2);
     r[0].should.not.equal(r[1]);
@@ -642,10 +649,11 @@ describe('Wallet model', function() {
     });
   });
   it('should create & sign transaction from received funds', function(done) {
-    this.timeout(10000);
-    var w = cachedCreateW2();
-    var pk = w.privateKey;
-    w.privateKey = null;
+    var k2 = new PrivateKey({
+      networkName: config.networkName
+    });
+
+    var w = createW2([k2]);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
@@ -654,7 +662,7 @@ describe('Wallet model', function() {
         w.getTxProposals()[0].rejectedByUs.should.equal(false);
         done();
       });
-      w.privateKey = pk;
+      w.privateKey = k2;
       w.sign(ntxid, function(success) {
         success.should.equal(true);
       });
@@ -1031,9 +1039,9 @@ describe('Wallet model', function() {
         e.type.should.equal(result);
         done();
       });
-      var txp = {
-        'txProposal': { dummy: 1}
-      };
+      var txp = {dummy:1};
+      //      txp.prototype.getId = function() {return 'aa'};
+      var txp = { 'txProposal': txp };
       var merge = sinon.stub(w.txProposals, 'mergeFromObj', function() {
         if (shouldThrow) throw new Error();
         return {events: [{type:'new'}]};
