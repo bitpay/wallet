@@ -111,8 +111,12 @@ angular.module('copayApp.controllers').controller('SendController',
         $rootScope.pendingPayment = null;
       }
 
-      var uri = address.indexOf('bitcoin:') === 0
-        && copay.HDPath.parseBitcoinURI(address);
+      var uri;
+      if (address.indexOf('bitcoin:') === 0) {
+        uri = copay.HDPath.parseBitcoinURI(address);
+      } else if (address.indexOf('Merchant: ') === 0) {
+        uri = { merchant: address.split(' ')[1] };
+      }
 
       if (uri && uri.merchant) {
         w.createPaymentTx({
