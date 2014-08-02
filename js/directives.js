@@ -51,7 +51,8 @@ angular.module('copayApp.directives')
                 var address = angular.element(
                   document.querySelector('input#address'));
 
-                var amount = angular.element( document.querySelector('input#amount'));
+                var amount = angular.element(
+                  document.querySelector('input#amount'));
                 amount.val(total);
                 amount.attr('disabled', true);
 
@@ -70,7 +71,8 @@ angular.module('copayApp.directives')
                   + expires.toISOString()
                   + ')');
 
-                var submit = angular.element( document.querySelector('button[type=submit]'));
+                var submit = angular.element(
+                  document.querySelector('button[type=submit]'));
                 submit.attr('disabled', false);
 
                 var sendall = angular.element(
