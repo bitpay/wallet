@@ -102,7 +102,7 @@ angular.module('copayApp.controllers').controller('SendController',
       if (address.indexOf('bitcoin:') === 0) {
         uri = copay.HDPath.parseBitcoinURI(address);
       } else if (address.indexOf('Merchant: ') === 0) {
-        uri = { merchant: address.split(' ')[1] };
+        uri = { merchant: address.split(/\s+/)[1] };
       }
 
       if (uri && uri.merchant) {
