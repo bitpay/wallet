@@ -10,6 +10,9 @@ var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
+var VERSION = 1;
+var CORE_FIELDS = ['builderObj','inputChainPaths', 'version'];
+
 
 function TxProposal(opts) {
   preconditions.checkArgument(opts);
@@ -17,22 +20,26 @@ function TxProposal(opts) {
   preconditions.checkArgument(opts.creator,'no creator');
   preconditions.checkArgument(opts.createdTs,'no createdTs');
   preconditions.checkArgument(opts.builder,'no builder');
+  preconditions.checkArgument(opts.inputChainPaths,'no inputChainPaths');
 
-
-  this.creator = opts.creator;
-  this.createdTs = opts.createdTs;
-  this.builder = opts.builder;
   this.inputChainPaths = opts.inputChainPaths;
-
+  this.version = opts.version;
+  this.builder = opts.builder;
+  this.createdTs = opts.createdTs;
+  this.createdTs = opts.createdTs;
   this._inputSignatures = [];
-  this.seenBy = opts.seenBy || {};
+
+  // CopayerIds
+  this.creator = opts.creator;
   this.signedBy = opts.signedBy || {};
+  this.seenBy = opts.seenBy || {};
   this.rejectedBy = opts.rejectedBy || {};
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
-  //  this._updateSignedBy();
+
+  this.sync();
 }
 
 TxProposal.prototype.getId = function() {
@@ -47,11 +54,24 @@ TxProposal.prototype.toObj = function() {
 };
 
 
-TxProposal.prototype.setSent = function(sentTxid) {
-  this.sentTxid = sentTxid;
-  this.sentTs = Date.now();
+TxProposal.prototype.toObjForNetwork = function() {
+  var o = this.toObj;
+
+  var newOutput = {};
+  CORE_FIELDS.forEach(function(k){
+    newOutput[k] = o[k];
+  });
+  return newOutput;
 };
 
+TxProposal.prototype.sync = function() {
+  this._check();
+  this._updateSignedBy();
+  return this;
+}
+
+
+// fromObj => from a trusted source
 TxProposal.fromObj = function(o, forceOpts) {
   preconditions.checkArgument(o.builderObj);
   delete o['builder'];
@@ -64,17 +84,24 @@ TxProposal.fromObj = function(o, forceOpts) {
     o.builder = TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
 
+    // backwards (V0) compatatibility fix.
     if (!o.version) {
       o.builder = new BuilderMockV0(o.builderObj);
       o.readonly = 1;
     };
   }
+  return new TxProposal(o);
+};
 
-  var t = new TxProposal(o);
-  t._check();
-  t._updateSignedBy();
+TxProposal.fromObjUntrusted = function(o, forceOpts, senderId) {
+  var newInput = {};
+  CORE_FIELDS.forEach(function(k){
+    newInput[k] = o[k];
+  });
+  if (newInput.version !== VERSION)
+    throw new Error('Peer using different version');
 
-  return t;
+  return TxProposal.fromObj(newInput, forceOpts, senderId);
 };
 
 
@@ -144,7 +171,8 @@ TxProposal.prototype._updateSignedBy = function() {
     if (signatureIndexes.length !== signatureCount)
       throw new Error('Invalid signature');
     this._inputSignatures[i] = signatureIndexes.map(function(i) {
-      return info.keys[i].toString('hex');
+      var r = info.keys[i].toString('hex');
+      return r;
     });
   };
 };
@@ -184,6 +212,21 @@ TxProposal.prototype.mergeBuilder = function(incoming) {
 };
 
 
+TxProposal.prototype.setSeen = function(copayerId) {
+  if (!this.seenBy[copayerId]) 
+    this.seenBy[copayerId] = Date.now();
+};
+
+TxProposal.prototype.setRejected = function(copayerId) {
+  if (!this.rejectedBy[copayerId] && !this.signedBy) 
+    this.rejectedBy[copayerId] = Date.now();
+};
+
+TxProposal.prototype.setSent = function(sentTxid) {
+  this.sentTxid = sentTxid;
+  this.sentTs = Date.now();
+};
+
 /* OTDO
    events.push({
 type: 'seen',
@@ -213,12 +256,11 @@ TxProposal.prototype._allSignatures = function() {
   return ret;
 };
 
+// merge will not merge any metadata.
 TxProposal.prototype.merge = function(incoming) {
   var ret = {};
   var newSignatures = [];
-
-  incoming._check();
-  incoming._updateSignedBy();
+  incoming.sync();
 
   var prevInputSignatures = this._allSignatures();
 

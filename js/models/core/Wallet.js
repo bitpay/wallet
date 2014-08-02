@@ -17,6 +17,7 @@ var Address = bitcore.Address;
 
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
+var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
@@ -129,11 +130,39 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
+Wallet.prototype._processProposalEvents = function(mergeInfo) {
+  var ev = [];
+  if (mergeInfo.new) {
+    ev = {
+      type: 'new',
+      cid: senderId
+    }
+  } else {
+    for (var i in mergeInfo.newCopayers) {
+      var copayerId = mergeInfo.newCopayers[i];
+      ev.push({
+        type: 'signed',
+        cid: copayerId
+      });
+    }
+  }
+  if (ev) 
+    this.emit('txProposalEvent',ev);
+};
+
+
 Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL: ', data);
-  var mergeInfo;
+  var mergeInfo, ntxid;
+
   try {
     mergeInfo = this.txProposals.mergeFromObj(data.txProposal, senderId, Wallet.builderOpts);
+    mergeInfo.newCopayers=[];
+    for (var i in mergeInfo.newSignatures) {
+      var k = mergeInfo.newSignatures[i];
+      mergeInfo.newCopayers.push(this.getCopayerIdFromPubKey(k));
+    };
+    ntxid = mergeInfo.inTxp.getId();
   } catch (e) {
     var corruptEvent = {
       type: 'corrupt',
@@ -143,20 +172,35 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
     this.emit('txProposalEvent', corruptEvent);
     return;
   }
+  this.sendSeen(ntxid);
 
-  var added = this.addSeenToTxProposals();
-  if (added) {
-    this.log('### BROADCASTING txProposals with my seenBy updated.');
-    this.sendTxProposal(mergeInfo.inTxp.getId());
-  }
+  if (mergeInfo.hasChanged)
+    this.sendTxProposal(ntxid);
 
   this.emit('txProposalsUpdated');
   this.store();
-
-  for (var i = 0; i < mergeInfo.events.length; i++) {
-    this.emit('txProposalEvent', mergeInfo.events[i]);
-  }
+  this._processProposalEvents(senderId, mergeInfo);
 };
+
+
+Wallet.prototype._handleReject = function(senderId, data, isInbound) {
+  this.log('RECV REJECT:', data);
+  // TODO check that has not signed.
+  //
+  this.txProposals.txps[data.ntxid].setRejected(senderId);
+  this.emit('txProposalsUpdated');
+  this.store();
+
+};
+
+Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
+  this.log('RECV SEEN:', data);
+  this.txProposals.txps[data.ntxid].setSeen(senderId);
+  this.emit('txProposalsUpdated');
+  this.store();
+};
+
+
 
 Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   this.log('RECV ADDRESSBOOK:', data);
@@ -199,6 +243,10 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
     break;
+    case 'reject':
+      this._handleReject(senderId, data, isInbound);
+    case 'seen':
+      this._handleReject(senderId, data, isInbound);
     case 'txProposal':
       this._handleTxProposal(senderId, data, isInbound);
     break;
@@ -381,6 +429,7 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
+// fromObj => from a trusted source
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
@@ -420,6 +469,26 @@ Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   this.send(recipients, {
     type: 'txProposal',
     txProposal: this.txProposals.txps[ntxid].toObj(),
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendSeen = function(ntxid) {
+  preconditions.checkArgument(ntxid);
+  this.log('### SENDING seen:  ' + ntxid + ' TO: All');
+  this.send(null, {
+    type: 'seen',
+    ntxid: ntxid,
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendReject = function(ntxid) {
+  preconditions.checkArgument(ntxid);
+  this.log('### SENDING reject:  ' + ntxid + ' TO: All');
+  this.send(null, {
+    type: 'reject',
+    ntxid: ntxid,
     walletId: this.id,
   });
 };
@@ -521,7 +590,7 @@ Wallet.prototype.reject = function(ntxid) {
   }
 
   txp.rejectedBy[myId] = Date.now();
-  this.sendTxProposal(ntxid);
+  this.sendReject(ntxid);
   this.store();
   this.emit('txProposalsUpdated');
 };
@@ -534,10 +603,10 @@ Wallet.prototype.sign = function(ntxid, cb) {
   setTimeout(function() {
     var myId = self.getMyCopayerId();
     var txp = self.txProposals.txps[ntxid];
-    if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
-      if (cb) cb(false);
-    }
-
+    // if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
+    //   if (cb) cb(false);
+    // }
+    //
     var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
@@ -574,7 +643,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.blockchain.sendRawTransaction(txHex, function(txid) {
     self.log('BITCOIND txid:', txid);
     if (txid) {
-      self.txProposals.setSent(ntxid, txid);
+      self.txProposals.txps[ntxid].setSent(txid);
       self.sendTxProposal(ntxid);
       self.store();
     }
@@ -582,20 +651,20 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   });
 };
 
-Wallet.prototype.addSeenToTxProposals = function() {
-  var ret = false;
-  var myId = this.getMyCopayerId();
-
-  for (var k in this.txProposals.txps) {
-    var txp = this.txProposals.txps[k];
-    if (!txp.seenBy[myId]) {
-
-      txp.seenBy[myId] = Date.now();
-      ret = true;
-    }
-  }
-  return ret;
-};
+// Wallet.prototype.addSeenToTxProposals = function() {
+//   var ret = false;
+//   var myId = this.getMyCopayerId();
+//
+//   for (var k in this.txProposals.txps) {
+//     var txp = this.txProposals.txps[k];
+//     if (!txp.seenBy[myId]) {
+//
+//       txp.seenBy[myId] = Date.now();
+//       ret = true;
+//     }
+//   }
+//   return ret;
+// };
 
 // TODO: remove this method and use getAddressesInfo everywhere
 Wallet.prototype.getAddresses = function(opts) {
@@ -718,6 +787,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
   preconditions.checkState(pkr.isComplete());
+  preconditions.checkState(priv);
   if (comment) preconditions.checkArgument(comment.length <= 100);
 
   if (!opts.remainderOut) {
@@ -744,22 +814,23 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
 
-  if (priv) {
-    var keys = priv.getForPaths(inputChainPaths);
-    var signed = b.sign(keys);
-  }
+  var keys = priv.getForPaths(inputChainPaths);
+  var signed = b.sign(keys);
   var myId = this.getMyCopayerId();
   var now = Date.now();
 
-  var me = {};
 
   var tx = b.build();
-  if (priv && tx.countInputSignatures(0)) me[myId] = now;
+  if (!tx.countInputSignatures(0)) 
+    throw new Error ('Could not sign generated tx');
+
+  var me = {};
+  me[myId] = now;
 
   var meSeen = {};
   if (priv) meSeen[myId] = now;
 
-  var data = {
+  var ntxid = this.txProposals.add(new TxProposal({
     inputChainPaths: inputChainPaths,
     signedBy: me,
     seenBy: meSeen,
@@ -767,9 +838,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     createdTs: now,
     builder: b,
     comment: comment
-  };
-
-  var ntxid = this.txProposals.add(data);
+  }));
   return ntxid;
 };
 

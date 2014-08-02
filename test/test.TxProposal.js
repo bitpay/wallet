@@ -182,8 +182,6 @@ describe('TxProposal', function() {
     });
     it('#_updateSignedBy', function() {
       var txp = dummyProposal;
-      txp._inputSignatures.should.deep.equal([]);
-      txp._updateSignedBy();
       txp._inputSignatures.should.deep.equal([[ '03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3' ]]);
     });
     describe('#_check', function() {
