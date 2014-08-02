@@ -263,4 +263,4 @@ Wallet backups
 Wallet funds can be restored using an old backups, since new addresses are
 scanned in the blockchain for transactions. The scan window is set to 20. 
 However, if address bookmarks were created after the backup, or new transaction proposal were created, 
-they will only be restored is one peer participating the wallet have them.
+they will only be restored if one peer participating the wallet have them.
