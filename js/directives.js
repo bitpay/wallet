@@ -44,11 +44,14 @@ angular.module('copayApp.directives')
                 // XXX There needs to be a better way to do this:
                 total = +total / config.unitToSatoshi;
 
+                // XXX Pretty much all of this code accesses the raw DOM. It's
+                // very bad, there's probably a better, more angular-y way to
+                // do things here.
+
                 var address = angular.element(
                   document.querySelector('input#address'));
 
-                var amount = angular.element(
-                  document.querySelector('input#amount'));
+                var amount = angular.element( document.querySelector('input#amount'));
                 amount.val(total);
                 amount.attr('disabled', true);
 
@@ -67,8 +70,7 @@ angular.module('copayApp.directives')
                   + expires.toISOString()
                   + ')');
 
-                var submit = angular.element(
-                  document.querySelector('button[type=submit]'));
+                var submit = angular.element( document.querySelector('button[type=submit]'));
                 submit.attr('disabled', false);
 
                 var sendall = angular.element(
@@ -76,39 +78,36 @@ angular.module('copayApp.directives')
                 sendall.attr('class', sendall.attr('class') + ' hidden');
 
                 // Reset all the changes from the payment protocol weirdness.
-                //address.attr('ng-change', 'ppChange()');
-                //scope.ppChange = scope.ppChange || function() {
-                //address.on('change', function(ev) {
-                scope.$watch('address', function(newValue, oldValue) {
-                  var val = address.val();
-                  var uri = copay.HDPath.parseBitcoinURI(val || '');
-                  if (!uri || !uri.merchant) {
-                    if (amount.attr('disabled') === true) {
-                      amount.attr('disabled', false);
+                // XXX Bad hook.
+                if (!scope.__watchingAddress) {
+                  scope.__watchingAddress = true;
+                  scope.$watch('address', function(newValue, oldValue) {
+                    var val = address.val();
+                    var uri = copay.HDPath.parseBitcoinURI(val || '');
+                    if (!uri || !uri.merchant) {
+                      if (amount.attr('disabled')) {
+                        amount.val('');
+                        amount.attr('disabled', false);
+                      }
+                      sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
+                      if (!/hidden/.test(tamount.attr('class'))) {
+                        tamount.attr(tamount.attr('class') + ' hidden');
+                      }
+                      if (~tamount.html().indexOf('(CA: ')) {
+                        tamount.html('');
+                      }
+                      if (!submit.attr('disabled')) {
+                        submit.attr('disabled', true);
+                      }
+                      if (/ hidden$/.test(sendall.attr('class'))) {
+                        sendall.attr('class',
+                          sendall.attr('class').replace(' hidden', ''));
+                      }
                     }
-                    if (submit.attr('disabled') === false) {
-                      submit.attr('disabled', true);
-                    }
-                    sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
-                    if (!/hidden/.test(tamount.attr('class'))) {
-                      tamount.attr(tamount.attr('class') + ' hidden');
-                    }
-                    if (~tamount.html().indexOf('(CA: ')) {
-                      tamount.html('');
-                    }
-                    if (submit.attr('disabled') === false) {
-                      submit.attr('disabled', true);
-                    }
-                    if (/ hidden$/.test(sendall.attr('class'))) {
-                      sendall.attr('class',
-                        sendall.attr('class').replace(' hidden', ''));
-                    }
-                  }
-                  // TODO: Check paymentRequest expiration,
-                  // delete if beyond expiration date.
-                //};
-                });
-                //scope.$apply(); // scope.$digest();
+                    // TODO: Check paymentRequest expiration,
+                    // delete if beyond expiration date.
+                  });
+                }
 
                 ctrl.$setValidity('validAddress', true);
 

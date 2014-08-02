@@ -1035,7 +1035,9 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       // 'Content-Length': (pay.byteLength || pay.length) + '',
       // 'Content-Transfer-Encoding': 'binary'
     },
-    data: buf, // Technically how this should be done via XHR.
+    // Technically how this should be done via XHR (used to
+    // be the ArrayBuffer, now you send the View instead).
+    data: view,
     responseType: 'arraybuffer'
   })
   .success(function(data, status, headers, config) {
