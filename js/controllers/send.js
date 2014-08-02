@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('SendController',
               + ' has been verified through ' + ca + '.';
           }
           if (merchantData) {
-            message += '\nFor merchant: ' + merchantData.pr.payment_url;
+            message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
           }
           notification.success('Success!', message);
           $scope.loadTxs();
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('SendController',
                   + ' has been verified through ' + ca + '.';
               }
               if (merchantData) {
-                message += '\nFor merchant: ' + merchantData.pr.payment_url;
+                message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
               }
               notification.success('Transaction broadcast', message);
             } else {

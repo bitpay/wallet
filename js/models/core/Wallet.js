@@ -803,7 +803,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
         + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
       'Content-Type': 'application/octet-stream'
-      // XHR does not allow these:
+      // XHR does not allow this:
       // 'Content-Length': 0
     },
     responseType: 'arraybuffer'
@@ -856,7 +856,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var certs = PayPro.X509Certificates.decode(pki_data);
   certs = certs.certificate;
 
-  // XXX Temporary fix for tests
+  // Fix for older versions of bitcore
   if (!PayPro.RootCerts) {
     PayPro.RootCerts = {
       getTrusted: function() {}
@@ -868,10 +868,6 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     var pem = PayPro.prototype._DERtoPEM(der, 'CERTIFICATE');
     return PayPro.RootCerts.getTrusted(pem);
   }).filter(Boolean);
-
-  // if (!trusted.length) {
-  //   return cb(new Error('Not a trusted certificate.'));
-  // }
 
   // Verify Signature
   var verified = pr.verify();
@@ -1018,20 +1014,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   pay = pay.serialize();
 
-  this.log(pay);
+  this.log('Sending Payment Message:');
   this.log(pay.toString('hex'));
-
-  // https://www.google.com/search?q=angular+%24http+ArrayBuffer+in+body
-  // https://github.com/feross/buffer/blob/master/index.js
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
-
-  // var view = new Uint8Array(new ArrayBuffer(pay.length));
-  // Buffer._augment(view);
-  // pay = pay.copy(view);
-
-  // var view = new Uint8Array(new ArrayBuffer(pay.length));
-  // view.set(Array.prototype.slice.call(pay), 0);
-  // pay = view;
 
   var buf = new ArrayBuffer(pay.length);
   var view = new Uint8Array(buf);
@@ -1051,11 +1035,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       // 'Content-Length': (pay.byteLength || pay.length) + '',
       // 'Content-Transfer-Encoding': 'binary'
     },
-    // data: pay,
-    // data: pay,
-    // data: view,
-    data: buf, // Technically how this should be done.
-    // requestType: 'arraybuffer',
+    data: buf, // Technically how this should be done via XHR.
     responseType: 'arraybuffer'
   })
   .success(function(data, status, headers, config) {
