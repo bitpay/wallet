@@ -136,26 +136,26 @@ function startServer(cb) {
             169, // OP_HASH160
             76,  // OP_PUSHDATA1
             20,  // number of bytes
-            0xcf,
-            0xbe,
-            0x41,
-            0xf4,
-            0xa5,
-            0x18,
-            0xed,
-            0xc2,
-            0x5a,
-            0xf7,
-            0x1b,
-            0xaf,
-            0xc7,
-            0x2f,
-            0xb6,
-            0x1b,
-            0xfc,
-            0xfc,
-            0x4f,
-            0xcd,
+            55,
+            48,
+            254,
+            188,
+            186,
+            4,
+            186,
+            208,
+            205,
+            71,
+            108,
+            251,
+            130,
+            15,
+            156,
+            55,
+            215,
+            70,
+            111,
+            217,
             136, // OP_EQUALVERIFY
             172  // OP_CHECKSIG
           ]));
@@ -181,7 +181,7 @@ function startServer(cb) {
         pd.set('network', 'test');
         pd.set('outputs', outputs);
         pd.set('time', now);
-        pd.set('expires', now * 60 * 60 * 24);
+        pd.set('expires', now + 60 * 60 * 24);
         pd.set('memo', 'Hello, this is the server, we would like some money.');
         var port = +req.headers.host.split(':')[1] || server.port;
         pd.set('payment_url', 'https://localhost:' + port + '/-/pay');
@@ -223,6 +223,9 @@ function startServer(cb) {
       '/-/pay': function(req, cb) {
         var body = req.body;
 
+        console.log('Received Payment Message Body:');
+        console.log(body.toString('hex'));
+
         var res = {
           statusCode: 200,
           headers: {},
@@ -238,7 +241,7 @@ function startServer(cb) {
         var refund_to = pay.get('refund_to');
         var memo = pay.get('memo');
 
-        console.log('Received payment from %s.', req.socket.remoteAddress);
+        console.log('Received Payment from %s.', req.socket.remoteAddress);
         console.log('Customer Message: %s', memo);
         console.log('Payment Message:');
         console.log(pay);
@@ -307,7 +310,7 @@ function startServer(cb) {
     var path = uri.replace(/^https?:\/\/[^\/]+/, '');
     var req = options;
     req.headers = req.headers || {};
-    req.body = req.body || {};
+    req.body = req.data || req.body || {};
     req.socket = {
       remoteAddress: 'localhost'
     };
