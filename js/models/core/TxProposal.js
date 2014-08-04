@@ -11,16 +11,16 @@ var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
 var VERSION = 1;
-var CORE_FIELDS = ['builderObj','inputChainPaths', 'version'];
+var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version'];
 
 
 function TxProposal(opts) {
   preconditions.checkArgument(opts);
-  preconditions.checkArgument(opts.inputChainPaths,'no inputChainPaths');
-  preconditions.checkArgument(opts.creator,'no creator');
-  preconditions.checkArgument(opts.createdTs,'no createdTs');
-  preconditions.checkArgument(opts.builder,'no builder');
-  preconditions.checkArgument(opts.inputChainPaths,'no inputChainPaths');
+  preconditions.checkArgument(opts.inputChainPaths, 'no inputChainPaths');
+  preconditions.checkArgument(opts.creator, 'no creator');
+  preconditions.checkArgument(opts.createdTs, 'no createdTs');
+  preconditions.checkArgument(opts.builder, 'no builder');
+  preconditions.checkArgument(opts.inputChainPaths, 'no inputChainPaths');
 
   this.inputChainPaths = opts.inputChainPaths;
   this.version = opts.version;
@@ -38,11 +38,63 @@ function TxProposal(opts) {
   this.sentTxid = opts.sentTxid || null;
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
-
-  this.sync();
+  this._sync();
 }
 
+
+TxProposal.prototype._check = function() {
+
+  if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
+    throw new Error('Invalid tx proposal');
+  }
+
+  var tx = this.builder.build();
+  if (!tx.ins.length)
+    throw new Error('Invalid tx proposal: no ins');
+
+  for (var i in tx.ins) {
+    var scriptSig = tx.ins[i].s;
+    if (!scriptSig || !scriptSig.length) {
+      throw new Error('Invalid tx proposal: no signatures');
+    }
+  }
+
+  for (var i = 0; i < tx.ins.length; i++) {
+    var hashType = tx.getHashType(i);
+    if (hashType && hashType !== Transaction.SIGHASH_ALL)
+      throw new Error('Invalid tx proposal: bad signatures');
+  }
+};
+
+
+TxProposal.prototype._updateSignedBy = function() {
+  this._inputSignatures = [];
+
+  var tx = this.builder.build();
+  for (var i in tx.ins) {
+    var scriptSig = new Script(tx.ins[i].s);
+    var signatureCount = scriptSig.countSignatures();
+    var info = TxProposal._infoFromRedeemScript(scriptSig);
+    var txSigHash = tx.hashForSignature(info.script, parseInt(i), Transaction.SIGHASH_ALL);
+    var signatureIndexes = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
+    if (signatureIndexes.length !== signatureCount)
+      throw new Error('Invalid signature');
+    this._inputSignatures[i] = signatureIndexes.map(function(i) {
+      var r = info.keys[i].toString('hex');
+      return r;
+    });
+  };
+};
+
+TxProposal.prototype._sync = function() {
+  this._check();
+  this._updateSignedBy();
+  return this;
+}
+
+
 TxProposal.prototype.getId = function() {
+  preconditions.checkState(this.builder);
   return this.builder.build().getNormalizedHash().toString('hex');
 };
 
@@ -54,22 +106,14 @@ TxProposal.prototype.toObj = function() {
 };
 
 
-TxProposal.prototype.toObjForNetwork = function() {
-  var o = this.toObj;
-
-  var newOutput = {};
-  CORE_FIELDS.forEach(function(k){
-    newOutput[k] = o[k];
+TxProposal.trim = function() {
+  var o = this.toObj();
+  var ret = {};
+  CORE_FIELDS.forEach(function(k) {
+    ret[k] = o[k];
   });
-  return newOutput;
+  return ret;
 };
-
-TxProposal.prototype.sync = function() {
-  this._check();
-  this._updateSignedBy();
-  return this;
-}
-
 
 // fromObj => from a trusted source
 TxProposal.fromObj = function(o, forceOpts) {
@@ -91,17 +135,6 @@ TxProposal.fromObj = function(o, forceOpts) {
     };
   }
   return new TxProposal(o);
-};
-
-TxProposal.fromObjUntrusted = function(o, forceOpts, senderId) {
-  var newInput = {};
-  CORE_FIELDS.forEach(function(k){
-    newInput[k] = o[k];
-  });
-  if (newInput.version !== VERSION)
-    throw new Error('Peer using different version');
-
-  return TxProposal.fromObj(newInput, forceOpts, senderId);
 };
 
 
@@ -158,49 +191,6 @@ TxProposal._infoFromRedeemScript = function(s) {
   };
 };
 
-TxProposal.prototype._updateSignedBy = function() {
-  this._inputSignatures = [];
-
-  var tx = this.builder.build();
-  for (var i in tx.ins) {
-    var scriptSig = new Script(tx.ins[i].s);
-    var signatureCount = scriptSig.countSignatures();
-    var info = TxProposal._infoFromRedeemScript(scriptSig);
-    var txSigHash = tx.hashForSignature(info.script, parseInt(i), Transaction.SIGHASH_ALL);
-    var signatureIndexes = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
-    if (signatureIndexes.length !== signatureCount)
-      throw new Error('Invalid signature');
-    this._inputSignatures[i] = signatureIndexes.map(function(i) {
-      var r = info.keys[i].toString('hex');
-      return r;
-    });
-  };
-};
-
-TxProposal.prototype._check = function() {
-
-  if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
-    throw new Error('Invalid tx proposal');
-  }
-
-  var tx = this.builder.build();
-  if (!tx.ins.length)
-    throw new Error('Invalid tx proposal: no ins');
-
-  for(var i in tx.ins){
-    var scriptSig = tx.ins[i].s;
-    if (!scriptSig || !scriptSig.length) {
-      throw new Error('Invalid tx proposal: no signatures');
-    }
-  }
-
-  for (var i = 0; i < tx.ins.length; i++) {
-    var hashType = tx.getHashType(i);
-    if (hashType && hashType !== Transaction.SIGHASH_ALL) 
-      throw new Error('Invalid tx proposal: bad signatures');
-  }
-};
-
 TxProposal.prototype.mergeBuilder = function(incoming) {
   var b0 = this.builder;
   var b1 = incoming.builder;
@@ -213,12 +203,12 @@ TxProposal.prototype.mergeBuilder = function(incoming) {
 
 
 TxProposal.prototype.setSeen = function(copayerId) {
-  if (!this.seenBy[copayerId]) 
+  if (!this.seenBy[copayerId])
     this.seenBy[copayerId] = Date.now();
 };
 
 TxProposal.prototype.setRejected = function(copayerId) {
-  if (!this.rejectedBy[copayerId] && !this.signedBy) 
+  if (!this.rejectedBy[copayerId] && !this.signedBy)
     this.rejectedBy[copayerId] = Date.now();
 };
 
@@ -227,55 +217,78 @@ TxProposal.prototype.setSent = function(sentTxid) {
   this.sentTs = Date.now();
 };
 
-/* OTDO
-   events.push({
-type: 'seen',
-cId: k,
-txId: ntxid
-});
-events.push({
-type: 'signed',
-cId: k,
-txId: ntxid
-});
-events.push({
-type: 'rejected',
-cId: k,
-txId: ntxid
-});
-ret.events = this.mergeMetadata(incoming);
-*/
 
 
 TxProposal.prototype._allSignatures = function() {
   var ret = {};
-  for(var i in this._inputSignatures) 
+  for (var i in this._inputSignatures)
     for (var j in this._inputSignatures[i])
       ret[this._inputSignatures[i][j]] = true;
 
   return ret;
 };
 
+
+TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
+  var newCopayers = {},
+  oldCopayers = {}, newSignedBy = {}, readOnlyPeers = {}, isNew = 1;
+
+  for(var k in this.signedBy) {
+    oldCopayers[k] = 1;
+    isNew = 0;
+  };
+
+  if (isNew == 0 &&  (!this.creator || !this.createdTs))
+    throw new Error('Existing TX has no creator');
+
+  if (isNew == 0 &&  (!this.signedBy[this.creator]))
+    throw new Error('Existing TX is not signed by creator');
+
+  var iSig = this._inputSignatures[0];
+  for(var i in iSig){
+    var copayerId = keyMap[iSig[i]];
+    if (!copayerId)
+      throw new Error('Found unknown signature')
+
+    if (oldCopayers[copayerId]) {
+      //Already have it. Do nothing
+    } else {
+      newCopayers[copayerId] =  Date.now();
+      delete oldCopayers[i];
+    }
+  }
+
+  if (!newCopayers[senderId] && !readOnlyPeers[senderId])
+    throw new Error('TX must have a (new) senders signature')
+
+  if (isNew && Object.keys(newCopayers).length>1)
+    throw new Error('New TX must have only 1 signature');
+
+  // Handler creator / createdTs.
+  // from senderId, and must be signed by senderId
+  if (isNew) {
+    this.creator = Object.keys(newCopayers)[0];
+    this.createdTs = Date.now();
+  } 
+
+  //Ended. Update this.
+  for(var i in newCopayers) {
+    this.signedBy[i] = newCopayers[i];
+  }
+
+  // signedBy has preference over rejectedBy
+  for(var i in this.signedBy) {
+    delete this.rejectedBy[i];    
+  }
+
+  return Object.keys(newCopayers);
+};
+
 // merge will not merge any metadata.
 TxProposal.prototype.merge = function(incoming) {
-  var ret = {};
-  var newSignatures = [];
-  incoming.sync();
-
-  var prevInputSignatures = this._allSignatures();
-
-  ret.hasChanged = this.mergeBuilder(incoming);
-  this._updateSignedBy();
-
-  if (ret.hasChanged) 
-    for(var i in this._inputSignatures) 
-      for (var j in this._inputSignatures[i])
-        if (!prevInputSignatures[this._inputSignatures[i][j]])
-          newSignatures.push(this._inputSignatures[i][j]);
-
-  ret.newSignatures = newSignatures;
-
-  return ret;
+  var hasChanged = this.mergeBuilder(incoming);
+  this._sync();
+  return hasChanged;
 };
 
 //This should be on bitcore / Transaction
