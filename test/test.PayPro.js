@@ -158,6 +158,24 @@ describe('PayPro (in Wallet) model', function() {
     });
   });
 
+  it('#retrieve a payment request message via http', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var req = {};
+    server.POST['/-/request'](req, function(err, res, body) {
+      done();
+    });
+  });
+
+  it('#send a payment message via http', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var req = {};
+    server.POST['/-/pay'](req, function(err, res, body) {
+      done();
+    });
+  });
+
   it('#send a payment request', function(done) {
     var w = createWallet();
     should.exist(w);
