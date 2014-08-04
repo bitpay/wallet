@@ -40,37 +40,37 @@
         </div>
 
         <div class="last-transactions-content">
-          <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
+          <div class="box-copayer" ng-repeat="c in tx.actionList">
             <a href="#!/transactions" class="has-tip">
-              <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
+              <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{c.cId}}">
             </a>
             <div class="box-status">
-              <a ng-if="actions.create" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.create" tooltip-popup-delay="1000" tooltip="Created {{c.actions.create | amTimeAgo}}">
                   <i class="fi-crown icon-status icon-active"></i>
               </a>
-              <a ng-if="!actions.create"><i class="fi-crown icon-status"></i></a>
+              <a ng-if="!c.actions.create"><i class="fi-crown icon-status"></i></a>
 
-              <a ng-if="actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{c.actions.seen | amTimeAgo}}">
                   <i class="fi-eye icon-status icon-active"></i>
               </a>
-              <a ng-if="!actions.seen"><i class="fi-eye icon-status"></i></a>
+              <a ng-if="!c.actions.seen"><i class="fi-eye icon-status"></i></a>
 
-              <a ng-if="actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{c.actions.rejected | amTimeAgo}}">
                   <i class="fi-x icon-status icon-active-x"></i>
               </a>
 
-              <a ng-if="actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{c.actions.sign | amTimeAgo}}">
                   <i class="fi-check icon-status icon-active-check"></i>
               </a>
 
-              <a ng-if="!actions.sign && !actions.rejected" href="#!/transactions" class="icon-status">
+              <a ng-if="!c.actions.sign && !c.actions.rejected" href="#!/transactions" class="icon-status">
                   <i class="fi-loop icon-rotate"></i>
               </a>
             </div>
 
             <div class="text-center">
               <p class="size-12 text-gray ellipsis">
-                {{cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+                {{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
               </p>
             </div>
           </div>
