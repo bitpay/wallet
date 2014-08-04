@@ -1600,118 +1600,60 @@ G.$http = G.$http || function $http(options, callback) {
   var req = options;
 
   req.headers = req.headers || {};
-  req.body = req.body || req.data || {};
+  req.body = req.body || {};
 
-  var xhr = new XMLHttpRequest();
-  xhr.open(method, uri, true);
+  if (typeof XMLHttpRequest !== 'undefined') {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, uri, true);
 
-  Object.keys(req.headers).forEach(function(key) {
-    var val = req.headers[key];
-    if (key === 'Content-Length') return;
-    if (key === 'Content-Transfer-Encoding') return;
-    xhr.setRequestHeader(key, val);
-  });
+    Object.keys(options.headers).forEach(function(key) {
+      var val = options.headers[key];
+      if (key === 'Content-Length') return;
+      if (key === 'Content-Transfer-Encoding') return;
+      xhr.setRequestHeader(key, val);
+    });
 
-  // For older browsers (binary data):
-  // xhr.overrideMimeType('text/plain; charset=x-user-defined');
+    // For older browsers (binary data):
+    // xhr.overrideMimeType('text/plain; charset=x-user-defined');
 
-  // Newer browsers (binary data):
-  // xhr.responseType = 'arraybuffer';
+    // Newer browsers (binary data):
+    // xhr.responseType = 'arraybuffer';
 
-  if (req.responseType) {
-    xhr.responseType = req.responseType;
-  }
-
-  // xhr.onreadystatechange = function() {
-  //   if (xhr.readyState == 4) {
-  //     ;
-  //   }
-  // };
-
-  xhr.onload = function(event) {
-    var response = xhr.response;
-    var buf = new Uint8Array(response);
-    var headers = {};
-    (xhr.getAllResponseHeaders() || '').replace(
-      /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
-      function($0, $1, $2) {
-        headers[$1.toLowerCase()] = $2;
-      }
-    );
-    return ret._success(buf, xhr.status, headers, req);
-  };
-
-  xhr.onerror = function(event) {
-    return ret._error(null, new Error(event.message), null, req);
-  };
-
-  if (req.body) {
-    xhr.send(req.body);
-  } else {
-    xhr.send(null);
-  }
-
-  return ret;
-
-  return ret;
-};
-
-G.$http = G.$http || function $http(options, callback) {
-  if (typeof options === 'string') {
-    options = { uri: options };
-  }
-
-  var ret = {
-    success: function(cb) {
-      this._success = cb;
-      return this;
-    },
-    error: function(cb) {
-      this._error = cb;
-      return this;
-    },
-    _success: function() {
-      ;
-    },
-    _error: function(_, err) {
-      throw err;
+    if (options.responseType) {
+      xhr.responseType = options.responseType;
     }
-  };
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/_request', true);
-  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-  xhr.responseType = 'arraybuffer';
+    // xhr.onreadystatechange = function() {
+    //   if (xhr.readyState == 4) {
+    //     ;
+    //   }
+    // };
 
-  xhr.onload = function(event) {
-    var response = xhr.response;
-    var buf = new Uint8Array(response);
-    var headers = {};
-    (xhr.getAllResponseHeaders() || '').replace(
-      /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
-      function($0, $1, $2) {
-        headers[$1.toLowerCase()] = $2;
-      }
-    );
-    return ret._success(buf, xhr.status, headers, req);
-  };
+    xhr.onload = function(event) {
+      var response = xhr.response;
+      var buf = new Uint8Array(response);
+      var headers = {};
+      (xhr.getAllResponseHeaders() || '').replace(
+        /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
+        function($0, $1, $2) {
+          headers[$1.toLowerCase()] = $2;
+        }
+      );
+      return ret._success(buf, xhr.status, headers, options);
+    };
 
-  xhr.onerror = function(event) {
-    return ret._error(null, new Error(event.message), null, req);
-  };
+    xhr.onerror = function(event) {
+      return ret._error(null, new Error(event.message), null, options);
+    };
 
-  options.body = options.body || options.data;
-
-  if (options.body) {
-    if (!Buffer.isBuffer(options.body)) {
-      options.body = new Buffer(options.body);
+    if (options.data || options.body) {
+      xhr.send(options.data || options.body);
+    } else {
+      xhr.send(null);
     }
-    options.body = options.body.toString('hex');
+
+    return ret;
   }
-
-  options.encoding = null;
-
-  xhr.send(JSON.stringify(options));
 
   return ret;
 };
