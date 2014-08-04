@@ -179,6 +179,10 @@ describe('PayPro (in Wallet) model', function() {
       body: {}
     };
 
+    Object.keys(req.headers).forEach(function(key) {
+      req.headers[key.toLowerCase()] = req.headers[key];
+    });
+
     server.POST['/-/request'](req, function(err, res, body) {
       var data = PayPro.PaymentRequest.decode(body);
       pr = new PayPro();
@@ -218,6 +222,9 @@ describe('PayPro (in Wallet) model', function() {
     var payment_url = pd.get('payment_url');
     var merchant_data = pd.get('merchant_data');
 
+    var priv = w.privateKey;
+    var pkr = w.publicKeyRing;
+
     var opts = {
       remainderOut: {
         address: w._doGenerateAddress(true).toString()
@@ -233,7 +240,7 @@ describe('PayPro (in Wallet) model', function() {
     });
 
     var b = new bitcore.TransactionBuilder(opts)
-      .setUnspent(unspent)
+      .setUnspent(unspentTest)
       .setOutputs(outs);
 
     var selectedUtxos = b.getSelectedUnspent();
@@ -299,7 +306,7 @@ describe('PayPro (in Wallet) model', function() {
           20, // number of bytes
         ]),
         // needs to be ripesha'd
-        bitcore.util.sha256ripe160(options.refund_to),
+        bitcore.util.sha256ripe160(refund_to),
         new Buffer([
           136, // OP_EQUALVERIFY
           172  // OP_CHECKSIG
@@ -333,6 +340,10 @@ describe('PayPro (in Wallet) model', function() {
       body: pay,
       data: pay
     };
+
+    Object.keys(req.headers).forEach(function(key) {
+      req.headers[key.toLowerCase()] = req.headers[key];
+    });
 
     server.POST['/-/pay'](req, function(err, res, body) {
       if (err) return done(err);
@@ -369,7 +380,7 @@ describe('PayPro (in Wallet) model', function() {
         }));
       }, bitcore.Bignum('0', 10));
 
-      assert.equal(ackTotal.toString(10), total.toString(10));
+      ackTotal.toString(10).should.equal(total.toString(10));
 
       done();
     });
