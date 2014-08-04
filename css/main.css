@@ -1123,4 +1123,10 @@ a.text-white:hover {color: #ccc;}
   }
 }
 
+.wide-page {
+  background-color: #2C3E50;
+  margin: 10% 0;
+  padding: 50px;
+}
+
 /*-----------------------------------------------------------------*/

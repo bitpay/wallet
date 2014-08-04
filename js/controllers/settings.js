@@ -2,6 +2,10 @@
 
 angular.module('copayApp.controllers').controller('SettingsController',
   function($scope, $rootScope, $window, $location) {
+    if ($rootScope.wallet) {
+      $location.path('/addresses');
+    }
+
     $scope.title = 'Settings';
     $scope.networkName = config.networkName;
     $scope.insightHost = config.blockchain.host;
