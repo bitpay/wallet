@@ -363,6 +363,7 @@ describe('TxProposal', function() {
         Object.keys(txp.signedBy).length.should.equal(1);
         txp.creator.should.equal('creator');
         txp.createdTs.should.gte(ts);
+        txp.seenBy['creator'].should.equal(txp.createdTs);
       })
       it("New tx should have only 1 signature", function() {
         var txp = dummyProposal;
