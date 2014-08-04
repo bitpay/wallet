@@ -19,6 +19,13 @@ FakeStorage.prototype.getGlobal = function(id) {
   return this.storage[id];
 };
 
+FakeStorage.prototype.setLastOpened = function(val) {
+  this.storage['lastOpened'] = val;
+};
+
+FakeStorage.prototype.getLastOpened = function() {
+  return this.storage['lastOpened'];
+};
 
 FakeStorage.prototype.removeGlobal = function(id) {
   delete this.storage[id];

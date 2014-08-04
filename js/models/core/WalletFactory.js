@@ -143,6 +143,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.version = opts.version || this.version;
   var w = new Wallet(opts);
   w.store();
+  this.storage.setLastOpened(w.id);
   return w;
 };
 
@@ -179,6 +180,8 @@ WalletFactory.prototype.open = function(walletId, opts) {
   if (w) {
     w.store();
   }
+
+  this.storage.setLastOpened(walletId);
   return w;
 };
 
@@ -194,6 +197,7 @@ WalletFactory.prototype.delete = function(walletId, cb) {
   var s = this.storage;
   this.log('## DELETING WALLET ID:' + walletId); //TODO
   s.deleteWallet(walletId);
+  s.setLastOpened(undefined);
   return cb();
 };
 

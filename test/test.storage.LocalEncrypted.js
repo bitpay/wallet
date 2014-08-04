@@ -148,6 +148,18 @@ describe('Storage/LocalEncrypted model', function() {
       s.getName(1).should.equal('hola');
     });
   });
+
+  describe('#getLastOpened #setLastOpened', function() {
+    it('should get/set names', function() {
+      var s = new LocalEncrypted({
+        localStorage: localMock,
+        password: 'password'
+      });
+      s.setLastOpened('hey');
+      s.getLastOpened().should.equal('hey');
+    });
+  });
+
   describe('#getWallets', function() {
     it('should retreive wallets from storage', function() {
       var s = new LocalEncrypted({
