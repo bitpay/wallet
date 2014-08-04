@@ -132,6 +132,11 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   font-weight: 100;
 }
 
+.setup .comment {
+  font-size: 0.875rem;
+  color: #7A8C9E !important;
+}
+
 a:hover {
   color: #2980b9;
 }
@@ -1019,7 +1024,7 @@ a.text-white:hover {color: #ccc;}
   background: #2C3E50;
   -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
   box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .box-setup-copay-required {
