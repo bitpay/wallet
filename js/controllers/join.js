@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, walletFactory, controllerUtils, Passphrase, notification) {
+  function($scope, $rootScope, $timeout, $location, walletFactory, controllerUtils, Passphrase, notification) {
+    if ($rootScope.wallet) {
+      $location.path('/addresses');
+    }
+
     $scope.loading = false;
 
    // QR code Scanner
