@@ -271,7 +271,7 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   // from senderId, and must be signed by senderId
   if (isNew) {
     this.creator = Object.keys(newCopayer)[0];
-    this.createdTs = Date.now();
+    this.seenBy[this.creator] = this.createdTs = Date.now();
   } 
 
   //Ended. Update this.
@@ -283,7 +283,6 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   for(var i in this.signedBy) {
     delete this.rejectedBy[i];    
   }
-  console.log('[TxProposal.js.287:newCopayer:]',newCopayer); //TODO
 
   return Object.keys(newCopayer);
 };
