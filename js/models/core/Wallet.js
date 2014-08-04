@@ -130,30 +130,27 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-Wallet.prototype._processProposalEvents = function(mergeInfo) {
-  var ev = [];
-  if (mergeInfo) {
-    if (mergeInfo.new) {
+Wallet.prototype._processProposalEvents = function(senderId, m) {
+  var ev;
+  if (m) {
+    if (m.new) {
       ev = {
         type: 'new',
         cid: senderId
       }
-    } else {
-      for (var i in mergeInfo.newCopayers) {
-        var copayerId = mergeInfo.newCopayers[i];
-        ev.push({
-          type: 'signed',
-          cid: copayerId
-        });
-      }
+    } else if(m.newCopayer){
+      ev={
+        type: 'signed',
+        cid: m.newCopayer 
+      };
     }
   } else {
     ev = {
       type: 'corrupt',
       cId: senderId,
-      error: e,
     };
   }
+
   if (ev)
     this.emit('txProposalEvent', ev);
 };
@@ -189,13 +186,12 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   var m;
 
   try {
-    m = this.txProposals.mergeObj(senderId, data.txProposal, Wallet.builderOpts);
-
+    m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
     var keyMap = this._getKeyMap(m.tpx,senderId);
-    ret.newCopayers = m.txp.setCopayers(senderId, keyMap);
+    ret.newCopayer = m.txp.setCopayers(senderId, keyMap);
 
   } catch (e) {
-    this.log('Corrupt TX proposal received', senderId, e); //TODO
+    this.log('Corrupt TX proposal received', senderId, e);
   }
 
   if (m) {
@@ -632,19 +628,11 @@ Wallet.prototype.getTxProposals = function() {
 
 
 Wallet.prototype.reject = function(ntxid) {
-  var myId = this.getMyCopayerId();
-  var txp = this.txProposals.txps[ntxid];
-  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
-    throw new Error('Invalid transaction to reject: ' + ntxid);
-  }
-
-  txp.rejectedBy[myId] = Date.now();
+  var txp = this.txProposals.reject(ntxid, this.getMyCopayerId()) ;
   this.sendReject(ntxid);
   this.store();
   this.emit('txProposalsUpdated');
 };
-
-
 
 Wallet.prototype.sign = function(ntxid, cb) {
   preconditions.checkState(typeof this.getMyCopayerId() !== 'undefined');
@@ -834,9 +822,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var priv = this.privateKey;
   opts = opts || {};
 
-  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
-  preconditions.checkState(pkr.isComplete());
-  preconditions.checkState(priv);
+  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName(), 'networkname mismatch');
+  preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
+  preconditions.checkState(priv,'no private key');
   if (comment) preconditions.checkArgument(comment.length <= 100);
 
   if (!opts.remainderOut) {

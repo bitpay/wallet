@@ -668,18 +668,28 @@ describe('Wallet model', function() {
       });
     });
   });
-  it('should create & reject transaction', function(done) {
+  it('should fail to reject a signed transaction', function() {
     var w = cachedCreateW2();
-    w.privateKey = null;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
-      w.on('txProposalsUpdated', function() {
-        w.getTxProposals()[0].signedByUs.should.equal(false);
-        w.getTxProposals()[0].rejectedByUs.should.equal(true);
-        done();
-      });
+      (function() {w.reject(ntxid);}).should.throw('reject a signed');
+    });
+  });
+
+  it('should create & reject transaction', function(done) {
+    var w = cachedCreateW2();
+    var oldK = w.privateKey;
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      var s = sinon.stub(w, 'getMyCopayerId').returns('213');
+      Object.keys(w.txProposals._getTxp(ntxid).rejectedBy).length.should.equal(0);
       w.reject(ntxid);
+      Object.keys(w.txProposals._getTxp(ntxid).rejectedBy).length.should.equal(1);
+      w.txProposals._getTxp(ntxid).rejectedBy['213'].should.gt(1);
+      s.restore();
+      done();
     });
   });
   it('should create & sign & send a transaction', function(done) {
@@ -1030,8 +1040,9 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('validate txProposals', function() {
-    var testValidate = function(shouldThrow, result, done) {
+  describe('_handleTxProposal', function() {
+    var testValidate = function(response, result, done) {
+
       var w = cachedCreateW();
       var spy = sinon.spy();
       w.on('txProposalEvent', spy);
@@ -1039,26 +1050,31 @@ describe('Wallet model', function() {
         e.type.should.equal(result);
         done();
       });
-      var txp = {dummy:1};
       //      txp.prototype.getId = function() {return 'aa'};
+      var txp = {dummy:1};
       var txp = { 'txProposal': txp };
-      var merge = sinon.stub(w.txProposals, 'mergeFromObj', function() {
-        if (shouldThrow) throw new Error();
-        return {events: [{type:'new'}]};
+      var merge = sinon.stub(w.txProposals, 'merge', function() {
+        if (response==0) throw new Error();
+        return {newCopayer: ['juan'], ntxid:1, new:response==1};
       });
 
-      w._handleTxProposal('senderID', txp, true);
+      w._handleTxProposal('senderID', txp);
       spy.callCount.should.equal(1);
       merge.restore();
     };
 
-    it('should validate for undefined', function(done) {
+    it('should handle corrupt', function(done) {
       var result = 'corrupt';
-      testValidate(1, result, done);
-    });
-    it('should validate for SIGHASH_ALL', function(done) {
-      var result = 'new';
       testValidate(0, result, done);
     });
+    it('should handle new', function(done) {
+      var result = 'new';
+      testValidate(1, result, done);
+    });
+    it('should handle signed', function(done) {
+      var result = 'signed';
+      testValidate(2, result, done);
+    });
+
   });
 });

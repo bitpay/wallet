@@ -56,13 +56,12 @@ TxProposals.prototype.toObj = function() {
 };
 
 
-TxProposals.prototype.merge = function(inObj, senderId, copayersForPubkeys, builderOpts) {
-  var safeObj = inObj.trimUntrustedObj();
-  var incomingTx = TxProposal.fromObj(safeObj, builderOpts);
+TxProposals.prototype.merge = function(inObj, builderOpts) {
+  var incomingTx = TxProposal.fromUntrustedObj(inObj, builderOpts);
   incomingTx._sync();
 
   var myTxps = this.txps;
-  var ntxid = inTxp.getId();
+  var ntxid = incomingTx.getId();
   var ret = {
     ntxid: ntxid
   };
@@ -70,37 +69,39 @@ TxProposals.prototype.merge = function(inObj, senderId, copayersForPubkeys, buil
   if (myTxps[ntxid]) {
 
     // Merge an existing txProposal
-    ret.hasChanged = myTxps[ntxid].merge(inTxp, allowedPubKeys);
+    ret.hasChanged = myTxps[ntxid].merge(incomingTx, allowedPubKeys);
 
 
   } else {
     // Create a new one
     ret.new = 1;
-    this.txps[ntxid] = inTxp;
+    this.txps[ntxid] = incomingTx;
   }
 
   ret.txp = this.txps[ntxid];
   return ret;
 };
 
-TxProposals.prototype.mergeFromObj = function(txProposalObj, allowedPubKeys, opts) {
-  var inTxp = TxProposal.fromObj(txProposalObj, opts);
-  var mergeInfo = this.merge(inTxp, allowedPubKeys);
-  mergeInfo.inTxp = inTxp;
-  return mergeInfo;
-};
-
-
 // Add a LOCALLY CREATED (trusted) tx proposal
 TxProposals.prototype.add = function(txp) {
-  txp.sync();
+  txp._sync();
   var ntxid = txp.getId();
   this.txps[ntxid] = txp;
   return ntxid;
 };
 
+
+TxProposals.prototype._getTxp = function(ntxid) {
+  var ret = this.txps[ntxid];
+  if (!ret)
+    throw new Error('Could not find txp: '+ntxid);
+
+  return ret;
+};
+
 TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
-  var txp = this.txps[ntxid];
+  var txp = this._getTxp(ntxid);
+
   var i = JSON.parse(JSON.stringify(txp));
   i.builder = txp.builder;
   i.ntxid = ntxid;
@@ -134,6 +135,17 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   i.peerActions[c] = i.peerActions[c] || {};
   i.peerActions[c].create = txp.createdTs;
   return i;
+};
+
+
+TxProposals.prototype.reject = function(ntxid, copayerId) {
+  var txp = this._getTxp(ntxid);
+  txp.setRejected(copayerId);
+};
+
+TxProposals.prototype.seen = function(ntxid, copayerId) {
+  var txp = this._getTxp(ntxid);
+  txp.setSeen(copayerId);
 };
 
 //returns the unspent txid-vout used in PENDING Txs

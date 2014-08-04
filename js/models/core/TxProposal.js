@@ -17,8 +17,6 @@ var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version'];
 function TxProposal(opts) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.inputChainPaths, 'no inputChainPaths');
-  preconditions.checkArgument(opts.creator, 'no creator');
-  preconditions.checkArgument(opts.createdTs, 'no createdTs');
   preconditions.checkArgument(opts.builder, 'no builder');
   preconditions.checkArgument(opts.inputChainPaths, 'no inputChainPaths');
 
@@ -106,8 +104,7 @@ TxProposal.prototype.toObj = function() {
 };
 
 
-TxProposal.trim = function() {
-  var o = this.toObj();
+TxProposal._trim = function(o) {
   var ret = {};
   CORE_FIELDS.forEach(function(k) {
     ret[k] = o[k];
@@ -115,7 +112,6 @@ TxProposal.trim = function() {
   return ret;
 };
 
-// fromObj => from a trusted source
 TxProposal.fromObj = function(o, forceOpts) {
   preconditions.checkArgument(o.builderObj);
   delete o['builder'];
@@ -137,6 +133,9 @@ TxProposal.fromObj = function(o, forceOpts) {
   return new TxProposal(o);
 };
 
+TxProposal.fromUntrustedObj = function(o, forceOpts) {
+  return TxProposal.fromObj(TxProposal._trim(o),forceOpts);
+};
 
 
 TxProposal._formatKeys = function(keys) {
@@ -208,7 +207,11 @@ TxProposal.prototype.setSeen = function(copayerId) {
 };
 
 TxProposal.prototype.setRejected = function(copayerId) {
-  if (!this.rejectedBy[copayerId] && !this.signedBy)
+
+  if (this.signedBy[copayerId])
+    throw new Error('Can not reject a signed TX');
+
+  if (!this.rejectedBy[copayerId])
     this.rejectedBy[copayerId] = Date.now();
 };
 
@@ -230,7 +233,7 @@ TxProposal.prototype._allSignatures = function() {
 
 
 TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
-  var newCopayers = {},
+  var newCopayer = {},
   oldCopayers = {}, newSignedBy = {}, readOnlyPeers = {}, isNew = 1;
 
   for(var k in this.signedBy) {
@@ -253,35 +256,36 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
     if (oldCopayers[copayerId]) {
       //Already have it. Do nothing
     } else {
-      newCopayers[copayerId] =  Date.now();
+      newCopayer[copayerId] =  Date.now();
       delete oldCopayers[i];
     }
   }
 
-  if (!newCopayers[senderId] && !readOnlyPeers[senderId])
+  if (!newCopayer[senderId] && !readOnlyPeers[senderId])
     throw new Error('TX must have a (new) senders signature')
 
-  if (isNew && Object.keys(newCopayers).length>1)
-    throw new Error('New TX must have only 1 signature');
+  if (Object.keys(newCopayer).length>1)
+    throw new Error('New TX must have only 1 new signature');
 
   // Handler creator / createdTs.
   // from senderId, and must be signed by senderId
   if (isNew) {
-    this.creator = Object.keys(newCopayers)[0];
+    this.creator = Object.keys(newCopayer)[0];
     this.createdTs = Date.now();
   } 
 
   //Ended. Update this.
-  for(var i in newCopayers) {
-    this.signedBy[i] = newCopayers[i];
+  for(var i in newCopayer) {
+    this.signedBy[i] = newCopayer[i];
   }
 
   // signedBy has preference over rejectedBy
   for(var i in this.signedBy) {
     delete this.rejectedBy[i];    
   }
+  console.log('[TxProposal.js.287:newCopayer:]',newCopayer); //TODO
 
-  return Object.keys(newCopayers);
+  return Object.keys(newCopayer);
 };
 
 // merge will not merge any metadata.
