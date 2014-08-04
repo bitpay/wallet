@@ -968,18 +968,20 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     || this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
-    // pubkey needs to be ripesha'd
-    options.refund_to = bitcore.util.sha256ripe160(options.refund_to);
     var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
       return total.add(bignum.fromBuffer(tx.outs[i].v, {
         endian: 'little',
         size: 1
       }));
     }, bignum('0', 10));
+
     var rpo = new PayPro();
     rpo = rpo.makeOutput();
+
     // XXX Bad - the amount *has* to be a Number in protobufjs
+    // Possibly does not matter - server can ignore the amount anyway.
     rpo.set('amount', +total.toString(10));
+
     rpo.set('script',
       Buffer.concat([
         new Buffer([
@@ -988,13 +990,15 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
           76, // OP_PUSHDATA1
           20, // number of bytes
         ]),
-        options.refund_to,
+        // needs to be ripesha'd
+        bitcore.util.sha256ripe160(options.refund_to),
         new Buffer([
           136, // OP_EQUALVERIFY
           172  // OP_CHECKSIG
         ])
       ])
     );
+
     refund_outputs.push(rpo.message);
   }
 
