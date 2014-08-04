@@ -673,7 +673,9 @@ describe('Wallet model', function() {
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
-      (function() {w.reject(ntxid);}).should.throw('reject a signed');
+      (function() {
+        w.reject(ntxid);
+      }).should.throw('reject a signed');
     });
   });
 
@@ -1039,6 +1041,87 @@ describe('Wallet model', function() {
       copayConfig.forceNetwork = backup;
     });
   });
+  describe('_getKeymap', function() {
+    var w = cachedCreateW();
+
+    it('should set keymap', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan'
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['123']
+        ],
+        paths: ['/m/1'],
+      };
+      var map = w._getKeyMap(txp);
+      Object.keys(map).length.should.equal(1);
+      map['123'].should.equal('juan');
+      stub.restore();
+    });
+
+    it('should throw if unmatched sigs', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan'
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['234']
+        ],
+        paths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('dont match know copayers');
+      stub.restore();
+    });
+
+    it('should set keymap with multiple signatures', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['234', '123']
+        ],
+        paths: ['/m/1'],
+      };
+      var map = w._getKeyMap(txp);
+      Object.keys(map).length.should.equal(2);
+      map['123'].should.equal('juan');
+      map['234'].should.equal('pepe');
+      stub.restore();
+    });
+
+    it('should throw is one inputs has missing sigs', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['234', '123'],
+          ['234']
+        ],
+        paths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('different sig');
+      stub.restore();
+    });
+  });
+
+
 
   describe('_handleTxProposal', function() {
     var testValidate = function(response, result, done) {
@@ -1051,11 +1134,19 @@ describe('Wallet model', function() {
         done();
       });
       //      txp.prototype.getId = function() {return 'aa'};
-      var txp = {dummy:1};
-      var txp = { 'txProposal': txp };
+      var txp = {
+        dummy: 1
+      };
+      var txp = {
+        'txProposal': txp
+      };
       var merge = sinon.stub(w.txProposals, 'merge', function() {
-        if (response==0) throw new Error();
-        return {newCopayer: ['juan'], ntxid:1, new:response==1};
+        if (response == 0) throw new Error();
+        return {
+          newCopayer: ['juan'],
+          ntxid: 1,
+          new: response == 1
+        };
       });
 
       w._handleTxProposal('senderID', txp);
@@ -1077,4 +1168,114 @@ describe('Wallet model', function() {
     });
 
   });
+
+
+  describe('_handleReject', function() {
+    it('should fails if unknown tx', function() {
+      var w = cachedCreateW();
+      (function() {
+        w._handleReject(1, {
+          ntxid: 1
+        }, 1);
+      }).should.throw('unknown TX');
+    });
+    it('should fail to reject a signed tx', function() {
+      var w = cachedCreateW();
+      w.txProposals.txps['qwerty'] = {
+        signedBy: {
+          john: 1
+        }
+      };
+      (function() {
+        w._handleReject('john', {
+          ntxid: 'qwerty'
+        }, 1);
+      }).should.throw('already signed');
+    });
+    it('should reject a tx', function() {
+      var w = cachedCreateW();
+      function txp() {
+        this.ok=0;
+        this.signedBy = {};
+      };
+      txp.prototype.setRejected = function() { 
+        this.ok=1;
+      };
+      txp.prototype.toObj = function() { 
+      };
+
+      var spy1 = sinon.spy(w,'store');
+      var spy2 = sinon.spy(w,'emit');
+      w.txProposals.txps['qwerty'] = new txp();
+      w.txProposals.txps['qwerty'].ok.should.equal(0); 
+      w._handleReject('john', {
+        ntxid: 'qwerty'
+      }, 1);
+      w.txProposals.txps['qwerty'].ok.should.equal(1); 
+      spy1.calledOnce.should.equal(true);
+      spy2.callCount.should.equal(2);
+      spy2.firstCall.args.should.deep.equal(['txProposalsUpdated']);
+      spy2.secondCall.args.should.deep.equal(['txProposalEvent',{
+        type:'rejected',
+        cId: 'john',
+        txId: 'qwerty',
+      }]);
+    });
+  });
+
+
+  describe('_handleSeen', function() {
+    it('should fails if unknown tx', function() {
+      var w = cachedCreateW();
+      (function() {
+        w._handleReject(1, {
+          ntxid: 1
+        }, 1);
+      }).should.throw('unknown TX');
+    });
+    it('should set seen a tx', function() {
+      var w = cachedCreateW();
+      function txp() {
+        this.ok=0;
+        this.signedBy = {};
+      };
+      txp.prototype.setSeen = function() { 
+        this.ok=1;
+      };
+      txp.prototype.toObj = function() { 
+      };
+
+      var spy1 = sinon.spy(w,'store');
+      var spy2 = sinon.spy(w,'emit');
+      w.txProposals.txps['qwerty'] = new txp();
+      w.txProposals.txps['qwerty'].ok.should.equal(0); 
+      w._handleSeen('john', {
+        ntxid: 'qwerty'
+      }, 1);
+      w.txProposals.txps['qwerty'].ok.should.equal(1); 
+      spy1.calledOnce.should.equal(true);
+      spy2.callCount.should.equal(2);
+      spy2.firstCall.args.should.deep.equal(['txProposalsUpdated']);
+      spy2.secondCall.args.should.deep.equal(['txProposalEvent',{
+        type:'seen',
+        cId: 'john',
+        txId: 'qwerty',
+      }]);
+    });
+  });
+
+  it('getNetwork', function() {
+    var w = cachedCreateW();
+    var n = w.getNetwork();
+    n.maxPeers.should.equal(5);
+    should.exist(n.networkNonce);
+  });
+
+  it('#disconnect', function() {
+    var w = cachedCreateW();
+    var spy1 = sinon.spy(w.network,'disconnect');
+    w.disconnect();
+    spy1.callCount.should.equal(1);
+  });
+
 });

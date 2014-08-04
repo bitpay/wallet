@@ -164,20 +164,25 @@ cId: k,
 txId: ntxid
 });
 */
-Wallet.prototype._getKeyMap = function(tpx, senderId) {
+Wallet.prototype._getKeyMap = function(txp) {
 
-  this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.paths);
+  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.paths);
+
+  var inSig = JSON.stringify(txp._inputSignatures[0].sort());
+
+  if (JSON.stringify(Object.keys(keyMap).sort()) !== inSig) {
+    throw new Error('inputSignatures dont match know copayers pubkeys');
+  }
 
   var keyMapStr = JSON.stringify(keyMap);
   // All inputs must be signed with the same copayers
-  for (var i in m.txp._inputSignatures) {
+  for (var i in txp._inputSignatures) {
     if (!i) continue;
-    var inputKeyMapStr = JSON.stringify(
-      this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[i], txp.paths));
-
-      if (inputKeyMapStr !== keyMapStr)
-        throw new Error('found inputs with different signatures in Tx from:' + senderId);
+    var inSigX = JSON.stringify(txp._inputSignatures[i].sort());
+    if (inSigX !== inSig)
+      throw new Error('found inputs with different signatures:');
   }
+  return keyMap;
 };
 
 
@@ -187,7 +192,7 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
 
   try {
     m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
-    var keyMap = this._getKeyMap(m.tpx,senderId);
+    var keyMap = this._getKeyMap(m.tpx);
     ret.newCopayer = m.txp.setCopayers(senderId, keyMap);
 
   } catch (e) {
@@ -209,12 +214,13 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
 
 
 Wallet.prototype._handleReject = function(senderId, data, isInbound) {
+  preconditions.checkState(data.ntxid);
   this.log('RECV REJECT:', data);
 
   var txp = this.txProposals.txps[data.ntxid];
 
   if (!txp)
-    throw new Error('Received Reject for an unkwown TX from:' + senderId);
+    throw new Error('Received Reject for an unknown TX from:' + senderId);
 
   if (txp.signedBy[senderId])
     throw new Error('Received Reject for an already signed TX from:' + senderId);
@@ -231,8 +237,15 @@ Wallet.prototype._handleReject = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
+  preconditions.checkState(data.ntxid);
   this.log('RECV SEEN:', data);
-  this.txProposals.txps[data.ntxid].setSeen(senderId);
+
+  var txp = this.txProposals.txps[data.ntxid];
+
+  if (!txp)
+    throw new Error('Received Reject for an unknown TX from:' + senderId);
+
+  txp.setSeen(senderId);
   this.store();
   this.emit('txProposalsUpdated');
   this.emit('txProposalEvent', {
@@ -246,6 +259,7 @@ Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
 
 
 Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
+  preconditions.checkState(data.addressBook);
   this.log('RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
   var hasChange;
