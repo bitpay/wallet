@@ -270,16 +270,27 @@ angular.module('copayApp.services')
           i.outs = outs;
           i.fee = i.builder.feeSat * satToUnit;
           i.missingSignatures = tx.countInputMissingSignatures(0);
+          i.actionList = getActionList(i.peerActions);
           txs.push(i);
         }
       });
 
-      $rootScope.txs = txs; //.some(function(i) {return i.isPending; } );
+      $rootScope.txs = txs;
       if ($rootScope.pendingTxCount < pendingForUs) {
         $rootScope.txAlertCount = pendingForUs;
       }
       $rootScope.pendingTxCount = pendingForUs;
     };
+
+    function getActionList(actions) {
+      var peers = Object.keys(actions).map(function(i) {
+        return {cId: i, actions: actions[i] }
+      });
+
+      return peers.sort(function(a, b) {
+        return !!b.actions.create - !!a.actions.create;
+      });
+    }
 
     $rootScope.$watch('insightError', function(status) {
       if (status) {
