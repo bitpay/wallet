@@ -1,7 +1,7 @@
 <div class="transactions" data-ng-controller="TransactionsController">
   <div ng-show='$root.wallet.isReady()'>
-    <h1 ng-show="wallet.totalCopayers > 1"> Transaction proposals <small>({{txs.length}})</small></h1>
-    <div class="large-12" ng-show="wallet.totalCopayers > 1">
+    <h1 ng-show="wallet.isShared()"> Transaction proposals <small>({{txs.length}})</small></h1>
+    <div class="large-12" ng-show="wallet.isShared()">
       <ul class="inline-list">
         <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
         <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
@@ -135,9 +135,9 @@
       <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
 
-    <h1 ng-class="{'line-dashed': wallet.totalCopayers > 1}">
+    <h1 ng-class="{'line-dashed': wallet.isShared()}">
       Last transactions 
-      <small ng-hide="wallet.totalCopayers > 1 || !loading">
+      <small ng-hide="wallet.isShared() || !loading">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </small>   
     </h1>

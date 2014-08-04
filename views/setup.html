@@ -16,7 +16,7 @@
               <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
             </label>
             <div class="row" ng-show="isSetupWalletPage">
-              <div>
+              <div ng-if="totalCopayers > 1">
                 <label for="Name">Your name</label>
                   <input id="Name" type="text" placeholder="Name" class="form-control" ng-model="myNickname">
               </div>

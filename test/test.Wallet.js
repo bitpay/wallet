@@ -363,6 +363,14 @@ describe('Wallet model', function() {
     }, w.reconnectDelay * callCount * (callCount + 1) / 2);
   });
 
+  it('#isSingleUser', function() {
+    var w = createW();
+    w.isShared().should.equal(true);
+
+    w.totalCopayers = 1;
+    w.isShared().should.equal(false);
+  });
+
   it('#isReady', function() {
     var w = createW();
     w.publicKeyRing.isComplete().should.equal(false);

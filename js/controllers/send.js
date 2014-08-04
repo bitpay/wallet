@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('SendController',
       var w = $rootScope.wallet;
 
       w.createTx(address, amount, commentText, function(ntxid) {
-        if (w.totalCopayers > 1) {
+        if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
           notification.success('Success!', message);
