@@ -70,6 +70,7 @@ angular.module('copayApp.controllers').controller('SendController',
               message += '\nThis payment protocol transaction'
                 + ' has been verified through ' + merchantData.pr.ca + '.';
             }
+            message += '\nMessage from server: ' + merchantData.ack.memo;
             message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
           }
           notification.success('Success!', message);
@@ -83,6 +84,7 @@ angular.module('copayApp.controllers').controller('SendController',
                   message += '\nThis payment protocol transaction'
                     + ' has been verified through ' + merchantData.pr.ca + '.';
                 }
+                message += '\nMessage from server: ' + merchantData.ack.memo;
                 message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
               }
               notification.success('Transaction broadcast', message);
@@ -342,6 +344,7 @@ angular.module('copayApp.controllers').controller('SendController',
               message += '\nThis payment protocol transaction'
                 + ' has been verified through ' + merchantData.pr.ca + '.';
             }
+            message += '\nMessage from server: ' + merchantData.ack.memo;
             message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
             notification.success('Transaction sent', message);
           }

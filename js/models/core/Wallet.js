@@ -1082,6 +1082,10 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
     tx = ptx;
   }
 
+  txp.merchant.ack = {
+    memo: memo
+  };
+
   var txid = tx.getHash().toString('hex');
   return cb(txid, txp.merchant);
 };
