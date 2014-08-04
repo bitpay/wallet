@@ -59,7 +59,7 @@ function Wallet(opts) {
 }
 
 
-Wallet.builderOpts =  {
+Wallet.builderOpts = {
   lockTime: null,
   signhash: bitcore.Transaction.SIGNHASH_ALL,
   fee: null,
@@ -132,72 +132,119 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 
 Wallet.prototype._processProposalEvents = function(mergeInfo) {
   var ev = [];
-  if (mergeInfo.new) {
-    ev = {
-      type: 'new',
-      cid: senderId
+  if (mergeInfo) {
+    if (mergeInfo.new) {
+      ev = {
+        type: 'new',
+        cid: senderId
+      }
+    } else {
+      for (var i in mergeInfo.newCopayers) {
+        var copayerId = mergeInfo.newCopayers[i];
+        ev.push({
+          type: 'signed',
+          cid: copayerId
+        });
+      }
     }
   } else {
-    for (var i in mergeInfo.newCopayers) {
-      var copayerId = mergeInfo.newCopayers[i];
-      ev.push({
-        type: 'signed',
-        cid: copayerId
-      });
-    }
+    ev = {
+      type: 'corrupt',
+      cId: senderId,
+      error: e,
+    };
   }
-  if (ev) 
-    this.emit('txProposalEvent',ev);
+  if (ev)
+    this.emit('txProposalEvent', ev);
+};
+
+
+
+/* OTDO
+   events.push({
+type: 'signed',
+cId: k,
+txId: ntxid
+});
+*/
+Wallet.prototype._getKeyMap = function(tpx, senderId) {
+
+  this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.paths);
+
+  var keyMapStr = JSON.stringify(keyMap);
+  // All inputs must be signed with the same copayers
+  for (var i in m.txp._inputSignatures) {
+    if (!i) continue;
+    var inputKeyMapStr = JSON.stringify(
+      this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[i], txp.paths));
+
+      if (inputKeyMapStr !== keyMapStr)
+        throw new Error('found inputs with different signatures in Tx from:' + senderId);
+  }
 };
 
 
 Wallet.prototype._handleTxProposal = function(senderId, data) {
   this.log('RECV TXPROPOSAL: ', data);
-  var mergeInfo, ntxid;
+  var m;
 
   try {
-    mergeInfo = this.txProposals.mergeFromObj(data.txProposal, senderId, Wallet.builderOpts);
-    mergeInfo.newCopayers=[];
-    for (var i in mergeInfo.newSignatures) {
-      var k = mergeInfo.newSignatures[i];
-      mergeInfo.newCopayers.push(this.getCopayerIdFromPubKey(k));
-    };
-    ntxid = mergeInfo.inTxp.getId();
+    m = this.txProposals.mergeObj(senderId, data.txProposal, Wallet.builderOpts);
+
+    var keyMap = this._getKeyMap(m.tpx,senderId);
+    ret.newCopayers = m.txp.setCopayers(senderId, keyMap);
+
   } catch (e) {
-    var corruptEvent = {
-      type: 'corrupt',
-      cId: senderId,
-      error: e,
-    };
-    this.emit('txProposalEvent', corruptEvent);
-    return;
+    this.log('Corrupt TX proposal received', senderId, e); //TODO
   }
-  this.sendSeen(ntxid);
 
-  if (mergeInfo.hasChanged)
-    this.sendTxProposal(ntxid);
+  if (m) {
+    this.emit('txProposalsUpdated');
+    this.store();
 
-  this.emit('txProposalsUpdated');
-  this.store();
-  this._processProposalEvents(senderId, mergeInfo);
+    this.sendSeen(m.ntxid);
+
+    if (m.hasChanged)
+      this.sendTxProposal(m.ntxid);
+  }
+
+  this._processProposalEvents(senderId, m);
 };
 
 
 Wallet.prototype._handleReject = function(senderId, data, isInbound) {
   this.log('RECV REJECT:', data);
-  // TODO check that has not signed.
-  //
-  this.txProposals.txps[data.ntxid].setRejected(senderId);
-  this.emit('txProposalsUpdated');
+
+  var txp = this.txProposals.txps[data.ntxid];
+
+  if (!txp)
+    throw new Error('Received Reject for an unkwown TX from:' + senderId);
+
+  if (txp.signedBy[senderId])
+    throw new Error('Received Reject for an already signed TX from:' + senderId);
+
+  txp.setRejected(senderId);
   this.store();
 
+  this.emit('txProposalsUpdated');
+  this.emit('txProposalEvent', {
+    type: 'rejected',
+    cId: senderId,
+    txId: data.ntxid,
+  });
 };
 
 Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
   this.log('RECV SEEN:', data);
   this.txProposals.txps[data.ntxid].setSeen(senderId);
-  this.emit('txProposalsUpdated');
   this.store();
+  this.emit('txProposalsUpdated');
+  this.emit('txProposalEvent', {
+    type: 'seen',
+    cId: senderId,
+    txId: data.ntxid,
+  });
+
 };
 
 
@@ -245,8 +292,10 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     break;
     case 'reject':
       this._handleReject(senderId, data, isInbound);
+    break;
     case 'seen':
-      this._handleReject(senderId, data, isInbound);
+      this._handleSeen(senderId, data, isInbound);
+    break;
     case 'txProposal':
       this._handleTxProposal(senderId, data, isInbound);
     break;
@@ -796,7 +845,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     };
   }
 
-  for (var k in Wallet.builderOpts){
+  for (var k in Wallet.builderOpts) {
     opts[k] = Wallet.builderOpts[k];
   }
 
@@ -821,8 +870,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
 
   var tx = b.build();
-  if (!tx.countInputSignatures(0)) 
-    throw new Error ('Could not sign generated tx');
+  if (!tx.countInputSignatures(0))
+    throw new Error('Could not sign generated tx');
 
   var me = {};
   me[myId] = now;

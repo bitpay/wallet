@@ -56,21 +56,30 @@ TxProposals.prototype.toObj = function() {
 };
 
 
-TxProposals.prototype.merge = function(inTxp, allowedPubKeys) {
-  var myTxps = this.txps;
+TxProposals.prototype.merge = function(inObj, senderId, copayersForPubkeys, builderOpts) {
+  var safeObj = inObj.trimUntrustedObj();
+  var incomingTx = TxProposal.fromObj(safeObj, builderOpts);
+  incomingTx._sync();
 
+  var myTxps = this.txps;
   var ntxid = inTxp.getId();
-  var ret = {};
+  var ret = {
+    ntxid: ntxid
+  };
 
   if (myTxps[ntxid]) {
-    var v0 = myTxps[ntxid];
-    var v1 = inTxp;
-    ret = v0.merge(v1, allowedPubKeys);
-  } 
-  else {
-    this.txps[ntxid] = inTxp;
+
+    // Merge an existing txProposal
+    ret.hasChanged = myTxps[ntxid].merge(inTxp, allowedPubKeys);
+
+
+  } else {
+    // Create a new one
     ret.new = 1;
+    this.txps[ntxid] = inTxp;
   }
+
+  ret.txp = this.txps[ntxid];
   return ret;
 };
 

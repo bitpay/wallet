@@ -297,9 +297,10 @@ PublicKeyRing.prototype.forPaths = function(paths) {
 };
 
 
+// returns pubkey -> copayerId.
 PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
 
-  var inKeyMap = {}, ret = [];
+  var inKeyMap = {}, ret = {};
   for(var i in pubkeys ){
     inKeyMap[pubkeys[i]] = 1;
   };
@@ -309,7 +310,7 @@ PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
     for(var copayerIndex in keys[i] ){
       var kHex = keys[i][copayerIndex].toString('hex');
       if (inKeyMap[kHex]) {
-        ret.push(this.copayerIds[copayerIndex]);
+        ret[kHex] =this.copayerIds[copayerIndex];
         delete inKeyMap[kHex];
       }
     }
