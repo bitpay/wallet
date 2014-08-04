@@ -913,6 +913,10 @@ Wallet.prototype.toggleAddressBookEntry = function(key) {
   this.store();
 };
 
+Wallet.prototype.isShared = function() {
+  return this.totalCopayers > 1;
+}
+
 Wallet.prototype.isReady = function() {
   var ret = this.publicKeyRing.isComplete() && this.publicKeyRing.isFullyBackup();
   return ret;
