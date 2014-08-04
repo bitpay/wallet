@@ -332,11 +332,25 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
-      w.sendTx(ntxid, function(txid) {
+      w.sendTx(ntxid, function(txid, ca) {
         if (!txid) {
           notification.error('Error', 'There was an error sending the transaction');
         } else {
-          notification.success('Transaction broadcast', 'Transaction id: '+txid);
+          if (!ca) {
+            notification.success('Transaction broadcast', 'Transaction id: '+txid);
+          } else {
+            var txp = w.txProposals.txps[ntxid];
+            var merchantData = txp.merchant;
+            var message = 'Transaction ID: ' + txid;
+            if (ca) {
+              message += '\nThis payment protocol transaction'
+                + ' has been verified through ' + ca + '.';
+            }
+            if (merchantData) {
+              message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
+            }
+            notification.success('Transaction sent', message);
+          }
         }
 
         if (cb) return cb();
