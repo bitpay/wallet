@@ -137,6 +137,18 @@ describe('PayPro (in Wallet) model', function() {
     return w;
   };
 
+  var createWallet = function() {
+    var w = cachedCreateW2();
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
+    w.getUnspent = function(cb) {
+      return setTimeout(function() {
+        return cb(null, unspentTest, []);
+      }, 1);
+    };
+    return w;
+  };
+
   it('#start the example server', function(done) {
     startServer(function(err, s) {
       if (err) return done(err);
@@ -147,15 +159,8 @@ describe('PayPro (in Wallet) model', function() {
   });
 
   it('#send a payment request', function(done) {
-    var w = cachedCreateW2();
+    var w = createWallet();
     should.exist(w);
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
-    w.getUnspent = function(cb) {
-      return setTimeout(function() {
-        return cb(null, unspentTest, []);
-      }, 1);
-    };
     var address = 'bitcoin:mq7se9wy2egettFxPbmn99cK8v5AFq55Lx?amount=0.11&r=' + server.uri + '/request';
     var commentText = 'Hello, server. I\'d like to make a payment.';
     w.createTx(address, commentText, function(ntxid, ca) {
