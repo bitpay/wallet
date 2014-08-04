@@ -317,6 +317,20 @@ describe('WalletFactory model', function() {
     });
   });
 
+  it('should clean lastOpened on delete wallet', function(done) {
+    var wf = new WalletFactory(config, '0.0.1');
+    var w = wf.create({
+      name: 'test wallet'
+    });
+
+    wf.storage.setLastOpened(w.id);
+    wf.delete(w.id, function() {
+      var last = wf.storage.getLastOpened();
+      should.equal(last, undefined);
+      done();
+    });
+  });
+
   it('should return false if wallet does not exist', function() {
     var opts = {
       'requiredCopayers': 2,
@@ -341,6 +355,23 @@ describe('WalletFactory model', function() {
     var wo = wf.open(walletId, opts);
     should.exist(wo);
     wf.read.calledWith(walletId).should.be.true;
+  });
+
+  it('should save lastOpened on create/open a wallet', function() {
+    var opts = {
+      'requiredCopayers': 2,
+      'totalCopayers': 3
+    };
+    var wf = new WalletFactory(config, '0.0.1');
+    var w = wf.create(opts);
+    var last = wf.storage.getLastOpened();
+    should.equal(last, w.id);
+
+    wf.storage.setLastOpened('other_id');
+
+    var wo = wf.open(w.id, opts);
+    last = wf.storage.getLastOpened();
+    should.equal(last, w.id);
   });
 
   it('should return error if network are differents', function() {
