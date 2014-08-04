@@ -69,7 +69,7 @@ TxProposals.prototype.merge = function(inObj, builderOpts) {
   if (myTxps[ntxid]) {
 
     // Merge an existing txProposal
-    ret.hasChanged = myTxps[ntxid].merge(incomingTx, allowedPubKeys);
+    ret.hasChanged = myTxps[ntxid].merge(incomingTx);
 
 
   } else {
