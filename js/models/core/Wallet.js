@@ -943,7 +943,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     self.log('The server sent you a message:');
     self.log(memo);
 
-    return cb(ntxid, ca);
+    return cb(ntxid, merchantData);
   });
 };
 
@@ -1083,7 +1083,7 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
   }
 
   var txid = tx.getHash().toString('hex');
-  return cb(txid, txp.merchant.pr.ca);
+  return cb(txid, txp.merchant);
 };
 
 Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
