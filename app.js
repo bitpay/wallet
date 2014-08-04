@@ -13,25 +13,24 @@ app.start = function(port, callback) {
   app.use(express.static(__dirname));
 
   if (process.env.USE_HTTPS) {
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
     var path = require('path');
+
     var bc = path.dirname(require.resolve('bitcore/package.json'));
-    // var fs = require('fs');
-    // var server = require('https').createServer({
-    //   key: fs.readFileSync(bc + '/test/data/x509.key'),
-    //   cert: fs.readFileSync(bc + '/test/data/x509.crt')
-    // });
     var pserver = require(bc + '/examples/PayPro/server.js');
+
     pserver.removeListener('request', pserver.app);
+
     pserver.on('request', function(req, res) {
       if (req.url.indexOf('/-/') === 0) {
         return pserver.app(req, res);
       }
       return app(req, res);
     });
+
     pserver.listen(port, function() {
       callback('https://localhost:' + port);
     });
+
     return;
   }
 
