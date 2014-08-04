@@ -41,7 +41,7 @@
 
         <div class="last-transactions-content">
           <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
-            <a href="#!/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
+            <a href="#!/transactions" class="has-tip">
               <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
             </a>
             <div class="box-status">
@@ -70,7 +70,7 @@
 
             <div class="text-center">
               <p class="size-12 text-gray ellipsis">
-                {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+                {{cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
               </p>
             </div>
           </div>
