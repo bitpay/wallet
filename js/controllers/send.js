@@ -61,30 +61,28 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
 
-      function done(ntxid, ca) {
-        var txp = w.txProposals.txps[ntxid];
-        var merchantData = txp.merchant;
+      function done(ntxid, merchantData) {
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
-          if (ca) {
-            message += '\nThis payment protocol transaction'
-              + ' has been verified through ' + ca + '.';
-          }
           if (merchantData) {
+            if (merchantData.pr.ca) {
+              message += '\nThis payment protocol transaction'
+                + ' has been verified through ' + merchantData.pr.ca + '.';
+            }
             message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
           }
           notification.success('Success!', message);
           $scope.loadTxs();
         } else {
-          w.sendTx(ntxid, function(txid, ca) {
+          w.sendTx(ntxid, function(txid, merchantData) {
             if (txid) {
               var message = 'Transaction id: ' + txid;
-              if (ca) {
-                message += '\nThis payment protocol transaction'
-                  + ' has been verified through ' + ca + '.';
-              }
               if (merchantData) {
+                if (merchantData.pr.ca) {
+                  message += '\nThis payment protocol transaction'
+                    + ' has been verified through ' + merchantData.pr.ca + '.';
+                }
                 message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
               }
               notification.success('Transaction broadcast', message);
@@ -332,23 +330,19 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
-      w.sendTx(ntxid, function(txid, ca) {
+      w.sendTx(ntxid, function(txid, merchantData) {
         if (!txid) {
           notification.error('Error', 'There was an error sending the transaction');
         } else {
-          if (!ca) {
+          if (!merchantData) {
             notification.success('Transaction broadcast', 'Transaction id: '+txid);
           } else {
-            var txp = w.txProposals.txps[ntxid];
-            var merchantData = txp.merchant;
             var message = 'Transaction ID: ' + txid;
-            if (ca) {
+            if (merchantData.pr.ca) {
               message += '\nThis payment protocol transaction'
-                + ' has been verified through ' + ca + '.';
+                + ' has been verified through ' + merchantData.pr.ca + '.';
             }
-            if (merchantData) {
-              message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
-            }
+            message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
             notification.success('Transaction sent', message);
           }
         }
