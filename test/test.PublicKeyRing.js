@@ -13,10 +13,19 @@ try {
 } catch (e) {
   var copay = require('../copay'); //node
 }
+var PrivateKey = copay.PrivateKey;
 var PublicKeyRing = copay.PublicKeyRing;
 
 var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEMbavPumpAicsUm2XvC6NTdcWB89yN5DUWx5HQ7z3KByUg7Ht74VRZ';
 
+
+var getNewEpk = function() {
+  return new PrivateKey({
+    networkName: 'livenet',
+  })
+  .deriveBIP45Branch()
+  .extendedPublicKeyString();
+}
 
 var createW = function(networkName) {
   var config = {
@@ -29,8 +38,8 @@ var createW = function(networkName) {
   var copayers = [];
   for (var i = 0; i < 5; i++) {
     w.isComplete().should.equal(false);
-    w.remainingCopayers().should.equal(5-i);
-    var newEpk = w.addCopayer();
+    w.remainingCopayers().should.equal(5 - i);
+    var newEpk = w.addCopayer(getNewEpk());
     copayers.push(newEpk);
   }
   w.isComplete().should.equal(true);
@@ -41,6 +50,14 @@ var createW = function(networkName) {
     copayers: copayers,
     pub: w.copayersHK[0].eckey.public.toString('hex')
   };
+};
+
+var cachedW;
+var getCachedW = function()  {
+  if (!cachedW) {
+    cachedW = createW();
+  }
+  return cachedW;
 };
 
 describe('PublicKeyRing model', function() {
@@ -78,7 +95,7 @@ describe('PublicKeyRing model', function() {
   });
 
   it('should add and check when adding shared pub keys', function() {
-    var k = createW();
+    var k = getCachedW();
     var w = k.w;
     var copayers = k.copayers;
 
@@ -92,7 +109,7 @@ describe('PublicKeyRing model', function() {
   });
 
   it('should be able to to store and read', function() {
-    var k = createW();
+    var k = getCachedW();
     var w = k.w;
     var copayers = k.copayers;
     var changeN = 2;
@@ -124,10 +141,10 @@ describe('PublicKeyRing model', function() {
 
 
   it('should generate some p2sh addresses', function() {
-    var k = createW();
+    var k = getCachedW();
     var w = k.w;
 
-    [true, false].forEach(function(isChange){
+    [true, false].forEach(function(isChange) {
       for (var i = 0; i < 2; i++) {
         var a = w.generateAddress(isChange, k.pub);
         a.isValid().should.equal(true);
@@ -148,7 +165,7 @@ describe('PublicKeyRing model', function() {
     var a = w.getAddresses();
     a.length.should.equal(1);
 
-    [true, false].forEach(function(isChange){
+    [true, false].forEach(function(isChange) {
       for (var i = 0; i < 2; i++) {
         w.generateAddress(isChange, k.pub);
       }
@@ -185,18 +202,12 @@ describe('PublicKeyRing model', function() {
   });
 
   it('should set backup ready', function() {
-    var w = createW().w;
+    var w = getCachedW().w;
     w.isBackupReady().should.equal(false);
     w.setBackupReady();
     w.isBackupReady().should.equal(true);
   });
 
-  it('should set backup ready', function() {
-    var w = createW().w;
-    w.isBackupReady().should.equal(false);
-    w.setBackupReady();
-    w.isBackupReady().should.equal(true);
-  });
 
   it('should check for other backups', function() {
     var w = createW().w;
@@ -213,7 +224,7 @@ describe('PublicKeyRing model', function() {
   });
 
   it('should merge backup', function() {
-    var w = createW().w;
+    var w = getCachedW().w;
 
     w.copayersBackup = ["a", "b"];
     var hasChanged = w.mergeBackups(["b", "c"]);
@@ -313,11 +324,10 @@ describe('PublicKeyRing model', function() {
     var w0 = new PublicKeyRing({
       networkName: 'livenet',
     });
-    w0.addCopayer();
-    w0.addCopayer();
-    w0.addCopayer();
-    w0.addCopayer();
-    w0.addCopayer();
+
+    for (var i = 0; i < 5; i++)
+    w0.addCopayer(getNewEpk());
+
     (function() {
       w0.merge(w);
     }).should.throw();
@@ -327,7 +337,7 @@ describe('PublicKeyRing model', function() {
     var wx = new PublicKeyRing({
       networkName: 'livenet',
     });
-    wx.addCopayer();
+    wx.addCopayer(getNewEpk());
     (function() {
       w.merge(wx);
     }).should.throw();
@@ -343,7 +353,7 @@ describe('PublicKeyRing model', function() {
     var copayers = [];
     for (var i = 0; i < 2; i++) {
       w.isComplete().should.equal(false);
-      w.addCopayer();
+      w.addCopayer(getNewEpk());
     }
 
     var w2 = new PublicKeyRing({
@@ -354,7 +364,7 @@ describe('PublicKeyRing model', function() {
     var copayers = [];
     for (var i = 0; i < 3; i++) {
       w2.isComplete().should.equal(false);
-      w2.addCopayer();
+      w2.addCopayer(getNewEpk());
     }
     w2.merge(w).should.equal(true);
     w2.isComplete().should.equal(true);
@@ -379,7 +389,7 @@ describe('PublicKeyRing model', function() {
         networkName: 'livenet',
         id: w.id,
       });
-      w2.addCopayer();
+      w2.addCopayer(getNewEpk());
       w.merge(w2).should.equal(true);
     }
     w.isComplete().should.equal(true);
@@ -393,7 +403,7 @@ describe('PublicKeyRing model', function() {
     var w = new PublicKeyRing(config);
     should.exist(w);
     for (var i = 0; i < 3; i++) {
-      w.addCopayer();
+      w.addCopayer(getNewEpk());
     };
     w._setNicknameForIndex(0, 'pepe0');
     w._setNicknameForIndex(1, 'pepe1');
@@ -409,7 +419,7 @@ describe('PublicKeyRing model', function() {
         networkName: 'livenet',
         id: w.id,
       });
-      w2.addCopayer();
+      w2.addCopayer(getNewEpk());
       w2._setNicknameForIndex(0, 'juan' + i);
       w.merge(w2).should.equal(true);
     }
@@ -430,7 +440,7 @@ describe('PublicKeyRing model', function() {
     var w = new PublicKeyRing(config);
     should.exist(w);
     for (var i = 0; i < 3; i++) {
-      w.addCopayer(null, 'tito' + i);
+      w.addCopayer(getNewEpk(), 'tito' + i);
     };
     w.nicknameForIndex(0).should.equal('tito0');
     w.nicknameForIndex(1).should.equal('tito1');
@@ -468,7 +478,7 @@ describe('PublicKeyRing model', function() {
   });
 
   it('#getRedeemScriptMap check tests', function() {
-    var k = createW();
+    var k = getCachedW();
     var w = k.w;
     var amount = 2;
 
@@ -497,7 +507,7 @@ describe('PublicKeyRing model', function() {
 
   it('#getForPaths should return 2 arrays of 5 pubkey ', function() {
     var w = getCachedW().w;
-    var pubkeys = w.getForPaths([ 'm/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1'] );
+    var pubkeys = w.getForPaths(['m/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1']);
     pubkeys.length.should.equal(2);
     pubkeys[0].length.should.equal(5);
     pubkeys[1].length.should.equal(5);
@@ -505,7 +515,7 @@ describe('PublicKeyRing model', function() {
 
   it('#forPaths should return copayers and pubkeys ', function() {
     var w = getCachedW().w;
-    var ret = w.forPaths([ 'm/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1'] );
+    var ret = w.forPaths(['m/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1']);
     ret.copayerIds.length.should.equal(5);
     ret.pubKeys.length.should.equal(2);
     ret.pubKeys[0].length.should.equal(5);
