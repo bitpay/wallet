@@ -285,6 +285,7 @@ PublicKeyRing.prototype.getForPath = function(path) {
 };
 
 PublicKeyRing.prototype.getForPaths = function(paths) {
+  preconditions.checkArgument(paths);
   return paths.map(this.getForPath.bind(this));
 };
 
@@ -299,6 +300,8 @@ PublicKeyRing.prototype.forPaths = function(paths) {
 
 // returns pubkey -> copayerId.
 PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
+  preconditions.checkArgument(pubkeys);
+  preconditions.checkArgument(paths);
 
   var inKeyMap = {}, ret = {};
   for(var i in pubkeys ){
