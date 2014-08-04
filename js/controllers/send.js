@@ -198,7 +198,8 @@ angular.module('copayApp.controllers').controller('SendController',
         function onSuccess(result) {
           if (result.cancelled) return;
 
-          var bip21 = copay.Structure.parseBitcoinURI(result.text);
+          debugger;
+          var bip21 = copay.HDPath.parseBitcoinURI(result.text);
           $scope.address = bip21.address;
 
           if (bip21.amount) {
