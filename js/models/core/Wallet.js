@@ -804,7 +804,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
         + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
       'Content-Type': 'application/octet-stream'
       // XHR does not allow this:
-      // 'Content-Length': 0
+      // 'Content-Length': '0'
     },
     responseType: 'arraybuffer'
   })
