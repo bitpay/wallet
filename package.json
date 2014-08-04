@@ -14,7 +14,8 @@
     "preconditions": "^1.0.7",
     "sinon": "1.9.1",
     "mocha-lcov-reporter": "0.0.1",
-    "mocha": "^1.18.2"
+    "mocha": "^1.18.2",
+    "request": "2.39.0"
   },
   "scripts": {
     "shell": "node shell/scripts/launch.js",
