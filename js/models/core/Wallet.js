@@ -1565,7 +1565,8 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
 // NOTE: Angular $http module does not send ArrayBuffers correctly, so we're
 // not going to use it. We'll have to write our own. Otherwise, we could
 // hex-encoded our messages and decode them on the other side, but that
-// deviates from BIP-70 slightly.
+// deviates from BIP-70.
+
 // if (typeof angular !== 'undefined') {
 //   G.$http = G.$http || angular.bootstrap().get('$http');
 // }
@@ -1600,59 +1601,43 @@ G.$http = G.$http || function $http(options, callback) {
   var req = options;
 
   req.headers = req.headers || {};
-  req.body = req.body || {};
+  req.body = req.body || req.data || {};
 
-  if (typeof XMLHttpRequest !== 'undefined') {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, uri, true);
+  var xhr = new XMLHttpRequest();
+  xhr.open(method, uri, true);
 
-    Object.keys(options.headers).forEach(function(key) {
-      var val = options.headers[key];
-      if (key === 'Content-Length') return;
-      if (key === 'Content-Transfer-Encoding') return;
-      xhr.setRequestHeader(key, val);
-    });
+  Object.keys(req.headers).forEach(function(key) {
+    var val = req.headers[key];
+    if (key === 'Content-Length') return;
+    if (key === 'Content-Transfer-Encoding') return;
+    xhr.setRequestHeader(key, val);
+  });
 
-    // For older browsers (binary data):
-    // xhr.overrideMimeType('text/plain; charset=x-user-defined');
+  if (req.responseType) {
+    xhr.responseType = req.responseType;
+  }
 
-    // Newer browsers (binary data):
-    // xhr.responseType = 'arraybuffer';
+  xhr.onload = function(event) {
+    var response = xhr.response;
+    var buf = new Uint8Array(response);
+    var headers = {};
+    (xhr.getAllResponseHeaders() || '').replace(
+      /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
+      function($0, $1, $2) {
+        headers[$1.toLowerCase()] = $2;
+      }
+    );
+    return ret._success(buf, xhr.status, headers, options);
+  };
 
-    if (options.responseType) {
-      xhr.responseType = options.responseType;
-    }
+  xhr.onerror = function(event) {
+    return ret._error(null, new Error(event.message), null, options);
+  };
 
-    // xhr.onreadystatechange = function() {
-    //   if (xhr.readyState == 4) {
-    //     ;
-    //   }
-    // };
-
-    xhr.onload = function(event) {
-      var response = xhr.response;
-      var buf = new Uint8Array(response);
-      var headers = {};
-      (xhr.getAllResponseHeaders() || '').replace(
-        /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
-        function($0, $1, $2) {
-          headers[$1.toLowerCase()] = $2;
-        }
-      );
-      return ret._success(buf, xhr.status, headers, options);
-    };
-
-    xhr.onerror = function(event) {
-      return ret._error(null, new Error(event.message), null, options);
-    };
-
-    if (options.data || options.body) {
-      xhr.send(options.data || options.body);
-    } else {
-      xhr.send(null);
-    }
-
-    return ret;
+  if (req.body) {
+    xhr.send(req.body);
+  } else {
+    xhr.send(null);
   }
 
   return ret;
