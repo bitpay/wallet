@@ -440,19 +440,7 @@ describe('Wallet model', function() {
     var w = createW();
     var txp = {
       'txProposal': {
-        creator: '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96',
-        createdTs: '2014-07-24T23:54:26.682Z',
-        seenBy: {
-          '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96': 1406246066682
-        },
-        signedBy: {
-          '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96': 1406246066682
-        },
-        rejectedBy: {},
-        sentTs: null,
-        sentTxid: null,
-        inputChainPaths: ['m/45\'/2/0/0'],
-        comment: null,
+        inputChainPaths: ['m/1'],
         builderObj: {
           version: 1,
           outs: [{
@@ -480,9 +468,13 @@ describe('Wallet model', function() {
       }
     };
 
+    var stub = sinon.stub(w.publicKeyRing,'copayersForPubkeys').returns(
+      {'027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509':'pepe'}
+    );
     w._handleTxProposal('senderID', txp, true);
     Object.keys(w.txProposals.txps).length.should.equal(1);
     w.getTxProposals().length.should.equal(1);
+    //stub.restore();
   });
 
   var newId = '00bacacafe';
@@ -1054,7 +1046,7 @@ describe('Wallet model', function() {
         _inputSignatures: [
           ['123']
         ],
-        paths: ['/m/1'],
+        inputChainPaths: ['/m/1'],
       };
       var map = w._getKeyMap(txp);
       Object.keys(map).length.should.equal(1);
@@ -1072,7 +1064,7 @@ describe('Wallet model', function() {
         _inputSignatures: [
           ['234']
         ],
-        paths: ['/m/1'],
+        inputChainPaths: ['/m/1'],
       };
       (function() {
         w._getKeyMap(txp);
@@ -1091,7 +1083,7 @@ describe('Wallet model', function() {
         _inputSignatures: [
           ['234', '123']
         ],
-        paths: ['/m/1'],
+        inputChainPaths: ['/m/1'],
       };
       var map = w._getKeyMap(txp);
       Object.keys(map).length.should.equal(2);
@@ -1112,7 +1104,7 @@ describe('Wallet model', function() {
           ['234', '123'],
           ['234']
         ],
-        paths: ['/m/1'],
+        inputChainPaths: ['/m/1'],
       };
       (function() {
         w._getKeyMap(txp);
@@ -1194,29 +1186,29 @@ describe('Wallet model', function() {
     });
     it('should reject a tx', function() {
       var w = cachedCreateW();
+
       function txp() {
-        this.ok=0;
+        this.ok = 0;
         this.signedBy = {};
       };
-      txp.prototype.setRejected = function() { 
-        this.ok=1;
+      txp.prototype.setRejected = function() {
+        this.ok = 1;
       };
-      txp.prototype.toObj = function() { 
-      };
+      txp.prototype.toObj = function() {};
 
-      var spy1 = sinon.spy(w,'store');
-      var spy2 = sinon.spy(w,'emit');
+      var spy1 = sinon.spy(w, 'store');
+      var spy2 = sinon.spy(w, 'emit');
       w.txProposals.txps['qwerty'] = new txp();
-      w.txProposals.txps['qwerty'].ok.should.equal(0); 
+      w.txProposals.txps['qwerty'].ok.should.equal(0);
       w._handleReject('john', {
         ntxid: 'qwerty'
       }, 1);
-      w.txProposals.txps['qwerty'].ok.should.equal(1); 
+      w.txProposals.txps['qwerty'].ok.should.equal(1);
       spy1.calledOnce.should.equal(true);
       spy2.callCount.should.equal(2);
       spy2.firstCall.args.should.deep.equal(['txProposalsUpdated']);
-      spy2.secondCall.args.should.deep.equal(['txProposalEvent',{
-        type:'rejected',
+      spy2.secondCall.args.should.deep.equal(['txProposalEvent', {
+        type: 'rejected',
         cId: 'john',
         txId: 'qwerty',
       }]);
@@ -1235,29 +1227,29 @@ describe('Wallet model', function() {
     });
     it('should set seen a tx', function() {
       var w = cachedCreateW();
+
       function txp() {
-        this.ok=0;
+        this.ok = 0;
         this.signedBy = {};
       };
-      txp.prototype.setSeen = function() { 
-        this.ok=1;
+      txp.prototype.setSeen = function() {
+        this.ok = 1;
       };
-      txp.prototype.toObj = function() { 
-      };
+      txp.prototype.toObj = function() {};
 
-      var spy1 = sinon.spy(w,'store');
-      var spy2 = sinon.spy(w,'emit');
+      var spy1 = sinon.spy(w, 'store');
+      var spy2 = sinon.spy(w, 'emit');
       w.txProposals.txps['qwerty'] = new txp();
-      w.txProposals.txps['qwerty'].ok.should.equal(0); 
+      w.txProposals.txps['qwerty'].ok.should.equal(0);
       w._handleSeen('john', {
         ntxid: 'qwerty'
       }, 1);
-      w.txProposals.txps['qwerty'].ok.should.equal(1); 
+      w.txProposals.txps['qwerty'].ok.should.equal(1);
       spy1.calledOnce.should.equal(true);
       spy2.callCount.should.equal(2);
       spy2.firstCall.args.should.deep.equal(['txProposalsUpdated']);
-      spy2.secondCall.args.should.deep.equal(['txProposalEvent',{
-        type:'seen',
+      spy2.secondCall.args.should.deep.equal(['txProposalEvent', {
+        type: 'seen',
         cId: 'john',
         txId: 'qwerty',
       }]);
@@ -1273,7 +1265,7 @@ describe('Wallet model', function() {
 
   it('#disconnect', function() {
     var w = cachedCreateW();
-    var spy1 = sinon.spy(w.network,'disconnect');
+    var spy1 = sinon.spy(w.network, 'disconnect');
     w.disconnect();
     spy1.callCount.should.equal(1);
   });

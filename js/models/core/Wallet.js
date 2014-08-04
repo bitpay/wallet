@@ -165,8 +165,9 @@ txId: ntxid
 });
 */
 Wallet.prototype._getKeyMap = function(txp) {
+  preconditions.checkArgument(txp);
 
-  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.paths);
+  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.inputChainPaths);
 
   var inSig = JSON.stringify(txp._inputSignatures[0].sort());
 
@@ -191,12 +192,12 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
   var m;
 
   try {
-    m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
-    var keyMap = this._getKeyMap(m.tpx);
-    ret.newCopayer = m.txp.setCopayers(senderId, keyMap);
+  m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
+  var keyMap = this._getKeyMap(m.txp);
+  ret.newCopayer = m.txp.setCopayers(senderId, keyMap);
 
   } catch (e) {
-    this.log('Corrupt TX proposal received', senderId, e);
+    this.log('Corrupt TX proposal received from:', senderId, e);
   }
 
   if (m) {
@@ -524,10 +525,11 @@ Wallet.prototype.sendAllTxProposals = function(recipients) {
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
   preconditions.checkState(this.txProposals.txps[ntxid]);
+
   this.log('### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
   this.send(recipients, {
     type: 'txProposal',
-    txProposal: this.txProposals.txps[ntxid].toObj(),
+    txProposal: this.txProposals.txps[ntxid].toObjTrim(),
     walletId: this.id,
   });
 };

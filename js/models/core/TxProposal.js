@@ -134,9 +134,12 @@ TxProposal.fromObj = function(o, forceOpts) {
 };
 
 TxProposal.fromUntrustedObj = function(o, forceOpts) {
-  return TxProposal.fromObj(TxProposal._trim(o),forceOpts);
+  return TxProposal.fromObj(TxProposal._trim(o), forceOpts);
 };
 
+TxProposal.prototype.toObjTrim = function() {
+  return TxProposal._trim(this.toObj());
+};
 
 TxProposal._formatKeys = function(keys) {
   var ret = [];
@@ -234,21 +237,31 @@ TxProposal.prototype._allSignatures = function() {
 
 TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   var newCopayer = {},
-  oldCopayers = {}, newSignedBy = {}, readOnlyPeers = {}, isNew = 1;
+  oldCopayers = {},
+  newSignedBy = {},
+  readOnlyPeers = {},
+  isNew = 1;
 
-  for(var k in this.signedBy) {
+  for (var k in this.signedBy) {
     oldCopayers[k] = 1;
     isNew = 0;
   };
 
-  if (isNew == 0 &&  (!this.creator || !this.createdTs))
-    throw new Error('Existing TX has no creator');
+  if (isNew == 0) {
+    if (!this.creator || !this.createdTs)
+      throw new Error('Existing TX has no creator');
 
-  if (isNew == 0 &&  (!this.signedBy[this.creator]))
-    throw new Error('Existing TX is not signed by creator');
+    if (!this.signedBy[this.creator])
+      throw new Error('Existing TX is not signed by creator');
+
+
+    if (Object.keys(this.signedBy).length === 0)
+      throw new Error('Existing TX has no signatures');
+  }
+
 
   var iSig = this._inputSignatures[0];
-  for(var i in iSig){
+  for (var i in iSig) {
     var copayerId = keyMap[iSig[i]];
     if (!copayerId)
       throw new Error('Found unknown signature')
@@ -256,15 +269,16 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
     if (oldCopayers[copayerId]) {
       //Already have it. Do nothing
     } else {
-      newCopayer[copayerId] =  Date.now();
+      newCopayer[copayerId] = Date.now();
       delete oldCopayers[i];
     }
   }
 
-  if (!newCopayer[senderId] && !readOnlyPeers[senderId])
-    throw new Error('TX must have a (new) senders signature')
+  // Seems unncessary to check this:
+  // if (!newCopayer[senderId] && !readOnlyPeers[senderId])
+  //   throw new Error('TX must have a (new) senders signature')
 
-  if (Object.keys(newCopayer).length>1)
+  if (Object.keys(newCopayer).length > 1)
     throw new Error('New TX must have only 1 new signature');
 
   // Handler creator / createdTs.
@@ -272,16 +286,16 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   if (isNew) {
     this.creator = Object.keys(newCopayer)[0];
     this.seenBy[this.creator] = this.createdTs = Date.now();
-  } 
+  }
 
   //Ended. Update this.
-  for(var i in newCopayer) {
+  for (var i in newCopayer) {
     this.signedBy[i] = newCopayer[i];
   }
 
   // signedBy has preference over rejectedBy
-  for(var i in this.signedBy) {
-    delete this.rejectedBy[i];    
+  for (var i in this.signedBy) {
+    delete this.rejectedBy[i];
   }
 
   return Object.keys(newCopayer);
