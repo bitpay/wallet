@@ -1248,6 +1248,11 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
 
   var outputs = pd.get('outputs');
 
+  if (tx.outs.length < outputs.length) {
+    // Outputs do not and cannot match.
+    return false;
+  }
+
   for (var i = 0; i < outputs.length; i++) {
     var output = outputs[i];
 
@@ -1258,36 +1263,28 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
       buffer: new Buffer(new Uint8Array(output.get('script').buffer))
     };
 
-    var v = new Buffer(8);
-    v[0] = (amount.low >> 0) & 0xff;
-    v[1] = (amount.low >> 8) & 0xff;
-    v[2] = (amount.low >> 16) & 0xff;
-    v[3] = (amount.low >> 24) & 0xff;
-    v[4] = (amount.high >> 0) & 0xff;
-    v[5] = (amount.high >> 8) & 0xff;
-    v[6] = (amount.high >> 16) & 0xff;
-    v[7] = (amount.high >> 24) & 0xff;
-
     // Expected value
-    var ev = bignum.fromBuffer(v, {
-      endian: 'little',
-      size: 1
-    });
+    var ev = new Buffer(8);
+    ev[0] = (amount.low >> 0) & 0xff;
+    ev[1] = (amount.low >> 8) & 0xff;
+    ev[2] = (amount.low >> 16) & 0xff;
+    ev[3] = (amount.low >> 24) & 0xff;
+    ev[4] = (amount.high >> 0) & 0xff;
+    ev[5] = (amount.high >> 8) & 0xff;
+    ev[6] = (amount.high >> 16) & 0xff;
+    ev[7] = (amount.high >> 24) & 0xff;
 
     // Expected script
     var es = script.buffer.slice(script.offset, script.limit);
 
     // Actual value
-    var av = bignum.fromBuffer(tx.outs[i].v, {
-      endian: 'little',
-      size: 1
-    });
+    var av = tx.outs[i].v;
 
     // Actual script
     var as = tx.outs[i].s;
 
     // Make sure the tx's output script and values match the payment request's.
-    if (av.toString(10) !== ev.toString(10)
+    if (av.toString('hex') !== ev.toString('hex')
         || as.toString('hex') !== es.toString('hex'))  {
       // Verifiable outputs do not match outputs of merchant
       // data. We should not sign this transaction proposal!
