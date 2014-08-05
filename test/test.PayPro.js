@@ -643,9 +643,8 @@ describe('PayPro (in Wallet) model', function() {
     should.exist(req);
     delete w.paymentRequests[options.uri];
     w.receivePaymentRequest(options, req.pr, function(ntxid, merchantData) {
-      if (!ntxid) {
-        return done(new Error('No TX proposal.'));
-      }
+      should.exist(ntxid);
+      should.exist(merchantData);
       w._ntxid = ntxid;
       merchantData.pr.pd.payment_url.should.equal('https://localhost:8080/-/pay');
       return done();
@@ -656,9 +655,8 @@ describe('PayPro (in Wallet) model', function() {
     var w = ppw;
     should.exist(w);
     w.sendPaymentTx(w._ntxid, function(txid, merchantData) {
-      if (!txid) {
-        return done(new Error('No TX ID.'));
-      }
+      should.exist(txid);
+      should.exist(merchantData);
       should.exist(merchantData.ack);
       merchantData.ack.memo.should.equal('Thank you for your payment!');
       return done();
@@ -674,8 +672,9 @@ describe('PayPro (in Wallet) model', function() {
       uri: uri,
       memo: memo
     }, function(ntxid, merchantData) {
+      should.exist(ntxid);
+      should.exist(merchantData);
       if (w.totalCopayers > 1) {
-        should.exist(ntxid);
         console.log('Sent TX proposal to other copayers:');
         console.log([ntxid, merchantData]);
         return done();
@@ -684,6 +683,7 @@ describe('PayPro (in Wallet) model', function() {
         console.log(ntxid);
         w.sendPaymentTx(ntxid, { memo: memo }, function(txid, merchantData) {
           should.exist(txid);
+          should.exist(merchantData);
           console.log('TX sent:');
           console.log([ntxid, merchantData]);
           return done();
@@ -709,14 +709,17 @@ describe('PayPro (in Wallet) model', function() {
     w.createTx(uri, commentText, function(ntxid, merchantData) {
       if (w.totalCopayers > 1) {
         should.exist(ntxid);
+        should.exist(merchantData);
         console.log('Sent TX proposal to other copayers:');
         console.log([ntxid, merchantData]);
         return done();
       } else {
         console.log('Sending TX to merchant server:');
         console.log(ntxid);
+        should.exist(merchantData);
         w.sendTx(ntxid, function(txid, merchantData) {
           should.exist(txid);
+          should.exist(merchantData);
           console.log('TX sent:');
           console.log([ntxid, merchantData]);
           return done();
@@ -733,6 +736,7 @@ describe('PayPro (in Wallet) model', function() {
     w.createTx(address, commentText, function(ntxid, merchantData) {
       if (w.totalCopayers > 1) {
         should.exist(ntxid);
+        should.exist(merchantData);
         console.log('Sent TX proposal to other copayers:');
         console.log([ntxid, merchantData]);
         return done();
@@ -741,6 +745,7 @@ describe('PayPro (in Wallet) model', function() {
         console.log(ntxid);
         w.sendTx(ntxid, function(txid, merchantData) {
           should.exist(txid);
+          should.exist(merchantData);
           console.log('TX sent:');
           console.log([ntxid, merchantData]);
           return done();
