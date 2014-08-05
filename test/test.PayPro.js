@@ -246,18 +246,6 @@ describe('PayPro (in Wallet) model', function() {
       .setUnspent(unspentTest)
       .setOutputs(outs);
 
-    var selectedUtxos = b.getSelectedUnspent();
-    var inputChainPaths = selectedUtxos.map(function(utxo) {
-      return pkr.pathForAddress(utxo.address);
-    });
-
-    b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
-
-    if (priv) {
-      var keys = priv.getForPaths(inputChainPaths);
-      var signed = b.sign(keys);
-    }
-
     outputs.forEach(function(output, i) {
       var amount = output.get('amount');
       var script = {
@@ -281,6 +269,18 @@ describe('PayPro (in Wallet) model', function() {
       b.tx.outs[i].v = v;
       b.tx.outs[i].s = s;
     });
+
+    var selectedUtxos = b.getSelectedUnspent();
+    var inputChainPaths = selectedUtxos.map(function(utxo) {
+      return pkr.pathForAddress(utxo.address);
+    });
+
+    b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
+
+    if (priv) {
+      var keys = priv.getForPaths(inputChainPaths);
+      var signed = b.sign(keys);
+    }
 
     var tx = b.build();
 
@@ -472,18 +472,6 @@ describe('PayPro (in Wallet) model', function() {
       .setUnspent(unspentTest)
       .setOutputs(outs);
 
-    var selectedUtxos = b.getSelectedUnspent();
-    var inputChainPaths = selectedUtxos.map(function(utxo) {
-      return pkr.pathForAddress(utxo.address);
-    });
-
-    b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
-
-    if (priv) {
-      var keys = priv.getForPaths(inputChainPaths);
-      var signed = b.sign(keys);
-    }
-
     outputs.forEach(function(output, i) {
       var amount = output.get('amount');
       var script = {
@@ -507,6 +495,18 @@ describe('PayPro (in Wallet) model', function() {
       b.tx.outs[i].v = v;
       b.tx.outs[i].s = s;
     });
+
+    var selectedUtxos = b.getSelectedUnspent();
+    var inputChainPaths = selectedUtxos.map(function(utxo) {
+      return pkr.pathForAddress(utxo.address);
+    });
+
+    b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
+
+    if (priv) {
+      var keys = priv.getForPaths(inputChainPaths);
+      var signed = b.sign(keys);
+    }
 
     var tx = b.build();
 
