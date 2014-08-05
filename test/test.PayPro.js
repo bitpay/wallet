@@ -665,19 +665,53 @@ describe('PayPro (in Wallet) model', function() {
     });
   });
 
-  it('#send a payment request', function(done) {
+  it('#send a payment request using payment api', function(done) {
     var w = createWallet();
     should.exist(w);
-    var address = 'bitcoin:mq7se9wy2egettFxPbmn99cK8v5AFq55Lx?amount=0.11&r=' + server.uri + '/request';
-    var commentText = 'Hello, server. I\'d like to make a payment.';
-    w.createTx(address, commentText, function(ntxid, merchantData) {
+    var uri = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
+    var memo = 'Hello, server. I\'d like to make a payment.';
+    w.createPaymentTx({
+      uri: uri,
+      memo: memo
+    }, function(ntxid, merchantData) {
       if (w.totalCopayers > 1) {
         should.exist(ntxid);
         console.log('Sent TX proposal to other copayers:');
         console.log([ntxid, merchantData]);
-        server.close(function() {
-          done();
+        return done();
+      } else {
+        console.log('Sending TX to merchant server:');
+        console.log(ntxid);
+        w.sendPaymentTx(ntxid, { memo: memo }, function(txid, merchantData) {
+          should.exist(txid);
+          console.log('TX sent:');
+          console.log([ntxid, merchantData]);
+          return done();
         });
+      }
+    });
+  });
+
+  it('#send a payment request with merchant prefix', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var address = 'Merchant: ' + server.uri + '/request\nMemo: foo';
+    var commentText = 'Hello, server. I\'d like to make a payment.';
+    var uri;
+
+    // Replicates code in controllers/send.js:
+    if (address.indexOf('bitcoin:') === 0) {
+      uri = copay.HDPath.parseBitcoinURI(address);
+    } else if (address.indexOf('Merchant: ') === 0) {
+      uri = address.split(/\s+/)[1];
+    }
+
+    w.createTx(uri, commentText, function(ntxid, merchantData) {
+      if (w.totalCopayers > 1) {
+        should.exist(ntxid);
+        console.log('Sent TX proposal to other copayers:');
+        console.log([ntxid, merchantData]);
+        return done();
       } else {
         console.log('Sending TX to merchant server:');
         console.log(ntxid);
@@ -685,11 +719,39 @@ describe('PayPro (in Wallet) model', function() {
           should.exist(txid);
           console.log('TX sent:');
           console.log([ntxid, merchantData]);
-          server.close(function() {
-            done();
-          });
+          return done();
         });
       }
+    });
+  });
+
+  it('#send a payment request with bitcoin uri', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
+    var commentText = 'Hello, server. I\'d like to make a payment.';
+    w.createTx(address, commentText, function(ntxid, merchantData) {
+      if (w.totalCopayers > 1) {
+        should.exist(ntxid);
+        console.log('Sent TX proposal to other copayers:');
+        console.log([ntxid, merchantData]);
+        return done();
+      } else {
+        console.log('Sending TX to merchant server:');
+        console.log(ntxid);
+        w.sendTx(ntxid, function(txid, merchantData) {
+          should.exist(txid);
+          console.log('TX sent:');
+          console.log([ntxid, merchantData]);
+          return done();
+        });
+      }
+    });
+  });
+
+  it('#close payment server', function(done) {
+    server.close(function() {
+      return done();
     });
   });
 });
