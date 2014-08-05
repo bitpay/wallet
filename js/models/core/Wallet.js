@@ -719,6 +719,8 @@ Wallet.prototype.sign = function(ntxid, cb) {
     // }
     //
 
+    // If this is a payment protocol request,
+    // ensure it hasn't been tampered with.
     if (!self.verifyPaymentRequest(ntxid)) {
       if (cb) cb(false);
       return;
@@ -1206,6 +1208,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   return ntxid;
 };
 
+// This essentially ensures that a copayer hasn't tampered with a
+// PaymentRequest message from a payment server. It verifies the signature
+// based on the cert, and checks to ensure the desired outputs are the same as
+// the ones on the tx proposal.
 Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   if (!txp) return false;
 
