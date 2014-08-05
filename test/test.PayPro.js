@@ -675,17 +675,11 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(ntxid);
       should.exist(merchantData);
       if (w.totalCopayers > 1) {
-        console.log('Sent TX proposal to other copayers:');
-        console.log([ntxid, merchantData]);
         return done();
       } else {
-        console.log('Sending TX to merchant server:');
-        console.log(ntxid);
         w.sendPaymentTx(ntxid, { memo: memo }, function(txid, merchantData) {
           should.exist(txid);
           should.exist(merchantData);
-          console.log('TX sent:');
-          console.log([ntxid, merchantData]);
           return done();
         });
       }
@@ -710,18 +704,12 @@ describe('PayPro (in Wallet) model', function() {
       if (w.totalCopayers > 1) {
         should.exist(ntxid);
         should.exist(merchantData);
-        console.log('Sent TX proposal to other copayers:');
-        console.log([ntxid, merchantData]);
         return done();
       } else {
-        console.log('Sending TX to merchant server:');
-        console.log(ntxid);
         should.exist(merchantData);
         w.sendTx(ntxid, function(txid, merchantData) {
           should.exist(txid);
           should.exist(merchantData);
-          console.log('TX sent:');
-          console.log([ntxid, merchantData]);
           return done();
         });
       }
@@ -737,17 +725,11 @@ describe('PayPro (in Wallet) model', function() {
       if (w.totalCopayers > 1) {
         should.exist(ntxid);
         should.exist(merchantData);
-        console.log('Sent TX proposal to other copayers:');
-        console.log([ntxid, merchantData]);
         return done();
       } else {
-        console.log('Sending TX to merchant server:');
-        console.log(ntxid);
         w.sendTx(ntxid, function(txid, merchantData) {
           should.exist(txid);
           should.exist(merchantData);
-          console.log('TX sent:');
-          console.log([ntxid, merchantData]);
           return done();
         });
       }
@@ -762,9 +744,6 @@ describe('PayPro (in Wallet) model', function() {
     w.createTx(address, commentText, function(ntxid, merchantData) {
       should.exist(ntxid);
       should.exist(merchantData);
-
-      console.log('Sending TX to merchant server:');
-      console.log(ntxid);
 
       // Tamper with payment request in its raw form:
       var data = new Buffer(merchantData.raw, 'hex');
@@ -789,7 +768,6 @@ describe('PayPro (in Wallet) model', function() {
 
       w.verifyPaymentRequest(ntxid).should.equal(false);
 
-      console.log('TX not verified.');
       return done();
     });
   });
@@ -802,9 +780,6 @@ describe('PayPro (in Wallet) model', function() {
     w.createTx(address, commentText, function(ntxid, merchantData) {
       should.exist(ntxid);
       should.exist(merchantData);
-
-      console.log('Sending TX to merchant server:');
-      console.log(ntxid);
 
       // Tamper with payment request in its abstract form:
       var outputs = merchantData.pr.pd.outputs;
@@ -820,7 +795,6 @@ describe('PayPro (in Wallet) model', function() {
 
       w.verifyPaymentRequest(ntxid).should.equal(false);
 
-      console.log('TX not verified.');
       return done();
     });
   });
@@ -833,9 +807,6 @@ describe('PayPro (in Wallet) model', function() {
     w.createTx(address, commentText, function(ntxid, merchantData) {
       should.exist(ntxid);
       should.exist(merchantData);
-
-      console.log('Sending TX to merchant server:');
-      console.log(ntxid);
 
       // Tamper with payment request in its abstract form:
       var txp = w.txProposals.txps[ntxid];
@@ -850,7 +821,6 @@ describe('PayPro (in Wallet) model', function() {
 
       w.verifyPaymentRequest(ntxid).should.equal(false);
 
-      console.log('TX not verified.');
       return done();
     });
   });
@@ -864,9 +834,6 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(ntxid);
       should.exist(merchantData);
 
-      console.log('Sending TX to merchant server:');
-      console.log(ntxid);
-
       var myId = w.getMyCopayerId();
       var txp = w.txProposals.txps[ntxid];
       should.exist(txp);
@@ -875,7 +842,6 @@ describe('PayPro (in Wallet) model', function() {
 
       w.verifyPaymentRequest(ntxid).should.equal(true);
 
-      console.log('PR verfied successfully.');
       return done();
     });
   });
