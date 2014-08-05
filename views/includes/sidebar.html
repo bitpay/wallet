@@ -64,7 +64,7 @@
     </li>
   </ul>
 
-  <div ng-include="'views/includes/peer-list.html'"></div>
+  <div ng-show="$root.wallet.isShared()" ng-include="'views/includes/peer-list.html'"></div>
 
 </div>
 
