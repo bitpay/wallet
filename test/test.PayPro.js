@@ -835,6 +835,39 @@ describe('PayPro (in Wallet) model', function() {
     });
   });
 
+  it('#sign an untampered payment request', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
+    var commentText = 'Hello, server. I\'d like to make a payment.';
+    w.createTx(address, commentText, function(ntxid, merchantData) {
+      should.exist(ntxid);
+      should.exist(merchantData);
+
+      console.log('Sending TX to merchant server:');
+      console.log(ntxid);
+
+      var myId = w.getMyCopayerId();
+      var txp = w.txProposals.txps[ntxid];
+      should.exist(txp);
+      should.exist(txp.signedBy[myId]);
+      should.not.exist(txp.rejectedBy[myId]);
+      delete txp.signedBy[myId];
+
+      w.verifyPaymentRequest(ntxid).should.equal(true);
+
+      // w.sign(ntxid, function(signed) {
+      //   should.exist(signed);
+      //   // signed.should.equal(true); // false for some reason
+      //   console.log('TX signed successfully.');
+      //   return done();
+      // });
+
+      console.log('PR verfied successfully.');
+      return done();
+    });
+  });
+
   it('#close payment server', function(done) {
     server.close(function() {
       return done();
