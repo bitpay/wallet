@@ -1133,18 +1133,6 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     .setUnspent(unspent)
     .setOutputs(outs);
 
-  var selectedUtxos = b.getSelectedUnspent();
-  var inputChainPaths = selectedUtxos.map(function(utxo) {
-    return pkr.pathForAddress(utxo.address);
-  });
-
-  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
-
-  if (priv) {
-    var keys = priv.getForPaths(inputChainPaths);
-    var signed = b.sign(keys);
-  }
-
   merchantData.total = bignum(merchantData.total, 10);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
@@ -1177,6 +1165,18 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   });
 
   merchantData.total = merchantData.total.toString(10);
+
+  var selectedUtxos = b.getSelectedUnspent();
+  var inputChainPaths = selectedUtxos.map(function(utxo) {
+    return pkr.pathForAddress(utxo.address);
+  });
+
+  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
+
+  if (priv) {
+    var keys = priv.getForPaths(inputChainPaths);
+    var signed = b.sign(keys);
+  }
 
   if (options.fetch) return;
 
