@@ -802,10 +802,35 @@ describe('PayPro (in Wallet) model', function() {
       console.log(ntxid);
 
       // Tamper with payment request in its abstract form:
-      // var outputs = merchantData.pr.pd.outputs;
-      // var output = outputs[outputs.length - 1];
-      // var amount = output.amount;
-      // amount.low = 2;
+      var outputs = merchantData.pr.pd.outputs;
+      var output = outputs[outputs.length - 1];
+      var amount = output.amount;
+      amount.low = 2;
+
+      var myId = w.getMyCopayerId();
+      var txp = w.txProposals.txps[ntxid];
+      should.exist(txp);
+      should.exist(txp.signedBy[myId]);
+      should.not.exist(txp.rejectedBy[myId]);
+
+      w.verifyPaymentRequest(ntxid).should.equal(false);
+
+      console.log('TX not verified.');
+      return done();
+    });
+  });
+
+  it('#try to sign a tampered txp tx (abstract)', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
+    var commentText = 'Hello, server. I\'d like to make a payment.';
+    w.createTx(address, commentText, function(ntxid, merchantData) {
+      should.exist(ntxid);
+      should.exist(merchantData);
+
+      console.log('Sending TX to merchant server:');
+      console.log(ntxid);
 
       // Tamper with payment request in its abstract form:
       var txp = w.txProposals.txps[ntxid];
