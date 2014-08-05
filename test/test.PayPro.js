@@ -749,6 +749,92 @@ describe('PayPro (in Wallet) model', function() {
     });
   });
 
+  it('#try to sign a tampered payment request (raw)', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
+    var commentText = 'Hello, server. I\'d like to make a payment.';
+    w.createTx(address, commentText, function(ntxid, merchantData) {
+      should.exist(ntxid);
+      should.exist(merchantData);
+
+      console.log('Sending TX to merchant server:');
+      console.log(ntxid);
+
+      // Tamper with payment request in its raw form:
+      var data = new Buffer(merchantData.raw, 'hex');
+      data = PayPro.PaymentRequest.decode(data);
+      var pr = new PayPro();
+      pr = pr.makePaymentRequest(data);
+      var details = pr.get('serialized_payment_details');
+      details = PayPro.PaymentDetails.decode(details);
+      var pd = new PayPro();
+      pd = pd.makePaymentDetails(details);
+      var outputs = pd.get('outputs');
+      outputs[outputs.length - 1].set('amount', 1000000000);
+      pd.set('outputs', outputs);
+      pr.set('serialized_payment_details', pd.serialize());
+      merchantData.raw = pr.serialize().toString('hex');
+
+      var myId = w.getMyCopayerId();
+      var txp = w.txProposals.txps[ntxid];
+      should.exist(txp);
+      should.exist(txp.signedBy[myId]);
+      should.not.exist(txp.rejectedBy[myId]);
+      delete txp.signedBy[myId];
+
+      w.verifyPaymentRequest(ntxid).should.equal(false);
+
+      w.sign(ntxid, function(signed) {
+        should.exist(signed);
+        signed.should.equal(false);
+        console.log('TX not signed.');
+        return done();
+      });
+    });
+  });
+
+  it('#try to sign a tampered payment request (abstract)', function(done) {
+    var w = createWallet();
+    should.exist(w);
+    var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
+    var commentText = 'Hello, server. I\'d like to make a payment.';
+    w.createTx(address, commentText, function(ntxid, merchantData) {
+      should.exist(ntxid);
+      should.exist(merchantData);
+
+      console.log('Sending TX to merchant server:');
+      console.log(ntxid);
+
+      // Tamper with payment request in its abstract form:
+      // var outputs = merchantData.pr.pd.outputs;
+      // var output = outputs[outputs.length - 1];
+      // var amount = output.amount;
+      // amount.low = 2;
+
+      // Tamper with payment request in its abstract form:
+      var txp = w.txProposals.txps[ntxid];
+      var tx = txp.builder.tx || txp.builder.build();
+      tx.outs[0].v = new Buffer([2, 0, 0, 0, 0, 0, 0, 0]);
+
+      var myId = w.getMyCopayerId();
+      var txp = w.txProposals.txps[ntxid];
+      should.exist(txp);
+      should.exist(txp.signedBy[myId]);
+      should.not.exist(txp.rejectedBy[myId]);
+      delete txp.signedBy[myId];
+
+      w.verifyPaymentRequest(ntxid).should.equal(false);
+
+      w.sign(ntxid, function(signed) {
+        should.exist(signed);
+        signed.should.equal(false);
+        console.log('TX not signed.');
+        return done();
+      });
+    });
+  });
+
   it('#close payment server', function(done) {
     server.close(function() {
       return done();
