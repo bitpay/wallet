@@ -678,10 +678,10 @@ describe('Wallet model', function() {
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
       var s = sinon.stub(w, 'getMyCopayerId').returns('213');
-      Object.keys(w.txProposals._getTxp(ntxid).rejectedBy).length.should.equal(0);
+      Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(0);
       w.reject(ntxid);
-      Object.keys(w.txProposals._getTxp(ntxid).rejectedBy).length.should.equal(1);
-      w.txProposals._getTxp(ntxid).rejectedBy['213'].should.gt(1);
+      Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(1);
+      w.txProposals.get(ntxid).rejectedBy['213'].should.gt(1);
       s.restore();
       done();
     });
@@ -1169,7 +1169,7 @@ describe('Wallet model', function() {
         w._handleReject(1, {
           ntxid: 1
         }, 1);
-      }).should.throw('unknown TX');
+      }).should.throw('Unknown TXP');
     });
     it('should fail to reject a signed tx', function() {
       var w = cachedCreateW();
@@ -1223,7 +1223,7 @@ describe('Wallet model', function() {
         w._handleReject(1, {
           ntxid: 1
         }, 1);
-      }).should.throw('unknown TX');
+      }).should.throw('Unknown TXP');
     });
     it('should set seen a tx', function() {
       var w = cachedCreateW();
