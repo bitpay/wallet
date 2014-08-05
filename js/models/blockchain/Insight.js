@@ -38,33 +38,6 @@ function _asyncForEach(array, fn, callback) {
   }
 };
 
-function removeRepeatedElements(ar) {
-  var ya = false,
-  v = "",
-  aux = [].concat(ar),
-  r = Array();
-  for (var i in aux) { // 
-    v = aux[i];
-    ya = false;
-    for (var a in aux) {
-      if (v == aux[a]) {
-        if (ya == false) {
-          ya = true;
-        } else {
-          aux[a] = "";
-        }
-      }
-    }
-  }
-  for (var a in aux) {
-    if (aux[a] != "") {
-      r.push(aux[a]);
-    }
-  }
-  return r;
-}
-
-
 Insight.prototype._getOptions = function(method, path, data) {
   return {
     host: this.host,
@@ -121,8 +94,11 @@ Insight.prototype.getTransactions = function(addresses, cb) {
       callback();
     });
   }, function() {
-    var clean_txids = removeRepeatedElements(txids);
-    _asyncForEach(clean_txids, function(txid, callback2) {
+    var uniqueTxids = {};
+    for (var k in txids) {
+      uniqueTxids[k] = 1;
+    }
+    _asyncForEach(Object.keys(uniqueTxids), function(txid, callback2) {
       var options = self._getOptions('GET', '/api/tx/' + txid);
       self._request(options, function(err, res) {
         txs.push(res);
@@ -184,8 +160,8 @@ Insight.prototype.checkActivity = function(addresses, cb) {
     var getOutputs = function(t) {
       return flatArray(
         t.vout.map(function(vout) {
-        return vout.scriptPubKey.addresses;
-      })
+          return vout.scriptPubKey.addresses;
+        })
       );
     };
 
