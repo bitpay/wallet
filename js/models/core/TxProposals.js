@@ -74,7 +74,7 @@ TxProposals.prototype.merge = function(inObj, builderOpts) {
 
   } else {
     // Create a new one
-    ret.new = 1;
+    ret.new = ret.hasChanged =  1;
     this.txps[ntxid] = incomingTx;
   }
 
@@ -91,16 +91,16 @@ TxProposals.prototype.add = function(txp) {
 };
 
 
-TxProposals.prototype._getTxp = function(ntxid) {
+TxProposals.prototype.get = function(ntxid) {
   var ret = this.txps[ntxid];
   if (!ret)
-    throw new Error('Could not find txp: '+ntxid);
+    throw new Error('Unknown TXP: '+ntxid);
 
   return ret;
 };
 
 TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
-  var txp = this._getTxp(ntxid);
+  var txp = this.get(ntxid);
 
   var i = JSON.parse(JSON.stringify(txp));
   i.builder = txp.builder;
@@ -139,12 +139,12 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
 
 
 TxProposals.prototype.reject = function(ntxid, copayerId) {
-  var txp = this._getTxp(ntxid);
+  var txp = this.get(ntxid);
   txp.setRejected(copayerId);
 };
 
 TxProposals.prototype.seen = function(ntxid, copayerId) {
-  var txp = this._getTxp(ntxid);
+  var txp = this.get(ntxid);
   txp.setSeen(copayerId);
 };
 
