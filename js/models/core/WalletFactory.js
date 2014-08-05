@@ -122,10 +122,10 @@ WalletFactory.prototype.create = function(opts) {
   );
   this.log('\t### PublicKeyRing Initialized');
 
-  opts.txProposals = opts.txProposals || new TxProposalsSet({
+  opts.txProposals = opts.txProposals || new TxProposals({
     networkName: this.networkName,
   });
-  this.log('\t### TxProposalsSet Initialized');
+  this.log('\t### TxProposals Initialized');
 
   this.storage._setPassphrase(opts.passphrase);
 
@@ -155,9 +155,9 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   //We only check for major version differences
   if (thisV0 < inV0) {
     throw new Error('Major difference in software versions' +
-      '. Received:' + inVersion +
-      '. Current version:' + this.version +
-      '. Aborting.');
+                    '. Received:' + inVersion +
+                    '. Current version:' + this.version +
+                    '. Aborting.');
   }
 };
 
