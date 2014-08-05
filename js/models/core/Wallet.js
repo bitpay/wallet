@@ -921,7 +921,10 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       untrusted: !ca
     },
     request_url: options.uri,
-    total: bignum('0', 10).toString(10)
+    total: bignum('0', 10).toString(10),
+    // Expose so other copayers can verify signature
+    // and identity, not to mention data.
+    raw: pr.serialize().toString('hex')
   };
 
   return this.getUnspent(function(err, unspent) {
