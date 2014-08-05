@@ -74,6 +74,8 @@ angular.module('copayApp.controllers').controller('SettingsController',
         unitToSatoshi: $scope.selectedUnit.value,
       }));
 
-      window.location.reload();
+      // Go home reloading the application
+      var hashIndex = window.location.href.indexOf('#!/');
+      window.location = window.location.href.substr(0, hashIndex);
     };
   });
