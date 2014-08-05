@@ -1290,6 +1290,31 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
       // data. We should not sign this transaction proposal!
       return false;
     }
+
+    // Checking the merchant data itself isn't technically
+    // necessary as long as we check the transaction, but
+    // we can do it for good measure.
+    var ro = txp.merchant.pr.pd.outputs[i];
+
+    // Actual value
+    var av = new Buffer(8);
+    av[0] = (ro.amount.low >> 0) & 0xff;
+    av[1] = (ro.amount.low >> 8) & 0xff;
+    av[2] = (ro.amount.low >> 16) & 0xff;
+    av[3] = (ro.amount.low >> 24) & 0xff;
+    av[4] = (ro.amount.high >> 0) & 0xff;
+    av[5] = (ro.amount.high >> 8) & 0xff;
+    av[6] = (ro.amount.high >> 16) & 0xff;
+    av[7] = (ro.amount.high >> 24) & 0xff;
+
+    // Actual script
+    var as = new Buffer(ro.script.buffer, 'hex')
+      .slice(ro.script.offset, ro.script.limit);
+
+    if (av.toString('hex') !== ev.toString('hex')
+        || as.toString('hex') !== es.toString('hex'))  {
+      return false;
+    }
   }
 
   return true;
