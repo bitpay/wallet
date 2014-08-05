@@ -949,11 +949,6 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       self.emit('txProposalsUpdated');
     }
 
-    self.log('You are currently on this BTC network:');
-    self.log(network);
-    self.log('The server sent you a message:');
-    self.log(memo);
-
     return cb(ntxid, merchantData);
   });
 };
@@ -1029,9 +1024,6 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   pay = pay.serialize();
 
-  this.log('Sending Payment Message:');
-  this.log(pay.toString('hex'));
-
   var buf = new ArrayBuffer(pay.length);
   var view = new Uint8Array(buf);
   for (var i = 0; i < pay.length; i++) {
@@ -1071,9 +1063,6 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
 
   var payment = ack.get('payment');
   var memo = ack.get('memo');
-
-  this.log('Our payment was acknowledged!');
-  this.log('Message from Merchant: %s', memo);
 
   payment = PayPro.Payment.decode(payment);
   var pay = new PayPro();
@@ -1176,11 +1165,6 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.total = merchantData.total.toString(10);
 
   if (options.fetch) return;
-
-  this.log('');
-  this.log('Created transaction:');
-  this.log(b.tx.getStandardizedObject());
-  this.log('');
 
   var myId = this.getMyCopayerId();
   var now = Date.now();
