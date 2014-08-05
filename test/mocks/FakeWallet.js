@@ -46,6 +46,10 @@ FakeWallet.prototype.getAddressesInfo = function() {
   return ret;
 };
 
+FakeWallet.prototype.isShared = function() {
+  return this.totalCopayers > 1;
+}
+
 FakeWallet.prototype.isReady = function() {
   return true;
 }

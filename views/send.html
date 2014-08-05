@@ -77,7 +77,7 @@
           </div>
         </div>
 
-        <div class="row" ng-show="wallet.totalCopayers > 1">
+        <div class="row" ng-show="wallet.isShared()">
           <div class="large-12 columns">
             <div class="row collapse">
               <label for="comment">Note
@@ -116,7 +116,7 @@
           Including fee of {{defaultFee|noFractionNumber}} {{$root.unitName}}
         </small>
         </p>
-        <div ng-show="wallet.totalCopayers > 1">
+        <div ng-show="wallet.isShared()">
         <h6>Note</h6>
         <p ng-class="{'hidden': !commentText}">{{commentText}}</p>
       </div>
