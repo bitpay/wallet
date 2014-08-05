@@ -4,9 +4,7 @@
       <a href="#!/addresses" class="db">
         <img src="img/logo-negative-beta.svg" alt="" width="80">
       </a>
-      <small>v{{version}}</small>
-      <small ng-if="$root.wallet.getNetworkName()=='livenet'">LIVENET</small>
-      <small ng-if="$root.wallet.getNetworkName()=='testnet'">TESTNET</small>
+      <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div class="line-sidebar-b"></div>
     <div class="founds size-12 text-center box-founds p10t">
