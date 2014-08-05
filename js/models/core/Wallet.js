@@ -718,6 +718,12 @@ Wallet.prototype.sign = function(ntxid, cb) {
     //   if (cb) cb(false);
     // }
     //
+
+    if (!self.verifyPaymentRequest(ntxid)) {
+      if (cb) cb(false);
+      return;
+    }
+
     var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
