@@ -214,7 +214,7 @@ describe("Unit: Controllers", function() {
 
   });
 
-  describe("Unit: Sidebar Controller", function() {
+  describe("Unit: Version Controller", function() {
     var scope, $httpBackendOut;
     var GH = 'https://api.github.com/repos/bitpay/copay/tags';
     beforeEach(inject(function($controller, $injector) {
@@ -235,7 +235,7 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $rootScope) {
       rootScope = $rootScope;
       scope = $rootScope.$new();
-      headerCtrl = $controller('SidebarController', {
+      headerCtrl = $controller('VersionController', {
         $scope: scope,
       });
     }));
@@ -273,8 +273,24 @@ describe("Unit: Controllers", function() {
       scope.$apply();
     });
 
-    it('should return an array of n undefined elements', function() {
+    it('should return networkName', function() {
       $httpBackend.flush(); // need flush
+      var networkName = scope.networkName;
+      expect(networkName).equal('livenet');
+    });
+  });
+
+  describe("Unit: Sidebar Controller", function() {
+    var rootScope;
+    beforeEach(inject(function($controller, $rootScope) {
+      rootScope = $rootScope;
+      scope = $rootScope.$new();
+      headerCtrl = $controller('SidebarController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should return an array of n undefined elements', function() {
       var n = 5;
       var array = scope.getNumber(n);
       expect(array.length).equal(n);
