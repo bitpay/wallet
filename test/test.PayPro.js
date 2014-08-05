@@ -159,9 +159,12 @@ describe('PayPro (in Wallet) model', function() {
   });
 
   var pr;
+  var ppw;
+
+  ppw = createWallet();
 
   it('#retrieve a payment request message via http', function(done) {
-    var w = createWallet();
+    var w = ppw;
     should.exist(w);
 
     var req = {
@@ -192,7 +195,7 @@ describe('PayPro (in Wallet) model', function() {
   });
 
   it('#send a payment message via http', function(done) {
-    var w = createWallet();
+    var w = ppw;
     should.exist(w);
 
     var ver = pr.get('payment_details_version');
@@ -383,6 +386,282 @@ describe('PayPro (in Wallet) model', function() {
       ackTotal.toString(10).should.equal(total.toString(10));
 
       done();
+    });
+  });
+
+  it('#retrieve a payment request message via http', function(done) {
+    var w = ppw;
+    should.exist(w);
+
+    var req = {
+      headers: {
+        'Host': 'localhost:8080',
+        'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+          + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
+        'Content-Type': 'application/octet-stream',
+        'Content-Length': '0'
+      },
+      socket: {
+        remoteAddress: 'localhost',
+        remotePort: 8080
+      },
+      body: {}
+    };
+
+    Object.keys(req.headers).forEach(function(key) {
+      req.headers[key.toLowerCase()] = req.headers[key];
+    });
+
+    server.POST['/-/request'](req, function(err, res, body) {
+      var data = PayPro.PaymentRequest.decode(body);
+      pr = new PayPro();
+      pr = pr.makePaymentRequest(data);
+      done();
+    });
+  });
+
+  it('#send a payment message via http', function(done) {
+    var w = ppw;
+    should.exist(w);
+
+    var ver = pr.get('payment_details_version');
+    var pki_type = pr.get('pki_type');
+    var pki_data = pr.get('pki_data');
+    var details = pr.get('serialized_payment_details');
+    var sig = pr.get('signature');
+
+    var certs = PayPro.X509Certificates.decode(pki_data);
+    certs = certs.certificate;
+
+    var verified = pr.verify();
+
+    if (!verified) {
+      return done(new Error('Server sent a bad signature.'));
+    }
+
+    details = PayPro.PaymentDetails.decode(details);
+    var pd = new PayPro();
+    pd = pd.makePaymentDetails(details);
+
+    var network = pd.get('network');
+    var outputs = pd.get('outputs');
+    var time = pd.get('time');
+    var expires = pd.get('expires');
+    var memo = pd.get('memo');
+    var payment_url = pd.get('payment_url');
+    var merchant_data = pd.get('merchant_data');
+
+    var priv = w.privateKey;
+    var pkr = w.publicKeyRing;
+
+    var opts = {
+      remainderOut: {
+        address: w._doGenerateAddress(true).toString()
+      }
+    };
+
+    var outs = [];
+    outputs.forEach(function(output) {
+      outs.push({
+        address: w.getAddressesStr()[0] || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A',
+        amountSatStr: '0'
+      });
+    });
+
+    var b = new bitcore.TransactionBuilder(opts)
+      .setUnspent(unspentTest)
+      .setOutputs(outs);
+
+    var selectedUtxos = b.getSelectedUnspent();
+    var inputChainPaths = selectedUtxos.map(function(utxo) {
+      return pkr.pathForAddress(utxo.address);
+    });
+
+    b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
+
+    if (priv) {
+      var keys = priv.getForPaths(inputChainPaths);
+      var signed = b.sign(keys);
+    }
+
+    outputs.forEach(function(output, i) {
+      var amount = output.get('amount');
+      var script = {
+        offset: output.get('script').offset,
+        limit: output.get('script').limit,
+        buffer: output.get('script').buffer
+      };
+
+      var v = new Buffer(8);
+      v[0] = (amount.low >> 0) & 0xff;
+      v[1] = (amount.low >> 8) & 0xff;
+      v[2] = (amount.low >> 16) & 0xff;
+      v[3] = (amount.low >> 24) & 0xff;
+      v[4] = (amount.high >> 0) & 0xff;
+      v[5] = (amount.high >> 8) & 0xff;
+      v[6] = (amount.high >> 16) & 0xff;
+      v[7] = (amount.high >> 24) & 0xff;
+
+      var s = script.buffer.slice(script.offset, script.limit);
+
+      b.tx.outs[i].v = v;
+      b.tx.outs[i].s = s;
+    });
+
+    var tx = b.build();
+
+    var refund_outputs = [];
+
+    var refund_to = w.publicKeyRing.getPubKeys(0, false, w.getMyCopayerId())[0];
+
+    var total = outputs.reduce(function(total, _, i) {
+      return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
+        endian: 'little',
+        size: 1
+      }));
+    }, bitcore.Bignum('0', 10));
+
+    var rpo = new PayPro();
+    rpo = rpo.makeOutput();
+
+    rpo.set('amount', +total.toString(10));
+
+    rpo.set('script',
+      Buffer.concat([
+        new Buffer([
+          118, // OP_DUP
+          169, // OP_HASH160
+          76, // OP_PUSHDATA1
+          20, // number of bytes
+        ]),
+        // needs to be ripesha'd
+        bitcore.util.sha256ripe160(refund_to),
+        new Buffer([
+          136, // OP_EQUALVERIFY
+          172  // OP_CHECKSIG
+        ])
+      ])
+    );
+
+    refund_outputs.push(rpo.message);
+
+    var pay = new PayPro();
+    pay = pay.makePayment();
+    pay.set('merchant_data', new Buffer([0, 1]));
+    pay.set('transactions', [tx.serialize()]);
+    pay.set('refund_to', refund_outputs);
+    pay.set('memo', 'Hi server, I would like to give you some money.');
+
+    pay = pay.serialize();
+
+    var req = {
+      headers: {
+        'Host': 'localhost:8080',
+        'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+          + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
+        'Content-Type': PayPro.PAYMENT_CONTENT_TYPE,
+        'Content-Length': pay.length + ''
+      },
+      socket: {
+        remoteAddress: 'localhost',
+        remotePort: 8080
+      },
+      body: pay,
+      data: pay
+    };
+
+    Object.keys(req.headers).forEach(function(key) {
+      req.headers[key.toLowerCase()] = req.headers[key];
+    });
+
+    server.POST['/-/pay'](req, function(err, res, body) {
+      if (err) return done(err);
+
+      var data = PayPro.PaymentACK.decode(body);
+      var ack = new PayPro();
+      ack = ack.makePaymentACK(data);
+
+      var payment = ack.get('payment');
+      var memo = ack.get('memo');
+
+      payment = PayPro.Payment.decode(payment);
+      var pay = new PayPro();
+      payment = pay.makePayment(payment);
+
+      var tx = payment.message.transactions[0];
+
+      if (!tx) {
+        return done(new Error('No tx in payment ACK.'));
+      }
+
+      if (tx.buffer) {
+        tx.buffer = new Buffer(new Uint8Array(tx.buffer));
+        tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
+        var ptx = new bitcore.Transaction();
+        ptx.parse(tx.buffer);
+        tx = ptx;
+      }
+
+      var ackTotal = outputs.reduce(function(total, _, i) {
+        return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
+          endian: 'little',
+          size: 1
+        }));
+      }, bitcore.Bignum('0', 10));
+
+      ackTotal.toString(10).should.equal(total.toString(10));
+
+      should.exist(ack);
+      memo.should.equal('Thank you for your payment!');
+
+      done();
+    });
+  });
+
+  ppw = createWallet();
+
+  it('#retrieve a payment request message via model', function(done) {
+    var w = ppw;
+    should.exist(w);
+    // Caches Payment Request but does not add TX proposal
+    w.fetchPaymentTx({
+      uri: 'https://localhost:8080/-/request'
+    }, function(err, merchantData) {
+      if (err) return done(err);
+      merchantData.pr.pd.payment_url.should.equal('https://localhost:8080/-/pay');
+      return done();
+    });
+  });
+
+  it('#add tx proposal based on payment message via model', function(done) {
+    var w = ppw;
+    should.exist(w);
+    var options = {
+      uri: 'https://localhost:8080/-/request'
+    };
+    var req = w.paymentRequests[options.uri];
+    should.exist(req);
+    delete w.paymentRequests[options.uri];
+    w.receivePaymentRequest(options, req.pr, function(ntxid, merchantData) {
+      if (!ntxid) {
+        return done(new Error('No TX proposal.'));
+      }
+      w._ntxid = ntxid;
+      merchantData.pr.pd.payment_url.should.equal('https://localhost:8080/-/pay');
+      return done();
+    });
+  });
+
+  it('#add tx proposal based on payment message via model', function(done) {
+    var w = ppw;
+    should.exist(w);
+    w.sendPaymentTx(w._ntxid, function(txid, merchantData) {
+      if (!txid) {
+        return done(new Error('No TX ID.'));
+      }
+      should.exist(merchantData.ack);
+      merchantData.ack.memo.should.equal('Thank you for your payment!');
+      return done();
     });
   });
 
