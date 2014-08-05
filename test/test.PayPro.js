@@ -781,16 +781,11 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
-      delete txp.signedBy[myId];
 
       w.verifyPaymentRequest(ntxid).should.equal(false);
 
-      w.sign(ntxid, function(signed) {
-        should.exist(signed);
-        signed.should.equal(false);
-        console.log('TX not signed.');
-        return done();
-      });
+      console.log('TX not verified.');
+      return done();
     });
   });
 
@@ -822,16 +817,11 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
-      delete txp.signedBy[myId];
 
       w.verifyPaymentRequest(ntxid).should.equal(false);
 
-      w.sign(ntxid, function(signed) {
-        should.exist(signed);
-        signed.should.equal(false);
-        console.log('TX not signed.');
-        return done();
-      });
+      console.log('TX not verified.');
+      return done();
     });
   });
 
@@ -852,16 +842,8 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
-      delete txp.signedBy[myId];
 
       w.verifyPaymentRequest(ntxid).should.equal(true);
-
-      // w.sign(ntxid, function(signed) {
-      //   should.exist(signed);
-      //   // signed.should.equal(true); // false for some reason
-      //   console.log('TX signed successfully.');
-      //   return done();
-      // });
 
       console.log('PR verfied successfully.');
       return done();
