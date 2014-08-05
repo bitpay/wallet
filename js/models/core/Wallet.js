@@ -1213,7 +1213,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 // based on the cert, and checks to ensure the desired outputs are the same as
 // the ones on the tx proposal.
 Wallet.prototype.verifyPaymentRequest = function(ntxid) {
-  if (!txp) return false;
+  if (!ntxid) return false;
 
   var txp = typeof ntxid !== 'object'
     ? this.txProposals.txps[ntxid]
