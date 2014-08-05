@@ -924,7 +924,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         payment_url: payment_url,
         merchant_data: merchant_data.toString('hex')
       },
-      signature: sig,
+      signature: sig.toString('hex'),
       ca: ca,
       untrusted: !ca
     },
