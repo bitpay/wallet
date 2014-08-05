@@ -1200,6 +1200,92 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   return ntxid;
 };
 
+Wallet.prototype.verifyPaymentRequest = function(ntxid) {
+  if (!txp) return false;
+
+  var txp = typeof ntxid !== 'object'
+    ? this.txProposals.txps[ntxid]
+    : ntxid;
+
+  // If we're not a payment protocol proposal, ignore.
+  if (!txp.merchant) return true;
+
+  // The copayer didn't send us the raw payment request, unverifiable.
+  if (!txp.merchant.raw) return false;
+
+  // var tx = txp.builder.tx;
+  var tx = txp.builder.build();
+
+  var data = new Buffer(txp.merchant.raw, 'hex');
+  data = PayPro.PaymentRequest.decode(data);
+  var pr = new PayPro();
+  pr = pr.makePaymentRequest(data);
+
+  // Verify the signature so we know this is the real request.
+  if (!pr.verify()) {
+    // Signature does not match cert. It may have
+    // been modified by an untrustworthy person.
+    // We should not sign this transaction proposal!
+    return false;
+  }
+
+  var details = pr.get('serialized_payment_details');
+  details = PayPro.PaymentDetails.decode(details);
+  var pd = new PayPro();
+  pd = pd.makePaymentDetails(details);
+
+  var outputs = pd.get('outputs');
+
+  for (var i = 0; i < outputs.length; i++) {
+    var output = outputs[i];
+
+    var amount = output.get('amount');
+    var script = {
+      offset: output.get('script').offset,
+      limit: output.get('script').limit,
+      buffer: new Buffer(new Uint8Array(output.get('script').buffer))
+    };
+
+    var v = new Buffer(8);
+    v[0] = (amount.low >> 0) & 0xff;
+    v[1] = (amount.low >> 8) & 0xff;
+    v[2] = (amount.low >> 16) & 0xff;
+    v[3] = (amount.low >> 24) & 0xff;
+    v[4] = (amount.high >> 0) & 0xff;
+    v[5] = (amount.high >> 8) & 0xff;
+    v[6] = (amount.high >> 16) & 0xff;
+    v[7] = (amount.high >> 24) & 0xff;
+
+    // Expected value
+    var ev = bignum.fromBuffer(v, {
+      endian: 'little',
+      size: 1
+    });
+
+    // Expected script
+    var es = script.buffer.slice(script.offset, script.limit);
+
+    // Actual value
+    var av = bignum.fromBuffer(tx.outs[i].v, {
+      endian: 'little',
+      size: 1
+    });
+
+    // Actual script
+    var as = tx.outs[i].s;
+
+    // Make sure the tx's output script and values match the payment request's.
+    if (av.toString(10) !== ev.toString(10)
+        || as.toString('hex') !== es.toString('hex'))  {
+      // Verifiable outputs do not match outputs of merchant
+      // data. We should not sign this transaction proposal!
+      return false;
+    }
+  }
+
+  return true;
+};
+
 Wallet.prototype.addSeenToTxProposals = function() {
   var ret = false;
   var myId = this.getMyCopayerId();
