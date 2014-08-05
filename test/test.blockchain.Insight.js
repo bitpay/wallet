@@ -229,7 +229,4 @@ describe('Insight model', function() {
     });
   });
 
-
-
-
 });
