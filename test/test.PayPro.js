@@ -255,8 +255,9 @@ describe('PayPro (in Wallet) model', function() {
       v[7] = (amount.low >> 0) & 0xff;
 
       var s = script.buffer.slice(script.offset, script.limit);
-      var network = network === 'main' ? 'livenet' : 'testnet';
-      var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
+      var net = network === 'main' ? 'livenet' : 'testnet';
+      // XXX browser test chokes here on new bitcore.Script:
+      var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), net);
 
       outs.push({
         address: addr[0].toString(),
@@ -491,8 +492,8 @@ describe('PayPro (in Wallet) model', function() {
       v[7] = (amount.low >> 0) & 0xff;
 
       var s = script.buffer.slice(script.offset, script.limit);
-      var network = network === 'main' ? 'livenet' : 'testnet';
-      var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
+      var net = network === 'main' ? 'livenet' : 'testnet';
+      var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), net);
 
       outs.push({
         address: addr[0].toString(),
