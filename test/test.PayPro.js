@@ -270,6 +270,16 @@ describe('PayPro (in Wallet) model', function() {
       .setUnspent(unspentTest)
       .setOutputs(outs);
 
+    // outputs.forEach(function(output, i) {
+    //   var script = {
+    //     offset: output.get('script').offset,
+    //     limit: output.get('script').limit,
+    //     buffer: output.get('script').buffer
+    //   };
+    //   var s = script.buffer.slice(script.offset, script.limit);
+    //   b.tx.outs[i].s = s;
+    // });
+
     var selectedUtxos = b.getSelectedUnspent();
     var inputChainPaths = selectedUtxos.map(function(utxo) {
       return pkr.pathForAddress(utxo.address);
@@ -495,6 +505,16 @@ describe('PayPro (in Wallet) model', function() {
     var b = new bitcore.TransactionBuilder(opts)
       .setUnspent(unspentTest)
       .setOutputs(outs);
+
+    // outputs.forEach(function(output, i) {
+    //   var script = {
+    //     offset: output.get('script').offset,
+    //     limit: output.get('script').limit,
+    //     buffer: output.get('script').buffer
+    //   };
+    //   var s = script.buffer.slice(script.offset, script.limit);
+    //   b.tx.outs[i].s = s;
+    // });
 
     var selectedUtxos = b.getSelectedUnspent();
     var inputChainPaths = selectedUtxos.map(function(utxo) {
