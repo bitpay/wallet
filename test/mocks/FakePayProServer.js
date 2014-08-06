@@ -256,6 +256,7 @@ function startServer(cb) {
         res.headers['Content-Transfer-Encoding'] = 'binary';
 
         transactions = transactions.map(function(tx) {
+          tx.buffer = new Buffer(new Uint8Array(tx.buffer));
           tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
           var ptx = new bitcore.Transaction();
           ptx.parse(tx.buffer);
