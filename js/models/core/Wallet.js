@@ -1165,6 +1165,16 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     .setUnspent(unspent)
     .setOutputs(outs);
 
+  // merchantData.pr.pd.outputs.forEach(function(output, i) {
+  //   var script = {
+  //     offset: output.script.offset,
+  //     limit: output.script.limit,
+  //     buffer: new Buffer(output.script.buffer, 'hex')
+  //   };
+  //   var s = script.buffer.slice(script.offset, script.limit);
+  //   b.tx.outs[i].s = s;
+  // });
+
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
