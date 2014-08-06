@@ -1122,6 +1122,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.pr.pd.outputs.forEach(function(output) {
     var amount = output.amount;
 
+    // big endian
     var v = new Buffer(8);
     v[0] = (amount.high >> 24) & 0xff;
     v[1] = (amount.high >> 16) & 0xff;
@@ -1268,6 +1269,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   for (var i = 0; i < outputs.length; i++) {
     var output = outputs[i];
     var amount = output.get('amount');
+    // big endian
     var v = new Buffer(8);
     v[0] = (amount.high >> 24) & 0xff;
     v[1] = (amount.high >> 16) & 0xff;
@@ -1297,6 +1299,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     };
 
     // Expected value
+    // little endian
     var ev = new Buffer(8);
     ev[0] = (amount.low >> 0) & 0xff;
     ev[1] = (amount.low >> 8) & 0xff;
@@ -1342,6 +1345,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     var ro = txp.merchant.pr.pd.outputs[i];
 
     // Actual value
+    // little endian
     var av = new Buffer(8);
     av[0] = (ro.amount.low >> 0) & 0xff;
     av[1] = (ro.amount.low >> 8) & 0xff;
