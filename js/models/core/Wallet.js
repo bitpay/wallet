@@ -1161,15 +1161,15 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     .setUnspent(unspent)
     .setOutputs(outs);
 
-  // merchantData.pr.pd.outputs.forEach(function(output, i) {
-  //   var script = {
-  //     offset: output.script.offset,
-  //     limit: output.script.limit,
-  //     buffer: new Buffer(output.script.buffer, 'hex')
-  //   };
-  //   var s = script.buffer.slice(script.offset, script.limit);
-  //   b.tx.outs[i].s = s;
-  // });
+  merchantData.pr.pd.outputs.forEach(function(output, i) {
+    var script = {
+      offset: output.script.offset,
+      limit: output.script.limit,
+      buffer: new Buffer(output.script.buffer, 'hex')
+    };
+    var s = script.buffer.slice(script.offset, script.limit);
+    b.tx.outs[i].s = s;
+  });
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -1289,10 +1289,10 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     var av = tx.outs[i].v;
 
     // Actual script
-    // var as = tx.outs[i].s;
+    var as = tx.outs[i].s;
 
     // XXX allow changing of script as long as address is same
-    var as = es;
+    // var as = es;
 
     // XXX allow changing of script as long as address is same
     // var network = pd.get('network') === 'main' ? 'livenet' : 'testnet';
