@@ -17,12 +17,6 @@ angular.module('copayApp.directives')
             // Is this a payment protocol URI (BIP-72)?
             if (uri && uri.merchant) {
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-                if ((err && err.message === 'No unspent outputs.')
-                    || scope.availableBalance < +merchantData.total) {
-                  ctrl.$setValidity('validAddress', false);
-                  return;
-                }
-
                 if (err) {
                   if (scope._resetPayPro) scope._resetPayPro();
                   ctrl.$setValidity('validAddress', false);
