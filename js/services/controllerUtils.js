@@ -136,9 +136,7 @@ angular.module('copayApp.services')
         }
       });
       w.on('txProposalsUpdated', function(dontDigest) {
-        root.updateTxs({
-          onlyPending: true
-        });
+        root.updateTxs();
         // give sometime to the tx to propagate.
         $timeout(function() {
           root.updateBalance(function() {
@@ -231,7 +229,7 @@ angular.module('copayApp.services')
     root.updateTxs = function(opts) {
       var w = $rootScope.wallet;
       if (!w) return;
-      opts = opts || {};
+      opts = opts || $rootScope.txsOpts || {};
 
       var satToUnit = 1 / config.unitToSatoshi;
       var myCopayerId = w.getMyCopayerId();
@@ -252,7 +250,8 @@ angular.module('copayApp.services')
         if (!i.finallyRejected && !i.sentTs) {
           i.isPending = 1;
         }
-        if (!opts.onlyPending || i.isPending) {
+
+        if (!!opts.pending == !!i.isPending) {
           var tx = i.builder.build();
           var outs = [];
           tx.outs.forEach(function(o) {
@@ -276,6 +275,7 @@ angular.module('copayApp.services')
       });
 
       $rootScope.txs = txs;
+      $rootScope.txsOpts = opts;
       if ($rootScope.pendingTxCount < pendingForUs) {
         $rootScope.txAlertCount = pendingForUs;
       }

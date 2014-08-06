@@ -2,12 +2,24 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification) {
+  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
+
+    $scope.loadTxs = function() {
+      var opts = {
+        pending: true,
+        skip: null
+      };
+      controllerUtils.updateTxs(opts);
+      setTimeout(function() {
+        $scope.loading = false;
+        $rootScope.$digest();
+      }, 0);
+    }
 
     $scope.showAddressBook = function() {
       var w = $rootScope.wallet;
@@ -54,7 +66,7 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
           notification.success('Success!', message);
-          $rootScope.$digest();
+          $scope.loadTxs();
         } else {
           w.sendTx(ntxid, function(txid) {
             if (txid) {
@@ -280,4 +292,51 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.amount = $scope.getAvailableAmount();
       form.amount.$pristine = false;
     };
+
+
+    $scope.send = function(ntxid, cb) {
+      $scope.loading = true;
+      $rootScope.txAlertCount = 0;
+      var w = $rootScope.wallet;
+      w.sendTx(ntxid, function(txid) {
+        if (!txid) {
+          notification.error('Error', 'There was an error sending the transaction');
+        } else {
+          notification.success('Transaction broadcast', 'Transaction id: '+txid);
+        }
+
+        if (cb) return cb();
+        else $scope.loadTxs();
+      });
+    };
+
+    $scope.sign = function(ntxid) {
+      $scope.loading = true;
+      var w = $rootScope.wallet;
+      w.sign(ntxid, function(ret) {
+        if (!ret) {
+          notification.error('Error', 'There was an error signing the transaction');
+          $scope.loadTxs();
+        } else {
+          var p = w.txProposals.getTxProposal(ntxid);
+          if (p.builder.isFullySigned()) {
+            $scope.send(ntxid, function() {
+              $scope.loadTxs();
+            });
+          } else
+            $scope.loadTxs();
+        }
+      });
+    };
+
+    $scope.reject = function(ntxid) {
+      $scope.loading = true;
+      $rootScope.txAlertCount = 0;
+      var w = $rootScope.wallet;
+      w.reject(ntxid);
+      notification.warning('Transaction rejected', 'You rejected the transaction successfully');
+      $scope.loading = false;
+      $scope.loadTxs();
+    };
+
   });

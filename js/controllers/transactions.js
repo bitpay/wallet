@@ -6,7 +6,6 @@ angular.module('copayApp.controllers').controller('TransactionsController',
 
     $scope.title = 'Transactions';
     $scope.loading = false;
-    $scope.onlyPending = true;
     $scope.lastShowed = false;
 
     $scope.txpCurrentPage = 1;
@@ -19,16 +18,17 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       $scope.loading = false;
       var from = ($scope.txpCurrentPage - 1) * $scope.txpItemsPerPage;
       var opts = {
-        onlyPending: $scope.onlyPending,
-        skip: !$scope.onlyPending ? [from, from + $scope.txpItemsPerPage] : null
+        pending: false,
+        skip: [from, from + $scope.txpItemsPerPage]
       };
       controllerUtils.updateTxs(opts);
-      $rootScope.$digest();
+      setTimeout(function() {
+        $rootScope.$digest();
+      }, 0);
     };
 
-    $scope.show = function(onlyPending) {
+    $scope.show = function() {
       $scope.loading = true;
-      $scope.onlyPending = onlyPending;
       setTimeout(function() {
         $scope.update();
       }, 10);
@@ -102,40 +102,6 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       }
     };
 
-    $scope.send = function(ntxid, cb) {
-      $scope.loading = true;
-      $rootScope.txAlertCount = 0;
-      var w = $rootScope.wallet;
-      w.sendTx(ntxid, function(txid) {
-        if (!txid) {
-          notification.error('Error', 'There was an error sending the transaction');
-        } else {
-          notification.success('Transaction broadcast', 'Transaction id: '+txid);
-        }
-        if (cb) return cb();
-        else $scope.update();
-      });
-    };
-
-    $scope.sign = function(ntxid) {
-      $scope.loading = true;
-      var w = $rootScope.wallet;
-      w.sign(ntxid, function(ret) {
-        if (!ret) {
-          notification.error('Error', 'There was an error signing the transaction');
-          $scope.update();
-        } else {
-          var p = w.txProposals.getTxProposal(ntxid);
-          if (p.builder.isFullySigned()) {
-            $scope.send(ntxid, function() {
-              $scope.update();
-            });
-          } else
-            $scope.update();
-        }
-      });
-    };
-
     $scope.getTransactions = function() {
       var w = $rootScope.wallet;
       $scope.loading = true;
@@ -172,15 +138,6 @@ angular.module('copayApp.controllers').controller('TransactionsController',
 
     $scope.getShortNetworkName = function() {
       return config.networkName.substring(0, 4);
-    };
-
-    $scope.reject = function(ntxid) {
-      $scope.loading = true;
-      $rootScope.txAlertCount = 0;
-      var w = $rootScope.wallet;
-      w.reject(ntxid);
-      notification.warning('Transaction rejected', 'You rejected the transaction successfully');
-      $scope.loading = false;
     };
 
     // Autoload transactions on 1-of-1

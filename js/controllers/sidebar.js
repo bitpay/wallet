@@ -6,17 +6,17 @@ angular.module('copayApp.controllers').controller('SidebarController',
     $scope.version = copay.version;
     $scope.networkName = config.networkName;
     $scope.menu = [{
-      'title': 'Addresses',
-      'icon': 'fi-address-book',
+      'title': 'Receive',
+      'icon': 'fi-arrow-left',
       'link': 'addresses'
-    }, {
-      'title': 'Transactions',
-      'icon': 'fi-clipboard-pencil',
-      'link': 'transactions'
     }, {
       'title': 'Send',
       'icon': 'fi-arrow-right',
       'link': 'send'
+    }, {
+      'title': 'History',
+      'icon': 'fi-clipboard-pencil',
+      'link': 'transactions'
     }, {
       'title': 'More',
       'icon': 'fi-download',
