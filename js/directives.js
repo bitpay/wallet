@@ -61,7 +61,9 @@ angular.module('copayApp.directives')
                 var amount = angular.element(
                   document.querySelector('input#amount'));
                 amount.val(total);
-                amount.attr('disabled', true);
+                if (+merchantData.total !== 0) {
+                  amount.attr('disabled', true);
+                }
 
                 var sendto = angular.element(document
                   .querySelector('div.send-note > p[ng-class]:first-of-type'));
