@@ -245,15 +245,16 @@ describe('PayPro (in Wallet) model', function() {
           output.get('script').buffer))
       };
 
+      // little endian
       var v = new Buffer(8);
-      v[0] = (amount.high >> 24) & 0xff;
-      v[1] = (amount.high >> 16) & 0xff;
-      v[2] = (amount.high >> 8) & 0xff;
-      v[3] = (amount.high >> 0) & 0xff;
-      v[4] = (amount.low >> 24) & 0xff;
-      v[5] = (amount.low >> 16) & 0xff;
-      v[6] = (amount.low >> 8) & 0xff;
-      v[7] = (amount.low >> 0) & 0xff;
+      v[0] = (amount.low >> 0) & 0xff;
+      v[1] = (amount.low >> 8) & 0xff;
+      v[2] = (amount.low >> 16) & 0xff;
+      v[3] = (amount.low >> 24) & 0xff;
+      v[4] = (amount.high >> 0) & 0xff;
+      v[5] = (amount.high >> 8) & 0xff;
+      v[6] = (amount.high >> 16) & 0xff;
+      v[7] = (amount.high >> 24) & 0xff;
 
       var s = script.buffer.slice(script.offset, script.limit);
       var net = network === 'main' ? 'livenet' : 'testnet';
@@ -262,10 +263,16 @@ describe('PayPro (in Wallet) model', function() {
       outs.push({
         address: addr[0].toString(),
         amountSatStr: bitcore.Bignum.fromBuffer(v, {
+          // XXX for some reason, endian is ALWAYS 'big'
+          // in node (in the browser it behaves correctly)
           endian: 'little',
           size: 1
         }).toString(10)
       });
+
+      console.log('Output 1:');
+      console.log('Buffer: ' + v.toString('hex'));
+      console.log(outs[outs.length - 1]);
     });
 
     var b = new bitcore.TransactionBuilder(opts)
@@ -483,15 +490,16 @@ describe('PayPro (in Wallet) model', function() {
           output.get('script').buffer))
       };
 
+      // little endian
       var v = new Buffer(8);
-      v[0] = (amount.high >> 24) & 0xff;
-      v[1] = (amount.high >> 16) & 0xff;
-      v[2] = (amount.high >> 8) & 0xff;
-      v[3] = (amount.high >> 0) & 0xff;
-      v[4] = (amount.low >> 24) & 0xff;
-      v[5] = (amount.low >> 16) & 0xff;
-      v[6] = (amount.low >> 8) & 0xff;
-      v[7] = (amount.low >> 0) & 0xff;
+      v[0] = (amount.low >> 0) & 0xff;
+      v[1] = (amount.low >> 8) & 0xff;
+      v[2] = (amount.low >> 16) & 0xff;
+      v[3] = (amount.low >> 24) & 0xff;
+      v[4] = (amount.high >> 0) & 0xff;
+      v[5] = (amount.high >> 8) & 0xff;
+      v[6] = (amount.high >> 16) & 0xff;
+      v[7] = (amount.high >> 24) & 0xff;
 
       var s = script.buffer.slice(script.offset, script.limit);
       var net = network === 'main' ? 'livenet' : 'testnet';
@@ -504,6 +512,10 @@ describe('PayPro (in Wallet) model', function() {
           size: 1
         }).toString(10)
       });
+
+      console.log('Output 2:');
+      console.log('Buffer: ' + v.toString('hex'));
+      console.log(outs[outs.length - 1]);
     });
 
     var b = new bitcore.TransactionBuilder(opts)
