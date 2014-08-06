@@ -48,6 +48,7 @@ browser-extensions/firefox/firefox-addon
 browser-extensions/firefox/data
 browser-extensions/firefox/copay.xpi
 version.js
+!js/controllers/version.js
 
 android/package
 android/*.apk
