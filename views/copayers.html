@@ -8,6 +8,7 @@
     <div class="large-8 columns line-dashed-setup-v">
       <div class="box-setup oh">
         <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
+          <img ng-if="$root.fromSetup" class="right m15t" src="../img/step-3.svg" alt="Step 3">
           <h1 class="text-primary line-sidebar-b">Waiting copayers</h1>
           <h3>Share this secret with your other copayers</h3>
           <div class="panel">
