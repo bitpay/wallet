@@ -12,11 +12,11 @@ Message.encode = function(topubkey, fromkey, payload, opts) {
                                   //i.e., increment version1 to prevent communications with old clients
   var version2 = new Buffer([0]); //peers will not reject messages containing not-understood version2
                                   //i.e., increment version2 to allow communication with old clients, but signal new clients
-
+  var nonce;
   if (opts && opts.nonce && Buffer.isBuffer(opts.nonce) && opts.nonce.length == 8) {
-    var nonce = opts.nonce;
+    nonce = opts.nonce;
   } else {
-    var nonce = new Buffer(8);
+    nonce = new Buffer(8);
     nonce.fill(0); //nonce is a big endian 8 byte number
   }
 
@@ -33,10 +33,11 @@ Message.encode = function(topubkey, fromkey, payload, opts) {
 };
 
 Message.decode = function(key, encoded, opts) {
+  var prevnonce;
   if (opts && opts.prevnonce && Buffer.isBuffer(opts.prevnonce) && opts.prevnonce.length == 8) {
-    var prevnonce = opts.prevnonce;
+    prevnonce = opts.prevnonce;
   } else {
-    var prevnonce = new Buffer(8);
+    prevnonce = new Buffer(8);
     prevnonce.fill(0); //nonce is a big endian 8 byte number
   }
 
