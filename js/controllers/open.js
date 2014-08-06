@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('OpenController',
         v2 = o2.show.toLowerCase();
       return v1 > v2 ? 1 : (v1 < v2) ? -1 : 0;
     };
+    $rootScope.fromSetup = false;
     $scope.loading = false;
     $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = walletFactory.storage.getLastOpened() || ($scope.wallets[0] && $scope.wallets[0].id);

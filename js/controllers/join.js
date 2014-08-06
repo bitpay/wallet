@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('JoinController',
   function($scope, $rootScope, $timeout, walletFactory, controllerUtils, Passphrase, notification) {
+    $rootScope.fromSetup = false;
     $scope.loading = false;
 
    // QR code Scanner
