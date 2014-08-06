@@ -236,16 +236,51 @@ describe('PayPro (in Wallet) model', function() {
 
     var outs = [];
     outputs.forEach(function(output) {
+      var amount = output.get('amount');
+      var script = {
+        offset: output.get('script').offset,
+        limit: output.get('script').limit,
+        buffer: output.get('script').buffer
+      };
+
+      var v = new Buffer(8);
+      v[0] = (amount.high >> 24) & 0xff;
+      v[1] = (amount.high >> 16) & 0xff;
+      v[2] = (amount.high >> 8) & 0xff;
+      v[3] = (amount.high >> 0) & 0xff;
+      v[4] = (amount.low >> 24) & 0xff;
+      v[5] = (amount.low >> 16) & 0xff;
+      v[6] = (amount.low >> 8) & 0xff;
+      v[7] = (amount.low >> 0) & 0xff;
+
+      var s = script.buffer.slice(script.offset, script.limit);
+      var network = network === 'main' ? 'livenet' : 'testnet';
+      var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
+
+      outs.push({
+        address: addr[0].toString(),
+        amountSatStr: bitcore.Bignum.fromBuffer(v, {
+          endian: 'little',
+          size: 1
+        }).toString(10)
+      });
+    });
+
+/*
+    var outs = [];
+    outputs.forEach(function(output) {
       outs.push({
         address: w.getAddressesStr()[0] || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A',
         amountSatStr: '0'
       });
     });
+*/
 
     var b = new bitcore.TransactionBuilder(opts)
       .setUnspent(unspentTest)
       .setOutputs(outs);
 
+/*
     outputs.forEach(function(output, i) {
       var amount = output.get('amount');
       var script = {
@@ -269,6 +304,7 @@ describe('PayPro (in Wallet) model', function() {
       b.tx.outs[i].v = v;
       b.tx.outs[i].s = s;
     });
+*/
 
     var selectedUtxos = b.getSelectedUnspent();
     var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -462,16 +498,51 @@ describe('PayPro (in Wallet) model', function() {
 
     var outs = [];
     outputs.forEach(function(output) {
+      var amount = output.get('amount');
+      var script = {
+        offset: output.get('script').offset,
+        limit: output.get('script').limit,
+        buffer: output.get('script').buffer
+      };
+
+      var v = new Buffer(8);
+      v[0] = (amount.high >> 24) & 0xff;
+      v[1] = (amount.high >> 16) & 0xff;
+      v[2] = (amount.high >> 8) & 0xff;
+      v[3] = (amount.high >> 0) & 0xff;
+      v[4] = (amount.low >> 24) & 0xff;
+      v[5] = (amount.low >> 16) & 0xff;
+      v[6] = (amount.low >> 8) & 0xff;
+      v[7] = (amount.low >> 0) & 0xff;
+
+      var s = script.buffer.slice(script.offset, script.limit);
+      var network = network === 'main' ? 'livenet' : 'testnet';
+      var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
+
+      outs.push({
+        address: addr[0].toString(),
+        amountSatStr: bitcore.Bignum.fromBuffer(v, {
+          endian: 'little',
+          size: 1
+        }).toString(10)
+      });
+    });
+
+/*
+    var outs = [];
+    outputs.forEach(function(output) {
       outs.push({
         address: w.getAddressesStr()[0] || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A',
         amountSatStr: '0'
       });
     });
+*/
 
     var b = new bitcore.TransactionBuilder(opts)
       .setUnspent(unspentTest)
       .setOutputs(outs);
 
+/*
     outputs.forEach(function(output, i) {
       var amount = output.get('amount');
       var script = {
@@ -495,6 +566,7 @@ describe('PayPro (in Wallet) model', function() {
       b.tx.outs[i].v = v;
       b.tx.outs[i].s = s;
     });
+*/
 
     var selectedUtxos = b.getSelectedUnspent();
     var inputChainPaths = selectedUtxos.map(function(utxo) {

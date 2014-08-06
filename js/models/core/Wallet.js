@@ -1120,6 +1120,48 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     }
   };
 
+  merchantData.total = bignum(merchantData.total, 10);
+
+  var outs = [];
+  merchantData.pr.pd.outputs.forEach(function(output) {
+    var amount = output.amount;
+
+    var v = new Buffer(8);
+    v[0] = (amount.high >> 24) & 0xff;
+    v[1] = (amount.high >> 16) & 0xff;
+    v[2] = (amount.high >> 8) & 0xff;
+    v[3] = (amount.high >> 0) & 0xff;
+    v[4] = (amount.low >> 24) & 0xff;
+    v[5] = (amount.low >> 16) & 0xff;
+    v[6] = (amount.low >> 8) & 0xff;
+    v[7] = (amount.low >> 0) & 0xff;
+
+    var script = {
+      offset: output.script.offset,
+      limit: output.script.limit,
+      buffer: new Buffer(output.script.buffer, 'hex')
+    };
+    var s = script.buffer.slice(script.offset, script.limit);
+    var network = merchantData.pr.pd.network === 'main' ? 'livenet' : 'testnet';
+    var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
+
+    outs.push({
+      address: addr[0].toString(),
+      amountSatStr: bignum.fromBuffer(v, {
+        endian: 'little',
+        size: 1
+      }).toString(10)
+    });
+
+    merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
+      endian: 'little',
+      size: 1
+    }));
+  });
+
+  merchantData.total = merchantData.total.toString(10);
+
+/*
   var outs = [];
   merchantData.pr.pd.outputs.forEach(function(output) {
     outs.push({
@@ -1128,11 +1170,13 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
       amountSatStr: '0' // dummy amount
     });
   });
+*/
 
   var b = new Builder(opts)
     .setUnspent(unspent)
     .setOutputs(outs);
 
+/*
   merchantData.total = bignum(merchantData.total, 10);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
@@ -1165,6 +1209,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   });
 
   merchantData.total = merchantData.total.toString(10);
+*/
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -1284,7 +1329,15 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     var av = tx.outs[i].v;
 
     // Actual script
-    var as = tx.outs[i].s;
+    // var as = tx.outs[i].s;
+
+    // XXX allow changing of script as long as address is same
+    var as = es;
+
+    // XXX allow changing of script as long as address is same
+    // var network = pd.get('network') === 'main' ? 'livenet' : 'testnet';
+    // var es = bitcore.Address.fromScriptPubKey(new bitcore.Script(es), network)[0];
+    // var as = bitcore.Address.fromScriptPubKey(new bitcore.Script(tx.outs[i].s), network)[0];
 
     // Make sure the tx's output script and values match the payment request's.
     if (av.toString('hex') !== ev.toString('hex')
