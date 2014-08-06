@@ -965,7 +965,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     options = {};
   }
 
-  var txp = this.txProposals.get(ntxid);
+  var txp = this.txProposals.txps[ntxid];
   if (!txp) return;
 
   var tx = txp.builder.build();
@@ -1178,8 +1178,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
 
-  var keys = priv.getForPaths(inputChainPaths);
-  var signed = b.sign(keys);
+  if (priv) {
+    var keys = priv.getForPaths(inputChainPaths);
+    var signed = b.sign(keys);
+  }
 
   if (options.fetch) return;
 
@@ -1191,16 +1193,15 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   var myId = this.getMyCopayerId();
   var now = Date.now();
 
-  var tx = b.build();
-  if (!tx.countInputSignatures(0))
-    throw new Error('Could not sign generated tx');
-
   var me = {};
-  me[myId] = now;
+
+  var tx = b.build();
+  if (priv && tx.countInputSignatures(0)) me[myId] = now;
+
   var meSeen = {};
   if (priv) meSeen[myId] = now;
 
-  var ntxid = this.txProposals.add(new TxProposal({
+  var data = {
     inputChainPaths: inputChainPaths,
     signedBy: me,
     seenBy: meSeen,
@@ -1209,7 +1210,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     builder: b,
     comment: options.memo,
     merchant: merchantData
-  }));
+  };
+
+  var ntxid = this.txProposals.add(data);
   return ntxid;
 };
 
@@ -1221,7 +1224,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   if (!ntxid) return false;
 
   var txp = typeof ntxid !== 'object'
-    ? this.txProposals.get(ntxid)
+    ? this.txProposals.txps[ntxid]
     : ntxid;
 
   // If we're not a payment protocol proposal, ignore.

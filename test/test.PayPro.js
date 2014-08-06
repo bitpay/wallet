@@ -782,7 +782,7 @@ describe('PayPro (in Wallet) model', function() {
       merchantData.raw = pr.serialize().toString('hex');
 
       var myId = w.getMyCopayerId();
-      var txp = w.txProposals.get(ntxid);
+      var txp = w.txProposals.txps[ntxid];
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
@@ -809,7 +809,7 @@ describe('PayPro (in Wallet) model', function() {
       amount.low = 2;
 
       var myId = w.getMyCopayerId();
-      var txp = w.txProposals.get(ntxid);
+      var txp = w.txProposals.txps[ntxid];
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
@@ -830,12 +830,12 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(merchantData);
 
       // Tamper with payment request in its abstract form:
-      var txp = w.txProposals.get(ntxid);
+      var txp = w.txProposals.txps[ntxid];
       var tx = txp.builder.tx || txp.builder.build();
       tx.outs[0].v = new Buffer([2, 0, 0, 0, 0, 0, 0, 0]);
 
       var myId = w.getMyCopayerId();
-      var txp = w.txProposals.get(ntxid);
+      var txp = w.txProposals.txps[ntxid];
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
@@ -856,7 +856,7 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(merchantData);
 
       var myId = w.getMyCopayerId();
-      var txp = w.txProposals.get(ntxid);
+      var txp = w.txProposals.txps[ntxid];
       should.exist(txp);
       should.exist(txp.signedBy[myId]);
       should.not.exist(txp.rejectedBy[myId]);
