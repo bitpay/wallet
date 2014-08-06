@@ -98,11 +98,13 @@ describe('TxProposal', function() {
         createdTs: 1,
         builder: b,
         inputChainPaths: 'm/1',
+        comment: 'hola',
       });
       var o = txp.toObjTrim();
       should.exist(o);
       should.not.exist(o.creator);
       should.not.exist(o.builder);
+      should.exist(o.comment);
       should.exist(o.builderObj);
     });
 
@@ -256,7 +258,7 @@ describe('TxProposal', function() {
       it('with less signatures', function() {
         var backup = txp.builder.vanilla.scriptSig[0];
         txp.builder.merge = function() {
-          // 3 signatures.
+          // 2 signatures.
           this.vanilla.scriptSig = ['0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
           this.tx.ins[0].s = new Buffer(this.vanilla.scriptSig[0], 'hex');
         };

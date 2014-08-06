@@ -11,7 +11,7 @@ var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
 var VERSION = 1;
-var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version'];
+var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment'];
 
 
 function TxProposal(opts) {

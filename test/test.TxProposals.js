@@ -106,9 +106,10 @@ describe('TxProposals', function() {
     });
   });
   describe.skip('#merge', function() {
-    it('mergeFromObj', function() {
+    it('should merge', function() {
       var txps = new TxProposals();
-      txps.mergeFromObj(dummyProposal.toObj());
+      var d = dummyProposal;
+      txps.merge(d.toObj(),{});
     });
   });
 });
