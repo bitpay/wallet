@@ -35,6 +35,7 @@ var valid_pairs = {
 angular.module('copayApp.controllers').controller('SetupController',
   function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification) {
 
+    $rootScope.fromSetup = true;
     $rootScope.videoInfo = {};
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
