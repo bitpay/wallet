@@ -2,9 +2,7 @@
 
 angular.module('copayApp.controllers').controller('OpenController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification) {
-    if ($rootScope.wallet) {
-      $location.path('/addresses');
-    }
+    controllerUtils.redirIfLogged();
 
     var cmp = function(o1, o2) {
       var v1 = o1.show.toLowerCase(),

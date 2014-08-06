@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HomeController',
-  function($scope, $rootScope, $location, walletFactory, notification) {
-    if ($rootScope.wallet) {
-      $location.path('/addresses');
-    }
+  function($scope, $rootScope, $location, walletFactory, notification, controllerUtils) {
+    
+    controllerUtils.redirIfLogged();
 
     $scope.loading = false;
     if ($rootScope.pendingPayment) {

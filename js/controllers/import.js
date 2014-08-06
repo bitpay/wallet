@@ -2,9 +2,8 @@
 
 angular.module('copayApp.controllers').controller('ImportController',
   function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification) {
-    if ($rootScope.wallet) {
-      $location.path('/addresses');
-    }
+
+    controllerUtils.redirIfLogged();
 
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
