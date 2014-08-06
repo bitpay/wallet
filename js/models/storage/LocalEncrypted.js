@@ -172,6 +172,13 @@ Storage.prototype.deleteWallet = function(walletId) {
   }
 };
 
+Storage.prototype.setLastOpened = function(walletId) {
+  this.setGlobal('lastOpened', walletId);
+}
+
+Storage.prototype.getLastOpened = function() {
+  return this.getGlobal('lastOpened');
+}
 
 //obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj) {

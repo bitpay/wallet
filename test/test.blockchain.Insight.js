@@ -82,9 +82,9 @@ describe('Insight model', function() {
 
 
       sinon
-        .stub(http, 'request')
-        .returns(req)
-        .yields(request);
+      .stub(http, 'request')
+      .returns(req)
+      .yields(request);
 
       i.getUnspent(['2MuD5LnZSViZZYwZbpVsagwrH8WWvCztdmV', '2NBSLoMvsHsf2Uv3LA17zV4beH6Gze6RovA'], function(e, ret) {
         should.not.exist(e);
@@ -113,9 +113,9 @@ describe('Insight model', function() {
       req.end = function() {};
 
       sinon
-        .stub(http, 'request')
-        .returns(req)
-        .yields(request);
+      .stub(http, 'request')
+      .returns(req)
+      .yields(request);
 
       i.sendRawTransaction(rawtx, function(a) {
         should.exist(a);
@@ -200,5 +200,33 @@ describe('Insight model', function() {
     });
   });
 
+  describe("#checkSentTx", function() {
+    it('should return true if Tx is found', function(done) {
+      var w = new Insight();
+      w._request = sinon.stub().yields(null, {
+        txid: "414142",
+      });
+      var tx = function() {};
+      tx.prototype.getHash = function(){return  new Buffer('BAA')};
+      w.checkSentTx(new tx(), function(err, ret) {
+        should.not.exist(err);
+        ret.should.equal('414142');
+        done();
+      });
+    });
+    it('should return false if Tx is not found', function(done) {
+      var w = new Insight();
+      w._request = sinon.stub().yields(null, {
+        txid: "414142",
+      });
+      var tx = function() {};
+      tx.prototype.getHash = function(){return new Buffer('ABC')};
+      w.checkSentTx(new tx(), function(err, ret) {
+        should.not.exist(err);
+        ret.should.equal(false);
+        done();
+      });
+    });
+  });
 
 });

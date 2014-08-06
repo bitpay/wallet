@@ -5,6 +5,15 @@ var should = chai.should();
 var PrivateKey = require('../js/models/core/PrivateKey');
 var PublicKeyRing = require('../js/models/core/PublicKeyRing');
 
+var getNewEpk = function() {
+  return new PrivateKey({
+    networkName: 'livenet',
+  })
+  .deriveBIP45Branch()
+  .extendedPublicKeyString();
+}
+
+
 describe('Performance tests', function() {
   describe('PrivateKey', function() {
     it('should optimize BIP32 private key gen time with cache', function() {
@@ -43,7 +52,7 @@ describe('Performance tests', function() {
                 requiredCopayers: M
               });
               for (var i = 0; i < N; i++) {
-                pkr1.addCopayer(); // add new random ext public key
+                pkr1.addCopayer(getNewEpk()); // add new random ext public key
               }
               var generateN = 5;
               var generated = [];
