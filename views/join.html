@@ -19,13 +19,17 @@
                 ng-show="joinForm.connectionId.$pristine" class="has-tip
                 text-gray" tooltip="Paste wallet secret here" >Required</small>
             </label>
-
-            <input id="connectionId" type="text" class="small-9 columns" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required style="width:85%;">
-            <div class="small-2 columns" style="padding:0px;width:15%;" ng-hide="showScanner">
-                <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
-            </div>
-            <div class="small-2 columns" style="padding:0px;width:15%;" ng-show="showScanner">
-                <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
+            
+            <div class="row collapse">
+              <div class="large-10 columns">
+                <input id="connectionId" type="text" class="small-9 columns" placeholder="Paste wallet secret here" name="connectionId" ng-model="connectionId" wallet-secret required>
+              </div>
+              <div class="small-2 columns" ng-hide="showScanner">
+                  <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
+              </div>
+              <div class="small-2 columns" ng-show="showScanner">
+                  <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
+              </div>
             </div>
 
             <div id="scanner" class="row" ng-if="showScanner">
@@ -46,7 +50,6 @@
               </div>
             </div>
 
-            <div style="clear: both;"></div>
             <label for="joinPassword"> User info </label>
             <input id="joinPassword" type="text" class="form-control" placeholder="Your name (optional)" name="nickname" ng-model="nickname">
             <input type="password" class="form-control"
