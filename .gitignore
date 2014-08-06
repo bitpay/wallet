@@ -8,6 +8,7 @@ lib-cov
 *.pid
 *.gz
 *.swp
+*.sig
 tags
 pids
 logs

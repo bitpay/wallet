@@ -70,9 +70,9 @@ describe('HDPath model', function() {
   ].forEach(function(datum) {
     var path = datum[0];
     var result = datum[1];
-    it('should get the correct indices for path ' + path, function() {
-      var i = HDPath.indicesForPath(path);
-      i.index.should.equal(result.index);
+    it('should get the correct indexes for path ' + path, function() {
+      var i = HDPath.indexesForPath(path);
+      i.addressIndex.should.equal(result.index);
       i.isChange.should.equal(result.isChange);
     });
   });

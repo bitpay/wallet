@@ -33,12 +33,12 @@ HDPath.FullBranch = function(addressIndex, isChange, copayerIndex) {
   return BIP45_PUBLIC_PREFIX + '/' + sub;
 };
 
-HDPath.indicesForPath = function(path) {
+HDPath.indexesForPath = function(path) {
   preconditions.shouldBeString(path);
   var s = path.split('/');
   return {
     isChange: s[3] === '1',
-    index: parseInt(s[4]),
+    addressIndex: parseInt(s[4]),
     copayerIndex: parseInt(s[2])
   };
 };
