@@ -1261,6 +1261,31 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     return false;
   }
 
+  // Figure out whether the user is supposed
+  // to decide the value of the outputs.
+  var undecided = false;
+  var total = bignum('0', 10);
+  for (var i = 0; i < outputs.length; i++) {
+    var output = outputs[i];
+    var amount = output.get('amount');
+    var v = new Buffer(8);
+    v[0] = (amount.high >> 24) & 0xff;
+    v[1] = (amount.high >> 16) & 0xff;
+    v[2] = (amount.high >> 8) & 0xff;
+    v[3] = (amount.high >> 0) & 0xff;
+    v[4] = (amount.low >> 24) & 0xff;
+    v[5] = (amount.low >> 16) & 0xff;
+    v[6] = (amount.low >> 8) & 0xff;
+    v[7] = (amount.low >> 0) & 0xff;
+    total = total.add(bignum.fromBuffer(v, {
+      endian: 'little',
+      size: 1
+    }));
+  }
+  if (+total.toString(10) === 0) {
+    undecided = true;
+  }
+
   for (var i = 0; i < outputs.length; i++) {
     var output = outputs[i];
 
@@ -1298,6 +1323,10 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     // var network = pd.get('network') === 'main' ? 'livenet' : 'testnet';
     // var es = bitcore.Address.fromScriptPubKey(new bitcore.Script(es), network)[0];
     // var as = bitcore.Address.fromScriptPubKey(new bitcore.Script(tx.outs[i].s), network)[0];
+
+    if (undecided) {
+      av = ev = new Buffer([0]);
+    }
 
     // Make sure the tx's output script and values match the payment request's.
     if (av.toString('hex') !== ev.toString('hex')
