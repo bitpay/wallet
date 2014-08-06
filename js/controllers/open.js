@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('OpenController',
       Passphrase.getBase64Async(password, function(passphrase) {
         var w, errMsg;
         try {
-          var w = walletFactory.open($scope.selectedWalletId, {
+          w = walletFactory.open($scope.selectedWalletId, {
             passphrase: passphrase
           });
         } catch (e) {
