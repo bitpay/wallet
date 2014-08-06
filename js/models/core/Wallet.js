@@ -25,10 +25,6 @@ var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
 
-var G = typeof window !== 'undefined'
-  ? window
-  : global;
-
 function Wallet(opts) {
   var self = this;
 
@@ -804,7 +800,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     return;
   }
 
-  return $http({
+  return Wallet.request({
     method: options.method || 'POST',
     url: options.uri,
     headers: {
@@ -1041,7 +1037,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     view[i] = pay[i];
   }
 
-  return $http({
+  return Wallet.request({
     method: 'POST',
     url: txp.merchant.pr.pd.payment_url,
     headers: {
@@ -1719,10 +1715,10 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
 // deviates from BIP-70.
 
 // if (typeof angular !== 'undefined') {
-//   G.$http = G.$http || angular.bootstrap().get('$http');
+//   var $http = angular.bootstrap().get('$http');
 // }
 
-G.$http = G.$http || function $http(options, callback) {
+Wallet.request = function(options, callback) {
   if (typeof options === 'string') {
     options = { uri: options };
   }

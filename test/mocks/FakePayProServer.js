@@ -4,9 +4,7 @@ var is_browser = typeof process == 'undefined'
   || typeof process.versions === 'undefined';
 var bitcore = bitcore || require('bitcore');
 var PayPro = bitcore.PayPro;
-
-var G = is_browser ? window : global;
-G.SSL_UNTRUSTED = true;
+var Wallet = require('../../js/models/core/Wallet');
 
 var x509 = {
   priv: ''
@@ -93,17 +91,14 @@ x509.der = new Buffer(x509.der, 'base64');
 x509.pem = new Buffer(x509.pem, 'base64');
 
 function startServer(cb) {
-  if (G.$http && G.$http.__server) {
+  if (Wallet.request._server) {
     setTimeout(function() {
-      return cb(null, G.$http.__server);
+      return cb(null, Wallet.request._server);
     }, 1);
     return;
   }
 
-  var old;
-  if (G.$http) {
-    old = G.$http;
-  }
+  var old = Wallet.request;
 
   var server = {
     POST: {
@@ -283,12 +278,12 @@ function startServer(cb) {
       if (cb) return cb();
     },
     close: function(cb) {
-      if (old) G.$http = old;
+      Wallet.request = old;
       return cb();
     }
   };
 
-  G.$http = function(options) {
+  Wallet.request = function(options) {
     var ret = {
       success: function(cb) {
         this._success = cb;
@@ -332,7 +327,7 @@ function startServer(cb) {
     return ret;
   };
 
-  G.$http.__server = server;
+  Wallet.request._server = server;
 
   setTimeout(function() {
     return cb(null, server);
