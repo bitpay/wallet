@@ -75,11 +75,8 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeNetwork', {
     expose: './mocks/FakeNetwork'
   });
-  b.require('./test/mocks/FakeBuilder', {
-    expose: './mocks/FakeBuilder'
-  });
   b.require('./js/models/network/WebRTC', {
-    expose: '../js/models/network/WebRTC' 
+    expose: '../js/models/network/WebRTC'
   });
   b.require('./js/models/blockchain/Insight', {
     expose: '../js/models/blockchain/Insight'
@@ -98,10 +95,10 @@ var createBundle = function(opts) {
   });
   b.require('./config', {
     expose: '../config'
-  }); 
+  });
   b.require('./js/models/core/HDPath', {
     expose: '../js/models/core/HDPath'
-  }); 
+  });
 
   if (opts.debug) {
     //include dev dependencies
