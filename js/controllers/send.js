@@ -63,7 +63,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       function done(ntxid, merchantData) {
         if (merchantData && +merchantData.total === 0) {
-          var txp = w.txProposals.get(ntxid);
+          var txp = w.txProposals.txps[ntxid];
           txp.builder.tx.outs[0].v = bitcore.Bignum(amount + '', 10).toBuffer({
             endian: 'little',
             size: 1
