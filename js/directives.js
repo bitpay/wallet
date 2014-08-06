@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('validAddress', [
-    function() {
+  .directive('validAddress', ['$rootScope',
+    function($rootScope) {
 
       var bitcore = require('bitcore');
       var Address = bitcore.Address;
@@ -17,8 +17,11 @@ angular.module('copayApp.directives')
             // Is this a payment protocol URI (BIP-72)?
             if (uri && uri.merchant) {
               scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-                if ((err && err.message === 'No unspent outputs.')) {
-                    //|| scope.availableBalance < +merchantData.total) {
+                var balance = $rootScope.availableBalance;
+                var available = +(balance * config.unitToSatoshi).toFixed(0);
+
+                if ((err && err.message === 'No unspent outputs.')
+                    || available < +merchantData.total) {
                   ctrl.$setValidity('validAddress', false);
                   return;
                 }
