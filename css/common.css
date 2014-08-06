@@ -169,6 +169,7 @@ header {
   position: relative;
   min-height: 700px;
   display: block;
+  max-height: 750px;
 }
 
 header h3, header p, header h4 {
