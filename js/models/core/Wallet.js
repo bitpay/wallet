@@ -1161,55 +1161,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   merchantData.total = merchantData.total.toString(10);
 
-/*
-  var outs = [];
-  merchantData.pr.pd.outputs.forEach(function(output) {
-    outs.push({
-      address: self.getAddressesStr()[0]
-        || '2N6J45pqfu5y7zgWDwXDAmdd8qzK1oRdz3A', // dummy address
-      amountSatStr: '0' // dummy amount
-    });
-  });
-*/
-
   var b = new Builder(opts)
     .setUnspent(unspent)
     .setOutputs(outs);
-
-/*
-  merchantData.total = bignum(merchantData.total, 10);
-
-  merchantData.pr.pd.outputs.forEach(function(output, i) {
-    var amount = output.amount;
-    var script = {
-      offset: output.script.offset,
-      limit: output.script.limit,
-      buffer: new Buffer(output.script.buffer, 'hex')
-    };
-
-    var v = new Buffer(8);
-    v[0] = (amount.low >> 0) & 0xff;
-    v[1] = (amount.low >> 8) & 0xff;
-    v[2] = (amount.low >> 16) & 0xff;
-    v[3] = (amount.low >> 24) & 0xff;
-    v[4] = (amount.high >> 0) & 0xff;
-    v[5] = (amount.high >> 8) & 0xff;
-    v[6] = (amount.high >> 16) & 0xff;
-    v[7] = (amount.high >> 24) & 0xff;
-
-    var s = script.buffer.slice(script.offset, script.limit);
-
-    b.tx.outs[i].v = v;
-    b.tx.outs[i].s = s;
-
-    merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
-      endian: 'little',
-      size: 1
-    }));
-  });
-
-  merchantData.total = merchantData.total.toString(10);
-*/
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
