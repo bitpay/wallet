@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CopayersController',
-  function($scope, $rootScope, $location, backupService) {
+  function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils) {
 
     $scope.backup = function() {
       var w = $rootScope.wallet;
@@ -16,6 +16,14 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.goToWallet = function() {
       $location.path('/addresses');
+    };
+
+    $scope.deleteWallet = function() {
+      var w = $rootScope.wallet;
+      w.disconnect();
+      walletFactory.delete(w.id, function() {
+        controllerUtils.logout();
+      });
     };
 
   });

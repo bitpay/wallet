@@ -23,14 +23,13 @@ function PublicKeyRing(opts) {
 
   this.copayersHK = opts.copayersHK || [];
 
-  this.indexes = opts.indexes ? HDParams.fromList(opts.indexes)
-    : HDParams.init(this.totalCopayers);
+  this.indexes = opts.indexes ? HDParams.fromList(opts.indexes) : HDParams.init(this.totalCopayers);
 
-    this.publicKeysCache = opts.publicKeysCache || {};
-    this.nicknameFor = opts.nicknameFor || {};
-    this.copayerIds = [];
-    this.copayersBackup = opts.copayersBackup || [];
-    this.addressToPath = {};
+  this.publicKeysCache = opts.publicKeysCache || {};
+  this.nicknameFor = opts.nicknameFor || {};
+  this.copayerIds = [];
+  this.copayersBackup = opts.copayersBackup || [];
+  this.addressToPath = {};
 }
 
 PublicKeyRing.fromObj = function(data) {
@@ -100,14 +99,6 @@ PublicKeyRing.prototype._checkKeys = function() {
     throw new Error('dont have required keys yet');
 };
 
-PublicKeyRing.prototype._newExtendedPublicKey = function() {
-  return new PrivateKey({
-    networkName: this.network.name
-  })
-  .deriveBIP45Branch()
-  .extendedPublicKeyString();
-};
-
 PublicKeyRing.prototype._updateBip = function(index) {
   var hk = this.copayersHK[index].derive(HDPath.IdBranch);
   this.copayerIds[index] = hk.eckey.public.toString('hex');
@@ -126,6 +117,8 @@ PublicKeyRing.prototype.nicknameForCopayer = function(copayerId) {
 };
 
 PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
+  preconditions.checkArgument(newEpk);
+
   if (this.isComplete())
     throw new Error('PKR already has all required key:' + this.totalCopayers);
 
@@ -133,10 +126,6 @@ PublicKeyRing.prototype.addCopayer = function(newEpk, nickname) {
     if (b.extendedPublicKeyString() === newEpk)
       throw new Error('PKR already has that key');
   });
-
-  if (!newEpk) {
-    newEpk = this._newExtendedPublicKey();
-  }
 
   var i = this.copayersHK.length;
   var bip = new HK(newEpk);
@@ -192,7 +181,9 @@ PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
 // Overloaded to receive a PubkeyString or a consigner index
 PublicKeyRing.prototype.getHDParams = function(id) {
   var copayerIndex = this.getCosigner(id);
-  var index = this.indexes.filter(function(i) { return i.copayerIndex == copayerIndex });
+  var index = this.indexes.filter(function(i) {
+    return i.copayerIndex == copayerIndex
+  });
   if (index.length != 1) throw new Error('no index for copayerIndex');
 
   return index[0];
@@ -231,9 +222,11 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
   if (typeof pubKey == 'undefined') return HDPath.SHARED_INDEX;
   if (typeof pubKey == 'number') return pubKey;
 
-  var sorted = this.copayersHK.map(function(h, i){
+  var sorted = this.copayersHK.map(function(h, i) {
     return h.eckey.public.toString('hex');
-  }).sort(function(h1, h2){ return h1.localeCompare(h2); });
+  }).sort(function(h1, h2) {
+    return h1.localeCompare(h2);
+  });
 
   var index = sorted.indexOf(pubKey);
   if (index == -1) throw new Error('no public key in ring');
@@ -255,41 +248,87 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
 PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayerIndex) {
   opts = opts || {};
 
-  var isOwned = index.copayerIndex == HDPath.SHARED_INDEX
-    || index.copayerIndex == copayerIndex;
+  var isOwned = index.copayerIndex == HDPath.SHARED_INDEX || index.copayerIndex == copayerIndex;
 
-    var ret = [];
-    if (!opts.excludeChange) {
-      for (var i = 0; i < index.changeIndex; i++) {
-        var a = this.getAddress(i, true, index.copayerIndex);
-        ret.unshift({
-          address: a,
-          addressStr: a.toString(),
-          isChange: true,
-          owned: isOwned
-        });
-      }
+  var ret = [];
+  if (!opts.excludeChange) {
+    for (var i = 0; i < index.changeIndex; i++) {
+      var a = this.getAddress(i, true, index.copayerIndex);
+      ret.unshift({
+        address: a,
+        addressStr: a.toString(),
+        isChange: true,
+        owned: isOwned
+      });
     }
+  }
 
-    if (!opts.excludeMain) {
-      for (var i = 0; i < index.receiveIndex; i++) {
-        var a = this.getAddress(i, false, index.copayerIndex);
-        ret.unshift({
-          address: a,
-          addressStr: a.toString(),
-          isChange: false,
-          owned: isOwned
-        });
-      }
+  if (!opts.excludeMain) {
+    for (var i = 0; i < index.receiveIndex; i++) {
+      var a = this.getAddress(i, false, index.copayerIndex);
+      ret.unshift({
+        address: a,
+        addressStr: a.toString(),
+        isChange: false,
+        owned: isOwned
+      });
     }
+  }
 
-    return ret;
+  return ret;
 };
+
+PublicKeyRing.prototype.getForPath = function(path) {
+  var p = HDPath.indexesForPath(path);
+  var pubKeys = this.getPubKeys(p.addressIndex, p.isChange, p.copayerIndex);
+  return pubKeys;
+};
+
+PublicKeyRing.prototype.getForPaths = function(paths) {
+  preconditions.checkArgument(paths);
+  return paths.map(this.getForPath.bind(this));
+};
+
+
+PublicKeyRing.prototype.forPaths = function(paths) {
+  return {
+    pubKeys: paths.map(this.getForPath.bind(this)),
+    copayerIds: this.copayerIds,
+  }
+};
+
+
+// returns pubkey -> copayerId.
+PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
+  preconditions.checkArgument(pubkeys);
+  preconditions.checkArgument(paths);
+
+  var inKeyMap = {}, ret = {};
+  for(var i in pubkeys ){
+    inKeyMap[pubkeys[i]] = 1;
+  };
+
+  var keys = this.getForPaths(paths);
+  for(var i in keys ){
+    for(var copayerIndex in keys[i] ){
+      var kHex = keys[i][copayerIndex].toString('hex');
+      if (inKeyMap[kHex]) {
+        ret[kHex] =this.copayerIds[copayerIndex];
+        delete inKeyMap[kHex];
+      }
+    }
+  }
+  for(var i in inKeyMap)
+    throw new Error('Pubkey not identified')
+
+  return ret;
+};
+
 
 // TODO this could be cached
 PublicKeyRing.prototype._addScriptMap = function(map, path) {
-  var p = HDPath.indicesForPath(path);
-  var script = this.getRedeemScript(p.index, p.isChange, p.copayerIndex);
+  var p = HDPath.indexesForPath(path);
+  var script = this.getRedeemScript(p.addressIndex, p.isChange, p.copayerIndex);
   map[Address.fromScript(script, this.network.name).toString()] = script.getBuffer().toString('hex');
 };
 

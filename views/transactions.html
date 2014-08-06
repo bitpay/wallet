@@ -1,7 +1,7 @@
 <div class="transactions" data-ng-controller="TransactionsController">
   <div ng-show='$root.wallet.isReady()'>
-    <h1 ng-show="wallet.totalCopayers > 1"> Transaction proposals <small>({{txs.length}})</small></h1>
-    <div class="large-12" ng-show="wallet.totalCopayers > 1">
+    <h1 ng-show="wallet.isShared()"> Transaction proposals <small>({{txs.length}})</small></h1>
+    <div class="large-12" ng-show="wallet.isShared()">
       <ul class="inline-list">
         <li> <a class="text-gray size-12" ng-click="show(true)" ng-disabled="loading || onlyPending" loading="Updating" ng-class="{'active' : onlyPending}"> [ Pending ] </a> </li>
         <li> <a class="text-gray size-12" ng-click="show()" ng-disabled="loading || !onlyPending" loading="Updating" ng-class="{'active' : !onlyPending}"> [ All ] </a> </li>
@@ -40,37 +40,37 @@
         </div>
 
         <div class="last-transactions-content">
-          <div class="box-copayer" ng-repeat="(cId, actions) in tx.peerActions">
-            <a href="#!/transactions" class="has-tip" tooltip-popup-delay="1000" tooltip="{{cId === $root.wallet.getMyCopayerId() ? 'You' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}">
-              <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{cId}}">
+          <div class="box-copayer" ng-repeat="c in tx.actionList">
+            <a href="#!/transactions" class="has-tip">
+              <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{c.cId}}">
             </a>
             <div class="box-status">
-              <a ng-if="actions.create" tooltip-popup-delay="1000" tooltip="Created {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.create" tooltip-popup-delay="1000" tooltip="Created {{c.actions.create | amTimeAgo}}">
                   <i class="fi-crown icon-status icon-active"></i>
               </a>
-              <a ng-if="!actions.create"><i class="fi-crown icon-status"></i></a>
+              <a ng-if="!c.actions.create"><i class="fi-crown icon-status"></i></a>
 
-              <a ng-if="actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{c.actions.seen | amTimeAgo}}">
                   <i class="fi-eye icon-status icon-active"></i>
               </a>
-              <a ng-if="!actions.seen"><i class="fi-eye icon-status"></i></a>
+              <a ng-if="!c.actions.seen"><i class="fi-eye icon-status"></i></a>
 
-              <a ng-if="actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{c.actions.rejected | amTimeAgo}}">
                   <i class="fi-x icon-status icon-active-x"></i>
               </a>
 
-              <a ng-if="actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{ts | amTimeAgo}}">
+              <a ng-if="c.actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{c.actions.sign | amTimeAgo}}">
                   <i class="fi-check icon-status icon-active-check"></i>
               </a>
 
-              <a ng-if="!actions.sign && !actions.rejected" href="#!/transactions" class="icon-status">
+              <a ng-if="!c.actions.sign && !c.actions.rejected" href="#!/transactions" class="icon-status">
                   <i class="fi-loop icon-rotate"></i>
               </a>
             </div>
 
             <div class="text-center">
               <p class="size-12 text-gray ellipsis">
-                {{$root.wallet.publicKeyRing.nicknameForCopayer(cId)}}
+                {{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
               </p>
             </div>
           </div>
@@ -135,9 +135,9 @@
       <pagination ng-show="!onlyPending && txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
 
-    <h1 ng-class="{'line-dashed': wallet.totalCopayers > 1}">
+    <h1 ng-class="{'line-dashed': wallet.isShared()}">
       Last transactions 
-      <small ng-hide="wallet.totalCopayers > 1 || !loading">
+      <small ng-hide="wallet.isShared() || !loading">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </small>   
     </h1>

@@ -102,10 +102,7 @@ WalletFactory.prototype.read = function(walletId) {
 
 WalletFactory.prototype.create = function(opts) {
   opts = opts || {};
-  this.log('### CREATING NEW WALLET.' +
-    (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') +
-    (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey')
-  );
+  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
   opts.privateKey = opts.privateKey || new PrivateKey({
     networkName: this.networkName
@@ -121,7 +118,8 @@ WalletFactory.prototype.create = function(opts) {
   });
   opts.publicKeyRing.addCopayer(
     opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
-    opts.nickname);
+    opts.nickname
+  );
   this.log('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
@@ -143,6 +141,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.version = opts.version || this.version;
   var w = new Wallet(opts);
   w.store();
+  this.storage.setLastOpened(w.id);
   return w;
 };
 
@@ -156,9 +155,9 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   //We only check for major version differences
   if (thisV0 < inV0) {
     throw new Error('Major difference in software versions' +
-      '. Received:' + inVersion +
-      '. Current version:' + this.version +
-      '. Aborting.');
+                    '. Received:' + inVersion +
+                    '. Current version:' + this.version +
+                    '. Aborting.');
   }
 };
 
@@ -179,6 +178,8 @@ WalletFactory.prototype.open = function(walletId, opts) {
   if (w) {
     w.store();
   }
+
+  this.storage.setLastOpened(walletId);
   return w;
 };
 
@@ -194,6 +195,7 @@ WalletFactory.prototype.delete = function(walletId, cb) {
   var s = this.storage;
   this.log('## DELETING WALLET ID:' + walletId); //TODO
   s.deleteWallet(walletId);
+  s.setLastOpened(undefined);
   return cb();
 };
 
