@@ -1,173 +1,15 @@
 'use strict';
 
-
-var imports = require('soop').imports();
+var BuilderMockV0 = require('./BuilderMockV0');;
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var BuilderMockV0 = require('./BuilderMockV0');;
-var TransactionBuilder = bitcore.TransactionBuilder;
+var TxProposal = require('./TxProposal');;
 var Script = bitcore.Script;
+var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
-
-function TxProposal(opts) {
-  this.creator = opts.creator;
-  this.createdTs = opts.createdTs;
-  this.seenBy = opts.seenBy || {};
-  this.signedBy = opts.signedBy || {};
-  this.rejectedBy = opts.rejectedBy || {};
-  this.builder = opts.builder;
-  this.sentTs = opts.sentTs || null;
-  this.sentTxid = opts.sentTxid || null;
-  this.inputChainPaths = opts.inputChainPaths || [];
-  this.comment = opts.comment || null;
-}
-
-TxProposal.prototype.getID = function() {
-  return this.builder.build().getNormalizedHash().toString('hex');
-};
-
-TxProposal.prototype.toObj = function() {
-  var o = JSON.parse(JSON.stringify(this));
-  delete o['builder'];
-  o.builderObj = this.builder.toObj();
-  return o;
-};
-
-
-TxProposal.prototype.setSent = function(sentTxid) {
-  this.sentTxid = sentTxid;
-  this.sentTs = Date.now();
-};
-
-TxProposal.fromObj = function(o, forceOpts) {
-  var t = new TxProposal(o);
-
-  try {
-    // force opts is requested.
-    for (var k in forceOpts) {
-      o.builderObj.opts[k] = forceOpts[k];
-    }
-    t.builder = TransactionBuilder.fromObj(o.builderObj);
-
-  } catch (e) {
-    if (!o.version) {
-      t.builder = new BuilderMockV0(o.builderObj);
-      t.readonly = 1;
-    };
-  }
-
-  return t;
-};
-
-
-TxProposal.prototype.isValid = function() {
-  if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
-    return false;
-  }
-  var tx = this.builder.build();
-  for (var i = 0; i < tx.ins.length; i++) {
-    var hashType = tx.getHashType(i);
-    if (hashType && hashType !== Transaction.SIGHASH_ALL) {
-      return false;
-    }
-  }
-  return true;
-};
-
-TxProposal.getSentTs = function() {
-  return this.sentTs;
-};
-
-TxProposal.prototype.merge = function(other, author) {
-  var ret = {};
-  ret.events = this.mergeMetadata(other, author);
-  ret.hasChanged = this.mergeBuilder(other);
-  return ret;
-};
-
-TxProposal.prototype.mergeBuilder = function(other) {
-  var b0 = this.builder;
-  var b1 = other.builder;
-
-  // TODO: improve this comparison
-  var before = JSON.stringify(b0.toObj());
-  b0.merge(b1);
-  var after = JSON.stringify(b0.toObj());
-  return after !== before;
-};
-
-TxProposal.prototype.mergeMetadata = function(v1, author) {
-  var events = [];
-  var v0 = this;
-
-  var ntxid = this.getID();
-
-  Object.keys(v1.seenBy).forEach(function(k) {
-    if (!v0.seenBy[k]) {
-      // TODO: uncomment below and change protocol to make this work
-      //if (k != author) throw new Error('Non authoritative seenBy change by ' + author);
-      v0.seenBy[k] = v1.seenBy[k];
-      events.push({
-        type: 'seen',
-        cId: k,
-        txId: ntxid
-      });
-    }
-  });
-
-  Object.keys(v1.signedBy).forEach(function(k) {
-    if (!v0.signedBy[k]) {
-      // TODO: uncomment below and change protocol to make this work
-      //if (k != author) throw new Error('Non authoritative signedBy change by ' + author);
-      v0.signedBy[k] = v1.signedBy[k];
-      events.push({
-        type: 'signed',
-        cId: k,
-        txId: ntxid
-      });
-    }
-  });
-
-  Object.keys(v1.rejectedBy).forEach(function(k) {
-    if (!v0.rejectedBy[k]) {
-      // TODO: uncomment below and change protocol to make this work
-      //if (k != author) throw new Error('Non authoritative rejectedBy change by ' + author);
-      v0.rejectedBy[k] = v1.rejectedBy[k];
-      events.push({
-        type: 'rejected',
-        cId: k,
-        txId: ntxid
-      });
-    }
-  });
-
-  if (!v0.sentTxid && v1.sentTxid) {
-    v0.sentTs = v1.sentTs;
-    v0.sentTxid = v1.sentTxid;
-    events.push({
-      type: 'broadcast',
-      txId: ntxid
-    });
-  }
-
-  return events;
-
-};
-
-//This should be on bitcore / Transaction
-TxProposal.prototype.countSignatures = function() {
-  var tx = this.builder.build();
-
-  var ret = 0;
-  for (var i in tx.ins) {
-    ret += tx.countInputSignatures(i);
-  }
-  return ret;
-};
-
-module.exports = require('soop')(TxProposal);
 
 
 function TxProposals(opts) {
@@ -178,6 +20,7 @@ function TxProposals(opts) {
   this.txps = {};
 }
 
+// fromObj => from a trusted source
 TxProposals.fromObj = function(o, forceOpts) {
   var ret = new TxProposals({
     networkName: o.networkName,
@@ -187,7 +30,7 @@ TxProposals.fromObj = function(o, forceOpts) {
   o.txps.forEach(function(o2) {
     var t = TxProposal.fromObj(o2, forceOpts);
     if (t.builder) {
-      var id = t.getID();
+      var id = t.getId();
       ret.txps[id] = t;
     }
   });
@@ -198,14 +41,9 @@ TxProposals.prototype.getNtxids = function() {
   return Object.keys(this.txps);
 };
 
-TxProposals.prototype.toObj = function(onlyThisNtxid) {
-  if (onlyThisNtxid) throw new Error();
+TxProposals.prototype.toObj = function() {
   var ret = [];
   for (var id in this.txps) {
-
-    if (onlyThisNtxid && id != onlyThisNtxid)
-      continue;
-
     var t = this.txps[id];
     if (!t.sent)
       ret.push(t.toObj());
@@ -217,50 +55,53 @@ TxProposals.prototype.toObj = function(onlyThisNtxid) {
   };
 };
 
-TxProposals.prototype.merge = function(inTxp, author) {
-  var myTxps = this.txps;
 
-  var ntxid = inTxp.getID();
-  var ret = {};
-  ret.events = [];
-  ret.events.hasChanged = false;
+TxProposals.prototype.merge = function(inObj, builderOpts) {
+  var incomingTx = TxProposal.fromUntrustedObj(inObj, builderOpts);
+  incomingTx._sync();
+
+  var myTxps = this.txps;
+  var ntxid = incomingTx.getId();
+  var ret = {
+    ntxid: ntxid
+  };
 
   if (myTxps[ntxid]) {
-    var v0 = myTxps[ntxid];
-    var v1 = inTxp;
-    ret = v0.merge(v1, author);
+
+    // Merge an existing txProposal
+    ret.hasChanged = myTxps[ntxid].merge(incomingTx);
+
+
   } else {
-    this.txps[ntxid] = inTxp;
-    ret.hasChanged = true;
-    ret.events.push({
-      type: 'new',
-      cid: inTxp.creator,
-      tx: ntxid
-    });
+    // Create a new one
+    ret.new = ret.hasChanged =  1;
+    this.txps[ntxid] = incomingTx;
   }
+
+  ret.txp = this.txps[ntxid];
   return ret;
 };
 
-TxProposals.prototype.add = function(data) {
-  preconditions.checkArgument(data.inputChainPaths);
-  preconditions.checkArgument(data.signedBy);
-  preconditions.checkArgument(data.creator);
-  preconditions.checkArgument(data.createdTs);
-  preconditions.checkArgument(data.builder);
-  var txp = new TxProposal(data);
-  var ntxid = txp.getID();
+// Add a LOCALLY CREATED (trusted) tx proposal
+TxProposals.prototype.add = function(txp) {
+  txp._sync();
+  var ntxid = txp.getId();
   this.txps[ntxid] = txp;
   return ntxid;
 };
 
-TxProposals.prototype.setSent = function(ntxid, txid) {
-  //sent TxProposals are local an not broadcasted.
-  this.txps[ntxid].setSent(txid);
+
+TxProposals.prototype.get = function(ntxid) {
+  var ret = this.txps[ntxid];
+  if (!ret)
+    throw new Error('Unknown TXP: '+ntxid);
+
+  return ret;
 };
 
-
 TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
-  var txp = this.txps[ntxid];
+  var txp = this.get(ntxid);
+
   var i = JSON.parse(JSON.stringify(txp));
   i.builder = txp.builder;
   i.ntxid = ntxid;
@@ -296,6 +137,17 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
   return i;
 };
 
+
+TxProposals.prototype.reject = function(ntxid, copayerId) {
+  var txp = this.get(ntxid);
+  txp.setRejected(copayerId);
+};
+
+TxProposals.prototype.seen = function(ntxid, copayerId) {
+  var txp = this.get(ntxid);
+  txp.setSeen(copayerId);
+};
+
 //returns the unspent txid-vout used in PENDING Txs
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
@@ -312,5 +164,4 @@ TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   return ret;
 };
 
-TxProposals.TxProposal = TxProposal;
-module.exports = require('soop')(TxProposals);
+module.exports = TxProposals;

@@ -10,7 +10,7 @@ try {
 }
 var copayConfig = require('../config');
 var Wallet = require('../js/models/core/Wallet');
-var Structure = copay.Structure;
+var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
@@ -19,21 +19,29 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 
+var config = {
+  requiredCopayers: 3,
+  totalCopayers: 5,
+  spendUnconfirmed: true,
+  reconnectDelay: 100,
+  networkName: 'testnet',
+};
+
+var getNewEpk = function() {
+  return new PrivateKey({
+    networkName: config.networkName,
+  })
+  .deriveBIP45Branch()
+  .extendedPublicKeyString();
+}
+
 var addCopayers = function(w) {
   for (var i = 0; i < 4; i++) {
-    w.publicKeyRing.addCopayer();
+    w.publicKeyRing.addCopayer(getNewEpk());
   }
 };
 
 describe('Wallet model', function() {
-
-  var config = {
-    requiredCopayers: 3,
-    totalCopayers: 5,
-    spendUnconfirmed: true,
-    reconnectDelay: 100,
-    networkName: 'testnet',
-  };
 
   it('should fail to create an instance', function() {
     (function() {
@@ -47,12 +55,11 @@ describe('Wallet model', function() {
   });
 
 
-  var createW = function(netKey, N, conf) {
+  var createW = function(N, conf) {
 
     var c = JSON.parse(JSON.stringify(conf || config));
     if (!N) N = c.totalCopayers;
 
-    if (netKey) c.netKey = netKey;
     var mainPrivateKey = new copay.PrivateKey({
       networkName: config.networkName
     });
@@ -148,8 +155,7 @@ describe('Wallet model', function() {
 
   var createW2 = function(privateKeys, N, conf) {
     if (!N) N = 3;
-    var netKey = 'T0FbU2JLby0=';
-    var w = createW(netKey, N, conf);
+    var w = createW(N, conf);
     should.exist(w);
 
     var pkr = w.publicKeyRing;
@@ -157,9 +163,9 @@ describe('Wallet model', function() {
     for (var i = 0; i < N - 1; i++) {
       if (privateKeys) {
         var k = privateKeys[i];
-        pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : null);
+        pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : getNewEpk());
       } else {
-        pkr.addCopayer();
+        pkr.addCopayer(getNewEpk());
       }
     }
 
@@ -212,12 +218,12 @@ describe('Wallet model', function() {
 
     var t = w.txProposals;
     var txp = t.txps[ntxid];
+    Object.keys(txp._inputSignatures).length.should.equal(1);
     var tx = txp.builder.build();
     should.exist(tx);
     chai.expect(txp.comment).to.be.null;
     tx.isComplete().should.equal(false);
     Object.keys(txp.seenBy).length.should.equal(1);
-    Object.keys(txp.signedBy).length.should.equal(1);
   });
 
   it('#create with comment', function() {
@@ -434,19 +440,7 @@ describe('Wallet model', function() {
     var w = createW();
     var txp = {
       'txProposal': {
-        creator: '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96',
-        createdTs: '2014-07-24T23:54:26.682Z',
-        seenBy: {
-          '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96': 1406246066682
-        },
-        signedBy: {
-          '02c643ef43c14481fa8e81e61438c2cbc39a59024663f8cab575d28a248fe53d96': 1406246066682
-        },
-        rejectedBy: {},
-        sentTs: null,
-        sentTxid: null,
-        inputChainPaths: ['m/45\'/2/0/0'],
-        comment: null,
+        inputChainPaths: ['m/1'],
         builderObj: {
           version: 1,
           outs: [{
@@ -474,9 +468,13 @@ describe('Wallet model', function() {
       }
     };
 
+    var stub = sinon.stub(w.publicKeyRing,'copayersForPubkeys').returns(
+      {'027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509':'pepe'}
+    );
     w._handleTxProposal('senderID', txp, true);
     Object.keys(w.txProposals.txps).length.should.equal(1);
     w.getTxProposals().length.should.equal(1);
+    //stub.restore();
   });
 
   var newId = '00bacacafe';
@@ -502,7 +500,8 @@ describe('Wallet model', function() {
     var w = createW();
     var r = w.getRegisteredCopayerIds();
     r.length.should.equal(1);
-    w.publicKeyRing.addCopayer();
+    w.publicKeyRing.addCopayer(getNewEpk());
+
     r = w.getRegisteredCopayerIds();
     r.length.should.equal(2);
     r[0].should.not.equal(r[1]);
@@ -512,7 +511,7 @@ describe('Wallet model', function() {
     var w = createW();
     var r = w.getRegisteredPeerIds();
     r.length.should.equal(1);
-    w.publicKeyRing.addCopayer();
+    w.publicKeyRing.addCopayer(getNewEpk());
     r = w.getRegisteredPeerIds();
     r.length.should.equal(2);
     r[0].should.not.equal(r[1]);
@@ -642,10 +641,11 @@ describe('Wallet model', function() {
     });
   });
   it('should create & sign transaction from received funds', function(done) {
-    this.timeout(10000);
-    var w = cachedCreateW2();
-    var pk = w.privateKey;
-    w.privateKey = null;
+    var k2 = new PrivateKey({
+      networkName: config.networkName
+    });
+
+    var w = createW2([k2]);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
@@ -654,24 +654,36 @@ describe('Wallet model', function() {
         w.getTxProposals()[0].rejectedByUs.should.equal(false);
         done();
       });
-      w.privateKey = pk;
+      w.privateKey = k2;
       w.sign(ntxid, function(success) {
         success.should.equal(true);
       });
     });
   });
-  it('should create & reject transaction', function(done) {
+  it('should fail to reject a signed transaction', function() {
     var w = cachedCreateW2();
-    w.privateKey = null;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
-      w.on('txProposalsUpdated', function() {
-        w.getTxProposals()[0].signedByUs.should.equal(false);
-        w.getTxProposals()[0].rejectedByUs.should.equal(true);
-        done();
-      });
+      (function() {
+        w.reject(ntxid);
+      }).should.throw('reject a signed');
+    });
+  });
+
+  it('should create & reject transaction', function(done) {
+    var w = cachedCreateW2();
+    var oldK = w.privateKey;
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      var s = sinon.stub(w, 'getMyCopayerId').returns('213');
+      Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(0);
       w.reject(ntxid);
+      Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(1);
+      w.txProposals.get(ntxid).rejectedBy['213'].should.gt(1);
+      s.restore();
+      done();
     });
   });
   it('should create & sign & send a transaction', function(done) {
@@ -1021,32 +1033,91 @@ describe('Wallet model', function() {
       copayConfig.forceNetwork = backup;
     });
   });
+  describe('_getKeymap', function() {
+    var w = cachedCreateW();
 
-  describe('validate txProposals', function() {
-    var a1 = 'n1pKARYYUnZwxBuGj3y7WqVDu6VLN7n971';
-    var a2 = 'mtxYYJXZJmQc2iJRHQ4RZkfxU5K7TE2qMJ';
-    var utxos = [{
-      address: a1,
-      txid: '2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1',
-      vout: 1,
-      scriptPubKey: Address.getScriptPubKeyFor(a1).serialize().toString('hex'),
-      amount: 0.5,
-      confirmations: 200
-    }, {
-      address: a2,
-      txid: '88c4520ffd97ea565578afe0b40919120be704b36561c71ba4e450e83cb3c9fd',
-      vout: 1,
-      scriptPubKey: Address.getScriptPubKeyFor(a2).serialize().toString('hex'),
-      amount: 0.5001,
-      confirmations: 200
-    }];
-    var destAddress = 'myuAQcCc1REUgXGsCTiYhZvPPc3XxZ36G1';
-    var outs = [{
-      address: destAddress,
-      amount: 1.0
-    }];
+    it('should set keymap', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan'
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['123']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      var map = w._getKeyMap(txp);
+      Object.keys(map).length.should.equal(1);
+      map['123'].should.equal('juan');
+      stub.restore();
+    });
 
-    var testValidate = function(signhash, result, done) {
+    it('should throw if unmatched sigs', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan'
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['234']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('dont match know copayers');
+      stub.restore();
+    });
+
+    it('should set keymap with multiple signatures', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['234', '123']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      var map = w._getKeyMap(txp);
+      Object.keys(map).length.should.equal(2);
+      map['123'].should.equal('juan');
+      map['234'].should.equal('pepe');
+      stub.restore();
+    });
+
+    it('should throw is one inputs has missing sigs', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+          '123': 'juan',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSignatures: [
+          ['234', '123'],
+          ['234']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('different sig');
+      stub.restore();
+    });
+  });
+
+
+
+  describe('_handleTxProposal', function() {
+    var testValidate = function(response, result, done) {
+
       var w = cachedCreateW();
       var spy = sinon.spy();
       w.on('txProposalEvent', spy);
@@ -1054,47 +1125,149 @@ describe('Wallet model', function() {
         e.type.should.equal(result);
         done();
       });
-      var opts = {};
-      opts.signhash = signhash;
-      var txb = new TransactionBuilder(opts)
-      .setUnspent(utxos)
-      .setOutputs(outs)
-      .sign(['cVBtNonMyTydnS3NnZyipbduXo9KZfF1aUZ3uQHcvJB6UARZbiWG',
-            'cRVF68hhZp1PUQCdjr2k6aVYb2cn6uabbySDPBizAJ3PXF7vDXTL'
-      ]);
+      //      txp.prototype.getId = function() {return 'aa'};
       var txp = {
-        'txProposal': {
-          'builderObj': txb.toObj()
-        }
+        dummy: 1
       };
-      w._handleTxProposal('senderID', txp, true);
+      var txp = {
+        'txProposal': txp
+      };
+      var merge = sinon.stub(w.txProposals, 'merge', function() {
+        if (response == 0) throw new Error();
+        return {
+          newCopayer: ['juan'],
+          ntxid: 1,
+          new: response == 1
+        };
+      });
+
+      w._handleTxProposal('senderID', txp);
       spy.callCount.should.equal(1);
+      merge.restore();
     };
 
-    it('should validate for undefined', function(done) {
+    it('should handle corrupt', function(done) {
+      var result = 'corrupt';
+      testValidate(0, result, done);
+    });
+    it('should handle new', function(done) {
       var result = 'new';
-      var signhash;
-      testValidate(signhash, result, done);
+      testValidate(1, result, done);
     });
-    it('should validate for SIGHASH_ALL', function(done) {
-      var result = 'new';
-      var signhash = Transaction.SIGHASH_ALL;
-      testValidate(signhash, result, done);
+    it('should handle signed', function(done) {
+      var result = 'signed';
+      testValidate(2, result, done);
     });
-    it('should not validate for different SIGHASH_NONE', function(done) {
-      var result = 'corrupt';
-      var signhash = Transaction.SIGHASH_NONE;
-      testValidate(signhash, result, done);
+
+  });
+
+
+  describe('_handleReject', function() {
+    it('should fails if unknown tx', function() {
+      var w = cachedCreateW();
+      (function() {
+        w._handleReject(1, {
+          ntxid: 1
+        }, 1);
+      }).should.throw('Unknown TXP');
     });
-    it('should not validate for different SIGHASH_SINGLE', function(done) {
-      var result = 'corrupt';
-      var signhash = Transaction.SIGHASH_SINGLE;
-      testValidate(signhash, result, done);
+    it('should fail to reject a signed tx', function() {
+      var w = cachedCreateW();
+      w.txProposals.txps['qwerty'] = {
+        signedBy: {
+          john: 1
+        }
+      };
+      (function() {
+        w._handleReject('john', {
+          ntxid: 'qwerty'
+        }, 1);
+      }).should.throw('already signed');
     });
-    it('should not validate for different SIGHASH_ANYONECANPAY', function(done) {
-      var result = 'corrupt';
-      var signhash = Transaction.SIGHASH_ANYONECANPAY;
-      testValidate(signhash, result, done);
+    it('should reject a tx', function() {
+      var w = cachedCreateW();
+
+      function txp() {
+        this.ok = 0;
+        this.signedBy = {};
+      };
+      txp.prototype.setRejected = function() {
+        this.ok = 1;
+      };
+      txp.prototype.toObj = function() {};
+
+      var spy1 = sinon.spy(w, 'store');
+      var spy2 = sinon.spy(w, 'emit');
+      w.txProposals.txps['qwerty'] = new txp();
+      w.txProposals.txps['qwerty'].ok.should.equal(0);
+      w._handleReject('john', {
+        ntxid: 'qwerty'
+      }, 1);
+      w.txProposals.txps['qwerty'].ok.should.equal(1);
+      spy1.calledOnce.should.equal(true);
+      spy2.callCount.should.equal(2);
+      spy2.firstCall.args.should.deep.equal(['txProposalsUpdated']);
+      spy2.secondCall.args.should.deep.equal(['txProposalEvent', {
+        type: 'rejected',
+        cId: 'john',
+        txId: 'qwerty',
+      }]);
     });
   });
+
+
+  describe('_handleSeen', function() {
+    it('should fails if unknown tx', function() {
+      var w = cachedCreateW();
+      (function() {
+        w._handleReject(1, {
+          ntxid: 1
+        }, 1);
+      }).should.throw('Unknown TXP');
+    });
+    it('should set seen a tx', function() {
+      var w = cachedCreateW();
+
+      function txp() {
+        this.ok = 0;
+        this.signedBy = {};
+      };
+      txp.prototype.setSeen = function() {
+        this.ok = 1;
+      };
+      txp.prototype.toObj = function() {};
+
+      var spy1 = sinon.spy(w, 'store');
+      var spy2 = sinon.spy(w, 'emit');
+      w.txProposals.txps['qwerty'] = new txp();
+      w.txProposals.txps['qwerty'].ok.should.equal(0);
+      w._handleSeen('john', {
+        ntxid: 'qwerty'
+      }, 1);
+      w.txProposals.txps['qwerty'].ok.should.equal(1);
+      spy1.calledOnce.should.equal(true);
+      spy2.callCount.should.equal(2);
+      spy2.firstCall.args.should.deep.equal(['txProposalsUpdated']);
+      spy2.secondCall.args.should.deep.equal(['txProposalEvent', {
+        type: 'seen',
+        cId: 'john',
+        txId: 'qwerty',
+      }]);
+    });
+  });
+
+  it('getNetwork', function() {
+    var w = cachedCreateW();
+    var n = w.getNetwork();
+    n.maxPeers.should.equal(5);
+    should.exist(n.networkNonce);
+  });
+
+  it('#disconnect', function() {
+    var w = cachedCreateW();
+    var spy1 = sinon.spy(w.network, 'disconnect');
+    w.disconnect();
+    spy1.callCount.should.equal(1);
+  });
+
 });

@@ -17,6 +17,7 @@ var Address = bitcore.Address;
 
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
+var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var copayConfig = require('../../../config');
@@ -36,7 +37,7 @@ function Wallet(opts) {
   });
   if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
     throw new Error('Network forced to ' + copayConfig.networkName +
-      ' and tried to create a Wallet with network ' + this.getNetworkName());
+                    ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
@@ -58,11 +59,11 @@ function Wallet(opts) {
 }
 
 
-Wallet.builderOpts =  {
-    lockTime: null,
-    signhash: bitcore.Transaction.SIGNHASH_ALL,
-    fee: null,
-    feeSat: null,
+Wallet.builderOpts = {
+  lockTime: null,
+  signhash: bitcore.Transaction.SIGNHASH_ALL,
+  fee: null,
+  feeSat: null,
 };
 
 Wallet.parent = EventEmitter;
@@ -129,39 +130,158 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
 };
 
 
-
-Wallet.prototype._handleTxProposal = function(senderId, data) {
-  this.log('RECV TXPROPOSAL: ', data);
-  var inTxp = TxProposals.TxProposal.fromObj(data.txProposal, Wallet.builderOpts);
-
-
-
-  var valid = inTxp.isValid();
-  if (!valid) {
-    var corruptEvent = {
+Wallet.prototype._processProposalEvents = function(senderId, m) {
+  var ev;
+  if (m) {
+    if (m.new) {
+      ev = {
+        type: 'new',
+        cid: senderId
+      }
+    } else if (m.newCopayer) {
+      ev = {
+        type: 'signed',
+        cid: m.newCopayer
+      };
+    }
+  } else {
+    ev = {
       type: 'corrupt',
-      cId: inTxp.creator
+      cId: senderId,
     };
-    this.emit('txProposalEvent', corruptEvent);
-    return;
-  }
-  var mergeInfo = this.txProposals.merge(inTxp, senderId);
-  var added = this.addSeenToTxProposals();
-
-  if (added) {
-    this.log('### BROADCASTING txProposals with my seenBy updated.');
-    this.sendTxProposal(inTxp.getID());
   }
 
-  this.emit('txProposalsUpdated');
-  this.store();
-
-  for (var i = 0; i < mergeInfo.events.length; i++) {
-    this.emit('txProposalEvent', mergeInfo.events[i]);
-  }
+  if (ev)
+    this.emit('txProposalEvent', ev);
 };
 
+
+
+/* OTDO
+   events.push({
+type: 'signed',
+cId: k,
+txId: ntxid
+});
+*/
+Wallet.prototype._getKeyMap = function(txp) {
+  preconditions.checkArgument(txp);
+
+  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.inputChainPaths);
+
+  var inSig = JSON.stringify(txp._inputSignatures[0].sort());
+
+  if (JSON.stringify(Object.keys(keyMap).sort()) !== inSig) {
+    throw new Error('inputSignatures dont match know copayers pubkeys');
+  }
+
+  var keyMapStr = JSON.stringify(keyMap);
+  // All inputs must be signed with the same copayers
+  for (var i in txp._inputSignatures) {
+    if (!i) continue;
+    var inSigX = JSON.stringify(txp._inputSignatures[i].sort());
+    if (inSigX !== inSig)
+      throw new Error('found inputs with different signatures:');
+  }
+  return keyMap;
+};
+
+
+Wallet.prototype._checkSentTx = function(ntxid, cb) {
+  var txp = this.txProposals.get(ntxid);
+  var tx = txp.builder.build();
+
+  this.blockchain.checkSentTx(tx, function(err, txid) {
+    var ret = false;
+    if (txid) {
+      txp.setSent(txid);
+      ret = txid;
+    }
+    return cb(ret);
+  });
+};
+
+
+Wallet.prototype._handleTxProposal = function(senderId, data) {
+  var self = this;
+  this.log('RECV TXPROPOSAL: ', data);
+  var m;
+
+  try {
+    m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
+    var keyMap = this._getKeyMap(m.txp);
+    ret.newCopayer = m.txp.setCopayers(senderId, keyMap);
+
+  } catch (e) {
+    this.log('Corrupt TX proposal received from:', senderId, e);
+  }
+
+  if (m) {
+
+    if (m.hasChanged) {
+      this.sendSeen(m.ntxid);
+      var tx = m.txp.builder.build();
+      if (tx.isComplete()) {
+        this._checkSentTx(m.ntxid, function(ret) {
+          if (ret) {
+            self.emit('txProposalsUpdated');
+            self.store();
+          }
+        });
+      } else {
+        this.sendTxProposal(m.ntxid);
+      }
+    }
+    this.emit('txProposalsUpdated');
+    this.store();
+  }
+  this._processProposalEvents(senderId, m);
+};
+
+
+Wallet.prototype._handleReject = function(senderId, data, isInbound) {
+  preconditions.checkState(data.ntxid);
+  this.log('RECV REJECT:', data);
+
+  var txp = this.txProposals.get(data.ntxid);
+
+  if (!txp)
+    throw new Error('Received Reject for an unknown TX from:' + senderId);
+
+  if (txp.signedBy[senderId])
+    throw new Error('Received Reject for an already signed TX from:' + senderId);
+
+  txp.setRejected(senderId);
+  this.store();
+
+  this.emit('txProposalsUpdated');
+  this.emit('txProposalEvent', {
+    type: 'rejected',
+    cId: senderId,
+    txId: data.ntxid,
+  });
+};
+
+Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
+  preconditions.checkState(data.ntxid);
+  this.log('RECV SEEN:', data);
+
+  var txp = this.txProposals.get(data.ntxid);
+  txp.setSeen(senderId);
+  this.store();
+  this.emit('txProposalsUpdated');
+  this.emit('txProposalEvent', {
+    type: 'seen',
+    cId: senderId,
+    txId: data.ntxid,
+  });
+
+};
+
+
+
 Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
+  preconditions.checkState(data.addressBook);
   this.log('RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
   var hasChange;
@@ -193,24 +313,30 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
       this.sendWalletReady(senderId);
-      break;
+    break;
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
-      this.sendAddressBook(senderId);
-      this.sendAllTxProposals(senderId); // send old txps
-      break;
+    this.sendAddressBook(senderId);
+    this.sendAllTxProposals(senderId); // send old txps
+    break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
-      break;
+    break;
+    case 'reject':
+      this._handleReject(senderId, data, isInbound);
+    break;
+    case 'seen':
+      this._handleSeen(senderId, data, isInbound);
+    break;
     case 'txProposal':
       this._handleTxProposal(senderId, data, isInbound);
-      break;
+    break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
-      break;
+    break;
     case 'addressbook':
       this._handleAddressBook(senderId, data, isInbound);
-      break;
+    break;
   }
 };
 
@@ -384,6 +510,7 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
+// fromObj => from a trusted source
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
@@ -418,11 +545,31 @@ Wallet.prototype.sendAllTxProposals = function(recipients) {
 
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
-  preconditions.checkState(this.txProposals.txps[ntxid]);
+
   this.log('### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
   this.send(recipients, {
     type: 'txProposal',
-    txProposal: this.txProposals.txps[ntxid].toObj(),
+    txProposal: this.txProposals.get(ntxid).toObjTrim(),
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendSeen = function(ntxid) {
+  preconditions.checkArgument(ntxid);
+  this.log('### SENDING seen:  ' + ntxid + ' TO: All');
+  this.send(null, {
+    type: 'seen',
+    ntxid: ntxid,
+    walletId: this.id,
+  });
+};
+
+Wallet.prototype.sendReject = function(ntxid) {
+  preconditions.checkArgument(ntxid);
+  this.log('### SENDING reject:  ' + ntxid + ' TO: All');
+  this.send(null, {
+    type: 'reject',
+    ntxid: ntxid,
     walletId: this.id,
   });
 };
@@ -517,30 +664,22 @@ Wallet.prototype.getTxProposals = function() {
 
 
 Wallet.prototype.reject = function(ntxid) {
-  var myId = this.getMyCopayerId();
-  var txp = this.txProposals.txps[ntxid];
-  if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
-    throw new Error('Invalid transaction to reject: ' + ntxid);
-  }
-
-  txp.rejectedBy[myId] = Date.now();
-  this.sendTxProposal(ntxid);
+  var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
+  this.sendReject(ntxid);
   this.store();
   this.emit('txProposalsUpdated');
 };
-
-
 
 Wallet.prototype.sign = function(ntxid, cb) {
   preconditions.checkState(typeof this.getMyCopayerId() !== 'undefined');
   var self = this;
   setTimeout(function() {
     var myId = self.getMyCopayerId();
-    var txp = self.txProposals.txps[ntxid];
-    if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
-      if (cb) cb(false);
-    }
-
+    var txp =  self.txProposals.get(ntxid);
+    // if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
+    //   if (cb) cb(false);
+    // }
+    //
     var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
@@ -559,14 +698,13 @@ Wallet.prototype.sign = function(ntxid, cb) {
   }, 10);
 };
 
+
 Wallet.prototype.sendTx = function(ntxid, cb) {
-  var txp = this.txProposals.txps[ntxid];
-  if (!txp) return;
-
+  var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
-  if (!tx.isComplete()) return;
+  if (!tx.isComplete())
+    throw new Error('Tx is not complete. Can not broadcast');
   this.log('Broadcasting Transaction');
-
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
 
@@ -577,28 +715,23 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.blockchain.sendRawTransaction(txHex, function(txid) {
     self.log('BITCOIND txid:', txid);
     if (txid) {
-      self.txProposals.setSent(ntxid, txid);
+      self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
       self.store();
+      return cb(txid);
+    } else {
+      self.log('Sent failed. Checking is the TX was sent already');
+      self._checkSentTx(ntxid, function(txid) {
+        console.log('[Wallet.js.730:txid:]', txid); //TODO
+        if (txid)
+          self.store();
+
+        return cb(txid);
+      });
     }
-    return cb(txid);
   });
 };
 
-Wallet.prototype.addSeenToTxProposals = function() {
-  var ret = false;
-  var myId = this.getMyCopayerId();
-
-  for (var k in this.txProposals.txps) {
-    var txp = this.txProposals.txps[k];
-    if (!txp.seenBy[myId]) {
-
-      txp.seenBy[myId] = Date.now();
-      ret = true;
-    }
-  }
-  return ret;
-};
 
 // TODO: remove this method and use getAddressesInfo everywhere
 Wallet.prototype.getAddresses = function(opts) {
@@ -719,8 +852,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var priv = this.privateKey;
   opts = opts || {};
 
-  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName());
-  preconditions.checkState(pkr.isComplete());
+  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName(), 'networkname mismatch');
+  preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
+  preconditions.checkState(priv, 'no private key');
   if (comment) preconditions.checkArgument(comment.length <= 100);
 
   if (!opts.remainderOut) {
@@ -729,16 +863,16 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     };
   }
 
-  for (var k in Wallet.builderOpts){
+  for (var k in Wallet.builderOpts) {
     opts[k] = Wallet.builderOpts[k];
   }
 
   var b = new Builder(opts)
-    .setUnspent(utxos)
-    .setOutputs([{
-      address: toAddress,
-      amountSatStr: amountSatStr,
-    }]);
+  .setUnspent(utxos)
+  .setOutputs([{
+    address: toAddress,
+    amountSatStr: amountSatStr,
+  }]);
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -747,22 +881,23 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
 
-  if (priv) {
-    var keys = priv.getForPaths(inputChainPaths);
-    var signed = b.sign(keys);
-  }
+  var keys = priv.getForPaths(inputChainPaths);
+  var signed = b.sign(keys);
   var myId = this.getMyCopayerId();
   var now = Date.now();
 
-  var me = {};
 
   var tx = b.build();
-  if (priv && tx.countInputSignatures(0)) me[myId] = now;
+  if (!tx.countInputSignatures(0))
+    throw new Error('Could not sign generated tx');
+
+  var me = {};
+  me[myId] = now;
 
   var meSeen = {};
   if (priv) meSeen[myId] = now;
 
-  var data = {
+  var ntxid = this.txProposals.add(new TxProposal({
     inputChainPaths: inputChainPaths,
     signedBy: me,
     seenBy: meSeen,
@@ -770,9 +905,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     createdTs: now,
     builder: b,
     comment: comment
-  };
-
-  var ntxid = this.txProposals.add(data);
+  }));
   return ntxid;
 };
 
@@ -831,29 +964,29 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
   var self = this;
   async.doWhilst(
     function _do(next) {
-      // Optimize window to minimize the derivations.
-      var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
-      var addresses = self.deriveAddresses(scanIndex, scanWindow, change, cosigner);
-      self.blockchain.checkActivity(addresses, function(err, actives) {
-        if (err) throw err;
+    // Optimize window to minimize the derivations.
+    var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
+    var addresses = self.deriveAddresses(scanIndex, scanWindow, change, cosigner);
+    self.blockchain.checkActivity(addresses, function(err, actives) {
+      if (err) throw err;
 
-        // Check for new activities in the newlly scanned addresses
-        var recentActive = actives.reduce(function(r, e, i) {
-          return e ? scanIndex + i : r;
-        }, lastActive);
-        hasActivity = lastActive != recentActive;
-        lastActive = recentActive;
-        scanIndex += scanWindow;
-        next();
-      });
-    },
-    function _while() {
-      return hasActivity;
-    },
-    function _finnaly(err) {
-      if (err) return cb(err);
-      cb(null, lastActive);
-    }
+      // Check for new activities in the newlly scanned addresses
+      var recentActive = actives.reduce(function(r, e, i) {
+        return e ? scanIndex + i : r;
+      }, lastActive);
+      hasActivity = lastActive != recentActive;
+      lastActive = recentActive;
+      scanIndex += scanWindow;
+      next();
+    });
+  },
+  function _while() {
+    return hasActivity;
+  },
+  function _finnaly(err) {
+    if (err) return cb(err);
+    cb(null, lastActive);
+  }
   );
 }
 
