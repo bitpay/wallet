@@ -979,10 +979,21 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   if (options.refund_to) {
     var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
-      return total.add(bignum.fromBuffer(tx.outs[i].v, {
-        endian: 'little',
+      // XXX reverse endianness to work around bignum bug:
+      var txv = tx.outs[i].v;
+      var v = new Buffer(8);
+      for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
+      return total.add(bignum.fromBuffer(v, {
+        endian: 'big',
         size: 1
       }));
+
+      // XXX potential problem: bignum seems bugged in node - tx outputs use
+      // little endian, but fromBuffer(endian=little) ends up being big endian
+      // return total.add(bignum.fromBuffer(tx.outs[i].v, {
+      //   endian: 'little',
+      //   size: 1
+      // }));
     }, bignum('0', 10));
 
     var rpo = new PayPro();
@@ -1145,13 +1156,13 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     outs.push({
       address: addr[0].toString(),
       amountSatStr: bignum.fromBuffer(v, {
-        endian: 'little',
+        endian: 'big',
         size: 1
       }).toString(10)
     });
 
     merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
-      endian: 'little',
+      endian: 'big',
       size: 1
     }));
   });
@@ -1280,7 +1291,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     v[6] = (amount.low >> 8) & 0xff;
     v[7] = (amount.low >> 0) & 0xff;
     total = total.add(bignum.fromBuffer(v, {
-      endian: 'little',
+      endian: 'big',
       size: 1
     }));
   }
@@ -1299,7 +1310,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     };
 
     // Expected value
-    // little endian
+    // little endian (keep this LE to compare with tx output value)
     var ev = new Buffer(8);
     ev[0] = (amount.low >> 0) & 0xff;
     ev[1] = (amount.low >> 8) & 0xff;
@@ -1345,7 +1356,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     var ro = txp.merchant.pr.pd.outputs[i];
 
     // Actual value
-    // little endian
+    // little endian (keep this LE to compare with the ev above)
     var av = new Buffer(8);
     av[0] = (ro.amount.low >> 0) & 0xff;
     av[1] = (ro.amount.low >> 8) & 0xff;

@@ -21,6 +21,7 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
+var bignum = bitcore.Bignum;
 var startServer = require('./mocks/FakePayProServer');
 
 var server;
@@ -246,15 +247,26 @@ describe('PayPro (in Wallet) model', function() {
       };
 
       // little endian
+      // var v = new Buffer(8);
+      // v[0] = (amount.low >> 0) & 0xff;
+      // v[1] = (amount.low >> 8) & 0xff;
+      // v[2] = (amount.low >> 16) & 0xff;
+      // v[3] = (amount.low >> 24) & 0xff;
+      // v[4] = (amount.high >> 0) & 0xff;
+      // v[5] = (amount.high >> 8) & 0xff;
+      // v[6] = (amount.high >> 16) & 0xff;
+      // v[7] = (amount.high >> 24) & 0xff;
+
+      // big endian
       var v = new Buffer(8);
-      v[0] = (amount.low >> 0) & 0xff;
-      v[1] = (amount.low >> 8) & 0xff;
-      v[2] = (amount.low >> 16) & 0xff;
-      v[3] = (amount.low >> 24) & 0xff;
-      v[4] = (amount.high >> 0) & 0xff;
-      v[5] = (amount.high >> 8) & 0xff;
-      v[6] = (amount.high >> 16) & 0xff;
-      v[7] = (amount.high >> 24) & 0xff;
+      v[0] = (amount.high >> 24) & 0xff;
+      v[1] = (amount.high >> 16) & 0xff;
+      v[2] = (amount.high >> 8) & 0xff;
+      v[3] = (amount.high >> 0) & 0xff;
+      v[4] = (amount.low >> 24) & 0xff;
+      v[5] = (amount.low >> 16) & 0xff;
+      v[6] = (amount.low >> 8) & 0xff;
+      v[7] = (amount.low >> 0) & 0xff;
 
       var s = script.buffer.slice(script.offset, script.limit);
       var net = network === 'main' ? 'livenet' : 'testnet';
@@ -265,7 +277,8 @@ describe('PayPro (in Wallet) model', function() {
         amountSatStr: bitcore.Bignum.fromBuffer(v, {
           // XXX for some reason, endian is ALWAYS 'big'
           // in node (in the browser it behaves correctly)
-          endian: 'little',
+          // endian: 'little',
+          endian: 'big',
           size: 1
         }).toString(10)
       });
@@ -309,10 +322,21 @@ describe('PayPro (in Wallet) model', function() {
     var refund_to = w.publicKeyRing.getPubKeys(0, false, w.getMyCopayerId())[0];
 
     var total = outputs.reduce(function(total, _, i) {
-      return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-        endian: 'little',
+      // XXX reverse endianness to work around bignum bug:
+      var txv = tx.outs[i].v;
+      var v = new Buffer(8);
+      for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
+      return total.add(bignum.fromBuffer(v, {
+        endian: 'big',
         size: 1
       }));
+
+      // XXX potential problem: bignum seems bugged in node - tx outputs use
+      // little endian, but fromBuffer(endian=little) ends up being big endian
+      // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
+      //   endian: 'little',
+      //   size: 1
+      // }));
     }, bitcore.Bignum('0', 10));
 
     var rpo = new PayPro();
@@ -397,10 +421,21 @@ describe('PayPro (in Wallet) model', function() {
       }
 
       var ackTotal = outputs.reduce(function(total, _, i) {
-        return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-          endian: 'little',
+        // XXX reverse endianness to work around bignum bug:
+        var txv = tx.outs[i].v;
+        var v = new Buffer(8);
+        for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
+        return total.add(bignum.fromBuffer(v, {
+          endian: 'big',
           size: 1
         }));
+
+        // XXX potential problem: bignum seems bugged in node - tx outputs use
+        // little endian, but fromBuffer(endian=little) ends up being big endian
+        // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
+        //   endian: 'little',
+        //   size: 1
+        // }));
       }, bitcore.Bignum('0', 10));
 
       ackTotal.toString(10).should.equal(total.toString(10));
@@ -491,15 +526,26 @@ describe('PayPro (in Wallet) model', function() {
       };
 
       // little endian
+      // var v = new Buffer(8);
+      // v[0] = (amount.low >> 0) & 0xff;
+      // v[1] = (amount.low >> 8) & 0xff;
+      // v[2] = (amount.low >> 16) & 0xff;
+      // v[3] = (amount.low >> 24) & 0xff;
+      // v[4] = (amount.high >> 0) & 0xff;
+      // v[5] = (amount.high >> 8) & 0xff;
+      // v[6] = (amount.high >> 16) & 0xff;
+      // v[7] = (amount.high >> 24) & 0xff;
+
+      // big endian
       var v = new Buffer(8);
-      v[0] = (amount.low >> 0) & 0xff;
-      v[1] = (amount.low >> 8) & 0xff;
-      v[2] = (amount.low >> 16) & 0xff;
-      v[3] = (amount.low >> 24) & 0xff;
-      v[4] = (amount.high >> 0) & 0xff;
-      v[5] = (amount.high >> 8) & 0xff;
-      v[6] = (amount.high >> 16) & 0xff;
-      v[7] = (amount.high >> 24) & 0xff;
+      v[0] = (amount.high >> 24) & 0xff;
+      v[1] = (amount.high >> 16) & 0xff;
+      v[2] = (amount.high >> 8) & 0xff;
+      v[3] = (amount.high >> 0) & 0xff;
+      v[4] = (amount.low >> 24) & 0xff;
+      v[5] = (amount.low >> 16) & 0xff;
+      v[6] = (amount.low >> 8) & 0xff;
+      v[7] = (amount.low >> 0) & 0xff;
 
       var s = script.buffer.slice(script.offset, script.limit);
       var net = network === 'main' ? 'livenet' : 'testnet';
@@ -508,7 +554,10 @@ describe('PayPro (in Wallet) model', function() {
       outs.push({
         address: addr[0].toString(),
         amountSatStr: bitcore.Bignum.fromBuffer(v, {
-          endian: 'little',
+          // XXX for some reason, endian is ALWAYS 'big'
+          // in node (in the browser it behaves correctly)
+          // endian: 'little',
+          endian: 'big',
           size: 1
         }).toString(10)
       });
@@ -552,10 +601,21 @@ describe('PayPro (in Wallet) model', function() {
     var refund_to = w.publicKeyRing.getPubKeys(0, false, w.getMyCopayerId())[0];
 
     var total = outputs.reduce(function(total, _, i) {
-      return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-        endian: 'little',
+      // XXX reverse endianness to work around bignum bug:
+      var txv = tx.outs[i].v;
+      var v = new Buffer(8);
+      for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
+      return total.add(bignum.fromBuffer(v, {
+        endian: 'big',
         size: 1
       }));
+
+      // XXX potential problem: bignum seems bugged in node - tx outputs use
+      // little endian, but fromBuffer(endian=little) ends up being big endian
+      // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
+      //   endian: 'little',
+      //   size: 1
+      // }));
     }, bitcore.Bignum('0', 10));
 
     var rpo = new PayPro();
@@ -640,10 +700,21 @@ describe('PayPro (in Wallet) model', function() {
       }
 
       var ackTotal = outputs.reduce(function(total, _, i) {
-        return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-          endian: 'little',
+        // XXX reverse endianness to work around bignum bug:
+        var txv = tx.outs[i].v;
+        var v = new Buffer(8);
+        for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
+        return total.add(bignum.fromBuffer(v, {
+          endian: 'big',
           size: 1
         }));
+
+        // XXX potential problem: bignum seems bugged in node - tx outputs use
+        // little endian, but fromBuffer(endian=little) ends up being big endian
+        // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
+        //   endian: 'little',
+        //   size: 1
+        // }));
       }, bitcore.Bignum('0', 10));
 
       ackTotal.toString(10).should.equal(total.toString(10));
