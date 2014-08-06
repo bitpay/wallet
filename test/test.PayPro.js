@@ -241,7 +241,8 @@ describe('PayPro (in Wallet) model', function() {
       var script = {
         offset: output.get('script').offset,
         limit: output.get('script').limit,
-        buffer: output.get('script').buffer
+        buffer: new Buffer(new Uint8Array(
+          output.get('script').buffer))
       };
 
       var v = new Buffer(8);
@@ -256,7 +257,6 @@ describe('PayPro (in Wallet) model', function() {
 
       var s = script.buffer.slice(script.offset, script.limit);
       var net = network === 'main' ? 'livenet' : 'testnet';
-      // XXX browser test chokes here on new bitcore.Script:
       var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), net);
 
       outs.push({
@@ -276,7 +276,8 @@ describe('PayPro (in Wallet) model', function() {
       var script = {
         offset: output.get('script').offset,
         limit: output.get('script').limit,
-        buffer: output.get('script').buffer
+        buffer: new Buffer(new Uint8Array(
+          output.get('script').buffer))
       };
       var s = script.buffer.slice(script.offset, script.limit);
       b.tx.outs[i].s = s;
@@ -478,7 +479,8 @@ describe('PayPro (in Wallet) model', function() {
       var script = {
         offset: output.get('script').offset,
         limit: output.get('script').limit,
-        buffer: output.get('script').buffer
+        buffer: new Buffer(new Uint8Array(
+          output.get('script').buffer))
       };
 
       var v = new Buffer(8);
@@ -512,7 +514,8 @@ describe('PayPro (in Wallet) model', function() {
       var script = {
         offset: output.get('script').offset,
         limit: output.get('script').limit,
-        buffer: output.get('script').buffer
+        buffer: new Buffer(new Uint8Array(
+          output.get('script').buffer))
       };
       var s = script.buffer.slice(script.offset, script.limit);
       b.tx.outs[i].s = s;
