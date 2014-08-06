@@ -96,7 +96,7 @@ Insight.prototype.getTransactions = function(addresses, cb) {
   }, function() {
     var uniqueTxids = {};
     for (var k in txids) {
-      uniqueTxids[k] = 1;
+      uniqueTxids[txids[k]] = 1;
     }
     _asyncForEach(Object.keys(uniqueTxids), function(txid, callback2) {
       var options = self._getOptions('GET', '/api/tx/' + txid);
@@ -160,8 +160,8 @@ Insight.prototype.checkActivity = function(addresses, cb) {
     var getOutputs = function(t) {
       return flatArray(
         t.vout.map(function(vout) {
-          return vout.scriptPubKey.addresses;
-        })
+        return vout.scriptPubKey.addresses;
+      })
       );
     };
 
