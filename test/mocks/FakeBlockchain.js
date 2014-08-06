@@ -1,6 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
 var bitcore = require('bitcore');
 
 function FakeBlockchain(opts) {
@@ -47,4 +46,4 @@ FakeBlockchain.prototype.sendRawTransaction = function(rawtx, cb) {
   return cb(txid);
 };
 
-module.exports = require('soop')(FakeBlockchain);
+module.exports = FakeBlockchain;
