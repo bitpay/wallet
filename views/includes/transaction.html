@@ -32,7 +32,7 @@
 
 <div class="last-transactions-content">
   <div class="box-copayer" ng-repeat="c in tx.actionList">
-    <a href="#!/transactions" class="has-tip">
+    <a class="has-tip">
       <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{c.cId}}">
     </a>
     <div class="box-status">
@@ -54,7 +54,7 @@
           <i class="fi-check icon-status icon-active-check"></i>
       </a>
 
-      <a ng-if="!c.actions.sign && !c.actions.rejected" href="#!/transactions" class="icon-status">
+      <a ng-if="!c.actions.sign && !c.actions.rejected" class="icon-status">
           <i class="fi-loop icon-rotate"></i>
       </a>
     </div>

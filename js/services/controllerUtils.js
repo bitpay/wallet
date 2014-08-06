@@ -51,7 +51,7 @@ angular.module('copayApp.services')
       });
       wallet.on('serverError', function(m) {
         var message = m || 'The PeerJS server is not responding, please try again';
-        $location.path('addresses');
+        $location.path('receive');
         root.onErrorDigest($scope, message);
       });
       wallet.on('ready', function() {
@@ -123,7 +123,7 @@ angular.module('copayApp.services')
         if ($rootScope.pendingPayment) {
           $location.path('send');
         } else {
-          $location.path('addresses');
+          $location.path('receive');
         }
         if (!config.disableVideo)
           video.setOwnPeer(myPeerID, w, handlePeerVideo);
