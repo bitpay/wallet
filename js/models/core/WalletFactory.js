@@ -5,7 +5,7 @@ var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 
-var WebRTC = module.exports.WebRTC = require('../network/WebRTC');
+var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
 
@@ -19,7 +19,7 @@ function WalletFactory(config, version) {
   config = config || {};
 
   this.Storage = config.Storage || StorageLocalEncrypted;
-  this.Network = config.Network || WebRTC;
+  this.Network = config.Network || Async;
   this.Blockchain = config.Blockchain || Insight;
 
   this.storage = new this.Storage(config.storage);
