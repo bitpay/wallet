@@ -247,18 +247,13 @@ Network.prototype._setupConnectionHandlers = function() {
     });
   });
   self.socket.on('message', self._onMessage);
-  self.socket.on('error', self._handlePeerError);
+  self.socket.on('error', self._handleError);
 
 };
 
-Network.prototype._handlePeerError = function(err) {
-  alert(err);
+Network.prototype._handleError = function(err) {
   console.log('RECV ERROR: ', err);
-  if (err.message.match(/Could\snot\sconnect\sto peer/)) {
-    this._checkAnyPeer();
-  } else {
-    this.criticalError = err.message;
-  }
+  this.criticalError = err.message;
 };
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
