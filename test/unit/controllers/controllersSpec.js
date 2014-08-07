@@ -214,7 +214,7 @@ describe("Unit: Controllers", function() {
       scope.submitForm(sendForm);
       sinon.assert.callCount(spy, 1);
       sinon.assert.callCount(spy2, 1);
-      sinon.assert.callCount(scope.loadTxs, 0);
+      sinon.assert.callCount(scope.loadTxs, 1);
     });
 
   });
