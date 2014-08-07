@@ -240,16 +240,14 @@ Network.prototype._checkAnyPeer = function(msg) {
   }
 };
 
-Network.prototype._setupConnectionHandlers = function(toCopayerId) {
+Network.prototype._setupConnectionHandlers = function() {
   preconditions.checkState(this.socket);
   var self = this;
 
-  var isInbound = toCopayerId ? false : true;
-
   self.socket.on('connect', function() {
-    console.log('CONNECTED!');
+    alert('CONNECTED!');
     self.socket.on('disconnect', function() {
-      console.log('DISCONNECTED');
+      alert('DISCONNECTED');
       self.cleanUp();
     });
   });
@@ -297,6 +295,7 @@ Network.prototype.peerFromCopayer = function(hex) {
 };
 
 Network.prototype.start = function(opts, openCallback) {
+  alert('start');
   opts = opts || {};
 
   if (this.started) return openCallback();
@@ -324,7 +323,7 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket.emit('subscribe', this.getKey().public.toString('hex'));
   this.socket.emit('sync');
   this.started = true;
-  this._setupConnectionHandlers(this.socket);
+  this._setupConnectionHandlers();
 
   //this.emit('serverError', self.criticalError);
 
