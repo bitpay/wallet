@@ -75,6 +75,7 @@ angular.module('copayApp.controllers').controller('SendController',
               notification.error('Error', 'There was an error sending the transaction.');
             }
             $scope.loading = false;
+            $scope.loadTxs();
           });
         }
         $rootScope.pendingPayment = null;
