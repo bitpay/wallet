@@ -258,6 +258,7 @@ Network.prototype._setupConnectionHandlers = function() {
 };
 
 Network.prototype._handlePeerError = function(err) {
+  alert(err);
   console.log('RECV ERROR: ', err);
   if (err.message.match(/Could\snot\sconnect\sto peer/)) {
     this._checkAnyPeer();
