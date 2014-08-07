@@ -22,6 +22,8 @@ angular.module('copayApp.directives')
 
                 if ((err && err.message === 'No unspent outputs.')
                     || available < +merchantData.total) {
+                  // TODO: Actually display a notification window here
+                  // instead of simply saying the URI is invalid.
                   ctrl.$setValidity('validAddress', false);
                   return;
                 }
