@@ -356,11 +356,11 @@ angular.module('copayApp.controllers').controller('SendController',
           } else {
             var message = 'Transaction ID: ' + txid;
             if (merchantData.pr.ca) {
-              message += '\nThis payment protocol transaction'
+              message += ' This payment protocol transaction'
                 + ' has been verified through ' + merchantData.pr.ca + '.';
             }
-            message += '\nMessage from server: ' + merchantData.ack.memo;
-            message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
+            message += ' Message from server: ' + merchantData.ack.memo;
+            message += ' For merchant: ' + merchantData.pr.pd.payment_url;
             notification.success('Transaction sent', message);
           }
         }
