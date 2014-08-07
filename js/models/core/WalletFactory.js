@@ -249,9 +249,6 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   self.network.on('connected', function(sender, data) {
     connectedOnce = true;
   });
-  self.network.on('onlyYou', function(sender, data) {
-    return cb(connectedOnce ? 'walletFull' : 'joinError');
-  });
 
   self.network.on('serverError', function() {
     return cb('joinError');
