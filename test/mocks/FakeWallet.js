@@ -4,6 +4,7 @@ var FakeWallet = function() {
   this.safeBalance = 1000;
   this.totalCopayers = 2;
   this.requiredCopayers = 2;
+  this.isLocked = false;
   this.balanceByAddr = {
     '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000
   };

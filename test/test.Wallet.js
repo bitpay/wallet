@@ -1022,6 +1022,14 @@ describe('Wallet model', function() {
       w.netStart();
       w.network.start.getCall(0).args[0].privkey.length.should.equal(64);
     });
+
+    it('should check if wallet is already opened', function() {
+      var w = createW();
+      w._checkLocked();
+      w.isLocked.should.equal(false);
+      w._checkLocked();
+      w.isLocked.should.equal(true);
+    });
   });
 
   describe('#forceNetwork in config', function() {

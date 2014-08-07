@@ -180,6 +180,18 @@ Storage.prototype.getLastOpened = function() {
   return this.getGlobal('lastOpened');
 }
 
+Storage.prototype.setIsOpen = function(walletId) {
+  this.setGlobal(this._key(walletId, 'isOpen'), true);
+}
+
+Storage.prototype.getIsOpen = function(walletId) {
+  return this.getGlobal(this._key(walletId, 'isOpen'));
+}
+
+Storage.prototype.removeIsOpen = function(walletId) {
+  this.localStorage.removeItem(this._key(walletId, 'isOpen'));
+}
+
 //obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj) {
   for (var k in obj) {

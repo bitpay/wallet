@@ -160,6 +160,19 @@ describe('Storage/LocalEncrypted model', function() {
     });
   });
 
+  describe('#WalletIsOpened', function() {
+    it('should get/set/remove opened', function() {
+      var s = new LocalEncrypted({
+        localStorage: localMock,
+        password: 'password'
+      });
+      s.setIsOpen('walletId');
+      s.getIsOpen('walletId').should.equal(true);
+      s.removeIsOpen('walletId');
+      should.not.exist(s.getIsOpen('walletId'));
+    });
+  });
+
   describe('#getWallets', function() {
     it('should retreive wallets from storage', function() {
       var s = new LocalEncrypted({

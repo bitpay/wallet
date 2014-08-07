@@ -288,8 +288,10 @@ describe("Unit: Controllers", function() {
   describe("Unit: Sidebar Controller", function() {
     var rootScope;
     beforeEach(inject(function($controller, $rootScope) {
-      rootScope = $rootScope;
       scope = $rootScope.$new();
+      rootScope = $rootScope;
+      rootScope.wallet = new FakeWallet(config);
+
       headerCtrl = $controller('SidebarController', {
         $scope: scope,
       });
@@ -299,6 +301,11 @@ describe("Unit: Controllers", function() {
       var n = 5;
       var array = scope.getNumber(n);
       expect(array.length).equal(n);
+    });
+
+    it('should ignore if wallet is locked', function() {
+      scope.ignoreLocked();
+      expect(rootScope.wallet.isLocked).equal(false);
     });
 
   });
