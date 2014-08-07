@@ -14,6 +14,13 @@ angular.module('copayApp.services')
       return vi.muted;
     };
 
+    root.redirIfLogged = function() {
+      var w = $rootScope.wallet;
+      if (w) {
+        $location.path('addresses');
+      }
+    };
+
     root.logout = function() {
       Socket.removeAllListeners();
 
