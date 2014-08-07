@@ -12,7 +12,7 @@ if (is_browser) {
 }
 var copayConfig = require('../config');
 var Wallet = require('../js/models/core/Wallet');
-var Structure = copay.Structure;
+var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
@@ -26,20 +26,27 @@ var startServer = require('./mocks/FakePayProServer');
 
 var server;
 
-describe('PayPro (in Wallet) model', function() {
-  var config = {
-    requiredCopayers: 1,
-    totalCopayers: 1,
-    spendUnconfirmed: true,
-    reconnectDelay: 100,
-    networkName: 'testnet',
-  };
+var config = {
+  requiredCopayers: 1,
+  totalCopayers: 1,
+  spendUnconfirmed: true,
+  reconnectDelay: 100,
+  networkName: 'testnet',
+};
 
-  var createW = function(netKey, N, conf) {
+var getNewEpk = function() {
+  return new PrivateKey({
+    networkName: config.networkName,
+  })
+  .deriveBIP45Branch()
+  .extendedPublicKeyString();
+};
+
+describe('PayPro (in Wallet) model', function() {
+  var createW = function(N, conf) {
     var c = JSON.parse(JSON.stringify(conf || config));
     if (!N) N = c.totalCopayers;
 
-    if (netKey) c.netKey = netKey;
     var mainPrivateKey = new copay.PrivateKey({
       networkName: config.networkName
     });
@@ -109,8 +116,7 @@ describe('PayPro (in Wallet) model', function() {
 
   var createW2 = function(privateKeys, N, conf) {
     if (!N) N = 3;
-    var netKey = 'T0FbU2JLby0=';
-    var w = createW(netKey, N, conf);
+    var w = createW(N, conf);
     should.exist(w);
 
     var pkr = w.publicKeyRing;
@@ -118,9 +124,9 @@ describe('PayPro (in Wallet) model', function() {
     for (var i = 0; i < N - 1; i++) {
       if (privateKeys) {
         var k = privateKeys[i];
-        pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : null);
+        pkr.addCopayer(k ? k.deriveBIP45Branch().extendedPublicKeyString() : getNewEpk());
       } else {
-        pkr.addCopayer();
+        pkr.addCopayer(getNewEpk());
       }
     }
 
