@@ -7,6 +7,7 @@ var AuthMessage = bitcore.AuthMessage;
 var util = bitcore.util;
 var extend = require('util')._extend;
 var io = require('socket.io-client');
+var preconditions = require('preconditions').singleton();
 
 /*
  * Emits
@@ -26,8 +27,6 @@ function Network(opts) {
   opts = opts || {};
   this.host = opts.host || 'localhost';
   this.port = opts.port || 3001;
-  this.retryDelay = opts.retryDelay || 3000;
-  this.reconnectAttempts = opts.reconnectAttempts || 3;
   this.cleanUp();
 }
 
@@ -46,7 +45,6 @@ Network.prototype.cleanUp = function() {
   this.connections = {};
   this.criticalErr = '';
   this.closing = 0;
-  this.tries = 0;
   this.removeAllListeners();
 };
 
@@ -232,7 +230,7 @@ Network.prototype._onMessage = function(enc) {
       this._onClose(peerId);
       break;
     default:
-      this.emit('data', self.copayerForPeer[peerId], payload, isInbound);
+      this.emit('data', self.copayerForPeer[peerId], payload);
   }
 };
 
@@ -314,38 +312,22 @@ Network.prototype.start = function(opts, openCallback) {
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
 
-  var self = this;
-  var setupPeer = function() {
-    if (self.connectedPeers.length > 0) return; // Already connected!
-    if (self.socket) {
-      self.socket.destroy();
-      self.socket.removeAllListeners();
-    }
-
-    if (!self.criticalError && self.tries < self.reconnectAttempts) {
-      self.tries++;
-      self.opts.token = util.sha256(self.peerId).toString('hex');
-      self.socket = io.connect(self.host, {
-        port: self.port
-      });
-      self.socket.emit('subscribe', pubkey);
-      self.socket.emit('sync', ts);
-      self.started = true;
-      self._setupConnectionHandlers(self.socket, copayerId);
-
-      setTimeout(setupPeer, self.retryDelay); // Schedule retry
-      return;
-    }
-    if (self.criticalError && self.criticalError.match(/taken/)) {
-      self.criticalError = ' Looks like you are already connected to this wallet please close all other Copay Wallets '
-    }
-
-    self.emit('serverError', self.criticalError);
-    self.cleanUp();
+  if (this.connectedPeers.length > 0) return; // Already connected!
+  if (this.socket) {
+    this.socket.destroy();
+    this.socket.removeAllListeners();
   }
 
-  this.tries = 0;
-  setupPeer();
+  this.socket = io.connect(this.host, {
+    port: this.port
+  });
+  this.socket.emit('subscribe', this.getKey().public.toString('hex'));
+  this.socket.emit('sync');
+  this.started = true;
+  this._setupConnectionHandlers(this.socket);
+
+  //this.emit('serverError', self.criticalError);
+
 };
 
 Network.prototype.getOnlinePeerIDs = function() {
