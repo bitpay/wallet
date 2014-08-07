@@ -47,13 +47,13 @@
             </div>
             <div class="row" ng-show="!isSetupWalletPage">
               <div class="large-6 medium-6 columns">
-                <label>Select total number of copayers
+                <label>Select total number of copayers (*)
                   <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
                   </select>
                 </label>
               </div>
               <div class="large-6 medium-6 columns">
-                <label>Select required signatures
+                <label>Select required signatures (*)
                   <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
                   </select>
                 </label>
@@ -68,6 +68,7 @@
                 width="50px">
               </div>
             </div>
+            <p class="comment">(*) The limits are imposed by the bitcoin network.</p>
             <div class="text-right">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; Back</a>
               <a ng-show="isSetupWalletPage" class="back-button m20r"
