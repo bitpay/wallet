@@ -56,6 +56,10 @@ angular
       .when('/uri-payment/:data', {
         templateUrl: 'views/uri-payment.html'
       })
+      .when('/warning', {
+        templateUrl: 'views/warning.html',
+        validate: true
+      })
       .otherwise({
         templateUrl: 'views/errors/404.html',
         title: 'Error'
@@ -85,6 +89,9 @@ angular
         }
         if ($rootScope.wallet && !$rootScope.wallet.isReady()) {
           $location.path('/copayers');
+        }
+        if ($rootScope.wallet && $rootScope.wallet.isLocked) {
+          $location.path('/warning');
         }
       }
     });

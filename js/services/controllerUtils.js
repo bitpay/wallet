@@ -17,11 +17,14 @@ angular.module('copayApp.services')
     root.redirIfLogged = function() {
       var w = $rootScope.wallet;
       if (w) {
-        $location.path('addresses');
+        $location.path('receive');
       }
     };
 
     root.logout = function() {
+      if (!$rootScope.wallet.isLocked) {
+        $rootScope.wallet.closeIfOpen();
+      }
       Socket.removeAllListeners();
 
       $rootScope.wallet = null;

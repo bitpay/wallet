@@ -17,7 +17,8 @@
     <div class="off-canvas-wrap">
       <div class="inner-wrap">
 
-        <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet || !$root.wallet.isReady()}">
+        <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet ||
+          !$root.wallet.isReady() || $root.wallet.isLocked}">
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
@@ -39,12 +40,15 @@
         <div notifications="right top"></div>
 
         <div 
-          ng-class="{'sidebar' : $root.wallet && $root.wallet.isReady()}"
+          ng-class="{'sidebar' : $root.wallet && $root.wallet.isReady() &&
+          !$root.wallet.isLocked}"
           ng-include="'views/includes/sidebar.html'" 
           role='navigation'
-          ng-if="$root.wallet && $root.wallet.isReady()"></div>
+          ng-if="$root.wallet && $root.wallet.isReady() &&
+          !$root.wallet.isLocked"></div>
 
-        <section ng-class="{'main' : $root.wallet && $root.wallet.isReady()}" ng-view></section>
+        <section ng-class="{'main' : $root.wallet && $root.wallet.isReady() &&
+          !$root.wallet.isLocked}" ng-view></section>
 
         <a class="exit-off-canvas"></a>
 
