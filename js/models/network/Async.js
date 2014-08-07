@@ -6,7 +6,7 @@ var bitcore = require('bitcore');
 var AuthMessage = bitcore.AuthMessage;
 var util = bitcore.util;
 var extend = require('util')._extend;
-var io = require('socket.io-browserify');
+var io = require('socket.io-client');
 var preconditions = require('preconditions').singleton();
 
 /*
@@ -238,7 +238,6 @@ Network.prototype._setupConnectionHandlers = function() {
   preconditions.checkState(this.socket);
   var self = this;
 
-  alert('setup');
   self.socket.on('connect', function() {
     alert('CONNECTED!');
     self.socket.on('disconnect', function() {
@@ -307,9 +306,8 @@ Network.prototype.start = function(opts, openCallback) {
     this.socket.removeAllListeners();
   }
 
-  this.socket = io.connect(this.host, {
-    port: this.port,
-    reconnection: false
+  this.socket = io.connect(this.host + ':' + this.port, {
+    //reconnection: false,
   });
   this.socket.emit('subscribe', this.getKey().public.toString('hex'));
   this.socket.emit('sync');
