@@ -30,11 +30,11 @@ angular
         templateUrl: 'views/copayers.html',
         validate: true
       })
-      .when('/addresses', {
+      .when('/receive', {
         templateUrl: 'views/addresses.html',
         validate: true
       })
-      .when('/transactions', {
+      .when('/history', {
         templateUrl: 'views/transactions.html',
         validate: true
       })

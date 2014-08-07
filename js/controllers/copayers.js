@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
     }
 
     $scope.goToWallet = function() {
-      $location.path('/addresses');
+      $location.path('/receive');
     };
 
     $scope.deleteWallet = function() {
