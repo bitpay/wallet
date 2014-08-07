@@ -234,7 +234,7 @@ Network.prototype._onMessage = function(enc) {
   }
 };
 
-Network.prototype._setupConnectionHandlers = function() {
+Network.prototype._setupConnectionHandlers = function(cb) {
   preconditions.checkState(this.socket);
   var self = this;
 
@@ -244,6 +244,7 @@ Network.prototype._setupConnectionHandlers = function() {
       alert('DISCONNECTED');
       self.cleanUp();
     });
+    if (typeof cb === 'function') cb();
   });
   self.socket.on('message', self._onMessage);
   self.socket.on('error', self._handleError);
@@ -300,7 +301,10 @@ Network.prototype.start = function(opts, openCallback) {
   if (!this.copayerId)
     this.setCopayerId(opts.copayerId);
 
-  if (this.connectedPeers.length > 0) return; // Already connected!
+  if (this.connectedPeers.length > 0) {
+    // already connected
+    return;
+  }
   if (this.socket) {
     this.socket.destroy();
     this.socket.removeAllListeners();
@@ -309,10 +313,11 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket = io.connect(this.host + ':' + this.port, {
     //reconnection: false,
   });
-  this.socket.emit('subscribe', this.getKey().public.toString('hex'));
+  this._setupConnectionHandlers(openCallback);
+  var pubkey = this.getKey().public.toString('hex');
+  this.socket.emit('subscribe', pubkey);
   this.socket.emit('sync');
   this.started = true;
-  this._setupConnectionHandlers();
 
   //this.emit('serverError', self.criticalError);
 

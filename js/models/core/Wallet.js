@@ -451,10 +451,12 @@ Wallet.prototype.netStart = function(callback) {
   }
 
   net.start(startOpts, function() {
+    alert('start callback!');
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
-      self.scheduleConnect();
+      //self.scheduleConnect(); 
+      // no connection logic for now
       self.emit('txProposalsUpdated');
     }, 10);
   });
