@@ -27,6 +27,9 @@ angular.module('copayApp.directives')
               return value;
             }
 
+            notification.info('Fetching Payment',
+              'Retrieving Payment Request from ' + uri.merchant);
+
             // Payment Protocol URI (BIP-72)
             scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
               var balance = $rootScope.availableBalance;
@@ -50,6 +53,10 @@ angular.module('copayApp.directives')
 
               // XXX There needs to be a better way to do this:
               total = +total / config.unitToSatoshi;
+
+              notification.info('Payment Request',
+                'Server is requesting ' + total + ' ' + config.unitName + '.\n'
+                + 'Message: ' + memo);
 
               // XXX Pretty much all of this code accesses the raw DOM. It's
               // very bad, there's probably a better, more angular-y way to
