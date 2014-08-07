@@ -1,5 +1,12 @@
-<div class="send" data-ng-controller="SendController">
+<div class="send" data-ng-controller="SendController" data-ng-init="loadTxs()">
   <div ng-show='$root.wallet.isReady()'>
+
+    <h1 ng-show="txs.length != 0">Send Proposals</h1>
+    <div class="last-transactions" ng-repeat="tx in txs | paged">
+      <div ng-include="'views/includes/transaction.html'"></div>
+    </div>
+    <div ng-show="txs.length != 0" class="large-12 line-dashed" style="padding: 0;"></div>
+
     <h1>{{title}}</h1>
     <div class="large-6 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>

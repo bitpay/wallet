@@ -194,9 +194,12 @@ describe("Unit: Controllers", function() {
 
       var spy = sinon.spy(scope.wallet, 'createTx');
       var spy2 = sinon.spy(scope.wallet, 'sendTx');
+      scope.loadTxs = sinon.spy();
+
       scope.submitForm(sendForm);
       sinon.assert.callCount(spy, 1);
       sinon.assert.callCount(spy2, 0);
+      sinon.assert.callCount(scope.loadTxs, 1);
     });
 
     it('should create and send a transaction proposal', function() {
@@ -206,10 +209,12 @@ describe("Unit: Controllers", function() {
       scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
       var spy = sinon.spy(scope.wallet, 'createTx');
       var spy2 = sinon.spy(scope.wallet, 'sendTx');
+      scope.loadTxs = sinon.spy();
 
       scope.submitForm(sendForm);
       sinon.assert.callCount(spy, 1);
       sinon.assert.callCount(spy2, 1);
+      sinon.assert.callCount(scope.loadTxs, 1);
     });
 
   });
