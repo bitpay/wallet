@@ -2,6 +2,8 @@
 
 angular.module('copayApp.controllers').controller('SettingsController',
   function($scope, $rootScope, $window, $location) {
+
+    controllerUtils.redirIfLogged();
     $scope.title = 'Settings';
     $scope.networkName = config.networkName;
     $scope.insightHost = config.blockchain.host;

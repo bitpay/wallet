@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('OpenController',
-  function($scope, $rootScope, walletFactory, controllerUtils, Passphrase, notification) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification) {
+    controllerUtils.redirIfLogged();
+
     var cmp = function(o1, o2) {
       var v1 = o1.show.toLowerCase(),
         v2 = o2.show.toLowerCase();

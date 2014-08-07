@@ -1129,4 +1129,10 @@ a.text-warning:hover {color: #FD7262;}
   }
 }
 
+.wide-page {
+  background-color: #2C3E50;
+  margin: 10% 0;
+  padding: 50px;
+}
+
 /*-----------------------------------------------------------------*/
