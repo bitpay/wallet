@@ -55,8 +55,8 @@ angular.module('copayApp.directives')
               total = +total / config.unitToSatoshi;
 
               notification.info('Payment Request',
-                'Server is requesting ' + total + ' ' + config.unitName + '.\n'
-                + 'Message: ' + memo);
+                'Server is requesting ' + total + ' ' + config.unitName + '.'
+                + ' Message: ' + memo);
 
               // XXX Pretty much all of this code accesses the raw DOM. It's
               // very bad, there's probably a better, more angular-y way to
@@ -122,8 +122,6 @@ angular.module('copayApp.directives')
                         sendall.attr('class').replace(' hidden', ''));
                     }
                   }
-                  // TODO: Check paymentRequest expiration,
-                  // delete if beyond expiration date.
                 };
                 scope.$watch('address',scope._resetPayPro);
               }
@@ -148,7 +146,7 @@ angular.module('copayApp.directives')
 
             ctrl.$setValidity('validAddress', true);
 
-            return 'Merchant: '+ uri.merchant;
+            return 'Merchant: ' + uri.merchant;
           };
 
           ctrl.$parsers.unshift(validator);

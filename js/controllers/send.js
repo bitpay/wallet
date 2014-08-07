@@ -80,11 +80,11 @@ angular.module('copayApp.controllers').controller('SendController',
           var message = 'The transaction proposal has been created';
           if (merchantData) {
             if (merchantData.pr.ca) {
-              message += '\nThis payment protocol transaction'
+              message += ' This payment protocol transaction'
                 + ' has been verified through ' + merchantData.pr.ca + '.';
             }
-            message += '\nMessage from server: ' + merchantData.ack.memo;
-            message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
+            message += ' Message from server: ' + merchantData.ack.memo;
+            message += ' For merchant: ' + merchantData.pr.pd.payment_url;
           }
           notification.success('Success!', message);
           $scope.loadTxs();
@@ -94,11 +94,11 @@ angular.module('copayApp.controllers').controller('SendController',
               var message = 'Transaction id: ' + txid;
               if (merchantData) {
                 if (merchantData.pr.ca) {
-                  message += '\nThis payment protocol transaction'
+                  message += ' This payment protocol transaction'
                     + ' has been verified through ' + merchantData.pr.ca + '.';
                 }
-                message += '\nMessage from server: ' + merchantData.ack.memo;
-                message += '\nFor merchant: ' + merchantData.pr.pd.payment_url;
+                message += ' Message from server: ' + merchantData.ack.memo;
+                message += ' For merchant: ' + merchantData.pr.pd.payment_url;
               }
               notification.success('Transaction broadcast', message);
             } else {
@@ -116,6 +116,8 @@ angular.module('copayApp.controllers').controller('SendController',
         uri = copay.HDPath.parseBitcoinURI(address);
       } else if (address.indexOf('Merchant: ') === 0) {
         uri = { merchant: address.split(/\s+/)[1] };
+      } else if (/^https?:\/\//.test(address)) {
+        uri = { merchant: address };
       }
 
       if (uri && uri.merchant) {
