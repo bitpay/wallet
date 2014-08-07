@@ -36,6 +36,7 @@ function TxProposal(opts) {
   this.sentTxid = opts.sentTxid || null;
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
+  this.merchant = opts.merchant || null;
   this._sync();
 }
 
