@@ -28,7 +28,7 @@ angular.module('copayApp.filters', [])
   })
   .filter('limitAddress', function() {
     return function(elements, showAll) {
-      var elements = elements.sort(function(a, b) {
+      elements = elements.sort(function(a, b) {
         return (+b.owned) - (+a.owned);
       });
 

@@ -225,14 +225,15 @@ describe('PublicKeyRing model', function() {
 
   it('should merge backup', function() {
     var w = getCachedW().w;
+    var hasChanged;
 
     w.copayersBackup = ["a", "b"];
-    var hasChanged = w.mergeBackups(["b", "c"]);
+    hasChanged = w.mergeBackups(["b", "c"]);
     w.copayersBackup.length.should.equal(3);
     hasChanged.should.equal(true);
 
     w.copayersBackup = ["a", "b", "c"];
-    var hasChanged = w.mergeBackups(["b", "c"]);
+    hasChanged = w.mergeBackups(["b", "c"]);
     w.copayersBackup.length.should.equal(3);
     hasChanged.should.equal(false);
   });
@@ -348,9 +349,10 @@ describe('PublicKeyRing model', function() {
     var config = {
       networkName: 'livenet',
     };
+    var copayers;
     var w = new PublicKeyRing(config);
     should.exist(w);
-    var copayers = [];
+    copayers = [];
     for (var i = 0; i < 2; i++) {
       w.isComplete().should.equal(false);
       w.addCopayer(getNewEpk());
@@ -361,7 +363,7 @@ describe('PublicKeyRing model', function() {
       id: w.id,
     });
     should.exist(w);
-    var copayers = [];
+    copayers = [];
     for (var i = 0; i < 3; i++) {
       w2.isComplete().should.equal(false);
       w2.addCopayer(getNewEpk());
