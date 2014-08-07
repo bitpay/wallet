@@ -12,146 +12,153 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
-            var uri = copay.HDPath.parseBitcoinURI(value);
+            var uri;
 
-            // Is this a payment protocol URI (BIP-72)?
-            if (uri && uri.merchant) {
-              scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-                var balance = $rootScope.availableBalance;
-                var available = +(balance * config.unitToSatoshi).toFixed(0);
+            if (/^https?:\/\//.test(value)) {
+              uri = { merchant: value };
+            } else {
+              uri = copay.HDPath.parseBitcoinURI(value);
+            }
 
-                if ((err && err.message === 'No unspent outputs.')
-                    || available < +merchantData.total) {
-                  // TODO: Actually display a notification window here
-                  // instead of simply saying the URI is invalid.
-                  ctrl.$setValidity('validAddress', false);
-                  return;
-                }
+            // Regular Address
+            if (!uri || !uri.merchant) {
+              var a = new Address(value);
+              ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
+              return value;
+            }
 
-                if (err) {
-                  if (scope._resetPayPro) scope._resetPayPro();
-                  ctrl.$setValidity('validAddress', false);
-                  return;
-                }
+            // Payment Protocol URI (BIP-72)
+            scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+              var balance = $rootScope.availableBalance;
+              var available = +(balance * config.unitToSatoshi).toFixed(0);
 
-                var expires = new Date(merchantData.pr.pd.expires * 1000);
-                var memo = merchantData.pr.pd.memo;
-                var payment_url = merchantData.pr.pd.payment_url;
-                var total = merchantData.total;
+              if ((err && err.message === 'No unspent outputs.')
+                  || available < +merchantData.total) {
+                // TODO: Actually display a notification window here
+                // instead of simply saying the URI is invalid.
+                ctrl.$setValidity('validAddress', false);
+                return;
+              }
 
-                if (typeof total === 'string') {
-                  total = bignum(total, 10).toBuffer({
-                    endian: 'little',
-                    size: 1
-                  });
-                }
+              if (err) {
+                if (scope._resetPayPro) scope._resetPayPro();
+                ctrl.$setValidity('validAddress', false);
+                return;
+              }
 
-                total = bignum
-                  .fromBuffer(total, {
-                    endian: 'little',
-                    size: 1
-                  })
-                  .toString(10);
+              var expires = new Date(merchantData.pr.pd.expires * 1000);
+              var memo = merchantData.pr.pd.memo;
+              var payment_url = merchantData.pr.pd.payment_url;
+              var total = merchantData.total;
 
-                // XXX There needs to be a better way to do this:
-                total = +total / config.unitToSatoshi;
+              if (typeof total === 'string') {
+                total = bignum(total, 10).toBuffer({
+                  endian: 'little',
+                  size: 1
+                });
+              }
 
-                // XXX Pretty much all of this code accesses the raw DOM. It's
-                // very bad, there's probably a better, more angular-y way to
-                // do things here.
+              total = bignum
+                .fromBuffer(total, {
+                  endian: 'little',
+                  size: 1
+                })
+                .toString(10);
 
-                var address = angular.element(
-                  document.querySelector('input#address'));
+              // XXX There needs to be a better way to do this:
+              total = +total / config.unitToSatoshi;
 
-                var amount = angular.element(
-                  document.querySelector('input#amount'));
-                amount.val(total);
-                if (+merchantData.total !== 0) {
-                  amount.attr('disabled', true);
-                }
+              // XXX Pretty much all of this code accesses the raw DOM. It's
+              // very bad, there's probably a better, more angular-y way to
+              // do things here.
 
-                var sendto = angular.element(document
-                  .querySelector('div.send-note > p[ng-class]:first-of-type'));
-                sendto.html(sendto.html() + '<br><b>Server:</b> ' + memo);
+              var address = angular.element(
+                document.querySelector('input#address'));
 
-                var tamount = angular.element(document
-                  .querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
-                var ca = merchantData.pr.ca
-                  || '<span style="color:red;">Untrusted</span>';
-                tamount.attr('class',
-                  tamount.attr('class').replace(' hidden', ''))
-                tamount.html(total + ' (CA: ' + ca
-                  + '. Expires: '
-                  + expires.toISOString()
-                  + ')');
+              var amount = angular.element(
+                document.querySelector('input#amount'));
+              amount.val(total);
+              if (+merchantData.total !== 0) {
+                amount.attr('disabled', true);
+              }
 
-                var submit = angular.element(
-                  document.querySelector('button[type=submit]'));
-                submit.attr('disabled', false);
+              var sendto = angular.element(document
+                .querySelector('div.send-note > p[ng-class]:first-of-type'));
+              sendto.html(sendto.html() + '<br><b>Server:</b> ' + memo);
 
-                var sendall = angular.element(
-                  document.querySelector('[title="Send all funds"]'));
-                sendall.attr('class', sendall.attr('class') + ' hidden');
+              var tamount = angular.element(document
+                .querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
+              var ca = merchantData.pr.ca
+                || '<span style="color:red;">Untrusted</span>';
+              tamount.attr('class',
+                tamount.attr('class').replace(' hidden', ''))
+              tamount.html(total + ' (CA: ' + ca
+                + '. Expires: '
+                + expires.toISOString()
+                + ')');
 
-                // Reset all the changes from the payment protocol weirdness.
-                // XXX Bad hook. Find a better more angular-y way of doing this.
-                // This will also closure scope every variable above forever.
-                if (!scope._resetPayPro) {
-                  scope._resetPayPro = function() {
-                    var val = address.val();
-                    var uri = copay.HDPath.parseBitcoinURI(val || '');
-                    if (!uri || !uri.merchant) {
-                      if (amount.attr('disabled')) {
-                        amount.val('');
-                        amount.attr('disabled', false);
-                      }
-                      sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
-                      if (!/hidden/.test(tamount.attr('class'))) {
-                        tamount.attr(tamount.attr('class') + ' hidden');
-                      }
-                      if (~tamount.html().indexOf('(CA: ')) {
-                        tamount.html('');
-                      }
-                      if (!submit.attr('disabled')) {
-                        submit.attr('disabled', true);
-                      }
-                      if (/ hidden$/.test(sendall.attr('class'))) {
-                        sendall.attr('class',
-                          sendall.attr('class').replace(' hidden', ''));
-                      }
+              var submit = angular.element(
+                document.querySelector('button[type=submit]'));
+              submit.attr('disabled', false);
+
+              var sendall = angular.element(
+                document.querySelector('[title="Send all funds"]'));
+              sendall.attr('class', sendall.attr('class') + ' hidden');
+
+              // Reset all the changes from the payment protocol weirdness.
+              // XXX Bad hook. Find a better more angular-y way of doing this.
+              // This will also closure scope every variable above forever.
+              if (!scope._resetPayPro) {
+                scope._resetPayPro = function() {
+                  var val = address.val();
+                  var uri = copay.HDPath.parseBitcoinURI(val || '');
+                  if (!uri || !uri.merchant) {
+                    if (amount.attr('disabled')) {
+                      amount.val('');
+                      amount.attr('disabled', false);
                     }
-                    // TODO: Check paymentRequest expiration,
-                    // delete if beyond expiration date.
-                  };
-                  scope.$watch('address',scope._resetPayPro);
-                }
-
-                ctrl.$setValidity('validAddress', true);
-
-                // XXX With PayPro, since amount is already filled in among
-                // other field oddities, the form is always invalid. Make it
-                // valid.
-                scope.sendForm.$valid = true;
-                scope.sendForm.$invalid = false;
-                scope.sendForm.$pristine = true;
-
-                scope.sendForm.address.$valid = true;
-                scope.sendForm.address.$invalid = false;
-                scope.sendForm.address.$pristine = true;
-
-                scope.sendForm.amount.$valid = true;
-                scope.sendForm.amount.$invalid = false;
-                scope.sendForm.amount.$pristine = true;
-              });
+                    sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
+                    if (!/hidden/.test(tamount.attr('class'))) {
+                      tamount.attr(tamount.attr('class') + ' hidden');
+                    }
+                    if (~tamount.html().indexOf('(CA: ')) {
+                      tamount.html('');
+                    }
+                    if (!submit.attr('disabled')) {
+                      submit.attr('disabled', true);
+                    }
+                    if (/ hidden$/.test(sendall.attr('class'))) {
+                      sendall.attr('class',
+                        sendall.attr('class').replace(' hidden', ''));
+                    }
+                  }
+                  // TODO: Check paymentRequest expiration,
+                  // delete if beyond expiration date.
+                };
+                scope.$watch('address',scope._resetPayPro);
+              }
 
               ctrl.$setValidity('validAddress', true);
 
-              return 'Merchant: '+ uri.merchant;
-            }
+              // XXX With PayPro, since amount is already filled in among
+              // other field oddities, the form is always invalid. Make it
+              // valid.
+              scope.sendForm.$valid = true;
+              scope.sendForm.$invalid = false;
+              scope.sendForm.$pristine = true;
 
-            var a = new Address(value);
-            ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
-            return value;
+              scope.sendForm.address.$valid = true;
+              scope.sendForm.address.$invalid = false;
+              scope.sendForm.address.$pristine = true;
+
+              scope.sendForm.amount.$valid = true;
+              scope.sendForm.amount.$invalid = false;
+              scope.sendForm.amount.$pristine = true;
+            });
+
+            ctrl.$setValidity('validAddress', true);
+
+            return 'Merchant: '+ uri.merchant;
           };
 
           ctrl.$parsers.unshift(validator);
