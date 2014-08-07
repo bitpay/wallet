@@ -92,6 +92,27 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
+Wallet.prototype.getIsOpen = function() {
+  return this.storage.getIsOpen(this.id);
+};
+
+Wallet.prototype.setIsOpen = function() {
+  return this.storage.setIsOpen(this.id);
+};
+
+Wallet.prototype.closeIfOpen = function() {
+  this.storage.removeIsOpen(this.id);
+};
+
+Wallet.prototype._checkLocked = function() {
+  if (this.getIsOpen()) {
+    this.isLocked = true;
+  }
+  else {
+    this.setIsOpen();
+  }
+};
+
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
@@ -409,6 +430,9 @@ Wallet.prototype._lockIncomming = function() {
 Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
+
+  this._checkLocked();
+
   net.removeAllListeners();
   net.on('connect', self._handleConnect.bind(self));
   net.on('disconnect', self._handleDisconnect.bind(self));
