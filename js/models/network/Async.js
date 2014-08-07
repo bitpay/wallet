@@ -234,12 +234,6 @@ Network.prototype._onMessage = function(enc) {
   }
 };
 
-Network.prototype._checkAnyPeer = function(msg) {
-  if (this.connectedPeers.length === 1) {
-    this.emit('onlyYou');
-  }
-};
-
 Network.prototype._setupConnectionHandlers = function() {
   preconditions.checkState(this.socket);
   var self = this;
