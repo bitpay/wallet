@@ -75,14 +75,16 @@ angular.module('copayApp.controllers').controller('SidebarController',
     }
 
     $scope.checkIfWarning = function() {
-      if (!$rootScope.wallet.isLocked) {
+      if ($rootScope.wallet && !$rootScope.wallet.isLocked) {
         controllerUtils.redirIfLogged();
       }
     };
 
     $scope.ignoreLocked = function() {
-      $rootScope.wallet.isLocked = false;
-      controllerUtils.redirIfLogged();
+      if ($rootScope.wallet) {
+        $rootScope.wallet.isLocked = false;
+        controllerUtils.redirIfLogged();
+      }
     };
 
   });

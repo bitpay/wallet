@@ -21,10 +21,7 @@ angular.module('copayApp.services')
       }
     };
 
-    root.logout = function() {
-      if (!$rootScope.wallet.isLocked) {
-        $rootScope.wallet.closeIfOpen();
-      }
+    root.logout = function() { 
       Socket.removeAllListeners();
 
       $rootScope.wallet = null;

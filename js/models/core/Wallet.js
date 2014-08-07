@@ -43,6 +43,7 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
+  this.isLocked = false;
 
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
@@ -431,7 +432,6 @@ Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
 
-  this._checkLocked();
 
   net.removeAllListeners();
   net.on('connect', self._handleConnect.bind(self));
@@ -464,6 +464,7 @@ Wallet.prototype.netStart = function(callback) {
       self.scheduleConnect();
       self.emit('txProposalsUpdated');
     }, 10);
+    self._checkLocked();
   });
 };
 
@@ -1017,6 +1018,9 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
+  if (!this.isLocked) {
+    this.closeIfOpen();
+  }
   this.network.disconnect();
 };
 
