@@ -62,13 +62,19 @@ angular.module('copayApp.controllers').controller('SendController',
       var w = $rootScope.wallet;
 
       function done(ntxid, merchantData) {
+        // If user is granted the privilege of choosing
+        // their own amount, add it to the tx.
         if (merchantData && +merchantData.total === 0) {
           var txp = w.txProposals.get(ntxid);
-          txp.builder.tx.outs[0].v = bitcore.Bignum(amount + '', 10).toBuffer({
+          var tx = txp.builder.tx = txp.builder.tx || txp.builder.build();
+          tx.outs[0].v = bitcore.Bignum(amount + '', 10).toBuffer({
+            // XXX This may not work in node due
+            // to the bignum only-big endian bug:
             endian: 'little',
             size: 1
           });
         }
+
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
