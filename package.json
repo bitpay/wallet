@@ -15,7 +15,8 @@
     "mocha-lcov-reporter": "0.0.1",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
-    "sinon": "1.9.1"
+    "sinon": "1.9.1",
+    "socket.io-browserify": "^0.9.6"
   },
   "scripts": {
     "shell": "node shell/scripts/launch.js",
