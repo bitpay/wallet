@@ -51,20 +51,6 @@ angular.module('copayApp.directives')
               var payment_url = merchantData.pr.pd.payment_url;
               var total = merchantData.total;
 
-              if (typeof total === 'string') {
-                total = bignum(total, 10).toBuffer({
-                  endian: 'little',
-                  size: 1
-                });
-              }
-
-              total = bignum
-                .fromBuffer(total, {
-                  endian: 'little',
-                  size: 1
-                })
-                .toString(10);
-
               // XXX There needs to be a better way to do this:
               total = +total / config.unitToSatoshi;
 
