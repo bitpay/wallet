@@ -934,7 +934,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   return this.getUnspent(function(err, unspent) {
     if (options.fetch) {
       if (!unspent || !unspent.length) {
-        return cb(new Error('No unspent outputs.'));
+        return cb(new Error('No unspent outputs available.'));
       }
       self.createPaymentTxSync(options, merchantData, unspent);
       return cb(null, merchantData, pr);

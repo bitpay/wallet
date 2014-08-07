@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope',
-    function($rootScope) {
+  .directive('validAddress', ['$rootScope', 'notification',
+    function($rootScope, notification) {
 
       var bitcore = require('bitcore');
       var Address = bitcore.Address;
@@ -32,17 +32,14 @@ angular.module('copayApp.directives')
               var balance = $rootScope.availableBalance;
               var available = +(balance * config.unitToSatoshi).toFixed(0);
 
-              if ((err && err.message === 'No unspent outputs.')
-                  || available < +merchantData.total) {
-                // TODO: Actually display a notification window here
-                // instead of simply saying the URI is invalid.
-                ctrl.$setValidity('validAddress', false);
-                return;
+              if (merchantData && available < +merchantData.total) {
+                err = new Error('No unspent outputs available.');
               }
 
               if (err) {
                 if (scope._resetPayPro) scope._resetPayPro();
                 ctrl.$setValidity('validAddress', false);
+                notification.error('Error', err.message);
                 return;
               }
 
