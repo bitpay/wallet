@@ -30,4 +30,24 @@
       <span class="btn-copy" clip-copy="copayer.peerId"></span>
     </li>
   </ul>
+  <div class="copayer-list-small-height" ng-repeat="copayer in copayers">
+    <span class="left">
+      <video
+        ng-if="hasVideo(copayer)"
+        peer="{{copayer}}" avatar autoplay
+        ng-class="isConnected(copayer) ? 'online' : 'offline'"
+        ng-src="{{getVideoURL(copayer)}}"></video>
+
+      <img 
+        class="br100 oh no-video m20r"
+        ng-if="!hasVideo(copayer)"
+        ng-class="isConnected(copayer) ? 'online' : 'offline'"
+        src="./img/satoshi.gif"
+        alt="{{copayer}}">
+
+      <!-- <span ng-show="copayer.index == 0">Me</span>
+      <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
+      <span class="btn-copy" clip-copy="copayer.peerId"></span> -->
+    </span>
+  </div>
 </div>

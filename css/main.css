@@ -108,6 +108,10 @@ body, html{
   color: #2C3E50;
 }
 
+header {
+  padding: 15px 20px 5px;
+}
+
 .off-canvas-wrap, .inner-wrap{
     height:100%;   
 }
@@ -437,7 +441,7 @@ a:hover {
 
 .line-sidebar {
   border-top: 1px solid #34495E;
-  margin: 1rem 0;
+  margin: 0.7rem 0;
 }
 
 .line-sidebar-t {
@@ -1122,10 +1126,53 @@ a.text-warning:hover {color: #FD7262;}
 .btn-copy.zeroclipboard-is-hover { color: #000; }
 .btn-copy.zeroclipboard-is-active { opacity: 1; }
 
+.copayer-list-small-height {
+  display: none;
+}
+
 @media only screen and (min-width: 40.063em) {
   dialog.tiny, .reveal-modal.tiny {
     width: 50%;
     margin-left: -25%;
+  }
+}
+
+@media (max-height: 610px) {
+  .copayer-list {
+    display: none;
+  }
+
+  .copayer-list-small-height {
+    display: block;
+  }
+
+  .sidebar .copayer-list-small-height {
+    list-style-type: none;
+    padding:0; margin:0;
+  }
+
+  .sidebar .copayer-list-small-height li {
+    margin-top: 15px;
+    font-weight: 100;
+    font-size: 12px;
+    color: #C9C9C9;
+  }
+
+  .sidebar .copayer-list-small-height img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .copayers {
+    padding: 10px 20px;
+  }
+
+  .side-bar h3 {
+    margin-top: 0;
+  }
+
+  .side-nav li {
+    line-height: 30px;
   }
 }
 
