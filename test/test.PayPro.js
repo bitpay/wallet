@@ -252,17 +252,6 @@ describe('PayPro (in Wallet) model', function() {
           output.get('script').buffer))
       };
 
-      // little endian
-      // var v = new Buffer(8);
-      // v[0] = (amount.low >> 0) & 0xff;
-      // v[1] = (amount.low >> 8) & 0xff;
-      // v[2] = (amount.low >> 16) & 0xff;
-      // v[3] = (amount.low >> 24) & 0xff;
-      // v[4] = (amount.high >> 0) & 0xff;
-      // v[5] = (amount.high >> 8) & 0xff;
-      // v[6] = (amount.high >> 16) & 0xff;
-      // v[7] = (amount.high >> 24) & 0xff;
-
       // big endian
       var v = new Buffer(8);
       v[0] = (amount.high >> 24) & 0xff;
@@ -283,15 +272,10 @@ describe('PayPro (in Wallet) model', function() {
         amountSatStr: bitcore.Bignum.fromBuffer(v, {
           // XXX for some reason, endian is ALWAYS 'big'
           // in node (in the browser it behaves correctly)
-          // endian: 'little',
           endian: 'big',
           size: 1
         }).toString(10)
       });
-
-      console.log('Output 1:');
-      console.log('Buffer: ' + v.toString('hex'));
-      console.log(outs[outs.length - 1]);
     });
 
     var b = new bitcore.TransactionBuilder(opts)
@@ -336,13 +320,6 @@ describe('PayPro (in Wallet) model', function() {
         endian: 'big',
         size: 1
       }));
-
-      // XXX potential problem: bignum seems bugged in node - tx outputs use
-      // little endian, but fromBuffer(endian=little) ends up being big endian
-      // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-      //   endian: 'little',
-      //   size: 1
-      // }));
     }, bitcore.Bignum('0', 10));
 
     var rpo = new PayPro();
@@ -435,13 +412,6 @@ describe('PayPro (in Wallet) model', function() {
           endian: 'big',
           size: 1
         }));
-
-        // XXX potential problem: bignum seems bugged in node - tx outputs use
-        // little endian, but fromBuffer(endian=little) ends up being big endian
-        // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-        //   endian: 'little',
-        //   size: 1
-        // }));
       }, bitcore.Bignum('0', 10));
 
       ackTotal.toString(10).should.equal(total.toString(10));
@@ -531,17 +501,6 @@ describe('PayPro (in Wallet) model', function() {
           output.get('script').buffer))
       };
 
-      // little endian
-      // var v = new Buffer(8);
-      // v[0] = (amount.low >> 0) & 0xff;
-      // v[1] = (amount.low >> 8) & 0xff;
-      // v[2] = (amount.low >> 16) & 0xff;
-      // v[3] = (amount.low >> 24) & 0xff;
-      // v[4] = (amount.high >> 0) & 0xff;
-      // v[5] = (amount.high >> 8) & 0xff;
-      // v[6] = (amount.high >> 16) & 0xff;
-      // v[7] = (amount.high >> 24) & 0xff;
-
       // big endian
       var v = new Buffer(8);
       v[0] = (amount.high >> 24) & 0xff;
@@ -562,15 +521,10 @@ describe('PayPro (in Wallet) model', function() {
         amountSatStr: bitcore.Bignum.fromBuffer(v, {
           // XXX for some reason, endian is ALWAYS 'big'
           // in node (in the browser it behaves correctly)
-          // endian: 'little',
           endian: 'big',
           size: 1
         }).toString(10)
       });
-
-      console.log('Output 2:');
-      console.log('Buffer: ' + v.toString('hex'));
-      console.log(outs[outs.length - 1]);
     });
 
     var b = new bitcore.TransactionBuilder(opts)
@@ -615,13 +569,6 @@ describe('PayPro (in Wallet) model', function() {
         endian: 'big',
         size: 1
       }));
-
-      // XXX potential problem: bignum seems bugged in node - tx outputs use
-      // little endian, but fromBuffer(endian=little) ends up being big endian
-      // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-      //   endian: 'little',
-      //   size: 1
-      // }));
     }, bitcore.Bignum('0', 10));
 
     var rpo = new PayPro();
@@ -714,13 +661,6 @@ describe('PayPro (in Wallet) model', function() {
           endian: 'big',
           size: 1
         }));
-
-        // XXX potential problem: bignum seems bugged in node - tx outputs use
-        // little endian, but fromBuffer(endian=little) ends up being big endian
-        // return total.add(bitcore.Bignum.fromBuffer(tx.outs[i].v, {
-        //   endian: 'little',
-        //   size: 1
-        // }));
       }, bitcore.Bignum('0', 10));
 
       ackTotal.toString(10).should.equal(total.toString(10));
