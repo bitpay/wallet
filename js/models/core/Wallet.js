@@ -1062,14 +1062,14 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     data = PayPro.PaymentACK.decode(data);
     var ack = new PayPro();
     ack = ack.makePaymentACK(data);
-    return self.receivePaymentRequestACK(tx, txp, ack, cb);
+    return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
   })
   .error(function(data, status, headers, config) {
     return cb(new Error('Status: ' + JSON.stringify(status)));
   });
 };
 
-Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
+Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
   var self = this;
 
   var payment = ack.get('payment');
@@ -1082,10 +1082,19 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
   var pay = new PayPro();
   payment = pay.makePayment(payment);
 
+  txp.merchant.ack = {
+    memo: memo
+  };
+
   var tx = payment.message.transactions[0];
 
   if (!tx) {
-    return cb();
+    this.log('Sending to server was not met with a returned tx.');
+    return this._checkSentTx(ntxid, function(txid) {
+      self.log('[Wallet.js.1048:txid:%s]', txid);
+      if (txid) self.store();
+      return cb(txid, txp.merchant);
+    });
   }
 
   if (tx.buffer) {
@@ -1096,11 +1105,14 @@ Wallet.prototype.receivePaymentRequestACK = function(tx, txp, ack, cb) {
     tx = ptx;
   }
 
-  txp.merchant.ack = {
-    memo: memo
-  };
-
   var txid = tx.getHash().toString('hex');
+  var txHex = tx.serialize().toString('hex');
+  this.log('Raw transaction: ', txHex);
+  this.log('BITCOIND txid:', txid);
+  this.txProposals.get(ntxid).setSent(txid);
+  this.sendTxProposal(ntxid);
+  this.store();
+
   return cb(txid, txp.merchant);
 };
 
