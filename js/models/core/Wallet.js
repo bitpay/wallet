@@ -987,13 +987,6 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
         endian: 'big',
         size: 1
       }));
-
-      // XXX potential problem: bignum seems bugged in node - tx outputs use
-      // little endian, but fromBuffer(endian=little) ends up being big endian
-      // return total.add(bignum.fromBuffer(tx.outs[i].v, {
-      //   endian: 'little',
-      //   size: 1
-      // }));
     }, bignum('0', 10));
 
     var rpo = new PayPro();
