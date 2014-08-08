@@ -40,108 +40,51 @@ angular.module('copayApp.directives')
               }
 
               if (err) {
-                if (scope._resetPayPro) scope._resetPayPro();
-                ctrl.$setValidity('validAddress', false);
-                notification.error('Error', err.message);
+                scope.sendForm.address.$isValid = false;
+                notification.error('Error', err.message || 'Bad payment server.');
                 return;
               }
 
-              var expires = new Date(merchantData.pr.pd.expires * 1000);
-              var memo = merchantData.pr.pd.memo;
-              var payment_url = merchantData.pr.pd.payment_url;
-              var total = merchantData.total;
+              merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
+              merchantData.expiration = new Date(
+                merchantData.pr.pd.expires * 1000).toISOString();
 
-              // XXX There needs to be a better way to do this:
-              total = +total / config.unitToSatoshi;
+              $rootScope.merchant = merchantData;
+
+              scope.sendForm.address.$isValid = true;
+
+              scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
+              scope.sendForm.amount.$render();
+              scope.sendForm.amount.$isValid = true;
+
+              // If the address changes to a non-payment-protocol one,
+              // delete the `merchant` property from the scope.
+              var unregister = scope.$watch('address', function() {
+                var val = scope.sendForm.address.$viewValue || '';
+                var uri = copay.HDPath.parseBitcoinURI(val);
+                if (!uri || !uri.merchant) {
+                  delete $rootScope.merchant;
+                  scope.sendForm.amount.$setViewValue('');
+                  scope.sendForm.amount.$render();
+                  unregister();
+                  if ($rootScope.$$phase !== '$apply'
+                      && $rootScope.$$phase !== '$digest') {
+                    $rootScope.$apply();
+                  }
+                }
+              });
+
+              if ($rootScope.$$phase !== '$apply'
+                  && $rootScope.$$phase !== '$digest') {
+                $rootScope.$apply();
+              }
 
               notification.info('Payment Request',
-                'Server is requesting ' + total + ' ' + config.unitName + '.'
-                + ' Message: ' + memo);
-
-              // XXX Pretty much all of this code accesses the raw DOM. It's
-              // very bad, there's probably a better, more angular-y way to
-              // do things here.
-
-              var address = angular.element(
-                document.querySelector('input#address'));
-
-              var amount = angular.element(
-                document.querySelector('input#amount'));
-              amount.val(total);
-              if (+merchantData.total !== 0) {
-                amount.attr('disabled', true);
-              }
-
-              var sendto = angular.element(document
-                .querySelector('div.send-note > p[ng-class]:first-of-type'));
-              sendto.html(sendto.html() + '<br><b>Server:</b> ' + memo);
-
-              var tamount = angular.element(document
-                .querySelector('div.send-note > p[ng-class]:nth-of-type(2)'));
-              var ca = merchantData.pr.ca
-                || '<span style="color:red;">Untrusted</span>';
-              tamount.attr('class',
-                tamount.attr('class').replace(' hidden', ''))
-              tamount.html(total + ' (CA: ' + ca
-                + '. Expires: '
-                + expires.toISOString()
-                + ')');
-
-              var submit = angular.element(
-                document.querySelector('button[type=submit]'));
-              submit.attr('disabled', false);
-
-              var sendall = angular.element(
-                document.querySelector('[title="Send all funds"]'));
-              sendall.attr('class', sendall.attr('class') + ' hidden');
-
-              // Reset all the changes from the payment protocol weirdness.
-              // XXX Bad hook. Find a better more angular-y way of doing this.
-              // This will also closure scope every variable above forever.
-              if (!scope._resetPayPro) {
-                scope._resetPayPro = function() {
-                  var val = address.val();
-                  var uri = copay.HDPath.parseBitcoinURI(val || '');
-                  if (!uri || !uri.merchant) {
-                    if (amount.attr('disabled')) {
-                      amount.val('');
-                      amount.attr('disabled', false);
-                    }
-                    sendto.html(sendto.html().replace(/<br><b>Server:.*$/, ''));
-                    if (!/hidden/.test(tamount.attr('class'))) {
-                      tamount.attr(tamount.attr('class') + ' hidden');
-                    }
-                    if (~tamount.html().indexOf('(CA: ')) {
-                      tamount.html('');
-                    }
-                    if (!submit.attr('disabled')) {
-                      submit.attr('disabled', true);
-                    }
-                    if (/ hidden$/.test(sendall.attr('class'))) {
-                      sendall.attr('class',
-                        sendall.attr('class').replace(' hidden', ''));
-                    }
-                  }
-                };
-                scope.$watch('address',scope._resetPayPro);
-              }
-
-              ctrl.$setValidity('validAddress', true);
-
-              // XXX With PayPro, since amount is already filled in among
-              // other field oddities, the form is always invalid. Make it
-              // valid.
-              scope.sendForm.$valid = true;
-              scope.sendForm.$invalid = false;
-              scope.sendForm.$pristine = true;
-
-              scope.sendForm.address.$valid = true;
-              scope.sendForm.address.$invalid = false;
-              scope.sendForm.address.$pristine = true;
-
-              scope.sendForm.amount.$valid = true;
-              scope.sendForm.amount.$invalid = false;
-              scope.sendForm.amount.$pristine = true;
+                'Server is requesting '
+                + merchantData.unitTotal + ' '
+                + config.unitName + '.'
+                + ' Message: '
+                + merchantData.pr.pd.memo);
             });
 
             ctrl.$setValidity('validAddress', true);

@@ -64,7 +64,8 @@
                 <small ng-show="notEnoughAmount" class="has-error">Insufficient funds</small>
               </label>
               <div class="small-9 columns">
-                <input type="number" id="amount" ng-disabled="loading"
+                <input type="number" id="amount"
+                ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0)"
                 name="amount" placeholder="Amount" ng-model="amount"
                 min="0.0001" max="10000000000" enough-amount required
                 autocomplete="off"
@@ -72,10 +73,10 @@
                 <small class="icon-input" ng-show="!sendForm.amount.$invalid && amount"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount"><i class="fi-x"></i></small>
                 <a class="small input-note" title="Send all funds"
-                  ng-show="$root.availableBalance > 0" 
+                  ng-show="$root.availableBalance > 0 && (!$root.merchant || +$root.merchant.total === 0)"
                   ng-click="topAmount(sendForm)">
                   Use all funds ({{getAvailableAmount()}} {{$root.unitName}})
-                </a>                      
+                </a>
               </div>
               <div class="small-3 columns">
                 <span class="postfix">{{$root.unitName}}</span>
@@ -114,14 +115,23 @@
         <h6>Send to</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}">
         {{address}}&nbsp;
+        <span ng-show="!!$root.merchant" style="display:block;">Server: {{$root.merchant.pr.pd.memo}}</span>
         </p>
         <h6>Total amount for this transaction:</h6>
-        <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
+        <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}" ng-hide="!!$root.merchant">
         <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
         <small>
           {{ ((amount + defaultFee) * unitToBtc)|noFractionNumber:8}} BTC <br/>
           Including fee of {{defaultFee|noFractionNumber}} {{$root.unitName}}
         </small>
+        </p>
+        <p class="text-gray" ng-show="!!$root.merchant">
+          <b>{{amount + defaultFee | noFractionNumber}}</b> {{$root.unitName}}<br>
+          CA:
+            <span ng-show="!!$root.merchant.pr.ca">{{$root.merchant.pr.ca}}</span>
+            <span ng-show="!$root.merchant.pr.ca" style="color:red;weight:bold;">Untrusted</span>
+          <br>
+          Expires: {{$root.merchant.expiration}}
         </p>
         <div ng-show="wallet.isShared()">
         <h6>Note</h6>
@@ -144,8 +154,8 @@
           </tr>
         </thead>
         <tbody>
-        <tr 
-          ng-repeat="(addr, info) in $root.wallet.addressBook" 
+        <tr
+          ng-repeat="(addr, info) in $root.wallet.addressBook"
           ng-class="{'addressbook-disabled': info.hidden}">
           <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
           <td class="ellipsis">{{addr}} <span class="btn-copy" clip-copy="addr"></span></td>
