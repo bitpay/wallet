@@ -67,11 +67,7 @@ HDPath.parseBitcoinURI = function(uri) {
     var i = 0;
     for (; i < parts.length; i++) {
       part = parts[i].split('=');
-      if (part[0] === '') {
-        data[part[1]] = part[1];
-      } else {
-        data[part[0]] = decodeURIComponent(part[1]);
-      }
+      data[part[0]] = decodeURIComponent(part[1]);
     }
     ret.amount = parseFloat(data.amount);
     ret.message = data.message;
