@@ -728,7 +728,7 @@ describe('PayPro (in Wallet) model', function() {
     }, function(ntxid, merchantData) {
       should.exist(ntxid);
       should.exist(merchantData);
-      if (w.totalCopayers > 1) {
+      if (w.isShared()) {
         return done();
       } else {
         w.sendPaymentTx(ntxid, { memo: memo }, function(txid, merchantData) {
@@ -755,7 +755,7 @@ describe('PayPro (in Wallet) model', function() {
     }
 
     w.createTx(uri, commentText, function(ntxid, merchantData) {
-      if (w.totalCopayers > 1) {
+      if (w.isShared()) {
         should.exist(ntxid);
         should.exist(merchantData);
         return done();
@@ -776,7 +776,7 @@ describe('PayPro (in Wallet) model', function() {
     var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
     var commentText = 'Hello, server. I\'d like to make a payment.';
     w.createTx(address, commentText, function(ntxid, merchantData) {
-      if (w.totalCopayers > 1) {
+      if (w.isShared()) {
         should.exist(ntxid);
         should.exist(merchantData);
         return done();
