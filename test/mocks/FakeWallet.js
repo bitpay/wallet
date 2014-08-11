@@ -1,3 +1,6 @@
+var Wallet = require('../../js/models/core/Wallet');
+
+
 var FakeWallet = function() {
   this.id = 'testID';
   this.balance = 10000;
@@ -66,10 +69,7 @@ FakeWallet.prototype.fetchPaymentTx = function(opts, cb) {
 };
 
 
-FakeWallet.prototype.createPaymentTx = function() {
-
-};
-
+FakeWallet.prototype.createPaymentTx = Wallet.prototype.createPaymentTx;
 
 
 FakeWallet.prototype.getBalance = function(cb) {
