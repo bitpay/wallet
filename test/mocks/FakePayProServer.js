@@ -210,11 +210,13 @@ function startServer(cb) {
 
         return cb(null, res, res.body);
       },
+    },
 
       /**
        * Receive Payment
        */
 
+    POST: {
       '/-/pay': function(req, cb) {
         var body = req.body;
 
