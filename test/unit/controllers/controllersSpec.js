@@ -153,6 +153,7 @@ describe("Unit: Controllers", function() {
       scope.$digest();
       form = scope.form;
       sendForm = scope.form2;
+      scope.sendForm = sendForm;
     }));
 
     it('should have a SendController controller', function() {
