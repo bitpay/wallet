@@ -115,28 +115,38 @@
         <h6>Send to</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}">
         {{address}}&nbsp;
-        <span ng-show="!!$root.merchant" style="display:block;">Server: {{$root.merchant.pr.pd.memo}}</span>
         </p>
         <h6>Total amount for this transaction:</h6>
-        <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}" ng-hide="!!$root.merchant">
+        <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
         <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
         <small>
           {{ ((amount + defaultFee) * unitToBtc)|noFractionNumber:8}} BTC <br/>
           Including fee of {{defaultFee|noFractionNumber}} {{$root.unitName}}
         </small>
         </p>
-        <p class="text-gray" ng-show="!!$root.merchant">
-          <b>{{amount + defaultFee | noFractionNumber}}</b> {{$root.unitName}}<br>
-          CA:
+        <div ng-show="wallet.isShared()">
+          <h6>Note</h6>
+          <p ng-class="{'hidden': !commentText}">{{commentText}}</p>
+        </div>
+        <div ng-show="!!$root.merchant">
+          <h6>Merchant Data:</h6>
+          <p class="text-gray">
+            Note: This is a payment protocol transaction.
+          </p>
+          <h6>Server Says:</h6>
+          <p class="text-gray">
+            {{$root.merchant.pr.pd.memo}}
+          </p>
+          <h6>Certificate:</h6>
+          <p class="text-gray">
             <span ng-show="!!$root.merchant.pr.ca">{{$root.merchant.pr.ca}}</span>
             <span ng-show="!$root.merchant.pr.ca" style="color:red;weight:bold;">Untrusted</span>
-          <br>
-          Expires: {{$root.merchant.expiration}}
-        </p>
-        <div ng-show="wallet.isShared()">
-        <h6>Note</h6>
-        <p ng-class="{'hidden': !commentText}">{{commentText}}</p>
-      </div>
+          </p>
+          <h6>Payment Expiration:</h6>
+          <p class="text-gray">
+            {{$root.merchant.expiration}}
+          </p>
+        </div>
       </div>
     </div>
 
