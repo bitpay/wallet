@@ -3,6 +3,7 @@
 var is_browser = typeof process == 'undefined'
   || typeof process.versions === 'undefined';
 var bitcore = bitcore || require('bitcore');
+var Buffer = bitcore.Buffer;
 var PayPro = bitcore.PayPro;
 var Wallet = require('../../js/models/core/Wallet');
 
