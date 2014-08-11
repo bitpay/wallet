@@ -60,17 +60,23 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Wallet', {
     expose: '../js/models/core/Wallet'
   });
+  b.require('./js/models/core/Wallet', {
+    expose: '../../js/models/core/Wallet'
+  });
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
+  });
+  b.require('./test/mocks/FakePayProServer', {
+    expose: './mocks/FakePayProServer'
+  });
+  b.require('./test/mocks/FakePayProServer', {
+    expose: '../../mocks/FakePayProServer'
   });
   b.require('./test/mocks/FakeBlockchain', {
     expose: './mocks/FakeBlockchain'
   });
   b.require('./test/mocks/FakeLocalStorage', {
     expose: './mocks/FakeLocalStorage'
-  });
-  b.require('./js/models/core/Wallet', {
-    expose: '../js/models/core/Wallet'
   });
   b.require('./test/mocks/FakeNetwork', {
     expose: './mocks/FakeNetwork'
