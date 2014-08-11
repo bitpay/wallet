@@ -804,8 +804,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     method: options.method || 'POST',
     url: options.uri,
     headers: {
-      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
-        + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
+      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE,
       'Content-Type': 'application/octet-stream'
       // XHR does not allow this:
       // 'Content-Length': '0'
@@ -1046,8 +1045,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     url: txp.merchant.pr.pd.payment_url,
     headers: {
       // BIP-71
-      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
-        + ', ' + PayPro.PAYMENT_ACK_CONTENT_TYPE,
+      'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
       'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
       // XHR does not allow these:
       // 'Content-Length': (pay.byteLength || pay.length) + '',
