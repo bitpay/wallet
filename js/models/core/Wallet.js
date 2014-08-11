@@ -804,10 +804,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     method: options.method || 'POST',
     url: options.uri,
     headers: {
-      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE,
-      'Content-Type': 'application/octet-stream'
-      // XHR does not allow this:
-      // 'Content-Length': '0'
+      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
     },
     responseType: 'arraybuffer'
   })
