@@ -229,7 +229,7 @@ describe("Unit: Controllers", function() {
       });
     });
 
-    it('should create a payment protocol transaction proposal', function() {
+    it('#create a payment protocol transaction proposal', function() {
       var uri = 'bitcoin:1JqniWpWNA6Yvdivg3y9izLidETnurxRQm?amount=0.00001000&r=https://localhost:8080/-/request';
       sendForm.address.$setViewValue(uri);
       sendForm.amount.$setViewValue(1000);
@@ -242,7 +242,7 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(spy2, 0);
     });
 
-    it('should create and send a payment protocol transaction proposal', function() {
+    it('#create and send a payment protocol transaction proposal', function() {
       var uri = 'bitcoin:1JqniWpWNA6Yvdivg3y9izLidETnurxRQm?amount=0.00001000&r=https://localhost:8080/-/request';
       sendForm.address.$setViewValue(uri);
       sendForm.amount.$setViewValue(1000);
