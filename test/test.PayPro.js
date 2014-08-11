@@ -93,18 +93,6 @@ describe('PayPro (in Wallet) model', function() {
     return new Wallet(c);
   }
 
-  var cachedW = null;
-  var cachedWobj = null;
-  var cachedCreateW = function() {
-    if (!cachedW) {
-      cachedW = createW();
-      cachedWobj = cachedW.toObj();
-      cachedWobj.opts.reconnectDelay = 100;
-    }
-    var w = Wallet.fromObj(cachedWobj, cachedW.storage, cachedW.network, cachedW.blockchain);
-    return w;
-  };
-
   var unspentTest = [{
     "address": "dummy",
     "scriptPubKey": "dummy",
