@@ -31,7 +31,7 @@
     </li>
   </ul>
   <div class="copayer-list-small-height" ng-repeat="copayer in copayers">
-    <span class="left">
+    <span class="left" class="has-tip" tooltip-placement="top" tooltip="{{copayer.nick}}">
       <video
         ng-if="hasVideo(copayer)"
         peer="{{copayer}}" avatar autoplay
