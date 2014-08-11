@@ -101,7 +101,7 @@ function startServer(cb) {
   var old = Wallet.request;
 
   var server = {
-    POST: {
+    GET: {
 
       /**
        * Receive "I want to pay"

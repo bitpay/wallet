@@ -182,7 +182,7 @@ describe('PayPro (in Wallet) model', function() {
       req.headers[key.toLowerCase()] = req.headers[key];
     });
 
-    server.POST['/-/request'](req, function(err, res, body) {
+    server.GET['/-/request'](req, function(err, res, body) {
       var data = PayPro.PaymentRequest.decode(body);
       pr = new PayPro();
       pr = pr.makePaymentRequest(data);
@@ -431,7 +431,7 @@ describe('PayPro (in Wallet) model', function() {
       req.headers[key.toLowerCase()] = req.headers[key];
     });
 
-    server.POST['/-/request'](req, function(err, res, body) {
+    server.GET['/-/request'](req, function(err, res, body) {
       var data = PayPro.PaymentRequest.decode(body);
       pr = new PayPro();
       pr = pr.makePaymentRequest(data);
