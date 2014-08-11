@@ -225,15 +225,15 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)
-        .respond([{
-          name: "v100.1.6",
-          zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
-          tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
-          commit: {
-            sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
-            url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
-          }
-        }]);
+      .respond([{
+        name: "v100.1.6",
+        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+        commit: {
+          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+        }
+      }]);
     }));
 
     var rootScope;
@@ -375,6 +375,22 @@ describe("Unit: Controllers", function() {
       });
     });
   });
+
+  describe('Settings Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('SettingsController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
+    });
+  });
+
+
 
   describe('Join Controller', function() {
     var what;
