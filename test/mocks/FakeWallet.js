@@ -53,7 +53,17 @@ FakeWallet.prototype.isShared = function() {
 
 FakeWallet.prototype.isReady = function() {
   return true;
-}
+};
+
+FakeWallet.prototype.fetchPaymentTx = function() {
+
+};
+
+
+FakeWallet.prototype.createPaymentTx = function() {
+
+};
+
 
 
 FakeWallet.prototype.getBalance = function(cb) {
