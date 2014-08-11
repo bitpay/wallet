@@ -801,7 +801,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
   }
 
   return Wallet.request({
-    method: options.method || 'POST',
+    method: 'GET',
     url: options.uri,
     headers: {
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
