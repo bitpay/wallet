@@ -55,8 +55,14 @@ FakeWallet.prototype.isReady = function() {
   return true;
 };
 
-FakeWallet.prototype.fetchPaymentTx = function() {
-
+FakeWallet.prototype.fetchPaymentTx = function(opts, cb) {
+  cb(null, {
+    pr: {
+      pd: {
+        expires: 12
+      }
+    }
+  });
 };
 
 
