@@ -1,26 +1,26 @@
-<div class="wide-page" ng-controller="SidebarController"
-  ng-init="checkIfWarning()">
+<div class="wide-page" ng-controller="WarningController"
+  ng-init="checkLock()">
   <div class="text-center">
     <img src="img/logo-negative-beta.svg" alt="Copay">
     <div class="text-white" ng-include="'views/includes/version.html'"></div>
   </div>
   <h1 class="text-center text-warning">Warning!</h1>
   <h3 class="text-center text-white">
-    This wallet appear to be open on an other tab at your browser. Are you sure
-    you want to proceed? (*)
+    This wallet appears to be currently open.
+    <br>
+    Opening the wallet in multiple browser tabs could lead to unexpected results
   </h3>
   <div class="text-center m30v large-12 columns">
     <div class="row">
-      <div class="large-6 medium-6 small-6 columns text-center">
-        <a href class="button gray" ng-click="signout()">No, I am not sure.</a> 
-      </div>
-      <div class="large-6 columns medium-6 small-6 text-center">
-        <a href class="button warning" ng-click="ignoreLocked()">I am. Go!</a> 
+      <div class="large-12 columns medium-12 small-12 text-center">
+        <a href class="button sucess" ng-click="signout()">Go back</a> 
+        <br>
+        <br>
+        <a href ng-click="ignoreLock()">Continue anyways</a> 
       </div>
     </div>
   </div>
   <div class="text-center text-gray small cb">
-    (*) Opening the wallet in multiple tabs could lead to unexpected results
   </div>
 </div>
 

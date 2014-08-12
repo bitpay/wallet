@@ -225,15 +225,15 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)
-        .respond([{
-          name: "v100.1.6",
-          zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
-          tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
-          commit: {
-            sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
-            url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
-          }
-        }]);
+      .respond([{
+        name: "v100.1.6",
+        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+        commit: {
+          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+        }
+      }]);
     }));
 
     var rootScope;
@@ -301,11 +301,6 @@ describe("Unit: Controllers", function() {
       var n = 5;
       var array = scope.getNumber(n);
       expect(array.length).equal(n);
-    });
-
-    it('should ignore if wallet is locked', function() {
-      scope.ignoreLocked();
-      expect(rootScope.wallet.isLocked).equal(false);
     });
 
   });
@@ -425,6 +420,20 @@ describe("Unit: Controllers", function() {
       scope.address.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
       scope.amount.should.equal(0.1);
       scope.message.should.equal('a bitcoin donation');
+    });
+  });
+
+  describe('Warning Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('WarningController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
     });
   });
 

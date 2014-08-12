@@ -14,8 +14,8 @@ function Storage(opts) {
   if (opts.localStorage) {
     this.localStorage = opts.localStorage;
   } else if (localStorage) {
-  this.localStorage = localStorage;
-}
+    this.localStorage = localStorage;
+  }
 }
 
 var pps = {};
@@ -180,16 +180,16 @@ Storage.prototype.getLastOpened = function() {
   return this.getGlobal('lastOpened');
 }
 
-Storage.prototype.setIsOpen = function(walletId) {
-  this.setGlobal(this._key(walletId, 'isOpen'), true);
+Storage.prototype.setLock = function(walletId) {
+  this.setGlobal(this._key(walletId, 'Lock'), true);
 }
 
-Storage.prototype.getIsOpen = function(walletId) {
-  return this.getGlobal(this._key(walletId, 'isOpen'));
+Storage.prototype.getLock = function(walletId) {
+  return this.getGlobal(this._key(walletId, 'Lock'));
 }
 
-Storage.prototype.removeIsOpen = function(walletId) {
-  this.localStorage.removeItem(this._key(walletId, 'isOpen'));
+Storage.prototype.removeLock = function(walletId) {
+  this.removeGlobal(this._key(walletId, 'Lock'));
 }
 
 //obj contains keys to be set
