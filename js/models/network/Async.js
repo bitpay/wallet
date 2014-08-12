@@ -196,14 +196,12 @@ Network.prototype._onMessage = function(enc) {
     var payload = decoded.payload;
   } catch (e) {
     this._deletePeer(sender);
-    alert('quit 1');
     return;
   }
 
 
   if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
     this._deletePeer(sender);
-    alert('quit 2');
     return;
   }
 
@@ -213,7 +211,6 @@ Network.prototype._onMessage = function(enc) {
   /*
   if (!this.copayerForPeer[sender] || (isInbound && !this.isInboundPeerAuth[sender])) {
     this._deletePeer(sender);
-    alert('quit 3');
     return;
   }
   */

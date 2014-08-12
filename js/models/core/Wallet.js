@@ -318,8 +318,6 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
-  alert('data '+JSON.stringify(data));
-
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId);
@@ -358,6 +356,7 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleConnect = function(newCopayerId) {
+  alert(newCopayerId);
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
