@@ -65,7 +65,7 @@ n=5
 node launch.js $n &
 ```
 
-To require Copay as a module for use within you application:
+To require Copay as a module for use within your application:
 
 ```js
 require('copay').start(3000, function(location) {
