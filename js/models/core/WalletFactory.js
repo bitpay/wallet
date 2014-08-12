@@ -255,7 +255,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 
   self.network.start(opts, function() {
-    self.network.connectTo(s.pubKey);
+    self.network.greet(s.pubKey);
 
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {

@@ -16,11 +16,6 @@ describe('Network / Async', function() {
 
   describe('#Async constructor', function() {
 
-    it('should set reconnect attempts', function() {
-      var n = new Async();
-      n.reconnectAttempts.should.equal(3);
-    });
-
     it('should call cleanUp', function() {
       var save = Async.prototype.cleanUp;
       Async.prototype.cleanUp = sinon.spy();
@@ -52,7 +47,6 @@ describe('Network / Async', function() {
       Async.prototype.removeAllListeners = save;
     });
   });
-
 
   describe('#send', function() {
 
@@ -208,7 +202,9 @@ describe('Network / Async', function() {
       var messagestr = JSON.stringify(message);
       var messagebuf = new Buffer(messagestr);
 
-      var opts = {nonce: new Buffer('0000000000000001', 'hex')}; //message send with new nonce
+      var opts = {
+        nonce: new Buffer('0000000000000001', 'hex')
+      }; //message send with new nonce
       var encoded = n._encode(key2.public, key1, messagebuf, opts);
       var encodedstr = JSON.stringify(encoded);
       var encodeduint = new Buffer(encodedstr);
@@ -236,7 +232,9 @@ describe('Network / Async', function() {
       var messagestr = JSON.stringify(message);
       var messagebuf = new Buffer(messagestr);
 
-      var opts = {nonce: new Buffer('5000000000000002', 'hex')}; //message send with new nonce
+      var opts = {
+        nonce: new Buffer('5000000000000002', 'hex')
+      }; //message send with new nonce
       var encoded = n._encode(key2.public, key1, messagebuf, opts);
       var encodedstr = JSON.stringify(encoded);
       var encodeduint = new Buffer(encodedstr);
@@ -263,7 +261,9 @@ describe('Network / Async', function() {
       var messagestr = JSON.stringify(message);
       var messagebuf = new Buffer(messagestr);
 
-      var opts = {nonce: new Buffer('5000000000000002', 'hex')}; //message send with new nonce
+      var opts = {
+        nonce: new Buffer('5000000000000002', 'hex')
+      }; //message send with new nonce
       var encoded = n._encode(key2.public, key1, messagebuf, opts);
       var encodedstr = JSON.stringify(encoded);
       var encodeduint = new Buffer(encodedstr);
@@ -290,7 +290,9 @@ describe('Network / Async', function() {
       var messagestr = JSON.stringify(message);
       var messagebuf = new Buffer(messagestr);
 
-      var opts = {nonce: new Buffer('0000000000000001', 'hex')}; //message send with old nonce
+      var opts = {
+        nonce: new Buffer('0000000000000001', 'hex')
+      }; //message send with old nonce
       var encoded = n._encode(key2.public, key1, messagebuf, opts);
       var encodedstr = JSON.stringify(encoded);
       var encodeduint = new Buffer(encodedstr);
@@ -317,7 +319,9 @@ describe('Network / Async', function() {
       var messagestr = JSON.stringify(message);
       var messagebuf = new Buffer(messagestr);
 
-      var opts = {nonce: new Buffer('5000000000000001', 'hex')}; //message send with old nonce
+      var opts = {
+        nonce: new Buffer('5000000000000001', 'hex')
+      }; //message send with old nonce
       var encoded = n._encode(key2.public, key1, messagebuf, opts);
       var encodedstr = JSON.stringify(encoded);
       var encodeduint = new Buffer(encodedstr);
@@ -334,7 +338,7 @@ describe('Network / Async', function() {
   });
 
   describe('#setHexNonce', function() {
-    
+
     it('should set a nonce from a hex value', function() {
       var hex = '0000000000000000';
       var n = new Async();
@@ -346,18 +350,20 @@ describe('Network / Async', function() {
   });
 
   describe('#setHexNonces', function() {
-    
+
     it('should set a nonce from a hex value', function() {
       var hex = '0000000000000000';
       var n = new Async();
-      n.setHexNonces({fakeid: hex});
+      n.setHexNonces({
+        fakeid: hex
+      });
       n.getHexNonces().fakeid.should.equal(hex);
     });
 
   });
 
   describe('#getHexNonce', function() {
-    
+
     it('should get a nonce hex value', function() {
       var hex = '0000000000000000';
       var n = new Async();
@@ -368,11 +374,13 @@ describe('Network / Async', function() {
   });
 
   describe('#getHexNonces', function() {
-    
+
     it('should get a nonce from a hex value', function() {
       var hex = '0000000000000000';
       var n = new Async();
-      n.setHexNonces({fakeid: hex});
+      n.setHexNonces({
+        fakeid: hex
+      });
       n.getHexNonces().fakeid.should.equal(hex);
     });
 
@@ -399,7 +407,7 @@ describe('Network / Async', function() {
       var n = new Async();
       n.iterateNonce();
       var buf = new Buffer(4);
-      buf.writeUInt32BE(Math.floor(Date.now()/1000), 0);
+      buf.writeUInt32BE(Math.floor(Date.now() / 1000), 0);
       n.networkNonce[0].should.equal(buf[0]);
     });
 

@@ -89,6 +89,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
   this.seededCopayerId = pubKey;
 };
 
+// not being used now
 Wallet.prototype.connectToAll = function() {
 
   var all = this.publicKeyRing.getAllCopayerIds();
@@ -317,7 +318,7 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
-  // TODO check message signature
+  alert('data '+JSON.stringify(data));
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
@@ -451,7 +452,6 @@ Wallet.prototype.netStart = function(callback) {
   }
 
   net.start(startOpts, function() {
-    alert('start callback!');
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
@@ -462,6 +462,8 @@ Wallet.prototype.netStart = function(callback) {
   });
 };
 
+
+// not being used now
 Wallet.prototype.scheduleConnect = function() {
   var self = this;
   if (self.network.isOnline()) {
