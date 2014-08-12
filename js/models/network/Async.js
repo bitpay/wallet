@@ -93,19 +93,6 @@ Network.prototype.connectedCopayers = function() {
   return ret;
 };
 
-Network.prototype.connectToCopayers = function(copayerIds) {
-  var self = this;
-  var arrayDiff = Network._arrayDiff(copayerIds, self.connectedCopayers());
-
-  arrayDiff.forEach(function(copayerId) {
-    if (self.allowedCopayerIds && !self.allowedCopayerIds[copayerId]) {
-      self._deletePeer(self.peerFromCopayer(copayerId));
-    } else {
-      self.connectTo(copayerId);
-    }
-  });
-};
-
 Network.prototype._sendHello = function(copayerId) {
   this.send(copayerId, {
     type: 'hello',
@@ -193,9 +180,9 @@ Network.prototype.iterateNonce = function() {
 
 Network.prototype._onMessage = function(enc) {
   var key = this.getKey();
-
+  var sender = enc.pubkey;
   try {
-    var prevnonce = this.networkNonces ? this.networkNonces[peerId] : undefined;
+    var prevnonce = this.networkNonces ? this.networkNonces[sender] : undefined;
     var opts = {
       prevnonce: prevnonce
     };
@@ -204,33 +191,43 @@ Network.prototype._onMessage = function(enc) {
     //if no error thrown in the last step, we can set the copayer's nonce
     if (!this.networkNonces)
       this.networkNonces = {};
-    this.networkNonces[peerId] = decoded.nonce;
+    this.networkNonces[sender] = decoded.nonce;
 
     var payload = decoded.payload;
   } catch (e) {
-    this._deletePeer(peerId);
+    this._deletePeer(sender);
+    alert('quit 1');
     return;
   }
 
 
   if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
-    this._deletePeer(peerId);
+    this._deletePeer(sender);
+    alert('quit 2');
     return;
   }
 
 
-  if (!this.copayerForPeer[peerId] || (isInbound && !this.isInboundPeerAuth[peerId])) {
-    this._deletePeer(peerId);
+
+  // TODO
+  /*
+  if (!this.copayerForPeer[sender] || (isInbound && !this.isInboundPeerAuth[sender])) {
+    this._deletePeer(sender);
+    alert('quit 3');
     return;
   }
+  */
 
   var self = this;
   switch (payload.type) {
     case 'disconnect':
-      this._onClose(peerId);
+      this._onClose(sender);
+      break;
+    case 'hello':
+      this._addConnectedCopayer(payload.copayerId);
       break;
     default:
-      this.emit('data', self.copayerForPeer[peerId], payload);
+      this.emit('data', self.copayerForPeer[sender], payload);
   }
 };
 
@@ -239,21 +236,26 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   var self = this;
 
   self.socket.on('connect', function() {
-    alert('CONNECTED!');
     self.socket.on('disconnect', function() {
-      alert('DISCONNECTED');
       self.cleanUp();
     });
     if (typeof cb === 'function') cb();
   });
-  self.socket.on('message', self._onMessage);
-  self.socket.on('error', self._handleError);
+  self.socket.on('message', self._onMessage.bind(self));
+  self.socket.on('error', self._onError.bind(self));
 
 };
 
-Network.prototype._handleError = function(err) {
+Network.prototype._onError = function(err) {
   console.log('RECV ERROR: ', err);
+  console.log(err.stack);
   this.criticalError = err.message;
+};
+
+Network.prototype.greet = function(copayerId) {
+  this._sendHello(copayerId);
+  var peerId = this.peerFromCopayer(copayerId);
+  this._addCopayerMap(peerId, copayerId);
 };
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
@@ -264,8 +266,8 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
   }
 };
 
-Network.prototype._setInboundPeerAuth = function(peerId, isAuthenticated) {
-  this.isInboundPeerAuth[peerId] = isAuthenticated;
+Network.prototype._setInboundPeerAuth = function(peerId) {
+  this.isInboundPeerAuth[peerId] = true;
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
@@ -311,12 +313,12 @@ Network.prototype.start = function(opts, openCallback) {
   }
 
   this.socket = io.connect(this.host + ':' + this.port, {
-    //reconnection: false,
+    reconnection: false,
   });
   this._setupConnectionHandlers(openCallback);
   var pubkey = this.getKey().public.toString('hex');
   this.socket.emit('subscribe', pubkey);
-  this.socket.emit('sync');
+  //this.socket.emit('sync');
   this.started = true;
 
   //this.emit('serverError', self.criticalError);
@@ -333,7 +335,7 @@ Network.prototype.getPeer = function() {
 
 
 Network.prototype.send = function(copayerIds, payload, cb) {
-  if (!payload) return cb();
+  preconditions.checkArgument(payload);
 
   var self = this;
   if (!copayerIds) {
@@ -353,9 +355,11 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     };
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var message = AuthMessage.encode(copayerIdBuf, self.getKey(), payload, opts);
+    console.log(JSON.stringify(payload));
+    console.log(JSON.stringify(message));
     self.socket.emit('message', message);
-    if (++i === l && typeof cb === 'function') cb();
   });
+  if (typeof cb === 'function') cb();
 };
 
 
