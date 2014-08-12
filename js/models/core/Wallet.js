@@ -43,8 +43,8 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
-  this.isLocked = false;
 
+  this.ignoreLock = opts.ignoreLock;
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
@@ -93,25 +93,25 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
-Wallet.prototype.getIsOpen = function() {
-  return this.storage.getIsOpen(this.id);
+Wallet.prototype.getLock = function() {
+  return this.storage.getLock(this.id);
 };
 
-Wallet.prototype.setIsOpen = function() {
-  return this.storage.setIsOpen(this.id);
+Wallet.prototype.setLock = function() {
+  return this.storage.setLock(this.id);
 };
 
-Wallet.prototype.closeIfOpen = function() {
-  this.storage.removeIsOpen(this.id);
+Wallet.prototype.unlock = function() {
+  this.storage.removeLock(this.id);
 };
 
-Wallet.prototype._checkLocked = function() {
-  if (this.getIsOpen()) {
-    this.isLocked = true;
-  }
-  else {
-    this.setIsOpen();
-  }
+Wallet.prototype.checkAndLock = function() {
+  if (this.getLock()) {
+    return true;
+  } 
+
+  this.setLock();
+  return false;
 };
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
@@ -432,6 +432,12 @@ Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
 
+  if (this.checkAndLock() && !this.ignoreLock) {
+
+console.log('[Wallet.js.436] LOCKED' ); //TODO
+    this.emit('locked');
+    return;
+  }
 
   net.removeAllListeners();
   net.on('connect', self._handleConnect.bind(self));
@@ -464,7 +470,6 @@ Wallet.prototype.netStart = function(callback) {
       self.scheduleConnect();
       self.emit('txProposalsUpdated');
     }, 10);
-    self._checkLocked();
   });
 };
 
@@ -1018,9 +1023,7 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
-  if (!this.isLocked) {
-    this.closeIfOpen();
-  }
+  this.unlock();
   this.network.disconnect();
 };
 

@@ -27,16 +27,16 @@ FakeStorage.prototype.getLastOpened = function() {
   return this.storage['lastOpened'];
 };
 
-FakeStorage.prototype.setIsOpen = function(id) {
-  this.storage[id + '::isOpen'] = true;
+FakeStorage.prototype.setLock = function(id) {
+  this.storage[id + '::lock'] = true;
 }
 
-FakeStorage.prototype.getIsOpen = function(id) {
-  return this.storage[id + '::isOpen'];
+FakeStorage.prototype.getLock = function(id) {
+  return this.storage[id + '::lock'];
 }
 
-FakeStorage.prototype.removeIsOpen = function(id) {
-  delete this[id + '::isOpen'];
+FakeStorage.prototype.removeLock = function(id) {
+  delete this.storage[id + '::lock'];
 }
 
 FakeStorage.prototype.removeGlobal = function(id) {
