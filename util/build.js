@@ -48,8 +48,11 @@ var createBundle = function(opts) {
   b.require('./copay', {
     expose: 'copay'
   });
+  b.require('./copay', {
+    expose: '../copay'
+  });
   b.require('./version');
-//  b.external('bitcore');
+  //  b.external('bitcore');
   b.require('./js/models/core/WalletFactory', {
     expose: '../js/models/core/WalletFactory'
   });
@@ -71,6 +74,9 @@ var createBundle = function(opts) {
   });
   b.require('./test/mocks/FakeNetwork', {
     expose: './mocks/FakeNetwork'
+  });
+  b.require('./test/mocks/FakeBuilder', {
+    expose: './mocks/FakeBuilder'
   });
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC' 
@@ -119,10 +125,10 @@ if (require.main === module) {
   };
   var program = require('commander');
   program
-    .version('0.0.1')
-    .option('-d, --debug', 'Development. Don\'t minify the codem and include debug packages.')
-    .option('-o, --stdout', 'Specify output as stdout')
-    .parse(process.argv);
+  .version('0.0.1')
+  .option('-d, --debug', 'Development. Don\'t minify the codem and include debug packages.')
+  .option('-o, --stdout', 'Specify output as stdout')
+  .parse(process.argv);
 
   createVersion();
   var copayBundle = createBundle(program);
