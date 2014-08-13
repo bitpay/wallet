@@ -804,7 +804,6 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     method: 'GET',
     url: options.uri,
     headers: {
-      'Access-Control-Request-Headers': 'Content-Type,Content-Length,Accept',
       'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
     },
     responseType: 'arraybuffer'
@@ -1043,7 +1042,6 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     url: txp.merchant.pr.pd.payment_url,
     headers: {
       // BIP-71
-      'Access-Control-Request-Headers': 'Content-Type,Content-Length,Accept',
       'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
       'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
       // XHR does not allow these:
