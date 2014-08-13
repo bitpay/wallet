@@ -422,7 +422,7 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
       var routeParams = {
-        data: 'bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8%3Famount=0.1&message=a%20bitcoin%20donation'
+        data: 'bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8?amount=0.1&message=a%20bitcoin%20donation'
       };
       what = $controller('UriPaymentController', {
         $scope: scope,
@@ -436,10 +436,10 @@ describe("Unit: Controllers", function() {
 
     it('should parse url correctly', function() {
       should.exist(what);
-      scope.protocol.should.equal('bitcoin');
-      scope.address.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
-      scope.amount.should.equal(0.1);
-      scope.message.should.equal('a bitcoin donation');
+      should.exist(scope.pendingPayment);
+      scope.pendingPayment.address.data.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
+      scope.pendingPayment.data.amount.should.equal(0.1);
+      scope.pendingPayment.data.message.should.equal('a bitcoin donation');
     });
   });
 
