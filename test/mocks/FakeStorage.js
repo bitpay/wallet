@@ -27,6 +27,18 @@ FakeStorage.prototype.getLastOpened = function() {
   return this.storage['lastOpened'];
 };
 
+FakeStorage.prototype.setLock = function(id) {
+  this.storage[id + '::lock'] = true;
+}
+
+FakeStorage.prototype.getLock = function(id) {
+  return this.storage[id + '::lock'];
+}
+
+FakeStorage.prototype.removeLock = function(id) {
+  delete this.storage[id + '::lock'];
+}
+
 FakeStorage.prototype.removeGlobal = function(id) {
   delete this.storage[id];
 };

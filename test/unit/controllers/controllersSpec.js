@@ -288,8 +288,10 @@ describe("Unit: Controllers", function() {
   describe("Unit: Sidebar Controller", function() {
     var rootScope;
     beforeEach(inject(function($controller, $rootScope) {
-      rootScope = $rootScope;
       scope = $rootScope.$new();
+      rootScope = $rootScope;
+      rootScope.wallet = new FakeWallet(config);
+
       headerCtrl = $controller('SidebarController', {
         $scope: scope,
       });
@@ -434,6 +436,20 @@ describe("Unit: Controllers", function() {
       scope.address.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
       scope.amount.should.equal(0.1);
       scope.message.should.equal('a bitcoin donation');
+    });
+  });
+
+  describe('Warning Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('WarningController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
     });
   });
 
