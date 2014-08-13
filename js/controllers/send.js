@@ -80,8 +80,7 @@ angular.module('copayApp.controllers').controller('SendController',
           var message = 'The transaction proposal has been created';
           if (merchantData) {
             if (merchantData.pr.ca) {
-              message += ' This payment protocol transaction'
-                + ' has been verified through ' + merchantData.pr.ca + '.';
+              message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
             }
             message += ' Message from server: ' + merchantData.ack.memo;
             message += ' For merchant: ' + merchantData.pr.pd.payment_url;
@@ -94,8 +93,7 @@ angular.module('copayApp.controllers').controller('SendController',
               var message = 'Transaction id: ' + txid;
               if (merchantData) {
                 if (merchantData.pr.ca) {
-                  message += ' This payment protocol transaction'
-                    + ' has been verified through ' + merchantData.pr.ca + '.';
+                  message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
                 }
                 message += ' Message from server: ' + merchantData.ack.memo;
                 message += ' For merchant: ' + merchantData.pr.pd.payment_url;
@@ -115,9 +113,13 @@ angular.module('copayApp.controllers').controller('SendController',
       if (address.indexOf('bitcoin:') === 0) {
         uri = copay.HDPath.parseBitcoinURI(address);
       } else if (address.indexOf('Merchant: ') === 0) {
-        uri = { merchant: address.split(/\s+/)[1] };
+        uri = {
+          merchant: address.split(/\s+/)[1]
+        };
       } else if (/^https?:\/\//.test(address)) {
-        uri = { merchant: address };
+        uri = {
+          merchant: address
+        };
       }
 
       if (uri && uri.merchant) {
@@ -352,12 +354,11 @@ angular.module('copayApp.controllers').controller('SendController',
           notification.error('Error', 'There was an error sending the transaction');
         } else {
           if (!merchantData) {
-            notification.success('Transaction broadcast', 'Transaction id: '+txid);
+            notification.success('Transaction broadcast', 'Transaction id: ' + txid);
           } else {
             var message = 'Transaction ID: ' + txid;
             if (merchantData.pr.ca) {
-              message += ' This payment protocol transaction'
-                + ' has been verified through ' + merchantData.pr.ca + '.';
+              message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
             }
             message += ' Message from server: ' + merchantData.ack.memo;
             message += ' For merchant: ' + merchantData.pr.pd.payment_url;
@@ -397,6 +398,64 @@ angular.module('copayApp.controllers').controller('SendController',
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
       $scope.loading = false;
       $scope.loadTxs();
+    };
+
+
+    $scope.onChanged = function() {
+      var scope = $scope;
+      notification.info('Fetching Payment',
+        'Retrieving Payment Request from ' + uri.merchant);
+
+      // Payment Protocol URI (BIP-72)
+      scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+        var balance = $rootScope.availableBalance;
+        var available = +(balance * config.unitToSatoshi).toFixed(0);
+
+        if (merchantData && available < +merchantData.total) {
+          err = new Error('No unspent outputs available.');
+        }
+
+        if (err) {
+          scope.sendForm.address.$isValid = false;
+          notification.error('Error', err.message || 'Bad payment server.');
+          return;
+        }
+
+        merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
+        merchantData.expiration = new Date(
+          merchantData.pr.pd.expires * 1000).toISOString();
+
+        $rootScope.merchant = merchantData;
+
+        scope.sendForm.address.$isValid = true;
+
+        scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
+        scope.sendForm.amount.$render();
+        scope.sendForm.amount.$isValid = true;
+
+        // If the address changes to a non-payment-protocol one,
+        // delete the `merchant` property from the scope.
+        var unregister = scope.$watch('address', function() {
+          var val = scope.sendForm.address.$viewValue || '';
+          var uri = copay.HDPath.parseBitcoinURI(val);
+          if (!uri || !uri.merchant) {
+            delete $rootScope.merchant;
+            scope.sendForm.amount.$setViewValue('');
+            scope.sendForm.amount.$render();
+            unregister();
+            if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+              $rootScope.$apply();
+            }
+          }
+        });
+
+        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+          $rootScope.$apply();
+        }
+
+        notification.info('Payment Request',
+          'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
+      });
     };
 
   });

@@ -43,9 +43,9 @@ module.exports = function(config) {
       //App-specific Code
       'js/app.js',
       'js/routes.js',
+      'js/services/*.js',
       'js/directives.js',
       'js/filters.js',
-      'js/services/*.js',
       'js/controllers/*.js',
       'js/init.js',
 
