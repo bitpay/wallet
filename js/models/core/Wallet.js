@@ -134,7 +134,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   try {
     hasChanged = this.publicKeyRing.merge(inPKR, true);
   } catch (e) {
-    this.log('## WALLET ERROR', e); //TODO
+    this.log('## WALLET ERROR', e);
     this.emit('connectionError', e.message);
     return;
   }
@@ -328,9 +328,10 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
-    this.log('badMessage FROM:', senderId); //TODO
+    this.log('badMessage FROM:', senderId);
     return;
   }
+
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
@@ -433,8 +434,6 @@ Wallet.prototype.netStart = function(callback) {
   var net = this.network;
 
   if (this.checkAndLock() && !this.ignoreLock) {
-
-console.log('[Wallet.js.436] LOCKED' ); //TODO
     this.emit('locked');
     return;
   }
@@ -752,7 +751,6 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     } else {
       self.log('Sent failed. Checking is the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
-        console.log('[Wallet.js.730:txid:]', txid); //TODO
         if (txid)
           self.store();
 
