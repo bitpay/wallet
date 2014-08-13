@@ -199,13 +199,10 @@ Network.prototype._onMessage = function(enc) {
     return;
   }
 
-
   if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
     this._deletePeer(sender);
     return;
   }
-
-
 
   // TODO
   /*
@@ -214,6 +211,9 @@ Network.prototype._onMessage = function(enc) {
     return;
   }
   */
+
+
+  console.log('receiving '+JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
@@ -352,8 +352,7 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     };
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var message = AuthMessage.encode(copayerIdBuf, self.getKey(), payload, opts);
-    console.log(JSON.stringify(payload));
-    console.log(JSON.stringify(message));
+    console.log('sending '+JSON.stringify(payload));
     self.socket.emit('message', message);
   });
   if (typeof cb === 'function') cb();
