@@ -29,7 +29,7 @@ angular.module('copayApp.directives')
 
 
           ctrl.$setValidity('validAddress', true);
-          return 'Merchant: ' + uri.merchant;
+          return uri.merchant;
         };
 
         ctrl.$parsers.unshift(validator);
