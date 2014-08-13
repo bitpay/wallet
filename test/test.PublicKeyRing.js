@@ -8,11 +8,7 @@ var buffertools = bitcore.buffertools;
 
 var HDPath = require('../js/models/core/HDPath');
 
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = require('../copay');
 var PrivateKey = copay.PrivateKey;
 var PublicKeyRing = copay.PublicKeyRing;
 

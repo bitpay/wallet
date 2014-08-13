@@ -3,11 +3,7 @@
 var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = require('../copay');
 var copayConfig = require('../config');
 var Wallet = require('../js/models/core/Wallet');
 var PrivateKey = copay.PrivateKey;
