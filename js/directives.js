@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('validAddress', function($rootScope, notification) {
+  .directive('validAddress', function() {
     var bitcore = require('bitcore');
     var Address = bitcore.Address;
     var bignum = bitcore.Bignum;
@@ -27,62 +27,8 @@ angular.module('copayApp.directives')
             return value;
           }
 
-          notification.info('Fetching Payment',
-            'Retrieving Payment Request from ' + uri.merchant);
-
-          // Payment Protocol URI (BIP-72)
-          scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-            var balance = $rootScope.availableBalance;
-            var available = +(balance * config.unitToSatoshi).toFixed(0);
-
-            if (merchantData && available < +merchantData.total) {
-              err = new Error('No unspent outputs available.');
-            }
-
-            if (err) {
-              scope.sendForm.address.$isValid = false;
-              notification.error('Error', err.message || 'Bad payment server.');
-              return;
-            }
-
-            merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
-            merchantData.expiration = new Date(
-              merchantData.pr.pd.expires * 1000).toISOString();
-
-            $rootScope.merchant = merchantData;
-
-            scope.sendForm.address.$isValid = true;
-
-            scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
-            scope.sendForm.amount.$render();
-            scope.sendForm.amount.$isValid = true;
-
-            // If the address changes to a non-payment-protocol one,
-            // delete the `merchant` property from the scope.
-            var unregister = scope.$watch('address', function() {
-              var val = scope.sendForm.address.$viewValue || '';
-              var uri = copay.HDPath.parseBitcoinURI(val);
-              if (!uri || !uri.merchant) {
-                delete $rootScope.merchant;
-                scope.sendForm.amount.$setViewValue('');
-                scope.sendForm.amount.$render();
-                unregister();
-                if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-                  $rootScope.$apply();
-                }
-              }
-            });
-
-            if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-              $rootScope.$apply();
-            }
-
-            notification.info('Payment Request',
-              'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
-          });
 
           ctrl.$setValidity('validAddress', true);
-
           return 'Merchant: ' + uri.merchant;
         };
 

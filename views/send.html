@@ -21,7 +21,7 @@
               </label>
               <div class="small-10 columns">
                 <input type="text" id="address" name="address" ng-disabled="loading"
-                placeholder="Send to" ng-model="address" valid-address required>
+                placeholder="Send to" ng-model="address" ngChange="onChanged()" valid-address required>
                 <small class="icon-input" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.address.$invalid && address"><i class="fi-x"></i></small>
               </div>
