@@ -44,6 +44,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.name = opts.name;
 
+  this.ignoreLock = opts.ignoreLock;
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
@@ -92,6 +93,27 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
+Wallet.prototype.getLock = function() {
+  return this.storage.getLock(this.id);
+};
+
+Wallet.prototype.setLock = function() {
+  return this.storage.setLock(this.id);
+};
+
+Wallet.prototype.unlock = function() {
+  this.storage.removeLock(this.id);
+};
+
+Wallet.prototype.checkAndLock = function() {
+  if (this.getLock()) {
+    return true;
+  } 
+
+  this.setLock();
+  return false;
+};
+
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
@@ -112,7 +134,7 @@ Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
   try {
     hasChanged = this.publicKeyRing.merge(inPKR, true);
   } catch (e) {
-    this.log('## WALLET ERROR', e); //TODO
+    this.log('## WALLET ERROR', e);
     this.emit('connectionError', e.message);
     return;
   }
@@ -306,9 +328,10 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
-    this.log('badMessage FROM:', senderId); //TODO
+    this.log('badMessage FROM:', senderId);
     return;
   }
+
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
@@ -409,6 +432,12 @@ Wallet.prototype._lockIncomming = function() {
 Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
+
+  if (this.checkAndLock() && !this.ignoreLock) {
+    this.emit('locked');
+    return;
+  }
+
   net.removeAllListeners();
   net.on('connect', self._handleConnect.bind(self));
   net.on('disconnect', self._handleDisconnect.bind(self));
@@ -722,7 +751,6 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     } else {
       self.log('Sent failed. Checking is the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
-        console.log('[Wallet.js.730:txid:]', txid); //TODO
         if (txid)
           self.store();
 
@@ -993,6 +1021,7 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
+  this.unlock();
   this.network.disconnect();
 };
 
