@@ -168,7 +168,6 @@ angular.module('copayApp.controllers').controller('SendController',
                 qrcode.imagedata = context.getImageData(0, 0, qrcode.width, qrcode.height);
 
                 try {
-                  //alert(JSON.stringify(qrcode.process(context)));
                   qrcode.decode();
                 } catch (e) {
                   // error decoding QR
@@ -403,6 +402,19 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.onChanged = function() {
       var scope = $scope;
+      var value = scope.address;
+      var uri;
+
+      if (/^https?:\/\//.test(value)) {
+        uri = {
+          merchant: value
+        };
+      } else {
+        uri = copay.HDPath.parseBitcoinURI(value);
+      }
+      if (!uri || !uri.merchant) {
+        return;
+      }
       notification.info('Fetching Payment',
         'Retrieving Payment Request from ' + uri.merchant);
 
