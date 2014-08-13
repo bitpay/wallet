@@ -318,15 +318,19 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
+
+  alert(JSON.stringify(data));
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId);
+    alert('fuck');
     return;
   }
 
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
+      alert('walletID received');
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
@@ -356,7 +360,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleConnect = function(newCopayerId) {
-  alert(newCopayerId);
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
@@ -1727,7 +1730,7 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
     function _while() {
       return hasActivity;
     },
-    function _finnaly(err) {
+    function _finally(err) {
       if (err) return cb(err);
       cb(null, lastActive);
     }

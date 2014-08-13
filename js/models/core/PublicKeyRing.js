@@ -377,6 +377,7 @@ PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
 
 
 PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
+  alert('merge pubkeys');
   var self = this;
 
   var hasChanged = false;
