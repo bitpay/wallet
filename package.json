@@ -11,10 +11,11 @@
   },
   "version": "0.4.2",
   "dependencies": {
-    "preconditions": "^1.0.7",
-    "sinon": "1.9.1",
+    "mocha": "^1.18.2",
     "mocha-lcov-reporter": "0.0.1",
-    "mocha": "^1.18.2"
+    "optimist": "^0.6.1",
+    "preconditions": "^1.0.7",
+    "sinon": "1.9.1"
   },
   "scripts": {
     "shell": "node shell/scripts/launch.js",
