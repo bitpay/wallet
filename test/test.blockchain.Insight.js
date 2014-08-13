@@ -4,11 +4,7 @@ var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
 var bitcore = bitcore || require('bitcore');
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = require('../copay');
 var Insight = copay.Insight || require('../js/models/blockchain/Insight');
 
 var ID = '933bf321393459b7';

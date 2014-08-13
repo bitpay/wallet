@@ -11,11 +11,7 @@ var bignum = bitcore.Bignum;
 var networks = bitcore.networks;
 var Address = bitcore.Address;
 var BitcorePrivateKey = bitcore.PrivateKey;
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = require('../copay');
 var PrivateKey = copay.PrivateKey || require('../js/models/core/PrivateKey');
 
 var config = {

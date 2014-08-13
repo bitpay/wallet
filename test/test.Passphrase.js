@@ -4,11 +4,7 @@ var chai = chai || require('chai');
 var should = chai.should();
 var bitcore = bitcore || require('bitcore');
 var buffertools = bitcore.buffertools;
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = require('../copay');
 var Passphrase = copay.Passphrase;
 
 

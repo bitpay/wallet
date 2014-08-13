@@ -3,11 +3,7 @@
 var chai = chai || require('chai');
 var should = chai.should();
 var bitcore = bitcore || require('bitcore');
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = require('../copay');
 var HDPath = require('../js/models/core/HDPath');
 
 describe('HDPath model', function() {
