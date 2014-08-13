@@ -1,103 +1,96 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope', 'notification',
-    function($rootScope, notification) {
+  .directive('validAddress', function($rootScope, notification) {
+    var bitcore = require('bitcore');
+    var Address = bitcore.Address;
+    var bignum = bitcore.Bignum;
 
-      var bitcore = require('bitcore');
-      var Address = bitcore.Address;
-      var bignum = bitcore.Bignum;
+    return {
+      require: 'ngModel',
+      link: function(scope, elem, attrs, ctrl) {
+        var validator = function(value) {
+          var uri;
 
-      return {
-        require: 'ngModel',
-        link: function(scope, elem, attrs, ctrl) {
-          var validator = function(value) {
-            var uri;
+          if (/^https?:\/\//.test(value)) {
+            uri = {
+              merchant: value
+            };
+          } else {
+            uri = copay.HDPath.parseBitcoinURI(value);
+          }
 
-            if (/^https?:\/\//.test(value)) {
-              uri = { merchant: value };
-            } else {
-              uri = copay.HDPath.parseBitcoinURI(value);
+          // Regular Address
+          if (!uri || !uri.merchant) {
+            var a = new Address(value);
+            ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
+            return value;
+          }
+
+          notification.info('Fetching Payment',
+            'Retrieving Payment Request from ' + uri.merchant);
+
+          // Payment Protocol URI (BIP-72)
+          scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+            var balance = $rootScope.availableBalance;
+            var available = +(balance * config.unitToSatoshi).toFixed(0);
+
+            if (merchantData && available < +merchantData.total) {
+              err = new Error('No unspent outputs available.');
             }
 
-            // Regular Address
-            if (!uri || !uri.merchant) {
-              var a = new Address(value);
-              ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
-              return value;
+            if (err) {
+              scope.sendForm.address.$isValid = false;
+              notification.error('Error', err.message || 'Bad payment server.');
+              return;
             }
 
-            notification.info('Fetching Payment',
-              'Retrieving Payment Request from ' + uri.merchant);
+            merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
+            merchantData.expiration = new Date(
+              merchantData.pr.pd.expires * 1000).toISOString();
 
-            // Payment Protocol URI (BIP-72)
-            scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
-              var balance = $rootScope.availableBalance;
-              var available = +(balance * config.unitToSatoshi).toFixed(0);
+            $rootScope.merchant = merchantData;
 
-              if (merchantData && available < +merchantData.total) {
-                err = new Error('No unspent outputs available.');
-              }
+            scope.sendForm.address.$isValid = true;
 
-              if (err) {
-                scope.sendForm.address.$isValid = false;
-                notification.error('Error', err.message || 'Bad payment server.');
-                return;
-              }
+            scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
+            scope.sendForm.amount.$render();
+            scope.sendForm.amount.$isValid = true;
 
-              merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
-              merchantData.expiration = new Date(
-                merchantData.pr.pd.expires * 1000).toISOString();
-
-              $rootScope.merchant = merchantData;
-
-              scope.sendForm.address.$isValid = true;
-
-              scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
-              scope.sendForm.amount.$render();
-              scope.sendForm.amount.$isValid = true;
-
-              // If the address changes to a non-payment-protocol one,
-              // delete the `merchant` property from the scope.
-              var unregister = scope.$watch('address', function() {
-                var val = scope.sendForm.address.$viewValue || '';
-                var uri = copay.HDPath.parseBitcoinURI(val);
-                if (!uri || !uri.merchant) {
-                  delete $rootScope.merchant;
-                  scope.sendForm.amount.$setViewValue('');
-                  scope.sendForm.amount.$render();
-                  unregister();
-                  if ($rootScope.$$phase !== '$apply'
-                      && $rootScope.$$phase !== '$digest') {
-                    $rootScope.$apply();
-                  }
+            // If the address changes to a non-payment-protocol one,
+            // delete the `merchant` property from the scope.
+            var unregister = scope.$watch('address', function() {
+              var val = scope.sendForm.address.$viewValue || '';
+              var uri = copay.HDPath.parseBitcoinURI(val);
+              if (!uri || !uri.merchant) {
+                delete $rootScope.merchant;
+                scope.sendForm.amount.$setViewValue('');
+                scope.sendForm.amount.$render();
+                unregister();
+                if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+                  $rootScope.$apply();
                 }
-              });
-
-              if ($rootScope.$$phase !== '$apply'
-                  && $rootScope.$$phase !== '$digest') {
-                $rootScope.$apply();
               }
-
-              notification.info('Payment Request',
-                'Server is requesting '
-                + merchantData.unitTotal + ' '
-                + config.unitName + '.'
-                + ' Message: '
-                + merchantData.pr.pd.memo);
             });
 
-            ctrl.$setValidity('validAddress', true);
+            if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+              $rootScope.$apply();
+            }
 
-            return 'Merchant: ' + uri.merchant;
-          };
+            notification.info('Payment Request',
+              'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
+          });
 
-          ctrl.$parsers.unshift(validator);
-          ctrl.$formatters.unshift(validator);
-        }
-      };
-    }
-  ])
+          ctrl.$setValidity('validAddress', true);
+
+          return 'Merchant: ' + uri.merchant;
+        };
+
+        ctrl.$parsers.unshift(validator);
+        ctrl.$formatters.unshift(validator);
+      }
+    };
+  })
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var bitcore = require('bitcore');
@@ -278,32 +271,34 @@ angular.module('copayApp.directives')
       restrict: 'A',
       link: function(scope, element, attrs) {
         element.bind('click', function() {
-          window.open('bitcoin:'+attrs.address, '_blank');
+          window.open('bitcoin:' + attrs.address, '_blank');
         });
       }
     }
   })
-  // From https://gist.github.com/asafge/7430497
-  .directive('ngReallyClick', [function() {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-          element.bind('click', function() {
-            var message = attrs.ngReallyMessage;
-            if (message && confirm(message)) {
-              scope.$apply(attrs.ngReallyClick);
-            }
-          });
-        }
+// From https://gist.github.com/asafge/7430497
+.directive('ngReallyClick', [
+
+  function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.bind('click', function() {
+          var message = attrs.ngReallyMessage;
+          if (message && confirm(message)) {
+            scope.$apply(attrs.ngReallyClick);
+          }
+        });
       }
     }
-  ])
-  .directive('match', function () {
+  }
+])
+  .directive('match', function() {
     return {
       require: 'ngModel',
       restrict: 'A',
       scope: {
-          match: '='
+        match: '='
       },
       link: function(scope, elem, attrs, ctrl) {
         scope.$watch(function() {
@@ -324,16 +319,18 @@ angular.module('copayApp.directives')
 
     return {
       restric: 'A',
-      scope: { clipCopy: '=clipCopy' },
+      scope: {
+        clipCopy: '=clipCopy'
+      },
       link: function(scope, elm) {
         var client = new ZeroClipboard(elm);
 
-        client.on( 'ready', function(event) {
-          client.on( 'copy', function(event) {
+        client.on('ready', function(event) {
+          client.on('copy', function(event) {
             event.clipboardData.setData('text/plain', scope.clipCopy);
           });
 
-          client.on( 'aftercopy', function(event) {
+          client.on('aftercopy', function(event) {
             elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');
             setTimeout(function() {
               elm.addClass('btn-copy').removeClass('btn-copied').html('');
@@ -341,8 +338,8 @@ angular.module('copayApp.directives')
           });
         });
 
-        client.on( 'error', function(event) {
-          console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+        client.on('error', function(event) {
+          console.log('ZeroClipboard error of type "' + event.name + '": ' + event.message);
           ZeroClipboard.destroy();
         });
       }
