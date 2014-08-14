@@ -42,7 +42,6 @@
     "buffertools": "2.0.1",
     "commander": "2.1.0",
     "uglifyify": "1.2.3",
-    "soop": "0.1.5",
     "grunt-contrib-watch": "0.5.3",
     "istanbul": "0.2.10",
     "grunt-mocha-test": "0.8.2",
