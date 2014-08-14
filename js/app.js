@@ -20,7 +20,7 @@ var log = function() {
 }
 
 // From the bundle
-var copay = require('copay');
+var copay = require('../copay');
 
 var copayApp = window.copayApp = angular.module('copayApp', [
   'ngRoute',
