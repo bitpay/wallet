@@ -55,10 +55,10 @@ var createBundle = function(opts) {
   });
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {
-    expose: '../../js/models/core/Wallet'
+    expose: '../js/models/core/Wallet'
   });
   b.require('./js/models/core/Wallet', {
-    expose: '../js/models/core/Wallet'
+    expose: '../../js/models/core/Wallet'
   });
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
@@ -76,10 +76,10 @@ var createBundle = function(opts) {
     expose: './mocks/FakeNetwork'
   });
   b.require('./test/mocks/FakePayProServer', {
-    expose: '../../mocks/FakePayProServer'
+    expose: './mocks/FakePayProServer'
   });
   b.require('./test/mocks/FakePayProServer', {
-    expose: './mocks/FakePayProServer'
+    expose: '../../mocks/FakePayProServer'
   });
   b.require('./test/mocks/FakeBuilder', {
     expose: './mocks/FakeBuilder'
