@@ -139,7 +139,7 @@ describe('PayPro (in Wallet) model', function() {
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
     w.getUnspent = function(cb) {
       return setTimeout(function() {
-        return cb(null, unspentTest, []);
+        return cb(null, unspentTest, unspentTest);
       }, 1);
     };
     return w;
