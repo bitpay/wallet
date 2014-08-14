@@ -15,4 +15,3 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js
 
 module.exports.WalletFactory = require('./js/models/core/WalletFactory');
 module.exports.version = require('./version');
-module.exports.API = require('./API');
