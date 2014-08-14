@@ -19,7 +19,13 @@ CryptoJS.AES.decrypt = function(a) {
 'use strict';
 var chai = chai || require('chai');
 var should = chai.should();
-var copay = copay || require('../copay');
+var is_browser = typeof process == 'undefined'
+  || typeof process.versions === 'undefined';
+if (is_browser) {
+  var copay = require('copay'); //browser
+} else {
+  var copay = require('../copay'); //node
+}
 var LocalEncrypted = copay.StorageLocalEncrypted;
 
 var fakeWallet = 'fake-wallet-id';

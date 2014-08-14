@@ -10,6 +10,7 @@ saveAs = function(o) {
   saveAsLastCall = o;
 };
 
+var startServer = require('../../mocks/FakePayProServer');
 
 describe("Unit: Controllers", function() {
   var invalidForm = {
@@ -17,6 +18,8 @@ describe("Unit: Controllers", function() {
   };
 
   var scope;
+
+  var server;
 
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
@@ -150,6 +153,7 @@ describe("Unit: Controllers", function() {
       scope.$digest();
       form = scope.form;
       sendForm = scope.form2;
+      scope.sendForm = sendForm;
     }));
 
     it('should have a SendController controller', function() {

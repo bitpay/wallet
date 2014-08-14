@@ -11,7 +11,6 @@ var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
-
 function TxProposals(opts) {
   opts = opts || {};
   this.walletId = opts.walletId;

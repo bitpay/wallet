@@ -3,13 +3,14 @@
 var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
-try {
+var is_browser = (typeof process == 'undefined' || typeof process.versions === 'undefined');
+if (is_browser) {
   var copay = require('copay'); //browser
-} catch (e) {
+} else {
   var copay = require('../copay'); //node
 }
 var copayConfig = require('../config');
-var Wallet = require('../js/models/core/Wallet');
+var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
