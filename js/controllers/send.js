@@ -61,16 +61,44 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
 
-      w.createTx(address, amount, commentText, function(ntxid) {
+      function done(ntxid, merchantData) {
+        // If user is granted the privilege of choosing
+        // their own amount, add it to the tx.
+        if (merchantData && +merchantData.total === 0) {
+          var txp = w.txProposals.get(ntxid);
+          var tx = txp.builder.tx = txp.builder.tx || txp.builder.build();
+          tx.outs[0].v = bitcore.Bignum(amount + '', 10).toBuffer({
+            // XXX This may not work in node due
+            // to the bignum only-big endian bug:
+            endian: 'little',
+            size: 1
+          });
+        }
+
         if (w.isShared()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
+          if (merchantData) {
+            if (merchantData.pr.ca) {
+              message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
+            }
+            message += ' Message from server: ' + merchantData.ack.memo;
+            message += ' For merchant: ' + merchantData.pr.pd.payment_url;
+          }
           notification.success('Success!', message);
           $scope.loadTxs();
         } else {
-          w.sendTx(ntxid, function(txid) {
+          w.sendTx(ntxid, function(txid, merchantData) {
             if (txid) {
-              notification.success('Transaction broadcast', 'Transaction id: ' + txid);
+              var message = 'Transaction id: ' + txid;
+              if (merchantData) {
+                if (merchantData.pr.ca) {
+                  message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
+                }
+                message += ' Message from server: ' + merchantData.ack.memo;
+                message += ' For merchant: ' + merchantData.pr.pd.payment_url;
+              }
+              notification.success('Transaction broadcast', message);
             } else {
               notification.error('Error', 'There was an error sending the transaction.');
             }
@@ -79,7 +107,29 @@ angular.module('copayApp.controllers').controller('SendController',
           });
         }
         $rootScope.pendingPayment = null;
-      });
+      }
+
+      var uri;
+      if (address.indexOf('bitcoin:') === 0) {
+        uri = copay.HDPath.parseBitcoinURI(address);
+      } else if (address.indexOf('Merchant: ') === 0) {
+        uri = {
+          merchant: address.split(/\s+/)[1]
+        };
+      } else if (/^https?:\/\//.test(address)) {
+        uri = {
+          merchant: address
+        };
+      }
+
+      if (uri && uri.merchant) {
+        w.createPaymentTx({
+          uri: uri.merchant,
+          memo: commentText
+        }, done);
+      } else {
+        w.createTx(address, amount, commentText, done);
+      }
 
       // reset fields
       $scope.address = $scope.amount = $scope.commentText = null;
@@ -118,7 +168,6 @@ angular.module('copayApp.controllers').controller('SendController',
                 qrcode.imagedata = context.getImageData(0, 0, qrcode.width, qrcode.height);
 
                 try {
-                  //alert(JSON.stringify(qrcode.process(context)));
                   qrcode.decode();
                 } catch (e) {
                   // error decoding QR
@@ -299,11 +348,21 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       var w = $rootScope.wallet;
-      w.sendTx(ntxid, function(txid) {
+      w.sendTx(ntxid, function(txid, merchantData) {
         if (!txid) {
           notification.error('Error', 'There was an error sending the transaction');
         } else {
-          notification.success('Transaction broadcast', 'Transaction id: '+txid);
+          if (!merchantData) {
+            notification.success('Transaction broadcast', 'Transaction id: ' + txid);
+          } else {
+            var message = 'Transaction ID: ' + txid;
+            if (merchantData.pr.ca) {
+              message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
+            }
+            message += ' Message from server: ' + merchantData.ack.memo;
+            message += ' For merchant: ' + merchantData.pr.pd.payment_url;
+            notification.success('Transaction sent', message);
+          }
         }
 
         if (cb) return cb();
@@ -338,6 +397,103 @@ angular.module('copayApp.controllers').controller('SendController',
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
       $scope.loading = false;
       $scope.loadTxs();
+    };
+
+
+    $scope.onChanged = function() {
+      var scope = $scope;
+      var value = scope.address;
+      var uri;
+
+      if (/^https?:\/\//.test(value)) {
+        uri = {
+          merchant: value
+        };
+      } else {
+        uri = copay.HDPath.parseBitcoinURI(value);
+      }
+      if (!uri || !uri.merchant) {
+        return;
+      }
+      notification.info('Fetching Payment',
+        'Retrieving Payment Request from ' + uri.merchant);
+
+      // Payment Protocol URI (BIP-72)
+      scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+        var balance = $rootScope.availableBalance;
+        var available = +(balance * config.unitToSatoshi).toFixed(0);
+
+        if (merchantData && available < +merchantData.total) {
+          err = new Error('No unspent outputs available.');
+          err.amount = merchantData.total;
+        }
+
+        if (err) {
+          scope.sendForm.address.$isValid = false;
+
+          if (err.amount) {
+            scope.sendForm.amount.$setViewValue(+err.amount / config.unitToSatoshi);
+            scope.sendForm.amount.$render();
+            scope.sendForm.amount.$isValid = false;
+            scope.notEnoughAmount = true;
+            $rootScope.merchantError = true;
+            var lastAddr = scope.sendForm.address.$viewValue;
+            var unregister = scope.$watch('address', function() {
+              if (scope.sendForm.address.$viewValue !== lastAddr) {
+                delete $rootScope.merchantError;
+                scope.sendForm.amount.$setViewValue('');
+                scope.sendForm.amount.$render();
+                unregister();
+                if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+                  $rootScope.$apply();
+                }
+              }
+            });
+          }
+
+          notification.error('Error', err.message || 'Bad payment server.');
+
+          if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+            $rootScope.$apply();
+          }
+          return;
+        }
+
+        merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
+        merchantData.expiration = new Date(
+          merchantData.pr.pd.expires * 1000).toISOString();
+
+        $rootScope.merchant = merchantData;
+
+        scope.sendForm.address.$isValid = true;
+
+        scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
+        scope.sendForm.amount.$render();
+        scope.sendForm.amount.$isValid = true;
+
+        // If the address changes to a non-payment-protocol one,
+        // delete the `merchant` property from the scope.
+        var unregister = scope.$watch('address', function() {
+          var val = scope.sendForm.address.$viewValue || '';
+          var uri = copay.HDPath.parseBitcoinURI(val);
+          if (!uri || !uri.merchant) {
+            delete $rootScope.merchant;
+            scope.sendForm.amount.$setViewValue('');
+            scope.sendForm.amount.$render();
+            unregister();
+            if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+              $rootScope.$apply();
+            }
+          }
+        });
+
+        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+          $rootScope.$apply();
+        }
+
+        notification.info('Payment Request',
+          'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
+      });
     };
 
   });

@@ -1,28 +1,42 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('validAddress', [
+  .directive('validAddress', function() {
+    var bitcore = require('bitcore');
+    var Address = bitcore.Address;
+    var bignum = bitcore.Bignum;
 
-    function() {
+    return {
+      require: 'ngModel',
+      link: function(scope, elem, attrs, ctrl) {
+        var validator = function(value) {
+          var uri;
 
-      var bitcore = require('bitcore');
-      var Address = bitcore.Address;
+          if (/^https?:\/\//.test(value)) {
+            uri = {
+              merchant: value
+            };
+          } else {
+            uri = copay.HDPath.parseBitcoinURI(value);
+          }
 
-      return {
-        require: 'ngModel',
-        link: function(scope, elem, attrs, ctrl) {
-          var validator = function(value) {
+          // Regular Address
+          if (!uri || !uri.merchant) {
             var a = new Address(value);
             ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
             return value;
-          };
+          }
 
-          ctrl.$parsers.unshift(validator);
-          ctrl.$formatters.unshift(validator);
-        }
-      };
-    }
-  ])
+
+          ctrl.$setValidity('validAddress', true);
+          return uri.merchant;
+        };
+
+        ctrl.$parsers.unshift(validator);
+        ctrl.$formatters.unshift(validator);
+      }
+    };
+  })
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var bitcore = require('bitcore');
@@ -203,32 +217,34 @@ angular.module('copayApp.directives')
       restrict: 'A',
       link: function(scope, element, attrs) {
         element.bind('click', function() {
-          window.open('bitcoin:'+attrs.address, '_blank');
+          window.open('bitcoin:' + attrs.address, '_blank');
         });
       }
     }
   })
-  // From https://gist.github.com/asafge/7430497
-  .directive('ngReallyClick', [function() {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-          element.bind('click', function() {
-            var message = attrs.ngReallyMessage;
-            if (message && confirm(message)) {
-              scope.$apply(attrs.ngReallyClick);
-            }
-          });
-        }
+// From https://gist.github.com/asafge/7430497
+.directive('ngReallyClick', [
+
+  function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.bind('click', function() {
+          var message = attrs.ngReallyMessage;
+          if (message && confirm(message)) {
+            scope.$apply(attrs.ngReallyClick);
+          }
+        });
       }
     }
-  ])
-  .directive('match', function () {
+  }
+])
+  .directive('match', function() {
     return {
       require: 'ngModel',
       restrict: 'A',
       scope: {
-          match: '='
+        match: '='
       },
       link: function(scope, elem, attrs, ctrl) {
         scope.$watch(function() {
@@ -249,16 +265,18 @@ angular.module('copayApp.directives')
 
     return {
       restric: 'A',
-      scope: { clipCopy: '=clipCopy' },
+      scope: {
+        clipCopy: '=clipCopy'
+      },
       link: function(scope, elm) {
         var client = new ZeroClipboard(elm);
 
-        client.on( 'ready', function(event) {
-          client.on( 'copy', function(event) {
+        client.on('ready', function(event) {
+          client.on('copy', function(event) {
             event.clipboardData.setData('text/plain', scope.clipCopy);
           });
 
-          client.on( 'aftercopy', function(event) {
+          client.on('aftercopy', function(event) {
             elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');
             setTimeout(function() {
               elm.addClass('btn-copy').removeClass('btn-copied').html('');
@@ -266,8 +284,8 @@ angular.module('copayApp.directives')
           });
         });
 
-        client.on( 'error', function(event) {
-          console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+        client.on('error', function(event) {
+          console.log('ZeroClipboard error of type "' + event.name + '": ' + event.message);
           ZeroClipboard.destroy();
         });
       }

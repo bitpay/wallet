@@ -1,3 +1,14 @@
+
+var is_browser = typeof process == 'undefined'
+  || typeof process.versions === 'undefined';
+if (is_browser) {
+  var copay = require('copay'); //browser
+} else {
+  var copay = require('../copay'); //node
+}
+var Wallet = copay.Wallet;
+
+
 var FakeWallet = function() {
   this.id = 'testID';
   this.balance = 10000;
@@ -53,7 +64,20 @@ FakeWallet.prototype.isShared = function() {
 
 FakeWallet.prototype.isReady = function() {
   return true;
-}
+};
+
+FakeWallet.prototype.fetchPaymentTx = function(opts, cb) {
+  cb(null, {
+    pr: {
+      pd: {
+        expires: 12
+      }
+    }
+  });
+};
+
+
+FakeWallet.prototype.createPaymentTx = Wallet.prototype.createPaymentTx;
 
 
 FakeWallet.prototype.getBalance = function(cb) {

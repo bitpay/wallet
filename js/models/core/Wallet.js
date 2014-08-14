@@ -5,6 +5,7 @@ var http = require('http');
 var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
+var parseBitcoinURI = require('./HDPath').parseBitcoinURI;
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -14,6 +15,8 @@ var Builder = bitcore.TransactionBuilder;
 var SecureRandom = bitcore.SecureRandom;
 var Base58Check = bitcore.Base58.base58Check;
 var Address = bitcore.Address;
+var PayPro = bitcore.PayPro;
+var Transaction = bitcore.Transaction;
 
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
@@ -52,6 +55,8 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
+
+  this.paymentRequests = opts.paymentRequests || {};
 
   //network nonces are 8 byte buffers, representing a big endian number
   //one nonce for oneself, and then one nonce for each copayer
@@ -108,7 +113,7 @@ Wallet.prototype.unlock = function() {
 Wallet.prototype.checkAndLock = function() {
   if (this.getLock()) {
     return true;
-  } 
+  }
 
   this.setLock();
   return false;
@@ -709,6 +714,14 @@ Wallet.prototype.sign = function(ntxid, cb) {
     //   if (cb) cb(false);
     // }
     //
+
+    // If this is a payment protocol request,
+    // ensure it hasn't been tampered with.
+    if (!self.verifyPaymentRequest(ntxid)) {
+      if (cb) cb(false);
+      return;
+    }
+
     var keys = self.privateKey.getForPaths(txp.inputChainPaths);
 
     var b = txp.builder;
@@ -730,6 +743,11 @@ Wallet.prototype.sign = function(ntxid, cb) {
 
 Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
+
+  if (txp.merchant) {
+    return this.sendPaymentTx(ntxid, cb);
+  }
+
   var tx = txp.builder.build();
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
@@ -760,6 +778,629 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   });
 };
 
+Wallet.prototype.createPaymentTx = function(options, cb) {
+  var self = this;
+
+  if (typeof options === 'string') {
+    options = { uri: options };
+  }
+  options.uri = options.uri || options.url;
+
+  if (options.uri.indexOf('bitcoin:') === 0) {
+    options.uri = parseBitcoinURI(options.uri).merchant;
+    if (!options.uri) {
+      return cb(new Error('No URI.'));
+    }
+  }
+
+  var req = this.paymentRequests[options.uri];
+  if (req) {
+    delete this.paymentRequests[options.uri];
+    this.receivePaymentRequest(options, req.pr, cb);
+    return;
+  }
+
+  return Wallet.request({
+    method: 'GET',
+    url: options.uri,
+    headers: {
+      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+    },
+    responseType: 'arraybuffer'
+  })
+  .success(function(data, status, headers, config) {
+    data = PayPro.PaymentRequest.decode(data);
+    var pr = new PayPro();
+    pr = pr.makePaymentRequest(data);
+    return self.receivePaymentRequest(options, pr, cb);
+  })
+  .error(function(data, status, headers, config) {
+    return cb(new Error('Status: ' + JSON.stringify(status)));
+  });
+};
+
+Wallet.prototype.fetchPaymentTx = function(options, cb) {
+  var self = this;
+
+  options = options || {};
+  if (typeof options === 'string') {
+    options = { uri: options };
+  }
+  options.uri = options.uri || options.url;
+  options.fetch = true;
+
+  var req = this.paymentRequests[options.uri];
+  if (req) {
+    return cb(null, req.merchantData);
+  }
+
+  return this.createPaymentTx(options, function(err, merchantData, pr) {
+    if (err) return cb(err);
+    self.paymentRequests[options.uri] = {
+      merchantData: merchantData,
+      pr: pr
+    };
+    return cb(null, merchantData);
+  });
+};
+
+Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
+  var self = this;
+
+  var ver = pr.get('payment_details_version');
+  var pki_type = pr.get('pki_type');
+  var pki_data = pr.get('pki_data');
+  var details = pr.get('serialized_payment_details');
+  var sig = pr.get('signature');
+
+  var certs = PayPro.X509Certificates.decode(pki_data);
+  certs = certs.certificate;
+
+  // Fix for older versions of bitcore
+  if (!PayPro.RootCerts) {
+    PayPro.RootCerts = {
+      getTrusted: function() {}
+    };
+  }
+
+  var trusted = certs.map(function(cert) {
+    var der = cert.toString('hex');
+    var pem = PayPro.prototype._DERtoPEM(der, 'CERTIFICATE');
+    return PayPro.RootCerts.getTrusted(pem);
+  }).filter(Boolean);
+
+  // Verify Signature
+  var verified = pr.verify();
+
+  if (!verified) {
+    return cb(new Error('Server sent a bad signature.'));
+  }
+
+  var ca = trusted[0];
+
+  details = PayPro.PaymentDetails.decode(details);
+  var pd = new PayPro();
+  pd = pd.makePaymentDetails(details);
+
+  var network = pd.get('network');
+  var outputs = pd.get('outputs');
+  var time = pd.get('time');
+  var expires = pd.get('expires');
+  var memo = pd.get('memo');
+  var payment_url = pd.get('payment_url');
+  var merchant_data = pd.get('merchant_data');
+
+  var merchantData = {
+    pr: {
+      payment_details_version: ver,
+      pki_type: pki_type,
+      pki_data: certs,
+      pd: {
+        network: network,
+        outputs: outputs.map(function(output) {
+          return {
+            amount: output.get('amount'),
+            script: {
+              offset: output.get('script').offset,
+              limit: output.get('script').limit,
+              // NOTE: For some reason output.script.buffer
+              // is only an ArrayBuffer
+              buffer: new Buffer(new Uint8Array(
+                output.get('script').buffer)).toString('hex')
+            }
+          };
+        }),
+        time: time,
+        expires: expires,
+        memo: memo || 'This server would like some BTC from you.',
+        payment_url: payment_url,
+        merchant_data: merchant_data.toString('hex')
+      },
+      signature: sig.toString('hex'),
+      ca: ca,
+      untrusted: !ca
+    },
+    request_url: options.uri,
+    total: bignum('0', 10).toString(10),
+    // Expose so other copayers can verify signature
+    // and identity, not to mention data.
+    raw: pr.serialize().toString('hex')
+  };
+
+  return this.getUnspent(function(err, safeUnspent, unspent) {
+    if (options.fetch) {
+      if (!unspent || !unspent.length) {
+        return cb(new Error('No unspent outputs available.'));
+      }
+      try {
+        self.createPaymentTxSync(options, merchantData, unspent);
+      } catch (e) {
+        var msg = e.message || '';
+        if (msg.indexOf('not enough unspent tx outputs to fulfill')) {
+          var sat = /(\d+)/.exec(msg)[1];
+          e = new Error('No unspent outputs available.');
+          e.amount = sat;
+          return cb(e);
+        }
+      }
+      return cb(null, merchantData, pr);
+    }
+
+    var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
+    if (ntxid) {
+      self.sendIndexes();
+      self.sendTxProposal(ntxid);
+      self.store();
+      self.emit('txProposalsUpdated');
+    }
+
+    self.log('You are currently on this BTC network:');
+    self.log(network);
+    self.log('The server sent you a message:');
+    self.log(memo);
+
+    return cb(ntxid, merchantData);
+  });
+};
+
+Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
+  var self = this;
+
+  if (!cb) {
+    cb = options;
+    options = {};
+  }
+
+  var txp = this.txProposals.get(ntxid);
+  if (!txp) return;
+
+  var tx = txp.builder.build();
+  if (!tx.isComplete()) return;
+  this.log('Sending Transaction');
+
+  var refund_outputs = [];
+
+  options.refund_to = options.refund_to
+    || this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
+
+  if (options.refund_to) {
+    var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
+      // XXX reverse endianness to work around bignum bug:
+      var txv = tx.outs[i].v;
+      var v = new Buffer(8);
+      for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
+      return total.add(bignum.fromBuffer(v, {
+        endian: 'big',
+        size: 1
+      }));
+    }, bignum('0', 10));
+
+    var rpo = new PayPro();
+    rpo = rpo.makeOutput();
+
+    // XXX Bad - the amount *has* to be a Number in protobufjs
+    // Possibly does not matter - server can ignore the amount anyway.
+    rpo.set('amount', +total.toString(10));
+
+    rpo.set('script',
+      Buffer.concat([
+        new Buffer([
+          118, // OP_DUP
+          169, // OP_HASH160
+          76, // OP_PUSHDATA1
+          20, // number of bytes
+        ]),
+        // needs to be ripesha'd
+        bitcore.util.sha256ripe160(options.refund_to),
+        new Buffer([
+          136, // OP_EQUALVERIFY
+          172  // OP_CHECKSIG
+        ])
+      ])
+    );
+
+    refund_outputs.push(rpo.message);
+  }
+
+  // We send this to the serve after receiving a PaymentRequest
+  var pay = new PayPro();
+  pay = pay.makePayment();
+  var merchant_data = txp.merchant.pr.pd.merchant_data;
+  merchant_data = new Buffer(merchant_data, 'hex');
+  pay.set('merchant_data', merchant_data);
+  pay.set('transactions', [tx.serialize()]);
+  pay.set('refund_to', refund_outputs);
+
+  options.memo = options.memo || options.comment
+    || 'Hi server, I would like to give you some money.';
+
+  pay.set('memo', options.memo);
+
+  pay = pay.serialize();
+
+  this.log('Sending Payment Message:');
+  this.log(pay.toString('hex'));
+
+  var buf = new ArrayBuffer(pay.length);
+  var view = new Uint8Array(buf);
+  for (var i = 0; i < pay.length; i++) {
+    view[i] = pay[i];
+  }
+
+  return Wallet.request({
+    method: 'POST',
+    url: txp.merchant.pr.pd.payment_url,
+    headers: {
+      // BIP-71
+      'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
+      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
+      // XHR does not allow these:
+      // 'Content-Length': (pay.byteLength || pay.length) + '',
+      // 'Content-Transfer-Encoding': 'binary'
+    },
+    // Technically how this should be done via XHR (used to
+    // be the ArrayBuffer, now you send the View instead).
+    data: view,
+    responseType: 'arraybuffer'
+  })
+  .success(function(data, status, headers, config) {
+    data = PayPro.PaymentACK.decode(data);
+    var ack = new PayPro();
+    ack = ack.makePaymentACK(data);
+    return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
+  })
+  .error(function(data, status, headers, config) {
+    return cb(new Error('Status: ' + JSON.stringify(status)));
+  });
+};
+
+Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
+  var self = this;
+
+  var payment = ack.get('payment');
+  var memo = ack.get('memo');
+
+  this.log('Our payment was acknowledged!');
+  this.log('Message from Merchant: %s', memo);
+
+  payment = PayPro.Payment.decode(payment);
+  var pay = new PayPro();
+  payment = pay.makePayment(payment);
+
+  txp.merchant.ack = {
+    memo: memo
+  };
+
+  var tx = payment.message.transactions[0];
+
+  if (!tx) {
+    this.log('Sending to server was not met with a returned tx.');
+    return this._checkSentTx(ntxid, function(txid) {
+      self.log('[Wallet.js.1048:txid:%s]', txid);
+      if (txid) self.store();
+      return cb(txid, txp.merchant);
+    });
+  }
+
+  if (tx.buffer) {
+    tx.buffer = new Buffer(new Uint8Array(tx.buffer));
+    tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
+    var ptx = new bitcore.Transaction();
+    ptx.parse(tx.buffer);
+    tx = ptx;
+  }
+
+  var txid = tx.getHash().toString('hex');
+  var txHex = tx.serialize().toString('hex');
+  this.log('Raw transaction: ', txHex);
+  this.log('BITCOIND txid:', txid);
+  this.txProposals.get(ntxid).setSent(txid);
+  this.sendTxProposal(ntxid);
+  this.store();
+
+  return cb(txid, txp.merchant);
+};
+
+Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
+  var self = this;
+  var priv = this.privateKey;
+  var pkr = this.publicKeyRing;
+
+  preconditions.checkState(pkr.isComplete());
+  if (options.memo) {
+    preconditions.checkArgument(options.memo.length <= 100);
+  }
+
+  var opts = {
+    remainderOut: {
+      address: this._doGenerateAddress(true).toString()
+    }
+  };
+
+  merchantData.total = bignum(merchantData.total, 10);
+
+  var outs = [];
+  merchantData.pr.pd.outputs.forEach(function(output) {
+    var amount = output.amount;
+
+    // big endian
+    var v = new Buffer(8);
+    v[0] = (amount.high >> 24) & 0xff;
+    v[1] = (amount.high >> 16) & 0xff;
+    v[2] = (amount.high >> 8) & 0xff;
+    v[3] = (amount.high >> 0) & 0xff;
+    v[4] = (amount.low >> 24) & 0xff;
+    v[5] = (amount.low >> 16) & 0xff;
+    v[6] = (amount.low >> 8) & 0xff;
+    v[7] = (amount.low >> 0) & 0xff;
+
+    var script = {
+      offset: output.script.offset,
+      limit: output.script.limit,
+      buffer: new Buffer(output.script.buffer, 'hex')
+    };
+    var s = script.buffer.slice(script.offset, script.limit);
+    var network = merchantData.pr.pd.network === 'main' ? 'livenet' : 'testnet';
+    var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
+
+    outs.push({
+      address: addr[0].toString(),
+      amountSatStr: bignum.fromBuffer(v, {
+        endian: 'big',
+        size: 1
+      }).toString(10)
+    });
+
+    merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
+      endian: 'big',
+      size: 1
+    }));
+  });
+
+  merchantData.total = merchantData.total.toString(10);
+
+  var b = new Builder(opts)
+    .setUnspent(unspent)
+    .setOutputs(outs);
+
+  merchantData.pr.pd.outputs.forEach(function(output, i) {
+    var script = {
+      offset: output.script.offset,
+      limit: output.script.limit,
+      buffer: new Buffer(output.script.buffer, 'hex')
+    };
+    var s = script.buffer.slice(script.offset, script.limit);
+    b.tx.outs[i].s = s;
+  });
+
+  var selectedUtxos = b.getSelectedUnspent();
+  var inputChainPaths = selectedUtxos.map(function(utxo) {
+    return pkr.pathForAddress(utxo.address);
+  });
+
+  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
+
+  var keys = priv.getForPaths(inputChainPaths);
+  var signed = b.sign(keys);
+
+  if (options.fetch) return;
+
+  this.log('');
+  this.log('Created transaction:');
+  this.log(b.tx.getStandardizedObject());
+  this.log('');
+
+  var myId = this.getMyCopayerId();
+  var now = Date.now();
+
+  var tx = b.build();
+  if (!tx.countInputSignatures(0))
+    throw new Error('Could not sign generated tx');
+
+  var me = {};
+  me[myId] = now;
+  var meSeen = {};
+  if (priv) meSeen[myId] = now;
+
+  var ntxid = this.txProposals.add(new TxProposal({
+    inputChainPaths: inputChainPaths,
+    signedBy: me,
+    seenBy: meSeen,
+    creator: myId,
+    createdTs: now,
+    builder: b,
+    comment: options.memo,
+    merchant: merchantData
+  }));
+  return ntxid;
+};
+
+// This essentially ensures that a copayer hasn't tampered with a
+// PaymentRequest message from a payment server. It verifies the signature
+// based on the cert, and checks to ensure the desired outputs are the same as
+// the ones on the tx proposal.
+Wallet.prototype.verifyPaymentRequest = function(ntxid) {
+  if (!ntxid) return false;
+
+  var txp = typeof ntxid !== 'object'
+    ? this.txProposals.get(ntxid)
+    : ntxid;
+
+  // If we're not a payment protocol proposal, ignore.
+  if (!txp.merchant) return true;
+
+  // The copayer didn't send us the raw payment request, unverifiable.
+  if (!txp.merchant.raw) return false;
+
+  // var tx = txp.builder.tx;
+  var tx = txp.builder.build();
+
+  var data = new Buffer(txp.merchant.raw, 'hex');
+  data = PayPro.PaymentRequest.decode(data);
+  var pr = new PayPro();
+  pr = pr.makePaymentRequest(data);
+
+  // Verify the signature so we know this is the real request.
+  if (!pr.verify()) {
+    // Signature does not match cert. It may have
+    // been modified by an untrustworthy person.
+    // We should not sign this transaction proposal!
+    return false;
+  }
+
+  var details = pr.get('serialized_payment_details');
+  details = PayPro.PaymentDetails.decode(details);
+  var pd = new PayPro();
+  pd = pd.makePaymentDetails(details);
+
+  var outputs = pd.get('outputs');
+
+  if (tx.outs.length < outputs.length) {
+    // Outputs do not and cannot match.
+    return false;
+  }
+
+  // Figure out whether the user is supposed
+  // to decide the value of the outputs.
+  var undecided = false;
+  var total = bignum('0', 10);
+  for (var i = 0; i < outputs.length; i++) {
+    var output = outputs[i];
+    var amount = output.get('amount');
+    // big endian
+    var v = new Buffer(8);
+    v[0] = (amount.high >> 24) & 0xff;
+    v[1] = (amount.high >> 16) & 0xff;
+    v[2] = (amount.high >> 8) & 0xff;
+    v[3] = (amount.high >> 0) & 0xff;
+    v[4] = (amount.low >> 24) & 0xff;
+    v[5] = (amount.low >> 16) & 0xff;
+    v[6] = (amount.low >> 8) & 0xff;
+    v[7] = (amount.low >> 0) & 0xff;
+    total = total.add(bignum.fromBuffer(v, {
+      endian: 'big',
+      size: 1
+    }));
+  }
+  if (+total.toString(10) === 0) {
+    undecided = true;
+  }
+
+  for (var i = 0; i < outputs.length; i++) {
+    var output = outputs[i];
+
+    var amount = output.get('amount');
+    var script = {
+      offset: output.get('script').offset,
+      limit: output.get('script').limit,
+      buffer: new Buffer(new Uint8Array(output.get('script').buffer))
+    };
+
+    // Expected value
+    // little endian (keep this LE to compare with tx output value)
+    var ev = new Buffer(8);
+    ev[0] = (amount.low >> 0) & 0xff;
+    ev[1] = (amount.low >> 8) & 0xff;
+    ev[2] = (amount.low >> 16) & 0xff;
+    ev[3] = (amount.low >> 24) & 0xff;
+    ev[4] = (amount.high >> 0) & 0xff;
+    ev[5] = (amount.high >> 8) & 0xff;
+    ev[6] = (amount.high >> 16) & 0xff;
+    ev[7] = (amount.high >> 24) & 0xff;
+
+    // Expected script
+    var es = script.buffer.slice(script.offset, script.limit);
+
+    // Actual value
+    var av = tx.outs[i].v;
+
+    // Actual script
+    var as = tx.outs[i].s;
+
+    // XXX allow changing of script as long as address is same
+    // var as = es;
+
+    // XXX allow changing of script as long as address is same
+    // var network = pd.get('network') === 'main' ? 'livenet' : 'testnet';
+    // var es = bitcore.Address.fromScriptPubKey(new bitcore.Script(es), network)[0];
+    // var as = bitcore.Address.fromScriptPubKey(new bitcore.Script(tx.outs[i].s), network)[0];
+
+    if (undecided) {
+      av = ev = new Buffer([0]);
+    }
+
+    // Make sure the tx's output script and values match the payment request's.
+    if (av.toString('hex') !== ev.toString('hex')
+        || as.toString('hex') !== es.toString('hex'))  {
+      // Verifiable outputs do not match outputs of merchant
+      // data. We should not sign this transaction proposal!
+      return false;
+    }
+
+    // Checking the merchant data itself isn't technically
+    // necessary as long as we check the transaction, but
+    // we can do it for good measure.
+    var ro = txp.merchant.pr.pd.outputs[i];
+
+    // Actual value
+    // little endian (keep this LE to compare with the ev above)
+    var av = new Buffer(8);
+    av[0] = (ro.amount.low >> 0) & 0xff;
+    av[1] = (ro.amount.low >> 8) & 0xff;
+    av[2] = (ro.amount.low >> 16) & 0xff;
+    av[3] = (ro.amount.low >> 24) & 0xff;
+    av[4] = (ro.amount.high >> 0) & 0xff;
+    av[5] = (ro.amount.high >> 8) & 0xff;
+    av[6] = (ro.amount.high >> 16) & 0xff;
+    av[7] = (ro.amount.high >> 24) & 0xff;
+
+    // Actual script
+    var as = new Buffer(ro.script.buffer, 'hex')
+      .slice(ro.script.offset, ro.script.limit);
+
+    if (av.toString('hex') !== ev.toString('hex')
+        || as.toString('hex') !== es.toString('hex'))  {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+Wallet.prototype.addSeenToTxProposals = function() {
+  var ret = false;
+  var myId = this.getMyCopayerId();
+
+  for (var k in this.txProposals.txps) {
+    var txp = this.txProposals.txps[k];
+    if (!txp.seenBy[myId]) {
+
+      txp.seenBy[myId] = Date.now();
+      ret = true;
+    }
+  }
+  return ret;
+};
 
 // TODO: remove this method and use getAddressesInfo everywhere
 Wallet.prototype.getAddresses = function(opts) {
@@ -853,6 +1494,20 @@ Wallet.prototype.getUnspent = function(cb) {
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
+
+  if (typeof amountSatStr === 'function') {
+    var cb = amountSatStr;
+    var merchant = toAddress;
+    return this.createPaymentTx({ uri: merchant }, cb);
+  }
+
+  if (typeof comment === 'function') {
+    var cb = comment;
+    var merchant = toAddress;
+    var comment = amountSatStr;
+    return this.createPaymentTx({ uri: merchant, memo: comment }, cb);
+  }
+
   if (typeof opts === 'function') {
     cb = opts;
     opts = {};
@@ -1104,5 +1759,86 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
   var v = bitcore.Message.verifyWithPubKey(pubkey, JSON.stringify(payload), sign);
   return v;
 }
+
+// NOTE: Angular $http module does not send ArrayBuffers correctly, so we're
+// not going to use it. We'll have to write our own. Otherwise, we could
+// hex-encoded our messages and decode them on the other side, but that
+// deviates from BIP-70.
+
+// if (typeof angular !== 'undefined') {
+//   var $http = angular.bootstrap().get('$http');
+// }
+
+Wallet.request = function(options, callback) {
+  if (typeof options === 'string') {
+    options = { uri: options };
+  }
+
+  options.method = options.method || 'GET';
+  options.headers = options.headers || {};
+
+  var ret = {
+    success: function(cb) {
+      this._success = cb;
+      return this;
+    },
+    error: function(cb) {
+      this._error = cb;
+      return this;
+    },
+    _success: function() {
+      ;
+    },
+    _error: function(_, err) {
+      throw err;
+    }
+  };
+
+  var method = (options.method || 'GET').toUpperCase();
+  var uri = options.uri || options.url;
+  var req = options;
+
+  req.headers = req.headers || {};
+  req.body = req.body || req.data || {};
+
+  var xhr = new XMLHttpRequest();
+  xhr.open(method, uri, true);
+
+  Object.keys(req.headers).forEach(function(key) {
+    var val = req.headers[key];
+    if (key === 'Content-Length') return;
+    if (key === 'Content-Transfer-Encoding') return;
+    xhr.setRequestHeader(key, val);
+  });
+
+  if (req.responseType) {
+    xhr.responseType = req.responseType;
+  }
+
+  xhr.onload = function(event) {
+    var response = xhr.response;
+    var buf = new Uint8Array(response);
+    var headers = {};
+    (xhr.getAllResponseHeaders() || '').replace(
+      /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
+      function($0, $1, $2) {
+        headers[$1.toLowerCase()] = $2;
+      }
+    );
+    return ret._success(buf, xhr.status, headers, options);
+  };
+
+  xhr.onerror = function(event) {
+    return ret._error(null, new Error(event.message), null, options);
+  };
+
+  if (req.body) {
+    xhr.send(req.body);
+  } else {
+    xhr.send(null);
+  }
+
+  return ret;
+};
 
 module.exports = require('soop')(Wallet);
