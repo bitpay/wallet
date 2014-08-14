@@ -63,6 +63,9 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
   });
+  b.require('./test/mocks/FakeLocalStorage', {
+    expose: './mocks/FakeLocalStorage'
+  });
   b.require('./js/models/core/Message', {
     expose: '../js/models/core/Message'
   });
