@@ -933,7 +933,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         return cb(new Error('No unspent outputs available.'));
       }
       try {
-        self.createPaymentTxSync(options, merchantData, unspent);
+        self.createPaymentTxSync(options, merchantData, safeUnspent);
       } catch (e) {
         var msg = e.message || '';
         if (msg.indexOf('not enough unspent tx outputs to fulfill')) {
@@ -946,7 +946,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       return cb(null, merchantData, pr);
     }
 
-    var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
+    var ntxid = self.createPaymentTxSync(options, merchantData, safeUnspent);
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
@@ -1136,6 +1136,14 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
       address: this._doGenerateAddress(true).toString()
     }
   };
+
+  if (typeof opts.spendUnconfirmed === 'undefined') {
+    opts.spendUnconfirmed = this.spendUnconfirmed;
+  }
+
+  for (var k in Wallet.builderOpts) {
+    opts[k] = Wallet.builderOpts[k];
+  }
 
   merchantData.total = bignum(merchantData.total, 10);
 
