@@ -425,12 +425,17 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (merchantData && available < +merchantData.total) {
           err = new Error('No unspent outputs available.');
-          scope.notEnoughAmount = true;
-          scope.sendForm.amount.$isValid = false;
+          err.amount = merchantData.total;
         }
 
         if (err) {
           scope.sendForm.address.$isValid = false;
+          if (err.amount) {
+            scope.sendForm.amount.$setViewValue(+err.amount / config.unitToSatoshi);
+            scope.sendForm.amount.$render();
+            scope.sendForm.amount.$isValid = false;
+            scope.notEnoughAmount = true;
+          }
           notification.error('Error', err.message || 'Bad payment server.');
           if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
             $rootScope.$apply();

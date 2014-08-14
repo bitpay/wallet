@@ -932,7 +932,17 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       if (!unspent || !unspent.length) {
         return cb(new Error('No unspent outputs available.'));
       }
-      self.createPaymentTxSync(options, merchantData, unspent);
+      try {
+        self.createPaymentTxSync(options, merchantData, unspent);
+      } catch (e) {
+        var msg = e.message || '';
+        if (msg.indexOf('not enough unspent tx outputs to fulfill')) {
+          var sat = /(\d+)/.exec(msg)[1];
+          e = new Error('No unspent outputs available.');
+          e.amount = sat;
+          return cb(e);
+        }
+      }
       return cb(null, merchantData, pr);
     }
 
