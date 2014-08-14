@@ -24,4 +24,4 @@ FakeLocalStorage.setItem = function(k, v) {
   this.length = Object.keys(ls).length;
 };
 
-module.exports = require('soop')(FakeLocalStorage);
+module.exports = FakeLocalStorage;
