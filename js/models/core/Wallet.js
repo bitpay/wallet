@@ -113,7 +113,7 @@ Wallet.prototype.unlock = function() {
 Wallet.prototype.checkAndLock = function() {
   if (this.getLock()) {
     return true;
-  } 
+  }
 
   this.setLock();
   return false;
@@ -927,16 +927,16 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     raw: pr.serialize().toString('hex')
   };
 
-  return this.getUnspent(function(err, unspent) {
+  return this.getUnspent(function(err, safeUnspent, unspent) {
     if (options.fetch) {
       if (!unspent || !unspent.length) {
         return cb(new Error('No unspent outputs available.'));
       }
-      self.createPaymentTxSync(options, merchantData, unspent);
+      self.createPaymentTxSync(options, merchantData, safeUnspent);
       return cb(null, merchantData, pr);
     }
 
-    var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
+    var ntxid = self.createPaymentTxSync(options, merchantData, safeUnspent);
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
