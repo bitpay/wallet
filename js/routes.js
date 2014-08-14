@@ -74,8 +74,8 @@ angular
   .html5Mode(false)
   .hashPrefix('!');
   // IDLE timeout
-  $idleProvider.idleDuration(15 * 60); // in seconds
-  $idleProvider.warningDuration(10); // in seconds
+  $idleProvider.idleDuration(config.wallet.idleDurationMin * 60); // in seconds
+  $idleProvider.warningDuration(20); // in seconds
 })
 .run(function($rootScope, $location, $idle) {
   $idle.watch();

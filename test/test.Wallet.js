@@ -182,7 +182,6 @@ describe('Wallet model', function() {
       cachedW2obj.opts.reconnectDelay = 100;
     }
     var w = Wallet.fromObj(cachedW2obj, cachedW2.storage, cachedW2.network, cachedW2.blockchain);
-    w.unlock();
     return w;
   };
 
@@ -1024,20 +1023,6 @@ describe('Wallet model', function() {
       w.netStart();
       w.network.start.getCall(0).args[0].privkey.length.should.equal(64);
     });
-
-    it('should check if wallet is already opened', function() {
-      var w = cachedCreateW2();
-      should.not.exist(w.getLock());
-      w.checkAndLock().should.equal(false);
-      w.getLock().should.equal(true);
-    });
-    it('should check if wallet is already opened', function() {
-      var w = cachedCreateW2();
-      should.not.exist(w.getLock());
-      w.checkAndLock().should.equal(false);
-      w.getLock().should.equal(true);
-    });
-
 
     it('should not start if locked', function() {
       var w = cachedCreateW2();
