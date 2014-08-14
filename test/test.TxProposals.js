@@ -13,7 +13,11 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
 var sinon = require('sinon');
-var copay = require('../copay');
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
 
 var FakeBuilder = require('./mocks/FakeBuilder');
 var TxProposal = copay.TxProposal;
