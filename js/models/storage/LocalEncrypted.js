@@ -1,7 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
-
 var id = 0;
 
 function Storage(opts) {
@@ -215,4 +213,4 @@ Storage.prototype.import = function(base64) {
   return decryptedObj;
 };
 
-module.exports = require('soop')(Storage);
+module.exports = Storage;
