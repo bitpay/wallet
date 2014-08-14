@@ -1,7 +1,7 @@
 'use strict';
 
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
-
+var bitcore = require('bitcore');
 var id = 0;
 
 function Storage(opts) {
@@ -93,6 +93,15 @@ Storage.prototype.removeGlobal = function(k) {
   this.localStorage.removeItem(k);
 };
 
+Storage.prototype.getSessionId = function() {
+  var sessionId  = this.sessionStorage.getItem('sessionId');
+  if (!sessionId) {
+    sessionId = bitcore.getRandomBuffer(8).toString('hex');
+    this.sessionStorage.setItem(sessionId, 'sessionId');
+  }
+  return sessionId;
+};
+
 Storage.prototype._key = function(walletId, k) {
   return walletId + '::' + k;
 };
@@ -132,7 +141,8 @@ Storage.prototype.getWalletIds = function() {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (walletId === 'nameFor') continue;
+      if (walletId === 'nameFor' || walletId === 'lock') 
+        continue;
 
       if (typeof uniq[walletId] === 'undefined') {
         walletIds.push(walletId);
@@ -180,8 +190,9 @@ Storage.prototype.getLastOpened = function() {
   return this.getGlobal('lastOpened');
 }
 
+// Lock related
 Storage.prototype.setLock = function(walletId) {
-  this.setGlobal(this._key(walletId, 'Lock'), true);
+  this.setGlobal(this._key(walletId, 'Lock'), this.sessionId());
 }
 
 Storage.prototype.getLock = function(walletId) {

@@ -35,6 +35,11 @@ FakeStorage.prototype.getLock = function(id) {
   return this.storage[id + '::lock'];
 }
 
+FakeStorage.prototype.getSessionId = function() {
+  return this.sessionId || 'aSessionId';
+};
+
+
 FakeStorage.prototype.removeLock = function(id) {
   delete this.storage[id + '::lock'];
 }
