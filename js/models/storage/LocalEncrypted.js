@@ -1,5 +1,7 @@
 'use strict';
 
+var CryptoJS = require('node-cryptojs-aes').CryptoJS;
+
 var id = 0;
 
 function Storage(opts) {

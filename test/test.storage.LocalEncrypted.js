@@ -1,15 +1,13 @@
 'use strict';
 var chai = chai || require('chai');
 var should = chai.should();
-var is_browser = typeof process == 'undefined'
-  || typeof process.versions === 'undefined';
+var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 if (is_browser) {
   var copay = require('copay'); //browser
 } else {
   var copay = require('../copay'); //node
 }
 var LocalEncrypted = copay.StorageLocalEncrypted;
-var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 
 var fakeWallet = 'fake-wallet-id';
@@ -88,18 +86,6 @@ describe('Storage/LocalEncrypted model', function() {
       //encrypted.slice(0,6).should.equal("53616c");
     });
   });
-  describe('#_decryptObj', function() {
-    it('should decrypt and Obj', function() {
-      var storage = new LocalEncrypted({
-        password: 'password',
-        localStorage: localMock,
-      });
-      storage._decryptObj('{"a":"2"}').should.deep.equal({
-        a: "2"
-      });
-    });
-  });
-
 
   describe('#remove', function() {
     it('should remove an item', function() {
