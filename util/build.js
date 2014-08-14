@@ -58,13 +58,13 @@ var createBundle = function(opts) {
     expose: '../js/models/core/Wallet'
   });
   b.require('./js/models/core/Wallet', {
-    expose: '../js/models/core/Wallet'
-  });
-  b.require('./js/models/core/Wallet', {
     expose: '../../js/models/core/Wallet'
   });
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
+  });
+  b.require('./js/models/core/Message', {
+    expose: '../js/models/core/Message'
   });
   b.require('./test/mocks/FakeBlockchain', {
     expose: './mocks/FakeBlockchain'
@@ -89,6 +89,9 @@ var createBundle = function(opts) {
   });
   b.require('./js/models/core/Passphrase', {
     expose: '../js/models/core/Passphrase'
+  });
+  b.require('./config', {
+    expose: '../config'
   });
 
   if (opts.dontminify) {
