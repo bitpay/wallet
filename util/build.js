@@ -93,8 +93,14 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Passphrase', {
     expose: '../js/models/core/Passphrase'
   });
+  b.require('./js/models/core/HDPath', {
+    expose: '../js/models/core/HDPath'
+  });
   b.require('./config', {
     expose: '../config'
+  });
+  b.require('./copay', {
+    expose: '../copay'
   });
 
   if (opts.dontminify) {
