@@ -1,7 +1,9 @@
 
-try {
+var is_browser = typeof process == 'undefined'
+  || typeof process.versions === 'undefined';
+if (is_browser) {
   var copay = require('copay'); //browser
-} catch (e) {
+} else {
   var copay = require('../copay'); //node
 }
 var Wallet = copay.Wallet;

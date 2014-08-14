@@ -5,9 +5,9 @@ var is_browser = typeof process == 'undefined'
 var bitcore = bitcore || require('bitcore');
 var Buffer = bitcore.Buffer;
 var PayPro = bitcore.PayPro;
-try {
+if (is_browser) {
   var copay = require('copay'); //browser
-} catch (e) {
+} else {
   var copay = require('../../copay'); //node
 }
 var Wallet = copay.Wallet;
