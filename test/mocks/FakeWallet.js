@@ -1,6 +1,4 @@
-
-var is_browser = typeof process == 'undefined'
-  || typeof process.versions === 'undefined';
+var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 if (is_browser) {
   var copay = require('copay'); //browser
 } else {
@@ -27,7 +25,11 @@ var FakeWallet = function() {
       createdTs: 1403102115,
     }
   };
-  this.publicKeyRing = {isComplete: function(){ return true; }};
+  this.publicKeyRing = {
+    isComplete: function() {
+      return true;
+    }
+  };
 };
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
@@ -96,7 +98,5 @@ FakeWallet.prototype.disconnect = function() {
   this.disconnectCalled = 1;
 };
 
-// This mock is meant for karma, module.exports is not necesary.
-try {
-  module.exports = require('soop')(FakeWallet);
-} catch (e) {}
+// TODO a try catch was here
+module.exports = FakeWallet;
