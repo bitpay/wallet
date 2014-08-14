@@ -39,14 +39,6 @@ var defaultConfig = {
     maxPeers: 15,
     debug: 2,
 
-    // Network encryption config
-    sjclParams: {
-      salt: 'mjuBtGybi/4=', // choose your own salt (base64)
-      iter: 1000,
-      mode: 'ccm',
-      ts: parseInt(64),
-    },
-
     // PeerJS internal config object 
     config: {
       'iceServers': [
