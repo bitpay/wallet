@@ -309,14 +309,22 @@ angular.module('copayApp.services')
     });
   }
 
+  var connectionLost = false;
   $rootScope.$watch('insightError', function(status) {
-    if (status) {
-      if (status === -1) {
-        notification.success('Networking restored', 'Connection to Insight re-established');
-      } else if (!isNaN(status)) {
-        notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number ' + status + ')');
-      }
+    if (!status) return;
+
+    // Reconnected
+    if (status === -1) {
+      if (!connectionLost) return; // Skip on first reconnect
+      connectionLost = false;
+      notification.success('Networking restored', 'Connection to Insight re-established');
+      return;
     }
+
+    // Retry
+    if (status == 1) return; // Skip the first try
+    connectionLost = true;
+    notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number ' + (status-1) + ')');
   });
 
   root._setCommError = function(e) {
@@ -324,7 +332,6 @@ angular.module('copayApp.services')
       $rootScope.insightError = 0;
     $rootScope.insightError++;
   };
-
 
   root._clearCommError = function(e) {
     if ($rootScope.insightError > 0)
