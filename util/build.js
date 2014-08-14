@@ -78,6 +78,9 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakePayProServer', {
     expose: '../../mocks/FakePayProServer'
   });
+  b.require('./test/mocks/FakeBuilder', {
+    expose: './mocks/FakeBuilder'
+  });
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC'
   });
@@ -98,6 +101,10 @@ var createBundle = function(opts) {
   });
   b.require('./config', {
     expose: '../config'
+  });
+  b.require('./copay');
+  b.require('./copay', {
+    expose: 'copay'
   });
   b.require('./copay', {
     expose: '../copay'
