@@ -932,11 +932,11 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       if (!unspent || !unspent.length) {
         return cb(new Error('No unspent outputs available.'));
       }
-      self.createPaymentTxSync(options, merchantData, safeUnspent);
+      self.createPaymentTxSync(options, merchantData, unspent);
       return cb(null, merchantData, pr);
     }
 
-    var ntxid = self.createPaymentTxSync(options, merchantData, safeUnspent);
+    var ntxid = self.createPaymentTxSync(options, merchantData, unspent);
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
