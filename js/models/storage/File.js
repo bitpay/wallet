@@ -1,6 +1,5 @@
 'use strict';
-var imports = require('soop').imports();
-var fs = imports.fs || require('fs');
+var fs = require('fs');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 var passwords = [];
@@ -147,4 +146,4 @@ Storage.prototype.clearAll = function(callback) {
   this.save(callback);
 };
 
-module.exports = require('soop')(Storage);
+module.exports = Storage;
