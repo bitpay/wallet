@@ -11,7 +11,7 @@ if (is_browser) {
   var copay = require('../copay'); //node
 }
 var copayConfig = require('../config');
-var Wallet = require('../js/models/core/Wallet');
+var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
@@ -22,7 +22,7 @@ var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var bignum = bitcore.Bignum;
-var startServer = require('./mocks/FakePayProServer');
+var startServer = copay.FakePayProServer; // TODO should be require('./mocks/FakePayProServer');
 
 var server;
 

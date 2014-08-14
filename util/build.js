@@ -13,7 +13,7 @@ var puts = function(error, stdout, stderr) {
   //sys.puts(stderr);
 };
 
-var pack = function (params) {
+var pack = function(params) {
   var file = require.resolve('soop');
   var dir = file.substr(0, file.length - String('soop.js').length);
   var preludePath = dir + 'example/custom_prelude.js';
@@ -48,9 +48,6 @@ var createBundle = function(opts) {
   b.require('./copay', {
     expose: 'copay'
   });
-  b.require('./copay', {
-    expose: '../copay'
-  });
   b.require('./version');
   //  b.external('bitcore');
   b.require('./js/models/core/WalletFactory', {
@@ -66,20 +63,26 @@ var createBundle = function(opts) {
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
   });
+  b.require('./test/mocks/FakeLocalStorage', {
+    expose: './mocks/FakeLocalStorage'
+  });
+  b.require('./js/models/core/Message', {
+    expose: '../js/models/core/Message'
+  });
+  b.require('./test/mocks/FakeBlockchain', {
+    expose: './mocks/FakeBlockchain'
+  });
+  b.require('./test/mocks/FakeNetwork', {
+    expose: './mocks/FakeNetwork'
+  });
   b.require('./test/mocks/FakePayProServer', {
     expose: './mocks/FakePayProServer'
   });
   b.require('./test/mocks/FakePayProServer', {
     expose: '../../mocks/FakePayProServer'
   });
-  b.require('./test/mocks/FakeBlockchain', {
-    expose: './mocks/FakeBlockchain'
-  });
-  b.require('./test/mocks/FakeLocalStorage', {
-    expose: './mocks/FakeLocalStorage'
-  });
-  b.require('./test/mocks/FakeNetwork', {
-    expose: './mocks/FakeNetwork'
+  b.require('./test/mocks/FakeBuilder', {
+    expose: './mocks/FakeBuilder'
   });
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC'
@@ -96,24 +99,21 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Passphrase', {
     expose: '../js/models/core/Passphrase'
   });
-  b.require('./js/models/core/Message', {
-    expose: '../js/models/core/Message'
+  b.require('./js/models/core/HDPath', {
+    expose: '../js/models/core/HDPath'
   });
   b.require('./config', {
     expose: '../config'
   });
-  b.require('./js/models/core/HDPath', {
-    expose: '../js/models/core/HDPath'
-  });
 
-  if (opts.debug) {
+  if (opts.dontminify) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
     b.require('soop');
   }
 
-  if (!opts.debug) {
+  if (!opts.dontminify) {
     b.transform({
       global: true
     }, 'uglifyify');
@@ -128,10 +128,10 @@ if (require.main === module) {
   };
   var program = require('commander');
   program
-  .version('0.0.1')
-  .option('-d, --debug', 'Development. Don\'t minify the codem and include debug packages.')
-  .option('-o, --stdout', 'Specify output as stdout')
-  .parse(process.argv);
+    .version('0.0.1')
+    .option('-d, --dontminify', 'Development. Don\'t minify the code.')
+    .option('-o, --stdout', 'Specify output as stdout')
+    .parse(process.argv);
 
   createVersion();
   var copayBundle = createBundle(program);
