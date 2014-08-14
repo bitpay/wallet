@@ -1,4 +1,10 @@
-var Wallet = require('../../js/models/core/Wallet');
+
+try {
+  var copay = require('copay'); //browser
+} catch (e) {
+  var copay = require('../copay'); //node
+}
+var Wallet = copay.Wallet;
 
 
 var FakeWallet = function() {
