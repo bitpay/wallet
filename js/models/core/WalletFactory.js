@@ -233,7 +233,6 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 
   self.network.on('serverError', function() {
-    console.log('[WalletFactory.js.236]'); //TODO
     return cb('joinError');
   });
 
