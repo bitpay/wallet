@@ -10,7 +10,7 @@ if (is_browser) {
   var copay = require('../copay'); //node
 }
 var copayConfig = require('../config');
-var Wallet = require('../js/models/core/Wallet');
+var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
