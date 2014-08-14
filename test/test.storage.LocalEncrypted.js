@@ -1,21 +1,3 @@
-//Crypto Mock
-CryptoJS = {};
-CryptoJS.AES = {};
-CryptoJS.AES.encrypt = function(a) {
-  return a;
-};
-
-CryptoJS.enc = {
-  utf8: ''
-};
-
-CryptoJS.AES.decrypt = function(a) {
-  return a;
-};
-
-
-
-
 'use strict';
 var chai = chai || require('chai');
 var should = chai.should();
@@ -27,6 +9,8 @@ if (is_browser) {
   var copay = require('../copay'); //node
 }
 var LocalEncrypted = copay.StorageLocalEncrypted;
+var CryptoJS = require('node-cryptojs-aes').CryptoJS;
+
 
 var fakeWallet = 'fake-wallet-id';
 var timeStamp = Date.now();
