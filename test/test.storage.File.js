@@ -7,25 +7,25 @@ var sinon = require('sinon');
 var crypto = require('crypto');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
+var mock = require('mock-fs');
+
+
 describe('Storage/File', function() {
   it('should exist', function() {
     should.exist(Storage);
   });
 
+  var obj = {
+    "test": "test"
+  };
+  var encryptedStr = CryptoJS.AES.encrypt(JSON.stringify(obj), 'password').toString();
+  console.log(encryptedStr);
+  mock({
+    'myfilename': encryptedStr
+  });
+
   describe('#load', function(done) {
     it('should call fs.readFile', function(done) {
-      var fs = {}
-      fs.readFile = function(filename, callback) {
-        filename.should.equal('myfilename');
-        var obj = {
-          "test": "test"
-        };
-        var encryptedStr = CryptoJS.AES.encrypt(JSON.stringify(obj), "password").toString();
-        callback(null, encryptedStr);
-      };
-      var Storage = require('soop').load('../js/models/storage/File.js', {
-        fs: fs
-      });
       var storage = new Storage({
         password: 'password'
       });
@@ -37,18 +37,11 @@ describe('Storage/File', function() {
 
   describe('#save', function(done) {
     it('should call fs.writeFile', function(done) {
-      var fs = {}
-      fs.writeFile = function(filename, data, callback) {
-        filename.should.equal('myfilename');
-        callback();
-      };
-      var Storage = require('soop').load('../js/models/storage/File.js', {
-        fs: fs
-      });
       var storage = new Storage({
         password: 'password'
       });
       storage.save('myfilename', function(err) {
+        mock.restore();
         done();
       });
     });
