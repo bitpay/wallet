@@ -55,10 +55,10 @@ var createBundle = function(opts) {
   });
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {
-    expose: '../js/models/core/Wallet'
+    expose: '../../js/models/core/Wallet'
   });
   b.require('./js/models/core/Wallet', {
-    expose: '../../js/models/core/Wallet'
+    expose: '../js/models/core/Wallet'
   });
   b.require('./test/mocks/FakeStorage', {
     expose: './mocks/FakeStorage'
@@ -77,6 +77,9 @@ var createBundle = function(opts) {
   });
   b.require('./test/mocks/FakePayProServer', {
     expose: '../../mocks/FakePayProServer'
+  });
+  b.require('./test/mocks/FakePayProServer', {
+    expose: './mocks/FakePayProServer'
   });
   b.require('./test/mocks/FakeBuilder', {
     expose: './mocks/FakeBuilder'
@@ -101,13 +104,6 @@ var createBundle = function(opts) {
   });
   b.require('./config', {
     expose: '../config'
-  });
-  b.require('./copay');
-  b.require('./copay', {
-    expose: 'copay'
-  });
-  b.require('./copay', {
-    expose: '../copay'
   });
 
   if (opts.dontminify) {
