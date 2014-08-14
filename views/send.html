@@ -65,7 +65,7 @@
               </label>
               <div class="small-9 columns">
                 <input type="number" id="amount"
-                ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0)"
+                ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || $root.merchantError"
                 name="amount" placeholder="Amount" ng-model="amount"
                 min="0.00005400" max="10000000000" enough-amount required
                 autocomplete="off"

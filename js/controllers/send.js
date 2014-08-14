@@ -430,13 +430,29 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (err) {
           scope.sendForm.address.$isValid = false;
+
           if (err.amount) {
             scope.sendForm.amount.$setViewValue(+err.amount / config.unitToSatoshi);
             scope.sendForm.amount.$render();
             scope.sendForm.amount.$isValid = false;
             scope.notEnoughAmount = true;
+            $rootScope.merchantError = true;
+            var lastAddr = scope.sendForm.address.$viewValue;
+            var unregister = scope.$watch('address', function() {
+              if (scope.sendForm.address.$viewValue !== lastAddr) {
+                delete $rootScope.merchantError;
+                scope.sendForm.amount.$setViewValue('');
+                scope.sendForm.amount.$render();
+                unregister();
+                if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+                  $rootScope.$apply();
+                }
+              }
+            });
           }
+
           notification.error('Error', err.message || 'Bad payment server.');
+
           if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
             $rootScope.$apply();
           }
