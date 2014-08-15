@@ -497,7 +497,12 @@ Wallet.prototype.getRegisteredPeerIds = function() {
 };
 
 Wallet.prototype.keepAlive = function() {
-  this.lock.keepAlive();
+  try{
+    this.lock.keepAlive();
+  } catch(e){
+    this.log(e);
+    this.emit('locked',null,'Wallet appears to be openned on other browser instance. Closing this one.' );
+  }
 };
 
 Wallet.prototype.store = function() {

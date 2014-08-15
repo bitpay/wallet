@@ -101,7 +101,7 @@ Storage.prototype.getSessionId = function() {
   var sessionId  = this.sessionStorage.getItem('sessionId');
   if (!sessionId) {
     sessionId = bitcore.SecureRandom.getRandomBuffer(8).toString('hex');
-    this.sessionStorage.setItem(sessionId, 'sessionId');
+    this.sessionStorage.setItem('sessionId', sessionId);
   }
   return sessionId;
 };

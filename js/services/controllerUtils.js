@@ -26,7 +26,7 @@ angular.module('copayApp.services')
 
     Socket.removeAllListeners();
 
-    $rootScope.wallet = $rootScope.tmp = null;
+    $rootScope.wallet = null;
     delete $rootScope['wallet'];
 
     video.close();
@@ -72,7 +72,6 @@ angular.module('copayApp.services')
   root.setupRootVariables = function() {
     uriHandler.register();
     $rootScope.unitName = config.unitName;
-    $rootScope.showLockWarning = false;
     $rootScope.txAlertCount = 0;
     $rootScope.insightError = 0;
     $rootScope.isCollapsed = true;
@@ -125,12 +124,6 @@ angular.module('copayApp.services')
     };
 
     notification.enableHtml5Mode(); // for chrome: if support, enable it
-    w.on('locked', function() {
-      $rootScope.tmp = w;
-      $rootScope.showLockWarning=true;
-      $location.path('/warning');
-      $rootScope.$digest();
-    });
 
     w.on('badMessage', function(peerId) {
       notification.error('Error', 'Received wrong message from peer ' + peerId);
@@ -195,6 +188,7 @@ angular.module('copayApp.services')
       $rootScope.$digest();
     });
     w.on('close', root.onErrorDigest);
+    w.on('locked', root.onErrorDigest.bind(this));
     w.netStart();
   };
 
