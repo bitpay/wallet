@@ -38,6 +38,13 @@ module.exports = [
     {
         "file": "plugins/nl.x-services.plugins.toast/test/tests.js",
         "id": "nl.x-services.plugins.toast.tests"
+    },
+    {
+        "file": "plugins/com.borismus.webintent/www/webintent.js",
+        "id": "com.borismus.webintent.WebIntent",
+        "clobbers": [
+            "WebIntent"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -48,6 +55,7 @@ module.exports.metadata =
     "org.apache.cordova.splashscreen": "0.3.0",
     "com.verso.cordova.clipboard": "0.1.0",
     "nl.x-services.plugins.toast": "2.0"
+    "com.borismus.webintent": "1.0.0"
 }
 // BOTTOM OF METADATA
 });

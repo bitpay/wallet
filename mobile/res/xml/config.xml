@@ -33,5 +33,7 @@
     </feature>
     <feature name="Toast">
         <param name="android-package" value="nl.xservices.plugins.Toast" />
+    <feature name="WebIntent">
+        <param name="android-package" value="com.borismus.webintent.WebIntent" />
     </feature>
 </widget>
