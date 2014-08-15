@@ -24,20 +24,19 @@ var createTests = function(opts) {
   };
   var b = browserify(bopts);
 
-  /*
   var files = fs.readdirSync('./test');
   var i = 0;
   files.map(function(filename) {
     if (/^.*\.js$/.test(filename)) {
-      if (i <= 1) {
+      if (i <= 10000) {
         b.add('./test/' + filename);
         console.log(filename);
       }
+      i++;
     }
-    i++;
   });
-  */
   b.external('copay');
+  b.external('bitcore');
   var bundle = b.bundle();
   return bundle;
 };
@@ -54,25 +53,14 @@ var createBundle = function(opts) {
     expose: 'copay'
   });
   b.require('./version');
-
-  if (opts.debug) {
-    //include dev dependencies
-    b.require('sinon');
-    b.require('blanket');
-    b.require('./test/mocks/FakeStorage');
-    b.require('./test/mocks/FakeLocalStorage');
-    b.require('./test/mocks/FakeBlockchain');
-    b.require('./test/mocks/FakeNetwork');
-    b.require('./test/mocks/FakePayProServer');
-    b.require('./test/mocks/FakeBuilder');
-  }
-
-  if (!opts.debug) {
+  b.require('bitcore/node_modules/browserify-buffertools/buffertools.js', {
+    expose: 'buffertools'
+  });
+  if (!opts.dontminify) {
     b.transform({
       global: true
     }, 'uglifyify');
   }
-  b.external('bitcore');
   var bundle = b.bundle();
   return bundle;
 };
@@ -88,7 +76,7 @@ if (require.main === module) {
   program.dir = program.dir || 'js/';
 
   createVersion();
-  if (false && program.dontminify) {
+  if (program.dontminify) {
     var testBundle = createTests(program);
     testBundle.pipe(fs.createWriteStream('js/testsBundle.js'));
     console.log('Test bundle being created');

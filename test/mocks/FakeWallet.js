@@ -1,4 +1,4 @@
-var copay = copay || require('../copay');
+var copay = copay || require('../../copay');
 var Wallet = copay.Wallet;
 
 
