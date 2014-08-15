@@ -66,7 +66,7 @@ var createBundle = function(opts) {
     expose: '../config'
   });
 
-  if (opts.dontminify) {
+  if (opts.debug) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
