@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('OpenController',
     $scope.wallets = walletFactory.getWallets().sort(cmp);
     $scope.selectedWalletId = walletFactory.storage.getLastOpened() || ($scope.wallets[0] && $scope.wallets[0].id);
     $scope.openPassword = '';
+    $scope.isMobile = !!window.cordova;
 
     $scope.open = function(form) {
       if (form && form.$invalid) {
