@@ -15,6 +15,10 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
   $scope.openPassword = '';
   $scope.isMobile = !!window.cordova;
 
+  if (!$scope.wallets.length){
+    $location.path('/');
+  }
+
   $scope.open = function(form) {
     if (form && form.$invalid) {
       notification.error('Error', 'Please enter the required fields');
