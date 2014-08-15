@@ -170,7 +170,7 @@ WalletFactory.prototype._checkNetwork = function(inNetworkName) {
 
 WalletFactory.prototype.open = function(walletId, passphrase) {
   this.storage._setPassphrase(passphrase);
-  var w = this.read(walletId, opts);
+  var w = this.read(walletId);
   if (w) 
     w.store();
 

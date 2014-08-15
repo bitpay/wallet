@@ -141,7 +141,7 @@ Storage.prototype.getWalletIds = function() {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (walletId === 'nameFor' || walletId === 'lock') 
+      if (!walletId || walletId === 'nameFor') 
         continue;
 
       if (typeof uniq[walletId] === 'undefined') {
@@ -188,19 +188,6 @@ Storage.prototype.setLastOpened = function(walletId) {
 
 Storage.prototype.getLastOpened = function() {
   return this.getGlobal('lastOpened');
-}
-
-// Lock related
-Storage.prototype.setLock = function(walletId) {
-  this.setGlobal(this._key(walletId, 'Lock'), this.sessionId());
-}
-
-Storage.prototype.getLock = function(walletId) {
-  return this.getGlobal(this._key(walletId, 'Lock'));
-}
-
-Storage.prototype.removeLock = function(walletId) {
-  this.removeGlobal(this._key(walletId, 'Lock'));
 }
 
 //obj contains keys to be set

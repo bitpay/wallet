@@ -1670,7 +1670,7 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
-  this.unlock();
+  this.lock.release();
   this.network.disconnect();
 };
 
