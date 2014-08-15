@@ -4,24 +4,9 @@
 
 var fs = require('fs');
 var browserify = require('browserify');
-var browserPack = require('browser-pack');
 var exec = require('child_process').exec;
-var sys = require('sys');
 var puts = function(error, stdout, stderr) {
   if (error) console.log(error);
-  //sys.puts(stdout);
-  //sys.puts(stderr);
-};
-
-var pack = function(params) {
-  var file = require.resolve('soop');
-  var dir = file.substr(0, file.length - String('soop.js').length);
-  var preludePath = dir + 'example/custom_prelude.js';
-  params.raw = true;
-  params.sourceMapPrefix = '//#';
-  params.prelude = fs.readFileSync(preludePath, 'utf8');
-  params.preludePath = preludePath;
-  return browserPack(params);
 };
 
 var createVersion = function() {
@@ -34,7 +19,6 @@ var createBundle = function(opts) {
   opts.dir = opts.dir || 'js/';
 
   var bopts = {
-    pack: pack,
     debug: true,
     standalone: 'copay',
     insertGlobals: true
