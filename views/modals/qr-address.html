@@ -11,6 +11,9 @@
     </p>
     <button class="m15t button secondary" open-external address="{{address.address}}">
       <i class="fi-link">&nbsp;</i> Open in external application
+    </button><br><br>
+    <button class="m15t button secondary" ng-show="isMobile" ng-click="mobileCopy(address.address)">
+      <i class="fi-link">&nbsp;</i> Copy to clipboard
     </button>
   </div>
 </div>
