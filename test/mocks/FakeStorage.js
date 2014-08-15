@@ -69,7 +69,11 @@ FakeStorage.prototype.getWalletIds = function() {
     var split = ii.split('::');
     if (split.length == 2) {
       var walletId = split[0];
-      if (walletId !== 'nameFor' && typeof uniq[walletId] === 'undefined') {
+
+      if (!walletId || walletId === 'nameFor' || walletId ==='lock') 
+        continue;
+
+      if (typeof uniq[walletId] === 'undefined') {
         walletIds.push(walletId);
         uniq[walletId] = 1;
       }
