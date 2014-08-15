@@ -37,7 +37,6 @@
   ],
   "devDependencies": {
     "async": "0.9.0",
-    "bitcore": "git://github.com/bitpay/bitcore.git#master",
     "blanket": "1.1.6",
     "browser-pack": "2.0.1",
     "browserify": "3.32.1",
