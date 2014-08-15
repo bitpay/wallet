@@ -12,8 +12,8 @@
         </div>
         <div class="large-8 columns line-dashed-setup-v">
           <div class="box-setup oh">
-            <img ng-if="!isSetupWalletPage" class="right m15t" src="../img/step-1.svg" alt="Step 1">
-            <img ng-if="isSetupWalletPage" class="right m15t" src="../img/step-2.svg" alt="Step 2">
+            <img ng-if="!isSetupWalletPage && !isMobile" class="right m15t" src="img/step-1.svg" alt="Step 1">
+            <img ng-if="isSetupWalletPage && !isMobile" class="right m15t" src="img/step-2.svg" alt="Step 2">
             <h1 class="text-secondary line-sidebar-b">Create new wallet</h1>
             <label ng-show="!isSetupWalletPage">Wallet name
               <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
