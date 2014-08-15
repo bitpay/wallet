@@ -16,6 +16,3 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js
 module.exports.WalletFactory = require('./js/models/core/WalletFactory');
 module.exports.Wallet = require('./js/models/core/Wallet');
 module.exports.version = require('./version');
-
-// test hack :s, will fix 
-module.exports.FakePayProServer = require('./test/mocks/FakePayProServer');

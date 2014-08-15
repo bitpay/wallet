@@ -15,9 +15,34 @@ var createVersion = function() {
   fs.writeFileSync("./version.js", content);
 };
 
-var createBundle = function(opts) {
-  opts.dir = opts.dir || 'js/';
 
+var createTests = function(opts) {
+  var bopts = {
+    debug: true,
+    standalone: 'tests',
+    insertGlobals: true
+  };
+  var b = browserify(bopts);
+
+  /*
+  var files = fs.readdirSync('./test');
+  var i = 0;
+  files.map(function(filename) {
+    if (/^.*\.js$/.test(filename)) {
+      if (i <= 1) {
+        b.add('./test/' + filename);
+        console.log(filename);
+      }
+    }
+    i++;
+  });
+  */
+  b.external('copay');
+  var bundle = b.bundle();
+  return bundle;
+};
+
+var createBundle = function(opts) {
   var bopts = {
     debug: true,
     standalone: 'copay',
@@ -25,41 +50,21 @@ var createBundle = function(opts) {
   };
   var b = browserify(bopts);
 
-  b.require('bitcore/node_modules/browserify-buffertools/buffertools.js', {
-    expose: 'buffertools'
-  });
-
   b.require('./copay', {
     expose: 'copay'
   });
   b.require('./version');
-  //  b.external('bitcore');
-
-  if (opts.debug) {
-    //include dev dependencies
-    b.require('sinon');
-    b.require('blanket');
-    b.require('./test/mocks/FakeStorage');
-    b.require('./test/mocks/FakeLocalStorage');
-    b.require('./test/mocks/FakeBlockchain');
-    b.require('./test/mocks/FakeNetwork');
-    b.require('./test/mocks/FakePayProServer');
-    b.require('./test/mocks/FakeBuilder');
-  }
-
   if (!opts.dontminify) {
     b.transform({
       global: true
     }, 'uglifyify');
   }
+  b.external('bitcore');
   var bundle = b.bundle();
   return bundle;
 };
 
 if (require.main === module) {
-  var list = function(val) {
-    return val.split(',');
-  };
   var program = require('commander');
   program
   .version('0.0.1')
@@ -67,9 +72,17 @@ if (require.main === module) {
   .option('-o, --stdout', 'Specify output as stdout')
   .parse(process.argv);
 
+  program.dir = program.dir || 'js/';
+
   createVersion();
+  if (false && program.dontminify) {
+    var testBundle = createTests(program);
+    testBundle.pipe(fs.createWriteStream('js/testsBundle.js'));
+    console.log('Test bundle being created');
+  }
   var copayBundle = createBundle(program);
   copayBundle.pipe(program.stdout ? process.stdout : fs.createWriteStream('js/copayBundle.js'));
+  console.log('Copay bundle being created');
 }
 
 module.exports.createBundle = createBundle;

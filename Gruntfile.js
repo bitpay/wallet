@@ -24,7 +24,16 @@ module.exports = function(grunt) {
         tasks: ['markdown']
       },
       scripts: {
-        files: ['*.js', '*/*/*.js', '**/*.js', '*.html', '!**/node_modules/**', '!lib/**js', '!browser/vendor-bundle.js', '!js/copayBundle.js'],
+        files: ['*.js',
+          '*/*/*.js',
+          '**/*.js',
+          '*.html',
+          '!**/node_modules/**',
+          '!lib/**js',
+          '!version.js',
+          '!js/testsBundle.js',
+          '!js/copayBundle.js'
+        ],
         tasks: ['shell'],
       },
     },
