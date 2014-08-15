@@ -17,20 +17,24 @@ WalletLock._keyFor = function(walletId) {
 };
 
 WalletLock.prototype._isLockedByOther = function() {
-  var wl = this.storage.getGlobal(this.key);
-
-  if (!wl || wl.expireTs < Date.now() || wl.sessionId === this.sessionId)
+  var json = this.storage.getGlobal(this.key);
+  var wl = json ? JSON.parse(json) : null;
+  var t =  wl ? (Date.now() - wl.expireTs) : false;
+  // is not locked?
+  if (!wl || t > 0 || wl.sessionId === this.sessionId)
     return false;
 
-  return true;
+  // Seconds remainding
+  return parseInt(-t/1000.);
 };
 
 
 WalletLock.prototype.keepAlive = function() {
   preconditions.checkState(this.sessionId);
 
-  if (this._isLockedByOther())
-    throw new Error('Could not adquire lock');
+  var t = this._isLockedByOther();
+  if (t)
+    throw new Error('Wallet is already open. Close it to proceed or wait '+ t + ' seconds if you close it already' );
 
   this.storage.setGlobal(this.key, {
     sessionId: this.sessionId,

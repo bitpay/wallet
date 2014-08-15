@@ -11,8 +11,8 @@ FakeStorage.prototype._setPassphrase = function(password) {
   this.storage.passphrase = password;
 };
 
-FakeStorage.prototype.setGlobal = function(id, payload) {
-  this.storage[id] = payload;
+FakeStorage.prototype.setGlobal = function(id, v) {
+  this.storage[id] = typeof v === 'object' ? JSON.stringify(v) : v;
 };
 
 FakeStorage.prototype.getGlobal = function(id) {

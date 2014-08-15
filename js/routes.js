@@ -69,13 +69,15 @@ angular
 //Setting HTML5 Location Mode
 angular
 .module('copayApp')
-.config(function($locationProvider, $idleProvider) {
+.config(function($locationProvider, $idleProvider, $keepaliveProvider) {
   $locationProvider
   .html5Mode(false)
   .hashPrefix('!');
   // IDLE timeout
-  $idleProvider.idleDuration(config.wallet.idleDurationMin * 60); // in seconds
+  var timeout = config.wallet.idleDurationMin * 60 || 300;
+  $idleProvider.idleDuration(timeout); // in seconds
   $idleProvider.warningDuration(20); // in seconds
+  $keepaliveProvider.interval(5); // in seconds
 })
 .run(function($rootScope, $location, $idle) {
   $idle.watch();
@@ -83,20 +85,6 @@ angular
     if (!util.supports.data) {
       $location.path('unsupported');
     } else {
-
-      // Locked?
-      if ($rootScope.showLockWarning) {
-        if ($rootScope.tmp) {
-          if ($location.path() !== '/warning') {
-            $location.path('/warning');
-          }
-          else {
-            delete $rootScope['showLockWarning'];
-          }
-        }
-        return;
-      }
-
       if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
         $idle.unwatch();
         $location.path('/');

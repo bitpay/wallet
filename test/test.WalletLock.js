@@ -41,7 +41,7 @@ describe('WalletLock model', function() {
     storage.sessionId = 'xxx';
     (function() {
       new WalletLock(storage, 'walletId')
-    }).should.throw('adquire lock');
+    }).should.throw('already open');
   });
 
   it('should not fail if locked by me', function() {
@@ -60,7 +60,10 @@ describe('WalletLock model', function() {
   it('should not fail if expired', function() {
     var s = new Storage();
     var w = new WalletLock(s, 'walletId');
-    s.storage[Object.keys(s.storage)[0]].expireTs = Date.now() - 60 * 6 * 1000;
+    var k = Object.keys(s.storage)[0];
+    var v = JSON.parse(s.storage[k]);
+    v.expireTs = Date.now() - 60 * 6 * 1000;
+    s.storage[k] = JSON.stringify(v);
 
     s.sessionId = 'xxx';
     var w2 = new WalletLock(s, 'walletId')
