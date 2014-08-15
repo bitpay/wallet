@@ -4,7 +4,6 @@ var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
-var parseBitcoinURI = require('./HDPath').parseBitcoinURI;
 var util = require('util');
 
 var bitcore = require('bitcore');
@@ -46,7 +45,7 @@ function Wallet(opts) {
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
   this.id = opts.id || Wallet.getRandomId();
-  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin); 
+  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
 
 
   this.name = opts.name;
@@ -777,7 +776,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
   options.uri = options.uri || options.url;
 
   if (options.uri.indexOf('bitcoin:') === 0) {
-    options.uri = parseBitcoinURI(options.uri).merchant;
+    options.uri = new bitcore.BIP21(options.uri).data.merchant;
     if (!options.uri) {
       return cb(new Error('No URI.'));
     }
