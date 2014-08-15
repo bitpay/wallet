@@ -128,10 +128,10 @@ if (require.main === module) {
   };
   var program = require('commander');
   program
-    .version('0.0.1')
-    .option('-d, --dontminify', 'Development. Don\'t minify the code.')
-    .option('-o, --stdout', 'Specify output as stdout')
-    .parse(process.argv);
+  .version('0.0.1')
+  .option('-d, --debug', 'Development. Don\'t minify the codem and include debug packages.')
+  .option('-o, --stdout', 'Specify output as stdout')
+  .parse(process.argv);
 
   createVersion();
   var copayBundle = createBundle(program);
