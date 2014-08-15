@@ -20,7 +20,7 @@ function onDeviceReady() {
 
     var body = document.getElementsByTagName('nav')[0];
     var $rootScope = angular.element(body).scope();
-    $rootScope.pendingPayment = copay.HDPath.parseBitcoinURI(url);
+    $rootScope.pendingPayment = new bitcore.BIP21(url);
 
     // Redirect or reload controller (if already there)
     window.location = ($rootScope.wallet ? '#!/send' : '#!/open') + '?r=' + Math.random();
