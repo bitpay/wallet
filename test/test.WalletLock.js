@@ -36,27 +36,32 @@ describe('WalletLock model', function() {
     should.exist(w);
   });
 
-  it('should fail if locked already', function() {
+  it('should NOT fail if locked already', function() {
     var w = new WalletLock(storage, 'walletId');
     storage.sessionId = 'xxx';
-    (function() {
-      new WalletLock(storage, 'walletId')
-    }).should.throw('already open');
+    var w2= new WalletLock(storage, 'walletId');
+    should.exist(w2);
   });
+
+  it('should change status of previously openned wallet', function() {
+    storage.sessionId = 'session1';
+    var w = new WalletLock(storage, 'walletId');
+    storage.sessionId = 'xxx';
+    var w2= new WalletLock(storage, 'walletId');
+    w2.keepAlive();
+    (function() {w.keepAlive();}).should.throw('already open');
+
+  });
+
 
   it('should not fail if locked by me', function() {
     var s = new Storage();
     var w = new WalletLock(s, 'walletId');
     var w2 = new WalletLock(s, 'walletId')
+    w2.keepAlive();
     should.exist(w2);
   });
 
-  it('should not fail if locked by me', function() {
-    var s = new Storage();
-    var w = new WalletLock(s, 'walletId');
-    var w2 = new WalletLock(s, 'walletId')
-    should.exist(w2);
-  });
   it('should not fail if expired', function() {
     var s = new Storage();
     var w = new WalletLock(s, 'walletId');
