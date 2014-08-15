@@ -34,66 +34,17 @@ var createBundle = function(opts) {
   });
   b.require('./version');
   //  b.external('bitcore');
-  b.require('./js/models/core/WalletFactory', {
-    expose: '../js/models/core/WalletFactory'
-  });
-  b.require('./js/models/core/Wallet');
-  b.require('./js/models/core/Wallet', {
-    expose: '../js/models/core/Wallet'
-  });
-  b.require('./js/models/core/Wallet', {
-    expose: '../../js/models/core/Wallet'
-  });
-  b.require('./js/models/network/WebRTC', {
-    expose: '../js/models/network/WebRTC'
-  });
-  b.require('./js/models/blockchain/Insight', {
-    expose: '../js/models/blockchain/Insight'
-  });
-  b.require('./js/models/core/PrivateKey', {
-    expose: '../js/models/core/PrivateKey'
-  });
-  b.require('./js/models/core/PublicKeyRing', {
-    expose: '../js/models/core/PublicKeyRing'
-  });
-  b.require('./js/models/core/Passphrase', {
-    expose: '../js/models/core/Passphrase'
-  });
-  b.require('./js/models/core/HDPath', {
-    expose: '../js/models/core/HDPath'
-  });
-  b.require('./config', {
-    expose: '../config'
-  });
 
   if (opts.debug) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
-    b.require('./test/mocks/FakeStorage', {
-      expose: './mocks/FakeStorage'
-    });
-    b.require('./test/mocks/FakeLocalStorage', {
-      expose: './mocks/FakeLocalStorage'
-    });
-    b.require('./js/models/core/Message', {
-      expose: '../js/models/core/Message'
-    });
-    b.require('./test/mocks/FakeBlockchain', {
-      expose: './mocks/FakeBlockchain'
-    });
-    b.require('./test/mocks/FakeNetwork', {
-      expose: './mocks/FakeNetwork'
-    });
-    b.require('./test/mocks/FakePayProServer', {
-      expose: './mocks/FakePayProServer'
-    });
-    b.require('./test/mocks/FakePayProServer', {
-      expose: '../../mocks/FakePayProServer'
-    });
-    b.require('./test/mocks/FakeBuilder', {
-      expose: './mocks/FakeBuilder'
-    });
+    b.require('./test/mocks/FakeStorage');
+    b.require('./test/mocks/FakeLocalStorage');
+    b.require('./test/mocks/FakeBlockchain');
+    b.require('./test/mocks/FakeNetwork');
+    b.require('./test/mocks/FakePayProServer');
+    b.require('./test/mocks/FakeBuilder');
   }
 
   if (!opts.dontminify) {
