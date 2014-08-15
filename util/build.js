@@ -41,37 +41,9 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Wallet', {
     expose: '../../js/models/core/Wallet'
   });
-<<<<<<< HEAD
-=======
   b.require('./js/models/core/WalletLock', {
     expose: '../js/models/core/WalletLock'
   });
-
-  b.require('./test/mocks/FakeStorage', {
-    expose: './mocks/FakeStorage'
-  });
-  b.require('./test/mocks/FakeLocalStorage', {
-    expose: './mocks/FakeLocalStorage'
-  });
-  b.require('./js/models/core/Message', {
-    expose: '../js/models/core/Message'
-  });
-  b.require('./test/mocks/FakeBlockchain', {
-    expose: './mocks/FakeBlockchain'
-  });
-  b.require('./test/mocks/FakeNetwork', {
-    expose: './mocks/FakeNetwork'
-  });
-  b.require('./test/mocks/FakePayProServer', {
-    expose: './mocks/FakePayProServer'
-  });
-  b.require('./test/mocks/FakePayProServer', {
-    expose: '../../mocks/FakePayProServer'
-  });
-  b.require('./test/mocks/FakeBuilder', {
-    expose: './mocks/FakeBuilder'
-  });
->>>>>>> add WalletLock class
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC'
   });
@@ -124,7 +96,7 @@ var createBundle = function(opts) {
     });
   }
 
-  if (!opts.dontminify) {
+  if (!opts.debug) {
     b.transform({
       global: true
     }, 'uglifyify');
