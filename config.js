@@ -89,7 +89,7 @@ path: '/',
     verbose: 1,
     // will duplicate itself after each try
     reconnectDelay: 5000,
-    idleDurationMin: 1  
+    idleDurationMin: 4
   },
 
   // blockchain service API config
