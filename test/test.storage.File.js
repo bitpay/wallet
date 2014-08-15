@@ -9,26 +9,29 @@ var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 var mock = require('mock-fs');
 
-
 describe('Storage/File', function() {
   it('should exist', function() {
     should.exist(Storage);
   });
 
-  var obj = {
-    "test": "test"
+  var mockFS = function() {
+    var obj = {
+      "test": "test"
+    };
+    var encryptedStr = CryptoJS.AES.encrypt(JSON.stringify(obj), 'password').toString();
+    mock({
+      'myfilename': encryptedStr
+    });
   };
-  var encryptedStr = CryptoJS.AES.encrypt(JSON.stringify(obj), 'password').toString();
-  mock({
-    'myfilename': encryptedStr
-  });
 
   describe('#load', function(done) {
     it('should call fs.readFile', function(done) {
+      mockFS();
       var storage = new Storage({
         password: 'password'
       });
       storage.load('myfilename', function(err) {
+        mock.restore();
         done();
       });
     });
@@ -36,6 +39,7 @@ describe('Storage/File', function() {
 
   describe('#save', function(done) {
     it('should call fs.writeFile', function(done) {
+      mockFS();
       var storage = new Storage({
         password: 'password'
       });

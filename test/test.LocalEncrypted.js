@@ -1,7 +1,7 @@
 'use strict';
+var copay = copay || require('../copay');
 var chai = chai || require('chai');
 var should = chai.should();
-var copay = require('../copay');
 var LocalEncrypted = copay.StorageLocalEncrypted;
 
 
