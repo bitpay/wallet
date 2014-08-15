@@ -40,6 +40,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.address = pp.address;
       var amount = pp.amount / config.unitToSatoshi * 100000000;
       $scope.amount = amount;
+      $scope.commentText = pp.message;
     }
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
