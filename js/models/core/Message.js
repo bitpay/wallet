@@ -1,6 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
 var bitcore = require('bitcore');
 
 /* Encrypted, authenticated messages to be shared between copayers */
@@ -146,4 +145,4 @@ Message._verify = function(pubkey, signature, payload) {
   return v;
 };
 
-module.exports = require('soop')(Message);
+module.exports = Message;

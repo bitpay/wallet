@@ -1,8 +1,8 @@
 'use strict';
-var imports = require('soop').imports();
 
 var http = require('http');
-var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
+var nodeUtil = require('util');
 var async = require('async');
 var preconditions = require('preconditions').singleton();
 var parseBitcoinURI = require('./HDPath').parseBitcoinURI;
@@ -64,6 +64,7 @@ function Wallet(opts) {
   this.network.setHexNonces(opts.networkNonces);
 }
 
+nodeUtil.inherits(Wallet, EventEmitter);
 
 Wallet.builderOpts = {
   lockTime: null,
@@ -72,7 +73,6 @@ Wallet.builderOpts = {
   feeSat: null,
 };
 
-Wallet.parent = EventEmitter;
 Wallet.prototype.log = function() {
   if (!this.verbose) return;
   if (console)
@@ -1849,4 +1849,4 @@ Wallet.request = function(options, callback) {
   return ret;
 };
 
-module.exports = require('soop')(Wallet);
+module.exports = Wallet;

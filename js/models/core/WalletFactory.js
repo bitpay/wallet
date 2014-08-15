@@ -1,7 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
-
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
@@ -235,7 +233,6 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 
   self.network.on('serverError', function() {
-    console.log('[WalletFactory.js.236]'); //TODO
     return cb('joinError');
   });
 
@@ -260,4 +257,4 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 };
 
-module.exports = require('soop')(WalletFactory);
+module.exports = WalletFactory;

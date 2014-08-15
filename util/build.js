@@ -4,24 +4,9 @@
 
 var fs = require('fs');
 var browserify = require('browserify');
-var browserPack = require('browser-pack');
 var exec = require('child_process').exec;
-var sys = require('sys');
 var puts = function(error, stdout, stderr) {
   if (error) console.log(error);
-  //sys.puts(stdout);
-  //sys.puts(stderr);
-};
-
-var pack = function(params) {
-  var file = require.resolve('soop');
-  var dir = file.substr(0, file.length - String('soop.js').length);
-  var preludePath = dir + 'example/custom_prelude.js';
-  params.raw = true;
-  params.sourceMapPrefix = '//#';
-  params.prelude = fs.readFileSync(preludePath, 'utf8');
-  params.preludePath = preludePath;
-  return browserPack(params);
 };
 
 var createVersion = function() {
@@ -34,7 +19,6 @@ var createBundle = function(opts) {
   opts.dir = opts.dir || 'js/';
 
   var bopts = {
-    pack: pack,
     debug: true,
     standalone: 'copay',
     insertGlobals: true
@@ -60,30 +44,6 @@ var createBundle = function(opts) {
   b.require('./js/models/core/Wallet', {
     expose: '../../js/models/core/Wallet'
   });
-  b.require('./test/mocks/FakeStorage', {
-    expose: './mocks/FakeStorage'
-  });
-  b.require('./test/mocks/FakeLocalStorage', {
-    expose: './mocks/FakeLocalStorage'
-  });
-  b.require('./js/models/core/Message', {
-    expose: '../js/models/core/Message'
-  });
-  b.require('./test/mocks/FakeBlockchain', {
-    expose: './mocks/FakeBlockchain'
-  });
-  b.require('./test/mocks/FakeNetwork', {
-    expose: './mocks/FakeNetwork'
-  });
-  b.require('./test/mocks/FakePayProServer', {
-    expose: './mocks/FakePayProServer'
-  });
-  b.require('./test/mocks/FakePayProServer', {
-    expose: '../../mocks/FakePayProServer'
-  });
-  b.require('./test/mocks/FakeBuilder', {
-    expose: './mocks/FakeBuilder'
-  });
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC'
   });
@@ -106,11 +66,34 @@ var createBundle = function(opts) {
     expose: '../config'
   });
 
-  if (opts.dontminify) {
+  if (opts.debug) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
-    b.require('soop');
+    b.require('./test/mocks/FakeStorage', {
+      expose: './mocks/FakeStorage'
+    });
+    b.require('./test/mocks/FakeLocalStorage', {
+      expose: './mocks/FakeLocalStorage'
+    });
+    b.require('./js/models/core/Message', {
+      expose: '../js/models/core/Message'
+    });
+    b.require('./test/mocks/FakeBlockchain', {
+      expose: './mocks/FakeBlockchain'
+    });
+    b.require('./test/mocks/FakeNetwork', {
+      expose: './mocks/FakeNetwork'
+    });
+    b.require('./test/mocks/FakePayProServer', {
+      expose: './mocks/FakePayProServer'
+    });
+    b.require('./test/mocks/FakePayProServer', {
+      expose: '../../mocks/FakePayProServer'
+    });
+    b.require('./test/mocks/FakeBuilder', {
+      expose: './mocks/FakeBuilder'
+    });
   }
 
   if (!opts.dontminify) {

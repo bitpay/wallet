@@ -1,9 +1,9 @@
-var imports = require('soop').imports();
-var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
 
 function Network(opts) {}
 
-Network.parent = EventEmitter;
+util.inherits(Network, EventEmitter);
 
 Network.prototype.start = function(opts, cb) {
   // start! :D
@@ -92,4 +92,4 @@ Network.prototype.iterateNonce = function() {
 };
 
 
-module.exports = require('soop')(Network);
+module.exports = Network;

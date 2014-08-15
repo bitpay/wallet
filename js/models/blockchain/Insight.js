@@ -1,6 +1,5 @@
 'use strict';
 
-var imports = require('soop').imports();
 var bitcore = require('bitcore');
 var coinUtil = bitcore.util;
 var preconditions = require('preconditions').singleton();
@@ -286,4 +285,4 @@ Insight.prototype._request = function(options, callback) {
   }
 };
 
-module.exports = require('soop')(Insight);
+module.exports = Insight;
