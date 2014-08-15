@@ -54,7 +54,7 @@
               </div>
               <div class="large-6 medium-6 columns">
                 <label>Select required signatures (*)
-                  <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues">
+                  <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues" ng-disabled="totalCopayers == 1">
                   </select>
                 </label>
               </div>
