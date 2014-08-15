@@ -12,6 +12,7 @@ function WalletLock(storage, walletId, timeoutMin) {
   this.key = WalletLock._keyFor(walletId);
   this._setLock();
 }
+
 WalletLock._keyFor = function(walletId) {
   return 'lock' + '::' + walletId;
 };
