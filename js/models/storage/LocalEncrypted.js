@@ -11,11 +11,15 @@ function Storage(opts) {
   if (opts.password)
     this._setPassphrase(opts.password);
 
-  if (opts.localStorage) {
-    this.localStorage = opts.localStorage;
-  } else if (localStorage) {
-    this.localStorage = localStorage;
-  }
+  try{
+    this.localStorage = opts.localStorage || localStorage;
+    this.sessionStorage = opts.sessionStorage || sessionStorage;
+  } catch (e) {};
+
+  if (!this.localStorage)
+    throw new Error('no localStorage');
+  if (!this.sessionStorage)
+    throw new Error('no sessionStorage');
 }
 
 var pps = {};
@@ -141,7 +145,7 @@ Storage.prototype.getWalletIds = function() {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (!walletId || walletId === 'nameFor') 
+      if (!walletId || walletId === 'nameFor' || walletId ==='lock') 
         continue;
 
       if (typeof uniq[walletId] === 'undefined') {
