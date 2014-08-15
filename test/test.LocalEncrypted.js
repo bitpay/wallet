@@ -1,27 +1,8 @@
-//Crypto Mock
-CryptoJS = {};
-CryptoJS.AES = {};
-CryptoJS.AES.encrypt = function(a) {
-  return a;
-};
-
-CryptoJS.enc = {
-  utf8: ''
-};
-
-CryptoJS.AES.decrypt = function(a) {
-  return a;
-};
-
 'use strict';
 var chai = chai || require('chai');
 var should = chai.should();
 var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
-if (is_browser) {
-  var copay = require('copay'); //browser
-} else {
-  var copay = require('../copay'); //node
-}
+var copay = copay || require('../copay');
 var LocalEncrypted = copay.StorageLocalEncrypted;
 
 var fakeWallet = 'fake-wallet-id';
