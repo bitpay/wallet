@@ -10,7 +10,7 @@ function WalletLock(storage, walletId, timeoutMin) {
   this.storage = storage;
   this.timeoutMin = timeoutMin || 5;
   this.key = WalletLock._keyFor(walletId);
-  this.keepAlive();
+  this._setLock();
 }
 WalletLock._keyFor = function(walletId) {
   return 'lock' + '::' + walletId;
@@ -29,17 +29,21 @@ WalletLock.prototype._isLockedByOther = function() {
 };
 
 
+WalletLock.prototype._setLock = function() {
+  this.storage.setGlobal(this.key, {
+    sessionId: this.sessionId,
+    expireTs: Date.now() + this.timeoutMin * 60 * 1000,
+  });
+};
+
+
 WalletLock.prototype.keepAlive = function() {
   preconditions.checkState(this.sessionId);
 
   var t = this._isLockedByOther();
   if (t)
     throw new Error('Wallet is already open. Close it to proceed or wait '+ t + ' seconds if you close it already' );
-
-  this.storage.setGlobal(this.key, {
-    sessionId: this.sessionId,
-    expireTs: Date.now() + this.timeoutMin * 60 * 1000,
-  });
+  this._setLock();
 };
 
 
