@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('JoinController',
     controllerUtils.redirIfLogged();
     $rootScope.fromSetup = false;
     $scope.loading = false;
+    $scope.isMobile = !!window.cordova;
 
    // QR code Scanner
     var cameraInput;
