@@ -1,6 +1,5 @@
 'use strict';
-var imports = require('soop').imports();
-var fs = imports.fs || require('fs');
+var fs = require('fs');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 var passwords = [];
@@ -37,6 +36,8 @@ Storage.prototype._decryptObj = function(base64) {
 Storage.prototype.load = function(walletId, callback) {
   var self = this;
   fs.readFile(walletId, function(err, base64) {
+    if (typeof base64 !== 'string')
+      base64 = base64.toString();
     var data = self._decryptObj(base64);
 
     if (err) return callback(err);
@@ -145,4 +146,4 @@ Storage.prototype.clearAll = function(callback) {
   this.save(callback);
 };
 
-module.exports = require('soop')(Storage);
+module.exports = Storage;

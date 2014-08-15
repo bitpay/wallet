@@ -119,4 +119,4 @@ FakeStorage.prototype.setFromObj = function(walletId, obj) {
   this.setName(walletId, obj.opts.name);
 };
 
-module.exports = require('soop')(FakeStorage);
+module.exports = FakeStorage;

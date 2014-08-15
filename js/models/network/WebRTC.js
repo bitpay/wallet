@@ -1,10 +1,9 @@
 'use strict';
 
-var imports = require('soop').imports();
-var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 var bitcore = require('bitcore');
 var util = bitcore.util;
-var extend = require('util')._extend;
+var nodeUtil = require('util');
 var Message = require('../core/Message');
 /*
  * Emits
@@ -39,7 +38,7 @@ function Network(opts) {
   this.cleanUp();
 }
 
-Network.parent = EventEmitter;
+nodeUtil.inherits(Network, EventEmitter);
 
 Network.prototype.cleanUp = function() {
   this.started = false;
@@ -64,7 +63,6 @@ Network.prototype.cleanUp = function() {
   this.removeAllListeners();
 };
 
-Network.parent = EventEmitter;
 
 // Array helpers
 Network._arrayDiff = function(a, b) {
@@ -524,4 +522,4 @@ Network.prototype.disconnect = function(cb, forced) {
   });
 };
 
-module.exports = require('soop')(Network);
+module.exports = Network;

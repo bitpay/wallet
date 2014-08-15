@@ -1,6 +1,6 @@
 'use strict';
 
-var imports = require('soop').imports();
+var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
 var id = 0;
 
@@ -215,4 +215,4 @@ Storage.prototype.import = function(base64) {
   return decryptedObj;
 };
 
-module.exports = require('soop')(Storage);
+module.exports = Storage;

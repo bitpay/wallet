@@ -1,32 +1,9 @@
-//Crypto Mock
-CryptoJS = {};
-CryptoJS.AES = {};
-CryptoJS.AES.encrypt = function(a) {
-  return a;
-};
-
-CryptoJS.enc = {
-  utf8: ''
-};
-
-CryptoJS.AES.decrypt = function(a) {
-  return a;
-};
-
-
-
-
 'use strict';
+var copay = copay || require('../copay');
 var chai = chai || require('chai');
 var should = chai.should();
-var is_browser = typeof process == 'undefined'
-  || typeof process.versions === 'undefined';
-if (is_browser) {
-  var copay = require('copay'); //browser
-} else {
-  var copay = require('../copay'); //node
-}
 var LocalEncrypted = copay.StorageLocalEncrypted;
+
 
 var fakeWallet = 'fake-wallet-id';
 var timeStamp = Date.now();
@@ -104,18 +81,6 @@ describe('Storage/LocalEncrypted model', function() {
       //encrypted.slice(0,6).should.equal("53616c");
     });
   });
-  describe('#_decryptObj', function() {
-    it('should decrypt and Obj', function() {
-      var storage = new LocalEncrypted({
-        password: 'password',
-        localStorage: localMock,
-      });
-      storage._decryptObj('{"a":"2"}').should.deep.equal({
-        a: "2"
-      });
-    });
-  });
-
 
   describe('#remove', function() {
     it('should remove an item', function() {
