@@ -925,6 +925,18 @@ button, .button, p {
   margin-left: 0;
 }
 
+.addresses .list-addr i {
+  position: absolute;
+  top: -25px;
+  left: 6px;
+  cursor: pointer;
+}
+
+.addresses .list-addr contact {
+  margin-left: 42px;
+  cursor: text;
+}
+
 .pointer {
   cursor: pointer;
 }
