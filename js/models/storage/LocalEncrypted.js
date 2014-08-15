@@ -100,7 +100,7 @@ Storage.prototype.removeGlobal = function(k) {
 Storage.prototype.getSessionId = function() {
   var sessionId  = this.sessionStorage.getItem('sessionId');
   if (!sessionId) {
-    sessionId = bitcore.getRandomBuffer(8).toString('hex');
+    sessionId = bitcore.SecureRandom.getRandomBuffer(8).toString('hex');
     this.sessionStorage.setItem(sessionId, 'sessionId');
   }
   return sessionId;
