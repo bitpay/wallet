@@ -1,7 +1,7 @@
 'use strict';
 
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
-
+var bitcore = require('bitcore');
 var id = 0;
 
 function Storage(opts) {
@@ -11,11 +11,15 @@ function Storage(opts) {
   if (opts.password)
     this._setPassphrase(opts.password);
 
-  if (opts.localStorage) {
-    this.localStorage = opts.localStorage;
-  } else if (localStorage) {
-    this.localStorage = localStorage;
-  }
+  try{
+    this.localStorage = opts.localStorage || localStorage;
+    this.sessionStorage = opts.sessionStorage || sessionStorage;
+  } catch (e) {};
+
+  if (!this.localStorage)
+    throw new Error('no localStorage');
+  if (!this.sessionStorage)
+    throw new Error('no sessionStorage');
 }
 
 var pps = {};
@@ -93,6 +97,15 @@ Storage.prototype.removeGlobal = function(k) {
   this.localStorage.removeItem(k);
 };
 
+Storage.prototype.getSessionId = function() {
+  var sessionId  = this.sessionStorage.getItem('sessionId');
+  if (!sessionId) {
+    sessionId = bitcore.SecureRandom.getRandomBuffer(8).toString('hex');
+    this.sessionStorage.setItem('sessionId', sessionId);
+  }
+  return sessionId;
+};
+
 Storage.prototype._key = function(walletId, k) {
   return walletId + '::' + k;
 };
@@ -132,7 +145,8 @@ Storage.prototype.getWalletIds = function() {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (walletId === 'nameFor') continue;
+      if (!walletId || walletId === 'nameFor' || walletId ==='lock') 
+        continue;
 
       if (typeof uniq[walletId] === 'undefined') {
         walletIds.push(walletId);
@@ -178,18 +192,6 @@ Storage.prototype.setLastOpened = function(walletId) {
 
 Storage.prototype.getLastOpened = function() {
   return this.getGlobal('lastOpened');
-}
-
-Storage.prototype.setLock = function(walletId) {
-  this.setGlobal(this._key(walletId, 'Lock'), true);
-}
-
-Storage.prototype.getLock = function(walletId) {
-  return this.getGlobal(this._key(walletId, 'Lock'));
-}
-
-Storage.prototype.removeLock = function(walletId) {
-  this.removeGlobal(this._key(walletId, 'Lock'));
 }
 
 //obj contains keys to be set

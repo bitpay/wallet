@@ -2,10 +2,10 @@
 
 var http = require('http');
 var EventEmitter = require('events').EventEmitter;
-var nodeUtil = require('util');
 var async = require('async');
 var preconditions = require('preconditions').singleton();
 var parseBitcoinURI = require('./HDPath').parseBitcoinURI;
+var util = require('util');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -23,6 +23,7 @@ var PublicKeyRing = require('./PublicKeyRing');
 var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
+var WalletLock = require('./WalletLock');
 var copayConfig = require('../../../config');
 
 function Wallet(opts) {
@@ -45,9 +46,11 @@ function Wallet(opts) {
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
   this.id = opts.id || Wallet.getRandomId();
+  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin); 
+
+
   this.name = opts.name;
 
-  this.ignoreLock = opts.ignoreLock;
   this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
@@ -64,7 +67,7 @@ function Wallet(opts) {
   this.network.setHexNonces(opts.networkNonces);
 }
 
-nodeUtil.inherits(Wallet, EventEmitter);
+util.inherits(Wallet, EventEmitter);
 
 Wallet.builderOpts = {
   lockTime: null,
@@ -96,27 +99,6 @@ Wallet.prototype.connectToAll = function() {
     this.sendWalletReady(this.seededCopayerId);
     this.seededCopayerId = null;
   }
-};
-
-Wallet.prototype.getLock = function() {
-  return this.storage.getLock(this.id);
-};
-
-Wallet.prototype.setLock = function() {
-  return this.storage.setLock(this.id);
-};
-
-Wallet.prototype.unlock = function() {
-  this.storage.removeLock(this.id);
-};
-
-Wallet.prototype.checkAndLock = function() {
-  if (this.getLock()) {
-    return true;
-  }
-
-  this.setLock();
-  return false;
 };
 
 Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
@@ -438,11 +420,6 @@ Wallet.prototype.netStart = function(callback) {
   var self = this;
   var net = this.network;
 
-  if (this.checkAndLock() && !this.ignoreLock) {
-    this.emit('locked');
-    return;
-  }
-
   net.removeAllListeners();
   net.on('connect', self._handleConnect.bind(self));
   net.on('disconnect', self._handleDisconnect.bind(self));
@@ -519,7 +496,18 @@ Wallet.prototype.getRegisteredPeerIds = function() {
   return this.registeredPeerIds;
 };
 
+Wallet.prototype.keepAlive = function() {
+  try{
+    this.lock.keepAlive();
+  } catch(e){
+    this.log(e);
+    this.emit('locked',null,'Wallet appears to be openned on other browser instance. Closing this one.' );
+  }
+};
+
 Wallet.prototype.store = function() {
+  this.keepAlive();
+
   var wallet = this.toObj();
   this.storage.setFromObj(this.id, wallet);
   this.log('Wallet stored');
@@ -556,8 +544,8 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.storage = storage;
   opts.network = network;
   opts.blockchain = blockchain;
-  var w = new Wallet(opts);
-  return w;
+
+  return new Wallet(opts);
 };
 
 Wallet.prototype.toEncryptedObj = function() {
@@ -709,7 +697,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
   var self = this;
   setTimeout(function() {
     var myId = self.getMyCopayerId();
-    var txp =  self.txProposals.get(ntxid);
+    var txp = self.txProposals.get(ntxid);
     // if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
     //   if (cb) cb(false);
     // }
@@ -782,7 +770,9 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
   var self = this;
 
   if (typeof options === 'string') {
-    options = { uri: options };
+    options = {
+      uri: options
+    };
   }
   options.uri = options.uri || options.url;
 
@@ -824,7 +814,9 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
 
   options = options || {};
   if (typeof options === 'string') {
-    options = { uri: options };
+    options = {
+      uri: options
+    };
   }
   options.uri = options.uri || options.url;
   options.fetch = true;
@@ -980,8 +972,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   var refund_outputs = [];
 
-  options.refund_to = options.refund_to
-    || this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
+  options.refund_to = options.refund_to || this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
 
   if (options.refund_to) {
     var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
@@ -1003,23 +994,23 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     rpo.set('amount', +total.toString(10));
 
     rpo.set('script',
-      Buffer.concat([
-        new Buffer([
-          118, // OP_DUP
-          169, // OP_HASH160
-          76, // OP_PUSHDATA1
-          20, // number of bytes
-        ]),
-        // needs to be ripesha'd
-        bitcore.util.sha256ripe160(options.refund_to),
-        new Buffer([
-          136, // OP_EQUALVERIFY
-          172  // OP_CHECKSIG
-        ])
-      ])
-    );
+            Buffer.concat([
+              new Buffer([
+              118, // OP_DUP
+              169, // OP_HASH160
+              76, // OP_PUSHDATA1
+              20, // number of bytes
+            ]),
+            // needs to be ripesha'd
+            bitcore.util.sha256ripe160(options.refund_to),
+            new Buffer([
+              136, // OP_EQUALVERIFY
+              172 // OP_CHECKSIG
+            ])
+            ])
+           );
 
-    refund_outputs.push(rpo.message);
+           refund_outputs.push(rpo.message);
   }
 
   // We send this to the serve after receiving a PaymentRequest
@@ -1031,8 +1022,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   pay.set('transactions', [tx.serialize()]);
   pay.set('refund_to', refund_outputs);
 
-  options.memo = options.memo || options.comment
-    || 'Hi server, I would like to give you some money.';
+  options.memo = options.memo || options.comment || 'Hi server, I would like to give you some money.';
 
   pay.set('memo', options.memo);
 
@@ -1188,8 +1178,8 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.total = merchantData.total.toString(10);
 
   var b = new Builder(opts)
-    .setUnspent(unspent)
-    .setOutputs(outs);
+  .setUnspent(unspent)
+  .setOutputs(outs);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -1250,9 +1240,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   if (!ntxid) return false;
 
-  var txp = typeof ntxid !== 'object'
-    ? this.txProposals.get(ntxid)
-    : ntxid;
+  var txp = typeof ntxid !== 'object' ? this.txProposals.get(ntxid) : ntxid;
 
   // If we're not a payment protocol proposal, ignore.
   if (!txp.merchant) return true;
@@ -1358,8 +1346,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
     }
 
     // Make sure the tx's output script and values match the payment request's.
-    if (av.toString('hex') !== ev.toString('hex')
-        || as.toString('hex') !== es.toString('hex'))  {
+    if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
       // Verifiable outputs do not match outputs of merchant
       // data. We should not sign this transaction proposal!
       return false;
@@ -1384,10 +1371,9 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
 
     // Actual script
     var as = new Buffer(ro.script.buffer, 'hex')
-      .slice(ro.script.offset, ro.script.limit);
+    .slice(ro.script.offset, ro.script.limit);
 
-    if (av.toString('hex') !== ev.toString('hex')
-        || as.toString('hex') !== es.toString('hex'))  {
+    if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
       return false;
     }
   }
@@ -1506,14 +1492,19 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   if (typeof amountSatStr === 'function') {
     var cb = amountSatStr;
     var merchant = toAddress;
-    return this.createPaymentTx({ uri: merchant }, cb);
+    return this.createPaymentTx({
+      uri: merchant
+    }, cb);
   }
 
   if (typeof comment === 'function') {
     var cb = comment;
     var merchant = toAddress;
     var comment = amountSatStr;
-    return this.createPaymentTx({ uri: merchant, memo: comment }, cb);
+    return this.createPaymentTx({
+      uri: merchant,
+      memo: comment
+    }, cb);
   }
 
   if (typeof opts === 'function') {
@@ -1684,7 +1675,7 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
 
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
-  this.unlock();
+  this.lock.release();
   this.network.disconnect();
 };
 
@@ -1779,7 +1770,9 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
 
 Wallet.request = function(options, callback) {
   if (typeof options === 'string') {
-    options = { uri: options };
+    options = {
+      uri: options
+    };
   }
 
   options.method = options.method || 'GET';
@@ -1794,8 +1787,7 @@ Wallet.request = function(options, callback) {
       this._error = cb;
       return this;
     },
-    _success: function() {
-      ;
+    _success: function() {;
     },
     _error: function(_, err) {
       throw err;

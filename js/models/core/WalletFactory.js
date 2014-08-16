@@ -108,6 +108,7 @@ WalletFactory.prototype.create = function(opts) {
 
   var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
   var totalCopayers = opts.totalCopayers || this.walletDefaults.totalCopayers;
+  opts.lockTimeoutMin = this.walletDefaults.idleDurationMin;
 
   opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
     networkName: this.networkName,
@@ -137,6 +138,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
+
   var w = new Wallet(opts);
   w.store();
   this.storage.setLastOpened(w.id);
@@ -166,16 +168,12 @@ WalletFactory.prototype._checkNetwork = function(inNetworkName) {
   }
 };
 
-WalletFactory.prototype.open = function(walletId, opts) {
-  opts = opts || {};
-  opts.id = walletId;
-  opts.verbose = this.verbose;
-  this.storage._setPassphrase(opts.passphrase);
 
+WalletFactory.prototype.open = function(walletId, passphrase) {
+  this.storage._setPassphrase(passphrase);
   var w = this.read(walletId);
-  if (w) {
+  if (w) 
     w.store();
-  }
 
   this.storage.setLastOpened(walletId);
   return w;

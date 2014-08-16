@@ -11,8 +11,8 @@ FakeStorage.prototype._setPassphrase = function(password) {
   this.storage.passphrase = password;
 };
 
-FakeStorage.prototype.setGlobal = function(id, payload) {
-  this.storage[id] = payload;
+FakeStorage.prototype.setGlobal = function(id, v) {
+  this.storage[id] = typeof v === 'object' ? JSON.stringify(v) : v;
 };
 
 FakeStorage.prototype.getGlobal = function(id) {
@@ -34,6 +34,11 @@ FakeStorage.prototype.setLock = function(id) {
 FakeStorage.prototype.getLock = function(id) {
   return this.storage[id + '::lock'];
 }
+
+FakeStorage.prototype.getSessionId = function() {
+  return this.sessionId || 'aSessionId';
+};
+
 
 FakeStorage.prototype.removeLock = function(id) {
   delete this.storage[id + '::lock'];
@@ -64,7 +69,11 @@ FakeStorage.prototype.getWalletIds = function() {
     var split = ii.split('::');
     if (split.length == 2) {
       var walletId = split[0];
-      if (walletId !== 'nameFor' && typeof uniq[walletId] === 'undefined') {
+
+      if (!walletId || walletId === 'nameFor' || walletId ==='lock') 
+        continue;
+
+      if (typeof uniq[walletId] === 'undefined') {
         walletIds.push(walletId);
         uniq[walletId] = 1;
       }
