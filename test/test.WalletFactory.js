@@ -298,6 +298,7 @@ describe('WalletFactory model', function() {
     var w = wf.create({
       name: 'test wallet'
     });
+
     ws = wf.getWallets();
     ws.length.should.equal(1);
     ws[0].name.should.equal('test wallet');

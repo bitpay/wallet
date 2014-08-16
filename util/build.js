@@ -39,10 +39,10 @@ var createBundle = function(opts) {
   });
   b.require('./js/models/core/Wallet');
   b.require('./js/models/core/Wallet', {
-    expose: '../js/models/core/Wallet'
-  });
-  b.require('./js/models/core/Wallet', {
     expose: '../../js/models/core/Wallet'
+  });
+  b.require('./js/models/core/WalletLock', {
+    expose: '../js/models/core/WalletLock'
   });
   b.require('./js/models/network/WebRTC', {
     expose: '../js/models/network/WebRTC'
@@ -96,7 +96,7 @@ var createBundle = function(opts) {
     });
   }
 
-  if (!opts.dontminify) {
+  if (!opts.debug) {
     b.transform({
       global: true
     }, 'uglifyify');
