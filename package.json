@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/bitpay/copay/issues"
   },
-  "version": "0.4.4",
+  "version": "0.4.5",
   "dependencies": {
     "mocha": "^1.18.2",
     "mocha-lcov-reporter": "0.0.1",
