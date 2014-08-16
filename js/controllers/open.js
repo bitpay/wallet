@@ -3,6 +3,10 @@
 angular.module('copayApp.controllers').controller('OpenController', function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification) {
   controllerUtils.redirIfLogged();
 
+  if ($rootScope.pendingPayment) {
+    notification.info('Login Required', 'Please open wallet to complete payment');
+  }
+
   var cmp = function(o1, o2) {
     var v1 = o1.show.toLowerCase(),
       v2 = o2.show.toLowerCase();
