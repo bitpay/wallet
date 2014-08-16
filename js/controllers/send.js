@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     if ($rootScope.pendingPayment) {
       var pp = $rootScope.pendingPayment;
-      $scope.address = pp.address;
+      $scope.address = pp.address + '';
       var amount = pp.data.amount / config.unitToSatoshi * 100000000;
       $scope.amount = amount;
       $scope.commentText = pp.data.message;

@@ -47,8 +47,9 @@ angular.module('copayApp.directives')
           var val = function(value) {
             var availableBalanceNum = Number(($rootScope.availableBalance * config.unitToSatoshi).toFixed(0));
             var vNum = Number((value * config.unitToSatoshi).toFixed(0)) + feeSat;
+
             if (typeof vNum == "number" && vNum > 0) {
-              if (availableBalanceNum < vNum) {
+              if (availableBalanceNum < vNum || isNaN(availableBalanceNum)) {
                 ctrl.$setValidity('enoughAmount', false);
                 scope.notEnoughAmount = true;
               } else {
