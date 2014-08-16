@@ -1,11 +1,7 @@
-<h3 class="text-center text-white">
-Preparing payment...
-</h3>
 <div data-ng-init="" data-ng-controller="UriPaymentController">
-<p>Protocol: {{protocol}}</p>
-<p>To: {{address}}</p>
-<p>Amount: {{amount}}</p>
-<p>Message:</p>
-<div class="alert-box secondary radius">{{message}}</div>
+
+<div data-alert class="loading-screen">
+  <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
+  Preparing payment...
 </div>
 

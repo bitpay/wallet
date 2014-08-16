@@ -37,10 +37,10 @@ angular.module('copayApp.controllers').controller('SendController',
 
     if ($rootScope.pendingPayment) {
       var pp = $rootScope.pendingPayment;
-      $scope.address = pp.address;
-      var amount = pp.amount / config.unitToSatoshi * 100000000;
+      $scope.address = pp.address + '';
+      var amount = pp.data.amount / config.unitToSatoshi * 100000000;
       $scope.amount = amount;
-      $scope.commentText = pp.message;
+      $scope.commentText = pp.data.message;
     }
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -261,12 +261,12 @@ angular.module('copayApp.controllers').controller('SendController',
         function onSuccess(result) {
           if (result.cancelled) return;
 
-          debugger;
-          var bip21 = copay.HDPath.parseBitcoinURI(result.text);
-          $scope.address = bip21.address;
+          var bip21 = new bitcore.BIP21(result.text);
+          $scope.address = bip21.address + '';
+          $scope.commentText = bip21.data.message;
 
-          if (bip21.amount) {
-            $scope.amount = bip21.amount * bitcore.util.COIN * satToUnit;
+          if (bip21.data.amount) {
+            $scope.amount = bip21.data.amount * bitcore.util.COIN * satToUnit;
           }
 
           $rootScope.$digest();

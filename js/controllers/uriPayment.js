@@ -1,16 +1,13 @@
 'use strict';
 
+var bitcore = require('bitcore');
+
 angular.module('copayApp.controllers').controller('UriPaymentController', function($rootScope, $scope, $routeParams, $timeout, $location) {
   var data = decodeURIComponent($routeParams.data);
-  $rootScope.pendingPayment = copay.HDPath.parseBitcoinURI($routeParams.data);
-
-  $scope.protocol = $rootScope.pendingPayment.protocol;
-  $scope.address = $rootScope.pendingPayment.address;
-  $scope.amount = $rootScope.pendingPayment.amount;
-  $scope.message = $rootScope.pendingPayment.message;
+  $rootScope.pendingPayment = new bitcore.BIP21($routeParams.data);
 
   $timeout(function() {
-    $location.path('/');
+    $location.path('/open');
   }, 1000);
 
 

@@ -76,13 +76,4 @@ describe('HDPath model', function() {
       i.isChange.should.equal(result.isChange);
     });
   });
-  it('should get the correct result for bitcoin uri', function() {
-    var uri = 'bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8%3Famount=0.1&message=a%20bitcoin%20donation';
-    var result = HDPath.parseBitcoinURI(uri);
-    result.address.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
-    result.amount.should.equal(0.1);
-    result.message.should.equal('a bitcoin donation');
-    result.protocol.should.equal('bitcoin');
-  });
-
 });
