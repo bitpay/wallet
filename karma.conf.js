@@ -39,6 +39,7 @@ module.exports = function(config) {
       'lib/ios-imagefile-megapixel/megapix-image.js',
       'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
       'js/copayBundle.js',
+      'js/mocksBundle.js',
 
       //App-specific Code
       'js/app.js',

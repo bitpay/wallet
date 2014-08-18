@@ -10,21 +10,14 @@
     <div id="mocha"></div>
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
-    <script src="../lib/crypto-js/rollups/aes.js"></script>
     <script>mocha.setup('bdd')</script>
+    
+    <script src="../lib/crypto-js/rollups/aes.js"></script>
+    
     <script src="../lib/bitcore-0.1.35-paypro.js"></script>
     <script src="../js/copayBundle.js"></script>
-    <script src="test.blockchain.Insight.js"></script>
-    <script src="test.Message.js"></script>
-    <script src="test.network.WebRTC.js"></script>
-    <script src="test.PayPro.js"></script>
-    <script src="test.PrivateKey.js"></script>
-    <script src="test.PublicKeyRing.js"></script>
-    <script src="test.LocalEncrypted.js"></script>
-    <script src="test.TxProposals.js"></script>
-    <script src="test.Wallet.js"></script>
-    <script src="test.WalletFactory.js"></script>
-    <script src="test.performance.js"></script>
+    <script src="../js/testsBundle.js"></script>
+
     <script>
       mocha.run();
     </script>
