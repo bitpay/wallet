@@ -56,7 +56,7 @@ var createBundle = function(opts) {
   b.require('bitcore/node_modules/browserify-buffertools/buffertools.js', {
     expose: 'buffertools'
   });
-  if (!opts.dontminify) {
+  if (!opts.debug) {
     b.transform({
       global: true
     }, 'uglifyify');
@@ -76,7 +76,7 @@ if (require.main === module) {
   program.dir = program.dir || 'js/';
 
   createVersion();
-  if (program.dontminify) {
+  if (program.debug) {
     var testBundle = createTests(program);
     testBundle.pipe(fs.createWriteStream('js/testsBundle.js'));
     console.log('Test bundle being created');
