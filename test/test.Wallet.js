@@ -814,6 +814,9 @@ describe('Wallet model', function() {
         });
 
         sinon.assert.callCount(updateIndex, 4);
+        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[0] );
+        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[1] );
+        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[2] );
         w.updateIndex.restore();
         done();
       });
@@ -837,6 +840,8 @@ describe('Wallet model', function() {
         index.receiveIndex.should.equal(9);
         index.changeIndex.should.equal(9);
         indexDiscovery.callCount.should.equal(2);
+        sinon.assert.calledWith(indexDiscovery, 1, true, 2, 20 );
+        sinon.assert.calledWith(indexDiscovery, 2, false, 2, 20 );
         w.indexDiscovery.restore();
         done();
       });

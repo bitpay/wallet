@@ -1611,12 +1611,12 @@ Wallet.prototype.updateIndexes = function(callback) {
 Wallet.prototype.updateIndex = function(index, callback) {
   var self = this;
   var SCANN_WINDOW = 20;
-  self.indexDiscovery(index.changeIndex, true, index.cosigner, SCANN_WINDOW, function(err, changeIndex) {
+  self.indexDiscovery(index.changeIndex, true, index.copayerIndex, SCANN_WINDOW, function(err, changeIndex) {
     if (err) return callback(err);
     if (changeIndex != -1)
       index.changeIndex = changeIndex + 1;
 
-    self.indexDiscovery(index.receiveIndex, false, index.cosigner, SCANN_WINDOW, function(err, receiveIndex) {
+    self.indexDiscovery(index.receiveIndex, false, index.copayerIndex, SCANN_WINDOW, function(err, receiveIndex) {
       if (err) return callback(err);
       if (receiveIndex != -1)
         index.receiveIndex = receiveIndex + 1;
@@ -1625,12 +1625,13 @@ Wallet.prototype.updateIndex = function(index, callback) {
   });
 }
 
-Wallet.prototype.deriveAddresses = function(index, amount, isChange, cosigner) {
-  preconditions.checkArgument(cosigner);
+Wallet.prototype.deriveAddresses = function(index, amount, isChange, copayerIndex) {
+  preconditions.checkArgument(amount);
+  preconditions.shouldBeDefined(copayerIndex);
 
   var ret = new Array(amount);
   for (var i = 0; i < amount; i++) {
-    ret[i] = this.publicKeyRing.getAddress(index + i, isChange, cosigner).toString();
+    ret[i] = this.publicKeyRing.getAddress(index + i, isChange, copayerIndex).toString();
   }
   return ret;
 }
@@ -1638,7 +1639,9 @@ Wallet.prototype.deriveAddresses = function(index, amount, isChange, cosigner) {
 // This function scans the publicKeyRing branch starting at index @start and reports the index with last activity,
 // using a scan window of @gap. The argument @change defines the branch to scan: internal or external.
 // Returns -1 if no activity is found in range.
-Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
+Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb) {
+  preconditions.shouldBeDefined(copayerIndex);
+  preconditions.checkArgument(gap);
   var scanIndex = start;
   var lastActive = -1;
   var hasActivity = false;
@@ -1648,7 +1651,7 @@ Wallet.prototype.indexDiscovery = function(start, change, cosigner, gap, cb) {
     function _do(next) {
     // Optimize window to minimize the derivations.
     var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
-    var addresses = self.deriveAddresses(scanIndex, scanWindow, change, cosigner);
+    var addresses = self.deriveAddresses(scanIndex, scanWindow, change, copayerIndex);
     self.blockchain.checkActivity(addresses, function(err, actives) {
       if (err) throw err;
 
