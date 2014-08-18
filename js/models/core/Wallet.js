@@ -1,6 +1,5 @@
 'use strict';
 
-var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
