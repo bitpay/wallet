@@ -1,11 +1,11 @@
 'use strict';
 
-var imports = require('soop').imports();
-var EventEmitter = imports.EventEmitter || require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 var bitcore = require('bitcore');
 var AuthMessage = bitcore.AuthMessage;
 var util = bitcore.util;
-var extend = require('util')._extend;
+var nodeUtil = require('util');
+var extend = nodeUtil._extend;
 var io = require('socket.io-client');
 var preconditions = require('preconditions').singleton();
 
@@ -30,7 +30,7 @@ function Network(opts) {
   this.cleanUp();
 }
 
-Network.parent = EventEmitter;
+nodeUtil.inherits(Network, EventEmitter);
 
 Network.prototype.cleanUp = function() {
   this.started = false;
@@ -213,7 +213,7 @@ Network.prototype._onMessage = function(enc) {
   */
 
 
-  console.log('receiving '+JSON.stringify(payload));
+  console.log('receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
@@ -352,7 +352,7 @@ Network.prototype.send = function(copayerIds, payload, cb) {
     };
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var message = AuthMessage.encode(copayerIdBuf, self.getKey(), payload, opts);
-    console.log('sending '+JSON.stringify(payload));
+    console.log('sending ' + JSON.stringify(payload));
     self.socket.emit('message', message);
   });
   if (typeof cb === 'function') cb();
@@ -382,4 +382,4 @@ Network.prototype.disconnect = function(cb, forced) {
   });
 };
 
-module.exports = require('soop')(Network);
+module.exports = Network;
