@@ -29,7 +29,7 @@ module.exports = function(config) {
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
       'lib/peerjs/peer.js',
-      'lib/bitcore/browser/bundle.js',
+      'lib/bitcore-0.1.35-paypro.js',
       'lib/crypto-js/rollups/sha256.js',
       'lib/crypto-js/rollups/pbkdf2.js',
       'lib/crypto-js/rollups/aes.js',
