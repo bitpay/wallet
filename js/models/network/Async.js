@@ -224,8 +224,6 @@ Network.prototype._onMessage = function(enc) {
       this._addConnectedCopayer(payload.copayerId);
       break;
     default: 
-      console.log(JSON.stringify(self.copayerForPeer));
-      console.log('data from '+sender+' '+self.copayerForPeer[sender]);
       this.emit('data', sender, payload);
   }
 };
