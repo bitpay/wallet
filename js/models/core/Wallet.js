@@ -91,6 +91,8 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 
 // not being used now
 Wallet.prototype.connectToAll = function() {
+  // not being used now
+  return;
 
   var all = this.publicKeyRing.getAllCopayerIds();
   this.network.connectToCopayers(all);

@@ -196,7 +196,6 @@ Network.prototype._onMessage = function(enc) {
 
     var payload = decoded.payload;
   } catch (e) {
-    alert('caught :' + e);
     this._deletePeer(sender);
     return;
   }
