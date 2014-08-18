@@ -1625,9 +1625,11 @@ Wallet.prototype.updateIndex = function(index, callback) {
   });
 }
 
-Wallet.prototype.deriveAddresses = function(index, amout, isChange, cosigner) {
-  var ret = new Array(amout);
-  for (var i = 0; i < amout; i++) {
+Wallet.prototype.deriveAddresses = function(index, amount, isChange, cosigner) {
+  preconditions.checkArgument(cosigner);
+
+  var ret = new Array(amount);
+  for (var i = 0; i < amount; i++) {
     ret[i] = this.publicKeyRing.getAddress(index + i, isChange, cosigner).toString();
   }
   return ret;
