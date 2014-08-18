@@ -229,6 +229,10 @@ Network.prototype._onMessage = function(enc) {
   }
 };
 
+Network.prototype._onClose = function(copayerId) {
+  // TODO
+};
+
 Network.prototype._setupConnectionHandlers = function(cb) {
   preconditions.checkState(this.socket);
   var self = this;
