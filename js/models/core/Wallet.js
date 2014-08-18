@@ -319,6 +319,9 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
 };
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
+  preconditions.checkArgument(senderId);
+  preconditions.checkArgument(data);
+  preconditions.checkArgument(data.type);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
@@ -453,6 +456,7 @@ Wallet.prototype.netStart = function(callback) {
 
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
+    self.fakeConnections();
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
       //self.scheduleConnect(); 
@@ -460,6 +464,17 @@ Wallet.prototype.netStart = function(callback) {
       self.emit('txProposalsUpdated');
     }, 10);
   });
+};
+
+
+// TODO temporary method. should remove this when we refactor peerID out
+Wallet.prototype.fakeConnections = function() {
+  var all = this.publicKeyRing.getAllCopayerIds();
+  for (var i = 0; i < all.length; i++) {
+    var copayerID = all[i];
+    var peerID = this.network.peerFromCopayer(copayerID);
+    this.network._addCopayerMap(peerID, copayerID);
+  }
 };
 
 
@@ -713,7 +728,7 @@ Wallet.prototype.getTxProposals = function() {
       txp.finallyRejected = true;
     }
 
-    if (txp.readonly && !txp.finallyRejected && !txp.sentTs) {} else {
+    if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
       ret.push(txp);
     }
   }
