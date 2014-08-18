@@ -196,11 +196,7 @@ Network.prototype._onMessage = function(enc) {
 
     var payload = decoded.payload;
   } catch (e) {
-    this._deletePeer(sender);
-    return;
-  }
-
-  if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+    alert('caught :' + e);
     this._deletePeer(sender);
     return;
   }
@@ -222,6 +218,11 @@ Network.prototype._onMessage = function(enc) {
       this._onClose(sender);
       break;
     case 'hello':
+      if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+        this._deletePeer(sender);
+        return;
+      }
+
       this._addConnectedCopayer(payload.copayerId);
       break;
     default:
