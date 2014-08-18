@@ -122,8 +122,6 @@ function startServer(cb) {
 
         var uid = 0;
 
-        console.log('Received payment "request" from %s.', req.socket.remoteAddress);
-
         var outputs = [];
 
         [2000, 1000].forEach(function(value) {
@@ -226,9 +224,6 @@ function startServer(cb) {
       '/-/pay': function(req, cb) {
         var body = req.body;
 
-        console.log('Received Payment Message Body:');
-        console.log(body.toString('hex'));
-
         var res = {
           statusCode: 200,
           headers: {},
@@ -243,11 +238,6 @@ function startServer(cb) {
         var transactions = pay.get('transactions');
         var refund_to = pay.get('refund_to');
         var memo = pay.get('memo');
-
-        console.log('Received Payment from %s.', req.socket.remoteAddress);
-        console.log('Customer Message: %s', memo);
-        console.log('Payment Message:');
-        console.log(pay);
 
         // We send this to the customer after receiving a Payment
         // Then we propogate the transaction through bitcoin network
@@ -269,13 +259,6 @@ function startServer(cb) {
           var ptx = new bitcore.Transaction();
           ptx.parse(tx.buffer);
           return ptx;
-        });
-
-        transactions.forEach(function(tx) {
-          var id = tx.getHash().toString('hex');
-          console.log('');
-          console.log('Sending transaction with txid: %s', id);
-          console.log(tx.getStandardizedObject());
         });
 
         res.body = ack;
