@@ -3,6 +3,7 @@
 var chai = require('chai');
 var should = chai.should();
 var Storage = require('../js/models/storage/File.js');
+
 var sinon = require('sinon');
 var crypto = require('crypto');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
@@ -202,3 +203,4 @@ describe('Storage/File', function() {
   });
 
 });
+
