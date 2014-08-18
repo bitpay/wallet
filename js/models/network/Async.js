@@ -112,7 +112,7 @@ Network.prototype._deletePeer = function(peerId) {
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
 };
 
-Network.prototype._addConnectedCopayer = function(copayerId, isInbound) {
+Network.prototype._addConnectedCopayer = function(copayerId) {
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId, copayerId);
   Network._arrayPushOnce(peerId, this.connectedPeers);
@@ -221,10 +221,11 @@ Network.prototype._onMessage = function(enc) {
         this._deletePeer(sender);
         return;
       }
-
       this._addConnectedCopayer(payload.copayerId);
       break;
-    default:
+    default: 
+      console.log(JSON.stringify(self.copayerForPeer));
+      console.log('data from '+sender+' '+self.copayerForPeer[sender]);
       this.emit('data', self.copayerForPeer[sender], payload);
   }
 };
@@ -243,7 +244,12 @@ Network.prototype._setupConnectionHandlers = function(cb) {
     });
     if (typeof cb === 'function') cb();
   });
-  self.socket.on('message', self._onMessage.bind(self));
+  self.socket.on('message', function (m) { 
+    // delay execution, to improve error handling
+    setTimeout(function() {
+      self._onMessage(m);
+    }, 1);
+  });
   self.socket.on('error', self._onError.bind(self));
 
 };
@@ -273,9 +279,8 @@ Network.prototype._setInboundPeerAuth = function(peerId) {
 };
 
 Network.prototype.setCopayerId = function(copayerId) {
-  if (this.started) {
-    throw new Error('network already started: can not change peerId')
-  }
+  preconditions.checkState(!this.started, 'network already started: can not change peerId');
+  
   this.copayerId = copayerId;
   this.copayerIdBuf = new Buffer(copayerId, 'hex');
   this.peerId = this.peerFromCopayer(this.copayerId);
@@ -323,8 +328,6 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket.emit('subscribe', pubkey);
   //this.socket.emit('sync');
   this.started = true;
-
-  //this.emit('serverError', self.criticalError);
 
 };
 
