@@ -321,7 +321,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId);
-    alert('fuck');
     return;
   }
 
