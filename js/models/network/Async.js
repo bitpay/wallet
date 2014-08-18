@@ -25,6 +25,7 @@ var preconditions = require('preconditions').singleton();
 function Network(opts) {
   var self = this;
   opts = opts || {};
+  this.maxPeers = opts.maxPeers || 12;
   this.host = opts.host || 'localhost';
   this.port = opts.port || 3001;
   this.cleanUp();
@@ -259,7 +260,7 @@ Network.prototype._addCopayerMap = function(peerId, copayerId) {
   if (!this.copayerForPeer[peerId]) {
     if (Object.keys(this.copayerForPeer).length < this.maxPeers) {
       this.copayerForPeer[peerId] = copayerId;
-    } else {}
+    }
   }
 };
 
@@ -332,12 +333,25 @@ Network.prototype.getPeer = function() {
 };
 
 
+Network.prototype.getCopayerIds = function() {
+  if (this.allowedCopayerIds) {
+    return Object.keys(this.allowedCopayerIds);
+  } else {
+    var copayerIds = [];
+    for (var peerId in this.copayerForPeer) {
+      copayerIds.push(this.copayerForPeer[peerId]);
+    }
+    return copayerIds;
+  }
+};
+
+
 Network.prototype.send = function(copayerIds, payload, cb) {
   preconditions.checkArgument(payload);
 
   var self = this;
   if (!copayerIds) {
-    copayerIds = this.connectedCopayers();
+    copayerIds = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
 
@@ -346,14 +360,15 @@ Network.prototype.send = function(copayerIds, payload, cb) {
 
   var l = copayerIds.length;
   var i = 0;
+  console.log('sending ' + JSON.stringify(payload));
   copayerIds.forEach(function(copayerId) {
+    console.log('\t to ' + copayerId);
     self.iterateNonce();
     var opts = {
       nonce: self.networkNonce
     };
     var copayerIdBuf = new Buffer(copayerId, 'hex');
     var message = AuthMessage.encode(copayerIdBuf, self.getKey(), payload, opts);
-    console.log('sending ' + JSON.stringify(payload));
     self.socket.emit('message', message);
   });
   if (typeof cb === 'function') cb();
