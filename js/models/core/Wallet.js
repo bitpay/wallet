@@ -633,7 +633,9 @@ Wallet.prototype.sendReject = function(ntxid) {
   });
 };
 
+
 Wallet.prototype.sendWalletReady = function(recipients) {
+  preconditions.checkArgument(recipients);
   this.log('### SENDING WalletReady TO:', recipients);
 
   this.send(recipients, {
