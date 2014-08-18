@@ -318,8 +318,6 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
 
 Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
-
-  alert(JSON.stringify(data));
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('badMessage', senderId);
     this.log('badMessage FROM:', senderId);
@@ -330,7 +328,6 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
-      alert('walletID received');
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
