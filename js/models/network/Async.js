@@ -226,7 +226,7 @@ Network.prototype._onMessage = function(enc) {
     default: 
       console.log(JSON.stringify(self.copayerForPeer));
       console.log('data from '+sender+' '+self.copayerForPeer[sender]);
-      this.emit('data', self.copayerForPeer[sender], payload);
+      this.emit('data', sender, payload);
   }
 };
 

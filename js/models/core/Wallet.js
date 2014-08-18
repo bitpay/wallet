@@ -456,7 +456,6 @@ Wallet.prototype.netStart = function(callback) {
 
   net.start(startOpts, function() {
     self.emit('ready', net.getPeer());
-    self.fakeConnections();
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
       //self.scheduleConnect(); 
@@ -464,17 +463,6 @@ Wallet.prototype.netStart = function(callback) {
       self.emit('txProposalsUpdated');
     }, 10);
   });
-};
-
-
-// TODO temporary method. should remove this when we refactor peerID out
-Wallet.prototype.fakeConnections = function() {
-  var all = this.publicKeyRing.getAllCopayerIds();
-  for (var i = 0; i < all.length; i++) {
-    var copayerID = all[i];
-    var peerID = this.network.peerFromCopayer(copayerID);
-    this.network._addCopayerMap(peerID, copayerID);
-  }
 };
 
 
