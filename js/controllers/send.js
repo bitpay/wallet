@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var uri;
       if (address.indexOf('bitcoin:') === 0) {
-        uri = copay.HDPath.parseBitcoinURI(address);
+        uri = new bitcore.BIP21(address).data;
       } else if (address.indexOf('Merchant: ') === 0) {
         uri = {
           merchant: address.split(/\s+/)[1]
@@ -411,7 +411,7 @@ angular.module('copayApp.controllers').controller('SendController',
           merchant: value
         };
       } else {
-        uri = copay.HDPath.parseBitcoinURI(value);
+        uri = new bitcore.BIP21(value).data;
       }
       if (!uri || !uri.merchant) {
         return;
@@ -476,7 +476,7 @@ angular.module('copayApp.controllers').controller('SendController',
         // delete the `merchant` property from the scope.
         var unregister = scope.$watch('address', function() {
           var val = scope.sendForm.address.$viewValue || '';
-          var uri = copay.HDPath.parseBitcoinURI(val);
+          var uri = new bitcore.BIP21(val).data;
           if (!uri || !uri.merchant) {
             delete $rootScope.merchant;
             scope.sendForm.amount.$setViewValue('');
