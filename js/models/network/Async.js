@@ -309,7 +309,8 @@ Network.prototype.start = function(opts, openCallback) {
     this.socket.removeAllListeners();
   }
 
-  this.socket = io.connect(this.host + ':' + this.port, {
+  var hostPort = this.host + ':' + this.port;
+  this.socket = io.connect(hostPort, {
     reconnection: false,
   });
   this._setupConnectionHandlers(openCallback);
