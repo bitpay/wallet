@@ -10,26 +10,25 @@ angular.module('copayApp.directives')
       require: 'ngModel',
       link: function(scope, elem, attrs, ctrl) {
         var validator = function(value) {
-          var uri;
 
+          // Regular url
           if (/^https?:\/\//.test(value)) {
-            uri = {
-              merchant: value
-            };
-          } else {
-            uri = copay.HDPath.parseBitcoinURI(value);
-          }
-
-          // Regular Address
-          if (!uri || !uri.merchant) {
-            var a = new Address(value);
-            ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
+            ctrl.$setValidity('validAddress', true);
             return value;
           }
 
+          // Bip21 uri
+          if (/^bitcoin:/.test(value)) {
+            var uri = new bitcore.BIP21(value);
+            var hasAddress = uri.address && uri.isValid() && uri.address.network().name === config.networkName;
+            ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
+            return value;
+          }
 
-          ctrl.$setValidity('validAddress', true);
-          return uri.merchant;
+          // Regular Address
+          var a = new Address(value);
+          ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
+          return value;
         };
 
         ctrl.$parsers.unshift(validator);

@@ -50,31 +50,4 @@ HDPath.MAX_NON_HARDENED = MAX_NON_HARDENED;
 HDPath.SHARED_INDEX = SHARED_INDEX;
 HDPath.ID_INDEX = ID_INDEX;
 
-HDPath.parseBitcoinURI = function(uri) {
-  var ret = {};
-  var data = decodeURIComponent(uri);
-  var splitDots = data.split(':');
-  ret.protocol = splitDots[0];
-  data = splitDots.slice(1).join(':');
-  var splitQuestion = data.split('?');
-  ret.address = splitQuestion[0];
-
-  if (splitQuestion.length > 1) {
-    var data = {};
-    var search = splitQuestion[1];
-    var parts = search.split('&');
-    var part;
-    var i = 0;
-    for (; i < parts.length; i++) {
-      part = parts[i].split('=');
-      data[part[0]] = decodeURIComponent(part[1]);
-    }
-    ret.amount = parseFloat(data.amount);
-    ret.message = data.message;
-    ret.merchant = data.r;
-  }
-
-  return ret;
-};
-
 module.exports = HDPath;
