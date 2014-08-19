@@ -119,8 +119,8 @@ Network.prototype._addConnectedCopayer = function(copayerId) {
 };
 
 Network.prototype.getKey = function() {
+  preconditions.checkState(this.privkey || this.key);
   if (!this.key) {
-    preconditions.checkState(this.privkey);
     var key = new bitcore.Key();
     key.private = new Buffer(this.privkey, 'hex');
     key.regenerateSync();
@@ -286,40 +286,38 @@ Network.prototype.peerFromCopayer = function(hex) {
 };
 
 Network.prototype.start = function(opts, openCallback) {
-  opts = opts || {};
+  preconditions.checkArgument(opts);
+  preconditions.checkArgument(opts.privkey);
+  preconditions.checkArgument(opts.copayerId);
+  preconditions.checkArgument(opts.lastTimestamp);
+
+  preconditions.checkState(this.connectedPeers && this.connectedPeers.length === 0);
 
   if (this.started) return openCallback();
 
-  if (!this.privkey)
-    this.privkey = opts.privkey;
-
+  this.privkey = opts.privkey;
+  var pubkey = this.getKey().public.toString('hex');
+  this.setCopayerId(opts.copayerId);
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
-  if (opts.token)
-    this.opts.token = opts.token;
-
-  if (!this.copayerId)
-    this.setCopayerId(opts.copayerId);
-
-  if (this.connectedPeers.length > 0) {
-    // already connected
-    return;
-  }
   if (this.socket) {
     this.socket.destroy();
     this.socket.removeAllListeners();
   }
 
-  var hostPort = this.host + ':' + this.port;
-  this.socket = io.connect(hostPort, {
-    reconnection: true,
-  });
+  this.socket = this.createSocket(this.host, this.port);
   this._setupConnectionHandlers(openCallback);
-  var pubkey = this.getKey().public.toString('hex');
   this.socket.emit('subscribe', pubkey);
   this.socket.emit('sync', opts.lastTimestamp);
   this.started = true;
 
+};
+
+Network.prototype.createSocket = function(host, port) {
+  var hostPort = host + ':' + port;
+  return io.connect(hostPort, {
+    reconnection: true,
+  });
 };
 
 Network.prototype.getOnlinePeerIDs = function() {
