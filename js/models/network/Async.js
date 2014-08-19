@@ -179,22 +179,28 @@ Network.prototype.iterateNonce = function() {
   return this.networkNonce;
 };
 
-Network.prototype._onMessage = function(enc) {
+Network.prototype.decode = function(enc) {
+  var sender = enc.pubkey;
   var key = this.getKey();
+  var prevnonce = this.networkNonces ? this.networkNonces[sender] : undefined;
+  var opts = {
+    prevnonce: prevnonce
+  };
+  var decoded = AuthMessage.decode(key, enc, opts);
+
+  //if no error thrown in the last step, we can set the copayer's nonce
+  if (!this.networkNonces)
+    this.networkNonces = {};
+  this.networkNonces[sender] = decoded.nonce;
+
+  var payload = decoded.payload;
+  return payload;
+};
+
+Network.prototype._onMessage = function(enc) {
   var sender = enc.pubkey;
   try {
-    var prevnonce = this.networkNonces ? this.networkNonces[sender] : undefined;
-    var opts = {
-      prevnonce: prevnonce
-    };
-    var decoded = AuthMessage.decode(key, enc, opts);
-
-    //if no error thrown in the last step, we can set the copayer's nonce
-    if (!this.networkNonces)
-      this.networkNonces = {};
-    this.networkNonces[sender] = decoded.nonce;
-
-    var payload = decoded.payload;
+    var payload = this.decode(enc);
   } catch (e) {
     this._deletePeer(sender);
     return;
@@ -359,17 +365,21 @@ Network.prototype.send = function(copayerIds, payload, cb) {
   //console.log('sending ' + JSON.stringify(payload));
   copayerIds.forEach(function(copayerId) {
     //console.log('\t to ' + copayerId);
-    self.iterateNonce();
-    var opts = {
-      nonce: self.networkNonce
-    };
-    var copayerIdBuf = new Buffer(copayerId, 'hex');
-    var message = AuthMessage.encode(copayerIdBuf, self.getKey(), payload, opts);
+    var message = self.encode(copayerId, payload);
     self.socket.emit('message', message);
   });
   if (typeof cb === 'function') cb();
 };
 
+
+Network.prototype.encode = function(copayerId, payload) {
+  this.iterateNonce();
+  var opts = {
+    nonce: this.networkNonce
+  };
+  var copayerIdBuf = new Buffer(copayerId, 'hex');
+  var message = AuthMessage.encode(copayerIdBuf, this.getKey(), payload, opts);
+};
 
 Network.prototype.isOnline = function() {
   return !!this.socket;

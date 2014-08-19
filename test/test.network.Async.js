@@ -127,6 +127,7 @@ describe('Network / Async', function() {
     it('should not reject data sent from a peer with hijacked pubkey', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
+      n.key = null;
 
       var message = {
         type: 'hello',
@@ -151,6 +152,7 @@ describe('Network / Async', function() {
     it('should reject data sent from a peer with hijacked pubkey', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
+      n.key = null;
 
       var message = {
         type: 'hello',
@@ -177,8 +179,7 @@ describe('Network / Async', function() {
     it('should not reject data sent from a peer with no previously set nonce but who is setting one now', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
-      //n.networkNonces = {};
-      //n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('0000000000000001', 'hex'); //previously used nonce
+      n.key = null;
 
       var message = {
         type: 'hello',
@@ -207,6 +208,7 @@ describe('Network / Async', function() {
     it('should not reject data sent from a peer with a really big new nonce', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
+      n.key = null;
       n.networkNonces = {};
       n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000001', 'hex'); //previously used nonce
 
@@ -236,6 +238,7 @@ describe('Network / Async', function() {
     it('should not reject data sent from a peer with a really big new nonce', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
+      n.key = false;
       n.networkNonces = {};
       n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000001', 'hex'); //previously used nonce
 
@@ -265,6 +268,7 @@ describe('Network / Async', function() {
     it('should reject data sent from a peer with an outdated nonce', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
+      n.key = null;
       n.networkNonces = {};
       n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('0000000000000002', 'hex'); //previously used nonce
 
@@ -294,6 +298,7 @@ describe('Network / Async', function() {
     it('should reject data sent from a peer with a really big outdated nonce', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
+      n.key = null;
       n.networkNonces = {};
       n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000002', 'hex'); //previously used nonce
 
