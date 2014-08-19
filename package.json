@@ -24,7 +24,7 @@
     "setup-shell": "node shell/scripts/download-atom-shell.js",
     "start": "node server.js",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
-    "test": "./node_modules/bin/karma start --single-run --browsers PhantomJS && node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test": "./node_modules/karma/bin/karma start --single-run --browsers PhantomJS && node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "dist": "node shell/scripts/dist.js",
     "sign": "gpg -u 1112CFA1 --output browser-extensions/firefox/copay.xpi.sig --detach-sig browser-extensions/firefox/copay.xpi; gpg -u 1112CFA1 --output browser-extensions/chrome/copay-chrome-extension.zip.sig --detach-sig browser-extensions/chrome/copay-chrome-extension.zip",
     "verify": "gpg --verify browser-extensions/firefox/copay.xpi.sig browser-extensions/firefox/copay.xpi; gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip"
