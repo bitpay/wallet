@@ -33,20 +33,16 @@ function Wallet(opts) {
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
   ].forEach(function(k) {
-    if (typeof opts[k] === 'undefined')
-      throw new Error('missing required option for Wallet: ' + k);
+    preconditions.checkArgument(typeof opts[k] !== 'undefined',
+      'missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
-  if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
-    throw new Error('Network forced to ' + copayConfig.networkName +
-      ' and tried to create a Wallet with network ' + this.getNetworkName());
-
-  this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
+  preconditions.checkArgument(!copayConfig.forceNetwork || this.getNetworkName() === copayConfig.networkName,
+    'Network forced to ' + copayConfig.networkName +
+    ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.id = opts.id || Wallet.getRandomId();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
-
-
   this.name = opts.name;
 
   this.verbose = opts.verbose;
@@ -56,6 +52,7 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
+  this.lastTimestamp = opts.lastTimestamp || undefined;
 
   this.paymentRequests = opts.paymentRequests || {};
 
@@ -540,6 +537,7 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
+    lastTimestamp: this.lastTimestamp,
   };
 
   return walletObj;
@@ -578,6 +576,8 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
     opts.txProposals = new TxProposals({
       networkName: this.networkName,
     });
+  
+  opts.lastTimestamp = o.lastTimestamp;
 
   opts.storage = storage;
   opts.network = network;
