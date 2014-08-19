@@ -59,11 +59,6 @@ angular.module('copayApp.services')
       notification.error('PeerJS Error', message);
       root.onErrorDigest($scope);
     });
-    wallet.on('serverError', function(m) {
-      var message = m || 'The PeerJS server is not responding, please try again';
-      $location.path('receive');
-      root.onErrorDigest($scope, message);
-    });
     wallet.on('ready', function() {
       $scope.loading = false;
     });

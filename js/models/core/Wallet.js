@@ -431,9 +431,6 @@ Wallet.prototype.netStart = function(callback) {
   net.on('connect', self._onConnect.bind(self));
   net.on('disconnect', self._onDisconnect.bind(self));
   net.on('data', self._onData.bind(self));
-  net.on('serverError', function(msg) {
-    self.emit('serverError', msg);
-  });
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
