@@ -120,8 +120,8 @@ angular.module('copayApp.services')
 
     notification.enableHtml5Mode(); // for chrome: if support, enable it
 
-    w.on('badMessage', function(peerId) {
-      notification.error('Error', 'Received wrong message from peer ' + peerId);
+    w.on('corrupt', function(peerId) {
+      notification.error('Error', 'Received corrupt message from ' + peerId);
     });
     w.on('ready', function(myPeerID) {
       $rootScope.wallet = w;

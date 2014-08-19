@@ -46,7 +46,6 @@ Network.prototype.cleanUp = function() {
   this.copayerForPeer = {};
   this.connections = {};
   this.criticalErr = '';
-  this.closing = 0;
   this.removeAllListeners();
 };
 
@@ -215,9 +214,6 @@ Network.prototype._onMessage = function(enc) {
 
   var self = this;
   switch (payload.type) {
-    case 'disconnect':
-      this._onClose(sender);
-      break;
     case 'hello':
       if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
         this._deletePeer(sender);
@@ -225,13 +221,9 @@ Network.prototype._onMessage = function(enc) {
       }
       this._addConnectedCopayer(payload.copayerId);
       break;
-    default: 
+    default:
       this.emit('data', sender, payload);
   }
-};
-
-Network.prototype._onClose = function(copayerId) {
-  // TODO
 };
 
 Network.prototype._setupConnectionHandlers = function(cb) {
@@ -244,7 +236,7 @@ Network.prototype._setupConnectionHandlers = function(cb) {
     });
     if (typeof cb === 'function') cb();
   });
-  self.socket.on('message', function (m) { 
+  self.socket.on('message', function(m) {
     // delay execution, to improve error handling
     setTimeout(function() {
       self._onMessage(m);
@@ -280,7 +272,7 @@ Network.prototype._setInboundPeerAuth = function(peerId) {
 
 Network.prototype.setCopayerId = function(copayerId) {
   preconditions.checkState(!this.started, 'network already started: can not change peerId');
-  
+
   this.copayerId = copayerId;
   this.copayerIdBuf = new Buffer(copayerId, 'hex');
   this.peerId = this.peerFromCopayer(this.copayerId);
@@ -392,17 +384,6 @@ Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
   for (var i in allowedCopayerIdsArray) {
     this.allowedCopayerIds[allowedCopayerIdsArray[i]] = true;
   }
-};
-
-Network.prototype.disconnect = function(cb, forced) {
-  var self = this;
-  self.closing = 1;
-  self.send(null, {
-    type: 'disconnect'
-  }, function() {
-    self.cleanUp();
-    if (typeof cb === 'function') cb();
-  });
 };
 
 module.exports = Network;

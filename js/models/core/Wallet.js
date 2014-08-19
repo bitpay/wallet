@@ -326,12 +326,12 @@ Wallet.prototype._onData = function(senderId, data, isInbound) {
   preconditions.checkArgument(data);
   preconditions.checkArgument(data.type);
 
+  this.updateTimestamp();
+
   if (data.type !== 'walletId' && this.id !== data.walletId) {
-    this.emit('badMessage', senderId);
-    this.log('badMessage FROM:', senderId);
+    this.emit('corrupt', senderId);
     return;
   }
-  this.updateTimestamp();
 
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
@@ -360,6 +360,9 @@ Wallet.prototype._onData = function(senderId, data, isInbound) {
       break;
     case 'addressbook':
       this._onAddressBook(senderId, data, isInbound);
+      break;
+    case 'disconnect':
+      this._onDisconnect(senderId, data, isInbound);
       break;
   }
 
@@ -437,7 +440,6 @@ Wallet.prototype.netStart = function(callback) {
 
   net.removeAllListeners();
   net.on('connect', self._onConnect.bind(self));
-  net.on('disconnect', self._onDisconnect.bind(self));
   net.on('data', self._onData.bind(self));
 
   var myId = self.getMyCopayerId();
@@ -1747,7 +1749,13 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
   this.lock.release();
-  this.network.disconnect();
+  var self = this;
+  self.send(null, {
+    type: 'disconnect',
+    walletId: this.id,
+  }, function() {
+    self.network.cleanUp();
+  });
 };
 
 Wallet.prototype.getNetwork = function() {
