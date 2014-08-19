@@ -4,7 +4,6 @@ var EventEmitter = require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
 var util = require('util');
-var microtime = require('microtime');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
