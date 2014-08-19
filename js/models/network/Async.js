@@ -370,10 +370,10 @@ Network.prototype.send = function(dest, payload, cb) {
 };
 
 
-Network.prototype.encode = function(copayerId, payload) {
+Network.prototype.encode = function(copayerId, payload, nonce) {
   this.iterateNonce();
   var opts = {
-    nonce: this.networkNonce
+    nonce: nonce || this.networkNonce
   };
   var copayerIdBuf = new Buffer(copayerId, 'hex');
   var message = AuthMessage.encode(copayerIdBuf, this.getKey(), payload, opts);

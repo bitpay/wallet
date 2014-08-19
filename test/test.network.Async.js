@@ -154,30 +154,19 @@ describe('Network / Async', function() {
     });
 
     it('should not reject data sent from a peer with no previously set nonce but who is setting one now', function() {
-      var n = createN(pk2);
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2._deletePeer = sinon.spy();
 
       var message = {
         type: 'hello',
-        copayerId: key1.public.toString('hex')
+        copayerId: cid1
       };
-      var messagestr = JSON.stringify(message);
-      var messagebuf = new Buffer(messagestr);
-
-      var opts = {
-        nonce: new Buffer('0000000000000001', 'hex')
-      }; //message send with new nonce
-      var encoded = n._encode(key2.public, key1, messagebuf, opts);
-      var encodedstr = JSON.stringify(encoded);
-      var encodeduint = new Buffer(encodedstr);
-
-      var isInbound = true;
-      var peerId = new bitcore.SIN(key1.public);
-
-      n._deletePeer = sinon.spy();
-
-      n._onMessage(encodeduint, isInbound, peerId);
-      n._deletePeer.calledOnce.should.equal(false);
-      n.getHexNonces()[(new bitcore.SIN(key1.public)).toString()].toString('hex').should.equal('0000000000000001');
+      var nonce = new Buffer('0000000000000001', 'hex');
+      var enc = n1.encode(cid2, message, nonce);
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(false);
+      n2.getHexNonces()[cid1].toString('hex').should.equal('0000000000000001');
     });
 
     it('should not reject data sent from a peer with a really big new nonce', function() {
