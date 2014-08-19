@@ -467,7 +467,7 @@ describe('Wallet model', function() {
       copayersExtPubKeys: cepk,
       nicknameFor: {},
     };
-    w._handlePublicKeyRing('senderID', {
+    w._onPublicKeyRing('senderID', {
       publicKeyRing: pkrObj
     }, true);
     w.publicKeyRing.getHDParams(0).getReceiveIndex(2);
