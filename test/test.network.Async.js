@@ -122,18 +122,17 @@ describe('Network / Async', function() {
     var cid3 = '034d3dd2054234737c1cff9d973c9c7e0fb5902c8e56c9d57a699b7842cedfe984';
 
     it('should not reject data sent from a peer with hijacked pubkey', function() {
-      var n = createN(pk2);
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2._deletePeer = sinon.spy();
 
       var message = {
         type: 'hello',
         copayerId: cid1
       };
-      var enc = n.encode(cid2, message);
-
-      n._deletePeer = sinon.spy();
-
-      n._onMessage(enc);
-      n._deletePeer.calledOnce.should.equal(false);
+      var enc = n1.encode(cid2, message);
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(false);
     });
 
     it('should reject data sent from a peer with hijacked pubkey', function() {
