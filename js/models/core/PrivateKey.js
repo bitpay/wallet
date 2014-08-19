@@ -13,8 +13,8 @@ function PrivateKey(opts) {
   this.network = opts.networkName === 'testnet' ?
     networks.testnet : networks.livenet;
   var init = opts.extendedPrivateKeyString || this.network.name;
-  this.bip = opts.HK || new HK(init);
-  this.privateKeyCache = opts.privateKeyCache || {};
+  this.bip = new HK(init);
+  this.privateKeyCache = {};
   this.publicHex = this.deriveBIP45Branch().eckey.public.toString('hex');
 };
 
@@ -54,15 +54,24 @@ PrivateKey.prototype.deriveBIP45Branch = function() {
   return this.bip45Branch;
 }
 
+
+PrivateKey.trim = function(data) {
+ var opts = {};
+  ['networkName', 'extendedPrivateKeyString'].forEach(function(k){
+   opts[k] = data[k];
+  });
+
+  return opts;
+};
+
 PrivateKey.fromObj = function(obj) {
-  return new PrivateKey(obj);
+  return new PrivateKey(PrivateKey.trim(obj));
 };
 
 PrivateKey.prototype.toObj = function() {
   return {
     extendedPrivateKeyString: this.getExtendedPrivateKeyString(),
     networkName: this.network.name,
-    privateKeyCache: this.privateKeyCache
   };
 };
 
