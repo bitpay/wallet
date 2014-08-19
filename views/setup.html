@@ -68,7 +68,7 @@
                 width="50px">
               </div>
             </div>
-            <p class="comment">(*) The limits are imposed by the bitcoin network.</p>
+            <p class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
             <div class="text-right">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; Back</a>
               <a ng-show="isSetupWalletPage" class="back-button m20r"
