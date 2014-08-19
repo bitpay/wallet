@@ -441,7 +441,7 @@ describe('Wallet model', function() {
         receiveIndex: 2
       }]
     };
-    w._handleIndexes('senderID', aiObj, true);
+    w._onIndexes('senderID', aiObj, true);
     w.publicKeyRing.getHDParams(0).getReceiveIndex(2);
     w.publicKeyRing.getHDParams(0).getChangeIndex(3);
   });
