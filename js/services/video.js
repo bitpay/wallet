@@ -7,9 +7,6 @@ var Video = function() {
 
   this.mediaConnections = {};
   this.localStream = null;
-  if (typeof Audio !== 'undefined') {
-    this.onlineSound = new Audio('sound/online.wav');
-  }
 };
 
 Video.prototype.setOwnPeer = function(peer, wallet, cb) {
@@ -66,7 +63,6 @@ Video.prototype._addCall = function(mediaConnection, cb) {
 
   // Wait for stream on the call, then set peer video display
   mediaConnection.on('stream', function(stream) {
-    if (self.onlineSound) self.onlineSound.play();
     cb(null, peerID, URL.createObjectURL(stream));
   });
 
