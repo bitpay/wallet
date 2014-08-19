@@ -1093,7 +1093,7 @@ describe('Wallet model', function() {
     it('should throw if network is different', function() {
       var backup = copayConfig.forceNetwork;
       copayConfig.forceNetwork = true;
-      config.networkName = 'livenet';
+      config.networkName = 'testnet';
       cachedCreateW2.should.throw(Error);
       copayConfig.forceNetwork = backup;
     });
