@@ -1,9 +1,8 @@
 'use strict';
 
-var chai = require('chai');
+var chai = chai || require('chai');
 var should = chai.should();
-var Storage = require('../js/models/storage/File.js');
-
+var Storage = require('../js/models/storage/File');
 var sinon = require('sinon');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 
