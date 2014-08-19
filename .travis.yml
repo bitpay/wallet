@@ -9,6 +9,8 @@ install:
   - bower install
 before_script:
   - grunt shell --target=dev
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 notifications:
   email:
     recipients:
