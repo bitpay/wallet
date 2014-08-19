@@ -62,6 +62,9 @@ var createBundle = function(opts) {
   b.require('./js/models/core/HDPath', {
     expose: '../js/models/core/HDPath'
   });
+  b.require('./js/models/storage/File', {
+    expose: '../js/models/storage/File'
+  });
   b.require('./config', {
     expose: '../config'
   });
