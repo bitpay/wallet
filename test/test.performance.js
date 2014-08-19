@@ -26,11 +26,9 @@ describe('Performance tests', function() {
         generated.push(k);
       }
       var delta1 = new Date().getTime() - start1;
-      var backup = k1.toObj();
-      var k2 = PrivateKey.fromObj(backup);
       var start2 = new Date().getTime();
       for (var i = 0; i < generateN; i++) {
-        var k = JSON.stringify(k2.get(i, false).storeObj());
+        var k = JSON.stringify(k1.get(i, false).storeObj());
         generated[i].should.equal(k);
       }
       var delta2 = new Date().getTime() - start2;
@@ -62,11 +60,9 @@ describe('Performance tests', function() {
                 generated.push(pubKeys);
               }
               var delta1 = new Date().getTime() - start1;
-              var backup = pkr1.toObj();
-              var pkr2 = PublicKeyRing.fromObj(backup);
               var start2 = new Date().getTime();
               for (var i = 0; i < generateN; i++) {
-                var pubKeys = JSON.stringify(pkr2.getPubKeys(i, false));
+                var pubKeys = JSON.stringify(pkr1.getPubKeys(i, false));
                 generated[i].should.equal(pubKeys);
               }
               var delta2 = new Date().getTime() - start2;

@@ -21,7 +21,7 @@
             <div class="row" ng-show="isSetupWalletPage">
               <div ng-if="totalCopayers > 1">
                 <label for="Name">Your name</label>
-                  <input id="Name" type="text" placeholder="Name" class="form-control" ng-model="myNickname">
+                  <input id="Name" type="text" placeholder="Name" class="form-control" ng-model="$parent.myNickname">
               </div>
               <div>
                 <label for="walletPassword">Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip text-gray" tooltip="doesn't need to be shared" >Required</small>
@@ -68,7 +68,7 @@
                 width="50px">
               </div>
             </div>
-            <p class="comment">(*) The limits are imposed by the bitcoin network.</p>
+            <p class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
             <div class="text-right">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; Back</a>
               <a ng-show="isSetupWalletPage" class="back-button m20r"
