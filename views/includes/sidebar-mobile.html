@@ -15,7 +15,7 @@
         </span>
         <span ng-if="!$root.updatingBalance"
           data-options="disable_for_touch:true"
-          tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
+          tooltip="{{totalBalanceBTC |noFractionNumber:8}} BTC"
           tooltip-trigger="mouseenter"
           tooltip-placement="bottom">{{totalBalance || 0
           |noFractionNumber}} {{$root.unitName}} 
@@ -28,7 +28,7 @@
         </span>
         <span ng-show="!$root.updatingBalance"
           data-options="disable_for_touch:true"
-          tooltip="{{lockedBalanceBTC || 0 |noFractionNumber:8}} BTC"
+          tooltip="{{lockedBalanceBTC |noFractionNumber:8}} BTC"
           tooltip-trigger="mouseenter"
           tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
         </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
