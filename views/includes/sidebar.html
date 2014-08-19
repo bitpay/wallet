@@ -24,7 +24,7 @@
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
-        tooltip="{{totalBalanceBTC || 0 |noFractionNumber:8}} BTC"
+        tooltip="{{totalBalanceBTC |noFractionNumber:8}} BTC"
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{totalBalance || 0
         |noFractionNumber}} {{$root.unitName}} 
@@ -38,7 +38,7 @@
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
-        tooltip="{{lockedBalanceBTC || 0 |noFractionNumber:8}} BTC"
+        tooltip="{{lockedBalanceBTC |noFractionNumber:8}} BTC"
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
       </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
