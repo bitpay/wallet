@@ -218,10 +218,7 @@ Network.prototype._onMessage = function(enc) {
       }
       //ensure claimed public key is actually the public key of the peer
       //e.g., their public key should hash to be their peerId
-      if (enc.pubkey !== payload.copayerId) {
-        console.log(JSON.stringify(enc));
-        console.log(JSON.stringify(enc.pubkey));
-        console.log(JSON.stringify(payload.copayerId));
+      if (sender !== payload.copayerId) {
         this._deletePeer(enc.pubkey, 'incorrect pubkey for peerId');
         return;
       }
