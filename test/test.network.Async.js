@@ -59,8 +59,11 @@ describe('Network / Async', function() {
 
   describe('#send', function() {
 
-    it('should be able to broadcast', function(done) {
+    it('should be able to broadcast', function() {
       var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+      var spy = sinon.spy();
+      n.send(null, 'hello', spy);
+      spy.calledOnce.should.be.true;
     });
     it('should call _sendToOne for a copayer', function(done) {
       var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
