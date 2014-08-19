@@ -23,7 +23,6 @@ var preconditions = require('preconditions').singleton();
  */
 
 function Network(opts) {
-  preconditions.checkArgument(opts);
   var self = this;
   opts = opts || {};
   this.maxPeers = opts.maxPeers || 12;
