@@ -293,7 +293,6 @@ Network.prototype.start = function(opts, openCallback) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.privkey);
   preconditions.checkArgument(opts.copayerId);
-  preconditions.checkArgument(opts.lastTimestamp);
 
   preconditions.checkState(this.connectedPeers && this.connectedPeers.length === 0);
 
