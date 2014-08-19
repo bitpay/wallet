@@ -350,7 +350,7 @@ Network.prototype.send = function(dest, payload, cb) {
 
   var self = this;
   if (!dest) {
-    defst = this.getCopayerIds();
+    dest = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
 
