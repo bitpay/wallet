@@ -45,6 +45,7 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
         $rootScope.$digest();
         return;
       }
+      $rootScope.updatingBalance = true;
       controllerUtils.startNetwork(w, $scope);
     });
   };
