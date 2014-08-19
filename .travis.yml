@@ -8,7 +8,7 @@ install:
   - npm install
   - bower install
 before_script:
-  - grunt shell
+  - grunt shell --target=dev
 notifications:
   email:
     recipients:
