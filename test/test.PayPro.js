@@ -737,7 +737,7 @@ describe('PayPro (in Wallet) model', function() {
 
     // Replicates code in controllers/send.js:
     if (address.indexOf('bitcoin:') === 0) {
-      uri = copay.HDPath.parseBitcoinURI(address);
+      uri = new bitcore.BIP21(address).data;
     } else if (address.indexOf('Merchant: ') === 0) {
       uri = address.split(/\s+/)[1];
     }
