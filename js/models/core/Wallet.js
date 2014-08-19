@@ -317,7 +317,8 @@ Wallet.prototype._onAddressBook = function(senderId, data, isInbound) {
 
 
 Wallet.prototype.updateTimestamp = function() {
-  this.lastTimestamp = new Date().getTime() * 1000;
+  this.lastTimestamp = (new Date().getTime()) * 1000;
+  this.store();
 };
 
 Wallet.prototype._onData = function(senderId, data, isInbound) {
@@ -330,7 +331,6 @@ Wallet.prototype._onData = function(senderId, data, isInbound) {
     this.log('badMessage FROM:', senderId);
     return;
   }
-
   this.updateTimestamp();
 
   switch (data.type) {
@@ -362,6 +362,7 @@ Wallet.prototype._onData = function(senderId, data, isInbound) {
       this._onAddressBook(senderId, data, isInbound);
       break;
   }
+
 };
 
 Wallet.prototype._onConnect = function(newCopayerId) {
