@@ -5,7 +5,8 @@ var should = chai.should();
 var expect = chai.expect;
 var sinon = sinon || require('sinon');
 var bitcore = bitcore || require('bitcore');
-var Async = require('../js/models/network/Async');
+var copay = copay || require('../copay');
+var Async = copay.Async;
 var EventEmitter = require('events').EventEmitter;
 
 describe('Network / Async', function() {
@@ -148,7 +149,6 @@ describe('Network / Async', function() {
       n._deletePeer = sinon.spy();
 
       n._onMessage(enc);
-      console.log(n._deletePeer.callCount);
       n._deletePeer.calledOnce.should.equal(true);
       n._deletePeer.getCall(0).args[1].should.equal('incorrect pubkey for peerId');
     });
