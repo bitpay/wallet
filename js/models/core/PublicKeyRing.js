@@ -25,7 +25,7 @@ function PublicKeyRing(opts) {
 
   this.indexes = opts.indexes ? HDParams.fromList(opts.indexes) : HDParams.init(this.totalCopayers);
 
-  this.publicKeysCache = opts.publicKeysCache || {};
+  this.publicKeysCache =  {};
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
   this.copayersBackup = opts.copayersBackup || [];
@@ -64,7 +64,6 @@ PublicKeyRing.prototype.toObj = function() {
       return b.extendedPublicKeyString();
     }),
     nicknameFor: this.nicknameFor,
-    publicKeysCache: this.publicKeysCache
   };
 };
 
