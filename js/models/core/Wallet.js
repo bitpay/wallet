@@ -4,6 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var async = require('async');
 var preconditions = require('preconditions').singleton();
 var util = require('util');
+var microtime = require('microtime');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -315,6 +316,11 @@ Wallet.prototype._onAddressBook = function(senderId, data, isInbound) {
   }
 };
 
+
+Wallet.prototype.updateTimestamp = function() {
+  this.lastTimestamp = microtime.now();
+};
+
 Wallet.prototype._onData = function(senderId, data, isInbound) {
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
@@ -325,6 +331,8 @@ Wallet.prototype._onData = function(senderId, data, isInbound) {
     this.log('badMessage FROM:', senderId);
     return;
   }
+
+  this.updateTimestamp();
 
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
@@ -438,7 +446,8 @@ Wallet.prototype.netStart = function(callback) {
   var startOpts = {
     copayerId: myId,
     privkey: myIdPriv,
-    maxPeers: self.totalCopayers
+    maxPeers: self.totalCopayers,
+    lastTimestamp: this.lastTimestamp,
   };
 
   if (this.publicKeyRing.isComplete()) {
