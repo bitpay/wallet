@@ -9,7 +9,6 @@ module.exports.HDParams = require('./js/models/core/HDParams');
 
 
 // components
-var WebRTC = module.exports.WebRTC = require('./js/models/network/WebRTC');
 var Insight = module.exports.Insight = require('./js/models/blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js/models/storage/LocalEncrypted');
 
