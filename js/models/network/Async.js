@@ -218,7 +218,10 @@ Network.prototype._onMessage = function(enc) {
       }
       //ensure claimed public key is actually the public key of the peer
       //e.g., their public key should hash to be their peerId
-      if (enc.pubkey !== this.peerFromCopayer(payload.copayerId)) {
+      if (enc.pubkey !== payload.copayerId) {
+        console.log(JSON.stringify(enc));
+        console.log(JSON.stringify(enc.pubkey));
+        console.log(JSON.stringify(payload.copayerId));
         this._deletePeer(enc.pubkey, 'incorrect pubkey for peerId');
         return;
       }
@@ -346,24 +349,24 @@ Network.prototype.getCopayerIds = function() {
 };
 
 
-Network.prototype.send = function(copayerIds, payload, cb) {
+Network.prototype.send = function(dest, payload, cb) {
   preconditions.checkArgument(payload);
 
   var self = this;
-  if (!copayerIds) {
-    copayerIds = this.getCopayerIds();
+  if (!dest) {
+    defst = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
 
-  if (typeof copayerIds === 'string')
-    copayerIds = [copayerIds];
+  if (typeof dest === 'string')
+    dest = [dest];
 
-  var l = copayerIds.length;
+  var l = dest.length;
   var i = 0;
   //console.log('sending ' + JSON.stringify(payload));
-  copayerIds.forEach(function(copayerId) {
-    //console.log('\t to ' + copayerId);
-    var message = self.encode(copayerId, payload);
+  dest.forEach(function(to) {
+    //console.log('\t to ' + to);
+    var message = self.encode(to, payload);
     self.socket.emit('message', message);
   });
   if (typeof cb === 'function') cb();
