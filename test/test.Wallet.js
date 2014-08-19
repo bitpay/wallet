@@ -1402,9 +1402,9 @@ describe('Wallet model', function() {
 
   it('#disconnect', function() {
     var w = cachedCreateW();
-    var spy1 = sinon.spy(w.network, 'disconnect');
+    var spy1 = sinon.spy(w, 'send');
     w.disconnect();
-    spy1.callCount.should.equal(1);
+    spy1.calledOnce.should.be.true;
   });
 
 });
