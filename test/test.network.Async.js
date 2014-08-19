@@ -179,7 +179,7 @@ describe('Network / Async', function() {
         copayerId: cid1
       };
       n2.networkNonces = {};
-      n2.networkNonces[cid1] = new Buffer('5000000000000001', 'hex'); //previously used nonce
+      n2.networkNonces[cid1] = new Buffer('5000000000000001', 'hex');
       var nonce = new Buffer('5000000000000002', 'hex')
       var enc = n1.encode(cid2, message, nonce);
       n2._onMessage(enc);
@@ -189,33 +189,20 @@ describe('Network / Async', function() {
     });
 
     it('should reject data sent from a peer with an outdated nonce', function() {
-      var n = createN();
-      n.privkey = key2.private.toString('hex');
-      n.key = null;
-      n.networkNonces = {};
-      n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('0000000000000002', 'hex'); //previously used nonce
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2._deletePeer = sinon.spy();
 
       var message = {
         type: 'hello',
-        copayerId: key1.public.toString('hex')
+        copayerId: cid1
       };
-      var messagestr = JSON.stringify(message);
-      var messagebuf = new Buffer(messagestr);
-
-      var opts = {
-        nonce: new Buffer('0000000000000001', 'hex')
-      }; //message send with old nonce
-      var encoded = n._encode(key2.public, key1, messagebuf, opts);
-      var encodedstr = JSON.stringify(encoded);
-      var encodeduint = new Buffer(encodedstr);
-
-      var isInbound = true;
-      var peerId = new bitcore.SIN(key1.public);
-
-      n._deletePeer = sinon.spy();
-
-      n._onMessage(encodeduint, isInbound, peerId);
-      n._deletePeer.calledOnce.should.equal(true);
+      n2.networkNonces = {};
+      n2.networkNonces[cid1] = new Buffer('0000000000000002', 'hex');
+      var nonce = new Buffer('0000000000000001', 'hex');
+      var enc = n1.encode(cid2, message, nonce);
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(true);
     });
 
     it('should reject data sent from a peer with a really big outdated nonce', function() {
