@@ -112,27 +112,14 @@ describe('Network / Async', function() {
   });
 
   describe('#_onMessage', function() {
-    var privkey1 = bitcore.util.sha256('test privkey 1');
-    var privkey2 = bitcore.util.sha256('test privkey 2');
-    var privkey3 = bitcore.util.sha256('test privkey 2');
+    var pk1 = 'fb23b9074ca5e7163719b86b41c7ce8348cf3d2839bb5f6125ef6efd5d40d7d3';
+    var cid1 = '0311a10109320efb3646c832d3e140c6d9c4f69b16e73fc3f0c23b3d014ec77828';
 
-    var key1 = new bitcore.Key();
-    key1.private = privkey1;
-    key1.regenerateSync();
-    var pk1 = key1.private.toString('hex');
-    var cid1 = key1.public.toString('hex');
+    var pk2 = '89073fe4d3fdef2c5f2909bcda92e4470633f08640d1a62acc464327d611577e';
+    var cid2 = '03ceefb9dbcf7410411e5c1268d9d8e850ffd3a55da764a8377f3212571a52c01b';
 
-    var key2 = new bitcore.Key();
-    key2.private = privkey2;
-    key2.regenerateSync();
-    var pk2 = key2.private.toString('hex');
-    var cid2 = key2.public.toString('hex');
-
-    var key3 = new bitcore.Key();
-    key3.private = privkey3;
-    key3.regenerateSync();
-    var pk3 = key3.private.toString('hex');
-    var cid3 = key3.public.toString('hex');
+    var pk3 = 'a2ae2c7029c6a4136d7fe60c4d078a2e9d5af8a246bf2d5fee3410e273a5d430';
+    var cid3 = '034d3dd2054234737c1cff9d973c9c7e0fb5902c8e56c9d57a699b7842cedfe984';
 
     it('should not reject data sent from a peer with hijacked pubkey', function() {
       var n = createN(pk2);
@@ -162,6 +149,7 @@ describe('Network / Async', function() {
       n._deletePeer = sinon.spy();
 
       n._onMessage(enc);
+      console.log(n._deletePeer.callCount);
       n._deletePeer.calledOnce.should.equal(true);
       n._deletePeer.getCall(0).args[0].should.equal(peerId);
       n._deletePeer.getCall(0).args[1].should.equal('incorrect pubkey for peerId');
