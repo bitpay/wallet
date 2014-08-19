@@ -185,7 +185,7 @@ describe('Network / Async', function() {
       n2._onMessage(enc);
       n2._deletePeer.calledOnce.should.equal(false);
       n2.getHexNonces()[cid1].toString('hex').should.equal('5000000000000002');
-      n._deletePeer.calledOnce.should.equal(false);
+      n2._deletePeer.calledOnce.should.equal(false);
     });
 
     it('should not reject data sent from a peer with a really big new nonce', function() {
