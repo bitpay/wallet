@@ -228,12 +228,12 @@ describe('PublicKeyRing model', function() {
     var hasChanged;
 
     w.copayersBackup = ["a", "b"];
-    hasChanged = w.mergeBackups(["b", "c"]);
+    hasChanged = w._mergeBackups(["b", "c"]);
     w.copayersBackup.length.should.equal(3);
     hasChanged.should.equal(true);
 
     w.copayersBackup = ["a", "b", "c"];
-    hasChanged = w.mergeBackups(["b", "c"]);
+    hasChanged = w._mergeBackups(["b", "c"]);
     w.copayersBackup.length.should.equal(3);
     hasChanged.should.equal(false);
   });
