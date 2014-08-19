@@ -62,11 +62,9 @@ describe('Performance tests', function() {
                 generated.push(pubKeys);
               }
               var delta1 = new Date().getTime() - start1;
-              var backup = pkr1.toObj();
-              var pkr2 = PublicKeyRing.fromObj(backup);
               var start2 = new Date().getTime();
               for (var i = 0; i < generateN; i++) {
-                var pubKeys = JSON.stringify(pkr2.getPubKeys(i, false));
+                var pubKeys = JSON.stringify(pkr1.getPubKeys(i, false));
                 generated[i].should.equal(pubKeys);
               }
               var delta2 = new Date().getTime() - start2;
