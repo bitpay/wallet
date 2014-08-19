@@ -60,10 +60,7 @@ describe('Network / Async', function() {
   describe('#send', function() {
 
     it('should call _sendToOne for a copayer', function(done) {
-      var n = createN();
-      n.privkey = bitcore.util.sha256('test');
-      n.key = null;
-
+      var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
       var data = new bitcore.Buffer('my data to send');
 
       var copayerId = '03b51d01d798522cf61211b4dfcdd6d01020304cf166e1cb7f43d836abc5c18b23';
@@ -76,10 +73,7 @@ describe('Network / Async', function() {
     });
 
     it('should call _sendToOne with encrypted data for a copayer', function(done) {
-      var n = createN();
-      n.privkey = bitcore.util.sha256('test');
-      n.key = null;
-
+      var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
       var data = new bitcore.Buffer('my data to send');
 
       var copayerId = '03b51d01d798522cf61001b4dfcdd6db219ee33cf166e1cb7f43d836abc5c18b23';
@@ -96,9 +90,7 @@ describe('Network / Async', function() {
     });
 
     it('should call _sendToOne for a list of copayers', function(done) {
-      var n = createN();
-      n.privkey = bitcore.util.sha256('test');
-
+      var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
       var data = new bitcore.Buffer('my data to send');
       var copayerIds = ['03b51d01d798522cf61211b4dfcdd6db219ee33cf166e1cb7f43d836abc5c18b23'];
       n._sendToOne = function(a1, a2, cb) {
