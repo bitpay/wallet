@@ -184,7 +184,7 @@ describe('Network / Async', function() {
       var enc = n1.encode(cid2, message, nonce);
       n2._onMessage(enc);
       n2._deletePeer.calledOnce.should.equal(false);
-      n2.getHexNonces()[cid1].toString('hex').should.equal('0000000000000001');
+      n2.getHexNonces()[cid1].toString('hex').should.equal('5000000000000002');
       n._deletePeer.calledOnce.should.equal(false);
     });
 
