@@ -11,15 +11,17 @@ var EventEmitter = require('events').EventEmitter;
 describe('Network / Async', function() {
 
 
-  var createN = function() {
+  var createN = function(pk) {
     var n = new Async();
-    var fakeSocket = new EventEmitter();
+    var fakeSocket = {};
+    fakeSocket.emit = function() {};
+    fakeSocket.on = function() {};
     n.createSocket = function() {
       return fakeSocket;
     };
     var opts = {
       copayerId: '03b51d01d798522cf61211b4dfcdd6db219ee33cf166e1cb7f43d836ab00ccddee',
-      privkey: '31701118abde096d166607115ed00ce74a2231f68f43144406c863f5ebf06c32',
+      privkey: pk || '31701118abde096d166607115ed00ce74a2231f68f43144406c863f5ebf06c32',
       lastTimestamp: 1,
     };
     n.start(opts);
@@ -59,10 +61,11 @@ describe('Network / Async', function() {
     it('should call _sendToOne for a copayer', function(done) {
       var n = createN();
       n.privkey = bitcore.util.sha256('test');
+      n.key = null;
 
       var data = new bitcore.Buffer('my data to send');
 
-      var copayerId = '03b51d01d798522cf61211b4dfcdd6db219ee33cf166e1cb7f43d836abc5c18b23';
+      var copayerId = '03b51d01d798522cf61211b4dfcdd6d01020304cf166e1cb7f43d836abc5c18b23';
       n._sendToOne = function(a, b, cb) {
         cb();
       };
@@ -74,10 +77,11 @@ describe('Network / Async', function() {
     it('should call _sendToOne with encrypted data for a copayer', function(done) {
       var n = createN();
       n.privkey = bitcore.util.sha256('test');
+      n.key = null;
 
       var data = new bitcore.Buffer('my data to send');
 
-      var copayerId = '03b51d01d798522cf61211b4dfcdd6db219ee33cf166e1cb7f43d836abc5c18b23';
+      var copayerId = '03b51d01d798522cf61001b4dfcdd6db219ee33cf166e1cb7f43d836abc5c18b23';
       n._sendToOne = function(a1, enc, cb) {
         var encPayload = JSON.parse(enc.toString());
         encPayload.sig.length.should.be.greaterThan(0);
@@ -107,7 +111,7 @@ describe('Network / Async', function() {
     });
   });
 
-  describe('#_onData', function() {
+  describe('#_onMessage', function() {
     var privkey1 = bitcore.util.sha256('test privkey 1');
     var privkey2 = bitcore.util.sha256('test privkey 2');
     var privkey3 = bitcore.util.sha256('test privkey 2');
@@ -115,62 +119,49 @@ describe('Network / Async', function() {
     var key1 = new bitcore.Key();
     key1.private = privkey1;
     key1.regenerateSync();
+    var pk1 = key1.private.toString('hex');
+    var cid1 = key1.public.toString('hex');
 
     var key2 = new bitcore.Key();
     key2.private = privkey2;
     key2.regenerateSync();
+    var pk2 = key2.private.toString('hex');
+    var cid2 = key2.public.toString('hex');
 
     var key3 = new bitcore.Key();
     key3.private = privkey3;
     key3.regenerateSync();
+    var pk3 = key3.private.toString('hex');
+    var cid3 = key3.public.toString('hex');
 
     it('should not reject data sent from a peer with hijacked pubkey', function() {
-      var n = createN();
-      n.privkey = key2.private.toString('hex');
-      n.key = null;
+      var n = createN(pk2);
 
       var message = {
         type: 'hello',
-        copayerId: key1.public.toString('hex')
+        copayerId: cid1
       };
-      var messagestr = JSON.stringify(message);
-      var messagebuf = new Buffer(messagestr);
-
-      var encoded = n._encode(key2.public, key1, messagebuf);
-      var encodedstr = JSON.stringify(encoded);
-      var encodeduint = new Buffer(encodedstr);
-
-      var isInbound = true;
-      var peerId = new bitcore.SIN(key1.public);
+      var enc = n.encode(cid2, message);
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(enc);
       n._deletePeer.calledOnce.should.equal(false);
     });
 
     it('should reject data sent from a peer with hijacked pubkey', function() {
-      var n = createN();
-      n.privkey = key2.private.toString('hex');
-      n.key = null;
+      var n = createN(pk2);
 
       var message = {
         type: 'hello',
-        copayerId: key3.public.toString('hex') //MITM pubkey 3
+        copayerId: cid3 // MITM
       };
-      var messagestr = JSON.stringify(message);
-      var messagebuf = new Buffer(messagestr);
-
-      var encoded = n._encode(key2.public, key1, messagebuf);
-      var encodedstr = JSON.stringify(encoded);
-      var encodeduint = new Buffer(encodedstr);
-
-      var isInbound = true;
-      var peerId = new bitcore.SIN(key1.public);
+      
+      var enc = n.encode(cid2, message);
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(enc);
       n._deletePeer.calledOnce.should.equal(true);
       n._deletePeer.getCall(0).args[0].should.equal(peerId);
       n._deletePeer.getCall(0).args[1].should.equal('incorrect pubkey for peerId');
@@ -200,7 +191,7 @@ describe('Network / Async', function() {
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(encodeduint, isInbound, peerId);
       n._deletePeer.calledOnce.should.equal(false);
       n.getHexNonces()[(new bitcore.SIN(key1.public)).toString()].toString('hex').should.equal('0000000000000001');
     });
@@ -231,7 +222,7 @@ describe('Network / Async', function() {
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(encodeduint, isInbound, peerId);
       n._deletePeer.calledOnce.should.equal(false);
     });
 
@@ -261,7 +252,7 @@ describe('Network / Async', function() {
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(encodeduint, isInbound, peerId);
       n._deletePeer.calledOnce.should.equal(false);
     });
 
@@ -291,7 +282,7 @@ describe('Network / Async', function() {
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(encodeduint, isInbound, peerId);
       n._deletePeer.calledOnce.should.equal(true);
     });
 
@@ -321,7 +312,7 @@ describe('Network / Async', function() {
 
       n._deletePeer = sinon.spy();
 
-      n._onData(encodeduint, isInbound, peerId);
+      n._onMessage(encodeduint, isInbound, peerId);
       n._deletePeer.calledOnce.should.equal(true);
     });
 

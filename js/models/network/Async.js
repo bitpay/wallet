@@ -206,22 +206,20 @@ Network.prototype._onMessage = function(enc) {
     return;
   }
 
-  // TODO
-  /*
-  if (!this.copayerForPeer[sender] || (isInbound && !this.isInboundPeerAuth[sender])) {
-    this._deletePeer(sender);
-    return;
-  }
-  */
-
-
   //console.log('receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
     case 'hello':
+      // if we locked allowed copayers, check if it belongs
       if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
         this._deletePeer(sender);
+        return;
+      }
+      //ensure claimed public key is actually the public key of the peer
+      //e.g., their public key should hash to be their peerId
+      if (enc.pubkey !== this.peerFromCopayer(payload.copayerId)) {
+        this._deletePeer(enc.pubkey, 'incorrect pubkey for peerId');
         return;
       }
       this._addConnectedCopayer(payload.copayerId);
@@ -379,6 +377,7 @@ Network.prototype.encode = function(copayerId, payload) {
   };
   var copayerIdBuf = new Buffer(copayerId, 'hex');
   var message = AuthMessage.encode(copayerIdBuf, this.getKey(), payload, opts);
+  return message;
 };
 
 Network.prototype.isOnline = function() {
