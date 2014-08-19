@@ -5,10 +5,10 @@ before_install: npm install -g grunt-cli
 install: npm install
 before_script: grunt shell
 notifications:
-  hipchat:
-    rooms:
-      secure: ibsyaK2/7hdms9pRHCibamfUtA1yb5Ib3tIQOChwnfNSkpOy5ZViuq92duPZpKacgNuRmiwp6wfbDY8duLiadwnCet4V3dHAGqt+t9o+O7A9DzxNeYFFHnnrhqhg95PjWK6UyFqrQajPIr+n11M2itEQLa7kljQxJZ3Z26zJCdI=
+  email:
+    recipients:
+	  - gregg@bitpay.com
     template:
       - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
     format: html
-    on_success: never
+    on_success: always
