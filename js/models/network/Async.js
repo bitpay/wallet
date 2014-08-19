@@ -326,7 +326,7 @@ Network.prototype.start = function(opts, openCallback) {
   this._setupConnectionHandlers(openCallback);
   var pubkey = this.getKey().public.toString('hex');
   this.socket.emit('subscribe', pubkey);
-  //this.socket.emit('sync');
+  this.socket.emit('sync', opts.lastTimestamp);
   this.started = true;
 
 };
