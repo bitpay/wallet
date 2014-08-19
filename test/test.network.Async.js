@@ -188,36 +188,6 @@ describe('Network / Async', function() {
       n2._deletePeer.calledOnce.should.equal(false);
     });
 
-    it('should not reject data sent from a peer with a really big new nonce', function() {
-      var n = createN();
-      n.privkey = key2.private.toString('hex');
-      n.key = false;
-      n.networkNonces = {};
-      n.networkNonces[(new bitcore.SIN(key1.public)).toString()] = new Buffer('5000000000000001', 'hex'); //previously used nonce
-
-      var message = {
-        type: 'hello',
-        copayerId: key1.public.toString('hex')
-      };
-      var messagestr = JSON.stringify(message);
-      var messagebuf = new Buffer(messagestr);
-
-      var opts = {
-        nonce: new Buffer('5000000000000002', 'hex')
-      }; //message send with new nonce
-      var encoded = n._encode(key2.public, key1, messagebuf, opts);
-      var encodedstr = JSON.stringify(encoded);
-      var encodeduint = new Buffer(encodedstr);
-
-      var isInbound = true;
-      var peerId = new bitcore.SIN(key1.public);
-
-      n._deletePeer = sinon.spy();
-
-      n._onMessage(encodeduint, isInbound, peerId);
-      n._deletePeer.calledOnce.should.equal(false);
-    });
-
     it('should reject data sent from a peer with an outdated nonce', function() {
       var n = createN();
       n.privkey = key2.private.toString('hex');
