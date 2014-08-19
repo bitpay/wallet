@@ -200,8 +200,11 @@ factory('notification', ['$timeout',
           }, settings[type].duration);
         }
 
-        // Movile notification
-        window.navigator.vibrate([200,100,200]);
+        // Mobile notification
+        if (window && window.navigator && window.navigator.vibrate) {
+          window.navigator.vibrate([200,100,200]);
+        };
+
         if (document.hidden && (type == 'info' || type == 'funds')) {
           new window.Notification(title, {body: content, icon:'img/notification.png'});
         }
