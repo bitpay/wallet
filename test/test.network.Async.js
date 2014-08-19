@@ -59,9 +59,12 @@ describe('Network / Async', function() {
 
   describe('#send', function() {
 
+    it('should be able to broadcast', function(done) {
+      var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+    });
     it('should call _sendToOne for a copayer', function(done) {
       var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
-      var data = new bitcore.Buffer('my data to send');
+      var data = 'my data to send';
 
       var copayerId = '03b51d01d798522cf61211b4dfcdd6d01020304cf166e1cb7f43d836abc5c18b23';
       n._sendToOne = function(a, b, cb) {
