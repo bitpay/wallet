@@ -318,7 +318,7 @@ Wallet.prototype._onAddressBook = function(senderId, data, isInbound) {
 
 
 Wallet.prototype.updateTimestamp = function() {
-  this.lastTimestamp = microtime.now();
+  this.lastTimestamp = new Date().getTime() * 1000;
 };
 
 Wallet.prototype._onData = function(senderId, data, isInbound) {
