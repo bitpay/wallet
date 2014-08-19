@@ -99,7 +99,7 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
-Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
+Wallet.prototype._onIndexes = function(senderId, data, isInbound) {
   this.log('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
@@ -109,7 +109,7 @@ Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
+Wallet.prototype._onPublicKeyRing = function(senderId, data, isInbound) {
   this.log('RECV PUBLICKEYRING:', data);
 
   var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
@@ -217,7 +217,7 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
 };
 
 
-Wallet.prototype._handleTxProposal = function(senderId, data) {
+Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
   this.log('RECV TXPROPOSAL: ', data);
   var m;
@@ -254,7 +254,7 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
 };
 
 
-Wallet.prototype._handleReject = function(senderId, data, isInbound) {
+Wallet.prototype._onReject = function(senderId, data, isInbound) {
   preconditions.checkState(data.ntxid);
   this.log('RECV REJECT:', data);
 
@@ -277,7 +277,7 @@ Wallet.prototype._handleReject = function(senderId, data, isInbound) {
   });
 };
 
-Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
+Wallet.prototype._onSeen = function(senderId, data, isInbound) {
   preconditions.checkState(data.ntxid);
   this.log('RECV SEEN:', data);
 
@@ -295,7 +295,7 @@ Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
 
 
 
-Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
+Wallet.prototype._onAddressBook = function(senderId, data, isInbound) {
   preconditions.checkState(data.addressBook);
   this.log('RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
@@ -315,7 +315,7 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._handleData = function(senderId, data, isInbound) {
+Wallet.prototype._onData = function(senderId, data, isInbound) {
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
   preconditions.checkArgument(data.type);
@@ -337,27 +337,27 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       this.sendAllTxProposals(senderId); // send old txps
       break;
     case 'publicKeyRing':
-      this._handlePublicKeyRing(senderId, data, isInbound);
+      this._onPublicKeyRing(senderId, data, isInbound);
       break;
     case 'reject':
-      this._handleReject(senderId, data, isInbound);
+      this._onReject(senderId, data, isInbound);
       break;
     case 'seen':
-      this._handleSeen(senderId, data, isInbound);
+      this._onSeen(senderId, data, isInbound);
       break;
     case 'txProposal':
-      this._handleTxProposal(senderId, data, isInbound);
+      this._onTxProposal(senderId, data, isInbound);
       break;
     case 'indexes':
-      this._handleIndexes(senderId, data, isInbound);
+      this._onIndexes(senderId, data, isInbound);
       break;
     case 'addressbook':
-      this._handleAddressBook(senderId, data, isInbound);
+      this._onAddressBook(senderId, data, isInbound);
       break;
   }
 };
 
-Wallet.prototype._handleConnect = function(newCopayerId) {
+Wallet.prototype._onConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
@@ -366,7 +366,7 @@ Wallet.prototype._handleConnect = function(newCopayerId) {
   this.emit('connect', peerID);
 };
 
-Wallet.prototype._handleDisconnect = function(peerID) {
+Wallet.prototype._onDisconnect = function(peerID) {
   this.currentDelay = null;
   this.emit('disconnect', peerID);
 };
@@ -428,12 +428,9 @@ Wallet.prototype.netStart = function(callback) {
   var net = this.network;
 
   net.removeAllListeners();
-  net.on('connect', self._handleConnect.bind(self));
-  net.on('disconnect', self._handleDisconnect.bind(self));
-  net.on('data', self._handleData.bind(self));
-  net.on('close', function() {
-    self.emit('close');
-  });
+  net.on('connect', self._onConnect.bind(self));
+  net.on('disconnect', self._onDisconnect.bind(self));
+  net.on('data', self._onData.bind(self));
   net.on('serverError', function(msg) {
     self.emit('serverError', msg);
   });
