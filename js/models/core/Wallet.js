@@ -618,7 +618,6 @@ Wallet.prototype.sendWalletId = function(recipients) {
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
   this.log('### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
   var publicKeyRing = this.publicKeyRing.toObj();
-  delete publicKeyRing.publicKeysCache; // exclude publicKeysCache from network obj
 
   this.send(recipients, {
     type: 'publicKeyRing',
