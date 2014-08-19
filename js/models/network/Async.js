@@ -210,7 +210,7 @@ Network.prototype._onMessage = function(enc) {
   */
 
 
-  console.log('receiving ' + JSON.stringify(payload));
+  //console.log('receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
@@ -359,9 +359,9 @@ Network.prototype.send = function(copayerIds, payload, cb) {
 
   var l = copayerIds.length;
   var i = 0;
-  console.log('sending ' + JSON.stringify(payload));
+  //console.log('sending ' + JSON.stringify(payload));
   copayerIds.forEach(function(copayerId) {
-    console.log('\t to ' + copayerId);
+    //console.log('\t to ' + copayerId);
     self.iterateNonce();
     var opts = {
       nonce: self.networkNonce
