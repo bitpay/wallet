@@ -175,12 +175,12 @@ describe("Unit: Controllers", function() {
     });
 
     it('should validate address with network', function() {
-      form.newaddress.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       expect(form.newaddress.$invalid).to.equal(false);
     });
 
     it('should not validate address with other network', function() {
-      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      form.newaddress.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       expect(form.newaddress.$invalid).to.equal(true);
     });
 
@@ -199,7 +199,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should create a transaction proposal with given values', function() {
-      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(1000);
 
       var spy = sinon.spy(scope.wallet, 'createTx');
@@ -245,7 +245,7 @@ describe("Unit: Controllers", function() {
 
 
     it('should create and send a transaction proposal', function() {
-      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(1000);
       scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
       var spy = sinon.spy(scope.wallet, 'createTx');
@@ -322,7 +322,7 @@ describe("Unit: Controllers", function() {
     it('should return networkName', function() {
       $httpBackend.flush(); // need flush
       var networkName = scope.networkName;
-      expect(networkName).equal('livenet');
+      expect(networkName).equal('testnet');
     });
   });
 
