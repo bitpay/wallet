@@ -104,6 +104,7 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
   obj.privateKey = s.get(walletId, 'privateKey');
   obj.addressBook = s.get(walletId, 'addressBook');
   obj.backupOffered = s.get(walletId, 'backupOffered');
+  obj.lastTimestamp = s.get(walletId, 'lastTimestamp');
 
   var w = this.fromObj(obj, skipFields);
   return w;

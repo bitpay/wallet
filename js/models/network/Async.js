@@ -321,7 +321,7 @@ Network.prototype.start = function(opts, openCallback) {
 
   var hostPort = this.host + ':' + this.port;
   this.socket = io.connect(hostPort, {
-    reconnection: false,
+    reconnection: true,
   });
   this._setupConnectionHandlers(openCallback);
   var pubkey = this.getKey().public.toString('hex');
