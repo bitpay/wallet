@@ -26,11 +26,9 @@ describe('Performance tests', function() {
         generated.push(k);
       }
       var delta1 = new Date().getTime() - start1;
-      var backup = k1.toObj();
-      var k2 = PrivateKey.fromObj(backup);
       var start2 = new Date().getTime();
       for (var i = 0; i < generateN; i++) {
-        var k = JSON.stringify(k2.get(i, false).storeObj());
+        var k = JSON.stringify(k1.get(i, false).storeObj());
         generated[i].should.equal(k);
       }
       var delta2 = new Date().getTime() - start2;
