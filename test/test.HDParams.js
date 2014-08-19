@@ -2,6 +2,7 @@
 
 var chai = chai || require('chai');
 var should = chai.should();
+
 var bitcore = bitcore || require('bitcore');
 var Address = bitcore.Address;
 var buffertools = bitcore.buffertools;
@@ -13,20 +14,6 @@ try {
 var PublicKeyRing = copay.PublicKeyRing;
 var HDParams = copay.HDParams;
 var HDPath = copay.HDPath;
-
-
-var config = {
-  networkName: 'livenet',
-};
-
-var createAI = function() {
-  var i = new HDParams();
-  should.exist(i);
-
-  i.copayerIndex = 1;
-
-  return i;
-};
 
 describe('HDParams model', function() {
 
@@ -60,7 +47,8 @@ describe('HDParams model', function() {
   });
 
   it('show be able to store and read', function() {
-    var i = createAI();
+    var i = new HDParams();
+    i.copayerIndex = 1;
     var changeN = 2;
     var addressN = 2;
     for (var j = 0; j < changeN; j++) {
@@ -81,7 +69,8 @@ describe('HDParams model', function() {
   });
 
   it('should count generation indexes', function() {
-    var j = createAI();
+    var j = new HDParams();
+    j.copayerIndex = 1;
     for (var i = 0; i < 3; i++)
     j.increment(true);
     for (var i = 0; i < 2; i++)
@@ -92,7 +81,8 @@ describe('HDParams model', function() {
   });
 
   it('#merge tests', function() {
-    var j = createAI();
+    var j = new HDParams();
+    j.copayerIndex = 1;
 
     for (var i = 0; i < 15; i++)
     j.increment(true);
