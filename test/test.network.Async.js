@@ -150,14 +150,11 @@ describe('Network / Async', function() {
       n._onMessage(enc);
       console.log(n._deletePeer.callCount);
       n._deletePeer.calledOnce.should.equal(true);
-      n._deletePeer.getCall(0).args[0].should.equal(peerId);
       n._deletePeer.getCall(0).args[1].should.equal('incorrect pubkey for peerId');
     });
 
     it('should not reject data sent from a peer with no previously set nonce but who is setting one now', function() {
-      var n = createN();
-      n.privkey = key2.private.toString('hex');
-      n.key = null;
+      var n = createN(pk2);
 
       var message = {
         type: 'hello',
