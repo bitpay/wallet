@@ -23,6 +23,7 @@ var preconditions = require('preconditions').singleton();
  */
 
 function Network(opts) {
+  preconditions.checkArgument(opts);
   var self = this;
   opts = opts || {};
   this.maxPeers = opts.maxPeers || 12;
@@ -121,6 +122,7 @@ Network.prototype._addConnectedCopayer = function(copayerId) {
 
 Network.prototype.getKey = function() {
   if (!this.key) {
+    preconditions.checkState(this.privkey);
     var key = new bitcore.Key();
     key.private = new Buffer(this.privkey, 'hex');
     key.regenerateSync();
