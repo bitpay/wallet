@@ -50,10 +50,18 @@ WalletFactory.prototype._checkRead = function(walletId) {
   return !!ret;
 };
 
-WalletFactory.prototype.fromObj = function(obj) {
+WalletFactory.prototype.fromObj = function(obj, skipFields) {
 
   // not stored options
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
+
+  skipFields = skipFields || [];
+  skipFields.forEach(function(k){
+    if (obj[k])
+      delete obj[k];
+    else 
+      throw new Error('unknown field:' + k);
+  });
 
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   if (!w) return false;
@@ -63,23 +71,23 @@ WalletFactory.prototype.fromObj = function(obj) {
   return w;
 };
 
-WalletFactory.prototype.fromEncryptedObj = function(base64, password) {
+WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields) {
   this.storage._setPassphrase(password);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
-  var w = this.fromObj(walletObj);
+  var w = this.fromObj(walletObj, skipFields);
   return w;
 };
 
-WalletFactory.prototype.import = function(base64, password) {
+WalletFactory.prototype.import = function(base64, password, skipFields) {
   var self = this;
-  var w = self.fromEncryptedObj(base64, password);
+  var w = self.fromEncryptedObj(base64, password, skipFields);
 
   if (!w) throw new Error('Wrong password');
   return w;
 }
 
-WalletFactory.prototype.read = function(walletId) {
+WalletFactory.prototype.read = function(walletId, skipFields) {
   if (!this._checkRead(walletId))
     return false;
 
@@ -94,7 +102,7 @@ WalletFactory.prototype.read = function(walletId) {
   obj.addressBook = s.get(walletId, 'addressBook');
   obj.backupOffered = s.get(walletId, 'backupOffered');
 
-  var w = this.fromObj(obj);
+  var w = this.fromObj(obj, skipFields);
   return w;
 };
 
