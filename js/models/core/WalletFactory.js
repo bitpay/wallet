@@ -214,16 +214,22 @@ WalletFactory.prototype.decodeSecret = function(secret) {
   }
 };
 
-WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
-  var self = this;
 
+WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
+  var self = this;
   var s = self.decodeSecret(secret);
   if (!s) return cb('badSecret');
 
+  var privOpts = {
+    networkName: this.networkName,
+  };
+
+  if (privateHex && privateHex.length>10) {
+    privOpts.extendedPrivateKeyString = privateHex;
+  }
+
   //Create our PrivateK
-  var privateKey = new PrivateKey({
-    networkName: this.networkName
-  });
+  var privateKey = new PrivateKey(privOpts);
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
