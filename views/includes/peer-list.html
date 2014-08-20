@@ -23,7 +23,8 @@
         ng-if="!hasVideo(copayer)"
         ng-class="isConnected(copayer) ? 'online' : 'offline'"
         src="./img/satoshi.gif"
-        alt="{{copayer}}">
+        alt="{{copayer}}"
+        width="70">
 
       <span ng-show="copayer.index == 0">Me</span>
       <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
@@ -43,7 +44,8 @@
         ng-if="!hasVideo(copayer)"
         ng-class="isConnected(copayer) ? 'online' : 'offline'"
         src="./img/satoshi.gif"
-        alt="{{copayer}}">
+        alt="{{copayer}}"
+        width="70">
 
       <!-- <span ng-show="copayer.index == 0">Me</span>
       <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
