@@ -55,11 +55,14 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   // not stored options
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
 
+  // this is only used if private key or public key ring is skipped
+  obj.opts.networkName    = this.networkName;
+
   skipFields = skipFields || [];
   skipFields.forEach(function(k){
-    if (obj[k])
+    if (obj[k]) {
       delete obj[k];
-    else 
+    } else 
       throw new Error('unknown field:' + k);
   });
 
