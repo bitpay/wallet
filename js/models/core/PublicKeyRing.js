@@ -239,7 +239,7 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
   });
 
   var index = sorted.indexOf(pubKey);
-  if (index == -1) throw new Error('no public key in ring');
+  if (index == -1) throw new Error('public key is not on the ring');
 
   return index;
 }

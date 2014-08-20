@@ -39,7 +39,7 @@ function Wallet(opts) {
   });
   if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
     throw new Error('Network forced to ' + copayConfig.networkName +
-                    ' and tried to create a Wallet with network ' + this.getNetworkName());
+      ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
 
@@ -321,30 +321,30 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
       this.sendWalletReady(senderId);
-    break;
+      break;
     case 'walletReady':
       this.sendPublicKeyRing(senderId);
-    this.sendAddressBook(senderId);
-    this.sendAllTxProposals(senderId); // send old txps
-    break;
+      this.sendAddressBook(senderId);
+      this.sendAllTxProposals(senderId); // send old txps
+      break;
     case 'publicKeyRing':
       this._handlePublicKeyRing(senderId, data, isInbound);
-    break;
+      break;
     case 'reject':
       this._handleReject(senderId, data, isInbound);
-    break;
+      break;
     case 'seen':
       this._handleSeen(senderId, data, isInbound);
-    break;
+      break;
     case 'txProposal':
       this._handleTxProposal(senderId, data, isInbound);
-    break;
+      break;
     case 'indexes':
       this._handleIndexes(senderId, data, isInbound);
-    break;
+      break;
     case 'addressbook':
       this._handleAddressBook(senderId, data, isInbound);
-    break;
+      break;
   }
 };
 
@@ -495,11 +495,11 @@ Wallet.prototype.getRegisteredPeerIds = function() {
 };
 
 Wallet.prototype.keepAlive = function() {
-  try{
+  try {
     this.lock.keepAlive();
-  } catch(e){
+  } catch (e) {
     this.log(e);
-    this.emit('locked',null,'Wallet appears to be openned on other browser instance. Closing this one.' );
+    this.emit('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
   }
 };
 
@@ -535,9 +535,33 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
 
-  opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
-  opts.privateKey = PrivateKey.fromObj(o.privateKey);
+  if (o.privateKey)
+    opts.privateKey = PrivateKey.fromObj(o.privateKey);
+  else
+    opts.privateKey = new PrivateKey({
+    networkName: this.networkName
+  });
+
+  if (o.publicKeyRing)
+    opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
+  else {
+    opts.publicKeyRing = new PublicKeyRing({
+      networkName: opts.networkName,
+      requiredCopayers: opts.requiredCopayers,
+      totalCopayers: opts.totalCopayers,
+    });
+    opts.publicKeyRing.addCopayer(
+      opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
+      opts.nickname
+    );
+  }
+
+  if (o.txProposals)
+    opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
+  else
+    opts.txProposals = new TxProposals({
+      networkName: this.networkName,
+    });
 
   opts.storage = storage;
   opts.network = network;
@@ -788,22 +812,22 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
   }
 
   return Wallet.request({
-    method: 'GET',
-    url: options.uri,
-    headers: {
-      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
-    },
-    responseType: 'arraybuffer'
-  })
-  .success(function(data, status, headers, config) {
-    data = PayPro.PaymentRequest.decode(data);
-    var pr = new PayPro();
-    pr = pr.makePaymentRequest(data);
-    return self.receivePaymentRequest(options, pr, cb);
-  })
-  .error(function(data, status, headers, config) {
-    return cb(new Error('Status: ' + JSON.stringify(status)));
-  });
+      method: 'GET',
+      url: options.uri,
+      headers: {
+        'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+      },
+      responseType: 'arraybuffer'
+    })
+    .success(function(data, status, headers, config) {
+      data = PayPro.PaymentRequest.decode(data);
+      var pr = new PayPro();
+      pr = pr.makePaymentRequest(data);
+      return self.receivePaymentRequest(options, pr, cb);
+    })
+    .error(function(data, status, headers, config) {
+      return cb(new Error('Status: ' + JSON.stringify(status)));
+    });
 };
 
 Wallet.prototype.fetchPaymentTx = function(options, cb) {
@@ -991,23 +1015,23 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     rpo.set('amount', +total.toString(10));
 
     rpo.set('script',
-            Buffer.concat([
-              new Buffer([
-              118, // OP_DUP
-              169, // OP_HASH160
-              76, // OP_PUSHDATA1
-              20, // number of bytes
-            ]),
-            // needs to be ripesha'd
-            bitcore.util.sha256ripe160(options.refund_to),
-            new Buffer([
-              136, // OP_EQUALVERIFY
-              172 // OP_CHECKSIG
-            ])
-            ])
-           );
+      Buffer.concat([
+        new Buffer([
+          118, // OP_DUP
+          169, // OP_HASH160
+          76, // OP_PUSHDATA1
+          20, // number of bytes
+        ]),
+        // needs to be ripesha'd
+        bitcore.util.sha256ripe160(options.refund_to),
+        new Buffer([
+          136, // OP_EQUALVERIFY
+          172 // OP_CHECKSIG
+        ])
+      ])
+    );
 
-           refund_outputs.push(rpo.message);
+    refund_outputs.push(rpo.message);
   }
 
   // We send this to the serve after receiving a PaymentRequest
@@ -1035,30 +1059,30 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   }
 
   return Wallet.request({
-    method: 'POST',
-    url: txp.merchant.pr.pd.payment_url,
-    headers: {
-      // BIP-71
-      'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
-      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
-      // XHR does not allow these:
-      // 'Content-Length': (pay.byteLength || pay.length) + '',
-      // 'Content-Transfer-Encoding': 'binary'
-    },
-    // Technically how this should be done via XHR (used to
-    // be the ArrayBuffer, now you send the View instead).
-    data: view,
-    responseType: 'arraybuffer'
-  })
-  .success(function(data, status, headers, config) {
-    data = PayPro.PaymentACK.decode(data);
-    var ack = new PayPro();
-    ack = ack.makePaymentACK(data);
-    return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
-  })
-  .error(function(data, status, headers, config) {
-    return cb(new Error('Status: ' + JSON.stringify(status)));
-  });
+      method: 'POST',
+      url: txp.merchant.pr.pd.payment_url,
+      headers: {
+        // BIP-71
+        'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
+        'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
+        // XHR does not allow these:
+        // 'Content-Length': (pay.byteLength || pay.length) + '',
+        // 'Content-Transfer-Encoding': 'binary'
+      },
+      // Technically how this should be done via XHR (used to
+      // be the ArrayBuffer, now you send the View instead).
+      data: view,
+      responseType: 'arraybuffer'
+    })
+    .success(function(data, status, headers, config) {
+      data = PayPro.PaymentACK.decode(data);
+      var ack = new PayPro();
+      ack = ack.makePaymentACK(data);
+      return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
+    })
+    .error(function(data, status, headers, config) {
+      return cb(new Error('Status: ' + JSON.stringify(status)));
+    });
 };
 
 Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
@@ -1175,8 +1199,8 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   merchantData.total = merchantData.total.toString(10);
 
   var b = new Builder(opts)
-  .setUnspent(unspent)
-  .setOutputs(outs);
+    .setUnspent(unspent)
+    .setOutputs(outs);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -1368,7 +1392,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
 
     // Actual script
     var as = new Buffer(ro.script.buffer, 'hex')
-    .slice(ro.script.offset, ro.script.limit);
+      .slice(ro.script.offset, ro.script.limit);
 
     if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
       return false;
@@ -1548,11 +1572,11 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   }
 
   var b = new Builder(opts)
-  .setUnspent(utxos)
-  .setOutputs([{
-    address: toAddress,
-    amountSatStr: amountSatStr,
-  }]);
+    .setUnspent(utxos)
+    .setOutputs([{
+      address: toAddress,
+      amountSatStr: amountSatStr,
+    }]);
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -1649,29 +1673,29 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
   var self = this;
   async.doWhilst(
     function _do(next) {
-    // Optimize window to minimize the derivations.
-    var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
-    var addresses = self.deriveAddresses(scanIndex, scanWindow, change, copayerIndex);
-    self.blockchain.checkActivity(addresses, function(err, actives) {
-      if (err) throw err;
+      // Optimize window to minimize the derivations.
+      var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
+      var addresses = self.deriveAddresses(scanIndex, scanWindow, change, copayerIndex);
+      self.blockchain.checkActivity(addresses, function(err, actives) {
+        if (err) throw err;
 
-      // Check for new activities in the newlly scanned addresses
-      var recentActive = actives.reduce(function(r, e, i) {
-        return e ? scanIndex + i : r;
-      }, lastActive);
-      hasActivity = lastActive != recentActive;
-      lastActive = recentActive;
-      scanIndex += scanWindow;
-      next();
-    });
-  },
-  function _while() {
-    return hasActivity;
-  },
-  function _finnaly(err) {
-    if (err) return cb(err);
-    cb(null, lastActive);
-  }
+        // Check for new activities in the newlly scanned addresses
+        var recentActive = actives.reduce(function(r, e, i) {
+          return e ? scanIndex + i : r;
+        }, lastActive);
+        hasActivity = lastActive != recentActive;
+        lastActive = recentActive;
+        scanIndex += scanWindow;
+        next();
+      });
+    },
+    function _while() {
+      return hasActivity;
+    },
+    function _finnaly(err) {
+      if (err) return cb(err);
+      cb(null, lastActive);
+    }
   );
 }
 

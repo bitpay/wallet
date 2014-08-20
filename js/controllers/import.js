@@ -7,6 +7,10 @@ angular.module('copayApp.controllers').controller('ImportController',
 
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
+    var s = ($location.search()).skip;
+    if (s) {
+      $scope.skipFields = s.split(',');
+    }
 
     var reader = new FileReader();
 
@@ -22,7 +26,7 @@ angular.module('copayApp.controllers').controller('ImportController',
 
         // try to import encrypted wallet with passphrase
         try {
-          w = walletFactory.import(encryptedObj, passphrase);
+          w = walletFactory.import(encryptedObj, passphrase, $scope.skipFields);
         } catch (e) {
           errMsg = e.message;
         }
