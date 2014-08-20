@@ -24,6 +24,12 @@ p {
   font-size: 1.2rem;
 }
 
+
+#licenceModal p {
+  color: #153536;
+}
+
+
 .reveal-modal.line-dashed-v {
   border-right: 1px dashed #E3E3E3;
 }
@@ -278,3 +284,5 @@ footer {
     border: none;
   }
 }
+
+

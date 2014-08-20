@@ -20,6 +20,26 @@
     <link rel="stylesheet" href="css/common.css">
 </head>
 <body>
+   <div id="licenseModal" class="reveal-modal large" data-reveal>
+    <div class="line-dashed-v">
+    <h2 class="panel m2r">
+        <i class="fi-alert"></i>
+        Disclaimer</h2>
+    </h2>
+    <p>   
+The software you are about to use is unsupported beta software. It is important to understand that beta software refers to software that is undergoing testing and has not officially been released and may not act in a reliable fashion. Because the software is currently in beta, it is possible but not certain that you may lose bitcoin or the value of your bitcoin. You acknowledge that your use of this software is at your own option and discretion. You assume any and all risk associated with the use of this software. To the fullest extent permitted by law, this software is provided “as is” and no warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. In no event shall the authors, employees of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
+    <p>   
+    <label>
+    <input type="checkbox" id="accept"> I read and I agree with these terms
+    </label>
+    <p>   
+    <a href="#" id="continue" class="button radius m2r small disabled" onclick="cont( isDownload ? false :  '/in/app/')">
+        Continue
+    </a>
+    </div>
+  </div>
+ 
+ 
   <div id="extensionsModal" class="reveal-modal" data-reveal>
     <div class="large-6 columns">
       <div class="line-dashed-v">
@@ -31,9 +51,9 @@
           <!-- <small>If you are updating check here.</small> -->
         </h4>
         <ul class="size-16" style="line-height: 35px;">
-          <li>Download the ZIP file: <a href="copay-chrome-extension-0.4.6.zip">Copay v0.4.6</a>
+          <li>Download the ZIP file: <a href="/in/copay-chrome-extension-0.4.6.zip">Copay v0.4.6</a>
             </li>
-          <li>[Optional] Check  <a href="copay-chrome-extension-0.4.6.zip.sig">signature</a> (<a href="#" onclick="$('#chrome-txt').slideToggle()">Show me how</a>)
+          <li>[Optional] Check  <a href="/in/copay-chrome-extension-0.4.6.zip.sig">signature</a> (<a href="#" onclick="$('#chrome-txt').slideToggle()">Show me how</a>)
  <br>
             <ol style="display:none" id="chrome-txt">
             <li>Download signature file  
@@ -61,10 +81,10 @@ copay-chrome-extension-0.1.4.zip
       </h4>
       <ul class="size-16" style="line-height: 35px;">
         <li>Download XPI
-            <a href="copay-0.4.6.xpi">Copay v0.4.6</a>
+            <a href="/in/copay-0.4.6.xpi">Copay v0.4.6</a>
         </li>
 
-          <li>[Optional] Check  <a href="copay-0.4.6.xpi.sig">signature</a> (<a href="#" onclick="$('#ff-txt').slideToggle()">Show me how</a>)
+          <li>[Optional] Check  <a href="/in/copay-0.4.6.xpi.sig">signature</a> (<a href="#" onclick="$('#ff-txt').slideToggle()">Show me how</a>)
  <br>
             <ol style="display:none" id="ff-txt">
             <li>Download signature file  
@@ -121,7 +141,7 @@ copay-0.4.6.xpi
       <h3>A secure bitcoin wallet for <br> <b>friends</b> and <b>companies.</b></h3>
       <p class="size-16 hide-for-small-only">Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.</p>
       <div class="download hide-for-small-only">
-        <a href="#" class="button primary radius m2r small" data-reveal-id="extensionsModal">
+        <a href="#" class="button primary radius m2r small" data-reveal-id="licenseModal" onclick="isDownload=1">
           <i class="fi-download icon-button"></i>
           <p class="btn-download">
             <small>DOWNLOAD v0.4.6</small><br>
@@ -135,7 +155,7 @@ copay-0.4.6.xpi
             Android Version
           </p>
         </a><br/>
-       <a href="app/" target="_blank" class="button secondary radius">
+       <a href="#" target="_blank" class="button secondary radius"  data-reveal-id="licenseModal"  onclick="isDownload=0">
           <i class="fi-monitor primary icon-button p20t"></i>
           <p class="btn-download">
             <small>TRY v0.4.6</small><br>
@@ -158,7 +178,7 @@ copay-0.4.6.xpi
             Android Version
           </p>
         </a>
-        <a href="app/" target="_blank" class="button secondary radius expand">
+        <a href="/in/app/" target="_blank" class="button secondary radius expand">
           <i class="fi-monitor icon-button p20t"></i>
           <p class="btn-download">
             <small>TRY v0.4.6</small><br>
@@ -265,7 +285,37 @@ copay-0.4.6.xpi
   <script src="js/foundation/foundation.reveal.js"></script>
   <script src="js/main.js"></script>
 
-  <script>
+  <script>  
+    var COOKIE_NAME = 'termsCookieV1'; 
+
+    function cont(path){
+        if( document.cookie.indexOf(COOKIE_NAME)>0) {
+            if (path) {
+                window.location.href=path;
+            } else {
+                $('#extensionsModal').foundation('reveal', 'open');
+            }
+        } else {
+            $('#licenseModal').foundation('reveal', 'close');
+        }
+    };
+$(function() {
+ $('#accept').change(function() {
+
+    var val = $(this).prop('checked');
+    if (val) {
+        document.cookie = 'name=' + COOKIE_NAME + '; expires=Tue, 3 Aug 2100 20:47:11 UTC; path=/';
+        $('#continue').removeClass('disabled');
+    } else {
+        document.cookie = 'name=' + COOKIE_NAME + '; expires=Tue, 3 Aug 2000 20:47:11 UTC; path=/';
+        $('#continue').addClass('disabled');
+    }
+ });
+});
+
+
+
+
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -273,6 +323,8 @@ copay-0.4.6.xpi
 
     ga('create', 'UA-24163874-8', 'auto');
     ga('send', 'pageview');
+
+
   </script>
 </body>
 </html>
