@@ -21,5 +21,4 @@ angular.module('copayApp.controllers').controller('BackupController',
         controllerUtils.logout();
       });
     };
-
   });

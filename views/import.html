@@ -3,12 +3,14 @@
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
     {{ importStatus }}
   </div>
+
   <div class="row" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
     <div class="large-4 columns logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div class="large-8 columns line-dashed-setup-v">
+ 
       <div class="box-setup">
         <h1 class="text-white line-sidebar-b">{{title}}</h1>
         <form name="importForm" ng-submit="import(importForm)" novalidate>
@@ -19,6 +21,12 @@
 
           <label for="password">Password <small>Required</small></label>
           <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
+
+          <div data-alert ng-show="skipFields">
+            <i class="size-18 fi-alert"></i> 
+            Skipping fields: {{skipFields}}
+          </div>
+      
 
           <div class="text-right">
             <a class="back-button text-white m20r" href="#!/">&laquo; Back</a>
