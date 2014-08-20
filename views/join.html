@@ -67,6 +67,13 @@
             name="joinPasswordConfirm"
             ng-model="joinPasswordConfirm" 
             match="joinPassword" required>
+
+            <input type="text" 
+            placeholder="Private"
+            name="private"
+            ng-model="private" 
+            ng-if="enterPrivate">
+ 
             <div class="text-right">
               <a href="#!/" class="back-button text-primary m20r">&laquo; Back</a>
               <button type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>

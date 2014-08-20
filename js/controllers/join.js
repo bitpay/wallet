@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, walletFactory, controllerUtils, Passphrase, notification) {
+  function($scope, $rootScope, $timeout, $location, walletFactory, controllerUtils, Passphrase, notification) {
     controllerUtils.redirIfLogged();
     $rootScope.fromSetup = false;
     $scope.loading = false;
@@ -14,6 +14,13 @@ angular.module('copayApp.controllers').controller('JoinController',
     var $video;
     var context;
     var localMediaStream;
+
+    var s = ($location.search()).enterPrivate;
+    if (s) {
+      $scope.enterPrivate = true;
+    }
+
+
 
     var _scan = function(evt) {
       if (localMediaStream) {
@@ -112,7 +119,7 @@ angular.module('copayApp.controllers').controller('JoinController',
       walletFactory.network.on('badSecret', function() {});
 
       Passphrase.getBase64Async($scope.joinPassword, function(passphrase) {
-        walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, function(err, w) {
+        walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, $scope.enterPrivate ? $scope.private : 'null', function(err, w) {
           $scope.loading = false;
           if (err || !w) {
             if (err === 'joinError')
