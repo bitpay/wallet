@@ -51,6 +51,12 @@
           </div>
       
 
+          <div data-alert ng-show="skipFields">
+            <i class="size-18 fi-alert"></i> 
+            Skipping fields: {{skipFields}}
+          </div>
+      
+
           <div class="text-right">
             <a class="back-button text-white m20r" href="#!/">&laquo; Back</a>
             <button type="submit" class="button primary m0" ng-disabled="importForm.$invalid" loading="Importing">

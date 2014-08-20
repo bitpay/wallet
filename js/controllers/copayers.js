@@ -25,5 +25,4 @@ angular.module('copayApp.controllers').controller('CopayersController',
         controllerUtils.logout();
       });
     };
-
   });

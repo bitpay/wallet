@@ -55,14 +55,11 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   // not stored options
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
 
-  // this is only used if private key or public key ring is skipped
-  obj.opts.networkName    = this.networkName;
-
   skipFields = skipFields || [];
   skipFields.forEach(function(k){
-    if (obj[k]) {
+    if (obj[k])
       delete obj[k];
-    } else 
+    else 
       throw new Error('unknown field:' + k);
   });
 
@@ -113,15 +110,9 @@ WalletFactory.prototype.create = function(opts) {
   opts = opts || {};
   this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
-  var privOpts = {
-    networkName: this.networkName,
-  };
-
-  if (opts.privateKeyHex && opts.privateKeyHex.length>1) {
-    privOpts.extendedPrivateKeyString = opts.privateKeyHex;
-  }
-
-  opts.privateKey = opts.privateKey || new PrivateKey(privOpts);
+  opts.privateKey = opts.privateKey || new PrivateKey({
+    networkName: this.networkName
+  });
 
   var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
   var totalCopayers = opts.totalCopayers || this.walletDefaults.totalCopayers;
@@ -220,22 +211,16 @@ WalletFactory.prototype.decodeSecret = function(secret) {
   }
 };
 
-
-WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
+WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, cb) {
   var self = this;
+
   var s = self.decodeSecret(secret);
   if (!s) return cb('badSecret');
 
-  var privOpts = {
-    networkName: this.networkName,
-  };
-
-  if (privateHex && privateHex.length>1) {
-    privOpts.extendedPrivateKeyString = privateHex;
-  }
-
   //Create our PrivateK
-  var privateKey = new PrivateKey(privOpts);
+  var privateKey = new PrivateKey({
+    networkName: this.networkName
+  });
   this.log('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
