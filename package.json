@@ -54,7 +54,6 @@
     "bitcore": "0.1.35",
     "node-cryptojs-aes": "0.4.0",
     "blanket": "1.1.6",
-    "express": "4.0.0",
     "grunt-mocha-test": "0.8.2",
     "grunt-shell": "0.6.4",
     "istanbul": "0.2.10",
