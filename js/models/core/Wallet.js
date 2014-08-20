@@ -533,13 +533,14 @@ Wallet.prototype.toObj = function() {
 // fromObj => from a trusted source
 Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
+
   opts.addressBook = o.addressBook;
 
   if (o.privateKey)
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
   else
     opts.privateKey = new PrivateKey({
-    networkName: this.networkName
+    networkName: opts.networkName
   });
 
   if (o.publicKeyRing)
