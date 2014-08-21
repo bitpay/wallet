@@ -714,6 +714,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   } else {
     this.txProposals.deletePending(this.maxRejectCount());
   }
+  this.store();
 
   var n = this.txProposals.length();
   return m-n;
