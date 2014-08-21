@@ -11,7 +11,8 @@ var defaultConfig = {
   // wallet limits
   limits: {
     totalCopayers: 12,
-    mPlusN: 100
+    mPlusN: 100,
+    minAmountSatoshi: 5400,
   },
 
   // network layer (PeerJS) config
