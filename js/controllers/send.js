@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('SendController',
     var satToUnit = 1 / config.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
+    $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
 
     $scope.loadTxs = function() {
       var opts = {
