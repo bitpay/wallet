@@ -72,6 +72,7 @@ module.exports = function(config) {
       'test/test.TxProposals.js',
       'test/test.Wallet.js',
       'test/test.WalletFactory.js',
+      'test/test.WalletLock.js',
 
       'test/unit/**/*.js',
 
