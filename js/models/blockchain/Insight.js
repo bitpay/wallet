@@ -256,7 +256,7 @@ Insight.prototype._requestBrowser = function(options, callback) {
         errTxt = 'CRITICAL:  Wrong response from insight' + e2;
       }
     } else if (request.status >= 400 && request.status < 499) {
-      errTxt = 'CRITICAL: Bad request to insight. Probably wrong transaction to broadcast?.';
+      errTxt = 'CRITICAL: Bad request to insight: '+request.status;
     } else {
       errTxt = 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText;
       setTimeout(function() {
