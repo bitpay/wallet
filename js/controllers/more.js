@@ -24,6 +24,12 @@ angular.module('copayApp.controllers').controller('MoreController',
       });
     };
 
+    $scope.purge = function(deleteAll) {
+      var w = $rootScope.wallet;
+      var removed = w.purgeTxProposals(deleteAll);
+      notification.info('Tx Proposals Purged', removed + ' transactions proposals were purged');
+    };
+
     $scope.updateIndexes = function() {
       var w = $rootScope.wallet;
 

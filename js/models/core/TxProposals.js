@@ -36,8 +36,23 @@ TxProposals.fromObj = function(o, forceOpts) {
   return ret;
 };
 
+TxProposals.prototype.length = function() {
+  return Object.keys(this.txps).length;
+};
+
 TxProposals.prototype.getNtxids = function() {
   return Object.keys(this.txps);
+};
+
+TxProposals.prototype.deleteAll = function() {
+  this.txps = {};
+};
+
+TxProposals.prototype.deletePending = function(maxRejectCount) {
+  for (var ntxid in this.txps) {
+    if (this.txps[ntxid].isPending(maxRejectCount))
+      delete this.txps[ntxid];
+  };
 };
 
 TxProposals.prototype.toObj = function() {
@@ -153,7 +168,8 @@ TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   for (var i in this.txps) {
     var u = this.txps[i].builder.getSelectedUnspent();
     var p = this.getTxProposal(i);
-    if (p.rejectCount > maxRejectCount || p.sentTxid)
+
+    if (!p.isPending(maxRejectCount))
       continue;
 
     for (var j in u) {
