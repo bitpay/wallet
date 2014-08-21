@@ -41,6 +41,8 @@ lib/*
 !lib/socket.io.js
 
 js/copayBundle.js
+css/copay.min.css
+css/vendors.min.css
 
 webapp
 browser-extensions/chrome/copay-chrome-extension
