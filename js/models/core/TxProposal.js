@@ -25,7 +25,7 @@ function TxProposal(opts) {
   this.builder = opts.builder;
   this.createdTs = opts.createdTs;
   this.createdTs = opts.createdTs;
-  this._inputSignatures = [];
+  this._inputSigners = [];
 
   // CopayerIds
   this.creator = opts.creator;
@@ -77,24 +77,25 @@ TxProposal.prototype.isPending = function(maxRejectCount) {
 
   return true;
 };
- 
+
 
 TxProposal.prototype._updateSignedBy = function() {
-  this._inputSignatures = [];
+  this._inputSigners = [];
 
   var tx = this.builder.build();
   for (var i in tx.ins) {
     var scriptSig = new Script(tx.ins[i].s);
     var signatureCount = scriptSig.countSignatures();
+    console.log('[TxProposal.js.88:signatureCount:]', i, '#sig:', signatureCount); //TODO
+
     var info = TxProposal._infoFromRedeemScript(scriptSig);
     var txSigHash = tx.hashForSignature(info.script, parseInt(i), Transaction.SIGHASH_ALL);
-    var signatureIndexes = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
-    if (signatureIndexes.length !== signatureCount)
+    var signersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
+    console.log('[TxProposal.js.94:signersPubKey:]', signersPubKey, signatureCount); //TODO
+    if (signersPubKey.length !== signatureCount)
       throw new Error('Invalid signature');
-    this._inputSignatures[i] = signatureIndexes.map(function(i) {
-      var r = info.keys[i].toString('hex');
-      return r;
-    });
+
+    this._inputSigners[i] = signersPubKey;
   };
 };
 
@@ -163,8 +164,11 @@ TxProposal._formatKeys = function(keys) {
 
     var k = new Key();
     k.public = keys[i];
-    ret.push(k);
-  };
+    ret.push({
+      keyObj: k,
+      keyHex: keys[i].toString('hex'),
+    });
+  }
   return ret;
 };
 
@@ -183,8 +187,8 @@ TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
     var sigRaw = new Buffer(chunk.slice(0, chunk.length - 1));
     for (var j in keys) {
       var k = keys[j];
-      if (k.verifySignatureSync(txSigHash, sigRaw)) {
-        ret.push(parseInt(j));
+      if (k.keyObj.verifySignatureSync(txSigHash, sigRaw)) {
+        ret.push(k.keyHex);
         break;
       }
     }
@@ -241,9 +245,9 @@ TxProposal.prototype.setSent = function(sentTxid) {
 
 TxProposal.prototype._allSignatures = function() {
   var ret = {};
-  for (var i in this._inputSignatures)
-    for (var j in this._inputSignatures[i])
-      ret[this._inputSignatures[i][j]] = true;
+  for (var i in this._inputSigners)
+    for (var j in this._inputSigners[i])
+      ret[this._inputSigners[i][j]] = true;
 
   return ret;
 };
@@ -251,10 +255,10 @@ TxProposal.prototype._allSignatures = function() {
 
 TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   var newCopayer = {},
-  oldCopayers = {},
-  newSignedBy = {},
-  readOnlyPeers = {},
-  isNew = 1;
+    oldCopayers = {},
+    newSignedBy = {},
+    readOnlyPeers = {},
+    isNew = 1;
 
   for (var k in this.signedBy) {
     oldCopayers[k] = 1;
@@ -274,7 +278,7 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   }
 
 
-  var iSig = this._inputSignatures[0];
+  var iSig = this._inputSigners[0];
   for (var i in iSig) {
     var copayerId = keyMap[iSig[i]];
     if (!copayerId)
