@@ -20,7 +20,7 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 
-var config = {
+var walletConfig = {
   requiredCopayers: 3,
   totalCopayers: 5,
   spendUnconfirmed: true,
@@ -30,7 +30,7 @@ var config = {
 
 var getNewEpk = function() {
   return new PrivateKey({
-      networkName: config.networkName,
+      networkName: walletConfig.networkName,
     })
     .deriveBIP45Branch()
     .extendedPublicKeyString();
@@ -46,7 +46,7 @@ describe('Wallet model', function() {
 
   it('should fail to create an instance', function() {
     (function() {
-      new Wallet(config)
+      new Wallet(walletConfig)
     }).should.
     throw();
   });
@@ -58,11 +58,11 @@ describe('Wallet model', function() {
 
   var createW = function(N, conf) {
 
-    var c = JSON.parse(JSON.stringify(conf || config));
+    var c = JSON.parse(JSON.stringify(conf || walletConfig));
     if (!N) N = c.totalCopayers;
 
     var mainPrivateKey = new copay.PrivateKey({
-      networkName: config.networkName
+      networkName: walletConfig.networkName
     });
     var mainCopayerEPK = mainPrivateKey.deriveBIP45Branch().extendedPublicKeyString();
     c.privateKey = mainPrivateKey;
@@ -78,9 +78,9 @@ describe('Wallet model', function() {
       networkName: c.networkName,
     });
 
-    var storage = new Storage(config.storage);
-    var network = new Network(config.network);
-    var blockchain = new Blockchain(config.blockchain);
+    var storage = new Storage(walletConfig.storage);
+    var network = new Network(walletConfig.network);
+    var blockchain = new Blockchain(walletConfig.blockchain);
     c.storage = storage;
     c.network = network;
     c.blockchain = blockchain;
@@ -100,8 +100,8 @@ describe('Wallet model', function() {
       }
     };
 
-    c.networkName = config.networkName;
-    c.verbose = config.verbose;
+    c.networkName = walletConfig.networkName;
+    c.verbose = walletConfig.verbose;
     c.version = '0.0.1';
 
     return new Wallet(c);
@@ -322,9 +322,9 @@ describe('Wallet model', function() {
     o.opts.reconnectDelay = 100;
 
     var w2 = Wallet.fromObj(o,
-      new Storage(config.storage),
-      new Network(config.network),
-      new Blockchain(config.blockchain));
+      new Storage(walletConfig.storage),
+      new Network(walletConfig.network),
+      new Blockchain(walletConfig.blockchain));
     should.exist(w2);
     w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
     should.exist(w2.publicKeyRing.getCopayerId);
@@ -580,7 +580,7 @@ describe('Wallet model', function() {
   });
 
   it('#getUnspent should honor spendUnconfirmed = false', function(done) {
-    var conf = JSON.parse(JSON.stringify(config));
+    var conf = JSON.parse(JSON.stringify(walletConfig));
     conf.spendUnconfirmed = false;
     var w = createW2(null, null, conf);
     w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
@@ -592,7 +592,7 @@ describe('Wallet model', function() {
   });
 
   it('#getUnspent and spendUnconfirmed should count transactions with 1 confirmations', function(done) {
-    var conf = JSON.parse(JSON.stringify(config));
+    var conf = JSON.parse(JSON.stringify(walletConfig));
     conf.spendUnconfirmed = false;
     var w = cachedCreateW2(null, null, conf);
     w.blockchain.getUnspent = w.blockchain.getUnspent2;
@@ -684,7 +684,7 @@ describe('Wallet model', function() {
 
   it('should create & sign transaction from received funds', function(done) {
     var k2 = new PrivateKey({
-      networkName: config.networkName
+      networkName: walletConfig.networkName
     });
 
     var w = createW2([k2]);
@@ -1093,7 +1093,7 @@ describe('Wallet model', function() {
     it('should throw if network is different', function() {
       var backup = copayConfig.forceNetwork;
       copayConfig.forceNetwork = true;
-      config.networkName = 'livenet';
+      walletConfig.networkName = 'livenet';
       createW2.should.throw(Error);
       copayConfig.forceNetwork = backup;
     });

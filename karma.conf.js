@@ -68,6 +68,9 @@ module.exports = function(config) {
       'test/test.performance.js',
       'test/test.PrivateKey.js',
       'test/test.PublicKeyRing.js',
+      'test/test.TxProposal.js',
+      'test/test.TxProposals.js',
+      'test/test.Wallet.js',
 
       'test/unit/**/*.js',
 
