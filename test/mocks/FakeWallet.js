@@ -6,6 +6,12 @@ if (is_browser) {
 }
 var Wallet = copay.Wallet;
 
+var FakePrivateKey = function () {
+};
+
+FakePrivateKey.prototype.toObj = function() {
+    return extendedPublicKeyString = 'privHex';
+};
 
 var FakeWallet = function() {
   this.id = 'testID';
@@ -30,6 +36,8 @@ var FakeWallet = function() {
       return true;
     }
   };
+
+  this.privateKey = new FakePrivateKey();
 };
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
