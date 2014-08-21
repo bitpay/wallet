@@ -69,9 +69,9 @@
             match="joinPassword" required>
 
             <input type="text" 
-            placeholder="Private"
+            placeholder="Private Key (Hex)"
             name="private"
-            ng-model="private" 
+            ng-model="$parent.private" 
             ng-if="enterPrivate">
  
             <div class="text-right">
