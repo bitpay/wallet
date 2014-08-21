@@ -18,9 +18,28 @@
     </div>
   </div>
   <div class="oh large-12 columns panel" ng-if="priv">
-    <h3><i class="fi-minus-circle m10r"></i> Master Private Key </h3>
-      <p class="large-8 columns text-gray"> 
-     {{priv}}
+      <h3><i class="fi-minus-circle m10r"></i> Master Private Key </h3>
+      <p class="large-8 columns text-gray"> Your master private key contains the information to sign <b>any</b> transaction on this wallet. Handle with care.
+      <div class="large-4 columns">
+        <a class="button expand"  ng-click="showPriv=!showPriv">
+          <span ng-hide="showPriv">Show</span>
+          <span ng-hide="!showPriv">Hide</span>
+        </a>
+      </div>
+      <textarea class="text-gray"   ng-hide="!showPriv"> 
+        {{priv}}
+      </textarea>
+      </p>
   </div>
+  <div class="oh large-12 columns panel" ng-if="advanced">
+      <h3><i class="fi-minus-circle m10r"></i> Scan Wallet Addresses </h3>
+      <p class="large-8 columns text-gray"> This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup).
+      <div class="large-4 columns">
+        <a class="button expand"  ng-click="updateIndexes()">
+          Scan
+        </a>
+      </div>
+  </div>
+
 </div>
 
