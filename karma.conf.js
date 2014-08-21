@@ -59,20 +59,7 @@ module.exports = function(config) {
       'test/mocha.conf.js',
 
       //test files
-      'test/test.blockchain.Insight.js',
-      'test/test.HDParams.js',
-      'test/test.HDPath.js',
-      'test/test.LocalEncrypted.js',
-      'test/test.Passphrase.js',
-      'test/test.PayPro.js',
-      'test/test.performance.js',
-      'test/test.PrivateKey.js',
-      'test/test.PublicKeyRing.js',
-      'test/test.TxProposal.js',
-      'test/test.TxProposals.js',
-      'test/test.Wallet.js',
-      'test/test.WalletFactory.js',
-      'test/test.WalletLock.js',
+      'test/test.*.js',
 
       'test/unit/**/*.js',
 
