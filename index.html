@@ -5,11 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Copay - Multisignature Wallet</title>
-  <link rel="stylesheet" href="css/foundation.min.css">
-  <link rel="stylesheet" href="css/foundation-icons.css">
-  <link rel="stylesheet" href="lib/angular/angular-csp.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/vendors.min.css">
+  <link rel="stylesheet" href="css/copay.min.css">
   <link rel="shortcut icon" href="img/favicon.ico">
 </head>
 <body ng-cloak class="ng-cloak">
@@ -60,59 +57,13 @@
   <!-- shell must be loaded before moment due to the way moment loads in a commonjs env -->
   <script src="js/shell.js"></script>
 
-  <script src="lib/angular/angular.min.js"></script>
-  <script src="lib/angular-route/angular-route.min.js"></script>
-  <script src="lib/moment/min/moment.min.js"></script>
-  <script src="lib/angular-moment/angular-moment.js"></script>
-  <script src="lib/qrcode-generator/js/qrcode.js"></script>
-  <script src="lib/angular-qrcode/qrcode.js"></script>
-  <script src="lib/ng-idle/angular-idle.min.js"></script>
-  <script src="lib/angular-foundation/mm-foundation.min.js"></script>
-  <script src="lib/angular-foundation/mm-foundation-tpls.min.js"></script>
-  <script src="lib/peer.js"></script> <!-- TODO Change this on PeerJS version 0.3.9 -->
-  <script src="lib/bitcore.js"></script>
-  <script src="lib/crypto-js/rollups/sha256.js"></script>
-  <script src="lib/crypto-js/rollups/pbkdf2.js"></script>
-  <script src="lib/crypto-js/rollups/aes.js"></script>
-  <script src="lib/file-saver/FileSaver.js"></script>
-  <script src="lib/socket.io-client/socket.io.js"></script>
-  <script src="lib/sjcl.js"></script>
-  <script src="lib/ios-imagefile-megapixel/megapix-image.js"></script>
-  <script src="lib/qrcode-decoder-js/lib/qrcode-decoder.min.js"></script>
+  <script src="lib/vendors.js"></script>
   <script src="lib/zeroclipboard/dist/ZeroClipboard.min.js"></script>
+  <script src="lib/angularjs-all.js"></script>
 
   <script src="config.js"></script>
   <script src="js/copayBundle.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/routes.js"></script>
-  <script src="js/directives.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/services/socket.js"></script>
-  <script src="js/services/video.js"></script>
-  <script src="js/services/walletFactory.js"></script>
-  <script src="js/services/controllerUtils.js"></script>
-  <script src="js/services/passphrase.js"></script>
-  <script src="js/services/notifications.js"></script>
-  <script src="js/services/backupService.js"></script>
-  <script src="js/services/isMobile.js"></script>
-  <script src="js/services/uriHandler.js"></script>
-
-  <script src="js/controllers/home.js"></script>
-  <script src="js/controllers/open.js"></script>
-  <script src="js/controllers/join.js"></script>
-  <script src="js/controllers/copayers.js"></script>
-  <script src="js/controllers/video.js"></script>
-  <script src="js/controllers/sidebar.js"></script>
-  <script src="js/controllers/addresses.js"></script>
-  <script src="js/controllers/transactions.js"></script>
-  <script src="js/controllers/send.js"></script>
-  <script src="js/controllers/more.js"></script>
-  <script src="js/controllers/setup.js"></script>
-  <script src="js/controllers/import.js"></script>
-  <script src="js/controllers/settings.js"></script>
-  <script src="js/controllers/uriPayment.js"></script>
-  <script src="js/controllers/version.js"></script>
-  <script src="js/controllers/warning.js"></script>
+  <script src="js/copayMain.js"></script>
 
   <!-- PLACEHOLDER: CORDOVA SRIPT -->
   <script src="js/mobile.js"></script>
