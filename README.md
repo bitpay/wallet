@@ -32,7 +32,11 @@ Build Copay:
 ```
 npm install
 bower install
-grunt shell --target=dev
+grunt
+```
+For production environments:
+```
+grunt prod
 ```
 
 Open Copay:
