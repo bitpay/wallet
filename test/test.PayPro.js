@@ -10,7 +10,6 @@ if (is_browser) {
 } else {
   var copay = require('../copay'); //node
 }
-var copayConfig = require('../config');
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
@@ -26,7 +25,7 @@ var startServer = copay.FakePayProServer; // TODO should be require('./mocks/Fak
 
 var server;
 
-var config = {
+var walletConfig = {
   requiredCopayers: 1,
   totalCopayers: 1,
   spendUnconfirmed: true,
@@ -36,7 +35,7 @@ var config = {
 
 var getNewEpk = function() {
   return new PrivateKey({
-    networkName: config.networkName,
+    networkName: walletConfig.networkName,
   })
   .deriveBIP45Branch()
   .extendedPublicKeyString();
@@ -44,11 +43,11 @@ var getNewEpk = function() {
 
 describe('PayPro (in Wallet) model', function() {
   var createW = function(N, conf) {
-    var c = JSON.parse(JSON.stringify(conf || config));
+    var c = JSON.parse(JSON.stringify(conf || walletConfig));
     if (!N) N = c.totalCopayers;
 
     var mainPrivateKey = new copay.PrivateKey({
-      networkName: config.networkName
+      networkName: walletConfig.networkName
     });
     var mainCopayerEPK = mainPrivateKey.deriveBIP45Branch().extendedPublicKeyString();
     c.privateKey = mainPrivateKey;
@@ -64,9 +63,9 @@ describe('PayPro (in Wallet) model', function() {
       networkName: c.networkName,
     });
 
-    var storage = new Storage(config.storage);
-    var network = new Network(config.network);
-    var blockchain = new Blockchain(config.blockchain);
+    var storage = new Storage(walletConfig.storage);
+    var network = new Network(walletConfig.network);
+    var blockchain = new Blockchain(walletConfig.blockchain);
     c.storage = storage;
     c.network = network;
     c.blockchain = blockchain;
@@ -86,8 +85,8 @@ describe('PayPro (in Wallet) model', function() {
       }
     };
 
-    c.networkName = config.networkName;
-    c.verbose = config.verbose;
+    c.networkName = walletConfig.networkName;
+    c.verbose = walletConfig.verbose;
     c.version = '0.0.1';
 
     return new Wallet(c);
