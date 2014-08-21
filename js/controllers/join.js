@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('JoinController',
     var context;
     var localMediaStream;
 
-    var s = ($location.search()).enterPrivate;
+    var s = ($location.search()).advanced;
     if (s) {
       $scope.enterPrivate = true;
     }

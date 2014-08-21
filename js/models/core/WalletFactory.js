@@ -224,7 +224,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     networkName: this.networkName,
   };
 
-  if (privateHex && privateHex.length>10) {
+  if (privateHex && privateHex.length>1) {
     privOpts.extendedPrivateKeyString = privateHex;
   }
 
