@@ -42,8 +42,8 @@ angular
     templateUrl: 'views/send.html',
     validate: true
   })
-  .when('/backup', {
-    templateUrl: 'views/backup.html',
+  .when('/more', {
+    templateUrl: 'views/more.html',
     validate: true
   })
   .when('/settings', {
