@@ -30,7 +30,7 @@
         <h3><i class="fi-minus-circle m10r"></i> Master Private Key </h3>
         <p class="large-8 columns text-gray"> Your master private key contains the information to sign <b>any</b> transaction on this wallet. Handle with care.
         <div class="large-4 columns">
-          <a class="button expand"  ng-click="hidePriv=!hidePriv">
+          <a class="button primary expand"  ng-click="hidePriv=!hidePriv">
             <span ng-hide="!hidePriv">Show</span>
             <span ng-hide="hidePriv">Hide</span>
           </a>
@@ -39,10 +39,28 @@
     </div>
     <div class="oh large-12 columns panel">
         <h3><i class="fi-minus-circle m10r"></i> Scan Wallet Addresses </h3>
-        <p class="large-8 columns text-gray"> This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup).
+        <p class="large-8 columns text-gray"> This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup). This will also trigger a syncronization of addresses to other connected peers.
         <div class="large-4 columns">
-          <a class="button expand"  ng-click="updateIndexes()">
+          <a class="button primary expand"  ng-click="updateIndexes()">
             Scan
+          </a>
+        </div>
+    </div>
+    <div class="oh large-12 columns panel">
+        <h3><i class="fi-minus-circle m10r"></i> Purge Pending Transaction Proposals </h3>
+        <p class="large-8 columns text-gray"> Pending Transactions Proposals will be discarted. This need to be done on <b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced again. 
+        <div class="large-4 columns">
+          <a class="button warning expand"  ng-click="purge()">
+            Purge
+          </a>
+        </div>
+    </div>
+    <div class="oh large-12 columns panel">
+        <h3><i class="fi-minus-circle m10r"></i> Purge ALL Transaction Proposals </h3>
+        <p class="large-8 columns text-gray"> ALL Transactions Proposals will be discarted. This need to be done on <b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced again. 
+        <div class="large-4 columns">
+          <a class="button warning expand"  ng-click="purge(true)">
+            Purge All
           </a>
         </div>
     </div>

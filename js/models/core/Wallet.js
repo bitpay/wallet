@@ -706,6 +706,18 @@ Wallet.prototype.getTxProposals = function() {
   return ret;
 };
 
+Wallet.prototype.purgeTxProposals = function(deleteAll) {
+  var m = this.txProposals.length();
+
+  if (deleteAll) {
+    this.txProposals.deleteAll();
+  } else {
+    this.txProposals.deletePending(this.maxRejectCount());
+  }
+
+  var n = this.txProposals.length();
+  return m-n;
+};
 
 Wallet.prototype.reject = function(ntxid) {
   var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
@@ -1484,6 +1496,17 @@ Wallet.prototype.getBalance = function(cb) {
   });
 };
 
+
+// See 
+// https://github.com/bitpay/copay/issues/1056
+//
+// maxRejectCount should equal requiredCopayers
+// strictly. 
+//
+Wallet.prototype.maxRejectCount = function(cb) {
+  return this.totalCopayers - this.requiredCopayers;
+};
+
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
@@ -1493,8 +1516,7 @@ Wallet.prototype.getUnspent = function(cb) {
     }
 
     var safeUnspendList = [];
-    var maxRejectCount = self.totalCopayers - self.requiredCopayers;
-    var uu = self.txProposals.getUsedUnspent(maxRejectCount);
+    var uu = self.txProposals.getUsedUnspent(self.maxRejectCount());
 
     for (var i in unspentList) {
       var u = unspentList[i];

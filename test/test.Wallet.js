@@ -357,6 +357,39 @@ describe('Wallet model', function() {
       throw();
   });
 
+
+  it.only('#maxRejectCount', function() {
+    var w = cachedCreateW();
+    w.maxRejectCount().should.equal(2);
+  });
+
+
+  describe('#purgeTxProposals', function() {
+    it('should delete all', function() {
+      var w = cachedCreateW();
+      var spy1 = sinon.spy(w.txProposals, 'deleteAll');
+      var spy2 = sinon.spy(w.txProposals, 'deletePending');
+      w.purgeTxProposals(1);
+      spy1.callCount.should.equal(1);
+      spy2.callCount.should.equal(0);
+    });
+    it('should delete pending', function() {
+      var w = cachedCreateW();
+      var spy1 = sinon.spy(w.txProposals, 'deleteAll');
+      var spy2 = sinon.spy(w.txProposals, 'deletePending');
+      w.purgeTxProposals();
+      spy1.callCount.should.equal(0);
+      spy2.callCount.should.equal(1);
+    });
+    it('should count deletions', function() {
+      var w = cachedCreateW();
+      var s = sinon.stub(w.txProposals, 'length').returns(10);
+      var n = w.purgeTxProposals();
+      n.should.equal(0);
+    });
+  });
+
+
   //this test fails randomly
   it.skip('call reconnect after interval', function(done) {
     this.timeout(10000);
@@ -377,6 +410,8 @@ describe('Wallet model', function() {
     w.totalCopayers = 1;
     w.isShared().should.equal(false);
   });
+
+
 
   it('#isReady', function() {
     var w = createW();
