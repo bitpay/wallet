@@ -157,7 +157,7 @@ describe("Unit: Controllers", function() {
     }));
 
     it('should have a SendController controller', function() {
-      expect(scope.loading).equal(false);
+      expect(scope.loading).equal(true);
     });
 
     it('should have a title', function() {
