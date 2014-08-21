@@ -40,18 +40,24 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: [
-          'js/models/**/*.js',
-          '!*.html', 
-          '!**/node_modules/**', 
-          '!lib/**js', 
-          '!browser/vendor-bundle.js', 
-          '!js/copayBundle.js'
+          'js/models/**/*.js'
         ],
-        tasks: ['shell']
+        tasks: ['shell:dev']
       },
       css: {
         files: ['css/src/*.css'],
-        tasks: ['cssmin']
+        tasks: ['cssmin:copay']
+      },
+      main: {
+        files: [
+          'js/app.js', 
+          'js/directives.js', 
+          'js/filters.js', 
+          'js/routes.js', 
+          'js/services/*.js', 
+          'js/controllers/*.js'
+        ],
+        tasks: ['concat:main']
       }
     },
     mochaTest: {
@@ -113,9 +119,13 @@ module.exports = function(grunt) {
       }
     },
     cssmin: {
-      combine: {
+      copay: {
         files: {
           'css/copay.min.css': ['css/src/*.css'],
+        }
+      },
+      vendors: {
+        files: {
           'css/vendors.min.css': ['css/foundation.min.css', 'css/foundation-icons.css', 'lib/angular/angular-csp.css']
         }
       }
