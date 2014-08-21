@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, $location, walletFactory, controllerUtils, Passphrase, notification) {
+  function($scope, $rootScope, $timeout, walletFactory, controllerUtils, Passphrase, notification) {
     controllerUtils.redirIfLogged();
     $rootScope.fromSetup = false;
     $scope.loading = false;
@@ -15,10 +15,7 @@ angular.module('copayApp.controllers').controller('JoinController',
     var context;
     var localMediaStream;
 
-    var s = ($location.search()).advanced;
-    if (s) {
-      $scope.enterPrivate = true;
-    }
+    $scope.hideAdv=true;
 
 
 
