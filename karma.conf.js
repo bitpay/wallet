@@ -67,6 +67,7 @@ module.exports = function(config) {
       'test/test.PayPro.js',
       'test/test.performance.js',
       'test/test.PrivateKey.js',
+      'test/test.PublicKeyRing.js',
 
       'test/unit/**/*.js',
 
