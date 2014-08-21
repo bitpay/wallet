@@ -23,5 +23,8 @@
     "mousetrap": "1.4.6",
     "zeroclipboard": "~2.1.6",
     "ng-idle": "*"
+  },
+  "resolutions": {
+    "angular": "=1.2.19"
   }
 }
