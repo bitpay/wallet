@@ -1534,6 +1534,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName(), 'networkname mismatch');
   preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
   preconditions.checkState(priv, 'no private key');
+  preconditions.checkArgument(bignum(amountSatStr, 10).cmp(copayConfig.limits.minAmountSatoshi) >= 0, 'invalid amount');
   if (comment) preconditions.checkArgument(comment.length <= 100);
 
   if (!opts.remainderOut) {
