@@ -670,7 +670,7 @@ describe('Wallet model', function() {
     return utxo;
   };
   var toAddress = 'mjfAe7YrzFujFf8ub5aUrCaN5GfSABdqjh';
-  var amountSatStr = '1000';
+  var amountSatStr = '10000';
 
   it('should create transaction', function(done) {
     var w = cachedCreateW2();
@@ -681,6 +681,7 @@ describe('Wallet model', function() {
       done();
     });
   });
+
   it('should create & sign transaction from received funds', function(done) {
     var k2 = new PrivateKey({
       networkName: config.networkName
@@ -761,6 +762,23 @@ describe('Wallet model', function() {
         w.sendAllTxProposals();
       }).should.not.throw();
       done();
+    });
+  });
+
+  describe('#createTxSync', function () {
+    it('should fail if amount below min value', function() {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+
+      var badCreate = function() {
+        w.createTxSync(
+          'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
+          '123',
+          null,
+          utxo
+        );
+      }
+      chai.expect(badCreate).to.throw('invalid amount');
     });
   });
 
