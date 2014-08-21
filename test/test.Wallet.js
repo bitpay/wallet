@@ -358,7 +358,7 @@ describe('Wallet model', function() {
   });
 
 
-  it.only('#maxRejectCount', function() {
+  it('#maxRejectCount', function() {
     var w = cachedCreateW();
     w.maxRejectCount().should.equal(2);
   });
@@ -372,6 +372,8 @@ describe('Wallet model', function() {
       w.purgeTxProposals(1);
       spy1.callCount.should.equal(1);
       spy2.callCount.should.equal(0);
+      spy1.restore();
+      spy2.restore();
     });
     it('should delete pending', function() {
       var w = cachedCreateW();
@@ -380,12 +382,15 @@ describe('Wallet model', function() {
       w.purgeTxProposals();
       spy1.callCount.should.equal(0);
       spy2.callCount.should.equal(1);
+      spy1.restore();
+      spy2.restore();
     });
     it('should count deletions', function() {
       var w = cachedCreateW();
       var s = sinon.stub(w.txProposals, 'length').returns(10);
       var n = w.purgeTxProposals();
       n.should.equal(0);
+      s.restore();
     });
   });
 
