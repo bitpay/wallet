@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('BackupController',
+angular.module('copayApp.controllers').controller('MoreController',
   function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils, notification) {
 
     $scope.hideAdv=true;
