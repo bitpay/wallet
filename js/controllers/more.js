@@ -27,12 +27,14 @@ angular.module('copayApp.controllers').controller('MoreController',
     $scope.purge = function(deleteAll) {
       var w = $rootScope.wallet;
       var removed = w.purgeTxProposals(deleteAll);
-      notification.info('Tx Proposals Purged', removed + ' transactions proposals were purged');
+      if (removed){
+        controllerUtils.updateBalance();
+      }
+      notification.info('Tx Proposals Purged', removed + ' transaction proposal purged');
     };
 
     $scope.updateIndexes = function() {
       var w = $rootScope.wallet;
-
       notification.info('Scaning for transactions','Using derived addresses from your wallet');
       w.updateIndexes(function(err) {
         notification.info('Scan Ended', 'Updating balance');
