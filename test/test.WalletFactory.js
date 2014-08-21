@@ -138,6 +138,27 @@ describe('WalletFactory model', function() {
     var w = wf.create();
     should.exist(w);
   });
+
+  it('should be able to create wallets with given pk', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+    var w = wf.create({
+      privateKeyHex:priv,
+    });
+    w.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+  });
+ 
+  it('should be able to create wallets with random pk', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+    var w1 = wf.create();
+    var w2 = wf.create();
+    w1.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+      w2.privateKey.toObj().extendedPrivateKeyString
+    );
+  });
+ 
+
   it('should be able to get wallets', function() {
     var wf = new WalletFactory(config, '0.0.1');
     var w = wf.create();

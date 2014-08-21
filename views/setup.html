@@ -44,6 +44,21 @@
                   match="walletPassword" 
                   required>
               </div>
+
+              <a class="expand small"  ng-click="hideAdv=!hideAdv">
+                <span ng-hide="!hideAdv">Show</span>
+                <span ng-hide="hideAdv">Hide</span>
+                advanced options
+              </a>
+              <div ng-hide="hideAdv">
+                <p>
+                <input type="text" 
+                placeholder="Private Key (Hex)"
+                name="private"
+                ng-model="private" 
+                >
+              </div>
+  
             </div>
             <div class="row" ng-show="!isSetupWalletPage">
               <div class="large-6 medium-6 columns">
@@ -68,7 +83,7 @@
                 width="50px">
               </div>
             </div>
-            <p class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
+            <p class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
             <div class="text-right">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; Back</a>
               <a ng-show="isSetupWalletPage" class="back-button m20r"

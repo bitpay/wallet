@@ -113,9 +113,15 @@ WalletFactory.prototype.create = function(opts) {
   opts = opts || {};
   this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
-  opts.privateKey = opts.privateKey || new PrivateKey({
-    networkName: this.networkName
-  });
+  var privOpts = {
+    networkName: this.networkName,
+  };
+
+  if (opts.privateKeyHex && opts.privateKeyHex.length>1) {
+    privOpts.extendedPrivateKeyString = opts.privateKeyHex;
+  }
+
+  opts.privateKey = opts.privateKey || new PrivateKey(privOpts);
 
   var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
   var totalCopayers = opts.totalCopayers || this.walletDefaults.totalCopayers;
@@ -216,7 +222,6 @@ WalletFactory.prototype.decodeSecret = function(secret) {
 
 
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
-console.log('[WalletFactory.js.218:privateHex:]',privateHex); //TODO
   var self = this;
   var s = self.decodeSecret(secret);
   if (!s) return cb('badSecret');
@@ -229,7 +234,6 @@ console.log('[WalletFactory.js.218:privateHex:]',privateHex); //TODO
     privOpts.extendedPrivateKeyString = privateHex;
   }
 
-console.log('[WalletFactory.js.229:privOpts:]',privOpts); //TODO
   //Create our PrivateK
   var privateKey = new PrivateKey(privOpts);
   this.log('\t### PrivateKey Initialized');
