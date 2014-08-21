@@ -35,6 +35,7 @@ angular.module('copayApp.controllers').controller('BackupController',
         controllerUtils.updateAddressList();
         controllerUtils.updateBalance(function(){
           notification.info('Finished', 'The balance is updated using the derived addresses');
+          w.sendIndexes();
         });
       });
     };
