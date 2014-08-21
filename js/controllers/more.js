@@ -6,7 +6,8 @@ angular.module('copayApp.controllers').controller('MoreController',
 
     $scope.hideAdv=true;
     $scope.hidePriv=true;
-    $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
+    if (w)
+      $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
 
     $scope.downloadBackup = function() {
       var w = $rootScope.wallet;
