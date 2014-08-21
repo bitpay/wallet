@@ -65,6 +65,7 @@ module.exports = function(config) {
       'test/test.LocalEncrypted.js',
       'test/test.Passphrase.js',
       'test/test.PayPro.js',
+      'test/test.performance.js',
 
       'test/unit/**/*.js',
 
