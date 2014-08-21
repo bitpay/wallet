@@ -2,13 +2,14 @@
 
 angular.module('copayApp.controllers').controller('BackupController',
   function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils, notification) {
-    var s = ($location.search()).advanced;
-    if (s) {
-      var w = $rootScope.wallet;
-      $scope.advanced = 1;
-      $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
-    }
 
+    $scope.hideAdv=true;
+    $scope.hidePriv=true;
+
+    $scope.getPrivate = function() {
+      var w = $rootScope.wallet;
+      return w.privateKey.toObj().extendedPrivateKeyString;
+    }
 
     $scope.downloadBackup = function() {
       var w = $rootScope.wallet;
