@@ -62,7 +62,8 @@ module.exports = function(config) {
       'test/unit/**/*.js',
       'test/test.blockchain.Insight.js',
       'test/test.HDParams.js',
-      'test/test.HDPath.js'
+      'test/test.HDPath.js',
+      'test/test.LocalEncrypted.js'
     ],
 
 
