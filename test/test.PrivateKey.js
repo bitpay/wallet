@@ -18,21 +18,21 @@ try {
 }
 var PrivateKey = copay.PrivateKey || require('../js/models/core/PrivateKey');
 
-var config = {
+var pkConfig = {
   networkName: 'livenet',
 };
 
 describe('PrivateKey model', function() {
 
   it('should create an instance', function() {
-    var w = new PrivateKey(config);
+    var w = new PrivateKey(pkConfig);
     should.exist(w);
     should.exist(w.bip);
     should.exist(w.bip.derive);
   });
 
   it('should derive priv keys', function() {
-    var pk = new PrivateKey(config);
+    var pk = new PrivateKey(pkConfig);
     for (var j = false; !j; j=true) {
       for (var i = 0; i < 3; i++) {
         var wk = pk.get(i, j);
@@ -51,7 +51,7 @@ describe('PrivateKey model', function() {
     }
   });
   it('should derive priv keys array', function() {
-    var w = new PrivateKey(config);
+    var w = new PrivateKey(pkConfig);
     var wks = w.getAll(2, 3);
     wks.length.should.equal(5);
     for (var j = 0; j < wks.length; j++) {
@@ -71,7 +71,7 @@ describe('PrivateKey model', function() {
   });
 
   it('fromObj toObj roundtrip', function() {
-    var w1 = new PrivateKey(config);
+    var w1 = new PrivateKey(pkConfig);
     var o = JSON.parse(JSON.stringify(w1.toObj()))
     var w2 = PrivateKey.fromObj(o);
 
@@ -86,7 +86,7 @@ describe('PrivateKey model', function() {
 
   describe('#getId', function() {
     it('should calculate the copayerId', function() {
-      var w1 = new PrivateKey(config);
+      var w1 = new PrivateKey(pkConfig);
       should.exist(w1.getId());
       w1.getId().length.should.equal(33 * 2);
     });
@@ -94,7 +94,7 @@ describe('PrivateKey model', function() {
 
   describe('#getIdPriv', function() {
     it('should calculate .id', function() {
-      var w1 = new PrivateKey(config);
+      var w1 = new PrivateKey(pkConfig);
       should.exist(w1.getIdPriv());
       w1.getIdPriv().length.should.equal(32 * 2);
     });
@@ -102,7 +102,7 @@ describe('PrivateKey model', function() {
 
   describe('#cacheId', function() {
     it('should set .id and .idpriv', function() {
-      var w1 = new PrivateKey(config);
+      var w1 = new PrivateKey(pkConfig);
       w1.cacheId();
       var pub = w1.id;
       var priv = w1.idpriv;
@@ -111,7 +111,7 @@ describe('PrivateKey model', function() {
     });
 
     it('should set the id equal to the public key of the idpriv private key', function() {
-      var w1 = new PrivateKey(config);
+      var w1 = new PrivateKey(pkConfig);
       w1.cacheId();
       var pub = w1.id;
       var priv = w1.idpriv;
