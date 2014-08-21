@@ -166,11 +166,11 @@ TxProposals.prototype.seen = function(ntxid, copayerId) {
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
   for (var i in this.txps) {
+    if (!this.txps[i].isPending(maxRejectCount))
+      continue;
+
     var u = this.txps[i].builder.getSelectedUnspent();
     var p = this.getTxProposal(i);
-
-    if (!p.isPending(maxRejectCount))
-      continue;
 
     for (var j in u) {
       ret[u[j].txid + ',' + u[j].vout] = 1;
