@@ -17,11 +17,34 @@
           <fieldset>
             <legend for="backupFile" class="m10b"> Choose backup file from your computer <i class="fi-laptop"></i></legend>
             <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
+
+
+            <label for="password">Password <small>Required</small></label>
+            <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
+
+            <a class="expand small"  ng-click="hideAdv=!hideAdv">
+              <span ng-hide="!hideAdv">Show</span>
+              <span ng-hide="hideAdv">Hide</span>
+              advanced options
+            </a>
+
+
+            <div ng-hide="hideAdv">
+              <label>
+              <input type="checkbox" class="form-control" name="skipPublicKeyRing" ng-model="skipPublicKeyRing"> Skip public keys from peers
+              </label>
+
+              <label>
+              <input type="checkbox" class="form-control" name="skipTxProposals" ng-model="skipTxProposals"> Skip transaction proposals from Backup
+              </label>
+
+              <label>
+              <input type="checkbox" class="form-control" name="skipPrivateKey" ng-model="skipPrivateKey"> Skip private key 
+              </label>
+            </div>
+          
+
           </fieldset>
-
-          <label for="password">Password <small>Required</small></label>
-          <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
-
           <div data-alert ng-show="skipFields">
             <i class="size-18 fi-alert"></i> 
             Skipping fields: {{skipFields}}
