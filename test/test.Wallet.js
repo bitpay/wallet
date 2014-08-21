@@ -219,7 +219,7 @@ describe('Wallet model', function() {
 
     var t = w.txProposals;
     var txp = t.txps[ntxid];
-    Object.keys(txp._inputSignatures).length.should.equal(1);
+    Object.keys(txp._inputSigners).length.should.equal(1);
     var tx = txp.builder.build();
     should.exist(tx);
     chai.expect(txp.comment).to.be.null;
@@ -1090,7 +1090,7 @@ describe('Wallet model', function() {
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['123']
         ],
         inputChainPaths: ['/m/1'],
@@ -1108,7 +1108,7 @@ describe('Wallet model', function() {
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['234']
         ],
         inputChainPaths: ['/m/1'],
@@ -1127,7 +1127,7 @@ describe('Wallet model', function() {
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['234', '123']
         ],
         inputChainPaths: ['/m/1'],
@@ -1147,7 +1147,7 @@ describe('Wallet model', function() {
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['234', '123'],
           ['234']
         ],

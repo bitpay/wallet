@@ -173,20 +173,26 @@ txId: ntxid
 */
 Wallet.prototype._getKeyMap = function(txp) {
   preconditions.checkArgument(txp);
+console.log('[Wallet.js.175:txp:]',txp); //TODO
 
-  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.inputChainPaths);
+  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSigners[0], txp.inputChainPaths);
 
-  var inSig = JSON.stringify(txp._inputSignatures[0].sort());
+  var inSig = JSON.stringify(txp._inputSigners[0].sort());
+
+console.log('[Wallet.js.179:inSig:]',inSig); //TODO
 
   if (JSON.stringify(Object.keys(keyMap).sort()) !== inSig) {
     throw new Error('inputSignatures dont match know copayers pubkeys');
   }
 
   var keyMapStr = JSON.stringify(keyMap);
+console.log('[Wallet.js.187:keyMapStr:]',keyMapStr); //TODO
   // All inputs must be signed with the same copayers
-  for (var i in txp._inputSignatures) {
+  for (var i in txp._inputSigners) {
+console.log('[Wallet.js.190]',i); //TODO
+
     if (!i) continue;
-    var inSigX = JSON.stringify(txp._inputSignatures[i].sort());
+    var inSigX = JSON.stringify(txp._inputSigners[i].sort());
     if (inSigX !== inSig)
       throw new Error('found inputs with different signatures:');
   }
