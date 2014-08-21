@@ -59,12 +59,14 @@ module.exports = function(config) {
       'test/mocha.conf.js',
 
       //test files
-      'test/unit/**/*.js',
       'test/test.blockchain.Insight.js',
       'test/test.HDParams.js',
       'test/test.HDPath.js',
       'test/test.LocalEncrypted.js',
-      'test/test.Passphrase.js'
+      'test/test.Passphrase.js',
+      'test/test.PayPro.js',
+
+      'test/unit/**/*.js',
 
     ],
 
