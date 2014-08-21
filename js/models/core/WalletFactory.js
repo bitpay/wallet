@@ -216,6 +216,7 @@ WalletFactory.prototype.decodeSecret = function(secret) {
 
 
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
+console.log('[WalletFactory.js.218:privateHex:]',privateHex); //TODO
   var self = this;
   var s = self.decodeSecret(secret);
   if (!s) return cb('badSecret');
@@ -228,6 +229,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     privOpts.extendedPrivateKeyString = privateHex;
   }
 
+console.log('[WalletFactory.js.229:privOpts:]',privOpts); //TODO
   //Create our PrivateK
   var privateKey = new PrivateKey(privOpts);
   this.log('\t### PrivateKey Initialized');
