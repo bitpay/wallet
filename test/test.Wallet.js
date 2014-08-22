@@ -30,10 +30,10 @@ var config = {
 
 var getNewEpk = function() {
   return new PrivateKey({
-    networkName: config.networkName,
-  })
-  .deriveBIP45Branch()
-  .extendedPublicKeyString();
+      networkName: config.networkName,
+    })
+    .deriveBIP45Branch()
+    .extendedPublicKeyString();
 }
 
 var addCopayers = function(w) {
@@ -48,7 +48,7 @@ describe('Wallet model', function() {
     (function() {
       new Wallet(config)
     }).should.
-      throw();
+    throw();
   });
   it('should getNetworkName', function() {
     var w = cachedCreateW();
@@ -219,7 +219,7 @@ describe('Wallet model', function() {
 
     var t = w.txProposals;
     var txp = t.txps[ntxid];
-    Object.keys(txp._inputSignatures).length.should.equal(1);
+    Object.keys(txp._inputSigners).length.should.equal(1);
     var tx = txp.builder.build();
     should.exist(tx);
     chai.expect(txp.comment).to.be.null;
@@ -273,7 +273,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var l = w.getAddressesStr();
     for (var i = 0; i < l.length; i++)
-    w.addressIsOwn(l[i]).should.equal(true);
+      w.addressIsOwn(l[i]).should.equal(true);
 
     w.addressIsOwn(l[0], {
       excludeMain: true
@@ -322,14 +322,14 @@ describe('Wallet model', function() {
     o.opts.reconnectDelay = 100;
 
     var w2 = Wallet.fromObj(o,
-                            new Storage(config.storage),
-                            new Network(config.network),
-                            new Blockchain(config.blockchain));
-                            should.exist(w2);
-                            w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
-                            should.exist(w2.publicKeyRing.getCopayerId);
-                            should.exist(w2.txProposals.toObj);
-                            should.exist(w2.privateKey.toObj);
+      new Storage(config.storage),
+      new Network(config.network),
+      new Blockchain(config.blockchain));
+    should.exist(w2);
+    w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
+    should.exist(w2.publicKeyRing.getCopayerId);
+    should.exist(w2.txProposals.toObj);
+    should.exist(w2.privateKey.toObj);
   });
 
   it('#getSecret decodeSecret', function() {
@@ -346,15 +346,15 @@ describe('Wallet model', function() {
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
     }).should.not.
-      throw();
+    throw();
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     }).should.
-      throw();
+    throw();
     (function() {
       Wallet.decodeSecret('12345');
     }).should.
-      throw();
+    throw();
   });
 
 
@@ -509,9 +509,9 @@ describe('Wallet model', function() {
       }
     };
 
-    var stub = sinon.stub(w.publicKeyRing,'copayersForPubkeys').returns(
-      {'027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509':'pepe'}
-    );
+    var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys').returns({
+      '027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509': 'pepe'
+    });
     w._handleTxProposal('senderID', txp, true);
     Object.keys(w.txProposals.txps).length.should.equal(1);
     w.getTxProposals().length.should.equal(1);
@@ -605,21 +605,21 @@ describe('Wallet model', function() {
   });
 
   var roundErrorChecks = [{
-    unspent: [1.0001],
-    balance: 100010000
-  }, {
-    unspent: [1.0002, 1.0003, 1.0004],
-    balance: 300090000
-  }, {
-    unspent: [0.000002, 1.000003, 2.000004],
-    balance: 300000900
-  }, {
-    unspent: [0.0001, 0.0003],
-    balance: 40000
-  }, {
-    unspent: [0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002],
-    balance: 110000
-  },
+      unspent: [1.0001],
+      balance: 100010000
+    }, {
+      unspent: [1.0002, 1.0003, 1.0004],
+      balance: 300090000
+    }, {
+      unspent: [0.000002, 1.000003, 2.000004],
+      balance: 300000900
+    }, {
+      unspent: [0.0001, 0.0003],
+      balance: 40000
+    }, {
+      unspent: [0.0001, 0.0003, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0002],
+      balance: 110000
+    },
 
   ];
   var roundWallet = cachedCreateW2();
@@ -765,7 +765,7 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('#createTxSync', function () {
+  describe('#createTxSync', function() {
     it('should fail if amount below min value', function() {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
@@ -872,9 +872,9 @@ describe('Wallet model', function() {
         });
 
         sinon.assert.callCount(updateIndex, 4);
-        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[0] );
-        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[1] );
-        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[2] );
+        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[0]);
+        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[1]);
+        sinon.assert.calledWith(updateIndex, w.publicKeyRing.indexes[2]);
         w.updateIndex.restore();
         done();
       });
@@ -898,8 +898,8 @@ describe('Wallet model', function() {
         index.receiveIndex.should.equal(9);
         index.changeIndex.should.equal(9);
         indexDiscovery.callCount.should.equal(2);
-        sinon.assert.calledWith(indexDiscovery, 1, true, 2, 20 );
-        sinon.assert.calledWith(indexDiscovery, 2, false, 2, 20 );
+        sinon.assert.calledWith(indexDiscovery, 1, true, 2, 20);
+        sinon.assert.calledWith(indexDiscovery, 2, false, 2, 20);
         w.indexDiscovery.restore();
         done();
       });
@@ -957,7 +957,7 @@ describe('Wallet model', function() {
       (function() {
         w.setAddressBook(contacts[0].address, contacts[0].label);
       }).should.
-        throw();
+      throw();
     });
 
     it('should show/hide everywhere', function() {
@@ -1108,7 +1108,7 @@ describe('Wallet model', function() {
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['123']
         ],
         inputChainPaths: ['/m/1'],
@@ -1121,19 +1121,34 @@ describe('Wallet model', function() {
 
     it('should throw if unmatched sigs', function() {
       var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
-        return {
-          '123': 'juan'
-        };
+        return {};
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['234']
         ],
         inputChainPaths: ['/m/1'],
       };
       (function() {
         w._getKeyMap(txp);
-      }).should.throw('dont match know copayers');
+      }).should.throw('does not match known copayers');
+      stub.restore();
+    });
+
+    it('should throw if unmatched sigs (case 2)', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {};
+      });
+      var txp = {
+        _inputSigners: [
+          ['234', '321'],
+          ['234', '322']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('does not match known copayers');
       stub.restore();
     });
 
@@ -1145,7 +1160,7 @@ describe('Wallet model', function() {
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['234', '123']
         ],
         inputChainPaths: ['/m/1'],
@@ -1157,23 +1172,80 @@ describe('Wallet model', function() {
       stub.restore();
     });
 
-    it('should throw is one inputs has missing sigs', function() {
+    it('should throw if one inputs has missing sigs', function() {
+      var call = 0;
       var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
-        return {
+        return call++ ? {
+          '555': 'pepe',
+        } : {
           '123': 'juan',
           '234': 'pepe',
         };
       });
       var txp = {
-        _inputSignatures: [
+        _inputSigners: [
           ['234', '123'],
-          ['234']
+          ['555']
         ],
         inputChainPaths: ['/m/1'],
       };
       (function() {
         w._getKeyMap(txp);
       }).should.throw('different sig');
+      stub.restore();
+    });
+
+
+    it('should throw if one inputs has different sigs', function() {
+      var call = 0;
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return call++ ? {
+          '555': 'pepe',
+          '666': 'pedro',
+        } : {
+          '123': 'juan',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSigners: [
+          ['234', '123'],
+          ['555', '666']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('different sig');
+      stub.restore();
+    });
+
+
+    it('should not throw if 2 inputs has different pubs, same copayers', function() {
+      var call = 0;
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return call++ ? {
+          '555': 'pepe',
+          '666': 'pedro',
+        } : {
+          '123': 'pedro',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSigners: [
+          ['234', '123'],
+          ['555', '666']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      var gk = w._getKeyMap(txp);
+      gk.should.deep.equal({
+        '123': 'pedro',
+        '234': 'pepe',
+        '555': 'pepe',
+        '666': 'pedro'
+      });
       stub.restore();
     });
   });
