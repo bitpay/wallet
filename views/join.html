@@ -67,10 +67,28 @@
             name="joinPasswordConfirm"
             ng-model="joinPasswordConfirm" 
             match="joinPassword" required>
+            <a class="expand small"  ng-click="hideAdv=!hideAdv">
+              <span ng-hide="!hideAdv">Show</span>
+              <span ng-hide="hideAdv">Hide</span>
+              advanced options
+            </a>
+            <div ng-hide="hideAdv">
+              <p>
+              <input type="text" 
+              placeholder="Private Key (Hex)"
+              name="private"
+              ng-model="$parent.private" 
+              >
+            </div>
+ 
             <div class="text-right">
               <a href="#!/" class="back-button text-primary m20r">&laquo; Back</a>
               <button type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading" loading="Joining">Join</button>
             </div>
+
+         
+
+
           </form>
         </div>
     </div>

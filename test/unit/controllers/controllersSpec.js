@@ -38,7 +38,7 @@ describe("Unit: Controllers", function() {
       scope = $rootScope.$new();
 
       $rootScope.wallet = new FakeWallet(config);
-      ctrl = $controller('BackupController', {
+      ctrl = $controller('MoreController', {
         $scope: scope,
         $modal: {},
       });
