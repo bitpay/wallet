@@ -173,30 +173,32 @@ txId: ntxid
 */
 Wallet.prototype._getKeyMap = function(txp) {
   preconditions.checkArgument(txp);
-console.log('[Wallet.js.175:txp:]',txp); //TODO
+  var inSig0, keyMapAll = {};
 
-  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSigners[0], txp.inputChainPaths);
-
-  var inSig = JSON.stringify(txp._inputSigners[0].sort());
-
-console.log('[Wallet.js.179:inSig:]',inSig); //TODO
-
-  if (JSON.stringify(Object.keys(keyMap).sort()) !== inSig) {
-    throw new Error('inputSignatures dont match know copayers pubkeys');
-  }
-
-  var keyMapStr = JSON.stringify(keyMap);
-console.log('[Wallet.js.187:keyMapStr:]',keyMapStr); //TODO
-  // All inputs must be signed with the same copayers
   for (var i in txp._inputSigners) {
-console.log('[Wallet.js.190]',i); //TODO
+    var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSigners[i], txp.inputChainPaths);
 
-    if (!i) continue;
-    var inSigX = JSON.stringify(txp._inputSigners[i].sort());
-    if (inSigX !== inSig)
-      throw new Error('found inputs with different signatures:');
+    if (Object.keys(keyMap).length !== txp._inputSigners[i].length)
+      throw new Error('Signature does not match known copayers');
+
+    for(var j in keyMap) {
+      keyMapAll[j] = keyMap[j];
+    }
+
+    // From here -> only to check that all inputs have the same sigs
+    var inSigArr = [];
+    Object.keys(keyMap).forEach(function(k){ 
+      inSigArr.push(keyMap[k]);
+    });
+    var inSig =  JSON.stringify(inSigArr.sort());
+    if (i === '0') { 
+      inSig0 = inSig;
+      continue;
+    }
+    if (inSig !== inSig0)
+      throw new Error('found inputs with different signatures');
   }
-  return keyMap;
+  return keyMapAll;
 };
 
 

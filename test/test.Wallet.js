@@ -1122,7 +1122,6 @@ describe('Wallet model', function() {
     it('should throw if unmatched sigs', function() {
       var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
         return {
-          '123': 'juan'
         };
       });
       var txp = {
@@ -1133,7 +1132,25 @@ describe('Wallet model', function() {
       };
       (function() {
         w._getKeyMap(txp);
-      }).should.throw('dont match know copayers');
+      }).should.throw('does not match known copayers');
+      stub.restore();
+    });
+
+    it('should throw if unmatched sigs (case 2)', function() {
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return {
+        };
+      });
+      var txp = {
+        _inputSigners: [
+          ['234','321'],
+          ['234','322']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('does not match known copayers');
       stub.restore();
     });
 
@@ -1157,9 +1174,12 @@ describe('Wallet model', function() {
       stub.restore();
     });
 
-    it('should throw is one inputs has missing sigs', function() {
+    it('should throw if one inputs has missing sigs', function() {
+      var call=0;
       var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
-        return {
+        return call++ ? {
+          '555': 'pepe',
+        }: {
           '123': 'juan',
           '234': 'pepe',
         };
@@ -1167,13 +1187,62 @@ describe('Wallet model', function() {
       var txp = {
         _inputSigners: [
           ['234', '123'],
-          ['234']
+          ['555']
         ],
         inputChainPaths: ['/m/1'],
       };
       (function() {
         w._getKeyMap(txp);
       }).should.throw('different sig');
+      stub.restore();
+    });
+
+
+    it('should throw if one inputs has different sigs', function() {
+      var call=0;
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return call++ ? {
+          '555': 'pepe',
+          '666': 'pedro',
+        }: {
+          '123': 'juan',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSigners: [
+          ['234', '123'],
+          ['555', '666']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      (function() {
+        w._getKeyMap(txp);
+      }).should.throw('different sig');
+      stub.restore();
+    });
+
+
+    it('should not throw if 2 inputs has different pubs, same copayers', function() {
+      var call=0;
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys', function() {
+        return call++ ? {
+          '555': 'pepe',
+          '666': 'pedro',
+        }: {
+          '123': 'pedro',
+          '234': 'pepe',
+        };
+      });
+      var txp = {
+        _inputSigners: [
+          ['234', '123'],
+          ['555', '666']
+        ],
+        inputChainPaths: ['/m/1'],
+      };
+      var gk =  w._getKeyMap(txp);
+      gk.should.deep.equal({ '123': 'pedro', '234': 'pepe', '555': 'pepe', '666': 'pedro' });
       stub.restore();
     });
   });
