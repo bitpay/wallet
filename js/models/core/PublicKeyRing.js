@@ -328,6 +328,8 @@ PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
       }
     }
   }
+
+
   for(var i in inKeyMap)
     throw new Error('Pubkey not identified')
 
