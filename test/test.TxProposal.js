@@ -189,7 +189,7 @@ describe('TxProposal', function() {
       var txp = dummyProposal;
       var tx = dummyProposal.builder.build();
       var ret = TxProposal._verifySignatures(pubkeys, validScriptSig, tx.hashForSignature());
-      ret.should.deep.equal([0, 3]);
+      ret.should.deep.equal(['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3']);
     });
     it('#_infoFromRedeemScript', function() {
       var info = TxProposal._infoFromRedeemScript(validScriptSig);
@@ -202,7 +202,7 @@ describe('TxProposal', function() {
     });
     it('#_updateSignedBy', function() {
       var txp = dummyProposal;
-      txp._inputSignatures.should.deep.equal([
+      txp._inputSigners.should.deep.equal([
         ['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3']
       ]);
     });
@@ -302,7 +302,7 @@ describe('TxProposal', function() {
         txp.signedBy = {
           'hugo': 1
         };
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pkX']
         ];
         (function() {
@@ -319,7 +319,7 @@ describe('TxProposal', function() {
         txp.signedBy = {
           creator: 1
         };
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pk0', 'pkX']
         ];
         (function() {
@@ -333,7 +333,7 @@ describe('TxProposal', function() {
       it.skip("should be signed by sender", function() {
         var txp = dummyProposal;
         var ts = Date.now();
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pk1', 'pk0']
         ];
         txp.signedBy = {
@@ -352,7 +352,7 @@ describe('TxProposal', function() {
       it("should set signedBy (trivial case)", function() {
         var txp = dummyProposal;
         var ts = Date.now();
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pk1', 'pk0']
         ];
         txp.signedBy = {
@@ -370,7 +370,7 @@ describe('TxProposal', function() {
       it("should assign creator", function() {
         var txp = dummyProposal;
         var ts = Date.now();
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pk0']
         ];
         txp.signedBy = {};
@@ -392,7 +392,7 @@ describe('TxProposal', function() {
         txp.signedBy = {};
         delete txp['creator'];
         delete txp['creatorTs'];
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pk0', 'pk1']
         ];
         (function() {
@@ -411,7 +411,7 @@ describe('TxProposal', function() {
       it("if signed, should not change ts", function() {
         var txp = dummyProposal;
         var ts = Date.now();
-        txp._inputSignatures = [
+        txp._inputSigners = [
           ['pk0', 'pk1']
         ];
         txp.creator = 'creator';

@@ -173,24 +173,32 @@ txId: ntxid
 */
 Wallet.prototype._getKeyMap = function(txp) {
   preconditions.checkArgument(txp);
+  var inSig0, keyMapAll = {};
 
-  var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSignatures[0], txp.inputChainPaths);
+  for (var i in txp._inputSigners) {
+    var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSigners[i], txp.inputChainPaths);
 
-  var inSig = JSON.stringify(txp._inputSignatures[0].sort());
+    if (Object.keys(keyMap).length !== txp._inputSigners[i].length)
+      throw new Error('Signature does not match known copayers');
 
-  if (JSON.stringify(Object.keys(keyMap).sort()) !== inSig) {
-    throw new Error('inputSignatures dont match know copayers pubkeys');
+    for (var j in keyMap) {
+      keyMapAll[j] = keyMap[j];
+    }
+
+    // From here -> only to check that all inputs have the same sigs
+    var inSigArr = [];
+    Object.keys(keyMap).forEach(function(k) {
+      inSigArr.push(keyMap[k]);
+    });
+    var inSig = JSON.stringify(inSigArr.sort());
+    if (i === '0') {
+      inSig0 = inSig;
+      continue;
+    }
+    if (inSig !== inSig0)
+      throw new Error('found inputs with different signatures');
   }
-
-  var keyMapStr = JSON.stringify(keyMap);
-  // All inputs must be signed with the same copayers
-  for (var i in txp._inputSignatures) {
-    if (!i) continue;
-    var inSigX = JSON.stringify(txp._inputSignatures[i].sort());
-    if (inSigX !== inSig)
-      throw new Error('found inputs with different signatures:');
-  }
-  return keyMap;
+  return keyMapAll;
 };
 
 
@@ -540,8 +548,8 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
   else
     opts.privateKey = new PrivateKey({
-    networkName: opts.networkName
-  });
+      networkName: opts.networkName
+    });
 
   if (o.publicKeyRing)
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
@@ -717,7 +725,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   this.store();
 
   var n = this.txProposals.length();
-  return m-n;
+  return m - n;
 };
 
 Wallet.prototype.reject = function(ntxid) {
