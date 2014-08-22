@@ -1753,9 +1753,8 @@ Wallet.prototype.disconnect = function() {
   self.send(null, {
     type: 'disconnect',
     walletId: this.id,
-  }, function() {
-    self.network.cleanUp();
   });
+  self.network.cleanUp();
 };
 
 Wallet.prototype.getNetwork = function() {
