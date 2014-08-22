@@ -124,7 +124,6 @@ angular.module('copayApp.services')
         notification.error('Error', 'Received corrupt message from ' + peerId);
       });
       w.on('ready', function(myPeerID) {
-        alert('wallet ready!');
         $rootScope.wallet = w;
         if ($rootScope.pendingPayment) {
           $location.path('send');
