@@ -252,7 +252,6 @@ TxProposal.prototype._allSignatures = function() {
 
 
 TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
-console.log('[TxProposal.js.256:setCopayers:]'); //TODO
   var newCopayer = {},
     oldCopayers = {},
     newSignedBy = {},
