@@ -11,7 +11,7 @@
           <fieldset>
             <legend>Bitcoin Network</legend>
             <input id="network-name" type="checkbox" ng-model="networkName"
-            ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()"
+            ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-change="changeNetwork()"
             ng-disabled="forceNetwork" 
             ng-checked="networkName == 'livenet' ? true : false">
             <label for="network-name">Livenet</label>
@@ -37,7 +37,7 @@
             <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
             <label for="insight-port">Port</label>
             <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
-            <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
+            <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-change="changeInsightSSL()">
             <label for="insight-secure">Use SSL</label>
 
             <p class="small">
