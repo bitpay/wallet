@@ -46,25 +46,15 @@ Network.prototype.cleanUp = function() {
   this.connections = {};
   this.criticalErr = '';
   this.removeAllListeners();
+  if (this.socket) {
+    this.socket.disconnect();
+    this.socket = null;
+  }
 };
 
 Network.parent = EventEmitter;
 
 // Array helpers
-Network._arrayDiff = function(a, b) {
-  var seen = [];
-  var diff = [];
-
-  for (var i = 0; i < b.length; i++)
-    seen[b[i]] = true;
-
-  for (var j = 0; j < a.length; j++)
-    if (!seen[a[j]])
-      diff.push(a[j]);
-
-  return diff;
-};
-
 Network._inArray = function(el, array) {
   return array.indexOf(el) > -1;
 };
@@ -302,11 +292,6 @@ Network.prototype.start = function(opts, openCallback) {
   var pubkey = this.getKey().public.toString('hex');
   this.setCopayerId(opts.copayerId);
   this.maxPeers = opts.maxPeers || this.maxPeers;
-
-  if (this.socket) {
-    this.socket.destroy();
-    this.socket.removeAllListeners();
-  }
 
   this.socket = this.createSocket(this.host, this.port);
   this._setupConnectionHandlers(openCallback);
