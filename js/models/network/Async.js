@@ -45,6 +45,7 @@ Network.prototype.cleanUp = function() {
   this.copayerForPeer = {};
   this.connections = {};
   this.criticalErr = '';
+  this.removeAllListeners();
   if (this.socket) {
     this.socket.disconnect();
     this.socket = null;
