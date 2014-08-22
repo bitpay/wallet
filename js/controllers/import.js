@@ -28,10 +28,6 @@ angular.module('copayApp.controllers').controller('ImportController',
         if ($scope.skipTxProposals)
           skipFields.push('txProposals');
 
-        if ($scope.skipPrivateKey)
-          skipFields.push('privateKey');
-
-console.log('[import.js.36:skipFields:]',skipFields); //TODO
         // try to import encrypted wallet with passphrase
         try {
           w = walletFactory.import(encryptedObj, passphrase, skipFields);
