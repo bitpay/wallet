@@ -181,17 +181,17 @@ Wallet.prototype._getKeyMap = function(txp) {
     if (Object.keys(keyMap).length !== txp._inputSigners[i].length)
       throw new Error('Signature does not match known copayers');
 
-    for(var j in keyMap) {
+    for (var j in keyMap) {
       keyMapAll[j] = keyMap[j];
     }
 
     // From here -> only to check that all inputs have the same sigs
     var inSigArr = [];
-    Object.keys(keyMap).forEach(function(k){ 
+    Object.keys(keyMap).forEach(function(k) {
       inSigArr.push(keyMap[k]);
     });
-    var inSig =  JSON.stringify(inSigArr.sort());
-    if (i === '0') { 
+    var inSig = JSON.stringify(inSigArr.sort());
+    if (i === '0') {
       inSig0 = inSig;
       continue;
     }
@@ -548,8 +548,8 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
   else
     opts.privateKey = new PrivateKey({
-    networkName: opts.networkName
-  });
+      networkName: opts.networkName
+    });
 
   if (o.publicKeyRing)
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
@@ -725,7 +725,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   this.store();
 
   var n = this.txProposals.length();
-  return m-n;
+  return m - n;
 };
 
 Wallet.prototype.reject = function(ntxid) {
