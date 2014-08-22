@@ -86,12 +86,10 @@ TxProposal.prototype._updateSignedBy = function() {
   for (var i in tx.ins) {
     var scriptSig = new Script(tx.ins[i].s);
     var signatureCount = scriptSig.countSignatures();
-    console.log('[TxProposal.js.88:signatureCount:]', i, '#sig:', signatureCount); //TODO
 
     var info = TxProposal._infoFromRedeemScript(scriptSig);
     var txSigHash = tx.hashForSignature(info.script, parseInt(i), Transaction.SIGHASH_ALL);
     var signersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
-    console.log('[TxProposal.js.94:signersPubKey:]', signersPubKey, signatureCount); //TODO
     if (signersPubKey.length !== signatureCount)
       throw new Error('Invalid signature');
 
@@ -254,6 +252,7 @@ TxProposal.prototype._allSignatures = function() {
 
 
 TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
+console.log('[TxProposal.js.256:setCopayers:]'); //TODO
   var newCopayer = {},
     oldCopayers = {},
     newSignedBy = {},
@@ -281,6 +280,7 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   var iSig = this._inputSigners[0];
   for (var i in iSig) {
     var copayerId = keyMap[iSig[i]];
+
     if (!copayerId)
       throw new Error('Found unknown signature')
 
