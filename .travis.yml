@@ -10,7 +10,7 @@ install:
   - npm install
   - bower install
 before_script:
-  - grunt shell --target=dev
+  - grunt
 notifications:
   hipchat:
     rooms:
