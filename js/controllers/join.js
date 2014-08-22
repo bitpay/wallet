@@ -15,6 +15,10 @@ angular.module('copayApp.controllers').controller('JoinController',
     var context;
     var localMediaStream;
 
+    $scope.hideAdv=true;
+
+
+
     var _scan = function(evt) {
       if (localMediaStream) {
         context.drawImage(video, 0, 0, 300, 225);
@@ -112,7 +116,7 @@ angular.module('copayApp.controllers').controller('JoinController',
       walletFactory.network.on('badSecret', function() {});
 
       Passphrase.getBase64Async($scope.joinPassword, function(passphrase) {
-        walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, function(err, w) {
+        walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, $scope.private, function(err, w) {
           $scope.loading = false;
           if (err || !w) {
             if (err === 'joinError')

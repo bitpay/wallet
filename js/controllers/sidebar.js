@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   }, {
     'title': 'More',
     'icon': 'fi-download',
-    'link': 'backup'
+    'link': 'more'
   }];
 
   $scope.signout = function() {

@@ -139,6 +139,7 @@ describe('TxProposal', function() {
 
   });
 
+
   describe('#setSent', function() {
     it('should set txid and timestamp', function() {
       var now = Date.now();
@@ -430,4 +431,33 @@ describe('TxProposal', function() {
     });
 
   });
+
+  describe('micelaneous functions', function() {
+    it('should report rejectCount', function() {
+      var txp = dummyProposal;
+      txp.rejectCount().should.equal(0);
+      txp.setRejected(['juan'])
+      txp.rejectCount().should.equal(1);
+    });
+    it('should report isPending 1', function() {
+      var txp = dummyProposal;
+      txp.rejectedBy=[];
+      txp.sentTxid=1;
+      txp.isPending(3).should.equal(false);
+    });
+    it('should report isPending 2', function() {
+      var txp = dummyProposal;
+      txp.rejectedBy=[];
+      txp.sentTxid=null;
+      txp.isPending(3).should.equal(true);
+    });
+    it('should report isPending 3', function() {
+      var txp = dummyProposal;
+      txp.rejectedBy=[1,2,3,4];
+      txp.sentTxid=null;
+      txp.isPending(3).should.equal(false);
+    });
+  });
+
+
 });

@@ -138,6 +138,27 @@ describe('WalletFactory model', function() {
     var w = wf.create();
     should.exist(w);
   });
+
+  it('should be able to create wallets with given pk', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+    var w = wf.create({
+      privateKeyHex:priv,
+    });
+    w.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+  });
+ 
+  it('should be able to create wallets with random pk', function() {
+    var wf = new WalletFactory(config, '0.0.1');
+    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+    var w1 = wf.create();
+    var w2 = wf.create();
+    w1.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+      w2.privateKey.toObj().extendedPrivateKeyString
+    );
+  });
+ 
+
   it('should be able to get wallets', function() {
     var wf = new WalletFactory(config, '0.0.1');
     var w = wf.create();
@@ -173,6 +194,19 @@ describe('WalletFactory model', function() {
     should.exist(w.txProposals.toObj());
     should.exist(w.privateKey.toObj());
     assertObjectEqual(w.toObj(), JSON.parse(o));
+  });
+
+
+  it('#fromObj, skipping fields', function() {
+    var wf = new WalletFactory(config, '0.0.5');
+    var w = wf.fromObj(JSON.parse(o), ['publicKeyRing']);
+
+    should.exist(w);
+    w.id.should.equal("dbfe10c3fae71cea");
+    should.exist(w.publicKeyRing.getCopayerId);
+    should.exist(w.txProposals.toObj());
+    should.exist(w.privateKey.toObj());
+    (function() { assertObjectEqual(w.toObj(), JSON.parse(o))}).should.throw();
   });
 
   it('support old index schema: #fromObj #toObj round trip', function() {
@@ -391,8 +425,16 @@ describe('WalletFactory model', function() {
       var wf = new WalletFactory(config, '0.0.1');
       wf.network.cleanUp = sinon.spy();
       wf.network.start = sinon.spy();
-      wf.joinCreateSession('8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM', 'test', null, undefined);
+      wf.joinCreateSession('8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM', 'test');
       wf.network.start.calledOnce.should.equal(true);
+    });
+    it('should accept a priv key a input', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var privHex = 'tprv8ZgxMBicQKsPf7MCvCjnhnr4uiR2Z2gyNC27vgd9KUu98F9mM1tbaRrWMyddVju36GxLbeyntuSadBAttriwGGMWUkRgVmUUCg5nFioGZsd';
+      wf.network.cleanUp = sinon.spy();
+      wf.network.start = sinon.spy();
+      wf.joinCreateSession('8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM', 'test', null, privHex);
+      wf.network.start.getCall(0).args[0].privkey.should.equal('ddc2fa8c583a73c4b2a24630ec7c283df4e7c230a02c4e48bc36ec61687afd7d');
     });
     it('should call network.start with private key', function() {
       var wf = new WalletFactory(config, '0.0.1');

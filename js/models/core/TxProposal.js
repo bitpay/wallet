@@ -65,6 +65,19 @@ TxProposal.prototype._check = function() {
   }
 };
 
+TxProposal.prototype.rejectCount = function() {
+  return Object.keys(this.rejectedBy).length;
+};
+
+TxProposal.prototype.isPending = function(maxRejectCount) {
+  preconditions.checkArgument(typeof maxRejectCount != 'undefined');
+
+  if (this.rejectCount() > maxRejectCount || this.sentTxid)
+    return false;
+
+  return true;
+};
+ 
 
 TxProposal.prototype._updateSignedBy = function() {
   this._inputSignatures = [];
