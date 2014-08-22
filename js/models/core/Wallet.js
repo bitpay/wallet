@@ -554,16 +554,17 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
 
   opts.addressBook = o.addressBook;
 
-  if (o.privateKey)
+  if (o.privateKey) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
-  else
+  } else {
     opts.privateKey = new PrivateKey({
       networkName: opts.networkName
     });
+  }
 
-  if (o.publicKeyRing)
+  if (o.publicKeyRing) {
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  else {
+  } else {
     opts.publicKeyRing = new PublicKeyRing({
       networkName: opts.networkName,
       requiredCopayers: opts.requiredCopayers,
@@ -575,13 +576,14 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
     );
   }
 
-  if (o.txProposals)
+  if (o.txProposals) {
     opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
-  else
+  } else {
     opts.txProposals = new TxProposals({
       networkName: this.networkName,
     });
-  
+  }
+
   opts.lastTimestamp = o.lastTimestamp;
 
   opts.storage = storage;
