@@ -223,7 +223,6 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   var self = this;
 
   self.socket.on('connect', function() {
-    alert('socket connected!');
     self.socket.on('disconnect', function() {
       self.cleanUp();
     });
@@ -298,7 +297,6 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket.emit('subscribe', pubkey);
   this.socket.emit('sync', opts.lastTimestamp);
   this.started = true;
-  alert('started = true');
 
 };
 
