@@ -111,23 +111,26 @@ angular.module('copayApp.controllers').controller('SendController',
         $rootScope.pendingPayment = null;
       }
 
-      var uri;
-      if (address.indexOf('bitcoin:') === 0) {
-        uri = new bitcore.BIP21(address).data;
-      } else if (/^https?:\/\//.test(address)) {
-        uri = {
-          merchant: address
-        };
-      }
+      // XXX Payment Protocol is temporarily disabled.
+      // var uri;
+      // if (address.indexOf('bitcoin:') === 0) {
+      //   uri = new bitcore.BIP21(address).data;
+      // } else if (/^https?:\/\//.test(address)) {
+      //   uri = {
+      //     merchant: address
+      //   };
+      // }
+      //
+      // if (uri && uri.merchant) {
+      //   w.createPaymentTx({
+      //     uri: uri.merchant,
+      //     memo: commentText
+      //   }, done);
+      // } else {
+      //   w.createTx(address, amount, commentText, done);
+      // }
 
-      if (uri && uri.merchant) {
-        w.createPaymentTx({
-          uri: uri.merchant,
-          memo: commentText
-        }, done);
-      } else {
-        w.createTx(address, amount, commentText, done);
-      }
+      w.createTx(address, amount, commentText, done);
 
       // reset fields
       $scope.address = $scope.amount = $scope.commentText = null;
@@ -501,6 +504,11 @@ angular.module('copayApp.controllers').controller('SendController',
         notification.info('Payment Request',
           'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
+    };
+
+    // XXX Payment Protocol is temporarily disabled.
+    $scope.onChanged = function() {
+      ;
     };
 
   });
