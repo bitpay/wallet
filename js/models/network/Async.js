@@ -45,7 +45,6 @@ Network.prototype.cleanUp = function() {
   this.copayerForPeer = {};
   this.connections = {};
   this.criticalErr = '';
-  this.removeAllListeners();
   if (this.socket) {
     this.socket.disconnect();
     this.socket = null;
@@ -224,6 +223,7 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   var self = this;
 
   self.socket.on('connect', function() {
+    alert('socket connected!');
     self.socket.on('disconnect', function() {
       self.cleanUp();
     });
@@ -298,6 +298,7 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket.emit('subscribe', pubkey);
   this.socket.emit('sync', opts.lastTimestamp);
   this.started = true;
+  alert('started = true');
 
 };
 
@@ -305,6 +306,7 @@ Network.prototype.createSocket = function(host, port) {
   var hostPort = host + ':' + port;
   return io.connect(hostPort, {
     reconnection: true,
+    'force new connection': true
   });
 };
 
