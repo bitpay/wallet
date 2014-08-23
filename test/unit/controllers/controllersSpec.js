@@ -24,7 +24,7 @@ describe("Unit: Controllers", function() {
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
 
-  var config = {
+  var walletConfig = {
     requiredCopayers: 3,
     totalCopayers: 5,
     spendUnconfirmed: 1,
@@ -32,12 +32,18 @@ describe("Unit: Controllers", function() {
     networkName: 'testnet'
   };
 
+  it('Copay config should be binded', function() {
+    should.exist(config);
+    should.exist(config.unitToSatoshi);
+  });
+
+
   describe('Backup Controller', function() {
     var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
 
-      $rootScope.wallet = new FakeWallet(config);
+      $rootScope.wallet = new FakeWallet(walletConfig);
       ctrl = $controller('MoreController', {
         $scope: scope,
         $modal: {},
@@ -122,7 +128,7 @@ describe("Unit: Controllers", function() {
     beforeEach(angular.mock.module('copayApp'));
     beforeEach(angular.mock.inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
-      $rootScope.wallet = new FakeWallet(config);
+      $rootScope.wallet = new FakeWallet(walletConfig);
       var element = angular.element(
         '<form name="form">' +
         '<input type="text" id="newaddress" name="newaddress" ng-disabled="loading" placeholder="Address" ng-model="newaddress" valid-address required>' +
@@ -192,7 +198,7 @@ describe("Unit: Controllers", function() {
       expect(form.newlabel.$invalid).to.equal(true);
     });
 
-    it('should create a transaction proposal', function() {
+    it('should create a transaction proposal with given values', function() {
       sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       sendForm.amount.$setViewValue(1000);
 
@@ -204,12 +210,43 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(spy, 1);
       sinon.assert.callCount(spy2, 0);
       sinon.assert.callCount(scope.loadTxs, 1);
+      spy.getCall(0).args[0].should.equal('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      spy.getCall(0).args[1].should.equal(1000 * config.unitToSatoshi);
+      (typeof spy.getCall(0).args[2]).should.equal('undefined');
     });
+
+
+    it('should handle big values in 100 BTC', function() {
+      var old = config.unitToSatoshi;
+      config.unitToSatoshi = 100000000;;
+      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.amount.$setViewValue(100);
+      var spy = sinon.spy(scope.wallet, 'createTx');
+      scope.loadTxs = sinon.spy();
+      scope.submitForm(sendForm);
+      spy.getCall(0).args[1].should.equal(100 * config.unitToSatoshi);
+      config.unitToSatoshi = old;
+    });
+
+
+    it('should handle big values in 5000 BTC', function() {
+      var old = config.unitToSatoshi;
+      config.unitToSatoshi = 100000000;;
+      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.amount.$setViewValue(5000);
+      var spy = sinon.spy(scope.wallet, 'createTx');
+      scope.loadTxs = sinon.spy();
+      scope.submitForm(sendForm);
+      spy.getCall(0).args[1].should.equal(5000 * config.unitToSatoshi);
+      config.unitToSatoshi = old;
+    });
+
+
+
 
     it('should create and send a transaction proposal', function() {
       sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       sendForm.amount.$setViewValue(1000);
-
       scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
       var spy = sinon.spy(scope.wallet, 'createTx');
       var spy2 = sinon.spy(scope.wallet, 'sendTx');
@@ -294,7 +331,7 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
       rootScope = $rootScope;
-      rootScope.wallet = new FakeWallet(config);
+      rootScope.wallet = new FakeWallet(walletConfig);
 
       headerCtrl = $controller('SidebarController', {
         $scope: scope,
