@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     var satToUnit = 1 / config.unitToSatoshi;
 
     $scope.update = function() {
-      $scope.loading = false;
+      $scope.loading = true;
       var from = ($scope.txpCurrentPage - 1) * $scope.txpItemsPerPage;
       var opts = {
         pending: false,

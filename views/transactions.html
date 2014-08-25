@@ -19,8 +19,10 @@
 
     <div class="large-12">
       <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
-        <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-hide="lastShowed && !loading">[ Show ]</a>
-        <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Loading" ng-show="lastShowed && !loading">[ Hide ]</a>
+        <a class="text-gray active" ng-click="toogleLast()"
+          ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">[ Show ]</a>
+        <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading"
+          loading="Updating" ng-show="lastShowed && !loading">[ Hide ]</a>
       </div>
 
       <div class="btransactions" ng-if="lastShowed">
