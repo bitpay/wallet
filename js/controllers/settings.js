@@ -52,10 +52,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   $scope.save = function() {
     var network = config.network;
-    network.key = $scope.networkKey;
-    network.host = $scope.networkHost;
-    network.port = $scope.networkPort;
-    network.secure = $scope.networkSecure;
+    network.host = $scope.insightHost;
+    network.port = $scope.insightPort;
+    network.schema = $scope.insightSecure ? 'https' : 'http';
 
     localStorage.setItem('config', JSON.stringify({
       networkName: $scope.networkName,
