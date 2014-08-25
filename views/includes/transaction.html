@@ -54,7 +54,7 @@
           <i class="fi-check icon-status icon-active-check"></i>
       </a>
 
-      <a ng-if="!c.actions.sign && !c.actions.rejected" class="icon-status">
+      <a ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="icon-status">
           <i class="fi-loop icon-rotate"></i>
       </a>
     </div>
