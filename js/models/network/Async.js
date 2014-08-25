@@ -28,6 +28,7 @@ function Network(opts) {
   this.maxPeers = opts.maxPeers || 12;
   this.host = opts.host || 'localhost';
   this.port = opts.port || 3001;
+  this.schema = opts.schema || 'https';
   this.cleanUp();
 }
 
@@ -293,7 +294,7 @@ Network.prototype.start = function(opts, openCallback) {
   this.setCopayerId(opts.copayerId);
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
-  this.socket = this.createSocket(this.host, this.port);
+  this.socket = this.createSocket();
   this._setupConnectionHandlers(openCallback);
   this.socket.emit('subscribe', pubkey);
   this.socket.emit('sync', opts.lastTimestamp);
@@ -301,11 +302,12 @@ Network.prototype.start = function(opts, openCallback) {
 
 };
 
-Network.prototype.createSocket = function(host, port) {
-  var hostPort = host + ':' + port;
+Network.prototype.createSocket = function() {
+  var hostPort = this.schema + '://' + this.host + ':' + this.port;
   return io.connect(hostPort, {
     reconnection: true,
-    'force new connection': true
+    'force new connection': true,
+    'secure': this.schema === 'https',
   });
 };
 
