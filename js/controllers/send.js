@@ -58,7 +58,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = (form.amount.$modelValue * config.unitToSatoshi) | 0;
+      var amount = parseInt((form.amount.$modelValue * config.unitToSatoshi).toFixed(0));
       var commentText = form.comment.$modelValue;
 
       var w = $rootScope.wallet;
