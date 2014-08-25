@@ -3,13 +3,13 @@
     <video
       ng-if="hasVideo(copayer)"
       peer="{{copayer}}" avatar autoplay
-      ng-class="isConnected(copayer) ? 'online' : 'offline'"
+      ng-class="true || isConnected(copayer) ? 'online' : 'offline'"
       ng-src="{{getVideoURL(copayer)}}"></video>
 
     <img
       class="br100 no-video"
       ng-if="!hasVideo(copayer)"
-      ng-class="isConnected(copayer) ? 'online' : 'offline'"
+      ng-class="true || isConnected(copayer) ? 'online' : 'offline'"
       src="./img/satoshi.gif"
       alt="{{copayer}}"
       width="70">
