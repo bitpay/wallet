@@ -257,7 +257,7 @@ describe('Network / Async', function() {
 
   describe('#iterateNonce', function() {
 
-    it.only('should set a nonce not already set', function() {
+    it('should set a nonce not already set', function() {
       var n = createN();
       n.iterateNonce();
       n.networkNonce.slice(4, 8).toString('hex').should.equal('00000001');
