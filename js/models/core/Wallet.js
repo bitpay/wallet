@@ -99,7 +99,7 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
-Wallet.prototype._onIndexes = function(senderId, data, isInbound) {
+Wallet.prototype._onIndexes = function(senderId, data) {
   this.log('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
@@ -109,7 +109,7 @@ Wallet.prototype._onIndexes = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._onPublicKeyRing = function(senderId, data, isInbound) {
+Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   this.log('RECV PUBLICKEYRING:', data);
 
   var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
@@ -254,7 +254,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
 };
 
 
-Wallet.prototype._onReject = function(senderId, data, isInbound) {
+Wallet.prototype._onReject = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   this.log('RECV REJECT:', data);
 
@@ -277,7 +277,7 @@ Wallet.prototype._onReject = function(senderId, data, isInbound) {
   });
 };
 
-Wallet.prototype._onSeen = function(senderId, data, isInbound) {
+Wallet.prototype._onSeen = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   this.log('RECV SEEN:', data);
 
@@ -295,7 +295,7 @@ Wallet.prototype._onSeen = function(senderId, data, isInbound) {
 
 
 
-Wallet.prototype._onAddressBook = function(senderId, data, isInbound) {
+Wallet.prototype._onAddressBook = function(senderId, data) {
   preconditions.checkState(data.addressBook);
   this.log('RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
@@ -316,17 +316,21 @@ Wallet.prototype._onAddressBook = function(senderId, data, isInbound) {
 };
 
 
-Wallet.prototype.updateTimestamp = function() {
-  this.lastTimestamp = (new Date().getTime()) * 1000;
+Wallet.prototype.updateTimestamp = function(ts) {
+  preconditions.checkArgument(ts);
+  preconditions.checkArgument(typeof ts === 'number');
+  this.lastTimestamp = ts;
   this.store();
 };
 
-Wallet.prototype._onData = function(senderId, data, isInbound) {
+Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
   preconditions.checkArgument(data.type);
+  preconditions.checkArgument(ts);
+  preconditions.checkArgument(typeof ts === 'number');
 
-  this.updateTimestamp();
+  this.updateTimestamp(ts);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('corrupt', senderId);
@@ -344,25 +348,25 @@ Wallet.prototype._onData = function(senderId, data, isInbound) {
       this.sendAllTxProposals(senderId); // send old txps
       break;
     case 'publicKeyRing':
-      this._onPublicKeyRing(senderId, data, isInbound);
+      this._onPublicKeyRing(senderId, data);
       break;
     case 'reject':
-      this._onReject(senderId, data, isInbound);
+      this._onReject(senderId, data);
       break;
     case 'seen':
-      this._onSeen(senderId, data, isInbound);
+      this._onSeen(senderId, data);
       break;
     case 'txProposal':
-      this._onTxProposal(senderId, data, isInbound);
+      this._onTxProposal(senderId, data);
       break;
     case 'indexes':
-      this._onIndexes(senderId, data, isInbound);
+      this._onIndexes(senderId, data);
       break;
     case 'addressbook':
-      this._onAddressBook(senderId, data, isInbound);
+      this._onAddressBook(senderId, data);
       break;
     case 'disconnect':
-      this._onDisconnect(senderId, data, isInbound);
+      this._onDisconnect(senderId, data);
       break;
   }
 
