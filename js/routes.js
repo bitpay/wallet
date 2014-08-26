@@ -82,7 +82,7 @@ angular
 .run(function($rootScope, $location, $idle) {
   $idle.watch();
   $rootScope.$on('$routeChangeStart', function(event, next, current) {
-    if (!util.supports.data) {
+    if (!localStorage || localStorage.length < 1) {
       $location.path('unsupported');
     } else {
       if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
