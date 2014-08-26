@@ -167,6 +167,7 @@ Network.prototype.iterateNonce = function() {
   var noncep2uint = this.networkNonce.slice(4, 8).readUInt32BE(0);
   var noncep2 = this.networkNonce.slice(4, 8);
   noncep2.writeUInt32BE(noncep2uint + 1, 0);
+  this.networkNonce = Buffer.concat([noncep1, noncep2], 8);
   return this.networkNonce;
 };
 
