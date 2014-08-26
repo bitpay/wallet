@@ -4,7 +4,6 @@
 [![Stories in Ready](https://badge.waffle.io/bitpay/copay.svg?label=ready&title=Ready)](https://waffle.io/bitpay/copay)
 
 
-
 Copay is a secure bitcoin wallet for friends and companies.
 Easy-to-use multisignature bitcoin wallet, bringing corporate-level security to ordinary people.
 
