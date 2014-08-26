@@ -43,9 +43,9 @@ PublicKeyRing.trim = function(data) {
 };
 
 PublicKeyRing.fromObj = function(data) {
-  if (data instanceof PublicKeyRing) {
-    throw new Error('bad data format: Did you use .toObj()?');
-  }
+  preconditions.checkArgument(typeof data !== 'PublicKeyRing');
+
+
   var opts = PublicKeyRing.trim(data);
  
   // Support old indexes schema
