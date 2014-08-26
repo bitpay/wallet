@@ -1,5 +1,7 @@
 'use strict';
 
+var CryptoJS = CryptoJS || require('crypto-js');
+
 function Passphrase(config) {
   config = config || {};
   this.salt = config.salt || 'mjuBtGybi/4=';
