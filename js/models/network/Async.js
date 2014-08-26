@@ -216,7 +216,7 @@ Network.prototype._onMessage = function(enc) {
       this._addConnectedCopayer(payload.copayerId);
       break;
     default:
-      this.emit('data', sender, payload);
+      this.emit('data', sender, payload, enc.ts);
   }
 };
 
