@@ -47,22 +47,6 @@
 
           </fieldset>
 
-          <fieldset>
-            <legend>PeerJS server</legend>
-            <label for="peerjs-key">Key</label>
-            <input type="text" ng-model="networkKey" class="form-control" name="peerjs-key">
-            <label for="peerjs-host">Host</label>
-            <input type="text" ng-model="networkHost" class="form-control" name="peerjs-host">
-            <label for="peerjs-port">Port</label>
-            <input type="number" ng-model="networkPort" class="form-control" name="peerjs-port">
-            <input id="peerjs-secure" type="checkbox" ng-model="networkSecure" class="form-control">
-            <label for="peerjs-secure">Use SSL</label>
-
-            <p class="small">
-            PeerJS Server is open-source software.  You can run your own instance, or use PeerJS Server cloud. Check <a href="http://peerjs.com" target="_blank">PeerJS Server</a>
-            </p>
-          </fieldset>
-
           <div class="text-right">
             <a class="back-button text-white m20r" href="#!/">&laquo; Back</a>
             <button type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">

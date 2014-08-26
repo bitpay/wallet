@@ -441,7 +441,7 @@ describe('Wallet model', function() {
         receiveIndex: 2
       }]
     };
-    w._handleIndexes('senderID', aiObj, true);
+    w._onIndexes('senderID', aiObj, true);
     w.publicKeyRing.getHDParams(0).getReceiveIndex(2);
     w.publicKeyRing.getHDParams(0).getChangeIndex(3);
   });
@@ -467,7 +467,7 @@ describe('Wallet model', function() {
       copayersExtPubKeys: cepk,
       nicknameFor: {},
     };
-    w._handlePublicKeyRing('senderID', {
+    w._onPublicKeyRing('senderID', {
       publicKeyRing: pkrObj
     }, true);
     w.publicKeyRing.getHDParams(0).getReceiveIndex(2);
@@ -512,7 +512,7 @@ describe('Wallet model', function() {
     var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys').returns({
       '027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509': 'pepe'
     });
-    w._handleTxProposal('senderID', txp, true);
+    w._onTxProposal('senderID', txp, true);
     Object.keys(w.txProposals.txps).length.should.equal(1);
     w.getTxProposals().length.should.equal(1);
     //stub.restore();
@@ -525,7 +525,7 @@ describe('Wallet model', function() {
       id.should.equal(newId);
       done();
     });
-    w._handleConnect(newId);
+    w._onConnect(newId);
   });
 
   it('handle disconnections', function(done) {
@@ -534,7 +534,7 @@ describe('Wallet model', function() {
       id.should.equal(newId);
       done();
     });
-    w._handleDisconnect(newId);
+    w._onDisconnect(newId);
   });
 
   it('should register new copayers correctly', function() {
@@ -993,7 +993,7 @@ describe('Wallet model', function() {
       var senderId = "03baa45498fee1045fa8f91a2913f638dc3979b455498924d3cf1a11303c679cdb";
 
       Object.keys(w.addressBook).length.should.equal(2);
-      w._handleAddressBook(senderId, data, true);
+      w._onAddressBook(senderId, data, true);
       Object.keys(w.addressBook).length.should.equal(3);
     });
 
@@ -1094,7 +1094,7 @@ describe('Wallet model', function() {
       var backup = copayConfig.forceNetwork;
       copayConfig.forceNetwork = true;
       config.networkName = 'livenet';
-      cachedCreateW2.should.throw(Error);
+      createW2.should.throw(Error);
       copayConfig.forceNetwork = backup;
     });
   });
@@ -1252,7 +1252,7 @@ describe('Wallet model', function() {
 
 
 
-  describe('_handleTxProposal', function() {
+  describe('_onTxProposal', function() {
     var testValidate = function(response, result, done) {
 
       var w = cachedCreateW();
@@ -1278,7 +1278,7 @@ describe('Wallet model', function() {
         };
       });
 
-      w._handleTxProposal('senderID', txp);
+      w._onTxProposal('senderID', txp);
       spy.callCount.should.equal(1);
       merge.restore();
     };
@@ -1299,11 +1299,11 @@ describe('Wallet model', function() {
   });
 
 
-  describe('_handleReject', function() {
+  describe('_onReject', function() {
     it('should fails if unknown tx', function() {
       var w = cachedCreateW();
       (function() {
-        w._handleReject(1, {
+        w._onReject(1, {
           ntxid: 1
         }, 1);
       }).should.throw('Unknown TXP');
@@ -1316,7 +1316,7 @@ describe('Wallet model', function() {
         }
       };
       (function() {
-        w._handleReject('john', {
+        w._onReject('john', {
           ntxid: 'qwerty'
         }, 1);
       }).should.throw('already signed');
@@ -1337,7 +1337,7 @@ describe('Wallet model', function() {
       var spy2 = sinon.spy(w, 'emit');
       w.txProposals.txps['qwerty'] = new txp();
       w.txProposals.txps['qwerty'].ok.should.equal(0);
-      w._handleReject('john', {
+      w._onReject('john', {
         ntxid: 'qwerty'
       }, 1);
       w.txProposals.txps['qwerty'].ok.should.equal(1);
@@ -1353,11 +1353,11 @@ describe('Wallet model', function() {
   });
 
 
-  describe('_handleSeen', function() {
+  describe('_onSeen', function() {
     it('should fails if unknown tx', function() {
       var w = cachedCreateW();
       (function() {
-        w._handleReject(1, {
+        w._onReject(1, {
           ntxid: 1
         }, 1);
       }).should.throw('Unknown TXP');
@@ -1378,7 +1378,7 @@ describe('Wallet model', function() {
       var spy2 = sinon.spy(w, 'emit');
       w.txProposals.txps['qwerty'] = new txp();
       w.txProposals.txps['qwerty'].ok.should.equal(0);
-      w._handleSeen('john', {
+      w._onSeen('john', {
         ntxid: 'qwerty'
       }, 1);
       w.txProposals.txps['qwerty'].ok.should.equal(1);
@@ -1402,9 +1402,9 @@ describe('Wallet model', function() {
 
   it('#disconnect', function() {
     var w = cachedCreateW();
-    var spy1 = sinon.spy(w.network, 'disconnect');
+    var spy1 = sinon.spy(w, 'send');
     w.disconnect();
-    spy1.callCount.should.equal(1);
+    spy1.calledOnce.should.be.true;
   });
 
 });

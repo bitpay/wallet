@@ -44,9 +44,6 @@ var createBundle = function(opts) {
   b.require('./js/models/core/WalletLock', {
     expose: '../js/models/core/WalletLock'
   });
-  b.require('./js/models/network/WebRTC', {
-    expose: '../js/models/network/WebRTC'
-  });
   b.require('./js/models/blockchain/Insight', {
     expose: '../js/models/blockchain/Insight'
   });
@@ -78,9 +75,6 @@ var createBundle = function(opts) {
     });
     b.require('./test/mocks/FakeLocalStorage', {
       expose: './mocks/FakeLocalStorage'
-    });
-    b.require('./js/models/core/Message', {
-      expose: '../js/models/core/Message'
     });
     b.require('./test/mocks/FakeBlockchain', {
       expose: './mocks/FakeBlockchain'
