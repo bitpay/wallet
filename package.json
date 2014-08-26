@@ -70,7 +70,8 @@
     "mock-fs": "^2.3.1",
     "node-cryptojs-aes": "0.4.0",
     "travis-cov": "0.2.5",
-    "uglifyify": "1.2.3"
+    "uglifyify": "1.2.3",
+    "crypto-js": "3.1.2"
   },
   "main": "app.js",
   "homepage": "https://github.com/bitpay/copay",
