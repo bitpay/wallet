@@ -1,6 +1,5 @@
 'use strict';
 
-
 var preconditions = require('preconditions').instance();
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;

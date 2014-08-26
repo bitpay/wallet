@@ -9,6 +9,7 @@ try {
 } catch (e) {
   var copay = require('../copay'); //node
 }
+var Buffer = bitcore.Buffer;
 var Insight = copay.Insight || require('../js/models/blockchain/Insight');
 
 var ID = '933bf321393459b7';

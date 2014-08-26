@@ -5,7 +5,7 @@ var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 
-var WebRTC = module.exports.WebRTC = require('../network/WebRTC');
+var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
 
@@ -19,7 +19,7 @@ function WalletFactory(config, version) {
   config = config || {};
 
   this.Storage = config.Storage || StorageLocalEncrypted;
-  this.Network = config.Network || WebRTC;
+  this.Network = config.Network || Async;
   this.Blockchain = config.Blockchain || Insight;
 
   this.storage = new this.Storage(config.storage);
@@ -104,6 +104,7 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
   obj.privateKey = s.get(walletId, 'privateKey');
   obj.addressBook = s.get(walletId, 'addressBook');
   obj.backupOffered = s.get(walletId, 'backupOffered');
+  obj.lastTimestamp = s.get(walletId, 'lastTimestamp');
 
   var w = this.fromObj(obj, skipFields);
   return w;
@@ -249,16 +250,13 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   self.network.on('connected', function(sender, data) {
     connectedOnce = true;
   });
-  self.network.on('onlyYou', function(sender, data) {
-    return cb(connectedOnce ? 'walletFull' : 'joinError');
-  });
 
   self.network.on('serverError', function() {
     return cb('joinError');
   });
 
   self.network.start(opts, function() {
-    self.network.connectTo(s.pubKey);
+    self.network.greet(s.pubKey);
 
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
@@ -271,7 +269,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.passphrase = passphrase;
         data.opts.id = data.walletId;
         var w = self.create(data.opts);
-        w.seedCopayer(s.pubKey);
+        w.sendWalletReady(s.pubKey);
+        //w.seedCopayer(s.pubKey);
         return cb(null, w);
       }
     });

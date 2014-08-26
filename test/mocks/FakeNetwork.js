@@ -6,7 +6,6 @@ function Network(opts) {}
 util.inherits(Network, EventEmitter);
 
 Network.prototype.start = function(opts, cb) {
-  // start! :D
   this.peer = {
     options: {
       token: "asd"
@@ -15,18 +14,12 @@ Network.prototype.start = function(opts, cb) {
   if (cb) cb();
 };
 
-Network.prototype.send = function(peerIds, data, cb) {
-  // send! c:
-};
+Network.prototype.send = function(peerIds, data, cb) {};
 
-Network.prototype.connectTo = function(peerId) {
-  // connect C:
-};
+Network.prototype.connectTo = function(peerId) {};
 
 
-Network.prototype.disconnect = function(cb) {
-  // disconect :c
-};
+Network.prototype.disconnect = function(cb) {};
 
 Network.prototype.lockIncommingConnections = function() {
 
@@ -43,7 +36,7 @@ Network.prototype.peerFromCopayer = function(copayerId) {
 
 //hex version of one's own nonce
 Network.prototype.setHexNonce = function(networkNonce) {
-  if (networkNonce && networkNonce.length === 16) 
+  if (networkNonce && networkNonce.length === 16)
     this.networkNonce = new Buffer(networkNonce, 'hex');
   else
     this.iterateNonce();
@@ -84,11 +77,16 @@ Network.prototype.iterateNonce = function() {
   //the second 4 bytes is just an iterated "sub" nonce
   //the whole thing is interpreted as one big endian number
   var noncep1 = this.networkNonce.slice(0, 4);
-  noncep1.writeUInt32BE(Math.floor(Date.now()/1000), 0);
+  noncep1.writeUInt32BE(Math.floor(Date.now() / 1000), 0);
   var noncep2uint = this.networkNonce.slice(4, 8).readUInt32BE(0);
   var noncep2 = this.networkNonce.slice(4, 8);
   noncep2.writeUInt32BE(noncep2uint + 1, 0);
   return this.networkNonce;
+};
+
+
+Network.prototype.cleanUp = function() {
+  return;
 };
 
 

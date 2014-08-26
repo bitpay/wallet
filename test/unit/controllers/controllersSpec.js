@@ -175,12 +175,12 @@ describe("Unit: Controllers", function() {
     });
 
     it('should validate address with network', function() {
-      form.newaddress.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       expect(form.newaddress.$invalid).to.equal(false);
     });
 
     it('should not validate address with other network', function() {
-      form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      form.newaddress.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
       expect(form.newaddress.$invalid).to.equal(true);
     });
 
@@ -199,7 +199,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should create a transaction proposal with given values', function() {
-      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(1000);
 
       var spy = sinon.spy(scope.wallet, 'createTx');
@@ -210,7 +210,7 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(spy, 1);
       sinon.assert.callCount(spy2, 0);
       sinon.assert.callCount(scope.loadTxs, 1);
-      spy.getCall(0).args[0].should.equal('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      spy.getCall(0).args[0].should.equal('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       spy.getCall(0).args[1].should.equal(1000 * config.unitToSatoshi);
       (typeof spy.getCall(0).args[2]).should.equal('undefined');
     });
@@ -219,7 +219,7 @@ describe("Unit: Controllers", function() {
     it('should handle big values in 100 BTC', function() {
       var old = config.unitToSatoshi;
       config.unitToSatoshi = 100000000;;
-      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(100);
       var spy = sinon.spy(scope.wallet, 'createTx');
       scope.loadTxs = sinon.spy();
@@ -232,7 +232,7 @@ describe("Unit: Controllers", function() {
     it('should handle big values in 5000 BTC', function() {
       var old = config.unitToSatoshi;
       config.unitToSatoshi = 100000000;;
-      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(5000);
       var spy = sinon.spy(scope.wallet, 'createTx');
       scope.loadTxs = sinon.spy();
@@ -245,7 +245,7 @@ describe("Unit: Controllers", function() {
 
 
     it('should create and send a transaction proposal', function() {
-      sendForm.address.$setViewValue('1JqniWpWNA6Yvdivg3y9izLidETnurxRQm');
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(1000);
       scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
       var spy = sinon.spy(scope.wallet, 'createTx');
@@ -322,7 +322,7 @@ describe("Unit: Controllers", function() {
     it('should return networkName', function() {
       $httpBackend.flush(); // need flush
       var networkName = scope.networkName;
-      expect(networkName).equal('livenet');
+      expect(networkName).equal('testnet');
     });
   });
 

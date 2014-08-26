@@ -33,20 +33,16 @@ function Wallet(opts) {
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
   ].forEach(function(k) {
-    if (typeof opts[k] === 'undefined')
-      throw new Error('missing required option for Wallet: ' + k);
+    preconditions.checkArgument(typeof opts[k] !== 'undefined',
+      'missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
-  if (copayConfig.forceNetwork && this.getNetworkName() !== copayConfig.networkName)
-    throw new Error('Network forced to ' + copayConfig.networkName +
-      ' and tried to create a Wallet with network ' + this.getNetworkName());
-
-  this.log('creating ' + opts.requiredCopayers + ' of ' + opts.totalCopayers + ' wallet');
+  preconditions.checkArgument(!copayConfig.forceNetwork || this.getNetworkName() === copayConfig.networkName,
+    'Network forced to ' + copayConfig.networkName +
+    ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.id = opts.id || Wallet.getRandomId();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
-
-
   this.name = opts.name;
 
   this.verbose = opts.verbose;
@@ -56,6 +52,7 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
+  this.lastTimestamp = opts.lastTimestamp || undefined;
 
   this.paymentRequests = opts.paymentRequests || {};
 
@@ -89,7 +86,10 @@ Wallet.prototype.seedCopayer = function(pubKey) {
   this.seededCopayerId = pubKey;
 };
 
+// not being used now
 Wallet.prototype.connectToAll = function() {
+  // not being used now
+  return;
 
   var all = this.publicKeyRing.getAllCopayerIds();
   this.network.connectToCopayers(all);
@@ -99,7 +99,7 @@ Wallet.prototype.connectToAll = function() {
   }
 };
 
-Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
+Wallet.prototype._onIndexes = function(senderId, data) {
   this.log('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
@@ -109,7 +109,7 @@ Wallet.prototype._handleIndexes = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._handlePublicKeyRing = function(senderId, data, isInbound) {
+Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   this.log('RECV PUBLICKEYRING:', data);
 
   var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
@@ -217,7 +217,7 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
 };
 
 
-Wallet.prototype._handleTxProposal = function(senderId, data) {
+Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
   this.log('RECV TXPROPOSAL: ', data);
   var m;
@@ -254,7 +254,7 @@ Wallet.prototype._handleTxProposal = function(senderId, data) {
 };
 
 
-Wallet.prototype._handleReject = function(senderId, data, isInbound) {
+Wallet.prototype._onReject = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   this.log('RECV REJECT:', data);
 
@@ -277,7 +277,7 @@ Wallet.prototype._handleReject = function(senderId, data, isInbound) {
   });
 };
 
-Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
+Wallet.prototype._onSeen = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   this.log('RECV SEEN:', data);
 
@@ -295,7 +295,7 @@ Wallet.prototype._handleSeen = function(senderId, data, isInbound) {
 
 
 
-Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
+Wallet.prototype._onAddressBook = function(senderId, data) {
   preconditions.checkState(data.addressBook);
   this.log('RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
@@ -315,13 +315,25 @@ Wallet.prototype._handleAddressBook = function(senderId, data, isInbound) {
   }
 };
 
-Wallet.prototype._handleData = function(senderId, data, isInbound) {
 
-  // TODO check message signature
+Wallet.prototype.updateTimestamp = function(ts) {
+  preconditions.checkArgument(ts);
+  preconditions.checkArgument(typeof ts === 'number');
+  this.lastTimestamp = ts;
+  this.store();
+};
+
+Wallet.prototype._onData = function(senderId, data, ts) {
+  preconditions.checkArgument(senderId);
+  preconditions.checkArgument(data);
+  preconditions.checkArgument(data.type);
+  preconditions.checkArgument(ts);
+  preconditions.checkArgument(typeof ts === 'number');
+
+  this.updateTimestamp(ts);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
-    this.emit('badMessage', senderId);
-    this.log('badMessage FROM:', senderId);
+    this.emit('corrupt', senderId);
     return;
   }
 
@@ -336,27 +348,31 @@ Wallet.prototype._handleData = function(senderId, data, isInbound) {
       this.sendAllTxProposals(senderId); // send old txps
       break;
     case 'publicKeyRing':
-      this._handlePublicKeyRing(senderId, data, isInbound);
+      this._onPublicKeyRing(senderId, data);
       break;
     case 'reject':
-      this._handleReject(senderId, data, isInbound);
+      this._onReject(senderId, data);
       break;
     case 'seen':
-      this._handleSeen(senderId, data, isInbound);
+      this._onSeen(senderId, data);
       break;
     case 'txProposal':
-      this._handleTxProposal(senderId, data, isInbound);
+      this._onTxProposal(senderId, data);
       break;
     case 'indexes':
-      this._handleIndexes(senderId, data, isInbound);
+      this._onIndexes(senderId, data);
       break;
     case 'addressbook':
-      this._handleAddressBook(senderId, data, isInbound);
+      this._onAddressBook(senderId, data);
+      break;
+    case 'disconnect':
+      this._onDisconnect(senderId, data);
       break;
   }
+
 };
 
-Wallet.prototype._handleConnect = function(newCopayerId) {
+Wallet.prototype._onConnect = function(newCopayerId) {
   if (newCopayerId) {
     this.log('#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
@@ -365,7 +381,7 @@ Wallet.prototype._handleConnect = function(newCopayerId) {
   this.emit('connect', peerID);
 };
 
-Wallet.prototype._handleDisconnect = function(peerID) {
+Wallet.prototype._onDisconnect = function(peerID) {
   this.currentDelay = null;
   this.emit('disconnect', peerID);
 };
@@ -427,15 +443,8 @@ Wallet.prototype.netStart = function(callback) {
   var net = this.network;
 
   net.removeAllListeners();
-  net.on('connect', self._handleConnect.bind(self));
-  net.on('disconnect', self._handleDisconnect.bind(self));
-  net.on('data', self._handleData.bind(self));
-  net.on('close', function() {
-    self.emit('close');
-  });
-  net.on('serverError', function(msg) {
-    self.emit('serverError', msg);
-  });
+  net.on('connect', self._onConnect.bind(self));
+  net.on('data', self._onData.bind(self));
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
@@ -443,7 +452,8 @@ Wallet.prototype.netStart = function(callback) {
   var startOpts = {
     copayerId: myId,
     privkey: myIdPriv,
-    maxPeers: self.totalCopayers
+    maxPeers: self.totalCopayers,
+    lastTimestamp: this.lastTimestamp,
   };
 
   if (this.publicKeyRing.isComplete()) {
@@ -454,12 +464,15 @@ Wallet.prototype.netStart = function(callback) {
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
-      self.scheduleConnect();
+      //self.scheduleConnect(); 
+      // no connection logic for now
       self.emit('txProposalsUpdated');
     }, 10);
   });
 };
 
+
+// not being used now
 Wallet.prototype.scheduleConnect = function() {
   var self = this;
   if (self.network.isOnline()) {
@@ -533,6 +546,7 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
+    lastTimestamp: this.lastTimestamp,
   };
 
   return walletObj;
@@ -544,16 +558,17 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
 
   opts.addressBook = o.addressBook;
 
-  if (o.privateKey)
+  if (o.privateKey) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
-  else
+  } else {
     opts.privateKey = new PrivateKey({
       networkName: opts.networkName
     });
+  }
 
-  if (o.publicKeyRing)
+  if (o.publicKeyRing) {
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
-  else {
+  } else {
     opts.publicKeyRing = new PublicKeyRing({
       networkName: opts.networkName,
       requiredCopayers: opts.requiredCopayers,
@@ -565,12 +580,15 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
     );
   }
 
-  if (o.txProposals)
+  if (o.txProposals) {
     opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
-  else
+  } else {
     opts.txProposals = new TxProposals({
       networkName: this.networkName,
     });
+  }
+
+  opts.lastTimestamp = o.lastTimestamp;
 
   opts.storage = storage;
   opts.network = network;
@@ -627,7 +645,9 @@ Wallet.prototype.sendReject = function(ntxid) {
   });
 };
 
+
 Wallet.prototype.sendWalletReady = function(recipients) {
+  preconditions.checkArgument(recipients);
   this.log('### SENDING WalletReady TO:', recipients);
 
   this.send(recipients, {
@@ -707,7 +727,7 @@ Wallet.prototype.getTxProposals = function() {
       txp.finallyRejected = true;
     }
 
-    if (txp.readonly && !txp.finallyRejected && !txp.sentTs) {} else {
+    if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
       ret.push(txp);
     }
   }
@@ -1724,7 +1744,7 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
     function _while() {
       return hasActivity;
     },
-    function _finnaly(err) {
+    function _finally(err) {
       if (err) return cb(err);
       cb(null, lastActive);
     }
@@ -1735,7 +1755,12 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
 Wallet.prototype.disconnect = function() {
   this.log('## DISCONNECTING');
   this.lock.release();
-  this.network.disconnect();
+  var self = this;
+  self.send(null, {
+    type: 'disconnect',
+    walletId: this.id,
+  });
+  self.network.cleanUp();
 };
 
 Wallet.prototype.getNetwork = function() {
