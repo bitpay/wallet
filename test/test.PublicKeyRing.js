@@ -441,7 +441,6 @@ describe('PublicKeyRing model', function() {
     };
     var pkr = new PublicKeyRing(config);
 
-
     (function () 
     {
       PublicKeyRing.fromObj(pkr);
