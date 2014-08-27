@@ -207,7 +207,6 @@ WalletFactory.prototype.getWallets = function() {
 
 WalletFactory.prototype.delete = function(walletId, cb) {
   var s = this.storage;
-  this.log('## DELETING WALLET ID:' + walletId); //TODO
   s.deleteWallet(walletId);
   s.setLastOpened(undefined);
   return cb();
@@ -251,13 +250,12 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     connectedOnce = true;
   });
 
-  self.network.on('serverError', function() {
+  self.network.on('serverError', function() { 
     return cb('joinError');
   });
 
   self.network.start(opts, function() {
     self.network.greet(s.pubKey);
-
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
         if (data.networkName !== self.networkName) {
