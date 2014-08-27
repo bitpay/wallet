@@ -756,6 +756,18 @@ describe('Wallet model', function() {
       done();
     });
   });
+  it('should check if transaction already sent when failing to send', function(done) {
+    var w = createW2(null, 1);
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      sinon.stub(w.blockchain, 'sendRawTransaction').yields(undefined);
+      var spyCheckSentTx = sinon.spy(w, '_checkSentTx');
+      w.sendTx(ntxid, function () {});
+      chai.expect(spyCheckSentTx.calledOnce).to.be.true;
+      done();
+    });
+  });
   it('should send TxProposal', function(done) {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);

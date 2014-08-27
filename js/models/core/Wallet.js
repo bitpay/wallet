@@ -817,7 +817,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
       self.store();
       return cb(txid);
     } else {
-      self.log('Sent failed. Checking is the TX was sent already');
+      self.log('Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
           self.store();

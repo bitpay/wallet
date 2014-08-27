@@ -46,4 +46,9 @@ FakeBlockchain.prototype.sendRawTransaction = function(rawtx, cb) {
   return cb(txid);
 };
 
+FakeBlockchain.prototype.checkSentTx = function (tx, cb) {
+  var txid = '0be0fb4579911be829e3077202e1ab47fcc12cf3ab8f8487ccceae768e1f95fa';
+  return cb(null, txid);  
+};
+
 module.exports = FakeBlockchain;
