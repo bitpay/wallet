@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils) {
+  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
@@ -12,41 +12,56 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
     $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
     $scope.minAlternativeAmount = config.limits.minAmountSatoshi * satToAlternative;
+// Mockup
     $rootScope.alternativeName = 'Dollars';
-    $rootScope.alternativeShort = 'USD';
+    $rootScope.alternativeIsoCode = 'USD';
+    config.unitDecimals = 2;
+    this.rateService = rateService;
 
     $scope._amount = 0;
     $scope._alternative = 0;
-// Mockup
-    var alternativeToUnit = function(val) {
-      return val * configAlternativeToSatoshi * satToUnit;
+    this.amountFilter = function(val) {
+      if (val) {
+        return val.toFixed(config.unitDecimals);
+      }
     };
-    var unitToAlternative = function(val) {
-      return val * config.unitToSatoshi * satToAlternative;
-    };
+    this.fiatFilter = function(val) {
+      if (val) {
+        return val.toFixed(2);
+      }
+    }
+
     Object.defineProperty($scope,
-        "alternative", {
-        get: function () {
-            return this._alternative;
-        },
-        set: function (newValue) {
-            this._alternative = newValue;
-            this._amount = alternativeToUnit(this._alternative);
-        },
-        enumerable: true,
-        configurable: true
+      "alternative", {
+      get: function () {
+        return this._alternative;
+      },
+      set: function (newValue) {
+        this._alternative = newValue;
+        if (typeof(newValue) === 'number') {
+          this._amount = -(-(
+            rateService.fromFiat(newValue, $rootScope.alternativeIsoCode) * satToUnit
+          ).toFixed(config.unitDecimals));
+        }
+      },
+      enumerable: true,
+      configurable: true
     });
     Object.defineProperty($scope,
-        "amount", {
-        get: function () {
-            return this._amount;
-        },
-        set: function (newValue) {
-            this._amount = newValue;
-            this._alternative = unitToAlternative(this._amount);
-        },
-        enumerable: true,
-        configurable: true
+      "amount", {
+      get: function () {
+        return this._amount;
+      },
+      set: function (newValue) {
+        this._amount = newValue;
+        if (newValue) {
+          this._alternative = -(-(
+            rateService.toFiat(newValue * config.unitToSatoshi, $rootScope.alternativeIsoCode)
+          ).toFixed(2));
+        }
+      },
+      enumerable: true,
+      configurable: true
     });
 
     $scope.loadTxs = function() {

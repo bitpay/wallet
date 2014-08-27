@@ -1,4 +1,4 @@
-<div class="send" data-ng-controller="SendController" data-ng-init="loadTxs()">
+<div class="send" data-ng-controller="SendController as ctrl" data-ng-init="loadTxs()">
   <div ng-show='$root.wallet.isReady()'>
 
     <h1 ng-show="txs.length != 0">Send Proposals</h1>
@@ -88,14 +88,14 @@
               <label for="alternative">Amount in {{ $root.alternativeName }} </label>
               <div class="small-9 columns">
                 <input type="number" id="alternative_amount"
-                ng-disabled="loading"
+                ng-disabled="loading || !ctrl.rateService.isAvailable "
                 name="alternative" placeholder="Amount" ng-model="alternative"
                 min="{{minAlternativeAmount}}" max="10000000000" enough-amount required
                 autocomplete="off"
                 >
               </div>
               <div class="small-3 columns">
-                <span class="postfix">{{$root.alternativeShort}}</span>
+                <span class="postfix">{{$root.alternativeIsoCode}}</span>
               </div>
             </div>
           </div>
