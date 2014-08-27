@@ -44,6 +44,13 @@ TxProposals.prototype.getNtxids = function() {
   return Object.keys(this.txps);
 };
 
+TxProposals.prototype.deleteOne = function(ntxid) {
+  var txp = this.txps[ntxid];
+  if (!txp)
+    throw new Error('Unknown TXP: ' + ntxid);
+  delete this.txps[ntxid];
+};
+
 TxProposals.prototype.deleteAll = function() {
   this.txps = {};
 };
