@@ -79,6 +79,8 @@ module.exports = function(grunt) {
     concat: {
       vendors: {
         src: [
+          'lib/mousetrap/mousetrap.min.js',
+          'js/shell.js', // shell must be loaded before moment due to the way moment loads in a commonjs env
           'lib/moment/min/moment.min.js',
           'lib/qrcode-generator/js/qrcode.js',
           'lib/peer.js',
@@ -113,7 +115,9 @@ module.exports = function(grunt) {
           'js/filters.js', 
           'js/routes.js', 
           'js/services/*.js', 
-          'js/controllers/*.js'
+          'js/controllers/*.js',
+          'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
+          'js/init.js'
         ],
         dest: 'js/copayMain.js'
       }
@@ -136,7 +140,9 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'js/copayMain.js': ['js/copayMain.js']
+          'js/copayMain.js': ['js/copayMain.js'],
+          'lib/angularjs-all.js': ['lib/angularjs-all.js'],
+          'lib/vendors.js': ['lib/vendors.js']
         }
       }
     }
