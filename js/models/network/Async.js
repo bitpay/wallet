@@ -225,11 +225,6 @@ Network.prototype._onMessage = function(enc) {
 Network.prototype._setupConnectionHandlers = function(cb) {
   preconditions.checkState(this.socket);
   var self = this;
-  self.socket.on('insight-error', function(m) {
-    console.log('** insgight-error', m);
-    self.emit('serverError');
-  });
-
   self.socket.on('message', function(m) {
     // delay execution, to improve error handling
     setTimeout(function() {
@@ -239,6 +234,7 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   self.socket.on('error', self._onError.bind(self));
 
   self.socket.on('connect', function() {
+
     self.socket.on('disconnect', function() {
       self.cleanUp();
     });
@@ -304,9 +300,23 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket = this.createSocket();
   this._setupConnectionHandlers(openCallback);
   this.socket.emit('subscribe', pubkey);
-  this.socket.emit('sync', opts.lastTimestamp);
-  this.started = true;
 
+  var self = this,
+    tries = 0;
+  self.socket.on('insight-error', function(m) {
+
+    console.log('Retrying to sync...');
+    setTimeout(function() {
+      if (tries++ > 5) {
+        self.emit('serverError');
+      } else {
+        self.socket.emit('sync', opts.lastTimestamp);
+      }
+    }, 500);
+  });
+
+  self.socket.emit('sync', opts.lastTimestamp);
+  self.started = true;
 };
 
 Network.prototype.createSocket = function() {
