@@ -798,7 +798,6 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   if (txp.merchant) {
     return this.sendPaymentTx(ntxid, cb);
   }
-
   var tx = txp.builder.build();
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
