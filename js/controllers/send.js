@@ -6,12 +6,9 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
-    var configAlternativeToSatoshi = (1 / 512 / 1e-8);
-    var satToAlternative = 1 / configAlternativeToSatoshi; // TODO: Change
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
     $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
-    $scope.minAlternativeAmount = config.limits.minAmountSatoshi * satToAlternative;
 
     this.alternativeName = config.alternativeName;
     this.alternativeIsoCode = config.alternativeIsoCode;
@@ -19,16 +16,9 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope._amount = 0;
     $scope._alternative = 0;
-    this.amountFilter = function(val) {
-      if (val) {
-        return val.toFixed(config.unitDecimals);
-      }
+    var makeNumber = function(val) {
+      return -(-val);
     };
-    this.fiatFilter = function(val) {
-      if (val) {
-        return val.toFixed(2);
-      }
-    }
 
     Object.defineProperty($scope,
       "alternative", {
@@ -38,8 +28,8 @@ angular.module('copayApp.controllers').controller('SendController',
       set: function (newValue) {
         this._alternative = newValue;
         if (typeof(newValue) === 'number') {
-          this._amount = -(-(
-            rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
+          this._amount = makeNumber(
+            (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
           ).toFixed(config.unitDecimals));
         }
       },
@@ -54,8 +44,8 @@ angular.module('copayApp.controllers').controller('SendController',
       set: function (newValue) {
         this._amount = newValue;
         if (newValue) {
-          this._alternative = -(-(
-            rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
+          this._alternative = makeNumber(
+            (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
           ).toFixed(2));
         }
       },
