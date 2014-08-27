@@ -120,7 +120,7 @@ angular.module('copayApp.controllers').controller('JoinController',
           $scope.loading = false;
           if (err || !w) {
             if (err === 'joinError')
-              notification.error('Can\'t find peer.');
+              notification.error('Fatal error connecting to Insight server');
             else if (err === 'walletFull')
               notification.error('The wallet is full');
             else if (err === 'badNetwork')
