@@ -40,6 +40,9 @@ var createBundle = function(opts) {
   b.require('bitcore/node_modules/browserify-buffertools/buffertools.js', {
     expose: 'buffertools'
   });
+  b.require('browser-request', {
+    expose: 'request'
+  });
 
   b.require('./copay', {
     expose: 'copay'

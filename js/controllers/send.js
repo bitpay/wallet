@@ -12,10 +12,9 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
     $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
     $scope.minAlternativeAmount = config.limits.minAmountSatoshi * satToAlternative;
-// Mockup
-    $rootScope.alternativeName = 'Dollars';
-    $rootScope.alternativeIsoCode = 'USD';
-    config.unitDecimals = 2;
+
+    this.alternativeName = config.alternativeName;
+    this.alternativeIsoCode = config.alternativeIsoCode;
     this.rateService = rateService;
 
     $scope._amount = 0;
@@ -40,7 +39,7 @@ angular.module('copayApp.controllers').controller('SendController',
         this._alternative = newValue;
         if (typeof(newValue) === 'number') {
           this._amount = -(-(
-            rateService.fromFiat(newValue, $rootScope.alternativeIsoCode) * satToUnit
+            rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
           ).toFixed(config.unitDecimals));
         }
       },
@@ -56,7 +55,7 @@ angular.module('copayApp.controllers').controller('SendController',
         this._amount = newValue;
         if (newValue) {
           this._alternative = -(-(
-            rateService.toFiat(newValue * config.unitToSatoshi, $rootScope.alternativeIsoCode)
+            rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
           ).toFixed(2));
         }
       },
