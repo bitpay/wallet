@@ -6,9 +6,48 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
+    var configAlternativeToSatoshi = (1 / 512 / 1e-8);
+    var satToAlternative = 1 / configAlternativeToSatoshi; // TODO: Change
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
     $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
+    $scope.minAlternativeAmount = config.limits.minAmountSatoshi * satToAlternative;
+    $rootScope.alternativeName = 'Dollars';
+    $rootScope.alternativeShort = 'USD';
+
+    $scope._amount = 0;
+    $scope._alternative = 0;
+// Mockup
+    var alternativeToUnit = function(val) {
+      return val * configAlternativeToSatoshi * satToUnit;
+    };
+    var unitToAlternative = function(val) {
+      return val * config.unitToSatoshi * satToAlternative;
+    };
+    Object.defineProperty($scope,
+        "alternative", {
+        get: function () {
+            return this._alternative;
+        },
+        set: function (newValue) {
+            this._alternative = newValue;
+            this._amount = alternativeToUnit(this._alternative);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty($scope,
+        "amount", {
+        get: function () {
+            return this._amount;
+        },
+        set: function (newValue) {
+            this._amount = newValue;
+            this._alternative = unitToAlternative(this._amount);
+        },
+        enumerable: true,
+        configurable: true
+    });
 
     $scope.loadTxs = function() {
       var opts = {
