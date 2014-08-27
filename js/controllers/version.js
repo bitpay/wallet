@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('VersionController',
     function($scope, $rootScope, $http, notification) {
 
     $scope.version = copay.version;
+    $scope.commitHash = copay.commitHash;
     $scope.networkName = config.networkName;
 
     $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data) {
