@@ -802,6 +802,55 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('removeTxWithSpentInputs', function () {
+    it('should remove TxProposal with spent inputs', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      chai.expect(w.getTxProposals().length).to.equal(0);
+      w.blockchain.fixUnspent(utxo);
+      w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+        w.sendTxProposal(ntxid);
+        chai.expect(w.getTxProposals().length).to.equal(1);
+        
+        // Inputs are still available, txp still valid
+        w.removeTxWithSpentInputs();
+        chai.expect(w.getTxProposals().length).to.equal(1);
+
+        // Simulate input spent. txp should be removed from txps list
+        w.blockchain.fixUnspent([]);
+        w.removeTxWithSpentInputs();
+        chai.expect(w.getTxProposals().length).to.equal(0);
+
+        done();
+      });
+    });
+
+    it('should remove TxProposal with at least 1 spent input', function(done) {
+      var w = cachedCreateW2();
+      var utxo = [createUTXO(w)[0], createUTXO(w)[0]];
+      utxo[0].amount = 80000;
+      utxo[1].amount = 80000;
+      utxo[1].vout = 1;
+      chai.expect(w.getTxProposals().length).to.equal(0);
+      w.blockchain.fixUnspent(utxo);
+      w.createTx(toAddress, '100000', null, function(ntxid) {
+        w.sendTxProposal(ntxid);
+        chai.expect(w.getTxProposals().length).to.equal(1);
+        
+        // Inputs are still available, txp still valid
+        w.removeTxWithSpentInputs();
+        chai.expect(w.getTxProposals().length).to.equal(1);
+
+        // Simulate 1 input spent. txp should be removed from txps list
+        w.blockchain.fixUnspent([utxo[0]]);
+        w.removeTxWithSpentInputs();
+        chai.expect(w.getTxProposals().length).to.equal(0);
+
+        done();
+      });
+    });
+  });
+
   describe('#send', function() {
     it('should call this.network.send', function() {
       var w = cachedCreateW2();
