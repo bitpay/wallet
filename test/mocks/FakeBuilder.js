@@ -8,7 +8,6 @@ function Tx() {
   this.ins = [{s: VALID_SCRIPTSIG_BUF }];
 };
 
-
 Tx.prototype.getHashType = function() {
   return 1;
 };
@@ -19,7 +18,6 @@ Tx.prototype.getNormalizedHash = function() {
 Tx.prototype.hashForSignature = function() {
   return new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex');
 };
-
 
 function FakeBuilder() {
   this.test = 1;
