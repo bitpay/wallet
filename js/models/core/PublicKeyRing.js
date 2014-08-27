@@ -43,7 +43,7 @@ PublicKeyRing.trim = function(data) {
 };
 
 PublicKeyRing.fromObj = function(data) {
-  preconditions.checkArgument(typeof data !== 'PublicKeyRing');
+  preconditions.checkArgument(!(data instanceof PublicKeyRing), 'bad data format: Did you use .toObj()?');
 
 
   var opts = PublicKeyRing.trim(data);
