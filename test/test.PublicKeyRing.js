@@ -434,6 +434,20 @@ describe('PublicKeyRing model', function() {
     w.nicknameForIndex(4).should.equal('juan1');
   });
 
+  it('#fromObj with error', function() {
+
+    var config = {
+      networkName: 'livenet',
+    };
+    var pkr = new PublicKeyRing(config);
+
+    (function () 
+    {
+      PublicKeyRing.fromObj(pkr);
+    }
+    ).should.throw('bad data format: Did you use .toObj()?');  
+  });
+
 
   it('#toObj #fromObj with nickname', function() {
     var config = {
