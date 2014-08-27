@@ -83,6 +83,22 @@
               </div>
             </div>
           </div>
+          <div class="large-6 medium-6 columns">
+            <div class="row collapse">
+              <label for="alternative">Amount in {{ $root.alternativeName }} </label>
+              <div class="small-9 columns">
+                <input type="number" id="alternative_amount"
+                ng-disabled="loading"
+                name="alternative" placeholder="Amount" ng-model="alternative"
+                min="{{minAlternativeAmount}}" max="10000000000" enough-amount required
+                autocomplete="off"
+                >
+              </div>
+              <div class="small-3 columns">
+                <span class="postfix">{{$root.alternativeShort}}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="row" ng-show="wallet.isShared()">
