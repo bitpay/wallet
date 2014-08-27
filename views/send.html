@@ -85,7 +85,7 @@
           </div>
           <div class="large-6 medium-6 columns">
             <div class="row collapse">
-              <label for="alternative">Amount in {{ $root.alternativeName }} </label>
+              <label for="alternative">Amount in {{ ctrl.alternativeName }} </label>
               <div class="small-9 columns">
                 <input type="number" id="alternative_amount"
                 ng-disabled="loading || !ctrl.rateService.isAvailable "
@@ -95,7 +95,7 @@
                 >
               </div>
               <div class="small-3 columns">
-                <span class="postfix">{{$root.alternativeIsoCode}}</span>
+                <span class="postfix">{{ctrl.alternativeIsoCode}}</span>
               </div>
             </div>
           </div>

@@ -7,6 +7,8 @@ var defaultConfig = {
   // DEFAULT unit: Bit
   unitName: 'bits',
   unitToSatoshi: 100,
+  alternativeName: 'US Dollar',
+  alternativeIsoCode: 'USD',
 
   // wallet limits
   limits: {
