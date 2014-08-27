@@ -5,13 +5,25 @@
 var fs = require('fs');
 var browserify = require('browserify');
 var exec = require('child_process').exec;
+var shell = require('shelljs');
+
 var puts = function(error, stdout, stderr) {
   if (error) console.log(error);
 };
 
+var getCommitHash = function() {
+  //exec git command to get the hash of the current commit
+  //git rev-parse HEAD
+
+  var hash = shell.exec('git rev-parse HEAD').output.trim().substr(0,10);
+  return hash;
+}
+
 var createVersion = function() {
   var json = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-  var content = 'module.exports="' + json.version + '";';
+  var content = 'module.exports.version="' + json.version + '";';
+
+  content = content +  '\nmodule.exports.commitHash="' + getCommitHash() + '";';
   fs.writeFileSync("./version.js", content);
 };
 
