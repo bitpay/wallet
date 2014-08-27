@@ -15,6 +15,7 @@ var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
+var Builder = require('./mocks/FakeBuilder');
 var bitcore = bitcore || require('bitcore');
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
@@ -103,6 +104,7 @@ describe('Wallet model', function() {
     c.networkName = config.networkName;
     c.verbose = config.verbose;
     c.version = '0.0.1';
+
 
     return new Wallet(c);
   }
@@ -737,6 +739,21 @@ describe('Wallet model', function() {
         txid.length.should.equal(64);
         done();
       });
+    });
+  });
+  it('should fail to send incomplete transaction', function(done) {
+    var w = createW2(null, 1);
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      var txp = w.txProposals.get(ntxid);
+      // Assign fake builder
+      txp.builder = new Builder();
+      sinon.stub(txp.builder, 'build').returns({ isComplete: function () { return false; }});
+      (function () { 
+        w.sendTx(ntxid);
+      }).should.throw('Tx is not complete. Can not broadcast');
+      done();
     });
   });
   it('should send TxProposal', function(done) {
