@@ -86,19 +86,6 @@ Wallet.prototype.seedCopayer = function(pubKey) {
   this.seededCopayerId = pubKey;
 };
 
-// not being used now
-Wallet.prototype.connectToAll = function() {
-  // not being used now
-  return;
-
-  var all = this.publicKeyRing.getAllCopayerIds();
-  this.network.connectToCopayers(all);
-  if (this.seededCopayerId) {
-    this.sendWalletReady(this.seededCopayerId);
-    this.seededCopayerId = null;
-  }
-};
-
 Wallet.prototype._onIndexes = function(senderId, data) {
   this.log('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
@@ -647,8 +634,7 @@ Wallet.prototype.sendReject = function(ntxid) {
 
 
 Wallet.prototype.sendWalletReady = function(recipients) {
-  preconditions.checkArgument(recipients);
-  this.log('### SENDING WalletReady TO:', recipients);
+  this.log('### SENDING WalletReady TO:', recipients || 'All');
 
   this.send(recipients, {
     type: 'walletReady',
