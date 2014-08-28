@@ -65,7 +65,7 @@ describe('TxProposals', function() {
       txps.getNtxids().should.deep.equal(['a','b']);
     });
   });
-  describe.only('#deleteOne', function() {
+  describe('#deleteOne', function() {
     it('should delete specified ntxid', function() {
       var txps = new TxProposals();
       txps.txps = {a:1, b:2};
