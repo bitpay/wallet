@@ -14,12 +14,12 @@ angular.module('copayApp.controllers').controller('SendController',
     this.alternativeIsoCode = config.alternativeIsoCode;
     this.rateService = rateService;
 
-    $scope._amount = 0;
-    $scope._alternative = 0;
-    var makeNumber = function(val) {
-      return -(-val);
-    };
+    $scope.amount = 0;
 
+    /**
+     * Setting the two related amounts as properties prevents an infinite
+     * recursion for watches while preserving the original angular updates
+     */
     Object.defineProperty($scope,
       "alternative", {
       get: function () {
@@ -28,9 +28,9 @@ angular.module('copayApp.controllers').controller('SendController',
       set: function (newValue) {
         this._alternative = newValue;
         if (typeof(newValue) === 'number') {
-          this._amount = makeNumber(
+          this._amount = Number.parseFloat(
             (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
-          ).toFixed(config.unitDecimals));
+          ).toFixed(config.unitDecimals), 10);
         }
       },
       enumerable: true,
@@ -44,9 +44,9 @@ angular.module('copayApp.controllers').controller('SendController',
       set: function (newValue) {
         this._amount = newValue;
         if (newValue) {
-          this._alternative = makeNumber(
+          this._alternative = Number.parseFloat(
             (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
-          ).toFixed(2));
+          ).toFixed(2), 10);
         }
       },
       enumerable: true,
