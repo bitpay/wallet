@@ -281,7 +281,7 @@ angular.module('copayApp.directives')
             elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');
             setTimeout(function() {
               elm.addClass('btn-copy').removeClass('btn-copied').html('');
-            }, 1000);            
+            }, 1000);
           });
         });
 
