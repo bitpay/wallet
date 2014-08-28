@@ -72,6 +72,7 @@ Network.prototype.connectedCopayers = function() {
 };
 
 Network.prototype._sendHello = function(copayerId) {
+
   this.send(copayerId, {
     type: 'hello',
     copayerId: this.copayerId,
@@ -211,13 +212,6 @@ Network.prototype._onMessage = function(enc) {
 Network.prototype._setupConnectionHandlers = function(cb) {
   preconditions.checkState(this.socket);
   var self = this;
-
-  self.socket.on('connect', function() {
-    self.socket.on('disconnect', function() {
-      self.cleanUp();
-    });
-    if (typeof cb === 'function') cb();
-  });
   self.socket.on('message', function(m) {
     // delay execution, to improve error handling
     setTimeout(function() {
@@ -226,6 +220,14 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   });
   self.socket.on('error', self._onError.bind(self));
 
+  self.socket.on('connect', function() {
+
+    self.socket.on('disconnect', function() {
+      self.cleanUp();
+    });
+
+    if (typeof cb === 'function') cb();
+  });
 };
 
 Network.prototype._onError = function(err) {
@@ -285,9 +287,23 @@ Network.prototype.start = function(opts, openCallback) {
   this.socket = this.createSocket();
   this._setupConnectionHandlers(openCallback);
   this.socket.emit('subscribe', pubkey);
-  this.socket.emit('sync', opts.lastTimestamp);
-  this.started = true;
 
+  var self = this,
+    tries = 0;
+  self.socket.on('insight-error', function(m) {
+
+    console.log('Retrying to sync...');
+    setTimeout(function() {
+      if (tries++ > 5) {
+        self.emit('serverError');
+      } else {
+        self.socket.emit('sync', opts.lastTimestamp);
+      }
+    }, 500);
+  });
+
+  self.socket.emit('sync', opts.lastTimestamp);
+  self.started = true;
 };
 
 Network.prototype.createSocket = function() {
@@ -329,7 +345,6 @@ Network.prototype.send = function(dest, payload, cb) {
     dest = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
-
   if (typeof dest === 'string')
     dest = [dest];
 
@@ -339,6 +354,7 @@ Network.prototype.send = function(dest, payload, cb) {
   dest.forEach(function(to) {
     //console.log('\t to ' + to);
     var message = self.encode(to, payload);
+
     self.socket.emit('message', message);
   });
   if (typeof cb === 'function') cb();
