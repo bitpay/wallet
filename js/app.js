@@ -4,7 +4,9 @@ var copay = require('copay');
 var config = defaultConfig;
 var localConfig = JSON.parse(localStorage.getItem('config'));
 if (localConfig) {
-  if (localConfig.version === copay.version) {
+  var cmv = copay.version.split('.')[1];
+  var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
+  if (cmv === lmv) {
     for (name in localConfig) {
       if (localConfig.hasOwnProperty(name)) {
         if (name === 'networkName' && config['forceNetwork']) {
