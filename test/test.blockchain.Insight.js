@@ -4,23 +4,17 @@ var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
 var bitcore = bitcore || require('bitcore');
+var FakeSocket = require('./mocks/FakeBlockchainSocket');
+
 try {
-  var copay = require('copay'); //browser
+  var copay = require('./copay'); //browser
 } catch (e) {
   var copay = require('../copay'); //node
 }
 var Buffer = bitcore.Buffer;
-var Insight = copay.Insight || require('../js/models/blockchain/Insight');
+var Insight = copay.Insight;
 
-var ID = '933bf321393459b7';
-var copayers = [
-  'tpubD6NzVbkrYhZ4WeSS3M5axcR1EMYPeerA8GozBmYVLKSjriMXhse1C4kiLJMvaaDKRBaP7iSJJo5wMBh3JSYcMz1vrwXKKnAgtt4V4pfSEcq',
-  'tpubD6NzVbkrYhZ4XPjvz7c2544jPBY2WKCJVCETEE68ykBLMcE7J3GVDGvmPEdzvTWWXxQsE25rm7f4J1ZNxzWhuR7iEhX1m4dS9HrYbg1ezUP',
-  'tpubD6NzVbkrYhZ4YTRVfKf1tHgydyvoEWdsBRVCG6odCZdpY7nPZWxA26sLPtyHkquzHmgdAH8HpftobnJJUvcbi7MyHVqXmPLJCW9KCS6rkw8',
-  'tpubD6NzVbkrYhZ4XDY86vJmcCUuUvbqujhM633a5ih8b6ngm1AsskGz3orGkjvbzcJNQUJSK9jqggRwSohq3LAigwWZ8uzGNrGZqCwaE95foAj',
-  'tpubD6NzVbkrYhZ4XGHkbBTx4kU5w7RDb9hWXyK9tuEaYrY9SJUWBCUxrcMFkqBa6qAv11FNdVJ4MFxKdnKnjoBWDY6SwBtmP83gjFHTV5zz4RW'
-];
-var addresses = [
+var ADDRESSES = [
   '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM',
   '2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb', // 41btc
   '2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x', // 50btc
@@ -31,7 +25,7 @@ var addresses = [
   '2N9EdxU3co5XKTyj3yhFBeU3qw3EM1rrgzE'
 ];
 
-var unspent = [{
+var UNSPENT = [{
   address: "2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb",
   txid: "d5597c6cf7f72507af63a4d5a2f9f84edb45fb42452cc8c514435b7a93158915",
   vout: 0,
@@ -49,182 +43,362 @@ var unspent = [{
   confirmations: 6728
 }];
 
-var rawtx = '01000000010c2a03ed71ee18148e8c99c5ff66d5ffb75e5def46cdea2acc6f30103f33bfb5010000006a47304402207f960aeefdfad270dd77d1acca7af17d3a2e47e2059034ff5d6305cf63635e1d02202f061ee196cc4459cdecae6559beac696a9ecde9a17520849f319fa2a627e64f012103870465f9b4efb90b5d186a7a5eacd7081e601020dacd68d942e5918a56ed0bfcffffffff02a086010000000000ad532102a9495c64323cd8c3354dbf0b3400d830ee680da493acbccc3c2c356d1b20fabf21028233cf8bc6112ae2c36468bd447732c5586b52e1ba3284a2319cadfac6367f99210279fd856e5ed13ab6807e85ed7c0cd6f80613be042240fd731c43f5aba3dcae9821021380858a67a4f99eda52ce2d72c300911f9d3eb9d7a45102a2133f14f7b2dc14210215739b613ce42106a11ce433342c13c610bf68a1bc934f607ad7aeb4178e04cf55ae2044d200000000001976a9146917322f0010aaf7ec136a34b476dfc5eb7a331288ac00000000';
-
+var FAKE_OPTS = {
+  host: 'something.com',
+  port: 123,
+  schema: 'http'
+}
 
 describe('Insight model', function() {
 
+  before(function() {
+    sinon.stub(Insight.prototype, "getSocket", function() {
+      return new FakeSocket();
+    });
+  });
+
+  after(function() {
+    Insight.prototype.getSocket.restore();
+  });
 
   it('should create an instance', function() {
-    var i = new Insight();
-    should.exist(i);
+    var blockchain = new Insight(FAKE_OPTS);
+    should.exist(blockchain);
+    blockchain.url.should.be.equal('http://something.com:123');
   });
 
-  // Tests for Node
-  if (typeof process !== 'undefined' && process.version) {
-    it('should return array of unspent output', function(done) {
-      var i = new Insight();
+  it('should subscribe to inventory', function(done) {
+    var blockchain = new Insight(FAKE_OPTS);
+    var emitSpy = sinon.spy(blockchain.socket, 'emit');
+    blockchain.on('connect', function() {
+      emitSpy.calledWith('subscribe', 'inv');
+      done();
+    });
+  });
 
+  it('should be able to destroy the instance', function(done) {
+    var blockchain = new Insight(FAKE_OPTS);
+    blockchain.status.should.be.equal('disconnected');
+    blockchain.on('connect', function() {
+      blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+      blockchain.subscribed.length.should.equal(1);
+      blockchain.destroy();
+      blockchain.subscribed.length.should.equal(0);
+      blockchain.status.should.be.equal('destroyed');
+      done();
+    });
+  });
 
-      var http = require('http');
-      var request = {
-        statusCode: 200
-      };
+  it('should subscribe to an address', function() {
+    var blockchain = new Insight(FAKE_OPTS);
+    var emitSpy = sinon.spy(blockchain.socket, 'emit');
 
-      request.on = function(event, cb) {
-        if (event === 'error') return;
-        if (event === 'data') return cb(JSON.stringify(unspent));
-        return cb();
-      };
+    blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribed.length.should.equal(1);
+    emitSpy.calledWith('subscribe', 'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+  });
 
-      var req = {};
-      req.write = function() {};
-      req.end = function() {};
+  it('should subscribe to a list of addresses', function() {
+    var blockchain = new Insight(FAKE_OPTS);
+    var emitSpy = sinon.spy(blockchain.socket, 'emit');
 
+    blockchain.subscribe([
+      'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM',
+      '2NBBHBjB5sd7HFqKtout1L7d6dPhwJgP2j8'
+    ]);
+    blockchain.subscribed.length.should.equal(2);
+    emitSpy.calledWith('subscribe', 'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    emitSpy.calledWith('subscribe', '2NBBHBjB5sd7HFqKtout1L7d6dPhwJgP2j8');
+  });
 
-      sinon
-      .stub(http, 'request')
-      .returns(req)
-      .yields(request);
+  it('should unsubscribe to an address', function() {
+    var blockchain = new Insight(FAKE_OPTS);
+    blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribed.length.should.equal(1);
+    blockchain.unsubscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribed.length.should.equal(0);
+  });
 
-      i.getUnspent(['2MuD5LnZSViZZYwZbpVsagwrH8WWvCztdmV', '2NBSLoMvsHsf2Uv3LA17zV4beH6Gze6RovA'], function(e, ret) {
-        should.not.exist(e);
-        ret.should.deep.equal(unspent);
-        http.request.restore();
+  it('should unsubscribe to all addresses', function() {
+    var blockchain = new Insight(FAKE_OPTS);
+    blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribe('2NBBHBjB5sd7HFqKtout1L7d6dPhwJgP2j8');
+    blockchain.subscribed.length.should.equal(2);
+
+    blockchain.unsubscribeAll('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribed.length.should.equal(0);
+  });
+
+  it('should broadcast a raw transaction', function(done) {
+    var blockchain = new Insight(FAKE_OPTS);
+    var rawtx = '01000000010c2a03ed71ee18148e8c99c5ff66d5ffb75e5def46cdea2acc6f30103f33bfb5010000006a47304402207f960aeefdfad270dd77d1acca7af17d3a2e47e2059034ff5d6305cf63635e1d02202f061ee196cc4459cdecae6559beac696a9ecde9a17520849f319fa2a627e64f012103870465f9b4efb90b5d186a7a5eacd7081e601020dacd68d942e5918a56ed0bfcffffffff02a086010000000000ad532102a9495c64323cd8c3354dbf0b3400d830ee680da493acbccc3c2c356d1b20fabf21028233cf8bc6112ae2c36468bd447732c5586b52e1ba3284a2319cadfac6367f99210279fd856e5ed13ab6807e85ed7c0cd6f80613be042240fd731c43f5aba3dcae9821021380858a67a4f99eda52ce2d72c300911f9d3eb9d7a45102a2133f14f7b2dc14210215739b613ce42106a11ce433342c13c610bf68a1bc934f607ad7aeb4178e04cf55ae2044d200000000001976a9146917322f0010aaf7ec136a34b476dfc5eb7a331288ac00000000';
+
+    sinon.stub(blockchain, "requestPost", function(url, data, cb) {
+      url.should.be.equal('/api/tx/send');
+      var res = {statusCode: 200};
+      var body = JSON.stringify({txid: 1234});
+      setTimeout(function() {
+        cb(null, res, body);
+      }, 0);
+    });
+
+    blockchain.broadcast(rawtx, function(err, id) {
+      id.should.be.equal(1234);
+      done();
+    });
+  });
+
+  describe('getTransaction', function() {
+    it('should get a transaction by id', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      var txid = '123321';
+      var tx = {txid: txid, more: 'something'};
+
+      sinon.stub(blockchain, "request", function(url, cb) {
+        url.should.be.equal('/api/tx/' + txid);
+        var res = {statusCode: 200};
+        var body = JSON.stringify(tx);
+        setTimeout(function() {
+          cb(null, res, body);
+        }, 0);
+      });
+
+      blockchain.getTransaction(txid, function(err, t) {
+        chai.expect(err).to.be.null;
+        t.should.be.an('object');
+        t.txid.should.be.equal(tx.txid);
+        t.more.should.be.equal(tx.more);
         done();
       });
     });
 
-    it('should return txid', function(done) {
-      var i = new Insight();
+    it('should handle a 404 error code', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      var txid = '123321';
 
-      var http = require('http');
-      var request = {
-        statusCode: 200
-      };
+      sinon.stub(blockchain, "request", function(url, cb) {
+        url.should.be.equal('/api/tx/' + txid);
+        var res = {statusCode: 404};
+        var body = '';
+        setTimeout(function() {
+          cb(null, res, body);
+        }, 0);
+      });
 
-      request.on = function(event, cb) {
-        if (event === 'error') return;
-        if (event === 'data') return cb('{ "txid": "1234" }');
-        return cb();
-      };
-
-      var req = {};
-      req.write = function() {};
-      req.end = function() {};
-
-      sinon
-      .stub(http, 'request')
-      .returns(req)
-      .yields(request);
-
-      i.sendRawTransaction(rawtx, function(a) {
-        should.exist(a);
-        a.should.equal('1234');
-        http.request.restore();
+      blockchain.getTransaction(txid, function(err, t) {
+        chai.expect(t).to.be.undefined;
+        chai.expect(err).not.be.null;
         done();
       });
     });
-  }
 
+    it('should handle a null response', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      var txid = '123321';
 
-
-  it('#checkActivity for innactive addreses', function(done) {
-    var w = new Insight();
-    w.getTransactions = function(addresses, cb) {
-      cb([]);
-    };
-
-    w.checkActivity(addresses, function(err, actives) {
-      actives.length.should.equal(addresses.length);
-      actives.filter(function(i) {
-        return i
-      }).length.should.equal(0);
-      done();
-    });
-  });
-  it('#checkActivity for active addreses', function(done) {
-    var w = new Insight();
-    w.getTransactions = function(addresses, cb) {
-      cb([{
-        vin: [{
-          addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
-        }],
-        vout: []
-      }, {
-        vin: [{
-          addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
-        }],
-        vout: []
-      }, {
-        vin: [{
-          addr: '2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x'
-        }],
-        vout: []
-      }, {
-        vin: [],
-        vout: [{
-          scriptPubKey: {
-            addresses: ['2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY']
-          }
-        }]
-      }]);
-    };
-
-    w.checkActivity(addresses, function(err, actives) {
-      actives.length.should.equal(addresses.length);
-      actives.filter(function(i) {
-        return i
-      }).length.should.equal(3);
-      done();
-    });
-  });
-
-
-  it('should handle getTransaction null response', function(done) {
-    var w = new Insight();
-    w._request = sinon.stub().yields();
-    w.getTransactions(['asdasd'], function(ret) {
-      ret.length.should.equal(0);
-      done();
-    });
-  });
-
-
-
-  it('should handle getTransaction empty response', function(done) {
-    var w = new Insight();
-    w._request = sinon.stub().yields([]);
-    w.getTransactions(['asdasd'], function(ret) {
-      ret.length.should.equal(0);
-      done();
-    });
-  });
-
-  describe("#checkSentTx", function() {
-    it('should return true if Tx is found', function(done) {
-      var w = new Insight();
-      w._request = sinon.stub().yields(null, {
-        txid: "414142",
+      sinon.stub(blockchain, "request", function(url, cb) {
+        url.should.be.equal('/api/tx/' + txid);
+        var res = {statusCode: 200};
+        var body = null;
+        setTimeout(function() {
+          cb(null, res, body);
+        }, 0);
       });
-      var tx = function() {};
-      tx.prototype.getHash = function(){return  new Buffer('BAA')};
-      w.checkSentTx(new tx(), function(err, ret) {
-        should.not.exist(err);
-        ret.should.equal('414142');
+
+      blockchain.getTransaction(txid, function(err, t) {
+        chai.expect(t).to.be.undefined;
+        chai.expect(err).not.be.null;
         done();
       });
     });
-    it('should return false if Tx is not found', function(done) {
-      var w = new Insight();
-      w._request = sinon.stub().yields(null, {
-        txid: "414142",
+
+    it('should handle an empty response', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      var txid = '123321';
+
+      sinon.stub(blockchain, "request", function(url, cb) {
+        url.should.be.equal('/api/tx/' + txid);
+        var res = {statusCode: 200};
+        var body = null;
+        setTimeout(function() {
+          cb(null, res, body);
+        }, 0);
       });
-      var tx = function() {};
-      tx.prototype.getHash = function(){return new Buffer('ABC')};
-      w.checkSentTx(new tx(), function(err, ret) {
-        should.not.exist(err);
-        ret.should.equal(false);
+
+      blockchain.getTransaction(txid, function(err, t) {
+        chai.expect(t).to.be.undefined;
+        chai.expect(err).not.be.null;
+        done();
+      });
+    });
+  });
+
+  it('should get a set of transaction by addresses', function(done) {
+    var blockchain = new Insight(FAKE_OPTS);
+
+    sinon.stub(blockchain, "request", function(url, cb) {
+      var res = {statusCode: 200};
+
+      if (url == '/api/addr/2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM') {
+        return setTimeout(function() {
+          var body = JSON.stringify({transactions: [1, 2]});
+          cb(null, res, body);
+        }, 0);
+      }
+
+      if (url == '/api/addr/2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb') {
+        return setTimeout(function() {
+          var body = JSON.stringify({transactions: [3]});
+          cb(null, res, body);
+        }, 0);
+      }
+
+      setTimeout(function() {
+        var body = JSON.stringify({txid: '123123'});
+        cb(null, res, body);
+      }, 0);
+    });
+
+    var addresses = ['2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM', '2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb'];
+    blockchain.getTransactions(addresses, function(err, txs) {
+      chai.expect(err).to.be.null;
+      txs.length.should.be.equal(3);
+      done();
+    });
+  });
+
+  it('should get a list of unspent output', function(done) {
+    var blockchain = new Insight(FAKE_OPTS);
+
+    sinon.stub(blockchain, "requestPost", function(url, data, cb) {
+      url.should.be.equal('/api/addrs/utxo');
+      data.addrs.should.be.equal('2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM,2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb,2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x');
+      setTimeout(function() {
+        var res = {statusCode: 200};
+        var body = JSON.stringify(UNSPENT);
+        cb(null, res, body);
+      }, 0);
+    });
+
+    blockchain.getUnspent(ADDRESSES.slice(0, 3), function(err, unspent) {
+      chai.expect(err).to.be.null;
+      unspent.length.should.be.equal(2);
+      unspent[0].address.should.be.equal('2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb');
+      unspent[1].address.should.be.equal('2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x');
+      done();
+    });
+  });
+
+  describe('getActivity', function() {
+    it('should get activity for an innactive address', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+
+      sinon.stub(blockchain, "getTransactions", function(addresses, cb) {
+        cb(null, []);
+      });
+
+      blockchain.getActivity(ADDRESSES, function(err, actives) {
+        chai.expect(err).to.be.null;
+        actives.length.should.equal(ADDRESSES.length);
+        actives.filter(function(i) {
+          return i
+        }).length.should.equal(0);
+        done();
+      });
+    });
+
+    it('should get activity for active addresses', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+
+      sinon.stub(blockchain, "getTransactions", function(addresses, cb) {
+        cb(null, [{
+            vin: [{
+              addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
+            }],
+            vout: []
+          }, {
+            vin: [{
+              addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
+            }],
+            vout: []
+          }, {
+            vin: [{
+              addr: '2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x'
+            }],
+            vout: []
+          }, {
+            vin: [],
+            vout: [{
+              scriptPubKey: {
+                addresses: ['2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY']
+              }
+            }]
+        }]);
+      });
+
+      blockchain.getActivity(ADDRESSES, function(err, actives) {
+        chai.expect(err).to.be.null;
+        actives.length.should.equal(ADDRESSES.length);
+        actives.filter(function(i) {
+          return i
+        }).length.should.equal(3);
+        done();
+      });
+    });
+  });
+
+  describe('Events', function() {
+    it('should emmit event on a new block', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.on('connect', function() {
+        blockchain.socket.emit('block', '12312312');
+      });
+
+      blockchain.on('block', function(blockid) {
+        blockid.should.be.equal('12312312');
+        done();
+      });
+    });
+
+    it('should emmit event on a transaction for subscried addresses', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.subscribe('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY');
+      blockchain.on('connect', function() {
+        blockchain.socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
+      });
+
+      blockchain.on('tx', function(ev) {
+        ev.address.should.be.equal('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY');
+        ev.txid.should.be.equal('1123');
+        done();
+      });
+    });
+
+    it('should\'t emmit event on a transaction for non subscribed addresses', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.on('connect', function() {
+        blockchain.socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
+        setTimeout(function() { done(); }, 20);
+      });
+
+      blockchain.on('tx', function(ev) {
+        throw Error('should not call this event!');
+      });
+    });
+
+    it('should emmit event on connection', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.on('connect', function() {
+        done();
+      });
+    });
+
+    it('should emmit event on disconnection', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.on('connect', function() {
+        blockchain.socket.emit('connect_error');
+      });
+      blockchain.on('disconnect', function() {
         done();
       });
     });

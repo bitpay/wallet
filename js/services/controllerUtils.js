@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video, uriHandler) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, video, uriHandler) {
     var root = {};
     root.getVideoMutedStatus = function(copayer) {
       if (!$rootScope.videoInfo) return;
@@ -23,8 +23,6 @@ angular.module('copayApp.services')
     root.logout = function() {
       if ($rootScope.wallet)
         $rootScope.wallet.close();
-
-      Socket.removeAllListeners();
 
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
@@ -68,7 +66,6 @@ angular.module('copayApp.services')
       uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
-      $rootScope.insightError = 0;
       $rootScope.isCollapsed = true;
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
         if (txAlertCount && txAlertCount > 0) {
@@ -100,8 +97,6 @@ angular.module('copayApp.services')
 
 
     root.startNetwork = function(w, $scope) {
-      Socket.removeAllListeners();
-
       root.setupRootVariables();
       root.installStartupHandlers(w, $scope);
       root.setSocketHandlers();
@@ -125,6 +120,8 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
+
+
         if ($rootScope.pendingPayment) {
           $location.path('send');
         } else {
@@ -298,47 +295,20 @@ angular.module('copayApp.services')
       });
     }
 
-    var connectionLost = false;
-    $rootScope.$watch('insightError', function(status) {
-      if (!status) return;
-
-      // Reconnected
-      if (status === -1) {
-        if (!connectionLost) return; // Skip on first reconnect
-        connectionLost = false;
+    root.setConnectionListeners = function(wallet) {
+      wallet.blockchain.on('connect', function(attempts) {
+        if (attempts == 0) return;
         notification.success('Networking restored', 'Connection to Insight re-established');
-        return;
-      }
+      });
 
-      // Retry
-      if (status == 1) return; // Skip the first try
-      connectionLost = true;
-      notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number ' + (status - 1) + ')');
-    });
-
-    root._setCommError = function(e) {
-      if ($rootScope.insightError < 0)
-        $rootScope.insightError = 0;
-      $rootScope.insightError++;
-    };
-
-    root._clearCommError = function(e) {
-      if ($rootScope.insightError > 0)
-        $rootScope.insightError = -1;
-      else
-        $rootScope.insightError = 0;
-    };
+      wallet.blockchain.on('disconnect', function() {
+        notification.error('Networking problem', 'Connection to Insight lost, trying to reconnect...');
+      });
+    }
 
     root.setSocketHandlers = function() {
       root.updateAddressList();
-      if (!Socket.sysEventsSet) {
-        Socket.sysOn('error', root._setCommError);
-        Socket.sysOn('reconnect_error', root._setCommError);
-        Socket.sysOn('reconnect_failed', root._setCommError);
-        Socket.sysOn('connect', root._clearCommError);
-        Socket.sysOn('reconnect', root._clearCommError);
-        Socket.sysEventsSet = true;
-      }
+
       if (!$rootScope.wallet) return;
 
       var currentAddrs = Socket.getListeners();

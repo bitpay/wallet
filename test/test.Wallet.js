@@ -823,7 +823,7 @@ describe('Wallet model', function() {
     });
 
     var mockFakeActivity = function(f) {
-      w.blockchain.checkActivity = function(addresses, cb) {
+      w.blockchain.getActivity = function(addresses, cb) {
         var activity = new Array(addresses.length);
         for (var i = 0; i < addresses.length; i++) {
           var a1 = ADDRESSES_CHANGE.indexOf(addresses[i]);

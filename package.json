@@ -15,6 +15,7 @@
     "mocha-lcov-reporter": "0.0.1",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
+    "request": "^2.40.0",
     "sinon": "1.9.1"
   },
   "scripts": {
