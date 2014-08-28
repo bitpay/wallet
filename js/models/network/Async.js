@@ -290,6 +290,8 @@ Network.prototype.start = function(opts, openCallback) {
   this._setupConnectionHandlers(openCallback);
   this.socket.emit('subscribe', pubkey);
 
+
+  var fromTs = opts.lastTimestamp + 1;
   var self = this,
     tries = 0;
   self.socket.on('insight-error', function(m) {
@@ -299,13 +301,13 @@ Network.prototype.start = function(opts, openCallback) {
       if (tries++ > 5) {
         self.emit('serverError');
       } else {
-        self.socket.emit('sync', opts.lastTimestamp + 1);
+        self.socket.emit('sync', fromTs);
       }
     }, 500);
   });
 
 
-  self.socket.emit('sync', opts.lastTimestamp);
+  self.socket.emit('sync', fromTs);
   self.started = true;
 };
 
@@ -358,9 +360,7 @@ Network.prototype.send = function(dest, payload, cb) {
     var to = dest[ii];
     if (to == this.copayerId) 
       continue;
-    console.log('SEND to: ' + to, this.copayerId, payload);
-
-
+    //console.log('SEND to: ' + to, this.copayerId, payload);
     var message = this.encode(to, payload);
     this.socket.emit('message', message);
   }
