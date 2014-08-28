@@ -50,7 +50,7 @@ var Insight = function (opts) {
   var self = this;
   this.socket.on('connect', function() {
     self.status = self.STATUS.CONNECTED;
-    self.suscribeToBlocks();
+    self.subscribeToBlocks();
     self.emit('connect', 0);
   });
 
@@ -82,7 +82,7 @@ Insight.prototype.STATUS = {
 }
 
 /** @private */
-Insight.prototype.suscribeToBlocks = function() {
+Insight.prototype.subscribeToBlocks = function() {
   if (this.listeningBlocks || !this.socket.connected) return;
 
   var self = this;
@@ -132,9 +132,12 @@ Insight.prototype.subscribe = function(addresses) {
   addresses.forEach(function(address) {
     preconditions.checkArgument(new bitcore.Address(address).isValid());
 
-    self.subscribed.push(address);
-    self.socket.emit('subscribe', address);
-    self.socket.on(address, handlerFor(self, address));
+    // skip already subscibed
+    if (self.subscribed.indexOf(address) == -1) {
+      self.subscribed.push(address);
+      self.socket.emit('subscribe', address);
+      self.socket.on(address, handlerFor(self, address));
+    }
   });
 };
 
