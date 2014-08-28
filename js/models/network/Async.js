@@ -356,6 +356,8 @@ Network.prototype.send = function(dest, payload, cb) {
   var l = dest.length;
   var i = 0;
   dest.forEach(function(to) {
+    if (to === this.copayerId)
+      continue;
 
 
     //console.log('\t to ' + to);
