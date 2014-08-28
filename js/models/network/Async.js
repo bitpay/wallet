@@ -345,13 +345,16 @@ Network.prototype.send = function(dest, payload, cb) {
     dest = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
+  console.log('SEND to: ' + to, payload);
+
   if (typeof dest === 'string')
     dest = [dest];
 
   var l = dest.length;
   var i = 0;
-  //console.log('sending ' + JSON.stringify(payload));
   dest.forEach(function(to) {
+
+
     //console.log('\t to ' + to);
     var message = self.encode(to, payload);
 
