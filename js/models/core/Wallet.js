@@ -53,6 +53,7 @@ function Wallet(opts) {
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
   this.lastTimestamp = opts.lastTimestamp || undefined;
+  this.lastMessageFrom = {};
 
   this.paymentRequests = opts.paymentRequests || {};
 
@@ -313,7 +314,7 @@ Wallet.prototype.updateTimestamp = function(ts) {
 
 Wallet.prototype._onNoMessages = function() {
   console.log('No messages at the server. Requesting sync'); //TODO
-  this.sendWalletReady(senderId);
+  this.sendWalletReady();
 };
 
 Wallet.prototype._onData = function(senderId, data, ts) {
@@ -323,7 +324,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(typeof ts === 'number');
 
-  //console.log('RECV', senderId, data); 
+  console.log('RECV', senderId, data);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('corrupt', senderId);
@@ -331,15 +332,18 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     return;
   }
 
+
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
     case 'walletId':
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
-      this.sendPublicKeyRing(senderId);
-      this.sendAddressBook(senderId);
-      this.sendAllTxProposals(senderId); // send old txps
+      if (this.lastMessageFrom[senderId] !== 'walletReady') {
+        this.sendPublicKeyRing(senderId);
+        this.sendAddressBook(senderId);
+        this.sendAllTxProposals(senderId); // send old txps
+      }
       break;
     case 'publicKeyRing':
       this._onPublicKeyRing(senderId, data);
@@ -359,13 +363,15 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     case 'addressbook':
       this._onAddressBook(senderId, data);
       break;
-    // unused messages  
+      // unused messages  
     case 'disconnect':
+      //case 'an other unused message':
       break;
     default:
-      throw new Error('unknown message type received: '+ data.type + ' from: ' + senderId)
+      throw new Error('unknown message type received: ' + data.type + ' from: ' + senderId)
   }
 
+  this.lastMessageFrom[senderId] = data.type;
   this.updateTimestamp(ts);
 };
 
