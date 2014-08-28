@@ -290,25 +290,12 @@ Network.prototype.start = function(opts, openCallback) {
   this._setupConnectionHandlers(openCallback);
   this.socket.emit('subscribe', pubkey);
 
-
   var fromTs = opts.lastTimestamp + 1;
-  var self = this,
-    tries = 0;
-  self.socket.on('insight-error', function(m) {
-
-    console.log('Retrying to sync...');
-    setTimeout(function() {
-      if (tries++ > 5) {
-        self.emit('serverError');
-      } else {
-        self.socket.emit('sync', fromTs);
-      }
-    }, 500);
+  var self = this;
+  self.socket.on('subscribed', function(m) {
+    self.socket.emit('sync', fromTs);
+    self.started = true;
   });
-
-
-  self.socket.emit('sync', fromTs);
-  self.started = true;
 };
 
 Network.prototype.createSocket = function() {
@@ -356,9 +343,9 @@ Network.prototype.send = function(dest, payload, cb) {
 
   var l = dest.length;
   var i = 0;
-  for(var ii in dest){
+  for (var ii in dest) {
     var to = dest[ii];
-    if (to == this.copayerId) 
+    if (to == this.copayerId)
       continue;
     //console.log('SEND to: ' + to, this.copayerId, payload);
     var message = this.encode(to, payload);
