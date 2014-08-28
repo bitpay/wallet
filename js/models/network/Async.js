@@ -299,7 +299,7 @@ Network.prototype.start = function(opts, openCallback) {
       if (tries++ > 5) {
         self.emit('serverError');
       } else {
-        self.socket.emit('sync', opts.lastTimestamp);
+        self.socket.emit('sync', opts.lastTimestamp + 1);
       }
     }, 500);
   });
