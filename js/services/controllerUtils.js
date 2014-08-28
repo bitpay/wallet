@@ -22,7 +22,7 @@ angular.module('copayApp.services')
 
     root.logout = function() {
       if ($rootScope.wallet)
-        $rootScope.wallet.disconnect();
+        $rootScope.wallet.close();
 
       Socket.removeAllListeners();
 
@@ -177,9 +177,6 @@ angular.module('copayApp.services')
         if (peerID && !config.disableVideo) {
           video.callPeer(peerID, handlePeerVideo);
         }
-        $rootScope.$digest();
-      });
-      w.on('disconnect', function(peerID) {
         $rootScope.$digest();
       });
       w.on('close', root.onErrorDigest);

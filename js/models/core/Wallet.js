@@ -323,6 +323,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(typeof ts === 'number');
 
+  //console.log('RECV', senderId, data); 
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('corrupt', senderId);
@@ -358,12 +359,13 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     case 'addressbook':
       this._onAddressBook(senderId, data);
       break;
+    // unused messages  
     case 'disconnect':
-      this._onDisconnect(senderId, data);
       break;
     default:
       throw new Error('unknown message type received: '+ data.type + ' from: ' + senderId)
   }
+
   this.updateTimestamp(ts);
 };
 
@@ -375,12 +377,6 @@ Wallet.prototype._onConnect = function(newCopayerId) {
   var peerID = this.network.peerFromCopayer(newCopayerId)
   this.emit('connect', peerID);
 };
-
-Wallet.prototype._onDisconnect = function(peerID) {
-  this.currentDelay = null;
-  this.emit('disconnect', peerID);
-};
-
 
 Wallet.prototype.getNetworkName = function() {
   return this.publicKeyRing.network.name;
@@ -1746,15 +1742,10 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
 }
 
 
-Wallet.prototype.disconnect = function() {
-  this.log('## DISCONNECTING');
+Wallet.prototype.close = function() {
+  this.log('## CLOSING');
   this.lock.release();
-  var self = this;
-  self.send(null, {
-    type: 'disconnect',
-    walletId: this.id,
-  });
-  self.network.cleanUp();
+  this.network.cleanUp();
 };
 
 Wallet.prototype.getNetwork = function() {

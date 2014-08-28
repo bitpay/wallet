@@ -220,7 +220,7 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   });
   self.socket.on('error', self._onError.bind(self));
 
-  self.socket.on('no messages', self.bind(self, 'no messages'));
+  self.socket.on('no messages', self.emit.bind(self, 'no messages'));
 
   self.socket.on('connect', function() {
 
@@ -348,23 +348,23 @@ Network.prototype.send = function(dest, payload, cb) {
     dest = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
-  console.log('SEND to: ' + to, payload);
 
   if (typeof dest === 'string')
     dest = [dest];
 
   var l = dest.length;
   var i = 0;
-  dest.forEach(function(to) {
-    if (to === this.copayerId)
+  for(var ii in dest){
+    var to = dest[ii];
+    if (to == this.copayerId) 
       continue;
+    console.log('SEND to: ' + to, this.copayerId, payload);
 
 
-    //console.log('\t to ' + to);
-    var message = self.encode(to, payload);
+    var message = this.encode(to, payload);
+    this.socket.emit('message', message);
+  }
 
-    self.socket.emit('message', message);
-  });
   if (typeof cb === 'function') cb();
 };
 
