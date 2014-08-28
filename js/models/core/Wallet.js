@@ -317,10 +317,10 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(typeof ts === 'number');
 
-  this.updateTimestamp(ts);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('corrupt', senderId);
+    this.updateTimestamp(ts);
     return;
   }
 
@@ -356,6 +356,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this._onDisconnect(senderId, data);
       break;
   }
+  this.updateTimestamp(ts);
 
 };
 
