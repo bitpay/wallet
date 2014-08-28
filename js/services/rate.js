@@ -1,8 +1,6 @@
 'use strict';
 
-var request = require('request');
-
-var RateService = function() {
+var RateService = function(request) {
   this.isAvailable = false;
   this.SAT_TO_BTC = 1 / 1e8;
   this.queued = [];
