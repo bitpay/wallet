@@ -62,26 +62,26 @@ describe("Unit: controllerUtils", function() {
       expect($rootScope.unitName).to.be.equal('bits');
     });
   }));
-  describe("Unit: controllerUtils #setSocketHandlers", function() {
+  describe("Unit: controllerUtils #updateGlobalAddresses", function() {
 
 
     it(' should call updateAddressList ', inject(function(controllerUtils, $rootScope) {
       var spy = sinon.spy(controllerUtils, 'updateAddressList');
-      controllerUtils.setSocketHandlers();
+      controllerUtils.updateGlobalAddresses();
       sinon.assert.callCount(spy, 1);
     }));
 
     it('should update addresses', inject(function(controllerUtils, $rootScope) {
       $rootScope.wallet = new FakeWallet();
       var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
-      controllerUtils.setSocketHandlers();
+      controllerUtils.updateGlobalAddresses();
       expect($rootScope.addrInfos[0].address).to.be.equal(Waddr);;
     }));
 
     it('should set System Event Handlers', inject(function(controllerUtils, $rootScope, Socket) {
       var spy = sinon.spy(Socket, 'sysOn');
       $rootScope.wallet = new FakeWallet();
-      controllerUtils.setSocketHandlers();
+      controllerUtils.updateGlobalAddresses();
       sinon.assert.callCount(spy, 5);
       ['error', 'reconnect_error', 'reconnect_failed', 'connect', 'reconnect'].forEach(function(e) {
         sinon.assert.calledWith(spy, e);
@@ -92,7 +92,7 @@ describe("Unit: controllerUtils", function() {
       var spy = sinon.spy(Socket, 'on');
       $rootScope.wallet = new FakeWallet();
       var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
-      controllerUtils.setSocketHandlers();
+      controllerUtils.updateGlobalAddresses();
       sinon.assert.calledWith(spy, Waddr);
     }));
   });

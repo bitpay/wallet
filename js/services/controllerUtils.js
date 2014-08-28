@@ -99,7 +99,7 @@ angular.module('copayApp.services')
     root.startNetwork = function(w, $scope) {
       root.setupRootVariables();
       root.installStartupHandlers(w, $scope);
-      root.setSocketHandlers();
+      root.updateGlobalAddresses();
 
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
@@ -120,7 +120,7 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
-
+        root.setConnectionListeners();
 
         if ($rootScope.pendingPayment) {
           $location.path('send');
@@ -132,7 +132,7 @@ angular.module('copayApp.services')
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.setSocketHandlers();
+        root.updateGlobalAddresses();
         if (!dontDigest) {
           $rootScope.$digest();
         }
@@ -304,44 +304,38 @@ angular.module('copayApp.services')
       wallet.blockchain.on('disconnect', function() {
         notification.error('Networking problem', 'Connection to Insight lost, trying to reconnect...');
       });
+
+      wallet.blockchain.on('tx', function(tx) {
+        notification.funds('Funds received!', tx.address);
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      });
+
+      if (!$rootScope.wallet.spendUnconfirmed) {
+        wallet.blockchain.on('block', function(block) {
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
+        });
+      }
     }
 
-    root.setSocketHandlers = function() {
-      root.updateAddressList();
-
+    root.updateGlobalAddresses = function() {
       if (!$rootScope.wallet) return;
 
-      var currentAddrs = Socket.getListeners();
+      root.updateAddressList();
+      var currentAddrs = $rootScope.wallet.blockchain.getListeners();
       var allAddrs = $rootScope.addrInfos;
 
       var newAddrs = [];
       for (var i in allAddrs) {
         var a = allAddrs[i];
-        if (!currentAddrs[a.addressStr])
+        if (!currentAddrs[a.addressStr] && !a.isChange)
           newAddrs.push(a);
       }
       for (var i = 0; i < newAddrs.length; i++) {
-        Socket.emit('subscribe', newAddrs[i].addressStr);
-      }
-      newAddrs.forEach(function(a) {
-        Socket.on(a.addressStr, function(txid) {
-
-          if (!a.isChange)
-            notification.funds('Funds received!', a.addressStr);
-
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        });
-      });
-
-      if (!$rootScope.wallet.spendUnconfirmed && !Socket.isListeningBlocks()) {
-        Socket.emit('subscribe', 'inv');
-        Socket.on('block', function(block) {
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        });
+        $rootScope.wallet.blockchain.subscribe(newAddrs[i].addressStr);
       }
     };
     return root;

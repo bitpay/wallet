@@ -98,6 +98,14 @@ describe('Insight model', function() {
     emitSpy.calledWith('subscribe', 'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
   });
 
+  it('should subscribe to an address once', function() {
+    var blockchain = new Insight(FAKE_OPTS);
+
+    blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
+    blockchain.subscribed.length.should.equal(1);
+  });
+
   it('should subscribe to a list of addresses', function() {
     var blockchain = new Insight(FAKE_OPTS);
     var emitSpy = sinon.spy(blockchain.socket, 'emit');

@@ -57,9 +57,6 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     return new Array(num);
   }
 
-  // Init socket handlers (with no wallet yet)
-  controllerUtils.setSocketHandlers();
-
   if ($rootScope.wallet) {
     $scope.$on('$idleWarn', function(a,countdown) {
       if (!(countdown%5))

@@ -6,6 +6,10 @@ function FakeBlockchain(opts) {
   opts = opts || {};
 }
 
+FakeBlockchain.prototype.getTransaction = function(txid, cb) {
+  return cb(null, {txid: txid});
+};
+
 FakeBlockchain.prototype.getTransactions = function(addresses, cb) {
   return cb(null, []);
 };

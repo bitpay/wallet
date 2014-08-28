@@ -805,8 +805,6 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var self = this;
   this.blockchain.broadcast(txHex, function(err, txid) {
-    if(err) throw err;
-
     self.log('BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
