@@ -54,11 +54,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       break;
     }
   }
-  for (var ii in $scope.alternativeOpts) {
-    if (config.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
-      $scope.selectedAlternative = $scope.alternativeOpts[ii];
-    }
-  }
 
   $scope.changeNetwork = function() {
     $scope.insightHost = $scope.networkName !== 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
