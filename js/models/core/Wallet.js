@@ -310,6 +310,12 @@ Wallet.prototype.updateTimestamp = function(ts) {
   this.store();
 };
 
+
+Wallet.prototype._onNoMessages = function() {
+  console.log('No messages at the server. Requesting sync'); //TODO
+  this.sendWalletReady(senderId);
+};
+
 Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
@@ -355,9 +361,10 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     case 'disconnect':
       this._onDisconnect(senderId, data);
       break;
+    default:
+      throw new Error('unknown message type received: '+ data.type + ' from: ' + senderId)
   }
   this.updateTimestamp(ts);
-
 };
 
 Wallet.prototype._onConnect = function(newCopayerId) {
@@ -433,6 +440,7 @@ Wallet.prototype.netStart = function(callback) {
   net.removeAllListeners();
   net.on('connect', self._onConnect.bind(self));
   net.on('data', self._onData.bind(self));
+  net.on('no messages', self._onNoMessages.bind(self));
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();

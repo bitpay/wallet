@@ -220,6 +220,8 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   });
   self.socket.on('error', self._onError.bind(self));
 
+  self.socket.on('no messages', self.bind(self, 'no messages'));
+
   self.socket.on('connect', function() {
 
     self.socket.on('disconnect', function() {
@@ -301,6 +303,7 @@ Network.prototype.start = function(opts, openCallback) {
       }
     }, 500);
   });
+
 
   self.socket.emit('sync', opts.lastTimestamp);
   self.started = true;
