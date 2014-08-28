@@ -45,9 +45,7 @@ TxProposals.prototype.getNtxids = function() {
 };
 
 TxProposals.prototype.deleteOne = function(ntxid) {
-  var txp = this.txps[ntxid];
-  if (!txp)
-    throw new Error('Unknown TXP: ' + ntxid);
+  preconditions.checkState(this.txps[ntxid], 'Unknown TXP: ' + ntxid);
   delete this.txps[ntxid];
 };
 

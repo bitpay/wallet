@@ -65,6 +65,21 @@ describe('TxProposals', function() {
       txps.getNtxids().should.deep.equal(['a','b']);
     });
   });
+  describe.only('#deleteOne', function() {
+    it('should delete specified ntxid', function() {
+      var txps = new TxProposals();
+      txps.txps = {a:1, b:2};
+      txps.deleteOne('a');
+      txps.getNtxids().should.deep.equal(['b']);
+    });
+    it('should fail on non-existent ntxid', function() {
+      var txps = new TxProposals();
+      txps.txps = {a:1, b:2};
+      (function () {
+        txps.deleteOne('c');
+      }).should.throw('Unknown TXP: c');
+    });
+  });
   describe('#toObj', function() {
     it('should an object', function() {
       var txps = TxProposals.fromObj({
