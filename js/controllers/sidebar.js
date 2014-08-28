@@ -49,11 +49,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   };
 
   function logout() {
-    var w = $rootScope.wallet;
-    if (w) {
-      w.disconnect();
-      controllerUtils.logout();
-    }
+    controllerUtils.logout();
   }
 
   // ng-repeat defined number of times instead of repeating over array?
