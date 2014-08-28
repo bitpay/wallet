@@ -146,8 +146,6 @@ describe("Unit: controllerUtils", function() {
       sinon.assert.calledWith(spy, Waddr);
     }));
   });
-
-
 });
 
 describe("Unit: Notification Service", function() {
@@ -201,4 +199,24 @@ describe("Unit: uriHandler service", function() {
       uriHandler.register();
     }).should.not.throw();
   }));
+});
+
+describe('Unit: Rate Service', function() {
+  beforeEach(angular.mock.module('copayApp.services'));
+  it('should be injected correctly', inject(function(rateService) {
+    should.exist(rateService);
+  }));
+  it('should be possible to ask if it is available',
+    inject(function(rateService) {
+      should.exist(rateService.isAvailable);
+    })
+  );
+  it('should be possible to ask for conversion',
+    inject(function(rateService) {
+      rateService.whenAvailable(function() {
+        rateService.rates['LOL'] = 2;
+        (1 * 1e8).should.equal(rateService.fromFiat(2, 'LOL'));
+      });
+    })
+  );
 });
