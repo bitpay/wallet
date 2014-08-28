@@ -92,7 +92,8 @@ module.exports = function(grunt) {
           'lib/socket.io-client/socket.io.js',
           'lib/sjcl.js',
           'lib/ios-imagefile-megapixel/megapix-image.js',
-          'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js'
+          'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
+          'lib/zeroclipboard/ZeroClipboard.min.js'
         ],
         dest: 'lib/vendors.js'
       },
