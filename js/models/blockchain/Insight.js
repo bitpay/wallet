@@ -1,72 +1,176 @@
 'use strict';
 
+var util = require('util');
+var async = require('async');
+var request = require('request');
 var bitcore = require('bitcore');
-var coinUtil = bitcore.util;
+var io = require('socket.io-client');
+
+var EventEmitter = require('events').EventEmitter;
 var preconditions = require('preconditions').singleton();
 
-var http;
-if (process.version) {
-  http = require('http');
-};
+/*
+  This class lets interfaces with the blockchain, making general queries and
+  subscribing to transactions on adressess and blocks.
 
-function Insight(opts) {
-  opts = opts || {};
-  this.host = opts.host || 'localhost';
-  this.port = opts.port || '3001';
-  this.schema = opts.schema || 'http';
-  this.retryDelay = opts.retryDelay || 5000;
+  Opts: 
+    - host
+    - port
+    - schema
+    - reconnection (optional)
+    - reconnectionDelay (optional)
+
+  Events:
+    - tx: activity on subscribed address.
+    - block: a new block that includes a subscribed address.
+    - connect: the connection with the blockchain is ready.
+    - disconnect: the connection with the blochckain is unavailable.  
+*/
+
+var Insight = function (opts) {
+  this.status = this.STATUS.DISCONNECTED;
+  this.subscribed = [];
+  this.listeningBlocks = false;
+
+  preconditions.checkArgument(opts).shouldBeObject(opts)
+  .checkArgument(opts.host)
+  .checkArgument(opts.port)
+  .checkArgument(opts.schema);
+
+  this.url = opts.schema + '://' + opts.host + ':' + opts.port;
+  this.opts = {
+    'reconnection': opts.reconnection || true,
+    'reconnectionDelay': opts.reconnectionDelay || 1000,
+    'secure': opts.schema === 'https'
+  };
+
+  this.socket = this.getSocket(this.url, this.opts);
+
+  // Emmit connection events
+  var self = this;
+  this.socket.on('connect', function() {
+    self.status = self.STATUS.CONNECTED;
+    self.suscribeToBlocks();
+    self.emit('connect', 0);
+  });
+
+  this.socket.on('connect_error', function() {
+    if (self.status != self.STATUS.CONNECTED) return;
+    self.status = self.STATUS.DISCONNECTED;
+    self.emit('disconnect');
+  });
+
+  this.socket.on('connect_timeout', function() {
+    if (self.status != self.STATUS.CONNECTED) return;
+    self.status = self.STATUS.DISCONNECTED;
+    self.emit('disconnect');
+  });
+
+  this.socket.on('reconnect', function(attempt) {
+    if (self.status != self.STATUS.DISCONNECTED) return;
+    self.status = self.STATUS.CONNECTED;
+    self.emit('connect', attempt);
+  });
 }
 
-function _asyncForEach(array, fn, callback) {
-  array = array.slice(0);
+util.inherits(Insight, EventEmitter);
 
-  function processOne() {
-    var item = array.pop();
-    fn(item, function(result) {
-      if (array.length > 0) {
-        setTimeout(processOne, 0); // schedule immediately
-      } else {
-        callback(); // Done!
-      }
-    });
-  }
-  if (array.length > 0) {
-    setTimeout(processOne, 0); // schedule immediately
-  } else {
-    callback(); // Done!
-  }
+Insight.prototype.STATUS = {
+  CONNECTED: 'connected',
+  DISCONNECTED: 'disconnected',
+  DESTROYED: 'destroyed'
+}
+
+/** @private */
+Insight.prototype.suscribeToBlocks = function() {
+  if (this.listeningBlocks || !this.socket.connected) return;
+
+  var self = this;
+  this.socket.emit('subscribe', 'inv');
+  this.socket.on('block', function(blockHash) {
+    self.emit('block', blockHash);
+  });
+  this.listeningBlocks = true;
+}
+
+/** @private */
+Insight.prototype.getSocket = function(url, opts) {
+  return io(this.url, this.opts);
+}
+
+/** @private */
+Insight.prototype.request = function(path, cb) {
+  preconditions.checkArgument(url).shouldBeFunction(cb);
+  request(this.url + path, cb);
+}
+
+/** @private */
+Insight.prototype.requestPost = function(path, data, cb) {
+  preconditions.checkArgument(url).checkArgument(data).shouldBeFunction(cb);
+  request.post(this.url, cb).form(data);
+}
+
+Insight.prototype.destroy = function() {
+  this.socket.destroy();
+  this.subscribed = [];
+  this.status = this.STATUS.DESTROYED;
+  this.removeAllListeners();
 };
 
-Insight.prototype._getOptions = function(method, path, data) {
-  return {
-    host: this.host,
-    port: this.port,
-    schema: this.schema,
-    method: method,
-    path: path,
-    data: data,
-    headers: {
-      'Access-Control-Request-Headers': ''
+Insight.prototype.subscribe = function(addresses) {
+  addresses = Array.isArray(addresses) ? addresses : [addresses];
+  var self = this;
+
+  function handlerFor(self, address) {
+    return function (txid) {
+      // verify the address is still subscribed
+      if (self.subscribed.indexOf(address) == -1) return;
+      self.emit('tx', {address: address, txid: txid});
     }
-  };
+  }
+
+  addresses.forEach(function(address) {
+    preconditions.checkArgument(new bitcore.Address(address).isValid());
+
+    self.subscribed.push(address);
+    self.socket.emit('subscribe', address);
+    self.socket.on(address, handlerFor(self, address));
+  });
 };
 
+Insight.prototype.unsubscribe = function(addresses) {
+  addresses = Array.isArray(addresses) ? addresses : [addresses];
+  var self = this;
 
-// This is vulneable to txid maneability
-// TODO: if ret = false,
-// check output address from similar transactions.
-//
-Insight.prototype.checkSentTx = function(tx, cb) {
-  var hash = coinUtil.formatHashFull(tx.getHash());
-  var options = this._getOptions('GET', '/api/tx/' + hash);
+  addresses.forEach(function(address) {
+    preconditions.checkArgument(new bitcore.Address(address).isValid());
+    self.socket.removeEventListener(address);
+  });
 
-  this._request(options, function(err, res) {
-    if (err) return cb(err);
-    var ret = false;
-    if (res && res.txid === hash) {
-      ret = hash;
-    }
-    return cb(err, ret);
+  this.subscribed = this.subscribed.filter(function(a) {
+    return addresses.indexOf(a) == -1;
+  });
+};
+
+Insight.prototype.unsubscribeAll = function() {
+  this.unsubscribe(this.subscribed);
+};
+
+Insight.prototype.broadcast = function(rawtx, cb) {
+  preconditions.checkArgument(rawtx);
+  preconditions.shouldBeFunction(cb);
+
+  this.requestPost('/api/tx/send', {rawtx: rawtx}, function(err, res, body) {
+    if (err || res.statusCode != 200) cb(err || res);
+    cb(null, JSON.parse(body).txid);
+  });
+};
+
+Insight.prototype.getTransaction = function(txid, cb) {
+  preconditions.shouldBeFunction(cb);
+  this.request('/api/tx/' + txid, function(err, res, body) {
+    if (err || res.statusCode != 200 || !body) return cb(err || res);
+    cb(null, JSON.parse(body));
   });
 };
 
@@ -75,77 +179,53 @@ Insight.prototype.getTransactions = function(addresses, cb) {
   preconditions.shouldBeFunction(cb);
 
   var self = this;
-  if (!addresses || !addresses.length) return cb([]);
+  if (!addresses.length) return cb(null, []);
 
-  var txids = [];
-  var txs = [];
-
-  _asyncForEach(addresses, function(addr, callback) {
-    var options = self._getOptions('GET', '/api/addr/' + addr);
-
-    self._request(options, function(err, res) {
-      if (res && res.transactions) {
-        var txids_tmp = res.transactions;
-        for (var i = 0; i < txids_tmp.length; i++) {
-          txids.push(txids_tmp[i]);
-        }
-      }
-      callback();
+  // Iterator: get a list of transaction ids for an address
+  function getTransactionIds(address, next) {
+    self.request('/api/addr/' + address, function(err, res, body) {
+      if (err || res.statusCode != 200 || !body) return next(err || res);
+      next(null, JSON.parse(body).transactions);
     });
-  }, function() {
-    var uniqueTxids = {};
-    for (var k in txids) {
-      uniqueTxids[txids[k]] = 1;
-    }
-    _asyncForEach(Object.keys(uniqueTxids), function(txid, callback2) {
-      var options = self._getOptions('GET', '/api/tx/' + txid);
-      self._request(options, function(err, res) {
-        txs.push(res);
-        callback2();
-      });
-    }, function() {
-      return cb(txs);
+  }
+
+  async.map(addresses, getTransactionIds, function then(err, txids) {
+    if (err) return cb(err);
+
+    // txids it's a list of list, let's fix that:
+    var txidsList = txids.reduce(function(a, r) {
+      return r.concat(a);
+    });
+
+    // Remove duplicated txids
+    txidsList = txidsList.filter(function(elem, pos, self) {
+      return self.indexOf(elem) == pos;
+    });
+
+    // Now get the transactions for that list of txIds
+    async.map(txidsList, self.getTransaction.bind(self), function then(err, txs) {
+      if (err) return cb(err);
+      cb(null, txs);
     });
   });
 };
 
 Insight.prototype.getUnspent = function(addresses, cb) {
-  if (!addresses || !addresses.length) return cb(null, []);
+  preconditions.shouldBeArray(addresses);
+  preconditions.shouldBeFunction(cb);
 
-  var all = [];
-
-  var options = this._getOptions('POST', '/api/addrs/utxo', 'addrs=' + addresses.join(','));
-
-  var self = this;
-  this._request(options, function(err, res) {
-    if (err) {
-      return cb(err);
-    }
-
-    if (res && res.length > 0) {
-      all = all.concat(res);
-    }
-
-    return cb(null, all);
+  this.requestPost('/api/addrs/utxo', {addrs: addresses.join(',')}, function(err, res, body) {
+    if (err || res.statusCode != 200) return cb(err || res);
+    cb(null, JSON.parse(body));
   });
 };
 
-Insight.prototype.sendRawTransaction = function(rawtx, cb) {
-  if (!rawtx) throw new Error('rawtx must be set');
+Insight.prototype.getActivity = function(addresses, cb) {
+  preconditions.shouldBeArray(addresses);
 
-  var options = this._getOptions('POST', '/api/tx/send', 'rawtx=' + rawtx);
-  this._request(options, function(err, res) {
-    if (err) return cb();
+  this.getTransactions(addresses, function then(err, txs) {
+    if (err) return cb(err);
 
-    return cb(res.txid);
-  });
-};
-
-
-Insight.prototype.checkActivity = function(addresses, cb) {
-  if (!addresses) throw new Error('address must be set');
-
-  this.getTransactions(addresses, function onResult(txs) {
     var flatArray = function(xss) {
       return xss.reduce(function(r, xs) {
         return r.concat(xs);
@@ -175,114 +255,6 @@ Insight.prototype.checkActivity = function(addresses, cb) {
 
     cb(null, activityMap);
   });
-};
-
-Insight.prototype._requestNode = function(options, callback) {
-  if (options.method === 'POST') {
-    options.headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': options.data.length,
-
-    };
-  }
-
-  var req = http.request(options, function(response) {
-    var ret, errTxt, e;
-    if (response.statusCode == 200 || response.statusCode === 304) {
-      response.on('data', function(chunk) {
-        try {
-          ret = JSON.parse(chunk);
-        } catch (e2) {
-          errTxt = 'CRITICAL:  Wrong response from insight' + e2;
-        }
-      });
-    } else {
-      errTxt = "INSIGHT ERROR:" + response.statusCode;
-      console.log(errTxt);
-      e = new Error(errTxt);
-      return callback(e);
-    }
-    response.on('end', function() {
-      if (errTxt) {
-        console.log("INSIGHT ERROR:" + errTxt);
-        e = new Error(errTxt);
-      }
-      return callback(e, ret);
-    });
-    response.on('error', function(e) {
-      return callback(e, ret);
-    });
-  });
-
-  if (options.data) {
-    req.write(options.data);
-  }
-  req.end();
-};
-
-Insight.prototype._requestBrowser = function(options, callback) {
-  var self = this;
-  var request = new XMLHttpRequest();
-  var url = (options.schema || 'http') + '://' + options.host;
-
-  if (options.port !== 80) {
-    url = url + ':' + options.port;
-  }
-
-  url = url + options.path;
-
-  if (options.data && options.method === 'GET') {
-    url = url + '?' + options.data;
-  }
-
-  request.open(options.method, url, true);
-  request.timeout = 5000;
-  request.ontimeout = function() {
-    setTimeout(function() {
-      return self._request(options, callback);
-    }, self.retryDelay);
-    return callback(new Error('Insight request timeout'));
-  };
-
-
-  request.onreadystatechange = function() {
-    if (request.readyState !== 4) return;
-    var ret, errTxt, e;
-
-    if (request.status === 200 || request.status === 304) {
-      try {
-        ret = JSON.parse(request.responseText);
-      } catch (e2) {
-        errTxt = 'CRITICAL:  Wrong response from insight' + e2;
-      }
-    } else if (request.status >= 400 && request.status < 499) {
-      errTxt = 'CRITICAL: Bad request to insight: '+request.status;
-    } else {
-      errTxt = 'Error code: ' + request.status + ' - Status: ' + request.statusText + ' - Description: ' + request.responseText;
-      setTimeout(function() {
-        return self._request(options, callback);
-      }, self.retryDelay);
-    }
-    if (errTxt) {
-      console.log("INSIGHT ERROR:", e);
-      e = new Error(errTxt);
-    }
-    return callback(e, ret);
-  };
-
-  if (options.method === 'POST') {
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  }
-
-  request.send(options.data || null);
-};
-
-Insight.prototype._request = function(options, callback) {
-  if (typeof process === 'undefined' || !process.version) {
-    this._requestBrowser(options, callback);
-  } else {
-    this._requestNode(options, callback);
-  }
 };
 
 module.exports = Insight;

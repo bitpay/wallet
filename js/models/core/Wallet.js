@@ -193,14 +193,12 @@ Wallet.prototype._getKeyMap = function(txp) {
 Wallet.prototype._checkSentTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
+  var txid = bitcore.util.formatHashFull(tx.getHash());
 
-  this.blockchain.checkSentTx(tx, function(err, txid) {
-    var ret = false;
-    if (txid) {
-      txp.setSent(txid);
-      ret = txid;
-    }
-    return cb(ret);
+  this.blockchain.getTransaction(txid, function(err, tx) {
+    if (err) return cb(false);
+    txp.setSent(tx.txid);
+    cb(ret);
   });
 };
 
@@ -806,7 +804,9 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   this.log('Raw transaction: ', txHex);
 
   var self = this;
-  this.blockchain.sendRawTransaction(txHex, function(txid) {
+  this.blockchain.broadcast(txHex, function(err, txid) {
+    if(err) throw err;
+
     self.log('BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
@@ -1724,7 +1724,7 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
       // Optimize window to minimize the derivations.
       var scanWindow = (lastActive == -1) ? gap : gap - (scanIndex - lastActive) + 1;
       var addresses = self.deriveAddresses(scanIndex, scanWindow, change, copayerIndex);
-      self.blockchain.checkActivity(addresses, function(err, actives) {
+      self.blockchain.getActivity(addresses, function(err, actives) {
         if (err) throw err;
 
         // Check for new activities in the newlly scanned addresses
@@ -1752,6 +1752,7 @@ Wallet.prototype.close = function() {
   this.log('## CLOSING');
   this.lock.release();
   this.network.cleanUp();
+  this.blockchain.destroy();
 };
 
 Wallet.prototype.getNetwork = function() {
