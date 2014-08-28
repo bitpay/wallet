@@ -9,19 +9,6 @@ var extend = nodeUtil._extend;
 var io = require('socket.io-client');
 var preconditions = require('preconditions').singleton();
 
-/*
- * Emits
- *  'connect'
- *    when network layout has change (new/lost peers, etc)
- *
- *  'data'
- *    when an unknown data type arrives
- *
- * Provides
- *  send(toPeerIds, {data}, cb?)
- *
- */
-
 function Network(opts) {
   var self = this;
   opts = opts || {};

@@ -1,16 +1,19 @@
 'use strict';
 
+var copay = require('copay');
 var config = defaultConfig;
 var localConfig = JSON.parse(localStorage.getItem('config'));
-
 if (localConfig) {
-  var count = 0;
-  for (name in localConfig) {
-    if (localConfig.hasOwnProperty(name)) {
-      if (name === 'networkName' && config['forceNetwork']) {
-        continue;
+  var cmv = copay.version.split('.')[1];
+  var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
+  if (cmv === lmv) {
+    for (name in localConfig) {
+      if (localConfig.hasOwnProperty(name)) {
+        if (name === 'networkName' && config['forceNetwork']) {
+          continue;
+        }
+        config[name] = localConfig[name];
       }
-      config[name] = localConfig[name];
     }
   }
 }
@@ -19,8 +22,6 @@ var log = function() {
   if (config.verbose) console.log(arguments);
 }
 
-// From the bundle
-var copay = require('copay');
 
 var copayApp = window.copayApp = angular.module('copayApp', [
   'ngRoute',
@@ -35,9 +36,9 @@ var copayApp = window.copayApp = angular.module('copayApp', [
 ]);
 
 copayApp.config(function($sceDelegateProvider) {
- $sceDelegateProvider.resourceUrlWhitelist([
-   'self',
-   'mailto:**'
+  $sceDelegateProvider.resourceUrlWhitelist([
+    'self',
+    'mailto:**'
   ]);
 });
 

@@ -8,10 +8,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   $scope.insightHost = config.blockchain.host;
   $scope.insightPort = config.blockchain.port;
   $scope.insightSecure = config.blockchain.schema === 'https';
-  $scope.networkKey = config.network.key;
-  $scope.networkHost = config.network.host;
-  $scope.networkPort = config.network.port;
-  $scope.networkSecure = config.network.secure || false;
   $scope.disableVideo = typeof config.disableVideo === undefined ? true : config.disableVideo;
   $scope.forceNetwork = config.forceNetwork;
 
@@ -72,6 +68,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       disableVideo: $scope.disableVideo,
       unitName: $scope.selectedUnit.shortName,
       unitToSatoshi: $scope.selectedUnit.value,
+      version: copay.version,
     }));
 
     // Go home reloading the application
