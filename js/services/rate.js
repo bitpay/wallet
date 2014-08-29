@@ -29,7 +29,7 @@ var RateService = function(request) {
       that.isAvailable = true;
       that.rates = rates;
       that.queued.forEach(function(callback) {
-        setTimeout(callback, 0);
+        setTimeout(callback, 1);
       });
     });
   };
@@ -38,7 +38,7 @@ var RateService = function(request) {
 
 RateService.prototype.whenAvailable = function(callback) {
   if (this.isAvailable) {
-    setTimeout(callback, 0);
+    setTimeout(callback, 1);
   } else {
     this.queued.push(callback);
   }

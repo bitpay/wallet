@@ -29,7 +29,9 @@ describe("Unit: Controllers", function() {
     totalCopayers: 5,
     spendUnconfirmed: 1,
     reconnectDelay: 100,
-    networkName: 'testnet'
+    networkName: 'testnet',
+    alternativeName: 'lol currency',
+    alternativeIsoCode: 'LOL'
   };
 
   it('Copay config should be binded', function() {
@@ -124,11 +126,20 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Send Controller', function() {
-    var scope, form, sendForm;
+    var scope, form, sendForm, sendCtrl;
     beforeEach(angular.mock.module('copayApp'));
+    beforeEach(module(function($provide) {
+      $provide.value('request', {
+        'get': function(_, cb) {
+          cb(null, null, [{name: 'lol currency', code: 'LOL', rate: 2}]);
+        }
+      });
+    }));
     beforeEach(angular.mock.inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
       $rootScope.wallet = new FakeWallet(walletConfig);
+      config.alternativeName = 'lol currency';
+      config.alternativeIsoCode = 'LOL';
       var element = angular.element(
         '<form name="form">' +
         '<input type="text" id="newaddress" name="newaddress" ng-disabled="loading" placeholder="Address" ng-model="newaddress" valid-address required>' +
@@ -147,11 +158,12 @@ describe("Unit: Controllers", function() {
         '<form name="form2">' +
         '<input type="text" id="address" name="address" ng-model="address" valid-address required>' +
         '<input type="number" id="amount" name="amount" ng-model="amount" min="1" max="10000000000" required>' +
+        '<input type="number" id="alternative" name="alternative" ng-model="alternative">' +
         '<textarea id="comment" name="comment" ng-model="commentText" ng-maxlength="100"></textarea>' +
         '</form>'
       );
       $compile(element2)(scope);
-      $controller('SendController', {
+      sendCtrl = $controller('SendController', {
         $scope: scope,
         $modal: {},
       });
@@ -241,8 +253,22 @@ describe("Unit: Controllers", function() {
       config.unitToSatoshi = old;
     });
 
-
-
+    it('should convert bits amount to fiat', function(done) {
+      sendCtrl.rateService.whenAvailable(function() {
+        sendForm.amount.$setViewValue(1e6);
+        scope.$digest();
+        expect(scope.alternative).to.equal(2);
+        done();
+      });
+    });
+    it('should convert fiat to bits amount', function(done) {
+      sendCtrl.rateService.whenAvailable(function() {
+        sendForm.alternative.$setViewValue(2);
+        scope.$digest();
+        expect(scope.amount).to.equal(1e6);
+        done();
+      });
+    });
 
     it('should create and send a transaction proposal', function() {
       sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
