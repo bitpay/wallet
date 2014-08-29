@@ -6,11 +6,7 @@ var sinon = require('sinon');
 var bitcore = bitcore || require('bitcore');
 var FakeSocket = require('./mocks/FakeBlockchainSocket');
 
-try {
-  var copay = require('./copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
+var copay = copay || require('../copay');
 var Buffer = bitcore.Buffer;
 var Insight = copay.Insight;
 
@@ -144,7 +140,7 @@ describe('Insight model', function() {
     sinon.stub(blockchain, "requestPost", function(url, data, cb) {
       url.should.be.equal('/api/tx/send');
       var res = {statusCode: 200};
-      var body = JSON.stringify({txid: 1234});
+      var body = {txid: 1234};
       setTimeout(function() {
         cb(null, res, body);
       }, 0);
@@ -283,7 +279,7 @@ describe('Insight model', function() {
       data.addrs.should.be.equal('2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM,2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb,2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x');
       setTimeout(function() {
         var res = {statusCode: 200};
-        var body = JSON.stringify(UNSPENT);
+        var body = UNSPENT;
         cb(null, res, body);
       }, 0);
     });

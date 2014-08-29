@@ -1,6 +1,5 @@
 'use strict';
 
-var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 
 var FakeSocket = function (url, opts) {
@@ -13,7 +12,19 @@ var FakeSocket = function (url, opts) {
   }, 0);
 }
 
-util.inherits(FakeSocket, EventEmitter);
+var inherits = function(ctor, superCtor) {
+  ctor.super_ = superCtor;
+  ctor.prototype = Object.create(superCtor.prototype, {
+    constructor: {
+      value: ctor,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+};
+
+inherits(FakeSocket, EventEmitter);
 
 FakeSocket.prototype.removeEventListener = function() {
   return;
