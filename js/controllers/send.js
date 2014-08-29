@@ -32,13 +32,14 @@ angular.module('copayApp.controllers').controller('SendController',
         return this._alternative;
       },
       set: function (newValue) {
-        newValue = -(-newValue) || 0;
         this._alternative = newValue;
-        if ($scope.isRateAvailable) {
+        if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
           this._amount = Number.parseFloat(
             (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
           ).toFixed(config.unitDecimals), 10);
-        };
+        } else {
+          this._amount = 0;
+        }
       },
       enumerable: true,
       configurable: true
@@ -49,13 +50,14 @@ angular.module('copayApp.controllers').controller('SendController',
         return this._amount;
       },
       set: function (newValue) {
-        newValue = -(-newValue) || 0;
         this._amount = newValue;
-        if ($scope.isRateAvailable) {
+        if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
           this._alternative = Number.parseFloat(
             (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
           ).toFixed(2), 10);
-        };
+        } else {
+          this._alternative = 0;
+        }
       },
       enumerable: true,
       configurable: true
