@@ -752,7 +752,7 @@ describe('Wallet model', function() {
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(ntxid) {
-      sinon.stub(w.blockchain, 'sendRawTransaction').yields(undefined);
+      sinon.stub(w.blockchain, 'broadcast').yields({statusCode: 303});
       var spyCheckSentTx = sinon.spy(w, '_checkSentTx');
       w.sendTx(ntxid, function () {});
       chai.expect(spyCheckSentTx.calledOnce).to.be.true;
@@ -823,7 +823,7 @@ describe('Wallet model', function() {
     });
 
     var mockFakeActivity = function(f) {
-      w.blockchain.checkActivity = function(addresses, cb) {
+      w.blockchain.getActivity = function(addresses, cb) {
         var activity = new Array(addresses.length);
         for (var i = 0; i < addresses.length; i++) {
           var a1 = ADDRESSES_CHANGE.indexOf(addresses[i]);

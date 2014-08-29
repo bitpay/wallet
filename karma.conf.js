@@ -54,6 +54,7 @@ module.exports = function(config) {
       'test/lib/chai-should.js',
       'test/lib/chai-expect.js',
       'test/mocks/FakeWallet.js',
+      'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
 
       'test/mocha.conf.js',

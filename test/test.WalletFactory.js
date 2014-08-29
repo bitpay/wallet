@@ -91,7 +91,8 @@ describe('WalletFactory model', function() {
     },
     blockchain: {
       host: 'test.insight.is',
-      port: 80
+      port: 80,
+      schema: 'https'
     },
     networkName: 'testnet',
     passphrase: 'test',

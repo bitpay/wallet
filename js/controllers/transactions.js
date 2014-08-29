@@ -109,7 +109,9 @@ angular.module('copayApp.controllers').controller('TransactionsController',
         var addresses = w.getAddressesStr();
         if (addresses.length > 0) {
           $scope.blockchain_txs = $scope.wallet.txCache || [];
-          w.blockchain.getTransactions(addresses, function(txs) {
+          w.blockchain.getTransactions(addresses, function(err, txs) {
+            if (err) throw err;
+
             $timeout(function() {
               $scope.blockchain_txs = [];
               for (var i = 0; i < txs.length; i++) {

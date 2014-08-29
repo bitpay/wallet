@@ -6,13 +6,20 @@ function FakeBlockchain(opts) {
   opts = opts || {};
 }
 
+FakeBlockchain.prototype.getTransaction = function(txid, cb) {
+  return cb(null, {txid: txid});
+};
+
 FakeBlockchain.prototype.getTransactions = function(addresses, cb) {
-  return cb([]);
+  return cb(null, []);
 };
 
 
 FakeBlockchain.prototype.fixUnspent = function(u) {
   this.u = u;
+};
+
+FakeBlockchain.prototype.destroy = function() {
 };
 
 FakeBlockchain.prototype.getUnspent = function(addresses, cb) {
@@ -41,9 +48,9 @@ FakeBlockchain.prototype.getUnspent2 = function(addresses, cb) {
   }]);
 };
 
-FakeBlockchain.prototype.sendRawTransaction = function(rawtx, cb) {
+FakeBlockchain.prototype.broadcast = function(rawtx, cb) {
   var txid = '0be0fb4579911be829e3077202e1ab47fcc12cf3ab8f8487ccceae768e1f95fa';
-  return cb(txid);
+  return cb(null, txid);
 };
 
 FakeBlockchain.prototype.checkSentTx = function (tx, cb) {

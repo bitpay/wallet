@@ -13,7 +13,7 @@
   <div class="page">
     <div class="off-canvas-wrap">
       <div class="inner-wrap">
-
+        <span class="status" ng-if="$root.reconnecting">Attempting to reconnect...</span>
         <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet ||
           !$root.wallet.isReady() || $root.wallet.isLocked}">
           <section class="left-small">

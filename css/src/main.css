@@ -128,6 +128,19 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
+.status {
+  border: 1px solid #f0c36d;
+  background-color: #f9edbe;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 10px;
+  width: 215px;
+  padding: 7px;
+}
+
 .join label, 
 .open label, 
 .setup label {
