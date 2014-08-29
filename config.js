@@ -56,6 +56,11 @@ var defaultConfig = {
     storageSalt: 'mjuBtGybi/4=',
   },
 
+  rate: {
+    url: 'https://bitpay.com/api/rates',
+    updateFrequencySeconds: 60 * 60
+  },
+
   disableVideo: true,
   verbose: 1,
 };

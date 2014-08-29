@@ -2,19 +2,25 @@
 
 var RateService = function(request) {
   this.isAvailable = false;
+  this.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable or use service.whenAvailable';
   this.SAT_TO_BTC = 1 / 1e8;
+  var MINS_IN_HOUR = 60;
+  var MILLIS_IN_SECOND = 1000;
+  var rateServiceConfig = config.rate;
+  var updateFrequencySeconds = rateServiceConfig.updateFrequencySeconds || 60 * MINS_IN_HOUR;
+  var rateServiceUrl = rateServiceConfig.url || 'https://bitpay.com/api/rates';
   this.queued = [];
   this.alternatives = [];
   var that = this;
-  var backoff = 5;
+  var backoffSeconds = 5;
   var retrieve = function() {
     request.get({
-      url:'https://bitpay.com/api/rates',
+      url: rateServiceUrl,
       json: true
     }, function(err, response, listOfCurrencies) {
       if (err) {
-        backoff *= 1.5;
-        setTimeout(retrieve, backoff * 1000);
+        backoffSeconds *= 1.5;
+        setTimeout(retrieve, backoffSeconds * MILLIS_IN_SECOND);
         return;
       }
       var rates = {};
@@ -31,6 +37,7 @@ var RateService = function(request) {
       that.queued.forEach(function(callback) {
         setTimeout(callback, 1);
       });
+      setTimeout(retrieve, updateFrequencySeconds * MILLIS_IN_SECOND);
     });
   };
   retrieve();
@@ -46,21 +53,21 @@ RateService.prototype.whenAvailable = function(callback) {
 
 RateService.prototype.toFiat = function(satoshis, code) {
   if (!this.isAvailable) {
-    return 0;
+    throw new Error(this.UNAVAILABLE_ERROR);
   }
   return satoshis * this.SAT_TO_BTC * this.rates[code];
 };
 
 RateService.prototype.fromFiat = function(amount, code) {
   if (!this.isAvailable) {
-    return 0;
+    throw new Error(this.UNAVAILABLE_ERROR);
   }
   return amount / this.rates[code] / this.SAT_TO_BTC;
 };
 
 RateService.prototype.listAlternatives = function() {
   if (!this.isAvailable) {
-    return [];
+    throw new Error(this.UNAVAILABLE_ERROR);
   }
 
   var alts = [];
