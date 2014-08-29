@@ -8,13 +8,19 @@ angular.module('copayApp.controllers').controller('SendController',
     var satToUnit = 1 / config.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = config.unitToSatoshi;
     $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
 
-    this.alternativeName = config.alternativeName;
-    this.alternativeIsoCode = config.alternativeIsoCode;
-    this.rateService = rateService;
+    $scope.alternativeName = config.alternativeName;
+    $scope.alternativeIsoCode = config.alternativeIsoCode;
 
-    $scope.amount = 0;
+    $scope.isRateAvailable = false;
+    $scope.rateService = rateService;
+
+    rateService.whenAvailable(function() {
+      $scope.isRateAvailable = true;
+      $scope.$digest();
+    });
 
     /**
      * Setting the two related amounts as properties prevents an infinite
@@ -26,12 +32,13 @@ angular.module('copayApp.controllers').controller('SendController',
         return this._alternative;
       },
       set: function (newValue) {
+        newValue = -(-newValue) || 0;
         this._alternative = newValue;
-        if (typeof(newValue) === 'number') {
+        if ($scope.isRateAvailable) {
           this._amount = Number.parseFloat(
             (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
           ).toFixed(config.unitDecimals), 10);
-        }
+        };
       },
       enumerable: true,
       configurable: true
@@ -42,12 +49,13 @@ angular.module('copayApp.controllers').controller('SendController',
         return this._amount;
       },
       set: function (newValue) {
+        newValue = -(-newValue) || 0;
         this._amount = newValue;
-        if (newValue) {
+        if ($scope.isRateAvailable) {
           this._alternative = Number.parseFloat(
             (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
           ).toFixed(2), 10);
-        }
+        };
       },
       enumerable: true,
       configurable: true
