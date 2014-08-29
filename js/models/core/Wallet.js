@@ -607,8 +607,8 @@ Wallet.prototype.getMyCopayerIdPriv = function() {
  */
 Wallet.prototype.getSecretNumber = function() {
   if (this.secretNumber) return this.secretNumber;
-  this.secretNumber = Wallet.getRandomNumber(); 
-  return this.secretNumber; 
+  this.secretNumber = Wallet.getRandomNumber();
+  return this.secretNumber;
 };
 
 /**
@@ -1284,20 +1284,12 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     };
   }
 
-  var trusted = certs.map(function(cert) {
-    var der = cert.toString('hex');
-    var pem = PayPro.prototype._DERtoPEM(der, 'CERTIFICATE');
-    return PayPro.RootCerts.getTrusted(pem);
-  }).filter(Boolean);
-
   // Verify Signature
-  var verified = pr.verify();
+  var trust = pr.verify(true);
 
-  if (!verified) {
+  if (!trust.verified) {
     return cb(new Error('Server sent a bad signature.'));
   }
-
-  var ca = trusted[0];
 
   details = PayPro.PaymentDetails.decode(details);
   var pd = new PayPro();
@@ -1338,8 +1330,9 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         merchant_data: merchant_data.toString('hex')
       },
       signature: sig.toString('hex'),
-      ca: ca,
-      untrusted: !ca
+      ca: trust.caName,
+      untrusted: !trust.caTrusted,
+      selfSigned: trust.selfSigned
     },
     request_url: options.uri,
     total: bignum('0', 10).toString(10),
@@ -1703,7 +1696,8 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   pr = pr.makePaymentRequest(data);
 
   // Verify the signature so we know this is the real request.
-  if (!pr.verify()) {
+  var trust = pr.verify();
+  if (!trust.verified) {
     // Signature does not match cert. It may have
     // been modified by an untrustworthy person.
     // We should not sign this transaction proposal!
@@ -2005,7 +1999,7 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   var proposalsChanged = false;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
     if (err) return cb(err);
-    
+
     unspentList.forEach(function (unspent) {
       inputs.forEach(function (input) {
         input.unspent = input.unspent || (input.txid === unspent.txid && input.vout === unspent.vout);
