@@ -18,6 +18,7 @@ describe('Network / Async', function() {
     fakeSocket.emit = function() {};
     fakeSocket.on = function() {};
     fakeSocket.disconnect = function() {};
+    fakeSocket.removeAllListeners = function() {};
     n.createSocket = function() {
       return fakeSocket;
     };

@@ -9,8 +9,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
       $scope.loading = true;
       w.generateAddress(null, function() {
         $timeout(function() {
-          controllerUtils.setSocketHandlers();
-          controllerUtils.updateAddressList();
+          controllerUtils.updateGlobalAddresses();
           $scope.loading = false;
         }, 1);
       });

@@ -35,6 +35,7 @@ Network.prototype.cleanUp = function() {
   this.criticalErr = '';
   this.removeAllListeners();
   if (this.socket) {
+    this.socket.removeAllListeners();
     this.socket.disconnect();
     this.socket = null;
   }

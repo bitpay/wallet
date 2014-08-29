@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, Socket, video, uriHandler) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, video, uriHandler) {
     var root = {};
     root.getVideoMutedStatus = function(copayer) {
       if (!$rootScope.videoInfo) return;
@@ -23,8 +23,6 @@ angular.module('copayApp.services')
     root.logout = function() {
       if ($rootScope.wallet)
         $rootScope.wallet.close();
-
-      Socket.removeAllListeners();
 
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
@@ -68,7 +66,7 @@ angular.module('copayApp.services')
       uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
-      $rootScope.insightError = 0;
+      $rootScope.reconnecting = false;
       $rootScope.isCollapsed = true;
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
         if (txAlertCount && txAlertCount > 0) {
@@ -100,11 +98,9 @@ angular.module('copayApp.services')
 
 
     root.startNetwork = function(w, $scope) {
-      Socket.removeAllListeners();
-
       root.setupRootVariables();
       root.installStartupHandlers(w, $scope);
-      root.setSocketHandlers();
+      root.updateGlobalAddresses();
 
       var handlePeerVideo = function(err, peerID, url) {
         if (err) {
@@ -125,6 +121,8 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
+        root.setConnectionListeners($rootScope.wallet);
+
         if ($rootScope.pendingPayment) {
           $location.path('send');
         } else {
@@ -135,7 +133,7 @@ angular.module('copayApp.services')
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.setSocketHandlers();
+        root.updateGlobalAddresses();
         if (!dontDigest) {
           $rootScope.$digest();
         }
@@ -199,13 +197,7 @@ angular.module('copayApp.services')
       $rootScope.updatingBalance = true;
 
       w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
-        if (err) {
-          console.error('Error: ' + err.message); //TODO
-          root._setCommError();
-          return null;
-        } else {
-          root._clearCommError();
-        }
+        if (err) throw err;
 
         var satToUnit = 1 / config.unitToSatoshi;
         var COIN = bitcore.util.COIN;
@@ -298,81 +290,53 @@ angular.module('copayApp.services')
       });
     }
 
-    var connectionLost = false;
-    $rootScope.$watch('insightError', function(status) {
-      if (!status) return;
-
-      // Reconnected
-      if (status === -1) {
-        if (!connectionLost) return; // Skip on first reconnect
-        connectionLost = false;
+    root.setConnectionListeners = function(wallet) {
+      wallet.blockchain.on('connect', function(attempts) {
+        if (attempts == 0) return;
         notification.success('Networking restored', 'Connection to Insight re-established');
-        return;
+        $rootScope.reconnecting = false;
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      });
+
+      wallet.blockchain.on('disconnect', function() {
+        notification.error('Networking problem', 'Connection to Insight lost, trying to reconnect...');
+        $rootScope.reconnecting = true;
+        $rootScope.$digest();
+      });
+
+      wallet.blockchain.on('tx', function(tx) {
+        notification.funds('Funds received!', tx.address);
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      });
+
+      if (!$rootScope.wallet.spendUnconfirmed) {
+        wallet.blockchain.on('block', function(block) {
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
+        });
       }
+    }
 
-      // Retry
-      if (status == 1) return; // Skip the first try
-      connectionLost = true;
-      notification.error('Networking problem', 'Connection to Insight lost, reconnecting (attempt number ' + (status - 1) + ')');
-    });
-
-    root._setCommError = function(e) {
-      if ($rootScope.insightError < 0)
-        $rootScope.insightError = 0;
-      $rootScope.insightError++;
-    };
-
-    root._clearCommError = function(e) {
-      if ($rootScope.insightError > 0)
-        $rootScope.insightError = -1;
-      else
-        $rootScope.insightError = 0;
-    };
-
-    root.setSocketHandlers = function() {
-      root.updateAddressList();
-      if (!Socket.sysEventsSet) {
-        Socket.sysOn('error', root._setCommError);
-        Socket.sysOn('reconnect_error', root._setCommError);
-        Socket.sysOn('reconnect_failed', root._setCommError);
-        Socket.sysOn('connect', root._clearCommError);
-        Socket.sysOn('reconnect', root._clearCommError);
-        Socket.sysEventsSet = true;
-      }
+    root.updateGlobalAddresses = function() {
       if (!$rootScope.wallet) return;
 
-      var currentAddrs = Socket.getListeners();
+      root.updateAddressList();
+      var currentAddrs = $rootScope.wallet.blockchain.getSubscriptions();
       var allAddrs = $rootScope.addrInfos;
 
       var newAddrs = [];
       for (var i in allAddrs) {
         var a = allAddrs[i];
-        if (!currentAddrs[a.addressStr])
-          newAddrs.push(a);
+        if (!currentAddrs[a.addressStr] && !a.isChange)
+          newAddrs.push(a.addressStr);
       }
-      for (var i = 0; i < newAddrs.length; i++) {
-        Socket.emit('subscribe', newAddrs[i].addressStr);
-      }
-      newAddrs.forEach(function(a) {
-        Socket.on(a.addressStr, function(txid) {
 
-          if (!a.isChange)
-            notification.funds('Funds received!', a.addressStr);
-
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        });
-      });
-
-      if (!$rootScope.wallet.spendUnconfirmed && !Socket.isListeningBlocks()) {
-        Socket.emit('subscribe', 'inv');
-        Socket.on('block', function(block) {
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        });
-      }
+      $rootScope.wallet.blockchain.subscribe(newAddrs);
     };
     return root;
   });
