@@ -144,11 +144,24 @@ describe('Unit: Rate Service', function() {
       should.exist(rateService.isAvailable);
     })
   );
-  it('should be possible to ask for conversion',
+  beforeEach(module(function($provide) {
+    $provide.value('request', {
+      'get': function(_, cb) {
+        cb(null, null, [{name: 'lol currency', code: 'LOL', rate: 2}]);
+      }
+    });
+  }));
+  it('should be possible to ask for conversion from fiat',
     inject(function(rateService) {
       rateService.whenAvailable(function() {
-        rateService.rates['LOL'] = 2;
-        (1 * 1e8).should.equal(rateService.fromFiat(2, 'LOL'));
+        (1).should.equal(rateService.fromFiat(2, 'LOL'));
+      });
+    })
+  );
+  it('should be possible to ask for conversion to fiat',
+    inject(function(rateService) {
+      rateService.whenAvailable(function() {
+        (2).should.equal(rateService.toFiat(1e8, 'LOL'));
       });
     })
   );
