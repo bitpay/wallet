@@ -36,6 +36,7 @@ var FakeWallet = function() {
       return true;
     }
   };
+  this.blockchain = {subscribed: [], subscribe: function(){}};
 
   this.privateKey = new FakePrivateKey();
 };
