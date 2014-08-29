@@ -100,14 +100,14 @@ Insight.prototype.getSocket = function(url, opts) {
 
 /** @private */
 Insight.prototype.request = function(path, cb) {
-  preconditions.checkArgument(url).shouldBeFunction(cb);
+  preconditions.checkArgument(path).shouldBeFunction(cb);
   request(this.url + path, cb);
 }
 
 /** @private */
 Insight.prototype.requestPost = function(path, data, cb) {
-  preconditions.checkArgument(url).checkArgument(data).shouldBeFunction(cb);
-  request.post(this.url, cb).form(data);
+  preconditions.checkArgument(path).checkArgument(data).shouldBeFunction(cb);
+  request({method: "POST", url: this.url + path, json: data}, cb);
 }
 
 Insight.prototype.destroy = function() {
@@ -165,7 +165,7 @@ Insight.prototype.broadcast = function(rawtx, cb) {
 
   this.requestPost('/api/tx/send', {rawtx: rawtx}, function(err, res, body) {
     if (err || res.statusCode != 200) cb(err || res);
-    cb(null, JSON.parse(body).txid);
+    cb(null, body.txid);
   });
 };
 
@@ -219,7 +219,7 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 
   this.requestPost('/api/addrs/utxo', {addrs: addresses.join(',')}, function(err, res, body) {
     if (err || res.statusCode != 200) return cb(err || res);
-    cb(null, JSON.parse(body));
+    cb(null, body);
   });
 };
 

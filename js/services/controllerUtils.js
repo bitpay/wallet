@@ -120,7 +120,7 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
-        root.setConnectionListeners();
+        root.setConnectionListeners($rootScope.wallet);
 
         if ($rootScope.pendingPayment) {
           $location.path('send');
@@ -196,13 +196,7 @@ angular.module('copayApp.services')
       $rootScope.updatingBalance = true;
 
       w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
-        if (err) {
-          console.error('Error: ' + err.message); //TODO
-          root._setCommError();
-          return null;
-        } else {
-          root._clearCommError();
-        }
+        if (err) throw err;
 
         var satToUnit = 1 / config.unitToSatoshi;
         var COIN = bitcore.util.COIN;
@@ -325,7 +319,7 @@ angular.module('copayApp.services')
       if (!$rootScope.wallet) return;
 
       root.updateAddressList();
-      var currentAddrs = $rootScope.wallet.blockchain.getListeners();
+      var currentAddrs = $rootScope.wallet.blockchain.subscribed;
       var allAddrs = $rootScope.addrInfos;
 
       var newAddrs = [];
