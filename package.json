@@ -11,6 +11,7 @@
   },
   "version": "0.4.7",
   "dependencies": {
+    "browser-request": "^0.3.2",
     "mocha": "^1.18.2",
     "mocha-lcov-reporter": "0.0.1",
     "optimist": "^0.6.1",
@@ -71,7 +72,7 @@
     "travis-cov": "0.2.5",
     "uglifyify": "1.2.3",
     "crypto-js": "3.1.2",
-    "shelljs":"0.3.0"
+    "shelljs": "0.3.0"
   },
   "main": "app.js",
   "homepage": "https://github.com/bitpay/copay",

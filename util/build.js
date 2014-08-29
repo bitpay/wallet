@@ -40,6 +40,9 @@ var createBundle = function(opts) {
   b.require('bitcore/node_modules/browserify-buffertools/buffertools.js', {
     expose: 'buffertools'
   });
+  b.require('browser-request', {
+    expose: 'request'
+  });
 
   b.require('./copay', {
     expose: 'copay'
@@ -87,6 +90,9 @@ var createBundle = function(opts) {
     });
     b.require('./test/mocks/FakeBlockchain', {
       expose: './mocks/FakeBlockchain'
+    });
+    b.require('./test/mocks/FakeBlockchainSocket', {
+      expose: './mocks/FakeBlockchainSocket'
     });
     b.require('./test/mocks/FakeNetwork', {
       expose: './mocks/FakeNetwork'
