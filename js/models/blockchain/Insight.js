@@ -29,7 +29,7 @@ var preconditions = require('preconditions').singleton();
 
 var Insight = function (opts) {
   this.status = this.STATUS.DISCONNECTED;
-  this.subscribed = [];
+  this.subscribed = {};
   this.listeningBlocks = false;
 
   preconditions.checkArgument(opts).shouldBeObject(opts)
@@ -112,7 +112,7 @@ Insight.prototype.requestPost = function(path, data, cb) {
 
 Insight.prototype.destroy = function() {
   this.socket.destroy();
-  this.subscribed = [];
+  this.subscribed = {};
   this.status = this.STATUS.DESTROYED;
   this.removeAllListeners();
 };
@@ -124,7 +124,7 @@ Insight.prototype.subscribe = function(addresses) {
   function handlerFor(self, address) {
     return function (txid) {
       // verify the address is still subscribed
-      if (self.subscribed.indexOf(address) == -1) return;
+      if (!self.subscribed[address]) return;
       self.emit('tx', {address: address, txid: txid});
     }
   }
@@ -133,13 +133,17 @@ Insight.prototype.subscribe = function(addresses) {
     preconditions.checkArgument(new bitcore.Address(address).isValid());
 
     // skip already subscibed
-    if (self.subscribed.indexOf(address) == -1) {
-      self.subscribed.push(address);
+    if (!self.subscribed[address]) {
+      self.subscribed[address] = true;
       self.socket.emit('subscribe', address);
       self.socket.on(address, handlerFor(self, address));
     }
   });
 };
+
+Insight.prototype.getSubscriptions = function(addresses) {
+  return Object.keys(this.subscribed);
+}
 
 Insight.prototype.unsubscribe = function(addresses) {
   addresses = Array.isArray(addresses) ? addresses : [addresses];
@@ -148,15 +152,12 @@ Insight.prototype.unsubscribe = function(addresses) {
   addresses.forEach(function(address) {
     preconditions.checkArgument(new bitcore.Address(address).isValid());
     self.socket.removeEventListener(address);
-  });
-
-  this.subscribed = this.subscribed.filter(function(a) {
-    return addresses.indexOf(a) == -1;
+    delete self.subscribed[address];
   });
 };
 
 Insight.prototype.unsubscribeAll = function() {
-  this.unsubscribe(this.subscribed);
+  this.unsubscribe(this.getSubscriptions());
 };
 
 Insight.prototype.broadcast = function(rawtx, cb) {

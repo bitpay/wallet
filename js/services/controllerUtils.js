@@ -66,6 +66,7 @@ angular.module('copayApp.services')
       uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
+      $rootScope.reconnecting = false;
       $rootScope.isCollapsed = true;
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
         if (txAlertCount && txAlertCount > 0) {
@@ -293,10 +294,16 @@ angular.module('copayApp.services')
       wallet.blockchain.on('connect', function(attempts) {
         if (attempts == 0) return;
         notification.success('Networking restored', 'Connection to Insight re-established');
+        $rootScope.reconnecting = false;
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
       });
 
       wallet.blockchain.on('disconnect', function() {
         notification.error('Networking problem', 'Connection to Insight lost, trying to reconnect...');
+        $rootScope.reconnecting = true;
+        $rootScope.$digest();
       });
 
       wallet.blockchain.on('tx', function(tx) {
@@ -319,18 +326,17 @@ angular.module('copayApp.services')
       if (!$rootScope.wallet) return;
 
       root.updateAddressList();
-      var currentAddrs = $rootScope.wallet.blockchain.subscribed;
+      var currentAddrs = $rootScope.wallet.blockchain.getSubscriptions();
       var allAddrs = $rootScope.addrInfos;
 
       var newAddrs = [];
       for (var i in allAddrs) {
         var a = allAddrs[i];
         if (!currentAddrs[a.addressStr] && !a.isChange)
-          newAddrs.push(a);
+          newAddrs.push(a.addressStr);
       }
-      for (var i = 0; i < newAddrs.length; i++) {
-        $rootScope.wallet.blockchain.subscribe(newAddrs[i].addressStr);
-      }
+
+      $rootScope.wallet.blockchain.subscribe(newAddrs);
     };
     return root;
   });
