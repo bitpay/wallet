@@ -16,7 +16,7 @@ angular.module('copayApp.services')
 
     root.redirIfLogged = function() {
       if ($rootScope.wallet) {
-        $rootScope.wallet.path('receive');
+        $location.path('receive');
       }
     };
 
