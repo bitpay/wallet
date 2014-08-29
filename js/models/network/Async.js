@@ -220,6 +220,8 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   });
   self.socket.on('error', self._onError.bind(self));
 
+  self.socket.on('no messages', self.emit.bind(self, 'no messages'));
+
   self.socket.on('connect', function() {
 
     self.socket.on('disconnect', function() {
@@ -288,22 +290,12 @@ Network.prototype.start = function(opts, openCallback) {
   this._setupConnectionHandlers(openCallback);
   this.socket.emit('subscribe', pubkey);
 
-  var self = this,
-    tries = 0;
-  self.socket.on('insight-error', function(m) {
-
-    console.log('Retrying to sync...');
-    setTimeout(function() {
-      if (tries++ > 5) {
-        self.emit('serverError');
-      } else {
-        self.socket.emit('sync', opts.lastTimestamp);
-      }
-    }, 500);
+  var fromTs = opts.lastTimestamp + 1;
+  var self = this;
+  self.socket.on('subscribed', function(m) {
+    self.socket.emit('sync', fromTs);
+    self.started = true;
   });
-
-  self.socket.emit('sync', opts.lastTimestamp);
-  self.started = true;
 };
 
 Network.prototype.createSocket = function() {
@@ -345,18 +337,21 @@ Network.prototype.send = function(dest, payload, cb) {
     dest = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
+
   if (typeof dest === 'string')
     dest = [dest];
 
   var l = dest.length;
   var i = 0;
-  //console.log('sending ' + JSON.stringify(payload));
-  dest.forEach(function(to) {
-    //console.log('\t to ' + to);
-    var message = self.encode(to, payload);
+  for (var ii in dest) {
+    var to = dest[ii];
+    if (to == this.copayerId)
+      continue;
+    //console.log('SEND to: ' + to, this.copayerId, payload);
+    var message = this.encode(to, payload);
+    this.socket.emit('message', message);
+  }
 
-    self.socket.emit('message', message);
-  });
   if (typeof cb === 'function') cb();
 };
 

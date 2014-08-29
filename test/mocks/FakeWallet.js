@@ -102,8 +102,7 @@ FakeWallet.prototype.toEncryptedObj = function() {
   return this.enc;
 };
 
-FakeWallet.prototype.disconnect = function() {
-  this.disconnectCalled = 1;
+FakeWallet.prototype.close = function() {
 };
 
 // TODO a try catch was here

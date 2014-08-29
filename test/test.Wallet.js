@@ -530,15 +530,6 @@ describe('Wallet model', function() {
     w._onConnect(newId);
   });
 
-  it('handle disconnections', function(done) {
-    var w = createW();
-    w.on('disconnect', function(id) {
-      id.should.equal(newId);
-      done();
-    });
-    w._onDisconnect(newId);
-  });
-
   it('should register new copayers correctly', function() {
     var w = createW();
     var r = w.getRegisteredCopayerIds();
@@ -1427,13 +1418,6 @@ describe('Wallet model', function() {
     var n = w.getNetwork();
     n.maxPeers.should.equal(5);
     should.exist(n.networkNonce);
-  });
-
-  it('#disconnect', function() {
-    var w = cachedCreateW();
-    var spy1 = sinon.spy(w, 'send');
-    w.disconnect();
-    spy1.calledOnce.should.be.true;
   });
 
 });

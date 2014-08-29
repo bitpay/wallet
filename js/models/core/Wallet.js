@@ -53,6 +53,7 @@ function Wallet(opts) {
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
   this.lastTimestamp = opts.lastTimestamp || undefined;
+  this.lastMessageFrom = {};
 
   this.paymentRequests = opts.paymentRequests || {};
 
@@ -84,19 +85,6 @@ Wallet.getRandomId = function() {
 
 Wallet.prototype.seedCopayer = function(pubKey) {
   this.seededCopayerId = pubKey;
-};
-
-// not being used now
-Wallet.prototype.connectToAll = function() {
-  // not being used now
-  return;
-
-  var all = this.publicKeyRing.getAllCopayerIds();
-  this.network.connectToCopayers(all);
-  if (this.seededCopayerId) {
-    this.sendWalletReady(this.seededCopayerId);
-    this.seededCopayerId = null;
-  }
 };
 
 Wallet.prototype._onIndexes = function(senderId, data) {
@@ -323,6 +311,12 @@ Wallet.prototype.updateTimestamp = function(ts) {
   this.store();
 };
 
+
+Wallet.prototype._onNoMessages = function() {
+  console.log('No messages at the server. Requesting sync'); //TODO
+  this.sendWalletReady();
+};
+
 Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
@@ -330,12 +324,14 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(typeof ts === 'number');
 
-  this.updateTimestamp(ts);
+  console.log('RECV', senderId, data);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     this.emit('corrupt', senderId);
+    this.updateTimestamp(ts);
     return;
   }
+
 
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
@@ -343,9 +339,11 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
-      this.sendPublicKeyRing(senderId);
-      this.sendAddressBook(senderId);
-      this.sendAllTxProposals(senderId); // send old txps
+      if (this.lastMessageFrom[senderId] !== 'walletReady') {
+        this.sendPublicKeyRing(senderId);
+        this.sendAddressBook(senderId);
+        this.sendAllTxProposals(senderId); // send old txps
+      }
       break;
     case 'publicKeyRing':
       this._onPublicKeyRing(senderId, data);
@@ -365,11 +363,16 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     case 'addressbook':
       this._onAddressBook(senderId, data);
       break;
+      // unused messages  
     case 'disconnect':
-      this._onDisconnect(senderId, data);
+      //case 'an other unused message':
       break;
+    default:
+      throw new Error('unknown message type received: ' + data.type + ' from: ' + senderId)
   }
 
+  this.lastMessageFrom[senderId] = data.type;
+  this.updateTimestamp(ts);
 };
 
 Wallet.prototype._onConnect = function(newCopayerId) {
@@ -380,12 +383,6 @@ Wallet.prototype._onConnect = function(newCopayerId) {
   var peerID = this.network.peerFromCopayer(newCopayerId)
   this.emit('connect', peerID);
 };
-
-Wallet.prototype._onDisconnect = function(peerID) {
-  this.currentDelay = null;
-  this.emit('disconnect', peerID);
-};
-
 
 Wallet.prototype.getNetworkName = function() {
   return this.publicKeyRing.network.name;
@@ -445,6 +442,7 @@ Wallet.prototype.netStart = function(callback) {
   net.removeAllListeners();
   net.on('connect', self._onConnect.bind(self));
   net.on('data', self._onData.bind(self));
+  net.on('no messages', self._onNoMessages.bind(self));
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
@@ -647,8 +645,7 @@ Wallet.prototype.sendReject = function(ntxid) {
 
 
 Wallet.prototype.sendWalletReady = function(recipients) {
-  preconditions.checkArgument(recipients);
-  this.log('### SENDING WalletReady TO:', recipients);
+  this.log('### SENDING WalletReady TO:', recipients || 'All');
 
   this.send(recipients, {
     type: 'walletReady',
@@ -1751,15 +1748,10 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
 }
 
 
-Wallet.prototype.disconnect = function() {
-  this.log('## DISCONNECTING');
+Wallet.prototype.close = function() {
+  this.log('## CLOSING');
   this.lock.release();
-  var self = this;
-  self.send(null, {
-    type: 'disconnect',
-    walletId: this.id,
-  });
-  self.network.cleanUp();
+  this.network.cleanUp();
 };
 
 Wallet.prototype.getNetwork = function() {
