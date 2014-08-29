@@ -135,8 +135,9 @@ describe("Unit: Controllers", function() {
         }
       });
     }));
-    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller) {
+    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller, rateService) {
       scope = $rootScope.$new();
+      scope.rateService = rateService;
       $rootScope.wallet = new FakeWallet(walletConfig);
       config.alternativeName = 'lol currency';
       config.alternativeIsoCode = 'LOL';
@@ -254,7 +255,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should convert bits amount to fiat', function(done) {
-      sendCtrl.rateService.whenAvailable(function() {
+      scope.rateService.whenAvailable(function() {
         sendForm.amount.$setViewValue(1e6);
         scope.$digest();
         expect(scope.alternative).to.equal(2);
@@ -262,7 +263,7 @@ describe("Unit: Controllers", function() {
       });
     });
     it('should convert fiat to bits amount', function(done) {
-      sendCtrl.rateService.whenAvailable(function() {
+      scope.rateService.whenAvailable(function() {
         sendForm.alternative.$setViewValue(2);
         scope.$digest();
         expect(scope.amount).to.equal(1e6);
