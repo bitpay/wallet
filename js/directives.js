@@ -257,7 +257,7 @@ angular.module('copayApp.directives')
   })
   .directive('clipCopy', function() {
     ZeroClipboard.config({
-      moviePath: '/lib/zeroclipboard/ZeroClipboard.swf',
+      moviePath: './lib/zeroclipboard/ZeroClipboard.swf',
       trustedDomains: ['*'],
       allowScriptAccess: 'always',
       forceHandCursor: true
