@@ -53,10 +53,10 @@ var defaultConfig = {
   verbose: 1,
 
   plugins: {
-    googleDrive: true,
+    GoogleDrive: true,
   },
 
-  googleDrive: {
+  GoogleDrive: {
     clientId: '1',
   },
 };

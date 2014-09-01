@@ -16,6 +16,7 @@ var StorageEncrypted = module.exports.StorageEncrypted = require('./js/models/st
 module.exports.WalletFactory = require('./js/models/core/WalletFactory');
 module.exports.Wallet = require('./js/models/core/Wallet');
 module.exports.WalletLock = require('./js/models/core/WalletLock');
+module.exports.PluginManager = require('./js/models/core/PluginManager');
 module.exports.version = require('./version').version;
 module.exports.commitHash = require('./version').commitHash;
 

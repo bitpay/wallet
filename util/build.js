@@ -83,9 +83,15 @@ var createBundle = function(opts) {
   b.require('./js/models/core/HDPath', {
     expose: '../js/models/core/HDPath'
   });
-  b.require('./plugins/googleDrive', {
-    expose: '../plugins/googleDrive'
+  b.require('./js/models/core/PluginManager', {
+    expose: '../js/models/core/PluginManager'
   });
+
+  if (!opts.disablePlugins) {
+    b.require('./plugins/GoogleDrive', {
+      expose: '../plugins/GoogleDrive'
+    });
+  }
  
   b.require('./config', {
     expose: '../config'
