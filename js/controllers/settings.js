@@ -34,10 +34,11 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   }];
 
   $scope.selectedAlternative = {
-    name: 'US Dollar',
-    isoCode: 'USD'
+    name: config.alternativeName,
+    isoCode: config.alternativeIsoCode
   };
-  $scope.alternativeOpts = rateService.alternatives;
+  $scope.alternativeOpts = rateService.isAvailable ?
+    rateService.listAlternatives() : [$scope.selectedAlternative];
 
   rateService.whenAvailable(function() {
     $scope.alternativeOpts = rateService.listAlternatives();
