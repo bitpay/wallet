@@ -22,8 +22,8 @@ angular
     templateUrl: 'views/import.html',
     validate: false
   })
-  .when('/setup', {
-    templateUrl: 'views/setup.html',
+  .when('/create', {
+    templateUrl: 'views/create.html',
     validate: false
   })
   .when('/copayers', {
