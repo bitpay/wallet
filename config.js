@@ -3,7 +3,7 @@ var defaultConfig = {
   // DEFAULT network (livenet or testnet)
   networkName: 'testnet',
   forceNetwork: false,
-  logLevel: 'debug',
+  logLevel: 'info',
 
   // DEFAULT unit: Bit
   unitName: 'bits',
