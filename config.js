@@ -50,6 +50,15 @@ var defaultConfig = {
     updateFrequencySeconds: 60 * 60
   },
 
+  verbose: 1,
+
+  plugins: {
+    googleDrive: true,
+  },
+
+  googleDrive: {
+    clientId: '1',
+  },
 };
 if (typeof module !== 'undefined')
   module.exports = defaultConfig;

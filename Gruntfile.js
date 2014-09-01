@@ -115,6 +115,7 @@ module.exports = function(grunt) {
           'lib/angular-foundation/mm-foundation.min.js',
           'lib/angular-foundation/mm-foundation-tpls.min.js',
           'lib/angular-gettext/dist/angular-gettext.min.js'
+          'lib/angular-load/angular-load.min.js',
         ],
         dest: 'lib/angularjs-all.js'
       },
