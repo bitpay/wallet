@@ -2,6 +2,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 var bitcore = require('bitcore');
+var log = require('../../log');
 var AuthMessage = bitcore.AuthMessage;
 var util = bitcore.util;
 var nodeUtil = require('util');
@@ -187,7 +188,7 @@ Network.prototype._onMessage = function(enc) {
     return;
   }
 
-  //console.log('receiving ' + JSON.stringify(payload));
+  log.debug('receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
@@ -234,8 +235,8 @@ Network.prototype._setupConnectionHandlers = function(cb) {
 };
 
 Network.prototype._onError = function(err) {
-  console.log('RECV ERROR: ', err);
-  console.log(err.stack);
+  log.debug('RECV ERROR: ', err);
+  log.debug(err.stack);
   this.criticalError = err.message;
 };
 
@@ -348,7 +349,7 @@ Network.prototype.send = function(dest, payload, cb) {
     var to = dest[ii];
     if (to == this.copayerId)
       continue;
-    //console.log('SEND to: ' + to, this.copayerId, payload);
+    log.debug('SEND to: ' + to, this.copayerId, payload);
     var message = this.encode(to, payload);
     this.socket.emit('message', message);
   }
