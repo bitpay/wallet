@@ -37,8 +37,16 @@ var modules = [
   'copayApp.directives',
 ];
 
-if (config.plugins.googleDrive)
+if (config.plugins.length)
   modules.push('angularLoad');
+
+if (config.plugins.googleDrive) {
+  var googleDrive = require('../plugins/googleDrive');
+  var a = new googleDrive();
+  a.init();
+console.log('[app.js.41:new:]',a); //TODO
+}
+
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);
 

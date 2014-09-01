@@ -42,7 +42,8 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: [
-          'js/models/**/*.js'
+          'js/models/**/*.js',
+          'plugins/*.js',
         ],
         tasks: ['shell:dev']
       },
@@ -129,7 +130,7 @@ module.exports = function(grunt) {
           'js/controllers/*.js',
           'js/translations.js',
           'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
-          'js/init.js'
+          'js/init.js',
         ],
         dest: 'js/copayMain.js'
       }

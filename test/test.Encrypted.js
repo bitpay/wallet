@@ -3,7 +3,7 @@ var chai = chai || require('chai');
 var should = chai.should();
 var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 var copay = copay || require('../copay');
-var LocalEncrypted = copay.StorageLocalEncrypted;
+var Encrypted = copay.StorageEncrypted;
 
 var fakeWallet = 'fake-wallet-id';
 var timeStamp = Date.now();
@@ -11,23 +11,23 @@ var localMock = require('./mocks/FakeLocalStorage');
 var sessionMock = require('./mocks/FakeLocalStorage');
 
 
-describe('Storage/LocalEncrypted model', function() {
-  var s = new LocalEncrypted({
-    localStorage: localMock,
+describe('Storage/Encrypted model', function() {
+  var s = new Encrypted({
+    storage: localMock,
     sessionStorage: sessionMock,
   });
   s._setPassphrase('mysupercoolpassword');
 
   it('should create an instance', function() {
-    var s2 = new LocalEncrypted({
-      localStorage: localMock,
+    var s2 = new Encrypted({
+      storage: localMock,
       sessionStorage: sessionMock,
     });
     should.exist(s2);
   });
   it('should fail when encrypting without a password', function() {
-    var s2 = new LocalEncrypted({
-      localStorage: localMock,
+    var s2 = new Encrypted({
+      storage: localMock,
       sessionStorage: sessionMock,
     });
     (function() {
@@ -71,8 +71,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#export', function() {
     it('should export the encrypted wallet', function() {
-      var storage = new LocalEncrypted({
-        localStorage: localMock,
+      var storage = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password',
       });
@@ -89,8 +89,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#remove', function() {
     it('should remove an item', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -105,8 +105,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#getWalletIds', function() {
     it('should get wallet ids', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -118,8 +118,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#getName #setName', function() {
     it('should get/set names', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -130,8 +130,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#getLastOpened #setLastOpened', function() {
     it('should get/set names', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -143,8 +143,8 @@ describe('Storage/LocalEncrypted model', function() {
   if (is_browser) {
     describe('#getSessionId', function() {
       it('should get SessionId', function() {
-        var s = new LocalEncrypted({
-          localStorage: localMock,
+        var s = new Encrypted({
+          storage: localMock,
           sessionStorage: sessionMock,
           password: 'password'
         });
@@ -158,8 +158,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#getWallets', function() {
     it('should retreive wallets from storage', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -178,8 +178,8 @@ describe('Storage/LocalEncrypted model', function() {
   });
   describe('#deleteWallet', function() {
     it('should delete a wallet', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -198,8 +198,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#setFromObj', function() {
     it('set localstorage from an object', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -218,8 +218,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('#globals', function() {
     it('should set, get and remove keys', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
@@ -237,8 +237,8 @@ describe('Storage/LocalEncrypted model', function() {
 
   describe('session storage', function() {
     it('should get a session ID', function() {
-      var s = new LocalEncrypted({
-        localStorage: localMock,
+      var s = new Encrypted({
+        storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });

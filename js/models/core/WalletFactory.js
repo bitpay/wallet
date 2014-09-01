@@ -8,7 +8,7 @@ var _ = require('underscore');
 var log = require('../../log');
 var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
-var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
+var StorageEncrypted = module.exports.StorageEncrypted = require('../storage/Encrypted');
 var preconditions = require('preconditions').singleton();
 
 /**
@@ -36,7 +36,7 @@ function WalletFactory(config, version) {
   var self = this;
   config = config || {};
 
-  this.Storage = config.Storage || StorageLocalEncrypted;
+  this.Storage = config.Storage || StorageEncrypted;
   this.Network = config.Network || Async;
   this.Blockchain = config.Blockchain || Insight;
 
