@@ -1124,6 +1124,7 @@ a.text-warning:hover {color: #FD7262;}
   float: left;
   margin-left: 2rem;
   overflow-wrap: break-word;
+  word-wrap: break-word;
   width: 55%;
   text-align: left;
 }
