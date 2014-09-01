@@ -11,7 +11,7 @@ module.exports.HDParams = require('./js/models/core/HDParams');
 // components
 var Async = module.exports.Async = require('./js/models/network/Async');
 var Insight = module.exports.Insight = require('./js/models/blockchain/Insight');
-var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('./js/models/storage/LocalEncrypted');
+var StorageEncrypted = module.exports.StorageEncrypted = require('./js/models/storage/Encrypted');
 
 module.exports.WalletFactory = require('./js/models/core/WalletFactory');
 module.exports.Wallet = require('./js/models/core/Wallet');
