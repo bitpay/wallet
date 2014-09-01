@@ -14,26 +14,24 @@ var levels = {
   'fatal': 5
 };
 
-for (_level in levels) {
-  (function(level) {
-    Logger.prototype[level] = function() {
-      if (levels[level] >= levels[this.level]) {
-        var str = '[' + level + '] ' + this.name + ': ' + arguments[0],
-          extraArgs,
-        extraArgs = [].slice.call(arguments, 1);
-        if (console[level]) {
-          extraArgs.unshift(str);
-          console[level].apply(console, extraArgs);
-        } else {
-          if (extraArgs.length) {
-            str += JSON.stringify(extraArgs);
-          }
-          console.log(str);
+Object.keys(levels).forEach(function(level) {
+  Logger.prototype[level] = function() {
+    if (levels[level] >= levels[this.level]) {
+      var str = '[' + level + '] ' + this.name + ': ' + arguments[0],
+        extraArgs,
+      extraArgs = [].slice.call(arguments, 1);
+      if (console[level]) {
+        extraArgs.unshift(str);
+        console[level].apply(console, extraArgs);
+      } else {
+        if (extraArgs.length) {
+          str += JSON.stringify(extraArgs);
         }
+        console.log(str);
       }
-    };
-  })(_level);
-}
+    }
+  };
+});
 
 Logger.prototype.setLevel = function(level) {
   this.level = level;
