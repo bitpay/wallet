@@ -7,6 +7,8 @@ var defaultConfig = {
   // DEFAULT unit: Bit
   unitName: 'bits',
   unitToSatoshi: 100,
+  alternativeName: 'US Dollar',
+  alternativeIsoCode: 'USD',
 
   // wallet limits
   limits: {
@@ -52,6 +54,11 @@ var defaultConfig = {
   passphrase: {
     iterations: 100,
     storageSalt: 'mjuBtGybi/4=',
+  },
+
+  rate: {
+    url: 'https://bitpay.com/api/rates',
+    updateFrequencySeconds: 60 * 60
   },
 
   disableVideo: true,

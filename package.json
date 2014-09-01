@@ -72,7 +72,9 @@
     "travis-cov": "0.2.5",
     "uglifyify": "1.2.3",
     "crypto-js": "3.1.2",
-    "shelljs": "0.3.0"
+    "shelljs":"0.3.0",
+    "browser-request": "0.3.2",
+    "request": "2.40.0"
   },
   "main": "app.js",
   "homepage": "https://github.com/bitpay/copay",

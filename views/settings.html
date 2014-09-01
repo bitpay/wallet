@@ -27,6 +27,11 @@
             </select>
           </fieldset>
           <fieldset>
+            <legend>Alternative Currency</legend>
+            <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" required>
+            </select>
+          </fieldset>
+          <fieldset>
             <legend>Videoconferencing</legend>
             <input id="disableVideo-opt" type="checkbox" ng-model="disableVideo" class="form-control">
             <label for="disableVideo-opt">Disable videoconferencing (for slow networks)</label>

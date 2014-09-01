@@ -83,6 +83,22 @@
               </div>
             </div>
           </div>
+          <div class="large-6 medium-6 columns">
+            <div class="row collapse">
+              <label for="alternative">Amount in {{ alternativeName }} </label>
+              <div class="small-9 columns">
+                <input type="number" id="alternative_amount"
+                ng-disabled="loading || !isRateAvailable "
+                name="alternative" placeholder="Amount" ng-model="alternative"
+                enough-amount required
+                autocomplete="off"
+                >
+              </div>
+              <div class="small-3 columns">
+                <span class="postfix">{{alternativeIsoCode}}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="row" ng-show="wallet.isShared()">
@@ -110,7 +126,7 @@
       </form>
     </div>
 
-    <div class="large-6 columns show-for-large-up">
+    <div class="large-6 columns show-for-large-up" ng-show="!!$root.merchant">
       <div class="send-note">
         <h6>Send to</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}">
@@ -119,8 +135,11 @@
         <h6>Total amount for this transaction:</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
         <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
+        <small ng-if="isRateAvailable">
+          {{ rateService.toFiat((amount + defaultFee) * unitToSatoshi, alternativeIsoCode) | noFractionNumber: 2 }} {{ alternativeIsoCode }}
+        <br>
+        </small>
         <small>
-          {{ ((amount + defaultFee) * unitToBtc)|noFractionNumber:8}} BTC <br/>
           Including fee of {{defaultFee|noFractionNumber}} {{$root.unitName}}
         </small>
         </p>
