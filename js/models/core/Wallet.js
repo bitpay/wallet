@@ -998,10 +998,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       self.emit('txProposalsUpdated');
     }
 
-    log.debug('You are currently on this BTC network:');
-    log.debug(network);
-    log.debug('The server sent you a message:');
-    log.debug(memo);
+    log.debug('You are currently on this BTC network:', network);
+    log.debug('The server sent you a message:', memo);
 
     return cb(ntxid, merchantData);
   });
@@ -1080,8 +1078,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
 
   pay = pay.serialize();
 
-  log.debug('Sending Payment Message:');
-  log.debug(pay.toString('hex'));
+  log.debug('Sending Payment Message:', pay.toString('hex'));
 
   var buf = new ArrayBuffer(pay.length);
   var view = new Uint8Array(buf);
