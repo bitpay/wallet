@@ -127,5 +127,10 @@
     display: none;
   }
 
+  .addresses .list-addr contact {
+    margin-left: 0;
+    font-size: 14px;
+  }
+
 }
 
