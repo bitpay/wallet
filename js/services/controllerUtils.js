@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, video, uriHandler) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, video, uriHandler, rateService) {
     var root = {};
     root.getVideoMutedStatus = function(copayer) {
       if (!$rootScope.videoInfo) return;
@@ -217,7 +217,15 @@ angular.module('copayApp.services')
         $rootScope.balanceByAddr = balanceByAddr;
         root.updateAddressList();
         $rootScope.updatingBalance = false;
-        return cb ? cb() : null;
+
+        rateService.whenAvailable(function() {
+          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, config.alternativeIsoCode);
+          $rootScope.alternativeIsoCode = config.alternativeIsoCode;
+          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, config.alternativeIsoCode);
+
+
+          return cb ? cb() : null;
+        });
       });
     };
 
