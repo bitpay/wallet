@@ -65,11 +65,11 @@ describe("Unit: Controllers", function() {
     });
   });
 
-  describe('Setup Controller', function() {
-    var setupCtrl;
+  describe('Create Controller', function() {
+    var c;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      setupCtrl = $controller('SetupController', {
+      c = $controller('CreateController', {
         $scope: scope,
       });
     }));

@@ -32,7 +32,7 @@ var valid_pairs = {
   '1,12': 489
 };
 
-angular.module('copayApp.controllers').controller('SetupController',
+angular.module('copayApp.controllers').controller('CreateController',
   function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification) {
     controllerUtils.redirIfLogged();
 
