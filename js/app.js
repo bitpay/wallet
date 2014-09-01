@@ -18,7 +18,13 @@ if (localConfig) {
   }
 }
 
+var log = function() {
+  if (config.verbose) console.log(arguments);
+}
 var copayApp = window.copayApp = angular.module('copayApp', [
+
+
+var modules = [
   'ngRoute',
   'angularMoment',
   'mm.foundation',
@@ -29,7 +35,12 @@ var copayApp = window.copayApp = angular.module('copayApp', [
   'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
-]);
+];
+
+if (config.plugins.googleDrive)
+  modules.push('angularLoad');
+
+var copayApp = window.copayApp = angular.module('copayApp', modules);
 
 copayApp.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
