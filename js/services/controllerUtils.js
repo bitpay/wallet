@@ -48,7 +48,7 @@ angular.module('copayApp.services')
       if (msg) {
         notification.error('Error', msg);
       }
-      $rootScope.$digest();
+//      $rootScope.$digest();
     };
 
     root.installStartupHandlers = function(wallet, $scope) {
