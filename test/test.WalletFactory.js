@@ -113,21 +113,6 @@ describe('WalletFactory model', function() {
     wf.version.should.equal('0.0.1');
   });
 
-  it('should log', function() {
-    var c2 = JSON.parse(JSON.stringify(config));
-    c2.verbose = 1;
-    c2.Storage = FakeStorage;
-    var wf = new WalletFactory(c2, '0.0.1');
-    var save_console_log = console.log;
-    console.log = function() {};
-    var spy = sinon.spy(console, 'log');
-    wf.log('ok');
-    sinon.assert.callCount(spy, 1);
-    spy.getCall(0).args[0].should.equal('ok');
-    console.log = save_console_log;
-  });
-
-
   it('#_checkRead should return false', function() {
     var wf = new WalletFactory(config);
     wf._checkRead('dummy').should.equal(false);
