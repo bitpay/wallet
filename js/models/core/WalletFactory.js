@@ -5,6 +5,8 @@ var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 
+var log = require('../../log');
+
 var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
@@ -27,18 +29,9 @@ function WalletFactory(config, version) {
   this.blockchain = new this.Blockchain(config.blockchain);
 
   this.networkName = config.networkName;
-  this.verbose = config.verbose;
   this.walletDefaults = config.wallet;
   this.version = version;
 }
-
-WalletFactory.prototype.log = function() {
-  if (!this.verbose) return;
-  if (console) {
-    console.log.apply(console, arguments);
-  }
-};
-
 
 WalletFactory.prototype._checkRead = function(walletId) {
   var s = this.storage;
@@ -112,7 +105,7 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
 
 WalletFactory.prototype.create = function(opts) {
   opts = opts || {};
-  this.log('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
+  log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
   var privOpts = {
     networkName: this.networkName,
@@ -137,12 +130,12 @@ WalletFactory.prototype.create = function(opts) {
     opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
     opts.nickname
   );
-  this.log('\t### PublicKeyRing Initialized');
+  log.debug('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
     networkName: this.networkName,
   });
-  this.log('\t### TxProposals Initialized');
+  log.debug('\t### TxProposals Initialized');
 
   this.storage._setPassphrase(opts.passphrase);
 
@@ -236,7 +229,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
 
   //Create our PrivateK
   var privateKey = new PrivateKey(privOpts);
-  this.log('\t### PrivateKey Initialized');
+  log.debug('\t### PrivateKey Initialized');
   var opts = {
     copayerId: privateKey.getId(),
     privkey: privateKey.getIdPriv(),

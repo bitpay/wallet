@@ -42,4 +42,4 @@ Logger.prototype.setLevel = function(level) {
 var logger = new Logger('copay');
 logger.setLevel(config.logLevel);
 
-module.exports.logger = logger;
+module.exports = logger;

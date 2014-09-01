@@ -18,11 +18,6 @@ if (localConfig) {
   }
 }
 
-var log = function() {
-  if (config.verbose) console.log(arguments);
-}
-
-
 var copayApp = window.copayApp = angular.module('copayApp', [
   'ngRoute',
   'angularMoment',
