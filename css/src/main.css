@@ -53,19 +53,19 @@
 }
 
 ::-webkit-input-placeholder {
-   color: #7A8C9E;
+   color: #4D657C;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: #7A8C9E;
+   color: #4D657C;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: #7A8C9E;
+   color: #4D657C;
 }
 
 :-ms-input-placeholder {  
-   color: #7A8C9E;
+   color: #4D657C;
 }
 
 #qr-canvas { display: none; }
@@ -167,7 +167,7 @@ a:hover {
   -moz-box-shadow:    inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
   box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
   border: 0 !important;
-  color: #7A8C9E !important;
+  color: #fff !important;
 }
 
 .open select, 
@@ -177,7 +177,7 @@ a:hover {
 .settings select {
   background: #2C3E50 !important;
   border: 0 !important;
-  color: #7A8C9E !important;
+  color: #fff !important;
 }
 
 .page, .main {
