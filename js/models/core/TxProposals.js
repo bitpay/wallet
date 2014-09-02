@@ -1,11 +1,9 @@
 'use strict';
 
-var BuilderMockV0 = require('./BuilderMockV0');;
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var BuilderMockV0 = require('./BuilderMockV0');;
-var TxProposal = require('./TxProposal');;
+var TxProposal = require('./TxProposal');
 var Script = bitcore.Script;
 var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
