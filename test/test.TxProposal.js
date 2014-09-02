@@ -133,7 +133,7 @@ describe('TxProposal', function() {
           builderObj: b.toObj(),
           inputChainPaths: ['m/1'],
         });
-      }).should.throw('Invalid');
+      }).should.throw('Invalid or Incompatible Backup Detected');
     });
 
 
