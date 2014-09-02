@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HomeController',
-  function($scope, $rootScope, $location, walletFactory, notification, controllerUtils, pluginManager) {
+  function($scope, $rootScope, $location, walletFactory, notification, controllerUtils) {
     
     controllerUtils.redirIfLogged();
 

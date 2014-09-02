@@ -36,11 +36,13 @@ function WalletFactory(config, version) {
   var self = this;
   config = config || {};
 
-  this.Storage = config.Storage || StorageEncrypted;
+  this.pluginManager = new copay.PluginManager(config);
+
+  this.Storage = config.Storage ||  StorageEncrypted;
   this.Network = config.Network || Async;
   this.Blockchain = config.Blockchain || Insight;
+  this.storage = new this.Storage({storage: this.pluginManager.get('STORAGE')});
 
-  this.storage = new this.Storage(config.storage);
   this.networks = {
     'livenet': new this.Network(config.network.livenet),
     'testnet': new this.Network(config.network.testnet),

@@ -10,11 +10,11 @@ function PluginManager(config) {
     if (!config.plugins[pluginName])
       continue;
 
-    console.log('Loading ' + pluginName);
+    console.log('Loading plugin: ' + pluginName);
     var pluginClass = require('../plugins/' + pluginName);
     var pluginObj  = new pluginClass();
     pluginObj.init();
-    this._register(pluginObj);
+    this._register(pluginObj, pluginName);
   }
 };
 
@@ -24,14 +24,12 @@ var KIND_MULTIPLE = PluginManager.KIND_MULTIPLE = 2;
 PluginManager.TYPE = {};
 PluginManager.TYPE['STORAGE'] = KIND_UNIQUE;
 
-PluginManager.prototype._register = function(obj) {
-  preconditions.checkArgument(obj.type,'Plugin has not type');
+PluginManager.prototype._register = function(obj, name) {
+  preconditions.checkArgument(obj.type,'Plugin has not type:' + name);
   var type = obj.type;
-console.log('[PluginManager.js.29:type:]',type); //TODO
-
   var kind = PluginManager.TYPE[type];
-  preconditions.checkArgument(kind, 'Plugin has unkown type');
-  preconditions.checkState(kind !== PluginManager.KIND_UNIQUE || !this.registered[type], 'Plugin kind already registered');
+  preconditions.checkArgument(kind, 'Plugin has unkown type' + name);
+  preconditions.checkState(kind !== PluginManager.KIND_UNIQUE || !this.registered[type], 'Plugin kind already registered: ' + name);
 
   if (kind === PluginManager.KIND_UNIQUE) {
     this.registered[type] = obj;
@@ -41,6 +39,8 @@ console.log('[PluginManager.js.29:type:]',type); //TODO
   }
 };
 
-PluginManager.prototype.getOne = function(type) {};
+PluginManager.prototype.get = function(type) {
+  return this.registered[type];
+};
 
 module.exports = PluginManager;

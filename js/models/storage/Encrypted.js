@@ -130,6 +130,8 @@ Storage.prototype.getWalletIds = function() {
   var walletIds = [];
   var uniq = {};
 
+console.log('[Encrypted.js.144]', this.storage); //TODO
+console.log('[Encrypted.js.144]', this.storage.length); //TODO
   for (var i = 0; i < this.storage.length; i++) {
     var key = this.storage.key(i);
     var split = key.split('::');
