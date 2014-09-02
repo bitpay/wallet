@@ -455,26 +455,10 @@ Wallet.prototype.netStart = function(callback) {
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
-      //self.scheduleConnect(); 
       // no connection logic for now
       self.emit('txProposalsUpdated');
     }, 10);
   });
-};
-
-
-// not being used now
-Wallet.prototype.scheduleConnect = function() {
-  var self = this;
-  if (self.network.isOnline()) {
-    self.connectToAll();
-    self.currentDelay = self.currentDelay * 2 || self.reconnectDelay;
-    setTimeout(self.scheduleConnect.bind(self), self.currentDelay);
-  }
-}
-
-Wallet.prototype.getOnlinePeerIDs = function() {
-  return this.network.getOnlinePeerIDs();
 };
 
 Wallet.prototype.getRegisteredCopayerIds = function() {
