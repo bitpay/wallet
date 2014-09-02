@@ -1,55 +1,23 @@
-<div ng-controller="VideoController" class="copayers">
-  <div>
-    <h3>
-      <i class="fi-torsos-all size-21 m20r"></i>
-      Copayers
-      <small class="m15l">
-        {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}}
-      </small>
-    </h3>
-  </div>
-  
+<div ng-controller="CopayersController" class="copayers">
+  <h3>
+    <i class="fi-torsos-all size-21 m20r"></i>
+    Copayers
+    <small class="m15l">
+      {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}}
+    </small>
+  </h3>
 
-  <ul class="copayer-list" ng-repeat="copayer in copayers">
-    <li class="ellipsis">
-      <video
-        ng-if="hasVideo(copayer)"
-        peer="{{copayer}}" avatar autoplay
-        ng-class="isConnected(copayer) ? 'online' : 'offline'"
-        ng-src="{{getVideoURL(copayer)}}"></video>
+  <div class="copay-box-small" ng-repeat="copayer in copayers">
+    <img
+      class="br100"
+      ng-class="online"
+      src="./img/satoshi.gif"
+      alt="{{copayer.peerId}}"
+      width="30">
 
-      <img 
-        class="br100 oh no-video m20r"
-        ng-if="!hasVideo(copayer)"
-        ng-class="isConnected(copayer) ? 'online' : 'offline'"
-        src="./img/satoshi.gif"
-        alt="{{copayer}}"
-        width="70">
-
-      <span ng-show="copayer.index == 0">Me</span>
-      <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
-      <span class="btn-copy" clip-copy="copayer.peerId"></span>
-    </li>
-  </ul>
-  <div class="copayer-list-small-height" ng-repeat="copayer in copayers">
-    <span class="left" class="has-tip" tooltip-placement="top" tooltip="{{copayer.nick}}">
-      <video
-        ng-if="hasVideo(copayer)"
-        peer="{{copayer}}" avatar autoplay
-        ng-class="isConnected(copayer) ? 'online' : 'offline'"
-        ng-src="{{getVideoURL(copayer)}}"></video>
-
-      <img 
-        class="br100 oh no-video m20r"
-        ng-if="!hasVideo(copayer)"
-        ng-class="isConnected(copayer) ? 'online' : 'offline'"
-        src="./img/satoshi.gif"
-        alt="{{copayer}}"
-        width="70">
-
-      <!-- <span ng-show="copayer.index == 0">Me</span>
-      <span ng-show="copayer.index > 0">{{copayer.nick}}</span>
-      <span class="btn-copy" clip-copy="copayer.peerId"></span> -->
-    </span>
-  </div>
+    <div class="ellipsis">
+      <small class="text-gray" ng-show="copayer.index == 0">Me</small>
+      <small class="text-gray" ng-show="copayer.index > 0">{{copayer.nick}}</small>
+    </div>
+  </div> 
 </div>
