@@ -9,13 +9,12 @@
 
   <div class="copay-box-small" ng-repeat="copayer in copayers">
     <img
-      class="br100"
-      ng-class="online"
+      class="br100 online"
       src="./img/satoshi.gif"
       alt="{{copayer.peerId}}"
       width="30">
 
-    <div class="ellipsis">
+    <div class="ellipsis" tooltip-placement="top" tooltip="{{copayer.nick}}">
       <small class="text-gray" ng-show="copayer.index == 0">Me</small>
       <small class="text-gray" ng-show="copayer.index > 0">{{copayer.nick}}</small>
     </div>
