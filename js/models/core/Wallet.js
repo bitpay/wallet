@@ -1,6 +1,7 @@
 'use strict';
 
 var EventEmitter = require('events').EventEmitter;
+var _ = require('underscore');
 var async = require('async');
 var preconditions = require('preconditions').singleton();
 var util = require('util');
@@ -34,8 +35,7 @@ function Wallet(opts) {
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
   ].forEach(function(k) {
-    preconditions.checkArgument(typeof opts[k] !== 'undefined',
-      'missing required option for Wallet: ' + k);
+    preconditions.checkArgument(!_.isUndefined(opts[k]), 'missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
   preconditions.checkArgument(!copayConfig.forceNetwork || this.getNetworkName() === copayConfig.networkName,
@@ -161,7 +161,7 @@ Wallet.prototype._getKeyMap = function(txp) {
   for (var i in txp._inputSigners) {
     var keyMap = this.publicKeyRing.copayersForPubkeys(txp._inputSigners[i], txp.inputChainPaths);
 
-    if (Object.keys(keyMap).length !== txp._inputSigners[i].length)
+    if (_.size(keyMap) !== _.size(txp._inputSigners[i]))
       throw new Error('Signature does not match known copayers');
 
     for (var j in keyMap) {
@@ -170,8 +170,8 @@ Wallet.prototype._getKeyMap = function(txp) {
 
     // From here -> only to check that all inputs have the same sigs
     var inSigArr = [];
-    Object.keys(keyMap).forEach(function(k) {
-      inSigArr.push(keyMap[k]);
+    _.each(keyMap, function(value, key) {
+      inSigArr.push(value);
     });
     var inSig = JSON.stringify(inSigArr.sort());
     if (i === '0') {
@@ -299,7 +299,7 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
 
 Wallet.prototype.updateTimestamp = function(ts) {
   preconditions.checkArgument(ts);
-  preconditions.checkArgument(typeof ts === 'number');
+  preconditions.checkArgument(_.isNumber(ts));
   this.lastTimestamp = ts;
   this.store();
 };
@@ -315,7 +315,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(data);
   preconditions.checkArgument(data.type);
   preconditions.checkArgument(ts);
-  preconditions.checkArgument(typeof ts === 'number');
+  preconditions.checkArgument(_.isNumber(ts));
 
   log.debug('RECV', senderId, data);
 
@@ -582,11 +582,11 @@ Wallet.prototype.send = function(recipients, obj) {
 };
 
 Wallet.prototype.sendAllTxProposals = function(recipients) {
-  var ntxids = this.txProposals.getNtxids();
-  for (var i in ntxids) {
-    var ntxid = ntxids[i];
-    this.sendTxProposal(ntxid, recipients);
-  }
+  var ntxids = this.txProposals.getNtxids(),
+        that = this;
+  _.each(ntxids, function(ntxid, key) {
+    that.sendTxProposal(ntxid, recipients);
+  });
 };
 
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
@@ -730,7 +730,7 @@ Wallet.prototype.reject = function(ntxid) {
 };
 
 Wallet.prototype.sign = function(ntxid, cb) {
-  preconditions.checkState(typeof this.getMyCopayerId() !== 'undefined');
+  preconditions.checkState(!_.isUndefined(this.getMyCopayerId()));
   var self = this;
   setTimeout(function() {
     var myId = self.getMyCopayerId();
@@ -805,7 +805,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 Wallet.prototype.createPaymentTx = function(options, cb) {
   var self = this;
 
-  if (typeof options === 'string') {
+  if (_.isString(options)) {
     options = {
       uri: options
     };
@@ -849,7 +849,7 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
   var self = this;
 
   options = options || {};
-  if (typeof options === 'string') {
+  if (_.isString(options)) {
     options = {
       uri: options
     };
@@ -1160,7 +1160,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     }
   };
 
-  if (typeof opts.spendUnconfirmed === 'undefined') {
+  if (_.isUndefined(opts.spendUnconfirmed)) {
     opts.spendUnconfirmed = this.spendUnconfirmed;
   }
 
@@ -1270,7 +1270,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   if (!ntxid) return false;
 
-  var txp = typeof ntxid !== 'object' ? this.txProposals.get(ntxid) : ntxid;
+  var txp = _.isObject(ntxid) ? ntxid : this.txProposals.get(ntxid);
 
   // If we're not a payment protocol proposal, ignore.
   if (!txp.merchant) return true;
@@ -1443,16 +1443,7 @@ Wallet.prototype.getAddressesInfo = function(opts) {
 
 Wallet.prototype.addressIsOwn = function(addrStr, opts) {
   var addrList = this.getAddressesStr(opts);
-  var l = addrList.length;
-  var ret = false;
-
-  for (var i = 0; i < l; i++) {
-    if (addrList[i] === addrStr) {
-      ret = true;
-      break;
-    }
-  }
-  return ret;
+  return _.any(addrList, function(value) { return value === addrStr; });
 };
 
 //retunrs values in SATOSHIs
@@ -1476,10 +1467,10 @@ Wallet.prototype.getBalance = function(cb) {
 
     // we multiply and divide by BIT to avoid rounding errors when adding
     for (var a in balanceByAddr) {
-      balanceByAddr[a] = parseInt(balanceByAddr[a].toFixed(0));
+      balanceByAddr[a] = parseInt(balanceByAddr[a].toFixed(0), 10);
     }
 
-    balance = parseInt(balance.toFixed(0));
+    balance = parseInt(balance.toFixed(0), 10);
 
     for (var i = 0; i < safeUnspent.length; i++) {
       var u = safeUnspent[i];
@@ -1487,7 +1478,7 @@ Wallet.prototype.getBalance = function(cb) {
       safeBalance += amt;
     }
 
-    safeBalance = parseInt(safeBalance.toFixed(0));
+    safeBalance = parseInt(safeBalance.toFixed(0), 10);
     return cb(null, balance, balanceByAddr, safeBalance);
   });
 };
@@ -1529,7 +1520,7 @@ Wallet.prototype.getUnspent = function(cb) {
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
 
-  if (typeof amountSatStr === 'function') {
+  if (_.isFunction(amountSatStr)) {
     var cb = amountSatStr;
     var merchant = toAddress;
     return this.createPaymentTx({
@@ -1537,7 +1528,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     }, cb);
   }
 
-  if (typeof comment === 'function') {
+  if (_.isFunction(comment)) {
     var cb = comment;
     var merchant = toAddress;
     var comment = amountSatStr;
@@ -1547,13 +1538,13 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     }, cb);
   }
 
-  if (typeof opts === 'function') {
+  if (_.isFunction(opts)) {
     cb = opts;
     opts = {};
   }
   opts = opts || {};
 
-  if (typeof opts.spendUnconfirmed === 'undefined') {
+  if (_.isUndefined(opts.spendUnconfirmed)) {
     opts.spendUnconfirmed = this.spendUnconfirmed;
   }
 
@@ -1816,7 +1807,7 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
 // }
 
 Wallet.request = function(options, callback) {
-  if (typeof options === 'string') {
+  if (_.isString(options)) {
     options = {
       uri: options
     };
