@@ -28,6 +28,7 @@ module.exports = function(config) {
       'lib/angular-route/angular-route.min.js',
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
+      'lib/assert/assert.js',
       'lib/bitcore.js',
       'lib/underscore/underscore.js',
       'lib/crypto-js/rollups/sha256.js',
