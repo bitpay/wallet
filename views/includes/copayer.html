@@ -1,17 +1,10 @@
-<div ng-controller="VideoController">
-  <div class="video-box" ng-repeat="copayer in copayersList()">
-    <video
-      ng-if="hasVideo(copayer)"
-      peer="{{copayer}}" avatar autoplay
-      ng-class="true || isConnected(copayer) ? 'online' : 'offline'"
-      ng-src="{{getVideoURL(copayer)}}"></video>
-
+<div ng-controller="CopayersController">
+  <div class="copay-box" ng-repeat="copayer in copayersList()">
     <img
-      class="br100 no-video"
-      ng-if="!hasVideo(copayer)"
-      ng-class="true || isConnected(copayer) ? 'online' : 'offline'"
+      class="br100"
+      ng-class="online"
       src="./img/satoshi.gif"
-      alt="{{copayer}}"
+      alt="{{copayer.peerId}}"
       width="70">
 
     <div

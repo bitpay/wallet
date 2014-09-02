@@ -51,10 +51,10 @@
 
         <div class="box-setup-copayers p20">
           <div class="oh">
-            <div ng-include="'views/includes/video.html'"></div> 
+            <div ng-include="'views/includes/copayer.html'"></div> 
             <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
               <img
-              class="waiting br100 no-video"
+              class="waiting br100"
               ng-if="!hasVideo(copayer)"
               src="./img/satoshi.gif"
               alt="Waiting Copayer"
