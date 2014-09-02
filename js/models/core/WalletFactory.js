@@ -4,6 +4,7 @@ var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
+var preconditions = require('preconditions').instance();
 
 var log = require('../../log');
 
@@ -13,7 +14,6 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../s
 
 /*
  * WalletFactory
- *
  */
 
 function WalletFactory(config, version) {
