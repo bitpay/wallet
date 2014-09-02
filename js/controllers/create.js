@@ -37,7 +37,6 @@ angular.module('copayApp.controllers').controller('CreateController',
     controllerUtils.redirIfLogged();
 
     $rootScope.fromSetup = true;
-    $rootScope.videoInfo = {};
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
     $scope.isMobile = !!window.cordova;
