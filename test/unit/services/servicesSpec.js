@@ -116,12 +116,7 @@ describe("Unit: isMobile Service", function() {
     isMobile.any().should.equal(true);
   }));
 });
-describe("Unit: video service", function() {
-  beforeEach(angular.mock.module('copayApp.services'));
-  it('should contain a video service', inject(function(video) {
-    should.exist(video);
-  }));
-});
+
 describe("Unit: uriHandler service", function() {
   beforeEach(angular.mock.module('copayApp.services'));
   it('should contain a uriHandler service', inject(function(uriHandler) {
