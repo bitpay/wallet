@@ -11,6 +11,7 @@
   },
   "version": "0.4.7",
   "dependencies": {
+    "assert": "^1.1.2",
     "browser-request": "^0.3.2",
     "mocha": "^1.18.2",
     "mocha-lcov-reporter": "0.0.1",

@@ -46,11 +46,18 @@ var createBundle = function(opts) {
   b.require('underscore', {
     expose: 'underscore'
   });
+  b.require('assert', {
+    expose: 'assert'
+  });
 
   b.require('./copay', {
     expose: 'copay'
   });
   b.require('./version');
+
+  b.require('./js/log', {
+    expose: '../js/log'
+  });
   //  b.external('bitcore');
   b.require('./js/models/core/WalletFactory', {
     expose: '../js/models/core/WalletFactory'
