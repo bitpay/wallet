@@ -6,10 +6,11 @@ var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 var _ = require('underscore');
 var log = require('../../log');
+var PluginManager  = require('./PluginManager');
 var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
-var StorageEncrypted = module.exports.StorageEncrypted = require('../storage/Encrypted');
 var preconditions = require('preconditions').singleton();
+var Storage = module.exports.Storage = require('../Storage');
 
 /**
  * @desc
@@ -36,9 +37,9 @@ function WalletFactory(config, version) {
   var self = this;
   config = config || {};
 
-  this.pluginManager = new copay.PluginManager(config);
+  this.pluginManager = new PluginManager(config);
 
-  this.Storage = config.Storage ||  StorageEncrypted;
+  this.Storage = config.Storage ||  Storage;
   this.Network = config.Network || Async;
   this.Blockchain = config.Blockchain || Insight;
   this.storage = new this.Storage({storage: this.pluginManager.get('STORAGE')});
