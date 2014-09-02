@@ -10,7 +10,6 @@
     "angular-foundation": "*",
     "angular-route": "~1.2.14",
     "angular-qrcode": "~3.1.0",
-    "peerjs": "=0.3.8",
     "angular-mocks": "~1.2.14",
     "mocha": "~1.18.2",
     "chai": "~1.9.1",
