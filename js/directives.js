@@ -109,20 +109,6 @@ angular.module('copayApp.directives')
       }
     }
   })
-  .directive('avatar', function($rootScope, controllerUtils) {
-    return {
-      link: function(scope, element, attrs) {
-        var peer = JSON.parse(attrs.peer)
-        var peerId = peer.peerId;
-        var nick = peer.nick;
-        element.addClass('video-small');
-        var muted = controllerUtils.getVideoMutedStatus(peerId);
-        if (true || muted) { // mute everyone for now
-          element.attr("muted", true);
-        }
-      }
-    }
-  })
   .directive('contact', function() {
     return {
       restrict: 'E',

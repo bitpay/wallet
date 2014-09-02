@@ -26,4 +26,15 @@ angular.module('copayApp.controllers').controller('CopayersController',
       });
     };
 
+    // Cached list of copayers
+    $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
+
+    $scope.copayersList = function() {
+      return $rootScope.wallet.getRegisteredPeerIds();
+    }
+
+    $scope.isBackupReady = function(copayer) {
+      return $rootScope.wallet.publicKeyRing.isBackupReady(copayer.copayerId);
+    }
+
   });

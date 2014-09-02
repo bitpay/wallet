@@ -2,17 +2,8 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, video, uriHandler, rateService) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, uriHandler, rateService) {
     var root = {};
-    root.getVideoMutedStatus = function(copayer) {
-      if (!$rootScope.videoInfo) return;
-
-      var vi = $rootScope.videoInfo[copayer]
-      if (!vi) {
-        return;
-      }
-      return vi.muted;
-    };
 
     root.redirIfLogged = function() {
       if ($rootScope.wallet) {
@@ -27,7 +18,6 @@ angular.module('copayApp.services')
       $rootScope.wallet = null;
       delete $rootScope['wallet'];
 
-      video.close();
       // Clear rootScope
       for (var i in $rootScope) {
         if (i.charAt(0) != '$') {
@@ -102,18 +92,6 @@ angular.module('copayApp.services')
       root.installStartupHandlers(w, $scope);
       root.updateGlobalAddresses();
 
-      var handlePeerVideo = function(err, peerID, url) {
-        if (err) {
-          delete $rootScope.videoInfo[peerID];
-          return;
-        }
-        $rootScope.videoInfo[peerID] = {
-          url: encodeURI(url),
-          muted: peerID === w.network.peerId
-        };
-        $rootScope.$digest();
-      };
-
       notification.enableHtml5Mode(); // for chrome: if support, enable it
 
       w.on('corrupt', function(peerId) {
@@ -128,8 +106,6 @@ angular.module('copayApp.services')
         } else {
           $location.path('receive');
         }
-        if (!config.disableVideo)
-          video.setOwnPeer(myPeerID, w, handlePeerVideo);
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
@@ -172,9 +148,6 @@ angular.module('copayApp.services')
         root.onErrorDigest(null, msg);
       });
       w.on('connect', function(peerID) {
-        if (peerID && !config.disableVideo) {
-          video.callPeer(peerID, handlePeerVideo);
-        }
         $rootScope.$digest();
       });
       w.on('close', root.onErrorDigest);

@@ -62,7 +62,6 @@ var defaultConfig = {
     updateFrequencySeconds: 60 * 60
   },
 
-  disableVideo: true,
   verbose: 1,
 };
 if (typeof module !== 'undefined')
