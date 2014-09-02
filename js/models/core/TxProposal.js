@@ -135,7 +135,7 @@ TxProposal.fromObj = function(o, forceOpts) {
     }
     o.builder = TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
-    throw new Error("Old version of wallet detected.");
+    throw new Error("Invalid or Incompatible Backup Detected.");
   }
   return new TxProposal(o);
 };
