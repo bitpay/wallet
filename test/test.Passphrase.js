@@ -18,7 +18,7 @@ describe('Passphrase model', function() {
     should.exist(p);
   });
 
-  it('should generate key from password', function () {
+  it('should generate key from password', function (done) {
   	var p = new Passphrase({
   		salt: 'mjuBtGybi/4=',
   		iterations: 10,
@@ -33,6 +33,7 @@ describe('Passphrase model', function() {
   	
   	p.getBase64Async(pass, function (ret) {
 	  	ret.toString().should.equal('IoP+EbmhibgvHAkgCAaSDL3Y73UvU96pEPkKtSb0Qazb1RKFVWR6fjkKGp/qBCImljzND3hRAws9bigszrqhfg==');
+      done();
   	});
   });
 
