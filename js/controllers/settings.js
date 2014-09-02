@@ -8,7 +8,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   $scope.insightHost = config.blockchain.host;
   $scope.insightPort = config.blockchain.port;
   $scope.insightSecure = config.blockchain.schema === 'https';
-  $scope.disableVideo = typeof config.disableVideo === undefined ? true : config.disableVideo;
   $scope.forceNetwork = config.forceNetwork;
 
   $scope.unitOpts = [{
@@ -85,7 +84,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
         schema: $scope.insightSecure ? 'https' : 'http',
       },
       network: network,
-      disableVideo: $scope.disableVideo,
       unitName: $scope.selectedUnit.shortName,
       unitToSatoshi: $scope.selectedUnit.value,
       unitDecimals: $scope.selectedUnit.decimals,
