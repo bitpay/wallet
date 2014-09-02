@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
   $scope.menu = [{
     'title': 'Receive',
-    'icon': 'fi-arrow-left',
+    'icon': 'fi-download',
     'link': 'receive'
   }, {
     'title': 'Send',
