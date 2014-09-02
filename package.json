@@ -17,7 +17,8 @@
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
     "request": "^2.40.0",
-    "sinon": "1.9.1"
+    "sinon": "1.9.1",
+    "underscore": "^1.7.0"
   },
   "scripts": {
     "shell": "node shell/scripts/launch.js",
@@ -72,7 +73,7 @@
     "travis-cov": "0.2.5",
     "uglifyify": "1.2.3",
     "crypto-js": "3.1.2",
-    "shelljs":"0.3.0",
+    "shelljs": "0.3.0",
     "browser-request": "0.3.2",
     "request": "2.40.0"
   },
