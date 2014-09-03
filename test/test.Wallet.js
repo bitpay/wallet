@@ -337,22 +337,29 @@ describe('Wallet model', function() {
   it('#getSecret decodeSecret', function() {
     var w = cachedCreateW2();
     var id = w.getMyCopayerId();
+    var secretNumber = w.getSecretNumber();
 
     var sb = w.getSecret();
     should.exist(sb);
+
     var s = Wallet.decodeSecret(sb);
     s.pubKey.should.equal(id);
+    s.secretNumber.should.equal(secretNumber);
 
   });
+
+
   it('decodeSecret check', function() {
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
     }).should.not.
     throw();
+
     (function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     }).should.
     throw();
+    
     (function() {
       Wallet.decodeSecret('12345');
     }).should.
