@@ -1,20 +1,20 @@
 'use strict';
 
 var copay = require('copay');
+var _ = require('underscore');
 var config = defaultConfig;
 var localConfig = JSON.parse(localStorage.getItem('config'));
+
 if (localConfig) {
   var cmv = copay.version.split('.')[1];
   var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
   if (cmv === lmv) {
-    for (name in localConfig) {
-      if (localConfig.hasOwnProperty(name)) {
-        if (name === 'networkName' && config['forceNetwork']) {
-          continue;
-        }
-        config[name] = localConfig[name];
+    _.each(localConfig, function(value, key) {
+      if (key === 'networkName' && config['forceNetwork']) {
+        return;
       }
-    }
+      config[name] = value;
+    });
   }
 }
 

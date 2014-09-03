@@ -29,6 +29,7 @@ module.exports = function(config) {
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
       'lib/bitcore.js',
+      'lib/underscore/underscore.js',
       'lib/crypto-js/rollups/sha256.js',
       'lib/crypto-js/rollups/pbkdf2.js',
       'lib/crypto-js/rollups/aes.js',

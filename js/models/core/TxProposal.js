@@ -1,6 +1,7 @@
 'use strict';
 
 var bitcore = require('bitcore');
+var _ = require('underscore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var BuilderMockV0 = require('./BuilderMockV0');;
@@ -51,22 +52,19 @@ TxProposal.prototype._check = function() {
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
-  for (var i in tx.ins) {
-    var scriptSig = tx.ins[i].s;
+  _.each(tx.ins, function(value, index) {
+    var scriptSig = value.s;
     if (!scriptSig || !scriptSig.length) {
       throw new Error('Invalid tx proposal: no signatures');
     }
-  }
-
-  for (var i = 0; i < tx.ins.length; i++) {
-    var hashType = tx.getHashType(i);
+    var hashType = tx.getHashType(index);
     if (hashType && hashType !== Transaction.SIGHASH_ALL)
       throw new Error('Invalid tx proposal: bad signatures');
-  }
+  });
 };
 
 TxProposal.prototype.rejectCount = function() {
-  return Object.keys(this.rejectedBy).length;
+  return _.size(this.rejectedBy);
 };
 
 TxProposal.prototype.isPending = function(maxRejectCount) {
