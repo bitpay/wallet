@@ -290,7 +290,6 @@ describe('WalletFactory model', function() {
         "totalCopayers": 3,
         "reconnectDelay": 100,
         "spendUnconfirmed": 1,
-        "verbose": 0
       },
       "blockchain": {
         "host": "test.insight.is",
@@ -300,7 +299,6 @@ describe('WalletFactory model', function() {
         "host": "test.insight.is",
         "port": 3001
       },
-      "verbose": 0,
       "themes": ["default"],
     };
     var wf = new WalletFactory(sconfig, '0.0.1');
