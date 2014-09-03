@@ -791,14 +791,11 @@ Wallet.prototype.store = function() {
 Wallet.prototype.toObj = function() {
   var optsObj = this._optsToObj();
 
-  var networkNonce = this.network.getHexNonce();
-  var networkNonces = this.network.getHexNonces();
-
   var walletObj = {
     opts: optsObj,
     settings: this.settings,
-    networkNonce: networkNonce, //yours
-    networkNonces: networkNonces, //copayers
+    networkNonce: this.network.getHexNonce(), //yours
+    networkNonces: this.network.getHexNonces(), //copayers
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
