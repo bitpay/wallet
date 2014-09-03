@@ -1528,6 +1528,7 @@ Wallet.prototype.getUnspent = function(cb) {
 Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   var self = this;
 
+  cb = cb || function () {};
   var txps = this.getTxProposals();
 
   var inputs = [];
@@ -1540,9 +1541,7 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
     return;
 
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
-    if (err) {
-      return cb(err);
-    }
+    if (err) return cb(err);
     
     unspentList.forEach(function (unspent) {
       inputs.forEach(function (input) {
@@ -1558,6 +1557,8 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
     self.emit('txProposalsUpdated');
     self.store();
+
+    cb(null);
   });
 
 };

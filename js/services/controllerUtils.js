@@ -166,6 +166,8 @@ angular.module('copayApp.services')
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;
 
+      w.removeTxWithSpentInputs();
+
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
 
