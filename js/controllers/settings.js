@@ -4,11 +4,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   controllerUtils.redirIfLogged();
   $scope.title = 'Settings';
-  $scope.networkName = config.networkName;
   $scope.insightHost = config.blockchain.host;
   $scope.insightPort = config.blockchain.port;
   $scope.insightSecure = config.blockchain.schema === 'https';
-  $scope.forceNetwork = config.forceNetwork;
   $scope.defaultLanguage = config.defaultLanguage || 'en';
 
   $scope.availableLanguages = [{
