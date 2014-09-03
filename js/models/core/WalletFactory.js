@@ -178,10 +178,10 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
  * @TODO: Figure out in what unit is this reconnect delay.
  * @param {number} opts.reconnectDelay milliseconds?
  * @param {number=} opts.version
+ * @param {callback} opts.version
  * @return {Wallet}
  */
-WalletFactory.prototype.create = function(opts) {
-
+WalletFactory.prototype.create = function(opts, cb) {
   opts = opts || {};
   opts.networkName = opts.networkName || 'testnet';
 
@@ -230,9 +230,12 @@ WalletFactory.prototype.create = function(opts) {
   opts.version = opts.version || this.version;
 
   var w = new Wallet(opts);
-  w.store();
-  this.storage.setLastOpened(w.id);
-  return w;
+  var self = this;
+  w.store(function() {
+    self.storage.setLastOpened(w.id, function() {
+      return cb(null, w);
+    });
+  });
 };
 
 /**
@@ -364,15 +367,13 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     connectedOnce = true;
   });
 
-  << << << < HEAD
-  joinNetwork.on('serverError', function() { === === =
-        self.network.on('serverError', function() { >>> >>> > wallet listing working
-          return cb('joinError');
-        });
+  joinNetwork.on('serverError', function() {
+    return cb('joinError');
+  });
 
-      joinNetwork.start(opts, function() {
-        joinNetwork.greet(decodedSecret.pubKey, opts.secretNumber);
-        joinNetwork.on('data', function(sender, data) {
+  joinNetwork.start(opts, function() {
+      joinNetwork.greet(decodedSecret.pubKey, opts.secretNumber);
+      joinNetwork.on('data', function(sender, data) {
           if (data.type === 'walletId') {
             if (data.networkName !== decodedSecret.networkName) {
               return cb('badNetwork');
@@ -382,14 +383,18 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
             data.opts.nickname = nickname;
             data.opts.passphrase = passphrase;
             data.opts.id = data.walletId;
-            var w = self.create(data.opts);
-            w.sendWalletReady(decodedSecret.pubKey);
-            return cb(null, w);
-          } else {
-            return cb('walletFull', w);
-          }
-        });
-      });
-    };
+            self.create(data.opts, function(err, w) {
+              if (!err & w) {
+                w.sendWalletReady(s.pubKey);
+              } else {
+                if (!err) err = 'walletFull';
+              }
+              return cb(err, w);
+            });
 
-    module.exports = WalletFactory;
+          });
+      });
+  };
+};
+
+module.exports = WalletFactory;

@@ -25,7 +25,7 @@ function GoogleDrive(config) {
 
 window.InitGoogleDrive = function() {
 
-  console.log('[googleDrive.js.18] setting loaded'); //TODO
+  // console.log('[googleDrive.js.18] setting loaded'); //TODO
   loaded = 1;
 };
 
@@ -47,7 +47,7 @@ GoogleDrive.prototype.initLoaded = function() {
  */
 GoogleDrive.prototype.checkAuth = function() {
 
-  console.log('\tChecking google Auth'); //TODO
+  console.log('\tChecking google Auth');
   gapi.auth.authorize({
       'client_id': this.clientId,
       'scope': SCOPES,
@@ -61,7 +61,7 @@ GoogleDrive.prototype.checkAuth = function() {
  */
 GoogleDrive.prototype.handleAuthResult = function(authResult) {
   var self = this;
-  console.log('[googleDrive.js.39:authResult:]', authResult); //TODO
+  // console.log('[googleDrive.js.39:authResult:]', authResult); //TODO
 
   if (authResult.error) {
     if (authResult.error) {
@@ -81,61 +81,121 @@ GoogleDrive.prototype.checkReady = function() {
     throw new Error('goggle drive is not ready!');
 };
 
-GoogleDrive.prototype.getItem = function(k) {
-  this.checkReady();
-  throw new Error('getItem not implemented');
+GoogleDrive.prototype._httpGet = function(theUrl) {
+  var accessToken = gapi.auth.getToken().access_token;
+  var xmlHttp = null;
+
+  xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("GET", theUrl, false);
+  xmlHttp.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+  xmlHttp.send(null);
+  return xmlHttp.responseText;
+}
+
+GoogleDrive.prototype.getItem = function(k, cb) {
+  console.log('[googleDrive.js.95:getItem:]', k); //TODO
+  var self = this;
+
+  self.checkReady();
+  self._idForName(k, function(kId) {
+    // console.log('[googleDrive.js.89:kId:]', kId); //TODO
+    if (!kId)
+      return cb(null);
+
+
+    var args = {
+      'path': '/drive/v2/files/' + kId,
+      'method': 'GET',
+    };
+    // console.log('[googleDrive.js.95:args:]', args); //TODO
+
+    var request = gapi.client.request(args);
+    request.execute(function(res) {
+      // console.log('[googleDrive.js.175:res:]', res); //TODO
+      if (!res || !res.downloadUrl)
+        return cb(null);
+
+      return cb(self._httpGet(res.downloadUrl));
+    });
+
+  });
 };
 
 GoogleDrive.prototype.setItem = function(k, v, cb) {
+  // console.log('[googleDrive.js.111:setItem:]', k, v); //TODO
   var self = this;
 
-  this.checkReady();
+  self.checkReady();
+  self._idForName(this.home, function(parentId) {
+    preconditions.checkState(parentId);
+    // console.log('[googleDrive.js.118:parentId:]', parentId); //TODO
+    self._idForName(k, function(kId) {
 
-  var parendId = self._idForName[this.home];
-  preconditions.checkState(parentId);
+      // console.log('[googleDrive.js.105]', parentId, kId); //TODO
 
 
-  var boundary = '-------314159265358979323846';
-  var delimiter = "\r\n--" + boundary + "\r\n";
-  var close_delim = "\r\n--" + boundary + "--";
+      var boundary = '-------314159265358979323846';
+      var delimiter = "\r\n--" + boundary + "\r\n";
+      var close_delim = "\r\n--" + boundary + "--";
 
-  var metadata = {
-    'title': k,
-    'mimeType': 'application/octet-stream',
-    'parents': [parentId],
-  };
+      var metadata = {
+        'title': k,
+        'mimeType': 'application/octet-stream',
+        'parents': [{
+          'id': parentId
+        }],
+      };
 
-  var base64Data = btoa(v);
-  var multipartRequestBody =
-    delimiter +
-    'Content-Type: application/json\r\n\r\n' +
-    JSON.stringify(metadata) +
-    delimiter +
-    'Content-Type: application/octet-stream \r\n' +
-    'Content-Transfer-Encoding: base64\r\n' +
-    '\r\n' +
-    base64Data +
-    close_delim;
-console.log('[googleDrive.js.105:multipartRequestBody:]',multipartRequestBody); //TODO
+      var base64Data = btoa(v);
+      var multipartRequestBody =
+        delimiter +
+        'Content-Type: application/json\r\n\r\n' +
+        JSON.stringify(metadata) +
+        delimiter +
+        'Content-Type: application/octet-stream \r\n' +
+        'Content-Transfer-Encoding: base64\r\n' +
+        '\r\n' +
+        base64Data +
+        close_delim;
 
-  var request = gapi.client.request({
-    'path': '/upload/drive/v2/files',
-    'method': 'POST',
-    'params': {
-      'uploadType': 'multipart',
-    },
-    'headers': {
-      'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
-    },
-    'body': multipartRequestBody
+      var args = {
+          'path': '/upload/drive/v2/files' + (kId ? '/' + kId : ''),
+          'method': kId ? 'PUT' : 'POST',
+          'params': {
+            'uploadType': 'multipart',
+          },
+          'headers': {
+            'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+          },
+          'body': multipartRequestBody
+        }
+        // console.log('[googleDrive.js.148:args:]', args); //TODO
+
+      var request = gapi.client.request(args);
+      request.execute(cb);
+    });
   });
-  request.execute(cb);
 };
 
-GoogleDrive.prototype.removeItem = function(k) {
-  this.checkReady();
+GoogleDrive.prototype.removeItem = function(k, cb) {
+  var self = this;
 
-  throw new Error('removeItem not implemented');
+  self.checkReady();
+  self._idForName(this.home, function(parentId) {
+    preconditions.checkState(parentId);
+    self._idForName(k, function(kId) {
+
+      var args = {
+        'path': '/drive/v2/files/' + kId,
+        'method': 'DELETE',
+      };
+      var request = gapi.client.request(args);
+      request.execute(function() {
+        if (cb)
+          cb();
+      });
+    });
+  });
 };
 
 GoogleDrive.prototype.clear = function() {
@@ -158,13 +218,14 @@ GoogleDrive.prototype._mkdir = function(cb) {
       'mimeType': "application/vnd.google-apps.folder",
     }),
   });
-  request.execute(function(){
-    self._idForName(this.home, cb);
+  request.execute(function() {
+    self._idForName(self.home, cb);
   });
 };
 
 
 GoogleDrive.prototype._idForName = function(name, cb) {
+  // console.log('[googleDrive.js.199:_idForName:]', name); //TODO
   preconditions.checkArgument(name);
   preconditions.checkArgument(cb);
   var self = this;
@@ -174,17 +235,24 @@ GoogleDrive.prototype._idForName = function(name, cb) {
     self.ts = self.ts * 1.5;
     return setTimeout(self._idForName.bind(self, name, cb), self.ts);
   }
-console.log('[googleDrive.js.178:name:]',name); //TODO
+  // console.log('[googleDrive.js.178:name:]', name); //TODO
 
-  if (self.idCache[name])
+  if (self.idCache[name]) {
+    // console.log('[googleDrive.js.212:] FROM CACHE', name, self.idCache[name]); //TODO
     return cb(self.idCache[name]);
+  }
 
   console.log('Querying for: ', name); //TODO
   var args;
 
-  var idParent = name == this.home ? 'root' : self.idCache[this.home] ;
+  var idParent = name == this.home ? 'root' : self.idCache[this.home];
 
-console.log('[googleDrive.js.177:idParent:]',idParent); //TODO
+  if (!idParent) {
+    return self._mkdir(function() {
+      self._idForName(name, cb);
+    });
+  }
+  // console.log('[googleDrive.js.177:idParent:]', idParent); //TODO
   preconditions.checkState(idParent);
 
   args = {
@@ -195,13 +263,12 @@ console.log('[googleDrive.js.177:idParent:]',idParent); //TODO
     }
   };
 
-  console.log('[googleDrive.js.196:args:]', args); //TODO
   var request = gapi.client.request(args);
   request.execute(function(res) {
-    console.log('[googleDrive.js.175:res:]', res); //TODO
     var i = res.items && res.items[0] ? res.items[0].id : false;
     if (i)
       self.idCache[name] = i;
+    // console.log('[googleDrive.js.238] CACHING ' + name + ':' + i); //TODO
     return cb(self.idCache[name]);
   });
 };
@@ -232,13 +299,13 @@ GoogleDrive.prototype.allKeys = function(cb) {
       },
     });
     request.execute(function(res) {
-      console.log('[googleDrive.js.152:res:]', res); //TODO
+      // console.log('[googleDrive.js.152:res:]', res); //TODO
       if (res.error)
         throw new Error(res.error.message);
 
       var ret = [];
       for (var ii in res.items) {
-        ret.push(res[ii].id);
+        ret.push(res.items[ii].title);
       }
       return cb(ret);
     });

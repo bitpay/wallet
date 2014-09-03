@@ -76,8 +76,8 @@ angular
   // IDLE timeout
   var timeout = config.wallet.idleDurationMin * 60 || 300;
   $idleProvider.idleDuration(timeout); // in seconds
-  $idleProvider.warningDuration(20); // in seconds
-  $keepaliveProvider.interval(2); // in seconds
+  $idleProvider.warningDuration(40); // in seconds
+  $keepaliveProvider.interval(30); // in seconds
 })
 .run(function($rootScope, $location, $idle, gettextCatalog) {
   gettextCatalog.currentLanguage = config.defaultLanguage;
