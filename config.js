@@ -6,11 +6,6 @@ var defaultConfig = {
   forceNetwork: false,
   logLevel: 'info',
 
-  // DEFAULT unit: Bit
-  unitName: 'bits',
-  unitToSatoshi: 100,
-  alternativeName: 'US Dollar',
-  alternativeIsoCode: 'USD',
 
   // wallet limits
   limits: {
@@ -30,10 +25,14 @@ var defaultConfig = {
     requiredCopayers: 2,
     totalCopayers: 3,
     spendUnconfirmed: true,
-    verbose: 1,
-    // will duplicate itself after each try
     reconnectDelay: 5000,
-    idleDurationMin: 4
+    idleDurationMin: 4,
+    settings: {
+      unitName: 'bits',
+      unitToSatoshi: 100,
+      alternativeName: 'US Dollar',
+      alternativeIsoCode: 'USD',
+    }
   },
 
   // blockchain service API config
@@ -62,7 +61,6 @@ var defaultConfig = {
     updateFrequencySeconds: 60 * 60
   },
 
-  verbose: 1,
 };
 if (typeof module !== 'undefined')
   module.exports = defaultConfig;
