@@ -4,9 +4,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   controllerUtils.redirIfLogged();
   $scope.title = 'Settings';
-  $scope.insightHost = config.blockchain.host;
-  $scope.insightPort = config.blockchain.port;
-  $scope.insightSecure = config.blockchain.schema === 'https';
+  $scope.insightHost = config.network.host;
+  $scope.insightPort = config.network.port;
+  $scope.insightSecure = config.network.schema === 'https';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
 
   $scope.availableLanguages = [{
@@ -33,9 +33,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   $scope.save = function() {
     var network = config.network;
-    network.host = $scope.insightHost;
-    network.port = $scope.insightPort;
-    network.schema = $scope.insightSecure ? 'https' : 'http';
 
     var insightSettings = {
       host: $scope.insightHost,
@@ -44,11 +41,8 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
 
     localStorage.setItem('config', JSON.stringify({
-      blockchain: insightSettings,
-      socket: insightSettings,
-      network: network,
-
-      version: copay.version,
+      network: insightSettings,
+      version: copay.version
       defaultLanguage: $scope.selectedLanguage.isoCode
     }));
 
