@@ -5,13 +5,13 @@ angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
     $scope.title = 'Send';
     $scope.loading = false;
-    var satToUnit = 1 / config.unitToSatoshi;
+    var satToUnit = 1 / $rootScope.wallet.settings.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
-    $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
-    $scope.unitToSatoshi = config.unitToSatoshi;
+    $scope.unitToBtc = $rootScope.wallet.settings.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = $rootScope.wallet.settings.unitToSatoshi;
 
-    $scope.alternativeName = config.alternativeName;
-    $scope.alternativeIsoCode = config.alternativeIsoCode;
+    $scope.alternativeName = $rootScope.wallet.settings.alternativeName;
+    $scope.alternativeIsoCode = $rootScope.wallet.settings.alternativeIsoCode;
 
     $scope.isRateAvailable = false;
     $scope.rateService = rateService;
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('SendController',
           this._alternative = newValue;
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
             this._amount = parseFloat(
-              (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit).toFixed(config.unitDecimals), 10);
+              (rateService.fromFiat(newValue, $rootScope.wallet.settings.alternativeIsoCode) * satToUnit).toFixed($rootScope.wallet.settings.unitDecimals), 10);
           } else {
             this._amount = 0;
           }
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('SendController',
           this._amount = newValue;
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
             this._alternative = parseFloat(
-              (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)).toFixed(2), 10);
+              (rateService.toFiat(newValue * $rootScope.wallet.settings.unitToSatoshi, $rootScope.wallet.settings.alternativeIsoCode)).toFixed(2), 10);
           } else {
             this._alternative = 0;
           }
@@ -91,7 +91,7 @@ angular.module('copayApp.controllers').controller('SendController',
     if ($rootScope.pendingPayment) {
       var pp = $rootScope.pendingPayment;
       $scope.address = pp.address + '';
-      var amount = pp.data.amount / config.unitToSatoshi * 100000000;
+      var amount = pp.data.amount / $rootScope.wallet.settings.unitToSatoshi * 100000000;
       $scope.amount = amount;
       $scope.commentText = pp.data.message;
     }
@@ -113,7 +113,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = parseInt((form.amount.$modelValue * config.unitToSatoshi).toFixed(0));
+      var amount = parseInt((form.amount.$modelValue * $rootScope.wallet.settings.unitToSatoshi).toFixed(0));
       var commentText = form.comment.$modelValue;
 
       var w = $rootScope.wallet;
@@ -403,7 +403,7 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.getAvailableAmount = function() {
-      var amount = ((($rootScope.availableBalance * config.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / config.unitToSatoshi);
+      var amount = ((($rootScope.availableBalance * $rootScope.wallet.settings.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / $rootScope.wallet.settings.unitToSatoshi);
       return amount > 0 ? amount : 0;
     };
 
@@ -497,7 +497,7 @@ angular.module('copayApp.controllers').controller('SendController',
       // Payment Protocol URI (BIP-72)
       scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
         var balance = $rootScope.availableBalance;
-        var available = +(balance * config.unitToSatoshi).toFixed(0);
+        var available = +(balance * $rootScope.wallet.settings.unitToSatoshi).toFixed(0);
 
         if (merchantData && available < +merchantData.total) {
           err = new Error('No unspent outputs available.');
@@ -508,7 +508,7 @@ angular.module('copayApp.controllers').controller('SendController',
           scope.sendForm.address.$isValid = false;
 
           if (err.amount) {
-            scope.sendForm.amount.$setViewValue(+err.amount / config.unitToSatoshi);
+            scope.sendForm.amount.$setViewValue(+err.amount / $rootScope.wallet.settings.unitToSatoshi);
             scope.sendForm.amount.$render();
             scope.sendForm.amount.$isValid = false;
             scope.notEnoughAmount = true;
@@ -538,7 +538,7 @@ angular.module('copayApp.controllers').controller('SendController',
         var url = merchantData.request_url;
         var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
 
-        merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
+        merchantData.unitTotal = (+merchantData.total / $rootScope.wallet.settings.unitToSatoshi) + '';
         merchantData.expiration = new Date(
           merchantData.pr.pd.expires * 1000).toISOString();
         merchantData.domain = domain;
@@ -587,7 +587,9 @@ angular.module('copayApp.controllers').controller('SendController',
         }
 
         notification.info('Payment Request',
-          'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
+          'Server is requesting ' + merchantData.unitTotal +
+          ' ' + $rootScope.wallet.settings.unitName +
+          '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
     };
 

@@ -77,11 +77,11 @@
                 <a class="small input-note" title="{{'Send all funds'|translate}}"
                   ng-show="$root.availableBalance > 0 && (!$root.merchant || +$root.merchant.total === 0)"
                   ng-click="topAmount(sendForm)">
-                  <span translate>Use all funds</span> ({{getAvailableAmount()}} {{$root.unitName}})
+                <span translate>Use all funds</span> ({{getAvailableAmount()}} {{$root.wallet.settings.unitName}})
                 </a>
               </div>
               <div class="small-3 columns">
-                <span class="postfix">{{$root.unitName}}</span>
+                <span class="postfix">{{$root.wallet.settings.unitName}}</span>
               </div>
             </div>
           </div>
@@ -138,13 +138,13 @@
         </p>
         <h6 translate>Total amount for this transaction:</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
-        <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
+        <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.wallet.settings.unitName}}
         <small ng-if="isRateAvailable">
           {{ rateService.toFiat((amount + defaultFee) * unitToSatoshi, alternativeIsoCode) | noFractionNumber: 2 }} {{ alternativeIsoCode }}
         <br>
         </small>
         <small>
-          <span translate>Including fee of</span> {{defaultFee|noFractionNumber}} {{$root.unitName}}
+          <span translate>Including fee of</span> {{defaultFee|noFractionNumber}} {{$root.wallet.settings.unitName}}
         </small>
         </p>
         <div ng-show="wallet.isShared()">

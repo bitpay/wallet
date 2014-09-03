@@ -8,20 +8,19 @@
     </a>
   </div>
   <div class="show-for-small-only small-12 columns m10b" ng-show="tx.comment">
-    <p class="size-14 label" >
-      {{tx.comment}} - 
-      {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
+    <p class="size-14 label">
+      {{tx.comment}} - {{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}
     </p>
   </div>
   <div class="large-8 medium-8 small-8 columns">
     <div ng-repeat="out in tx.outs">
       <div class="large-3 medium-3 small-3 columns">
-        <p class="size-14 hide-for-small-only">{{out.value | noFractionNumber}} {{$root.unitName}}</p>
-        <p class="size-12 show-for-small-only">{{out.value | noFractionNumber}} {{$root.unitName}}</p>
+        <p class="size-14 hide-for-small-only">{{out.value | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+        <p class="size-12 show-for-small-only">{{out.value | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
       </div>
-      <div class="large-1 medium-1 small-2 columns fi-arrow-right"> </div>
+      <div class="large-1 medium-1 small-2 columns fi-arrow-right"></div>
       <div class="large-8 medium-8 small-7 columns ellipsis">
-        <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+        <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
       </div>
     </div>
   </div>
@@ -37,25 +36,25 @@
     </a>
     <div class="box-status">
       <a ng-if="c.actions.create" tooltip-popup-delay="1000" tooltip="Created {{c.actions.create | amTimeAgo}}">
-          <i class="fi-crown icon-status icon-active"></i>
+        <i class="fi-crown icon-status icon-active"></i>
       </a>
       <a ng-if="!c.actions.create"><i class="fi-crown icon-status"></i></a>
 
       <a ng-if="c.actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{c.actions.seen | amTimeAgo}}">
-          <i class="fi-eye icon-status icon-active"></i>
+        <i class="fi-eye icon-status icon-active"></i>
       </a>
       <a ng-if="!c.actions.seen"><i class="fi-eye icon-status"></i></a>
 
       <a ng-if="c.actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{c.actions.rejected | amTimeAgo}}">
-          <i class="fi-x icon-status icon-active-x"></i>
+        <i class="fi-x icon-status icon-active-x"></i>
       </a>
 
       <a ng-if="c.actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{c.actions.sign | amTimeAgo}}">
-          <i class="fi-check icon-status icon-active-check"></i>
+        <i class="fi-check icon-status icon-active-check"></i>
       </a>
 
       <a ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="icon-status">
-          <i class="fi-loop icon-rotate"></i>
+        <i class="fi-loop icon-rotate"></i>
       </a>
     </div>
 
@@ -100,7 +99,7 @@
     </div>
     <div ng-show="!tx.missingSignatures && tx.sentTs">
       <div class="is-valid m10b">
-        <strong translate>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
+        <strong translate>Sent</strong>  <span class="text-gray" am-time-ago="tx.sentTs"></span>
       </div>
       <div class="ellipsis small">
         <span translate>Transaction ID</span>:
@@ -110,12 +109,12 @@
       </div>
     </div>
     <p translate class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
-    One signature missing
+      One signature missing
     </p>
     <p translate class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
-    {{tx.missingSignatures}} signatures missing</p>
+      {{tx.missingSignatures}} signatures missing</p>
     <div class="ellipsis small text-gray">
-      <strong translate>Fee</strong>: {{tx.fee|noFractionNumber}} {{$root.unitName}}
+      <strong translate>Fee</strong>: {{tx.fee|noFractionNumber}} {{$root.wallet.settings.unitName}}
       <strong translate>Proposal ID</strong>: {{tx.ntxid}}
     </div>
   </div>
