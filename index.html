@@ -17,8 +17,8 @@
           <i class="fi-loop icon-rotate m15r"></i>
           <span translate> Network Error. Attempting to reconnect...</span>
         </span>
-        <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet ||
-          !$root.wallet.isReady() || $root.wallet.isLocked}">
+        <nav class="tab-bar" ng-if="$root.wallet &&
+          $root.wallet.isReady() && !$root.wallet.isLocked">
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
@@ -28,7 +28,7 @@
 
           <section class="middle tab-bar-section">
             <h1 class="right">
-              {{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
+              {{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}
             </h1>
             <h1 class="title ellipsis">
               {{$root.wallet.getName()}}

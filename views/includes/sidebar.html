@@ -20,7 +20,7 @@
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-if="!$root.updatingBalance"
+      <span ng-if="$root.wallet && !$root.updatingBalance"
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
@@ -33,7 +33,7 @@
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-show="!$root.updatingBalance"
+      <span ng-if="$root.wallet && !$root.updatingBalance"
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
