@@ -77,7 +77,6 @@ function Wallet(opts) {
   this.settings = new Settings(opts.settings);
   this.name = opts.name;
 
-  this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
   this.network.maxPeers = this.totalCopayers;
