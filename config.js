@@ -3,10 +3,13 @@ var defaultConfig = {
   // DEFAULT network (livenet or testnet)
   networkName: 'testnet',
   forceNetwork: false,
+  logLevel: 'info',
 
   // DEFAULT unit: Bit
   unitName: 'bits',
   unitToSatoshi: 100,
+  alternativeName: 'US Dollar',
+  alternativeIsoCode: 'USD',
 
   // wallet limits
   limits: {
@@ -54,7 +57,11 @@ var defaultConfig = {
     storageSalt: 'mjuBtGybi/4=',
   },
 
-  disableVideo: true,
+  rate: {
+    url: 'https://bitpay.com/api/rates',
+    updateFrequencySeconds: 60 * 60
+  },
+
   verbose: 1,
 };
 if (typeof module !== 'undefined')

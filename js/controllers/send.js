@@ -2,13 +2,66 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils) {
+  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
     $scope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / config.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = config.unitToSatoshi;
     $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
+
+    $scope.alternativeName = config.alternativeName;
+    $scope.alternativeIsoCode = config.alternativeIsoCode;
+
+    $scope.isRateAvailable = false;
+    $scope.rateService = rateService;
+
+    rateService.whenAvailable(function() {
+      $scope.isRateAvailable = true;
+      $scope.$digest();
+    });
+
+    /**
+     * Setting the two related amounts as properties prevents an infinite
+     * recursion for watches while preserving the original angular updates
+     */
+    Object.defineProperty($scope,
+      "alternative", {
+      get: function () {
+        return this._alternative;
+      },
+      set: function (newValue) {
+        this._alternative = newValue;
+        if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+          this._amount = Number.parseFloat(
+            (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
+          ).toFixed(config.unitDecimals), 10);
+        } else {
+          this._amount = 0;
+        }
+      },
+      enumerable: true,
+      configurable: true
+    });
+    Object.defineProperty($scope,
+      "amount", {
+      get: function () {
+        return this._amount;
+      },
+      set: function (newValue) {
+        this._amount = newValue;
+        if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+          this._alternative = Number.parseFloat(
+            (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
+          ).toFixed(2), 10);
+        } else {
+          this._alternative = 0;
+        }
+      },
+      enumerable: true,
+      configurable: true
+    });
 
     $scope.loadTxs = function() {
       var opts = {

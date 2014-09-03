@@ -2,6 +2,7 @@
 
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var bitcore = require('bitcore');
+var preconditions = require('preconditions').instance();
 var id = 0;
 
 function Storage(opts) {
@@ -11,15 +12,12 @@ function Storage(opts) {
   if (opts.password)
     this._setPassphrase(opts.password);
 
-  try{
+  try {
     this.localStorage = opts.localStorage || localStorage;
     this.sessionStorage = opts.sessionStorage || sessionStorage;
-  } catch (e) {};
-
-  if (!this.localStorage)
-    throw new Error('no localStorage');
-  if (!this.sessionStorage)
-    throw new Error('no sessionStorage');
+  } catch (e) {}
+  preconditions.checkState(this.localStorage, 'No localstorage found');
+  preconditions.checkState(this.sessionStorage, 'No sessionStorage found');
 }
 
 var pps = {};
@@ -40,11 +38,6 @@ Storage.prototype._encrypt = function(string) {
   return encryptedBase64;
 };
 
-Storage.prototype._encryptObj = function(obj) {
-  var string = JSON.stringify(obj);
-  return this._encrypt(string);
-};
-
 Storage.prototype._decrypt = function(base64) {
   var decryptedStr = null;
   try {
@@ -58,10 +51,6 @@ Storage.prototype._decrypt = function(base64) {
   return decryptedStr;
 };
 
-Storage.prototype._decryptObj = function(base64) {
-  var decryptedStr = this._decrypt(base64);
-  return JSON.parse(decryptedStr);
-};
 
 Storage.prototype._read = function(k) {
   var ret;
@@ -98,7 +87,7 @@ Storage.prototype.removeGlobal = function(k) {
 };
 
 Storage.prototype.getSessionId = function() {
-  var sessionId  = this.sessionStorage.getItem('sessionId');
+  var sessionId = this.sessionStorage.getItem('sessionId');
   if (!sessionId) {
     sessionId = bitcore.SecureRandom.getRandomBuffer(8).toString('hex');
     this.sessionStorage.setItem('sessionId', sessionId);
@@ -131,7 +120,6 @@ Storage.prototype.setName = function(walletId, name) {
 
 Storage.prototype.getName = function(walletId) {
   var ret = this.getGlobal('nameFor::' + walletId);
-
   return ret;
 };
 
@@ -145,7 +133,7 @@ Storage.prototype.getWalletIds = function() {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (!walletId || walletId === 'nameFor' || walletId ==='lock') 
+      if (!walletId || walletId === 'nameFor' || walletId === 'lock')
         continue;
 
       if (typeof uniq[walletId] === 'undefined') {
@@ -207,14 +195,14 @@ Storage.prototype.clearAll = function() {
   this.localStorage.clear();
 };
 
-Storage.prototype.export = function(obj) {
-  var encryptedObj = this._encryptObj(obj);
-  return encryptedObj;
+Storage.prototype.import = function(base64) {
+  var decryptedStr = this._decrypt(base64);
+  return JSON.parse(decryptedStr);
 };
 
-Storage.prototype.import = function(base64) {
-  var decryptedObj = this._decryptObj(base64);
-  return decryptedObj;
+Storage.prototype.export = function(obj) {
+  var string = JSON.stringify(obj);
+  return this._encrypt(string);
 };
 
 module.exports = Storage;

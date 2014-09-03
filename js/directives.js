@@ -45,9 +45,10 @@ angular.module('copayApp.directives')
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
             var availableBalanceNum = Number(($rootScope.availableBalance * config.unitToSatoshi).toFixed(0));
-            var vNum = Number((value * config.unitToSatoshi).toFixed(0)) + feeSat;
+            var vNum = Number((value * config.unitToSatoshi).toFixed(0));
 
             if (typeof vNum == "number" && vNum > 0) {
+              vNum = vNum + feeSat;
               if (availableBalanceNum < vNum || isNaN(availableBalanceNum)) {
                 ctrl.$setValidity('enoughAmount', false);
                 scope.notEnoughAmount = true;
@@ -105,20 +106,6 @@ angular.module('copayApp.directives')
           $scope.file = (e.srcElement || e.target).files[0];
           $scope.getFile();
         });
-      }
-    }
-  })
-  .directive('avatar', function($rootScope, controllerUtils) {
-    return {
-      link: function(scope, element, attrs) {
-        var peer = JSON.parse(attrs.peer)
-        var peerId = peer.peerId;
-        var nick = peer.nick;
-        element.addClass('video-small');
-        var muted = controllerUtils.getVideoMutedStatus(peerId);
-        if (true || muted) { // mute everyone for now
-          element.attr("muted", true);
-        }
       }
     }
   })
