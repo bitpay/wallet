@@ -25,7 +25,6 @@ var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var WalletLock = require('./WalletLock');
-var Settings = require('./Settings');
 var copayConfig = require('../../../config');
 
 /**
@@ -74,7 +73,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
-  this.settings = new Settings(opts.settings);
+  this.settings = opts.settings || copayConfig.settings;
   this.name = opts.name;
 
   this.publicKeyRing.walletId = this.id;
@@ -781,9 +780,7 @@ Wallet.prototype.keepAlive = function() {
  */
 Wallet.prototype.store = function() {
   this.keepAlive();
-
-  var wallet = this.toObj();
-  this.storage.setFromObj(this.id, wallet);
+  this.storage.setFromObj(this.id, this.toObj());
   log.debug('Wallet stored');
 };
 
@@ -799,7 +796,7 @@ Wallet.prototype.toObj = function() {
 
   var walletObj = {
     opts: optsObj,
-    settings: this.settings.toObj(),
+    settings: this.settings,
     networkNonce: networkNonce, //yours
     networkNonces: networkNonces, //copayers
     publicKeyRing: this.publicKeyRing.toObj(),

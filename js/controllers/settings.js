@@ -24,8 +24,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
   }
 
-
-
   $scope.changeInsightSSL = function() {
     $scope.insightPort = $scope.insightSecure ? 80 : 443;
   };
