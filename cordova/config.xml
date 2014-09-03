@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bitpay.copay" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Copay</name>
+    <description>
+      A secure bitcoin wallet for friends and companies.
+    </description>
+    <author email="support@bitpay.com" href="http://copay.io">
+        BitPay Inc.
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="splashscreen" value="screen" />
+    <preference name="splashScreenDelay" value="10000" />
+    <preference name="backgroundColor" value="0x2C3E50" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+</widget>
