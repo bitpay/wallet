@@ -73,7 +73,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
-  this.settings = opts.settings || copayConfig.settings;
+  this.settings = opts.settings || copayConfig.wallet.settings;
   this.name = opts.name;
 
   this.publicKeyRing.walletId = this.id;

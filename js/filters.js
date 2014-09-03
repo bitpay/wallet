@@ -45,12 +45,12 @@ angular.module('copayApp.filters', [])
     };
   })
   .filter('noFractionNumber',
-  [ '$filter', '$locale',
-  function(filter, locale) {
+  [ '$filter', '$locale', '$rootScope', 
+  function(filter, locale, $rootScope) {
     var numberFilter = filter('number');
     var formats = locale.NUMBER_FORMATS;
     return function(amount, n) {
-      var fractionSize = (typeof(n) != 'undefined') ? n : config.unitToSatoshi.toString().length - 1;
+      var fractionSize = (typeof(n) != 'undefined') ? n : $rootScope.wallet.settings.unitToSatoshi.toString().length - 1;
       var value = numberFilter(amount, fractionSize);
       var sep = value.indexOf(formats.DECIMAL_SEP);
       var group = value.indexOf(formats.GROUP_SEP);
