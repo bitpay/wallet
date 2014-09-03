@@ -10,7 +10,7 @@ function WalletLock(storage, walletId, timeoutMin) {
   this.storage = storage;
   this.timeoutMin = timeoutMin || 5;
   this.key = WalletLock._keyFor(walletId);
-  this._setLock(function() {});
+  //  this._setLock(function() {});
 }
 
 WalletLock._keyFor = function(walletId) {
@@ -18,7 +18,9 @@ WalletLock._keyFor = function(walletId) {
 };
 
 WalletLock.prototype._isLockedByOther = function(cb) {
-  var self=this;
+  var self = this;
+
+  console.log('[WalletLock.js.22]'); //TODO
   this.storage.getGlobal(this.key, function(json) {
     var wl = json ? JSON.parse(json) : null;
     var t = wl ? (Date.now() - wl.expireTs) : false;
@@ -33,10 +35,13 @@ WalletLock.prototype._isLockedByOther = function(cb) {
 
 
 WalletLock.prototype._setLock = function(cb) {
+
   this.storage.setGlobal(this.key, {
     sessionId: this.sessionId,
     expireTs: Date.now() + this.timeoutMin * 60 * 1000,
-  }, cb);
+  }, function() {
+    cb(null);
+  });
 };
 
 
@@ -45,6 +50,7 @@ WalletLock.prototype.keepAlive = function(cb) {
   var self = this;
 
   this._isLockedByOther(function(t) {
+
     if (t)
       return cb(new Error('Wallet is already open. Close it to proceed or wait ' + t + ' seconds if you close it already'));
 

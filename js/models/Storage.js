@@ -83,6 +83,7 @@ Storage.prototype.getGlobal = function(k, cb) {
   preconditions.checkArgument(cb);
 
   this.storage.getItem(k, function(item) {
+console.log('[Storage.js.96:item:]',item); //TODO
     cb(item == 'undefined' ? undefined : item);
   });
 };
@@ -118,18 +119,34 @@ Storage.prototype.get = function(walletId, k, cb) {
   this._read(this._key(walletId, k), cb);
 };
 
+
+Storage.prototype._readHelper = function(walletId, k, cb) {
+console.log('[Storage.js.134:walletId:]',walletId,k); //TODO
+  var wk = this._key(walletId, k);
+
+  this._read(wk, function(v){
+    return cb(v,k);
+  });
+};
+
 Storage.prototype.getMany = function(walletId, keys, cb) {
   preconditions.checkArgument(cb);
 
   var self = this;
   var ret = {};
+console.log('[Storage.js.142:keys:]',keys); //TODO
 
-  var l = keys.length - 1;
+  var l = keys.length, i=0;
+
   for (var ii in keys) {
-    var k = keys[ii];
-    this._read(this._key(walletId, k), function(v) {
+    this._readHelper(walletId, keys[ii], function(v, k) {
       ret[k] = v;
-      if (ii == l) return cb(ret);
+console.log('[Storage.js.144:ret:]',k,i,l,v); //TODO
+      if (++i == l) {
+
+console.log('[Storage.js.157] LKIST', ret); //TODO
+       return cb(ret);
+      }
     });
   }
 };
@@ -148,9 +165,8 @@ Storage.prototype.setName = function(walletId, name, cb) {
   this.setGlobal('nameFor::' + walletId, name, cb);
 };
 
-Storage.prototype.getName = function(walletId) {
-  var ret = this.getGlobal('nameFor::' + walletId);
-  return ret;
+Storage.prototype.getName = function(walletId, cb) {
+  this.getGlobal('nameFor::' + walletId, cb);
 };
 
 Storage.prototype.getWalletIds = function(cb) {
@@ -185,17 +201,21 @@ Storage.prototype.getWallets = function(cb) {
   var self = this;
 
   this.getWalletIds(function(ids) {
-    var l = ids.length - 1;
+console.log('[Storage.js.197:ids:]',ids); //TODO
+    var l = ids.length, i=0;
     if (!l)
       return cb([]);
 
-    for (var i in ids) {
-      self.getName(ids[i], function(name) {
+    for (var ii in ids) {
+      var id = ids[ii];
+console.log('[Storage.js.206:id:]',id); //TODO
+      self.getName(id, function(name) {
         wallets.push({
-          id: ids[i],
+          id: id,
           name: name,
         });
-        if (i == l) {
+console.log('[Storage.js.208:wallets:]',wallets); //TODO
+        if (++i == l) {
           return cb(wallets);
         }
       })
@@ -232,7 +252,6 @@ Storage.prototype.setFromObj = function(walletId, obj, cb) {
   preconditions.checkArgument(cb);
   var self = this;
 
-  console.log('[Storage.js.241]'); //TODO
   var l = Object.keys(obj).length,
     i = 0;
   for (var k in obj) {
