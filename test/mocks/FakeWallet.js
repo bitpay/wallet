@@ -98,6 +98,9 @@ FakeWallet.prototype.getBalance = function(cb) {
   return cb(null, this.balance, this.balanceByAddr, this.safeBalance);
 };
 
+FakeWallet.prototype.removeTxWithSpentInputs = function (cb) {
+};
+
 FakeWallet.prototype.setEnc = function(enc) {
   this.enc = enc;
 };
