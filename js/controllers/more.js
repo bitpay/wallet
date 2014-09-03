@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils, notification) {
+  function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
-
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -49,6 +48,15 @@ angular.module('copayApp.controllers').controller('MoreController',
         break;
       }
     }
+    $scope.save = function() {
+      w.changeSettings({
+        unitName: $scope.selectedUnit.shortName,
+        unitToSatoshi: $scope.selectedUnit.value,
+        unitDecimals: $scope.selectedUnit.decimals,
+        alternativeName: $scope.selectedAlternative.name,
+        alternativeIsoCode: $scope.selectedAlternative.isoCode,
+      });
+    };
 
 
     $scope.hideAdv = true;
@@ -57,19 +65,16 @@ angular.module('copayApp.controllers').controller('MoreController',
       $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
 
     $scope.downloadBackup = function() {
-      var w = $rootScope.wallet;
       backupService.download(w);
     }
 
     $scope.deleteWallet = function() {
-      var w = $rootScope.wallet;
       walletFactory.delete(w.id, function() {
         controllerUtils.logout();
       });
     };
 
     $scope.purge = function(deleteAll) {
-      var w = $rootScope.wallet;
       var removed = w.purgeTxProposals(deleteAll);
       if (removed) {
         controllerUtils.updateBalance();
@@ -78,7 +83,6 @@ angular.module('copayApp.controllers').controller('MoreController',
     };
 
     $scope.updateIndexes = function() {
-      var w = $rootScope.wallet;
       notification.info('Scaning for transactions', 'Using derived addresses from your wallet');
       w.updateIndexes(function(err) {
         notification.info('Scan Ended', 'Updating balance');

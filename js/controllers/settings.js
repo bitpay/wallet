@@ -37,24 +37,16 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     network.port = $scope.insightPort;
     network.schema = $scope.insightSecure ? 'https' : 'http';
 
+    var insightSettings = {
+      host: $scope.insightHost,
+      port: $scope.insightPort,
+      schema: $scope.insightSecure ? 'https' : 'http',
+    }
+
     localStorage.setItem('config', JSON.stringify({
-      networkName: $scope.networkName,
-      blockchain: {
-        host: $scope.insightHost,
-        port: $scope.insightPort,
-        schema: $scope.insightSecure ? 'https' : 'http',
-      },
-      socket: {
-        host: $scope.insightHost,
-        port: $scope.insightPort,
-        schema: $scope.insightSecure ? 'https' : 'http',
-      },
+      blockchain: insightSettings,
+      socket: insightSettings,
       network: network,
-      unitName: $scope.selectedUnit.shortName,
-      unitToSatoshi: $scope.selectedUnit.value,
-      unitDecimals: $scope.selectedUnit.decimals,
-      alternativeName: $scope.selectedAlternative.name,
-      alternativeIsoCode: $scope.selectedAlternative.isoCode,
 
       version: copay.version,
       defaultLanguage: $scope.selectedLanguage.isoCode
