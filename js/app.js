@@ -37,9 +37,8 @@ var modules = [
   'copayApp.directives',
 ];
 
-if (config.plugins.length)
+if (Object.keys(config.plugins).length)
   modules.push('angularLoad');
-
 
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);

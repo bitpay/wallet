@@ -3,8 +3,9 @@ var preconditions = require('preconditions').singleton();
 
 function PluginManager(config) {
   this.registered = {};
+  this.scripts = [];
 
-  for(var ii in config.plugins){
+  for (var ii in config.plugins) {
     var pluginName = ii;
 
     if (!config.plugins[pluginName])
@@ -12,7 +13,7 @@ function PluginManager(config) {
 
     console.log('Loading plugin: ' + pluginName);
     var pluginClass = require('../plugins/' + pluginName);
-    var pluginObj  = new pluginClass();
+    var pluginObj = new pluginClass(config[pluginName]);
     pluginObj.init();
     this._register(pluginObj, pluginName);
   }
@@ -25,9 +26,10 @@ PluginManager.TYPE = {};
 PluginManager.TYPE['STORAGE'] = KIND_UNIQUE;
 
 PluginManager.prototype._register = function(obj, name) {
-  preconditions.checkArgument(obj.type,'Plugin has not type:' + name);
+  preconditions.checkArgument(obj.type, 'Plugin has not type:' + name);
   var type = obj.type;
   var kind = PluginManager.TYPE[type];
+
   preconditions.checkArgument(kind, 'Plugin has unkown type' + name);
   preconditions.checkState(kind !== PluginManager.KIND_UNIQUE || !this.registered[type], 'Plugin kind already registered: ' + name);
 
@@ -37,7 +39,10 @@ PluginManager.prototype._register = function(obj, name) {
     this.registered[type] = this.registered[type] || [];
     this.registered[type].push(obj);
   }
+
+  this.scripts = this.scripts.concat(obj.scripts || []);
 };
+
 
 PluginManager.prototype.get = function(type) {
   return this.registered[type];
