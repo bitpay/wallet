@@ -28,7 +28,6 @@ module.exports = function(config) {
       'lib/angular-route/angular-route.min.js',
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
-      'lib/peerjs/peer.js',
       'lib/bitcore.js',
       'lib/crypto-js/rollups/sha256.js',
       'lib/crypto-js/rollups/pbkdf2.js',
@@ -42,6 +41,7 @@ module.exports = function(config) {
 
       //App-specific Code
       'js/app.js',
+      'js/log.js',
       'js/routes.js',
       'js/services/*.js',
       'js/directives.js',

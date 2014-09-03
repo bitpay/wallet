@@ -32,12 +32,11 @@ var valid_pairs = {
   '1,12': 489
 };
 
-angular.module('copayApp.controllers').controller('SetupController',
+angular.module('copayApp.controllers').controller('CreateController',
   function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification) {
     controllerUtils.redirIfLogged();
 
     $rootScope.fromSetup = true;
-    $rootScope.videoInfo = {};
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
     $scope.isMobile = !!window.cordova;
