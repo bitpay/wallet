@@ -50,7 +50,6 @@ angular.module('copayApp.services')
         $scope.loading = false;
       });
 
-
       w.on('corrupt', function(peerId) {
         notification.error('Error', 'Received corrupt message from ' + peerId);
       });

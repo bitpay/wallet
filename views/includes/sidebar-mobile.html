@@ -6,6 +6,37 @@
       </a>
       <div ng-include="'views/includes/version.html'"></div>
     </div>
+
+    <div class="line-sidebar-b"></div>
+    <div class="founds size-12 text-center box-founds p10t">
+      <div class="m10b">
+        Balance
+        <span ng-if="$root.updatingBalance">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        </span>
+        <span ng-if="$root.wallet && !$root.updatingBalance"
+          data-options="disable_for_touch:true"
+          tooltip="{{totalBalanceBTC |noFractionNumber:8}} BTC"
+          tooltip-trigger="mouseenter"
+          tooltip-placement="bottom">{{totalBalance || 0
+          |noFractionNumber}} {{$root.unitName}} 
+        </span>
+      </div> 
+      <div>
+        Locked 
+        <span ng-if="$root.updatingBalance">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        </span>
+        <span ng-if="$root.wallet && !$root.updatingBalance"
+          data-options="disable_for_touch:true"
+          tooltip="{{lockedBalanceBTC |noFractionNumber:8}} BTC"
+          tooltip-trigger="mouseenter"
+          tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
+        </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
+      </div>
+      <div class="line-sidebar-b"></div>
+    </div>
+
   </header>
   <div class="line-sidebar-b"></div>
   <div class="founds size-12 box-founds p15" ng-disabled="$root.loading" ng-click="refresh()">
