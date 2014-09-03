@@ -43,6 +43,7 @@ function Wallet(opts) {
     ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.id = opts.id || Wallet.getRandomId();
+  this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
   this.name = opts.name;
 
@@ -50,6 +51,7 @@ function Wallet(opts) {
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
   this.network.maxPeers = this.totalCopayers;
+  this.network.secretNumber = this.secretNumber;
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
@@ -75,6 +77,11 @@ Wallet.builderOpts = {
 
 Wallet.getRandomId = function() {
   var r = bitcore.SecureRandom.getPseudoRandomBuffer(8).toString('hex');
+  return r;
+};
+
+Wallet.getRandomNumber = function() {
+  var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex');
   return r;
 };
 
@@ -408,18 +415,28 @@ Wallet.prototype.getMyCopayerIdPriv = function() {
   return this.privateKey.getIdPriv(); //copayer idpriv is hex of a private key
 };
 
+
+Wallet.prototype.getSecretNumber = function() {
+  if (this.secretNumber) return this.secretNumber;
+  this.secretNumber = Wallet.getRandomNumber(); 
+  return this.secretNumber; 
+};
+
 Wallet.prototype.getSecret = function() {
-  var pubkeybuf = new Buffer(this.getMyCopayerId(), 'hex');
-  var str = Base58Check.encode(pubkeybuf);
+  var buf = new Buffer(this.getMyCopayerId() + this.getSecretNumber(), 'hex');
+  var str = Base58Check.encode(buf);
   return str;
 };
+
 
 
 Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
   var pubKeyBuf = secret.slice(0, 33);
+  var secretNumber = secret.slice(33, 38);
   return {
-    pubKey: pubKeyBuf.toString('hex')
+    pubKey: pubKeyBuf.toString('hex'),
+    secretNumber : secretNumber.toString('hex')
   }
 };
 
@@ -445,6 +462,7 @@ Wallet.prototype.netStart = function(callback) {
     privkey: myIdPriv,
     maxPeers: self.totalCopayers,
     lastTimestamp: this.lastTimestamp,
+    secretNumber: self.secretNumber,
   };
 
   if (this.publicKeyRing.isComplete()) {

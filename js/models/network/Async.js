@@ -17,6 +17,7 @@ function Network(opts) {
   this.host = opts.host || 'localhost';
   this.port = opts.port || 3001;
   this.schema = opts.schema || 'https';
+  this.secretNumber = opts.secretNumber;
   this.cleanUp();
 }
 
@@ -73,11 +74,12 @@ Network.prototype.connectedCopayers = function() {
   return ret;
 };
 
-Network.prototype._sendHello = function(copayerId) {
+Network.prototype._sendHello = function(copayerId,secretNumber) {
 
   this.send(copayerId, {
     type: 'hello',
     copayerId: this.copayerId,
+    secretNumber : secretNumber
   });
 };
 
@@ -193,6 +195,12 @@ Network.prototype._onMessage = function(enc) {
   var self = this;
   switch (payload.type) {
     case 'hello':
+
+      if (typeof payload.secretNumber === 'undefined' || payload.secretNumber !== this.secretNumber) 
+      {
+        this._deletePeer(enc.pubkey, 'incorrect secret number');
+        return; 
+      }
       // if we locked allowed copayers, check if it belongs
       if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
         this._deletePeer(sender);
@@ -240,8 +248,8 @@ Network.prototype._onError = function(err) {
   this.criticalError = err.message;
 };
 
-Network.prototype.greet = function(copayerId) {
-  this._sendHello(copayerId);
+Network.prototype.greet = function(copayerId,secretNumber) {
+  this._sendHello(copayerId,secretNumber);
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId, copayerId);
 };
@@ -350,6 +358,7 @@ Network.prototype.send = function(dest, payload, cb) {
     if (to == this.copayerId)
       continue;
     log.debug('SEND to: ' + to, this.copayerId, payload);
+
     var message = this.encode(to, payload);
     this.socket.emit('message', message);
   }
