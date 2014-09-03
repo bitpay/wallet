@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils, rateService) {
+angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils) {
 
   controllerUtils.redirIfLogged();
   $scope.title = 'Settings';
@@ -24,54 +24,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
   }
 
-  $scope.unitOpts = [{
-    name: 'Satoshis (100,000,000 satoshis = 1BTC)',
-    shortName: 'SAT',
-    value: 1,
-    decimals: 0
-  }, {
-    name: 'bits (1,000,000 bits = 1BTC)',
-    shortName: 'bits',
-    value: 100,
-    decimals: 2
-  }, {
-    name: 'mBTC (1,000 mBTC = 1BTC)',
-    shortName: 'mBTC',
-    value: 100000,
-    decimals: 5
-  }, {
-    name: 'BTC',
-    shortName: 'BTC',
-    value: 100000000,
-    decimals: 8
-  }];
-
-  $scope.selectedAlternative = {
-    name: config.alternativeName,
-    isoCode: config.alternativeIsoCode
-  };
-  $scope.alternativeOpts = rateService.isAvailable ?
-    rateService.listAlternatives() : [$scope.selectedAlternative];
-
-  rateService.whenAvailable(function() {
-    $scope.alternativeOpts = rateService.listAlternatives();
-    for (var ii in $scope.alternativeOpts) {
-      if (config.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
-        $scope.selectedAlternative = $scope.alternativeOpts[ii];
-      }
-    }
-  });
-
-  for (var ii in $scope.unitOpts) {
-    if (config.unitName === $scope.unitOpts[ii].shortName) {
-      $scope.selectedUnit = $scope.unitOpts[ii];
-      break;
-    }
-  }
-
-  $scope.changeNetwork = function() {
-    $scope.insightHost = $scope.networkName !== 'testnet' ? 'test-insight.bitpay.com' : 'insight.bitpay.com';
-  };
 
 
   $scope.changeInsightSSL = function() {
