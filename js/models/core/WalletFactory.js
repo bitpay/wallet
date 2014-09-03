@@ -95,7 +95,6 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
 
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   if (!w) return false;
-  w.verbose = this.verbose;
   this._checkVersion(w.version);
   this._checkNetwork(w.getNetworkName());
   return w;
@@ -217,7 +216,6 @@ WalletFactory.prototype.create = function(opts) {
   opts.storage = this.storage;
   opts.network = this.network;
   opts.blockchain = this.blockchain;
-  opts.verbose = this.verbose;
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;

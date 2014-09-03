@@ -799,6 +799,7 @@ Wallet.prototype.toObj = function() {
 
   var walletObj = {
     opts: optsObj,
+    settings: this.settings.toObj();
     networkNonce: networkNonce, //yours
     networkNonces: networkNonces, //copayers
     publicKeyRing: this.publicKeyRing.toObj(),
@@ -832,6 +833,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
+  opts.settings = o.settings;
 
   if (o.privateKey) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);

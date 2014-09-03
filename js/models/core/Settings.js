@@ -9,4 +9,10 @@ function Settings(opts) {
   var self = this;
 }
 
+Settings.prototype.toObj = function() {
+  return {
+  
+  }
+};
+
 module.exports = Settings;
