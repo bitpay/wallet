@@ -348,7 +348,7 @@ describe('Insight model', function() {
   });
 
   describe('Events', function() {
-    it('should emmit event on a new block', function(done) {
+    it('should emit event on a new block', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
@@ -362,7 +362,7 @@ describe('Insight model', function() {
       });
     });
 
-    it('should emmit event on a transaction for subscribed addresses', function(done) {
+    it('should emit event on a transaction for subscribed addresses', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       var socket = blockchain.getSocket();
       blockchain.subscribe('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY');
@@ -378,7 +378,7 @@ describe('Insight model', function() {
       });
     });
 
-    it('should\'t emmit event on a transaction for non subscribed addresses', function(done) {
+    it('should\'t emit event on a transaction for non subscribed addresses', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
@@ -392,7 +392,7 @@ describe('Insight model', function() {
       });
     });
 
-    it('should emmit event on connection', function(done) {
+    it('should emit event on connection', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
@@ -400,7 +400,7 @@ describe('Insight model', function() {
       });
     });
 
-    it('should emmit event on disconnection', function(done) {
+    it('should emit event on disconnection', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
