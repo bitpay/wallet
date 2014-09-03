@@ -29,14 +29,14 @@ var preconditions = require('preconditions').singleton();
 */
 
 var Insight = function(opts) {
-  this.status = this.STATUS.DISCONNECTED;
-  this.subscribed = {};
-  this.listeningBlocks = false;
-
   preconditions.checkArgument(opts).shouldBeObject(opts)
     .checkArgument(opts.host)
     .checkArgument(opts.port)
     .checkArgument(opts.schema);
+
+  this.status = this.STATUS.DISCONNECTED;
+  this.subscribed = {};
+  this.listeningBlocks = false;
 
   this.url = opts.schema + '://' + opts.host + ':' + opts.port;
   this.opts = {
