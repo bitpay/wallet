@@ -1,53 +1,119 @@
 'use strict';
 
-var preconditions = require('preconditions').singleton();
+// 90.2% typed (by google's closure-compiler account)
 
-function HDPath() {}
+var assert = require('assert'),
+         _ = require('underscore');
 
-/*
+/**
+ * @namespace
+ *
+ * HDPath contains helper functions to handle BIP32 branches as
+ * Copay uses them.
+ *
  * Based on https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki
- * m / purpose' / copayerIndex / change / addressIndex
+ * <pre>
+ * m / purpose' / copayerIndex / change:boolean / addressIndex
+ * </pre>
  */
-var PURPOSE = 45;
-var MAX_NON_HARDENED = 0x80000000 - 1;
+var HDPath = {};
 
-var SHARED_INDEX = MAX_NON_HARDENED - 0;
-var ID_INDEX = MAX_NON_HARDENED - 1;
+/**
+ * @desc Copay's BIP45 purpose code
+ * @const
+ * @type number
+ */
+HDPath.PURPOSE = 45;
 
-var BIP45_PUBLIC_PREFIX = 'm/' + PURPOSE + '\'';
-HDPath.BIP45_PUBLIC_PREFIX = BIP45_PUBLIC_PREFIX;
+/**
+ * @desc Maximum number for non-hardened values (BIP32)
+ * @const
+ * @type number
+ */
+HDPath.MAX_NON_HARDENED = 0x80000000 - 1;
 
+/**
+ * @desc Shared Index: used for creating addresses for no particular purpose
+ * @const
+ * @type number
+ */
+HDPath.SHARED_INDEX = HDPath.MAX_NON_HARDENED - 0;
+
+/**
+ * @desc ???
+ * @const
+ * @type number
+ */
+HDPath.ID_INDEX = HDPath.MAX_NON_HARDENED - 1;
+
+/**
+ * @desc BIP45 prefix for COPAY
+ * @const
+ * @type string
+ */
+HDPath.BIP45_PUBLIC_PREFIX = 'm/' + HDPath.PURPOSE + '\'';
+
+/**
+ * @desc Retrieve a string to be used with bitcore representing a Copay branch
+ * @param {number} addressIndex - the last value of the HD derivation
+ * @param {boolean} isChange - whether this is a change address or a receive
+ * @param {number} copayerIndex - the index of the copayer in the pubkeyring
+ * @return {string} - the path for the HD derivation
+ */
 HDPath.Branch = function(addressIndex, isChange, copayerIndex) {
-  preconditions.shouldBeNumber(addressIndex);
-  preconditions.shouldBeBoolean(isChange);
+  assert(_.isNumber(addressIndex));
+  assert(_.isBoolean(isChange));
+  assert(!copayerIndex || _.isNumber(copayerIndex));
+
   var ret = 'm/' +
-    (typeof copayerIndex !== 'undefined' ? copayerIndex : SHARED_INDEX) + '/' +
+    (typeof copayerIndex !== 'undefined' ? copayerIndex : HDPath.SHARED_INDEX) + '/' +
     (isChange ? 1 : 0) + '/' +
     addressIndex;
   return ret;
 };
 
+/**
+ * @desc ???
+ * @param {number} addressIndex - the last value of the HD derivation
+ * @param {boolean} isChange - whether this is a change address or a receive
+ * @param {number} copayerIndex - the index of the copayer in the pubkeyring
+ * @return {string} - the path for the HD derivation
+ */
 HDPath.FullBranch = function(addressIndex, isChange, copayerIndex) {
+  assert(_.isNumber(addressIndex));
+  assert(_.isBoolean(isChange));
+  assert(!copayerIndex || _.isNumber(copayerIndex));
+
   var sub = HDPath.Branch(addressIndex, isChange, copayerIndex);
   sub = sub.substring(2);
-  return BIP45_PUBLIC_PREFIX + '/' + sub;
+  return HDPath.BIP45_PUBLIC_PREFIX + '/' + sub;
 };
 
+/**
+ * @desc
+ * Decompose a string and retrieve its arguments as if it where a Copay address.
+ * @param {string} path - the HD path
+ * @returns {Object} an object with three keys: addressIndex, isChange, and
+ *                   copayerIndex
+ */
 HDPath.indexesForPath = function(path) {
-  preconditions.shouldBeString(path);
+  assert(_.isString(path));
+
   var s = path.split('/');
   return {
     isChange: s[3] === '1',
-    addressIndex: parseInt(s[4]),
-    copayerIndex: parseInt(s[2])
+    addressIndex: parseInt(s[4], 10),
+    copayerIndex: parseInt(s[2], 10)
   };
 };
 
-HDPath.IdFullBranch = HDPath.FullBranch(0, false, ID_INDEX);
-HDPath.IdBranch = HDPath.Branch(0, false, ID_INDEX);
-HDPath.PURPOSE = PURPOSE;
-HDPath.MAX_NON_HARDENED = MAX_NON_HARDENED;
-HDPath.SHARED_INDEX = SHARED_INDEX;
-HDPath.ID_INDEX = ID_INDEX;
+/**
+ * @desc The ID for a shared branch
+ */
+HDPath.IdFullBranch = HDPath.FullBranch(0, false, HDPath.ID_INDEX);
+/**
+ * @desc Partial ID for a shared branch
+ */
+HDPath.IdBranch = HDPath.Branch(0, false, HDPath.ID_INDEX);
 
 module.exports = HDPath;
