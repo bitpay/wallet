@@ -21,7 +21,8 @@
     "socket.io-client": ">=1.0.0",
     "mousetrap": "1.4.6",
     "zeroclipboard": "~1.3.5",
-    "ng-idle": "*"
+    "ng-idle": "*",
+    "underscore": "~1.7.0"
   },
   "resolutions": {
     "angular": "=1.2.19"
