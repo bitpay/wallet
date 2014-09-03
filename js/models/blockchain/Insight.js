@@ -45,6 +45,7 @@ var Insight = function(opts) {
     'secure': opts.schema === 'https'
   };
 
+  this.socket = this.getSocket();
 }
 
 util.inherits(Insight, EventEmitter);
@@ -105,7 +106,7 @@ Insight.prototype._setMainHandlers = function(url, opts) {
 
 
 /** @private */
-Insight.prototype.getSocket = function(url, opts) {
+Insight.prototype.getSocket = function() {
 
   if (!this.socket) {
     this.socket = this._getSocketIO(this.url, this.opts);
