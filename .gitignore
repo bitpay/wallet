@@ -54,16 +54,8 @@ browser-extensions/firefox/copay.xpi
 version.js
 !js/controllers/version.js
 
-android/package
-android/*.apk
-android/*.keystore
-
-mobile/*.keystore
-mobile/assets/www
-mobile/bin/*
-mobile/gen/*
-mobile/cordova/*
-mobile/CordovaLib/*
+cordova/project/*
+cordova/*.keystore
 
 coverage/
 

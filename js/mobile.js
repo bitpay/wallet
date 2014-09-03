@@ -28,4 +28,5 @@ function onDeviceReady() {
 
   window.plugins.webintent.getUri(handleBitcoinURI);
   window.plugins.webintent.onNewIntent(handleBitcoinURI);
+  window.handleOpenURL = handleBitcoinURI;
 }
