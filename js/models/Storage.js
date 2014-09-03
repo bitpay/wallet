@@ -1,5 +1,5 @@
 'use strict';
-
+var preconditions = require('preconditions').singleton();
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var bitcore = require('bitcore');
 var preconditions = require('preconditions').instance();
@@ -55,38 +55,50 @@ Storage.prototype._decrypt = function(base64) {
 };
 
 
-Storage.prototype._read = function(k) {
-  var ret;
-  ret = this.storage.getItem(k);
-  if (!ret) return null;
-  ret = this._decrypt(ret);
-  if (!ret) return null;
-  ret = ret.toString(CryptoJS.enc.Utf8);
-  ret = JSON.parse(ret);
-  return ret;
+Storage.prototype._read = function(k, cb) {
+  preconditions.checkArgument(cb);
+
+  var self = this;
+  this.storage.getItem(k, function(ret) {
+    if (!ret) return cb(null);
+    var ret = self._decrypt(ret);
+    if (!ret) return cb(null);
+
+    ret = ret.toString(CryptoJS.enc.Utf8);
+    ret = JSON.parse(ret);
+    return cb(ret);
+  });
 };
 
-Storage.prototype._write = function(k, v) {
+Storage.prototype._write = function(k, v, cb) {
+  preconditions.checkArgument(cb);
+
   v = JSON.stringify(v);
   v = this._encrypt(v);
-
-  this.storage.setItem(k, v);
+  this.storage.setItem(k, v, cb);
 };
 
 // get value by key
-Storage.prototype.getGlobal = function(k) {
-  var item = this.storage.getItem(k);
-  return item == 'undefined' ? undefined : item;
+Storage.prototype.getGlobal = function(k, cb) {
+  preconditions.checkArgument(cb);
+
+  this.storage.getItem(k, function(item) {
+    cb(item == 'undefined' ? undefined : item);
+  });
 };
 
 // set value for key
-Storage.prototype.setGlobal = function(k, v) {
-  this.storage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v);
+Storage.prototype.setGlobal = function(k, v, cb) {
+  preconditions.checkArgument(cb);
+
+  this.storage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v, cb);
 };
 
 // remove value for key
-Storage.prototype.removeGlobal = function(k) {
-  this.storage.removeItem(k);
+Storage.prototype.removeGlobal = function(k, cb) {
+  preconditions.checkArgument(cb);
+
+  this.storage.removeItem(k, cb);
 };
 
 Storage.prototype.getSessionId = function() {
@@ -102,23 +114,38 @@ Storage.prototype._key = function(walletId, k) {
   return walletId + '::' + k;
 };
 // get value by key
-Storage.prototype.get = function(walletId, k) {
-  var ret = this._read(this._key(walletId, k));
-  return ret;
+Storage.prototype.get = function(walletId, k, cb) {
+  this._read(this._key(walletId, k), cb);
+};
+
+Storage.prototype.getMany = function(walletId, keys, cb) {
+  preconditions.checkArgument(cb);
+
+  var self = this;
+  var ret = {};
+
+  var l = keys.length - 1;
+  for (var ii in keys) {
+    var k = keys[ii];
+    this._read(this._key(walletId, k), function(v) {
+      ret[k] = v;
+      if (ii == l) return cb(ret);
+    });
+  }
 };
 
 // set value for key
-Storage.prototype.set = function(walletId, k, v) {
-  this._write(this._key(walletId, k), v);
+Storage.prototype.set = function(walletId, k, v, cb) {
+  this._write(this._key(walletId, k), v, cb);
 };
 
 // remove value for key
-Storage.prototype.remove = function(walletId, k) {
-  this.removeGlobal(this._key(walletId, k));
+Storage.prototype.remove = function(walletId, k, cb) {
+  this.removeGlobal(this._key(walletId, k), cb);
 };
 
-Storage.prototype.setName = function(walletId, name) {
-  this.setGlobal('nameFor::' + walletId, name);
+Storage.prototype.setName = function(walletId, name, cb) {
+  this.setGlobal('nameFor::' + walletId, name, cb);
 };
 
 Storage.prototype.getName = function(walletId) {
@@ -126,41 +153,54 @@ Storage.prototype.getName = function(walletId) {
   return ret;
 };
 
-Storage.prototype.getWalletIds = function() {
+Storage.prototype.getWalletIds = function(cb) {
   var walletIds = [];
   var uniq = {};
 
-console.log('[Encrypted.js.144]', this.storage); //TODO
-console.log('[Encrypted.js.144]', this.storage.length); //TODO
-  for (var i = 0; i < this.storage.length; i++) {
-    var key = this.storage.key(i);
-    var split = key.split('::');
-    if (split.length == 2) {
-      var walletId = split[0];
+  this.storage.allKeys(function(keys) {
+console.log('[Storage.js.170:keys:]',keys); //TODO
 
-      if (!walletId || walletId === 'nameFor' || walletId === 'lock')
-        continue;
+    for (var ii in keys) {
+      var key = keys[ii];
+console.log('[Storage.js.174:key:]',key); //TODO
+      var split = key.split('::');
+      if (split.length == 2) {
+        var walletId = split[0];
 
-      if (typeof uniq[walletId] === 'undefined') {
-        walletIds.push(walletId);
-        uniq[walletId] = 1;
+        if (!walletId || walletId === 'nameFor' || walletId === 'lock')
+          continue;
+
+        if (typeof uniq[walletId] === 'undefined') {
+          walletIds.push(walletId);
+          uniq[walletId] = 1;
+        }
       }
     }
-  }
-  return walletIds;
+    return cb(walletIds);
+  });
 };
 
-Storage.prototype.getWallets = function() {
+Storage.prototype.getWallets = function(cb) {
   var wallets = [];
-  var ids = this.getWalletIds();
+  var self = this;
 
-  for (var i in ids) {
-    wallets.push({
-      id: ids[i],
-      name: this.getName(ids[i]),
-    });
-  }
-  return wallets;
+  this.getWalletIds(function(ids) {
+    var l = ids.length - 1;
+    if (!l)
+      return cb([]);
+
+    for (var i in ids) {
+      self.getName(ids[i], function(name) {
+        wallets.push({
+          id: ids[i],
+          name: name,
+        });
+        if (i == l) {
+          return cb(wallets);
+        }
+      })
+    }
+  });
 };
 
 Storage.prototype.deleteWallet = function(walletId) {
@@ -179,25 +219,35 @@ Storage.prototype.deleteWallet = function(walletId) {
   }
 };
 
-Storage.prototype.setLastOpened = function(walletId) {
-  this.setGlobal('lastOpened', walletId);
+Storage.prototype.setLastOpened = function(walletId, cb) {
+  this.setGlobal('lastOpened', walletId, cb);
 }
 
-Storage.prototype.getLastOpened = function() {
-  return this.getGlobal('lastOpened');
+Storage.prototype.getLastOpened = function(cb) {
+  this.getGlobal('lastOpened', cb);
 }
 
 //obj contains keys to be set
-Storage.prototype.setFromObj = function(walletId, obj) {
+Storage.prototype.setFromObj = function(walletId, obj, cb) {
+  preconditions.checkArgument(cb);
+  var self = this;
+
+  console.log('[Storage.js.241]'); //TODO
+  var l = Object.keys(obj).length,
+    i = 0;
   for (var k in obj) {
-    this.set(walletId, k, obj[k]);
+    console.log('[Storage.js.247]', k, i, l); //TODO
+    self.set(walletId, k, obj[k], function() {
+      if (++i == l) {
+        self.setName(walletId, obj.opts.name, cb);
+      }
+    });
   }
-  this.setName(walletId, obj.opts.name);
 };
 
 // remove all values
-Storage.prototype.clearAll = function() {
-  this.storage.clear();
+Storage.prototype.clearAll = function(cb) {
+  this.storage.clear(cb);
 };
 
 Storage.prototype.import = function(base64) {

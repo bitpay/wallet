@@ -43,6 +43,7 @@ module.exports = function(grunt) {
       scripts: {
         files: [
           'js/models/**/*.js',
+          'js/models/*.js',
           'plugins/*.js',
           'copay.js',
           'utils/*.js'

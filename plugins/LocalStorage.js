@@ -9,33 +9,33 @@ LocalStorage.prototype.init = function() {
 };
 
 
-LocalStorage.prototype.getItem = function(k) {
-  return localStorage.getItem(k);
+LocalStorage.prototype.getItem = function(k,cb) {
+  return cb(localStorage.getItem(k));
 };
 
-LocalStorage.prototype.setItem = function(k,v) {
+LocalStorage.prototype.setItem = function(k,v,cb) {
   localStorage.setItem(k,v);
+  return cb();
 };
 
-LocalStorage.prototype.removeItem = function(k) { 
+LocalStorage.prototype.removeItem = function(k,cb) { 
   localStorage.removeItem(k);
+  return cb();
 };
 
-LocalStorage.prototype.clear = function() { 
+LocalStorage.prototype.clear = function(cb) { 
   localStorage.clear();
+  return cb();
 };
 
-delete LocalStorage.prototype.length;
+LocalStorage.prototype.allKeys = function(cb) {
+  var l = localStorage.length;
+  var ret = [];
 
-Object.defineProperty(LocalStorage.prototype, 'length', {
-  get: function() {
-    return localStorage.length;
-  }
-});
+  for(var i=0; i<l; i++)
+    ret.push(localStorage.key(i));
 
-LocalStorage.prototype.key = function(k) {
-  var v = localStorage.key(k);
-  return v;
+  return cb(ret);    
 };
 
 
