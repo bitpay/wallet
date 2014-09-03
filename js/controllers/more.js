@@ -26,8 +26,8 @@ angular.module('copayApp.controllers').controller('MoreController',
       decimals: 8
     }];
     $scope.selectedAlternative = {
-      name: config.alternativeName,
-      isoCode: config.alternativeIsoCode
+      name: w.settings.alternativeName,
+      isoCode: w.settings.alternativeIsoCode
     };
     $scope.alternativeOpts = rateService.isAvailable ?
       rateService.listAlternatives() : [$scope.selectedAlternative];
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     rateService.whenAvailable(function() {
       $scope.alternativeOpts = rateService.listAlternatives();
       for (var ii in $scope.alternativeOpts) {
-        if (config.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
+        if (w.settings.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
           $scope.selectedAlternative = $scope.alternativeOpts[ii];
         }
       }
@@ -43,7 +43,7 @@ angular.module('copayApp.controllers').controller('MoreController',
 
 
     for (var ii in $scope.unitOpts) {
-      if (config.unitName === $scope.unitOpts[ii].shortName) {
+      if (w.settings.unitName === $scope.unitOpts[ii].shortName) {
         $scope.selectedUnit = $scope.unitOpts[ii];
         break;
       }

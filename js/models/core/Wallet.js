@@ -799,7 +799,7 @@ Wallet.prototype.toObj = function() {
 
   var walletObj = {
     opts: optsObj,
-    settings: this.settings.toObj();
+    settings: this.settings.toObj(),
     networkNonce: networkNonce, //yours
     networkNonces: networkNonces, //copayers
     publicKeyRing: this.publicKeyRing.toObj(),
