@@ -25,6 +25,7 @@ var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var WalletLock = require('./WalletLock');
+var Settings = require('./Settings');
 var copayConfig = require('../../../config');
 
 /**
@@ -73,6 +74,7 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
+  this.settings = new Settings(opts.settings);
   this.name = opts.name;
 
   this.verbose = opts.verbose;
