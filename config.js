@@ -30,6 +30,7 @@ var defaultConfig = {
     settings: {
       unitName: 'bits',
       unitToSatoshi: 100,
+      unitDecimals: 2,
       alternativeName: 'US Dollar',
       alternativeIsoCode: 'USD',
     }

@@ -26,7 +26,7 @@
         tooltip-popup-delay='500'
         tooltip="{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
+        tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span>
       <div class="m10t" ng-show="lockedBalance">
         <span translate>Locked</span> &nbsp;
@@ -39,7 +39,7 @@
         tooltip-popup-delay='500'
         tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
+        tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
       </div>
     </div>
