@@ -1,5 +1,22 @@
 var config = require('../config');
+var _ = require('underscore');
 
+/**
+ * @desc
+ * A simple logger that wraps the <tt>console.log</tt> methods when available.
+ *
+ * Usage:
+ * <pre>
+ *   log = new Logger('copay');
+ *   log.setLevel('info');
+ *   log.debug('Message!'); // won't show
+ *   log.setLevel('debug');
+ *   log.debug('Message!', 1); // will show '[debug] copay: Message!, 1'
+ * </pre>
+ *
+ * @param {string} name - a name for the logger. This will show up on every log call
+ * @constructor
+ */
 var Logger = function(name) {
   this.name = name || 'log';
   this.level = 2;
@@ -14,15 +31,15 @@ var levels = {
   'fatal': 5
 };
 
-Object.keys(levels).forEach(function(level) {
-  Logger.prototype[level] = function() {
-    if (levels[level] >= levels[this.level]) {
-      var str = '[' + level + '] ' + this.name + ': ' + arguments[0],
+_.each(levels, function(level, levelName) {
+  Logger.prototype[levelName] = function() {
+    if (level >= levels[this.level]) {
+      var str = '[' + levelName + '] ' + this.name + ': ' + arguments[0],
         extraArgs,
       extraArgs = [].slice.call(arguments, 1);
-      if (console[level]) {
+      if (console[levelName]) {
         extraArgs.unshift(str);
-        console[level].apply(console, extraArgs);
+        console[levelName].apply(console, extraArgs);
       } else {
         if (extraArgs.length) {
           str += JSON.stringify(extraArgs);
@@ -33,9 +50,54 @@ Object.keys(levels).forEach(function(level) {
   };
 });
 
+/**
+ * @desc
+ * Sets the level of a logger. A level can be any bewteen: 'debug', 'info', 'log',
+ * 'warn', 'error', and 'fatal'. That order matters: if a logger's level is set to
+ * 'warn', calling <tt>level.debug</tt> won't have any effect.
+ *
+ * @param {number} level - the name of the logging level
+ */
 Logger.prototype.setLevel = function(level) {
   this.level = level;
-}
+};
+
+/**
+ * @class Logger
+ * @method debug
+ * @desc Log messages at the debug level.
+ * @param {*} args - the arguments to be logged.
+ */
+/**
+ * @class Logger
+ * @method info
+ * @desc Log messages at the info level.
+ * @param {*} args - the arguments to be logged.
+ */
+/**
+ * @class Logger
+ * @method log
+ * @desc Log messages at an intermediary level called 'log'.
+ * @param {*} args - the arguments to be logged.
+ */
+/**
+ * @class Logger
+ * @method warn
+ * @desc Log messages at the warn level.
+ * @param {*} args - the arguments to be logged.
+ */
+/**
+ * @class Logger
+ * @method error
+ * @desc Log messages at the error level.
+ * @param {*} args - the arguments to be logged.
+ */
+/**
+ * @class Logger
+ * @method fatal
+ * @desc Log messages at the fatal level.
+ * @param {*} args - the arguments to be logged.
+ */
 
 var logger = new Logger('copay');
 logger.setLevel(config.logLevel);
