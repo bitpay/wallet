@@ -924,8 +924,8 @@ button, .button, p {
 
 .addresses .list-addr i {
   position: absolute;
-  top: -25px;
-  left: 6px;
+  top: -15px;
+  left: 0;
   cursor: pointer;
 }
 
@@ -1193,6 +1193,11 @@ a.text-warning:hover {color: #FD7262;}
   background-color: #2C3E50;
   margin: 5% 0;
   padding: 50px;
+}
+
+.collapse {
+  margin: auto;
+  max-width: 100%;
 }
 
 

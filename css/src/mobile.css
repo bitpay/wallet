@@ -131,6 +131,10 @@
     height: 200px;
   }
 
+  .addresses .panel {
+    padding: 1rem 0.8rem;
+  }
+
   .btn-copy {
     display: none;
   }
