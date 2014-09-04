@@ -5,8 +5,6 @@ angular.module('copayApp.controllers').controller('AddressesController',
     $scope.loading = false;
     var w = $rootScope.wallet;
 
-    controllerUtils.updateAddressList();
-
     $scope.newAddr = function() {
       $scope.loading = true;
       w.generateAddress(null, function() {
