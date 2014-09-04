@@ -27,9 +27,11 @@ describe('Network / Async', function() {
       privkey: pk || '31701118abde096d166607115ed00ce74a2231f68f43144406c863f5ebf06c32',
       lastTimestamp: 1,
     };
+    n.secretNumber = 'mySecret';
     n.start(opts);
     return n;
   };
+
 
   it('should create an instance', function() {
     var n = createN();
@@ -129,7 +131,8 @@ describe('Network / Async', function() {
 
       var message = {
         type: 'hello',
-        copayerId: cid1
+        copayerId: cid1,
+        secretNumber : 'mySecret'
       };
       var enc = n1.encode(cid2, message);
       n2._onMessage(enc);
@@ -141,7 +144,8 @@ describe('Network / Async', function() {
 
       var message = {
         type: 'hello',
-        copayerId: cid3 // MITM
+        copayerId: cid3, // MITM
+        secretNumber : 'mySecret'
       };
 
       var enc = n.encode(cid2, message);
@@ -160,7 +164,8 @@ describe('Network / Async', function() {
 
       var message = {
         type: 'hello',
-        copayerId: cid1
+        copayerId: cid1,
+        secretNumber : 'mySecret'
       };
       var nonce = new Buffer('0000000000000001', 'hex');
       var enc = n1.encode(cid2, message, nonce);
@@ -176,7 +181,8 @@ describe('Network / Async', function() {
 
       var message = {
         type: 'hello',
-        copayerId: cid1
+        copayerId: cid1,
+        secretNumber : 'mySecret'
       };
       n2.networkNonces = {};
       n2.networkNonces[cid1] = new Buffer('5000000000000001', 'hex');
@@ -195,7 +201,8 @@ describe('Network / Async', function() {
 
       var message = {
         type: 'hello',
-        copayerId: cid1
+        copayerId: cid1,
+        secretNumber : 'mySecret'
       };
       n2.networkNonces = {};
       n2.networkNonces[cid1] = new Buffer('0000000000000002', 'hex');
@@ -203,6 +210,40 @@ describe('Network / Async', function() {
       var enc = n1.encode(cid2, message, nonce);
       n2._onMessage(enc);
       n2._deletePeer.calledOnce.should.equal(true);
+    });
+
+    it('should accept join with a correct secret number', function() {
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2._deletePeer = sinon.spy();
+
+      var message = {
+        type: 'hello',
+        copayerId: cid1,
+        secretNumber : 'mySecret'
+      };
+
+      var enc = n1.encode(cid2, message);  
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(false);
+
+    });
+
+    it('should reject join with a incorrect secret number', function() {
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2._deletePeer = sinon.spy();
+
+      var message = {
+        type: 'hello',
+        copayerId: cid1,
+        secretNumber : 'otherSecret'
+      };
+
+      var enc = n1.encode(cid2, message);  
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(true);
+
     });
 
   });
