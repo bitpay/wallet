@@ -168,7 +168,6 @@ Storage.prototype.getWalletIds = function(cb) {
   var uniq = {};
 
   this.storage.allKeys(function(keys) {
-
     for (var ii in keys) {
       var key = keys[ii];
       var split = key.split('::');
