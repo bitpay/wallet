@@ -802,7 +802,7 @@ describe('Wallet model', function() {
     });
   });
 
-  describe.only('removeTxWithSpentInputs', function () {
+  describe('removeTxWithSpentInputs', function () {
     it('should remove pending TxProposal with spent inputs', function(done) {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
