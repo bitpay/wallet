@@ -113,6 +113,21 @@ Wallet.builderOpts = {
 };
 
 /**
+ * @desc static list with persisted properties of a wallet.
+ * These are the properties that get stored/read from localstorage
+ */
+Wallet.PERSISTED_PROPERTIES = [
+  'opts',
+  'settings',
+  'publicKeyRing',
+  'txProposals',
+  'privateKey',
+  'addressBook',
+  'backupOffered',
+  'lastTimestamp',
+];
+
+/**
  * @desc Retrieve a random id for the wallet
  * @TODO: Discuss changing to a UUID
  * @return {string} 8 bytes, hexa encoded
@@ -175,6 +190,7 @@ Wallet.prototype._onIndexes = function(senderId, data) {
 Wallet.prototype.changeSettings = function(settings) {
   console.log(settings);
   this.settings = settings;
+  this.store();
 };
 
 /**
@@ -818,6 +834,8 @@ Wallet.prototype.toObj = function() {
     addressBook: this.addressBook,
     lastTimestamp: this.lastTimestamp,
   };
+  console.dir(walletObj);
+  console.trace();
 
   return walletObj;
 };
