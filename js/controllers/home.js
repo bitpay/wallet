@@ -4,10 +4,10 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   controllerUtils.redirIfLogged();
 
-  $scope.loading = true;
+  $scope.retreiving = true;
 
   walletFactory.getWallets(function(ret) {
-    $scope.loading = false;
+    $scope.retreiving = false;
     $scope.hasWallets = (ret && ret.length > 0) ? true : false;
   });
 });

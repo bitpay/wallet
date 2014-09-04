@@ -5,7 +5,6 @@ function LocalStorage() {
 };
 
 LocalStorage.prototype.init = function() {
-  console.log(' init LocalStorage'); //TODO
 };
 
 
