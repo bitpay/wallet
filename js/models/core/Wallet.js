@@ -834,8 +834,6 @@ Wallet.prototype.toObj = function() {
     addressBook: this.addressBook,
     lastTimestamp: this.lastTimestamp,
   };
-  console.dir(walletObj);
-  console.trace();
 
   return walletObj;
 };
