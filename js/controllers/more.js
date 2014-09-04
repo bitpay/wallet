@@ -56,6 +56,7 @@ angular.module('copayApp.controllers').controller('MoreController',
         alternativeName: $scope.selectedAlternative.name,
         alternativeIsoCode: $scope.selectedAlternative.isoCode,
       });
+      controllerUtils.updateBalance();
     };
 
 
