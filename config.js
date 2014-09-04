@@ -53,12 +53,14 @@ var defaultConfig = {
   verbose: 1,
 
   plugins: {
-//  LocalStorage: true,
-    GoogleDrive: true,
+    LocalStorage: true,
+     // GoogleDrive: true,
   },
 
   GoogleDrive: {
-    clientId: '232630733383-29u1khqf5i8qubhf0homhpb2m14b5lja.apps.googleusercontent.com',
+    // for localhost:
+    clientId: '232630733383-a35gcnovnkgka94394i88gq60vtjb4af.apps.googleusercontent.com',
+    // clientId: '232630733383-29u1khqf5i8qubhf0homhpb2m14b5lja.apps.googleusercontent.com',
     home: 'copay'
   },
 };

@@ -83,7 +83,6 @@ Storage.prototype.getGlobal = function(k, cb) {
   preconditions.checkArgument(cb);
 
   this.storage.getItem(k, function(item) {
-console.log('[Storage.js.96:item:]',item); //TODO
     cb(item == 'undefined' ? undefined : item);
   });
 };
@@ -121,9 +120,7 @@ Storage.prototype.get = function(walletId, k, cb) {
 
 
 Storage.prototype._readHelper = function(walletId, k, cb) {
-console.log('[Storage.js.134:walletId:]',walletId,k); //TODO
   var wk = this._key(walletId, k);
-
   this._read(wk, function(v){
     return cb(v,k);
   });
@@ -141,10 +138,7 @@ console.log('[Storage.js.142:keys:]',keys); //TODO
   for (var ii in keys) {
     this._readHelper(walletId, keys[ii], function(v, k) {
       ret[k] = v;
-console.log('[Storage.js.144:ret:]',k,i,l,v); //TODO
       if (++i == l) {
-
-console.log('[Storage.js.157] LKIST', ret); //TODO
        return cb(ret);
       }
     });
@@ -174,11 +168,9 @@ Storage.prototype.getWalletIds = function(cb) {
   var uniq = {};
 
   this.storage.allKeys(function(keys) {
-console.log('[Storage.js.170:keys:]',keys); //TODO
 
     for (var ii in keys) {
       var key = keys[ii];
-console.log('[Storage.js.174:key:]',key); //TODO
       var split = key.split('::');
       if (split.length == 2) {
         var walletId = split[0];
@@ -201,20 +193,17 @@ Storage.prototype.getWallets = function(cb) {
   var self = this;
 
   this.getWalletIds(function(ids) {
-console.log('[Storage.js.197:ids:]',ids); //TODO
     var l = ids.length, i=0;
     if (!l)
       return cb([]);
 
     for (var ii in ids) {
       var id = ids[ii];
-console.log('[Storage.js.206:id:]',id); //TODO
       self.getName(id, function(name) {
         wallets.push({
           id: id,
           name: name,
         });
-console.log('[Storage.js.208:wallets:]',wallets); //TODO
         if (++i == l) {
           return cb(wallets);
         }
