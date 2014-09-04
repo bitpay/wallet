@@ -42,6 +42,7 @@ var FakeWallet = function() {
   };
 
   this.privateKey = new FakePrivateKey();
+  this.settings = {};
 };
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
