@@ -139,8 +139,8 @@ describe("Unit: Controllers", function() {
       scope = $rootScope.$new();
       scope.rateService = rateService;
       $rootScope.wallet = new FakeWallet(walletConfig);
-      config.alternativeName = 'lol currency';
-      config.alternativeIsoCode = 'LOL';
+      $rootScope.wallet.settings.alternativeName = 'lol currency';
+      $rootScope.wallet.settings.alternativeIsoCode = 'LOL';
       var element = angular.element(
         '<form name="form">' +
         '<input type="text" id="newaddress" name="newaddress" ng-disabled="loading" placeholder="Address" ng-model="newaddress" valid-address required>' +
