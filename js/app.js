@@ -13,7 +13,7 @@ if (localConfig) {
       if (key === 'networkName' && config['forceNetwork']) {
         return;
       }
-      config[name] = value;
+      config[key] = value;
     });
   }
 }
