@@ -175,7 +175,7 @@ angular.module('copayApp.services')
       w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
         if (err) throw err;
 
-        var satToUnit = 1 / config.unitToSatoshi;
+        var satToUnit = 1 / w.settings.unitToSatoshi;
         var COIN = bitcore.util.COIN;
 
         $rootScope.totalBalance = balanceSat * satToUnit;
@@ -210,7 +210,7 @@ angular.module('copayApp.services')
       if (!w) return;
       opts = opts || $rootScope.txsOpts || {};
 
-      var satToUnit = 1 / config.unitToSatoshi;
+      var satToUnit = 1 / w.settings.unitToSatoshi;
       var myCopayerId = w.getMyCopayerId();
       var pendingForUs = 0;
       var inT = w.getTxProposals().sort(function(t1, t2) {

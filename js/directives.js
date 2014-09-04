@@ -47,13 +47,14 @@ angular.module('copayApp.directives')
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var bitcore = require('bitcore');
+      var w = $rootScope.wallet;
       var feeSat = Number(bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var availableBalanceNum = Number(($rootScope.availableBalance * config.unitToSatoshi).toFixed(0));
-            var vNum = Number((value * config.unitToSatoshi).toFixed(0));
+            var availableBalanceNum = Number(($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0));
+            var vNum = Number((value * w.settings.unitToSatoshi).toFixed(0));
 
             if (typeof vNum == "number" && vNum > 0) {
               vNum = vNum + feeSat;
