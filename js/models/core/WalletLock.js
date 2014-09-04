@@ -20,7 +20,6 @@ WalletLock._keyFor = function(walletId) {
 WalletLock.prototype._isLockedByOther = function(cb) {
   var self = this;
 
-  console.log('[WalletLock.js.22]'); //TODO
   this.storage.getGlobal(this.key, function(json) {
     var wl = json ? JSON.parse(json) : null;
     var t = wl ? (Date.now() - wl.expireTs) : false;

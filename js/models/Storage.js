@@ -3,6 +3,8 @@ var preconditions = require('preconditions').singleton();
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var bitcore = require('bitcore');
 var preconditions = require('preconditions').instance();
+var _ = require('underscore');
+
 var id = 0;
 
 function Storage(opts) {
@@ -19,14 +21,14 @@ function Storage(opts) {
     console.log('Error in storage:', e); //TODO
   };
 
-  preconditions.checkState(this.localStorage, 'No localstorage found');
-  preconditions.checkState(this.sessionStorage, 'No sessionStorage found');
+  preconditions.checkState(this.storage, 'No storage defined');
+  preconditions.checkState(this.sessionStorage, 'No sessionStorage defined');
 }
 
 var pps = {};
 Storage.prototype._getPassphrase = function() {
   if (!pps[this.__uniqueid])
-    throw new Error('No passprase set');
+    throw new Error('NOPASSPHRASE: No passphrase set');
 
   return pps[this.__uniqueid];
 }
@@ -147,23 +149,29 @@ console.log('[Storage.js.142:keys:]',keys); //TODO
 
 // set value for key
 Storage.prototype.set = function(walletId, k, v, cb) {
+  preconditions.checkArgument(walletId && k && !_.isUndefined(v) && cb);
+
   this._write(this._key(walletId, k), v, cb);
 };
 
 // remove value for key
 Storage.prototype.remove = function(walletId, k, cb) {
+  preconditions.checkArgument(walletId && k && cb);
   this.removeGlobal(this._key(walletId, k), cb);
 };
 
 Storage.prototype.setName = function(walletId, name, cb) {
+  preconditions.checkArgument(walletId && name && cb);
   this.setGlobal('nameFor::' + walletId, name, cb);
 };
 
 Storage.prototype.getName = function(walletId, cb) {
+  preconditions.checkArgument(walletId && cb);
   this.getGlobal('nameFor::' + walletId, cb);
 };
 
 Storage.prototype.getWalletIds = function(cb) {
+  preconditions.checkArgument(cb);
   var walletIds = [];
   var uniq = {};
 
@@ -188,6 +196,8 @@ Storage.prototype.getWalletIds = function(cb) {
 };
 
 Storage.prototype.getWallets = function(cb) {
+  preconditions.checkArgument(cb);
+
   var wallets = [];
   var self = this;
 
@@ -212,6 +222,8 @@ Storage.prototype.getWallets = function(cb) {
 };
 
 Storage.prototype.deleteWallet = function(walletId) {
+  preconditions.checkArgument(walletId);
+
   var toDelete = {};
   toDelete['nameFor::' + walletId] = 1;
 
