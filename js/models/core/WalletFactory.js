@@ -83,13 +83,13 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
 
   // this is only used if private key or public key ring is skipped
-  obj.opts.networkName    = this.networkName;
+  obj.opts.networkName = this.networkName;
 
   skipFields = skipFields || [];
-  skipFields.forEach(function(k){
+  skipFields.forEach(function(k) {
     if (obj[k]) {
       delete obj[k];
-    } else 
+    } else
       throw new Error('unknown field:' + k);
   });
 
@@ -146,13 +146,9 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
   var s = this.storage;
 
   obj.id = walletId;
-  obj.opts = s.get(walletId, 'opts');
-  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
-  obj.txProposals = s.get(walletId, 'txProposals');
-  obj.privateKey = s.get(walletId, 'privateKey');
-  obj.addressBook = s.get(walletId, 'addressBook');
-  obj.backupOffered = s.get(walletId, 'backupOffered');
-  obj.lastTimestamp = s.get(walletId, 'lastTimestamp');
+  _.each(Wallet.PERSISTED_PROPERTIES, function(value) {
+    obj[value] = s.get(walletId, value);
+  });
 
   var w = this.fromObj(obj, skipFields);
   return w;
@@ -185,7 +181,7 @@ WalletFactory.prototype.create = function(opts) {
     networkName: this.networkName,
   };
 
-  if (opts.privateKeyHex && opts.privateKeyHex.length>1) {
+  if (opts.privateKeyHex && opts.privateKeyHex.length > 1) {
     privOpts.extendedPrivateKeyString = opts.privateKeyHex;
   }
 
@@ -243,9 +239,9 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   //We only check for major version differences
   if (thisV0 < inV0) {
     throw new Error('Major difference in software versions' +
-                    '. Received:' + inVersion +
-                    '. Current version:' + this.version +
-                    '. Aborting.');
+      '. Received:' + inVersion +
+      '. Current version:' + this.version +
+      '. Aborting.');
   }
 };
 
@@ -269,7 +265,7 @@ WalletFactory.prototype._checkNetwork = function(inNetworkName) {
 WalletFactory.prototype.open = function(walletId, passphrase) {
   this.storage._setPassphrase(passphrase);
   var w = this.read(walletId);
-  if (w) 
+  if (w)
     w.store();
 
   this.storage.setLastOpened(walletId);
@@ -343,7 +339,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     networkName: this.networkName,
   };
 
-  if (privateHex && privateHex.length>1) {
+  if (privateHex && privateHex.length > 1) {
     privOpts.extendedPrivateKeyString = privateHex;
   }
 
@@ -354,7 +350,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     copayerId: privateKey.getId(),
     privkey: privateKey.getIdPriv(),
     key: privateKey.getIdKey(),
-    secretNumber : s.secretNumber,
+    secretNumber: s.secretNumber,
   };
   self.network.cleanUp();
 
@@ -364,12 +360,12 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     connectedOnce = true;
   });
 
-  self.network.on('serverError', function() { 
+  self.network.on('serverError', function() {
     return cb('joinError');
   });
 
   self.network.start(opts, function() {
-    self.network.greet(s.pubKey,opts.secretNumber);
+    self.network.greet(s.pubKey, opts.secretNumber);
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
         if (data.networkName !== self.networkName) {
