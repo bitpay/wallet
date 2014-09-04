@@ -26,22 +26,29 @@ describe('Storage model', function() {
     should.exist(s2);
   });
   it('should fail when encrypting without a password', function() {
+
     var s2 = new Storage({
       storage: localMock,
       sessionStorage: sessionMock,
     });
     (function() {
-      s2.set(fakeWallet, timeStamp, 1);
-    }).should.throw();
+      s2.set(fakeWallet, timeStamp, 1, function() {});
+    }).should.throw('NOPASSPHRASE');
   });
-  it('should be able to encrypt and decrypt', function() {
-    s._write(fakeWallet + timeStamp, 'value');
-    s._read(fakeWallet + timeStamp).should.equal('value');
-    localMock.removeItem(fakeWallet + timeStamp);
+  it('should be able to encrypt and decrypt', function(done) {
+    s._write(fakeWallet + timeStamp, 'value', function() {
+      s._read(fakeWallet + timeStamp, function(v) {
+        v.should.equal('value');
+        localMock.removeItem(fakeWallet + timeStamp);
+        done();
+      });
+    });
   });
-  it('should be able to set a value', function() {
-    s.set(fakeWallet, timeStamp, 1);
-    localMock.removeItem(fakeWallet + '::' + timeStamp);
+  it('should be able to set a value', function(done) {
+    s.set(fakeWallet, timeStamp, 1, function() {
+      localMock.removeItem(fakeWallet + '::' + timeStamp);
+      done();
+    });
   });
   var getSetData = [
     1, 1000, -15, -1000,
@@ -62,81 +69,101 @@ describe('Storage model', function() {
   ];
   getSetData.forEach(function(obj) {
     it('should be able to set a value and get it for ' + JSON.stringify(obj), function() {
-      s.set(fakeWallet, timeStamp, obj);
-      var obj2 = s.get(fakeWallet, timeStamp);
-      JSON.stringify(obj2).should.equal(JSON.stringify(obj));
-      localMock.removeItem(fakeWallet + '::' + timeStamp);
+      s.set(fakeWallet, timeStamp, obj, function() {
+        s.get(fakeWallet, timeStamp, function(obj2) {
+          JSON.stringify(obj2).should.equal(JSON.stringify(obj));
+          localMock.removeItem(fakeWallet + '::' + timeStamp);
+        });
+      });
     });
   });
 
   describe('#export', function() {
-    it('should export the encrypted wallet', function() {
+    it('should export the encrypted wallet', function(done) {
       var storage = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password',
       });
-      storage.set(fakeWallet, timeStamp, 'testval');
-      var obj = {
-        test: 'testval'
-      };
-      var encrypted = storage.export(obj);
-      encrypted.length.should.be.greaterThan(10);
-      localMock.removeItem(fakeWallet + '::' + timeStamp);
-      //encrypted.slice(0,6).should.equal("53616c");
+      storage.set(fakeWallet, timeStamp, 'testval', function() {
+        var obj = {
+          test: 'testval'
+        };
+        var encrypted = storage.export(obj);
+        encrypted.length.should.be.greaterThan(10);
+        localMock.removeItem(fakeWallet + '::' + timeStamp);
+        done();
+
+      });
     });
   });
 
-  describe('#remove', function() {
+  describe('#remove', function(done) {
     it('should remove an item', function() {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.set('1', "hola", 'juan');
-      s.get('1', 'hola').should.equal('juan');
-      s.remove('1', 'hola');
-
-      should.not.exist(s.get('1', 'hola'));
+      s.set('1', "hola", 'juan', function() {
+        s.get('1', 'hola', function(v) {
+          v.should.equal('juan');
+          s.remove('1', 'hola', function() {
+            should.not.exist(s.get('1', 'hola'));
+            done();
+          });
+        })
+      })
     });
   });
 
 
   describe('#getWalletIds', function() {
-    it('should get wallet ids', function() {
+    it('should get wallet ids', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.set('1', "hola", 'juan');
-      s.set('2', "hola", 'juan');
-      s.getWalletIds().should.deep.equal(['1', '2']);
+      s.set('1', "hola", 'juan', function() {
+        s.set('2', "hola", 'juan', function() {
+          s.getWalletIds(function(v) {
+            v.should.deep.equal(['1', '2']);
+            done();
+          });
+        });
+      });
     });
   });
 
   describe('#getName #setName', function() {
-    it('should get/set names', function() {
+    it('should get/set names', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.setName(1, 'hola');
-      s.getName(1).should.equal('hola');
+      s.setName(1, 'hola', function() {
+        s.getName(1, function(v) {
+          v.should.equal('hola');
+          done();
+        });
+      });
     });
   });
 
   describe('#getLastOpened #setLastOpened', function() {
-    it('should get/set names', function() {
+    it('should get/set last opened', function() {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.setLastOpened('hey');
-      s.getLastOpened().should.equal('hey');
+      s.setLastOpened('hey', function() {
+        s.getLastOpened(function(v) {
+          v.should.equal('hey');
+        });
+      });
     });
   });
 
@@ -243,7 +270,7 @@ describe('Storage model', function() {
         password: 'password'
       });
       s.getSessionId().length.should.equal(16);
-      (new Buffer(s.getSessionId(),'hex')).length.should.equal(8);
+      (new Buffer(s.getSessionId(), 'hex')).length.should.equal(8);
     });
   });
 });
