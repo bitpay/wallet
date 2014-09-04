@@ -233,7 +233,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   var opts = {
     copayerId: privateKey.getId(),
     privkey: privateKey.getIdPriv(),
-    key: privateKey.getIdKey()
+    key: privateKey.getIdKey(),
+    secretNumber : s.secretNumber,
   };
   self.network.cleanUp();
 
@@ -248,7 +249,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 
   self.network.start(opts, function() {
-    self.network.greet(s.pubKey);
+    self.network.greet(s.pubKey,opts.secretNumber);
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
         if (data.networkName !== self.networkName) {
