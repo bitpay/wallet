@@ -1534,6 +1534,52 @@ Wallet.prototype.getUnspent = function(cb) {
   });
 };
 
+Wallet.prototype.removeTxWithSpentInputs = function(cb) {
+  var self = this;
+
+  cb = cb || function () {};
+
+  var txps = [];
+  var maxRejectCount = this.maxRejectCount();
+  for (var ntxid in this.txProposals.txps) {
+    var txp = this.txProposals.txps[ntxid];
+    txp.ntxid = ntxid;
+    if (txp.isPending(maxRejectCount)) {
+      txps.push(txp);
+    }
+  }
+
+  var inputs = [];
+  txps.forEach(function (txp) {
+    txp.builder.utxos.forEach(function (utxo) {
+      inputs.push({ ntxid: txp.ntxid, txid: utxo.txid, vout: utxo.vout });
+    });
+  });
+  if (inputs.length === 0)
+    return;
+
+  this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
+    if (err) return cb(err);
+    
+    unspentList.forEach(function (unspent) {
+      inputs.forEach(function (input) {
+        input.unspent = input.unspent || (input.txid === unspent.txid && input.vout === unspent.vout);
+      });
+    });
+
+    inputs.forEach(function (input) {
+      if (!input.unspent) {
+        self.txProposals.deleteOne(input.ntxid);
+      }
+    });
+
+    self.emit('txProposalsUpdated');
+    self.store();
+
+    cb(null);
+  });
+
+};
 
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
