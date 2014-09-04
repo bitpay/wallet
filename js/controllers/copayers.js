@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
     }
 
     $scope.goToWallet = function() {
+      controllerUtils.updateGlobalAddresses();
       $location.path('/receive');
     };
 
