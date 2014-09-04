@@ -802,8 +802,8 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('removeTxWithSpentInputs', function () {
-    it('should remove TxProposal with spent inputs', function(done) {
+  describe.only('removeTxWithSpentInputs', function () {
+    it('should remove pending TxProposal with spent inputs', function(done) {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
       chai.expect(w.getTxProposals().length).to.equal(0);
@@ -825,7 +825,7 @@ describe('Wallet model', function() {
       });
     });
 
-    it('should remove TxProposal with at least 1 spent input', function(done) {
+    it('should remove pending TxProposal with at least 1 spent input', function(done) {
       var w = cachedCreateW2();
       var utxo = [createUTXO(w)[0], createUTXO(w)[0]];
       utxo[0].amount = 80000;
@@ -845,6 +845,30 @@ describe('Wallet model', function() {
         w.blockchain.fixUnspent([utxo[0]]);
         w.removeTxWithSpentInputs();
         chai.expect(w.getTxProposals().length).to.equal(0);
+
+        done();
+      });
+    });
+
+    it('should not remove complete TxProposal', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      chai.expect(w.getTxProposals().length).to.equal(0);
+      w.blockchain.fixUnspent(utxo);
+      w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+        w.sendTxProposal(ntxid);
+        chai.expect(w.getTxProposals().length).to.equal(1);
+        
+        // Inputs are still available, txp still valid
+        w.removeTxWithSpentInputs();
+        chai.expect(w.getTxProposals().length).to.equal(1);
+
+        // Simulate input spent. txp should be removed from txps list
+        w.blockchain.fixUnspent([]);
+        var txp = w.txProposals.get(ntxid);
+        sinon.stub(txp, 'isPending', function () { return false; })
+        w.removeTxWithSpentInputs();
+        chai.expect(w.getTxProposals().length).to.equal(1);
 
         done();
       });

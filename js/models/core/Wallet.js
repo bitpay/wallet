@@ -1529,7 +1529,16 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   var self = this;
 
   cb = cb || function () {};
-  var txps = this.getTxProposals();
+
+  var txps = [];
+  var maxRejectCount = this.maxRejectCount();
+  for (var ntxid in this.txProposals.txps) {
+    var txp = this.txProposals.txps[ntxid];
+    txp.ntxid = ntxid;
+    if (txp.isPending(maxRejectCount)) {
+      txps.push(txp);
+    }
+  }
 
   var inputs = [];
   txps.forEach(function (txp) {
