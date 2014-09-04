@@ -4,18 +4,34 @@ var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
-var preconditions = require('preconditions').instance();
-
+var _ = require('underscore');
 var log = require('../../log');
-
 var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
 
-/*
- * WalletFactory
+/**
+ * @desc
+ * WalletFactory - stores the state for a wallet in creation
+ *
+ * @param {Object} config - configuration for this wallet
+ *
+ * @TODO: Don't pass a class for these three components
+ *        -- send a factory or instance, the 'new' call considered harmful for refactoring
+ *        -- arguable, since all of them is called with an object as argument.
+ *        -- Still, could it be hard to refactor? (for example, what if we want to fail hard if a network call gets interrupted?)
+ * @param {Storage} config.Storage - the class to instantiate to store the wallet (StorageLocalEncrypted by default)
+ * @param {Object} config.storage - the configuration to be sent to the Storage constructor
+ * @param {Network} config.Network - the class to instantiate to make network requests to copayers (the Async module by default)
+ * @param {Object} config.network - the configuration to be sent to the Network constructor
+ * @param {Blockchain} config.Blockchain - the class to instantiate to get information about the blockchain (Insight by default)
+ * @param {Object} config.blockchain - the configuration to be sent to the Blockchain constructor
+ * @param {string} config.networkName - the name of the bitcoin network to use ('testnet' or 'livenet')
+ * @TODO: Investigate what parameters go inside this object
+ * @param {Object} config.wallet - default configuration for the wallet
+ * @TODO: put `version` inside of the config object
+ * @param {string} version - the version of copay for which this wallet was generated (for example, 0.4.7)
  */
-
 function WalletFactory(config, version) {
   var self = this;
   config = config || {};
@@ -31,8 +47,20 @@ function WalletFactory(config, version) {
   this.networkName = config.networkName;
   this.walletDefaults = config.wallet;
   this.version = version;
-}
+};
 
+/**
+ * @desc
+ * Returns true if the storage instance can retrieve the following keys using a given walletId
+ * <ul>
+ * <li><tt>publicKeyRing</tt></li>
+ * <li><tt>txProposals</tt></li>
+ * <li><tt>opts</tt></li>
+ * <li><tt>privateKey</tt></li>
+ * </ul>
+ * @param {string} walletId
+ * @return {boolean} true if all the keys are present in the storage instance
+ */
 WalletFactory.prototype._checkRead = function(walletId) {
   var s = this.storage;
   var ret =
@@ -43,6 +71,12 @@ WalletFactory.prototype._checkRead = function(walletId) {
   return !!ret;
 };
 
+/**
+ * @desc Deserialize an object to a Wallet
+ * @param {Object} obj
+ * @param {string[]} skipFields - fields to skip when importing
+ * @return {Wallet}
+ */
 WalletFactory.prototype.fromObj = function(obj, skipFields) {
 
   // not stored options
@@ -67,6 +101,13 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   return w;
 };
 
+/**
+ * @desc Imports a wallet from an encrypted base64 object
+ * @param {string} base64 - the base64 encoded object
+ * @param {string} password - password to decrypt it
+ * @param {string[]} skipFields - fields to ignore when importing
+ * @return {Wallet}
+ */
 WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields) {
   this.storage._setPassphrase(password);
   var walletObj = this.storage.import(base64);
@@ -75,14 +116,29 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields
   return w;
 };
 
+/**
+ * @TODO: import is a reserved keyword! DONT USE IT
+ * @TODO: this is essentialy the same method as {@link WalletFactory#fromEncryptedObj}!
+ * @desc Imports a wallet from an encrypted base64 object
+ * @param {string} base64 - the base64 encoded object
+ * @param {string} password - password to decrypt it
+ * @param {string[]} skipFields - fields to ignore when importing
+ * @return {Wallet}
+ */
 WalletFactory.prototype.import = function(base64, password, skipFields) {
   var self = this;
   var w = self.fromEncryptedObj(base64, password, skipFields);
 
   if (!w) throw new Error('Wrong password');
   return w;
-}
+};
 
+/**
+ * @desc Retrieve a wallet from storage
+ * @param {string} walletId - the wallet id
+ * @param {string[]} skipFields - parameters to ignore when importing
+ * @return {Wallet}
+ */
 WalletFactory.prototype.read = function(walletId, skipFields) {
   if (!this._checkRead(walletId))
     return false;
@@ -103,6 +159,25 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
   return w;
 };
 
+/**
+ * @desc This method instantiates a wallet
+ *
+ * @param {Object} opts
+ * @param {string} opts.id
+ * @param {PrivateKey=} opts.privateKey
+ * @param {string=} opts.privateKeyHex
+ * @param {number} opts.requiredCopayers
+ * @param {number} opts.totalCopayers
+ * @param {PublicKeyRing=} opts.publicKeyRing
+ * @param {string} opts.nickname
+ * @param {string} opts.passphrase
+ * @TODO: Figure out what is this parameter
+ * @param {?} opts.spendUnconfirmed this.walletDefaults.spendUnconfirmed ??
+ * @TODO: Figure out in what unit is this reconnect delay.
+ * @param {number} opts.reconnectDelay milliseconds?
+ * @param {number=} opts.version
+ * @return {Wallet}
+ */
 WalletFactory.prototype.create = function(opts) {
   opts = opts || {};
   log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
@@ -156,7 +231,11 @@ WalletFactory.prototype.create = function(opts) {
   return w;
 };
 
-
+/**
+ * @desc Checks if a version is compatible with the current version
+ * @param {string} inVersion - a version, with major, minor, and revision, period-separated (x.y.z)
+ * @throws {Error} if there's a major version difference
+ */
 WalletFactory.prototype._checkVersion = function(inVersion) {
   var thisV = this.version.split('.');
   var thisV0 = parseInt(thisV[0]);
@@ -172,14 +251,23 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   }
 };
 
-
+/**
+ * @desc Throw an error if the network name is different to {@link WalletFactory#networkName}
+ * @param {string} inNetworkName - the network name to check
+ * @throws {Error}
+ */
 WalletFactory.prototype._checkNetwork = function(inNetworkName) {
   if (this.networkName !== inNetworkName) {
     throw new Error('This Wallet is configured for ' + inNetworkName + ' while currently Copay is configured for: ' + this.networkName + '. Check your settings.');
   }
 };
 
-
+/**
+ * @desc Retrieve a wallet from the storage
+ * @param {string} walletId - the id of the wallet
+ * @param {string} passphrase - the passphrase to decode it
+ * @return {Wallet}
+ */
 WalletFactory.prototype.open = function(walletId, passphrase) {
   this.storage._setPassphrase(passphrase);
   var w = this.read(walletId);
@@ -190,6 +278,10 @@ WalletFactory.prototype.open = function(walletId, passphrase) {
   return w;
 };
 
+/**
+ * @desc Retrieve all wallets stored without encription in the storage instance
+ * @returns {Wallet[]}
+ */
 WalletFactory.prototype.getWallets = function() {
   var ret = this.storage.getWallets();
   ret.forEach(function(i) {
@@ -198,6 +290,14 @@ WalletFactory.prototype.getWallets = function() {
   return ret;
 };
 
+/**
+ * @desc Deletes this wallet. This involves removing it from the storage instance
+ * @TODO: delete is a reserved javascript keyword. NEVER USE IT.
+ * @param {string} walletId
+ * @TODO: Why is there a callback?
+ * @callback cb
+ * @return {?} the result of the callback
+ */
 WalletFactory.prototype.delete = function(walletId, cb) {
   var s = this.storage;
   s.deleteWallet(walletId);
@@ -205,6 +305,9 @@ WalletFactory.prototype.delete = function(walletId, cb) {
   return cb();
 };
 
+/**
+ * @desc Pass through to {@link Wallet#secret}
+ */
 WalletFactory.prototype.decodeSecret = function(secret) {
   try {
     return Wallet.decodeSecret(secret);
@@ -213,7 +316,26 @@ WalletFactory.prototype.decodeSecret = function(secret) {
   }
 };
 
+/**
+ * @callback walletCreationCallback
+ * @param {?=} err - an error, if any, that happened during the wallet creation
+ * @param {Wallet=} wallet - the wallet created
+ */
 
+/**
+ * @desc Start the network functionality.
+ *
+ * Start up the Network instance and try to join a wallet defined by the
+ * parameter <tt>secret</tt> using the parameter <tt>nickname</tt>. Encode
+ * information locally using <tt>passphrase</tt>. <tt>privateHex</tt> is the
+ * private extended master key. <tt>cb</tt> has two params: error and wallet.
+ *
+ * @param {string} secret - the wallet secret
+ * @param {string} nickname - a nickname for the current user
+ * @param {string} passphrase - a passphrase to use to encrypt the wallet for persistance
+ * @param {string} privateHex - the private extended master key
+ * @param {walletCreationCallback} cb - a callback
+ */
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
   var self = this;
   var s = self.decodeSecret(secret);
