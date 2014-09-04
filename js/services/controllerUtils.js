@@ -195,9 +195,9 @@ angular.module('copayApp.services')
         $rootScope.updatingBalance = false;
 
         rateService.whenAvailable(function() {
-          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, config.alternativeIsoCode);
-          $rootScope.alternativeIsoCode = config.alternativeIsoCode;
-          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, config.alternativeIsoCode);
+          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
+          $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
+          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
 
 
           return cb ? cb() : null;
