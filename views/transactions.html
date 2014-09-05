@@ -7,7 +7,7 @@
       <div class="last-transactions" ng-repeat="tx in txs | paged">
         <div ng-include="'views/includes/transaction.html'"></div>
       </div>
-      <p translate ng-show="txs.length == 0">No transactions proposals yet.</p>
+      <p ng-show="txs.length == 0"><span translate>No transactions proposals yet.</span></p>
       <pagination ng-show="txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
 

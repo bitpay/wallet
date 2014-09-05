@@ -85,6 +85,14 @@ msgstr "Copia de Seguridad"
 msgid "Backup wallet"
 msgstr "Hacer copia de seguridad"
 
+#: views/includes/sidebar-mobile.html views/includes/sidebar.html
+msgid "Balance"
+msgstr "Balance"
+
+#: views/includes/sidebar-mobile.html views/includes/sidebar.html
+msgid "Balance locked in pending transaction proposals"
+msgstr "Balance bloqueado en las propuestas de transacción pendientes"
+
 #: views/settings.html
 msgid "Bitcoin Network"
 msgstr "Red Bitcoin"
@@ -202,6 +210,10 @@ msgstr "Obtener código QR"
 msgid "Hide"
 msgstr "Ocultar"
 
+#: views/dummy-translations.html
+msgid "History"
+msgstr "Historial"
+
 #: views/more.html
 msgid ""
 "If all funds have been removed from your wallet and you do not wish to have "
@@ -272,6 +284,10 @@ msgstr "Últimas transacciones"
 msgid "Leave a private message to your copayers"
 msgstr "Dejar mensaje privado a tus compañeros"
 
+#: views/includes/sidebar-mobile.html views/includes/sidebar.html
+msgid "Locked"
+msgstr "Bloqueado"
+
 #: views/more.html
 msgid "Master Private Key"
 msgstr "Master Private Key"
@@ -303,9 +319,8 @@ msgid "Next"
 msgstr "Siguiente"
 
 #: views/transactions.html
-#, fuzzy
 msgid "No transactions proposals yet."
-msgstr "Aún no hay transacciones."
+msgstr "Sin propuestas de transacciones aún."
 
 #: views/transactions.html
 msgid "No transactions yet."
@@ -316,7 +331,6 @@ msgid "Not valid"
 msgstr "No válido"
 
 #: views/send.html
-#, fuzzy
 msgid "Notes"
 msgstr "Notas"
 
@@ -410,6 +424,10 @@ msgstr "Purgar Propuestas de Transacciones Pendientes"
 #: views/includes/copayer.html
 msgid "Ready"
 msgstr "Listo"
+
+#: views/dummy-translations.html
+msgid "Receive"
+msgstr "Recibir"
 
 #: views/includes/transaction.html
 msgid "Reject"
