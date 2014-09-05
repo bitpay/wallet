@@ -1558,6 +1558,8 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   if (inputs.length === 0)
     return;
 
+
+  var proposalsChanged = false;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
     if (err) return cb(err);
     
@@ -1569,12 +1571,15 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
     inputs.forEach(function (input) {
       if (!input.unspent) {
+        proposalsChanged = true;
         self.txProposals.deleteOne(input.ntxid);
       }
     });
 
-    self.emit('txProposalsUpdated');
-    self.store();
+    if (proposalsChanged) {
+      self.emit('txProposalsUpdated');
+      self.store();
+    }
 
     cb(null);
   });
