@@ -368,6 +368,7 @@ a:hover {
 .pr {position: relative;}
 .pa {position: absolute;}
 .m0 {margin: 0;}
+.p0 {padding: 0 !important;}
 .db {display: block;}  
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
@@ -923,8 +924,8 @@ button, .button, p {
 
 .addresses .list-addr i {
   position: absolute;
-  top: -25px;
-  left: 6px;
+  top: -15px;
+  left: 0;
   cursor: pointer;
 }
 
@@ -1192,6 +1193,11 @@ a.text-warning:hover {color: #FD7262;}
   background-color: #2C3E50;
   margin: 5% 0;
   padding: 50px;
+}
+
+.collapse {
+  margin: auto;
+  max-width: 100%;
 }
 
 
