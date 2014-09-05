@@ -34,12 +34,6 @@ describe("Unit: Controllers", function() {
     alternativeIsoCode: 'LOL'
   };
 
-  it('Copay config should be binded', function() {
-    should.exist(config);
-    should.exist(config.unitToSatoshi);
-  });
-
-
   describe('More Controller', function() {
     var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
@@ -224,35 +218,35 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(spy2, 0);
       sinon.assert.callCount(scope.loadTxs, 1);
       spy.getCall(0).args[0].should.equal('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
-      spy.getCall(0).args[1].should.equal(1000 * config.unitToSatoshi);
+      spy.getCall(0).args[1].should.equal(1000 * scope.wallet.settings.unitToSatoshi);
       (typeof spy.getCall(0).args[2]).should.equal('undefined');
     });
 
 
     it('should handle big values in 100 BTC', function() {
-      var old = config.unitToSatoshi;
-      config.unitToSatoshi = 100000000;;
+      var old = scope.wallet.settings.unitToSatoshi;
+      scope.wallet.settings.unitToSatoshi = 100000000;;
       sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(100);
       var spy = sinon.spy(scope.wallet, 'createTx');
       scope.loadTxs = sinon.spy();
       scope.submitForm(sendForm);
-      spy.getCall(0).args[1].should.equal(100 * config.unitToSatoshi);
-      config.unitToSatoshi = old;
+      spy.getCall(0).args[1].should.equal(100 * scope.wallet.settings.unitToSatoshi);
+      scope.wallet.settings.unitToSatoshi = old;
     });
 
 
-    it('should handle big values in 5000 BTC', function() {
-      var old = config.unitToSatoshi;
-      config.unitToSatoshi = 100000000;;
+    it('should handle big values in 5000 BTC', inject(function($rootScope) {
+      var old = $rootScope.wallet.settings.unitToSatoshi;
+      $rootScope.wallet.settings.unitToSatoshi = 100000000;;
       sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(5000);
       var spy = sinon.spy(scope.wallet, 'createTx');
       scope.loadTxs = sinon.spy();
       scope.submitForm(sendForm);
-      spy.getCall(0).args[1].should.equal(5000 * config.unitToSatoshi);
-      config.unitToSatoshi = old;
-    });
+      spy.getCall(0).args[1].should.equal(5000 * $rootScope.wallet.settings.unitToSatoshi);
+      $rootScope.wallet.settings.unitToSatoshi = old;
+    }));
 
     it('should convert bits amount to fiat', function(done) {
       scope.rateService.whenAvailable(function() {
