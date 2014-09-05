@@ -9,6 +9,22 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   $scope.insightPort = config.blockchain.port;
   $scope.insightSecure = config.blockchain.schema === 'https';
   $scope.forceNetwork = config.forceNetwork;
+  $scope.defaultLanguage = config.defaultLanguage || 'en';
+
+  $scope.availableLanguages = [{
+    name: 'English',
+    isoCode: 'en',
+  }, {
+    name: 'Spanish',
+    isoCode: 'es',
+  }];
+
+  for (var ii in $scope.availableLanguages) {
+    if ($scope.defaultLanguage === $scope.availableLanguages[ii].isoCode) {
+      $scope.selectedLanguage = $scope.availableLanguages[ii];
+      break;
+    }
+  }
 
   $scope.unitOpts = [{
     name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -90,7 +106,8 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       alternativeName: $scope.selectedAlternative.name,
       alternativeIsoCode: $scope.selectedAlternative.isoCode,
 
-      version: copay.version
+      version: copay.version,
+      defaultLanguage: $scope.selectedLanguage.isoCode
     }));
 
     // Go home reloading the application
