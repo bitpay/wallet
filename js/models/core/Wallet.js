@@ -4,7 +4,8 @@ var EventEmitter = require('events').EventEmitter;
 var _ = require('underscore');
 var async = require('async');
 var preconditions = require('preconditions').singleton();
-var util = require('util');
+var inherits = require('inherits');
+var events = require('events');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -26,6 +27,33 @@ var PrivateKey = require('./PrivateKey');
 var WalletLock = require('./WalletLock');
 var copayConfig = require('../../../config');
 
+/**
+ * @desc
+ * Wallet manages a private key for Copay, network, storage of the wallet for
+ * persistance, and blockchain information.
+ *
+ * @TODO: Split this leviathan.
+ *
+ * @param {Object} opts
+ * @param {Storage} opts.storage - an object that can persist the wallet
+ * @param {Network} opts.network - used to send and retrieve messages from
+ *                                 copayers
+ * @param {Blockchain} opts.blockchain - source of truth for what happens in
+ *                                       the blockchain (utxos, balances)
+ * @param {number} opts.requiredCopayers - number of required copayers to
+ *                                         release funds
+ * @param {number} opts.totalCopayers - number of copayers in the wallet
+ * @param {boolean} opts.spendUnconfirmed - whether it's safe to spend
+ *                                          unconfirmed outputs or not
+ * @param {PublicKeyRing} opts.publicKeyRing - an instance of {@link PublicKeyRing}
+ * @param {TxProposals} opts.txProposals - an instance of {@link TxProposals}
+ * @param {PrivateKey} opts.privateKey - an instance of {@link PrivateKey}
+ * @param {string} opts.version - the version of copay where this wallet was
+ *                                created
+ * @TODO: figure out if reconnectDelay is set in milliseconds
+ * @param {number} opts.reconnectDelay - amount of seconds to wait before
+ *                                       attempting to reconnect
+ */
 function Wallet(opts) {
   var self = this;
 
@@ -66,8 +94,17 @@ function Wallet(opts) {
   this.network.setHexNonces(opts.networkNonces);
 }
 
-util.inherits(Wallet, EventEmitter);
+inherits(Wallet, events.EventEmitter);
 
+/**
+ * @TODO: Document this. Its usage is kind of weird
+ *
+ * @static
+ * @property lockTime
+ * @property signhash
+ * @property fee
+ * @property feeSat
+ */
 Wallet.builderOpts = {
   lockTime: null,
   signhash: bitcore.Transaction.SIGNHASH_ALL,
@@ -75,20 +112,45 @@ Wallet.builderOpts = {
   feeSat: null,
 };
 
+/**
+ * @desc Retrieve a random id for the wallet
+ * @TODO: Discuss changing to a UUID
+ * @return {string} 8 bytes, hexa encoded
+ */
 Wallet.getRandomId = function() {
   var r = bitcore.SecureRandom.getPseudoRandomBuffer(8).toString('hex');
   return r;
 };
 
+/**
+ * @desc Get a random 8 byte number and encode it as a hexa string
+ * @return {string}
+ */
 Wallet.getRandomNumber = function() {
   var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex');
   return r;
 };
 
+/**
+ * @desc Set the copayer id for the owner of this wallet
+ * @param {string} pubkey - the pubkey to set to the {@link Wallet#seededCopayerId} property
+ */
 Wallet.prototype.seedCopayer = function(pubKey) {
   this.seededCopayerId = pubKey;
 };
 
+/**
+ * @desc Handles an 'indexes' message.
+ *
+ * Processes the data using {@link HDParams#fromList} and merges it with the
+ * {@link Wallet#publicKeyRing}.
+ *
+ * Triggers a {@link Wallet#store} if the internal state has changed.
+ *
+ * @param {string} senderId - the sender id
+ * @param {Object} data - the data recived, {@see HDParams#fromList}
+ * @emits {publicKeyRingUpdated}
+ */
 Wallet.prototype._onIndexes = function(senderId, data) {
   log.debug('RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
@@ -99,6 +161,26 @@ Wallet.prototype._onIndexes = function(senderId, data) {
   }
 };
 
+/**
+ * @desc
+ * Handles a 'PUBLICKEYRING' message from <tt>senderId</tt>.
+ *
+ * <tt>data.publicKeyRing</tt> is expected to be processed correctly by
+ * {@link PublicKeyRing#fromObj}.
+ *
+ * After successful deserialization, {@link Wallet#publicKeyRing} is merged
+ * with the received data, a call to {@link Wallet#store} is performed if the
+ * internal state has changed.
+ *
+ * This locks new incoming connections in case the public key ring is completed
+ *
+ * @param {string} senderId - the sender id
+ * @param {Object} data - the data recived, {@see HDParams#fromList}
+ * @param {Object} data.publicKeyRing - data to be deserialized into a {@link PublicKeyRing}
+ *                                      using {@link PublicKeyRing#fromObj}
+ * @emits {publicKeyRingUpdated}
+ * @emits {connectionError}
+ */
 Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   log.debug('RECV PUBLICKEYRING:', data);
 
@@ -126,7 +208,14 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   }
 };
 
-
+/**
+ * @desc
+ * Demultiplexes calls to update TxProposal updates
+ *
+ * @param {string} senderId - the copayer that sent this event
+ * @param {Object} m - the data received
+ * @emits {txProposalEvent}
+ */
 Wallet.prototype._processProposalEvents = function(senderId, m) {
   var ev;
   if (m) {
@@ -153,7 +242,6 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
 };
 
 
-
 /* OTDO
    events.push({
 type: 'signed',
@@ -161,6 +249,14 @@ cId: k,
 txId: ntxid
 });
 */
+/**
+ * @desc
+ * Retrieves a keymap from from a transaction proposal set extracts a maps from
+ * public key to cosignerId for each signed input of the transaction proposal.
+ *
+ * @param {TxProposals} txp - the transaction proposals
+ * @return {Object}
+ */
 Wallet.prototype._getKeyMap = function(txp) {
   preconditions.checkArgument(txp);
   var inSig0, keyMapAll = {};
@@ -191,7 +287,18 @@ Wallet.prototype._getKeyMap = function(txp) {
   return keyMapAll;
 };
 
+/**
+ * @callback transactionCallback
+ * @param {false|Transaction} returnValue
+ */
 
+/**
+ * @desc
+ * Asyncchronously check with the blockchain if a given transaction was sent.
+ *
+ * @param {string} ntxid - the transaction
+ * @param {transactionCallback} cb
+ */
 Wallet.prototype._checkSentTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
@@ -204,7 +311,15 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
   });
 };
 
-
+/**
+ * @desc
+ * Handles a 'TXPROPOSAL' network message
+ *
+ * @param {string} senderId - the id of the sender
+ * @param {Object} data - the data received
+ * @param {Object} data.txProposal - first parameter for {@link TxProposals#merge}
+ * @emits txProposalsUpdated
+ */
 Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
   log.debug('RECV TXPROPOSAL: ', data);
@@ -241,7 +356,16 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   this._processProposalEvents(senderId, m);
 };
 
-
+/**
+ * @desc
+ * Handle a REJECT message received
+ *
+ * @param {string} senderId
+ * @param {Object} data
+ * @param {string} data.ntxid
+ * @emits txProposalsUpdated
+ * @emits txProposalEvent
+ */
 Wallet.prototype._onReject = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   log.debug('RECV REJECT:', data);
@@ -265,6 +389,16 @@ Wallet.prototype._onReject = function(senderId, data) {
   });
 };
 
+/**
+ * @desc
+ * Handle a SEEN message received
+ *
+ * @param {string} senderId
+ * @param {Object} data
+ * @param {string} data.ntxid
+ * @emits txProposalsUpdated
+ * @emits txProposalEvent
+ */
 Wallet.prototype._onSeen = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   log.debug('RECV SEEN:', data);
@@ -281,8 +415,18 @@ Wallet.prototype._onSeen = function(senderId, data) {
 
 };
 
-
-
+/**
+ * @desc
+ * Handle a ADDRESSBOOK message received
+ *
+ * {@see Wallet#verifyAddressbookEntry}
+ *
+ * @param {string} senderId
+ * @param {Object} data
+ * @param {Object} data.addressBook
+ * @emits addressBookUpdated
+ * @emits txProposalEvent
+ */
 Wallet.prototype._onAddressBook = function(senderId, data) {
   preconditions.checkState(data.addressBook);
   log.debug('RECV ADDRESSBOOK:', data);
@@ -303,7 +447,10 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   }
 };
 
-
+/**
+ * @desc Updates the wallet's last modified timestamp and triggers a save
+ * @param {number} ts - the timestamp
+ */
 Wallet.prototype.updateTimestamp = function(ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
@@ -311,12 +458,24 @@ Wallet.prototype.updateTimestamp = function(ts) {
   this.store();
 };
 
-
+/**
+ * @desc Called when there are no messages in the server
+ * Triggers a call to {@link Wallet#sendWalletReady}
+ */
 Wallet.prototype._onNoMessages = function() {
   log.debug('No messages at the server. Requesting sync'); //TODO
   this.sendWalletReady();
 };
 
+/**
+ * @desc Demultiplexes a new message received through the wire
+ *
+ * @param {string} senderId - the sender id
+ * @param {Object} data - the received object
+ * @param {number} ts - the timestamp when this object was received
+ *
+ * @emits corrupt
+ */
 Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
@@ -363,7 +522,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     case 'addressbook':
       this._onAddressBook(senderId, data);
       break;
-      // unused messages  
+      // unused messages
     case 'disconnect':
       //case 'an other unused message':
       break;
@@ -375,6 +534,11 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   this.updateTimestamp(ts);
 };
 
+/**
+ * @desc Handles a connect message
+ * @param {string} newCopayerId - the new copayer in the wallet
+ * @emits connect
+ */
 Wallet.prototype._onConnect = function(newCopayerId) {
   if (newCopayerId) {
     log.debug('#### Setting new COPAYER:', newCopayerId);
@@ -384,10 +548,20 @@ Wallet.prototype._onConnect = function(newCopayerId) {
   this.emit('connect', peerID);
 };
 
+/**
+ * @desc Returns the network name for this wallet ('testnet' or 'livenet')
+ * @return {string}
+ */
 Wallet.prototype.getNetworkName = function() {
   return this.publicKeyRing.network.name;
 };
 
+/**
+ * @desc Serialize options into an object
+ * @return {Object} with keys <tt>id</tt>, <tt>spendUnconfirmed</tt>,
+ * <tt>requiredCopayers</tt>, <tt>totalCopayers</tt>, <tt>name</tt>,
+ * <tt>version</tt>
+ */
 Wallet.prototype._optsToObj = function() {
   var obj = {
     id: this.id,
@@ -401,35 +575,57 @@ Wallet.prototype._optsToObj = function() {
   return obj;
 };
 
-
+/**
+ * @desc Retrieve the copayerId pubkey for a given index
+ * @param {number=} index - the index of the copayer, ours by default
+ * @return {string} hex-encoded pubkey
+ */
 Wallet.prototype.getCopayerId = function(index) {
   return this.publicKeyRing.getCopayerId(index || 0);
 };
 
-
+/**
+ * @desc Get my own pubkey
+ * @return {string} hex-encoded pubkey
+ */
 Wallet.prototype.getMyCopayerId = function() {
   return this.getCopayerId(0); //copayer id is hex of a public key
 };
 
+/**
+ * @desc Retrieve my private key
+ * @return {string} hex-encoded private key
+ */
 Wallet.prototype.getMyCopayerIdPriv = function() {
   return this.privateKey.getIdPriv(); //copayer idpriv is hex of a private key
 };
 
-
+/**
+ * @desc Returns the secret value for other users to join this wallet
+ * @return {string} my own pubkey, base58 encoded
+ */
 Wallet.prototype.getSecretNumber = function() {
   if (this.secretNumber) return this.secretNumber;
   this.secretNumber = Wallet.getRandomNumber(); 
   return this.secretNumber; 
 };
 
+/**
+ * @desc Returns the secret number used to prevent MitM attacks from Insight
+ * @return {string}
+ */
 Wallet.prototype.getSecret = function() {
   var buf = new Buffer(this.getMyCopayerId() + this.getSecretNumber(), 'hex');
   var str = Base58Check.encode(buf);
   return str;
 };
 
-
-
+/**
+ * @desc Returns an object with a <tt>pubKey</tt> value, an hex representation
+ * of a public key
+ * @param {string} secretB - the secret to be base58-decoded
+ * @return {Object}
+ */
 Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
   var pubKeyBuf = secret.slice(0, 33);
@@ -440,12 +636,28 @@ Wallet.decodeSecret = function(secretB) {
   }
 };
 
-
+/**
+ * @desc Locks other sessions from connecting to the wallet
+ * @see Async#lockIncommingConnections
+ */
 Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
 
-Wallet.prototype.netStart = function(callback) {
+/**
+ * @desc Sets up the networking with other peers.
+ *
+ * @emits connect
+ * @emits data
+ *
+ * @emits ready
+ * @emits publicKeyRingUpdated
+ * @emits txProposalsUpdated
+ *
+ * @TODO: FIX PROTOCOL -- emit with a space is shitty
+ * @emits no messages
+ */
+Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
 
@@ -479,6 +691,10 @@ Wallet.prototype.netStart = function(callback) {
   });
 };
 
+/**
+ * @desc Retrieves the public keys of all the copayers in the ring
+ * @return {string[]} hex-encoded public keys of copayers
+ */
 Wallet.prototype.getRegisteredCopayerIds = function() {
   var l = this.publicKeyRing.registeredCopayers();
   var copayers = [];
@@ -489,6 +705,12 @@ Wallet.prototype.getRegisteredCopayerIds = function() {
   return copayers;
 };
 
+/**
+ * @desc Retrieves the public keys of all the peers in the network
+ * @TODO: Isn't this deprecated? Now that we don't use peerjs
+ *
+ * @return {string[]} hex-encoded public keys of copayers
+ */
 Wallet.prototype.getRegisteredPeerIds = function() {
   var l = this.publicKeyRing.registeredCopayers();
   if (this.registeredPeerIds.length !== l) {
@@ -508,6 +730,12 @@ Wallet.prototype.getRegisteredPeerIds = function() {
   return this.registeredPeerIds;
 };
 
+/**
+ * @TODO: Review design of this call
+ * @desc Send a keepalive to this wallet's {@link WalletLock} instance.
+ *
+ * @emits locked - in case the wallet is opened in another instance
+ */
 Wallet.prototype.keepAlive = function() {
   try {
     this.lock.keepAlive();
@@ -517,6 +745,9 @@ Wallet.prototype.keepAlive = function() {
   }
 };
 
+/**
+ * @desc Store the wallet's state
+ */
 Wallet.prototype.store = function() {
   this.keepAlive();
 
@@ -525,6 +756,10 @@ Wallet.prototype.store = function() {
   log.debug('Wallet stored');
 };
 
+/**
+ * @desc Serialize the wallet into a plain object.
+ * @return {Object}
+ */
 Wallet.prototype.toObj = function() {
   var optsObj = this._optsToObj();
 
@@ -545,8 +780,24 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
-// fromObj => from a trusted source
+/**
+ * @desc Retrieve the wallet state from a trusted object
+ *
+ * @param {Object} o
+ * @param {Object[]} o.addressBook - Stores known associations of bitcoin addresses to names
+ * @param {Object} o.privateKey - Private key to be deserialized by {@link PrivateKey#fromObj}
+ * @param {string} o.networkName - 'livenet' or 'testnet'
+ * @param {Object} o.publicKeyRing - PublicKeyRing to be deserialized by {@link PublicKeyRing#fromObj}
+ * @param {number} o.lastTimestamp - last time this wallet object was deserialized
+ * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
+ * @param {string} o.nickname - user's nickname
+ * @param {Storage} storage - a Storage instance to store the data of the wallet
+ * @param {Network} network - a Network instance to communicate with peers
+ * @param {Blockchain} blockchain - a Blockchain instance to retrieve state from the blockchain
+ */
 Wallet.fromObj = function(o, storage, network, blockchain) {
+
+  // TODO: What is this supposed to do?
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
@@ -590,15 +841,28 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   return new Wallet(opts);
 };
 
+/**
+ * @desc Return a base64 encrypted version of the wallet
+ * @return {string} base64 encoded string
+ */
 Wallet.prototype.toEncryptedObj = function() {
   var walletObj = this.toObj();
   return this.storage.export(walletObj);
 };
 
+/**
+ * @desc Send a message to other peers
+ * @param {string[]} recipients - the pubkey of the recipients of the message
+ * @param {Object} obj - the data to be sent to them
+ */
 Wallet.prototype.send = function(recipients, obj) {
   this.network.send(recipients, obj);
 };
 
+/**
+ * @desc Send the set of TxProposals to some peers
+ * @param {string[]} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendAllTxProposals = function(recipients) {
   var ntxids = this.txProposals.getNtxids(),
         that = this;
@@ -607,6 +871,11 @@ Wallet.prototype.sendAllTxProposals = function(recipients) {
   });
 };
 
+/**
+ * @desc Send a TxProposal identified by transaction id to a set of recipients
+ * @param {string} ntxid - the transaction proposal id
+ * @param {string[]=} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
 
@@ -618,6 +887,10 @@ Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   });
 };
 
+/**
+ * @desc Notifies other peers that a transaction proposal was seen
+ * @param {string} ntxid
+ */
 Wallet.prototype.sendSeen = function(ntxid) {
   preconditions.checkArgument(ntxid);
   log.debug('### SENDING seen:  ' + ntxid + ' TO: All');
@@ -628,6 +901,10 @@ Wallet.prototype.sendSeen = function(ntxid) {
   });
 };
 
+/**
+ * @desc Notifies other peers that a transaction proposal was rejected
+ * @param {string} ntxid
+ */
 Wallet.prototype.sendReject = function(ntxid) {
   preconditions.checkArgument(ntxid);
   log.debug('### SENDING reject:  ' + ntxid + ' TO: All');
@@ -638,7 +915,10 @@ Wallet.prototype.sendReject = function(ntxid) {
   });
 };
 
-
+/**
+ * @desc Notify other peers that a wallet has been backed up and it's ready to be used
+ * @param {string[]=} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendWalletReady = function(recipients) {
   log.debug('### SENDING WalletReady TO:', recipients || 'All');
 
@@ -648,6 +928,11 @@ Wallet.prototype.sendWalletReady = function(recipients) {
   });
 };
 
+/**
+ * @desc Notify other peers of the walletId
+ * @TODO: Why is this needed? Can't everybody just calculate the walletId?
+ * @param {string[]=} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendWalletId = function(recipients) {
   log.debug('### SENDING walletId TO:', recipients || 'All', this.id);
 
@@ -659,7 +944,10 @@ Wallet.prototype.sendWalletId = function(recipients) {
   });
 };
 
-
+/**
+ * @desc Send the current PublicKeyRing to other recipients
+ * @param {string[]=} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
   log.debug('### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
   var publicKeyRing = this.publicKeyRing.toObj();
@@ -670,6 +958,11 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
     walletId: this.id,
   });
 };
+
+/**
+ * @desc Send the current indexes of our public key ring to other peers
+ * @param {string[]=} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendIndexes = function(recipients) {
   var indexes = HDParams.serialize(this.publicKeyRing.indexes);
   log.debug('### INDEXES TO:', recipients || 'All', indexes);
@@ -681,6 +974,10 @@ Wallet.prototype.sendIndexes = function(recipients) {
   });
 };
 
+/**
+ * @desc Send our addressBook to other recipients
+ * @param {string[]=} recipients - the pubkeys of the recipients
+ */
 Wallet.prototype.sendAddressBook = function(recipients) {
   log.debug('### SENDING addressBook TO:', recipients || 'All', this.addressBook);
   this.send(recipients, {
@@ -690,15 +987,33 @@ Wallet.prototype.sendAddressBook = function(recipients) {
   });
 };
 
+/**
+ * @desc Retrieve this wallet's name
+ * @return {string}
+ */
 Wallet.prototype.getName = function() {
   return this.name || this.id;
 };
 
+/**
+ * @desc Generate a new address
+ * @param {boolean} isChange - whether to generate a change address or a receive address
+ * @return {string[]} a list of all the addresses generated so far for the wallet
+ */
 Wallet.prototype._doGenerateAddress = function(isChange) {
   return this.publicKeyRing.generateAddress(isChange, this.publicKey);
 };
 
-
+/**
+ * @callback addressCallback
+ * @param {string} addr - all the addresses of the wallet
+ */
+/**
+ * @desc Generate a new address
+ * @param {boolean} isChange - whether to generate a change address or a receive address
+ * @param {addressCallback} cb
+ * @return {string[]} a list of all the addresses generated so far for the wallet
+ */
 Wallet.prototype.generateAddress = function(isChange, cb) {
   var addr = this._doGenerateAddress(isChange);
   this.sendIndexes();
@@ -707,7 +1022,12 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
   return addr;
 };
 
-
+/**
+ * @desc Retrieve all the Transaction proposals (see {@link TxProposals})
+ * @return {Object[]} each object returned represents a transaction proposal, with two additional
+ * booleans: <tt>signedByUs</tt> and <tt>rejectedByUs</tt>. An optional third boolean signals
+ * whether the transaction was finally rejected (<tt>finallyRejected</tt> set to true).
+ */
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
   var copayers = this.getRegisteredCopayerIds();
@@ -726,6 +1046,11 @@ Wallet.prototype.getTxProposals = function() {
   return ret;
 };
 
+/**
+ * @desc Removes old transactions
+ * @param {boolean} deleteAll - if true, remove all the transactions
+ * @return {number} the number of deleted proposals
+ */
 Wallet.prototype.purgeTxProposals = function(deleteAll) {
   var m = this.txProposals.length();
 
@@ -740,6 +1065,11 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   return m - n;
 };
 
+/**
+ * @desc Reject a proposal
+ * @param {string} ntxid the id of the transaction proposal to reject
+ * @emits txProposalsUpdated
+ */
 Wallet.prototype.reject = function(ntxid) {
   var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
   this.sendReject(ntxid);
@@ -747,6 +1077,16 @@ Wallet.prototype.reject = function(ntxid) {
   this.emit('txProposalsUpdated');
 };
 
+/**
+ * @callback signCallback
+ * @param {boolean} ret - true if it was successfully signed
+ */
+/**
+ * @desc Sign a proposal
+ * @param {string} ntxid the id of the transaction proposal to sign
+ * @param {signCallback} cb - a callback to be called on successful signing
+ * @emits txProposalsUpdated
+ */
 Wallet.prototype.sign = function(ntxid, cb) {
   preconditions.checkState(!_.isUndefined(this.getMyCopayerId()));
   var self = this;
@@ -783,7 +1123,15 @@ Wallet.prototype.sign = function(ntxid, cb) {
   }, 10);
 };
 
-
+/**
+ * @callback broadcastCallback
+ * @param {string} txid - the transaction id on the blockchain
+ */
+/**
+ * @desc Broadcasts a transaction to the blockchain
+ * @param {string} ntxid - the transaction proposal id
+ * @param {broadcastCallback} cb
+ */
 Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
 
@@ -820,6 +1168,12 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   });
 };
 
+/**
+ * @desc Create a Payment Protocol transaction
+ * @param {Object|string} options - if it's a string, parse it as the uri
+ * @param {string} options.uri the url for the transaction
+ * @param {Function} cb
+ */
 Wallet.prototype.createPaymentTx = function(options, cb) {
   var self = this;
 
@@ -863,6 +1217,13 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
     });
 };
 
+/**
+ * @desc Creates a Payment TxProposal from a uri
+ * @param {Object} options
+ * @param {string=} options.uri
+ * @param {string=} options.url
+ * @param {Function} cb
+ */
 Wallet.prototype.fetchPaymentTx = function(options, cb) {
   var self = this;
 
@@ -890,6 +1251,19 @@ Wallet.prototype.fetchPaymentTx = function(options, cb) {
   });
 };
 
+/**
+ * @desc Analyzes a payment request and generates a transaction proposal for it.
+ * @param {Object} options
+ * @param {PayProRequest} pr
+ * @param {string} pr.payment_details_version
+ * @param {string} pr.pki_type
+ * @param {Object} pr.data
+ * @param {string} pr.serialized_payment_details
+ * @param {string} pr.signature
+ * @param {string} options.memo
+ * @param {string} options.comment
+ * @param {Function} cb
+ */
 Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var self = this;
 
@@ -1007,6 +1381,18 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   });
 };
 
+/**
+ * @desc Send a payment transaction to a server, complying with BIP70
+ *
+ * @TODO: Get this out of here.
+ *
+ * @param {string} ntxid - the transaction proposal id
+ * @param {Object} options
+ * @param {string} options.refund_to
+ * @param {string} options.memo
+ * @param {string} options.comment
+ * @param {Function} cb
+ */
 Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   var self = this;
 
@@ -1115,6 +1501,9 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     });
 };
 
+/**
+ * @desc Handles a PaymentRequestACK from the server
+ */
 Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
   var self = this;
 
@@ -1162,6 +1551,10 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
   return cb(txid, txp.merchant);
 };
 
+/**
+ * @desc Create a Payment Transaction Sync (see BIP70)
+ * @TODO: Document better
+ */
 Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
   var self = this;
   var priv = this.privateKey;
@@ -1281,10 +1674,14 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   return ntxid;
 };
 
-// This essentially ensures that a copayer hasn't tampered with a
-// PaymentRequest message from a payment server. It verifies the signature
-// based on the cert, and checks to ensure the desired outputs are the same as
-// the ones on the tx proposal.
+/**
+ * @desc Verifies a PaymentRequest sent by another peer
+ * This essentially ensures that a copayer hasn't tampered with a
+ * PaymentRequest message from a payment server. It verifies the signature
+ * based on the cert, and checks to ensure the desired outputs are the same as
+ * the ones on the tx proposal.
+ * @TODO: Document better
+ */
 Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   if (!ntxid) return false;
 
@@ -1429,6 +1826,10 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   return true;
 };
 
+/**
+ * @desc Mark that a user has seen a given TxProposal
+ * @return {boolean} true if the internal state has changed
+ */
 Wallet.prototype.addSeenToTxProposals = function() {
   var ret = false;
   var myId = this.getMyCopayerId();
@@ -1444,27 +1845,54 @@ Wallet.prototype.addSeenToTxProposals = function() {
   return ret;
 };
 
-// TODO: remove this method and use getAddressesInfo everywhere
+/**
+ * @desc Alias for {@link PublicKeyRing#getAddresses}
+ * @TODO: remove this method and use getAddressesInfo everywhere
+ * @return {Buffer[]}
+ */
 Wallet.prototype.getAddresses = function(opts) {
   return this.publicKeyRing.getAddresses(opts);
 };
 
+/**
+ * @desc Retrieves all addresses as strings.
+ *
+ * @param {Object} opts - Same options as {@link PublicKeyRing#getAddresses}
+ * @return {string[]}
+ */
 Wallet.prototype.getAddressesStr = function(opts) {
   return this.getAddresses(opts).map(function(a) {
     return a.toString();
   });
 };
 
+/**
+ * @desc Alias for {@link PublicKeyRing#getAddressesInfo}
+ */
 Wallet.prototype.getAddressesInfo = function(opts) {
   return this.publicKeyRing.getAddressesInfo(opts, this.publicKey);
 };
-
+/**
+ * @desc Returns true if a given address was generated by deriving our master public key
+ * @return {boolean}
+ */
 Wallet.prototype.addressIsOwn = function(addrStr, opts) {
   var addrList = this.getAddressesStr(opts);
   return _.any(addrList, function(value) { return value === addrStr; });
 };
 
-//retunrs values in SATOSHIs
+
+/**
+ * @callback {getBalanceCallback}
+ * @param {string=} err - an error, if any
+ * @param {number} balance - total number of satoshis for all addresses
+ * @param {Object} balanceByAddr - maps string addresses to satoshis
+ * @param {number} safeBalance - total number of satoshis in UTXOs that are not part of any TxProposal
+ */
+/**
+ * @desc Returns the balances for all addresses in Satoshis
+ * @param {getBalanceCallback} cb
+ */
 Wallet.prototype.getBalance = function(cb) {
   var balance = 0;
   var safeBalance = 0;
@@ -1502,16 +1930,30 @@ Wallet.prototype.getBalance = function(cb) {
 };
 
 
-// See 
+// See
 // https://github.com/bitpay/copay/issues/1056
 //
 // maxRejectCount should equal requiredCopayers
-// strictly. 
-//
-Wallet.prototype.maxRejectCount = function(cb) {
+// strictly.
+/**
+ * @desc Get the number of copayers that need to reject a transaction so it can't be signed
+ * @return {number}
+ */
+Wallet.prototype.maxRejectCount = function() {
   return this.totalCopayers - this.requiredCopayers;
 };
 
+/**
+ * @callback getUnspentCallback
+ * @TODO: Document this better
+ * @param {string} error
+ * @param {Object[]} safeUnspendList
+ * @param {Object[]} unspentList
+ */
+/**
+ * @desc Get a list of unspent transaction outputs
+ * @param {getUnspentCallback} cb
+ */
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
@@ -1581,6 +2023,10 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
 };
 
+/**
+ * @desc Create a transaction proposal
+ * @TODO: Document more
+ */
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
 
@@ -1624,6 +2070,10 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   });
 };
 
+/**
+ * @desc Create a transaction proposal
+ * @TODO: Document more
+ */
 Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos, opts) {
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;
@@ -1687,6 +2137,13 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   return ntxid;
 };
 
+/**
+ * @desc Updates all the indexes for the current publicKeyRing
+ *
+ * Triggers a wallet {@link Wallet#store} call
+ * @param {Function} callback - called when all indexes have been updated. Receives an error, if any, as first argument
+ * @emits publicKeyRingUpdated
+ */
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
   log.debug('Updating indexes...');
@@ -1704,8 +2161,13 @@ Wallet.prototype.updateIndexes = function(callback) {
     self.store();
     callback();
   });
-}
+};
 
+/**
+ * @desc Updates the lastly used index
+ * @param {Object} index - an index, as used by {@link PublicKeyRing}
+ * @param {Function} callback - called with no arguments when done updating
+ */
 Wallet.prototype.updateIndex = function(index, callback) {
   var self = this;
   var SCANN_WINDOW = 20;
@@ -1721,8 +2183,17 @@ Wallet.prototype.updateIndex = function(index, callback) {
       callback();
     });
   });
-}
+};
 
+/**
+ * @desc Derive addresses using the given parameters
+ *
+ * @param {number} index - the index to start with
+ * @param {number} amount - number of addresses to derive
+ * @param {boolean} isChange - derive change addresses or receive addresses
+ * @param {number} copayerIndex - the index of the copayer for whom to derive addresses
+ * @return {string[]} the result of calling {@link PublicKeyRing#getAddress}
+ */
 Wallet.prototype.deriveAddresses = function(index, amount, isChange, copayerIndex) {
   preconditions.checkArgument(amount);
   preconditions.shouldBeDefined(copayerIndex);
@@ -1732,11 +2203,26 @@ Wallet.prototype.deriveAddresses = function(index, amount, isChange, copayerInde
     ret[i] = this.publicKeyRing.getAddress(index + i, isChange, copayerIndex).toString();
   }
   return ret;
-}
+};
 
-// This function scans the publicKeyRing branch starting at index @start and reports the index with last activity,
-// using a scan window of @gap. The argument @change defines the branch to scan: internal or external.
-// Returns -1 if no activity is found in range.
+/**
+ * @callback {indexDiscoveryCallback}
+ * @param {?} err
+ * @param {number} lastActivityIndex
+ */
+/**
+ * @desc Scans the block chain for the last index with activity for a copayer
+ *
+ * This function scans the publicKeyRing branch starting at index @start and reports the index with last activity,
+ * using a scan window of @gap. The argument @change defines the branch to scan: internal or external.
+ * Returns -1 if no activity is found in range.
+ * @param {number} start - the number for which to start scanning
+ * @param {boolean} change - whether to search for in the change branch or the receive branch
+ * @param {number} copayerIndex - the index of the copayer
+ * @param {number} gap - the maximum number of addresses to scan after the last active address
+ * @param {indexDiscoveryCallback} cb - callback
+ * @return {number} -1 if there's no activity in the range provided
+ */
 Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb) {
   preconditions.shouldBeDefined(copayerIndex);
   preconditions.checkArgument(gap);
@@ -1771,9 +2257,11 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
       cb(null, lastActive);
     }
   );
-}
+};
 
-
+/**
+ * @desc Closes the wallet and disconnects all services
+ */
 Wallet.prototype.close = function() {
   log.debug('## CLOSING');
   this.lock.release();
@@ -1781,16 +2269,30 @@ Wallet.prototype.close = function() {
   this.blockchain.destroy();
 };
 
+/**
+ * @desc Returns the name of the network ('livenet' or 'testnet')
+ * @return {string}
+ */
 Wallet.prototype.getNetwork = function() {
   return this.network;
 };
 
+/**
+ * @desc Throws an error if an address already exists in the address book
+ * @private
+ */
 Wallet.prototype._checkAddressBook = function(key) {
   if (this.addressBook[key] && this.addressBook[key].copayerId != -1) {
     throw new Error('This address already exists in your Address Book: ' + address);
   }
 };
 
+/**
+ * @desc Add an entry to the address book
+ *
+ * @param {string} key - the address to be added
+ * @param {string} label - a name for the address
+ */
 Wallet.prototype.setAddressBook = function(key, label) {
   this._checkAddressBook(key);
   var copayerId = this.getMyCopayerId();
@@ -1813,6 +2315,14 @@ Wallet.prototype.setAddressBook = function(key, label) {
   this.store();
 };
 
+/**
+ * @desc Verifies that an addressbook entry is correctly signed by a copayer
+ *
+ * @param {Object} rcvEntry - the entry in the address book
+ * @param {string} senderId - the pubkey of a copayer
+ * @param {string} key - the base58 encoded address
+ * @return {boolean} true if the signature matches
+ */
 Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
   if (!key) throw new Error('Keys are required');
   var signature = rcvEntry.signature;
@@ -1823,29 +2333,53 @@ Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
     createdTs: rcvEntry.createdTs
   };
   return this.verifySignedJson(senderId, payload, signature);
-}
+};
 
+/**
+ * @desc Hides or unhides an address book entry
+ * @param {string} key - the address in the addressbook
+ */
 Wallet.prototype.toggleAddressBookEntry = function(key) {
   if (!key) throw new Error('Key is required');
   this.addressBook[key].hidden = !this.addressBook[key].hidden;
   this.store();
 };
 
+/**
+ * @desc Returns true if there are more than one cosigners
+ * @return {boolean}
+ */
 Wallet.prototype.isShared = function() {
   return this.totalCopayers > 1;
-}
+};
 
+/**
+ * @desc Returns true if the keyring is complete and all users have backed up the wallet
+ * @return {boolean}
+ */
 Wallet.prototype.isReady = function() {
   var ret = this.publicKeyRing.isComplete() && this.publicKeyRing.isFullyBackup();
   return ret;
 };
 
+/**
+ * @desc Mark that our backup is ready and send a sync to other users.
+ *
+ * Also backs up the wallet
+ */
 Wallet.prototype.setBackupReady = function() {
   this.publicKeyRing.setBackupReady();
   this.sendPublicKeyRing();
   this.store();
 };
 
+/**
+ * @desc Sign a JSON
+ *
+ * @TODO: THIS WON'T WORK ALLWAYS! JSON.stringify doesn't warants an order
+ * @param {Object} payload - the payload to verify
+ * @return {string} base64 encoded string
+ */
 Wallet.prototype.signJson = function(payload) {
   var key = new bitcore.Key();
   key.private = new Buffer(this.getMyCopayerIdPriv(), 'hex');
@@ -1854,6 +2388,16 @@ Wallet.prototype.signJson = function(payload) {
   return sign.toString('hex');
 }
 
+/**
+ * @desc Verify that a JSON object is correctly signed
+ *
+ * @TODO: THIS WON'T WORK ALLWAYS! JSON.stringify doesn't warants an order
+ *
+ * @param {string} senderId - a sender's public key, hex encoded
+ * @param {Object} payload - the object to verify
+ * @param {string} signature - a sender's public key, hex encoded
+ * @return {boolean}
+ */
 Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
   var pubkey = new Buffer(senderId, 'hex');
   var sign = new Buffer(signature, 'hex');
@@ -1870,6 +2414,10 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
 //   var $http = angular.bootstrap().get('$http');
 // }
 
+/**
+ * @desc Create a HTTP request
+ * @TODO: This shouldn't be a wallet responsibility
+ */
 Wallet.request = function(options, callback) {
   if (_.isString(options)) {
     options = {
