@@ -8,17 +8,23 @@ describe("Unit: Testing Directives", function() {
 
   beforeEach(module('copayApp.directives'));
 
-  beforeEach(function() {
-    config.unitToSatoshi = 100;
-    config.unitName = 'bits';
-  });
+  var walletConfig = {
+    requiredCopayers: 3,
+    totalCopayers: 5,
+    spendUnconfirmed: 1,
+    reconnectDelay: 100,
+    networkName: 'testnet',
+    alternativeName: 'lol currency',
+    alternativeIsoCode: 'LOL'
+  };
 
-  describe('Check config', function() {
-    it('unit should be set to BITS in config.js', function() {
-      expect(config.unitToSatoshi).to.equal(100);
-      expect(config.unitName).to.equal('bits');
-    });
-  });
+
+  beforeEach(inject(function($rootScope) {
+    $rootScope.wallet = new FakeWallet(walletConfig);
+    var w = $rootScope.wallet;
+    w.settings.unitToSatoshi = 100;
+    w.settings.unitName = 'bits';
+  }));
 
   describe('Validate Address', function() {
     beforeEach(inject(function($compile, $rootScope) {
@@ -94,9 +100,12 @@ describe("Unit: Testing Directives", function() {
 
     describe('Unit: BTC', function() {
       beforeEach(inject(function($compile, $rootScope) {
-        config.unitToSatoshi = 100000000;
-        config.unitName = 'BTC';
         $scope = $rootScope;
+        var w = new FakeWallet(walletConfig);
+        w.settings.unitToSatoshi = 100000000;
+        w.settings.unitName = 'BTC';
+        $rootScope.wallet = w;
+
         $rootScope.availableBalance = 0.04;
         var element = angular.element(
           '<form name="form">' +

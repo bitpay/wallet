@@ -1,10 +1,12 @@
 'use strict';
 
+var bitcore = require('bitcore');
+var Address = bitcore.Address;
+var bignum = bitcore.Bignum;
+var preconditions = require('preconditions').singleton();
+
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope', function($rootScope) {
-    var bitcore = require('bitcore');
-    var Address = bitcore.Address;
-    var bignum = bitcore.Bignum;
+  irective('validAddress', ['$rootScope', function($rootScope) {
 
     return {
       require: 'ngModel',
@@ -46,8 +48,10 @@ angular.module('copayApp.directives')
   }])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
-      var bitcore = require('bitcore');
       var w = $rootScope.wallet;
+      preconditions.checkState(w);
+      preconditions.checkState(w.settings.unitToSatoshi);
+
       var feeSat = Number(bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
       return {
         require: 'ngModel',
@@ -271,7 +275,7 @@ angular.module('copayApp.directives')
 
           client.on('datarequested', function(client) {
             client.setText(scope.clipCopy);
-          } );
+          });
 
           client.on('complete', function(client, args) {
             elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');
