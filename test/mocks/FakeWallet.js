@@ -6,11 +6,10 @@ if (is_browser) {
 }
 var Wallet = copay.Wallet;
 
-var FakePrivateKey = function () {
-};
+var FakePrivateKey = function() {};
 
 FakePrivateKey.prototype.toObj = function() {
-    return extendedPublicKeyString = 'privHex';
+  return extendedPublicKeyString = 'privHex';
 };
 
 var FakeWallet = function() {
@@ -37,12 +36,20 @@ var FakeWallet = function() {
     }
   };
   this.blockchain = {
-    getSubscriptions: function(){ return []; },
-    subscribe: function(){}
+    getSubscriptions: function() {
+      return [];
+    },
+    subscribe: function() {}
   };
 
   this.privateKey = new FakePrivateKey();
-  this.settings = {};
+  this.settings = {
+    unitName: 'bits',
+    unitToSatoshi: 100,
+    unitDecimals: 2,
+    alternativeName: 'US Dollar',
+    alternativeIsoCode: 'USD',
+  };
 };
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
@@ -99,8 +106,7 @@ FakeWallet.prototype.getBalance = function(cb) {
   return cb(null, this.balance, this.balanceByAddr, this.safeBalance);
 };
 
-FakeWallet.prototype.removeTxWithSpentInputs = function (cb) {
-};
+FakeWallet.prototype.removeTxWithSpentInputs = function(cb) {};
 
 FakeWallet.prototype.setEnc = function(enc) {
   this.enc = enc;
@@ -110,8 +116,7 @@ FakeWallet.prototype.toEncryptedObj = function() {
   return this.enc;
 };
 
-FakeWallet.prototype.close = function() {
-};
+FakeWallet.prototype.close = function() {};
 
 // TODO a try catch was here
 module.exports = FakeWallet;
