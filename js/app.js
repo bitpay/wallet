@@ -24,6 +24,7 @@ var copayApp = window.copayApp = angular.module('copayApp', [
   'mm.foundation',
   'monospaced.qrcode',
   'ngIdle',
+  'gettext',
   'copayApp.filters',
   'copayApp.services',
   'copayApp.controllers',

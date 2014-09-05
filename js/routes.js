@@ -79,7 +79,8 @@ angular
   $idleProvider.warningDuration(20); // in seconds
   $keepaliveProvider.interval(2); // in seconds
 })
-.run(function($rootScope, $location, $idle) {
+.run(function($rootScope, $location, $idle, gettextCatalog) {
+  gettextCatalog.currentLanguage = config.defaultLanguage;
   $idle.watch();
   $rootScope.$on('$routeChangeStart', function(event, next, current) {
     if (!localStorage || localStorage.length < 1) {
