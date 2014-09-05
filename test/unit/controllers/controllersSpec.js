@@ -104,6 +104,7 @@ describe("Unit: Controllers", function() {
     var transactionsCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
+      $rootScope.wallet = new FakeWallet(walletConfig);
       transactionsCtrl = $controller('TransactionsController', {
         $scope: scope,
       });
@@ -125,7 +126,11 @@ describe("Unit: Controllers", function() {
     beforeEach(module(function($provide) {
       $provide.value('request', {
         'get': function(_, cb) {
-          cb(null, null, [{name: 'lol currency', code: 'LOL', rate: 2}]);
+          cb(null, null, [{
+            name: 'lol currency',
+            code: 'LOL',
+            rate: 2
+          }]);
         }
       });
     }));
@@ -299,15 +304,15 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)
-      .respond([{
-        name: "v100.1.6",
-        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
-        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
-        commit: {
-          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
-          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
-        }
-      }]);
+        .respond([{
+          name: "v100.1.6",
+          zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+          tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+          commit: {
+            sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+            url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+          }
+        }]);
     }));
 
     var rootScope;
