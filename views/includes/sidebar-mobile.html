@@ -14,7 +14,7 @@
       <span class="size-12 right">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</span>
     </p>
     <div class="line-sidebar-t">
-      Balance
+      <span translate>Balance</span>
       <span class="gray small side-bar right" title="Manual Refresh"><i class="size-16 fi-refresh"></i></span>
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
@@ -24,12 +24,12 @@
       </span>
     </div> 
     <div class="m10t" ng-show="lockedBalance">
-      Locked 
+      <span translate>Locked</span> 
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
       <span ng-show="!$root.updatingBalance">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
-      </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
+      </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
     </div>
   </div>
   <div class="line-sidebar-t p0"></div>

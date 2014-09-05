@@ -16,7 +16,7 @@
       ng-click="refresh()"><i class="size-16 fi-refresh"></i></a>
     </div>
     <div class="founds size-14 m10v">
-      Balance
+      <span translate>Balance</span>
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
@@ -29,7 +29,7 @@
         tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
       </span>
       <div class="m10t" ng-show="lockedBalance">
-      Locked &nbsp;
+        <span translate>Locked</span> &nbsp;
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
@@ -40,7 +40,7 @@
         tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
-      </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
+      </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
       </div>
     </div>
     <div class="line-sidebar"></div>
