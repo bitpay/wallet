@@ -9,8 +9,8 @@
       <div class="box-setup oh">
         <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
           <img ng-if="$root.fromSetup && !isMobile" class="right m15t" src="img/step-3.svg" alt="Step 3">
-          <h1 class="text-primary line-sidebar-b">Waiting copayers</h1>
-          <h3>Share this secret with your other copayers</h3>
+          <h1 translate class="text-primary line-sidebar-b">Waiting copayers</h1>
+          <h3 translate>Share this secret with your other copayers</h3>
           <div class="panel">
             <qrcode size="350" data="{{$root.wallet.getSecret()}}"></qrcode>
             <div class="secret text-gray size-14">
@@ -20,30 +20,31 @@
             <div style="clear:both;"></div>
           </div>
         </div>
-        <h1 class="text-white line-sidebar-b" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">New Wallet Created </h1>
+        <h1 class="text-white line-sidebar-b" ng-if="$root.wallet &&
+          $root.wallet.publicKeyRing.isComplete()" translate>New Wallet Created</h1>
         <div class="row" ng-show="$root.wallet.publicKeyRing.isComplete()">
           <div class="large-4 small-6 columns text-left">
-            <h3>Download Backup</h3>
+            <h3 translate>Download Backup</h3>
           </div>
           <div class="large-8 small-6 columns text-right">
             <h3 class="ellipsis">
               <small class="text-gray">
                 <b>{{$root.wallet.getName()}}</b> : 
-                {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}
+                {{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}
               </small>
             </h3>
           </div>
         </div>
         <div class="row">
           <div class="large-10 small-9 columns text-left">
-            <h4 class="ellipsis" ng-show="!$root.wallet.publicKeyRing.isComplete()">
+            <h4 translate class="ellipsis" ng-show="!$root.wallet.publicKeyRing.isComplete()">
               Waiting Copayers for {{$root.wallet.getName()}}
             </h4>
           </div>
           <div class="large-2 small-3 columns text-right">
             <h4 ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
               <small class="text-gray">
-                {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet
+                {{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}
               </small>
             </h4>
           </div>
@@ -61,53 +62,55 @@
               width="70">
               <p class="size-12 text-white text-light m0">
               <i class="fi-loop icon-rotate spinner"></i>
-              Waiting...
+              <span translate>Waiting...</span>
               </p>
             </div>
           </div>
           <div ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
           <div class="line-sidebar-b" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()"></div>
           <div class="text-gray m10t" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
-            <i class="text-white fi-loop icon-rotate spinner"></i> Waiting for other
-            copayers to make a Backup
+            <i class="text-white fi-loop icon-rotate spinner"></i> 
+            <span translate>Waiting for other copayers to make a Backup</span>
           </div>
           </div>
         </div>
 
         <div class="text-right">
-          <a class="text-warning" ng-really-click="deleteWallet()"
+          <a translate class="text-warning" ng-really-click="deleteWallet()"
             ng-really-message="Are you sure to delete this wallet from this
             computer?">Delete wallet</a> 
           <span class="text-gray">|</span> 
-          <a class="text-primary m20r" ng-click="downloadBackup()"
+          <a translate class="text-primary m20r" ng-click="downloadBackup()"
             ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a> 
           <button class="button primary m0"
             ng-click="backup()"
             ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
             ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-            <span ng-show="$root.wallet.publicKeyRing.isComplete()" >
+            <span translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
               Backup wallet
             </span>
             <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
               <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
-                {{ $root.wallet.publicKeyRing.remainingCopayers() }} people have
+                {{ $root.wallet.publicKeyRing.remainingCopayers() }} <span
+                  translate>people have</span>
               </span>
-              <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
+              <span translate ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
                 One person has
               </span>
-              yet to join.
+              <span translate>yet to join.</span>
             </span>
           </button>
           <button class="button primary"
             disabled="disabled"
             ng-show="$root.wallet.publicKeyRing.isBackupReady()">
             <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
-              {{ $root.wallet.publicKeyRing.remainingBackups() }} people have
+              {{ $root.wallet.publicKeyRing.remainingBackups() }} <span
+                translate>people have</span>
             </span>
-            <span ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
+            <span translate ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
               One person has
             </span>
-            yet to backup the wallet.
+            <span translate>yet to backup the wallet.</span>
           </button>
         </div>
       </div>

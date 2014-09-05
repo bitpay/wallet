@@ -1,65 +1,76 @@
 <div class="backup" ng-controller="MoreController">
-  <h1>Settings </h1>
+  <h1 translate>Settings </h1>
     <div class="oh large-12 columns panel">
-      <h3><i class="fi-download m10r"></i> Backup </h3>
-      <p class="large-8 columns text-gray"> It's important to backup your wallet so that you can recover it in case of disaster</p>
+      <h3><i class="fi-download m10r"></i> <span translate>Backup</span> </h3>
+      <p translate class="large-8 columns text-gray">It's important to backup your wallet so that you can recover it in case of disaster</p>
       <div class="large-4 columns">
-        <a class="button primary expand" ng-click="downloadBackup()">Download File</a>
+        <a translate class="button primary expand" ng-click="downloadBackup()">Download File</a>
       </div>
     </div>
   <div class="large-12 columns line-dashed-h m15b"> </div>
   <div>
     <div class="oh large-12 columns panel">
-      <h3><i class="fi-minus-circle m10r"></i> Delete Wallet </h3>
-      <p class="large-8 columns text-gray"> If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet. </p>
+      <h3><i class="fi-minus-circle m10r"></i> 
+        <span translate>Delete Wallet</span> </h3>
+        <p translate class="large-8 columns text-gray">If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet.</p>
       <div class="large-4 columns">
-        <a class="button warning expand" ng-really-message="Are you sure to delete this wallet from this computer?" ng-really-click="deleteWallet()"> Delete</a>
+        <a translate class="button warning expand" 
+          ng-really-message="'Are you sure to delete this wallet from this computer?'|translate" ng-really-click="deleteWallet()"> Delete</a>
       </div>
     </div>
   </div>
   <p>
   <a class="expand small"  ng-click="hideAdv=!hideAdv">
-    <span ng-hide="!hideAdv">Show</span>
-    <span ng-hide="hideAdv">Hide</span>
-    advanced options
+    <span translate ng-hide="!hideAdv">Show</span> 
+    <span translate ng-hide="hideAdv">Hide</span> 
+    <span translate>advanced options</span>
   </a>
 
 
   <div ng-hide="hideAdv">
     <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> Master Private Key </h3>
-        <p class="large-8 columns text-gray"> Your master private key contains the information to sign <b>any</b> transaction on this wallet. Handle with care.
+      <h3><i class="fi-minus-circle m10r"></i> 
+        <span translate>Master Private Key</span> </h3>
+        <p translate class="large-8 columns text-gray">
+          Your master private key contains the information to sign <b>any</b> transaction on this wallet. Handle with care.
+        </p>
         <div class="large-4 columns">
           <a class="button primary expand"  ng-click="hidePriv=!hidePriv">
-            <span ng-hide="!hidePriv">Show</span>
-            <span ng-hide="hidePriv">Hide</span>
+            <span translate ng-hide="!hidePriv">Show</span>
+            <span translate ng-hide="hidePriv">Hide</span>
           </a>
         </div>
         <textarea ng-hide="hidePriv" readonly>{{priv}}</textarea>
     </div>
     <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> Scan Wallet Addresses </h3>
-        <p class="large-8 columns text-gray"> This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup). This will also trigger a syncronization of addresses to other connected peers.
+      <h3><i class="fi-minus-circle m10r"></i> <span translate>Scan Wallet Addresses</span> </h3>
+        <p translate class="large-8 columns text-gray">
+        This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup). This will also trigger a syncronization of addresses to other connected peers.
+        </p>
         <div class="large-4 columns">
-          <a class="button primary expand"  ng-click="updateIndexes()">
+          <a translate class="button primary expand"  ng-click="updateIndexes()">
             Scan
           </a>
         </div>
     </div>
     <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> Purge Pending Transaction Proposals </h3>
-        <p class="large-8 columns text-gray"> Pending Transactions Proposals will be discarted. This need to be done on <b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced again. 
+      <h3><i class="fi-minus-circle m10r"></i> <span translate>Purge Pending Transaction Proposals</span> </h3>
+        <p translate class="large-8 columns text-gray">
+        Pending Transactions Proposals will be discarted. This need to be done on <b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced again.
+        </p>
         <div class="large-4 columns">
-          <a class="button warning expand"  ng-click="purge()">
+          <a translate class="button warning expand"  ng-click="purge()">
             Purge
           </a>
         </div>
     </div>
     <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> Purge ALL Transaction Proposals </h3>
-        <p class="large-8 columns text-gray"> ALL Transactions Proposals will be discarted. This need to be done on <b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced again. 
+      <h3><i class="fi-minus-circle m10r"></i> <span translate>Purge ALL Transaction Proposals</span> </h3>
+        <p translate class="large-8 columns text-gray">
+        ALL Transactions Proposals will be discarted. This need to be done on <b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced again.
+        </p>
         <div class="large-4 columns">
-          <a class="button warning expand"  ng-click="purge(true)">
+          <a translate class="button warning expand"  ng-click="purge(true)">
             Purge All
           </a>
         </div>
