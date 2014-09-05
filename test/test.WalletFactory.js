@@ -441,9 +441,10 @@ describe('WalletFactory model', function() {
       should.exist(w.privateKey.toObj());
     });
 
-    it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function(done) {
+    it.only('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function(done) {
       var pp = new Passphrase(config.passphrase);
       var alternateConfig = JSON.parse(JSON.stringify(config));
+      alternateConfig.Blockchain = FakeBlockchain;
       alternateConfig.Storage = LocalEncrypted;
       alternateConfig.storage = {
         localStorage: mockLocalStorage,

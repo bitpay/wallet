@@ -29,7 +29,8 @@ var preconditions = require('preconditions').singleton();
 */
 
 var Insight = function(opts) {
-  preconditions.checkArgument(opts).shouldBeObject(opts)
+  preconditions.checkArgument(opts)
+    .shouldBeObject(opts)
     .checkArgument(opts.host)
     .checkArgument(opts.port)
     .checkArgument(opts.schema);
@@ -149,7 +150,6 @@ Insight.prototype.subscribe = function(addresses) {
     return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;
-
       log.debug('insight tx event');
 
       self.emit('tx', {
