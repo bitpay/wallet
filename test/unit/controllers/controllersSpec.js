@@ -384,6 +384,7 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
       $rootScope.availableBalance = 123456;
+      $rootScope.wallet = new FakeWallet(walletConfig);
 
       var element = angular.element(
         '<form name="form">' +
