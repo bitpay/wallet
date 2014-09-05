@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('VersionController',
     $scope.version = copay.version;
     $scope.commitHash = copay.commitHash;
     $scope.networkName = config.networkName;
+    $scope.defaultLanguage = config.defaultLanguage;
 
     $http.get('https://api.github.com/repos/bitpay/copay/tags').success(function(data) {
       var toInt = function(s) {
