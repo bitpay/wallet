@@ -28,7 +28,7 @@
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
       </span>
-      <br>
+      <div class="m10t" ng-show="lockedBalance">
       Locked &nbsp;
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
@@ -41,6 +41,7 @@
         tooltip-trigger="mouseenter"
         tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
       </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
+      </div>
     </div>
     <div class="line-sidebar"></div>
   </header>
