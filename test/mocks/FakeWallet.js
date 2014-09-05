@@ -39,7 +39,8 @@ var FakeWallet = function() {
     getSubscriptions: function() {
       return [];
     },
-    subscribe: function() {}
+    subscribe: function() {},
+    getTransactions: function() {}
   };
 
   this.privateKey = new FakePrivateKey();
@@ -60,6 +61,9 @@ FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts,
 FakeWallet.prototype.sendTx = function(ntxid, cb) {
   cb(8);
 }
+FakeWallet.prototype.getAddressesStr = function() {
+  return ['2Mw2YXxyMD7fhtPhHYY39X6BVWiBRaez5Zn'];
+};
 
 FakeWallet.prototype.set = function(balance, safeBalance, balanceByAddr) {
   this.balance = balance;

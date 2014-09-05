@@ -11,7 +11,7 @@ FakeBlockchain.prototype.getTransaction = function(txid, cb) {
 };
 
 FakeBlockchain.prototype.getTransactions = function(addresses, cb) {
-  return cb(null, []);
+  cb(null, []);
 };
 
 
