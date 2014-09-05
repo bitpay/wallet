@@ -78,7 +78,7 @@ function assertObjectEqual(a, b, msg) {
     var orderedA = reconstructObject(a, getKeys(a).sort()),
       orderedB = reconstructObject(b, getKeys(b).sort());
 
-    // compare as strings for diff tolls to show us the difference
+    // compare as strings for diff tools to show us the difference
     JSON.stringify(orderedA).should.equal(JSON.stringify(orderedB), msg)
   }
 }
