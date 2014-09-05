@@ -12,30 +12,32 @@
     <div class="large-8 columns line-dashed-setup-v">
  
       <div class="box-setup">
-        <h1 class="text-white line-sidebar-b">{{title}}</h1>
+        <h1 class="text-white line-sidebar-b">{{title|translate}}</h1>
         <form name="importForm" ng-submit="import(importForm)" novalidate>
           <fieldset>
-            <legend for="backupFile" class="m10b"> Choose backup file from your computer <i class="fi-laptop"></i></legend>
-            <input type="file" class="form-control" placeholder="Select a backup file" name="backupFile" ng-model="backupFile" ng-file-select>
+            <legend for="backupFile" class="m10b"> <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i></legend>
+            <input type="file" class="form-control" 
+            placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
 
 
-            <label for="password">Password <small>Required</small></label>
-            <input type="password" class="form-control" placeholder="Your wallet password" name="password" ng-model="password" required>
+            <label for="password"><span translate>Password</span> <small translate>Required</small></label>
+            <input type="password" class="form-control" 
+            placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
 
             <a class="expand small"  ng-click="hideAdv=!hideAdv">
-              <span ng-hide="!hideAdv">Show</span>
-              <span ng-hide="hideAdv">Hide</span>
-              advanced options
+              <span translate ng-hide="!hideAdv">Show</span> 
+              <span translate ng-hide="hideAdv">Hide</span> 
+              <span translate>advanced options</span>
             </a>
 
 
             <div ng-hide="hideAdv">
               <label>
-              <input type="checkbox" class="form-control" name="skipPublicKeyRing" ng-model="skipPublicKeyRing"> Skip public keys from peers
+              <input translate type="checkbox" class="form-control" name="skipPublicKeyRing" ng-model="skipPublicKeyRing">Skip public keys from peers
               </label>
 
               <label>
-              <input type="checkbox" class="form-control" name="skipTxProposals" ng-model="skipTxProposals"> Skip transaction proposals from Backup
+              <input translate type="checkbox" class="form-control" name="skipTxProposals" ng-model="skipTxProposals">Skip transaction proposals from Backup
               </label>
             </div>
           
@@ -43,13 +45,13 @@
           </fieldset>
           <div data-alert ng-show="skipFields">
             <i class="size-18 fi-alert"></i> 
-            Skipping fields: {{skipFields}}
+            <span translate>Skipping fields: {{skipFields}}</span>
           </div>
       
 
           <div class="text-right">
-            <a class="back-button text-white m20r" href="#!/">&laquo; Back</a>
-            <button type="submit" class="button primary m0" ng-disabled="importForm.$invalid" loading="Importing">
+            <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
+            <button translate type="submit" class="button primary m0" ng-disabled="importForm.$invalid" loading="Importing">
               Import backup
             </button>
           </div>

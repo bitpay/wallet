@@ -1,20 +1,22 @@
-<h2>Add Address Book Entry</h2>
+<h2 translate>Add Address Book Entry</h2>
 <form name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
-  <label for="newaddress">Address
-    <small ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
-    <small class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
-    <small class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+  <label for="newaddress"><span translate>Address</span>
+    <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
+    <small translate class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
+    <small translate class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">
       Not valid</small>
     <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
-    placeholder="Address" ng-model="newaddress" valid-address required>
+    placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
   </label>
-  <label for="newlabel">Label
-    <small ng-hide="!addressBookForm.newlabel.$pristine || newlabel">required</small>
+  <label for="newlabel"><span translate>Label</span>
+    <small translate ng-hide="!addressBookForm.newlabel.$pristine || newlabel">required</small>
     <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
-    placeholder="Label" ng-model="newlabel" required>
+    placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
   </label>
-  <a class="button warning small default" ng-click="cancel()">Cancel</a>
-  <input type="submit" class="button small primary right" ng-disabled="addressBookForm.$invalid || loading" value="Add Address">
+  <a translate class="button warning small default" ng-click="cancel()">Cancel</a>
+  <input type="submit" class="button small primary right"
+  ng-disabled="addressBookForm.$invalid || loading" 
+  value="{{'Add Address'|translate}}">
 </form>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 
