@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('SendController',
       set: function (newValue) {
         this._alternative = newValue;
         if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-          this._amount = Number.parseFloat(
+          this._amount = parseFloat(
             (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
           ).toFixed(config.unitDecimals), 10);
         } else {
@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('SendController',
       set: function (newValue) {
         this._amount = newValue;
         if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-          this._alternative = Number.parseFloat(
+          this._alternative = parseFloat(
             (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
           ).toFixed(2), 10);
         } else {
