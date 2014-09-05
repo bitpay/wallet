@@ -340,6 +340,7 @@ Network.prototype.getCopayerIds = function() {
 
 
 Network.prototype.send = function(dest, payload, cb) {
+  preconditions.checkState(this.socket);
   preconditions.checkArgument(payload);
 
   var self = this;
@@ -357,7 +358,8 @@ Network.prototype.send = function(dest, payload, cb) {
     var to = dest[ii];
     if (to == this.copayerId)
       continue;
-    log.debug('SEND to: ' + to, this.copayerId, payload);
+
+    log.debug('SEND to: ' + to, this.copayerId, JSON.stringify(payload));
 
     var message = this.encode(to, payload);
     this.socket.emit('message', message);

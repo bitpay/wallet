@@ -102,6 +102,14 @@
     border-right: 1px solid #425568;
   }
 
+  .right-small {
+    border-left: 1px solid #425568;
+  }
+
+  .right-small a {
+    color: white;
+  }
+
   .panel .secret {
     padding-top: 0.5rem;
     display: block;
@@ -121,6 +129,10 @@
   .panel qrcode canvas {
     width: 200px;
     height: 200px;
+  }
+
+  .addresses .panel {
+    padding: 1rem 0.8rem;
   }
 
   .btn-copy {

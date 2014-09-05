@@ -8,9 +8,10 @@
     <div ng-show="txs.length != 0" class="large-12 line-dashed" style="padding: 0;"></div>
 
     <h1>{{title|translate}}</h1>
+    <div class="row collapse m0">
     <div class="large-6 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
-        <div class="row">
+        <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
               <label for="address"><span translate>To address</span>
@@ -52,8 +53,8 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="large-6 medium-6 columns">
+        <div class="row collapse">
+          <div class="large-5 medium-5 columns">
             <div class="row collapse">
               <label for="amount"><span translate>Amount</span>
                 <small translate ng-hide="!sendForm.amount.$pristine">required</small>
@@ -101,7 +102,7 @@
           </div>
         </div>
 
-        <div class="row" ng-show="wallet.isShared()">
+        <div class="row collapse" ng-show="wallet.isShared()">
           <div class="large-12 columns">
             <div class="row collapse">
               <label for="comment"><span translate>Notes</span>
@@ -116,8 +117,8 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="large-5 medium-3 small-4 columns">
+        <div class="row collapse">
+          <div class="large-5 medium-6 small-12 columns">
             <button translate type="submit" class="button primary expand text-center" ng-disabled="sendForm.$invalid || loading" loading="Sending">
               Send
             </button>
@@ -125,6 +126,7 @@
         </div>
       </form>
     </div>
+  </div><!--  end of row -->
 
     <div class="large-6 columns show-for-large-up" ng-show="!!$root.merchant">
       <div class="send-note">
