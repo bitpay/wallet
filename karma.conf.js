@@ -28,6 +28,7 @@ module.exports = function(config) {
       'lib/angular-route/angular-route.min.js',
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
+      'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/assert/assert.js',
       'lib/bitcore.js',
       'lib/underscore/underscore.js',
@@ -49,6 +50,7 @@ module.exports = function(config) {
       'js/directives.js',
       'js/filters.js',
       'js/controllers/*.js',
+      'js/translations.js',
       'js/init.js',
 
       //Test-Specific Code
