@@ -117,6 +117,14 @@ angular.module('copayApp.controllers').controller('SendController',
       var w = $rootScope.wallet;
 
       function done(err, ntxid, merchantData) {
+        if (err) {
+          var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created';
+          notification.error('Error', message);
+          $scope.loading = false;
+          $scope.loadTxs();
+          return;
+        }
+
         // If user is granted the privilege of choosing
         // their own amount, add it to the tx.
         if (merchantData && +merchantData.total === 0) {

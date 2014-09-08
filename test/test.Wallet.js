@@ -792,6 +792,19 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#createTx', function () {
+    it('should fail if insight server is down', function (done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      sinon.stub(w, 'getUnspent').yields('error', null);
+      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) { 
+        chai.expect(err.message).to.equal('Could not get list of UTXOs');
+        done(); 
+      });
+    });
+  });
+
   describe('#createTxSync', function() {
     it('should fail if amount below min value', function() {
       var w = cachedCreateW2();
