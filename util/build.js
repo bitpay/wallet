@@ -46,9 +46,6 @@ var createBundle = function(opts) {
   b.require('underscore', {
     expose: 'underscore'
   });
-  b.require('assert', {
-    expose: 'assert'
-  });
 
   b.require('./copay', {
     expose: 'copay'
