@@ -46,7 +46,7 @@ var FakeWallet = function() {
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var callback = cb || opts;
-  callback({});
+  callback(null, {});
 }
 
 FakeWallet.prototype.sendTx = function(ntxid, cb) {
