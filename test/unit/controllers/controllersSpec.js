@@ -423,6 +423,13 @@ describe("Unit: Controllers", function() {
       var amount = scope.getAvailableAmount();
       expect(amount).to.equal(123356);
     });
+    it('should return 0 if available amount below minimum fee', function() {
+      inject(function($compile, $rootScope, $controller) {
+        $rootScope.availableBalance = 1;
+      });
+      var amount = scope.getAvailableAmount();
+      expect(amount).to.equal(0);
+    });
   });
 
   describe('Import Controller', function() {
