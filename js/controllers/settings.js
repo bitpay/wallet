@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
     localStorage.setItem('config', JSON.stringify({
       network: insightSettings,
-      version: copay.version
+      version: copay.version,
       defaultLanguage: $scope.selectedLanguage.isoCode
     }));
 

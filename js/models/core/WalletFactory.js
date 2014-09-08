@@ -42,7 +42,7 @@ function WalletFactory(config, version) {
 
   this.storage = new this.Storage(config.storage);
   this.network = new this.Network(config.network);
-  this.blockchain = new this.Blockchain(config.blockchain);
+  this.blockchain = new this.Blockchain(config.network);
 
   this.networkName = config.networkName;
   this.walletDefaults = config.wallet;
