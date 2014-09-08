@@ -337,6 +337,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   if (m) {
 
     if (m.hasChanged) {
+      m.txp.setSeen(this.getMyCopayerId());
       this.sendSeen(m.ntxid);
       var tx = m.txp.builder.build();
       if (tx.isComplete()) {
