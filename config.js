@@ -35,21 +35,6 @@ var defaultConfig = {
     }
   },
 
-  // blockchain service API config
-  blockchain: {
-    schema: 'https',
-    host: 'test-insight.bitpay.com',
-    port: 443,
-    retryDelay: 1000,
-  },
-  // socket service API config
-  socket: {
-    schema: 'https',
-    host: 'test-insight.bitpay.com',
-    port: 443,
-    reconnectDelay: 1000,
-  },
-
   // local encryption/security config
   passphrase: {
     iterations: 100,

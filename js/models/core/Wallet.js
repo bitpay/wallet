@@ -163,6 +163,22 @@ Wallet.prototype._onIndexes = function(senderId, data) {
 
 /**
  * @desc
+ * Changes wallet settings. The settings format is:
+ *
+ *   var settings = {
+ *     unitName: 'bits',
+ *     unitToSatoshi: 100,
+ *     alternativeName: 'US Dollar',
+ *     alternativeIsoCode: 'USD',
+ *   };
+ */
+Wallet.prototype.changeSettings = function(settings) {
+  console.log(settings);
+  this.settings = settings;
+};
+
+/**
+ * @desc
  * Handles a 'PUBLICKEYRING' message from <tt>senderId</tt>.
  *
  * <tt>data.publicKeyRing</tt> is expected to be processed correctly by
@@ -893,7 +909,6 @@ Wallet.prototype.send = function(recipients, obj) {
 Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
   var ntxids = sinceTs ? this.txProposals.getNtxidsSince(sinceTs) : this.txProposals.getNtxids();
   var self = this;
-
   _.each(ntxids, function(ntxid, key) {
     self.sendTxProposal(ntxid, recipients);
   });
