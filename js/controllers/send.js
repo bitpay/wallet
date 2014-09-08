@@ -461,6 +461,13 @@ angular.module('copayApp.controllers').controller('SendController',
       var value = scope.address || '';
       var uri;
 
+      // If we're setting the domain, ignore the change.
+      if ($rootScope.merchant
+          && $rootScope.merchant.domain
+          && value === $rootScope.merchant.domain) {
+        return;
+      }
+
       if (value.indexOf('bitcoin:') === 0) {
         uri = new bitcore.BIP21(value).data;
       } else if (/^https?:\/\//.test(value)) {
@@ -517,12 +524,18 @@ angular.module('copayApp.controllers').controller('SendController',
           return;
         }
 
+        var url = merchantData.request_url;
+        var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
+
         merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
         merchantData.expiration = new Date(
           merchantData.pr.pd.expires * 1000).toISOString();
+        merchantData.domain = domain;
 
         $rootScope.merchant = merchantData;
 
+        scope.sendForm.address.$setViewValue(domain);
+        scope.sendForm.address.$render();
         scope.sendForm.address.$isValid = true;
 
         scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
@@ -534,6 +547,14 @@ angular.module('copayApp.controllers').controller('SendController',
         var unregister = scope.$watch('address', function() {
           var val = scope.sendForm.address.$viewValue || '';
           var uri;
+          // If we're setting the domain, ignore the change.
+          if ($rootScope.merchant
+              && $rootScope.merchant.domain
+              && val === $rootScope.merchant.domain) {
+            uri = {
+              merchant: $rootScope.merchant.request_url
+            };
+          }
           if (val.indexOf('bitcoin:') === 0) {
             uri = new bitcore.BIP21(val).data;
           } else if (/^https?:\/\//.test(val)) {
