@@ -20,6 +20,19 @@ FakeStorage.prototype.getGlobal = function(id, cb) {
   return cb(this.storage[id]);
 };
 
+FakeStorage.prototype.getMany = function(wid, fields, cb) {
+  var self= this;
+  var ret = [];
+  for(var ii in fields){
+    var k = fields[ii];
+    ret[k] = this.storage[wid + '::' + k];
+  }
+
+  return cb(ret);
+};
+
+
+
 FakeStorage.prototype.setLastOpened = function(val, cb) {
   this.storage['lastOpened'] = val;
   return cb();
@@ -34,7 +47,7 @@ FakeStorage.prototype.setLock = function(id) {
   return cb();
 }
 
-FakeStorage.prototype.getLock = function(id,cb) {
+FakeStorage.prototype.getLock = function(id, cb) {
   return cb(this.storage[id + '::lock']);
 }
 
@@ -44,12 +57,12 @@ FakeStorage.prototype.getSessionId = function(cb) {
 };
 
 
-FakeStorage.prototype.removeLock = function(id,cb) {
+FakeStorage.prototype.removeLock = function(id, cb) {
   delete this.storage[id + '::lock'];
   cb();
 }
 
-FakeStorage.prototype.removeGlobal = function(id,cb) {
+FakeStorage.prototype.removeGlobal = function(id, cb) {
   delete this.storage[id];
   cb();
 };
@@ -78,7 +91,7 @@ FakeStorage.prototype.getWalletIds = function(cb) {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (!walletId || walletId === 'nameFor' || walletId ==='lock') 
+      if (!walletId || walletId === 'nameFor' || walletId === 'lock')
         continue;
 
       if (typeof uniq[walletId] === 'undefined') {
@@ -106,8 +119,8 @@ FakeStorage.prototype.deleteWallet = function(walletId, cb) {
 };
 
 
-FakeStorage.prototype.getName = function(walletId,cb) {
-  return this.getGlobal('nameFor::' + walletId,cb);
+FakeStorage.prototype.getName = function(walletId, cb) {
+  return this.getGlobal('nameFor::' + walletId, cb);
 };
 
 
