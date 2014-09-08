@@ -878,7 +878,6 @@ Wallet.prototype.sendAllTxProposals = function(recipients) {
  */
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
-
   log.debug('### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
   this.send(recipients, {
     type: 'txProposal',
@@ -2035,24 +2034,6 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
   var self = this;
 
-  if (_.isFunction(amountSatStr)) {
-    var cb = amountSatStr;
-    var merchant = toAddress;
-    return this.createPaymentTx({
-      uri: merchant
-    }, cb);
-  }
-
-  if (_.isFunction(comment)) {
-    var cb = comment;
-    var merchant = toAddress;
-    var comment = amountSatStr;
-    return this.createPaymentTx({
-      uri: merchant,
-      memo: comment
-    }, cb);
-  }
-
   if (_.isFunction(opts)) {
     cb = opts;
     opts = {};
@@ -2064,14 +2045,18 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   }
 
   this.getUnspent(function(err, safeUnspent) {
+    if (err) return cb(err);
+
     var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
-    if (ntxid) {
-      self.sendIndexes();
-      self.sendTxProposal(ntxid);
-      self.store();
-      self.emit('txProposalsUpdated');
+    if (!ntxid) {
+      return cb(new Error('Error creating TX'));
     }
-    return cb(ntxid);
+
+    self.sendIndexes();
+    self.sendTxProposal(ntxid);
+    self.store();
+    self.emit('txProposalsUpdated');
+    return cb(null, ntxid);
   });
 };
 

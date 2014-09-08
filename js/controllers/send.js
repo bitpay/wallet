@@ -116,7 +116,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
 
-      function done(ntxid, merchantData) {
+      function done(err, ntxid, merchantData) {
         // If user is granted the privilege of choosing
         // their own amount, add it to the tx.
         if (merchantData && +merchantData.total === 0) {
