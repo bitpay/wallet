@@ -153,7 +153,7 @@ describe('WalletFactory model', function() {
   });
 
 
-  it.only('should be able to get wallets', function(done) {
+  it('should be able to get wallets', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
     wf.create(null, function(err,w){
       wf.read(w.id, [], function(err, w2){
@@ -273,7 +273,7 @@ describe('WalletFactory model', function() {
     }).should.throw();
   });
 
-  it('BIP32 length problem', function() {
+  it('BIP32 length problem', function(done) {
     var sconfig = {
       Network: FakeNetwork,
       Blockchain: FakeBlockchain,
@@ -312,8 +312,11 @@ describe('WalletFactory model', function() {
       'requiredCopayers': 2,
       'totalCopayers': 3
     };
-    var w = wf.create(opts);
-
+    wf.create(opts, function(err,w){
+      should.not.exist(err);
+      should.exist(w);
+      done();
+    });
   });
 
   it('should be able to get current wallets', function() {
