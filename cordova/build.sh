@@ -113,11 +113,12 @@ checkOK
 cp android/config.xml $PROJECT/platforms/android/res/xml/config.xml
 checkOK
 
-cp -R ios/icons $PROJECT/platforms/ios/Copay/Resources/icons
-checkOK
+if [[ !SKIPIOS ]]; then
+  cp -R ios/icons $PROJECT/platforms/ios/Copay/Resources/icons
+  checkOK
 
-cp -R ios/splash $PROJECT/platforms/ios/Copay/Resources/splash
-checkOK
-
+  cp -R ios/splash $PROJECT/platforms/ios/Copay/Resources/splash
+  checkOK
+fi
 
 
