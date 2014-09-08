@@ -2045,7 +2045,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   }
 
   this.getUnspent(function(err, safeUnspent) {
-    if (err) return cb(err);
+    if (err) return cb(new Error('Could not get list of UTXOs'));
 
     var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
     if (!ntxid) {
