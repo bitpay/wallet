@@ -130,7 +130,7 @@
       <div class="send-note">
         <h6>Send to</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}">
-        {{address}}&nbsp;
+        {{$root.merchant.request_url}}&nbsp;
         </p>
         <h6>Total amount for this transaction:</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
