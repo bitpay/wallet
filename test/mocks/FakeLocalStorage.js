@@ -5,8 +5,9 @@ function LocalStorage(opts) {
 
 FakeLocalStorage = {};
 FakeLocalStorage.length = 0;
-FakeLocalStorage.removeItem = function(key) {
+FakeLocalStorage.removeItem = function(key,cb) {
   delete ls[key];
+  cb();
 };
 
 FakeLocalStorage.getItem = function(k,cb) {

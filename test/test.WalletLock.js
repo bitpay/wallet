@@ -15,8 +15,11 @@ var WalletLock = copay.WalletLock;
 var PrivateKey = copay.PrivateKey;
 var Storage = require('./mocks/FakeStorage');
 
+var storage;
 describe('WalletLock model', function() {
-  var storage = new Storage();
+  beforeEach(function() {
+    storage = new Storage();
+  });
 
   it('should fail with missing args', function() {
     (function() {
@@ -36,45 +39,70 @@ describe('WalletLock model', function() {
     should.exist(w);
   });
 
-  it('should NOT fail if locked already', function() {
-    var w = new WalletLock(storage, 'walletId');
-    storage.sessionId = 'xxx';
-    var w2= new WalletLock(storage, 'walletId');
-    should.exist(w2);
+
+  it('should generate a sessionId with init', function(done) {
+    var w = new WalletLock(storage, 'id');
+    var spy = sinon.spy(storage, 'getSessionId');
+    w.init(function() {
+      spy.calledOnce.should.equal(true);
+      done();
+    });
   });
 
-  it('should change status of previously openned wallet', function() {
+  it('#keepAlive should call getsessionId if not called before', function(done) {
+    var w = new WalletLock(storage, 'id');
+    var spy = sinon.spy(storage, 'getSessionId');
+    w.keepAlive(function() {
+      spy.calledOnce.should.equal(true);
+      done();
+    });
+  });
+
+  it('should NOT fail if locked already by me', function(done) {
+    var w = new WalletLock(storage, 'walletId2');
+    w.keepAlive(function() {
+      var w2 = new WalletLock(storage, 'walletId2');
+      w2.init(function() {
+        w2.keepAlive(function() {
+          w.sessionId.should.equal(w2.sessionId);
+          should.exist(w2);
+          done();
+        });
+      });
+    })
+  });
+
+  it('should FAIL if locked by someone else', function(done) {
     storage.sessionId = 'session1';
     var w = new WalletLock(storage, 'walletId');
-    storage.sessionId = 'xxx';
-    var w2= new WalletLock(storage, 'walletId');
-    w2.keepAlive();
-    (function() {w.keepAlive();}).should.throw('already open');
+    w.keepAlive(function() {
+      storage.sessionId = 'session2';
+      var w2 = new WalletLock(storage, 'walletId');
+      w2.keepAlive(function(locked) {
+        w2.sessionId.should.equal('session2');
+        should.exist(locked);
+        locked.message.should.contain('LOCKED');
+        done();
+      });
+    });
+  })
 
-  });
-
-
-  it('should not fail if locked by me', function() {
-    var s = new Storage();
-    var w = new WalletLock(s, 'walletId');
-    var w2 = new WalletLock(s, 'walletId')
-    w2.keepAlive();
-    should.exist(w2);
-  });
-
-  it('should not fail if expired', function() {
-    var s = new Storage();
-    var w = new WalletLock(s, 'walletId');
-    var k = Object.keys(s.storage)[0];
-    var v = JSON.parse(s.storage[k]);
-    v.expireTs = Date.now() - 60 * 6 * 1000;
-    s.storage[k] = JSON.stringify(v);
-
-    s.sessionId = 'xxx';
-    var w2 = new WalletLock(s, 'walletId')
-    should.exist(w2);
-  });
-
-
-
+  it('should FAIL if locked by someone else but expired', function(done) {
+    storage.sessionId = 'session1';
+    var w = new WalletLock(storage, 'walletId');
+    w.keepAlive(function() {
+      storage.sessionId = 'session2';
+      var json = JSON.parse(storage.storage['lock::walletId']);
+      json.expireTs -= 3600 * 1000;
+      storage.storage['lock::walletId'] = JSON.stringify(json);
+      var w2 = new WalletLock(storage, 'walletId');
+      w2.keepAlive(function(locked) {
+        w2.sessionId.should.equal('session2');
+        should.not.exist(locked);
+        done();
+      });
+    });
+  })
 });
+
+

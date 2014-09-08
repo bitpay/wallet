@@ -182,6 +182,8 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
  * @return {Wallet}
  */
 WalletFactory.prototype.create = function(opts, cb) {
+  preconditions.checkArgument(cb);
+
   opts = opts || {};
   opts.networkName = opts.networkName || 'testnet';
 
@@ -229,6 +231,7 @@ WalletFactory.prototype.create = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
+console.log('[WalletFactory.js.165]'); //TODO
   var w = new Wallet(opts);
   var self = this;
   w.store(function() {
@@ -266,6 +269,7 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
  * @return
  */
 WalletFactory.prototype.open = function(walletId, passphrase, cb) {
+  preconditions.checkArgument(cb);
   var self = this,
     err;
   self.storage._setPassphrase(passphrase);
@@ -334,6 +338,7 @@ WalletFactory.prototype.decodeSecret = function(secret) {
  * @param {walletCreationCallback} cb - a callback
  */
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
+  preconditions.checkArgument(cb);
   var self = this;
   var decodedSecret = this.decodeSecret(secret);
   if (!decodedSecret || !decodedSecret.networkName || !decodedSecret.pubKey) {

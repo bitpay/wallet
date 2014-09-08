@@ -117,16 +117,17 @@ describe('WalletFactory model', function() {
     wf.version.should.equal('0.0.1');
   });
 
-  it('#_checkRead should return false', function() {
-    var wf = new WalletFactory(config);
-    wf._checkRead('dummy').should.equal(false);
-    wf.read('dummy').should.equal(false);
-  });
 
-  it('should be able to create wallets', function() {
+  it('should be able to create wallets', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create();
-    should.exist(w);
+    wf.create(null, function(err, w) {
+
+console.log('[test.WalletFactory.js.123]'); //TODO
+      should.not.exist(err);
+      should.exist(w);
+      w.should.be.instanceof('WalletFactory');
+      done();
+    });
   });
 
   it('should be able to create wallets with given pk', function() {
