@@ -271,8 +271,8 @@ angular.module('copayApp.directives')
             }, 1000);
           });
         });
-
         client.on('wrongflash noflash', function() {
+          elm.removeClass('btn-copy').html('');
           ZeroClipboard.destroy();
         });
 
