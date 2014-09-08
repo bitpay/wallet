@@ -13,18 +13,18 @@
             <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
             </select>
           </fieldset>
-          <legend translate>Insight API server</legend>
-          <label for="insight-host">Host</label>
-          <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
-          <label for="insight-port" translate>Port</label>
-          <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
-          <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
-          <label for="insight-secure" translate>Use SSL</label>
+          <fieldset>
+            <legend translate>Insight API server</legend>
+            <label for="insight-host">Host</label>
+            <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
+            <label for="insight-port" translate>Port</label>
+            <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
+            <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
+            <label for="insight-secure" translate>Use SSL</label>
 
-          <p translate class="small">
-            Insight API server is open-source software. You can run your own instance, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
-          </p>
-
+            <p translate class="small">
+              Insight API server is open-source software. You can run your own instance, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
+            </p>
           </fieldset>
           <div class="text-right">
             <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
