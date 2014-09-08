@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-angular-gettext');
 
   // Project Configuration
   grunt.initConfig({
@@ -105,7 +106,8 @@ module.exports = function(grunt) {
           'lib/angular-qrcode/qrcode.js',
           'lib/ng-idle/angular-idle.min.js',
           'lib/angular-foundation/mm-foundation.min.js',
-          'lib/angular-foundation/mm-foundation-tpls.min.js'
+          'lib/angular-foundation/mm-foundation-tpls.min.js',
+          'lib/angular-gettext/dist/angular-gettext.min.js'
         ],
         dest: 'lib/angularjs-all.js'
       },
@@ -117,6 +119,7 @@ module.exports = function(grunt) {
           'js/routes.js', 
           'js/services/*.js', 
           'js/controllers/*.js',
+          'js/translations.js',
           'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
           'js/init.js'
         ],
@@ -146,10 +149,28 @@ module.exports = function(grunt) {
           'lib/vendors.js': ['lib/vendors.js']
         }
       }
+    },
+    nggettext_extract: {
+      pot: {
+        files: {
+          'po/template.pot': ['index.html', 'views/*.html', 'views/**/*.html']
+        }
+      },
+    },
+    nggettext_compile: {
+      all: {
+        options: {
+          module: 'copayApp'
+        },
+        files: {
+          'js/translations.js': ['po/*.po']
+        }
+      },
     }
   });
 
-  grunt.registerTask('default', ['shell:dev', 'concat', 'cssmin']);
-  grunt.registerTask('prod', ['shell:prod', 'concat', 'cssmin', 'uglify']);
+  grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
+  grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
+  grunt.registerTask('translate', ['nggettext_extract']);
 
 };

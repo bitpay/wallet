@@ -72,51 +72,51 @@
     <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
       <div class="hide-for-small-only">
         <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
-          <i class="fi-check"></i> Sign
+          <i class="fi-check"></i> <span translate>Sign</span>
         </button>
         <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
-          <i class="fi-x" ></i> Reject
+          <i class="fi-x" ></i> <span translate>Reject</span>
         </button>
       </div>
       <div class="show-for-small-only row m10b">
         <button class="primary small-5 columns"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
-          <i class="fi-check"></i> Sign
+          <i class="fi-check"></i> <span translate>Sign</span>
         </button>
         <button class="warning small-5 columns" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
-          <i class="fi-x" ></i> Reject
+          <i class="fi-x" ></i> <span translate>Reject</span>
         </button>
       </div>
     </div>
     <div ng-show="!tx.missingSignatures && !tx.sentTs">
       <button class="primary"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
-        Broadcast Transaction
+        <span translate>Broadcast Transaction</span>
       </button>
     </div>
   </div>
 
   <div class="large-7 medium-5 small-12 columns text-right">
-    <div ng-show="tx.finallyRejected" class="has-error m10b">
+    <div translate ng-show="tx.finallyRejected" class="has-error m10b">
       Transaction finally rejected
     </div>
     <div ng-show="!tx.missingSignatures && tx.sentTs">
       <div class="is-valid m10b">
-        <strong>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
+        <strong translate>Sent</strong> <span class="text-gray" am-time-ago="tx.sentTs"></span>
       </div>
       <div class="ellipsis small">
-        Transaction ID:
+        <span translate>Transaction ID</span>:
         <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="_blank">
           {{tx.sentTxid}}
         </a>
       </div>
     </div>
-    <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
+    <p translate class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
     One signature missing
     </p>
-    <p class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
+    <p translate class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
     {{tx.missingSignatures}} signatures missing</p>
     <div class="ellipsis small text-gray">
-      <strong>Fee:</strong> {{tx.fee|noFractionNumber}} {{$root.unitName}}
-      <strong>Proposal ID:</strong> {{tx.ntxid}}
+      <strong translate>Fee</strong>: {{tx.fee|noFractionNumber}} {{$root.unitName}}
+      <strong translate>Proposal ID</strong>: {{tx.ntxid}}
     </div>
   </div>
 </div>

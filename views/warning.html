@@ -4,19 +4,19 @@
     <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
     <div class="text-white" ng-include="'views/includes/version.html'"></div>
   </div>
-  <h1 class="text-center text-warning">Warning!</h1>
+  <h1 translate class="text-center text-warning">Warning!</h1>
   <h3 class="text-center text-white">
-    This wallet appears to be currently open.
+    <span translate>This wallet appears to be currently open.</span>
     <br>
-    Opening the wallet in multiple browser tabs could lead to unexpected results
+    <span translate>Opening the wallet in multiple browser tabs could lead to unexpected results</span>
   </h3>
   <div class="text-center m30v large-12 columns">
     <div class="row">
       <div class="large-12 columns medium-12 small-12 text-center">
-        <a href class="button sucess" ng-click="signout()">Go back</a> 
+        <a href class="button sucess" ng-click="signout()">&laquo; <span translate>Back</span></a> 
         <br>
         <br>
-        <a href ng-click="ignoreLock()">Continue anyways</a> 
+        <a translate href ng-click="ignoreLock()">Continue anyways</a> 
       </div>
     </div>
   </div>

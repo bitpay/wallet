@@ -65,6 +65,7 @@
     "grunt-markdown": "0.5.0",
     "grunt-mocha-test": "0.8.2",
     "grunt-shell": "0.6.4",
+    "grunt-angular-gettext": "^0.2.15",
     "istanbul": "0.2.10",
     "karma": "0.12.9",
     "karma-chrome-launcher": "0.1.3",
