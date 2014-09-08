@@ -235,7 +235,8 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   self.socket.on('connect', function() {
 
     self.socket.on('disconnect', function() {
-      self.cleanUp();
+      var pubKey = self.getKey().public.toString('hex');
+      self.socket.emit('subscribe', pubKey);
     });
 
     if (typeof cb === 'function') cb();
