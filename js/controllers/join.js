@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('JoinController',
 
     $scope.hideAdv=true;
 
-
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
     var _scan = function(evt) {
       if (localMediaStream) {
