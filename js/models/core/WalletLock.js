@@ -6,12 +6,23 @@ function WalletLock(storage, walletId, timeoutMin) {
   preconditions.checkArgument(storage);
   preconditions.checkArgument(walletId);
 
-  this.sessionId = storage.getSessionId();
   this.storage = storage;
   this.timeoutMin = timeoutMin || 5;
   this.key = WalletLock._keyFor(walletId);
-  //  this._setLock(function() {});
 }
+
+
+WalletLock.prototype.init = function(cb) {
+  preconditions.checkArgument(cb);
+  var self = this;
+
+  self.storage.getSessionId(function(sid) {
+    preconditions.checkState(sid);
+
+    self.sessionId = sid;
+    cb();
+  });
+};
 
 WalletLock._keyFor = function(walletId) {
   return 'lock' + '::' + walletId;
@@ -22,18 +33,27 @@ WalletLock.prototype._isLockedByOther = function(cb) {
 
   this.storage.getGlobal(this.key, function(json) {
     var wl = json ? JSON.parse(json) : null;
-    var t = wl ? (Date.now() - wl.expireTs) : false;
-    // is not locked?
-    if (!wl || t > 0 || wl.sessionId === self.sessionId)
+    if (!wl || !wl.expireTs)
+      return cb(false);
+
+    var expiredSince = Date.now() - wl.expireTs;
+    if (expiredSince >= 0)
+      return cb(false);
+
+    var isMyself = wl.sessionId === self.sessionId;
+
+    if (isMyself)
       return cb(false);
 
     // Seconds remainding
-    return cb(parseInt(-t / 1000.));
+    return cb(parseInt(-expiredSince / 1000));
   });
 };
 
 
 WalletLock.prototype._setLock = function(cb) {
+  preconditions.checkArgument(cb);
+  preconditions.checkState(this.sessionId);
 
   this.storage.setGlobal(this.key, {
     sessionId: this.sessionId,
@@ -44,17 +64,30 @@ WalletLock.prototype._setLock = function(cb) {
 };
 
 
-WalletLock.prototype.keepAlive = function(cb) {
+WalletLock.prototype._doKeepAlive = function(cb) {
+  preconditions.checkArgument(cb);
   preconditions.checkState(this.sessionId);
+
   var self = this;
 
   this._isLockedByOther(function(t) {
-
     if (t)
-      return cb(new Error('Wallet is already open. Close it to proceed or wait ' + t + ' seconds if you close it already'));
+      return cb(new Error('LOCKED: Wallet is locked for ' + t + ' srcs'));
 
     self._setLock(cb);
   });
+};
+
+
+
+WalletLock.prototype.keepAlive = function(cb) {
+  var self = this;
+
+  if (!self.sessionId) {
+    return self.init(self._doKeepAlive.bind(self, cb));
+  };
+
+  return this._doKeepAlive(cb);
 };
 
 

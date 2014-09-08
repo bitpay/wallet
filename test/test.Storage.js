@@ -39,15 +39,13 @@ describe('Storage model', function() {
     s._write(fakeWallet + timeStamp, 'value', function() {
       s._read(fakeWallet + timeStamp, function(v) {
         v.should.equal('value');
-        localMock.removeItem(fakeWallet + timeStamp);
-        done();
+        localMock.removeItem(fakeWallet + timeStamp, done);
       });
     });
   });
   it('should be able to set a value', function(done) {
     s.set(fakeWallet, timeStamp, 1, function() {
-      localMock.removeItem(fakeWallet + '::' + timeStamp);
-      done();
+      localMock.removeItem(fakeWallet + '::' + timeStamp, done);
     });
   });
   var getSetData = [
@@ -68,11 +66,11 @@ describe('Storage model', function() {
     null
   ];
   getSetData.forEach(function(obj) {
-    it('should be able to set a value and get it for ' + JSON.stringify(obj), function() {
+    it('should be able to set a value and get it for ' + JSON.stringify(obj), function(done) {
       s.set(fakeWallet, timeStamp, obj, function() {
         s.get(fakeWallet, timeStamp, function(obj2) {
           JSON.stringify(obj2).should.equal(JSON.stringify(obj));
-          localMock.removeItem(fakeWallet + '::' + timeStamp);
+          localMock.removeItem(fakeWallet + '::' + timeStamp, done);
         });
       });
     });
@@ -91,15 +89,13 @@ describe('Storage model', function() {
         };
         var encrypted = storage.export(obj);
         encrypted.length.should.be.greaterThan(10);
-        localMock.removeItem(fakeWallet + '::' + timeStamp);
-        done();
-
+        localMock.removeItem(fakeWallet + '::' + timeStamp, done);
       });
     });
   });
 
-  describe('#remove', function(done) {
-    it('should remove an item', function() {
+  describe('#remove', function() {
+    it('should remove an item', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
@@ -109,8 +105,10 @@ describe('Storage model', function() {
         s.get('1', 'hola', function(v) {
           v.should.equal('juan');
           s.remove('1', 'hola', function() {
-            should.not.exist(s.get('1', 'hola'));
-            done();
+            s.get('1', 'hola', function(v) {
+              should.not.exist(v);
+              done();
+            });
           });
         })
       })
@@ -169,62 +167,75 @@ describe('Storage model', function() {
 
   if (is_browser) {
     describe('#getSessionId', function() {
-      it('should get SessionId', function() {
+      it('should get SessionId', function(done) {
         var s = new Storage({
           storage: localMock,
           sessionStorage: sessionMock,
           password: 'password'
         });
-        var sid = s.getSessionId();
-        should.exist(sid);
-        var sid2 = s.getSessionId();
-        sid2.should.equal(sid);
+        s.getSessionId(function(sid) {
+          should.exist(sid);
+          s.getSessionId(function(sid2) {
+            sid2.should.equal(sid);
+            done();
+          });
+        });
       });
     });
   }
 
   describe('#getWallets', function() {
-    it('should retreive wallets from storage', function() {
+    it('should retreive wallets from storage', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.set('1', "hola", 'juan');
-      s.set('2', "hola", 'juan');
-      s.setName(1, 'hola');
-      s.getWallets()[0].should.deep.equal({
-        id: '1',
-        name: 'hola',
-      });
-      s.getWallets()[1].should.deep.equal({
-        id: '2',
-        name: undefined
+      s.set('1', "hola", 'juan', function() {
+        s.set('2', "hola", 'juan', function() {
+          s.setName(1, 'hola', function() {
+            s.getWallets(function(ws) {
+              ws[0].should.deep.equal({
+                id: '1',
+                name: 'hola',
+              });
+              ws[1].should.deep.equal({
+                id: '2',
+                name: undefined
+              });
+              done();
+            });
+          });
+        });
       });
     });
   });
-  describe('#deleteWallet', function() {
+  describe('#deleteWallet', function(done) {
     it('should delete a wallet', function() {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.set('1', "hola", 'juan');
-      s.set('2', "hola", 'juan');
-      s.setName(1, 'hola');
-
-      s.deleteWallet('1');
-      s.getWallets().length.should.equal(1);
-      s.getWallets()[0].should.deep.equal({
-        id: '2',
-        name: undefined
+      s.set('1', "hola", 'juan', function() {
+        s.set('2', "hola", 'juan', function() {
+          s.deleteWallet('1', function() {
+            s.getWallets(function(ws) {
+              s.getWallets().length.should.equal(1);
+              ws[0].should.deep.equal({
+                id: '2',
+                name: undefined
+              });
+              done();
+            });
+          });
+        });
       });
     });
   });
 
   describe('#setFromObj', function() {
-    it('set localstorage from an object', function() {
+    it('set localstorage from an object', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
@@ -235,42 +246,57 @@ describe('Storage model', function() {
         'opts': {
           'name': 'nameid1'
         },
+      }, function() {
+        s.get('id1', 'key', function(v) {
+          v.should.equal('val');
+          done();
+        });
       });
-
-      s.get('id1', 'key').should.equal('val');
-
     });
   });
 
 
   describe('#globals', function() {
-    it('should set, get and remove keys', function() {
+    it('should set, get and remove keys', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
+
       s.setGlobal('a', {
         b: 1
+      }, function() {
+        s.getGlobal('a', function(v) {
+
+          JSON.parse(v).should.deep.equal({
+            b: 1
+          });
+          s.removeGlobal('a', function() {
+            s.getGlobal('a', function(v) {
+              should.not.exist(v);
+              done();
+            });
+          });
+        });
       });
-      JSON.parse(s.getGlobal('a')).should.deep.equal({
-        b: 1
-      });
-      s.removeGlobal('a');
-      should.not.exist(s.getGlobal('a'));
     });
   });
 
 
   describe('session storage', function() {
-    it('should get a session ID', function() {
+    it('should get a session ID', function(done) {
       var s = new Storage({
         storage: localMock,
         sessionStorage: sessionMock,
         password: 'password'
       });
-      s.getSessionId().length.should.equal(16);
-      (new Buffer(s.getSessionId(), 'hex')).length.should.equal(8);
+      s.getSessionId(function(s) {
+        should.exist(s);
+        s.length.should.equal(16);
+        (new Buffer(s, 'hex')).length.should.equal(8);
+        done();
+      });
     });
   });
 });
