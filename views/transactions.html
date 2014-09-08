@@ -1,17 +1,18 @@
 <div class="transactions" data-ng-controller="TransactionsController" data-ng-init="update()">
   <div ng-show='$root.wallet.isReady()'>
-    <h1 ng-show="wallet.isShared()"> Transaction Proposals <small>({{txs.length}})</small></h1>
+    <h1 ng-show="wallet.isShared()"> 
+      <span translate>Transaction Proposals</span> <small>({{txs.length}})</small></h1>
     <div class="large-12" ng-show="wallet.isShared()">
 
       <div class="last-transactions" ng-repeat="tx in txs | paged">
         <div ng-include="'views/includes/transaction.html'"></div>
       </div>
-      <p ng-show="txs.length == 0">No transactions proposals yet.</p>
+      <p ng-show="txs.length == 0"><span translate>No transactions proposals yet.</span></p>
       <pagination ng-show="txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
 
     <h1 ng-class="{'line-dashed': wallet.isShared()}">
-      Last transactions 
+      <span translate>Last transactions</span> 
       <small ng-hide="wallet.isShared() || !loading">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </small>   
@@ -20,13 +21,13 @@
     <div class="large-12">
       <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
         <a class="text-gray active" ng-click="toogleLast()"
-          ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">[ Show ]</a>
+          ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">[ <span translate>Show</span> ]</a>
         <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading"
-          loading="Updating" ng-show="lastShowed && !loading">[ Hide ]</a>
+          loading="Updating" ng-show="lastShowed && !loading">[ <span translate>Hide</span> ]</a>
       </div>
 
       <div class="btransactions" ng-if="lastShowed">
-        <div ng-if="!blockchain_txs[0].txid && !loading">
+        <div translate ng-if="!blockchain_txs[0].txid && !loading">
           No transactions yet.
         </div>
         <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
@@ -39,11 +40,11 @@
             </div>
             <div class="large-4 medium-5 small-8 columns text-right">
               <div data-ng-show="btx.firstSeenTs">
-                first seen at
+                <span translate>first seen at</span>
                 <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
               </div>
               <div data-ng-show="btx.time && !btx.firstSeenTs">
-                mined at
+                <span translate>mined at</span>
                 <time>{{btx.time * 1000 | amCalendar}}</time>
               </div>
             </div>
@@ -74,11 +75,11 @@
           </div>
           <div class="last-transactions-footer">
             <div class="large-6 medium-6 small-6 columns">
-              <p class="size-12"> Fees: {{btx.fees | noFractionNumber}} {{$root.unitName}}</p>
-              <p class="size-12">Confirmations: {{btx.confirmations || 0}}</p>
+              <p class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.unitName}}</p>
+                <p class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</p>
             </div>
             <div class="large-6 medium-6 small-6 columns text-right">
-              <p class="label size-14">Total: {{btx.valueOut| noFractionNumber}} {{$root.unitName}}</p>
+              <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.unitName}}</p>
             </div>
           </div>
         </div>

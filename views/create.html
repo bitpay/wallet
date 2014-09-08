@@ -1,7 +1,7 @@
 <div ng-controller="CreateController">
   <div data-alert class="loading-screen" ng-show="loading">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
-    Creating wallet...
+    <span translate>Creating wallet...</span>
   </div>
   <div class="setup" ng-show="!loading">
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
@@ -14,19 +14,21 @@
           <div class="box-setup oh">
             <img ng-if="!isSetupWalletPage && !isMobile" class="right m15t" src="img/step-1.svg" alt="Step 1">
             <img ng-if="isSetupWalletPage && !isMobile" class="right m15t" src="img/step-2.svg" alt="Step 2">
-            <h1 class="text-secondary line-sidebar-b">Create new wallet</h1>
-            <label ng-show="!isSetupWalletPage">Wallet name
-              <input type="text" placeholder="Family vacation funds" class="form-control" ng-model="walletName">
+            <h1 translate class="text-secondary line-sidebar-b">Create new wallet</h1>
+            <label ng-show="!isSetupWalletPage"><span translate>Wallet name</span>
+              <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName">
             </label>
             <div class="row" ng-show="isSetupWalletPage">
               <div ng-if="totalCopayers > 1">
-                <label for="Name">Your name</label>
-                  <input id="Name" type="text" placeholder="Name" class="form-control" ng-model="$parent.myNickname">
+                <label translate for="Name">Your name</label>
+                <input id="Name" type="text" placeholder="{{'Name'|translate}}" class="form-control" ng-model="$parent.myNickname">
               </div>
               <div>
-                <label for="walletPassword">Your Wallet Password <small data-options="disable_for_touch:true" class="has-tip text-gray" tooltip="doesn't need to be shared" >Required</small>
+                <label for="walletPassword"><span translate>Your Wallet Password</span> 
+                  <small translate data-options="disable_for_touch:true" class="has-tip text-gray" tooltip="doesn't need to be shared" >Required</small>
                 </label>
-                  <input id="walletPassword" type="password" placeholder="Choose your password" class="form-control"
+                  <input id="walletPassword" type="password"
+                  placeholder="{{'Choose your password'|translate}}" class="form-control"
                   ng-model="$parent.walletPassword" 
                   name="walletPassword"
                   check-strength="passwordStrength" 
@@ -38,7 +40,7 @@
                   tooltip-placement="top">
                   
                   <input type="password" 
-                  placeholder="Repeat password"
+                  placeholder="{{'Repeat password'|translate}}"
                   name="walletPasswordConfirm"
                   ng-model="walletPasswordConfirm" 
                   match="walletPassword" 
@@ -46,14 +48,14 @@
               </div>
 
               <a class="expand small"  ng-click="hideAdv=!hideAdv">
-                <span ng-hide="!hideAdv">Show</span>
-                <span ng-hide="hideAdv">Hide</span>
-                advanced options
+                <span translate ng-hide="!hideAdv">Show</span> 
+                <span translate ng-hide="hideAdv">Hide</span> 
+                <span translate>advanced options</span>
               </a>
               <div ng-hide="hideAdv">
                 <p>
                 <input type="text" 
-                placeholder="Private Key (Hex)"
+                placeholder="{{'Private Key (Hex)'|translate}}"
                 name="private"
                 ng-model="private" 
                 >
@@ -62,13 +64,13 @@
             </div>
             <div class="row" ng-show="!isSetupWalletPage">
               <div class="large-6 medium-6 columns">
-                <label>Select total number of copayers (*)
+                <label><span translate>Select total number of copayers (*)</span>
                   <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
                   </select>
                 </label>
               </div>
               <div class="large-6 medium-6 columns">
-                <label>Select required signatures (*)
+                <label><span translate>Select required signatures (*)</span>
                   <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues" ng-disabled="totalCopayers == 1">
                   </select>
                 </label>
@@ -83,15 +85,16 @@
                 width="50px">
               </div>
             </div>
-            <p class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
+            <p translate class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
             <div class="text-right">
-              <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; Back</a>
+              <a ng-show="!isSetupWalletPage" class="back-button m20r"
+                href="#!/">&laquo; <span translate>Back</span></a>
               <a ng-show="isSetupWalletPage" class="back-button m20r"
-                ng-click="setupWallet()">&laquo; Back</a>
-              <button ng-show="isSetupWalletPage" type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
+                ng-click="setupWallet()">&laquo; <span translate>Back</span></a>
+              <button translate ng-show="isSetupWalletPage" type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
-              <a class="button secondary m0" ng-show="!isSetupWalletPage"
+              <a translate class="button secondary m0" ng-show="!isSetupWalletPage"
                 ng-click="setupWallet()">Next</a>
             </div>
           </div>

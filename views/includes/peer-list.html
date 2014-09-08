@@ -1,9 +1,9 @@
 <div ng-controller="CopayersController" class="copayers">
   <h3>
     <i class="fi-torsos-all size-21 m20r"></i>
-    Copayers
+    <span translate>Copayers</span>
     <small class="m15l">
-      {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}}
+      {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}}
     </small>
   </h3>
 
@@ -15,7 +15,9 @@
       width="30">
 
     <div class="ellipsis" tooltip-placement="top" tooltip="{{copayer.nick}}">
-      <small class="text-gray" ng-show="copayer.index == 0">Me</small>
+      <small class="text-gray" ng-show="copayer.index == 0">
+        <span translate>Me</span>
+        </small>
       <small class="text-gray" ng-show="copayer.index > 0">{{copayer.nick}}</small>
     </div>
   </div> 

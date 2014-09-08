@@ -45,6 +45,11 @@ js/copayMain.js
 css/copay.min.css
 css/vendors.min.css
 
+# translation
+po/*
+!po/*.po
+js/translations.js
+
 webapp
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip

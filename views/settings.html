@@ -6,50 +6,52 @@
     </div>
     <div class="large-8 columns line-dashed-setup-v">
       <div class="box-setup">
-        <h1 class="text-white line-sidebar-b">{{title}}</h1>
+        <h1 class="text-white line-sidebar-b">{{title|translate}}</h1>
         <form name="settingsForm">
           <fieldset>
-            <legend>Bitcoin Network</legend>
+            <legend translate>Language</legend>
+            <select class="form-control" ng-model="selectedLanguage"
+              ng-options="o.name for o in availableLanguages" required>
+            </select>
+          </fieldset>
+          <fieldset>
+            <legend translate>Bitcoin Network</legend>
             <input id="network-name" type="checkbox" ng-model="networkName"
             ng-true-value="livenet" ng-false-value="testnet" class="form-control" ng-click="changeNetwork()"
             ng-disabled="forceNetwork" 
             ng-checked="networkName == 'livenet' ? true : false">
             <label for="network-name">Livenet</label>
-            <div ng-show="forceNetwork">
-              Network has been fixed to
-              <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a>
-              for options to use Copay on both livenet and testnet.
+            <div translate ng-show="forceNetwork">
+              Network has been fixed to <strong>{{networkName}}</strong> in this setup. See <a href="https://copay.io">copay.io</a> for options to use Copay on both livenet and testnet.
             </div>
           </fieldset>
           <fieldset>
-            <legend>Wallet Unit</legend>
+            <legend translate>Wallet Unit</legend>
             <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
             </select>
           </fieldset>
           <fieldset>
-            <legend>Alternative Currency</legend>
+            <legend translate>Alternative Currency</legend>
             <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" required>
             </select>
           </fieldset>
           <fieldset>
-            <legend>Insight API server</legend>
+            <legend translate>Insight API server</legend>
             <label for="insight-host">Host</label>
             <input type="text" ng-model="insightHost" class="form-control" name="insight-host">
-            <label for="insight-port">Port</label>
+            <label for="insight-port" translate>Port</label>
             <input type="number" ng-model="insightPort" class="form-control" name="insight-port">
             <input id="insight-secure" type="checkbox" ng-model="insightSecure" class="form-control" ng-click="changeInsightSSL()">
-            <label for="insight-secure">Use SSL</label>
+            <label for="insight-secure" translate>Use SSL</label>
 
-            <p class="small">
-            Insight API server is open-source software.  You can run your own
-            instance, check <a href="http://insight.is" target="_blank">Insight
-              API Homepage</a></p>
+            <p translate class="small">
+            Insight API server is open-source software.  You can run your own instance, check <a href="http://insight.is" target="_blank">Insight API Homepage</a></p>
 
           </fieldset>
 
           <div class="text-right">
-            <a class="back-button text-white m20r" href="#!/">&laquo; Back</a>
-            <button type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+            <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
+            <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
               Save
             </button>
           </div>

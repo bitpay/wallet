@@ -1,5 +1,6 @@
 'use strict';
 var defaultConfig = {
+  defaultLanguage: 'en',
   // DEFAULT network (livenet or testnet)
   networkName: 'testnet',
   forceNetwork: false,
