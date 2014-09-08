@@ -17,6 +17,8 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.isRateAvailable = false;
     $scope.rateService = rateService;
 
+
+
     rateService.whenAvailable(function() {
       $scope.isRateAvailable = true;
       $scope.$digest();
@@ -100,6 +102,9 @@ angular.module('copayApp.controllers').controller('SendController',
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
     $scope.isMobile = isMobile.any();
+
+    if (!window.cordova && !navigator.getUserMedia) 
+      $scope.disableScanner =1;
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
