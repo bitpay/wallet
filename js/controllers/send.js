@@ -121,7 +121,15 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
 
-      function done(ntxid, merchantData) {
+      function done(err, ntxid, merchantData) {
+        if (err) {
+          var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created';
+          notification.error('Error', message);
+          $scope.loading = false;
+          $scope.loadTxs();
+          return;
+        }
+
         // If user is granted the privilege of choosing
         // their own amount, add it to the tx.
         if (merchantData && +merchantData.total === 0) {
@@ -394,7 +402,8 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.getAvailableAmount = function() {
-      return ((($rootScope.availableBalance * config.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / config.unitToSatoshi);
+      var amount = ((($rootScope.availableBalance * config.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / config.unitToSatoshi);
+      return amount > 0 ? amount : 0;
     };
 
     $scope.topAmount = function(form) {
