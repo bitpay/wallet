@@ -20,7 +20,7 @@
                   not valid</small>
               </label>
               <div class="small-10 columns">
-                <input type="text" id="address" name="address" ng-disabled="loading"
+                <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
                 placeholder="Send to" ng-model="address" ng-change="onChanged()" valid-address required>
                 <small class="icon-input" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.address.$invalid && address"><i class="fi-x"></i></small>
@@ -129,8 +129,9 @@
     <div class="large-6 columns show-for-large-up" ng-show="!!$root.merchant">
       <div class="send-note">
         <h6>Send to</h6>
-        <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}">
-        {{$root.merchant.request_url}}&nbsp;
+        <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}"
+        title="{{$root.merchant.request_url}}">
+        {{$root.merchant.domain}}&nbsp;
         </p>
         <h6>Total amount for this transaction:</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">

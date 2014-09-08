@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('validAddress', function() {
+  .directive('validAddress', ['$rootScope', function($rootScope) {
     var bitcore = require('bitcore');
     var Address = bitcore.Address;
     var bignum = bitcore.Bignum;
@@ -10,6 +10,14 @@ angular.module('copayApp.directives')
       require: 'ngModel',
       link: function(scope, elem, attrs, ctrl) {
         var validator = function(value) {
+
+          // If we're setting the domain, ignore the change.
+          if ($rootScope.merchant
+              && $rootScope.merchant.domain
+              && value === $rootScope.merchant.domain) {
+            ctrl.$setValidity('validAddress', true);
+            return value;
+          }
 
           // Regular url
           if (/^https?:\/\//.test(value)) {
@@ -35,7 +43,7 @@ angular.module('copayApp.directives')
         ctrl.$formatters.unshift(validator);
       }
     };
-  })
+  }])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var bitcore = require('bitcore');
