@@ -151,7 +151,7 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.read = function(walletId, skipFields, cb) {
-  var self = this;
+  var self = this, err;
   var obj = {};
   obj.id = walletId;
 
@@ -159,7 +159,7 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
     for (var ii in ret) {
       obj[ii] = ret[ii];
     }
-    return cb(self.fromObj(obj, skipFields));
+    return cb(err, self.fromObj(obj, skipFields));
   });
 };
 
@@ -271,11 +271,12 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
  */
 WalletFactory.prototype.open = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
-  var self = this,
-    err;
+  var self = this;
   self.storage._setPassphrase(passphrase);
-  self.read(walletId, null, function(w) {
-    w.store(function() {
+  self.read(err, walletId, null, function(w) {
+    if (err) return cb(err);
+
+    w.store(function(err) {
       self.storage.setLastOpened(walletId, function() {
         return cb(err, w);
       });
