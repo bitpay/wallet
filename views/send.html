@@ -26,7 +26,7 @@
                 <small class="icon-input" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.address.$invalid && address"><i class="fi-x"></i></small>
               </div>
-              <div class="small-2 columns" ng-hide="showScanner">
+              <div class="small-2 columns"  ng-hide="disableScanner" ng-hide="showScanner">
                 <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera"></i></a>
               </div>
               <div class="small-2 columns" ng-show="showScanner">
