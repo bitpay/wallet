@@ -85,6 +85,7 @@ function assertObjectEqual(a, b, msg) {
 
 
 describe('WalletFactory model', function() {
+
   var config = {
     Network: FakeNetwork,
     Blockchain: FakeBlockchain,
@@ -121,42 +122,46 @@ describe('WalletFactory model', function() {
   it('should be able to create wallets', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
     wf.create(null, function(err, w) {
-
-console.log('[test.WalletFactory.js.123]'); //TODO
-      should.not.exist(err);
       should.exist(w);
-      w.should.be.instanceof('WalletFactory');
+      should.not.exist(err);
       done();
     });
   });
 
-  it('should be able to create wallets with given pk', function() {
+  it('should be able to create wallets with given pk', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
     var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-    var w = wf.create({
+    wf.create({
       privateKeyHex: priv,
+    }, function(err, w) {
+      w.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+      should.not.exist(err);
+      done();
     });
-    w.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
   });
 
-  it('should be able to create wallets with random pk', function() {
+  it('should be able to create wallets with random pk', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
-    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-    var w1 = wf.create();
-    var w2 = wf.create();
-    w1.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
-      w2.privateKey.toObj().extendedPrivateKeyString
-    );
+    wf.create(null, function(err, w1) {
+      wf.create(null, function(err, w2) {
+        w1.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+          w2.privateKey.toObj().extendedPrivateKeyString
+        );
+        done();
+      });
+    });
   });
 
 
-  it('should be able to get wallets', function() {
+  it.only('should be able to get wallets', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create();
-
-    var w2 = wf.read(w.id);
-    should.exist(w2);
-    w2.id.should.equal(w.id);
+    wf.create(null, function(err,w){
+      wf.read(w.id, [], function(err, w2){
+        should.exist(w2);
+        w2.id.should.equal(w.id);
+        done();
+      });
+    });
   });
 
 

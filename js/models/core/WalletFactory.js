@@ -91,6 +91,8 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   preconditions.checkArgument(obj);
 
 
+  // not stored options
+  obj.opts = obj.opts || {};
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
 
   // this is only used if private key or public key ring is skipped
@@ -231,7 +233,6 @@ WalletFactory.prototype.create = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
-console.log('[WalletFactory.js.165]'); //TODO
   var w = new Wallet(opts);
   var self = this;
   w.store(function() {
