@@ -21,7 +21,6 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.deleteWallet = function() {
       var w = $rootScope.wallet;
-      w.disconnect();
       walletFactory.delete(w.id, function() {
         controllerUtils.logout();
       });
