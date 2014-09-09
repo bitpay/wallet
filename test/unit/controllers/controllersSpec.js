@@ -40,7 +40,7 @@ describe("Unit: Controllers", function() {
   });
 
 
-  describe('Backup Controller', function() {
+  describe('More Controller', function() {
     var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
@@ -479,7 +479,30 @@ describe("Unit: Controllers", function() {
     });
   });
 
+  describe('Copayers Controller', function() {
+    var saveDownload = null;
+    var ctrl;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
 
+      $rootScope.wallet = new FakeWallet(walletConfig);
+      ctrl = $controller('CopayersController', {
+        $scope: scope,
+        $modal: {},
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(ctrl);
+    });
+
+    it('Delete Wallet', function() {
+      expect(scope.wallet).not.equal(undefined);
+      scope.deleteWallet();
+      expect(scope.wallet).equal(undefined);
+    });
+
+  });
 
   describe('Join Controller', function() {
     var what;
