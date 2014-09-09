@@ -15,7 +15,7 @@
       <div class="inner-wrap">
         <span class="status" ng-if="$root.reconnecting">
           <i class="fi-loop icon-rotate m15r"></i>
-          Attempting to reconnect...
+          <span translate> Network Error. Attempting to reconnect...</span>
         </span>
         <nav class="tab-bar" ng-class="{'hide-tab-bar' : !$root.wallet ||
           !$root.wallet.isReady() || $root.wallet.isLocked}">

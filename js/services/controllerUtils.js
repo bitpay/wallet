@@ -70,8 +70,8 @@ angular.module('copayApp.services')
         }
       });
 
-      w.on('tx', function() {
-        notification.funds('Funds received!', tx.address);
+      w.on('tx', function(address) {
+        notification.funds('Funds received!', address);
         root.updateBalance(function() {
           $rootScope.$digest();
         });
