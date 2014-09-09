@@ -44,7 +44,6 @@ function WalletFactory(config, version) {
   this.network = new this.Network(config.network);
   this.blockchain = new this.Blockchain(config.network);
 
-  this.networkName = config.networkName;
   this.walletDefaults = config.wallet;
   this.version = version;
 };
@@ -81,9 +80,6 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
 
   // not stored options
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
-
-  // this is only used if private key or public key ring is skipped
-  obj.opts.networkName = this.networkName;
 
   skipFields = skipFields || [];
   skipFields.forEach(function(k) {
@@ -178,7 +174,7 @@ WalletFactory.prototype.create = function(opts) {
   log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
   var privOpts = {
-    networkName: this.networkName,
+    networkName: opts.networkName,
   };
 
   if (opts.privateKeyHex && opts.privateKeyHex.length > 1) {
@@ -192,7 +188,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.lockTimeoutMin = this.walletDefaults.idleDurationMin;
 
   opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
-    networkName: this.networkName,
+    networkName: opts.networkName,
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
@@ -203,7 +199,7 @@ WalletFactory.prototype.create = function(opts) {
   log.debug('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
-    networkName: this.networkName,
+    networkName: opts.networkName,
   });
   log.debug('\t### TxProposals Initialized');
 
@@ -332,11 +328,11 @@ WalletFactory.prototype.decodeSecret = function(secret) {
  */
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
   var self = this;
-  var s = self.decodeSecret(secret);
-  if (!s) return cb('badSecret');
+  var decodedSecret = self.decodeSecret(secret);
+  if (!decodedSecret) return cb('badSecret');
 
   var privOpts = {
-    networkName: this.networkName,
+    networkName: decodedSecret.networkName,
   };
 
   if (privateHex && privateHex.length > 1) {
@@ -350,7 +346,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     copayerId: privateKey.getId(),
     privkey: privateKey.getIdPriv(),
     key: privateKey.getIdKey(),
-    secretNumber: s.secretNumber,
+    secretNumber: decodedSecret.secretNumber,
   };
   self.network.cleanUp();
 
@@ -365,7 +361,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
   });
 
   self.network.start(opts, function() {
-    self.network.greet(s.pubKey, opts.secretNumber);
+    self.network.greet(decodedSecret.pubKey, opts.secretNumber);
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
         if (data.networkName !== self.networkName) {
@@ -377,8 +373,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.passphrase = passphrase;
         data.opts.id = data.walletId;
         var w = self.create(data.opts);
-        w.sendWalletReady(s.pubKey);
-        //w.seedCopayer(s.pubKey);
+        w.sendWalletReady(decodedSecret.pubKey);
         return cb(null, w);
       } else {
         return cb('walletFull', w);
