@@ -125,12 +125,22 @@ TxProposal._trim = function(o) {
 TxProposal.fromObj = function(o, forceOpts) {
   preconditions.checkArgument(o.builderObj);
   delete o['builder'];
+  forceOpts = forceOpts || {};
+
+
+  // force opts is requested.
+  for (var k in forceOpts) {
+    o.builderObj.opts[k] = forceOpts[k];
+  }
+  // Handle undef options
+  if (_.isUndefined(forceOpts.fee) && _.isUndefined(forceOpts.feeSat)) {
+    if (o.builderObj.opts) {
+      o.builderObj.opts.fee = undefined;
+      o.builderObj.opts.feeSat = undefined;
+    }
+  }
 
   try {
-    // force opts is requested.
-    for (var k in forceOpts) {
-      o.builderObj.opts[k] = forceOpts[k];
-    }
     o.builder = TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
     throw new Error("Invalid or Incompatible Backup Detected.");
