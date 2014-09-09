@@ -48,13 +48,13 @@ var FAKE_OPTS = {
 describe('Insight model', function() {
 
   before(function() {
-    sinon.stub(Insight.prototype, "getSocket", function() {
+    sinon.stub(Insight.prototype, "_getSocketIO", function() {
       return new FakeSocket();
     });
   });
 
   after(function() {
-    Insight.prototype.getSocket.restore();
+    Insight.prototype._getSocketIO.restore();
   });
 
   it('should create an instance', function() {
@@ -65,7 +65,8 @@ describe('Insight model', function() {
 
   it('should subscribe to inventory', function(done) {
     var blockchain = new Insight(FAKE_OPTS);
-    var emitSpy = sinon.spy(blockchain.socket, 'emit');
+    var socket = blockchain.getSocket();
+    var emitSpy = sinon.spy(socket, 'emit');
     blockchain.on('connect', function() {
       emitSpy.calledWith('subscribe', 'inv');
       done();
@@ -75,6 +76,7 @@ describe('Insight model', function() {
   it('should be able to destroy the instance', function(done) {
     var blockchain = new Insight(FAKE_OPTS);
     blockchain.status.should.be.equal('disconnected');
+    var socket = blockchain.getSocket();
     blockchain.on('connect', function() {
       blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
       blockchain.getSubscriptions().length.should.equal(1);
@@ -87,7 +89,8 @@ describe('Insight model', function() {
 
   it('should subscribe to an address', function() {
     var blockchain = new Insight(FAKE_OPTS);
-    var emitSpy = sinon.spy(blockchain.socket, 'emit');
+    var socket = blockchain.getSocket();
+    var emitSpy = sinon.spy(socket, 'emit');
 
     blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
     blockchain.getSubscriptions().length.should.equal(1);
@@ -104,7 +107,8 @@ describe('Insight model', function() {
 
   it('should subscribe to a list of addresses', function() {
     var blockchain = new Insight(FAKE_OPTS);
-    var emitSpy = sinon.spy(blockchain.socket, 'emit');
+    var socket = blockchain.getSocket();
+    var emitSpy = sinon.spy(socket, 'emit');
 
     blockchain.subscribe([
       'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM',
@@ -354,8 +358,10 @@ describe('Insight model', function() {
   describe('Events', function() {
     it('should emmit event on a new block', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
+      var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
-        blockchain.socket.emit('block', '12312312');
+        var socket = blockchain.getSocket();
+        socket.emit('block', '12312312');
       });
 
       blockchain.on('block', function(blockid) {
@@ -364,11 +370,13 @@ describe('Insight model', function() {
       });
     });
 
-    it('should emmit event on a transaction for subscried addresses', function(done) {
+    it('should emmit event on a transaction for subscribed addresses', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
+      var socket = blockchain.getSocket();
       blockchain.subscribe('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY');
       blockchain.on('connect', function() {
-        blockchain.socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
+        var socket = blockchain.getSocket();
+        socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
       });
 
       blockchain.on('tx', function(ev) {
@@ -380,8 +388,10 @@ describe('Insight model', function() {
 
     it('should\'t emmit event on a transaction for non subscribed addresses', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
+      var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
-        blockchain.socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
+        var socket = blockchain.getSocket();
+        socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
         setTimeout(function() { done(); }, 20);
       });
 
@@ -392,6 +402,7 @@ describe('Insight model', function() {
 
     it('should emmit event on connection', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
+      var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
         done();
       });
@@ -399,8 +410,10 @@ describe('Insight model', function() {
 
     it('should emmit event on disconnection', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
+      var socket = blockchain.getSocket();
       blockchain.on('connect', function() {
-        blockchain.socket.emit('connect_error');
+        var socket = blockchain.getSocket();
+        socket.emit('connect_error');
       });
       blockchain.on('disconnect', function() {
         done();
