@@ -386,6 +386,8 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         w.sendWalletReady(s.pubKey);
         //w.seedCopayer(s.pubKey);
         return cb(null, w);
+      } else {
+        return cb('walletFull', w);
       }
     });
   });
