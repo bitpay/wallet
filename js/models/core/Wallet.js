@@ -653,6 +653,7 @@ Wallet.prototype._setBlockchainListeners = function() {
   this.blockchain.on('disconnect', self.emit.bind(self,'networkError'));
 
   this.blockchain.on('tx', function(tx) {
+console.log('[Wallet.js.655:tx:]',tx); //TODO
     self.emit('tx', tx.address);
   });
 
