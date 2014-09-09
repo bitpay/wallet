@@ -64,7 +64,7 @@ angular.module('copayApp.services')
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.updateGlobalAddresses();
+        root.updateAddressList();
         if (!dontDigest) {
           $rootScope.$digest();
         }
@@ -149,7 +149,7 @@ angular.module('copayApp.services')
     root.startNetwork = function(w, $scope) {
       root.setupRootVariables();
       root.installWalletHandlers(w, $scope);
-      root.updateGlobalAddresses();
+      root.updateAddressList();
       notification.enableHtml5Mode(); // for chrome: if support, enable it
       w.netStart();
     };
@@ -273,21 +273,5 @@ angular.module('copayApp.services')
       });
     }
 
-    // TODO Move this to wallet model!
-    root.updateGlobalAddresses = function() {
-      if (!$rootScope.wallet) return;
-      root.updateAddressList();
-      var currentAddrs = $rootScope.wallet.blockchain.getSubscriptions();
-      var allAddrs = $rootScope.addrInfos;
-
-      var newAddrs = [];
-      for (var i in allAddrs) {
-        var a = allAddrs[i];
-        if (!currentAddrs[a.addressStr] && !a.isChange)
-          newAddrs.push(a.addressStr);
-      }
-
-      $rootScope.wallet.blockchain.subscribe(newAddrs);
-    };
     return root;
   });

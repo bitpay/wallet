@@ -163,7 +163,7 @@ Insight.prototype.subscribe = function(addresses) {
 };
 
 Insight.prototype.getSubscriptions = function(addresses) {
-  return Object.keys(this.subscribed);
+  return this.subscribed;
 }
 
 Insight.prototype.unsubscribe = function(addresses) {
@@ -178,7 +178,7 @@ Insight.prototype.unsubscribe = function(addresses) {
 };
 
 Insight.prototype.unsubscribeAll = function() {
-  this.unsubscribe(this.getSubscriptions());
+  this.unsubscribe(Object.keys(this.subscribed));
 };
 
 Insight.prototype.broadcast = function(rawtx, cb) {
