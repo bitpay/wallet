@@ -26,11 +26,9 @@ angular.module('copayApp.controllers').controller('CopayersController',
       });
     };
 
-    // Cached list of copayers
-    $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
-
     $scope.copayersList = function() {
-      return $rootScope.wallet.getRegisteredPeerIds();
+      $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
+      return $scope.copayers;
     }
 
     $scope.isBackupReady = function(copayer) {
