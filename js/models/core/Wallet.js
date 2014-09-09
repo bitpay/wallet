@@ -108,8 +108,8 @@ inherits(Wallet, events.EventEmitter);
 Wallet.builderOpts = {
   lockTime: null,
   signhash: bitcore.Transaction.SIGNHASH_ALL,
-  fee: null,
-  feeSat: null,
+  fee: undefined,
+  feeSat: undefined,
 };
 
 /**
