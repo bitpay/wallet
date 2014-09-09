@@ -21,17 +21,14 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.deleteWallet = function() {
       var w = $rootScope.wallet;
-      w.disconnect();
       walletFactory.delete(w.id, function() {
         controllerUtils.logout();
       });
     };
 
-    // Cached list of copayers
-    $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
-
     $scope.copayersList = function() {
-      return $rootScope.wallet.getRegisteredPeerIds();
+      $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
+      return $scope.copayers;
     }
 
     $scope.isBackupReady = function(copayer) {
