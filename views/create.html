@@ -25,42 +25,26 @@
               </div>
               <div>
                 <label for="walletPassword"><span translate>Your Wallet Password</span> 
-                  <small translate data-options="disable_for_touch:true" class="has-tip text-gray" tooltip="doesn't need to be shared" >Required</small>
+                  <small translate data-options="disable_for_touch:true" class="has-tip text-gray" tooltip="doesn't need to be shared">Required</small>
                 </label>
-                  <input id="walletPassword" type="password"
-                  placeholder="{{'Choose your password'|translate}}" class="form-control"
-                  ng-model="$parent.walletPassword" 
-                  name="walletPassword"
-                  check-strength="passwordStrength" 
-                  tooltip-html-unsafe="Password strength: 
+                <input id="walletPassword" type="password" placeholder="{{'Choose your password'|translate}}" class="form-control" ng-model="$parent.walletPassword" name="walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: 
                   <i>{{passwordStrength}}</i><br/><span
                     class='size-12'>Tip: Use lower and uppercase, numbers and
-                    symbols</span>" 
-                  tooltip-trigger="focus" required
-                  tooltip-placement="top">
-                  
-                  <input type="password" 
-                  placeholder="{{'Repeat password'|translate}}"
-                  name="walletPasswordConfirm"
-                  ng-model="walletPasswordConfirm" 
-                  match="walletPassword" 
-                  required>
+                    symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
+
+                <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
               </div>
 
-              <a class="expand small"  ng-click="hideAdv=!hideAdv">
+              <a class="expand small" ng-click="hideAdv=!hideAdv">
                 <span translate ng-hide="!hideAdv">Show</span> 
                 <span translate ng-hide="hideAdv">Hide</span> 
                 <span translate>advanced options</span>
               </a>
               <div ng-hide="hideAdv">
                 <p>
-                <input type="text" 
-                placeholder="{{'Private Key (Hex)'|translate}}"
-                name="private"
-                ng-model="private" 
-                >
+                  <input type="text" placeholder="{{'Private Key (Hex)'|translate}}" name="private" ng-model="private">
               </div>
-  
+
             </div>
             <div class="row" ng-show="!isSetupWalletPage">
               <div class="large-6 medium-6 columns">
@@ -78,24 +62,21 @@
             </div>
             <div class="box-setup-copayers" ng-show="!isSetupWalletPage">
               <div class="box-setup-copayers p10">
-                <img class="br100 oh box-setup-copay m10" ng-repeat="i in getNumber(totalCopayers) track by $index"
-                src="./img/satoshi.gif"
-                title="Copayer {{$index+1}}-{{totalCopayers}}"
-                ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}"
-                width="50px">
+                <img class="br100 oh box-setup-copay m10" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" title="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}" width="50px">
               </div>
             </div>
             <p translate class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
+            <div class="text-left">
+              <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
+              <label for="network-name">Use test network</label>
+            </div>
             <div class="text-right">
-              <a ng-show="!isSetupWalletPage" class="back-button m20r"
-                href="#!/">&laquo; <span translate>Back</span></a>
-              <a ng-show="isSetupWalletPage" class="back-button m20r"
-                ng-click="setupWallet()">&laquo; <span translate>Back</span></a>
+              <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; <span translate>Back</span></a>
+              <a ng-show="isSetupWalletPage" class="back-button m20r" ng-click="setupWallet()">&laquo; <span translate>Back</span></a>
               <button translate ng-show="isSetupWalletPage" type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
-              <a translate class="button secondary m0" ng-show="!isSetupWalletPage"
-                ng-click="setupWallet()">Next</a>
+              <a translate class="button secondary m0" ng-show="!isSetupWalletPage" ng-click="setupWallet()">Next</a>
             </div>
           </div>
         </div>
@@ -103,4 +84,3 @@
     </form>
   </div>
 </div>
-
