@@ -2,7 +2,7 @@
   <div ng-show='$root.wallet.isReady()'>
     <h1>
       <span translate>Addresses</span>
-      <span class="button primary small side-bar" ng-click="newAddr()" ng-disabled="loading" loading="Creating"><i class="fi-plus"></i></span>
+      <span class="button primary small side-bar" ng-click="newAddr()" ng-disabled="loading"><i class="fi-plus"></i></span>
     </h1> 
     
     <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">

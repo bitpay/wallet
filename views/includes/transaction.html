@@ -71,24 +71,24 @@
   <div class="large-5 medium-7 small-12 columns" ng-show="!tx.sentTs">
     <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
       <div class="hide-for-small-only">
-        <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+        <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
           <i class="fi-check"></i> <span translate>Sign</span>
         </button>
-        <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
+        <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading">
           <i class="fi-x" ></i> <span translate>Reject</span>
         </button>
       </div>
       <div class="show-for-small-only row m10b">
-        <button class="primary small-5 columns"  ng-click="sign(tx.ntxid)" ng-disabled="loading" loading="Signing">
+        <button class="primary small-5 columns"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
           <i class="fi-check"></i> <span translate>Sign</span>
         </button>
-        <button class="warning small-5 columns" ng-click="reject(tx.ntxid)" ng-disabled="loading" loading="Rejecting">
+        <button class="warning small-5 columns" ng-click="reject(tx.ntxid)" ng-disabled="loading">
           <i class="fi-x" ></i> <span translate>Reject</span>
         </button>
       </div>
     </div>
     <div ng-show="!tx.missingSignatures && !tx.sentTs">
-      <button class="primary"  ng-click="send(tx.ntxid)" ng-disabled="loading" loading="Broadcasting"> <i class=".fi-upload-cloud"></i>
+      <button class="primary"  ng-click="send(tx.ntxid)" ng-disabled="loading"> <i class=".fi-upload-cloud"></i>
         <span translate>Broadcast Transaction</span>
       </button>
     </div>
