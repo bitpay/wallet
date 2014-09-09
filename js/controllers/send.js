@@ -80,7 +80,6 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.showAddressBook = function() {
-      var w = w;
       var flag;
       if (w) {
         for (var k in w.addressBook) {
@@ -120,8 +119,6 @@ angular.module('copayApp.controllers').controller('SendController',
       var address = form.address.$modelValue;
       var amount = parseInt((form.amount.$modelValue * w.settings.unitToSatoshi).toFixed(0));
       var commentText = form.comment.$modelValue;
-
-      var w = w;
 
       function done(err, ntxid, merchantData) {
         if (err) {
@@ -349,7 +346,6 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.toggleAddressBookEntry = function(key) {
-      var w = w;
       w.toggleAddressBookEntry(key);
     };
 
@@ -384,7 +380,6 @@ angular.module('copayApp.controllers').controller('SendController',
       });
 
       modalInstance.result.then(function(entry) {
-        var w = w;
 
         $timeout(function() {
           $scope.loading = false;
@@ -421,7 +416,6 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.send = function(ntxid, cb) {
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
-      var w = w;
       w.sendTx(ntxid, function(txid, merchantData) {
         if (!txid) {
           notification.error('Error', 'There was an error sending the transaction');
@@ -446,7 +440,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.sign = function(ntxid) {
       $scope.loading = true;
-      var w = w;
       w.sign(ntxid, function(ret) {
         if (!ret) {
           notification.error('Error', 'There was an error signing the transaction');
@@ -466,7 +459,6 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.reject = function(ntxid) {
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
-      var w = w;
       w.reject(ntxid);
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
       $scope.loading = false;
