@@ -205,8 +205,26 @@ describe('Wallet model', function() {
     f.should.throw(Error);
   });
 
-  it('#create, 1 sign', function() {
 
+  it('#create, check builder opts', function() {
+    var w = cachedCreateW2();
+    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
+    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
+    var ntxid = w.createTxSync(
+      'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
+      '123456789',
+      null,
+      unspentTest
+    );
+    var t = w.txProposals;
+    var opts = JSON.parse(t.txps[ntxid].builder.vanilla.opts);
+    opts.signhash.should.equal(1);
+    (opts.lockTime===null).should.be.true;
+    should.not.exist(opts.fee);
+    should.not.exist(opts.feeSat);
+  });
+
+  it('#create, 1 sign', function() {
     var w = cachedCreateW2();
 
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
