@@ -76,12 +76,20 @@
         </div>
 
         <div class="text-right">
-          <a translate class="text-warning" ng-really-click="deleteWallet()"
-            ng-really-message="Are you sure to delete this wallet from this
-            computer?">Delete wallet</a> 
-          <span class="text-gray">|</span> 
-          <a translate class="text-primary m20r" ng-click="downloadBackup()"
-            ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a> 
+          <div class="left text-left m10b">
+            <a class="expand small"  ng-click="hideAdv=!hideAdv">
+              <span translate ng-hide="!hideAdv">Show</span> 
+              <span translate ng-hide="hideAdv">Hide</span> 
+              <span translate>advanced options</span>
+            </a>
+            <div ng-hide="hideAdv">
+              <a translate class="text-warning" ng-really-click="deleteWallet()"
+                ng-really-message="Are you sure to delete this wallet from this computer?">Delete wallet</a> 
+              <span class="text-gray">|</span> 
+              <a translate class="text-primary m20r" ng-click="downloadBackup()"
+                ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a> 
+            </div>
+          </div>
           <button class="button primary m0"
             ng-click="backup()"
             ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
