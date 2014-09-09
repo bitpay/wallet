@@ -633,7 +633,7 @@ Wallet.decodeSecret = function(secretB) {
   var secretNumber = secret.slice(33, 38);
   return {
     pubKey: pubKeyBuf.toString('hex'),
-    secretNumber : secretNumber.toString('hex')
+    secretNumber: secretNumber.toString('hex')
   }
 };
 
@@ -644,6 +644,24 @@ Wallet.decodeSecret = function(secretB) {
 Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
+
+
+
+Wallet.prototype._setBlockchainListeners = function() {
+  var self = this;
+  this.blockchain.on('connect', self.emit.bind(self,'networkReconnected'));
+  this.blockchain.on('disconnect', self.emit.bind(self,'networkError'));
+
+  this.blockchain.on('tx', function(tx) {
+    self.emit('tx', tx.address);
+  });
+
+  if (!self.spendUnconfirmed) {
+    self.blockchain.on('block', self.emit.bind(self,'balanceUpdated'));
+  }
+}
+
+
 
 /**
  * @desc Sets up the networking with other peers.
@@ -682,7 +700,12 @@ Wallet.prototype.netStart = function() {
     this._lockIncomming();
   }
 
+  net.on('connect_error', function() {
+    self.emit('connectionError');
+  });
+
   net.start(startOpts, function() {
+    self._setBlockchainListeners();
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
@@ -866,7 +889,7 @@ Wallet.prototype.send = function(recipients, obj) {
  */
 Wallet.prototype.sendAllTxProposals = function(recipients) {
   var ntxids = this.txProposals.getNtxids(),
-        that = this;
+    that = this;
   _.each(ntxids, function(ntxid, key) {
     that.sendTxProposal(ntxid, recipients);
   });
@@ -1872,7 +1895,9 @@ Wallet.prototype.getAddressesInfo = function(opts) {
  */
 Wallet.prototype.addressIsOwn = function(addrStr, opts) {
   var addrList = this.getAddressesStr(opts);
-  return _.any(addrList, function(value) { return value === addrStr; });
+  return _.any(addrList, function(value) {
+    return value === addrStr;
+  });
 };
 
 
@@ -1973,7 +1998,7 @@ Wallet.prototype.getUnspent = function(cb) {
 Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   var self = this;
 
-  cb = cb || function () {};
+  cb = cb || function() {};
 
   var txps = [];
   var maxRejectCount = this.maxRejectCount();
@@ -1986,9 +2011,13 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   }
 
   var inputs = [];
-  txps.forEach(function (txp) {
-    txp.builder.utxos.forEach(function (utxo) {
-      inputs.push({ ntxid: txp.ntxid, txid: utxo.txid, vout: utxo.vout });
+  txps.forEach(function(txp) {
+    txp.builder.utxos.forEach(function(utxo) {
+      inputs.push({
+        ntxid: txp.ntxid,
+        txid: utxo.txid,
+        vout: utxo.vout
+      });
     });
   });
   if (inputs.length === 0)
@@ -1999,13 +2028,13 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
     if (err) return cb(err);
 
-    unspentList.forEach(function (unspent) {
-      inputs.forEach(function (input) {
+    unspentList.forEach(function(unspent) {
+      inputs.forEach(function(input) {
         input.unspent = input.unspent || (input.txid === unspent.txid && input.vout === unspent.vout);
       });
     });
 
-    inputs.forEach(function (input) {
+    inputs.forEach(function(input) {
       if (!input.unspent) {
         proposalsChanged = true;
         self.txProposals.deleteOne(input.ntxid);

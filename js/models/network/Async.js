@@ -33,14 +33,14 @@ Network.prototype.cleanUp = function() {
   this.allowedCopayerIds = null;
   this.isInboundPeerAuth = [];
   this.copayerForPeer = {};
-  this.connections = {};
   this.criticalErr = '';
-  this.removeAllListeners();
   if (this.socket) {
-    this.socket.removeAllListeners();
+console.log('[Async.js.39] DISCONNECT'); //TODO
     this.socket.disconnect();
+    this.socket.removeAllListeners();
     this.socket = null;
   }
+  this.removeAllListeners();
 };
 
 Network.parent = EventEmitter;
@@ -86,11 +86,6 @@ Network.prototype._sendHello = function(copayerId,secretNumber) {
 Network.prototype._deletePeer = function(peerId) {
   delete this.isInboundPeerAuth[peerId];
   delete this.copayerForPeer[peerId];
-
-  if (this.connections[peerId]) {
-    this.connections[peerId].close();
-  }
-  delete this.connections[peerId];
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
 };
 
@@ -219,9 +214,27 @@ Network.prototype._onMessage = function(enc) {
   }
 };
 
-Network.prototype._setupConnectionHandlers = function(cb) {
+Network.prototype._setupConnectionHandlers = function(opts, cb) {
   preconditions.checkState(this.socket);
   var self = this;
+
+  self.socket.on('connect_error', function(m) {
+
+    // If socket is not started, destroy it and emit and error
+    // If it is started, socket.io will try to reconnect. 
+    if (!self.started) {
+      self.emit('connect_error');
+      self.cleanUp();
+    }
+  });
+
+  self.socket.on('subscribed', function(m) {
+    var fromTs = (opts.lastTimestamp||0) + 1;
+    self.socket.emit('sync', fromTs);
+    self.started = true;
+  });
+
+
   self.socket.on('message', function(m) {
     // delay execution, to improve error handling
     setTimeout(function() {
@@ -233,14 +246,17 @@ Network.prototype._setupConnectionHandlers = function(cb) {
   self.socket.on('no messages', self.emit.bind(self, 'no messages'));
 
   self.socket.on('connect', function() {
+    var pubkey = self.getKey().public.toString('hex');
+    self.socket.emit('subscribe', pubkey);
 
     self.socket.on('disconnect', function() {
-      var pubKey = self.getKey().public.toString('hex');
-      self.socket.emit('subscribe', pubKey);
+      self.socket.emit('subscribe', pubkey);
     });
 
     if (typeof cb === 'function') cb();
   });
+
+
 };
 
 Network.prototype._onError = function(err) {
@@ -293,20 +309,11 @@ Network.prototype.start = function(opts, openCallback) {
   if (this.started) return openCallback();
 
   this.privkey = opts.privkey;
-  var pubkey = this.getKey().public.toString('hex');
   this.setCopayerId(opts.copayerId);
   this.maxPeers = opts.maxPeers || this.maxPeers;
 
   this.socket = this.createSocket();
-  this._setupConnectionHandlers(openCallback);
-  this.socket.emit('subscribe', pubkey);
-
-  var fromTs = opts.lastTimestamp + 1;
-  var self = this;
-  self.socket.on('subscribed', function(m) {
-    self.socket.emit('sync', fromTs);
-    self.started = true;
-  });
+  this._setupConnectionHandlers(opts, openCallback);
 };
 
 Network.prototype.createSocket = function() {

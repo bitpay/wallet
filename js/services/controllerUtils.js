@@ -40,15 +40,96 @@ angular.module('copayApp.services')
       }
     };
 
-    root.installStartupHandlers = function(wallet, $scope) {
-      wallet.on('connectionError', function() {
-        var message = "Looks like you are already connected to this wallet, please logout and try importing it again.";
-        notification.error('PeerJS Error', message);
+    root.installWalletHandlers = function(w, $scope) {
+      w.on('connectionError', function() {
+        var message = "Could not connect to the Insight server. Check your settings and network configuration";
+        notification.error('Networking Error', message);
         root.onErrorDigest($scope);
       });
-      wallet.on('ready', function() {
+      w.on('ready', function() {
         $scope.loading = false;
       });
+
+
+      w.on('corrupt', function(peerId) {
+        notification.error('Error', 'Received corrupt message from ' + peerId);
+      });
+      w.on('ready', function(myPeerID) {
+        $rootScope.wallet = w;
+        if ($rootScope.pendingPayment) {
+          $location.path('send');
+        } else {
+          $location.path('receive');
+        }
+      });
+
+      w.on('publicKeyRingUpdated', function(dontDigest) {
+        root.updateGlobalAddresses();
+        if (!dontDigest) {
+          $rootScope.$digest();
+        }
+      });
+
+      w.on('tx', function() {
+        notification.funds('Funds received!', tx.address);
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      });
+
+      w.on('balanceUpdated', function() {
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      });
+
+      w.on('networkReconnected', function() {
+        $rootScope.reconnecting = false;
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        });
+      });
+
+      w.on('networkError', function() {
+        $rootScope.reconnecting = true;
+        $rootScope.$digest();
+      });
+
+      w.on('txProposalsUpdated', function(dontDigest) {
+        root.updateTxs();
+        // give sometime to the tx to propagate.
+        $timeout(function() {
+          root.updateBalance(function() {
+            if (!dontDigest) {
+              $rootScope.$digest();
+            }
+          });
+        }, 3000);
+      });
+      w.on('txProposalEvent', function(e) {
+        var user = w.publicKeyRing.nicknameForCopayer(e.cId);
+        switch (e.type) {
+          case 'signed':
+            notification.info('Transaction Update', 'A transaction was signed by ' + user);
+            break;
+          case 'rejected':
+            notification.info('Transaction Update', 'A transaction was rejected by ' + user);
+            break;
+          case 'corrupt':
+            notification.error('Transaction Error', 'Received corrupt transaction from ' + user);
+            break;
+        }
+      });
+      w.on('addressBookUpdated', function(dontDigest) {
+        if (!dontDigest) {
+          $rootScope.$digest();
+        }
+      });
+      w.on('connect', function(peerID) {
+        $rootScope.$digest();
+      });
+      w.on('close', root.onErrorDigest);
+      w.on('locked', root.onErrorDigest.bind(this));
     };
 
     root.setupRootVariables = function() {
@@ -88,69 +169,9 @@ angular.module('copayApp.services')
 
     root.startNetwork = function(w, $scope) {
       root.setupRootVariables();
-      root.installStartupHandlers(w, $scope);
+      root.installWalletHandlers(w, $scope);
       root.updateGlobalAddresses();
-
       notification.enableHtml5Mode(); // for chrome: if support, enable it
-
-      w.on('corrupt', function(peerId) {
-        notification.error('Error', 'Received corrupt message from ' + peerId);
-      });
-      w.on('ready', function(myPeerID) {
-        $rootScope.wallet = w;
-        root.setConnectionListeners($rootScope.wallet);
-
-        if ($rootScope.pendingPayment) {
-          $location.path('send');
-        } else {
-          $location.path('receive');
-        }
-      });
-
-      w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.updateGlobalAddresses();
-        if (!dontDigest) {
-          $rootScope.$digest();
-        }
-      });
-      w.on('txProposalsUpdated', function(dontDigest) {
-        root.updateTxs();
-        // give sometime to the tx to propagate.
-        $timeout(function() {
-          root.updateBalance(function() {
-            if (!dontDigest) {
-              $rootScope.$digest();
-            }
-          });
-        }, 3000);
-      });
-      w.on('txProposalEvent', function(e) {
-        var user = w.publicKeyRing.nicknameForCopayer(e.cId);
-        switch (e.type) {
-          case 'signed':
-            notification.info('Transaction Update', 'A transaction was signed by ' + user);
-            break;
-          case 'rejected':
-            notification.info('Transaction Update', 'A transaction was rejected by ' + user);
-            break;
-          case 'corrupt':
-            notification.error('Transaction Error', 'Received corrupt transaction from ' + user);
-            break;
-        }
-      });
-      w.on('addressBookUpdated', function(dontDigest) {
-        if (!dontDigest) {
-          $rootScope.$digest();
-        }
-      });
-      w.on('connectionError', function(msg) {
-        root.onErrorDigest(null, msg);
-      });
-      w.on('connect', function(peerID) {
-        $rootScope.$digest();
-      });
-      w.on('close', root.onErrorDigest);
-      w.on('locked', root.onErrorDigest.bind(this));
       w.netStart();
     };
 
@@ -270,38 +291,6 @@ angular.module('copayApp.services')
       return peers.sort(function(a, b) {
         return !!b.actions.create - !!a.actions.create;
       });
-    }
-
-    root.setConnectionListeners = function(wallet) {
-      wallet.blockchain.on('connect', function(attempts) {
-        if (attempts == 0) return;
-        notification.success('Networking restored', 'Connection to Insight re-established');
-        $rootScope.reconnecting = false;
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
-      });
-
-      wallet.blockchain.on('disconnect', function() {
-        notification.error('Networking problem', 'Connection to Insight lost, trying to reconnect...');
-        $rootScope.reconnecting = true;
-        $rootScope.$digest();
-      });
-
-      wallet.blockchain.on('tx', function(tx) {
-        notification.funds('Funds received!', tx.address);
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
-      });
-
-      if (!$rootScope.wallet.spendUnconfirmed) {
-        wallet.blockchain.on('block', function(block) {
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        });
-      }
     }
 
     root.updateGlobalAddresses = function() {
