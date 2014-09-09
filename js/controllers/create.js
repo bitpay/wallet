@@ -41,6 +41,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     $scope.walletPassword = $rootScope.walletPassword;
     $scope.isMobile = !!window.cordova;
     $scope.hideAdv = true;
+    $scope.networkName = config.networkName;
 
     // ng-repeat defined number of times instead of repeating over array?
     $scope.getNumber = function(num) {
