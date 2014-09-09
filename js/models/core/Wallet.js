@@ -1696,7 +1696,7 @@ Wallet.prototype.verifyPaymentRequest = function(ntxid) {
   pr = pr.makePaymentRequest(data);
 
   // Verify the signature so we know this is the real request.
-  var trust = pr.verify();
+  var trust = pr.verify(true);
   if (!trust.verified) {
     // Signature does not match cert. It may have
     // been modified by an untrustworthy person.
