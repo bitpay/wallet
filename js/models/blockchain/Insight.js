@@ -124,7 +124,12 @@ Insight.prototype.requestPost = function(path, data, cb) {
 }
 
 Insight.prototype.destroy = function() {
-  this.getSocket().destroy();
+
+console.log('[Insight.js.127] INSIGHT destroy' ); //TODO
+  var socket = this.getSocket();
+  this.socket.disconnect();
+  this.socket.removeAllListeners();
+  this.socket = null;
   this.subscribed = {};
   this.status = this.STATUS.DESTROYED;
   this.removeAllListeners();
