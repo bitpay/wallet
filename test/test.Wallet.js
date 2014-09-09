@@ -694,7 +694,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       ntxid.length.should.equal(64);
       done();
     });
@@ -708,7 +708,7 @@ describe('Wallet model', function() {
     var w = createW2([k2]);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       w.on('txProposalsUpdated', function() {
         w.getTxProposals()[0].signedByUs.should.equal(true);
         w.getTxProposals()[0].rejectedByUs.should.equal(false);
@@ -724,7 +724,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       (function() {
         w.reject(ntxid);
       }).should.throw('reject a signed');
@@ -736,7 +736,7 @@ describe('Wallet model', function() {
     var oldK = w.privateKey;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       var s = sinon.stub(w, 'getMyCopayerId').returns('213');
       Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(0);
       w.reject(ntxid);
@@ -750,7 +750,7 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       w.sendTx(ntxid, function(txid) {
         txid.length.should.equal(64);
         done();
@@ -761,7 +761,7 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       var txp = w.txProposals.get(ntxid);
       // Assign fake builder
       txp.builder = new Builder();
@@ -776,7 +776,7 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       sinon.stub(w.blockchain, 'broadcast').yields({statusCode: 303});
       var spyCheckSentTx = sinon.spy(w, '_checkSentTx');
       w.sendTx(ntxid, function () {});
@@ -788,7 +788,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       w.sendTxProposal.bind(w).should.throw('Illegal Argument.');
       (function() {
         w.sendTxProposal(ntxid);
@@ -801,12 +801,25 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+    w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
       w.sendAllTxProposals.bind(w).should.not.throw();
       (function() {
         w.sendAllTxProposals();
       }).should.not.throw();
       done();
+    });
+  });
+
+  describe('#createTx', function () {
+    it('should fail if insight server is down', function (done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      sinon.stub(w, 'getUnspent').yields('error', null);
+      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) { 
+        chai.expect(err.message).to.equal('Could not get list of UTXOs');
+        done(); 
+      });
     });
   });
 
@@ -833,7 +846,7 @@ describe('Wallet model', function() {
       var utxo = createUTXO(w);
       chai.expect(w.getTxProposals().length).to.equal(0);
       w.blockchain.fixUnspent(utxo);
-      w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
         w.sendTxProposal(ntxid);
         chai.expect(w.getTxProposals().length).to.equal(1);
         
@@ -858,7 +871,7 @@ describe('Wallet model', function() {
       utxo[1].vout = 1;
       chai.expect(w.getTxProposals().length).to.equal(0);
       w.blockchain.fixUnspent(utxo);
-      w.createTx(toAddress, '100000', null, function(ntxid) {
+      w.createTx(toAddress, '100000', null, function(err, ntxid) {
         w.sendTxProposal(ntxid);
         chai.expect(w.getTxProposals().length).to.equal(1);
         
@@ -880,7 +893,7 @@ describe('Wallet model', function() {
       var utxo = createUTXO(w);
       chai.expect(w.getTxProposals().length).to.equal(0);
       w.blockchain.fixUnspent(utxo);
-      w.createTx(toAddress, amountSatStr, null, function(ntxid) {
+      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
         w.sendTxProposal(ntxid);
         chai.expect(w.getTxProposals().length).to.equal(1);
         

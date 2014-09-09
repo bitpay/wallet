@@ -285,6 +285,18 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(scope.loadTxs, 1);
     });
 
+    it('should not send txp when there is an error at creation', function() {
+      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.amount.$setViewValue(1000);
+      scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
+      sinon.stub(scope.wallet, 'createTx').yields('error');
+      var spySendTx = sinon.spy(scope.wallet, 'sendTx');
+      scope.loadTxs = sinon.spy();
+
+      scope.submitForm(sendForm);
+      sinon.assert.callCount(spySendTx, 0);
+      sinon.assert.callCount(scope.loadTxs, 1);
+    });
   });
 
   describe("Unit: Version Controller", function() {
