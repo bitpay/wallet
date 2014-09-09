@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
       $scope.loading = true;
       w.generateAddress(null, function() {
         $timeout(function() {
-          controllerUtils.updateGlobalAddresses();
+          controllerUtils.updateAddressList();
           $scope.loading = false;
         }, 1);
       });
