@@ -146,7 +146,6 @@ angular.module('copayApp.services')
       });
     };
 
-
     root.startNetwork = function(w, $scope) {
       root.setupRootVariables();
       root.installWalletHandlers(w, $scope);
@@ -274,7 +273,6 @@ angular.module('copayApp.services')
       });
     }
 
-    // TODO Move this to wallet model!
     root.updateGlobalAddresses = function() {
       if (!$rootScope.wallet) return;
       root.updateAddressList();
