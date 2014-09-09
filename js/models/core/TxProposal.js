@@ -128,6 +128,10 @@ TxProposal.fromObj = function(o, forceOpts) {
   forceOpts = forceOpts || {};
 
 
+  if (forceOpts){
+    o.builderObj.opts = o.builderObj.opts || {};
+  }
+
   // force opts is requested.
   for (var k in forceOpts) {
     o.builderObj.opts[k] = forceOpts[k];
