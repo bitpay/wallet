@@ -83,6 +83,14 @@ Network.prototype._sendHello = function(copayerId,secretNumber) {
   });
 };
 
+Network.prototype._sendRejectConnection = function(copayerId) {
+
+  this.send(copayerId, {
+    type: 'rejectConnection',
+    copayerId: this.copayerId,
+  });
+};
+
 Network.prototype._deletePeer = function(peerId) {
   delete this.isInboundPeerAuth[peerId];
   delete this.copayerForPeer[peerId];
@@ -189,26 +197,27 @@ Network.prototype._onMessage = function(enc) {
     this._deletePeer(sender);
     return;
   }
-
   log.debug('receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
     case 'hello':
-
       if (typeof payload.secretNumber === 'undefined' || payload.secretNumber !== this.secretNumber) 
       {
+        this._sendRejectConnection(sender);
         this._deletePeer(enc.pubkey, 'incorrect secret number');
         return; 
       }
       // if we locked allowed copayers, check if it belongs
       if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
+        this._sendRejectConnection(sender);
         this._deletePeer(sender);
         return;
       }
       //ensure claimed public key is actually the public key of the peer
       //e.g., their public key should hash to be their peerId
       if (sender !== payload.copayerId) {
+        this._sendRejectConnection(sender);
         this._deletePeer(enc.pubkey, 'incorrect pubkey for peerId');
         return;
       }
