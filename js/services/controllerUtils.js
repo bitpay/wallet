@@ -144,26 +144,6 @@ angular.module('copayApp.services')
           notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
         }
       });
-
-
-      $rootScope.$watch('receivedFund', function(receivedFund) {
-        if (receivedFund) {
-          var currentAddr;
-          for (var i = 0; i < $rootScope.addrInfos.length; i++) {
-            var addrinfo = $rootScope.addrInfos[i];
-            if (addrinfo.address.toString() == receivedFund[1] && !addrinfo.isChange) {
-              currentAddr = addrinfo.address.toString();
-              break;
-            }
-          }
-          if (currentAddr) {
-            //var beep = new Audio('sound/transaction.mp3');
-            notification.funds('Received fund', currentAddr, receivedFund);
-            //beep.play();
-          }
-        }
-      });
-
     };
 
 
@@ -175,6 +155,7 @@ angular.module('copayApp.services')
       w.netStart();
     };
 
+    // TODO movie this to wallet
     root.updateAddressList = function() {
       var w = $rootScope.wallet;
       if (w && w.isReady())
@@ -293,9 +274,9 @@ angular.module('copayApp.services')
       });
     }
 
+    // TODO Move this to wallet model!
     root.updateGlobalAddresses = function() {
       if (!$rootScope.wallet) return;
-
       root.updateAddressList();
       var currentAddrs = $rootScope.wallet.blockchain.getSubscriptions();
       var allAddrs = $rootScope.addrInfos;
