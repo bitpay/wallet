@@ -103,7 +103,7 @@ angular.module('copayApp.controllers').controller('SendController',
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
     $scope.isMobile = isMobile.any();
 
-    if (!window.cordova && !navigator.getUserMedia) 
+    if (!window.cordova && !navigator.getUserMedia)
       $scope.disableScanner =1;
 
     $scope.submitForm = function(form) {
@@ -175,6 +175,15 @@ angular.module('copayApp.controllers').controller('SendController',
       } else if (/^https?:\/\//.test(address)) {
         uri = {
           merchant: address
+        };
+      }
+
+      // If we're setting the domain, ignore the change.
+      if ($rootScope.merchant
+          && $rootScope.merchant.domain
+          && address === $rootScope.merchant.domain) {
+        uri = {
+          merchant: $rootScope.merchant.request_url
         };
       }
 
