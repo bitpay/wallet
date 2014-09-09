@@ -282,7 +282,7 @@ angular.module('copayApp.services')
       var allAddrs = $rootScope.addrInfos;
 
       var newAddrs = [];
-      for (var i in allAddrs) {
+      for:(var i in allAddrs) {
         var a = allAddrs[i];
         if (!currentAddrs[a.addressStr] && !a.isChange)
           newAddrs.push(a.addressStr);
