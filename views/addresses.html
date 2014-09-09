@@ -19,16 +19,16 @@
                 <small translate class="label" ng-if="addr.isChange">change</small>
               </div>
             </div>
-          </div>
-
-          <div class="large-2 medium-3 small-4 column text-right">
-            <span ng-if="$root.updatingBalance">
+            <div class="large-2 medium-3 small-4 column text-right">
+              <span ng-if="$root.updatingBalance">
                 <i class="fi-bitcoin-circle icon-rotate spinner"></i>
               </span>
-            <span class="size-12" ng-if="!$root.updatingBalance">
+              <span class="size-12" ng-if="!$root.updatingBalance">
                 {{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
               </span>
+            </div>
           </div>
+
         </div>
       </div>
 
