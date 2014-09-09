@@ -13,8 +13,7 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
 var sinon = require('sinon');
-var is_browser = typeof process == 'undefined'
-  || typeof process.versions === 'undefined';
+var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 if (is_browser) {
   var copay = require('copay'); //browser
 } else {
@@ -112,18 +111,6 @@ describe('TxProposal', function() {
 
   });
   describe('#fromObj', function() {
-    it.skip('should create from Object', function() {
-      var b = new FakeBuilder();
-      var txp = TxProposal.fromObj({
-        creator: 1,
-        createdTs: 1,
-        builderObj: b.toObj(),
-        inputChainPaths: ['m/1'],
-      });
-      should.exist(txp);
-    });
-
-
     it('should fail to create from wrong object', function() {
       var b = new FakeBuilder();
       (function() {
@@ -135,8 +122,21 @@ describe('TxProposal', function() {
         });
       }).should.throw('Invalid or Incompatible Backup Detected');
     });
-
-
+    it('sets force opts', function() {
+      var b = new FakeBuilder();
+      b.opts={juan:1, pepe:1, fee:1000};
+      var txp;
+      var o = {
+        creator: 1,
+        createdTs: 1,
+        builderObj: b.toObj(),
+        inputChainPaths: ['m/1'],
+      };
+      (function() {
+        txp = TxProposal.fromObj(o,{pepe:100});
+      }).should.throw('Invalid or Incompatible Backup Detected');
+      o.builderObj.opts.should.deep.equal({juan:1, pepe:100, feeSat:undefined, fee:undefined});
+    });
   });
 
 
@@ -398,12 +398,12 @@ describe('TxProposal', function() {
         (function() {
           txp.setCopayers(
             'creator', {
-            pk0: 'creator',
-            pk1: 'pepe',
-            pk2: 'john'
-          }, {
-            'creator2': 1
-          }
+              pk0: 'creator',
+              pk1: 'pepe',
+              pk2: 'john'
+            }, {
+              'creator2': 1
+            }
           );
         }).should.throw('only 1');
       })
@@ -441,20 +441,20 @@ describe('TxProposal', function() {
     });
     it('should report isPending 1', function() {
       var txp = dummyProposal;
-      txp.rejectedBy=[];
-      txp.sentTxid=1;
+      txp.rejectedBy = [];
+      txp.sentTxid = 1;
       txp.isPending(3).should.equal(false);
     });
     it('should report isPending 2', function() {
       var txp = dummyProposal;
-      txp.rejectedBy=[];
-      txp.sentTxid=null;
+      txp.rejectedBy = [];
+      txp.sentTxid = null;
       txp.isPending(3).should.equal(true);
     });
     it('should report isPending 3', function() {
       var txp = dummyProposal;
-      txp.rejectedBy=[1,2,3,4];
-      txp.sentTxid=null;
+      txp.rejectedBy = [1, 2, 3, 4];
+      txp.sentTxid = null;
       txp.isPending(3).should.equal(false);
     });
   });
