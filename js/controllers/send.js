@@ -103,7 +103,7 @@ angular.module('copayApp.controllers').controller('SendController',
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
     $scope.isMobile = isMobile.any();
 
-    if (!window.cordova && !navigator.getUserMedia) 
+    if (!window.cordova && !navigator.getUserMedia)
       $scope.disableScanner =1;
 
     $scope.submitForm = function(form) {
@@ -169,26 +169,32 @@ angular.module('copayApp.controllers').controller('SendController',
         $rootScope.pendingPayment = null;
       }
 
-      // XXX Payment Protocol is temporarily disabled.
-      // var uri;
-      // if (address.indexOf('bitcoin:') === 0) {
-      //   uri = new bitcore.BIP21(address).data;
-      // } else if (/^https?:\/\//.test(address)) {
-      //   uri = {
-      //     merchant: address
-      //   };
-      // }
-      //
-      // if (uri && uri.merchant) {
-      //   w.createPaymentTx({
-      //     uri: uri.merchant,
-      //     memo: commentText
-      //   }, done);
-      // } else {
-      //   w.createTx(address, amount, commentText, done);
-      // }
+      var uri;
+      if (address.indexOf('bitcoin:') === 0) {
+        uri = new bitcore.BIP21(address).data;
+      } else if (/^https?:\/\//.test(address)) {
+        uri = {
+          merchant: address
+        };
+      }
 
-      w.createTx(address, amount, commentText, done);
+      // If we're setting the domain, ignore the change.
+      if ($rootScope.merchant
+          && $rootScope.merchant.domain
+          && address === $rootScope.merchant.domain) {
+        uri = {
+          merchant: $rootScope.merchant.request_url
+        };
+      }
+
+      if (uri && uri.merchant) {
+        w.createPaymentTx({
+          uri: uri.merchant,
+          memo: commentText
+        }, done);
+      } else {
+        w.createTx(address, amount, commentText, done);
+      }
 
       // reset fields
       $scope.address = $scope.amount = $scope.commentText = null;
@@ -464,6 +470,13 @@ angular.module('copayApp.controllers').controller('SendController',
       var value = scope.address || '';
       var uri;
 
+      // If we're setting the domain, ignore the change.
+      if ($rootScope.merchant
+          && $rootScope.merchant.domain
+          && value === $rootScope.merchant.domain) {
+        return;
+      }
+
       if (value.indexOf('bitcoin:') === 0) {
         uri = new bitcore.BIP21(value).data;
       } else if (/^https?:\/\//.test(value)) {
@@ -520,12 +533,18 @@ angular.module('copayApp.controllers').controller('SendController',
           return;
         }
 
+        var url = merchantData.request_url;
+        var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
+
         merchantData.unitTotal = (+merchantData.total / config.unitToSatoshi) + '';
         merchantData.expiration = new Date(
           merchantData.pr.pd.expires * 1000).toISOString();
+        merchantData.domain = domain;
 
         $rootScope.merchant = merchantData;
 
+        scope.sendForm.address.$setViewValue(domain);
+        scope.sendForm.address.$render();
         scope.sendForm.address.$isValid = true;
 
         scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
@@ -537,6 +556,14 @@ angular.module('copayApp.controllers').controller('SendController',
         var unregister = scope.$watch('address', function() {
           var val = scope.sendForm.address.$viewValue || '';
           var uri;
+          // If we're setting the domain, ignore the change.
+          if ($rootScope.merchant
+              && $rootScope.merchant.domain
+              && val === $rootScope.merchant.domain) {
+            uri = {
+              merchant: $rootScope.merchant.request_url
+            };
+          }
           if (val.indexOf('bitcoin:') === 0) {
             uri = new bitcore.BIP21(val).data;
           } else if (/^https?:\/\//.test(val)) {
@@ -562,11 +589,6 @@ angular.module('copayApp.controllers').controller('SendController',
         notification.info('Payment Request',
           'Server is requesting ' + merchantData.unitTotal + ' ' + config.unitName + '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
-    };
-
-    // XXX Payment Protocol is temporarily disabled.
-    $scope.onChanged = function() {
-      ;
     };
 
   });
