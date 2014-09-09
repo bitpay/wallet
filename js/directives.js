@@ -6,7 +6,7 @@ var bignum = bitcore.Bignum;
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.directives')
-  irective('validAddress', ['$rootScope', function($rootScope) {
+  .directive('validAddress', ['$rootScope', function($rootScope) {
 
     return {
       require: 'ngModel',
