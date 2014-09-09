@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils) {
 
+    $scope.hideAdv = true;
+
     $scope.backup = function() {
       var w = $rootScope.wallet;
       w.setBackupReady();
