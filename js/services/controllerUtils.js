@@ -83,14 +83,15 @@ angular.module('copayApp.services')
         });
       });
 
-      w.on('networkReconnected', function() {
+      w.on('insightReconnected', function() {
         $rootScope.reconnecting = false;
+        root.updateAddressList();
         root.updateBalance(function() {
           $rootScope.$digest();
         });
       });
 
-      w.on('networkError', function() {
+      w.on('insightError', function() {
         $rootScope.reconnecting = true;
         $rootScope.$digest();
       });

@@ -1,6 +1,7 @@
 var config = require('../config');
 var _ = require('underscore');
 
+console.log('[log.js.3]'); //TODO
 /**
  * @desc
  * A simple logger that wraps the <tt>console.log</tt> methods when available.
@@ -100,6 +101,9 @@ Logger.prototype.setLevel = function(level) {
  */
 
 var logger = new Logger('copay');
+
+console.log('Log level:' + config.logLevel);
+
 logger.setLevel(config.logLevel);
 
 module.exports = logger;

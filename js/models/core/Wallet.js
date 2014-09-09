@@ -649,19 +649,26 @@ Wallet.prototype._lockIncomming = function() {
 
 Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
-  this.blockchain.on('connect', self.emit.bind(self,'networkReconnected'));
-  this.blockchain.on('disconnect', self.emit.bind(self,'networkError'));
+  this.blockchain.removeAllListeners();
 
+  this.blockchain.on('reconnect', function(attempts) {
+    log.debug('blockchain reconnect event');
+    self.emit('insightReconnected');
+  });
+
+  this.blockchain.on('disconnect', function() {
+    log.debug('blockchain disconnect event');
+    self.emit('insightError');
+  });
   this.blockchain.on('tx', function(tx) {
+    log.debug('blockchain tx event');
     self.emit('tx', tx.address);
   });
 
   if (!self.spendUnconfirmed) {
-    self.blockchain.on('block', self.emit.bind(self,'balanceUpdated'));
+    self.blockchain.on('block', self.emit.bind(self, 'balanceUpdated'));
   }
 }
-
-
 
 /**
  * @desc Sets up the networking with other peers.
@@ -1887,7 +1894,7 @@ Wallet.prototype.getAddressesStr = function(opts) {
  * @desc Alias for {@link PublicKeyRing#getAddressesInfo}
  */
 Wallet.prototype.getAddressesInfo = function(opts) {
-  var addrInfo =  this.publicKeyRing.getAddressesInfo(opts, this.publicKey);
+  var addrInfo = this.publicKeyRing.getAddressesInfo(opts, this.publicKey);
   var currentAddrs = this.blockchain.getSubscriptions();
 
   var newAddrs = [];

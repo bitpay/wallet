@@ -5,6 +5,7 @@ var async = require('async');
 var request = require('request');
 var bitcore = require('bitcore');
 var io = require('socket.io-client');
+var log = require('../../log');
 
 var EventEmitter = require('events').EventEmitter;
 var preconditions = require('preconditions').singleton();
@@ -57,7 +58,7 @@ Insight.prototype.STATUS = {
 /** @private */
 Insight.prototype.subscribeToBlocks = function() {
   var socket = this.getSocket();
-  if (this.listeningBlocks || ! socket.connected) return;
+  if (this.listeningBlocks || !socket.connected) return;
 
   var self = this;
   socket.emit('subscribe', 'inv');
@@ -69,40 +70,46 @@ Insight.prototype.subscribeToBlocks = function() {
 
 /** @private */
 Insight.prototype._getSocketIO = function(url, opts) {
-    return io(this.url, this.opts);
+  return io(this.url, this.opts);
 };
+
+
+Insight.prototype._setMainHandlers = function(url, opts) {
+  // Emmit connection events
+  var self = this;
+  this.socket.on('connect', function() {
+    self.status = self.STATUS.CONNECTED;
+    self.subscribeToBlocks();
+    self.emit('connect', 0);
+  });
+
+  this.socket.on('connect_error', function() {
+    if (self.status != self.STATUS.CONNECTED) return;
+    self.status = self.STATUS.DISCONNECTED;
+    self.emit('disconnect');
+  });
+
+  this.socket.on('connect_timeout', function() {
+    if (self.status != self.STATUS.CONNECTED) return;
+    self.status = self.STATUS.DISCONNECTED;
+    self.emit('disconnect');
+  });
+
+  this.socket.on('reconnect', function(attempt) {
+    if (self.status != self.STATUS.DISCONNECTED) return;
+    self.emit('reconnect', attempt);
+    self.reSubscribe();
+    self.status = self.STATUS.CONNECTED;
+  });
+};
+
 
 /** @private */
 Insight.prototype.getSocket = function(url, opts) {
 
   if (!this.socket) {
     this.socket = this._getSocketIO(this.url, this.opts);
-
-    // Emmit connection events
-    var self = this;
-    this.socket.on('connect', function() {
-      self.status = self.STATUS.CONNECTED;
-      self.subscribeToBlocks();
-      self.emit('connect', 0);
-    });
-
-    this.socket.on('connect_error', function() {
-      if (self.status != self.STATUS.CONNECTED) return;
-      self.status = self.STATUS.DISCONNECTED;
-      self.emit('disconnect');
-    });
-
-    this.socket.on('connect_timeout', function() {
-      if (self.status != self.STATUS.CONNECTED) return;
-      self.status = self.STATUS.DISCONNECTED;
-      self.emit('disconnect');
-    });
-
-    this.socket.on('reconnect', function(attempt) {
-      if (self.status != self.STATUS.DISCONNECTED) return;
-      self.status = self.STATUS.CONNECTED;
-      self.emit('connect', attempt);
-    });
+    this._setMainHandlers();
   }
   return this.socket;
 }
@@ -124,8 +131,6 @@ Insight.prototype.requestPost = function(path, data, cb) {
 }
 
 Insight.prototype.destroy = function() {
-
-console.log('[Insight.js.127] INSIGHT destroy' ); //TODO
   var socket = this.getSocket();
   this.socket.disconnect();
   this.socket.removeAllListeners();
@@ -143,6 +148,9 @@ Insight.prototype.subscribe = function(addresses) {
     return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;
+
+      log.debug('insight tx event');
+
       self.emit('tx', {
         address: address,
         txid: txid
@@ -150,14 +158,18 @@ Insight.prototype.subscribe = function(addresses) {
     }
   }
 
+  var s = self.getSocket();
   addresses.forEach(function(address) {
     preconditions.checkArgument(new bitcore.Address(address).isValid());
 
     // skip already subscibed
     if (!self.subscribed[address]) {
-      self.subscribed[address] = true;
-      self.getSocket().emit('subscribe', address);
-      self.getSocket().on(address, handlerFor(self, address));
+      var handler = handlerFor(self, address);
+      self.subscribed[address] = handler;
+      log.debug('Subcribe to: ', address);
+
+      s.emit('subscribe', address);
+      s.on(address, handler);
     }
   });
 };
@@ -166,20 +178,20 @@ Insight.prototype.getSubscriptions = function(addresses) {
   return this.subscribed;
 }
 
-Insight.prototype.unsubscribe = function(addresses) {
-  addresses = Array.isArray(addresses) ? addresses : [addresses];
-  var self = this;
 
-  addresses.forEach(function(address) {
-    preconditions.checkArgument(new bitcore.Address(address).isValid());
-    self.getSocket().removeEventListener(address);
-    delete self.subscribed[address];
-  });
+Insight.prototype.reSubscribe = function() {
+  log.debug('insight reSubscribe');
+  var allAddresses = Object.keys(this.subscribed);
+  this.subscribed = {};
+  var s = this.socket;
+  if (s) {
+    s.removeAllListeners();
+    this._setMainHandlers();
+    this.subscribe(allAddresses);
+    this.subscribeToBlocks();
+  }
 };
 
-Insight.prototype.unsubscribeAll = function() {
-  this.unsubscribe(Object.keys(this.subscribed));
-};
 
 Insight.prototype.broadcast = function(rawtx, cb) {
   preconditions.checkArgument(rawtx);
