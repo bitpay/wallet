@@ -273,6 +273,7 @@ angular.module('copayApp.services')
       });
     }
 
+    // TODO Move this to wallet model!
     root.updateGlobalAddresses = function() {
       if (!$rootScope.wallet) return;
       root.updateAddressList();
