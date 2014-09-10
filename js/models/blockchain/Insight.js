@@ -5,6 +5,7 @@ var async = require('async');
 var request = require('request');
 var bitcore = require('bitcore');
 var io = require('socket.io-client');
+var log = require('../../log');
 
 var EventEmitter = require('events').EventEmitter;
 var preconditions = require('preconditions').singleton();
@@ -27,15 +28,15 @@ var preconditions = require('preconditions').singleton();
     - disconnect: the connection with the blochckain is unavailable.  
 */
 
-var Insight = function (opts) {
+var Insight = function(opts) {
   this.status = this.STATUS.DISCONNECTED;
   this.subscribed = {};
   this.listeningBlocks = false;
 
   preconditions.checkArgument(opts).shouldBeObject(opts)
-  .checkArgument(opts.host)
-  .checkArgument(opts.port)
-  .checkArgument(opts.schema);
+    .checkArgument(opts.host)
+    .checkArgument(opts.port)
+    .checkArgument(opts.schema);
 
   this.url = opts.schema + '://' + opts.host + ':' + opts.port;
   this.opts = {
@@ -44,8 +45,36 @@ var Insight = function (opts) {
     'secure': opts.schema === 'https'
   };
 
-  this.socket = this.getSocket(this.url, this.opts);
+}
 
+util.inherits(Insight, EventEmitter);
+
+Insight.prototype.STATUS = {
+  CONNECTED: 'connected',
+  DISCONNECTED: 'disconnected',
+  DESTROYED: 'destroyed'
+}
+
+/** @private */
+Insight.prototype.subscribeToBlocks = function() {
+  var socket = this.getSocket();
+  if (this.listeningBlocks || !socket.connected) return;
+
+  var self = this;
+  socket.emit('subscribe', 'inv');
+  socket.on('block', function(blockHash) {
+    self.emit('block', blockHash);
+  });
+  this.listeningBlocks = true;
+}
+
+/** @private */
+Insight.prototype._getSocketIO = function(url, opts) {
+  return io(this.url, this.opts);
+};
+
+
+Insight.prototype._setMainHandlers = function(url, opts) {
   // Emmit connection events
   var self = this;
   this.socket.on('connect', function() {
@@ -68,34 +97,21 @@ var Insight = function (opts) {
 
   this.socket.on('reconnect', function(attempt) {
     if (self.status != self.STATUS.DISCONNECTED) return;
+    self.emit('reconnect', attempt);
+    self.reSubscribe();
     self.status = self.STATUS.CONNECTED;
-    self.emit('connect', attempt);
   });
-}
+};
 
-util.inherits(Insight, EventEmitter);
-
-Insight.prototype.STATUS = {
-  CONNECTED: 'connected',
-  DISCONNECTED: 'disconnected',
-  DESTROYED: 'destroyed'
-}
-
-/** @private */
-Insight.prototype.subscribeToBlocks = function() {
-  if (this.listeningBlocks || !this.socket.connected) return;
-
-  var self = this;
-  this.socket.emit('subscribe', 'inv');
-  this.socket.on('block', function(blockHash) {
-    self.emit('block', blockHash);
-  });
-  this.listeningBlocks = true;
-}
 
 /** @private */
 Insight.prototype.getSocket = function(url, opts) {
-  return io(this.url, this.opts);
+
+  if (!this.socket) {
+    this.socket = this._getSocketIO(this.url, this.opts);
+    this._setMainHandlers();
+  }
+  return this.socket;
 }
 
 /** @private */
@@ -107,11 +123,18 @@ Insight.prototype.request = function(path, cb) {
 /** @private */
 Insight.prototype.requestPost = function(path, data, cb) {
   preconditions.checkArgument(path).checkArgument(data).shouldBeFunction(cb);
-  request({method: "POST", url: this.url + path, json: data}, cb);
+  request({
+    method: "POST",
+    url: this.url + path,
+    json: data
+  }, cb);
 }
 
 Insight.prototype.destroy = function() {
-  this.socket.destroy();
+  var socket = this.getSocket();
+  this.socket.disconnect();
+  this.socket.removeAllListeners();
+  this.socket = null;
   this.subscribed = {};
   this.status = this.STATUS.DESTROYED;
   this.removeAllListeners();
@@ -122,49 +145,61 @@ Insight.prototype.subscribe = function(addresses) {
   var self = this;
 
   function handlerFor(self, address) {
-    return function (txid) {
+    return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;
-      self.emit('tx', {address: address, txid: txid});
+
+      log.debug('insight tx event');
+
+      self.emit('tx', {
+        address: address,
+        txid: txid
+      });
     }
   }
 
+  var s = self.getSocket();
   addresses.forEach(function(address) {
     preconditions.checkArgument(new bitcore.Address(address).isValid());
 
     // skip already subscibed
     if (!self.subscribed[address]) {
-      self.subscribed[address] = true;
-      self.socket.emit('subscribe', address);
-      self.socket.on(address, handlerFor(self, address));
+      var handler = handlerFor(self, address);
+      self.subscribed[address] = handler;
+      log.debug('Subcribe to: ', address);
+
+      s.emit('subscribe', address);
+      s.on(address, handler);
     }
   });
 };
 
 Insight.prototype.getSubscriptions = function(addresses) {
-  return Object.keys(this.subscribed);
+  return this.subscribed;
 }
 
-Insight.prototype.unsubscribe = function(addresses) {
-  addresses = Array.isArray(addresses) ? addresses : [addresses];
-  var self = this;
 
-  addresses.forEach(function(address) {
-    preconditions.checkArgument(new bitcore.Address(address).isValid());
-    self.socket.removeEventListener(address);
-    delete self.subscribed[address];
-  });
+Insight.prototype.reSubscribe = function() {
+  log.debug('insight reSubscribe');
+  var allAddresses = Object.keys(this.subscribed);
+  this.subscribed = {};
+  var s = this.socket;
+  if (s) {
+    s.removeAllListeners();
+    this._setMainHandlers();
+    this.subscribe(allAddresses);
+    this.subscribeToBlocks();
+  }
 };
 
-Insight.prototype.unsubscribeAll = function() {
-  this.unsubscribe(this.getSubscriptions());
-};
 
 Insight.prototype.broadcast = function(rawtx, cb) {
   preconditions.checkArgument(rawtx);
   preconditions.shouldBeFunction(cb);
 
-  this.requestPost('/api/tx/send', {rawtx: rawtx}, function(err, res, body) {
+  this.requestPost('/api/tx/send', {
+    rawtx: rawtx
+  }, function(err, res, body) {
     if (err || res.statusCode != 200) cb(err || res);
     cb(null, body.txid);
   });
@@ -218,7 +253,9 @@ Insight.prototype.getUnspent = function(addresses, cb) {
   preconditions.shouldBeArray(addresses);
   preconditions.shouldBeFunction(cb);
 
-  this.requestPost('/api/addrs/utxo', {addrs: addresses.join(',')}, function(err, res, body) {
+  this.requestPost('/api/addrs/utxo', {
+    addrs: addresses.join(',')
+  }, function(err, res, body) {
     if (err || res.statusCode != 200) return cb(err || res);
     cb(null, body);
   });
@@ -243,8 +280,8 @@ Insight.prototype.getActivity = function(addresses, cb) {
     var getOutputs = function(t) {
       return flatArray(
         t.vout.map(function(vout) {
-        return vout.scriptPubKey.addresses;
-      })
+          return vout.scriptPubKey.addresses;
+        })
       );
     };
 
