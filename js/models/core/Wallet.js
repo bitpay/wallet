@@ -650,7 +650,7 @@ Wallet.prototype.getSecret = function() {
   var buf = new Buffer(
     this.getMyCopayerId() +
     this.getSecretNumber() +
-    this.getNetworkName() === 'livenet' ? 'L' : 'T',
+    (this.getNetworkName() === 'livenet' ? '00' : '01'),
     'hex');
   var str = Base58Check.encode(buf);
   return str;
@@ -666,7 +666,7 @@ Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
   var pubKeyBuf = secret.slice(0, 33);
   var secretNumber = secret.slice(33, 38);
-  var networkName = secret.slice(38, 39) === 'L' ? 'livenet' : 'testnet';
+  var networkName = secret.slice(38, 39).toString('hex') === '00' ? 'livenet' : 'testnet';
   return {
     pubKey: pubKeyBuf.toString('hex'),
     secretNumber: secretNumber.toString('hex'),

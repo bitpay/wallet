@@ -362,7 +362,18 @@ describe('Wallet model', function() {
     var s = Wallet.decodeSecret(sb);
     s.pubKey.should.equal(id);
     s.secretNumber.should.equal(secretNumber);
+    s.networkName.should.equal(w.getNetworkName());
+  });
 
+  it('#getSecret decodeSecret livenet', function() {
+    var w = cachedCreateW2();
+    var stub = sinon.stub(w, 'getNetworkName');
+    stub.returns('livenet');
+    var sb = w.getSecret();
+    should.exist(sb);
+    var s = Wallet.decodeSecret(sb);
+    s.networkName.should.equal('livenet');
+    stub.restore();
   });
 
 
