@@ -108,7 +108,7 @@ angular.module('copayApp.services')
         }, 3000);
       });
       w.on('txProposalEvent', function(e) {
-        
+
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
         switch (e.type) {
           case 'signed':
