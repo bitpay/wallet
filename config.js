@@ -16,14 +16,10 @@ var defaultConfig = {
   // network layer config
   network: {
     testnet: {
-      host: 'test-insight.bitpay.com',
-      port: 443,
-      schema: 'https'
+      url: 'https://test-insight.bitpay.com:443'
     },
     livenet: {
-      host: 'insight.bitpay.com',
-      port: 443,
-      schema: 'https'
+      url: 'https:insight.bitpay.com:443'
     },
   },
 
