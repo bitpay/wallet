@@ -35,7 +35,7 @@ Network.prototype.cleanUp = function() {
   this.copayerForPeer = {};
   this.criticalErr = '';
   if (this.socket) {
-console.log('[Async.js.39] DISCONNECT'); //TODO
+    log.info('Async DISCONNECT');
     this.socket.disconnect();
     this.socket.removeAllListeners();
     this.socket = null;
