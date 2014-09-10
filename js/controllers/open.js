@@ -37,7 +37,6 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
       try {
         w = walletFactory.open($scope.selectedWalletId, passphrase);
       } catch (e) {
-        throw e;
         errMsg = e.message;
       };
       if (!w) {

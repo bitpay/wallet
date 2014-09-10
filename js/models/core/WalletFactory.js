@@ -80,7 +80,6 @@ WalletFactory.prototype._checkRead = function(walletId) {
  * @return {string} network name
  */
 WalletFactory.prototype.obtainNetworkName = function(obj) {
-  console.log(JSON.stringify(obj));
   return obj.networkName ||
     obj.opts.networkName ||
     obj.publicKeyRing.networkName ||
@@ -106,8 +105,6 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
     } else
       throw new Error('unknown field:' + k);
   });
-
-  alert(networkName);
 
   var w = Wallet.fromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
   if (!w) return false;
