@@ -40,9 +40,7 @@ var UNSPENT = [{
 }];
 
 var FAKE_OPTS = {
-  host: 'something.com',
-  port: 123,
-  schema: 'http'
+  url: 'http://something.com:123',
 }
 
 describe('Insight model', function() {
