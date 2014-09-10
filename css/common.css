@@ -14,12 +14,12 @@ figure.bg-logo {
 }
 
 h2 {
-  font-weight: 100;
+  font-weight:300;
   color: #535A6C;
 }
 
 p {
-  font-weight: 100;
+  font-weight: 300;
   color: #95A5A6;
   font-size: 1.2rem;
 }
@@ -105,6 +105,8 @@ button.warning,
 .m2r {margin-right: 2rem;}
 .p2r {padding-right: 2rem;}
 .m4b {margin-bottom: 4rem;}
+.p3t {padding-top: 3rem;}
+.m3b {margin-bottom: 3rem;}
 .p5t {padding-top: 5rem;}
 .p5b {padding-bottom: 5rem;}
 .m10t {margin-top: 10px;}
