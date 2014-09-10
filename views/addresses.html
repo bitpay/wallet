@@ -10,12 +10,19 @@
           <div class="panel radius oh" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
             <div class="row collapse">
               <div class="large-10 medium-9 small-8 column" >
-                <div class="ellipsis list-addr">
-                  <i class="fi-thumbnails size-48 show-for-large-up"  ng-click="openAddressModal(addr)">&nbsp;</i>
+                <div class="show-for-large-up list-addr">
+                  <i class="fi-thumbnails size-48" ng-click="openAddressModal(addr)">&nbsp;</i>
                   <span>
-                    <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                    <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
                   </span>
                   <span class="btn-copy" clip-copy="addr.address"> </span>
+                  <small translate class="label" ng-if="addr.isChange">change</small>
+                </div>
+                <div class="ellipsis hide-for-large-up list-addr"
+                  ng-click="openAddressModal(addr)">
+                  <span>
+                    <contact address="{{addr.address}}">
+                  </span>
                   <small translate class="label" ng-if="addr.isChange">change</small>
                 </div>
               </div>
