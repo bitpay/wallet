@@ -16,10 +16,10 @@ var defaultConfig = {
   // network layer config
   network: {
     testnet: {
-      url: 'https://test-insight.bitpay.com'
+      url: 'https://test-insight.bitpay.com:443'
     },
     livenet: {
-      url: 'https://insight.bitpay.com'
+      url: 'https://insight.bitpay.com:443'
     },
   },
 
