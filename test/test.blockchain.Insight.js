@@ -79,9 +79,9 @@ describe('Insight model', function() {
     var socket = blockchain.getSocket();
     blockchain.on('connect', function() {
       blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
-      blockchain.getSubscriptions().length.should.equal(1);
+      Object.keys(blockchain.getSubscriptions()).length.should.equal(1);
       blockchain.destroy();
-      blockchain.getSubscriptions().length.should.equal(0);
+      Object.keys(blockchain.getSubscriptions()).length.should.equal(0);
       blockchain.status.should.be.equal('destroyed');
       done();
     });
@@ -93,7 +93,7 @@ describe('Insight model', function() {
     var emitSpy = sinon.spy(socket, 'emit');
 
     blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
-    blockchain.getSubscriptions().length.should.equal(1);
+    Object.keys(blockchain.getSubscriptions()).length.should.equal(1);
     emitSpy.calledWith('subscribe', 'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
   });
 
@@ -102,7 +102,7 @@ describe('Insight model', function() {
 
     blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
     blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
-    blockchain.getSubscriptions().length.should.equal(1);
+    Object.keys(blockchain.getSubscriptions()).length.should.equal(1);
   });
 
   it('should subscribe to a list of addresses', function() {
@@ -114,27 +114,19 @@ describe('Insight model', function() {
       'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM',
       '2NBBHBjB5sd7HFqKtout1L7d6dPhwJgP2j8'
     ]);
-    blockchain.getSubscriptions().length.should.equal(2);
+    Object.keys(blockchain.getSubscriptions()).length.should.equal(2);
     emitSpy.calledWith('subscribe', 'mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
     emitSpy.calledWith('subscribe', '2NBBHBjB5sd7HFqKtout1L7d6dPhwJgP2j8');
   });
 
-  it('should unsubscribe to an address', function() {
-    var blockchain = new Insight(FAKE_OPTS);
-    blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
-    blockchain.getSubscriptions().length.should.equal(1);
-    blockchain.unsubscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
-    blockchain.getSubscriptions().length.should.equal(0);
-  });
-
-  it('should unsubscribe to all addresses', function() {
+  it('should resubscribe to all addresses', function() {
     var blockchain = new Insight(FAKE_OPTS);
     blockchain.subscribe('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
     blockchain.subscribe('2NBBHBjB5sd7HFqKtout1L7d6dPhwJgP2j8');
-    blockchain.getSubscriptions().length.should.equal(2);
+    Object.keys(blockchain.getSubscriptions()).length.should.equal(2);
 
-    blockchain.unsubscribeAll('mg7UbtKgMvWAixTNMbC8soyUnwFk1qxEuM');
-    blockchain.getSubscriptions().length.should.equal(0);
+    blockchain.reSubscribe();
+    Object.keys(blockchain.getSubscriptions()).length.should.equal(2);
   });
 
   it('should broadcast a raw transaction', function(done) {
