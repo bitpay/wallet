@@ -33,11 +33,15 @@
 
             <div ng-hide="hideAdv">
               <label>
-              <input translate type="checkbox" class="form-control" name="skipPublicKeyRing" ng-model="skipPublicKeyRing">Skip public keys from peers
+              <input type="checkbox" class="form-control"
+              name="skipPublicKeyRing" ng-model="skipPublicKeyRing"> 
+              <span translate>Skip public keys from peers</span>
               </label>
 
               <label>
-              <input translate type="checkbox" class="form-control" name="skipTxProposals" ng-model="skipTxProposals">Skip transaction proposals from Backup
+              <input type="checkbox" class="form-control"
+              name="skipTxProposals" ng-model="skipTxProposals"> 
+              <span translate>Skip transaction proposals from Backup</span>
               </label>
             </div>
           

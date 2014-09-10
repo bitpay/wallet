@@ -68,7 +68,7 @@ msgstr "Importe en"
 msgid "Are you sure to delete this wallet from this computer?"
 msgstr "¿Estas seguro de borrar este monedero de tu computadora?"
 
-#: views/join.html views/open.html
+#: views/join.html
 msgid "Authenticating and looking for peers..."
 msgstr "Autenticando y buscando compañeros..."
 
@@ -109,6 +109,10 @@ msgstr "Navegador no soportado"
 msgid "Cancel"
 msgstr "Cancelar"
 
+#: views/send.html
+msgid "Certificate:"
+msgstr "Certificado:"
+
 #: views/import.html
 msgid "Choose backup file from your computer"
 msgstr "Seleccione el archivo backup de su computadora"
@@ -124,6 +128,10 @@ msgstr "Cerrar"
 #: views/transactions.html
 msgid "Confirmations"
 msgstr "Confirmaciones"
+
+#: views/open.html
+msgid "Connecting..."
+msgstr "Conectando..."
 
 #: views/warning.html
 msgid "Continue anyways"
@@ -201,12 +209,12 @@ msgstr "Fondos para vacaciones en familia"
 msgid "Fee"
 msgstr "Tasa"
 
-#: views/join.html
+#: views/join.html views/send.html
 msgid "Get QR code"
 msgstr "Obtener código QR"
 
-#: views/create.html views/import.html views/join.html views/more.html
-#: views/transactions.html
+#: views/copayers.html views/create.html views/import.html views/join.html
+#: views/more.html views/transactions.html
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -296,9 +304,17 @@ msgstr "Master Private Key"
 msgid "Me"
 msgstr "Yo"
 
+#: views/send.html
+msgid "Merchant Data:"
+msgstr "Negocio:"
+
 #: views/create.html
 msgid "Name"
 msgstr "Nombre"
+
+#: index.html
+msgid "Network Error. Attempting to reconnect..."
+msgstr "Error de Red. Intentando reconectar..."
 
 #: views/settings.html
 msgid ""
@@ -326,13 +342,13 @@ msgstr "Sin propuestas de transacciones aún."
 msgid "No transactions yet."
 msgstr "Aún no hay transacciones."
 
-#: views/send.html views/modals/address-book.html
+#: views/modals/address-book.html
 msgid "Not valid"
 msgstr "No válido"
 
 #: views/send.html
-msgid "Notes"
-msgstr "Notas"
+msgid "Note"
+msgstr "Nota"
 
 #: views/copayers.html
 msgid "One person has"
@@ -376,6 +392,10 @@ msgstr "Contraseña"
 #: views/join.html
 msgid "Paste wallet secret here"
 msgstr "Pegar código secreto del monedero aquí"
+
+#: views/send.html
+msgid "Payment Expiration:"
+msgstr "Vencimiento de Pago:"
 
 #: views/more.html
 msgid ""
@@ -466,10 +486,6 @@ msgid "Select total number of copayers (*)"
 msgstr "Seleccione el total de compañeros (*)"
 
 #: views/send.html
-msgid "Send"
-msgstr "Enviar"
-
-#: views/send.html
 msgid "Send Proposals"
 msgstr "Enviar Propuestas"
 
@@ -485,6 +501,10 @@ msgstr "Enviar a"
 msgid "Sent"
 msgstr "Enviado"
 
+#: views/send.html
+msgid "Server Says:"
+msgstr "Mensaje del Servidor:"
+
 #: views/home.html views/more.html
 msgid "Settings"
 msgstr "Configuración"
@@ -493,8 +513,8 @@ msgstr "Configuración"
 msgid "Share this secret with your other copayers"
 msgstr "Compartir el código secreto con tus otros compañeros"
 
-#: views/create.html views/import.html views/join.html views/more.html
-#: views/transactions.html
+#: views/copayers.html views/create.html views/import.html views/join.html
+#: views/more.html views/transactions.html
 msgid "Show"
 msgstr "Mostrar"
 
@@ -509,6 +529,14 @@ msgstr "Ver menos"
 #: views/includes/transaction.html
 msgid "Sign"
 msgstr "Firmar"
+
+#: views/import.html
+msgid "Skip public keys from peers"
+msgstr "Ignorar claves pública de los compañeros"
+
+#: views/import.html
+msgid "Skip transaction proposals from Backup"
+msgstr "Ignorar propuestas de transacciones desde la Copia de Seguridad"
 
 #: views/import.html
 msgid "Skipping fields: {{skipFields}}"
@@ -538,6 +566,10 @@ msgstr "Dirección"
 msgid "Total"
 msgstr "Total"
 
+#: views/send.html
+msgid "Total amount for this transaction:"
+msgstr "Cantidad total de esta transacción:"
+
 #: views/includes/transaction.html
 msgid "Transaction ID"
 msgstr "ID Transacción"
@@ -562,7 +594,7 @@ msgstr "Todos los fondos"
 msgid "User information"
 msgstr "Información de Usuario"
 
-#: views/send.html views/modals/address-book.html
+#: views/modals/address-book.html
 msgid "Valid"
 msgstr "Válido"
 
@@ -630,7 +662,8 @@ msgstr "Tu contraseña"
 msgid "Your wallet password"
 msgstr "Contraseña de tu monedero"
 
-#: views/create.html views/import.html views/join.html views/more.html
+#: views/copayers.html views/create.html views/import.html views/join.html
+#: views/more.html
 msgid "advanced options"
 msgstr "opciones avanzadas"
 
@@ -685,6 +718,9 @@ msgstr "deben unirse"
 #: views/includes/transaction.html
 msgid "{{tx.missingSignatures}} signatures missing"
 msgstr "Faltan {{tx.missingSignatures}} firmas"
+
+#~ msgid "Send"
+#~ msgstr "Enviar"
 
 #~ msgid ""
 #~ "{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet"
