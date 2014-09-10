@@ -70,9 +70,8 @@
                 <input type="number" id="amount"
                 ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || $root.merchantError"
                 name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
-                min="{{minAmount}}" max="10000000000" enough-amount required
-                autocomplete="off"
-                >
+                min="0.00000001" max="10000000000" enough-amount required
+                autocomplete="off">
                 <small class="icon-input" ng-show="!sendForm.amount.$invalid && amount"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount"><i class="fi-x"></i></small>
                 <a class="small input-note" title="{{'Send all funds'|translate}}"
