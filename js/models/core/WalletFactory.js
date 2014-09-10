@@ -9,6 +9,7 @@ var log = require('../../log');
 var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
+var preconditions = require('preconditions').singleton();
 
 /**
  * @desc
@@ -186,8 +187,9 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.create = function(opts) {
-  preconditions.checkArgument(opts);
-  preconditions.checkArgument(opts.networkName);
+
+  opts = opts || {};
+  opts.networkName = opts.networkName || 'testnet';
 
   log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
