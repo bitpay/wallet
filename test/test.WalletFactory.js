@@ -424,10 +424,10 @@ describe('WalletFactory model', function() {
     });
     it('should call network.start with private key', function() {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.network.cleanUp = sinon.spy();
-      wf.network.start = sinon.spy();
+      wf.networks.testnet.cleanUp = sinon.spy();
+      wf.networks.testnet.start = sinon.spy();
       wf.joinCreateSession('8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM', 'test', null, undefined);
-      wf.network.start.getCall(0).args[0].privkey.length.should.equal(64); //privkey is hex of private key buffer
+      wf.networks.testnet.start.getCall(0).args[0].privkey.length.should.equal(64); //privkey is hex of private key buffer
     });
   });
   describe('dont break backwards compatibility of wallets', function() {
