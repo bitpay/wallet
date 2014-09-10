@@ -357,11 +357,6 @@ describe("Unit: Controllers", function() {
       scope.$apply();
     });
 
-    it('should return networkName', function() {
-      $httpBackend.flush(); // need flush
-      var networkName = scope.networkName;
-      expect(networkName).equal('testnet');
-    });
   });
 
   describe("Unit: Sidebar Controller", function() {
