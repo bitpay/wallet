@@ -38,6 +38,22 @@ TxProposals.prototype.length = function() {
   return Object.keys(this.txps).length;
 };
 
+
+TxProposals.prototype.getNtxidsSince = function(sinceTs) {
+  preconditions.checkArgument(sinceTs);
+  var ret = [];
+
+  for(var ii in this.txps){
+    var txp = this.txps[ii];
+    if (txp.createdTs >=  sinceTs)
+      ret.push(ii);
+  }
+console.log('[TxProposals.js.52:ret:]',ret); //TODO
+  return ret;
+};
+
+
+
 TxProposals.prototype.getNtxids = function() {
   return Object.keys(this.txps);
 };
