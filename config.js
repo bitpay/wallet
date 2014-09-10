@@ -16,7 +16,6 @@ var defaultConfig = {
   limits: {
     totalCopayers: 12,
     mPlusN: 100,
-    minAmountSatoshi: 5400,
   },
 
   // network layer config

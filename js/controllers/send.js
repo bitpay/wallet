@@ -9,7 +9,6 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = config.unitToSatoshi / bitcore.util.COIN;
     $scope.unitToSatoshi = config.unitToSatoshi;
-    $scope.minAmount = config.limits.minAmountSatoshi * satToUnit;
 
     $scope.alternativeName = config.alternativeName;
     $scope.alternativeIsoCode = config.alternativeIsoCode;
@@ -30,40 +29,38 @@ angular.module('copayApp.controllers').controller('SendController',
      */
     Object.defineProperty($scope,
       "alternative", {
-      get: function () {
-        return this._alternative;
-      },
-      set: function (newValue) {
-        this._alternative = newValue;
-        if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-          this._amount = parseFloat(
-            (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit
-          ).toFixed(config.unitDecimals), 10);
-        } else {
-          this._amount = 0;
-        }
-      },
-      enumerable: true,
-      configurable: true
-    });
+        get: function() {
+          return this._alternative;
+        },
+        set: function(newValue) {
+          this._alternative = newValue;
+          if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+            this._amount = parseFloat(
+              (rateService.fromFiat(newValue, config.alternativeIsoCode) * satToUnit).toFixed(config.unitDecimals), 10);
+          } else {
+            this._amount = 0;
+          }
+        },
+        enumerable: true,
+        configurable: true
+      });
     Object.defineProperty($scope,
       "amount", {
-      get: function () {
-        return this._amount;
-      },
-      set: function (newValue) {
-        this._amount = newValue;
-        if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-          this._alternative = parseFloat(
-            (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)
-          ).toFixed(2), 10);
-        } else {
-          this._alternative = 0;
-        }
-      },
-      enumerable: true,
-      configurable: true
-    });
+        get: function() {
+          return this._amount;
+        },
+        set: function(newValue) {
+          this._amount = newValue;
+          if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+            this._alternative = parseFloat(
+              (rateService.toFiat(newValue * config.unitToSatoshi, config.alternativeIsoCode)).toFixed(2), 10);
+          } else {
+            this._alternative = 0;
+          }
+        },
+        enumerable: true,
+        configurable: true
+      });
 
     $scope.loadTxs = function() {
       var opts = {
@@ -104,7 +101,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.isMobile = isMobile.any();
 
     if (!window.cordova && !navigator.getUserMedia)
-      $scope.disableScanner =1;
+      $scope.disableScanner = 1;
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
@@ -187,9 +184,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       // If we're setting the domain, ignore the change.
-      if ($rootScope.merchant
-          && $rootScope.merchant.domain
-          && address === $rootScope.merchant.domain) {
+      if ($rootScope.merchant && $rootScope.merchant.domain && address === $rootScope.merchant.domain) {
         uri = {
           merchant: $rootScope.merchant.request_url
         };
@@ -480,9 +475,7 @@ angular.module('copayApp.controllers').controller('SendController',
       var uri;
 
       // If we're setting the domain, ignore the change.
-      if ($rootScope.merchant
-          && $rootScope.merchant.domain
-          && value === $rootScope.merchant.domain) {
+      if ($rootScope.merchant && $rootScope.merchant.domain && value === $rootScope.merchant.domain) {
         return;
       }
 
@@ -566,9 +559,7 @@ angular.module('copayApp.controllers').controller('SendController',
           var val = scope.sendForm.address.$viewValue || '';
           var uri;
           // If we're setting the domain, ignore the change.
-          if ($rootScope.merchant
-              && $rootScope.merchant.domain
-              && val === $rootScope.merchant.domain) {
+          if ($rootScope.merchant && $rootScope.merchant.domain && val === $rootScope.merchant.domain) {
             uri = {
               merchant: $rootScope.merchant.request_url
             };
