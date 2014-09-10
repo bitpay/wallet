@@ -26,7 +26,6 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../s
  * @param {Object} config.network - the configuration to be sent to the Network constructor
  * @param {Blockchain} config.Blockchain - the class to instantiate to get information about the blockchain (Insight by default)
  * @param {Object} config.blockchain - the configuration to be sent to the Blockchain constructor
- * @param {string} config.networkName - the name of the bitcoin network to use ('testnet' or 'livenet')
  * @TODO: Investigate what parameters go inside this object
  * @param {Object} config.wallet - default configuration for the wallet
  * @TODO: put `version` inside of the config object
@@ -92,7 +91,6 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
   if (!w) return false;
   this._checkVersion(w.version);
-  this._checkNetwork(w.getNetworkName());
   return w;
 };
 
@@ -238,17 +236,6 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
       '. Received:' + inVersion +
       '. Current version:' + this.version +
       '. Aborting.');
-  }
-};
-
-/**
- * @desc Throw an error if the network name is different to {@link WalletFactory#networkName}
- * @param {string} inNetworkName - the network name to check
- * @throws {Error}
- */
-WalletFactory.prototype._checkNetwork = function(inNetworkName) {
-  if (this.networkName !== inNetworkName) {
-    throw new Error('This Wallet is configured for ' + inNetworkName + ' while currently Copay is configured for: ' + this.networkName + '. Check your settings.');
   }
 };
 
