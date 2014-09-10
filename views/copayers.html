@@ -51,6 +51,7 @@
         </div>
 
         <div class="box-setup-copayers p20">
+          <span translate>Creating and storing a backup will allow to restore funds of the wallet</span>
           <div class="oh">
             <div ng-include="'views/includes/copayer.html'"></div> 
             <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
@@ -75,21 +76,23 @@
           </div>
         </div>
 
-        <div class="text-right">
-          <div class="left text-left m10b">
-            <a class="expand small"  ng-click="hideAdv=!hideAdv">
-              <span translate ng-hide="!hideAdv">Show</span> 
-              <span translate ng-hide="hideAdv">Hide</span> 
-              <span translate>advanced options</span>
-            </a>
-            <div ng-hide="hideAdv">
-              <a translate class="text-warning" ng-really-click="deleteWallet()"
-                ng-really-message="Are you sure to delete this wallet from this computer?">Delete wallet</a> 
-              <span class="text-gray">|</span> 
-              <a translate class="text-primary m20r" ng-click="downloadBackup()"
-                ng-show="!$root.wallet.publicKeyRing.isComplete()">Download seed backup</a> 
-            </div>
-          </div>
+<!--         <div class="text-right">
+          <button class="button secondary m0"
+            ng-click="skipBackup()"
+            ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+            ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+            <span translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
+              Skip Backup
+            </span>
+          </button> -->
+
+          <a class="small"  ng-click="skipBackup()"      
+            ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+            ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+             <span translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
+              Skip Backup
+            </span>
+          </a>
           <button class="button primary m0"
             ng-click="backup()"
             ng-show="!$root.wallet.publicKeyRing.isBackupReady()"

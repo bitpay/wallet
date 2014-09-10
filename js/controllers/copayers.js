@@ -5,6 +5,12 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.hideAdv = true;
 
+
+    $scope.skipBackup = function() {
+      var w = $rootScope.wallet;
+      w.setBackupReady();
+    };
+
     $scope.backup = function() {
       var w = $rootScope.wallet;
       w.setBackupReady();
