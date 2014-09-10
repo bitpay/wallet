@@ -129,7 +129,7 @@ angular.module('copayApp.controllers').controller('JoinController',
             else if (err === 'walletFull')
               notification.error('The wallet is full');
             else if (err === 'badNetwork')
-              notification.error('Network Error', 'The wallet your are trying to join uses a different Bitcoin Network. Check your settings.');
+              notification.error('Network Error', 'Wallet network configuration missmatch');
             else if (err === 'badSecret')
               notification.error('Bad secret', 'The secret string you entered is invalid');
             else

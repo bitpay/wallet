@@ -364,7 +364,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     self.network.greet(decodedSecret.pubKey, opts.secretNumber);
     self.network.on('data', function(sender, data) {
       if (data.type === 'walletId') {
-        if (data.networkName !== self.networkName) {
+        if (data.networkName !== decodedSecret.networkName) {
           return cb('badNetwork');
         }
 
