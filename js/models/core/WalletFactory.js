@@ -339,7 +339,7 @@ WalletFactory.prototype.decodeSecret = function(secret) {
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
   var self = this;
   var decodedSecret = this.decodeSecret(secret);
-  if (!decodedSecret || !decodedSecret.networkName || !decodedSecret.pubkey) {
+  if (!decodedSecret || !decodedSecret.networkName || !decodedSecret.pubKey) {
     return cb('badSecret');
   }
 
