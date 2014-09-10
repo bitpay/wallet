@@ -4,10 +4,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   controllerUtils.redirIfLogged();
   $scope.title = 'Settings';
-  $scope.insightHost = config.network.host;
-  $scope.insightPort = config.network.port;
-  $scope.insightSecure = config.network.schema === 'https';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
+  $scope.insightLivenet = config.network.livenet.url;
+  $scope.insightTestnet = config.network.testnet.url;
 
   $scope.availableLanguages = [{
     name: 'English',
@@ -24,18 +23,14 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
   }
 
-  $scope.changeInsightSSL = function() {
-    $scope.insightPort = $scope.insightSecure ? 80 : 443;
-  };
-
-
   $scope.save = function() {
-    var network = config.network;
-
     var insightSettings = {
-      host: $scope.insightHost,
-      port: $scope.insightPort,
-      schema: $scope.insightSecure ? 'https' : 'http',
+      livenet: {
+        url: $scope.insightLivenet,
+      },
+      testnet: {
+        url: $scope.insightTestnet,
+      },
     }
 
     localStorage.setItem('config', JSON.stringify({
