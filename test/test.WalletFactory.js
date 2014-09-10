@@ -417,10 +417,10 @@ describe('WalletFactory model', function() {
     it('should accept a priv key a input', function() {
       var wf = new WalletFactory(config, '0.0.1');
       var privHex = 'tprv8ZgxMBicQKsPf7MCvCjnhnr4uiR2Z2gyNC27vgd9KUu98F9mM1tbaRrWMyddVju36GxLbeyntuSadBAttriwGGMWUkRgVmUUCg5nFioGZsd';
-      wf.network.cleanUp = sinon.spy();
-      wf.network.start = sinon.spy();
+      wf.networks.testnet.cleanUp = sinon.spy();
+      wf.networks.testnet.start = sinon.spy();
       wf.joinCreateSession('CA1e4HJpSmx9i97i2NigZ6j6F8C5pSaZX9XrAUwQERYAxNpQ4jsBEkr8iS', 'test', null, privHex);
-      wf.network.start.getCall(0).args[0].privkey.should.equal('ddc2fa8c583a73c4b2a24630ec7c283df4e7c230a02c4e48bc36ec61687afd7d');
+      wf.networks.testnet.start.getCall(0).args[0].privkey.should.equal('ddc2fa8c583a73c4b2a24630ec7c283df4e7c230a02c4e48bc36ec61687afd7d');
     });
     it('should call network.start with private key', function() {
       var wf = new WalletFactory(config, '0.0.1');
