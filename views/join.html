@@ -26,7 +26,7 @@
                 <input id="connectionId" type="text" class="small-9 columns" 
                 placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
               </div>
-              <div class="small-2 columns"  ng-hide="disableScanner" ng-hide="showScanner">
+              <div class="small-2 columns" ng-hide="showScanner || disableScanner">
                   <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
               </div>
               <div class="small-2 columns" ng-show="showScanner">
