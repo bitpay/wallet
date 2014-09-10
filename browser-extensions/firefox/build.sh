@@ -20,7 +20,7 @@ checkOK() {
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPDIR="$BUILDDIR/firefox-addon"
 ZIPFILE="copay-firefox-addon.zip"
-VERSION=`cut -d '"' -f2 $BUILDDIR/../../version.js`
+VERSION=`cut -d '"' -f2 $BUILDDIR/../../version.js|head -n 1`
 
 
 cfx >/dev/null
