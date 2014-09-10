@@ -432,13 +432,16 @@ describe('WalletFactory model', function() {
       wf.network.start.getCall(0).args[0].privkey.length.should.equal(64); //privkey is hex of private key buffer
     });
   });
-  describe('break backwards compatibility with older versions', function() {
-    it('should\'nt be able to import unencrypted legacy wallet TxProposal: v0', function() {
+  describe('dont break backwards compatibility of wallets', function() {
+    it('should be able to import unencrypted legacy wallet TxProposal: v0', function() {
+      var wf = new WalletFactory(config, '0.0.5');
+      var w = wf.fromObj(JSON.parse(legacyO));
 
-      (function() {
-        var wf = new WalletFactory(config, '0.0.5');
-        var w = wf.fromObj(JSON.parse(legacyO));
-      }).should.throw('Invalid or Incompatible Backup Detected');
+      should.exist(w);
+      w.id.should.equal('55d4bd062d32f90a');
+      should.exist(w.publicKeyRing.getCopayerId);
+      should.exist(w.txProposals.toObj());
+      should.exist(w.privateKey.toObj());
     });
 
     it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function(done) {

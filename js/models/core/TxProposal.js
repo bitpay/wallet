@@ -4,6 +4,7 @@ var bitcore = require('bitcore');
 var _ = require('underscore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
+var BuilderMockV0 = require('./BuilderMockV0');;
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Script = bitcore.Script;
 var Key = bitcore.Key;
@@ -147,7 +148,12 @@ TxProposal.fromObj = function(o, forceOpts) {
   try {
     o.builder = TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
-    throw new Error("Invalid or Incompatible Backup Detected.");
+
+    // backwards (V0) compatatibility fix.
+    if (!o.version) {
+      o.builder = new BuilderMockV0(o.builderObj);
+      o.readonly = 1;
+    };
   }
   return new TxProposal(o);
 };
