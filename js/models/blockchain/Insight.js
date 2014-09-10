@@ -36,7 +36,6 @@ var Insight = function(opts) {
   this.listeningBlocks = false;
 
   this.url = opts.url;
-  alert(this.url);
   this.opts = {
     'reconnection': opts.reconnection || true,
     'reconnectionDelay': opts.reconnectionDelay || 1000,
