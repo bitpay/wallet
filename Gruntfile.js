@@ -121,7 +121,6 @@ module.exports = function(grunt) {
           'js/controllers/*.js',
           'js/translations.js',
           'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
-          'js/log.js',
           'js/init.js'
         ],
         dest: 'js/copayMain.js'

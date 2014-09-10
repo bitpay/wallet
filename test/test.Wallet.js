@@ -1400,31 +1400,38 @@ describe('Wallet model', function() {
       var txp = {
         'txProposal': txp
       };
-      var merge = sinon.stub(w.txProposals, 'merge', function() {
-        if (response == 0) throw new Error();
+
+      var s1 = sinon.stub(w, '_getKeyMap', function() {
+        return {1:2};
+      });
+
+      var s2 = sinon.stub(w.txProposals, 'merge', function() {
+        if (response == 0) 
+          throw new Error('test error');
+
         return {
-          newCopayer: ['juan'],
           ntxid: 1,
+          txp: {
+            setCopayers: function() {return ['oeoe']; } ,
+          },
           new: response == 1
         };
       });
 
       w._onTxProposal('senderID', txp);
       spy.callCount.should.equal(1);
-      merge.restore();
+      s1.restore();
+      s2.restore();
     };
 
     it('should handle corrupt', function(done) {
-      var result = 'corrupt';
-      testValidate(0, result, done);
+      testValidate(0, 'corrupt', done);
     });
     it('should handle new', function(done) {
-      var result = 'new';
-      testValidate(1, result, done);
+      testValidate(1, 'new', done);
     });
     it('should handle signed', function(done) {
-      var result = 'signed';
-      testValidate(2, result, done);
+      testValidate(2, 'signed', done);
     });
 
   });

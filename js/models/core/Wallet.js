@@ -329,12 +329,11 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     var keyMap = this._getKeyMap(m.txp);
     m.newCopayer = m.txp.setCopayers(senderId, keyMap);
   } catch (e) {
-    log.error('Corrupt TX proposal received from:', senderId, e);
-    return;
+    log.error('Corrupt TX proposal received from:', senderId, e.toString());
+    m=null;
   }
 
   if (m) {
-
     if (m.hasChanged) {
       m.txp.setSeen(this.getMyCopayerId());
       this.sendSeen(m.ntxid);
