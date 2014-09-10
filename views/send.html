@@ -8,28 +8,28 @@
     <div ng-show="txs.length != 0" class="large-12 line-dashed" style="padding: 0;"></div>
 
     <h1>{{title|translate}}</h1>
+    <div class="row collapse m0">
     <div class="large-6 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
-        <div class="row">
+        <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
-              <label for="address">To address
-                <small ng-hide="!sendForm.address.$pristine || address">required</small>
-                <small class="is-valid" ng-show="!sendForm.address.$invalid && address">valid!</small>
-                <small class="has-error" ng-show="sendForm.address.$invalid && address">
-                  not valid</small>
+              <label for="address"><span translate>To address</span>
+                <small translate ng-hide="!sendForm.address.$pristine || address">required</small>
+                <small translate class="is-valid" ng-show="!sendForm.address.$invalid && address">valid!</small>
+                <small translate class="has-error" ng-show="sendForm.address.$invalid && address">not valid</small>
               </label>
               <div class="small-10 columns">
                 <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
-                placeholder="Send to" ng-model="address" ng-change="onChanged()" valid-address required>
+                placeholder="{{'Send to'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
                 <small class="icon-input" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.address.$invalid && address"><i class="fi-x"></i></small>
               </div>
-              <div class="small-2 columns" ng-hide="showScanner">
+              <div class="small-2 columns" ng-hide="showScanner || disableScanner">
                 <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera"></i></a>
               </div>
               <div class="small-2 columns" ng-show="showScanner">
-                <a class="postfix button warning" ng-click="cancelScanner()">Cancel</a>
+                <a translate class="postfix button warning" ng-click="cancelScanner()">Cancel</a>
               </div>
             </div>
             <div id="scanner" class="row" ng-if="showScanner">
@@ -39,7 +39,7 @@
                   <div id="file-input-wrapper" class="btn btn-primary">
                     <span class="pull-left text-centered">
                       <i class="glyphicon glyphicon-refresh icon-rotate"></i>
-                      Get QR code
+                      <span translate>Get QR code</span>
                     </span>
                     <input id="qrcode-camera" type="file" capture="camera" accept="image/*">
                   </div>
@@ -52,30 +52,33 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="large-6 medium-6 columns">
+        <div class="row collapse">
+          <div class="large-5 medium-5 columns">
             <div class="row collapse">
-              <label for="amount">Amount
-                <small ng-hide="!sendForm.amount.$pristine">required</small>
-                <small class="is-valid" ng-show="!sendForm.amount.$invalid && !sendForm.amount.$pristine">Valid</small>
-                <small class="has-error" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount">
-                  Not valid
+              <label for="amount"><span translate>Amount</span>
+                <small translate ng-hide="!sendForm.amount.$pristine">required</small>
+                <small translate class="is-valid"
+                  ng-show="!sendForm.amount.$invalid &&
+                !sendForm.amount.$pristine">valid!</small>
+                <small translate class="has-error"
+                  ng-show="sendForm.amount.$invalid &&
+                  !sendForm.amount.$pristine && !notEnoughAmount">not valid
                 </small>
-                <small ng-show="notEnoughAmount" class="has-error">Insufficient funds</small>
+                <small translate ng-show="notEnoughAmount" class="has-error">Insufficient funds</small>
               </label>
               <div class="small-9 columns">
                 <input type="number" id="amount"
                 ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || $root.merchantError"
-                name="amount" placeholder="Amount" ng-model="amount"
+                name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
                 min="{{minAmount}}" max="10000000000" enough-amount required
                 autocomplete="off"
                 >
                 <small class="icon-input" ng-show="!sendForm.amount.$invalid && amount"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount"><i class="fi-x"></i></small>
-                <a class="small input-note" title="Send all funds"
+                <a class="small input-note" title="{{'Send all funds'|translate}}"
                   ng-show="$root.availableBalance > 0 && (!$root.merchant || +$root.merchant.total === 0)"
                   ng-click="topAmount(sendForm)">
-                  Use all funds ({{getAvailableAmount()}} {{$root.unitName}})
+                  <span translate>Use all funds</span> ({{getAvailableAmount()}} {{$root.unitName}})
                 </a>
               </div>
               <div class="small-3 columns">
@@ -83,13 +86,13 @@
               </div>
             </div>
           </div>
-          <div class="large-6 medium-6 columns">
+          <div class="large-5 medium-5 columns">
             <div class="row collapse">
-              <label for="alternative">Amount in {{ alternativeName }} </label>
+              <label for="alternative"><span translate>Amount in</span> {{ alternativeName }} </label>
               <div class="small-9 columns">
                 <input type="number" id="alternative_amount"
                 ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0) || $root.merchantError"
-                name="alternative" placeholder="Amount" ng-model="alternative"
+                name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative"
                 required
                 autocomplete="off"
                 >
@@ -101,22 +104,22 @@
           </div>
         </div>
 
-        <div class="row" ng-show="wallet.isShared()">
+        <div class="row collapse" ng-show="wallet.isShared()">
           <div class="large-12 columns">
             <div class="row collapse">
-              <label for="comment">Note
-                <small ng-hide="!sendForm.comment.$pristine">optional</small>
-                <small class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+              <label for="comment"><span translate>Note</span>
+                <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
+                <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="large-12 columns">
                 <textarea id="comment" ng-disabled="loading"
-                  name="comment" placeholder="Leave a private message to your copayers" ng-model="commentText" ng-maxlength="100"></textarea>
+                  name="comment" placeholder="{{'Leave a private message to your copayers'|translate}}" ng-model="commentText" ng-maxlength="100"></textarea>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row collapse">
           <div class="large-5 medium-3 small-4 columns">
             <button type="submit" class="button primary expand text-center" ng-disabled="sendForm.$invalid || loading">
               Send
@@ -125,15 +128,16 @@
         </div>
       </form>
     </div>
+    </div><!--  end of row -->
 
     <div class="large-6 columns show-for-large-up" ng-show="!!$root.merchant">
       <div class="send-note">
-        <h6>Send to</h6>
+        <h6 translate>Send to</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.address.$invalid || !address}"
         title="{{$root.merchant.request_url}}">
         {{$root.merchant.domain}}&nbsp;
         </p>
-        <h6>Total amount for this transaction:</h6>
+        <h6 translate>Total amount for this transaction:</h6>
         <p class="text-gray" ng-class="{'hidden': sendForm.amount.$invalid || !amount > 0}">
         <b>{{amount + defaultFee |noFractionNumber}}</b> {{$root.unitName}}
         <small ng-if="isRateAvailable">
@@ -145,24 +149,24 @@
         </small>
         </p>
         <div ng-show="wallet.isShared()">
-          <h6>Note</h6>
+          <h6 translate>Note</h6>
           <p ng-class="{'hidden': !commentText}">{{commentText}}</p>
         </div>
         <div ng-show="!!$root.merchant">
-          <h6>Merchant Data:</h6>
+          <h6 translate>Merchant Data:</h6>
           <p class="text-gray">
             Note: This is a payment protocol transaction.
           </p>
-          <h6>Server Says:</h6>
+          <h6 translate>Server Says:</h6>
           <p class="text-gray">
             {{$root.merchant.pr.pd.memo}}
           </p>
-          <h6>Certificate:</h6>
+          <h6 translate>Certificate:</h6>
           <p class="text-gray">
             <span ng-show="!!$root.merchant.pr.ca">{{$root.merchant.pr.ca}}</span>
             <span ng-show="!$root.merchant.pr.ca" style="color:red;weight:bold;">Untrusted</span>
           </p>
-          <h6>Payment Expiration:</h6>
+          <h6 translate>Payment Expiration:</h6>
           <p class="text-gray">
             {{$root.merchant.expiration}}
           </p>
@@ -172,7 +176,7 @@
 
     <div class="large-12 columns line-dashed">
       <h2 translate>Address Book</h2>
-      <p translate class="text-gray" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
+      <p translate class="text-gray m15b" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
       <table class="large-12 medium-12 small-12" ng-show="showAddressBook()">
         <thead>
           <tr>
