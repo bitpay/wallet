@@ -86,6 +86,9 @@ function Wallet(opts) {
   this.lastTimestamp = opts.lastTimestamp || undefined;
   this.lastMessageFrom = {};
 
+  //to avoid confirmation of copayer's backups if is imported from a file
+  this.isImported = opts.isImported;
+
   this.paymentRequests = opts.paymentRequests || {};
 
   //network nonces are 8 byte buffers, representing a big endian number
@@ -867,6 +870,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   opts.storage = storage;
   opts.network = network;
   opts.blockchain = blockchain;
+  opts.isImported = true;
 
   return new Wallet(opts);
 };
@@ -2389,7 +2393,7 @@ Wallet.prototype.isShared = function() {
  * @return {boolean}
  */
 Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && this.publicKeyRing.isFullyBackup();
+  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported);
   return ret;
 };
 
