@@ -120,7 +120,7 @@ describe('TxProposal', function() {
           builderObj: b.toObj(),
           inputChainPaths: ['m/1'],
         });
-      }).should.throw('Invalid or Incompatible Backup Detected');
+      }).should.throw('Invalid');
     });
     it('sets force opts', function() {
       var b = new FakeBuilder();
@@ -134,7 +134,7 @@ describe('TxProposal', function() {
       };
       (function() {
         txp = TxProposal.fromObj(o,{pepe:100});
-      }).should.throw('Invalid or Incompatible Backup Detected');
+      }).should.throw('Invalid tx proposal: no ins');
       o.builderObj.opts.should.deep.equal({juan:1, pepe:100, feeSat:undefined, fee:undefined});
     });
   });
