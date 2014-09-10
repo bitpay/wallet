@@ -15,9 +15,7 @@ var preconditions = require('preconditions').singleton();
   subscribing to transactions on adressess and blocks.
 
   Opts: 
-    - host
-    - port
-    - schema
+    - url
     - reconnection (optional)
     - reconnectionDelay (optional)
 
@@ -31,19 +29,18 @@ var preconditions = require('preconditions').singleton();
 var Insight = function(opts) {
   preconditions.checkArgument(opts)
     .shouldBeObject(opts)
-    .checkArgument(opts.host)
-    .checkArgument(opts.port)
-    .checkArgument(opts.schema);
+    .checkArgument(opts.url)
 
   this.status = this.STATUS.DISCONNECTED;
   this.subscribed = {};
   this.listeningBlocks = false;
 
-  this.url = opts.schema + '://' + opts.host + ':' + opts.port;
+  this.url = opts.url;
+  alert(this.url);
   this.opts = {
     'reconnection': opts.reconnection || true,
     'reconnectionDelay': opts.reconnectionDelay || 1000,
-    'secure': opts.schema === 'https'
+    'secure': opts.url.indexOf('https') > -1
   };
 
   this.socket = this.getSocket();

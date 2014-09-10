@@ -19,7 +19,7 @@ var defaultConfig = {
       url: 'https://test-insight.bitpay.com:443'
     },
     livenet: {
-      url: 'https:insight.bitpay.com:443'
+      url: 'https://insight.bitpay.com:443'
     },
   },
 
