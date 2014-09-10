@@ -118,7 +118,6 @@ angular.module('copayApp.controllers').controller('JoinController',
       }
 
       $scope.loading = true;
-      walletFactory.network.on('badSecret', function() {});
 
       Passphrase.getBase64Async($scope.joinPassword, function(passphrase) {
         walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, $scope.private, function(err, w) {
