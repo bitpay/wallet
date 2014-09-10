@@ -33,6 +33,11 @@
                     symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
 
                 <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
+
+                <div class="text-left">
+                  <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
+                  <label for="network-name">Use test network</label>
+                </div>
               </div>
 
               <a class="expand small" ng-click="hideAdv=!hideAdv">
@@ -66,10 +71,6 @@
               </div>
             </div>
             <p translate class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
-            <div class="text-left">
-              <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
-              <label for="network-name">Use test network</label>
-            </div>
             <div class="text-right">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; <span translate>Back</span></a>
               <a ng-show="isSetupWalletPage" class="back-button m20r" ng-click="setupWallet()">&laquo; <span translate>Back</span></a>
