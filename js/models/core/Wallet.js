@@ -330,7 +330,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     m.newCopayer = m.txp.setCopayers(senderId, keyMap);
   } catch (e) {
     log.error('Corrupt TX proposal received from:', senderId, e.toString());
-    m=null;
+    m = null;
   }
 
   if (m) {
@@ -462,8 +462,8 @@ Wallet.prototype.updateTimestamp = function(ts) {
  * Triggers a call to {@link Wallet#sendWalletReady}
  */
 Wallet.prototype._onNoMessages = function() {
-  log.debug('No messages at the server. Requesting sync'); //TODO
-  this.sendWalletReady();
+  log.debug('No messages at the server. Requesting peer sync from: ' + this.lastTimestamp + 1); //TODO
+  this.sendWalletReady(null, parseInt((this.lastTimestamp + 1)/1000) ) ;
 };
 
 /**
@@ -498,9 +498,10 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       break;
     case 'walletReady':
       if (this.lastMessageFrom[senderId] !== 'walletReady') {
+        log.debug('peer Sync received. since: ' + (data.sinceTs||0));
         this.sendPublicKeyRing(senderId);
         this.sendAddressBook(senderId);
-        this.sendAllTxProposals(senderId); // send old txps
+        this.sendAllTxProposals(senderId, data.sinceTs); // send old txps
       }
       break;
     case 'publicKeyRing':
@@ -892,11 +893,12 @@ Wallet.prototype.send = function(recipients, obj) {
  * @desc Send the set of TxProposals to some peers
  * @param {string[]} recipients - the pubkeys of the recipients
  */
-Wallet.prototype.sendAllTxProposals = function(recipients) {
-  var ntxids = this.txProposals.getNtxids(),
-    that = this;
+Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
+  var ntxids = sinceTs ? this.txProposals.getNtxidsSince(sinceTs) : this.txProposals.getNtxids();
+  var self = this;
+
   _.each(ntxids, function(ntxid, key) {
-    that.sendTxProposal(ntxid, recipients);
+    self.sendTxProposal(ntxid, recipients);
   });
 };
 
@@ -947,12 +949,13 @@ Wallet.prototype.sendReject = function(ntxid) {
  * @desc Notify other peers that a wallet has been backed up and it's ready to be used
  * @param {string[]=} recipients - the pubkeys of the recipients
  */
-Wallet.prototype.sendWalletReady = function(recipients) {
+Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
   log.debug('### SENDING WalletReady TO:', recipients || 'All');
 
   this.send(recipients, {
     type: 'walletReady',
     walletId: this.id,
+    sinceTs: sinceTs,
   });
 };
 
