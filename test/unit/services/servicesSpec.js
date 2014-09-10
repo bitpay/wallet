@@ -62,23 +62,6 @@ describe("Unit: controllerUtils", function() {
       expect($rootScope.unitName).to.be.equal('bits');
     });
   }));
-  describe("Unit: controllerUtils #updateGlobalAddresses", function() {
-
-
-    it(' should call updateAddressList ', inject(function(controllerUtils, $rootScope) {
-      $rootScope.wallet = new FakeWallet();
-      var spy = sinon.spy(controllerUtils, 'updateAddressList');
-      controllerUtils.updateGlobalAddresses();
-      sinon.assert.callCount(spy, 1);
-    }));
-
-    it('should update addresses', inject(function(controllerUtils, $rootScope) {
-      $rootScope.wallet = new FakeWallet();
-      var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
-      controllerUtils.updateGlobalAddresses();
-      expect($rootScope.addrInfos[0].address).to.be.equal(Waddr);;
-    }));
-  });
 });
 
 describe("Unit: Notification Service", function() {
