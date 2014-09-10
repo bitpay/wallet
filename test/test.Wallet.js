@@ -219,7 +219,7 @@ describe('Wallet model', function() {
     var t = w.txProposals;
     var opts = JSON.parse(t.txps[ntxid].builder.vanilla.opts);
     opts.signhash.should.equal(1);
-    (opts.lockTime===null).should.be.true;
+    (opts.lockTime === null).should.be.true;
     should.not.exist(opts.fee);
     should.not.exist(opts.feeSat);
   });
@@ -377,7 +377,7 @@ describe('Wallet model', function() {
       Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     }).should.
     throw();
-    
+
     (function() {
       Wallet.decodeSecret('12345');
     }).should.
@@ -765,8 +765,12 @@ describe('Wallet model', function() {
       var txp = w.txProposals.get(ntxid);
       // Assign fake builder
       txp.builder = new Builder();
-      sinon.stub(txp.builder, 'build').returns({ isComplete: function () { return false; }});
-      (function () { 
+      sinon.stub(txp.builder, 'build').returns({
+        isComplete: function() {
+          return false;
+        }
+      });
+      (function() {
         w.sendTx(ntxid);
       }).should.throw('Tx is not complete. Can not broadcast');
       done();
@@ -777,9 +781,11 @@ describe('Wallet model', function() {
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
     w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
-      sinon.stub(w.blockchain, 'broadcast').yields({statusCode: 303});
+      sinon.stub(w.blockchain, 'broadcast').yields({
+        statusCode: 303
+      });
       var spyCheckSentTx = sinon.spy(w, '_checkSentTx');
-      w.sendTx(ntxid, function () {});
+      w.sendTx(ntxid, function() {});
       chai.expect(spyCheckSentTx.calledOnce).to.be.true;
       done();
     });
@@ -810,37 +816,20 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('#createTx', function () {
-    it('should fail if insight server is down', function (done) {
+  describe('#createTx', function() {
+    it('should fail if insight server is down', function(done) {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
       w.blockchain.fixUnspent(utxo);
       sinon.stub(w, 'getUnspent').yields('error', null);
-      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) { 
+      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
         chai.expect(err.message).to.equal('Could not get list of UTXOs');
-        done(); 
+        done();
       });
     });
   });
 
-  describe('#createTxSync', function() {
-    it('should fail if amount below min value', function() {
-      var w = cachedCreateW2();
-      var utxo = createUTXO(w);
-
-      var badCreate = function() {
-        w.createTxSync(
-          'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
-          '123',
-          null,
-          utxo
-        );
-      }
-      chai.expect(badCreate).to.throw('invalid amount');
-    });
-  });
-
-  describe('removeTxWithSpentInputs', function () {
+  describe('removeTxWithSpentInputs', function() {
     it('should remove pending TxProposal with spent inputs', function(done) {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
@@ -849,7 +838,7 @@ describe('Wallet model', function() {
       w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
         w.sendTxProposal(ntxid);
         chai.expect(w.getTxProposals().length).to.equal(1);
-        
+
         // Inputs are still available, txp still valid
         w.removeTxWithSpentInputs();
         chai.expect(w.getTxProposals().length).to.equal(1);
@@ -874,7 +863,7 @@ describe('Wallet model', function() {
       w.createTx(toAddress, '100000', null, function(err, ntxid) {
         w.sendTxProposal(ntxid);
         chai.expect(w.getTxProposals().length).to.equal(1);
-        
+
         // Inputs are still available, txp still valid
         w.removeTxWithSpentInputs();
         chai.expect(w.getTxProposals().length).to.equal(1);
@@ -896,7 +885,7 @@ describe('Wallet model', function() {
       w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
         w.sendTxProposal(ntxid);
         chai.expect(w.getTxProposals().length).to.equal(1);
-        
+
         // Inputs are still available, txp still valid
         w.removeTxWithSpentInputs();
         chai.expect(w.getTxProposals().length).to.equal(1);
@@ -904,7 +893,9 @@ describe('Wallet model', function() {
         // Simulate input spent. txp should be removed from txps list
         w.blockchain.fixUnspent([]);
         var txp = w.txProposals.get(ntxid);
-        sinon.stub(txp, 'isPending', function () { return false; })
+        sinon.stub(txp, 'isPending', function() {
+          return false;
+        })
         w.removeTxWithSpentInputs();
         chai.expect(w.getTxProposals().length).to.equal(1);
 
@@ -1402,17 +1393,21 @@ describe('Wallet model', function() {
       };
 
       var s1 = sinon.stub(w, '_getKeyMap', function() {
-        return {1:2};
+        return {
+          1: 2
+        };
       });
 
       var s2 = sinon.stub(w.txProposals, 'merge', function() {
-        if (response == 0) 
+        if (response == 0)
           throw new Error('test error');
 
         return {
           ntxid: 1,
           txp: {
-            setCopayers: function() {return ['oeoe']; } ,
+            setCopayers: function() {
+              return ['oeoe'];
+            },
           },
           new: response == 1
         };

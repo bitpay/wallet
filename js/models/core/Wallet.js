@@ -463,7 +463,7 @@ Wallet.prototype.updateTimestamp = function(ts) {
  */
 Wallet.prototype._onNoMessages = function() {
   log.debug('No messages at the server. Requesting peer sync from: ' + this.lastTimestamp + 1); //TODO
-  this.sendWalletReady(null, parseInt((this.lastTimestamp + 1)/1000) ) ;
+  this.sendWalletReady(null, parseInt((this.lastTimestamp + 1) / 1000));
 };
 
 /**
@@ -498,7 +498,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       break;
     case 'walletReady':
       if (this.lastMessageFrom[senderId] !== 'walletReady') {
-        log.debug('peer Sync received. since: ' + (data.sinceTs||0));
+        log.debug('peer Sync received. since: ' + (data.sinceTs || 0));
         this.sendPublicKeyRing(senderId);
         this.sendAddressBook(senderId);
         this.sendAllTxProposals(senderId, data.sinceTs); // send old txps
@@ -2114,7 +2114,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName(), 'networkname mismatch');
   preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
   preconditions.checkState(priv, 'no private key');
-  preconditions.checkArgument(bignum(amountSatStr, 10).cmp(copayConfig.limits.minAmountSatoshi) >= 0, 'invalid amount');
   if (comment) preconditions.checkArgument(comment.length <= 100);
 
   if (!opts.remainderOut) {
