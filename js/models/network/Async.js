@@ -14,9 +14,7 @@ function Network(opts) {
   var self = this;
   opts = opts || {};
   this.maxPeers = opts.maxPeers || 12;
-  this.host = opts.host || 'localhost';
-  this.port = opts.port || 3001;
-  this.schema = opts.schema || 'https';
+  this.url = opts.url || 'http//localhost:30001';
   this.secretNumber = opts.secretNumber;
   this.cleanUp();
 }
@@ -74,12 +72,12 @@ Network.prototype.connectedCopayers = function() {
   return ret;
 };
 
-Network.prototype._sendHello = function(copayerId,secretNumber) {
+Network.prototype._sendHello = function(copayerId, secretNumber) {
 
   this.send(copayerId, {
     type: 'hello',
     copayerId: this.copayerId,
-    secretNumber : secretNumber
+    secretNumber: secretNumber
   });
 };
 
@@ -197,11 +195,10 @@ Network.prototype._onMessage = function(enc) {
   var self = this;
   switch (payload.type) {
     case 'hello':
-      if (typeof payload.secretNumber === 'undefined' || payload.secretNumber !== this.secretNumber) 
-      {
+      if (typeof payload.secretNumber === 'undefined' || payload.secretNumber !== this.secretNumber) {
         this._sendRejectConnection(sender);
         this._deletePeer(enc.pubkey, 'incorrect secret number');
-        return; 
+        return;
       }
       // if we locked allowed copayers, check if it belongs
       if (this.allowedCopayerIds && !this.allowedCopayerIds[payload.copayerId]) {
@@ -274,8 +271,8 @@ Network.prototype._onError = function(err) {
   this.criticalError = err.message;
 };
 
-Network.prototype.greet = function(copayerId,secretNumber) {
-  this._sendHello(copayerId,secretNumber);
+Network.prototype.greet = function(copayerId, secretNumber) {
+  this._sendHello(copayerId, secretNumber);
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId, copayerId);
 };
@@ -326,11 +323,10 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 Network.prototype.createSocket = function() {
-  var hostPort = this.schema + '://' + this.host + ':' + this.port;
-  return io.connect(hostPort, {
+  return io.connect(this.url, {
     reconnection: true,
     'force new connection': true,
-    'secure': this.schema === 'https',
+    'secure': this.url.indexOf('https') > -1,
   });
 };
 
