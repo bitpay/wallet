@@ -222,12 +222,12 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
     if (m.new) {
       ev = {
         type: 'new',
-        cid: senderId
+        cId: senderId
       }
-    } else if (m.newCopayer) {
+    } else if (m.newCopayer.length) {
       ev = {
         type: 'signed',
-        cid: m.newCopayer
+        cId: m.newCopayer[0]
       };
     }
   } else {
@@ -236,7 +236,6 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
       cId: senderId,
     };
   }
-
   if (ev)
     this.emit('txProposalEvent', ev);
 };
@@ -328,10 +327,10 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   try {
     m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
     var keyMap = this._getKeyMap(m.txp);
-    ret.newCopayer = m.txp.setCopayers(senderId, keyMap);
-
+    m.newCopayer = m.txp.setCopayers(senderId, keyMap);
   } catch (e) {
-    log.debug('Corrupt TX proposal received from:', senderId, e);
+    log.error('Corrupt TX proposal received from:', senderId, e);
+    return;
   }
 
   if (m) {
