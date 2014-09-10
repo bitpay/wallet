@@ -30,9 +30,16 @@ FakeSocket.prototype.removeEventListener = function() {
   return;
 }
 
+
+
 FakeSocket.prototype.destroy = function() {
   this.connected = false;
   this.removeAllListeners();
+};
+
+
+FakeSocket.prototype.disconnect = function() {
+  this.destroy();
 };
 
 module.exports = FakeSocket;
