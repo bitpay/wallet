@@ -15,9 +15,16 @@ var defaultConfig = {
 
   // network layer config
   network: {
-    host: 'test-insight.bitpay.com',
-    port: 443,
-    schema: 'https'
+    testnet: {
+      host: 'test-insight.bitpay.com',
+      port: 443,
+      schema: 'https'
+    },
+    livenet: {
+      host: 'insight.bitpay.com',
+      port: 443,
+      schema: 'https'
+    },
   },
 
   // wallet default config
