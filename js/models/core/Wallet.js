@@ -602,6 +602,7 @@ Wallet.prototype._optsToObj = function() {
     totalCopayers: this.totalCopayers,
     name: this.name,
     version: this.version,
+    networkName: this.getNetworkName(),
   };
 
   return obj;
