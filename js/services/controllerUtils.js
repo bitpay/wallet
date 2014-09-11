@@ -234,7 +234,7 @@ angular.module('copayApp.services')
           var tx = i.builder.build();
           var outs = [];
           tx.outs.forEach(function(o) {
-            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), w.getNetworkName())[0].toString();
             if (!w.addressIsOwn(addr, {
               excludeMain: true
             })) {
