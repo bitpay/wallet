@@ -51,14 +51,20 @@ module.exports = function(grunt) {
       },
       main: {
         files: [
+          'js/init.js',
           'js/app.js', 
           'js/directives.js', 
           'js/filters.js', 
           'js/routes.js', 
+          'js/mobile.js',
           'js/services/*.js', 
           'js/controllers/*.js'
         ],
         tasks: ['concat:main']
+      },
+      config: {
+        files: ['config.js'],
+        tasks: ['shell:dev', 'concat:main']
       }
     },
     mochaTest: {
