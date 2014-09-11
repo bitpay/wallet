@@ -87,7 +87,7 @@ function Wallet(opts) {
   this.lastMessageFrom = {};
 
   //to avoid confirmation of copayer's backups if is imported from a file
-  this.isImported = opts.isImported;
+  this.isImported = opts.isImported || false;
 
   this.paymentRequests = opts.paymentRequests || {};
 
