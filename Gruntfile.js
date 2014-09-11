@@ -191,5 +191,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
   grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
-  grunt.registerTask('docs', ['jsdoc2md']);
+  grunt.registerTask('docs', ['jsdoc']);
 };
