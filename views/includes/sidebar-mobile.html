@@ -6,9 +6,41 @@
       </a>
       <div ng-include="'views/includes/version.html'"></div>
     </div>
+
+    <div class="line-sidebar-b"></div>
+    <div>
+    <div ng-if="$root.wallet" class="founds size-12 text-center box-founds p10t">
+      <div class="m10b">
+        Balance
+        <span ng-if="$root.updatingBalance">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        </span>
+        <span ng-if="$root.wallet && !$root.updatingBalance"
+          data-options="disable_for_touch:true"
+          tooltip="{{totalBalanceBTC |noFractionNumber:8}} BTC"
+          tooltip-trigger="mouseenter"
+          tooltip-placement="bottom">{{totalBalance || 0
+          |noFractionNumber}} {{$root.wallet.settings.unitName}} 
+        </span>
+      </div> 
+      <div>
+        Locked 
+        <span ng-if="$root.updatingBalance">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        </span>
+        <span ng-if="$root.wallet && !$root.updatingBalance"
+          data-options="disable_for_touch:true"
+          tooltip="{{lockedBalanceBTC |noFractionNumber:8}} BTC"
+          tooltip-trigger="mouseenter"
+          tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+        </span> &nbsp;<i class="fi-info medium" tooltip="Balance locked in pending transaction proposals" tooltip-placement="bottom"></i>
+      </div>
+      <div class="line-sidebar-b"></div>
+    </div>
+
   </header>
   <div class="line-sidebar-b"></div>
-  <div class="founds size-12 box-founds p15" ng-disabled="$root.loading" ng-click="refresh()">
+  <div ng-if="$root.wallet" class="founds size-12 box-founds p15" ng-disabled="$root.loading" ng-click="refresh()">
     <p class="text-gray">
       <span>{{$root.wallet.getName()}}</span>
       <span class="size-12 right">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</span>
@@ -20,7 +52,7 @@
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
       <span ng-if="!$root.updatingBalance">{{totalBalance || 0
-        |noFractionNumber}} {{$root.unitName}} 
+        |noFractionNumber}} {{$root.wallet.settings.unitName}} 
       </span>
     </div> 
     <div class="m10t" ng-show="lockedBalance">
@@ -28,7 +60,7 @@
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-show="!$root.updatingBalance">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
+      <span ng-show="!$root.updatingBalance">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
     </div>
   </div>

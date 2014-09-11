@@ -15,9 +15,7 @@ var preconditions = require('preconditions').singleton();
   subscribing to transactions on adressess and blocks.
 
   Opts: 
-    - host
-    - port
-    - schema
+    - url
     - reconnection (optional)
     - reconnectionDelay (optional)
 
@@ -29,22 +27,22 @@ var preconditions = require('preconditions').singleton();
 */
 
 var Insight = function(opts) {
+  preconditions.checkArgument(opts)
+    .shouldBeObject(opts)
+    .checkArgument(opts.url)
+
   this.status = this.STATUS.DISCONNECTED;
   this.subscribed = {};
   this.listeningBlocks = false;
 
-  preconditions.checkArgument(opts).shouldBeObject(opts)
-    .checkArgument(opts.host)
-    .checkArgument(opts.port)
-    .checkArgument(opts.schema);
-
-  this.url = opts.schema + '://' + opts.host + ':' + opts.port;
+  this.url = opts.url;
   this.opts = {
     'reconnection': opts.reconnection || true,
     'reconnectionDelay': opts.reconnectionDelay || 1000,
-    'secure': opts.schema === 'https'
+    'secure': opts.url.indexOf('https') === 0
   };
 
+  this.socket = this.getSocket();
 }
 
 util.inherits(Insight, EventEmitter);
@@ -105,7 +103,7 @@ Insight.prototype._setMainHandlers = function(url, opts) {
 
 
 /** @private */
-Insight.prototype.getSocket = function(url, opts) {
+Insight.prototype.getSocket = function() {
 
   if (!this.socket) {
     this.socket = this._getSocketIO(this.url, this.opts);
@@ -148,7 +146,6 @@ Insight.prototype.subscribe = function(addresses) {
     return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;
-
       log.debug('insight tx event');
 
       self.emit('tx', {

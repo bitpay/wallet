@@ -73,9 +73,9 @@ function Wallet(opts) {
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
+  this.settings = opts.settings || copayConfig.wallet.settings;
   this.name = opts.name;
 
-  this.verbose = opts.verbose;
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
   this.network.maxPeers = this.totalCopayers;
@@ -111,6 +111,21 @@ Wallet.builderOpts = {
   fee: undefined,
   feeSat: undefined,
 };
+
+/**
+ * @desc static list with persisted properties of a wallet.
+ * These are the properties that get stored/read from localstorage
+ */
+Wallet.PERSISTED_PROPERTIES = [
+  'opts',
+  'settings',
+  'publicKeyRing',
+  'txProposals',
+  'privateKey',
+  'addressBook',
+  'backupOffered',
+  'lastTimestamp',
+];
 
 /**
  * @desc Retrieve a random id for the wallet
@@ -159,6 +174,22 @@ Wallet.prototype._onIndexes = function(senderId, data) {
     this.emit('publicKeyRingUpdated');
     this.store();
   }
+};
+
+/**
+ * @desc
+ * Changes wallet settings. The settings format is:
+ *
+ *   var settings = {
+ *     unitName: 'bits',
+ *     unitToSatoshi: 100,
+ *     alternativeName: 'US Dollar',
+ *     alternativeIsoCode: 'USD',
+ *   };
+ */
+Wallet.prototype.changeSettings = function(settings) {
+  this.settings = settings;
+  this.store();
 };
 
 /**
@@ -570,6 +601,7 @@ Wallet.prototype._optsToObj = function() {
     totalCopayers: this.totalCopayers,
     name: this.name,
     version: this.version,
+    networkName: this.getNetworkName(),
   };
 
   return obj;
@@ -615,7 +647,11 @@ Wallet.prototype.getSecretNumber = function() {
  * @return {string}
  */
 Wallet.prototype.getSecret = function() {
-  var buf = new Buffer(this.getMyCopayerId() + this.getSecretNumber(), 'hex');
+  var buf = new Buffer(
+    this.getMyCopayerId() +
+    this.getSecretNumber() +
+    (this.getNetworkName() === 'livenet' ? '00' : '01'),
+    'hex');
   var str = Base58Check.encode(buf);
   return str;
 };
@@ -630,9 +666,11 @@ Wallet.decodeSecret = function(secretB) {
   var secret = Base58Check.decode(secretB);
   var pubKeyBuf = secret.slice(0, 33);
   var secretNumber = secret.slice(33, 38);
+  var networkName = secret.slice(38, 39).toString('hex') === '00' ? 'livenet' : 'testnet';
   return {
     pubKey: pubKeyBuf.toString('hex'),
-    secretNumber: secretNumber.toString('hex')
+    secretNumber: secretNumber.toString('hex'),
+    networkName: networkName,
   }
 };
 
@@ -780,9 +818,7 @@ Wallet.prototype.keepAlive = function() {
  */
 Wallet.prototype.store = function() {
   this.keepAlive();
-
-  var wallet = this.toObj();
-  this.storage.setFromObj(this.id, wallet);
+  this.storage.setFromObj(this.id, this.toObj());
   log.debug('Wallet stored');
 };
 
@@ -793,13 +829,11 @@ Wallet.prototype.store = function() {
 Wallet.prototype.toObj = function() {
   var optsObj = this._optsToObj();
 
-  var networkNonce = this.network.getHexNonce();
-  var networkNonces = this.network.getHexNonces();
-
   var walletObj = {
     opts: optsObj,
-    networkNonce: networkNonce, //yours
-    networkNonces: networkNonces, //copayers
+    settings: this.settings,
+    networkNonce: this.network.getHexNonce(), //yours
+    networkNonces: this.network.getHexNonces(), //copayers
     publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
@@ -831,6 +865,7 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
+  opts.settings = o.settings;
 
   if (o.privateKey) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
@@ -896,7 +931,6 @@ Wallet.prototype.send = function(recipients, obj) {
 Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
   var ntxids = sinceTs ? this.txProposals.getNtxidsSince(sinceTs) : this.txProposals.getNtxids();
   var self = this;
-
   _.each(ntxids, function(ntxid, key) {
     self.sendTxProposal(ntxid, recipients);
   });

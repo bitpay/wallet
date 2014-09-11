@@ -7,7 +7,8 @@
       <div class="last-transactions" ng-repeat="tx in txs | paged">
         <div ng-include="'views/includes/transaction.html'"></div>
       </div>
-      <p ng-show="txs.length == 0"><span translate>No transactions proposals yet.</span></p>
+      <p ng-show="txs.length == 0"><span translate>No transactions proposals yet.</span>
+      </p>
       <pagination ng-show="txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
 
@@ -20,10 +21,8 @@
 
     <div class="large-12">
       <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
-        <a class="text-gray active" ng-click="toogleLast()"
-          ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">[ <span translate>Show</span> ]</a>
-        <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading"
-          loading="Updating" ng-show="lastShowed && !loading">[ <span translate>Hide</span> ]</a>
+        <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">[ <span translate>Show</span> ]</a>
+        <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">[ <span translate>Hide</span> ]</a>
       </div>
 
       <div class="btransactions" ng-if="lastShowed">
@@ -52,9 +51,9 @@
           <div class="last-transactions-content">
             <div class="large-5 medium-5 small-12 columns">
               <div ng-repeat="vin in btx.vinSimple">
-                <small class="right m5t">{{vin.value| noFractionNumber}} {{$root.unitName}}</small>
+                <small class="right m5t">{{vin.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
                 <p class="ellipsis text-gray size-12">
-                <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                  <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
                 </p>
               </div>
             </div>
@@ -66,20 +65,20 @@
             </div>
             <div class="large-6 medium-6 small-12 columns">
               <div ng-repeat="vout in btx.voutSimple">
-                <small class="right m5t">{{vout.value| noFractionNumber}} {{$root.unitName}}</small>
+                <small class="right m5t">{{vout.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
                 <p class="ellipsis text-gray size-12">
-                <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                  <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
                 </p>
               </div>
             </div>
           </div>
           <div class="last-transactions-footer">
             <div class="large-6 medium-6 small-6 columns">
-              <p class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.unitName}}</p>
-                <p class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</p>
+              <p class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+              <p class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</p>
             </div>
             <div class="large-6 medium-6 small-6 columns text-right">
-              <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.unitName}}</p>
+              <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
             </div>
           </div>
         </div>
@@ -87,4 +86,3 @@
     </div>
   </div>
 </div>
-

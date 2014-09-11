@@ -20,26 +20,26 @@
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-if="!$root.updatingBalance"
+      <span ng-if="$root.wallet && !$root.updatingBalance"
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
         tooltip="{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
+        tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span>
       <div class="m10t" ng-show="lockedBalance">
         <span translate>Locked</span> &nbsp;
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-show="!$root.updatingBalance"
+      <span ng-if="$root.wallet && !$root.updatingBalance"
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
         tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
+        tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
       </div>
     </div>

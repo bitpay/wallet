@@ -86,7 +86,6 @@ describe('PayPro (in Wallet) model', function() {
       };
 
       c.networkName = walletConfig.networkName;
-      c.verbose = walletConfig.verbose;
       c.version = '0.0.1';
 
       return new Wallet(c);

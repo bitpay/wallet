@@ -7,7 +7,7 @@
       <i class="fi-bitcoin-circle icon-rotate spinner"></i>
     </span>
     <p class="m15b" ng-if="!$root.updatingBalance">
-      {{address.balance || 0|noFractionNumber}} {{$root.unitName}}
+      {{address.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
     </p>
     <button class="m15t button secondary" open-external address="{{address.address}}">
       <i class="fi-link">&nbsp;</i> <span translate>Open in external application</span>

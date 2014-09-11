@@ -9,6 +9,7 @@ var log = require('../../log');
 var Async = module.exports.Async = require('../network/Async');
 var Insight = module.exports.Insight = require('../blockchain/Insight');
 var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../storage/LocalEncrypted');
+var preconditions = require('preconditions').singleton();
 
 /**
  * @desc
@@ -23,10 +24,8 @@ var StorageLocalEncrypted = module.exports.StorageLocalEncrypted = require('../s
  * @param {Storage} config.Storage - the class to instantiate to store the wallet (StorageLocalEncrypted by default)
  * @param {Object} config.storage - the configuration to be sent to the Storage constructor
  * @param {Network} config.Network - the class to instantiate to make network requests to copayers (the Async module by default)
- * @param {Object} config.network - the configuration to be sent to the Network constructor
+ * @param {Object} config.network - the configurations to be sent to the Network and Blockchain constructors
  * @param {Blockchain} config.Blockchain - the class to instantiate to get information about the blockchain (Insight by default)
- * @param {Object} config.blockchain - the configuration to be sent to the Blockchain constructor
- * @param {string} config.networkName - the name of the bitcoin network to use ('testnet' or 'livenet')
  * @TODO: Investigate what parameters go inside this object
  * @param {Object} config.wallet - default configuration for the wallet
  * @TODO: put `version` inside of the config object
@@ -41,10 +40,15 @@ function WalletFactory(config, version) {
   this.Blockchain = config.Blockchain || Insight;
 
   this.storage = new this.Storage(config.storage);
-  this.network = new this.Network(config.network);
-  this.blockchain = new this.Blockchain(config.blockchain);
+  this.networks = {
+    'livenet': new this.Network(config.network.livenet),
+    'testnet': new this.Network(config.network.testnet),
+  };
+  this.blockchains = {
+    'livenet': new this.Blockchain(config.network.livenet),
+    'testnet': new this.Blockchain(config.network.testnet),
+  };
 
-  this.networkName = config.networkName;
   this.walletDefaults = config.wallet;
   this.version = version;
 };
@@ -72,32 +76,40 @@ WalletFactory.prototype._checkRead = function(walletId) {
 };
 
 /**
+ * @desc obtain network name from serialized wallet
+ * @param {Object} wallet object
+ * @return {string} network name
+ */
+WalletFactory.prototype.obtainNetworkName = function(obj) {
+  return obj.networkName ||
+    obj.opts.networkName ||
+    obj.publicKeyRing.networkName ||
+    obj.privateKey.networkName;
+};
+
+/**
  * @desc Deserialize an object to a Wallet
- * @param {Object} obj
+ * @param {Object} wallet object
  * @param {string[]} skipFields - fields to skip when importing
  * @return {Wallet}
  */
 WalletFactory.prototype.fromObj = function(obj, skipFields) {
+  var networkName = this.obtainNetworkName(obj);
+  preconditions.checkState(networkName);
 
-  // not stored options
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
 
-  // this is only used if private key or public key ring is skipped
-  obj.opts.networkName    = this.networkName;
-
   skipFields = skipFields || [];
-  skipFields.forEach(function(k){
+  skipFields.forEach(function(k) {
     if (obj[k]) {
       delete obj[k];
-    } else 
+    } else
       throw new Error('unknown field:' + k);
   });
 
-  var w = Wallet.fromObj(obj, this.storage, this.network, this.blockchain);
+  var w = Wallet.fromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
   if (!w) return false;
-  w.verbose = this.verbose;
   this._checkVersion(w.version);
-  this._checkNetwork(w.getNetworkName());
   return w;
 };
 
@@ -147,13 +159,9 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
   var s = this.storage;
 
   obj.id = walletId;
-  obj.opts = s.get(walletId, 'opts');
-  obj.publicKeyRing = s.get(walletId, 'publicKeyRing');
-  obj.txProposals = s.get(walletId, 'txProposals');
-  obj.privateKey = s.get(walletId, 'privateKey');
-  obj.addressBook = s.get(walletId, 'addressBook');
-  obj.backupOffered = s.get(walletId, 'backupOffered');
-  obj.lastTimestamp = s.get(walletId, 'lastTimestamp');
+  _.each(Wallet.PERSISTED_PROPERTIES, function(value) {
+    obj[value] = s.get(walletId, value);
+  });
 
   var w = this.fromObj(obj, skipFields);
   return w;
@@ -179,14 +187,17 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.create = function(opts) {
+
   opts = opts || {};
+  opts.networkName = opts.networkName || 'testnet';
+
   log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
 
   var privOpts = {
-    networkName: this.networkName,
+    networkName: opts.networkName,
   };
 
-  if (opts.privateKeyHex && opts.privateKeyHex.length>1) {
+  if (opts.privateKeyHex && opts.privateKeyHex.length > 1) {
     privOpts.extendedPrivateKeyString = opts.privateKeyHex;
   }
 
@@ -197,7 +208,7 @@ WalletFactory.prototype.create = function(opts) {
   opts.lockTimeoutMin = this.walletDefaults.idleDurationMin;
 
   opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
-    networkName: this.networkName,
+    networkName: opts.networkName,
     requiredCopayers: requiredCopayers,
     totalCopayers: totalCopayers,
   });
@@ -208,16 +219,15 @@ WalletFactory.prototype.create = function(opts) {
   log.debug('\t### PublicKeyRing Initialized');
 
   opts.txProposals = opts.txProposals || new TxProposals({
-    networkName: this.networkName,
+    networkName: opts.networkName,
   });
   log.debug('\t### TxProposals Initialized');
 
   this.storage._setPassphrase(opts.passphrase);
 
   opts.storage = this.storage;
-  opts.network = this.network;
-  opts.blockchain = this.blockchain;
-  opts.verbose = this.verbose;
+  opts.network = this.networks[opts.networkName];
+  opts.blockchain = this.blockchains[opts.networkName];
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
@@ -245,20 +255,9 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
   //We only check for major version differences
   if (thisV0 < inV0) {
     throw new Error('Major difference in software versions' +
-                    '. Received:' + inVersion +
-                    '. Current version:' + this.version +
-                    '. Aborting.');
-  }
-};
-
-/**
- * @desc Throw an error if the network name is different to {@link WalletFactory#networkName}
- * @param {string} inNetworkName - the network name to check
- * @throws {Error}
- */
-WalletFactory.prototype._checkNetwork = function(inNetworkName) {
-  if (this.networkName !== inNetworkName) {
-    throw new Error('This Wallet is configured for ' + inNetworkName + ' while currently Copay is configured for: ' + this.networkName + '. Check your settings.');
+      '. Received:' + inVersion +
+      '. Current version:' + this.version +
+      '. Aborting.');
   }
 };
 
@@ -271,8 +270,9 @@ WalletFactory.prototype._checkNetwork = function(inNetworkName) {
 WalletFactory.prototype.open = function(walletId, passphrase) {
   this.storage._setPassphrase(passphrase);
   var w = this.read(walletId);
-  if (w) 
+  if (w) {
     w.store();
+  }
 
   this.storage.setLastOpened(walletId);
   return w;
@@ -338,14 +338,16 @@ WalletFactory.prototype.decodeSecret = function(secret) {
  */
 WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
   var self = this;
-  var s = self.decodeSecret(secret);
-  if (!s) return cb('badSecret');
+  var decodedSecret = this.decodeSecret(secret);
+  if (!decodedSecret || !decodedSecret.networkName || !decodedSecret.pubKey) {
+    return cb('badSecret');
+  }
 
   var privOpts = {
-    networkName: this.networkName,
+    networkName: decodedSecret.networkName,
   };
 
-  if (privateHex && privateHex.length>1) {
+  if (privateHex && privateHex.length > 1) {
     privOpts.extendedPrivateKeyString = privateHex;
   }
 
@@ -356,25 +358,27 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     copayerId: privateKey.getId(),
     privkey: privateKey.getIdPriv(),
     key: privateKey.getIdKey(),
-    secretNumber : s.secretNumber,
+    secretNumber: decodedSecret.secretNumber,
   };
-  self.network.cleanUp();
+
+  var joinNetwork = this.networks[decodedSecret.networkName];
+  joinNetwork.cleanUp();
 
   // This is a hack to reconize if the connection was rejected or the peer wasn't there.
   var connectedOnce = false;
-  self.network.on('connected', function(sender, data) {
+  joinNetwork.on('connected', function(sender, data) {
     connectedOnce = true;
   });
 
-  self.network.on('serverError', function() { 
+  joinNetwork.on('serverError', function() {
     return cb('joinError');
   });
 
-  self.network.start(opts, function() {
-    self.network.greet(s.pubKey,opts.secretNumber);
-    self.network.on('data', function(sender, data) {
+  joinNetwork.start(opts, function() {
+    joinNetwork.greet(decodedSecret.pubKey, opts.secretNumber);
+    joinNetwork.on('data', function(sender, data) {
       if (data.type === 'walletId') {
-        if (data.networkName !== self.networkName) {
+        if (data.networkName !== decodedSecret.networkName) {
           return cb('badNetwork');
         }
 
@@ -383,8 +387,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
         data.opts.passphrase = passphrase;
         data.opts.id = data.walletId;
         var w = self.create(data.opts);
-        w.sendWalletReady(s.pubKey);
-        //w.seedCopayer(s.pubKey);
+        w.sendWalletReady(decodedSecret.pubKey);
         return cb(null, w);
       } else {
         return cb('walletFull', w);
