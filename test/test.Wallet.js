@@ -840,6 +840,23 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#createTxSync', function() {
+    it('should fail if amount below min value', function() {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+
+      var badCreate = function() {
+        w.createTxSync(
+          'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
+          '123',
+          null,
+          utxo
+        );
+      }
+      chai.expect(badCreate).to.throw('invalid amount');
+    });
+  });
+
   describe('removeTxWithSpentInputs', function() {
     it('should remove pending TxProposal with spent inputs', function(done) {
       var w = cachedCreateW2();
