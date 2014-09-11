@@ -122,5 +122,9 @@ FakeWallet.prototype.toEncryptedObj = function() {
 
 FakeWallet.prototype.close = function() {};
 
+FakeWallet.prototype.getNetworkName = function() {
+  return 'testnet';
+};
+
 // TODO a try catch was here
 module.exports = FakeWallet;
