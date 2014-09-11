@@ -30,14 +30,14 @@ angular.module('copayApp.directives')
           // Bip21 uri
           if (/^bitcoin:/.test(value)) {
             var uri = new bitcore.BIP21(value);
-            var hasAddress = uri.address && uri.isValid() && uri.address.network().name === config.networkName;
+            var hasAddress = uri.address && uri.isValid() && uri.address.network().name === $rootScope.wallet.getNetworkName();
             ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
             return value;
           }
 
           // Regular Address
           var a = new Address(value);
-          ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
+          ctrl.$setValidity('validAddress', a.isValid() && a.network().name === $rootScope.wallet.getNetworkName());
           return value;
         };
 
