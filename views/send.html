@@ -14,14 +14,14 @@
         <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
-              <label for="address"><span translate>To address</span>
+              <label for="address"><span translate>To:</span>
                 <small translate ng-hide="!sendForm.address.$pristine || address">required</small>
                 <small translate class="is-valid" ng-show="!sendForm.address.$invalid && address">valid!</small>
                 <small translate class="has-error" ng-show="sendForm.address.$invalid && address">not valid</small>
               </label>
               <div class="small-10 columns">
                 <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
-                placeholder="{{'Send to'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
+                placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
                 <small class="icon-input" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
                 <small class="icon-input" ng-show="sendForm.address.$invalid && address"><i class="fi-x"></i></small>
               </div>
