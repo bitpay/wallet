@@ -11,10 +11,11 @@ var io = require('socket.io-client');
 var preconditions = require('preconditions').singleton();
 
 function Network(opts) {
-  var self = this;
+  preconditions.checkArgument(opts);
+  preconditions.checkArgument(opts.url);
   opts = opts || {};
   this.maxPeers = opts.maxPeers || 12;
-  this.url = opts.url || 'http//localhost:30001';
+  this.url = opts.url;
   this.secretNumber = opts.secretNumber;
   this.cleanUp();
 }
