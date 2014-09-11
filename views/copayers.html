@@ -51,7 +51,7 @@
         </div>
 
         <div class="box-setup-copayers p20">
-          <p class="text-gray m10b" translate>Creating and storing a backup will allow to restore funds of the wallet</p>
+          <p class="text-primary m10b" translate>Creating and storing a backup will allow to restore funds of the wallet</p>
           <div class="oh">
             <div ng-include="'views/includes/copayer.html'"></div> 
             <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
@@ -75,14 +75,7 @@
           </div>
           </div>
         </div>
-          <a class="small"  ng-click="skipBackup()"      
-            ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
-            ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-             <span translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
-              Skip Backup
-            </span>
-          </a>
-          <button class="button primary m0"
+          <button class="button primary right m0"
             ng-click="backup()"
             ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
             ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
@@ -100,6 +93,13 @@
               <span translate>yet to join.</span>
             </span>
           </button>
+          <a class="text-primary m15t m20r right"  ng-click="skipBackup()"      
+            ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+            ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
+             <span class="size-12" translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
+              Skip Backup
+            </span>
+          </a>
           <button class="button primary"
             disabled="disabled"
             ng-show="$root.wallet.publicKeyRing.isBackupReady()">

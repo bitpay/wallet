@@ -1046,7 +1046,7 @@ a.text-warning:hover {color: #FD7262;}
   background: #2C3E50;
   -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
   box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .box-setup-copay-required {
