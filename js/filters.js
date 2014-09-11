@@ -49,6 +49,8 @@ angular.module('copayApp.filters', [])
       var numberFilter = filter('number');
       var formats = locale.NUMBER_FORMATS;
       return function(amount, n) {
+        if (!$rootScope.wallet) return amount;
+
         var fractionSize = (typeof(n) !== 'undefined') ?
           n : $rootScope.wallet.settings.unitToSatoshi.toString().length - 1;
         var value = numberFilter(amount, fractionSize);
