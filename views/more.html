@@ -1,33 +1,34 @@
 <div class="backup" ng-controller="MoreController">
   <h1 translate>Settings </h1>
-  <div class="oh large-12 columns panel">
-    <h3><i class="fi-download m10r"></i> <span translate>Backup</span> </h3>
-    <p translate class="large-8 columns text-gray">It's important to backup your wallet so that you can recover it in case of disaster</p>
-    <div class="large-4 columns">
-      <a translate class="button primary expand" ng-click="downloadBackup()">Download File</a>
-    </div>
+  <div class="row collapse">
+    <form name="settingsForm" class="large-6 small-12 columns">
+      <fieldset>
+        <legend translate>Wallet Unit</legend>
+        <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
+        </select>
+      </fieldset>
+      <fieldset>
+        <legend translate>Alternative Currency</legend>
+        <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" required>
+        </select>
+      </fieldset>
+
+      <div class="text-left">
+        <button translate type="submit" class="large-6 small-12 columns button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+          Save
+        </button>
+      </div>
+    </form>
   </div>
   <div class="large-12 columns line-dashed-h m15b"></div>
-  <form name="settingsForm">
-    <fieldset>
-      <legend translate>Wallet Unit</legend>
-      <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" required>
-      </select>
-    </fieldset>
-    <fieldset>
-      <legend translate>Alternative Currency</legend>
-      <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" required>
-      </select>
-    </fieldset>
-
-    <div class="text-right">
-      <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
-        Save
-      </button>
-    </div>
-  </form>
-  <div class="large-12 columns line-dashed-h m15b"></div>
   <div>
+    <div class="oh large-12 columns panel">
+      <h3><i class="fi-download m10r"></i> <span translate>Backup</span> </h3>
+      <p translate class="large-8 columns text-gray">It's important to backup your wallet so that you can recover it in case of disaster</p>
+      <div class="large-4 columns">
+        <a translate class="button primary expand" ng-click="downloadBackup()">Download File</a>
+      </div>
+    </div>
     <div class="oh large-12 columns panel">
       <h3><i class="fi-minus-circle m10r"></i> <span translate> Delete Wallet </span></h3>
       <p translate class="large-8 columns text-gray">If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet.</p>
