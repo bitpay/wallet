@@ -39,7 +39,7 @@ var Insight = function(opts) {
   this.opts = {
     'reconnection': opts.reconnection || true,
     'reconnectionDelay': opts.reconnectionDelay || 1000,
-    'secure': opts.url.indexOf('https') > -1
+    'secure': opts.url.indexOf('https') === 0
   };
 
   this.socket = this.getSocket();
