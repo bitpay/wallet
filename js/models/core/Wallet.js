@@ -188,7 +188,6 @@ Wallet.prototype._onIndexes = function(senderId, data) {
  *   };
  */
 Wallet.prototype.changeSettings = function(settings) {
-  console.log(settings);
   this.settings = settings;
   this.store();
 };
