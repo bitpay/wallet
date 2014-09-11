@@ -326,7 +326,7 @@ Network.prototype.createSocket = function() {
   return io.connect(this.url, {
     reconnection: true,
     'force new connection': true,
-    'secure': this.url.indexOf('https') > -1,
+    'secure': this.url.indexOf('https') === 0,
   });
 };
 
