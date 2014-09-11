@@ -141,7 +141,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     }
 
     $scope.getShortNetworkName = function() {
-      return config.networkName.substring(0, 4);
+      return w.getNetworkName().substring(0, 4);
     };
 
     // Autoload transactions on 1-of-1
