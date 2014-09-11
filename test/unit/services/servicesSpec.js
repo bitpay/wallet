@@ -4,19 +4,7 @@
 //
 //
 var sinon = require('sinon');
-
-beforeEach(function() {
-  config.unitToSatoshi = 100;
-  config.unitName = 'bits';
-});
-
-describe('Check config', function() {
-
-  it('unit should be set to BITS in config.js', function() {
-    expect(config.unitToSatoshi).to.equal(100);
-    expect(config.unitName).to.equal('bits');
-  });
-});
+var preconditions = require('preconditions').singleton();
 
 describe("Unit: Walletfactory Service", function() {
   beforeEach(angular.mock.module('copayApp.services'));

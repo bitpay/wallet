@@ -1,6 +1,6 @@
 <div ng-controller="VersionController">
   <small>v{{version}} ({{defaultLanguage}})</small> 
   <small>#{{commitHash}}</small> 
-  <small ng-if="networkName=='testnet'">[ {{networkName}} ]</small>
+  <small ng-if="networkName ==='testnet' || networkName ==='livenet'">[ {{networkName}} ]</small>
 </div>
 

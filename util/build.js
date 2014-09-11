@@ -15,7 +15,9 @@ var getCommitHash = function() {
   //exec git command to get the hash of the current commit
   //git rev-parse HEAD
 
-  var hash = shell.exec('git rev-parse HEAD',{silent:true}).output.trim().substr(0,7);
+  var hash = shell.exec('git rev-parse HEAD', {
+    silent: true
+  }).output.trim().substr(0, 7);
   return hash;
 }
 
@@ -23,7 +25,7 @@ var createVersion = function() {
   var json = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
   var content = 'module.exports.version="' + json.version + '";';
 
-  content = content +  '\nmodule.exports.commitHash="' + getCommitHash() + '";';
+  content = content + '\nmodule.exports.commitHash="' + getCommitHash() + '";';
   fs.writeFileSync("./version.js", content);
 };
 
@@ -43,9 +45,9 @@ var createBundle = function(opts) {
   b.require('browser-request', {
     expose: 'request'
   });
-  b.require('underscore', {
-    expose: 'underscore'
-  });
+  b.require('underscore');
+  b.require('assert');
+  b.require('preconditions');
 
   b.require('./copay', {
     expose: 'copay'
@@ -130,10 +132,10 @@ if (require.main === module) {
   };
   var program = require('commander');
   program
-  .version('0.0.1')
-  .option('-d, --debug', 'Development. Don\'t minify the codem and include debug packages.')
-  .option('-o, --stdout', 'Specify output as stdout')
-  .parse(process.argv);
+    .version('0.0.1')
+    .option('-d, --debug', 'Development. Don\'t minify the codem and include debug packages.')
+    .option('-o, --stdout', 'Specify output as stdout')
+    .parse(process.argv);
 
   createVersion();
   var copayBundle = createBundle(program);

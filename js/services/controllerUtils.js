@@ -50,7 +50,6 @@ angular.module('copayApp.services')
         $scope.loading = false;
       });
 
-
       w.on('corrupt', function(peerId) {
         notification.error('Error', 'Received corrupt message from ' + peerId);
       });
@@ -176,7 +175,7 @@ angular.module('copayApp.services')
       w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
         if (err) throw err;
 
-        var satToUnit = 1 / config.unitToSatoshi;
+        var satToUnit = 1 / w.settings.unitToSatoshi;
         var COIN = bitcore.util.COIN;
 
         $rootScope.totalBalance = balanceSat * satToUnit;
@@ -196,9 +195,9 @@ angular.module('copayApp.services')
         $rootScope.updatingBalance = false;
 
         rateService.whenAvailable(function() {
-          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, config.alternativeIsoCode);
-          $rootScope.alternativeIsoCode = config.alternativeIsoCode;
-          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, config.alternativeIsoCode);
+          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
+          $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
+          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
 
 
           return cb ? cb() : null;
@@ -211,7 +210,7 @@ angular.module('copayApp.services')
       if (!w) return;
       opts = opts || $rootScope.txsOpts || {};
 
-      var satToUnit = 1 / config.unitToSatoshi;
+      var satToUnit = 1 / w.settings.unitToSatoshi;
       var myCopayerId = w.getMyCopayerId();
       var pendingForUs = 0;
       var inT = w.getTxProposals().sort(function(t1, t2) {
@@ -235,7 +234,7 @@ angular.module('copayApp.services')
           var tx = i.builder.build();
           var outs = [];
           tx.outs.forEach(function(o) {
-            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), config.networkName)[0].toString();
+            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), w.getNetworkName())[0].toString();
             if (!w.addressIsOwn(addr, {
               excludeMain: true
             })) {

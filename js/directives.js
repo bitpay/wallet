@@ -1,10 +1,12 @@
 'use strict';
 
+var bitcore = require('bitcore');
+var Address = bitcore.Address;
+var bignum = bitcore.Bignum;
+var preconditions = require('preconditions').singleton();
+
 angular.module('copayApp.directives')
   .directive('validAddress', ['$rootScope', function($rootScope) {
-    var bitcore = require('bitcore');
-    var Address = bitcore.Address;
-    var bignum = bitcore.Bignum;
 
     return {
       require: 'ngModel',
@@ -28,14 +30,14 @@ angular.module('copayApp.directives')
           // Bip21 uri
           if (/^bitcoin:/.test(value)) {
             var uri = new bitcore.BIP21(value);
-            var hasAddress = uri.address && uri.isValid() && uri.address.network().name === config.networkName;
+            var hasAddress = uri.address && uri.isValid() && uri.address.network().name === $rootScope.wallet.getNetworkName();
             ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
             return value;
           }
 
           // Regular Address
           var a = new Address(value);
-          ctrl.$setValidity('validAddress', a.isValid() && a.network().name === config.networkName);
+          ctrl.$setValidity('validAddress', a.isValid() && a.network().name === $rootScope.wallet.getNetworkName());
           return value;
         };
 
@@ -46,14 +48,17 @@ angular.module('copayApp.directives')
   }])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
-      var bitcore = require('bitcore');
+      var w = $rootScope.wallet;
+      preconditions.checkState(w);
+      preconditions.checkState(w.settings.unitToSatoshi);
+
       var feeSat = Number(bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var availableBalanceNum = Number(($rootScope.availableBalance * config.unitToSatoshi).toFixed(0));
-            var vNum = Number((value * config.unitToSatoshi).toFixed(0));
+            var availableBalanceNum = Number(($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0));
+            var vNum = Number((value * w.settings.unitToSatoshi).toFixed(0));
 
             if (typeof vNum == "number" && vNum > 0) {
               vNum = vNum + feeSat;
@@ -270,7 +275,7 @@ angular.module('copayApp.directives')
 
           client.on('datarequested', function(client) {
             client.setText(scope.clipCopy);
-          } );
+          });
 
           client.on('complete', function(client, args) {
             elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');

@@ -3,9 +3,11 @@
 angular.module('copayApp.controllers').controller('VersionController',
   function($scope, $rootScope, $http, notification) {
 
+    var w = $rootScope.wallet;
+
     $scope.version = copay.version;
     $scope.commitHash = copay.commitHash;
-    $scope.networkName = config.networkName;
+    $scope.networkName = w ? w.getNetworkName() : '';
     $scope.defaultLanguage = config.defaultLanguage;
     if (_.isUndefined($rootScope.checkVersion))
       $rootScope.checkVersion = true;
