@@ -249,6 +249,10 @@ a:hover {
   font-weight: normal;
 }
 
+fieldset legend {
+  background: transparent;
+}
+
 .import input[type="file"], 
 .import label, 
 .import label small,
@@ -1147,6 +1151,8 @@ a.text-warning:hover {color: #FD7262;}
 .copayer-list-small-height {
   display: none;
 }
+
+
 
 @media only screen and (min-width: 40.063em) {
   dialog.tiny, .reveal-modal.tiny {
