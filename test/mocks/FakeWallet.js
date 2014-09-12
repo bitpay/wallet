@@ -84,6 +84,8 @@ FakeWallet.prototype.getAddressesInfo = function() {
   return ret;
 };
 
+FakeWallet.prototype.subscribeToAddresses = function() {};
+
 FakeWallet.prototype.isShared = function() {
   return this.totalCopayers > 1;
 }
