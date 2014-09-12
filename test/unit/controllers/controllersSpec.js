@@ -5,9 +5,11 @@
 var sinon = require('sinon');
 
 // Replace saveAs plugin
-saveAsLastCall = null;
-saveAs = function(o) {
-  saveAsLastCall = o;
+saveAs = function(blob, filename) {
+  saveAsLastCall = {
+    blob: blob,
+    filename: filename
+  };
 };
 
 var startServer = require('../../mocks/FakePayProServer');
@@ -44,14 +46,30 @@ describe("Unit: Controllers", function() {
         $scope: scope,
         $modal: {},
       });
+      saveAsLastCall = null;
     }));
 
     it('Backup controller #download', function() {
       scope.wallet.setEnc('1234567');
       expect(saveAsLastCall).equal(null);
       scope.downloadBackup();
-      expect(saveAsLastCall.size).equal(7);
-      expect(saveAsLastCall.type).equal('text/plain;charset=utf-8');
+      expect(saveAsLastCall.blob.size).equal(7);
+      expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
+    });
+
+    it('Backup controller should name backup correctly for multiple copayers', function() {
+      scope.wallet.setEnc('1234567');
+      expect(saveAsLastCall).equal(null);
+      scope.downloadBackup();
+      expect(saveAsLastCall.filename).equal('myNickname-myTESTwullet-testID-keybackup.json.aes');
+    });
+
+    it('Backup controller should name backup correctly for 1-1 wallet', function() {
+      scope.wallet.setEnc('1234567');
+      expect(saveAsLastCall).equal(null);
+      scope.wallet.totalCopayers = 1;
+      scope.downloadBackup();
+      expect(saveAsLastCall.filename).equal('myTESTwullet-testID-keybackup.json.aes');
     });
 
     it('Backup controller #delete', function() {

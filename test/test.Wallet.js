@@ -1221,6 +1221,15 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#getMyCopayerNickname', function() {
+    it('should call publicKeyRing.nicknameForCopayer', function() {
+      var w = cachedCreateW2();
+      w.publicKeyRing.nicknameForCopayer = sinon.spy();
+      w.getMyCopayerNickname();
+      w.publicKeyRing.nicknameForCopayer.calledOnce.should.equal(true);
+    });
+  });
+
   describe('#netStart', function() {
     it('should call Network.start', function() {
       var w = cachedCreateW2();
