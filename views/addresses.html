@@ -10,33 +10,40 @@
         <div class="panel radius oh" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
           <div class="row collapse">
             <div class="large-10 medium-9 small-8 column">
-              <div class="ellipsis list-addr">
-                <i class="fi-thumbnails size-48 show-for-large-up" ng-click="openAddressModal(addr)">&nbsp;</i>
+              <div class="show-for-large-up list-addr">
+                <i class="fi-thumbnails size-48" ng-click="openAddressModal(addr)">&nbsp;</i>
                 <span>
-                    <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right"/>
+                    <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
                   </span>
                 <span class="btn-copy" clip-copy="addr.address"> </span>
+                <small translate class="label" ng-if="addr.isChange">change</small>
+              </div>
+              <div class="ellipsis hide-for-large-up list-addr" ng-click="openAddressModal(addr)">
+                <span>
+                    <contact address="{{addr.address}}">
+                  </span>
                 <small translate class="label" ng-if="addr.isChange">change</small>
               </div>
             </div>
             <div class="large-2 medium-3 small-4 column text-right">
               <span ng-if="$root.updatingBalance">
-                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-              </span>
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                </span>
               <span class="size-12" ng-if="!$root.updatingBalance">
-                {{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
-              </span>
+                  {{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+                </span>
             </div>
           </div>
-
         </div>
       </div>
-
-
-      <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
-        <span translate ng-if="!showAll">Show all</span>
-        <span translate ng-if="showAll">Show less</span>
-      </a>
     </div>
+
+
+    <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
+      <span translate ng-if="!showAll">Show all</span>
+      <span translate ng-if="showAll">Show less</span>
+    </a>
   </div>
 </div>
+</div>
+
