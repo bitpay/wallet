@@ -30,6 +30,7 @@
                 <input id="walletPassword" type="password" placeholder="{{'Choose your password'|translate}}" class="form-control" ng-model="$parent.walletPassword" name="walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: 
                   <i>{{passwordStrength}}</i><br/><span
                     class='size-12'>Tip: Use lower and uppercase, numbers and
+<<<<<<< HEAD
                     symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
 
                 <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
@@ -38,6 +39,19 @@
                   <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
                   <label for="network-name">Use test network</label>
                 </div>
+=======
+                    symbols</span>" 
+                  tooltip-trigger="focus" required
+                  tooltip-placement="top">
+
+                  <small translate class="is-valid" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.$invalid">Please enter the same password you entered above</small>
+                  <input type="password" 
+                  placeholder="{{'Repeat password'|translate}}"
+                  name="walletPasswordConfirm"
+                  ng-model="walletPasswordConfirm" 
+                  match="walletPassword" 
+                  required>
+>>>>>>> Fixed
               </div>
 
               <a class="expand small" ng-click="hideAdv=!hideAdv">

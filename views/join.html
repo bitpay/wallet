@@ -64,6 +64,7 @@
               numbers and symbols</span>" tooltip-trigger="focus" 
               tooltip-placement="top" required>
 
+            <small translate class="is-valid" ng-show="joinForm.joinPasswordConfirm.$dirty &&  joinForm.$invalid">Please enter the same password you entered above</small>
             <input type="password" 
             placeholder="{{'Repeat password'|translate}}"
             name="joinPasswordConfirm"

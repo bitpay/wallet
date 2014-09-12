@@ -6,17 +6,16 @@ var bignum = bitcore.Bignum;
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope', function($rootScope) {
 
+.directive('validAddress', ['$rootScope',
+  function($rootScope) {
     return {
       require: 'ngModel',
       link: function(scope, elem, attrs, ctrl) {
         var validator = function(value) {
 
           // If we're setting the domain, ignore the change.
-          if ($rootScope.merchant
-              && $rootScope.merchant.domain
-              && value === $rootScope.merchant.domain) {
+          if ($rootScope.merchant && $rootScope.merchant.domain && value === $rootScope.merchant.domain) {
             ctrl.$setValidity('validAddress', true);
             return value;
           }
@@ -26,6 +25,7 @@ angular.module('copayApp.directives')
             ctrl.$setValidity('validAddress', true);
             return value;
           }
+
 
           // Bip21 uri
           if (/^bitcoin:/.test(value)) {
@@ -41,11 +41,13 @@ angular.module('copayApp.directives')
           return value;
         };
 
+
         ctrl.$parsers.unshift(validator);
         ctrl.$formatters.unshift(validator);
       }
     };
-  }])
+  }
+])
   .directive('enoughAmount', ['$rootScope',
     function($rootScope) {
       var w = $rootScope.wallet;
