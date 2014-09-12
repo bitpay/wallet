@@ -738,3 +738,12 @@ msgstr "Faltan {{tx.missingSignatures}} firmas"
 #~ msgstr ""
 #~ "Nombre del\n"
 #~ "                monedero"
+
+#: views/create.html
+msgid "Please enter the same password you entered above"
+msgstr "Por favor ingrese la misma contraseña ingresada arriba"
+
+#: views/join.html
+msgid "Please enter the same password you entered above"
+msgstr "Por favor ingrese la misma contraseña ingresada arriba"
+
