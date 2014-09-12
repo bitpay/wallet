@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.skipBackup = function() {
       var w = $rootScope.wallet;
-      w.setBackupReady();
+      w.setBackupReady(true);
     };
 
     $scope.backup = function() {
