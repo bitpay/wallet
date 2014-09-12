@@ -24,17 +24,23 @@
                 <input id="Name" type="text" placeholder="{{'Name'|translate}}" class="form-control" ng-model="$parent.myNickname">
               </div>
               <div>
-                <label for="walletPassword"><span translate>Your Wallet Password</span> 
-                  <small translate data-options="disable_for_touch:true" class="has-tip text-gray" tooltip="doesn't need to be shared">Required</small>
+                <label for="walletPassword">
+                  <span translate>Your Password</span> 
                 </label>
-                <input id="walletPassword" type="password" placeholder="{{'Choose your password'|translate}}" class="form-control" ng-model="$parent.walletPassword" name="walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: 
+                <input id="walletPassword" type="password" placeholder="{{'Choose a password'|translate}}" class="form-control" ng-model="$parent.walletPassword" name="walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: 
                   <i>{{passwordStrength}}</i><br/><span
                     class='size-12'>Tip: Use lower and uppercase, numbers and
                     symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
-                <small translate class="is-valid" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.$invalid">Please enter the same password you entered above</small>
-                <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
+                <div class="pr">
+                  <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
+                  <small class="icon-input" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.$invalid"><i class="fi-x"></i></small>
+                  <p translate class="m15b text-gray size-12" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.$invalid">
+                    <i class="fi-x m5r"></i>
+                    Passwords must match
+                  </p>
+                </div>
 
-                <div class="text-left">
+                <div class="text-left line-sidebar-t">
                   <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
                   <label for="network-name">Use test network</label>
                 </div>
