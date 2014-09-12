@@ -107,7 +107,7 @@ angular.module('copayApp.services')
         }, 3000);
       });
       w.on('txProposalEvent', function(e) {
-        
+
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
         switch (e.type) {
           case 'signed':
@@ -158,8 +158,10 @@ angular.module('copayApp.services')
     // TODO movie this to wallet
     root.updateAddressList = function() {
       var w = $rootScope.wallet;
-      if (w && w.isReady())
+      if (w && w.isReady()) {
+        w.subscribeToAddresses();
         $rootScope.addrInfos = w.getAddressesInfo();
+      }
     };
 
     root.updateBalance = function(cb) {

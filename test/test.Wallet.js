@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
@@ -911,6 +912,22 @@ describe('Wallet model', function() {
 
         done();
       });
+    });
+  });
+
+  describe('#subscribeToAddresses', function() {
+    it('should subscribe successfully', function() {
+      var w = cachedCreateW2();
+      var addr1 = w.getAddresses()[0].toString();
+      var addr2 = w.generateAddress().toString();
+      var addr3 = w.generateAddress(true).toString();
+      chai.expect(w.getAddresses().length).to.equal(3);
+
+      w.blockchain.subscribe = sinon.spy();
+      w.subscribeToAddresses();
+      w.blockchain.subscribe.calledOnce.should.equal(true);
+      var arg = w.blockchain.subscribe.getCall(0).args[0];
+      chai.expect(_.difference(arg, [addr1, addr2, addr3]).length).to.equal(0);
     });
   });
 
