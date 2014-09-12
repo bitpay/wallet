@@ -2433,9 +2433,8 @@ Wallet.prototype.isShared = function() {
  * @desc Returns true if the keyring is complete and all users have backed up the wallet
  * @return {boolean}
  */
-Wallet.prototype.isReady = function() { << << << < HEAD
-  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin); === === =
-  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported); >>> >>> > 6703652ea9d7e9e8c9a137a735b2fc2fc6de2494
+Wallet.prototype.isReady = function() {
+  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin);
   return ret;
 };
 
