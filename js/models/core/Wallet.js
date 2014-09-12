@@ -89,6 +89,9 @@ function Wallet(opts) {
   //to avoid confirmation of copayer's backups if is imported from a file
   this.isImported = opts.isImported || false;
 
+  //to avoid waiting others copayers to make a backup and login immediatly
+  this.forcedLogin = opts.forcedLogin || false;
+
   this.paymentRequests = opts.paymentRequests || {};
 
   //network nonces are 8 byte buffers, representing a big endian number
@@ -2430,7 +2433,7 @@ Wallet.prototype.isShared = function() {
  * @return {boolean}
  */
 Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported);
+  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin);
   return ret;
 };
 
@@ -2439,7 +2442,8 @@ Wallet.prototype.isReady = function() {
  *
  * Also backs up the wallet
  */
-Wallet.prototype.setBackupReady = function() {
+Wallet.prototype.setBackupReady = function(forcedLogin) {
+  this.forcedLogin = forcedLogin;
   this.publicKeyRing.setBackupReady();
   this.sendPublicKeyRing();
   this.store();
