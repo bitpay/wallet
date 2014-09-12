@@ -89,6 +89,7 @@ function Wallet(opts) {
   //to avoid confirmation of copayer's backups if is imported from a file
   this.isImported = opts.isImported || false;
 
+
   //to avoid waiting others copayers to make a backup and login immediatly
   this.forcedLogin = opts.forcedLogin || false;
 
@@ -2432,8 +2433,9 @@ Wallet.prototype.isShared = function() {
  * @desc Returns true if the keyring is complete and all users have backed up the wallet
  * @return {boolean}
  */
-Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin);
+Wallet.prototype.isReady = function() { << << << < HEAD
+  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin); === === =
+  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported); >>> >>> > 6703652ea9d7e9e8c9a137a735b2fc2fc6de2494
   return ret;
 };
 
