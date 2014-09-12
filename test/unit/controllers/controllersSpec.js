@@ -37,11 +37,6 @@ describe("Unit: Controllers", function() {
   };
 
   describe('More Controller', function() {
-    it('Copay config should be binded', function() {
-      should.exist(config);
-      should.exist(config.unitToSatoshi);
-    });
-
     var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
