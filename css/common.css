@@ -103,6 +103,7 @@ button.warning,
 
 .p5h {padding: 0 5rem;}
 .m2r {margin-right: 2rem;}
+.m1r {margin-right: 1rem;}
 .p2r {padding-right: 2rem;}
 .m4b {margin-bottom: 4rem;}
 .p3t {padding-top: 3rem;}
@@ -111,7 +112,7 @@ button.warning,
 .p5b {padding-bottom: 5rem;}
 .m10t {margin-top: 10px;}
 .p20t {padding-top: 20px !important;}
-.p1l {padding-right: 5rem;}
+.p1l {padding-left: 1rem;}
 
 
 .row {
@@ -221,7 +222,7 @@ header h3 {
 }
 
 figure {
-  margin: 1em 0;
+  margin: 0.7em 0;
 }
 
 footer {
@@ -261,11 +262,10 @@ footer {
     color: #2C3E50;
     display: block;
     font-weight: 300;
-    font-size: 20px;
-    width: 60%;
-    padding: 8px;
-    margin: 40px auto;
-    border-radius: 5px;
+    font-size: 16px;
+    padding: 8px 12px;
+    margin: 10px auto;
+    border-radius: 2px;
     text-align: center;
   }
 
