@@ -633,6 +633,14 @@ Wallet.prototype.getMyCopayerIdPriv = function() {
 };
 
 /**
+ * @desc Get my own nickname
+ * @return {string} copayer nickname
+ */
+Wallet.prototype.getMyCopayerNickname = function() {
+  return this.publicKeyRing.nicknameForCopayer(this.getMyCopayerId());
+};
+
+/**
  * @desc Returns the secret value for other users to join this wallet
  * @return {string} my own pubkey, base58 encoded
  */

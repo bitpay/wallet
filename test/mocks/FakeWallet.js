@@ -23,6 +23,7 @@ var FakeWallet = function() {
     '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000
   };
   this.name = 'myTESTwullet';
+  this.nickname = 'myNickname';
   this.addressBook = {
     '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
       label: 'John',
@@ -85,6 +86,10 @@ FakeWallet.prototype.getAddressesInfo = function() {
 };
 
 FakeWallet.prototype.subscribeToAddresses = function() {};
+
+FakeWallet.prototype.getMyCopayerNickname = function() {
+  return this.nickname;
+};
 
 FakeWallet.prototype.isShared = function() {
   return this.totalCopayers > 1;
