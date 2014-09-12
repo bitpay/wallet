@@ -10,14 +10,14 @@ BackupService.prototype.getName = function(wallet) {
 };
 
 BackupService.prototype.getCopayer = function(wallet) {
-  return wallet.getMyCopayerNickname();
+  return wallet.totalCopayers > 1 ? wallet.getMyCopayerNickname() : '';
 };
 
 BackupService.prototype.download = function(wallet) {
   var ew = wallet.toEncryptedObj();
   var walletName = this.getName(wallet);
   var copayerName = this.getCopayer(wallet);
-  var filename = copayerName + '-' + walletName + '-keybackup.json.aes';
+  var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
 
   this.notifications.success('Backup created', 'Encrypted backup file saved.');
   var blob = new Blob([ew], {

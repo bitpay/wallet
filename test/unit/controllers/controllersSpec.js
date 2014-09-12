@@ -57,11 +57,19 @@ describe("Unit: Controllers", function() {
       expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
     });
 
-    it('Backup controller should name backup correctly', function() {
+    it('Backup controller should name backup correctly for multiple copayers', function() {
       scope.wallet.setEnc('1234567');
       expect(saveAsLastCall).equal(null);
       scope.downloadBackup();
       expect(saveAsLastCall.filename).equal('myNickname-myTESTwullet-testID-keybackup.json.aes');
+    });
+
+    it('Backup controller should name backup correctly for 1-1 wallet', function() {
+      scope.wallet.setEnc('1234567');
+      expect(saveAsLastCall).equal(null);
+      scope.wallet.totalCopayers = 1;
+      scope.downloadBackup();
+      expect(saveAsLastCall.filename).equal('myTESTwullet-testID-keybackup.json.aes');
     });
 
     it('Backup controller #delete', function() {
