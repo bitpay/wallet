@@ -113,7 +113,11 @@ describe('Unit: Rate Service', function() {
   beforeEach(module(function($provide) {
     $provide.value('request', {
       'get': function(_, cb) {
-        cb(null, null, [{name: 'lol currency', code: 'LOL', rate: 2}]);
+        cb(null, null, [{
+          name: 'lol currency',
+          code: 'LOL',
+          rate: 2
+        }]);
       }
     });
   }));
