@@ -51,7 +51,10 @@
         </div>
 
         <div class="box-setup-copayers p20">
-          <p class="text-primary m10b" ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()" translate>Creating and storing a backup will allow to restore funds of the wallet</p>
+          <p class="text-primary m10b" 
+            ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()" translate>
+            Creating and storing a backup will allow you to recover wallet funds
+          </p>
           <div class="oh">
             <div ng-include="'views/includes/copayer.html'"></div> 
             <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
