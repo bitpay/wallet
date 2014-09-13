@@ -1,5 +1,6 @@
 'use strict';
 var preconditions = require('preconditions').singleton();
+var log = require('../../log');
 
 function PluginManager(config) {
   this.registered = {};
@@ -11,7 +12,7 @@ function PluginManager(config) {
     if (!config.plugins[pluginName])
       continue;
 
-    console.log('Loading plugin: ' + pluginName);
+    log.info('Loading plugin: ' + pluginName);
     var pluginClass = require('../plugins/' + pluginName);
     var pluginObj = new pluginClass(config[pluginName]);
     pluginObj.init();

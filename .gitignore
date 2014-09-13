@@ -77,5 +77,8 @@ dist/windows
 dist/*.dmg
 dist/*.tar.gz
 dist/*.exe
+<<<<<<< HEAD
 
 doc/
+/node_modules
+/*-cov

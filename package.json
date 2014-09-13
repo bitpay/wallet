@@ -13,7 +13,7 @@
   "dependencies": {
     "browser-request": "^0.3.2",
     "inherits": "^2.0.1",
-    "mocha": "^1.18.2",
+    "mocha": "^1.21.4",
     "mocha-lcov-reporter": "0.0.1",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
@@ -27,12 +27,14 @@
     "chrome": "source browser-extensions/chrome/build.sh",
     "setup-shell": "node shell/scripts/download-atom-shell.js",
     "start": "node server.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
-    "test": "sh test/run.sh",
+    "coverage": "mochacoverage",
+    "test": "mocha --ui exports --reporter spec",
     "dist": "node shell/scripts/dist.js",
     "sign": "gpg -u 1112CFA1 --output browser-extensions/firefox/copay.xpi.sig --detach-sig browser-extensions/firefox/copay.xpi; gpg -u 1112CFA1 --output browser-extensions/chrome/copay-chrome-extension.zip.sig --detach-sig browser-extensions/chrome/copay-chrome-extension.zip",
     "verify": "gpg --verify browser-extensions/firefox/copay.xpi.sig browser-extensions/firefox/copay.xpi; gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip",
-    "postinstall": "./node_modules/.bin/grunt"
+    "postinstall": "./node_modules/.bin/grunt",
+    "monitor": "mocha --ui exports --reporter min --watch",
+    "debugtest": "mocha --debug-brk --ui exports --reporter spec"
   },
   "keywords": [
     "wallet",
@@ -81,7 +83,8 @@
     "shelljs": "0.3.0",
     "socket.io-client": "1.0.6",
     "travis-cov": "0.2.5",
-    "uglifyify": "1.2.3"
+    "uglifyify": "1.2.3",
+    "mochawrapper": ""
   },
   "main": "app.js",
   "homepage": "https://github.com/bitpay/copay",
