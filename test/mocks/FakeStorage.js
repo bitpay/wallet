@@ -21,9 +21,9 @@ FakeStorage.prototype.getGlobal = function(id, cb) {
 };
 
 FakeStorage.prototype.getMany = function(wid, fields, cb) {
-  var self= this;
+  var self = this;
   var ret = [];
-  for(var ii in fields){
+  for (var ii in fields) {
     var k = fields[ii];
     ret[k] = this.storage[wid + '::' + k];
   }
@@ -113,14 +113,23 @@ FakeStorage.prototype.deleteWallet = function(walletId, cb) {
       toDelete[key] = 1;
     }
   }
+  var l = toDelete.length,
+    j = 0;
+
+  if (!l) 
+    return cb(new Error('WNOTFOUND: Wallet not found'));
+
   for (var i in toDelete) {
-    this.removeGlobal(i);
+    this.removeGlobal(i, cb);
+    if (++j == l)
+      return cb(err);
+
   }
 };
 
 
 FakeStorage.prototype.getName = function(walletId, cb) {
-  return this.getGlobal('nameFor::' + walletId, cb);
+  this.getGlobal('nameFor::' + walletId, cb);
 };
 
 
@@ -131,15 +140,16 @@ FakeStorage.prototype.setName = function(walletId, name, cb) {
 
 FakeStorage.prototype.getWallets = function(cb) {
   var wallets = [];
-  var ids = this.getWalletIds();
-
-  for (var i in ids) {
-    wallets.push({
-      id: ids[i],
-      name: this.getName(ids[i]),
-    });
-  }
-  return cb(wallets);
+  var self= this;
+  this.getWalletIds(function(ids) {
+    for (var i in ids) {
+      wallets.push({
+        id: ids[i],
+        name: self.storage['nameFor::' + ids[i]],
+      });
+    }
+    return cb(wallets);
+  });
 };
 
 FakeStorage.prototype.setFromObj = function(walletId, obj, cb) {

@@ -64,7 +64,7 @@ function Wallet(opts) {
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
   ].forEach(function(k) {
-    preconditions.checkArgument(!_.isUndefined(opts[k]), 'missing required option for Wallet: ' + k);
+    preconditions.checkArgument(!_.isUndefined(opts[k]), 'MISSOPT: missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
   preconditions.checkArgument(!copayConfig.forceNetwork || this.getNetworkName() === copayConfig.networkName,

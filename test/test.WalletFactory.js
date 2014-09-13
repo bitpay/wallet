@@ -155,8 +155,8 @@ describe('WalletFactory model', function() {
 
   it('should be able to get wallets', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
-    wf.create(null, function(err,w){
-      wf.read(w.id, [], function(err, w2){
+    wf.create(null, function(err, w) {
+      wf.read(w.id, [], function(err, w2) {
         should.exist(w2);
         w2.id.should.equal(w.id);
         done();
@@ -312,107 +312,177 @@ describe('WalletFactory model', function() {
       'requiredCopayers': 2,
       'totalCopayers': 3
     };
-    wf.create(opts, function(err,w){
+    wf.create(opts, function(err, w) {
       should.not.exist(err);
       should.exist(w);
       done();
     });
   });
 
-  it('should be able to get current wallets', function() {
+  it('should be able to get current wallets', function(done) {
     var wf = new WalletFactory(config, '0.0.1');
-    var ws = wf.getWallets();
-
-    var w = wf.create({
+    wf.create({
       name: 'test wallet'
-    });
+    }, function(err, ws) {
+      should.not.exist(err);
 
-    ws = wf.getWallets();
-    ws.length.should.equal(1);
-    ws[0].name.should.equal('test wallet');
-  });
-
-  it('should be able to delete wallet', function(done) {
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create({
-      name: 'test wallet'
-    });
-    var ws = wf.getWallets();
-    ws.length.should.equal(1);
-    wf.delete(ws[0].id, function() {
-      ws = wf.getWallets();
-      ws.length.should.equal(0);
-      done();
+      wf.getWallets(function(err, ws) {
+        should.not.exist(err);
+        ws.length.should.equal(1);
+        ws[0].name.should.equal('test wallet');
+        done();
+      });
     });
   });
 
-  it('should clean lastOpened on delete wallet', function(done) {
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create({
-      name: 'test wallet'
+  describe('#delete', function() {
+    it('should call deleteWallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      var s1 = sinon.spy(wf.storage, 'deleteWallet');
+
+      wf.delete('xxx', function() {
+        s1.getCall(0).args[0].should.equal('xxx');
+        done();
+      });
     });
 
-    wf.storage.setLastOpened(w.id);
-    wf.delete(w.id, function() {
-      var last = wf.storage.getLastOpened();
-      should.equal(last, undefined);
-      done();
+    it('should call lastOpened', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      var s1 = sinon.stub(wf.storage, 'deleteWallet').yields(null);
+      var s2 = sinon.stub(wf.storage, 'setLastOpened').yields(null);
+      wf.delete('xxx', function() {
+        s2.calledOnce.should.equal(true);
+        should.not.exist(s2.getCall(0).args[0]);
+        done();
+      });
     });
   });
 
-  it('should return false if wallet does not exist', function() {
+
+  describe('#read', function() {
+    it('should fail to read unexisting wallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.read('id', [], function(err, w) {
+        should.not.exist(w);
+        should.exist(err);
+        should.exist(err.message);
+        var m = err.message.toString();
+        m.should.to.have.string('Wallet not found');
+        done();
+      });
+    });
+    it('should fail to read broken wallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.getMany = sinon.stub().yields({
+        'opts': 1
+      });
+      wf.read('id', [], function(err, w) {
+        should.not.exist(w);
+        should.exist(err);
+        should.exist(err.message);
+        var m = err.message.toString();
+        m.should.to.have.string('Could not read');
+        done();
+      });
+    });
+    it('should read existing wallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.getMany = sinon.stub().yields({
+        'opts': 1
+      });
+      wf.fromObj = sinon.stub().returns('ok');
+      wf.read('id', [], function(err, w) {
+        should.not.exist(err);
+        should.exist(w);
+        done();
+      });
+    });
+  });
+
+
+  describe('#open', function() {
     var opts = {
-      'requiredCopayers': 2,
-      'totalCopayers': 3
+      'requiredcopayers': 2,
+      'totalcopayers': 3
     };
-    var wf = new WalletFactory(config, '0.0.1');
 
-    var w = wf.open('dummy', opts);
-    should.exist(w);
+    it('should call setPassphrase', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.setPassphrase = sinon.spy();
+
+      var s1 = sinon.stub();
+      s1.store = sinon.stub().yields(null);
+      wf.read = sinon.stub().yields(null, s1);
+      wf.storage.setLastOpened = sinon.stub().yields(null);
+
+      wf.open('dummy', 'xxx', function(err, w) {
+        wf.storage.setPassphrase.calledOnce.should.equal(true);
+        wf.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
+        done();
+      });
+    });
+
+    it('should call return wallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.setPassphrase = sinon.spy();
+
+      var s1 = sinon.stub();
+      s1.store = sinon.stub().yields(null);
+      wf.read = sinon.stub().yields(null, s1);
+      wf.storage.setLastOpened = sinon.stub().yields(null);
+
+      wf.open('dummy', 'xxx', function(err, w) {
+        w.should.equal(s1);
+        s1.store.calledOnce.should.equal(true);
+        done();
+      });
+    });
+
+
+    it('should call #store', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.setPassphrase = sinon.spy();
+
+      var s1 = sinon.stub();
+      s1.store = sinon.stub().yields(null);
+      wf.read = sinon.stub().yields(null, s1);
+      wf.storage.setLastOpened = sinon.stub().yields(null);
+
+      wf.open('dummy', 'xxx', function(err, w) {
+        s1.store.calledOnce.should.equal(true);
+        done();
+      });
+    });
+
+    it('should call #setLastOpened', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.setPassphrase = sinon.spy();
+
+      var s1 = sinon.stub();
+      s1.store = sinon.stub().yields(null);
+      wf.read = sinon.stub().yields(null, s1);
+      wf.storage.setLastOpened = sinon.stub().yields(null);
+
+      wf.open('dummy', 'xxx', function(err, w) {
+        wf.storage.setLastOpened.calledOnce.should.equal(true);
+        wf.storage.setLastOpened.getCall(0).args[0].should.equal('dummy');
+        done();
+      });
+    });
   });
 
-  it('should open a wallet', function() {
-    var opts = {
-      'requiredCopayers': 2,
-      'totalCopayers': 3
-    };
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create(opts);
-    var walletId = w.id;
-
-    wf.read = sinon.stub().withArgs(walletId).returns(w);
-    var wo = wf.open(walletId, opts);
-    should.exist(wo);
-    wf.read.calledWith(walletId).should.be.true;
-  });
-
-  it('should save lastOpened on create/open a wallet', function() {
-    var opts = {
-      'requiredCopayers': 2,
-      'totalCopayers': 3
-    };
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create(opts);
-    var last = wf.storage.getLastOpened();
-    should.equal(last, w.id);
-
-    wf.storage.setLastOpened('other_id');
-
-    var wo = wf.open(w.id, opts);
-    last = wf.storage.getLastOpened();
-    should.equal(last, w.id);
-  });
-
-  it('should return error if network are differents', function() {
-    var opts = {
-      'requiredCopayers': 2,
-      'totalCopayers': 3
-    };
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create(opts);
-    (function() {
-      wf._checkNetwork('livenet');
-    }).should.throw();
+  describe.only('#create', function() {
+    it('should return error if network are differents', function() {
+      var opts = {
+        'requiredCopayers': 2,
+        'totalCopayers': 3
+      };
+      var wf = new WalletFactory(config, '0.0.1');
+      var w = wf.create(opts, function(err, w) {
+        err.should.to.have.string('Wallet not found');
+        should.not.exist(w);
+      });
+    });
   });
 
   describe('#joinCreateSession', function() {

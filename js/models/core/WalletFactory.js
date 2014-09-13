@@ -120,7 +120,7 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields) {
-  this.storage._setPassphrase(password);
+  this.storage.setPassphrase(password);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
   var w = this.fromObj(walletObj, skipFields);
@@ -148,18 +148,34 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
  * @desc Retrieve a wallet from storage
  * @param {string} walletId - the wallet id
  * @param {string[]} skipFields - parameters to ignore when importing
- * @return {Wallet}
+ * @param {function} callback - {err, Wallet}
  */
 WalletFactory.prototype.read = function(walletId, skipFields, cb) {
-  var self = this, err;
+  var self = this,
+    err;
   var obj = {};
-  obj.id = walletId;
 
   this.storage.getMany(walletId, Wallet.PERSISTED_PROPERTIES, function(ret) {
     for (var ii in ret) {
       obj[ii] = ret[ii];
     }
-    return cb(err, self.fromObj(obj, skipFields));
+
+    if (!_.any(_.values(obj)))
+      return cb(new Error('Wallet not found'));
+
+    var w, err;
+    obj.id = walletId;
+    try {
+      w = self.fromObj(obj, skipFields);
+    } catch (e) {
+      if (e && e.message && e.message.indexOf('MISSOPTS')) {
+        err = new Error('Could not read: ' + walletId);
+      } else {
+        err = e;
+      }
+      w = null;
+    }
+    return cb(err, w);
   });
 };
 
@@ -221,7 +237,7 @@ WalletFactory.prototype.create = function(opts, cb) {
   });
   log.debug('\t### TxProposals Initialized');
 
-  this.storage._setPassphrase(opts.passphrase);
+  this.storage.setPassphrase(opts.passphrase);
 
   opts.storage = this.storage;
   opts.network = this.networks[opts.networkName];
@@ -272,8 +288,8 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
 WalletFactory.prototype.open = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
   var self = this;
-  self.storage._setPassphrase(passphrase);
-  self.read(err, walletId, null, function(w) {
+  self.storage.setPassphrase(passphrase);
+  self.read(walletId, null, function(err, w) {
     if (err) return cb(err);
 
     w.store(function(err) {
@@ -285,11 +301,11 @@ WalletFactory.prototype.open = function(walletId, passphrase, cb) {
 };
 
 WalletFactory.prototype.getWallets = function(cb) {
-  var ret = this.storage.getWallets(function(ret) {
+  this.storage.getWallets(function(ret) {
     ret.forEach(function(i) {
       i.show = i.name ? ((i.name + ' <' + i.id + '>')) : i.id;
     });
-    return cb(ret);
+    return cb(null, ret);
   });
 };
 
@@ -303,9 +319,12 @@ WalletFactory.prototype.getWallets = function(cb) {
  */
 WalletFactory.prototype.delete = function(walletId, cb) {
   var s = this.storage;
-  s.deleteWallet(walletId);
-  s.setLastOpened(undefined);
-  return cb();
+  s.deleteWallet(walletId, function(err) {
+    if (err) return cb(err);
+    s.setLastOpened(null, function(err) {
+      return cb(err);
+    });
+  });
 };
 
 /**

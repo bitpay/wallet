@@ -12,7 +12,7 @@ function Storage(opts) {
 
   this.__uniqueid = ++id;
   if (opts.password)
-    this._setPassphrase(opts.password);
+    this.setPassphrase(opts.password);
 
   try {
     this.storage = opts.storage || localStorage;
@@ -33,7 +33,7 @@ Storage.prototype._getPassphrase = function() {
   return pps[this.__uniqueid];
 }
 
-Storage.prototype._setPassphrase = function(password) {
+Storage.prototype.setPassphrase = function(password) {
   pps[this.__uniqueid] = password;
 }
 
@@ -231,6 +231,7 @@ Storage.prototype.getWallets = function(cb) {
 Storage.prototype.deleteWallet = function(walletId, cb) {
   preconditions.checkArgument(walletId);
   preconditions.checkArgument(cb);
+  var err;
 
   var toDelete = {};
   toDelete['nameFor::' + walletId] = 1;
@@ -245,11 +246,15 @@ Storage.prototype.deleteWallet = function(walletId, cb) {
   });
 
   var l = toDelete.length,
-    i = 0;
+    j = 0;
+
+  if (!l) 
+    return cb(new Error('WNOTFOUND: Wallet not found'));
+
   for (var i in toDelete) {
     this.removeGlobal(i, function() {
-      if (++i == l)
-        return cb();
+      if (++j == l)
+        return cb(err);
     });
   }
 };
