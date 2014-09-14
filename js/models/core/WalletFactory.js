@@ -123,8 +123,7 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields
   this.storage.setPassphrase(password);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
-  var w = this.fromObj(walletObj, skipFields);
-  return w;
+  return this.fromObj(walletObj, skipFields);
 };
 
 /**
@@ -179,8 +178,21 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
   });
 };
 
+
 /**
- * @desc This method instantiates a wallet
+ * @desc This method instantiates a wallet. Usefull for stubbing.
+ *
+ * @param {opts} opts, ready for new Wallet(opts)
+ *
+ */
+
+
+WalletFactory.prototype._getWallet = function(opts) {
+  return new Wallet(opts);
+};
+
+/**
+ * @desc This method prepares options for a new Wallet
  *
  * @param {Object} opts
  * @param {string} opts.id
@@ -249,11 +261,12 @@ WalletFactory.prototype.create = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
-  var w = new Wallet(opts);
+  var w = this._getWallet(opts);
   var self = this;
-  w.store(function() {
-    self.storage.setLastOpened(w.id, function() {
-      return cb(null, w);
+  w.store(function(err) {
+    if (err) return cb(err);
+    self.storage.setLastOpened(w.id, function(err) {
+      return cb(err, w);
     });
   });
 };
@@ -352,16 +365,21 @@ WalletFactory.prototype.decodeSecret = function(secret) {
  * information locally using <tt>passphrase</tt>. <tt>privateHex</tt> is the
  * private extended master key. <tt>cb</tt> has two params: error and wallet.
  *
- * @param {string} secret - the wallet secret
- * @param {string} nickname - a nickname for the current user
- * @param {string} passphrase - a passphrase to use to encrypt the wallet for persistance
- * @param {string} privateHex - the private extended master key
+ * @param {object} opts
+ * @param {string} opts.secret - the wallet secret
+ * @param {string} opts.passphrase - a passphrase to use to encrypt the wallet for persistance
+ * @param {string} opts.nickname - a nickname for the current user
+ * @param {string} opts.privateHex - the private extended master key
  * @param {walletCreationCallback} cb - a callback
  */
-WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphrase, privateHex, cb) {
+WalletFactory.prototype.joinCreateSession = function(opts, cb) {
+  preconditions.checkArgument(opts);
+  preconditions.checkArgument(opts.secret);
+  preconditions.checkArgument(opts.passphrase);
+  preconditions.checkArgument(opts.nickname);
   preconditions.checkArgument(cb);
   var self = this;
-  var decodedSecret = this.decodeSecret(secret);
+  var decodedSecret = this.decodeSecret(opts.secret);
   if (!decodedSecret || !decodedSecret.networkName || !decodedSecret.pubKey) {
     return cb('badSecret');
   }
@@ -370,7 +388,7 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     networkName: decodedSecret.networkName,
   };
 
-  if (privateHex && privateHex.length > 1) {
+  if (opts.privateHex && opts.privateHex.length > 1) {
     privOpts.extendedPrivateKeyString = privateHex;
   }
 

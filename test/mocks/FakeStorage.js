@@ -7,7 +7,7 @@ FakeStorage.prototype.reset = function(password) {
   this.storage = {};
 };
 
-FakeStorage.prototype._setPassphrase = function(password) {
+FakeStorage.prototype.setPassphrase = function(password) {
   this.storage.passphrase = password;
 };
 
