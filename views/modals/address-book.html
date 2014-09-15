@@ -1,4 +1,4 @@
-<h2 translate>Add Address Book Entry</h2>
+<h2 translate>Address Book</h2>
 <form name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
   <label for="newaddress"><span translate>Address</span>
     <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">required</small>
@@ -16,7 +16,7 @@
   <a translate class="button warning small default" ng-click="cancel()">Cancel</a>
   <input type="submit" class="button small primary right"
   ng-disabled="addressBookForm.$invalid || loading" 
-  value="{{'Add Address'|translate}}">
+  value="{{'Add'|translate}}">
 </form>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 
