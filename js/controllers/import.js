@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (!backupFile) {
         $scope.loading = false;
-        notification.error('Error', 'Please, select your backup file or paste the file contents');
+        notification.error('Error', 'Please, select your backup file');
         $scope.loading = false;
         return;
       }
