@@ -136,18 +136,26 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
 
   obj.id = walletId;
   var data = s.get(walletId, 'data');
-  _.each(Wallet.PERSISTED_PROPERTIES, function(v) {
-    var k = v.property;
-    obj[k] = data ? data[k] : s.get(walletId, k);
-  });
+  var missingProp = false;
 
-  if (_.some(_.where(Wallet.PERSISTED_PROPERTIES, {
-    required: true
-  }), function(v) {
-    return _.isUndefined(obj[v.property]);
-  })) {
-    return false;
+  if (data) {
+    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+      if (p.required && !data.hasOwnProperty(p.name))
+        missingProp = true;
+      obj[p.name] = data[p.name];
+    });
+  } else {
+    // Legacy format
+    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+      var value = s.get(walletId, p.name);
+      if (p.required && !value)
+        missingProp = true;
+      obj[p.name] = value;
+    });
   }
+
+  if (missingProp)
+    return false;
 
   var w = this.fromObj(obj, skipFields);
   return w;

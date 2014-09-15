@@ -125,24 +125,24 @@ Wallet.builderOpts = {
  * These are the properties that get stored/read from storage
  */
 Wallet.PERSISTED_PROPERTIES = [{
-  property: 'opts',
+  name: 'opts',
   required: true
 }, {
-  property: 'publicKeyRing',
+  name: 'publicKeyRing',
   required: true
 }, {
-  property: 'privateKey',
+  name: 'privateKey',
   required: true
 }, {
-  property: 'settings'
+  name: 'settings'
 }, {
-  property: 'txProposals'
+  name: 'txProposals'
 }, {
-  property: 'addressBook'
+  name: 'addressBook'
 }, {
-  property: 'backupOffered'
+  name: 'backupOffered'
 }, {
-  property: 'lastTimestamp'
+  name: 'lastTimestamp'
 }];
 
 /**
