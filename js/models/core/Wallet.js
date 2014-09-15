@@ -1295,7 +1295,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
       return self.receivePaymentRequest(options, pr, cb);
     })
     .error(function(data, status, headers, config) {
-      return cb(new Error('Status: ' + JSON.stringify(status)));
+      return cb(new Error('Status: ' + status));
     });
 };
 
@@ -1572,7 +1572,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
     })
     .error(function(data, status, headers, config) {
-      return cb(new Error('Status: ' + JSON.stringify(status)));
+      return cb(new Error('Status: ' + status));
     });
 };
 
@@ -2483,15 +2483,6 @@ Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
   return v;
 }
 
-// NOTE: Angular $http module does not send ArrayBuffers correctly, so we're
-// not going to use it. We'll have to write our own. Otherwise, we could
-// hex-encoded our messages and decode them on the other side, but that
-// deviates from BIP-70.
-
-// if (typeof angular !== 'undefined') {
-//   var $http = angular.bootstrap().get('$http');
-// }
-
 /**
  * @desc Create a HTTP request
  * @TODO: This shouldn't be a wallet responsibility
@@ -2557,7 +2548,13 @@ Wallet.request = function(options, callback) {
   };
 
   xhr.onerror = function(event) {
-    return ret._error(null, new Error(event.message), null, options);
+    var status;
+    if (xhr.status === 0 || !xhr.statusText) {
+      status = 'HTTP Request Error: This endpoint likely does not support cross-origin requests.';
+    } else {
+      status = xhr.statusText;
+    }
+    return ret._error(null, status, null, options);
   };
 
   if (req.body) {
