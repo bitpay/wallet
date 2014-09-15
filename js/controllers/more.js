@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('MoreController',
       if (removed) {
         controllerUtils.updateBalance();
       }
-      notification.info('Tx Proposals Purged', removed + ' transaction proposal purged');
+      notification.info('Transactions Proposals Purged', removed + ' transaction proposal purged');
     };
 
     $scope.updateIndexes = function() {
