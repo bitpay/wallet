@@ -53,6 +53,7 @@ var copayConfig = require('../../../config');
  * @TODO: figure out if reconnectDelay is set in milliseconds
  * @param {number} opts.reconnectDelay - amount of seconds to wait before
  *                                       attempting to reconnect
+ * @constructor
  */
 function Wallet(opts) {
   var self = this;
@@ -171,7 +172,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
  *
  * @param {string} senderId - the sender id
  * @param {Object} data - the data recived, {@see HDParams#fromList}
- * @emits {publicKeyRingUpdated}
+ * @emits publicKeyRingUpdated
  */
 Wallet.prototype._onIndexes = function(senderId, data) {
   log.debug('RECV INDEXES:', data);
@@ -216,8 +217,8 @@ Wallet.prototype.changeSettings = function(settings) {
  * @param {Object} data - the data recived, {@see HDParams#fromList}
  * @param {Object} data.publicKeyRing - data to be deserialized into a {@link PublicKeyRing}
  *                                      using {@link PublicKeyRing#fromObj}
- * @emits {publicKeyRingUpdated}
- * @emits {connectionError}
+ * @emits publicKeyRingUpdated
+ * @emits connectionError
  */
 Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   log.debug('RECV PUBLICKEYRING:', data);
@@ -252,7 +253,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
  *
  * @param {string} senderId - the copayer that sent this event
  * @param {Object} m - the data received
- * @emits {txProposalEvent}
+ * @emits txProposalEvent
  */
 Wallet.prototype._processProposalEvents = function(senderId, m) {
   var ev;
@@ -955,7 +956,7 @@ Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
 /**
  * @desc Send a TxProposal identified by transaction id to a set of recipients
  * @param {string} ntxid - the transaction proposal id
- * @param {string[]=} recipients - the pubkeys of the recipients
+ * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
@@ -997,7 +998,7 @@ Wallet.prototype.sendReject = function(ntxid) {
 
 /**
  * @desc Notify other peers that a wallet has been backed up and it's ready to be used
- * @param {string[]=} recipients - the pubkeys of the recipients
+ * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
   log.debug('### SENDING WalletReady TO:', recipients || 'All');
@@ -1012,7 +1013,7 @@ Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
 /**
  * @desc Notify other peers of the walletId
  * @TODO: Why is this needed? Can't everybody just calculate the walletId?
- * @param {string[]=} recipients - the pubkeys of the recipients
+ * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletId = function(recipients) {
   log.debug('### SENDING walletId TO:', recipients || 'All', this.id);
@@ -1027,7 +1028,7 @@ Wallet.prototype.sendWalletId = function(recipients) {
 
 /**
  * @desc Send the current PublicKeyRing to other recipients
- * @param {string[]=} recipients - the pubkeys of the recipients
+ * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
   log.debug('### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
@@ -1042,7 +1043,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
 
 /**
  * @desc Send the current indexes of our public key ring to other peers
- * @param {string[]=} recipients - the pubkeys of the recipients
+ * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendIndexes = function(recipients) {
   var indexes = HDParams.serialize(this.publicKeyRing.indexes);
@@ -1057,7 +1058,7 @@ Wallet.prototype.sendIndexes = function(recipients) {
 
 /**
  * @desc Send our addressBook to other recipients
- * @param {string[]=} recipients - the pubkeys of the recipients
+ * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendAddressBook = function(recipients) {
   log.debug('### SENDING addressBook TO:', recipients || 'All', this.addressBook);

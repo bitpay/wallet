@@ -30,6 +30,7 @@ var preconditions = require('preconditions').singleton();
  * @param {Object} config.wallet - default configuration for the wallet
  * @TODO: put `version` inside of the config object
  * @param {string} version - the version of copay for which this wallet was generated (for example, 0.4.7)
+ * @constructor
  */
 function WalletFactory(config, version) {
   var self = this;
@@ -318,7 +319,7 @@ WalletFactory.prototype.decodeSecret = function(secret) {
 
 /**
  * @callback walletCreationCallback
- * @param {?=} err - an error, if any, that happened during the wallet creation
+ * @param {?} err - an error, if any, that happened during the wallet creation
  * @param {Wallet=} wallet - the wallet created
  */
 
