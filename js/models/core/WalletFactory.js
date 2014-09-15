@@ -37,7 +37,8 @@ var Storage = module.exports.Storage = require('../Storage');
 
 function WalletFactory(config, version, pluginManager) {
   var self = this;
-  config = config || {};
+  preconditions.checkArgument(config);
+  preconditions.checkArgument(config.network);
 
   this.Storage = config.Storage || Storage;
   this.Network = config.Network || Async;
@@ -62,7 +63,7 @@ function WalletFactory(config, version, pluginManager) {
     'testnet': new this.Blockchain(config.network.testnet),
   };
 
-  this.walletDefaults = config.walle || {};
+  this.walletDefaults = config.wallet || {};
   this.version = version;
 };
 
@@ -93,9 +94,6 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   // not stored options
   obj.opts = obj.opts || {};
   obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
-
-  // this is only used if private key or public key ring is skipped
-  obj.opts.networkName = networkName;
 
   skipFields = skipFields || [];
   skipFields.forEach(function(k) {
