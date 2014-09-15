@@ -149,7 +149,7 @@ describe('WalletFactory model', function() {
     );
   });
 
-  describe.only('#read', function() {
+  describe('#read', function() {
     it('should be able to get wallets', function() {
       var wf = new WalletFactory(config, '0.0.1');
       var w = wf.create();
