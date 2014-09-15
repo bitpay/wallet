@@ -161,7 +161,7 @@ describe('WalletFactory model', function() {
 
 console.log('[test.WalletFactory.js.169]', original.opts); //TODO
       ['addressBook', 'networkNonce','networkNonces', 'opts', 'privateKey','copayersExtPubKeys'].forEach(function(k){
-console.log('[test.WalletFactory.js.166:original:]',k,original[k]); //TODO
+console.log('[test.WalletFactory.js.166:original:]',k,original[k], o2[k]); //TODO
         o2[k].should.be.deep.equal(original[k], k + ' differs');
 
       })
