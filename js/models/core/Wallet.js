@@ -1408,7 +1408,10 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         expires: expires,
         memo: memo || 'This server would like some BTC from you.',
         payment_url: payment_url,
-        merchant_data: merchant_data.toString('hex')
+        merchant_data: merchant_data
+          ? merchant_data.toString('hex')
+          // : new Buffer('none', 'utf8').toString('hex')
+          : '00'
       },
       signature: sig.toString('hex'),
       ca: trust.caName,
