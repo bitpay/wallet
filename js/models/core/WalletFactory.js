@@ -55,28 +55,6 @@ function WalletFactory(config, version) {
 };
 
 /**
- * @desc
- * Returns true if the storage instance can retrieve the following keys using a given walletId
- * <ul>
- * <li><tt>publicKeyRing</tt></li>
- * <li><tt>txProposals</tt></li>
- * <li><tt>opts</tt></li>
- * <li><tt>privateKey</tt></li>
- * </ul>
- * @param {string} walletId
- * @return {boolean} true if all the keys are present in the storage instance
- */
-WalletFactory.prototype._checkRead = function(walletId) {
-  var s = this.storage;
-  var ret =
-    s.get(walletId, 'publicKeyRing') &&
-    s.get(walletId, 'txProposals') &&
-    s.get(walletId, 'opts') &&
-    s.get(walletId, 'privateKey');
-  return !!ret;
-};
-
-/**
  * @desc obtain network name from serialized wallet
  * @param {Object} wallet object
  * @return {string} network name
@@ -153,15 +131,13 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.read = function(walletId, skipFields) {
-  if (!this._checkRead(walletId))
-    return false;
-
   var obj = {};
   var s = this.storage;
 
   obj.id = walletId;
-  _.each(Wallet.PERSISTED_PROPERTIES, function(value) {
-    obj[value] = s.get(walletId, value);
+  var data = s.get(walletId, 'data');
+  _.each(Wallet.PERSISTED_PROPERTIES, function(k) {
+    obj[k] = data ? data[k] : s.get(walletId, k);
   });
 
   var w = this.fromObj(obj, skipFields);

@@ -149,7 +149,7 @@ describe('WalletFactory model', function() {
     );
   });
 
-  describe('#read', function() {
+  describe.only('#read', function() {
     it('should be able to get wallets', function() {
       var wf = new WalletFactory(config, '0.0.1');
       var w = wf.create();
@@ -234,6 +234,13 @@ describe('WalletFactory model', function() {
       var w = wf.read(walletId);
       should.exist(w);
       w.id.should.equal(walletId);
+    });
+
+    it('should persist wallets as single key', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.set = sinon.spy();
+      var w = wf.create();
+      wf.storage.set.calledOnce.should.equal(true);
     });
   });
 
