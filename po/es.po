@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.8\n"
+"X-Generator: Poedit 1.6.9\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: views/create.html
@@ -17,8 +17,9 @@ msgid "(*) The limits are imposed by the bitcoin network."
 msgstr "(*) Los límites son impuestos por la red de bitcoin."
 
 #: views/more.html
+#, fuzzy
 msgid ""
-"ALL Transactions Proposals will be discarted. This need to be done on "
+"ALL Transactions Proposals will be discarted. This needs to be done on "
 "<b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced "
 "again.\n"
 "        </b></b>"
@@ -52,7 +53,7 @@ msgstr "Libreta de Direcciones"
 msgid "Addresses"
 msgstr "Direcciones"
 
-#: views/settings.html
+#: views/more.html
 msgid "Alternative Currency"
 msgstr "Moneda Alternativa"
 
@@ -93,9 +94,9 @@ msgstr "Balance"
 msgid "Balance locked in pending transaction proposals"
 msgstr "Balance bloqueado en las propuestas de transacción pendientes"
 
-#: views/settings.html
-msgid "Bitcoin Network"
-msgstr "Red Bitcoin"
+#: views/send.html
+msgid "Bitcoin address"
+msgstr "Dirección bitcoin"
 
 #: views/includes/transaction.html
 msgid "Broadcast Transaction"
@@ -113,11 +114,16 @@ msgstr "Cancelar"
 msgid "Certificate:"
 msgstr "Certificado:"
 
+#: views/create.html
+#, fuzzy
+msgid "Choose a password"
+msgstr "Escribe tu contraseña"
+
 #: views/import.html
 msgid "Choose backup file from your computer"
 msgstr "Seleccione el archivo backup de su computadora"
 
-#: views/create.html views/join.html
+#: views/join.html
 msgid "Choose your password"
 msgstr "Escribe tu contraseña"
 
@@ -161,6 +167,12 @@ msgstr "Crear nuevo monedero"
 msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
 msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
 
+#: views/copayers.html
+msgid "Creating and storing a backup will allow you to recover wallet funds"
+msgstr ""
+"Crear y guardar una copia de seguridad  le permitirá recuperar el dinero de "
+"su monedero"
+
 #: views/create.html
 msgid "Creating wallet..."
 msgstr "Creando monedero..."
@@ -182,20 +194,12 @@ msgid "Delete Wallet"
 msgstr "Borrar Monedero"
 
 #: views/copayers.html
-msgid "Delete wallet"
-msgstr "Borrar monedero"
-
-#: views/copayers.html
 msgid "Download Backup"
 msgstr "Descargar Copia de Seguridad"
 
 #: views/more.html
 msgid "Download File"
 msgstr "Descargar Archivo"
-
-#: views/copayers.html
-msgid "Download seed backup"
-msgstr "Descargar copia de seguridad"
 
 #: views/send.html
 msgid "Empty. Create an alias for your addresses"
@@ -213,8 +217,8 @@ msgstr "Tasa"
 msgid "Get QR code"
 msgstr "Obtener código QR"
 
-#: views/copayers.html views/create.html views/import.html views/join.html
-#: views/more.html views/transactions.html
+#: views/create.html views/import.html views/join.html views/more.html
+#: views/transactions.html
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -243,18 +247,20 @@ msgid "Including fee of"
 msgstr "Incluye tasa de"
 
 #: views/settings.html
-msgid "Insight API server"
-msgstr "Servidor API Insight"
-
-#: views/settings.html
+#, fuzzy
 msgid ""
-"Insight API server is open-source software.  You can run your own instance, "
+"Insight API server is open-source software. You can run your own instances, "
 "check <a href=\"http://insight.is\" target=\"_blank\">Insight API Homepage</"
 "a>"
 msgstr ""
 "Servidor API de insight es un software código-abierto. Puedes correr tu "
 "propia instancia en <a href=\"http://insight.is\" target=\"_blank\">Insight "
 "API Homepage</a>"
+
+#: views/settings.html
+#, fuzzy
+msgid "Insight API servers"
+msgstr "Servidor API Insight"
 
 #: views/send.html
 msgid "Insufficient funds"
@@ -315,16 +321,6 @@ msgstr "Nombre"
 #: index.html
 msgid "Network Error. Attempting to reconnect..."
 msgstr "Error de Red. Intentando reconectar..."
-
-#: views/settings.html
-msgid ""
-"Network has been fixed to <strong>{{networkName}}</strong> in this setup. "
-"See <a href=\"https://copay.io\">copay.io</a> for options to use Copay on "
-"both livenet and testnet."
-msgstr ""
-"La red fue fijada a <strong>{{networkName}}</strong> para esta "
-"configuración. Ver <a href=\"https://copay.io\">copay.io</a> para más "
-"opciones de uso de Copay en livenet y testnet."
 
 #: views/copayers.html
 msgid "New Wallet Created"
@@ -389,6 +385,10 @@ msgstr "Página no encontrada"
 msgid "Password"
 msgstr "Contraseña"
 
+#: views/create.html views/join.html
+msgid "Passwords must match"
+msgstr "Las contraseñas deben coincidir"
+
 #: views/join.html
 msgid "Paste wallet secret here"
 msgstr "Pegar código secreto del monedero aquí"
@@ -398,8 +398,9 @@ msgid "Payment Expiration:"
 msgstr "Vencimiento de Pago:"
 
 #: views/more.html
+#, fuzzy
 msgid ""
-"Pending Transactions Proposals will be discarted. This need to be done on "
+"Pending Transactions Proposals will be discarted. This needs to be done on "
 "<b>ALL<b> peers of a wallet, to prevent the old proposals to be resynced "
 "again.\n"
 "        </b></b>"
@@ -408,10 +409,6 @@ msgstr ""
 "necesario hacerlo con <b>TODOS</b> los compañeros del monedero, para "
 "prevenir que viejas propuestas sean re sincronizadas de nuevo.\n"
 "        </b></b>"
-
-#: views/settings.html
-msgid "Port"
-msgstr "Puerto"
 
 #: views/uri-payment.html
 msgid "Preparing payment..."
@@ -457,11 +454,11 @@ msgstr "Rechazar"
 msgid "Repeat password"
 msgstr "Repite la contraseña"
 
-#: views/create.html views/import.html views/join.html
+#: views/import.html views/join.html
 msgid "Required"
 msgstr "Requerido"
 
-#: views/settings.html
+#: views/more.html views/settings.html
 msgid "Save"
 msgstr "Guardar"
 
@@ -513,8 +510,8 @@ msgstr "Configuración"
 msgid "Share this secret with your other copayers"
 msgstr "Compartir el código secreto con tus otros compañeros"
 
-#: views/copayers.html views/create.html views/import.html views/join.html
-#: views/more.html views/transactions.html
+#: views/create.html views/import.html views/join.html views/more.html
+#: views/transactions.html
 msgid "Show"
 msgstr "Mostrar"
 
@@ -529,6 +526,10 @@ msgstr "Ver menos"
 #: views/includes/transaction.html
 msgid "Sign"
 msgstr "Firmar"
+
+#: views/copayers.html
+msgid "Skip Backup"
+msgstr "Saltear Copia de Seguridad"
 
 #: views/import.html
 msgid "Skip public keys from peers"
@@ -559,8 +560,8 @@ msgstr ""
 "sincronización de direcciones a los demás compañeros conectados."
 
 #: views/send.html
-msgid "To address"
-msgstr "Dirección"
+msgid "To:"
+msgstr "Para:"
 
 #: views/transactions.html
 msgid "Total"
@@ -581,10 +582,6 @@ msgstr "Propuestas de Transacción"
 #: views/includes/transaction.html
 msgid "Transaction finally rejected"
 msgstr "Transacción rechazada"
-
-#: views/settings.html
-msgid "Use SSL"
-msgstr "Usar SSL"
 
 #: views/send.html
 msgid "Use all funds"
@@ -622,7 +619,7 @@ msgstr "Código Secreto del Monedero"
 msgid "Wallet Secret is not valid!"
 msgstr "¡El código secreto no es válido!"
 
-#: views/settings.html
+#: views/more.html
 msgid "Wallet Unit"
 msgstr "Unidad del monedero"
 
@@ -635,8 +632,9 @@ msgid "Warning!"
 msgstr "¡Advertencia!"
 
 #: views/create.html
-msgid "Your Wallet Password"
-msgstr "Contraseña de tu Monedero"
+#, fuzzy
+msgid "Your Password"
+msgstr "Tu contraseña"
 
 #: views/more.html
 msgid ""
@@ -662,8 +660,7 @@ msgstr "Tu contraseña"
 msgid "Your wallet password"
 msgstr "Contraseña de tu monedero"
 
-#: views/copayers.html views/create.html views/import.html views/join.html
-#: views/more.html
+#: views/create.html views/import.html views/join.html views/more.html
 msgid "advanced options"
 msgstr "opciones avanzadas"
 
@@ -676,7 +673,8 @@ msgid "first seen at"
 msgstr "Visto el"
 
 #: views/transactions.html
-msgid "mined at"
+#, fuzzy
+msgid "mined"
 msgstr "Minado el"
 
 #: views/send.html
@@ -718,6 +716,33 @@ msgstr "deben unirse"
 #: views/includes/transaction.html
 msgid "{{tx.missingSignatures}} signatures missing"
 msgstr "Faltan {{tx.missingSignatures}} firmas"
+
+#~ msgid "Bitcoin Network"
+#~ msgstr "Red Bitcoin"
+
+#~ msgid "Delete wallet"
+#~ msgstr "Borrar monedero"
+
+#~ msgid "Download seed backup"
+#~ msgstr "Descargar copia de seguridad"
+
+#~ msgid ""
+#~ "Network has been fixed to <strong>{{networkName}}</strong> in this setup. "
+#~ "See <a href=\"https://copay.io\">copay.io</a> for options to use Copay on "
+#~ "both livenet and testnet."
+#~ msgstr ""
+#~ "La red fue fijada a <strong>{{networkName}}</strong> para esta "
+#~ "configuración. Ver <a href=\"https://copay.io\">copay.io</a> para más "
+#~ "opciones de uso de Copay en livenet y testnet."
+
+#~ msgid "Port"
+#~ msgstr "Puerto"
+
+#~ msgid "Use SSL"
+#~ msgstr "Usar SSL"
+
+#~ msgid "Your Wallet Password"
+#~ msgstr "Contraseña de tu Monedero"
 
 #~ msgid "Send"
 #~ msgstr "Enviar"
