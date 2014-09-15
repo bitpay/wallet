@@ -9,6 +9,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   // Project Configuration
   grunt.initConfig({
@@ -16,7 +17,7 @@ module.exports = function(grunt) {
       prod: {
         options: {
           stdout: false,
-          stderr: false 
+          stderr: false
         },
         command: 'node ./util/build.js'
       },
@@ -52,12 +53,12 @@ module.exports = function(grunt) {
       main: {
         files: [
           'js/init.js',
-          'js/app.js', 
-          'js/directives.js', 
-          'js/filters.js', 
-          'js/routes.js', 
+          'js/app.js',
+          'js/directives.js',
+          'js/filters.js',
+          'js/routes.js',
           'js/mobile.js',
-          'js/services/*.js', 
+          'js/services/*.js',
           'js/controllers/*.js'
         ],
         tasks: ['concat:main']
@@ -119,11 +120,11 @@ module.exports = function(grunt) {
       },
       main: {
         src: [
-          'js/app.js', 
-          'js/directives.js', 
-          'js/filters.js', 
-          'js/routes.js', 
-          'js/services/*.js', 
+          'js/app.js',
+          'js/directives.js',
+          'js/filters.js',
+          'js/routes.js',
+          'js/services/*.js',
           'js/controllers/*.js',
           'js/translations.js',
           'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
@@ -172,11 +173,23 @@ module.exports = function(grunt) {
           'js/translations.js': ['po/*.po']
         }
       },
+    },
+    jsdoc: {
+      dist : {
+        src: ['js/models/core/*.js'],
+        options: {
+          destination: 'doc',
+          configure: 'jsdoc.conf.json',
+          template: './node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
+          theme: 'flatly'
+        }
+      }
     }
   });
+
 
   grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
   grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
-
+  grunt.registerTask('docs', ['jsdoc']);
 };
