@@ -159,7 +159,7 @@ describe('WalletFactory model', function() {
       w2.id.should.equal(w.id);
     });
 
-    it.only('should be able to get wallets stored in old format (multiple keys per wallet)', function() {
+    it('should be able to get wallets stored in old format (multiple keys per wallet)', function() {
       var wf = new WalletFactory(config, '0.0.1');
 
       var walletId = 'db61df6833e57e3c';
