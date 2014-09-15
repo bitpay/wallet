@@ -131,30 +131,39 @@ describe('WalletFactory model', function() {
       iterations: 100,
       storageSalt: 'mjuBtGybi/4=',
     },
+
+    // network layer config
+    network: {
+      testnet: {
+        url: 'https://test-insight.bitpay.com:443'
+      },
+      livenet: {
+        url: 'https://insight.bitpay.com:443'
+      },
+    },
+
   };
 
   describe('#constructor', function() {
     it('should create the factory', function() {
       var wf = new WalletFactory(config, '0.0.1');
       should.exist(wf);
-      wf.networkName.should.equal(config.networkName);
       wf.walletDefaults.should.deep.equal(config.wallet);
       wf.version.should.equal('0.0.1');
     });
   });
 
   describe('#fromObj / #toObj', function() {
-    it('round trip', function() {
+    it.only('round trip', function() {
       var wf = new WalletFactory(config, '0.0.5');
-      var w = wf.fromObj(JSON.parse(o));
+      var original = JSON.parse(o);
+      var o2 = wf.fromObj(original).toObj();
 
-      should.exist(w);
-      w.id.should.equal("dbfe10c3fae71cea");
-      should.exist(w.publicKeyRing.getCopayerId);
-      should.exist(w.txProposals.toObj());
-      should.exist(w.privateKey.toObj());
-
-      assertObjectEqual(w.toObj(), JSON.parse(o));
+console.log('[test.WalletFactory.js.169]', original.opts); //TODO
+      ['addressBook', 'networkNonce','networkNonces', 'opts', 'privateKey','copayersExtPubKeys'].forEach(function(k){
+        o2[k].should.be.deep.equal(original[k], k + ' differs');
+      })
+      //assertObjectEqual(w.toObj(), JSON.parse(o));
     });
 
     it('round trip, using old copayerIndex', function() {
