@@ -1247,15 +1247,6 @@ describe('Wallet model', function() {
 
   });
 
-  describe('#forceNetwork in config', function() {
-    it('should throw if network is different', function() {
-      var backup = copayConfig.forceNetwork;
-      copayConfig.forceNetwork = true;
-      walletConfig.networkName = 'livenet';
-      createW2.should.throw(Error);
-      copayConfig.forceNetwork = backup;
-    });
-  });
   describe('_getKeymap', function() {
     var w = cachedCreateW();
 
