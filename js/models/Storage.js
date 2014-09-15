@@ -155,7 +155,9 @@ Storage.prototype.getMany = function(walletId, keys, cb) {
 
 // set value for key
 Storage.prototype.set = function(walletId, k, v, cb) {
-  preconditions.checkArgument(walletId && k && !_.isUndefined(v) && cb);
+  preconditions.checkArgument(walletId && k && cb);
+
+  if (_.isUndefined(v)) return cb();
 
   this._write(this._key(walletId, k), v, cb);
 };
