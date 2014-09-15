@@ -118,12 +118,6 @@ describe('WalletFactory model', function() {
     wf.version.should.equal('0.0.1');
   });
 
-  it('#_checkRead should return false', function() {
-    var wf = new WalletFactory(config);
-    wf._checkRead('dummy').should.equal(false);
-    wf.read('dummy').should.equal(false);
-  });
-
   it('should be able to create wallets', function() {
     var wf = new WalletFactory(config, '0.0.1');
     var w = wf.create();

@@ -122,9 +122,7 @@ FakeStorage.prototype.getWallets = function() {
 };
 
 FakeStorage.prototype.setFromObj = function(walletId, obj) {
-  for (var k in obj) {
-    this.set(walletId, k, obj[k]);
-  }
+  this.set(walletId, 'data', obj);
   this.setName(walletId, obj.opts.name);
 };
 

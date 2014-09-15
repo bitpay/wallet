@@ -136,9 +136,18 @@ WalletFactory.prototype.read = function(walletId, skipFields) {
 
   obj.id = walletId;
   var data = s.get(walletId, 'data');
-  _.each(Wallet.PERSISTED_PROPERTIES, function(k) {
+  _.each(Wallet.PERSISTED_PROPERTIES, function(v) {
+    var k = v.property;
     obj[k] = data ? data[k] : s.get(walletId, k);
   });
+
+  if (_.some(_.where(Wallet.PERSISTED_PROPERTIES, {
+    required: true
+  }), function(v) {
+    return _.isUndefined(obj[v.property]);
+  })) {
+    return false;
+  }
 
   var w = this.fromObj(obj, skipFields);
   return w;
