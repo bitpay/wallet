@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var chai = chai || require('chai');
 var should = chai.should();
 
@@ -148,16 +149,93 @@ describe('WalletFactory model', function() {
     );
   });
 
+  describe('#read', function() {
+    it('should be able to get wallets', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var w = wf.create();
 
-  it('should be able to get wallets', function() {
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create();
+      var w2 = wf.read(w.id);
+      should.exist(w2);
+      w2.id.should.equal(w.id);
+    });
 
-    var w2 = wf.read(w.id);
-    should.exist(w2);
-    w2.id.should.equal(w.id);
+    it.only('should be able to get wallets stored in old format (multiple keys per wallet)', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+
+      var walletId = 'db61df6833e57e3c';
+      var old = {
+        'opts': {
+          "id": "db61df6833e57e3c",
+          "spendUnconfirmed": 1,
+          "requiredCopayers": 3,
+          "totalCopayers": 5,
+          "version": "0.0.1",
+          "networkName": "testnet"
+        },
+        'settings': {
+          "unitName": "bits",
+          "unitToSatoshi": 100,
+          "unitDecimals": 2,
+          "alternativeName": "US Dollar",
+          "alternativeIsoCode": "USD"
+        },
+        'networkNonce': "0000000000000001",
+        'networkNonces': [],
+        'publicKeyRing': {
+          "walletId": "db61df6833e57e3c",
+          "networkName": "testnet",
+          "requiredCopayers": 3,
+          "totalCopayers": 5,
+          "indexes": [{
+            "copayerIndex": 2147483647,
+            "changeIndex": 0,
+            "receiveIndex": 1
+          }, {
+            "copayerIndex": 0,
+            "changeIndex": 0,
+            "receiveIndex": 0
+          }, {
+            "copayerIndex": 1,
+            "changeIndex": 0,
+            "receiveIndex": 0
+          }, {
+            "copayerIndex": 2,
+            "changeIndex": 0,
+            "receiveIndex": 0
+          }, {
+            "copayerIndex": 3,
+            "changeIndex": 0,
+            "receiveIndex": 0
+          }, {
+            "copayerIndex": 4,
+            "changeIndex": 0,
+            "receiveIndex": 0
+          }],
+          "copayersBackup": [],
+          "copayersExtPubKeys": ["tpubD8xPsfrweHePTxJX4QMYgvhoAv4X18tEf29z3Me8E1zGf1mqjdr6qSy7zszJBLTgecXnUABV88E9DEjaLxA7GKqf1QdzkZMMcgXieRU2RJi"],
+          "nicknameFor": {}
+        },
+        'txProposals': {
+          "txps": [],
+          "walletId": "db61df6833e57e3c",
+          "networkName": "testnet"
+        },
+        'privateKey': {
+          "extendedPrivateKeyString": "tprv8ZgxMBicQKsPdPuzoozh1LtKuTjBgsi8qrfi9Y9F5GswQbKXZCwX7dzDGWpdjX6ptPF2jww2c7NgGShZeLvFt8RVGNAcKtEaJZrcGJfvRdt",
+          "networkName": "testnet"
+        },
+        'addressBook': {},
+        'lastTimestamp': undefined,
+      };
+
+      _.each(old, function(value, key) {
+        wf.storage.set(walletId, key, value);
+      });
+      var w = wf.read(walletId);
+      should.exist(w);
+      w.id.should.equal(walletId);
+    });
   });
-
 
   it('#fromObj #toObj round trip', function() {
     var wf = new WalletFactory(config, '0.0.5');
@@ -171,8 +249,6 @@ describe('WalletFactory model', function() {
 
     assertObjectEqual(w.toObj(), JSON.parse(o));
   });
-
-
 
   it('#fromObj #toObj round trip, using old copayerIndex', function() {
     var wf = new WalletFactory(config, '0.0.5');
