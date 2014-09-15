@@ -884,7 +884,7 @@ Wallet.prototype.toObj = function() {
  */
 Wallet.fromObj = function(o, storage, network, blockchain) {
 
-  // TODO: What is this supposed to do?
+  // clone opts
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
