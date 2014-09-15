@@ -111,7 +111,7 @@ Storage.prototype.getSessionId = function(cb) {
       return cb(sessionId);
 
     sessionId = bitcore.SecureRandom.getRandomBuffer(8).toString('hex');
-    self.sessionStorage.setItem('sessionId', sessionId, function(){
+    self.sessionStorage.setItem('sessionId', sessionId, function() {
       return cb(sessionId);
     });
   });
@@ -232,31 +232,36 @@ Storage.prototype.deleteWallet = function(walletId, cb) {
   preconditions.checkArgument(walletId);
   preconditions.checkArgument(cb);
   var err;
+  var self = this;
 
   var toDelete = {};
-  toDelete['nameFor::' + walletId] = 1;
 
   this.storage.allKeys(function(allKeys) {
-    for (var key in allKeys) {
+    for (var ii in allKeys) {
+      var key = allKeys[ii];
       var split = key.split('::');
       if (split.length == 2 && split[0] === walletId) {
         toDelete[key] = 1;
       };
     }
+    var l = Object.keys(toDelete).length,
+      j = 0;
+    if (!l)
+      return cb(new Error('WNOTFOUND: Wallet not found'));
+
+    toDelete['nameFor::' + walletId] = 1;
+    l++;
+
+    for (var i in toDelete) {
+      self.removeGlobal(i, function() {
+        if (++j == l)
+          return cb(err);
+      });
+
+    }
   });
 
-  var l = toDelete.length,
-    j = 0;
 
-  if (!l) 
-    return cb(new Error('WNOTFOUND: Wallet not found'));
-
-  for (var i in toDelete) {
-    this.removeGlobal(i, function() {
-      if (++j == l)
-        return cb(err);
-    });
-  }
 };
 
 Storage.prototype.setLastOpened = function(walletId, cb) {

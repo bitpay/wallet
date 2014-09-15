@@ -53,6 +53,7 @@ function WalletFactory(config, version, pluginManager) {
 
   this.storage = new this.Storage(storageOpts);
 
+<<<<<<< HEAD
   this.networks = {
     'livenet': new this.Network(config.network.livenet),
     'testnet': new this.Network(config.network.testnet),
@@ -63,6 +64,10 @@ function WalletFactory(config, version, pluginManager) {
   };
 
   this.walletDefaults = config.wallet;
+=======
+  this.networkName = config.networkName;
+  this.walletDefaults = config.wallet || {};
+>>>>>>> ALL TEST PASSING!!!
   this.version = version;
 };
 
@@ -89,7 +94,6 @@ WalletFactory.prototype.fromObj = function(obj, skipFields) {
   var networkName = this.obtainNetworkName(obj);
   preconditions.checkState(networkName);
   preconditions.checkArgument(obj);
-
 
   // not stored options
   obj.opts = obj.opts || {};
@@ -418,7 +422,7 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
   joinNetwork.start(opts, function() {
       joinNetwork.greet(decodedSecret.pubKey, opts.secretNumber);
       joinNetwork.on('data', function(sender, data) {
-          if (data.type === 'walletId') {
+          if (data.type === 'walletId' && data.opts) {
             if (data.networkName !== decodedSecret.networkName) {
               return cb('badNetwork');
             }
