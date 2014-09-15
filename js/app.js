@@ -10,9 +10,6 @@ if (localConfig) {
   var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
   if (cmv === lmv) {
     _.each(localConfig, function(value, key) {
-      if (key === 'networkName' && config['forceNetwork']) {
-        return;
-      }
       config[key] = value;
     });
   }
