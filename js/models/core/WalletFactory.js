@@ -86,10 +86,12 @@ WalletFactory.prototype.obtainNetworkName = function(obj) {
  * @param {string[]} skipFields - fields to skip when importing
  * @return {Wallet}
  */
-WalletFactory.prototype.fromObj = function(obj, skipFields) {
-  var networkName = this.obtainNetworkName(obj);
+WalletFactory.prototype.fromObj = function(inObj, skipFields) {
+  var networkName = this.obtainNetworkName(inObj);
   preconditions.checkState(networkName);
-  preconditions.checkArgument(obj);
+  preconditions.checkArgument(inObj);
+
+  var obj = JSON.parse(JSON.stringify(inObj));
 
   // not stored options
   obj.opts = obj.opts || {};
@@ -421,8 +423,8 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
         }
 
         data.opts.privateKey = privateKey;
-        data.opts.nickname = nickname;
-        data.opts.passphrase = passphrase;
+        data.opts.nickname = opts.nickname;
+        data.opts.passphrase = opts.passphrase;
         data.opts.id = data.walletId;
         self.create(data.opts, function(err, w) {
           if (!err & w) {
