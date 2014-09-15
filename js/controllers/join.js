@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('JoinController',
     $scope.loading = false;
     $scope.isMobile = !!window.cordova;
 
-   // QR code Scanner
+    // QR code Scanner
     var cameraInput;
     var video;
     var canvas;
@@ -15,14 +15,13 @@ angular.module('copayApp.controllers').controller('JoinController',
     var context;
     var localMediaStream;
 
-    $scope.hideAdv=true;
-
+    $scope.hideAdv = true;
 
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-    if (!window.cordova && !navigator.getUserMedia) 
-      $scope.disableScanner =1;
+    if (!window.cordova && !navigator.getUserMedia)
+      $scope.disableScanner = 1;
 
     var _scan = function(evt) {
       if (localMediaStream) {
