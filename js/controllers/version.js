@@ -8,7 +8,6 @@ angular.module('copayApp.controllers').controller('VersionController',
     $scope.version = copay.version;
     $scope.commitHash = copay.commitHash;
     $scope.networkName = w ? w.getNetworkName() : '';
-    $scope.defaultLanguage = config.defaultLanguage;
     if (_.isUndefined($rootScope.checkVersion))
       $rootScope.checkVersion = true;
 
@@ -20,7 +19,7 @@ angular.module('copayApp.controllers').controller('VersionController',
         };
         var latestVersion = data[0].name.replace('v', '').split('.').map(toInt);
         var currentVersion = copay.version.split('.').map(toInt);
-        var title = 'Copay ' + data[0].name + $filter('translate')(' available.');
+        var title = 'Copay ' + data[0].name + ' ' + $filter('translate')('available.');
         var content;
         if (currentVersion[0] < latestVersion[0]) {
           content = 'It\'s important that you update your wallet at https://copay.io';
