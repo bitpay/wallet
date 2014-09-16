@@ -1,7 +1,7 @@
 <div class="import" ng-controller="ImportController">
   <div data-alert class="loading-screen" ng-show="loading">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
-    {{ importStatus }}
+    {{ importStatus|translate }}
   </div>
 
   <div class="row" ng-init="choosefile=0; pastetext=0" ng-show="!loading">
