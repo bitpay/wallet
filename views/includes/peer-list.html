@@ -15,9 +15,7 @@
       width="30">
 
     <div class="ellipsis" tooltip-placement="top" tooltip="{{copayer.nick}}">
-      <small class="text-gray" ng-show="copayer.index == 0">
-        <span translate>Me</span>
-        </small>
+      <small class="text-gray" ng-show="copayer.index == 0">{{'Me'|translate}}</small>
       <small class="text-gray" ng-show="copayer.index > 0">{{copayer.nick}}</small>
     </div>
   </div> 

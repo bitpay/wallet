@@ -15,7 +15,7 @@
       <span class="size-12 right">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</span>
     </p>
     <div class="line-sidebar-t">
-      <span translate>Balance</span>
+      {{'Balance'|translate}}
       <span class="gray small side-bar right" title="Manual Refresh"><i class="size-16 fi-refresh"></i></span>
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
@@ -25,7 +25,7 @@
       </span>
     </div> 
     <div class="m10t" ng-show="lockedBalance">
-      <span translate>Locked</span> 
+      {{'Locked'|translate}} 
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
@@ -43,7 +43,7 @@
     </li>
     <li>
       <a href="#" class="db p20h" title="Close"
-      ng-click="signout()"><i class="size-24 m20r fi-power"></i> <span translate>Close</span></a>
+        ng-click="signout()"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</a>
     </li>
   </ul>
 
