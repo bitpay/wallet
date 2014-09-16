@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, notification, $timeout, uriHandler, rateService) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, $filter, notification, $timeout, uriHandler, rateService) {
     var root = {};
 
     root.redirIfLogged = function() {
@@ -51,7 +51,7 @@ angular.module('copayApp.services')
       });
 
       w.on('corrupt', function(peerId) {
-        notification.error('Error', 'Received corrupt message from ' + peerId);
+        notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
@@ -111,13 +111,13 @@ angular.module('copayApp.services')
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
         switch (e.type) {
           case 'signed':
-            notification.info('Transaction Update', 'A transaction was signed by ' + user);
+            notification.info('Transaction Update', $filter('translate')('A transaction was signed by') + ' ' + user);
             break;
           case 'rejected':
-            notification.info('Transaction Update', 'A transaction was rejected by ' + user);
+            notification.info('Transaction Update', $filter('translate')('A transaction was rejected by') + ' ' + user);
             break;
           case 'corrupt':
-            notification.error('Transaction Error', 'Received corrupt transaction from ' + user);
+            notification.error('Transaction Error', $filter('translate')('Received corrupt transaction from') + ' ' +  user);
             break;
         }
       });
@@ -142,7 +142,7 @@ angular.module('copayApp.services')
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
         if (txAlertCount && txAlertCount > 0) {
 
-          notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : 'You have ' + $rootScope.txAlertCount + ' pending transaction proposals', txAlertCount);
+          notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : $filter('translate')('You have') + ' ' + $rootScope.txAlertCount + ' ' + $filter('translate')('pending transaction proposals'), txAlertCount);
         }
       });
     };

@@ -16,6 +16,14 @@ msgstr ""
 msgid "(*) The limits are imposed by the bitcoin network."
 msgstr "(*) Los límites son impuestos por la red de bitcoin."
 
+#: views/dummy-translations.html
+msgid "A transaction was rejected by"
+msgstr "Una transacción fue rechazada por"
+
+#: views/dummy-translations.html
+msgid "A transaction was signed by"
+msgstr "Una transacción fue firmada por"
+
 #: views/more.html
 msgid ""
 "ALL Transactions Proposals will be discarted. This needs to be done on "
@@ -70,6 +78,10 @@ msgstr "Volver"
 #: views/more.html
 msgid "Backup"
 msgstr "Copia de Seguridad"
+
+#: views/dummy-translations.html
+msgid "Backup created"
+msgstr "Copia de Seguridad creada"
 
 #: views/copayers.html
 msgid "Backup wallet"
@@ -135,9 +147,20 @@ msgstr "Continuar de todas maneras"
 msgid "Copayers"
 msgstr "Compañeros"
 
+#: views/dummy-translations.html
+msgid "Copied to clipboard"
+msgstr "Copiado al portapapeles"
+
 #: views/modals/qr-address.html
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
+
+#: views/dummy-translations.html
+msgid ""
+"Could not connect to the Insight server. Check your settings and network "
+"configuration"
+msgstr ""
+"No se pudo conectar con el servidor Insight. Verifica la configuración de red"
 
 #: views/home.html
 msgid "Create a new wallet"
@@ -193,13 +216,37 @@ msgstr "Descargar Archivo"
 msgid "Empty. Create an alias for your addresses"
 msgstr "Vacío. Crea una etiqueta para tus direcciones"
 
+#: views/dummy-translations.html
+msgid "Encrypted backup file saved"
+msgstr "Archivo de copia de seguridad encriptado guardado"
+
+#: views/dummy-translations.html
+msgid "Error updating indexes:"
+msgstr "Error al actualizar índices:"
+
 #: views/create.html
 msgid "Family vacation funds"
 msgstr "Fondos para vacaciones en familia"
 
+#: views/dummy-translations.html
+msgid "Fatal error connecting to Insight server"
+msgstr "Error fatal al conectar con el servidor Insight"
+
 #: views/transactions.html views/includes/transaction.html
 msgid "Fee"
 msgstr "Tasa"
+
+#: views/dummy-translations.html
+msgid "Finished"
+msgstr "Finalizado"
+
+#: views/dummy-translations.html
+msgid "Form Error"
+msgstr "Error en formulario"
+
+#: views/dummy-translations.html
+msgid "Funds received!"
+msgstr "¡Fondos recibidos!"
 
 #: views/join.html views/send.html
 msgid "Get QR code"
@@ -222,17 +269,33 @@ msgstr ""
 "Si todos los fondos fueron removidos de tu monedero y no deseas tener los "
 "datos guardados en tu computadora, puedes eliminar tu monedero."
 
-#: views/home.html
+#: views/dummy-translations.html views/home.html
 msgid "Import a backup"
-msgstr "Importar backup"
+msgstr "Importar una copia de seguridad"
 
 #: views/import.html
 msgid "Import backup"
 msgstr "Importar copia de seguridad"
 
+#: views/dummy-translations.html
+msgid "Importing wallet - Reading backup..."
+msgstr "Importando monedero - Leyendo archivo..."
+
+#: views/dummy-translations.html
+msgid "Importing wallet - Setting things up..."
+msgstr "Importando monedero - Configurando..."
+
+#: views/dummy-translations.html
+msgid "Importing wallet - We are almost there..."
+msgstr "Importando monedero - Finalizando..."
+
 #: views/send.html
 msgid "Including fee of"
 msgstr "Incluye tasa de"
+
+#: views/settings.html
+msgid "Insight API server"
+msgstr "Servidor de API Insight"
 
 #: views/settings.html
 msgid ""
@@ -240,17 +303,17 @@ msgid ""
 "check <a href=\"http://insight.is\" target=\"_blank\">Insight API Homepage</"
 "a>"
 msgstr ""
-"Servidor API de insight es un software código-abierto. Puedes correr tu "
+"Servidor de API insight es un software código-abierto. Puedes correr tu "
 "propia instancia en <a href=\"http://insight.is\" target=\"_blank\">Insight "
 "API Homepage</a>"
-
-#: views/settings.html
-msgid "Insight API servers"
-msgstr "Servidor Insight API"
 
 #: views/send.html
 msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
+
+#: views/dummy-translations.html
+msgid "It's important that you update your wallet at https://copay.io"
+msgstr "Es importante que actualices tu monedero en https://copay.io"
 
 #: views/more.html
 msgid ""
@@ -258,7 +321,7 @@ msgid ""
 "disaster"
 msgstr ""
 "Es importante hacer copia de seguridad de tu monedero para que puedas "
-"recuperarlo en caso de pérdidas"
+"recuperarlo en caso de pérdidas de datos de tu computadora"
 
 #: views/join.html
 msgid "Join"
@@ -288,6 +351,14 @@ msgstr "Dejar mensaje privado a tus compañeros"
 msgid "Locked"
 msgstr "Bloqueado"
 
+#: views/dummy-translations.html
+msgid "Login Required"
+msgstr "Inicio de Sesión Requerido"
+
+#: views/includes/sidebar.html
+msgid "Manual Update"
+msgstr "Actualización Manual"
+
 #: views/more.html
 msgid "Master Private Key"
 msgstr "Master Private Key"
@@ -308,9 +379,21 @@ msgstr "Nombre"
 msgid "Network Error. Attempting to reconnect..."
 msgstr "Error de Red. Intentando reconectar..."
 
+#: views/dummy-translations.html
+msgid "Networking Error"
+msgstr "Error de Red"
+
+#: views/dummy-translations.html
+msgid "New Transaction"
+msgstr "Nueva Transacción"
+
 #: views/copayers.html
 msgid "New Wallet Created"
 msgstr "Nuevo Monedero Creado"
+
+#: views/dummy-translations.html
+msgid "New entry has been created"
+msgstr "Nueva entrada fue creada"
 
 #: views/create.html
 msgid "Next"
@@ -393,6 +476,26 @@ msgstr ""
 "necesario hacerlo con <b>TODOS</b> los compañeros del monedero, para "
 "prevenir que viejas propuestas sean re sincronizadas de nuevo."
 
+#: views/dummy-translations.html
+msgid "Please complete required fields"
+msgstr "Por favor complete los campos requeridos"
+
+#: views/dummy-translations.html
+msgid "Please enter the required fields"
+msgstr "Por favor ingrese los campos requeridos"
+
+#: views/dummy-translations.html
+msgid "Please open wallet to complete payment"
+msgstr "Por favor abrir un monedero para completar el pago"
+
+#: views/dummy-translations.html
+msgid "Please update your wallet at https://copay.io"
+msgstr "Por favor actualiza tu monedero de https://copay.io"
+
+#: views/dummy-translations.html
+msgid "Please, select your backup file"
+msgstr "Por favor, selecciona el archivo de copia de seguridad"
+
 #: views/uri-payment.html
 msgid "Preparing payment..."
 msgstr "Preparando pago..."
@@ -429,6 +532,14 @@ msgstr "Listo"
 msgid "Receive"
 msgstr "Recibir"
 
+#: views/dummy-translations.html
+msgid "Received corrupt message from"
+msgstr "Se recibió un mensaje corrupto de"
+
+#: views/dummy-translations.html
+msgid "Received corrupt transaction from"
+msgstr "Se recibió una transacción corrupta de"
+
 #: views/includes/transaction.html
 msgid "Reject"
 msgstr "Rechazar"
@@ -437,7 +548,7 @@ msgstr "Rechazar"
 msgid "Repeat password"
 msgstr "Repite la contraseña"
 
-#: views/import.html views/join.html
+#: views/import.html views/join.html views/modals/address-book.html
 msgid "Required"
 msgstr "Requerido"
 
@@ -453,6 +564,10 @@ msgstr "Explorar"
 msgid "Scan Wallet Addresses"
 msgstr "Explorar Direcciones del Monedero"
 
+#: views/dummy-translations.html
+msgid "Scaning for transactions"
+msgstr "Explorando transacciones"
+
 #: views/import.html
 msgid "Select a backup file"
 msgstr "Seleccionar el archivo de copia de seguridad"
@@ -464,6 +579,10 @@ msgstr "Seleccione las firmas requeridas (*)"
 #: views/create.html
 msgid "Select total number of copayers (*)"
 msgstr "Seleccione el total de compañeros (*)"
+
+#: views/dummy-translations.html
+msgid "Send"
+msgstr "Enviar"
 
 #: views/send.html
 msgid "Send Proposals"
@@ -484,6 +603,18 @@ msgstr "Enviado"
 #: views/send.html
 msgid "Server Says:"
 msgstr "Mensaje del Servidor:"
+
+#: views/dummy-translations.html
+msgid "Session closed"
+msgstr "Sesión cerrada"
+
+#: views/dummy-translations.html
+msgid "Session closed because a long time of inactivity"
+msgstr "La sesión fue cerrada por mucho tiempo de inactividad"
+
+#: views/dummy-translations.html
+msgid "Session will be closed"
+msgstr "La sesión se cerrará"
 
 #: views/home.html views/more.html
 msgid "Settings"
@@ -526,6 +657,34 @@ msgstr "Ignorar propuestas de transacciones desde la Copia de Seguridad"
 msgid "Skipping fields: {{skipFields}}"
 msgstr "Saltear campos: {{skipFields}}"
 
+#: views/dummy-translations.html
+msgid "Success"
+msgstr "Listo"
+
+#: views/dummy-translations.html
+msgid "The balance is updated using the derived addresses"
+msgstr "El balance es actualizado utilizando direcciones derivadas"
+
+#: views/dummy-translations.html
+msgid "The secret string you entered is invalid"
+msgstr "La palabra secreta ingresada no es válida"
+
+#: views/dummy-translations.html
+msgid "The transaction proposal has been created"
+msgstr "La propuesta de transacción fue creada"
+
+#: views/dummy-translations.html
+msgid "The wallet is full"
+msgstr "El monedero esta completo"
+
+#: views/dummy-translations.html
+msgid "There was an error sending the transaction"
+msgstr "Hubo un error al enviar la transacción"
+
+#: views/dummy-translations.html
+msgid "There was an error signing the transaction"
+msgstr "Hubo un error al firmar la transacción"
+
 #: views/warning.html
 msgid "This wallet appears to be currently open."
 msgstr "Este monedero parece estar actualmente abierto."
@@ -554,17 +713,45 @@ msgstr "Total"
 msgid "Total amount for this transaction:"
 msgstr "Cantidad total de esta transacción:"
 
+#: views/dummy-translations.html
+msgid "Transaction Error"
+msgstr "Error en Transacción"
+
 #: views/includes/transaction.html
 msgid "Transaction ID"
-msgstr "ID Transacción"
+msgstr "ID de Transacción"
 
 #: views/transactions.html
 msgid "Transaction Proposals"
 msgstr "Propuestas de Transacción"
 
+#: views/dummy-translations.html
+msgid "Transaction Update"
+msgstr "Actualización de una Transacción"
+
+#: views/dummy-translations.html
+msgid "Transaction broadcasted"
+msgstr "Transacción transmitida"
+
 #: views/includes/transaction.html
 msgid "Transaction finally rejected"
+msgstr "Transacción finalmente rechazada"
+
+#: views/dummy-translations.html
+msgid "Transaction rejected"
 msgstr "Transacción rechazada"
+
+#: views/dummy-translations.html
+msgid "Transactions Proposals Purged"
+msgstr "Propuestas de Transacciones Purgadas"
+
+#: views/dummy-translations.html
+msgid "Unable to send transaction proposal"
+msgstr "No se puede enviar propuesta de transacción"
+
+#: views/dummy-translations.html
+msgid "Updating balance"
+msgstr "Actualizando balance"
 
 #: views/send.html
 msgid "Use all funds"
@@ -577,6 +764,10 @@ msgstr "Red de prueba"
 #: views/join.html
 msgid "User information"
 msgstr "Información de Usuario"
+
+#: views/dummy-translations.html
+msgid "Using derived addresses from your wallet"
+msgstr "Usando direcciones derivadas de tu monedero"
 
 #: views/modals/address-book.html
 msgid "Valid"
@@ -614,6 +805,10 @@ msgstr "Unidad del monedero"
 msgid "Wallet name"
 msgstr "Nombre del monedero"
 
+#: views/dummy-translations.html
+msgid "Wallet network configuration missmatch"
+msgstr "Configuración de la Red del monedero no coinciden"
+
 #: views/warning.html
 msgid "Warning!"
 msgstr "¡Advertencia!"
@@ -621,6 +816,18 @@ msgstr "¡Advertencia!"
 #: views/dummy-translations.html
 msgid "Wrong password"
 msgstr "Contraseña incorrecta"
+
+#: views/dummy-translations.html
+msgid "You have"
+msgstr "Tienes"
+
+#: views/dummy-translations.html
+msgid "You have a pending transaction proposal"
+msgstr "Tienes una propuesta de transacción pendiente"
+
+#: views/dummy-translations.html
+msgid "You rejected the transaction successfully"
+msgstr "Rechazaste la transacción con éxito"
 
 #: views/more.html
 msgid ""
@@ -642,6 +849,10 @@ msgstr "Tu nombre (opcional)"
 msgid "Your password"
 msgstr "Tu contraseña"
 
+#: views/dummy-translations.html
+msgid "Your session is about to expire due to inactivity in"
+msgstr "Tu sesión está va a expirar por inactividad en"
+
 #: views/import.html
 msgid "Your wallet password"
 msgstr "Contraseña de tu monedero"
@@ -649,6 +860,10 @@ msgstr "Contraseña de tu monedero"
 #: views/create.html views/import.html views/join.html views/more.html
 msgid "advanced options"
 msgstr "opciones avanzadas"
+
+#: views/dummy-translations.html
+msgid "available."
+msgstr "disponible."
 
 #: views/addresses.html
 msgid "change"
@@ -674,17 +889,29 @@ msgstr "de"
 msgid "optional"
 msgstr "opcional"
 
+#: views/dummy-translations.html
+msgid "pending transaction proposals"
+msgstr "propuestas de transacciones pendientes"
+
 #: views/copayers.html
 msgid "people have"
 msgstr "personas"
 
-#: views/send.html views/modals/address-book.html
+#: views/send.html
 msgid "required"
 msgstr "requerido"
+
+#: views/dummy-translations.html
+msgid "seconds"
+msgstr "segundos"
 
 #: views/send.html
 msgid "too long!"
 msgstr "¡demasiado largo!"
+
+#: views/dummy-translations.html
+msgid "transaction proposal purged"
+msgstr "propuestas de transacciones purgadas"
 
 #: views/send.html
 msgid "valid!"
@@ -701,6 +928,16 @@ msgstr "deben unirse"
 #: views/includes/transaction.html
 msgid "{{tx.missingSignatures}} signatures missing"
 msgstr "Faltan {{tx.missingSignatures}} firmas"
+
+#~ msgid "Scan Ended"
+#~ msgstr "Búsqueda Finalizada"
+
+#~ msgid "There is an error in the form."
+#~ msgstr "Hubo un error en el formulario."
+
+#, fuzzy
+#~ msgid "Wrong password que parece"
+#~ msgstr "Contraseña incorrecta"
 
 #~ msgid "Add Address"
 #~ msgstr "Agregar Dirección"
@@ -741,9 +978,6 @@ msgstr "Faltan {{tx.missingSignatures}} firmas"
 
 #~ msgid "Your Wallet Password"
 #~ msgstr "Contraseña de tu Monedero"
-
-#~ msgid "Send"
-#~ msgstr "Enviar"
 
 #~ msgid ""
 #~ "{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}} wallet"

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $sce, $location, $http, notification, controllerUtils) {
+angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $sce, $location, $http, $filter, notification, controllerUtils) {
 
   $scope.menu = [{
     'title': 'Receive',
@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   if ($rootScope.wallet) {
     $scope.$on('$idleWarn', function(a,countdown) {
       if (!(countdown%5))
-      notification.warning('Session will be closed', 'Your session is about to expire due to inactivity in ' + countdown +  ' seconds');
+      notification.warning('Session will be closed', $filter('translate')('Your session is about to expire due to inactivity in') + ' ' + countdown + ' ' + $filter('translate')('seconds'));
     });
 
     $scope.$on('$idleTimeout', function() {
