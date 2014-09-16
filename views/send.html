@@ -181,9 +181,9 @@
           <tr>
             <th translate>Label</th>
             <th translate>Address</th>
-            <th translate>Creator</th>
-            <th translate>Date</th>
-            <th>&nbsp;</th>
+            <th class="hide-for-small-only" translate>Creator</th>
+            <th class="hide-for-small-only" translate>Date</th>
+            <th class="hide-for-small-only">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -191,10 +191,10 @@
           ng-repeat="(addr, info) in $root.wallet.addressBook"
           ng-class="{'addressbook-disabled': info.hidden}">
           <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
-          <td class="ellipsis">{{addr}} <span class="btn-copy" clip-copy="addr"></span></td>
-          <td>{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
-          <td><time>{{info.createdTs | amCalendar}}</time></td>
-          <td width="5"><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
+          <td class="size-12">{{addr}} <span class="btn-copy" clip-copy="addr"></span></td>
+          <td class="hide-for-small-only">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
+          <td class="hide-for-small-only"><time>{{info.createdTs | amCalendar}}</time></td>
+          <td class="hide-for-small-only" width="5"><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
               'Enable' : 'Disable'}}</a></td>
         </tr>
         </tbody>
