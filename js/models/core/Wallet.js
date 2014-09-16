@@ -1636,12 +1636,23 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
   var txid = tx.getHash().toString('hex');
   var txHex = tx.serialize().toString('hex');
   log.debug('Raw transaction: ', txHex);
-  log.debug('BITCOIND txid:', txid);
-  this.txProposals.get(ntxid).setSent(txid);
-  this.sendTxProposal(ntxid);
-  this.store();
+  this.blockchain.broadcast(txHex, function(err, txid) {
+    log.debug('BITCOIND txid:', txid);
+    if (txid) {
+      self.txProposals.get(ntxid).setSent(txid);
+      self.sendTxProposal(ntxid);
+      self.store();
+      return cb(txid, txp.merchant);
+    } else {
+      log.debug('Sent failed. Checking if the TX was sent already');
+      self._checkSentTx(ntxid, function(txid) {
+        if (txid)
+          self.store();
 
-  return cb(txid, txp.merchant);
+        return cb(txid, txp.merchant);
+      });
+    }
+  });
 };
 
 /**
