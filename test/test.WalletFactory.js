@@ -236,6 +236,16 @@ describe('WalletFactory model', function() {
       var w = wf.create();
       wf.storage.set.calledOnce.should.equal(true);
     });
+
+    it('should return false when missing required key', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var w = wf.create();
+      var data = wf.storage.get(w.id, 'data');
+      delete data['privateKey'];
+      wf.storage.set(w.id, 'data', data);
+      var w2 = wf.read(w.id);
+      w2.should.be.false;
+    });
   });
 
   it('#fromObj #toObj round trip', function() {
