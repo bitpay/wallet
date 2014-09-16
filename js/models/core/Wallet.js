@@ -1303,7 +1303,14 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
       return self.receivePaymentRequest(options, pr, cb);
     })
     .error(function(data, status, headers, config) {
-      return cb(new Error('Status: ' + status));
+      log.debug('Server was did not return PaymentRequest.');
+      log.debug('XHR status: ' + status);
+      if (options.fetch) {
+        return cb(new Error('Status: ' + status));
+      } else {
+        // Should never happen:
+        return cb(null, null, null);
+      }
     });
 };
 
