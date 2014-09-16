@@ -27,8 +27,7 @@
 
       <div class="btransactions" ng-if="lastShowed">
         <div translate ng-if="!blockchain_txs[0].txid && !loading">
-          No transactions yet.
-        </div>
+        <em><strong>No transactions yet.</strong></em> </div>
         <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
           <div class="last-transactions-header size-14">
             <div class="large-8 medium-7 small-4 columns ellipsis">
