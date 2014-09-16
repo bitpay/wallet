@@ -465,6 +465,40 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loadTxs();
     };
 
+    $scope.clearMerchant = function(callback) {
+      var scope = $scope;
+      // TODO: Find a better way of detecting
+      // whether we're in the Send scope or not.
+      if (!scope.sendForm || !scope.sendForm.address) {
+        delete $rootScope.merchant;
+        if (callback) callback();
+        return;
+      }
+      var val = scope.sendForm.address.$viewValue || '';
+      var uri;
+      // If we're setting the domain, ignore the change.
+      if ($rootScope.merchant && $rootScope.merchant.domain && val === $rootScope.merchant.domain) {
+        uri = {
+          merchant: $rootScope.merchant.request_url
+        };
+      }
+      if (val.indexOf('bitcoin:') === 0) {
+        uri = new bitcore.BIP21(val).data;
+      } else if (/^https?:\/\//.test(val)) {
+        uri = {
+          merchant: val
+        };
+      }
+      if (!uri || !uri.merchant) {
+        delete $rootScope.merchant;
+        scope.sendForm.amount.$setViewValue('');
+        scope.sendForm.amount.$render();
+        if (callback) callback();
+        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+          $rootScope.$apply();
+        }
+      }
+    };
 
     $scope.onChanged = function() {
       var scope = $scope;
@@ -552,31 +586,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
         // If the address changes to a non-payment-protocol one,
         // delete the `merchant` property from the scope.
-        var unregister = scope.$watch('address', function() {
-          var val = scope.sendForm.address.$viewValue || '';
-          var uri;
-          // If we're setting the domain, ignore the change.
-          if ($rootScope.merchant && $rootScope.merchant.domain && val === $rootScope.merchant.domain) {
-            uri = {
-              merchant: $rootScope.merchant.request_url
-            };
-          }
-          if (val.indexOf('bitcoin:') === 0) {
-            uri = new bitcore.BIP21(val).data;
-          } else if (/^https?:\/\//.test(val)) {
-            uri = {
-              merchant: val
-            };
-          }
-          if (!uri || !uri.merchant) {
-            delete $rootScope.merchant;
-            scope.sendForm.amount.$setViewValue('');
-            scope.sendForm.amount.$render();
-            unregister();
-            if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-              $rootScope.$apply();
-            }
-          }
+        var unregister = $rootScope.$watch(function() {
+          $scope.clearMerchant(unregister);
         });
 
         if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
