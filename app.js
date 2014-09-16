@@ -20,6 +20,9 @@ app.start = function(port, callback) {
 
     pserver.removeListener('request', pserver.app);
 
+    // pserver.options['no-tx'] = true;
+    // pserver.options['discovery'] = true;
+
     pserver.on('request', function(req, res) {
       if (req.url.indexOf('/-/') === 0) {
         return pserver.app(req, res);
