@@ -122,13 +122,13 @@
     display: block;
     float: none;
     margin: 0 auto;
-    width: 210px;
-    height: 210px;
+    width: 160px;
+    height: 160px;
   }
 
   .panel qrcode canvas {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
   }
 
   .addresses .panel {
