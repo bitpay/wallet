@@ -45,8 +45,6 @@ module.exports = function(grunt) {
           'js/models/**/*.js',
           'js/models/*.js',
           'plugins/*.js',
-          'copay.js',
-          'utils/*.js'
         ],
         tasks: ['shell:dev']
       },
@@ -181,7 +179,7 @@ module.exports = function(grunt) {
     },
     jsdoc: {
       dist : {
-        src: ['js/models/core/*.js'],
+        src: ['js/models/core/*.js', 'js/models/*.js', 'plugins/*.js'],
         options: {
           destination: 'doc',
           configure: 'jsdoc.conf.json',

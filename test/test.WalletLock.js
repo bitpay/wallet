@@ -13,12 +13,19 @@ var copayConfig = require('../config');
 var WalletLock = copay.WalletLock;
 
 var PrivateKey = copay.PrivateKey;
-var Storage = require('./mocks/FakeStorage');
+var localMock = require('./mocks/FakeLocalStorage');
+var sessionMock = require('./mocks/FakeLocalStorage');
+var Storage = copay.Storage;
+
+
 
 var storage;
 describe('WalletLock model', function() {
   beforeEach(function() {
-    storage = new Storage();
+    storage = new Storage({
+      storage: localMock,
+      sessionStorage: sessionMock,
+    });
   });
 
   it('should fail with missing args', function() {

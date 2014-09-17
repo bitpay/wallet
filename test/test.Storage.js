@@ -25,8 +25,7 @@ describe('Storage model', function() {
     });
     should.exist(s2);
   });
-  it.only('should fail when encrypting without a password', function() {
-
+  it('should fail when encrypting without a password', function() {
     var s2 = new Storage({
       storage: localMock,
       sessionStorage: sessionMock,

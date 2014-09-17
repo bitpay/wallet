@@ -104,9 +104,6 @@ var createBundle = function(opts) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
-    b.require('./test/mocks/FakeStorage', {
-      expose: './mocks/FakeStorage'
-    });
     b.require('./test/mocks/FakeLocalStorage', {
       expose: './mocks/FakeLocalStorage'
     });

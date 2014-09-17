@@ -13,7 +13,7 @@ if (is_browser) {
 var copayConfig = require('../config');
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
-var Storage = require('./mocks/FakeStorage');
+var Storage = copay.Storage;
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
 var Builder = require('./mocks/FakeBuilder');
@@ -21,6 +21,8 @@ var bitcore = bitcore || require('bitcore');
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
+var localMock = require('./mocks/FakeLocalStorage');
+var sessionMock = require('./mocks/FakeLocalStorage');
 
 var walletConfig = {
   requiredCopayers: 3,
@@ -28,6 +30,10 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
+  storage: {
+      storage: localMock,
+      sessionStorage: sessionMock,
+  }
 };
 
 var getNewEpk = function() {
