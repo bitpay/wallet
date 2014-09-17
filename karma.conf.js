@@ -60,6 +60,8 @@ module.exports = function(config) {
       'test/mocks/FakeWallet.js',
       'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
+      'test/mocks/FakeLocalStorage.js',
+      'test/mocks/FakeStorage.js',
 
       'test/mocha.conf.js',
 

@@ -27,6 +27,7 @@ function Storage(opts) {
 
 var pps = {};
 Storage.prototype._getPassphrase = function() {
+
   if (!pps[this.__uniqueid])
     throw new Error('NOPASSPHRASE: No passphrase set');
 
