@@ -59,7 +59,12 @@ Storage.prototype._read = function(k) {
   ret = this._decrypt(ret);
   if (!ret) return null;
   ret = ret.toString(CryptoJS.enc.Utf8);
-  ret = JSON.parse(ret);
+  try {
+    ret = JSON.parse(ret);
+  } catch (e) {
+    // Error while deserializing
+    return null;
+  }
   return ret;
 };
 
@@ -184,9 +189,7 @@ Storage.prototype.getLastOpened = function() {
 
 //obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj) {
-  for (var k in obj) {
-    this.set(walletId, k, obj[k]);
-  }
+  this.set(walletId, 'data', obj);
   this.setName(walletId, obj.opts.name);
 };
 

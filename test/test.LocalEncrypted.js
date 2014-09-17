@@ -1,6 +1,7 @@
 'use strict';
 var chai = chai || require('chai');
 var should = chai.should();
+var sinon = require('sinon');
 var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 var copay = copay || require('../copay');
 var LocalEncrypted = copay.StorageLocalEncrypted;
@@ -35,8 +36,14 @@ describe('Storage/LocalEncrypted model', function() {
     }).should.throw();
   });
   it('should be able to encrypt and decrypt', function() {
+    var spyEncrypt = sinon.spy(s, '_encrypt');
+    var spyDecrypt = sinon.spy(s, '_decrypt');
     s._write(fakeWallet + timeStamp, 'value');
+    spyEncrypt.calledOnce.should.be.true;
+
     s._read(fakeWallet + timeStamp).should.equal('value');
+    spyDecrypt.calledOnce.should.be.true;
+
     localMock.removeItem(fakeWallet + timeStamp);
   });
   it('should be able to set a value', function() {
@@ -210,8 +217,9 @@ describe('Storage/LocalEncrypted model', function() {
         },
       });
 
-      s.get('id1', 'key').should.equal('val');
-
+      var data = s.get('id1', 'data');
+      should.exist(data);
+      data.key.should.equal('val');
     });
   });
 
@@ -243,7 +251,7 @@ describe('Storage/LocalEncrypted model', function() {
         password: 'password'
       });
       s.getSessionId().length.should.equal(16);
-      (new Buffer(s.getSessionId(),'hex')).length.should.equal(8);
+      (new Buffer(s.getSessionId(), 'hex')).length.should.equal(8);
     });
   });
 });

@@ -55,28 +55,6 @@ function WalletFactory(config, version) {
 };
 
 /**
- * @desc
- * Returns true if the storage instance can retrieve the following keys using a given walletId
- * <ul>
- * <li><tt>publicKeyRing</tt></li>
- * <li><tt>txProposals</tt></li>
- * <li><tt>opts</tt></li>
- * <li><tt>privateKey</tt></li>
- * </ul>
- * @param {string} walletId
- * @return {boolean} true if all the keys are present in the storage instance
- */
-WalletFactory.prototype._checkRead = function(walletId) {
-  var s = this.storage;
-  var ret =
-    s.get(walletId, 'publicKeyRing') &&
-    s.get(walletId, 'txProposals') &&
-    s.get(walletId, 'opts') &&
-    s.get(walletId, 'privateKey');
-  return !!ret;
-};
-
-/**
  * @desc obtain network name from serialized wallet
  * @param {Object} wallet object
  * @return {string} network name
@@ -146,6 +124,28 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
   return w;
 };
 
+WalletFactory.prototype.legacyRead = function(walletId, skipFields) {
+  var s = this.storage;
+
+  var obj = {
+    id: walletId
+  };
+  var missingProp = false;
+
+  _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+    var value = s.get(walletId, p.name);
+    if (p.required && !value)
+      missingProp = true;
+    obj[p.name] = value;
+  });
+
+  if (missingProp)
+    return false;
+
+  return this.fromObj(obj, skipFields);
+};
+
+
 /**
  * @desc Retrieve a wallet from storage
  * @param {string} walletId - the wallet id
@@ -153,19 +153,27 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.read = function(walletId, skipFields) {
-  if (!this._checkRead(walletId))
-    return false;
-
-  var obj = {};
   var s = this.storage;
+  var data = s.get(walletId, 'data');
 
-  obj.id = walletId;
-  _.each(Wallet.PERSISTED_PROPERTIES, function(value) {
-    obj[value] = s.get(walletId, value);
+  if (!data)
+    return this.legacyRead(walletId, skipFields);
+
+  var obj = {
+    id: walletId
+  };
+  var missingProp = false;
+
+  _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+    if (p.required && !data.hasOwnProperty(p.name))
+      missingProp = true;
+    obj[p.name] = data[p.name];
   });
 
-  var w = this.fromObj(obj, skipFields);
-  return w;
+  if (missingProp)
+    return false;
+
+  return this.fromObj(obj, skipFields);
 };
 
 /**

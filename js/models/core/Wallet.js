@@ -119,18 +119,28 @@ Wallet.builderOpts = {
 
 /**
  * @desc static list with persisted properties of a wallet.
- * These are the properties that get stored/read from localstorage
+ * These are the properties that get stored/read from storage
  */
-Wallet.PERSISTED_PROPERTIES = [
-  'opts',
-  'settings',
-  'publicKeyRing',
-  'txProposals',
-  'privateKey',
-  'addressBook',
-  'backupOffered',
-  'lastTimestamp',
-];
+Wallet.PERSISTED_PROPERTIES = [{
+  name: 'opts',
+  required: true
+}, {
+  name: 'publicKeyRing',
+  required: true
+}, {
+  name: 'privateKey',
+  required: true
+}, {
+  name: 'settings'
+}, {
+  name: 'txProposals'
+}, {
+  name: 'addressBook'
+}, {
+  name: 'backupOffered'
+}, {
+  name: 'lastTimestamp'
+}];
 
 /**
  * @desc Retrieve a random id for the wallet
