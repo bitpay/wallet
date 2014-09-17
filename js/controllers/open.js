@@ -15,17 +15,19 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
   $rootScope.fromSetup = false;
   $scope.loading = false;
   $scope.retreiving = true;
+
   walletFactory.getWallets(function(wallets) {
-    $scope.wallets = wallets.sort(cmp);
 
-    if (!$scope.wallets.length) {
+    if (!wallets || !wallets.length) {
       $location.path('/');
-    }
+    } else {
+      $scope.wallets = wallets.sort(cmp);
 
-    walletFactory.storage.getLastOpened(function(ret) {
-      $scope.selectedWalletId = ret || ($scope.wallets[0] && $scope.wallets[0].id);
-      $scope.retreiving = false;
-    });
+      walletFactory.storage.getLastOpened(function(ret) {
+        $scope.selectedWalletId = ret || ($scope.wallets[0] && $scope.wallets[0].id);
+        $scope.retreiving = false;
+      });
+    }
   });
 
   $scope.openPassword = '';

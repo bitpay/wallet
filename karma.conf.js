@@ -28,6 +28,7 @@ module.exports = function(config) {
       'lib/angular-route/angular-route.min.js',
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
+      'lib/angular-load/angular-load.min.js',
       'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/inherits/inherits.js',
       'lib/bitcore.js',
@@ -61,7 +62,6 @@ module.exports = function(config) {
       'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
       'test/mocks/FakeLocalStorage.js',
-      'test/mocks/FakeStorage.js',
 
       'test/mocha.conf.js',
 
