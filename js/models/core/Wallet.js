@@ -710,7 +710,13 @@ Wallet.prototype._setBlockchainListeners = function() {
   });
   this.blockchain.on('tx', function(tx) {
     log.debug('blockchain tx event');
-    self.emit('tx', tx.address);
+    var addresses = self.getAddressesInfo();
+    var addr = _.findWhere(addresses, {
+      addressStr: tx.address
+    });
+    if (addr) {
+      self.emit('tx', tx.address, addr.isChange);
+    }
   });
 
   if (!self.spendUnconfirmed) {
@@ -1403,10 +1409,9 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         expires: expires,
         memo: memo || 'This server would like some BTC from you.',
         payment_url: payment_url,
-        merchant_data: merchant_data
-          ? merchant_data.toString('hex')
-          // : new Buffer('none', 'utf8').toString('hex')
-          : '00'
+        merchant_data: merchant_data ? merchant_data.toString('hex')
+        // : new Buffer('none', 'utf8').toString('hex')
+        : '00'
       },
       signature: sig.toString('hex'),
       ca: trust.caName,
