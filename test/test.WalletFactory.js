@@ -16,7 +16,7 @@ var mockLocalStorage = require('./mocks/FakeLocalStorage');
 var mockSessionStorage = require('./mocks/FakeLocalStorage');
 
 
-var PERSISTED_PROPERTIES = require('../js/models/core/Wallet').PERSISTED_PROPERTIES;
+var PERSISTED_PROPERTIES = (copay.Wallet || require('../js/models/core/Wallet')).PERSISTED_PROPERTIES;
 
 function assertObjectEqual(a, b) {
   PERSISTED_PROPERTIES.forEach(function(k) {
