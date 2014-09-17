@@ -33,10 +33,7 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
-  storage: {
-      storage: localMock,
-      sessionStorage: sessionMock,
-  }
+  storage: require('./mocks/FakeLocalStorage').storageParams,
 };
 
 var getNewEpk = function() {
@@ -48,6 +45,7 @@ var getNewEpk = function() {
 };
 
 describe('PayPro (in Wallet) model', function() {
+
   if (!is_browser) {
     var createW = function(N, conf) {
       var c = JSON.parse(JSON.stringify(conf || walletConfig));
@@ -71,6 +69,7 @@ describe('PayPro (in Wallet) model', function() {
       });
 
       var storage = new Storage(walletConfig.storage);
+      storage.setPassphrase('xxx');
       var network = new Network(walletConfig.network);
       var blockchain = new Blockchain(walletConfig.blockchain);
       c.storage = storage;

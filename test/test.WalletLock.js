@@ -11,21 +11,19 @@ if (is_browser) {
 }
 var copayConfig = require('../config');
 var WalletLock = copay.WalletLock;
-
 var PrivateKey = copay.PrivateKey;
-var localMock = require('./mocks/FakeLocalStorage');
-var sessionMock = require('./mocks/FakeLocalStorage');
 var Storage = copay.Storage;
 
 
 
 var storage;
 describe('WalletLock model', function() {
+
   beforeEach(function() {
-    storage = new Storage({
-      storage: localMock,
-      sessionStorage: sessionMock,
-    });
+    storage = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    storage.setPassphrase('mysupercoolpassword');
+    storage.storage.clear();
+    storage.sessionStorage.clear();
   });
 
   it('should fail with missing args', function() {
@@ -80,36 +78,34 @@ describe('WalletLock model', function() {
   });
 
   it('should FAIL if locked by someone else', function(done) {
-    storage.sessionId = 'session1';
     var w = new WalletLock(storage, 'walletId');
     w.keepAlive(function() {
-      storage.sessionId = 'session2';
-      var w2 = new WalletLock(storage, 'walletId');
-      w2.keepAlive(function(locked) {
-        w2.sessionId.should.equal('session2');
-        should.exist(locked);
-        locked.message.should.contain('LOCKED');
-        done();
+      storage.setSessionId('session2', function() {
+        var w2 = new WalletLock(storage, 'walletId');
+        w2.keepAlive(function(locked) {
+          should.exist(locked);
+          locked.message.should.contain('LOCKED');
+          done();
+        });
       });
     });
   })
 
   it('should FAIL if locked by someone else but expired', function(done) {
-    storage.sessionId = 'session1';
     var w = new WalletLock(storage, 'walletId');
     w.keepAlive(function() {
-      storage.sessionId = 'session2';
-      var json = JSON.parse(storage.storage['lock::walletId']);
-      json.expireTs -= 3600 * 1000;
-      storage.storage['lock::walletId'] = JSON.stringify(json);
-      var w2 = new WalletLock(storage, 'walletId');
-      w2.keepAlive(function(locked) {
-        w2.sessionId.should.equal('session2');
-        should.not.exist(locked);
-        done();
+      storage.setSessionId('session2', function() {
+
+        var json = JSON.parse(storage.storage.ls['lock::walletId']);
+        json.expireTs -= 3600 * 1000;
+        storage.storage.ls['lock::walletId'] = JSON.stringify(json);
+        var w2 = new WalletLock(storage, 'walletId');
+        w2.keepAlive(function(locked) {
+          w2.sessionId.should.equal('session2');
+          should.not.exist(locked);
+          done();
+        });
       });
     });
   })
 });
-
-

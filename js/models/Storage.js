@@ -118,6 +118,10 @@ Storage.prototype.getSessionId = function(cb) {
   });
 };
 
+Storage.prototype.setSessionId = function(sessionId, cb) {
+  this.sessionStorage.setItem('sessionId', sessionId, cb);
+};
+
 Storage.prototype._key = function(walletId, k) {
   return walletId + '::' + k;
 };
@@ -285,7 +289,10 @@ Storage.prototype.setFromObj = function(walletId, obj, cb) {
   for (var k in obj) {
     self.set(walletId, k, obj[k], function() {
       if (++i == l) {
-        self.setName(walletId, obj.opts.name, cb);
+        if (obj.opts.name)
+          self.setName(walletId, obj.opts.name, cb);
+        else
+          return cb();
       }
     });
   }

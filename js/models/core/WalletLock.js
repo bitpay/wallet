@@ -54,11 +54,13 @@ WalletLock.prototype._isLockedByOther = function(cb) {
 WalletLock.prototype._setLock = function(cb) {
   preconditions.checkArgument(cb);
   preconditions.checkState(this.sessionId);
+  var self = this;
 
   this.storage.setGlobal(this.key, {
     sessionId: this.sessionId,
     expireTs: Date.now() + this.timeoutMin * 60 * 1000,
   }, function() {
+
     cb(null);
   });
 };
