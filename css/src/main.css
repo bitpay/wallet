@@ -1029,6 +1029,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .text-light {font-weight: 100;}
 .text-gray {color: #8597A7;}
+.text-gray1 {color: #8597A7;}
 .text-black {color: #2C3E50;}
 .text-primary {color: #1ABC9C;}
 .text-secondary {color: #3498DB;}
@@ -1037,6 +1038,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .footer-setup a.text-gray:hover {color: #fff;}
 a.text-gray:hover {color: #2C3E50;}
+a.text-gray1:hover {color: #fff;}
 a.text-black:hover {color: #213140;}
 a.text-primary:hover {color: #50E3C2;}
 a.text-secondary:hover {color: #4A90E2;}
