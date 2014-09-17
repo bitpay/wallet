@@ -67,9 +67,6 @@ function Wallet(opts) {
     preconditions.checkArgument(!_.isUndefined(opts[k]), 'missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
-  preconditions.checkArgument(!copayConfig.forceNetwork || this.getNetworkName() === copayConfig.networkName,
-    'Network forced to ' + copayConfig.networkName +
-    ' and tried to create a Wallet with network ' + this.getNetworkName());
 
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
