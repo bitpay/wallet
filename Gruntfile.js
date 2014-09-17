@@ -118,6 +118,7 @@ module.exports = function(grunt) {
           'lib/angular-foundation/mm-foundation-tpls.min.js',
           'lib/angular-gettext/dist/angular-gettext.min.js',
           'lib/angular-load/angular-load.min.js'
+          // If you add libs here, remember to add it too to karma.conf
         ],
         dest: 'lib/angularjs-all.js'
       },

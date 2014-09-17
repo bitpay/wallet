@@ -25,6 +25,7 @@ describe("Unit: Controllers", function() {
 
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
+  beforeEach(angular.mock.module('copayApp'));
 
   var walletConfig = {
     requiredCopayers: 3,
