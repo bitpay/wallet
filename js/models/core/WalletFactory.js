@@ -124,6 +124,28 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
   return w;
 };
 
+WalletFactory.prototype.legacyRead = function(walletId, skipFields) {
+  var s = this.storage;
+
+  var obj = {
+    id: walletId
+  };
+  var missingProp = false;
+
+  _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+    var value = s.get(walletId, p.name);
+    if (p.required && !value)
+      missingProp = true;
+    obj[p.name] = value;
+  });
+
+  if (missingProp)
+    return false;
+
+  return this.fromObj(obj, skipFields);
+};
+
+
 /**
  * @desc Retrieve a wallet from storage
  * @param {string} walletId - the wallet id
@@ -131,34 +153,27 @@ WalletFactory.prototype.import = function(base64, password, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.read = function(walletId, skipFields) {
-  var obj = {};
   var s = this.storage;
-
-  obj.id = walletId;
   var data = s.get(walletId, 'data');
+
+  if (!data)
+    return this.legacyRead(walletId, skipFields);
+
+  var obj = {
+    id: walletId
+  };
   var missingProp = false;
 
-  if (data) {
-    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
-      if (p.required && !data.hasOwnProperty(p.name))
-        missingProp = true;
-      obj[p.name] = data[p.name];
-    });
-  } else {
-    // Legacy format
-    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
-      var value = s.get(walletId, p.name);
-      if (p.required && !value)
-        missingProp = true;
-      obj[p.name] = value;
-    });
-  }
+  _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+    if (p.required && !data.hasOwnProperty(p.name))
+      missingProp = true;
+    obj[p.name] = data[p.name];
+  });
 
   if (missingProp)
     return false;
 
-  var w = this.fromObj(obj, skipFields);
-  return w;
+  return this.fromObj(obj, skipFields);
 };
 
 /**

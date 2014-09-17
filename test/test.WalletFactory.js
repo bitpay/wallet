@@ -118,29 +118,31 @@ describe('WalletFactory model', function() {
     wf.version.should.equal('0.0.1');
   });
 
-  it('should be able to create wallets', function() {
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create();
-    should.exist(w);
-  });
-
-  it('should be able to create wallets with given pk', function() {
-    var wf = new WalletFactory(config, '0.0.1');
-    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-    var w = wf.create({
-      privateKeyHex: priv,
+  describe('#create', function() {
+    it('should be able to create wallets', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var w = wf.create();
+      should.exist(w);
     });
-    w.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
-  });
 
-  it('should be able to create wallets with random pk', function() {
-    var wf = new WalletFactory(config, '0.0.1');
-    var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-    var w1 = wf.create();
-    var w2 = wf.create();
-    w1.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
-      w2.privateKey.toObj().extendedPrivateKeyString
-    );
+    it('should be able to create wallets with given pk', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+      var w = wf.create({
+        privateKeyHex: priv,
+      });
+      w.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+    });
+
+    it('should be able to create wallets with random pk', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+      var w1 = wf.create();
+      var w2 = wf.create();
+      w1.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+        w2.privateKey.toObj().extendedPrivateKeyString
+      );
+    });
   });
 
   describe('#read', function() {
@@ -397,30 +399,97 @@ describe('WalletFactory model', function() {
 
   });
 
-  it('should be able to get current wallets', function() {
-    var wf = new WalletFactory(config, '0.0.1');
-    var ws = wf.getWallets();
+  describe('#getWallets', function() {
+    it('should be able to get current wallets', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var w = wf.create({
+        name: 'test wallet'
+      });
 
-    var w = wf.create({
-      name: 'test wallet'
+      var ws = wf.getWallets();
+      ws.length.should.equal(1);
+      ws[0].name.should.equal('test wallet');
     });
+    it.only('should be able to get wallets from new format and from legacy format', function() {
+      var wf = new WalletFactory(config, '0.0.1');
+      var s = wf.storage;
+      // Legacy format only
+      var w1 = 'db61df6833e57e3c';
+      s.set(w1, 'key1', 'dummy');
+      s.set(w1, 'key2', 'dummy');
+      s.setGlobal('nameFor::' + w1, 'w1');
 
-    ws = wf.getWallets();
-    ws.length.should.equal(1);
-    ws[0].name.should.equal('test wallet');
+      // Both new and old
+      var w2 = 'iewihsdheu238ukm';
+      s.setGlobal('wallet::' + w2 + '_w2', 'dummy');
+      s.set(w2, 'key1', 'dummy');
+      s.set(w2, 'key2', 'dummy');
+      s.setGlobal('nameFor::' + w2, 'w2');
+
+      // New format only
+      var w3 = '2309hiefjkss937a';
+      s.setGlobal('wallet::' + w3 + '_w3', 'dummy');
+
+      var ws = wf.getWallets();
+      ws.length.should.equal(3);
+      _.difference(_.pluck(ws, 'name'), ['w1', 'w2', 'w3']).length.should.equal(0);
+    });
   });
 
-  it('should be able to delete wallet', function(done) {
-    var wf = new WalletFactory(config, '0.0.1');
-    var w = wf.create({
-      name: 'test wallet'
+  describe('#delete', function() {
+    it.only('should be able to delete wallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      var w = wf.create({
+        name: 'test wallet'
+      });
+      var ws = wf.getWallets();
+      ws.length.should.equal(1);
+      wf.delete(ws[0].id, function() {
+        ws = wf.getWallets();
+        ws.length.should.equal(0);
+        done();
+      });
     });
-    var ws = wf.getWallets();
-    ws.length.should.equal(1);
-    wf.delete(ws[0].id, function() {
-      ws = wf.getWallets();
-      ws.length.should.equal(0);
-      done();
+    it('should be able to delete wallet in new format and in legacy format', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      var s = wf.storage;
+      // Legacy format only
+      var w1 = 'db61df6833e57e3c';
+      s.set(w1, 'key1', 'dummy');
+      s.set(w1, 'key2', 'dummy');
+      s.setGlobal('nameFor::' + w1, 'w1');
+
+      // Both new and old
+      var w2 = 'iewihsdheu238ukm';
+      s.setGlobal('wallet::' + w2 + '_w2', 'dummy');
+      s.set(w2, 'key1', 'dummy');
+      s.set(w2, 'key2', 'dummy');
+      s.setGlobal('nameFor::' + w2, 'w2');
+
+      // New format only
+      var w3 = '2309hiefjkss937a';
+      s.setGlobal('wallet::' + w3 + '_w3', 'dummy');
+
+      var ws = wf.getWallets();
+      ws.length.should.equal(3);
+
+      wf.delete(w1, function() {
+        ws = wf.getWallets();
+        ws.length.should.equal(2);
+        _.difference(_.pluck(ws, 'id'), [w2, w3]).length.should.equal(0);
+        done();
+      });
+      wf.delete(w2, function() {
+        ws = wf.getWallets();
+        ws.length.should.equal(1);
+        _.difference(_.pluck(ws, 'id'), [w3]).length.should.equal(0);
+        done();
+      });
+      wf.delete(w3, function() {
+        ws = wf.getWallets();
+        ws.length.should.equal(0);
+        done();
+      });
     });
   });
 

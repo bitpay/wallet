@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 var FakeStorage = function() {
   this.reset();
 };
@@ -64,13 +66,14 @@ FakeStorage.prototype.clear = function() {
 FakeStorage.prototype.getWalletIds = function() {
   var walletIds = [];
   var uniq = {};
+  var ignore = ['nameFor', 'lock', 'wallet'];
 
   for (var ii in this.storage) {
     var split = ii.split('::');
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (!walletId || walletId === 'nameFor' || walletId === 'lock')
+      if (!walletId || _.contains(ignore, walletId))
         continue;
 
       if (typeof uniq[walletId] === 'undefined') {
@@ -82,7 +85,45 @@ FakeStorage.prototype.getWalletIds = function() {
   return walletIds;
 };
 
-FakeStorage.prototype.deleteWallet = function(walletId) {
+FakeStorage.prototype.legacyGetWallets = function() {
+  var wallets = [];
+  var ids = this.getWalletIds();
+
+  for (var i in ids) {
+    wallets.push({
+      id: ids[i],
+      name: this.getName(ids[i]),
+    });
+  }
+  return wallets;
+};
+
+FakeStorage.prototype.getWallets = function() {
+  var self = this;
+  var re = /wallet::([^_]+)_(.*)/;
+
+  var wallets = _.compact(_.map(_.keys(self.storage), function(key) {
+    if (key.indexOf('wallet::') !== 0)
+      return null;
+    var match = key.match(re);
+    if (match.length != 3)
+      return null;
+    return {
+      id: match[1],
+      name: match[2],
+    };
+  }));
+
+  var legacy = this.legacyGetWallets();
+  _.each(legacy, function(w) {
+    if (!_.contains(_.pluck(wallets, 'id'), w.id))
+      wallets.push(w);
+  });
+
+  return wallets;
+};
+
+FakeStorage.prototype.legacyDeleteWallet = function(walletId) {
   var toDelete = {};
   toDelete['nameFor::' + walletId] = 1;
 
@@ -97,6 +138,14 @@ FakeStorage.prototype.deleteWallet = function(walletId) {
   }
 };
 
+FakeStorage.prototype.deleteWallet = function(walletId) {
+  this.legacyDeleteWallet();
+  var wallet = _.findWhere(this.getWallets(), {
+    id: walletId
+  });
+  console.log(wallet);
+  this.removeGlobal('wallet::' + walletId + '_' + wallet.name);
+};
 
 FakeStorage.prototype.getName = function(walletId) {
   return this.getGlobal('nameFor::' + walletId);
@@ -105,20 +154,6 @@ FakeStorage.prototype.getName = function(walletId) {
 
 FakeStorage.prototype.setName = function(walletId, name) {
   this.setGlobal('nameFor::' + walletId, name);
-};
-
-
-FakeStorage.prototype.getWallets = function() {
-  var wallets = [];
-  var ids = this.getWalletIds();
-
-  for (var i in ids) {
-    wallets.push({
-      id: ids[i],
-      name: this.getName(ids[i]),
-    });
-  }
-  return wallets;
 };
 
 FakeStorage.prototype.setFromObj = function(walletId, obj) {
