@@ -517,7 +517,6 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(data.type);
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
-
   log.debug('RECV', senderId, data);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
@@ -525,7 +524,6 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     this.updateTimestamp(ts);
     return;
   }
-
 
   switch (data.type) {
     // This handler is repeaded on WalletFactory (#join). TODO
