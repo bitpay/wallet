@@ -402,6 +402,37 @@ describe('Wallet model', function() {
   });
 
 
+  describe('#_onData', function() {
+    var w = cachedCreateW();
+    var sender = '025c046aaf505a6d23203edd343132e9d4d21818b962d1e9a9c98573cc2031bfc9';
+    var ts = 1410810974778246;
+    it('should fail on message unknown', function() {
+      var data = {
+        type: "xxx",
+        walletId: w.id
+      };
+
+      (function() {
+        w._onData(sender, data, ts);
+      }).should.
+      throw('unknown message type received: xxx from: 025c046aaf505a6d23203edd343132e9d4d21818b962d1e9a9c98573cc2031bfc9');
+
+    });
+
+    it('should call sendWalletReady', function() {
+      var data = {
+        type: "walletId",
+        walletId: w.id
+      };
+
+      var spy = sinon.spy(w, 'sendWalletReady');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+  });
+
+
   describe('#purgeTxProposals', function() {
     it('should delete all', function() {
       var w = cachedCreateW();
