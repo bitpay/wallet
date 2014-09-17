@@ -21,8 +21,6 @@ var bitcore = bitcore || require('bitcore');
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
-var localMock = require('./mocks/FakeLocalStorage');
-var sessionMock = require('./mocks/FakeLocalStorage');
 
 var walletConfig = {
   requiredCopayers: 3,
@@ -30,10 +28,7 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
-  storage: {
-      storage: localMock,
-      sessionStorage: sessionMock,
-  }
+  storage: require('./mocks/FakeLocalStorage').storageParams,
 };
 
 var getNewEpk = function() {
