@@ -24,8 +24,14 @@
           </section>
 
           <section class="middle tab-bar-section">
+
             <h1 class="right">
-              {{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}
+				<span ng-if="$root.updatingBalance">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                </span>
+              	<span class="size-14" ng-if="!$root.updatingBalance">
+                	{{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+              	</span>
             </h1>
             <h1 class="title ellipsis">
               {{$root.wallet.getName()}}
