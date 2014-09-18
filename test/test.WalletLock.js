@@ -21,7 +21,7 @@ describe('WalletLock model', function() {
 
   beforeEach(function() {
     storage = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-    storage.setPassword('mysupercoolpassword');
+    storage.setPassphrase('mysupercoolpassword');
     storage.storage.clear();
     storage.sessionStorage.clear();
   });
