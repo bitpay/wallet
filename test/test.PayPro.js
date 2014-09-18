@@ -69,7 +69,7 @@ describe('PayPro (in Wallet) model', function() {
       });
 
       var storage = new Storage(walletConfig.storage);
-      storage.setPassphrase('xxx');
+      storage.setPassword('xxx');
       var network = new Network(walletConfig.network);
       var blockchain = new Blockchain(walletConfig.blockchain);
       c.storage = storage;

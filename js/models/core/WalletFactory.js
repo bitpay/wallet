@@ -119,7 +119,7 @@ WalletFactory.prototype.fromObj = function(inObj, skipFields) {
  * @return {Wallet}
  */
 WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields) {
-  this.storage.setPassphrase(password);
+  this.storage.setPassword(password);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
   return this.fromObj(walletObj, skipFields);
@@ -248,7 +248,7 @@ WalletFactory.prototype.create = function(opts, cb) {
   });
   log.debug('\t### TxProposals Initialized');
 
-  this.storage.setPassphrase(opts.passphrase);
+  this.storage.setPassword(opts.passphrase);
 
   opts.storage = this.storage;
   opts.network = this.networks[opts.networkName];
@@ -300,7 +300,7 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
 WalletFactory.prototype.open = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
   var self = this;
-  self.storage.setPassphrase(passphrase);
+  self.storage.setPassword(passphrase);
   self.read(walletId, null, function(err, w) {
     if (err) return cb(err);
 
