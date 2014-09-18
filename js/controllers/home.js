@@ -5,8 +5,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   controllerUtils.redirIfLogged();
 
   $scope.retreiving = true;
-
-  walletFactory.getWallets(function(ret) {
+  walletFactory.getWallets(function(err,ret) {
     $scope.retreiving = false;
     $scope.hasWallets = (ret && ret.length > 0) ? true : false;
   });

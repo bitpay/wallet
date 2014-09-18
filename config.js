@@ -53,8 +53,8 @@ var defaultConfig = {
   verbose: 1,
 
   plugins: {
-    LocalStorage: true,
-     // GoogleDrive: true,
+    //LocalStorage: true,
+    GoogleDrive: true,
   },
 
   GoogleDrive: {

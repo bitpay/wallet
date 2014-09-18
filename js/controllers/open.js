@@ -16,16 +16,23 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
   $scope.loading = false;
   $scope.retreiving = true;
 
-  walletFactory.getWallets(function(wallets) {
+  walletFactory.getWallets(function(err, wallets) {
 
-    if (!wallets || !wallets.length) {
+    if (err || !wallets || !wallets.length) {
       $location.path('/');
     } else {
+      $scope.retreiving = false;
       $scope.wallets = wallets.sort(cmp);
 
       walletFactory.storage.getLastOpened(function(ret) {
+        if (ret && _.indexOf(_.pluck($scope.wallets, 'id')) == -1)
+          ret = null;
+
         $scope.selectedWalletId = ret || ($scope.wallets[0] && $scope.wallets[0].id);
-        $scope.retreiving = false;
+
+        setTimeout(function() {
+          $rootScope.$digest();
+        }, 0);
       });
     }
   });
@@ -49,9 +56,10 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
           $scope.loading = false;
           notification.error('Error', err.errMsg || 'Wrong password');
           $rootScope.$digest();
+        } else {
+          $rootScope.updatingBalance = true;
+          controllerUtils.startNetwork(w, $scope);
         }
-        $rootScope.updatingBalance = true;
-        controllerUtils.startNetwork(w, $scope);
       });
     });
   };

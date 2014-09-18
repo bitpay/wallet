@@ -3,6 +3,7 @@
 var preconditions = require('preconditions').singleton();
 var loaded = 0;
 var SCOPES = 'https://www.googleapis.com/auth/drive';
+var log = require('../js/log');
 
 function GoogleDrive(config) {
   preconditions.checkArgument(config && config.clientId, 'No clientId at GoogleDrive config');
@@ -24,8 +25,7 @@ function GoogleDrive(config) {
 };
 
 window.InitGoogleDrive = function() {
-
-  // console.log('[googleDrive.js.18] setting loaded'); //TODO
+  log.debug('googleDrive loadeded'); //TODO
   loaded = 1;
 };
 
@@ -47,7 +47,7 @@ GoogleDrive.prototype.initLoaded = function() {
  */
 GoogleDrive.prototype.checkAuth = function() {
 
-  console.log('\tChecking google Auth');
+  log.debug('Google Drive: Checking Auth');
   gapi.auth.authorize({
       'client_id': this.clientId,
       'scope': SCOPES,
@@ -61,7 +61,7 @@ GoogleDrive.prototype.checkAuth = function() {
  */
 GoogleDrive.prototype.handleAuthResult = function(authResult) {
   var self = this;
-  // console.log('[googleDrive.js.39:authResult:]', authResult); //TODO
+  log.debug('Google Drive: authResult', authResult); //TODO
 
   if (authResult.error) {
     if (authResult.error) {
@@ -93,7 +93,7 @@ GoogleDrive.prototype._httpGet = function(theUrl) {
 }
 
 GoogleDrive.prototype.getItem = function(k, cb) {
-  console.log('[googleDrive.js.95:getItem:]', k); //TODO
+  //console.log('[googleDrive.js.95:getItem:]', k); //TODO
   var self = this;
 
   self.checkReady();
@@ -208,7 +208,7 @@ GoogleDrive.prototype._mkdir = function(cb) {
   preconditions.checkArgument(cb);
   var self = this;
 
-  console.log('Creating drive folder ' + this.home);
+  log.debug('Creating drive folder ' + this.home);
 
   var request = gapi.client.request({
     'path': '/drive/v2/files',
@@ -231,18 +231,17 @@ GoogleDrive.prototype._idForName = function(name, cb) {
   var self = this;
 
   if (!self.isReady) {
-    console.log('\tWaiting for Drive');
+    log.debug('Waiting for Google Drive');
     self.ts = self.ts * 1.5;
     return setTimeout(self._idForName.bind(self, name, cb), self.ts);
   }
-  // console.log('[googleDrive.js.178:name:]', name); //TODO
 
   if (self.idCache[name]) {
     // console.log('[googleDrive.js.212:] FROM CACHE', name, self.idCache[name]); //TODO
     return cb(self.idCache[name]);
   }
 
-  console.log('Querying for: ', name); //TODO
+  log.debug('GoogleDrive Querying for: ', name); //TODO
   var args;
 
   var idParent = name == this.home ? 'root' : self.idCache[this.home];
