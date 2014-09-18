@@ -443,10 +443,17 @@ describe('WalletFactory model', function() {
         networkName: 'testnet',
         opts: {},
       });
-      wf.create = sinon.stub().yields(null, 'wallet');
+
+      var w = sinon.stub();
+      w.sendWalletReady = sinon.spy();
+      wf.create = sinon.stub().yields(null, w);
       wf.joinCreateSession(opts, function(err, w) {
         net.start.calledOnce.should.equal(true);
         wf.create.calledOnce.should.equal(true);
+        wf.create.calledOnce.should.equal(true);
+
+        w.sendWalletReady.calledOnce.should.equal(true);
+        w.sendWalletReady.getCall(0).args[0].should.equal('03ddbc4711534bc62ccf576ab05f2a0afd11f9e2f4016781f3f5a88de9543a229a');
         done();
       });
     });
