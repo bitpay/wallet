@@ -4,12 +4,13 @@ var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var bitcore = require('bitcore');
 var preconditions = require('preconditions').instance();
 var _ = require('underscore');
-
+var CACHE_DURATION = 1000 * 60 * 5;
 var id = 0;
 
 function Storage(opts) {
   opts = opts || {};
 
+  this.wListCache = {};
   this.__uniqueid = ++id;
   if (opts.password)
     this.setPassphrase(opts.password);
@@ -211,6 +212,9 @@ Storage.prototype.getWalletIds = function(cb) {
 Storage.prototype.getWallets = function(cb) {
   preconditions.checkArgument(cb);
 
+  if (this.wListCache.ts > Date.now())
+    return cb(this.wListCache.data)
+
   var wallets = [];
   var self = this;
 
@@ -228,6 +232,8 @@ Storage.prototype.getWallets = function(cb) {
           name: name,
         });
         if (++i == l) {
+          self.wListCache.data = wallets;
+          self.wListCache.ts = Date.now() + CACHE_DURATION;
           return cb(wallets);
         }
       })
