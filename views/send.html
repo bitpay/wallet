@@ -8,7 +8,6 @@
     <div ng-show="txs.length != 0" class="large-12 line-dashed" style="padding: 0;"></div>
 
     <h1>{{title|translate}}</h1>
-    <span ng-if="$root.alternativeConversionRate > 0">1 BTC = {{alternativeConversionRate|noFractionNumber:2}} {{alternativeIsoCode}}</span>
     <div class="row collapse m0">
     <div class="large-6 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
@@ -118,9 +117,15 @@
             </div>
           </div>
         </div>
-
+ 
         <div class="row collapse">
-          <div class="large-5 medium-3 small-6 columns">
+          <span ng-if="!$root.alternativeConversionRate">
+            <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+          </span>
+          <span class="left m5t text-gray size-14" ng-if="$root.alternativeConversionRate > 0">1 BTC = {{alternativeConversionRate|noFractionNumber:2}} {{alternativeIsoCode}}
+           
+          </span>
+          <div class="large-5 medium-3 small-6 columns right">
             <button type="submit" class="button primary expand text-center" ng-disabled="sendForm.$invalid || loading">
               Send
             </button>
