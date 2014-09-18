@@ -15,12 +15,14 @@ saveAs = function(blob, filename) {
 var startServer = require('../../mocks/FakePayProServer');
 
 describe("Unit: Controllers", function() {
+  config.plugins.LocalStorage=null;
+  config.plugins.GoogleDrive=null;
+
   var invalidForm = {
     $invalid: true
   };
 
   var scope;
-
   var server;
 
   beforeEach(module('copayApp.services'));
@@ -36,6 +38,7 @@ describe("Unit: Controllers", function() {
     alternativeName: 'lol currency',
     alternativeIsoCode: 'LOL'
   };
+
 
   describe('More Controller', function() {
     var ctrl;
