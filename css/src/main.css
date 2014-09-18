@@ -725,6 +725,14 @@ button.radius, .button.radius {
 }
 
 /* SECONDARY */
+
+input[type='submit']
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 button.secondary, 
 .button.secondary { 
   background-color: #4A90E2;
@@ -758,6 +766,7 @@ button.primary,
 .button.primary { 
   background-color: #1ABC9C;
   color: #fff;
+  border-radius: 0;
 }
 button.primary:hover, 
 button.primary:focus, 
