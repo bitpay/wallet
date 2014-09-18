@@ -114,12 +114,12 @@ WalletFactory.prototype.fromObj = function(inObj, skipFields) {
 /**
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
- * @param {string} password - password to decrypt it
+ * @param {string} passphrase - passphrase to decrypt it
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields) {
-  this.storage.setPassphrase(password);
+WalletFactory.prototype.fromEncryptedObj = function(base64, passphrase, skipFields) {
+  this.storage.setPassphrase(passphrase);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
   return this.fromObj(walletObj, skipFields);
@@ -130,15 +130,15 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, password, skipFields
  * @TODO: this is essentialy the same method as {@link WalletFactory#fromEncryptedObj}!
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
- * @param {string} password - password to decrypt it
+ * @param {string} passphrase - passphrase to decrypt it
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-WalletFactory.prototype.import = function(base64, password, skipFields) {
+WalletFactory.prototype.import = function(base64, passphrase, skipFields) {
   var self = this;
-  var w = self.fromEncryptedObj(base64, password, skipFields);
+  var w = self.fromEncryptedObj(base64, passphrase, skipFields);
 
-  if (!w) throw new Error('Wrong password');
+  if (!w) throw new Error('Wrong passphrase');
   return w;
 };
 
@@ -248,7 +248,6 @@ WalletFactory.prototype.create = function(opts, cb) {
   });
   log.debug('\t### TxProposals Initialized');
 
-  this.storage.setPassphrase(opts.passphrase);
 
   opts.storage = this.storage;
   opts.network = this.networks[opts.networkName];
@@ -260,6 +259,7 @@ WalletFactory.prototype.create = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
+  this.storage.setPassphrase(opts.passphrase);
   var w = this._getWallet(opts);
   var self = this;
   w.store(function(err) {
@@ -394,7 +394,7 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
   //Create our PrivateK
   var privateKey = new PrivateKey(privOpts);
   log.debug('\t### PrivateKey Initialized');
-  var opts = {
+  var joinOpts = {
     copayerId: privateKey.getId(),
     privkey: privateKey.getIdPriv(),
     key: privateKey.getIdKey(),
@@ -414,23 +414,29 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
     return cb('joinError');
   });
 
-  joinNetwork.start(opts, function() {
-    joinNetwork.greet(decodedSecret.pubKey, opts.secretNumber);
+  joinNetwork.start(joinOpts, function() {
+
+    joinNetwork.greet(decodedSecret.pubKey, joinOpts.secretNumber);
     joinNetwork.on('data', function(sender, data) {
       if (data.type === 'walletId' && data.opts) {
         if (data.networkName !== decodedSecret.networkName) {
           return cb('badNetwork');
         }
 
-        data.opts.privateKey = privateKey;
-        data.opts.nickname = opts.nickname;
-        data.opts.passphrase = opts.passphrase;
-        data.opts.id = data.walletId;
-        self.create(data.opts, function(err, w) {
-          if (!err & w) {
-            w.sendWalletReady(s.pubKey);
+        var walletOpts =  _.clone(data.opts);
+        walletOpts.id = data.walletId;
+
+        walletOpts.privateKey = privateKey;
+        walletOpts.nickname = opts.nickname;
+        walletOpts.passphrase = opts.passphrase;
+
+        self.create(walletOpts, function(err, w) {
+
+          if (w) {
+            w.sendWalletReady(decodedSecret.pubKey);
           } else {
             if (!err) err = 'walletFull';
+            log.info(err);
           }
           return cb(err, w);
         });
