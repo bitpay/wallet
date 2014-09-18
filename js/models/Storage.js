@@ -12,7 +12,7 @@ function Storage(opts) {
 
   this.__uniqueid = ++id;
   if (opts.password)
-    this.setPassphrase(opts.password);
+    this.setPassword(opts.password);
 
   try {
     this.storage = opts.storage || localStorage;
@@ -26,7 +26,7 @@ function Storage(opts) {
 }
 
 var pps = {};
-Storage.prototype._getPassphrase = function() {
+Storage.prototype._getPassword = function() {
 
   if (!pps[this.__uniqueid])
     throw new Error('NOPASSPHRASE: No passphrase set');
@@ -34,12 +34,12 @@ Storage.prototype._getPassphrase = function() {
   return pps[this.__uniqueid];
 }
 
-Storage.prototype.setPassphrase = function(password) {
+Storage.prototype.setPassword = function(password) {
   pps[this.__uniqueid] = password;
 }
 
 Storage.prototype._encrypt = function(string) {
-  var encrypted = CryptoJS.AES.encrypt(string, this._getPassphrase());
+  var encrypted = CryptoJS.AES.encrypt(string, this._getPassword());
   var encryptedBase64 = encrypted.toString();
   return encryptedBase64;
 };
@@ -47,7 +47,7 @@ Storage.prototype._encrypt = function(string) {
 Storage.prototype._decrypt = function(base64) {
   var decryptedStr = null;
   try {
-    var decrypted = CryptoJS.AES.decrypt(base64, this._getPassphrase());
+    var decrypted = CryptoJS.AES.decrypt(base64, this._getPassword());
     if (decrypted)
       decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
   } catch (e) {

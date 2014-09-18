@@ -82,7 +82,7 @@ describe('Wallet model', function() {
     });
 
     var storage = new Storage(walletConfig.storage);
-    storage.setPassphrase('xxx');
+    storage.setPassword('xxx');
     var network = new Network(walletConfig.network);
     var blockchain = new Blockchain(walletConfig.blockchain);
     c.storage = storage;
@@ -344,7 +344,7 @@ describe('Wallet model', function() {
     o.opts.reconnectDelay = 100;
 
     var s = new Storage(walletConfig.storage);
-    s.setPassphrase('xxx');
+    s.setPassword('xxx');
     var w2 = Wallet.fromObj(o,
       s,
       new Network(walletConfig.network),
