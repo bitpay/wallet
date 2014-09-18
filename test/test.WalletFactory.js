@@ -34,7 +34,7 @@ describe('WalletFactory model', function() {
   beforeEach(function() {
     wf = new WalletFactory(config, '0.0.1');
 
-    wf.storage.setPassword = sinon.spy();
+    wf.storage.setPassphrase = sinon.spy();
     wf.storage.getSessionId = sinon.spy();
     wf.storage.setFromObj = sinon.spy();
     wf.storage.setLastOpened = sinon.stub().yields(null);
@@ -151,15 +151,15 @@ describe('WalletFactory model', function() {
 
   describe('#fromEncryptedObj', function() {
     it('should create wallet from encrypted object', function() {
-      wf.storage.setPassword = sinon.spy();
+      wf.storage.setPassphrase = sinon.spy();
       wf.storage.import = sinon.stub().withArgs('base64').returns('walletObj');
       wf.fromObj = sinon.stub().withArgs('walletObj').returns('ok');
 
       var w = wf.fromEncryptedObj("encrypted object", "123");
 
       w.should.equal('ok');
-      wf.storage.setPassword.calledOnce.should.be.true;
-      wf.storage.setPassword.getCall(0).args[0].should.equal('123');
+      wf.storage.setPassphrase.calledOnce.should.be.true;
+      wf.storage.setPassphrase.getCall(0).args[0].should.equal('123');
       wf.storage.import.calledOnce.should.be.true;
       wf.fromObj.calledWith('walletObj').should.be.true;
     });
@@ -291,9 +291,9 @@ describe('WalletFactory model', function() {
       'totalcopayers': 3
     };
 
-    it('should call setPassword', function(done) {
+    it('should call setPassphrase', function(done) {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.storage.setPassword = sinon.spy();
+      wf.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
@@ -301,15 +301,15 @@ describe('WalletFactory model', function() {
       wf.storage.setLastOpened = sinon.stub().yields(null);
 
       wf.open('dummy', 'xxx', function(err, w) {
-        wf.storage.setPassword.calledOnce.should.equal(true);
-        wf.storage.setPassword.getCall(0).args[0].should.equal('xxx');
+        wf.storage.setPassphrase.calledOnce.should.equal(true);
+        wf.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
         done();
       });
     });
 
     it('should call return wallet', function(done) {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.storage.setPassword = sinon.spy();
+      wf.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
@@ -326,7 +326,7 @@ describe('WalletFactory model', function() {
 
     it('should call #store', function(done) {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.storage.setPassword = sinon.spy();
+      wf.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
@@ -341,7 +341,7 @@ describe('WalletFactory model', function() {
 
     it('should call #setLastOpened', function(done) {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.storage.setPassword = sinon.spy();
+      wf.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
@@ -510,13 +510,13 @@ describe('WalletFactory model', function() {
     it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function() {
 
       wf.storage.import = sinon.stub();
-      wf.storage.setPassword = sinon.spy();
+      wf.storage.setPassphrase = sinon.spy();
       wf.storage.import.withArgs('dummy').returns(JSON.parse(legacy1));
 
       var w = wf.import('dummy', 'xxx');
       should.exist(w);
-      wf.storage.setPassword.calledOnce.should.equal(true);
-      wf.storage.setPassword.getCall(0).args[0].should.equal('xxx');
+      wf.storage.setPassphrase.calledOnce.should.equal(true);
+      wf.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
 
       w.isReady().should.equal(true);
       var wo = w.toObj();

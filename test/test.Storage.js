@@ -13,7 +13,7 @@ describe('Storage model', function() {
     var s;
     beforeEach(function() {
       s = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      s.setPassword('mysupercoolpassword');
+      s.setPassphrase('mysupercoolpassword');
       s.storage.clear();
       s.sessionStorage.clear();
     });
@@ -251,13 +251,13 @@ describe('Storage model', function() {
 
   describe('#import', function() {
     it('should not be able to decrypt with wrong password', function() {
-      s.setPassword('xxx');
+      s.setPassphrase('xxx');
       var wo = s.import(encryptedLegacy1);
       should.not.exist(wo);
     });
  
     it('should be able to decrypt an old backup', function() {
-      s.setPassword(legacyPassword1);
+      s.setPassphrase(legacyPassword1);
       var wo = s.import(encryptedLegacy1);
       should.exist(wo);
       wo.opts.id.should.equal('48ba2f1ffdfe9708');
