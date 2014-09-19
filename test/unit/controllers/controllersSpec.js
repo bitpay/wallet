@@ -15,7 +15,7 @@ saveAs = function(blob, filename) {
 var startServer = require('../../mocks/FakePayProServer');
 
 describe("Unit: Controllers", function() {
-  config.plugins.LocalStorage=null;
+  config.plugins.LocalStorage=true;
   config.plugins.GoogleDrive=null;
 
   var invalidForm = {
@@ -76,11 +76,6 @@ describe("Unit: Controllers", function() {
       expect(saveAsLastCall.filename).equal('myTESTwullet-testID-keybackup.json.aes');
     });
 
-    it('Backup controller #delete', function() {
-      expect(scope.wallet).not.equal(undefined);
-      scope.deleteWallet();
-      expect(scope.wallet).equal(undefined);
-    });
   });
 
   describe('Create Controller', function() {
