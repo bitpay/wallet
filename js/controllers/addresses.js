@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('AddressesController',
   function($scope, $rootScope, $timeout, $modal, controllerUtils) {
     $scope.loading = false;
+    $scope.showAll = false;
     var w = $rootScope.wallet;
 
     $scope.newAddr = function() {
@@ -16,7 +17,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
     };
 
     $scope.openAddressModal = function(address) {
-      var ModalInstanceCtrl = function ($scope, $modalInstance, address) {
+      var ModalInstanceCtrl = function($scope, $modalInstance, address) {
         $scope.address = address;
         $scope.isMobile = !!window.cordova;
 
@@ -25,7 +26,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
           window.plugins.toast.showShortBottom('Copied to clipboard');
         }
 
-        $scope.cancel = function () {
+        $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
         };
       };
@@ -35,7 +36,9 @@ angular.module('copayApp.controllers').controller('AddressesController',
         windowClass: 'tiny',
         controller: ModalInstanceCtrl,
         resolve: {
-          address: function() { return address; }
+          address: function() {
+            return address;
+          }
         }
       });
     };
@@ -44,20 +47,45 @@ angular.module('copayApp.controllers').controller('AddressesController',
       $scope.addressList();
     });
 
+    $scope.toggleShowAll = function() {
+      $scope.showAll = !$scope.showAll;
+      $scope.addressList();
+    };
+
+    $scope.limitAddress = function(elements) {
+
+      elements = elements.sort(function(a, b) {
+        return (+a.isChange - +b.isChange);
+      });
+
+      if (elements.length <= 1 || $scope.showAll) {
+        return elements;
+      }
+
+      // Show last 3 non-change addresses plus those with balance
+      var addrs = elements.filter(function(e, i) {
+        return (!e.isChange && i < 3) || (e.balance && e.balance > 0);
+      });
+
+      return addrs;
+    };
+
     $scope.addressList = function() {
       $scope.addresses = [];
-      var addrInfos = $rootScope.addrInfos;
-      if (addrInfos) {
+
+      if ($rootScope.addrInfos) {
+        var addrInfos = $rootScope.addrInfos;
         for (var i = 0; i < addrInfos.length; i++) {
           var addrinfo = addrInfos[i];
           $scope.addresses.push({
             'address': addrinfo.addressStr,
             'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
             'isChange': addrinfo.isChange,
-            'owned': addrinfo.owned
+            'owned': addrinfo.owned,
           });
         }
+        $scope.addresses = $scope.limitAddress($scope.addresses);
       }
-    }
+    };
   }
 );

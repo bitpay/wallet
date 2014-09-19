@@ -136,6 +136,7 @@ angular.module('copayApp.services')
       });
       w.on('close', root.onErrorDigest);
       w.on('locked', root.onErrorDigest.bind(this));
+
     };
 
     root.setupRootVariables = function() {
@@ -159,6 +160,7 @@ angular.module('copayApp.services')
       root.updateAddressList();
       notification.enableHtml5Mode(); // for chrome: if support, enable it
       w.netStart();
+
     };
 
     // TODO movie this to wallet
@@ -280,6 +282,8 @@ angular.module('copayApp.services')
         return !!b.actions.create - !!a.actions.create;
       });
     }
+
+
 
     return root;
   });
