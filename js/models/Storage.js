@@ -224,18 +224,21 @@ Storage.prototype.getWallets = function(cb) {
       return cb([]);
 
     for (var ii in ids) {
-      var id = ids[ii];
-      self.getName(id, function(name) {
-        wallets.push({
-          id: id,
-          name: name,
+      // Create a closure for async calls.
+      (function() {
+        var id = ids[ii];
+        self.getName(id, function(name) {
+          wallets.push({
+            id: id,
+            name: name,
+          });
+          if (++i == l) {
+            self.wListCache.data = wallets;
+            self.wListCache.ts = Date.now() + CACHE_DURATION;
+            return cb(wallets);
+          }
         });
-        if (++i == l) {
-          self.wListCache.data = wallets;
-          self.wListCache.ts = Date.now() + CACHE_DURATION;
-          return cb(wallets);
-        }
-      })
+      })();
     }
   });
 };
