@@ -14,31 +14,14 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
   };
   $rootScope.fromSetup = false;
   $scope.loading = false;
-  $scope.retreiving = true;
-
-  walletFactory.getWallets(function(err, wallets) {
-
-    if (err || !wallets || !wallets.length) {
-      $location.path('/');
-    } else {
-      $scope.retreiving = false;
-      $scope.wallets = wallets.sort(cmp);
-
-      walletFactory.storage.getLastOpened(function(ret) {
-        if (ret && _.indexOf(_.pluck($scope.wallets, 'id')) == -1)
-          ret = null;
-
-        $scope.selectedWalletId = ret || ($scope.wallets[0] && $scope.wallets[0].id);
-
-        setTimeout(function() {
-          $rootScope.$digest();
-        }, 0);
-      });
-    }
-  });
-
+  $scope.wallets = walletFactory.getWallets().sort(cmp);
+  $scope.selectedWalletId = walletFactory.storage.getLastOpened() || ($scope.wallets[0] && $scope.wallets[0].id);
   $scope.openPassword = '';
   $scope.isMobile = !!window.cordova;
+
+  if (!$scope.wallets.length) {
+    $location.path('/');
+  }
 
   $scope.open = function(form) {
     if (form && form.$invalid) {
@@ -51,16 +34,19 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
 
     Passphrase.getBase64Async(password, function(passphrase) {
       var w, errMsg;
-      walletFactory.open($scope.selectedWalletId, passphrase, function(err, w) {
-        if (!w) {
-          $scope.loading = false;
-          notification.error('Error', err.errMsg || 'Wrong password');
-          $rootScope.$digest();
-        } else {
-          $rootScope.updatingBalance = true;
-          controllerUtils.startNetwork(w, $scope);
-        }
-      });
+      try {
+        w = walletFactory.open($scope.selectedWalletId, passphrase);
+      } catch (e) {
+        errMsg = e.message;
+      };
+      if (!w) {
+        $scope.loading = false;
+        notification.error('Error', errMsg || 'Wrong password');
+        $rootScope.$digest();
+        return;
+      }
+      $rootScope.updatingBalance = true;
+      controllerUtils.startNetwork(w, $scope);
     });
   };
 

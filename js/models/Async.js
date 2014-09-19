@@ -377,6 +377,7 @@ Network.prototype.send = function(dest, payload, cb) {
 
     var message = this.encode(to, payload);
     this.socket.emit('message', message);
+
   }
 
   if (typeof cb === 'function') cb();
@@ -404,5 +405,7 @@ Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
     this.allowedCopayerIds[allowedCopayerIdsArray[i]] = true;
   }
 };
+
+
 
 module.exports = Network;
