@@ -1,5 +1,6 @@
 'use strict';
 var chai = chai || require('chai');
+var sinon = require('sinon');
 var should = chai.should();
 var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 var copay = copay || require('../copay');
@@ -153,6 +154,7 @@ describe('Storage model', function() {
       s.set('1', "hola", 'juan', function() {
         s.set('2', "hola", 'juan', function() {
           s.setName(1, 'hola', function() {
+
             s.getWallets(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
@@ -168,7 +170,36 @@ describe('Storage model', function() {
         });
       });
     });
-  }); describe('#deleteWallet', function() {
+    it('should retreive wallets from storage (with delay)', function(done) {
+      s.set('1', "hola", 'juan', function() {
+        s.set('2', "hola", 'juan', function() {
+          s.setName(1, 'hola', function() {
+
+            var orig = s.getName.bind(s);
+            s.getName = function(wid, cb) {
+              setTimeout(function() { 
+                orig(wid, cb);
+              },1);
+            };
+
+            s.getWallets(function(ws) {
+              ws[0].should.deep.equal({
+                id: '1',
+                name: 'hola',
+              });
+              ws[1].should.deep.equal({
+                id: '2',
+                name: undefined
+              });
+              done();
+            });
+          });
+        });
+      });
+    });
+  }); 
+  
+  describe('#deleteWallet', function() {
     it('should fail to delete a unexisting wallet', function(done) {
       s.set('1', "hola", 'juan', function() {
         s.set('2', "hola", 'juan', function() {
