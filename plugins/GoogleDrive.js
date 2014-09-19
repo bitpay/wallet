@@ -172,7 +172,9 @@ GoogleDrive.prototype.setItem = function(k, v, cb) {
         // console.log('[googleDrive.js.148:args:]', args); //TODO
 
       var request = gapi.client.request(args);
-      request.execute(cb);
+      request.execute(function(ret) {
+        return cb(ret.kind === 'drive#file' ? null : new Error('error saving file on drive'));
+      });
     });
   });
 };
