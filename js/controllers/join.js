@@ -130,6 +130,8 @@ angular.module('copayApp.controllers').controller('JoinController',
               notification.error('Network Error', 'Wallet network configuration missmatch');
             else if (err === 'badSecret')
               notification.error('Bad secret', 'The secret string you entered is invalid');
+            else if (err === 'connectionError')
+              notification.error('Networking Error', 'Could not connect to the Insight server. Check your settings and network configuration');
             else
               notification.error('Unknown error');
             controllerUtils.onErrorDigest();
