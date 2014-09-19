@@ -55,10 +55,13 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $rootScope.wallet = w;
-        if ($rootScope.pendingPayment) {
-          $location.path('send');
-        } else {
-          $location.path('receive');
+        if ($rootScope.initialConnection) {
+          $rootScope.initialConnection = false;
+          if ($rootScope.pendingPayment) {
+            $location.path('send');
+          } else {
+            $location.path('receive');
+          }
         }
       });
 
@@ -137,6 +140,7 @@ angular.module('copayApp.services')
       uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
+      $rootScope.initialConnection = true;
       $rootScope.reconnecting = false;
       $rootScope.isCollapsed = true;
       $rootScope.$watch('txAlertCount', function(txAlertCount) {
