@@ -188,7 +188,6 @@ Storage.prototype.getWalletIds = function(cb) {
   preconditions.checkArgument(cb);
   var walletIds = [];
   var uniq = {};
-
   this.storage.allKeys(function(keys) {
     for (var ii in keys) {
       var key = keys[ii];
