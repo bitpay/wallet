@@ -223,23 +223,19 @@ Storage.prototype.getWallets = function(cb) {
     if (!l)
       return cb([]);
 
-    for (var ii in ids) {
-      // Create a closure for async calls.
-      (function() {
-        var id = ids[ii];
-        self.getName(id, function(name) {
-          wallets.push({
-            id: id,
-            name: name,
-          });
-          if (++i == l) {
-            self.wListCache.data = wallets;
-            self.wListCache.ts = Date.now() + CACHE_DURATION;
-            return cb(wallets);
-          }
+    _.each(ids, function(id) {
+      self.getName(id, function(name) {
+        wallets.push({
+          id: id,
+          name: name,
         });
-      })();
-    }
+        if (++i == l) {
+          self.wListCache.data = wallets;
+          self.wListCache.ts = Date.now() + CACHE_DURATION;
+          return cb(wallets);
+        }
+      });
+    });
   });
 };
 
