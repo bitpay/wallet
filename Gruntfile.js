@@ -10,9 +10,31 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-release');
 
   // Project Configuration
   grunt.initConfig({
+    release: {
+      options: {
+        bump: true,
+        file: 'package.json',
+        add: true,
+        commit: true,
+        tag: true,
+        push: true,
+        pushTags: true,
+        npm: false,
+        npmtag: true,
+        tagName: 'v<%= version %>',
+        commitMessage: 'New release v<%= version %>',
+        tagMessage: 'Version <%= version %>',
+        github: { 
+          repo: 'bitpay/copay',
+          usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username 
+          passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains Github password
+        }
+      }
+    },
     shell: {
       prod: {
         options: {
