@@ -31,7 +31,7 @@ PluginManager.prototype._register = function(obj, name) {
   var type = obj.type;
   var kind = PluginManager.TYPE[type];
 
-  preconditions.checkArgument(kind, 'Plugin has unkown type' + name);
+  preconditions.checkArgument(kind, 'Plugin has unknown type' + name);
   preconditions.checkState(kind !== PluginManager.KIND_UNIQUE || !this.registered[type], 'Plugin kind already registered: ' + name);
 
   if (kind === PluginManager.KIND_UNIQUE) {
