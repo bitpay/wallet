@@ -7,7 +7,7 @@ angular.module('copayApp.services').factory('pluginManager', function(angularLoa
   for(var ii in scripts){
     var src = scripts[ii].src;
 
-    log.info('\tLoading ',src); //TODO
+    console.log('\tLoading ',src); //TODO
     angularLoad.loadScript(src)
       .then(scripts[ii].then || null)
       .catch(function() {
