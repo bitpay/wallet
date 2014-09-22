@@ -371,6 +371,10 @@ WalletFactory.prototype.joinCreateSession = function(secret, nickname, passphras
     connectedOnce = true;
   });
 
+  joinNetwork.on('connect_error', function() {
+    return cb('connectionError');
+  });
+
   joinNetwork.on('serverError', function() {
     return cb('joinError');
   });
