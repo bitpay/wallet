@@ -88,7 +88,8 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
-            ctrl.$setValidity('walletSecret', Boolean(walletFactory.decodeSecret(value)));
+            var a = new Address(value);
+            ctrl.$setValidity('walletSecret', !a.isValid() && Boolean(walletFactory.decodeSecret(value)));
             return value;
           };
 
