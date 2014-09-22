@@ -64,7 +64,7 @@ function Wallet(opts) {
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
   ].forEach(function(k) {
-    preconditions.checkArgument(!_.isUndefined(opts[k]), 'missing required option for Wallet: ' + k);
+    preconditions.checkArgument(!_.isUndefined(opts[k]), 'MISSOPT: missing required option for Wallet: ' + k);
     self[k] = opts[k];
   });
 
@@ -822,21 +822,28 @@ Wallet.prototype.getRegisteredPeerIds = function() {
  * @emits locked - in case the wallet is opened in another instance
  */
 Wallet.prototype.keepAlive = function() {
-  try {
-    this.lock.keepAlive();
-  } catch (e) {
-    log.debug(e);
-    this.emit('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
-  }
+  var self = this;
+
+  this.lock.keepAlive(function(err) {
+    if (err) {
+      log.debug(err);
+      self.emit('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
+    }
+  });
 };
 
 /**
  * @desc Store the wallet's state
+ * @param {function} callback (err)
  */
-Wallet.prototype.store = function() {
+Wallet.prototype.store = function(cb) {
+  var self = this;
   this.keepAlive();
-  this.storage.setFromObj(this.id, this.toObj());
-  log.debug('Wallet stored');
+  this.storage.setFromObj(this.id, this.toObj(), function(err) {
+    log.debug('Wallet stored');
+    if (cb) 
+      cb(err);
+  });
 };
 
 /**
@@ -878,7 +885,7 @@ Wallet.prototype.toObj = function() {
  */
 Wallet.fromObj = function(o, storage, network, blockchain) {
 
-  // TODO: What is this supposed to do?
+  // clone opts
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
@@ -2342,11 +2349,14 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
 /**
  * @desc Closes the wallet and disconnects all services
  */
-Wallet.prototype.close = function() {
+Wallet.prototype.close = function(cb) {
+  var self =this;
   log.debug('## CLOSING');
-  this.lock.release();
-  this.network.cleanUp();
-  this.blockchain.destroy();
+  this.lock.release(function() {
+    self.network.cleanUp();
+    self.blockchain.destroy();
+    if (cb) return cb();
+  });
 };
 
 /**

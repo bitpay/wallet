@@ -36,5 +36,4 @@ describe('Passphrase model', function() {
       done();
   	});
   });
-
 });

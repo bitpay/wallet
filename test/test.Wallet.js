@@ -13,7 +13,7 @@ if (is_browser) {
 var copayConfig = require('../config');
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
-var Storage = require('./mocks/FakeStorage');
+var Storage = copay.Storage;
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
 var Builder = require('./mocks/FakeBuilder');
@@ -28,6 +28,7 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
+  storage: require('./mocks/FakeLocalStorage').storageParams,
 };
 
 var getNewEpk = function() {
@@ -81,6 +82,7 @@ describe('Wallet model', function() {
     });
 
     var storage = new Storage(walletConfig.storage);
+    storage.setPassphrase('xxx');
     var network = new Network(walletConfig.network);
     var blockchain = new Blockchain(walletConfig.blockchain);
     c.storage = storage;
@@ -341,8 +343,10 @@ describe('Wallet model', function() {
     // non stored options
     o.opts.reconnectDelay = 100;
 
+    var s = new Storage(walletConfig.storage);
+    s.setPassphrase('xxx');
     var w2 = Wallet.fromObj(o,
-      new Storage(walletConfig.storage),
+      s,
       new Network(walletConfig.network),
       new Blockchain(walletConfig.blockchain));
     should.exist(w2);

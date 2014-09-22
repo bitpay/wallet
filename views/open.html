@@ -1,9 +1,13 @@
 <div class="open" ng-controller="OpenController">
-  <div data-alert class="loading-screen" ng-show="loading && !failure">
+  <div data-alert class="loading-screen" ng-show="retreiving">
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
+    Retreiving information from storage...
+  </div>
+  <div data-alert class="loading-screen" ng-show="loading && !failure && !retreiving">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     <span translate>Connecting...</span>
   </div>
-  <div class="row" ng-show="!loading">
+  <div class="row" ng-show="!loading && !retreiving">
     <div class="large-4 columns logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>

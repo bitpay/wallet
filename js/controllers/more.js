@@ -25,6 +25,7 @@ angular.module('copayApp.controllers').controller('MoreController',
       value: 100000000,
       decimals: 8
     }];
+
     $scope.selectedAlternative = {
       name: w.settings.alternativeName,
       isoCode: w.settings.alternativeIsoCode

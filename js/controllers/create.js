@@ -86,8 +86,9 @@ angular.module('copayApp.controllers').controller('CreateController',
           privateKeyHex: $scope.private,
           networkName: $scope.networkName,
         };
-        var w = walletFactory.create(opts);
-        controllerUtils.startNetwork(w, $scope);
+        walletFactory.create(opts, function(err, w) {
+          controllerUtils.startNetwork(w, $scope);
+        });
       });
     };
 

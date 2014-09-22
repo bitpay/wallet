@@ -49,6 +49,28 @@ var defaultConfig = {
     updateFrequencySeconds: 60 * 60
   },
 
+  verbose: 1,
+
+  plugins: {
+    LocalStorage: true,
+    //GoogleDrive: true,
+  },
+
+  GoogleDrive: {
+    home: 'copay',
+
+    /* 
+     * This clientId was generated at:
+     * https://console.developers.google.com/project
+     * To run Copay with Google Drive at your domain you need
+     * to generata your own Id.
+     */
+    // for localhost:3001 you can use  you can:
+    clientId: '232630733383-a35gcnovnkgka94394i88gq60vtjb4af.apps.googleusercontent.com',
+
+    // for copay.io:
+    // clientId: '1036948132229-biqm3b8sirik9lt5rtvjo9kjjpotn4ac.apps.googleusercontent.com',
+  },
 };
 if (typeof module !== 'undefined')
   module.exports = defaultConfig;

@@ -6,6 +6,8 @@
 var sinon = require('sinon');
 var preconditions = require('preconditions').singleton();
 
+beforeEach(angular.mock.module('copayApp'));
+
 describe("Unit: Walletfactory Service", function() {
   beforeEach(angular.mock.module('copayApp.services'));
   it('should contain a walletFactory service', inject(function(walletFactory) {
