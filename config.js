@@ -2,7 +2,7 @@
 var defaultConfig = {
   defaultLanguage: 'en',
   // DEFAULT network (livenet or testnet)
-  networkName: 'testnet',
+  networkName: 'livenet',
   logLevel: 'info',
 
 

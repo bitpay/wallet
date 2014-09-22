@@ -40,10 +40,6 @@
                   </p>
                 </div>
 
-                <div class="text-left line-sidebar-t">
-                  <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
-                  <label for="network-name" translate>Use test network</label>
-                </div>
               </div>
 
               <a class="expand small" ng-click="hideAdv=!hideAdv">
@@ -53,8 +49,11 @@
                 <span translate>advanced options</span>
               </a>
               <div ng-hide="hideAdv" class="m10t">
+                <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
+                <label for="network-name" translate>Use test network</label>
+
                 <p>
-                  <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
+                <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
               </div>
 
             </div>
