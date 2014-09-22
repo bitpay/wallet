@@ -26,7 +26,7 @@ describe("Unit: controllerUtils", function() {
     var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
     var a = {};
     a[Waddr] = 100;
-    //SATs 
+    //SATs
     $rootScope.wallet.set(100000001, 90000002, a);
 
     //retuns values in DEFAULT UNIT(bits)
@@ -124,17 +124,23 @@ describe('Unit: Rate Service', function() {
     });
   }));
   it('should be possible to ask for conversion from fiat',
-    inject(function(rateService) {
-      rateService.whenAvailable(function() {
-        (1).should.equal(rateService.fromFiat(2, 'LOL'));
-      });
-    })
+    function(done) {
+      inject(function(rateService) {
+        rateService.whenAvailable(function() {
+          (1e8).should.equal(rateService.fromFiat(2, 'LOL'));
+          done();
+        });
+      })
+    }
   );
   it('should be possible to ask for conversion to fiat',
-    inject(function(rateService) {
-      rateService.whenAvailable(function() {
-        (2).should.equal(rateService.toFiat(1e8, 'LOL'));
-      });
-    })
+    function(done) {
+      inject(function(rateService) {
+        rateService.whenAvailable(function() {
+          (2).should.equal(rateService.toFiat(1e8, 'LOL'));
+          done();
+        });
+      })
+    }
   );
 });
