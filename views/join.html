@@ -81,11 +81,12 @@
             </div>
 
             <a class="expand small"  ng-click="hideAdv=!hideAdv">
+              <i class="fi-widget m3r"></i>
               <span translate ng-hide="!hideAdv">Show</span> 
               <span translate ng-hide="hideAdv">Hide</span> 
               <span translate>advanced options</span>
             </a>
-            <div ng-hide="hideAdv">
+            <div ng-hide="hideAdv" class="m10t">
               <p>
               <input type="text" 
               placeholder="BIP32 master extended private key (hex)"

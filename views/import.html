@@ -25,13 +25,14 @@
             placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
 
             <a class="expand small"  ng-click="hideAdv=!hideAdv">
+      		  <i class="fi-widget m3r"></i>
               <span translate ng-hide="!hideAdv">Show</span> 
               <span translate ng-hide="hideAdv">Hide</span> 
               <span translate>advanced options</span>
             </a>
 
 
-            <div ng-hide="hideAdv">
+            <div ng-hide="hideAdv" class="m10t">
               <label>
               <input type="checkbox" class="form-control"
               name="skipPublicKeyRing" ng-model="skipPublicKeyRing"> 
