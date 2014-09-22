@@ -1469,7 +1469,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     log.debug('You are currently on this BTC network:', network);
     log.debug('The server sent you a message:', memo);
 
-    return cb(ntxid, merchantData);
+    return cb(null, ntxid, merchantData);
   });
 };
 
