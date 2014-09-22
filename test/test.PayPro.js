@@ -684,7 +684,8 @@ describe('PayPro (in Wallet) model', function() {
       var req = w.paymentRequests[options.uri];
       should.exist(req);
       delete w.paymentRequests[options.uri];
-      w.receivePaymentRequest(options, req.pr, function(ntxid, merchantData) {
+      w.receivePaymentRequest(options, req.pr, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
         w._ntxid = ntxid;
@@ -713,7 +714,8 @@ describe('PayPro (in Wallet) model', function() {
       w.createPaymentTx({
         uri: uri,
         memo: memo
-      }, function(ntxid, merchantData) {
+      }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
         if (w.isShared()) {
@@ -744,7 +746,8 @@ describe('PayPro (in Wallet) model', function() {
         uri = address.split(/\s+/)[1];
       }
 
-      w.createPaymentTx({ uri: uri, memo: commentText }, function(ntxid, merchantData) {
+      w.createPaymentTx({ uri: uri, memo: commentText }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         if (w.isShared()) {
           should.exist(ntxid);
           should.exist(merchantData);
@@ -765,7 +768,8 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(ntxid, merchantData) {
+      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         if (w.isShared()) {
           should.exist(ntxid);
           should.exist(merchantData);
@@ -785,7 +789,8 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(ntxid, merchantData) {
+      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
 
@@ -821,7 +826,8 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(ntxid, merchantData) {
+      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
 
@@ -848,7 +854,8 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(ntxid, merchantData) {
+      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
 
@@ -874,7 +881,8 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(ntxid, merchantData) {
+      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+        should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
 
