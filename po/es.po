@@ -66,10 +66,6 @@ msgstr "Importe en"
 msgid "Are you sure to delete this wallet from this computer?"
 msgstr "¿Estas seguro de borrar este monedero de tu computadora?"
 
-#: views/join.html
-msgid "Authenticating and looking for peers..."
-msgstr "Autenticando y buscando compañeros..."
-
 #: views/create.html views/import.html views/join.html views/open.html
 #: views/settings.html views/warning.html views/errors/404.html
 msgid "Back"
@@ -134,6 +130,10 @@ msgstr "Cerrar"
 #: views/transactions.html
 msgid "Confirmations"
 msgstr "Confirmaciones"
+
+#: views/join.html
+msgid "Connecting to Insight Wallet Server..."
+msgstr "Conectando al Servidor Insight..."
 
 #: views/open.html
 msgid "Connecting..."
@@ -405,7 +405,7 @@ msgstr "Sin propuestas de transacciones aún."
 
 #: views/transactions.html
 msgid "No transactions yet."
-msgstr "Aún no hay transacciones."
+msgstr "Sin propuestas de transacciones aún."
 
 #: views/modals/address-book.html
 msgid "Not valid"
@@ -499,10 +499,6 @@ msgstr "Por favor, selecciona el archivo de copia de seguridad"
 #: views/uri-payment.html
 msgid "Preparing payment..."
 msgstr "Preparando pago..."
-
-#: views/join.html
-msgid "Private Key (Hex)"
-msgstr "Clave Privada (Hex)"
 
 #: views/includes/transaction.html
 msgid "Proposal ID"
@@ -928,6 +924,16 @@ msgstr "deben unirse"
 #: views/includes/transaction.html
 msgid "{{tx.missingSignatures}} signatures missing"
 msgstr "Faltan {{tx.missingSignatures}} firmas"
+
+#, fuzzy
+#~ msgid "<em><strong>No transactions yet.</strong></em>"
+#~ msgstr "Aún no hay transacciones."
+
+#~ msgid "Authenticating and looking for peers..."
+#~ msgstr "Autenticando y buscando compañeros..."
+
+#~ msgid "Private Key (Hex)"
+#~ msgstr "Clave Privada (Hex)"
 
 #~ msgid "Scan Ended"
 #~ msgstr "Búsqueda Finalizada"
