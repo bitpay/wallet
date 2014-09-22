@@ -64,7 +64,9 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: [
-          'js/models/**/*.js'
+          'js/models/**/*.js',
+          'js/models/*.js',
+          'plugins/*.js',
         ],
         tasks: ['shell:dev']
       },
@@ -136,7 +138,9 @@ module.exports = function(grunt) {
           'lib/ng-idle/angular-idle.min.js',
           'lib/angular-foundation/mm-foundation.min.js',
           'lib/angular-foundation/mm-foundation-tpls.min.js',
-          'lib/angular-gettext/dist/angular-gettext.min.js'
+          'lib/angular-gettext/dist/angular-gettext.min.js',
+          'lib/angular-load/angular-load.min.js'
+          // If you add libs here, remember to add it too to karma.conf
         ],
         dest: 'lib/angularjs-all.js'
       },
@@ -150,7 +154,7 @@ module.exports = function(grunt) {
           'js/controllers/*.js',
           'js/translations.js',
           'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
-          'js/init.js'
+          'js/init.js',
         ],
         dest: 'js/copayMain.js'
       }
@@ -198,7 +202,7 @@ module.exports = function(grunt) {
     },
     jsdoc: {
       dist : {
-        src: ['js/models/core/*.js'],
+        src: ['js/models/core/*.js', 'js/models/*.js', 'plugins/*.js'],
         options: {
           destination: 'doc',
           configure: 'jsdoc.conf.json',

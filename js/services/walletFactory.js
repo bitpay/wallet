@@ -1,3 +1,5 @@
 'use strict';
+angular.module('copayApp.services').factory('walletFactory', function(pluginManager){ 
+  return new copay.WalletFactory(config, copay.version, pluginManager);
+});
 
-angular.module('copayApp.services').value('walletFactory', new copay.WalletFactory(config, copay.version));

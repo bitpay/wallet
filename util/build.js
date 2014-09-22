@@ -83,6 +83,19 @@ var createBundle = function(opts) {
   b.require('./js/models/core/HDPath', {
     expose: '../js/models/core/HDPath'
   });
+  b.require('./js/models/core/PluginManager', {
+    expose: '../js/models/core/PluginManager'
+  });
+
+  if (!opts.disablePlugins) {
+    b.require('./plugins/GoogleDrive', {
+      expose: '../plugins/GoogleDrive'
+    });
+    b.require('./plugins/LocalStorage', {
+      expose: '../plugins/LocalStorage'
+    });
+  }
+ 
   b.require('./config', {
     expose: '../config'
   });
@@ -91,9 +104,6 @@ var createBundle = function(opts) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
-    b.require('./test/mocks/FakeStorage', {
-      expose: './mocks/FakeStorage'
-    });
     b.require('./test/mocks/FakeLocalStorage', {
       expose: './mocks/FakeLocalStorage'
     });

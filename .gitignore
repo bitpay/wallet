@@ -79,3 +79,5 @@ dist/*.tar.gz
 dist/*.exe
 
 doc/
+/node_modules
+/*-cov
