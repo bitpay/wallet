@@ -319,6 +319,7 @@ describe("Unit: Controllers", function() {
   describe("Unit: Version Controller", function() {
     var scope, $httpBackendOut;
     var GH = 'https://api.github.com/repos/bitpay/copay/tags';
+    beforeEach(angular.mock.module('copayApp'));
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)

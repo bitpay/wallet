@@ -109,7 +109,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
-        var message = 'Unable to send transaction proposal.';
+        var message = 'Unable to send transaction proposal';
         notification.error('Error', message);
         return;
       }
@@ -152,7 +152,7 @@ angular.module('copayApp.controllers').controller('SendController',
             message += ' Message from server: ' + merchantData.ack.memo;
             message += ' For merchant: ' + merchantData.pr.pd.payment_url;
           }
-          notification.success('Success!', message);
+          notification.success('Success', message);
           $scope.loadTxs();
         } else {
           w.sendTx(ntxid, function(txid, merchantData) {
@@ -165,9 +165,9 @@ angular.module('copayApp.controllers').controller('SendController',
                 message += ' Message from server: ' + merchantData.ack.memo;
                 message += ' For merchant: ' + merchantData.pr.pd.payment_url;
               }
-              notification.success('Transaction broadcast', message);
+              notification.success('Transaction broadcasted', message);
             } else {
-              notification.error('Error', 'There was an error sending the transaction.');
+              notification.error('Error', 'There was an error sending the transaction');
             }
             $scope.loading = false;
             $scope.loadTxs();
@@ -421,7 +421,7 @@ angular.module('copayApp.controllers').controller('SendController',
           notification.error('Error', 'There was an error sending the transaction');
         } else {
           if (!merchantData) {
-            notification.success('Transaction broadcast', 'Transaction id: ' + txid);
+            notification.success('Transaction broadcasted', 'Transaction id: ' + txid);
           } else {
             var message = 'Transaction ID: ' + txid;
             if (merchantData.pr.ca) {

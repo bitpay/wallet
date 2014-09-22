@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils, notification, rateService) {
+  function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
 
     $scope.unitOpts = [{
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('MoreController',
       if (removed) {
         controllerUtils.updateBalance();
       }
-      notification.info('Tx Proposals Purged', removed + ' transaction proposal purged');
+      notification.info('Transactions Proposals Purged', removed + ' ' + $filter('translate')('transaction proposal purged'));
     };
 
     $scope.updateIndexes = function() {
@@ -88,7 +88,7 @@ angular.module('copayApp.controllers').controller('MoreController',
       w.updateIndexes(function(err) {
         notification.info('Scan Ended', 'Updating balance');
         if (err) {
-          notification.error('Error', 'Error updating indexes: ' + err);
+          notification.error('Error', $filter('translate')('Error updating indexes: ') + err);
         }
         controllerUtils.updateAddressList();
         controllerUtils.updateBalance(function() {

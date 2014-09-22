@@ -14,7 +14,7 @@
         <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
-              <label for="address"><span translate>To:</span>
+              <label for="address"><span translate>To</span>
                 <small translate ng-hide="!sendForm.address.$pristine || address">required</small>
                 <small translate class="is-valid" ng-show="!sendForm.address.$invalid && address">valid!</small>
                 <small translate class="has-error" ng-show="sendForm.address.$invalid && address">not valid</small>
@@ -181,7 +181,7 @@
           <tr>
             <th translate>Label</th>
             <th translate>Address</th>
-            <th class="hide-for-small-only" translate>Creator</th>
+            <th ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
             <th class="hide-for-small-only" translate>Date</th>
             <th class="hide-for-small-only">&nbsp;</th>
           </tr>
@@ -192,14 +192,14 @@
           ng-class="{'addressbook-disabled': info.hidden}">
           <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
           <td class="size-12">{{addr}} <span class="btn-copy" clip-copy="addr"></span></td>
-          <td class="hide-for-small-only">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
+          <td ng-show="$root.wallet.isShared()" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
           <td class="hide-for-small-only"><time>{{info.createdTs | amCalendar}}</time></td>
           <td class="hide-for-small-only" width="5"><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
               'Enable' : 'Disable'}}</a></td>
         </tr>
         </tbody>
       </table>
-      <button translate class="button tiny primary text-center" ng-click="openAddressBookModal()">Add New Entry</button>
+      <button translate class="button tiny primary text-center" ng-click="openAddressBookModal()">Add</button>
     </div>
   </div>
 </div>
