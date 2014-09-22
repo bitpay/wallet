@@ -202,8 +202,7 @@ angular.module('copayApp.services')
           $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
           $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
           $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
-
-
+          $rootScope.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
           return cb ? cb() : null;
         });
       });
