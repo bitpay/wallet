@@ -1591,4 +1591,27 @@ describe('Wallet model', function() {
     should.exist(n.networkNonce);
   });
 
+  it('should emit notification when tx received', function(done) {
+    var w = cachedCreateW2();
+    w.blockchain.removeAllListeners = sinon.stub();
+    var spy = sinon.spy(w, 'emit');
+
+    w.generateAddress(false, function(addr1) {
+      w.generateAddress(true, function(addr2) {
+        w.blockchain.on = sinon.stub().withArgs('tx').yields({
+          address: addr1.toString(),
+        });
+        w._setBlockchainListeners();
+        spy.calledWith('tx', addr1.toString(), false).should.be.true;
+
+        w.blockchain.on = sinon.stub().withArgs('tx').yields({
+          address: addr2.toString(),
+        });
+        w._setBlockchainListeners();
+        spy.calledWith('tx', addr2.toString(), true).should.be.true;
+        done();
+      });
+    });
+  });
+
 });
