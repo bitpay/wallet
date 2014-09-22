@@ -457,6 +457,9 @@ describe("Unit: Controllers", function() {
     it('should exist', function() {
       should.exist(what);
     });
+    it('import status', function() {
+      expect(scope.importStatus).equal('Importing wallet - Reading backup...');
+    });
   });
 
   describe('Open Controller', function() {
