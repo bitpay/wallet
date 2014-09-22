@@ -19,7 +19,7 @@ BackupService.prototype.download = function(wallet) {
   var copayerName = this.getCopayer(wallet);
   var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
 
-  this.notifications.success('Backup created', 'Encrypted backup file saved.');
+  this.notifications.success('Backup created', 'Encrypted backup file saved');
   var blob = new Blob([ew], {
     type: 'text/plain;charset=utf-8'
   });

@@ -24,8 +24,8 @@
                 <input id="Name" type="text" placeholder="{{'Name'|translate}}" class="form-control" ng-model="$parent.myNickname">
               </div>
               <div>
-                <label for="walletPassword">
-                  <span translate>Your Password</span> 
+                <label translate for="walletPassword">
+                  Your password 
                 </label>
                 <input id="walletPassword" type="password" placeholder="{{'Choose a password'|translate}}" class="form-control" ng-model="$parent.walletPassword" name="walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: 
                   <i>{{passwordStrength}}</i><br/><span
@@ -42,7 +42,7 @@
 
                 <div class="text-left line-sidebar-t">
                   <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-click="changeNetwork()" ng-checked="networkName == 'testnet' ? true : false">
-                  <label for="network-name">Use test network</label>
+                  <label for="network-name" translate>Use test network</label>
                 </div>
               </div>
 
@@ -53,7 +53,7 @@
               </a>
               <div ng-hide="hideAdv">
                 <p>
-                  <input type="text" placeholder="{{'Private Key (Hex)'|translate}}" name="private" ng-model="private">
+                  <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
               </div>
 
             </div>
