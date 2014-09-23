@@ -1,6 +1,7 @@
 'use strict';
 var chai = chai || require('chai');
 var sinon = require('sinon');
+var _ = require('underscore');
 var should = chai.should();
 var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 var copay = copay || require('../copay');
@@ -11,65 +12,65 @@ var timeStamp = Date.now();
 
 describe('Storage model', function() {
 
-    var s;
-    beforeEach(function() {
-      s = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      s.setPassphrase('mysupercoolpassword');
-      s.storage.clear();
-      s.sessionStorage.clear();
-    });
+  var s;
+  beforeEach(function() {
+    s = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    s.setPassphrase('mysupercoolpassword');
+    s.storage.clear();
+    s.sessionStorage.clear();
+  });
 
 
-    it('should create an instance', function() {
-      var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      should.exist(s2);
+  it('should create an instance', function() {
+    var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    should.exist(s2);
+  });
+  it('should fail when encrypting without a password', function() {
+    var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    (function() {
+      s2.set(fakeWallet, timeStamp, 1, function() {});
+    }).should.throw('NOPASSPHRASE');
+  });
+  it('should be able to encrypt and decrypt', function(done) {
+    s._write(fakeWallet + timeStamp, 'value', function() {
+      s._read(fakeWallet + timeStamp, function(v) {
+        v.should.equal('value');
+        done();
+      });
     });
-    it('should fail when encrypting without a password', function() {
-      var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      (function() {
-        s2.set(fakeWallet, timeStamp, 1, function() {});
-      }).should.throw('NOPASSPHRASE');
+  });
+  it('should be able to set a value', function(done) {
+    s.set(fakeWallet, timeStamp, 1, function() {
+      done();
     });
-    it('should be able to encrypt and decrypt', function(done) {
-      s._write(fakeWallet + timeStamp, 'value', function() {
-        s._read(fakeWallet + timeStamp, function(v) {
-          v.should.equal('value');
+  });
+  var getSetData = [
+    1, 1000, -15, -1000,
+    0.1, -0.5, -0.5e-10, Math.PI,
+    'hi', 'auydoaiusyodaisudyoa', '0b5b8556a0c2ce828c9ccfa58b3dd0a1ae879b9b',
+    '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC', 'OP_DUP OP_HASH160 80ad90d4035', [1, 2, 3, 4, 5, 6], {
+      x: 1,
+      y: 2
+    }, {
+      x: 'hi',
+      y: null
+    }, {
+      a: {},
+      b: [],
+      c: [1, 2, 'hi']
+    },
+    null
+  ];
+  getSetData.forEach(function(obj) {
+    it('should be able to set a value and get it for ' + JSON.stringify(obj), function(done) {
+      s.set(fakeWallet, timeStamp, obj, function() {
+        s.get(fakeWallet, timeStamp, function(obj2) {
+          JSON.stringify(obj2).should.equal(JSON.stringify(obj));
           done();
         });
       });
     });
-    it('should be able to set a value', function(done) {
-      s.set(fakeWallet, timeStamp, 1, function() {
-        done();
-      });
-    });
-    var getSetData = [
-      1, 1000, -15, -1000,
-      0.1, -0.5, -0.5e-10, Math.PI,
-      'hi', 'auydoaiusyodaisudyoa', '0b5b8556a0c2ce828c9ccfa58b3dd0a1ae879b9b',
-      '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC', 'OP_DUP OP_HASH160 80ad90d4035', [1, 2, 3, 4, 5, 6], {
-        x: 1,
-        y: 2
-      }, {
-        x: 'hi',
-        y: null
-      }, {
-        a: {},
-        b: [],
-        c: [1, 2, 'hi']
-      },
-      null
-    ];
-    getSetData.forEach(function(obj) {
-        it('should be able to set a value and get it for ' + JSON.stringify(obj), function(done) {
-            s.set(fakeWallet, timeStamp, obj, function() {
-                s.get(fakeWallet, timeStamp, function(obj2) {
-                    JSON.stringify(obj2).should.equal(JSON.stringify(obj));
-                    done();
-                });
-            });
-        });
-    });
+  });
 
   describe('#export', function() {
     it('should export the encrypted wallet', function(done) {
@@ -177,9 +178,9 @@ describe('Storage model', function() {
 
             var orig = s.getName.bind(s);
             s.getName = function(wid, cb) {
-              setTimeout(function() { 
+              setTimeout(function() {
                 orig(wid, cb);
-              },1);
+              }, 1);
             };
 
             s.getWallets(function(ws) {
@@ -197,8 +198,8 @@ describe('Storage model', function() {
         });
       });
     });
-  }); 
-  
+  });
+
   describe('#deleteWallet', function() {
     it('should fail to delete a unexisting wallet', function(done) {
       s.set('1', "hola", 'juan', function() {
@@ -226,6 +227,30 @@ describe('Storage model', function() {
             });
           });
         });
+      });
+    });
+  });
+
+  describe('#readWallet', function() {
+    it('should read wallet', function(done) {
+      var data = {
+        'id1::a': 'x',
+        'id1::b': 'y',
+        'id2::c': 'z',
+      };
+      s.storage.allKeys = sinon.stub().yields(_.keys(data));
+      sinon.stub(s, '_read', function(k, cb) {
+        return cb(data[k]);
+      });
+      s.readWallet('id1', function(w) {
+        w.should.exist;
+        w.hasOwnProperty('a').should.be.true;
+        w.hasOwnProperty('b').should.be.true;
+        w.hasOwnProperty('c').should.be.false;
+        w.a.should.equal('x');
+        w.b.should.equal('y');
+        s._read.restore();
+        done();
       });
     });
   });
@@ -286,7 +311,7 @@ describe('Storage model', function() {
       var wo = s.import(encryptedLegacy1);
       should.not.exist(wo);
     });
- 
+
     it('should be able to decrypt an old backup', function() {
       s.setPassphrase(legacyPassword1);
       var wo = s.import(encryptedLegacy1);

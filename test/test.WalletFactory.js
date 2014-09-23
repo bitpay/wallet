@@ -246,7 +246,7 @@ describe('WalletFactory model', function() {
 
   describe('#read', function() {
     it('should fail to read unexisting wallet', function(done) {
-      wf.storage.getMany = sinon.stub().yields({});
+      wf.storage.readWallet = sinon.stub().yields({});
 
       wf.read('id', [], function(err, w) {
         should.not.exist(w);
@@ -258,7 +258,7 @@ describe('WalletFactory model', function() {
       });
     });
     it('should fail to read broken wallet', function(done) {
-      wf.storage.getMany = sinon.stub().yields({
+      wf.storage.readWallet = sinon.stub().yields({
         'opts': 1
       });
       wf.read('id', [], function(err, w) {
@@ -272,7 +272,7 @@ describe('WalletFactory model', function() {
     });
     it('should read existing wallet', function(done) {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.storage.getMany = sinon.stub().yields({
+      wf.storage.readWallet = sinon.stub().yields({
         'opts': 1
       });
       wf.fromObj = sinon.stub().returns('ok');
