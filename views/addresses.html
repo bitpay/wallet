@@ -4,7 +4,9 @@
       <span translate>Addresses</span>
       <span class="button primary small side-bar" ng-click="newAddr()" ng-disabled="loading"><i class="fi-plus"></i></span>
     </h1> 
-
+    <div ng-show="!addresses[0]">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+    </div>  
     <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
       <div class="large-12 medium-12">
         <div class="oh" ng-repeat="addr in addresses|removeEmpty">
@@ -50,8 +52,7 @@
       </div>
     </div>
 
-
-    <a class="secondary radius" ng-click="toggleShowAll()" ng-show="(addresses|removeEmpty).length == (addresses|removeEmpty).length">
+    <a class="secondary radius" ng-click="toggleShowAll()" ng-show="addrLength > 3">
       <span translate ng-if="!showAll">Show all</span>
       <span translate ng-if="showAll">Show less</span>
     </a>
