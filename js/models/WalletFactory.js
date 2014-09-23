@@ -153,10 +153,10 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
     err;
   var obj = {};
 
-  this.storage.getMany(walletId, Wallet.PERSISTED_PROPERTIES, function(ret) {
-    for (var ii in ret) {
-      obj[ii] = ret[ii];
-    }
+  this.storage.readWallet(walletId, function(ret) {
+    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+      obj[p] = ret[p];
+    });
 
     if (!_.any(_.values(obj)))
       return cb(new Error('Wallet not found'));

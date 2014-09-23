@@ -140,6 +140,23 @@ Storage.prototype._readHelper = function(walletId, k, cb) {
   });
 };
 
+Storage.prototype.readWallet = function(walletId, cb) {
+  var self = this;
+  this.storage.allKeys(function(allKeys) {
+    var obj = {};
+    var keys = _.filter(allKeys, function(k) {
+      if (k.indexOf(walletId + '::') === 0) return true;
+    });
+    var count = keys.length;
+    _.each(keys, function(k) {
+      self._read(k, function(v) {
+        obj[k.split('::')[1]] = v;
+        if (--count === 0) return cb(obj);
+      })
+    });
+  });
+};
+
 Storage.prototype.getMany = function(walletId, keys, cb) {
   preconditions.checkArgument(cb);
 
