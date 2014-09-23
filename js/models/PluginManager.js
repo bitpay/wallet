@@ -1,6 +1,6 @@
 'use strict';
 var preconditions = require('preconditions').singleton();
-var log = require('../../log');
+var log = require('../log');
 
 function PluginManager(config) {
   this.registered = {};

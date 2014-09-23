@@ -17,7 +17,7 @@ var Base58Check = bitcore.Base58.base58Check;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var Transaction = bitcore.Transaction;
-var log = require('../../log');
+var log = require('../log');
 
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
@@ -25,7 +25,7 @@ var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
 var WalletLock = require('./WalletLock');
-var copayConfig = require('../../../config');
+var copayConfig = require('../../config');
 
 /**
  * @desc
@@ -2382,7 +2382,7 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  * @desc Closes the wallet and disconnects all services
  */
 Wallet.prototype.close = function(cb) {
-  var self =this;
+  var self = this;
   log.debug('## CLOSING');
   this.lock.release(function() {
     self.network.cleanUp();
