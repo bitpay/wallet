@@ -94,7 +94,6 @@ Storage.prototype.getGlobal = function(k, cb) {
 // set value for key
 Storage.prototype.setGlobal = function(k, v, cb) {
   preconditions.checkArgument(cb);
-
   this.storage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v, cb);
 };
 
@@ -147,6 +146,7 @@ Storage.prototype.readWallet = function(walletId, cb) {
     var keys = _.filter(allKeys, function(k) {
       if (k.indexOf(walletId + '::') === 0) return true;
     });
+    if (keys.length === 0) return cb(null);
     var count = keys.length;
     _.each(keys, function(k) {
       self._read(k, function(v) {
@@ -154,6 +154,19 @@ Storage.prototype.readWallet = function(walletId, cb) {
         if (--count === 0) return cb(obj);
       })
     });
+  });
+};
+
+Storage.prototype.readWallet2 = function(walletId, cb) {
+  var self = this;
+  this.storage.allKeys(function(allKeys) {
+    var keys = _.filter(allKeys, function(k) {
+      if ((k === 'wallet::' + walletId) || k.indexOf('wallet::' + walletId) === 0) return true;
+    });
+    if (keys.length !== 1) throw new Error('WALLETNOTFOUND');
+    self._read(keys[0], function(v) {
+      return cb(v);
+    })
   });
 };
 
@@ -256,6 +269,28 @@ Storage.prototype.getWallets = function(cb) {
   });
 };
 
+Storage.prototype.getWallets2 = function(cb) {
+  var self = this;
+  var re = /wallet::([^_]+)(_?(.*))/;
+
+  this.storage.allKeys(function(allKeys) {
+    var wallets = _.compact(_.map(allKeys, function(key) {
+      if (key.indexOf('wallet::') !== 0)
+        return null;
+      var match = key.match(re);
+      if (match.length != 4)
+        return null;
+      return {
+        id: match[1],
+        name: match[3] ? match[3] : undefined,
+      };
+    }));
+
+    return cb(wallets);
+  });
+};
+
+
 Storage.prototype.deleteWallet = function(walletId, cb) {
   preconditions.checkArgument(walletId);
   preconditions.checkArgument(cb);
@@ -288,17 +323,32 @@ Storage.prototype.deleteWallet = function(walletId, cb) {
 
     }
   });
+};
 
+Storage.prototype.deleteWallet2 = function(walletId, cb) {
+  preconditions.checkArgument(walletId);
+  preconditions.checkArgument(cb);
 
+  var self = this;
+  this.getWallets2(function(wallets) {
+    var w = _.findWhere(wallets, {
+      id: walletId
+    });
+    if (!w)
+      return cb(new Error('WNOTFOUND: Wallet not found'));
+    self.removeGlobal('wallet::' + walletId + (w.name ? '_' + w.name : ''), function() {
+      return cb();
+    });
+  });
 };
 
 Storage.prototype.setLastOpened = function(walletId, cb) {
   this.setGlobal('lastOpened', walletId, cb);
-}
+};
 
 Storage.prototype.getLastOpened = function(cb) {
   this.getGlobal('lastOpened', cb);
-}
+};
 
 //obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj, cb) {
@@ -319,6 +369,17 @@ Storage.prototype.setFromObj = function(walletId, obj, cb) {
   }
 };
 
+Storage.prototype.setFromObj2 = function(walletId, obj, cb) {
+  preconditions.checkArgument(cb);
+  var self = this;
+
+  var key = 'wallet::' + walletId + ((obj.opts && obj.opts.name) ? '_' + obj.opts.name : '');
+  self._write(key, obj, function() {
+    return cb();
+  });
+};
+
+
 // remove all values
 Storage.prototype.clearAll = function(cb) {
   this.storage.clear(cb);
@@ -333,5 +394,6 @@ Storage.prototype.export = function(obj) {
   var string = JSON.stringify(obj);
   return this._encrypt(string);
 };
+
 
 module.exports = Storage;

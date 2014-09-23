@@ -549,7 +549,6 @@ describe('WalletFactory model', function() {
 
     });
   });
-
 });
 
 
