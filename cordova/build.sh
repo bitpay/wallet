@@ -41,9 +41,8 @@ echo "${OpenColor}${Green}* Checking dependencies...${CloseColor}"
 command -v cordova >/dev/null 2>&1 || { echo >&2 "Cordova is not present, please install it: sudo npm -g cordova."; exit 1; }
 command -v xcodebuild >/dev/null 2>&1 || { echo >&2 "XCode is not present, install it or use [--android]."; exit 1; }
 
-
 # Create project dir
-if [[ CLEAR ]]
+if $CLEAR
 then
   if [ -d $PROJECT ]; then
     rm -rf $PROJECT
@@ -61,7 +60,7 @@ if [ ! -d $PROJECT ]; then
   cordova platforms add android
   checkOK
 
-  if [[ !SKIPIOS ]]; then
+  if [[ !$SKIPIOS ]]; then
     echo "${OpenColor}${Green}* Adding IOS platform... ${CloseColor}"
     cordova platforms add ios
     checkOK
@@ -113,11 +112,19 @@ checkOK
 cp android/config.xml $PROJECT/platforms/android/res/xml/config.xml
 checkOK
 
-if [[ !SKIPIOS ]]; then
-  cp -R ios/icons $PROJECT/platforms/ios/Copay/Resources/icons
+cp android/project.properties $PROJECT/platforms/android/project.properties
+checkOK
+
+cp -R android/res/* $PROJECT/platforms/android/res
+checkOK
+
+echo $SKIPIOS;
+if [[ !$SKIPIOS ]]; then
+  echo "Copiando IOS";
+  cp -R ios/icons/* $PROJECT/platforms/ios/Copay/Resources/icons
   checkOK
 
-  cp -R ios/splash $PROJECT/platforms/ios/Copay/Resources/splash
+  cp -R ios/splash/* $PROJECT/platforms/ios/Copay/Resources/splash
   checkOK
 fi
 

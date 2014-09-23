@@ -11,3 +11,7 @@
     $ cd cordova/project
     $ cordova run android
     $ cordova emulate ios
+
+## Build for release
+
+    $ cordova build android --release
