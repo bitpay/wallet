@@ -944,7 +944,6 @@ button, .button, p {
 }
 
 .addresses .list-addr contact {
-  margin-left: 42px;
   cursor: text;
 }
 
@@ -1155,6 +1154,10 @@ a.text-warning:hover {color: #FD7262;}
 
 .copayer-list-small-height {
   display: none;
+}
+
+fieldset legend {
+  background: transparent;
 }
 
 @media only screen and (min-width: 40.063em) {
