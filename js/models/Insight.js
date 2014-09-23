@@ -5,7 +5,7 @@ var async = require('async');
 var request = require('request');
 var bitcore = require('bitcore');
 var io = require('socket.io-client');
-var log = require('../../log');
+var log = require('../log');
 
 var EventEmitter = require('events').EventEmitter;
 var preconditions = require('preconditions').singleton();

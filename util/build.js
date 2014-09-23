@@ -58,33 +58,33 @@ var createBundle = function(opts) {
     expose: '../js/log'
   });
   //  b.external('bitcore');
-  b.require('./js/models/core/WalletFactory', {
-    expose: '../js/models/core/WalletFactory'
+  b.require('./js/models/WalletFactory', {
+    expose: '../js/models/WalletFactory'
   });
-  b.require('./js/models/core/Wallet');
-  b.require('./js/models/core/Wallet', {
-    expose: '../../js/models/core/Wallet'
+  b.require('./js/models/Wallet');
+  b.require('./js/models/Wallet', {
+    expose: '../../js/models/Wallet'
   });
-  b.require('./js/models/core/WalletLock', {
-    expose: '../js/models/core/WalletLock'
+  b.require('./js/models/WalletLock', {
+    expose: '../js/models/WalletLock'
   });
-  b.require('./js/models/blockchain/Insight', {
-    expose: '../js/models/blockchain/Insight'
+  b.require('./js/models/Insight', {
+    expose: '../js/models/Insight'
   });
-  b.require('./js/models/core/PrivateKey', {
-    expose: '../js/models/core/PrivateKey'
+  b.require('./js/models/PrivateKey', {
+    expose: '../js/models/PrivateKey'
   });
-  b.require('./js/models/core/PublicKeyRing', {
-    expose: '../js/models/core/PublicKeyRing'
+  b.require('./js/models/PublicKeyRing', {
+    expose: '../js/models/PublicKeyRing'
   });
-  b.require('./js/models/core/Passphrase', {
-    expose: '../js/models/core/Passphrase'
+  b.require('./js/models/Passphrase', {
+    expose: '../js/models/Passphrase'
   });
-  b.require('./js/models/core/HDPath', {
-    expose: '../js/models/core/HDPath'
+  b.require('./js/models/HDPath', {
+    expose: '../js/models/HDPath'
   });
-  b.require('./js/models/core/PluginManager', {
-    expose: '../js/models/core/PluginManager'
+  b.require('./js/models/PluginManager', {
+    expose: '../js/models/PluginManager'
   });
 
   if (!opts.disablePlugins) {
@@ -95,7 +95,7 @@ var createBundle = function(opts) {
       expose: '../plugins/LocalStorage'
     });
   }
- 
+
   b.require('./config', {
     expose: '../config'
   });

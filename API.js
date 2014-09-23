@@ -1,4 +1,4 @@
-var WalletFactory = require('./js/models/core/WalletFactory');
+var WalletFactory = require('./js/models/WalletFactory');
 
 var API = function(opts) {
   this._init(opts);

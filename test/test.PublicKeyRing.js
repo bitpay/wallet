@@ -6,7 +6,7 @@ var bitcore = bitcore || require('bitcore');
 var Address = bitcore.Address;
 var buffertools = bitcore.buffertools;
 
-var HDPath = require('../js/models/core/HDPath');
+var HDPath = require('../js/models/HDPath');
 
 try {
   var copay = require('copay'); //browser
@@ -21,10 +21,10 @@ var aMasterPubKey = 'tprv8ZgxMBicQKsPdSVTiWXEqCCzqRaRr9EAQdn5UVMpT9UHX67Dh1FmzEM
 
 var getNewEpk = function() {
   return new PrivateKey({
-    networkName: 'livenet',
-  })
-  .deriveBIP45Branch()
-  .extendedPublicKeyString();
+      networkName: 'livenet',
+    })
+    .deriveBIP45Branch()
+    .extendedPublicKeyString();
 }
 
 var createW = function(networkName) {
@@ -53,7 +53,7 @@ var createW = function(networkName) {
 };
 
 var cachedW;
-var getCachedW = function()  {
+var getCachedW = function() {
   if (!cachedW) {
     cachedW = createW();
   }
@@ -152,7 +152,7 @@ describe('PublicKeyRing model', function() {
         a.network().name.should.equal('livenet');
         if (i > 1) {
           w.getAddress(i - 1, isChange).toString().should
-          .not.equal(w.getAddress(i - 2, isChange).toString());
+            .not.equal(w.getAddress(i - 2, isChange).toString());
         }
       }
     });
@@ -193,9 +193,9 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for (var i = 0; i < 3; i++)
-    w.generateAddress(true, k.pub);
+      w.generateAddress(true, k.pub);
     for (var i = 0; i < 2; i++)
-    w.generateAddress(false, k.pub);
+      w.generateAddress(false, k.pub);
 
     w.getHDParams(k.pub).getChangeIndex().should.equal(3);
     w.getHDParams(k.pub).getReceiveIndex().should.equal(2);
@@ -258,9 +258,9 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
 
     for (var i = 0; i < 2; i++)
-    w.generateAddress(true, k.pub);
+      w.generateAddress(true, k.pub);
     for (var i = 0; i < 3; i++)
-    w.generateAddress(false, k.pub);
+      w.generateAddress(false, k.pub);
 
     var w2 = new PublicKeyRing({
       networkName: 'livenet',
@@ -327,7 +327,7 @@ describe('PublicKeyRing model', function() {
     });
 
     for (var i = 0; i < 5; i++)
-    w0.addCopayer(getNewEpk());
+      w0.addCopayer(getNewEpk());
 
     (function() {
       w0.merge(w);
@@ -441,11 +441,9 @@ describe('PublicKeyRing model', function() {
     };
     var pkr = new PublicKeyRing(config);
 
-    (function () 
-    {
+    (function() {
       PublicKeyRing.fromObj(pkr);
-    }
-    ).should.throw('bad data format: Did you use .toObj()?');  
+    }).should.throw('bad data format: Did you use .toObj()?');
   });
 
 
@@ -499,9 +497,9 @@ describe('PublicKeyRing model', function() {
     var amount = 2;
 
     for (var i = 0; i < amount; i++)
-    w.generateAddress(true, k.pub);
+      w.generateAddress(true, k.pub);
     for (var i = 0; i < amount; i++)
-    w.generateAddress(false, k.pub);
+      w.generateAddress(false, k.pub);
 
     var m = w.getRedeemScriptMap([
       'm/45\'/2147483647/1/0',

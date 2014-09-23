@@ -2,15 +2,15 @@
 
 var chai = chai || require('chai');
 var should = chai.should();
-var PrivateKey = require('../js/models/core/PrivateKey');
-var PublicKeyRing = require('../js/models/core/PublicKeyRing');
+var PrivateKey = require('../js/models/PrivateKey');
+var PublicKeyRing = require('../js/models/PublicKeyRing');
 
 var getNewEpk = function() {
   return new PrivateKey({
-    networkName: 'livenet',
-  })
-  .deriveBIP45Branch()
-  .extendedPublicKeyString();
+      networkName: 'livenet',
+    })
+    .deriveBIP45Branch()
+    .extendedPublicKeyString();
 }
 
 
