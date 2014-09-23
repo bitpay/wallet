@@ -45,6 +45,7 @@ function PublicKeyRing(opts) {
   this.copayerIds = [];
   this.copayersBackup = opts.copayersBackup || [];
   this.addressToPath = {};
+
 };
 
 /**
@@ -322,6 +323,8 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex
   return script;
 };
 
+
+
 /**
  * @desc
  * Get the address for a multisig based on the given params.
@@ -462,9 +465,11 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
   var ret = [];
   var self = this;
   var copayerIndex = pubkey && this.getCosigner(pubkey);
+
   this.indexes.forEach(function(index) {
     ret = ret.concat(self.getAddressesInfoForIndex(index, opts, copayerIndex));
   });
+
   return ret;
 };
 
@@ -489,7 +494,6 @@ PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
  */
 PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayerIndex) {
   opts = opts || {};
-
   var isOwned = index.copayerIndex === HDPath.SHARED_INDEX || index.copayerIndex === copayerIndex;
   var ret = [];
   var appendAddressInfo = function(address, isChange) {
