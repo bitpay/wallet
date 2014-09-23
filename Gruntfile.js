@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         tagName: 'v<%= version %>',
         commitMessage: 'New release v<%= version %>',
         tagMessage: 'Version <%= version %>',
-        github: { 
+        github: {
           repo: 'bitpay/copay',
           usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username 
           passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains Github password
@@ -201,8 +201,8 @@ module.exports = function(grunt) {
       },
     },
     jsdoc: {
-      dist : {
-        src: ['js/models/core/*.js', 'js/models/*.js', 'plugins/*.js'],
+      dist: {
+        src: ['js/models/*.js', 'plugins/*.js'],
         options: {
           destination: 'doc',
           configure: 'jsdoc.conf.json',

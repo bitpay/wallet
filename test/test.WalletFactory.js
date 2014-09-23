@@ -10,18 +10,18 @@ var sinon = require('sinon');
 var FakeNetwork = require('./mocks/FakeNetwork');
 var FakeBlockchain = require('./mocks/FakeBlockchain');
 var FakeStorage = function FakeStorage() {};
-var WalletFactory = require('../js/models/core/WalletFactory');
-var Passphrase = require('../js/models/core/Passphrase');
+var WalletFactory = require('../js/models/WalletFactory');
+var Passphrase = require('../js/models/Passphrase');
 var mockLocalStorage = require('./mocks/FakeLocalStorage');
 var mockSessionStorage = require('./mocks/FakeLocalStorage');
 
 
-var PERSISTED_PROPERTIES = (copay.Wallet || require('../js/models/core/Wallet')).PERSISTED_PROPERTIES;
+var PERSISTED_PROPERTIES = (copay.Wallet || require('../js/models/Wallet')).PERSISTED_PROPERTIES;
 
 function assertObjectEqual(a, b) {
   PERSISTED_PROPERTIES.forEach(function(k) {
     if (a[k] && b[k]) {
-      _.omit(a[k],'name').should.be.deep.equal(b[k], k + ' differs');
+      _.omit(a[k], 'name').should.be.deep.equal(b[k], k + ' differs');
     }
   })
 }

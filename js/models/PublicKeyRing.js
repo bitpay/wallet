@@ -2,7 +2,7 @@
 
 var preconditions = require('preconditions').instance();
 var _ = require('underscore');
-var log = require('../../log');
+var log = require('../log');
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;
 var Address = bitcore.Address;
@@ -40,7 +40,7 @@ function PublicKeyRing(opts) {
 
   this.indexes = opts.indexes ? HDParams.fromList(opts.indexes) : HDParams.init(this.totalCopayers);
 
-  this.publicKeysCache =  {};
+  this.publicKeysCache = {};
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
   this.copayersBackup = opts.copayersBackup || [];
@@ -68,10 +68,10 @@ function PublicKeyRing(opts) {
  *                   as a parameter
  */
 PublicKeyRing.trim = function(data) {
- var opts = {};
+  var opts = {};
   ['walletId', 'networkName', 'requiredCopayers', 'totalCopayers',
-   'indexes','nicknameFor','copayersBackup', 'copayersExtPubKeys'
-  ].forEach(function(k){
+    'indexes', 'nicknameFor', 'copayersBackup', 'copayersExtPubKeys'
+  ].forEach(function(k) {
     opts[k] = data[k];
   });
   return opts;
@@ -259,7 +259,9 @@ PublicKeyRing.prototype.addCopayer = function(newHexaExtendedPublicKey, nickname
   preconditions.checkArgument(!this.isComplete());
   preconditions.checkArgument(!nickname || _.isString(nickname));
   preconditions.checkArgument(!_.any(this.copayersHK,
-    function(copayer) { return copayer.extendedPublicKeyString === newHexaExtendedPublicKey; }
+    function(copayer) {
+      return copayer.extendedPublicKeyString === newHexaExtendedPublicKey;
+    }
   ));
 
   var newCopayerIndex = this.copayersHK.length;
@@ -564,17 +566,18 @@ PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
   preconditions.checkArgument(pubkeys);
   preconditions.checkArgument(paths);
 
-  var inKeyMap = {}, ret = {};
-  for(var i in pubkeys ){
+  var inKeyMap = {},
+    ret = {};
+  for (var i in pubkeys) {
     inKeyMap[pubkeys[i]] = 1;
   };
 
   var keys = this.getForPaths(paths);
-  for(var i in keys ){
-    for(var copayerIndex in keys[i] ){
+  for (var i in keys) {
+    for (var copayerIndex in keys[i]) {
       var kHex = keys[i][copayerIndex].toString('hex');
       if (inKeyMap[kHex]) {
-        ret[kHex] =this.copayerIds[copayerIndex];
+        ret[kHex] = this.copayerIds[copayerIndex];
         delete inKeyMap[kHex];
       }
     }
@@ -628,17 +631,17 @@ PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
 
   if (this.network.name !== inPKR.network.name)
     throw new Error('Network mismatch. Should be ' + this.network.name +
-                    ' and found ' + inPKR.network.name);
+      ' and found ' + inPKR.network.name);
 
   if (this.requiredCopayers && inPKR.requiredCopayers &&
-      (this.requiredCopayers !== inPKR.requiredCopayers))
+    (this.requiredCopayers !== inPKR.requiredCopayers))
     throw new Error('inPKR requiredCopayers mismatch ' + this.requiredCopayers +
-                    '!=' + inPKR.requiredCopayers);
+      '!=' + inPKR.requiredCopayers);
 
   if (this.totalCopayers && inPKR.totalCopayers &&
-      this.totalCopayers !== inPKR.totalCopayers)
+    this.totalCopayers !== inPKR.totalCopayers)
     throw new Error('inPKR totalCopayers mismatch' + this.totalCopayers +
-                    '!=' + inPKR.requiredCopayers);
+      '!=' + inPKR.requiredCopayers);
 
   return true;
 };
@@ -659,7 +662,9 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
 
   inPKR.copayersHK.forEach(function(b) {
     var epk = b.extendedPublicKeyString();
-    var haveIt = _.any(self.copayersHK, function(hk) { return hk.extendedPublicKeyString() === epk; });
+    var haveIt = _.any(self.copayersHK, function(hk) {
+      return hk.extendedPublicKeyString() === epk;
+    });
 
     if (!haveIt) {
       if (self.isComplete()) {

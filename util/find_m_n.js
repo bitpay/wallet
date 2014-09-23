@@ -6,14 +6,14 @@ var async = require('async');
 var bitcore = require('bitcore');
 var chai = require('chai');
 var should = chai.should();
-var PublicKeyRing = require('../js/models/core/PublicKeyRing');
-var PrivateKey = require('../js/models/core/PrivateKey');
+var PublicKeyRing = require('../js/models/PublicKeyRing');
+var PrivateKey = require('../js/models/PrivateKey');
 
 var FakeNetwork = require('../test/mocks/FakeNetwork');
 var Insight = require('../js/models/blockchain/Insight');
 var FakeStorage = require('../test/mocks/FakeStorage');
 
-var WalletFactory = require('soop').load('../js/models/core/WalletFactory', {
+var WalletFactory = require('soop').load('../js/models/WalletFactory', {
   Network: FakeNetwork,
   Blockchain: Insight,
   Storage: FakeStorage,
@@ -34,7 +34,7 @@ for (var n = 1; n <= N_LIMIT; n++) {
     // case m-of-n
     console.log('case ' + m + '-of-' + n);
     var pair = [m, n];
-    for (var iter = 0; iter <= ITERS*n; iter++) {
+    for (var iter = 0; iter <= ITERS * n; iter++) {
       // create full pkr
       var publicKeyRing = new PublicKeyRing({
         networkName: nn,
@@ -108,11 +108,11 @@ for (var n = 1; n <= N_LIMIT; n++) {
 
     }
     var size = maxs[pair];
-    console.log('\tmax size: '+size);
+    console.log('\tmax size: ' + size);
     var m_valid = false;
     if (size < 500) {
       m_valid = true;
-      valid[[m,n]] = size;
+      valid[[m, n]] = size;
     }
     if (!m_valid) break;
   }

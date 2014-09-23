@@ -2,7 +2,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 var bitcore = require('bitcore');
-var log = require('../../log');
+var log = require('../log');
 var AuthMessage = bitcore.AuthMessage;
 var util = bitcore.util;
 var nodeUtil = require('util');
@@ -236,7 +236,7 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
   });
 
   self.socket.on('subscribed', function(m) {
-    var fromTs = (opts.lastTimestamp||0) + 1;
+    var fromTs = (opts.lastTimestamp || 0) + 1;
     self.socket.emit('sync', fromTs);
     self.started = true;
   });
