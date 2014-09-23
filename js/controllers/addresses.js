@@ -81,7 +81,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
             'address': addrinfo.addressStr,
             'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
             'isChange': addrinfo.isChange,
-            'owned': addrinfo.owned,
+            'owned': addrinfo.owned
           });
         }
         $scope.addresses = $scope.limitAddress($scope.addresses);

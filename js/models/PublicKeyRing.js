@@ -496,16 +496,14 @@ PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayer
   opts = opts || {};
   var isOwned = index.copayerIndex === HDPath.SHARED_INDEX || index.copayerIndex === copayerIndex;
   var ret = [];
-  var appendAddressInfo = function(address, isChange, index) {
+  var appendAddressInfo = function(address, isChange) {
     ret.unshift({
       address: address,
       addressStr: address.toString(),
       isChange: isChange,
-      owned: isOwned,
-      //index: index.copayerIndex
+      owned: isOwned
     });
   };
-
 
   for (var i = 0; !opts.excludeChange && i < index.changeIndex; i++) {
     appendAddressInfo(this.getAddress(i, true, index.copayerIndex), true);
