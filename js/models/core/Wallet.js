@@ -841,7 +841,7 @@ Wallet.prototype.store = function(cb) {
   this.keepAlive();
   this.storage.setFromObj(this.id, this.toObj(), function(err) {
     log.debug('Wallet stored');
-    if (cb) 
+    if (cb)
       cb(err);
   });
 };
@@ -1303,7 +1303,14 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
       return self.receivePaymentRequest(options, pr, cb);
     })
     .error(function(data, status, headers, config) {
-      return cb(new Error('Status: ' + status));
+      log.debug('Server was did not return PaymentRequest.');
+      log.debug('XHR status: ' + status);
+      if (options.fetch) {
+        return cb(new Error('Status: ' + status));
+      } else {
+        // Should never happen:
+        return cb(null, null, null);
+      }
     });
 };
 
@@ -1416,9 +1423,9 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         expires: expires,
         memo: memo || 'This server would like some BTC from you.',
         payment_url: payment_url,
-        merchant_data: merchant_data ? merchant_data.toString('hex')
-        // : new Buffer('none', 'utf8').toString('hex')
-        : '00'
+        merchant_data: merchant_data
+          ? merchant_data.toString('hex')
+          : null
       },
       signature: sig.toString('hex'),
       ca: trust.caName,
@@ -1462,7 +1469,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     log.debug('You are currently on this BTC network:', network);
     log.debug('The server sent you a message:', memo);
 
-    return cb(ntxid, merchantData);
+    return cb(null, ntxid, merchantData);
   });
 };
 
@@ -1540,8 +1547,10 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   var pay = new PayPro();
   pay = pay.makePayment();
   var merchant_data = txp.merchant.pr.pd.merchant_data;
-  merchant_data = new Buffer(merchant_data, 'hex');
-  pay.set('merchant_data', merchant_data);
+  if (merchant_data) {
+    merchant_data = new Buffer(merchant_data, 'hex');
+    pay.set('merchant_data', merchant_data);
+  }
   pay.set('transactions', [tx.serialize()]);
   pay.set('refund_to', refund_outputs);
 
@@ -1582,7 +1591,13 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
     })
     .error(function(data, status, headers, config) {
-      return cb(new Error('Status: ' + status));
+      log.debug('Sending to server was not met with a returned tx.');
+      log.debug('XHR status: ' + status);
+      return self._checkSentTx(ntxid, function(txid) {
+        log.debug('[Wallet.js.1581:txid:%s]', txid);
+        if (txid) self.store();
+        return cb(txid, txp.merchant);
+      });
     });
 };
 
@@ -1606,34 +1621,51 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     memo: memo
   };
 
-  var tx = payment.message.transactions[0];
-
-  if (!tx) {
-    log.debug('Sending to server was not met with a returned tx.');
-    return this._checkSentTx(ntxid, function(txid) {
-      self.log('[Wallet.js.1048:txid:%s]', txid);
-      if (txid) self.store();
-      return cb(txid, txp.merchant);
-    });
-  }
-
-  if (tx.buffer) {
-    tx.buffer = new Buffer(new Uint8Array(tx.buffer));
-    tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
-    var ptx = new bitcore.Transaction();
-    ptx.parse(tx.buffer);
-    tx = ptx;
+  if (payment.message.transactions && payment.message.transactions.length) {
+    tx = payment.message.transactions[0];
+    if (!tx) {
+      log.debug('Sending to server was not met with a returned tx.');
+      return this._checkSentTx(ntxid, function(txid) {
+        log.debug('[Wallet.js.1613:txid:%s]', txid);
+        if (txid) self.store();
+        return cb(txid, txp.merchant);
+      });
+    }
+    if (tx.buffer) {
+      tx.buffer = new Buffer(new Uint8Array(tx.buffer));
+      tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
+      var ptx = new bitcore.Transaction();
+      ptx.parse(tx.buffer);
+      tx = ptx;
+    }
+  } else {
+    log.debug('WARNING: This server does not comply by standards.');
+    log.debug('It is not returning a copy of the transaction.');
   }
 
   var txid = tx.getHash().toString('hex');
   var txHex = tx.serialize().toString('hex');
   log.debug('Raw transaction: ', txHex);
-  log.debug('BITCOIND txid:', txid);
-  this.txProposals.get(ntxid).setSent(txid);
-  this.sendTxProposal(ntxid);
-  this.store();
 
-  return cb(txid, txp.merchant);
+  // XXX This fixes the invalid signature error:
+  // we might as well broadcast it ourselves anyway.
+  this.blockchain.broadcast(txHex, function(err, txid) {
+    log.debug('BITCOIND txid:', txid);
+    if (txid) {
+      self.txProposals.get(ntxid).setSent(txid);
+      self.sendTxProposal(ntxid);
+      self.store();
+      return cb(txid, txp.merchant);
+    } else {
+      log.debug('Sent failed. Checking if the TX was sent already');
+      self._checkSentTx(ntxid, function(txid) {
+        if (txid)
+          self.store();
+
+        return cb(txid, txp.merchant);
+      });
+    }
+  });
 };
 
 /**
