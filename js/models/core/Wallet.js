@@ -1621,28 +1621,34 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     memo: memo
   };
 
-  var tx = payment.message.transactions[0];
-
-  if (!tx) {
-    log.debug('Sending to server was not met with a returned tx.');
-    return this._checkSentTx(ntxid, function(txid) {
-      log.debug('[Wallet.js.1613:txid:%s]', txid);
-      if (txid) self.store();
-      return cb(txid, txp.merchant);
-    });
-  }
-
-  if (tx.buffer) {
-    tx.buffer = new Buffer(new Uint8Array(tx.buffer));
-    tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
-    var ptx = new bitcore.Transaction();
-    ptx.parse(tx.buffer);
-    tx = ptx;
+  if (payment.message.transactions && payment.message.transactions.length) {
+    tx = payment.message.transactions[0];
+    if (!tx) {
+      log.debug('Sending to server was not met with a returned tx.');
+      return this._checkSentTx(ntxid, function(txid) {
+        log.debug('[Wallet.js.1613:txid:%s]', txid);
+        if (txid) self.store();
+        return cb(txid, txp.merchant);
+      });
+    }
+    if (tx.buffer) {
+      tx.buffer = new Buffer(new Uint8Array(tx.buffer));
+      tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
+      var ptx = new bitcore.Transaction();
+      ptx.parse(tx.buffer);
+      tx = ptx;
+    }
+  } else {
+    log.debug('WARNING: This server does not comply by standards.');
+    log.debug('It is not returning a copy of the transaction.');
   }
 
   var txid = tx.getHash().toString('hex');
   var txHex = tx.serialize().toString('hex');
   log.debug('Raw transaction: ', txHex);
+
+  // XXX This fixes the invalid signature error:
+  // we might as well broadcast it ourselves anyway.
   this.blockchain.broadcast(txHex, function(err, txid) {
     log.debug('BITCOIND txid:', txid);
     if (txid) {
