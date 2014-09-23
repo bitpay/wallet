@@ -11,35 +11,35 @@
       <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
         <span>{{$root.wallet.getName()}}</span>
       </a>
-      <a class="button gray small side-bar right" title="Manual Refresh"
+      <a class="button gray small side-bar right" title="{{'Manual Update'|translate}}"
       ng-disabled="$root.loading"
       ng-click="refresh()"><i class="size-16 fi-refresh"></i></a>
     </div>
     <div class="founds size-14 m10v">
-      <span translate>Balance</span>
+      {{'Balance'|translate}}
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-if="!$root.updatingBalance"
-        class="has-tip"
+      <span ng-if="$root.wallet && !$root.updatingBalance"
+        class="has-tip size-18"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
         tooltip="{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.unitName}}
+        tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span>
       <div class="m10t" ng-show="lockedBalance">
-        <span translate>Locked</span> &nbsp;
+        {{'Locked'|translate}} &nbsp;
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span ng-show="!$root.updatingBalance"
+      <span ng-if="$root.wallet && !$root.updatingBalance"
         class="has-tip"
         data-options="disable_for_touch:true"
         tooltip-popup-delay='500'
         tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}"
         tooltip-trigger="mouseenter"
-        tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.unitName}}
+        tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
       </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
       </div>
     </div>
@@ -56,7 +56,7 @@
     </li>
     <li>
       <a href="#!/" class="db p20h" title="Close"
-      ng-click="signout()"><i class="size-21 m20r fi-power"></i> <span translate>Close</span></a>
+        ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
     </li>
   </ul>
 

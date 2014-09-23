@@ -9,14 +9,37 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
+  grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-release');
 
   // Project Configuration
   grunt.initConfig({
+    release: {
+      options: {
+        bump: true,
+        file: 'package.json',
+        add: true,
+        commit: true,
+        tag: true,
+        push: true,
+        pushTags: true,
+        npm: false,
+        npmtag: true,
+        tagName: 'v<%= version %>',
+        commitMessage: 'New release v<%= version %>',
+        tagMessage: 'Version <%= version %>',
+        github: { 
+          repo: 'bitpay/copay',
+          usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username 
+          passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains Github password
+        }
+      }
+    },
     shell: {
       prod: {
         options: {
           stdout: false,
-          stderr: false 
+          stderr: false
         },
         command: 'node ./util/build.js'
       },
@@ -41,7 +64,9 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: [
-          'js/models/**/*.js'
+          'js/models/**/*.js',
+          'js/models/*.js',
+          'plugins/*.js',
         ],
         tasks: ['shell:dev']
       },
@@ -51,14 +76,20 @@ module.exports = function(grunt) {
       },
       main: {
         files: [
-          'js/app.js', 
-          'js/directives.js', 
-          'js/filters.js', 
-          'js/routes.js', 
-          'js/services/*.js', 
+          'js/init.js',
+          'js/app.js',
+          'js/directives.js',
+          'js/filters.js',
+          'js/routes.js',
+          'js/mobile.js',
+          'js/services/*.js',
           'js/controllers/*.js'
         ],
         tasks: ['concat:main']
+      },
+      config: {
+        files: ['config.js'],
+        tasks: ['shell:dev', 'concat:main']
       }
     },
     mochaTest: {
@@ -107,21 +138,23 @@ module.exports = function(grunt) {
           'lib/ng-idle/angular-idle.min.js',
           'lib/angular-foundation/mm-foundation.min.js',
           'lib/angular-foundation/mm-foundation-tpls.min.js',
-          'lib/angular-gettext/dist/angular-gettext.min.js'
+          'lib/angular-gettext/dist/angular-gettext.min.js',
+          'lib/angular-load/angular-load.min.js'
+          // If you add libs here, remember to add it too to karma.conf
         ],
         dest: 'lib/angularjs-all.js'
       },
       main: {
         src: [
-          'js/app.js', 
-          'js/directives.js', 
-          'js/filters.js', 
-          'js/routes.js', 
-          'js/services/*.js', 
+          'js/app.js',
+          'js/directives.js',
+          'js/filters.js',
+          'js/routes.js',
+          'js/services/*.js',
           'js/controllers/*.js',
           'js/translations.js',
           'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
-          'js/init.js'
+          'js/init.js',
         ],
         dest: 'js/copayMain.js'
       }
@@ -166,11 +199,23 @@ module.exports = function(grunt) {
           'js/translations.js': ['po/*.po']
         }
       },
+    },
+    jsdoc: {
+      dist : {
+        src: ['js/models/core/*.js', 'js/models/*.js', 'plugins/*.js'],
+        options: {
+          destination: 'doc',
+          configure: 'jsdoc.conf.json',
+          template: './node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
+          theme: 'flatly'
+        }
+      }
     }
   });
+
 
   grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
   grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
-
+  grunt.registerTask('docs', ['jsdoc']);
 };

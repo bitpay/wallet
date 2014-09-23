@@ -4,19 +4,9 @@
 //
 //
 var sinon = require('sinon');
+var preconditions = require('preconditions').singleton();
 
-beforeEach(function() {
-  config.unitToSatoshi = 100;
-  config.unitName = 'bits';
-});
-
-describe('Check config', function() {
-
-  it('unit should be set to BITS in config.js', function() {
-    expect(config.unitToSatoshi).to.equal(100);
-    expect(config.unitName).to.equal('bits');
-  });
-});
+beforeEach(angular.mock.module('copayApp'));
 
 describe("Unit: Walletfactory Service", function() {
   beforeEach(angular.mock.module('copayApp.services'));
@@ -36,7 +26,7 @@ describe("Unit: controllerUtils", function() {
     var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
     var a = {};
     a[Waddr] = 100;
-    //SATs 
+    //SATs
     $rootScope.wallet.set(100000001, 90000002, a);
 
     //retuns values in DEFAULT UNIT(bits)
@@ -125,22 +115,32 @@ describe('Unit: Rate Service', function() {
   beforeEach(module(function($provide) {
     $provide.value('request', {
       'get': function(_, cb) {
-        cb(null, null, [{name: 'lol currency', code: 'LOL', rate: 2}]);
+        cb(null, null, [{
+          name: 'lol currency',
+          code: 'LOL',
+          rate: 2
+        }]);
       }
     });
   }));
   it('should be possible to ask for conversion from fiat',
-    inject(function(rateService) {
-      rateService.whenAvailable(function() {
-        (1).should.equal(rateService.fromFiat(2, 'LOL'));
-      });
-    })
+    function(done) {
+      inject(function(rateService) {
+        rateService.whenAvailable(function() {
+          (1e8).should.equal(rateService.fromFiat(2, 'LOL'));
+          done();
+        });
+      })
+    }
   );
   it('should be possible to ask for conversion to fiat',
-    inject(function(rateService) {
-      rateService.whenAvailable(function() {
-        (2).should.equal(rateService.toFiat(1e8, 'LOL'));
-      });
-    })
+    function(done) {
+      inject(function(rateService) {
+        rateService.whenAvailable(function() {
+          (2).should.equal(rateService.toFiat(1e8, 'LOL'));
+          done();
+        });
+      })
+    }
   );
 });

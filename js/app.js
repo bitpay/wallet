@@ -10,15 +10,16 @@ if (localConfig) {
   var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
   if (cmv === lmv) {
     _.each(localConfig, function(value, key) {
-      if (key === 'networkName' && config['forceNetwork']) {
-        return;
-      }
       config[key] = value;
     });
   }
 }
 
-var copayApp = window.copayApp = angular.module('copayApp', [
+var log = function() {
+  if (config.verbose) console.log(arguments);
+}
+
+var modules = [
   'ngRoute',
   'angularMoment',
   'mm.foundation',
@@ -29,7 +30,13 @@ var copayApp = window.copayApp = angular.module('copayApp', [
   'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
-]);
+];
+
+if (Object.keys(config.plugins).length)
+  modules.push('angularLoad');
+
+
+var copayApp = window.copayApp = angular.module('copayApp', modules);
 
 copayApp.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([

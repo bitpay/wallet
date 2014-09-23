@@ -50,7 +50,6 @@ TxProposals.prototype.getNtxidsSince = function(sinceTs) {
     if (txp.createdTs >=  sinceTs)
       ret.push(ii);
   }
-console.log('[TxProposals.js.52:ret:]',ret); //TODO
   return ret;
 };
 

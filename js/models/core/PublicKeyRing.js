@@ -12,7 +12,7 @@ var HDPath = require('./HDPath');
 var HDParams = require('./HDParams');
 
 /**
- * @desc
+ * @desc Represents a public key ring, the set of all public keys and the used indexes
  *
  * @constructor
  * @param {Object} opts
@@ -20,10 +20,10 @@ var HDParams = require('./HDParams');
  * @param {string} opts.network 'livenet' to signal the bitcoin main network, all others are testnet
  * @param {number=} opts.requiredCopayers - defaults to 3
  * @param {number=} opts.totalCopayers - defaults to 5
- * @param {Object[]=} opts.indexes - an array to be deserialized using {@link HDParams#fromList}
+ * @param {Object[]} [opts.indexes] - an array to be deserialized using {@link HDParams#fromList}
  *                                   (defaults to all indexes in zero)
  * @param {Object=} opts.nicknameFor - nicknames for other copayers
- * @param {boolean[]=} opts.copayersBackup - whether other copayers have backed up their wallets
+ * @param {boolean[]} [opts.copayersBackup] - whether other copayers have backed up their wallets
  */
 function PublicKeyRing(opts) {
   opts = opts || {};
@@ -527,7 +527,7 @@ PublicKeyRing.prototype.getForPath = function(path) {
  * @see PublicKeyRing#getForPath
  *
  * @param {string[]} paths - the BIP32 paths
- * @return {Buffer[][]} the public keys, in buffer format
+ * @return {Array[]} the public keys, in buffer format (matrix of Buffer, Buffer[][])
  */
 PublicKeyRing.prototype.getForPaths = function(paths) {
   preconditions.checkArgument(!_.isUndefined(paths));

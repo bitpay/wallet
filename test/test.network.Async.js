@@ -13,7 +13,9 @@ describe('Network / Async', function() {
 
 
   var createN = function(pk) {
-    var n = new Async();
+    var n = new Async({
+      url: 'http://insight.example.com:1234'
+    });
     var fakeSocket = {};
     fakeSocket.emit = function() {};
     fakeSocket.on = function() {};

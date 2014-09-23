@@ -280,7 +280,6 @@ a:hover {
 
 .last-transactions-header {
   padding: 1rem 0;
-  height: 50px;
 }
 
 .last-transactions-footer {
@@ -385,6 +384,7 @@ a:hover {
 .size-48 { font-size: 48px; }
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
+.m3r {margin-right: 3px;}
 .m5t {margin-top: 5px;}
 .m10t {margin-top: 10px;}
 .m5b {margin-bottom: 5px;}
@@ -725,6 +725,14 @@ button.radius, .button.radius {
 }
 
 /* SECONDARY */
+
+input[type='submit']
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 button.secondary, 
 .button.secondary { 
   background-color: #4A90E2;
@@ -758,6 +766,7 @@ button.primary,
 .button.primary { 
   background-color: #1ABC9C;
   color: #fff;
+  border-radius: 0;
 }
 button.primary:hover, 
 button.primary:focus, 
@@ -1046,7 +1055,7 @@ a.text-warning:hover {color: #FD7262;}
   background: #2C3E50;
   -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
   box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 0px 0px 2px 0px rgba(0,0,0,0.20);
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .box-setup-copay-required {

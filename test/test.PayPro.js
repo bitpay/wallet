@@ -11,7 +11,6 @@ if (is_browser) {
 }
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
-var Storage = require('./mocks/FakeStorage');
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
 var bitcore = bitcore || require('bitcore');
@@ -21,6 +20,10 @@ var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var bignum = bitcore.Bignum;
 var startServer = copay.FakePayProServer; // TODO should be require('./mocks/FakePayProServer');
+var localMock = require('./mocks/FakeLocalStorage');
+var sessionMock = require('./mocks/FakeLocalStorage');
+var Storage = copay.Storage;
+
 
 var server;
 
@@ -30,6 +33,7 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
+  storage: require('./mocks/FakeLocalStorage').storageParams,
 };
 
 var getNewEpk = function() {
@@ -41,6 +45,7 @@ var getNewEpk = function() {
 };
 
 describe('PayPro (in Wallet) model', function() {
+
   if (!is_browser) {
     var createW = function(N, conf) {
       var c = JSON.parse(JSON.stringify(conf || walletConfig));
@@ -64,6 +69,7 @@ describe('PayPro (in Wallet) model', function() {
       });
 
       var storage = new Storage(walletConfig.storage);
+      storage.setPassphrase('xxx');
       var network = new Network(walletConfig.network);
       var blockchain = new Blockchain(walletConfig.blockchain);
       c.storage = storage;
@@ -86,7 +92,6 @@ describe('PayPro (in Wallet) model', function() {
       };
 
       c.networkName = walletConfig.networkName;
-      c.verbose = walletConfig.verbose;
       c.version = '0.0.1';
 
       return new Wallet(c);

@@ -6,11 +6,10 @@ if (is_browser) {
 }
 var Wallet = copay.Wallet;
 
-var FakePrivateKey = function () {
-};
+var FakePrivateKey = function() {};
 
 FakePrivateKey.prototype.toObj = function() {
-    return extendedPublicKeyString = 'privHex';
+  return extendedPublicKeyString = 'privHex';
 };
 
 var FakeWallet = function() {
@@ -24,6 +23,7 @@ var FakeWallet = function() {
     '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC': 1000
   };
   this.name = 'myTESTwullet';
+  this.nickname = 'myNickname';
   this.addressBook = {
     '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
       label: 'John',
@@ -37,11 +37,21 @@ var FakeWallet = function() {
     }
   };
   this.blockchain = {
-    getSubscriptions: function(){ return []; },
-    subscribe: function(){}
+    getSubscriptions: function() {
+      return [];
+    },
+    subscribe: function() {},
+    getTransactions: function() {}
   };
 
   this.privateKey = new FakePrivateKey();
+  this.settings = {
+    unitName: 'bits',
+    unitToSatoshi: 100,
+    unitDecimals: 2,
+    alternativeName: 'US Dollar',
+    alternativeIsoCode: 'USD',
+  };
 };
 
 FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
@@ -52,6 +62,9 @@ FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts,
 FakeWallet.prototype.sendTx = function(ntxid, cb) {
   cb(8);
 }
+FakeWallet.prototype.getAddressesStr = function() {
+  return ['2Mw2YXxyMD7fhtPhHYY39X6BVWiBRaez5Zn'];
+};
 
 FakeWallet.prototype.set = function(balance, safeBalance, balanceByAddr) {
   this.balance = balance;
@@ -70,6 +83,12 @@ FakeWallet.prototype.getAddressesInfo = function() {
     });
   }
   return ret;
+};
+
+FakeWallet.prototype.subscribeToAddresses = function() {};
+
+FakeWallet.prototype.getMyCopayerNickname = function() {
+  return this.nickname;
 };
 
 FakeWallet.prototype.isShared = function() {
@@ -98,8 +117,7 @@ FakeWallet.prototype.getBalance = function(cb) {
   return cb(null, this.balance, this.balanceByAddr, this.safeBalance);
 };
 
-FakeWallet.prototype.removeTxWithSpentInputs = function (cb) {
-};
+FakeWallet.prototype.removeTxWithSpentInputs = function(cb) {};
 
 FakeWallet.prototype.setEnc = function(enc) {
   this.enc = enc;
@@ -109,7 +127,10 @@ FakeWallet.prototype.toEncryptedObj = function() {
   return this.enc;
 };
 
-FakeWallet.prototype.close = function() {
+FakeWallet.prototype.close = function() {};
+
+FakeWallet.prototype.getNetworkName = function() {
+  return 'testnet';
 };
 
 // TODO a try catch was here

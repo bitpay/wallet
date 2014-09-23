@@ -4,6 +4,7 @@ var RateService = function(request) {
   this.isAvailable = false;
   this.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable or use service.whenAvailable';
   this.SAT_TO_BTC = 1 / 1e8;
+  this.BTC_TO_SAT = 1e8;
   var MINS_IN_HOUR = 60;
   var MILLIS_IN_SECOND = 1000;
   var rateServiceConfig = config.rate;
@@ -62,7 +63,7 @@ RateService.prototype.fromFiat = function(amount, code) {
   if (!this.isAvailable) {
     throw new Error(this.UNAVAILABLE_ERROR);
   }
-  return amount / this.rates[code] / this.SAT_TO_BTC;
+  return amount / this.rates[code] * this.BTC_TO_SAT;
 };
 
 RateService.prototype.listAlternatives = function() {
