@@ -4,10 +4,12 @@
       <span translate>Addresses</span>
       <span class="button primary small side-bar" ng-click="newAddr()" ng-disabled="loading"><i class="fi-plus"></i></span>
     </h1> 
-
+    <div ng-show="!addresses[0]">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+    </div>  
     <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
-      <div class="large-12 medium-12" ng-init="showAll=0">
-        <div class="oh" ng-repeat="addr in addresses|removeEmpty|limitAddress:showAll">
+      <div class="large-12 medium-12">
+        <div class="oh" ng-repeat="addr in addresses|removeEmpty">
           <div class="panel radius show-for-large-up">
             <div class="row collapse">
               <div class="large-7 medium-9 column">
@@ -22,7 +24,7 @@
               <div class="large-3 medium-3 column text-right">
                 <span ng-if="$root.updatingBalance">
                     <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-                  </span>
+                </span>
                 <p class="size-14" ng-if="!$root.updatingBalance">
                   <b>{{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
                 </p>
@@ -50,8 +52,7 @@
       </div>
     </div>
 
-
-    <a class="secondary radius" ng-click="showAll=!showAll" ng-show="(addresses|removeEmpty).length != (addresses|removeEmpty|limitAddress).length">
+    <a class="secondary radius" ng-click="toggleShowAll()" ng-show="addrLength > 3">
       <span translate ng-if="!showAll">Show all</span>
       <span translate ng-if="showAll">Show less</span>
     </a>
