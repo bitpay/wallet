@@ -76,6 +76,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
 
       if ($rootScope.addrInfos) {
         var addrInfos = $rootScope.addrInfos;
+        $scope.addrLength = addrInfos.length;
         for (var i = 0; i < addrInfos.length; i++) {
           var addrinfo = addrInfos[i];
           $scope.addresses.push({
