@@ -40,7 +40,6 @@ describe('WalletFactory model', function() {
     wf.storage.setLastOpened = sinon.stub().yields(null);
 
 
-
     var w = sinon.stub();
     w.store = sinon.stub().yields(null);
 
@@ -246,7 +245,7 @@ describe('WalletFactory model', function() {
 
   describe('#read', function() {
     it('should fail to read unexisting wallet', function(done) {
-      wf.storage.readWallet = sinon.stub().yields({});
+      wf.storage.readWallet = sinon.stub().yields(null, {});
 
       wf.read('id', [], function(err, w) {
         should.not.exist(w);
@@ -258,7 +257,7 @@ describe('WalletFactory model', function() {
       });
     });
     it('should fail to read broken wallet', function(done) {
-      wf.storage.readWallet = sinon.stub().yields({
+      wf.storage.readWallet = sinon.stub().yields(null, {
         'opts': 1
       });
       wf.read('id', [], function(err, w) {
@@ -272,7 +271,7 @@ describe('WalletFactory model', function() {
     });
     it('should read existing wallet', function(done) {
       var wf = new WalletFactory(config, '0.0.1');
-      wf.storage.readWallet = sinon.stub().yields({
+      wf.storage.readWallet = sinon.stub().yields(null, {
         'opts': 1
       });
       wf.fromObj = sinon.stub().returns('ok');
@@ -298,6 +297,7 @@ describe('WalletFactory model', function() {
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
       wf.read = sinon.stub().yields(null, s1);
+      wf.migrateWallet = sinon.stub().yields(null);
       wf.storage.setLastOpened = sinon.stub().yields(null);
 
       wf.open('dummy', 'xxx', function(err, w) {
@@ -314,6 +314,7 @@ describe('WalletFactory model', function() {
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
       wf.read = sinon.stub().yields(null, s1);
+      wf.migrateWallet = sinon.stub().yields(null);
       wf.storage.setLastOpened = sinon.stub().yields(null);
 
       wf.open('dummy', 'xxx', function(err, w) {
@@ -331,6 +332,7 @@ describe('WalletFactory model', function() {
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
       wf.read = sinon.stub().yields(null, s1);
+      wf.migrateWallet = sinon.stub().yields(null);
       wf.storage.setLastOpened = sinon.stub().yields(null);
 
       wf.open('dummy', 'xxx', function(err, w) {
@@ -346,11 +348,30 @@ describe('WalletFactory model', function() {
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
       wf.read = sinon.stub().yields(null, s1);
+      wf.migrateWallet = sinon.stub().yields(null);
       wf.storage.setLastOpened = sinon.stub().yields(null);
 
       wf.open('dummy', 'xxx', function(err, w) {
         wf.storage.setLastOpened.calledOnce.should.equal(true);
         wf.storage.setLastOpened.getCall(0).args[0].should.equal('dummy');
+        done();
+      });
+    });
+    it('should call #migrateWallet', function(done) {
+      var wf = new WalletFactory(config, '0.0.1');
+      wf.storage.setPassphrase = sinon.spy();
+
+      var s1 = sinon.stub();
+      s1.store = sinon.stub().yields(null);
+      wf.read = sinon.stub().yields(null, s1);
+      wf.migrateWallet = sinon.stub().yields(null);
+      wf.storage.deleteWallet_Old = sinon.stub().yields(null);
+      wf.storage.removeGlobal = sinon.stub().yields(null);
+      wf.storage.setLastOpened = sinon.stub().yields(null);
+
+      wf.open('dummy', 'xxx', function(err, w) {
+        wf.migrateWallet.calledOnce.should.equal(true);
+        wf.migrateWallet.getCall(0).args[0].should.equal('dummy');
         done();
       });
     });

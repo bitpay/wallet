@@ -28,7 +28,7 @@ describe('Storage model', function() {
   it('should fail when encrypting without a password', function() {
     var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
     (function() {
-      s2.set(fakeWallet, timeStamp, 1, function() {});
+      s2._write(fakeWallet + timeStamp, 1, function() {});
     }).should.throw('NOPASSPHRASE');
   });
   it('should be able to encrypt and decrypt', function(done) {
@@ -40,7 +40,7 @@ describe('Storage model', function() {
     });
   });
   it('should be able to set a value', function(done) {
-    s.set(fakeWallet, timeStamp, 1, function() {
+    s._write(fakeWallet + timeStamp, 1, function() {
       done();
     });
   });
@@ -63,8 +63,8 @@ describe('Storage model', function() {
   ];
   getSetData.forEach(function(obj) {
     it('should be able to set a value and get it for ' + JSON.stringify(obj), function(done) {
-      s.set(fakeWallet, timeStamp, obj, function() {
-        s.get(fakeWallet, timeStamp, function(obj2) {
+      s._write(fakeWallet + timeStamp, obj, function() {
+        s._read(fakeWallet + timeStamp, function(obj2) {
           JSON.stringify(obj2).should.equal(JSON.stringify(obj));
           done();
         });
@@ -74,7 +74,7 @@ describe('Storage model', function() {
 
   describe('#export', function() {
     it('should export the encrypted wallet', function(done) {
-      s.set(fakeWallet, timeStamp, 'testval', function() {
+      s._write(fakeWallet + timeStamp, 'testval', function() {
         var obj = {
           test: 'testval'
         };
@@ -85,42 +85,14 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#remove', function() {
-    it('should remove an item', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.get('1', 'hola', function(v) {
-          v.should.equal('juan');
-          s.remove('1', 'hola', function() {
-            s.get('1', 'hola', function(v) {
-              should.not.exist(v);
-              done();
-            });
-          });
-        })
-      })
-    });
-  });
-
-
-  describe('#getWalletIds', function() {
+  describe('#_getWalletIds', function() {
     it('should get wallet ids', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.getWalletIds(function(v) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s._getWalletIds(function(v) {
             v.should.deep.equal(['1', '2']);
             done();
           });
-        });
-      });
-    });
-  });
-
-  describe('#getName #setName', function() {
-    it('should get/set names', function(done) {
-      s.setName(1, 'hola', function() {
-        s.getName(1, function(v) {
-          v.should.equal('hola');
-          done();
         });
       });
     });
@@ -150,13 +122,13 @@ describe('Storage model', function() {
     });
   }
 
-  describe('#getWallets', function() {
-    it('should retreive wallets from storage', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.setName(1, 'hola', function() {
+  describe('#getWallets_Old', function() {
+    it('should retrieve wallets from storage', function(done) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.setGlobal('nameFor::1', 'hola', function() {
 
-            s.getWallets(function(ws) {
+            s.getWallets_Old(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
                 name: 'hola',
@@ -171,19 +143,19 @@ describe('Storage model', function() {
         });
       });
     });
-    it('should retreive wallets from storage (with delay)', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.setName(1, 'hola', function() {
+    it('should retrieve wallets from storage (with delay)', function(done) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.setGlobal('nameFor::1', 'hola', function() {
 
-            var orig = s.getName.bind(s);
-            s.getName = function(wid, cb) {
+            var orig = s.getGlobal.bind(s);
+            s.getGlobal = function(k, cb) {
               setTimeout(function() {
-                orig(wid, cb);
+                orig(k, cb);
               }, 1);
             };
 
-            s.getWallets(function(ws) {
+            s.getWallets_Old(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
                 name: 'hola',
@@ -201,7 +173,7 @@ describe('Storage model', function() {
   });
 
   describe('#getWallets2', function() {
-    it('should retreive wallets from storage', function(done) {
+    it('should retrieve wallets from storage', function(done) {
       var w1 = {
         name: 'juan',
         opts: {
@@ -211,8 +183,8 @@ describe('Storage model', function() {
       var w2 = {
         name: 'pepe'
       };
-      s.setFromObj2('1', w1, function() {
-        s.setFromObj2('2', w2, function() {
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
           s.getWallets2(function(ws) {
             ws[0].should.deep.equal({
               id: '1',
@@ -229,11 +201,51 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#deleteWallet', function() {
+
+  describe('#getWallets', function() {
+    it('should retrieve wallets from storage both new and old format', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s._write('3::name', 'matias', function() {
+            s.setGlobal('nameFor::3', 'wallet3', function() {
+              s.getWallets(function(ws) {
+                ws.length.should.equal(3);
+                ws[0].should.deep.equal({
+                  id: '1',
+                  name: 'wallet1',
+                });
+                ws[1].should.deep.equal({
+                  id: '2',
+                  name: undefined
+                });
+                ws[2].should.deep.equal({
+                  id: '3',
+                  name: 'wallet3',
+                });
+                done();
+              });
+            });
+          })
+        });
+      });
+    });
+  });
+
+  describe('#deleteWallet_Old', function() {
     it('should fail to delete a unexisting wallet', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.deleteWallet('3', function(err) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.deleteWallet_Old('3', function(err) {
             err.toString().should.include('WNOTFOUND');
             done();
           });
@@ -242,11 +254,11 @@ describe('Storage model', function() {
     });
 
     it('should delete a wallet', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.deleteWallet('1', function(err) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.deleteWallet_Old('1', function(err) {
             should.not.exist(err);
-            s.getWallets(function(ws) {
+            s.getWallets_Old(function(ws) {
               ws.length.should.equal(1);
               ws[0].should.deep.equal({
                 id: '2',
@@ -260,7 +272,7 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#deleteWallet2', function() {
+  describe('#deleteWallet', function() {
     it('should fail to delete a unexisting wallet', function(done) {
       var w1 = {
         name: 'juan',
@@ -272,9 +284,9 @@ describe('Storage model', function() {
         name: 'pepe'
       };
 
-      s.setFromObj2('1', w1, function() {
-        s.setFromObj2('2', w2, function() {
-          s.deleteWallet2('3', function(err) {
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s.deleteWallet('3', function(err) {
             err.toString().should.include('WNOTFOUND');
             done();
           });
@@ -293,9 +305,9 @@ describe('Storage model', function() {
         name: 'pepe'
       };
 
-      s.setFromObj2('1', w1, function() {
-        s.setFromObj2('2', w2, function() {
-          s.deleteWallet2('1', function(err) {
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s.deleteWallet('1', function(err) {
             should.not.exist(err);
             s.getWallets2(function(ws) {
               ws.length.should.equal(1);
@@ -308,7 +320,7 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#readWallet', function() {
+  describe('#readWallet_Old', function() {
     it('should read wallet', function(done) {
       var data = {
         'id1::a': 'x',
@@ -319,7 +331,8 @@ describe('Storage model', function() {
       sinon.stub(s, '_read', function(k, cb) {
         return cb(data[k]);
       });
-      s.readWallet('id1', function(w) {
+      s.readWallet_Old('id1', function(err, w) {
+        should.not.exist(err);
         w.should.exist;
         w.hasOwnProperty('a').should.be.true;
         w.hasOwnProperty('b').should.be.true;
@@ -332,7 +345,7 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#readWallet2', function() {
+  describe('#readWallet', function() {
     it('should read wallet', function(done) {
       var data = {
         'wallet::id1_wallet1': {
@@ -347,7 +360,8 @@ describe('Storage model', function() {
       sinon.stub(s, '_read', function(k, cb) {
         return cb(data[k]);
       });
-      s.readWallet2('id1', function(w) {
+      s.readWallet('id1', function(err, w) {
+        should.not.exist(err);
         w.should.exist;
         w.hasOwnProperty('a').should.be.true;
         w.hasOwnProperty('b').should.be.true;
@@ -361,24 +375,8 @@ describe('Storage model', function() {
   });
 
   describe('#setFromObj', function() {
-    it('set localstorage from an object', function(done) {
-      s.setFromObj('id1', {
-        'key': 'val',
-        'opts': {
-          'name': 'nameid1'
-        },
-      }, function() {
-        s.get('id1', 'key', function(v) {
-          v.should.equal('val');
-          done();
-        });
-      });
-    });
-  });
-
-  describe('#setFromObj2', function() {
     it('should store from an object as single key', function(done) {
-      s.setFromObj2('id1', {
+      s.setFromObj('id1', {
         'key': 'val',
         'opts': {
           'name': 'nameid1'
