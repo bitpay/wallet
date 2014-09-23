@@ -146,28 +146,18 @@ WalletFactory.prototype.migrateWallet = function(walletId, passphrase, cb) {
   var self = this;
 
   self.storage.setPassphrase(passphrase);
-  self.storage.setFromObj = self.storage.setFromObj2;
-
-  var reconfigureStorage = function() {
-    self.storage.getWallets = self.storage.getWallets2;
-    self.storage.readWallet = self.storage.readWallet2;
-    self.storage.deleteWallet = self.storage.deleteWallet2;
-    self.storage.get = function() {
-      throw 'DO NOT USE'
-    };
-    self.storage.set = function() {
-      throw 'DO NOT USE'
-    };
-  };
-
-  self.read(walletId, null, function(err, wallet) {
+  self.read_Old(walletId, null, function(err, wallet) {
     if (err) return cb(err);
 
-    wallet.store();
-    self.storage.deleteWallet(walletId, function() {
-      self.storage.removeGlobal('nameFor::' + walletId, function() {
-        reconfigureStorage();
-        return cb();
+    wallet.store(function(err) {
+      if (err) return cb(err);
+
+      self.storage.deleteWallet_Old(walletId, function(err) {
+        if (err) return cb(err);
+
+        self.storage.removeGlobal('nameFor::' + walletId, function() {
+          return cb();
+        });
       });
     });
   });
@@ -186,9 +176,9 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
     err;
   var obj = {};
 
-  console.log('aáaa');
-  this.storage.readWallet(walletId, function(ret) {
-    console.log('bbb');
+  this.storage.readWallet(walletId, function(err, ret) {
+    if (err) return cb(err);
+
     _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
       obj[p] = ret[p];
     });
@@ -212,6 +202,36 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
   });
 };
 
+WalletFactory.prototype.read_Old = function(walletId, skipFields, cb) {
+  var self = this,
+    err;
+  var obj = {};
+
+  this.storage.readWallet_Old(walletId, function(err, ret) {
+    if (err) return cb(err);
+
+    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+      obj[p] = ret[p];
+    });
+
+    if (!_.any(_.values(obj)))
+      return cb(new Error('Wallet not found'));
+
+    var w, err;
+    obj.id = walletId;
+    try {
+      w = self.fromObj(obj, skipFields);
+    } catch (e) {
+      if (e && e.message && e.message.indexOf('MISSOPTS')) {
+        err = new Error('Could not read: ' + walletId);
+      } else {
+        err = e;
+      }
+      w = null;
+    }
+    return cb(err, w);
+  });
+};
 
 /**
  * @desc This method instantiates a wallet. Usefull for stubbing.
@@ -368,10 +388,10 @@ WalletFactory.prototype.getWallets = function(cb) {
  * @return {?} the result of the callback
  */
 WalletFactory.prototype.delete = function(walletId, cb) {
-  var s = this.storage;
-  s.deleteWallet(walletId, function(err) {
+  var self = this;
+  self.storage.deleteWallet(walletId, function(err) {
     if (err) return cb(err);
-    s.setLastOpened(null, function(err) {
+    self.storage.setLastOpened(null, function(err) {
       return cb(err);
     });
   });
