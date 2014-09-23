@@ -44,6 +44,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
     };
 
     $rootScope.$watch('addrInfos', function() {
+      if ($rootScope.updatingBalance) return;
       $scope.addressList();
     });
 
