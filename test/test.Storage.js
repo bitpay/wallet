@@ -200,6 +200,35 @@ describe('Storage model', function() {
     });
   });
 
+  describe('#getWallets2', function() {
+    it('should retreive wallets from storage', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+      s.setFromObj2('1', w1, function() {
+        s.setFromObj2('2', w2, function() {
+          s.getWallets2(function(ws) {
+            ws[0].should.deep.equal({
+              id: '1',
+              name: 'wallet1',
+            });
+            ws[1].should.deep.equal({
+              id: '2',
+              name: undefined
+            });
+            done();
+          });
+        });
+      });
+    });
+  });
+
   describe('#deleteWallet', function() {
     it('should fail to delete a unexisting wallet', function(done) {
       s.set('1', "hola", 'juan', function() {
@@ -223,6 +252,54 @@ describe('Storage model', function() {
                 id: '2',
                 name: undefined
               });
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe('#deleteWallet2', function() {
+    it('should fail to delete a unexisting wallet', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+
+      s.setFromObj2('1', w1, function() {
+        s.setFromObj2('2', w2, function() {
+          s.deleteWallet2('3', function(err) {
+            err.toString().should.include('WNOTFOUND');
+            done();
+          });
+        });
+      });
+    });
+
+    it('should delete a wallet', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+
+      s.setFromObj2('1', w1, function() {
+        s.setFromObj2('2', w2, function() {
+          s.deleteWallet2('1', function(err) {
+            should.not.exist(err);
+            s.getWallets2(function(ws) {
+              ws.length.should.equal(1);
+              ws[0].id.should.equal('2');
               done();
             });
           });
@@ -255,6 +332,34 @@ describe('Storage model', function() {
     });
   });
 
+  describe('#readWallet2', function() {
+    it('should read wallet', function(done) {
+      var data = {
+        'wallet::id1_wallet1': {
+          a: 'x',
+          b: 'y'
+        },
+        'wallet::id2': {
+          c: 'z'
+        },
+      };
+      s.storage.allKeys = sinon.stub().yields(_.keys(data));
+      sinon.stub(s, '_read', function(k, cb) {
+        return cb(data[k]);
+      });
+      s.readWallet2('id1', function(w) {
+        w.should.exist;
+        w.hasOwnProperty('a').should.be.true;
+        w.hasOwnProperty('b').should.be.true;
+        w.hasOwnProperty('c').should.be.false;
+        w.a.should.equal('x');
+        w.b.should.equal('y');
+        s._read.restore();
+        done();
+      });
+    });
+  });
+
   describe('#setFromObj', function() {
     it('set localstorage from an object', function(done) {
       s.setFromObj('id1', {
@@ -271,6 +376,24 @@ describe('Storage model', function() {
     });
   });
 
+  describe('#setFromObj2', function() {
+    it('should store from an object as single key', function(done) {
+      s.setFromObj2('id1', {
+        'key': 'val',
+        'opts': {
+          'name': 'nameid1'
+        },
+      }, function() {
+        s._read('wallet::id1_nameid1', function(r) {
+          r.should.exist;
+          r.key.should.exist;
+          r.key.should.equal('val');
+          r.opts.name.should.equal('nameid1');
+          done();
+        });
+      });
+    });
+  });
 
   describe('#globals', function() {
     it('should set, get and remove keys', function(done) {
@@ -335,11 +458,8 @@ describe('Storage model', function() {
       wo.publicKeyRing.copayersExtPubKeys[0].should.equal('tpubD9SGoP7CXsqSKTiQxCZSCpicDcophqnE4yuqjfw5M9tAR3fSjT9GDGwPEUFCN7SSmRKGDLZgKQePYFaLWyK32akeSan45TNTd8sgef9Ymh6');
       wo.privateKey.extendedPrivateKeyString.should.equal('tprv8ZgxMBicQKsPfQCscb7CtJKzixxcVSyrCVcfr3WCFbtT8kYTzNubhjQ5R7AuYJgPCcSH4R8T34YVxeohKGhAB9wbB4eFBbQFjUpjGCqptHm');
       wo.privateKey.networkName.should.equal('testnet');
-
-
     });
   });
-
 });
 
 var legacyPassword1 = '1DUpLRbuVpgLkcEY8gY8iod/SmA7+OheGZJ9PtvmTlvNE0FkEWpCKW9STdzXYJqbn0wiAapE4ojHNYj2hjYYAQ==';

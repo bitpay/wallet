@@ -142,6 +142,39 @@ WalletFactory.prototype.import = function(base64, passphrase, skipFields) {
   return w;
 };
 
+WalletFactory.prototype.migrateWallet = function(walletId, passphrase, cb) {
+  var self = this;
+
+  self.storage.setPassphrase(passphrase);
+  self.storage.setFromObj = self.storage.setFromObj2;
+
+  var reconfigureStorage = function() {
+    self.storage.getWallets = self.storage.getWallets2;
+    self.storage.readWallet = self.storage.readWallet2;
+    self.storage.deleteWallet = self.storage.deleteWallet2;
+    self.storage.get = function() {
+      throw 'DO NOT USE'
+    };
+    self.storage.set = function() {
+      throw 'DO NOT USE'
+    };
+  };
+
+  self.read(walletId, null, function(err, wallet) {
+    if (err) return cb(err);
+
+    wallet.store();
+    self.storage.deleteWallet(walletId, function() {
+      self.storage.removeGlobal('nameFor::' + walletId, function() {
+        reconfigureStorage();
+        return cb();
+      });
+    });
+  });
+
+};
+
+
 /**
  * @desc Retrieve a wallet from storage
  * @param {string} walletId - the wallet id
@@ -153,7 +186,9 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
     err;
   var obj = {};
 
+  console.log('aáaa');
   this.storage.readWallet(walletId, function(ret) {
+    console.log('bbb');
     _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
       obj[p] = ret[p];
     });
@@ -301,12 +336,15 @@ WalletFactory.prototype.open = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
   var self = this;
   self.storage.setPassphrase(passphrase);
-  self.read(walletId, null, function(err, w) {
-    if (err) return cb(err);
 
-    w.store(function(err) {
-      self.storage.setLastOpened(walletId, function() {
-        return cb(err, w);
+  self.migrateWallet(walletId, passphrase, function() {
+    self.read(walletId, null, function(err, w) {
+      if (err) return cb(err);
+
+      w.store(function(err) {
+        self.storage.setLastOpened(walletId, function() {
+          return cb(err, w);
+        });
       });
     });
   });
