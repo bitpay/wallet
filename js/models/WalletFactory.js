@@ -6,12 +6,12 @@ var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 var _ = require('underscore');
-var log = require('../../log');
+var log = require('../log');
 var PluginManager = require('./PluginManager');
-var Async = module.exports.Async = require('../network/Async');
-var Insight = module.exports.Insight = require('../blockchain/Insight');
+var Async = module.exports.Async = require('./Async');
+var Insight = module.exports.Insight = require('./Insight');
 var preconditions = require('preconditions').singleton();
-var Storage = module.exports.Storage = require('../Storage');
+var Storage = module.exports.Storage = require('./Storage');
 
 /**
  * @desc
@@ -427,7 +427,7 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
           return cb('badNetwork');
         }
 
-        var walletOpts =  _.clone(data.opts);
+        var walletOpts = _.clone(data.opts);
         walletOpts.id = data.walletId;
 
         walletOpts.privateKey = privateKey;

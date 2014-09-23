@@ -8,7 +8,7 @@ try {
 } catch (e) {
   var copay = require('../copay'); //node
 }
-var HDPath = require('../js/models/core/HDPath');
+var HDPath = require('../js/models/HDPath');
 
 describe('HDPath model', function() {
   it('should have the correct constants', function() {
@@ -40,33 +40,33 @@ describe('HDPath model', function() {
 
   [
     ['m/45\'/0/0/0', {
-    index: 0,
-    isChange: false
-  }],
-  ['m/45\'/0/0/1', {
-    index: 1,
-    isChange: false
-  }],
-  ['m/45\'/0/0/2', {
-    index: 2,
-    isChange: false
-  }],
-  ['m/45\'/0/1/0', {
-    index: 0,
-    isChange: true
-  }],
-  ['m/45\'/0/1/1', {
-    index: 1,
-    isChange: true
-  }],
-  ['m/45\'/0/1/2', {
-    index: 2,
-    isChange: true
-  }],
-  ['m/45\'/0/0/900', {
-    index: 900,
-    isChange: false
-  }],
+      index: 0,
+      isChange: false
+    }],
+    ['m/45\'/0/0/1', {
+      index: 1,
+      isChange: false
+    }],
+    ['m/45\'/0/0/2', {
+      index: 2,
+      isChange: false
+    }],
+    ['m/45\'/0/1/0', {
+      index: 0,
+      isChange: true
+    }],
+    ['m/45\'/0/1/1', {
+      index: 1,
+      isChange: true
+    }],
+    ['m/45\'/0/1/2', {
+      index: 2,
+      isChange: true
+    }],
+    ['m/45\'/0/0/900', {
+      index: 900,
+      isChange: false
+    }],
   ].forEach(function(datum) {
     var path = datum[0];
     var result = datum[1];

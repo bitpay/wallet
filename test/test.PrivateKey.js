@@ -16,7 +16,7 @@ try {
 } catch (e) {
   var copay = require('../copay'); //node
 }
-var PrivateKey = copay.PrivateKey || require('../js/models/core/PrivateKey');
+var PrivateKey = copay.PrivateKey || require('../js/models/PrivateKey');
 
 var pkConfig = {
   networkName: 'livenet',
@@ -33,7 +33,7 @@ describe('PrivateKey model', function() {
 
   it('should derive priv keys', function() {
     var pk = new PrivateKey(pkConfig);
-    for (var j = false; !j; j=true) {
+    for (var j = false; !j; j = true) {
       for (var i = 0; i < 3; i++) {
         var wk = pk.get(i, j);
         should.exist(wk);
