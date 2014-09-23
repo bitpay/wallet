@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('JoinController',
     $scope.loading = false;
     $scope.isMobile = !!window.cordova;
 
-   // QR code Scanner
+    // QR code Scanner
     var cameraInput;
     var video;
     var canvas;
@@ -15,14 +15,13 @@ angular.module('copayApp.controllers').controller('JoinController',
     var context;
     var localMediaStream;
 
-    $scope.hideAdv=true;
-
+    $scope.hideAdv = true;
 
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-    if (!window.cordova && !navigator.getUserMedia) 
-      $scope.disableScanner =1;
+    if (!window.cordova && !navigator.getUserMedia)
+      $scope.disableScanner = 1;
 
     var _scan = function(evt) {
       if (localMediaStream) {
@@ -118,10 +117,14 @@ angular.module('copayApp.controllers').controller('JoinController',
       }
 
       $scope.loading = true;
-      walletFactory.network.on('badSecret', function() {});
 
       Passphrase.getBase64Async($scope.joinPassword, function(passphrase) {
-        walletFactory.joinCreateSession($scope.connectionId, $scope.nickname, passphrase, $scope.private, function(err, w) {
+        walletFactory.joinCreateSession({
+          secret: $scope.connectionId,
+          nickname: $scope.nickname,
+          passphrase: passphrase,
+          privateHex: $scope.private,
+        }, function(err, w) {
           $scope.loading = false;
           if (err || !w) {
             if (err === 'joinError')
@@ -129,9 +132,11 @@ angular.module('copayApp.controllers').controller('JoinController',
             else if (err === 'walletFull')
               notification.error('The wallet is full');
             else if (err === 'badNetwork')
-              notification.error('Network Error', 'The wallet your are trying to join uses a different Bitcoin Network. Check your settings.');
+              notification.error('Network Error', 'Wallet network configuration missmatch');
             else if (err === 'badSecret')
               notification.error('Bad secret', 'The secret string you entered is invalid');
+            else if (err === 'connectionError')
+              notification.error('Networking Error', 'Could not connect to the Insight server. Check your settings and network configuration');
             else
               notification.error('Unknown error');
             controllerUtils.onErrorDigest();

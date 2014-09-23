@@ -1,27 +1,33 @@
 //localstorage Mock
-ls = {};
-function LocalStorage(opts) {}
 
-FakeLocalStorage = {};
-FakeLocalStorage.length = 0;
-FakeLocalStorage.removeItem = function(key) {
-  delete ls[key];
-  this.length = Object.keys(ls).length;
+function FakeLocalStorage() {
+  this.ls = {};
+};
+FakeLocalStorage.prototype.removeItem = function(key, cb) {
+  delete this.ls[key];
+  cb();
 };
 
-FakeLocalStorage.getItem = function(k) {
-  return ls[k];
+FakeLocalStorage.prototype.getItem = function(k, cb) {
+  return cb(this.ls[k]);
 };
 
 
-FakeLocalStorage.key = function(i) {
-  return Object.keys(ls)[i];
+FakeLocalStorage.prototype.allKeys = function(cb) {
+  return cb(Object.keys(this.ls));
 };
 
-FakeLocalStorage.setItem = function(k, v) {
-  ls[k] = v;
-  this.key[this.length] = k;
-  this.length = Object.keys(ls).length;
+FakeLocalStorage.prototype.setItem = function(k, v, cb) {
+  this.ls[k] = v;
+  return cb();
 };
+FakeLocalStorage.prototype.clear = function() {
+  this.ls = {};
+}
 
 module.exports = FakeLocalStorage;
+
+module.exports.storageParams = {
+  storage: new FakeLocalStorage(),
+  sessionStorage:  new FakeLocalStorage(),
+};

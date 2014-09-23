@@ -2,15 +2,9 @@
 var defaultConfig = {
   defaultLanguage: 'en',
   // DEFAULT network (livenet or testnet)
-  networkName: 'testnet',
-  forceNetwork: false,
+  networkName: 'livenet',
   logLevel: 'info',
 
-  // DEFAULT unit: Bit
-  unitName: 'bits',
-  unitToSatoshi: 100,
-  alternativeName: 'US Dollar',
-  alternativeIsoCode: 'USD',
 
   // wallet limits
   limits: {
@@ -20,9 +14,12 @@ var defaultConfig = {
 
   // network layer config
   network: {
-    host: 'test-insight.bitpay.com',
-    port: 443,
-    schema: 'https'
+    testnet: {
+      url: 'https://test-insight.bitpay.com:443'
+    },
+    livenet: {
+      url: 'https://insight.bitpay.com:443'
+    },
   },
 
   // wallet default config
@@ -30,25 +27,15 @@ var defaultConfig = {
     requiredCopayers: 2,
     totalCopayers: 3,
     spendUnconfirmed: true,
-    verbose: 1,
-    // will duplicate itself after each try
     reconnectDelay: 5000,
-    idleDurationMin: 4
-  },
-
-  // blockchain service API config
-  blockchain: {
-    schema: 'https',
-    host: 'test-insight.bitpay.com',
-    port: 443,
-    retryDelay: 1000,
-  },
-  // socket service API config
-  socket: {
-    schema: 'https',
-    host: 'test-insight.bitpay.com',
-    port: 443,
-    reconnectDelay: 1000,
+    idleDurationMin: 4,
+    settings: {
+      unitName: 'bits',
+      unitToSatoshi: 100,
+      unitDecimals: 2,
+      alternativeName: 'US Dollar',
+      alternativeIsoCode: 'USD',
+    }
   },
 
   // local encryption/security config
@@ -63,6 +50,27 @@ var defaultConfig = {
   },
 
   verbose: 1,
+
+  plugins: {
+    LocalStorage: true,
+    //GoogleDrive: true,
+  },
+
+  GoogleDrive: {
+    home: 'copay',
+
+    /* 
+     * This clientId was generated at:
+     * https://console.developers.google.com/project
+     * To run Copay with Google Drive at your domain you need
+     * to generata your own Id.
+     */
+    // for localhost:3001 you can use  you can:
+    clientId: '232630733383-a35gcnovnkgka94394i88gq60vtjb4af.apps.googleusercontent.com',
+
+    // for copay.io:
+    // clientId: '1036948132229-biqm3b8sirik9lt5rtvjo9kjjpotn4ac.apps.googleusercontent.com',
+  },
 };
 if (typeof module !== 'undefined')
   module.exports = defaultConfig;

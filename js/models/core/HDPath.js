@@ -7,10 +7,9 @@ var _ = require('underscore');
 
 /**
  * @namespace
- *
+ * @desc
  * HDPath contains helper functions to handle BIP32 branches as
  * Copay uses them.
- *
  * Based on https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki
  * <pre>
  * m / purpose' / copayerIndex / change:boolean / addressIndex

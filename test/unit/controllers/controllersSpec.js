@@ -5,24 +5,29 @@
 var sinon = require('sinon');
 
 // Replace saveAs plugin
-saveAsLastCall = null;
-saveAs = function(o) {
-  saveAsLastCall = o;
+saveAs = function(blob, filename) {
+  saveAsLastCall = {
+    blob: blob,
+    filename: filename
+  };
 };
 
 var startServer = require('../../mocks/FakePayProServer');
 
 describe("Unit: Controllers", function() {
+  config.plugins.LocalStorage=true;
+  config.plugins.GoogleDrive=null;
+
   var invalidForm = {
     $invalid: true
   };
 
   var scope;
-
   var server;
 
   beforeEach(module('copayApp.services'));
   beforeEach(module('copayApp.controllers'));
+  beforeEach(angular.mock.module('copayApp'));
 
   var walletConfig = {
     requiredCopayers: 3,
@@ -33,11 +38,6 @@ describe("Unit: Controllers", function() {
     alternativeName: 'lol currency',
     alternativeIsoCode: 'LOL'
   };
-
-  it('Copay config should be binded', function() {
-    should.exist(config);
-    should.exist(config.unitToSatoshi);
-  });
 
 
   describe('More Controller', function() {
@@ -50,21 +50,32 @@ describe("Unit: Controllers", function() {
         $scope: scope,
         $modal: {},
       });
+      saveAsLastCall = null;
     }));
 
     it('Backup controller #download', function() {
       scope.wallet.setEnc('1234567');
       expect(saveAsLastCall).equal(null);
       scope.downloadBackup();
-      expect(saveAsLastCall.size).equal(7);
-      expect(saveAsLastCall.type).equal('text/plain;charset=utf-8');
+      expect(saveAsLastCall.blob.size).equal(7);
+      expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
     });
 
-    it('Backup controller #delete', function() {
-      expect(scope.wallet).not.equal(undefined);
-      scope.deleteWallet();
-      expect(scope.wallet).equal(undefined);
+    it('Backup controller should name backup correctly for multiple copayers', function() {
+      scope.wallet.setEnc('1234567');
+      expect(saveAsLastCall).equal(null);
+      scope.downloadBackup();
+      expect(saveAsLastCall.filename).equal('myNickname-myTESTwullet-testID-keybackup.json.aes');
     });
+
+    it('Backup controller should name backup correctly for 1-1 wallet', function() {
+      scope.wallet.setEnc('1234567');
+      expect(saveAsLastCall).equal(null);
+      scope.wallet.totalCopayers = 1;
+      scope.downloadBackup();
+      expect(saveAsLastCall.filename).equal('myTESTwullet-testID-keybackup.json.aes');
+    });
+
   });
 
   describe('Create Controller', function() {
@@ -110,6 +121,7 @@ describe("Unit: Controllers", function() {
     var transactionsCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
+      $rootScope.wallet = new FakeWallet(walletConfig);
       transactionsCtrl = $controller('TransactionsController', {
         $scope: scope,
       });
@@ -131,7 +143,11 @@ describe("Unit: Controllers", function() {
     beforeEach(module(function($provide) {
       $provide.value('request', {
         'get': function(_, cb) {
-          cb(null, null, [{name: 'lol currency', code: 'LOL', rate: 2}]);
+          cb(null, null, [{
+            name: 'lol currency',
+            code: 'LOL',
+            rate: 2
+          }]);
         }
       });
     }));
@@ -139,8 +155,8 @@ describe("Unit: Controllers", function() {
       scope = $rootScope.$new();
       scope.rateService = rateService;
       $rootScope.wallet = new FakeWallet(walletConfig);
-      config.alternativeName = 'lol currency';
-      config.alternativeIsoCode = 'LOL';
+      $rootScope.wallet.settings.alternativeName = 'lol currency';
+      $rootScope.wallet.settings.alternativeIsoCode = 'LOL';
       var element = angular.element(
         '<form name="form">' +
         '<input type="text" id="newaddress" name="newaddress" ng-disabled="loading" placeholder="Address" ng-model="newaddress" valid-address required>' +
@@ -224,35 +240,35 @@ describe("Unit: Controllers", function() {
       sinon.assert.callCount(spy2, 0);
       sinon.assert.callCount(scope.loadTxs, 1);
       spy.getCall(0).args[0].should.equal('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
-      spy.getCall(0).args[1].should.equal(1000 * config.unitToSatoshi);
+      spy.getCall(0).args[1].should.equal(1000 * scope.wallet.settings.unitToSatoshi);
       (typeof spy.getCall(0).args[2]).should.equal('undefined');
     });
 
 
     it('should handle big values in 100 BTC', function() {
-      var old = config.unitToSatoshi;
-      config.unitToSatoshi = 100000000;;
+      var old = scope.wallet.settings.unitToSatoshi;
+      scope.wallet.settings.unitToSatoshi = 100000000;;
       sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(100);
       var spy = sinon.spy(scope.wallet, 'createTx');
       scope.loadTxs = sinon.spy();
       scope.submitForm(sendForm);
-      spy.getCall(0).args[1].should.equal(100 * config.unitToSatoshi);
-      config.unitToSatoshi = old;
+      spy.getCall(0).args[1].should.equal(100 * scope.wallet.settings.unitToSatoshi);
+      scope.wallet.settings.unitToSatoshi = old;
     });
 
 
-    it('should handle big values in 5000 BTC', function() {
-      var old = config.unitToSatoshi;
-      config.unitToSatoshi = 100000000;;
+    it('should handle big values in 5000 BTC', inject(function($rootScope) {
+      var old = $rootScope.wallet.settings.unitToSatoshi;
+      $rootScope.wallet.settings.unitToSatoshi = 100000000;;
       sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       sendForm.amount.$setViewValue(5000);
       var spy = sinon.spy(scope.wallet, 'createTx');
       scope.loadTxs = sinon.spy();
       scope.submitForm(sendForm);
-      spy.getCall(0).args[1].should.equal(5000 * config.unitToSatoshi);
-      config.unitToSatoshi = old;
-    });
+      spy.getCall(0).args[1].should.equal(5000 * $rootScope.wallet.settings.unitToSatoshi);
+      $rootScope.wallet.settings.unitToSatoshi = old;
+    }));
 
     it('should convert bits amount to fiat', function(done) {
       scope.rateService.whenAvailable(function() {
@@ -302,18 +318,19 @@ describe("Unit: Controllers", function() {
   describe("Unit: Version Controller", function() {
     var scope, $httpBackendOut;
     var GH = 'https://api.github.com/repos/bitpay/copay/tags';
+    beforeEach(angular.mock.module('copayApp'));
     beforeEach(inject(function($controller, $injector) {
       $httpBackend = $injector.get('$httpBackend');
       $httpBackend.when('GET', GH)
-      .respond([{
-        name: "v100.1.6",
-        zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
-        tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
-        commit: {
-          sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
-          url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
-        }
-      }]);
+        .respond([{
+          name: "v100.1.6",
+          zipball_url: "https://api.github.com/repos/bitpay/copay/zipball/v0.0.6",
+          tarball_url: "https://api.github.com/repos/bitpay/copay/tarball/v0.0.6",
+          commit: {
+            sha: "ead7352bf2eca705de58d8b2f46650691f2bc2c7",
+            url: "https://api.github.com/repos/bitpay/copay/commits/ead7352bf2eca705de58d8b2f46650691f2bc2c7"
+          }
+        }]);
     }));
 
     var rootScope;
@@ -358,11 +375,6 @@ describe("Unit: Controllers", function() {
       scope.$apply();
     });
 
-    it('should return networkName', function() {
-      $httpBackend.flush(); // need flush
-      var networkName = scope.networkName;
-      expect(networkName).equal('testnet');
-    });
   });
 
   describe("Unit: Sidebar Controller", function() {
@@ -390,6 +402,7 @@ describe("Unit: Controllers", function() {
     beforeEach(inject(function($compile, $rootScope, $controller) {
       scope = $rootScope.$new();
       $rootScope.availableBalance = 123456;
+      $rootScope.wallet = new FakeWallet(walletConfig);
 
       var element = angular.element(
         '<form name="form">' +

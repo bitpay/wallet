@@ -21,6 +21,7 @@ var HDPath = require('./HDPath');
  * @param {string} opts.extendedPrivateKeyString if set, use this private key
  *                                               string, othewise create a new
  *                                               private key
+ * @constructor
  */
 function PrivateKey(opts) {
   opts = opts || {};

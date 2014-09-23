@@ -4,6 +4,8 @@ var bitcore = require('bitcore');
 angular.module('copayApp.controllers').controller('TransactionsController',
   function($scope, $rootScope, $timeout, controllerUtils, notification) {
 
+    var w = $rootScope.wallet;
+
     $scope.title = 'Transactions';
     $scope.loading = false;
     $scope.lastShowed = false;
@@ -12,7 +14,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     $scope.txpItemsPerPage = 4;
     $scope.blockchain_txs = [];
 
-    var satToUnit = 1 / config.unitToSatoshi;
+    var satToUnit = 1 / w.settings.unitToSatoshi;
 
     $scope.update = function() {
       $scope.loading = true;
@@ -139,7 +141,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     }
 
     $scope.getShortNetworkName = function() {
-      return config.networkName.substring(0, 4);
+      return w.getNetworkName().substring(0, 4);
     };
 
     // Autoload transactions on 1-of-1

@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('underscore');
 var chai = chai || require('chai');
 var should = chai.should();
 var sinon = require('sinon');
@@ -12,7 +13,7 @@ if (is_browser) {
 var copayConfig = require('../config');
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
-var Storage = require('./mocks/FakeStorage');
+var Storage = copay.Storage;
 var Network = require('./mocks/FakeNetwork');
 var Blockchain = require('./mocks/FakeBlockchain');
 var Builder = require('./mocks/FakeBuilder');
@@ -27,6 +28,7 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
+  storage: require('./mocks/FakeLocalStorage').storageParams,
 };
 
 var getNewEpk = function() {
@@ -80,6 +82,7 @@ describe('Wallet model', function() {
     });
 
     var storage = new Storage(walletConfig.storage);
+    storage.setPassphrase('xxx');
     var network = new Network(walletConfig.network);
     var blockchain = new Blockchain(walletConfig.blockchain);
     c.storage = storage;
@@ -102,7 +105,6 @@ describe('Wallet model', function() {
     };
 
     c.networkName = walletConfig.networkName;
-    c.verbose = walletConfig.verbose;
     c.version = '0.0.1';
 
 
@@ -341,8 +343,10 @@ describe('Wallet model', function() {
     // non stored options
     o.opts.reconnectDelay = 100;
 
+    var s = new Storage(walletConfig.storage);
+    s.setPassphrase('xxx');
     var w2 = Wallet.fromObj(o,
-      new Storage(walletConfig.storage),
+      s,
       new Network(walletConfig.network),
       new Blockchain(walletConfig.blockchain));
     should.exist(w2);
@@ -363,7 +367,18 @@ describe('Wallet model', function() {
     var s = Wallet.decodeSecret(sb);
     s.pubKey.should.equal(id);
     s.secretNumber.should.equal(secretNumber);
+    s.networkName.should.equal(w.getNetworkName());
+  });
 
+  it('#getSecret decodeSecret livenet', function() {
+    var w = cachedCreateW2();
+    var stub = sinon.stub(w, 'getNetworkName');
+    stub.returns('livenet');
+    var sb = w.getSecret();
+    should.exist(sb);
+    var s = Wallet.decodeSecret(sb);
+    s.networkName.should.equal('livenet');
+    stub.restore();
   });
 
 
@@ -388,6 +403,37 @@ describe('Wallet model', function() {
   it('#maxRejectCount', function() {
     var w = cachedCreateW();
     w.maxRejectCount().should.equal(2);
+  });
+
+
+  describe('#_onData', function() {
+    var w = cachedCreateW();
+    var sender = '025c046aaf505a6d23203edd343132e9d4d21818b962d1e9a9c98573cc2031bfc9';
+    var ts = 1410810974778246;
+    it('should fail on message unknown', function() {
+      var data = {
+        type: "xxx",
+        walletId: w.id
+      };
+
+      (function() {
+        w._onData(sender, data, ts);
+      }).should.
+      throw('unknown message type received: xxx from: 025c046aaf505a6d23203edd343132e9d4d21818b962d1e9a9c98573cc2031bfc9');
+
+    });
+
+    it('should call sendWalletReady', function() {
+      var data = {
+        type: "walletId",
+        walletId: w.id
+      };
+
+      var spy = sinon.spy(w, 'sendWalletReady');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
   });
 
 
@@ -904,6 +950,22 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#subscribeToAddresses', function() {
+    it('should subscribe successfully', function() {
+      var w = cachedCreateW2();
+      var addr1 = w.getAddresses()[0].toString();
+      var addr2 = w.generateAddress().toString();
+      var addr3 = w.generateAddress(true).toString();
+      chai.expect(w.getAddresses().length).to.equal(3);
+
+      w.blockchain.subscribe = sinon.spy();
+      w.subscribeToAddresses();
+      w.blockchain.subscribe.calledOnce.should.equal(true);
+      var arg = w.blockchain.subscribe.getCall(0).args[0];
+      chai.expect(_.difference(arg, [addr1, addr2, addr3]).length).to.equal(0);
+    });
+  });
+
   describe('#send', function() {
     it('should call this.network.send', function() {
       var w = cachedCreateW2();
@@ -1194,6 +1256,15 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#getMyCopayerNickname', function() {
+    it('should call publicKeyRing.nicknameForCopayer', function() {
+      var w = cachedCreateW2();
+      w.publicKeyRing.nicknameForCopayer = sinon.spy();
+      w.getMyCopayerNickname();
+      w.publicKeyRing.nicknameForCopayer.calledOnce.should.equal(true);
+    });
+  });
+
   describe('#netStart', function() {
     it('should call Network.start', function() {
       var w = cachedCreateW2();
@@ -1211,15 +1282,6 @@ describe('Wallet model', function() {
 
   });
 
-  describe('#forceNetwork in config', function() {
-    it('should throw if network is different', function() {
-      var backup = copayConfig.forceNetwork;
-      copayConfig.forceNetwork = true;
-      walletConfig.networkName = 'livenet';
-      createW2.should.throw(Error);
-      copayConfig.forceNetwork = backup;
-    });
-  });
   describe('_getKeymap', function() {
     var w = cachedCreateW();
 
@@ -1531,6 +1593,29 @@ describe('Wallet model', function() {
     var n = w.getNetwork();
     n.maxPeers.should.equal(5);
     should.exist(n.networkNonce);
+  });
+
+  it('should emit notification when tx received', function(done) {
+    var w = cachedCreateW2();
+    w.blockchain.removeAllListeners = sinon.stub();
+    var spy = sinon.spy(w, 'emit');
+
+    w.generateAddress(false, function(addr1) {
+      w.generateAddress(true, function(addr2) {
+        w.blockchain.on = sinon.stub().withArgs('tx').yields({
+          address: addr1.toString(),
+        });
+        w._setBlockchainListeners();
+        spy.calledWith('tx', addr1.toString(), false).should.be.true;
+
+        w.blockchain.on = sinon.stub().withArgs('tx').yields({
+          address: addr2.toString(),
+        });
+        w._setBlockchainListeners();
+        spy.calledWith('tx', addr2.toString(), true).should.be.true;
+        done();
+      });
+    });
   });
 
 });
