@@ -118,9 +118,7 @@ checkOK
 cp -R android/res/* $PROJECT/platforms/android/res
 checkOK
 
-echo $SKIPIOS;
 if [[ !$SKIPIOS ]]; then
-  echo "Copiando IOS";
   cp -R ios/icons/* $PROJECT/platforms/ios/Copay/Resources/icons
   checkOK
 
