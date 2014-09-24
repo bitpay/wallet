@@ -189,6 +189,7 @@ describe('WalletFactory model', function() {
   describe('#getWallets', function() {
     it('should return empty array if no wallets', function(done) {
       wf.storage.getWallets = sinon.stub().yields([]);
+      wf.storage.getLastOpened = sinon.stub().yields(null);
 
       wf.getWallets(function(err, ws) {
         should.not.exist(err);
@@ -205,6 +206,7 @@ describe('WalletFactory model', function() {
         name: 'w',
         id: 'id2',
       }]);
+      wf.storage.getLastOpened = sinon.stub().yields(null);
 
       wf.getWallets(function(err, ws) {
         should.not.exist(err);
@@ -215,6 +217,31 @@ describe('WalletFactory model', function() {
         }, {
           name: 'w',
           id: 'id2',
+          show: 'w <id2>'
+        }]);
+        done();
+      });
+    });
+    it('should include last used info', function(done) {
+      wf.storage.getWallets = sinon.stub().yields([{
+        name: 'w1',
+        id: 'id1',
+      }, {
+        name: 'w',
+        id: 'id2',
+      }]);
+      wf.storage.getLastOpened = sinon.stub().yields('id2');
+
+      wf.getWallets(function(err, ws) {
+        should.not.exist(err);
+        ws.should.deep.equal([{
+          name: 'w1',
+          id: 'id1',
+          show: 'w1 <id1>'
+        }, {
+          name: 'w',
+          id: 'id2',
+          lastOpened: true,
           show: 'w <id2>'
         }]);
         done();
