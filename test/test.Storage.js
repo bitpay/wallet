@@ -217,22 +217,24 @@ describe('Storage model', function() {
       s.setFromObj('1', w1, function() {
         s.setFromObj('2', w2, function() {
           s._write('3::name', 'matias', function() {
-            s.setGlobal('nameFor::3', 'wallet3', function() {
-              s.getWallets(function(ws) {
-                ws.length.should.equal(3);
-                ws[0].should.deep.equal({
-                  id: '1',
-                  name: 'wallet1',
+            s._write('1::name', 'juan', function() {
+              s.setGlobal('nameFor::3', 'wallet3', function() {
+                s.getWallets(function(ws) {
+                  ws.length.should.equal(3);
+                  ws[0].should.deep.equal({
+                    id: '1',
+                    name: 'wallet1',
+                  });
+                  ws[1].should.deep.equal({
+                    id: '2',
+                    name: undefined
+                  });
+                  ws[2].should.deep.equal({
+                    id: '3',
+                    name: 'wallet3',
+                  });
+                  done();
                 });
-                ws[1].should.deep.equal({
-                  id: '2',
-                  name: undefined
-                });
-                ws[2].should.deep.equal({
-                  id: '3',
-                  name: 'wallet3',
-                });
-                done();
               });
             });
           })

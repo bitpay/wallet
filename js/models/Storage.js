@@ -258,9 +258,14 @@ Storage.prototype.getWallets2 = function(cb) {
 
 Storage.prototype.getWallets = function(cb) {
   var self = this;
-  self.getWallets2(function(wallets1) {
+  self.getWallets2(function(wallets) {
     self.getWallets_Old(function(wallets2) {
-      return cb(wallets1.concat(wallets2));
+      var ids = _.pluck(wallets, 'id');
+      _.each(wallets2, function(w) {
+        if (!_.contains(ids, w.id))
+          wallets.push(w);
+      });
+      return cb(wallets);
     });
   })
 };
