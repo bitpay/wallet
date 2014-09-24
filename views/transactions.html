@@ -54,7 +54,16 @@
           <div class="last-transactions-content">
             <div class="large-5 medium-5 small-12 columns">
               <div ng-repeat="vin in btx.vinSimple">
-                <small class="right m5t">{{vin.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
+                <small class="right m5t"
+                  ng-class="{'has-tip': vin.valueAlt}"
+                  data-options="disable_for_touch:true"
+                  tooltip-popup-delay='500'
+                  tooltip="{{vin.valueAlt|noFractionNumber}} {{alternativeIsoCode}}"
+                  tooltip-trigger="mouseenter"
+                  tooltip-placement="right"
+                  >
+                  {{vin.value| noFractionNumber}} {{$root.wallet.settings.unitName}}
+                </small>
                 <p class="ellipsis text-gray size-12">
                   <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
                 </p>
@@ -68,7 +77,15 @@
             </div>
             <div class="large-6 medium-6 small-12 columns">
               <div ng-repeat="vout in btx.voutSimple">
-                <small class="right m5t">{{vout.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
+                <small class="right m5t"
+                  ng-class="{'has-tip': vout.valueAlt}"
+                  data-options="disable_for_touch:true"
+                  tooltip-popup-delay='500'
+                  tooltip="{{vout.valueAlt|noFractionNumber}} {{alternativeIsoCode}}"
+                  tooltip-trigger="mouseenter"
+                  tooltip-placement="left"
+                  >
+                  {{vout.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
                 <p class="ellipsis text-gray size-12">
                   <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
                 </p>
