@@ -23,17 +23,14 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
     } else {
       $scope.retreiving = false;
       $scope.wallets = wallets.sort(cmp);
-
-      walletFactory.storage.getLastOpened(function(ret) {
-        if (ret && _.indexOf(_.pluck($scope.wallets, 'id')) == -1)
-          ret = null;
-
-        $scope.selectedWalletId = ret || ($scope.wallets[0] && $scope.wallets[0].id);
-
-        setTimeout(function() {
-          $rootScope.$digest();
-        }, 0);
+      var lastOpened = _.findWhere($scope.wallets, {
+        lastOpened: true
       });
+      $scope.selectedWalletId = lastOpened ? lastOpened.id : ($scope.wallets[0] && $scope.wallets[0].id);
+
+      setTimeout(function() {
+        $rootScope.$digest();
+      }, 0);
     }
   });
 
