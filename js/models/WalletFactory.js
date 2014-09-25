@@ -368,11 +368,19 @@ WalletFactory.prototype.open = function(walletId, passphrase, cb) {
 };
 
 WalletFactory.prototype.getWallets = function(cb) {
-  this.storage.getWallets(function(ret) {
-    ret.forEach(function(i) {
+  var self = this;
+  this.storage.getWallets(function(wallets) {
+    wallets.forEach(function(i) {
       i.show = i.name ? ((i.name + ' <' + i.id + '>')) : i.id;
     });
-    return cb(null, ret);
+    self.storage.getLastOpened(function(lastId) {
+      var last = _.findWhere(wallets, {
+        id: lastId
+      });
+      if (last)
+        last.lastOpened = true;
+      return cb(null, wallets);
+    })
   });
 };
 
