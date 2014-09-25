@@ -1,6 +1,7 @@
 'use strict';
 var chai = chai || require('chai');
 var sinon = require('sinon');
+var _ = require('underscore');
 var should = chai.should();
 var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
 var copay = copay || require('../copay');
@@ -11,69 +12,69 @@ var timeStamp = Date.now();
 
 describe('Storage model', function() {
 
-    var s;
-    beforeEach(function() {
-      s = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      s.setPassphrase('mysupercoolpassword');
-      s.storage.clear();
-      s.sessionStorage.clear();
-    });
+  var s;
+  beforeEach(function() {
+    s = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    s.setPassphrase('mysupercoolpassword');
+    s.storage.clear();
+    s.sessionStorage.clear();
+  });
 
 
-    it('should create an instance', function() {
-      var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      should.exist(s2);
+  it('should create an instance', function() {
+    var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    should.exist(s2);
+  });
+  it('should fail when encrypting without a password', function() {
+    var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    (function() {
+      s2._write(fakeWallet + timeStamp, 1, function() {});
+    }).should.throw('NOPASSPHRASE');
+  });
+  it('should be able to encrypt and decrypt', function(done) {
+    s._write(fakeWallet + timeStamp, 'value', function() {
+      s._read(fakeWallet + timeStamp, function(v) {
+        v.should.equal('value');
+        done();
+      });
     });
-    it('should fail when encrypting without a password', function() {
-      var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
-      (function() {
-        s2.set(fakeWallet, timeStamp, 1, function() {});
-      }).should.throw('NOPASSPHRASE');
+  });
+  it('should be able to set a value', function(done) {
+    s._write(fakeWallet + timeStamp, 1, function() {
+      done();
     });
-    it('should be able to encrypt and decrypt', function(done) {
-      s._write(fakeWallet + timeStamp, 'value', function() {
-        s._read(fakeWallet + timeStamp, function(v) {
-          v.should.equal('value');
+  });
+  var getSetData = [
+    1, 1000, -15, -1000,
+    0.1, -0.5, -0.5e-10, Math.PI,
+    'hi', 'auydoaiusyodaisudyoa', '0b5b8556a0c2ce828c9ccfa58b3dd0a1ae879b9b',
+    '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC', 'OP_DUP OP_HASH160 80ad90d4035', [1, 2, 3, 4, 5, 6], {
+      x: 1,
+      y: 2
+    }, {
+      x: 'hi',
+      y: null
+    }, {
+      a: {},
+      b: [],
+      c: [1, 2, 'hi']
+    },
+    null
+  ];
+  getSetData.forEach(function(obj) {
+    it('should be able to set a value and get it for ' + JSON.stringify(obj), function(done) {
+      s._write(fakeWallet + timeStamp, obj, function() {
+        s._read(fakeWallet + timeStamp, function(obj2) {
+          JSON.stringify(obj2).should.equal(JSON.stringify(obj));
           done();
         });
       });
     });
-    it('should be able to set a value', function(done) {
-      s.set(fakeWallet, timeStamp, 1, function() {
-        done();
-      });
-    });
-    var getSetData = [
-      1, 1000, -15, -1000,
-      0.1, -0.5, -0.5e-10, Math.PI,
-      'hi', 'auydoaiusyodaisudyoa', '0b5b8556a0c2ce828c9ccfa58b3dd0a1ae879b9b',
-      '1CjPR7Z5ZSyWk6WtXvSFgkptmpoi4UM9BC', 'OP_DUP OP_HASH160 80ad90d4035', [1, 2, 3, 4, 5, 6], {
-        x: 1,
-        y: 2
-      }, {
-        x: 'hi',
-        y: null
-      }, {
-        a: {},
-        b: [],
-        c: [1, 2, 'hi']
-      },
-      null
-    ];
-    getSetData.forEach(function(obj) {
-        it('should be able to set a value and get it for ' + JSON.stringify(obj), function(done) {
-            s.set(fakeWallet, timeStamp, obj, function() {
-                s.get(fakeWallet, timeStamp, function(obj2) {
-                    JSON.stringify(obj2).should.equal(JSON.stringify(obj));
-                    done();
-                });
-            });
-        });
-    });
+  });
 
   describe('#export', function() {
     it('should export the encrypted wallet', function(done) {
-      s.set(fakeWallet, timeStamp, 'testval', function() {
+      s._write(fakeWallet + timeStamp, 'testval', function() {
         var obj = {
           test: 'testval'
         };
@@ -84,42 +85,14 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#remove', function() {
-    it('should remove an item', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.get('1', 'hola', function(v) {
-          v.should.equal('juan');
-          s.remove('1', 'hola', function() {
-            s.get('1', 'hola', function(v) {
-              should.not.exist(v);
-              done();
-            });
-          });
-        })
-      })
-    });
-  });
-
-
-  describe('#getWalletIds', function() {
+  describe('#_getWalletIds', function() {
     it('should get wallet ids', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.getWalletIds(function(v) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s._getWalletIds(function(v) {
             v.should.deep.equal(['1', '2']);
             done();
           });
-        });
-      });
-    });
-  });
-
-  describe('#getName #setName', function() {
-    it('should get/set names', function(done) {
-      s.setName(1, 'hola', function() {
-        s.getName(1, function(v) {
-          v.should.equal('hola');
-          done();
         });
       });
     });
@@ -149,13 +122,13 @@ describe('Storage model', function() {
     });
   }
 
-  describe('#getWallets', function() {
-    it('should retreive wallets from storage', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.setName(1, 'hola', function() {
+  describe('#getWallets_Old', function() {
+    it('should retrieve wallets from storage', function(done) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.setGlobal('nameFor::1', 'hola', function() {
 
-            s.getWallets(function(ws) {
+            s.getWallets_Old(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
                 name: 'hola',
@@ -170,19 +143,19 @@ describe('Storage model', function() {
         });
       });
     });
-    it('should retreive wallets from storage (with delay)', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.setName(1, 'hola', function() {
+    it('should retrieve wallets from storage (with delay)', function(done) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.setGlobal('nameFor::1', 'hola', function() {
 
-            var orig = s.getName.bind(s);
-            s.getName = function(wid, cb) {
-              setTimeout(function() { 
-                orig(wid, cb);
-              },1);
+            var orig = s.getGlobal.bind(s);
+            s.getGlobal = function(k, cb) {
+              setTimeout(function() {
+                orig(k, cb);
+              }, 1);
             };
 
-            s.getWallets(function(ws) {
+            s.getWallets_Old(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
                 name: 'hola',
@@ -197,13 +170,84 @@ describe('Storage model', function() {
         });
       });
     });
-  }); 
-  
-  describe('#deleteWallet', function() {
+  });
+
+  describe('#getWallets2', function() {
+    it('should retrieve wallets from storage', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s.getWallets2(function(ws) {
+            ws[0].should.deep.equal({
+              id: '1',
+              name: 'wallet1',
+            });
+            ws[1].should.deep.equal({
+              id: '2',
+              name: undefined
+            });
+            done();
+          });
+        });
+      });
+    });
+  });
+
+
+  describe('#getWallets', function() {
+    it('should retrieve wallets from storage both new and old format', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s._write('3::name', 'matias', function() {
+            s._write('1::name', 'juan', function() {
+              s.setGlobal('nameFor::3', 'wallet3', function() {
+                s.getWallets(function(ws) {
+                  ws.length.should.equal(3);
+                  ws[0].should.deep.equal({
+                    id: '1',
+                    name: 'wallet1',
+                  });
+                  ws[1].should.deep.equal({
+                    id: '2',
+                    name: undefined
+                  });
+                  ws[2].should.deep.equal({
+                    id: '3',
+                    name: 'wallet3',
+                  });
+                  done();
+                });
+              });
+            });
+          })
+        });
+      });
+    });
+  });
+
+  describe('#deleteWallet_Old', function() {
     it('should fail to delete a unexisting wallet', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.deleteWallet('3', function(err) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.deleteWallet_Old('3', function(err) {
             err.toString().should.include('WNOTFOUND');
             done();
           });
@@ -212,11 +256,11 @@ describe('Storage model', function() {
     });
 
     it('should delete a wallet', function(done) {
-      s.set('1', "hola", 'juan', function() {
-        s.set('2', "hola", 'juan', function() {
-          s.deleteWallet('1', function(err) {
+      s._write('1::hola', 'juan', function() {
+        s._write('2::hola', 'juan', function() {
+          s.deleteWallet_Old('1', function(err) {
             should.not.exist(err);
-            s.getWallets(function(ws) {
+            s.getWallets_Old(function(ws) {
               ws.length.should.equal(1);
               ws[0].should.deep.equal({
                 id: '2',
@@ -230,22 +274,126 @@ describe('Storage model', function() {
     });
   });
 
+  describe('#deleteWallet', function() {
+    it('should fail to delete a unexisting wallet', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s.deleteWallet('3', function(err) {
+            err.toString().should.include('WNOTFOUND');
+            done();
+          });
+        });
+      });
+    });
+
+    it('should delete a wallet', function(done) {
+      var w1 = {
+        name: 'juan',
+        opts: {
+          name: 'wallet1'
+        }
+      };
+      var w2 = {
+        name: 'pepe'
+      };
+
+      s.setFromObj('1', w1, function() {
+        s.setFromObj('2', w2, function() {
+          s.deleteWallet('1', function(err) {
+            should.not.exist(err);
+            s.getWallets2(function(ws) {
+              ws.length.should.equal(1);
+              ws[0].id.should.equal('2');
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe('#readWallet_Old', function() {
+    it('should read wallet', function(done) {
+      var data = {
+        'id1::a': 'x',
+        'id1::b': 'y',
+        'id2::c': 'z',
+      };
+      s.storage.allKeys = sinon.stub().yields(_.keys(data));
+      sinon.stub(s, '_read', function(k, cb) {
+        return cb(data[k]);
+      });
+      s.readWallet_Old('id1', function(err, w) {
+        should.not.exist(err);
+        w.should.exist;
+        w.hasOwnProperty('a').should.be.true;
+        w.hasOwnProperty('b').should.be.true;
+        w.hasOwnProperty('c').should.be.false;
+        w.a.should.equal('x');
+        w.b.should.equal('y');
+        s._read.restore();
+        done();
+      });
+    });
+  });
+
+  describe('#readWallet', function() {
+    it('should read wallet', function(done) {
+      var data = {
+        'wallet::id1_wallet1': {
+          a: 'x',
+          b: 'y'
+        },
+        'wallet::id2': {
+          c: 'z'
+        },
+      };
+      s.storage.allKeys = sinon.stub().yields(_.keys(data));
+      sinon.stub(s, '_read', function(k, cb) {
+        return cb(data[k]);
+      });
+      s.readWallet('id1', function(err, w) {
+        should.not.exist(err);
+        w.should.exist;
+        w.hasOwnProperty('a').should.be.true;
+        w.hasOwnProperty('b').should.be.true;
+        w.hasOwnProperty('c').should.be.false;
+        w.a.should.equal('x');
+        w.b.should.equal('y');
+        s._read.restore();
+        done();
+      });
+    });
+  });
+
   describe('#setFromObj', function() {
-    it('set localstorage from an object', function(done) {
+    it('should store from an object as single key', function(done) {
       s.setFromObj('id1', {
         'key': 'val',
         'opts': {
           'name': 'nameid1'
         },
       }, function() {
-        s.get('id1', 'key', function(v) {
-          v.should.equal('val');
+        s._read('wallet::id1_nameid1', function(r) {
+          r.should.exist;
+          r.key.should.exist;
+          r.key.should.equal('val');
+          r.opts.name.should.equal('nameid1');
           done();
         });
       });
     });
   });
-
 
   describe('#globals', function() {
     it('should set, get and remove keys', function(done) {
@@ -286,7 +434,7 @@ describe('Storage model', function() {
       var wo = s.import(encryptedLegacy1);
       should.not.exist(wo);
     });
- 
+
     it('should be able to decrypt an old backup', function() {
       s.setPassphrase(legacyPassword1);
       var wo = s.import(encryptedLegacy1);
@@ -310,11 +458,8 @@ describe('Storage model', function() {
       wo.publicKeyRing.copayersExtPubKeys[0].should.equal('tpubD9SGoP7CXsqSKTiQxCZSCpicDcophqnE4yuqjfw5M9tAR3fSjT9GDGwPEUFCN7SSmRKGDLZgKQePYFaLWyK32akeSan45TNTd8sgef9Ymh6');
       wo.privateKey.extendedPrivateKeyString.should.equal('tprv8ZgxMBicQKsPfQCscb7CtJKzixxcVSyrCVcfr3WCFbtT8kYTzNubhjQ5R7AuYJgPCcSH4R8T34YVxeohKGhAB9wbB4eFBbQFjUpjGCqptHm');
       wo.privateKey.networkName.should.equal('testnet');
-
-
     });
   });
-
 });
 
 var legacyPassword1 = '1DUpLRbuVpgLkcEY8gY8iod/SmA7+OheGZJ9PtvmTlvNE0FkEWpCKW9STdzXYJqbn0wiAapE4ojHNYj2hjYYAQ==';
