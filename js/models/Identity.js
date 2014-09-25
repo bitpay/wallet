@@ -11,9 +11,7 @@ var inherits = require('inherits'),
  * @param {string} opts.password - this user's selected password (used for encryption)
  * @param {Wallet[]} opts.wallets - this user's wallet
  *
- * @emits newWallet
- * @emits newCopayer
- * @emits newWalletCreated
+ * @emits updated
  */
 function Identity(opts) {
   events.EventEmitter.call(this);
@@ -42,12 +40,6 @@ Identity.prototype.createWallet = function(callback) {
 /**
  * Asynchronous method that joins a new Wallet
  */
-Identity.prototype.joinWallet = function(callback) {
-};
-
-/**
- * Process a new copayer in the public key ring
- */
-Identity.prototype.processNewCopayer = function(xpubkey, walletSecret, callback) {
+Identity.prototype.joinWallet = function(walletId, secret, opts, callback) {
 };
 
