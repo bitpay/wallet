@@ -127,6 +127,10 @@ describe("Unit: Controllers", function() {
       });
     }));
 
+    it('should exist', function() {
+      should.exist(transactionsCtrl);
+    });
+
     it('should have a TransactionController controller', function() {
       expect(scope.loading).equal(false);
     });
@@ -134,6 +138,17 @@ describe("Unit: Controllers", function() {
     it('should return an empty array of tx from insight', function() {
       scope.getTransactions();
       expect(scope.blockchain_txs).to.be.empty;
+    });
+
+    it('should call amountAlternative and return a value', function() {
+      var cb = sinon.spy();
+      var s1 = sinon.stub(scope, 'amountAlternative');
+      s1.onCall(0).returns(1000);
+      s1.onCall(1).returns(2000);
+      expect(s1(100, 0, cb)).equal(1000);
+      expect(s1(200, 1, cb)).equal(2000);
+      sinon.assert.callCount(scope.amountAlternative, 2);
+      s1.restore();
     });
   });
 
