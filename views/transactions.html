@@ -5,7 +5,9 @@
     <div class="large-12" ng-show="wallet.isShared()">
 
       <div class="last-transactions" ng-repeat="tx in txs | paged">
-        <div ng-include="'views/includes/transaction.html'"></div>
+        <div class="row collapse">
+          <div ng-include="'views/includes/transaction.html'"></div>
+        </div>
       </div>
       <p ng-show="txs.length == 0"><span translate>No transactions proposals yet.</span>
       </p>
@@ -29,21 +31,23 @@
         <div ng-if="!blockchain_txs[0].txid && !loading">
         <em><strong translate>No transactions yet.</strong></em></div>
         <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
-          <div class="last-transactions-header oh size-14">
-            <div class="large-8 medium-7 small-4 columns ellipsis">
-              <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank">
-                {{btx.txid}} 
-              </a> 
-              <span class="btn-copy" clip-copy="btx.txid"></span>
-            </div>
-            <div class="large-4 medium-5 small-8 columns text-right">
-              <div data-ng-show="btx.firstSeenTs">
-                <span translate>first seen at</span>
-                <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+          <div class="last-transactions-header size-14">
+            <div class="row collapse">
+              <div class="large-8 medium-7 small-4 columns ellipsis">
+                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank">
+                  {{btx.txid}} 
+                </a> 
+                <span class="btn-copy" clip-copy="btx.txid"></span>
               </div>
-              <div data-ng-show="btx.time && !btx.firstSeenTs">
-                <span translate>mined</span>
-                <time>{{btx.time * 1000 | amCalendar}}</time>
+              <div class="large-4 medium-5 small-8 columns text-right">
+                <div data-ng-show="btx.firstSeenTs">
+                  <span translate>first seen at</span>
+                  <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+                </div>
+                <div data-ng-show="btx.time && !btx.firstSeenTs">
+                  <span translate>mined</span>
+                  <time>{{btx.time * 1000 | amCalendar}}</time>
+                </div>
               </div>
             </div>
           </div>
@@ -72,12 +76,14 @@
             </div>
           </div>
           <div class="last-transactions-footer">
-            <div class="large-6 medium-6 small-6 columns">
-              <p class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
-              <p class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</p>
-            </div>
-            <div class="large-6 medium-6 small-6 columns text-right">
-              <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+            <div class="row collapse">
+              <div class="large-6 medium-6 small-6 columns">
+                <p class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+                <p class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</p>
+              </div>
+              <div class="large-6 medium-6 small-6 columns text-right">
+                <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+              </div>
             </div>
           </div>
         </div>
