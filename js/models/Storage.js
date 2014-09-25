@@ -94,7 +94,6 @@ Storage.prototype.getGlobal = function(k, cb) {
 // set value for key
 Storage.prototype.setGlobal = function(k, v, cb) {
   preconditions.checkArgument(cb);
-
   this.storage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v, cb);
 };
 
@@ -123,20 +122,42 @@ Storage.prototype.setSessionId = function(sessionId, cb) {
   this.sessionStorage.setItem('sessionId', sessionId, cb);
 };
 
-Storage.prototype._key = function(walletId, k) {
-  return walletId + '::' + k;
-};
-// get value by key
-Storage.prototype.get = function(walletId, k, cb) {
-  preconditions.checkArgument(walletId, k, cb);
-  this._read(this._key(walletId, k), cb);
-};
-
-
 Storage.prototype._readHelper = function(walletId, k, cb) {
   var wk = this._key(walletId, k);
   this._read(wk, function(v) {
     return cb(v, k);
+  });
+};
+
+Storage.prototype.readWallet_Old = function(walletId, cb) {
+  var self = this;
+  this.storage.allKeys(function(allKeys) {
+    var obj = {};
+    var keys = _.filter(allKeys, function(k) {
+      if (k.indexOf(walletId + '::') === 0) return true;
+    });
+    if (keys.length === 0) return cb(new Error('Wallet ' + walletId + ' not found'));
+    var count = keys.length;
+    _.each(keys, function(k) {
+      self._read(k, function(v) {
+        obj[k.split('::')[1]] = v;
+        if (--count === 0) return cb(null, obj);
+      })
+    });
+  });
+};
+
+Storage.prototype.readWallet = function(walletId, cb) {
+  var self = this;
+  this.storage.allKeys(function(allKeys) {
+    var keys = _.filter(allKeys, function(k) {
+      if ((k === 'wallet::' + walletId) || k.indexOf('wallet::' + walletId) === 0) return true;
+    });
+    if (keys.length === 0) return cb(new Error('Wallet ' + walletId + ' not found'));
+    self._read(keys[0], function(v) {
+      if (_.isNull(v)) return cb(new Error('Could not decrypt wallet data'));
+      return cb(null, v);
+    })
   });
 };
 
@@ -159,32 +180,7 @@ Storage.prototype.getMany = function(walletId, keys, cb) {
   }
 };
 
-// set value for key
-Storage.prototype.set = function(walletId, k, v, cb) {
-  preconditions.checkArgument(walletId && k && cb);
-
-  if (_.isUndefined(v)) return cb();
-
-  this._write(this._key(walletId, k), v, cb);
-};
-
-// remove value for key
-Storage.prototype.remove = function(walletId, k, cb) {
-  preconditions.checkArgument(walletId && k && cb);
-  this.removeGlobal(this._key(walletId, k), cb);
-};
-
-Storage.prototype.setName = function(walletId, name, cb) {
-  preconditions.checkArgument(walletId && name && cb);
-  this.setGlobal('nameFor::' + walletId, name, cb);
-};
-
-Storage.prototype.getName = function(walletId, cb) {
-  preconditions.checkArgument(walletId && cb);
-  this.getGlobal('nameFor::' + walletId, cb);
-};
-
-Storage.prototype.getWalletIds = function(cb) {
+Storage.prototype._getWalletIds = function(cb) {
   preconditions.checkArgument(cb);
   var walletIds = [];
   var uniq = {};
@@ -195,7 +191,7 @@ Storage.prototype.getWalletIds = function(cb) {
       if (split.length == 2) {
         var walletId = split[0];
 
-        if (!walletId || walletId === 'nameFor' || walletId === 'lock')
+        if (!walletId || walletId === 'nameFor' || walletId === 'lock' || walletId === 'wallet')
           continue;
 
         if (typeof uniq[walletId] === 'undefined') {
@@ -208,7 +204,7 @@ Storage.prototype.getWalletIds = function(cb) {
   });
 };
 
-Storage.prototype.getWallets = function(cb) {
+Storage.prototype.getWallets_Old = function(cb) {
   preconditions.checkArgument(cb);
 
   if (this.wListCache.ts > Date.now())
@@ -217,14 +213,14 @@ Storage.prototype.getWallets = function(cb) {
   var wallets = [];
   var self = this;
 
-  this.getWalletIds(function(ids) {
+  this._getWalletIds(function(ids) {
     var l = ids.length,
       i = 0;
     if (!l)
       return cb([]);
 
     _.each(ids, function(id) {
-      self.getName(id, function(name) {
+      self.getGlobal('nameFor::' + id, function(name) {
         wallets.push({
           id: id,
           name: name,
@@ -239,7 +235,43 @@ Storage.prototype.getWallets = function(cb) {
   });
 };
 
-Storage.prototype.deleteWallet = function(walletId, cb) {
+Storage.prototype.getWallets2 = function(cb) {
+  var self = this;
+  var re = /wallet::([^_]+)(_?(.*))/;
+
+  this.storage.allKeys(function(allKeys) {
+    var wallets = _.compact(_.map(allKeys, function(key) {
+      if (key.indexOf('wallet::') !== 0)
+        return null;
+      var match = key.match(re);
+      if (match.length != 4)
+        return null;
+      return {
+        id: match[1],
+        name: match[3] ? match[3] : undefined,
+      };
+    }));
+
+    return cb(wallets);
+  });
+};
+
+Storage.prototype.getWallets = function(cb) {
+  var self = this;
+  self.getWallets2(function(wallets) {
+    self.getWallets_Old(function(wallets2) {
+      var ids = _.pluck(wallets, 'id');
+      _.each(wallets2, function(w) {
+        if (!_.contains(ids, w.id))
+          wallets.push(w);
+      });
+      return cb(wallets);
+    });
+  })
+};
+
+
+Storage.prototype.deleteWallet_Old = function(walletId, cb) {
   preconditions.checkArgument(walletId);
   preconditions.checkArgument(cb);
   var err;
@@ -271,36 +303,43 @@ Storage.prototype.deleteWallet = function(walletId, cb) {
 
     }
   });
+};
 
+Storage.prototype.deleteWallet = function(walletId, cb) {
+  preconditions.checkArgument(walletId);
+  preconditions.checkArgument(cb);
 
+  var self = this;
+  this.getWallets2(function(wallets) {
+    var w = _.findWhere(wallets, {
+      id: walletId
+    });
+    if (!w)
+      return cb(new Error('WNOTFOUND: Wallet not found'));
+    self.removeGlobal('wallet::' + walletId + (w.name ? '_' + w.name : ''), function() {
+      return cb();
+    });
+  });
 };
 
 Storage.prototype.setLastOpened = function(walletId, cb) {
   this.setGlobal('lastOpened', walletId, cb);
-}
+};
 
 Storage.prototype.getLastOpened = function(cb) {
   this.getGlobal('lastOpened', cb);
-}
+};
 
-//obj contains keys to be set
 Storage.prototype.setFromObj = function(walletId, obj, cb) {
   preconditions.checkArgument(cb);
   var self = this;
 
-  var l = Object.keys(obj).length,
-    i = 0;
-  for (var k in obj) {
-    self.set(walletId, k, obj[k], function() {
-      if (++i == l) {
-        if (obj.opts.name)
-          self.setName(walletId, obj.opts.name, cb);
-        else
-          return cb();
-      }
-    });
-  }
+  var key = 'wallet::' + walletId + ((obj.opts && obj.opts.name) ? '_' + obj.opts.name : '');
+  self._write(key, obj, function() {
+    return cb();
+  });
 };
+
 
 // remove all values
 Storage.prototype.clearAll = function(cb) {
@@ -316,5 +355,6 @@ Storage.prototype.export = function(obj) {
   var string = JSON.stringify(obj);
   return this._encrypt(string);
 };
+
 
 module.exports = Storage;
