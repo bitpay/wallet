@@ -1,16 +1,6 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-
-var bitcore = bitcore || require('bitcore');
 var Address = bitcore.Address;
-var buffertools = bitcore.buffertools;
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
 var PublicKeyRing = copay.PublicKeyRing;
 var HDParams = copay.HDParams;
 var HDPath = copay.HDPath;
