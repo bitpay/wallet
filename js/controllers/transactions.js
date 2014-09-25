@@ -156,11 +156,12 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       $scope.getTransactions();
     }
 
-    $scope.amountAlternative = function (amount, txIndex) {
+    $scope.amountAlternative = function (amount, txIndex, cb) {
       var w = $rootScope.wallet;
       rateService.whenAvailable(function() {
         var valueSat = amount * w.settings.unitToSatoshi;
         $scope.alternativeCurrency[txIndex] = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
+        return cb ? cb() : null;
       });
     };
   });
