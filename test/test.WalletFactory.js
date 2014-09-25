@@ -179,11 +179,11 @@ describe('WalletFactory model', function() {
 
       should.exist(w);
       wallet.should.equal(w);
-
+    });
+    it('should import with a wrong password', function() {
       wf.fromEncryptedObj = sinon.stub().returns(null);
-      (function() {
-        wf.import("encrypted", "password")
-      }).should.throw();
+      var w = wf.import("encrypted", "passwordasdfasdf");
+      should.not.exist(w);
     });
   });
 

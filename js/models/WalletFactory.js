@@ -136,10 +136,7 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, passphrase, skipFiel
  */
 WalletFactory.prototype.import = function(base64, passphrase, skipFields) {
   var self = this;
-  var w = self.fromEncryptedObj(base64, passphrase, skipFields);
-
-  if (!w) throw new Error('Wrong passphrase');
-  return w;
+  return self.fromEncryptedObj(base64, passphrase, skipFields);
 };
 
 /**
