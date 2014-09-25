@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         tagMessage: 'Version <%= version %>',
         github: {
           repo: 'bitpay/copay',
-          usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username 
+          usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username
           passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains Github password
         }
       }
@@ -79,13 +79,23 @@ module.exports = function(grunt) {
       config: {
         files: ['config.js'],
         tasks: ['shell:dev', 'concat:main']
+      },
+      test: {
+        files: ['test/models/*.js'],
+        tasks: ['mochaTest']
       }
     },
     mochaTest: {
-      options: {
-        reporter: 'spec',
-      },
-      src: ['test/*.js'],
+      tests: {
+        options: {
+          require: 'test/mocha_node_setup.js',
+          reporter: 'spec',
+          mocha: require('mocha')
+        },
+        src: [
+          'test/models/*.js',
+        ]
+      }
     },
     markdown: {
       all: {

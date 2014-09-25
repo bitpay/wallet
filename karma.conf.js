@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'chai'],
 
 
     // list of files / patterns to load in the browser
@@ -31,7 +31,6 @@ module.exports = function(config) {
       'lib/angular-load/angular-load.min.js',
       'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/inherits/inherits.js',
-      'lib/bitcore.js',
       'lib/underscore/underscore.js',
       'lib/crypto-js/rollups/sha256.js',
       'lib/crypto-js/rollups/pbkdf2.js',
@@ -41,6 +40,8 @@ module.exports = function(config) {
       'lib/sjcl.js',
       'lib/ios-imagefile-megapixel/megapix-image.js',
       'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
+
+      'lib/bitcore.js',
       'js/copayBundle.js',
 
       //App-specific Code
@@ -54,10 +55,6 @@ module.exports = function(config) {
       'js/translations.js',
       'js/init.js',
 
-      //Test-Specific Code
-      'lib/chai/chai.js',
-      'test/lib/chai-should.js',
-      'test/lib/chai-expect.js',
       'test/mocks/FakeWallet.js',
       'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
@@ -66,7 +63,8 @@ module.exports = function(config) {
       'test/mocha.conf.js',
 
       //test files
-      'test/test.*.js',
+      'karma/setup.js',
+      'test/models/*.js',
 
       'test/unit/**/*.js',
 

@@ -1,29 +1,18 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var sinon = require('sinon');
-var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
-if (is_browser) {
-  var copay = require('copay'); //browser
-} else {
-  var copay = require('../copay'); //node
-}
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
-var Network = require('./mocks/FakeNetwork');
-var Blockchain = require('./mocks/FakeBlockchain');
-var bitcore = bitcore || require('bitcore');
+var Network = requireMock('FakeNetwork');
+var Blockchain = requireMock('FakeBlockchain');
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var bignum = bitcore.Bignum;
 var startServer = copay.FakePayProServer; // TODO should be require('./mocks/FakePayProServer');
-var localMock = require('./mocks/FakeLocalStorage');
-var sessionMock = require('./mocks/FakeLocalStorage');
+var localMock = requireMock('FakeLocalStorage');
+var sessionMock = requireMock('FakeLocalStorage');
 var Storage = copay.Storage;
-
 
 var server;
 
@@ -33,7 +22,7 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
-  storage: require('./mocks/FakeLocalStorage').storageParams,
+  storage: requireMock('FakeLocalStorage').storageParams,
 };
 
 var getNewEpk = function() {

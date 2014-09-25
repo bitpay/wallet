@@ -1,22 +1,16 @@
 'use strict';
 
 
-var _ = require('underscore');
-var chai = chai || require('chai');
-var should = chai.should();
-
-var copay = copay || require('../copay');
-var sinon = require('sinon');
-var FakeNetwork = require('./mocks/FakeNetwork');
-var FakeBlockchain = require('./mocks/FakeBlockchain');
+var FakeNetwork = requireMock('FakeNetwork');
+var FakeBlockchain = requireMock('FakeBlockchain');
 var FakeStorage = function FakeStorage() {};
-var WalletFactory = require('../js/models/WalletFactory');
-var Passphrase = require('../js/models/Passphrase');
-var mockLocalStorage = require('./mocks/FakeLocalStorage');
-var mockSessionStorage = require('./mocks/FakeLocalStorage');
+var WalletFactory = copay.WalletFactory;
+var Passphrase = copay.Passphrase;
+var mockLocalStorage = requireMock('FakeLocalStorage');
+var mockSessionStorage = requireMock('FakeLocalStorage');
 
 
-var PERSISTED_PROPERTIES = (copay.Wallet || require('../js/models/Wallet')).PERSISTED_PROPERTIES;
+var PERSISTED_PROPERTIES = copay.Wallet.PERSISTED_PROPERTIES;
 
 function assertObjectEqual(a, b) {
   PERSISTED_PROPERTIES.forEach(function(k) {

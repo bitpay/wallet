@@ -1,14 +1,6 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var bitcore = bitcore || require('bitcore');
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
-var HDPath = require('../js/models/HDPath');
+var HDPath = copay.HDPath;
 
 describe('HDPath model', function() {
   it('should have the correct constants', function() {

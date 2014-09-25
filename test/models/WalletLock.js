@@ -1,26 +1,15 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var sinon = require('sinon');
-var is_browser = (typeof process == 'undefined' || typeof process.versions === 'undefined');
-if (is_browser) {
-  var copay = require('copay'); //browser
-} else {
-  var copay = require('../copay'); //node
-}
-var copayConfig = require('../config');
 var WalletLock = copay.WalletLock;
 var PrivateKey = copay.PrivateKey;
 var Storage = copay.Storage;
-
 
 
 var storage;
 describe('WalletLock model', function() {
 
   beforeEach(function() {
-    storage = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    storage = new Storage(requireMock('FakeLocalStorage').storageParams);
     storage.setPassphrase('mysupercoolpassword');
     storage.storage.clear();
     storage.sessionStorage.clear();

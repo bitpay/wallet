@@ -1,11 +1,5 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var expect = chai.expect;
-var sinon = sinon || require('sinon');
-var bitcore = bitcore || require('bitcore');
-var copay = copay || require('../copay');
 var Async = copay.Async;
 var EventEmitter = require('events').EventEmitter;
 
