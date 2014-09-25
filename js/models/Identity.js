@@ -7,12 +7,13 @@ var inherits = require('inherits'),
  * @extends {events.EventEmitter}
  * @param {Object} opts
  * @param {string} opts.xprivkey - the private key, a string, base58encoded as in BIP32
- * @param {string} opts.profile - this user's public profile
+ * @param {Profile} opts.profile - this user's public profile
  * @param {string} opts.password - this user's selected password (used for encryption)
  * @param {Wallet[]} opts.wallets - this user's wallet
  *
- * @emits newCopayer
  * @emits newWallet
+ * @emits newCopayer
+ * @emits newWalletCreated
  */
 function Identity(opts) {
   events.EventEmitter.call(this);
@@ -42,5 +43,11 @@ Identity.prototype.createWallet = function(callback) {
  * Asynchronous method that joins a new Wallet
  */
 Identity.prototype.joinWallet = function(callback) {
+};
+
+/**
+ * Process a new copayer in the public key ring
+ */
+Identity.prototype.processNewCopayer = function(xpubkey, walletSecret, callback) {
 };
 
