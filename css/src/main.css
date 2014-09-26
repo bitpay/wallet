@@ -279,11 +279,11 @@ a:hover {
 }
 
 .last-transactions-header {
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .last-transactions-footer {
-  padding: 1rem 0;
+  padding: 1rem;
   overflow: hidden;
 }
 
@@ -323,6 +323,12 @@ a:hover {
 .last-transactions-content .box-copayer .icon-active-x {
   background-color: #C0392B;
   color: #fff;
+}
+
+.last-transactions-header .label, .last-transactions-footer .label {
+  white-space: normal;
+  text-align: left;
+  line-height: 1.2rem;
 }
 
 .input-note {
