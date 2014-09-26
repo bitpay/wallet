@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification, isMobile) {
+  function($scope, $rootScope, $location, identity, controllerUtils, Passphrase, notification, isMobile) {
     controllerUtils.redirIfLogged();
 
     $scope.title = 'Import a backup';
@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('ImportController',
 
         // try to import encrypted wallet with passphrase
         try {
-          w = walletFactory.import(encryptedObj, passphrase, skipFields);
+          w = identity.import(encryptedObj, passphrase, skipFields);
         } catch (e) {
           errMsg = e.message;
         }
