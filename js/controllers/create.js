@@ -33,7 +33,7 @@ var valid_pairs = {
 };
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification) {
+  function($scope, $rootScope, $location, $timeout, identity, controllerUtils, Passphrase, backupService, notification) {
     controllerUtils.redirIfLogged();
 
     $rootScope.fromSetup = true;
@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('CreateController',
           privateKeyHex: $scope.private,
           networkName: $scope.networkName,
         };
-        walletFactory.create(opts, function(err, w) {
+        identity.create(opts, function(err, w) {
           controllerUtils.startNetwork(w, $scope);
         });
       });

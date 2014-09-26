@@ -13,7 +13,7 @@ var Async = module.exports.Async = require('./js/models/Async');
 var Insight = module.exports.Insight = require('./js/models/Insight');
 var Storage = module.exports.Storage = require('./js/models/Storage');
 
-module.exports.WalletFactory = require('./js/models/WalletFactory');
+module.exports.Identity = require('./js/models/Identity');
 module.exports.Wallet = require('./js/models/Wallet');
 module.exports.WalletLock = require('./js/models/WalletLock');
 module.exports.PluginManager = require('./js/models/PluginManager');

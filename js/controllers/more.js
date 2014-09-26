@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService) {
+  function($scope, $rootScope, $location, $filter, backupService, identity, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
 
     $scope.unitOpts = [{
@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     }
 
     $scope.deleteWallet = function() {
-      walletFactory.delete(w.id, function() {
+      identity.delete(w.id, function() {
         controllerUtils.logout();
       });
     };

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('OpenController', function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification) {
+angular.module('copayApp.controllers').controller('OpenController', function($scope, $rootScope, $location, identity, controllerUtils, Passphrase, notification) {
   controllerUtils.redirIfLogged();
 
   if ($rootScope.pendingPayment) {
@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
   $scope.loading = false;
   $scope.retreiving = true;
 
-  walletFactory.getWallets(function(err, wallets) {
+  identity.getWallets(function(err, wallets) {
 
     if (err || !wallets || !wallets.length) {
       $location.path('/');
@@ -48,7 +48,7 @@ angular.module('copayApp.controllers').controller('OpenController', function($sc
 
     Passphrase.getBase64Async(password, function(passphrase) {
       var w, errMsg;
-      walletFactory.open($scope.selectedWalletId, passphrase, function(err, w) {
+      identity.open($scope.selectedWalletId, passphrase, function(err, w) {
         if (!w) {
           $scope.loading = false;
           notification.error('Error', err.errMsg || 'Wrong password');
