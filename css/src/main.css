@@ -364,10 +364,6 @@ a:hover {
   overflow: hidden;
 }
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
-}
-
 .dn {display: none;}
 .pr {position: relative;}
 .pa {position: absolute;}
