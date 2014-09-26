@@ -58,8 +58,8 @@ var createBundle = function(opts) {
     expose: '../js/log'
   });
   //  b.external('bitcore');
-  b.require('./js/models/WalletFactory', {
-    expose: '../js/models/WalletFactory'
+  b.require('./js/models/Identity', {
+    expose: '../js/models/Identity'
   });
   b.require('./js/models/Wallet');
   b.require('./js/models/Wallet', {

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, walletFactory, notification, controllerUtils) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, identity, notification, controllerUtils) {
 
   controllerUtils.redirIfLogged();
 
   $scope.retreiving = true;
-  walletFactory.getWallets(function(err,ret) {
+  identity.getWallets(function(err,ret) {
     $scope.retreiving = false;
     $scope.hasWallets = (ret && ret.length > 0) ? true : false;
   });

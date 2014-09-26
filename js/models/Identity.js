@@ -15,7 +15,7 @@ var Storage = module.exports.Storage = require('./Storage');
 
 /**
  * @desc
- * WalletFactory - stores the state for a wallet in creation
+ * Identity - stores the state for a wallet in creation
  *
  * @param {Object} config - configuration for this wallet
  *
@@ -35,7 +35,7 @@ var Storage = module.exports.Storage = require('./Storage');
  * @constructor
  */
 
-function WalletFactory(config, version, pluginManager) {
+function Identity(config, version, pluginManager) {
   var self = this;
   preconditions.checkArgument(config);
   preconditions.checkArgument(config.network);
@@ -73,7 +73,7 @@ function WalletFactory(config, version, pluginManager) {
  * @param {Object} wallet object
  * @return {string} network name
  */
-WalletFactory.prototype.obtainNetworkName = function(obj) {
+Identity.prototype.obtainNetworkName = function(obj) {
   return obj.networkName ||
     obj.opts.networkName ||
     obj.publicKeyRing.networkName ||
@@ -86,7 +86,7 @@ WalletFactory.prototype.obtainNetworkName = function(obj) {
  * @param {string[]} skipFields - fields to skip when importing
  * @return {Wallet}
  */
-WalletFactory.prototype.fromObj = function(inObj, skipFields) {
+Identity.prototype.fromObj = function(inObj, skipFields) {
   var networkName = this.obtainNetworkName(inObj);
   preconditions.checkState(networkName);
   preconditions.checkArgument(inObj);
@@ -118,7 +118,7 @@ WalletFactory.prototype.fromObj = function(inObj, skipFields) {
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-WalletFactory.prototype.fromEncryptedObj = function(base64, passphrase, skipFields) {
+Identity.prototype.fromEncryptedObj = function(base64, passphrase, skipFields) {
   this.storage.setPassphrase(passphrase);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
@@ -127,19 +127,19 @@ WalletFactory.prototype.fromEncryptedObj = function(base64, passphrase, skipFiel
 
 /**
  * @TODO: import is a reserved keyword! DONT USE IT
- * @TODO: this is essentialy the same method as {@link WalletFactory#fromEncryptedObj}!
+ * @TODO: this is essentialy the same method as {@link Identity#fromEncryptedObj}!
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
  * @param {string} passphrase - passphrase to decrypt it
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-WalletFactory.prototype.import = function(base64, passphrase, skipFields) {
+Identity.prototype.import = function(base64, passphrase, skipFields) {
   var self = this;
   return self.fromEncryptedObj(base64, passphrase, skipFields);
 };
 
-WalletFactory.prototype.migrateWallet = function(walletId, passphrase, cb) {
+Identity.prototype.migrateWallet = function(walletId, passphrase, cb) {
   var self = this;
 
   self.storage.setPassphrase(passphrase);
@@ -168,7 +168,7 @@ WalletFactory.prototype.migrateWallet = function(walletId, passphrase, cb) {
  * @param {string[]} skipFields - parameters to ignore when importing
  * @param {function} callback - {err, Wallet}
  */
-WalletFactory.prototype.read = function(walletId, skipFields, cb) {
+Identity.prototype.read = function(walletId, skipFields, cb) {
   var self = this,
     err;
   var obj = {};
@@ -199,7 +199,7 @@ WalletFactory.prototype.read = function(walletId, skipFields, cb) {
   });
 };
 
-WalletFactory.prototype.read_Old = function(walletId, skipFields, cb) {
+Identity.prototype.read_Old = function(walletId, skipFields, cb) {
   var self = this,
     err;
   var obj = {};
@@ -238,7 +238,7 @@ WalletFactory.prototype.read_Old = function(walletId, skipFields, cb) {
  */
 
 
-WalletFactory.prototype._getWallet = function(opts) {
+Identity.prototype._getWallet = function(opts) {
   return new Wallet(opts);
 };
 
@@ -262,7 +262,7 @@ WalletFactory.prototype._getWallet = function(opts) {
  * @param {callback} opts.version
  * @return {Wallet}
  */
-WalletFactory.prototype.create = function(opts, cb) {
+Identity.prototype.create = function(opts, cb) {
   preconditions.checkArgument(cb);
 
   opts = opts || {};
@@ -327,7 +327,7 @@ WalletFactory.prototype.create = function(opts, cb) {
  * @param {string} inVersion - a version, with major, minor, and revision, period-separated (x.y.z)
  * @throws {Error} if there's a major version difference
  */
-WalletFactory.prototype._checkVersion = function(inVersion) {
+Identity.prototype._checkVersion = function(inVersion) {
   var thisV = this.version.split('.');
   var thisV0 = parseInt(thisV[0]);
   var inV = inVersion.split('.');
@@ -349,7 +349,7 @@ WalletFactory.prototype._checkVersion = function(inVersion) {
  * @param {function} callback (err, {Wallet})
  * @return
  */
-WalletFactory.prototype.open = function(walletId, passphrase, cb) {
+Identity.prototype.open = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
   var self = this;
   self.storage.setPassphrase(passphrase);
@@ -367,7 +367,7 @@ WalletFactory.prototype.open = function(walletId, passphrase, cb) {
   });
 };
 
-WalletFactory.prototype.getWallets = function(cb) {
+Identity.prototype.getWallets = function(cb) {
   var self = this;
   this.storage.getWallets(function(wallets) {
     wallets.forEach(function(i) {
@@ -392,7 +392,7 @@ WalletFactory.prototype.getWallets = function(cb) {
  * @callback cb
  * @return {?} the result of the callback
  */
-WalletFactory.prototype.delete = function(walletId, cb) {
+Identity.prototype.delete = function(walletId, cb) {
   var self = this;
   self.storage.deleteWallet(walletId, function(err) {
     if (err) return cb(err);
@@ -405,7 +405,7 @@ WalletFactory.prototype.delete = function(walletId, cb) {
 /**
  * @desc Pass through to {@link Wallet#secret}
  */
-WalletFactory.prototype.decodeSecret = function(secret) {
+Identity.prototype.decodeSecret = function(secret) {
   try {
     return Wallet.decodeSecret(secret);
   } catch (e) {
@@ -434,7 +434,7 @@ WalletFactory.prototype.decodeSecret = function(secret) {
  * @param {string} opts.privateHex - the private extended master key
  * @param {walletCreationCallback} cb - a callback
  */
-WalletFactory.prototype.joinCreateSession = function(opts, cb) {
+Identity.prototype.joinCreateSession = function(opts, cb) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.secret);
   preconditions.checkArgument(opts.passphrase);
@@ -513,4 +513,4 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
   });
 };
 
-module.exports = WalletFactory;
+module.exports = Identity;

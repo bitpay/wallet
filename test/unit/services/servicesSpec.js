@@ -10,8 +10,8 @@ beforeEach(angular.mock.module('copayApp'));
 
 describe("Unit: Walletfactory Service", function() {
   beforeEach(angular.mock.module('copayApp.services'));
-  it('should contain a walletFactory service', inject(function(walletFactory) {
-    expect(walletFactory).not.to.equal(null);
+  it('should contain a identity service', inject(function(identity) {
+    expect(identity).not.to.equal(null);
   }));
 });
 
