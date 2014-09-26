@@ -144,5 +144,10 @@
     font-size: 14px;
   }
 
+  .top-balance {
+    width: auto;
+    padding: 0 5px;
+  }
+
 }
 
