@@ -17,13 +17,7 @@ function onDeviceReady() {
 
   function handleBitcoinURI(url) {
     if (!url) return;
-
-    var body = document.getElementsByTagName('nav')[0];
-    var $rootScope = angular.element(body).scope();
-    $rootScope.pendingPayment = new bitcore.BIP21(url);
-
-    // Redirect or reload controller (if already there)
-    window.location = ($rootScope.wallet ? '#!/send' : '#!/open') + '?r=' + Math.random();
+    window.location = '#!/uri-payment/' + encodeURIComponent(url);
   }
 
   window.plugins.webintent.getUri(handleBitcoinURI);
