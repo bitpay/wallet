@@ -12,6 +12,14 @@
     border: none;
   }
 
+  .status {
+    left: 0;
+    top: 45px;
+    font-size: 13px;
+    font-weight: 700;
+    height: 55px;
+  }
+
   .logo-setup {
     margin: 20px 0;
   }
