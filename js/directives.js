@@ -72,6 +72,7 @@ angular.module('copayApp.directives')
                 scope.notEnoughAmount = null;
               }
             } else {
+              ctrl.$setValidity('enoughAmount', false);
               scope.notEnoughAmount = null;
             }
             return value;
