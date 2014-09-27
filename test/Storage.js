@@ -177,8 +177,8 @@ describe('Storage model', function() {
       var w2 = {
         name: 'pepe'
       };
-      s.setFromObj('1', w1, function() {
-        s.setFromObj('2', w2, function() {
+      s.setFromObj('wallet::1_wallet1', w1, function() {
+        s.setFromObj('wallet::2', w2, function() {
           s.getWallets2(function(ws) {
             ws[0].should.deep.equal({
               id: '1',
@@ -208,8 +208,8 @@ describe('Storage model', function() {
         name: 'pepe'
       };
 
-      s.setFromObj('1', w1, function() {
-        s.setFromObj('2', w2, function() {
+      s.setFromObj('wallet::1_wallet1', w1, function() {
+        s.setFromObj('wallet::2', w2, function() {
           s._write('3::name', 'matias', function() {
             s._write('1::name', 'juan', function() {
               s.setGlobal('nameFor::3', 'wallet3', function() {
@@ -280,8 +280,8 @@ describe('Storage model', function() {
         name: 'pepe'
       };
 
-      s.setFromObj('1', w1, function() {
-        s.setFromObj('2', w2, function() {
+      s.setFromObj('wallet::1', w1, function() {
+        s.setFromObj('wallet::2', w2, function() {
           s.deleteWallet('3', function(err) {
             err.toString().should.include('WNOTFOUND');
             done();
@@ -301,8 +301,8 @@ describe('Storage model', function() {
         name: 'pepe'
       };
 
-      s.setFromObj('1', w1, function() {
-        s.setFromObj('2', w2, function() {
+      s.setFromObj('wallet::1', w1, function() {
+        s.setFromObj('wallet::2', w2, function() {
           s.deleteWallet('1', function(err) {
             should.not.exist(err);
             s.getWallets2(function(ws) {
@@ -372,7 +372,7 @@ describe('Storage model', function() {
 
   describe('#setFromObj', function() {
     it('should store from an object as single key', function(done) {
-      s.setFromObj('id1', {
+      s.setFromObj('wallet::id1_nameid1', {
         'key': 'val',
         'opts': {
           'name': 'nameid1'
