@@ -28,6 +28,7 @@ FakeLocalStorage.prototype.clear = function() {
 module.exports = FakeLocalStorage;
 
 module.exports.storageParams = {
+  password: '123',
   storage: new FakeLocalStorage(),
   sessionStorage:  new FakeLocalStorage(),
 };
