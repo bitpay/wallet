@@ -9,7 +9,6 @@ var _ = require('underscore');
 var log = require('../log');
 var PluginManager = require('./PluginManager');
 var Profile = require('./Profile');
-var Async = module.exports.Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var preconditions = require('preconditions').singleton();
 var Storage = module.exports.Storage = require('./Storage');
@@ -19,17 +18,6 @@ var Storage = module.exports.Storage = require('./Storage');
  * Identity - stores the state for a wallet in creation
  *
  * @param {Object} config - configuration for this wallet
- *
- * @TODO: Don't pass a class for these three components
- *        -- send a factory or instance, the 'new' call considered harmful for refactoring
- *        -- arguable, since all of them is called with an object as argument.
- *        -- Still, could it be hard to refactor? (for example, what if we want to fail hard if a network call gets interrupted?)
- * @param {Storage} config.Storage - the class to instantiate to store the wallet (StorageLocalEncrypted by default)
- * @param {Object} config.storage - the configuration to be sent to the Storage constructor
- * @param {Network} config.Network - the class to instantiate to make network requests to copayers (the Async module by default)
- * @param {Object} config.network - the configurations to be sent to the Network and Blockchain constructors
- * @param {Blockchain} config.Blockchain - the class to instantiate to get information about the blockchain (Insight by default)
- * @TODO: Investigate what parameters go inside this object
  * @param {Object} config.wallet - default configuration for the wallet
  * @TODO: put `version` inside of the config object
  * @param {string} version - the version of copay for which this wallet was generated (for example, 0.4.7)
@@ -39,35 +27,41 @@ var Storage = module.exports.Storage = require('./Storage');
 function Identity(config, version, pluginManager) {
   var self = this;
   preconditions.checkArgument(config);
-  preconditions.checkArgument(config.network);
-
-  this.Storage = config.Storage || Storage;
-  this.Network = config.Network || Async;
-  this.Blockchain = config.Blockchain || Insight;
-
   var storageOpts = {};
 
   if (pluginManager) {
     storageOpts = {
-      storage: pluginManager.get('DB')
+      db: pluginManager.get('DB')
     };
+    /*
+     * TODO (plugins for other services)
+     *
+     * blockchainOpts = {
+     *   provider: Insight...
+     * }
+     */
   }
 
-  this.storage = new this.Storage(storageOpts);
+  this.storage = this._getStorage(storageOpts);
 
   this.networks = {
-    'livenet': new this.Network(config.network.livenet),
-    'testnet': new this.Network(config.network.testnet),
+    'livenet': new Insight(config.network.livenet),
+    'testnet': new Insight(config.network.testnet),
   };
   this.blockchains = {
-    'livenet': new this.Blockchain(config.network.livenet),
-    'testnet': new this.Blockchain(config.network.testnet),
+    'livenet': new Insight(config.network.livenet),
+    'testnet': new Insight(config.network.testnet),
   };
 
   this.walletDefaults = config.wallet || {};
   this.version = version;
 };
 
+
+/* for stubbing */
+Identity.prototype._getStorage = function(opts) {
+  return new Storage(opts);
+};
 
 /**
  * @desc obtain network name from serialized wallet
