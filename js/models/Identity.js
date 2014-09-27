@@ -243,7 +243,7 @@ Identity.prototype._getWallet = function(opts) {
  * @param {callback} opts.version
  * @return {Wallet}
  */
-Identity.prototype.create = function(opts, cb) {
+Identity.prototype.createWallet = function(opts, cb) {
   preconditions.checkArgument(cb);
 
   opts = opts || {};
@@ -415,7 +415,7 @@ Identity.prototype.decodeSecret = function(secret) {
  * @param {string} opts.privateHex - the private extended master key
  * @param {walletCreationCallback} cb - a callback
  */
-Identity.prototype.joinCreateSession = function(opts, cb) {
+Identity.prototype.joinWallet = function(opts, cb) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.secret);
   preconditions.checkArgument(opts.passphrase);
