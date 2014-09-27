@@ -343,8 +343,8 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#readWallet', function() {
-    it('should read wallet', function(done) {
+  describe('#getFirst', function() {
+    it('should read first key', function(done) {
       var data = {
         'wallet::id1_wallet1': {
           a: 'x',
@@ -358,7 +358,7 @@ describe('Storage model', function() {
       sinon.stub(s, '_read', function(k, cb) {
         return cb(data[k]);
       });
-      s.readWallet('id1', function(err, w) {
+      s.getFirst('wallet::id1', function(err, w) {
         should.not.exist(err);
         w.should.exist;
         w.hasOwnProperty('a').should.be.true;
