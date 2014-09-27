@@ -162,9 +162,6 @@ describe('Identity model', function() {
       wf.storage.import.calledOnce.should.be.true;
       wf.fromObj.calledWith('walletObj').should.be.true;
     });
-  });
-
-  describe('#import', function() {
     it('should import and update indexes', function() {
       var wallet = {
         id: "fake wallet",
@@ -174,14 +171,14 @@ describe('Identity model', function() {
       };
       wf.fromEncryptedObj = sinon.stub().returns(wallet);
 
-      var w = wf.import("encrypted", "password");
+      var w = wf.fromEncryptedObj("encrypted", "password");
 
       should.exist(w);
       wallet.should.equal(w);
     });
     it('should import with a wrong password', function() {
       wf.fromEncryptedObj = sinon.stub().returns(null);
-      var w = wf.import("encrypted", "passwordasdfasdf");
+      var w = wf.fromEncryptedObj("encrypted", "passwordasdfasdf");
       should.not.exist(w);
     });
   });
@@ -272,7 +269,7 @@ describe('Identity model', function() {
 
   describe('#read', function() {
     it('should fail to read unexisting wallet', function(done) {
-      wf.storage.readWallet = sinon.stub().yields(null, {});
+      wf.storage.getFirst = sinon.stub().yields(null, {});
 
       wf.read('id', [], function(err, w) {
         should.not.exist(w);
@@ -284,7 +281,7 @@ describe('Identity model', function() {
       });
     });
     it('should fail to read broken wallet', function(done) {
-      wf.storage.readWallet = sinon.stub().yields(null, {
+      wf.storage.getFirst = sinon.stub().yields(null, {
         'opts': 1
       });
       wf.read('id', [], function(err, w) {
@@ -298,7 +295,7 @@ describe('Identity model', function() {
     });
     it('should read existing wallet', function(done) {
       var wf = new Identity(config, '0.0.1');
-      wf.storage.readWallet = sinon.stub().yields(null, {
+      wf.storage.getFirst = sinon.stub().yields(null, {
         'opts': 1
       });
       wf.fromObj = sinon.stub().returns('ok');
@@ -568,7 +565,7 @@ describe('Identity model', function() {
       wf.storage.setPassphrase = sinon.spy();
       wf.storage.import.withArgs('dummy').returns(JSON.parse(legacy1));
 
-      var w = wf.import('dummy', 'xxx');
+      var w = wf.fromEncryptedObj('dummy', 'xxx');
       should.exist(w);
       wf.storage.setPassphrase.calledOnce.should.equal(true);
       wf.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
