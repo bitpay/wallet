@@ -81,11 +81,11 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#_getWalletIds', function() {
+  describe('#_getWalletIds_Old', function() {
     it('should get wallet ids', function(done) {
       s._write('1::hola', 'juan', function() {
         s._write('2::hola', 'juan', function() {
-          s._getWalletIds(function(v) {
+          s._getWalletIds_Old(function(v) {
             v.should.deep.equal(['1', '2']);
             done();
           });
@@ -118,13 +118,13 @@ describe('Storage model', function() {
     });
   }
 
-  describe('#getWallets_Old', function() {
+  describe('#getWallets1_Old', function() {
     it('should retrieve wallets from storage', function(done) {
       s._write('1::hola', 'juan', function() {
         s._write('2::hola', 'juan', function() {
           s.setGlobal('nameFor::1', 'hola', function() {
 
-            s.getWallets_Old(function(ws) {
+            s.getWallets1_Old(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
                 name: 'hola',
@@ -151,7 +151,7 @@ describe('Storage model', function() {
               }, 1);
             };
 
-            s.getWallets_Old(function(ws) {
+            s.getWallets1_Old(function(ws) {
               ws[0].should.deep.equal({
                 id: '1',
                 name: 'hola',
@@ -168,7 +168,7 @@ describe('Storage model', function() {
     });
   });
 
-  describe('#getWallets2', function() {
+  describe('#getWallets2_Old', function() {
     it('should retrieve wallets from storage', function(done) {
       var w1 = {
         name: 'juan',
@@ -181,7 +181,7 @@ describe('Storage model', function() {
       };
       s.setFromObj('wallet::1_wallet1', w1, function() {
         s.setFromObj('wallet::2', w2, function() {
-          s.getWallets2(function(ws) {
+          s.getWallets2_Old(function(ws) {
             ws[0].should.deep.equal({
               id: '1',
               name: 'wallet1',
@@ -215,7 +215,7 @@ describe('Storage model', function() {
           s._write('3::name', 'matias', function() {
             s._write('1::name', 'juan', function() {
               s.setGlobal('nameFor::3', 'wallet3', function() {
-                s.getWallets(function(ws) {
+                s.getWallets_Old(function(ws) {
                   ws.length.should.equal(3);
                   ws[0].should.deep.equal({
                     id: '1',
@@ -307,7 +307,7 @@ describe('Storage model', function() {
         s.setFromObj('wallet::2', w2, function() {
           s.deleteWallet('1', function(err) {
             should.not.exist(err);
-            s.getWallets2(function(ws) {
+            s.getWallets2_Old(function(ws) {
               ws.length.should.equal(1);
               ws[0].id.should.equal('2');
               done();
