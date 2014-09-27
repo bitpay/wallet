@@ -11,8 +11,7 @@ describe('WalletLock model', function() {
   beforeEach(function() {
     storage = new Storage(requireMock('FakeLocalStorage').storageParams);
     storage.setPassphrase('mysupercoolpassword');
-    storage.storage.clear();
-    storage.sessionStorage.clear();
+    storage.clearAll();
   });
 
   it('should fail with missing args', function() {
@@ -85,9 +84,9 @@ describe('WalletLock model', function() {
     w.keepAlive(function() {
       storage.setSessionId('session2', function() {
 
-        var json = JSON.parse(storage.storage.ls['lock::walletId']);
+        var json = JSON.parse(storage.db.ls['lock::walletId']);
         json.expireTs -= 3600 * 1000;
-        storage.storage.ls['lock::walletId'] = JSON.stringify(json);
+        storage.db.ls['lock::walletId'] = JSON.stringify(json);
         var w2 = new WalletLock(storage, 'walletId');
         w2.keepAlive(function(locked) {
           w2.sessionId.should.equal('session2');

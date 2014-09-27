@@ -8,6 +8,7 @@ var Wallet = require('./Wallet');
 var _ = require('underscore');
 var log = require('../log');
 var PluginManager = require('./PluginManager');
+var Profile = require('./Profile');
 var Async = module.exports.Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var preconditions = require('preconditions').singleton();
@@ -48,7 +49,7 @@ function Identity(config, version, pluginManager) {
 
   if (pluginManager) {
     storageOpts = {
-      storage: pluginManager.get('STORAGE')
+      storage: pluginManager.get('DB')
     };
   }
 
