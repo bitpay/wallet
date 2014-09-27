@@ -330,12 +330,10 @@ Storage.prototype.getLastOpened = function(cb) {
   this.getGlobal('lastOpened', cb);
 };
 
-Storage.prototype.setFromObj = function(walletId, obj, cb) {
+Storage.prototype.setFromObj = function(key, obj, cb) {
+  preconditions.checkArgument(key);
   preconditions.checkArgument(cb);
-  var self = this;
-
-  var key = 'wallet::' + walletId + ((obj.opts && obj.opts.name) ? '_' + obj.opts.name : '');
-  self._write(key, obj, function() {
+  this._write(key, obj, function() {
     return cb();
   });
 };
