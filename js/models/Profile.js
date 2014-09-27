@@ -4,35 +4,40 @@ var _ = require('underscore');
 var log = require('../log');
 var bitcore = require('bitcore');
 
-function Profile(opts, storage) {
+function Profile(opts, password, storage) {
   preconditions.checkArgument(opts.email);
-  preconditions.checkArgument(opts.password);
+  preconditions.checkArgument(password);
   preconditions.checkArgument(storage);
   preconditions.checkArgument(storage.getItem);
 
   this.email  = opts.email;
-  this.password = opts.password;
-  this.hash = bitcore.util.sha256ripe160(this.email + this.password);
-
+  this.hash = bitcore.util.sha256ripe160(this.email + this.password).toString('hex');
+  this.storage = storage;
   this.extra = opts.extra;
 };
 
-Profile.fromObj = function(obj, storage) {
-  return new Profile(obj, storage);
+Profile.fromObj = function(obj, password, storage) {
+  var o = _.clone(obj);
+  return new Profile(obj, password, storage);
 };
 
 Profile.prototype.toObj = function() {
-  return JSON.parse(JSON.stringify(this));
+  var obj = _.clone(this);
+  delete obj['hash'];
+  return JSON.parse(JSON.stringify(obj));
 };
 
 
 Profile.prototype.store = function(cb) {
-// TODO
-  return cb();
-//  this.storage.setItem(this.hash, this.toObj());
+  var val  = this.toObj();
+  var key = 'identity::' + this.hash + '_' + this.email;
+
+  this.storage.setFromObj(key, val, function(err) {
+    log.debug('Identity stored');
+    if (cb)
+      cb(err);
+  });
 };
-
-
 
 module.exports = Profile;
  

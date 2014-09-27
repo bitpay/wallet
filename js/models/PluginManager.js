@@ -24,7 +24,7 @@ var KIND_UNIQUE = PluginManager.KIND_UNIQUE = 1;
 var KIND_MULTIPLE = PluginManager.KIND_MULTIPLE = 2;
 
 PluginManager.TYPE = {};
-PluginManager.TYPE['STORAGE'] = KIND_UNIQUE;
+PluginManager.TYPE['DB'] = KIND_UNIQUE;
 
 PluginManager.prototype._register = function(obj, name) {
   preconditions.checkArgument(obj.type, 'Plugin has not type:' + name);

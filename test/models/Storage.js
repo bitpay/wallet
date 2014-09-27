@@ -7,11 +7,10 @@ var timeStamp = Date.now();
 describe('Storage model', function() {
 
   var s;
-  beforeEach(function() {
+  beforeEach(function(done) {
     s = new Storage(requireMock('FakeLocalStorage').storageParams);
     s.setPassphrase('mysupercoolpassword');
-    s.storage.clear();
-    s.sessionStorage.clear();
+    s.clearAll(done);
   });
 
 
@@ -22,7 +21,7 @@ describe('Storage model', function() {
   it('should fail when encrypting without a password', function() {
     var s2 = new Storage(requireMock('FakeLocalStorage').storageParams);
     (function() {
-      var params = _.clone(require('./mocks/FakeLocalStorage').storageParams);
+      var params = _.clone(requireMock('FakeLocalStorage').storageParams);
       params.password = undefined;
       new Storage(params);
     }).should.throw('Illegal Argument');
@@ -325,7 +324,7 @@ describe('Storage model', function() {
         'id1::b': 'y',
         'id2::c': 'z',
       };
-      s.storage.allKeys = sinon.stub().yields(_.keys(data));
+      s.db.allKeys = sinon.stub().yields(_.keys(data));
       sinon.stub(s, '_read', function(k, cb) {
         return cb(data[k]);
       });
@@ -354,7 +353,7 @@ describe('Storage model', function() {
           c: 'z'
         },
       };
-      s.storage.allKeys = sinon.stub().yields(_.keys(data));
+      s.db.allKeys = sinon.stub().yields(_.keys(data));
       sinon.stub(s, '_read', function(k, cb) {
         return cb(data[k]);
       });
