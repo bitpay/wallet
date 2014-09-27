@@ -405,9 +405,9 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#create', function() {
+  describe('#createWallet', function() {
     it('should create wallet', function(done) {
-      wf.create(null, function(err, w) {
+      wf.createWallet(null, function(err, w) {
         should.exist(w);
         should.not.exist(err);
         done();
@@ -416,7 +416,7 @@ describe('Identity model', function() {
 
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-      wf.create({
+      wf.createWallet({
         privateKeyHex: priv,
       }, function(err, w) {
         wf._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
@@ -426,8 +426,8 @@ describe('Identity model', function() {
     });
 
     it('should be able to create wallets with random pk', function(done) {
-      wf.create(null, function(err, w1) {
-        wf.create(null, function(err, w2) {
+      wf.createWallet(null, function(err, w1) {
+        wf.createWallet(null, function(err, w2) {
           wf._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
             wf._getWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
           );
@@ -437,7 +437,7 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#joinCreateSession', function() {
+  describe('#joinWallet', function() {
     var opts = {
       secret: '8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM',
       nickname: 'test',
@@ -456,7 +456,7 @@ describe('Identity model', function() {
         opts: {},
       });
       opts.privHex = undefined;
-      wf.joinCreateSession(opts, function(err, w) {
+      wf.joinWallet(opts, function(err, w) {
         err.should.equal('badNetwork');
         done();
       });
@@ -476,7 +476,7 @@ describe('Identity model', function() {
         type: 'walletId',
         networkName: wf.networkName,
       });
-      wf.joinCreateSession(opts, function(err, w) {
+      wf.joinWallet(opts, function(err, w) {
         err.should.equal('joinError');
         done();
       });
@@ -500,11 +500,11 @@ describe('Identity model', function() {
 
       var w = sinon.stub();
       w.sendWalletReady = sinon.spy();
-      wf.create = sinon.stub().yields(null, w);
-      wf.joinCreateSession(opts, function(err, w) {
+      wf.createWallet = sinon.stub().yields(null, w);
+      wf.joinWallet(opts, function(err, w) {
         net.start.calledOnce.should.equal(true);
-        wf.create.calledOnce.should.equal(true);
-        wf.create.calledOnce.should.equal(true);
+        wf.createWallet.calledOnce.should.equal(true);
+        wf.createWallet.calledOnce.should.equal(true);
 
         w.sendWalletReady.calledOnce.should.equal(true);
         w.sendWalletReady.getCall(0).args[0].should.equal('03ddbc4711534bc62ccf576ab05f2a0afd11f9e2f4016781f3f5a88de9543a229a');
@@ -526,8 +526,8 @@ describe('Identity model', function() {
         networkName: 'testnet',
         opts: {},
       });
-      wf.create = sinon.stub().yields(null, null);
-      wf.joinCreateSession(opts, function(err, w) {
+      wf.createWallet = sinon.stub().yields(null, null);
+      wf.joinWallet(opts, function(err, w) {
         err.should.equal('walletFull');
         done();
       });
@@ -539,7 +539,7 @@ describe('Identity model', function() {
       var net = wf.networks['testnet'];
       net.cleanUp = sinon.spy();
       net.start = sinon.spy();
-      wf.joinCreateSession(opts, function(err, w) {
+      wf.joinWallet(opts, function(err, w) {
         net.start.getCall(0).args[0].privkey.should.equal('ddc2fa8c583a73c4b2a24630ec7c283df4e7c230a02c4e48bc36ec61687afd7d');
       });
     });
@@ -549,7 +549,7 @@ describe('Identity model', function() {
       var net = wf.networks['testnet'];
       net.cleanUp = sinon.spy();
       net.start = sinon.spy();
-      wf.joinCreateSession(opts, function(err, w) {
+      wf.joinWallet(opts, function(err, w) {
         net.start.getCall(0).args[0].privkey.length.should.equal(64); //privkey is hex of private key buffer
       });
     });
