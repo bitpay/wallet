@@ -22,8 +22,10 @@ describe('Storage model', function() {
   it('should fail when encrypting without a password', function() {
     var s2 = new Storage(requireMock('FakeLocalStorage').storageParams);
     (function() {
-      s2._write(fakeWallet + timeStamp, 1, function() {});
-    }).should.throw('NOPASSPHRASE');
+      var params = _.clone(require('./mocks/FakeLocalStorage').storageParams);
+      params.password = undefined;
+      new Storage(params);
+    }).should.throw('Illegal Argument');
   });
   it('should be able to encrypt and decrypt', function(done) {
     s._write(fakeWallet + timeStamp, 'value', function() {
