@@ -873,7 +873,10 @@ Wallet.prototype.keepAlive = function() {
 Wallet.prototype.store = function(cb) {
   var self = this;
   this.keepAlive();
-  this.storage.setFromObj(this.id, this.toObj(), function(err) {
+
+  var val  = this.toObj();
+  var key = 'wallet::' + this.id + ((val.opts && val.opts.name) ? '_' + obj.opts.name : '');
+  this.storage.setFromObj(key, val, function(err) {
     log.debug('Wallet stored');
     if (cb)
       cb(err);
