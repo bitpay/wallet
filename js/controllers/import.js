@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('ImportController',
 
         // try to import encrypted wallet with passphrase
         try {
-          w = identity.import(encryptedObj, passphrase, skipFields);
+          w = identity.fromEncryptedObj(encryptedObj, passphrase, skipFields);
         } catch (e) {
           errMsg = e.message;
         }

@@ -125,20 +125,6 @@ Identity.prototype.fromEncryptedObj = function(base64, passphrase, skipFields) {
   return this.fromObj(walletObj, skipFields);
 };
 
-/**
- * @TODO: import is a reserved keyword! DONT USE IT
- * @TODO: this is essentialy the same method as {@link Identity#fromEncryptedObj}!
- * @desc Imports a wallet from an encrypted base64 object
- * @param {string} base64 - the base64 encoded object
- * @param {string} passphrase - passphrase to decrypt it
- * @param {string[]} skipFields - fields to ignore when importing
- * @return {Wallet}
- */
-Identity.prototype.import = function(base64, passphrase, skipFields) {
-  var self = this;
-  return self.fromEncryptedObj(base64, passphrase, skipFields);
-};
-
 Identity.prototype.migrateWallet = function(walletId, passphrase, cb) {
   var self = this;
 
@@ -173,7 +159,7 @@ Identity.prototype.read = function(walletId, skipFields, cb) {
     err;
   var obj = {};
 
-  this.storage.readWallet(walletId, function(err, ret) {
+  this.storage.getFirst('wallet::' + walletId, function(err, ret) {
     if (err) return cb(err);
 
     _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
@@ -512,5 +498,6 @@ Identity.prototype.joinCreateSession = function(opts, cb) {
     });
   });
 };
+
 
 module.exports = Identity;
