@@ -21,14 +21,15 @@ FakeLocalStorage.prototype.setItem = function(k, v, cb) {
   this.ls[k] = v;
   return cb();
 };
-FakeLocalStorage.prototype.clear = function() {
+FakeLocalStorage.prototype.clear = function(cb) {
   this.ls = {};
+  if (cb) return cb();
 }
 
 module.exports = FakeLocalStorage;
 
 module.exports.storageParams = {
   password: '123',
-  storage: new FakeLocalStorage(),
+  db: new FakeLocalStorage(),
   sessionStorage:  new FakeLocalStorage(),
 };
