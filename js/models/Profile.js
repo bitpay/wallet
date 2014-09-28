@@ -4,16 +4,16 @@ var _ = require('underscore');
 var log = require('../log');
 var bitcore = require('bitcore');
 
-function Profile(opts, password, storage) {
-  preconditions.checkArgument(opts.email);
+function Profile(info, password, storage) {
+  preconditions.checkArgument(info.email);
   preconditions.checkArgument(password);
   preconditions.checkArgument(storage);
   preconditions.checkArgument(storage.getItem);
 
-  this.email  = opts.email;
+  this.email  = info.email;
+  this.extra = info.extra;
   this.hash = bitcore.util.sha256ripe160(this.email + this.password).toString('hex');
   this.storage = storage;
-  this.extra = opts.extra;
 };
 
 Profile.fromObj = function(obj, password, storage) {

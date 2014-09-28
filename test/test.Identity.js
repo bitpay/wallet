@@ -28,39 +28,39 @@ function assertObjectEqual(a, b) {
 
 
 describe('Identity model', function() {
-
-  var wf;
+  var iden, storage, wallet, profile;
 
   beforeEach(function() {
-    var s = sinon.stub();
-
-    Identity.prototype._getStorage = sinon.stub().returns(s);
-
-    wf = new Identity(config,'0.0.1');
-
-    s.setPassphrase = sinon.spy();
-    s.getSessionId = sinon.spy();
-    s.setFromObj = sinon.spy();
-    s.setLastOpened = sinon.stub().yields(null);
+    storage = sinon.stub();
+    storage.getItem = sinon.stub();
+    storage.setPassphrase = sinon.spy();
+    storage.getSessionId = sinon.spy();
+    storage.setFromObj = sinon.spy();
+    storage.setLastOpened = sinon.stub().yields(null);
+    Identity._newStorage = sinon.stub().returns(storage);
 
 
-    var w = sinon.stub();
-    w.store = sinon.stub().yields(null);
+    wallet = sinon.stub();
+    wallet.store = sinon.stub().yields(null);
+    Identity._newWallet = sinon.stub().returns(wallet);
 
-    wf._getWallet = sinon.stub().returns(w);
+    profile = sinon.stub();
+    profile.test = sinon.stub();
+    Identity._newProfile = sinon.stub().returns(profile);
+
+    iden = new Identity(email, password, config);
   });
 
 
   afterEach(function() {
-    wf = undefined;
+    iden = undefined;
   });
 
 
+  var email = 'hola@hola.com';
+  var password = 'password';
 
   var config = {
-    Network: FakeNetwork,
-    Blockchain: FakeBlockchain,
-    Storage: FakeStorage,
     wallet: {
       requiredCopayers: 3,
       totalCopayers: 5,
@@ -88,30 +88,64 @@ describe('Identity model', function() {
         url: 'https://insight.bitpay.com:443'
       },
     },
-
+    version: '0.0.1',
   };
 
-  describe('#constructor', function() {
-    it('should create the factory', function() {
-      var wf = new Identity(config, '0.0.1');
-      should.exist(wf);
-      wf.walletDefaults.should.deep.equal(config.wallet);
-      wf.version.should.equal('0.0.1');
+  describe.only('#constructors', function() {
+    describe('#new', function() {
+      it('should create an identity', function() {
+        var iden = new Identity(email, password, config);
+        should.exist(iden);
+        iden.walletDefaults.should.deep.equal(config.wallet);
+        iden.version.should.equal('0.0.1');
+        should.exist(iden.profile.test);
+
+        Identity._newProfile.getCall(0).args[0].should.deep.equal({
+          email: email
+        });
+        Identity._newProfile.getCall(0).args[1].should.equal(password);
+        Identity._newProfile.getCall(0).args[2].should.equal(iden.storage);
+      });
+    });
+
+    describe('#create', function(done) {
+      it('should call .store', function(done) {
+        Identity.prototype.store = sinon.stub().yields(null);
+        Identity.create(email, password, config, function(err, iden) {
+          should.not.exist(err);
+          should.exist(iden.profile.test);
+          iden.store.getCall(0).args[0].should.deep.equal({overwrite:false});
+          done();
+        });
+      });
+    });
+
+
+    describe('#open', function(done) {
+      it('should call .read', function(done) {
+        Identity.prototype.read = sinon.stub().yields(null);
+        Identity.open(email, password, config, function(err, iden) {
+          should.not.exist(err);
+          should.exist(iden.profile.test);
+          iden.read.calledOnce.should.equal(true);
+          done();
+        });
+      });
     });
   });
 
   // TODO this is a WALLET TEST! not Wallet Factory. Move it.
   describe.skip('#fromObj / #toObj', function() {
     it('round trip', function() {
-      var wf = new Identity(config, '0.0.5');
+      var iden = new Identity(config, '0.0.5');
       var original = JSON.parse(o);
-      var o2 = wf.fromObj(original).toObj();
+      var o2 = iden.fromObj(original).toObj();
       assertObjectEqual(o2, original);
     });
 
     it('round trip, using old copayerIndex', function() {
-      var wf = new Identity(config, '0.0.5');
-      var w = wf.fromObj(JSON.parse(o));
+      var iden = new Identity(config, '0.0.5');
+      var w = iden.fromObj(JSON.parse(o));
 
       should.exist(w);
       w.id.should.equal("dbfe10c3fae71cea");
@@ -122,8 +156,8 @@ describe('Identity model', function() {
     });
 
     it('#fromObj, skipping fields', function() {
-      var wf = new Identity(config, '0.0.5');
-      var w = wf.fromObj(JSON.parse(o), ['publicKeyRing']);
+      var iden = new Identity(config, '0.0.5');
+      var w = iden.fromObj(JSON.parse(o), ['publicKeyRing']);
 
       should.exist(w);
       w.id.should.equal("dbfe10c3fae71cea");
@@ -139,8 +173,8 @@ describe('Identity model', function() {
       var o = '{"opts":{"id":"dbfe10c3fae71cea","spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":{"changeIndex":0,"receiveIndex":0},"copayersBackup":[],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{}}';
       var o2 = '{"opts":{"id":"dbfe10c3fae71cea","spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5","networkName":"testnet"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":[{"copayerIndex":2147483647,"changeIndex":0,"receiveIndex":0},{"copayerIndex":0,"changeIndex":0,"receiveIndex":0},{"copayerIndex":1,"changeIndex":0,"receiveIndex":0},{"copayerIndex":2,"changeIndex":0,"receiveIndex":0},{"copayerIndex":3,"changeIndex":0,"receiveIndex":0},{"copayerIndex":4,"changeIndex":0,"receiveIndex":0}],"copayersBackup":[],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{}}';
 
-      var wf = new Identity(config, '0.0.5');
-      var w = wf.fromObj(JSON.parse(o));
+      var iden = new Identity(config, '0.0.5');
+      var w = iden.fromObj(JSON.parse(o));
 
       should.exist(w);
       w.id.should.equal("dbfe10c3fae71cea");
@@ -152,19 +186,19 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#fromEncryptedObj', function() {
+  describe('#import', function() {
     it('should create wallet from encrypted object', function() {
-      wf.storage.setPassphrase = sinon.spy();
-      wf.storage.import = sinon.stub().withArgs('base64').returns('walletObj');
-      wf.fromObj = sinon.stub().withArgs('walletObj').returns('ok');
+      iden.storage.setPassphrase = sinon.spy();
+      iden.storage.import = sinon.stub().withArgs('base64').returns('walletObj');
+      iden.fromObj = sinon.stub().withArgs('walletObj').returns('ok');
 
-      var w = wf.fromEncryptedObj("encrypted object", "123");
+      var w = iden.fromEncryptedObj("encrypted object", "123");
 
       w.should.equal('ok');
-      wf.storage.setPassphrase.calledOnce.should.be.true;
-      wf.storage.setPassphrase.getCall(0).args[0].should.equal('123');
-      wf.storage.import.calledOnce.should.be.true;
-      wf.fromObj.calledWith('walletObj').should.be.true;
+      iden.storage.setPassphrase.calledOnce.should.be.true;
+      iden.storage.setPassphrase.getCall(0).args[0].should.equal('123');
+      iden.storage.import.calledOnce.should.be.true;
+      iden.fromObj.calledWith('walletObj').should.be.true;
     });
     it('should import and update indexes', function() {
       var wallet = {
@@ -173,26 +207,26 @@ describe('Identity model', function() {
           cb();
         }
       };
-      wf.fromEncryptedObj = sinon.stub().returns(wallet);
+      iden.fromEncryptedObj = sinon.stub().returns(wallet);
 
-      var w = wf.fromEncryptedObj("encrypted", "password");
+      var w = iden.fromEncryptedObj("encrypted", "password");
 
       should.exist(w);
       wallet.should.equal(w);
     });
     it('should import with a wrong password', function() {
-      wf.fromEncryptedObj = sinon.stub().returns(null);
-      var w = wf.fromEncryptedObj("encrypted", "passwordasdfasdf");
+      iden.fromEncryptedObj = sinon.stub().returns(null);
+      var w = iden.fromEncryptedObj("encrypted", "passwordasdfasdf");
       should.not.exist(w);
     });
   });
 
   describe('#getWallets', function() {
     it('should return empty array if no wallets', function(done) {
-      wf.storage.getWallets = sinon.stub().yields([]);
-      wf.storage.getLastOpened = sinon.stub().yields(null);
+      iden.storage.getWallets = sinon.stub().yields([]);
+      iden.storage.getLastOpened = sinon.stub().yields(null);
 
-      wf.getWallets(function(err, ws) {
+      iden.getWallets(function(err, ws) {
         should.not.exist(err);
         ws.should.deep.equal([]);
         done();
@@ -200,16 +234,16 @@ describe('Identity model', function() {
     });
 
     it('should be able to get current wallets', function(done) {
-      wf.storage.getWallets = sinon.stub().yields([{
+      iden.storage.getWallets = sinon.stub().yields([{
         name: 'w1',
         id: 'id1',
       }, {
         name: 'w',
         id: 'id2',
       }]);
-      wf.storage.getLastOpened = sinon.stub().yields(null);
+      iden.storage.getLastOpened = sinon.stub().yields(null);
 
-      wf.getWallets(function(err, ws) {
+      iden.getWallets(function(err, ws) {
         should.not.exist(err);
         ws.should.deep.equal([{
           name: 'w1',
@@ -224,16 +258,16 @@ describe('Identity model', function() {
       });
     });
     it('should include last used info', function(done) {
-      wf.storage.getWallets = sinon.stub().yields([{
+      iden.storage.getWallets = sinon.stub().yields([{
         name: 'w1',
         id: 'id1',
       }, {
         name: 'w',
         id: 'id2',
       }]);
-      wf.storage.getLastOpened = sinon.stub().yields('id2');
+      iden.storage.getLastOpened = sinon.stub().yields('id2');
 
-      wf.getWallets(function(err, ws) {
+      iden.getWallets(function(err, ws) {
         should.not.exist(err);
         ws.should.deep.equal([{
           name: 'w1',
@@ -252,19 +286,19 @@ describe('Identity model', function() {
 
   describe('#delete', function() {
     it('should call deleteWallet', function(done) {
-      wf.storage.deleteWallet = sinon.stub().yields(null);
-      wf.delete('xxx', function() {
-        wf.storage.deleteWallet.getCall(0).args[0].should.equal('xxx');
+      iden.storage.deleteWallet = sinon.stub().yields(null);
+      iden.delete('xxx', function() {
+        iden.storage.deleteWallet.getCall(0).args[0].should.equal('xxx');
         done();
       });
     });
 
     it('should call lastOpened', function(done) {
-      wf.storage.deleteWallet = sinon.stub().yields(null);
-      wf.storage.setLastOpened = sinon.stub().yields(null);
-      wf.delete('xxx', function() {
-        wf.storage.setLastOpened.calledOnce.should.equal(true);
-        should.not.exist(wf.storage.setLastOpened.getCall(0).args[0]);
+      iden.storage.deleteWallet = sinon.stub().yields(null);
+      iden.storage.setLastOpened = sinon.stub().yields(null);
+      iden.delete('xxx', function() {
+        iden.storage.setLastOpened.calledOnce.should.equal(true);
+        should.not.exist(iden.storage.setLastOpened.getCall(0).args[0]);
         done();
       });
     });
@@ -273,9 +307,9 @@ describe('Identity model', function() {
 
   describe('#read', function() {
     it('should fail to read unexisting wallet', function(done) {
-      wf.storage.getFirst = sinon.stub().yields(null, {});
+      iden.storage.getFirst = sinon.stub().yields(null, {});
 
-      wf.read('id', [], function(err, w) {
+      iden.read('id', [], function(err, w) {
         should.not.exist(w);
         should.exist(err);
         should.exist(err.message);
@@ -285,10 +319,10 @@ describe('Identity model', function() {
       });
     });
     it('should fail to read broken wallet', function(done) {
-      wf.storage.getFirst = sinon.stub().yields(null, {
+      iden.storage.getFirst = sinon.stub().yields(null, {
         'opts': 1
       });
-      wf.read('id', [], function(err, w) {
+      iden.read('id', [], function(err, w) {
         should.not.exist(w);
         should.exist(err);
         should.exist(err.message);
@@ -298,12 +332,12 @@ describe('Identity model', function() {
       });
     });
     it('should read existing wallet', function(done) {
-      var wf = new Identity(config, '0.0.1');
-      wf.storage.getFirst = sinon.stub().yields(null, {
+      var iden = new Identity(config, '0.0.1');
+      iden.storage.getFirst = sinon.stub().yields(null, {
         'opts': 1
       });
-      wf.fromObj = sinon.stub().returns('ok');
-      wf.read('id', [], function(err, w) {
+      iden.fromObj = sinon.stub().returns('ok');
+      iden.read('id', [], function(err, w) {
         should.not.exist(err);
         should.exist(w);
         done();
@@ -319,33 +353,33 @@ describe('Identity model', function() {
     };
 
     it('should call setPassphrase', function(done) {
-      var wf = new Identity(config, '0.0.1');
-      wf.storage.setPassphrase = sinon.spy();
+      var iden = new Identity(config, '0.0.1');
+      iden.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
-      wf.read = sinon.stub().yields(null, s1);
-      wf.migrateWallet = sinon.stub().yields(null);
-      wf.storage.setLastOpened = sinon.stub().yields(null);
+      iden.read = sinon.stub().yields(null, s1);
+      iden.migrateWallet = sinon.stub().yields(null);
+      iden.storage.setLastOpened = sinon.stub().yields(null);
 
-      wf.open('dummy', 'xxx', function(err, w) {
-        wf.storage.setPassphrase.calledOnce.should.equal(true);
-        wf.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
+      iden.open('dummy', 'xxx', function(err, w) {
+        iden.storage.setPassphrase.calledOnce.should.equal(true);
+        iden.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
         done();
       });
     });
 
     it('should call return wallet', function(done) {
-      var wf = new Identity(config, '0.0.1');
-      wf.storage.setPassphrase = sinon.spy();
+      var iden = new Identity(config, '0.0.1');
+      iden.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
-      wf.read = sinon.stub().yields(null, s1);
-      wf.migrateWallet = sinon.stub().yields(null);
-      wf.storage.setLastOpened = sinon.stub().yields(null);
+      iden.read = sinon.stub().yields(null, s1);
+      iden.migrateWallet = sinon.stub().yields(null);
+      iden.storage.setLastOpened = sinon.stub().yields(null);
 
-      wf.open('dummy', 'xxx', function(err, w) {
+      iden.open('dummy', 'xxx', function(err, w) {
         w.should.equal(s1);
         s1.store.calledOnce.should.equal(true);
         done();
@@ -354,52 +388,52 @@ describe('Identity model', function() {
 
 
     it('should call #store', function(done) {
-      var wf = new Identity(config, '0.0.1');
-      wf.storage.setPassphrase = sinon.spy();
+      var iden = new Identity(config, '0.0.1');
+      iden.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
-      wf.read = sinon.stub().yields(null, s1);
-      wf.migrateWallet = sinon.stub().yields(null);
-      wf.storage.setLastOpened = sinon.stub().yields(null);
+      iden.read = sinon.stub().yields(null, s1);
+      iden.migrateWallet = sinon.stub().yields(null);
+      iden.storage.setLastOpened = sinon.stub().yields(null);
 
-      wf.open('dummy', 'xxx', function(err, w) {
+      iden.open('dummy', 'xxx', function(err, w) {
         s1.store.calledOnce.should.equal(true);
         done();
       });
     });
 
     it('should call #setLastOpened', function(done) {
-      var wf = new Identity(config, '0.0.1');
-      wf.storage.setPassphrase = sinon.spy();
+      var iden = new Identity(config, '0.0.1');
+      iden.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
-      wf.read = sinon.stub().yields(null, s1);
-      wf.migrateWallet = sinon.stub().yields(null);
-      wf.storage.setLastOpened = sinon.stub().yields(null);
+      iden.read = sinon.stub().yields(null, s1);
+      iden.migrateWallet = sinon.stub().yields(null);
+      iden.storage.setLastOpened = sinon.stub().yields(null);
 
-      wf.open('dummy', 'xxx', function(err, w) {
-        wf.storage.setLastOpened.calledOnce.should.equal(true);
-        wf.storage.setLastOpened.getCall(0).args[0].should.equal('dummy');
+      iden.open('dummy', 'xxx', function(err, w) {
+        iden.storage.setLastOpened.calledOnce.should.equal(true);
+        iden.storage.setLastOpened.getCall(0).args[0].should.equal('dummy');
         done();
       });
     });
     it('should call #migrateWallet', function(done) {
-      var wf = new Identity(config, '0.0.1');
-      wf.storage.setPassphrase = sinon.spy();
+      var iden = new Identity(config, '0.0.1');
+      iden.storage.setPassphrase = sinon.spy();
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
-      wf.read = sinon.stub().yields(null, s1);
-      wf.migrateWallet = sinon.stub().yields(null);
-      wf.storage.deleteWallet_Old = sinon.stub().yields(null);
-      wf.storage.removeGlobal = sinon.stub().yields(null);
-      wf.storage.setLastOpened = sinon.stub().yields(null);
+      iden.read = sinon.stub().yields(null, s1);
+      iden.migrateWallet = sinon.stub().yields(null);
+      iden.storage.deleteWallet_Old = sinon.stub().yields(null);
+      iden.storage.removeGlobal = sinon.stub().yields(null);
+      iden.storage.setLastOpened = sinon.stub().yields(null);
 
-      wf.open('dummy', 'xxx', function(err, w) {
-        wf.migrateWallet.calledOnce.should.equal(true);
-        wf.migrateWallet.getCall(0).args[0].should.equal('dummy');
+      iden.open('dummy', 'xxx', function(err, w) {
+        iden.migrateWallet.calledOnce.should.equal(true);
+        iden.migrateWallet.getCall(0).args[0].should.equal('dummy');
         done();
       });
     });
@@ -407,7 +441,7 @@ describe('Identity model', function() {
 
   describe('#createWallet', function() {
     it('should create wallet', function(done) {
-      wf.createWallet(null, function(err, w) {
+      iden.createWallet(null, function(err, w) {
         should.exist(w);
         should.not.exist(err);
         done();
@@ -416,20 +450,20 @@ describe('Identity model', function() {
 
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-      wf.createWallet({
+      iden.createWallet({
         privateKeyHex: priv,
       }, function(err, w) {
-        wf._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+        iden._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
         should.not.exist(err);
         done();
       });
     });
 
     it('should be able to create wallets with random pk', function(done) {
-      wf.createWallet(null, function(err, w1) {
-        wf.createWallet(null, function(err, w2) {
-          wf._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
-            wf._getWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
+      iden.createWallet(null, function(err, w1) {
+        iden.createWallet(null, function(err, w2) {
+          iden._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+            iden._getWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
           );
           done();
         });
@@ -445,7 +479,7 @@ describe('Identity model', function() {
     };
 
     it('should yield bad network error', function(done) {
-      var net = wf.networks['testnet'];
+      var net = iden.networks['testnet'];
       net.greet = sinon.stub();
       net.cleanUp = sinon.stub();
       net.start = sinon.stub().yields(null);
@@ -456,7 +490,7 @@ describe('Identity model', function() {
         opts: {},
       });
       opts.privHex = undefined;
-      wf.joinWallet(opts, function(err, w) {
+      iden.joinWallet(opts, function(err, w) {
         err.should.equal('badNetwork');
         done();
       });
@@ -465,18 +499,18 @@ describe('Identity model', function() {
 
     it('should yield to join error', function(done) {
       opts.privHex = undefined;
-      var net = wf.networks['testnet'];
+      var net = iden.networks['testnet'];
       net.greet = sinon.stub();
       net.cleanUp = sinon.stub();
       net.start = sinon.stub().yields(null);
- 
+
       net.on = sinon.stub();
       net.on.withArgs('serverError').yields(null);
       net.on.withArgs('data').yields('senderId', {
         type: 'walletId',
-        networkName: wf.networkName,
+        networkName: iden.networkName,
       });
-      wf.joinWallet(opts, function(err, w) {
+      iden.joinWallet(opts, function(err, w) {
         err.should.equal('joinError');
         done();
       });
@@ -485,7 +519,7 @@ describe('Identity model', function() {
 
     it('should call network.start / create', function(done) {
       opts.privHex = undefined;
-      var net = wf.networks['testnet'];
+      var net = iden.networks['testnet'];
       net.cleanUp = sinon.spy();
       net.greet = sinon.spy();
       net.start = sinon.stub().yields(null);
@@ -500,11 +534,11 @@ describe('Identity model', function() {
 
       var w = sinon.stub();
       w.sendWalletReady = sinon.spy();
-      wf.createWallet = sinon.stub().yields(null, w);
-      wf.joinWallet(opts, function(err, w) {
+      iden.createWallet = sinon.stub().yields(null, w);
+      iden.joinWallet(opts, function(err, w) {
         net.start.calledOnce.should.equal(true);
-        wf.createWallet.calledOnce.should.equal(true);
-        wf.createWallet.calledOnce.should.equal(true);
+        iden.createWallet.calledOnce.should.equal(true);
+        iden.createWallet.calledOnce.should.equal(true);
 
         w.sendWalletReady.calledOnce.should.equal(true);
         w.sendWalletReady.getCall(0).args[0].should.equal('03ddbc4711534bc62ccf576ab05f2a0afd11f9e2f4016781f3f5a88de9543a229a');
@@ -514,7 +548,7 @@ describe('Identity model', function() {
 
     it('should return walletFull', function(done) {
       opts.privHex = undefined;
-      var net = wf.networks['testnet'];
+      var net = iden.networks['testnet'];
       net.cleanUp = sinon.spy();
       net.greet = sinon.spy();
       net.start = sinon.stub().yields(null);
@@ -526,30 +560,30 @@ describe('Identity model', function() {
         networkName: 'testnet',
         opts: {},
       });
-      wf.createWallet = sinon.stub().yields(null, null);
-      wf.joinWallet(opts, function(err, w) {
+      iden.createWallet = sinon.stub().yields(null, null);
+      iden.joinWallet(opts, function(err, w) {
         err.should.equal('walletFull');
         done();
       });
     });
 
     it('should accept a priv key a input', function() {
-      var wf = new Identity(config, '0.0.1');
+      var iden = new Identity(config, '0.0.1');
       opts.privHex = 'tprv8ZgxMBicQKsPf7MCvCjnhnr4uiR2Z2gyNC27vgd9KUu98F9mM1tbaRrWMyddVju36GxLbeyntuSadBAttriwGGMWUkRgVmUUCg5nFioGZsd';
-      var net = wf.networks['testnet'];
+      var net = iden.networks['testnet'];
       net.cleanUp = sinon.spy();
       net.start = sinon.spy();
-      wf.joinWallet(opts, function(err, w) {
+      iden.joinWallet(opts, function(err, w) {
         net.start.getCall(0).args[0].privkey.should.equal('ddc2fa8c583a73c4b2a24630ec7c283df4e7c230a02c4e48bc36ec61687afd7d');
       });
     });
     it('should call network.start with private key', function() {
       opts.privHex = undefined;
-      var wf = new Identity(config, '0.0.1');
-      var net = wf.networks['testnet'];
+      var iden = new Identity(config, '0.0.1');
+      var net = iden.networks['testnet'];
       net.cleanUp = sinon.spy();
       net.start = sinon.spy();
-      wf.joinWallet(opts, function(err, w) {
+      iden.joinWallet(opts, function(err, w) {
         net.start.getCall(0).args[0].privkey.length.should.equal(64); //privkey is hex of private key buffer
       });
     });
@@ -558,8 +592,8 @@ describe('Identity model', function() {
 
   describe.skip('Backwards compatibility tests', function() {
     it('should be able to import unencrypted legacy wallet TxProposal: v0', function() {
-      var wf = new Identity(config, '0.0.5');
-      var w = wf.fromObj(JSON.parse(legacyO));
+      var iden = new Identity(config, '0.0.5');
+      var w = iden.fromObj(JSON.parse(legacyO));
 
       should.exist(w);
       w.id.should.equal('55d4bd062d32f90a');
@@ -570,14 +604,14 @@ describe('Identity model', function() {
 
     it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function() {
 
-      wf.storage.import = sinon.stub();
-      wf.storage.setPassphrase = sinon.spy();
-      wf.storage.import.withArgs('dummy').returns(JSON.parse(legacy1));
+      iden.storage.import = sinon.stub();
+      iden.storage.setPassphrase = sinon.spy();
+      iden.storage.import.withArgs('dummy').returns(JSON.parse(legacy1));
 
-      var w = wf.fromEncryptedObj('dummy', 'xxx');
+      var w = iden.fromEncryptedObj('dummy', 'xxx');
       should.exist(w);
-      wf.storage.setPassphrase.calledOnce.should.equal(true);
-      wf.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
+      iden.storage.setPassphrase.calledOnce.should.equal(true);
+      iden.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
 
       w.isReady().should.equal(true);
       var wo = w.toObj();
