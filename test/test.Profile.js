@@ -18,8 +18,9 @@ describe('Profile model', function() {
 
   beforeEach(function() {
     storage.getItem = sinon.stub();
-    storage.setFromObj = sinon.stub();
-    storage.setFromObj.yields(null);
+    storage.set = sinon.stub();
+    storage.set.yields(null);
+    storage.get = sinon.stub().yields(null);
   });
 
   it('should fail create an instance', function() {
@@ -43,15 +44,33 @@ describe('Profile model', function() {
     p2.should.deep.equal(p);
   });
 
-  it('#store', function(done) {
-    var p = new Profile(opts, password, storage);
-    p.store(function(err) {
-      storage.setFromObj.getCall(0).args[1].should.deep.equal(p.toObj());
-      should.not.exist(err);
-      done();
-    })
+  describe('#store', function() {
+    it('should call storage set', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.store({}, function(err) {
+        storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
+        should.not.exist(err);
+        done();
+      })
+    });
+    it('should use fail to overwrite', function(done) {
+      storage.get = sinon.stub().yields(123);
+      var p = new Profile(opts, password, storage);
+      p.store({}, function(err) {
+        err.toString().should.contain('PEXISTS');
+        should.not.exist(storage.set.getCall(0));
+        done();
+      })
+    });
+ 
+    it('should use overwrite param', function(done) {
+      storage.get = sinon.stub().yields(123);
+      var p = new Profile(opts, password, storage);
+      p.store({overwrite:true}, function(err) {
+        storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
+        should.not.exist(err);
+        done();
+      })
+    });
   });
-
-
-
 });

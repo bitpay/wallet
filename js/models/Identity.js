@@ -123,7 +123,7 @@ Identity.prototype.validate = function(authcode, cb) {
  */
 Identity.open = function(email, password, opts, cb) {
   var iden = new Identity(email, password, opts);
-  iden.read(function(err){
+  iden.read(function(err) {
     return cb(err, iden);
   });
 };
@@ -143,8 +143,21 @@ Identity.isAvailable = function(email, opts, cb) {
 
 
 Identity.prototype.store = function(opts, cb) {
-  console.log('[Identity.js.142] TODO .store'); //TODO
-  return cb();
+  var self = this;
+  self.profile.store(function() {
+    var l = self.wallets.length,
+      i = 0;
+    if (!l) return cb();
+
+    _.each(self.wallets, function(w) {
+      w.store(function(err) {
+        if (err) return cb(err);
+
+        if (++i == l)
+          return cb();
+      })
+    });
+  });
 };
 
 
@@ -155,8 +168,8 @@ Identity.prototype.store = function(opts, cb) {
  */
 Identity.prototype.obtainNetworkName = function(obj) {
   return obj.networkName ||
-    obj.opts.networkName ||
-    obj.publicKeyRing.networkName ||
+    (obj.opts ? obj.opts.networkName : null) ||
+    (obj.publicKeyRing ? obj.publicKeyRing.networkName :null) ||
     obj.privateKey.networkName;
 };
 
