@@ -46,6 +46,8 @@ describe('Identity model', function() {
 
     profile = sinon.stub();
     profile.test = sinon.stub();
+    profile.store = sinon.stub();
+    profile.store.yields(null);
     Identity._newProfile = sinon.stub().returns(profile);
 
     iden = new Identity(email, password, config);
@@ -53,7 +55,7 @@ describe('Identity model', function() {
 
 
   afterEach(function() {
-    iden = undefined;
+    iden = storage = wallet = profile = undefined;
   });
 
 
@@ -91,7 +93,7 @@ describe('Identity model', function() {
     version: '0.0.1',
   };
 
-  describe.only('#constructors', function() {
+  describe('#constructors', function() {
     describe('#new', function() {
       it('should create an identity', function() {
         var iden = new Identity(email, password, config);
@@ -110,16 +112,16 @@ describe('Identity model', function() {
 
     describe('#create', function(done) {
       it('should call .store', function(done) {
-        Identity.prototype.store = sinon.stub().yields(null);
         Identity.create(email, password, config, function(err, iden) {
           should.not.exist(err);
           should.exist(iden.profile.test);
-          iden.store.getCall(0).args[0].should.deep.equal({overwrite:false});
+          iden.profile.store.getCall(0).args[0].should.deep.equal({
+            overwrite: false
+          });
           done();
         });
       });
     });
-
 
     describe('#open', function(done) {
       it('should call .read', function(done) {
@@ -131,6 +133,57 @@ describe('Identity model', function() {
           done();
         });
       });
+    });
+  });
+  describe('#store', function() {
+
+    it('should call .store from profile and no wallets', function(done) {
+      profile.store = sinon.stub().yields(null);
+      iden.wallets = [];
+      iden.store({}, function(err) {
+        should.not.exist(err);
+        profile.store.calledOnce.should.equal(true);
+        done();
+      });
+    });
+
+    it('should call .store from profile and wallets (2)', function(done) {
+      iden.profile.store = sinon.stub().yields(null);
+      iden.wallets = [{
+        store: sinon.stub().yields(null)
+      }, {
+        store: sinon.stub().yields(null)
+      }];
+      iden.store({}, function(err) {
+        should.not.exist(err);
+        iden.profile.store.calledOnce.should.equal(true);
+        iden.wallets[0].store.calledOnce.should.equal(true);
+        iden.wallets[1].store.calledOnce.should.equal(true);
+        done();
+      });
+    });
+  });
+
+  describe('#obtainNetworkName', function() {
+    it('should return the networkname', function() {
+      iden.obtainNetworkName({
+        networkName: 'testnet',
+      }).should.equal('testnet');
+      iden.obtainNetworkName({
+        opts: {
+          networkName: 'testnet'
+        }
+      }).should.equal('testnet');
+      iden.obtainNetworkName({
+        publicKeyRing: {
+          networkName: 'testnet'
+        }
+      }).should.equal('testnet');
+      iden.obtainNetworkName({
+        privateKey: {
+          networkName: 'testnet'
+        }
+      }).should.equal('testnet');
     });
   });
 
