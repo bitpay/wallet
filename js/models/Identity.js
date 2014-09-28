@@ -7,6 +7,7 @@ var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 var _ = require('underscore');
 var log = require('../log');
+var version = require('../../version').version;
 var PluginManager = require('./PluginManager');
 var Profile = require('./Profile');
 var Insight = module.exports.Insight = require('./Insight');
@@ -19,20 +20,17 @@ var Storage = module.exports.Storage = require('./Storage');
  *
  * @param {Object} config - configuration for this wallet
  * @param {Object} config.wallet - default configuration for the wallet
- * @TODO: put `version` inside of the config object
- * @param {string} version - the version of copay for which this wallet was generated (for example, 0.4.7)
  * @constructor
  */
 
-function Identity(config, version, pluginManager) {
-  var self = this;
-  preconditions.checkArgument(config);
+function Identity(email, password, opts) {
+  preconditions.checkArgument(opts);
   var storageOpts = {};
 
-  if (pluginManager) {
-    storageOpts = {
-      db: pluginManager.get('DB')
-    };
+  if (opts.pluginManager) {
+    storageOpts = _.clone({
+      db: opts.pluginManager.get('DB')
+    });
     /*
      * TODO (plugins for other services)
      *
@@ -41,27 +39,114 @@ function Identity(config, version, pluginManager) {
      * }
      */
   }
+  storageOpts.password = password;
 
-  this.storage = this._getStorage(storageOpts);
+  this.storage = Identity._newStorage(storageOpts);
 
   this.networks = {
-    'livenet': new Insight(config.network.livenet),
-    'testnet': new Insight(config.network.testnet),
+    'livenet': Identity._newInsight(opts.network.livenet),
+    'testnet': Identity._newInsight(opts.network.testnet),
   };
   this.blockchains = {
-    'livenet': new Insight(config.network.livenet),
-    'testnet': new Insight(config.network.testnet),
+    'livenet': Identity._newInsight(opts.network.livenet),
+    'testnet': Identity._newInsight(opts.network.testnet),
   };
 
-  this.walletDefaults = config.wallet || {};
-  this.version = version;
+  this.walletDefaults = opts.wallet || {};
+  this.version = opts.version || version;
+
+  this.wallets = [];
+  this.profile = Identity._newProfile({
+    email: email,
+  }, password, this.storage);
 };
 
 
 /* for stubbing */
-Identity.prototype._getStorage = function(opts) {
+Identity._newProfile = function(info, password, storage) {
+  return new Profile(info, password, storage);
+};
+
+/* for stubbing */
+Identity._newInsight = function(opts) {
+  return new Insight(opts);
+};
+
+
+/* for stubbing */
+Identity._newStorage = function(opts) {
   return new Storage(opts);
 };
+
+
+/**
+ * creates and Identity
+ *
+ * @param email
+ * @param password
+ * @param opts
+ * @param cb
+ * @return {undefined}
+ */
+Identity.create = function(email, password, opts, cb) {
+  var iden = new Identity(email, password, opts);
+  iden.store({
+    overwrite: false,
+  }, function(err) {
+    return cb(err, iden);
+  });
+};
+
+
+/**
+ * validates Profile's email
+ *
+ * @param authcode
+ * @param cb
+ * @return {undefined}
+ */
+Identity.prototype.validate = function(authcode, cb) {
+  // TODO
+  console.log('[Identity.js.99] TODO: Should validate email thru authcode'); //TODO
+  return cb();
+};
+
+
+/**
+ * open's an Identity from storage
+ *
+ * @param email
+ * @param password
+ * @param opts
+ * @param cb
+ * @return {undefined}
+ */
+Identity.open = function(email, password, opts, cb) {
+  var iden = new Identity(email, password, opts);
+  iden.read(function(err){
+    return cb(err, iden);
+  });
+};
+
+/**
+ * isAvailable
+ *
+ * @param email
+ * @param opts
+ * @param cb
+ * @return {undefined}
+ */
+Identity.isAvailable = function(email, opts, cb) {
+  console.log('[Identity.js.127:isAvailable:] TODO'); //TODO
+  return cb();
+};
+
+
+Identity.prototype.store = function(opts, cb) {
+  console.log('[Identity.js.142] TODO .store'); //TODO
+  return cb();
+};
+
 
 /**
  * @desc obtain network name from serialized wallet
@@ -81,7 +166,7 @@ Identity.prototype.obtainNetworkName = function(obj) {
  * @param {string[]} skipFields - fields to skip when importing
  * @return {Wallet}
  */
-Identity.prototype.fromObj = function(inObj, skipFields) {
+Identity.prototype._fromObj = function(inObj, skipFields) {
   var networkName = this.obtainNetworkName(inObj);
   preconditions.checkState(networkName);
   preconditions.checkArgument(inObj);
@@ -113,7 +198,7 @@ Identity.prototype.fromObj = function(inObj, skipFields) {
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-Identity.prototype.fromEncryptedObj = function(base64, passphrase, skipFields) {
+Identity.prototype.importWallet = function(base64, passphrase, skipFields) {
   this.storage.setPassphrase(passphrase);
   var walletObj = this.storage.import(base64);
   if (!walletObj) return false;
@@ -149,7 +234,7 @@ Identity.prototype.migrateWallet = function(walletId, passphrase, cb) {
  * @param {string[]} skipFields - parameters to ignore when importing
  * @param {function} callback - {err, Wallet}
  */
-Identity.prototype.read = function(walletId, skipFields, cb) {
+Identity.prototype._readWallet = function(walletId, skipFields, cb) {
   var self = this,
     err;
   var obj = {};
@@ -330,13 +415,13 @@ Identity.prototype._checkVersion = function(inVersion) {
  * @param {function} callback (err, {Wallet})
  * @return
  */
-Identity.prototype.open = function(walletId, passphrase, cb) {
+Identity.prototype.openWallet = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
   var self = this;
   self.storage.setPassphrase(passphrase);
 
   self.migrateWallet(walletId, passphrase, function() {
-    self.read(walletId, null, function(err, w) {
+    self._readWallet(walletId, null, function(err, w) {
       if (err) return cb(err);
 
       w.store(function(err) {
@@ -348,7 +433,7 @@ Identity.prototype.open = function(walletId, passphrase, cb) {
   });
 };
 
-Identity.prototype.getWallets = function(cb) {
+Identity.prototype.listWallets = function(cb) {
   var self = this;
   this.storage.getWallets(function(wallets) {
     wallets.forEach(function(i) {
@@ -373,7 +458,7 @@ Identity.prototype.getWallets = function(cb) {
  * @callback cb
  * @return {?} the result of the callback
  */
-Identity.prototype.delete = function(walletId, cb) {
+Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
   self.storage.deleteWallet(walletId, function(err) {
     if (err) return cb(err);
@@ -479,7 +564,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
         walletOpts.nickname = opts.nickname;
         walletOpts.passphrase = opts.passphrase;
 
-        self.create(walletOpts, function(err, w) {
+        self.createWallet(walletOpts, function(err, w) {
 
           if (w) {
             w.sendWalletReady(decodedSecret.pubKey);
