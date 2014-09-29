@@ -129,7 +129,7 @@ TxProposal.fromObj = function(o, forceOpts) {
   forceOpts = forceOpts || {};
 
 
-  if (forceOpts){
+  if (forceOpts) {
     o.builderObj.opts = o.builderObj.opts || {};
   }
 
@@ -231,6 +231,10 @@ TxProposal.prototype.mergeBuilder = function(incoming) {
   return after !== before;
 };
 
+
+TxProposal.prototype.getSeen = function(copayerId) {
+  return this.seenBy[copayerId];
+};
 
 TxProposal.prototype.setSeen = function(copayerId) {
   if (!this.seenBy[copayerId])

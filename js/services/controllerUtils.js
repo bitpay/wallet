@@ -122,7 +122,7 @@ angular.module('copayApp.services')
             notification.info('Transaction Update', $filter('translate')('A transaction was rejected by') + ' ' + user);
             break;
           case 'corrupt':
-            notification.error('Transaction Error', $filter('translate')('Received corrupt transaction from') + ' ' +  user);
+            notification.error('Transaction Error', $filter('translate')('Received corrupt transaction from') + ' ' + user);
             break;
         }
       });
@@ -177,8 +177,6 @@ angular.module('copayApp.services')
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;
 
-      w.removeTxWithSpentInputs();
-
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
 
@@ -232,11 +230,8 @@ angular.module('copayApp.services')
           return txs.push(null);
         }
 
-        if (myCopayerId != i.creator && !i.finallyRejected && !i.sentTs && !i.rejectedByUs && !i.signedByUs) {
+        if (i.isPending && myCopayerId != i.creator && !i.rejectedByUs && !i.signedByUs) {
           pendingForUs++;
-        }
-        if (!i.finallyRejected && !i.sentTs) {
-          i.isPending = 1;
         }
 
         if (!!opts.pending == !!i.isPending) {
@@ -261,6 +256,8 @@ angular.module('copayApp.services')
           txs.push(i);
         }
       });
+
+      w.removeTxWithSpentInputs();
 
       $rootScope.txs = txs;
       $rootScope.txsOpts = opts;
