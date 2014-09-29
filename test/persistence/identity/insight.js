@@ -1,14 +1,10 @@
 'use strict';
 
-var           chai = require('chai'),
-            assert = require('better-assert'),
-             sinon = require('sinon'),
-            should = chai.should(),
-            expect = chai.expect,
+var         assert = require('assert'),
        cryptoUtils = require('../../../js/util/crypto'),
   identityProvider = require('../../../js/persistence/identity/insight');
 
-describe.only('insight identity persistence', function() {
+describe('insight identity persistence', function() {
 
   var INSIGHT_URL = 'insighturl',
             EMAIL = 'email',

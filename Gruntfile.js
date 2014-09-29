@@ -94,8 +94,8 @@ module.exports = function(grunt) {
           mocha: require('mocha')
         },
         src: [
-          'test/models/*.js', 'test/*.js', 'test/persistence/**/*.js', 'test/util/*.js'
-        ],
+          'test/models/*.js',
+        ]
       }
     },
     markdown: {
