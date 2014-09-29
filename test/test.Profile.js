@@ -44,6 +44,27 @@ describe('Profile model', function() {
     p2.should.deep.equal(p);
   });
 
+  describe.only('#addWallet', function() {
+    it('should add a wallet id', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.addWallet('123', function(err) {
+        p.walletIds['123'].should.be.above(123456789);
+        storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
+        done();
+      })
+    });
+    it('should keep old value', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.walletIds['123']=1;
+      p.addWallet('123', function(err) {
+        p.walletIds['123'].should.equal(1);
+        should.not.exist(storage.set.getCall(0));
+        done();
+      })
+    });
+ 
+  });
+
   describe('#store', function() {
     it('should call storage set', function(done) {
       var p = new Profile(opts, password, storage);
@@ -62,11 +83,13 @@ describe('Profile model', function() {
         done();
       })
     });
- 
+
     it('should use overwrite param', function(done) {
       storage.get = sinon.stub().yields(123);
       var p = new Profile(opts, password, storage);
-      p.store({overwrite:true}, function(err) {
+      p.store({
+        overwrite: true
+      }, function(err) {
         storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
         should.not.exist(err);
         done();
