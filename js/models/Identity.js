@@ -183,37 +183,6 @@ Identity.prototype.obtainNetworkName = function(obj) {
 };
 
 /**
- * @desc Deserialize an object to a Wallet
- * @param {Object} wallet object
- * @param {string[]} skipFields - fields to skip when importing
- * @return {Wallet}
- */
-Identity.prototype._fromObj = function(inObj, skipFields) {
-  var networkName = this.obtainNetworkName(inObj);
-  preconditions.checkState(networkName);
-  preconditions.checkArgument(inObj);
-
-  var obj = JSON.parse(JSON.stringify(inObj));
-
-  // not stored options
-  obj.opts = obj.opts || {};
-  obj.opts.reconnectDelay = this.walletDefaults.reconnectDelay;
-
-  skipFields = skipFields || [];
-  skipFields.forEach(function(k) {
-    if (obj[k]) {
-      delete obj[k];
-    } else
-      throw new Error('unknown field:' + k);
-  });
-
-  var w = Wallet.fromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
-  if (!w) return false;
-  this._checkVersion(w.version);
-  return w;
-};
-
-/**
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
  * @param {string} passphrase - passphrase to decrypt it
@@ -222,9 +191,19 @@ Identity.prototype._fromObj = function(inObj, skipFields) {
  */
 Identity.prototype.importWallet = function(base64, passphrase, skipFields) {
   this.storage.setPassphrase(passphrase);
-  var walletObj = this.storage.import(base64);
-  if (!walletObj) return false;
-  return this.fromObj(walletObj, skipFields);
+
+  var obj = this.storage.decrypt(base64);
+  if (!obj) return false;
+
+  var w = Wallet.fromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
+  this._checkVersion(w.version);
+
+  this.profile.addWallet(w.id,function(err){
+    if (err) return cb(err);
+
+
+    w.store();
+  });
 };
 
 Identity.prototype.migrateWallet = function(walletId, passphrase, cb) {
@@ -401,19 +380,33 @@ Identity.prototype.createWallet = function(opts, cb) {
 
   this.storage.setPassphrase(opts.passphrase);
 
-
   var self = this;
   var w = this._newWallet(opts);
-  this.profile.addWallet(w.id, function(err) {
+  this.addWallet(w, function(err) {
     if (err) return cb(err);
-    w.store(function(err) {
-      if (err) return cb(err);
-      self.profile.setLastOpenedTs(w.id, function(err) {
+    self.profile.setLastOpenedTs(w.id, function(err) {
         return cb(err, w);
-      });
     });
   });
 };
+
+Identity.prototype.addWallet = function(wallet, cb) {
+  preconditions.checkArgument(wallet.id);
+  preconditions.checkArgument(cb);
+
+  var self = this;
+  self.profile.addWallet(wallet.id, function(err) {
+    if (err) return cb(err);
+
+    self.wallets.push(w);
+
+    self.store(function(err) {
+      if (err) return cb(err);
+      return (err);
+    });
+  });
+};
+
 
 /**
  * @desc Checks if a version is compatible with the current version
