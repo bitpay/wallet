@@ -95,6 +95,10 @@ FakeWallet.prototype.isShared = function() {
   return this.totalCopayers > 1;
 }
 
+FakeWallet.prototype.requiresMultipleSignatures = function() {
+  return this.requiredCopayers > 1;
+};
+
 FakeWallet.prototype.isReady = function() {
   return true;
 };

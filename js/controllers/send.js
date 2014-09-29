@@ -142,7 +142,7 @@ angular.module('copayApp.controllers').controller('SendController',
           });
         }
 
-        if (w.isShared()) {
+        if (w.requiresMultipleSignatures()) {
           $scope.loading = false;
           var message = 'The transaction proposal has been created';
           if (merchantData) {
