@@ -1,19 +1,24 @@
+<div class="show-for-small-only header-message">
+  <span class="date-message">{{tx.createdTs | amCalendar}}</span>
+</div>
 <div class="last-transactions-header" ng-init="txIndex = $index">
-  <h4 class="show-for-small-only">{{tx.createdTs | amCalendar}}</h4>
+  <div class="show-for-small-only private-message">
+    <i class="fi-comment-quotes"></i> {{tx.comment}}
+  </div>
   <div class="row collapse">
     <div class="show-for-large-up large-1 columns">
-      <a class="text-black" ng-show="tx.comment">
-        <i class="fi-comment-quotes size-24" popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
+      <a class="text-black" 
+        ng-show="tx.comment" 
+        popover-animation="true" 
+        popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" 
+        popover-title="{{tx.comment}}" 
+        popover-placement="right" 
+        popover-trigger="mouseenter">
+          <i class="fi-comment-quotes size-24"></i>
       </a>
       <a class="disable" ng-show="!tx.comment">
         <i class="fi-comment-quotes size-24 text-gray"></i>
       </a>
-    </div>
-    <div class="hide-for-large-up small-12 medium-12 columns m10b" ng-show="tx.comment">
-      <div class="private-message">
-        {{tx.comment}} <small>Created by
-          <strong>{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}</strong></small>
-      </div>
     </div>
     <div class="large-8 medium-8 small-12 columns">
       <div class="row collapse" ng-repeat="out in tx.outs">
@@ -46,7 +51,7 @@
     </div>
   </div>
 </div>
-<table class="last-transactions-content show-for-small-only" summary="{{tx.createdTs | amCalendar}}">
+<table class="last-transactions-content show-for-small-only">
   <tbody>
   <tr ng-repeat="c in tx.actionList">
     <td class="copayer-name" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
@@ -116,11 +121,11 @@
             <i class="fi-x" ></i> <span translate>Reject</span>
           </button>
         </div>
-        <div class="show-for-small-only row m10b">
-          <button class="primary small-5 columns"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
+        <div class="show-for-small-only row">
+          <button class="primary small-5 columns m10b"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
             <i class="fi-check"></i> <span translate>Sign</span>
           </button>
-          <button class="warning small-5 columns" ng-click="reject(tx.ntxid)" ng-disabled="loading">
+          <button class="warning small-5 columns m10b" ng-click="reject(tx.ntxid)" ng-disabled="loading">
             <i class="fi-x" ></i> <span translate>Reject</span>
           </button>
         </div>
