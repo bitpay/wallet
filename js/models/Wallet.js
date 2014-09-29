@@ -209,7 +209,7 @@ Wallet.obtainNetworkName = function(obj) {
   return obj.networkName ||
     (obj.opts ? obj.opts.networkName : null) ||
     (obj.publicKeyRing ? obj.publicKeyRing.networkName : null) ||
-    obj.privateKey.networkName;
+    (obj.publicKeyRing ? obj.privateKey.networkName : null);
 };
 
 

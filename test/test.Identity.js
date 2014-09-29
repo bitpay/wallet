@@ -228,8 +228,8 @@ describe('Identity model', function() {
   describe.only('#importWallet', function() {
     it('should create wallet from encrypted object', function() {
       iden.storage.setPassphrase = sinon.spy();
-      iden.storage.decrypt = sinon.stub().withArgs('base64').returns('walletObj');
-      iden.fromObj = sinon.stub().withArgs('walletObj').returns('ok');
+      iden.storage.decrypt = sinon.stub().withArgs('base64').returns({networkName:'testnet'});
+      Identity._walletFromObj = sinon.stub().withArgs('walletObj').returns('ok');
 
       var w = iden.importWallet("encrypted object", "123");
 
