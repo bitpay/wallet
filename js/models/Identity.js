@@ -144,7 +144,9 @@ Identity.isAvailable = function(email, opts, cb) {
 
 Identity.prototype.store = function(opts, cb) {
   var self = this;
-  self.profile.store(function() {
+  self.profile.store(opts, function(err) {
+    if (err) return cb(err);
+
     var l = self.wallets.length,
       i = 0;
     if (!l) return cb();
@@ -169,7 +171,7 @@ Identity.prototype.store = function(opts, cb) {
 Identity.prototype.obtainNetworkName = function(obj) {
   return obj.networkName ||
     (obj.opts ? obj.opts.networkName : null) ||
-    (obj.publicKeyRing ? obj.publicKeyRing.networkName :null) ||
+    (obj.publicKeyRing ? obj.publicKeyRing.networkName : null) ||
     obj.privateKey.networkName;
 };
 
@@ -391,12 +393,17 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.version = opts.version || this.version;
 
   this.storage.setPassphrase(opts.passphrase);
+
+
   var w = this._getWallet(opts);
-  var self = this;
-  w.store(function(err) {
+  this.profile.addWallet(w.id, function(err) {
     if (err) return cb(err);
-    self.storage.setLastOpened(w.id, function(err) {
-      return cb(err, w);
+    var self = this;
+    w.store(function(err) {
+      if (err) return cb(err);
+      self.storage.setLastOpened(w.id, function(err) {
+        return cb(err, w);
+      });
     });
   });
 };
