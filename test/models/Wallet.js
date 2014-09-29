@@ -864,76 +864,76 @@ describe('Wallet model', function() {
   });
 
   describe('removeTxWithSpentInputs', function() {
+    var w;
+    var utxos;
+    beforeEach(function() {
+      w = cachedCreateW2();
+      w.txProposals.deleteOne = sinon.spy();
+      utxos = [{
+        txid: 'txid0',
+        vout: 'vout1',
+      }, {
+        txid: 'txid0',
+        vout: 'vout2',
+      }];
+    });
     it('should remove pending TxProposal with spent inputs', function(done) {
-      var w = cachedCreateW2();
-      var utxo = createUTXO(w);
-      chai.expect(w.getTxProposals().length).to.equal(0);
-      w.blockchain.fixUnspent(utxo);
-      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
-        w.sendTxProposal(ntxid);
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        // Inputs are still available, txp still valid
-        w.removeTxWithSpentInputs();
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        // Simulate input spent. txp should be removed from txps list
-        w.blockchain.fixUnspent([]);
-        w.removeTxWithSpentInputs();
-        chai.expect(w.getTxProposals().length).to.equal(0);
-
-        done();
+      var txp = {
+        ntxid: 'txid1',
+        isPending: true,
+        builder: {
+          utxos: [utxos[0]],
+        }
+      };
+      w.getTxProposals = sinon.stub().returns([txp]);
+      w.blockchain.getUnspent = sinon.stub().yields(null, utxos);
+      w.removeTxWithSpentInputs(function() {
+        w.txProposals.deleteOne.called.should.be.false;
+        w.blockchain.getUnspent = sinon.stub().yields(null, []);
+        w.removeTxWithSpentInputs(function() {
+          w.txProposals.deleteOne.calledWith('txid1').should.be.true;
+          done();
+        });
       });
     });
 
     it('should remove pending TxProposal with at least 1 spent input', function(done) {
-      var w = cachedCreateW2();
-      var utxo = [createUTXO(w)[0], createUTXO(w)[0]];
-      utxo[0].amount = 80000;
-      utxo[1].amount = 80000;
-      utxo[1].vout = 1;
-      chai.expect(w.getTxProposals().length).to.equal(0);
-      w.blockchain.fixUnspent(utxo);
-      w.createTx(toAddress, '100000', null, function(err, ntxid) {
-        w.sendTxProposal(ntxid);
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        // Inputs are still available, txp still valid
-        w.removeTxWithSpentInputs();
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        // Simulate 1 input spent. txp should be removed from txps list
-        w.blockchain.fixUnspent([utxo[0]]);
-        w.removeTxWithSpentInputs();
-        chai.expect(w.getTxProposals().length).to.equal(0);
-
-        done();
+      var txp = {
+        ntxid: 'txid1',
+        isPending: true,
+        builder: {
+          utxos: utxos,
+        }
+      };
+      w.getTxProposals = sinon.stub().returns([txp]);
+      w.blockchain.getUnspent = sinon.stub().yields(null, utxos);
+      w.removeTxWithSpentInputs(function() {
+        w.txProposals.deleteOne.called.should.be.false;
+        w.blockchain.getUnspent = sinon.stub().yields(null, [utxos[0]]);
+        w.removeTxWithSpentInputs(function() {
+          w.txProposals.deleteOne.calledWith('txid1').should.be.true;
+          done();
+        });
       });
     });
 
     it('should not remove complete TxProposal', function(done) {
-      var w = cachedCreateW2();
-      var utxo = createUTXO(w);
-      chai.expect(w.getTxProposals().length).to.equal(0);
-      w.blockchain.fixUnspent(utxo);
-      w.createTx(toAddress, amountSatStr, null, function(err, ntxid) {
-        w.sendTxProposal(ntxid);
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        // Inputs are still available, txp still valid
-        w.removeTxWithSpentInputs();
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        // Simulate input spent. txp should be removed from txps list
-        w.blockchain.fixUnspent([]);
-        var txp = w.txProposals.get(ntxid);
-        sinon.stub(txp, 'isPending', function() {
-          return false;
-        })
-        w.removeTxWithSpentInputs();
-        chai.expect(w.getTxProposals().length).to.equal(1);
-
-        done();
+      var txp = {
+        ntxid: 'txid1',
+        isPending: false,
+        builder: {
+          utxos: [utxos[0]],
+        }
+      };
+      w.getTxProposals = sinon.stub().returns([txp]);
+      w.blockchain.getUnspent = sinon.stub().yields(null, utxos);
+      w.removeTxWithSpentInputs(function() {
+        w.txProposals.deleteOne.called.should.be.false;
+        w.blockchain.getUnspent = sinon.stub().yields(null, []);
+        w.removeTxWithSpentInputs(function() {
+          w.txProposals.deleteOne.called.should.be.false;
+          done();
+        });
       });
     });
   });
@@ -1425,60 +1425,204 @@ describe('Wallet model', function() {
 
 
   describe('_onTxProposal', function() {
-    var testValidate = function(response, result, done) {
+    var w;
+    beforeEach(function() {
+      w = cachedCreateW();
+      w._getKeyMap = sinon.stub();
+      w.sendSeen = sinon.spy();
+      w.sendTxProposal = sinon.spy();
+    });
 
-      var w = cachedCreateW();
+    it('should handle corrupt tx', function(done) {
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      w.txProposals.merge = sinon.stub().throws(new Error('test error'));
+
       var spy = sinon.spy();
       w.on('txProposalEvent', spy);
       w.on('txProposalEvent', function(e) {
-        e.type.should.equal(result);
+        e.type.should.equal('corrupt');
         done();
       });
-      //      txp.prototype.getId = function() {return 'aa'};
-      var txp = {
-        dummy: 1
-      };
-      var txp = {
-        'txProposal': txp
-      };
 
-      var s1 = sinon.stub(w, '_getKeyMap', function() {
-        return {
-          1: 2
-        };
-      });
-
-      var s2 = sinon.stub(w.txProposals, 'merge', function() {
-        if (response == 0)
-          throw new Error('test error');
-
-        return {
-          ntxid: 1,
-          txp: {
-            setCopayers: function() {
-              return ['oeoe'];
-            },
-          },
-          new: response == 1
-        };
-      });
-
-      w._onTxProposal('senderID', txp);
-      spy.callCount.should.equal(1);
-      s1.restore();
-      s2.restore();
-    };
-
-    it('should handle corrupt', function(done) {
-      testValidate(0, 'corrupt', done);
+      w._onTxProposal('senderID', data);
+      spy.called.should.be.true;
     });
+
     it('should handle new', function(done) {
-      testValidate(1, 'new', done);
-    });
-    it('should handle signed', function(done) {
-      testValidate(2, 'signed', done);
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      var txp = {
+        getSeen: sinon.stub().returns(false),
+        setSeen: sinon.spy(),
+        setCopayers: sinon.spy(),
+        builder: {
+          build: sinon.stub().returns({
+            isComplete: sinon.stub().returns(false),
+          }),
+        },
+      };
+
+      w.txProposals.merge = sinon.stub().returns({
+        ntxid: 1,
+        txp: txp,
+        new: true,
+        hasChanged: true,
+      });
+
+      var spy1 = sinon.spy();
+      var spy2 = sinon.spy();
+      w.on('txProposalEvent', spy1);
+      w.on('txProposalsUpdated', spy2);
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('new');
+        done();
+      });
+
+      w._onTxProposal('senderID', data);
+      spy1.called.should.be.true;
+      spy2.called.should.be.true;
+      txp.setSeen.calledOnce.should.be.true;
+      w.sendSeen.calledOnce.should.be.true;
+      w.sendTxProposal.calledOnce.should.be.true;
     });
 
+    it('should handle signed', function(done) {
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      var txp = {
+        getSeen: sinon.stub().returns(true),
+        setSeen: sinon.spy(),
+        setCopayers: sinon.stub().returns(['new copayer']),
+        builder: {
+          build: sinon.stub().returns({
+            isComplete: sinon.stub().returns(false),
+          }),
+        },
+      };
+
+      w.txProposals.merge = sinon.stub().returns({
+        ntxid: 1,
+        txp: txp,
+        new: false,
+        hasChanged: true,
+      });
+
+      var spy1 = sinon.spy();
+      var spy2 = sinon.spy();
+      w.on('txProposalEvent', spy1);
+      w.on('txProposalsUpdated', spy2);
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('signed');
+        done();
+      });
+
+      w._onTxProposal('senderID', data);
+      spy1.called.should.be.true;
+      spy2.called.should.be.true;
+      txp.setSeen.calledOnce.should.be.false;
+      w.sendSeen.calledOnce.should.be.false;
+      w.sendTxProposal.calledOnce.should.be.true;
+    });
+
+    it('should mark as broadcast when complete', function(done) {
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      var txp = {
+        getSeen: sinon.stub().returns(true),
+        setCopayers: sinon.stub().returns(['new copayer']),
+        setSent: sinon.spy(),
+        builder: {
+          build: sinon.stub().returns({
+            isComplete: sinon.stub().returns(true),
+          }),
+        },
+      };
+
+      w.txProposals.merge = sinon.stub().returns({
+        ntxid: 1,
+        txp: txp,
+        new: false,
+        hasChanged: true,
+      });
+      w._checkSentTx = sinon.stub().yields(true);
+
+      w._onTxProposal('senderID', data);
+      txp.setSent.calledOnce.should.be.true;
+      w.sendTxProposal.called.should.be.false;
+      done();
+    });
+
+    it('should only mark as broadcast if found in the blockchain', function(done) {
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      var txp = {
+        getSeen: sinon.stub().returns(true),
+        setCopayers: sinon.stub().returns(['new copayer']),
+        setSent: sinon.spy(),
+        builder: {
+          build: sinon.stub().returns({
+            isComplete: sinon.stub().returns(true),
+          }),
+        },
+      };
+
+      w.txProposals.merge = sinon.stub().returns({
+        ntxid: 1,
+        txp: txp,
+        new: false,
+        hasChanged: true,
+      });
+      w._checkSentTx = sinon.stub().yields(false);
+
+      w._onTxProposal('senderID', data);
+      txp.setSent.called.should.be.false;
+      w.sendTxProposal.called.should.be.false;
+      done();
+    });
+
+    it('should resend when not complete only if changed', function(done) {
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      var txp = {
+        getSeen: sinon.stub().returns(true),
+        setCopayers: sinon.stub().returns(['new copayer']),
+        builder: {
+          build: sinon.stub().returns({
+            isComplete: sinon.stub().returns(false),
+          }),
+        },
+      };
+
+      w.txProposals.merge = sinon.stub().returns({
+        ntxid: 1,
+        txp: txp,
+        new: false,
+        hasChanged: false,
+      });
+
+      w._onTxProposal('senderID', data);
+      w.sendTxProposal.called.should.be.false;
+      done();
+    });
   });
 
 
