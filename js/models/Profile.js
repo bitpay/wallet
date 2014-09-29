@@ -4,16 +4,18 @@ var _ = require('underscore');
 var log = require('../log');
 var bitcore = require('bitcore');
 
-function Profile(info, password, storage) {
+function Profile(info, storage) {
   preconditions.checkArgument(info.email);
-  preconditions.checkArgument(password);
+  preconditions.checkArgument(info.hash);
   preconditions.checkArgument(storage);
   preconditions.checkArgument(storage.getItem);
 
+  this.hash = info.hash;
   this.email = info.email;
   this.extra = info.extra;
+
+  this.key = Profile.key(this.hash);
   this.walletInfos = {};
-  this.hash = Profile.hash(this.email, password);
   this.storage = storage;
 };
 
@@ -21,28 +23,26 @@ Profile.hash = function(email, password) {
   return bitcore.util.sha256ripe160(email + password).toString('hex');
 };
 
-Profile.fromObj = function(obj, password, storage) {
-  var o = _.clone(obj);
-  return new Profile(obj, password, storage);
+Profile.key = function(hash) {
+  return 'identity::' + hash;
 };
 
+Profile.open = function(email, password, storage, cb) {
+  preconditions.checkArgument(cb);
 
-Profile.prototype.key = function() {
-  return 'identity::' + this.hash + '_' + this.email;
+  var key = Profile.key(Profile.hash(email, password));
+  storage.getGlobal(key, function(err, val) {
+    if (err) return cb(err);
+
+    if (!val)
+      return cb(new Error('PNOTFOUND: Profile not found'));
+
+    return cb(new Profile(val, storage));
+  });
 };
 
 Profile.prototype.toObj = function() {
-  var obj = _.clone(this);
-  delete obj['hash'];
-  return JSON.parse(JSON.stringify(obj));
-};
-
-Profile.open = function(storage, cb) {
-  var key = this.key();
-  this.storage.getGlobal(key, function(err, val) {
-    if (!val) return cb(new Error('PNOTFOUND: Profile not found'));
-    return cb(Profile.fromObj(val, password, storage));
-  });
+  return JSON.parse(JSON.stringify(this));
 };
 
 Profile.prototype.getWallet = function(walletId, cb) {
@@ -104,7 +104,7 @@ Profile.prototype.setLasOpenedTs = function(walletId, cb) {
 Profile.prototype.store = function(opts, cb) {
   var self = this;
   var val = self.toObj();
-  var key = self.key();
+  var key = self.key;
 
   self.storage.get(key, function(val2) {
     if (val2 && !opts.overwrite) {

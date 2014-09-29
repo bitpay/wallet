@@ -79,13 +79,23 @@ Identity._newStorage = function(opts) {
 };
 
 /* for stubbing */
-Identity.prototype._newWallet = function(opts) {
+Identity._newWallet = function(opts) {
   return new Wallet(opts);
 };
 
 /* for stubbing */
 Identity._walletFromObj = function(o, s, n, b, skip) {
   return Wallet.fromObj(o, s, n, b, skip);
+};
+
+/* for stubbing */
+Identity._walletRead = function(id, s, n, b, skip, cb) {
+  return Wallet.read(id, s, n, b, skip, cb);
+};
+
+/* for stubbing */
+Identity._walletDelete = function(id, cb) {
+  return Wallet.delete(id, cb);
 };
 
 
@@ -182,6 +192,35 @@ Identity.prototype.store = function(opts, cb) {
 };
 
 /**
+ * read 
+ *
+ * @param opts
+ * @param cb
+ * @return {undefined}
+ */
+Identity.prototype.read = function(opts, cb) {
+  var self = this;
+  self.profile.read(opts, function(err) {
+    if (err) return cb(err);
+
+    var l = self.wallets.length,
+      i = 0;
+    if (!l) return cb();
+
+    _.each(self.wallets, function(w) {
+      w.store(function(err) {
+        if (err) return cb(err);
+
+        if (++i == l)
+          return cb();
+      })
+    });
+  });
+};
+
+
+
+/**
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
  * @param {string} passphrase - passphrase to decrypt it
@@ -202,61 +241,6 @@ Identity.prototype.importWallet = function(base64, passphrase, skipFields, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     w.store(cb);
-  });
-};
-
-Identity.prototype.migrateWallet = function(walletId, passphrase, cb) {
-  var self = this;
-
-  self.storage.setPassphrase(passphrase);
-  self.read_Old(walletId, null, function(err, wallet) {
-    if (err) return cb(err);
-
-    wallet.store(function(err) {
-      if (err) return cb(err);
-
-      self.storage.deleteWallet_Old(walletId, function(err) {
-        if (err) return cb(err);
-
-        self.storage.removeGlobal('nameFor::' + walletId, function() {
-          return cb();
-        });
-      });
-    });
-  });
-
-};
-
-
-
-Identity.prototype.read_Old = function(walletId, skipFields, cb) {
-  var self = this,
-    err;
-  var obj = {};
-
-  this.storage.readWallet_Old(walletId, function(err, ret) {
-    if (err) return cb(err);
-
-    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
-      obj[p] = ret[p];
-    });
-
-    if (!_.any(_.values(obj)))
-      return cb(new Error('Wallet not found'));
-
-    var w, err;
-    obj.id = walletId;
-    try {
-      w = self.fromObj(obj, skipFields);
-    } catch (e) {
-      if (e && e.message && e.message.indexOf('MISSOPTS')) {
-        err = new Error('Could not read: ' + walletId);
-      } else {
-        err = e;
-      }
-      w = null;
-    }
-    return cb(err, w);
   });
 };
 /**
@@ -331,7 +315,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.storage.setPassphrase(opts.passphrase);
 
   var self = this;
-  var w = this._newWallet(opts);
+  var w = Identity._newWallet(opts);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.profile.setLastOpenedTs(w.id, function(err) {
@@ -389,10 +373,11 @@ Identity.prototype._checkVersion = function(inVersion) {
 Identity.prototype.openWallet = function(walletId, passphrase, cb) {
   preconditions.checkArgument(cb);
   var self = this;
-  self.storage.setPassphrase(passphrase);
 
+  self.storage.setPassphrase(passphrase);
   self.migrateWallet(walletId, passphrase, function() {
-    self._readWallet(walletId, null, function(err, w) {
+
+    Identity._walletRead(walletId, self.storage, self.networks, self.blockchains, [], function(err, w) {
       if (err) return cb(err);
 
       w.store(function(err) {
@@ -418,7 +403,7 @@ Identity.prototype.listWallets = function() {
 Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
 
-  Wallet.delete(walletId, this.storage, function(err) {
+  Identity._walletDelete(walletId, this.storage, function(err) {
     if (err) return cb(err);
     self.profile.deleteWallet(walletId, function(err) {
       return cb(err);

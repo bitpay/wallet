@@ -43,22 +43,20 @@ describe('Identity model', function() {
 
     wallet = sinon.stub();
     wallet.store = sinon.stub().yields(null);
+    wallet.getId = sinon.stub().returns('wid:123');
     Identity._newWallet = sinon.stub().returns(wallet);
 
     profile = sinon.stub();
     profile.addWallet = sinon.stub().yields(null);;
     profile.deleteWallet = sinon.stub().yields(null);;
+    profile.listWallets = sinon.stub().returns([]);
     profile.setLastOpenedTs = sinon.stub().yields(null);;
     profile.store = sinon.stub().yields(null);;
     Identity._newProfile = sinon.stub().returns(profile);
 
+
+
     iden = new Identity(email, password, config);
-
-    var w = sinon.stub();
-    w.store = sinon.stub().yields(null);
-    iden._newWallet = sinon.stub().returns(w);
-
-
   });
 
 
@@ -194,7 +192,7 @@ describe('Identity model', function() {
       iden.createWallet({
         privateKeyHex: priv,
       }, function(err, w) {
-        iden._newWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+        Identity._newWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
         should.not.exist(err);
         done();
       });
@@ -203,8 +201,8 @@ describe('Identity model', function() {
     it('should be able to create wallets with random pk', function(done) {
       iden.createWallet(null, function(err, w1) {
         iden.createWallet(null, function(err, w2) {
-          iden._newWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
-            iden._newWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
+          Identity._newWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+            Identity._newWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
           );
           done();
         });
@@ -225,12 +223,18 @@ describe('Identity model', function() {
   });
 
 
-  describe.only('#openWallet', function() {
+  describe('#openWallet', function() {
+
     beforeEach(function() {
       iden.migrateWallet = sinon.stub().yields(null);
-      iden.storage.setLastOpened = sinon.stub().yields(null);
+      iden.profile.setLastOpened = sinon.stub().yields(null);
       iden.storage.setPassphrase = sinon.spy();
-      storage.getFirst = sinon.stub().yields('wallet');
+      storage.getFirst = sinon.stub().yields('wallet1234');
+
+      var wallet = sinon.stub();
+      wallet.store = sinon.stub().yields(null);
+
+      Identity._walletRead = sinon.stub().callsArgWith(5, null, wallet);
     });
 
     it('should call setPassphrase', function(done) {
@@ -245,67 +249,13 @@ describe('Identity model', function() {
       });
     });
 
-    it('should call return wallet', function(done) {
-
-      var s1 = sinon.stub();
-      s1.store = sinon.stub().yields(null);
-      iden.read = sinon.stub().yields(null, s1);
+    it('should return wallet and call .store, .setLastOpenedTs & .migrateWallet', function(done) {
 
       iden.openWallet('dummy', 'xxx', function(err, w) {
-        w.should.equal(s1);
-        s1.store.calledOnce.should.equal(true);
-        done();
-      });
-    });
-
-
-    it('should call #store', function(done) {
-      var iden = new Identity(config, '0.0.1');
-      iden.storage.setPassphrase = sinon.spy();
-
-      var s1 = sinon.stub();
-      s1.store = sinon.stub().yields(null);
-      iden.read = sinon.stub().yields(null, s1);
-      iden.migrateWallet = sinon.stub().yields(null);
-      iden.storage.setLastOpened = sinon.stub().yields(null);
-
-      iden.open('dummy', 'xxx', function(err, w) {
-        s1.store.calledOnce.should.equal(true);
-        done();
-      });
-    });
-
-    it('should call #setLastOpened', function(done) {
-      var iden = new Identity(config, '0.0.1');
-      iden.storage.setPassphrase = sinon.spy();
-
-      var s1 = sinon.stub();
-      s1.store = sinon.stub().yields(null);
-      iden.read = sinon.stub().yields(null, s1);
-      iden.migrateWallet = sinon.stub().yields(null);
-      iden.storage.setLastOpened = sinon.stub().yields(null);
-
-      iden.open('dummy', 'xxx', function(err, w) {
-        iden.storage.setLastOpened.calledOnce.should.equal(true);
-        iden.storage.setLastOpened.getCall(0).args[0].should.equal('dummy');
-        done();
-      });
-    });
-    it('should call #migrateWallet', function(done) {
-      var iden = new Identity(config, '0.0.1');
-      iden.storage.setPassphrase = sinon.spy();
-
-      var s1 = sinon.stub();
-      s1.store = sinon.stub().yields(null);
-      iden.read = sinon.stub().yields(null, s1);
-      iden.migrateWallet = sinon.stub().yields(null);
-      iden.storage.deleteWallet_Old = sinon.stub().yields(null);
-      iden.storage.removeGlobal = sinon.stub().yields(null);
-      iden.storage.setLastOpened = sinon.stub().yields(null);
-
-      iden.open('dummy', 'xxx', function(err, w) {
+        should.not.exist(err);
+        w.store.calledOnce.should.equal(true);
+        iden.profile.setLastOpenedTs.calledOnce.should.equal(true);
         iden.migrateWallet.calledOnce.should.equal(true);
-        iden.migrateWallet.getCall(0).args[0].should.equal('dummy');
         done();
       });
     });
@@ -314,6 +264,11 @@ describe('Identity model', function() {
 
 
   describe('#importWallet', function() {
+
+    beforeEach(function() {
+      iden.migrateWallet = sinon.stub().yields(null);
+    });
+
     it('should create wallet from encrypted object', function(done) {
       iden.storage.setPassphrase = sinon.spy();
       iden.storage.decrypt = sinon.stub().withArgs('base64').returns({
@@ -323,14 +278,11 @@ describe('Identity model', function() {
       wallet.getId = sinon.stub().returns('ID123');
       Identity._walletFromObj = sinon.stub().returns(wallet);
 
-      iden.importWallet("encrypted object", "123", [], function(err) {
-        iden.openWallet('ID123', function(err, w) {
+      iden.importWallet("encrypted object", "xxx", [], function(err) {
+        iden.openWallet('ID123', 'xxx', function(err, w) {
           should.not.exist(err);
-          w.should.equal('ok');
-          iden.storage.setPassphrase.calledOnce.should.be.true;
-          iden.storage.setPassphrase.getCall(0).args[0].should.equal('123');
-          iden.storage.import.calledOnce.should.be.true;
-          iden.fromObj.calledWith('walletObj').should.be.true;
+          should.exist(w);
+          done();
         });
       });
     });
@@ -357,84 +309,21 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#getWallets', function() {
-    it('should return empty array if no wallets', function(done) {
-      iden.storage.getWallets = sinon.stub().yields([]);
-      iden.storage.getLastOpened = sinon.stub().yields(null);
-
-      iden.getWallets(function(err, ws) {
-        should.not.exist(err);
-        ws.should.deep.equal([]);
-        done();
-      });
-    });
-
-    it('should be able to get current wallets', function(done) {
-      iden.storage.getWallets = sinon.stub().yields([{
-        name: 'w1',
-        id: 'id1',
-      }, {
-        name: 'w',
-        id: 'id2',
-      }]);
-      iden.storage.getLastOpened = sinon.stub().yields(null);
-
-      iden.getWallets(function(err, ws) {
-        should.not.exist(err);
-        ws.should.deep.equal([{
-          name: 'w1',
-          id: 'id1',
-          show: 'w1 <id1>'
-        }, {
-          name: 'w',
-          id: 'id2',
-          show: 'w <id2>'
-        }]);
-        done();
-      });
-    });
-    it('should include last used info', function(done) {
-      iden.storage.getWallets = sinon.stub().yields([{
-        name: 'w1',
-        id: 'id1',
-      }, {
-        name: 'w',
-        id: 'id2',
-      }]);
-      iden.storage.getLastOpened = sinon.stub().yields('id2');
-
-      iden.getWallets(function(err, ws) {
-        should.not.exist(err);
-        ws.should.deep.equal([{
-          name: 'w1',
-          id: 'id1',
-          show: 'w1 <id1>'
-        }, {
-          name: 'w',
-          id: 'id2',
-          lastOpened: true,
-          show: 'w <id2>'
-        }]);
-        done();
-      });
+  describe('#listWallets', function() {
+    it('should return empty array if no wallets', function() {
+      iden.listWallets();
+      iden.profile.listWallets.calledOnce.should.equal(true);
     });
   });
 
-  describe('#delete', function() {
-    it('should call deleteWallet', function(done) {
-      iden.storage.deleteWallet = sinon.stub().yields(null);
-      iden.delete('xxx', function() {
-        iden.storage.deleteWallet.getCall(0).args[0].should.equal('xxx');
-        done();
-      });
-    });
 
-    it('should call lastOpened', function(done) {
-      iden.storage.deleteWallet = sinon.stub().yields(null);
-      iden.storage.setLastOpened = sinon.stub().yields(null);
-      iden.delete('xxx', function() {
-        iden.storage.setLastOpened.calledOnce.should.equal(true);
-        should.not.exist(iden.storage.setLastOpened.getCall(0).args[0]);
+  describe('#deleteWallet', function() {
+    Identity._walletDelete = sinon.stub().callsArgWith(2, null);
+
+    it('should call Profile deleteWallet', function(done) {
+      iden.profile.deleteWallet = sinon.stub().yields(null);
+      iden.deleteWallet('xxx', function() {
+        iden.profile.deleteWallet.getCall(0).args[0].should.equal('xxx');
         done();
       });
     });
