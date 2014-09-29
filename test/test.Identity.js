@@ -45,7 +45,7 @@ describe('Identity model', function() {
     Identity._newWallet = sinon.stub().returns(wallet);
 
     profile = sinon.stub();
-    profile.test = sinon.stub();
+    profile.addWallet = sinon.stub().yields(null);;
     profile.store = sinon.stub().yields(null);;
     Identity._newProfile = sinon.stub().returns(profile);
 
@@ -105,7 +105,7 @@ describe('Identity model', function() {
         should.exist(iden);
         iden.walletDefaults.should.deep.equal(config.wallet);
         iden.version.should.equal('0.0.1');
-        should.exist(iden.profile.test);
+        should.exist(iden.profile.addWallet);
 
         Identity._newProfile.getCall(0).args[0].should.deep.equal({
           email: email
@@ -119,7 +119,7 @@ describe('Identity model', function() {
       it('should call .store', function(done) {
         Identity.create(email, password, config, function(err, iden) {
           should.not.exist(err);
-          should.exist(iden.profile.test);
+          should.exist(iden.profile.addWallet);
           iden.profile.store.getCall(0).args[0].should.deep.equal({
             overwrite: false
           });
@@ -133,7 +133,7 @@ describe('Identity model', function() {
         Identity.prototype.read = sinon.stub().yields(null);
         Identity.open(email, password, config, function(err, iden) {
           should.not.exist(err);
-          should.exist(iden.profile.test);
+          should.exist(iden.profile.addWallet);
           iden.read.calledOnce.should.equal(true);
           done();
         });
@@ -201,6 +201,14 @@ describe('Identity model', function() {
         done();
       });
     });
+
+    it('should add wallet to profile', function(done) {
+      iden.createWallet(null, function(err, w) {
+        profile.addWallet.getCall(0).args[0].should.contain('spy#');
+        done();
+      });
+    });
+
 
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
