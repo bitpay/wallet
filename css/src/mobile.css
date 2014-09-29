@@ -157,7 +157,15 @@
     padding: 0 5px;
   }
 
-  table .icon-status { 
+  table.last-transactions-content td {
+    text-align: center;
+  }
+
+  table.last-transactions-content td.copayer-name {
+    text-align: left;
+  }
+
+  table.last-transactions-content .icon-status { 
     border-radius: 0;
     padding: 0.1rem 0.3rem;
     margin-bottom: 0;
