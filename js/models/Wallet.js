@@ -199,6 +199,51 @@ Wallet.delete = function(walletId, storage, cb) {
   });
 };
 
+/**
+ * @desc Retrieve a wallet from storage
+ *
+ * @param {string} walletId - the wallet id
+ * @param storage
+ * @param network
+ * @param blockchain
+ * @param {string[]} skipFields - parameters to ignore when importing
+ * @param {function} callback - {err, Wallet}
+ * @return {undefined}
+ */
+Wallet.read = function(walletId,  storage, network, blockchain,  skipFields, cb) {
+  preconditions.checkArgument(cb);
+
+  var self = this,
+    err;
+  var obj = {};
+
+  storage.getFirst('wallet::' + walletId, function(err, ret) {
+    if (err) return cb(err);
+
+    if (!ret)
+      return cb(new Error('WNOTFOUND: Wallet not found'));
+
+    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+      obj[p] = ret[p];
+    });
+
+    var w, err;
+    obj.id = walletId;
+    try {
+      w = self.fromObj(obj, storage, network, blockchain, skipFields);
+    } catch (e) {
+      if (e && e.message && e.message.indexOf('MISSOPTS')) {
+        err = new Error('WERROR: Could not read: ' + walletId);
+      } else {
+        err = e;
+      }
+      w = null;
+    }
+    return cb(err, w);
+  });
+};
+
+
 
 /**
  * @desc obtain network name from serialized wallet
@@ -209,7 +254,7 @@ Wallet.obtainNetworkName = function(obj) {
   return obj.networkName ||
     (obj.opts ? obj.opts.networkName : null) ||
     (obj.publicKeyRing ? obj.publicKeyRing.networkName : null) ||
-    (obj.publicKeyRing ? obj.privateKey.networkName : null);
+    (obj.privateKey ? obj.privateKey.networkName : null);
 };
 
 
@@ -917,6 +962,11 @@ Wallet.prototype.store = function(cb) {
     if (cb)
       cb(err);
   });
+};
+
+
+Wallet.prototype.getId = function() {
+  return this.id;
 };
 
 /**
