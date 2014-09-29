@@ -2,25 +2,12 @@
   <span class="date-message">{{tx.createdTs | amCalendar}}</span>
 </div>
 <div class="last-transactions-header" ng-init="txIndex = $index">
-  <div class="show-for-small-only private-message">
-    <i class="fi-comment-quotes"></i> {{tx.comment}}
+  <div class="private-message" ng-show="tx.comment">
+    <i class="fi-comment-quotes"></i> 
+    <span class="text-light">{{tx.comment}}</span>
   </div>
   <div class="row collapse">
-    <div class="show-for-large-up large-1 columns">
-      <a class="text-black" 
-        ng-show="tx.comment" 
-        popover-animation="true" 
-        popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" 
-        popover-title="{{tx.comment}}" 
-        popover-placement="right" 
-        popover-trigger="mouseenter">
-          <i class="fi-comment-quotes size-24"></i>
-      </a>
-      <a class="disable" ng-show="!tx.comment">
-        <i class="fi-comment-quotes size-24 text-gray"></i>
-      </a>
-    </div>
-    <div class="large-8 medium-8 small-12 columns">
+    <div class="large-9 medium-8 small-12 columns">
       <div class="row collapse" ng-repeat="out in tx.outs">
         <div class="large-3 medium-3 small-4 columns">
           <div class="size-14 hide-for-small-only">
