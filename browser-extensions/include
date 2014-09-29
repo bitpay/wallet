@@ -5,6 +5,7 @@ js
 sound
 views
 config.js 
+init.js
 version.js 
 index.html 
 popup.html 
