@@ -45,19 +45,19 @@ Profile.open = function(storage, cb) {
   });
 };
 
-Profile.prototype.getWallet = function(walletId,  cb) {
+Profile.prototype.getWallet = function(walletId, cb) {
   return this.walletInfos[walletId];
 };
 
-Profile.prototype.listWallets = function(opts,  cb) {
-  return _.sortBy(this.walletInfos,function(winfo){
+Profile.prototype.listWallets = function(opts, cb) {
+  return _.sortBy(this.walletInfos, function(winfo) {
     return winfo.lastOpenedTs || winfo.createdTs;
   });
 };
 
 
-Profile.prototype.deleteWallet = function(walletId,  cb) {
-  if (!this.walletInfos[walletId]) 
+Profile.prototype.deleteWallet = function(walletId, cb) {
+  if (!this.walletInfos[walletId])
     return cb(new Error('WNOEXIST: Wallet not on profile'));
 
   delete this.walletInfos[walletId];
@@ -67,8 +67,8 @@ Profile.prototype.deleteWallet = function(walletId,  cb) {
   }, cb);
 };
 
-Profile.prototype.addToWallet = function(walletId, info,  cb) {
-  if (!this.walletInfos[walletId]) 
+Profile.prototype.addToWallet = function(walletId, info, cb) {
+  if (!this.walletInfos[walletId])
     return cb(new Error('WNOEXIST: Wallet not on profile'));
 
   this.walletInfos[walletId] = _.extend(this.walletInfos[walletId], info);
@@ -80,14 +80,24 @@ Profile.prototype.addToWallet = function(walletId, info,  cb) {
 
 
 
-Profile.prototype.addWallet = function(walletId, info,  cb) {
-  if (this.walletInfos[walletId]) 
+Profile.prototype.addWallet = function(walletId, info, cb) {
+  if (this.walletInfos[walletId])
     return cb(new Error('WEXIST: Wallet already on profile'));
 
-  this.walletInfos[walletId] = _.extend(info, {createdTs: Date.now(), id: walletId} );
+  this.walletInfos[walletId] = _.extend(info, {
+    createdTs: Date.now(),
+    id: walletId
+  });
 
   this.store({
     overwrite: true
+  }, cb);
+};
+
+
+Profile.prototype.setLasOpenedTs = function(walletId, cb) {
+  return this.addToWallet(walletId, {
+    lastOpenedTs: Date.now()
   }, cb);
 };
 

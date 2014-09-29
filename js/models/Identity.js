@@ -142,6 +142,13 @@ Identity.isAvailable = function(email, opts, cb) {
 };
 
 
+/**
+ * store
+ *
+ * @param opts
+ * @param cb
+ * @return {undefined}
+ */
 Identity.prototype.store = function(opts, cb) {
   var self = this;
   self.profile.store(opts, function(err) {
@@ -319,7 +326,7 @@ Identity.prototype.read_Old = function(walletId, skipFields, cb) {
  */
 
 
-Identity.prototype._getWallet = function(opts) {
+Identity.prototype._newWallet = function(opts) {
   return new Wallet(opts);
 };
 
@@ -396,12 +403,12 @@ Identity.prototype.createWallet = function(opts, cb) {
 
 
   var self = this;
-  var w = this._getWallet(opts);
+  var w = this._newWallet(opts);
   this.profile.addWallet(w.id, function(err) {
     if (err) return cb(err);
     w.store(function(err) {
       if (err) return cb(err);
-      self.storage.setLastOpened(w.id, function(err) {
+      self.profile.setLastOpenedTs(w.id, function(err) {
         return cb(err, w);
       });
     });
@@ -445,7 +452,7 @@ Identity.prototype.openWallet = function(walletId, passphrase, cb) {
       if (err) return cb(err);
 
       w.store(function(err) {
-        self.storage.setLastOpened(walletId, function() {
+        self.profile.setLastOpenedTs(walletId, function() {
           return cb(err, w);
         });
       });
@@ -454,42 +461,25 @@ Identity.prototype.openWallet = function(walletId, passphrase, cb) {
 };
 
 
-TODO
-from profile
-implement lastOpen
-Identity.prototype.listWallets = function(cb) {
-  var self = this;
-  this.storage.getWallets(function(wallets) {
-    wallets.forEach(function(i) {
-      i.show = i.name ? ((i.name + ' <' + i.id + '>')) : i.id;
-    });
-    self.storage.getLastOpened(function(lastId) {
-      var last = _.findWhere(wallets, {
-        id: lastId
-      });
-      if (last)
-        last.lastOpened = true;
-      return cb(null, wallets);
-    })
-  });
+Identity.prototype.listWallets = function() {
+  return this.profile.listWallets();
 };
 
 /**
  * @desc Deletes this wallet. This involves removing it from the storage instance
- * @TODO: delete is a reserved javascript keyword. NEVER USE IT.
  * @param {string} walletId
- * @TODO: Why is there a callback?
  * @callback cb
- * @return {?} the result of the callback
+ * @return {err}
  */
 Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
-  self.storage.deleteWallet(walletId, function(err) {
+
+  Wallet.delete(walletId, this.storage, function(err) {
     if (err) return cb(err);
-    self.storage.setLastOpened(null, function(err) {
+    self.profile.deleteWallet(walletId, function(err) {
       return cb(err);
     });
-  });
+  })
 };
 
 /**
