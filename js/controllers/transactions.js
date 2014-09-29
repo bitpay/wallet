@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('TransactionsController',
-  function($scope, $rootScope, $timeout, controllerUtils, notification) {
+  function($scope, $rootScope, $timeout, controllerUtils, notification, rateService) {
 
     var w = $rootScope.wallet;
 
@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     $scope.txpCurrentPage = 1;
     $scope.txpItemsPerPage = 4;
     $scope.blockchain_txs = [];
+    $scope.alternativeCurrency = [];
 
     var satToUnit = 1 / w.settings.unitToSatoshi;
 
@@ -37,6 +38,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     };
 
     var _aggregateItems = function(items) {
+      var w = $rootScope.wallet;
       if (!items) return [];
 
       var l = items.length;
@@ -92,6 +94,10 @@ angular.module('copayApp.controllers').controller('TransactionsController',
 
       angular.forEach(tmp, function(v) {
         v.value = (parseInt(v.valueSat || 0).toFixed(0)) * satToUnit;
+        rateService.whenAvailable(function() {
+          var valueSat = v.value * w.settings.unitToSatoshi;
+          v.valueAlt = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
+        });
         ret.push(v);
       });
       return ret;
@@ -150,4 +156,12 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       $scope.getTransactions();
     }
 
+    $scope.amountAlternative = function (amount, txIndex, cb) {
+      var w = $rootScope.wallet;
+      rateService.whenAvailable(function() {
+        var valueSat = amount * w.settings.unitToSatoshi;
+        $scope.alternativeCurrency[txIndex] = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
+        return cb ? cb() : null;
+      });
+    };
   });
