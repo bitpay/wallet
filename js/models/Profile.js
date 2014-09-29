@@ -12,6 +12,7 @@ function Profile(info, password, storage) {
 
   this.email = info.email;
   this.extra = info.extra;
+  this.walletIds = {};
   this.hash = Profile.hash(this.email, password);
   this.storage = storage;
 };
@@ -42,6 +43,17 @@ Profile.open = function(storage, cb) {
     if (!val) return cb(new Error('PNOTFOUND: Profile not found'));
     return cb(Profile.fromObj(val, password, storage));
   });
+};
+
+
+Profile.prototype.addWallet = function(walletId, cb) {
+  if (this.walletIds[walletId])
+    return cb(new Error('WEXIST: Wallet already on profile'));
+
+  this.walletIds[walletId] = Date.now();
+  this.store({
+    overwrite: true
+  }, cb);
 };
 
 Profile.prototype.store = function(opts, cb) {

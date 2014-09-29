@@ -46,11 +46,16 @@ describe('Identity model', function() {
 
     profile = sinon.stub();
     profile.test = sinon.stub();
-    profile.store = sinon.stub();
-    profile.store.yields(null);
+    profile.store = sinon.stub().yields(null);;
     Identity._newProfile = sinon.stub().returns(profile);
 
     iden = new Identity(email, password, config);
+
+    var w = sinon.stub();
+    w.store = sinon.stub().yields(null);
+    iden._getWallet = sinon.stub().returns(w);
+
+
   });
 
 
@@ -186,6 +191,40 @@ describe('Identity model', function() {
       }).should.equal('testnet');
     });
   });
+
+
+  describe('#createWallet', function() {
+    it('should create wallet', function(done) {
+      iden.createWallet(null, function(err, w) {
+        should.exist(w);
+        should.not.exist(err);
+        done();
+      });
+    });
+
+    it('should be able to create wallets with given pk', function(done) {
+      var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+      iden.createWallet({
+        privateKeyHex: priv,
+      }, function(err, w) {
+        iden._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+        should.not.exist(err);
+        done();
+      });
+    });
+
+    it('should be able to create wallets with random pk', function(done) {
+      iden.createWallet(null, function(err, w1) {
+        iden.createWallet(null, function(err, w2) {
+          iden._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+            iden._getWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
+          );
+          done();
+        });
+      });
+    });
+  });
+
 
   // TODO this is a WALLET TEST! not Wallet Factory. Move it.
   describe.skip('#fromObj / #toObj', function() {
@@ -488,38 +527,6 @@ describe('Identity model', function() {
         iden.migrateWallet.calledOnce.should.equal(true);
         iden.migrateWallet.getCall(0).args[0].should.equal('dummy');
         done();
-      });
-    });
-  });
-
-  describe('#createWallet', function() {
-    it('should create wallet', function(done) {
-      iden.createWallet(null, function(err, w) {
-        should.exist(w);
-        should.not.exist(err);
-        done();
-      });
-    });
-
-    it('should be able to create wallets with given pk', function(done) {
-      var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
-      iden.createWallet({
-        privateKeyHex: priv,
-      }, function(err, w) {
-        iden._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
-        should.not.exist(err);
-        done();
-      });
-    });
-
-    it('should be able to create wallets with random pk', function(done) {
-      iden.createWallet(null, function(err, w1) {
-        iden.createWallet(null, function(err, w2) {
-          iden._getWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.not.equal(
-            iden._getWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString
-          );
-          done();
-        });
       });
     });
   });
