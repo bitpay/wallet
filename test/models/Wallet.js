@@ -1592,6 +1592,7 @@ describe('Wallet model', function() {
 
       w._onTxProposal('senderID', data);
       txp.setSent.called.should.be.false;
+      txp.setSent.calledWith(1).should.be.false;
       w.sendTxProposal.called.should.be.false;
       done();
     });
