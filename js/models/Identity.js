@@ -395,10 +395,10 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.storage.setPassphrase(opts.passphrase);
 
 
+  var self = this;
   var w = this._getWallet(opts);
   this.profile.addWallet(w.id, function(err) {
     if (err) return cb(err);
-    var self = this;
     w.store(function(err) {
       if (err) return cb(err);
       self.storage.setLastOpened(w.id, function(err) {
@@ -453,6 +453,10 @@ Identity.prototype.openWallet = function(walletId, passphrase, cb) {
   });
 };
 
+
+TODO
+from profile
+implement lastOpen
 Identity.prototype.listWallets = function(cb) {
   var self = this;
   this.storage.getWallets(function(wallets) {

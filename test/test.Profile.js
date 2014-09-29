@@ -1,5 +1,5 @@
 'use strict';
-
+var _ = require('underscore');
 var chai = chai || require('chai');
 var should = chai.should();
 var bitcore = bitcore || require('bitcore');
@@ -44,26 +44,103 @@ describe('Profile model', function() {
     p2.should.deep.equal(p);
   });
 
-  describe.only('#addWallet', function() {
+  describe('#addWallet', function() {
     it('should add a wallet id', function(done) {
       var p = new Profile(opts, password, storage);
-      p.addWallet('123', function(err) {
-        p.walletIds['123'].should.be.above(123456789);
+      p.addWallet('123', {}, function(err) {
+        p.getWallet('123').createdTs.should.be.above(123456789);
         storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
         done();
       })
     });
-    it('should keep old value', function(done) {
+    it('should keep old ts value', function(done) {
       var p = new Profile(opts, password, storage);
-      p.walletIds['123']=1;
-      p.addWallet('123', function(err) {
-        p.walletIds['123'].should.equal(1);
+      p.walletInfos['123'] = {
+        createdTs: 1
+      };
+      p.addWallet('123', {}, function(err) {
+        err.toString().should.contain('WEXIST');
+        p.walletInfos['123'].createdTs.should.equal(1);
         should.not.exist(storage.set.getCall(0));
         done();
       })
     });
- 
+    it('should add a wallet info', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.addWallet('123', {
+        a: 1,
+        b: 2
+      }, function(err) {
+        var w = p.getWallet('123');
+        w.createdTs.should.be.above(123456789);
+        w.a.should.equal(1);
+        w.b.should.equal(2);
+        storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
+        done();
+      })
+    });
   });
+
+  describe('#addToWallet', function() {
+    it('should warn if wallet does not exist', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.addToWallet('234',{1:1}, function(err) {
+        err.toString().should.contain('WNOEXIST');
+        done();
+      });
+    });
+    it('should add info to a wallet', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.addWallet('234', {}, function(err) {
+        p.addToWallet('234',{'hola':1}, function(err) {
+          var w = p.getWallet('234');
+          should.exist(w);
+          w.hola.should.equal(1);
+          w.createdTs.should.be.above(123456789);
+          done();
+        })
+      })
+    });
+  });
+ 
+
+
+  describe('#listWallets', function() {
+    it('should list wallets in order', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.addWallet('123', {}, function(err) {
+        p.addWallet('234', {}, function(err) {
+          _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '234']);
+          done();
+        })
+      });
+    });
+  });
+
+  describe('#deleteWallet', function() {
+    it('should delete a wallet', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.addWallet('123', {}, function(err) {
+        p.addWallet('234', {}, function(err) {
+          p.addWallet('345', {}, function(err) {
+            _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '234', '345']);
+            p.deleteWallet('234', function(err) {
+              _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '345']);
+              done();
+            });
+          })
+        });
+      });
+    });
+    it('should warn if wallet does not exist', function(done) {
+      var p = new Profile(opts, password, storage);
+      p.deleteWallet('234', function(err) {
+        err.toString().should.contain('WNOEXIST');
+        done();
+      });
+    });
+  });
+
 
   describe('#store', function() {
     it('should call storage set', function(done) {

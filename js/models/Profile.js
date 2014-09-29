@@ -12,7 +12,7 @@ function Profile(info, password, storage) {
 
   this.email = info.email;
   this.extra = info.extra;
-  this.walletIds = {};
+  this.walletInfos = {};
   this.hash = Profile.hash(this.email, password);
   this.storage = storage;
 };
@@ -45,12 +45,47 @@ Profile.open = function(storage, cb) {
   });
 };
 
+Profile.prototype.getWallet = function(walletId,  cb) {
+  return this.walletInfos[walletId];
+};
 
-Profile.prototype.addWallet = function(walletId, cb) {
-  if (this.walletIds[walletId])
+Profile.prototype.listWallets = function(opts,  cb) {
+  return _.sortBy(this.walletInfos,function(winfo){
+    return winfo.lastOpenedTs || winfo.createdTs;
+  });
+};
+
+
+Profile.prototype.deleteWallet = function(walletId,  cb) {
+  if (!this.walletInfos[walletId]) 
+    return cb(new Error('WNOEXIST: Wallet not on profile'));
+
+  delete this.walletInfos[walletId];
+
+  this.store({
+    overwrite: true
+  }, cb);
+};
+
+Profile.prototype.addToWallet = function(walletId, info,  cb) {
+  if (!this.walletInfos[walletId]) 
+    return cb(new Error('WNOEXIST: Wallet not on profile'));
+
+  this.walletInfos[walletId] = _.extend(this.walletInfos[walletId], info);
+
+  this.store({
+    overwrite: true
+  }, cb);
+};
+
+
+
+Profile.prototype.addWallet = function(walletId, info,  cb) {
+  if (this.walletInfos[walletId]) 
     return cb(new Error('WEXIST: Wallet already on profile'));
 
-  this.walletIds[walletId] = Date.now();
+  this.walletInfos[walletId] = _.extend(info, {createdTs: Date.now(), id: walletId} );
+
   this.store({
     overwrite: true
   }, cb);
