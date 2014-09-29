@@ -1,8 +1,8 @@
-<div class="last-transactions-header">
+<div class="last-transactions-header" ng-init="txIndex = $index">
   <div class="row collapse">
     <div class="hide-for-small-only large-1 medium-1 columns">
       <a class="text-black" ng-show="tx.comment">
-        <i class="fi-comment-quotes size-24" Popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
+        <i class="fi-comment-quotes size-24" popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
       </a>
       <a class="disable" ng-show="!tx.comment">
         <i class="fi-comment-quotes size-24 text-gray"></i>
@@ -16,8 +16,21 @@
     <div class="large-8 medium-8 small-9 columns">
       <div class="row collapse" ng-repeat="out in tx.outs">
         <div class="large-3 medium-3 small-4 columns">
-          <p class="size-14 hide-for-small-only">{{out.value | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
-          <p class="size-12 show-for-small-only">{{out.value | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+          <div class="size-14 hide-for-small-only">
+            <span 
+              ng-class="{'has-tip': alternativeCurrency[txIndex]}"
+              ng-init="amountAlternative(out.value, txIndex)"
+              data-options="disable_for_touch:true"
+              tooltip-popup-delay='500'
+              tooltip="{{alternativeCurrency[txIndex]|noFractionNumber}} {{alternativeIsoCode}}"
+              tooltip-trigger="mouseenter"
+              tooltip-placement="right"
+              >{{out.value |noFractionNumber}}
+              {{$root.wallet.settings.unitName}}</span>
+          </div>
+          <div class="size-12 show-for-small-only">
+            <span>{{out.value |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
+          </div>
         </div>
         <div class="large-1 medium-1 small-1 columns fi-arrow-right"></div>
         <div class="large-8 medium-8 small-7 columns ellipsis">
