@@ -1793,6 +1793,32 @@ describe('Wallet model', function() {
     should.exist(n.networkNonce);
   });
 
+
+  describe('#obtainNetworkName', function() {
+    it('should return the networkname', function() {
+      Wallet.obtainNetworkName({
+        networkName: 'testnet',
+      }).should.equal('testnet');
+      Wallet.obtainNetworkName({
+        opts: {
+          networkName: 'testnet'
+        }
+      }).should.equal('testnet');
+      Wallet.obtainNetworkName({
+        publicKeyRing: {
+          networkName: 'testnet'
+        }
+      }).should.equal('testnet');
+      Wallet.obtainNetworkName({
+        privateKey: {
+          networkName: 'testnet'
+        }
+      }).should.equal('testnet');
+    });
+  });
+
+
+
   it('should emit notification when tx received', function(done) {
     var w = cachedCreateW2();
     w.blockchain.removeAllListeners = sinon.stub();

@@ -172,30 +172,6 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#obtainNetworkName', function() {
-    it('should return the networkname', function() {
-      iden.obtainNetworkName({
-        networkName: 'testnet',
-      }).should.equal('testnet');
-      iden.obtainNetworkName({
-        opts: {
-          networkName: 'testnet'
-        }
-      }).should.equal('testnet');
-      iden.obtainNetworkName({
-        publicKeyRing: {
-          networkName: 'testnet'
-        }
-      }).should.equal('testnet');
-      iden.obtainNetworkName({
-        privateKey: {
-          networkName: 'testnet'
-        }
-      }).should.equal('testnet');
-    });
-  });
-
-
   describe('#createWallet', function() {
     it('should create wallet', function(done) {
       iden.createWallet(null, function(err, w) {
@@ -249,13 +225,13 @@ describe('Identity model', function() {
   });
 
 
-  describe('#import', function() {
+  describe.only('#importWallet', function() {
     it('should create wallet from encrypted object', function() {
       iden.storage.setPassphrase = sinon.spy();
-      iden.storage.import = sinon.stub().withArgs('base64').returns('walletObj');
+      iden.storage.decrypt = sinon.stub().withArgs('base64').returns('walletObj');
       iden.fromObj = sinon.stub().withArgs('walletObj').returns('ok');
 
-      var w = iden.fromEncryptedObj("encrypted object", "123");
+      var w = iden.importWallet("encrypted object", "123");
 
       w.should.equal('ok');
       iden.storage.setPassphrase.calledOnce.should.be.true;
@@ -263,6 +239,8 @@ describe('Identity model', function() {
       iden.storage.import.calledOnce.should.be.true;
       iden.fromObj.calledWith('walletObj').should.be.true;
     });
+
+
     it('should import and update indexes', function() {
       var wallet = {
         id: "fake wallet",
