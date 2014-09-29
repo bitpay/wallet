@@ -20,33 +20,10 @@
   </style>
   <link rel="shortcut icon" href="img/favicon.ico">
 </head>
-<body onLoad="init()">
+<body>
   <div id="loading" class="loadingpage">
     <img src="img/ajax-loader.gif" alt="Loading...">
   </div>
-  <script>
-    var ld=(document.all);
-    var ns4=document.layers;
-    var ns6=document.getElementById&&!document.all;
-    var ie4=document.all;
-    if (ns4) {
-      ld=document.loading;
-    }
-    else if (ns6) {
-      ld=document.getElementById("loading").style;
-    }
-    else if (ie4) {
-      ld=document.all.loading.style;
-    }
-    function init() {
-      if(ns4) { 
-        ld.visibility="hidden";
-      }
-      else if (ns6||ie4) { 
-        ld.display="none";
-      }
-    }
-  </script>
   <div ng-cloak class="page ng-cloak">
     <div class="off-canvas-wrap">
       <div class="inner-wrap">
@@ -107,6 +84,7 @@
   <!-- DO NOT DELETE THIS COMMET  -->
   <!-- PLACEHOLDER: CORDOVA SRIPT -->
 
+  <script src="init.js"></script>
   <script src="config.js"></script>
   <script src="js/copayBundle.js"></script>
   <script src="js/copayMain.js"></script>
