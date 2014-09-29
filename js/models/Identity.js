@@ -78,6 +78,18 @@ Identity._newStorage = function(opts) {
   return new Storage(opts);
 };
 
+/* for stubbing */
+Identity.prototype._newWallet = function(opts) {
+  return new Wallet(opts);
+};
+
+/* for stubbing */
+Identity._walletFromObj = function(o, s, n, b, skip) {
+  return Wallet.fromObj(o, s, n, b, skip);
+};
+
+
+
 
 /**
  * creates and Identity
@@ -169,19 +181,6 @@ Identity.prototype.store = function(opts, cb) {
   });
 };
 
-
-/**
- * @desc obtain network name from serialized wallet
- * @param {Object} wallet object
- * @return {string} network name
- */
-Identity.prototype.obtainNetworkName = function(obj) {
-  return obj.networkName ||
-    (obj.opts ? obj.opts.networkName : null) ||
-    (obj.publicKeyRing ? obj.publicKeyRing.networkName : null) ||
-    obj.privateKey.networkName;
-};
-
 /**
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
@@ -195,14 +194,12 @@ Identity.prototype.importWallet = function(base64, passphrase, skipFields) {
   var obj = this.storage.decrypt(base64);
   if (!obj) return false;
 
-  var w = Wallet.fromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
+  var networkName = Wallet.obtainNetworkName(obj);
+  var w = Identity._walletFromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
   this._checkVersion(w.version);
-
-  this.profile.addWallet(w.id,function(err){
+  this.addWallet(w.id, function(err) {
     if (err) return cb(err);
-
-
-    w.store();
+    w.store(cb);
   });
 };
 
@@ -296,19 +293,6 @@ Identity.prototype.read_Old = function(walletId, skipFields, cb) {
     return cb(err, w);
   });
 };
-
-/**
- * @desc This method instantiates a wallet. Usefull for stubbing.
- *
- * @param {opts} opts, ready for new Wallet(opts)
- *
- */
-
-
-Identity.prototype._newWallet = function(opts) {
-  return new Wallet(opts);
-};
-
 /**
  * @desc This method prepares options for a new Wallet
  *
@@ -385,12 +369,13 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.profile.setLastOpenedTs(w.id, function(err) {
-        return cb(err, w);
+      return cb(err, w);
     });
   });
 };
 
 Identity.prototype.addWallet = function(wallet, cb) {
+  preconditions.checkArgument(wallet);
   preconditions.checkArgument(wallet.id);
   preconditions.checkArgument(cb);
 
@@ -400,9 +385,8 @@ Identity.prototype.addWallet = function(wallet, cb) {
 
     self.wallets.push(w);
 
-    self.store(function(err) {
-      if (err) return cb(err);
-      return (err);
+    w.store(function(err) {
+      return cb(err);
     });
   });
 };
@@ -414,10 +398,12 @@ Identity.prototype.addWallet = function(wallet, cb) {
  * @throws {Error} if there's a major version difference
  */
 Identity.prototype._checkVersion = function(inVersion) {
-  var thisV = this.version.split('.');
-  var thisV0 = parseInt(thisV[0]);
-  var inV = inVersion.split('.');
-  var inV0 = parseInt(inV[0]);
+  if (inVersion) {
+    var thisV = this.version.split('.');
+    var thisV0 = parseInt(thisV[0]);
+    var inV = inVersion.split('.');
+    var inV0 = parseInt(inV[0]);
+  }
 
   //We only check for major version differences
   if (thisV0 < inV0) {
