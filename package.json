@@ -2,23 +2,24 @@
   "name": "copay",
   "description": "A multisignature wallet",
   "author": "BitPay",
-  "version": "0.6.1",
-  "keywords": ["wallet", "copay", "multisignature", "bitcoin"],
+  "version": "0.6.2",
+  "keywords": [
+    "wallet",
+    "copay",
+    "multisignature",
+    "bitcoin"
+  ],
   "main": "app.js",
   "id": "jid1-x7bV5evAaI1P9Q",
-
   "homepage": "https://github.com/bitpay/copay",
   "license": "MIT",
-
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
     "type": "git"
   },
-
   "bugs": {
     "url": "https://github.com/bitpay/copay/issues"
   },
-
   "dependencies": {
     "browser-request": "^0.3.2",
     "inherits": "^2.0.1",
@@ -27,24 +28,19 @@
     "request": "^2.40.0",
     "underscore": "^1.7.0"
   },
-
   "scripts": {
     "start": "node server.js",
-
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
     "test": "sh test/run.sh",
     "dist": "node shell/scripts/dist.js",
-
     "shell": "node shell/scripts/launch.js",
     "firefox": "source browser-extensions/firefox/build.sh",
     "chrome": "source browser-extensions/chrome/build.sh",
     "setup-shell": "node shell/scripts/download-atom-shell.js",
     "postinstall": "./node_modules/.bin/grunt",
-
-     "sign": "gpg -u 1112CFA1 --output browser-extensions/firefox/copay.xpi.sig --detach-sig browser-extensions/firefox/copay.xpi; gpg -u 1112CFA1 --output browser-extensions/chrome/copay-chrome-extension.zip.sig --detach-sig browser-extensions/chrome/copay-chrome-extension.zip",
-     "verify": "gpg --verify browser-extensions/firefox/copay.xpi.sig browser-extensions/firefox/copay.xpi; gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip"
+    "sign": "gpg -u 1112CFA1 --output browser-extensions/firefox/copay.xpi.sig --detach-sig browser-extensions/firefox/copay.xpi; gpg -u 1112CFA1 --output browser-extensions/chrome/copay-chrome-extension.zip.sig --detach-sig browser-extensions/chrome/copay-chrome-extension.zip",
+    "verify": "gpg --verify browser-extensions/firefox/copay.xpi.sig browser-extensions/firefox/copay.xpi; gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip"
   },
-
   "devDependencies": {
     "async": "^0.9.0",
     "bitcore": "^0.1.36",
@@ -91,5 +87,4 @@
     "travis-cov": "^0.2.5",
     "uglifyify": "^1.2.3"
   }
-
 }
