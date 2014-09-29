@@ -188,7 +188,9 @@ Identity.prototype.store = function(opts, cb) {
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-Identity.prototype.importWallet = function(base64, passphrase, skipFields) {
+Identity.prototype.importWallet = function(base64, passphrase, skipFields, cb) {
+  preconditions.checkArgument(cb);
+
   this.storage.setPassphrase(passphrase);
 
   var obj = this.storage.decrypt(base64);
@@ -197,7 +199,7 @@ Identity.prototype.importWallet = function(base64, passphrase, skipFields) {
   var networkName = Wallet.obtainNetworkName(obj);
   var w = Identity._walletFromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
   this._checkVersion(w.version);
-  this.addWallet(w.id, function(err) {
+  this.addWallet(w, function(err) {
     if (err) return cb(err);
     w.store(cb);
   });
@@ -226,42 +228,6 @@ Identity.prototype.migrateWallet = function(walletId, passphrase, cb) {
 };
 
 
-/**
- * @desc Retrieve a wallet from storage
- * @param {string} walletId - the wallet id
- * @param {string[]} skipFields - parameters to ignore when importing
- * @param {function} callback - {err, Wallet}
- */
-Identity.prototype._readWallet = function(walletId, skipFields, cb) {
-  var self = this,
-    err;
-  var obj = {};
-
-  this.storage.getFirst('wallet::' + walletId, function(err, ret) {
-    if (err) return cb(err);
-
-    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
-      obj[p] = ret[p];
-    });
-
-    if (!_.any(_.values(obj)))
-      return cb(new Error('Wallet not found'));
-
-    var w, err;
-    obj.id = walletId;
-    try {
-      w = self.fromObj(obj, skipFields);
-    } catch (e) {
-      if (e && e.message && e.message.indexOf('MISSOPTS')) {
-        err = new Error('Could not read: ' + walletId);
-      } else {
-        err = e;
-      }
-      w = null;
-    }
-    return cb(err, w);
-  });
-};
 
 Identity.prototype.read_Old = function(walletId, skipFields, cb) {
   var self = this,
@@ -376,16 +342,15 @@ Identity.prototype.createWallet = function(opts, cb) {
 
 Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkArgument(wallet);
-  preconditions.checkArgument(wallet.id);
+  preconditions.checkArgument(wallet.getId);
   preconditions.checkArgument(cb);
 
   var self = this;
   self.profile.addWallet(wallet.id, function(err) {
     if (err) return cb(err);
 
-    self.wallets.push(w);
-
-    w.store(function(err) {
+    self.wallets.push(wallet);
+    wallet.store(function(err) {
       return cb(err);
     });
   });
