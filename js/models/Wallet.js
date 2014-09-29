@@ -201,6 +201,20 @@ Wallet.delete = function(walletId, storage, cb) {
 
 
 /**
+ * @desc obtain network name from serialized wallet
+ * @param {Object} wallet object
+ * @return {string} network name
+ */
+Wallet.obtainNetworkName = function(obj) {
+  return obj.networkName ||
+    (obj.opts ? obj.opts.networkName : null) ||
+    (obj.publicKeyRing ? obj.publicKeyRing.networkName : null) ||
+    obj.privateKey.networkName;
+};
+
+
+
+/**
  * @desc Set the copayer id for the owner of this wallet
  * @param {string} pubkey - the pubkey to set to the {@link Wallet#seededCopayerId} property
  */
