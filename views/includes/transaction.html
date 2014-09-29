@@ -1,6 +1,7 @@
 <div class="last-transactions-header" ng-init="txIndex = $index">
+  <h4 class="show-for-small-only">{{tx.createdTs | amCalendar}}</h4>
   <div class="row collapse">
-    <div class="hide-for-small-only large-1 medium-1 columns">
+    <div class="show-for-large-up large-1 columns">
       <a class="text-black" ng-show="tx.comment">
         <i class="fi-comment-quotes size-24" popover-animation="true" popover="{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}" popover-title="{{tx.comment}}" popover-placement="right" popover-trigger="mouseenter"></i>
       </a>
@@ -8,12 +9,13 @@
         <i class="fi-comment-quotes size-24 text-gray"></i>
       </a>
     </div>
-    <div class="show-for-small-only small-12 columns m10b" ng-show="tx.comment">
-      <p class="size-14 label ">
-        {{tx.comment}} Created by <strong>{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}</strong>
-      </p>
+    <div class="hide-for-large-up small-12 medium-12 columns m10b" ng-show="tx.comment">
+      <div class="private-message">
+        {{tx.comment}} <small>Created by
+          <strong>{{$root.wallet.publicKeyRing.nicknameForCopayer(tx.creator)}}</strong></small>
+      </div>
     </div>
-    <div class="large-8 medium-8 small-9 columns">
+    <div class="large-8 medium-8 small-12 columns">
       <div class="row collapse" ng-repeat="out in tx.outs">
         <div class="large-3 medium-3 small-4 columns">
           <div class="size-14 hide-for-small-only">
@@ -39,13 +41,33 @@
       </div>
     </div>
 
-    <div class="large-3 medium-3 small-3 columns text-right">
+    <div class="large-3 medium-4 columns text-right hide-for-small-only">
       <p class="size-12">{{tx.createdTs | amCalendar}}</p>
     </div>
   </div>
 </div>
-
-<div class="last-transactions-content">
+<table class="last-transactions-content show-for-small-only" summary="{{tx.createdTs | amCalendar}}">
+  <tbody>
+  <tr ng-repeat="c in tx.actionList">
+    <td width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+    </td>
+    <td>
+      <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
+      <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
+    </td>
+    <td>
+      <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
+      <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
+    </td>
+    <td>
+      <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
+      <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
+      <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div class="last-transactions-content show-for-medium-up">
   <div class="box-copayer" ng-repeat="c in tx.actionList">
     <a class="has-tip">
       <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{c.cId}}">
@@ -129,7 +151,7 @@
     </p>
     <p translate class="text-gray m5b" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
       {{tx.missingSignatures}} signatures missing</p>
-    <div class="ellipsis small text-gray">
+    <div class="ellipsis small text-gray show-for-large-up">
       <strong translate>Fee</strong>: {{tx.fee|noFractionNumber}} {{$root.wallet.settings.unitName}}
       <strong translate>Proposal ID</strong>: {{tx.ntxid}}
     </div>
