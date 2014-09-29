@@ -2476,6 +2476,14 @@ Wallet.prototype.isShared = function() {
 };
 
 /**
+ * @desc Returns true if more than one signature is required
+ * @return {boolean}
+ */
+Wallet.prototype.requiresMultipleSignatures = function() {
+  return this.requiredCopayers > 1;
+};
+
+/**
  * @desc Returns true if the keyring is complete and all users have backed up the wallet
  * @return {boolean}
  */
