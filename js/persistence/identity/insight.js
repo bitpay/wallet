@@ -1,5 +1,7 @@
-var cryptoUtil = require('../../util/crypto'),
-   querystring = require('querystring');
+var    cryptoUtil = require('../../util/crypto'),
+      querystring = require('querystring'),
+  identityFactory = require('../../models/factory/Identity'),
+           config = require('../../../config');
 
 /**
  * Insight Identity Provider. Can register an email remotely and store/retrieve a master private
@@ -16,11 +18,8 @@ var cryptoUtil = require('../../util/crypto'),
  */
 function InsightIdentityProvider(opts) {
   this.request = opts.request || require('request');
-  if (!opts.insightUrl) {
-    var config = require('../../../config');
-  }
   this.insightUrl = opts.insightUrl || config.network[config.networkName].url;
-  this.identityFactory = opts.identityFactory || require('../../models/factory/identity');
+  this.identityFactory = opts.identityFactory || identityFactory;
   this.registerUrl = this.insightUrl + '/email/register';
   this.retrieveUrl = this.insightUrl + '/email/retrieve';
 }

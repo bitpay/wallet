@@ -1,11 +1,7 @@
 'use strict';
 
-var           chai = require('chai'),
-            assert = require('better-assert'),
-             sinon = require('sinon'),
-            should = chai.should(),
-            expect = chai.expect,
-       cryptoUtils = require('../../js/util/crypto');
+var cryptoUtils = require('../../js/util/crypto'),
+         assert = require('assert');
 
 describe('crypto utilities', function() {
 
