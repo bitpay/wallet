@@ -5,12 +5,49 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Copay - Multisignature Wallet</title>
-  <link rel="stylesheet" href="css/vendors.min.css">
-  <link rel="stylesheet" href="css/copay.min.css">
+  <style type="text/css">
+    .loadingpage {
+      height:100%;
+      overflow-y: auto;
+      overflow-x: none;
+      background: #2C3E50;
+      padding-top: 20%;
+      text-align: center;
+    }
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none;
+    }
+  </style>
   <link rel="shortcut icon" href="img/favicon.ico">
 </head>
-<body ng-cloak class="ng-cloak">
-  <div class="page">
+<body onLoad="init()">
+  <div id="loading" class="loadingpage">
+    <img src="img/ajax-loader.gif" alt="Loading...">
+  </div>
+  <script>
+    var ld=(document.all);
+    var ns4=document.layers;
+    var ns6=document.getElementById&&!document.all;
+    var ie4=document.all;
+    if (ns4) {
+      ld=document.loading;
+    }
+    else if (ns6) {
+      ld=document.getElementById("loading").style;
+    }
+    else if (ie4) {
+      ld=document.all.loading.style;
+    }
+    function init() {
+      if(ns4) { 
+        ld.visibility="hidden";
+      }
+      else if (ns6||ie4) { 
+        ld.display="none";
+      }
+    }
+  </script>
+  <div ng-cloak class="page ng-cloak">
     <div class="off-canvas-wrap">
       <div class="inner-wrap">
         <span class="status" ng-if="$root.reconnecting">
@@ -61,6 +98,9 @@
       </div>
     </div>
   </div>
+ 
+  <link rel="stylesheet" href="css/vendors.min.css">
+  <link rel="stylesheet" href="css/copay.min.css">
 
   <script src="lib/vendors.js"></script>
   <script src="lib/angularjs-all.js"></script>
