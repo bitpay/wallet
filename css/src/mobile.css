@@ -157,5 +157,11 @@
     padding: 0 5px;
   }
 
+  table .icon-status { 
+    border-radius: 0;
+    padding: 0.1rem 0.3rem;
+    margin-bottom: 0;
+  }
+
 }
 
