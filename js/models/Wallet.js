@@ -57,6 +57,9 @@ var copayConfig = require('../../config');
  */
 function Wallet(opts) {
   var self = this;
+  preconditions.checkArgument(opts);
+
+  opts.reconnectDelay = opts.reconnectDelay || 500;
 
   //required params
   ['storage', 'network', 'blockchain',
@@ -150,6 +153,26 @@ Wallet.getRandomNumber = function() {
   var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex');
   return r;
 };
+
+/**
+ * delete
+ *
+ * @param walletId
+ * @param storage
+ * @param cb
+ * @return {undefined}
+ */
+Wallet.delete = function(walletId, storage, cb) {
+  preconditions.checkArgument(cb);
+
+  storage.deletePrefix('wallet::' + walletId, function(err) {
+    if (err) return cb(err);
+    storage.deletePrefix(walletId + '::', function(err) {
+      return cb(err);
+    });
+  });
+};
+
 
 /**
  * @desc Set the copayer id for the owner of this wallet
@@ -840,7 +863,7 @@ Wallet.prototype.store = function(cb) {
   var self = this;
   this.keepAlive();
 
-  var val  = this.toObj();
+  var val = this.toObj();
   var key = 'wallet::' + this.id + ((val.opts && val.opts.name) ? '_' + obj.opts.name : '');
   this.storage.set(key, val, function(err) {
     log.debug('Wallet stored');
@@ -885,9 +908,23 @@ Wallet.prototype.toObj = function() {
  * @param {Storage} storage - a Storage instance to store the data of the wallet
  * @param {Network} network - a Network instance to communicate with peers
  * @param {Blockchain} blockchain - a Blockchain instance to retrieve state from the blockchain
+ * @param skipFields
  */
-Wallet.fromObj = function(o, storage, network, blockchain) {
+Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
 
+
+  if (skipFields) {
+    _.each(skipFields, function(k) {
+      if (o[k]) {
+        delete o[k];
+      } else {
+        throw new Error('unknown field:' + k);
+      }
+    });
+  }
+
+  // TODO Why moving everything to opts. This needs refactoring.
+  
   // clone opts
   var opts = JSON.parse(JSON.stringify(o.opts));
 
@@ -1426,9 +1463,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         expires: expires,
         memo: memo || 'This server would like some BTC from you.',
         payment_url: payment_url,
-        merchant_data: merchant_data
-          ? merchant_data.toString('hex')
-          : null
+        merchant_data: merchant_data ? merchant_data.toString('hex') : null
       },
       signature: sig.toString('hex'),
       ca: trust.caName,
