@@ -333,12 +333,26 @@ table.last-transactions-content {
 }
 
 .private-message {
-  white-space: normal;
-  text-align: left;
-  width: 100%;
-  background-color: #008cba;
-  padding: 5px 10px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #fff;
+  line-height: 20px;
+}
+
+.header-message {
+  background-color: #F8F8FB;
+  height: 18px;
+}
+
+.date-message {
+  background-color: #3C4E60;
   color: #fff;
+  font-size: 12px;
+  padding: 2px 5px;
+  -webkit-border-radius: 0 5px 0 0;
+  -moz-border-radius: 0 5px 0 0;
+  -ms-border-radius: 0 5px 0 0;
+  border-radius: 0 5px 0 0;
 }
 
 .input-note {
