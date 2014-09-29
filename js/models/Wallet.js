@@ -1009,7 +1009,6 @@ Wallet.prototype.toObj = function() {
  */
 Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
 
-
   if (skipFields) {
     _.each(skipFields, function(k) {
       if (o[k]) {
@@ -1020,19 +1019,23 @@ Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
     });
   }
 
+  var networkName = Wallet.obtainNetworkName(o);
+
+
   // TODO Why moving everything to opts. This needs refactoring.
-  
+  //
   // clone opts
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
   opts.settings = o.settings;
 
+
   if (o.privateKey) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
   } else {
     opts.privateKey = new PrivateKey({
-      networkName: opts.networkName
+      networkName: networkName
     });
   }
 
@@ -1040,7 +1043,7 @@ Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
   } else {
     opts.publicKeyRing = new PublicKeyRing({
-      networkName: opts.networkName,
+      networkName: networkName,
       requiredCopayers: opts.requiredCopayers,
       totalCopayers: opts.totalCopayers,
     });
@@ -1054,15 +1057,15 @@ Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
     opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
   } else {
     opts.txProposals = new TxProposals({
-      networkName: this.networkName,
+      networkName: networkName,
     });
   }
 
   opts.lastTimestamp = o.lastTimestamp;
 
   opts.storage = storage;
-  opts.network = network;
-  opts.blockchain = blockchain;
+  opts.network = _.isArray(network)? network[networkName] : network;
+  opts.blockchain = _.isArray(blockchain) ? blockchain[networkName] : blockchain;
   opts.isImported = true;
 
   return new Wallet(opts);
@@ -2755,5 +2758,65 @@ Wallet.request = function(options, callback) {
 
   return ret;
 };
+
+/*
+ * Old fns, only for compat
+ *
+ */
+
+
+Wallet.prototype.migrateWallet = function(walletId, passphrase, cb) {
+  var self = this;
+
+  self.storage.setPassphrase(passphrase);
+  self.read_Old(walletId, null, function(err, wallet) {
+    if (err) return cb(err);
+
+    wallet.store(function(err) {
+      if (err) return cb(err);
+
+      self.storage.deleteWallet_Old(walletId, function(err) {
+        if (err) return cb(err);
+
+        self.storage.removeGlobal('nameFor::' + walletId, function() {
+          return cb();
+        });
+      });
+    });
+  });
+
+};
+
+Wallet.prototype.read_Old = function(walletId, skipFields, cb) {
+  var self = this,
+    err;
+  var obj = {};
+
+  this.storage.readWallet_Old(walletId, function(err, ret) {
+    if (err) return cb(err);
+
+    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+      obj[p] = ret[p];
+    });
+
+    if (!_.any(_.values(obj)))
+      return cb(new Error('Wallet not found'));
+
+    var w, err;
+    obj.id = walletId;
+    try {
+      w = self.fromObj(obj, skipFields);
+    } catch (e) {
+      if (e && e.message && e.message.indexOf('MISSOPTS')) {
+        err = new Error('Could not read: ' + walletId);
+      } else {
+        err = e;
+      }
+      w = null;
+    }
+    return cb(err, w);
+  });
+};
+
 
 module.exports = Wallet;

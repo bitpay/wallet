@@ -1809,6 +1809,7 @@ describe('Wallet model', function() {
           networkName: 'testnet'
         }
       }).should.equal('testnet');
+
       Wallet.obtainNetworkName({
         privateKey: {
           networkName: 'testnet'

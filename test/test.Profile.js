@@ -11,9 +11,11 @@ var FakeStorage = function() {};
 describe('Profile model', function() {
   var email = 'email@pepe.com';
   var password = 'iamnotsatoshi';
+  var hash = '1234';
   var storage = new FakeStorage();
   var opts = {
     email: email,
+    hash:hash,
   };
 
   beforeEach(function() {
@@ -34,19 +36,20 @@ describe('Profile model', function() {
   it('should create an instance', function() {
     var p = new Profile({
       email: email,
-    }, password, storage);
+      hash: hash,
+    }, storage);
     should.exist(p);
   });
 
   it('#fromObj #toObj round trip', function() {
-    var p = new Profile(opts, password, storage);
-    var p2 = Profile.fromObj(p.toObj(), password, storage);
+    var p = new Profile(opts, storage);
+    var p2 = new Profile(p.toObj(), storage);
     p2.should.deep.equal(p);
   });
 
   describe('#addWallet', function() {
     it('should add a wallet id', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.addWallet('123', {}, function(err) {
         p.getWallet('123').createdTs.should.be.above(123456789);
         storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
@@ -54,7 +57,7 @@ describe('Profile model', function() {
       })
     });
     it('should keep old ts value', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.walletInfos['123'] = {
         createdTs: 1
       };
@@ -66,7 +69,7 @@ describe('Profile model', function() {
       })
     });
     it('should add a wallet info', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.addWallet('123', {
         a: 1,
         b: 2
@@ -83,14 +86,14 @@ describe('Profile model', function() {
 
   describe('#addToWallet', function() {
     it('should warn if wallet does not exist', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.addToWallet('234',{1:1}, function(err) {
         err.toString().should.contain('WNOEXIST');
         done();
       });
     });
     it('should add info to a wallet', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.addWallet('234', {}, function(err) {
         p.addToWallet('234',{'hola':1}, function(err) {
           var w = p.getWallet('234');
@@ -107,7 +110,7 @@ describe('Profile model', function() {
 
   describe('#listWallets', function() {
     it('should list wallets in order', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.addWallet('123', {}, function(err) {
         p.addWallet('234', {}, function(err) {
           _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '234']);
@@ -119,7 +122,7 @@ describe('Profile model', function() {
 
   describe('#deleteWallet', function() {
     it('should delete a wallet', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.addWallet('123', {}, function(err) {
         p.addWallet('234', {}, function(err) {
           p.addWallet('345', {}, function(err) {
@@ -133,7 +136,7 @@ describe('Profile model', function() {
       });
     });
     it('should warn if wallet does not exist', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.deleteWallet('234', function(err) {
         err.toString().should.contain('WNOEXIST');
         done();
@@ -144,7 +147,7 @@ describe('Profile model', function() {
 
   describe('#store', function() {
     it('should call storage set', function(done) {
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.store({}, function(err) {
         storage.set.getCall(0).args[1].should.deep.equal(p.toObj());
         should.not.exist(err);
@@ -153,7 +156,7 @@ describe('Profile model', function() {
     });
     it('should use fail to overwrite', function(done) {
       storage.get = sinon.stub().yields(123);
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.store({}, function(err) {
         err.toString().should.contain('PEXISTS');
         should.not.exist(storage.set.getCall(0));
@@ -163,7 +166,7 @@ describe('Profile model', function() {
 
     it('should use overwrite param', function(done) {
       storage.get = sinon.stub().yields(123);
-      var p = new Profile(opts, password, storage);
+      var p = new Profile(opts, storage);
       p.store({
         overwrite: true
       }, function(err) {
