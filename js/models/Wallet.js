@@ -378,7 +378,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     if (tx.isComplete()) {
       this._checkSentTx(m.ntxid, function(ret) {
         if (ret) {
-          m.txp.setSent(m.mtxid);
+          m.txp.setSent(m.ntxid);
           self.emit('txProposalsUpdated');
           self.store();
         }
@@ -2107,26 +2107,29 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
   cb = cb || function() {};
 
-  var txps = _.where(this.getTxProposals(), {
+  if (!_.some(self.getTxProposals(), {
     isPending: true
-  });
-  var inputs = _.flatten(_.map(txps, function(txp) {
-    return _.map(txp.builder.utxos, function(utxo) {
-      return {
-        ntxid: txp.ntxid,
-        txid: utxo.txid,
-        vout: utxo.vout,
-      };
-    });
-  }));
-
-  if (inputs.length === 0)
+  }))
     return cb();
-
 
   var proposalsChanged = false;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
     if (err) return cb(err);
+
+    var txps = _.where(self.getTxProposals(), {
+      isPending: true
+    });
+    if (txps.length === 0) return cb();
+
+    var inputs = _.flatten(_.map(txps, function(txp) {
+      return _.map(txp.builder.utxos, function(utxo) {
+        return {
+          ntxid: txp.ntxid,
+          txid: utxo.txid,
+          vout: utxo.vout,
+        };
+      });
+    }));
 
     _.each(unspentList, function(unspent) {
       _.each(inputs, function(input) {
