@@ -132,7 +132,7 @@ Wallet.PERSISTED_PROPERTIES = [
   'lastTimestamp',
 ];
 
-Wallet.VALID_COPAYER_PAIRS = {
+Wallet.COPAYER_PAIR_LIMITS = {
   1: 1,
   2: 2,
   3: 3,
@@ -174,7 +174,7 @@ Wallet.getRandomNumber = function() {
  * @return {number}
  */
 Wallet.getMaxRequiredCopayers = function(totalCopayers) {
-  return Wallet.VALID_COPAYER_PAIRS[totalCopayers];
+  return Wallet.COPAYER_PAIR_LIMITS[totalCopayers];
 };
 
 
