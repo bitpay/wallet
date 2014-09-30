@@ -62,6 +62,8 @@ angular.module('copayApp.controllers').controller('JoinController',
 
       $scope.$apply(function() {
         $scope.connectionId = data;
+        $scope.joinForm.connectionId.$setViewValue(data);
+        $scope.joinForm.connectionId.$render();
       });
     };
 
