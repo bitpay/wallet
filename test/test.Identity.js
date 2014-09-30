@@ -127,14 +127,14 @@ describe('Identity model', function() {
 
     describe('#open', function(done) {
       beforeEach(function() {
-        Identity._profileOpen = sinon.stub().callsArgWith(3, null, 'kk');
+        Identity._createProfile = sinon.stub().callsArgWith(3, null, 'kk');
       });
 
-      it('should call ._profileOpen', function(done) {
+      it('should call ._createProfile', function(done) {
         Identity.open(email, password, config, function(err, iden) {
           should.not.exist(err);
           iden.profile.should.equal('kk');
-          Identity._profileOpen.calledOnce.should.equal(true);
+          Identity._createProfile.calledOnce.should.equal(true);
           done();
         });
       });
