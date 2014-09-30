@@ -55,6 +55,7 @@ function Identity(email, password, opts) {
   this.walletDefaults = opts.wallet || {};
   this.version = opts.version || version;
 
+  // open wallets
   this.wallets = [];
   this.profile = Identity._newProfile({
     email: email,
@@ -67,35 +68,32 @@ Identity._newProfile = function(info, password, storage) {
   return new Profile(info, password, storage);
 };
 
-/* for stubbing */
 Identity._newInsight = function(opts) {
   return new Insight(opts);
 };
 
-
-/* for stubbing */
 Identity._newStorage = function(opts) {
   return new Storage(opts);
 };
 
-/* for stubbing */
 Identity._newWallet = function(opts) {
   return new Wallet(opts);
 };
 
-/* for stubbing */
 Identity._walletFromObj = function(o, s, n, b, skip) {
   return Wallet.fromObj(o, s, n, b, skip);
 };
 
-/* for stubbing */
 Identity._walletRead = function(id, s, n, b, skip, cb) {
   return Wallet.read(id, s, n, b, skip, cb);
 };
 
-/* for stubbing */
 Identity._walletDelete = function(id, cb) {
   return Wallet.delete(id, cb);
+};
+
+Identity._profileOpen = function(e, p, s, cb) {
+  return Profile.open(e, p, s, cb);
 };
 
 
@@ -145,8 +143,12 @@ Identity.prototype.validate = function(authcode, cb) {
  */
 Identity.open = function(email, password, opts, cb) {
   var iden = new Identity(email, password, opts);
-  iden.read(function(err) {
-    return cb(err, iden);
+
+  Identity._profileOpen(email, password, iden.storage, function(err, profile){
+    if (err) return cb(err);
+    iden.profile = profile;
+
+    return cb(null, iden);
   });
 };
 
@@ -190,35 +192,6 @@ Identity.prototype.store = function(opts, cb) {
     });
   });
 };
-
-/**
- * read 
- *
- * @param opts
- * @param cb
- * @return {undefined}
- */
-Identity.prototype.read = function(opts, cb) {
-  var self = this;
-  self.profile.read(opts, function(err) {
-    if (err) return cb(err);
-
-    var l = self.wallets.length,
-      i = 0;
-    if (!l) return cb();
-
-    _.each(self.wallets, function(w) {
-      w.store(function(err) {
-        if (err) return cb(err);
-
-        if (++i == l)
-          return cb();
-      })
-    });
-  });
-};
-
-
 
 /**
  * @desc Imports a wallet from an encrypted base64 object
@@ -324,6 +297,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   });
 };
 
+// add open wallet?
 Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkArgument(wallet);
   preconditions.checkArgument(wallet.getId);
