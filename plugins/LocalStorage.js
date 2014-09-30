@@ -1,7 +1,7 @@
 'use strict';
 
 function LocalStorage() {
-  this.type = 'STORAGE';
+  this.type = 'DB';
 };
 
 LocalStorage.prototype.init = function() {

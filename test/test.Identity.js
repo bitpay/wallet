@@ -30,7 +30,7 @@ function assertObjectEqual(a, b) {
 describe('Identity model', function() {
   var iden, storage, wallet, profile;
 
-  beforeEach(function() {
+  beforeEach(function(done) {
     storage = sinon.stub();
     storage.getItem = sinon.stub();
     storage.setPassphrase = sinon.spy();
@@ -52,11 +52,14 @@ describe('Identity model', function() {
     profile.listWallets = sinon.stub().returns([]);
     profile.setLastOpenedTs = sinon.stub().yields(null);;
     profile.store = sinon.stub().yields(null);;
-    Identity._newProfile = sinon.stub().returns(profile);
+    Identity._createProfile = sinon.stub().callsArgWith(3,null,profile);
 
 
 
-    iden = new Identity(email, password, config);
+    Identity.create(email, password, config, function(err,i){
+      iden = i;
+      done();
+    });
   });
 
 
@@ -105,25 +108,18 @@ describe('Identity model', function() {
         var iden = new Identity(email, password, config);
         should.exist(iden);
         iden.walletDefaults.should.deep.equal(config.wallet);
-        iden.version.should.equal('0.0.1');
-        should.exist(iden.profile.addWallet);
-
-        Identity._newProfile.getCall(0).args[0].should.deep.equal({
-          email: email
-        });
-        Identity._newProfile.getCall(0).args[1].should.equal(password);
-        Identity._newProfile.getCall(0).args[2].should.equal(iden.storage);
       });
     });
 
     describe('#create', function(done) {
       it('should call .store', function(done) {
         Identity.create(email, password, config, function(err, iden) {
+
           should.not.exist(err);
           should.exist(iden.profile.addWallet);
-          iden.profile.store.getCall(0).args[0].should.deep.equal({
-            overwrite: false
-          });
+
+          Identity._createProfile.getCall(0).args[0].should.deep.equal(email);
+          Identity._createProfile.getCall(0).args[1].should.deep.equal(password);
           done();
         });
       });

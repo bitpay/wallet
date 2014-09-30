@@ -10,6 +10,10 @@ angular
     templateUrl: 'views/home.html',
     validate: false
   })
+  .when('/createProfile', {
+    templateUrl: 'views/createProfile.html',
+    validate: false
+  })
   .when('/open', {
     templateUrl: 'views/open.html',
     validate: false
