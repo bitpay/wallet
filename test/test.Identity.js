@@ -447,5 +447,6 @@ describe('Identity model', function() {
       });
     });
   });
+});
 
 
