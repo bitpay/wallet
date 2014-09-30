@@ -106,13 +106,28 @@ Identity._profileOpen = function(e, p, s, cb) {
  * @return {undefined}
  */
 Identity.create = function(email, password, opts, cb) {
+  opts = opts || {};
 
   var iden = new Identity(email, password, opts);
+
   Identity._createProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
-
     iden.profile = profile;
-    return cb(null, iden);
+
+    if (opts.noWallets)
+      cb(null, iden);
+
+    // default wallet
+    var wopts = {
+      nickname: email,
+      networkName: opts.networkName,
+      requiredCopayers: 1,
+      totalCopayers: 1,
+    };
+
+    iden.createWallet(wopts, function(err, w) {
+      return cb(null, iden, w);
+    });
   });
 };
 
