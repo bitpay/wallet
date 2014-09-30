@@ -113,7 +113,6 @@ Identity.create = function(email, password, opts, cb) {
   Identity._createProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
     iden.profile = profile;
-console.log('[Identity.js.115:profile:]',profile); //TODO
 
     if (opts.noWallets)
       cb(null, iden);
