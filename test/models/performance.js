@@ -1,9 +1,7 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var PrivateKey = require('../js/models/PrivateKey');
-var PublicKeyRing = require('../js/models/PublicKeyRing');
+var PrivateKey = copay.PrivateKey;
+var PublicKeyRing = copay.PublicKeyRing;
 
 var getNewEpk = function() {
   return new PrivateKey({
