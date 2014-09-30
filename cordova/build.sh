@@ -96,7 +96,7 @@ checkOK
 
 echo "${OpenColor}${Green}* Coping files...${CloseColor}"
 cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,views,config.js,version.js} $PROJECT/www
+cp -af {css,font,img,js,lib,sound,views,config.js,version.js,init.js} $PROJECT/www
 checkOK
 
 sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' charset='utf-8' src='cordova.js'><\/script>/g" index.html > $PROJECT/www/index.html
