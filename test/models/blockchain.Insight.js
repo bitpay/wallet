@@ -1,12 +1,7 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var sinon = require('sinon');
-var bitcore = bitcore || require('bitcore');
-var FakeSocket = require('./mocks/FakeBlockchainSocket');
+var FakeSocket = requireMock('FakeBlockchainSocket');
 
-var copay = copay || require('../copay');
 var Buffer = bitcore.Buffer;
 var Insight = copay.Insight;
 

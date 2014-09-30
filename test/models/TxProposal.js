@@ -1,10 +1,6 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var bitcore = bitcore || require('bitcore');
 var Transaction = bitcore.Transaction;
-var buffertools = bitcore.buffertools;
 var WalletKey = bitcore.WalletKey;
 var Key = bitcore.Key;
 var bignum = bitcore.Bignum;
@@ -12,15 +8,7 @@ var Script = bitcore.Script;
 var TransactionBuilder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
-var sinon = require('sinon');
-var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
-if (is_browser) {
-  var copay = require('copay'); //browser
-} else {
-  var copay = require('../copay'); //node
-}
-
-var FakeBuilder = require('./mocks/FakeBuilder');
+var FakeBuilder = requireMock('FakeBuilder');
 var TxProposal = copay.TxProposal;
 
 var dummyProposal = new TxProposal({

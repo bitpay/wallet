@@ -1,10 +1,4 @@
 'use strict';
-var chai = chai || require('chai');
-var sinon = require('sinon');
-var _ = require('underscore');
-var should = chai.should();
-var is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
-var copay = copay || require('../copay');
 var Storage = copay.Storage;
 
 var fakeWallet = 'fake-wallet-id';
@@ -14,7 +8,7 @@ describe('Storage model', function() {
 
   var s;
   beforeEach(function() {
-    s = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    s = new Storage(requireMock('FakeLocalStorage').storageParams);
     s.setPassphrase('mysupercoolpassword');
     s.storage.clear();
     s.sessionStorage.clear();
@@ -22,11 +16,11 @@ describe('Storage model', function() {
 
 
   it('should create an instance', function() {
-    var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    var s2 = new Storage(requireMock('FakeLocalStorage').storageParams);
     should.exist(s2);
   });
   it('should fail when encrypting without a password', function() {
-    var s2 = new Storage(require('./mocks/FakeLocalStorage').storageParams);
+    var s2 = new Storage(requireMock('FakeLocalStorage').storageParams);
     (function() {
       s2._write(fakeWallet + timeStamp, 1, function() {});
     }).should.throw('NOPASSPHRASE');

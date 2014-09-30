@@ -1,8 +1,5 @@
 'use strict';
 
-var chai = chai || require('chai');
-var should = chai.should();
-var bitcore = bitcore || require('bitcore');
 var Transaction = bitcore.Transaction;
 var buffertools = bitcore.buffertools;
 var WalletKey = bitcore.WalletKey;
@@ -11,12 +8,7 @@ var bignum = bitcore.Bignum;
 var networks = bitcore.networks;
 var Address = bitcore.Address;
 var BitcorePrivateKey = bitcore.PrivateKey;
-try {
-  var copay = require('copay'); //browser
-} catch (e) {
-  var copay = require('../copay'); //node
-}
-var PrivateKey = copay.PrivateKey || require('../js/models/PrivateKey');
+var PrivateKey = copay.PrivateKey;
 
 var pkConfig = {
   networkName: 'livenet',
