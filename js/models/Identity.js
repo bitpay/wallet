@@ -57,15 +57,12 @@ function Identity(email, password, opts) {
 
   // open wallets
   this.wallets = [];
-  this.profile = Identity._newProfile({
-    email: email,
-  }, password, this.storage);
 };
 
 
 /* for stubbing */
-Identity._newProfile = function(info, password, storage) {
-  return new Profile(info, password, storage);
+Identity._createProfile = function(email, password, storage, cb) {
+  Profile.create(email, password, storage, cb);
 };
 
 Identity._newInsight = function(opts) {
@@ -93,7 +90,7 @@ Identity._walletDelete = function(id, cb) {
 };
 
 Identity._profileOpen = function(e, p, s, cb) {
-  return Profile.open(e, p, s, cb);
+  Profile.create(e, p, s, cb);
 };
 
 
@@ -109,11 +106,13 @@ Identity._profileOpen = function(e, p, s, cb) {
  * @return {undefined}
  */
 Identity.create = function(email, password, opts, cb) {
+
   var iden = new Identity(email, password, opts);
-  iden.store({
-    overwrite: false,
-  }, function(err) {
-    return cb(err, iden);
+  Identity._createProfile(email, password, iden.storage, function(err, profile) {
+    if (err) return cb(err);
+
+    iden.profile = profile;
+    return cb(null, iden);
   });
 };
 
@@ -144,7 +143,7 @@ Identity.prototype.validate = function(authcode, cb) {
 Identity.open = function(email, password, opts, cb) {
   var iden = new Identity(email, password, opts);
 
-  Identity._profileOpen(email, password, iden.storage, function(err, profile){
+  Identity._profileOpen(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
     iden.profile = profile;
 
@@ -174,6 +173,8 @@ Identity.isAvailable = function(email, opts, cb) {
  * @return {undefined}
  */
 Identity.prototype.store = function(opts, cb) {
+  preconditions.checkState(this.profile);
+
   var self = this;
   self.profile.store(opts, function(err) {
     if (err) return cb(err);
