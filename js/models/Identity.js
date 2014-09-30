@@ -11,6 +11,7 @@ var version = require('../../version').version;
 var PluginManager = require('./PluginManager');
 var Profile = require('./Profile');
 var Insight = module.exports.Insight = require('./Insight');
+var Async = module.exports.Async = require('./Async');
 var preconditions = require('preconditions').singleton();
 var Storage = module.exports.Storage = require('./Storage');
 
@@ -44,8 +45,8 @@ function Identity(email, password, opts) {
   this.storage = Identity._newStorage(storageOpts);
 
   this.networks = {
-    'livenet': Identity._newInsight(opts.network.livenet),
-    'testnet': Identity._newInsight(opts.network.testnet),
+    'livenet': Identity._newAsync(opts.network.livenet),
+    'testnet': Identity._newAsync(opts.network.testnet),
   };
   this.blockchains = {
     'livenet': Identity._newInsight(opts.network.livenet),
@@ -69,6 +70,12 @@ Identity._newInsight = function(opts) {
   return new Insight(opts);
 };
 
+Identity._newAsync = function(opts) {
+  return new Async(opts);
+};
+
+
+
 Identity._newStorage = function(opts) {
   return new Storage(opts);
 };
@@ -89,13 +96,6 @@ Identity._walletDelete = function(id, cb) {
   return Wallet.delete(id, cb);
 };
 
-Identity._profileOpen = function(e, p, s, cb) {
-  Profile.create(e, p, s, cb);
-};
-
-
-
-
 /**
  * creates and Identity
  *
@@ -113,18 +113,18 @@ Identity.create = function(email, password, opts, cb) {
   Identity._createProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
     iden.profile = profile;
+console.log('[Identity.js.115:profile:]',profile); //TODO
 
     if (opts.noWallets)
       cb(null, iden);
 
     // default wallet
-    var wopts = {
+    var wopts = _.extend(opts.walletDefaults,{
       nickname: email,
       networkName: opts.networkName,
       requiredCopayers: 1,
       totalCopayers: 1,
-    };
-
+    });
     iden.createWallet(wopts, function(err, w) {
       return cb(null, iden, w);
     });
@@ -158,10 +158,9 @@ Identity.prototype.validate = function(authcode, cb) {
 Identity.open = function(email, password, opts, cb) {
   var iden = new Identity(email, password, opts);
 
-  Identity._profileOpen(email, password, iden.storage, function(err, profile) {
+  Identity._createProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
     iden.profile = profile;
-
     return cb(null, iden);
   });
 };
@@ -254,6 +253,7 @@ Identity.prototype.importWallet = function(base64, passphrase, skipFields, cb) {
  */
 Identity.prototype.createWallet = function(opts, cb) {
   preconditions.checkArgument(cb);
+  preconditions.checkState(this.profile);
 
   opts = opts || {};
   opts.networkName = opts.networkName || 'testnet';
@@ -318,6 +318,7 @@ Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkArgument(wallet);
   preconditions.checkArgument(wallet.getId);
   preconditions.checkArgument(cb);
+  preconditions.checkState(this.profile);
 
   var self = this;
   self.profile.addWallet(wallet.id, function(err) {

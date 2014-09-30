@@ -30,11 +30,17 @@ Profile.key = function(hash) {
 
 Profile.create = function(email, password, storage, cb) {
   preconditions.checkArgument(cb);
+  preconditions.checkArgument(storage.setPassphrase);
+
+  preconditions.checkState(storage.hasPassphrase());
+
   var p = new Profile({
     email: email,
     hash: Profile.hash(email,password),
   }, storage);
-  p.store({}, cb);
+  p.store({}, function(err) {
+    return cb(err,p);
+  });
 };
 
 Profile.open = function(email, password, storage, cb) {
