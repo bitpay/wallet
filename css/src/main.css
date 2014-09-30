@@ -262,6 +262,10 @@ a:hover {
   margin-top: 9%;
 }
 
+.setup .logo-setup, .join .logo-setup {
+  margin-top: 16%;
+}
+
 .box-setup {
   padding: 20px 30px;
   background: #34495E;
