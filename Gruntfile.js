@@ -85,7 +85,7 @@ module.exports = function(grunt) {
       options: {
         reporter: 'spec',
       },
-      src: ['test/*.js'],
+      src: ['test/*.js', 'test/persistence/**/*.js', 'test/util/*.js'],
     },
     markdown: {
       all: {

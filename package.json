@@ -26,6 +26,7 @@
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
     "request": "^2.40.0",
+    "sjcl": "^1.0.1",
     "underscore": "^1.7.0"
   },
   "scripts": {
