@@ -24,7 +24,18 @@ Profile.hash = function(email, password) {
 };
 
 Profile.key = function(hash) {
-  return 'identity::' + hash;
+  return 'profile::' + hash;
+};
+
+
+Profile.create = function(email, password, storage, cb) {
+  preconditions.checkArgument(cb);
+  var p = new Profile({
+    email: email,
+    hash: Profile.hash(email,password),
+  }, storage);
+
+  p.store(cb);
 };
 
 Profile.open = function(email, password, storage, cb) {

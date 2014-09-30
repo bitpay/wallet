@@ -1,4 +1,7 @@
 <div class="home" ng-controller="HomeController">
+
+<P>( TODO1: only this form if there is any profile:: key)
+<p>( TODO2: if user has wallets (wallet::) show message: Copay now needs a profile to ... , you can import your wallets after creating your profile )
   <div data-alert class="loading-screen" ng-show="retreiving">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     Retreiving information from storage...
@@ -8,25 +11,33 @@
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
-    <div class="large-8 columns">
-      <div class="button-setup" ng-show="hasWallets">
-        <a translate class="text-white" href="#!/open">Open a wallet</a>
-      </div>
-      <div class="button-setup" ng-show="!hasWallets">
-        <a translate class="text-secondary" href="#!/create">Create a new wallet</a>
-      </div>
+    <div class="large-8 columns line-dashed-setup-v">
       <div class="button-setup">
-        <a translate class="text-primary" href="#!/join">Join a Wallet in Creation</a>
-      </div>
-      <div class="button-setup" ng-show="hasWallets">
-        <a translate class="text-secondary" href="#!/create">Create a wallet</a>
+        <h1 class="text-white line-sidebar-b" translate >Login </h1>
+        <form name="settingsForm">
+          <fieldset>
+            <label for="insight-livenet">Email</label>
+            <input type="text" ng-model="profile.email" class="form-control" name="profile-email">
+            <label for="insight-testnet">Password</label>
+            <input type="text" ng-model="profile.password" class="form-control" name="profile-password">
+          </fieldset>
+          <div class="text-right">
+            <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+             Login 
+            </button>
+          </div>
+        </form>
       </div>
 
+
+
+
+      <div class="button-setup">
+        <a translate class="text-secondary" href="#!/createProfile">Create a profile</a>
+      </div>
       <div class="footer-setup">
         <a class="right size-12 text-gray" href="#!/settings"><i class="m10r
             size-14 fi-wrench"></i><span translate>Settings</span></a>
-        <a class="left size-12 text-gray" href="#!/import"><i class="m10r
-            size-14 fi-upload"></i><span translate>Import a backup</span></a>
       </div>
     </div>
   </div>

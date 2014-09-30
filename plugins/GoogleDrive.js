@@ -12,7 +12,7 @@ function GoogleDrive(config) {
   this.home = config.home || 'copay';
   this.idCache = {};
 
-  this.type = 'STORAGE';
+  this.type = 'DB';
 
   this.scripts = [{
     then: this.initLoaded.bind(this),
