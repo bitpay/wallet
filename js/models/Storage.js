@@ -27,7 +27,7 @@ function Storage(opts) {
     this.db = opts.db || localStorage;
     this.sessionStorage = opts.sessionStorage || sessionStorage;
   } catch (e) {
-    console.log('Error in storage:', e); //TODO
+    console.log('Error in storage:', e);
   };
 
   preconditions.checkState(this.db, 'No db defined');
