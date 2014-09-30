@@ -191,7 +191,7 @@ describe('Identity model', function() {
       iden.createWallet({
         privateKeyHex: priv,
       }, function(err, w) {
-        Identity._newWallet.getCall(0).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
+        Identity._newWallet.getCall(1).args[0].privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
         should.not.exist(err);
         done();
       });
@@ -253,7 +253,7 @@ describe('Identity model', function() {
       iden.openWallet('dummy', 'xxx', function(err, w) {
         should.not.exist(err);
         w.store.calledOnce.should.equal(true);
-        iden.profile.setLastOpenedTs.calledOnce.should.equal(true);
+        iden.profile.setLastOpenedTs.calledTwice.should.equal(true);
         iden.migrateWallet.calledOnce.should.equal(true);
         done();
       });

@@ -8,7 +8,7 @@ function Profile(info, storage) {
   preconditions.checkArgument(info.email);
   preconditions.checkArgument(info.hash);
   preconditions.checkArgument(storage);
-  preconditions.checkArgument(storage.getItem);
+  preconditions.checkArgument(storage.setPassphrase, 'bad storage');
 
   this.hash = info.hash;
   this.email = info.email;
@@ -34,8 +34,7 @@ Profile.create = function(email, password, storage, cb) {
     email: email,
     hash: Profile.hash(email,password),
   }, storage);
-
-  p.store(cb);
+  p.store({}, cb);
 };
 
 Profile.open = function(email, password, storage, cb) {
@@ -118,6 +117,7 @@ Profile.prototype.store = function(opts, cb) {
   var key = self.key;
 
   self.storage.get(key, function(val2) {
+
     if (val2 && !opts.overwrite) {
       if (cb)
         return cb(new Error('PEXISTS: Profile already exist'))
