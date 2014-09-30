@@ -79,8 +79,6 @@ function Wallet(opts) {
 
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
-  this.network.maxPeers = this.totalCopayers;
-  this.network.secretNumber = this.secretNumber;
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
@@ -95,6 +93,15 @@ function Wallet(opts) {
   this.forcedLogin = opts.forcedLogin || false;
 
   this.paymentRequests = opts.paymentRequests || {};
+
+
+  var networkName = Wallet.obtainNetworkName(this);
+  this.network = _.isArray(this.network)? this.network[networkName] : this.network;
+  this.blockchain = _.isArray(this.blockchain) ? this.blockchain[networkName] : this.blockchain;
+
+
+  this.network.maxPeers = this.totalCopayers;
+  this.network.secretNumber = this.secretNumber;
 
   //network nonces are 8 byte buffers, representing a big endian number
   //one nonce for oneself, and then one nonce for each copayer
@@ -1064,8 +1071,8 @@ Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
   opts.lastTimestamp = o.lastTimestamp;
 
   opts.storage = storage;
-  opts.network = _.isArray(network)? network[networkName] : network;
-  opts.blockchain = _.isArray(blockchain) ? blockchain[networkName] : blockchain;
+  opts.network = network;
+  opts.blockchain = blockchain;
   opts.isImported = true;
 
   return new Wallet(opts);

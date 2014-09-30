@@ -43,6 +43,11 @@ Storage.prototype._getPassphrase = function() {
   return pps[this.__uniqueid];
 }
 
+
+Storage.prototype.hasPassphrase = function() {
+  return pps[this.__uniqueid] ? true : false;
+};
+
 Storage.prototype.setPassphrase = function(password) {
   pps[this.__uniqueid] = password;
 }
