@@ -40,12 +40,14 @@ describe('TxProposals', function() {
       should.exist(txps);
       txps.network.name.should.equal('livenet');
     });
-    it('should fail create an instance from an Object with errors', function() {
-      (function() {var txps = TxProposals.fromObj({
+    it('should skip  Objects with errors', function() {
+      var txps = TxProposals.fromObj({
         networkName:'livenet',
         walletId: '123a12',
         txps: [ { a: 1 }],
-      }) }).should.throw('Illegal');
+      });
+      should.exist(txps);
+      Object.keys(txps.txps).length.should.equal(0);
     });
   });
   describe('#getNtxids', function() {
