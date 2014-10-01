@@ -30,7 +30,8 @@ function Identity(email, password, opts) {
 
   if (opts.pluginManager) {
     storageOpts = _.clone({
-      db: opts.pluginManager.get('DB')
+      db: opts.pluginManager.get('DB'),
+      passphrase: opts.passphrase,
     });
     /*
      * TODO (plugins for other services)
@@ -43,6 +44,7 @@ function Identity(email, password, opts) {
   storageOpts.password = password;
 
   this.storage = Identity._newStorage(storageOpts);
+  this.storage.setPassword(password);
 
   this.networks = {
     'livenet': Identity._newAsync(opts.network.livenet),
@@ -57,7 +59,7 @@ function Identity(email, password, opts) {
   this.version = opts.version || version;
 
   // open wallets
-  this.wallets = [];
+  this.openWallets = [];
 };
 
 
@@ -118,11 +120,12 @@ Identity.create = function(email, password, opts, cb) {
       cb(null, iden);
 
     // default wallet
-    var wopts = _.extend(opts.walletDefaults,{
+    var wopts = _.extend(opts.walletDefaults, {
       nickname: email,
       networkName: opts.networkName,
       requiredCopayers: 1,
       totalCopayers: 1,
+      password: password,
     });
     iden.createWallet(wopts, function(err, w) {
       return cb(null, iden, w);
@@ -192,11 +195,11 @@ Identity.prototype.store = function(opts, cb) {
   self.profile.store(opts, function(err) {
     if (err) return cb(err);
 
-    var l = self.wallets.length,
+    var l = self.openWallets.length,
       i = 0;
     if (!l) return cb();
 
-    _.each(self.wallets, function(w) {
+    _.each(self.openWallets, function(w) {
       w.store(function(err) {
         if (err) return cb(err);
 
@@ -207,6 +210,28 @@ Identity.prototype.store = function(opts, cb) {
   });
 };
 
+
+/**
+ * @desc Closes the wallet and disconnects all services
+ */
+Identity.prototype.close = function(cb) {
+  preconditions.checkState(this.profile);
+
+  var l = self.openWallets.length,
+    i = 0;
+  if (!l) return cb();
+
+  _.each(self.openWallets, function(w) {
+    w.close(function(err) {
+      if (err) return cb(err);
+
+      if (++i == l)
+        return cb();
+    })
+  });
+};
+
+
 /**
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
@@ -214,10 +239,10 @@ Identity.prototype.store = function(opts, cb) {
  * @param {string[]} skipFields - fields to ignore when importing
  * @return {Wallet}
  */
-Identity.prototype.importWallet = function(base64, passphrase, skipFields, cb) {
+Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   preconditions.checkArgument(cb);
 
-  this.storage.setPassphrase(passphrase);
+  this.storage.setPassword(password);
 
   var obj = this.storage.decrypt(base64);
   if (!obj) return false;
@@ -241,7 +266,7 @@ Identity.prototype.importWallet = function(base64, passphrase, skipFields, cb) {
  * @param {number} opts.totalCopayers
  * @param {PublicKeyRing=} opts.publicKeyRing
  * @param {string} opts.nickname
- * @param {string} opts.passphrase
+ * @param {string} opts.password
  * @TODO: Figure out what is this parameter
  * @param {?} opts.spendUnconfirmed this.walletDefaults.spendUnconfirmed ??
  * @TODO: Figure out in what unit is this reconnect delay.
@@ -300,7 +325,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
-  this.storage.setPassphrase(opts.passphrase);
+  this.storage.setPassword(opts.password);
 
   var self = this;
   var w = Identity._newWallet(opts);
@@ -320,10 +345,10 @@ Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkState(this.profile);
 
   var self = this;
-  self.profile.addWallet(wallet.id, function(err) {
-    if (err) return cb(err);
+  self.profile.addWallet(wallet.id, {}, function(err) {
 
-    self.wallets.push(wallet);
+    if (err) return cb(err);
+    self.openWallets.push(wallet);
     wallet.store(function(err) {
       return cb(err);
     });
@@ -356,16 +381,16 @@ Identity.prototype._checkVersion = function(inVersion) {
 /**
  * @desc Retrieve a wallet from the storage
  * @param {string} walletId - the id of the wallet
- * @param {string} passphrase - the passphrase to decode it
+ * @param {string} password - the password  to decode it
  * @param {function} callback (err, {Wallet})
  * @return
  */
-Identity.prototype.openWallet = function(walletId, passphrase, cb) {
+Identity.prototype.openWallet = function(walletId, password, cb) {
   preconditions.checkArgument(cb);
   var self = this;
 
-  self.storage.setPassphrase(passphrase);
-  self.migrateWallet(walletId, passphrase, function() {
+  self.storage.setPassword(password);
+  self.migrateWallet(walletId, password, function() {
 
     Identity._walletRead(walletId, self.storage, self.networks, self.blockchains, [], function(err, w) {
       if (err) return cb(err);
@@ -428,7 +453,7 @@ Identity.prototype.decodeSecret = function(secret) {
  *
  * @param {object} opts
  * @param {string} opts.secret - the wallet secret
- * @param {string} opts.passphrase - a passphrase to use to encrypt the wallet for persistance
+ * @param {string} opts.password - a password to use to encrypt the wallet for persistance
  * @param {string} opts.nickname - a nickname for the current user
  * @param {string} opts.privateHex - the private extended master key
  * @param {walletCreationCallback} cb - a callback
@@ -436,7 +461,7 @@ Identity.prototype.decodeSecret = function(secret) {
 Identity.prototype.joinWallet = function(opts, cb) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.secret);
-  preconditions.checkArgument(opts.passphrase);
+  preconditions.checkArgument(opts.password);
   preconditions.checkArgument(opts.nickname);
   preconditions.checkArgument(cb);
   var self = this;
@@ -495,7 +520,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
 
         walletOpts.privateKey = privateKey;
         walletOpts.nickname = opts.nickname;
-        walletOpts.passphrase = opts.passphrase;
+        walletOpts.password = opts.password;
 
         self.createWallet(walletOpts, function(err, w) {
 

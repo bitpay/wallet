@@ -35,8 +35,8 @@ angular.module('copayApp.controllers').controller('CopayersController',
     };
 
     $scope.deleteWallet = function() {
-      var w = $rootScope.wallet;
-      identity.delete(w.id, function() {
+      var w = $rootScope.iden;
+      iden.deleteWallet(w.id, function() {
         controllerUtils.logout();
       });
     };

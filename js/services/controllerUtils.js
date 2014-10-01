@@ -12,11 +12,11 @@ angular.module('copayApp.services')
     };
 
     root.logout = function() {
-      if ($rootScope.wallet)
-        $rootScope.wallet.close();
+      if ($rootScope.iden)
+        $rootScope.iden.close();
 
-      $rootScope.wallet = null;
       delete $rootScope['wallet'];
+      delete $rootScope['iden'];
 
       // Clear rootScope
       for (var i in $rootScope) {
@@ -154,7 +154,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.startNetwork = function(w, $scope) {
+    root.bindWallet = function(w, $scope) {
       root.setupRootVariables();
       root.installWalletHandlers(w, $scope);
       root.updateAddressList();

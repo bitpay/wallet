@@ -10,7 +10,7 @@ describe('WalletLock model', function() {
 
   beforeEach(function() {
     storage = new Storage(requireMock('FakeLocalStorage').storageParams);
-    storage.setPassphrase('mysupercoolpassword');
+    storage._setPassphrase('mysupercoolpassword');
     storage.clearAll();
   });
 

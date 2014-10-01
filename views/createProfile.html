@@ -1,0 +1,44 @@
+<div class="createProfile" ng-controller="CreateProfileController">
+
+<P>( TODO1: only this form if there is any profile:: key)
+<p>( TODO2: if user has wallets (wallet::) show message: Copay now needs a profile to ... , you can import your wallets after creating your profile )
+  <div data-alert class="loading-screen" ng-show="retreiving">
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
+    Retreiving information from storage...
+  </div>
+  <div class="row" ng-show="!loading && !retreiving">
+    <div class="large-4 columns logo-setup">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+      <div ng-include="'views/includes/version.html'"></div>
+    </div>
+    <div class="large-8 columns line-dashed-setup-v">
+      <div class="button-setup">
+        <h1 class="text-white line-sidebar-b" translate >Create Profile</h1>
+        <form  name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
+          <fieldset>
+            <label for="insight-livenet">email</label>
+            <input type="text" ng-model="profile.email" class="form-control" name="email">
+            <label for="insight-testnet">Password</label>
+            <input type="text" ng-model="profile.password" class="form-control" name="password">
+            <label for="insight-testnet">Repeat Password</label>
+            <input type="text" ng-model="profile.repeatpassword" class="form-control" name="repeatpassword">
+          </fieldset>
+          <div class="text-right">
+            <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
+             Create 
+            </button>
+          </div>
+        </form>
+      </div>
+
+
+
+
+      <div class="button-setup">
+        <a translate class="text-secondary" href="#!/">Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
