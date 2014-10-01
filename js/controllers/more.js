@@ -69,7 +69,6 @@ angular.module('copayApp.controllers').controller('MoreController',
       $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
 
     $scope.downloadBackup = function() {
-      console.log(window.mobilecheck());
       backupService.download(w);
     }
 
