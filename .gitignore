@@ -33,6 +33,9 @@ public/js/angularjs-all.js
 public/js/main.js
 public/js/vendors.js
 
+js/copayBundle.js.map
+js/copayMain.js.map
+
 public/css/main.css
 
 README.html

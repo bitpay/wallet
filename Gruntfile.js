@@ -97,7 +97,7 @@ module.exports = function(grunt) {
         }]
       }
     },
-    concat: {
+    concat: { 
       vendors: {
         src: [
           'lib/mousetrap/mousetrap.min.js',
@@ -134,6 +134,9 @@ module.exports = function(grunt) {
         dest: 'lib/angularjs-all.js'
       },
       main: {
+        options: {
+          sourceMap: true
+        },
         src: [
           'js/app.js',
           'js/directives.js',
@@ -146,6 +149,13 @@ module.exports = function(grunt) {
           'js/init.js',
         ],
         dest: 'js/copayMain.js'
+      },
+      bundle: {
+        options: {
+          sourceMap: true
+        },
+        src: ['js/copayBundle.js'],
+        dest: 'js/copayBundle.js'
       }
     },
     cssmin: {
@@ -167,6 +177,7 @@ module.exports = function(grunt) {
       prod: {
         files: {
           'js/copayMain.js': ['js/copayMain.js'],
+          'js/copayBundle.js': ['js/copayBundle.js'],
           'lib/angularjs-all.js': ['lib/angularjs-all.js'],
           'lib/vendors.js': ['lib/vendors.js']
         }
