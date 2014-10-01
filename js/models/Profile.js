@@ -8,7 +8,7 @@ function Profile(info, storage) {
   preconditions.checkArgument(info.email);
   preconditions.checkArgument(info.hash);
   preconditions.checkArgument(storage);
-  preconditions.checkArgument(storage.setPassphrase, 'bad storage');
+  preconditions.checkArgument(storage.setPassword, 'bad storage');
 
   this.hash = info.hash;
   this.email = info.email;
@@ -30,7 +30,7 @@ Profile.key = function(hash) {
 
 Profile.create = function(email, password, storage, cb) {
   preconditions.checkArgument(cb);
-  preconditions.checkArgument(storage.setPassphrase);
+  preconditions.checkArgument(storage.setPassword);
 
   preconditions.checkState(storage.hasPassphrase());
 
@@ -97,6 +97,8 @@ Profile.prototype.addToWallet = function(walletId, info, cb) {
 
 
 Profile.prototype.addWallet = function(walletId, info, cb) {
+  preconditions.checkArgument(cb);
+
   if (this.walletInfos[walletId])
     return cb(new Error('WEXIST: Wallet already on profile'));
 
@@ -111,7 +113,7 @@ Profile.prototype.addWallet = function(walletId, info, cb) {
 };
 
 
-Profile.prototype.setLasOpenedTs = function(walletId, cb) {
+Profile.prototype.setLastOpenedTs = function(walletId, cb) {
   return this.addToWallet(walletId, {
     lastOpenedTs: Date.now()
   }, cb);
@@ -129,7 +131,7 @@ Profile.prototype.store = function(opts, cb) {
         return cb(new Error('PEXISTS: Profile already exist'))
     } else {
       self.storage.set(key, val, function(err) {
-        log.debug('Identity stored');
+        log.debug('Profile stored');
         if (cb)
           cb(err);
       });

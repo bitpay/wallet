@@ -4,6 +4,7 @@ var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var bitcore = require('bitcore');
 var Passphrase = require('./Passphrase');
 var preconditions = require('preconditions').instance();
+var log = require('../log');
 var _ = require('underscore');
 var CACHE_DURATION = 1000 * 60 * 5;
 var id = 0;
@@ -21,11 +22,7 @@ function Storage(opts) {
 
   this.wListCache = {};
   this.__uniqueid = ++id;
-  this.passphraseConfig = {
-    salt: opts.salt,
-    iterations: opts.iterations,
-  };
-
+  this.passphraseConfig = opts.passphrase;
   this.setPassword(opts.password);
 
   try {
@@ -61,7 +58,9 @@ Storage.prototype._setPassphrase = function(passphrase) {
 Storage.prototype.setPassword = function(password, config) {
   var passphraseConfig = _.extend(this.passphraseConfig, config);
   var p = new Passphrase(passphraseConfig);
+  log.debug('Setting passphrase... Iterations:' + (passphraseConfig.iterations || 'default'))
   this._setPassphrase(p.getBase64(password));
+  log.debug('done.')
 }
 
 Storage.prototype._encrypt = function(string) {

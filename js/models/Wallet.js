@@ -875,7 +875,7 @@ Wallet.prototype.netStart = function() {
     copayerId: myId,
     privkey: myIdPriv,
     maxPeers: self.totalCopayers,
-    lastTimestamp: this.lastTimestamp,
+    lastTimestamp: this.lastTimestamp || 0,
     secretNumber: self.secretNumber,
   };
 
@@ -992,7 +992,7 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
-    lastTimestamp: this.lastTimestamp,
+    lastTimestamp: this.lastTimestamp || 0,
   };
 
   return walletObj;
@@ -1068,7 +1068,7 @@ Wallet.fromObj = function(o, storage, network, blockchain, skipFields) {
     });
   }
 
-  opts.lastTimestamp = o.lastTimestamp;
+  opts.lastTimestamp = o.lastTimestamp || 0;
 
   opts.storage = storage;
   opts.network = network;
@@ -2530,7 +2530,7 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  */
 Wallet.prototype.close = function(cb) {
   var self = this;
-  log.debug('## CLOSING');
+  log.debug('## CLOSING Wallet');
   this.lock.release(function() {
     self.network.cleanUp();
     self.blockchain.destroy();
