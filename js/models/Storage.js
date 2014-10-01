@@ -89,7 +89,7 @@ Storage.prototype._read = function(k, cb) {
   var self = this;
   this.db.getItem(k, function(ret) {
     if (!ret) return cb(null);
-    var ret = self._decrypt(ret);
+    ret = self._decrypt(ret);
     if (!ret) return cb(null);
 
     ret = ret.toString(CryptoJS.enc.Utf8);

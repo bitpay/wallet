@@ -83,6 +83,14 @@ describe('PayPro (in Wallet) model', function() {
       c.networkName = walletConfig.networkName;
       c.version = '0.0.1';
 
+      c.network =  sinon.stub();
+      c.network.setHexNonce =  sinon.stub();
+      c.network.setHexNonces =  sinon.stub();
+      c.network.getHexNonce =  sinon.stub();
+      c.network.getHexNonces =  sinon.stub();
+      c.network.send =  sinon.stub();
+
+
       return new Wallet(c);
     }
 
@@ -683,9 +691,11 @@ describe('PayPro (in Wallet) model', function() {
       });
     });
 
-    it('#add tx proposal based on payment message via model', function(done) {
+    it('#add tx proposal based on payment message via model ', function(done) {
+
       var w = ppw;
       should.exist(w);
+
       w.sendPaymentTx(w._ntxid, function(txid, merchantData) {
         should.exist(txid);
         should.exist(merchantData);

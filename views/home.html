@@ -1,7 +1,8 @@
 <div class="home" ng-controller="HomeController">
 
-<P>( TODO1: only this form if there is any profile:: key)
-<p>( TODO2: if user has wallets (wallet::) show message: Copay now needs a profile to ... , you can import your wallets after creating your profile )
+<P>( TODO: only show this login form if there is any profile:: key)
+
+<p>( TODO: if user has wallets (wallet::) show message: Copay now needs a profile to ... , you can import your wallets after creating your profile )
   <div data-alert class="loading-screen" ng-show="retreiving">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     Retreiving information from storage...
@@ -14,12 +15,12 @@
     <div class="large-8 columns line-dashed-setup-v">
       <div class="button-setup">
         <h1 class="text-white line-sidebar-b" translate >Login </h1>
-        <form name="settingsForm">
+        <form  name="loginForm" ng-submit="openProfile(loginForm)" novalidate>
           <fieldset>
             <label for="insight-livenet">Email</label>
-            <input type="text" ng-model="profile.email" class="form-control" name="profile-email">
+            <input type="text" ng-model="email" class="form-control" name="email">
             <label for="insight-testnet">Password</label>
-            <input type="text" ng-model="profile.password" class="form-control" name="profile-password">
+            <input type="text" ng-model="password" class="form-control" name="password">
           </fieldset>
           <div class="text-right">
             <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
