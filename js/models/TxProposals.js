@@ -10,6 +10,7 @@ var Script = bitcore.Script;
 var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
+var log = require('../log');
 
 function TxProposals(opts) {
   opts = opts || {};
@@ -27,11 +28,16 @@ TxProposals.fromObj = function(o, forceOpts) {
   });
 
   o.txps.forEach(function(o2) {
-    var t = TxProposal.fromObj(o2, forceOpts);
-    if (t.builder) {
+    try {
+      var t = TxProposal.fromObj(o2, forceOpts);
+    } catch (e) {
+      log.info('Ignoring corrupted TxProposal:', o2, e);
+    }
+    if (t && t.builder) {
       var id = t.getId();
       ret.txps[id] = t;
     }
+
   });
   return ret;
 };
