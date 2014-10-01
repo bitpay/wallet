@@ -57,7 +57,7 @@ module.exports = function(grunt) {
           'js/models/*.js',
           'plugins/*.js',
         ],
-        tasks: ['shell:dev']
+        tasks: ['shell:dev', 'concat:bundle']
       },
       css: {
         files: ['css/src/*.css'],
