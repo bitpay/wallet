@@ -183,6 +183,16 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      maps: {
+        files: [{
+          cwd: 'lib/angular-load/',
+          src: 'angular-load.min.js.map', 
+          dest: 'lib/',
+          expand: true
+        }]
+      }
+    },
     nggettext_extract: {
       pot: {
         files: {
@@ -215,7 +225,7 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
-  grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
+  grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify', 'copy']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('docs', ['jsdoc']);
 };
