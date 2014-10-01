@@ -341,7 +341,7 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
 
   this.blockchain.getTransaction(txid, function(err, tx) {
     if (err) return cb(false);
-    cb(ret);
+    return cb(ret);
   });
 };
 

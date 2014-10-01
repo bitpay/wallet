@@ -197,8 +197,8 @@ Insight.prototype.broadcast = function(rawtx, cb) {
   this.requestPost('/api/tx/send', {
     rawtx: rawtx
   }, function(err, res, body) {
-    if (err || res.statusCode != 200) cb(err || res);
-    cb(null, body.txid);
+    if (err || res.status != 200) cb(err || res);
+    cb(null, body ? body.txid: null);
   });
 };
 
