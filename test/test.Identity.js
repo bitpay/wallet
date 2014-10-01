@@ -33,10 +33,10 @@ describe('Identity model', function() {
   beforeEach(function(done) {
     storage = sinon.stub();
     storage.getItem = sinon.stub();
-    storage.setPassphrase = sinon.spy();
+    storage.setPassword = sinon.spy();
+    storage.hasPassphrase = sinon.stub().returns(true);
     storage.getSessionId = sinon.spy();
     storage.setFromObj = sinon.spy();
-    storage.setLastOpened = sinon.stub().yields(null);
     storage.deletePrefix = sinon.stub().yields(null);
     Identity._newStorage = sinon.stub().returns(storage);
 
@@ -127,14 +127,17 @@ describe('Identity model', function() {
 
     describe('#open', function(done) {
       beforeEach(function() {
-        Identity._createProfile = sinon.stub().callsArgWith(3, null, 'kk');
+        storage.getFirst = sinon.stub().yields('wallet1234');
+        profile.listWallets = sinon.stub().returns([{id:'walletid'}]);
+        Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
+          Identity._walletRead = sinon.stub().callsArgWith(5, null, wallet);
       });
 
-      it('should call ._createProfile', function(done) {
-        Identity.open(email, password, config, function(err, iden) {
+      it('should call ._openProfile', function(done) {
+        Identity.open(email, password, config, function(err, iden, w) {
+          Identity._openProfile.calledOnce.should.equal(true);
           should.not.exist(err);
-          iden.profile.should.equal('kk');
-          Identity._createProfile.calledOnce.should.equal(true);
+          iden.profile.should.equal(profile);
           done();
         });
       });
@@ -154,7 +157,7 @@ describe('Identity model', function() {
 
     it('should call .store from profile and wallets (2)', function(done) {
       iden.profile.store = sinon.stub().yields(null);
-      iden.wallets = [{
+      iden.openWallets = [{
         store: sinon.stub().yields(null)
       }, {
         store: sinon.stub().yields(null)
@@ -162,8 +165,8 @@ describe('Identity model', function() {
       iden.store({}, function(err) {
         should.not.exist(err);
         iden.profile.store.calledOnce.should.equal(true);
-        iden.wallets[0].store.calledOnce.should.equal(true);
-        iden.wallets[1].store.calledOnce.should.equal(true);
+        iden.openWallets[0].store.calledOnce.should.equal(true);
+        iden.openWallets[1].store.calledOnce.should.equal(true);
         done();
       });
     });
@@ -226,8 +229,7 @@ describe('Identity model', function() {
 
     beforeEach(function() {
       iden.migrateWallet = sinon.stub().yields(null);
-      iden.profile.setLastOpened = sinon.stub().yields(null);
-      iden.storage.setPassphrase = sinon.spy();
+      storage.setPassword = sinon.spy();
       storage.getFirst = sinon.stub().yields('wallet1234');
 
       var wallet = sinon.stub();
@@ -236,14 +238,14 @@ describe('Identity model', function() {
       Identity._walletRead = sinon.stub().callsArgWith(5, null, wallet);
     });
 
-    it('should call setPassphrase', function(done) {
+    it('should call setPassword', function(done) {
 
       var s1 = sinon.stub();
       s1.store = sinon.stub().yields(null);
 
       iden.openWallet('id123', 'xxx', function(err, w) {
-        iden.storage.setPassphrase.calledOnce.should.equal(true);
-        iden.storage.setPassphrase.getCall(0).args[0].should.equal('xxx');
+        iden.storage.setPassword.calledOnce.should.equal(true);
+        iden.storage.setPassword.getCall(0).args[0].should.equal('xxx');
         done();
       });
     });
@@ -254,7 +256,7 @@ describe('Identity model', function() {
         should.not.exist(err);
         w.store.calledOnce.should.equal(true);
         iden.profile.setLastOpenedTs.calledTwice.should.equal(true);
-        iden.migrateWallet.calledOnce.should.equal(true);
+        // iden.migrateWallet.calledOnce.should.equal(true);
         done();
       });
     });
@@ -332,7 +334,7 @@ describe('Identity model', function() {
     var opts = {
       secret: '8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM',
       nickname: 'test',
-      passphrase: 'pass'
+      password: 'pass'
     };
 
     it('should yield bad network error', function(done) {
