@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CopayersController',
-  function($scope, $rootScope, $location, backupService, identity, controllerUtils) {
+  function($scope, $rootScope, $location, backupService, controllerUtils) {
 
     $scope.hideAdv = true;
 
@@ -28,8 +28,8 @@ angular.module('copayApp.controllers').controller('CopayersController',
     };
 
     $scope.deleteWallet = function() {
-      var w = $rootScope.wallet;
-      identity.delete(w.id, function() {
+      var w = $rootScope.iden;
+      iden.deleteWallet(w.id, function() {
         controllerUtils.logout();
       });
     };
