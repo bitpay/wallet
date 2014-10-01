@@ -341,7 +341,6 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
 
   this.blockchain.getTransaction(txid, function(err, tx) {
     if (err) return cb(false);
-    txp.setSent(tx.txid);
     cb(ret);
   });
 };
@@ -370,21 +369,26 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   }
 
   if (m) {
-    if (m.hasChanged) {
+    if (!m.txp.getSeen(this.getMyCopayerId())) {
       m.txp.setSeen(this.getMyCopayerId());
       this.sendSeen(m.ntxid);
-      var tx = m.txp.builder.build();
-      if (tx.isComplete()) {
-        this._checkSentTx(m.ntxid, function(ret) {
-          if (ret) {
-            self.emit('txProposalsUpdated');
-            self.store();
-          }
-        });
-      } else {
+    }
+
+    var tx = m.txp.builder.build();
+    if (tx.isComplete()) {
+      this._checkSentTx(m.ntxid, function(ret) {
+        if (ret) {
+          m.txp.setSent(m.ntxid);
+          self.emit('txProposalsUpdated');
+          self.store();
+        }
+      });
+    } else {
+      if (m.hasChanged) {
         this.sendTxProposal(m.ntxid);
       }
     }
+
     this.emit('txProposalsUpdated');
     this.store();
   }
@@ -1125,9 +1129,8 @@ Wallet.prototype.getTxProposals = function() {
     var txp = this.txProposals.getTxProposal(ntxid, copayers);
     txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
     txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
-    if (this.totalCopayers - txp.rejectCount < this.requiredCopayers) {
-      txp.finallyRejected = true;
-    }
+    txp.finallyRejected = this.totalCopayers - txp.rejectCount < this.requiredCopayers;
+    txp.isPending = !txp.finallyRejected && !txp.sentTxid;
 
     if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
       ret.push(txp);
@@ -1423,9 +1426,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
         expires: expires,
         memo: memo || 'This server would like some BTC from you.',
         payment_url: payment_url,
-        merchant_data: merchant_data
-          ? merchant_data.toString('hex')
-          : null
+        merchant_data: merchant_data ? merchant_data.toString('hex') : null
       },
       signature: sig.toString('hex'),
       ca: trust.caName,
@@ -2106,41 +2107,37 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
   cb = cb || function() {};
 
-  var txps = [];
-  var maxRejectCount = this.maxRejectCount();
-  for (var ntxid in this.txProposals.txps) {
-    var txp = this.txProposals.txps[ntxid];
-    txp.ntxid = ntxid;
-    if (txp.isPending(maxRejectCount)) {
-      txps.push(txp);
-    }
-  }
-
-  var inputs = [];
-  txps.forEach(function(txp) {
-    txp.builder.utxos.forEach(function(utxo) {
-      inputs.push({
-        ntxid: txp.ntxid,
-        txid: utxo.txid,
-        vout: utxo.vout
-      });
-    });
-  });
-  if (inputs.length === 0)
-    return;
-
+  if (!_.some(self.getTxProposals(), {
+    isPending: true
+  }))
+    return cb();
 
   var proposalsChanged = false;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
     if (err) return cb(err);
 
-    unspentList.forEach(function(unspent) {
-      inputs.forEach(function(input) {
+    var txps = _.where(self.getTxProposals(), {
+      isPending: true
+    });
+    if (txps.length === 0) return cb();
+
+    var inputs = _.flatten(_.map(txps, function(txp) {
+      return _.map(txp.builder.utxos, function(utxo) {
+        return {
+          ntxid: txp.ntxid,
+          txid: utxo.txid,
+          vout: utxo.vout,
+        };
+      });
+    }));
+
+    _.each(unspentList, function(unspent) {
+      _.each(inputs, function(input) {
         input.unspent = input.unspent || (input.txid === unspent.txid && input.vout === unspent.vout);
       });
     });
 
-    inputs.forEach(function(input) {
+    _.each(inputs, function(input) {
       if (!input.unspent) {
         proposalsChanged = true;
         self.txProposals.deleteOne(input.ntxid);
@@ -2152,7 +2149,7 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
       self.store();
     }
 
-    cb(null);
+    return cb();
   });
 
 };
