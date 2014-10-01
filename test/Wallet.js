@@ -1894,12 +1894,13 @@ describe('Wallet model', function() {
     var storage = new s();
     var network = new Network(walletConfig.network);
     var blockchain = new Blockchain(walletConfig.blockchain);
+    storage.setPassword  = sinon.stub();
 
 
     it('should fail to read an unexisting wallet', function(done) {
-      s.getFirst = sinon.stub().yields(null);
+      storage.getFirst = sinon.stub().yields(null);
 
-      Wallet.read('123', s, network, blockchain, [], function(err, w) {
+      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
         err.toString().should.contain('WNOTFOUND');
         done();
       });
@@ -1907,25 +1908,25 @@ describe('Wallet model', function() {
 
     it('should not read a corrupted wallet', function(done) {
 
-      s.getFirst = sinon.stub().yields(null, '{hola:1}');
+      storage.getFirst = sinon.stub().yields(null, '{hola:1}');
 
-      Wallet.read('123', s, network, blockchain, [], function(err, w) {
+      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
         err.toString().should.contain('WERROR');
         done();
       });
     });
 
     it('should read a wallet', function(done) {
-      s.getFirst = sinon.stub().yields(null, JSON.parse(o));
-      Wallet.read('123', s, network, blockchain, [], function(err, w) {
+      storage.getFirst = sinon.stub().yields(null, JSON.parse(o));
+      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
         should.not.exist(err);
         done();
       });
     });
 
     it('should be able to import unencrypted legacy wallet TxProposal: v0', function(done) {
-      s.getFirst = sinon.stub().yields(null, JSON.parse(legacyO));
-      Wallet.read('123', s, network, blockchain, [], function(err, w) {
+      storage.getFirst = sinon.stub().yields(null, JSON.parse(legacyO));
+      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
         should.exist(w);
         w.id.should.equal('55d4bd062d32f90a');
         should.exist(w.publicKeyRing.getCopayerId);
@@ -1936,9 +1937,9 @@ describe('Wallet model', function() {
     });
 
     it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function(done) {
-      s.getFirst = sinon.stub().yields(null, JSON.parse(legacy1));
+      storage.getFirst = sinon.stub().yields(null, JSON.parse(legacy1));
 
-      Wallet.read('123', s, network, blockchain, [], function(err, w) {
+      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
         should.exist(w);
         w.isReady().should.equal(true);
         var wo = w.toObj();

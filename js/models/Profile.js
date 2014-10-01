@@ -13,9 +13,9 @@ function Profile(info, storage) {
   this.hash = info.hash;
   this.email = info.email;
   this.extra = info.extra;
+  this.walletInfos = info.walletInfos || {};
 
   this.key = Profile.key(this.hash);
-  this.walletInfos = {};
   this.storage = storage;
 };
 
@@ -36,29 +36,31 @@ Profile.create = function(email, password, storage, cb) {
 
   var p = new Profile({
     email: email,
-    hash: Profile.hash(email,password),
+    hash: Profile.hash(email, password),
   }, storage);
   p.store({}, function(err) {
-    return cb(err,p);
+    return cb(err, p);
   });
 };
 
 Profile.open = function(email, password, storage, cb) {
   preconditions.checkArgument(cb);
+  preconditions.checkState(storage.hasPassphrase());
 
   var key = Profile.key(Profile.hash(email, password));
-  storage.getGlobal(key, function(err, val) {
-    if (err) return cb(err);
-
-    if (!val)
+  storage.get(key, function(err, val) {
+    if (err || !val)
       return cb(new Error('PNOTFOUND: Profile not found'));
 
-    return cb(new Profile(val, storage));
+    if (!val.email)
+      return cb(new Error('PERROR: Could not open profile'));
+
+    return cb(null, new Profile(val, storage));
   });
 };
 
 Profile.prototype.toObj = function() {
-  return JSON.parse(JSON.stringify(this));
+  return _.clone(_.pick(this, 'hash', 'email', 'extra', 'walletInfos'));
 };
 
 Profile.prototype.getWallet = function(walletId, cb) {
@@ -74,7 +76,7 @@ Profile.prototype.listWallets = function(opts, cb) {
 
 Profile.prototype.deleteWallet = function(walletId, cb) {
   if (!this.walletInfos[walletId])
-    return cb(new Error('WNOEXIST: Wallet not on profile'));
+    return cb(new Error('WNOEXIST: Wallet not on profile '));
 
   delete this.walletInfos[walletId];
 
@@ -85,7 +87,7 @@ Profile.prototype.deleteWallet = function(walletId, cb) {
 
 Profile.prototype.addToWallet = function(walletId, info, cb) {
   if (!this.walletInfos[walletId])
-    return cb(new Error('WNOEXIST: Wallet not on profile'));
+    return cb(new Error('WNOEXIST: Wallet not on profile '));
 
   this.walletInfos[walletId] = _.extend(this.walletInfos[walletId], info);
 
@@ -100,7 +102,7 @@ Profile.prototype.addWallet = function(walletId, info, cb) {
   preconditions.checkArgument(cb);
 
   if (this.walletInfos[walletId])
-    return cb(new Error('WEXIST: Wallet already on profile'));
+    return cb(new Error('WEXIST: Wallet already on profile '));
 
   this.walletInfos[walletId] = _.extend(info, {
     createdTs: Date.now(),
@@ -128,7 +130,7 @@ Profile.prototype.store = function(opts, cb) {
 
     if (val2 && !opts.overwrite) {
       if (cb)
-        return cb(new Error('PEXISTS: Profile already exist'))
+        return cb(new Error('PEXISTS: Profile already exist '))
     } else {
       self.storage.set(key, val, function(err) {
         log.debug('Profile stored');

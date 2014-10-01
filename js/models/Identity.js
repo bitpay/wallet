@@ -98,6 +98,13 @@ Identity._walletDelete = function(id, cb) {
   return Wallet.delete(id, cb);
 };
 
+/* for stubbing */
+Identity._openProfile = function(email, password, storage, cb) {
+  Profile.open(email, password, storage, cb);
+};
+
+
+
 /**
  * creates and Identity
  *
@@ -160,10 +167,14 @@ Identity.prototype.validate = function(authcode, cb) {
 Identity.open = function(email, password, opts, cb) {
   var iden = new Identity(email, password, opts);
 
-  Identity._createProfile(email, password, iden.storage, function(err, profile) {
+  Identity._openProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
     iden.profile = profile;
-    return cb(null, iden);
+    var wid = iden.listWallets()[0].id;
+    iden.openWallet(wid, password, function(err, w) {
+      return cb(err, iden, w);
+    })
+
   });
 };
 
@@ -217,15 +228,17 @@ Identity.prototype.store = function(opts, cb) {
 Identity.prototype.close = function(cb) {
   preconditions.checkState(this.profile);
 
-  var l = self.openWallets.length,
+  var l = this.openWallets.length,
     i = 0;
-  if (!l) return cb();
+  if (!l) {
+    return cb ? cb() : null;
+  }
 
-  _.each(self.openWallets, function(w) {
+  _.each(this.openWallets, function(w) {
     w.close(function(err) {
       if (err) return cb(err);
 
-      if (++i == l)
+      if (++i == l && cb)
         return cb();
     })
   });
@@ -390,18 +403,19 @@ Identity.prototype.openWallet = function(walletId, password, cb) {
   var self = this;
 
   self.storage.setPassword(password);
-  self.migrateWallet(walletId, password, function() {
+  // TODO
+  //  self.migrateWallet(walletId, password, function() {
 
-    Identity._walletRead(walletId, self.storage, self.networks, self.blockchains, [], function(err, w) {
-      if (err) return cb(err);
+  Identity._walletRead(walletId, self.storage, self.networks, self.blockchains, [], function(err, w) {
+    if (err) return cb(err);
 
-      w.store(function(err) {
-        self.profile.setLastOpenedTs(walletId, function() {
-          return cb(err, w);
-        });
+    w.store(function(err) {
+      self.profile.setLastOpenedTs(walletId, function() {
+        return cb(err, w);
       });
     });
   });
+  //  });
 };
 
 

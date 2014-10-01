@@ -71,6 +71,7 @@ function Wallet(opts) {
     self[k] = opts[k];
   });
 
+
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
@@ -94,10 +95,12 @@ function Wallet(opts) {
 
   this.paymentRequests = opts.paymentRequests || {};
 
+  var networkName = Wallet.obtainNetworkName(opts);
+  this.network = networkName && this.network[networkName] ? this.network[networkName] : this.network;
+  this.blockchain = networkName && this.blockchain[networkName] ? this.blockchain[networkName] : this.blockchain;
 
-  var networkName = Wallet.obtainNetworkName(this);
-  this.network = _.isArray(this.network)? this.network[networkName] : this.network;
-  this.blockchain = _.isArray(this.blockchain) ? this.blockchain[networkName] : this.blockchain;
+  preconditions.checkArgument(this.network.setHexNonce, 'Incorrect network parameter');
+  preconditions.checkArgument(this.blockchain.getTransaction, 'Incorrect blockchain parameter');
 
 
   this.network.maxPeers = this.totalCopayers;
@@ -217,8 +220,9 @@ Wallet.delete = function(walletId, storage, cb) {
  * @param {function} callback - {err, Wallet}
  * @return {undefined}
  */
-Wallet.read = function(walletId,  storage, network, blockchain,  skipFields, cb) {
+Wallet.read = function(walletId, storage, network, blockchain, skipFields, cb) {
   preconditions.checkArgument(cb);
+  preconditions.checkArgument(storage.setPassword);
 
   var self = this,
     err;
@@ -237,10 +241,12 @@ Wallet.read = function(walletId,  storage, network, blockchain,  skipFields, cb)
     var w, err;
     obj.id = walletId;
     try {
+console.log('[Wallet.js.218:network:]',network); //TODO
       w = self.fromObj(obj, storage, network, blockchain, skipFields);
     } catch (e) {
+      log.debug("ERROR: ", e.message);
       if (e && e.message && e.message.indexOf('MISSOPTS')) {
-        err = new Error('WERROR: Could not read: ' + walletId);
+        err = new Error('WERROR: Could not read: ' + walletId + ': ' + e.message);
       } else {
         err = e;
       }
@@ -1637,6 +1643,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     options = {};
   }
 
+console.log('[Wallet.js.1613:ntxid:]',ntxid); //TODO
   var txp = this.txProposals.get(ntxid);
   if (!txp) return;
 

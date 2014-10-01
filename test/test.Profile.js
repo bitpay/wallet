@@ -19,7 +19,7 @@ describe('Profile model', function() {
   };
 
   beforeEach(function() {
-    storage.setPassphrase = sinon.stub();
+    storage.setPassword = sinon.stub();
     storage.set = sinon.stub();
     storage.set.yields(null);
     storage.get = sinon.stub().yields(null);
