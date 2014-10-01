@@ -14,9 +14,9 @@
       alt="{{copayer.peerId}}"
       width="30">
 
-    <div class="ellipsis" tooltip-placement="top" tooltip="{{copayer.nick}}">
-      <small class="text-gray" ng-show="copayer.index == 0">{{'Me'|translate}}</small>
-      <small class="text-gray" ng-show="copayer.index > 0">{{copayer.nick}}</small>
+    <div tooltip-placement="top" tooltip="{{copayer.nick}}">
+      <small class="text-gray db" ng-show="copayer.index == 0">{{'Me'|translate}}</small>
+      <small class="text-gray ellipsis" ng-show="copayer.index > 0">{{copayer.nick}}</small>
     </div>
   </div> 
 </div>
