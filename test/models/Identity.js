@@ -5,15 +5,15 @@ var _ = require('underscore');
 var chai = chai || require('chai');
 var should = chai.should();
 
-var copay = copay || require('../copay');
-var sinon = require('sinon');
-var FakeNetwork = require('./mocks/FakeNetwork');
-var FakeBlockchain = require('./mocks/FakeBlockchain');
+
+var FakeNetwork = requireMock('FakeNetwork');
+var FakeBlockchain = requireMock('FakeBlockchain');
 var FakeStorage = function FakeStorage() {};
-var Identity = require('../js/models/Identity');
-var Passphrase = require('../js/models/Passphrase');
-var mockLocalStorage = require('./mocks/FakeLocalStorage');
-var mockSessionStorage = require('./mocks/FakeLocalStorage');
+var Identity = copay.Identity;
+var Passphrase = copay.Passphrase;
+var mockLocalStorage = requireMock('FakeLocalStorage');
+var mockSessionStorage = requireMock('FakeLocalStorage');
+
 
 
 var PERSISTED_PROPERTIES = (copay.Wallet || require('../js/models/Wallet')).PERSISTED_PROPERTIES;
