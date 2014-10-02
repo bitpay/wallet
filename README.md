@@ -221,23 +221,10 @@ Without a proper backup of the user's private key data, all funds stored in the
 wallet may be lost or inaccessible if the browser's localStorage is deleted, the browser uninstalled,
 the local hard disk fails, etc.
 
-Peer communications
--------------------
-*Copay* uses peer-to-peer (p2p) networking to communicate between wallet participants. Participants exchange transaction
-proposals, public keys, nicknames and information about the wallet configuration. Private keys are *not* shared with anyone.
-
-*Copay* network communications use the webRTC protocol. A p2p facilitator server is needed to enable the peers to find each other.
- *Copay* uses the open-sourced *peerjs* server implementation for p2p discovery. Wallet participants can use a
- public peerjs server or install their own. Once the peers find each other, a true p2p connection is established between the
- peers and there is no further flow of information to the p2p discovery server.
-
-webRTC uses DTLS to secure communications between the peers, and each peer uses a self-signed
-certificate.
-
 Security model
 --------------
-On top of webRTC, *Copay* peers encrypt and sign each message using 
-ECIES (a.k.a. asynchronous encryptio) as decribed on
+*Copay* peers encrypt and sign each message using 
+ECIES (a.k.a. asynchronous encryption) as decribed on
 [http://en.wikipedia.org/wiki/Integrated_Encryption_Scheme].
 
 
