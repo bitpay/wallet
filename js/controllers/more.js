@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService, isMobile) {
+  function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
-    $scope.isMobile = isMobile.iOS();
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
