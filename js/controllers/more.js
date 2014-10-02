@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService, isMobile) {
+  function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
 
     $scope.unitOpts = [{
