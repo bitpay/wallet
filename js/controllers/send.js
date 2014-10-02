@@ -522,11 +522,36 @@ angular.module('copayApp.controllers').controller('SendController',
         return;
       }
 
+      var apply = function() {
+        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
+          $rootScope.$apply();
+        }
+      };
+
       notification.info('Fetching Payment',
         'Retrieving Payment Request from ' + uri.merchant);
 
+      scope.loading = true;
+      apply();
+
+      var timeout = setTimeout(function() {
+        timeout = null;
+        scope.loading = false;
+        scope.sendForm.address.$setViewValue('');
+        scope.sendForm.address.$render();
+        scope.sendForm.address.$isValid = false;
+        notification.error('Error', 'Payment server timed out.');
+        apply();
+      }, 10 * 1000);
+
       // Payment Protocol URI (BIP-72)
       scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+        if (!timeout) return;
+        clearTimeout(timeout);
+
+        scope.loading = false;
+        apply();
+
         var balance = $rootScope.availableBalance;
         var available = +(balance * w.settings.unitToSatoshi).toFixed(0);
 
@@ -536,8 +561,6 @@ angular.module('copayApp.controllers').controller('SendController',
         }
 
         if (err) {
-          scope.sendForm.address.$isValid = false;
-
           if (err.amount) {
             scope.sendForm.amount.$setViewValue(+err.amount / w.settings.unitToSatoshi);
             scope.sendForm.amount.$render();
@@ -551,18 +574,18 @@ angular.module('copayApp.controllers').controller('SendController',
                 scope.sendForm.amount.$setViewValue('');
                 scope.sendForm.amount.$render();
                 unregister();
-                if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-                  $rootScope.$apply();
-                }
+                apply();
               }
             });
+          } else {
+            scope.sendForm.address.$setViewValue('');
+            scope.sendForm.address.$render();
           }
+          scope.sendForm.address.$isValid = false;
 
           notification.error('Error', err.message || 'Bad payment server.');
 
-          if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-            $rootScope.$apply();
-          }
+          apply();
           return;
         }
 
@@ -590,9 +613,7 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.clearMerchant(unregister);
         });
 
-        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-          $rootScope.$apply();
-        }
+        apply();
 
         notification.info('Payment Request',
           'Server is requesting ' + merchantData.unitTotal +
