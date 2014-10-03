@@ -81,7 +81,7 @@ function Wallet(opts) {
 
 
   this.id = opts.id || Wallet.getRandomId();
-  this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
+  this.secretNumber = opts.secretNumber || Wallet.getRandomSecretNumber();
   this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
   this.settings = opts.settings || copayConfig.wallet.settings;
   this.name = opts.name;
@@ -149,6 +149,7 @@ Wallet.PERSISTED_PROPERTIES = [
   'addressBook',
   'backupOffered',
   'lastTimestamp',
+  'secretNumber',
 ];
 
 Wallet.COPAYER_PAIR_LIMITS = {
@@ -200,11 +201,11 @@ Wallet.getRandomId = function() {
 };
 
 /**
- * @desc Get a random 8 byte number and encode it as a hexa string
- * @return {string}
+ * @desc Retrieve a random secret number to secure wallet secret
+ * @return {string} 5 bytes, hexa encoded
  */
-Wallet.getRandomNumber = function() {
-  var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex');
+Wallet.getRandomSecretNumber = function() {
+  var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex')
   return r;
 };
 
@@ -828,8 +829,6 @@ Wallet.prototype.getMyCopayerNickname = function() {
  * @return {string} my own pubkey, base58 encoded
  */
 Wallet.prototype.getSecretNumber = function() {
-  if (this.secretNumber) return this.secretNumber;
-  this.secretNumber = Wallet.getRandomNumber();
   return this.secretNumber;
 };
 
@@ -1066,6 +1065,7 @@ Wallet.prototype.toObj = function() {
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
     lastTimestamp: this.lastTimestamp || 0,
+    secretNumber: this.secretNumber,
   };
 
   return walletObj;
@@ -1130,6 +1130,8 @@ Wallet.fromObj = function(o, readOpts) {
       networkName: networkName
     });
   }
+
+  opts.secretNumber = o.secretNumber;
 
   if (o.publicKeyRing) {
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
