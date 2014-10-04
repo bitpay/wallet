@@ -486,9 +486,10 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
     joinNetwork.greet(decodedSecret.pubKey, joinOpts.secretNumber);
     joinNetwork.on('data', function(sender, data) {
       if (data.type === 'walletId' && data.opts) {
-        if (data.networkName !== decodedSecret.networkName) {
+        if (!data.networkName || data.networkName !== decodedSecret.networkName) {
           return cb('badNetwork');
         }
+        data.opts.networkName = data.networkName;
 
         var walletOpts = _.clone(data.opts);
         walletOpts.id = data.walletId;
