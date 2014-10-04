@@ -524,6 +524,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   log.debug('RECV', senderId, data);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
+    log.debug('Received corrupt message:', data)
     this.emit('corrupt', senderId);
     this.updateTimestamp(ts);
     return;

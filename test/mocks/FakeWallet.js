@@ -59,6 +59,11 @@ FakeWallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts,
   callback(null, {});
 }
 
+
+FakeWallet.prototype.getSecret = function() {
+  return 'xxx';
+};
+
 FakeWallet.prototype.sendTx = function(ntxid, cb) {
   cb(8);
 }
