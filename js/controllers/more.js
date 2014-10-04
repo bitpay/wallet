@@ -64,8 +64,11 @@ angular.module('copayApp.controllers').controller('MoreController',
 
     $scope.hideAdv = true;
     $scope.hidePriv = true;
-    if (w)
+    $scope.hideSecret = true;
+    if (w) {
       $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
+      $scope.secret = w.getSecret();
+    }
 
     $scope.downloadBackup = function() {
       backupService.download(w);
