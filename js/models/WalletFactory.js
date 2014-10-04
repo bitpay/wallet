@@ -451,7 +451,7 @@ WalletFactory.prototype.joinCreateSession = function(opts, cb) {
   };
 
   if (opts.privateHex && opts.privateHex.length > 1) {
-    privOpts.extendedPrivateKeyString = privateHex;
+    privOpts.extendedPrivateKeyString = opts.privateHex;
   }
 
   //Create our PrivateK

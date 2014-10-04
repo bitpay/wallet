@@ -87,6 +87,21 @@
           </a>
         </div>
     </div>
+    <div class="oh large-12 columns panel">
+      <h3><i class="fi-minus-circle m10r"></i> 
+      <span translate>Join Secret</span> </h3>
+      <p translate class="large-8 columns text-gray">
+        This is the initial secret join string. Since your wallet it is already complete, this is only useful to rejoin peers that loose their backup BUT have the extented private key stored (they will be rejected on other case). They need to enter their extended private key during the join process (in advenced options).
+      </p>
+      <div class="large-4 columns">
+        <a class="button primary expand" ng-click="hideSecret=!hideSecret">
+          <span translate ng-hide="!hideSecret">Show</span>
+          <span translate ng-hide="hideSecret">Hide</span>
+        </a>
+      </div>
+      <textarea ng-hide="hideSecret" readonly>{{secret}}</textarea>
+    </div>
+ 
   </div>
 
 </div>
