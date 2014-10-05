@@ -33,8 +33,7 @@ var valid_pairs = {
 };
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, identity, controllerUtils, Passphrase, backupService, notification) {
-    controllerUtils.redirIfLogged();
+  function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification) {
 
     $rootScope.fromSetup = true;
     $scope.loading = false;
@@ -76,26 +75,18 @@ angular.module('copayApp.controllers').controller('CreateController',
         return;
       }
       $scope.loading = true;
-      Passphrase.getBase64Async($scope.walletPassword, function(passphrase) {
-        var opts = {
-          requiredCopayers: $scope.requiredCopayers,
-          totalCopayers: $scope.totalCopayers,
-          name: $scope.walletName,
-          nickname: $scope.myNickname,
-          passphrase: passphrase,
-          privateKeyHex: $scope.private,
-          networkName: $scope.networkName,
-        };
-        identity.create(opts, function(err, w) {
-          controllerUtils.startNetwork(w, $scope);
-        });
+      var opts = {
+        requiredCopayers: $scope.requiredCopayers,
+        totalCopayers: $scope.totalCopayers,
+        name: $scope.walletName,
+        privateKeyHex: $scope.private,
+        networkName: $scope.networkName,
+      };
+      $rootScope.iden.createWallet(opts, function(err, w) {
+        // TODO close old wallet??
+        $scope.loading = false;
+        $rootScope.wallet = w;
+        controllerUtils.bindWallet(w, $scope);
       });
     };
-
-    $scope.isSetupWalletPage = 0;
-
-    $scope.setupWallet = function() {
-      $scope.isSetupWalletPage = !$scope.isSetupWalletPage;
-    };
-
   });
