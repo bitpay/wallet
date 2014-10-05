@@ -55,7 +55,7 @@ function Identity(email, password, opts) {
     'testnet': Identity._newInsight(opts.network.testnet),
   };
 
-  this.walletDefaults = opts.wallet || {};
+  this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
 
   // open wallets
@@ -338,7 +338,8 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
-  this.storage.setPassword(opts.password);
+  if (opts.password)
+    this.storage.setPassword(opts.password);
 
   var self = this;
   var w = Identity._newWallet(opts);
@@ -419,7 +420,7 @@ Identity.prototype.openWallet = function(walletId, password, cb) {
 };
 
 
-Identity.prototype.listWallets = function() {
+Identity.prototype.listWallets = function(a) {
   return this.profile.listWallets();
 };
 
