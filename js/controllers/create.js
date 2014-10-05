@@ -83,10 +83,11 @@ angular.module('copayApp.controllers').controller('CreateController',
         networkName: $scope.networkName,
       };
       $rootScope.iden.createWallet(opts, function(err, w) {
-        // TODO close old wallet??
-        $scope.loading = false;
-        $rootScope.wallet = w;
-        controllerUtils.bindWallet(w, $scope);
+        $rootScope.iden.closeWallet($rootScope.wallet.id, function() {
+          $scope.loading = false;
+          $rootScope.wallet = w;
+          controllerUtils.bindWallet(w, $scope);
+        });
       });
     };
   });

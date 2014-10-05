@@ -183,12 +183,13 @@ Storage.prototype.delete = function(key, cb) {
 };
 
 Storage.prototype.deletePrefix = function(prefix, cb) {
-  storage.getFirst(prefix, function(err, v, k) {
-    if (err && !v) return cb(err);
+  var self = this;
+  this.getFirst(prefix, function(err, v, k) {
+    if (err || !v) return cb(err);
 
-    storage.delete(k, function(err) {
+    self.delete(k, function(err) {
       if (err) return cb(err);
-      storage.deletePrefix(prefix, cb);
+      self.deletePrefix(prefix, cb);
     })
   });
 };

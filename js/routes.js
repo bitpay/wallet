@@ -20,7 +20,7 @@ angular
   })
   .when('/join', {
     templateUrl: 'views/join.html',
-    validate: false
+    validate: true
   })
   .when('/import', {
     templateUrl: 'views/import.html',

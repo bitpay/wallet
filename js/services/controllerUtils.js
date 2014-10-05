@@ -154,13 +154,18 @@ angular.module('copayApp.services')
       });
     };
 
+
+    root.unbindWallet = function($scope) {
+      var w =$rootScope.wallet;
+      w.removeAllListeners();
+    };
+
     root.bindWallet = function(w, $scope) {
       root.setupRootVariables();
       root.installWalletHandlers(w, $scope);
       root.updateAddressList();
       notification.enableHtml5Mode(); // for chrome: if support, enable it
       w.netStart();
-
     };
 
     // TODO movie this to wallet

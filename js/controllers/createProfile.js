@@ -13,10 +13,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       walletDefaults: config.wallet,
       passphrase: config.passphrase,
     }, function(err, iden ,w) {
-      $scope.loading = false;
       $rootScope.iden = iden;
       $rootScope.wallet = w;
-
       controllerUtils.bindWallet(w, $scope);
     });
   }
