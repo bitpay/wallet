@@ -3,107 +3,77 @@
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     <span translate>Connecting to Insight Wallet Server...</span>
   </div>
-  <div class="row" ng-show="!loading">
-    <div class="large-4 columns logo-setup">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
-      <div ng-include="'views/includes/version.html'"></div>
-    </div>
-    <div class="large-8 columns">
-        <div class="box-setup">
-          <h1 translate class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
-          <form name="joinForm" ng-submit="join(joinForm)" novalidate>
 
-            <label for="connectionId" class="m10b"><span translate>Wallet Secret</span> 
-              <small translate class="has-error" ng-show="joinForm.connectionId.$invalid
+  <h1>{{'Join Wallet'|translate}}</h1>
+  <div class="row collapse m0">
+    <div class="large-6 columns">
+      <div class="box-setup">
+        <h1 translate class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
+        <form name="joinForm" ng-submit="join(joinForm)" novalidate>
+
+          <label for="connectionId"><span translate>Wallet Secret</span> 
+            <small translate class="has-error" ng-show="joinForm.connectionId.$invalid
                 && !joinForm.connectionId.$pristine">Wallet Secret is not valid!</small>
-              <small translate data-options="disable_for_touch:true"
-                ng-show="joinForm.connectionId.$pristine" class="has-tip
-                text-gray" tooltip="Paste wallet secret here" >Required</small>
-            </label>
-            
-            <div class="row collapse">
-              <div class="large-10 medium-10 small-10 columns pr">
-                <input id="connectionId" type="text" class="small-9 columns" 
-                placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
-                <small class="icon-input" ng-show="joinForm.connectionId.$invalid && !joinForm.connectionId.$pristine"><i class="fi-x"></i></small>
-                <small class="icon-input" ng-show="joinForm.connectionId.$valid
-                && !joinForm.connectionId.$pristine"><i class="fi-check"></i></small>
-              </div>
-              <div class="small-2 columns" ng-hide="showScanner || disableScanner">
-                  <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
-              </div>
-              <div class="small-2 columns" ng-show="showScanner">
-                  <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
-              </div>
-            </div>
+            <small translate data-options="disable_for_touch:true" ng-show="joinForm.connectionId.$pristine" class="has-tip
+                text-gray" tooltip="Paste wallet secret here">Required</small>
+          </label>
 
-            <div id="scanner" class="row" ng-if="showScanner">
-              <div class="text-centered">
-                <canvas id="qr-canvas" width="200" height="150"></canvas>
-                <div ng-show="isMobile">
-                  <div id="file-input-wrapper" class="btn btn-primary">
-                    <span class="pull-left text-centered">
+          <div class="row collapse">
+            <div class="large-10 medium-10 small-10 columns pr">
+              <input id="connectionId" type="text" class="small-9 columns" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
+              <small class="icon-input" ng-show="joinForm.connectionId.$invalid && !joinForm.connectionId.$pristine"><i class="fi-x"></i></small>
+              <small class="icon-input" ng-show="joinForm.connectionId.$valid
+                && !joinForm.connectionId.$pristine"><i class="fi-check"></i></small>
+            </div>
+            <div class="small-2 columns" ng-hide="showScanner || disableScanner">
+              <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
+            </div>
+            <div class="small-2 columns" ng-show="showScanner">
+              <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
+            </div>
+          </div>
+
+          <div id="scanner" class="row" ng-if="showScanner">
+            <div class="text-centered">
+              <canvas id="qr-canvas" width="200" height="150"></canvas>
+              <div ng-show="isMobile">
+                <div id="file-input-wrapper" class="btn btn-primary">
+                  <span class="pull-left text-centered">
                       <i class="glyphicon glyphicon-refresh icon-rotate"></i>
                       <span translate>Get QR code</span>
-                    </span>
-                    <input id="qrcode-camera" type="file" capture="camera" accept="image/*">
-                  </div>
-                </div>
-                <div ng-hide="isMobile">
-                  <video id="qrcode-scanner-video" width="300" height="225" ng-hide="isMobile"></video>
+                  </span>
+                  <input id="qrcode-camera" type="file" capture="camera" accept="image/*">
                 </div>
               </div>
+              <div ng-hide="isMobile">
+                <video id="qrcode-scanner-video" width="300" height="225" ng-hide="isMobile"></video>
+              </div>
             </div>
+          </div>
 
-            <label translate for="joinPassword" class="m10b">User information</label>
-            <input id="joinPassword" type="text" class="form-control" 
-            placeholder="{{'Your name'|translate}}" name="nickname"
-            ng-model="nickname" required>
-            <input type="password" class="form-control"
-            placeholder="{{'Choose your password'|translate}}" name="joinPassword"
-            ng-model="$parent.joinPassword"
-            check-strength="passwordStrength"
-            tooltip-html-unsafe="Password strength: 
-            <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase,
-              numbers and symbols</span>" tooltip-trigger="focus" 
-              tooltip-placement="top" required>
+          <a class="expand small" ng-click="hideAdv=!hideAdv">
+            <i class="fi-widget m3r"></i>
+            <span translate ng-hide="!hideAdv">Show</span> 
+            <span translate ng-hide="hideAdv">Hide</span> 
+            <span translate>advanced options</span>
+          </a>
+          <div ng-hide="hideAdv" class="m10t">
+            <p>
+              <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
+          </div>
 
-            <div class="pr">
-              <input type="password" 
-              placeholder="{{'Repeat password'|translate}}"
-              name="joinPasswordConfirm"
-              ng-model="joinPasswordConfirm" 
-              match="joinPassword" required>
-              <small class="icon-input" ng-show="joinForm.joinPasswordConfirm.$dirty && joinForm.joinPasswordConfirm.$invalid"><i class="fi-x"></i></small>
-              <p class="m15b text-gray size-12" ng-show="joinForm.joinPasswordConfirm.$dirty && joinForm.joinPasswordConfirm.$invalid">
-                <i class="fi-x m5r"></i>
-                {{'Passwords must match'|translate}}
-              </p>
-            </div>
+          <div class="text-right">
+            <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading">Join</button>
+          </div>
 
-            <a class="expand small"  ng-click="hideAdv=!hideAdv">
-              <i class="fi-widget m3r"></i>
-              <span translate ng-hide="!hideAdv">Show</span> 
-              <span translate ng-hide="hideAdv">Hide</span> 
-              <span translate>advanced options</span>
-            </a>
-            <div ng-hide="hideAdv" class="m10t">
-              <p>
-              <input type="text" 
-              placeholder="BIP32 master extended private key (hex)"
-              name="private"
-              ng-model="$parent.private" 
-              >
-            </div>
- 
-            <div class="text-right m20t">
-              <a href="#!/" class="back-button text-primary m20r">&laquo; <span translate>Back</span></a>
-              <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading">Join</button>
-            </div>
-          </form>
-        </div>
+
+
+
+        </form>
+      </div>
     </div>
-  </div> <!-- End !loading -->
+  </div>
+  <!-- End !loading -->
 </div>
 
 

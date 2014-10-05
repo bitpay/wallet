@@ -18,7 +18,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         controllerUtils.onErrorDigest(
           $scope, (err.toString()||'').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
       } else {
-        $scope.loading = false;
         $rootScope.iden = iden;
         $rootScope.wallet = w;
         controllerUtils.bindWallet(w, $scope);

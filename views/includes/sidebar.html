@@ -11,13 +11,20 @@
     <div>
       Available wallets
       <ul class="side-nav">
-      <li data-ng-repeat="item in $root.iden.listWallets()" class="nav-item">
-            {{item.id}} 
+      <li data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item">
+        <a ng-click="switchWallet(item.id)">
+            {{item.name || item.id}} 
+        </a>
       </li>
       <li class="nav-item"  ui-route="{{create}}">
-         <a href="#!/create">+ {{'Create a new wallet' | translate }}
-         </a>
+         <a href="#!/create">+ {{'Create ' | translate }} </a> <a href="#!/join">+ {{'Join' | translate }} </a>
       </li>
+      <li>
+        <a href="#!/" class="db p20h" title="Close"
+          ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
+      </li>
+
+ 
       </ul>
     </div>
 
@@ -69,10 +76,6 @@
           <span class="label alert" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
         </span>
       </a>
-    </li>
-    <li>
-      <a href="#!/" class="db p20h" title="Close"
-        ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
     </li>
   </ul>
 

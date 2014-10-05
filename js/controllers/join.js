@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, identity, controllerUtils, Passphrase, notification) {
-    controllerUtils.redirIfLogged();
+  function($scope, $rootScope, $timeout, controllerUtils, notification) {
     $rootScope.fromSetup = false;
     $scope.loading = false;
     $scope.isMobile = !!window.cordova;
@@ -120,31 +119,32 @@ angular.module('copayApp.controllers').controller('JoinController',
 
       $scope.loading = true;
 
-      Passphrase.getBase64Async($scope.joinPassword, function(passphrase) {
-        identity.joinCreateSession({
-          secret: $scope.connectionId,
-          nickname: $scope.nickname,
-          passphrase: passphrase,
-          privateHex: $scope.private,
-        }, function(err, w) {
+      $rootScope.iden.joinWallet({
+        secret: $scope.connectionId,
+        nickname: $scope.nickname,
+        privateHex: $scope.private,
+      }, function(err, w) {
 
-          $scope.loading = false;
-          if (err || !w) {
-            if (err === 'joinError')
-              notification.error('Fatal error connecting to Insight server');
-            else if (err === 'walletFull')
-              notification.error('The wallet is full');
-            else if (err === 'badNetwork')
-              notification.error('Network Error', 'Wallet network configuration missmatch');
-            else if (err === 'badSecret')
-              notification.error('Bad secret', 'The secret string you entered is invalid');
-            else
-              notification.error('Unknown error');
-            controllerUtils.onErrorDigest();
-          } else {
-            controllerUtils.startNetwork(w, $scope);
-          }
-        });
+        $scope.loading = false;
+        if (err || !w) {
+          if (err === 'joinError')
+            notification.error('Fatal error connecting to Insight server');
+          else if (err === 'walletFull')
+            notification.error('The wallet is full');
+          else if (err === 'badNetwork')
+            notification.error('Network Error', 'Wallet network configuration missmatch');
+          else if (err === 'badSecret')
+            notification.error('Bad secret', 'The secret string you entered is invalid');
+          else
+            notification.error('Unknown error');
+          controllerUtils.onErrorDigest();
+        } else {
+          $rootScope.iden.closeWallet($rootScope.wallet.id, function() {
+            $scope.loading = false;
+            $rootScope.wallet = w;
+            controllerUtils.bindWallet(w, $scope);
+          });
+        }
       });
     }
   });

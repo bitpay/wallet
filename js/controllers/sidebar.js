@@ -58,9 +58,9 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   }
 
   if ($rootScope.wallet) {
-    $scope.$on('$idleWarn', function(a,countdown) {
-      if (!(countdown%5))
-      notification.warning('Session will be closed', $filter('translate')('Your session is about to expire due to inactivity in') + ' ' + countdown + ' ' + $filter('translate')('seconds'));
+    $scope.$on('$idleWarn', function(a, countdown) {
+      if (!(countdown % 5))
+        notification.warning('Session will be closed', $filter('translate')('Your session is about to expire due to inactivity in') + ' ' + countdown + ' ' + $filter('translate')('seconds'));
     });
 
     $scope.$on('$idleTimeout', function() {
@@ -71,4 +71,21 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       $rootScope.wallet.keepAlive();
     });
   }
+
+  $scope.switchWallet = function(id) {
+    var iden = $rootScope.iden;
+    controllerUtils.unbindWallet($scope);
+
+    iden.openWallet(id, null, function(err, w) {
+      if (err) {
+        notification.warning('Could not open wallet');
+      } else {
+        iden.closeWallet($rootScope.wallet.id, function() {
+          $scope.loading = false;
+          $rootScope.wallet = w;
+          controllerUtils.bindWallet(w, $scope);
+        });
+      }
+    });
+  };
 });
