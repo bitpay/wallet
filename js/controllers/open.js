@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('OpenController', function($scope, $rootScope, $location, identity, controllerUtils, Passphrase, notification) {
+angular.module('copayApp.controllers').controller('OpenController', function($scope, $rootScope, $location, controllerUtils, Passphrase, notification) {
   controllerUtils.redirIfLogged();
 
   if ($rootScope.pendingPayment) {

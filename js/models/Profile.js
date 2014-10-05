@@ -12,7 +12,7 @@ function Profile(info, storage) {
 
   this.hash = info.hash;
   this.email = info.email;
-  this.extra = info.extra;
+  this.extra = info.extra || {};
   this.walletInfos = info.walletInfos || {};
 
   this.key = Profile.key(this.hash);
@@ -69,7 +69,7 @@ Profile.prototype.getWallet = function(walletId, cb) {
 
 Profile.prototype.listWallets = function(opts, cb) {
   return _.sortBy(this.walletInfos, function(winfo) {
-    return winfo.lastOpenedTs || winfo.createdTs;
+    return -winfo.lastOpenedTs || -winfo.createdTs;
   });
 };
 
@@ -139,6 +139,11 @@ Profile.prototype.store = function(opts, cb) {
       });
     }
   });
+};
+
+
+Profile.prototype.getName = function() {
+  return this.extra.nickname || this.email;
 };
 
 module.exports = Profile;

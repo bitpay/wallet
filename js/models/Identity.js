@@ -94,8 +94,8 @@ Identity._walletRead = function(id, s, n, b, skip, cb) {
   return Wallet.read(id, s, n, b, skip, cb);
 };
 
-Identity._walletDelete = function(id, cb) {
-  return Wallet.delete(id, cb);
+Identity._walletDelete = function(id, s, cb) {
+  return Wallet.delete(id, s, cb);
 };
 
 /* for stubbing */
@@ -133,6 +133,7 @@ Identity.create = function(email, password, opts, cb) {
       requiredCopayers: 1,
       totalCopayers: 1,
       password: password,
+      name: 'general',
     });
     iden.createWallet(wopts, function(err, w) {
       return cb(null, iden, w);
@@ -170,10 +171,22 @@ Identity.open = function(email, password, opts, cb) {
   Identity._openProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
     iden.profile = profile;
-    var wid = iden.listWallets()[0].id;
-    iden.openWallet(wid, password, function(err, w) {
-      return cb(err, iden, w);
-    })
+
+    var wids = _.pluck(iden.listWallets(), 'id');
+
+
+    while (1) {
+      var wid = wids.shift();
+      if (!wid)
+        return new Error('Could not open any wallet from profile');
+
+      iden.openWallet(wid, password, function(err, w) {
+        if (err)
+          log.info('Cound not open wallet id:' + wid + '. Skipping')
+        else
+          return cb(err, iden, w);
+      })
+    }
 
   });
 };
@@ -222,6 +235,16 @@ Identity.prototype.store = function(opts, cb) {
 };
 
 
+Identity.prototype._cleanUp = function() {
+  log.info('Cleaning Network connections')
+  var self = this;
+
+  _.each(['livenet', 'testnet'], function(n) {
+    self.networks[n].cleanUp();
+    self.blockchains[n].destroy();
+  });
+};
+
 /**
  * @desc Closes the wallet and disconnects all services
  */
@@ -234,12 +257,17 @@ Identity.prototype.close = function(cb) {
     return cb ? cb() : null;
   }
 
+  var self = this;
   _.each(this.openWallets, function(w) {
     w.close(function(err) {
+      console.log('[Identity.js.239:err:]', err); //TODO
       if (err) return cb(err);
 
-      if (++i == l && cb)
-        return cb();
+      console.log('[Identity.js.241]', i, l); //TODO
+      if (++i == l) {
+        self._cleanUp();
+        if (cb) return cb();
+      }
     })
   });
 };
@@ -268,6 +296,22 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
     w.store(cb);
   });
 };
+
+Identity.prototype.closeWallet = function(wid, cb) {
+  var w = _.findWhere(this.openWallets, function(w) {
+    w.id === wid;
+  });
+  preconditions.checkState(w);
+
+  var self = this;
+  w.close(function(err) {
+    self.openWallets = _.without(self.openWallets, function(id) {
+      id === wid
+    });
+    return cb(err);
+  });
+};
+
 /**
  * @desc This method prepares options for a new Wallet
  *
@@ -345,13 +389,15 @@ Identity.prototype.createWallet = function(opts, cb) {
   var w = Identity._newWallet(opts);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
+    self.openWallets.push(w);
+
     self.profile.setLastOpenedTs(w.id, function(err) {
       return cb(err, w);
     });
   });
 };
 
-// add open wallet?
+// add wallet (import)
 Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkArgument(wallet);
   preconditions.checkArgument(wallet.getId);
@@ -359,10 +405,11 @@ Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkState(this.profile);
 
   var self = this;
-  self.profile.addWallet(wallet.id, {}, function(err) {
+  self.profile.addWallet(wallet.getId(), {
+    name: wallet.name
+  }, function(err) {
 
     if (err) return cb(err);
-    self.openWallets.push(wallet);
     wallet.store(function(err) {
       return cb(err);
     });
@@ -400,15 +447,19 @@ Identity.prototype._checkVersion = function(inVersion) {
  * @return
  */
 Identity.prototype.openWallet = function(walletId, password, cb) {
+  console.log('[Identity.js.434:openWallet:]', walletId); //TODO
   preconditions.checkArgument(cb);
   var self = this;
 
-  self.storage.setPassword(password);
+  if (password)
+    self.storage.setPassword(password);
+
   // TODO
   //  self.migrateWallet(walletId, password, function() {
 
   Identity._walletRead(walletId, self.storage, self.networks, self.blockchains, [], function(err, w) {
     if (err) return cb(err);
+    self.openWallets.push(w);
 
     w.store(function(err) {
       self.profile.setLastOpenedTs(walletId, function() {
@@ -421,7 +472,8 @@ Identity.prototype.openWallet = function(walletId, password, cb) {
 
 
 Identity.prototype.listWallets = function(a) {
-  return this.profile.listWallets();
+  var ret = this.profile.listWallets();
+  return ret;
 };
 
 /**
@@ -468,7 +520,6 @@ Identity.prototype.decodeSecret = function(secret) {
  *
  * @param {object} opts
  * @param {string} opts.secret - the wallet secret
- * @param {string} opts.password - a password to use to encrypt the wallet for persistance
  * @param {string} opts.nickname - a nickname for the current user
  * @param {string} opts.privateHex - the private extended master key
  * @param {walletCreationCallback} cb - a callback
@@ -476,8 +527,6 @@ Identity.prototype.decodeSecret = function(secret) {
 Identity.prototype.joinWallet = function(opts, cb) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.secret);
-  preconditions.checkArgument(opts.password);
-  preconditions.checkArgument(opts.nickname);
   preconditions.checkArgument(cb);
   var self = this;
   var decodedSecret = this.decodeSecret(opts.secret);
@@ -534,8 +583,10 @@ Identity.prototype.joinWallet = function(opts, cb) {
         walletOpts.id = data.walletId;
 
         walletOpts.privateKey = privateKey;
-        walletOpts.nickname = opts.nickname;
-        walletOpts.password = opts.password;
+        walletOpts.nickname = opts.nickname || self.profile.name;
+
+        if (opts.password)
+          walletOpts.password = opts.password;
 
         self.createWallet(walletOpts, function(err, w) {
 

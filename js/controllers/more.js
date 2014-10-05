@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, backupService, identity, controllerUtils, notification, rateService) {
+  function($scope, $rootScope, $location, $filter, backupService, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
     $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
@@ -81,7 +81,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     };
 
     $scope.deleteWallet = function() {
-      identity.delete(w.id, function() {
+      $rootScope.iden.deleteWallet(w.id, function() {
         controllerUtils.logout();
       });
     };

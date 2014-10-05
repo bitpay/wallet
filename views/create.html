@@ -35,6 +35,22 @@
               </div>
             </div>
             <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
+
+              <a class="expand small" ng-click="hideAdv=!hideAdv">
+               <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdv">Show</span> 
+                <span translate ng-hide="hideAdv">Hide</span> 
+                <span translate>advanced options</span>
+              </a>
+              <div ng-hide="hideAdv" class="m10t">
+                <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
+                <label for="network-name" translate>Use test network</label>
+
+                <p>
+                <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
+              </div>
+
+
             <div class="text-right">
               <button translate  type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet

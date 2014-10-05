@@ -241,6 +241,7 @@ Wallet.read = function(walletId, storage, network, blockchain, skipFields, cb) {
     var w, err;
     obj.id = walletId;
     try {
+      log.debug('## OPENING Wallet: ' + walletId);
       w = self.fromObj(obj, storage, network, blockchain, skipFields);
     } catch (e) {
       log.debug("ERROR: ", e.message);
@@ -892,6 +893,7 @@ Wallet.prototype.netStart = function() {
     self.emit('connectionError');
   });
 
+  log.debug('Starting wallet networking');
   net.start(startOpts, function() {
     self._setBlockchainListeners();
     self.emit('ready', net.getPeer());
@@ -2536,10 +2538,8 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  */
 Wallet.prototype.close = function(cb) {
   var self = this;
-  log.debug('## CLOSING Wallet');
+  log.debug('## CLOSING Wallet: ' + this.id);
   this.lock.release(function() {
-    self.network.cleanUp();
-    self.blockchain.destroy();
     if (cb) return cb();
   });
 };

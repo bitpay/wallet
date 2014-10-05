@@ -52,22 +52,20 @@
           </section>
         </nav>
 
-        <aside class="left-off-canvas-menu">
-          <div ng-include="'views/includes/sidebar-mobile.html'"></div>
-        </aside>
 
+        <!-- <aside class="left&#45;off&#45;canvas&#45;menu"> -->
+        <!--   <div ng&#45;include="'views/includes/sidebar&#45;mobile.html'"></div> -->
+        <!-- </aside> -->
+        <!--  -->
         <div notifications="right top"></div>
 
         <div 
-          ng-class="{'sidebar' : $root.wallet && $root.wallet.isReady() &&
-          !$root.wallet.isLocked}"
           ng-include="'views/includes/sidebar.html'" 
           role='navigation'
-          ng-if="$root.wallet && $root.wallet.isReady() &&
-          !$root.wallet.isLocked"></div>
+          class="sidebar"
+          ng-if="$root.iden"></div>
 
-        <section ng-class="{'main' : $root.wallet && $root.wallet.isReady() &&
-          !$root.wallet.isLocked}" ng-view></section>
+        <section ng-class="{'main' : $root.iden && $root.iden.listWallets().length>0}" ng-view></section>
 
         <a class="exit-off-canvas"></a>
 
