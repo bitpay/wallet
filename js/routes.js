@@ -28,7 +28,7 @@ angular
   })
   .when('/create', {
     templateUrl: 'views/create.html',
-    validate: false
+    validate: true 
   })
   .when('/copayers', {
     templateUrl: 'views/copayers.html',

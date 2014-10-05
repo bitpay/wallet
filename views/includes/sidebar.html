@@ -7,6 +7,22 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div class="line-sidebar"></div>
+
+    <div>
+      Available wallets
+      <ul class="side-nav">
+      <li data-ng-repeat="item in $root.iden.listWallets()" class="nav-item">
+            {{item.id}} 
+      </li>
+      <li class="nav-item"  ui-route="{{create}}">
+         <a href="#!/create">+ {{'Create a new wallet' | translate }}
+         </a>
+      </li>
+      </ul>
+    </div>
+
+
+    <div class="line-sidebar"></div>
     <div>
       <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
         <span>{{$root.wallet.getName()}}</span>

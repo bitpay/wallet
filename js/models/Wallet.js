@@ -241,7 +241,6 @@ Wallet.read = function(walletId, storage, network, blockchain, skipFields, cb) {
     var w, err;
     obj.id = walletId;
     try {
-console.log('[Wallet.js.218:network:]',network); //TODO
       w = self.fromObj(obj, storage, network, blockchain, skipFields);
     } catch (e) {
       log.debug("ERROR: ", e.message);
@@ -969,7 +968,7 @@ Wallet.prototype.store = function(cb) {
   this.keepAlive();
 
   var val = this.toObj();
-  var key = 'wallet::' + this.id + ((val.opts && val.opts.name) ? '_' + obj.opts.name : '');
+  var key = 'wallet::' + this.id + ((val.opts && val.opts.name) ? '_' + val.opts.name : '');
   this.storage.set(key, val, function(err) {
     log.debug('Wallet stored');
     if (cb)

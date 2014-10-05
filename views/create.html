@@ -5,62 +5,17 @@
   </div>
   <div class="setup" ng-show="!loading">
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
-      <div class="row">
-        <div class="large-4 columns logo-setup text-center">
-          <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
-          <div ng-include="'views/includes/version.html'"></div>
-        </div>
-        <div class="large-8 columns">
+
+      <h1>{{'Create Wallet'|translate}}</h1>
+      <div class="row collapse m0">
+      <div class="large-6 columns">
           <div class="box-setup oh">
-            <img src="img/step-1.png" alt="Step 1" width="157" class="right
-            m15t hide-for-small-only" ng-if="!isSetupWalletPage && !isMobile">
-            <img src="img/step-2.png" alt="Step 2" width="157" class="right
-            m15t hide-for-small-only" ng-if="isSetupWalletPage && !isMobile">
+            <img src="img/step-1.png" alt="Step 1" width="157" class="right m15t" ng-if="!isSetupWalletPage && !isMobile">
             <h1 translate class="text-secondary line-sidebar-b">Create new wallet</h1>
-            <label ng-show="!isSetupWalletPage"><span translate>Wallet name</span>
+            <label><span translate>Wallet name</span>
               <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName">
             </label>
-            <div class="row" ng-show="isSetupWalletPage">
-              <div ng-if="totalCopayers > 1">
-                <label translate for="Name">Your name</label>
-                <input id="Name" type="text" placeholder="{{'Your name'|translate}}"
-                class="form-control" ng-model="$parent.myNickname" required>
-              </div>
-              <div>
-                <label translate for="walletPassword">
-                  Your password 
-                </label>
-                <input id="walletPassword" type="password" placeholder="{{'Choose a password'|translate}}" class="form-control" ng-model="$parent.walletPassword" name="walletPassword" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: 
-                  <i>{{passwordStrength}}</i><br/><span
-                    class='size-12'>Tip: Use lower and uppercase, numbers and
-                    symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
-                <div class="pr">
-                  <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
-                  <small class="icon-input"
-                    ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.walletPasswordConfirm.$invalid"><i class="fi-x"></i></small>
-                  <p class="m15b text-gray size-12" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.walletPasswordConfirm.$invalid">
-                    <i class="fi-x m5r"></i>
-                   {{'Passwords must match'|translate}}
-                  </p>
-                </div>
-
-              </div>
-
-              <a class="expand small" ng-click="hideAdv=!hideAdv">
-                <i class="fi-widget m3r"></i>
-                <span translate ng-hide="!hideAdv">Show</span> 
-                <span translate ng-hide="hideAdv">Hide</span> 
-                <span translate>advanced options</span>
-              </a>
-              <div ng-hide="hideAdv" class="m10t">
-                <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
-                <label for="network-name" translate>Use test network</label>
-
-                <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
-              </div>
-
-            </div>
-            <div class="row" ng-show="!isSetupWalletPage">
+            <div class="row">
               <div class="large-6 medium-6 columns">
                 <label><span translate>Select total number of copayers (*)</span>
                   <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
@@ -74,19 +29,16 @@
                 </label>
               </div>
             </div>
-            <div class="box-setup-copayers" ng-show="!isSetupWalletPage">
+            <div class="box-setup-copayers">
               <div class="box-setup-copayers p10">
                 <img class="br100 oh box-setup-copay m10" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" title="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}" width="50px">
               </div>
             </div>
-            <p translate class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
-            <div class="text-right m20t">
-              <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; <span translate>Back</span></a>
-              <a ng-show="isSetupWalletPage" class="back-button m20r" ng-click="setupWallet()">&laquo; <span translate>Back</span></a>
-              <button translate ng-show="isSetupWalletPage" type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
+            <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
+            <div class="text-right">
+              <button translate  type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
-              <a translate class="button secondary m0" ng-show="!isSetupWalletPage" ng-click="setupWallet()">Next</a>
             </div>
             <div ng-show="showNetwork()"><p translate class="size-12">Using network: {{networkName}} at <a href="{{networkUrl}}" target="_blank">{{networkUrl}}</a></p></div>
           </div>
