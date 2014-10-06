@@ -22,6 +22,7 @@ var Logger = function(name) {
   this.level = 2;
 };
 
+
 var levels = {
   'debug': 0,
   'info': 1,
@@ -34,9 +35,18 @@ var levels = {
 _.each(levels, function(level, levelName) {
   Logger.prototype[levelName] = function() {
     if (level >= levels[this.level]) {
-      var str = '[' + levelName + '] ' + this.name + ': ' + arguments[0],
+
+      if (Error.stackTraceLimit && this.level == 'debug') {
+        Error.stackTraceLimit = 2
+        var stack = new Error().stack;
+        var lines = stack.split('\n');
+        var caller = lines[2];
+        caller =  ':' + caller.substr(6);
+      }
+
+      var str = '[' + levelName + (caller||'') + '] ' + arguments[0],
         extraArgs,
-      extraArgs = [].slice.call(arguments, 1);
+        extraArgs = [].slice.call(arguments, 1);
       if (console[levelName]) {
         extraArgs.unshift(str);
         console[levelName].apply(console, extraArgs);
