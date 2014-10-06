@@ -393,6 +393,27 @@ describe('Wallet model', function() {
     w.maxRejectCount().should.equal(2);
   });
 
+  describe('#getMaxRequiredCopayers', function() {
+    it('should return ', function() {
+      var validPairs = {
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 4,
+        6: 3,
+        7: 3,
+        8: 2,
+        9: 2,
+        10: 2,
+        11: 1,
+        12: 1,
+      };
+      _.each(validPairs, function(maxReq, total) {
+        Wallet.getMaxRequiredCopayers(total).should.equal(maxReq);
+      })
+    });
+  });
 
   describe('#_onData', function() {
     var w = cachedCreateW();
