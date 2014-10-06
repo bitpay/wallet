@@ -57,7 +57,8 @@
 
             <label translate for="joinPassword">User information</label>
             <input id="joinPassword" type="text" class="form-control" 
-            placeholder="{{'Your name (optional)'|translate}}" name="nickname" ng-model="nickname">
+            placeholder="{{'Your name'|translate}}" name="nickname"
+            ng-model="nickname" required>
             <input type="password" class="form-control"
             placeholder="{{'Choose your password'|translate}}" name="joinPassword"
             ng-model="$parent.joinPassword"
