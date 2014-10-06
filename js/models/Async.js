@@ -264,7 +264,7 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
 
   self.socket.on('connect', function() {
     var pubkey = self.getKey().public.toString('hex');
-    log.debug('Async subcribing to:pubkey:',pubkey);
+    log.debug('Async subscribing to:pubkey:',pubkey);
 
     self.socket.emit('subscribe', pubkey);
 
@@ -325,7 +325,10 @@ Network.prototype.start = function(opts, openCallback) {
 
   preconditions.checkState(this.connectedPeers && this.connectedPeers.length === 0);
 
-  if (this.started) return openCallback();
+  if (this.started) {
+    log.debug('Async: Networing already started for this wallet.')
+    return openCallback();
+  }
 
   this.privkey = opts.privkey;
   this.setCopayerId(opts.copayerId);
@@ -336,8 +339,7 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 Network.prototype.createSocket = function() {
-
-  console.log('Async: Connecting to socket:', this.url, this.socketOptions); //TODO
+  log.debug('Async: Connecting to socket:', this.url, this.socketOptions); 
   return io.connect(this.url, this.socketOptions);
 };
 

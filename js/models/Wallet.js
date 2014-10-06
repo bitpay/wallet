@@ -869,6 +869,12 @@ Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
 
+  if (net.started) {
+    log.debug('Wallet networking was ready')
+    self.emit('ready', net.getPeer());
+    return;
+  }
+
   net.removeAllListeners();
   net.on('connect', self._onConnect.bind(self));
   net.on('data', self._onData.bind(self));
@@ -2539,6 +2545,7 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  */
 Wallet.prototype.close = function(cb) {
   var self = this;
+  this.network.cleanUp();
   log.debug('## CLOSING Wallet: ' + this.id);
   this.lock.release(function() {
     if (cb) return cb();
