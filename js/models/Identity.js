@@ -127,7 +127,8 @@ Identity.create = function(email, password, opts, cb) {
       cb(null, iden);
 
     // default wallet
-    var wopts = _.extend(opts.walletDefaults, {
+    var dflt = _.clone(opts.walletDefaults);
+    var wopts = _.extend(dflt, {
       nickname: email,
       networkName: opts.networkName,
       requiredCopayers: 1,
@@ -447,7 +448,6 @@ Identity.prototype._checkVersion = function(inVersion) {
  * @return
  */
 Identity.prototype.openWallet = function(walletId, password, cb) {
-  console.log('[Identity.js.434:openWallet:]', walletId); //TODO
   preconditions.checkArgument(cb);
   var self = this;
 

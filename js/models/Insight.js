@@ -73,6 +73,7 @@ Insight.prototype.subscribeToBlocks = function() {
 
 /** @private */
 Insight.prototype._getSocketIO = function(url, opts) {
+  log.debug('Insight: Connecting to socket:', this.url, this.opts);
   return io(this.url, this.opts);
 };
 

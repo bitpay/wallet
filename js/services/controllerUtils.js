@@ -40,20 +40,29 @@ angular.module('copayApp.services')
       }
     };
 
+
+    root.isFocusedWallet = function(wid) {
+      return wid === $rootScope.wallet.getId();
+    };
+
     root.installWalletHandlers = function(w, $scope) {
+
+      var wid = w.getId();
       w.on('connectionError', function() {
-        var message = "Could not connect to the Insight server. Check your settings and network configuration";
-        notification.error('Networking Error', message);
-        root.onErrorDigest($scope);
-      });
-      w.on('ready', function() {
-        $scope.loading = false;
+        if (root.isFocusedWallet(wid)) {
+          var message = "Could not connect to the Insight server. Check your settings and network configuration";
+          notification.error('Networking Error', message);
+          root.onErrorDigest($scope);
+        }
       });
 
       w.on('corrupt', function(peerId) {
-        notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
+        if (root.isFocusedWallet(wid)) {
+          notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
+        }
       });
       w.on('ready', function(myPeerID) {
+        $scope.loading = false;
         $rootScope.wallet = w;
         if ($rootScope.initialConnection) {
           $rootScope.initialConnection = false;
@@ -66,69 +75,84 @@ angular.module('copayApp.services')
       });
 
       w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.updateAddressList();
-        if (!dontDigest) {
-          $rootScope.$digest();
+        if (root.isFocusedWallet(wid)) {
+          root.updateAddressList();
+          if (!dontDigest) {
+            $rootScope.$digest();
+          }
         }
       });
 
       w.on('tx', function(address, isChange) {
-        if (!isChange) {
-          notification.funds('Funds received!', address);
+        if (root.isFocusedWallet(wid)) {
+          if (!isChange) {
+            notification.funds('Funds received!', address);
+          }
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
         }
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
       });
 
       w.on('balanceUpdated', function() {
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
+        if (root.isFocusedWallet(wid)) {
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
+        }
       });
 
       w.on('insightReconnected', function() {
-        $rootScope.reconnecting = false;
-        root.updateAddressList();
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        });
+        if (root.isFocusedWallet(wid)) {
+          $rootScope.reconnecting = false;
+          root.updateAddressList();
+          root.updateBalance(function() {
+            $rootScope.$digest();
+          });
+        }
       });
 
       w.on('insightError', function() {
-        $rootScope.reconnecting = true;
-        $rootScope.$digest();
+        if (root.isFocusedWallet(wid)) {
+          $rootScope.reconnecting = true;
+          $rootScope.$digest();
+        }
       });
 
       w.on('txProposalsUpdated', function(dontDigest) {
-        root.updateTxs();
-        // give sometime to the tx to propagate.
-        $timeout(function() {
-          root.updateBalance(function() {
-            if (!dontDigest) {
-              $rootScope.$digest();
-            }
-          });
-        }, 3000);
+        if (root.isFocusedWallet(wid)) {
+          root.updateTxs();
+          // give sometime to the tx to propagate.
+          $timeout(function() {
+            root.updateBalance(function() {
+              if (!dontDigest) {
+                $rootScope.$digest();
+              }
+            });
+          }, 2000);
+        }
       });
       w.on('txProposalEvent', function(e) {
-
-        var user = w.publicKeyRing.nicknameForCopayer(e.cId);
-        switch (e.type) {
-          case 'signed':
-            notification.info('Transaction Update', $filter('translate')('A transaction was signed by') + ' ' + user);
-            break;
-          case 'rejected':
-            notification.info('Transaction Update', $filter('translate')('A transaction was rejected by') + ' ' + user);
-            break;
-          case 'corrupt':
-            notification.error('Transaction Error', $filter('translate')('Received corrupt transaction from') + ' ' +  user);
-            break;
+        if (root.isFocusedWallet(wid)) {
+          var user = w.publicKeyRing.nicknameForCopayer(e.cId);
+          switch (e.type) {
+            case 'signed':
+              notification.info('Transaction Update', $filter('translate')('A transaction was signed by') + ' ' + user);
+              break;
+            case 'rejected':
+              notification.info('Transaction Update', $filter('translate')('A transaction was rejected by') + ' ' + user);
+              break;
+            case 'corrupt':
+              notification.error('Transaction Error', $filter('translate')('Received corrupt transaction from') + ' ' + user);
+              break;
+          }
         }
       });
       w.on('addressBookUpdated', function(dontDigest) {
-        if (!dontDigest) {
-          $rootScope.$digest();
+        if (root.isFocusedWallet(wid)) {
+          if (!dontDigest) {
+            $rootScope.$digest();
+          }
         }
       });
       w.on('connect', function(peerID) {
@@ -156,7 +180,7 @@ angular.module('copayApp.services')
 
 
     root.unbindWallet = function($scope) {
-      var w =$rootScope.wallet;
+      var w = $rootScope.wallet;
       w.removeAllListeners();
     };
 
