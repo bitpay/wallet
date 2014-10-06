@@ -132,6 +132,21 @@ Wallet.PERSISTED_PROPERTIES = [
   'lastTimestamp',
 ];
 
+Wallet.COPAYER_PAIR_LIMITS = {
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 4,
+  6: 3,
+  7: 3,
+  8: 2,
+  9: 2,
+  10: 2,
+  11: 1,
+  12: 1,
+};
+
 /**
  * @desc Retrieve a random id for the wallet
  * @TODO: Discuss changing to a UUID
@@ -150,6 +165,18 @@ Wallet.getRandomNumber = function() {
   var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex');
   return r;
 };
+
+/**
+ * @desc
+ * Get the maximum allowed number of required copayers.
+ * This is a limit imposed by the maximum allowed size of the scriptSig.
+ * @param {number} totalCopayers - the total number of copayers
+ * @return {number}
+ */
+Wallet.getMaxRequiredCopayers = function(totalCopayers) {
+  return Wallet.COPAYER_PAIR_LIMITS[totalCopayers];
+};
+
 
 /**
  * @desc Set the copayer id for the owner of this wallet
