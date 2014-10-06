@@ -893,8 +893,9 @@ Wallet.prototype.netStart = function() {
     self.emit('connectionError');
   });
 
-  log.debug('Starting wallet networking');
+  log.debug('Wallet: Starting networking');
   net.start(startOpts, function() {
+    log.debug('Wallet: Networking ready');
     self._setBlockchainListeners();
     self.emit('ready', net.getPeer());
     setTimeout(function() {
