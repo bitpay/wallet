@@ -42,6 +42,11 @@ var Insight = function(opts) {
     'secure': opts.url.indexOf('https') === 0
   };
 
+
+   if (opts.transports) {
+     this.opts['transports'] =  opts.transports;
+   }
+
   this.socket = this.getSocket();
 }
 
