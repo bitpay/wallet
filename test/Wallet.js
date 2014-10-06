@@ -1564,6 +1564,7 @@ describe('Wallet model', function() {
       var txp = {
         getSeen: sinon.stub().returns(true),
         setCopayers: sinon.stub().returns(['new copayer']),
+        getSent: sinon.stub().returns(false),
         setSent: sinon.spy(),
         builder: {
           build: sinon.stub().returns({
@@ -1595,6 +1596,7 @@ describe('Wallet model', function() {
       var txp = {
         getSeen: sinon.stub().returns(true),
         setCopayers: sinon.stub().returns(['new copayer']),
+        getSent: sinon.stub().returns(false),
         setSent: sinon.spy(),
         builder: {
           build: sinon.stub().returns({
@@ -1614,6 +1616,38 @@ describe('Wallet model', function() {
       w._onTxProposal('senderID', data);
       txp.setSent.called.should.be.false;
       txp.setSent.calledWith(1).should.be.false;
+      w.sendTxProposal.called.should.be.false;
+      done();
+    });
+
+    it('should not overwrite sent info', function(done) {
+      var data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      var txp = {
+        getSeen: sinon.stub().returns(true),
+        setCopayers: sinon.stub().returns(['new copayer']),
+        getSent: sinon.stub().returns(true),
+        setSent: sinon.spy(),
+        builder: {
+          build: sinon.stub().returns({
+            isComplete: sinon.stub().returns(true),
+          }),
+        },
+      };
+
+      w.txProposals.merge = sinon.stub().returns({
+        ntxid: 1,
+        txp: txp,
+        new: false,
+        hasChanged: false,
+      });
+      w._checkSentTx = sinon.stub().yields(true);
+
+      w._onTxProposal('senderID', data);
+      txp.setSent.called.should.be.false;
       w.sendTxProposal.called.should.be.false;
       done();
     });
