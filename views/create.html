@@ -21,7 +21,8 @@
             <div class="row" ng-show="isSetupWalletPage">
               <div ng-if="totalCopayers > 1">
                 <label translate for="Name">Your name</label>
-                <input id="Name" type="text" placeholder="{{'Name'|translate}}" class="form-control" ng-model="$parent.myNickname">
+                <input id="Name" type="text" placeholder="{{'Your name'|translate}}"
+                class="form-control" ng-model="$parent.myNickname" required>
               </div>
               <div>
                 <label translate for="walletPassword">
@@ -33,8 +34,9 @@
                     symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
                 <div class="pr">
                   <input type="password" placeholder="{{'Repeat password'|translate}}" name="walletPasswordConfirm" ng-model="walletPasswordConfirm" match="walletPassword" required>
-                  <small class="icon-input" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.$invalid"><i class="fi-x"></i></small>
-                  <p class="m15b text-gray size-12" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.$invalid">
+                  <small class="icon-input"
+                    ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.walletPasswordConfirm.$invalid"><i class="fi-x"></i></small>
+                  <p class="m15b text-gray size-12" ng-show="setupForm.walletPasswordConfirm.$dirty && setupForm.walletPasswordConfirm.$invalid">
                     <i class="fi-x m5r"></i>
                    {{'Passwords must match'|translate}}
                   </p>
