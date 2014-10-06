@@ -18,6 +18,16 @@ function Network(opts) {
   this.url = opts.url;
   this.secretNumber = opts.secretNumber;
   this.cleanUp();
+
+  this.socketOptions =  {
+    reconnection: true,
+    'force new connection': true,
+    'secure': this.url.indexOf('https') === 0,
+  };
+
+   if (opts.transports) {
+     this.socketOptions['transports'] =  opts.transports;
+   }
 }
 
 nodeUtil.inherits(Network, EventEmitter);
@@ -191,7 +201,7 @@ Network.prototype._onMessage = function(enc) {
     this._deletePeer(sender);
     return;
   }
-  log.debug('receiving ' + JSON.stringify(payload));
+  log.debug('Async: receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
@@ -254,6 +264,8 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
 
   self.socket.on('connect', function() {
     var pubkey = self.getKey().public.toString('hex');
+    log.debug('Async subcribing to:pubkey:',pubkey);
+
     self.socket.emit('subscribe', pubkey);
 
     self.socket.on('disconnect', function() {
@@ -324,11 +336,9 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 Network.prototype.createSocket = function() {
-  return io.connect(this.url, {
-    reconnection: true,
-    'force new connection': true,
-    'secure': this.url.indexOf('https') === 0,
-  });
+
+  console.log('Async: Connecting to socket:', this.url, this.socketOptions); //TODO
+  return io.connect(this.url, this.socketOptions);
 };
 
 Network.prototype.getOnlinePeerIDs = function() {
