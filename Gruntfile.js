@@ -56,6 +56,7 @@ module.exports = function(grunt) {
         files: [
           'js/models/*.js',
           'plugins/*.js',
+          'js/*.js',
         ],
         tasks: ['shell:dev']
       },
