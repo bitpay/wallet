@@ -182,13 +182,17 @@ i.e:
 The application fails at login.
  
 1) Launch the app `npm run start`
+
 2) Click on "Join a Wallet"
+
 3) Type an unexistent username
+
 4) The app stops working, throws "Unhandled exception" error.
  
 Expected: The app should login to the home screen after clicking login and show no errors.
  
 Platform: Android 4.3, Android 4.4, iOS
+
 
 ## Web App
 
