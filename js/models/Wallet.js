@@ -405,9 +405,11 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     if (tx.isComplete()) {
       this._checkSentTx(m.ntxid, function(ret) {
         if (ret) {
-          m.txp.setSent(m.ntxid);
-          self.emit('txProposalsUpdated');
-          self.store();
+          if (!m.txp.getSent()) {
+            m.txp.setSent(m.ntxid);
+            self.emit('txProposalsUpdated');
+            self.store();
+          }
         }
       });
     } else {
