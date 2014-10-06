@@ -80,11 +80,9 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       if (err) {
         notification.warning('Could not open wallet');
       } else {
-        iden.closeWallet($rootScope.wallet.id, function() {
-          $scope.loading = false;
-          $rootScope.wallet = w;
-          controllerUtils.bindWallet(w, $scope);
-        });
+        $scope.loading = false;
+        $rootScope.wallet = w;
+        controllerUtils.bindWallet(w, $scope);
       }
     });
   };

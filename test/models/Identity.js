@@ -72,7 +72,7 @@ describe('Identity model', function() {
   var password = 'password';
 
   var config = {
-    wallet: {
+    walletDefaults: {
       requiredCopayers: 3,
       totalCopayers: 5,
       spendUnconfirmed: 1,
@@ -107,7 +107,7 @@ describe('Identity model', function() {
       it('should create an identity', function() {
         var iden = new Identity(email, password, config);
         should.exist(iden);
-        iden.walletDefaults.should.deep.equal(config.wallet);
+        iden.walletDefaults.should.deep.equal(config.walletDefaults);
       });
     });
 
@@ -183,7 +183,7 @@ describe('Identity model', function() {
 
     it('should add wallet to profile', function(done) {
       iden.createWallet(null, function(err, w) {
-        profile.addWallet.getCall(0).args[0].should.contain('spy#');
+        profile.addWallet.getCall(0).args[0].should.contain('wid:123');
         done();
       });
     });
