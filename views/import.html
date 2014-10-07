@@ -15,9 +15,23 @@
         <h1 class="text-white line-sidebar-b">{{title|translate}}</h1>
         <form name="importForm" ng-submit="import(importForm)" novalidate>
           <fieldset>
-            <legend for="backupFile" class="m10b"> <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i></legend>
-            <input type="file" class="form-control" 
-            placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
+            <div ng-show="!is_iOS">
+              <legend for="backupFile" class="m10b"> 
+                <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i>
+              </legend>
+              <input type="file" class="form-control" 
+                placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
+            </div>
+
+            <div ng-show="is_iOS">
+            <label for="backupText" class="m10b"> 
+              <span translate>Paste backup plain text code</span> <i class="fi-clipboard"></i>
+            </label>
+            <textarea class="form-control" 
+              name="backupText" 
+              ng-model="backupText" 
+              rows="5"></textarea>
+            </div>
 
 
             <label for="password"><span translate>Password</span> <small translate>Required</small></label>
