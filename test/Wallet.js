@@ -27,7 +27,22 @@ var walletConfig = {
   reconnectDelay: 100,
   networkName: 'testnet',
   storage: requireMock('FakeLocalStorage').storageParams,
+  // network layer config
+  networkOpts: {
+    testnet: {
+      url: 'https://test-insight.bitpay.com:443',
+      transports: ['polling'],
+    },
+    livenet: {
+      url: 'https://insight.bitpay.com:443',
+      transports: ['polling'],
+    },
+  },
 };
+
+
+walletConfig.blockchainOpts = walletConfig.networkOpts;
+
 
 var getNewEpk = function() {
   return new PrivateKey({
@@ -81,11 +96,19 @@ describe('Wallet model', function() {
 
     var storage = new Storage(walletConfig.storage);
     storage._setPassphrase('xxx');
-    var network = new Network(walletConfig.network);
-    var blockchain = new Blockchain(walletConfig.blockchain);
+
+    c.blockchain = new Blockchain(walletConfig.blockchain);
     c.storage = storage;
-    c.network = network;
-    c.blockchain = blockchain;
+
+    c.network = sinon.stub();
+    c.network.setHexNonce = sinon.stub();
+    c.network.setHexNonces = sinon.stub();
+    c.network.getHexNonce = sinon.stub();
+    c.network.getHexNonces = sinon.stub();
+    c.network.peerFromCopayer = sinon.stub().returns('xxxx');
+    c.network.send = sinon.stub();
+
+
 
     c.addressBook = {
       '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
@@ -105,7 +128,6 @@ describe('Wallet model', function() {
     c.networkName = walletConfig.networkName;
     c.version = '0.0.1';
 
-
     return new Wallet(c);
   }
 
@@ -117,7 +139,14 @@ describe('Wallet model', function() {
       cachedWobj = cachedW.toObj();
       cachedWobj.opts.reconnectDelay = 100;
     }
-    var w = Wallet.fromObj(cachedWobj, cachedW.storage, cachedW.network, cachedW.blockchain);
+    Wallet._newAsync = sinon.stub().returns(new Network(walletConfig.network));
+    Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
+
+    var w = Wallet.fromObj(cachedWobj, {
+      storage: cachedW.storage,
+      blockchainOpts: {},
+      networkOpts: {},
+    });
     return w;
   };
 
@@ -183,9 +212,17 @@ describe('Wallet model', function() {
       cachedW2obj = cachedW2.toObj();
       cachedW2obj.opts.reconnectDelay = 100;
     }
-    var w = Wallet.fromObj(cachedW2obj, cachedW2.storage, cachedW2.network, cachedW2.blockchain);
+    Wallet._newAsync = sinon.stub().returns(new Network(walletConfig.network));
+    Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
+
+    var w = Wallet.fromObj(cachedW2obj, {
+      storage: cachedW2.storage,
+      blockchainOpts: {},
+      networkOpts: {},
+    });
     return w;
   };
+
 
   it('#create, fail for network', function() {
 
@@ -343,10 +380,11 @@ describe('Wallet model', function() {
 
     var s = new Storage(walletConfig.storage);
     s._setPassphrase('xxx');
-    var w2 = Wallet.fromObj(o,
-      s,
-      new Network(walletConfig.network),
-      new Blockchain(walletConfig.blockchain));
+    var w2 = Wallet.fromObj(o, {
+      storage: s,
+      blockchainOpts: {},
+      networkOpts: {},
+    });
     should.exist(w2);
     w2.publicKeyRing.requiredCopayers.should.equal(w.publicKeyRing.requiredCopayers);
     should.exist(w2.publicKeyRing.getCopayerId);
@@ -613,8 +651,10 @@ describe('Wallet model', function() {
   var newId = '00bacacafe';
   it('handle new connections', function(done) {
     var w = createW();
+    w.sendWalletId = sinon.stub();
+
     w.on('connect', function(id) {
-      id.should.equal(newId);
+      id.should.equal('xxxx');
       done();
     });
     w._onConnect(newId);
@@ -1849,7 +1889,12 @@ describe('Wallet model', function() {
     var blockchain = new Blockchain(walletConfig.blockchain);
 
     it('Import backup using old copayerIndex', function() {
-      var w = Wallet.fromObj(JSON.parse(o), storage, network, blockchain);
+
+      var w = Wallet.fromObj(JSON.parse(o), {
+        storage: storage,
+        blockchainOpts: {},
+        networkOpts: {},
+      });
 
       should.exist(w);
       w.id.should.equal("dbfe10c3fae71cea");
@@ -1860,7 +1905,12 @@ describe('Wallet model', function() {
     });
 
     it('#fromObj, skipping fields', function() {
-      var w = Wallet.fromObj(JSON.parse(o), storage, network, blockchain, ['publicKeyRing']);
+      var w = Wallet.fromObj(JSON.parse(o), {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+        skipFields: ['publicKeyRing'],
+      });
 
       should.exist(w);
       w.id.should.equal("dbfe10c3fae71cea");
@@ -1876,7 +1926,11 @@ describe('Wallet model', function() {
       var o = '{"opts":{"id":"dbfe10c3fae71cea","spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":{"changeIndex":0,"receiveIndex":0},"copayersBackup":[],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{}}';
       var o2 = '{"opts":{"id":"dbfe10c3fae71cea","spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5","networkName":"testnet"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":[{"copayerIndex":2147483647,"changeIndex":0,"receiveIndex":0},{"copayerIndex":0,"changeIndex":0,"receiveIndex":0},{"copayerIndex":1,"changeIndex":0,"receiveIndex":0},{"copayerIndex":2,"changeIndex":0,"receiveIndex":0},{"copayerIndex":3,"changeIndex":0,"receiveIndex":0},{"copayerIndex":4,"changeIndex":0,"receiveIndex":0}],"copayersBackup":[],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{}}';
 
-      var w = Wallet.fromObj(JSON.parse(o), storage, network, blockchain);
+      var w = Wallet.fromObj(JSON.parse(o), {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+      });
 
       should.exist(w);
       w.id.should.equal("dbfe10c3fae71cea");
@@ -1889,18 +1943,25 @@ describe('Wallet model', function() {
   });
 
   describe('#read', function() {
+    var storage, network, blockchain;
 
-    var s = function() {};
-    var storage = new s();
-    var network = new Network(walletConfig.network);
-    var blockchain = new Blockchain(walletConfig.blockchain);
-    storage.setPassword  = sinon.stub();
+    beforeEach(function() {
+      var s = function() {};
+      storage = new s();
+      network = new Network(walletConfig.network);
+      blockchain = new Blockchain(walletConfig.blockchain);
+      storage.setPassword = sinon.stub();
+    });
 
 
     it('should fail to read an unexisting wallet', function(done) {
       storage.getFirst = sinon.stub().yields(null);
 
-      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
+      Wallet.read('123', {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+      }, function(err, w) {
         err.toString().should.contain('WNOTFOUND');
         done();
       });
@@ -1910,7 +1971,11 @@ describe('Wallet model', function() {
 
       storage.getFirst = sinon.stub().yields(null, '{hola:1}');
 
-      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
+      Wallet.read('123', {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+      }, function(err, w) {
         err.toString().should.contain('WERROR');
         done();
       });
@@ -1918,7 +1983,11 @@ describe('Wallet model', function() {
 
     it('should read a wallet', function(done) {
       storage.getFirst = sinon.stub().yields(null, JSON.parse(o));
-      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
+      Wallet.read('123', {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+      }, function(err, w) {
         should.not.exist(err);
         done();
       });
@@ -1926,7 +1995,11 @@ describe('Wallet model', function() {
 
     it('should be able to import unencrypted legacy wallet TxProposal: v0', function(done) {
       storage.getFirst = sinon.stub().yields(null, JSON.parse(legacyO));
-      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
+      Wallet.read('123', {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+      }, function(err, w) {
         should.exist(w);
         w.id.should.equal('55d4bd062d32f90a');
         should.exist(w.publicKeyRing.getCopayerId);
@@ -1939,7 +2012,11 @@ describe('Wallet model', function() {
     it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function(done) {
       storage.getFirst = sinon.stub().yields(null, JSON.parse(legacy1));
 
-      Wallet.read('123', storage, network, blockchain, [], function(err, w) {
+      Wallet.read('123', {
+        storage: storage,
+        networkOpts: {},
+        blockchainOpts: {},
+      }, function(err, w) {
         should.exist(w);
         w.isReady().should.equal(true);
         var wo = w.toObj();

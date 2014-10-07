@@ -19,15 +19,16 @@ function Network(opts) {
   this.secretNumber = opts.secretNumber;
   this.cleanUp();
 
-  this.socketOptions =  {
+  this.socketOptions = {
     reconnection: true,
     'force new connection': true,
     'secure': this.url.indexOf('https') === 0,
   };
 
-   if (opts.transports) {
-     this.socketOptions['transports'] =  opts.transports;
-   }
+  if (opts.transports) {
+    this.socketOptions['transports'] = opts.transports;
+  }
+  this.socket = this.createSocket();
 }
 
 nodeUtil.inherits(Network, EventEmitter);
@@ -262,9 +263,11 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
 
   self.socket.on('no messages', self.emit.bind(self, 'no messages'));
 
+
+  var pubkey = self.getKey().public.toString('hex');
   self.socket.on('connect', function() {
     var pubkey = self.getKey().public.toString('hex');
-    log.debug('Async subscribing to:pubkey:',pubkey);
+    log.debug('Async subscribing to pubkey:', pubkey);
 
     self.socket.emit('subscribe', pubkey);
 
@@ -322,7 +325,6 @@ Network.prototype.start = function(opts, openCallback) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.privkey);
   preconditions.checkArgument(opts.copayerId);
-
   preconditions.checkState(this.connectedPeers && this.connectedPeers.length === 0);
 
   if (this.started) {
@@ -333,13 +335,11 @@ Network.prototype.start = function(opts, openCallback) {
   this.privkey = opts.privkey;
   this.setCopayerId(opts.copayerId);
   this.maxPeers = opts.maxPeers || this.maxPeers;
-
-  this.socket = this.createSocket();
   this._setupConnectionHandlers(opts, openCallback);
 };
 
 Network.prototype.createSocket = function() {
-  log.debug('Async: Connecting to socket:', this.url, this.socketOptions); 
+  log.debug('Async: Connecting to socket:', this.url, this.socketOptions);
   return io.connect(this.url, this.socketOptions);
 };
 
