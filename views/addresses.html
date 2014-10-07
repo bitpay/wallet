@@ -25,9 +25,9 @@
                 <span ng-if="$root.updatingBalance">
                     <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
-                <p class="size-14" ng-if="!$root.updatingBalance">
+                <span class="size-14" ng-if="!$root.updatingBalance">
                   <b>{{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-                </p>
+                </span>
               </div>
               <div class="large-1 columns show-for-large-up" ng-click="openAddressModal(addr)">
                 <a class="size-12" href=""> Show QR</a>
@@ -40,12 +40,12 @@
                 <small translate class="m0 label" ng-if="addr.isChange">change</small>
               </div>
             <div class="text-left">
-              <p class="small-12 columns m15t" ng-if="$root.updatingBalance">
+              <span class="small-12 columns m15t" ng-if="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-              </p>
-              <p class="size-14" ng-if="!$root.updatingBalance">
+              </span>
+              <span class="size-14" ng-if="!$root.updatingBalance">
                   <b>{{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-              </p>
+              </span>
             </div>
           </a> <!-- end of panel mobile --> 
         </div>
