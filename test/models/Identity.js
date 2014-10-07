@@ -6,7 +6,6 @@ var chai = chai || require('chai');
 var should = chai.should();
 
 
-var FakeNetwork = requireMock('FakeNetwork');
 var FakeBlockchain = requireMock('FakeBlockchain');
 var FakeStorage = function FakeStorage() {};
 var Identity = copay.Identity;
@@ -338,7 +337,8 @@ describe('Identity model', function() {
     };
 
     it('should yield bad network error', function(done) {
-      var net = iden.networks['testnet'];
+      var net = sinon.stub();
+
       net.greet = sinon.stub();
       net.cleanUp = sinon.stub();
       net.start = sinon.stub().yields(null);
@@ -348,6 +348,8 @@ describe('Identity model', function() {
         networkName: 'aWeirdNetworkName',
         opts: {},
       });
+      Identity._newAsync = function() { return net; };
+
       opts.privHex = undefined;
       iden.joinWallet(opts, function(err, w) {
         err.should.equal('badNetwork');
@@ -358,7 +360,7 @@ describe('Identity model', function() {
 
     it('should yield to join error', function(done) {
       opts.privHex = undefined;
-      var net = iden.networks['testnet'];
+      var net = sinon.stub();
       net.greet = sinon.stub();
       net.cleanUp = sinon.stub();
       net.start = sinon.stub().yields(null);
@@ -369,6 +371,8 @@ describe('Identity model', function() {
         type: 'walletId',
         networkName: iden.networkName,
       });
+      Identity._newAsync = function() { return net; };
+
       iden.joinWallet(opts, function(err, w) {
         err.should.equal('joinError');
         done();
@@ -378,7 +382,7 @@ describe('Identity model', function() {
 
     it('should call network.start / create', function(done) {
       opts.privHex = undefined;
-      var net = iden.networks['testnet'];
+      var net = sinon.stub();
       net.cleanUp = sinon.spy();
       net.greet = sinon.spy();
       net.start = sinon.stub().yields(null);
@@ -390,6 +394,7 @@ describe('Identity model', function() {
         networkName: 'testnet',
         opts: {},
       });
+      Identity._newAsync = function() { return net; };
 
       var w = sinon.stub();
       w.sendWalletReady = sinon.spy();
@@ -407,7 +412,7 @@ describe('Identity model', function() {
 
     it('should return walletFull', function(done) {
       opts.privHex = undefined;
-      var net = iden.networks['testnet'];
+      var net = sinon.stub();
       net.cleanUp = sinon.spy();
       net.greet = sinon.spy();
       net.start = sinon.stub().yields(null);
@@ -419,6 +424,7 @@ describe('Identity model', function() {
         networkName: 'testnet',
         opts: {},
       });
+      Identity._newAsync = function() { return net; };
       iden.createWallet = sinon.stub().yields(null, null);
       iden.joinWallet(opts, function(err, w) {
         err.should.equal('walletFull');
@@ -428,7 +434,10 @@ describe('Identity model', function() {
 
     it('should accept a priv key a input', function() {
       opts.privHex = 'tprv8ZgxMBicQKsPf7MCvCjnhnr4uiR2Z2gyNC27vgd9KUu98F9mM1tbaRrWMyddVju36GxLbeyntuSadBAttriwGGMWUkRgVmUUCg5nFioGZsd';
-      var net = iden.networks['testnet'];
+      var net = sinon.stub();
+      Identity._newAsync = function() { return net; };
+      net.on = sinon.stub();
+
       net.cleanUp = sinon.spy();
       net.start = sinon.spy();
       iden.joinWallet(opts, function(err, w) {
@@ -437,9 +446,11 @@ describe('Identity model', function() {
     });
     it('should call network.start with private key', function() {
       opts.privHex = undefined;
-      var net = iden.networks['testnet'];
+      var net = sinon.stub();
       net.cleanUp = sinon.spy();
+      net.on = sinon.stub();
       net.start = sinon.spy();
+      Identity._newAsync = function() { return net; };
       iden.joinWallet(opts, function(err, w) {
         net.start.getCall(0).args[0].privkey.length.should.equal(64); //privkey is hex of private key buffer
       });

@@ -203,7 +203,6 @@ Insight.prototype.subscribe = function(addresses) {
     return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;
-      log.debug('insight tx event');
 
       self.emit('tx', {
         address: address,

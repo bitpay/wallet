@@ -46,13 +46,13 @@ function Identity(email, password, opts) {
   this.storage = Identity._newStorage(storageOpts);
   this.storage.setPassword(password);
 
-  this.networks = {
-    'livenet': Identity._newAsync(opts.network.livenet),
-    'testnet': Identity._newAsync(opts.network.testnet),
+  this.networkOpts = {
+    'livenet': opts.network.livenet,
+    'testnet': opts.network.testnet,
   };
-  this.blockchains = {
-    'livenet': Identity._newInsight(opts.network.livenet),
-    'testnet': Identity._newInsight(opts.network.testnet),
+  this.blockchainOpts = {
+    'livenet': opts.network.livenet,
+    'testnet': opts.network.testnet,
   };
 
   this.walletDefaults = opts.walletDefaults || {};
@@ -66,14 +66,6 @@ function Identity(email, password, opts) {
 /* for stubbing */
 Identity._createProfile = function(email, password, storage, cb) {
   Profile.create(email, password, storage, cb);
-};
-
-Identity._newInsight = function(opts) {
-  return new Insight(opts);
-};
-
-Identity._newAsync = function(opts) {
-  return new Async(opts);
 };
 
 
@@ -90,8 +82,8 @@ Identity._walletFromObj = function(o, s, n, b, skip) {
   return Wallet.fromObj(o, s, n, b, skip);
 };
 
-Identity._walletRead = function(id, s, n, b, skip, cb) {
-  return Wallet.read(id, s, n, b, skip, cb);
+Identity._walletRead = function(id, r, cb) {
+  return Wallet.read(id, r, cb);
 };
 
 Identity._walletDelete = function(id, s, cb) {
@@ -102,6 +94,12 @@ Identity._walletDelete = function(id, s, cb) {
 Identity._openProfile = function(email, password, storage, cb) {
   Profile.open(email, password, storage, cb);
 };
+
+/* for stubbing */
+Identity._newAsync = function(opts) {
+  return new Async(opts);
+};
+
 
 
 
@@ -237,13 +235,7 @@ Identity.prototype.store = function(opts, cb) {
 
 
 Identity.prototype._cleanUp = function() {
-  log.info('Cleaning Network connections')
-  var self = this;
-
-  _.each(['livenet', 'testnet'], function(n) {
-    self.networks[n].cleanUp();
-    self.blockchains[n].destroy();
-  });
+  // NOP
 };
 
 /**
@@ -261,10 +253,8 @@ Identity.prototype.close = function(cb) {
   var self = this;
   _.each(this.openWallets, function(w) {
     w.close(function(err) {
-      console.log('[Identity.js.239:err:]', err); //TODO
       if (err) return cb(err);
 
-      console.log('[Identity.js.241]', i, l); //TODO
       if (++i == l) {
         self._cleanUp();
         if (cb) return cb();
@@ -289,8 +279,7 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   var obj = this.storage.decrypt(base64);
   if (!obj) return false;
 
-  var networkName = Wallet.obtainNetworkName(obj);
-  var w = Identity._walletFromObj(obj, this.storage, this.networks[networkName], this.blockchains[networkName]);
+  var w = Identity._walletFromObj(obj, this.storage, this.networkOpts, this.blockchainOpts);
   this._checkVersion(w.version);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
@@ -374,8 +363,8 @@ Identity.prototype.createWallet = function(opts, cb) {
 
 
   opts.storage = this.storage;
-  opts.network = this.networks[opts.networkName];
-  opts.blockchain = this.blockchains[opts.networkName];
+  opts.networkOpts = this.networkOpts;
+  opts.blockchainOpts = this.blockchainOpts;
 
   opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
   opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
@@ -383,7 +372,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
 
-  if (opts.password)
+  if (opts.password && !this.storage.hasPassphrase())
     this.storage.setPassword(opts.password);
 
   var self = this;
@@ -393,6 +382,7 @@ Identity.prototype.createWallet = function(opts, cb) {
     self.openWallets.push(w);
 
     self.profile.setLastOpenedTs(w.id, function(err) {
+      w.netStart();
       return cb(err, w);
     });
   });
@@ -451,13 +441,18 @@ Identity.prototype.openWallet = function(walletId, password, cb) {
   preconditions.checkArgument(cb);
   var self = this;
 
-  if (password)
+  if (password && !this.storage.hasPassphrase())
     self.storage.setPassword(password);
 
   // TODO
   //  self.migrateWallet(walletId, password, function() {
+  //
 
-  Identity._walletRead(walletId, self.storage, self.networks, self.blockchains, [], function(err, w) {
+  Identity._walletRead(walletId, {
+    storage: self.storage, 
+    networkOpts: this.networkOpts, 
+    blockchainOpts: this.blockchainOpts
+  }, function(err, w) {
     if (err) return cb(err);
     self.openWallets.push(w);
 
@@ -552,8 +547,8 @@ Identity.prototype.joinWallet = function(opts, cb) {
     secretNumber: decodedSecret.secretNumber,
   };
 
-  var joinNetwork = this.networks[decodedSecret.networkName];
-  joinNetwork.cleanUp();
+
+  var joinNetwork = Identity._newAsync(this.networkOpts[decodedSecret.networkName]);
 
   // This is a hack to reconize if the connection was rejected or the peer wasn't there.
   var connectedOnce = false;
@@ -569,6 +564,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
     return cb('joinError');
   });
 
+console.log('[Identity.js.566:joinOpts:]',joinOpts); //TODO
   joinNetwork.start(joinOpts, function() {
 
     joinNetwork.greet(decodedSecret.pubKey, joinOpts.secretNumber);
@@ -589,7 +585,6 @@ Identity.prototype.joinWallet = function(opts, cb) {
           walletOpts.password = opts.password;
 
         self.createWallet(walletOpts, function(err, w) {
-
           if (w) {
             w.sendWalletReady(decodedSecret.pubKey);
           } else {

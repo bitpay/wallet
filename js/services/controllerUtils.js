@@ -186,10 +186,10 @@ angular.module('copayApp.services')
 
     root.bindWallet = function(w, $scope) {
       root.setupRootVariables();
+      root.unbindWallet(w);
       root.installWalletHandlers(w, $scope);
       root.updateAddressList();
       notification.enableHtml5Mode(); // for chrome: if support, enable it
-      w.netStart();
     };
 
     // TODO movie this to wallet
