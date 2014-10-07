@@ -37,14 +37,16 @@ _.each(levels, function(level, levelName) {
     if (level >= levels[this.level]) {
 
       if (Error.stackTraceLimit && this.level == 'debug') {
+        var old = Error.stackTraceLimit;
         Error.stackTraceLimit = 2
         var stack = new Error().stack;
         var lines = stack.split('\n');
         var caller = lines[2];
-        caller =  ':' + caller.substr(6);
+        caller = ':' + caller.substr(6);
+        Error.stackTraceLimit = old;
       }
 
-      var str = '[' + levelName + (caller||'') + '] ' + arguments[0],
+      var str = '[' + levelName + (caller || '') + '] ' + arguments[0],
         extraArgs,
         extraArgs = [].slice.call(arguments, 1);
       if (console[levelName]) {
