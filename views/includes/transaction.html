@@ -34,7 +34,7 @@
     </div>
 
     <div class="large-3 medium-4 columns text-right hide-for-small-only">
-      <p class="size-12">{{tx.createdTs | amCalendar}}</p>
+      <span class="size-12">{{tx.createdTs | amCalendar}}</span>
     </div>
   </div>
 </div>
@@ -88,11 +88,9 @@
       </a>
     </div>
 
-    <div class="text-center">
-      <p class="size-12 text-gray ellipsis">
+      <div class="text-center m5t size-12 text-gray ellipsis">
         {{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
-      </p>
-    </div>
+      </div>
   </div>
 </div>
 

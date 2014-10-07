@@ -266,7 +266,6 @@ a:hover {
 .box-setup {
   padding: 20px 30px;
   background: #34495E;
-  margin-bottom: 20px;
 }
 
 .box-setup label small.has-error {
@@ -417,7 +416,8 @@ table.last-transactions-content {
 .m5b {margin-bottom: 5px;}
 .m5r {margin-right: 5px;}
 .m10b {margin-bottom: 10px;}
-.m15b {margin-bottom: 20px;}
+.m15b {margin-bottom: 15px;}
+.m20b {margin-bottom: 20px;}
 .m10r {margin-right: 10px;}
 .m15l {margin-left: 15px;}
 .m15t {margin-top: 15px;}
@@ -484,7 +484,7 @@ table.last-transactions-content {
 }
 
 .line-dashed {
-  border-top: 1px dashed #ccc;
+  border-top: 1px dashed #3C5269;
   margin: 1rem 0;
   padding: 1rem 0;
   overflow: hidden;
@@ -920,10 +920,6 @@ button.gray:focus,
 .button.gray:focus {
   background-color: #E0E5E5;
   color: #2C3E50;
-}
-
-button, .button, p {
-  margin: 0;
 }
 
 .side-nav {padding: 0;}

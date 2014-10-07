@@ -12,8 +12,10 @@
         </div>
         <div class="large-8 columns line-dashed-setup-v">
           <div class="box-setup oh">
-            <img src="img/step-1.png" alt="Step 1" width="157" class="right m15t" ng-if="!isSetupWalletPage && !isMobile">
-            <img src="img/step-2.png" alt="Step 2" width="157" class="right m15t" ng-if="isSetupWalletPage && !isMobile">
+            <img src="img/step-1.png" alt="Step 1" width="157" class="right
+            m15t hide-for-small-only" ng-if="!isSetupWalletPage && !isMobile">
+            <img src="img/step-2.png" alt="Step 2" width="157" class="right
+            m15t hide-for-small-only" ng-if="isSetupWalletPage && !isMobile">
             <h1 translate class="text-secondary line-sidebar-b">Create new wallet</h1>
             <label ng-show="!isSetupWalletPage"><span translate>Wallet name</span>
               <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName">
@@ -43,7 +45,7 @@
               </div>
 
               <a class="expand small" ng-click="hideAdv=!hideAdv">
-              	<i class="fi-widget m3r"></i>
+                <i class="fi-widget m3r"></i>
                 <span translate ng-hide="!hideAdv">Show</span> 
                 <span translate ng-hide="hideAdv">Hide</span> 
                 <span translate>advanced options</span>
@@ -52,7 +54,6 @@
                 <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
                 <label for="network-name" translate>Use test network</label>
 
-                <p>
                 <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
               </div>
 
@@ -77,7 +78,7 @@
               </div>
             </div>
             <p translate class="comment" ng-show="totalCopayers>1 && !isSetupWalletPage">(*) The limits are imposed by the bitcoin network.</p>
-            <div class="text-right">
+            <div class="text-right m20t">
               <a ng-show="!isSetupWalletPage" class="back-button m20r" href="#!/">&laquo; <span translate>Back</span></a>
               <a ng-show="isSetupWalletPage" class="back-button m20r" ng-click="setupWallet()">&laquo; <span translate>Back</span></a>
               <button translate ng-show="isSetupWalletPage" type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
