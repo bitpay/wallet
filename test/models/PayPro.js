@@ -83,12 +83,12 @@ describe('PayPro (in Wallet) model', function() {
       c.networkName = walletConfig.networkName;
       c.version = '0.0.1';
 
-      c.network =  sinon.stub();
-      c.network.setHexNonce =  sinon.stub();
-      c.network.setHexNonces =  sinon.stub();
-      c.network.getHexNonce =  sinon.stub();
-      c.network.getHexNonces =  sinon.stub();
-      c.network.send =  sinon.stub();
+      c.network = sinon.stub();
+      c.network.setHexNonce = sinon.stub();
+      c.network.setHexNonces = sinon.stub();
+      c.network.getHexNonce = sinon.stub();
+      c.network.getHexNonces = sinon.stub();
+      c.network.send = sinon.stub();
 
 
       return new Wallet(c);
@@ -130,7 +130,15 @@ describe('PayPro (in Wallet) model', function() {
         cachedW2obj = cachedW2.toObj();
         cachedW2obj.opts.reconnectDelay = 100;
       }
-      var w = Wallet.fromObj(cachedW2obj, cachedW2.storage, cachedW2.network, cachedW2.blockchain);
+
+      Wallet._newAsync = sinon.stub().returns(new Network(walletConfig.network));
+      Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
+
+      var w = Wallet.fromObj(cachedW2obj, {
+        storage: cachedW2.storage,
+        blockchainOpts: {},
+        networkOpts: {},
+      });
       return w;
     };
 
@@ -745,7 +753,10 @@ describe('PayPro (in Wallet) model', function() {
         uri = address.split(/\s+/)[1];
       }
 
-      w.createPaymentTx({ uri: uri, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: uri,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         if (w.isShared()) {
           should.exist(ntxid);
@@ -767,7 +778,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         if (w.isShared()) {
           should.exist(ntxid);
@@ -788,7 +802,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
@@ -825,7 +842,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
@@ -853,7 +873,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
@@ -880,7 +903,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);

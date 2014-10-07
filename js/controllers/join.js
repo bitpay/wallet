@@ -137,11 +137,9 @@ angular.module('copayApp.controllers').controller('JoinController',
             notification.error('Unknown error');
           controllerUtils.onErrorDigest();
         } else {
-          $rootScope.iden.closeWallet($rootScope.wallet.id, function() {
-            $scope.loading = false;
-            $rootScope.wallet = w;
-            controllerUtils.bindWallet(w, $scope);
-          });
+          $scope.loading = false;
+          $rootScope.wallet = w;
+          controllerUtils.bindWallet(w, $scope);
         }
       });
     }
