@@ -59,7 +59,6 @@ Insight.prototype.subscribeToBlocks = function() {
   if (this.listeningBlocks || !socket.connected) return;
 
   var self = this;
-  socket.emit('subscribe', 'inv');
   socket.on('block', function(blockHash) {
     self.emit('block', blockHash);
   });
@@ -198,7 +197,7 @@ Insight.prototype.broadcast = function(rawtx, cb) {
     rawtx: rawtx
   }, function(err, res, body) {
     if (err || res.status != 200) cb(err || res);
-    cb(null, body ? body.txid: null);
+    cb(null, body ? body.txid : null);
   });
 };
 
