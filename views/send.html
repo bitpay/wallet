@@ -61,19 +61,19 @@
                   ng-show="!sendForm.amount.$invalid &&
                 !sendForm.amount.$pristine">valid!</small>
                 <small translate class="has-error"
-                  ng-show="sendForm.amount.$invalid &&
-                  !sendForm.amount.$pristine && !notEnoughAmount">not valid
+                  ng-show="(sendForm.amount.$invalid || notValidAmount) &&
+                  !sendForm.amount.$pristine">not valid
                 </small>
-                <small translate ng-show="notEnoughAmount" class="has-error">Insufficient funds</small>
               </label>
               <div class="small-9 columns">
                 <input type="number" id="amount"
                 ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || $root.merchantError"
                 name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
-                min="0.00000001" max="10000000000" enough-amount required
+                min="0.00000001" max="10000000000" valid-amount required
                 autocomplete="off">
                 <small class="icon-input" ng-show="!sendForm.amount.$invalid && amount"><i class="fi-check"></i></small>
-                <small class="icon-input" ng-show="sendForm.amount.$invalid && !sendForm.amount.$pristine && !notEnoughAmount"><i class="fi-x"></i></small>
+                <small class="icon-input" ng-show="sendForm.amount.$invalid &&
+                  !sendForm.amount.$pristine && !notValidAmount"><i class="fi-x"></i></small>
                 <a class="small input-note" title="{{'Send all funds'|translate}}"
                   ng-show="$root.availableBalance > 0 && (!$root.merchant || +$root.merchant.total === 0)"
                   ng-click="topAmount(sendForm)">
