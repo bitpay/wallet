@@ -255,8 +255,8 @@ TxProposal.prototype.setSent = function(sentTxid) {
   this.sentTs = Date.now();
 };
 
-TxProposal.prototype.getSent = function(sentTxid) {
-  return !!this.sentTxid;
+TxProposal.prototype.getSent = function() {
+  return this.sentTs;
 }
 
 TxProposal.prototype._allSignatures = function() {
