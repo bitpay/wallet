@@ -112,7 +112,11 @@ describe('TxProposal', function() {
     });
     it('sets force opts', function() {
       var b = new FakeBuilder();
-      b.opts={juan:1, pepe:1, fee:1000};
+      b.opts = {
+        juan: 1,
+        pepe: 1,
+        fee: 1000
+      };
       var txp;
       var o = {
         creator: 1,
@@ -121,9 +125,16 @@ describe('TxProposal', function() {
         inputChainPaths: ['m/1'],
       };
       (function() {
-        txp = TxProposal.fromObj(o,{pepe:100});
+        txp = TxProposal.fromObj(o, {
+          pepe: 100
+        });
       }).should.throw('Invalid tx proposal: no ins');
-      o.builderObj.opts.should.deep.equal({juan:1, pepe:100, feeSat:undefined, fee:undefined});
+      o.builderObj.opts.should.deep.equal({
+        juan: 1,
+        pepe: 100,
+        feeSat: undefined,
+        fee: undefined
+      });
     });
   });
 
@@ -131,13 +142,36 @@ describe('TxProposal', function() {
   describe('#setSent', function() {
     it('should set txid and timestamp', function() {
       var now = Date.now();
-      var txp = dummyProposal;
+      var txp = new TxProposal({
+        creator: 1,
+        createdTs: 1,
+        builder: new FakeBuilder(),
+        inputChainPaths: ['m/1'],
+      });
       txp.setSent('3a42');
       txp.sentTs.should.gte(now);
       txp.sentTxid.should.equal('3a42');
     });
   });
 
+  describe('#getSent', function() {
+    it('should get sent timestamp', function() {
+      var now = Date.now();
+      var txp = new TxProposal({
+        creator: 1,
+        createdTs: 1,
+        builder: new FakeBuilder(),
+        inputChainPaths: ['m/1'],
+      });
+
+      var sentTs = txp.getSent();
+      should.not.exist(sentTs);
+
+      txp.setSent('3a42');
+      sentTs = txp.getSent();
+      sentTs.should.gte(now);
+    });
+  });
 
   describe('Signature verification', function() {
     var validScriptSig = new bitcore.Script(FakeBuilder.VALID_SCRIPTSIG_BUF);
