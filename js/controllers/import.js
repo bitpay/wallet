@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification) {
+  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification, isMobile) {
     controllerUtils.redirIfLogged();
 
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
+    $scope.is_iOS = isMobile.iOS();
 
     var reader = new FileReader();
 
@@ -69,10 +70,6 @@ angular.module('copayApp.controllers').controller('ImportController',
       $scope.choosefile = !$scope.choosefile;
     };
 
-    $scope.openPasteArea = function() {
-      $scope.pastetext = !$scope.pastetext;
-    };
-
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
@@ -93,9 +90,10 @@ angular.module('copayApp.controllers').controller('ImportController',
       }
 
       var backupFile = $scope.file;
+      var backupText = form.backupText.$modelValue;
       var password = form.password.$modelValue;
 
-      if (!backupFile) {
+      if (!backupFile && !backupText) {
         $scope.loading = false;
         notification.error('Error', 'Please, select your backup file');
         $scope.loading = false;
@@ -104,6 +102,9 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
+      }
+      else {
+        _importBackup(backupText);
       }
     };
   });
