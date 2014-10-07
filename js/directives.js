@@ -48,32 +48,37 @@ angular.module('copayApp.directives')
     };
   }
 ])
-  .directive('enoughAmount', ['$rootScope',
-    function($rootScope) {
+  .directive('validAmount', ['$rootScope', '$locale', 
+    function($rootScope, locale) {
       var w = $rootScope.wallet;
       preconditions.checkState(w);
       preconditions.checkState(w.settings.unitToSatoshi);
+      var formats = locale.NUMBER_FORMATS;
 
-      var feeSat = Number(bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var availableBalanceNum = Number(($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0));
             var vNum = Number((value * w.settings.unitToSatoshi).toFixed(0));
 
+            if (typeof value == 'undefined') {
+              ctrl.$pristine = true;
+            }
+
             if (typeof vNum == "number" && vNum > 0) {
-              vNum = vNum + feeSat;
-              if (availableBalanceNum < vNum || isNaN(availableBalanceNum)) {
-                ctrl.$setValidity('enoughAmount', false);
-                scope.notEnoughAmount = true;
+              var decimals = Number(w.settings.unitDecimals);
+              var sep_index = ('' + value).indexOf(formats.DECIMAL_SEP);
+              var str_value = ('' + value).substring(sep_index+1);
+              if (sep_index > 0 && str_value.length > decimals) {
+                ctrl.$setValidity('validAmount', false);
+                scope.notValidAmount = true;
               } else {
-                ctrl.$setValidity('enoughAmount', true);
-                scope.notEnoughAmount = null;
+                ctrl.$setValidity('validAmount', true);
+                scope.notValidAmount = null;
               }
             } else {
-              ctrl.$setValidity('enoughAmount', false);
-              scope.notEnoughAmount = null;
+              ctrl.$setValidity('validAmount', false);
+              scope.notValidAmount = null;
             }
             return value;
           }
