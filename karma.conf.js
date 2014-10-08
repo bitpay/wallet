@@ -67,6 +67,8 @@ module.exports = function(config) {
       'test/models/*.js',
 
       'test/unit/**/*.js',
+      'test/util/**/*.js',
+      //'test/persistence/**/*.js',
 
     ],
 

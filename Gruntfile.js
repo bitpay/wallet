@@ -81,8 +81,8 @@ module.exports = function(grunt) {
         tasks: ['shell:dev', 'concat:main']
       },
       test: {
-        files: ['test/models/*.js'],
-        tasks: ['mochaTest']
+        files: ['test/**/*.js', 'test/*.js','js/**/*.js'],
+        tasks: ['mochaTest'],
       }
     },
     mochaTest: {
@@ -93,8 +93,8 @@ module.exports = function(grunt) {
           mocha: require('mocha')
         },
         src: [
-          'test/models/*.js',
-        ]
+          'test/models/*.js', 'test/*.js', 'test/persistence/**/*.js', 'test/util/*.js'
+        ],
       }
     },
     markdown: {

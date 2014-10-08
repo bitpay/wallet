@@ -47,6 +47,7 @@ var createBundle = function(opts) {
   });
   b.require('underscore');
   b.require('assert');
+  b.require('sjcl');
   b.require('preconditions');
 
   b.require('./copay', {
@@ -57,7 +58,37 @@ var createBundle = function(opts) {
   b.require('./js/log', {
     expose: '../js/log'
   });
+  b.require('./js/log', {
+    expose: '../log'
+  });
   //  b.external('bitcore');
+  b.require('./js/util/crypto', {
+    expose: '../../js/util/crypto'
+  });
+  b.require('./js/util/crypto', {
+    expose: '../../util/crypto'
+  });
+  b.require('./js/models/factory/Identity', {
+    expose: '../../models/factory/Identity'
+  });
+  b.require('./js/models/factory/Profile', {
+    expose: '../../models/factory/Profile'
+  });
+  b.require('./js/models/Profile', {
+    expose: '../js/models/Profile'
+  });
+  b.require('./js/models/Identity', {
+    expose: '../js/models/Identity'
+  });
+  b.require('./js/persistence/identity/insight', {
+    expose: '../../../js/persistence/identity/insight'
+  });
+  b.require('./js/persistence/profile/insight', {
+    expose: '../../../js/persistence/profile/insight'
+  });
+  b.require('./js/persistence/state/localstorage', {
+    expose: '../../../js/persistence/state/localstorage'
+  });
   b.require('./js/models/WalletFactory', {
     expose: '../js/models/WalletFactory'
   });
