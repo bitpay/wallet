@@ -257,7 +257,9 @@ angular.module('copayApp.services')
         }
       });
 
-      w.removeTxWithSpentInputs();
+      // Disabling this as discrepancies in local time on copayer machines is causing
+      // valid TXPs to get removed
+      //w.removeTxWithSpentInputs();
 
       $rootScope.txs = txs;
       $rootScope.txsOpts = opts;
