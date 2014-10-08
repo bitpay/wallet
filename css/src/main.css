@@ -112,6 +112,18 @@ header {
   padding: 15px 20px 5px;
 }
 
+
+header .wfooter {
+  font-size: 12px;
+}
+
+
+header .creation {
+  color: white;
+  background: red;
+  font-weight: bold;
+}
+
 .off-canvas-wrap, .inner-wrap{
     height:100%;   
 }
@@ -210,6 +222,7 @@ a:hover {
 .sidebar a {
   color: #fff;
 }
+
 
 .button.small.side-bar {
   padding: 0rem 0.4rem;
@@ -1046,12 +1059,12 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .copayers {
   width: 100%;
   background-color: #213140;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  /* position: absolute; */
+  /* bottom: 0; */
+  /* left: 0; */
   padding: 20px;
   border-top: 1px solid #475065;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 
 .copayers i {
@@ -1244,6 +1257,8 @@ fieldset legend {
   margin: auto;
   max-width: 100%;
 }
+
+
 
 
 /*-----------------------------------------------------------------*/

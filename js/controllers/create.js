@@ -45,8 +45,8 @@ angular.module('copayApp.controllers').controller('CreateController',
       };
       $rootScope.iden.createWallet(opts, function(err, w) {
         $scope.loading = false;
-        $rootScope.wallet = w;
-        controllerUtils.bindWallet(w, $scope);
+        controllerUtils.installWalletHandlers($scope, w);
+        controllerUtils.setFocusedWallet(w);
       });
     };
   });

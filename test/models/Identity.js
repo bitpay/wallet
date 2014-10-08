@@ -237,21 +237,9 @@ describe('Identity model', function() {
       Identity._walletRead = sinon.stub().callsArgWith(5, null, wallet);
     });
 
-    it('should call setPassword', function(done) {
-
-      var s1 = sinon.stub();
-      s1.store = sinon.stub().yields(null);
-
-      iden.openWallet('id123', 'xxx', function(err, w) {
-        iden.storage.setPassword.calledOnce.should.equal(true);
-        iden.storage.setPassword.getCall(0).args[0].should.equal('xxx');
-        done();
-      });
-    });
-
     it('should return wallet and call .store, .setLastOpenedTs & .migrateWallet', function(done) {
 
-      iden.openWallet('dummy', 'xxx', function(err, w) {
+      iden.openWallet('dummy', function(err, w) {
         should.not.exist(err);
         w.store.calledOnce.should.equal(true);
         iden.profile.setLastOpenedTs.calledTwice.should.equal(true);
@@ -279,7 +267,7 @@ describe('Identity model', function() {
       Identity._walletFromObj = sinon.stub().returns(wallet);
 
       iden.importWallet("encrypted object", "xxx", [], function(err) {
-        iden.openWallet('ID123', 'xxx', function(err, w) {
+        iden.openWallet('ID123', function(err, w) {
           should.not.exist(err);
           should.exist(w);
           done();

@@ -12,10 +12,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       networkName: config.networkName,
       walletDefaults: config.wallet,
       passphrase: config.passphrase,
-    }, function(err, iden ,w) {
-      $rootScope.iden = iden;
-      $rootScope.wallet = w;
-      controllerUtils.bindWallet(w, $scope);
+    }, function(err, iden , firstWallet) {
+      controllerUtils.bindProfile($scope, iden, firstWallet);
     });
   }
 

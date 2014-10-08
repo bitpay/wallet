@@ -94,11 +94,6 @@ angular
         $idle.unwatch();
         $location.path('/');
       }
-
-      // In creation?
-      if ($rootScope.wallet && !$rootScope.wallet.isReady()) {
-        $location.path('/copayers');
-      }
     }
   });
 })
