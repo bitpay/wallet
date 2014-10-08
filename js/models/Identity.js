@@ -173,20 +173,25 @@ Identity.open = function(email, password, opts, cb) {
 
     var wids = _.pluck(iden.listWallets(), 'id');
 
+    if (!wids || !wids.length)
+      return new Error('Could not open any wallet from profile');
 
-    while (1) {
-      var wid = wids.shift();
-      if (!wid)
-        return new Error('Could not open any wallet from profile');
-
-      iden.openWallet(wid, password, function(err, w) {
+    // Open All wallets from profile
+    //This could be optional, or opts.onlyOpen = wid
+    var firstWallet;
+    _.each(wids, function(wid) {
+      iden.openWallet(wid, function(err, w) {
         if (err)
-          log.info('Cound not open wallet id:' + wid + '. Skipping')
-        else
-          return cb(err, iden, w);
+          log.error('Cound not open wallet id:' + wid + '. Skipping')
+        else {
+          log.info('Open wallet id:' + wid + ' opened');
+          if (!firstWallet)
+            firstWallet = w;
+        }
       })
-    }
+    });
 
+    return cb(err, iden, firstWallet);
   });
 };
 
@@ -288,10 +293,8 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
 };
 
 Identity.prototype.closeWallet = function(wid, cb) {
-  var w = _.findWhere(this.openWallets, function(w) {
-    w.id === wid;
-  });
-  preconditions.checkState(w);
+  var w = this.getOpenWallet(wid);
+  preconditions.checkState(w, 'Wallet not found');
 
   var self = this;
   w.close(function(err) {
@@ -433,24 +436,21 @@ Identity.prototype._checkVersion = function(inVersion) {
 /**
  * @desc Retrieve a wallet from the storage
  * @param {string} walletId - the id of the wallet
- * @param {string} password - the password  to decode it
  * @param {function} callback (err, {Wallet})
  * @return
  */
-Identity.prototype.openWallet = function(walletId, password, cb) {
+Identity.prototype.openWallet = function(walletId, cb) {
   preconditions.checkArgument(cb);
+  preconditions.checkState(this.storage.hasPassphrase());
+
   var self = this;
-
-  if (password && !this.storage.hasPassphrase())
-    self.storage.setPassword(password);
-
   // TODO
   //  self.migrateWallet(walletId, password, function() {
   //
 
   Identity._walletRead(walletId, {
-    storage: self.storage, 
-    networkOpts: this.networkOpts, 
+    storage: self.storage,
+    networkOpts: this.networkOpts,
     blockchainOpts: this.blockchainOpts
   }, function(err, w) {
     if (err) return cb(err);
@@ -463,6 +463,13 @@ Identity.prototype.openWallet = function(walletId, password, cb) {
     });
   });
   //  });
+};
+
+
+Identity.prototype.getOpenWallet = function(id) {
+  return  _.findWhere(this.openWallets, {
+    id: id,
+  });
 };
 
 
@@ -564,7 +571,6 @@ Identity.prototype.joinWallet = function(opts, cb) {
     return cb('joinError');
   });
 
-console.log('[Identity.js.566:joinOpts:]',joinOpts); //TODO
   joinNetwork.start(joinOpts, function() {
 
     joinNetwork.greet(decodedSecret.pubKey, joinOpts.secretNumber);

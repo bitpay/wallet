@@ -825,6 +825,9 @@ Wallet.prototype._setBlockchainListeners = function() {
   this.blockchain.on('reconnect', function(attempts) {
     log.debug('Wallet:' + this.id +'blockchain reconnect event');
     self.emit('insightReconnected');
+
+    // Subscription should persist? TODO 
+    //self.subscribeToAddresses();
   });
 
   this.blockchain.on('disconnect', function() {
@@ -898,6 +901,7 @@ Wallet.prototype.netStart = function() {
   net.start(startOpts, function() {
     log.debug('Wallet:' + self.id + ' Networking ready:', net.copayerId);
     self._setBlockchainListeners();
+    self.subscribeToAddresses();
     self.emit('ready', net.getPeer());
     setTimeout(function() {
       self.emit('publicKeyRingUpdated', true);
@@ -1018,9 +1022,11 @@ Wallet.prototype.toObj = function() {
  * @param {number} o.lastTimestamp - last time this wallet object was deserialized
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
+ *
  * @param readOpts.storage
  * @param readOpts.network
  * @param readOpts.blockchain
+ * @param readOpts.isImported {boolean}  - tag wallet as 'imported' (skip forced backup step)
  * @param readOpts.{string[]} skipFields - parameters to ignore when importing
  */
 Wallet.fromObj = function(o, readOpts) {
@@ -1090,9 +1096,9 @@ Wallet.fromObj = function(o, readOpts) {
   opts.lastTimestamp = o.lastTimestamp || 0;
 
   opts.storage = storage;
-  opts.isImported = true;
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
+  opts.isImported = readOpts.isImported || false;
 
   return new Wallet(opts);
 };

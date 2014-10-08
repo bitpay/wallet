@@ -6,31 +6,10 @@
       </a>
       <div ng-include="'views/includes/version.html'"></div>
     </div>
-    <div class="line-sidebar"></div>
-
-    <div>
-      Available wallets
-      <ul class="side-nav">
-      <li data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item">
-        <a ng-click="switchWallet(item.id)">
-            {{item.name || item.id}} 
-        </a>
-      </li>
-      <li class="nav-item"  ui-route="{{create}}">
-         <a href="#!/create">+ {{'Create ' | translate }} </a> <a href="#!/join">+ {{'Join' | translate }} </a>
-      </li>
-      <li>
-        <a href="#!/" class="db p20h" title="Close"
-          ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
-      </li>
-
- 
-      </ul>
-    </div>
-
 
     <div class="line-sidebar"></div>
-    <div>
+
+    <div >
       <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
         <span>{{$root.wallet.getName()}}</span>
       </a>
@@ -68,7 +47,10 @@
     </div>
     <div class="line-sidebar"></div>
   </header>
-  <ul class="side-nav">
+  <div ng-if="!$root.wallet.isReady()">
+    Wallet in creation
+  </div>
+  <ul class="side-nav" ng-if="$root.wallet.isReady()">
     <li data-ng-repeat="item in menu" ui-route="{{item.link}}" class="nav-item" data-ng-class="{active: isActive(item)}">
       <a href="#!/{{item.link}}" ng-click="toggleCollapse()" class="db p20h"> 
         <i class="size-21 m20r {{item.icon}}"></i> {{item.title|translate}}
@@ -80,6 +62,32 @@
   </ul>
 
   <div ng-show="$root.wallet.isShared()" ng-include="'views/includes/peer-list.html'"></div>
+
+  <div class="line-sidebar"></div>
+
+  <div>
+   Your wallets: 
+    <ul class="side-nav">
+    <li data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item">
+       <a ng-click="switchWallet(item.id)"> * {{item.name || item.id}} </a>
+    </li>
+    <li class="nav-item"  ui-route="{{create}}">
+        <a href="#!/create">+ {{'Create ' | translate }} </a>
+    </li>
+    <li class="nav-item"  ui-route="{{create}}">
+        <a href="#!/join">+ {{'Join' | translate }} </a>
+    </li>
+ 
+    <li>
+      <a href="#!/" class="db p20h" title="Close"
+        ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
+    </li>
+
+
+    </ul>
+  </div>
+
+
 
 </div>
 
