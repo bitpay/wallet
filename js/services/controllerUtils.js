@@ -6,8 +6,13 @@ angular.module('copayApp.services')
     var root = {};
 
     root.redirIfLogged = function() {
-      if ($rootScope.wallet) {
-        $location.path('receive');
+      var w = $rootScope.wallet;
+      if (w) {
+        if (!w.isReady()) {
+          $location.path('/copayers');
+        } else {
+          $location.path('receive');
+        }
       }
     };
 
@@ -45,7 +50,8 @@ angular.module('copayApp.services')
       return wid === $rootScope.wallet.getId();
     };
 
-    root.installWalletHandlers = function(w, $scope) {
+    root.installWalletHandlers = function($scope, w) {
+      w.removeAllListeners();
 
       var wid = w.getId();
       w.on('connectionError', function() {
@@ -69,7 +75,7 @@ angular.module('copayApp.services')
           if ($rootScope.pendingPayment) {
             $location.path('send');
           } else {
-            $location.path('receive');
+            root.redirIfLogged();
           }
         }
       });
@@ -163,41 +169,63 @@ angular.module('copayApp.services')
 
     };
 
-    root.setupRootVariables = function() {
+    root.setupGlobalVariables = function(iden) {
+      notification.enableHtml5Mode(); // for chrome: if support, enable it
       uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
       $rootScope.initialConnection = true;
       $rootScope.reconnecting = false;
       $rootScope.isCollapsed = true;
-      $rootScope.$watch('txAlertCount', function(txAlertCount) {
-        if (txAlertCount && txAlertCount > 0) {
 
-          notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : $filter('translate')('You have') + ' ' + $rootScope.txAlertCount + ' ' + $filter('translate')('pending transaction proposals'), txAlertCount);
-        }
+      $rootScope.iden = iden;
+
+      // TODO
+      // $rootScope.$watch('txAlertCount', function(txAlertCount) {
+      //   if (txAlertCount && txAlertCount > 0) {
+      //
+      //     notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : $filter('translate')('You have') + ' ' + $rootScope.txAlertCount + ' ' + $filter('translate')('pending transaction proposals'), txAlertCount);
+      //   }
+      // });
+    };
+
+
+    root.rebindWallets = function($scope, iden) {
+      _.each(iden.listWallets(), function(winfo) {
+        var w = iden.getOpenWallet(winfo.id);
+        preconditions.checkState(w);
+        root.installWalletHandlers($scope, w);
       });
     };
 
+    root.setFocusedWallet = function(w) {
+      if (!_.isObject(w) )
+        w = $rootScope.iden.getOpenWallet(w);
+      preconditions.checkState(w && _.isObject(w));
 
-    root.unbindWallet = function($scope) {
-      var w = $rootScope.wallet;
-      w.removeAllListeners();
-    };
-
-    root.bindWallet = function(w, $scope) {
-      root.setupRootVariables();
-      root.unbindWallet(w);
-      root.installWalletHandlers(w, $scope);
+      $rootScope.wallet = w;
       root.updateAddressList();
-      notification.enableHtml5Mode(); // for chrome: if support, enable it
+
+      root.redirIfLogged();
     };
 
-    // TODO movie this to wallet
-    root.updateAddressList = function() {
-      var w = $rootScope.wallet;
-      if (w && w.isReady()) {
-        w.subscribeToAddresses();
-        $rootScope.addrInfos = w.getAddressesInfo();
+    root.bindProfile = function($scope, iden, w) {
+
+      root.setupGlobalVariables(iden);
+      root.rebindWallets($scope, iden);
+      root.setFocusedWallet(w);
+    };
+
+
+    // On the focused wallet 
+    root.updateAddressList = function(wid) {
+
+      if (!wid || root.isFocusedWallet(wid)) {
+        var w = $rootScope.wallet;
+
+        if (w && w.isReady()) {
+          $rootScope.addrInfos = w.getAddressesInfo();
+        }
       }
     };
 

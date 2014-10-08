@@ -57,6 +57,8 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     return new Array(num);
   }
 
+
+
   if ($rootScope.wallet) {
     $scope.$on('$idleWarn', function(a, countdown) {
       if (!(countdown % 5))
@@ -72,18 +74,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     });
   }
 
-  $scope.switchWallet = function(id) {
-    var iden = $rootScope.iden;
-    controllerUtils.unbindWallet($scope);
-
-    iden.openWallet(id, null, function(err, w) {
-      if (err) {
-        notification.warning('Could not open wallet');
-      } else {
-        $scope.loading = false;
-        $rootScope.wallet = w;
-        controllerUtils.bindWallet(w, $scope);
-      }
-    });
+  $scope.switchWallet = function(wid) {
+    controllerUtils.setFocusedWallet(wid);
   };
 });
