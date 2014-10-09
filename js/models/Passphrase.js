@@ -2,7 +2,7 @@
 
 // 65.7% typed (by google's closure-compiler account)
 
-var CryptoJS = CryptoJS || require('crypto-js');
+var sjcl = require('../../lib/sjcl');
 var preconditions = require('preconditions').instance();
 var _ = require('underscore');
 
@@ -30,14 +30,22 @@ function Passphrase(config) {
  * @returns WordArray 512 bits with the expanded key generated from password
  */
 Passphrase.prototype.get = function(password) {
-  var hash = CryptoJS.SHA256(CryptoJS.SHA256(password));
-  var salt = CryptoJS.enc.Base64.parse(this.salt);
-  var key512 = CryptoJS.PBKDF2(hash, salt, {
-    keySize: 512 / 32,
-    iterations: this.iterations
-  });
+  var hash = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(password));
+  var salt = sjcl.codec.base64.toBits(this.salt);
+
+  var crypto2 = function(key, salt, iterations, length, alg) {
+    return sjcl.codec.hex.fromBits(sjcl.misc.pbkdf2(key, salt, iterations, length * 8,
+      alg == 'sha1' ? function(key) {
+        return new sjcl.misc.hmac(key, sjcl.hash.sha1)
+      } : null
+    ))
+  };
+
+  var key512 = crypto2(hash, salt, this.iterations, 64, 'sha1');
+
   return key512;
 };
+
 
 /**
  * @desc Generate a base64 encoded key
@@ -47,16 +55,11 @@ Passphrase.prototype.get = function(password) {
  */
 Passphrase.prototype.getBase64 = function(password) {
   var key512 = this.get(password);
-  var keyBase64 = key512.toString(CryptoJS.enc.Base64);
-  return keyBase64;
+
+  var sbase64 = sjcl.codec.base64.fromBits(sjcl.codec.hex.toBits(key512));
+  return sbase64;
 };
 
-
-/**
- * @desc Callback for the Passphrase#getBase64Async method
- * @callback passphraseCallback
- * @param {string} passphrase 512 bits of a base64 encoded passphrase based on password
- */
 
 /**
  * @desc Generate a base64 encoded key, without blocking
