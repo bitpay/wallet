@@ -5,6 +5,10 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   controllerUtils.redirIfLogged();
 
   $scope.openProfile = function(form) {
+    if (form && form.$invalid) {
+      notification.error('Error', 'Please enter the required fields');
+      return;
+    }
     $scope.loading = true;
     copay.Identity.open(form.email.$modelValue, form.password.$modelValue, {
       pluginManager: pluginManager,

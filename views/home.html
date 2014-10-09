@@ -13,25 +13,22 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div class="large-8 columns line-dashed-setup-v">
-      <div class="button-setup">
+      <div class="box-setup">
         <h1 class="text-white line-sidebar-b" translate >Login </h1>
-        <form  name="loginForm" ng-submit="openProfile(loginForm)" novalidate>
-          <fieldset>
-            <label for="email">Email</label>
-            <input type="text" ng-model="email" class="form-control" name="email">
-            <label for="password">Password</label>
-            <input type="text" ng-model="password" class="form-control" name="password">
-          </fieldset>
+        <form name="loginForm" ng-submit="openProfile(loginForm)" novalidate>
+          <input type="email" ng-model="email" class="form-control"
+            name="email" placeholder="Email" required>
+          <input type="password" ng-model="password" class="form-control"
+            name="password" placeholder="Password" required>
+            
           <div class="text-right">
-            <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="setupForm.$invalid || loading" disabled="disabled" ng-click="save()">
-             Login 
+            <button translate type="submit" class="button primary m0"
+              ng-disabled="loginForm.$invalid || loading">
+              Login 
             </button>
           </div>
         </form>
       </div>
-
-
-
 
       <div class="button-setup">
         <a translate class="text-secondary" href="#!/createProfile">Create a profile</a>

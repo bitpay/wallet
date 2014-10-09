@@ -4,7 +4,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   controllerUtils.redirIfLogged();
 
   $scope.createProfile = function(form) {
-
+    if (form && form.$invalid) {
+      notification.error('Error', 'Please enter the required fields');
+      return;
+    }
     $scope.loading = true;
     copay.Identity.create(form.email.$modelValue, form.password.$modelValue, {
       pluginManager: pluginManager,
