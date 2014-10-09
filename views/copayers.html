@@ -78,12 +78,16 @@
           </div>
           </div>
         </div>
+        <div>
           <button class="button primary right m0"
             ng-click="backup()"
-            ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+            ng-show="!$root.wallet.publicKeyRing.isBackupReady() && !hideViewBackup"
             ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-            <span translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
+            <span translate ng-show="$root.wallet.publicKeyRing.isComplete() && !isSafari">
               Backup wallet
+            </span>
+            <span translate ng-show="$root.wallet.publicKeyRing.isComplete() && isSafari">
+              View backup
             </span>
             <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
               <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
@@ -97,7 +101,7 @@
             </span>
           </button>
           <a class="text-primary m15t m20r right"  ng-click="skipBackup()"      
-            ng-show="!$root.wallet.publicKeyRing.isBackupReady()"
+            ng-show="!$root.wallet.publicKeyRing.isBackupReady() && !hideViewBackup"
             ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
              <span class="size-12" translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
               Skip Backup
@@ -115,6 +119,18 @@
             </span>
             <span translate>yet to backup the wallet.</span>
           </button>
+          <div ng-show="backupPlainText">
+            <textarea readonly rows="5">{{backupPlainText}}</textarea>
+            <div class="show-for-large-up">
+              <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
+            </div>
+            <div class="hide-for-large-up m10b">
+              <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+            </div>
+          </div>
+          <button class="button primary right m0" 
+            ng-show="hideViewBackup"
+            ng-click="skipBackup()" translate>Continue</button>
         </div>
       </div>
     </div>
