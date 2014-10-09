@@ -1,10 +1,22 @@
 <div class="backup" ng-controller="MoreController">
   <h1 translate>Settings </h1>
-  <div class="oh large-12 columns panel">
-    <h3><i class="fi-download m10r"></i> <span translate>Backup</span> </h3>
-    <p translate class="large-8 columns text-gray">It's important to backup your wallet so that you can recover it in case of disaster</p>
-    <div class="large-4 columns">
-      <a translate class="button primary expand" ng-click="downloadBackup()">Download File</a>
+  <div class="large-12 columns panel">
+    <h2><i class="fi-download m10r"></i> <span translate>Backup</span> </h2>
+    <p translate class="text-gray">
+      It's important to backup your wallet so that you can recover it in case of disaster
+    </p>
+    <a translate class="button primary m0" ng-click="downloadBackup()"
+      ng-show="!isSafari">Download File</a>
+    <a translate class="button primary m0" ng-click="viewBackup()"
+      ng-show="isSafari && !hideViewBackup">View Backup</a>
+    <div ng-show="backupPlainText">
+      <textarea readonly rows="5">{{backupPlainText}}</textarea>
+      <div class="show-for-large-up">
+        <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
+      </div>
+      <div class="hide-for-large-up">
+        <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+      </div>
     </div>
   </div>
   <div class="large-12 columns line-dashed-h m15b"></div>

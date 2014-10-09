@@ -13,8 +13,12 @@ BackupService.prototype.getCopayer = function(wallet) {
   return wallet.totalCopayers > 1 ? wallet.getMyCopayerNickname() : '';
 };
 
+BackupService.prototype.getBackup = function(wallet) {
+  return wallet.toEncryptedObj();
+};
+
 BackupService.prototype.download = function(wallet) {
-  var ew = wallet.toEncryptedObj();
+  var ew = this.getBackup(wallet);
   var walletName = this.getName(wallet);
   var copayerName = this.getCopayer(wallet);
   var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
