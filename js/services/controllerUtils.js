@@ -100,17 +100,17 @@ angular.module('copayApp.services')
         $rootScope.$digest();
       });
 
-      w.on('txProposalsUpdated', function(dontDigest) {
+      var updateTxsAndBalance = _.debounce(function() {
         root.updateTxs();
-        // give sometime to the tx to propagate.
-        $timeout(function() {
-          root.updateBalance(function() {
-            if (!dontDigest) {
-              $rootScope.$digest();
-            }
-          });
-        }, 3000);
+        root.updateBalance(function() {
+          $rootScope.$digest();
+        })
+      }, 3000);
+
+      w.on('txProposalsUpdated', function(dontDigest) {
+        updateTxsAndBalance();
       });
+
       w.on('txProposalEvent', function(e) {
 
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
