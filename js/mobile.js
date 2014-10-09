@@ -17,7 +17,7 @@ function onDeviceReady() {
 
   function handleBitcoinURI(url) {
     if (!url) return;
-    window.location = '#!/uri-payment/' + encodeURIComponent(url);
+    window.location = '#!/uri-payment/' + url;
   }
 
   window.plugins.webintent.getUri(handleBitcoinURI);
