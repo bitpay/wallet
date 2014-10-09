@@ -62,7 +62,10 @@ describe('Network / Async', function() {
     it('should be able to broadcast', function() {
       var n = createN('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
       var spy = sinon.spy();
-      n.send(null, 'hello', spy);
+      var dummy = {
+        dummy: true
+      };
+      n.send(null, dummy, spy);
       spy.calledOnce.should.be.true;
     });
     it('should call _sendToOne for a copayer', function(done) {
@@ -128,7 +131,7 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid1,
-        secretNumber : 'mySecret'
+        secretNumber: 'mySecret'
       };
       var enc = n1.encode(cid2, message);
       n2._onMessage(enc);
@@ -141,7 +144,7 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid3, // MITM
-        secretNumber : 'mySecret'
+        secretNumber: 'mySecret'
       };
 
       var enc = n.encode(cid2, message);
@@ -161,7 +164,7 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid1,
-        secretNumber : 'mySecret'
+        secretNumber: 'mySecret'
       };
       var nonce = new Buffer('0000000000000001', 'hex');
       var enc = n1.encode(cid2, message, nonce);
@@ -178,7 +181,7 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid1,
-        secretNumber : 'mySecret'
+        secretNumber: 'mySecret'
       };
       n2.networkNonces = {};
       n2.networkNonces[cid1] = new Buffer('5000000000000001', 'hex');
@@ -198,7 +201,7 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid1,
-        secretNumber : 'mySecret'
+        secretNumber: 'mySecret'
       };
       n2.networkNonces = {};
       n2.networkNonces[cid1] = new Buffer('0000000000000002', 'hex');
@@ -216,10 +219,10 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid1,
-        secretNumber : 'mySecret'
+        secretNumber: 'mySecret'
       };
 
-      var enc = n1.encode(cid2, message);  
+      var enc = n1.encode(cid2, message);
       n2._onMessage(enc);
       n2._deletePeer.calledOnce.should.equal(false);
 
@@ -233,10 +236,10 @@ describe('Network / Async', function() {
       var message = {
         type: 'hello',
         copayerId: cid1,
-        secretNumber : 'otherSecret'
+        secretNumber: 'otherSecret'
       };
 
-      var enc = n1.encode(cid2, message);  
+      var enc = n1.encode(cid2, message);
       n2._onMessage(enc);
       n2._deletePeer.calledOnce.should.equal(true);
 
