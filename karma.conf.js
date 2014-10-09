@@ -63,8 +63,8 @@ module.exports = function(config) {
       'test/mocha.conf.js',
 
       //test files
-      'karma/setup.js',
-      'test/models/*.js',
+      'setup/karma.js',
+      'test/*.js',
 
       'test/unit/**/*.js',
 

@@ -88,12 +88,12 @@ module.exports = function(grunt) {
     mochaTest: {
       tests: {
         options: {
-          require: 'test/mocha_node_setup.js',
+          require: 'setup/node.js',
           reporter: 'spec',
           mocha: require('mocha')
         },
         src: [
-          'test/models/*.js',
+          'test/*.js',
         ]
       }
     },
