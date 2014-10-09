@@ -158,6 +158,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   z-index: 9999;
 }
 
+.home label,
+.createProfile label,
 .join label, 
 .open label, 
 .setup label {
@@ -175,6 +177,8 @@ a:hover {
   color: #2980b9;
 }
 
+.home input,
+.createProfile input,
 .open input, 
 .join input, 
 .setup input,
@@ -188,6 +192,8 @@ a:hover {
   color: #fff !important;
 }
 
+.home select,
+.createProfile select,
 .open select, 
 .join select, 
 .setup select,
@@ -248,7 +254,7 @@ a:hover {
   background-color: #F8F8FB;
 }
 
-.home, .open, .join, .waiting-copayers, .setup, .import, .settings {
+.home, .createProfile, .open, .join, .waiting-copayers, .setup, .import, .settings {
   margin-top: 15%;
   color: #fff;
 }
