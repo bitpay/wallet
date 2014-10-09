@@ -1,4 +1,7 @@
-<div ng-controller="CopayersController" class="copayers">
+<div ng-controller="CopayersController" 
+  class="copayers"
+  ng-mouseenter="showCopayers=1" 
+  ng-mouseleave="showCopayers=0">
   <h3>
     <i class="fi-torsos-all size-21 m20r"></i>
     <span translate>Copayers</span>
@@ -7,7 +10,8 @@
     </small>
   </h3>
 
-  <div class="copay-box-small" ng-repeat="copayer in copayersList()">
+  <div class="copay-box-small" ng-repeat="copayer in copayersList()"
+    ng-show="showCopayers">
     <img
       class="br100 online"
       src="./img/satoshi.gif"
