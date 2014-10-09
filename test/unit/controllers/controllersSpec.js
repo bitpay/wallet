@@ -556,14 +556,18 @@ describe("Unit: Controllers", function() {
 
   describe('UriPayment Controller', function() {
     var what;
-    beforeEach(inject(function($controller, $rootScope) {
+    beforeEach(inject(function($controller, $rootScope, $location) {
       scope = $rootScope.$new();
       var routeParams = {
-        data: 'bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8?amount=0.1&message=a%20bitcoin%20donation'
+        data: 'bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8'
       };
+      var query = {amount: 0.1, message: "a bitcoin donation"};
       what = $controller('UriPaymentController', {
         $scope: scope,
-        $routeParams: routeParams
+        $routeParams: routeParams,
+        $location: {
+          search: function() { return query; }
+        }
       });
     }));
 
