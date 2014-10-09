@@ -62,10 +62,9 @@ describe("Unit: Testing Directives", function() {
     describe('Unit: bits', function() {
       beforeEach(inject(function($compile, $rootScope) {
         $scope = $rootScope;
-        $rootScope.availableBalance = 1000;
         var element = angular.element(
           '<form name="form">' +
-          '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
+          '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.00000001" max="10000000000" valid-amount required>' +
           '</form>'
         );
         $scope.model = {
@@ -81,20 +80,19 @@ describe("Unit: Testing Directives", function() {
         form.amount.$setViewValue(800);
         expect(form.amount.$invalid).to.equal(false);
         form.amount.$setViewValue(900);
-        expect($scope.notEnoughAmount).to.equal(null);
+        expect($scope.notValidAmount).to.equal(null);
+        form.amount.$setViewValue(0.44);
+        expect($scope.notValidAmount).to.equal(null);
+
       });
 
       it('should not validate', function() {
         form.amount.$setViewValue(0);
         expect(form.amount.$invalid).to.equal(true);
-        form.amount.$setViewValue(9999999999);
+        form.amount.$setViewValue(999999999999);
         expect(form.amount.$invalid).to.equal(true);
-        form.amount.$setViewValue(901);
-        expect(form.amount.$invalid).to.equal(true);
-        form.amount.$setViewValue(1000);
-        expect(form.amount.$invalid).to.equal(true);
-        form.amount.$setViewValue(901);
-        expect($scope.notEnoughAmount).to.equal(true);
+        form.amount.$setViewValue(0.333);
+        expect($scope.notValidAmount).to.equal(true);
       });
     });
 
@@ -104,12 +102,13 @@ describe("Unit: Testing Directives", function() {
         var w = new FakeWallet(walletConfig);
         w.settings.unitToSatoshi = 100000000;
         w.settings.unitName = 'BTC';
+        w.settings.unitDecimals = 8;
         $rootScope.wallet = w;
 
         $rootScope.availableBalance = 0.04;
         var element = angular.element(
           '<form name="form">' +
-          '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.0001" max="10000000" enough-amount required>' +
+          '<input type="number" id="amount" name="amount" placeholder="Amount" ng-model="amount" min="0.00000001" max="10000000000" valid-amount required>' +
           '</form>'
         );
         $scope.model = {
@@ -122,25 +121,24 @@ describe("Unit: Testing Directives", function() {
 
       it('should validate', function() {
         form.amount.$setViewValue(0.01);
-        expect($scope.notEnoughAmount).to.equal(null);
+        expect($scope.notValidAmount).to.equal(null);
         expect(form.amount.$invalid).to.equal(false);
         form.amount.$setViewValue(0.039);
-        expect($scope.notEnoughAmount).to.equal(null);
+        expect($scope.notValidAmount).to.equal(null);
+        expect(form.amount.$invalid).to.equal(false);
+        form.amount.$setViewValue(100292.039);
+        expect($scope.notValidAmount).to.equal(null);
         expect(form.amount.$invalid).to.equal(false);
       });
 
       it('should not validate', function() {
-        form.amount.$setViewValue(0.03999);
-        expect($scope.notEnoughAmount).to.equal(true);
+        form.amount.$setViewValue(0.039998888888888);
+        expect($scope.notValidAmount).to.equal(true);
         expect(form.amount.$invalid).to.equal(true);
         form.amount.$setViewValue(0);
         expect(form.amount.$invalid).to.equal(true);
         form.amount.$setViewValue(0.0);
         expect(form.amount.$invalid).to.equal(true);
-        form.amount.$setViewValue(0.05);
-        expect($scope.notEnoughAmount).to.equal(true);
-        expect(form.amount.$invalid).to.equal(true);
-
       });
 
     });
