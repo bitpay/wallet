@@ -1,1 +1,1 @@
---require test/mocha_node_setup.js --reporter spec test/models/*.js
+--require setup/node.js --reporter spec
