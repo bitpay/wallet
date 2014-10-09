@@ -2206,7 +2206,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
 
     var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
     if (!ntxid) {
-      return cb(new Error('Error creating TX'));
+      return cb(new Error('Error creating the Transaction'));
     }
 
     self.sendIndexes();
@@ -2241,12 +2241,19 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts[k] = Wallet.builderOpts[k];
   }
 
-  var b = new Builder(opts)
+  var b;
+
+  try {
+    b = new Builder(opts)
     .setUnspent(utxos)
     .setOutputs([{
       address: toAddress,
       amountSatStr: amountSatStr,
     }]);
+  } catch (e) {
+    log.debug(e.message);
+    return;
+  };
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
