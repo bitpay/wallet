@@ -13,7 +13,7 @@
           <h1 translate class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
           <form name="joinForm" ng-submit="join(joinForm)" novalidate>
 
-            <label for="connectionId"><span translate>Wallet Secret</span> 
+            <label for="connectionId" class="m10b"><span translate>Wallet Secret</span> 
               <small translate class="has-error" ng-show="joinForm.connectionId.$invalid
                 && !joinForm.connectionId.$pristine">Wallet Secret is not valid!</small>
               <small translate data-options="disable_for_touch:true"
@@ -55,7 +55,7 @@
               </div>
             </div>
 
-            <label translate for="joinPassword">User information</label>
+            <label translate for="joinPassword" class="m10b">User information</label>
             <input id="joinPassword" type="text" class="form-control" 
             placeholder="{{'Your name'|translate}}" name="nickname"
             ng-model="nickname" required>
@@ -68,7 +68,7 @@
               numbers and symbols</span>" tooltip-trigger="focus" 
               tooltip-placement="top" required>
 
-            <div class="pr line-sidebar-b">
+            <div class="pr">
               <input type="password" 
               placeholder="{{'Repeat password'|translate}}"
               name="joinPasswordConfirm"
@@ -96,14 +96,10 @@
               >
             </div>
  
-            <div class="text-right">
+            <div class="text-right m20t">
               <a href="#!/" class="back-button text-primary m20r">&laquo; <span translate>Back</span></a>
               <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading">Join</button>
             </div>
-
-         
-
-
           </form>
         </div>
     </div>
