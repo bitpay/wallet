@@ -7,48 +7,47 @@
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
 
       <h1>{{'Create Wallet'|translate}}</h1>
-      <div class="row collapse m0">
-      <div class="large-6 columns">
-          <div class="box-setup oh">
-            <img src="img/step-1.png" alt="Step 1" width="157" class="right m15t" ng-if="!isSetupWalletPage && !isMobile">
-            <h1 translate class="text-secondary line-sidebar-b">Create new wallet</h1>
-            <label><span translate>Wallet name</span>
-              <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName">
-            </label>
-            <div class="row">
-              <div class="large-6 medium-6 columns">
-                <label><span translate>Select total number of copayers (*)</span>
-                  <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
-                  </select>
-                </label>
-              </div>
-              <div class="large-6 medium-6 columns">
-                <label><span translate>Select required signatures (*)</span>
-                  <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues" ng-disabled="totalCopayers == 1">
-                  </select>
-                </label>
-              </div>
+      <div class="row">
+        <div class="large-12 columns">
+          <label><span translate>Wallet name</span>
+            <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName">
+          </label>
+          <div class="row">
+            <div class="large-6 medium-6 columns">
+              <label><span translate>Select total number of copayers (*)</span>
+                <select ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in TCValues">
+                </select>
+              </label>
             </div>
-            <div class="box-setup-copayers">
-              <div class="box-setup-copayers p10">
-                <img class="br100 oh box-setup-copay m10" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" title="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}" width="50px">
-              </div>
+            <div class="large-6 medium-6 columns">
+              <label><span translate>Select required signatures (*)</span>
+                <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues" ng-disabled="totalCopayers == 1">
+                </select>
+              </label>
             </div>
-            <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
+          </div>
+          <div class="box-setup-copayers">
+            <div class="box-setup-copayers p10">
+              <img class="br100 oh box-setup-copay m10" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" title="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}" width="50px">
+            </div>
+          </div>
+          <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
 
-              <a class="expand small" ng-click="hideAdv=!hideAdv">
-               <i class="fi-widget m3r"></i>
-                <span translate ng-hide="!hideAdv">Show</span> 
-                <span translate ng-hide="hideAdv">Hide</span> 
-                <span translate>advanced options</span>
-              </a>
-              <div ng-hide="hideAdv" class="m10t">
-                <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
-                <label for="network-name" translate>Use test network</label>
+          <div class="m10b">
+            <a class="expand small" ng-click="hideAdv=!hideAdv">
+              <i class="fi-widget m3r"></i>
+              <span translate ng-hide="!hideAdv">Show</span> 
+              <span translate ng-hide="hideAdv">Hide</span> 
+              <span translate>advanced options</span>
+            </a>
+          </div>
+          <div ng-hide="hideAdv">
+            <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
+            <label for="network-name" translate>Use test network</label>
 
-                <p>
-                <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
-              </div>
+            <p>
+            <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
+          </div>
 
 
             <div class="text-right">
