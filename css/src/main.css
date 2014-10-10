@@ -742,6 +742,7 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 .has-tip {
   color: #7A8C9E;
   border-color: #7A8C9E;
+  cursor: inherit;
 }
 
 .logo {
