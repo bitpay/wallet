@@ -3,6 +3,8 @@ var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('TransactionsController',
   function($scope, $rootScope, $timeout, controllerUtils, notification, rateService) {
+    controllerUtils.redirIfNotComplete();
+
 
     var w = $rootScope.wallet;
 

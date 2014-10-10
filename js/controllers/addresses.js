@@ -2,6 +2,9 @@
 
 angular.module('copayApp.controllers').controller('AddressesController',
   function($scope, $rootScope, $timeout, $modal, controllerUtils) {
+    controllerUtils.redirIfNotComplete();
+
+
     $scope.loading = false;
     $scope.showAll = false;
     var w = $rootScope.wallet;
