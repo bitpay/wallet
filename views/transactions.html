@@ -53,8 +53,8 @@
           </div>
           <div class="last-transactions-content">
             <div class="large-5 medium-5 small-12 columns">
-              <div ng-repeat="vin in btx.vinSimple">
-                <small class="right m5t"
+              <div ng-repeat="vin in btx.vinSimple" class="m5b">
+                <small class="right"
                   ng-class="{'has-tip': vin.valueAlt}"
                   data-options="disable_for_touch:true"
                   tooltip-popup-delay='500'
@@ -64,9 +64,9 @@
                   >
                   {{vin.value| noFractionNumber}} {{$root.wallet.settings.unitName}}
                 </small>
-                <p class="ellipsis text-gray size-12">
+                <div class="ellipsis text-gray size-12">
                   <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
-                </p>
+                </div>
               </div>
             </div>
             <div class="large-1 medium-1 hide-for-small-only columns text-center">
@@ -76,8 +76,8 @@
               <i class="fi-arrow-down"></i>
             </div>
             <div class="large-6 medium-6 small-12 columns">
-              <div ng-repeat="vout in btx.voutSimple">
-                <small class="right m5t"
+              <div ng-repeat="vout in btx.voutSimple" class="m5b">
+                <small class="right"
                   ng-class="{'has-tip': vout.valueAlt}"
                   data-options="disable_for_touch:true"
                   tooltip-popup-delay='500'
@@ -86,17 +86,17 @@
                   tooltip-placement="left"
                   >
                   {{vout.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
-                <p class="ellipsis text-gray size-12">
+                <div class="ellipsis text-gray size-12">
                   <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
-                </p>
+                </div>
               </div>
             </div>
           </div>
           <div class="last-transactions-footer">
             <div class="row collapse">
               <div class="large-6 medium-6 small-6 columns">
-                <p class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
-                <p class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</p>
+                <div class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.wallet.settings.unitName}}</div>
+                <div class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</div>
               </div>
               <div class="large-6 medium-6 small-6 columns text-right">
                 <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
