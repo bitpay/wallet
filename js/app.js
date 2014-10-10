@@ -9,13 +9,13 @@ if (localConfig) {
   var cmv = copay.version.split('.')[1];
   var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
   if (cmv === lmv) {
-    _.each(localConfig, function(value, key) {
+    _.each(localConfig, function (value, key) {
       config[key] = value;
     });
   }
 }
 
-var log = function() {
+var log = function () {
   if (config.verbose) console.log(arguments);
 }
 
@@ -38,7 +38,12 @@ if (Object.keys(config.plugins).length)
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);
 
-copayApp.config(function($sceDelegateProvider) {
+copayApp.value('defaults', {
+  livenetUrl: 'https://insight.bitpay.com:443',
+  testnetUrl: 'https://test-insight.bitpay.com:443'
+});
+
+copayApp.config(function ($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
     'mailto:**'

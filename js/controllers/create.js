@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification) {
+  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification, defaults) {
     controllerUtils.redirIfLogged();
 
     $rootScope.fromSetup = true;
@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     // ng-repeat defined number of times instead of repeating over array?
     $scope.getNumber = function(num) {
       return new Array(num);
-    }
+    };
 
     $scope.totalCopayers = config.wallet.totalCopayers;
     $scope.TCValues = _.range(1, config.limits.totalCopayers + 1);
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     });
 
     $scope.showNetwork = function(){
-      return $scope.networkUrl == config.network['testnet'] || $scope.networkUrl == config.network['livenet'];
+      return $scope.networkUrl != defaults.livenetUrl && $scope.networkUrl != defaults.testnetUrl;
     };
 
     $scope.create = function(form) {
