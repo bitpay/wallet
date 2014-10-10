@@ -1,18 +1,18 @@
 'use strict';
 var preconditions = require('preconditions').singleton();
 
+var _ = require('underscore');
+var log = require('../log');
+
+var version = require('../../version').version;
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
-var _ = require('underscore');
-var log = require('../log');
-var version = require('../../version').version;
 var PluginManager = require('./PluginManager');
 var Profile = require('./Profile');
 var Insight = module.exports.Insight = require('./Insight');
 var Async = module.exports.Async = require('./Async');
-var preconditions = require('preconditions').singleton();
 var Storage = module.exports.Storage = require('./Storage');
 
 /**
