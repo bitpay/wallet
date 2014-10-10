@@ -36,6 +36,10 @@ angular.module('copayApp.controllers').controller('CreateController',
       $scope.networkUrl = config.network[$scope.networkName].url;
     });
 
+    $scope.showNetwork = function(){
+      return $scope.networkUrl == config.network['testnet'] || $scope.networkUrl == config.network['livenet'];
+    };
+
     $scope.create = function(form) {
       if (form && form.$invalid) {
         notification.error('Error', 'Please enter the required fields');
