@@ -5,6 +5,7 @@ var _ = require('underscore');
 var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
+var async = require('async');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -865,22 +866,22 @@ Wallet.prototype._lockIncomming = function() {
 
 Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
-  this.blockchain.removeAllListeners();
+  self.blockchain.removeAllListeners();
 
-  this.blockchain.on('reconnect', function(attempts) {
-    log.debug('Wallet:' + this.id +'blockchain reconnect event');
+  self.blockchain.on('reconnect', function(attempts) {
+    log.debug('Wallet:' + self.id +'blockchain reconnect event');
     self.emit('insightReconnected');
 
     // Subscription should persist? TODO 
     //self.subscribeToAddresses();
   });
 
-  this.blockchain.on('disconnect', function() {
-    log.debug('Wallet:' + this.id +'blockchain disconnect event');
+  self.blockchain.on('disconnect', function() {
+    log.debug('Wallet:' + self.id +'blockchain disconnect event');
     self.emit('insightError');
   });
-  this.blockchain.on('tx', function(tx) {
-    log.debug('Wallet:' + this.id +'blockchain tx event');
+  self.blockchain.on('tx', function(tx) {
+    log.debug('Wallet:' + self.id +'blockchain tx event');
     var addresses = self.getAddressesInfo();
     var addr = _.findWhere(addresses, {
       addressStr: tx.address

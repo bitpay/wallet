@@ -419,20 +419,15 @@ describe('Wallet model', function() {
 
 
   it('decodeSecret check', function() {
-    (function() {
-      Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
-    }).should.not.
-    throw();
+    var s = Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
+    should.exist(s);
 
-    (function() {
-      Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
-    }).should.
-    throw();
+    s= Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
+    s.should.equal(false);
 
-    (function() {
-      Wallet.decodeSecret('12345');
-    }).should.
-    throw();
+
+    s= Wallet.decodeSecret('123456');
+    s.should.equal(false);
   });
 
 
