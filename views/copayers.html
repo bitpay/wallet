@@ -1,17 +1,18 @@
 <div class="waiting-copayers" ng-controller="CopayersController">
   <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
 
-  <div class="row collapse m0">
-    <div class="large-6 columns">
- 
-      <div class="box-setup oh">
+  <div class="row collapse">
+    <div class="large-12 columns">
         <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
-          <img src="img/step-3.png" alt="Step 3" width="157" class="right m15t" ng-if="$root.fromSetup && !isMobile">
-          <h1 translate class="text-primary line-sidebar-b">Waiting copayers</h1>
-          <h3 translate>Share this secret with your other copayers</h3>
+          <h1>
+            <span translate>Waiting copayers for</span>
+            {{$root.wallet.getName()}} 
+            <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
+          </h1>
           <div class="panel">
             <qrcode size="350" data="{{$root.wallet.getSecret()}}"></qrcode>
-            <div class="secret text-gray size-14">
+            <div class="secret">
+              <h2 translate>Share this secret with your other copayers</h2>
               {{$root.wallet.getSecret()}} 
               <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
             </div>
@@ -33,21 +34,6 @@
             </h3>
           </div>
         </div>
-        <div class="row">
-          <div class="large-10 small-9 columns text-left">
-            <h4 translate class="ellipsis" ng-show="!$root.wallet.publicKeyRing.isComplete()">
-              Waiting Copayers for {{$root.wallet.getName()}}
-            </h4>
-          </div>
-          <div class="large-2 small-3 columns text-right">
-            <h4 ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
-              <small class="text-gray">
-                {{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}
-              </small>
-            </h4>
-          </div>
-        </div>
-
         <div class="box-setup-copayers p20">
           <p class="text-primary m10b" 
             ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()" translate>
@@ -131,7 +117,6 @@
             ng-show="hideViewBackup"
             ng-click="skipBackup()" translate>Continue</button>
         </div>
-      </div>
     </div>
   </div> <!-- end of row -->
 </div>
