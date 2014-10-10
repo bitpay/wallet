@@ -159,10 +159,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .home label,
-.createProfile label,
-.join label, 
-.open label, 
-.setup label {
+.createProfile label {
   font-size: 0.875rem;
   color: #fff;
   font-weight: 100;
@@ -194,10 +191,6 @@ a:hover {
 
 .home select,
 .createProfile select,
-.open select, 
-.join select, 
-.setup select,
-.import select,
 .settings select {
   background: #2C3E50 !important;
   border: 0 !important;
@@ -254,7 +247,7 @@ a:hover {
   background-color: #F8F8FB;
 }
 
-.home, .createProfile, .open, .join, .waiting-copayers, .setup, .import, .settings {
+.home, .createProfile, .settings {
   margin-top: 15%;
   color: #fff;
 }
