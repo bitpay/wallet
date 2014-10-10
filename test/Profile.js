@@ -126,7 +126,7 @@ describe('Profile model', function() {
       p.addWallet('123', {}, function(err) {
         p.addWallet('234', {}, function(err) {
           p.addWallet('345', {}, function(err) {
-            _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '234', '345']);
+            _.pluck(p.listWallets(), 'id').sort().should.deep.equal(['123', '234', '345']);
             p.deleteWallet('234', function(err) {
               _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '345']);
               done();

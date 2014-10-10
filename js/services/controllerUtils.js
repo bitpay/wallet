@@ -5,6 +5,19 @@ angular.module('copayApp.services')
   .factory('controllerUtils', function($rootScope, $sce, $location, $filter, notification, $timeout, uriHandler, rateService) {
     var root = {};
 
+
+    root.redirIfNotComplete = function() {
+      var w = $rootScope.wallet;
+      if (w) {
+        if (!w.isReady()) {
+          $location.path('/copayers');
+        } 
+      } else {
+        $location.path('/');
+      }
+    };
+
+
     root.redirIfLogged = function() {
       var w = $rootScope.wallet;
       if (w) {
@@ -80,7 +93,7 @@ angular.module('copayApp.services')
         }
       });
 
-      w.on('publicKeyRingUpdated', function(dontDigest) {
+      w.on('newAddresses', function(dontDigest) {
         if (root.isFocusedWallet(wid)) {
           root.updateAddressList();
           if (!dontDigest) {
@@ -205,7 +218,6 @@ angular.module('copayApp.services')
 
       $rootScope.wallet = w;
       root.updateAddressList();
-
       root.redirIfLogged();
     };
 
