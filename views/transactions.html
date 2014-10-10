@@ -55,6 +55,7 @@
             <div class="large-5 medium-5 small-12 columns">
               <div ng-repeat="vin in btx.vinSimple">
                 <small class="right m5t"
+                  ng-class="{'has-tip': vin.valueAlt}"
                   data-options="disable_for_touch:true"
                   tooltip-popup-delay='500'
                   tooltip="{{vin.valueAlt|noFractionNumber}} {{alternativeIsoCode}}"
@@ -77,6 +78,7 @@
             <div class="large-6 medium-6 small-12 columns">
               <div ng-repeat="vout in btx.voutSimple">
                 <small class="right m5t"
+                  ng-class="{'has-tip': vout.valueAlt}"
                   data-options="disable_for_touch:true"
                   tooltip-popup-delay='500'
                   tooltip="{{vout.valueAlt|noFractionNumber}} {{alternativeIsoCode}}"
