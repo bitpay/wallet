@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('MoreController',
   function($scope, $rootScope, $location, $filter, backupService, walletFactory, controllerUtils, notification, rateService) {
     var w = $rootScope.wallet;
+    $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -73,6 +74,11 @@ angular.module('copayApp.controllers').controller('MoreController',
     $scope.downloadBackup = function() {
       backupService.download(w);
     }
+
+    $scope.viewBackup = function() {
+      $scope.backupPlainText = backupService.getBackup(w);
+      $scope.hideViewBackup = true;
+    };
 
     $scope.deleteWallet = function() {
       walletFactory.delete(w.id, function() {

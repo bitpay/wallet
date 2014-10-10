@@ -2,9 +2,8 @@
 
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $location, backupService, walletFactory, controllerUtils) {
-
+    $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
     $scope.hideAdv = true;
-
 
     $scope.skipBackup = function() {
       var w = $rootScope.wallet;
@@ -13,14 +12,22 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.backup = function() {
       var w = $rootScope.wallet;
-      w.setBackupReady();
-      backupService.download(w);
+      if ($scope.isSafari) {
+        $scope.viewBackup(w);
+      } else {
+        w.setBackupReady();
+        $scope.downloadBackup(w);
+      }
     };
 
-    $scope.downloadBackup = function() {
-      var w = $rootScope.wallet;
+    $scope.downloadBackup = function(w) {
       backupService.download(w);
-    }
+    };
+    
+    $scope.viewBackup = function(w) {
+      $scope.backupPlainText = backupService.getBackup(w);
+      $scope.hideViewBackup = true;
+    };
 
     $scope.goToWallet = function() {
       controllerUtils.updateAddressList();
