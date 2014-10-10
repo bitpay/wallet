@@ -5,10 +5,8 @@
   </div>
 
   <h1>{{'Join Wallet'|translate}}</h1>
-  <div class="row collapse m0">
-    <div class="large-6 columns">
-      <div class="box-setup">
-        <h1 translate class="text-primary line-sidebar-b">Join a Wallet in Creation</h1>
+  <div class="row collapse">
+    <div class="large-12 columns">
         <form name="joinForm" ng-submit="join(joinForm)" novalidate>
 
           <label for="connectionId"><span translate>Wallet Secret</span> 
@@ -51,13 +49,15 @@
             </div>
           </div>
 
-          <a class="expand small" ng-click="hideAdv=!hideAdv">
-            <i class="fi-widget m3r"></i>
-            <span translate ng-hide="!hideAdv">Show</span> 
-            <span translate ng-hide="hideAdv">Hide</span> 
-            <span translate>advanced options</span>
-          </a>
-          <div ng-hide="hideAdv" class="m10t">
+          <div class="m10b">
+            <a class="expand small" ng-click="hideAdv=!hideAdv">
+              <i class="fi-widget m3r"></i>
+              <span translate ng-hide="!hideAdv">Show</span> 
+              <span translate ng-hide="hideAdv">Hide</span> 
+              <span translate>advanced options</span>
+            </a>
+          </div>
+          <div ng-hide="hideAdv">
             <p>
               <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
           </div>
@@ -65,12 +65,7 @@
           <div class="text-right">
             <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading">Join</button>
           </div>
-
-
-
-
         </form>
-      </div>
     </div>
   </div>
   <!-- End !loading -->

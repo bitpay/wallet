@@ -837,14 +837,19 @@ Wallet.prototype.getSecret = function() {
  * @return {Object}
  */
 Wallet.decodeSecret = function(secretB) {
-  var secret = Base58Check.decode(secretB);
-  var pubKeyBuf = secret.slice(0, 33);
-  var secretNumber = secret.slice(33, 38);
-  var networkName = secret.slice(38, 39).toString('hex') === '00' ? 'livenet' : 'testnet';
-  return {
-    pubKey: pubKeyBuf.toString('hex'),
-    secretNumber: secretNumber.toString('hex'),
-    networkName: networkName,
+  try {
+    var secret = Base58Check.decode(secretB);
+    var pubKeyBuf = secret.slice(0, 33);
+    var secretNumber = secret.slice(33, 38);
+    var networkName = secret.slice(38, 39).toString('hex') === '00' ? 'livenet' : 'testnet';
+    return {
+      pubKey: pubKeyBuf.toString('hex'),
+      secretNumber: secretNumber.toString('hex'),
+      networkName: networkName,
+    }
+  } catch (e) {
+    log.debug(e.message);
+    return false;
   }
 };
 
