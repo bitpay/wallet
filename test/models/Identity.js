@@ -42,6 +42,7 @@ describe('Identity model', function() {
 
     wallet = sinon.stub();
     wallet.store = sinon.stub().yields(null);
+    wallet.netStart = sinon.stub();
     wallet.getId = sinon.stub().returns('wid:123');
     Identity._newWallet = sinon.stub().returns(wallet);
 
@@ -129,7 +130,7 @@ describe('Identity model', function() {
         storage.getFirst = sinon.stub().yields('wallet1234');
         profile.listWallets = sinon.stub().returns([{id:'walletid'}]);
         Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
-          Identity._walletRead = sinon.stub().callsArgWith(5, null, wallet);
+          Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
       });
 
       it('should call ._openProfile', function(done) {
@@ -234,7 +235,7 @@ describe('Identity model', function() {
       var wallet = sinon.stub();
       wallet.store = sinon.stub().yields(null);
 
-      Identity._walletRead = sinon.stub().callsArgWith(5, null, wallet);
+      Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
     });
 
     it('should return wallet and call .store, .setLastOpenedTs & .migrateWallet', function(done) {
