@@ -19,21 +19,12 @@
             <div style="clear:both;"></div>
           </div>
         </div>
-        <h1 class="text-white line-sidebar-b" ng-if="$root.wallet &&
-          $root.wallet.publicKeyRing.isComplete()" translate>New Wallet Created</h1>
-        <div class="row" ng-show="$root.wallet.publicKeyRing.isComplete()">
-          <div class="large-4 small-6 columns text-left">
-            <h3 translate>Download Backup</h3>
-          </div>
-          <div class="large-8 small-6 columns text-right">
-            <h3 class="ellipsis">
-              <small class="text-gray">
-                <b>{{$root.wallet.getName()}}</b> : 
-                {{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}
-              </small>
-            </h3>
-          </div>
-        </div>
+        <h1 ng-if="$root.wallet &&
+          $root.wallet.publicKeyRing.isComplete()">
+          <span translate>Wallet</span> {{$root.wallet.getName()}} 
+          <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
+          <span translate>created</span>
+        </h1>
         <div class="box-setup-copayers p20">
           <p class="text-primary m10b" 
             ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()" translate>
