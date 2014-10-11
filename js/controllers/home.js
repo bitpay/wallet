@@ -1,8 +1,17 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager) {
-
   controllerUtils.redirIfLogged();
+
+  $scope.retreiving =true;
+  copay.Identity.anyProfile({
+    pluginManager: pluginManager,
+  }, function(any) {
+    $scope.retreiving =false;
+    if (!any)
+      $location.path('/createProfile');
+  });
+ 
 
   $scope.openProfile = function(form) {
     if (form && form.$invalid) {

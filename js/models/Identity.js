@@ -26,26 +26,8 @@ var Storage = module.exports.Storage = require('./Storage');
 
 function Identity(email, password, opts) {
   preconditions.checkArgument(opts);
-  var storageOpts = {};
 
-  if (opts.pluginManager) {
-    storageOpts = _.clone({
-      db: opts.pluginManager.get('DB'),
-      passphrase: opts.passphrase,
-    });
-    /*
-     * TODO (plugins for other services)
-     *
-     * blockchainOpts = {
-     *   provider: Insight...
-     * }
-     */
-  }
-  storageOpts.password = password;
-
-  this.storage = Identity._newStorage(storageOpts);
-  this.storage.setPassword(password);
-
+  this.storage = Identity._getStorage(opts, password);
   this.networkOpts = {
     'livenet': opts.network.livenet,
     'testnet': opts.network.testnet,
@@ -102,6 +84,33 @@ Identity._newAsync = function(opts) {
 
 
 
+Identity._getStorage = function(opts, password) {
+  var storageOpts = {};
+
+  if (opts.pluginManager) {
+    storageOpts = _.clone({
+      db: opts.pluginManager.get('DB'),
+      passphraseConfig: opts.passphraseConfig,
+    });
+  }
+  if (password)
+    storageOpts.password = password;
+
+  return Identity._newStorage(storageOpts);
+};
+
+/**
+ * check if any profile exists on storage
+ *
+ * @param opts.storageOpts
+ * @param cb
+ */
+
+ 
+Identity.anyProfile = function(opts, cb) {
+  var storage = Identity._getStorage(opts);
+  Profile.any(storage,cb);
+};
 
 /**
  * creates and Identity

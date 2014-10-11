@@ -43,6 +43,13 @@ Profile.create = function(email, password, storage, cb) {
   });
 };
 
+
+Profile.any = function(storage, cb) {
+  storage.getFirst(Profile.key(''), function(err, val) {
+    return cb(val ? true : false);
+  });
+};
+
 Profile.open = function(email, password, storage, cb) {
   preconditions.checkArgument(cb);
   preconditions.checkState(storage.hasPassphrase());
