@@ -174,8 +174,8 @@ Wallet.key = function(str) {
 
 
 Wallet.any = function(storage, cb) {
-  storage.getFirst(Wallet.key(''), function(err, val) {
-    return cb(val ? true : false);
+  storage.getFirst(Wallet.key(''), function(err, v, k) {
+    return cb(k ? true : false);
   });
 };
 
