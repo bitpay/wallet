@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       network: config.network,
       networkName: config.networkName,
       walletDefaults: config.wallet,
-      passphrase: config.passphrase,
+      passphraseConfig: config.passphraseConfig,
     }, function(err, iden, firstWallet) {
       if (err && !iden) {
         console.log('Error:' + err)

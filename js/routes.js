@@ -14,10 +14,6 @@ angular
     templateUrl: 'views/createProfile.html',
     validate: false
   })
-  .when('/open', {
-    templateUrl: 'views/open.html',
-    validate: false
-  })
   .when('/join', {
     templateUrl: 'views/join.html',
     validate: true

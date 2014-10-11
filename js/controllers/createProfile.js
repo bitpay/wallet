@@ -13,9 +13,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     }, function(anyWallet) {
       $scope.retreiving = false;
       $scope.anyProfile = anyProfile;
-console.log('[createProfile.js.15:anyProfile:]',anyProfile); //TODO
       $scope.anyWallet = anyWallet;
-console.log('[createProfile.js.17:anyWallet:]',anyWallet); //TODO
     });
 
   });
@@ -32,7 +30,7 @@ console.log('[createProfile.js.17:anyWallet:]',anyWallet); //TODO
       network: config.network,
       networkName: config.networkName,
       walletDefaults: config.wallet,
-      passphrase: config.passphrase,
+      passphraseConfig: config.passphraseConfig,
     }, function(err, iden, firstWallet) {
       controllerUtils.bindProfile($scope, iden, firstWallet);
     });

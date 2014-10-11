@@ -163,7 +163,7 @@ Storage.prototype.getFirst = function(prefix, cb) {
     });
     if (keys.length === 0) return cb(new Error('not found'));
     self._read(keys[0], function(v) {
-      if (_.isNull(v)) return cb(new Error('Could not decrypt data'));
+      if (_.isNull(v)) return cb(new Error('Could not decrypt data'), null, keys[0]);
       return cb(null, v, keys[0]);
     })
   });

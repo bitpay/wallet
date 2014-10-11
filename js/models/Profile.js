@@ -45,8 +45,8 @@ Profile.create = function(email, password, storage, cb) {
 
 
 Profile.any = function(storage, cb) {
-  storage.getFirst(Profile.key(''), function(err, val) {
-    return cb(val ? true : false);
+  storage.getFirst(Profile.key(''), function(err, v, k) {
+    return cb(k ? true : false);
   });
 };
 
