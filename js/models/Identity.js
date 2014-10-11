@@ -105,11 +105,20 @@ Identity._getStorage = function(opts, password) {
  * @param opts.storageOpts
  * @param cb
  */
-
- 
 Identity.anyProfile = function(opts, cb) {
   var storage = Identity._getStorage(opts);
   Profile.any(storage,cb);
+};
+
+/**
+ * check if any wallet exists on storage
+ *
+ * @param opts.storageOpts
+ * @param cb
+ */
+Identity.anyWallet = function(opts, cb) {
+  var storage = Identity._getStorage(opts);
+  Wallet.any(storage,cb);
 };
 
 /**

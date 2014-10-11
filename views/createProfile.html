@@ -1,6 +1,15 @@
 <div class="createProfile" ng-controller="CreateProfileController">
+  <div class="m30a" style="width:50%" ng-show="anyWallet && !anyProfile">
+      <div class="left">
+      <i class="size-36 fi-alert"></i>
+      </div>
+      <div>
+      Copay now needs a profile to access your wallets. <br>
+      You can import current your wallets after creating your profile.
+      </div>
+  </div>
+ 
 
-<p>( TODO2: if user has wallets (wallet::) show message: Copay now needs a profile to ... , you can import your wallets after creating your profile )
   <div data-alert class="loading-screen" ng-show="retreiving">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     Retreiving information from storage...

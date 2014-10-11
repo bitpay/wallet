@@ -166,6 +166,19 @@ Wallet.COPAYER_PAIR_LIMITS = {
   12: 1,
 };
 
+
+
+Wallet.key = function(str) {
+  return 'wallet::' + str;
+};
+
+
+Wallet.any = function(storage, cb) {
+  storage.getFirst(Wallet.key(''), function(err, val) {
+    return cb(val ? true : false);
+  });
+};
+
 /* for stubbing */
 Wallet._newInsight = function(opts) {
   return new Insight(opts);
@@ -217,7 +230,7 @@ Wallet.getMaxRequiredCopayers = function(totalCopayers) {
 Wallet.delete = function(walletId, storage, cb) {
   preconditions.checkArgument(cb);
 
-  storage.deletePrefix('wallet::' + walletId, function(err) {
+  storage.deletePrefix(Wallet.key(walletId), function(err) {
     if (err) return cb(err);
     storage.deletePrefix(walletId + '::', function(err) {
       return cb(err);
@@ -245,7 +258,7 @@ Wallet.read = function(walletId, readOpts, cb) {
     err;
   var obj = {};
 
-  storage.getFirst('wallet::' + walletId, function(err, ret) {
+  storage.getFirst(Wallet.key(walletId), function(err, ret) {
     if (err) return cb(err);
 
     if (!ret)
@@ -1023,7 +1036,7 @@ Wallet.prototype.store = function(cb) {
   this.keepAlive();
 
   var val = this.toObj();
-  var key = 'wallet::' + this.id + ((val.opts && val.opts.name) ? '_' + val.opts.name : '');
+  var key = Wallet.key(this.id + ((val.opts && val.opts.name) ? '_' + val.opts.name : ''));
   this.storage.set(key, val, function(err) {
     log.debug('Wallet:' + self.id + '  stored');
     if (cb)
