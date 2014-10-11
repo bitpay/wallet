@@ -41,7 +41,7 @@ var defaultConfig = {
   },
 
   // local encryption/security config
-  passphrase: {
+  passphraseConfig: {
     iterations: 100,
     storageSalt: 'mjuBtGybi/4=',
   },

@@ -18,12 +18,14 @@ var id = 0;
  */
 function Storage(opts) {
   preconditions.checkArgument(opts);
-  preconditions.checkArgument(opts.password);
+  preconditions.checkArgument(!opts.passphrase);
 
   this.wListCache = {};
   this.__uniqueid = ++id;
-  this.passphraseConfig = opts.passphrase;
-  this.setPassword(opts.password);
+  this.passphraseConfig = opts.passphraseConfig;
+
+  if (opts.password)
+    this.setPassword(opts.password);
 
   try {
     this.db = opts.db || localStorage;
