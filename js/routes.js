@@ -60,6 +60,10 @@ angular
     templateUrl: 'views/warning.html',
     validate: true
   })
+  .when('/manage', {
+    templateUrl: 'views/manage.html',
+    validate: true
+  })
   .otherwise({
     templateUrl: 'views/errors/404.html',
     title: 'Error'
