@@ -202,7 +202,9 @@ Storage.prototype.clearAll = function(cb) {
   this.db.clear(cb);
 };
 
-Storage.prototype.decrypt = function(base64) {
+Storage.prototype.decrypt = function(base64, password) {
+  // password
+
   var decryptedStr = this._decrypt(base64);
   return JSON.parse(decryptedStr);
 };
