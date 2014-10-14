@@ -32,6 +32,8 @@ describe('Identity model', function() {
   beforeEach(function(done) {
     storage = sinon.stub();
     storage.getItem = sinon.stub();
+    storage.savePassphrase = sinon.spy();
+    storage.restorePassphrase = sinon.spy();
     storage.setPassword = sinon.spy();
     storage.hasPassphrase = sinon.stub().returns(true);
     storage.getSessionId = sinon.spy();
@@ -127,7 +129,7 @@ describe('Identity model', function() {
 
     describe('#open', function(done) {
       beforeEach(function() {
-        storage.getFirst = sinon.stub().yields('wallet1234');
+        storage.getFirst = sinon.stub().yields(null, 'wallet1234');
         profile.listWallets = sinon.stub().returns([{id:'walletid'}]);
         Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
           Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
@@ -230,7 +232,7 @@ describe('Identity model', function() {
     beforeEach(function() {
       iden.migrateWallet = sinon.stub().yields(null);
       storage.setPassword = sinon.spy();
-      storage.getFirst = sinon.stub().yields('wallet1234');
+      storage.getFirst = sinon.stub().yields(null, 'wallet1234');
 
       var wallet = sinon.stub();
       wallet.store = sinon.stub().yields(null);
@@ -256,6 +258,7 @@ describe('Identity model', function() {
 
     beforeEach(function() {
       iden.migrateWallet = sinon.stub().yields(null);
+      storage.getFirst = sinon.stub().yields(null, 'wallet1234');
     });
 
     it('should create wallet from encrypted object', function(done) {
@@ -266,9 +269,12 @@ describe('Identity model', function() {
 
       wallet.getId = sinon.stub().returns('ID123');
       Identity._walletFromObj = sinon.stub().returns(wallet);
+      Identity._walletRead = sinon.stub().yields(null,wallet);
 
       iden.importWallet("encrypted object", "xxx", [], function(err) {
         iden.openWallet('ID123', function(err, w) {
+          iden.storage.savePassphrase.calledOnce.should.equal(true);
+          iden.storage.restorePassphrase.calledOnce.should.equal(true);
           should.not.exist(err);
           should.exist(w);
           done();

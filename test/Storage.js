@@ -22,7 +22,7 @@ describe('Storage model', function() {
     var s2 = new Storage(requireMock('FakeLocalStorage').storageParams);
     (function() {
       var params = _.clone(requireMock('FakeLocalStorage').storageParams);
-      params.password = undefined;
+      params.passphrase = '1234';
       new Storage(params);
     }).should.throw('Illegal Argument');
   });

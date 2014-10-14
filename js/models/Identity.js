@@ -295,14 +295,17 @@ Identity.prototype.close = function(cb) {
  * @return {Wallet}
  */
 Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
+  preconditions.checkArgument(password);
   preconditions.checkArgument(cb);
 
+  this.storage.savePassphrase();
   this.storage.setPassword(password);
-
   var obj = this.storage.decrypt(base64);
-  if (!obj) return false;
+  this.storage.restorePassphrase();
 
+  if (!obj) return false;
   var w = Identity._walletFromObj(obj, this.storage, this.networkOpts, this.blockchainOpts);
+console.log('[Identity.js.307:Identity:]',w); //TODO
   this._checkVersion(w.version);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
