@@ -74,7 +74,7 @@ Profile.prototype.getWallet = function(walletId, cb) {
   return this.walletInfos[walletId];
 };
 
-Profile.prototype.listWallets = function(opts, cb) {
+Profile.prototype.listWallets = function() {
   return _.sortBy(this.walletInfos, function(winfo) {
     return -winfo.lastOpenedTs || -winfo.createdTs;
   });
