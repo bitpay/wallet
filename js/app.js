@@ -38,6 +38,11 @@ if (Object.keys(config.plugins).length)
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);
 
+copayApp.value('defaults', {
+  livenetUrl: 'https://insight.bitpay.com:443',
+  testnetUrl: 'https://test-insight.bitpay.com:443'
+});
+
 copayApp.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',

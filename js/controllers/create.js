@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     $scope.isMobile = !!window.cordova;
     $scope.hideAdv = true;
     $scope.networkName = config.networkName;
+    $scope.networkUrl = config.network[$scope.networkName].url;
 
     // ng-repeat defined number of times instead of repeating over array?
     $scope.getNumber = function(num) {
@@ -29,6 +30,10 @@ angular.module('copayApp.controllers').controller('CreateController',
 
     $scope.$watch('totalCopayers', function(tc) {
       updateRCSelect(tc);
+    });
+
+    $scope.$watch('networkName', function(tc) {
+      $scope.networkUrl = config.network[$scope.networkName].url;
     });
 
     $scope.create = function(form) {
