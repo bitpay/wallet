@@ -14,7 +14,12 @@
         <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
-              <label for="address"><span translate>To</span>
+                <label for="address"><span translate>To <a class="has-tip size-12" href="#"
+                                                           data-options="disable_for_touch:true"
+                                                           tooltip-popup-delay='500'
+                                                           tooltip="{{'Enter a valid Bitcoin address. Payment Protocol URLs are also supported'|translate}}"
+                                                           tooltip-trigger="mouseenter"
+                                                           tooltip-placement="right">(?)</a></span>
                 <small translate ng-hide="!sendForm.address.$pristine || address">required</small>
                 <small translate class="is-valid" ng-show="!sendForm.address.$invalid && address">valid!</small>
                 <small translate class="has-error" ng-show="sendForm.address.$invalid && address">not valid</small>
