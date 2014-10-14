@@ -107,7 +107,7 @@ Identity._getStorage = function(opts, password) {
  */
 Identity.anyProfile = function(opts, cb) {
   var storage = Identity._getStorage(opts);
-  Profile.any(storage,cb);
+  Profile.any(storage, cb);
 };
 
 /**
@@ -118,7 +118,7 @@ Identity.anyProfile = function(opts, cb) {
  */
 Identity.anyWallet = function(opts, cb) {
   var storage = Identity._getStorage(opts);
-  Wallet.any(storage,cb);
+  Wallet.any(storage, cb);
 };
 
 /**
@@ -305,7 +305,7 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
 
   if (!obj) return false;
   var w = Identity._walletFromObj(obj, this.storage, this.networkOpts, this.blockchainOpts);
-console.log('[Identity.js.307:Identity:]',w); //TODO
+  console.log('[Identity.js.307:Identity:]', w); //TODO
   this._checkVersion(w.version);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
@@ -479,6 +479,7 @@ Identity.prototype.openWallet = function(walletId, cb) {
 
     w.store(function(err) {
       self.profile.setLastOpenedTs(walletId, function() {
+        w.netStart();
         return cb(err, w);
       });
     });
@@ -488,7 +489,7 @@ Identity.prototype.openWallet = function(walletId, cb) {
 
 
 Identity.prototype.getOpenWallet = function(id) {
-  return  _.findWhere(this.openWallets, {
+  return _.findWhere(this.openWallets, {
     id: id,
   });
 };
