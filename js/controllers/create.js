@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     });
 
     $scope.showNetwork = function(){
-      return $scope.networkUrl != defaults.livenetUrl && $scope.networkUrl != defaults.testnetUrl;
+      return $scope.networkUrl != defaults.network.livenet.url && $scope.networkUrl != defaults.network.testnet.url;
     };
 
     $scope.create = function(form) {
