@@ -235,6 +235,7 @@ describe('Identity model', function() {
       storage.getFirst = sinon.stub().yields(null, 'wallet1234');
 
       var wallet = sinon.stub();
+      wallet.netStart = sinon.stub();
       wallet.store = sinon.stub().yields(null);
 
       Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
