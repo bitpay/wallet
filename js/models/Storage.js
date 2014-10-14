@@ -45,8 +45,24 @@ Storage.prototype._getPassphrase = function() {
     throw new Error('NOPASSPHRASE: No passphrase set');
 
   return pps[this.__uniqueid];
-}
+};
 
+Storage.prototype.savePassphrase = function() {
+  if (!pps[this.__uniqueid])
+    throw new Error('NOPASSPHRASE: No passphrase set');
+
+  this.savedPassphrase = this.savedPassphrase || {};
+  this.savedPassphrase[this.__uniqueid] = pps[this.__uniqueid];
+};
+
+
+Storage.prototype.restorePassphrase = function() {
+  if (!this.savedPassphrase[this.__uniqueid])
+    throw new Error('NOSTOREDPASSPHRASE: No stored passphrase');
+
+  pps[this.__uniqueid] = this.savedPassphrase[this.__uniqueid];
+  this.savedPassphrase[this.__uniqueid] = undefined;
+};
 
 Storage.prototype.hasPassphrase = function() {
   return pps[this.__uniqueid] ? true : false;

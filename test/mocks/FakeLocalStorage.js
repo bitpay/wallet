@@ -32,7 +32,7 @@ module.exports.storageParams = {
   password: '123',
   db: new FakeLocalStorage(),
   sessionStorage:  new FakeLocalStorage(),
-  passphrase: {
+  passphraseConfig: {
     iterations: 1,
   },
 };
