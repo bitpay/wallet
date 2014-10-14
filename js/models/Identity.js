@@ -495,7 +495,7 @@ Identity.prototype.getOpenWallet = function(id) {
 };
 
 
-Identity.prototype.listWallets = function(a) {
+Identity.prototype.listWallets = function() {
   var ret = this.profile.listWallets();
   return ret;
 };
