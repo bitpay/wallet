@@ -39,6 +39,7 @@ function Identity(email, password, opts) {
 
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
+  this.email = email;
 
   // open wallets
   this.openWallets = [];
@@ -376,7 +377,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   });
   opts.publicKeyRing.addCopayer(
     opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
-    opts.nickname
+    opts.nickname || this.email
   );
   log.debug('\t### PublicKeyRing Initialized');
 
@@ -605,9 +606,10 @@ Identity.prototype.joinWallet = function(opts, cb) {
 
         var walletOpts = _.clone(data.opts);
         walletOpts.id = data.walletId;
+        walletOpts.network = joinNetwork;
 
         walletOpts.privateKey = privateKey;
-        walletOpts.nickname = opts.nickname || self.profile.name;
+        walletOpts.nickname = opts.nickname || this.email;
 
         if (opts.password)
           walletOpts.password = opts.password;

@@ -380,6 +380,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
 
   var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
+console.log('[Wallet.js.382:wasIncomplete:]',wasIncomplete); //TODO
   var hasChanged;
 
   try {
@@ -389,7 +390,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     this.emit('connectionError', e.message);
     return;
   }
-
+console.log('[Wallet.js.393:hasChanged:]',hasChanged); //TODO
   if (hasChanged) {
     if (wasIncomplete) {
       this.sendPublicKeyRing();
@@ -699,10 +700,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       break;
     case 'walletReady':
 
-      console.log('[Wallet.js.653]', this.lastMessageFrom[senderId]); //TODO
       if (this.lastMessageFrom[senderId] !== 'walletReady') {
-
-        console.log('[Wallet.js.656]'); //TODO
         log.debug('Wallet:' + this.id + ' peer Sync received. since: ' + (data.sinceTs || 0));
         this.sendPublicKeyRing(senderId);
         this.sendAddressBook(senderId);
@@ -927,16 +925,27 @@ Wallet.prototype.netStart = function() {
   var self = this;
   var net = this.network;
 
+  net.removeAllListeners();
+  net.on('connect', self._onConnect.bind(self));
+  net.on('data', self._onData.bind(self));
+  net.on('no messages', self._onNoMessages.bind(self));
+  net.on('connect_error', function() {
+    self.emit('connectionError');
+  });
+
+  if (this.publicKeyRing.isComplete()) {
+    this._lockIncomming();
+  }
+
+
+
   if (net.started) {
     log.debug('Wallet:' + self.id + ' Wallet networking was ready')
     self.emit('ready', net.getPeer());
     return;
   }
 
-  net.removeAllListeners();
-  net.on('connect', self._onConnect.bind(self));
-  net.on('data', self._onData.bind(self));
-  net.on('no messages', self._onNoMessages.bind(self));
+
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
@@ -949,13 +958,6 @@ Wallet.prototype.netStart = function() {
     secretNumber: self.secretNumber,
   };
 
-  if (this.publicKeyRing.isComplete()) {
-    this._lockIncomming();
-  }
-
-  net.on('connect_error', function() {
-    self.emit('connectionError');
-  });
 
   log.debug('Wallet:' + self.id + ' Starting networking: ' + startOpts.copayerId);
   net.start(startOpts, function() {
@@ -1303,6 +1305,7 @@ Wallet.prototype.sendIndexes = function(recipients) {
  * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendAddressBook = function(recipients) {
+  if ( !Object.keys(this.addressBook).length ) return;
   log.debug('Wallet:' + this.id + ' ### SENDING addressBook TO:', recipients || 'All', this.addressBook);
   this.send(recipients, {
     type: 'addressbook',
