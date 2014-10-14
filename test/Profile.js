@@ -112,10 +112,12 @@ describe('Profile model', function() {
     it('should list wallets in order', function(done) {
       var p = new Profile(opts, storage);
       p.addWallet('123', {}, function(err) {
+        setTimeout(function() { 
         p.addWallet('234', {}, function(err) {
-          _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '234']);
+          _.pluck(p.listWallets(), 'id').should.deep.equal(['234', '123']);
           done();
         })
+        },10);
       });
     });
   });
