@@ -217,10 +217,13 @@ angular.module('copayApp.services')
     };
 
     root.bindProfile = function($scope, iden, w) {
-
       root.setupGlobalVariables(iden);
       root.rebindWallets($scope, iden);
-      root.setFocusedWallet(w);
+      if (w) {
+        root.setFocusedWallet(w);
+      } else {
+        $location.path('/manage');
+      }
     };
 
 

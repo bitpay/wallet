@@ -190,9 +190,8 @@ Identity.open = function(email, password, opts, cb) {
     iden.profile = profile;
 
     var wids = _.pluck(iden.listWallets(), 'id');
-
     if (!wids || !wids.length)
-      return new Error('Could not open any wallet from profile');
+      return cb(new Error('Could not open any wallet from profile'), iden);
 
     // Open All wallets from profile
     //This could be optional, or opts.onlyOpen = wid

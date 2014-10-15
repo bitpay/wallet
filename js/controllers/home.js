@@ -3,15 +3,15 @@
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager) {
   controllerUtils.redirIfLogged();
 
-  $scope.retreiving =true;
+  $scope.retreiving = true;
   copay.Identity.anyProfile({
     pluginManager: pluginManager,
   }, function(any) {
-    $scope.retreiving =false;
+    $scope.retreiving = false;
     if (!any)
       $location.path('/createProfile');
   });
- 
+
 
   $scope.openProfile = function(form) {
     if (form && form.$invalid) {
@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       if (err && !iden) {
         console.log('Error:' + err)
         controllerUtils.onErrorDigest(
-          $scope, (err.toString()||'').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
+          $scope, (err.toString() || '').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
       } else {
         controllerUtils.bindProfile($scope, iden, firstWallet);
       }
