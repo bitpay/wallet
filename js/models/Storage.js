@@ -64,7 +64,6 @@ Storage.prototype.restorePassphrase = function() {
     throw new Error('NOSTOREDPASSPHRASE: No stored passphrase');
 
   this._setPassphrase(this.savedPassphrase[this.__uniqueid].pps, this.savedPassphrase[this.__uniqueid].iterations);
-  this.savedPassphrase[this.__uniqueid] = undefined;
 };
 
 Storage.prototype.hasPassphrase = function() {

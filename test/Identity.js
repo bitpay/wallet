@@ -353,6 +353,30 @@ describe('Identity model', function() {
     });
   });
 
+
+  describe('#toEncryptedObj', function() {
+
+    beforeEach(function() {
+      var ws = [];
+      _.each([0, 1, 2, 3, 4], function(i) {
+        var w = sinon.stub();
+        w.toEncryptedObj = sinon.stub().returns('enc' + i);
+        w.getId = sinon.stub().returns('wid' + i);
+        ws.push(w);
+      });
+      iden.openWallets = ws;
+      iden.storage.iterations = 13;
+    });
+
+    it('should create an encrypted object', function() {
+      var ret = iden.toEncryptedObj();
+      ret.iterations.should.equal(13);
+      _.each([0, 1, 2, 3, 4], function(i) {
+        ret.wallets['wid' + i].should.equal('enc' + i);
+      });
+    });
+  });
+
   describe('#joinWallet', function() {
     var opts = {
       secret: '8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM',
