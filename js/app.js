@@ -4,6 +4,7 @@ var copay = require('copay');
 var _ = require('underscore');
 var config = defaultConfig;
 var localConfig = JSON.parse(localStorage.getItem('config'));
+var defaults = JSON.parse(JSON.stringify(defaultConfig));
 
 if (localConfig) {
   var cmv = copay.version.split('.')[1];
@@ -37,6 +38,8 @@ if (Object.keys(config.plugins).length)
 
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);
+
+copayApp.value('defaults', defaults);
 
 copayApp.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
