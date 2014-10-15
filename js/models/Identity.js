@@ -518,7 +518,6 @@ Identity.prototype.listWallets = function() {
  */
 Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
-
   Identity._walletDelete(walletId, this.storage, function(err) {
     if (err) return cb(err);
     self.profile.deleteWallet(walletId, function(err) {

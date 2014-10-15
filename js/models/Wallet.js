@@ -230,11 +230,11 @@ Wallet.getMaxRequiredCopayers = function(totalCopayers) {
  */
 Wallet.delete = function(walletId, storage, cb) {
   preconditions.checkArgument(cb);
-
   storage.deletePrefix(Wallet.key(walletId), function(err) {
-    if (err) return cb(err);
+    if (err && err.message != 'not found') return cb(err);
     storage.deletePrefix(walletId + '::', function(err) {
-      return cb(err);
+      if (err && err.message != 'not found') return cb(err);
+      return cb();
     });
   });
 };
