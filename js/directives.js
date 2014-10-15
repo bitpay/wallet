@@ -48,7 +48,30 @@ angular.module('copayApp.directives')
     };
   }
 ])
-  .directive('validAmount', ['$rootScope', '$locale', 
+  .directive('validUrl', [
+
+    function() {
+      return {
+        require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+          var validator = function(value) {
+            // Regular url
+            if (/^https?:\/\//.test(value)) {
+              ctrl.$setValidity('validUrl', true);
+              return value;
+            } else {
+              ctrl.$setValidity('validUrl', false);
+              return value;
+            }
+          };
+
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
+  .directive('validAmount', ['$rootScope', '$locale',
     function($rootScope, locale) {
       var w = $rootScope.wallet;
       preconditions.checkState(w);
@@ -68,7 +91,7 @@ angular.module('copayApp.directives')
             if (typeof vNum == "number" && vNum > 0) {
               var decimals = Number(w.settings.unitDecimals);
               var sep_index = ('' + value).indexOf(formats.DECIMAL_SEP);
-              var str_value = ('' + value).substring(sep_index+1);
+              var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
                 ctrl.$setValidity('validAmount', false);
                 scope.notValidAmount = true;

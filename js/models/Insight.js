@@ -45,6 +45,58 @@ var Insight = function(opts) {
   this.socket = this.getSocket();
 }
 
+Insight.setCompleteUrl = function(uri) {
+
+  if (!uri) return uri;
+
+  var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
+
+  var parts = [
+    'source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'anchor'
+  ];
+
+  function parseuri(str) {
+    var m = re.exec(str || ''),
+      uri = {},
+      i = 14;
+
+    while (i--) {
+      uri[parts[i]] = m[i] || '';
+    }
+
+    return uri;
+  };
+
+  var opts_host;
+  var opts_secure;
+  var opts_port;
+  var opts_protocol;
+  if (uri) {
+    uri = parseuri(uri);
+    opts_host = uri.host;
+    opts_protocol = uri.protocol;
+    opts_secure = uri.protocol == 'https' || uri.protocol == 'wss';
+    opts_port = uri.port;
+  }
+
+  var this_secure = null != opts_secure ? opts_secure :
+    ('https:' == location.protocol);
+
+  var opts_hostname;
+  if (opts_host) {
+    var pieces = opts_host.split(':');
+    opts_hostname = pieces.shift();
+    if (pieces.length) opts_port = pieces.pop();
+  }
+
+  var this_port = opts_port ||
+    (this_secure ? 443 : 80);
+
+  var newUri = opts_protocol + '://' + opts_host + ':' + this_port;
+
+  return newUri;
+}
+
 util.inherits(Insight, EventEmitter);
 
 Insight.prototype.STATUS = {
