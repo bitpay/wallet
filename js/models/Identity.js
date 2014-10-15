@@ -333,8 +333,23 @@ Identity.prototype.closeWallet = function(wid, cb) {
 };
 
 
-Identity.prototype.toObj = function(wid, cb) {
+/**
+ * @desc Return a base64 encrypted version of the wallet
+ * @return {string} base64 encoded string
+ */
+Identity.prototype.toEncryptedObj = function() {
+  var ret = {};
+  ret.iterations = this.storage.iterations;
+  ret.wallets = {};
+
+  _.each(this.openWallets, function(w){
+    ret.wallets[w.getId()] = w.toEncryptedObj();
+  });
+
+  return ret;
 };
+
+
 
 /**
  * @desc This method prepares options for a new Wallet
