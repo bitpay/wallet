@@ -200,9 +200,10 @@ Identity.open = function(email, password, opts, cb) {
     var firstWallet;
     _.each(wids, function(wid) {
       iden.openWallet(wid, function(err, w) {
-        if (err)
+        if (err) {
           log.error('Cound not open wallet id:' + wid + '. Skipping')
-        else {
+          iden.profile.deleteWallet(wid, function() {});
+        } else {
           log.info('Open wallet id:' + wid + ' opened');
           if (!firstWallet)
             firstWallet = w;
