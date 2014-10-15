@@ -294,13 +294,11 @@ Network.prototype.greet = function(copayerId, secretNumber) {
 };
 
 Network.prototype._addCopayerMap = function(peerId, copayerId) {
-console.log('[Async.js.296:_addCopayerMap:]',peerId, copayerId); //TODO
   if (!this.copayerForPeer[peerId]) {
     if (Object.keys(this.copayerForPeer).length < this.maxPeers) {
       this.copayerForPeer[peerId] = copayerId;
     }
   }
-console.log('[Async.js.296:_addCopayerMap:]',this.copayerForPeer); //TODO
 };
 
 Network.prototype._setInboundPeerAuth = function(peerId) {
@@ -376,7 +374,6 @@ Network.prototype.send = function(dest, payload, cb) {
     dest = this.getCopayerIds();
     payload.isBroadcast = 1;
   }
-console.log('[Async.js.374:dest:]',dest); //TODO
 
   if (typeof dest === 'string')
     dest = [dest];

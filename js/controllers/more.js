@@ -84,7 +84,8 @@ angular.module('copayApp.controllers').controller('MoreController',
 
     $scope.deleteWallet = function() {
       $rootScope.iden.deleteWallet(w.id, function() {
-        controllerUtils.logout();
+        notification.info('Wallet deleted', $filter('translate')('wallet deleted'));
+        $location.path('/manage');
       });
     };
 

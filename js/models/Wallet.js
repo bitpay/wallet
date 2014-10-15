@@ -315,6 +315,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 Wallet.prototype._newAddresses = function(dontUpdateUx) {
   if (this.publicKeyRing.isComplete()) {
     this.subscribeToAddresses();
+
   };
   this.emit('newAddresses', dontUpdateUx);
 };
@@ -380,7 +381,6 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
 
   var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
-console.log('[Wallet.js.382:wasIncomplete:]',wasIncomplete); //TODO
   var hasChanged;
 
   try {
@@ -390,7 +390,6 @@ console.log('[Wallet.js.382:wasIncomplete:]',wasIncomplete); //TODO
     this.emit('connectionError', e.message);
     return;
   }
-console.log('[Wallet.js.393:hasChanged:]',hasChanged); //TODO
   if (hasChanged) {
     if (wasIncomplete) {
       this.sendPublicKeyRing();
@@ -881,12 +880,11 @@ Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
   self.blockchain.removeAllListeners();
 
+
+  log.debug('Setting Blockchain listeners for', this.getId());
   self.blockchain.on('reconnect', function(attempts) {
     log.debug('Wallet:' + self.id + 'blockchain reconnect event');
     self.emit('insightReconnected');
-
-    // Subscription should persist? TODO 
-    //self.subscribeToAddresses();
   });
 
   self.blockchain.on('disconnect', function() {
@@ -894,7 +892,7 @@ Wallet.prototype._setBlockchainListeners = function() {
     self.emit('insightError');
   });
   self.blockchain.on('tx', function(tx) {
-    log.debug('Wallet:' + self.id + 'blockchain tx event');
+    log.debug('Wallet:' + self.id + ' blockchain tx event');
     var addresses = self.getAddressesInfo();
     var addr = _.findWhere(addresses, {
       addressStr: tx.address
@@ -1305,7 +1303,7 @@ Wallet.prototype.sendIndexes = function(recipients) {
  * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendAddressBook = function(recipients) {
-  if ( !Object.keys(this.addressBook).length ) return;
+  if (!Object.keys(this.addressBook).length) return;
   log.debug('Wallet:' + this.id + ' ### SENDING addressBook TO:', recipients || 'All', this.addressBook);
   this.send(recipients, {
     type: 'addressbook',
@@ -2221,6 +2219,7 @@ Wallet.prototype.getAddressesStr = function(opts) {
 Wallet.prototype.subscribeToAddresses = function() {
   var addrInfo = this.publicKeyRing.getAddressesInfo();
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
+  log.debug('Subscribed to ' + addrInfo.length + ' addresses'); //TODO
 };
 
 /**

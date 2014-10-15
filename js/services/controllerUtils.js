@@ -11,7 +11,7 @@ angular.module('copayApp.services')
       if (w) {
         if (!w.isReady()) {
           $location.path('/copayers');
-        } 
+        }
       } else {
         $location.path('/');
       }
@@ -63,6 +63,16 @@ angular.module('copayApp.services')
       return wid === $rootScope.wallet.getId();
     };
 
+
+    root.updateTxsAndBalance = _.debounce(function(w) {
+      root.updateTxs({
+        wallet: w
+      });
+      root.updateBalance(w, function() {
+        $rootScope.$digest();
+      })
+    }, 3000);
+
     root.installWalletHandlers = function($scope, w) {
       w.removeAllListeners();
 
@@ -94,41 +104,33 @@ angular.module('copayApp.services')
       });
 
       w.on('newAddresses', function(dontDigest) {
-        if (root.isFocusedWallet(wid)) {
-          root.updateAddressList();
-          if (!dontDigest) {
-            $rootScope.$digest();
-          }
+        root.updateTxsAndBalance(w);
+        if (!dontDigest) {
+          $rootScope.$digest();
         }
       });
 
       w.on('tx', function(address, isChange) {
-        if (root.isFocusedWallet(wid)) {
-          if (!isChange) {
-            notification.funds('Funds received!', address);
-          }
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
+        if (!isChange) {
+          notification.funds('Funds received on ' + w.getName(), address);
         }
+        root.updateBalance(w, function() {
+          $rootScope.$digest();
+        });
       });
 
       w.on('balanceUpdated', function() {
-        if (root.isFocusedWallet(wid)) {
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        }
+        root.updateBalance(w, function() {
+          $rootScope.$digest();
+        });
       });
 
       w.on('insightReconnected', function() {
-        if (root.isFocusedWallet(wid)) {
-          $rootScope.reconnecting = false;
-          root.updateAddressList();
-          root.updateBalance(function() {
-            $rootScope.$digest();
-          });
-        }
+        $rootScope.reconnecting = false;
+        root.updateAddressList(w.getId());
+        root.updateBalance(w, function() {
+          $rootScope.$digest();
+        });
       });
 
       w.on('insightError', function() {
@@ -138,17 +140,8 @@ angular.module('copayApp.services')
         }
       });
 
-      var updateTxsAndBalance = _.debounce(function() {
-        root.updateTxs();
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        })
-      }, 3000);
-
       w.on('txProposalsUpdated', function(dontDigest) {
-        if (root.isFocusedWallet(wid)) {
-          updateTxsAndBalance();
-        }
+        root.updateTxsAndBalance(w);
       });
 
       w.on('txProposalEvent', function(e) {
@@ -212,12 +205,12 @@ angular.module('copayApp.services')
     };
 
     root.setFocusedWallet = function(w) {
-      if (!_.isObject(w) )
+      if (!_.isObject(w))
         w = $rootScope.iden.getOpenWallet(w);
       preconditions.checkState(w && _.isObject(w));
 
       $rootScope.wallet = w;
-      root.updateAddressList();
+      root.updateTxsAndBalance();
       root.redirIfLogged();
     };
 
@@ -241,10 +234,11 @@ angular.module('copayApp.services')
       }
     };
 
-    root.updateBalance = function(cb) {
-      var w = $rootScope.wallet;
+    root.updateBalance = function(w, cb) {
+      w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;
+      console.log('## Updating balance of:' + w.id)
 
       $rootScope.balanceByAddr = {};
       $rootScope.updatingBalance = true;
@@ -255,34 +249,39 @@ angular.module('copayApp.services')
         var satToUnit = 1 / w.settings.unitToSatoshi;
         var COIN = bitcore.util.COIN;
 
-        $rootScope.totalBalance = balanceSat * satToUnit;
-        $rootScope.totalBalanceBTC = (balanceSat / COIN);
-        $rootScope.availableBalance = safeBalanceSat * satToUnit;
-        $rootScope.availableBalanceBTC = (safeBalanceSat / COIN);
+        if (root.isFocusedWallet(w.getId())) {
+          $rootScope.totalBalance = balanceSat * satToUnit;
+          $rootScope.totalBalanceBTC = (balanceSat / COIN);
+          $rootScope.availableBalance = safeBalanceSat * satToUnit;
+          $rootScope.availableBalanceBTC = (safeBalanceSat / COIN);
 
-        $rootScope.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
-        $rootScope.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
+          $rootScope.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
+          $rootScope.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
 
-        var balanceByAddr = {};
-        for (var ii in balanceByAddrSat) {
-          balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
+          var balanceByAddr = {};
+          for (var ii in balanceByAddrSat) {
+            balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
+          }
+          $rootScope.balanceByAddr = balanceByAddr;
+          root.updateAddressList();
+          $rootScope.updatingBalance = false;
+
+          rateService.whenAvailable(function() {
+            $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
+            $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
+            $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
+            $rootScope.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
+            return cb ? cb() : null;
+          });
+        } else {
+          // TODO
+          console.log('TODO: balance updated of a unfocused wallet');
         }
-        $rootScope.balanceByAddr = balanceByAddr;
-        root.updateAddressList();
-        $rootScope.updatingBalance = false;
-
-        rateService.whenAvailable(function() {
-          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
-          $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
-          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
-          $rootScope.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
-          return cb ? cb() : null;
-        });
       });
     };
 
     root.updateTxs = function(opts) {
-      var w = $rootScope.wallet;
+      var w = opts.wallet || $rootScope.wallet;
       if (!w) return;
       opts = opts || $rootScope.txsOpts || {};
 
