@@ -1,70 +1,74 @@
 <div class="createProfile" ng-controller="CreateProfileController">
-  <div class="m30a" style="width:50%" ng-show="anyWallet && !anyProfile">
-      <div class="left">
-      <i class="size-36 fi-alert"></i>
-      </div>
-      <div>
-      Copay now needs a profile to access wallets. <br>
-      You can import current your wallets after creating your profile.
-      </div>
-  </div>
- 
-
   <div data-alert class="loading-screen" ng-show="retreiving">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     Retreiving information from storage...
   </div>
-  <div class="row" ng-show="!loading && !retreiving">
-    <div class="large-4 columns logo-setup">
+
+  <div class="large-12 medium-6 medium-centered columns" ng-show="!loading && !retreiving">
+    <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
-    <div class="large-8 columns line-dashed-setup-v">
-      <div class="box-setup">
-        <h1 class="text-white line-sidebar-b" translate >Create Profile</h1>
-        <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
-          <div class="row collapse">
-            <div class="small-12 columns">
-              <input type="email" ng-model="email" class="form-control"
-              name="email" placeholder="Email" required>
-              <small class="icon-input" ng-show="!profileForm.email.$invalid &&
-                !profileForm.email.$pristine"><i class="fi-check"></i></small>
-              <small class="icon-input" ng-show="profileForm.email.$invalid &&
-                !profileForm.email.$pristine"><i class="fi-x"></i></small>
-            </div>
+    <div class="p10 box-setup bg-success m10b" ng-show="anyWallet && !anyProfile">
+      <div class="left">
+      <i class="size-36 fi-alert m10r"></i>
+      </div>
+      <div class="size-12">
+        <b>Copay now needs a profile to access wallets. </b>
+        You can import your current wallets after creating your frofile
+      </div>
+    </div>
+    <div class="box-setup">
+      <h1 class="m20b" translate >Create Profile</h1>
+      <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
+        <div class="row collapse">
+          <div class="small-12 columns">
+            <input type="email" ng-model="email" class="form-control fi-email"
+            name="email" placeholder="Email" required>
+            <small class="icon-input" ng-show="!profileForm.email.$invalid &&
+              !profileForm.email.$pristine"><i class="fi-check"></i></small>
+            <small class="icon-input" ng-show="profileForm.email.$invalid &&
+              !profileForm.email.$pristine"><i class="fi-x"></i></small>
           </div>
-          <input id="password" type="password" ng-model="$parent.password"
-          class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
-          tooltip-html-unsafe="Password strength: <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
+        </div>
+        <input id="password" type="password" ng-model="$parent.password"
+        class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
+        tooltip-html-unsafe="Password strength: <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="right">
 
-          <div class="pr">
-            <input type="password" ng-model="repeatpassword"
-            class="form-control" name="repeatpassword" 
-            placeholder="{{'Repeat password'|translate}}"
-            match="password" required >
-            <small class="icon-input"
-              ng-show="profileForm.repeatpassword.$dirty &&
-              !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></small>
-            <small class="icon-input"
-              ng-show="profileForm.repeatpassword.$dirty &&
-              profileForm.repeatpassword.$invalid"><i class="fi-x"></i></small>
-            <p class="m15b text-gray size-12"
+        <div class="pr">
+          <input type="password" ng-model="repeatpassword"
+          class="form-control" name="repeatpassword" 
+          placeholder="{{'Repeat password'|translate}}"
+          match="password" required >
+          <small class="icon-input"
             ng-show="profileForm.repeatpassword.$dirty &&
-            profileForm.repeatpassword.$invalid">
-            <i class="fi-x m5r"></i>
-            {{'Passwords must match'|translate}}
-            </p>
-          </div>
-
-
-          <div class="text-right">
-            <a href="#!/" class="back-button text-white m20r">&laquo; <span translate>Back</span></a>
-            <button translate type="submit" class="button primary m0"
-              ng-disabled="profileForm.$invalid || loading">
-             Create 
-            </button>
-          </div>
-        </form>
+            !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></small>
+          <small class="icon-input"
+            ng-show="profileForm.repeatpassword.$dirty &&
+            profileForm.repeatpassword.$invalid"><i class="fi-x"></i></small>
+          <p class="m15b text-gray size-12"
+          ng-show="profileForm.repeatpassword.$dirty &&
+          profileForm.repeatpassword.$invalid">
+          <i class="fi-x m5r"></i>
+          {{'Passwords must match'|translate}}
+          </p>
+        </div>
+        <div class="text-right">
+          <button translate type="submit" class="button primary radius expand m0"
+            ng-disabled="profileForm.$invalid || loading">
+           Create 
+          </button>
+        </div>
+      </form>
+      <div class="box-setup-footer">
+        <div class="left">
+          <a translate class="text-gray" href="#"><i class="m5r
+              size-14 fi-arrow-left"></i>Back to Copay.io</a>
+        </div>
+        <div class="right">
+          <a class="right size-12 text-gray" href="#!/settings"><i class="m5r
+              size-14 fi-wrench"></i><span translate>Settings</span></a>
+        </div>
       </div>
     </div>
   </div>
