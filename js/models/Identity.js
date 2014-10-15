@@ -197,7 +197,8 @@ Identity.open = function(email, password, opts, cb) {
 
     // Open All wallets from profile
     //This could be optional, or opts.onlyOpen = wid
-    var firstWallet;
+    var wallets = [];
+    var remaining = wids.length;
     _.each(wids, function(wid) {
       iden.openWallet(wid, function(err, w) {
         if (err) {
@@ -205,13 +206,16 @@ Identity.open = function(email, password, opts, cb) {
           iden.profile.deleteWallet(wid, function() {});
         } else {
           log.info('Open wallet id:' + wid + ' opened');
-          if (!firstWallet)
-            firstWallet = w;
+          wallets.push(w);
+        }
+        if (--remaining == 0) {
+          var firstWallet = _.findWhere(wallets, {
+            id: wids[0]
+          });
+          return cb(err, iden, firstWallet);
         }
       })
     });
-
-    return cb(err, iden, firstWallet);
   });
 };
 
