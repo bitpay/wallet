@@ -20,7 +20,7 @@ function Passphrase(config) {
   preconditions.checkArgument(!config || !config.iterations || _.isNumber(config.iterations));
   config = config || {};
   this.salt = config.salt || 'mjuBtGybi/4=';
-  this.iterations = config.iterations || 1000;
+  this.iterations = config.iterations;
 };
 
 /**

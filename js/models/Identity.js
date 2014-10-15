@@ -332,6 +332,10 @@ Identity.prototype.closeWallet = function(wid, cb) {
   });
 };
 
+
+Identity.prototype.toObj = function(wid, cb) {
+};
+
 /**
  * @desc This method prepares options for a new Wallet
  *

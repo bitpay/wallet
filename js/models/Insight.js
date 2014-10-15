@@ -200,6 +200,7 @@ Insight.prototype.subscribe = function(addresses) {
   var self = this;
 
   function handlerFor(self, address) {
+console.log('HANDLER [Insight.js.150:address:]',address); //TODO
     return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;

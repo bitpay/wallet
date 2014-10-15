@@ -210,8 +210,10 @@ angular.module('copayApp.services')
       preconditions.checkState(w && _.isObject(w));
 
       $rootScope.wallet = w;
-      root.updateTxsAndBalance();
       root.redirIfLogged();
+      root.updateBalance(w, function() {
+        $rootScope.$digest();
+      })
     };
 
     root.bindProfile = function($scope, iden, w) {
