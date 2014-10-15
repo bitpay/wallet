@@ -8,47 +8,9 @@ angular
   $routeProvider
   .when('/', {
     templateUrl: 'views/home.html',
-    validate: false
   })
   .when('/createProfile', {
     templateUrl: 'views/createProfile.html',
-    validate: false
-  })
-  .when('/join', {
-    templateUrl: 'views/join.html',
-    validate: true
-  })
-  .when('/import', {
-    templateUrl: 'views/import.html',
-    validate: false
-  })
-  .when('/create', {
-    templateUrl: 'views/create.html',
-    validate: true 
-  })
-  .when('/copayers', {
-    templateUrl: 'views/copayers.html',
-    validate: true
-  })
-  .when('/receive', {
-    templateUrl: 'views/addresses.html',
-    validate: true
-  })
-  .when('/history', {
-    templateUrl: 'views/transactions.html',
-    validate: true
-  })
-  .when('/send', {
-    templateUrl: 'views/send.html',
-    validate: true
-  })
-  .when('/more', {
-    templateUrl: 'views/more.html',
-    validate: true
-  })
-  .when('/settings', {
-    templateUrl: 'views/settings.html',
-    validate: false
   })
   .when('/unsupported', {
     templateUrl: 'views/unsupported.html'
@@ -56,13 +18,49 @@ angular
   .when('/uri-payment/:data', {
     templateUrl: 'views/uri-payment.html'
   })
+  .when('/join', {
+    templateUrl: 'views/join.html',
+    logged: true
+  })
+  .when('/import', {
+    templateUrl: 'views/import.html',
+    logged: true
+  })
+  .when('/create', {
+    templateUrl: 'views/create.html',
+    logged: true 
+  })
+  .when('/copayers', {
+    templateUrl: 'views/copayers.html',
+    logged: true
+  })
+  .when('/receive', {
+    templateUrl: 'views/addresses.html',
+    logged: true
+  })
+  .when('/history', {
+    templateUrl: 'views/transactions.html',
+    logged: true
+  })
+  .when('/send', {
+    templateUrl: 'views/send.html',
+    logged: true
+  })
+  .when('/more', {
+    templateUrl: 'views/more.html',
+    logged: true
+  })
+  .when('/settings', {
+    templateUrl: 'views/settings.html',
+    logged: true
+  })
   .when('/warning', {
     templateUrl: 'views/warning.html',
-    validate: true
+    logged: true
   })
   .when('/manage', {
     templateUrl: 'views/manage.html',
-    validate: true
+    logged: true
   })
   .otherwise({
     templateUrl: 'views/errors/404.html',
@@ -90,7 +88,8 @@ angular
     if (!localStorage || localStorage.length < 1) {
       $location.path('unsupported');
     } else {
-      if ((!$rootScope.wallet || !$rootScope.wallet.id) && next.validate) {
+      if (!$rootScope.iden && next.logged) {
+        console.log('not logged... redirecting')
         $idle.unwatch();
         $location.path('/');
       }
