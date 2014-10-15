@@ -175,18 +175,33 @@ a:hover {
 }
 
 .home input,
-.createProfile input,
+.box-setup input,
 .open input, 
 .join input, 
 .setup input,
 .import input,
 .import textarea, 
 .settings input {
-  background: #2C3E50 !important;
-  -moz-box-shadow:    inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
-  box-shadow:         inset 0px 0px 3px 0px rgba(0,0,0,0.10) !important;
-  border: 0 !important;
-  color: #fff !important;
+  border-radius: 2px;
+  background: #EDEDED;
+  -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  color: #2C3E42 !important;
+  padding: 1.2rem 0.7rem;
+  margin-bottom: 1.5rem;
+  border: 0;
+}
+
+.box-setup ::-webkit-input-placeholder {
+  color: #B7C2CD;
+}
+
+.box-setup :-ms-input-placeholder {
+  color: green !important;
+}
+
+.box-setup :-moz-placeholder {
+  color: red !important;
 }
 
 .home select,
@@ -248,7 +263,7 @@ a:hover {
 }
 
 .home, .createProfile, .settings {
-  margin-top: 15%;
+  margin-top: 8%;
   color: #fff;
 }
 
@@ -272,7 +287,7 @@ a:hover {
 
 .logo-setup {
   text-align: center;
-  margin-top: 9%;
+  margin-bottom: 2rem;
 }
 
 .setup .logo-setup, .join .logo-setup {
@@ -280,8 +295,21 @@ a:hover {
 }
 
 .box-setup {
-  padding: 20px 30px;
-  background: #34495E;
+  margin: 0 auto;
+  width: 310px;
+  padding: 1.3rem; 
+  border-radius: 2px;
+  background: #FFFFFF;
+  -moz-box-shadow:    1px 1px 0px 0px #213140;
+  box-shadow:         1px 1px 0px 0px #213140;
+}
+
+.box-setup-footer {
+  overflow: hidden;
+  margin-top: 2rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid #E5E7EA;
+  font-size: 12px;
 }
 
 .box-setup label small.has-error {
@@ -393,21 +421,16 @@ table.last-transactions-content {
   margin-bottom: 10px;  
 }
 
-.button-setup a {
+a.button-setup {
+  border-radius: 3px;
+  border: 1px solid #B7C2CE;
   display: block;
-  padding: 20px 30px;
-  background: #34495E;
-  margin-bottom: 20px;
-  font-weight: 100;
-  font-size: 24px;
+  padding: 0.5rem;
+  background: transparent;
 }
 
 .button-setup a:hover {
   background: #3C4E60;
-}
-
-.footer-setup {
-  overflow: hidden;
 }
 
 .dn {display: none;}
@@ -697,6 +720,10 @@ input[type=number]::-webkit-outer-spin-button {
   color: #1ABC9C;
 }
 
+.bg-success { 
+  background-color: #1ABC9C;
+}
+
 .label.success { 
   background-color: #1ABC9C;
 }
@@ -705,6 +732,10 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #C0392A;
   padding: 0.3rem 0.4rem;
   font-weight: 700;
+}
+
+.bg-alert {
+  background-color: #C0392A;
 }
 
 .dr-notification-text {
@@ -764,8 +795,8 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 }
 
 button.radius, .button.radius {
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
 
 /* SECONDARY */
@@ -810,7 +841,10 @@ button.primary,
 .button.primary { 
   background-color: #1ABC9C;
   color: #fff;
-  border-radius: 0;
+  border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow:    1px 1px 0px 0px #16A085;
+  box-shadow:         1px 1px 0px 0px #16A085;
 }
 button.primary:hover, 
 button.primary:focus, 
@@ -831,6 +865,8 @@ button[disabled].primary:focus,
 .button.disabled.primary:focus, 
 .button[disabled].primary:hover, 
 .button[disabled].primary:focus {
+  -moz-box-shadow:    1px 1px 0px 0px #687D80;
+  box-shadow:         1px 1px 0px 0px #687D80;
   background-color: #95a5a6;
   color: #E6E6E6;
 }
@@ -937,6 +973,11 @@ button.gray:focus,
 .button.gray:focus {
   background-color: #E0E5E5;
   color: #2C3E50;
+}
+
+.button, button {
+  color: #FFFFFF;
+  text-transform: uppercase;
 }
 
 .side-nav {padding: 0;}
@@ -1082,7 +1123,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-white {color: #fff;}
 .text-warning {color: #CA5649;}
 
-.footer-setup a.text-gray:hover {color: #fff;}
 a.text-gray:hover {color: #2C3E50;}
 a.text-black:hover {color: #213140;}
 a.text-primary:hover {color: #50E3C2;}
@@ -1118,6 +1158,18 @@ a.text-warning:hover {color: #FD7262;}
 
 .box-setup h3 {
   color: #fff;
+}
+
+.box-setup h1 {
+  font-weight: 100;
+  font-size: 16px;
+  color: #2C3E50;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.box-setup form {
+  margin: 0;
 }
 
 .joyride-tip-guide {
