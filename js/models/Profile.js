@@ -86,7 +86,6 @@ Profile.prototype.deleteWallet = function(walletId, cb) {
     return cb(new Error('WNOEXIST: Wallet not on profile '));
 
   delete this.walletInfos[walletId];
-
   this.store({
     overwrite: true
   }, cb);
