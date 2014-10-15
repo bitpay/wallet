@@ -52,7 +52,10 @@ Storage.prototype.savePassphrase = function() {
     throw new Error('NOPASSPHRASE: No passphrase set');
 
   this.savedPassphrase = this.savedPassphrase || {};
-  this.savedPassphrase[this.__uniqueid] = pps[this.__uniqueid];
+  this.savedPassphrase[this.__uniqueid] = {
+    pps: pps[this.__uniqueid],
+    iterations: this.iterations,
+  };
 };
 
 
@@ -60,7 +63,7 @@ Storage.prototype.restorePassphrase = function() {
   if (!this.savedPassphrase[this.__uniqueid])
     throw new Error('NOSTOREDPASSPHRASE: No stored passphrase');
 
-  pps[this.__uniqueid] = this.savedPassphrase[this.__uniqueid];
+  this._setPassphrase(this.savedPassphrase[this.__uniqueid].pps, this.savedPassphrase[this.__uniqueid].iterations);
   this.savedPassphrase[this.__uniqueid] = undefined;
 };
 
@@ -69,15 +72,16 @@ Storage.prototype.hasPassphrase = function() {
 };
 
 
-Storage.prototype._setPassphrase = function(passphrase) {
+Storage.prototype._setPassphrase = function(passphrase, iterations) {
   pps[this.__uniqueid] = passphrase;
+  this.iterations = iterations;
 };
 
 Storage.prototype.setPassword = function(password, config) {
   var passphraseConfig = _.extend(this.passphraseConfig, config);
   var p = new Passphrase(passphraseConfig);
-  log.debug('Setting passphrase... Iterations:' + (passphraseConfig.iterations || 'default'))
-  this._setPassphrase(p.getBase64(password));
+  log.debug('Setting passphrase... Iterations:' + passphraseConfig.iterations);
+  this._setPassphrase(p.getBase64(password), passphraseConfig.iterations);
   log.debug('done.')
 }
 
