@@ -1,12 +1,13 @@
 'use strict';
+angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils, notification) {
 
-angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils) {
 
   controllerUtils.redirIfLogged();
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
   $scope.insightLivenet = config.network.livenet.url;
   $scope.insightTestnet = config.network.testnet.url;
+
 
   $scope.availableLanguages = [{
     name: 'English',
@@ -23,7 +24,12 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
   }
 
+
   $scope.save = function() {
+    $scope.insightLivenet = copay.Insight.setCompleteUrl($scope.insightLivenet);
+    $scope.insightTestnet = copay.Insight.setCompleteUrl($scope.insightTestnet);
+
+
     var insightSettings = {
       livenet: {
         url: $scope.insightLivenet,
@@ -32,6 +38,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
         url: $scope.insightTestnet,
       },
     }
+
 
     localStorage.setItem('config', JSON.stringify({
       network: insightSettings,
