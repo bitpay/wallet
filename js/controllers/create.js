@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification) {
+  function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification, defaults) {
 
     $rootScope.fromSetup = true;
     $scope.loading = false;
@@ -29,6 +29,14 @@ angular.module('copayApp.controllers').controller('CreateController',
     $scope.$watch('totalCopayers', function(tc) {
       updateRCSelect(tc);
     });
+
+    $scope.$watch('networkName', function(tc) {
+      $scope.networkUrl = config.network[$scope.networkName].url;
+    });
+
+    $scope.showNetwork = function() {
+      return $scope.networkUrl != defaults.network.livenet.url && $scope.networkUrl != defaults.network.testnet.url;
+    };
 
     $scope.create = function(form) {
       if (form && form.$invalid) {
