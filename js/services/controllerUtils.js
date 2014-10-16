@@ -239,22 +239,19 @@ angular.module('copayApp.services')
       }
     };
 
+    var _balanceCache = {};
     root.updateBalance = function(w, cb) {
-      w = w || $rootScope.wallet;
-      if (!w) return root.onErrorDigest();
-      if (!w.isReady()) return;
-      console.log('## Updating balance of:' + w.id)
-
-      $rootScope.balanceByAddr = {};
-      $rootScope.updatingBalance = true;
-
-      w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
-        if (err) throw err;
-
+      var updateScope = function(w, data, cb2) {
         var satToUnit = 1 / w.settings.unitToSatoshi;
         var COIN = bitcore.util.COIN;
 
+        var balanceSat = data.balanceSat;
+        var balanceByAddrSat = data.balanceByAddrSat;
+        var safeBalanceSat = data.safeBalanceSat;
+
         if (root.isFocusedWallet(w.getId())) {
+          $rootScope.balanceByAddr = {};
+
           $rootScope.totalBalance = balanceSat * satToUnit;
           $rootScope.totalBalanceBTC = (balanceSat / COIN);
           $rootScope.availableBalance = safeBalanceSat * satToUnit;
@@ -269,19 +266,47 @@ angular.module('copayApp.services')
           }
           $rootScope.balanceByAddr = balanceByAddr;
           root.updateAddressList();
-          $rootScope.updatingBalance = false;
 
           rateService.whenAvailable(function() {
             $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
             $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
             $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
             $rootScope.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
-            return cb ? cb() : null;
+            return cb2 ? cb2() : null;
           });
         } else {
           // TODO
           console.log('TODO: balance updated of a unfocused wallet');
         }
+      };
+
+      w = w || $rootScope.wallet;
+      if (!w) return root.onErrorDigest();
+      if (!w.isReady()) return;
+      console.log('## Updating balance of:' + w.id)
+
+
+      var wid = w.getId();
+
+      if (_balanceCache[wid]) {
+        updateScope(w, _balanceCache[wid]);
+      } else {
+        $rootScope.updatingBalance = true;
+      }
+
+      w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
+        if (err) throw err;
+
+        _balanceCache[wid] = {
+          balanceSat: balanceSat,
+          balanceByAddrSat: balanceByAddrSat,
+          safeBalanceSat: safeBalanceSat,
+        };
+
+        updateScope(w, _balanceCache[wid], function() {
+          $rootScope.updatingBalance = false;
+          cb();
+        });
       });
     };
 
