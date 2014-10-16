@@ -5,6 +5,15 @@ angular.module('copayApp.controllers').controller('CopayersController',
     $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
     $scope.hideAdv = true;
 
+    $scope.sendEmail = function(backupPlainText) {
+      var w = $rootScope.wallet;
+      var link = 'mailto:'
+        + '?subject=' + escape(backupService.getFilename(w)) 
+        + '&body=' + escape(backupPlainText) + ''; 
+
+      window.location.href = link;
+    };
+
     $scope.skipBackup = function() {
       var w = $rootScope.wallet;
       w.setBackupReady(true);
