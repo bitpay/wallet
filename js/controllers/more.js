@@ -74,7 +74,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     }
 
     $scope.downloadBackup = function() {
-      backupService.download(w);
+      backupService.walletDownload(w);
     }
 
     $scope.viewBackup = function() {
