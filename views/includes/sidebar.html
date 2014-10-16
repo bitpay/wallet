@@ -1,12 +1,12 @@
 <div ng-controller="SidebarController">
   <header>
     <!-- <div ng&#45;show="$root.wallet.isShared()" ng&#45;include="'views/includes/peer&#45;list.html'"></div> -->
-    <div class="text-center">
+    <div class="text-center lo">
       <a href="#" class="db">
         <img src="img/logo-negative-beta.svg" alt="" width="100">
       </a>
-      <div ng-include="'views/includes/version.html'"></div>
     </div>
+  </header>
 
 
     <ul class="side-nav">
@@ -14,7 +14,6 @@
       <li data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item db p20h">
         <a ng-click="switchWallet(item.id)" ng-if="item.id != $root.wallet.id "> <i class="size-21 m20r fi-bitcoin-circle"></i> {{item.name || item.id}}</a>
         <div ng-if="item.id == $root.wallet.id ">
-          <div class="line-sidebar"></div>
           <div>
             <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
               <span>{{$root.wallet.getName()}}</span>
@@ -67,10 +66,9 @@
           <a href="#!/" class="db p20h" title="Close" ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
         </li>
     </ul>
-  </header>
-</div>
-
-
-
+    <div class="pa text-gray" style="bottom: 0; left: 30%;">
+      <div ng-include="'views/includes/version.html'"></div>
+    </div>
+  
 </div>
 
