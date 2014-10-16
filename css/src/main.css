@@ -109,7 +109,8 @@ body, html{
 }
 
 header {
-  padding: 15px 20px 5px;
+  padding: 1rem;
+  background-color: #1ABC9C;
 }
 
 
