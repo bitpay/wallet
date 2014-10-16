@@ -39,6 +39,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     if (w.isReady()) {
       w.sendWalletReady();
       if ($rootScope.addrInfos.length > 0) {
+        controllerUtils.clearBalanceCache(w);
         controllerUtils.updateBalance(w, function() {
           $rootScope.$digest();
         });
