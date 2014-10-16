@@ -13,14 +13,11 @@
       <div class="show-for-large-up">
         <textarea readonly rows="5">{{backupPlainText}}</textarea>
         <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
-        <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
       </div>
       <div class="hide-for-large-up">
-        <div class="ellipsis backup-plain-text">{{backupPlainText}}</div>
-        <button class="button secondary m0" 
-          ng-click="sendEmail(backupPlainText)" translate>Send by Email</button>
-        <div translate class="m10v size-12">Warning: Chrome for iOS removes some symbols from backup when opening Gmail client, please use only Safari on iOS (it open native Email application)</div>
+        <textarea rows="10">{{backupPlainText}}</textarea>
       </div>
+      <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
     </div>
   </div>
   <div class="large-12 columns line-dashed-h m15b"></div>
