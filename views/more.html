@@ -10,12 +10,16 @@
     <a translate class="button primary m0" ng-click="viewBackup()"
       ng-show="isSafari && !hideViewBackup">View Backup</a>
     <div ng-show="backupPlainText">
-      <textarea readonly rows="5">{{backupPlainText}}</textarea>
       <div class="show-for-large-up">
+        <textarea readonly rows="5">{{backupPlainText}}</textarea>
         <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
+        <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
       </div>
       <div class="hide-for-large-up">
-        <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+        <div class="ellipsis backup-plain-text">{{backupPlainText}}</div>
+        <button class="button secondary m0" 
+          ng-click="sendEmail(backupPlainText)" translate>Send by Email</button>
+        <div translate class="m10v size-12">Warning: Chrome for iOS removes some symbols from backup when opening Gmail client, please use only Safari on iOS (it open native Email application)</div>
       </div>
     </div>
   </div>

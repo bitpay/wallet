@@ -27,6 +27,15 @@ angular.module('copayApp.controllers').controller('MoreController',
       decimals: 8
     }];
 
+    $scope.sendEmail = function(backupPlainText) {
+      var w = $rootScope.wallet;
+      var link = 'mailto:'
+        + '?subject=' + escape(backupService.getFilename(w)) 
+        + '&body=' + escape(backupPlainText) + ''; 
+
+      window.location.href = link;
+    };    
+
     $scope.selectedAlternative = {
       name: w.settings.alternativeName,
       isoCode: w.settings.alternativeIsoCode
