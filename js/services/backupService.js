@@ -5,32 +5,16 @@ var BackupService = function(notification) {
   this.notifications = notification;
 };
 
-BackupService.prototype.getName = function(wallet) {
-  return (wallet.name ? (wallet.name + '-') : '') + wallet.id;
-};
-
 BackupService.prototype.getCopayer = function(wallet) {
   return wallet.totalCopayers > 1 ? wallet.getMyCopayerNickname() : '';
 };
 
-BackupService.prototype.getBackup = function(wallet) {
-  return wallet.toEncryptedObj();
-};
-
-BackupService.prototype.getFilename = function(wallet) {
-  var walletName = this.getName(wallet);
-  var copayerName = this.getCopayer(wallet);
-  return (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
-};
-
-BackupService.prototype.download = function(wallet) {
-  var ew = this.getBackup(wallet);
-  var filename = this.getFilename(wallet);
-
-  this.notifications.success('Backup created', 'Encrypted backup file saved');
+BackupService.prototype._download = function(ew, walletName, filename) {
   var blob = new Blob([ew], {
     type: 'text/plain;charset=utf-8'
   });
+
+
   // show a native save dialog if we are in the shell
   // and pass the wallet to the shell to convert to node Buffer
   if (window.cshell) {
@@ -49,9 +33,29 @@ BackupService.prototype.download = function(wallet) {
       attachments: ['base64:' + filename + '//' + btoa(ew)]
     });
   }
+  this.notifications.success('Backup created', 'Encrypted backup file saved');
 
   // otherwise lean on the browser implementation
   saveAs(blob, filename);
 };
+
+
+BackupService.prototype.walletDownload = function(wallet) {
+  var ew = wallet.toEncryptedObj();
+  var walletName = wallet.getName();
+  var copayerName = this.getCopayer(wallet);
+  var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
+  this._download(ew, walletName, filename)
+};
+
+BackupService.prototype.profileDownload = function(iden) {
+  var ew = iden.toEncryptedObj();
+  var name = iden.profile.getName();
+  var filename = name + '-profile.json';
+  this._download(ew, name, filename)
+};
+
+
+
 
 angular.module('copayApp.services').service('backupService', BackupService);

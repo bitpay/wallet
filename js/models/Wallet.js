@@ -1171,7 +1171,7 @@ Wallet.fromObj = function(o, readOpts) {
  */
 Wallet.prototype.toEncryptedObj = function() {
   var walletObj = this.toObj();
-  return this.storage.export(walletObj);
+  return this.storage.encrypt(walletObj);
 };
 
 /**
