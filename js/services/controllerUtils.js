@@ -240,6 +240,10 @@ angular.module('copayApp.services')
     };
 
     var _balanceCache = {};
+    root.clearBalanceCache = function(w) {
+      delete _balanceCache[w.getId()];
+    };
+
     root.updateBalance = function(w, cb) {
       var updateScope = function(w, data, cb2) {
         var satToUnit = 1 / w.settings.unitToSatoshi;
