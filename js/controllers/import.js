@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, identity, controllerUtils, Passphrase, notification, isMobile) {
-    controllerUtils.redirIfLogged();
+  function($scope, $rootScope, $location, controllerUtils, Passphrase, notification, isMobile) {
 
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
@@ -17,38 +16,30 @@ angular.module('copayApp.controllers').controller('ImportController',
     }
 
     var _importBackup = function(encryptedObj) {
-      Passphrase.getBase64Async($scope.password, function(passphrase) {
-        updateStatus('Importing wallet - Setting things up...');
-        var w, errMsg;
+      var password = $scope.password;
+      updateStatus('Importing wallet - Setting things up...');
+      var skipFields = [];
+      if ($scope.skipPublicKeyRing)
+        skipFields.push('publicKeyRing');
 
-        var skipFields = [];
-        if ($scope.skipPublicKeyRing)
-          skipFields.push('publicKeyRing');
+      if ($scope.skipTxProposals)
+        skipFields.push('txProposals');
 
-        if ($scope.skipTxProposals)
-          skipFields.push('txProposals');
-
-        // try to import encrypted wallet with passphrase
-        try {
-          w = identity.fromEncryptedObj(encryptedObj, passphrase, skipFields);
-        } catch (e) {
-          errMsg = e.message;
-        }
-
+      $rootScope.iden.importWallet(encryptedObj, password, skipFields, function(err, w) {
         if (!w) {
           $scope.loading = false;
-          notification.error('Error', errMsg || 'Wrong password');
+          notification.error('Error', err || 'Wrong password');
           $rootScope.$digest();
           return;
         }
 
         // if wallet was never used, we're done
         if (!w.isReady()) {
-          $rootScope.wallet = w;
-          controllerUtils.startNetwork($rootScope.wallet, $scope);
+          controllerUtils.installWalletHandlers($scope, w);
+          controllerUtils.setFocusedWallet(w);
           return;
         }
-
+          
         // if it was used, we need to scan for indices
         w.updateIndexes(function(err) {
           updateStatus('Importing wallet - We are almost there...');
@@ -56,11 +47,10 @@ angular.module('copayApp.controllers').controller('ImportController',
             $scope.loading = false;
             notification.error('Error', 'Error updating indexes: ' + err);
           }
-          $rootScope.wallet = w;
-          controllerUtils.startNetwork($rootScope.wallet, $scope);
+          controllerUtils.installWalletHandlers($scope, w);
+          controllerUtils.setFocusedWallet(w);
         });
-
-      });
+      }); 
     };
 
     $scope.openFileDialog = function() {
