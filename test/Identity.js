@@ -54,6 +54,7 @@ describe('Identity model', function() {
     profile.listWallets = sinon.stub().returns([]);
     profile.setLastOpenedTs = sinon.stub().yields(null);;
     profile.store = sinon.stub().yields(null);;
+    profile.getName = sinon.stub().returns('profile name');;
     Identity._createProfile = sinon.stub().callsArgWith(3, null, profile);
 
 
