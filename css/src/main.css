@@ -180,8 +180,6 @@ a:hover {
 .open input, 
 .join input, 
 .setup input,
-.import input,
-.import textarea, 
 .settings input {
   border-radius: 2px;
   background: #EDEDED;
@@ -268,19 +266,6 @@ a:hover {
   color: #fff;
 }
 
-.import fieldset, .settings fieldset {
-  border: 1px solid #3C5269;
-}
-
-.import fieldset legend, .settings fieldset legend {
-  background: transparent;
-  color: #fff;
-  font-weight: normal;
-}
-
-.import input[type="file"], 
-.import label, 
-.import label small,
 .settings label, 
 .settings label small {
   color: #fff;

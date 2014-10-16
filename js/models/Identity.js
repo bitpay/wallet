@@ -60,8 +60,8 @@ Identity._newWallet = function(opts) {
   return new Wallet(opts);
 };
 
-Identity._walletFromObj = function(o, s, n, b, skip) {
-  return Wallet.fromObj(o, s, n, b, skip);
+Identity._walletFromObj = function(o, readOpts) {
+  return Wallet.fromObj(o, readOpts);
 };
 
 Identity._walletRead = function(id, r, cb) {
@@ -299,6 +299,7 @@ Identity.prototype.close = function(cb) {
  * @return {Wallet}
  */
 Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
+  var self = this;
   preconditions.checkArgument(password);
   preconditions.checkArgument(cb);
 
@@ -307,13 +308,22 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   var obj = this.storage.decrypt(base64);
   this.storage.restorePassphrase();
 
-  if (!obj) return false;
-  var w = Identity._walletFromObj(obj, this.storage, this.networkOpts, this.blockchainOpts);
-  console.log('[Identity.js.307:Identity:]', w); //TODO
+  var readOpts = {
+    storage: this.storage,
+    networkOpts: this.networkOpts,
+    blockchainOpts: this.blockchainOpts,
+    skipFields: skipFields
+  };
+
+  if (!obj) return cb(null);
+  var w = Identity._walletFromObj(obj, readOpts);
   this._checkVersion(w.version);
   this.addWallet(w, function(err) {
-    if (err) return cb(err);
-    w.store(cb);
+    if (err) return cb(err, null);
+    self.openWallets.push(w);
+    self.store(null, function(err) {
+      return cb(err, w);
+    });
   });
 };
 

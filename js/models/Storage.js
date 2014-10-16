@@ -98,6 +98,7 @@ Storage.prototype._decrypt = function(base64) {
       decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
   } catch (e) {
     // Error while decrypting
+    log.debug(e.message);
     return null;
   }
   return decryptedStr;
