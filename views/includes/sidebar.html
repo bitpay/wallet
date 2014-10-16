@@ -1,72 +1,63 @@
 <div ng-controller="SidebarController">
   <header>
     <!-- <div ng&#45;show="$root.wallet.isShared()" ng&#45;include="'views/includes/peer&#45;list.html'"></div> -->
-    <div class="text-center lo">
-      <a href="#" class="db">
-        <img src="img/logo-negative-beta.svg" alt="" width="100">
-      </a>
+    <div data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item db p20h">
+      <a ng-click="switchWallet(item.id)" ng-if="item.id != $root.wallet.id "> <i class="size-21 m20r fi-bitcoin-circle"></i> {{item.name || item.id}}</a>
+      <div ng-if="item.id == $root.wallet.id ">
+        <div>
+          <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}"> {{$root.wallet.getName()}} </a>
+          <a class="button gray small side-bar right" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"><i class="size-16 fi-refresh"></i></a>
+        </div>
+        <div class="founds size-14 m10v">
+          {{'Balance'|translate}}
+          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip size-16" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
+          <div class="m10t" ng-show="lockedBalance">
+            {{'Locked'|translate}} &nbsp;
+            <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+            <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+            </span> &nbsp;
+            <i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
+          </div>
+        </div>
+<!--           <div class="wfooter">
+          <span ng-if="$root.wallet.isShared()">
+        {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} wallet
+            <span ng-if="!$root.wallet.isReady()">
+              <span class="creation"> in creation </span>
+            </span>
+          </span>
+        </div> -->
+      </div>
     </div>
   </header>
 
+  <ul class="side-nav" ng-if="$root.wallet.isReady()">
+    <li data-ng-repeat="item in menu" ui-route="{{item.link}}" class="nav-item" data-ng-class="{active: isActive(item)}">
+      <a href="#!/{{item.link}}" ng-click="toggleCollapse()" class="db p20h">
+        <i class="size-21 m20r {{item.icon}}"></i> {{item.title|translate}}
+        <span class="right">
+    <span class="label alert" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
+        </span>
+      </a>
+    </li>
+    <li class="nav-item" ui-route="{{create}}">
+      <a href="#!/manage" class="db p20h" title="Create"><i class="size-21 m20r fi-plus"></i> {{'Manage Wallets' | translate }} </a>
+    </li>
 
-    <ul class="side-nav">
-      <li data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item db p20h">
-        <a ng-click="switchWallet(item.id)" ng-if="item.id != $root.wallet.id "> <i class="size-21 m20r fi-bitcoin-circle"></i> {{item.name || item.id}}</a>
-        <div ng-if="item.id == $root.wallet.id ">
-          <div>
-            <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}">
-              <span>{{$root.wallet.getName()}}</span>
-            </a>
-            <a class="button gray small side-bar right" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"><i class="size-16 fi-refresh"></i></a>
-          </div>
-          <div class="founds size-14 m10v">
-            {{'Balance'|translate}}
-            <span ng-if="$root.updatingBalance">
-              <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-            </span>
-            <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip size-16" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}
-            </span>
-            <div class="m10t" ng-show="lockedBalance">
-              {{'Locked'|translate}} &nbsp;
-              <span ng-if="$root.updatingBalance">
-                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-              </span>
-              <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
-              </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
-            </div>
-          </div>
-          <div class="wfooter">
-            <span ng-if="$root.wallet.isShared()">
-              {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} wallet
-              <span ng-if="!$root.wallet.isReady()">
-                <span class="creation"> in creation </span>
-              </span>
-            </span>
-            <span ng-if="$root.wallet.isTestnet()" [TESTNET]</span>
-          </div>
-          <ul class="side-nav" ng-if="$root.wallet.isReady()">
-            <li data-ng-repeat="item in menu" ui-route="{{item.link}}" class="nav-item" data-ng-class="{active: isActive(item)}">
-              <a href="#!/{{item.link}}" ng-click="toggleCollapse()" class="db p20h">
-                <i class="size-21 m20r {{item.icon}}"></i> {{item.title|translate}}
-                <span class="right">
-                  <span class="label alert" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </li>
+    <li>
+      <a href="#!/" class="db p20h" title="Close" ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
+    </li>
+  </ul>
 
-        <li class="nav-item" ui-route="{{create}}">
-          <a href="#!/manage" class="db p20h" title="Create"><i class="size-21 m20r fi-plus"></i> {{'Manage Wallets' | translate }} </a>
-        </li>
-
-        <li>
-          <a href="#!/" class="db p20h" title="Close" ng-click="signout()"><i class="size-21 m20r fi-power"></i> {{'Close'|translate}}</a>
-        </li>
-    </ul>
     <div class="pa text-gray" style="bottom: 0; left: 30%;">
+      <div class="text-center lo">
+        <a href="#" class="db">
+          <img src="img/logo-negative-beta.svg" alt="" width="100">
+        </a>
+      </div>
       <div ng-include="'views/includes/version.html'"></div>
+      <span ng-if="$root.wallet.isTestnet()"> [TESTNET]</span>
     </div>
-  
 </div>
+
