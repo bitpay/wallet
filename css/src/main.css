@@ -109,20 +109,26 @@ body, html{
 }
 
 header {
-  padding: 1rem;
+  padding: 0.7rem;
   background-color: #1ABC9C;
 }
 
-
-header .wfooter {
-  font-size: 12px;
+header:hover {
+  cursor: pointer;
+  background-color: #23C9A9;
 }
-
 
 header .creation {
   color: white;
   background: red;
   font-weight: bold;
+}
+
+header .alt-currency {
+  padding: 0.05rem 0.2rem;
+  border-radius: 2px;
+  background: #16A085;
+  font-size: 10px;
 }
 
 .off-canvas-wrap, .inner-wrap{
@@ -139,6 +145,25 @@ a {
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+ul.side-nav.wallets .avatar-wallet{
+  background-color: #7A8C9E;
+  color: #213140;
+  padding: 0.35rem 0.7rem;
+  margin-top: 13px;
+  margin-left: 14px;
+}
+
+.avatar-wallet {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 4px;
+  float: left;
+  padding: 0.5rem 0.8rem;
+  background-color: #fff;
+  color: #1ABC9C;
+  border-radius: 3px;
+  line-height: 24px;
 }
 
 .status {
@@ -407,6 +432,18 @@ table.last-transactions-content {
   margin-bottom: 10px;  
 }
 
+a.button-setup.add-wallet {
+  opacity: .5;
+  margin: 1rem auto;
+  width: 146px;
+  font-size: 14px;
+  padding: .3rem 0.7rem;
+}
+
+a.button-setup.add-wallet:hover {
+  opacity: 1;
+}
+
 a.button-setup {
   border-radius: 3px;
   border: 1px solid #B7C2CE;
@@ -425,6 +462,7 @@ a.button-setup {
 .m0 {margin: 0;}
 .p0 {padding: 0 !important;}
 .db {display: block;}  
+.size-10 { font-size: 10px; }      
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }
@@ -469,7 +507,6 @@ a.button-setup {
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
 .oh {overflow:hidden;}
-.lh {line-height: 0;}
 
 .small {
   font-size: 60%;
@@ -528,7 +565,7 @@ a.button-setup {
 
 .founds {
   font-weight: 100;
-  color: #7A8C9E;
+  color: #B6E9DF;
 }
 
 .hidden {
@@ -965,6 +1002,30 @@ button.gray:focus,
   color: #FFFFFF;
   text-transform: uppercase;
 }
+
+.side-nav.wallets {
+  background-color: #213140 ;
+  padding: 0.7rem;
+  border-bottom: 1px solid #3A4E61;
+}
+
+.side-nav.wallets a {
+  color: #7A8C9E !important;
+  line-height: 18px;
+}
+
+.side-nav.wallets p {
+  color: #AAB1B9 !important;
+}
+
+.side-nav .wallet-item {
+  padding: 10px 0;
+}
+
+.side-nav .wallet-item a:hover {
+  background-color: #3C4E60;
+}
+
 
 .side-nav {padding: 0;}
 
