@@ -120,13 +120,14 @@
             <span translate>yet to backup the wallet.</span>
           </button>
           <div ng-show="backupPlainText">
-            <textarea readonly rows="5">{{backupPlainText}}</textarea>
             <div class="show-for-large-up">
+              <textarea readonly rows="5">{{backupPlainText}}</textarea>
               <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
             </div>
             <div class="hide-for-large-up m10b">
-              <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+              <textarea rows="10">{{backupPlainText}}</textarea>
             </div>
+            <div translate class="m10v size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
           </div>
           <button class="button primary right m0" 
             ng-show="hideViewBackup"

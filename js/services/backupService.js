@@ -17,11 +17,15 @@ BackupService.prototype.getBackup = function(wallet) {
   return wallet.toEncryptedObj();
 };
 
-BackupService.prototype.download = function(wallet) {
-  var ew = this.getBackup(wallet);
+BackupService.prototype.getFilename = function(wallet) {
   var walletName = this.getName(wallet);
   var copayerName = this.getCopayer(wallet);
-  var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
+  return (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
+};
+
+BackupService.prototype.download = function(wallet) {
+  var ew = this.getBackup(wallet);
+  var filename = this.getFilename(wallet);
 
   this.notifications.success('Backup created', 'Encrypted backup file saved');
   var blob = new Blob([ew], {
