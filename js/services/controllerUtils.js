@@ -245,7 +245,7 @@ angular.module('copayApp.services')
     };
 
     root.updateBalance = function(w, cb) {
-      var updateScope = function(w, data, cb2) {
+      function updateScope(w, data, cb2) {
         var satToUnit = 1 / w.settings.unitToSatoshi;
         var COIN = bitcore.util.COIN;
 
@@ -269,7 +269,6 @@ angular.module('copayApp.services')
             balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
           }
           $rootScope.balanceByAddr = balanceByAddr;
-          root.updateAddressList();
 
           rateService.whenAvailable(function() {
             $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
@@ -289,11 +288,15 @@ angular.module('copayApp.services')
       if (!w.isReady()) return;
       console.log('## Updating balance of:' + w.id)
 
+      root.updateAddressList();
 
       var wid = w.getId();
 
       if (_balanceCache[wid]) {
         updateScope(w, _balanceCache[wid]);
+        setTimeout(function() {
+          $rootScope.$digest();
+        }, 1);
       } else {
         $rootScope.updatingBalance = true;
       }
@@ -309,7 +312,7 @@ angular.module('copayApp.services')
 
         updateScope(w, _balanceCache[wid], function() {
           $rootScope.updatingBalance = false;
-          cb();
+          if (cb) cb();
         });
       });
     };
