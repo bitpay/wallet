@@ -281,9 +281,8 @@ angular.module('copayApp.controllers').controller('SendController',
     qrcode.callback = function(data) {
       _scanStop();
 
-      var str = (data.indexOf('bitcoin:') === 0) ? data.substring(8) : data;
       $scope.$apply(function() {
-        $scope.address = str;
+        $scope.sendForm.address.$setViewValue(data);
       });
     };
 
