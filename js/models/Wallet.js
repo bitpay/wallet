@@ -175,7 +175,7 @@ Wallet.key = function(str) {
 
 
 Wallet.any = function(storage, cb) {
-  storage.getFirst(Wallet.key(''), function(err, v, k) {
+  storage.getFirst(Wallet.key(''),  { onlyKey: true}, function(err, v, k) {
     return cb(k ? true : false);
   });
 };
@@ -259,7 +259,7 @@ Wallet.read = function(walletId, readOpts, cb) {
     err;
   var obj = {};
 
-  storage.getFirst(Wallet.key(walletId), function(err, ret) {
+  storage.getFirst(Wallet.key(walletId), {}, function(err, ret) {
     if (err) return cb(err);
 
     if (!ret)

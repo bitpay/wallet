@@ -175,13 +175,21 @@ Storage.prototype.get = function(key, cb) {
   })
 };
 
-Storage.prototype.getFirst = function(prefix, cb) {
+Storage.prototype.getFirst = function(prefix, opts, cb) {
+  opts = opts || {};
+
   var self = this;
   this.db.allKeys(function(allKeys) {
     var keys = _.filter(allKeys, function(k) {
       if ((k === prefix) || k.indexOf(prefix) === 0) return true;
     });
-    if (keys.length === 0) return cb(new Error('not found'));
+
+    if (keys.length === 0)
+      return cb(new Error('not found'));
+
+    if (opts.onlyKey)
+      return cb(null, null, keys[0]);
+
     self._read(keys[0], function(v) {
       if (_.isNull(v)) return cb(new Error('Could not decrypt data'), null, keys[0]);
       return cb(null, v, keys[0]);
@@ -206,7 +214,7 @@ Storage.prototype.delete = function(key, cb) {
 
 Storage.prototype.deletePrefix = function(prefix, cb) {
   var self = this;
-  this.getFirst(prefix, function(err, v, k) {
+  this.getFirst(prefix, {}, function(err, v, k) {
     if (err || !v) return cb(err);
 
     self.delete(k, function(err) {
