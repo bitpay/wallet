@@ -1,10 +1,10 @@
 <div class="createProfile" ng-controller="CreateProfileController">
   <div data-alert class="loading-screen" ng-show="retreiving">
-    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
-    Retreiving information from storage...
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
+    <span translate>Retreiving information from storage...</span>
   </div>
 
-  <div class="large-12 medium-6 medium-centered columns" ng-show="!loading && !retreiving">
+  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading && !retreiving">
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
@@ -13,13 +13,13 @@
       <div class="left">
       <i class="size-36 fi-alert m10r"></i>
       </div>
-      <div class="size-12">
-        <b>Copay now needs a profile to access wallets. </b>
+      <div class="size-12" translate>
+        <b>Copay now needs a profile to access wallets.</b>
         You can import your current wallets after creating your frofile
       </div>
     </div>
     <div class="box-setup">
-      <h1 class="m20b" translate >Create Profile</h1>
+      <h1 translate>Create Profile</h1>
       <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
         <div class="row collapse">
           <div class="small-12 columns">
@@ -46,10 +46,10 @@
           <small class="icon-input"
             ng-show="profileForm.repeatpassword.$dirty &&
             profileForm.repeatpassword.$invalid"><i class="fi-x"></i></small>
-          <p class="m15b text-gray size-12"
+          <p class="text-warning size-12"
           ng-show="profileForm.repeatpassword.$dirty &&
           profileForm.repeatpassword.$invalid">
-          <i class="fi-x m5r"></i>
+          <i class="fi-x"></i> 
           {{'Passwords must match'|translate}}
           </p>
         </div>
@@ -62,12 +62,20 @@
       </form>
       <div class="box-setup-footer">
         <div class="left">
-          <a translate class="text-gray" href="#"><i class="m5r
-              size-14 fi-arrow-left"></i>Back to Copay.io</a>
+          <a ng-show="!anyProfile" class="text-gray" href="https://copay.io">
+            <i class="m5r fi-arrow-left"></i> 
+            <span translate>Back to</span> copay.io
+          </a>
+          <a ng-show="anyProfile" class="text-gray" href="#!/">
+            <i class="fi-arrow-left"></i> 
+            <span translate>Back</span>
+          </a>
         </div>
         <div class="right">
-          <a class="right size-12 text-gray" href="#!/settings"><i class="m5r
-              size-14 fi-wrench"></i><span translate>Settings</span></a>
+          <a class="right size-12 text-gray" href="#!/settings">
+            <i class="fi-wrench"></i> 
+            <span translate>Settings</span>
+          </a>
         </div>
       </div>
     </div>
