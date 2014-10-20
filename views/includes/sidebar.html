@@ -1,56 +1,66 @@
 <div ng-controller="SidebarController">
   <header ng-click="toggleWalletSelection()">
     <!-- <div ng&#45;show="$root.wallet.isShared()" ng&#45;include="'views/includes/peer&#45;list.html'"></div> -->
-    <div class="avatar-wallet m10r">
+    <div class="col1 avatar-wallet m10r">
       <span>P</span>
     </div>
-    <div>
-      <a href="#!/receive" class="name-wallet" tooltip-placement="bottom" tooltip="ID: {{$root.wallet.id}}"> <b>{{$root.wallet.getName()}} </b></a>
-      <a class="m10t side-bar right" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"> v </a>
-    </div>
-    <div class="founds size-12">
-      <!-- {{'Balance'|translate}} -->
-      <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-      <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-        <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-        <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+    <div class="col2">
+      <div href="#!/receive"> 
+        <b class="ellipsis name-wallet">{{$root.wallet.getName()}} </b> 
+        <p class="right size-10">[ {{$root.wallet.totalCopayers}} of {{$root.wallet.requiredCopayers}} ]</p>
       </div>
-      <div class="m10t" ng-show="lockedBalance">
-        {{'Locked'|translate}} &nbsp;
+      <div class="founds size-12">
+        <!-- {{'Balance'|translate}} -->
         <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-        <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
-        </span> &nbsp;
-        <i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
-      </div>
-<!--           <div class="wfooter">
-          <span ng-if="$root.wallet.isShared()">
-        {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} wallet
-            <span ng-if="!$root.wallet.isReady()">
-              <span class="creation"> in creation </span>
+        <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
+          <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+          <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+        </div>
+        <div class="m10t" ng-show="lockedBalance">
+          {{'Locked'|translate}} &nbsp;
+          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+          </span> &nbsp;
+          <i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
+        </div>
+  <!--           <div class="wfooter">
+            <span ng-if="$root.wallet.isShared()">
+          {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} wallet
+              <span ng-if="!$root.wallet.isReady()">
+                <span class="creation"> in creation </span>
+              </span>
             </span>
-          </span>
-        </div> -->
+          </div> -->
+        </div>
+      </div>
+      <div class="col3">
+        <a class="side-bar" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"> v </a>
       </div>
   </header>
 
   <div ng-if="walletSelection">
     <ul class="side-nav wallets">
       <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
-        <div class="avatar-wallet m10r">
+        <div class="col1 avatar-wallet m10r">
           <span>P</span>
         </div>
-        <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
-          <p class="m0 size-14">{{item.name || item.id}} </p>
-          <span ng-if="item.isReady() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <span ng-if="item.isReady() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-            <b class="m5r">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
-            <span class="alt-currency">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
-          </span>
-          <span ng-if="!item.isReady()">Waiting for copayers...</span>
-        </a>
+        <div class="col2">
+          <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
+            <div>
+              <span class="ellipsis name-wallet">{{item.name || item.id}} </span>
+              <p class="m0 size-10">[ {{item.totalCopayers}} of {{item.requiredCopayers}} ]</p> 
+            </div>
+            <span ng-if="item.isReady() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+            <div ng-if="item.isReady() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+              <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
+              <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
+            </div>
+            <span ng-if="!item.isReady()">Waiting for copayers...</span>
+          </a>
+        </div>
       </li>
     </ul>
-      <a ui-route="{{create}}" href="#!/manage" class="button-setup add-wallet db p20h" title="Create"><i class="m5r fi-plus"></i> {{'Manage Wallets' | translate }} </a>
+      <a ui-route="{{create}}" href="#!/manage" class="button-setup add-wallet db p20h" title="Create"><i class="m5r fi-plus"></i> {{'Add Wallets' | translate }} </a>
   </div>
 
   <ul class="side-nav" ng-if="!walletSelection && $root.wallet.isReady()">
