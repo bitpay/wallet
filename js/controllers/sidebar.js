@@ -81,7 +81,18 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     $scope.walletSelection = false;
     controllerUtils.setFocusedWallet(wid);
   };
+
   $scope.toggleWalletSelection = function() {
     $scope.walletSelection = !$scope.walletSelection;
+    $scope.wallets = [];
+    var wids = _.pluck($rootScope.iden.listWallets(), 'id');
+    _.each(wids, function(wid) {
+      if (controllerUtils.isFocusedWallet(wid)) return;
+      var w = $rootScope.iden.getOpenWallet(wid);
+      $scope.wallets.push(w);
+      controllerUtils.updateBalance(w, function(err, res) {
+        if (err) return;
+      });
+    });
   };
 });

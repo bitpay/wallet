@@ -35,15 +35,16 @@
 
   <div ng-if="walletSelection">
     <ul class="side-nav wallets">
-      <li data-ng-repeat="item in $root.iden.listWallets() track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
+      <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
         <div class="avatar-wallet m10r">
           <span>P</span>
         </div>
         <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
           <p class="m0 size-14">{{item.name || item.id}} </p>
-          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <span ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-            <span class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
+          <span ng-if="item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <span ng-if="!item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+            <b class="m5r">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
+            <span class="alt-currency">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
           </span>
         </a>
       </li>
