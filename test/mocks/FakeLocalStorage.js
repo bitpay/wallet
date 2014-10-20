@@ -2,7 +2,12 @@
 
 function FakeLocalStorage() {
   this.ls = {};
+  this.type = 'DB';
 };
+
+FakeLocalStorage.prototype.init = function() {
+};
+
 FakeLocalStorage.prototype.removeItem = function(key, cb) {
   delete this.ls[key];
   cb();
