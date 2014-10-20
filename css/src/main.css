@@ -53,19 +53,19 @@
 }
 
 ::-webkit-input-placeholder {
-   color: #4D657C;
+  color: #B7C2CD;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: #4D657C;
+  color: #B7C2CD;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: #4D657C;
+  color: #B7C2CD;
 }
 
 :-ms-input-placeholder {  
-   color: #4D657C;
+  color: #B7C2CD;
 }
 
 #qr-canvas { display: none; }
@@ -215,13 +215,6 @@ ul.side-nav.wallets .avatar-wallet{
   z-index: 9999;
 }
 
-.home label,
-.createProfile label {
-  font-size: 0.875rem;
-  color: #fff;
-  font-weight: 100;
-}
-
 .setup .comment {
   font-size: 0.875rem;
   color: #7A8C9E !important;
@@ -229,42 +222,6 @@ ul.side-nav.wallets .avatar-wallet{
 
 a:hover {
   color: #2980b9;
-}
-
-.home input,
-.box-setup input,
-.open input, 
-.join input, 
-.setup input,
-.settings input {
-  border-radius: 2px;
-  background: #EDEDED;
-  -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
-  box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
-  color: #2C3E42 !important;
-  padding: 1.2rem 0.7rem;
-  margin-bottom: 1.5rem;
-  border: 0;
-}
-
-.box-setup ::-webkit-input-placeholder {
-  color: #B7C2CD;
-}
-
-.box-setup :-ms-input-placeholder {
-  color: green !important;
-}
-
-.box-setup :-moz-placeholder {
-  color: red !important;
-}
-
-.home select,
-.createProfile select,
-.settings select {
-  background: #2C3E50 !important;
-  border: 0 !important;
-  color: #fff !important;
 }
 
 .page, .main {
@@ -317,46 +274,25 @@ a:hover {
   background-color: #F8F8FB;
 }
 
-.home, .createProfile, .settings {
-  margin-top: 8%;
-  color: #fff;
-}
-
-.settings label, 
-.settings label small {
-  color: #fff;
-}
-
 .logo-setup {
   text-align: center;
-  margin-bottom: 2rem;
-}
-
-.setup .logo-setup, .join .logo-setup {
-  margin-top: 16%;
+  padding: 2rem 0;
+  color: #fff;
 }
 
 .box-setup {
-  margin: 0 auto;
-  width: 310px;
   padding: 1.3rem; 
   border-radius: 2px;
   background: #FFFFFF;
-  -moz-box-shadow:    1px 1px 0px 0px #213140;
-  box-shadow:         1px 1px 0px 0px #213140;
+  -moz-box-shadow: 1px 1px 0px 0px #213140;
+  box-shadow: 1px 1px 0px 0px #213140;
 }
 
 .box-setup-footer {
   overflow: hidden;
-  margin-top: 2rem;
   padding: 1rem 0 0;
   border-top: 1px solid #E5E7EA;
   font-size: 12px;
-}
-
-.box-setup label small.has-error {
-  font-size: 11px;
-  color: #FFA59B;
 }
 
 .last-transactions {
@@ -816,15 +752,10 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
 }
 
 .tooltip { 
-  background: #1ABC9C; 
+  background-color: #1ABC9C; 
   color: #fff; 
-  font-weight: normal; 
-  font-size: 14px; 
-  padding: 3px 5px;
-  -webkit-border-radius: 3px; 
-  -moz-border-radius: 3px; 
-  border-radius: 3px; 
-  border: 1px solid #16A085;
+  font-size: 12px; 
+  border-color: #16A085;
 }
 
 .tooltip>.nub {
@@ -851,9 +782,25 @@ ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   background-size: 130px 51px;
 }
 
+input {
+  border-radius: 2px;
+  background: #EDEDED;
+  -moz-box-shadow: 0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  box-shadow: 0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  color: #2C3E42;
+  padding: 1.2rem 0.7rem;
+  margin-bottom: 1.5rem;
+  border: 0;
+}
+
 button.radius, .button.radius {
   -webkit-border-radius: 3px;
   border-radius: 3px;
+}
+
+label small.has-error {
+  font-size: 11px;
+  color: #FFA59B;
 }
 
 /* SECONDARY */
@@ -1033,7 +980,6 @@ button.gray:focus,
 }
 
 .button, button {
-  color: #FFFFFF;
   text-transform: uppercase;
 }
 
@@ -1246,15 +1192,9 @@ a.text-warning:hover {color: #FD7262;}
 }
 
 .box-setup h1 {
-  font-weight: 100;
   font-size: 16px;
-  color: #2C3E50;
   text-transform: uppercase;
   text-align: center;
-}
-
-.box-setup form {
-  margin: 0;
 }
 
 .joyride-tip-guide {
@@ -1328,10 +1268,6 @@ a.text-warning:hover {color: #FD7262;}
 
 .copayer-list-small-height {
   display: none;
-}
-
-fieldset legend {
-  background: transparent;
 }
 
 @media only screen and (min-width: 40.063em) {
