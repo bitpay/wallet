@@ -41,11 +41,12 @@
         </div>
         <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
           <p class="m0 size-14">{{item.name || item.id}} </p>
-          <span ng-if="item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <span ng-if="!item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+          <span ng-if="item.isReady() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <span ng-if="item.isReady() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
             <b class="m5r">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
             <span class="alt-currency">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
           </span>
+          <span ng-if="!item.isReady()">Waiting for copayers...</span>
         </a>
       </li>
     </ul>
