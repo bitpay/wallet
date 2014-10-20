@@ -5,6 +5,7 @@ var _ = require('underscore');
 var chai = chai || require('chai');
 var should = chai.should();
 var PluginManager = require('../js/models/PluginManager');
+var Insight = require('../js/models/Insight');
 
 
 var FakeBlockchain = requireMock('FakeBlockchain');
@@ -417,6 +418,12 @@ describe('Identity model', function() {
     it('should create a new PluginManager object', function() {
       var pm = sinon.stub().returns(new PluginManager({plugins: { FakeLocalStorage: true }, pluginsPath: '../../test/mocks/'}));
       should.exist(pm);
+    });
+  });
+
+  describe('#Insight', function() {
+    it('should parse a uri', function() {
+      Insight.setCompleteUrl('http://someurl.bitpay.com:443');
     });
   });
 
