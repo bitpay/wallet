@@ -347,7 +347,7 @@ describe('Storage model', function() {
       sinon.stub(s, '_read', function(k, cb) {
         return cb(data[k]);
       });
-      s.getFirst('wallet::id1', function(err, w) {
+      s.getFirst('wallet::id1', {}, function(err, w) {
         should.not.exist(err);
         w.should.exist;
         w.hasOwnProperty('a').should.be.true;
