@@ -15,7 +15,7 @@ describe('Profile model', function() {
   var storage = new FakeStorage();
   var opts = {
     email: email,
-    hash:hash,
+    hash: hash,
   };
 
   beforeEach(function() {
@@ -87,7 +87,9 @@ describe('Profile model', function() {
   describe('#addToWallet', function() {
     it('should warn if wallet does not exist', function(done) {
       var p = new Profile(opts, storage);
-      p.addToWallet('234',{1:1}, function(err) {
+      p.addToWallet('234', {
+        1: 1
+      }, function(err) {
         err.toString().should.contain('WNOEXIST');
         done();
       });
@@ -95,7 +97,9 @@ describe('Profile model', function() {
     it('should add info to a wallet', function(done) {
       var p = new Profile(opts, storage);
       p.addWallet('234', {}, function(err) {
-        p.addToWallet('234',{'hola':1}, function(err) {
+        p.addToWallet('234', {
+          'hola': 1
+        }, function(err) {
           var w = p.getWallet('234');
           should.exist(w);
           w.hola.should.equal(1);
@@ -105,19 +109,19 @@ describe('Profile model', function() {
       })
     });
   });
- 
+
 
 
   describe('#listWallets', function() {
     it('should list wallets in order', function(done) {
       var p = new Profile(opts, storage);
       p.addWallet('123', {}, function(err) {
-        setTimeout(function() { 
-        p.addWallet('234', {}, function(err) {
-          _.pluck(p.listWallets(), 'id').should.deep.equal(['234', '123']);
-          done();
-        })
-        },10);
+        setTimeout(function() {
+          p.addWallet('234', {}, function(err) {
+            _.pluck(p.listWallets(), 'id').should.deep.equal(['123', '234']);
+            done();
+          })
+        }, 10);
       });
     });
   });
