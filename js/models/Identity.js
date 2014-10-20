@@ -633,7 +633,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
         walletOpts.network = joinNetwork;
 
         walletOpts.privateKey = privateKey;
-        walletOpts.nickname = opts.nickname || this.profile.getName();
+        walletOpts.nickname = opts.nickname || self.profile.getName();
 
         if (opts.password)
           walletOpts.password = opts.password;
