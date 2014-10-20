@@ -423,7 +423,8 @@ describe('Identity model', function() {
 
   describe('#Insight', function() {
     it('should parse a uri', function() {
-      Insight.setCompleteUrl('http://someurl.bitpay.com:443');
+      var uri = Insight.setCompleteUrl('http://someurl.bitpay.com:443');
+      should.exist(uri);
     });
   });
 
