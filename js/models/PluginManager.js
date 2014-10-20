@@ -13,7 +13,12 @@ function PluginManager(config) {
       continue;
 
     log.info('Loading plugin: ' + pluginName);
-    var pluginClass = require('../plugins/' + pluginName);
+    var pluginClass;
+    if(config.pluginsPath){
+      pluginClass = require(config.pluginsPath + pluginName);
+    } else {
+      pluginClass = require('../plugins/' + pluginName);
+    }
     var pluginObj = new pluginClass(config[pluginName]);
     pluginObj.init();
     this._register(pluginObj, pluginName);
