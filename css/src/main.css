@@ -111,11 +111,7 @@ body, html{
 header {
   padding: 0.7rem;
   background-color: #1ABC9C;
-}
-
-header:hover {
-  cursor: pointer;
-  background-color: #23C9A9;
+  overflow: hidden;
 }
 
 header .creation {
@@ -125,10 +121,46 @@ header .creation {
 }
 
 header .alt-currency {
+  background: #16A085;
+}
+
+.alt-currency {
+  background: #2C3E50;
   padding: 0.05rem 0.2rem;
   border-radius: 2px;
-  background: #16A085;
   font-size: 10px;
+}
+
+.col1 {
+  width: 38px;
+  float: left;
+}
+
+.col2 {
+  width: 150px;
+  float: left;
+  margin-top: 5px;
+}
+
+.col3 {
+  position: absolute;
+  width: 30px;
+  height: 68px;
+  float: right;
+  background-color: #23C9A9;
+  top: 0;
+  right: 0;
+  padding: 19px 12px;
+}
+
+.col3:hover {
+  cursor: pointer;
+  background-color: #16A085;
+}
+
+.col3:active {
+  cursor: pointer;
+  background-color: #213140;
 }
 
 .off-canvas-wrap, .inner-wrap{
@@ -158,7 +190,6 @@ ul.side-nav.wallets .avatar-wallet{
   font-size: 20px;
   font-weight: 700;
   margin-top: 4px;
-  float: left;
   padding: 0.5rem 0.8rem;
   background-color: #fff;
   color: #1ABC9C;
@@ -435,7 +466,7 @@ table.last-transactions-content {
 a.button-setup.add-wallet {
   opacity: .5;
   margin: 1rem auto;
-  width: 146px;
+  width: 125px;
   font-size: 14px;
   padding: .3rem 0.7rem;
 }
@@ -553,8 +584,11 @@ a.button-setup {
 }
 
 .name-wallet {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 16px;
+  width: 75%;
+  float: left;
+  color: #fff;
 }
 
 .box-livenet {
@@ -1011,7 +1045,7 @@ button.gray:focus,
 
 .side-nav.wallets a {
   color: #7A8C9E !important;
-  line-height: 18px;
+  line-height: 20px;
 }
 
 .side-nav.wallets p {
@@ -1021,9 +1055,13 @@ button.gray:focus,
 .side-nav .wallet-item {
   padding: 10px 0;
 }
+.side-nav li.nav-item {
+  overflow: hidden;
+}
 
-.side-nav .wallet-item a:hover {
+.side-nav li.nav-item:hover {
   background-color: #3C4E60;
+  overflow: hidden;
 }
 
 
