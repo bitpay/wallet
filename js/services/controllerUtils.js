@@ -92,7 +92,6 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $scope.loading = false;
-        //$rootScope.wallet = w;
         if ($rootScope.initialConnection) {
           $rootScope.initialConnection = false;
           if ($rootScope.pendingPayment) {
@@ -287,7 +286,6 @@ angular.module('copayApp.services')
 
       $scope.balanceByAddr = data.balanceByAddr;
 
-      // rateService.whenAvailable(function() {
       $scope.totalBalanceAlternative = data.totalBalanceAlternative;
       $scope.alternativeIsoCode = data.alternativeIsoCode;
       $scope.lockedBalanceAlternative = data.lockedBalanceAlternative;
