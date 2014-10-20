@@ -92,6 +92,9 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       $scope.wallets.push(w);
       controllerUtils.updateBalance(w, function(err, res) {
         if (err) return;
+        setTimeout(function() {
+          $scope.$digest();
+        }, 1);
       });
     });
   };
