@@ -92,7 +92,7 @@ angular.module('copayApp.services')
       });
       w.on('ready', function(myPeerID) {
         $scope.loading = false;
-        $rootScope.wallet = w;
+        //$rootScope.wallet = w;
         if ($rootScope.initialConnection) {
           $rootScope.initialConnection = false;
           if ($rootScope.pendingPayment) {
