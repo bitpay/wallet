@@ -25,13 +25,13 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       networkName: config.networkName,
       walletDefaults: config.wallet,
       passphraseConfig: config.passphraseConfig,
-    }, function(err, iden, firstWallet) {
+    }, function(err, iden, lastFocusedWallet) {
       if (err && !iden) {
         console.log('Error:' + err)
         controllerUtils.onErrorDigest(
           $scope, (err.toString() || '').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
       } else {
-        controllerUtils.bindProfile($scope, iden, firstWallet);
+        controllerUtils.bindProfile($scope, iden, lastFocusedWallet);
       }
     });
   }

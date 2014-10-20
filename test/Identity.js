@@ -134,6 +134,7 @@ describe('Identity model', function() {
         profile.listWallets = sinon.stub().returns([{
           id: 'walletid'
         }]);
+        profile.getLastFocusedWallet = sinon.stub().returns(null);
         Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
         Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
       });
@@ -147,7 +148,7 @@ describe('Identity model', function() {
         });
       });
 
-      it('should return last used wallet', function(done) {
+      it('should return last focused wallet', function(done) {
         var wallets = [{
           id: 'wallet1',
           store: sinon.stub().yields(null),
@@ -162,13 +163,14 @@ describe('Identity model', function() {
           netStart: sinon.stub(),
         }];
         profile.listWallets = sinon.stub().returns(wallets);
+        profile.getLastFocusedWallet = sinon.stub().returns(wallets[1]);
         Identity._walletRead = sinon.stub();
         Identity._walletRead.onCall(0).callsArgWith(2, null, wallets[0]);
         Identity._walletRead.onCall(1).callsArgWith(2, null, wallets[1]);
         Identity._walletRead.onCall(2).callsArgWith(2, null, wallets[2]);
 
         Identity.open(email, password, config, function(err, iden, w) {
-          w.id.should.equal('wallet1');
+          w.id.should.equal('wallet2');
           done();
         });
       });
@@ -270,12 +272,11 @@ describe('Identity model', function() {
       Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
     });
 
-    it('should return wallet and call .store, .setLastOpenedTs & .migrateWallet', function(done) {
+    it('should return wallet and call .store & .migrateWallet', function(done) {
 
       iden.openWallet('dummy', function(err, w) {
         should.not.exist(err);
         w.store.calledOnce.should.equal(true);
-        iden.profile.setLastOpenedTs.calledTwice.should.equal(true);
         // iden.migrateWallet.calledOnce.should.equal(true);
         done();
       });

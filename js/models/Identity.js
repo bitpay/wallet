@@ -207,10 +207,8 @@ Identity.open = function(email, password, opts, cb) {
           wallets.push(w);
         }
         if (--remaining == 0) {
-          var firstWallet = _.findWhere(wallets, {
-            id: wids[0]
-          });
-          return cb(err, iden, firstWallet);
+          var lastFocused = iden.profile.getLastFocusedWallet();
+          return cb(err, iden, lastFocused);
         }
       })
     });
@@ -350,7 +348,7 @@ Identity.prototype.toEncryptedObj = function() {
   ret.iterations = this.storage.iterations;
   ret.wallets = {};
 
-  _.each(this.openWallets, function(w){
+  _.each(this.openWallets, function(w) {
     ret.wallets[w.getId()] = w.toEncryptedObj();
   });
 
@@ -437,11 +435,8 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.openWallets.push(w);
-
-    self.profile.setLastOpenedTs(w.id, function(err) {
-      w.netStart();
-      return cb(err, w);
-    });
+    w.netStart();
+    return cb(err, w);
   });
 };
 
@@ -511,10 +506,8 @@ Identity.prototype.openWallet = function(walletId, cb) {
     self.openWallets.push(w);
 
     w.store(function(err) {
-      self.profile.setLastOpenedTs(walletId, function() {
-        w.netStart();
-        return cb(err, w);
-      });
+      w.netStart();
+      return cb(err, w);
     });
   });
   //  });

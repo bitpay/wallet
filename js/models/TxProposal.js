@@ -25,7 +25,6 @@ function TxProposal(opts) {
   this.version = opts.version;
   this.builder = opts.builder;
   this.createdTs = opts.createdTs;
-  this.createdTs = opts.createdTs;
   this._inputSigners = [];
 
   // CopayerIds

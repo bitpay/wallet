@@ -76,7 +76,7 @@ Profile.prototype.getWallet = function(walletId, cb) {
 
 Profile.prototype.listWallets = function() {
   return _.sortBy(this.walletInfos, function(winfo) {
-    return -winfo.lastOpenedTs || -winfo.createdTs;
+    return winfo.createdTs;
   });
 };
 
@@ -121,10 +121,19 @@ Profile.prototype.addWallet = function(walletId, info, cb) {
 };
 
 
-Profile.prototype.setLastOpenedTs = function(walletId, cb) {
+Profile.prototype.setLastFocusedTs = function(walletId, cb) {
   return this.addToWallet(walletId, {
-    lastOpenedTs: Date.now()
+    lastFocusedTs: Date.now()
   }, cb);
+};
+
+Profile.prototype.getLastFocusedWallet = function() {
+  var self = this;
+  var maxTs = _.max(_.pluck(self.walletInfos, 'lastFocusedTs'));
+  var last = _.findWhere(_.values(self.walletInfos), {
+    lastFocusedTs: maxTs
+  });
+  return last ? last.id : null;
 };
 
 Profile.prototype.store = function(opts, cb) {
