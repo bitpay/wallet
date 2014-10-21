@@ -148,10 +148,18 @@ Profile.prototype.setLastFocusedTs = function(walletId, cb) {
 
 Profile.prototype.getLastFocusedWallet = function() {
   var self = this;
+  var last;
   var maxTs = _.max(_.pluck(self.walletInfos, 'lastFocusedTs'));
-  var last = _.findWhere(_.values(self.walletInfos), {
+  var wallets = _.values(self.walletInfos);
+
+  last = _.findWhere(wallets, {
     lastFocusedTs: maxTs
   });
+
+  if (!last) {
+    last = _.last(wallets);
+  }
+
   return last ? last.id : null;
 };
 
