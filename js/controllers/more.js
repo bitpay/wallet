@@ -79,7 +79,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     }
 
     $scope.viewBackup = function() {
-      $scope.backupPlainText = backupService.getBackup(w);
+      $scope.backupPlainText = backupService.walletEncrypted(w);
       $scope.hideViewBackup = true;
     };
 
