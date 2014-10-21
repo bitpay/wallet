@@ -39,6 +39,9 @@ BackupService.prototype._download = function(ew, walletName, filename) {
   saveAs(blob, filename);
 };
 
+BackupService.prototype.walletEncrypted = function(wallet) {
+  return wallet.toEncryptedObj();
+}
 
 BackupService.prototype.walletDownload = function(wallet) {
   var ew = wallet.toEncryptedObj();
@@ -47,6 +50,10 @@ BackupService.prototype.walletDownload = function(wallet) {
   var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
   this._download(ew, walletName, filename)
 };
+
+BackupService.prototype.profileEncrypted = function(iden) {
+  return iden.toEncryptedObj();
+}
 
 BackupService.prototype.profileDownload = function(iden) {
   var ew = iden.toEncryptedObj();

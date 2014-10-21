@@ -21,11 +21,11 @@ angular.module('copayApp.controllers').controller('CopayersController',
     };
 
     $scope.downloadBackup = function(w) {
-      backupService.download(w);
+      backupService.walletDownload(w);
     };
     
     $scope.viewBackup = function(w) {
-      $scope.backupPlainText = backupService.getBackup(w);
+      $scope.backupPlainText = backupService.walletEncrypted(w);
       $scope.hideViewBackup = true;
     };
 

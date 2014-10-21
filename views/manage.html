@@ -4,7 +4,19 @@
     <h3><i class="fi-download m10r"></i> <span translate>Manage Wallets</span> </h3>
     <p translate class="large-8 columns text-gray">It's important to backup your profile so that you can recover it in case of disaster. The backup will include all your profile's wallets</p>
     <div class="large-4 columns">
-      <a translate class="button primary expand" ng-click="downloadBackup()">Backup profile</a>
+      <a translate class="button primary m0" ng-click="downloadBackup()"
+        ng-show="!isSafari">Backup profile</a>
+      <a translate class="button primary m0" ng-click="viewBackup()"
+        ng-show="isSafari && !hideViewBackup">View profile backup</a>
+    </div>
+    <div ng-show="backupPlainText">
+      <textarea readonly rows="5">{{backupPlainText}}</textarea>
+      <div class="show-for-large-up">
+        <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
+      </div>
+      <div class="hide-for-large-up">
+        <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+      </div>
     </div>
   </div>
   <div class="large-12 columns line-dashed-h m15b"></div>
