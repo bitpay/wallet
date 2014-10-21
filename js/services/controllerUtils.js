@@ -263,9 +263,13 @@ angular.module('copayApp.services')
         r.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
         r.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
 
-        r.balanceByAddr = _.map(balanceByAddrSat, function(bSat) {
-          return bSat * satToUnit;
-        });
+        var balanceByAddr = {};
+        for (var ii in balanceByAddrSat) {
+          balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
+        }
+        r.balanceByAddr = balanceByAddr;
+        root.updateAddressList();
+        r.updatingBalance = false;
 
         rateService.whenAvailable(function() {
           r.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
