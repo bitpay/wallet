@@ -419,6 +419,15 @@ describe('Storage model', function() {
       var wo = s.decrypt(encryptedLegacy1);
       should.not.exist(wo);
     });
+    it('should call save / restorePassphrase', function() {
+      var wo = s.decrypt(encryptedLegacy1, 'xxx');
+      s.savePassphrase.calledOnce.should.equal(true);
+      s.restorePassphrase.calledOnce.should.equal(true);
+      should.not.exist(wo);
+    });
+
+
+ 
 
     it('should be able to decrypt an old backup', function() {
       s._setPassphrase(legacyPassword1);

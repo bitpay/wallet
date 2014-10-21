@@ -70,6 +70,25 @@ Profile.prototype.toObj = function() {
   return _.clone(_.pick(this, 'hash', 'email', 'extra', 'walletInfos'));
 };
 
+
+/*
+ * @desc Return a base64 encrypted version of the wallet
+ * @return {string} base64 encoded string
+ */
+Profile.prototype.export = function() {
+  var profObj = this.toObj();
+  return this.storage.encrypt(profObj);
+};
+
+/*
+ * @desc Return a base64 encrypted version of the wallet
+ * @return {string} base64 encoded string
+ */
+Profile.import = function(str, password, storage) {
+  var obj = storage.decrypt(str,password)
+  return new Profile(obj, storage);
+};
+
 Profile.prototype.getWallet = function(walletId, cb) {
   return this.walletInfos[walletId];
 };

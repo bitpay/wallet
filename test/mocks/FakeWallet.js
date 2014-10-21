@@ -132,7 +132,7 @@ FakeWallet.prototype.setEnc = function(enc) {
   this.enc = enc;
 };
 
-FakeWallet.prototype.toEncryptedObj = function() {
+FakeWallet.prototype.export = function() {
   return this.enc;
 };
 

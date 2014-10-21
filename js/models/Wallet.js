@@ -1169,7 +1169,7 @@ Wallet.fromObj = function(o, readOpts) {
  * @desc Return a base64 encrypted version of the wallet
  * @return {string} base64 encoded string
  */
-Wallet.prototype.toEncryptedObj = function() {
+Wallet.prototype.export = function() {
   var walletObj = this.toObj();
   return this.storage.encrypt(walletObj);
 };
