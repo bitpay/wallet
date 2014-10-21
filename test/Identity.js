@@ -108,7 +108,7 @@ describe('Identity model', function() {
   describe('#constructors', function() {
     describe('#new', function() {
       it('should create an identity', function() {
-        var iden = new Identity(email, password, config);
+        var iden = new Identity(password, config);
         should.exist(iden);
         iden.walletDefaults.should.deep.equal(config.walletDefaults);
       });
@@ -358,7 +358,7 @@ describe('Identity model', function() {
     });
   });
 
-  describe.only('#import', function() {
+  describe('#import', function() {
 
     beforeEach(function() {
       var ws = [];
@@ -375,14 +375,37 @@ describe('Identity model', function() {
         email: '1@1.com',
         hash: 'hash1234'
       });
+
     });
 
-    it('should create an encrypted object', function(done) {
+
+    it('should check the import string', function(done) {
       Identity.import(JSON.stringify({
-        iterations: 10
+        profile: '1234'
       }), '1234', config, function(err, ret) {
+        err.should.contain('BADSTR');
+        done();
+      });
+    });
+
+
+    it('should check the import string 2', function(done) {
+      Identity.import(JSON.stringify({
+        iterations: 10,
+      }), '1234', config, function(err, ret) {
+        err.should.contain('BADSTR');
+        done();
+      });
+    });
+
+    it('should import a simple wallet', function(done) {
+      Identity.import(JSON.stringify({
+        iterations: 10,
+        profile: '1234'
+      }), '1234', config, function(err, iden) {
         should.not.exist(err);
-        should.exist(ret);
+        should.exist(iden);
+        iden.profile.email.should.equal('1@1.com');
         done();
       });
     });

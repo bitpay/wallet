@@ -343,11 +343,13 @@ Identity.prototype.closeWallet = function(wid, cb) {
  */
 Identity.import = function(str, password, opts, cb) {
   preconditions.checkArgument(str);
-console.log('[Identity.js.347:str::]',str); //TODO
-
-
   var json = JSON.parse(str);
-  preconditions.checkArgument(_.isNumber(json.iterations));
+
+  if (!_.isNumber(json.iterations))
+   return cb('BADSTR: Missing iterations');
+
+  if (!json.profile)
+    return cb('BADSTR: Missing profile');
 
 
   var iden = new Identity(password, opts);
@@ -383,7 +385,7 @@ Identity.prototype.export = function() {
   ret.wallets = {};
 
   _.each(this.openWallets, function(w) {
-    ret.wallets[w.getId()] = w.toEncryptedObj();
+    ret.wallets[w.getId()] = w.export();
   });
 
   var r = JSON.stringify(ret);
