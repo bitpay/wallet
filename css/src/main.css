@@ -109,7 +109,6 @@ body, html{
 }
 
 header {
-  padding: 0.7rem;
   background-color: #1ABC9C;
   overflow: hidden;
 }
@@ -132,24 +131,20 @@ header .alt-currency {
 }
 
 .col1 {
-  width: 38px;
+  width: 50px;
   float: left;
 }
 
 .col2 {
-  width: 150px;
+  width: 170px;
   float: left;
-  margin-top: 5px;
 }
 
 .col3 {
-  position: absolute;
-  width: 30px;
   height: 68px;
+  width: 30px;
   float: right;
   background-color: #23C9A9;
-  top: 0;
-  right: 0;
   padding: 19px 12px;
 }
 
@@ -182,14 +177,16 @@ ul.side-nav.wallets .avatar-wallet{
   background-color: #7A8C9E;
   color: #213140;
   padding: 0.35rem 0.7rem;
-  margin-top: 13px;
-  margin-left: 14px;
+  margin-top: 6px;
+  margin-left: 7px;
 }
 
 .avatar-wallet {
   font-size: 20px;
   font-weight: 700;
-  margin-top: 4px;
+  margin-top: 10px;
+  margin-left: 4px;
+  margin-right: 8px;
   padding: 0.5rem 0.8rem;
   background-color: #fff;
   color: #1ABC9C;
@@ -233,7 +230,6 @@ a:hover {
 
 .sidebar {
   height:100%;
-  overflow-y: auto;
   overflow-x: none;
 }
 
@@ -521,7 +517,6 @@ a.button-setup {
 
 .name-wallet {
   font-size: 14px;
-  line-height: 16px;
   width: 75%;
   float: left;
   color: #fff;
@@ -987,6 +982,8 @@ button.gray:focus,
   background-color: #213140 ;
   padding: 0.7rem;
   border-bottom: 1px solid #3A4E61;
+  overflow-y: auto;
+  height: 280px;
 }
 
 .side-nav.wallets a {
@@ -999,7 +996,7 @@ button.gray:focus,
 }
 
 .side-nav .wallet-item {
-  padding: 10px 0;
+  padding: 4px 0;
 }
 .side-nav li.nav-item {
   overflow: hidden;
@@ -1042,6 +1039,15 @@ button.gray:focus,
 
 .side-nav li:hover a {
   background-color: #3C4E60;
+}
+
+.sidebar-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-bottom: 10px;
+  overflow-y: hidden;
 }
 
 .addresses ul {
@@ -1277,42 +1283,15 @@ a.text-warning:hover {color: #FD7262;}
   }
 }
 
-@media (max-height: 610px) {
-  .copayer-list {
+@media (max-height: 480px) {
+  .side-nav.wallets {
+    height: 160px;
+  }
+}
+
+@media (max-height: 380px) {
+  .sidebar-footer {
     display: none;
-  }
-
-  .copayer-list-small-height {
-    display: block;
-  }
-
-  .sidebar .copayer-list-small-height {
-    list-style-type: none;
-    padding:0; margin:0;
-  }
-
-  .sidebar .copayer-list-small-height li {
-    margin-top: 15px;
-    font-weight: 100;
-    font-size: 12px;
-    color: #C9C9C9;
-  }
-
-  .sidebar .copayer-list-small-height img {
-    width: 30px;
-    height: 30px;
-  }
-
-  .copayers {
-    padding: 10px 20px;
-  }
-
-  .side-bar h3 {
-    margin-top: 0;
-  }
-
-  .side-nav li {
-    line-height: 30px;
   }
 }
 

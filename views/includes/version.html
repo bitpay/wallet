@@ -1,5 +1,6 @@
 <div ng-controller="VersionController">
   <small>v{{version}}</small> 
   <small>#{{commitHash}}</small> 
+  <small ng-if="$root.wallet.isTestnet()">[TESTNET]</small>
 </div>
 
