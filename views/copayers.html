@@ -9,14 +9,13 @@
             {{$root.wallet.getName()}} 
             <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
           </h1>
-          <div class="panel">
+          <div class="panel oh">
             <qrcode size="350" data="{{$root.wallet.getSecret()}}"></qrcode>
             <div class="secret">
               <h2 translate>Share this secret with your other copayers</h2>
               {{$root.wallet.getSecret()}} 
               <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
             </div>
-            <div style="clear:both;"></div>
           </div>
         </div>
         <h1 ng-if="$root.wallet &&
@@ -52,7 +51,9 @@
           </div>
           </div>
         </div>
-        <div>
+        <div class="oh">
+          <a translate class="size-12 text-warning left m20t" ng-really-click="deleteWallet()"
+            ng-really-message="Are you sure to delete this wallet from this computer?">Delete wallet</a>
           <button class="button primary right m0"
             ng-click="backup()"
             ng-show="!$root.wallet.publicKeyRing.isBackupReady() && !hideViewBackup"

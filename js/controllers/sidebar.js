@@ -75,7 +75,9 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       notification.warning('Session closed', 'Session closed because a long time of inactivity');
     });
     $scope.$on('$keepalive', function() {
-      $rootScope.wallet.keepAlive();
+      if ($rootScope.wallet) {
+        $rootScope.wallet.keepAlive();
+      }
     });
   }
 
