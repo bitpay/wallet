@@ -420,10 +420,11 @@ describe('Storage model', function() {
       should.not.exist(wo);
     });
     it('should call save / restorePassphrase', function() {
-      var wo = s.decrypt(encryptedLegacy1, 'xxx');
+      sinon.spy(s,'savePassphrase');
+      sinon.spy(s,'restorePassphrase');
+      s.decrypt(encryptedLegacy1, 'xxx');
       s.savePassphrase.calledOnce.should.equal(true);
       s.restorePassphrase.calledOnce.should.equal(true);
-      should.not.exist(wo);
     });
 
 
