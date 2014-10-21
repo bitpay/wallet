@@ -1,6 +1,6 @@
 <div ng-controller="SidebarController">
   <header ng-click="toggleWalletSelection()" ng-show="$root.wallet">
-    <a href="#" ng-click="refresh()">
+    <a ng-click="refresh()">
       <div class="col1">
         <div class="avatar-wallet">P</div>
       </div>
@@ -27,12 +27,12 @@
       </div>
     </a>
     <div class="col3">
-      <a href="#" class="side-bar" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"> v </a>
+      <a class="side-bar" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"> v </a>
     </div>
   </header>
 
   <div ng-if="walletSelection">
-    <ul class="side-nav wallets">
+    <ul class="side-nav wallets" ng-show="wallets.0">
       <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
         <div class="col1">
           <div class="avatar-wallet">P</div>
