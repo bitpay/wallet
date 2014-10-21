@@ -416,7 +416,7 @@ describe('Identity model', function() {
 
   describe('#pluginManager', function() {
     it('should create a new PluginManager object', function() {
-      var pm = sinon.stub().returns(new PluginManager({plugins: { FakeLocalStorage: true }, pluginsPath: '../../test/mocks/'}));
+      var pm = new PluginManager({plugins: { FakeLocalStorage: true }, pluginsPath: '../../test/mocks/'});
       should.exist(pm);
     });
   });
