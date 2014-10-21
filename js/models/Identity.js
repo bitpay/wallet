@@ -24,7 +24,7 @@ var Storage = module.exports.Storage = require('./Storage');
  * @constructor
  */
 
-function Identity(email, password, opts) {
+function Identity(password, opts) {
   preconditions.checkArgument(opts);
 
   this.storage = Identity._getStorage(opts, password);
@@ -133,7 +133,7 @@ Identity.anyWallet = function(opts, cb) {
 Identity.create = function(email, password, opts, cb) {
   opts = opts || {};
 
-  var iden = new Identity(email, password, opts);
+  var iden = new Identity(password, opts);
 
   Identity._createProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
@@ -183,7 +183,7 @@ Identity.prototype.validate = function(authcode, cb) {
  * @return {undefined}
  */
 Identity.open = function(email, password, opts, cb) {
-  var iden = new Identity(email, password, opts);
+  var iden = new Identity(password, opts);
 
   Identity._openProfile(email, password, iden.storage, function(err, profile) {
     if (err) return cb(err);
@@ -301,10 +301,7 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   preconditions.checkArgument(password);
   preconditions.checkArgument(cb);
 
-  this.storage.savePassphrase();
-  this.storage.setPassword(password);
-  var obj = this.storage.decrypt(base64);
-  this.storage.restorePassphrase();
+  var obj = this.storage.decrypt(base64, password);
 
   var readOpts = {
     storage: this.storage,
@@ -339,23 +336,59 @@ Identity.prototype.closeWallet = function(wid, cb) {
 };
 
 
+
 /**
  * @desc Return a base64 encrypted version of the wallet
  * @return {string} base64 encoded string
  */
-Identity.prototype.toEncryptedObj = function() {
+Identity.import = function(str, password, opts, cb) {
+  preconditions.checkArgument(str);
+console.log('[Identity.js.347:str::]',str); //TODO
+
+
+  var json = JSON.parse(str);
+  preconditions.checkArgument(_.isNumber(json.iterations));
+
+
+  var iden = new Identity(password, opts);
+  iden.profile = Profile.import(json.profile, password, iden.storage);
+
+  json.wallets = json.wallets || {};
+
+  var l = json.wallets.length,
+    i = 0;
+
+  if (!l)
+    return cb(null, iden);
+
+  _.each(this.wallets, function(wstr) {
+    iden.importWallet(wstr, password, skipFields, function(err, w) {
+      if (err) return cb(err);
+      log.debug('Wallet ' + w.getId() + ' imported');
+
+      if (++i == l)
+        iden.store(cb);
+    })
+  });
+};
+
+/**
+ * @desc Return JSON with base64 encoded strings for wallets and profile, and iteration count
+ * @return {string} Stringify JSON
+ */
+Identity.prototype.export = function() {
   var ret = {};
   ret.iterations = this.storage.iterations;
+  ret.profile = this.profile.export();
   ret.wallets = {};
 
   _.each(this.openWallets, function(w) {
     ret.wallets[w.getId()] = w.toEncryptedObj();
   });
 
-  return ret;
+  var r = JSON.stringify(ret);
+  return r;
 };
-
-
 
 /**
  * @desc This method prepares options for a new Wallet

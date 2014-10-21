@@ -304,34 +304,11 @@ describe('Identity model', function() {
 
       iden.importWallet("encrypted object", "xxx", [], function(err) {
         iden.openWallet('ID123', function(err, w) {
-          iden.storage.savePassphrase.calledOnce.should.equal(true);
-          iden.storage.restorePassphrase.calledOnce.should.equal(true);
           should.not.exist(err);
           should.exist(w);
           done();
         });
       });
-    });
-
-
-    it('should import and update indexes', function() {
-      var wallet = {
-        id: "fake wallet",
-        updateIndexes: function(cb) {
-          cb();
-        }
-      };
-      iden.fromEncryptedObj = sinon.stub().returns(wallet);
-
-      var w = iden.fromEncryptedObj("encrypted", "password");
-
-      should.exist(w);
-      wallet.should.equal(w);
-    });
-    it('should import with a wrong password', function() {
-      iden.fromEncryptedObj = sinon.stub().returns(null);
-      var w = iden.fromEncryptedObj("encrypted", "passwordasdfasdf");
-      should.not.exist(w);
     });
   });
 
@@ -356,25 +333,57 @@ describe('Identity model', function() {
   });
 
 
-  describe('#toEncryptedObj', function() {
+  describe('#export', function() {
 
     beforeEach(function() {
       var ws = [];
       _.each([0, 1, 2, 3, 4], function(i) {
         var w = sinon.stub();
-        w.toEncryptedObj = sinon.stub().returns('enc' + i);
+        w.export = sinon.stub().returns('enc' + i);
         w.getId = sinon.stub().returns('wid' + i);
         ws.push(w);
       });
       iden.openWallets = ws;
+      iden.profile.export = sinon.stub().returns('penc');
       iden.storage.iterations = 13;
     });
 
     it('should create an encrypted object', function() {
-      var ret = iden.toEncryptedObj();
+      var ret = JSON.parse(iden.export());
       ret.iterations.should.equal(13);
+      ret.profile.should.equal('penc');
       _.each([0, 1, 2, 3, 4], function(i) {
         ret.wallets['wid' + i].should.equal('enc' + i);
+      });
+    });
+  });
+
+  describe.only('#import', function() {
+
+    beforeEach(function() {
+      var ws = [];
+      _.each([0, 1, 2, 3, 4], function(i) {
+        var w = sinon.stub();
+        w.export = sinon.stub().returns('enc' + i);
+        w.getId = sinon.stub().returns('wid' + i);
+        ws.push(w);
+      });
+      iden.openWallets = ws;
+      iden.profile.export = sinon.stub().returns('penc');
+      iden.storage.iterations = 13;
+      iden.storage.decrypt = sinon.stub().returns({
+        email: '1@1.com',
+        hash: 'hash1234'
+      });
+    });
+
+    it('should create an encrypted object', function(done) {
+      Identity.import(JSON.stringify({
+        iterations: 10
+      }), '1234', config, function(err, ret) {
+        should.not.exist(err);
+        should.exist(ret);
+        done();
       });
     });
   });
