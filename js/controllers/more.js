@@ -85,7 +85,9 @@ angular.module('copayApp.controllers').controller('MoreController',
     $scope.deleteWallet = function() {
       $rootScope.iden.deleteWallet(w.id, function() {
         notification.info('Wallet deleted', $filter('translate')('wallet deleted'));
-        $location.path('/manage');
+        $rootScope.wallet = null;
+        var lastFocused = $rootScope.iden.profile.getLastFocusedWallet();
+        controllerUtils.bindProfile($scope, $rootScope.iden, lastFocused);
       });
     };
 
