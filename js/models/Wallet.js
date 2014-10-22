@@ -2918,6 +2918,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
 
   var satToUnit = 1 / self.settings.unitToSatoshi;
   var addresses = _.pluck(self.getAddressesInfo(), 'addressStr');
+
   if (addresses.length == 0) return cb();
 
   function computeAmountIn(items) {
@@ -2932,6 +2933,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
   function computeAmountOut(items) {
     var mine = _.filter(items, function(item) {
       if (!item.scriptPubKey) return false;
+
       // If classic multisig, ignore
       if (item.scriptPubKey.addresses.length > 1) return false;
       return _.contains(addresses, item.scriptPubKey.addresses[0]);
@@ -2945,14 +2947,16 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     var amountIn = computeAmountIn(tx.vin);
     var amountOut = computeAmountOut(tx.vout);
     var fees = parseInt((tx.fees * bitcore.util.COIN).toFixed(0));
-    var amount = amountIn - amountOut - (amountIn > 0 ? fees : 0);
-    if (amount == 0) {
+    var amount;
+    if (amountIn == (amountOut + (amountIn > 0 ? fees : 0))) {
       tx.action = 'moved';
-    } else if (amount > 0) {
-      tx.action = 'sent';
+      // TODO: subtract amount from change addresses
+      amount = amountOut;
     } else {
-      tx.action = 'received';
+      amount = amountIn - amountOut - (amountIn > 0 ? fees : 0);
+      tx.action = amount > 0 ? 'sent' : 'received';
     }
+
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
   };

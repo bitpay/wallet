@@ -422,11 +422,11 @@ describe('Wallet model', function() {
     var s = Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoKM');
     should.exist(s);
 
-    s= Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
+    s = Wallet.decodeSecret('4fp61K187CsYmjoRQC5iAdC5eGmbCRsAAXfwEwetSQgHvZs27eWKaLaNHRoK');
     s.should.equal(false);
 
 
-    s= Wallet.decodeSecret('123456');
+    s = Wallet.decodeSecret('123456');
     s.should.equal(false);
   });
 
@@ -1936,6 +1936,152 @@ describe('Wallet model', function() {
       assertObjectEqual(w.toObj(), JSON.parse(o2));
     });
   });
+
+  describe('#getTransactionHistory', function() {
+    it('should return list of txs', function(done) {
+      var w = cachedCreateW2();
+      var txs = [{
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 1000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_1'],
+          },
+          value: '0.00000900',
+        }],
+        fees: 0.00000100
+      }, {
+        vin: [{
+          addr: 'addr_in_2',
+          valueSat: 2000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_2'],
+          },
+          value: '0.00001900',
+        }],
+        fees: 0.00000100
+      }, {
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 3000
+
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_2'],
+          },
+          value: '0.00002900',
+
+        }],
+        fees: 0.00000100
+      }];
+
+      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_out_2'
+      }]);
+
+      w.getTransactionHistory(function(err, res) {
+        res.should.exist;
+        res.length.should.equal(3);
+        console.log('res', res);
+        res[0].action.should.equal('sent');
+        res[0].amountSat.should.equal(900);
+        res[1].action.should.equal('received');
+        res[1].amountSat.should.equal(1900);
+        res[2].action.should.equal('moved');
+        res[2].amountSat.should.equal(2900);
+        done();
+      });
+    });
+    it('should compute sent amount correctly', function(done) {
+      var w = cachedCreateW2();
+      var txs = [{
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 3000
+        }, {
+          addr: 'addr_in_2',
+          valueSat: 2000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_1'],
+          },
+          value: '0.00003900',
+        }, {
+          scriptPubKey: {
+            addresses: ['change'],
+          },
+          value: '0.00001000',
+        }],
+        fees: 0.00000100
+      }];
+
+      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_in_2'
+      }, {
+        addressStr: 'change'
+      }]);
+
+      w.getTransactionHistory(function(err, res) {
+        res.should.exist;
+        res[0].action.should.equal('sent');
+        res[0].amountSat.should.equal(3900);
+        done();
+      });
+    });
+    it('should compute moved amount correctly', function(done) {
+      var w = cachedCreateW2();
+      var txs = [{
+        vin: [{
+          addr: 'addr_1',
+          valueSat: 3000
+        }, {
+          addr: 'addr_2',
+          valueSat: 2000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_1'],
+          },
+          value: '0.00003900',
+        }, {
+          scriptPubKey: {
+            addresses: ['change'],
+          },
+          value: '0.00001000',
+        }],
+        fees: 0.00000100
+      }];
+
+      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_1'
+      }, {
+        addressStr: 'addr_2'
+      }, {
+        addressStr: 'change'
+      }]);
+
+      w.getTransactionHistory(function(err, res) {
+        res.should.exist;
+        res[0].action.should.equal('moved');
+        res[0].amountSat.should.equal(3900);
+        done();
+      });
+    });
+  });
+
 
   describe('#read', function() {
     var storage, network, blockchain;

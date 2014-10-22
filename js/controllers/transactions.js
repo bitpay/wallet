@@ -51,6 +51,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       var w = $rootScope.wallet;
       if (!w) return;
 
+      $scope.blockchain_txs = w.cached_txs || [];
       $scope.loading = true;
       w.getTransactionHistory(function(err, res) {
         if (err) throw err;
@@ -61,7 +62,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
           return;
         }
 
-        $scope.blockchain_txs = res;
+        $scope.blockchain_txs = w.cached_txs = res;
         $scope.loading = false;
       });
     };
