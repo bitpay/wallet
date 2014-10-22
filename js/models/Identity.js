@@ -4,6 +4,9 @@ var preconditions = require('preconditions').singleton();
 var _ = require('underscore');
 var log = require('../log');
 
+var querystring = require('querystring');
+var request = require('request');
+var cryptoUtil = require('../util/crypto');
 var version = require('../../version').version;
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
@@ -28,6 +31,7 @@ function Identity(password, opts) {
   preconditions.checkArgument(opts);
 
   opts = _.extend({}, opts);
+  this.request = opts.request || request;
   this.storage = Identity._getStorage(opts, password);
   this.networkOpts = {
     'livenet': opts.network.livenet,
