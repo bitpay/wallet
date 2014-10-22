@@ -7,7 +7,6 @@ function LocalStorage() {
 LocalStorage.prototype.init = function() {
 };
 
-
 LocalStorage.prototype.getItem = function(k,cb) {
   return cb(localStorage.getItem(k));
 };
@@ -36,6 +35,5 @@ LocalStorage.prototype.allKeys = function(cb) {
 
   return cb(ret);    
 };
-
 
 module.exports = LocalStorage;

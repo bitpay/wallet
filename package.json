@@ -25,6 +25,7 @@
     "inherits": "^2.0.1",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
+    "querystring": "^0.2.0",
     "request": "^2.40.0",
     "underscore": "^1.7.0"
   },
