@@ -1,5 +1,33 @@
 <div class="backup" ng-controller="ManageController">
   <h1 translate>Manage Wallets</h1>
+  <div class="row collapse">
+    <div class="large-12 columns">
+      <div class="large-4 columns" >
+        <div class="panel text-center" ui-route="{{create}}">
+          <div><i class="size-72 fi-plus text-gray"></i></div>
+          <p class="text-gray">Create a new Wallet</p>
+          <a href="#!/create" class="button primary radius" title="Create"> {{'Create' | translate }} </a>
+        </div>    
+      </div>
+      <div class="large-4 columns" ui-route="{{create}}">
+        <div class="panel text-center">
+          <div><i class="size-72 fi-torsos-all text-gray"></i></div>
+          <p class="text-gray">Join an existent Wallet</p>
+          <a href="#!/join" class="button secondary radius" title="Join"> {{'Join' | translate }} </a>
+        </div>    
+      </div>
+      <div class="large-4 columns" ui-route="{{create}}">
+        <div class="panel text-center">
+          <div><i class="size-72 fi-download text-gray"></i></div>
+          <p class="text-gray">Import a Wallet to Copay</p>
+          <a href="#!/import" class="button black radius" title="Import"> {{'Import wallet' | translate }}</a>
+        </div>    
+      </div>
+    </div>
+  </div>
+
+
+  <div class="large-12 columns line-dashed-h m30v"></div>
   <div class="oh large-12 columns panel">
     <h3><i class="fi-download m10r"></i> <span translate>Manage Wallets</span> </h3>
     <p translate class="large-8 columns text-gray">It's important to backup your profile so that you can recover it in case of disaster. The backup will include all your profile's wallets</p>
@@ -18,19 +46,5 @@
         <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
       </div>
     </div>
-  </div>
-  <div class="large-12 columns line-dashed-h m15b"></div>
-  <div class="row collapse">
-    <ul>
-      <li class="nav-item" ui-route="{{create}}">
-        <a href="#!/create" class="db p20h" title="Create"><i class="size-21 m20r fi-plus"></i> {{'Create' | translate }} </a>
-      </li>
-      <li class="nav-item" ui-route="{{create}}">
-        <a href="#!/join" class="db p20h" title="Join"><i class="size-21 m20r fi-torsos-all"></i> {{'Join' | translate }} </a>
-      </li>
-      <li class="nav-item" ui-route="{{create}}">
-        <a href="#!/import" class="db p20h" title="Create"><i class="size-21 m20r fi-download"></i> {{'Import wallet' | translate }} </a>
-      </li>
-    </ul>
   </div>
 </div>
