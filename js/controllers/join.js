@@ -135,8 +135,9 @@ angular.module('copayApp.controllers').controller('JoinController',
             notification.error('Network Error', 'Wallet network configuration missmatch');
           else if (err === 'badSecret')
             notification.error('Bad secret', 'The secret string you entered is invalid');
-          else
-            notification.error('Unknown error');
+          else {
+            notification.error('Error', err.message || err);
+          }
           controllerUtils.onErrorDigest();
         } else {
           controllerUtils.installWalletHandlers($scope, w);
