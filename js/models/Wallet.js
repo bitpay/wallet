@@ -2913,5 +2913,61 @@ Wallet.prototype.read_Old = function(walletId, skipFields, cb) {
   });
 };
 
+Wallet.prototype.getTransactionHistory = function(cb) {
+  var self = this;
+
+  var satToUnit = 1 / self.settings.unitToSatoshi;
+  var addresses = _.pluck(self.getAddressesInfo(), 'addressStr');
+  if (addresses.length == 0) return cb();
+
+  function computeAmountIn(items) {
+    var mine = _.filter(items, function(item) {
+      return _.contains(addresses, item.addr);
+    });
+    return _.reduce(mine, function(memo, item) {
+      return memo + item.valueSat;
+    }, 0);
+  };
+
+  function computeAmountOut(items) {
+    var mine = _.filter(items, function(item) {
+      if (!item.scriptPubKey) return false;
+      // If classic multisig, ignore
+      if (item.scriptPubKey.addresses.length > 1) return false;
+      return _.contains(addresses, item.scriptPubKey.addresses[0]);
+    });
+    return _.reduce(mine, function(memo, item) {
+      return memo + parseInt((item.value * bitcore.util.COIN).toFixed(0));
+    }, 0);
+  };
+
+  function decorateTx(tx) {
+    var amountIn = computeAmountIn(tx.vin);
+    var amountOut = computeAmountOut(tx.vout);
+    var fees = parseInt((tx.fees * bitcore.util.COIN).toFixed(0));
+    var amount = amountIn - amountOut - (amountIn > 0 ? fees : 0);
+    if (amount == 0) {
+      tx.action = 'moved';
+    } else if (amount > 0) {
+      tx.action = 'sent';
+    } else {
+      tx.action = 'received';
+    }
+    tx.amountSat = Math.abs(amount);
+    tx.amount = tx.amountSat * satToUnit;
+  };
+
+  if (addresses.length > 0) {
+    self.blockchain.getTransactions(addresses, function(err, txs) {
+      if (err) return cb(err);
+
+      var history = _.map(txs, function(tx) {
+        decorateTx(tx);
+        return tx;
+      });
+      return cb(null, history);
+    });
+  }
+};
 
 module.exports = Wallet;
