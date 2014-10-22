@@ -131,17 +131,17 @@ header .alt-currency {
 }
 
 .col1 {
-  width: 50px;
+  width: 56px;
   float: left;
 }
 
 .col2 {
-  width: 170px;
+  width: 164px;
   float: left;
 }
 
 .col3 {
-  height: 68px;
+  height: 62px;
   width: 30px;
   float: right;
   background-color: #23C9A9;
@@ -173,19 +173,20 @@ a {
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
-ul.side-nav.wallets .avatar-wallet{
+
+.side-nav.wallets .avatar-wallet{
   background-color: #7A8C9E;
   color: #213140;
   padding: 0.35rem 0.7rem;
   margin-top: 6px;
-  margin-left: 7px;
+  width: 35px;
 }
 
 .avatar-wallet {
   font-size: 20px;
   font-weight: 700;
   margin-top: 10px;
-  margin-left: 4px;
+  margin-left: 10px;
   margin-right: 8px;
   padding: 0.5rem 0.8rem;
   background-color: #fff;
@@ -809,8 +810,10 @@ input[type='submit']
 
 button.secondary, 
 .button.secondary { 
-  background-color: #4A90E2;
   color: #fff;
+  background: #008CC1;
+  -moz-box-shadow:    1px 1px 0px 0px #10769D;
+  box-shadow:         1px 1px 0px 0px #10769D;
 }
 button.secondary:hover, 
 button.secondary:focus, 
@@ -933,6 +936,8 @@ button[disabled].white:focus,
 /* BLACK */
 button.black, 
 .button.black { 
+  -moz-box-shadow:    1px 1px 0px 0px #1B2937;
+  box-shadow:         1px 1px 0px 0px #1B2937;
   background-color: #2C3E50;
   color: #fff;
 }
@@ -980,7 +985,7 @@ button.gray:focus,
 
 .side-nav.wallets {
   background-color: #213140 ;
-  padding: 0.7rem;
+  padding: 1.2rem 0.7rem;
   border-bottom: 1px solid #3A4E61;
   overflow-y: auto;
   height: 280px;
@@ -1005,6 +1010,7 @@ button.gray:focus,
 .side-nav li.nav-item:hover {
   background-color: #3C4E60;
   overflow: hidden;
+  border-radius: 3px;
 }
 
 
@@ -1014,6 +1020,7 @@ button.gray:focus,
   font-size: 16px;
   line-height: 40px;
   font-weight: 100;
+  margin-bottom: 10px;
 }
 
 .side-nav li.active>a:first-child:not(.button) {
@@ -1247,6 +1254,14 @@ a.text-warning:hover {color: #FD7262;}
   overflow-wrap: break-word;
   word-wrap: break-word;
   text-align: left;
+}
+
+.panel {
+  border-radius: 3px;
+  background: #FFFFFF;
+  -moz-box-shadow:    1px 1px 0px 0px rgba(32,48,64,0.10);
+  box-shadow:         1px 1px 0px 0px rgba(32,48,64,0.10);
+  border: none;
 }
 
 /**** Copy to clipboard ****/
