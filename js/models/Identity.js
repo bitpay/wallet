@@ -4,6 +4,9 @@ var preconditions = require('preconditions').singleton();
 var _ = require('underscore');
 var log = require('../log');
 
+var querystring = require('querystring');
+var request = require('request');
+var cryptoUtil = require('../util/crypto');
 var version = require('../../version').version;
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
@@ -27,6 +30,8 @@ var Storage = module.exports.Storage = require('./Storage');
 function Identity(password, opts) {
   preconditions.checkArgument(opts);
 
+  opts = _.extend({}, opts);
+  this.request = opts.request || request;
   this.storage = Identity._getStorage(opts, password);
   this.networkOpts = {
     'livenet': opts.network.livenet,
@@ -37,6 +42,7 @@ function Identity(password, opts) {
     'testnet': opts.network.testnet,
   };
 
+  this.insightSaveOpts = opts.insightSave || {};
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
 
@@ -49,8 +55,6 @@ function Identity(password, opts) {
 Identity._createProfile = function(email, password, storage, cb) {
   Profile.create(email, password, storage, cb);
 };
-
-
 
 Identity._newStorage = function(opts) {
   return new Storage(opts);
@@ -81,8 +85,6 @@ Identity._openProfile = function(email, password, storage, cb) {
 Identity._newAsync = function(opts) {
   return new Async(opts);
 };
-
-
 
 Identity._getStorage = function(opts, password) {
   var storageOpts = {};
@@ -150,10 +152,16 @@ Identity.create = function(email, password, opts, cb) {
       requiredCopayers: 1,
       totalCopayers: 1,
       password: password,
-      name: 'general',
+      name: 'general'
     });
     iden.createWallet(wopts, function(err, w) {
-      return cb(null, iden, w);
+      if (err) {
+        return cb(err);
+      }
+      iden.registerOnInsight(iden.insightSaveOpts, function(error) {
+        // Ignore error
+        return cb(null, iden, w);
+      });
     });
   });
 };
@@ -186,7 +194,12 @@ Identity.open = function(email, password, opts, cb) {
   var iden = new Identity(password, opts);
 
   Identity._openProfile(email, password, iden.storage, function(err, profile) {
-    if (err) return cb(err);
+    if (err) {
+      if (err.message && err.message.indexOf('PNOTFOUND') !== -1) {
+        return Identity.readFromInsight(email, password, opts, cb);
+      }
+      return cb(err);
+    }
     iden.profile = profile;
 
     var wids = _.pluck(iden.listWallets(), 'id');
@@ -335,15 +348,14 @@ Identity.prototype.closeWallet = function(wid, cb) {
   });
 };
 
-
-
-/**
- * @desc Return a base64 encrypted version of the wallet
- * @return {string} base64 encoded string
- */
-Identity.import = function(str, password, opts, cb) {
+Identity.importFromJson = function(str, password, opts, cb) {
   preconditions.checkArgument(str);
-  var json = JSON.parse(str);
+  var json;
+  try {
+    json = JSON.parse(str);
+  } catch (e) {
+    return cb('Unable to retrieve json from string', str);
+  }
 
   if (!_.isNumber(json.iterations))
    return cb('BADSTR: Missing iterations');
@@ -351,25 +363,34 @@ Identity.import = function(str, password, opts, cb) {
   if (!json.profile)
     return cb('BADSTR: Missing profile');
 
-
   var iden = new Identity(password, opts);
   iden.profile = Profile.import(json.profile, password, iden.storage);
 
   json.wallets = json.wallets || {};
+  var walletInfoBackup = iden.profile.walletInfos;
+  iden.profile.walletInfos = {};
 
-  var l = json.wallets.length,
+  var l = _.size(json.wallets),
     i = 0;
 
   if (!l)
     return cb(null, iden);
 
-  _.each(this.wallets, function(wstr) {
-    iden.importWallet(wstr, password, skipFields, function(err, w) {
+  _.each(json.wallets, function(wstr) {
+    iden.importWallet(wstr, password, opts.skipFields, function(err, w) {
       if (err) return cb(err);
       log.debug('Wallet ' + w.getId() + ' imported');
 
-      if (++i == l)
-        iden.store(cb);
+      if (++i == l) {
+        iden.profile.walletInfos = walletInfoBackup;
+        iden.store(opts, function(err) {
+          if (err) {
+            return cb(err);
+          } else {
+            return cb(null, iden, iden.openWallets[0]);
+          }
+        });
+      }
     })
   });
 };
@@ -378,7 +399,7 @@ Identity.import = function(str, password, opts, cb) {
  * @desc Return JSON with base64 encoded strings for wallets and profile, and iteration count
  * @return {string} Stringify JSON
  */
-Identity.prototype.export = function() {
+Identity.prototype.exportAsJson = function() {
   var ret = {};
   ret.iterations = this.storage.iterations;
   ret.profile = this.profile.export();
@@ -470,8 +491,59 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.openWallets.push(w);
-    w.netStart();
-    return cb(err, w);
+    self.triggerInsightSave(self.insightSaveOpts, function(error) {
+      // Ignore error
+      w.netStart();
+      return cb(null, w);
+    });
+  });
+};
+
+Identity.readFromInsight = function(email, password, opts, callback) {
+  var key = cryptoUtil.kdf(password, email);
+  var secret = cryptoUtil.kdf(key, password);
+  var useRequest = opts.request || request;
+  var encodedEmail = encodeURIComponent(email);
+  var retrieveUrl = opts.retrieveUrl || 'http://localhost:3001/api/email/retrieve/' + encodedEmail;
+  useRequest.get(retrieveUrl + '?' + querystring.encode({secret: secret}),
+    function(err, response, body) {
+      if (err) {
+        return callback('Connection error');
+      }
+      if (response.statusCode !== 200) {
+        return callback('Connection error');
+      }
+      var decryptedJson = cryptoUtil.decrypt(key, body);
+      if (!decryptedJson) {
+        return callback('Internal Error');
+      }
+      return Identity.importFromJson(decryptedJson, password, opts, callback);
+    }
+  );
+};
+
+Identity.prototype.triggerInsightSave = Identity.prototype.registerOnInsight = function(opts, callback) {
+  var password = this.profile.password;
+  var key = cryptoUtil.kdf(password, this.profile.email);
+  var secret = cryptoUtil.kdf(key, password);
+  var exportData = this.exportAsJson
+  var record = cryptoUtil.encrypt(key, this.exportAsJson());
+  var registerUrl = opts.registerUrl || 'http://localhost:3001/api/email/register';
+  this.request.post({
+    url: registerUrl,
+    body: querystring.encode({
+      email: this.profile.email,
+      secret: secret,
+      record: record
+    })
+  }, function(err, response, body) {
+    if (err) {
+      return callback('Connection error');
+    }
+    if (response.statusCode !== 200) {
+      return callback('Unable to store data on insight');
+    }
+    return callback();
   });
 };
 
@@ -486,11 +558,8 @@ Identity.prototype.addWallet = function(wallet, cb) {
   self.profile.addWallet(wallet.getId(), {
     name: wallet.name
   }, function(err) {
-
     if (err) return cb(err);
-    wallet.store(function(err) {
-      return cb(err);
-    });
+    cb();
   });
 };
 

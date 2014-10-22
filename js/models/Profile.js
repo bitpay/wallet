@@ -10,6 +10,7 @@ function Profile(info, storage) {
   preconditions.checkArgument(storage);
   preconditions.checkArgument(storage.setPassword, 'bad storage');
 
+  this.password = info.password;
   this.hash = info.hash;
   this.email = info.email;
   this.extra = info.extra || {};
@@ -19,8 +20,8 @@ function Profile(info, storage) {
   this.storage = storage;
 };
 
-Profile.hash = function(email, password) {
-  return bitcore.util.sha256ripe160(email + password).toString('hex');
+Profile.hash = function(email) {
+  return bitcore.util.sha256ripe160(email).toString('hex');
 };
 
 Profile.key = function(hash) {
@@ -36,6 +37,7 @@ Profile.create = function(email, password, storage, cb) {
 
   var p = new Profile({
     email: email,
+    password: password,
     hash: Profile.hash(email, password),
   }, storage);
   p.store({}, function(err) {
@@ -67,7 +69,7 @@ Profile.open = function(email, password, storage, cb) {
 };
 
 Profile.prototype.toObj = function() {
-  return _.clone(_.pick(this, 'hash', 'email', 'extra', 'walletInfos'));
+  return _.clone(_.pick(this, 'password', 'hash', 'email', 'extra', 'walletInfos'));
 };
 
 

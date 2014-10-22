@@ -46,6 +46,7 @@ var createBundle = function(opts) {
     expose: 'request'
   });
   b.require('underscore');
+  b.require('querystring');
   b.require('assert');
   b.require('preconditions');
 
@@ -85,6 +86,9 @@ var createBundle = function(opts) {
   });
   b.require('./js/models/PluginManager', {
     expose: '../js/models/PluginManager'
+  });
+  b.require('./js/util/crypto', {
+    expose: '../util/crypto'
   });
 
   if (!opts.disablePlugins) {
