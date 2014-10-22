@@ -9,11 +9,11 @@ factory('notification', ['$timeout',
 
     var settings = {
       info: {
-        duration: 5000,
+        duration: 10000,
         enabled: true
       },
       funds: {
-        duration: 5000,
+        duration: 7000,
         enabled: true
       },
       version: {
@@ -21,11 +21,11 @@ factory('notification', ['$timeout',
         enabled: true
       },
       warning: {
-        duration: 5000,
+        duration: 7000,
         enabled: true
       },
       error: {
-        duration: 5000,
+        duration: 10000,
         enabled: true
       },
       success: {
@@ -42,7 +42,7 @@ factory('notification', ['$timeout',
       },
       details: true,
       localStorage: false,
-      html5Mode: false,
+      html5Mode: true,
       html5DefaultIcon: 'img/favicon.ico'
     };
 
