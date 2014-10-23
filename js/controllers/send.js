@@ -82,16 +82,7 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.showAddressBook = function() {
-      var flag;
-      if (w) {
-        for (var k in w.addressBook) {
-          if (w.addressBook[k]) {
-            flag = true;
-            break;
-          }
-        }
-      }
-      return flag;
+      return w && _.keys(w.addressBook).length > 0;
     };
 
     if ($rootScope.pendingPayment) {
