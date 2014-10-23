@@ -3,6 +3,7 @@
 
 var _ = require('underscore');
 var chai = chai || require('chai');
+var sinon = sinon || require('sinon');
 var should = chai.should();
 var PluginManager = require('../js/models/PluginManager');
 var Insight = require('../js/models/Insight');

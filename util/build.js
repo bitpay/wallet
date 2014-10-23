@@ -62,6 +62,9 @@ var createBundle = function(opts) {
   b.require('./js/models/Identity', {
     expose: '../js/models/Identity'
   });
+  b.require('./js/models/Profile', {
+    expose: '../js/models/Profile'
+  });
   b.require('./js/models/Wallet');
   b.require('./js/models/Wallet', {
     expose: '../../js/models/Wallet'
