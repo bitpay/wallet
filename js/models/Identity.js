@@ -4,9 +4,6 @@ var preconditions = require('preconditions').singleton();
 var _ = require('underscore');
 var log = require('../log');
 
-var querystring = require('querystring');
-var request = require('request');
-var cryptoUtil = require('../util/crypto');
 var version = require('../../version').version;
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
@@ -31,7 +28,6 @@ function Identity(password, opts) {
   preconditions.checkArgument(opts);
 
   opts = _.extend({}, opts);
-  this.request = opts.request || request;
   this.storage = Identity._getStorage(opts, password);
   this.networkOpts = {
     'livenet': opts.network.livenet,
@@ -42,6 +38,7 @@ function Identity(password, opts) {
     'testnet': opts.network.testnet,
   };
 
+  this.pluginManager = opts.pluginManager || {};
   this.insightSaveOpts = opts.insightSave || {};
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
@@ -158,14 +155,18 @@ Identity.create = function(email, password, opts, cb) {
       if (err) {
         return cb(err);
       }
-      iden.registerOnInsight(iden.insightSaveOpts, function(error) {
-        // Ignore error
-        return cb(null, iden, w);
-      });
+      iden.pluginManager.get('remote-backup').store(
+        iden,
+        iden.insightSaveOpts,
+        function(error) {
+          // FIXME: Ignoring this error may not be the best thing to do. But remote storage
+          // is not required for the user to use the wallet.
+          return cb(null, iden, w);
+        }
+      );
     });
   });
 };
-
 
 /**
  * validates Profile's email
@@ -196,7 +197,7 @@ Identity.open = function(email, password, opts, cb) {
   Identity._openProfile(email, password, iden.storage, function(err, profile) {
     if (err) {
       if (err.message && err.message.indexOf('PNOTFOUND') !== -1) {
-        return Identity.readFromInsight(email, password, opts, cb);
+        return opts.pluginManager.get('remote-backup').retrieve(email, password, opts, cb);
       }
       return cb(err);
     }
@@ -491,7 +492,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.openWallets.push(w);
-    self.triggerInsightSave(self.insightSaveOpts, function(error) {
+    self.pluginManager.get('remote-backup').store(self, self.insightSaveOpts, function(error) {
       // Ignore error
       w.netStart();
       return cb(null, w);
@@ -499,53 +500,6 @@ Identity.prototype.createWallet = function(opts, cb) {
   });
 };
 
-Identity.readFromInsight = function(email, password, opts, callback) {
-  var key = cryptoUtil.kdf(password, email);
-  var secret = cryptoUtil.kdf(key, password);
-  var useRequest = opts.request || request;
-  var encodedEmail = encodeURIComponent(email);
-  var retrieveUrl = opts.retrieveUrl || 'http://localhost:3001/api/email/retrieve/' + encodedEmail;
-  useRequest.get(retrieveUrl + '?' + querystring.encode({secret: secret}),
-    function(err, response, body) {
-      if (err) {
-        return callback('Connection error');
-      }
-      if (response.statusCode !== 200) {
-        return callback('Connection error');
-      }
-      var decryptedJson = cryptoUtil.decrypt(key, body);
-      if (!decryptedJson) {
-        return callback('Internal Error');
-      }
-      return Identity.importFromJson(decryptedJson, password, opts, callback);
-    }
-  );
-};
-
-Identity.prototype.triggerInsightSave = Identity.prototype.registerOnInsight = function(opts, callback) {
-  var password = this.profile.password;
-  var key = cryptoUtil.kdf(password, this.profile.email);
-  var secret = cryptoUtil.kdf(key, password);
-  var exportData = this.exportAsJson
-  var record = cryptoUtil.encrypt(key, this.exportAsJson());
-  var registerUrl = opts.registerUrl || 'http://localhost:3001/api/email/register';
-  this.request.post({
-    url: registerUrl,
-    body: querystring.encode({
-      email: this.profile.email,
-      secret: secret,
-      record: record
-    })
-  }, function(err, response, body) {
-    if (err) {
-      return callback('Connection error');
-    }
-    if (response.statusCode !== 200) {
-      return callback('Unable to store data on insight');
-    }
-    return callback();
-  });
-};
 
 // add wallet (import)
 Identity.prototype.addWallet = function(wallet, cb) {
