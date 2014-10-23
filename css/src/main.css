@@ -140,7 +140,8 @@ header .alt-currency {
   float: left;
 }
 
-.col3 {
+.col3 a {
+  display: block;
   height: 62px;
   width: 30px;
   float: right;
@@ -148,14 +149,12 @@ header .alt-currency {
   padding: 19px 12px;
 }
 
-.col3:hover {
-  cursor: pointer;
-  background-color: #16A085;
+.col3 a.selected, .col3 a.selected:hover {
+  background-color: #213140;
 }
 
-.col3:active {
-  cursor: pointer;
-  background-color: #213140;
+.col3 a:hover {
+  background-color: #16A085;
 }
 
 .off-canvas-wrap, .inner-wrap{
@@ -245,7 +244,6 @@ a:hover {
 .sidebar a {
   color: #fff;
 }
-
 
 .button.small.side-bar {
   padding: 0rem 0.4rem;
@@ -518,7 +516,7 @@ a.button-setup {
 
 .name-wallet {
   font-size: 14px;
-  width: 75%;
+  width: 72%;
   float: left;
   color: #fff;
 }
