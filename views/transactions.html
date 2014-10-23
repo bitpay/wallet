@@ -52,7 +52,8 @@
             </div>
           </div>
           <div class="last-transactions-content">
-          {{btx.action}}
+          {{btx.action}} <span ng-show="btx.labelTo">to {{btx.labelTo}}</span>
+          <span ng-show="btx.comment">{{btx.comment}}</span>
           </div>
           <div class="last-transactions-footer">
             <div class="row collapse">

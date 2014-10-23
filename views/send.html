@@ -108,7 +108,7 @@
           </div>
         </div>
 
-        <div class="row collapse" ng-show="wallet.isShared()">
+        <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
               <label for="comment"><span translate>Note</span>
@@ -117,7 +117,7 @@
               </label>
               <div class="large-12 columns">
                 <textarea id="comment" ng-disabled="loading"
-                  name="comment" placeholder="{{'Leave a private message to your copayers'|translate}}" ng-model="commentText" ng-maxlength="100"></textarea>
+                  name="comment" placeholder="{{(wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction') |translate}}" ng-model="commentText" ng-maxlength="100"></textarea>
               </div>
             </div>
           </div>
