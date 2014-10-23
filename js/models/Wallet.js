@@ -2916,44 +2916,80 @@ Wallet.prototype.read_Old = function(walletId, skipFields, cb) {
 Wallet.prototype.getTransactionHistory = function(cb) {
   var self = this;
 
+  var addresses = self.getAddressesInfo();
   var satToUnit = 1 / self.settings.unitToSatoshi;
-  var addresses = _.pluck(self.getAddressesInfo(), 'addressStr');
 
-  if (addresses.length == 0) return cb();
-
-  function computeAmountIn(items) {
-    var mine = _.filter(items, function(item) {
-      return _.contains(addresses, item.addr);
+  function extractInsOuts(tx) {
+    // Inputs
+    var inputs = _.map(tx.vin, function(item) {
+      var addr = _.findWhere(addresses, {
+        addressStr: item.addr
+      });
+      return {
+        type: 'in',
+        address: addr ? addr.addressStr : item.addr,
+        isMine: !_.isUndefined(addr),
+        isChange: addr ? !!addr.isChange : false,
+        amountSat: item.valueSat,
+      }
     });
-    return _.reduce(mine, function(memo, item) {
-      return memo + item.valueSat;
-    }, 0);
+    var outputs = _.map(tx.vout, function(item) {
+      var addr;
+      var itemAddr;
+      // If classic multisig, ignore
+      if (item.scriptPubKey && item.scriptPubKey.addresses.length == 1) {
+        itemAddr = item.scriptPubKey.addresses[0];
+        addr = _.findWhere(addresses, {
+          addressStr: itemAddr,
+        });
+      }
+      return {
+        type: 'out',
+        address: addr ? addr : itemAddr,
+        isMine: !_.isUndefined(addr),
+        isChange: addr ? !!addr.isChange : false,
+        amountSat: parseInt((item.value * bitcore.util.COIN).toFixed(0)),
+      }
+    });
+
+    return inputs.concat(outputs);
   };
 
-  function computeAmountOut(items) {
-    var mine = _.filter(items, function(item) {
-      if (!item.scriptPubKey) return false;
-
-      // If classic multisig, ignore
-      if (item.scriptPubKey.addresses.length > 1) return false;
-      return _.contains(addresses, item.scriptPubKey.addresses[0]);
-    });
-    return _.reduce(mine, function(memo, item) {
-      return memo + parseInt((item.value * bitcore.util.COIN).toFixed(0));
-    }, 0);
+  function sum(items, filter) {
+    return _.reduce(_.where(items, filter),
+      function(memo, item) {
+        return memo + item.amountSat;
+      }, 0);
   };
 
   function decorateTx(tx) {
-    var amountIn = computeAmountIn(tx.vin);
-    var amountOut = computeAmountOut(tx.vout);
+    var items = extractInsOuts(tx);
+
+    var amountIn = sum(items, {
+      type: 'in',
+      isMine: true
+    });
+
+    var amountOut = sum(items, {
+      type: 'out',
+      isMine: true,
+      isChange: false,
+    });
+
+    var amountOutChange = sum(items, {
+      type: 'out',
+      isMine: true,
+      isChange: true,
+    });
+
     var fees = parseInt((tx.fees * bitcore.util.COIN).toFixed(0));
     var amount;
-    if (amountIn == (amountOut + (amountIn > 0 ? fees : 0))) {
+    if (amountIn == (amountOut + amountOutChange + (amountIn > 0 ? fees : 0))) {
       tx.action = 'moved';
       // TODO: subtract amount from change addresses
       amount = amountOut;
     } else {
-      amount = amountIn - amountOut - (amountIn > 0 ? fees : 0);
+      amount = amountIn - amountOut - amountOutChange - (amountIn > 0 ? fees : 0);
       tx.action = amount > 0 ? 'sent' : 'received';
     }
 

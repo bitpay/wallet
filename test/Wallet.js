@@ -1990,7 +1990,6 @@ describe('Wallet model', function() {
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
         res.length.should.equal(3);
-        console.log('res', res);
         res[0].action.should.equal('sent');
         res[0].amountSat.should.equal(900);
         res[1].action.should.equal('received');
@@ -2030,7 +2029,8 @@ describe('Wallet model', function() {
       }, {
         addressStr: 'addr_in_2'
       }, {
-        addressStr: 'change'
+        addressStr: 'change',
+        isChange: true,
       }]);
 
       w.getTransactionHistory(function(err, res) {
@@ -2070,7 +2070,8 @@ describe('Wallet model', function() {
       }, {
         addressStr: 'addr_2'
       }, {
-        addressStr: 'change'
+        addressStr: 'change',
+        isChange: true,
       }]);
 
       w.getTransactionHistory(function(err, res) {
