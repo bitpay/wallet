@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="last-transactions-content">
-          {{btx.action}} <span ng-show="btx.labelTo">to {{btx.labelTo}}</span>
+          {{btx.action}} <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
           <span ng-show="btx.comment">{{btx.comment}}</span>
           </div>
           <div class="last-transactions-footer">
