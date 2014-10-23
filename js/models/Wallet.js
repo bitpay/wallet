@@ -2943,11 +2943,13 @@ Wallet.prototype.getTransactionHistory = function(cb) {
           addressStr: itemAddr,
         });
       }
+
       return {
         type: 'out',
         address: addr ? addr : itemAddr,
         isMine: !_.isUndefined(addr),
         isChange: addr ? !!addr.isChange : false,
+        label: self.addressBook[itemAddr] ? self.addressBook[itemAddr].label : undefined,
         amountSat: parseInt((item.value * bitcore.util.COIN).toFixed(0)),
       }
     });
@@ -2986,13 +2988,16 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     var amount;
     if (amountIn == (amountOut + amountOutChange + (amountIn > 0 ? fees : 0))) {
       tx.action = 'moved';
-      // TODO: subtract amount from change addresses
       amount = amountOut;
     } else {
       amount = amountIn - amountOut - amountOutChange - (amountIn > 0 ? fees : 0);
       tx.action = amount > 0 ? 'sent' : 'received';
     }
 
+    var firstOut = _.findWhere(items, {
+      type: 'out'
+    });
+    tx.labelTo = firstOut ? firstOut.label : undefined;
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
   };

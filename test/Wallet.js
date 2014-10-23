@@ -2081,6 +2081,53 @@ describe('Wallet model', function() {
         done();
       });
     });
+    it('should assign label when address in address book', function(done) {
+      var w = cachedCreateW2();
+      var txs = [{
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 3000
+        }, {
+          addr: 'addr_in_2',
+          valueSat: 2000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_1'],
+          },
+          value: '0.00003900',
+        }, {
+          scriptPubKey: {
+            addresses: ['change'],
+          },
+          value: '0.00001000',
+        }],
+        fees: 0.00000100
+      }];
+
+      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_in_2'
+      }, {
+        addressStr: 'change',
+        isChange: true,
+      }]);
+
+      w.addressBook = {
+        'addr_out_1': {
+          label: 'Address out one'
+        },
+      };
+
+      w.getTransactionHistory(function(err, res) {
+        res.should.exist;
+        res[0].labelTo.should.equal('Address out one');
+        done();
+      });
+    });
+
   });
 
 
