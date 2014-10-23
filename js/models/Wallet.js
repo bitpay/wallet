@@ -3000,9 +3000,8 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     });
 
     var proposal = _.findWhere(proposals, {
-      ntxid: tx.txid
+      sentTxid: tx.txid
     });
-
     tx.comment = proposal ? proposal.comment : undefined;
     tx.labelTo = firstOut ? firstOut.label : undefined;
     tx.amountSat = Math.abs(amount);
@@ -3010,7 +3009,8 @@ Wallet.prototype.getTransactionHistory = function(cb) {
   };
 
   if (addresses.length > 0) {
-    self.blockchain.getTransactions(addresses, function(err, txs) {
+    var addressesStr = _.pluck(addresses, 'addressStr');
+    self.blockchain.getTransactions(addressesStr, function(err, txs) {
       if (err) return cb(err);
 
       var history = _.map(txs, function(tx) {

@@ -2163,10 +2163,10 @@ describe('Wallet model', function() {
       }]);
 
       w.getTxProposals = sinon.stub().returns([{
-        ntxid: 'id0',
+        sentTxid: 'id0',
         comment: 'My comment',
       }, {
-        ntxid: 'id1',
+        sentTxid: 'id1',
         comment: 'Another comment',
       }]);
       w.getTransactionHistory(function(err, res) {
