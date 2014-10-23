@@ -95,6 +95,9 @@ var createBundle = function(opts) {
     b.require('./plugins/GoogleDrive', {
       expose: '../plugins/GoogleDrive'
     });
+    b.require('./plugins/InsightStorage', {
+      expose: '../plugins/InsightStorage'
+    });
     b.require('./plugins/LocalStorage', {
       expose: '../plugins/LocalStorage'
     });

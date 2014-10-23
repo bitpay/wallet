@@ -56,12 +56,17 @@ var defaultConfig = {
   plugins: {
     LocalStorage: true,
     //GoogleDrive: true,
+    InsightStorage: true
+  },
+
+  InsightStorage: {
+    url: 'https://test-insight.bitpay.com:443/api/email'
   },
 
   GoogleDrive: {
     home: 'copay',
 
-    /* 
+    /*
      * This clientId was generated at:
      * https://console.developers.google.com/project
      * To run Copay with Google Drive at your domain you need
