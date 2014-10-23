@@ -1190,8 +1190,7 @@ a.text-warning:hover {color: #FD7262;}
   text-align: center;
   background-color: #1ABC9C;
   width: 100%;
-  position: absolute;
-  top: 40%;
+  margin-top: 15%;
 }
 
 .box-setup .panel {

@@ -1,24 +1,27 @@
 <div class="join" ng-controller="JoinController">
-  <div data-alert class="loading-screen" ng-show="loading && !failure">
+  <div data-alert class="loading-screen" ng-show="loading">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
-    <span translate>Connecting to Insight Wallet Server...</span>
+    <span translate>Connecting to Insight Wallet Server...</span> 
   </div>
 
-  <h1>{{'Join Wallet'|translate}}</h1>
-  <div class="row collapse">
-    <div class="large-12 columns">
+  <div ng-show="!loading">
+    <h1>{{'Join Wallet'|translate}}</h1>
+    <div class="row collapse">
+      <div class="large-12 columns">
         <form name="joinForm" ng-submit="join(joinForm)" novalidate>
 
           <label for="connectionId"><span translate>Wallet Secret</span> 
             <small translate class="has-error" ng-show="joinForm.connectionId.$invalid
-                && !joinForm.connectionId.$pristine">Wallet Secret is not valid!</small>
+              && !joinForm.connectionId.$pristine">Wallet Secret is not valid!</small>
             <small translate data-options="disable_for_touch:true" ng-show="joinForm.connectionId.$pristine" class="has-tip
-                text-gray" tooltip="Paste wallet secret here">Required</small>
+              text-gray" tooltip="Paste wallet secret here">Required</small>
           </label>
 
           <div class="row collapse">
             <div class="large-10 medium-10 small-10 columns pr">
-              <input id="connectionId" type="text" class="small-9 columns" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
+              <input id="connectionId" type="text" class="small-9 columns" 
+              placeholder="{{'Paste wallet secret here'|translate}}" 
+              name="connectionId" ng-model="connectionId" wallet-secret required>
               <small class="icon-input" ng-show="joinForm.connectionId.$invalid && !joinForm.connectionId.$pristine"><i class="fi-x"></i></small>
               <small class="icon-input" ng-show="joinForm.connectionId.$valid
                 && !joinForm.connectionId.$pristine"><i class="fi-check"></i></small>
@@ -37,8 +40,8 @@
               <div ng-show="isMobile">
                 <div id="file-input-wrapper" class="btn btn-primary">
                   <span class="pull-left text-centered">
-                      <i class="glyphicon glyphicon-refresh icon-rotate"></i>
-                      <span translate>Get QR code</span>
+                    <i class="glyphicon glyphicon-refresh icon-rotate"></i>
+                    <span translate>Get QR code</span>
                   </span>
                   <input id="qrcode-camera" type="file" capture="camera" accept="image/*">
                 </div>
@@ -59,13 +62,14 @@
           </div>
           <div ng-hide="hideAdv">
             <p>
-              <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
+            <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
           </div>
 
           <div class="text-right">
-            <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid || loading">Join</button>
+            <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid">Join</button>
           </div>
         </form>
+      </div>
     </div>
   </div>
   <!-- End !loading -->
