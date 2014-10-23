@@ -147,14 +147,22 @@ header .alt-currency {
   float: right;
   background-color: #23C9A9;
   padding: 19px 12px;
+  color: #B6E9DF;
 }
 
-.col3 a.selected, .col3 a.selected:hover {
+.col3 a.selected {
   background-color: #213140;
+  color: #3C4E60;
+}
+
+.col3 a.selected:hover {
+  background-color: #213140;
+  color: #fff;
 }
 
 .col3 a:hover {
   background-color: #16A085;
+  color: #fff;
 }
 
 .off-canvas-wrap, .inner-wrap{
@@ -239,10 +247,6 @@ a:hover {
   background-color: #2C3E50;
   color: #fff;
   line-height: 24px;
-}
-
-.sidebar a {
-  color: #fff;
 }
 
 .button.small.side-bar {
@@ -400,6 +404,7 @@ a.button-setup.add-wallet {
   width: 125px;
   font-size: 14px;
   padding: .3rem 0.7rem;
+  color: #fff;
 }
 
 a.button-setup.add-wallet:hover {
@@ -518,6 +523,14 @@ a.button-setup {
   font-size: 14px;
   width: 72%;
   float: left;
+  color: #fff;
+}
+
+.name-wallet i {
+  color: #B6E9DF;
+}
+
+.name-wallet i:hover {
   color: #fff;
 }
 
@@ -986,16 +999,25 @@ button.gray:focus,
   padding: 1.2rem 0.7rem;
   border-bottom: 1px solid #3A4E61;
   overflow-y: auto;
+  height: 160px;
+}
+
+.side-nav.wallets.medium {
   height: 280px;
 }
 
-.side-nav.wallets a {
-  color: #7A8C9E !important;
+.side-nav.wallets.large {
+  height: 380px;
+}
+
+.side-nav.wallets a.wallet-item, 
+.side-nav.wallets a.wallet-item:hover {
+  color: #7A8C9E;
   line-height: 20px;
 }
 
-.side-nav.wallets p {
-  color: #AAB1B9 !important;
+.side-nav.wallets .type-wallet {
+  color: #AAB1B9;
 }
 
 .side-nav .wallet-item {
@@ -1295,9 +1317,9 @@ a.text-warning:hover {color: #FD7262;}
   }
 }
 
-@media (max-height: 480px) {
+@media (max-height: 590px) {
   .side-nav.wallets {
-    height: 160px;
+    height: 180px !important;
   }
 }
 

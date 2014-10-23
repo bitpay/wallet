@@ -30,8 +30,7 @@
       </div>
     </div>
     <div class="col3">
-      <a class="side-bar" 
-        ng-class="{'selected':walletSelection}" 
+      <a ng-class="{'selected':walletSelection}" 
         title="{{'Manual Update'|translate}}" 
         ng-click="toggleWalletSelection()"> 
         <span ng-show="!walletSelection">
@@ -45,15 +44,22 @@
   </header>
 
   <div ng-if="walletSelection">
-    <ul class="side-nav wallets" ng-show="wallets.0">
+    <div class="side-nav wallets" ng-show="!wallets.0">
+      <p class="size-12" translate>You do not have another wallets. Creates one more from link below.</p>
+      <div class="text-center">
+        <i class="fi-arrow-down"></i>
+      </div>
+    </div>
+    <ul class="side-nav wallets" ng-show="wallets.0"
+      ng-class="{'large':wallets.length > 4, 'medium':wallets.length > 2 && wallets.length < 5}">
       <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
         <div class="col1">
-          <div class="avatar-wallet">P</div>
+          <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
         </div>
         <div class="col2">
           <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
             <div class="oh">
-              <div class="right size-10">[ {{item.totalCopayers}} of {{item.requiredCopayers}} ]</div> 
+              <div class="right size-10 type-wallet">[ {{item.totalCopayers}} of {{item.requiredCopayers}} ]</div> 
               <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
             </div>
             <div class="oh">
