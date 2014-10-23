@@ -1,33 +1,46 @@
 <div ng-controller="SidebarController">
-  <header ng-click="toggleWalletSelection()" ng-show="$root.wallet">
-    <a ng-click="refresh()">
-      <div class="col1">
-        <div class="avatar-wallet">P</div>
+  <header ng-show="$root.wallet">
+    <div class="col1">
+      <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
+    </div>
+    <div class="col2">
+      <div class="oh m5t m10r"> 
+        <div class="right size-10">[ {{$root.wallet.totalCopayers}} of {{$root.wallet.requiredCopayers}} ]</div>
+        <div class="name-wallet">
+          <a ng-click="refresh()">
+            <i class="fi-refresh right"></i>
+          </a>
+          <div class="ellipsis">{{$root.wallet.getName()}}</div>
+        </div> 
       </div>
-      <div class="col2">
-        <div class="oh m5t m10r"> 
-          <div class="right size-10">[ {{$root.wallet.totalCopayers}} of {{$root.wallet.requiredCopayers}} ]</div>
-          <div class="ellipsis name-wallet">{{$root.wallet.getName()}}</div> 
+      <div class="founds size-12">
+        <!-- {{'Balance'|translate}} -->
+        <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+        <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
+          <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+          <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
         </div>
-        <div class="founds size-12">
-          <!-- {{'Balance'|translate}} -->
+        <div class="m10t" ng-show="lockedBalance">
+          {{'Locked'|translate}} &nbsp;
           <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-            <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-            <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
-          </div>
-          <div class="m10t" ng-show="lockedBalance">
-            {{'Locked'|translate}} &nbsp;
-            <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-            <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
-            </span> &nbsp;
-            <i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
-          </div>
+          <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+          </span> &nbsp;
+          <i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
         </div>
       </div>
-    </a>
+    </div>
     <div class="col3">
-      <a class="side-bar" title="{{'Manual Update'|translate}}" ng-disabled="$root.loading" ng-click="refresh()"> v </a>
+      <a class="side-bar" 
+        ng-class="{'selected':walletSelection}" 
+        title="{{'Manual Update'|translate}}" 
+        ng-click="toggleWalletSelection()"> 
+        <span ng-show="!walletSelection">
+          <i class="fi-arrow-down"></i>
+        </span>
+        <span ng-show="walletSelection">
+          <i class="fi-arrow-up"></i>
+        </span> 
+      </a>
     </div>
   </header>
 
