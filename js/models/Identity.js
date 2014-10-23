@@ -155,15 +155,19 @@ Identity.create = function(email, password, opts, cb) {
       if (err) {
         return cb(err);
       }
-      iden.pluginManager.get('remote-backup').store(
-        iden,
-        iden.insightSaveOpts,
-        function(error) {
-          // FIXME: Ignoring this error may not be the best thing to do. But remote storage
-          // is not required for the user to use the wallet.
-          return cb(null, iden, w);
-        }
-      );
+      if (iden.pluginManager.get && iden.pluginManager.get('remote-backup')) {
+        iden.pluginManager.get('remote-backup').store(
+          iden,
+          iden.insightSaveOpts,
+          function(error) {
+            // FIXME: Ignoring this error may not be the best thing to do. But remote storage
+            // is not required for the user to use the wallet.
+            return cb(null, iden, w);
+          }
+        );
+      } else {
+        return cb(null, iden, w);
+      }
     });
   });
 };
@@ -197,7 +201,11 @@ Identity.open = function(email, password, opts, cb) {
   Identity._openProfile(email, password, iden.storage, function(err, profile) {
     if (err) {
       if (err.message && err.message.indexOf('PNOTFOUND') !== -1) {
-        return opts.pluginManager.get('remote-backup').retrieve(email, password, opts, cb);
+        if (opts.pluginManager && opts.pluginManager.get('remote-backup')) {
+          return opts.pluginManager.get('remote-backup').retrieve(email, password, opts, cb);
+        } else {
+          return cb(err);
+        }
       }
       return cb(err);
     }
@@ -492,11 +500,11 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.openWallets.push(w);
-    self.pluginManager.get('remote-backup').store(self, self.insightSaveOpts, function(error) {
-      // Ignore error
-      w.netStart();
-      return cb(null, w);
-    });
+    if (self.pluginManager.get && self.pluginManager.get('remote-backup')) {
+      self.pluginManager.get('remote-backup').store(self, self.insightSaveOpts, _.noop);
+    }
+    w.netStart();
+    return cb(null, w);
   });
 };
 

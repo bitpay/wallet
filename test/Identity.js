@@ -351,7 +351,7 @@ describe('Identity model', function() {
     });
 
     it('should create an encrypted object', function() {
-      var ret = JSON.parse(iden.export());
+      var ret = JSON.parse(iden.exportAsJson());
       ret.iterations.should.equal(13);
       ret.profile.should.equal('penc');
       _.each([0, 1, 2, 3, 4], function(i) {
@@ -382,7 +382,7 @@ describe('Identity model', function() {
 
 
     it('should check the import string', function(done) {
-      Identity.import(JSON.stringify({
+      Identity.importFromJson(JSON.stringify({
         profile: '1234'
       }), '1234', config, function(err, ret) {
         err.should.contain('BADSTR');
@@ -392,7 +392,7 @@ describe('Identity model', function() {
 
 
     it('should check the import string 2', function(done) {
-      Identity.import(JSON.stringify({
+      Identity.importFromJson(JSON.stringify({
         iterations: 10,
       }), '1234', config, function(err, ret) {
         err.should.contain('BADSTR');
@@ -401,7 +401,7 @@ describe('Identity model', function() {
     });
 
     it('should import a simple wallet', function(done) {
-      Identity.import(JSON.stringify({
+      Identity.importFromJson(JSON.stringify({
         iterations: 10,
         profile: '1234'
       }), '1234', config, function(err, iden) {
