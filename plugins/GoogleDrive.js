@@ -313,10 +313,4 @@ GoogleDrive.prototype.allKeys = function(cb) {
   });
 };
 
-GoogleDrive.prototype.key = function(k) {
-  var v = localStorage.key(k);
-  return v;
-};
-
-
 module.exports = GoogleDrive;
