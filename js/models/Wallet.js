@@ -2917,6 +2917,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
   var self = this;
 
   var addresses = self.getAddressesInfo();
+  var proposals = self.getTxProposals();
   var satToUnit = 1 / self.settings.unitToSatoshi;
 
   function extractInsOuts(tx) {
@@ -2997,6 +2998,12 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     var firstOut = _.findWhere(items, {
       type: 'out'
     });
+
+    var proposal = _.findWhere(proposals, {
+      ntxid: tx.txid
+    });
+
+    tx.comment = proposal ? proposal.comment : undefined;
     tx.labelTo = firstOut ? firstOut.label : undefined;
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
