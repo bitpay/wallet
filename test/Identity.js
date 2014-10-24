@@ -34,6 +34,7 @@ describe('Identity model', function() {
   beforeEach(function(done) {
     storage = sinon.stub();
     storage.getItem = sinon.stub();
+    storage.set = sinon.stub().yields(null);
     storage.savePassphrase = sinon.spy();
     storage.restorePassphrase = sinon.spy();
     storage.setPassword = sinon.spy();
@@ -45,8 +46,10 @@ describe('Identity model', function() {
 
 
     wallet = sinon.stub();
-    wallet.store = sinon.stub().yields(null);
+    wallet.on = sinon.stub().yields(null);
     wallet.netStart = sinon.stub();
+    wallet.toObj = sinon.stub();
+    wallet.getName = sinon.stub().returns('walletname');
     wallet.getId = sinon.stub().returns('wid:123');
     Identity._newWallet = sinon.stub().returns(wallet);
 
