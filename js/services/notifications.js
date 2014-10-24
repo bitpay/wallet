@@ -9,7 +9,7 @@ factory('notification', ['$timeout',
 
     var settings = {
       info: {
-        duration: 10000,
+        duration: 6000,
         enabled: true
       },
       funds: {
@@ -25,7 +25,7 @@ factory('notification', ['$timeout',
         enabled: true
       },
       error: {
-        duration: 10000,
+        duration: 7000,
         enabled: true
       },
       success: {

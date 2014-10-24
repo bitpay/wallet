@@ -79,10 +79,12 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
         $rootScope.wallet.keepAlive();
       }
     });
+    $rootScope.$watch('wallet.id', function() {
+      $scope.walletSelection = false;
+    });
   }
 
   $scope.switchWallet = function(wid) {
-    $scope.walletSelection = false;
     controllerUtils.setFocusedWallet(wid);
   };
 
