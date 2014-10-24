@@ -54,12 +54,13 @@ var defaultConfig = {
   verbose: 1,
 
   plugins: {
-    LocalStorage: true,
+    //LocalStorage: true,
     //GoogleDrive: true,
     //InsightStorage: true
+    EncryptedInsightStorage: true
   },
 
-  InsightStorage: {
+  EncryptedInsightStorage: {
     url: 'https://test-insight.bitpay.com:443/api/email'
   },
 
