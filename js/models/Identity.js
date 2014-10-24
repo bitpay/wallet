@@ -43,8 +43,7 @@ function Identity(password, opts) {
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
 
-  // open wallets
-  this.openWallets = [];
+  this.wallets = {};
 };
 
 
@@ -251,6 +250,24 @@ Identity.isAvailable = function(email, opts, cb) {
 };
 
 
+Identity.prototype.storeWallet = function(w, cb) {
+  preconditions.checkArgument(w && _.isObject(w));
+
+  var id = w.getId();
+
+  var val = w.toObj();
+  var key = Wallet.getStorageKey(id + '_' + w.getName());
+
+  this.storage.set(key, val, function(err) {
+    log.debug('Wallet:' + w.getName() + '  stored');
+
+    if (cb)
+      cb(err);
+  });
+
+};
+
+
 /**
  * store
  *
@@ -265,12 +282,12 @@ Identity.prototype.store = function(opts, cb) {
   self.profile.store(opts, function(err) {
     if (err) return cb(err);
 
-    var l = self.openWallets.length,
+    var l = Object.keys(self.wallets),
       i = 0;
     if (!l) return cb();
 
-    _.each(self.openWallets, function(w) {
-      w.store(function(err) {
+    _.each(self.wallets, function(w) {
+      self.storeWallet(w, function(err) {
         if (err) return cb(err);
 
         if (++i == l)
@@ -291,14 +308,14 @@ Identity.prototype._cleanUp = function() {
 Identity.prototype.close = function(cb) {
   preconditions.checkState(this.profile);
 
-  var l = this.openWallets.length,
+  var l = Object.keys(this.wallets),
     i = 0;
   if (!l) {
     return cb ? cb() : null;
   }
 
   var self = this;
-  _.each(this.openWallets, function(w) {
+  _.each(this.wallets, function(w) {
     w.close(function(err) {
       if (err) return cb(err);
 
@@ -337,7 +354,7 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   this._checkVersion(w.version);
   this.addWallet(w, function(err) {
     if (err) return cb(err, null);
-    self.openWallets.push(w);
+    self.wallets[w.getId()] = w;
     self.store(null, function(err) {
       return cb(err, w);
     });
@@ -350,9 +367,7 @@ Identity.prototype.closeWallet = function(wid, cb) {
 
   var self = this;
   w.close(function(err) {
-    self.openWallets = _.without(self.openWallets, function(id) {
-      id === wid
-    });
+    delete self.wallets[wid];
     return cb(err);
   });
 };
@@ -367,7 +382,7 @@ Identity.importFromJson = function(str, password, opts, cb) {
   }
 
   if (!_.isNumber(json.iterations))
-   return cb('BADSTR: Missing iterations');
+    return cb('BADSTR: Missing iterations');
 
   if (!json.profile)
     return cb('BADSTR: Missing profile');
@@ -414,12 +429,24 @@ Identity.prototype.exportAsJson = function() {
   ret.profile = this.profile.export();
   ret.wallets = {};
 
-  _.each(this.openWallets, function(w) {
+  _.each(this.wallets, function(w) {
     ret.wallets[w.getId()] = w.export();
   });
 
   var r = JSON.stringify(ret);
   return r;
+};
+
+Identity.prototype.bindWallet = function(w) {
+  var self = this;
+
+  self.wallets[w.getId()] = w;
+  log.debug('Binding wallet ' + w.getName());
+
+  w.on('hasChange', function() {
+    log.debug('<hasChange> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
 };
 
 /**
@@ -499,7 +526,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   var w = Identity._newWallet(opts);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
-    self.openWallets.push(w);
+    self.bindWallet(w);
     if (self.pluginManager.get && self.pluginManager.get('remote-backup')) {
       self.pluginManager.get('remote-backup').store(self, self.insightSaveOpts, _.noop);
     }
@@ -521,7 +548,9 @@ Identity.prototype.addWallet = function(wallet, cb) {
     name: wallet.name
   }, function(err) {
     if (err) return cb(err);
-    cb();
+    self.storeWallet(wallet, function(err) {
+      return cb(err);
+    });
   });
 };
 
@@ -569,9 +598,8 @@ Identity.prototype.openWallet = function(walletId, cb) {
     blockchainOpts: this.blockchainOpts
   }, function(err, w) {
     if (err) return cb(err);
-    self.openWallets.push(w);
-
-    w.store(function(err) {
+    self.bindWallet(w);
+    self.storeWallet(w, function(err) {
       w.netStart();
       return cb(err, w);
     });
@@ -581,9 +609,7 @@ Identity.prototype.openWallet = function(walletId, cb) {
 
 
 Identity.prototype.getOpenWallet = function(id) {
-  return _.findWhere(this.openWallets, {
-    id: id,
-  });
+  return this.wallets[id];
 };
 
 

@@ -2,9 +2,15 @@
 
 // 65.7% typed (by google's closure-compiler account)
 
+
+// this line throws a warning on Chrome Desktop
 var sjcl = require('../../lib/sjcl');
+
+
+console.log('[Passphrase.js.8]'); //TODO
 var preconditions = require('preconditions').instance();
 var _ = require('underscore');
+
 
 /**
  * @desc
