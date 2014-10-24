@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   controllerUtils.redirIfLogged();
   $scope.retreiving = true;
 
-  identityService.checkIdentity($scope);
+  identityService.check($scope);
 
   $scope.createProfile = function(form) {
     if (form && form.$invalid) {
@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       return;
     }
     $scope.loading = true;
-    identityService.createIdentity($scope, form);
+    identityService.create($scope, form);
   }
 
 });

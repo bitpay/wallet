@@ -4,7 +4,7 @@ angular.module('copayApp.services')
 .factory('identityService', function($rootScope, $location, pluginManager, controllerUtils) {
   var root = {};
 
-  root.checkIdentity = function (scope) {
+  root.check = function (scope) {
     copay.Identity.anyProfile({
       pluginManager: pluginManager,
     }, function(anyProfile) {
@@ -22,7 +22,7 @@ angular.module('copayApp.services')
     });
   };
 
-  root.createIdentity = function (scope, form) {
+  root.create = function (scope, form) {
     copay.Identity.create(form.email.$modelValue, form.password.$modelValue, {
       pluginManager: pluginManager,
       network: config.network,
@@ -34,6 +34,26 @@ angular.module('copayApp.services')
       scope.loading = false;
     });
   };
+
+
+  root.open = function (scope, form) {
+    copay.Identity.open(form.email.$modelValue, form.password.$modelValue, {
+      pluginManager: pluginManager,
+      network: config.network,
+      networkName: config.networkName,
+      walletDefaults: config.wallet,
+      passphraseConfig: config.passphraseConfig,
+    }, function(err, iden, lastFocusedWallet) {
+      if (err && !iden) {
+        console.log('Error:' + err)
+      controllerUtils.onErrorDigest(
+        scope, (err.toString() || '').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
+      } else {
+        controllerUtils.bindProfile(scope, iden, lastFocusedWallet);
+      }
+      scope.loading = false;
+    });
+  }
 
   return root;
 });
