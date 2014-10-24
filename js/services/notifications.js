@@ -47,7 +47,7 @@ factory('notification', ['$timeout',
     };
 
     function html5Notify(icon, title, content, ondisplay, onclose) {
-      if (window.webkitNotifications.checkPermission() === 0) {
+      if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0) {
         if (!icon) {
           icon = 'img/favicon.ico';
         }

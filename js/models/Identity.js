@@ -64,10 +64,6 @@ Identity._walletFromObj = function(o, readOpts) {
   return Wallet.fromObj(o, readOpts);
 };
 
-Identity._walletRead = function(id, r, cb) {
-  return Wallet.read(id, r, cb);
-};
-
 Identity._walletDelete = function(id, s, cb) {
   return Wallet.delete(id, s, cb);
 };
@@ -105,7 +101,11 @@ Identity._getStorage = function(opts, password) {
  */
 Identity.anyProfile = function(opts, cb) {
   var storage = Identity._getStorage(opts);
-  Profile.any(storage, cb);
+  storage.getFirst(Profile.key(''), {
+    onlyKey: true
+  }, function(err, v, k) {
+    return cb(k ? true : false);
+  });
 };
 
 /**
@@ -116,7 +116,11 @@ Identity.anyProfile = function(opts, cb) {
  */
 Identity.anyWallet = function(opts, cb) {
   var storage = Identity._getStorage(opts);
-  Wallet.any(storage, cb);
+  storage.getFirst(Wallet.getStorageKey(''), {
+    onlyKey: true
+  }, function(err, v, k) {
+    return cb(k ? true : false);
+  });
 };
 
 /**
@@ -249,12 +253,41 @@ Identity.isAvailable = function(email, opts, cb) {
   return cb();
 };
 
+Identity.prototype.readWallet = function(walletId, readOpts, cb) {
+  preconditions.checkArgument(cb);
+  var self = this,
+    err;
+  var obj = {};
+
+  this.storage.getFirst(Wallet.getStorageKey(walletId), {}, function(err, obj) {
+    if (err) return cb(err);
+
+    if (!obj)
+      return cb(new Error('WNOTFOUND: Wallet not found'));
+
+    var w, err;
+    obj.id = walletId;
+
+    try {
+      log.debug('## OPENING Wallet: ' + walletId);
+      w = Wallet.fromUntrustedObj(obj, readOpts);
+    } catch (e) {
+      log.debug("ERROR: ", e.message);
+      if (e && e.message && e.message.indexOf('MISSOPTS')) {
+        err = new Error('WERROR: Could not read: ' + walletId + ': ' + e.message);
+      } else {
+        err = e;
+      }
+      w = null;
+    }
+    return cb(err, w);
+  });
+};
 
 Identity.prototype.storeWallet = function(w, cb) {
   preconditions.checkArgument(w && _.isObject(w));
 
   var id = w.getId();
-
   var val = w.toObj();
   var key = Wallet.getStorageKey(id + '_' + w.getName());
 
@@ -264,7 +297,6 @@ Identity.prototype.storeWallet = function(w, cb) {
     if (cb)
       cb(err);
   });
-
 };
 
 
@@ -343,7 +375,6 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   var obj = this.storage.decrypt(base64, password);
 
   var readOpts = {
-    storage: this.storage,
     networkOpts: this.networkOpts,
     blockchainOpts: this.blockchainOpts,
     skipFields: skipFields
@@ -509,7 +540,6 @@ Identity.prototype.createWallet = function(opts, cb) {
   log.debug('\t### TxProposals Initialized');
 
 
-  opts.storage = this.storage;
   opts.networkOpts = this.networkOpts;
   opts.blockchainOpts = this.blockchainOpts;
 
@@ -518,9 +548,6 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.requiredCopayers = requiredCopayers;
   opts.totalCopayers = totalCopayers;
   opts.version = opts.version || this.version;
-
-  if (opts.password && !this.storage.hasPassphrase())
-    this.storage.setPassword(opts.password);
 
   var self = this;
   var w = Identity._newWallet(opts);
@@ -592,8 +619,7 @@ Identity.prototype.openWallet = function(walletId, cb) {
   //  self.migrateWallet(walletId, password, function() {
   //
 
-  Identity._walletRead(walletId, {
-    storage: self.storage,
+  self.readWallet(walletId, {
     networkOpts: this.networkOpts,
     blockchainOpts: this.blockchainOpts
   }, function(err, w) {

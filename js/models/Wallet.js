@@ -37,7 +37,6 @@ var copayConfig = require('../../config');
  * @TODO: Split this leviathan.
  *
  * @param {Object} opts
- * @param {Storage} opts.storage - an object that can persist the wallet
  * @param {Network} opts.network - used to send and retrieve messages from
  *                                 copayers
  * @param {Blockchain} opts.blockchain - source of truth for what happens in
@@ -70,7 +69,7 @@ function Wallet(opts) {
   opts.blockchain = opts.blockchain || Wallet._newInsight(opts.blockchainOpts[networkName]);;
 
   //required params
-  ['storage', 'network', 'blockchain',
+  ['network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
@@ -82,7 +81,8 @@ function Wallet(opts) {
 
   this.id = opts.id || Wallet.getRandomId();
   this.secretNumber = opts.secretNumber || Wallet.getRandomSecretNumber();
-  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
+  // TODO
+  //  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
   this.settings = opts.settings || copayConfig.wallet.settings;
   this.name = opts.name;
 
@@ -121,9 +121,9 @@ function Wallet(opts) {
 inherits(Wallet, events.EventEmitter);
 
 Wallet.prototype.emitAndKeepAlive = function(args) {
-  log.debug('Wallet Emitting:',arguments);
+  log.debug('Wallet Emitting:', arguments);
   this.keepAlive();
-  this.emit.apply(this,arguments);
+  this.emit.apply(this, arguments);
 };
 
 /**
@@ -179,13 +179,6 @@ Wallet.getStorageKey = function(str) {
   return 'wallet::' + str;
 };
 
-
-Wallet.any = function(storage, cb) {
-  storage.getFirst(Wallet.getStorageKey(''),  { onlyKey: true}, function(err, v, k) {
-    return cb(k ? true : false);
-  });
-};
-
 /* for stubbing */
 Wallet._newInsight = function(opts) {
   return new Insight(opts);
@@ -234,65 +227,17 @@ Wallet.getMaxRequiredCopayers = function(totalCopayers) {
  * @param cb
  * @return {undefined}
  */
-Wallet.delete = function(walletId, storage, cb) {
-  preconditions.checkArgument(cb);
-  storage.deletePrefix(Wallet.getStorageKey(walletId), function(err) {
-    if (err && err.message != 'not found') return cb(err);
-    storage.deletePrefix(walletId + '::', function(err) {
-      if (err && err.message != 'not found') return cb(err);
-      return cb();
-    });
-  });
-};
-
-/**
- * @desc Retrieve a wallet from storage
- *
- * @param {string} walletId - the wallet id
- * @param readOpts (see fromObj)
- * @param {function} callback - {err, Wallet}
- * @return {undefined}
- */
-Wallet.read = function(walletId, readOpts, cb) {
-  preconditions.checkArgument(readOpts);
-  preconditions.checkArgument(readOpts.storage);
-  preconditions.checkArgument(readOpts.storage.setPassword);
-  preconditions.checkArgument(cb);
-
-  var storage = readOpts.storage;
-
-  var self = this,
-    err;
-  var obj = {};
-
-  storage.getFirst(Wallet.getStorageKey(walletId), {}, function(err, ret) {
-    if (err) return cb(err);
-
-    if (!ret)
-      return cb(new Error('WNOTFOUND: Wallet not found'));
-
-    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
-      obj[p] = ret[p];
-    });
-
-    var w, err;
-    obj.id = walletId;
-    try {
-      log.debug('## OPENING Wallet: ' + walletId);
-      w = self.fromObj(obj, readOpts);
-    } catch (e) {
-      log.debug("ERROR: ", e.message);
-      if (e && e.message && e.message.indexOf('MISSOPTS')) {
-        err = new Error('WERROR: Could not read: ' + walletId + ': ' + e.message);
-      } else {
-        err = e;
-      }
-      w = null;
-    }
-    return cb(err, w);
-  });
-};
-
+// Wallet.delete = function(walletId, storage, cb) {
+//   preconditions.checkArgument(cb);
+//   storage.deletePrefix(Wallet.getStorageKey(walletId), function(err) {
+//     if (err && err.message != 'not found') return cb(err);
+//     storage.deletePrefix(walletId + '::', function(err) {
+//       if (err && err.message != 'not found') return cb(err);
+//       return cb();
+//     });
+//   });
+// };
+//
 
 
 /**
@@ -1024,12 +969,13 @@ Wallet.prototype.getRegisteredPeerIds = function() {
 Wallet.prototype.keepAlive = function() {
   var self = this;
 
-  this.lock.keepAlive(function(err) {
-    if (err) {
-      log.debug(err);
-      self.emitAndKeepAlive('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
-    }
-  });
+
+  // this.lock.keepAlive(function(err) {
+  //   if (err) {
+  //     log.debug(err);
+  //     self.emitAndKeepAlive('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
+  //   }
+  // });
 };
 
 
@@ -1061,6 +1007,19 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
+
+Wallet.fromUntrustedObj = function(obj, readOpts) {
+  obj =  _.clone(obj);
+  var o = {};
+  _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+    o[p] = obj[p];
+  });
+
+  return Wallet.fromObj(o,readOpts);
+};
+
+
+
 /**
  * @desc Retrieve the wallet state from a trusted object
  *
@@ -1073,7 +1032,6 @@ Wallet.prototype.toObj = function() {
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
  *
- * @param readOpts.storage
  * @param readOpts.network
  * @param readOpts.blockchain
  * @param readOpts.isImported {boolean}  - tag wallet as 'imported' (skip forced backup step)
@@ -1083,9 +1041,7 @@ Wallet.fromObj = function(o, readOpts) {
 
   preconditions.checkArgument(readOpts.networkOpts);
   preconditions.checkArgument(readOpts.blockchainOpts);
-  preconditions.checkArgument(readOpts.storage.setPassword);
 
-  var storage = readOpts.storage;
   var networkOpts = readOpts.networkOpts;
   var blockchainOpts = readOpts.blockchainOpts;
   var skipFields = readOpts.skipFields || [];
@@ -1147,7 +1103,6 @@ Wallet.fromObj = function(o, readOpts) {
 
   opts.lastTimestamp = o.lastTimestamp || 0;
 
-  opts.storage = storage;
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
   opts.isImported = readOpts.isImported || false;
@@ -1159,10 +1114,10 @@ Wallet.fromObj = function(o, readOpts) {
  * @desc Return a base64 encrypted version of the wallet
  * @return {string} base64 encoded string
  */
-Wallet.prototype.export = function() {
-  var walletObj = this.toObj();
-  return this.storage.encrypt(walletObj);
-};
+// Wallet.prototype.export = function() {
+//   var walletObj = this.toObj();
+//   return this.storage.encrypt(walletObj);
+// };
 
 /**
  * @desc Send a message to other peers
@@ -1817,7 +1772,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       log.debug('XHR status: ' + status);
       return self._checkSentTx(ntxid, function(txid) {
         log.debug('[Wallet.js.1581:txid:%s]', txid);
-        if (txid) 
+        if (txid)
           self.emitAndKeepAlive('hasChange');
         return cb(txid, txp.merchant);
       });
@@ -1850,7 +1805,7 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
       log.debug('Sending to server was not met with a returned tx.');
       return this._checkSentTx(ntxid, function(txid) {
         log.debug('[Wallet.js.1613:txid:%s]', txid);
-        if (txid) 
+        if (txid)
           self.emitAndKeepAlive('hasChange');
         return cb(txid, txp.merchant);
       });
@@ -2613,9 +2568,10 @@ Wallet.prototype.close = function(cb) {
   this.blockchain.destroy();
 
   log.debug('## CLOSING Wallet: ' + this.id);
-  this.lock.release(function() {
+// TODO
+//  this.lock.release(function() {
     if (cb) return cb();
-  });
+//  });
 };
 
 /**
