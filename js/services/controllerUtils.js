@@ -195,20 +195,19 @@ angular.module('copayApp.services')
 
 
     root.rebindWallets = function($scope, iden) {
-      _.each(iden.listWallets(), function(winfo) {
-        var w = iden.getOpenWallet(winfo.id);
-        preconditions.checkState(w);
-        root.installWalletHandlers($scope, w);
+      _.each(iden.listWallets(), function(wallet) {
+        preconditions.checkState(wallet);
+        root.installWalletHandlers($scope, wallet);
       });
     };
 
     root.setFocusedWallet = function(w) {
       if (!_.isObject(w))
-        w = $rootScope.iden.getOpenWallet(w);
+        w = $rootScope.iden.getWalletById(w);
       preconditions.checkState(w && _.isObject(w));
 
       $rootScope.wallet = w;
-      $rootScope.iden.profile.setLastFocusedTs(w.id, function() {
+      w.updateTimestamp(new Date().getTime(), function() {
         root.redirIfLogged();
         root.updateBalance(w, function() {
           $rootScope.$digest();
@@ -226,8 +225,7 @@ angular.module('copayApp.services')
       }
     };
 
-
-    // On the focused wallet 
+    // On the focused wallet
     root.updateAddressList = function(wid) {
 
       if (!wid || root.isFocusedWallet(wid)) {
@@ -396,7 +394,7 @@ angular.module('copayApp.services')
       $rootScope.iden.deleteWallet(w.id, function() {
         notification.info('Wallet deleted', $filter('translate')('Wallet deleted'));
         $rootScope.wallet = null;
-        var lastFocused = $rootScope.iden.profile.getLastFocusedWallet();
+        var lastFocused = $rootScope.iden.getLastFocusedWallet();
         root.bindProfile($scope, $rootScope.iden, lastFocused);
       });
     };

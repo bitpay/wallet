@@ -62,9 +62,6 @@ var createBundle = function(opts) {
   b.require('./js/models/Identity', {
     expose: '../js/models/Identity'
   });
-  b.require('./js/models/Profile', {
-    expose: '../js/models/Profile'
-  });
   b.require('./js/models/Wallet');
   b.require('./js/models/Wallet', {
     expose: '../../js/models/Wallet'
@@ -95,14 +92,17 @@ var createBundle = function(opts) {
   });
 
   if (!opts.disablePlugins) {
-    b.require('./plugins/GoogleDrive', {
+    b.require('./js/plugins/GoogleDrive', {
       expose: '../plugins/GoogleDrive'
     });
-    b.require('./plugins/InsightStorage', {
+    b.require('./js/plugins/InsightStorage', {
       expose: '../plugins/InsightStorage'
     });
-    b.require('./plugins/LocalStorage', {
+    b.require('./js/plugins/LocalStorage', {
       expose: '../plugins/LocalStorage'
+    });
+    b.require('./js/plugins/EncryptedInsightStorage', {
+      expose: '../plugins/EncryptedInsightStorage'
     });
   }
 

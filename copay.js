@@ -11,7 +11,6 @@ module.exports.HDParams = require('./js/models/HDParams');
 // components
 var Async = module.exports.Async = require('./js/models/Async');
 var Insight = module.exports.Insight = require('./js/models/Insight');
-var Storage = module.exports.Storage = require('./js/models/Storage');
 
 module.exports.Identity = require('./js/models/Identity');
 module.exports.Wallet = require('./js/models/Wallet');

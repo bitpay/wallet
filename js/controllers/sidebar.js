@@ -96,7 +96,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     var wids = _.pluck($rootScope.iden.listWallets(), 'id');
     _.each(wids, function(wid) {
       if (controllerUtils.isFocusedWallet(wid)) return;
-      var w = $rootScope.iden.getOpenWallet(wid);
+      var w = $rootScope.iden.getWalletById(wid);
       $scope.wallets.push(w);
       controllerUtils.updateBalance(w, function(err, res) {
         if (err) return;
