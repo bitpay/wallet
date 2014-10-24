@@ -56,7 +56,7 @@ var defaultConfig = {
   plugins: {
     LocalStorage: true,
     //GoogleDrive: true,
-    InsightStorage: true
+    //InsightStorage: true
   },
 
   InsightStorage: {

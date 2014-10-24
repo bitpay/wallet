@@ -46,17 +46,12 @@ Profile.create = function(email, password, storage, cb) {
 };
 
 
-Profile.any = function(storage, cb) {
-  storage.getFirst(Profile.key(''), { onlyKey: true}, function(err, v, k) {
-    return cb(k ? true : false);
-  });
-};
-
 Profile.open = function(email, password, storage, cb) {
   preconditions.checkArgument(cb);
   preconditions.checkState(storage.hasPassphrase());
 
   var key = Profile.key(Profile.hash(email, password));
+console.log('[Profile.js.59:key:]',key); //TODO
   storage.get(key, function(err, val) {
     if (err || !val)
       return cb(new Error('PNOTFOUND: Profile not found'));
