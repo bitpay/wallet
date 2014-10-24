@@ -3,7 +3,7 @@ var defaultConfig = {
   defaultLanguage: 'en',
   // DEFAULT network (livenet or testnet)
   networkName: 'livenet',
-  logLevel: 'info',
+  logLevel: 'debug',
 
 
   // wallet limits

@@ -120,6 +120,12 @@ function Wallet(opts) {
 
 inherits(Wallet, events.EventEmitter);
 
+Wallet.prototype.emitAndKeepAlive = function(args) {
+  log.debug('Wallet Emitting:',arguments);
+  this.keepAlive();
+  this.emit.apply(this,arguments);
+};
+
 /**
  * @TODO: Document this. Its usage is kind of weird
  *
@@ -169,13 +175,13 @@ Wallet.COPAYER_PAIR_LIMITS = {
 
 
 
-Wallet.key = function(str) {
+Wallet.getStorageKey = function(str) {
   return 'wallet::' + str;
 };
 
 
 Wallet.any = function(storage, cb) {
-  storage.getFirst(Wallet.key(''),  { onlyKey: true}, function(err, v, k) {
+  storage.getFirst(Wallet.getStorageKey(''),  { onlyKey: true}, function(err, v, k) {
     return cb(k ? true : false);
   });
 };
@@ -230,7 +236,7 @@ Wallet.getMaxRequiredCopayers = function(totalCopayers) {
  */
 Wallet.delete = function(walletId, storage, cb) {
   preconditions.checkArgument(cb);
-  storage.deletePrefix(Wallet.key(walletId), function(err) {
+  storage.deletePrefix(Wallet.getStorageKey(walletId), function(err) {
     if (err && err.message != 'not found') return cb(err);
     storage.deletePrefix(walletId + '::', function(err) {
       if (err && err.message != 'not found') return cb(err);
@@ -259,7 +265,7 @@ Wallet.read = function(walletId, readOpts, cb) {
     err;
   var obj = {};
 
-  storage.getFirst(Wallet.key(walletId), {}, function(err, ret) {
+  storage.getFirst(Wallet.getStorageKey(walletId), {}, function(err, ret) {
     if (err) return cb(err);
 
     if (!ret)
@@ -317,7 +323,7 @@ Wallet.prototype._newAddresses = function(dontUpdateUx) {
     this.subscribeToAddresses();
 
   };
-  this.emit('newAddresses', dontUpdateUx);
+  this.emitAndKeepAlive('newAddresses', dontUpdateUx);
 };
 
 /**
@@ -337,7 +343,7 @@ Wallet.prototype._onIndexes = function(senderId, data) {
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
     this._newAddresses();
-    this.store();
+    this.emitAndKeepAlive('hasChange');
   }
 };
 
@@ -354,7 +360,7 @@ Wallet.prototype._onIndexes = function(senderId, data) {
  */
 Wallet.prototype.changeSettings = function(settings) {
   this.settings = settings;
-  this.store();
+  this.emitAndKeepAlive('hasChange');
 };
 
 /**
@@ -387,7 +393,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     hasChanged = this.publicKeyRing.merge(inPKR, true);
   } catch (e) {
     log.debug('Wallet:' + this.id + '## WALLET ERROR', e);
-    this.emit('connectionError', e.message);
+    this.emitAndKeepAlive('connectionError', e.message);
     return;
   }
   if (hasChanged) {
@@ -398,7 +404,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
       this._lockIncomming();
     }
     this._newAddresses();
-    this.store();
+    this.emitAndKeepAlive('hasChange');
   }
 };
 
@@ -431,7 +437,7 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
     };
   }
   if (ev)
-    this.emit('txProposalEvent', ev);
+    this.emitAndKeepAlive('txProposalEvent', ev);
 };
 
 
@@ -538,8 +544,8 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
         if (ret) {
           if (!m.txp.getSent()) {
             m.txp.setSent(m.ntxid);
-            self.emit('txProposalsUpdated');
-            self.store();
+            self.emitAndKeepAlive('txProposalsUpdated');
+            self.emit('hasChange');
           }
         }
       });
@@ -549,8 +555,8 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
       }
     }
 
-    this.emit('txProposalsUpdated');
-    this.store();
+    this.emitAndKeepAlive('txProposalsUpdated');
+    this.emit('hasChange');
   }
   this._processProposalEvents(senderId, m);
 };
@@ -578,7 +584,7 @@ Wallet.prototype._onReject = function(senderId, data) {
     throw new Error('Received Reject for an already signed TX from:' + senderId);
 
   txp.setRejected(senderId);
-  this.store();
+  this.emitAndKeepAlive('hasChange');
 
   this.emit('txProposalsUpdated');
   this.emit('txProposalEvent', {
@@ -604,7 +610,7 @@ Wallet.prototype._onSeen = function(senderId, data) {
 
   var txp = this.txProposals.get(data.ntxid);
   txp.setSeen(senderId);
-  this.store();
+  this.emitAndKeepAlive('hasChange');
   this.emit('txProposalsUpdated');
   this.emit('txProposalEvent', {
     type: 'seen',
@@ -641,8 +647,8 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
     }
   }
   if (hasChange) {
-    this.emit('addressBookUpdated');
-    this.store();
+    this.emitAndKeepAlive('addressBookUpdated');
+    this.emit('hasChange');
   }
 };
 
@@ -688,7 +694,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     log.debug('Wallet:' + this.id + ' Received corrupt message:', data)
-    this.emit('corrupt', senderId);
+    this.emitAndKeepAlive('corrupt', senderId);
     return;
   }
 
@@ -747,7 +753,7 @@ Wallet.prototype._onConnect = function(newCopayerId) {
   }
 
   var peerID = this.network.peerFromCopayer(newCopayerId);
-  this.emit('connect', peerID);
+  this.emitAndKeepAlive('connect', peerID);
 };
 
 /**
@@ -884,12 +890,12 @@ Wallet.prototype._setBlockchainListeners = function() {
   log.debug('Setting Blockchain listeners for', this.getId());
   self.blockchain.on('reconnect', function(attempts) {
     log.debug('Wallet:' + self.id + 'blockchain reconnect event');
-    self.emit('insightReconnected');
+    self.emitAndKeepAlive('insightReconnected');
   });
 
   self.blockchain.on('disconnect', function() {
     log.debug('Wallet:' + self.id + 'blockchain disconnect event');
-    self.emit('insightError');
+    self.emitAndKeepAlive('insightError');
   });
   self.blockchain.on('tx', function(tx) {
     log.debug('Wallet:' + self.id + ' blockchain tx event');
@@ -898,12 +904,12 @@ Wallet.prototype._setBlockchainListeners = function() {
       addressStr: tx.address
     });
     if (addr) {
-      self.emit('tx', tx.address, addr.isChange);
+      self.emitAndKeepAlive('tx', tx.address, addr.isChange);
     }
   });
 
   if (!self.spendUnconfirmed) {
-    self.blockchain.on('block', self.emit.bind(self, 'balanceUpdated'));
+    self.blockchain.on('block', self.emitAndKeepAlive.bind(self, 'balanceUpdated'));
   }
 }
 
@@ -928,7 +934,7 @@ Wallet.prototype.netStart = function() {
   net.on('data', self._onData.bind(self));
   net.on('no messages', self._onNoMessages.bind(self));
   net.on('connect_error', function() {
-    self.emit('connectionError');
+    self.emitAndKeepAlive('connectionError');
   });
 
   if (this.publicKeyRing.isComplete()) {
@@ -939,7 +945,7 @@ Wallet.prototype.netStart = function() {
 
   if (net.started) {
     log.debug('Wallet:' + self.id + ' Wallet networking was ready')
-    self.emit('ready', net.getPeer());
+    self.emitAndKeepAlive('ready', net.getPeer());
     return;
   }
 
@@ -961,11 +967,11 @@ Wallet.prototype.netStart = function() {
   net.start(startOpts, function() {
     log.debug('Wallet:' + self.id + ' Networking ready:', net.copayerId);
     self._setBlockchainListeners();
-    self.emit('ready', net.getPeer());
+    self.emitAndKeepAlive('ready', net.getPeer());
     setTimeout(function() {
       self._newAddresses(true);
       // no connection logic for now
-      self.emit('txProposalsUpdated');
+      self.emitAndKeepAlive('txProposalsUpdated');
     }, 0);
   });
 };
@@ -1021,27 +1027,11 @@ Wallet.prototype.keepAlive = function() {
   this.lock.keepAlive(function(err) {
     if (err) {
       log.debug(err);
-      self.emit('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
+      self.emitAndKeepAlive('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
     }
   });
 };
 
-/**
- * @desc Store the wallet's state
- * @param {function} callback (err)
- */
-Wallet.prototype.store = function(cb) {
-  var self = this;
-  this.keepAlive();
-
-  var val = this.toObj();
-  var key = Wallet.key(this.id + ((val.opts && val.opts.name) ? '_' + val.opts.name : ''));
-  this.storage.set(key, val, function(err) {
-    log.debug('Wallet:' + self.id + '  stored');
-    if (cb)
-      cb(err);
-  });
-};
 
 
 Wallet.prototype.getId = function() {
@@ -1342,7 +1332,7 @@ Wallet.prototype._doGenerateAddress = function(isChange) {
 Wallet.prototype.generateAddress = function(isChange, cb) {
   var addr = this._doGenerateAddress(isChange);
   this.sendIndexes();
-  this.store();
+  this.emitAndKeepAlive('hasChange');
   if (cb) return cb(addr);
   return addr;
 };
@@ -1383,7 +1373,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   } else {
     this.txProposals.deletePending(this.maxRejectCount());
   }
-  this.store();
+  this.emitAndKeepAlive('hasChange');
 
   var n = this.txProposals.length();
   return m - n;
@@ -1397,7 +1387,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
 Wallet.prototype.reject = function(ntxid) {
   var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
   this.sendReject(ntxid);
-  this.store();
+  this.emitAndKeepAlive('hasChange');
   this.emit('txProposalsUpdated');
 };
 
@@ -1439,7 +1429,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
     if (txp.countSignatures() > before) {
       txp.signedBy[myId] = Date.now();
       self.sendTxProposal(ntxid);
-      self.store();
+      self.emitAndKeepAlive('hasChange');
       self.emit('txProposalsUpdated');
       ret = true;
     }
@@ -1478,13 +1468,13 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
-      self.store();
+      self.emitAndKeepAlive('hasChange');
       return cb(txid);
     } else {
       log.debug('Wallet:' + self.id + ' Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
-          self.store();
+          self.emitAndKeepAlive('hasChange');
 
         return cb(txid);
       });
@@ -1694,7 +1684,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
-      self.store();
+      self.emitAndKeepAlive('hasChange');
       self.emit('txProposalsUpdated');
     }
 
@@ -1827,7 +1817,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       log.debug('XHR status: ' + status);
       return self._checkSentTx(ntxid, function(txid) {
         log.debug('[Wallet.js.1581:txid:%s]', txid);
-        if (txid) self.store();
+        if (txid) 
+          self.emitAndKeepAlive('hasChange');
         return cb(txid, txp.merchant);
       });
     });
@@ -1859,7 +1850,8 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
       log.debug('Sending to server was not met with a returned tx.');
       return this._checkSentTx(ntxid, function(txid) {
         log.debug('[Wallet.js.1613:txid:%s]', txid);
-        if (txid) self.store();
+        if (txid) 
+          self.emitAndKeepAlive('hasChange');
         return cb(txid, txp.merchant);
       });
     }
@@ -1886,13 +1878,13 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
-      self.store();
+      self.emitAndKeepAlive('hasChange');
       return cb(txid, txp.merchant);
     } else {
       log.debug('Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
-          self.store();
+          self.emitAndKeepAlive('hasChange');
 
         return cb(txid, txp.merchant);
       });
@@ -2377,8 +2369,8 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
     });
 
     if (proposalsChanged) {
-      self.emit('txProposalsUpdated');
-      self.store();
+      self.emitAndKeepAlive('txProposalsUpdated');
+      self.emit('hasChange');
     }
 
     return cb();
@@ -2413,7 +2405,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
 
     self.sendIndexes();
     self.sendTxProposal(ntxid);
-    self.store();
+    self.emitAndKeepAlive('hasChange');
     self.emit('txProposalsUpdated');
     return cb(null, ntxid);
   });
@@ -2512,7 +2504,7 @@ Wallet.prototype.updateIndexes = function(callback) {
     if (err) callback(err);
     log.debug('Wallet:' + self.id + ' Indexes updated');
     self._newAddresses();
-    self.store();
+    self.emitAndKeepAlive('hasChange');
     callback();
   });
 };
@@ -2669,7 +2661,7 @@ Wallet.prototype.setAddressBook = function(key, label) {
   };
   this.addressBook[key] = newEntry;
   this.sendAddressBook();
-  this.store();
+  this.emitAndKeepAlive('hasChange');
 };
 
 /**
@@ -2699,7 +2691,7 @@ Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
 Wallet.prototype.toggleAddressBookEntry = function(key) {
   if (!key) throw new Error('Key is required');
   this.addressBook[key].hidden = !this.addressBook[key].hidden;
-  this.store();
+  this.emitAndKeepAlive('hasChange');
 };
 
 /**
@@ -2736,7 +2728,7 @@ Wallet.prototype.setBackupReady = function(forcedLogin) {
   this.forcedLogin = forcedLogin;
   this.publicKeyRing.setBackupReady();
   this.sendPublicKeyRing();
-  this.store();
+  this.emitAndKeepAlive('hasChange');
 };
 
 /**
@@ -2867,6 +2859,8 @@ Wallet.prototype.migrateWallet = function(walletId, passphrase, cb) {
   self.read_Old(walletId, null, function(err, wallet) {
     if (err) return cb(err);
 
+    // TODO
+    TODO(fix_this);
     wallet.store(function(err) {
       if (err) return cb(err);
 
