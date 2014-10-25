@@ -2,7 +2,6 @@
 
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
-var Storage = copay.Storage;
 var Network = requireMock('FakeNetwork');
 var Blockchain = requireMock('FakeBlockchain');
 var Builder = requireMock('FakeBuilder');
@@ -26,7 +25,6 @@ var walletConfig = {
   spendUnconfirmed: true,
   reconnectDelay: 100,
   networkName: 'testnet',
-  storage: requireMock('FakeLocalStorage').storageParams,
   // network layer config
   networkOpts: {
     testnet: {
@@ -94,11 +92,7 @@ describe('Wallet model', function() {
       networkName: c.networkName,
     });
 
-    var storage = new Storage(walletConfig.storage);
-    storage._setPassphrase('xxx');
-
     c.blockchain = new Blockchain(walletConfig.blockchain);
-    c.storage = storage;
 
     c.network = sinon.stub();
     c.network.setHexNonce = sinon.stub();
@@ -143,7 +137,6 @@ describe('Wallet model', function() {
     Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
 
     var w = Wallet.fromObj(cachedWobj, {
-      storage: cachedW.storage,
       blockchainOpts: {},
       networkOpts: {},
     });
@@ -216,7 +209,6 @@ describe('Wallet model', function() {
     Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
 
     var w = Wallet.fromObj(cachedW2obj, {
-      storage: cachedW2.storage,
       blockchainOpts: {},
       networkOpts: {},
     });
@@ -378,10 +370,7 @@ describe('Wallet model', function() {
     // non stored options
     o.opts.reconnectDelay = 100;
 
-    var s = new Storage(walletConfig.storage);
-    s._setPassphrase('xxx');
     var w2 = Wallet.fromObj(o, {
-      storage: s,
       blockchainOpts: {},
       networkOpts: {},
     });
@@ -1879,14 +1868,12 @@ describe('Wallet model', function() {
   });
 
   describe('#fromObj / #toObj', function() {
-    var storage = new Storage(walletConfig.storage);
     var network = new Network(walletConfig.network);
     var blockchain = new Blockchain(walletConfig.blockchain);
 
     it('Import backup using old copayerIndex', function() {
 
       var w = Wallet.fromObj(JSON.parse(o), {
-        storage: storage,
         blockchainOpts: {},
         networkOpts: {},
       });
@@ -1901,7 +1888,6 @@ describe('Wallet model', function() {
 
     it('#fromObj, skipping fields', function() {
       var w = Wallet.fromObj(JSON.parse(o), {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
         skipFields: ['publicKeyRing'],
@@ -1922,7 +1908,6 @@ describe('Wallet model', function() {
       var o2 = '{"opts":{"id":"dbfe10c3fae71cea","spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5","networkName":"testnet"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":[{"copayerIndex":2147483647,"changeIndex":0,"receiveIndex":0},{"copayerIndex":0,"changeIndex":0,"receiveIndex":0},{"copayerIndex":1,"changeIndex":0,"receiveIndex":0},{"copayerIndex":2,"changeIndex":0,"receiveIndex":0},{"copayerIndex":3,"changeIndex":0,"receiveIndex":0},{"copayerIndex":4,"changeIndex":0,"receiveIndex":0}],"copayersBackup":[],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{}}';
 
       var w = Wallet.fromObj(JSON.parse(o), {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
       });
@@ -2179,22 +2164,18 @@ describe('Wallet model', function() {
 
 
   describe('#read', function() {
-    var storage, network, blockchain;
+    var network, blockchain;
 
     beforeEach(function() {
       var s = function() {};
-      storage = new s();
       network = new Network(walletConfig.network);
       blockchain = new Blockchain(walletConfig.blockchain);
-      storage.setPassword = sinon.stub();
     });
 
 
     it('should fail to read an unexisting wallet', function(done) {
-      storage.getFirst = sinon.stub().yields(null);
 
       Wallet.read('123', {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
       }, function(err, w) {
@@ -2205,10 +2186,7 @@ describe('Wallet model', function() {
 
     it('should not read a corrupted wallet', function(done) {
 
-      storage.getFirst = sinon.stub().yields(null, '{hola:1}');
-
       Wallet.read('123', {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
       }, function(err, w) {
@@ -2218,9 +2196,7 @@ describe('Wallet model', function() {
     });
 
     it('should read a wallet', function(done) {
-      storage.getFirst = sinon.stub().yields(null, JSON.parse(o));
       Wallet.read('123', {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
       }, function(err, w) {
@@ -2230,9 +2206,7 @@ describe('Wallet model', function() {
     });
 
     it('should be able to import unencrypted legacy wallet TxProposal: v0', function(done) {
-      storage.getFirst = sinon.stub().yields(null, JSON.parse(legacyO));
       Wallet.read('123', {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
       }, function(err, w) {
@@ -2246,10 +2220,8 @@ describe('Wallet model', function() {
     });
 
     it('should be able to import simple 1-of-1 encrypted legacy testnet wallet', function(done) {
-      storage.getFirst = sinon.stub().yields(null, JSON.parse(legacy1));
 
       Wallet.read('123', {
-        storage: storage,
         networkOpts: {},
         blockchainOpts: {},
       }, function(err, w) {

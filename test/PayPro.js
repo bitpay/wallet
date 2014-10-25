@@ -10,9 +10,6 @@ var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var bignum = bitcore.Bignum;
 var startServer = copay.FakePayProServer; // TODO should be require('./mocks/FakePayProServer');
-var localMock = requireMock('FakeLocalStorage');
-var sessionMock = requireMock('FakeLocalStorage');
-var Storage = copay.Storage;
 
 var server;
 
@@ -21,8 +18,7 @@ var walletConfig = {
   totalCopayers: 1,
   spendUnconfirmed: true,
   reconnectDelay: 100,
-  networkName: 'testnet',
-  storage: requireMock('FakeLocalStorage').storageParams,
+  networkName: 'testnet'
 };
 
 var getNewEpk = function() {
@@ -57,11 +53,8 @@ describe('PayPro (in Wallet) model', function() {
         networkName: c.networkName,
       });
 
-      var storage = new Storage(walletConfig.storage);
-      storage._setPassphrase('xxx');
       var network = new Network(walletConfig.network);
       var blockchain = new Blockchain(walletConfig.blockchain);
-      c.storage = storage;
       c.network = network;
       c.blockchain = blockchain;
 
@@ -135,7 +128,6 @@ describe('PayPro (in Wallet) model', function() {
       Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
 
       var w = Wallet.fromObj(cachedW2obj, {
-        storage: cachedW2.storage,
         blockchainOpts: {},
         networkOpts: {},
       });

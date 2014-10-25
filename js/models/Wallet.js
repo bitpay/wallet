@@ -24,7 +24,6 @@ var PublicKeyRing = require('./PublicKeyRing');
 var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
-var WalletLock = require('./WalletLock');
 var Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
