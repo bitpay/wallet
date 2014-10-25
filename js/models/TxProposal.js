@@ -1,7 +1,7 @@
 'use strict';
 
 var bitcore = require('bitcore');
-var _ = require('underscore');
+var _ = require('lodash');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var BuilderMockV0 = require('./BuilderMockV0');;

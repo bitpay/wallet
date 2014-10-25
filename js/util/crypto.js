@@ -3,7 +3,7 @@
  */
 var sjcl = require('sjcl');
 var log = require('../log.js');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var SALT = 'copay random string NWRlNmExMTE4NzIzYzYyYWMwODU1MTdkN';
 var SEPARATOR = '&';
