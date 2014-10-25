@@ -26,7 +26,7 @@ function assertObjectEqual(a, b) {
 
 
 describe.only('Identity model', function() {
-  var params, wallet;
+  var wallet;
   var email = 'hola@hola.com';
   var password = 'password';
   var blockchain;
@@ -61,7 +61,7 @@ describe.only('Identity model', function() {
     },
     version: '0.0.1'
   };
-    
+
   function getDefaultParams() {
     var params = _.clone(config);
     _.extend(params, {
@@ -77,6 +77,16 @@ describe.only('Identity model', function() {
     return params;
   }
 
+  function getNewWallet() {
+    var wallet = sinon.stub();
+    wallet.on = sinon.stub().yields(null);
+    wallet.netStart = sinon.stub();
+    wallet.toObj = sinon.stub();
+    wallet.getName = sinon.stub().returns('walletname');
+    wallet.getId = sinon.stub().returns('wid:123');
+    return wallet;
+  }
+
   function createIdentity(done) {
     console.error("Reseting");
 
@@ -85,17 +95,17 @@ describe.only('Identity model', function() {
     blockchain.on = sinon.stub();
     Wallet._newInsight = sinon.stub().returns(blockchain);
 
-    wallet = sinon.stub();
-    wallet.on = sinon.stub().yields(null);
-    wallet.netStart = sinon.stub();
-    wallet.toObj = sinon.stub();
-    wallet.getName = sinon.stub().returns('walletname');
-    wallet.getId = sinon.stub().returns('wid:123');
+    wallet = getNewWallet();
     Identity._newWallet = sinon.stub().returns(wallet);
 
     params = getDefaultParams();
-
     Identity.create(params, done);
+    return {
+      blockchain: blockchain,
+      storage: params.storage,
+      wallet: wallet,
+      params: params
+    };
   };
 
   describe('new Identity()', function() {
@@ -108,37 +118,16 @@ describe.only('Identity model', function() {
 
   describe('Identity.create()', function() {
     it('should call .store', function(done) {
-      Identity.create(params, function(err, iden) {
-
+      blockchain.on = sinon.spy();
+      Identity.create(getDefaultParams(), function(err, iden) {
         should.not.exist(err);
-        should.exist(iden.profile.addWallet);
-
-        Identity._createProfile.getCall(0).args[0].should.deep.equal(email);
-        Identity._createProfile.getCall(0).args[1].should.deep.equal(password);
+        should.exist(iden.wallets);
         done();
       });
     });
   });
 
   describe('#open', function(done) {
-    beforeEach(function() {
-      storage.getFirst = sinon.stub().yields(null, 'wallet1234');
-      profile.listWallets = sinon.stub().returns([{
-        id: 'walletid'
-      }]);
-      profile.getLastFocusedWallet = sinon.stub().returns(null);
-      Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
-      Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
-    });
-
-    it('should call ._openProfile', function(done) {
-      Identity.open(email, password, config, function(err, iden, w) {
-        Identity._openProfile.calledOnce.should.equal(true);
-        should.not.exist(err);
-        iden.profile.should.equal(profile);
-        done();
-      });
-    });
 
     it('should return last focused wallet', function(done) {
       var wallets = [{
@@ -154,8 +143,9 @@ describe.only('Identity model', function() {
         store: sinon.stub().yields(null),
         netStart: sinon.stub(),
       }];
-      profile.listWallets = sinon.stub().returns(wallets);
-      profile.getLastFocusedWallet = sinon.stub().returns(wallets[1]);
+      createIdentity(function(identity) {
+      });
+      .getLastFocusedWallet = sinon.stub().returns(wallets[1]);
       Identity._walletRead = sinon.stub();
       Identity._walletRead.onCall(0).callsArgWith(2, null, wallets[0]);
       Identity._walletRead.onCall(1).callsArgWith(2, null, wallets[1]);
