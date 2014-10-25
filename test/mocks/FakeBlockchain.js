@@ -60,4 +60,7 @@ FakeBlockchain.prototype.checkSentTx = function (tx, cb) {
   return cb(null, txid);  
 };
 
+FakeBlockchain.prototype.removeAllListeners = function() {
+};
+
 module.exports = FakeBlockchain;

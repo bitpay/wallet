@@ -8,15 +8,11 @@ var should = chai.should();
 var PluginManager = require('../js/models/PluginManager');
 var Insight = require('../js/models/Insight');
 
-
-var FakeBlockchain = requireMock('FakeBlockchain');
-var FakeStorage = function FakeStorage() {};
 var Identity = copay.Identity;
+var Wallet = copay.Wallet;
 var Passphrase = copay.Passphrase;
-var mockLocalStorage = requireMock('FakeLocalStorage');
-var mockSessionStorage = requireMock('FakeLocalStorage');
 
-
+var FakeBlockchain = require('./mocks/FakeBlockchain');
 
 var PERSISTED_PROPERTIES = (copay.Wallet || require('../js/models/Wallet')).PERSISTED_PROPERTIES;
 
@@ -29,56 +25,11 @@ function assertObjectEqual(a, b) {
 }
 
 
-describe('Identity model', function() {
-  var iden, storage, wallet, profile;
-
-  beforeEach(function(done) {
-    storage = sinon.stub();
-    storage.getItem = sinon.stub();
-    storage.set = sinon.stub().yields(null);
-    storage.savePassphrase = sinon.spy();
-    storage.restorePassphrase = sinon.spy();
-    storage.setPassword = sinon.spy();
-    storage.hasPassphrase = sinon.stub().returns(true);
-    storage.getSessionId = sinon.spy();
-    storage.setFromObj = sinon.spy();
-    storage.deletePrefix = sinon.stub().yields(null);
-    Identity._newStorage = sinon.stub().returns(storage);
-
-
-    wallet = sinon.stub();
-    wallet.on = sinon.stub().yields(null);
-    wallet.netStart = sinon.stub();
-    wallet.toObj = sinon.stub();
-    wallet.getName = sinon.stub().returns('walletname');
-    wallet.getId = sinon.stub().returns('wid:123');
-    Identity._newWallet = sinon.stub().returns(wallet);
-
-    profile = sinon.stub();
-    profile.addWallet = sinon.stub().yields(null);;
-    profile.deleteWallet = sinon.stub().yields(null);;
-    profile.listWallets = sinon.stub().returns([]);
-    profile.setLastOpenedTs = sinon.stub().yields(null);;
-    profile.store = sinon.stub().yields(null);;
-    profile.getName = sinon.stub().returns('profile name');;
-    Identity._createProfile = sinon.stub().callsArgWith(3, null, profile);
-
-
-
-    Identity.create(email, password, config, function(err, i) {
-      iden = i;
-      done();
-    });
-  });
-
-
-  afterEach(function() {
-    iden = storage = wallet = profile = undefined;
-  });
-
-
+describe.only('Identity model', function() {
+  var params, wallet;
   var email = 'hola@hola.com';
   var password = 'password';
+  var blockchain;
 
   var config = {
     walletDefaults: {
@@ -108,80 +59,115 @@ describe('Identity model', function() {
         url: 'https://insight.bitpay.com:443'
       },
     },
-    version: '0.0.1',
+    version: '0.0.1'
+  };
+    
+  function getDefaultParams() {
+    var params = _.clone(config);
+    _.extend(params, {
+      email: email,
+      password: password
+    });
+    params.storage = sinon.stub();
+    params.storage.setCredentials = sinon.stub();
+    params.storage.getItem = sinon.stub();
+    params.storage.setItem = sinon.stub();
+    params.storage.setItem.onFirstCall().callsArgWith(2, null);
+    params.storage.setItem.onSecondCall().callsArgWith(2, null);
+    return params;
+  }
+
+  function createIdentity(done) {
+    console.error("Reseting");
+
+    // TODO (eordano): Change this to proper dependency injection
+    blockchain = new FakeBlockchain(config.blockchain);
+    blockchain.on = sinon.stub();
+    Wallet._newInsight = sinon.stub().returns(blockchain);
+
+    wallet = sinon.stub();
+    wallet.on = sinon.stub().yields(null);
+    wallet.netStart = sinon.stub();
+    wallet.toObj = sinon.stub();
+    wallet.getName = sinon.stub().returns('walletname');
+    wallet.getId = sinon.stub().returns('wid:123');
+    Identity._newWallet = sinon.stub().returns(wallet);
+
+    params = getDefaultParams();
+
+    Identity.create(params, done);
   };
 
-  describe('#constructors', function() {
-    describe('#new', function() {
-      it('should create an identity', function() {
-        var iden = new Identity(password, config);
-        should.exist(iden);
-        iden.walletDefaults.should.deep.equal(config.walletDefaults);
-      });
+  describe('new Identity()', function() {
+    it('returns an identity', function() {
+      var iden = new Identity(getDefaultParams());
+      should.exist(iden);
+      iden.walletDefaults.should.deep.equal(config.walletDefaults);
     });
+  });
 
-    describe('#create', function(done) {
-      it('should call .store', function(done) {
-        Identity.create(email, password, config, function(err, iden) {
+  describe('Identity.create()', function() {
+    it('should call .store', function(done) {
+      Identity.create(params, function(err, iden) {
 
-          should.not.exist(err);
-          should.exist(iden.profile.addWallet);
+        should.not.exist(err);
+        should.exist(iden.profile.addWallet);
 
-          Identity._createProfile.getCall(0).args[0].should.deep.equal(email);
-          Identity._createProfile.getCall(0).args[1].should.deep.equal(password);
-          done();
-        });
-      });
-    });
-
-    describe('#open', function(done) {
-      beforeEach(function() {
-        storage.getFirst = sinon.stub().yields(null, 'wallet1234');
-        profile.listWallets = sinon.stub().returns([{
-          id: 'walletid'
-        }]);
-        profile.getLastFocusedWallet = sinon.stub().returns(null);
-        Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
-        Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
-      });
-
-      it('should call ._openProfile', function(done) {
-        Identity.open(email, password, config, function(err, iden, w) {
-          Identity._openProfile.calledOnce.should.equal(true);
-          should.not.exist(err);
-          iden.profile.should.equal(profile);
-          done();
-        });
-      });
-
-      it('should return last focused wallet', function(done) {
-        var wallets = [{
-          id: 'wallet1',
-          store: sinon.stub().yields(null),
-          netStart: sinon.stub(),
-        }, {
-          id: 'wallet2',
-          store: sinon.stub().yields(null),
-          netStart: sinon.stub(),
-        }, {
-          id: 'wallet3',
-          store: sinon.stub().yields(null),
-          netStart: sinon.stub(),
-        }];
-        profile.listWallets = sinon.stub().returns(wallets);
-        profile.getLastFocusedWallet = sinon.stub().returns(wallets[1]);
-        Identity._walletRead = sinon.stub();
-        Identity._walletRead.onCall(0).callsArgWith(2, null, wallets[0]);
-        Identity._walletRead.onCall(1).callsArgWith(2, null, wallets[1]);
-        Identity._walletRead.onCall(2).callsArgWith(2, null, wallets[2]);
-
-        Identity.open(email, password, config, function(err, iden, w) {
-          w.id.should.equal('wallet2');
-          done();
-        });
+        Identity._createProfile.getCall(0).args[0].should.deep.equal(email);
+        Identity._createProfile.getCall(0).args[1].should.deep.equal(password);
+        done();
       });
     });
   });
+
+  describe('#open', function(done) {
+    beforeEach(function() {
+      storage.getFirst = sinon.stub().yields(null, 'wallet1234');
+      profile.listWallets = sinon.stub().returns([{
+        id: 'walletid'
+      }]);
+      profile.getLastFocusedWallet = sinon.stub().returns(null);
+      Identity._openProfile = sinon.stub().callsArgWith(3, null, profile);
+      Identity._walletRead = sinon.stub().callsArgWith(2, null, wallet);
+    });
+
+    it('should call ._openProfile', function(done) {
+      Identity.open(email, password, config, function(err, iden, w) {
+        Identity._openProfile.calledOnce.should.equal(true);
+        should.not.exist(err);
+        iden.profile.should.equal(profile);
+        done();
+      });
+    });
+
+    it('should return last focused wallet', function(done) {
+      var wallets = [{
+        id: 'wallet1',
+        store: sinon.stub().yields(null),
+        netStart: sinon.stub(),
+      }, {
+        id: 'wallet2',
+        store: sinon.stub().yields(null),
+        netStart: sinon.stub(),
+      }, {
+        id: 'wallet3',
+        store: sinon.stub().yields(null),
+        netStart: sinon.stub(),
+      }];
+      profile.listWallets = sinon.stub().returns(wallets);
+      profile.getLastFocusedWallet = sinon.stub().returns(wallets[1]);
+      Identity._walletRead = sinon.stub();
+      Identity._walletRead.onCall(0).callsArgWith(2, null, wallets[0]);
+      Identity._walletRead.onCall(1).callsArgWith(2, null, wallets[1]);
+      Identity._walletRead.onCall(2).callsArgWith(2, null, wallets[2]);
+
+      Identity.open(email, password, config, function(err, iden, w) {
+        w.id.should.equal('wallet2');
+        done();
+      });
+    });
+  });
+
   describe('#store', function() {
 
     it('should call .store from profile and no wallets', function(done) {
@@ -417,7 +403,9 @@ describe('Identity model', function() {
     });
   });
 
-
+  /**
+   * TODO (eordano): Move this to a different test file
+   *
   describe('#pluginManager', function() {
     it('should create a new PluginManager object', function() {
       var pm = new PluginManager({plugins: { FakeLocalStorage: true }, pluginsPath: '../../test/mocks/'});
@@ -431,6 +419,7 @@ describe('Identity model', function() {
       should.exist(uri);
     });
   });
+   */
 
   describe('#joinWallet', function() {
     var opts = {
