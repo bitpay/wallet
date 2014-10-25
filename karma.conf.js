@@ -31,7 +31,7 @@ module.exports = function(config) {
       'lib/angular-load/angular-load.min.js',
       'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/inherits/inherits.js',
-      'lib/underscore/underscore.js',
+      'lib/lodash/dist/lodash.js',
       'lib/file-saver/FileSaver.js',
       'lib/socket.io-client/socket.io.js',
       'lib/sjcl.js',

@@ -1,7 +1,7 @@
 'use strict';
 var preconditions = require('preconditions').singleton();
 
-var _ = require('underscore');
+var _ = require('lodash');
 var bitcore = require('bitcore');
 var log = require('../log');
 var async = require('async');

@@ -7,7 +7,7 @@
 var sjcl = require('../../lib/sjcl');
 
 var preconditions = require('preconditions').instance();
-var _ = require('underscore');
+var _ = require('lodash');
 
 
 /**

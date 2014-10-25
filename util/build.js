@@ -45,7 +45,7 @@ var createBundle = function(opts) {
   b.require('browser-request', {
     expose: 'request'
   });
-  b.require('underscore');
+  b.require('lodash');
   b.require('querystring');
   b.require('assert');
   b.require('preconditions');
@@ -65,9 +65,6 @@ var createBundle = function(opts) {
   b.require('./js/models/Wallet');
   b.require('./js/models/Wallet', {
     expose: '../../js/models/Wallet'
-  });
-  b.require('./js/models/WalletLock', {
-    expose: '../js/models/WalletLock'
   });
   b.require('./js/models/Insight', {
     expose: '../js/models/Insight'
@@ -114,9 +111,6 @@ var createBundle = function(opts) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
-    b.require('./test/mocks/FakeLocalStorage', {
-      expose: './mocks/FakeLocalStorage'
-    });
     b.require('./test/mocks/FakeBlockchain', {
       expose: './mocks/FakeBlockchain'
     });
