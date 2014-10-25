@@ -2,9 +2,7 @@
 
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager, identityService) {
   controllerUtils.redirIfLogged();
-  $scope.retreiving = true;
-
-  identityService.check($scope);
+  $scope.retreiving = false;
 
   $scope.openProfile = function(form) {
     if (form && form.$invalid) {
