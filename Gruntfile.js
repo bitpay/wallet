@@ -85,7 +85,7 @@ module.exports = function(grunt) {
         tasks: ['shell:dev', 'concat:main']
       },
       test: {
-        files: ['test/models/*.js'],
+        files: ['test/*.js'],
         tasks: ['mochaTest']
       }
     },

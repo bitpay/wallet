@@ -117,17 +117,17 @@ Identity.prototype.createDefaultWallet = function(opts, callback) {
 /**
  * Open an Identity from the given storage
  *
- * @param {string} email
- * @param {string} password
  * @param {Object} opts
  * @param {Object} opts.storage
+ * @param {string} opts.email
+ * @param {string} opts.password
  * @param {Function} cb
  */
-Identity.open = function(email, password, opts, cb) {
+Identity.open = function(opts, cb) {
 
   var storage = opts.storage || opts.pluginManager.get('DB');
-  storage.setCredentials(email, password, opts);
-  storage.getItem(Identity.getKeyForEmail(email), function(err, data) {
+  storage.setCredentials(opts.email, opts.password, opts);
+  storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data) {
     if (err) {
       return cb(err);
     }
@@ -239,7 +239,7 @@ Identity.prototype.exportWithWalletInfo = function() {
  */
 Identity.prototype.store = function(opts, cb) {
   var self = this;
-  self.storage.setItem(this.getStorageKey(), this.toObj(), function(err) {
+  self.storage.setItem(this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
     async.map(self.wallets, self.storeWallet, cb);
   });
@@ -333,7 +333,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
       if (err) {
         return cb(err);
       }
-      return cb(null, iden, iden.openWallets[0]);
+      return cb(null, iden);
     });
   });
 };
@@ -466,36 +466,6 @@ Identity.prototype._checkVersion = function(inVersion) {
       '. Aborting.');
   }
 };
-
-/**
- * @desc Retrieve a wallet from the storage
- * @param {string} walletId - the id of the wallet
- * @param {function} callback (err, {Wallet})
- * @return
- */
-Identity.prototype.openWallet = function(walletId, cb) {
-  preconditions.checkArgument(cb);
-  preconditions.checkState(this.storage.hasPassphrase());
-
-  var self = this;
-  // TODO
-  //  self.migrateWallet(walletId, password, function() {
-  //
-
-  self.readWallet(walletId, {
-    networkOpts: this.networkOpts,
-    blockchainOpts: this.blockchainOpts
-  }, function(err, w) {
-    if (err) return cb(err);
-    self.bindWallet(w);
-    self.storeWallet(w, function(err) {
-      w.netStart();
-      return cb(err, w);
-    });
-  });
-  //  });
-};
-
 
 /**
  * @param {string} walletId
