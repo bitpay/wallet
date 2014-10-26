@@ -4,7 +4,7 @@
 
 var preconditions = require('preconditions').singleton();
 var HDPath = require('./HDPath');
-var _ = require('underscore');
+var _ = require('lodash');
 
 /**
  * @desc
