@@ -1,18 +1,19 @@
 'use strict';
 
+var MINS_IN_HOUR = 60;
+var MILLIS_IN_SECOND = 1000;
+
 var RateService = function(request) {
   this.isAvailable = false;
   this.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable or use service.whenAvailable';
   this.SAT_TO_BTC = 1 / 1e8;
   this.BTC_TO_SAT = 1e8;
-  var MINS_IN_HOUR = 60;
-  var MILLIS_IN_SECOND = 1000;
   var rateServiceConfig = config.rate;
   var updateFrequencySeconds = rateServiceConfig.updateFrequencySeconds || 60 * MINS_IN_HOUR;
   var rateServiceUrl = rateServiceConfig.url || 'https://bitpay.com/api/rates';
   this.queued = [];
   this.alternatives = [];
-  var that = this;
+  var self = this;
   var backoffSeconds = 5;
   var retrieve = function() {
     request.get({
@@ -27,15 +28,15 @@ var RateService = function(request) {
       var rates = {};
       listOfCurrencies.forEach(function(element) {
         rates[element.code] = element.rate;
-        that.alternatives.push({
+        self.alternatives.push({
           name: element.name,
           isoCode: element.code,
           rate: element.rate
         });
       });
-      that.isAvailable = true;
-      that.rates = rates;
-      that.queued.forEach(function(callback) {
+      self.isAvailable = true;
+      self.rates = rates;
+      self.queued.forEach(function(callback) {
         setTimeout(callback, 1);
       });
       setTimeout(retrieve, updateFrequencySeconds * MILLIS_IN_SECOND);

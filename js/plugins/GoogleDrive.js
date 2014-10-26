@@ -3,7 +3,7 @@
 var preconditions = require('preconditions').singleton();
 var loaded = 0;
 var SCOPES = 'https://www.googleapis.com/auth/drive';
-var log = require('../js/log');
+var log = require('../log');
 
 function GoogleDrive(config) {
   preconditions.checkArgument(config && config.clientId, 'No clientId at GoogleDrive config');
@@ -54,6 +54,9 @@ GoogleDrive.prototype.checkAuth = function() {
       'immediate': this.useImmediate,
     },
     this.handleAuthResult.bind(this));
+};
+
+GoogleDrive.prototype.setCredentils = function(email, password, opts, callback) {
 };
 
 /**

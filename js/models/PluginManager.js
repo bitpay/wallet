@@ -30,7 +30,6 @@ var KIND_MULTIPLE = PluginManager.KIND_MULTIPLE = 2;
 
 PluginManager.TYPE = {};
 PluginManager.TYPE['DB'] = KIND_UNIQUE;
-PluginManager.TYPE['remote-backup'] = KIND_UNIQUE;
 
 PluginManager.prototype._register = function(obj, name) {
   preconditions.checkArgument(obj.type, 'Plugin has not type:' + name);

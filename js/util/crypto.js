@@ -1,9 +1,9 @@
 /**
  * Small module for some helpers that wrap sjcl with some good practices.
  */
-var sjcl = require('../../lib/sjcl');
+var sjcl = require('sjcl');
 var log = require('../log.js');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var SALT = 'copay random string NWRlNmExMTE4NzIzYzYyYWMwODU1MTdkN';
 var SEPARATOR = '&';
@@ -26,6 +26,9 @@ module.exports = {
    * Encrypts symmetrically using a passphrase
    */
   encrypt: function(key, message) {
+    if (!_.isString(message)) {
+      message = JSON.stringify(message);
+    }
     return sjcl.encrypt(key, message);
   },
 

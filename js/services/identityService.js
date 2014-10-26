@@ -4,32 +4,17 @@ angular.module('copayApp.services')
 .factory('identityService', function($rootScope, $location, pluginManager, controllerUtils) {
   var root = {};
 
-  root.check = function (scope) {
-    copay.Identity.anyProfile({
-      pluginManager: pluginManager,
-    }, function(anyProfile) {
-      copay.Identity.anyWallet({
-        pluginManager: pluginManager,
-      }, function(anyWallet) {
-        scope.retreiving = false;
-        scope.anyProfile = anyProfile ? true : false;
-        scope.anyWallet = anyWallet ? true : false;
-
-        if (!scope.anyProfile) {
-          $location.path('/createProfile');
-        }
-      });
-    });
-  };
-
   root.create = function (scope, form) {
-    copay.Identity.create(form.email.$modelValue, form.password.$modelValue, {
+    copay.Identity.create({
+      email: form.email.$modelValue,
+      password: form.password.$modelValue,
       pluginManager: pluginManager,
       network: config.network,
       networkName: config.networkName,
       walletDefaults: config.wallet,
       passphraseConfig: config.passphraseConfig,
-    }, function(err, iden, firstWallet) {
+    }, function(err, iden) {
+      var firstWallet = iden.getLastFocusedWallet();
       controllerUtils.bindProfile(scope, iden, firstWallet);
       scope.loading = false;
     });
@@ -37,19 +22,22 @@ angular.module('copayApp.services')
 
 
   root.open = function (scope, form) {
-    copay.Identity.open(form.email.$modelValue, form.password.$modelValue, {
+    copay.Identity.open({
+      email: form.email.$modelValue,
+      password: form.password.$modelValue, 
       pluginManager: pluginManager,
       network: config.network,
       networkName: config.networkName,
       walletDefaults: config.wallet,
       passphraseConfig: config.passphraseConfig,
-    }, function(err, iden, lastFocusedWallet) {
+    }, function(err, iden) {
       if (err && !iden) {
         console.log('Error:' + err)
       controllerUtils.onErrorDigest(
         scope, (err.toString() || '').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
       } else {
-        controllerUtils.bindProfile(scope, iden, lastFocusedWallet);
+        var firstWallet = iden.getLastFocusedWallet();
+        controllerUtils.bindProfile(scope, iden, firstWallet);
       }
       scope.loading = false;
     });

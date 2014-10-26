@@ -1,7 +1,7 @@
 'use strict';
 
 var preconditions = require('preconditions').instance();
-var _ = require('underscore');
+var _ = require('lodash');
 var log = require('../log');
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;

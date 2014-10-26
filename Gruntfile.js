@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         files: [
           'js/models/*.js',
           'js/util/*.js',
-          'plugins/*.js',
+          'js/plugins/*.js',
           'js/*.js',
           '!js/copayBundle.js',
           '!js/copayMain.js'
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
         tasks: ['shell:dev', 'concat:main']
       },
       test: {
-        files: ['test/models/*.js'],
+        files: ['test/*.js'],
         tasks: ['mochaTest']
       }
     },
@@ -118,7 +118,7 @@ module.exports = function(grunt) {
           'js/shell.js', // shell must be loaded before moment due to the way moment loads in a commonjs env
           'lib/moment/min/moment.min.js',
           'lib/qrcode-generator/js/qrcode.js',
-          'lib/underscore/underscore.js',
+          'lib/lodash/dist/lodash.js',
           'lib/bitcore.js',
           'lib/file-saver/FileSaver.js',
           'lib/socket.io-client/socket.io.js',
@@ -202,7 +202,7 @@ module.exports = function(grunt) {
     },
     jsdoc: {
       dist: {
-        src: ['js/models/*.js', 'plugins/*.js'],
+        src: ['js/models/*.js', 'js/plugins/*.js'],
         options: {
           destination: 'doc',
           configure: 'jsdoc.conf.json',

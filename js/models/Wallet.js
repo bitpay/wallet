@@ -1,7 +1,7 @@
 'use strict';
 
 var EventEmitter = require('events').EventEmitter;
-var _ = require('underscore');
+var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
@@ -24,7 +24,6 @@ var PublicKeyRing = require('./PublicKeyRing');
 var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
-var WalletLock = require('./WalletLock');
 var Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
@@ -173,10 +172,12 @@ Wallet.COPAYER_PAIR_LIMITS = {
   12: 1,
 };
 
-
-
 Wallet.getStorageKey = function(str) {
   return 'wallet::' + str;
+};
+
+Wallet.prototype.getStorageKey = function() {
+  return Wallet.getStorageKey(this.getId());
 };
 
 /* for stubbing */
@@ -218,27 +219,6 @@ Wallet.getRandomSecretNumber = function() {
 Wallet.getMaxRequiredCopayers = function(totalCopayers) {
   return Wallet.COPAYER_PAIR_LIMITS[totalCopayers];
 };
-
-/**
- * delete
- *
- * @param walletId
- * @param storage
- * @param cb
- * @return {undefined}
- */
-// Wallet.delete = function(walletId, storage, cb) {
-//   preconditions.checkArgument(cb);
-//   storage.deletePrefix(Wallet.getStorageKey(walletId), function(err) {
-//     if (err && err.message != 'not found') return cb(err);
-//     storage.deletePrefix(walletId + '::', function(err) {
-//       if (err && err.message != 'not found') return cb(err);
-//       return cb();
-//     });
-//   });
-// };
-//
-
 
 /**
  * @desc obtain network name from serialized wallet
@@ -601,11 +581,14 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
  * @desc Updates the wallet's last modified timestamp and triggers a save
  * @param {number} ts - the timestamp
  */
-Wallet.prototype.updateTimestamp = function(ts) {
+Wallet.prototype.updateTimestamp = function(ts, callback) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
   this.lastTimestamp = ts;
   // we dont store here
+  if (callback) {
+    return callback(null);
+  }
 };
 
 /**
@@ -825,12 +808,9 @@ Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
 
-
-
 Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
   self.blockchain.removeAllListeners();
-
 
   log.debug('Setting Blockchain listeners for', this.getId());
   self.blockchain.on('reconnect', function(attempts) {
@@ -1018,8 +998,6 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
   return Wallet.fromObj(o,readOpts);
 };
 
-
-
 /**
  * @desc Retrieve the wallet state from a trusted object
  *
@@ -1109,15 +1087,6 @@ Wallet.fromObj = function(o, readOpts) {
 
   return new Wallet(opts);
 };
-
-/**
- * @desc Return a base64 encrypted version of the wallet
- * @return {string} base64 encoded string
- */
-// Wallet.prototype.export = function() {
-//   var walletObj = this.toObj();
-//   return this.storage.encrypt(walletObj);
-// };
 
 /**
  * @desc Send a message to other peers

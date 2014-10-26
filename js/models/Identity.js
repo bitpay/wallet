@@ -1,8 +1,10 @@
 'use strict';
 var preconditions = require('preconditions').singleton();
 
-var _ = require('underscore');
+var _ = require('lodash');
+var bitcore = require('bitcore');
 var log = require('../log');
+var async = require('async');
 
 var version = require('../../version').version;
 var TxProposals = require('./TxProposals');
@@ -10,25 +12,30 @@ var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 var PluginManager = require('./PluginManager');
-var Profile = require('./Profile');
-var Insight = module.exports.Insight = require('./Insight');
 var Async = module.exports.Async = require('./Async');
-var Storage = module.exports.Storage = require('./Storage');
 
 /**
  * @desc
  * Identity - stores the state for a wallet in creation
  *
- * @param {Object} config - configuration for this wallet
- * @param {Object} config.wallet - default configuration for the wallet
+ * @param {Object} opts - configuration for this wallet
+ * @param {string} opts.fullName
+ * @param {string} opts.email
+ * @param {string} opts.password
+ * @param {string} opts.storage
+ * @param {string} opts.pluginManager
+ * @param {Object} opts.walletDefaults
+ * @param {string} opts.version
+ * @param {Object} opts.wallets
+ * @param {Object} opts.network
+ * @param {string} opts.network.testnet
+ * @param {string} opts.network.livenet
  * @constructor
  */
-
-function Identity(password, opts) {
+function Identity(opts) {
   preconditions.checkArgument(opts);
 
   opts = _.extend({}, opts);
-  this.storage = Identity._getStorage(opts, password);
   this.networkOpts = {
     'livenet': opts.network.livenet,
     'testnet': opts.network.testnet,
@@ -38,297 +45,205 @@ function Identity(password, opts) {
     'testnet': opts.network.testnet,
   };
 
-  this.pluginManager = opts.pluginManager || {};
-  this.insightSaveOpts = opts.insightSave || {};
+  this.fullName = opts.fullName || opts.email;
+  this.email = opts.email;
+  this.password = opts.password;
+
+  this.storage = opts.storage || opts.pluginManager.get('DB');
+  this.storage.setCredentials(this.email, this.password, {});
+
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
 
-  this.wallets = {};
+  this.wallets = opts.wallets || {};
 };
 
-
-/* for stubbing */
-Identity._createProfile = function(email, password, storage, cb) {
-  Profile.create(email, password, storage, cb);
+Identity.getKeyForEmail = function(email) {
+  return 'profile::' + bitcore.util.sha256ripe160(email).toString('hex');
 };
 
-Identity._newStorage = function(opts) {
-  return new Storage(opts);
+Identity.prototype.getId = function() {
+  return Identity.getKeyForEmail(this.email);
 };
 
-Identity._newWallet = function(opts) {
-  return new Wallet(opts);
+Identity.prototype.getName = function() {
+  return this.fullName || this.email;
 };
 
-Identity._walletFromObj = function(o, readOpts) {
-  return Wallet.fromObj(o, readOpts);
-};
+/**
+ * Creates an Identity
+ *
+ * @param opts
+ * @param cb
+ * @return {undefined}
+ */
+Identity.create = function(opts, cb) {
+  opts = _.extend({}, opts);
 
-Identity._walletDelete = function(id, s, cb) {
-  return Wallet.delete(id, s, cb);
-};
-
-/* for stubbing */
-Identity._openProfile = function(email, password, storage, cb) {
-  Profile.open(email, password, storage, cb);
-};
-
-/* for stubbing */
-Identity._newAsync = function(opts) {
-  return new Async(opts);
-};
-
-Identity._getStorage = function(opts, password) {
-  var storageOpts = {};
-
-  if (opts.pluginManager) {
-    storageOpts = _.clone({
-      db: opts.pluginManager.get('DB'),
-      passphraseConfig: opts.passphraseConfig,
-    });
+  var iden = new Identity(opts);
+  if (opts.noWallets) {
+    return cb(null, iden);
+  } else {
+    return iden.createDefaultWallet(opts, cb);
   }
-  if (password)
-    storageOpts.password = password;
-
-  return Identity._newStorage(storageOpts);
 };
 
 /**
- * check if any profile exists on storage
+ * Create a wallet, 1-of-1 named general
  *
- * @param opts.storageOpts
- * @param cb
+ * @param {Object} opts
+ * @param {Object} opts.walletDefaults
+ * @param {string} opts.walletDefaults.networkName
  */
-Identity.anyProfile = function(opts, cb) {
-  var storage = Identity._getStorage(opts);
-  storage.getFirst(Profile.key(''), {
-    onlyKey: true
-  }, function(err, v, k) {
-    return cb(k ? true : false);
-  });
-};
-
-/**
- * check if any wallet exists on storage
- *
- * @param opts.storageOpts
- * @param cb
- */
-Identity.anyWallet = function(opts, cb) {
-  var storage = Identity._getStorage(opts);
-  storage.getFirst(Wallet.getStorageKey(''), {
-    onlyKey: true
-  }, function(err, v, k) {
-    return cb(k ? true : false);
-  });
-};
-
-/**
- * creates and Identity
- *
- * @param email
- * @param password
- * @param opts
- * @param cb
- * @return {undefined}
- */
-Identity.create = function(email, password, opts, cb) {
-  opts = opts || {};
-
-  var iden = new Identity(password, opts);
-
-  Identity._createProfile(email, password, iden.storage, function(err, profile) {
-    if (err) return cb(err);
-    iden.profile = profile;
-
-    if (opts.noWallets)
-      cb(null, iden);
-
-    // default wallet
-    var dflt = _.clone(opts.walletDefaults);
-    var wopts = _.extend(dflt, {
-      nickname: email,
-      networkName: opts.networkName,
-      requiredCopayers: 1,
-      totalCopayers: 1,
-      password: password,
-      name: 'general'
-    });
-    iden.createWallet(wopts, function(err, w) {
-      if (err) {
-        return cb(err);
-      }
-      if (iden.pluginManager.get && iden.pluginManager.get('remote-backup')) {
-        iden.pluginManager.get('remote-backup').store(
-          iden,
-          iden.insightSaveOpts,
-          function(error) {
-            // FIXME: Ignoring this error may not be the best thing to do. But remote storage
-            // is not required for the user to use the wallet.
-            return cb(null, iden, w);
-          }
-        );
-      } else {
-        return cb(null, iden, w);
-      }
-    });
-  });
-};
-
-/**
- * validates Profile's email
- *
- * @param authcode
- * @param cb
- * @return {undefined}
- */
-Identity.prototype.validate = function(authcode, cb) {
-  // TODO
-  console.log('[Identity.js.99] TODO: Should validate email thru authcode'); //TODO
-  return cb();
-};
-
-
-/**
- * open's an Identity from storage
- *
- * @param email
- * @param password
- * @param opts
- * @param cb
- * @return {undefined}
- */
-Identity.open = function(email, password, opts, cb) {
-  var iden = new Identity(password, opts);
-
-  Identity._openProfile(email, password, iden.storage, function(err, profile) {
-    if (err) {
-      if (err.message && err.message.indexOf('PNOTFOUND') !== -1) {
-        if (opts.pluginManager && opts.pluginManager.get('remote-backup')) {
-          return opts.pluginManager.get('remote-backup').retrieve(email, password, opts, cb);
-        } else {
-          return cb(err);
-        }
-      }
-      return cb(err);
-    }
-    iden.profile = profile;
-
-    var wids = _.pluck(iden.listWallets(), 'id');
-    if (!wids || !wids.length)
-      return cb(new Error('Could not open any wallet from profile'), iden);
-
-    // Open All wallets from profile
-    //This could be optional, or opts.onlyOpen = wid
-    var wallets = [];
-    var remaining = wids.length;
-    _.each(wids, function(wid) {
-      iden.openWallet(wid, function(err, w) {
-        if (err) {
-          log.error('Cound not open wallet id:' + wid + '. Skipping')
-          iden.profile.deleteWallet(wid, function() {});
-        } else {
-          log.info('Open wallet id:' + wid + ' opened');
-          wallets.push(w);
-        }
-        if (--remaining == 0) {
-          var lastFocused = iden.profile.getLastFocusedWallet();
-          return cb(err, iden, lastFocused);
-        }
-      })
-    });
-  });
-};
-
-/**
- * isAvailable
- *
- * @param email
- * @param opts
- * @param cb
- * @return {undefined}
- */
-Identity.isAvailable = function(email, opts, cb) {
-  console.log('[Identity.js.127:isAvailable:] TODO'); //TODO
-  return cb();
-};
-
-Identity.prototype.readWallet = function(walletId, readOpts, cb) {
-  preconditions.checkArgument(cb);
-  var self = this,
-    err;
-  var obj = {};
-
-  this.storage.getFirst(Wallet.getStorageKey(walletId), {}, function(err, obj) {
-    if (err) return cb(err);
-
-    if (!obj)
-      return cb(new Error('WNOTFOUND: Wallet not found'));
-
-    var w, err;
-    obj.id = walletId;
-
-    try {
-      log.debug('## OPENING Wallet: ' + walletId);
-      w = Wallet.fromUntrustedObj(obj, readOpts);
-    } catch (e) {
-      log.debug("ERROR: ", e.message);
-      if (e && e.message && e.message.indexOf('MISSOPTS')) {
-        err = new Error('WERROR: Could not read: ' + walletId + ': ' + e.message);
-      } else {
-        err = e;
-      }
-      w = null;
-    }
-    return cb(err, w);
-  });
-};
-
-Identity.prototype.storeWallet = function(w, cb) {
-  preconditions.checkArgument(w && _.isObject(w));
-
-  var id = w.getId();
-  var val = w.toObj();
-  var key = Wallet.getStorageKey(id + '_' + w.getName());
-
-  this.storage.set(key, val, function(err) {
-    log.debug('Wallet:' + w.getName() + '  stored');
-
-    if (cb)
-      cb(err);
-  });
-};
-
-
-/**
- * store
- *
- * @param opts
- * @param cb
- * @return {undefined}
- */
-Identity.prototype.store = function(opts, cb) {
-  preconditions.checkState(this.profile);
+Identity.prototype.createDefaultWallet = function(opts, callback) {
 
   var self = this;
-  self.profile.store(opts, function(err) {
-    if (err) return cb(err);
-
-    var l = Object.keys(self.wallets),
-      i = 0;
-    if (!l) return cb();
-
-    _.each(self.wallets, function(w) {
-      self.storeWallet(w, function(err) {
-        if (err) return cb(err);
-
-        if (++i == l)
-          return cb();
-      })
-    });
+  var walletOptions = _.extend(opts.walletDefaults, {
+    nickname: this.fullName || this.email,
+    networkName: opts.networkName,
+    requiredCopayers: 1,
+    totalCopayers: 1,
+    password: this.password,
+    name: 'general'
+  });
+  this.createWallet(walletOptions, function(err, wallet) {
+    if (err) {
+      return callback(err);
+    }
+    return callback(null, self);
   });
 };
 
+/**
+ * Open an Identity from the given storage
+ *
+ * @param {Object} opts
+ * @param {Object} opts.storage
+ * @param {string} opts.email
+ * @param {string} opts.password
+ * @param {Function} cb
+ */
+Identity.open = function(opts, cb) {
+
+  var storage = opts.storage || opts.pluginManager.get('DB');
+  storage.setCredentials(opts.email, opts.password, opts);
+  storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data) {
+    if (err) {
+      return cb(err);
+    }
+    return Identity.createFromPartialJson(data, opts, cb);
+  });
+};
+
+/**
+ * Creates an Identity, retrieves all Wallets remotely, and activates network
+ *
+ * @param {string} jsonString - a string containing a json object with options to rebuild the identity
+ * @param {Object} opts
+ * @param {Function} cb
+ */
+Identity.createFromPartialJson = function(jsonString, opts, callback) {
+  var exported;
+  try {
+    exported = JSON.parse(jsonString);
+  } catch (e) {
+    return callback('Invalid JSON');
+  }
+  var identity = new Identity(_.extend(opts, exported));
+  async.map(exported.walletIds, function(walletId, callback) {
+    identity.retrieveWalletFromStorage(walletId, function(error, wallet) {
+      if (!error) {
+        identity.wallets[wallet.getId()] = wallet;
+        wallet.netStart();
+      }
+      callback(error, wallet);
+    });
+  }, function(err) {
+    return callback(err, identity);
+  });
+};
+
+/**
+ * @param {string} walletId
+ * @param {Function} callback
+ */
+Identity.prototype.retrieveWalletFromStorage = function(walletId, callback) {
+  var self = this;
+  this.storage.getItem(Wallet.getStorageKey(walletId), function(error, walletData) {
+    if (error) {
+      return callback(error);
+    }
+    try {
+      log.debug('## OPENING Wallet: ' + walletId);
+      if (_.isString(walletData)) {
+        walletData = JSON.parse(walletData);
+      }
+      var readOpts = {
+        networkOpts: self.networkOpts,
+        blockchainOpts: self.blockchainOpts,
+        skipFields: []
+      };
+      return callback(null, Wallet.fromUntrustedObj(walletData, readOpts));
+
+    } catch (e) {
+
+      log.debug("ERROR: ", e.message);
+      if (e && e.message && e.message.indexOf('MISSOPTS') !== -1) {
+        return callback(new Error('WERROR: Could not read: ' + walletId + ': ' + e.message));
+      } else {
+        return callback(e);
+      }
+    }
+  });
+};
+
+/**
+ * TODO (matiu): What is this supposed to do?
+ */
+Identity.isAvailable = function(email, opts, cb) {
+  return cb();
+};
+
+/**
+ * @param {Wallet} wallet
+ * @param {Function} cb
+ */
+Identity.prototype.storeWallet = function(wallet, cb) {
+  preconditions.checkArgument(w && _.isObject(wallet));
+
+  var val = wallet.toObj();
+  var key = wallet.getStorageKey();
+
+  this.storage.setItem(key, val, function(err) {
+    if (err) {
+      log.debug('Wallet:' + w.getName() + ' couldnt be stored');
+      return cb(err);
+    }
+    return cb();
+  });
+};
+
+Identity.prototype.toObj = function() {
+  return _.extend({walletIds: _.keys(this.wallets)},
+                  _.pick(this, 'version', 'fullName', 'password', 'email'));
+};
+
+Identity.prototype.exportWithWalletInfo = function() {
+  return _.extend({wallets: _.map(this.wallets, function(wallet) { return wallet.toObj(); })},
+                  _.pick(this, 'version', 'fullName', 'password', 'email'));
+};
+
+/**
+ * @param {Object} opts
+ * @param {Function} cb
+ */
+Identity.prototype.store = function(opts, cb) {
+  var self = this;
+  self.storage.setItem(this.getId(), this.toObj(), function(err) {
+    if (err) return cb(err);
+    async.map(self.wallets, self.storeWallet, cb);
+  });
+};
 
 Identity.prototype._cleanUp = function() {
   // NOP
@@ -338,27 +253,10 @@ Identity.prototype._cleanUp = function() {
  * @desc Closes the wallet and disconnects all services
  */
 Identity.prototype.close = function(cb) {
-  preconditions.checkState(this.profile);
-
-  var l = Object.keys(this.wallets),
-    i = 0;
-  if (!l) {
-    return cb ? cb() : null;
-  }
-
-  var self = this;
-  _.each(this.wallets, function(w) {
-    w.close(function(err) {
-      if (err) return cb(err);
-
-      if (++i == l) {
-        self._cleanUp();
-        if (cb) return cb();
-      }
-    })
-  });
+  async.map(this.wallets, function(wallet, callback) {
+    wallet.close(callback);
+  }, cb);
 };
-
 
 /**
  * @desc Imports a wallet from an encrypted base64 object
@@ -392,18 +290,20 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   });
 };
 
-Identity.prototype.closeWallet = function(wid, cb) {
-  var w = this.getOpenWallet(wid);
-  preconditions.checkState(w, 'Wallet not found');
+/**
+ * @param {Wallet} wallet
+ * @param {Function} cb
+ */
+Identity.prototype.closeWallet = function(wallet, cb) {
+  preconditions.checkState(wallet, 'Wallet not found');
 
-  var self = this;
-  w.close(function(err) {
+  wallet.close(function(err) {
     delete self.wallets[wid];
     return cb(err);
   });
 };
 
-Identity.importFromJson = function(str, password, opts, cb) {
+Identity.importFromFullJson = function(str, password, opts, cb) {
   preconditions.checkArgument(str);
   var json;
   try {
@@ -415,57 +315,27 @@ Identity.importFromJson = function(str, password, opts, cb) {
   if (!_.isNumber(json.iterations))
     return cb('BADSTR: Missing iterations');
 
-  if (!json.profile)
-    return cb('BADSTR: Missing profile');
-
-  var iden = new Identity(password, opts);
-  iden.profile = Profile.import(json.profile, password, iden.storage);
+  var email = json.email;
+  var iden = new Identity(email, password, opts);
 
   json.wallets = json.wallets || {};
-  var walletInfoBackup = iden.profile.walletInfos;
-  iden.profile.walletInfos = {};
-
-  var l = _.size(json.wallets),
-    i = 0;
-
-  if (!l)
-    return cb(null, iden);
-
-  _.each(json.wallets, function(wstr) {
+  async.map(json.wallets, function(walletData, callback) {
     iden.importWallet(wstr, password, opts.skipFields, function(err, w) {
-      if (err) return cb(err);
+      if (err) return callback(err);
       log.debug('Wallet ' + w.getId() + ' imported');
-
-      if (++i == l) {
-        iden.profile.walletInfos = walletInfoBackup;
-        iden.store(opts, function(err) {
-          if (err) {
-            return cb(err);
-          } else {
-            return cb(null, iden, iden.openWallets[0]);
-          }
-        });
+      callback();
+    });
+  }, function(err, results) {
+    if (err) {
+      return cb(err);
+    }
+    iden.store(function(err) {
+      if (err) {
+        return cb(err);
       }
-    })
+      return cb(null, iden);
+    });
   });
-};
-
-/**
- * @desc Return JSON with base64 encoded strings for wallets and profile, and iteration count
- * @return {string} Stringify JSON
- */
-Identity.prototype.exportAsJson = function() {
-  var ret = {};
-  ret.iterations = this.storage.iterations;
-  ret.profile = this.profile.export();
-  ret.wallets = {};
-
-  _.each(this.wallets, function(w) {
-    ret.wallets[w.getId()] = w.export();
-  });
-
-  var r = JSON.stringify(ret);
-  return r;
 };
 
 Identity.prototype.bindWallet = function(w) {
@@ -502,7 +372,6 @@ Identity.prototype.bindWallet = function(w) {
  */
 Identity.prototype.createWallet = function(opts, cb) {
   preconditions.checkArgument(cb);
-  preconditions.checkState(this.profile);
 
   opts = opts || {};
   opts.networkName = opts.networkName || 'testnet';
@@ -530,7 +399,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   });
   opts.publicKeyRing.addCopayer(
     opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
-    opts.nickname || this.profile.getName()
+    opts.nickname || this.getName()
   );
   log.debug('\t### PublicKeyRing Initialized');
 
@@ -550,35 +419,29 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.version = opts.version || this.version;
 
   var self = this;
-  var w = Identity._newWallet(opts);
+  var w = new Wallet(opts);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.bindWallet(w);
-    if (self.pluginManager.get && self.pluginManager.get('remote-backup')) {
-      self.pluginManager.get('remote-backup').store(self, self.insightSaveOpts, _.noop);
-    }
-    w.netStart();
-    return cb(null, w);
+    self.storage.setItem(self.getId(), self.toObj(), function(error) {
+      if (error) {
+        return callback(error);
+      }
+      w.netStart();
+      return cb(null, w);
+    });
   });
 };
 
-
-// add wallet (import)
 Identity.prototype.addWallet = function(wallet, cb) {
   preconditions.checkArgument(wallet);
   preconditions.checkArgument(wallet.getId);
   preconditions.checkArgument(cb);
-  preconditions.checkState(this.profile);
 
-  var self = this;
-  self.profile.addWallet(wallet.getId(), {
-    name: wallet.name
-  }, function(err) {
-    if (err) return cb(err);
-    self.storeWallet(wallet, function(err) {
-      return cb(err);
-    });
-  });
+  this.wallets[wallet.getId()] = wallet;
+
+  // TODO (eordano): Consider not saving automatically after this
+  this.storage.setItem(wallet.getStorageKey(), wallet.toObj(), cb);
 };
 
 
@@ -605,59 +468,37 @@ Identity.prototype._checkVersion = function(inVersion) {
 };
 
 /**
- * @desc Retrieve a wallet from the storage
- * @param {string} walletId - the id of the wallet
- * @param {function} callback (err, {Wallet})
- * @return
+ * @param {string} walletId
+ * @returns {Wallet}
  */
-Identity.prototype.openWallet = function(walletId, cb) {
-  preconditions.checkArgument(cb);
-  preconditions.checkState(this.storage.hasPassphrase());
-
-  var self = this;
-  // TODO
-  //  self.migrateWallet(walletId, password, function() {
-  //
-
-  self.readWallet(walletId, {
-    networkOpts: this.networkOpts,
-    blockchainOpts: this.blockchainOpts
-  }, function(err, w) {
-    if (err) return cb(err);
-    self.bindWallet(w);
-    self.storeWallet(w, function(err) {
-      w.netStart();
-      return cb(err, w);
-    });
-  });
-  //  });
-};
-
-
-Identity.prototype.getOpenWallet = function(id) {
-  return this.wallets[id];
-};
-
-
-Identity.prototype.listWallets = function() {
-  var ret = this.profile.listWallets();
-  return ret;
+Identity.prototype.getWalletById = function(walletId) {
+  return this.wallets[walletId];
 };
 
 /**
- * @desc Deletes this wallet. This involves removing it from the storage instance
+ * @returns {Wallet[]}
+ */
+Identity.prototype.listWallets = function() {
+  return _.values(this.wallets);
+};
+
+/**
+ * @desc Deletes a wallet. This involves removing it from the storage instance
+ *
  * @param {string} walletId
  * @callback cb
  * @return {err}
  */
 Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
-  Identity._walletDelete(walletId, this.storage, function(err) {
-    if (err) return cb(err);
-    self.profile.deleteWallet(walletId, function(err) {
+
+  delete this.wallets[walletId];
+  this.storage.deleteItem(walletId, function(err) {
+    if (err) {
       return cb(err);
-    });
-  })
+    }
+    self.store(cb);
+  });
 };
 
 /**
@@ -669,6 +510,12 @@ Identity.prototype.decodeSecret = function(secret) {
   } catch (e) {
     return false;
   }
+};
+
+Identity.prototype.getLastFocusedWallet = function() {
+  return _.max(this.wallets, function(wallet) {
+    return wallet.lastTimestamp || 0;
+  });
 };
 
 /**
@@ -720,7 +567,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
   };
 
 
-  var joinNetwork = Identity._newAsync(this.networkOpts[decodedSecret.networkName]);
+  var joinNetwork = opts.Async || new Async(this.networkOpts[decodedSecret.networkName]);
 
   // This is a hack to reconize if the connection was rejected or the peer wasn't there.
   var connectedOnce = false;
@@ -751,7 +598,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
         walletOpts.network = joinNetwork;
 
         walletOpts.privateKey = privateKey;
-        walletOpts.nickname = opts.nickname || self.profile.getName();
+        walletOpts.nickname = opts.nickname || self.getName();
 
         if (opts.password)
           walletOpts.password = opts.password;
