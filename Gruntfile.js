@@ -57,7 +57,7 @@ module.exports = function(grunt) {
           'js/models/*.js',
           'plugins/*.js',
         ],
-        tasks: ['shell:dev']
+        tasks: ['shell:dev', 'concat:bundle']
       },
       css: {
         files: ['css/src/*.css'],
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
         }]
       }
     },
-    concat: {
+    concat: { 
       vendors: {
         src: [
           'lib/mousetrap/mousetrap.min.js',
@@ -141,6 +141,9 @@ module.exports = function(grunt) {
         dest: 'lib/angularjs-all.js'
       },
       main: {
+        options: {
+          sourceMap: true
+        },
         src: [
           'js/app.js',
           'js/directives.js',
@@ -153,6 +156,13 @@ module.exports = function(grunt) {
           'js/init.js',
         ],
         dest: 'js/copayMain.js'
+      },
+      bundle: {
+        options: {
+          sourceMap: true
+        },
+        src: ['js/copayBundle.js'],
+        dest: 'js/copayBundle.js'
       }
     },
     cssmin: {
@@ -174,9 +184,20 @@ module.exports = function(grunt) {
       prod: {
         files: {
           'js/copayMain.js': ['js/copayMain.js'],
+          'js/copayBundle.js': ['js/copayBundle.js'],
           'lib/angularjs-all.js': ['lib/angularjs-all.js'],
           'lib/vendors.js': ['lib/vendors.js']
         }
+      }
+    },
+    copy: {
+      maps: {
+        files: [{
+          cwd: 'lib/angular-load/',
+          src: 'angular-load.min.js.map', 
+          dest: 'lib/',
+          expand: true
+        }]
       }
     },
     nggettext_extract: {
@@ -211,7 +232,7 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
-  grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
+  grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify', 'copy']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('docs', ['jsdoc']);
 };
