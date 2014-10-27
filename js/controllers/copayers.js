@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $location, backupService, controllerUtils) {
     $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
     $scope.hideAdv = true;
+    $rootScope.title = 'Copayers';
 
     $scope.skipBackup = function() {
       var w = $rootScope.wallet;

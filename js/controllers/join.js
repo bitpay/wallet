@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('JoinController',
     $rootScope.fromSetup = false;
     $scope.loading = false;
     $scope.isMobile = !!window.cordova;
+    $rootScope.title = 'Join a wallet';
 
     // QR code Scanner
     var cameraInput;

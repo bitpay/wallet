@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
 
     var w = $rootScope.wallet;
 
-    $scope.title = 'Transactions';
+    $rootScope.title = 'History';
     $scope.loading = false;
     $scope.lastShowed = false;
 

@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
   function($scope, $rootScope, $timeout, $modal, controllerUtils) {
     controllerUtils.redirIfNotComplete();
 
+    $rootScope.title = 'Addresses';
 
     $scope.loading = false;
     $scope.showAll = false;

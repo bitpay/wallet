@@ -6,7 +6,7 @@
   <div class="setup" ng-show="!loading">
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
 
-      <h1>{{'Create Wallet'|translate}}</h1>
+      <h1 class="hide-for-large-up">{{$root.title}}</h1>
       <div class="row">
         <div class="large-12 columns">
           <label><span translate>Wallet name</span>
@@ -51,6 +51,10 @@
 
 
             <div class="text-right">
+              <a class="back-button m20r" href="#!/manage">
+                <i class="fi-arrow-left"></i> 
+                <span translate>Back</span>
+              </a>
               <button translate  type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
