@@ -224,13 +224,19 @@ Identity.prototype.storeWallet = function(wallet, cb) {
 };
 
 Identity.prototype.toObj = function() {
-  return _.extend({walletIds: _.keys(this.wallets)},
-                  _.pick(this, 'version', 'fullName', 'password', 'email'));
+  return _.extend({
+      walletIds: _.keys(this.wallets)
+    },
+    _.pick(this, 'version', 'fullName', 'password', 'email'));
 };
 
 Identity.prototype.exportWithWalletInfo = function() {
-  return _.extend({wallets: _.map(this.wallets, function(wallet) { return wallet.toObj(); })},
-                  _.pick(this, 'version', 'fullName', 'password', 'email'));
+  return _.extend({
+      wallets: _.map(this.wallets, function(wallet) {
+        return wallet.toObj();
+      })
+    },
+    _.pick(this, 'version', 'fullName', 'password', 'email'));
 };
 
 /**
@@ -493,7 +499,7 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
 
   delete this.wallets[walletId];
-  this.storage.deleteItem(walletId, function(err) {
+  this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
     if (err) {
       return cb(err);
     }
