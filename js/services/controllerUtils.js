@@ -73,7 +73,6 @@ angular.module('copayApp.services')
     }, 3000);
 
     root.installWalletHandlers = function($scope, w) {
-      w.removeAllListeners();
 
       var wid = w.getId();
       w.on('connectionError', function() {
@@ -98,13 +97,6 @@ angular.module('copayApp.services')
           } else {
             root.redirIfLogged();
           }
-        }
-      });
-
-      w.on('newAddresses', function(dontDigest) {
-        root.updateTxsAndBalance(w);
-        if (!dontDigest) {
-          $rootScope.$digest();
         }
       });
 
@@ -137,8 +129,11 @@ angular.module('copayApp.services')
           $rootScope.$digest();
         }
       });
+      w.on('newAddresses', function() {
+        root.updateTxsAndBalance(w);
+      });
 
-      w.on('txProposalsUpdated', function(dontDigest) {
+      w.on('txProposalsUpdated', function() {
         root.updateTxsAndBalance(w);
       });
 

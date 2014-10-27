@@ -143,6 +143,7 @@ Identity.open = function(opts, cb) {
  * @param {Function} cb
  */
 Identity.createFromPartialJson = function(jsonString, opts, callback) {
+  var self = this;
   var exported;
   try {
     exported = JSON.parse(jsonString);
@@ -151,9 +152,10 @@ Identity.createFromPartialJson = function(jsonString, opts, callback) {
   }
   var identity = new Identity(_.extend(opts, exported));
   async.map(exported.walletIds, function(walletId, callback) {
-    identity.retrieveWalletFromStorage(walletId, function(error, wallet) {
+    identity.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
       if (!error) {
         identity.wallets[wallet.getId()] = wallet;
+        self.bindWallet(w);
         wallet.netStart();
       }
       callback(error, wallet);
@@ -165,10 +167,15 @@ Identity.createFromPartialJson = function(jsonString, opts, callback) {
 
 /**
  * @param {string} walletId
+ * @param {} opts
+ *           opts.importWallet
  * @param {Function} callback
  */
-Identity.prototype.retrieveWalletFromStorage = function(walletId, callback) {
+Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback) {
   var self = this;
+
+  var importFunction = opts.importWallet || Wallet.fromUntrustedObj;
+
   this.storage.getItem(Wallet.getStorageKey(walletId), function(error, walletData) {
     if (error) {
       return callback(error);
@@ -183,7 +190,8 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, callback) {
         blockchainOpts: self.blockchainOpts,
         skipFields: []
       };
-      return callback(null, Wallet.fromUntrustedObj(walletData, readOpts));
+
+      return callback(null, importFunction(walletData, readOpts));
 
     } catch (e) {
 
@@ -217,9 +225,9 @@ Identity.prototype.storeWallet = function(wallet, cb) {
   this.storage.setItem(key, val, function(err) {
     if (err) {
       log.debug('Wallet:' + wallet.getName() + ' couldnt be stored');
-      return cb(err);
     }
-    return cb();
+    if (cb)
+      return cb(err);
   });
 };
 
@@ -247,6 +255,10 @@ Identity.prototype.store = function(opts, cb) {
   var self = this;
   self.storage.setItem(this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
+
+    if (opts.noWallets) 
+      return cb();
+
     async.map(self.wallets, self.storeWallet, cb);
   });
 };
@@ -290,6 +302,7 @@ Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err, null);
     self.wallets[w.getId()] = w;
+    self.bindWallet(w);
     self.store(null, function(err) {
       return cb(err, w);
     });
@@ -452,12 +465,9 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.bindWallet(w);
-    self.storage.setItem(self.getId(), self.toObj(), function(error) {
-      if (error) {
-        return callback(error);
-      }
-      w.netStart();
-      return cb(null, w);
+    w.netStart();
+    self.store({noWallets:true},function(err){
+      return cb(err,w);
     });
   });
 };
