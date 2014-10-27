@@ -4,26 +4,26 @@
   <div class="row collapse">
     <div class="large-12 columns">
         <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
-          <h1>
+          <h2>
             <span translate>Waiting copayers for</span>
             {{$root.wallet.getName()}} 
             <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
-          </h1>
+          </h2>
           <div class="panel oh">
             <qrcode size="350" data="{{$root.wallet.getSecret()}}"></qrcode>
             <div class="secret">
-              <h2 translate>Share this secret with your other copayers</h2>
+              <h3 translate>Share this secret with your other copayers</h3>
               {{$root.wallet.getSecret()}} 
               <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
             </div>
           </div>
         </div>
-        <h1 ng-if="$root.wallet &&
+        <h2 ng-if="$root.wallet &&
           $root.wallet.publicKeyRing.isComplete()">
           <span translate>Wallet</span> {{$root.wallet.getName()}} 
           <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
           <span translate>created</span>
-        </h1>
+        </h2>
         <div class="box-setup-copayers p20">
           <p class="text-primary m10b" 
             ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()" translate>

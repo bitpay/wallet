@@ -130,6 +130,63 @@ header .alt-currency {
   font-size: 10px;
 }
 
+.head {
+  background-color: #FFF;
+  height: 62px;
+  border-bottom: 1px solid #eee;
+  position: fixed;
+  z-index: 10;
+  left: 250px;
+  right: 0;
+}
+
+.head .title h1 {
+  float: left;
+  padding: 12px 10px;
+  margin: 0;
+}
+
+.head .menu {
+  float: right;
+  position: relative;
+}
+
+.head .menu a.dropdown {
+  display: block;
+  height: 62px;
+  width: 140px;
+  padding: 22px 5px;
+  text-align: center;
+}
+
+.head .menu a.dropdown:hover,
+.head .menu a.dropdown.hover {
+  border-bottom: 1px solid #fff;
+}
+
+.head .menu ul {
+  position: absolute;
+  right: 0;
+  width: 160px;
+  list-style-type: none;
+  top: 61px;
+}
+
+.head .menu ul.hover {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-top: 1px solid #fff;
+}
+
+.head .menu ul li a {
+  display: block;
+  padding: 5px 10px;
+}
+
+.head .menu ul li a:hover {
+  background-color: #fff;
+}
+
 .col1 {
   width: 56px;
   float: left;
@@ -209,15 +266,13 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   color: #CA5649;
   background-color: #E2CFD0;
   position: absolute;
-  margin-left: auto;
-  margin-right: auto;
   left: 250px;
   right: 0;
-  top: 0;
-  width: 100%;
-  padding: 20px 50px;
-  height: 60px;
-  z-index: 9999;
+  top: 62px;
+  padding: 5px 0;
+  z-index: 9;
+  font-size: 12px;
+  text-align: center;
 }
 
 .setup .comment {
@@ -269,7 +324,7 @@ a:hover {
 
 .main {
   margin-left: 250px;
-  padding: 1.5rem;
+  padding: 80px 1.5rem;
   background-color: #F8F8FB;
 }
 

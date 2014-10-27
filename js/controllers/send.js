@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('SendController',
     preconditions.checkState(w);
     preconditions.checkState(w.settings.unitToSatoshi);
 
-    $scope.title = 'Send';
+    $rootScope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / w.settings.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;

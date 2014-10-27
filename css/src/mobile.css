@@ -14,10 +14,7 @@
 
   .status {
     left: 0;
-    top: 45px;
-    font-size: 13px;
-    font-weight: 700;
-    height: 55px;
+    top: 40px;
   }
 
   .logo-setup {
@@ -42,6 +39,7 @@
     margin-left: 0;
     margin-bottom: -40px;
     padding-bottom: 60px;
+    padding-top: 20px;
   }
 
   .tab-bar {
