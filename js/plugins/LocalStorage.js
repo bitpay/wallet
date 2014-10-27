@@ -13,7 +13,7 @@ LocalStorage.prototype.setCredentials = function(email, password, opts) {
 };
 
 LocalStorage.prototype.getItem = function(k,cb) {
-  return cb(localStorage.getItem(k));
+  return cb(null, localStorage.getItem(k));
 };
 
 LocalStorage.prototype.setItem = function(k,v,cb) {
@@ -38,7 +38,7 @@ LocalStorage.prototype.allKeys = function(cb) {
   for(var i=0; i<l; i++)
     ret.push(localStorage.key(i));
 
-  return cb(ret);    
+  return cb(null, ret);    
 };
 
 module.exports = LocalStorage;
