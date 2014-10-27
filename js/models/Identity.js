@@ -607,8 +607,9 @@ Identity.prototype.joinWallet = function(opts, cb) {
           if (w) {
             w.sendWalletReady(decodedSecret.pubKey);
           } else {
-            if (!err) err = 'walletFull';
-            log.info(err);
+            if (!err) {
+              err = 'walletFull';
+            }
           }
           return cb(err, w);
         });
