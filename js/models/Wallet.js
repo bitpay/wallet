@@ -268,7 +268,6 @@ Wallet.prototype._onIndexes = function(senderId, data) {
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
     this._newAddresses();
-    this.emitAndKeepAlive('hasChange');
   }
 };
 
@@ -285,7 +284,7 @@ Wallet.prototype._onIndexes = function(senderId, data) {
  */
 Wallet.prototype.changeSettings = function(settings) {
   this.settings = settings;
-  this.emitAndKeepAlive('hasChange');
+  this.emitAndKeepAlive('settingsUpdated');
 };
 
 /**
@@ -329,7 +328,6 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
       this._lockIncomming();
     }
     this._newAddresses();
-    this.emitAndKeepAlive('hasChange');
   }
 };
 
@@ -470,7 +468,6 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
           if (!m.txp.getSent()) {
             m.txp.setSent(m.ntxid);
             self.emitAndKeepAlive('txProposalsUpdated');
-            self.emit('hasChange');
           }
         }
       });
@@ -481,7 +478,6 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     }
 
     this.emitAndKeepAlive('txProposalsUpdated');
-    this.emit('hasChange');
   }
   this._processProposalEvents(senderId, m);
 };
@@ -509,10 +505,7 @@ Wallet.prototype._onReject = function(senderId, data) {
     throw new Error('Received Reject for an already signed TX from:' + senderId);
 
   txp.setRejected(senderId);
-  this.emitAndKeepAlive('hasChange');
-
-  this.emit('txProposalsUpdated');
-  this.emit('txProposalEvent', {
+  this.emitAndKeepAlive('txProposalEvent', {
     type: 'rejected',
     cId: senderId,
     txId: data.ntxid,
@@ -535,9 +528,7 @@ Wallet.prototype._onSeen = function(senderId, data) {
 
   var txp = this.txProposals.get(data.ntxid);
   txp.setSeen(senderId);
-  this.emitAndKeepAlive('hasChange');
-  this.emit('txProposalsUpdated');
-  this.emit('txProposalEvent', {
+  this.emitAndKeepAlive('txProposalEvent', {
     type: 'seen',
     cId: senderId,
     txId: data.ntxid,
@@ -573,7 +564,6 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   }
   if (hasChange) {
     this.emitAndKeepAlive('addressBookUpdated');
-    this.emit('hasChange');
   }
 };
 
@@ -895,8 +885,6 @@ Wallet.prototype.netStart = function() {
     self.emitAndKeepAlive('ready', net.getPeer());
     setTimeout(function() {
       self._newAddresses(true);
-      // no connection logic for now
-      self.emitAndKeepAlive('txProposalsUpdated');
     }, 0);
   });
 };
@@ -1256,7 +1244,7 @@ Wallet.prototype._doGenerateAddress = function(isChange) {
 Wallet.prototype.generateAddress = function(isChange, cb) {
   var addr = this._doGenerateAddress(isChange);
   this.sendIndexes();
-  this.emitAndKeepAlive('hasChange');
+  this._newAddresses();
   if (cb) return cb(addr);
   return addr;
 };
@@ -1297,7 +1285,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   } else {
     this.txProposals.deletePending(this.maxRejectCount());
   }
-  this.emitAndKeepAlive('hasChange');
+  this.emitAndKeepAlive('txProposalsUpdated');
 
   var n = this.txProposals.length();
   return m - n;
@@ -1311,8 +1299,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
 Wallet.prototype.reject = function(ntxid) {
   var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
   this.sendReject(ntxid);
-  this.emitAndKeepAlive('hasChange');
-  this.emit('txProposalsUpdated');
+  this.emitAndKeepAlive('txProposalsUpdated');
 };
 
 /**
@@ -1353,8 +1340,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
     if (txp.countSignatures() > before) {
       txp.signedBy[myId] = Date.now();
       self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('hasChange');
-      self.emit('txProposalsUpdated');
+      self.emitAndKeepAlive('txProposalsUpdated');
       ret = true;
     }
     if (cb) return cb(ret);
@@ -1392,13 +1378,13 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('hasChange');
+      self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid);
     } else {
       log.debug('Wallet:' + self.id + ' Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
-          self.emitAndKeepAlive('hasChange');
+          self.emitAndKeepAlive('txProposalsUpdated');
 
         return cb(txid);
       });
@@ -1608,7 +1594,6 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('hasChange');
       self.emit('txProposalsUpdated');
     }
 
@@ -1740,9 +1725,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       log.debug('Sending to server was not met with a returned tx.');
       log.debug('XHR status: ' + status);
       return self._checkSentTx(ntxid, function(txid) {
-        log.debug('[Wallet.js.1581:txid:%s]', txid);
         if (txid)
-          self.emitAndKeepAlive('hasChange');
+          self.emitAndKeepAlive('txProposalsUpdated');
         return cb(txid, txp.merchant);
       });
     });
@@ -1775,7 +1759,7 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
       return this._checkSentTx(ntxid, function(txid) {
         log.debug('[Wallet.js.1613:txid:%s]', txid);
         if (txid)
-          self.emitAndKeepAlive('hasChange');
+          self.emitAndKeepAlive('txProposalUpdated');
         return cb(txid, txp.merchant);
       });
     }
@@ -1802,13 +1786,13 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('hasChange');
+      self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid, txp.merchant);
     } else {
       log.debug('Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
-          self.emitAndKeepAlive('hasChange');
+          self.emitAndKeepAlive('txProposalsUpdated');
 
         return cb(txid, txp.merchant);
       });
@@ -2294,7 +2278,6 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
     if (proposalsChanged) {
       self.emitAndKeepAlive('txProposalsUpdated');
-      self.emit('hasChange');
     }
 
     return cb();
@@ -2329,8 +2312,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
 
     self.sendIndexes();
     self.sendTxProposal(ntxid);
-    self.emitAndKeepAlive('hasChange');
-    self.emit('txProposalsUpdated');
+    self.emitAndKeepAlive('txProposalsUpdated');
     return cb(null, ntxid);
   });
 };
@@ -2428,7 +2410,6 @@ Wallet.prototype.updateIndexes = function(callback) {
     if (err) callback(err);
     log.debug('Wallet:' + self.id + ' Indexes updated');
     self._newAddresses();
-    self.emitAndKeepAlive('hasChange');
     callback();
   });
 };
@@ -2586,7 +2567,7 @@ Wallet.prototype.setAddressBook = function(key, label) {
   };
   this.addressBook[key] = newEntry;
   this.sendAddressBook();
-  this.emitAndKeepAlive('hasChange');
+  this.emitAndKeepAlive('addressBookUpdated');
 };
 
 /**
@@ -2616,7 +2597,7 @@ Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
 Wallet.prototype.toggleAddressBookEntry = function(key) {
   if (!key) throw new Error('Key is required');
   this.addressBook[key].hidden = !this.addressBook[key].hidden;
-  this.emitAndKeepAlive('hasChange');
+  this.emitAndKeepAlive('addressBookUpdated');
 };
 
 /**
@@ -2653,7 +2634,7 @@ Wallet.prototype.setBackupReady = function(forcedLogin) {
   this.forcedLogin = forcedLogin;
   this.publicKeyRing.setBackupReady();
   this.sendPublicKeyRing();
-  this.emitAndKeepAlive('hasChange');
+  this.emitAndKeepAlive('txProposalsUpdated');
 };
 
 /**

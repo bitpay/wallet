@@ -350,8 +350,28 @@ Identity.prototype.bindWallet = function(w) {
   self.wallets[w.getId()] = w;
   log.debug('Binding wallet ' + w.getName());
 
-  w.on('hasChange', function() {
-    log.debug('<hasChange> Wallet' + w.getName());
+  w.on('txProposalsUpdated', function() {
+    log.debug('<txProposalsUpdated>> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
+  w.on('newAddresses', function() {
+    log.debug('<newAddresses> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
+  w.on('settingsUpdated', function() {
+    log.debug('<newAddresses> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
+  w.on('txProposalEvent', function() {
+    log.debug('<txProposalEvent> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
+  w.on('ready', function() {
+    log.debug('<ready> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
+  w.on('addressBookUpdated', function() {
+    log.debug('<addressBookUpdated> Wallet' + w.getName());
     self.storeWallet(w);
   });
 };
@@ -412,6 +432,8 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.txProposals = opts.txProposals || new TxProposals({
     networkName: opts.networkName,
   });
+  var walletClass =  opts.walletClass || Wallet;
+
   log.debug('\t### TxProposals Initialized');
 
 
@@ -425,7 +447,8 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.version = opts.version || this.version;
 
   var self = this;
-  var w = new Wallet(opts);
+
+  var w = new walletClass(opts);
   this.addWallet(w, function(err) {
     if (err) return cb(err);
     self.bindWallet(w);

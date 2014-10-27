@@ -115,7 +115,7 @@ describe('Identity model', function() {
   });
 
   describe('Identity.create()', function() {
-    it('should call .store', function(done) {
+    it('should create', function(done) {
       var args = createIdentity();
       args.blockchain.on = sinon.stub();
       Identity.create(args.params, function(err, iden) {
@@ -149,36 +149,32 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#store', function() {
-    it('should call .store for identity and wallets', function(done) {
-      var args = createIdentity();
-      Identity.create(args.params, function(err, identity) {
-
-        args.storage.setItem = sinon.stub();
-        args.storage.setItem.onFirstCall().callsArg(2);
-
-        var wallet1 = {}, wallet2 = {};
-        identity.storeWallet = sinon.stub();
-        identity.storeWallet.onFirstCall().callsArg(1);
-        identity.storeWallet.onSecondCall().callsArg(1);
-        identity.wallets = {'a': wallet1, 'b': wallet2};
-
-        identity.store({}, function(err) {
-          should.not.exist(err);
-          done();
-        });
-
-      });
-    });
+  describe.skip('#storeWallet', function() {
+    // TODO test storeWallet
   });
 
-  describe('#createWallet', function() {
 
+  describe('#createWallet', function() {
     var iden = null;
     var args = null;
+    var walletClass = function(args) {
+      var w = sinon.stub();
+      w.getId = sinon.stub().returns('wid');
+      w.getStorageKey = sinon.stub().returns('wkey');
+      w.toObj = sinon.stub().returns({
+        obj: 1
+      });
+      w.getName = sinon.stub().returns('name');
+      w.on = sinon.stub();
+      w.netStart = sinon.stub();
+      w.args = args;
+      return w;
+    };
+
 
     beforeEach(function(done) {
       args = createIdentity();
+      args.params.noWallets = true;
       Identity.create(args.params, function(err, identity) {
         iden = identity;
         done();
@@ -190,10 +186,13 @@ describe('Identity model', function() {
       args.storage.setItem = sinon.stub();
       args.storage.setItem.onFirstCall().callsArg(2);
       args.storage.setItem.onSecondCall().callsArg(2);
+      should.exist(walletClass, 'check walletClass stub');
       iden.createWallet({
         privateKeyHex: priv,
+        walletClass: walletClass,
       }, function(err, w) {
         should.not.exist(err);
+        w.args.privateKey.toObj().extendedPrivateKeyString.should.equal(priv);
         done();
       });
     });
@@ -204,10 +203,18 @@ describe('Identity model', function() {
       args.storage.setItem.onCall(1).callsArg(2);
       args.storage.setItem.onCall(2).callsArg(2);
       args.storage.setItem.onCall(3).callsArg(2);
-      iden.createWallet(null, function(err, w1) {
+      iden.createWallet({
+        walletClass: walletClass,
+      }, function(err, w1) {
         should.exist(w1);
-        iden.createWallet(null, function(err, w2) {
+
+        iden.createWallet({
+          walletClass: walletClass,
+        }, function(err, w2) {
           should.exist(w2);
+          w2.args.privateKey.toObj().extendedPrivateKeyString.should.not.equal(
+            w1.args.privateKey.toObj().extendedPrivateKeyString
+          );
           done();
         });
       });
@@ -353,7 +360,9 @@ describe('Identity model', function() {
       net.start.onFirstCall().callsArg(1);
       net.greet = sinon.stub();
       iden.createWallet = sinon.stub();
-      var fakeWallet = {sendWalletReady: _.noop};
+      var fakeWallet = {
+        sendWalletReady: _.noop
+      };
       iden.createWallet.onFirstCall().yields(null, fakeWallet);
       net.on.withArgs('data').yields('senderId', {
         type: 'walletId',
