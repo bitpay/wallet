@@ -1,7 +1,7 @@
 /**
  * Small module for some helpers that wrap sjcl with some good practices.
  */
-var sjcl = require('sjcl');
+var sjcl = require('../../lib/sjcl');
 var log = require('../log.js');
 var _ = require('lodash');
 
