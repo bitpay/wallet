@@ -101,6 +101,9 @@ var createBundle = function(opts) {
     b.require('./js/plugins/EncryptedInsightStorage', {
       expose: '../plugins/EncryptedInsightStorage'
     });
+    b.require('./js/plugins/EncryptedLocalStorage', {
+      expose: '../plugins/EncryptedLocalStorage'
+    });
   }
 
   b.require('./config', {
