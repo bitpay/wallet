@@ -8,6 +8,8 @@ LocalStorage.prototype.init = function() {
 };
 
 LocalStorage.prototype.setCredentials = function(email, password, opts) {
+  this.email = email;
+  this.password = password;
 };
 
 LocalStorage.prototype.getItem = function(k,cb) {
