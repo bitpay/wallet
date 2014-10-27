@@ -143,7 +143,6 @@ Identity.open = function(opts, cb) {
  * @param {Function} cb
  */
 Identity.createFromPartialJson = function(jsonString, opts, callback) {
-  var self = this;
   var exported;
   try {
     exported = JSON.parse(jsonString);
@@ -155,7 +154,7 @@ Identity.createFromPartialJson = function(jsonString, opts, callback) {
     identity.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
       if (!error) {
         identity.wallets[wallet.getId()] = wallet;
-        self.bindWallet(w);
+        identity.bindWallet(wallet);
         wallet.netStart();
       }
       callback(error, wallet);
