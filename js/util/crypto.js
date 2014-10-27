@@ -8,22 +8,32 @@ var _ = require('lodash');
 var defaultSalt = 'mjuBtGybi/4=';
 var defaultIterations = 100;
 
-// var SEPARATOR = '&';
-// var defaultOptions = {
-//   adata: '',
-//   cipher: 'aes',
-//   ks: 128,
-//   iter: 2000,
-//   mode: 'ccm',
-//   ts: 64
-// };
+sjcl.defaults = {
+  v: 1,
+  iter: 100,
+  ks: 128,
+  ts: 64,
+  mode: "ccm",
+  adata: "",
+  cipher: "aes"
+},
 
 module.exports = {
 
   kdf: function(value1, value2, salt, iterations) {
     iterations = iterations || defaultIterations;
     salt = salt || defaultSalt;
-    return sjcl.codec.base64.fromBits(sjcl.misc.pbkdf2(value1 + (value2 || ''), salt, iterations));
+
+    var password = value1 + (value2 || '');
+    var hash = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(password));
+    var salt = sjcl.codec.base64.toBits(salt);
+    var prff = function(key) {
+      return new sjcl.misc.hmac(hash, sjcl.hash.sha1);
+    };
+
+    var bits = sjcl.misc.pbkdf2(hash, salt, iterations, 64 * 8, prff);
+    var base64 = sjcl.codec.base64.fromBits(bits);
+    return base64;
   },
 
   /**
