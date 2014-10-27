@@ -61,7 +61,7 @@ var defaultConfig = {
   },
 
   EncryptedInsightStorage: {
-    url: 'https://test-insight.bitpay.com:443/api/email'
+    url: 'http://localhost:3001/api/email'
   },
 
   GoogleDrive: {
