@@ -209,14 +209,14 @@ Identity.isAvailable = function(email, opts, cb) {
  * @param {Function} cb
  */
 Identity.prototype.storeWallet = function(wallet, cb) {
-  preconditions.checkArgument(w && _.isObject(wallet));
+  preconditions.checkArgument(wallet && _.isObject(wallet));
 
   var val = wallet.toObj();
   var key = wallet.getStorageKey();
 
   this.storage.setItem(key, val, function(err) {
     if (err) {
-      log.debug('Wallet:' + w.getName() + ' couldnt be stored');
+      log.debug('Wallet:' + wallet.getName() + ' couldnt be stored');
       return cb(err);
     }
     return cb();
