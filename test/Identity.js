@@ -245,6 +245,38 @@ describe('Identity model', function() {
     });
   });
 
+  describe('#importWallet', function() {
+    it('should import a wallet, call the right encryption functions',function(done) {
+      var args = createIdentity();
+      args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');
+      var backup = Wallet.fromUntrustedObj;
+      args.params.noWallets = true;
+      sinon.stub().returns(args.wallet);
+
+      var fakeCrypto = {
+        kdf: sinon.stub().returns('passphrase'),
+        decrypt: sinon.stub().returns({walletId:123}),
+      };
+
+      var opts = {
+        importWallet: sinon.stub().returns(getNewWallet()),
+        cryptoUtil: fakeCrypto,
+      };
+
+      Identity.create(args.params, function(err, iden) {
+        iden.importWallet(123,'password', opts, function(err){
+          should.not.exist(err);
+          fakeCrypto.kdf.getCall(0).args[0].should.equal('password');
+          fakeCrypto.decrypt.getCall(0).args[0].should.equal('passphrase');
+          fakeCrypto.decrypt.getCall(0).args[1].should.equal(123);
+          done();
+        });
+      });
+    });
+  });
+
+
+
   describe('#export', function() {
 
   });

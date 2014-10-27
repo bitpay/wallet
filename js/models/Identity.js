@@ -5,6 +5,7 @@ var _ = require('lodash');
 var bitcore = require('bitcore');
 var log = require('../log');
 var async = require('async');
+var cryptoUtil = require('../util/crypto');
 
 var version = require('../../version').version;
 var TxProposals = require('./TxProposals');
@@ -252,6 +253,8 @@ Identity.prototype.exportWithWalletInfo = function() {
  */
 Identity.prototype.store = function(opts, cb) {
   var self = this;
+  opts = opts || {};
+
   self.storage.setItem(this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
 
@@ -279,24 +282,34 @@ Identity.prototype.close = function(cb) {
  * @desc Imports a wallet from an encrypted base64 object
  * @param {string} base64 - the base64 encoded object
  * @param {string} passphrase - passphrase to decrypt it
- * @param {string[]} skipFields - fields to ignore when importing
+ * @param {string[]} opts.skipFields - fields to ignore when importing
+ * @param {string[]} opts.salt - 
+ * @param {string[]} opts.iterations - 
+ * @param {string[]} opts.importFunction - for stubbing
  * @return {Wallet}
  */
-Identity.prototype.importWallet = function(base64, password, skipFields, cb) {
+Identity.prototype.importWallet = function(base64, password, opts, cb) {
   var self = this;
   preconditions.checkArgument(password);
   preconditions.checkArgument(cb);
-
-  var obj = this.storage.decrypt(base64, password);
+  var importFunction = opts.importWallet || Wallet.fromUntrustedObj;
+  var crypto = opts.cryptoUtil || cryptoUtil;
 
   var readOpts = {
     networkOpts: this.networkOpts,
     blockchainOpts: this.blockchainOpts,
-    skipFields: skipFields
+    skipFields: opts.skipFields,
   };
 
-  if (!obj) return cb(null);
-  var w = Identity._walletFromObj(obj, readOpts);
+  // TODO set iter and salt using config.js
+  var key = crypto.kdf(password);
+  var obj = crypto.decrypt(key, base64);
+  if (!obj) return cb(new Error('Could not decrypt'));
+
+
+  var w = importFunction(obj, readOpts);
+  if (!w) return cb(new Error('Could not decrypt'));
+
   this._checkVersion(w.version);
   this.addWallet(w, function(err) {
     if (err) return cb(err, null);
@@ -338,7 +351,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
 
   json.wallets = json.wallets || {};
   async.map(json.wallets, function(walletData, callback) {
-    iden.importWallet(wstr, password, opts.skipFields, function(err, w) {
+    iden.importWallet(wstr, password, opts, function(err, w) {
       if (err) return callback(err);
       log.debug('Wallet ' + w.getId() + ' imported');
       callback();
