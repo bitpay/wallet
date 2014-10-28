@@ -179,9 +179,7 @@ button small {
 header { 
   overflow: hidden;
   position: relative;
-  min-height: 700px;
   display: block;
-  max-height: 750px;
 }
 
 header h3, header p, header h4 {
@@ -289,5 +287,63 @@ footer {
     border: none;
   }
 }
+
+/* Mariano´s code */
+
+.center-img img
+{ display: block;
+      margin-left: auto;
+    margin-right: auto}
+
+.white
+{color: #FFFFFF;}
+
+header {
+  background-color: #00BD9C;
+  padding-top: 4.5em;
+  }
+
+header h2{
+  font-size: 2.9em;
+  font-family: ubuntulight;
+
+  }
+
+.slogan{
+  padding: 1.8em 0 0.8em 0;
+    }
+
+.uses {
+  padding-top: 2em;
+  border-bottom: 1px solid #D8DDE2;
+  }
+
+.uses p{
+    padding-top: 10%;
+    font-family:ubunturegular;
+    font-size: 1.3em;
+  }
+
+.strong-points {
+  padding: 10em 0 ;
+  }
+
+ .s-p-even-nbr{
+  background-color:#EAEDF0; 
+  } 
+
+  .strong-points h2 {
+    font-family:ubuntumedium;
+    font-size: 1.9em;}
+  .strong-points p {
+    font-family:ubunturegular;
+    font-size: 1em;}
+
+  .separator-1 {
+    padding-top: 1em;
+    margin-bottom: 1em;
+    width: 3em;
+    border-bottom: 1px solid #2C3E50;
+      }
 
 
