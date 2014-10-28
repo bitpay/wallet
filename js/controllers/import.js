@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, controllerUtils, Passphrase, notification, isMobile, Compatibility) {
+  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, Compatibility) {
 
     $rootScope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
