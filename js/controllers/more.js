@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     var w = $rootScope.wallet;
     $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
+    $rootScope.title = 'Settings';
 
     $scope.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
