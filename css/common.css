@@ -96,6 +96,7 @@ button.warning,
 .size-18 { font-size: 18px; }
 .size-21 { font-size: 21px; }
 .size-24 { font-size: 24px; }
+.size-30 { font-size: 30px; }
 .size-36 { font-size: 36px; }
 .size-48 { font-size: 48px; }
 .size-60 { font-size: 60px; }
@@ -290,6 +291,19 @@ footer {
 
 /* Mariano´s code */
 
+/* Font Families STARTS */
+
+.ubuntulight
+{font-family: ubuntulight;}
+
+.ubunturegular
+{font-family: ubunturegular;}
+
+.ubuntumedium
+{font-family:ubuntumedium;}
+
+/* Font Families ENDS */
+
 .center-img img
 { display: block;
       margin-left: auto;
@@ -303,15 +317,27 @@ header {
   padding-top: 4.5em;
   }
 
-header h2{
-  font-size: 2.9em;
-  font-family: ubuntulight;
-
-  }
-
-.slogan{
-  padding: 1.8em 0 0.8em 0;
+.slogan-small{
+  padding: 0em 0 1.5em 0;
     }
+
+.slogan-large{
+  padding: 2.1em 0 1.5em 0;
+    }
+
+.subheader{
+  background-color: #EAEDF0;
+  margin: 0; 
+  overflow: hidden;
+}
+
+.subheader a {
+  padding: 2.6em 0;
+}
+
+.subheader a:hover {
+  background: #F6F8FA;
+}
 
 .uses {
   padding-top: 2em;
@@ -319,10 +345,13 @@ header h2{
   }
 
 .uses p{
-    padding-top: 10%;
-    font-family:ubunturegular;
-    font-size: 1.3em;
+   
+    color: #2B3D51;
   }
+
+.uses-large p{
+   padding-top: 10%;
+    }
 
 .strong-points {
   padding: 10em 0 ;
@@ -332,12 +361,9 @@ header h2{
   background-color:#EAEDF0; 
   } 
 
-  .strong-points h2 {
-    font-family:ubuntumedium;
-    font-size: 1.9em;}
   .strong-points p {
     font-family:ubunturegular;
-    font-size: 1em;}
+    }
 
   .separator-1 {
     padding-top: 1em;
@@ -345,5 +371,8 @@ header h2{
     width: 3em;
     border-bottom: 1px solid #2C3E50;
       }
+
+footer {
+  padding: 2em 0;
 
 

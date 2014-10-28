@@ -130,11 +130,27 @@ copay-0.5.0.xpi
 
   <header>
     <div class="row">
-      <div class="large-6 medium-8 medium-centered columns">  
-        <div class="medium-9 columns">
+      <div class="large-6 medium-8 small-centered columns"> 
+      
+      <!--logo and download button for small and medimun STARTS-->
+        <div class="small-12 columns text-center show-for-medium-down">
+          <img src="img/copay-main-logo-big.png">
+        </div>
+        <div class="small-12 columns text-center show-for-medium-down">
+          <a href="" data-dropdown="drop" class="button dropdown">DOWNLOAD v0.6.3</a>
+            <ul id="drop" data-dropdown-content class="f-dropdown">
+              <li><a href="">BROWSER EXTENSION</a></li>
+              <li><a href="">WEB VERSION</a></li>
+              <li><a href="">ANDROID VERSION</a></li>
+              <li><a href="">IOS VERSION</a></li>
+            </ul>
+        </div>
+      <!--logo and download button for small and medimun ENDS-->
+
+        <div class="large-9 columns show-for-large-up">
           <img src="img/copay-main-logo.png">
         </div>
-        <div class="medium-3 columns right">
+        <div class="medium-3 columns right show-for-large-up">
           <a href="" data-dropdown="drop" class="button dropdown">DOWNLOAD v0.6.3</a>
             <ul id="drop" data-dropdown-content class="f-dropdown">
               <li><a href="">BROWSER EXTENSION</a></li>
@@ -144,10 +160,18 @@ copay-0.5.0.xpi
             </ul>
         </div>
       </div>    
-    </div>
+    </div
+
+    <!--slogan small and medimun STARTS-->
     <div class="row">
-      <div class="medium-12 columns slogan">
-        <h2 class="slogan white text-center">the trustless wallet by <img src="img/bitpay-logo-inverse-intxt.png"></h2>
+      <div class="small-12 columns slogan-small show-for-medium-down">
+        <h2 class="white text-center size-30 ubuntulight">secure, shared wallet. </h2>
+      </div>
+    <!--slogan small and medimun ENDS-->
+
+    <div class="row">
+      <div class="medium-12 columns slogan-large show-for-large-up">
+        <h2 class="white text-center size-48 ubuntulight">secure, shared wallet.</h2>
       </div>
     </div>
     <div class="row">
@@ -155,33 +179,47 @@ copay-0.5.0.xpi
         <img src="img/main-anim.png" width="826" alt="Copay"/>
       </div>
     </div>
-  </header>   
+  </header>  
 
-  <div class="source">
-    <a class="large-3 columns text-center" href="http://bitpay.com/" target="blank">
-      <img src="img/bitpay-negative.svg" alt="BitPay">
-    </a>
-    <a class="large-3 columns text-center" href="https://github.com/bitpay/copay/" target="blank">
-      <img src="img/logo-github.svg" alt="Github">
-    </a>
-    <a class="large-3 columns text-center" href="http://bitcore.io/" target="blank">
-      <img src="img/logo-bitcore.svg" alt="Bitcore">
-    </a>
-    <a class="large-3 columns text-center" href="http://insight.is/" target="blank">
-      <img src="img/logo-insight.svg" alt="Insight">
-    </a>
+  <div class="row subheader">
+    <div class="large-6 medium-8 medium-centered columns">  
+      <a class="medium-4 columns text-center" href="http://bitcore.io/" target="blank">
+        <img src="img/bitcore-logo-subheader.png" alt="Bitcore">
+      </a>
+      <a class="medium-4 columns text-center" href="http://bitpay.com/" target="blank">
+        <img src="img/bitpay-logo-subheader.png" alt="BitPay">
+      </a>
+      <a class="medium-4 columns text-center" href="http://insight.is/" target="blank">
+        <img src="img/insight-logo-subheader.png" alt="Insight">
+      </a>
+    </div>  
   </div>
 
   <section>
+
+
     <div class="row uses">  
-      <div class="large-6 medium-8 medium-centered columns">  
-        <div class="large-6 columns">
-          <p>use <img src="img/copay-logo-intxt.png" width="88" alt="Copay"> as your family wallet to manage your vacations budget.</p>
+      <div class="large-6 columns large-centered">  
+
+        <!--uses small and medimun STARTS-->
+        <div class="small-8 small-centered columns show-for-medium-down">
+          <p  class="text-center size-18 ubunturegular">use <img src="img/copay-logo-intxt.png" width="88" alt="Copay"> as your family wallet to manage your vacations budget.</p>
         </div>
-        <div class="large-6 columns">
+        <div class="small-12 columns text-center show-for-medium-down ">
+          <img src="img/couple-illustration.png" width="378" alt="Copay for your family">
+        </div>
+      
+        <!--uses small and medimun ENDS-->  
+
+        <div class="large-6 columns show-for-large-up uses-large">
+          <p class="size-24 ubunturegular">use <img src="img/copay-logo-intxt.png" width="88" alt="Copay"> as your family wallet to manage your vacations budget.</p>
+
+        </div>
+        <div class="large-6 columns show-for-large-up">
           <img src="img/couple-illustration.png" width="378" alt="Copay for your family">
         </div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -189,13 +227,13 @@ copay-0.5.0.xpi
     <div class="row strong-points">
       <div class="large-6 medium-8 medium-centered columns">
         <div class="large-6 columns">
-          <img src="img/server-illustration.png" width="429" alt="Be your own bank">
+          <img src="img/bank-illustration.png" width="429" alt="Be your own bank">
         </div>
         <div class="large-6 columns">
-          <h2>be your own bank</h2>
+          <h2 class="size-30 ubuntumedium">be your own bank</h2>
           <div class="separator-1">
           </div>
-          <p>No need to trust someone else with your bitcoin.</p>
+          <p class="size-16 ubunturegular">No need to trust someone else with your bitcoin.</p>
         </div>
       </div>
     </div>
@@ -206,10 +244,10 @@ copay-0.5.0.xpi
           <img src="img/multi-sign-illustration.png" width="429" alt="Multi Signature">
         </div>
         <div class="large-6 columns">
-          <h2>multi signature</h2>
+          <h2 class="size-30 ubuntumedium">multi signature</h2>
           <div class="separator-1">
           </div>
-          <p>Protect your bitcoin with multiple keys: 2, 3, or even more.</p>
+          <p class="size-16 ubunturegular">Protect your bitcoin with multiple keys: 2, 3, or even more.</p>
         </div>
       </div>
     </div>
@@ -217,40 +255,36 @@ copay-0.5.0.xpi
     <div class="row strong-points">
       <div class="large-6 medium-8 medium-centered columns">
         <div class="large-6 columns">
-          <img src="img/open-source-illustration.png" width="573" alt="Open-Source">
+          <img src="img/open-source-illustration_v1.png" width="429" alt="Open-Source">
         </div>
         <div class="large-6 columns">
-          <h2>code you can trust</h2>
+          <h2 class="size-30 ubuntumedium">code you can trust</h2>
           <div class="separator-1">
           </div>
-          <p>Copays code is Open-Source.Only open-source software can be fully auditable <a href="https://github.com/bitpay/copay/" target="blank">contribute to Copay</a> </p>
+          <p class="size-16 ubunturegular">Copays code is Open-Source.Only open-source software can be fully auditable <a href="https://github.com/bitpay/copay/" target="blank">contribute to Copay</a> </p>
         </div>
     </div>
   </section>
 
-
-  <!-- <div class="sub-footer">
-    <a class="large-4 column text-center">
-      <img src="img/logo-github.svg" alt="Bitcore">
-    </a>
-    <a class="large-4 column text-center">
-      <img src="img/logo-bitcore.svg" alt="Bitcore">
-    </a>
-    <a class="large-4 column text-center">
-      <img src="img/logo-insight.svg" alt="Bitcore">
-    </a>
-  </div> -->
-
   <footer>
     <div class="row">
-      <figure class="left">
+      <div class="small-4 columns">
         <a href="http://copay.io" id="logo">
-          <img src="img/logo-negative.svg" alt="Copay" width="70">
+          <img src="img/copay-logo-footer.png" width="61" alt="Copay">
         </a>
-      </figure>
-      <div class="ribbon-phone show-for-small-only right">
-        <a href="https://github.com/bitpay/copay/"><i class="fi-social-github"></i> View on GitHub</a>
       </div>
+      <div class="small-2 columns">        
+        <a href="" target="_blank"><img src="img/insight-logo-footer.png" width="64" alt="insight"></a>
+      </div> 
+      <div class="small-2 columns">        
+        <a href="" target="_blank"><img src="img/bitpay-logo-footer.png" width="67" alt="Bitpay"></a>
+      </div> 
+      <div class="small-2 columns">        
+        <a href="https://github.com/bitpay/copay/" target="_blank"><img src="img/github-logo-footer.png" width="90" alt="GitHub"></a>
+      </div> 
+      <div class="small-2 columns">        
+        <a href="" target="_blank"><img src="img/bitcore-logo-footer.png" width="81" alt="Bitcore"></a>
+      </div> 
     </div>
   </footer>
 
