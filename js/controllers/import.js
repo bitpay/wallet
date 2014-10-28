@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, Compatibility) {
+  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, Compatibility, cryptoUtils) {
 
     $rootScope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('ImportController',
       if ($scope.skipTxProposals)
         skipFields.push('txProposals');
 
-      $rootScope.iden.importWallet(encryptedObj, password, skipFields, function(err, w) {
+      $rootScope.iden.importEncryptedWallet(encryptedObj, password, skipFields, function(err, w) {
         if (!w) {
           $scope.loading = false;
           notification.error('Error', err || 'Wrong password');

@@ -1,8 +1,9 @@
 'use strict';
 
-
-var BackupService = function(notification) {
+var BackupService = function($rootScope, notification, cryptoUtils) {
+  this.$rootScope = $rootScope;
   this.notifications = notification;
+  this.cryptoUtils = cryptoUtils;
 };
 
 BackupService.prototype.getCopayer = function(wallet) {
@@ -40,11 +41,11 @@ BackupService.prototype._download = function(ew, walletName, filename) {
 };
 
 BackupService.prototype.walletEncrypted = function(wallet) {
-  return wallet.toEncryptedObj();
+  return wallet.exportEncrypted(this.$rootScope.iden.password);
 }
 
 BackupService.prototype.walletDownload = function(wallet) {
-  var ew = wallet.toEncryptedObj();
+  var ew = this.walletEncrypted(wallet);
   var walletName = wallet.getName();
   var copayerName = this.getCopayer(wallet);
   var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
@@ -52,17 +53,14 @@ BackupService.prototype.walletDownload = function(wallet) {
 };
 
 BackupService.prototype.profileEncrypted = function(iden) {
-  return iden.toEncryptedObj();
+  return iden.exportEncryptedWithWalletInfo(iden.password);
 }
 
 BackupService.prototype.profileDownload = function(iden) {
-  var ew = iden.toEncryptedObj();
-  var name = iden.profile.getName();
+  var ew = this.profileEncrypted(iden);
+  var name = iden.fullName;
   var filename = name + '-profile.json';
   this._download(ew, name, filename)
 };
-
-
-
 
 angular.module('copayApp.services').service('backupService', BackupService);

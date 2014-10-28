@@ -6,6 +6,7 @@ var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
 var async = require('async');
+var cryptoUtil = require('../util/crypto');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -683,7 +684,6 @@ Wallet.prototype.getNetworkName = function() {
 };
 
 /**
- * @desc
  * @return {bool}
  */
 Wallet.prototype.isTestnet = function() {
@@ -2862,6 +2862,13 @@ Wallet.prototype.getTransactionHistory = function(cb) {
       return cb(null, history);
     });
   }
+};
+
+Wallet.prototype.exportEncrypted = function(password, opts) {
+  opts = opts || {};
+  var crypto = opts.cryptoUtil || cryptoUtil;
+  var key = crypto.kdf(password);
+  return crypto.encrypt(key, this.toObj());
 };
 
 module.exports = Wallet;

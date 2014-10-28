@@ -36,6 +36,19 @@ Compatibility._getWalletIds = function(cb) {
 };
 
 /**
+ * @param {string} encryptedWallet - base64-encoded encrypted wallet
+ * @param {string} passphrase - base64-encoded passphrase
+ * @returns {Object}
+ */
+Compatibility.importLegacy = function(encryptedWallet, passphrase) {
+  var ret = Compatibility._decrypt(encryptedWallet, passphrase);
+  if (!ret) return null;
+  ret = ret.toString(CryptoJS.enc.Utf8);
+  ret = JSON.parse(ret);
+  return ret;
+};
+
+/**
  * Decrypts using the CryptoJS library (unknown encryption schema)
  *
  * Don't use CryptoJS to encrypt. This still exists for compatibility reasons only.

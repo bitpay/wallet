@@ -207,13 +207,20 @@ Identity.prototype.toObj = function() {
     _.pick(this, 'version', 'fullName', 'password', 'email'));
 };
 
-Identity.prototype.exportWithWalletInfo = function() {
+Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
+  var crypto = opts.cryptoUtil || cryptoUtil;
+  var key = crypto.kdf(this.password);
+  return crypto.encrypt(key, this.exportWithWalletInfo);
+};
+
+Identity.prototype.exportWithWalletInfo = function(opts) {
   return _.extend({
       wallets: _.map(this.wallets, function(wallet) {
         return wallet.toObj();
       })
     },
-    _.pick(this, 'version', 'fullName', 'password', 'email'));
+    _.pick(this, 'version', 'fullName', 'password', 'email')
+  );
 };
 
 /**
@@ -248,8 +255,8 @@ Identity.prototype.close = function(cb) {
 };
 
 /**
- * @desc Imports a wallet from an encrypted base64 object
- * @param {string} base64 - the base64 encoded object
+ * @desc Imports a wallet from an encrypted string
+ * @param {string} cypherText - the encrypted object
  * @param {string} passphrase - passphrase to decrypt it
  * @param {string[]} opts.skipFields - fields to ignore when importing
  * @param {string[]} opts.salt - 
@@ -257,24 +264,31 @@ Identity.prototype.close = function(cb) {
  * @param {string[]} opts.importFunction - for stubbing
  * @return {Wallet}
  */
-Identity.prototype.importWallet = function(base64, password, opts, cb) {
+Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
+
+  var crypto = opts.cryptoUtil || cryptoUtil;
+  // TODO set iter and salt using config.js
+  var key = crypto.kdf(password);
+  var obj = crypto.decrypt(key, cypherText);
+  if (!obj) return cb(new Error('Could not decrypt'));
+  try {
+    obj = JSON.parse(obj);
+  } catch (e) {
+    return cb(new Error('Could not decrypt'));
+  }
+  return this.importWalletFromObj(obj, opts, cb)
+};
+
+Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var self = this;
-  preconditions.checkArgument(password);
   preconditions.checkArgument(cb);
   var importFunction = opts.importWallet || Wallet.fromUntrustedObj;
-  var crypto = opts.cryptoUtil || cryptoUtil;
 
   var readOpts = {
     networkOpts: this.networkOpts,
     blockchainOpts: this.blockchainOpts,
     skipFields: opts.skipFields,
   };
-
-  // TODO set iter and salt using config.js
-  var key = crypto.kdf(password);
-  var obj = crypto.decrypt(key, base64);
-  if (!obj) return cb(new Error('Could not decrypt'));
-
 
   var w = importFunction(obj, readOpts);
   if (!w) return cb(new Error('Could not decrypt'));
@@ -303,6 +317,12 @@ Identity.prototype.closeWallet = function(wallet, cb) {
   });
 };
 
+Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
+  var crypto = opts.cryptoUtil || cryptoUtil;
+  var key = crypto.kdf(password);
+  return Identity.importFromFullJson(crypto.decript(key, str));
+};
+
 Identity.importFromFullJson = function(str, password, opts, cb) {
   preconditions.checkArgument(str);
   var json;
@@ -320,7 +340,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
 
   json.wallets = json.wallets || {};
   async.map(json.wallets, function(walletData, callback) {
-    iden.importWallet(wstr, password, opts, function(err, w) {
+    iden.importEncryptedWallet(wstr, password, opts, function(err, w) {
       if (err) return callback(err);
       log.debug('Wallet ' + w.getId() + ' imported');
       callback();
