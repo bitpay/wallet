@@ -25,7 +25,6 @@ angular.module('copayApp.services')
       };
       iden.createWallet(walletOptions, function(err, wallet) {
         if (err) {
-          console.log('Error:' + err)
           controllerUtils.onErrorDigest(
             scope, 'Could not create default wallet');
         } else {
@@ -47,9 +46,8 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
         if (err && !iden) {
-          console.log('Error:' + err)
           controllerUtils.onErrorDigest(
-            scope, (err.toString() || '').match('PNOTFOUND') ? 'Profile not found' : 'Unknown error');
+            scope, (err.toString() || '').match('PNOTFOUND') ? 'Invalid email or password' : 'Unknown error');
         } else {
           var firstWallet = iden.getLastFocusedWallet();
           controllerUtils.bindProfile(scope, iden, firstWallet);
