@@ -23,7 +23,6 @@ var HDParams = require('./HDParams');
  * @param {Object[]} [opts.indexes] - an array to be deserialized using {@link HDParams#fromList}
  *                                   (defaults to all indexes in zero)
  * @param {Object=} opts.nicknameFor - nicknames for other copayers
- * @param {boolean[]} [opts.copayersBackup] - whether other copayers have backed up their wallets
  */
 function PublicKeyRing(opts) {
   opts = opts || {};
@@ -43,7 +42,6 @@ function PublicKeyRing(opts) {
   this.publicKeysCache = {};
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
-  this.copayersBackup = opts.copayersBackup || [];
   this.addressToPath = {};
 
 };
@@ -63,7 +61,6 @@ function PublicKeyRing(opts) {
  * @param {Object[]} data.indexes - an array of objects that can be turned into
  *                                  an array of HDParams
  * @param {Object} data.nicknameFor - a registry of nicknames for other copayers
- * @param {boolean[]} data.copayersBackup - whether copayers have backed up their wallets
  * @param {string[]} data.copayersExtPubKeys - the extended public keys of copayers
  * @returns {Object} a trimmed down version of PublicKeyRing that can be used
  *                   as a parameter
@@ -71,7 +68,7 @@ function PublicKeyRing(opts) {
 PublicKeyRing.trim = function(data) {
   var opts = {};
   ['walletId', 'networkName', 'requiredCopayers', 'totalCopayers',
-    'indexes', 'nicknameFor', 'copayersBackup', 'copayersExtPubKeys'
+    'indexes', 'nicknameFor', 'copayersExtPubKeys'
   ].forEach(function(k) {
     opts[k] = data[k];
   });
@@ -119,7 +116,6 @@ PublicKeyRing.prototype.toObj = function() {
     requiredCopayers: this.requiredCopayers,
     totalCopayers: this.totalCopayers,
     indexes: HDParams.serialize(this.indexes),
-    copayersBackup: this.copayersBackup,
 
     copayersExtPubKeys: this.copayersHK.map(function(b) {
       return b.extendedPublicKeyString();
@@ -687,48 +683,6 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
 
 /**
  * @desc
- * Mark backup as done for us
- *
- * @TODO: REVIEW FUNCTIONALITY - it used to have a parameter that was not used at all!
- *
- * @return {boolean} true if everybody has backed up their wallet
- */
-PublicKeyRing.prototype.setBackupReady = function() {
-  if (this.isBackupReady()) return false;
-
-  var cid = this.myCopayerId();
-  this.copayersBackup.push(cid);
-  return true;
-};
-
-/**
- * @desc returns true if a copayer has backed up his wallet
- * @param {string=} copayerId - the pubkey of a copayer, defaults to our own's
- * @return {boolean} if this copayer has backed up
- */
-PublicKeyRing.prototype.isBackupReady = function(copayerId) {
-  var cid = copayerId || this.myCopayerId();
-  return this.copayersBackup.indexOf(cid) != -1;
-};
-
-/**
- * @desc returns true if all copayers have backed up their wallets
- * @return {boolean}
- */
-PublicKeyRing.prototype.isFullyBackup = function() {
-  return this.remainingBackups() == 0;
-};
-
-/**
- * @desc returns the amount of backups remaining
- * @return {boolean}
- */
-PublicKeyRing.prototype.remainingBackups = function() {
-  return this.totalCopayers - this.copayersBackup.length;
-};
-
-/**
- * @desc
  * Merges this public key ring with another one, optionally ignoring the
  * wallet id
  *
@@ -742,7 +696,6 @@ PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
   var hasChanged = false;
   hasChanged |= this.mergeIndexes(inPKR.indexes);
   hasChanged |= this._mergePubkeys(inPKR);
-  hasChanged |= this._mergeBackups(inPKR.copayersBackup);
 
   return !!hasChanged;
 };
@@ -768,22 +721,5 @@ PublicKeyRing.prototype.mergeIndexes = function(indexes) {
   return !!hasChanged
 }
 
-/**
- * @desc merges information about backups done by another copy of PublicKeyRing
- * @param {string[]} backups - another copy of backups
- * @return {boolean} true if the internal state has changed
- */
-PublicKeyRing.prototype._mergeBackups = function(backups) {
-  var self = this;
-  var hasChanged = false;
-
-  backups.forEach(function(cid) {
-    var isNew = self.copayersBackup.indexOf(cid) == -1;
-    if (isNew) self.copayersBackup.push(cid);
-    hasChanged |= isNew;
-  });
-
-  return !!hasChanged
-};
 
 module.exports = PublicKeyRing;
