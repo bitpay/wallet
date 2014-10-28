@@ -46,6 +46,7 @@ module.exports = function(config) {
       'js/log.js',
       'js/routes.js',
       'js/services/*.js',
+      'js/util/*.js',
       'js/directives.js',
       'js/filters.js',
       'js/controllers/*.js',
@@ -55,7 +56,6 @@ module.exports = function(config) {
       'test/mocks/FakeWallet.js',
       'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
-      'test/mocks/FakeLocalStorage.js',
 
       'test/mocha.conf.js',
 
