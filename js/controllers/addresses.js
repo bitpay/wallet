@@ -8,9 +8,9 @@ angular.module('copayApp.controllers').controller('AddressesController',
 
     $scope.loading = false;
     $scope.showAll = false;
-    var w = $rootScope.wallet;
 
     $scope.newAddr = function() {
+      var w = $rootScope.wallet;
       $scope.loading = true;
       w.generateAddress(null, function() {
         $timeout(function() {
