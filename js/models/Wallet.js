@@ -977,13 +977,13 @@ Wallet.prototype.toObj = function() {
 
 
 Wallet.fromUntrustedObj = function(obj, readOpts) {
-  obj =  _.clone(obj);
+  obj = _.clone(obj);
   var o = {};
   _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
     o[p] = obj[p];
   });
 
-  return Wallet.fromObj(o,readOpts);
+  return Wallet.fromObj(o, readOpts);
 };
 
 /**
@@ -2518,10 +2518,10 @@ Wallet.prototype.close = function(cb) {
   this.blockchain.destroy();
 
   log.debug('## CLOSING Wallet: ' + this.id);
-// TODO
-//  this.lock.release(function() {
-    if (cb) return cb();
-//  });
+  // TODO
+  //  this.lock.release(function() {
+  if (cb) return cb();
+  //  });
 };
 
 /**
@@ -2906,6 +2906,8 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     tx.labelTo = firstOut ? firstOut.label : undefined;
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
+    tx.sentTs = proposal ? proposal.sentTs : undefined;
+    tx.minedTs = tx.time * 1000;
   };
 
   if (addresses.length > 0) {
