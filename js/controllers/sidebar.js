@@ -35,6 +35,10 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     }
   };
 
+  $scope.signout = function() {
+    $scope.$emit('signout');
+  };
+
   $scope.isActive = function(item) {
     return item.link && item.link == $location.path().split('/')[1];
   };
