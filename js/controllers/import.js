@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('ImportController',
           controllerUtils.setFocusedWallet(w);
           return;
         }
-          
+
         // if it was used, we need to scan for indices
         w.updateIndexes(function(err) {
           updateStatus('Importing wallet - We are almost there...');
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('ImportController',
           controllerUtils.installWalletHandlers($scope, w);
           controllerUtils.setFocusedWallet(w);
         });
-      }); 
+      });
     };
 
     $scope.openFileDialog = function() {
@@ -65,7 +65,17 @@ angular.module('copayApp.controllers').controller('ImportController',
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
           var encryptedObj = evt.target.result;
-          _importBackup(encryptedObj);
+          Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, $scope.password, {},
+            function(err, wallet){
+              if (err) {
+                notification.error('Error', 'Could not read wallet. Please check your password');
+              } else {
+                controllerUtils.installWalletHandlers($scope, wallet);
+                controllerUtils.setFocusedWallet(wallet);
+                return;
+              }
+            }
+          );
         }
       };
     };
@@ -94,10 +104,21 @@ angular.module('copayApp.controllers').controller('ImportController',
         reader.readAsBinaryString(backupFile);
       }
       else {
+          Compatibility.importEncryptedWallet($rootScope.iden, backupText, $scope.password, {},
+            function(err, wallet){
+              if (err) {
+                notification.error('Error', 'Could not read wallet. Please check your password');
+              } else {
+                controllerUtils.installWalletHandlers($scope, wallet);
+                controllerUtils.setFocusedWallet(wallet);
+                return;
+              }
+            }
+          );
         try {
           _importBackup(backupText);
         } catch(e) {
-          Compatibility.preDotEightImportWalletToStorage(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
+          Compatibility.importEncryptedWallet(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
         }
       }
     };
