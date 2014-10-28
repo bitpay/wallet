@@ -78,9 +78,6 @@ var createBundle = function(opts) {
   b.require('./js/models/PublicKeyRing', {
     expose: '../js/models/PublicKeyRing'
   });
-  b.require('./js/models/Passphrase', {
-    expose: '../js/models/Passphrase'
-  });
   b.require('./js/models/HDPath', {
     expose: '../js/models/HDPath'
   });
