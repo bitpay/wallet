@@ -210,7 +210,7 @@ Identity.prototype.toObj = function() {
 Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
   var crypto = opts.cryptoUtil || cryptoUtil;
   var key = crypto.kdf(this.password);
-  return crypto.encrypt(key, this.exportWithWalletInfo);
+  return crypto.encrypt(key, this.exportWithWalletInfo(opts));
 };
 
 Identity.prototype.exportWithWalletInfo = function(opts) {
