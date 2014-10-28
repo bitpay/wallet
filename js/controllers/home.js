@@ -10,6 +10,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       return;
     }
     $scope.loading = true;
-    identityService.open($scope, form);   
+    identityService.open($scope, form);
   }
 });
