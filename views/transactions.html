@@ -40,13 +40,13 @@
                 <span class="btn-copy" clip-copy="btx.txid"></span>
               </div>
               <div class="large-4 medium-5 small-8 columns text-right">
-                <div data-ng-show="btx.firstSeenTs">
-                  <span translate>first seen at</span>
-                  <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+                <div data-ng-show="btx.sentTs">
+                  <span translate>broadcasted</span>
+                  <time>{{btx.sentTs | amCalendar}}</time>
                 </div>
-                <div data-ng-show="btx.time && !btx.firstSeenTs">
+                <div data-ng-show="btx.minedTs">
                   <span translate>mined</span>
-                  <time>{{btx.time * 1000 | amCalendar}}</time>
+                  <time>{{btx.minedTs | amCalendar}}</time>
                 </div>
               </div>
             </div>
