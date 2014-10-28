@@ -16,6 +16,16 @@ LocalStorage.prototype.getItem = function(k,cb) {
   return cb(null, localStorage.getItem(k));
 };
 
+/**
+ * Same as setItem, but fails if an item already exists
+ */
+LocalStorage.prototype.createItem = function(name, value, callback) {
+  if (localStorage.getItem(name)) {
+    return callback('EEXISTS');
+  }
+  return this.setItem(name, value, callback);
+};
+
 LocalStorage.prototype.setItem = function(k,v,cb) {
   localStorage.setItem(k,v);
   return cb();

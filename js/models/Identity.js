@@ -231,7 +231,9 @@ Identity.prototype.store = function(opts, cb) {
   var self = this;
   opts = opts || {};
 
-  self.storage.setItem(this.getId(), this.toObj(), function(err) {
+  var storeFunction = opts.failIfExists ? self.storage.createItem : self.storage.setItem;
+
+  storeFunction.call(self.storage, this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
 
     if (opts.noWallets)
@@ -349,7 +351,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
     if (err) {
       return cb(err);
     }
-    iden.store(function(err) {
+    iden.store(null, function(err) {
       if (err) {
         return cb(err);
       }
@@ -402,10 +404,8 @@ Identity.prototype.bindWallet = function(w) {
  * @param {PublicKeyRing=} opts.publicKeyRing
  * @param {string} opts.nickname
  * @param {string} opts.password
- * @TODO: Figure out what is this parameter
- * @param {?} opts.spendUnconfirmed this.walletDefaults.spendUnconfirmed ??
- * @TODO: Figure out in what unit is this reconnect delay.
- * @param {number} opts.reconnectDelay milliseconds?
+ * @param {boolean} opts.spendUnconfirmed this.walletDefaults.spendUnconfirmed
+ * @param {number} opts.reconnectDelay time in milliseconds
  * @param {number=} opts.version
  * @param {callback} opts.version
  * @return {Wallet}
@@ -467,11 +467,7 @@ Identity.prototype.createWallet = function(opts, cb) {
     if (err) return cb(err);
     self.bindWallet(w);
     w.netStart();
-    self.store({
-      noWallets: true
-    }, function(err) {
-      return cb(err, w);
-    });
+    return cb(err, w);
   });
 };
 
@@ -539,7 +535,7 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
     if (err) {
       return cb(err);
     }
-    self.store(cb);
+    self.store(null, cb);
   });
 };
 
@@ -654,7 +650,11 @@ Identity.prototype.joinWallet = function(opts, cb) {
               err = 'walletFull';
             }
           }
-          return cb(err, w);
+          self.store({
+            noWallets: true
+          }, function(err) {
+            return cb(err, w);
+          });
         });
       }
     });
