@@ -11,6 +11,9 @@ EncryptedInsightStorage.prototype.getItem = function(name, callback) {
   var key = cryptoUtil.kdfbinary(this.password + this.email);
   InsightStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
+      if (err) {
+        return callback(err);
+      }
       var decryptedJson = cryptoUtil.decrypt(key, body);
       if (!decryptedJson) {
         return callback('Internal Error');

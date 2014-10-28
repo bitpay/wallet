@@ -95,6 +95,16 @@ GoogleDrive.prototype._httpGet = function(theUrl) {
   return xmlHttp.responseText;
 }
 
+GoogleDrive.prototype.createItem = function(name, value, callback) {
+  this.getItem(name, function(err, retrieved) {
+    if (err || !retrieved) {
+      return this.setItem(name, value, callback);
+    } else {
+      return callback('EEXISTS');
+    }
+  });
+};
+
 GoogleDrive.prototype.getItem = function(k, cb) {
   //console.log('[googleDrive.js.95:getItem:]', k); //TODO
   var self = this;

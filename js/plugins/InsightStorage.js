@@ -16,6 +16,17 @@ InsightStorage.prototype.setCredentials = function(email, password, opts) {
   this.password = password;
 };
 
+InsightStorage.prototype.createItem = function(name, value, callback) {
+  var self = this;
+  this.getItem(name, function(err, retrieved) {
+    if (err || !retrieved) {
+      return self.setItem(name, value, callback);
+    } else {
+      return callback('EEXISTS');
+    }
+  });
+};
+
 InsightStorage.prototype.getItem = function(name, callback) {
   var key = cryptoUtil.kdf(this.password + this.email);
   var secret = cryptoUtil.kdf(key, this.password);
