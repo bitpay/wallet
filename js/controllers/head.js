@@ -48,6 +48,9 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     $rootScope.$watch('title', function(newTitle, oldTitle) {
       $scope.title = newTitle;
     });
+    $rootScope.$on('signout', function() {
+      $scope.signout();
+    });
   }
 });
 
