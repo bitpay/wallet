@@ -78,42 +78,12 @@ Identity.prototype.getName = function() {
  * @param cb
  * @return {undefined}
  */
-Identity.create = function(opts, cb) {
+Identity.create = function(opts) {
   opts = _.extend({}, opts);
 
-  var iden = new Identity(opts);
-  if (opts.noWallets) {
-    return cb(null, iden);
-  } else {
-    return iden.createDefaultWallet(opts, cb);
-  }
+  return new Identity(opts);
 };
 
-/**
- * Create a wallet, 1-of-1 named general
- *
- * @param {Object} opts
- * @param {Object} opts.walletDefaults
- * @param {string} opts.walletDefaults.networkName
- */
-Identity.prototype.createDefaultWallet = function(opts, callback) {
-
-  var self = this;
-  var walletOptions = _.extend(opts.walletDefaults, {
-    nickname: this.fullName || this.email,
-    networkName: opts.networkName,
-    requiredCopayers: 1,
-    totalCopayers: 1,
-    password: this.password,
-    name: 'general'
-  });
-  this.createWallet(walletOptions, function(err, wallet) {
-    if (err) {
-      return callback(err);
-    }
-    return callback(null, self);
-  });
-};
 
 /**
  * Open an Identity from the given storage
@@ -125,7 +95,6 @@ Identity.prototype.createDefaultWallet = function(opts, callback) {
  * @param {Function} cb
  */
 Identity.open = function(opts, cb) {
-
   var storage = opts.storage || opts.pluginManager.get('DB');
   storage.setCredentials(opts.email, opts.password, opts);
   storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data) {
@@ -258,7 +227,7 @@ Identity.prototype.store = function(opts, cb) {
   self.storage.setItem(this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
 
-    if (opts.noWallets) 
+    if (opts.noWallets)
       return cb();
 
     async.map(self.wallets, self.storeWallet, cb);
@@ -457,7 +426,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.txProposals = opts.txProposals || new TxProposals({
     networkName: opts.networkName,
   });
-  var walletClass =  opts.walletClass || Wallet;
+  var walletClass = opts.walletClass || Wallet;
 
   log.debug('\t### TxProposals Initialized');
 
@@ -478,8 +447,10 @@ Identity.prototype.createWallet = function(opts, cb) {
     if (err) return cb(err);
     self.bindWallet(w);
     w.netStart();
-    self.store({noWallets:true},function(err){
-      return cb(err,w);
+    self.store({
+      noWallets: true
+    }, function(err) {
+      return cb(err, w);
     });
   });
 };

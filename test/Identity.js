@@ -123,17 +123,15 @@ describe('Identity model', function() {
   });
 
   describe('Identity.create()', function() {
-    it('should create', function(done) {
+    it('should create', function() {
       var args = createIdentity();
       args.blockchain.on = sinon.stub();
       var old = Identity.prototype.createWallet;
       Identity.prototype.createWallet = sinon.stub().yields(null, getNewWallet());
-      Identity.create(args.params, function(err, iden) {
-        should.not.exist(err);
-        should.exist(iden.wallets);
-        Identity.prototype.createWallet = old;
-        done();
-      });
+      var iden = Identity.create(args.params);
+      should.exist(iden);
+      should.exist(iden.wallets);
+      Identity.prototype.createWallet = old;
     });
   });
 
@@ -168,16 +166,13 @@ describe('Identity model', function() {
   describe('#createWallet', function() {
     var iden = null;
     var args = null;
-    beforeEach(function(done) {
+    beforeEach(function() {
       args = createIdentity();
       args.params.noWallets = true;
       var old = Identity.prototype.createWallet;
       Identity.prototype.createWallet = sinon.stub().yields(null, getNewWallet());
-      Identity.create(args.params, function(err, identity) {
-        iden = identity;
-        Identity.prototype.createWallet = old;
-        done();
-      });
+      iden = Identity.create(args.params);
+      Identity.prototype.createWallet = old;
     });
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
@@ -234,13 +229,12 @@ describe('Identity model', function() {
         importWallet: sinon.stub().returns(getNewWallet()),
       };
 
-      Identity.create(args.params, function(err, iden) {
-        iden.retrieveWalletFromStorage('dummy', opts, function(err, wallet) {
-          should.not.exist(err);
-          opts.importWallet.calledOnce.should.equal(true);
-          should.exist(wallet);
-          done();
-        });
+      var iden = Identity.create(args.params);
+      iden.retrieveWalletFromStorage('dummy', opts, function(err, wallet) {
+        should.not.exist(err);
+        opts.importWallet.calledOnce.should.equal(true);
+        should.exist(wallet);
+        done();
       });
     });
   });
@@ -313,7 +307,7 @@ describe('Identity model', function() {
     var args = null;
     var net = null;
 
-    beforeEach(function(done) {
+    beforeEach(function() {
       args = createIdentity();
       args.params.Async = net = sinon.stub();
 
@@ -322,12 +316,9 @@ describe('Identity model', function() {
       net.start = sinon.spy();
       var old = Identity.prototype.createWallet;
       Identity.prototype.createWallet = sinon.stub().yields(null, getNewWallet());
- 
-      Identity.create(args.params, function(err, identity) {
-        iden = identity;
-        Identity.prototype.createWallet = old;
-        done();
-      });
+
+      iden = Identity.create(args.params);
+      Identity.prototype.createWallet = old;
     });
 
     it('should yield bad network error', function(done) {
