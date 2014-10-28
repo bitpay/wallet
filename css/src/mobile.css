@@ -185,5 +185,14 @@
     margin-bottom: 50px;
   }
 
+  .founds {
+    color: #8597A7;
+  }
+
+  .side-nav.wallets {
+    padding: 0;
+    height: auto;
+  }
+
 }
 

@@ -1,29 +1,73 @@
 <div ng-controller="SidebarController">
   <header class="text-center">
     <div class="text-white m10v">
-      <a href="#!/receive" class="db">
-        <img src="img/logo-negative-beta.svg" alt="" width="80">
-      </a>
+      <img src="img/logo-negative-beta.svg" alt="" width="80">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
 
   </header>
-  <div class="line-sidebar-b"></div>
-  <div ng-if="$root.wallet" class="founds size-12 box-founds p15" ng-disabled="$root.loading" ng-click="refresh()">
-    <p class="text-gray">
-      <span>{{$root.wallet.getName()}}</span>
-      <span class="size-12 right">{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</span>
-    </p>
-    <div class="line-sidebar-t">
-      <span class="gray small side-bar right" title="Manual Refresh"><i class="size-16 fi-refresh"></i></span>
+  <div ng-if="$root.wallet" class="founds box-founds p15" ng-disabled="$root.loading">
+    <div class="m10b" ng-click="toggleWalletSelection()">
+      <span>{{$root.wallet.getName()}} 
+        {{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}
+      </span>
+      <a class="right text-gray">
+        <span ng-show="!walletSelection">
+          <i class="fi-arrow-down"></i>
+        </span>
+        <span ng-show="walletSelection">
+          <i class="fi-arrow-up"></i>
+        </span> 
+      </a>
+    </div>
+    <div ng-if="walletSelection">
+      <div class="side-nav wallets" ng-show="!wallets.0">
+        <p class="size-12" translate>You do not have another wallets. Creates one more from link below.</p>
+        <div class="text-center">
+          <i class="fi-arrow-down"></i>
+        </div>
+      </div>
+      <ul class="side-nav wallets off-canvas-list" ng-show="wallets.0"
+        ng-click="toggleWalletSelection()"
+        ng-class="{'large':wallets.length > 4, 'medium':wallets.length > 2 && wallets.length < 5}">
+        <li data-ng-repeat="item in wallets track by $index"
+          class="nav-item" 
+          ng-if="item.id != $root.wallet.id">
+        <div class="col1">
+          <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
+        </div>
+        <div class="col2">
+          <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
+            <div class="oh">
+              <div class="right size-10 type-wallet">[ {{item.totalCopayers}} of {{item.requiredCopayers}} ]</div> 
+              <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
+            </div>
+            <div class="oh">
+              <span ng-if="item.isReady() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              <div ng-if="item.isReady() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+                <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
+                <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
+              </div>
+              <span ng-if="!item.isReady()">Waiting for copayers...</span>
+            </div>
+          </a>
+        </div>
+        </li>
+      </ul>
+      <div class="off-canvas-list" ng-click="toggleWalletSelection()">
+        <a href="#!/manage" class="button-setup add-wallet db p20h" title="Create"><i class="m5r fi-plus"></i> {{'Add Wallet' | translate }} </a>
+      </div>
+    </div>
+    <div class="line-sidebar-t" ng-show="!walletSelection" ng-click="refresh()">
+      <a class="side-bar text-gray right" title="Manual Refresh"><i class="fi-refresh"></i></a>
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
-      <span class="size-16" ng-if="!$root.updatingBalance">{{totalBalance || 0
+      <span ng-if="!$root.updatingBalance">{{totalBalance || 0
         |noFractionNumber}} {{$root.wallet.settings.unitName}} 
       </span>
     </div> 
-    <div class="m10t" ng-show="lockedBalance">
+    <div class="m10t" ng-show="lockedBalance && !walletSelection" ng-click="refresh()">
       {{'Locked'|translate}} 
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
@@ -32,16 +76,21 @@
       </span> &nbsp;<i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
     </div>
   </div>
+
   <div class="line-sidebar-t p0"></div>
-  <ul class="off-canvas-list">
+  <ul class="off-canvas-list" ng-show="!walletSelection">
     <li data-ng-repeat="item in menu" ui-route="{{item.link}}" class="nav-item" data-ng-class="{active: isActive(item)}">
-      <a href="#!/{{item.link}}" ng-click="toggleCollapse()" class="db p20h"> 
+      <a href="#!/{{item.link}}" class="db p20h"> 
         <i class="size-24 m20r {{item.icon}}"></i> {{item.title}}
         <span class="label alert round" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
       </a>
     </li>
     <li>
-      <a href="#" class="db p20h" title="Close"
+      <a ui-route="{{create}}" href="#!/manage" class="db p20h" title="Create">
+        <i class="size-24 m20r fi-plus"></i> {{'Manage wallets' | translate }} </a>
+    </li>
+    <li>
+      <a href="#!/" class="db p20h" title="Close"
         ng-click="signout()"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</a>
     </li>
   </ul>
