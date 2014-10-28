@@ -81,7 +81,7 @@
     "mocha": "^1.18.2",
     "mocha-lcov-reporter": "^0.0.1",
     "mock-fs": "^2.3.1",
-    "node-cryptojs-aes": "^0.4.0",
+    "sjcl": "*",
     "request": "^2.40.0",
     "shelljs": "^0.3.0",
     "sinon": "^1.9.1",
