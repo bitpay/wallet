@@ -1,8 +1,7 @@
 
-var Compatibility = require('../js/models/Compatibility');
+var compat = require('../js/models/Compatibility');
 
 describe('Compatibility', function() {
-  var compat = new Compatibility();
 
   describe('#import', function() {
     it('should not be able to decrypt with wrong password', function() {
@@ -13,6 +12,7 @@ describe('Compatibility', function() {
     it('should be able to decrypt an old backup', function() {
       var wo = compat.importLegacy(encryptedLegacy1, legacyPassword1);
       should.exist(wo);
+      console.log(wo);
       wo.opts.id.should.equal('48ba2f1ffdfe9708');
       wo.opts.spendUnconfirmed.should.equal(true);
       wo.opts.requiredCopayers.should.equal(1);
