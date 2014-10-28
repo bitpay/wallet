@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, controllerUtils, Passphrase, notification, isMobile) {
+  function($scope, $rootScope, $location, controllerUtils, Passphrase, notification, isMobile, Compatibility) {
 
     $rootScope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
@@ -94,7 +94,11 @@ angular.module('copayApp.controllers').controller('ImportController',
         reader.readAsBinaryString(backupFile);
       }
       else {
-        _importBackup(backupText);
+        try {
+          _importBackup(backupText);
+        } catch(e) {
+          Compatibility.preDotEightImportWalletToStorage(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
+        }
       }
     };
   });

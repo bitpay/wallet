@@ -69,6 +69,9 @@ var createBundle = function(opts) {
   b.require('./js/models/Insight', {
     expose: '../js/models/Insight'
   });
+  b.require('./js/models/Compatibility', {
+    expose: '../js/models/Compatibility'
+  });
   b.require('./js/models/PrivateKey', {
     expose: '../js/models/PrivateKey'
   });
