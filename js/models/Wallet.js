@@ -94,13 +94,6 @@ function Wallet(opts) {
   this.lastTimestamp = opts.lastTimestamp || 0;
   this.lastMessageFrom = {};
 
-  //to avoid confirmation of copayer's backups if is imported from a file
-  this.isImported = opts.isImported || false;
-
-
-  //to avoid waiting others copayers to make a backup and login immediatly
-  this.forcedLogin = opts.forcedLogin || false;
-
   this.paymentRequests = opts.paymentRequests || {};
 
   var networkName = Wallet.obtainNetworkName(opts);
@@ -153,7 +146,6 @@ Wallet.PERSISTED_PROPERTIES = [
   'txProposals',
   'privateKey',
   'addressBook',
-  'backupOffered',
   'lastTimestamp',
   'secretNumber',
 ];
@@ -1000,7 +992,6 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
  *
  * @param readOpts.network
  * @param readOpts.blockchain
- * @param readOpts.isImported {boolean}  - tag wallet as 'imported' (skip forced backup step)
  * @param readOpts.{string[]} skipFields - parameters to ignore when importing
  */
 Wallet.fromObj = function(o, readOpts) {
@@ -1071,7 +1062,6 @@ Wallet.fromObj = function(o, readOpts) {
 
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
-  opts.isImported = readOpts.isImported || false;
 
   return new Wallet(opts);
 };
@@ -2617,24 +2607,11 @@ Wallet.prototype.requiresMultipleSignatures = function() {
 };
 
 /**
- * @desc Returns true if the keyring is complete and all users have backed up the wallet
+ * @desc Returns true if the keyring is complete
  * @return {boolean}
  */
 Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin);
-  return ret;
-};
-
-/**
- * @desc Mark that our backup is ready and send a sync to other users.
- *
- * Also backs up the wallet
- */
-Wallet.prototype.setBackupReady = function(forcedLogin) {
-  this.forcedLogin = forcedLogin;
-  this.publicKeyRing.setBackupReady();
-  this.sendPublicKeyRing();
-  this.emitAndKeepAlive('txProposalsUpdated');
+  return this.publicKeyRing.isComplete();
 };
 
 /**
