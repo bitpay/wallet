@@ -1,15 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, notification, controllerUtils) {
-
-  $scope.username = $rootScope.iden ? $rootScope.iden.fullName || $rootScope.iden.email : 'undefined';
+  $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
-  $scope.hoverIn = function(){
+  $scope.hoverIn = function() {
     this.hoverMenu = true;
   };
 
-  $scope.hoverOut = function(){
+  $scope.hoverOut = function() {
     this.hoverMenu = false;
   };
 
@@ -53,4 +52,3 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     });
   }
 });
-
