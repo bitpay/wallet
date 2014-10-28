@@ -29,7 +29,13 @@ angular.module('copayApp.services')
           controllerUtils.onErrorDigest(
             scope, 'Could not create default wallet');
         } else {
-          controllerUtils.bindProfile(scope, iden, wallet.id);
+          iden.store({failIfExists: true}, function(err) {
+            if (err) {
+              controllerUtils.onErrorDigest(scope, 'User already exists!');
+            } else {
+              controllerUtils.bindProfile(scope, iden, wallet.id);
+            }
+          });
         }
         scope.loading = false;
       });
