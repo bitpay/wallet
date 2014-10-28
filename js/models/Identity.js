@@ -261,8 +261,8 @@ Identity.prototype.close = function(cb) {
  * @param {string} cypherText - the encrypted object
  * @param {string} passphrase - passphrase to decrypt it
  * @param {string[]} opts.skipFields - fields to ignore when importing
- * @param {string[]} opts.salt - 
- * @param {string[]} opts.iterations - 
+ * @param {string[]} opts.salt -
+ * @param {string[]} opts.iterations -
  * @param {string[]} opts.importFunction - for stubbing
  * @return {Wallet}
  */

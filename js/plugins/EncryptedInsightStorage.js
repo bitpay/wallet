@@ -16,7 +16,7 @@ EncryptedInsightStorage.prototype.getItem = function(name, callback) {
       }
       var decryptedJson = cryptoUtil.decrypt(key, body);
       if (!decryptedJson) {
-        return callback('Internal Error');
+        return callback('PNOTFOUND');
       }
       return callback(null, decryptedJson);
     }

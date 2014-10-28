@@ -9,13 +9,15 @@ inherits(EncryptedLocalStorage, LocalStorage);
 
 EncryptedLocalStorage.prototype.getItem = function(name, callback) {
   var key = cryptoUtil.kdf(this.password + this.email);
-  LocalStorage.prototype.getItem.apply(this, [name, function(err, body) {
-    var decryptedJson = cryptoUtil.decrypt(key, body);
-    if (!decryptedJson) {
-      return callback('Internal Error');
+  LocalStorage.prototype.getItem.apply(this, [name,
+    function(err, body) {
+      var decryptedJson = cryptoUtil.decrypt(key, body);
+      if (!decryptedJson) {
+        return callback('PNOTFOUND');
+      }
+      return callback(null, decryptedJson);
     }
-    return callback(null, decryptedJson);
-  }]);
+  ]);
 };
 
 EncryptedLocalStorage.prototype.setItem = function(name, value, callback) {
