@@ -3,7 +3,6 @@ module.exports.PublicKeyRing = require('./js/models/PublicKeyRing');
 module.exports.TxProposal = require('./js/models/TxProposal');
 module.exports.TxProposals = require('./js/models/TxProposals');
 module.exports.PrivateKey = require('./js/models/PrivateKey');
-module.exports.Passphrase = require('./js/models/Passphrase');
 module.exports.HDPath = require('./js/models/HDPath');
 module.exports.HDParams = require('./js/models/HDParams');
 

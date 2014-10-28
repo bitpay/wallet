@@ -8,7 +8,7 @@ function EncryptedLocalStorage(config) {
 inherits(EncryptedLocalStorage, LocalStorage);
 
 EncryptedLocalStorage.prototype.getItem = function(name, callback) {
-  var key = cryptoUtil.kdf(this.password, this.email);
+  var key = cryptoUtil.kdf(this.password + this.email);
   LocalStorage.prototype.getItem.apply(this, [name, function(err, body) {
     var decryptedJson = cryptoUtil.decrypt(key, body);
     if (!decryptedJson) {
@@ -19,7 +19,7 @@ EncryptedLocalStorage.prototype.getItem = function(name, callback) {
 };
 
 EncryptedLocalStorage.prototype.setItem = function(name, value, callback) {
-  var key = cryptoUtil.kdf(this.password, this.email);
+  var key = cryptoUtil.kdf(this.password + this.email);
   if (!_.isString(value)) {
     value = JSON.stringify(value);
   }
