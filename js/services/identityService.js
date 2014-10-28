@@ -5,7 +5,7 @@ angular.module('copayApp.services')
     var root = {};
 
     root.create = function(scope, form) {
-      copay.Identity.create({
+      var iden = copay.Identity.create({
         email: form.email.$modelValue,
         password: form.password.$modelValue,
         pluginManager: pluginManager,
@@ -13,9 +13,24 @@ angular.module('copayApp.services')
         networkName: config.networkName,
         walletDefaults: config.wallet,
         passphraseConfig: config.passphraseConfig,
-      }, function(err, iden) {
-        var firstWallet = iden.getLastFocusedWallet();
-        controllerUtils.bindProfile(scope, iden, firstWallet);
+      });
+
+      var walletOptions = {
+        nickname: iden.fullName,
+        networkName: config.networkName,
+        requiredCopayers: 1,
+        totalCopayers: 1,
+        password: iden.password,
+        name: 'My wallet',
+      };
+      iden.createWallet(walletOptions, function(err, wallet) {
+        if (err) {
+          console.log('Error:' + err)
+          controllerUtils.onErrorDigest(
+            scope, 'Could not create default wallet');
+        } else {
+          controllerUtils.bindProfile(scope, iden, wallet.id);
+        }
         scope.loading = false;
       });
     };
