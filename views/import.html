@@ -7,7 +7,7 @@
   <div class="row" ng-show="!loading">
     <div class="large-12 columns">
  
-        <h1>{{title|translate}}</h1>
+        <h1 class="hide-for-large-up">{{$root.title}}</h1>
         <form name="importForm" ng-submit="import(importForm)" novalidate>
             <div ng-show="!is_iOS">
               <legend for="backupFile" class="m10b"> 
@@ -61,7 +61,10 @@
       
 
           <div class="text-right m20t">
-            <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
+            <a class="back-button m20r" href="#!/manage">
+              <i class="fi-arrow-left"></i> 
+              <span translate>Back</span>
+            </a>
             <button translate type="submit" class="button primary m0" ng-disabled="importForm.$invalid">
               Import backup
             </button>

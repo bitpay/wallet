@@ -1,9 +1,6 @@
 <div class="addresses" ng-controller="AddressesController">
   <div ng-show='$root.wallet.isReady()'>
-    <h1>
-      <span translate>Addresses</span>
-      <span class="button primary small side-bar" ng-click="newAddr()" ng-disabled="loading"><i class="fi-plus"></i></span>
-    </h1> 
+    <h1 class="hide-for-large-up">{{$root.title}}</h1> 
     <div ng-show="!addresses[0]">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
     </div>  
@@ -56,6 +53,10 @@
       <span translate ng-if="!showAll">Show all</span>
       <span translate ng-if="showAll">Show less</span>
     </a>
+
+    <div class="m20t">
+      <a ng-click="newAddr()" ng-disabled="loading">Add <i class="fi-plus"></i></span>
+    </div>
   </div>
 </div>
 
