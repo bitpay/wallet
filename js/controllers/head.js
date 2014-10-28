@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, notification, controllerUtils) {
+angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, notification, controllerUtils) {
 
   $scope.username = $rootScope.iden ? $rootScope.iden.fullName || $rootScope.iden.email : 'undefined';
   $scope.hoverMenu = false;

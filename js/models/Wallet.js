@@ -6,6 +6,7 @@ var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
 var async = require('async');
+var cryptoUtil = require('../util/crypto');
 
 var bitcore = require('bitcore');
 var bignum = bitcore.Bignum;
@@ -683,7 +684,6 @@ Wallet.prototype.getNetworkName = function() {
 };
 
 /**
- * @desc
  * @return {bool}
  */
 Wallet.prototype.isTestnet = function() {
@@ -2752,66 +2752,6 @@ Wallet.request = function(options, callback) {
   return ret;
 };
 
-/*
- * Old fns, only for compat
- *
- */
-
-
-Wallet.prototype.migrateWallet = function(walletId, passphrase, cb) {
-  var self = this;
-
-  self.storage.setPassphrase(passphrase);
-  self.read_Old(walletId, null, function(err, wallet) {
-    if (err) return cb(err);
-
-    // TODO
-    TODO(fix_this);
-    wallet.store(function(err) {
-      if (err) return cb(err);
-
-      self.storage.deleteWallet_Old(walletId, function(err) {
-        if (err) return cb(err);
-
-        self.storage.removeGlobal('nameFor::' + walletId, function() {
-          return cb();
-        });
-      });
-    });
-  });
-
-};
-
-Wallet.prototype.read_Old = function(walletId, skipFields, cb) {
-  var self = this,
-    err;
-  var obj = {};
-
-  this.storage.readWallet_Old(walletId, function(err, ret) {
-    if (err) return cb(err);
-
-    _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
-      obj[p] = ret[p];
-    });
-
-    if (!_.any(_.values(obj)))
-      return cb(new Error('Wallet not found'));
-
-    var w, err;
-    obj.id = walletId;
-    try {
-      w = self.fromObj(obj, skipFields);
-    } catch (e) {
-      if (e && e.message && e.message.indexOf('MISSOPTS')) {
-        err = new Error('Could not read: ' + walletId);
-      } else {
-        err = e;
-      }
-      w = null;
-    }
-    return cb(err, w);
-  });
-};
 
 Wallet.prototype.getTransactionHistory = function(cb) {
   var self = this;
@@ -2922,6 +2862,13 @@ Wallet.prototype.getTransactionHistory = function(cb) {
       return cb(null, history);
     });
   }
+};
+
+Wallet.prototype.exportEncrypted = function(password, opts) {
+  opts = opts || {};
+  var crypto = opts.cryptoUtil || cryptoUtil;
+  var key = crypto.kdf(password);
+  return crypto.encrypt(key, this.toObj());
 };
 
 module.exports = Wallet;
