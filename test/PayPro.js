@@ -9,9 +9,7 @@ var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var bignum = bitcore.Bignum;
-var startServer = copay.FakePayProServer; // TODO should be require('./mocks/FakePayProServer');
-var localMock = requireMock('FakeLocalStorage');
-var sessionMock = requireMock('FakeLocalStorage');
+var startServer = require('./mocks/FakePayProServer');
 var Storage = copay.Storage;
 
 var server;

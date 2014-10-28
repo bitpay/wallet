@@ -120,7 +120,7 @@ var createBundle = function(opts) {
       expose: './mocks/FakePayProServer'
     });
     b.require('./test/mocks/FakePayProServer', {
-      expose: '../../mocks/FakePayProServer'
+      expose: '../mocks/FakePayProServer'
     });
     b.require('./test/mocks/FakeBuilder', {
       expose: './mocks/FakeBuilder'
