@@ -1,9 +1,8 @@
 'use strict';
 
-var BackupService = function($rootScope, notification, cryptoUtils) {
+var BackupService = function($rootScope, notification) {
   this.$rootScope = $rootScope;
   this.notifications = notification;
-  this.cryptoUtils = cryptoUtils;
 };
 
 BackupService.prototype.getCopayer = function(wallet) {
