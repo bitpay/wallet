@@ -497,7 +497,7 @@ PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayer
   var isOwned = index.copayerIndex === HDPath.SHARED_INDEX || index.copayerIndex === copayerIndex;
   var ret = [];
   var appendAddressInfo = function(address, isChange) {
-    ret.unshift({
+    ret.push({
       address: address,
       addressStr: address.toString(),
       isChange: isChange,
