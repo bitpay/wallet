@@ -84,6 +84,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
         for (var i = 0; i < addrInfos.length; i++) {
           var addrinfo = addrInfos[i];
           $scope.addresses.push({
+            'index': i,
             'address': addrinfo.addressStr,
             'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
             'isChange': addrinfo.isChange,
