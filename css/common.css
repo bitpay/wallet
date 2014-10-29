@@ -114,6 +114,7 @@ button.warning,
 .m10t {margin-top: 10px;}
 .p20t {padding-top: 20px !important;}
 .p1l {padding-left: 1rem;}
+.p1b {padding-bottom: 1rem;}
 
 
 .row {
@@ -300,7 +301,7 @@ footer {
 {font-family: ubunturegular;}
 
 .ubuntumedium
-{font-family:ubuntumedium;}
+{font-family: ubuntumedium;}
 
 /* Font Families ENDS */
 
@@ -360,10 +361,6 @@ header {
  .s-p-even-nbr{
   background-color:#EAEDF0; 
   } 
-
-  .strong-points p {
-    font-family:ubunturegular;
-    }
 
   .separator-1 {
     padding-top: 1em;

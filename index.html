@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Copay - A multisignature Bitcoin Wallet</title>
+    <title>Copay - secure, shared wallet.</title>
     <meta name="description" content="Copay is a mutisignature Bitcoin wallet">
     <meta property="og:site_name" content="Copay">
     <meta property="og:url" content="http://copay.io/">
     <meta property="og:title" content="Copay">
-    <meta property="og:description" content="A secure Bitcoin wallet for friends and companies.">
+    <meta property="og:description" content="Aecure, shared wallet.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:image" content="http://copay.io/img/og.png">
     <meta property="og:type" content="website">
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/fontface.css">
 </head>
 <body>
+
    <div id="licenseModal" class="reveal-modal large" data-reveal>
     <div class="line-dashed-v">
     <h2 class="panel m2r">
@@ -129,38 +130,42 @@ copay-0.6.4.xpi
   </div>  -->
 
   <header>
-    <div class="row">
-      <div class="large-6 medium-8 small-centered columns"> 
-      
-      <!--logo and download button for small and medimun STARTS-->
-        <div class="small-12 columns text-center show-for-medium-down">
-          <img src="img/copay-main-logo-big.png">
-        </div>
-        <div class="small-12 columns text-center show-for-medium-down">
-          <a href="" data-dropdown="drop" class="button dropdown">DOWNLOAD v0.6.3</a>
-            <ul id="drop" data-dropdown-content class="f-dropdown">
-              <li><a href="">BROWSER EXTENSION</a></li>
-              <li><a href="">WEB VERSION</a></li>
-              <li><a href="">ANDROID VERSION</a></li>
-              <li><a href="">IOS VERSION</a></li>
-            </ul>
-        </div>
-      <!--logo and download button for small and medimun ENDS-->
 
-        <div class="large-9 columns show-for-large-up">
-          <img src="img/copay-main-logo.png">
-        </div>
-        <div class="medium-3 columns right show-for-large-up">
-          <a href="" data-dropdown="drop" class="button dropdown">DOWNLOAD v0.6.3</a>
-            <ul id="drop" data-dropdown-content class="f-dropdown">
-              <li><a href="">BROWSER EXTENSION</a></li>
-              <li><a href="">WEB VERSION</a></li>
-              <li><a href="">ANDROID VERSION</a></li>
-              <li><a href="">IOS VERSION</a></li>
-            </ul>
-        </div>
-      </div>    
+    <!--logo and download small STARTS-->  
+    <div class="row show-for-small-down">
+      <div class="small-12 small-centered columns center-img p1b"> 
+        <img src="img/copay-main-logo-big.png">
+      </div>
     </div>
+    <div class="row show-for-small-down">
+      <div class="small-12 small-centered columns">
+        <a href="" data-dropdown="drop1" class="button expand dropdown">DOWNLOAD v0.6.3</a>
+          <ul id="drop1" data-dropdown-content class="f-dropdown">
+            <li><a href="">BROWSER EXTENSION</a></li>
+            <li><a href="">WEB VERSION</a></li>
+            <li><a href="">ANDROID VERSION</a></li>
+            <li><a href="">IOS VERSION</a></li>
+          </ul>
+      </div>
+    </div>
+<!--logo and download small ENDS-->  
+
+    <div class="row clearfix show-for-medium-up">
+    <div class="large-6 medium-8 small-centered columns"> 
+      <div class="small-9 columns show-for-medium-up">
+        <img src="img/copay-main-logo.png">
+      </div>
+      <div class="medium-3 columns">
+        <a href="" data-dropdown="drop2" class="button dropdown">DOWNLOAD v0.6.3</a>
+          <ul id="drop2" data-dropdown-content class="f-dropdown">
+            <li><a href="">BROWSER EXTENSION</a></li>
+            <li><a href="">WEB VERSION</a></li>
+            <li><a href="">ANDROID VERSION</a></li>
+            <li><a href="">IOS VERSION</a></li>
+          </ul>
+      </div>
+    </div>    
+  </div>  
 
     <!--slogan small and medimun STARTS-->
     <div class="row">
@@ -288,10 +293,15 @@ copay-0.6.4.xpi
     </div>
   </footer>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="js/vendor/jquery.js"></script>
   <script src="js/foundation/foundation.js"></script>
   <script src="js/foundation/foundation.reveal.js"></script>
   <script src="js/main.js"></script>
+
+  <script src="js/foundation.min.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
 
   <script>  
     var COOKIE_NAME = 'termsCookieV1'; 
