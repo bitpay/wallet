@@ -159,7 +159,7 @@ header .alt-currency {
   display: block;
   height: 62px;
   width: 140px;
-  padding: 22px 5px;
+  padding: 12px 5px;
   text-align: center;
 }
 
@@ -1098,6 +1098,22 @@ button.gray:focus,
   overflow: hidden;
 }
 
+.photo-container {
+  margin-right: 10px;
+  padding-top: 0.4rem;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  color: #fff;
+  background: #7A8C9E;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+a:hover .photo-container  {
+  background: #34495E;
+  color: #fff;
+}
 
 .side-nav {padding-top: 38px;}
 
