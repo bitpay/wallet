@@ -1,4 +1,5 @@
 'use strict';
+var _ = require('lodash');
 
 function LocalStorage() {
   this.type = 'DB';
@@ -49,6 +50,30 @@ LocalStorage.prototype.allKeys = function(cb) {
     ret.push(localStorage.key(i));
 
   return cb(null, ret);    
+};
+
+LocalStorage.prototype.getFirst = function(prefix, opts, cb) {
+  opts = opts || {};
+  var that = this;
+
+  this.allKeys(function(err, allKeys) {
+    var keys = _.filter(allKeys, function(k) {
+      if ((k === prefix) || k.indexOf(prefix) === 0) return true;
+    });
+
+    if (keys.length === 0)
+      return cb(new Error('not found'));
+
+    if (opts.onlyKey)
+      return cb(null, null, keys[0]);
+
+    that.getItem(keys[0], function(err, data) {
+      if (err) {
+        return cb(err);
+      }
+      return cb(null, data, keys[0]);
+    });
+  });
 };
 
 module.exports = LocalStorage;
