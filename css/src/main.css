@@ -4,6 +4,8 @@
  *
  */
 
+
+
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
@@ -131,9 +133,11 @@ header .alt-currency {
 }
 
 .head {
+  padding-left: 20px;
+  -moz-box-shadow:    0px 0px 2px 0px rgba(0,0,0,0.10);
+  box-shadow:         0px 0px 2px 0px rgba(0,0,0,0.10);
   background-color: #FFF;
   height: 62px;
-  border-bottom: 1px solid #eee;
   position: fixed;
   z-index: 10;
   left: 250px;
@@ -173,9 +177,9 @@ header .alt-currency {
 }
 
 .head .menu ul.hover {
-  background-color: #fff;
-  border: 1px solid #eee;
-  border-top: 1px solid #fff;
+  background: #FFFFFF;
+  -moz-box-shadow:    0px 0px 2px 0px rgba(0,0,0,0.25);
+  box-shadow:         0px 0px 2px 0px rgba(0,0,0,0.25);
 }
 
 .head .menu ul li a {
@@ -198,12 +202,13 @@ header .alt-currency {
 }
 
 .col3 a {
+  font-size: 20px;
   display: block;
   height: 62px;
   width: 30px;
   float: right;
   background-color: #23C9A9;
-  padding: 19px 12px;
+  padding: 22px 6px;
   color: #B6E9DF;
 }
 
@@ -529,6 +534,7 @@ a.button-setup {
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
 .oh {overflow:hidden;}
+.vm {vertical-align: middle;}
 
 .small {
   font-size: 60%;
