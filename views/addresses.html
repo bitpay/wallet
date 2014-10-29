@@ -9,13 +9,13 @@
     </div>  
     <div class="large-12 medium-12" ng-if="!!(addresses|removeEmpty).length">
       <div class="large-12 medium-12">
-        <div class="oh" ng-repeat="addr in addresses|removeEmpty">
+        <div class="oh" ng-repeat="addr in addresses|removeEmpty|orderBy:'-index':true">
           <div class="panel radius show-for-large-up">
             <div class="row collapse">
               <div class="large-7 medium-9 column">
                 <div class="list-addr">
                   <span>
-                      <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
+                      <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
                     </span>
                   <span class="btn-copy" clip-copy="addr.address"> </span>
                   <small translate class="label" ng-if="addr.isChange">change</small>
