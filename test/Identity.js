@@ -370,7 +370,7 @@ describe('Identity model', function() {
       net.start.onFirstCall().callsArg(1);
       net.greet = sinon.stub();
       iden.createWallet = sinon.stub();
-      iden.createWallet.onFirstCall().yields();
+      iden.createWallet.onFirstCall().yields(null,null);
       net.on.withArgs('data').yields('senderId', {
         type: 'walletId',
         networkName: 'testnet',
