@@ -55,9 +55,6 @@ var createBundle = function(opts) {
   });
   b.require('./version');
 
-  b.require('./js/log', {
-    expose: '../js/log'
-  });
   //  b.external('bitcore');
   b.require('./js/models/Identity', {
     expose: '../js/models/Identity'
@@ -84,10 +81,6 @@ var createBundle = function(opts) {
   b.require('./js/models/PluginManager', {
     expose: '../js/models/PluginManager'
   });
-  b.require('./js/util/crypto', {
-    expose: '../util/crypto'
-  });
-
   if (!opts.disablePlugins) {
     b.require('./js/plugins/GoogleDrive', {
       expose: '../plugins/GoogleDrive'
@@ -110,10 +103,19 @@ var createBundle = function(opts) {
     expose: '../config'
   });
 
+
+  // The following 2 lines fix karma tests
+  b.require('sjcl');
+  b.require('./js/log', {
+    expose: '../log.js'
+  });
+
   if (opts.debug) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
+ 
+
     b.require('./test/mocks/FakeBlockchain', {
       expose: './mocks/FakeBlockchain'
     });

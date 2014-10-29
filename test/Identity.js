@@ -94,7 +94,6 @@ describe('Identity model', function() {
 
 
   var walletClass = function(args) {
-    console.log('[Identity.js.96:args:]', args); //TODO
     return getNewWallet(args);
   };
 
@@ -180,7 +179,6 @@ describe('Identity model', function() {
       args.storage.setItem.onFirstCall().callsArg(2);
       args.storage.setItem.onSecondCall().callsArg(2);
       should.exist(walletClass, 'check walletClass stub');
-      console.log('[Identity.js.184:walletClass:]', walletClass); //TODO
       iden.createWallet({
         privateKeyHex: priv,
         walletClass: walletClass,

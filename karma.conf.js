@@ -53,7 +53,6 @@ module.exports = function(config) {
       'js/translations.js',
       'js/init.js',
 
-      'test/mocks/FakeWallet.js',
       'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
 
