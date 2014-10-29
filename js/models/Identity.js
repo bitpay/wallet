@@ -650,6 +650,9 @@ Identity.prototype.joinWallet = function(opts, cb) {
               err = 'walletFull';
             }
           }
+          if (err)
+            return cb(err);
+
           self.store({
             noWallets: true
           }, function(err) {
