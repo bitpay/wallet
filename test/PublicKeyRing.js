@@ -163,7 +163,6 @@ describe('PublicKeyRing model', function() {
 
     var as = w.getAddressesInfo();
     as.length.should.equal(5); // include pre-generated shared one
-    console.log(as);
     for (var j in as) {
       var a = as[j];
       a.address.isValid().should.equal(true);
