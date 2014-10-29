@@ -9,6 +9,7 @@ var async = require('async');
 var cryptoUtil = require('../util/crypto');
 
 var bitcore = require('bitcore');
+var BIP21 = bitcore.BIP21;
 var bignum = bitcore.Bignum;
 var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
@@ -2307,6 +2308,14 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   });
 };
 
+// TODO (eordano): Move this to bitcore
+var sanitize = function(address) {
+  if (/^bitcoin:/g.test(address)) {
+    return new BIP21(address).address;
+  }
+  return new Address(address);
+};
+
 /**
  * @desc Create a transaction proposal
  * @TODO: Document more
@@ -2315,8 +2324,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;
   opts = opts || {};
+  toAddress = sanitize(toAddress);
 
-  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName(), 'networkname mismatch');
+  preconditions.checkArgument(toAddress.network().name === this.getNetworkName(), 'networkname mismatch');
   preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
   preconditions.checkState(priv, 'no private key');
   if (comment) preconditions.checkArgument(comment.length <= 100);
@@ -2337,7 +2347,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     b = new Builder(opts)
       .setUnspent(utxos)
       .setOutputs([{
-        address: toAddress,
+        address: toAddress.data,
         amountSatStr: amountSatStr,
       }]);
   } catch (e) {
