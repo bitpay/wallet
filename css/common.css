@@ -96,6 +96,7 @@ button.warning,
 .size-18 { font-size: 18px; }
 .size-21 { font-size: 21px; }
 .size-24 { font-size: 24px; }
+.size-30 { font-size: 30px; }
 .size-36 { font-size: 36px; }
 .size-48 { font-size: 48px; }
 .size-60 { font-size: 60px; }
@@ -113,6 +114,7 @@ button.warning,
 .m10t {margin-top: 10px;}
 .p20t {padding-top: 20px !important;}
 .p1l {padding-left: 1rem;}
+.p1b {padding-bottom: 1rem;}
 
 
 .row {
@@ -179,9 +181,7 @@ button small {
 header { 
   overflow: hidden;
   position: relative;
-  min-height: 700px;
   display: block;
-  max-height: 750px;
 }
 
 header h3, header p, header h4 {
@@ -289,5 +289,87 @@ footer {
     border: none;
   }
 }
+
+/* Mariano´s code */
+
+/* Font Families STARTS */
+
+.ubuntulight
+{font-family: ubuntulight;}
+
+.ubunturegular
+{font-family: ubunturegular;}
+
+.ubuntumedium
+{font-family: ubuntumedium;}
+
+/* Font Families ENDS */
+
+.center-img img
+{ display: block;
+      margin-left: auto;
+    margin-right: auto}
+
+.white
+{color: #FFFFFF;}
+
+header {
+  background-color: #00BD9C;
+  padding-top: 4.5em;
+  }
+
+.slogan-small{
+  padding: 0em 0 1.5em 0;
+    }
+
+.slogan-large{
+  padding: 2.1em 0 1.5em 0;
+    }
+
+.subheader{
+  background-color: #EAEDF0;
+  margin: 0; 
+  overflow: hidden;
+}
+
+.subheader a {
+  padding: 2.6em 0;
+}
+
+.subheader a:hover {
+  background: #F6F8FA;
+}
+
+.uses {
+  padding-top: 2em;
+  border-bottom: 1px solid #D8DDE2;
+  }
+
+.uses p{
+   
+    color: #2B3D51;
+  }
+
+.uses-large p{
+   padding-top: 10%;
+    }
+
+.strong-points {
+  padding: 10em 0 ;
+  }
+
+ .s-p-even-nbr{
+  background-color:#EAEDF0; 
+  } 
+
+  .separator-1 {
+    padding-top: 1em;
+    margin-bottom: 1em;
+    width: 3em;
+    border-bottom: 1px solid #2C3E50;
+      }
+
+footer {
+  padding: 2em 0;
 
 
