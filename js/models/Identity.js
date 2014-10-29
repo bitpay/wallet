@@ -390,6 +390,10 @@ Identity.prototype.bindWallet = function(w) {
     log.debug('<addressBookUpdated> Wallet' + w.getName());
     self.storeWallet(w);
   });
+  w.on('publicKeyRingUpdated', function() {
+    log.debug('<publicKeyRingUpdated> Wallet' + w.getName());
+    self.storeWallet(w);
+  });
 };
 
 /**
