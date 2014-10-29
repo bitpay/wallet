@@ -5,6 +5,7 @@ var Wallet = require('./Wallet');
 var cryptoUtils = require('../util/crypto');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var sjcl = require('../../lib/sjcl');
+var log = require('../log');
 var preconditions = require('preconditions').instance();
 var _ = require('lodash');
 
@@ -24,10 +25,7 @@ Compatibility._getWalletIds = function(cb) {
     if (split.length == 2) {
       var walletId = split[0];
 
-      if (!walletId
-          || walletId === 'nameFor'
-          || walletId === 'lock'
-          || walletId === 'wallet') {
+      if (!walletId || walletId === 'nameFor' || walletId === 'lock' || walletId === 'wallet') {
         continue;
       }
 
@@ -42,11 +40,11 @@ Compatibility._getWalletIds = function(cb) {
 
 /**
  * @param {string} encryptedWallet - base64-encoded encrypted wallet
- * @param {string} passphrase - base64-encoded passphrase
+ * @param {string} password
  * @returns {Object}
  */
-Compatibility.importLegacy = function(encryptedWallet, passphrase) {
-  passphrase = this.kdf(passphrase);
+Compatibility.importLegacy = function(encryptedWallet, password) {
+  var passphrase = this.kdf(password);
   var ret = Compatibility._decrypt(encryptedWallet, passphrase);
   if (!ret) return null;
   return ret;
@@ -136,7 +134,7 @@ Compatibility.getWallets2 = function(cb) {
 /**
  * Lists all wallets in localstorage
  */
-Compatibility.listWalletsPre8 = function (cb) {
+Compatibility.listWalletsPre8 = function(cb) {
   var self = this;
   self.getWallets2(function(wallets) {
     self.getWallets_Old(function(wallets2) {
@@ -192,7 +190,7 @@ Compatibility.importEncryptedWallet = function(identity, cypherText, password, o
   var key = crypto.kdf(password);
   var obj = crypto.decrypt(key, cypherText);
   if (!obj) {
-    console.warn("Could not decrypt, trying legacy..");
+    log.info("Could not decrypt, trying legacy..");
     obj = Compatibility.importLegacy(cypherText, password);
     if (!obj) {
       return cb(new Error('Could not decrypt'))
@@ -218,7 +216,7 @@ Compatibility.kdf = function(password) {
 
   var crypto2 = function(key, salt, iterations, length, alg) {
     return sjcl.codec.hex.fromBits(sjcl.misc.pbkdf2(key, salt, iterations, length * 8,
-        alg == 'sha1' ? function(key) {
+      alg == 'sha1' ? function(key) {
         return new sjcl.misc.hmac(key, sjcl.hash.sha1)
       } : null
     ))
