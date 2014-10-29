@@ -167,7 +167,7 @@ describe('PublicKeyRing model', function() {
       var a = as[j];
       a.address.isValid().should.equal(true);
       a.addressStr.should.equal(a.address.toString());
-      a.isChange.should.equal([false, false, false, true, true][j]);
+      a.isChange.should.equal([false, true, true, false, false][j]);
     }
   });
 
