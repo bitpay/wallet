@@ -1,8 +1,7 @@
 'use strict';
 
-var cryptoUtils = require('../js/util/crypto');
+var cryptoUtils = copay.crypto;
 var assert = require('assert');
-
 describe('crypto utils', function() {
 
   it('should decrypt what it encrypts', function() {

@@ -59,6 +59,7 @@ angular.module('copayApp.controllers').controller('SendController',
         set: function(newValue) {
           this._amount = newValue;
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+
             this._alternative = parseFloat(
               (rateService.toFiat(newValue * w.settings.unitToSatoshi, w.settings.alternativeIsoCode)).toFixed(2), 10);
           } else {
