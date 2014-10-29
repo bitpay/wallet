@@ -61,7 +61,7 @@ module.exports = {
     try {
       return sjcl.decrypt(key, cyphertext);
     } catch (e) {
-      log.error('Decryption failed due to error: ' + e.message);
+      log.info('Decryption failed due to error: ' + e.message);
       return null;
     }
   }
