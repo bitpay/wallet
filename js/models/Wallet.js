@@ -245,6 +245,14 @@ Wallet.prototype._newAddresses = function(dontUpdateUx) {
   this.emitAndKeepAlive('newAddresses', dontUpdateUx);
 };
 
+
+Wallet.prototype._publicKeyRingUpdated = function(isComplete) {
+  if (isComplete) {
+    this.subscribeToAddresses();
+  };
+  this.emitAndKeepAlive('publicKeyRingUpdated');
+};
+
 /**
  * @desc Handles an 'indexes' message.
  *
@@ -321,7 +329,8 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
-    this._newAddresses();
+
+    this._publicKeyRingUpdated(this.publicKeyRing.isComplete());
   }
 };
 
