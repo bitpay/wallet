@@ -49,13 +49,13 @@
       </div>
     </div>
 
-    <a class="secondary radius" ng-click="toggleShowAll()" ng-show="addrLength > 3">
+    <a class="secondary radius size-12 right" ng-click="toggleShowAll()" ng-show="addrLength > 3">
       <span translate ng-if="!showAll">Show all</span>
       <span translate ng-if="showAll">Show less</span>
     </a>
 
-    <div class="m20t">
-      <a ng-click="newAddr()" ng-disabled="loading">Add <i class="fi-plus"></i></span>
+    <div class="m10t">
+      <a class="button tiny primary text-center" ng-click="newAddr()" ng-disabled="loading"><i class="fi-plus m5r"></i> Add </a>
     </div>
   </div>
 </div>
