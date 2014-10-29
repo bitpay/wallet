@@ -246,13 +246,6 @@ Wallet.prototype._newAddresses = function(dontUpdateUx) {
 };
 
 
-Wallet.prototype._publicKeyRingUpdated = function(isComplete) {
-  if (isComplete) {
-    this.subscribeToAddresses();
-  };
-  this.emitAndKeepAlive('publicKeyRingUpdated');
-};
-
 /**
  * @desc Handles an 'indexes' message.
  *
@@ -330,7 +323,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
       this._lockIncomming();
     }
 
-    this._publicKeyRingUpdated(this.publicKeyRing.isComplete());
+    this.emitAndKeepAlive('publicKeyRingUpdated');
   }
 };
 
