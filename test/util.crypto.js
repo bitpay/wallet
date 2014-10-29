@@ -5,15 +5,6 @@ var assert = require('assert');
 
 describe('crypto utils', function() {
 
-  it('should use pbkdf2 to generate a passphrase from password', function() {
-    var salt = 'mjuBtGybi/4=';
-    var iterations = 10;
-    var pass = '123456';
-    var passphrase = cryptoUtils.kdf(pass, salt, iterations);
-
-    passphrase.toString().should.equal('IoP+EbmhibgvHAkgCAaSDL3Y73UvU96pEPkKtSb0Qazb1RKFVWR6fjkKGp/qBCImljzND3hRAws9bigszrqhfg==');
-  });
-
   it('should decrypt what it encrypts', function() {
 
     var key = 'My secret key';
@@ -32,5 +23,33 @@ describe('crypto utils', function() {
 
     assert(decrypted === null);
   });
+
+  var tests = [
+    {
+    salt: 'mjuBtGybi/4=',
+    iterations: 10,
+    word: '123456',
+    phrase: 'UUNLzkU5b2aT2/bIoyYwL3teyiFuRYEJtGCGQ0y0aEDciEtNCX0Wb73j4gmoCWl++epj6StBQg4SorTROZ2wFA==',
+  },{
+    salt: 'mjuBtGybi/4=',
+    iterations: 5,
+    word: '123456',
+    phrase: '+3uClcHrIU52WGHPHBwbIDFirhbiIORYTDPs9xFLiXAkR2dEVN9gNoGtqhBPdi9U47tPkPoRqZtqXDaeetXflQ==',
+  },{
+    salt: 'asklhehuhug24',
+    iterations: 5,
+    word: '123456',
+    phrase: 'lI82NmwibnUCHSQVQunv3aL0XCimZyFj/TZlHNIXV5Rzbf6TEj5L/335N/t7k2zUVub6XmMaWvufqmvSqA4znA==',
+  }
+  ];
+
+  var test=0;
+  _.each(tests,function(t){
+    it('should generate a passphrase. Test case:' + test++,function(){
+      var phrase = cryptoUtils.kdf(t.word, t.salt, t.iterations);
+      phrase.should.equal(t.phrase);
+    });
+  });
+
 
 });
