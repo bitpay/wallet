@@ -228,6 +228,8 @@ Identity.prototype.exportWithWalletInfo = function(opts) {
  * @param {Function} cb
  */
 Identity.prototype.store = function(opts, cb) {
+  log.debug('Storing profile');
+
   var self = this;
   opts = opts || {};
 
@@ -348,14 +350,10 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
       callback();
     });
   }, function(err, results) {
-    if (err) {
-      return cb(err);
-    }
+    if (err) return cb(err);
+
     iden.store(null, function(err) {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, iden);
+      return cb(err, iden);
     });
   });
 };
@@ -384,7 +382,9 @@ Identity.prototype.bindWallet = function(w) {
   });
   w.on('ready', function() {
     log.debug('<ready> Wallet' + w.getName());
-    self.storeWallet(w);
+    self.store({noWallets:true}, function() {
+      self.storeWallet(w);
+    });
   });
   w.on('addressBookUpdated', function() {
     log.debug('<addressBookUpdated> Wallet' + w.getName());

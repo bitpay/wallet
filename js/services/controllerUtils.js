@@ -30,8 +30,12 @@ angular.module('copayApp.services')
     };
 
     root.logout = function() {
-      if ($rootScope.iden)
-        $rootScope.iden.close();
+
+      if ($rootScope.iden) {
+        $rootScope.iden.store(null, function(){
+          $rootScope.iden.close();
+        });
+      }
 
       delete $rootScope['wallet'];
       delete $rootScope['iden'];
