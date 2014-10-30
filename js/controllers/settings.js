@@ -1,27 +1,44 @@
 'use strict';
+
 angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils, notification) {
 
 
   controllerUtils.redirIfLogged();
+
+
+
+
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
   $scope.insightLivenet = config.network.livenet.url;
   $scope.insightTestnet = config.network.testnet.url;
+  $scope.defaultLogLevel = config.logLevel || 'log';
+
+  var logLevels = copay.logger.getLevels();
+
+  $scope.availableLogLevels = [];
+
+
+  for (var key in logLevels) {
+    $scope.availableLogLevels.push({
+      'name': key
+    });
+  }
 
   $scope.availableStorages = [{
-    name: 'Insight',
-    pluginName: 'EncryptedInsightStorage',
-  }, {
-    name: 'Localstorage',
-    pluginName: 'EncryptedLocalStorage',
-  },
-  // {
-  //   name: 'GoogleDrive',
-  //   pluginName: 'GoogleDrive',
-  // }
+      name: 'Insight',
+      pluginName: 'EncryptedInsightStorage',
+    }, {
+      name: 'Localstorage',
+      pluginName: 'EncryptedLocalStorage',
+    },
+    // {
+    //   name: 'GoogleDrive',
+    //   pluginName: 'GoogleDrive',
+    // }
   ];
 
-  _.each($scope.availableStorages, function(v){
+  _.each($scope.availableStorages, function(v) {
     if (config.plugins[v.pluginName])
       $scope.selectedStorage = v;
   });
@@ -41,6 +58,13 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
   }
 
+  for (var ii in $scope.availableLogLevels) {
+    if ($scope.defaultLogLevel === $scope.availableLogLevels[ii].name) {
+      $scope.selectedLogLevel = $scope.availableLogLevels[ii];
+      break;
+    }
+  }
+
 
   $scope.save = function() {
     $scope.insightLivenet = copay.Insight.setCompleteUrl($scope.insightLivenet);
@@ -56,14 +80,17 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       },
     }
 
+
     var plugins = {};
     plugins[$scope.selectedStorage.pluginName] = true;
+    copay.logger.setLevel($scope.selectedLogLevel.name);
 
     localStorage.setItem('config', JSON.stringify({
       network: insightSettings,
       version: copay.version,
       defaultLanguage: $scope.selectedLanguage.isoCode,
       plugins: plugins,
+      logLevel: $scope.selectedLogLevel.name,
     }));
 
     // Go home reloading the application
