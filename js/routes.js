@@ -35,11 +35,11 @@ angular
         logged: true
       })
       .when('/receive', {
-        templateUrl: 'views/addresses.html',
+        templateUrl: 'views/receive.html',
         logged: true
       })
       .when('/history', {
-        templateUrl: 'views/transactions.html',
+        templateUrl: 'views/history.html',
         logged: true
       })
       .when('/send', {
