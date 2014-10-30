@@ -1,10 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('AddressesController',
+angular.module('copayApp.controllers').controller('ReceiveController',
   function($scope, $rootScope, $timeout, $modal, controllerUtils) {
     controllerUtils.redirIfNotComplete();
-
-    $rootScope.title = 'Addresses';
 
     $scope.loading = false;
     $scope.showAll = false;
