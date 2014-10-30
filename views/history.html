@@ -20,14 +20,7 @@
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </small>   
     </h2>
-
-    <div class="large-12">
-      <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
-        <a class="text-gray active" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-hide="lastShowed && !loading">[ <span translate>Show</span> ]</a>
-        <a class="text-gray" ng-click="toogleLast()" ng-disabled="loading" loading="Updating" ng-show="lastShowed && !loading">[ <span translate>Hide</span> ]</a>
-      </div>
-
-      <div class="btransactions" ng-if="lastShowed">
+      <div class="btransactions">
         <div ng-if="!blockchain_txs[0].txid && !loading">
         <em><strong translate>No transactions yet.</strong></em></div>
         <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">

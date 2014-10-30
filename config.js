@@ -55,10 +55,10 @@ var defaultConfig = {
 
   plugins: {
     //LocalStorage: true,
-    EncryptedLocalStorage: true,
+//    EncryptedLocalStorage: true,
     //GoogleDrive: true,
     //InsightStorage: true
-    //EncryptedInsightStorage: true
+    EncryptedInsightStorage: true,
   },
 
   EncryptedInsightStorage: {
