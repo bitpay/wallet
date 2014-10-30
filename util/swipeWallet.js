@@ -24,86 +24,113 @@ var extPrivKeys = args.slice(4);
 var totalCopayers = extPrivKeys.length;
 
 var addr = new bitcore.Address(destAddr);
-if (!addr.isValid()){
+if (!addr.isValid()) {
   console.log('\tBad destination address'); //TODO
   process.exit(1);
 }
-
 var networkName = addr.network().name;
 console.log('\tNetwork: %s\n\tDestination Address:%s\n\tRequired copayers: %d\n\tTotal copayers: %d\n\tKeys:', networkName, destAddr, requiredCopayers, totalCopayers, extPrivKeys); //TODO
-
-
 console.log('\n ----------------------------');
 
 
-var opts = {};
+function createWallet(networkName, extPrivKeys, index) {
 
-opts.networkName = networkName || 'testnet';
-opts.publicKeyRing = new copay.PublicKeyRing({
-  networkName: networkName,
-  requiredCopayers: requiredCopayers,
-  totalCopayers: totalCopayers,
-});
+  var opts = {};
 
-
-_.each(extPrivKeys, function(extPrivKey, i) {
-  console.log('\tAdding key:', i);
-
-  var privateKey = new copay.PrivateKey({
+  opts.networkName = networkName || 'testnet';
+  opts.publicKeyRing = new copay.PublicKeyRing({
     networkName: networkName,
-    extendedPrivateKeyString: extPrivKeys[i],
+    requiredCopayers: requiredCopayers,
+    totalCopayers: totalCopayers,
   });
 
-  if (!i)
-    opts.privateKey = privateKey;
 
-  opts.publicKeyRing.addCopayer(
-    privateKey.deriveBIP45Branch().extendedPublicKeyString(),
-    'public key ' + i
-  );
-})
-console.log('\t### PublicKeyRing Initialized');
+  _.each(extPrivKeys, function(extPrivKey, i) {
+    console.log('\tAdding key:', i);
 
-opts.txProposals = new copay.TxProposals({
-  networkName: networkName,
+    var privateKey = new copay.PrivateKey({
+      networkName: networkName,
+      extendedPrivateKeyString: extPrivKeys[i],
+    });
+
+    if (i === index)
+      opts.privateKey = privateKey;
+
+    opts.publicKeyRing.addCopayer(
+      privateKey.deriveBIP45Branch().extendedPublicKeyString(),
+      'public key ' + i
+    );
+  })
+  console.log('\t### PublicKeyRing Initialized');
+
+  opts.txProposals = new copay.TxProposals({
+    networkName: networkName,
+  });
+
+
+  opts.requiredCopayers = requiredCopayers;
+  opts.totalCopayers = totalCopayers;
+  opts.network = {
+    setHexNonce: sinon.stub(),
+    setHexNonces: sinon.stub(),
+    send: sinon.stub(),
+  };
+  // opts.networkOpts = {
+  //   'livenet': config.network.livenet,
+  //   'testnet': config.network.testnet,
+  // };
+  opts.blockchainOpts = {
+    'livenet': config.network.livenet,
+    'testnet': config.network.testnet,
+  };
+  opts.spendUnconfirmed = true;
+  opts.version = version;
+  // opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
+
+  return new copay.Wallet(opts);
+}
+
+
+console.log('## CREATING ALL WALLETS'); //TODO
+var w = [];
+_.each(extPrivKeys, function(extPrivKey, i) {
+  w.push(createWallet(networkName, extPrivKeys, i));
 });
+console.log(' => %d Wallets created', w.length);
 
+console.log('\n\n## Scanning for funds');
 
-opts.requiredCopayers = requiredCopayers;
-opts.totalCopayers = totalCopayers;
-opts.network = {
-  setHexNonce: sinon.stub(),
-  setHexNonces: sinon.stub(),
-  send: sinon.stub(),
-};
-// opts.networkOpts = {
-//   'livenet': config.network.livenet,
-//   'testnet': config.network.testnet,
-// };
-opts.blockchainOpts = {
-  'livenet': config.network.livenet,
-  'testnet': config.network.testnet,
-};
+var firstWallet = w.pop();
 
-opts.spendUnconfirmed = true;
-opts.version = version;
-// opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
-
-var wallet = new copay.Wallet(opts);
-console.log('Wallet created. Scanning for funds');
-wallet.updateIndexes(function(){
+firstWallet.updateIndexes(function() {
   console.log('Scan done.'); //TODO
-  wallet.getBalance(function(err, balance, balanceByAddr){
-    console.log('\n\n\n\n### TOTAL BALANCE: %d SATOSHIS',balance); //TODO
-    console.log('Balance per address:',balanceByAddr); //TODO
+  firstWallet.getBalance(function(err, balance, balanceByAddr) {
+    console.log('\n\n\n\n### TOTAL BALANCE: %d SATOSHIS', balance); //TODO
+    console.log('Balance per address:', balanceByAddr); //TODO
 
     // rl.question("Should we swipe the wallet? (`yes` to continue)", function(answer) {
     // });
 
     var amount = balance - DFLT_FEE;
+    firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
+      console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
 
-    wallet.createTx(destAddr, amount, '', {}, function(err, ntxid){
-console.log('[swipeWallet.js.96]', err, ntxid); //TODO
+      var l = w.length;
+      _.each(w, function(dummy,i){
+        console.log('\t Signing with copayer', i + 1);
+        w[i].txProposals=firstWallet.txProposals;
+        w[i].sign(ntxid, function(err){
+          console.log('\t Signed!');
+          firstWallet.txProposals = firstWallet.txProposals;
+          if (i == l - 1){
+            console.log('\t ALL SIGNED');
+            firstWallet.sendTx(ntxid,function(txid){
+              console.log('\t #######  SENT  TXID:', txid);
+              process.exit(1);
+            });
+          }
+        })
+      })
     });
   });
 });
