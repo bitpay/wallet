@@ -20,6 +20,7 @@ Compatibility._getWalletIds = function(cb) {
   preconditions.checkArgument(cb);
   var walletIds = [];
   var uniq = {};
+  var key;
   for (key in localStorage) {
     var split = key.split('::');
     if (split.length == 2) {
@@ -111,7 +112,9 @@ Compatibility.getWallets_Old = function(cb) {
 Compatibility.getWallets2 = function(cb) {
   var self = this;
   var re = /wallet::([^_]+)(_?(.*))/;
+  var va = /^{+/;
 
+  var key;
   var keys = [];
   for (key in localStorage) {
     keys.push(key);
@@ -120,11 +123,15 @@ Compatibility.getWallets2 = function(cb) {
     if (key.indexOf('wallet::') !== 0)
       return null;
     var match = key.match(re);
+    var matchValue = localStorage[key].match(va);
     if (match.length != 4)
+      return null;
+    if (matchValue)
       return null;
     return {
       id: match[1],
       name: match[3] ? match[3] : undefined,
+      value: localStorage[key]
     };
   }));
 
@@ -186,7 +193,7 @@ Compatibility.readWalletPre8 = function(walletId, password, cb) {
 };
 
 Compatibility.importEncryptedWallet = function(identity, cypherText, password, opts, cb) {
-  var crypto = opts.cryptoUtil || cryptoUtils;
+  var crypto = (opts && opts.cryptoUtil) || cryptoUtils;
   var key = crypto.kdf(password);
   var obj = crypto.decrypt(key, cypherText);
   if (!obj) {
@@ -225,6 +232,11 @@ Compatibility.kdf = function(password) {
   var key512 = crypto2(hash, salt, this.iterations, 64, 'sha1');
   var sbase64 = sjcl.codec.base64.fromBits(sjcl.codec.hex.toBits(key512));
   return sbase64;
+};
+
+Compatibility.deleteOldWallet = function(walletObj) {
+  localStorage.removeItem('wallet::'+walletObj.id+'_'+walletObj.name);
+  log.info('Old wallet ' + walletObj.name + ' deleted: ' + walletObj.id);
 };
 
 

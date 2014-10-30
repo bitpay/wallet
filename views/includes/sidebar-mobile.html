@@ -39,7 +39,8 @@
         <div class="col2">
           <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
             <div class="oh">
-              <div class="right size-10 type-wallet">[ {{item.totalCopayers}} of {{item.requiredCopayers}} ]</div> 
+              <div class="right size-10 type-wallet">
+                [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
               <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
             </div>
             <div class="oh">
