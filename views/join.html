@@ -6,8 +6,8 @@
 
   <div ng-show="!loading">
     <h1 class="hide-for-large-up">{{$root.title}}</h1>
-    <div class="row collapse">
-      <div class="large-12 columns">
+    <div class="large-12 columns panel">
+      <div class="row collapse">
         <form name="joinForm" ng-submit="join(joinForm)" novalidate>
 
           <label for="connectionId"><span translate>Wallet Secret</span> 
@@ -27,7 +27,7 @@
                 && !joinForm.connectionId.$pristine"><i class="fi-check"></i></small>
             </div>
             <div class="small-2 columns" ng-hide="showScanner || disableScanner">
-              <a class="postfix button primary" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
+              <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
             </div>
             <div class="small-2 columns" ng-show="showScanner">
               <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
@@ -52,7 +52,9 @@
             </div>
           </div>
 
-          <div class="m10b">
+          <div class="line-dashed-h"></div>
+
+          <div class="m20t m20b">
             <a class="expand small" ng-click="hideAdv=!hideAdv">
               <i class="fi-widget m3r"></i>
               <span translate ng-hide="!hideAdv">Show</span> 
@@ -67,10 +69,10 @@
 
           <div class="text-right">
             <a class="back-button m20r" href="#!/manage">
-              <i class="fi-arrow-left"></i> 
+              <i class="icon-arrow-left2 vm"></i> 
               <span translate>Back</span>
             </a>
-            <button translate type="submit" class="button primary m0" ng-disabled="joinForm.$invalid">Join</button>
+            <button translate type="submit" class="button secondary m0" ng-disabled="joinForm.$invalid">Join</button>
           </div>
         </form>
       </div>
