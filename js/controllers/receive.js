@@ -1,22 +1,23 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ReceiveController',
-  function($scope, $rootScope, $timeout, $modal, controllerUtils) {
+  function($scope, $rootScope, $timeout, $modal, controllerUtils, notification) {
     controllerUtils.redirIfNotComplete();
 
     $scope.loading = false;
     $scope.showAll = false;
-    $scope.addrCreate = false;
+    $scope.isNewAddr = false;
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
       $scope.loading = true;
-      $scope.addrCreate = true;
+      $scope.isNewAddr = false;
       w.generateAddress(null, function() {
         $timeout(function() {
           controllerUtils.updateAddressList();
           $scope.loading = false;
-          $scope.addrCreate = false;
+          $scope.isNewAddr = true;
+          notification.info("Info", "New Address was created");
         }, 1);
       });
     };
@@ -29,7 +30,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
         $scope.mobileCopy = function(address) {
           window.cordova.plugins.clipboard.copy(address);
           window.plugins.toast.showShortBottom('Copied to clipboard');
-        }
+        };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -60,7 +61,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
     $scope.limitAddress = function(elements, isNewAddr) {
 
-      if(isNewAddr){
+      if(!isNewAddr){
         elements = elements.sort(function(a, b) {
           return (+a.isChange - +b.isChange);
         });
@@ -94,7 +95,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
             'owned': addrinfo.owned
           });
         }
-        $scope.addresses = $scope.limitAddress($scope.addresses, $scope.addrCreate);
+        $scope.addresses = $scope.limitAddress($scope.addresses, $scope.isNewAddr);
       }
     };
   }
