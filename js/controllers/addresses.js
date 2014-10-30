@@ -8,14 +8,17 @@ angular.module('copayApp.controllers').controller('AddressesController',
 
     $scope.loading = false;
     $scope.showAll = false;
+    $scope.addrCreate = false;
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
       $scope.loading = true;
+      $scope.addrCreate = true;
       w.generateAddress(null, function() {
         $timeout(function() {
           controllerUtils.updateAddressList();
           $scope.loading = false;
+          $scope.addrCreate = false;
         }, 1);
       });
     };
@@ -57,11 +60,13 @@ angular.module('copayApp.controllers').controller('AddressesController',
       $scope.addressList();
     };
 
-    $scope.limitAddress = function(elements) {
+    $scope.limitAddress = function(elements, isNewAddr) {
 
-      elements = elements.sort(function(a, b) {
-        return (+a.isChange - +b.isChange);
-      });
+      if(isNewAddr){
+        elements = elements.sort(function(a, b) {
+          return (+a.isChange - +b.isChange);
+        });
+      }
 
       if (elements.length <= 1 || $scope.showAll) {
         return elements;
@@ -91,7 +96,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
             'owned': addrinfo.owned
           });
         }
-        $scope.addresses = $scope.limitAddress($scope.addresses);
+        $scope.addresses = $scope.limitAddress($scope.addresses, $scope.addrCreate);
       }
     };
   }
