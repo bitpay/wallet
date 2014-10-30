@@ -1,14 +1,12 @@
 'use strict';
 var bitcore = require('bitcore');
 
-angular.module('copayApp.controllers').controller('TransactionsController',
+angular.module('copayApp.controllers').controller('HistoryController',
   function($scope, $rootScope, $timeout, controllerUtils, notification, rateService) {
     controllerUtils.redirIfNotComplete();
 
-
     var w = $rootScope.wallet;
 
-    $rootScope.title = 'History';
     $scope.loading = false;
     $scope.lastShowed = false;
 
@@ -18,6 +16,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     $scope.alternativeCurrency = [];
 
     var satToUnit = 1 / w.settings.unitToSatoshi;
+
 
     $scope.update = function() {
       $scope.loading = true;
@@ -32,6 +31,8 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       }, 0);
     };
 
+
+
     $scope.show = function() {
       $scope.loading = true;
       setTimeout(function() {
@@ -39,20 +40,15 @@ angular.module('copayApp.controllers').controller('TransactionsController',
       }, 10);
     };
 
-    $scope.toogleLast = function() {
-      $scope.lastShowed = !$scope.lastShowed;
-      if ($scope.lastShowed) {
-        $scope.getTransactions();
-      }
-    };
 
     $scope.getTransactions = function() {
-      var self = this;
+
       var w = $rootScope.wallet;
       if (!w) return;
 
       $scope.blockchain_txs = w.cached_txs || [];
       $scope.loading = true;
+
       w.getTransactionHistory(function(err, res) {
         if (err) throw err;
 
@@ -78,13 +74,6 @@ angular.module('copayApp.controllers').controller('TransactionsController',
     $scope.getShortNetworkName = function() {
       return w.getNetworkName().substring(0, 4);
     };
-
-    // Autoload transactions on 1-of-1
-    if ($rootScope.wallet && $rootScope.wallet.totalCopayers == 1) {
-      $scope.lastShowed = true;
-      $scope.getTransactions();
-    }
-
     $scope.amountAlternative = function(amount, txIndex, cb) {
       var w = $rootScope.wallet;
       rateService.whenAvailable(function() {
@@ -93,4 +82,7 @@ angular.module('copayApp.controllers').controller('TransactionsController',
         return cb ? cb() : null;
       });
     };
+
+    // Autoload transactions 
+    $scope.getTransactions();
   });

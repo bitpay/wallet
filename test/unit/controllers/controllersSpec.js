@@ -64,7 +64,7 @@ describe("Unit: Controllers", function() {
     w.getSecret = sinon.stub().returns('secret');
     w.getName = sinon.stub().returns('fakeWallet');
     w.exportEncrypted = sinon.stub().returns('1234567');
-    w.getTransactionHistory = sinon.stub().yields({});
+    w.getTransactionHistory = sinon.stub().yields(null);
     w.getNetworkName = sinon.stub().returns('testnet');
 
     w.createTx = sinon.stub().yields(null);
@@ -132,34 +132,37 @@ describe("Unit: Controllers", function() {
 
   });
 
-  describe('Address Controller', function() {
-    var addressCtrl;
+  describe('Receive Controller', function() {
+    var c;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      addressCtrl = $controller('AddressesController', {
+      c = $controller('ReceiveController', {
         $scope: scope,
       });
     }));
 
-    it('should have a AddressesController controller', function() {
+    it('should have a ReceiveController controller', function() {
       expect(scope.loading).equal(false);
     });
   });
 
-  describe('Transactions Controller', function() {
-    var transactionsCtrl;
+  describe('History Controller', function() {
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
+
       scope = $rootScope.$new();
-      transactionsCtrl = $controller('TransactionsController', {
+      scope.wallet = null;
+      scope.getTransactions = sinon.stub();
+      ctrl = $controller('HistoryController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(transactionsCtrl);
+      should.exist(ctrl);
     });
 
-    it('should have a TransactionController controller', function() {
+    it('should have a HistoryController controller', function() {
       expect(scope.loading).equal(false);
     });
 
