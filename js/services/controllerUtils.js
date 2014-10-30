@@ -32,22 +32,23 @@ angular.module('copayApp.services')
     root.logout = function() {
 
       if ($rootScope.iden) {
-        $rootScope.iden.store(null, function(){
+        $rootScope.iden.store(null, function() {
           $rootScope.iden.close();
+
+          delete $rootScope['wallet'];
+          delete $rootScope['iden'];
+
+          // Clear rootScope
+          for (var i in $rootScope) {
+            if (i.charAt(0) != '$') {
+              delete $rootScope[i];
+            }
+          }
+
+          $location.path('/');
+
         });
       }
-
-      delete $rootScope['wallet'];
-      delete $rootScope['iden'];
-
-      // Clear rootScope
-      for (var i in $rootScope) {
-        if (i.charAt(0) != '$') {
-          delete $rootScope[i];
-        }
-      }
-
-      $location.path('/');
     };
 
     root.onError = function(scope) {
