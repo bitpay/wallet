@@ -9,7 +9,7 @@
  
         <h1 class="hide-for-large-up">{{$root.title}}</h1>
         <form name="importForm" ng-submit="import(importForm)" novalidate>
-            <div ng-show="!is_iOS">
+            <div ng-show="!is_iOS && !backupOldWallet">
               <legend for="backupFile" class="m10b"> 
                 <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i>
               </legend>
@@ -17,7 +17,7 @@
                 placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
             </div>
 
-            <div ng-show="is_iOS">
+            <div ng-show="is_iOS && !backupOldWallet">
             <label for="backupText" class="m10b"> 
               <span translate>Paste backup plain text code</span> <i class="fi-clipboard"></i>
             </label>
@@ -25,6 +25,16 @@
               name="backupText" 
               ng-model="backupText" 
               rows="5"></textarea>
+            </div>
+
+            <div ng-show="anyWallet && (!backupFile || !backupText)">
+              <label for="backupOldWAllet" class="m10b size-14"> 
+                <span translate>You have old wallets in your localStorage. Choose one to import</span> <i class="fi-bitcoin"></i>
+              </label>
+                <select ng-model="backupOldWallet" name="backupOldWallet"
+                  ng-options="wallet.name for wallet in oldWallets">
+                  <option value="">-- choose wallet --</option>
+                </select>
             </div>
 
 

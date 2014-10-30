@@ -11,12 +11,20 @@
     </div>
     <div class="p10 box-setup bg-success m10b" ng-show="confirmedEmail">
       <div class="left">
-      <i class="size-36 fi-alert m10r"></i>
+        <i class="size-36 fi-alert m10r"></i>
       </div>
-      <div class="size-12" translate>
+      <div class="size-12">
         <b>Copay now needs a confirmation.</b><br />
         You have to sign in to confirm your email
       </div>
+    </div>
+    <div class="p10 box-setup bg-success m10b" ng-show="anyWallet">
+      <div class="left">
+        <i class="size-36 fi-alert m10r"></i>
+      </div>
+      <b>Copay now needs a profile to access wallets.</b>
+      You can import your current wallets after 
+      <a class="text-white" href="#!/createProfile">creating your profile</a>
     </div>
     <div class="box-setup">
       <h1><span translate>Sign in to</span> <b>Copay</b></h1>

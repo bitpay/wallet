@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager, identityService) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager, identityService, Compatibility) {
   controllerUtils.redirIfLogged();
-  $scope.retreiving = true;
-
-  identityService.check($scope);
   $scope.confirmedEmail = getParam('confirmed');
+  $scope.retreiving = false;
+  Compatibility.check($scope);
+
   $scope.openProfile = function(form) {
     if (form && form.$invalid) {
       notification.error('Error', 'Please enter the required fields');
