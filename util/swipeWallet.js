@@ -19,6 +19,12 @@ var args = process.argv;
 var destAddr = args[2];
 var DFLT_FEE = 0.0001 * bitcore.util.COIN;
 
+if (!args[4]) {
+  console.log('\n\tusage: swipeWallet.js <destionation address> <required signature number> <master private key 0> [<master private key 1> ...]');
+  console.log('\t e.g.: ./swipeWallet.js mxBVchwitGLXBHtT4Vah7DdP8J9M23ftE6  2 tprv8ZgxMBicQKsPejj9Xpky8M7NFv7szxqszBR2VvZTEkBTCCXZLtJfQwRxhUycNCu4sqyZepx8AfT1vuJr949np1gxYbZaJK3R9qekYPCZiJz tprv8ZgxMBicQKsPdWe14mn5SPY4zjG7fJnrmhkVZgTHQfYp91Kf1Lxof38KBQJiis4xv2zvZ2pVHgLn4GFRDUd8kR2HkMxDqLDNWTmnKqp95mZ tprv8ZgxMBicQKsPdzoFwT72Lwhr6n48ZyPahTAhPNaoAP4srVA1mcfPon7GWQaiwfAWesWACHm3aCBLYNGNPVKSU3E9vr1cLiBoMkayZiARywe');
+  process.exit(1);
+}
+
 var requiredCopayers = parseInt(args[3]);
 var extPrivKeys = args.slice(4);
 var totalCopayers = extPrivKeys.length;
@@ -113,7 +119,7 @@ firstWallet.updateIndexes(function() {
       process.exit(1);
     }
 
-    rl.question("Should we swipe the wallet? (`yes` to continue)", function(answer) {
+    rl.question("\n\tShould I swipe the wallet (destination address" + destAddr + ")?\n\t(`yes` to continue)\n\t", function(answer) {
       if (answer!== 'yes')
         process.exit(1);
 
