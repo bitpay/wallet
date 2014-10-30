@@ -7,14 +7,17 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     $rootScope.title = 'Receive';
     $scope.loading = false;
     $scope.showAll = false;
+    $scope.isNewAddr = false;
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
       $scope.loading = true;
+      $scope.isNewAddr = false;
       w.generateAddress(null, function() {
         $timeout(function() {
           controllerUtils.updateAddressList();
           $scope.loading = false;
+          $scope.isNewAddr = true;
         }, 1);
       });
     };
@@ -27,7 +30,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
         $scope.mobileCopy = function(address) {
           window.cordova.plugins.clipboard.copy(address);
           window.plugins.toast.showShortBottom('Copied to clipboard');
-        }
+        };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -56,11 +59,13 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       $scope.addressList();
     };
 
-    $scope.limitAddress = function(elements) {
+    $scope.limitAddress = function(elements, isNewAddr) {
 
-      elements = elements.sort(function(a, b) {
-        return (+a.isChange - +b.isChange);
-      });
+      if(!isNewAddr){
+        elements = elements.sort(function(a, b) {
+          return (+a.isChange - +b.isChange);
+        });
+      }
 
       if (elements.length <= 1 || $scope.showAll) {
         return elements;
@@ -90,7 +95,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
             'owned': addrinfo.owned
           });
         }
-        $scope.addresses = $scope.limitAddress($scope.addresses);
+        $scope.addresses = $scope.limitAddress($scope.addresses, $scope.isNewAddr);
       }
     };
   }
