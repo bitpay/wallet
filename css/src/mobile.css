@@ -195,5 +195,10 @@
     height: auto;
   }
 
+  .label {
+    font-size: 80%;
+    padding: 0.15rem 0.2rem;
+  }
+
 }
 
