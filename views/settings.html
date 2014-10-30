@@ -35,7 +35,10 @@
           Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on your platform, or remotely on the Insight Server. <a target="_blank" href="https://github.com/bitpay/copay/tree/master/js/plugins">More pluggins are welcomed!</a>
           </div>
         </fieldset>
- 
+          <legend translate>Log level</legend>
+          <select class="form-control" ng-model="selectedLogLevel" ng-options="o for o in availableLogLevels" required>
+          </select>
+        </fieldset>
         <button translate type="submit" class="button primary radius expand m0" ng-disabled="settingsForm.$invalid || loading" ng-click="save()">
           Save
         </button>
