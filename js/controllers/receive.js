@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ReceiveController',
-  function($scope, $rootScope, $timeout, $modal, controllerUtils, notification) {
+  function($scope, $rootScope, $timeout, $modal, controllerUtils) {
     controllerUtils.redirIfNotComplete();
 
     $scope.loading = false;
@@ -17,7 +17,6 @@ angular.module('copayApp.controllers').controller('ReceiveController',
           controllerUtils.updateAddressList();
           $scope.loading = false;
           $scope.isNewAddr = true;
-          notification.info("Info", "New Address was created");
         }, 1);
       });
     };
