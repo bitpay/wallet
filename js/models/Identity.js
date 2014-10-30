@@ -59,8 +59,12 @@ function Identity(opts) {
   this.wallets = opts.wallets || {};
 };
 
+Identity.getStoragePrefix = function() {
+  return 'profile::';
+};
+
 Identity.getKeyForEmail = function(email) {
-  return 'profile::' + bitcore.util.sha256ripe160(email).toString('hex');
+  return Identity.getStoragePrefix() + bitcore.util.sha256ripe160(email).toString('hex');
 };
 
 Identity.prototype.getId = function() {
@@ -486,6 +490,19 @@ Identity.prototype.addWallet = function(wallet, cb) {
   this.storage.setItem(wallet.getStorageKey(), wallet.toObj(), cb);
 };
 
+/**
+ * check if any profile exists on storage
+ * @param opts.storageOpts
+ * @param cb
+ */
+Identity.checkIfExistsAny = function(opts, cb) {
+  var storage = opts.storage || opts.pluginManager.get('DB');
+  storage.getFirst(Identity.getStoragePrefix(), {
+    onlyKey: true
+  }, function(err, v, k) {
+    return cb(k ? true : false);
+  });
+};
 
 /**
  * @desc Checks if a version is compatible with the current version

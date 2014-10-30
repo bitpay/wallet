@@ -4,6 +4,24 @@ angular.module('copayApp.services')
   .factory('identityService', function($rootScope, $location, pluginManager, controllerUtils) {
     var root = {};
 
+    root.check = function (scope) {
+      copay.Identity.checkIfExistsAny({
+        pluginManager: pluginManager,
+      }, function(anyProfile) {
+        copay.Wallet.checkIfExistsAny({
+          pluginManager: pluginManager,
+        }, function(anyWallet) {
+          scope.retreiving = false;
+          scope.anyProfile = anyProfile ? true : false;
+          scope.anyWallet = anyWallet ? true : false;
+
+          if (!scope.anyProfile) {
+            $location.path('/createProfile');
+          }
+        });
+      });
+    };
+
     root.create = function(scope, form) {
       var iden = copay.Identity.create({
         email: form.email.$modelValue,
@@ -60,7 +78,7 @@ angular.module('copayApp.services')
         }
         scope.loading = false;
       });
-    }
+    }; 
 
     return root;
   });

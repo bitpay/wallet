@@ -78,9 +78,13 @@ InsightStorage.prototype.clear = function(callback) {
 };
 
 InsightStorage.prototype.allKeys = function(callback) {
-  // NOOP
-  // TODO: Add functionality?
-  callback();
+  // TODO: compatibility with localStorage
+  return callback(null);
+};
+
+InsightStorage.prototype.getFirst = function(prefix, opts, callback) {
+  // TODO: compatibility with localStorage
+  return callback(null, true, true);
 };
 
 module.exports = InsightStorage;
