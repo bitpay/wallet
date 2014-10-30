@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
   function($scope, $rootScope, $timeout, $modal, controllerUtils) {
     controllerUtils.redirIfNotComplete();
 
+    $rootScope.title = 'Receive';
     $scope.loading = false;
     $scope.showAll = false;
 
