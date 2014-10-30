@@ -1,32 +1,28 @@
 'use strict';
+
 angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils, notification) {
 
 
   controllerUtils.redirIfLogged();
+
+
+
+
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
   $scope.insightLivenet = config.network.livenet.url;
   $scope.insightTestnet = config.network.testnet.url;
   $scope.defaultLogLevel = config.logLevel || 'log';
 
+  var logLevels = copay.logger.getLevels();
+
+  $scope.availableLogLevels = [];
 
 
-  //$scope.availableLogLevels = logger.levels;
-
-  $scope.availableLogLevels = {
-    'debug': 0,
-    'info': 1,
-    'log': 2,
-    'warn': 3,
-    'error': 4,
-    'fatal': 5
-  };
-
-  console.log($scope.defaultLogLevel);
-  console.log($scope.availableLogLevels);
-
-  for (var key in $scope.availableLogLevels) {
-    console.log("Ele " + key + " -- " + $scope.availableLogLevels[key])
+  for (var key in logLevels) {
+    $scope.availableLogLevels.push({
+      'name': key
+    });
   }
 
   $scope.availableStorages = [{
@@ -63,7 +59,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   }
 
   for (var ii in $scope.availableLogLevels) {
-    if ($scope.defaultLogLevel === $scope.availableLogLevels[ii]) {
+    if ($scope.defaultLogLevel === $scope.availableLogLevels[ii].name) {
       $scope.selectedLogLevel = $scope.availableLogLevels[ii];
       break;
     }
@@ -84,17 +80,17 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       },
     }
 
+
     var plugins = {};
     plugins[$scope.selectedStorage.pluginName] = true;
-
-    logger.setLevel($scope.selectedLogLevel);
+    copay.logger.setLevel($scope.selectedLogLevel.name);
 
     localStorage.setItem('config', JSON.stringify({
       network: insightSettings,
       version: copay.version,
       defaultLanguage: $scope.selectedLanguage.isoCode,
       plugins: plugins,
-      logLevel: $scope.selectedLogLevel,
+      logLevel: $scope.selectedLogLevel.name,
     }));
 
     // Go home reloading the application
