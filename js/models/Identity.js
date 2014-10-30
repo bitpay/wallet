@@ -491,20 +491,6 @@ Identity.prototype.addWallet = function(wallet, cb) {
 };
 
 /**
- * check if any profile exists on storage
- * @param opts.storageOpts
- * @param cb
- */
-Identity.checkIfExistsAny = function(opts, cb) {
-  var storage = opts.storage || opts.pluginManager.get('DB');
-  storage.getFirst(Identity.getStoragePrefix(), {
-    onlyKey: true
-  }, function(err, v, k) {
-    return cb(k ? true : false);
-  });
-};
-
-/**
  * @desc Checks if a version is compatible with the current version
  * @param {string} inVersion - a version, with major, minor, and revision, period-separated (x.y.z)
  * @throws {Error} if there's a major version difference
