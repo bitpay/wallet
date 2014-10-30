@@ -428,7 +428,7 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
 
   this.blockchain.getTransaction(txid, function(err, tx) {
     if (err) return cb(false);
-    return cb(ret);
+    return cb(txid);
   });
 };
 
@@ -463,10 +463,10 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
 
     var tx = m.txp.builder.build();
     if (tx.isComplete()) {
-      this._checkSentTx(m.ntxid, function(ret) {
-        if (ret) {
+      this._checkSentTx(m.ntxid, function(txid) {
+        if (txid) {
           if (!m.txp.getSent()) {
-            m.txp.setSent(m.ntxid);
+            m.txp.setSent(txid);
             self.emitAndKeepAlive('txProposalsUpdated');
           }
         }

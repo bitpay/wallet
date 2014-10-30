@@ -75,6 +75,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
     }
 
     $scope.getShortNetworkName = function() {
+      var w = $rootScope.wallet;
       return w.getNetworkName().substring(0, 4);
     };
     $scope.amountAlternative = function(amount, txIndex, cb) {
