@@ -54,6 +54,18 @@ angular.module('copayApp.controllers').controller('MoreController',
       }
     }
 
+    $scope.hideAdv = true;
+    $scope.hidePriv = true;
+    $scope.hideSecret = true;
+    if (w) {
+      $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
+      $scope.secret = w.getSecret();
+    }
+
+    setTimeout(function() {
+      $scope.$digest();
+    }, 1);
+
     $scope.save = function() {
       w.changeSettings({
         unitName: $scope.selectedUnit.shortName,
@@ -65,15 +77,6 @@ angular.module('copayApp.controllers').controller('MoreController',
       notification.success('Success', $filter('translate')('settings successfully updated'));
       controllerUtils.updateBalance();
     };
-
-
-    $scope.hideAdv = true;
-    $scope.hidePriv = true;
-    $scope.hideSecret = true;
-    if (w) {
-      $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
-      $scope.secret = w.getSecret();
-    }
 
     $scope.downloadBackup = function() {
       backupService.walletDownload(w);

@@ -8,6 +8,23 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   $scope.insightLivenet = config.network.livenet.url;
   $scope.insightTestnet = config.network.testnet.url;
 
+  $scope.availableStorages = [{
+    name: 'Insight',
+    pluginName: 'EncryptedInsightStorage',
+  }, {
+    name: 'Localstorage',
+    pluginName: 'EncryptedLocalStorage',
+  },
+  // {
+  //   name: 'GoogleDrive',
+  //   pluginName: 'GoogleDrive',
+  // }
+  ];
+
+  _.each($scope.availableStorages, function(v){
+    if (config.plugins[v.pluginName])
+      $scope.selectedStorage = v;
+  });
 
   $scope.availableLanguages = [{
     name: 'English',
@@ -39,11 +56,14 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       },
     }
 
+    var plugins = {};
+    plugins[$scope.selectedStorage.pluginName] = true;
 
     localStorage.setItem('config', JSON.stringify({
       network: insightSettings,
       version: copay.version,
-      defaultLanguage: $scope.selectedLanguage.isoCode
+      defaultLanguage: $scope.selectedLanguage.isoCode,
+      plugins: plugins,
     }));
 
     // Go home reloading the application

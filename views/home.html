@@ -9,6 +9,15 @@
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
+    <div class="p10 box-setup bg-success m10b" ng-show="confirmedEmail">
+      <div class="left">
+      <i class="size-36 fi-alert m10r"></i>
+      </div>
+      <div class="size-12" translate>
+        <b>Copay now needs a confirmation.</b><br />
+        You have to sign in to confirm your email
+      </div>
+    </div>
     <div class="box-setup">
       <h1><span translate>Sign in to</span> <b>Copay</b></h1>
       <form name="loginForm" ng-submit="openProfile(loginForm)" novalidate>
