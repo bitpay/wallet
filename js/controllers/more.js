@@ -75,6 +75,10 @@ angular.module('copayApp.controllers').controller('MoreController',
       $scope.secret = w.getSecret();
     }
 
+    setTimeout(function() {
+      $scope.$digest();
+    }, 1);
+
     $scope.downloadBackup = function() {
       backupService.walletDownload(w);
     }
