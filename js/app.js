@@ -16,10 +16,6 @@ if (localConfig) {
   }
 }
 
-var log = function() {
-  if (config.verbose) console.log(arguments);
-}
-
 var modules = [
   'ngRoute',
   'angularMoment',
