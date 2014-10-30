@@ -62,6 +62,9 @@ angular.module('copayApp.controllers').controller('TransactionsController',
           return;
         }
 
+        _.each(res, function (r) {
+          r.ts = r.minedTs || r.sentTs;
+        });
         $scope.blockchain_txs = w.cached_txs = res;
         $scope.loading = false;
         setTimeout(function() {
