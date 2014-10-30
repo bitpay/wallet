@@ -175,7 +175,7 @@ header .alt-currency {
   right: 14px;
   width: 100px;
   list-style-type: none;
-  top: 47px;
+  top: 47px;nt 
 }
 
 .head .menu ul.hover {
@@ -610,6 +610,19 @@ a.button-setup {
 .founds {
   font-weight: 100;
   color: #B6E9DF;
+}
+
+.founds .locked {
+  font-size: 11px;
+  z-index: -99999;
+  background-color: #213140;
+  position: absolute;
+  top: 52px;
+  width: 250px;
+  left: 0;
+  padding: 0.3rem 0.7rem;
+  color: white;
+  border-bottom: 1px solid #374756;
 }
 
 .hidden {
@@ -1118,13 +1131,17 @@ a:hover .photo-container  {
   color: #fff;
 }
 
-.side-nav {padding-top: 38px;}
+.side-nav {padding-top: 50px;}
 
 .side-nav li {
   font-size: 16px;
   line-height: 40px;
   font-weight: 100;
   margin-bottom: 10px;
+}
+
+.side-nav li>a:first-child:not(.button) {
+  padding-left: 40px;
 }
 
 .side-nav li.active>a:first-child:not(.button) {
@@ -1134,7 +1151,6 @@ a:hover .photo-container  {
 
 .side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
   color: #fff;
-  padding-left: 40px;
 }
 
 .side-nav li>a:first-child:not(.button) i {
