@@ -108,29 +108,38 @@ firstWallet.updateIndexes(function() {
     console.log('\n\n\n\n### TOTAL BALANCE: %d SATOSHIS', balance); //TODO
     console.log('Balance per address:', balanceByAddr); //TODO
 
-    // rl.question("Should we swipe the wallet? (`yes` to continue)", function(answer) {
-    // });
+    if (!balance) {
+      console.log('Could not find any balance from the generated wallet'); //TODO
+      process.exit(1);
+    }
 
-    var amount = balance - DFLT_FEE;
-    firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
-      console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
+    rl.question("Should we swipe the wallet? (`yes` to continue)", function(answer) {
+      if (answer!== 'yes')
+        process.exit(1);
 
-      var l = w.length;
-      _.each(w, function(dummy,i){
-        console.log('\t Signing with copayer', i + 1);
-        w[i].txProposals=firstWallet.txProposals;
-        w[i].sign(ntxid, function(err){
-          console.log('\t Signed!');
-          firstWallet.txProposals = firstWallet.txProposals;
-          if (i == l - 1){
-            console.log('\t ALL SIGNED');
-            firstWallet.sendTx(ntxid,function(txid){
-              console.log('\t #######  SENT  TXID:', txid);
-              process.exit(1);
-            });
-          }
+      var amount = balance - DFLT_FEE;
+      firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
+        console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
+
+        var l = w.length;
+        _.each(w, function(dummy, i) {
+          console.log('\t Signing with copayer', i + 1);
+          w[i].txProposals = firstWallet.txProposals;
+          w[i].sign(ntxid, function(err) {
+            console.log('\t Signed!');
+            firstWallet.txProposals = firstWallet.txProposals;
+
+            var p = firstWallet.txProposals.getTxProposal(ntxid);
+            if (p.builder.isFullySigned()) {
+              console.log('\t FULLY SIGNED. BROADCASTING NOW....');
+              firstWallet.sendTx(ntxid, function(txid) {
+                console.log('\t #######  SENT  TXID:', txid);
+                process.exit(1);
+              });
+            }
+          })
         })
-      })
+      });
     });
   });
 });
