@@ -25,13 +25,12 @@ describe("Unit: Controllers", function() {
   var scope;
   var server;
 
-  beforeEach(module('copayApp.services'));
-  beforeEach(module('copayApp.controllers'));
-  beforeEach(angular.mock.module('copayApp'));
-  beforeEach(module(function($provide) {
-    $provide.value('request', {
-      'get': function(_, cb) {
-        cb(null, null, [{
+  beforeEach(module('copayApp'));
+   beforeEach(module('copayApp.controllers'));
+   beforeEach(module(function($provide) {
+     $provide.value('request', {
+       'get': function(_, cb) {
+         cb(null, null, [{
           name: 'USD Dollars',
           code: 'USD',
           rate: 2

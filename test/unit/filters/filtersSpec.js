@@ -2,9 +2,54 @@
 //
 // test/unit/filters/filtersSpec.js
 //
-describe('Unit: Testing Filters', function() {
+describe('Angular Filters', function() {
 
+  beforeEach(angular.mock.module('copayApp'));
   beforeEach(module('copayApp.filters'));
+  beforeEach(inject(function($rootScope) {
+
+    var w = {};
+    w.isReady = sinon.stub().returns(true);
+    w.privateKey = {};
+    w.settings = {
+      unitToSatoshi: 100,
+      unitDecimals: 2,
+      alternativeName: 'US Dollar',
+      alternativeIsoCode: 'USD',
+    };
+    w.addressBook = {
+      'juan': '1',
+    };
+    w.balanceByAddr = [{
+      'address1': 1
+    }];
+
+    w.totalCopayers = 2;
+    w.getMyCopayerNickname = sinon.stub().returns('nickname');
+    w.getMyCopayerId = sinon.stub().returns('id');
+    w.privateKey.toObj = sinon.stub().returns({
+      wallet: 'mock'
+    });
+    w.getSecret = sinon.stub().returns('secret');
+    w.getName = sinon.stub().returns('fakeWallet');
+    w.getId = sinon.stub().returns('id');
+    w.exportEncrypted = sinon.stub().returns('1234567');
+    w.getTransactionHistory = sinon.stub().yields({});
+    w.getNetworkName = sinon.stub().returns('testnet');
+    w.getAddressesInfo = sinon.stub().returns({});
+
+    w.createTx = sinon.stub().yields(null);
+    w.sendTx = sinon.stub().yields(null);
+    w.requiresMultipleSignatures = sinon.stub().returns(true);
+    w.getTxProposals = sinon.stub().returns([1, 2, 3]);
+    $rootScope.wallet = w;
+  }));
+
+
+
+
+
+
   var walletConfig = {
     requiredCopayers: 3,
     totalCopayers: 5,
@@ -54,7 +99,6 @@ describe('Unit: Testing Filters', function() {
   describe('noFractionNumber', function() {
     describe('noFractionNumber bits', function() {
       beforeEach(inject(function($rootScope) {
-        $rootScope.wallet = new FakeWallet(walletConfig);
         var w = $rootScope.wallet;
         w.settings.unitToSatoshi = 100;
         w.settings.unitName = 'bits';
@@ -73,7 +117,6 @@ describe('Unit: Testing Filters', function() {
 
     describe('noFractionNumber BTC', function() {
       beforeEach(inject(function($rootScope) {
-        $rootScope.wallet = new FakeWallet(walletConfig);
         var w = $rootScope.wallet;
         w.settings.unitToSatoshi = 100000000;
         w.settings.unitName = 'BTC';
@@ -93,7 +136,6 @@ describe('Unit: Testing Filters', function() {
 
     describe('noFractionNumber mBTC', function() {
       beforeEach(inject(function($rootScope) {
-        $rootScope.wallet = new FakeWallet(walletConfig);
         var w = $rootScope.wallet;
         w.settings.unitToSatoshi = 100000;
         w.settings.unitName = 'mBTC';
