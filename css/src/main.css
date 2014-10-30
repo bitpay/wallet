@@ -159,7 +159,7 @@ header .alt-currency {
   display: block;
   height: 62px;
   width: 140px;
-  padding: 22px 5px;
+  padding: 12px 5px;
   text-align: center;
 }
 
@@ -246,7 +246,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 .side-nav.wallets .avatar-wallet{
   background-color: #7A8C9E;
   color: #213140;
-  padding: 0.35rem 0.7rem;
+  padding: 0.35rem 0.5rem;
+  text-align: center;
   margin-top: 6px;
   width: 35px;
 }
@@ -257,11 +258,12 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 8px;
-  padding: 0.5rem 0.8rem;
+  padding: 0.5rem 0.65rem;
   background-color: #fff;
   color: #1ABC9C;
   border-radius: 3px;
   line-height: 24px;
+  text-align: center;
 }
 
 .status {
@@ -329,13 +331,13 @@ a:hover {
 
 .main {
   margin-left: 250px;
-  padding: 80px 1.5rem;
+  padding: 100px 2.5rem;
   background-color: #F8F8FB;
 }
 
 .logo-setup {
   text-align: center;
-  padding: 2rem 0;
+  padding: 7rem 0 5rem;
   color: #fff;
 }
 
@@ -950,6 +952,9 @@ button.warning,
 .button.warning { 
   background-color: #C0392A;
   color: #fff;
+  border-radius: 2px;
+  -moz-box-shadow:    1px 1px 0px 0px #A02F23;
+  box-shadow:         1px 1px 0px 0px #A02F23;
 }
 button.warning:hover, 
 button.warning:focus, 
@@ -1091,11 +1096,26 @@ button.gray:focus,
 .side-nav li.nav-item:hover {
   background-color: #3C4E60;
   overflow: hidden;
-  border-radius: 3px;
 }
 
+.photo-container {
+  margin-right: 10px;
+  padding-top: 0.4rem;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  color: #fff;
+  background: #7A8C9E;
+  border-radius: 100%;
+  vertical-align: middle;
+}
 
-.side-nav {padding: 0;}
+a:hover .photo-container  {
+  background: #34495E;
+  color: #fff;
+}
+
+.side-nav {padding-top: 38px;}
 
 .side-nav li {
   font-size: 16px;
@@ -1111,6 +1131,7 @@ button.gray:focus,
 
 .side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
   color: #fff;
+  padding-left: 40px;
 }
 
 .side-nav li>a:first-child:not(.button) i {

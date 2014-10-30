@@ -4,7 +4,11 @@
 
 <div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
   ng-click="hoverMenu = !hoverMenu">
-  <a class="dropdown ellipsis text-gray" ng-class="{'hover': hoverMenu}">{{username}} <i class="icon-arrow-down2 size-16 vm"></i> </a>
+  <a class="dropdown ellipsis text-gray" ng-class="{'hover': hoverMenu}">
+    <span class="photo-container"><i class="fi-torso size-18"></i></span>
+    <span class="m15t">{{username}} </span>
+    <i class="icon-arrow-down2 size-16 vm"></i> 
+  </a>
   <ul ng-show="hoverMenu" ng-class="{'hover': hoverMenu}">
     <li>
       <a href="#!/manage" title="Manage wallets">

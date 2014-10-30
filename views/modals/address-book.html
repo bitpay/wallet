@@ -1,5 +1,5 @@
 <h2 translate>Address Book</h2>
-<form name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
+<form class="m0" name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
   <label for="newaddress"><span translate>Address</span>
     <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
     <small translate class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
@@ -12,8 +12,8 @@
     <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
     placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
   </label>
-  <a translate class="button warning small default" ng-click="cancel()">Cancel</a>
-  <input type="submit" class="button small primary right"
+  <a translate class="m0 button warning small default" ng-click="cancel()">Cancel</a>
+  <input type="submit" class="m0 button small primary right"
   ng-disabled="addressBookForm.$invalid || loading" 
   value="{{'Add'|translate}}">
 </form>
