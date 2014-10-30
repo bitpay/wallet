@@ -115,7 +115,7 @@ button.warning,
 .p20t {padding-top: 20px !important;}
 .p1l {padding-left: 1rem;}
 .p1b {padding-bottom: 1rem;}
-
+.p1tb {padding: 1rem 0;}
 
 .row {
   max-width: 100%;
@@ -371,5 +371,8 @@ header {
 
 footer {
   padding: 2em 0;
+      }
 
+.visbg { background-color: #2C3E50;
+      }
 
