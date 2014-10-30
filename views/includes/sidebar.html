@@ -5,7 +5,7 @@
     </div>
     <div class="col2">
       <div class="oh m5t m10r"> 
-        <div class="right size-10">[ {{$root.wallet.totalCopayers}} of {{$root.wallet.requiredCopayers}} ]</div>
+        <div class="right size-10">[ {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]</div>
         <div class="name-wallet">
           <a ng-click="refresh()">
             <i class="fi-refresh right"></i>
@@ -58,7 +58,7 @@
         <div class="col2">
           <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
             <div class="oh">
-              <div class="right size-10 type-wallet">[ {{item.totalCopayers}} of {{item.requiredCopayers}} ]</div> 
+              <div class="right size-10 type-wallet">[ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
               <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
             </div>
             <div class="oh">

@@ -8,16 +8,7 @@
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
-    </div>
-    <div class="p10 box-setup bg-success m10b" ng-show="anyWallet && !anyProfile">
-      <div class="left">
-      <i class="size-36 fi-alert m10r"></i>
-      </div>
-      <div class="size-12" translate>
-        <b>Copay now needs a profile to access wallets.</b>
-        You can import your current wallets after creating your frofile
-      </div>
-    </div>
+    </div> 
     <div class="box-setup">
       <h1 translate>Create Profile</h1>
       <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
@@ -62,11 +53,7 @@
       </form>
       <div class="box-setup-footer">
         <div class="left">
-          <a ng-show="!anyProfile" class="text-gray" href="https://copay.io">
-            <i class="m5r fi-arrow-left"></i> 
-            <span translate>Back to</span> copay.io
-          </a>
-          <a ng-show="anyProfile" class="text-gray" href="#!/">
+          <a class="text-gray" href="#!/">
             <i class="fi-arrow-left"></i> 
             <span translate>Back</span>
           </a>
