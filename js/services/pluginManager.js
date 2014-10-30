@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('pluginManager', function(angularLoad){ 
+angular.module('copayApp.services').factory('pluginManager', function(angularLoad) {
   var pm = new copay.PluginManager(config);
   var scripts = pm.scripts;
 

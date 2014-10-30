@@ -7,7 +7,7 @@ var HK = bitcore.HierarchicalKey;
 var WalletKey = bitcore.WalletKey;
 var networks = bitcore.networks;
 var util = bitcore.util;
-var _ = require('underscore');
+var _ = require('lodash');
 var preconditions = require('preconditions').instance();
 var HDPath = require('./HDPath');
 

@@ -1,13 +1,15 @@
 'use strict';
 
 var EventEmitter = require('events').EventEmitter;
-var _ = require('underscore');
-var async = require('async');
+var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
+var async = require('async');
+var cryptoUtil = require('../util/crypto');
 
 var bitcore = require('bitcore');
+var BIP21 = bitcore.BIP21;
 var bignum = bitcore.Bignum;
 var coinUtil = bitcore.util;
 var buffertools = bitcore.buffertools;
@@ -24,7 +26,8 @@ var PublicKeyRing = require('./PublicKeyRing');
 var TxProposal = require('./TxProposal');
 var TxProposals = require('./TxProposals');
 var PrivateKey = require('./PrivateKey');
-var WalletLock = require('./WalletLock');
+var Async = require('./Async');
+var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
 
 /**
@@ -35,7 +38,6 @@ var copayConfig = require('../../config');
  * @TODO: Split this leviathan.
  *
  * @param {Object} opts
- * @param {Storage} opts.storage - an object that can persist the wallet
  * @param {Network} opts.network - used to send and retrieve messages from
  *                                 copayers
  * @param {Blockchain} opts.blockchain - source of truth for what happens in
@@ -57,9 +59,18 @@ var copayConfig = require('../../config');
  */
 function Wallet(opts) {
   var self = this;
+  preconditions.checkArgument(opts);
+
+  opts.reconnectDelay = opts.reconnectDelay || 500;
+
+  var networkName = Wallet.obtainNetworkName(opts);
+  preconditions.checkState((opts.network && opts.blockchain) || networkName);
+
+  opts.network = opts.network || Wallet._newAsync(opts.networkOpts[networkName]);
+  opts.blockchain = opts.blockchain || Wallet._newInsight(opts.blockchainOpts[networkName]);;
 
   //required params
-  ['storage', 'network', 'blockchain',
+  ['network', 'blockchain',
     'requiredCopayers', 'totalCopayers', 'spendUnconfirmed',
     'publicKeyRing', 'txProposals', 'privateKey', 'version',
     'reconnectDelay'
@@ -68,30 +79,32 @@ function Wallet(opts) {
     self[k] = opts[k];
   });
 
+
   this.id = opts.id || Wallet.getRandomId();
-  this.secretNumber = opts.secretNumber || Wallet.getRandomNumber();
-  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
+  this.secretNumber = opts.secretNumber || Wallet.getRandomSecretNumber();
+  // TODO
+  //  this.lock = new WalletLock(this.storage, this.id, opts.lockTimeOutMin);
   this.settings = opts.settings || copayConfig.wallet.settings;
   this.name = opts.name;
 
   this.publicKeyRing.walletId = this.id;
   this.txProposals.walletId = this.id;
-  this.network.maxPeers = this.totalCopayers;
-  this.network.secretNumber = this.secretNumber;
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
-  this.lastTimestamp = opts.lastTimestamp || undefined;
+  this.lastTimestamp = opts.lastTimestamp || 0;
   this.lastMessageFrom = {};
 
-  //to avoid confirmation of copayer's backups if is imported from a file
-  this.isImported = opts.isImported || false;
-
-
-  //to avoid waiting others copayers to make a backup and login immediatly
-  this.forcedLogin = opts.forcedLogin || false;
-
   this.paymentRequests = opts.paymentRequests || {};
+
+  var networkName = Wallet.obtainNetworkName(opts);
+
+  preconditions.checkArgument(this.network.setHexNonce, 'Incorrect network parameter');
+  preconditions.checkArgument(this.blockchain.getTransaction, 'Incorrect blockchain parameter');
+
+
+  this.network.maxPeers = this.totalCopayers;
+  this.network.secretNumber = this.secretNumber;
 
   //network nonces are 8 byte buffers, representing a big endian number
   //one nonce for oneself, and then one nonce for each copayer
@@ -100,6 +113,12 @@ function Wallet(opts) {
 }
 
 inherits(Wallet, events.EventEmitter);
+
+Wallet.prototype.emitAndKeepAlive = function(args) {
+  log.debug('Wallet Emitting:', arguments);
+  this.keepAlive();
+  this.emit.apply(this, arguments);
+};
 
 /**
  * @TODO: Document this. Its usage is kind of weird
@@ -128,8 +147,8 @@ Wallet.PERSISTED_PROPERTIES = [
   'txProposals',
   'privateKey',
   'addressBook',
-  'backupOffered',
   'lastTimestamp',
+  'secretNumber',
 ];
 
 Wallet.COPAYER_PAIR_LIMITS = {
@@ -147,6 +166,24 @@ Wallet.COPAYER_PAIR_LIMITS = {
   12: 1,
 };
 
+Wallet.getStorageKey = function(str) {
+  return 'wallet::' + str;
+};
+
+Wallet.prototype.getStorageKey = function() {
+  return Wallet.getStorageKey(this.getId());
+};
+
+/* for stubbing */
+Wallet._newInsight = function(opts) {
+  return new Insight(opts);
+};
+
+/* for stubbing */
+Wallet._newAsync = function(opts) {
+  return new Async(opts);
+};
+
 /**
  * @desc Retrieve a random id for the wallet
  * @TODO: Discuss changing to a UUID
@@ -158,11 +195,11 @@ Wallet.getRandomId = function() {
 };
 
 /**
- * @desc Get a random 8 byte number and encode it as a hexa string
- * @return {string}
+ * @desc Retrieve a random secret number to secure wallet secret
+ * @return {string} 5 bytes, hexa encoded
  */
-Wallet.getRandomNumber = function() {
-  var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex');
+Wallet.getRandomSecretNumber = function() {
+  var r = bitcore.SecureRandom.getPseudoRandomBuffer(5).toString('hex')
   return r;
 };
 
@@ -177,6 +214,19 @@ Wallet.getMaxRequiredCopayers = function(totalCopayers) {
   return Wallet.COPAYER_PAIR_LIMITS[totalCopayers];
 };
 
+/**
+ * @desc obtain network name from serialized wallet
+ * @param {Object} wallet object
+ * @return {string} network name
+ */
+Wallet.obtainNetworkName = function(obj) {
+  return obj.networkName ||
+    (obj.opts ? obj.opts.networkName : null) ||
+    (obj.publicKeyRing ? (obj.publicKeyRing.networkName || obj.publicKeyRing.network.name) : null) ||
+    (obj.privateKey ? obj.privateKey.networkName : null);
+};
+
+
 
 /**
  * @desc Set the copayer id for the owner of this wallet
@@ -184,6 +234,23 @@ Wallet.getMaxRequiredCopayers = function(totalCopayers) {
  */
 Wallet.prototype.seedCopayer = function(pubKey) {
   this.seededCopayerId = pubKey;
+};
+
+
+Wallet.prototype._newAddresses = function(dontUpdateUx) {
+  if (this.publicKeyRing.isComplete()) {
+    this.subscribeToAddresses();
+
+  };
+  this.emitAndKeepAlive('newAddresses', dontUpdateUx);
+};
+
+
+Wallet.prototype._publicKeyRingUpdated = function(isComplete) {
+  if (isComplete) {
+    this.subscribeToAddresses();
+  };
+  this.emitAndKeepAlive('publicKeyRingUpdated');
 };
 
 /**
@@ -196,15 +263,13 @@ Wallet.prototype.seedCopayer = function(pubKey) {
  *
  * @param {string} senderId - the sender id
  * @param {Object} data - the data recived, {@see HDParams#fromList}
- * @emits publicKeyRingUpdated
  */
 Wallet.prototype._onIndexes = function(senderId, data) {
-  log.debug('RECV INDEXES:', data);
+  log.debug('Wallet:' + this.id + ' RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
-    this.emit('publicKeyRingUpdated');
-    this.store();
+    this._newAddresses();
   }
 };
 
@@ -221,7 +286,7 @@ Wallet.prototype._onIndexes = function(senderId, data) {
  */
 Wallet.prototype.changeSettings = function(settings) {
   this.settings = settings;
-  this.store();
+  this.emitAndKeepAlive('settingsUpdated');
 };
 
 /**
@@ -241,11 +306,10 @@ Wallet.prototype.changeSettings = function(settings) {
  * @param {Object} data - the data recived, {@see HDParams#fromList}
  * @param {Object} data.publicKeyRing - data to be deserialized into a {@link PublicKeyRing}
  *                                      using {@link PublicKeyRing#fromObj}
- * @emits publicKeyRingUpdated
  * @emits connectionError
  */
 Wallet.prototype._onPublicKeyRing = function(senderId, data) {
-  log.debug('RECV PUBLICKEYRING:', data);
+  log.debug('Wallet:' + this.id + ' RECV PUBLICKEYRING:', data);
 
   var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
@@ -254,11 +318,10 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   try {
     hasChanged = this.publicKeyRing.merge(inPKR, true);
   } catch (e) {
-    log.debug('## WALLET ERROR', e);
-    this.emit('connectionError', e.message);
+    log.debug('Wallet:' + this.id + '## WALLET ERROR', e);
+    this.emitAndKeepAlive('connectionError', e.message);
     return;
   }
-
   if (hasChanged) {
     if (wasIncomplete) {
       this.sendPublicKeyRing();
@@ -266,8 +329,8 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
     }
-    this.emit('publicKeyRingUpdated');
-    this.store();
+
+    this._publicKeyRingUpdated(this.publicKeyRing.isComplete());
   }
 };
 
@@ -300,7 +363,7 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
     };
   }
   if (ev)
-    this.emit('txProposalEvent', ev);
+    this.emitAndKeepAlive('txProposalEvent', ev);
 };
 
 
@@ -383,7 +446,7 @@ Wallet.prototype._checkSentTx = function(ntxid, cb) {
  */
 Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
-  log.debug('RECV TXPROPOSAL: ', data);
+  log.debug('Wallet:' + this.id + ' RECV TXPROPOSAL: ', data);
   var m;
 
   try {
@@ -407,8 +470,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
         if (ret) {
           if (!m.txp.getSent()) {
             m.txp.setSent(m.ntxid);
-            self.emit('txProposalsUpdated');
-            self.store();
+            self.emitAndKeepAlive('txProposalsUpdated');
           }
         }
       });
@@ -418,8 +480,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
       }
     }
 
-    this.emit('txProposalsUpdated');
-    this.store();
+    this.emitAndKeepAlive('txProposalsUpdated');
   }
   this._processProposalEvents(senderId, m);
 };
@@ -436,7 +497,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
  */
 Wallet.prototype._onReject = function(senderId, data) {
   preconditions.checkState(data.ntxid);
-  log.debug('RECV REJECT:', data);
+  log.debug('Wallet:' + this.id + ' RECV REJECT:', data);
 
   var txp = this.txProposals.get(data.ntxid);
 
@@ -447,10 +508,7 @@ Wallet.prototype._onReject = function(senderId, data) {
     throw new Error('Received Reject for an already signed TX from:' + senderId);
 
   txp.setRejected(senderId);
-  this.store();
-
-  this.emit('txProposalsUpdated');
-  this.emit('txProposalEvent', {
+  this.emitAndKeepAlive('txProposalEvent', {
     type: 'rejected',
     cId: senderId,
     txId: data.ntxid,
@@ -469,13 +527,11 @@ Wallet.prototype._onReject = function(senderId, data) {
  */
 Wallet.prototype._onSeen = function(senderId, data) {
   preconditions.checkState(data.ntxid);
-  log.debug('RECV SEEN:', data);
+  log.debug('Wallet:' + this.id + ' RECV SEEN:', data);
 
   var txp = this.txProposals.get(data.ntxid);
   txp.setSeen(senderId);
-  this.store();
-  this.emit('txProposalsUpdated');
-  this.emit('txProposalEvent', {
+  this.emitAndKeepAlive('txProposalEvent', {
     type: 'seen',
     cId: senderId,
     txId: data.ntxid,
@@ -497,7 +553,7 @@ Wallet.prototype._onSeen = function(senderId, data) {
  */
 Wallet.prototype._onAddressBook = function(senderId, data) {
   preconditions.checkState(data.addressBook);
-  log.debug('RECV ADDRESSBOOK:', data);
+  log.debug('Wallet:' + this.id + ' RECV ADDRESSBOOK:', data);
   var rcv = data.addressBook;
   var hasChange;
   for (var key in rcv) {
@@ -510,8 +566,7 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
     }
   }
   if (hasChange) {
-    this.emit('addressBookUpdated');
-    this.store();
+    this.emitAndKeepAlive('addressBookUpdated');
   }
 };
 
@@ -519,11 +574,14 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
  * @desc Updates the wallet's last modified timestamp and triggers a save
  * @param {number} ts - the timestamp
  */
-Wallet.prototype.updateTimestamp = function(ts) {
+Wallet.prototype.updateTimestamp = function(ts, callback) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
   this.lastTimestamp = ts;
-  this.store();
+  // we dont store here
+  if (callback) {
+    return callback(null);
+  }
 };
 
 /**
@@ -531,8 +589,9 @@ Wallet.prototype.updateTimestamp = function(ts) {
  * Triggers a call to {@link Wallet#sendWalletReady}
  */
 Wallet.prototype._onNoMessages = function() {
-  log.debug('No messages at the server. Requesting peer sync from: ' + this.lastTimestamp + 1); //TODO
+  log.debug('Wallet:' + this.id + ' No messages at the server. Requesting peer sync from: ' + (this.lastTimestamp + 1));
   this.sendWalletReady(null, parseInt((this.lastTimestamp + 1) / 1000));
+  this.updateTimestamp(parseInt(Date.now() / 1000));
 };
 
 /**
@@ -550,12 +609,13 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(data.type);
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
-  log.debug('RECV', senderId, data);
+  log.debug('Wallet:' + this.id + ' RECV', senderId, data);
+
+  this.updateTimestamp(ts);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
-    log.debug('Received corrupt message:', data)
-    this.emit('corrupt', senderId);
-    this.updateTimestamp(ts);
+    log.debug('Wallet:' + this.id + ' Received corrupt message:', data)
+    this.emitAndKeepAlive('corrupt', senderId);
     return;
   }
 
@@ -565,8 +625,9 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
+
       if (this.lastMessageFrom[senderId] !== 'walletReady') {
-        log.debug('peer Sync received. since: ' + (data.sinceTs || 0));
+        log.debug('Wallet:' + this.id + ' peer Sync received. since: ' + (data.sinceTs || 0));
         this.sendPublicKeyRing(senderId);
         this.sendAddressBook(senderId);
         this.sendAllTxProposals(senderId, data.sinceTs); // send old txps
@@ -597,9 +658,8 @@ Wallet.prototype._onData = function(senderId, data, ts) {
     default:
       throw new Error('unknown message type received: ' + data.type + ' from: ' + senderId)
   }
-
   this.lastMessageFrom[senderId] = data.type;
-  this.updateTimestamp(ts);
+
 };
 
 /**
@@ -609,11 +669,12 @@ Wallet.prototype._onData = function(senderId, data, ts) {
  */
 Wallet.prototype._onConnect = function(newCopayerId) {
   if (newCopayerId) {
-    log.debug('#### Setting new COPAYER:', newCopayerId);
+    log.debug('Wallet:' + this.id + '#### Setting new COPAYER:', newCopayerId);
     this.sendWalletId(newCopayerId);
   }
-  var peerID = this.network.peerFromCopayer(newCopayerId)
-  this.emit('connect', peerID);
+
+  var peerID = this.network.peerFromCopayer(newCopayerId);
+  this.emitAndKeepAlive('connect', peerID);
 };
 
 /**
@@ -623,6 +684,15 @@ Wallet.prototype._onConnect = function(newCopayerId) {
 Wallet.prototype.getNetworkName = function() {
   return this.publicKeyRing.network.name;
 };
+
+/**
+ * @return {bool}
+ */
+Wallet.prototype.isTestnet = function() {
+  return this.publicKeyRing.network.name === 'testnet';
+};
+
+
 
 /**
  * @desc Serialize options into an object
@@ -682,8 +752,6 @@ Wallet.prototype.getMyCopayerNickname = function() {
  * @return {string} my own pubkey, base58 encoded
  */
 Wallet.prototype.getSecretNumber = function() {
-  if (this.secretNumber) return this.secretNumber;
-  this.secretNumber = Wallet.getRandomNumber();
   return this.secretNumber;
 };
 
@@ -708,14 +776,19 @@ Wallet.prototype.getSecret = function() {
  * @return {Object}
  */
 Wallet.decodeSecret = function(secretB) {
-  var secret = Base58Check.decode(secretB);
-  var pubKeyBuf = secret.slice(0, 33);
-  var secretNumber = secret.slice(33, 38);
-  var networkName = secret.slice(38, 39).toString('hex') === '00' ? 'livenet' : 'testnet';
-  return {
-    pubKey: pubKeyBuf.toString('hex'),
-    secretNumber: secretNumber.toString('hex'),
-    networkName: networkName,
+  try {
+    var secret = Base58Check.decode(secretB);
+    var pubKeyBuf = secret.slice(0, 33);
+    var secretNumber = secret.slice(33, 38);
+    var networkName = secret.slice(38, 39).toString('hex') === '00' ? 'livenet' : 'testnet';
+    return {
+      pubKey: pubKeyBuf.toString('hex'),
+      secretNumber: secretNumber.toString('hex'),
+      networkName: networkName,
+    }
+  } catch (e) {
+    log.debug(e.message);
+    return false;
   }
 };
 
@@ -727,34 +800,33 @@ Wallet.prototype._lockIncomming = function() {
   this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
 };
 
-
-
 Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
-  this.blockchain.removeAllListeners();
+  self.blockchain.removeAllListeners();
 
-  this.blockchain.on('reconnect', function(attempts) {
-    log.debug('blockchain reconnect event');
-    self.emit('insightReconnected');
+  log.debug('Setting Blockchain listeners for', this.getId());
+  self.blockchain.on('reconnect', function(attempts) {
+    log.debug('Wallet:' + self.id + 'blockchain reconnect event');
+    self.emitAndKeepAlive('insightReconnected');
   });
 
-  this.blockchain.on('disconnect', function() {
-    log.debug('blockchain disconnect event');
-    self.emit('insightError');
+  self.blockchain.on('disconnect', function() {
+    log.debug('Wallet:' + self.id + 'blockchain disconnect event');
+    self.emitAndKeepAlive('insightError');
   });
-  this.blockchain.on('tx', function(tx) {
-    log.debug('blockchain tx event');
+  self.blockchain.on('tx', function(tx) {
+    log.debug('Wallet:' + self.id + ' blockchain tx event');
     var addresses = self.getAddressesInfo();
     var addr = _.findWhere(addresses, {
       addressStr: tx.address
     });
     if (addr) {
-      self.emit('tx', tx.address, addr.isChange);
+      self.emitAndKeepAlive('tx', tx.address, addr.isChange);
     }
   });
 
   if (!self.spendUnconfirmed) {
-    self.blockchain.on('block', self.emit.bind(self, 'balanceUpdated'));
+    self.blockchain.on('block', self.emitAndKeepAlive.bind(self, 'balanceUpdated'));
   }
 }
 
@@ -765,7 +837,6 @@ Wallet.prototype._setBlockchainListeners = function() {
  * @emits data
  *
  * @emits ready
- * @emits publicKeyRingUpdated
  * @emits txProposalsUpdated
  *
  * @TODO: FIX PROTOCOL -- emit with a space is shitty
@@ -779,6 +850,23 @@ Wallet.prototype.netStart = function() {
   net.on('connect', self._onConnect.bind(self));
   net.on('data', self._onData.bind(self));
   net.on('no messages', self._onNoMessages.bind(self));
+  net.on('connect_error', function() {
+    self.emitAndKeepAlive('connectionError');
+  });
+
+  if (this.publicKeyRing.isComplete()) {
+    this._lockIncomming();
+  }
+
+
+
+  if (net.started) {
+    log.debug('Wallet:' + self.id + ' Wallet networking was ready')
+    self.emitAndKeepAlive('ready', net.getPeer());
+    return;
+  }
+
+
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
@@ -787,26 +875,19 @@ Wallet.prototype.netStart = function() {
     copayerId: myId,
     privkey: myIdPriv,
     maxPeers: self.totalCopayers,
-    lastTimestamp: this.lastTimestamp,
+    lastTimestamp: this.lastTimestamp || 0,
     secretNumber: self.secretNumber,
   };
 
-  if (this.publicKeyRing.isComplete()) {
-    this._lockIncomming();
-  }
 
-  net.on('connect_error', function() {
-    self.emit('connectionError');
-  });
-
+  log.debug('Wallet:' + self.id + ' Starting networking: ' + startOpts.copayerId);
   net.start(startOpts, function() {
+    log.debug('Wallet:' + self.id + ' Networking ready:', net.copayerId);
     self._setBlockchainListeners();
-    self.emit('ready', net.getPeer());
+    self.emitAndKeepAlive('ready', net.getPeer());
     setTimeout(function() {
-      self.emit('publicKeyRingUpdated', true);
-      // no connection logic for now
-      self.emit('txProposalsUpdated');
-    }, 10);
+      self._newAddresses(true);
+    }, 0);
   });
 };
 
@@ -858,26 +939,19 @@ Wallet.prototype.getRegisteredPeerIds = function() {
 Wallet.prototype.keepAlive = function() {
   var self = this;
 
-  this.lock.keepAlive(function(err) {
-    if (err) {
-      log.debug(err);
-      self.emit('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
-    }
-  });
+
+  // this.lock.keepAlive(function(err) {
+  //   if (err) {
+  //     log.debug(err);
+  //     self.emitAndKeepAlive('locked', null, 'Wallet appears to be openned on other browser instance. Closing this one.');
+  //   }
+  // });
 };
 
-/**
- * @desc Store the wallet's state
- * @param {function} callback (err)
- */
-Wallet.prototype.store = function(cb) {
-  var self = this;
-  this.keepAlive();
-  this.storage.setFromObj(this.id, this.toObj(), function(err) {
-    log.debug('Wallet stored');
-    if (cb)
-      cb(err);
-  });
+
+
+Wallet.prototype.getId = function() {
+  return this.id;
 };
 
 /**
@@ -896,10 +970,22 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
-    lastTimestamp: this.lastTimestamp,
+    lastTimestamp: this.lastTimestamp || 0,
+    secretNumber: this.secretNumber,
   };
 
   return walletObj;
+};
+
+
+Wallet.fromUntrustedObj = function(obj, readOpts) {
+  obj = _.clone(obj);
+  var o = {};
+  _.each(Wallet.PERSISTED_PROPERTIES, function(p) {
+    o[p] = obj[p];
+  });
+
+  return Wallet.fromObj(o, readOpts);
 };
 
 /**
@@ -913,31 +999,58 @@ Wallet.prototype.toObj = function() {
  * @param {number} o.lastTimestamp - last time this wallet object was deserialized
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
- * @param {Storage} storage - a Storage instance to store the data of the wallet
- * @param {Network} network - a Network instance to communicate with peers
- * @param {Blockchain} blockchain - a Blockchain instance to retrieve state from the blockchain
+ *
+ * @param readOpts.network
+ * @param readOpts.blockchain
+ * @param readOpts.{string[]} skipFields - parameters to ignore when importing
  */
-Wallet.fromObj = function(o, storage, network, blockchain) {
+Wallet.fromObj = function(o, readOpts) {
 
+  preconditions.checkArgument(readOpts.networkOpts);
+  preconditions.checkArgument(readOpts.blockchainOpts);
+
+  var networkOpts = readOpts.networkOpts;
+  var blockchainOpts = readOpts.blockchainOpts;
+  var skipFields = readOpts.skipFields || [];
+
+
+  if (skipFields) {
+    _.each(skipFields, function(k) {
+      if (o[k]) {
+        delete o[k];
+      } else {
+        throw new Error('unknown field:' + k);
+      }
+    });
+  }
+
+  var networkName = Wallet.obtainNetworkName(o);
+
+
+  // TODO Why moving everything to opts. This needs refactoring.
+  //
   // clone opts
   var opts = JSON.parse(JSON.stringify(o.opts));
 
   opts.addressBook = o.addressBook;
   opts.settings = o.settings;
 
+
   if (o.privateKey) {
     opts.privateKey = PrivateKey.fromObj(o.privateKey);
   } else {
     opts.privateKey = new PrivateKey({
-      networkName: opts.networkName
+      networkName: networkName
     });
   }
+
+  opts.secretNumber = o.secretNumber;
 
   if (o.publicKeyRing) {
     opts.publicKeyRing = PublicKeyRing.fromObj(o.publicKeyRing);
   } else {
     opts.publicKeyRing = new PublicKeyRing({
-      networkName: opts.networkName,
+      networkName: networkName,
       requiredCopayers: opts.requiredCopayers,
       totalCopayers: opts.totalCopayers,
     });
@@ -951,27 +1064,16 @@ Wallet.fromObj = function(o, storage, network, blockchain) {
     opts.txProposals = TxProposals.fromObj(o.txProposals, Wallet.builderOpts);
   } else {
     opts.txProposals = new TxProposals({
-      networkName: this.networkName,
+      networkName: networkName,
     });
   }
 
-  opts.lastTimestamp = o.lastTimestamp;
+  opts.lastTimestamp = o.lastTimestamp || 0;
 
-  opts.storage = storage;
-  opts.network = network;
-  opts.blockchain = blockchain;
-  opts.isImported = true;
+  opts.blockchainOpts = readOpts.blockchainOpts;
+  opts.networkOpts = readOpts.networkOpts;
 
   return new Wallet(opts);
-};
-
-/**
- * @desc Return a base64 encrypted version of the wallet
- * @return {string} base64 encoded string
- */
-Wallet.prototype.toEncryptedObj = function() {
-  var walletObj = this.toObj();
-  return this.storage.export(walletObj);
 };
 
 /**
@@ -1002,7 +1104,7 @@ Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
  */
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
-  log.debug('### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
+  log.debug('Wallet:' + this.id + ' ### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
   this.send(recipients, {
     type: 'txProposal',
     txProposal: this.txProposals.get(ntxid).toObjTrim(),
@@ -1016,7 +1118,7 @@ Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
  */
 Wallet.prototype.sendSeen = function(ntxid) {
   preconditions.checkArgument(ntxid);
-  log.debug('### SENDING seen:  ' + ntxid + ' TO: All');
+  log.debug('Wallet:' + this.id + ' ### SENDING seen:  ' + ntxid + ' TO: All');
   this.send(null, {
     type: 'seen',
     ntxid: ntxid,
@@ -1030,7 +1132,7 @@ Wallet.prototype.sendSeen = function(ntxid) {
  */
 Wallet.prototype.sendReject = function(ntxid) {
   preconditions.checkArgument(ntxid);
-  log.debug('### SENDING reject:  ' + ntxid + ' TO: All');
+  log.debug('Wallet:' + this.id + ' ### SENDING reject:  ' + ntxid + ' TO: All');
   this.send(null, {
     type: 'reject',
     ntxid: ntxid,
@@ -1043,7 +1145,7 @@ Wallet.prototype.sendReject = function(ntxid) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
-  log.debug('### SENDING WalletReady TO:', recipients || 'All');
+  log.debug('Wallet:' + this.id + ' ### SENDING WalletReady TO:', recipients || 'All');
 
   this.send(recipients, {
     type: 'walletReady',
@@ -1058,7 +1160,7 @@ Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletId = function(recipients) {
-  log.debug('### SENDING walletId TO:', recipients || 'All', this.id);
+  log.debug('Wallet:' + this.id + ' ### SENDING walletId TO:', recipients || 'All', this.id);
 
   this.send(recipients, {
     type: 'walletId',
@@ -1073,7 +1175,7 @@ Wallet.prototype.sendWalletId = function(recipients) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  log.debug('### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
+  log.debug('Wallet:' + this.id + ' ### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
   var publicKeyRing = this.publicKeyRing.toObj();
 
   this.send(recipients, {
@@ -1089,7 +1191,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
  */
 Wallet.prototype.sendIndexes = function(recipients) {
   var indexes = HDParams.serialize(this.publicKeyRing.indexes);
-  log.debug('### INDEXES TO:', recipients || 'All', indexes);
+  log.debug('Wallet:' + this.id + ' ### INDEXES TO:', recipients || 'All', indexes);
 
   this.send(recipients, {
     type: 'indexes',
@@ -1103,7 +1205,8 @@ Wallet.prototype.sendIndexes = function(recipients) {
  * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendAddressBook = function(recipients) {
-  log.debug('### SENDING addressBook TO:', recipients || 'All', this.addressBook);
+  if (!Object.keys(this.addressBook).length) return;
+  log.debug('Wallet:' + this.id + ' ### SENDING addressBook TO:', recipients || 'All', this.addressBook);
   this.send(recipients, {
     type: 'addressbook',
     addressBook: this.addressBook,
@@ -1141,7 +1244,7 @@ Wallet.prototype._doGenerateAddress = function(isChange) {
 Wallet.prototype.generateAddress = function(isChange, cb) {
   var addr = this._doGenerateAddress(isChange);
   this.sendIndexes();
-  this.store();
+  this._newAddresses();
   if (cb) return cb(addr);
   return addr;
 };
@@ -1182,7 +1285,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
   } else {
     this.txProposals.deletePending(this.maxRejectCount());
   }
-  this.store();
+  this.emitAndKeepAlive('txProposalsUpdated');
 
   var n = this.txProposals.length();
   return m - n;
@@ -1196,8 +1299,7 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
 Wallet.prototype.reject = function(ntxid) {
   var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
   this.sendReject(ntxid);
-  this.store();
-  this.emit('txProposalsUpdated');
+  this.emitAndKeepAlive('txProposalsUpdated');
 };
 
 /**
@@ -1238,8 +1340,7 @@ Wallet.prototype.sign = function(ntxid, cb) {
     if (txp.countSignatures() > before) {
       txp.signedBy[myId] = Date.now();
       self.sendTxProposal(ntxid);
-      self.store();
-      self.emit('txProposalsUpdated');
+      self.emitAndKeepAlive('txProposalsUpdated');
       ret = true;
     }
     if (cb) return cb(ret);
@@ -1264,26 +1365,26 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   var tx = txp.builder.build();
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
-  log.debug('Broadcasting Transaction');
+  log.debug('Wallet:' + this.id + ' Broadcasting Transaction');
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
 
   var txHex = tx.serialize().toString('hex');
-  log.debug('Raw transaction: ', txHex);
+  log.debug('Wallet:' + this.id + ' Raw transaction: ', txHex);
 
   var self = this;
   this.blockchain.broadcast(txHex, function(err, txid) {
-    log.debug('BITCOIND txid:', txid);
+    log.debug('Wallet:' + self.id + ' BITCOIND txid:', txid);
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
-      self.store();
+      self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid);
     } else {
-      log.debug('Sent failed. Checking if the TX was sent already');
+      log.debug('Wallet:' + self.id + ' Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
-          self.store();
+          self.emitAndKeepAlive('txProposalsUpdated');
 
         return cb(txid);
       });
@@ -1493,7 +1594,6 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
     if (ntxid) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
-      self.store();
       self.emit('txProposalsUpdated');
     }
 
@@ -1625,8 +1725,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       log.debug('Sending to server was not met with a returned tx.');
       log.debug('XHR status: ' + status);
       return self._checkSentTx(ntxid, function(txid) {
-        log.debug('[Wallet.js.1581:txid:%s]', txid);
-        if (txid) self.store();
+        if (txid)
+          self.emitAndKeepAlive('txProposalsUpdated');
         return cb(txid, txp.merchant);
       });
     });
@@ -1658,7 +1758,8 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
       log.debug('Sending to server was not met with a returned tx.');
       return this._checkSentTx(ntxid, function(txid) {
         log.debug('[Wallet.js.1613:txid:%s]', txid);
-        if (txid) self.store();
+        if (txid)
+          self.emitAndKeepAlive('txProposalUpdated');
         return cb(txid, txp.merchant);
       });
     }
@@ -1685,13 +1786,13 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     if (txid) {
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
-      self.store();
+      self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid, txp.merchant);
     } else {
       log.debug('Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
-          self.store();
+          self.emitAndKeepAlive('txProposalsUpdated');
 
         return cb(txid, txp.merchant);
       });
@@ -2018,6 +2119,7 @@ Wallet.prototype.getAddressesStr = function(opts) {
 Wallet.prototype.subscribeToAddresses = function() {
   var addrInfo = this.publicKeyRing.getAddressesInfo();
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
+  log.debug('Subscribed to ' + addrInfo.length + ' addresses'); //TODO
 };
 
 /**
@@ -2175,8 +2277,7 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
     });
 
     if (proposalsChanged) {
-      self.emit('txProposalsUpdated');
-      self.store();
+      self.emitAndKeepAlive('txProposalsUpdated');
     }
 
     return cb();
@@ -2211,10 +2312,17 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
 
     self.sendIndexes();
     self.sendTxProposal(ntxid);
-    self.store();
-    self.emit('txProposalsUpdated');
+    self.emitAndKeepAlive('txProposalsUpdated');
     return cb(null, ntxid);
   });
+};
+
+// TODO (eordano): Move this to bitcore
+var sanitize = function(address) {
+  if (/^bitcoin:/g.test(address)) {
+    return new BIP21(address).address;
+  }
+  return new Address(address);
 };
 
 /**
@@ -2225,8 +2333,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;
   opts = opts || {};
+  toAddress = sanitize(toAddress);
 
-  preconditions.checkArgument(new Address(toAddress).network().name === this.getNetworkName(), 'networkname mismatch');
+  preconditions.checkArgument(toAddress.network().name === this.getNetworkName(), 'networkname mismatch');
   preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
   preconditions.checkState(priv, 'no private key');
   if (comment) preconditions.checkArgument(comment.length <= 100);
@@ -2245,11 +2354,11 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   try {
     b = new Builder(opts)
-    .setUnspent(utxos)
-    .setOutputs([{
-      address: toAddress,
-      amountSatStr: amountSatStr,
-    }]);
+      .setUnspent(utxos)
+      .setOutputs([{
+        address: toAddress.data,
+        amountSatStr: amountSatStr,
+      }]);
   } catch (e) {
     log.debug(e.message);
     return;
@@ -2295,11 +2404,10 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
  *
  * Triggers a wallet {@link Wallet#store} call
  * @param {Function} callback - called when all indexes have been updated. Receives an error, if any, as first argument
- * @emits publicKeyRingUpdated
  */
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
-  log.debug('Updating indexes...');
+  log.debug('Wallet:' + this.id + ' Updating indexes...');
 
   var tasks = this.publicKeyRing.indexes.map(function(index) {
     return function(callback) {
@@ -2309,9 +2417,8 @@ Wallet.prototype.updateIndexes = function(callback) {
 
   async.parallel(tasks, function(err) {
     if (err) callback(err);
-    log.debug('Indexes updated');
-    self.emit('publicKeyRingUpdated');
-    self.store();
+    log.debug('Wallet:' + self.id + ' Indexes updated');
+    self._newAddresses();
     callback();
   });
 };
@@ -2416,13 +2523,14 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  * @desc Closes the wallet and disconnects all services
  */
 Wallet.prototype.close = function(cb) {
-  var self = this;
-  log.debug('## CLOSING');
-  this.lock.release(function() {
-    self.network.cleanUp();
-    self.blockchain.destroy();
-    if (cb) return cb();
-  });
+  this.network.cleanUp();
+  this.blockchain.destroy();
+
+  log.debug('## CLOSING Wallet: ' + this.id);
+  // TODO
+  //  this.lock.release(function() {
+  if (cb) return cb();
+  //  });
 };
 
 /**
@@ -2468,7 +2576,7 @@ Wallet.prototype.setAddressBook = function(key, label) {
   };
   this.addressBook[key] = newEntry;
   this.sendAddressBook();
-  this.store();
+  this.emitAndKeepAlive('addressBookUpdated');
 };
 
 /**
@@ -2498,7 +2606,7 @@ Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
 Wallet.prototype.toggleAddressBookEntry = function(key) {
   if (!key) throw new Error('Key is required');
   this.addressBook[key].hidden = !this.addressBook[key].hidden;
-  this.store();
+  this.emitAndKeepAlive('addressBookUpdated');
 };
 
 /**
@@ -2518,24 +2626,11 @@ Wallet.prototype.requiresMultipleSignatures = function() {
 };
 
 /**
- * @desc Returns true if the keyring is complete and all users have backed up the wallet
+ * @desc Returns true if the keyring is complete
  * @return {boolean}
  */
 Wallet.prototype.isReady = function() {
-  var ret = this.publicKeyRing.isComplete() && (this.publicKeyRing.isFullyBackup() || this.isImported || this.forcedLogin);
-  return ret;
-};
-
-/**
- * @desc Mark that our backup is ready and send a sync to other users.
- *
- * Also backs up the wallet
- */
-Wallet.prototype.setBackupReady = function(forcedLogin) {
-  this.forcedLogin = forcedLogin;
-  this.publicKeyRing.setBackupReady();
-  this.sendPublicKeyRing();
-  this.store();
+  return this.publicKeyRing.isComplete();
 };
 
 /**
@@ -2651,6 +2746,125 @@ Wallet.request = function(options, callback) {
   }
 
   return ret;
+};
+
+
+Wallet.prototype.getTransactionHistory = function(cb) {
+  var self = this;
+
+  var addresses = self.getAddressesInfo();
+  var proposals = self.getTxProposals();
+  var satToUnit = 1 / self.settings.unitToSatoshi;
+
+  function extractInsOuts(tx) {
+    // Inputs
+    var inputs = _.map(tx.vin, function(item) {
+      var addr = _.findWhere(addresses, {
+        addressStr: item.addr
+      });
+      return {
+        type: 'in',
+        address: addr ? addr.addressStr : item.addr,
+        isMine: !_.isUndefined(addr),
+        isChange: addr ? !!addr.isChange : false,
+        amountSat: item.valueSat,
+      }
+    });
+    var outputs = _.map(tx.vout, function(item) {
+      var addr;
+      var itemAddr;
+      // If classic multisig, ignore
+      if (item.scriptPubKey && item.scriptPubKey.addresses.length == 1) {
+        itemAddr = item.scriptPubKey.addresses[0];
+        addr = _.findWhere(addresses, {
+          addressStr: itemAddr,
+        });
+      }
+
+      return {
+        type: 'out',
+        address: addr ? addr : itemAddr,
+        isMine: !_.isUndefined(addr),
+        isChange: addr ? !!addr.isChange : false,
+        label: self.addressBook[itemAddr] ? self.addressBook[itemAddr].label : undefined,
+        amountSat: parseInt((item.value * bitcore.util.COIN).toFixed(0)),
+      }
+    });
+
+    return inputs.concat(outputs);
+  };
+
+  function sum(items, filter) {
+    return _.reduce(_.where(items, filter),
+      function(memo, item) {
+        return memo + item.amountSat;
+      }, 0);
+  };
+
+  function decorateTx(tx) {
+    var items = extractInsOuts(tx);
+
+    var amountIn = sum(items, {
+      type: 'in',
+      isMine: true
+    });
+
+    var amountOut = sum(items, {
+      type: 'out',
+      isMine: true,
+      isChange: false,
+    });
+
+    var amountOutChange = sum(items, {
+      type: 'out',
+      isMine: true,
+      isChange: true,
+    });
+
+    var fees = parseInt((tx.fees * bitcore.util.COIN).toFixed(0));
+    var amount;
+    if (amountIn == (amountOut + amountOutChange + (amountIn > 0 ? fees : 0))) {
+      tx.action = 'moved';
+      amount = amountOut;
+    } else {
+      amount = amountIn - amountOut - amountOutChange - (amountIn > 0 ? fees : 0);
+      tx.action = amount > 0 ? 'sent' : 'received';
+    }
+
+    var firstOut = _.findWhere(items, {
+      type: 'out'
+    });
+
+    var proposal = _.findWhere(proposals, {
+      sentTxid: tx.txid
+    });
+    tx.comment = proposal ? proposal.comment : undefined;
+    tx.labelTo = firstOut ? firstOut.label : undefined;
+    tx.amountSat = Math.abs(amount);
+    tx.amount = tx.amountSat * satToUnit;
+    tx.sentTs = proposal ? proposal.sentTs : undefined;
+    tx.minedTs = tx.time * 1000;
+  };
+
+  if (addresses.length > 0) {
+    var addressesStr = _.pluck(addresses, 'addressStr');
+    self.blockchain.getTransactions(addressesStr, function(err, txs) {
+      if (err) return cb(err);
+
+      var history = _.map(txs, function(tx) {
+        decorateTx(tx);
+        return tx;
+      });
+      return cb(null, history);
+    });
+  }
+};
+
+Wallet.prototype.exportEncrypted = function(password, opts) {
+  opts = opts || {};
+  var crypto = opts.cryptoUtil || cryptoUtil;
+  var key = crypto.kdf(password);
+  return crypto.encrypt(key, this.toObj());
 };
 
 module.exports = Wallet;

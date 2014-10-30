@@ -3,7 +3,7 @@
 // 90.2% typed (by google's closure-compiler account)
 
 var preconditions = require('preconditions').singleton();
-var _ = require('underscore');
+var _ = require('lodash');
 
 /**
  * @namespace

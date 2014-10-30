@@ -1,7 +1,7 @@
 <div class="transactions" data-ng-controller="TransactionsController" data-ng-init="update()">
   <div ng-show='$root.wallet.isReady()'>
-    <h1 ng-show="wallet.isShared()"> 
-      <span translate>Transaction Proposals</span> <small>({{txs.length}})</small></h1>
+    <h2 ng-show="wallet.isShared()"> 
+      <span translate>Transaction Proposals</span> <small>({{txs.length}})</small></h2>
     <div class="large-12" ng-show="wallet.isShared()">
 
       <div class="last-transactions" ng-repeat="tx in txs | paged">
@@ -14,12 +14,12 @@
       <pagination ng-show="txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
     </div>
 
-    <h1 ng-class="{'line-dashed': wallet.isShared()}">
+    <h2 ng-class="{'line-dashed': wallet.isShared()}">
       <span translate>Last transactions</span> 
       <small ng-hide="wallet.isShared() || !loading">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </small>   
-    </h1>
+    </h2>
 
     <div class="large-12">
       <div class="m10b size-12" ng-hide="wallet.totalCopayers == 1">
@@ -34,72 +34,36 @@
           <div class="last-transactions-header size-14">
             <div class="row collapse">
               <div class="large-8 medium-7 small-4 columns ellipsis">
-                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank">
-                  {{btx.txid}} 
+                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" translate>
+                  Show more
                 </a> 
                 <span class="btn-copy" clip-copy="btx.txid"></span>
               </div>
               <div class="large-4 medium-5 small-8 columns text-right">
-                <div data-ng-show="btx.firstSeenTs">
-                  <span translate>first seen at</span>
-                  <time>{{btx.firstSeenTs * 1000 | amCalendar}}</time>
+                <div data-ng-show="btx.sentTs">
+                  <span translate>broadcasted</span>
+                  <time>{{btx.sentTs | amCalendar}}</time>
                 </div>
-                <div data-ng-show="btx.time && !btx.firstSeenTs">
+                <div data-ng-show="btx.minedTs">
                   <span translate>mined</span>
-                  <time>{{btx.time * 1000 | amCalendar}}</time>
+                  <time>{{btx.minedTs | amCalendar}}</time>
                 </div>
               </div>
             </div>
           </div>
           <div class="last-transactions-content">
-            <div class="large-5 medium-5 small-12 columns">
-              <div ng-repeat="vin in btx.vinSimple" class="m5b">
-                <small class="right"
-                  ng-class="{'has-tip': vin.valueAlt}"
-                  data-options="disable_for_touch:true"
-                  tooltip-popup-delay='500'
-                  tooltip="{{vin.valueAlt|noFractionNumber}} {{alternativeIsoCode}}"
-                  tooltip-trigger="mouseenter"
-                  tooltip-placement="right"
-                  >
-                  {{vin.value| noFractionNumber}} {{$root.wallet.settings.unitName}}
-                </small>
-                <div class="ellipsis text-gray size-12">
-                  <contact address="{{vin.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
-                </div>
-              </div>
-            </div>
-            <div class="large-1 medium-1 hide-for-small-only columns text-center">
-              <i class="fi-arrow-right"></i>
-            </div>
-            <div class="show-for-small-only small-12 columns text-center">
-              <i class="fi-arrow-down"></i>
-            </div>
-            <div class="large-6 medium-6 small-12 columns">
-              <div ng-repeat="vout in btx.voutSimple" class="m5b">
-                <small class="right"
-                  ng-class="{'has-tip': vout.valueAlt}"
-                  data-options="disable_for_touch:true"
-                  tooltip-popup-delay='500'
-                  tooltip="{{vout.valueAlt|noFractionNumber}} {{alternativeIsoCode}}"
-                  tooltip-trigger="mouseenter"
-                  tooltip-placement="left"
-                  >
-                  {{vout.value| noFractionNumber}} {{$root.wallet.settings.unitName}}</small>
-                <div class="ellipsis text-gray size-12">
-                  <contact address="{{vout.addr}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
-                </div>
-              </div>
-            </div>
+          {{btx.action}} <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
+          <span ng-show="btx.comment">{{btx.comment}}</span>
           </div>
           <div class="last-transactions-footer">
             <div class="row collapse">
               <div class="large-6 medium-6 small-6 columns">
-                <div class="size-12"><span translate>Fee</span>: {{btx.fees | noFractionNumber}} {{$root.wallet.settings.unitName}}</div>
-                <div class="size-12"><span translate>Confirmations</span>: {{btx.confirmations || 0}}</div>
+                <div class="size-12" ng-show="!btx.confirmations || btx.confirmations == 0"><span translate>Unconfirmed</span></div>
+                <div class="size-12" ng-show="btx.confirmations > 0 && btx.confirmations <= 6">{{btx.confirmations || 0}} <span translate>Confirmations</span></div>
+                <div class="size-12" ng-show="btx.confirmations > 6"><span translate>Confirmed</span></div>
               </div>
               <div class="large-6 medium-6 small-6 columns text-right">
-                <p class="label size-14"><span translate>Total</span>: {{btx.valueOut| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
+                <p class="label size-14"><span translate>Amount</span>: {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
               </div>
             </div>
           </div>

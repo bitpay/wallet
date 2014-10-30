@@ -2,11 +2,15 @@
 
 angular.module('copayApp.controllers').controller('AddressesController',
   function($scope, $rootScope, $timeout, $modal, controllerUtils) {
+    controllerUtils.redirIfNotComplete();
+
+    $rootScope.title = 'Addresses';
+
     $scope.loading = false;
     $scope.showAll = false;
-    var w = $rootScope.wallet;
 
     $scope.newAddr = function() {
+      var w = $rootScope.wallet;
       $scope.loading = true;
       w.generateAddress(null, function() {
         $timeout(function() {
@@ -80,6 +84,7 @@ angular.module('copayApp.controllers').controller('AddressesController',
         for (var i = 0; i < addrInfos.length; i++) {
           var addrinfo = addrInfos[i];
           $scope.addresses.push({
+            'index': i,
             'address': addrinfo.addressStr,
             'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
             'isChange': addrinfo.isChange,

@@ -9,11 +9,11 @@ factory('notification', ['$timeout',
 
     var settings = {
       info: {
-        duration: 5000,
+        duration: 6000,
         enabled: true
       },
       funds: {
-        duration: 5000,
+        duration: 7000,
         enabled: true
       },
       version: {
@@ -21,11 +21,11 @@ factory('notification', ['$timeout',
         enabled: true
       },
       warning: {
-        duration: 5000,
+        duration: 7000,
         enabled: true
       },
       error: {
-        duration: 5000,
+        duration: 7000,
         enabled: true
       },
       success: {
@@ -42,12 +42,12 @@ factory('notification', ['$timeout',
       },
       details: true,
       localStorage: false,
-      html5Mode: false,
+      html5Mode: true,
       html5DefaultIcon: 'img/favicon.ico'
     };
 
     function html5Notify(icon, title, content, ondisplay, onclose) {
-      if (window.webkitNotifications.checkPermission() === 0) {
+      if (window.webkitNotifications && window.webkitNotifications.checkPermission() === 0) {
         if (!icon) {
           icon = 'img/favicon.ico';
         }
@@ -185,6 +185,7 @@ factory('notification', ['$timeout',
           'timestamp': +new Date(),
           'userData': userData
         };
+
         notifications.push(notification);
 
         if (settings.html5Mode) {
@@ -193,7 +194,10 @@ factory('notification', ['$timeout',
           }, function() {
             // inner on close function
           });
-        } else {
+        }
+
+        //this is done because html5Notify() changes the variable settings.html5Mode
+        if (!settings.html5Mode) {
           queue.push(notification);
           $timeout(function removeFromQueueTimeout() {
             queue.splice(queue.indexOf(notification), 1);
@@ -202,11 +206,14 @@ factory('notification', ['$timeout',
 
         // Mobile notification
         if (window && window.navigator && window.navigator.vibrate) {
-          window.navigator.vibrate([200,100,200]);
+          window.navigator.vibrate([200, 100, 200]);
         };
 
         if (document.hidden && (type == 'info' || type == 'funds')) {
-          new window.Notification(title, {body: content, icon:'img/notification.png'});
+          new window.Notification(title, {
+            body: content,
+            icon: 'img/notification.png'
+          });
         }
 
         this.save();
@@ -234,8 +241,7 @@ factory('notification', ['$timeout',
 
     };
   }
-]).
-directive('notifications', function(notification, $compile) {
+]).directive('notifications', function(notification, $compile) {
   /**
    *
    * It should also parse the arguments passed to it that specify

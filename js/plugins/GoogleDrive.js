@@ -3,7 +3,7 @@
 var preconditions = require('preconditions').singleton();
 var loaded = 0;
 var SCOPES = 'https://www.googleapis.com/auth/drive';
-var log = require('../js/log');
+var log = require('../log');
 
 function GoogleDrive(config) {
   preconditions.checkArgument(config && config.clientId, 'No clientId at GoogleDrive config');
@@ -12,7 +12,7 @@ function GoogleDrive(config) {
   this.home = config.home || 'copay';
   this.idCache = {};
 
-  this.type = 'STORAGE';
+  this.type = 'DB';
 
   this.scripts = [{
     then: this.initLoaded.bind(this),
@@ -56,6 +56,9 @@ GoogleDrive.prototype.checkAuth = function() {
     this.handleAuthResult.bind(this));
 };
 
+GoogleDrive.prototype.setCredentils = function(email, password, opts, callback) {
+};
+
 /**
  * Called when authorization server replies.
  */
@@ -91,6 +94,16 @@ GoogleDrive.prototype._httpGet = function(theUrl) {
   xmlHttp.send(null);
   return xmlHttp.responseText;
 }
+
+GoogleDrive.prototype.createItem = function(name, value, callback) {
+  this.getItem(name, function(err, retrieved) {
+    if (err || !retrieved) {
+      return this.setItem(name, value, callback);
+    } else {
+      return callback('EEXISTS');
+    }
+  });
+};
 
 GoogleDrive.prototype.getItem = function(k, cb) {
   //console.log('[googleDrive.js.95:getItem:]', k); //TODO
@@ -312,11 +325,5 @@ GoogleDrive.prototype.allKeys = function(cb) {
     });
   });
 };
-
-GoogleDrive.prototype.key = function(k) {
-  var v = localStorage.key(k);
-  return v;
-};
-
 
 module.exports = GoogleDrive;

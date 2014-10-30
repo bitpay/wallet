@@ -1,7 +1,7 @@
 'use strict';
 
 var copay = require('copay');
-var _ = require('underscore');
+var _ = require('lodash');
 var config = defaultConfig;
 var localConfig = JSON.parse(localStorage.getItem('config'));
 var defaults = JSON.parse(JSON.stringify(defaultConfig));

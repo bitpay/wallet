@@ -1,32 +1,40 @@
 <div class="home" ng-controller="HomeController">
+
   <div data-alert class="loading-screen" ng-show="retreiving">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
-    Retreiving information from storage...
+    <span translate>Retreiving information from storage...</span>
   </div>
-  <div class="row" ng-show="!loading && !retreiving">
-    <div class="large-4 columns logo-setup">
+  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading && !retreiving">
+    <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
-    <div class="large-8 columns">
-      <div class="button-setup" ng-show="hasWallets">
-        <a translate class="text-white" href="#!/open">Open a wallet</a>
-      </div>
-      <div class="button-setup" ng-show="!hasWallets">
-        <a translate class="text-secondary" href="#!/create">Create a new wallet</a>
-      </div>
-      <div class="button-setup">
-        <a translate class="text-primary" href="#!/join">Join a Wallet in Creation</a>
-      </div>
-      <div class="button-setup" ng-show="hasWallets">
-        <a translate class="text-secondary" href="#!/create">Create a wallet</a>
-      </div>
-
-      <div class="footer-setup">
-        <a class="right size-12 text-gray" href="#!/settings"><i class="m10r
-            size-14 fi-wrench"></i><span translate>Settings</span></a>
-        <a class="left size-12 text-gray" href="#!/import"><i class="m10r
-            size-14 fi-upload"></i><span translate>Import a backup</span></a>
+    <div class="box-setup">
+      <h1><span translate>Sign in to</span> <b>Copay</b></h1>
+      <form name="loginForm" ng-submit="openProfile(loginForm)" novalidate>
+        <input type="email" ng-model="email" class="form-control"
+          name="email" placeholder="Email" required>
+        <input type="password" ng-model="password" class="form-control"
+          name="password" placeholder="Password" required>
+          
+        <button translate type="submit" class="button primary radius expand m0"
+          ng-disabled="loginForm.$invalid || loading">
+          Sign in 
+        </button>
+      </form>
+      <div class="box-setup-footer">
+        <div class="left">
+          <a class="button-setup text-gray" href="#!/createProfile">
+            <i class="fi-torso"></i> 
+            <span translate>Create a profile</span>
+          </a>
+        </div>
+        <div class="right m10t">
+          <a class="text-gray" href="#!/settings">
+            <i class="fi-wrench"></i> 
+            <span translate>Settings</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>

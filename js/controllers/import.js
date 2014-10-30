@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, walletFactory, controllerUtils, Passphrase, notification, isMobile) {
-    controllerUtils.redirIfLogged();
+  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, Compatibility) {
 
-    $scope.title = 'Import a backup';
+    $rootScope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
     $scope.is_iOS = isMobile.iOS();
@@ -17,35 +16,27 @@ angular.module('copayApp.controllers').controller('ImportController',
     }
 
     var _importBackup = function(encryptedObj) {
-      Passphrase.getBase64Async($scope.password, function(passphrase) {
-        updateStatus('Importing wallet - Setting things up...');
-        var w, errMsg;
+      var password = $scope.password;
+      updateStatus('Importing wallet - Setting things up...');
+      var skipFields = [];
+      if ($scope.skipPublicKeyRing)
+        skipFields.push('publicKeyRing');
 
-        var skipFields = [];
-        if ($scope.skipPublicKeyRing)
-          skipFields.push('publicKeyRing');
+      if ($scope.skipTxProposals)
+        skipFields.push('txProposals');
 
-        if ($scope.skipTxProposals)
-          skipFields.push('txProposals');
-
-        // try to import encrypted wallet with passphrase
-        try {
-          w = walletFactory.import(encryptedObj, passphrase, skipFields);
-        } catch (e) {
-          errMsg = e.message;
-        }
-
+      $rootScope.iden.importEncryptedWallet(encryptedObj, password, skipFields, function(err, w) {
         if (!w) {
           $scope.loading = false;
-          notification.error('Error', errMsg || 'Wrong password');
+          notification.error('Error', err || 'Wrong password');
           $rootScope.$digest();
           return;
         }
 
         // if wallet was never used, we're done
         if (!w.isReady()) {
-          $rootScope.wallet = w;
-          controllerUtils.startNetwork($rootScope.wallet, $scope);
+          controllerUtils.installWalletHandlers($scope, w);
+          controllerUtils.setFocusedWallet(w);
           return;
         }
 
@@ -56,10 +47,9 @@ angular.module('copayApp.controllers').controller('ImportController',
             $scope.loading = false;
             notification.error('Error', 'Error updating indexes: ' + err);
           }
-          $rootScope.wallet = w;
-          controllerUtils.startNetwork($rootScope.wallet, $scope);
+          controllerUtils.installWalletHandlers($scope, w);
+          controllerUtils.setFocusedWallet(w);
         });
-
       });
     };
 
@@ -75,7 +65,17 @@ angular.module('copayApp.controllers').controller('ImportController',
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
           var encryptedObj = evt.target.result;
-          _importBackup(encryptedObj);
+          Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, $scope.password, {},
+            function(err, wallet){
+              if (err) {
+                notification.error('Error', 'Could not read wallet. Please check your password');
+              } else {
+                controllerUtils.installWalletHandlers($scope, wallet);
+                controllerUtils.setFocusedWallet(wallet);
+                return;
+              }
+            }
+          );
         }
       };
     };
@@ -104,7 +104,22 @@ angular.module('copayApp.controllers').controller('ImportController',
         reader.readAsBinaryString(backupFile);
       }
       else {
-        _importBackup(backupText);
+          Compatibility.importEncryptedWallet($rootScope.iden, backupText, $scope.password, {},
+            function(err, wallet){
+              if (err) {
+                notification.error('Error', 'Could not read wallet. Please check your password');
+              } else {
+                controllerUtils.installWalletHandlers($scope, wallet);
+                controllerUtils.setFocusedWallet(wallet);
+                return;
+              }
+            }
+          );
+        try {
+          _importBackup(backupText);
+        } catch(e) {
+          Compatibility.importEncryptedWallet(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
+        }
       }
     };
   });

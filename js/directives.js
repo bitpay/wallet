@@ -111,14 +111,13 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('walletSecret', ['walletFactory',
-    function(walletFactory) {
+  .directive('walletSecret', function() {
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
             var a = new Address(value);
-            ctrl.$setValidity('walletSecret', !a.isValid() && Boolean(walletFactory.decodeSecret(value)));
+            ctrl.$setValidity('walletSecret', !a.isValid() && Boolean(copay.Wallet.decodeSecret(value)));
             return value;
           };
 
@@ -126,7 +125,7 @@ angular.module('copayApp.directives')
         }
       };
     }
-  ])
+  )
   .directive('loading', function() {
     return {
       restrict: 'A',

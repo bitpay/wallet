@@ -12,5 +12,5 @@ if (!!window) {
   }
 
   window.is_browser = true;
-  window._ = require('underscore');
+  window._ = require('lodash');
 }

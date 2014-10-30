@@ -45,7 +45,8 @@ var createBundle = function(opts) {
   b.require('browser-request', {
     expose: 'request'
   });
-  b.require('underscore');
+  b.require('lodash');
+  b.require('querystring');
   b.require('assert');
   b.require('preconditions');
 
@@ -54,22 +55,19 @@ var createBundle = function(opts) {
   });
   b.require('./version');
 
-  b.require('./js/log', {
-    expose: '../js/log'
-  });
   //  b.external('bitcore');
-  b.require('./js/models/WalletFactory', {
-    expose: '../js/models/WalletFactory'
+  b.require('./js/models/Identity', {
+    expose: '../js/models/Identity'
   });
   b.require('./js/models/Wallet');
   b.require('./js/models/Wallet', {
     expose: '../../js/models/Wallet'
   });
-  b.require('./js/models/WalletLock', {
-    expose: '../js/models/WalletLock'
-  });
   b.require('./js/models/Insight', {
     expose: '../js/models/Insight'
+  });
+  b.require('./js/models/Compatibility', {
+    expose: '../js/models/Compatibility'
   });
   b.require('./js/models/PrivateKey', {
     expose: '../js/models/PrivateKey'
@@ -77,22 +75,27 @@ var createBundle = function(opts) {
   b.require('./js/models/PublicKeyRing', {
     expose: '../js/models/PublicKeyRing'
   });
-  b.require('./js/models/Passphrase', {
-    expose: '../js/models/Passphrase'
-  });
   b.require('./js/models/HDPath', {
     expose: '../js/models/HDPath'
   });
   b.require('./js/models/PluginManager', {
     expose: '../js/models/PluginManager'
   });
-
   if (!opts.disablePlugins) {
-    b.require('./plugins/GoogleDrive', {
+    b.require('./js/plugins/GoogleDrive', {
       expose: '../plugins/GoogleDrive'
     });
-    b.require('./plugins/LocalStorage', {
+    b.require('./js/plugins/InsightStorage', {
+      expose: '../plugins/InsightStorage'
+    });
+    b.require('./js/plugins/LocalStorage', {
       expose: '../plugins/LocalStorage'
+    });
+    b.require('./js/plugins/EncryptedInsightStorage', {
+      expose: '../plugins/EncryptedInsightStorage'
+    });
+    b.require('./js/plugins/EncryptedLocalStorage', {
+      expose: '../plugins/EncryptedLocalStorage'
     });
   }
 
@@ -100,13 +103,19 @@ var createBundle = function(opts) {
     expose: '../config'
   });
 
+
+  // The following 2 lines fix karma tests
+  b.require('sjcl');
+  b.require('./js/log', {
+    expose: '../log.js'
+  });
+
   if (opts.debug) {
     //include dev dependencies
     b.require('sinon');
     b.require('blanket');
-    b.require('./test/mocks/FakeLocalStorage', {
-      expose: './mocks/FakeLocalStorage'
-    });
+ 
+
     b.require('./test/mocks/FakeBlockchain', {
       expose: './mocks/FakeBlockchain'
     });

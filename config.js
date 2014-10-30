@@ -3,7 +3,7 @@ var defaultConfig = {
   defaultLanguage: 'en',
   // DEFAULT network (livenet or testnet)
   networkName: 'livenet',
-  logLevel: 'info',
+  logLevel: 'debug',
 
 
   // wallet limits
@@ -15,10 +15,12 @@ var defaultConfig = {
   // network layer config
   network: {
     testnet: {
-      url: 'https://test-insight.bitpay.com:443'
+      url: 'https://test-insight.bitpay.com:443',
+      transports: ['polling'],
     },
     livenet: {
-      url: 'https://insight.bitpay.com:443'
+      url: 'https://insight.bitpay.com:443',
+      transports: ['polling'],
     },
   },
 
@@ -39,7 +41,7 @@ var defaultConfig = {
   },
 
   // local encryption/security config
-  passphrase: {
+  passphraseConfig: {
     iterations: 100,
     storageSalt: 'mjuBtGybi/4=',
   },
@@ -52,14 +54,22 @@ var defaultConfig = {
   verbose: 1,
 
   plugins: {
-    LocalStorage: true,
+    //LocalStorage: true,
+    EncryptedLocalStorage: true,
     //GoogleDrive: true,
+    //InsightStorage: true
+    //EncryptedInsightStorage: true
+  },
+
+  EncryptedInsightStorage: {
+    url: 'https://test-insight.bitpay.com:443/api/email'
+    // url: 'http://localhost:3001/api/email'
   },
 
   GoogleDrive: {
     home: 'copay',
 
-    /* 
+    /*
      * This clientId was generated at:
      * https://console.developers.google.com/project
      * To run Copay with Google Drive at your domain you need

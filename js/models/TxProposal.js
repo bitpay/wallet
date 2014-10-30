@@ -1,7 +1,7 @@
 'use strict';
 
 var bitcore = require('bitcore');
-var _ = require('underscore');
+var _ = require('lodash');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
 var BuilderMockV0 = require('./BuilderMockV0');;
@@ -24,7 +24,6 @@ function TxProposal(opts) {
   this.inputChainPaths = opts.inputChainPaths;
   this.version = opts.version;
   this.builder = opts.builder;
-  this.createdTs = opts.createdTs;
   this.createdTs = opts.createdTs;
   this._inputSigners = [];
 
