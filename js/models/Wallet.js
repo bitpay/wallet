@@ -2854,7 +2854,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
     tx.sentTs = proposal ? proposal.sentTs : undefined;
-    tx.minedTs = tx.time * 1000;
+    tx.minedTs = !_.isNaN(tx.time) ? tx.time * 1000 : undefined;
   };
 
   if (addresses.length > 0) {
@@ -2864,6 +2864,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
 
       var history = _.map(txs, function(tx) {
         decorateTx(tx);
+        console.log(tx);
         return tx;
       });
       return cb(null, history);
