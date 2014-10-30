@@ -127,6 +127,13 @@ firstWallet.updateIndexes(function() {
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
         console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
 
+        if (requiredCopayers ===1) {
+          firstWallet.sendTx(ntxid, function(txid) {
+            console.log('\t #######  SENT  TXID:', txid);
+            process.exit(1);
+          });
+        }
+
         var l = w.length;
         _.each(w, function(dummy, i) {
           console.log('\t Signing with copayer', i + 1);
