@@ -1609,10 +1609,11 @@ describe('Wallet model', function() {
         new: false,
         hasChanged: true,
       });
-      w._checkSentTx = sinon.stub().yields(true);
+      w._checkSentTx = sinon.stub().yields('123');
 
       w._onTxProposal('senderID', data);
       txp.setSent.calledOnce.should.be.true;
+      txp.setSent.calledWith('123').should.be.true;
       w.sendTxProposal.called.should.be.false;
       done();
     });
