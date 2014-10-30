@@ -64,7 +64,7 @@ describe("Unit: Controllers", function() {
     w.getSecret = sinon.stub().returns('secret');
     w.getName = sinon.stub().returns('fakeWallet');
     w.exportEncrypted = sinon.stub().returns('1234567');
-    w.getTransactionHistory = sinon.stub().yields({});
+    w.getTransactionHistory = sinon.stub().yields(null);
     w.getNetworkName = sinon.stub().returns('testnet');
 
     w.createTx = sinon.stub().yields(null);
@@ -147,19 +147,22 @@ describe("Unit: Controllers", function() {
   });
 
   describe('History Controller', function() {
-    var transactionsCtrl;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
+
       scope = $rootScope.$new();
-      transactionsCtrl = $controller('HistoryController', {
+      scope.wallet = null;
+      scope.getTransactions = sinon.stub();
+      ctrl = $controller('HistoryController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(transactionsCtrl);
+      should.exist(ctrl);
     });
 
-    it('should have a TransactionController controller', function() {
+    it('should have a HistoryController controller', function() {
       expect(scope.loading).equal(false);
     });
 
