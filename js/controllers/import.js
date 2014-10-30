@@ -8,6 +8,8 @@ angular.module('copayApp.controllers').controller('ImportController',
     $scope.hideAdv = true;
     $scope.is_iOS = isMobile.iOS();
 
+    Compatibility.check($scope);
+
     var reader = new FileReader();
 
     var updateStatus = function(status) {
@@ -65,7 +67,7 @@ angular.module('copayApp.controllers').controller('ImportController',
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
           var encryptedObj = evt.target.result;
-          Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, $scope.password, {},
+          copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, $scope.password, {},
             function(err, wallet){
               if (err) {
                 notification.error('Error', 'Could not read wallet. Please check your password');
@@ -91,7 +93,12 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       var backupFile = $scope.file;
       var backupText = form.backupText.$modelValue;
+      var backupOldWallet = form.backupOldWallet.$modelValue;
       var password = form.password.$modelValue;
+
+      if (backupOldWallet) {
+        backupText = backupOldWallet.value;
+      }
 
       if (!backupFile && !backupText) {
         $scope.loading = false;
@@ -104,11 +111,12 @@ angular.module('copayApp.controllers').controller('ImportController',
         reader.readAsBinaryString(backupFile);
       }
       else {
-          Compatibility.importEncryptedWallet($rootScope.iden, backupText, $scope.password, {},
+          copay.Compatibility.importEncryptedWallet($rootScope.iden, backupText, $scope.password, {},
             function(err, wallet){
               if (err) {
                 notification.error('Error', 'Could not read wallet. Please check your password');
               } else {
+                copay.Compatibility.deleteOldWallet(backupOldWallet);
                 controllerUtils.installWalletHandlers($scope, wallet);
                 controllerUtils.setFocusedWallet(wallet);
                 return;
@@ -118,7 +126,7 @@ angular.module('copayApp.controllers').controller('ImportController',
         try {
           _importBackup(backupText);
         } catch(e) {
-          Compatibility.importEncryptedWallet(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
+          copay.Compatibility.importEncryptedWallet(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
         }
       }
     };

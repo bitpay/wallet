@@ -178,20 +178,6 @@ Wallet.prototype.getStorageKey = function() {
   return Wallet.getStorageKey(this.getId());
 };
 
-/**
- * check if any wallet exists on storage
- * @param opts.storageOpts
- * @param cb
- */
-Wallet.checkIfExistsAny = function(opts, cb) {
-  var storage = opts.storage || opts.pluginManager.get('DB');
-  storage.getFirst(Wallet.getStoragePrefix(), {
-    onlyKey: true
-  }, function(err, v, k) {
-    return cb(k ? true : false);
-  });
-};
-
 /* for stubbing */
 Wallet._newInsight = function(opts) {
   return new Insight(opts);
