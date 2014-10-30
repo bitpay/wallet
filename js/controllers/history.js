@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
     var w = $rootScope.wallet;
 
+    $rootScope.title = 'History';
     $scope.loading = false;
     $scope.lastShowed = false;
 
