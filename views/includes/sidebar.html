@@ -20,12 +20,16 @@
           <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
           <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
         </div>
-        <div class="m10t" ng-show="lockedBalance">
-          {{'Locked'|translate}} &nbsp;
+        <div class="m10t locked" ng-show="lockedBalance">
+
+          <span class="text-gray">
+            <i class="fi-lock"></i> {{'Locked'|translate}} &nbsp;
+          </span>
           <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <span ng-if="$root.wallet && !$root.updatingBalance" class="has-tip" data-options="disable_for_touch:true" tooltip-popup-delay='500' tooltip="{{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
-          </span> &nbsp;
-          <i class="fi-info medium" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
+          <span ng-if="$root.wallet && !$root.updatingBalance" class="text-gray"><b>{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}} </b> - {{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}
+          </span>
+          <i class="fi-info medium right text-gray size-14" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
+          
         </div>
       </div>
     </div>
@@ -73,7 +77,7 @@
         </div>
       </li>
     </ul>
-      <a ui-route="{{create}}" href="#!/manage" class="button-setup add-wallet db p20h" title="Create"><i class="m5r fi-plus"></i> {{'Add Wallet' | translate }} </a>
+      <!-- <a ui-route="{{create}}" href="#!/manage" class="button-setup add-wallet db p20h" title="Create"><i class="m5r fi-plus"></i> {{'Add Wallet' | translate }} </a> -->
   </div>
 
   <ul class="side-nav" ng-if="!walletSelection && $root.wallet.isReady()">

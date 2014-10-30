@@ -23,43 +23,40 @@
       <div class="btransactions">
         <div ng-if="!blockchain_txs[0].txid && !loading">
         <em><strong translate>No transactions yet.</strong></em></div>
-        <div class="last-transactions" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
-          <div class="last-transactions-header size-14">
-            <div class="row collapse">
-              <div class="large-8 medium-7 small-4 columns ellipsis">
+        <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
+          <div class="row collapse size-12">
+              <div class="large-2 medium-2 small-4 columns">
+                <span ng-hide="btx.ts">&nbsp;</span>
+                <time>{{btx.ts | amCalendar}}</time>
+              </div>
+
+              <div class="large-3 medium-3 small-5 columns">
+                {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}
+                {{btx.action}} 
+              </div>
+
+              <div class="large-2 medium-2 columns hide-for-small-only">
+                <span ng-hide="btx.labelTo">&nbsp;</span>
+                <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
+              </div>
+
+              <div class="large-3 medium-3 small-4 columns hide-for-small-only">
+                <span ng-show="btx.comment">{{btx.comment}}</span>
+              </div>
+
+              <div class="large-1 medium-1 small-3 columns">
+                <span class="label alert" ng-show="!btx.confirmations || btx.confirmations == 0"><span translate>Unconfirmed</span></span>
+                <span class="label" ng-show="btx.confirmations > 0 && btx.confirmations <= 6">{{btx.confirmations || 0}} <span translate>Confirmations</span></span>
+                <span class="label success" ng-show="btx.confirmations > 6"><span translate>Confirmed</span></span>
+              </div>
+
+              <div class="large-1 medium-1 small-4 columns size-10 text-right hide-for-small-only">
                 <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" translate>
                   Show more
                 </a> 
-                <span class="btn-copy" clip-copy="btx.txid"></span>
               </div>
-              <div class="large-4 medium-5 small-8 columns text-right">
-                <div data-ng-show="btx.sentTs">
-                  <span translate>broadcasted</span>
-                  <time>{{btx.sentTs | amCalendar}}</time>
-                </div>
-                <div data-ng-show="btx.minedTs">
-                  <span translate>mined</span>
-                  <time>{{btx.minedTs | amCalendar}}</time>
-                </div>
-              </div>
-            </div>
           </div>
-          <div class="last-transactions-content">
-          {{btx.action}} <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
-          <span ng-show="btx.comment">{{btx.comment}}</span>
-          </div>
-          <div class="last-transactions-footer">
-            <div class="row collapse">
-              <div class="large-6 medium-6 small-6 columns">
-                <div class="size-12" ng-show="!btx.confirmations || btx.confirmations == 0"><span translate>Unconfirmed</span></div>
-                <div class="size-12" ng-show="btx.confirmations > 0 && btx.confirmations <= 6">{{btx.confirmations || 0}} <span translate>Confirmations</span></div>
-                <div class="size-12" ng-show="btx.confirmations > 6"><span translate>Confirmed</span></div>
-              </div>
-              <div class="large-6 medium-6 small-6 columns text-right">
-                <p class="label size-14"><span translate>Amount</span>: {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</p>
-              </div>
-            </div>
-          </div>
+              
         </div>
       </div>
     </div>
