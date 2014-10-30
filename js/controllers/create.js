@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, walletFactory, controllerUtils, Passphrase, backupService, notification, defaults) {
-    controllerUtils.redirIfLogged();
+  function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification, defaults) {
 
     $rootScope.fromSetup = true;
     $scope.loading = false;
@@ -10,7 +9,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     $scope.isMobile = !!window.cordova;
     $scope.hideAdv = true;
     $scope.networkName = config.networkName;
-    $scope.networkUrl = config.network[$scope.networkName].url;
+    $rootScope.title = 'Create a wallet';
 
     // ng-repeat defined number of times instead of repeating over array?
     $scope.getNumber = function(num) {
@@ -36,7 +35,7 @@ angular.module('copayApp.controllers').controller('CreateController',
       $scope.networkUrl = config.network[$scope.networkName].url;
     });
 
-    $scope.showNetwork = function(){
+    $scope.showNetwork = function() {
       return $scope.networkUrl != defaults.network.livenet.url && $scope.networkUrl != defaults.network.testnet.url;
     };
 
@@ -46,26 +45,17 @@ angular.module('copayApp.controllers').controller('CreateController',
         return;
       }
       $scope.loading = true;
-      Passphrase.getBase64Async($scope.walletPassword, function(passphrase) {
-        var opts = {
-          requiredCopayers: $scope.requiredCopayers,
-          totalCopayers: $scope.totalCopayers,
-          name: $scope.walletName,
-          nickname: $scope.myNickname,
-          passphrase: passphrase,
-          privateKeyHex: $scope.private,
-          networkName: $scope.networkName,
-        };
-        walletFactory.create(opts, function(err, w) {
-          controllerUtils.startNetwork(w, $scope);
-        });
+      var opts = {
+        requiredCopayers: $scope.requiredCopayers,
+        totalCopayers: $scope.totalCopayers,
+        name: $scope.walletName,
+        privateKeyHex: $scope.private,
+        networkName: $scope.networkName,
+      };
+      $rootScope.iden.createWallet(opts, function(err, w) {
+        $scope.loading = false;
+        controllerUtils.installWalletHandlers($scope, w);
+        controllerUtils.setFocusedWallet(w);
       });
     };
-
-    $scope.isSetupWalletPage = 0;
-
-    $scope.setupWallet = function() {
-      $scope.isSetupWalletPage = !$scope.isSetupWalletPage;
-    };
-
   });

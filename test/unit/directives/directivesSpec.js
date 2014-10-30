@@ -7,23 +7,37 @@ describe("Unit: Testing Directives", function() {
   var $scope, form;
 
   beforeEach(module('copayApp.directives'));
-
-  var walletConfig = {
-    requiredCopayers: 3,
-    totalCopayers: 5,
-    spendUnconfirmed: 1,
-    reconnectDelay: 100,
-    networkName: 'testnet',
-    alternativeName: 'lol currency',
-    alternativeIsoCode: 'LOL'
-  };
-
-
   beforeEach(inject(function($rootScope) {
-    $rootScope.wallet = new FakeWallet(walletConfig);
-    var w = $rootScope.wallet;
-    w.settings.unitToSatoshi = 100;
-    w.settings.unitName = 'bits';
+
+    var w = {};
+    w.isReady = sinon.stub().returns(true);
+    w.privateKey = {};
+    w.settings = {
+      unitToSatoshi: 100,
+      unitDecimals: 2,
+      alternativeName: 'US Dollar',
+      alternativeIsoCode: 'USD',
+    };
+    w.addressBook = {
+      'juan': '1',
+    };
+    w.totalCopayers = 2;
+    w.getMyCopayerNickname = sinon.stub().returns('nickname');
+    w.getMyCopayerId = sinon.stub().returns('id');
+    w.privateKey.toObj = sinon.stub().returns({
+      wallet: 'mock'
+    });
+    w.getSecret = sinon.stub().returns('secret');
+    w.getName = sinon.stub().returns('fakeWallet');
+    w.exportEncrypted = sinon.stub().returns('1234567');
+    w.getTransactionHistory = sinon.stub().yields({});
+    w.getNetworkName = sinon.stub().returns('testnet');
+
+    w.createTx = sinon.stub().yields(null);
+    w.sendTx = sinon.stub().yields(null);
+    w.requiresMultipleSignatures = sinon.stub().returns(true);
+    w.getTxProposals = sinon.stub().returns([1,2,3]);
+    $rootScope.wallet = w;
   }));
 
   describe('Validate Address', function() {
@@ -99,11 +113,10 @@ describe("Unit: Testing Directives", function() {
     describe('Unit: BTC', function() {
       beforeEach(inject(function($compile, $rootScope) {
         $scope = $rootScope;
-        var w = new FakeWallet(walletConfig);
+        var w = $rootScope.wallet;
         w.settings.unitToSatoshi = 100000000;
         w.settings.unitName = 'BTC';
         w.settings.unitDecimals = 8;
-        $rootScope.wallet = w;
 
         $rootScope.availableBalance = 0.04;
         var element = angular.element(

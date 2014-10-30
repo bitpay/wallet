@@ -4,11 +4,13 @@ var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
+    controllerUtils.redirIfNotComplete();
+
     var w = $rootScope.wallet;
     preconditions.checkState(w);
     preconditions.checkState(w.settings.unitToSatoshi);
 
-    $scope.title = 'Send';
+    $rootScope.title = 'Send';
     $scope.loading = false;
     var satToUnit = 1 / w.settings.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
@@ -57,6 +59,7 @@ angular.module('copayApp.controllers').controller('SendController',
         set: function(newValue) {
           this._amount = newValue;
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+
             this._alternative = parseFloat(
               (rateService.toFiat(newValue * w.settings.unitToSatoshi, w.settings.alternativeIsoCode)).toFixed(2), 10);
           } else {
@@ -80,16 +83,7 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.showAddressBook = function() {
-      var flag;
-      if (w) {
-        for (var k in w.addressBook) {
-          if (w.addressBook[k]) {
-            flag = true;
-            break;
-          }
-        }
-      }
-      return flag;
+      return w && _.keys(w.addressBook).length > 0;
     };
 
     if ($rootScope.pendingPayment) {

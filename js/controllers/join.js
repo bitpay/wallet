@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, walletFactory, controllerUtils, Passphrase, notification) {
-    controllerUtils.redirIfLogged();
+  function($scope, $rootScope, $timeout, controllerUtils, notification) {
     $rootScope.fromSetup = false;
     $scope.loading = false;
     $scope.isMobile = !!window.cordova;
+    $rootScope.title = 'Join a wallet';
 
     // QR code Scanner
     var cameraInput;
@@ -120,32 +120,30 @@ angular.module('copayApp.controllers').controller('JoinController',
 
       $scope.loading = true;
 
-      Passphrase.getBase64Async($scope.joinPassword, function(passphrase) {
-        walletFactory.joinCreateSession({
-          secret: $scope.connectionId,
-          nickname: $scope.nickname,
-          passphrase: passphrase,
-          privateHex: $scope.private,
-        }, function(err, w) {
-          $scope.loading = false;
-          if (err || !w) {
-            if (err === 'joinError')
-              notification.error('Fatal error connecting to Insight server');
-            else if (err === 'walletFull')
-              notification.error('The wallet is full');
-            else if (err === 'badNetwork')
-              notification.error('Network Error', 'Wallet network configuration missmatch');
-            else if (err === 'badSecret')
-              notification.error('Bad secret', 'The secret string you entered is invalid');
-            else if (err === 'connectionError')
-              notification.error('Networking Error', 'Could not connect to the Insight server. Check your settings and network configuration');
-            else
-              notification.error('Unknown error');
-            controllerUtils.onErrorDigest();
-          } else {
-            controllerUtils.startNetwork(w, $scope);
+      $rootScope.iden.joinWallet({
+        secret: $scope.connectionId,
+        nickname: $scope.nickname,
+        privateHex: $scope.private,
+      }, function(err, w) {
+
+        $scope.loading = false;
+        if (err || !w) {
+          if (err === 'joinError')
+            notification.error('Fatal error connecting to Insight server');
+          else if (err === 'walletFull')
+            notification.error('The wallet is full');
+          else if (err === 'badNetwork')
+            notification.error('Network Error', 'Wallet network configuration missmatch');
+          else if (err === 'badSecret')
+            notification.error('Bad secret', 'The secret string you entered is invalid');
+          else {
+            notification.error('Error', err.message || err);
           }
-        });
+          controllerUtils.onErrorDigest();
+        } else {
+          controllerUtils.installWalletHandlers($scope, w);
+          controllerUtils.setFocusedWallet(w);
+        }
       });
     }
   });

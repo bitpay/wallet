@@ -10,9 +10,6 @@ var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var bignum = bitcore.Bignum;
 var startServer = copay.FakePayProServer; // TODO should be require('./mocks/FakePayProServer');
-var localMock = requireMock('FakeLocalStorage');
-var sessionMock = requireMock('FakeLocalStorage');
-var Storage = copay.Storage;
 
 var server;
 
@@ -21,8 +18,7 @@ var walletConfig = {
   totalCopayers: 1,
   spendUnconfirmed: true,
   reconnectDelay: 100,
-  networkName: 'testnet',
-  storage: requireMock('FakeLocalStorage').storageParams,
+  networkName: 'testnet'
 };
 
 var getNewEpk = function() {
@@ -57,11 +53,8 @@ describe('PayPro (in Wallet) model', function() {
         networkName: c.networkName,
       });
 
-      var storage = new Storage(walletConfig.storage);
-      storage.setPassphrase('xxx');
       var network = new Network(walletConfig.network);
       var blockchain = new Blockchain(walletConfig.blockchain);
-      c.storage = storage;
       c.network = network;
       c.blockchain = blockchain;
 
@@ -82,6 +75,14 @@ describe('PayPro (in Wallet) model', function() {
 
       c.networkName = walletConfig.networkName;
       c.version = '0.0.1';
+
+      c.network = sinon.stub();
+      c.network.setHexNonce = sinon.stub();
+      c.network.setHexNonces = sinon.stub();
+      c.network.getHexNonce = sinon.stub();
+      c.network.getHexNonces = sinon.stub();
+      c.network.send = sinon.stub();
+
 
       return new Wallet(c);
     }
@@ -122,7 +123,14 @@ describe('PayPro (in Wallet) model', function() {
         cachedW2obj = cachedW2.toObj();
         cachedW2obj.opts.reconnectDelay = 100;
       }
-      var w = Wallet.fromObj(cachedW2obj, cachedW2.storage, cachedW2.network, cachedW2.blockchain);
+
+      Wallet._newAsync = sinon.stub().returns(new Network(walletConfig.network));
+      Wallet._newInsight = sinon.stub().returns(new Blockchain(walletConfig.blockchain));
+
+      var w = Wallet.fromObj(cachedW2obj, {
+        blockchainOpts: {},
+        networkOpts: {},
+      });
       return w;
     };
 
@@ -683,9 +691,11 @@ describe('PayPro (in Wallet) model', function() {
       });
     });
 
-    it('#add tx proposal based on payment message via model', function(done) {
+    it('#add tx proposal based on payment message via model ', function(done) {
+
       var w = ppw;
       should.exist(w);
+
       w.sendPaymentTx(w._ntxid, function(txid, merchantData) {
         should.exist(txid);
         should.exist(merchantData);
@@ -735,7 +745,10 @@ describe('PayPro (in Wallet) model', function() {
         uri = address.split(/\s+/)[1];
       }
 
-      w.createPaymentTx({ uri: uri, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: uri,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         if (w.isShared()) {
           should.exist(ntxid);
@@ -757,7 +770,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         if (w.isShared()) {
           should.exist(ntxid);
@@ -778,7 +794,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
@@ -815,7 +834,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
@@ -843,7 +865,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);
@@ -870,7 +895,10 @@ describe('PayPro (in Wallet) model', function() {
       should.exist(w);
       var address = 'bitcoin:2NBzZdFBoQymDgfzH2Pmnthser1E71MmU47?amount=0.00003&r=' + server.uri + '/request';
       var commentText = 'Hello, server. I\'d like to make a payment.';
-      w.createPaymentTx({ uri: address, memo: commentText }, function(err, ntxid, merchantData) {
+      w.createPaymentTx({
+        uri: address,
+        memo: commentText
+      }, function(err, ntxid, merchantData) {
         should.equal(err, null);
         should.exist(ntxid);
         should.exist(merchantData);

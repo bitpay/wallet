@@ -5,18 +5,40 @@ angular.module('copayApp.services')
   .factory('controllerUtils', function($rootScope, $sce, $location, $filter, notification, $timeout, uriHandler, rateService) {
     var root = {};
 
+
+    root.redirIfNotComplete = function() {
+      var w = $rootScope.wallet;
+      if (w) {
+        if (!w.isReady()) {
+          $location.path('/copayers');
+        }
+      } else {
+        $location.path('/');
+      }
+    };
+
+
     root.redirIfLogged = function() {
-      if ($rootScope.wallet) {
-        $location.path('receive');
+      var w = $rootScope.wallet;
+      if (w) {
+        if (!w.isReady()) {
+          $location.path('/copayers');
+        } else {
+          $location.path('receive');
+        }
       }
     };
 
     root.logout = function() {
-      if ($rootScope.wallet)
-        $rootScope.wallet.close();
 
-      $rootScope.wallet = null;
+      if ($rootScope.iden) {
+        $rootScope.iden.store(null, function(){
+          $rootScope.iden.close();
+        });
+      }
+
       delete $rootScope['wallet'];
+      delete $rootScope['iden'];
 
       // Clear rootScope
       for (var i in $rootScope) {
@@ -30,7 +52,6 @@ angular.module('copayApp.services')
 
     root.onError = function(scope) {
       if (scope) scope.loading = false;
-      root.logout();
     }
 
     root.onErrorDigest = function(scope, msg) {
@@ -40,79 +61,89 @@ angular.module('copayApp.services')
       }
     };
 
-    root.installWalletHandlers = function(w, $scope) {
-      w.on('connectionError', function() {
-        var message = "Could not connect to the Insight server. Check your settings and network configuration";
-        notification.error('Networking Error', message);
-        root.onErrorDigest($scope);
+
+    root.isFocusedWallet = function(wid) {
+      return wid === $rootScope.wallet.getId();
+    };
+
+
+    root.updateTxsAndBalance = _.debounce(function(w) {
+      root.updateTxs({
+        wallet: w
       });
-      w.on('ready', function() {
-        $scope.loading = false;
+      root.updateBalance(w, function() {
+        $rootScope.$digest();
+      })
+    }, 3000);
+
+    root.installWalletHandlers = function($scope, w) {
+
+      var wid = w.getId();
+      w.on('connectionError', function() {
+        if (root.isFocusedWallet(wid)) {
+          var message = "Could not connect to the Insight server. Check your settings and network configuration";
+          notification.error('Networking Error', message);
+          root.onErrorDigest($scope);
+        }
       });
 
       w.on('corrupt', function(peerId) {
-        notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
+        if (root.isFocusedWallet(wid)) {
+          notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
+        }
       });
       w.on('ready', function(myPeerID) {
-        $rootScope.wallet = w;
+        $scope.loading = false;
         if ($rootScope.initialConnection) {
           $rootScope.initialConnection = false;
           if ($rootScope.pendingPayment) {
             $location.path('send');
           } else {
-            $location.path('receive');
+            root.redirIfLogged();
           }
-        }
-      });
-
-      w.on('publicKeyRingUpdated', function(dontDigest) {
-        root.updateAddressList();
-        if (!dontDigest) {
-          $rootScope.$digest();
         }
       });
 
       w.on('tx', function(address, isChange) {
         if (!isChange) {
-          notification.funds('Funds received!', address);
+          notification.funds('Funds received on ' + w.getName(), address);
         }
-        root.updateBalance(function() {
+        root.updateBalance(w, function() {
           $rootScope.$digest();
         });
       });
 
       w.on('balanceUpdated', function() {
-        root.updateBalance(function() {
+        root.updateBalance(w, function() {
           $rootScope.$digest();
         });
       });
 
       w.on('insightReconnected', function() {
         $rootScope.reconnecting = false;
-        root.updateAddressList();
-        root.updateBalance(function() {
+        root.updateAddressList(w.getId());
+        root.updateBalance(w, function() {
           $rootScope.$digest();
         });
       });
 
       w.on('insightError', function() {
-        $rootScope.reconnecting = true;
-        $rootScope.$digest();
+        if (root.isFocusedWallet(wid)) {
+          $rootScope.reconnecting = true;
+          $rootScope.$digest();
+        }
+      });
+      w.on('newAddresses', function() {
+        root.updateTxsAndBalance(w);
       });
 
-      var updateTxsAndBalance = _.debounce(function() {
-        root.updateTxs();
-        root.updateBalance(function() {
-          $rootScope.$digest();
-        })
-      }, 3000);
-
-      w.on('txProposalsUpdated', function(dontDigest) {
-        updateTxsAndBalance();
+      w.on('txProposalsUpdated', function() {
+        root.updateTxsAndBalance(w);
       });
 
       w.on('txProposalEvent', function(e) {
 
+        // TODO: add wallet name notification
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
         switch (e.type) {
           case 'signed':
@@ -127,8 +158,10 @@ angular.module('copayApp.services')
         }
       });
       w.on('addressBookUpdated', function(dontDigest) {
-        if (!dontDigest) {
-          $rootScope.$digest();
+        if (root.isFocusedWallet(wid)) {
+          if (!dontDigest) {
+            $rootScope.$digest();
+          }
         }
       });
       w.on('connect', function(peerID) {
@@ -139,81 +172,167 @@ angular.module('copayApp.services')
 
     };
 
-    root.setupRootVariables = function() {
+    root.setupGlobalVariables = function(iden) {
+      notification.enableHtml5Mode(); // for chrome: if support, enable it
       uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
       $rootScope.initialConnection = true;
       $rootScope.reconnecting = false;
       $rootScope.isCollapsed = true;
-      $rootScope.$watch('txAlertCount', function(txAlertCount) {
-        if (txAlertCount && txAlertCount > 0) {
 
-          notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : $filter('translate')('You have') + ' ' + $rootScope.txAlertCount + ' ' + $filter('translate')('pending transaction proposals'), txAlertCount);
-        }
+      $rootScope.iden = iden;
+
+      // TODO
+      // $rootScope.$watch('txAlertCount', function(txAlertCount) {
+      //   if (txAlertCount && txAlertCount > 0) {
+      //
+      //     notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : $filter('translate')('You have') + ' ' + $rootScope.txAlertCount + ' ' + $filter('translate')('pending transaction proposals'), txAlertCount);
+      //   }
+      // });
+    };
+
+
+    root.rebindWallets = function($scope, iden) {
+      _.each(iden.listWallets(), function(wallet) {
+        preconditions.checkState(wallet);
+        root.installWalletHandlers($scope, wallet);
       });
     };
 
-    root.startNetwork = function(w, $scope) {
-      root.setupRootVariables();
-      root.installWalletHandlers(w, $scope);
-      root.updateAddressList();
-      notification.enableHtml5Mode(); // for chrome: if support, enable it
-      w.netStart();
+    root.setFocusedWallet = function(w) {
+      if (!_.isObject(w))
+        w = $rootScope.iden.getWalletById(w);
+      preconditions.checkState(w && _.isObject(w));
 
+      $rootScope.wallet = w;
+      w.updateTimestamp(new Date().getTime(), function() {
+        root.redirIfLogged();
+        root.updateBalance(w, function() {
+          $rootScope.$digest();
+        })
+      });
     };
 
-    // TODO movie this to wallet
-    root.updateAddressList = function() {
-      var w = $rootScope.wallet;
-      if (w && w.isReady()) {
-        w.subscribeToAddresses();
-        $rootScope.addrInfos = w.getAddressesInfo();
+    root.bindProfile = function($scope, iden, w) {
+      root.setupGlobalVariables(iden);
+      root.rebindWallets($scope, iden);
+      if (w) {
+        root.setFocusedWallet(w);
+      } else {
+        $location.path('/manage');
       }
     };
 
-    root.updateBalance = function(cb) {
-      var w = $rootScope.wallet;
-      if (!w) return root.onErrorDigest();
-      if (!w.isReady()) return;
+    // On the focused wallet
+    root.updateAddressList = function(wid) {
 
-      $rootScope.balanceByAddr = {};
-      $rootScope.updatingBalance = true;
+      if (!wid || root.isFocusedWallet(wid)) {
+        var w = $rootScope.wallet;
+
+        if (w && w.isReady()) {
+          $rootScope.addrInfos = w.getAddressesInfo();
+        }
+      }
+    };
+
+    var _balanceCache = {};
+    root.clearBalanceCache = function(w) {
+      delete _balanceCache[w.getId()];
+    };
+
+
+    root._computeBalance = function(w, cb) {
+      cb = cb || function() {};
+      var satToUnit = 1 / w.settings.unitToSatoshi;
+      var COIN = bitcore.util.COIN;
 
       w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
-        if (err) throw err;
+        if (err) return cb(err);
 
-        var satToUnit = 1 / w.settings.unitToSatoshi;
-        var COIN = bitcore.util.COIN;
+        var r = {};
+        r.totalBalance = balanceSat * satToUnit;
+        r.totalBalanceBTC = (balanceSat / COIN);
+        r.availableBalance = safeBalanceSat * satToUnit;
+        r.availableBalanceBTC = (safeBalanceSat / COIN);
 
-        $rootScope.totalBalance = balanceSat * satToUnit;
-        $rootScope.totalBalanceBTC = (balanceSat / COIN);
-        $rootScope.availableBalance = safeBalanceSat * satToUnit;
-        $rootScope.availableBalanceBTC = (safeBalanceSat / COIN);
-
-        $rootScope.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
-        $rootScope.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
+        r.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
+        r.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
 
         var balanceByAddr = {};
         for (var ii in balanceByAddrSat) {
           balanceByAddr[ii] = balanceByAddrSat[ii] * satToUnit;
         }
-        $rootScope.balanceByAddr = balanceByAddr;
+        r.balanceByAddr = balanceByAddr;
         root.updateAddressList();
-        $rootScope.updatingBalance = false;
+        r.updatingBalance = false;
 
         rateService.whenAvailable(function() {
-          $rootScope.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
-          $rootScope.alternativeIsoCode = w.settings.alternativeIsoCode;
-          $rootScope.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
-          $rootScope.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
-          return cb ? cb() : null;
+          r.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
+          r.alternativeIsoCode = w.settings.alternativeIsoCode;
+          r.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
+          r.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
+          return cb(null, r)
+        });
+      });
+    };
+
+    root._updateScope = function(w, data, $scope, cb) {
+      $scope.totalBalance = data.totalBalance;
+      $scope.totalBalanceBTC = data.totalBalanceBTC;
+      $scope.availableBalance = data.availableBalance;
+      $scope.availableBalanceBTC = data.availableBalanceBTC;
+
+      $scope.lockedBalance = data.lockedBalance;
+      $scope.lockedBalanceBTC = data.lockedBalanceBTC;
+
+      $scope.balanceByAddr = data.balanceByAddr;
+
+      $scope.totalBalanceAlternative = data.totalBalanceAlternative;
+      $scope.alternativeIsoCode = data.alternativeIsoCode;
+      $scope.lockedBalanceAlternative = data.lockedBalanceAlternative;
+      $scope.alternativeConversionRate = data.alternativeConversionRate;
+
+      if (cb) return cb();
+    };
+
+    root.updateBalance = function(w, cb) {
+      w = w || $rootScope.wallet;
+      if (!w) return root.onErrorDigest();
+      if (!w.isReady()) return;
+      console.log('## Updating balance of:' + w.id)
+
+      w.balanceInfo = {};
+      var scope = root.isFocusedWallet(w.id) ? $rootScope : w.balanceInfo;
+
+      root.updateAddressList();
+
+      var wid = w.getId();
+
+      if (_balanceCache[wid]) {
+        root._updateScope(w, _balanceCache[wid], scope, function() {
+          if (root.isFocusedWallet(w.id)) {
+            setTimeout(function() {
+              $rootScope.$digest();
+            }, 1);
+          }
+        });
+      } else {
+        scope.updatingBalance = true;
+      }
+
+      root._computeBalance(w, function(err, res) {
+        if (err) throw err;
+        _balanceCache[wid] = res;
+        root._updateScope(w, _balanceCache[wid], scope, function() {
+          scope.updatingBalance = false;
+          if (cb) cb();
         });
       });
     };
 
     root.updateTxs = function(opts) {
-      var w = $rootScope.wallet;
+      var w = opts.wallet || $rootScope.wallet;
       if (!w) return;
       opts = opts || $rootScope.txsOpts || {};
 
@@ -267,6 +386,16 @@ angular.module('copayApp.services')
         $rootScope.txAlertCount = pendingForUs;
       }
       $rootScope.pendingTxCount = pendingForUs;
+    };
+
+    root.deleteWallet = function($scope, w) {
+      w = w || $rootScope.wallet;
+      $rootScope.iden.deleteWallet(w.id, function() {
+        notification.info('Wallet deleted', $filter('translate')('Wallet deleted'));
+        $rootScope.wallet = null;
+        var lastFocused = $rootScope.iden.getLastFocusedWallet();
+        root.bindProfile($scope, $rootScope.iden, lastFocused);
+      });
     };
 
     function getActionList(actions) {

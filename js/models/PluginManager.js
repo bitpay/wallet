@@ -13,7 +13,12 @@ function PluginManager(config) {
       continue;
 
     log.info('Loading plugin: ' + pluginName);
-    var pluginClass = require('../plugins/' + pluginName);
+    var pluginClass;
+    if(config.pluginsPath){
+      pluginClass = require(config.pluginsPath + pluginName);
+    } else {
+      pluginClass = require('../plugins/' + pluginName);
+    }
     var pluginObj = new pluginClass(config[pluginName]);
     pluginObj.init();
     this._register(pluginObj, pluginName);
@@ -24,15 +29,15 @@ var KIND_UNIQUE = PluginManager.KIND_UNIQUE = 1;
 var KIND_MULTIPLE = PluginManager.KIND_MULTIPLE = 2;
 
 PluginManager.TYPE = {};
-PluginManager.TYPE['STORAGE'] = KIND_UNIQUE;
+PluginManager.TYPE['DB'] = KIND_UNIQUE;
 
 PluginManager.prototype._register = function(obj, name) {
   preconditions.checkArgument(obj.type, 'Plugin has not type:' + name);
   var type = obj.type;
   var kind = PluginManager.TYPE[type];
 
-  preconditions.checkArgument(kind, 'Plugin has unknown type' + name);
-  preconditions.checkState(kind !== PluginManager.KIND_UNIQUE || !this.registered[type], 'Plugin kind already registered: ' + name);
+  preconditions.checkArgument(kind, 'Unknown plugin type:' + name);
+  preconditions.checkState(kind !== PluginManager.KIND_UNIQUE || !this.registered[type], 'Plugin kind already registered:' + name);
 
   if (kind === PluginManager.KIND_UNIQUE) {
     this.registered[type] = obj;

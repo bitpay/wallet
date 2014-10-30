@@ -1,39 +1,40 @@
 <div class="settings" ng-controller="SettingsController">
-  <div class="row">
-    <div class="large-4 columns logo-setup">
+  <div class="large-4 large-centered medium-6 medium-centered columns">
+    <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
-    <div class="large-8 columns line-dashed-setup-v">
-      <div class="box-setup">
-        <h1 class="text-white line-sidebar-b">{{title|translate}}</h1>
-        <form name="settingsForm">
-          <fieldset>
-            <legend translate>Language</legend>
-            <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
-            </select>
-          </fieldset>
-          <fieldset>
-            <legend translate>Insight API server</legend>
-            <label for="insightLivenet">Livenet</label>
-            <small translate class="has-error" ng-show="settingsForm.insightLivenet.$invalid">not valid</small>
-            <input type="text" ng-model="insightLivenet" class="form-control" name="insightLivenet" valid-url required>
-            
-            <label for="insightTestnet">Testnet</label>
-            <small translate class="has-error" ng-show="settingsForm.insightTestnet.$invalid">not valid</small>
-            <input type="text" ng-model="insightTestnet" class="form-control" name="insightTestnet" valid-url required>
+    <div class="box-setup">
+      <h1>{{title|translate}}</h1>
+      <form name="settingsForm">
+        <fieldset>
+          <legend translate>Language</legend>
+          <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
+          </select>
+        </fieldset>
+        <fieldset>
+          <legend translate>Insight API server</legend>
+          <label for="insightLivenet">Livenet</label>
+          <small translate class="has-error" ng-show="settingsForm.insightLivenet.$invalid">not valid</small>
+          <input type="text" ng-model="insightLivenet" class="form-control" name="insightLivenet" valid-url required>
 
-            <p translate class="small">
-              Insight API server is open-source software. You can run your own instances, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
-            </p>
-          </fieldset>
-          <div class="text-right m20t">
-            <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
-            <button translate type="submit" class="button primary m0 ng-binding" ng-disabled="settingsForm.$invalid || loading" ng-click="save()">
-              Save
-            </button>
+          <label for="insightTestnet">Testnet</label>
+          <small translate class="has-error" ng-show="settingsForm.insightTestnet.$invalid">not valid</small>
+          <input type="text" ng-model="insightTestnet" class="form-control" name="insightTestnet" valid-url required>
+
+          <div translate class="small">
+          Insight API server is open-source software. You can run your own instances, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
           </div>
-        </form>
+        </fieldset>
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="settingsForm.$invalid || loading" ng-click="save()">
+          Save
+        </button>
+      </form>
+      <div class="box-setup-footer">
+        <a class="text-gray" href="#!/">
+          <i class="fi-arrow-left"></i> 
+          <span translate>Back</span>
+        </a>
       </div>
     </div>
   </div>

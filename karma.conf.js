@@ -31,7 +31,7 @@ module.exports = function(config) {
       'lib/angular-load/angular-load.min.js',
       'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/inherits/inherits.js',
-      'lib/underscore/underscore.js',
+      'lib/lodash/dist/lodash.js',
       'lib/file-saver/FileSaver.js',
       'lib/socket.io-client/socket.io.js',
       'lib/sjcl.js',
@@ -46,25 +46,22 @@ module.exports = function(config) {
       'js/log.js',
       'js/routes.js',
       'js/services/*.js',
+      'js/util/*.js',
       'js/directives.js',
       'js/filters.js',
       'js/controllers/*.js',
       'js/translations.js',
       'js/init.js',
 
-      'test/mocks/FakeWallet.js',
       'test/mocks/FakeBlockchainSocket.js',
       'test/mocks/FakePayProServer.js',
-      'test/mocks/FakeLocalStorage.js',
 
       'test/mocha.conf.js',
 
       //test files
       'setup/karma.js',
-      'test/*.js',
-
       'test/unit/**/*.js',
-
+      'test/*.js',
     ],
 
 

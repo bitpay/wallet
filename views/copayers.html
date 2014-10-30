@@ -1,66 +1,29 @@
 <div class="waiting-copayers" ng-controller="CopayersController">
   <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
-  <div class="row" ng-if='$root.wallet && !$root.wallet.isReady() && !loading'>
-    <div class="large-4 columns logo-setup">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
-      <div ng-include="'views/includes/version.html'"></div>
-    </div>
-    <div class="large-8 columns line-dashed-setup-v">
-      <div class="box-setup oh">
-        <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
-          <img src="img/step-3.png" alt="Step 3" width="157" class="right m15t" ng-if="$root.fromSetup && !isMobile">
-          <h1 translate class="text-primary line-sidebar-b">Waiting copayers</h1>
-          <h3 translate>Share this secret with your other copayers</h3>
-          <div class="panel">
+
+  <div class="row collapse">
+    <div class="large-12 columns">
+        <div ng-if="!$root.wallet.isReady()">
+          <h2>
+            <span translate>Waiting copayers for</span>
+            {{$root.wallet.getName()}} 
+            <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
+          </h2>
+          <div class="panel oh">
             <qrcode size="350" data="{{$root.wallet.getSecret()}}"></qrcode>
-            <div class="secret text-gray size-14">
+            <div class="secret">
+              <h3 translate>Share this secret with your other copayers</h3>
               {{$root.wallet.getSecret()}} 
               <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
             </div>
-            <div style="clear:both;"></div>
           </div>
         </div>
-        <h1 class="text-white line-sidebar-b" ng-if="$root.wallet &&
-          $root.wallet.publicKeyRing.isComplete()" translate>New Wallet Created</h1>
-        <div class="row" ng-show="$root.wallet.publicKeyRing.isComplete()">
-          <div class="large-4 small-6 columns text-left">
-            <h3 translate>Download Backup</h3>
-          </div>
-          <div class="large-8 small-6 columns text-right">
-            <h3 class="ellipsis">
-              <small class="text-gray">
-                <b>{{$root.wallet.getName()}}</b> : 
-                {{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}
-              </small>
-            </h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="large-10 small-9 columns text-left">
-            <h4 translate class="ellipsis" ng-show="!$root.wallet.publicKeyRing.isComplete()">
-              Waiting Copayers for {{$root.wallet.getName()}}
-            </h4>
-          </div>
-          <div class="large-2 small-3 columns text-right">
-            <h4 ng-show="$root.wallet && !$root.wallet.publicKeyRing.isComplete()">
-              <small class="text-gray">
-                {{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}
-              </small>
-            </h4>
-          </div>
-        </div>
-
         <div class="box-setup-copayers p20">
-          <p class="text-primary m10b" 
-            ng-show="$root.wallet && $root.wallet.publicKeyRing.isComplete()" translate>
-            Creating and storing a backup will allow you to recover wallet funds
-          </p>
           <div class="oh">
             <div ng-include="'views/includes/copayer.html'"></div> 
-            <div ng-if="!$root.wallet.publicKeyRing.isComplete()">
+            <div ng-if="!$root.wallet.isReady()">
               <img
               class="waiting br100"
-              ng-if="!hasVideo(copayer)"
               src="./img/satoshi.gif"
               alt="Waiting Copayer"
               width="70">
@@ -70,70 +33,7 @@
               </p>
             </div>
           </div>
-          <div ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
-          <div class="line-sidebar-b" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()"></div>
-          <div class="text-gray m10t" ng-if="$root.wallet && $root.wallet.publicKeyRing.isComplete()">
-            <i class="text-white fi-loop icon-rotate spinner"></i> 
-            <span translate>Waiting for other copayers to make a Backup</span>
-          </div>
-          </div>
         </div>
-        <div>
-          <button class="button primary right m0"
-            ng-click="backup()"
-            ng-show="!$root.wallet.publicKeyRing.isBackupReady() && !hideViewBackup"
-            ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-            <span translate ng-show="$root.wallet.publicKeyRing.isComplete() && !isSafari">
-              Backup wallet
-            </span>
-            <span translate ng-show="$root.wallet.publicKeyRing.isComplete() && isSafari">
-              View backup
-            </span>
-            <span ng-show="!$root.wallet.publicKeyRing.isComplete()" >
-              <span ng-show="$root.wallet.publicKeyRing.remainingCopayers() > 1">
-                {{ $root.wallet.publicKeyRing.remainingCopayers() }} <span
-                  translate>people have</span>
-              </span>
-              <span translate ng-show="$root.wallet.publicKeyRing.remainingCopayers() == 1">
-                One person has
-              </span>
-              <span translate>yet to join.</span>
-            </span>
-          </button>
-          <a class="text-primary m15t m20r right"  ng-click="skipBackup()"      
-            ng-show="!$root.wallet.publicKeyRing.isBackupReady() && !hideViewBackup"
-            ng-disabled="!$root.wallet.publicKeyRing.isComplete()">
-             <span class="size-12" translate ng-show="$root.wallet.publicKeyRing.isComplete()" >
-              Skip Backup
-            </span>
-          </a>
-          <button class="button primary"
-            disabled="disabled"
-            ng-show="$root.wallet.publicKeyRing.isBackupReady()">
-            <span ng-show="$root.wallet.publicKeyRing.remainingBackups() > 1">
-              {{ $root.wallet.publicKeyRing.remainingBackups() }} <span
-                translate>people have</span>
-            </span>
-            <span translate ng-show="$root.wallet.publicKeyRing.remainingBackups() == 1">
-              One person has
-            </span>
-            <span translate>yet to backup the wallet.</span>
-          </button>
-          <div ng-show="backupPlainText">
-            <div class="show-for-large-up">
-              <textarea readonly rows="5">{{backupPlainText}}</textarea>
-              <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
-            </div>
-            <div class="hide-for-large-up m10b">
-              <textarea rows="10">{{backupPlainText}}</textarea>
-            </div>
-            <div translate class="m10v size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
-          </div>
-          <button class="button primary right m0" 
-            ng-show="hideViewBackup"
-            ng-click="skipBackup()" translate>Continue</button>
-        </div>
-      </div>
     </div>
   </div> <!-- end of row -->
 </div>

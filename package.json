@@ -23,10 +23,11 @@
   "dependencies": {
     "browser-request": "^0.3.2",
     "inherits": "^2.0.1",
+    "lodash": "^2.4.1",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
-    "request": "^2.40.0",
-    "underscore": "^1.7.0"
+    "querystring": "^0.2.0",
+    "request": "^2.40.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -80,6 +81,7 @@
     "mocha": "^1.18.2",
     "mocha-lcov-reporter": "^0.0.1",
     "mock-fs": "^2.3.1",
+    "sjcl": "*",
     "node-cryptojs-aes": "^0.4.0",
     "request": "^2.40.0",
     "shelljs": "^0.3.0",

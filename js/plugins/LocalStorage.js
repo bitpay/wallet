@@ -1,15 +1,29 @@
 'use strict';
 
 function LocalStorage() {
-  this.type = 'STORAGE';
+  this.type = 'DB';
 };
 
 LocalStorage.prototype.init = function() {
 };
 
+LocalStorage.prototype.setCredentials = function(email, password, opts) {
+  this.email = email;
+  this.password = password;
+};
 
 LocalStorage.prototype.getItem = function(k,cb) {
-  return cb(localStorage.getItem(k));
+  return cb(null, localStorage.getItem(k));
+};
+
+/**
+ * Same as setItem, but fails if an item already exists
+ */
+LocalStorage.prototype.createItem = function(name, value, callback) {
+  if (localStorage.getItem(name)) {
+    return callback('EEXISTS');
+  }
+  return this.setItem(name, value, callback);
 };
 
 LocalStorage.prototype.setItem = function(k,v,cb) {
@@ -34,8 +48,7 @@ LocalStorage.prototype.allKeys = function(cb) {
   for(var i=0; i<l; i++)
     ret.push(localStorage.key(i));
 
-  return cb(ret);    
+  return cb(null, ret);    
 };
-
 
 module.exports = LocalStorage;

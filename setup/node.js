@@ -13,4 +13,4 @@ global.requireMock = function(name) {
 }
 
 global.is_browser = typeof process == 'undefined' || typeof process.versions === 'undefined';
-global._ = require('underscore');
+global._ = require('lodash');
