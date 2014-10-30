@@ -7,8 +7,8 @@
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
 
       <h1 class="hide-for-large-up">{{$root.title}}</h1>
-      <div class="row">
-        <div class="large-12 columns">
+      <div class="large-12 columns panel">
+        <div class="row collapse">
           <label><span translate>Wallet name</span>
             <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName">
           </label>
@@ -33,15 +33,17 @@
           </div>
           <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
 
-          <div class="m10b">
-            <a class="expand small" ng-click="hideAdv=!hideAdv">
+          <div class="line-dashed-h"></div>
+
+          <div class="m20t m20b">
+            <a class="small" ng-click="hideAdv=!hideAdv">
               <i class="fi-widget m3r"></i>
               <span translate ng-hide="!hideAdv">Show</span> 
               <span translate ng-hide="hideAdv">Hide</span> 
               <span translate>advanced options</span>
             </a>
           </div>
-          <div ng-hide="hideAdv">
+          <div ng-hide="hideAdv" class="row">
             <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
             <label for="network-name" translate>Use test network</label>
 
@@ -51,11 +53,11 @@
 
 
             <div class="text-right">
-              <a class="back-button m20r" href="#!/manage">
-                <i class="fi-arrow-left"></i> 
+              <a class="back-button m20r text-primary" href="#!/manage">
+                <i class="icon-arrow-left2 vm"></i> 
                 <span translate>Back</span>
               </a>
-              <button translate  type="submit" class="button secondary m0" ng-disabled="setupForm.$invalid || loading">
+              <button translate  type="submit" class="button primary m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
             </div>
