@@ -60,10 +60,8 @@ module.exports = function(config) {
 
       //test files
       'setup/karma.js',
-      'test/*.js',
-
       'test/unit/**/*.js',
-
+      'test/*.js',
     ],
 
 
