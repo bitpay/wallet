@@ -6,6 +6,7 @@ module.exports.PrivateKey = require('./js/models/PrivateKey');
 module.exports.HDPath = require('./js/models/HDPath');
 module.exports.HDParams = require('./js/models/HDParams');
 module.exports.crypto = require('./js/util/crypto');
+module.exports.logger = require('./js/log');
 
 
 // components
