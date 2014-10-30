@@ -1,4 +1,4 @@
-<div class="transactions" data-ng-controller="TransactionsController" data-ng-init="update()">
+<div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
   <div ng-show='$root.wallet.isReady()'>
     <h2 ng-show="wallet.isShared()"> 
       <span translate>Transaction Proposals</span> <small>({{txs.length}})</small></h2>

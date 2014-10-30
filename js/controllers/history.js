@@ -1,14 +1,13 @@
 'use strict';
 var bitcore = require('bitcore');
 
-angular.module('copayApp.controllers').controller('TransactionsController',
+angular.module('copayApp.controllers').controller('HistoryController',
   function($scope, $rootScope, $timeout, controllerUtils, notification, rateService) {
     controllerUtils.redirIfNotComplete();
 
 
     var w = $rootScope.wallet;
 
-    $rootScope.title = 'History';
     $scope.loading = false;
     $scope.lastShowed = false;
 

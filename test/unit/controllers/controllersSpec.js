@@ -132,25 +132,25 @@ describe("Unit: Controllers", function() {
 
   });
 
-  describe('Address Controller', function() {
-    var addressCtrl;
+  describe('Receive Controller', function() {
+    var c;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      addressCtrl = $controller('AddressesController', {
+      c = $controller('ReceiveController', {
         $scope: scope,
       });
     }));
 
-    it('should have a AddressesController controller', function() {
+    it('should have a ReceiveController controller', function() {
       expect(scope.loading).equal(false);
     });
   });
 
-  describe('Transactions Controller', function() {
+  describe('History Controller', function() {
     var transactionsCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      transactionsCtrl = $controller('TransactionsController', {
+      transactionsCtrl = $controller('HistoryController', {
         $scope: scope,
       });
     }));
