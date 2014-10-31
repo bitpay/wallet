@@ -1,62 +1,74 @@
 <div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
   <div ng-show='$root.wallet.isReady()'>
-    <h2 ng-show="wallet.isShared()"> 
-      <span translate>Transaction Proposals</span> <small>({{txs.length}})</small></h2>
-    <div class="large-12" ng-show="wallet.isShared()">
+    <div ng-if="loading" class="m10b">
+      <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
+      <span translate>Loading...</span>
+    </div>
+    <div ng-if="!blockchain_txs[0].txid && !loading">
+      <em><strong translate>No transactions yet.</strong></em>
+    </div>
+    <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
+      <div class="row collapse">
+        <div class="large-2 medium-2 small-4 columns">
+          <span ng-hide="btx.ts">&nbsp;</span>
+          <time ng-if="btx.ts">{{btx.ts | amCalendar}}</time>
+          <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
+            <span translate>Unconfirmed</span>
+          </span>
+        </div>
 
-      <div class="last-transactions" ng-repeat="tx in txs | paged">
-        <div class="row collapse">
-          <div ng-include="'views/includes/transaction.html'"></div>
+        <div class="large-3 medium-3 small-5 columns">
+          {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}
+          {{btx.action}} 
+        </div>
+
+        <div class="large-2 medium-2 columns hide-for-small-only">
+          <span ng-hide="btx.labelTo">&nbsp;</span>
+          <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
+        </div>
+
+        <div class="large-3 medium-3 small-4 columns hide-for-small-only">
+          <span ng-show="btx.comment">{{btx.comment}}</span>
+        </div>
+
+        <div class="large-1 medium-1 small-4 columns size-10 text-right"
+          ng-init="btx.showDetails = false">
+          <a ng-click="btx.showDetails = !btx.showDetails">
+            <i ng-if="!btx.showDetails" class="icon-arrow-down2"></i>
+            <i ng-if="btx.showDetails" class="icon-arrow-up2"></i>
+          </a>
         </div>
       </div>
-      <p ng-show="txs.length == 0"><span translate>No transactions proposals yet.</span>
-      </p>
-      <pagination ng-show="txs.length > txpItemsPerPage" total-items="txs.length" items-per-page="txpItemsPerPage" page="txpCurrentPage" on-select-page="show()" class="pagination-small primary"></pagination>
-    </div>
-
-    <h2 ng-class="{'line-dashed': wallet.isShared()}">
-      <span translate>Last transactions</span> 
-      <small ng-hide="wallet.isShared() || !loading">
-        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-      </small>   
-    </h2>
-      <div class="btransactions">
-        <div ng-if="!blockchain_txs[0].txid && !loading">
-        <em><strong translate>No transactions yet.</strong></em></div>
-        <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
-          <div class="row collapse size-12">
-              <div class="large-2 medium-2 small-4 columns">
-                <span ng-hide="btx.ts">&nbsp;</span>
-                <time>{{btx.ts | amCalendar}}</time>
-              </div>
-
-              <div class="large-3 medium-3 small-5 columns">
-                {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}
-                {{btx.action}} 
-              </div>
-
-              <div class="large-2 medium-2 columns hide-for-small-only">
-                <span ng-hide="btx.labelTo">&nbsp;</span>
-                <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
-              </div>
-
-              <div class="large-3 medium-3 small-4 columns hide-for-small-only">
-                <span ng-show="btx.comment">{{btx.comment}}</span>
-              </div>
-
-              <div class="large-1 medium-1 small-3 columns">
-                <span class="label alert" ng-show="!btx.confirmations || btx.confirmations == 0"><span translate>Unconfirmed</span></span>
-                <span class="label" ng-show="btx.confirmations > 0 && btx.confirmations <= 6">{{btx.confirmations || 0}} <span translate>Confirmations</span></span>
-                <span class="label success" ng-show="btx.confirmations > 6"><span translate>Confirmed</span></span>
-              </div>
-
-              <div class="large-1 medium-1 small-4 columns size-10 text-right hide-for-small-only">
-                <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" translate>
-                  Show more
-                </a> 
-              </div>
-          </div>
-              
+      <div ng-show="btx.showDetails">
+        <table class="last-transactions-content" ng-if="btx.actionList.0">
+          <tbody>
+          <tr ng-repeat="c in btx.actionList">
+            <td class="copayer-name" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+            </td>
+            <td>
+              <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
+              <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
+            </td>
+            <td>
+              <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
+              <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
+            </td>
+            <td>
+              <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
+              <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
+              <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
+            </td>
+          </tr> 
+          </tbody>
+        </table>
+        <div class="line-sidebar-t m10t">
+          <small class="ellipsis">Transaction ID: 
+            <a
+              href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}"
+              target="_blank">
+              {{btx.txid}}
+            </a>
+          </small>
         </div>
       </div>
     </div>

@@ -2841,6 +2841,9 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     tx.amount = tx.amountSat * satToUnit;
     tx.sentTs = proposal ? proposal.sentTs : undefined;
     tx.minedTs = !_.isNaN(tx.time) ? tx.time * 1000 : undefined;
+    tx.merchant = proposal ? proposal.merchant : undefined;
+    tx.peerActions = proposal ? proposal.peerActions : undefined;
+    tx.finallyRejected = proposal ? proposal.finallyRejected : undefined;
   };
 
   if (addresses.length > 0) {
