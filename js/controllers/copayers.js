@@ -6,7 +6,8 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
     $scope.goToWallet = function() {
       controllerUtils.updateAddressList();
-      $location.path('/receive');
+      $location.path('/homeWallet');
+
     };
 
     $scope.copayersList = function() {
