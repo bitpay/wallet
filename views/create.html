@@ -27,8 +27,10 @@
             </div>
           </div>
           <div class="box-setup-copayers">
-            <div class="box-setup-copayers p10">
-              <img class="br100 oh box-setup-copay m10" ng-repeat="i in getNumber(totalCopayers) track by $index" src="./img/satoshi.gif" title="Copayer {{$index+1}}-{{totalCopayers}}" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}" width="50px">
+            <div class="box-setup-copayers p10 oh">
+              <div class="copay-box" ng-class="{'box-setup-copay-required': ($index+1) <= requiredCopayers}" ng-repeat="i in getNumber(totalCopayers) track by $index">
+                <span ng-include="'views/includes/photo.html'"></span>
+              </div>
             </div>
           </div>
           <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
