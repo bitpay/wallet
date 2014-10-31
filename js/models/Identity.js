@@ -390,13 +390,6 @@ Identity.prototype.bindWallet = function(w) {
   w.on('txProposalEvent', function() {
     Identity.storeWalletDebounced(self, w);
   });
-  w.on('ready', function() {
-    self.store({
-      noWallets: true
-    }, function() {
-      Identity.storeWalletDebounced(self, w);
-    });
-  });
   w.on('addressBookUpdated', function() {
     Identity.storeWalletDebounced(self, w);
   });
