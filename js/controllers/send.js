@@ -79,7 +79,7 @@ angular.module('copayApp.controllers').controller('SendController',
       setTimeout(function() {
         $scope.loading = false;
         $rootScope.$digest();
-      }, 0);
+      }, 1);
     }
 
     $scope.showAddressBook = function() {

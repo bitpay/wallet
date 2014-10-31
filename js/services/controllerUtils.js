@@ -399,6 +399,10 @@ angular.module('copayApp.services')
       });
     };
 
+    root.getActionList = function(actions) {
+      return getActionList(actions);
+    };
+
     function getActionList(actions) {
       var peers = Object.keys(actions).map(function(i) {
         return {

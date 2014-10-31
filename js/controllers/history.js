@@ -61,6 +61,9 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
         _.each(res, function (r) {
           r.ts = r.minedTs || r.sentTs;
+          if (r.action === 'sent') {
+            r.actionList = controllerUtils.getActionList(r.peerActions);
+          }
         });
         $scope.blockchain_txs = w.cached_txs = res;
         $scope.loading = false;
