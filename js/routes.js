@@ -34,6 +34,10 @@ angular
         templateUrl: 'views/copayers.html',
         logged: true
       })
+      .when('/homeWallet', {
+        templateUrl: 'views/homeWallet.html',
+        logged: true
+      })
       .when('/receive', {
         templateUrl: 'views/receive.html',
         logged: true
