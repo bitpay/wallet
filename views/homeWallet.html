@@ -40,10 +40,24 @@
   <br>
 
   <!-- List of copayers -->
-    <div>
-      <span translate>Copayers</span>
-          <div ng-include="'views/includes/copayer.html'"></div> 
-     </div> 
+  <div>
+      <div class="copay-box" ng-repeat="copayer in copayersList()">
+        <img
+          class="br100 online"
+          src="./img/satoshi.gif"
+          alt="{{copayer.peerId}}"
+          width="70">
+        <div
+          class="ellipsis"
+          tooltip="ID: {{copayer.peerId}}"
+          tooltip-placement="bottom">
+          <small class="text-gray" ng-show="copayer.index == 0">
+            <i class="fi-check m5r"></i>{{'Me'|translate}}</small>
+          <small class="text-gray" ng-show="copayer.index > 0"><i class="fi-check m5r"></i>{{copayer.nick}}</small>
+        </div>
+        <div translate class="success label m10t" ng-show="isBackupReady(copayer)">Ready</div>
+      </div>
+  </div> 
 <!--   <br>
   <br>
   <br>  <!-- Last transactions
