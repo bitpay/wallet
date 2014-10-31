@@ -195,7 +195,7 @@ Identity.prototype.storeWallet = function(wallet, cb) {
 
   this.storage.setItem(key, val, function(err) {
     if (err) {
-      log.debug('Wallet:' + wallet.getName() + ' couldnt be stored');
+      log.debug('Wallet:' + wallet.getName() + ' couldnt be stored:', err);
     }
     if (cb)
       return cb(err);
