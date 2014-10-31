@@ -382,8 +382,8 @@ a:hover {
 table.last-transactions-content {
   padding: 0;
   border: 0;
-  background-color: #fff;
-  margin: 0;
+  background-color: #F8F8FB;
+  margin: 15px 0;
 }
 
 .last-transactions-content .box-status {
@@ -560,22 +560,17 @@ a.button-setup {
 }
 
 .line {
-  border-top: 1px solid #f2f2f2;
-  margin: 0.5rem 0 1rem;
-}
-
-.line-sidebar {
-  border-top: 1px solid #34495E;
+  border-top: 1px solid #F8F8FB;
   margin: 0.7rem 0;
 }
 
-.line-sidebar-t {
-  border-top: 1px solid #3C5269;
+.line-t {
+  border-top: 1px solid #F8F8FB;
   padding-top: 0.5rem;
 }
 
-.line-sidebar-b {
-  border-bottom: 1px solid #3C5269;
+.line-b {
+  border-bottom: 1px solid #F8F8FB;
   padding-bottom: 0.5rem;
 }
 
