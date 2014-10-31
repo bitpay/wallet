@@ -68,12 +68,6 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       var w = $rootScope.iden.getWalletById(wid);
       $scope.wallets.push(w);
       controllerUtils.updateTxsAndBalance(w);
-      // controllerUtils.updateBalance(w, function(err, res) {
-      //   if (err) return;
-      //   setTimeout(function() {
-      //     $scope.$digest();
-      //   }, 1);
-      // });
     });
   };
 });
