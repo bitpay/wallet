@@ -50,6 +50,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   if ($rootScope.wallet) {
     $rootScope.$watch('wallet.id', function() {
       $scope.walletSelection = false;
+      $scope.getWallets();
     });
   }
 
@@ -61,6 +62,10 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     $scope.walletSelection = !$scope.walletSelection;
     if (!$scope.walletSelection) return;
 
+    $scope.getWallets();
+  };
+
+  $scope.getWallets = function() {
     $scope.wallets = [];
     var wids = _.pluck($rootScope.iden.listWallets(), 'id');
     _.each(wids, function(wid) {
