@@ -1,0 +1,56 @@
+<div class="addresses" ng-controller="HomeWalletController">
+  <div ng-show='$root.wallet.isReady()'>
+      <h1 translate  class="hide-for-large-up">Home</h1> 
+      <br>
+      <br>
+
+   <!-- Wallet name and balance -->
+      <div>
+        <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
+        <div class="ellipsis">{{$root.wallet.getName()}}</div>
+        <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
+              <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+              <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+        </div>
+
+      </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- Address-->
+  <span translate>Quick receive</span>
+  <div>
+    <qrcode size="220" data="bitcoin:{{address.addressStr}}"></qrcode>
+
+    <div class="m10t">
+      <h4 class="size-12">{{address.addressStr}} <span class="btn-copy" clip-copy="address.addressStr"></span></h4>
+      <span ng-if="$root.updatingBalance">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+      </span>
+      <div class="small-10 columns small-centered">
+        <button class="m15t button secondary hide-for-large-up" ng-show="isMobile" ng-click="mobileCopy(address.addressStr)">
+          <i class="fi-link">&nbsp;</i> <span translate>Copy to clipboard</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+
+  <!-- List of copayers -->
+    <div>
+      <span translate>Copayers</span>
+          <div ng-include="'views/includes/copayer.html'"></div> 
+     </div> 
+<!--   <br>
+  <br>
+  <br>  <!-- Last transactions
+    <div>
+      <span translate>Last transactions</span>
+     </div>  -->
+
+
+</div>
+
