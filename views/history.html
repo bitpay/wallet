@@ -8,8 +8,8 @@
       <em><strong translate>No transactions yet.</strong></em>
     </div>
     <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true" ng-click="btx.showDetails = !btx.showDetails">
-      <div class="row collapse size-12">
-        <div class="large-3 medium-3 small-4 columns">
+      <div class="row collapse size-14">
+        <div class="large-2 medium-2 small-4 columns">
           <span ng-hide="btx.ts">&nbsp;</span>
           <time ng-if="btx.ts">{{btx.ts | amCalendar}}</time>
           <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
@@ -17,21 +17,28 @@
           </span>
         </div>
 
-        <div class="large-2 medium-2 small-5 columns">
-          {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}
-          {{btx.action}} 
-          <i ng-if="btx.action == 'received' " class="icon-arrow-down4"></i>
-          <i ng-if="btx.action == 'sent' " class="fi-torso"></i>
-          <i ng-if="btx.action == 'moved' " class="icon-arrow-down4"></i>
+        <div class="large-2 medium-2 small-5 columns text-right">
+          <div ng-if="btx.action == 'received' " class="text-primary">
+            <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+            <i class="m15h fi-arrow-left" tooltip="{{'received'|translate}}" tooltip-placement="bottom"></i>
+          </div>
+          <div ng-if="btx.action == 'sent' " class="text-warning">
+            <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+            <i class="m15h fi-arrow-right" tooltip="{{'Sent'|translate}}" tooltip-placement="bottom"></i>
+          </div>
+          <div ng-if="btx.action == 'moved' " class="text-gray">
+            <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+            <i class="m15h fi-loop" tooltip="{{'Moved'|translate}}" tooltip-placement="bottom"></i>
+          </div>
         </div>
 
-        <div class="large-2 medium-2 columns hide-for-small-only">
+        <div class="large-3 medium-3 columns hide-for-small-only text-gray">
           <span ng-hide="btx.labelTo">&nbsp;</span>
-          <span ng-show="btx.labelTo">{{ (btx.action == 'received' ? 'on' : 'to') | translate }} {{btx.labelTo}}</span>
+          <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
         </div>
 
-        <div class="large-3 medium-3 small-4 columns hide-for-small-only">
-          <span ng-show="btx.comment">{{btx.comment}}</span>
+        <div class="large-3 medium-3 small-4 columns hide-for-small-only text-gray">
+          <span ng-show="btx.comment"><i class="fi-comment-quotes"></i> {{btx.comment}} </span>
         </div>
 
         <div class="large-1 medium-1 small-1 columns text-right"
