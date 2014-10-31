@@ -143,7 +143,7 @@ angular.module('copayApp.controllers').controller('SendController',
             if (merchantData.pr.ca) {
               message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
             }
-            message += ' Message from server: ' + merchantData.ack.memo;
+            message += ' Message from server: ' + merchantData.pr.pd.memo;
             message += ' For merchant: ' + merchantData.pr.pd.payment_url;
           }
           notification.success('Success', message);
@@ -156,7 +156,7 @@ angular.module('copayApp.controllers').controller('SendController',
                 if (merchantData.pr.ca) {
                   message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
                 }
-                message += ' Message from server: ' + merchantData.ack.memo;
+                message += ' Message from server: ' + merchantData.pr.pd.memo;
                 message += ' For merchant: ' + merchantData.pr.pd.payment_url;
               }
               notification.success('Transaction broadcasted', message);
@@ -464,6 +464,7 @@ angular.module('copayApp.controllers').controller('SendController',
       // whether we're in the Send scope or not.
       if (!scope.sendForm || !scope.sendForm.address) {
         delete $rootScope.merchant;
+        $rootScope.merchantError = false;
         if (callback) callback();
         return;
       }
@@ -547,9 +548,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
         var balance = $rootScope.availableBalance;
         var available = +(balance * w.settings.unitToSatoshi).toFixed(0);
-
         if (merchantData && available < +merchantData.total) {
-          err = new Error('No unspent outputs available.');
+          err = new Error('Insufficient funds.');
           err.amount = merchantData.total;
         }
 
