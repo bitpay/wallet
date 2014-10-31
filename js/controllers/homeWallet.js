@@ -10,7 +10,6 @@ angular.module('copayApp.controllers').controller('HomeWalletController',
     if ($rootScope.addrInfos) {
 
       $scope.address = $rootScope.addrInfos[0];
-      console.log('$scope.address', $scope.address);
     }
 
   }
