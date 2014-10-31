@@ -1,0 +1,62 @@
+
+<div class="home" ng-controller="ImportProfileController">
+
+  <div class="large-4 large-centered medium-6 medium-centered columns">
+    <div class="logo-setup">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+      <div ng-include="'views/includes/version.html'"></div>
+    </div>
+    <div class="box-setup">
+      <h1><span translate>Import Profile<span></h1>
+
+        <form name="importProfileForm" ng-submit="import(importProfileForm)" novalidate>
+            <div ng-show="!is_iOS">
+              <legend for="backupFile" class="m10b"> 
+                <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i>
+              </legend>
+              <input type="file" class="form-control" 
+                placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
+            </div>
+
+            <div ng-show="is_iOS">
+            <label for="backupText" class="m10b"> 
+              <span translate>Paste backup plain text code</span> <i class="fi-clipboard"></i>
+            </label>
+            <textarea class="form-control" 
+              name="backupText" 
+              ng-model="backupText" 
+              rows="5"></textarea>
+            </div>
+
+
+            <label for="password" class="m10b"><span translate>Password</span> <small translate>Required</small></label>
+            <input type="password" class="form-control" 
+            placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
+
+          <div class="text-right m20t">
+            <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
+            <button translate type="submit" class="button primary m0" ng-disabled="importForm.$invalid">
+              Import backup
+            </button>
+          </div>
+        </form>
+      <div class="box-setup-footer">
+        <div class="right m10t">
+          <a class="text-gray" href="#!/">
+            <i class="fi-arrow"></i> 
+            <span translate>Back</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

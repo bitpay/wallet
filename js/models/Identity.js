@@ -287,6 +287,16 @@ Identity.prototype.close = function(cb) {
  * @return {Wallet}
  */
 Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
+  console.log('importEncryptedWallet------');
+
+  console.log('opts');
+  console.log(opts);
+
+  console.log('password');
+  console.log(password);
+
+  console.log('cypherText');
+  console.log(cypherText);
 
   var crypto = opts.cryptoUtil || cryptoUtil;
   // TODO set iter and salt using config.js
@@ -345,7 +355,7 @@ Identity.prototype.closeWallet = function(wallet, cb) {
 Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
   var key = crypto.kdf(password);
-  return Identity.importFromFullJson(crypto.decript(key, str));
+  return Identity.importFromFullJson(crypto.decrypt(key, str), password, opts, cb);
 };
 
 Identity.importFromFullJson = function(str, password, opts, cb) {
@@ -357,15 +367,21 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
     return cb('Unable to retrieve json from string', str);
   }
 
-  if (!_.isNumber(json.iterations))
-    return cb('BADSTR: Missing iterations');
+  // if (!_.isNumber(json.iterations))
+  //   return cb('BADSTR: Missing iterations');
 
   var email = json.email;
-  var iden = new Identity(email, password, opts);
+
+  opts.email = email;
+  opts.password = password;
+
+  var iden = new Identity(opts);
 
   json.wallets = json.wallets || {};
+
   async.map(json.wallets, function(walletData, callback) {
-    iden.importEncryptedWallet(wstr, password, opts, function(err, w) {
+
+    iden.importWalletFromObj(walletData, opts, function(err, w) {
       if (err) return callback(err);
       log.debug('Wallet ' + w.getId() + ' imported');
       callback();

@@ -34,6 +34,9 @@ angular
         templateUrl: 'views/import.html',
         logged: true
       })
+      .when('/importProfile', {
+        templateUrl: 'views/importProfile.html',
+      })
       .when('/create', {
         templateUrl: 'views/create.html',
         logged: true
