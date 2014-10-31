@@ -202,12 +202,12 @@ Network.prototype._onMessage = function(enc) {
     this._deletePeer(sender);
     return;
   }
-  log.debug('Async: receiving ' + JSON.stringify(payload));
 
   if (this.ignoreMessageFromTs && this.ignoreMessageFromTs === enc.ts) {
-    log.debug('Ignoring message from ', enc.ts);
+    log.debug('Ignoring trailing message. Ts:', enc.ts);
     return;
   }
+  log.debug('Async: receiving ' + JSON.stringify(payload));
 
   var self = this;
   switch (payload.type) {
@@ -352,7 +352,7 @@ Network.prototype.start = function(opts, openCallback) {
 };
 
 Network.prototype.createSocket = function() {
-  log.debug('Async: Connecting to socket:', this.url, this.socketOptions);
+  log.debug('Async: Connecting to socket:', this.url);
   return io.connect(this.url, this.socketOptions);
 };
 

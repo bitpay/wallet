@@ -124,7 +124,7 @@ Insight.prototype.subscribeToBlocks = function() {
 
 /** @private */
 Insight.prototype._getSocketIO = function(url, opts) {
-  log.debug('Insight: Connecting to socket:', this.url, this.opts);
+  log.debug('Insight: Connecting to socket:', this.url);
   return io(this.url, this.opts);
 };
 
@@ -200,7 +200,6 @@ Insight.prototype.subscribe = function(addresses) {
   var self = this;
 
   function handlerFor(self, address) {
-console.log('HANDLER [Insight.js.150:address:]',address); //TODO
     return function(txid) {
       // verify the address is still subscribed
       if (!self.subscribed[address]) return;
