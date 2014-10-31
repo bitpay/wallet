@@ -16,6 +16,20 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     controllerUtils.logout();
   };
 
+  $scope.refresh = function() {
+    var w = $rootScope.wallet;
+    if (!w) return;
+
+    if (w.isReady()) {
+      w.sendWalletReady();
+      if ($rootScope.addrInfos.length > 0) {
+        controllerUtils.clearBalanceCache(w);
+        controllerUtils.updateBalance(w, function() {
+          $rootScope.$digest();
+        });
+      }
+    }
+  };
 
   // Ensures a graceful disconnect
   window.onbeforeunload = function() {
