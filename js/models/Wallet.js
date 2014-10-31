@@ -116,7 +116,8 @@ function Wallet(opts) {
 inherits(Wallet, events.EventEmitter);
 
 Wallet.prototype.emitAndKeepAlive = function(args) {
-  log.debug('Wallet Emitting:', arguments);
+  var args = Array.prototype.slice.call(arguments);
+  log.debug('Wallet Emitting:', args);
   this.keepAlive();
   this.emit.apply(this, arguments);
 };
@@ -810,7 +811,7 @@ Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
   self.blockchain.removeAllListeners();
 
-  log.debug('Setting Blockchain listeners for', this.getId());
+  log.debug('Setting Blockchain listeners for', this.getName());
   self.blockchain.on('reconnect', function(attempts) {
     log.debug('Wallet:' + self.id + 'blockchain reconnect event');
     self.emitAndKeepAlive('insightReconnected');
@@ -888,12 +889,8 @@ Wallet.prototype.netStart = function() {
 
   log.debug('Wallet:' + self.id + ' Starting networking: ' + startOpts.copayerId);
   net.start(startOpts, function() {
-    log.debug('Wallet:' + self.id + ' Networking ready:', net.copayerId);
     self._setBlockchainListeners();
     self.emitAndKeepAlive('ready', net.getPeer());
-    setTimeout(function() {
-      self._newAddresses(true);
-    }, 0);
   });
 };
 
