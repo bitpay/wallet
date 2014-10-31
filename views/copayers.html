@@ -21,12 +21,8 @@
         <div class="panel p20">
           <div class="oh">
             <div ng-include="'views/includes/copayer.html'"></div> 
-            <div ng-if="!$root.wallet.isReady()">
-              <img
-              class="waiting br100"
-              src="./img/satoshi.gif"
-              alt="Waiting Copayer"
-              width="70">
+            <div class="copay-box" ng-if="!$root.wallet.isReady()">
+              <span ng-include="'views/includes/photo.html'"></span>
               <p class="size-12 text-white text-light m0">
               <i class="fi-loop icon-rotate spinner"></i>
               <span translate>Waiting...</span>

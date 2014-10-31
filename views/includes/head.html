@@ -7,7 +7,7 @@
 <div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
   ng-click="hoverMenu = !hoverMenu">
   <a class="dropdown ellipsis text-gray" ng-class="{'hover': hoverMenu}">
-    <span class="photo-container"><i class="fi-torso size-42"></i></span>
+    <span ng-include="'views/includes/photo.html'"></span>
     <span class="m15t">{{username}} </span>
     <i class="icon-arrow-down size-16 vm"></i> 
   </a>

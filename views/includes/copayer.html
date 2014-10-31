@@ -1,11 +1,6 @@
 <div ng-controller="CopayersController">
   <div class="copay-box" ng-repeat="copayer in copayersList()">
-    <img
-      class="br100 online"
-      src="./img/satoshi.gif"
-      alt="{{copayer.peerId}}"
-      width="70">
-
+    <span ng-include="'views/includes/photo.html'"></span>
     <div
       class="ellipsis"
       tooltip="ID: {{copayer.peerId}}"
