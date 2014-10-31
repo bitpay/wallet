@@ -37,6 +37,9 @@ InsightStorage.prototype.getItem = function(name, callback) {
       if (err) {
         return callback('Connection error');
       }
+      if (response.statusCode === 403) {
+        return callback('PNOTFOUND: Profile not found');
+      }
       if (response.statusCode !== 200) {
         return callback('Connection error');
       }
@@ -60,6 +63,9 @@ InsightStorage.prototype.setItem = function(name, value, callback) {
   }, function(err, response, body) {
     if (err) {
       return callback('Connection error');
+    }
+    if (response.statusCode === 409) {
+      return callback('Invalid username or password');
     }
     if (response.statusCode !== 200) {
       return callback('Unable to store data on insight');
