@@ -868,7 +868,7 @@ Wallet.prototype.netStart = function() {
 
 
   if (net.started) {
-    log.debug('Wallet:' + self.id + ' Wallet networking was ready')
+    log.debug('Wallet:' + self.getName() + ': Wallet networking was ready')
     self.emitAndKeepAlive('ready', net.getPeer());
     return;
   }
