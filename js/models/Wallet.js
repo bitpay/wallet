@@ -94,7 +94,6 @@ function Wallet(opts) {
   this.publicKey = this.privateKey.publicHex;
   this.focusedTimestamp = opts.focusedTimestamp || 0;
   this.syncedTimestamp = opts.syncedTimestamp || 0;
-console.log('[Wallet.js.96:syncedTimestamp:]',this.syncedTimestamp); //TODO
   this.lastMessageFrom = {};
 
   this.paymentRequests = opts.paymentRequests || {};
