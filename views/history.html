@@ -20,6 +20,9 @@
         <div class="large-2 medium-2 small-5 columns">
           {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}
           {{btx.action}} 
+          <i ng-if="btx.action == 'received' " class="icon-arrow-down4"></i>
+          <i ng-if="btx.action == 'sent' " class="fi-torso"></i>
+          <i ng-if="btx.action == 'moved' " class="icon-arrow-down4"></i>
         </div>
 
         <div class="large-2 medium-2 columns hide-for-small-only">
