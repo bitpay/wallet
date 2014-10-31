@@ -1,9 +1,9 @@
-<div ng-controller="SidebarController">
+<div ng-controller="SidebarController" ng-init="getWallets()">
   <header ng-show="$root.wallet">
     <div class="col1">
       <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
     </div>
-    <div class="col2">
+    <div class="col2" ng-class="{'col2_full':!wallets.0}">
       <div class="oh m5t m10r"> 
         <div class="right size-10">[ {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]</div>
         <div class="name-wallet">
@@ -16,21 +16,10 @@
         <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
           <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
           <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
-        </div>
-        <div class="m10t locked" ng-show="lockedBalance">
-
-          <span class="text-gray">
-            <i class="fi-lock"></i> {{'Locked'|translate}} &nbsp;
-          </span>
-          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <span ng-if="$root.wallet && !$root.updatingBalance" class="text-gray"><b>{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}} </b> - {{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}
-          </span>
-          <i class="fi-info medium right text-gray size-14" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
-          
-        </div>
+        </div> 
       </div>
     </div>
-    <div class="col3">
+    <div class="col3" ng-if="wallets.0">
       <a ng-class="{'selected':walletSelection}" 
         ng-click="toggleWalletSelection()"> 
         <span ng-show="!walletSelection">
@@ -42,14 +31,18 @@
       </a>
     </div>
   </header>
+  <div class="locked" ng-show="lockedBalance">
+    <span class="text-gray">
+      <i class="fi-lock"></i> {{'Locked'|translate}} &nbsp;
+    </span>
+    <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+    <span ng-if="$root.wallet && !$root.updatingBalance" class="text-gray"><b>{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}} </b> - {{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}
+    </span>
+    <i class="fi-info medium right text-gray size-14" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
+
+  </div>
 
   <div ng-if="walletSelection">
-    <div class="side-nav wallets" ng-show="!wallets.0">
-      <p class="size-12" translate>You do not have another wallets. Creates one more from link below.</p>
-      <div class="text-center">
-        <i class="fi-arrow-down"></i>
-      </div>
-    </div>
     <ul class="side-nav wallets" ng-show="wallets.0"
       ng-class="{'large':wallets.length > 4, 'medium':wallets.length > 2 && wallets.length < 5}">
       <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
