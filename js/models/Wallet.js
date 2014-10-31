@@ -580,13 +580,13 @@ Wallet.prototype.updateFocusedTimestamp = function(ts) {
   this.focusedTimestamp = ts;
 };
 
+
 Wallet.prototype.updateSyncedTimestamp = function(ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
   preconditions.checkArgument(ts > 2999999999999, 'use microseconds');
   this.syncedTimestamp = ts;
 };
-
 
 
 /**
@@ -617,6 +617,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(_.isNumber(ts));
   log.debug('Wallet:' + this.id + ' RECV', senderId, data);
 
+
   this.updateSyncedTimestamp(ts);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
@@ -631,7 +632,6 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
-
       if (this.lastMessageFrom[senderId] !== 'walletReady') {
         log.debug('Wallet:' + this.id + ' peer Sync received. since: ' + (data.sinceTs || 0));
         this.sendPublicKeyRing(senderId);
