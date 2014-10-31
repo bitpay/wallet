@@ -38,15 +38,9 @@ angular.module('copayApp.services')
           delete $rootScope['wallet'];
           delete $rootScope['iden'];
 
-          // Clear rootScope
-          for (var i in $rootScope) {
-            if (i.charAt(0) != '$') {
-              delete $rootScope[i];
-            }
-          }
-
-          $location.path('/');
-
+          // Go home reloading the application
+          var hashIndex = window.location.href.indexOf('#!/');
+          window.location = window.location.href.substr(0, hashIndex);
         });
       }
     };
