@@ -204,6 +204,11 @@ Network.prototype._onMessage = function(enc) {
   }
   log.debug('Async: receiving ' + JSON.stringify(payload));
 
+  if (this.ignoreMessageFromTs && this.ignoreMessageFromTs === enc.ts) {
+    log.debug('Ignoring message from ', enc.ts);
+    return;
+  }
+
   var self = this;
   switch (payload.type) {
     case 'hello':
@@ -247,7 +252,15 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
   });
 
   self.socket.on('subscribed', function(m) {
-    var fromTs = (opts.lastTimestamp || 0) + 1;
+    var fromTs = opts.syncedTimestamp || 0;
+
+    // We ask for this message, and then ignore it, only to see if the
+    // server has erased our old messages.
+    
+    if (fromTs) {
+      self.ignoreMessageFromTs = fromTs;
+    }
+    log.info('Async: synchronizing from: ',fromTs);
     self.socket.emit('sync', fromTs);
     self.started = true;
   });

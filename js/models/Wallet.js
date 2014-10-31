@@ -92,7 +92,9 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
-  this.lastTimestamp = opts.lastTimestamp || 0;
+  this.focusedTimestamp = opts.focusedTimestamp || 0;
+  this.syncedTimestamp = opts.syncedTimestamp || 0;
+console.log('[Wallet.js.96:syncedTimestamp:]',this.syncedTimestamp); //TODO
   this.lastMessageFrom = {};
 
   this.paymentRequests = opts.paymentRequests || {};
@@ -147,7 +149,8 @@ Wallet.PERSISTED_PROPERTIES = [
   'txProposals',
   'privateKey',
   'addressBook',
-  'lastTimestamp',
+  'focusedTimestamp',
+  'syncedTimestamp',
   'secretNumber',
 ];
 
@@ -571,24 +574,31 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
  * @desc Updates the wallet's last modified timestamp and triggers a save
  * @param {number} ts - the timestamp
  */
-Wallet.prototype.updateTimestamp = function(ts, callback) {
+Wallet.prototype.updateFocusedTimestamp = function(ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
-  this.lastTimestamp = ts;
-  // we dont store here
-  if (callback) {
-    return callback(null);
-  }
+  preconditions.checkArgument(ts > 2999999999, 'use miliseconds');
+  this.focusedTimestamp = ts;
 };
+
+Wallet.prototype.updateSyncedTimestamp = function(ts) {
+  preconditions.checkArgument(ts);
+  preconditions.checkArgument(_.isNumber(ts));
+  preconditions.checkArgument(ts > 2999999999999, 'use microseconds');
+  this.syncedTimestamp = ts;
+};
+
+
 
 /**
  * @desc Called when there are no messages in the server
  * Triggers a call to {@link Wallet#sendWalletReady}
  */
 Wallet.prototype._onNoMessages = function() {
-  log.debug('Wallet:' + this.id + ' No messages at the server. Requesting peer sync from: ' + (this.lastTimestamp + 1));
-  this.sendWalletReady(null, parseInt((this.lastTimestamp + 1) / 1000));
-  this.updateTimestamp(parseInt(Date.now() / 1000));
+  if (!this.isShared()) return;
+
+  log.debug('Wallet:' + this.id + ' No messages at the server. Requesting peer sync from: ' + (this.syncedTimestamp + 1));
+  this.sendWalletReady(null, parseInt((this.syncedTimestamp + 1) / 1000000));
 };
 
 /**
@@ -608,7 +618,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(_.isNumber(ts));
   log.debug('Wallet:' + this.id + ' RECV', senderId, data);
 
-  this.updateTimestamp(ts);
+  this.updateSyncedTimestamp(ts);
 
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     log.debug('Wallet:' + this.id + ' Received corrupt message:', data)
@@ -872,7 +882,7 @@ Wallet.prototype.netStart = function() {
     copayerId: myId,
     privkey: myIdPriv,
     maxPeers: self.totalCopayers,
-    lastTimestamp: this.lastTimestamp || 0,
+    syncedTimestamp: this.syncedTimestamp || 0,
     secretNumber: self.secretNumber,
   };
 
@@ -967,7 +977,8 @@ Wallet.prototype.toObj = function() {
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
-    lastTimestamp: this.lastTimestamp || 0,
+    syncedTimestamp: this.syncedTimestamp || 0,
+    focusedTimestamp: this.focusedTimestamp || 0,
     secretNumber: this.secretNumber,
   };
 
@@ -993,7 +1004,7 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
  * @param {Object} o.privateKey - Private key to be deserialized by {@link PrivateKey#fromObj}
  * @param {string} o.networkName - 'livenet' or 'testnet'
  * @param {Object} o.publicKeyRing - PublicKeyRing to be deserialized by {@link PublicKeyRing#fromObj}
- * @param {number} o.lastTimestamp - last time this wallet object was deserialized
+ * @param {number} o.Timestamp - last time this wallet object was deserialized
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
  *
@@ -1065,13 +1076,15 @@ Wallet.fromObj = function(o, readOpts) {
     });
   }
 
-  opts.lastTimestamp = o.lastTimestamp || 0;
+  opts.syncedTimestamp = o.syncedTimestamp || 0;
+  opts.focusedTimestamp = o.focusedTimestamp || 0;
 
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
 
   return new Wallet(opts);
 };
+
 
 /**
  * @desc Send a message to other peers
