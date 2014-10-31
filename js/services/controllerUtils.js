@@ -24,7 +24,7 @@ angular.module('copayApp.services')
         if (!w.isReady()) {
           $location.path('/copayers');
         } else {
-          $location.path('receive');
+          $location.path('homeWallet');
         }
       }
     };

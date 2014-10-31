@@ -3,6 +3,10 @@
 angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, controllerUtils) {
 
   $scope.menu = [{
+    'title': 'Home',
+    'icon': 'fi-home',
+    'link': 'homeWallet'
+  }, {
     'title': 'Receive',
     'icon': 'fi-download',
     'link': 'receive'
