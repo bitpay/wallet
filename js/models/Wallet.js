@@ -1434,7 +1434,7 @@ Wallet.prototype.createPaymentTx = function(options, cb) {
       return self.receivePaymentRequest(options, pr, cb);
     })
     .error(function(data, status, headers, config) {
-      log.debug('Server was did not return PaymentRequest.');
+      log.debug('Server did not return PaymentRequest.');
       log.debug('XHR status: ' + status);
       if (options.fetch) {
         return cb(new Error('Status: ' + status));
@@ -1592,6 +1592,8 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       self.sendIndexes();
       self.sendTxProposal(ntxid);
       self.emit('txProposalsUpdated');
+    } else {
+      return cb(new Error('Error creating the transaction'));
     }
 
     log.debug('You are currently on this BTC network:', network);
@@ -1867,9 +1869,15 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   merchantData.total = merchantData.total.toString(10);
 
-  var b = new Builder(opts)
-    .setUnspent(unspent)
-    .setOutputs(outs);
+  var b;
+  try {
+    b = new Builder(opts)
+      .setUnspent(unspent)
+      .setOutputs(outs);
+  } catch (e) {
+    log.debug(e.message);
+    return;
+  };
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -2304,7 +2312,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
 
     var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
     if (!ntxid) {
-      return cb(new Error('Error creating the Transaction'));
+      return cb(new Error('Error creating the transaction'));
     }
 
     self.sendIndexes();
