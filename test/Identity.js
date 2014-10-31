@@ -121,14 +121,15 @@ describe('Identity model', function() {
   });
 
   describe('Identity.create()', function() {
-    it('should create', function() {
+    it('should create and store identity', function() {
       var args = createIdentity();
       args.blockchain.on = sinon.stub();
-      var old = Identity.prototype.createWallet;
+      sinon.stub(Identity.prototype, 'store').yields(null);
       Identity.create(args.params, function(err, iden) {
         should.not.exist(err);
         should.exist(iden);
         should.exist(iden.wallets);
+        Identity.prototype.store.calledOnce.should.be.true;
       });
     });
   });
