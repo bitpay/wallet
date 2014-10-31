@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
         _.each(res, function (r) {
           r.ts = r.minedTs || r.sentTs;
-          if (r.action === 'sent') {
+          if (r.action === 'sent' && r.peerActions) {
             r.actionList = controllerUtils.getActionList(r.peerActions);
           }
         });
