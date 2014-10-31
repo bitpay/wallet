@@ -303,6 +303,9 @@ footer {
 .ubuntumedium
 {font-family: ubuntumedium;}
 
+.ubuntubold
+{font-family: ubuntubold;}
+
 /* Font Families ENDS */
 
 .center-img img
@@ -317,6 +320,63 @@ header {
   background-color: #00BD9C;
   padding-top: 4.5em;
   }
+
+ .download-btn  {
+
+    }
+
+#drop2 li a {
+    padding-left: 35px !important;  
+    }
+
+ a.browser-ext,  a.web-ver, a.android-ver   {
+   padding-left: 35px !important;
+   background-repeat: no-repeat;
+   background-position: 4px center;
+
+    }
+
+ a.browser-ext  {
+   background-image: url('../img/browser-icon-off.svg');
+
+    }
+
+ a:hover.browser-ext  {
+   background-image: url('../img/browser-icon-on.svg');
+   background-repeat: no-repeat;
+   background-position: 4px center;
+   color: #109F83;
+    }
+
+ a.web-ver  {
+   background-image: url('../img/web-icon-off.svg');
+    }
+
+ a:hover.web-ver  {
+   background-image: url('../img/web-icon-on.svg');
+   background-repeat: no-repeat;
+   background-position: 4px center;
+   color: #109F83;
+    }
+
+ a.android-ver {
+   background-image: url('../img/and-icon-off.svg');
+    }
+
+ a:hover.android-ver {
+   background-image: url('../img/and-icon-on.svg');
+   color: #109F83;
+    }    
+
+
+ 
+
+
+   
+
+
+
+    
 
 .slogan-small{
   padding: 0em 0 1.5em 0;
