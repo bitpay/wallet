@@ -2853,7 +2853,6 @@ Wallet.prototype.getTransactionHistory = function(cb) {
 
       var history = _.map(txs, function(tx) {
         decorateTx(tx);
-        console.log(tx);
         return tx;
       });
       return cb(null, history);
