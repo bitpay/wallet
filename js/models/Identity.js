@@ -158,7 +158,7 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback
       return callback(error);
     }
     try {
-      log.debug('## OPENING Wallet: ' + walletId);
+      log.debug('## OPENING Wallet:', self.getName(), walletId);
       if (_.isString(walletData)) {
         walletData = JSON.parse(walletData);
       }
@@ -376,7 +376,7 @@ Identity.prototype.bindWallet = function(w) {
   var self = this;
 
   self.wallets[w.getId()] = w;
-  log.debug('Binding wallet ' + w.getName());
+  log.debug('Binding wallet:' + w.getName());
 
   w.on('txProposalsUpdated', function() {
     Identity.storeWalletDebounced(self, w);
