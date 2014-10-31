@@ -1003,7 +1003,8 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
  * @param {Object} o.privateKey - Private key to be deserialized by {@link PrivateKey#fromObj}
  * @param {string} o.networkName - 'livenet' or 'testnet'
  * @param {Object} o.publicKeyRing - PublicKeyRing to be deserialized by {@link PublicKeyRing#fromObj}
- * @param {number} o.Timestamp - last time this wallet object was deserialized
+ * @param {number} o.syncedTimestamp - ts of the last synced message with insifht (in microseconds, as insight returns ts)
+ * @param {number} o.focusedTimestamp - last time this wallet was focused (open) by a user (in miliseconds)
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
  *
