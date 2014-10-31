@@ -12,7 +12,7 @@
           <h2 class="ellipsis m10t">{{$root.wallet.getName()}}</h2>
         </div>
         <div class="large-2 columns text-right text-black" ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-          <b class="db m5b size-24">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+          <b class="db m5b size-21">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
           <span class="size-14 m5t text-gray">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
         </div>
       </div>
