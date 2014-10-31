@@ -162,6 +162,7 @@ Compatibility.readWalletPre8 = function(walletId, password, cb) {
   var self = this;
   var passphrase = cryptoUtils.kdf(password);
   var obj = {};
+  var key;
 
   for (key in localStorage) {
     if (key.indexOf('wallet::' + walletId) !== -1) {
