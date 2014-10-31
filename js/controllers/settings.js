@@ -74,9 +74,11 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     var insightSettings = {
       livenet: {
         url: $scope.insightLivenet,
+        transports: ['polling'],
       },
       testnet: {
         url: $scope.insightTestnet,
+        transports: ['polling'],
       },
     }
 
