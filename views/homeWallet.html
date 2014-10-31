@@ -3,66 +3,65 @@
     <h1 translate  class="hide-for-large-up">Home</h1> 
 
  <!-- Wallet name and balance -->
-    <div class="panel large-12 columns">
+    <div class="panel">
       <div class="row collapse">
-        <div class="large-1 columns">
+        <div class="large-1 small-2 columns">
           <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
         </div>
-        <div class="large-9 columns">
+        <div class="large-9 small-5 columns">
           <h2 class="ellipsis m10t">{{$root.wallet.getName()}}</h2>
         </div>
-        <div class="large-2 columns text-right text-black" ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
+        <div class="large-2 small-5 columns text-right text-black" ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
           <b class="db m5b size-21">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
           <span class="size-14 m5t text-gray">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Address-->
-    <div class="large-6 columns">
-      <div class="panel oh">
-        <h2 class="line-b" translate>Quick receive</h2>
-        <div>
-          <qrcode size="220" data="bitcoin:{{address.addressStr}}"></qrcode>
+    <div class="row">
+      <!-- Address-->
+      <div class="large-6 columns">
+        <div class="panel oh">
+          <h2 class="line-b" translate>Quick receive</h2>
+          <div class="text-center">
+            <qrcode size="220" data="bitcoin:{{address.addressStr}}"></qrcode>
 
-          <div class="m10t">
-            <h4 class="size-12">{{address.addressStr}} <span class="btn-copy" clip-copy="address.addressStr"></span></h4>
-            <span ng-if="$root.updatingBalance">
-              <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-            </span>
-            <div class="small-10 columns small-centered">
-              <button class="m15t button secondary hide-for-large-up" ng-show="isMobile" ng-click="mobileCopy(address.addressStr)">
-                <i class="fi-link">&nbsp;</i> <span translate>Copy to clipboard</span>
-              </button>
+            <div class="m10t">
+              <h4 class="size-12">{{address.addressStr}} <span class="btn-copy" clip-copy="address.addressStr"></span></h4>
+              <span ng-if="$root.updatingBalance">
+                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+              </span>
+              <div class="small-10 columns small-centered">
+                <button class="m15t button secondary hide-for-large-up" ng-show="isMobile" ng-click="mobileCopy(address.addressStr)">
+                  <i class="fi-link">&nbsp;</i> <span translate>Copy to clipboard</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
- 
 
 
-    <!-- List of copayers -->
-    <div class="large-6 columns">
-      <div class="panel oh">
-        <h2 class="line-b" translate>Copayers</h2>
-        <div class="copay-box" ng-repeat="copayer in copayersList()">
-          <img
-            class="br100 online"
-            src="./img/satoshi.gif"
-            alt="{{copayer.peerId}}"
-            width="70">
-          <div
-            class="ellipsis"
-            tooltip="ID: {{copayer.peerId}}"
-            tooltip-placement="bottom">
-            <small class="text-gray" ng-show="copayer.index == 0">
-              <i class="fi-check m5r"></i>{{'Me'|translate}}</small>
-            <small class="text-gray" ng-show="copayer.index > 0"><i class="fi-check m5r"></i>{{copayer.nick}}</small>
+
+      <!-- List of copayers -->
+      <div class="large-6 columns">
+        <div class="panel oh">
+          <h2 class="line-b" translate>Copayers</h2>
+          <div class="copay-box" ng-repeat="copayer in copayersList()">
+            <span ng-include="'views/includes/photo.html'"></span>
+            <div
+              class="ellipsis"
+              tooltip="ID: {{copayer.peerId}}"
+              tooltip-placement="bottom">
+              <small class="text-gray" ng-show="copayer.index == 0">
+                <i class="fi-check m5r"></i>{{'Me'|translate}}</small>
+              <small class="text-gray" ng-show="copayer.index > 0"><i class="fi-check m5r"></i>{{copayer.nick}}</small>
+            </div>
+            <div translate class="success label m10t" ng-show="isBackupReady(copayer)">Ready</div>
           </div>
-          <div translate class="success label m10t" ng-show="isBackupReady(copayer)">Ready</div>
-        </div>
-      </div> 
+        </div> 
+      </div>
     </div>
+  </div>
+</div>
 

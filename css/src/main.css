@@ -349,7 +349,7 @@ a:hover {
 
 .main {
   margin-left: 250px;
-  padding: 100px 2.5rem;
+  padding: 100px 2rem;
   background-color: #F8F8FB;
 }
 
@@ -1133,6 +1133,7 @@ button.gray:focus,
   background: #7A8C9E;
   border-radius: 100%;
   vertical-align: middle;
+  overflow: hidden;
 }
 
 a:hover .photo-container  {
@@ -1309,9 +1310,8 @@ a.text-warning:hover {color: #FD7262;}
   margin-bottom: 15px;
 }
 
-.box-setup-copay-required {
-  border: 3px solid #1ABC9C;
-  opacity: 1;
+.box-setup-copay-required .photo-container {
+  background-color: #1ABC9C;
 }
 
 .loading-screen {
