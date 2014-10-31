@@ -11,7 +11,7 @@ angular.module('copayApp.services')
         copay.Wallet.checkIfExistsAny({
           pluginManager: pluginManager,
         }, function(anyWallet) {
-          scope.retreiving = false;
+          scope.loading = false;
           scope.anyProfile = anyProfile ? true : false;
           scope.anyWallet = anyWallet ? true : false;
 
