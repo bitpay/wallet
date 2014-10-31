@@ -209,7 +209,7 @@ Identity.prototype.storeWallet = function(wallet, cb) {
  * @param {Function} cb
  */
 Identity.storeWalletDebounced = _.debounce(function(identity, wallet, cb) {
-  identity.storeWallet(wallet,cb);
+  identity.storeWallet(wallet, cb);
 }, 3000);
 
 
@@ -252,10 +252,13 @@ Identity.prototype.store = function(opts, cb) {
   storeFunction.call(self.storage, this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
 
+    console.log('[Identity.js.255:opts:]', opts); //TODO
     if (opts.noWallets)
       return cb();
 
-    async.map(self.wallets, self.storeWallet, cb);
+    async.each(_.values(self.wallets), function(wallet, in_cb) {
+      self.storeWallet(wallet, in_cb);
+    }, cb);
   });
 };
 
@@ -312,11 +315,14 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   if (!w) return cb(new Error('Could not decrypt'));
 
   this._checkVersion(w.version);
-  this.addWallet(w, function(err) {
-    if (err) return cb(err, null);
-    self.wallets[w.getId()] = w;
-    self.bindWallet(w);
-    self.store(null, function(err) {
+  this.addWallet(w);
+  self.bindWallet(w);
+  self.storeWallet(w, function() {
+    if (err) return cb(err);
+
+    self.store({
+      noWallets: true
+    }, function(err) {
       return cb(err, w);
     });
   });
@@ -469,23 +475,24 @@ Identity.prototype.createWallet = function(opts, cb) {
   var self = this;
 
   var w = new walletClass(opts);
-  this.addWallet(w, function(err) {
+  this.addWallet(w);
+  self.bindWallet(w);
+  w.netStart();
+  self.storeWallet(w, function() {
     if (err) return cb(err);
-    self.bindWallet(w);
-    w.netStart();
-    return cb(err, w);
+
+    self.store({
+      noWallets: true
+    }, function(err) {
+      return cb(err, w);
+    });
   });
 };
 
-Identity.prototype.addWallet = function(wallet, cb) {
+Identity.prototype.addWallet = function(wallet) {
   preconditions.checkArgument(wallet);
   preconditions.checkArgument(wallet.getId);
-  preconditions.checkArgument(cb);
-
   this.wallets[wallet.getId()] = wallet;
-
-  // TODO (eordano): Consider not saving automatically after this
-  this.storage.setItem(wallet.getStorageKey(), wallet.toObj(), cb);
 };
 
 /**
@@ -655,14 +662,7 @@ Identity.prototype.joinWallet = function(opts, cb) {
               err = 'walletFull';
             }
           }
-          if (err)
-            return cb(err);
-
-          self.store({
-            noWallets: true
-          }, function(err) {
-            return cb(err, w);
-          });
+          return cb(err, w);
         });
       }
     });
