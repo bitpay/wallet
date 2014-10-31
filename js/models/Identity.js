@@ -158,7 +158,7 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback
       return callback(error);
     }
     try {
-      log.debug('## OPENING Wallet:', self.getName(), walletId);
+      log.info('## OPENING Wallet:', walletId);
       if (_.isString(walletData)) {
         walletData = JSON.parse(walletData);
       }
