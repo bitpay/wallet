@@ -566,7 +566,7 @@ Identity.prototype.decodeSecret = function(secret) {
 Identity.prototype.getLastFocusedWallet = function() {
   if (_.keys(this.wallets).length == 0) return;
   return _.max(this.wallets, function(wallet) {
-    return wallet.lastTimestamp || 0;
+    return wallet.focusedTimestamp || 0;
   });
 };
 
