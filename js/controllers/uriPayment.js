@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('UriPaymentController', functi
   $rootScope.pendingPayment = new bitcore.BIP21(bitcoinURI);
 
   $timeout(function() {
-    $location.path('/open');
+    $location.path('/send');
   }, 1000);
 
 
