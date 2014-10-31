@@ -7,9 +7,9 @@
     <div ng-if="!blockchain_txs[0].txid && !loading">
       <em><strong translate>No transactions yet.</strong></em>
     </div>
-    <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true">
-      <div class="row collapse">
-        <div class="large-2 medium-2 small-4 columns">
+    <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true" ng-click="btx.showDetails = !btx.showDetails">
+      <div class="row collapse size-12">
+        <div class="large-3 medium-3 small-4 columns">
           <span ng-hide="btx.ts">&nbsp;</span>
           <time ng-if="btx.ts">{{btx.ts | amCalendar}}</time>
           <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
@@ -17,7 +17,7 @@
           </span>
         </div>
 
-        <div class="large-3 medium-3 small-5 columns">
+        <div class="large-2 medium-2 small-5 columns">
           {{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}
           {{btx.action}} 
         </div>
@@ -31,11 +31,11 @@
           <span ng-show="btx.comment">{{btx.comment}}</span>
         </div>
 
-        <div class="large-1 medium-1 small-4 columns size-10 text-right"
+        <div class="large-1 medium-1 small-1 columns text-right"
           ng-init="btx.showDetails = false">
-          <a ng-click="btx.showDetails = !btx.showDetails">
-            <i ng-if="!btx.showDetails" class="icon-arrow-down2"></i>
-            <i ng-if="btx.showDetails" class="icon-arrow-up2"></i>
+          <a>
+            <i ng-if="!btx.showDetails" class="icon-arrow-down4"></i>
+            <i ng-if="btx.showDetails" class="icon-arrow-up4 size-12"></i>
           </a>
         </div>
       </div>
@@ -43,7 +43,7 @@
         <table class="last-transactions-content" ng-if="btx.actionList.0">
           <tbody>
           <tr ng-repeat="c in btx.actionList">
-            <td class="copayer-name" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+            <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
             </td>
             <td>
               <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
@@ -61,14 +61,10 @@
           </tr> 
           </tbody>
         </table>
-        <div class="line-sidebar-t m10t">
-          <small class="ellipsis">Transaction ID: 
-            <a
-              href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}"
-              target="_blank">
-              {{btx.txid}}
-            </a>
-          </small>
+        <div class="line"></div>
+        <div class="size-12 text-gray">
+            <span class="left hide-for-small-only">Transaction ID: {{btx.txid}} </span>
+            <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" class="right"> More details <i class="icon-arrow-right2 vm"></i> </a>
         </div>
       </div>
     </div>
