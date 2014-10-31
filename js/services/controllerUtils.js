@@ -64,7 +64,7 @@ angular.module('copayApp.services')
 
 
     root.isFocusedWallet = function(wid) {
-      return wid === $rootScope.wallet.getId();
+      return $rootScope.wallet && wid === $rootScope.wallet.getId();
     };
 
 
