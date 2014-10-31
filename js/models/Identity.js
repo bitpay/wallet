@@ -317,7 +317,7 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   this._checkVersion(w.version);
   this.addWallet(w);
   self.bindWallet(w);
-  self.storeWallet(w, function() {
+  self.storeWallet(w, function(err) {
     if (err) return cb(err);
 
     self.store({
@@ -478,7 +478,7 @@ Identity.prototype.createWallet = function(opts, cb) {
   this.addWallet(w);
   self.bindWallet(w);
   w.netStart();
-  self.storeWallet(w, function() {
+  self.storeWallet(w, function(err) {
     if (err) return cb(err);
 
     self.store({
