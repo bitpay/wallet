@@ -82,10 +82,14 @@ Identity.prototype.getName = function() {
  * @param cb
  * @return {undefined}
  */
-Identity.create = function(opts) {
+Identity.create = function(opts, cb) {
   opts = _.extend({}, opts);
 
-  return new Identity(opts);
+  var iden = new Identity(opts);
+  iden.store(opts, function(err) {
+    if (err) return cb(err);
+    return cb(null, iden);
+  });
 };
 
 
@@ -386,7 +390,9 @@ Identity.prototype.bindWallet = function(w) {
   });
   w.on('ready', function() {
     log.debug('<ready> Wallet' + w.getName());
-    self.store({noWallets:true}, function() {
+    self.store({
+      noWallets: true
+    }, function() {
       self.storeWallet(w);
     });
   });

@@ -89,7 +89,6 @@ describe('Identity model', function() {
     w.netStart = sinon.stub();
     w.args = args;
     return w;
-
   }
 
 
@@ -126,11 +125,11 @@ describe('Identity model', function() {
       var args = createIdentity();
       args.blockchain.on = sinon.stub();
       var old = Identity.prototype.createWallet;
-      Identity.prototype.createWallet = sinon.stub().yields(null, getNewWallet());
-      var iden = Identity.create(args.params);
-      should.exist(iden);
-      should.exist(iden.wallets);
-      Identity.prototype.createWallet = old;
+      Identity.create(args.params, function(err, iden) {
+        should.not.exist(err);
+        should.exist(iden);
+        should.exist(iden.wallets);
+      });
     });
   });
 
@@ -169,9 +168,9 @@ describe('Identity model', function() {
       args = createIdentity();
       args.params.noWallets = true;
       var old = Identity.prototype.createWallet;
-      Identity.prototype.createWallet = sinon.stub().yields(null, getNewWallet());
-      iden = Identity.create(args.params);
-      Identity.prototype.createWallet = old;
+      Identity.create(args.params, function(err, res) {
+        iden = res;
+      });
     });
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
@@ -227,12 +226,13 @@ describe('Identity model', function() {
         importWallet: sinon.stub().returns(getNewWallet()),
       };
 
-      var iden = Identity.create(args.params);
-      iden.retrieveWalletFromStorage('dummy', opts, function(err, wallet) {
-        should.not.exist(err);
-        opts.importWallet.calledOnce.should.equal(true);
-        should.exist(wallet);
-        done();
+      Identity.create(args.params, function(err, iden) {
+        iden.retrieveWalletFromStorage('dummy', opts, function(err, wallet) {
+          should.not.exist(err);
+          opts.importWallet.calledOnce.should.equal(true);
+          should.exist(wallet);
+          done();
+        });
       });
     });
   });
@@ -255,13 +255,15 @@ describe('Identity model', function() {
         cryptoUtil: fakeCrypto,
       };
 
-      var iden = Identity.create(args.params);
-      iden.importEncryptedWallet(123, 'password', opts, function(err) {
-        should.not.exist(err);
-        fakeCrypto.kdf.getCall(0).args[0].should.equal('password');
-        fakeCrypto.decrypt.getCall(0).args[0].should.equal('passphrase');
-        fakeCrypto.decrypt.getCall(0).args[1].should.equal(123);
-        done();
+      Identity.create(args.params, function(err, iden) {
+        sinon.stub(iden, 'importWalletFromObj').yields(null);
+        iden.importEncryptedWallet(123, 'password', opts, function(err) {
+          should.not.exist(err);
+          fakeCrypto.kdf.getCall(0).args[0].should.equal('password');
+          fakeCrypto.decrypt.getCall(0).args[0].should.equal('passphrase');
+          fakeCrypto.decrypt.getCall(0).args[1].should.equal(123);
+          done();
+        });
       });
     });
   });
@@ -312,10 +314,9 @@ describe('Identity model', function() {
       net.on = sinon.stub();
       net.start = sinon.spy();
       var old = Identity.prototype.createWallet;
-      Identity.prototype.createWallet = sinon.stub().yields(null, getNewWallet());
-
-      iden = Identity.create(args.params);
-      Identity.prototype.createWallet = old;
+      Identity.create(args.params, function(err, res) {
+        iden = res;
+      });
     });
 
     it('should yield bad network error', function(done) {
@@ -368,7 +369,7 @@ describe('Identity model', function() {
       net.start.onFirstCall().callsArg(1);
       net.greet = sinon.stub();
       iden.createWallet = sinon.stub();
-      iden.createWallet.onFirstCall().yields(null,null);
+      iden.createWallet.onFirstCall().yields(null, null);
       net.on.withArgs('data').yields('senderId', {
         type: 'walletId',
         networkName: 'testnet',
