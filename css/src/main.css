@@ -204,6 +204,11 @@ header .alt-currency {
   float: left;
 }
 
+.col2_full {
+  width: 194px;
+  height: 62px;
+}
+
 .col3 a {
   font-size: 20px;
   display: block;
@@ -608,14 +613,10 @@ a.button-setup {
   color: #B6E9DF;
 }
 
-.founds .locked {
+.locked {
   font-size: 11px;
-  z-index: -99999;
   background-color: #213140;
-  position: absolute;
-  top: 52px;
-  width: 250px;
-  left: 0;
+  width: 100%;
   padding: 0.3rem 0.7rem;
   color: white;
   border-bottom: 1px solid #374756;
@@ -1128,8 +1129,6 @@ a:hover .photo-container  {
   background: #34495E;
   color: #fff;
 }
-
-.side-nav {padding-top: 50px;}
 
 .side-nav li {
   font-size: 16px;
