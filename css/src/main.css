@@ -80,7 +80,7 @@
   font-family: 'Ubuntu', Helvetica, sans-serif !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, .panel h2 {
   color: #2C3E50;
 }
 
@@ -203,6 +203,11 @@ header .alt-currency {
   float: left;
 }
 
+.col2_full {
+  width: 194px;
+  height: 62px;
+}
+
 .col3 a {
   font-size: 20px;
   display: block;
@@ -243,6 +248,17 @@ a {
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+.home-wallet .avatar-wallet {
+  background: #1ABC9C;
+  margin: 0;
+  width: 45px;
+  height: 45px;
+  font-size: 30px;
+  padding-top: 10px;
+  margin-right: 15px;
+  color: #FFF;
 }
 
 .side-nav.wallets .avatar-wallet{
@@ -607,14 +623,10 @@ a.button-setup {
   color: #B6E9DF;
 }
 
-.founds .locked {
+.locked {
   font-size: 11px;
-  z-index: -99999;
   background-color: #213140;
-  position: absolute;
-  top: 52px;
-  width: 250px;
-  left: 0;
+  width: 100%;
   padding: 0.3rem 0.7rem;
   color: white;
   border-bottom: 1px solid #374756;
@@ -1127,8 +1139,6 @@ a:hover .photo-container  {
   background: #34495E;
   color: #fff;
 }
-
-.side-nav {padding-top: 50px;}
 
 .side-nav li {
   font-size: 16px;
