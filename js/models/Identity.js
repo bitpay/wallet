@@ -183,13 +183,6 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback
 };
 
 /**
- * TODO (matiu): What is this supposed to do?
- */
-Identity.isAvailable = function(email, opts, cb) {
-  return cb();
-};
-
-/**
  * @param {Wallet} wallet
  * @param {Function} cb
  */
@@ -198,15 +191,28 @@ Identity.prototype.storeWallet = function(wallet, cb) {
 
   var val = wallet.toObj();
   var key = wallet.getStorageKey();
+  log.debug('Storing wallet:' + wallet.getName());
 
   this.storage.setItem(key, val, function(err) {
     if (err) {
-      log.debug('Wallet:' + wallet.getName() + ' couldnt be stored');
+      log.debug('Wallet:' + wallet.getName() + ' couldnt be stored:', err);
     }
     if (cb)
       return cb(err);
   });
 };
+
+
+/**
+ * @param {Identity} identity
+ * @param {Wallet} wallet
+ * @param {Function} cb
+ */
+Identity.storeWalletDebounced = _.debounce(function(identity, wallet, cb) {
+  identity.storeWallet(wallet,cb);
+}, 3000);
+
+
 
 Identity.prototype.toObj = function() {
   return _.extend({
@@ -373,36 +379,29 @@ Identity.prototype.bindWallet = function(w) {
   log.debug('Binding wallet ' + w.getName());
 
   w.on('txProposalsUpdated', function() {
-    log.debug('<txProposalsUpdated>> Wallet' + w.getName());
-    self.storeWallet(w);
+    Identity.storeWalletDebounced(self, w);
   });
   w.on('newAddresses', function() {
-    log.debug('<newAddresses> Wallet' + w.getName());
-    self.storeWallet(w);
+    Identity.storeWalletDebounced(self, w);
   });
   w.on('settingsUpdated', function() {
-    log.debug('<newAddresses> Wallet' + w.getName());
-    self.storeWallet(w);
+    Identity.storeWalletDebounced(self, w);
   });
   w.on('txProposalEvent', function() {
-    log.debug('<txProposalEvent> Wallet' + w.getName());
-    self.storeWallet(w);
+    Identity.storeWalletDebounced(self, w);
   });
   w.on('ready', function() {
-    log.debug('<ready> Wallet' + w.getName());
     self.store({
       noWallets: true
     }, function() {
-      self.storeWallet(w);
+      Identity.storeWalletDebounced(self, w);
     });
   });
   w.on('addressBookUpdated', function() {
-    log.debug('<addressBookUpdated> Wallet' + w.getName());
-    self.storeWallet(w);
+    Identity.storeWalletDebounced(self, w);
   });
   w.on('publicKeyRingUpdated', function() {
-    log.debug('<publicKeyRingUpdated> Wallet' + w.getName());
-    self.storeWallet(w);
+    Identity.storeWalletDebounced(self, w);
   });
 };
 
@@ -566,7 +565,7 @@ Identity.prototype.decodeSecret = function(secret) {
 Identity.prototype.getLastFocusedWallet = function() {
   if (_.keys(this.wallets).length == 0) return;
   return _.max(this.wallets, function(wallet) {
-    return wallet.lastTimestamp || 0;
+    return wallet.focusedTimestamp || 0;
   });
 };
 

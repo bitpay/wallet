@@ -205,15 +205,15 @@ angular.module('copayApp.services')
     root.setFocusedWallet = function(w) {
       if (!_.isObject(w))
         w = $rootScope.iden.getWalletById(w);
+
       preconditions.checkState(w && _.isObject(w));
 
       $rootScope.wallet = w;
-      w.updateTimestamp(new Date().getTime(), function() {
-        root.redirIfLogged();
-        root.updateBalance(w, function() {
-          $rootScope.$digest();
-        })
-      });
+      w.updateFocusedTimestamp(Date.now());
+      root.redirIfLogged();
+      root.updateBalance(w, function() {
+        $rootScope.$digest();
+      })
     };
 
     root.bindProfile = function($scope, iden, w) {
