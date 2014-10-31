@@ -70,7 +70,8 @@ angular.module('copayApp.services')
 
     root.updateTxsAndBalance = _.debounce(function(w) {
       root.updateTxs({
-        wallet: w
+        wallet: w,
+        pending: true,
       });
       root.updateBalance(w, function() {
         $rootScope.$digest();
