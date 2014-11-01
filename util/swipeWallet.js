@@ -9,6 +9,7 @@ var version = require('../version').version;
 var sinon = require('sinon');
 var bitcore = require('bitcore');
 var readline = require('readline');
+var async = require('async');
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -37,6 +38,9 @@ if (!addr.isValid()) {
 var networkName = addr.network().name;
 console.log('\tNetwork: %s\n\tDestination Address:%s\n\tRequired copayers: %d\n\tTotal copayers: %d\n\tKeys:', networkName, destAddr, requiredCopayers, totalCopayers, extPrivKeys); //TODO
 console.log('\n ----------------------------');
+
+if (requiredCopayers > totalCopayers)
+  throw new Error('No enought private keys given');
 
 
 function createWallet(networkName, extPrivKeys, index) {
@@ -120,27 +124,39 @@ firstWallet.updateIndexes(function() {
     }
 
     rl.question("\n\tShould I swipe the wallet (destination address" + destAddr + ")?\n\t(`yes` to continue)\n\t", function(answer) {
-      if (answer!== 'yes')
+      if (answer !== 'yes')
         process.exit(1);
 
       var amount = balance - DFLT_FEE;
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
-        console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
-
-        if (requiredCopayers ===1) {
+        console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.'); 
+        if (requiredCopayers === 1) {
           firstWallet.sendTx(ntxid, function(txid) {
             console.log('\t #######  SENT  TXID:', txid);
             process.exit(1);
           });
         }
 
-        var l = w.length;
-        _.each(w, function(dummy, i) {
-          console.log('\t Signing with copayer', i + 1);
-          w[i].txProposals = firstWallet.txProposals;
-          w[i].sign(ntxid, function(err) {
-            console.log('\t Signed!');
-            firstWallet.txProposals = firstWallet.txProposals;
+        var signers = w.slice(0, requiredCopayers - 1);
+
+        console.log('Will add %d more signatures:', signers.length);
+
+        var i = 0;
+        async.eachSeries(signers, function(dummy, cb) {
+            console.log('\t Signing with copayer', i + 1);
+            w[i].txProposals = firstWallet.txProposals;
+            w[i].sign(ntxid, function(signed) {
+              if (!signed) return cb('Could not sign');
+
+              console.log('\t Signed!');
+              firstWallet.txProposals = firstWallet.txProposals;
+              i++;
+              return cb(null);
+            })
+          },
+          function(err) {
+            if (err)
+              throw new Error(err);
 
             var p = firstWallet.txProposals.getTxProposal(ntxid);
             if (p.builder.isFullySigned()) {
@@ -149,9 +165,11 @@ firstWallet.updateIndexes(function() {
                 console.log('\t #######  SENT  TXID:', txid);
                 process.exit(1);
               });
+            } else {
+              throw new Error('Error: could not fully sign the TX');
             }
-          })
-        })
+          }
+        )
       });
     });
   });
