@@ -130,7 +130,12 @@ firstWallet.updateIndexes(function() {
       var amount = balance - DFLT_FEE;
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
         console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.'); 
-        if (requiredCopayers === 1) {
+        if (!ntxid)
+          throw new Error('Counld not create tx' + err);
+
+        console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
+
+        if (requiredCopayers ===1) {
           firstWallet.sendTx(ntxid, function(txid) {
             console.log('\t #######  SENT  TXID:', txid);
             process.exit(1);
