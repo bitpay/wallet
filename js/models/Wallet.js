@@ -2367,17 +2367,17 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   var b;
 
-  try {
+//  try {
     b = new Builder(opts)
       .setUnspent(utxos)
       .setOutputs([{
         address: toAddress.data,
         amountSatStr: amountSatStr,
       }]);
-  } catch (e) {
-    log.debug(e.message);
-    return;
-  };
+//  } catch (e) {
+//    log.debug(e.message);
+//    return;
+//  };
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
