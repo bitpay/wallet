@@ -252,7 +252,6 @@ Identity.prototype.store = function(opts, cb) {
   storeFunction.call(self.storage, this.getId(), this.toObj(), function(err) {
     if (err) return cb(err);
 
-    console.log('[Identity.js.255:opts:]', opts); //TODO
     if (opts.noWallets)
       return cb();
 
