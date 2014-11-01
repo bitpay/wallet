@@ -2365,19 +2365,14 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts[k] = Wallet.builderOpts[k];
   }
 
-  var b;
+  var b = new Builder(opts);
 
-//  try {
-    b = new Builder(opts)
-      .setUnspent(utxos)
-      .setOutputs([{
-        address: toAddress.data,
-        amountSatStr: amountSatStr,
-      }]);
-//  } catch (e) {
-//    log.debug(e.message);
-//    return;
-//  };
+  b.setUnspent(utxos);
+
+  b.setOutputs([{
+    address: toAddress.data,
+    amountSatStr: amountSatStr,
+  }]);
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
