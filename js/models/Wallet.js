@@ -2172,10 +2172,16 @@ Wallet.prototype.getBalance = function(cb) {
   var balanceByAddr = {};
   var COIN = coinUtil.COIN;
 
-  this.getUnspent(function(err, safeUnspent, unspent) {
+  this.getUnspent(function(err, safeUnspent, unspentRaw) {
     if (err) {
       return cb(err);
     }
+
+    // This filter out possible broken unspent, as reported on
+    // https://github.com/bitpay/copay/issues/1585
+    // and later gitter conversation.
+    
+    var unspent = _.filter(unspentRaw, 'scriptPubKey');
 
     for (var i = 0; i < unspent.length; i++) {
       var u = unspent[i];
