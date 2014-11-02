@@ -5,6 +5,7 @@ var async = require('async');
 var request = require('request');
 var bitcore = require('bitcore');
 var io = require('socket.io-client');
+var _ = require('lodash');
 var log = require('../log');
 
 var EventEmitter = require('events').EventEmitter;
@@ -310,9 +311,15 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 
   this.requestPost('/api/addrs/utxo', {
     addrs: addresses.join(',')
-  }, function(err, res, body) {
+  }, function(err, res, unspentRaw) {
     if (err || res.statusCode != 200) return cb(err || res);
-    cb(null, body);
+
+    // This filter out possible broken unspent, as reported on
+    // https://github.com/bitpay/copay/issues/1585
+    // and later gitter conversation.
+    
+    var unspent = _.filter(unspentRaw, 'scriptPubKey');
+    cb(null, unspent);
   });
 };
 

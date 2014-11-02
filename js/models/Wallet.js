@@ -1879,15 +1879,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   merchantData.total = merchantData.total.toString(10);
 
-  var b;
-  try {
-    b = new Builder(opts)
-      .setUnspent(unspent)
-      .setOutputs(outs);
-  } catch (e) {
-    log.debug(e.message);
-    return;
-  };
+  var b = new Builder(opts)
+    .setUnspent(unspent)
+    .setOutputs(outs);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -2172,16 +2166,10 @@ Wallet.prototype.getBalance = function(cb) {
   var balanceByAddr = {};
   var COIN = coinUtil.COIN;
 
-  this.getUnspent(function(err, safeUnspent, unspentRaw) {
+  this.getUnspent(function(err, safeUnspent, unspent) {
     if (err) {
       return cb(err);
     }
-
-    // This filter out possible broken unspent, as reported on
-    // https://github.com/bitpay/copay/issues/1585
-    // and later gitter conversation.
-    
-    var unspent = _.filter(unspentRaw, 'scriptPubKey');
 
     for (var i = 0; i < unspent.length; i++) {
       var u = unspent[i];
@@ -2371,16 +2359,12 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts[k] = Wallet.builderOpts[k];
   }
 
-  var b = new Builder(opts);
-
-  b.setUnspent(utxos);
-
-console.log('[Wallet.js.2370:utxos:]',utxos); //TODO
-
-  b.setOutputs([{
-    address: toAddress.data,
-    amountSatStr: amountSatStr,
-  }]);
+  var b = new Builder(opts)
+    .setUnspent(utxos)
+    .setOutputs([{
+      address: toAddress.data,
+      amountSatStr: amountSatStr,
+    }]);
 
   var selectedUtxos = b.getSelectedUnspent();
   var inputChainPaths = selectedUtxos.map(function(utxo) {
