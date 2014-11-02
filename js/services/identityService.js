@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('identityService', function($rootScope, $location, pluginManager, controllerUtils) {
+  .factory('identityService', function($rootScope, $location, $timeout, pluginManager, controllerUtils) {
     var root = {};
 
     root.check = function(scope) {
@@ -36,11 +36,15 @@ angular.module('copayApp.services')
         scope.loading = false;
         if (err || !iden) {
           copay.logger.debug(err);
-          if (err && ( err.match('EEXISTS') || err.match('BADCREDENTIALS'))) {
+          if (err && (err.match('EEXISTS') || err.match('BADCREDENTIALS'))) {
             scope.error = 'User already exists!';
           } else {
             scope.error = 'Unknown error when connecting Insight Server';
           }
+          $timeout(function() {
+            $rootScope.$digest()
+          }, 1);
+ 
           return;
         }
         var walletOptions = {
@@ -74,18 +78,20 @@ angular.module('copayApp.services')
         walletDefaults: config.wallet,
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
+        scope.loading = false;
         if (err && !iden) {
           if ((err.toString() || '').match('PNOTFOUND')) {
             scope.error = 'Invalid email or password';
-          } 
-           else {
+          } else {
             scope.error = 'Unknown error';
-           }  
+          }
+          $timeout(function() {
+            $rootScope.$digest()
+          }, 1);
         } else {
           var firstWallet = iden.getLastFocusedWallet();
           controllerUtils.bindProfile(scope, iden, firstWallet);
         }
-        scope.loading = false;
       });
     };
 
