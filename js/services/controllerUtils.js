@@ -220,7 +220,7 @@ angular.module('copayApp.services')
       }
       $timeout(function() {
         $rootScope.$digest()
-      }, 0);
+      }, 1);
     };
 
     // On the focused wallet
