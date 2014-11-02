@@ -15,6 +15,10 @@ angular
       .when('/unsupported', {
         templateUrl: 'views/unsupported.html'
       })
+      .when('/confirmed', {
+        template: " ", // just fire controller
+        controller: 'EmailConfirmationController',
+      })
       .when('/uri-payment/:data', {
         templateUrl: 'views/uri-payment.html'
       })

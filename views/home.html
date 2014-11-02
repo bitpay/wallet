@@ -2,7 +2,7 @@
 
   <div data-alert class="loading-screen" ng-show="loading">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
-    <span translate>Synchronizing with storage...</span>
+    <span translate>Accessing your profile...</span>
   </div>
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading && !retreiving">
     <div class="logo-setup">
@@ -11,14 +11,17 @@
     </div>
     <div class="p10 box-setup bg-success m10b text-white" ng-show="confirmedEmail">
       <div class="left">
-        <i class="size-36 fi-alert m10r"></i>
+        <i class="size-36 fi-check m10r"></i>
       </div>
-      <div class="size-12">
-        <b>Copay now needs a confirmation.</b><br />
-        You have to sign in to confirm your email
+      <div class="size-14">
+        <h3>
+        Your email was confimed!
+        </h3>
+  
+        Please sign in to access your wallets
       </div>
     </div>
-    <div class="p10 box-setup bg-success m10b text-white" ng-show="anyWallet">
+    <div class="p10 box-setup bg-success m10b text-white" ng-show="anyWallet && !confirmedEmail && !error">
       <div class="left">
         <i class="size-36 fi-alert m10r"></i>
       </div>
@@ -29,6 +32,12 @@
     <div class="box-setup">
       <h1><span translate>Sign in to</span> <b>Copay</b></h1>
       <form name="loginForm" ng-submit="openProfile(loginForm)" novalidate>
+        <p class="text-warning size-12"
+          ng-show="error">
+          <i class="fi-x"></i> 
+          {{error|translate}}
+          </p>
+ 
         <input type="email" ng-model="email" class="form-control"
           name="email" placeholder="Email" required>
         <input type="password" ng-model="password" class="form-control"

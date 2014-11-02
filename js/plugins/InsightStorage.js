@@ -5,7 +5,7 @@ var Identity = require('../models/Identity');
 
 function InsightStorage(config) {
   this.type = 'DB';
-  this.storeUrl = config.url || 'https://insight.is/api/email';
+  this.storeUrl = config.url || 'https://test-insight.bitpay.com:443/api/email';
   this.request = config.request || request;
 }
 
@@ -65,7 +65,7 @@ InsightStorage.prototype.setItem = function(name, value, callback) {
       return callback('Connection error');
     }
     if (response.statusCode === 409) {
-      return callback('Invalid username or password');
+      return callback('BADCREDENTIALS: Invalid username or password');
     }
     if (response.statusCode !== 200) {
       return callback('Unable to store data on insight');
