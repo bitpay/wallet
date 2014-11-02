@@ -2369,6 +2369,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   b.setUnspent(utxos);
 
+console.log('[Wallet.js.2370:utxos:]',utxos); //TODO
+
   b.setOutputs([{
     address: toAddress.data,
     amountSatStr: amountSatStr,
