@@ -1321,6 +1321,18 @@ a.text-warning:hover {color: #FD7262;}
   margin-top: 15%;
 }
 
+.logout-screen {
+    position:fixed;
+    top:0;
+    left:0;
+    padding:0;
+    margin:0;
+    text-align: center;
+    background-color: #2C3E50;
+    width: 100%;
+    height: 100%;
+}
+
 .box-setup .panel {
   background-color: #2C3E50;
   padding: 1rem;

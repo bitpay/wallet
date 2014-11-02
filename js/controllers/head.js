@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   };
 
   $scope.signout = function() {
+    $scope.loading = true;
     controllerUtils.logout();
   };
 
@@ -59,6 +60,7 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
       $scope.title = newTitle;
     });
     $rootScope.$on('signout', function() {
+      $scope.loading = true;
       controllerUtils.logout();
     });
   }
