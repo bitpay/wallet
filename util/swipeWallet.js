@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 'use strict';
+
+
 var copay = require('../copay');
 var program = require('commander');
 var _ = require('lodash');
@@ -11,6 +13,11 @@ var bitcore = require('bitcore');
 var readline = require('readline');
 var async = require('async');
 
+// Fee to asign to the tx. Please put a bigger number if you get 'unsufficient unspent'
+var FEE = 0.0001;
+
+
+
 var rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -18,7 +25,6 @@ var rl = readline.createInterface({
 var args = process.argv;
 
 var destAddr = args[2];
-var DFLT_FEE = 0.0001 * bitcore.util.COIN;
 
 if (!args[4]) {
   console.log('\n\tusage: swipeWallet.js <destionation address> <required signature number> <master private key 0> [<master private key 1> ...]');
@@ -119,23 +125,23 @@ firstWallet.updateIndexes(function() {
     console.log('Balance per address:', balanceByAddr); //TODO
 
     if (!balance) {
-      console.log('Could not find any balance from the generated wallet'); //TODO
+      console.log('Could not find any coins in the generated wallet'); //TODO
       process.exit(1);
     }
 
-    rl.question("\n\tShould I swipe the wallet (destination address" + destAddr + ")?\n\t(`yes` to continue)\n\t", function(answer) {
+    rl.question("\n\tShould I swipe the wallet (destination address is:" + destAddr + ")?\n\t(`yes` to continue)\n\t", function(answer) {
       if (answer !== 'yes')
         process.exit(1);
 
-      var amount = balance - DFLT_FEE;
+      var amount = balance - FEE * bitcore.util.COIN;
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
-        console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.'); 
+        console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.');
         if (!ntxid)
-          throw new Error('Counld not create tx' + err);
+          throw new Error('Counld not create tx' + err + '. Try a bigger FEE by  editing the head lines of this script.');
 
         console.log('\n\t### Tx Proposal Created... With copayer 0 signature.');
 
-        if (requiredCopayers ===1) {
+        if (requiredCopayers === 1) {
           firstWallet.sendTx(ntxid, function(txid) {
             console.log('\t #######  SENT  TXID:', txid);
             process.exit(1);
@@ -166,6 +172,9 @@ firstWallet.updateIndexes(function() {
             var p = firstWallet.txProposals.getTxProposal(ntxid);
             if (p.builder.isFullySigned()) {
               console.log('\t FULLY SIGNED. BROADCASTING NOW....');
+              var tx = p.builder.build();
+              var txHex = tx.serialize().toString('hex');
+              console.log('\t RAW TX: ', txHex);
               firstWallet.sendTx(ntxid, function(txid) {
                 console.log('\t #######  SENT  TXID:', txid);
                 process.exit(1);
