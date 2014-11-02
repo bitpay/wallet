@@ -62,6 +62,9 @@ var defaultConfig = {
   },
 
   EncryptedInsightStorage: {
+    // THIS IS WRONG BUT DO NOT CHANGE IT WITH OUT A MIGRATION PLAN
+    // ALSO CHANGE THE DEFAULT AT js/plugins/InsightStorage.js
+    //
     url: 'https://test-insight.bitpay.com:443/api/email'
     // url: 'http://localhost:3001/api/email'
   },
