@@ -218,6 +218,9 @@ angular.module('copayApp.services')
       } else {
         $location.path('/manage');
       }
+      $timeout(function() {
+        $rootScope.$digest()
+      }, 0);
     };
 
     // On the focused wallet
