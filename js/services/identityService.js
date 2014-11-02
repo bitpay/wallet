@@ -43,7 +43,7 @@ angular.module('copayApp.services')
           }
           $timeout(function() {
             $rootScope.$digest()
-          }, 0);
+          }, 1);
  
           return;
         }
@@ -87,7 +87,7 @@ angular.module('copayApp.services')
           }
           $timeout(function() {
             $rootScope.$digest()
-          }, 0);
+          }, 1);
         } else {
           var firstWallet = iden.getLastFocusedWallet();
           controllerUtils.bindProfile(scope, iden, firstWallet);
