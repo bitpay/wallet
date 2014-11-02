@@ -1,10 +1,10 @@
 <div class="createProfile" ng-controller="CreateProfileController">
   <div data-alert class="loading-screen" ng-show="loading">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
-    <span translate>Retreiving information from storage...</span>
+    <span translate>Creating profile...</span>
   </div>
 
-  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading && !retreiving">
+  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading">
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
@@ -17,10 +17,16 @@
             <input type="email" ng-model="email" class="form-control fi-email"
             name="email" placeholder="Email" required>
             <small class="icon-input" ng-show="!profileForm.email.$invalid &&
-              !profileForm.email.$pristine"><i class="fi-check"></i></small>
+              !profileForm.email.$pristine && !error"><i class="fi-check"></i></small>
             <small class="icon-input" ng-show="profileForm.email.$invalid &&
-              !profileForm.email.$pristine"><i class="fi-x"></i></small>
+              !profileForm.email.$pristine || error"><i class="fi-x"></i></small>
           </div>
+          <p class="text-warning size-12"
+          ng-show="error">
+          <i class="fi-x"></i> 
+          {{error|translate}}
+          </p>
+ 
         </div>
         <input id="password" type="password" ng-model="$parent.password"
         class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
