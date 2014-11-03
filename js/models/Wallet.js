@@ -2154,12 +2154,23 @@ Wallet.prototype.addressIsOwn = function(addrStr, opts) {
 };
 
 
+/* 
+ * Estimate a tx fee in satoshis given its input count
+ * only for spending all wallet funds
+ */
+Wallet.estimatedFee = function(unspentCount) {
+  preconditions.checkArgument(_.isNumber(unspentCount));
+  var estimatedSizeKb = Math.ceil( ( 500 + unspentCount * 250) / 1024 );
+  return parseInt( estimatedSizeKb * bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
+};
+
 /**
  * @callback {getBalanceCallback}
  * @param {string=} err - an error, if any
  * @param {number} balance - total number of satoshis for all addresses
  * @param {Object} balanceByAddr - maps string addresses to satoshis
  * @param {number} safeBalance - total number of satoshis in UTXOs that are not part of any TxProposal
+ * @param {number} safeUnspentCount - total number of safe unspent Outputs that make this balance.
  */
 /**
  * @desc Returns the balances for all addresses in Satoshis
@@ -2190,14 +2201,16 @@ Wallet.prototype.getBalance = function(cb) {
 
     balance = parseInt(balance.toFixed(0), 10);
 
-    for (var i = 0; i < safeUnspent.length; i++) {
+    var safeUnspentCount = safeUnspent.length;
+
+    for (var i = 0; i < safeUnspentCount; i++) {
       var u = safeUnspent[i];
       var amt = u.amount * COIN;
       safeBalance += amt;
     }
 
     safeBalance = parseInt(safeBalance.toFixed(0), 10);
-    return cb(null, balance, balanceByAddr, safeBalance);
+    return cb(null, balance, balanceByAddr, safeBalance, safeUnspentCount);
   });
 };
 
@@ -2322,6 +2335,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     var ntxid;
     try {
       ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
+      log.debub('TX Created: ntxid', ntxid); //TODO
     } catch (e) {
       return cb(e);
     }
@@ -2370,6 +2384,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts[k] = Wallet.builderOpts[k];
   }
 
+console.log('[Wallet.js.2386]'); //TODO
   var b = new Builder(opts)
     .setUnspent(utxos)
     .setOutputs([{
@@ -2377,8 +2392,10 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
       amountSatStr: amountSatStr,
     }]);
 
+  log.debug('Creating TX: Builder ready');
 
   var selectedUtxos = b.getSelectedUnspent();
+console.log('[Wallet.js.2397:selectedUtxos:]',selectedUtxos); //TODO
 
   if (selectedUtxos.size > TX_MAX_INS)
     throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.size + ' inputs. Aborting');

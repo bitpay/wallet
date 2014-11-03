@@ -128,7 +128,7 @@ describe('Insight model', function() {
 
     sinon.stub(blockchain, "requestPost", function(url, data, cb) {
       url.should.be.equal('/api/tx/send');
-      var res = {status: 200};
+      var res = {statusCode: 200};
       var body = {txid: 1234};
       setTimeout(function() {
         cb(null, res, body);

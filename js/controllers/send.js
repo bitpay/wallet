@@ -4,32 +4,6 @@ var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
-    controllerUtils.redirIfNotComplete();
-
-    var w = $rootScope.wallet;
-    preconditions.checkState(w);
-    preconditions.checkState(w.settings.unitToSatoshi);
-
-    $rootScope.title = 'Send';
-    $scope.loading = false;
-    var satToUnit = 1 / w.settings.unitToSatoshi;
-    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
-    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
-    $scope.unitToSatoshi = w.settings.unitToSatoshi;
-
-    $scope.alternativeName = w.settings.alternativeName;
-    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
-
-    $scope.isRateAvailable = false;
-    $scope.rateService = rateService;
-
-
-
-    rateService.whenAvailable(function() {
-      $scope.isRateAvailable = true;
-      $scope.$digest();
-    });
-
     /**
      * Setting the two related amounts as properties prevents an infinite
      * recursion for watches while preserving the original angular updates
@@ -396,13 +370,19 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.getAvailableAmount = function() {
-      var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / w.settings.unitToSatoshi);
+      if (!$rootScope.safeUnspentCount) return null;
+
+      // Each signature takes
+      var estimatedFee = copay.Wallet.estimatedFee($rootScope.safeUnspentCount);
+console.log('[send.js.376:estimatedFee:]',estimatedFee); //TODO
+      var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
+
+console.log('[send.js.402:amount:]',amount); //TODO
       return amount > 0 ? amount : 0;
     };
 
     $scope.topAmount = function(form) {
       $scope.amount = $scope.getAvailableAmount();
-      form.amount.$pristine = false;
     };
 
 
@@ -614,5 +594,32 @@ angular.module('copayApp.controllers').controller('SendController',
           '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
     };
+
+    controllerUtils.redirIfNotComplete();
+
+    var w = $rootScope.wallet;
+    preconditions.checkState(w);
+    preconditions.checkState(w.settings.unitToSatoshi);
+
+    $rootScope.title = 'Send';
+    $scope.loading = false;
+    var satToUnit = 1 / w.settings.unitToSatoshi;
+    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
+    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = w.settings.unitToSatoshi;
+
+    $scope.alternativeName = w.settings.alternativeName;
+    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
+
+    $scope.isRateAvailable = false;
+    $scope.rateService = rateService;
+    $scope.availableBalance = $scope.getAvailableAmount();
+
+    rateService.whenAvailable(function() {
+      $scope.isRateAvailable = true;
+      $scope.$digest();
+    });
+
+
 
   });

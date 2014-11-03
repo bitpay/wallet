@@ -21,7 +21,7 @@ program
   .usage('-d n2kMqQ8Si9GndzQ6FrJxcwHMKacK2rCEpK -n 2 -k tprv8ZgxMBicQKsPem5BuuDT6xY9etUC2RohpUoyzoa1MEkkZyAHhszaHPZTmgDheN31hSP1r6bRwpj2JC66r1CPpftwaRrhz')
   .option('-d, --destination <n>', 'Destination Address')
   .option('-n, --required <n>', 'Required number of signatures', parseInt)
-  .option('-k, --keys <items>', 'master private keys', list)
+  .option('-k, --keys <items>', 'master private keys, separated by , ', list)
   .option('-a, --amount <n>', 'Optional, amount to transfer, in Satoshis. If not provided, will wipe all funds', parseInt)
   .option('-f, --fee [n]', 'Optional, fee in BTC (default 0.0001 BTC), only if amount is not provided', parseFloat)
   .parse(process.argv);
