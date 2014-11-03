@@ -22,12 +22,10 @@ program
   .option('-d, --destination <n>', 'Destination Address')
   .option('-n, --required <n>', 'Required number of signatures', parseInt)
   .option('-k, --keys <items>', 'master private keys', list)
-  .option('-a, --amount <n>', 'Optional, amount to transfer, in Satoshis', parseInt)
-  .option('-f, --fee [n]', 'Optional, fee in BTC (default 0.0001 BTC)', parseFloat)
+  .option('-a, --amount <n>', 'Optional, amount to transfer, in Satoshis. If not provided, will wipe all funds', parseInt)
+  .option('-f, --fee [n]', 'Optional, fee in BTC (default 0.0001 BTC), only if amount is not provided', parseFloat)
   .parse(process.argv);
 
-// Fee to asign to the tx. Please put a bigger number if you get 'unsufficient unspent'
-var fee = parseFloat(program.fee) ||  0.0001;
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -40,10 +38,18 @@ var extPrivKeys = program.keys;
 var destAddr = program.destination;
 var amount = program.amount;
 
+if (amount && program.fee) {
+  console.log('If amount if given, fee will be automatically calculated');
+  process.exit(1);
+}
+
 if (!requiredCopayers || !extPrivKeys || !extPrivKeys.length || !destAddr){
   program.outputHelp();
   process.exit(1);
 }
+
+// Fee to asign to the tx. Please put a bigger number if you get 'unsufficient unspent'
+var fee = program.fee ||  0.0001;
 
 
 var totalCopayers = extPrivKeys.length;
