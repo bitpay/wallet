@@ -1,35 +1,37 @@
-<div class="waiting-copayers" ng-controller="CopayersController">
+<div ng-controller="CopayersController">
   <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
 
-  <div class="row collapse">
+  <h1 translate  class="hide-for-large-up">
+    Waiting copayers for {{$root.wallet.getName()}} 
+    <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
+  </h1>
+  <div class="row">
     <div class="large-12 columns">
-        <div ng-if="!$root.wallet.isReady()">
-          <h2>
-            <span translate>Waiting copayers for</span>
-            {{$root.wallet.getName()}} 
-            <small>{{$root.wallet.requiredCopayers}}-{{'of'|translate}}-{{$root.wallet.totalCopayers}}</small>
+      <div ng-if="!$root.wallet.isReady()">
+        <div class="panel oh">
+          <h2 class="line-b">
+            Share this secret with your other copayers 
+            <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
           </h2>
-          <div class="panel oh">
-            <qrcode size="350" data="{{$root.wallet.getSecret()}}"></qrcode>
-            <div class="secret">
-              <h3 translate>Share this secret with your other copayers</h3>
-              {{$root.wallet.getSecret()}} 
-              <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
-            </div>
+          <div class="text-center">
+            <qrcode size="250" data="{{$root.wallet.getSecret()}}"></qrcode>
+          </div>
+          <div class="secret m20t">
+            {{$root.wallet.getSecret()}} 
+            <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
           </div>
         </div>
-        <div class="panel p20">
-          <div class="oh">
-            <div ng-include="'views/includes/copayer.html'"></div> 
-            <div class="copay-box" ng-if="!$root.wallet.isReady()">
-              <span ng-include="'views/includes/photo.html'"></span>
-              <p class="size-12 text-white text-light m0">
-              <i class="fi-loop icon-rotate spinner"></i>
-              <span translate>Waiting...</span>
-              </p>
-            </div>
-          </div>
+      </div>
+      <div class="panel oh">
+        <div ng-include="'views/includes/copayer.html'"></div> 
+        <div class="copay-box" ng-if="!$root.wallet.isReady()">
+          <span ng-include="'views/includes/photo.html'"></span>
+          <p class="size-12 text-white text-light m0">
+          <i class="fi-loop icon-rotate spinner"></i>
+          <span translate>Waiting...</span>
+          </p>
         </div>
+      </div>
     </div>
   </div> <!-- end of row -->
 </div>

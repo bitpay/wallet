@@ -2,7 +2,10 @@
 
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $location, controllerUtils) {
-    $rootScope.title = 'Copayers';
+    if (!$rootScope.wallet.isReady()) {
+      $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
+    }
+    $scope.loading = false;
 
     $scope.goToWallet = function() {
       controllerUtils.updateAddressList();

@@ -6,16 +6,8 @@ angular.module('copayApp.controllers').controller('HomeWalletController',
 
     $rootScope.title = 'Home';
 
-
     if ($rootScope.addrInfos) {
       $scope.address = $rootScope.addrInfos[0];
-    }
-
-    $scope.copayersList = function() {
-      if ($rootScope.wallet) {
-        $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
-      }
-      return $scope.copayers;
     }
 
   }
