@@ -287,17 +287,6 @@ Identity.prototype.close = function(cb) {
  * @return {Wallet}
  */
 Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
-  console.log('importEncryptedWallet------');
-
-  console.log('opts');
-  console.log(opts);
-
-  console.log('password');
-  console.log(password);
-
-  console.log('cypherText');
-  console.log(cypherText);
-
   var crypto = opts.cryptoUtil || cryptoUtil;
   // TODO set iter and salt using config.js
   var key = crypto.kdf(password);
@@ -355,7 +344,11 @@ Identity.prototype.closeWallet = function(wallet, cb) {
 Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
   var key = crypto.kdf(password);
-  return Identity.importFromFullJson(crypto.decrypt(key, str), password, opts, cb);
+  var str = crypto.decrypt(key, str);
+  if (!str) {
+    return cb('BADSTR');
+  }
+  return Identity.importFromFullJson(str, password, opts, cb);
 };
 
 Identity.importFromFullJson = function(str, password, opts, cb) {
@@ -364,7 +357,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   try {
     json = JSON.parse(str);
   } catch (e) {
-    return cb('Unable to retrieve json from string', str);
+    return cb('BADSTR: Unable to retrieve json from string', str);
   }
 
   // if (!_.isNumber(json.iterations))
