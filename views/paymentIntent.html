@@ -1,0 +1,32 @@
+<div ng-controller="PaymentIntentController" class="large-4 columns large-centered">
+
+
+<!-- //TODO THIS SHOULD BE A POPUP -->
+ <ul class="side-nav wallets" ng-show="wallets.0"
+      ng-class="{'large':wallets.length > 4, 'medium':wallets.length > 2 && wallets.length < 5}">
+      <li data-ng-repeat="item in wallets track by $index" class="nav-item">
+        <div class="col1">
+          <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
+        </div>
+        <div class="col2">
+          <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
+            <div class="oh">
+              <div class="right size-10 type-wallet">[ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
+              <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
+            </div>
+            <div class="oh">
+              <span ng-if="item.isReady() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              <div ng-if="item.isReady() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+                <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
+                <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
+              </div>
+              <span ng-if="!item.isReady()">Waiting for copayers...</span>
+            </div>
+          </a>
+        </div>
+      </li>
+    </ul>
+  
+</div>
+
+

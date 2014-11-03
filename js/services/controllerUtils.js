@@ -93,7 +93,7 @@ angular.module('copayApp.services')
         if ($rootScope.initialConnection) {
           $rootScope.initialConnection = false;
           if ($rootScope.pendingPayment) {
-            $location.path('send');
+            $location.path('paymentIntent');
           } else {
             root.redirIfLogged();
           }
@@ -194,6 +194,11 @@ angular.module('copayApp.services')
         preconditions.checkState(wallet);
         root.installWalletHandlers($scope, wallet);
       });
+    };
+
+    root.setPaymentWallet = function(w) {
+      root.setFocusedWallet(w);
+      $location.path('/send');
     };
 
     root.setFocusedWallet = function(w) {
