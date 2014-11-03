@@ -77,8 +77,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
-        var message = 'Unable to send transaction proposal';
-        notification.error('Error', message);
+        $scope.error = 'Unable to send transaction proposal';
         return;
       }
 
@@ -90,8 +89,15 @@ angular.module('copayApp.controllers').controller('SendController',
 
       function done(err, ntxid, merchantData) {
         if (err) {
-          var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created';
-          notification.error('Error', message);
+          copay.logger.error(err);
+
+          var msg = err.toString();
+
+          if (msg.match('BIG'))
+            msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts.'
+
+          var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created: ' + msg;
+          $scope.error = message;
           $scope.loading = false;
           $scope.loadTxs();
           return;
@@ -135,7 +141,7 @@ angular.module('copayApp.controllers').controller('SendController',
               }
               notification.success('Transaction broadcasted', message);
             } else {
-              notification.error('Error', 'There was an error sending the transaction');
+              $scope.error = 'There was an error sending the transaction';
             }
             $scope.loading = false;
             $scope.loadTxs();
@@ -374,10 +380,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
       // Each signature takes
       var estimatedFee = copay.Wallet.estimatedFee($rootScope.safeUnspentCount);
-console.log('[send.js.376:estimatedFee:]',estimatedFee); //TODO
       var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
 
-console.log('[send.js.402:amount:]',amount); //TODO
       return amount > 0 ? amount : 0;
     };
 
@@ -391,7 +395,7 @@ console.log('[send.js.402:amount:]',amount); //TODO
       $rootScope.txAlertCount = 0;
       w.sendTx(ntxid, function(txid, merchantData) {
         if (!txid) {
-          notification.error('Error', 'There was an error sending the transaction');
+          $scope.error = 'There was an error sending the transaction';
         } else {
           if (!merchantData) {
             notification.success('Transaction broadcasted', 'Transaction id: ' + txid);
@@ -415,7 +419,7 @@ console.log('[send.js.402:amount:]',amount); //TODO
       $scope.loading = true;
       w.sign(ntxid, function(ret) {
         if (!ret) {
-          notification.error('Error', 'There was an error signing the transaction');
+          $scope.error = 'There was an error signing the transaction';
           $scope.loadTxs();
         } else {
           var p = w.txProposals.getTxProposal(ntxid);

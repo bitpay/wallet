@@ -30,8 +30,8 @@ var Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
 
-var TX_MAX_SIZE_KB = 60;
-var TX_MAX_INS     = 100;
+var TX_MAX_SIZE_KB = 50;
+var TX_MAX_INS     = 70;
 /**
  * @desc
  * Wallet manages a private key for Copay, network, storage of the wallet for
@@ -2337,6 +2337,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
       ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
       log.debub('TX Created: ntxid', ntxid); //TODO
     } catch (e) {
+console.log('[Wallet.js.2340]', e); //TODO
       return cb(e);
     }
 
@@ -2384,7 +2385,6 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts[k] = Wallet.builderOpts[k];
   }
 
-console.log('[Wallet.js.2386]'); //TODO
   var b = new Builder(opts)
     .setUnspent(utxos)
     .setOutputs([{
@@ -2395,10 +2395,9 @@ console.log('[Wallet.js.2386]'); //TODO
   log.debug('Creating TX: Builder ready');
 
   var selectedUtxos = b.getSelectedUnspent();
-console.log('[Wallet.js.2397:selectedUtxos:]',selectedUtxos); //TODO
 
-  if (selectedUtxos.size > TX_MAX_INS)
-    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.size + ' inputs. Aborting');
+  if (selectedUtxos.length > TX_MAX_INS)
+    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length + ' inputs. Aborting');
  
 
   var inputChainPaths = selectedUtxos.map(function(utxo) {
