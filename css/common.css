@@ -36,6 +36,7 @@ p {
 
 .reveal-modal.line-dashed-v {
   border-right: 1px dashed #E3E3E3;
+
 }
 
 .supported-link {
@@ -287,6 +288,7 @@ footer {
 
   .reveal-modal .line-dashed-v {
     border: none;
+    z-index: 1000;
   }
 }
 
@@ -334,7 +336,7 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999;
+    z-index: 1;
   background-color: #00BD9C;
   padding-top: 4.5em;
  }
@@ -351,7 +353,8 @@ header {
 .header-logo {
   }
 
- .download-btn  {
+ .btn-dwnld {
+  border: #00977D solid 1px;
 
     }
 
@@ -397,19 +400,10 @@ header {
    background-image: url('../img/and-icon-on.svg');
    color: #109F83;
     }    
-
-
- 
-
-
-   
-
-
-
     
 
 .slogan-small{
-  padding: 15em 0 1.5em 0;
+  padding: 20em 0 1.5em 0;
     }
 
 .slogan-medium{
