@@ -20,6 +20,28 @@
     <link rel="stylesheet" href="css/common.css">
     <!-- Fonts -->
     <link rel="stylesheet" href="css/fontface.css">
+
+    <!-- js -->
+<script src="js/classie.js"></script>
+<script>
+    function init() {
+        window.addEventListener('scroll', function(e){
+            var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                shrinkOn = 300,
+                header = document.querySelector("header");
+            if (distanceY > shrinkOn) {
+                classie.add(header,"smaller");
+            } else {
+                if (classie.has(header,"smaller")) {
+                    classie.remove(header,"smaller");
+                }
+            }
+        });
+    }
+    window.onload = init();
+</script>
+
+
 </head>
 <body>
 
@@ -129,47 +151,61 @@ copay-0.7.2.xpi
     <a class="close-reveal-modal">&#215;</a>
   </div>  -->
 
-  <header>
 
-    <!--logo and download small STARTS-->  
-    <div class="row show-for-small-down">
-      <div class="small-12 small-centered columns center-img p1b"> 
-        <img src="img/copay-main-logo-big.png" width="202" alt="Copay">
-      </div>
-    </div>
-    <div class="row show-for-small-down">
-      <div class="small-12 small-centered columns">
-        <a href="" data-dropdown="drop1" class="button expand dropdown">DOWNLOAD <b>v0.7.2</b></a>
-          <ul id="drop1" data-dropdown-content class="f-dropdown">
-            <li><a href="#" data-reveal-id="licenseModal" class="browser-ext ubuntubold" onclick="contNext=false">BROWSER EXTENSION</a></li>
-            <li><a href="#" target="_blank" class="web-ver ubuntubold" data-reveal-id="licenseModal" onclick="contNext='https://copay.io/in/app/'">WEB VERSION</a></li>
-            <li><a href="#" data-reveal-id="licenseModal" class="android-ver ubuntubold" onclick="contNext='https://play.google.com/store/apps/details?id=com.bitpay.copay'">ANDROID VERSION</a></li>
-          </ul>
-      </div>
-    </div>
-<!--logo and download small ENDS-->  
 
-    <div class="row clearfix show-for-medium-up">
-    <div class="large-6 medium-8 small-centered columns"> 
-      <div class="small-8 columns show-for-medium-up">
-        <img src="img/copay-main-logo.png" width="145" alt="Copay">
-      </div>
-      <div class="medium-4 columns right download-btn">
-        <a href="" data-dropdown="drop2" class="button dropdown">DOWNLOAD <b>v0.7.2</b></a>
-          <ul id="drop2" data-dropdown-content class="f-dropdown">
-            <li><a href="#" data-reveal-id="licenseModal" class="browser-ext ubuntubold" onclick="contNext=false">BROWSER EXTENSION</a></li>
-            <li><a href="#" target="_blank" class="web-ver ubuntubold" data-reveal-id="licenseModal" onclick="contNext='https://copay.io/in/app/'">WEB VERSION</a></li>
-            <li><a href="#" data-reveal-id="licenseModal" class="android-ver ubuntubold" onclick="contNext='https://play.google.com/store/apps/details?id=com.bitpay.copay'">ANDROID VERSION</a></li>
-          </ul>
-      </div>
-    </div>    
-  </div>  
 
-    <!--slogan small and medimun STARTS-->
+  <section class="header"> 
+
+    <header class="trans03">
+      <!--logo and download small STARTS-->  
+      <div class="row show-for-small-down">
+        <div class="small-12 small-centered columns center-img header-logo trans03"> 
+          <img src="img/copay-main-logo-big.png" width="202" alt="Copay">
+        </div>
+      </div>
+      <div class="row show-for-small-down">
+        <div class="small-12 small-centered columns">
+          <a href="" data-dropdown="drop1" class="button expand dropdown">DOWNLOAD <b>v0.7.2</b></a>
+            <ul id="drop1" data-dropdown-content class="f-dropdown">
+              <li><a href="#" data-reveal-id="licenseModal" class="browser-ext ubuntubold" onclick="contNext=false">BROWSER EXTENSION</a></li>
+              <li><a href="#" target="_blank" class="web-ver ubuntubold" data-reveal-id="licenseModal" onclick="contNext='https://copay.io/in/app/'">WEB VERSION</a></li>
+              <li><a href="#" data-reveal-id="licenseModal" class="android-ver ubuntubold" onclick="contNext='https://play.google.com/store/apps/details?id=com.bitpay.copay'">ANDROID VERSION</a></li>
+            </ul>
+        </div>
+      </div>
+  <!--logo and download small ENDS-->  
+
+      <div class="row clearfix show-for-medium-up">
+        <div class="large-6 medium-8 small-centered columns"> 
+          <div class="small-8 columns show-for-medium-up header-logo trans03">
+            <img src="img/copay-main-logo.png" width="145" alt="Copay">
+          </div>
+          <div class="medium-4 columns right download-btn">
+            <a href="" data-dropdown="drop2" class="button dropdown">DOWNLOAD <b>v0.7.2</b></a>
+              <ul id="drop2" data-dropdown-content class="f-dropdown">
+                <li><a href="#" data-reveal-id="licenseModal" class="browser-ext ubuntubold" onclick="contNext=false">BROWSER EXTENSION</a></li>
+                <li><a href="#" target="_blank" class="web-ver ubuntubold" data-reveal-id="licenseModal" onclick="contNext='https://copay.io/in/app/'">WEB VERSION</a></li>
+                <li><a href="#" data-reveal-id="licenseModal" class="android-ver ubuntubold" onclick="contNext='https://play.google.com/store/apps/details?id=com.bitpay.copay'">ANDROID VERSION</a></li>
+              </ul>
+          </div>
+        </div>    
+      </div>  
+    </header>
+
+
+    <!--slogan small STARTS-->
     <div class="row">
-      <div class="small-12 columns slogan-small show-for-medium-down">
+      <div class="small-12 columns slogan-small show-for-small-only">
         <h2 class="white text-center size-30 ubuntulight">secure, shared wallet. </h2>
       </div>
+    </div>
+    <!--slogan small ENDS-->
+    <!--slogan small and medimun STARTS-->
+    <div class="row">
+      <div class="medium-12 columns slogan-medium show-for-medium-only">
+        <h2 class="white text-center size-30 ubuntulight">secure, shared wallet. </h2>
+      </div>
+    </div>
     <!--slogan small and medimun ENDS-->
 
     <div class="row">
@@ -182,7 +218,7 @@ copay-0.7.2.xpi
         <img src="img/main-anim.png" width="826" alt="Copay"/>
       </div>
     </div>
-  </header>  
+  </section>  
 
   <div class="row subheader">
     <div class="large-6 medium-8 medium-centered columns">  
