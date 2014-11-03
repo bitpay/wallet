@@ -36,6 +36,7 @@ p {
 
 .reveal-modal.line-dashed-v {
   border-right: 1px dashed #E3E3E3;
+
 }
 
 .supported-link {
@@ -287,6 +288,7 @@ footer {
 
   .reveal-modal .line-dashed-v {
     border: none;
+    z-index: 1000;
   }
 }
 
@@ -308,6 +310,16 @@ footer {
 
 /* Font Families ENDS */
 
+/* Transitions STARTS */
+.trans03 
+  {-webkit-transition: height 0.3s;
+    -moz-transition: height 0.3s;
+    -ms-transition: height 0.3s;
+    -o-transition: height 0.3s;
+    transition: height 0.3s;}
+
+/* Transitions ENDS */
+
 .center-img img
 { display: block;
       margin-left: auto;
@@ -316,12 +328,33 @@ footer {
 .white
 {color: #FFFFFF;}
 
+
+
 header {
+    width: 100%;
+    overflow: visible;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
   background-color: #00BD9C;
   padding-top: 4.5em;
+ }
+
+
+.f-dropdown {
+    z-index: 1000;
   }
 
- .download-btn  {
+.header {
+  background-color: #00BD9C;
+  }
+
+.header-logo {
+  }
+
+ .btn-dwnld {
+  border: #00977D solid 1px;
 
     }
 
@@ -367,23 +400,18 @@ header {
    background-image: url('../img/and-icon-on.svg');
    color: #109F83;
     }    
-
-
- 
-
-
-   
-
-
-
     
 
 .slogan-small{
-  padding: 0em 0 1.5em 0;
+  padding: 20em 0 1.5em 0;
+    }
+
+.slogan-medium{
+  padding: 10em 0 1.5em 0;
     }
 
 .slogan-large{
-  padding: 2.1em 0 1.5em 0;
+  padding: 10em 0 1.5em 0;
     }
 
 .subheader{
