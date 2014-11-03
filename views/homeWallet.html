@@ -1,19 +1,32 @@
 <div class="home-wallet" ng-controller="HomeWalletController">
   <div ng-show='$root.wallet.isReady()'>
-    <h1 translate  class="hide-for-large-up">Home</h1> 
+    <h1 translate  class="hide-for-large-up">Home</h1>
 
- <!-- Wallet name and balance -->
-    <div class="panel">
-      <div class="row collapse">
-        <div class="large-1 small-2 columns">
-          <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
-        </div>
-        <div class="large-9 small-5 columns">
-          <h2 class="ellipsis m10t">{{$root.wallet.getName()}}</h2>
-        </div>
-        <div class="large-2 small-5 columns text-right text-black" ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-          <b class="db m5b size-21">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-          <span class="size-14 m5t text-gray">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="panel oh">
+          <div class="row">
+            <div class="large-8 medium-6 small-3 columns">
+              <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
+              <h2 class="ellipsis m10t left hide-for-small-only">{{$root.wallet.getName()}}</h2>
+            </div>
+            <div class="large-4 medium-6 small-9 columns">
+              <div class="text-right">
+                <span class="size-21">
+                  <strong>
+                    <span ng-if="!$root.updatingBalance">{{totalBalance || 0 |noFractionNumber}}</span>
+                    <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+                    {{$root.wallet.settings.unitName}}
+                  </strong>
+                </span>
+                <span class="size-14 db m5t text-gray">
+                  <span ng-if="!$root.updatingBalance">{{totalBalanceAlternative |noFractionNumber:2}}</span>
+                  <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+                  {{alternativeIsoCode}}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -40,28 +53,15 @@
           </div>
         </div>
       </div>
-
-
-
       <!-- List of copayers -->
       <div class="large-6 columns">
         <div class="panel oh">
           <h2 class="line-b" translate>Copayers</h2>
-          <div class="copay-box" ng-repeat="copayer in copayersList()">
-            <span ng-include="'views/includes/photo.html'"></span>
-            <div
-              class="ellipsis"
-              tooltip="ID: {{copayer.peerId}}"
-              tooltip-placement="bottom">
-              <small class="text-gray" ng-show="copayer.index == 0">
-                <i class="fi-check m5r"></i>{{'Me'|translate}}</small>
-              <small class="text-gray" ng-show="copayer.index > 0"><i class="fi-check m5r"></i>{{copayer.nick}}</small>
-            </div>
-            <div translate class="success label m10t" ng-show="isBackupReady(copayer)">Ready</div>
-          </div>
+          <div ng-include="'views/includes/copayer.html'"></div>
         </div> 
       </div>
     </div>
+
   </div>
 </div>
 

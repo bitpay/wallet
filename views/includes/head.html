@@ -1,5 +1,15 @@
 <div class="title">
-  <h1>{{$root.title}}</h1>
+  <h1>
+    {{$root.title}} 
+    <small>
+      <a class="text-gray" ng-click="refresh()" ng-if="!$root.updatingBalance">
+        <i class="fi-refresh"></i>
+      </a>
+      <span ng-if="$root.updatingBalance">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+      </span>
+    </small>
+  </h1> 
 </div>
 
 
@@ -17,11 +27,6 @@
   </ul>
 </div>
 <div class="right">
-  <a class="button tiny secondary radius oh" href="#!/manage" title="Manage wallets"><i class="fi-plus"></i> {{'Manage wallets' | translate }}</a>
-</div>
-<div class="right m20r m5t">
-  <a ng-click="refresh()" class="size-18 text-gray">
-    <i class="fi-refresh right"></i>
-  </a>
+  <a class="button tiny secondary radius m0" href="#!/manage" title="Manage wallets"><i class="fi-plus"></i> {{'Manage wallets' | translate }}</a>
 </div>
 

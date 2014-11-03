@@ -1,80 +1,87 @@
 <div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
   <div ng-show='$root.wallet.isReady()'>
-    <div ng-if="loading" class="m10b">
+    <div ng-if="loading" class="m20b">
       <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
       <span translate>Loading...</span>
     </div>
     <div ng-if="!blockchain_txs[0].txid && !loading">
       <em><strong translate>No transactions yet.</strong></em>
     </div>
-    <div class="panel large-12 columns" ng-repeat="btx in blockchain_txs | orderBy: 'time':true" ng-click="btx.showDetails = !btx.showDetails">
-      <div class="row collapse size-14">
-        <div class="large-2 medium-2 small-4 columns">
-          <span ng-hide="btx.ts">&nbsp;</span>
-          <time ng-if="btx.ts">{{btx.ts | amCalendar}}</time>
-          <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
-            <span translate>Unconfirmed</span>
-          </span>
-        </div>
+    <div 
+      class="row"
+      ng-if="blockchain_txs[0].txid">
+      <div class="large-12 colums">
 
-        <div class="large-2 medium-2 small-5 columns text-right">
-          <div ng-if="btx.action == 'received' " class="text-primary">
-            <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-            <i class="m15h fi-arrow-left" tooltip="{{'received'|translate}}" tooltip-placement="bottom"></i>
+        <div class="panel oh" 
+          ng-repeat="btx in blockchain_txs | orderBy: 'time':true" ng-click="btx.showDetails = !btx.showDetails">
+          <div class="row size-14">
+            <div class="large-2 medium-3 small-12 columns">
+              <span ng-hide="btx.ts">&nbsp;</span>
+              <time ng-if="btx.ts">{{btx.ts | amCalendar}}</time>
+              <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
+                <span translate>Unconfirmed</span>
+              </span>
+            </div>
+
+            <div class="large-2 medium-3 small-6 columns text-right">
+              <div ng-class="{
+                'text-primary' : btx.action == 'received',
+                'text-warning': btx.action == 'sent', 
+                'text-gray': btx.action == 'moved'}">
+                <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+                <i class="m15h" 
+                  ng-class="{
+                  'fi-arrow-left' : btx.action == 'received',
+                  'fi-arrow-right': btx.action == 'sent', 
+                  'fi-arrow-loop': btx.action == 'moved'}"></i>
+              </div>
+            </div>
+
+            <div class="large-3 medium-3 small-6 columns text-gray">
+              <span ng-hide="btx.labelTo">&nbsp;</span>
+              <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
+            </div>
+
+            <div class="large-4 medium-3 small-12 columns text-gray"> 
+              <span ng-show="btx.comment"><i class="fi-comment-quotes"></i> {{btx.comment}} </span>
+            </div>
+
+            <div class="large-1 columns show-for-large-up text-gray text-right" ng-init="btx.showDetails = false">
+              <a>
+                <i ng-if="!btx.showDetails" class="icon-arrow-down4"></i>
+                <i ng-if="btx.showDetails" class="icon-arrow-up4 size-12"></i>
+              </a>
+            </div>
+
           </div>
-          <div ng-if="btx.action == 'sent' " class="text-warning">
-            <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-            <i class="m15h fi-arrow-right" tooltip="{{'Sent'|translate}}" tooltip-placement="bottom"></i>
+          <div ng-show="btx.showDetails">
+            <table class="last-transactions-content" ng-if="btx.actionList.0">
+              <tbody>
+              <tr ng-repeat="c in btx.actionList">
+                <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+                </td>
+                <td>
+                  <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
+                  <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
+                </td>
+                <td>
+                  <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
+                  <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
+                </td>
+                <td>
+                  <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
+                  <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
+                  <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
+                </td>
+              </tr> 
+              </tbody>
+            </table>
+            <div class="line"></div>
+            <div class="size-12 text-gray">
+              <span class="left hide-for-small-only">Transaction ID: {{btx.txid}} </span>
+              <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" class="right"> More details <i class="icon-arrow-right2 vm"></i> </a>
+            </div>
           </div>
-          <div ng-if="btx.action == 'moved' " class="text-gray">
-            <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-            <i class="m15h fi-loop" tooltip="{{'Moved'|translate}}" tooltip-placement="bottom"></i>
-          </div>
-        </div>
-
-        <div class="large-3 medium-3 columns hide-for-small-only text-gray">
-          <span ng-hide="btx.labelTo">&nbsp;</span>
-          <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
-        </div>
-
-        <div class="large-3 medium-3 small-4 columns hide-for-small-only text-gray">
-          <span ng-show="btx.comment"><i class="fi-comment-quotes"></i> {{btx.comment}} </span>
-        </div>
-
-        <div class="large-1 medium-1 small-1 columns text-right"
-          ng-init="btx.showDetails = false">
-          <a>
-            <i ng-if="!btx.showDetails" class="icon-arrow-down4"></i>
-            <i ng-if="btx.showDetails" class="icon-arrow-up4 size-12"></i>
-          </a>
-        </div>
-      </div>
-      <div ng-show="btx.showDetails">
-        <table class="last-transactions-content" ng-if="btx.actionList.0">
-          <tbody>
-          <tr ng-repeat="c in btx.actionList">
-            <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
-            </td>
-            <td>
-              <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
-              <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
-            </td>
-            <td>
-              <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
-              <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
-            </td>
-            <td>
-              <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
-              <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
-              <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
-            </td>
-          </tr> 
-          </tbody>
-        </table>
-        <div class="line"></div>
-        <div class="size-12 text-gray">
-            <span class="left hide-for-small-only">Transaction ID: {{btx.txid}} </span>
-            <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" class="right"> More details <i class="icon-arrow-right2 vm"></i> </a>
         </div>
       </div>
     </div>
