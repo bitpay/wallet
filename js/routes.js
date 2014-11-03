@@ -22,6 +22,10 @@ angular
       .when('/uri-payment/:data', {
         templateUrl: 'views/uri-payment.html'
       })
+      .when('/paymentIntent', {
+        templateUrl: 'views/paymentIntent.html',
+        logged: true
+      })
       .when('/join', {
         templateUrl: 'views/join.html',
         logged: true
