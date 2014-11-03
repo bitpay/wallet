@@ -116,27 +116,6 @@
     color: white;
   }
 
-  .panel .secret {
-    padding-top: 0.5rem;
-    display: block;
-    width: 100%;
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .panel qrcode {
-    display: block;
-    float: none;
-    margin: 0 auto;
-    width: 160px;
-    height: 160px;
-  }
-
-  .panel qrcode canvas {
-    width: 150px;
-    height: 150px;
-  }
-
   .addresses .panel {
     padding: 1rem 0.8rem;
   }
