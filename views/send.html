@@ -11,6 +11,12 @@
     <div class="row collapse m0">
     <div class="large-6 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
+        <p class="text-warning size-16"
+          ng-show="error">
+          <i class="fi-alert"></i> 
+          {{error|translate}}
+          </p>
+ 
         <div class="row collapse">
           <div class="large-12 columns">
             <div class="row collapse">
@@ -80,9 +86,9 @@
                 <small class="icon-input" ng-show="sendForm.amount.$invalid &&
                   !sendForm.amount.$pristine && !notValidAmount"><i class="fi-x"></i></small>
                 <a class="small input-note" title="{{'Send all funds'|translate}}"
-                  ng-show="$root.availableBalance > 0 && (!$root.merchant || +$root.merchant.total === 0)"
+                  ng-show="availableBalance && (!$root.merchant || +$root.merchant.total === 0)"
                   ng-click="topAmount(sendForm)">
-                <span translate>Use all funds</span> ({{getAvailableAmount()}} {{$root.wallet.settings.unitName}})
+                <span translate>Use all funds</span> ({{availableBalance}} {{$root.wallet.settings.unitName}})
                 </a>
               </div>
               <div class="small-3 columns">

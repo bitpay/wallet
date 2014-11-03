@@ -4,32 +4,6 @@ var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
-    controllerUtils.redirIfNotComplete();
-
-    var w = $rootScope.wallet;
-    preconditions.checkState(w);
-    preconditions.checkState(w.settings.unitToSatoshi);
-
-    $rootScope.title = 'Send';
-    $scope.loading = false;
-    var satToUnit = 1 / w.settings.unitToSatoshi;
-    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
-    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
-    $scope.unitToSatoshi = w.settings.unitToSatoshi;
-
-    $scope.alternativeName = w.settings.alternativeName;
-    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
-
-    $scope.isRateAvailable = false;
-    $scope.rateService = rateService;
-
-
-
-    rateService.whenAvailable(function() {
-      $scope.isRateAvailable = true;
-      $scope.$digest();
-    });
-
     /**
      * Setting the two related amounts as properties prevents an infinite
      * recursion for watches while preserving the original angular updates
@@ -103,8 +77,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.submitForm = function(form) {
       if (form.$invalid) {
-        var message = 'Unable to send transaction proposal';
-        notification.error('Error', message);
+        $scope.error = 'Unable to send transaction proposal';
         return;
       }
 
@@ -116,8 +89,15 @@ angular.module('copayApp.controllers').controller('SendController',
 
       function done(err, ntxid, merchantData) {
         if (err) {
-          var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created';
-          notification.error('Error', message);
+          copay.logger.error(err);
+
+          var msg = err.toString();
+
+          if (msg.match('BIG'))
+            msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts.'
+
+          var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created: ' + msg;
+          $scope.error = message;
           $scope.loading = false;
           $scope.loadTxs();
           return;
@@ -161,7 +141,7 @@ angular.module('copayApp.controllers').controller('SendController',
               }
               notification.success('Transaction broadcasted', message);
             } else {
-              notification.error('Error', 'There was an error sending the transaction');
+              $scope.error = 'There was an error sending the transaction';
             }
             $scope.loading = false;
             $scope.loadTxs();
@@ -396,13 +376,16 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.getAvailableAmount = function() {
-      var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - bitcore.TransactionBuilder.FEE_PER_1000B_SAT) / w.settings.unitToSatoshi);
+      if (!$rootScope.safeUnspentCount) return null;
+
+      var estimatedFee = copay.Wallet.estimatedFee($rootScope.safeUnspentCount);
+      var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
+
       return amount > 0 ? amount : 0;
     };
 
     $scope.topAmount = function(form) {
       $scope.amount = $scope.getAvailableAmount();
-      form.amount.$pristine = false;
     };
 
 
@@ -411,7 +394,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.txAlertCount = 0;
       w.sendTx(ntxid, function(txid, merchantData) {
         if (!txid) {
-          notification.error('Error', 'There was an error sending the transaction');
+          $scope.error = 'There was an error sending the transaction';
         } else {
           if (!merchantData) {
             notification.success('Transaction broadcasted', 'Transaction id: ' + txid);
@@ -435,7 +418,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       w.sign(ntxid, function(ret) {
         if (!ret) {
-          notification.error('Error', 'There was an error signing the transaction');
+          $scope.error = 'There was an error signing the transaction';
           $scope.loadTxs();
         } else {
           var p = w.txProposals.getTxProposal(ntxid);
@@ -614,5 +597,32 @@ angular.module('copayApp.controllers').controller('SendController',
           '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
     };
+
+    controllerUtils.redirIfNotComplete();
+
+    var w = $rootScope.wallet;
+    preconditions.checkState(w);
+    preconditions.checkState(w.settings.unitToSatoshi);
+
+    $rootScope.title = 'Send';
+    $scope.loading = false;
+    var satToUnit = 1 / w.settings.unitToSatoshi;
+    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
+    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = w.settings.unitToSatoshi;
+
+    $scope.alternativeName = w.settings.alternativeName;
+    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
+
+    $scope.isRateAvailable = false;
+    $scope.rateService = rateService;
+    $scope.availableBalance = $scope.getAvailableAmount();
+
+    rateService.whenAvailable(function() {
+      $scope.isRateAvailable = true;
+      $scope.$digest();
+    });
+
+
 
   });
