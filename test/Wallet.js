@@ -1005,6 +1005,18 @@ describe('Wallet model', function() {
     });
   });
 
+  describe('#estimatedFee', function() {
+    it('should calculate estimated fee', function() {
+      var COIN = 100000000;
+      Wallet.estimatedFee(1).should.equal(0.0001 * COIN);
+      Wallet.estimatedFee(2).should.equal(0.0001 * COIN);
+      Wallet.estimatedFee(3).should.equal(0.0002 * COIN);
+      Wallet.estimatedFee(1000).should.equal(0.0245 * COIN);
+    });
+  });
+
+
+
   describe('#send', function() {
     it('should call this.network.send', function() {
       var w = cachedCreateW2();

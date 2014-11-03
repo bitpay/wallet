@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-
 'use strict';
+
+
 var copay = require('../copay');
-var program = require('commander');
 var _ = require('lodash');
 var config = require('../config');
 var version = require('../version').version;
@@ -10,6 +10,22 @@ var sinon = require('sinon');
 var bitcore = require('bitcore');
 var readline = require('readline');
 var async = require('async');
+var program = require('commander');
+
+function list(val) {
+  return val.split(',');
+}
+
+program
+  .version('0.0.1')
+  .usage('-d n2kMqQ8Si9GndzQ6FrJxcwHMKacK2rCEpK -n 2 -k tprv8ZgxMBicQKsPem5BuuDT6xY9etUC2RohpUoyzoa1MEkkZyAHhszaHPZTmgDheN31hSP1r6bRwpj2JC66r1CPpftwaRrhz')
+  .option('-d, --destination <n>', 'Destination Address')
+  .option('-n, --required <n>', 'Required number of signatures', parseInt)
+  .option('-k, --keys <items>', 'master private keys, separated by , ', list)
+  .option('-a, --amount <n>', 'Optional, amount to transfer, in Satoshis. If not provided, will wipe all funds', parseInt)
+  .option('-f, --fee [n]', 'Optional, fee in BTC (default 0.0001 BTC), only if amount is not provided', parseFloat)
+  .parse(process.argv);
+
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -17,26 +33,39 @@ var rl = readline.createInterface({
 });
 var args = process.argv;
 
-var destAddr = args[2];
-var DFLT_FEE = 0.0001 * bitcore.util.COIN;
+var requiredCopayers = program.required;
+var extPrivKeys = program.keys;
+var destAddr = program.destination;
+var amount = program.amount;
 
-if (!args[4]) {
-  console.log('\n\tusage: swipeWallet.js <destionation address> <required signature number> <master private key 0> [<master private key 1> ...]');
-  console.log('\t e.g.: ./swipeWallet.js mxBVchwitGLXBHtT4Vah7DdP8J9M23ftE6  2 tprv8ZgxMBicQKsPejj9Xpky8M7NFv7szxqszBR2VvZTEkBTCCXZLtJfQwRxhUycNCu4sqyZepx8AfT1vuJr949np1gxYbZaJK3R9qekYPCZiJz tprv8ZgxMBicQKsPdWe14mn5SPY4zjG7fJnrmhkVZgTHQfYp91Kf1Lxof38KBQJiis4xv2zvZ2pVHgLn4GFRDUd8kR2HkMxDqLDNWTmnKqp95mZ tprv8ZgxMBicQKsPdzoFwT72Lwhr6n48ZyPahTAhPNaoAP4srVA1mcfPon7GWQaiwfAWesWACHm3aCBLYNGNPVKSU3E9vr1cLiBoMkayZiARywe');
+if (amount && program.fee) {
+  console.log('If amount if given, fee will be automatically calculated');
   process.exit(1);
 }
 
-var requiredCopayers = parseInt(args[3]);
-var extPrivKeys = args.slice(4);
-var totalCopayers = extPrivKeys.length;
+if (!requiredCopayers || !extPrivKeys || !extPrivKeys.length || !destAddr){
+  program.outputHelp();
+  process.exit(1);
+}
 
+// Fee to asign to the tx. Please put a bigger number if you get 'unsufficient unspent'
+var fee = program.fee ||  0.0001;
+
+
+var totalCopayers = extPrivKeys.length;
 var addr = new bitcore.Address(destAddr);
 if (!addr.isValid()) {
   console.log('\tBad destination address'); //TODO
   process.exit(1);
+
 }
+
+
+
 var networkName = addr.network().name;
-console.log('\tNetwork: %s\n\tDestination Address:%s\n\tRequired copayers: %d\n\tTotal copayers: %d\n\tKeys:', networkName, destAddr, requiredCopayers, totalCopayers, extPrivKeys); //TODO
+console.log('\tNetwork: %s\n\tDestination Address:%s\n\tRequired copayers: %d\n\tTotal copayers: %d\n\tFee: %d\n\tKeys:', 
+            networkName, destAddr, requiredCopayers, 
+            totalCopayers, fee, extPrivKeys); //TODO
 console.log('\n ----------------------------');
 
 if (requiredCopayers > totalCopayers)
@@ -119,17 +148,30 @@ firstWallet.updateIndexes(function() {
     console.log('Balance per address:', balanceByAddr); //TODO
 
     if (!balance) {
-      console.log('Could not find any balance from the generated wallet'); //TODO
-      process.exit(1);
+      throw ('Could not find any coins in the generated wallet');
     }
 
-    rl.question("\n\tShould I swipe the wallet (destination address" + destAddr + ")?\n\t(`yes` to continue)\n\t", function(answer) {
-      if (answer !== 'yes')
-        process.exit(1);
 
-      var amount = balance - DFLT_FEE;
+    if (amount && amount >= balance) 
+      throw ('Not enought balance fund to fullfill ' + amount + ' satoshis');
+
+     rl.question("\n\tShould I swipe the wallet (destination address is:" + destAddr + " Amount: "+ amount + "Satoshis )?\n\t(`yes` to continue)\n\t", function(answer) {
+       if (answer !== 'yes')
+         process.exit(1);
+
+      amount = amount || balance - fee * bitcore.util.COIN;
+
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
-        console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.'); 
+        if (err || !ntxid) {
+          if (err && err.toString().match('BIG')) {
+            throw new Error('Could not create tx' + err );
+          } else {
+            throw new Error('Could not create tx' + err + '. Try a bigger fee (--fee).');
+          }
+        }
+
+        console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.');
+
         if (requiredCopayers === 1) {
           firstWallet.sendTx(ntxid, function(txid) {
             console.log('\t #######  SENT  TXID:', txid);
@@ -161,6 +203,9 @@ firstWallet.updateIndexes(function() {
             var p = firstWallet.txProposals.getTxProposal(ntxid);
             if (p.builder.isFullySigned()) {
               console.log('\t FULLY SIGNED. BROADCASTING NOW....');
+              var tx = p.builder.build();
+              var txHex = tx.serialize().toString('hex');
+              //console.log('\t RAW TX: ', txHex);
               firstWallet.sendTx(ntxid, function(txid) {
                 console.log('\t #######  SENT  TXID:', txid);
                 process.exit(1);

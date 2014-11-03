@@ -42,6 +42,7 @@ describe("Unit: Controllers", function() {
   beforeEach(inject(function($controller, $rootScope) {
     scope = $rootScope.$new();
     $rootScope.iden = sinon.stub();
+    $rootScope.safeUnspentCount = 1;
 
     var w = {};
     w.isReady = sinon.stub().returns(true);
@@ -467,6 +468,7 @@ describe("Unit: Controllers", function() {
       expect(form.amount.$pristine).to.equal(false);
     });
     it('should return available amount', function() {
+      form.amount.$setViewValue(123356);
       var amount = scope.getAvailableAmount();
       expect(amount).to.equal(123356);
     });

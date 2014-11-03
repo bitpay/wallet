@@ -30,6 +30,8 @@ var Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
 
+var TX_MAX_SIZE_KB = 50;
+var TX_MAX_INS     = 70;
 /**
  * @desc
  * Wallet manages a private key for Copay, network, storage of the wallet for
@@ -1381,14 +1383,17 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var self = this;
   this.blockchain.broadcast(txHex, function(err, txid) {
-    log.debug('Wallet:' + self.id + ' BITCOIND txid:', txid);
+    if (err)
+      log.error('Error sending TX:',err);
+
     if (txid) {
+      log.debug('Wallet:' + self.getName() + ' Broadcasted TX. BITCOIND txid:', txid);
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
       self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid);
     } else {
-      log.debug('Wallet:' + self.id + ' Sent failed. Checking if the TX was sent already');
+      log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
           self.emitAndKeepAlive('txProposalsUpdated');
@@ -1879,15 +1884,9 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   merchantData.total = merchantData.total.toString(10);
 
-  var b;
-  try {
-    b = new Builder(opts)
-      .setUnspent(unspent)
-      .setOutputs(outs);
-  } catch (e) {
-    log.debug(e.message);
-    return;
-  };
+  var b = new Builder(opts)
+    .setUnspent(unspent)
+    .setOutputs(outs);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -2155,12 +2154,23 @@ Wallet.prototype.addressIsOwn = function(addrStr, opts) {
 };
 
 
+/* 
+ * Estimate a tx fee in satoshis given its input count
+ * only for spending all wallet funds
+ */
+Wallet.estimatedFee = function(unspentCount) {
+  preconditions.checkArgument(_.isNumber(unspentCount));
+  var estimatedSizeKb = Math.ceil( ( 500 + unspentCount * 250) / 1024 );
+  return parseInt( estimatedSizeKb * bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
+};
+
 /**
  * @callback {getBalanceCallback}
  * @param {string=} err - an error, if any
  * @param {number} balance - total number of satoshis for all addresses
  * @param {Object} balanceByAddr - maps string addresses to satoshis
  * @param {number} safeBalance - total number of satoshis in UTXOs that are not part of any TxProposal
+ * @param {number} safeUnspentCount - total number of safe unspent Outputs that make this balance.
  */
 /**
  * @desc Returns the balances for all addresses in Satoshis
@@ -2191,14 +2201,16 @@ Wallet.prototype.getBalance = function(cb) {
 
     balance = parseInt(balance.toFixed(0), 10);
 
-    for (var i = 0; i < safeUnspent.length; i++) {
+    var safeUnspentCount = safeUnspent.length;
+
+    for (var i = 0; i < safeUnspentCount; i++) {
       var u = safeUnspent[i];
       var amt = u.amount * COIN;
       safeBalance += amt;
     }
 
     safeBalance = parseInt(safeBalance.toFixed(0), 10);
-    return cb(null, balance, balanceByAddr, safeBalance);
+    return cb(null, balance, balanceByAddr, safeBalance, safeUnspentCount);
   });
 };
 
@@ -2320,7 +2332,14 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
   this.getUnspent(function(err, safeUnspent) {
     if (err) return cb(new Error('Could not get list of UTXOs'));
 
-    var ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
+    var ntxid;
+    try {
+      ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
+      log.debug('TX Created: ntxid', ntxid); //TODO
+    } catch (e) {
+      return cb(e);
+    }
+
     if (!ntxid) {
       return cb(new Error('Error creating the transaction'));
     }
@@ -2365,21 +2384,21 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
     opts[k] = Wallet.builderOpts[k];
   }
 
-  var b;
+  var b = new Builder(opts)
+    .setUnspent(utxos)
+    .setOutputs([{
+      address: toAddress.data,
+      amountSatStr: amountSatStr,
+    }]);
 
-  try {
-    b = new Builder(opts)
-      .setUnspent(utxos)
-      .setOutputs([{
-        address: toAddress.data,
-        amountSatStr: amountSatStr,
-      }]);
-  } catch (e) {
-    log.debug(e.message);
-    return;
-  };
+  log.debug('Creating TX: Builder ready');
 
   var selectedUtxos = b.getSelectedUnspent();
+
+  if (selectedUtxos.length > TX_MAX_INS)
+    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length + ' inputs. Aborting');
+ 
+
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
@@ -2395,6 +2414,12 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var tx = b.build();
   if (!tx.countInputSignatures(0))
     throw new Error('Could not sign generated tx');
+
+  var txSize = tx.getSize();
+
+  if (txSize/1024 > TX_MAX_SIZE_KB)
+    throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
+ 
 
   var me = {};
   me[myId] = now;
