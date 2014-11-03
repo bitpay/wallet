@@ -264,6 +264,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.$apply(function() {
         $scope.sendForm.address.$setViewValue(data);
+        $scope.sendForm.address.$render();
       });
     };
 

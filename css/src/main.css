@@ -144,9 +144,12 @@ header .alt-currency {
   right: 0;
 }
 
-.head .title h1 {
+.head .title {
   float: left;
   padding-left: 2rem;
+}
+
+.head .title h1 {
   margin: 0;
 }
 
@@ -349,7 +352,7 @@ a:hover {
 
 .main {
   margin-left: 250px;
-  padding: 100px 2rem;
+  padding: 100px 1.5rem;
   background-color: #F8F8FB;
 }
 
@@ -655,11 +658,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .spinner {
-  display:inline-block; 
-  width: 1em; 
-  text-align:center; 
-  line-height:1em; 
-  vertical-align:middle;
+  display: inline-block;
 }
 
 .highlight{
@@ -1134,6 +1133,7 @@ button.gray:focus,
   border-radius: 100%;
   vertical-align: middle;
   overflow: hidden;
+  text-align: center;
 }
 
 a:hover .photo-container  {
@@ -1205,19 +1205,10 @@ a:hover .photo-container  {
   cursor: pointer;
 }
 
-.copay-box-small {
-  width: 45px;
-  text-align: center;
-  margin-right: 10px;
-  padding-bottom: 5px;
-  float: left;
-}
-
 .copay-box {
   width: 70px;
   text-align: center;
   margin-right: 20px;
-  padding-bottom: 5px;
   float: left;
 }
 
@@ -1264,26 +1255,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-color: red;
 }
 
-.copayers h3, .copayers h4, .waiting-copayers h4 {
-  color: #fff;
-  font-weight: 100;
-}
-
-.copayers {
-  width: 100%;
-  background-color: #213140;
-  /* position: absolute; */
-  /* bottom: 0; */
-  /* left: 0; */
-  padding: 20px;
-  border-top: 1px solid #475065;
-  /* overflow-y: hidden; */
-}
-
-.copayers i {
-  opacity: 0.6;
-}
-
 .black {
   background-color: #2C3E50;
 }
@@ -1319,6 +1290,11 @@ a.text-warning:hover {color: #FD7262;}
   background-color: #1ABC9C;
   width: 100%;
   margin-top: 15%;
+}
+
+.loading-screen .spinner {
+  vertical-align: middle;
+  margin-right: 15px;
 }
 
 .box-setup .panel {
@@ -1363,24 +1339,18 @@ a.text-warning:hover {color: #FD7262;}
 }
 
 .panel qrcode {
-  float: left;
-  width: 160px;
-  height: 160px;
-  padding: 5px 0 0 5px;
   background-color: white;
 }
 
 .panel qrcode canvas {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
 }
 
 .panel .secret {
-  float: left;
-  margin-left: 2rem;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  text-align: left;
+  text-align: center;
 }
 
 .panel {
