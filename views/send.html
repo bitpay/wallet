@@ -80,9 +80,9 @@
                 <small class="icon-input" ng-show="sendForm.amount.$invalid &&
                   !sendForm.amount.$pristine && !notValidAmount"><i class="fi-x"></i></small>
                 <a class="small input-note" title="{{'Send all funds'|translate}}"
-                  ng-show="$root.availableBalance > 0 && (!$root.merchant || +$root.merchant.total === 0)"
+                  ng-show="availableBalance && (!$root.merchant || +$root.merchant.total === 0)"
                   ng-click="topAmount(sendForm)">
-                <span translate>Use all funds</span> ({{getAvailableAmount()}} {{$root.wallet.settings.unitName}})
+                <span translate>Use all funds</span> ({{availableBalance}} {{$root.wallet.settings.unitName}})
                 </a>
               </div>
               <div class="small-3 columns">

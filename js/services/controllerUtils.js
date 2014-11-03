@@ -241,18 +241,19 @@ angular.module('copayApp.services')
     };
 
 
-    root._computeBalance = function(w, cb) {
+    root._fetchBalance = function(w, cb) {
       cb = cb || function() {};
       var satToUnit = 1 / w.settings.unitToSatoshi;
       var COIN = bitcore.util.COIN;
 
-      w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat) {
+      w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat, safeUnspentCount) {
         if (err) return cb(err);
 
         var r = {};
         r.totalBalance = balanceSat * satToUnit;
         r.totalBalanceBTC = (balanceSat / COIN);
         r.availableBalance = safeBalanceSat * satToUnit;
+        r.safeUnspentCount = safeUnspentCount;
         r.availableBalanceBTC = (safeBalanceSat / COIN);
 
         r.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
@@ -276,22 +277,10 @@ angular.module('copayApp.services')
       });
     };
 
-    root._updateScope = function(w, data, $scope, cb) {
-      $scope.totalBalance = data.totalBalance;
-      $scope.totalBalanceBTC = data.totalBalanceBTC;
-      $scope.availableBalance = data.availableBalance;
-      $scope.availableBalanceBTC = data.availableBalanceBTC;
-
-      $scope.lockedBalance = data.lockedBalance;
-      $scope.lockedBalanceBTC = data.lockedBalanceBTC;
-
-      $scope.balanceByAddr = data.balanceByAddr;
-
-      $scope.totalBalanceAlternative = data.totalBalanceAlternative;
-      $scope.alternativeIsoCode = data.alternativeIsoCode;
-      $scope.lockedBalanceAlternative = data.lockedBalanceAlternative;
-      $scope.alternativeConversionRate = data.alternativeConversionRate;
-
+    root._updateScope = function(w, data, scope, cb) {
+      _.each(data, function(v, k) {
+        scope[k] = data[k];
+      })
       if (cb) return cb();
     };
 
@@ -320,7 +309,7 @@ angular.module('copayApp.services')
         scope.updatingBalance = true;
       }
 
-      root._computeBalance(w, function(err, res) {
+      root._fetchBalance(w, function(err, res) {
         if (err) throw err;
         _balanceCache[wid] = res;
         root._updateScope(w, _balanceCache[wid], scope, function() {
