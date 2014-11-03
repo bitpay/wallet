@@ -37,7 +37,6 @@ var args = process.argv;
 
 var requiredCopayers = program.required;
 var extPrivKeys = program.keys;
-var totalCopayers = extPrivKeys.length;
 var destAddr = program.destination;
 var amount = program.amount;
 
@@ -47,6 +46,7 @@ if (!requiredCopayers || !extPrivKeys || !extPrivKeys.length || !destAddr){
 }
 
 
+var totalCopayers = extPrivKeys.length;
 var addr = new bitcore.Address(destAddr);
 if (!addr.isValid()) {
   console.log('\tBad destination address'); //TODO
