@@ -2335,9 +2335,8 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     var ntxid;
     try {
       ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
-      log.debub('TX Created: ntxid', ntxid); //TODO
+      log.debug('TX Created: ntxid', ntxid); //TODO
     } catch (e) {
-console.log('[Wallet.js.2340]', e); //TODO
       return cb(e);
     }
 

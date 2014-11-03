@@ -378,7 +378,6 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.getAvailableAmount = function() {
       if (!$rootScope.safeUnspentCount) return null;
 
-      // Each signature takes
       var estimatedFee = copay.Wallet.estimatedFee($rootScope.safeUnspentCount);
       var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
 
