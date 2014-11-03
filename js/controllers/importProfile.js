@@ -19,12 +19,6 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     var _importBackup = function(str) {
       var password = $scope.password;
       updateStatus('Importing profile - Setting things up...');
-      // var skipFields = [];
-      // if ($scope.skipPublicKeyRing)
-      //   skipFields.push('publicKeyRing');
-      //
-      // if ($scope.skipTxProposals)
-      //   skipFields.push('txProposals');
 
       copay.Identity.importFromEncryptedFullJson(str, password, {
         pluginManager: pluginManager,
@@ -34,11 +28,9 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
         if (err && !iden) {
-          console.log('Error:' + err)
           controllerUtils.onErrorDigest(
             $scope, (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error');
         } else {
-          console.log('Success.....Profile imported successfully');
           notification.info('Success', 'Profile imported successfully');
           $location.path('/');
         }

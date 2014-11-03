@@ -112,7 +112,6 @@ angular
         $location.path('unsupported');
       } else {
         if (!$rootScope.iden && next.logged) {
-          console.log('not logged... redirecting')
           $idle.unwatch();
           $location.path('/');
         }
