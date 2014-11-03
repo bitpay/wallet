@@ -22,7 +22,8 @@ program
   .option('-d, --destination <n>', 'Destination Address')
   .option('-n, --required <n>', 'Required number of signatures', parseInt)
   .option('-k, --keys <items>', 'master private keys', list)
-  .option('-f, --fee [n]', 'Set fee in BTC (default 0.0001 BTC)', parseFloat)
+  .option('-a, --amount <n>', 'Optional, amount to transfer, in Satoshis', parseInt)
+  .option('-f, --fee [n]', 'Optional, fee in BTC (default 0.0001 BTC)', parseFloat)
   .parse(process.argv);
 
 // Fee to asign to the tx. Please put a bigger number if you get 'unsufficient unspent'
@@ -38,6 +39,7 @@ var requiredCopayers = program.required;
 var extPrivKeys = program.keys;
 var totalCopayers = extPrivKeys.length;
 var destAddr = program.destination;
+var amount = program.amount;
 
 if (!requiredCopayers || !extPrivKeys || !extPrivKeys.length || !destAddr){
   program.outputHelp();
@@ -140,20 +142,26 @@ firstWallet.updateIndexes(function() {
     console.log('Balance per address:', balanceByAddr); //TODO
 
     if (!balance) {
-      console.log('Could not find any coins in the generated wallet'); //TODO
-      process.exit(1);
+      throw ('Could not find any coins in the generated wallet');
     }
 
-    // rl.question("\n\tShould I swipe the wallet (destination address is:" + destAddr + ")?\n\t(`yes` to continue)\n\t", function(answer) {
-      // if (answer !== 'yes')
-        // process.exit(1);
 
-      var amount = balance - fee * bitcore.util.COIN;
+    if (amount && amount >= balance) 
+      throw ('Not enought balance fund to fullfill ' + amount + ' satoshis');
 
-console.log('[swipeWallet.js.136]'); //TODO
+     rl.question("\n\tShould I swipe the wallet (destination address is:" + destAddr + " Amount: "+ amount + "Satoshis )?\n\t(`yes` to continue)\n\t", function(answer) {
+       if (answer !== 'yes')
+         process.exit(1);
+
+      amount = amount || balance - fee * bitcore.util.COIN;
+
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
         if (err || !ntxid) {
-          throw new Error('Could not create tx' + err + '. Try a bigger fee (--fee).');
+          if (err && err.toString().match('BIG')) {
+            throw new Error('Could not create tx' + err );
+          } else {
+            throw new Error('Could not create tx' + err + '. Try a bigger fee (--fee).');
+          }
         }
 
         console.log('\n\t### Tx Proposal Created...\n\tWith copayer 0 signature.');
@@ -191,7 +199,7 @@ console.log('[swipeWallet.js.136]'); //TODO
               console.log('\t FULLY SIGNED. BROADCASTING NOW....');
               var tx = p.builder.build();
               var txHex = tx.serialize().toString('hex');
-              console.log('\t RAW TX: ', txHex);
+              //console.log('\t RAW TX: ', txHex);
               firstWallet.sendTx(ntxid, function(txid) {
                 console.log('\t #######  SENT  TXID:', txid);
                 process.exit(1);
@@ -202,6 +210,6 @@ console.log('[swipeWallet.js.136]'); //TODO
           }
         )
       });
-    // });
+    });
   });
 });

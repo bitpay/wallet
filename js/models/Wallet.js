@@ -2381,7 +2381,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var selectedUtxos = b.getSelectedUnspent();
 
   if (selectedUtxos.size > TX_MAX_INS)
-    throw new Error('Resulting TX is TOO big:' + selectedUtxos.size + ' inputs. Aborting');
+    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.size + ' inputs. Aborting');
  
 
   var inputChainPaths = selectedUtxos.map(function(utxo) {
@@ -2403,7 +2403,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
   var txSize = tx.getSize();
 
   if (txSize/1024 > TX_MAX_SIZE_KB)
-    throw new Error('Resulting TX is TOO big ' + txSize + ' bytes. Aborting');
+    throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
  
 
   var me = {};
