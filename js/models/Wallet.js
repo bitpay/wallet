@@ -1381,14 +1381,17 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
   var self = this;
   this.blockchain.broadcast(txHex, function(err, txid) {
-    log.debug('Wallet:' + self.id + ' BITCOIND txid:', txid);
+    if (err)
+      log.error('Error sending TX:',err);
+
     if (txid) {
+      log.debug('Wallet:' + self.getName() + ' Broadcasted TX. BITCOIND txid:', txid);
       self.txProposals.get(ntxid).setSent(txid);
       self.sendTxProposal(ntxid);
       self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid);
     } else {
-      log.debug('Wallet:' + self.id + ' Sent failed. Checking if the TX was sent already');
+      log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
       self._checkSentTx(ntxid, function(txid) {
         if (txid)
           self.emitAndKeepAlive('txProposalsUpdated');
