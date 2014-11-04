@@ -31,7 +31,7 @@ var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
 
 var TX_MAX_SIZE_KB = 50;
-var TX_MAX_INS     = 70;
+var TX_MAX_INS = 70;
 /**
  * @desc
  * Wallet manages a private key for Copay, network, storage of the wallet for
@@ -1384,7 +1384,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
   var self = this;
   this.blockchain.broadcast(txHex, function(err, txid) {
     if (err)
-      log.error('Error sending TX:',err);
+      log.error('Error sending TX:', err);
 
     if (txid) {
       log.debug('Wallet:' + self.getName() + ' Broadcasted TX. BITCOIND txid:', txid);
@@ -2160,8 +2160,8 @@ Wallet.prototype.addressIsOwn = function(addrStr, opts) {
  */
 Wallet.estimatedFee = function(unspentCount) {
   preconditions.checkArgument(_.isNumber(unspentCount));
-  var estimatedSizeKb = Math.ceil( ( 500 + unspentCount * 250) / 1024 );
-  return parseInt( estimatedSizeKb * bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
+  var estimatedSizeKb = Math.ceil((500 + unspentCount * 250) / 1024);
+  return parseInt(estimatedSizeKb * bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
 };
 
 /**
@@ -2397,7 +2397,7 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   if (selectedUtxos.length > TX_MAX_INS)
     throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length + ' inputs. Aborting');
- 
+
 
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
@@ -2417,9 +2417,9 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 
   var txSize = tx.getSize();
 
-  if (txSize/1024 > TX_MAX_SIZE_KB)
+  if (txSize / 1024 > TX_MAX_SIZE_KB)
     throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
- 
+
 
   var me = {};
   me[myId] = now;
