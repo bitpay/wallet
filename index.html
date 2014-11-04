@@ -25,7 +25,11 @@
     <img src="img/ajax-loader.gif" alt="Loading...">
   </div>
   <div ng-cloak class="page ng-cloak">
-    <div class="off-canvas-wrap">
+    <div data-alert class="loading-screen" ng-show="signingOut">
+      <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
+      <span translate>Logging Out</span>
+    </div>
+    <div class="off-canvas-wrap" ng-show="!signingOut">
       <div class="inner-wrap">
         <span class="status" ng-if="$root.reconnecting">
           <i class="fi-loop icon-rotate"></i>
