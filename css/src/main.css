@@ -401,7 +401,7 @@ table.last-transactions-content {
   padding: 0;
   border: 0;
   background-color: #F8F8FB;
-  margin: 0;
+  margin: 10px 0;
 }
 
 .last-transactions-content .box-status {
@@ -465,19 +465,18 @@ table.last-transactions-content {
 }
 
 .send-note {
-  font-style: italic;
-  color: gray;
   background-color: #EDEDF5;
-  padding: 1.5rem;
-  width: 400px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-.box-note {
-  text-align: center;
-  clear: both;
-  font-style: italic;
-  color: gray;
-  margin-bottom: 10px;  
+.send-note p {
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.send-note b {
+  color: #000;
 }
 
 a.button-setup.add-wallet {
