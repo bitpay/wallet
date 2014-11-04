@@ -288,7 +288,6 @@ angular.module('copayApp.services')
       w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;
-      console.log('## Updating balance of:' + w.id)
 
       w.balanceInfo = {};
       var scope = root.isFocusedWallet(w.id) ? $rootScope : w.balanceInfo;

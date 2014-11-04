@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
       $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
     }
     $scope.loading = false;
+    $scope.secret = $rootScope.wallet.getSecret();
 
     $scope.goToWallet = function() {
       controllerUtils.updateAddressList();
