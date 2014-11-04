@@ -1,120 +1,133 @@
 <div class="backup" ng-controller="MoreController">
   <h1 class="hide-for-large-up">{{$root.title}} </h1>
-  <div class="row collapse">
-    <form name="settingsForm" class="large-6 small-12 columns">
-      <fieldset>
-        <legend translate>Wallet Unit</legend>
-        <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" ng-change="save()">
-        </select>
-      </fieldset>
-      <fieldset>
-        <legend translate>Alternative Currency</legend>
-        <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" ng-change="save()">
-        </select>
-      </fieldset>
+  <div class="row">
+    <form name="settingsForm">
+      <div class="large-6 medium-6 columns">
+        <fieldset>
+          <legend translate>Wallet Unit</legend>
+          <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" ng-change="save()">
+          </select>
+        </fieldset>
+      </div>
+      <div class="large-6 medium-6 columns">
+        <fieldset>
+          <legend translate>Alternative Currency</legend>
+          <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" ng-change="save()">
+          </select>
+        </fieldset>
+      </div>
     </form>
   </div>
-  <div class="large-12 columns line-dashed-h m15b"></div>
-  <div class="large-6 columns panel">
-    <h2><i class="fi-download m10r"></i> <span translate>Backup</span> </h2>
-    <p translate class="text-gray">
-      It's important to backup your wallet so that you can recover it in case of disaster
-    </p>
-    <a translate class="button primary m0" ng-click="downloadBackup()"
-      ng-show="!isSafari">Download File</a>
-    <a translate class="button primary m0" ng-click="viewBackup()"
-      ng-show="isSafari && !hideViewBackup">View Backup</a>
-    <div ng-show="backupPlainText">
-      <div class="show-for-large-up">
-        <textarea readonly rows="5">{{backupPlainText}}</textarea>
-        <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
-      </div>
-      <div class="hide-for-large-up">
-        <textarea rows="10">{{backupPlainText}}</textarea>
-      </div>
-      <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
-    </div>
-  </div>
-  <div class="large-6 columns">
-    <div class="panel oh">
-      <h3><i class="fi-minus-circle m10r"></i> <span translate> Delete Wallet </span></h3>
-      <p translate class="large-8 columns text-gray">If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet.</p>
-      <div class="large-4 columns">
-        <a translate class="button warning expand" ng-really-message="{{'Are you sure to delete this wallet from this computer?'|translate}}" ng-really-click="deleteWallet()"> Delete</a>
+
+  <div class="line-dashed-h m20b"></div>
+  
+  <div class="row">
+    <div class="large-6 columns">
+      <div class="panel">
+        <h2><i class="fi-download m10r"></i> <span translate>Backup</span></h2>
+        <p translate class="text-gray">
+        It's important to backup your wallet so that you can recover it in case of disaster
+        </p>
+        <a translate class="button primary m0" ng-click="downloadBackup()"
+          ng-show="!isSafari">Download File</a>
+        <a translate class="button primary m0" ng-click="viewBackup()"
+          ng-show="isSafari && !hideViewBackup">View Backup</a>
+        <div ng-show="backupPlainText">
+          <div class="show-for-large-up">
+            <textarea readonly rows="5">{{backupPlainText}}</textarea>
+            <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
+          </div>
+          <div class="hide-for-large-up">
+            <textarea rows="10">{{backupPlainText}}</textarea>
+          </div>
+          <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
+        </div>
       </div>
     </div>
+    <div class="large-6 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> <span translate>Delete Wallet</span></h2>
+        <p translate class="text-gray">If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet.</p>
+        <a translate class="button warning m0" ng-really-message="{{'Are you sure to delete this wallet from this computer?'|translate}}" ng-really-click="deleteWallet()"> Delete</a>
+      </div>
+    </div>
   </div>
-    <a class="large-12 columns small" ng-click="hideAdv=!hideAdv">
+    
+  <div class="line-dashed-h m20b"></div>
+  
+  <div class="m20b">
+    <a class="size-12" ng-click="hideAdv=!hideAdv">
       <i class="fi-widget m3r"></i>
       <span translate ng-hide="!hideAdv">Show</span> 
       <span translate ng-hide="hideAdv">Hide</span> 
-      <span translate>advanced options</span>
+      <span translate>advanced options</span> 
+      <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+      <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
     </a>
+  </div>
 
-
-    <div ng-hide="hideAdv" class="m10t">
-      <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> 
-        <span translate>Master Private Key</span> </h3>
-        <p translate class="large-8 columns text-gray">
-          Your master private key contains the information to sign <b>any</b> transaction on this wallet. Handle with care.
+  <div ng-hide="hideAdv" class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> 
+          <span translate>Master Private Key</span> </h2>
+        <p translate class="text-gray">
+        Your master private key contains the information to sign <b>any</b> transaction on this wallet. Handle with care.
         </p>
-        <div class="large-4 columns">
-          <a class="button primary expand" ng-click="hidePriv=!hidePriv">
-            <span translate ng-hide="!hidePriv">Show</span>
-            <span translate ng-hide="hidePriv">Hide</span>
-          </a>
-        </div>
-        <textarea ng-hide="hidePriv" readonly>{{priv}}</textarea>
+        <a class="button primary m0" ng-click="hidePriv=!hidePriv">
+          <span translate ng-hide="!hidePriv">Show</span>
+          <span translate ng-hide="hidePriv">Hide</span>
+        </a>
+        <textarea class="m10t" ng-hide="hidePriv">{{priv}}</textarea>
       </div>
-      <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> <span translate>Scan Wallet Addresses</span> </h3>
-        <p translate class="large-8 columns text-gray">
-          This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup). This will also trigger a synchronization of addresses to other connected peers.
-        </p>
-        <div class="large-4 columns">
-          <a translate class="button primary expand" ng-click="updateIndexes()">
-            Scan
-          </a>
-        </div>
-      </div>
-      <div class="oh large-12 columns panel">
-        <h3><i class="fi-minus-circle m10r"></i> <span translate>Purge Pending Transaction Proposals</span> </h3>
-        <p translate class="large-8 columns text-gray">
-          Pending Transactions Proposals will be discarded. This needs to be done on <b>ALL</b> peers of a wallet, to prevent the old proposals to be resynced again.
-        </p>
-        <div class="large-4 columns">
-          <a translate class="button warning expand"  ng-click="purge()">
-            Purge
-          </a>
-        </div>
     </div>
-    <div class="oh large-12 columns panel">
-      <h3><i class="fi-minus-circle m10r"></i> <span translate>Purge ALL Transaction Proposals</span> </h3>
-        <p translate class="large-8 columns text-gray">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> <span translate>Scan Wallet Addresses</span></h2>
+        <p translate class="text-gray">
+        This will scan the blockchain looking for addresses derived from your wallet, in case you have funds in addresses not yet generated (e.g.: you restored an old backup). This will also trigger a synchronization of addresses to other connected peers.
+        </p>
+        <a translate class="button primary m0" ng-click="updateIndexes()">
+          Scan
+        </a>
+      </div>
+    </div>
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> <span translate>Purge Pending Transaction Proposals</span></h2>
+        <p translate class="text-gray">
+        Pending Transactions Proposals will be discarded. This needs to be done on <b>ALL</b> peers of a wallet, to prevent the old proposals to be resynced again.
+        </p>
+        <a translate class="button warning m0"  ng-click="purge()">
+          Purge
+        </a>
+      </div>
+    </div>
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> <span translate>Purge ALL Transaction Proposals</span></h2>
+        <p translate class="text-gray">
         ALL Transactions Proposals will be discarded. This needs to be done on <b>ALL</b> peers of a wallet, to prevent the old proposals to be resynced again.
         </p>
-        <div class="large-4 columns">
-          <a translate class="button warning expand"  ng-click="purge(true)">
-            Purge All
-          </a>
-        </div>
+        <a translate class="button warning m0"  ng-click="purge(true)">
+          Purge All
+        </a>
+      </div>
     </div>
-    <div class="oh large-12 columns panel">
-      <h3><i class="fi-minus-circle m10r"></i> 
-      <span translate>Join Secret</span> </h3>
-      <p translate class="large-8 columns text-gray">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> 
+          <span translate>Join Secret</span> </h2>
+        <p translate class="text-gray">
         This is the initial secret join string. Since your wallet it is already complete, this is only useful to rejoin peers that lost their backup BUT have the extended private key stored (they will be rejected on other case). They need to enter their extended private key during the join process (in advanced options).
-      </p>
-      <div class="large-4 columns">
-        <a class="button primary expand" ng-click="hideSecret=!hideSecret">
+        </p>
+        <a class="button primary m0" ng-click="hideSecret=!hideSecret">
           <span translate ng-hide="!hideSecret">Show</span>
           <span translate ng-hide="hideSecret">Hide</span>
         </a>
+        <textarea class="m10t" ng-hide="hideSecret">{{secret}}</textarea>
       </div>
-      <textarea ng-hide="hideSecret" readonly>{{secret}}</textarea>
     </div>
- 
   </div>
 
 </div>
