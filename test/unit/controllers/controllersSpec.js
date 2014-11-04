@@ -26,11 +26,11 @@ describe("Unit: Controllers", function() {
   var server;
 
   beforeEach(module('copayApp'));
-   beforeEach(module('copayApp.controllers'));
-   beforeEach(module(function($provide) {
-     $provide.value('request', {
-       'get': function(_, cb) {
-         cb(null, null, [{
+  beforeEach(module('copayApp.controllers'));
+  beforeEach(module(function($provide) {
+    $provide.value('request', {
+      'get': function(_, cb) {
+        cb(null, null, [{
           name: 'USD Dollars',
           code: 'USD',
           rate: 2
@@ -71,7 +71,7 @@ describe("Unit: Controllers", function() {
     w.createTx = sinon.stub().yields(null);
     w.sendTx = sinon.stub().yields(null);
     w.requiresMultipleSignatures = sinon.stub().returns(true);
-    w.getTxProposals = sinon.stub().returns([1,2,3]);
+    w.getTxProposals = sinon.stub().returns([1, 2, 3]);
 
 
     $rootScope.wallet = w;
@@ -171,17 +171,6 @@ describe("Unit: Controllers", function() {
     it.skip('should return an empty array of tx from insight', function() {
       scope.getTransactions();
       expect(scope.blockchain_txs).to.be.empty;
-    });
-
-    it('should call amountAlternative and return a value', function() {
-      var cb = sinon.spy();
-      var s1 = sinon.stub(scope, 'amountAlternative');
-      s1.onCall(0).returns(1000);
-      s1.onCall(1).returns(2000);
-      expect(s1(100, 0, cb)).equal(1000);
-      expect(s1(200, 1, cb)).equal(2000);
-      sinon.assert.callCount(scope.amountAlternative, 2);
-      s1.restore();
     });
   });
 
