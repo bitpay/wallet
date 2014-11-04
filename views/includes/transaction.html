@@ -1,4 +1,4 @@
-<div class="show-for-small-only header-message">
+<div class="header-message">
   <span class="date-message">{{tx.createdTs | amCalendar}}</span>
 </div>
 <div class="last-transactions-header" ng-init="txIndex = $index">
@@ -6,39 +6,19 @@
     <i class="fi-comment-quotes"></i> 
     <span class="text-light">{{tx.comment}}</span>
   </div>
-  <div class="row collapse">
-    <div class="large-9 medium-8 small-12 columns">
-      <div class="row collapse" ng-repeat="out in tx.outs">
-        <div class="large-3 medium-3 small-4 columns">
-          <div class="size-14 hide-for-small-only">
-            <span 
-              ng-class="{'has-tip': alternativeCurrency[txIndex]}"
-              ng-init="amountAlternative(out.value, txIndex)"
-              data-options="disable_for_touch:true"
-              tooltip-popup-delay='500'
-              tooltip="{{alternativeCurrency[txIndex]|noFractionNumber}} {{alternativeIsoCode}}"
-              tooltip-trigger="mouseenter"
-              tooltip-placement="right"
-              >{{out.value |noFractionNumber}}
-              {{$root.wallet.settings.unitName}}</span>
-          </div>
-          <div class="size-12 show-for-small-only">
-            <span>{{out.value |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
-          </div>
-        </div>
-        <div class="large-1 medium-1 small-1 columns fi-arrow-right"></div>
-        <div class="large-8 medium-8 small-7 columns ellipsis">
-          <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
-        </div>
+  <div class="row" ng-repeat="out in tx.outs">
+    <div class="large-3 medium-3 small-4 columns">
+      <div class="size-12">
+        <span>{{out.value |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
       </div>
     </div>
-
-    <div class="large-3 medium-4 columns text-right hide-for-small-only">
-      <span class="size-12">{{tx.createdTs | amCalendar}}</span>
+    <div class="large-1 medium-1 small-1 columns fi-arrow-right"></div>
+    <div class="large-8 medium-8 small-7 columns ellipsis">
+      <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
     </div>
   </div>
 </div>
-<table class="last-transactions-content show-for-small-only">
+<table class="last-transactions-content">
   <tbody>
   <tr ng-repeat="c in tx.actionList">
     <td class="copayer-name" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
@@ -59,64 +39,30 @@
   </tr>
   </tbody>
 </table>
-<div class="last-transactions-content show-for-medium-up">
-  <div class="box-copayer" ng-repeat="c in tx.actionList">
-    <a class="has-tip">
-      <img class="copayer-ico br100" src="./img/satoshi.gif" alt="{{c.cId}}">
-    </a>
-    <div class="box-status">
-      <a ng-if="c.actions.create" tooltip-popup-delay="1000" tooltip="Created {{c.actions.create | amTimeAgo}}">
-        <i class="fi-crown icon-status icon-active"></i>
-      </a>
-      <a ng-if="!c.actions.create"><i class="fi-crown icon-status"></i></a>
-
-      <a ng-if="c.actions.seen" tooltip-popup-delay="1000" tooltip="Seen {{c.actions.seen | amTimeAgo}}">
-        <i class="fi-eye icon-status icon-active"></i>
-      </a>
-      <a ng-if="!c.actions.seen"><i class="fi-eye icon-status"></i></a>
-
-      <a ng-if="c.actions.rejected" tooltip-popup-delay="1000" tooltip="Rejected {{c.actions.rejected | amTimeAgo}}">
-        <i class="fi-x icon-status icon-active-x"></i>
-      </a>
-
-      <a ng-if="c.actions.sign" tooltip-popup-delay="1000" tooltip="Signed {{c.actions.sign | amTimeAgo}}">
-        <i class="fi-check icon-status icon-active-check"></i>
-      </a>
-
-      <a ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="icon-status">
-        <i class="fi-loop icon-rotate"></i>
-      </a>
-    </div>
-
-      <div class="text-center m5t size-12 text-gray ellipsis">
-        {{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
-      </div>
-  </div>
-</div>
 
 <div class="last-transactions-footer">
   <div class="row collapse">
     <div class="large-5 medium-7 small-12 columns" ng-show="!tx.sentTs">
       <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
         <div class="hide-for-small-only">
-          <button class="primary m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
+          <button class="primary tiny m0 m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
             <i class="fi-check"></i> <span translate>Sign</span>
           </button>
-          <button class="warning" ng-click="reject(tx.ntxid)" ng-disabled="loading">
+          <button class="warning tiny m0" ng-click="reject(tx.ntxid)" ng-disabled="loading">
             <i class="fi-x" ></i> <span translate>Reject</span>
           </button>
         </div>
         <div class="show-for-small-only row">
-          <button class="primary small-5 columns m10b"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
+          <button class="primary tiny small-5 columns m10b"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
             <i class="fi-check"></i> <span translate>Sign</span>
           </button>
-          <button class="warning small-5 columns m10b" ng-click="reject(tx.ntxid)" ng-disabled="loading">
+          <button class="warning tiny small-5 columns m10b" ng-click="reject(tx.ntxid)" ng-disabled="loading">
             <i class="fi-x" ></i> <span translate>Reject</span>
           </button>
         </div>
       </div>
       <div ng-show="!tx.missingSignatures && !tx.sentTs">
-        <button class="primary"  ng-click="send(tx.ntxid)" ng-disabled="loading"> <i class=".fi-upload-cloud"></i>
+        <button class="primary tiny m0"  ng-click="send(tx.ntxid)" ng-disabled="loading"> <i class=".fi-upload-cloud"></i>
           <span translate>Broadcast Transaction</span>
         </button>
       </div>

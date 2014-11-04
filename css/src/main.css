@@ -401,7 +401,7 @@ table.last-transactions-content {
   padding: 0;
   border: 0;
   background-color: #F8F8FB;
-  margin: 15px 0;
+  margin: 0;
 }
 
 .last-transactions-content .box-status {
@@ -438,9 +438,8 @@ table.last-transactions-content {
 
 .private-message {
   margin-bottom: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #fff;
-  line-height: 20px;
 }
 
 .header-message {
