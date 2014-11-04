@@ -42,15 +42,15 @@
 
   </div>
 
-  <div ng-if="walletSelection">
-    <ul class="side-nav wallets" ng-show="wallets.0"
+  <div>
+    <ul class="side-nav wallets" ng-class="{'bechi': walletSelection}" ng-show="wallets.0"
       ng-class="{'large':wallets.length > 4, 'medium':wallets.length > 2 && wallets.length < 5}">
-      <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id">
+      <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id" ng-click="switchWallet(item.id)">
         <div class="col1">
           <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
         </div>
         <div class="col2">
-          <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
+          <a class="size-12 wallet-item" >
             <div class="oh">
               <div class="right size-10 type-wallet">[ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
               <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
