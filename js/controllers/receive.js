@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     $rootScope.title = 'Receive';
     $scope.loading = false;
     $scope.showAll = false;
-    $scope.isNewAddr = false;
+    $scope.isNewAddr = true;
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
