@@ -84,6 +84,9 @@ var defaultConfig = {
     // for copay.io:
     // clientId: '1036948132229-biqm3b8sirik9lt5rtvjo9kjjpotn4ac.apps.googleusercontent.com',
   },
+
+  developmentFeatures: false
+
 };
 if (typeof module !== 'undefined')
   module.exports = defaultConfig;
