@@ -10,7 +10,7 @@
     <div 
       class="row"
       ng-if="blockchain_txs[0].txid">
-      <div class="large-12 colums">
+      <div class="large-12 columns">
 
         <div class="panel oh" 
           ng-repeat="btx in blockchain_txs | orderBy: 'time':true" ng-click="btx.showDetails = !btx.showDetails">
@@ -49,7 +49,7 @@
             <div class="large-1 columns show-for-large-up text-gray text-right" ng-init="btx.showDetails = false">
               <a>
                 <i ng-if="!btx.showDetails" class="icon-arrow-down4"></i>
-                <i ng-if="btx.showDetails" class="icon-arrow-up4 size-12"></i>
+                <i ng-if="btx.showDetails" class="icon-arrow-up4"></i>
               </a>
             </div>
 
