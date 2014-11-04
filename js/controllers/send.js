@@ -24,8 +24,6 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.isRateAvailable = false;
     $scope.rateService = rateService;
 
-    $scope.alternativeCurrency = [];
-
 
     rateService.whenAvailable(function() {
       $scope.isRateAvailable = true;
@@ -87,15 +85,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.showAddressBook = function() {
       return w && _.keys(w.addressBook).length > 0;
-    };
-
-    $scope.amountAlternative = function(amount, txIndex, cb) {
-      var w = $rootScope.wallet;
-      rateService.whenAvailable(function() {
-        var valueSat = amount * w.settings.unitToSatoshi;
-        $scope.alternativeCurrency[txIndex] = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
-        return cb ? cb() : null;
-      });
     };
 
     if ($rootScope.pendingPayment) {
