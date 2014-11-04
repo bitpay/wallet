@@ -70,6 +70,10 @@ angular
         templateUrl: 'views/manage.html',
         logged: true
       })
+      .when('/devLogin/:mail/:password', {
+        templateUrl: 'views/devLogin.html',
+        logged: false
+      })
       .otherwise({
         templateUrl: 'views/errors/404.html',
         title: 'Error'
