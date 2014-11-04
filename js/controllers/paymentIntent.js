@@ -2,10 +2,8 @@
 
 var bitcore = require('bitcore');
 
-angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $routeParams, $timeout, $location, controllerUtils) {
+angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $modal, controllerUtils) {
 
-
-  $rootScope.title = 'Select the wallet that you will use to spend your bitcoins';
   $scope.wallets = [];
 
   var wids = _.pluck($rootScope.iden.listWallets(), 'id');
@@ -13,15 +11,41 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
     var w = $rootScope.iden.getWalletById(wid);
     if (w && w.isReady()) {
       $scope.wallets.push(w);
-      controllerUtils.updateBalance(w, function() {
-        $rootScope.$digest();
-      });
     }
   });
 
-  $scope.switchWallet = function(wid) {
-    //go to send page
-    controllerUtils.setPaymentWallet(wid);
+  $scope.open = function() {
+    var modalInstance = $modal.open({
+      templateUrl: 'myModalContent.html',
+      controller: ModalInstanceCtrl,
+      resolve: {
+        items: function() {
+          return $scope.wallets;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(selectedItem) {}, function() {
+      $rootScope.pendingPayment = null;
+    });
+  };
+
+
+  // Please note that $modalInstance represents a modal window (instance) dependency.
+  // It is not the same as the $modal service used above.
+
+  var ModalInstanceCtrl = function($scope, $modalInstance, items, controllerUtils) {
+
+    $scope.wallets = items;
+
+    $scope.ok = function(selectedItem) {
+      controllerUtils.setPaymentWallet(selectedItem);
+      $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
   };
 
 });

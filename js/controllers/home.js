@@ -11,6 +11,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   }
 
 
+
+
   if ($rootScope.fromEmailConfirmation) {
     $scope.confirmedEmail = true;
     $rootScope.fromEmailConfirmation = false;
@@ -27,6 +29,18 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
     $scope.loading = true;
     identityService.open($scope, form);
+  }
+
+  //TODO erase this function
+  $scope.setPayment = function() {
+    $rootScope.pendingPayment = {
+      "data": {
+        "amount": 20.3,
+        "label": "Luke-Jr",
+        "message": "Hola chango?"
+      },
+      "address": "175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"
+    };
   }
 
   function getParam(sname) {
