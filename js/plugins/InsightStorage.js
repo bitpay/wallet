@@ -4,6 +4,8 @@ var buffers = require('buffer');
 var querystring = require('querystring');
 var Identity = require('../models/Identity');
 
+var SEPARATOR = '|';
+
 function InsightStorage(config) {
   this.type = 'DB';
   this.storeUrl = config.url || 'https://test-insight.bitpay.com:443/api/email';
@@ -15,6 +17,7 @@ InsightStorage.prototype.init = function () {};
 InsightStorage.prototype.setCredentials = function(email, password, opts) {
   this.email = email;
   this.password = password;
+  this._cachedKey = null;
 };
 
 InsightStorage.prototype.createItem = function(name, value, callback) {
@@ -35,24 +38,23 @@ function mayBeOldPassword(password) {
 }
 
 InsightStorage.prototype.getItem = function(name, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
-  var secret = this.makeSecret(key);
+  var passphrase = this.getPassphrase();
   var self = this;
 
-  this._makeGetRequest(secret, name, function(err, body) {
+  this._makeGetRequest(passphrase, name, function(err, body) {
     if (err && err.indexOf('PNOTFOUND') !== -1 && mayBeOldPassword(self.password)) {
-      return self._brokenGetItem(key, name, callback);
+      return self._brokenGetItem(name, callback);
     }
     return callback(err, body);
   });
 };
 
-InsightStorage.prototype.makeSecret = function(key) {
-  return cryptoUtil.kdf(key + this.password);
+InsightStorage.prototype.getPassphrase = function() {
+  return cryptoUtil.hmac(this.getKey(), this.password);
 };
 
-InsightStorage.prototype._makeGetRequest = function(secret, key, callback) {
-  var authHeader = new Buffer(this.email + ':' + secret).toString('base64');
+InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
+  var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var retrieveUrl = this.storeUrl + '/retrieve';
   this.request.get({
       url: retrieveUrl + '?' + querystring.encode({key: key}),
@@ -73,12 +75,12 @@ InsightStorage.prototype._makeGetRequest = function(secret, key, callback) {
   );
 };
 
-InsightStorage.prototype._brokenGetItem = function(key, name, callback) {
-  var secret = this._makeBrokenSecret(key);
+InsightStorage.prototype._brokenGetItem = function(name, callback) {
+  var passphrase = this._makeBrokenSecret();
   var self = this;
-  this._makeGetRequest(secret, name, function(err, body) {
+  this._makeGetRequest(passphrase, name, function(err, body) {
     if (!err) {
-      return self._changePassword(function(err) {
+      return self._changePassphrase(function(err) {
         if (err) {
           return callback(err);
         }
@@ -89,22 +91,29 @@ InsightStorage.prototype._brokenGetItem = function(key, name, callback) {
   });
 };
 
-InsightStorage.prototype._makeBrokenSecret = function(key) {
+InsightStorage.prototype.getKey = function() {
+  if (!this._cachedKey) {
+    this._cachedKey = cryptoUtil.kdf(this.password + SEPARATOR + this.email);
+  }
+  return this._cachedKey;
+};
+
+InsightStorage.prototype._makeBrokenSecret = function() {
+  var key = cryptoUtil.kdf(this.password + this.email);
   return cryptoUtil.kdf(key, this.password);
 };
 
-InsightStorage.prototype._changePassword = function(callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
-  var secret = this._makeBrokenSecret(key);
-  var newSecret = this.makeSecret(key);
+InsightStorage.prototype._changePassphrase = function(callback) {
+  var passphrase = this._makeBrokenSecret();
+  var newPassphrase = this.getPassphrase();
+  var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
 
   var url = this.storeUrl + '/change_passphrase';
   this.request.post({
     url: url,
+    headers: {'Authorization': authHeader},
     body: querystring.encode({
-      email: this.email,
-      secret: secret,
-      newSecret: newSecret
+      newPassphrase: newPassphrase
     })
   }, function(err, response, body) {
     if (err) {
@@ -121,15 +130,14 @@ InsightStorage.prototype._changePassword = function(callback) {
 };
 
 InsightStorage.prototype.setItem = function(name, value, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
-  var secret = this.makeSecret(key);
+  var passphrase = this.getPassphrase();
+  var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var registerUrl = this.storeUrl + '/register';
   this.request.post({
     url: registerUrl,
+    headers: {'Authorization': authHeader},
     body: querystring.encode({
       key: name,
-      email: this.email,
-      secret: secret,
       record: value
     })
   }, function(err, response, body) {

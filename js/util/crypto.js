@@ -24,6 +24,17 @@ module.exports = {
   },
 
   /**
+   * @param {string} key
+   * @param {string} data
+   * @return {string} base64 encoded hmac
+   */
+  hmac: function(key, data) {
+    return sjcl.codec.base64.fromBits(
+      new sjcl.misc.hmac(key, sjcl.hash.sha256).encrypt(data)
+    );
+  },
+
+  /**
    * @param {string} password
    * @param {string} salt - base64 encoded, defaults to 'mjuBtGybi/4='
    * @param {number} iterations - defaults to 100
