@@ -1405,6 +1405,154 @@ a.text-warning:hover {color: #FD7262;}
 }
 
 
-
+/* Animation popup */
 
 /*-----------------------------------------------------------------*/
+
+.ca-menu{
+    padding:0;
+}
+.ca-menu li{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    background: #213140;
+    -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    margin-right: 4px;
+    -webkit-transition: all 300ms linear;
+    -moz-transition: all 300ms linear;
+    -o-transition: all 300ms linear;
+    -ms-transition: all 300ms linear;
+    transition: all 300ms linear;
+}
+.ca-menu li:last-child{
+    margin-right: 0px;
+}
+.ca-menu li a{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: #333;
+    position: relative;
+}
+.ca-icon{
+    font-family: 'WebSymbolsRegular', cursive;
+    color: #c5e4f4;
+    font-size: 90px;
+    text-shadow: 1px 0px 1px rgba(255,255,255,0.7);
+    line-height: 150px;
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    left: 0px;
+    top: 0px;
+    text-align: center;
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.ca-content{
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 50%;
+    top: 50%;
+}
+.ca-main{
+    color: #FFFFFF;
+    text-align: center;
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.ca-sub{
+    text-align:center;
+    color: #FFFFFF;
+    line-height: 40px;
+    opacity: 0.8;
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.ca-menu li:hover{
+    background-color: #3C4E60;
+}
+.ca-menu li:hover .ca-icon{
+    text-shadow: 0px 0px 20px #c5e4f4;
+    color: transparent;
+    -webkit-animation: moveFromTop 400ms ease;
+    -moz-animation: moveFromTop 400ms ease;
+    -ms-animation: moveFromTop 400ms ease;
+}
+.ca-menu li:hover .ca-main{
+    color: #FFFFFF;
+    -webkit-animation: moveFromTop 300ms ease;
+    -moz-animation: moveFromTop 300ms ease;
+    -ms-animation: moveFromTop 300ms ease;
+}
+.ca-menu li:hover .ca-sub{
+    color: #FFFFFF;
+    -webkit-animation: moveFromBottom 500ms ease;
+    -moz-animation: moveFromBottom 500ms ease;
+    -ms-animation: moveFromBottom 500ms ease;
+}
+@-webkit-keyframes moveFromTop {
+    from {
+        -webkit-transform: translateY(-300%);
+    }
+    to {
+        -webkit-transform: translateY(0%);
+    }
+}
+@-moz-keyframes moveFromTop {
+    from {
+        -moz-transform: translateY(-300%);
+    }
+    to {
+        -moz-transform: translateY(0%);
+    }
+}
+@-ms-keyframes moveFromTop {
+    from {
+        -ms-transform: translateY(-300%);
+    }
+    to {
+        -ms-transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes moveFromBottom {
+    from {
+        -webkit-transform: translateY(200%);
+    }
+    to {
+        -webkit-transform: translateY(0%);
+    }
+}
+@-moz-keyframes moveFromBottom {
+    from {
+        -moz-transform: translateY(200%);
+    }
+    to {
+        -moz-transform: translateY(0%);
+    }
+}
+@-ms-keyframes moveFromBottom {
+    from {
+        -ms-transform: translateY(200%);
+    }
+    to {
+        -ms-transform: translateY(0%);
+    }
+}
