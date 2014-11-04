@@ -11,6 +11,9 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
     var w = $rootScope.iden.getWalletById(wid);
     if (w && w.isReady()) {
       $scope.wallets.push(w);
+      controllerUtils.updateBalance(w, function() {
+        $rootScope.$digest();
+      });
     }
   });
 
