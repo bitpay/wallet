@@ -38,7 +38,9 @@
     <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
     <span ng-if="$root.wallet && !$root.updatingBalance" class="text-gray"><b>{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}} </b> - {{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}
     </span>
-    <i class="fi-info medium right text-gray size-14" tooltip="{{'Balance locked in pending transaction proposals'|translate}}" tooltip-placement="bottom"></i>
+    <i class="fi-info medium right text-gray size-14" 
+      tooltip="{{'Balance locked in pending transaction proposals'|translate}}"
+    tooltip-placement="left"></i>
 
   </div>
 
