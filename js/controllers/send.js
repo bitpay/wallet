@@ -4,6 +4,34 @@ var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
+
+    controllerUtils.redirIfNotComplete();
+
+    var w = $rootScope.wallet;
+    preconditions.checkState(w);
+    preconditions.checkState(w.settings.unitToSatoshi);
+
+    $rootScope.title = 'Send';
+    $scope.loading = false;
+    var satToUnit = 1 / w.settings.unitToSatoshi;
+    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
+    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = w.settings.unitToSatoshi;
+
+    $scope.alternativeName = w.settings.alternativeName;
+    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
+
+    $scope.isRateAvailable = false;
+    $scope.rateService = rateService;
+
+
+
+    rateService.whenAvailable(function() {
+      $scope.isRateAvailable = true;
+      $scope.$digest();
+    });
+
+
     /**
      * Setting the two related amounts as properties prevents an infinite
      * recursion for watches while preserving the original angular updates
