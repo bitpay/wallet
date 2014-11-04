@@ -14,11 +14,11 @@
             <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
           </h2>
           <div class="text-center">
-            <qrcode size="250" data="{{$root.wallet.getSecret()}}"></qrcode>
+            <qrcode size="250" data="{{secret}}"></qrcode>
           </div>
           <div class="secret m20t">
-            {{$root.wallet.getSecret()}} 
-            <span class="btn-copy" clip-copy="$root.wallet.getSecret()"></span>
+            {{secret}} 
+            <span class="btn-copy" clip-copy="secret"></span>
           </div>
         </div>
       </div>
