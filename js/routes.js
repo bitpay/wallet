@@ -69,15 +69,19 @@ angular
       .when('/manage', {
         templateUrl: 'views/manage.html',
         logged: true
-      })
-      .when('/devLogin/:mail/:password', {
+      });
+
+    if (config.developmentFeatures) {
+      $routeProvider.when('/devLogin/:mail/:password', {
         templateUrl: 'views/devLogin.html',
         logged: false
-      })
-      .otherwise({
-        templateUrl: 'views/errors/404.html',
-        title: 'Error'
       });
+    }
+
+    $routeProvider.otherwise({
+      templateUrl: 'views/errors/404.html',
+      title: 'Error'
+    });
   });
 
 //Setting HTML5 Location Mode
