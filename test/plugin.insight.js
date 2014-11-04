@@ -14,8 +14,7 @@ describe('insight storage plugin', function() {
 
   var oldSecret = 'rFA+F/N+ZvKXp717zBdfCKYQ5v9Fjry0W6tautj5etIH'
                 + 'KLQliZBEYXA7AXjTJ9K3DglzGWJKost3QJUCMbhM/A=='
-  var newSecret = '2YTcmtkmC/WSVrfmjAEyOmDnmntVQ8A9wS/q1DbD6rkc'
-                + 'si8LrIvS2Ru85Feb5Bvk2ziQbEN6PzlL1mIyQ3a+Vw=='
+  var newSecret = '+72pwnQ/ukrXVXZ/L4vFeiykwn522uVz0J6p81TGXvI=';
 
   var setupStorageCredentials = function() {
     storage.setCredentials(email, password);
