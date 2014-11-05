@@ -1105,7 +1105,7 @@ button.gray:focus,
     transition: height 250ms ease-in;
 }
 
-.side-nav.wallets.bechi {
+.side-nav.wallets.open {
   height: 100%;
 }
 
