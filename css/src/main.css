@@ -630,7 +630,6 @@ a.button-setup {
   width: 100%;
   padding: 0.3rem 0.7rem;
   color: white;
-  border-bottom: 1px solid #374756;
 }
 
 .hidden {
@@ -806,6 +805,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 .bg-success { 
   background-color: #1ABC9C;
+}
+
+.addresses .label {
+  font-weight: normal;
+  padding: .2rem .3rem;
+  font-size: 8px;
 }
 
 .label.success { 
