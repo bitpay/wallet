@@ -88,6 +88,9 @@ var createBundle = function(opts) {
     b.require('./js/plugins/InsightStorage', {
       expose: '../plugins/InsightStorage'
     });
+    b.require('./js/plugins/InsightStorage', {
+      expose: '../js/plugins/InsightStorage'
+    });
     b.require('./js/plugins/LocalStorage', {
       expose: '../plugins/LocalStorage'
     });

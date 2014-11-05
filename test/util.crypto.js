@@ -48,6 +48,9 @@ describe('crypto utils', function() {
       var phrase = cryptoUtils.kdf(t.word, t.salt, t.iterations);
       phrase.should.equal(t.phrase);
     });
+    it('should generate a passphrase from weird chars', function() {
+      var phrase = cryptoUtils.kdf('Pwd123!@#$%^&*(){}[]\|/?.>,<=+-_`~åéþïœ’ä²¤þçæ¶');
+    });
   });
 
 
