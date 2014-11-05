@@ -1,9 +1,11 @@
-<div class="wide-page">
+<div ng-init="$root.title = 'Page not found'"
+  ng-class="{'wide-page':!$root.wallet}">
   <div class="text-center">
-    <img src="img/logo-negative-beta.svg" alt="Copay">
+    <img ng-show="$root.wallet" src="img/logo.svg" alt="Copay">
+    <img ng-show="!$root.wallet" src="img/logo-negative.svg" alt="Copay">
   </div>
-  <h1 class="text-center text-white">404</h1>
-  <h3 translate class="text-center text-white">Page not found</h3>
+  <h1 class="text-center" ng-class="{'text-white': !$root.wallet}">404</h1>
+  <h3 translate class="text-center" ng-class="{'text-white': !$root.wallet}">Page not found</h3>
   <p class="text-center"><a href="#!/">&laquo; <span translate>Back</span></a></p>
 </div>
 
