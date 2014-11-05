@@ -31,7 +31,7 @@
       </a>
     </div>
   </header>
-  <div class="locked" ng-show="lockedBalance">
+  <div class="locked" ng-show="lockedBalance && !walletSelection">
     <span class="text-gray">
       <i class="fi-lock"></i> {{'Locked'|translate}} &nbsp;
     </span>
