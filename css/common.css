@@ -91,6 +91,7 @@ button.warning,
   min-width: 1440px;
 }
 
+.size-10 { font-size: 10px; }  
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }
@@ -117,6 +118,7 @@ button.warning,
 .p1l {padding-left: 1rem;}
 .p1b {padding-bottom: 1rem;}
 .p1tb {padding: 1rem 0;}
+.p0m0 {padding: 0; margin: 0}
 
 .row {
   max-width: 100%;
@@ -344,6 +346,7 @@ header {
 
 .f-dropdown {
     z-index: 1000;
+
   }
 
 .header {
@@ -358,42 +361,46 @@ header {
 
     }
 
-#drop2 li a {
-    padding-left: 35px !important;  
+#drop1 li a, #drop2 li a {
+    padding-left: 40px !important;  
     }
 
+.f-dropdown li{ line-height: 0.9em;
+      }   
+
+
  a.browser-ext,  a.web-ver, a.android-ver   {
-   padding-left: 35px !important;
    background-repeat: no-repeat;
-   background-position: 4px center;
+   background-color: #FFFFFF;
 
     }
 
  a.browser-ext  {
    background-image: url('../img/browser-icon-off.svg');
+      background-position: 7px 10px;
 
     }
 
  a:hover.browser-ext  {
    background-image: url('../img/browser-icon-on.svg');
    background-repeat: no-repeat;
-   background-position: 4px center;
    color: #109F83;
     }
 
  a.web-ver  {
    background-image: url('../img/web-icon-off.svg');
+      background-position: 7px 10px;
     }
 
  a:hover.web-ver  {
    background-image: url('../img/web-icon-on.svg');
    background-repeat: no-repeat;
-   background-position: 4px center;
    color: #109F83;
     }
 
  a.android-ver {
    background-image: url('../img/and-icon-off.svg');
+      background-position: 8px 10px;
     }
 
  a:hover.android-ver {
@@ -403,15 +410,15 @@ header {
     
 
 .slogan-small{
-  padding: 20em 0 1.5em 0;
+  padding: 15em 0 1.5em 0;
     }
 
 .slogan-medium{
-  padding: 10em 0 1.5em 0;
+  padding: 12em 0 1.5em 0;
     }
 
 .slogan-large{
-  padding: 10em 0 1.5em 0;
+  padding: 11em 0 1.5em 0;
     }
 
 .subheader{
@@ -463,4 +470,6 @@ footer {
 
 .visbg { background-color: #2C3E50;
       }
+
+
 
