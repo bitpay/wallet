@@ -39,7 +39,7 @@
     margin-top: 40px;
     margin-left: 0;
     margin-bottom: -40px;
-    padding: 20px 10px 60px 10px;
+    padding: 20px 0 60px 0;
   }
 
   .tab-bar {
@@ -116,8 +116,8 @@
     color: white;
   }
 
-  .addresses .panel {
-    padding: 1rem 0.8rem;
+  .panel {
+    padding: 0.5rem;
   }
 
   .btn-copy {
@@ -180,6 +180,21 @@
 
   .line-t {
     border-top: 1px solid #3C5269;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .tx-date {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;    
+  }
+
+  .tx-comment {
+    border-top: 1px solid #eee;    
+    padding-top: 10px;
+    margin-top: 10px;
   }
 
 }

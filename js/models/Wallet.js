@@ -2823,7 +2823,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
 
       return {
         type: 'out',
-        address: addr ? addr : itemAddr,
+        address: addr ? addr.addressStr : itemAddr,
         isMine: !_.isUndefined(addr),
         isChange: addr ? !!addr.isChange : false,
         label: self.addressBook[itemAddr] ? self.addressBook[itemAddr].label : undefined,
@@ -2880,6 +2880,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     });
     tx.comment = proposal ? proposal.comment : undefined;
     tx.labelTo = firstOut ? firstOut.label : undefined;
+    tx.addressTo = firstOut ? firstOut.address : undefined;
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
     tx.sentTs = proposal ? proposal.sentTs : undefined;
