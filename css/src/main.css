@@ -1411,12 +1411,6 @@ a.text-warning:hover {color: #FD7262;}
   }
 }
 
-@media (max-height: 590px) {
-  .side-nav.wallets {
-    height: 180px !important;
-  }
-}
-
 @media (max-height: 380px) {
   .sidebar-footer {
     display: none;
