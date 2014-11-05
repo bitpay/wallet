@@ -11,9 +11,11 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
     var w = $rootScope.iden.getWalletById(wid);
     if (w && w.isReady()) {
       $scope.wallets.push(w);
+      controllerUtils.clearBalanceCache(w);
       controllerUtils.updateBalance(w, function() {
         $rootScope.$digest();
       });
+
     }
   });
 
@@ -28,9 +30,9 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
       }
     });
 
-    modalInstance.result.then(function(selectedItem) {}, function() {
-      $rootScope.pendingPayment = null;
-    });
+    // modalInstance.result.then(function(selectedItem) {}, function() {
+    //   $rootScope.pendingPayment = null;
+    // });
   };
 
 
@@ -38,16 +40,16 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
   // It is not the same as the $modal service used above.
 
   var ModalInstanceCtrl = function($scope, $modalInstance, items, controllerUtils) {
-
     $scope.wallets = items;
-
     $scope.ok = function(selectedItem) {
       controllerUtils.setPaymentWallet(selectedItem);
       $modalInstance.close();
     };
 
     $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
+      $rootScope.pendingPayment = null;
+      controllerUtils.setFocusedWallet($scope.wallets[0]);
+      $modalInstance.close();
     };
   };
 
