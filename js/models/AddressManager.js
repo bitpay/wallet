@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var assert = require('assert');
 var events = require('events');
 var inherits = require('inherits');
 var preconditions = require('preconditions').singleton();
@@ -69,7 +68,7 @@ AddressManager.prototype.syncFromWallet = function syncFromWallet(wallet) {
 AddressManager.prototype.processOutput = function processOutput(output, hideEvents) {
   var oldBalance = this.balance;
   var address = output.address;
-  assert(address);
+  preconditions.checkState(address);
 
   if (!this.addresses[address]) {
     this.addresses[address] = this.createAddress(address);
@@ -95,8 +94,8 @@ AddressManager.prototype.createAddress = function createAddress(base58) {
 function outputOperation(operationName) {
   return function(output) {
     var address = output.address;
-    assert(address);
-    assert(this.addresses[address]);
+    preconditions.checkArgument(address);
+    preconditions.checkState(this.addresses[address]);
     this.addresses[address][operationName](output);
   };
 }

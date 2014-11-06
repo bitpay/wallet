@@ -1,7 +1,6 @@
 var AddressManager = copay.AddressManager;
-var assert = require('assert');
 
-describe('AddressManager', function() {
+describe.only('AddressManager', function() {
 
   var addressManager;
   var unspent = [];
@@ -35,15 +34,15 @@ describe('AddressManager', function() {
     beforeEach(setupManager);
 
     it('processes Wallet\'s getBalance result and emits "ready"', checkAfterSync(function() {
-      assert(_.size(addressManager.addresses) === 3);
+      _.size(addressManager.addresses).should.equal(3);
     }));
 
     it('has a "balance" property', checkAfterSync(function() {
-      assert(addressManager.balance === 6000);
+      addressManager.balance.should.equal(6000);
     }));
 
     it('has a "available" property', checkAfterSync(function() {
-      assert(addressManager.available === 6000);
+      addressManager.available.should.equal(6000);
     }));
   });
 
@@ -64,7 +63,7 @@ describe('AddressManager', function() {
 
     it('should emit balance event when a wallet\'s balance changes', function(done) {
       addressManager.on('balance', function() {
-        assert(addressManager.balance === 1000);
+        addressManager.balance.should.equal(1000);
         done();
       });
       addressManager.processOutput(fakeOutput);
@@ -76,21 +75,21 @@ describe('AddressManager', function() {
       addressManager.processOutput(fakeOutput);
 
       function firstCheck() {
-        assert(addressManager.available === 1000);
+        addressManager.available.should.equal(1000);
         addressManager.removeAllListeners();
         addressManager.on('available', secondCheck);
 
         addressManager.lockOutput(fakeOutput);
       }
       function secondCheck(callback) {
-        assert(addressManager.available === 0);
+        addressManager.available.should.equal(0);
         addressManager.removeAllListeners();
         addressManager.on('available', thirdCheck);
 
         addressManager.unlockOutput(fakeOutput);
       }
       function thirdCheck(callback) {
-        assert(addressManager.available === 1000);
+        addressManager.available.should.equal(1000);
         done();
       }
     });
@@ -106,14 +105,14 @@ describe('AddressManager', function() {
 
     it('allows to query only addresses with balance', function() {
       addressManager.removeOutput(unspent[0]);
-      assert(_.size(addressManager.addresses) === 3);
-      assert(_.size(addressManager.filter({balance: true})) === 2);
+      _.size(addressManager.addresses).should.equal(3);
+      _.size(addressManager.filter({balance: true})).should.equal(2);
     });
 
     it('allows to query only addresses with available balance', function() {
       addressManager.lockOutput(unspent[0]);
-      assert(_.size(addressManager.addresses) === 3);
-      assert(_.size(addressManager.filter({available: true})) === 2);
+      _.size(addressManager.addresses).should.equal(3);
+      _.size(addressManager.filter({available: true})).should.equal(2);
     });
 
     it.skip('allows to query for used and unused addresses', function() {

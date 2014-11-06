@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var assert = require('assert');
 var bitcore = require('bitcore');
 var events = require('events');
 var inherits = require('inherits');
@@ -48,7 +47,7 @@ ManagedAddress.prototype.invalidateAvailableCache = function() {
 };
 
 ManagedAddress.prototype.processOutput = function processOutput(output, silent) {
-  assert(output.address === this._base58);
+  preconditions.checkArgument(output.address === this._base58);
   verifyHasAmountSat(output);
 
   var key = keyForOutput(output);
@@ -63,7 +62,7 @@ ManagedAddress.prototype.processOutput = function processOutput(output, silent) 
 
 ManagedAddress.prototype.lockOutput = function lockOutput(output, silent) {
   var key = keyForOutput(output);
-  assert(this._outputs[key]);
+  preconditions.checkState(this._outputs[key]);
   if (!this._proposalLocks[key]) {
     this._proposalLocks[key] = true;
     this.invalidateAvailableCache();
@@ -75,7 +74,7 @@ ManagedAddress.prototype.lockOutput = function lockOutput(output, silent) {
 
 ManagedAddress.prototype.unlockOutput = function unlockOutput(output, silent) {
   var key = keyForOutput(output);
-  assert(this._outputs[key]);
+  preconditions.checkState(this._outputs[key]);
   if (this._proposalLocks[key]) {
     this._proposalLocks[key] = null;
     this.invalidateAvailableCache();
@@ -86,7 +85,7 @@ ManagedAddress.prototype.unlockOutput = function unlockOutput(output, silent) {
 };
 
 ManagedAddress.prototype.removeOutput = function removeOutput(output, silent) {
-  assert(output.address === this._base58);
+  preconditions.checkArgument(output.address === this._base58);
   var key = keyForOutput(output);
   if (this._outputs[key]) {
     this._outputs[key] = null;
