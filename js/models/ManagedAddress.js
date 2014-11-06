@@ -38,12 +38,12 @@ function keyForOutput(output) {
 };
 
 ManagedAddress.prototype.invalidateCache = function() {
-  this._balanceCache = null;
-  this._availableCache = null;
+  this._balanceCache = undefined;
+  this._availableCache = undefined;
 };
 
 ManagedAddress.prototype.invalidateAvailableCache = function() {
-  this._availableCache = null;
+  this._availableCache = undefined;
 };
 
 ManagedAddress.prototype.processOutput = function processOutput(output, silent) {
@@ -55,31 +55,29 @@ ManagedAddress.prototype.processOutput = function processOutput(output, silent) 
     this.invalidateCache();
     this._outputs[key] = output;
     if (!silent) {
-      this.emit('balance');
+      this.emit('balance', this.balance);
     }
   }
 };
 
 ManagedAddress.prototype.lockOutput = function lockOutput(output, silent) {
   var key = keyForOutput(output);
-  preconditions.checkState(this._outputs[key]);
   if (!this._proposalLocks[key]) {
     this._proposalLocks[key] = true;
     this.invalidateAvailableCache();
     if (!silent) {
-      this.emit('available');
+      this.emit('available', this.available);
     }
   }
 };
 
 ManagedAddress.prototype.unlockOutput = function unlockOutput(output, silent) {
   var key = keyForOutput(output);
-  preconditions.checkState(this._outputs[key]);
   if (this._proposalLocks[key]) {
-    this._proposalLocks[key] = null;
+    this._proposalLocks[key] = undefined;
     this.invalidateAvailableCache();
     if (!silent) {
-      this.emit('available');
+      this.emit('available', this.available);
     }
   }
 };
@@ -88,14 +86,12 @@ ManagedAddress.prototype.removeOutput = function removeOutput(output, silent) {
   preconditions.checkArgument(output.address === this._base58);
   var key = keyForOutput(output);
   if (this._outputs[key]) {
-    this._outputs[key] = null;
-    this._proposalLocks[key] = null;
+    this._outputs[key] = undefined;
+    this._proposalLocks[key] = undefined;
     this.invalidateCache();
     if (!silent) {
       this.emit('balance', this.balance);
     }
-  } else {
-    console.warn('Output ' + key + ' doesn\'t belong to address: ' + this._base58);
   }
 };
 
@@ -105,7 +101,7 @@ function retrieveSumAsCache(cachedName, elements, property) {
     var self = this;
     this[cachedName] = 0;
     _.each(this[elements], function(element) {
-      if (element === null) return;
+      if (!element) return;
       self[cachedName] += element[property];
     });
   }
@@ -144,6 +140,7 @@ Object.defineProperty(ManagedAddress.prototype, 'available', {
       var self = this;
       this._availableCache = 0;
       _.each(this._outputs, function(output) {
+        if (!output) return;
         if (!self._proposalLocks[keyForOutput(output)]) {
           self._availableCache += output.amountSat;
         }

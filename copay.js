@@ -15,6 +15,7 @@ var Insight = module.exports.Insight = require('./js/models/Insight');
 
 module.exports.Identity = require('./js/models/Identity');
 module.exports.AddressManager = require('./js/models/AddressManager');
+module.exports.manageWallet = require('./js/models/ManagedWallet');
 module.exports.Wallet = require('./js/models/Wallet');
 module.exports.Compatibility = require('./js/models/Compatibility');
 module.exports.PluginManager = require('./js/models/PluginManager');

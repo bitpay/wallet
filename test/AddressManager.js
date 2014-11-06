@@ -1,10 +1,9 @@
 var AddressManager = copay.AddressManager;
 
-describe.only('AddressManager', function() {
+describe('AddressManager', function() {
 
   var addressManager;
   var unspent = [];
-  var walletMock = {};
   
   function setupManager() {
     addressManager = new AddressManager();
@@ -13,8 +12,6 @@ describe.only('AddressManager', function() {
       {address: ADDRESS_2, amountSat: 2000, txid: TXID_2, vout: 1},
       {address: ADDRESS_3, amountSat: 3000, txid: TXID_2, vout: 0}
     ];
-    walletMock.getUnspent = sinon.mock();
-    walletMock.getUnspent.onFirstCall().callsArgWith(0, null, unspent);
   }
 
   var checkAfterSync = function checkAfterSync(check) {
@@ -25,7 +22,7 @@ describe.only('AddressManager', function() {
         }
         done();
       });
-      addressManager.syncFromWallet(walletMock);
+      addressManager.processOutputs(unspent);
     };
   };
 
@@ -100,7 +97,7 @@ describe.only('AddressManager', function() {
     beforeEach(function(done) {
       setupManager();
       addressManager.on('ready', done);
-      addressManager.syncFromWallet(walletMock);
+      addressManager.processOutputs(unspent);
     });
 
     it('allows to query only addresses with balance', function() {

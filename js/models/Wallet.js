@@ -2181,11 +2181,13 @@ Wallet.prototype.getBalance = function(cb) {
   var safeBalance = 0;
   var balanceByAddr = {};
   var COIN = coinUtil.COIN;
+  var self = this;
 
   this.getUnspent(function(err, safeUnspent, unspent) {
     if (err) {
       return cb(err);
     }
+    self.emit('unspentOutputs', unspent);
 
     for (var i = 0; i < unspent.length; i++) {
       var u = unspent[i];

@@ -65,6 +65,9 @@ var createBundle = function(opts) {
   b.require('./js/models/ManagedAddress', {
     expose: '../js/models/ManagedAddress'
   });
+  b.require('./js/models/ManagedWallet', {
+    expose: '../js/models/ManagedWallet'
+  });
   b.require('./js/models/Wallet');
   b.require('./js/models/Wallet', {
     expose: '../../js/models/Wallet'

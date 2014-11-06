@@ -7,18 +7,19 @@ var ManagedAddress = require('./ManagedAddress');
 
 /**
  * @param {Object} opts
- * @param {Wallet} opts.wallet
  * @constructor
  *
- * @emits ready
- * @emits balance
- * @emits available
+ * @emits ready - no arguments
+ * @emits address - argument is the new ManagedAddress created
+ * @emits balance - argument is balance in satoshis
+ * @emits available - argument is available balance in satoshis
  */
 function AddressManager(opts) {
   /**
    * Maps from Address (a string, not the bitcore Address) to ManagedAddress
    */
   this.addresses = {};
+  this._silentMode = false;
 }
 inherits(AddressManager, events.EventEmitter);
 
@@ -27,6 +28,7 @@ function retrieveSumAsCache(cachedName, elements, property) {
     var self = this;
     this[cachedName] = 0;
     _.each(this[elements], function(element) {
+      if (!element) return;
       self[cachedName] += element[property];
     });
   }
@@ -55,17 +57,15 @@ Object.defineProperty(AddressManager.prototype, 'available', {
   }
 });
 
-AddressManager.prototype.syncFromWallet = function syncFromWallet(wallet) {
+AddressManager.prototype.processOutputs = function processOutputs(unspent, silent) {
   var self = this;
-  wallet.getUnspent(function(err, unspent, safeUnspent) {
-    _.each(unspent, function(unspent) {
-      self.processOutput(unspent);
-    });
-    self.emit('ready');
+  _.each(unspent, function(unspent) {
+    self.processOutput(unspent, silent);
   });
+  self.emit('ready');
 };
 
-AddressManager.prototype.processOutput = function processOutput(output, hideEvents) {
+AddressManager.prototype.processOutput = function processOutput(output, silent) {
   var oldBalance = this.balance;
   var address = output.address;
   preconditions.checkState(address);
@@ -74,7 +74,7 @@ AddressManager.prototype.processOutput = function processOutput(output, hideEven
     this.addresses[address] = this.createAddress(address);
   }
   this.invalidateCache();
-  this.addresses[address].processOutput(output);
+  this.addresses[address].processOutput(output, silent);
 };
 
 AddressManager.prototype.createAddress = function createAddress(base58) {
@@ -82,21 +82,23 @@ AddressManager.prototype.createAddress = function createAddress(base58) {
   var self = this;
   address.on('balance', function() {
     self.invalidateCache();
-    self.emit('balance', this.balance);
+    self.emit('balance', self.balance);
   });
   address.on('available', function() {
     self.invalidateAvailableCache();
-    self.emit('available', this.available);
+    self.emit('available', self.available);
   });
   return address;
 };
 
 function outputOperation(operationName) {
-  return function(output) {
+  return function(output, silent) {
     var address = output.address;
     preconditions.checkArgument(address);
-    preconditions.checkState(this.addresses[address]);
-    this.addresses[address][operationName](output);
+    if (!this.addresses[address]) {
+      this.addresses[address] = this.createAddress(address);
+    }
+    this.addresses[address][operationName](output, silent);
   };
 }
 
