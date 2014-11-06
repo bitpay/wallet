@@ -10,11 +10,12 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
   _.each(wids, function(wid) {
     var w = $rootScope.iden.getWalletById(wid);
     if (w && w.isReady()) {
+
       $scope.wallets.push(w);
       controllerUtils.clearBalanceCache(w);
       controllerUtils.updateBalance(w, function() {
         $rootScope.$digest();
-      });
+      }, true);
 
     }
   });

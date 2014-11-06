@@ -289,13 +289,13 @@ angular.module('copayApp.services')
       if (cb) return cb();
     };
 
-    root.updateBalance = function(w, cb) {
+    root.updateBalance = function(w, cb, refreshAll) {
       w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;
 
       w.balanceInfo = {};
-      var scope = root.isFocusedWallet(w.id) ? $rootScope : w.balanceInfo;
+      var scope = root.isFocusedWallet(w.id) && !refreshAll ? $rootScope : w.balanceInfo;
 
       root.updateAddressList();
 
@@ -303,7 +303,7 @@ angular.module('copayApp.services')
 
       if (_balanceCache[wid]) {
         root._updateScope(w, _balanceCache[wid], scope, function() {
-          if (root.isFocusedWallet(w.id)) {
+          if (root.isFocusedWallet(w.id) && !refreshAll) {
             setTimeout(function() {
               $rootScope.$digest();
             }, 1);
