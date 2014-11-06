@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict';
 
 
@@ -43,13 +44,13 @@ if (amount && program.fee) {
   process.exit(1);
 }
 
-if (!requiredCopayers || !extPrivKeys || !extPrivKeys.length || !destAddr){
+if (!requiredCopayers || !extPrivKeys || !extPrivKeys.length || !destAddr) {
   program.outputHelp();
   process.exit(1);
 }
 
 // Fee to asign to the tx. Please put a bigger number if you get 'unsufficient unspent'
-var fee = program.fee ||  0.0001;
+var fee = program.fee || 0.0001;
 
 
 var totalCopayers = extPrivKeys.length;
@@ -63,9 +64,9 @@ if (!addr.isValid()) {
 
 
 var networkName = addr.network().name;
-console.log('\tNetwork: %s\n\tDestination Address:%s\n\tRequired copayers: %d\n\tTotal copayers: %d\n\tFee: %d\n\tKeys:', 
-            networkName, destAddr, requiredCopayers, 
-            totalCopayers, fee, extPrivKeys); //TODO
+console.log('\tNetwork: %s\n\tDestination Address:%s\n\tRequired copayers: %d\n\tTotal copayers: %d\n\tFee: %d\n\tKeys:',
+  networkName, destAddr, requiredCopayers,
+  totalCopayers, fee, extPrivKeys); //TODO
 console.log('\n ----------------------------');
 
 if (requiredCopayers > totalCopayers)
@@ -152,19 +153,19 @@ firstWallet.updateIndexes(function() {
     }
 
 
-    if (amount && amount >= balance) 
+    if (amount && amount >= balance)
       throw ('Not enought balance fund to fullfill ' + amount + ' satoshis');
 
-     rl.question("\n\tShould I swipe the wallet (destination address is:" + destAddr + " Amount: "+ amount + "Satoshis )?\n\t(`yes` to continue)\n\t", function(answer) {
-       if (answer !== 'yes')
-         process.exit(1);
+    rl.question("\n\tShould I swipe the wallet (destination address is:" + destAddr + " Amount: " + (amount || balance) + " satoshis)?\n\t(`yes` to continue)\n\t", function(answer) {
+      if (answer !== 'yes')
+        process.exit(1);
 
       amount = amount || balance - fee * bitcore.util.COIN;
 
       firstWallet.createTx(destAddr, amount, '', {}, function(err, ntxid) {
         if (err || !ntxid) {
           if (err && err.toString().match('BIG')) {
-            throw new Error('Could not create tx' + err );
+            throw new Error('Could not create tx' + err);
           } else {
             throw new Error('Could not create tx' + err + '. Try a bigger fee (--fee).');
           }
@@ -187,14 +188,17 @@ firstWallet.updateIndexes(function() {
         async.eachSeries(signers, function(dummy, cb) {
             console.log('\t Signing with copayer', i + 1);
             w[i].txProposals = firstWallet.txProposals;
-            w[i].sign(ntxid, function(signed) {
-              if (!signed) return cb('Could not sign');
 
-              console.log('\t Signed!');
-              firstWallet.txProposals = firstWallet.txProposals;
-              i++;
-              return cb(null);
-            })
+            try {
+              w[i].sign(ntxid);
+            } catch (e) {
+              return cb('Could not sign');
+            }
+
+            console.log('\t Signed!');
+            firstWallet.txProposals = firstWallet.txProposals;
+            i++;
+            return cb(null);
           },
           function(err) {
             if (err)

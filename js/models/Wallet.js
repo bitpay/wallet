@@ -1312,48 +1312,39 @@ Wallet.prototype.reject = function(ntxid) {
 };
 
 /**
- * @callback signCallback
- * @param {boolean} ret - true if it was successfully signed
- */
-/**
  * @desc Sign a proposal
  * @param {string} ntxid the id of the transaction proposal to sign
- * @param {signCallback} cb - a callback to be called on successful signing
  * @emits txProposalsUpdated
+ * @throws {Error} Could not sign proposal
+ * @throws {Error} Bad payment request
+ * @return {boolean} true if signing actually incremented the number of signatures
  */
-Wallet.prototype.sign = function(ntxid, cb) {
+Wallet.prototype.sign = function(ntxid) {
   preconditions.checkState(!_.isUndefined(this.getMyCopayerId()));
-  var self = this;
-  setTimeout(function() {
-    var myId = self.getMyCopayerId();
-    var txp = self.txProposals.get(ntxid);
-    // if (!txp || txp.rejectedBy[myId] || txp.signedBy[myId]) {
-    //   if (cb) cb(false);
-    // }
-    //
 
-    // If this is a payment protocol request,
-    // ensure it hasn't been tampered with.
-    if (!self.verifyPaymentRequest(ntxid)) {
-      if (cb) cb(false);
-      return;
-    }
+  var myId = this.getMyCopayerId();
+  var txp = this.txProposals.get(ntxid);
 
-    var keys = self.privateKey.getForPaths(txp.inputChainPaths);
+  // If this is a payment protocol request,
+  // ensure it hasn't been tampered with.
+  if (!this.verifyPaymentRequest(ntxid)) {
+    throw new Error('Bad payment request');
+  }
 
-    var b = txp.builder;
-    var before = txp.countSignatures();
-    b.sign(keys);
+  var before = txp.countSignatures();
 
-    var ret = false;
-    if (txp.countSignatures() > before) {
-      txp.signedBy[myId] = Date.now();
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('txProposalsUpdated');
-      ret = true;
-    }
-    if (cb) return cb(ret);
-  }, 10);
+  var keys = this.privateKey.getForPaths(txp.inputChainPaths);
+  txp.builder.sign(keys);
+
+  if (txp.countSignatures() <= before) {
+    return false;
+  }
+
+  txp.signedBy[myId] = Date.now();
+  this.sendTxProposal(ntxid);
+  this.emitAndKeepAlive('txProposalsUpdated');
+
+  return true;
 };
 
 /**
