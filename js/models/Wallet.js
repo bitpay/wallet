@@ -54,8 +54,7 @@ var TX_MAX_INS = 70;
  * @param {PrivateKey} opts.privateKey - an instance of {@link PrivateKey}
  * @param {string} opts.version - the version of copay where this wallet was
  *                                created
- * @TODO: figure out if reconnectDelay is set in milliseconds
- * @param {number} opts.reconnectDelay - amount of seconds to wait before
+ * @param {number} opts.reconnectDelay - amount of millis to wait before
  *                                       attempting to reconnect
  * @constructor
  */
@@ -830,6 +829,7 @@ Wallet.prototype._setBlockchainListeners = function() {
       addressStr: tx.address
     });
     if (addr) {
+      // TODO: Review parameters
       self.emitAndKeepAlive('tx', tx.address, addr.isChange);
     }
   });
@@ -2145,7 +2145,7 @@ Wallet.prototype.addressIsOwn = function(addrStr, opts) {
 };
 
 
-/* 
+/*
  * Estimate a tx fee in satoshis given its input count
  * only for spending all wallet funds
  */
@@ -2259,8 +2259,9 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 
   if (!_.some(self.getTxProposals(), {
     isPending: true
-  }))
+  })) {
     return cb();
+  }
 
   var proposalsChanged = false;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
