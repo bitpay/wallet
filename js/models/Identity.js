@@ -225,8 +225,10 @@ Identity.prototype.toObj = function() {
 
 Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
   var crypto = opts.cryptoUtil || cryptoUtil;
-  var key = crypto.kdf(this.password);
-  return crypto.encrypt(key, this.exportWithWalletInfo(opts));
+  //var key = crypto.kdf(this.password);
+  // return crypto.encrypt(key, this.exportWithWalletInfo(opts));
+  console.log('exportEncryptedWithWalletInfo');
+  return crypto.encrypt(this.password, this.exportWithWalletInfo(opts));
 };
 
 Identity.prototype.exportWithWalletInfo = function(opts) {
@@ -289,8 +291,10 @@ Identity.prototype.close = function(cb) {
 Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
   // TODO set iter and salt using config.js
-  var key = crypto.kdf(password);
-  var obj = crypto.decrypt(key, cypherText);
+  //var key = crypto.kdf(password);
+  //var obj = crypto.decrypt(key, cypherText);
+  console.log('importEncryptedWallet');
+  var obj = crypto.decrypt(password, cypherText);
   if (!obj) return cb(new Error('Could not decrypt'));
   try {
     obj = JSON.parse(obj);
@@ -343,8 +347,10 @@ Identity.prototype.closeWallet = function(wallet, cb) {
 
 Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
-  var key = crypto.kdf(password);
-  var str = crypto.decrypt(key, str);
+  //var key = crypto.kdf(password);
+  //var str = crypto.decrypt(key, str);
+  console.log('importFromEncryptedFullJson');
+  var str = crypto.decrypt(password, str);
   if (!str) {
     return cb('BADSTR');
   }
