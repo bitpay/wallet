@@ -29,10 +29,6 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
         }
       }
     });
-
-    // modalInstance.result.then(function(selectedItem) {}, function() {
-    //   $rootScope.pendingPayment = null;
-    // });
   };
 
 
