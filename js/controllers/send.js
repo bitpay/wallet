@@ -445,20 +445,23 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.sign = function(ntxid) {
       $scope.loading = true;
-      w.sign(ntxid, function(ret) {
-        if (!ret) {
-          $scope.error = 'There was an error signing the transaction';
+
+      try {
+        w.sign(ntxid);
+      } catch (e) {
+        $scope.error = 'There was an error signing the transaction';
+        $scope.loadTxs();
+        return;
+      }
+
+      var p = w.txProposals.getTxProposal(ntxid);
+      if (p.builder.isFullySigned()) {
+        $scope.send(ntxid, function() {
           $scope.loadTxs();
-        } else {
-          var p = w.txProposals.getTxProposal(ntxid);
-          if (p.builder.isFullySigned()) {
-            $scope.send(ntxid, function() {
-              $scope.loadTxs();
-            });
-          } else
-            $scope.loadTxs();
-        }
-      });
+        });
+      } else {
+        $scope.loadTxs();
+      }
     };
 
     $scope.reject = function(ntxid) {

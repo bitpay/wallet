@@ -800,9 +800,7 @@ describe('Wallet model', function() {
         done();
       });
       w.privateKey = k2;
-      w.sign(ntxid, function(success) {
-        success.should.equal(true);
-      });
+      w.sign(ntxid).should.equal.true;
     });
   });
   it('should fail to reject a signed transaction', function() {
