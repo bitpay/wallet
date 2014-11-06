@@ -13,6 +13,9 @@ var request = require('request');
 var RateService = function(opts) {
   var self = this;
 
+  opts = opts || {};
+  self.request = opts.request || request;
+
   self.SAT_TO_BTC = 1 / 1e8;
   self.BTC_TO_SAT = 1e8;
   self.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable() or use service.whenAvailable()';
@@ -44,7 +47,7 @@ RateService.prototype._fetchCurrencies = function() {
   var updateFrequencySeconds = 3600;
   var rateServiceUrl = 'https://bitpay.com/api/rates';
 
-  request.get({
+  self.request.get({
     url: rateServiceUrl,
     json: true
   }, function(err, res, body) {
