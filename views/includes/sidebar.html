@@ -45,7 +45,7 @@
   </div>
 
   <div>
-    <ul class="side-nav wallets" ng-class="{'open': walletSelection}" ng-show="wallets.0"
+    <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}" ng-show="wallets.0"
       ng-class="{'large':wallets.length > 4, 'medium':wallets.length > 2 && wallets.length < 5}">
       <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id" ng-click="switchWallet(item.id)">
         <div class="col1">
