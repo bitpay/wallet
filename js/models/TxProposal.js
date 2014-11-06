@@ -37,7 +37,6 @@ function TxProposal(opts) {
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
   this.merchant = opts.merchant || null;
-  this.altCurrency = opts.altCurrency || null;
   this._sync();
 }
 

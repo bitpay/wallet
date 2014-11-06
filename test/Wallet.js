@@ -120,8 +120,6 @@ describe('Wallet model', function() {
     c.networkName = walletConfig.networkName;
     c.version = '0.0.1';
 
-    Wallet._newRateService = sinon.stub().returns(null);
-
     return new Wallet(c);
   }
 
