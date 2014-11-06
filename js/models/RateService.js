@@ -20,14 +20,25 @@ var RateService = function(opts) {
 
   self._isAvailable = false;
   self._rates = {};
-  self._alternatives = {};
-  self.queued = [];
+  self._alternatives = [];
+  self._queued = [];
 
   self._fetchCurrencies();
-}
+};
+
+var _instance;
+RateService.singleton = function(opts) {
+  if (!_instance) {
+    _instance = new RateService(opts);
+  }
+  return _instance;
+};
+
 
 RateService.prototype._fetchCurrencies = function() {
   var self = this;
+
+  log.info('Fetching exchange rates');
 
   var backoffSeconds = 5;
   var updateFrequencySeconds = 3600;
@@ -43,15 +54,15 @@ RateService.prototype._fetchCurrencies = function() {
       return;
     }
     _.each(body, function(currency) {
-      self.rates[currency.code] = currency.rate;
-      self.alternatives.push({
+      self._rates[currency.code] = currency.rate;
+      self._alternatives.push({
         name: currency.name,
         isoCode: currency.code,
         rate: currency.rate
       });
     });
     self._isAvailable = true;
-    _.each(self.queued, function(callback) {
+    _.each(self._queued, function(callback) {
       setTimeout(callback, 1);
     });
     setTimeout(function() {
@@ -81,7 +92,7 @@ RateService.prototype.whenAvailable = function(callback) {
   if (!this.isAvailable()) {
     setTimeout(callback, 1);
   } else {
-    this.queued.push(callback);
+    this._queued.push(callback);
   }
 };
 
