@@ -260,13 +260,13 @@ copay-0.7.2.xpi
       <div class="row">  
           <div class="medium-9 small-centered columns">
             <div class="medium-4 columns text-center">
-              <img src="img/use-family.png" width="301">
+              <img src="img/use-family.png" width="301" id="family" class="animate" />
             </div>  
             <div class="medium-4 columns text-center">
-              <img src="img/use-business.png" width="301">
+              <img src="img/use-business.png" width="301" id="business" class="animate" />
             </div>  
             <div class="medium-4 columns text-center">
-              <img src="img/use-friends.png" width="301">
+              <img src="img/use-friends.png" width="301" id="friends" class="animate" />
             </div>  
           </div>  
       </div>    
@@ -276,7 +276,7 @@ copay-0.7.2.xpi
     <div class="row strong-points">
       <div class="large-6 medium-8 medium-centered columns">
         <div class="large-6 columns">
-          <img src="img/bank-illustration.png" width="429" alt="Be your own bank">
+          <img src="img/bank-illustration.png" width="429" alt="Be your own bank" id="bank" class="animate" />
         </div>
         <div class="large-6 columns">
           <h2 class="size-30 ubuntumedium">be your own bank</h2>
@@ -290,7 +290,7 @@ copay-0.7.2.xpi
     <div class="row strong-points s-p-even-nbr">
       <div class="large-6 medium-8 medium-centered columns">
         <div class="large-6 columns">
-          <img src="img/multi-sign-illustration.png" width="429" alt="Multi Signature">
+          <img src="img/multi-sign-illustration.png" width="429" alt="Multi Signature" id="signature" class="animate" />
         </div>
         <div class="large-6 columns">
           <h2 class="size-30 ubuntumedium">multi signature</h2>
@@ -304,7 +304,7 @@ copay-0.7.2.xpi
     <div class="row strong-points">
       <div class="large-6 medium-8 medium-centered columns">
         <div class="large-6 columns">
-          <img src="img/open-source-illustration_v1.png" width="429" alt="Open-Source">
+          <img src="img/open-source-illustration_v1.png" width="429" alt="Open-Source" id="opensource" class="animate" />
         </div>
         <div class="large-6 columns">
           <h2 class="size-30 ubuntumedium">code you can trust</h2>
@@ -411,5 +411,18 @@ $(function() {
 
 
   </script>
+
+  <script>
+  $(window).scroll(function() {
+    $('#bank, #signature, #opensource, #family, #business, #friends').each(function(){
+    var imagePos = $(this).offset().top;
+
+    var topOfWindow = $(window).scrollTop();
+      if (imagePos < topOfWindow+600) {
+        $(this).addClass("slideUp");
+      }
+    });
+  });
+</script>
 </body>
 </html>

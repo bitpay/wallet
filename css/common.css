@@ -76,7 +76,6 @@ p {
 }
 
 
-
 button small {
   font-weight: 100;
   font-size: 1rem;
@@ -210,6 +209,7 @@ header {
    padding-top: 10%;
     }
 
+
 .strong-points {
   padding: 10em 0 ;
   }
@@ -224,6 +224,13 @@ header {
     width: 3em;
     border-bottom: 1px solid #2C3E50;
       }
+
+
+
+#bank, #signature, #opensource, #family, #business, #friends{
+    visibility: hidden;
+  } 
+
 
 footer {
   padding: 2em 0;
