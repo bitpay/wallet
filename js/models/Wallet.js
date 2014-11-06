@@ -2866,19 +2866,23 @@ Wallet.prototype.getTransactionHistory = function(cb) {
       type: 'out'
     });
 
-    var proposal = _.findWhere(proposals, {
-      sentTxid: tx.txid
-    });
-    tx.comment = proposal ? proposal.comment : undefined;
     tx.labelTo = firstOut ? firstOut.label : undefined;
     tx.addressTo = firstOut ? firstOut.address : undefined;
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
-    tx.sentTs = proposal ? proposal.sentTs : undefined;
     tx.minedTs = !_.isNaN(tx.time) ? tx.time * 1000 : undefined;
-    tx.merchant = proposal ? proposal.merchant : undefined;
-    tx.peerActions = proposal ? proposal.peerActions : undefined;
-    tx.finallyRejected = proposal ? proposal.finallyRejected : undefined;
+
+    var proposal = _.findWhere(proposals, {
+      sentTxid: tx.txid
+    });
+
+    if (proposal) {
+      tx.comment = proposal.comment;
+      tx.sentTs = proposal.sentTs;
+      tx.merchant = proposal.merchant;
+      tx.peerActions = proposal.peerActions;
+      tx.finallyRejected = proposal.finallyRejected;
+    }
   };
 
   if (addresses.length > 0) {
