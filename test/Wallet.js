@@ -56,8 +56,8 @@ var addCopayers = function(w) {
   }
 };
 
-describe('Wallet model', function() {
 
+describe('Wallet model', function() {
   it('should fail to create an instance', function() {
     (function() {
       new Wallet(walletConfig)
@@ -102,8 +102,6 @@ describe('Wallet model', function() {
     c.network.peerFromCopayer = sinon.stub().returns('xxxx');
     c.network.send = sinon.stub();
 
-
-
     c.addressBook = {
       '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
         label: 'John',
@@ -121,6 +119,8 @@ describe('Wallet model', function() {
 
     c.networkName = walletConfig.networkName;
     c.version = '0.0.1';
+
+    Wallet._newRateService = sinon.stub().returns(null);
 
     return new Wallet(c);
   }
