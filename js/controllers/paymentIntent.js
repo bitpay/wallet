@@ -2,7 +2,7 @@
 
 var bitcore = require('bitcore');
 
-angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $modal, controllerUtils) {
+angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $modal, $location, controllerUtils) {
 
   $scope.wallets = [];
 
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
 
     $scope.cancel = function() {
       $rootScope.pendingPayment = null;
-      controllerUtils.setFocusedWallet($scope.wallets[0]);
+      $location.path('/');
       $modalInstance.close();
     };
   };
