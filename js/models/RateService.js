@@ -89,7 +89,7 @@ RateService.prototype.isAvailable = function() {
 };
 
 RateService.prototype.whenAvailable = function(callback) {
-  if (!this.isAvailable()) {
+  if (this.isAvailable()) {
     setTimeout(callback, 1);
   } else {
     this._queued.push(callback);
