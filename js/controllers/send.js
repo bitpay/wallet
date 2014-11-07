@@ -73,7 +73,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.loadTxs = function() {
       controllerUtils.updateTxs();
-      
+
       setTimeout(function() {
         $scope.loading = false;
         $rootScope.$digest();
@@ -625,32 +625,4 @@ angular.module('copayApp.controllers').controller('SendController',
           '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
     };
-
-    controllerUtils.redirIfNotComplete();
-
-    var w = $rootScope.wallet;
-    preconditions.checkState(w);
-    preconditions.checkState(w.settings.unitToSatoshi);
-
-    $rootScope.title = 'Send';
-    $scope.loading = false;
-    var satToUnit = 1 / w.settings.unitToSatoshi;
-    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
-    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
-    $scope.unitToSatoshi = w.settings.unitToSatoshi;
-
-    $scope.alternativeName = w.settings.alternativeName;
-    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
-
-    $scope.isRateAvailable = false;
-    $scope.rateService = rateService;
-    $scope.availableBalance = $scope.getAvailableAmount();
-
-    rateService.whenAvailable(function() {
-      $scope.isRateAvailable = true;
-      $scope.$digest();
-    });
-
-
-
   });
