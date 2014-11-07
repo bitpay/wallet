@@ -2967,8 +2967,7 @@ Wallet.prototype.getTransactionHistory = function(cb) {
 Wallet.prototype.exportEncrypted = function(password, opts) {
   opts = opts || {};
   var crypto = opts.cryptoUtil || cryptoUtil;
-  var key = crypto.kdf(password);
-  return crypto.encrypt(key, this.toObj());
+  return crypto.encrypt(password, this.toObj());
 };
 
 module.exports = Wallet;
