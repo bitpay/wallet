@@ -62,12 +62,12 @@ angular.module('copayApp.services')
     };
 
 
-    root.updateTxsAndBalance = _.debounce(function(w) {
+    root.updateTxsAndBalance = function(w) {
       root.updateTxs();
       root.updateBalance(w, function() {
         $rootScope.$digest();
       });
-    }, 3000);
+    };
 
     root.installWalletHandlers = function($scope, w) {
 
