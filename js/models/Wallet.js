@@ -1303,7 +1303,7 @@ Wallet.prototype._getActionList = function(actions) {
  * @return {Object[]} each object returned represents a transaction proposal
  */
 Wallet.prototype.getPendingTxProposals = function() {
-  var that = this;
+  var self = this;
   var ret = [];
   ret.txs = [];
   var pendingForUs = 0;
@@ -1313,24 +1313,22 @@ Wallet.prototype.getPendingTxProposals = function() {
   _.find(txps, function(txp) {
     if (txp.isPending) {
       pendingForUs++;
-      var tx = txp.builder.build();
-      var outs = [];
-      tx.outs.forEach(function(o) {
-        var addr = bitcore.Address.fromScriptPubKey(o.getScript(), that.getNetworkName())[0].toString();
-        if (!that.addressIsOwn(addr, {
-          excludeMain: true
-        })) {
-          outs.push({
-            address: addr,
-            value: bitcore.util.valueToBigInt(o.getValue()) * satToUnit,
-          });
-        }
+      var addresses = {};
+      var outs = JSON.parse(txp.builder.vanilla.outs);
+      outs.forEach(function(o) {
+        if (!self.publicKeyRing.addressToPath[o.Straddress]) {
+          if (!addresses[o.address]) addresses[o.address] = 0;
+          addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
+        };
+      });
+      txp.outs = [];
+      _.each(addresses, function(value, address) {
+        txp.outs.push({address: address, value: value * satToUnit});
       });
       // extra fields
-      txp.outs = outs;
       txp.fee = txp.builder.feeSat * satToUnit;
-      txp.missingSignatures = tx.countInputMissingSignatures(0);
-      txp.actionList = that._getActionList(txp.peerActions);
+      txp.missingSignatures = txp.builder.build().countInputMissingSignatures(0);
+      txp.actionList = self._getActionList(txp.peerActions);
       ret.txs.push(txp);
     }
   });
@@ -2203,7 +2201,7 @@ Wallet.prototype.addressIsOwn = function(addrStr, opts) {
 };
 
 
-/* 
+/**
  * Estimate a tx fee in satoshis given its input count
  * only for spending all wallet funds
  */
