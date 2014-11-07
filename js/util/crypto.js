@@ -4,9 +4,10 @@
 var sjcl = require('sjcl');
 var log = require('../log.js');
 var _ = require('lodash');
+var config = require('../../config');
 
-var defaultSalt = 'mjuBtGybi/4=';
-var defaultIterations = 100;
+var defaultSalt = (config && config.passphraseConfig && config.passphraseConfig.storageSalt) || 'mjuBtGybi/4=';
+var defaultIterations = (config && config.passphraseConfig && config.passphraseConfig.iterations) || 1000;
 
 module.exports = {
 
@@ -50,6 +51,8 @@ module.exports = {
     if (!_.isString(message)) {
       message = JSON.stringify(message);
     }
+    sjcl.json.defaults.salt = defaultSalt;
+    sjcl.json.defaults.iter = defaultIterations;
     return sjcl.encrypt(key, message);
   },
 
