@@ -20,9 +20,9 @@
                   </strong>
                 </span>
                 <span class="size-14 db m5t text-gray">
-                  <span ng-if="!$root.updatingBalance">{{totalBalanceAlternative |noFractionNumber:2}}</span>
+                  <span ng-if="!$root.updatingBalance && alternativeBalanceAvailable">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+                  <span ng-if="!$root.updatingBalance && !alternativeBalanceAvailable">N/A</span>
                   <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-                  {{alternativeIsoCode}}
                 </span>
               </div>
             </div>

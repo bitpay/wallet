@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('MoreController',
       name: w.settings.alternativeName,
       isoCode: w.settings.alternativeIsoCode
     };
-    $scope.alternativeOpts = rateService.isAvailable ?
+    $scope.alternativeOpts = rateService.isAvailable() ?
       rateService.listAlternatives() : [$scope.selectedAlternative];
 
     rateService.whenAvailable(function() {
