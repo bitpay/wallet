@@ -15,7 +15,8 @@
         <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
         <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
           <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-          <span class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+          <span ng-if="alternativeBalanceAvailable" class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+          <span ng-if="!alternativeBalanceAvailable" class="alt-currency">N/A</span>
         </div> 
       </div>
     </div>
