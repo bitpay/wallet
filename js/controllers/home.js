@@ -31,18 +31,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     identityService.open($scope, form);
   }
 
-  //TODO erase this function
-  $scope.setPayment = function() {
-    $rootScope.pendingPayment = {
-      "data": {
-        "amount": 20.3,
-        "label": "Luke-Jr",
-        "message": "Hola chango?"
-      },
-      "address": "175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"
-    };
-  }
-
   function getParam(sname) {
     var params = location.search.substr(location.search.indexOf("?") + 1);
     var sval = "";
