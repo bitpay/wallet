@@ -12,6 +12,7 @@ module.exports.logger = require('./js/log');
 // components
 var Async = module.exports.Async = require('./js/models/Async');
 var Insight = module.exports.Insight = require('./js/models/Insight');
+var RateService = module.exports.RateService = require('./js/models/RateService');
 
 module.exports.Identity = require('./js/models/Identity');
 module.exports.Wallet = require('./js/models/Wallet');

@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
           return;
         }
 
-        _.each(res, function (r) {
+        _.each(res, function(r) {
           r.ts = r.minedTs || r.sentTs;
           if (r.action === 'sent' && r.peerActions) {
             r.actionList = controllerUtils.getActionList(r.peerActions);
@@ -81,14 +81,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.getShortNetworkName = function() {
       var w = $rootScope.wallet;
       return w.getNetworkName().substring(0, 4);
-    };
-    $scope.amountAlternative = function(amount, txIndex, cb) {
-      var w = $rootScope.wallet;
-      rateService.whenAvailable(function() {
-        var valueSat = amount * w.settings.unitToSatoshi;
-        $scope.alternativeCurrency[txIndex] = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
-        return cb ? cb() : null;
-      });
     };
 
     // Autoload transactions 

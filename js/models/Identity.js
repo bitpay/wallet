@@ -86,7 +86,9 @@ Identity.create = function(opts, cb) {
   opts = _.extend({}, opts);
 
   var iden = new Identity(opts);
-  iden.store(_.extend(opts, {failIfExists: true}), function(err) {
+  iden.store(_.extend(opts, {
+    failIfExists: true
+  }), function(err) {
     if (err) return cb(err);
     return cb(null, iden);
   });
