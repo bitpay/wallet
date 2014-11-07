@@ -72,11 +72,8 @@ angular.module('copayApp.controllers').controller('SendController',
       });
 
     $scope.loadTxs = function() {
-      var opts = {
-        pending: true,
-        skip: null
-      };
-      controllerUtils.updateTxs(opts);
+      controllerUtils.updateTxs();
+      
       setTimeout(function() {
         $scope.loading = false;
         $rootScope.$digest();

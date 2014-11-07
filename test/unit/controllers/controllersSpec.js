@@ -43,6 +43,7 @@ describe("Unit: Controllers", function() {
     scope = $rootScope.$new();
     $rootScope.iden = sinon.stub();
     $rootScope.safeUnspentCount = 1;
+    $rootScope.pendingTxCount = 0;
 
     var w = {};
     w.isReady = sinon.stub().returns(true);
@@ -72,7 +73,10 @@ describe("Unit: Controllers", function() {
     w.sendTx = sinon.stub().yields(null);
     w.requiresMultipleSignatures = sinon.stub().returns(true);
     w.getTxProposals = sinon.stub().returns([1, 2, 3]);
-
+    w.getPendingTxProposals = sinon.stub().returns({
+      txs : [{ isPending : true }],
+      pendingForUs: 1
+    });
 
     $rootScope.wallet = w;
   }));

@@ -361,7 +361,7 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
   } else {
     ev = {
       type: 'corrupt',
-      cId: senderId,
+      cId: senderId
     };
   }
   if (ev)
@@ -513,7 +513,7 @@ Wallet.prototype._onReject = function(senderId, data) {
   this.emitAndKeepAlive('txProposalEvent', {
     type: 'rejected',
     cId: senderId,
-    txId: data.ntxid,
+    txId: data.ntxid
   });
 };
 
@@ -536,7 +536,7 @@ Wallet.prototype._onSeen = function(senderId, data) {
   this.emitAndKeepAlive('txProposalEvent', {
     type: 'seen',
     cId: senderId,
-    txId: data.ntxid,
+    txId: data.ntxid
   });
 
 };
@@ -1278,6 +1278,64 @@ Wallet.prototype.getTxProposals = function() {
       ret.push(txp);
     }
   }
+  return ret;
+};
+
+/**
+ * @desc get list of actions (see {@link getPendingTxProposals})
+ */
+Wallet.prototype._getActionList = function(actions) {
+  if (!actions) return;
+  var peers = Object.keys(actions).map(function(i) {
+    return {
+      cId: i,
+    actions: actions[i]
+    }
+  });
+
+  return peers.sort(function(a, b) {
+    return !!b.actions.create - !!a.actions.create;
+  });
+};
+
+/**
+ * @desc Retrieve Pendings Transaction proposals (see {@link TxProposals})
+ * @return {Object[]} each object returned represents a transaction proposal
+ */
+Wallet.prototype.getPendingTxProposals = function() {
+  var that = this;
+  var ret = [];
+  ret.txs = [];
+  var pendingForUs = 0;
+  var txps = this.getTxProposals();
+  var satToUnit = 1 / this.settings.unitToSatoshi;
+
+  _.find(txps, function(txp) {
+    if (txp.isPending) {
+      pendingForUs++;
+      var tx = txp.builder.build();
+      var outs = [];
+      tx.outs.forEach(function(o) {
+        var addr = bitcore.Address.fromScriptPubKey(o.getScript(), that.getNetworkName())[0].toString();
+        if (!that.addressIsOwn(addr, {
+          excludeMain: true
+        })) {
+          outs.push({
+            address: addr,
+            value: bitcore.util.valueToBigInt(o.getValue()) * satToUnit,
+          });
+        }
+      });
+      // extra fields
+      txp.outs = outs;
+      txp.fee = txp.builder.feeSat * satToUnit;
+      txp.missingSignatures = tx.countInputMissingSignatures(0);
+      txp.actionList = that._getActionList(txp.peerActions);
+      ret.txs.push(txp);
+    }
+  });
+
+  ret.pendingForUs = pendingForUs;
   return ret;
 };
 
@@ -2882,6 +2940,13 @@ Wallet.prototype.getTransactionHistory = function(cb) {
       tx.merchant = proposal.merchant;
       tx.peerActions = proposal.peerActions;
       tx.finallyRejected = proposal.finallyRejected;
+      tx.merchant = proposal.merchant;
+      tx.peerActions = proposal.peerActions;
+      tx.finallyRejected = proposal.finallyRejected;
+
+      if (tx.peerActions) {
+        tx.actionList = self._getActionList(tx.peerActions);
+      }
     }
   };
 
