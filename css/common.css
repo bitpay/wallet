@@ -42,6 +42,7 @@ p {
 {font-family: ubuntubold;}
 
 .size-10 { font-size: 10px; }  
+.size-11 { font-size: 12px; }  
 .size-12 { font-size: 12px; }      
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }
@@ -71,9 +72,12 @@ p {
 .p0m0 {padding: 0; margin: 0}
 
 .row {
-  max-width: 100%;
-  padding: 0 5%;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 62.5rem; 
 }
+
+.right {float: right;}
 
 
 button small {
@@ -100,7 +104,8 @@ header {
     left: 0;
     z-index: 1;
   background-color: #00BD9C;
-  padding-top: 4.5em;
+  padding-top: 3.5em;
+  padding-bottom: 1em;
  }
 
 
@@ -109,17 +114,43 @@ header {
 
   }
 
-.header {
+.header{
   background-color: #00BD9C;
   }
 
-.header-logo {
+.header-logo, .header-logo-small {
+  position: relative;
+  }
+
+.header-logo-small {
+  width: 210px;
+  }  
+
+   .copay-version, .copay-version-small {
+  color: #FFFFFF;
+   position: absolute;
+  }
+
+
+ .copay-version {
+  left: 55px; 
+   bottom: -10px; 
+  }
+
+   .copay-version-small {
+  right: 15px; 
+   bottom: -1px; 
   }
 
  .btn-dwnld {
-  border: #00977D solid 1px;
+  background-color: #109F83;
 
     }
+
+a:hover.btn-dwnld {
+  background-color: #066D59;
+
+    }   
 
 #drop1 li a, #drop2 li a {
     padding-left: 40px !important;  
@@ -183,8 +214,8 @@ header {
 
 .subheader{
   background-color: #EAEDF0;
-  margin: 0; 
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .subheader a {
@@ -243,8 +274,6 @@ footer {
   overflow: hidden;
 }
 
-.visbg { background-color: #2C3E50;
+.visbg { background-color: #D0021B !important;
       }
-
-
 
