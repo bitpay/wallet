@@ -288,7 +288,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .status {
-  font-weight: 700;
   -moz-box-shadow:    inset 0px -1px 1px 0px rgba(159,47,34,0.30);
   box-shadow:         inset 0px -1px 1px 0px rgba(159,47,34,0.30);
   color: #FFFFFF;
@@ -297,10 +296,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   left: 250px;
   right: 0;
   top: 62px;
-  padding: 5px 0;
+  padding: 10px 0;
   z-index: 9;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
+}
+
+.status-first-line {
+
+  z-index: 9;
+  font-size: 16px;
 }
 
 .setup .comment {
