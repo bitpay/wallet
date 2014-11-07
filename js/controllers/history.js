@@ -16,23 +16,9 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.blockchain_txs = [];
     $scope.alternativeCurrency = [];
 
-    var satToUnit = 1 / w.settings.unitToSatoshi;
-
-
     $scope.update = function() {
-      $scope.loading = true;
-      var from = ($scope.txpCurrentPage - 1) * $scope.txpItemsPerPage;
-      var opts = {
-        pending: false,
-        skip: [from, from + $scope.txpItemsPerPage]
-      };
-      controllerUtils.updateTxs(opts);
-      setTimeout(function() {
-        $rootScope.$digest();
-      }, 0);
+      $scope.getTransactions();
     };
-
-
 
     $scope.show = function() {
       $scope.loading = true;
@@ -61,9 +47,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
         _.each(res, function(r) {
           r.ts = r.minedTs || r.sentTs;
-          if (r.action === 'sent' && r.peerActions) {
-            r.actionList = controllerUtils.getActionList(r.peerActions);
-          }
         });
         $scope.blockchain_txs = w.cached_txs = res;
         $scope.loading = false;
@@ -76,13 +59,11 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
     $scope.hasAction = function(actions, action) {
       return actions.hasOwnProperty('create');
-    }
+    };
 
     $scope.getShortNetworkName = function() {
       var w = $rootScope.wallet;
       return w.getNetworkName().substring(0, 4);
     };
 
-    // Autoload transactions 
-    $scope.getTransactions();
   });

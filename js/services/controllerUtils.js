@@ -63,13 +63,10 @@ angular.module('copayApp.services')
 
 
     root.updateTxsAndBalance = _.debounce(function(w) {
-      root.updateTxs({
-        wallet: w,
-        pending: true,
-      });
+      root.updateTxs();
       root.updateBalance(w, function() {
         $rootScope.$digest();
-      })
+      });
     }, 3000);
 
     root.installWalletHandlers = function($scope, w) {
@@ -139,19 +136,29 @@ angular.module('copayApp.services')
 
       w.on('txProposalEvent', function(e) {
 
+        root.updateTxsAndBalance(w);
         // TODO: add wallet name notification
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
+        var name = w.getName();
         switch (e.type) {
+          case 'new':
+            notification.info('['+ name +'] New Transaction', 
+              $filter('translate')('You received a transaction proposal from') + ' ' + user);
+            break;
           case 'signed':
-            notification.info('Transaction Update', $filter('translate')('A transaction was signed by') + ' ' + user);
+            notification.info('['+ name +'] Transaction Signed', 
+              $filter('translate')('A transaction was signed by') + ' ' + user);
             break;
           case 'rejected':
-            notification.info('Transaction Update', $filter('translate')('A transaction was rejected by') + ' ' + user);
+            notification.info('['+ name +'] Transaction Rejected', 
+              $filter('translate')('A transaction was rejected by') + ' ' + user);
             break;
           case 'corrupt':
-            notification.error('Transaction Error', $filter('translate')('Received corrupt transaction from') + ' ' + user);
+            notification.error('['+ name +'] Transaction Error', 
+                $filter('translate')('Received corrupt transaction from') + ' ' + user);
             break;
         }
+        $rootScope.$digest();
       });
       w.on('addressBookUpdated', function(dontDigest) {
         if (root.isFocusedWallet(wid)) {
@@ -210,6 +217,7 @@ angular.module('copayApp.services')
       $rootScope.wallet = w;
       w.updateFocusedTimestamp(Date.now());
       root.redirIfLogged();
+      root.updateTxs();
       root.updateBalance(w, function() {
         $rootScope.$digest();
       })
@@ -323,75 +331,26 @@ angular.module('copayApp.services')
       });
     };
 
-    root.updateTxs = function(opts) {
-      function computeAlternativeAmount(w, tx, cb) {
-        rateService.whenAvailable(function() {
-          _.each(tx.outs, function(out) {
-            var valueSat = out.value * w.settings.unitToSatoshi;
-            out.alternativeAmount = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
-            out.alternativeIsoCode = w.settings.alternativeIsoCode;
-          });
-          if (cb) return cb();
+    root.computeAlternativeAmount = function(w, tx, cb) {
+      rateService.whenAvailable(function() {
+        _.each(tx.outs, function(out) {
+          var valueSat = out.value * w.settings.unitToSatoshi;
+          out.alternativeAmount = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
+          out.alternativeIsoCode = w.settings.alternativeIsoCode;
         });
-      };
-
-      var w = opts.wallet || $rootScope.wallet;
-      if (!w) return;
-      opts = opts || $rootScope.txsOpts || {};
-
-      var satToUnit = 1 / w.settings.unitToSatoshi;
-      var myCopayerId = w.getMyCopayerId();
-      var pendingForUs = 0;
-      var inT = w.getTxProposals().sort(function(t1, t2) {
-        return t2.createdTs - t1.createdTs
+        if (cb) return cb(tx);
       });
-      var txs = [];
+    };
 
-      inT.forEach(function(i, index) {
-        if (opts.skip && (index < opts.skip[0] || index >= opts.skip[1])) {
-          return txs.push(null);
-        }
-
-        if (i.isPending && myCopayerId != i.creator && !i.rejectedByUs && !i.signedByUs) {
-          pendingForUs++;
-        }
-
-        if (!!opts.pending == !!i.isPending) {
-          var tx = i.builder.build();
-          var outs = [];
-          tx.outs.forEach(function(o) {
-            var addr = bitcore.Address.fromScriptPubKey(o.getScript(), w.getNetworkName())[0].toString();
-            if (!w.addressIsOwn(addr, {
-              excludeMain: true
-            })) {
-              outs.push({
-                address: addr,
-                value: bitcore.util.valueToBigInt(o.getValue()) * satToUnit,
-              });
-            }
-          });
-          // extra fields
-          i.outs = outs;
-          i.fee = i.builder.feeSat * satToUnit;
-          i.missingSignatures = tx.countInputMissingSignatures(0);
-          i.actionList = getActionList(i.peerActions);
-          if (i.isPending) {
-            computeAlternativeAmount(w, i);
-          }
-          txs.push(i);
-        }
-      });
-
-      // Disabling this as discrepancies in local time on copayer machines is causing
-      // valid TXPs to get removed
-      //w.removeTxWithSpentInputs();
-
-      $rootScope.txs = txs;
-      $rootScope.txsOpts = opts;
-      if ($rootScope.pendingTxCount < pendingForUs) {
-        $rootScope.txAlertCount = pendingForUs;
+    root.updateTxs = function() {
+      var w = $rootScope.wallet;
+      if (!w) return root.onErrorDigest(); 
+      var res = w.getPendingTxProposals();
+      $rootScope.txps = res.txs;
+      if ($rootScope.pendingTxCount < res.pendingForUs) {
+        $rootScope.txAlertCount = res.pendingForUs;
       }
-      $rootScope.pendingTxCount = pendingForUs;
+      $rootScope.pendingTxCount = res.pendingForUs;
     };
 
     root.deleteWallet = function($scope, w) {
@@ -403,25 +362,6 @@ angular.module('copayApp.services')
         root.bindProfile($scope, $rootScope.iden, lastFocused);
       });
     };
-
-    root.getActionList = function(actions) {
-      return getActionList(actions);
-    };
-
-    function getActionList(actions) {
-      var peers = Object.keys(actions).map(function(i) {
-        return {
-          cId: i,
-          actions: actions[i]
-        }
-      });
-
-      return peers.sort(function(a, b) {
-        return !!b.actions.create - !!a.actions.create;
-      });
-    }
-
-
 
     return root;
   });
