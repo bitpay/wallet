@@ -83,7 +83,6 @@ describe('PayPro (in Wallet) model', function() {
       c.network.getHexNonces = sinon.stub();
       c.network.send = sinon.stub();
 
-
       return new Wallet(c);
     }
 

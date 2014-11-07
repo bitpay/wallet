@@ -324,6 +324,17 @@ angular.module('copayApp.services')
     };
 
     root.updateTxs = function(opts) {
+      function computeAlternativeAmount(w, tx, cb) {
+        rateService.whenAvailable(function() {
+          _.each(tx.outs, function(out) {
+            var valueSat = out.value * w.settings.unitToSatoshi;
+            out.alternativeAmount = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
+            out.alternativeIsoCode = w.settings.alternativeIsoCode;
+          });
+          if (cb) return cb();
+        });
+      };
+
       var w = opts.wallet || $rootScope.wallet;
       if (!w) return;
       opts = opts || $rootScope.txsOpts || {};
@@ -364,6 +375,9 @@ angular.module('copayApp.services')
           i.fee = i.builder.feeSat * satToUnit;
           i.missingSignatures = tx.countInputMissingSignatures(0);
           i.actionList = getActionList(i.peerActions);
+          if (i.isPending) {
+            computeAlternativeAmount(w, i);
+          }
           txs.push(i);
         }
       });
