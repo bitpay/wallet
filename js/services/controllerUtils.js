@@ -278,15 +278,18 @@ angular.module('copayApp.services')
         }
         r.balanceByAddr = balanceByAddr;
         root.updateAddressList();
-        r.updatingBalance = false;
 
-        rateService.whenAvailable(function() {
+        if (rateService.isAvailable()) {
           r.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
           r.alternativeIsoCode = w.settings.alternativeIsoCode;
           r.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
           r.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
-          return cb(null, r)
-        });
+          r.alternativeBalanceAvailable = true;
+        };
+
+        r.updatingBalance = false;
+
+        return cb(null, r)
       });
     };
 
