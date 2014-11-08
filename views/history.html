@@ -13,12 +13,19 @@
       ng-if="blockchain_txs[0].txid">
       <div class="large-12 columns">
 
-        <div class="panel oh" 
-          ng-repeat="btx in blockchain_txs | orderBy: 'time':true" ng-click="btx.showDetails = !btx.showDetails">
+        <div class="panel" 
+          ng-repeat="btx in blockchain_txs | orderBy:'-ts'" ng-click="btx.showDetails = !btx.showDetails">
           <div class="row size-14">
             <div class="large-2 medium-2 small-12 columns">
               <div class="tx-date">
-                <time ng-if="btx.ts">{{btx.ts | amCalendar}}</time>
+                <time 
+                  class="hastip"
+                  ng-if="btx.ts"
+                  data-options="disable_for_touch:true"
+                  tooltip-popup-delay='500'
+                  tooltip-placement="top"
+                  tooltip="{{btx.ts | amCalendar}}"
+                  tooltip-placement="left">{{btx.ts | amTimeAgo}}</time>
                 <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
                   <span translate>Unconfirmed</span>
                 </span>
@@ -43,7 +50,7 @@
                   ng-class="{
                   'fi-arrow-left' : btx.action == 'received',
                   'fi-arrow-right': btx.action == 'sent', 
-                  'fi-arrow-loop': btx.action == 'moved'}"></i>
+                  'fi-loop': btx.action == 'moved'}"></i>
               </div>
             </div>
 
