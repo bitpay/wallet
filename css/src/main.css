@@ -1101,7 +1101,7 @@ button.gray:focus,
 }
 
 .side-nav.wallets {
-  z-index: 9999;
+  z-index: 100;
   background-color: #213140 ;
   border-bottom: 1px solid #3A4E61;
   overflow-y: auto;

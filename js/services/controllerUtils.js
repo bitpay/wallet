@@ -349,6 +349,9 @@ angular.module('copayApp.services')
       var w = $rootScope.wallet;
       if (!w) return root.onErrorDigest(); 
       var res = w.getPendingTxProposals();
+      _.each(res.txs, function(tx) {
+        root.computeAlternativeAmount(w, tx);
+      });
       $rootScope.txps = res.txs;
       if ($rootScope.pendingTxCount < res.pendingForUs) {
         $rootScope.txAlertCount = res.pendingForUs;

@@ -10,7 +10,9 @@
     <div class="large-3 medium-3 small-4 columns">
       <div class="size-12">
         <span>{{out.value |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
-        <span>{{out.alternativeAmount|noFractionNumber}} {{out.alternativeIsoCode}}</span>
+        <span class="label secondary round">
+          {{out.alternativeAmount|noFractionNumber}} {{out.alternativeIsoCode}}
+        </span>
       </div>
     </div>
     <div class="large-1 medium-1 small-1 columns fi-arrow-right"></div>
