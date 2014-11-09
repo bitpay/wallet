@@ -212,6 +212,15 @@ angular.module('copayApp.services')
       if (!_.isObject(w))
         w = $rootScope.iden.getWalletById(w);
 
+      /**
+       * TODO: For debugging manager only
+      window.wallet = w;
+      window.manager = copay.manageWallet(w);
+      window.manager.on('available', function(available) {console.log('manager updated available: ' + available);});
+      window.manager.on('balance', function(balance) {console.log('manager updated balance: ' + balance);});
+      window.manager.on('address', function(address) {console.log('manager new address: ' + address._base58);});
+       */
+
       preconditions.checkState(w && _.isObject(w));
 
       $rootScope.wallet = w;
