@@ -24,7 +24,50 @@
     </div>
   </div>
 
-  <div class="line-dashed-h m30v"></div>
+  <div class="line-dashed-h m20b"></div>
+  
+  <div class="row" ng-init="getWallets()">
+    <div class="large-12 columns">
+      <table width="100%" role="grid">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Balance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+              data-ng-repeat="item in wallets | orderBy:'name'" 
+              ng-init="isReady = item.isReady(); activeWallet = $root.wallet.id"
+              ng-class="{'active':activeWallet == item.id, 'deleting':loading==item.id}">
+            <td>{{item.name || item.id }}</td>
+            <td width="70">{{item.requiredCopayers}} of {{item.totalCopayers}}</td>
+            <td width="220">{{isReady ? 'Complete' : 'Waiting for copayers...'}}</td>
+            <td width="220">
+              <span ng-if="!isReady">-</span>
+              <span ng-if="isReady">
+                {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
+              </span>
+            </td>
+            <td width="70" class="text-center">
+              <a translate 
+                 class="warning" 
+                 ng-really-message="{{'Are you sure to delete the wallet'}} {{(item.name || item.id)}}" 
+                 ng-really-click="deleteWallet(item)"
+                 ng-show="activeWallet != item.id && loading != item.id">Delete</a>
+              <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              <span ng-show="activeWallet == item.id">Active</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="line-dashed-h m20b"></div>
 
   <div class="row">
     <div class="large-12 columns">

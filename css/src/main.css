@@ -909,6 +909,14 @@ label small.has-error {
   font-size: 11px;
 }
 
+table tr.active {
+  background: #CBECE6;
+}
+
+table tr.deleting {
+  background: #FCD5D5;
+}
+
 /* SECONDARY */
 
 input[type='submit']

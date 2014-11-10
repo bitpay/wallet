@@ -6,17 +6,6 @@
 
 @media (max-width: 1024px) {
 
-  .line-dashed-setup-v, 
-  .line-dashed-v,
-  .line-dashed-h {
-    border: none;
-  }
-
-  .status {
-    left: 0;
-    top: 40px;
-  }
-
   .logo-setup {
     margin: 20px 0;
     padding: 2rem 0;
