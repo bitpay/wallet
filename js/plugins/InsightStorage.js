@@ -8,7 +8,7 @@ var SEPARATOR = '|';
 
 function InsightStorage(config) {
   this.type = 'DB';
-  this.storeUrl = config.url || 'https://test-insight.bitpay.com:443/api/email';
+  this.storeUrl = config.url || 'https://insight.bitpay.com:443/api/email',
   this.request = config.request || request;
 }
 
