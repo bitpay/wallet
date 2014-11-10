@@ -1289,7 +1289,7 @@ Wallet.prototype._getActionList = function(actions) {
   var peers = Object.keys(actions).map(function(i) {
     return {
       cId: i,
-    actions: actions[i]
+      actions: actions[i]
     }
   });
 
@@ -2836,8 +2836,21 @@ Wallet.request = function(options, callback) {
 };
 
 
-Wallet.prototype.getTransactionHistory = function(cb) {
+/**
+ * @desc Return a list of past transactions
+ *
+ * @param {number} opts.currentPage - the desired page in the dataset
+ * @param {number} opts.itemsPerPage - number of items per page
+ * @return {Object} the list of transactions
+ */
+Wallet.prototype.getTransactionHistory = function(opts, cb) {
   var self = this;
+
+  if (_.isFunction(opts)) {
+    cb = opts;
+    opts = {};
+  }
+  opts = opts || {};
 
   var addresses = self.getAddressesInfo();
   var proposals = self.getTxProposals();
@@ -2948,6 +2961,21 @@ Wallet.prototype.getTransactionHistory = function(cb) {
     }
   };
 
+  function paginate(list, currentPage, itemsPerPage) {
+    var res = {
+      itemsPerPage: itemsPerPage || list.length,
+      currentPage: currentPage || 1,
+      nbItems: list.length,
+    };
+    res.nbPages = res.itemsPerPage != 0 ? Math.ceil(res.nbItems / res.itemsPerPage) : 1;
+
+    var from = (res.currentPage - 1) * res.itemsPerPage;
+    var to = Math.min(from + res.itemsPerPage, res.nbItems);
+    res.items = list.slice(from, to);
+
+    return res;
+  };
+
   if (addresses.length > 0) {
     var addressesStr = _.pluck(addresses, 'addressStr');
     self.blockchain.getTransactions(addressesStr, function(err, txs) {
@@ -2957,7 +2985,11 @@ Wallet.prototype.getTransactionHistory = function(cb) {
         decorateTx(tx);
         return tx;
       });
-      return cb(null, history);
+      history.sort(function(a, b) {
+        return (b.sentTs || b.minedTs) - (a.sentTs || a.minedTs);
+      });
+
+      return cb(null, paginate(history, opts.currentPage, opts.itemsPerPage));
     });
   }
 };

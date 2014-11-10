@@ -1976,13 +1976,102 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res.length.should.equal(3);
-        res[0].action.should.equal('sent');
-        res[0].amountSat.should.equal(900);
-        res[1].action.should.equal('received');
-        res[1].amountSat.should.equal(1900);
-        res[2].action.should.equal('moved');
-        res[2].amountSat.should.equal(2900);
+        res.items.should.exist;
+        var items = res.items;
+        items.length.should.equal(3);
+        items[0].action.should.equal('sent');
+        items[0].amountSat.should.equal(900);
+        items[1].action.should.equal('received');
+        items[1].amountSat.should.equal(1900);
+        items[2].action.should.equal('moved');
+        items[2].amountSat.should.equal(2900);
+        done();
+      });
+    });
+    it('should return paginated list of txs', function(done) {
+      var w = cachedCreateW2();
+      var txs = [{
+        txid: 'id1',
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 1000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_1'],
+          },
+          value: '0.00000900',
+        }],
+        fees: 0.00000100
+      }, {
+        txid: 'id2',
+        vin: [{
+          addr: 'addr_in_2',
+          valueSat: 2000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_2'],
+          },
+          value: '0.00001900',
+        }],
+        fees: 0.00000100
+      }, {
+        txid: 'id3',
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 3000
+
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_2'],
+          },
+          value: '0.00002900',
+
+        }],
+        fees: 0.00000100
+      }];
+
+      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_out_2'
+      }]);
+
+      w.getTransactionHistory({
+        currentPage: 2,
+        itemsPerPage: 2
+      }, function(err, res) {
+        res.should.exist;
+        res.nbItems.should.equal(3);
+        res.nbPages.should.equal(2);
+        res.currentPage.should.equal(2);
+        res.items.should.exist;
+        res.items.length.should.equal(1);
+        res.items[0].txid.should.equal('id3');
+        done();
+      });
+    });
+    it('should paginate empty list', function(done) {
+      var w = cachedCreateW2();
+      w.blockchain.getTransactions = sinon.stub().yields(null, []);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_out_2'
+      }]);
+
+      w.getTransactionHistory({
+        currentPage: 2,
+        itemsPerPage: 2
+      }, function(err, res) {
+        res.should.exist;
+        res.nbItems.should.equal(0);
+        res.nbPages.should.equal(0);
+        res.items.should.exist;
+        res.items.length.should.equal(0);
         done();
       });
     });
@@ -2022,8 +2111,10 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].action.should.equal('sent');
-        res[0].amountSat.should.equal(3900);
+        res.items.should.exist;
+        var items = res.items;
+        items[0].action.should.equal('sent');
+        items[0].amountSat.should.equal(3900);
         done();
       });
     });
@@ -2063,8 +2154,10 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].action.should.equal('moved');
-        res[0].amountSat.should.equal(3900);
+        res.items.should.exist;
+        var items = res.items;
+        items[0].action.should.equal('moved');
+        items[0].amountSat.should.equal(3900);
         done();
       });
     });
@@ -2110,7 +2203,8 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].labelTo.should.equal('Address out one');
+        res.items.should.exist;
+        res.items[0].labelTo.should.equal('Address out one');
         done();
       });
     });
@@ -2158,7 +2252,8 @@ describe('Wallet model', function() {
       }]);
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].comment.should.equal('Another comment');
+        res.items.should.exist;
+        res.items[0].comment.should.equal('Another comment');
         done();
       });
     });
