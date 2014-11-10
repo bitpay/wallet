@@ -2962,8 +2962,6 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   };
 
   function paginate(list, currentPage, itemsPerPage) {
-    if (list.length == 0) return list;
-
     var res = {
       itemsPerPage: itemsPerPage || list.length,
       currentPage: currentPage || 1,
