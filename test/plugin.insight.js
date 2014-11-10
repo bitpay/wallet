@@ -66,7 +66,7 @@ describe('insight storage plugin', function() {
 
     storage.setItem(namespace, data, function(err) {
       assert(!err);
-      assert(requestMock.post.firstCall.args[0].url.indexOf('register') !== -1);
+      assert(requestMock.post.firstCall.args[0].url.indexOf('save') !== -1);
       return done();
     });
   });
