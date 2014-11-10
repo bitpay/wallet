@@ -19,10 +19,32 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.alternativeCurrency = [];
 
 
+
     $scope.selectPage = function(page) {
       $scope.currentPage = page;
       $scope.update();
     };
+
+
+
+    $scope.downloadHistory = function() {
+      var data = $scope.blockchain_txs;
+      var csvContent = "data:text/csv;charset=utf-8,";
+
+      data.forEach(function(it, index) {
+        var dataString = it.ts + ',' + it.amount + ',' + it.action + ',' + it.addressTo;
+        csvContent += index < data.length ? dataString + "\n" : dataString;
+      });
+
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "my_data.csv");
+
+      link.click();
+    };
+
+
 
     $scope.update = function() {
       $scope.getTransactions();
@@ -73,6 +95,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
 
     $scope.hasAction = function(actions, action) {
+
+
       return actions.hasOwnProperty('create');
     };
 
