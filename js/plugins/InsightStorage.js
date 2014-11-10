@@ -132,7 +132,7 @@ InsightStorage.prototype._changePassphrase = function(callback) {
 InsightStorage.prototype.setItem = function(name, value, callback) {
   var passphrase = this.getPassphrase();
   var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
-  var registerUrl = this.storeUrl + '/register';
+  var registerUrl = this.storeUrl + '/save';
   this.request.post({
     url: registerUrl,
     headers: {'Authorization': authHeader},
