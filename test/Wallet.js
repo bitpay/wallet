@@ -1988,6 +1988,93 @@ describe('Wallet model', function() {
         done();
       });
     });
+    it('should return paginated list of txs', function(done) {
+      var w = cachedCreateW2();
+      var txs = [{
+        txid: 'id1',
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 1000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_1'],
+          },
+          value: '0.00000900',
+        }],
+        fees: 0.00000100
+      }, {
+        txid: 'id2',
+        vin: [{
+          addr: 'addr_in_2',
+          valueSat: 2000
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_2'],
+          },
+          value: '0.00001900',
+        }],
+        fees: 0.00000100
+      }, {
+        txid: 'id3',
+        vin: [{
+          addr: 'addr_in_1',
+          valueSat: 3000
+
+        }],
+        vout: [{
+          scriptPubKey: {
+            addresses: ['addr_out_2'],
+          },
+          value: '0.00002900',
+
+        }],
+        fees: 0.00000100
+      }];
+
+      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_out_2'
+      }]);
+
+      w.getTransactionHistory({
+        currentPage: 2,
+        itemsPerPage: 2
+      }, function(err, res) {
+        res.should.exist;
+        res.nbItems.should.equal(3);
+        res.nbPages.should.equal(2);
+        res.currentPage.should.equal(2);
+        res.items.should.exist;
+        res.items.length.should.equal(1);
+        res.items[0].txid.should.equal('id3');
+        done();
+      });
+    });
+    it('should paginate empty list', function(done) {
+      var w = cachedCreateW2();
+      w.blockchain.getTransactions = sinon.stub().yields(null, []);
+      w.getAddressesInfo = sinon.stub().returns([{
+        addressStr: 'addr_in_1'
+      }, {
+        addressStr: 'addr_out_2'
+      }]);
+
+      w.getTransactionHistory({
+        currentPage: 2,
+        itemsPerPage: 2
+      }, function(err, res) {
+        res.should.exist;
+        res.nbItems.should.equal(0);
+        res.nbPages.should.equal(0);
+        res.items.should.exist;
+        res.items.length.should.equal(0);
+        done();
+      });
+    });
     it('should compute sent amount correctly', function(done) {
       var w = cachedCreateW2();
       var txs = [{
