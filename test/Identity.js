@@ -260,8 +260,7 @@ describe('Identity model', function() {
         sinon.stub(iden, 'importWalletFromObj').yields(null);
         iden.importEncryptedWallet(123, 'password', opts, function(err) {
           should.not.exist(err);
-          fakeCrypto.kdf.getCall(0).args[0].should.equal('password');
-          fakeCrypto.decrypt.getCall(0).args[0].should.equal('passphrase');
+          fakeCrypto.decrypt.getCall(0).args[0].should.equal('password');
           fakeCrypto.decrypt.getCall(0).args[1].should.equal(123);
           done();
         });

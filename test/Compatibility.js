@@ -1,4 +1,3 @@
-
 var compat = require('../js/models/Compatibility');
 
 describe('Compatibility', function() {
@@ -9,12 +8,12 @@ describe('Compatibility', function() {
       should.not.exist(wo);
     });
 
-    it('should generate passphrases acording to old algorightm', function() {
+    it('should generate passphrases acording to old algorithm', function() {
       var passphrase = compat.kdf(legacyPassword1);
       passphrase.should.equal(legacyPassphrase1);
     });
 
- 
+
 
     it('should be able to decrypt an old backup', function() {
       var str = compat.importLegacy(encryptedLegacy1, legacyPassword1);
@@ -45,8 +44,8 @@ describe('Compatibility', function() {
       var iden = sinon.stub();
       iden.importWalletFromObj = sinon.stub().yields(null);
 
-      compat.importEncryptedWallet(iden, encryptedLegacy1, legacyPassword1, {}, function(err){ 
-        var s  = iden.importWalletFromObj;
+      compat.importEncryptedWallet(iden, encryptedLegacy1, legacyPassword1, {}, function(err) {
+        var s = iden.importWalletFromObj;
         s.getCall(0).args[0].opts.id.should.equal('48ba2f1ffdfe9708');
         done();
       });

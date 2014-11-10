@@ -47,6 +47,7 @@ Compatibility._getWalletIds = function(cb) {
 Compatibility.importLegacy = function(encryptedWallet, password) {
   var passphrase = this.kdf(password);
   var ret = Compatibility._decrypt(encryptedWallet, passphrase);
+
   if (!ret) return null;
   return ret;
 };
@@ -195,19 +196,19 @@ Compatibility.readWalletPre8 = function(walletId, password, cb) {
 
 Compatibility.importEncryptedWallet = function(identity, cypherText, password, opts, cb) {
   var crypto = (opts && opts.cryptoUtil) || cryptoUtils;
-  var key = crypto.kdf(password);
-  var obj = crypto.decrypt(key, cypherText);
+
+  var obj = crypto.decrypt(password, cypherText);
   if (!obj) {
     log.info("Could not decrypt, trying legacy..");
     obj = Compatibility.importLegacy(cypherText, password);
     if (!obj) {
-      return cb(new Error('Could not decrypt'))
+      return cb('Could not decrypt', null);
     }
   };
   try {
     obj = JSON.parse(obj);
   } catch (e) {
-    return cb(new Error('Could not read encrypted wallet'));
+    return cb('Could not read encrypted wallet', null);
   }
   return identity.importWalletFromObj(obj, opts, cb);
 };
@@ -236,7 +237,7 @@ Compatibility.kdf = function(password) {
 };
 
 Compatibility.deleteOldWallet = function(walletObj) {
-  localStorage.removeItem('wallet::'+walletObj.id+'_'+walletObj.name);
+  localStorage.removeItem('wallet::' + walletObj.id + '_' + walletObj.name);
   log.info('Old wallet ' + walletObj.name + ' deleted: ' + walletObj.id);
 };
 

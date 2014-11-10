@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('ImportController',
       if ($scope.skipTxProposals)
         skipFields.push('txProposals');
 
-      $rootScope.iden.importEncryptedWallet(encryptedObj, password, skipFields, function(err, w) {
+      $rootScope.iden.importEncryptedWallet(encryptedObj, password, skipFields, opts, function(err, w) {
         if (!w) {
           $scope.loading = false;
           notification.error('Error', err || 'Wrong password');
@@ -67,9 +67,11 @@ angular.module('copayApp.controllers').controller('ImportController',
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
           var encryptedObj = evt.target.result;
+
           copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, $scope.password, {},
-            function(err, wallet){
+            function(err, wallet) {
               if (err) {
+                $scope.loading = false;
                 notification.error('Error', 'Could not read wallet. Please check your password');
               } else {
                 controllerUtils.installWalletHandlers($scope, wallet);
@@ -109,23 +111,22 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
-      }
-      else {
-          copay.Compatibility.importEncryptedWallet($rootScope.iden, backupText, $scope.password, {},
-            function(err, wallet){
-              if (err) {
-                notification.error('Error', 'Could not read wallet. Please check your password');
-              } else {
-                copay.Compatibility.deleteOldWallet(backupOldWallet);
-                controllerUtils.installWalletHandlers($scope, wallet);
-                controllerUtils.setFocusedWallet(wallet);
-                return;
-              }
+      } else {
+        copay.Compatibility.importEncryptedWallet($rootScope.iden, backupText, $scope.password, {},
+          function(err, wallet) {
+            if (err) {
+              notification.error('Error', 'Could not read wallet. Please check your password');
+            } else {
+              copay.Compatibility.deleteOldWallet(backupOldWallet);
+              controllerUtils.installWalletHandlers($scope, wallet);
+              controllerUtils.setFocusedWallet(wallet);
+              return;
             }
-          );
+          }
+        );
         try {
           _importBackup(backupText);
-        } catch(e) {
+        } catch (e) {
           copay.Compatibility.importEncryptedWallet(backupText, $scope.password, $scope.skipPublicKeyRing, $scope.skipTxProposals);
         }
       }
