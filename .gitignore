@@ -39,6 +39,7 @@ README.html
 
 lib/*
 !lib/socket.io.js
+!lib/sjcl.js
 
 js/copayBundle.js
 js/copayMain.js
