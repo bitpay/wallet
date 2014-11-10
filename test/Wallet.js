@@ -1976,13 +1976,15 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res.length.should.equal(3);
-        res[0].action.should.equal('sent');
-        res[0].amountSat.should.equal(900);
-        res[1].action.should.equal('received');
-        res[1].amountSat.should.equal(1900);
-        res[2].action.should.equal('moved');
-        res[2].amountSat.should.equal(2900);
+        res.items.should.exist;
+        var items = res.items;
+        items.length.should.equal(3);
+        items[0].action.should.equal('sent');
+        items[0].amountSat.should.equal(900);
+        items[1].action.should.equal('received');
+        items[1].amountSat.should.equal(1900);
+        items[2].action.should.equal('moved');
+        items[2].amountSat.should.equal(2900);
         done();
       });
     });
@@ -2022,8 +2024,10 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].action.should.equal('sent');
-        res[0].amountSat.should.equal(3900);
+        res.items.should.exist;
+        var items = res.items;
+        items[0].action.should.equal('sent');
+        items[0].amountSat.should.equal(3900);
         done();
       });
     });
@@ -2063,8 +2067,10 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].action.should.equal('moved');
-        res[0].amountSat.should.equal(3900);
+        res.items.should.exist;
+        var items = res.items;
+        items[0].action.should.equal('moved');
+        items[0].amountSat.should.equal(3900);
         done();
       });
     });
@@ -2110,7 +2116,8 @@ describe('Wallet model', function() {
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].labelTo.should.equal('Address out one');
+        res.items.should.exist;
+        res.items[0].labelTo.should.equal('Address out one');
         done();
       });
     });
@@ -2158,7 +2165,8 @@ describe('Wallet model', function() {
       }]);
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
-        res[0].comment.should.equal('Another comment');
+        res.items.should.exist;
+        res.items[0].comment.should.equal('Another comment');
         done();
       });
     });
