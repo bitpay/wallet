@@ -42,7 +42,7 @@ var defaultConfig = {
 
   // local encryption/security config
   passphraseConfig: {
-    iterations: 100,
+    iterations: 1000,
     storageSalt: 'mjuBtGybi/4=',
   },
 
@@ -55,7 +55,7 @@ var defaultConfig = {
 
   plugins: {
     //LocalStorage: true,
-//    EncryptedLocalStorage: true,
+    //    EncryptedLocalStorage: true,
     //GoogleDrive: true,
     //InsightStorage: true
     EncryptedInsightStorage: true,

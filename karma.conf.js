@@ -46,7 +46,6 @@ module.exports = function(config) {
       'js/log.js',
       'js/routes.js',
       'js/services/*.js',
-      'js/util/*.js',
       'js/directives.js',
       'js/filters.js',
       'js/controllers/*.js',

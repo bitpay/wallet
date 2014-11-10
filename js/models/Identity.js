@@ -225,8 +225,7 @@ Identity.prototype.toObj = function() {
 
 Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
   var crypto = opts.cryptoUtil || cryptoUtil;
-  var key = crypto.kdf(this.password);
-  return crypto.encrypt(key, this.exportWithWalletInfo(opts));
+  return crypto.encrypt(this.password, this.exportWithWalletInfo(opts));
 };
 
 Identity.prototype.exportWithWalletInfo = function(opts) {
@@ -287,11 +286,8 @@ Identity.prototype.close = function(cb) {
  * @return {Wallet}
  */
 Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
-
   var crypto = opts.cryptoUtil || cryptoUtil;
-  // TODO set iter and salt using config.js
-  var key = crypto.kdf(password);
-  var obj = crypto.decrypt(key, cypherText);
+  var obj = crypto.decrypt(password, cypherText);
   if (!obj) return cb(new Error('Could not decrypt'));
   try {
     obj = JSON.parse(obj);
@@ -344,8 +340,12 @@ Identity.prototype.closeWallet = function(wallet, cb) {
 
 Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
-  var key = crypto.kdf(password);
-  return Identity.importFromFullJson(crypto.decript(key, str));
+
+  var str = crypto.decrypt(password, str);
+  if (!str) {
+    return cb('BADSTR');
+  }
+  return Identity.importFromFullJson(str, password, opts, cb);
 };
 
 Identity.importFromFullJson = function(str, password, opts, cb) {
@@ -354,18 +354,21 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   try {
     json = JSON.parse(str);
   } catch (e) {
-    return cb('Unable to retrieve json from string', str);
+    return cb('BADSTR: Unable to retrieve json from string', str);
   }
 
-  if (!_.isNumber(json.iterations))
-    return cb('BADSTR: Missing iterations');
-
   var email = json.email;
-  var iden = new Identity(email, password, opts);
+
+  opts.email = email;
+  opts.password = password;
+
+  var iden = new Identity(opts);
 
   json.wallets = json.wallets || {};
+
   async.map(json.wallets, function(walletData, callback) {
-    iden.importEncryptedWallet(wstr, password, opts, function(err, w) {
+
+    iden.importWalletFromObj(walletData, opts, function(err, w) {
       if (err) return callback(err);
       log.debug('Wallet ' + w.getId() + ' imported');
       callback();

@@ -34,6 +34,9 @@ angular
         templateUrl: 'views/import.html',
         logged: true
       })
+      .when('/importProfile', {
+        templateUrl: 'views/importProfile.html',
+      })
       .when('/create', {
         templateUrl: 'views/create.html',
         logged: true
@@ -109,7 +112,6 @@ angular
         $location.path('unsupported');
       } else {
         if (!$rootScope.iden && next.logged) {
-          console.log('not logged... redirecting')
           $idle.unwatch();
           $location.path('/');
         }
