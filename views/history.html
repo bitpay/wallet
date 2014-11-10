@@ -100,8 +100,7 @@
             </div>
           </div>
         </div>
-          <button ng-click="previousPage()" ng-disabled="!hasPreviousPage()">prev</button>
-          <button ng-click="nextPage()" ng-disabled="!hasNextPage()">next</button>
+          <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" />
       </div>
     </div>
   </div>
