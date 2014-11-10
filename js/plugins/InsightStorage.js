@@ -28,8 +28,8 @@ InsightStorage.prototype.createItem = function(name, value, callback) {
 };
 
 InsightStorage.prototype.getItem = function(name, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
-  var secret = cryptoUtil.kdf(key, this.password);
+  var key = cryptoUtil.kdf(this.password + this.email, null, 100);
+  var secret = cryptoUtil.kdf(key, this.password, 100);
   var encodedEmail = encodeURIComponent(this.email);
   var retrieveUrl = this.storeUrl + '/retrieve/' + encodedEmail;
   this.request.get(retrieveUrl + '?' + querystring.encode({secret: secret, key: name}),
@@ -49,8 +49,8 @@ InsightStorage.prototype.getItem = function(name, callback) {
 };
 
 InsightStorage.prototype.setItem = function(name, value, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
-  var secret = cryptoUtil.kdf(key, this.password);
+  var key = cryptoUtil.kdf(this.password + this.email, null, 100);
+  var secret = cryptoUtil.kdf(key, this.password, 100);
   var registerUrl = this.storeUrl + '/register';
   this.request.post({
     url: registerUrl,

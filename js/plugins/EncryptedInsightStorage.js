@@ -8,7 +8,7 @@ function EncryptedInsightStorage(config) {
 inherits(EncryptedInsightStorage, InsightStorage);
 
 EncryptedInsightStorage.prototype.getItem = function(name, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
+  var key = cryptoUtil.kdf(this.password + this.email,null, 100);
   InsightStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
       if (err) {
@@ -24,13 +24,13 @@ EncryptedInsightStorage.prototype.getItem = function(name, callback) {
 };
 
 EncryptedInsightStorage.prototype.setItem = function(name, value, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
+  var key = cryptoUtil.kdf(this.password + this.email, null, 100);
   var record = cryptoUtil.encrypt(key, value);
   InsightStorage.prototype.setItem.apply(this, [name, record, callback]);
 };
 
 EncryptedInsightStorage.prototype.removeItem = function(name, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
+  var key = cryptoUtil.kdf(this.password + this.email, null,100);
   InsightStorage.prototype.removeItem.apply(this, [name, callback]);
 };
 
