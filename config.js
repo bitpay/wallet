@@ -61,12 +61,10 @@ var defaultConfig = {
     EncryptedInsightStorage: true,
   },
 
+  // This can be changed on the UX > Settings > Insight livenet
   EncryptedInsightStorage: {
-    // THIS IS WRONG BUT DO NOT CHANGE IT WITH OUT A MIGRATION PLAN
-    // ALSO CHANGE THE DEFAULT AT js/plugins/InsightStorage.js
-    //
-    url: 'https://test-insight.bitpay.com:443/api/email'
-    // url: 'http://localhost:3001/api/email'
+    url: 'https://insight.bitpay.com:443/api/email',
+     //url: 'http://localhost:3001/api/email'
   },
 
   GoogleDrive: {
