@@ -28,8 +28,7 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
         if (err && !iden) {
-          controllerUtils.onErrorDigest(
-            $scope, (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error');
+          $scope.error = (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error';
         } else {
           notification.info('Success', 'Profile imported successfully');
           $location.path('/');
@@ -59,7 +58,7 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
 
       if (form.$invalid) {
         $scope.loading = false;
-        notification.error('Error', 'There is an error in the form.');
+        $scope.error = 'Please enter the required fields';
         return;
       }
 
@@ -69,8 +68,7 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
 
       if (!backupFile && !backupText) {
         $scope.loading = false;
-        notification.error('Error', 'Please, select your backup file');
-        $scope.loading = false;
+        $scope.error = 'Please, select your backup file';
         return;
       }
 
