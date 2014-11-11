@@ -93,7 +93,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       defaultLanguage: $scope.selectedLanguage.isoCode,
       plugins: plugins,
       logLevel: $scope.selectedLogLevel.name,
-      EncryptedInsightStorage: {url: insightSettings.livenet.url + '/api/email' },
+      EncryptedInsightStorage: _.extend(config.EncryptedInsightStorage, {
+        url: insightSettings.livenet.url + '/api/email'
+      }),
     }));
 
     // Go home reloading the application
