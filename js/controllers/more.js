@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, backupService, controllerUtils, notification, rateService) {
+  function($scope, $rootScope, $location, $filter, controllerUtils, notification, rateService) {
     controllerUtils.redirIfNotComplete();
     var w = $rootScope.wallet;
     $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
@@ -76,26 +76,7 @@ angular.module('copayApp.controllers').controller('MoreController',
       });
       notification.success('Success', $filter('translate')('settings successfully updated'));
       controllerUtils.updateBalance();
-    };
-
-    $scope.downloadBackup = function() {
-      backupService.walletDownload(w);
-    }
-
-    $scope.viewBackup = function() {
-      $scope.backupPlainText = backupService.walletEncrypted(w);
-      $scope.hideViewBackup = true;
-    };
-
-    $scope.deleteWallet = function() {
-      $scope.loading = true;
-      controllerUtils.deleteWallet($scope, $rootScope.wallet, function() { 
-        $rootScope.wallet = null;
-        var lastFocused = $rootScope.iden.getLastFocusedWallet();
-        controllerUtils.bindProfile($scope, $rootScope.iden, lastFocused);
-        $scope.loading = false;
-      });
-    };
+    }; 
 
     $scope.purge = function(deleteAll) {
       var removed = w.purgeTxProposals(deleteAll);
