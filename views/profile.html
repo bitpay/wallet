@@ -1,0 +1,69 @@
+<div class="backup" ng-controller="ProfileController">
+  <h1 class="hide-for-large-up">{{$root.title}}</h1>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-download m10r"></i> <span translate>Backup Profile</span></h2>
+        <p translate class="text-gray">It's important to backup your profile so that you can recover it in case of disaster. The backup will include all your profile's wallets</p>
+        <a translate class="button primary m0" ng-click="downloadBackup()"
+          ng-show="!isSafari">Backup profile</a>
+        <a translate class="button primary m0" ng-click="viewBackup()"
+          ng-show="isSafari && !hideViewBackup">View profile backup</a>
+        <div ng-show="backupPlainText">
+          <textarea rows="5">{{backupPlainText}}</textarea>
+          <div class="show-for-large-up">
+            <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
+          </div>
+          <div class="hide-for-large-up">
+            <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="line-dashed-h m20b"></div>
+  
+  <div class="row" ng-init="getWallets()">
+    <div class="large-12 columns">
+      <h2>Manage wallets</h2>
+      <table width="100%" role="grid">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Balance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+              data-ng-repeat="item in wallets | orderBy:'name'" 
+              ng-init="isReady = item.isReady(); 
+              activeWallet = $root.wallet.id; networkName = item.getNetworkName()"
+              ng-class="{'active':activeWallet == item.id, 'deleting':loading==item.id}">
+            <td>{{item.name || item.id }}</td>
+            <td width="120">{{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}</td>
+            <td width="200">{{isReady ? 'Complete' : 'Waiting for copayers...'}}</td>
+            <td width="200">
+              <span ng-if="!isReady">-</span>
+              <span ng-if="isReady">
+                {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
+              </span>
+            </td>
+            <td width="70" class="text-center">
+              <a translate 
+                 class="warning" 
+                 ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
+                 ng-really-click="deleteWallet(item)"
+                 ng-show="activeWallet != item.id && loading != item.id">Delete</a>
+              <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              <span ng-show="activeWallet == item.id">Active</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> 
+</div>

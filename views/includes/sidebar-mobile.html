@@ -56,7 +56,8 @@
         </li>
       </ul>
       <div class="off-canvas-list" ng-click="toggleWalletSelection()">
-        <a href="#!/manage" class="button-setup add-wallet db p20h" title="Create"><i class="m5r fi-plus"></i> {{'Add Wallet' | translate }} </a>
+        <a href="#!/createWallet" class="button-setup add-wallet db p20h"
+          title="Create"><i class="m5r fi-plus"></i> {{'Create Wallet' | translate }} </a>
       </div>
     </div>
     <div class="line-t" ng-show="!walletSelection" ng-click="refresh()">
@@ -88,8 +89,12 @@
       </a>
     </li>
     <li>
-      <a ui-route="{{create}}" href="#!/manage" class="db p20h" title="Create">
-        <i class="size-24 m20r fi-plus"></i> {{'Manage wallets' | translate }} </a>
+      <a href="#!/profile" class="db p20h" title="Profile">
+        <i class="size-24 m20r fi-torso"></i> {{'Profile' | translate }} </a>
+    </li>
+    <li>
+      <a href="#!/createWallet" class="db p20h" title="Create">
+        <i class="size-24 m20r fi-plus"></i> {{'Create Wallet' | translate }} </a>
     </li>
     <li>
       <a href="#!/" class="db p20h" title="Close"

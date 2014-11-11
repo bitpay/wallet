@@ -73,8 +73,12 @@ angular
         templateUrl: 'views/warning.html',
         logged: true
       })
-      .when('/manage', {
-        templateUrl: 'views/manage.html',
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        logged: true
+      })
+      .when('/createWallet', {
+        templateUrl: 'views/createWallet.html',
         logged: true
       });
 
