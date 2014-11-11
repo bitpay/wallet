@@ -47,7 +47,7 @@ InsightStorage.prototype.getItem = function(name, callback) {
   var self = this;
 
   this._makeGetRequest(passphrase, name, function(err, body) {
-console.log('[InsightStorage.js.49:err:]',err); //TODO
+    if (err) log.info('[InsightStorage. err]', err);
     if (err && err.indexOf('PNOTFOUND') !== -1 && mayBeOldPassword(self.password)) {
       return self._brokenGetItem(name, callback);
     }
@@ -58,9 +58,9 @@ console.log('[InsightStorage.js.49:err:]',err); //TODO
 /* This key need to have DIFFERENT
  * settings(salt,iterations) than the kdf for wallet/profile encryption
  * in Encrpted*Storage. The user should be able
- * to change the settings on config.js to modify salt / iterations 
+ * to change the settings on config.js to modify salt / iterations
  * for encryption, but
- * mantain the same key & passphrase. This is why those settings are 
+ * mantain the same key & passphrase. This is why those settings are
  * not shared with encryption
  */
 InsightStorage.prototype.getKey = function() {
@@ -71,21 +71,22 @@ InsightStorage.prototype.getKey = function() {
 };
 
 InsightStorage.prototype.getPassphrase = function() {
- return bitcore.util.twoSha256(this.getKey()).toString('base64');
+  return bitcore.util.twoSha256(this.getKey()).toString('base64');
 };
 
 InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var retrieveUrl = this.storeUrl + '/retrieve';
-  log.debug(retrieveUrl);
-  this.request.get({
-      url: retrieveUrl + '?' + querystring.encode({
-        key: key
-      }),
-      headers: {
-        'Authorization': authHeader
-      }
-    },
+  var getParams = {
+    url: retrieveUrl + '?' + querystring.encode({
+      key: key
+    }),
+    headers: {
+      'Authorization': authHeader
+    }
+  };
+  log.debug('Insight request', getParams);
+  this.request.get(getParams,
     function(err, response, body) {
       if (err) {
         return callback('Connection error');
