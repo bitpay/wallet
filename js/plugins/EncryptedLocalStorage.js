@@ -49,7 +49,7 @@ EncryptedLocalStorage.prototype.setItem = function(name, value, callback) {
 };
 
 EncryptedLocalStorage.prototype.removeItem = function(name, callback) {
-  InsightStorage.prototype.removeItem.apply(this, [name, callback]);
+  LocalStorage.prototype.removeItem.apply(this, [name, callback]);
 };
 
 
