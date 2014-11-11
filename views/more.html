@@ -18,46 +18,6 @@
       </div>
     </form>
   </div>
-
-  <div class="line-dashed-h m20b"></div>
-  
-  <div class="row">
-    <div class="large-6 columns">
-      <div class="panel">
-        <h2><i class="fi-download m10r"></i> <span translate>Backup</span></h2>
-        <p translate class="text-gray">
-        It's important to backup your wallet so that you can recover it in case of disaster
-        </p>
-        <a translate class="button primary m0" ng-click="downloadBackup()"
-          ng-show="!isSafari">Download File</a>
-        <a translate class="button primary m0" ng-click="viewBackup()"
-          ng-show="isSafari && !hideViewBackup">View Backup</a>
-        <div ng-show="backupPlainText">
-          <div class="show-for-large-up">
-            <textarea readonly rows="5">{{backupPlainText}}</textarea>
-            <span translate class="size-12">Copy to clipboard</span> <span class="btn-copy" clip-copy="backupPlainText"> </span>
-          </div>
-          <div class="hide-for-large-up">
-            <textarea rows="10">{{backupPlainText}}</textarea>
-          </div>
-          <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
-        </div>
-      </div>
-    </div>
-    <div class="large-6 columns">
-      <div class="panel">
-        <h2><i class="fi-minus-circle m10r"></i> <span translate>Delete Wallet</span></h2>
-        <p translate class="text-gray">If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet.</p>
-        <a class="button warning m0" 
-          ng-really-message="{{'Are you sure you want to delete this wallet?'|translate}}"
-          ng-really-click="deleteWallet()"
-          ng-class="{'disabled':loading}">
-          <span ng-show="!loading">Delete</span>
-          <span ng-show="loading">Deleting...</span>
-        </a>
-      </div>
-    </div>
-  </div>
     
   <div class="line-dashed-h m20b"></div>
   

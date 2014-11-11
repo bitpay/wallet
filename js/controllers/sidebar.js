@@ -66,6 +66,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   };
 
   $scope.getWallets = function() {
+    if (!$rootScope.iden) return;
     $scope.wallets = [];
     var wids = _.pluck($rootScope.iden.listWallets(), 'id');
     _.each(wids, function(wid) {

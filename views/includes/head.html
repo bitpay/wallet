@@ -22,11 +22,12 @@
     <i class="icon-arrow-down size-16 vm"></i> 
   </a>
   <ul ng-show="hoverMenu" ng-class="{'hover': hoverMenu}">
+    <li><a class="text-gray size-16" href="#!/profile" title="Profile">
+      <i class="fi-torso m10r"></i> {{'Profile'|translate}}</a></li>
+    <li><a class="text-gray size-16" href="#!/createWallet" title="Create Wallet">
+      <i class="fi-plus m10r"></i> {{'Create Wallet'|translate}}</a></li>
     <li><a class="text-gray size-16" href="#!/" title="Close" ng-click="signout()">
       <i class="fi-power m10r"></i> {{'Close'|translate}}</a></li>
   </ul>
-</div>
-<div class="right">
-  <a class="button tiny secondary radius m0" href="#!/manage" title="Manage wallets"><i class="fi-plus"></i> {{'Manage wallets' | translate }}</a>
 </div>
 
