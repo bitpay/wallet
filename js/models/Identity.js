@@ -288,7 +288,18 @@ Identity.prototype.close = function(cb) {
 Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
   var obj = crypto.decrypt(password, cypherText);
-  if (!obj) return cb(new Error('Could not decrypt'));
+console.log('[Identity.js.290:obj:]',obj); //TODO
+
+  if (!obj) {
+    // 0.7.3 broken KDF
+    log.debug('Trying legacy encryption...');
+    var passphrase = crypto.kdf(password, 'mjuBtGybi/4=', 100);
+    obj = crypto.decrypt(passphrase, ejson);
+  }
+console.log('[Identity.js.300:obj:]',obj); //TOD
+
+  if (!obj) 
+    return cb(new Error('Could not decrypt'));
   try {
     obj = JSON.parse(obj);
   } catch (e) {
@@ -338,13 +349,21 @@ Identity.prototype.closeWallet = function(wallet, cb) {
   });
 };
 
-Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
+Identity.importFromEncryptedFullJson = function(ejson, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
 
-  var str = crypto.decrypt(password, str);
+  var str = crypto.decrypt(password, ejson);
+
   if (!str) {
-    return cb('BADSTR');
+    // 0.7.3 broken KDF
+    log.debug('Trying legacy encryption...');
+    var passphrase = crypto.kdf(password, 'mjuBtGybi/4=', 100);
+    str = crypto.decrypt(passphrase, ejson);
   }
+
+  if (!str)
+    return cb('BADSTR');
+
   return Identity.importFromFullJson(str, password, opts, cb);
 };
 
