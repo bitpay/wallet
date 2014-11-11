@@ -285,18 +285,35 @@ Identity.prototype.close = function(cb) {
  * @param {string[]} opts.importFunction - for stubbing
  * @return {Wallet}
  */
-Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
-  var crypto = opts.cryptoUtil || cryptoUtil;
-  var obj = crypto.decrypt(password, cypherText);
-  if (!obj) return cb(new Error('Could not decrypt'));
-  try {
-    obj = JSON.parse(obj);
-  } catch (e) {
-    return cb(new Error('Could not decrypt'));
-  }
-  return this.importWalletFromObj(obj, opts, cb)
-};
 
+// This is not used in favor of Compatibility. importEncryptedWallet
+
+// Identity.prototype.importEncryptedWallet = function(cypherText, password, opts, cb) {
+//   var crypto = opts.cryptoUtil || cryptoUtil;
+//   var obj = crypto.decrypt(password, cypherText);
+// console.log('[Identity.js.290:obj:]',obj); //TODO
+//
+//   if (!obj) {
+//     // 0.7.3 broken KDF
+//     log.debug('Trying legacy encryption...');
+// console.log('[Identity.js.296:password:]',password); //TODO
+//     var passphrase = crypto.kdf(password, 'mjuBtGybi/4=', 100);
+// console.log('[Identity.js.296:passphrase:]',passphrase); //TODO
+//     obj = crypto.decrypt(passphrase, ejson);
+// console.log('[Identity.js.297:obj:]',obj); //TODO
+//   }
+// console.log('[Identity.js.300:obj:]',obj); //TOD
+//
+//   if (!obj) 
+//     return cb(new Error('Could not decrypt'));
+//   try {
+//     obj = JSON.parse(obj);
+//   } catch (e) {
+//     return cb(new Error('Could not decrypt'));
+//   }
+//   return this.importWalletFromObj(obj, opts, cb)
+// };
+//
 Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var self = this;
   preconditions.checkArgument(cb);
@@ -338,13 +355,21 @@ Identity.prototype.closeWallet = function(wallet, cb) {
   });
 };
 
-Identity.importFromEncryptedFullJson = function(str, password, opts, cb) {
+Identity.importFromEncryptedFullJson = function(ejson, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
 
-  var str = crypto.decrypt(password, str);
+  var str = crypto.decrypt(password, ejson);
+
   if (!str) {
-    return cb('BADSTR');
+    // 0.7.3 broken KDF
+    log.debug('Trying legacy encryption...');
+    var passphrase = crypto.kdf(password, 'mjuBtGybi/4=', 100);
+    str = crypto.decrypt(passphrase, ejson);
   }
+
+  if (!str)
+    return cb('BADSTR');
+
   return Identity.importFromFullJson(str, password, opts, cb);
 };
 

@@ -199,12 +199,22 @@ Compatibility.importEncryptedWallet = function(identity, cypherText, password, o
 
   var obj = crypto.decrypt(password, cypherText);
   if (!obj) {
+    // 0.7.3 broken KDF
+    log.debug('Trying legacy encryption 0.7.2...');
+    var passphrase = crypto.kdf(password, 'mjuBtGybi/4=', 100);
+    obj = crypto.decrypt(passphrase, cypherText);
+  }
+
+  if (!obj) {
     log.info("Could not decrypt, trying legacy..");
     obj = Compatibility.importLegacy(cypherText, password);
-    if (!obj) {
-      return cb('Could not decrypt', null);
-    }
   };
+
+  if (!obj) {
+    return cb('Could not decrypt', null);
+  }
+
+
   try {
     obj = JSON.parse(obj);
   } catch (e) {

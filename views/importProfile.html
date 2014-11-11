@@ -10,6 +10,13 @@
       <h1><span translate>Import Profile<span></h1>
 
         <form name="importProfileForm" ng-submit="import(importProfileForm)" novalidate>
+            <p class="text-warning size-12"
+              ng-show="error">
+              <i class="fi-x"></i> 
+              {{error|translate}}
+              </p>
+  
+ 
             <div ng-show="!is_iOS">
               <legend for="backupFile" class="m10b"> 
                 <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i>
