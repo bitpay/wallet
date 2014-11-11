@@ -3,6 +3,8 @@ var log = require('../log');
 var LocalStorage = require('./LocalStorage');
 var inherits = require('inherits');
 
+var SEPARATOR = '@#$';
+
 function EncryptedLocalStorage(config) {
   LocalStorage.apply(this, [config]);
 }
@@ -21,7 +23,7 @@ EncryptedLocalStorage.prototype.getItem = function(name, callback) {
   var self = this;
   LocalStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
-      var decryptedJson = cryptoUtil.decrypt(self.password, body);
+      var decryptedJson = cryptoUtil.decrypt(self.email + SEPARATOR + self.password, body);
 
       if (!decryptedJson) {
         log.debug('Could not decrypt value using current decryption schema');
@@ -42,7 +44,7 @@ EncryptedLocalStorage.prototype.setItem = function(name, value, callback) {
   if (!_.isString(value)) {
     value = JSON.stringify(value);
   }
-  var record = cryptoUtil.encrypt(this.password, value);
+  var record = cryptoUtil.encrypt(this.email + SEPARATOR + this.password, value);
   LocalStorage.prototype.setItem.apply(this, [name, record, callback]);
 };
 
