@@ -81,38 +81,6 @@ describe("Unit: Controllers", function() {
     $rootScope.wallet = w;
   }));
 
-  describe('More Controller', function() {
-    var ctrl;
-    beforeEach(inject(function($controller, $rootScope) {
-      ctrl = $controller('MoreController', {
-        $scope: scope,
-        $modal: {},
-      });
-      saveAsLastCall = null;
-    }));
-
-    it('Backup controller #download', function() {
-      expect(saveAsLastCall).equal(null);
-      scope.downloadBackup();
-      expect(saveAsLastCall.blob.size).equal(7);
-      expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
-    });
-
-    it('Backup controller should name backup correctly for multiple copayers', function() {
-      expect(saveAsLastCall).equal(null);
-      scope.downloadBackup();
-      expect(saveAsLastCall.filename).equal('nickname-fakeWallet-keybackup.json.aes');
-    });
-
-    it('Backup controller should name backup correctly for 1-1 wallet', function() {
-      expect(saveAsLastCall).equal(null);
-      scope.wallet.totalCopayers = 1;
-      scope.downloadBackup();
-      expect(saveAsLastCall.filename).equal('fakeWallet-keybackup.json.aes');
-    });
-
-  });
-
   describe('Create Controller', function() {
     var c;
     beforeEach(inject(function($controller, $rootScope) {
