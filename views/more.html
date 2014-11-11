@@ -48,7 +48,13 @@
       <div class="panel">
         <h2><i class="fi-minus-circle m10r"></i> <span translate>Delete Wallet</span></h2>
         <p translate class="text-gray">If all funds have been removed from your wallet and you do not wish to have the wallet data stored on your computer anymore, you can delete your wallet.</p>
-        <a translate class="button warning m0" ng-really-message="{{'Are you sure to delete this wallet from this computer?'|translate}}" ng-really-click="deleteWallet()"> Delete</a>
+        <a class="button warning m0" 
+          ng-really-message="{{'Are you sure you want to delete this wallet?'|translate}}"
+          ng-really-click="deleteWallet()"
+          ng-class="{'disabled':loading}">
+          <span ng-show="!loading">Delete</span>
+          <span ng-show="loading">Deleting...</span>
+        </a>
       </div>
     </div>
   </div>
