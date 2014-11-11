@@ -85,7 +85,7 @@
     "node-cryptojs-aes": "^0.4.0",
     "request": "^2.40.0",
     "shelljs": "^0.3.0",
-    "sinon": "^1.9.1",
+    "sinon": "^1.10.3",
     "socket.io-client": "^1.0.6",
     "travis-cov": "^0.2.5",
     "uglifyify": "^1.2.3"
