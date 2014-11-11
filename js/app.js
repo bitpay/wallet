@@ -23,6 +23,7 @@ var modules = [
   'monospaced.qrcode',
   'ngIdle',
   'gettext',
+  'ui.gravatar',
   'copayApp.filters',
   'copayApp.services',
   'copayApp.controllers',
@@ -44,6 +45,15 @@ copayApp.config(function($sceDelegateProvider) {
   ]);
 });
 
+angular.module('ui.gravatar').config([
+  'gravatarServiceProvider', function(gravatarServiceProvider) {
+    gravatarServiceProvider.defaults = {
+      size     : 35
+    };
+    // Use https endpoint
+    gravatarServiceProvider.secure = true;
+  }
+]);
 
 angular.module('copayApp.filters', []);
 angular.module('copayApp.services', []);
