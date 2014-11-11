@@ -1,11 +1,12 @@
 var request = require('request');
 var cryptoUtil = require('../util/crypto');
+var bitcore = require('bitcore');
 var buffers = require('buffer');
 var querystring = require('querystring');
 var Identity = require('../models/Identity');
+var log = require('../log');
 
 var SEPARATOR = '|';
-var BODY = 'IR7GCUVgaLGe4LCtXjtUo4hsH8BO67jIrBKCeFiYOQ7CKWVPx3FshqTM';
 
 function InsightStorage(config) {
   this.type = 'DB';
@@ -46,6 +47,7 @@ InsightStorage.prototype.getItem = function(name, callback) {
   var self = this;
 
   this._makeGetRequest(passphrase, name, function(err, body) {
+console.log('[InsightStorage.js.49:err:]',err); //TODO
     if (err && err.indexOf('PNOTFOUND') !== -1 && mayBeOldPassword(self.password)) {
       return self._brokenGetItem(name, callback);
     }
@@ -53,12 +55,13 @@ InsightStorage.prototype.getItem = function(name, callback) {
   });
 };
 
-/* This key has not need to have the same
- * settings(salt,iterations) as the kdf for wallet/profile encryption
- * in Encrpted*Storage. And, actually, it good for the user to be able
- * to change the settings con config.js to modify salt / iterations but
+/* This key need to have DIFFERENT
+ * settings(salt,iterations) than the kdf for wallet/profile encryption
+ * in Encrpted*Storage. The user should be able
+ * to change the settings on config.js to modify salt / iterations 
+ * for encryption, but
  * mantain the same key & passphrase. This is why those settings are 
- * not shared.
+ * not shared with encryption
  */
 InsightStorage.prototype.getKey = function() {
   if (!this._cachedKey) {
@@ -68,12 +71,13 @@ InsightStorage.prototype.getKey = function() {
 };
 
 InsightStorage.prototype.getPassphrase = function() {
-  return cryptoUtil.hmac(this.getKey(), BODY);
+ return bitcore.util.twoSha256(this.getKey()).toString('base64');
 };
 
 InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var retrieveUrl = this.storeUrl + '/retrieve';
+  log.debug(retrieveUrl);
   this.request.get({
       url: retrieveUrl + '?' + querystring.encode({
         key: key
@@ -100,6 +104,7 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
 InsightStorage.prototype._brokenGetItem = function(name, callback) {
   var passphrase = this._makeBrokenSecret();
   var self = this;
+  log.debug('using legacy get');
   this._makeGetRequest(passphrase, name, function(err, body) {
     if (!err) {
       return self._changePassphrase(function(err) {
