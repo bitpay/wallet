@@ -133,13 +133,13 @@ header {
 
 
  .copay-version {
-  left: 55px; 
-   bottom: -10px; 
+  left: 65px; 
+   bottom: -5px; 
   }
 
    .copay-version-small {
   right: 15px; 
-   bottom: -1px; 
+   bottom: 5px; 
   }
 
  .btn-dwnld {
@@ -150,11 +150,24 @@ header {
 a:hover.btn-dwnld {
   background-color: #066D59;
 
-    }   
+    }  
 
 #drop1 li a, #drop2 li a {
-    padding-left: 40px !important;  
+    padding-left: 40px !important;   
     }
+
+#drop1 li, #drop2 li {
+    border-bottom: 1px solid #E7E7EB;  
+    }
+
+#drop2 li:last-child{
+   border-bottom:none;
+}
+
+
+
+
+
 
 .f-dropdown li{ line-height: 0.9em;
       }   
