@@ -1,0 +1,14 @@
+<div class="text-center">
+  <h1>Copy backup in a safe place</h1>
+  <div class="show-for-large-up">
+    <textarea readonly rows="7">{{backupWalletPlainText}}</textarea>
+    <span translate class="size-12">Copy to clipboard</span> 
+    <span class="btn-copy" clip-copy="backupWalletPlainText"> </span>
+  </div>
+  <div class="hide-for-large-up">
+    <textarea rows="12">{{backupWalletPlainText}}</textarea>
+  </div>
+  <div translate class="m10t size-12 text-gray text-right">Copy this text as it is in a safe place (notepad or email)</div>
+</div>
+
+<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
