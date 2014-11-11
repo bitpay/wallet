@@ -28,20 +28,37 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
 
     $scope.downloadHistory = function() {
+
+      if (window.cordova) {
+        log.info('Not available on mobile');
+        return;
+      }
+
       var data = $scope.blockchain_txs;
-      var csvContent = "data:text/csv;charset=utf-8,";
+      var filename = "copay_history.csv";
+      var csvContent = "data:text/csv;charset=utf-8,Date,Amount,Action,AddressTo\n";
 
       data.forEach(function(it, index) {
-        var dataString = it.ts + ',' + it.amount + ',' + it.action + ',' + it.addressTo;
+        var dataString = formatDate(it.ts) + ',' + it.amount + ',' + it.action + ',' + it.addressTo;
         csvContent += index < data.length ? dataString + "\n" : dataString;
       });
 
       var encodedUri = encodeURI(csvContent);
       var link = document.createElement("a");
       link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "my_data.csv");
+      link.setAttribute("download", filename);
 
       link.click();
+
+
+      function formatDate(date) {
+        var dateObj = new Date(date);
+        if (!dateObj) {
+          log.error('Error formating a date');
+          return 'DateError'
+        }
+        return dateObj.toJSON().substring(0, 10);
+      }
     };
 
 
