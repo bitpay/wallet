@@ -1,4 +1,5 @@
 var cryptoUtil = require('../util/crypto');
+var log = require('../log');
 var LocalStorage = require('./LocalStorage');
 var inherits = require('inherits');
 
@@ -17,13 +18,14 @@ EncryptedLocalStorage.prototype._brokenDecrypt = function(body) {
 
 
 EncryptedLocalStorage.prototype.getItem = function(name, callback) {
+  var self = this;
   LocalStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
-      var decryptedJson = cryptoUtil.decrypt(this.password, body);
-      log.debug('Could not decrypt value using current decryption schema');
+      var decryptedJson = cryptoUtil.decrypt(self.password, body);
 
       if (!decryptedJson) {
-        decryptedJson = this._brokenDecrypt(body);
+        log.debug('Could not decrypt value using current decryption schema');
+        decryptedJson = self._brokenDecrypt(body);
       }
 
       if (!decryptedJson) {

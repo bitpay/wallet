@@ -1,6 +1,7 @@
 var cryptoUtil = require('../util/crypto');
 var InsightStorage = require('./InsightStorage');
 var inherits = require('inherits');
+var log = require('../log');
 
 function EncryptedInsightStorage(config) {
   InsightStorage.apply(this, [config]);
@@ -16,16 +17,17 @@ EncryptedInsightStorage.prototype._brokenDecrypt = function(body) {
 };
 
 EncryptedInsightStorage.prototype.getItem = function(name, callback) {
+  var self = this;
   InsightStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
       if (err) {
         return callback(err);
       }
-      var decryptedJson = cryptoUtil.decrypt(this.password, body);
-      log.debug('Could not decrypt value using current decryption schema');
+      var decryptedJson = cryptoUtil.decrypt(self.password, body);
 
       if (!decryptedJson) {
-        decryptedJson = this._brokenDecrypt(body);
+        log.debug('Could not decrypt value using current decryption schema');
+        decryptedJson = self._brokenDecrypt(body);
       }
 
       if (!decryptedJson) {
