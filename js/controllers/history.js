@@ -33,42 +33,52 @@ angular.module('copayApp.controllers').controller('HistoryController',
         log.info('Not available on mobile');
         return;
       }
+      var w = $rootScope.wallet;
+      if (!w) return;
 
-      var data = $scope.blockchain_txs;
-      var filename = "copay_history.csv";
-      var csvContent = "data:text/csv;charset=utf-8,Date,Amount,Action,AddressTo,Comment\n";
+      var data = w.getTransactionHistory(null, function(err, res) {
+        if (err) throw err;
 
-      data.forEach(function(it, index) {
-        var dataString = formatDate(it.ts) + ',' + it.amount + ',' + it.action + ',' + it.addressTo + ',' + formatString(it.comment);
-        csvContent += index < data.length ? dataString + "\n" : dataString;
+        if (!res) {
+          return;
+        }
+
+        var data = res.items;
+        var filename = "copay_history.csv";
+        var csvContent = "data:text/csv;charset=utf-8,Date,Amount,Action,AddressTo,Comment\n";
+
+        data.forEach(function(it, index) {
+          var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + it.addressTo + ',' + formatString(it.comment);
+          csvContent += index < data.length ? dataString + "\n" : dataString;
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
+
+        link.click();
+
+
+        function formatDate(date) {
+          var dateObj = new Date(date);
+          if (!dateObj) {
+            log.error('Error formating a date');
+            return 'DateError'
+          }
+          if (!dateObj.toJSON()) {
+            return '';
+          }
+
+          return dateObj.toJSON().substring(0, 10);
+        }
+
+        function formatString(str) {
+          if (!str) return '';
+          return str;
+        }
       });
 
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", filename);
-
-      link.click();
-
-
-      function formatDate(date) {
-        var dateObj = new Date(date);
-        if (!dateObj) {
-          log.error('Error formating a date');
-          return 'DateError'
-        }
-        if (!dateObj.toJSON()) {
-          return '';
-        }
-
-        return dateObj.toJSON().substring(0, 10);
-      }
-
-
-      function formatString(str) {
-        if (!str) return '';
-        return str;
-      }
     };
 
 
@@ -122,8 +132,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
 
     $scope.hasAction = function(actions, action) {
-
-
       return actions.hasOwnProperty('create');
     };
 
