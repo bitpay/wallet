@@ -1,0 +1,26 @@
+<div class="backup" ng-controller="CreateWalletController">
+  <h1 class="hide-for-large-up">{{$root.title}}</h1>
+  <div class="row">
+    <div class="large-4 columns" >
+      <div class="panel text-center" ui-route="{{create}}">
+        <div><i class="size-72 fi-plus text-gray"></i></div>
+        <p class="text-gray">Create a new Wallet</p>
+        <a href="#!/create" class="button primary radius" title="Create"> {{'Create' | translate }} </a>
+      </div>    
+    </div>
+    <div class="large-4 columns" ui-route="{{create}}">
+      <div class="panel text-center">
+        <div><i class="size-72 fi-torsos-all text-gray"></i></div>
+        <p class="text-gray">Join an existent Wallet</p>
+        <a href="#!/join" class="button secondary radius" title="Join"> {{'Join' | translate }} </a>
+      </div>    
+    </div>
+    <div class="large-4 columns" ui-route="{{create}}">
+      <div class="panel text-center">
+        <div><i class="size-72 fi-download text-gray"></i></div>
+        <p class="text-gray">Import a Wallet to Copay</p>
+        <a href="#!/import" class="button black radius" title="Import"> {{'Import wallet' | translate }}</a>
+      </div>    
+    </div>
+  </div>
+</div>

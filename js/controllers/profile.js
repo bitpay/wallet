@@ -1,8 +1,8 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ManageController', function($scope, $rootScope, $location, controllerUtils, backupService) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, controllerUtils, backupService) {
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
-  $rootScope.title = 'Manage wallets';
+  $rootScope.title = 'Profile';
 
   $scope.downloadBackup = function() {
     backupService.profileDownload($rootScope.iden);
