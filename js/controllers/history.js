@@ -36,10 +36,10 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
       var data = $scope.blockchain_txs;
       var filename = "copay_history.csv";
-      var csvContent = "data:text/csv;charset=utf-8,Date,Amount,Action,AddressTo\n";
+      var csvContent = "data:text/csv;charset=utf-8,Date,Amount,Action,AddressTo,Comment\n";
 
       data.forEach(function(it, index) {
-        var dataString = formatDate(it.ts) + ',' + it.amount + ',' + it.action + ',' + it.addressTo;
+        var dataString = formatDate(it.ts) + ',' + it.amount + ',' + it.action + ',' + it.addressTo + ',' + formatString(it.comment);
         csvContent += index < data.length ? dataString + "\n" : dataString;
       });
 
@@ -57,7 +57,17 @@ angular.module('copayApp.controllers').controller('HistoryController',
           log.error('Error formating a date');
           return 'DateError'
         }
+        if (!dateObj.toJSON()) {
+          return '';
+        }
+
         return dateObj.toJSON().substring(0, 10);
+      }
+
+
+      function formatString(str) {
+        if (!str) return '';
+        return str;
       }
     };
 

@@ -11,8 +11,7 @@
     <div 
       class="row"
       ng-if="blockchain_txs[0].txid">
-      <div class="large-12 columns">
-        </div>
+        <div class="large-12 columns"></div>
         <div class="panel" 
           ng-repeat="btx in blockchain_txs | orderBy:'-ts'" ng-click="btx.showDetails = !btx.showDetails">
           <div class="row size-14">
