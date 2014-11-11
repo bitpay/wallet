@@ -24,6 +24,7 @@
 
     <!-- js -->
 <script src="js/classie.js"></script>
+
 <script>
     function init() {
         window.addEventListener('scroll', function(e){
@@ -178,14 +179,14 @@ copay-0.7.2.xpi
 
       <div class="row show-for-medium-up">
           <div class="medium-7 columns header-logo">
-            <img src="img/copay-logo.svg" width="145" alt="Copay">
+            <img src="img/copay-logo.svg" width="165" alt="Copay">
             <div class="copay-version">
               <h3 class="copay-version size-11">v0.7.2</h3>
             </div>
           </div>
           <div class="medium-5 columns">
             <a href="" data-dropdown="drop2" class="button btn-dwnld dropdown right">GET STARTED</a>
-              <ul id="drop2" data-dropdown-content class="f-dropdown">
+              <ul id="drop2" data-dropdown-content class="f-dropdown pullDown pullDownBtn">
                 <li><a href="#" target="_blank" class="web-ver ubuntubold" data-reveal-id="licenseModal" onclick="contNext='https://copay.io/in/app/'"><span class="size-10 ubuntumedium p0m0">TRY</span><br>WEB VERSION</a></li>
                 <li><a href="#" data-reveal-id="licenseModal" class="browser-ext ubuntubold" onclick="contNext=false"><span class="size-10 ubuntumedium p0m0">DOWNLOAD</span><br>BROWSER EXTENSION</a></li>
                 <li><a href="#" data-reveal-id="licenseModal" class="android-ver ubuntubold" onclick="contNext='https://play.google.com/store/apps/details?id=com.bitpay.copay'"><span class="size-10 ubuntumedium p0m0">DOWNLOAD</span><br>ANDROID VERSION</a></li>
@@ -421,6 +422,14 @@ $(function() {
       }
     });
   });
+
+
+    $('.pullDownBtn').click(function() {
+      $(this).each(function(){
+          $('#object').removeClass();       
+          $('#object').addClass("pullDown");
+        });
+    }); 
 </script>
 </body>
 </html>
