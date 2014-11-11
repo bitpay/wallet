@@ -56,7 +56,7 @@
             <td width="70" class="text-center">
               <a translate 
                  class="warning" 
-                 ng-really-message="{{'Are you sure to delete the wallet'}} {{(item.name || item.id)}}" 
+                 ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
                  ng-really-click="deleteWallet(item)"
                  ng-show="activeWallet != item.id && loading != item.id">Delete</a>
               <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
