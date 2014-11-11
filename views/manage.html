@@ -41,12 +41,13 @@
         <tbody>
           <tr 
               data-ng-repeat="item in wallets | orderBy:'name'" 
-              ng-init="isReady = item.isReady(); activeWallet = $root.wallet.id"
+              ng-init="isReady = item.isReady(); 
+              activeWallet = $root.wallet.id; networkName = item.getNetworkName()"
               ng-class="{'active':activeWallet == item.id, 'deleting':loading==item.id}">
             <td>{{item.name || item.id }}</td>
-            <td width="70">{{item.requiredCopayers}} of {{item.totalCopayers}}</td>
-            <td width="220">{{isReady ? 'Complete' : 'Waiting for copayers...'}}</td>
-            <td width="220">
+            <td width="120">{{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}</td>
+            <td width="200">{{isReady ? 'Complete' : 'Waiting for copayers...'}}</td>
+            <td width="200">
               <span ng-if="!isReady">-</span>
               <span ng-if="isReady">
                 {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}

@@ -359,12 +359,12 @@ angular.module('copayApp.services')
       $rootScope.pendingTxCount = res.pendingForUs;
     };
 
-    root.deleteWallet = function($scope, w, cb) {
+    root.deleteWallet = function($scope, w, skipBind) {
       w = w || $rootScope.wallet;
       var name = w.getName();
       $rootScope.iden.deleteWallet(w.id, function() {
         notification.info(name + ' deleted', $filter('translate')('Wallet deleted'));
-        if (cb) return cb();
+        if (skipBind) return skipBind();
         $rootScope.wallet = null;
         var lastFocused = $rootScope.iden.getLastFocusedWallet();
         root.bindProfile($scope, $rootScope.iden, lastFocused);
