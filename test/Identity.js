@@ -238,7 +238,8 @@ describe('Identity model', function() {
     });
   });
 
-  describe('#importWallet', function() {
+  // This is implemented in Compatibility
+  describe.skip('#importWallet', function() {
     it('should import a wallet, call the right encryption functions', function(done) {
       var args = createIdentity();
       args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');

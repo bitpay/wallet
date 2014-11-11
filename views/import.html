@@ -10,11 +10,11 @@
       <div class="large-12 columns">
         <div class="panel">
           <form name="importForm" ng-submit="import(importForm)" novalidate>
-            <p class="text-warning size-12"
+            <div class="text-warning size-12 m20b"
               ng-show="error">
               <i class="fi-x"></i> 
               {{error|translate}}
-              </p>
+              </div>
   
  
             <div ng-show="!is_iOS && !backupOldWallet">
