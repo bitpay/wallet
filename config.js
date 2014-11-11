@@ -64,7 +64,14 @@ var defaultConfig = {
   // This can be changed on the UX > Settings > Insight livenet
   EncryptedInsightStorage: {
     url: 'https://insight.bitpay.com:443/api/email',
-     //url: 'http://localhost:3001/api/email'
+    //url: 'http://localhost:3001/api/email'
+
+    // This KDF parameters are for the passphrase for Insight authentication
+    // Are not related to encryption itself.
+    //
+    // WARN: Changing this parameters would prevent accesing previously created profiles.
+    iterations: 1000,
+    salt: 'jBbYTj8zTrOt6V',
   },
 
   GoogleDrive: {
