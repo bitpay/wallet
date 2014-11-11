@@ -5,14 +5,18 @@ var querystring = require('querystring');
 var Identity = require('../models/Identity');
 
 var SEPARATOR = '|';
+var BODY = 'IR7GCUVgaLGe4LCtXjtUo4hsH8BO67jIrBKCeFiYOQ7CKWVPx3FshqTM';
 
 function InsightStorage(config) {
   this.type = 'DB';
   this.storeUrl = config.url || 'https://insight.bitpay.com:443/api/email',
   this.request = config.request || request;
+
+  this.iterations = config.iterations || 1000;
+  this.salt = config.salt || 'jBbYTj8zTrOt6V';
 }
 
-InsightStorage.prototype.init = function () {};
+InsightStorage.prototype.init = function() {};
 
 InsightStorage.prototype.setCredentials = function(email, password, opts) {
   this.email = email;
@@ -49,16 +53,34 @@ InsightStorage.prototype.getItem = function(name, callback) {
   });
 };
 
+/* This key has not need to have the same
+ * settings(salt,iterations) as the kdf for wallet/profile encryption
+ * in Encrpted*Storage. And, actually, it good for the user to be able
+ * to change the settings con config.js to modify salt / iterations but
+ * mantain the same key & passphrase. This is why those settings are 
+ * not shared.
+ */
+InsightStorage.prototype.getKey = function() {
+  if (!this._cachedKey) {
+    this._cachedKey = cryptoUtil.kdf(this.password + SEPARATOR + this.email, this.salt, this.iterations);
+  }
+  return this._cachedKey;
+};
+
 InsightStorage.prototype.getPassphrase = function() {
-  return cryptoUtil.hmac(this.getKey(), this.password);
+  return cryptoUtil.hmac(this.getKey(), BODY);
 };
 
 InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var retrieveUrl = this.storeUrl + '/retrieve';
   this.request.get({
-      url: retrieveUrl + '?' + querystring.encode({key: key}),
-      headers: {'Authorization': authHeader}
+      url: retrieveUrl + '?' + querystring.encode({
+        key: key
+      }),
+      headers: {
+        'Authorization': authHeader
+      }
     },
     function(err, response, body) {
       if (err) {
@@ -91,16 +113,9 @@ InsightStorage.prototype._brokenGetItem = function(name, callback) {
   });
 };
 
-InsightStorage.prototype.getKey = function() {
-  if (!this._cachedKey) {
-    this._cachedKey = cryptoUtil.kdf(this.password + SEPARATOR + this.email);
-  }
-  return this._cachedKey;
-};
-
 InsightStorage.prototype._makeBrokenSecret = function() {
-  var key = cryptoUtil.kdf(this.password + this.email);
-  return cryptoUtil.kdf(key, this.password);
+  var key = cryptoUtil.kdf(this.password + this.email, 'mjuBtGybi/4=', 100);
+  return cryptoUtil.kdf(key, this.password, 100);
 };
 
 InsightStorage.prototype._changePassphrase = function(callback) {
@@ -111,7 +126,9 @@ InsightStorage.prototype._changePassphrase = function(callback) {
   var url = this.storeUrl + '/change_passphrase';
   this.request.post({
     url: url,
-    headers: {'Authorization': authHeader},
+    headers: {
+      'Authorization': authHeader
+    },
     body: querystring.encode({
       newPassphrase: newPassphrase
     })
@@ -135,7 +152,9 @@ InsightStorage.prototype.setItem = function(name, value, callback) {
   var registerUrl = this.storeUrl + '/save';
   this.request.post({
     url: registerUrl,
-    headers: {'Authorization': authHeader},
+    headers: {
+      'Authorization': authHeader
+    },
     body: querystring.encode({
       key: name,
       record: value

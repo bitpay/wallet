@@ -7,26 +7,47 @@ function EncryptedLocalStorage(config) {
 }
 inherits(EncryptedLocalStorage, LocalStorage);
 
+
+EncryptedLocalStorage.prototype._brokenDecrypt = function(body) {
+  var key = cryptoUtil.kdf(this.password + this.email, 'mjuBtGybi/4=', 100);
+  log.debug('Trying legacy decrypt')
+  var decryptedJson = cryptoUtil.decrypt(key, body);
+  return decryptedJson;
+};
+
+
 EncryptedLocalStorage.prototype.getItem = function(name, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
   LocalStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
-      var decryptedJson = cryptoUtil.decrypt(key, body);
+      var decryptedJson = cryptoUtil.decrypt(this.password, body);
+      log.debug('Could not decrypt value using current decryption schema');
+
       if (!decryptedJson) {
+        decryptedJson = this._brokenDecrypt(body);
+      }
+
+      if (!decryptedJson) {
+        log.debug('Could not decrypt value.');
         return callback('PNOTFOUND');
       }
+
       return callback(null, decryptedJson);
     }
   ]);
 };
 
 EncryptedLocalStorage.prototype.setItem = function(name, value, callback) {
-  var key = cryptoUtil.kdf(this.password + this.email);
   if (!_.isString(value)) {
     value = JSON.stringify(value);
   }
-  var record = cryptoUtil.encrypt(key, value);
+  var record = cryptoUtil.encrypt(this.password, value);
   LocalStorage.prototype.setItem.apply(this, [name, record, callback]);
 };
+
+EncryptedLocalStorage.prototype.removeItem = function(name, callback) {
+  InsightStorage.prototype.removeItem.apply(this, [name, callback]);
+};
+
+
 
 module.exports = EncryptedLocalStorage;
