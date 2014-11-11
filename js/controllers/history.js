@@ -14,8 +14,15 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.currentPage = 1;
     $scope.itemsPerPage = 10;
     $scope.nbPages = 0;
+    $scope.totalItems = 0;
     $scope.blockchain_txs = [];
     $scope.alternativeCurrency = [];
+
+
+    $scope.selectPage = function(page) {
+      $scope.currentPage = page;
+      $scope.update();
+    };
 
     $scope.update = function() {
       $scope.getTransactions();
@@ -26,24 +33,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
       setTimeout(function() {
         $scope.update();
       }, 1);
-    };
-
-    $scope.nextPage = function() {
-      $scope.currentPage++;
-      $scope.update();
-    };
-
-    $scope.previousPage = function() {
-      $scope.currentPage--;
-      $scope.update();
-    };
-
-    $scope.hasNextPage = function() {
-      return $scope.currentPage < $scope.nbPages;
-    };
-
-    $scope.hasPreviousPage = function() {
-      return $scope.currentPage > 1;
     };
 
     $scope.getTransactions = function() {
@@ -72,6 +61,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
         });
         $scope.blockchain_txs = w.cached_txs = items;
         $scope.nbPages = res.nbPages;
+        $scope.totalItems = res.nbItems;
 
 
         $scope.loading = false;
