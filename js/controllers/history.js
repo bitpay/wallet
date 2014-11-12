@@ -43,9 +43,11 @@ angular.module('copayApp.controllers').controller('HistoryController',
           return;
         }
 
+        var unit = w.settings.unitName;
         var data = res.items;
         var filename = "copay_history.csv";
-        var csvContent = "data:text/csv;charset=utf-8,Date,Amount,Action,AddressTo,Comment\n";
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment\n";
 
         data.forEach(function(it, index) {
           var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + it.addressTo + ',' + formatString(it.comment);
@@ -75,6 +77,9 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
         function formatString(str) {
           if (!str) return '';
+          //escaping commas
+          str = '\"' + str + '\"';
+
           return str;
         }
       });
