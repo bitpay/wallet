@@ -67,6 +67,7 @@ angular.module('copayApp.controllers').controller('MoreController',
     }, 1);
 
     $scope.save = function() {
+      var w = $rootScope.wallet;
       w.changeSettings({
         unitName: $scope.selectedUnit.shortName,
         unitToSatoshi: $scope.selectedUnit.value,
@@ -75,18 +76,23 @@ angular.module('copayApp.controllers').controller('MoreController',
         alternativeIsoCode: $scope.selectedAlternative.isoCode,
       });
       notification.success('Success', $filter('translate')('settings successfully updated'));
-      controllerUtils.updateBalance();
+      controllerUtils.updateBalance(w, function() {
+        $rootScope.$digest();
+      });
     }; 
 
     $scope.purge = function(deleteAll) {
       var removed = w.purgeTxProposals(deleteAll);
       if (removed) {
-        controllerUtils.updateBalance();
+        controllerUtils.updateBalance(w, function() {
+          $rootScope.$digest();
+        });
       }
       notification.info('Transactions Proposals Purged', removed + ' ' + $filter('translate')('transaction proposal purged'));
     };
 
     $scope.updateIndexes = function() {
+      var w = $rootScope.wallet;
       notification.info('Scaning for transactions', 'Using derived addresses from your wallet');
       w.updateIndexes(function(err) {
         notification.info('Scan Ended', 'Updating balance');
@@ -94,9 +100,10 @@ angular.module('copayApp.controllers').controller('MoreController',
           notification.error('Error', $filter('translate')('Error updating indexes: ') + err);
         }
         controllerUtils.updateAddressList();
-        controllerUtils.updateBalance(function() {
+        controllerUtils.updateBalance(w, function() {
           notification.info('Finished', 'The balance is updated using the derived addresses');
           w.sendIndexes();
+          $rootScope.$digest();
         });
       });
     };
