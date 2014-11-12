@@ -148,6 +148,30 @@ describe('PublicKeyRing model', function() {
     });
   });
 
+  it('caches calls to getAddress', function() {
+    var setup = getCachedW();
+    var pubkeyring = setup.w;
+
+    var address = pubkeyring.getAddress(3, false, 4);
+
+    (pubkeyring._cacheAddressMap[3][0][4]).should.equal(address);
+  });
+
+  it('getAddress cache hit doesn\'t alter state', function() {
+    var setup = getCachedW();
+    var pubkeyring = setup.w;
+    var spySave;
+
+    pubkeyring.getAddress(3, false, 4);
+
+    spySave = sinon.stub(pubkeyring, '_cacheAddress');
+    spySave.onFirstCall().throws(new Error());
+
+    pubkeyring.getAddress(3, false, 4);
+
+    spySave.restore();
+  });
+
   it('should return PublicKeyRing addresses', function() {
     var k = createW();
     var w = k.w;
