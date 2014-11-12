@@ -1137,7 +1137,7 @@ describe('Wallet model', function() {
     });
 
 
-    it('#updateIndexes should store wallet', function(done) {
+    it.skip('#updateIndexes should store wallet', function(done) {
       mockFakeActivity(function(index) {
         return index <= 14 && index % 2 == 0;
       });
