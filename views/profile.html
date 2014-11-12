@@ -3,13 +3,23 @@
 
   <div class="row">
     <div class="large-12 columns">
-      <div class="panel">
-        <h2><i class="fi-download m10r"></i> <span translate>Backup Profile</span></h2>
-        <p translate class="text-gray">It's important to backup your profile so that you can recover it in case of disaster. The backup will include all your profile's wallets</p>
-        <a translate class="button primary m0" ng-click="downloadProfileBackup()"
-          ng-show="!isSafari">Backup profile</a>
-        <a translate class="button primary m0" ng-click="viewProfileBackup()"
-          ng-show="isSafari && !hideViewProfileBackup">View profile backup</a>
+      <div class="panel oh">
+        <div class="large-1 medium-2 columns m20r">
+          <a class="photo-container profile m15t" href="https://en.gravatar.com/" ng-init="isHover=0" ng-mouseenter="isHover=1" ng-mouseleave="isHover=0" target="_blank">
+            <img ng-show="!isHover" gravatar-src="'{{username}}'" gravatar-size="80">
+            <img ng-show="isHover" src="img/change-avatar.png" with="80">
+          </a>
+        </div>
+        <div class="large-7 medium-7 columns">
+          <h3 class="m15t"> Backup Profile </h3>
+          <p translate class="text-gray">It's important to backup your profile so that you can recover it in case of disaster. The backup will include all your profile's wallets</p>
+        </div>
+        <div class="large-3 medium-3 columns right m20t">
+          <a translate class="button primary m10t" ng-click="downloadProfileBackup()"
+            ng-show="!isSafari">Backup profile</a>
+          <a translate class="button primary m0" ng-click="viewProfileBackup()"
+            ng-show="isSafari && !hideViewProfileBackup">View profile backup</a>
+        </div>
         <div ng-show="backupProfilePlainText">
           <textarea rows="5">{{backupProfilePlainText}}</textarea>
           <div class="show-for-large-up">
@@ -53,19 +63,17 @@
                 {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
               </span>
             </td>
-            <td width="70" class="text-center">
+            <td width="90" class="text-center">
 
               <div ng-show="loading != item.id">
-                <a title="Download Backup" ng-click="downloadWalletBackup(item)"
-                  ng-show="!isSafari"><i class="fi-download"></i></a>
+                <a title="Download Backup" class="text-gray" ng-click="downloadWalletBackup(item)"
+                  ng-show="!isSafari"><i class="fi-download size-18 m10r"></i></a>
                 <a title="View Backup" ng-click="viewWalletBackup(item)"
                   ng-show="isSafari"><i class="fi-eye"></i></a> 
                 &nbsp; &nbsp;
-                <a title="Delete Wallet"  
-                  class="text-warning" 
-                  ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
+                <a title="Delete Wallet" ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
                   ng-really-click="deleteWallet(item)"
-                  ng-show="loading != item.id"><i class="fi-trash"></i></a>
+                  ng-show="loading != item.id"><i class="fi-trash text-gray size-18"></i></a>
               </div>
               <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
             </td>
