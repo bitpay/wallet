@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
     $rootScope.title = 'History';
     $scope.loading = false;
+    $scope.generating = false;
     $scope.lastShowed = false;
 
     $scope.currentPage = 1;
@@ -36,6 +37,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
       var w = $rootScope.wallet;
       if (!w) return;
 
+      $scope.generating = true;
       var data = w.getTransactionHistory(null, function(err, res) {
         if (err) throw err;
 
@@ -60,7 +62,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
         link.setAttribute("download", filename);
 
         link.click();
-
+        $scope.generating = false;
+        $scope.$digest();
 
         function formatDate(date) {
           var dateObj = new Date(date);
@@ -77,6 +80,12 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
         function formatString(str) {
           if (!str) return '';
+
+          if (str.indexOf('"') !== -1) {
+            //replace all
+            str = str.replace(new RegExp('"', 'g'), '\'');
+          }
+
           //escaping commas
           str = '\"' + str + '\"';
 
