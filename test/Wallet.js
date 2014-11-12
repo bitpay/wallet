@@ -1327,6 +1327,14 @@ describe('Wallet model', function() {
       w.network.start.getCall(0).args[0].privkey.length.should.equal(64);
     });
 
+    it('should call subscribeToAddresses', function() {
+      var w = cachedCreateW2();
+
+      w.blockchain.on = sinon.stub();
+      w.subscribeToAddresses = sinon.spy();
+      w.netStart();
+      w.subscribeToAddresses.calledOnce.should.equal(true);
+    });
   });
 
   describe('_getKeymap', function() {
