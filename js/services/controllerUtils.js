@@ -46,7 +46,9 @@ angular.module('copayApp.services')
     };
 
     root.onError = function(scope) {
-      if (scope) scope.loading = false;
+      if (scope) { 
+        scope.loading = false;
+      }
     }
 
     root.onErrorDigest = function(scope, msg) {

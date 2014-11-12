@@ -1,21 +1,11 @@
 language: node_js
 node_js:
-- '0.10'
+  - '0.10'
 before_install:
   - npm install -g bower
   - npm install -g grunt-cli
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
-  - npm install
   - bower install
-before_script:
-  - grunt
-notifications:
-  hipchat:
-    rooms:
-      secure: ibsyaK2/7hdms9pRHCibamfUtA1yb5Ib3tIQOChwnfNSkpOy5ZViuq92duPZpKacgNuRmiwp6wfbDY8duLiadwnCet4V3dHAGqt+t9o+O7A9DzxNeYFFHnnrhqhg95PjWK6UyFqrQajPIr+n11M2itEQLa7kljQxJZ3Z26zJCdI=
-    template:
-      - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
-    format: html
-    on_success: never
+  - npm install
