@@ -80,7 +80,7 @@
   }
 
   ul.off-canvas-list li a {
-    border-bottom: 1px solid #425568;
+    border-bottom: transparent;
     padding: 0.66667rem 1rem;
     color: #fff;
   }
@@ -160,6 +160,11 @@
   .side-nav.wallets {
     padding: 0;
     height: auto;
+    left: 0;
+  }
+
+  ul.off-canvas-list li a:hover {
+    background: transparent;
   }
 
   .label {
