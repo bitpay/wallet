@@ -327,8 +327,6 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex
  *
  * Caches the address to the branch in the member addressToPath
  *
- * @TODO this could be cached
- *
  * @param {number} index - the index for the shared address
  * @param {boolean} isChange - whether to derive a change address o receive address
  * @param {number} copayerIndex - the index of the copayer that requested the derivation
@@ -336,10 +334,27 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex
  */
 PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
   var copayerIndex = this.getCosigner(id);
-  var script = this.getRedeemScript(index, isChange, copayerIndex);
-  var address = Address.fromScript(script, this.network.name);
-  this.addressToPath[address.toString()] = HDPath.FullBranch(index, isChange, copayerIndex);
-  return address;
+  if (!this._cachedAddress(index, isChange, id)) {
+    var script = this.getRedeemScript(index, isChange, copayerIndex);
+    var address = Address.fromScript(script, this.network.name);
+    this.addressToPath[address.toString()] = HDPath.FullBranch(index, isChange, copayerIndex);
+    this._cacheAddress(index, isChange, copayerIndex, address);
+  }
+  return this._cachedAddress(index, isChange, copayerIndex);
+};
+PublicKeyRing.prototype._cacheAddress = function(index, isChange, copayerIndex, address) {
+  var changeIndex = isChange ? 1 : 0;
+  if (!this._cacheAddressMap) this._cacheAddressMap = {};
+  if (!this._cacheAddressMap[index]) this._cacheAddressMap[index] = {};
+  if (!this._cacheAddressMap[index][changeIndex]) this._cacheAddressMap[index][changeIndex] = {};
+  this._cacheAddressMap[index][changeIndex][copayerIndex] = address;
+};
+PublicKeyRing.prototype._cachedAddress = function(index, isChange, copayerIndex) {
+  var changeIndex = isChange ? 1 : 0;
+  if (!this._cacheAddressMap) return undefined;
+  if (!this._cacheAddressMap[index]) return undefined;
+  if (!this._cacheAddressMap[index][changeIndex]) return undefined;
+  return this._cacheAddressMap[index][changeIndex][copayerIndex];
 };
 
 /**
@@ -347,8 +362,6 @@ PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
  * Get the parameters used to derive a pubkey or a cosigner index
  *
  * Overloaded to receive a PubkeyString or a consigner index
- *
- * @TODO: Couldn't really figure out what does this do
  *
  * @param {number|string} id public key in hex format, or the copayer's index
  * @return ????
@@ -458,14 +471,13 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
  * @returns {AddressInfo[]}
  */
 PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
+
   var ret = [];
   var self = this;
   var copayerIndex = pubkey && this.getCosigner(pubkey);
-
   this.indexes.forEach(function(index) {
     ret = ret.concat(self.getAddressesInfoForIndex(index, opts, copayerIndex));
   });
-
   return ret;
 };
 
