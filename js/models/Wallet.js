@@ -2998,6 +2998,8 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
 
       return cb(null, paginate(history, opts.currentPage, opts.itemsPerPage));
     });
+  } else {
+    return paginate([], opts.currentPage, opts.ItemsPerPage);
   }
 };
 
