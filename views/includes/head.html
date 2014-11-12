@@ -17,7 +17,9 @@
 <div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
   ng-click="hoverMenu = !hoverMenu">
   <a class="dropdown ellipsis text-gray" ng-class="{'hover': hoverMenu}">
-    <img gravatar-src="'{{username}}'" gravatar-size="35">
+    <div class="photo-container">
+      <img gravatar-src="'{{username}}'" gravatar-size="35">
+    </div>
     <span class="m15t">{{username}} </span>
     <i class="icon-arrow-down size-16 vm"></i> 
   </a>
