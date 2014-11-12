@@ -1323,7 +1323,10 @@ Wallet.prototype.getPendingTxProposals = function() {
       });
       txp.outs = [];
       _.each(addresses, function(value, address) {
-        txp.outs.push({address: address, value: value * satToUnit});
+        txp.outs.push({
+          address: address,
+          value: value * satToUnit
+        });
       });
       // extra fields
       txp.fee = txp.builder.feeSat * satToUnit;
@@ -2931,12 +2934,16 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
       tx.action = amount > 0 ? 'sent' : 'received';
     }
 
-    var firstOut = _.findWhere(items, {
-      type: 'out'
-    });
+    if (tx.action == 'sent' || tx.action == 'moved') {
+      var firstOut = _.findWhere(items, {
+        type: 'out'
+      });
+      if (firstOut) {
+        tx.labelTo = firstOut.label;
+        tx.addressTo = firstOut.address;
+      }
+    };
 
-    tx.labelTo = firstOut ? firstOut.label : undefined;
-    tx.addressTo = firstOut ? firstOut.address : undefined;
     tx.amountSat = Math.abs(amount);
     tx.amount = tx.amountSat * satToUnit;
     tx.minedTs = !_.isNaN(tx.time) ? tx.time * 1000 : undefined;
