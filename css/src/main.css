@@ -1077,6 +1077,10 @@ button.gray:focus,
   overflow: hidden;
 }
 
+.fi-trash.text-gray:hover {
+  color: #CA5649;
+}
+
 .photo-container {
   margin-right: 3px;
   display: inline-block;
@@ -1088,6 +1092,11 @@ button.gray:focus,
   vertical-align: middle;
   overflow: hidden;
   text-align: center;
+}
+
+.photo-container.profile {
+  width: 80px;
+  height: 80px;
 }
 
 a:hover .photo-container  {
