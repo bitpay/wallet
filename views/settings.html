@@ -7,7 +7,14 @@
     <div class="box-setup">
       <h1>{{title|translate}}</h1>
       <form name="settingsForm">
-
+        <div class="box-notification" ng-show="message">
+          <div class="box-icon">
+            <i class="fi-check size-24"></i>
+          </div> 
+          <span class="text-primary size-14">
+            {{message|translate}}
+          </span>
+        </div>
         <fieldset>
           <legend translate>Language</legend>
           <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
@@ -15,12 +22,18 @@
         </fieldset>
         <fieldset>
           <legend translate>Insight API server</legend>
-          <label for="insightLivenet">Livenet</label>
-          <small translate class="has-error" ng-show="settingsForm.insightLivenet.$invalid">not valid</small>
+          <label class="left" for="insightLivenet">Livenet</label>
+            <div translate class="has-error right size-12" ng-show="settingsForm.insightLivenet.$invalid">
+              <span class="icon-input"><i class="fi-x"></i></span>
+              Not valid
+            </div>
           <input type="text" ng-model="insightLivenet" class="form-control" name="insightLivenet" valid-url required>
 
-          <label for="insightTestnet">Testnet</label>
-          <small translate class="has-error" ng-show="settingsForm.insightTestnet.$invalid">not valid</small>
+          <label class="left" for="insightTestnet">Testnet</label>
+          <div translate class="has-error right size-12" ng-show="settingsForm.insightTestnet.$invalid">
+            <span class="icon-input"><i class="fi-x"></i></span>
+            Not valid
+          </div>
           <input type="text" ng-model="insightTestnet" class="form-control" name="insightTestnet" valid-url required>
 
           <div translate class="small">

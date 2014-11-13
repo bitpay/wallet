@@ -324,6 +324,7 @@ a:hover {
 }
 
 .box-setup {
+  margin-bottom: 7rem;
   padding: 1.3rem; 
   border-radius: 2px;
   background: #FFFFFF;
@@ -336,6 +337,29 @@ a:hover {
   padding: 1rem 0 0;
   border-top: 1px solid #E5E7EA;
   font-size: 12px;
+}
+
+.box-notification {
+  height: 41px;
+  position: relative;
+  font-size: 12px;
+  width: 70%;
+  padding: 0.9rem 0.7rem 0.7rem 3rem;
+  border-radius: 4px;
+  background: #F2F5F8;
+  margin: 0 auto;
+}
+
+.box-notification .box-icon {
+  margin-right: 77px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  background-color: #1ABC9C;
+  padding: 0.5rem;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .last-transactions {
@@ -1211,21 +1235,22 @@ a:hover .photo-container  {
 }
 
 .icon-input {
-  position: absolute;
-  top: 11px;
-  right: 20px;
-  font-size: 16px;
+  font-size: 9px;
   color: #fff;
+  vertical-align: middle;
+  margin-right: 3px;
 }
 
 .icon-input .fi-check {
+  padding: .1rem .3rem;
   background-color: #1ABC9C;
-  padding: 0.2rem 0.4rem;
+  border-radius: 100%;
 }
 
 .icon-input .fi-x {
+  padding: .1rem .3rem;
   background-color: #C0392A;
-  padding: 0.2rem 0.4rem;
+  border-radius: 100%;
 }
 
 .box-status {
