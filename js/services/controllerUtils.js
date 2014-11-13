@@ -266,8 +266,8 @@ angular.module('copayApp.services')
         r.totalBalance = balanceSat * satToUnit;
         r.totalBalanceBTC = (balanceSat / COIN);
         r.availableBalance = safeBalanceSat * satToUnit;
-        r.safeUnspentCount = safeUnspentCount;
         r.availableBalanceBTC = (safeBalanceSat / COIN);
+        r.safeUnspentCount = safeUnspentCount;
 
         r.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
         r.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
@@ -309,6 +309,7 @@ angular.module('copayApp.services')
     };
 
     root.updateBalance = function(w, cb, refreshAll) {
+
       w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;
