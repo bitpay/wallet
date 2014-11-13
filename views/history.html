@@ -11,8 +11,7 @@
     <div 
       class="row"
       ng-if="blockchain_txs[0].txid">
-      <div class="large-12 columns">
-
+        <div class="large-12 columns"></div>
         <div class="panel" 
           ng-repeat="btx in blockchain_txs | orderBy:'-ts'" ng-click="btx.showDetails = !btx.showDetails">
           <div class="row size-14">
@@ -99,6 +98,16 @@
               <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" class="right"> More details <i class="icon-arrow-right2 vm"></i> </a>
             </div>
           </div>
+        </div>
+        <div ng-if="generating" class="right size-12">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
+          <span translate>Generating file...</span>
+        </div>
+        <div ng-if="!generating" class="right size-12">
+          <a class="text-gray" href="#!/history" ng-click="downloadHistory();">
+            <i class="fi-download"></i> 
+            <span translate>Download</span>
+          </a>
         </div>
           <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
       </div>

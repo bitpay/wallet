@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
     $rootScope.title = 'History';
     $scope.loading = false;
+    $scope.generating = false;
     $scope.lastShowed = false;
 
     $scope.currentPage = 1;
@@ -19,10 +20,82 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.alternativeCurrency = [];
 
 
+
     $scope.selectPage = function(page) {
       $scope.currentPage = page;
       $scope.update();
     };
+
+
+
+    $scope.downloadHistory = function() {
+
+      if (window.cordova) {
+        log.info('Not available on mobile');
+        return;
+      }
+      var w = $rootScope.wallet;
+      if (!w) return;
+
+      $scope.generating = true;
+      w.getTransactionHistory(function(err, res) {
+        if (err) throw err;
+
+        if (!res) {
+          return;
+        }
+
+        var unit = w.settings.unitName;
+        var data = res.items;
+        var filename = "copay_history.csv";
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment\n";
+
+        data.forEach(function(it, index) {
+          var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + it.addressTo + ',' + formatString(it.comment);
+          csvContent += index < data.length ? dataString + "\n" : dataString;
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
+
+        link.click();
+        $scope.generating = false;
+        $scope.$digest();
+
+        function formatDate(date) {
+          var dateObj = new Date(date);
+          if (!dateObj) {
+            log.error('Error formating a date');
+            return 'DateError'
+          }
+          if (!dateObj.toJSON()) {
+            return '';
+          }
+
+          return dateObj.toJSON().substring(0, 10);
+        }
+
+        function formatString(str) {
+          if (!str) return '';
+
+          if (str.indexOf('"') !== -1) {
+            //replace all
+            str = str.replace(new RegExp('"', 'g'), '\'');
+          }
+
+          //escaping commas
+          str = '\"' + str + '\"';
+
+          return str;
+        }
+      });
+
+    };
+
+
 
     $scope.update = function() {
       $scope.getTransactions();
