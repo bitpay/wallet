@@ -4,7 +4,7 @@ var app = express();
 
 app.use('/', express.static(__dirname + '/'));
 app.get('*', function(req, res) {
-  return res.sendfile('index.html');
+  return res.sendFile(__dirname + '/' + 'index.html');
 });
 
 app.start = function(port, callback) {
