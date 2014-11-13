@@ -1,5 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, controllerUtils, backupService) {
+  $scope.username = $rootScope.iden.getName();
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
   $rootScope.title = 'Profile';
