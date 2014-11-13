@@ -76,10 +76,6 @@ angular
       .when('/profile', {
         templateUrl: 'views/profile.html',
         logged: true
-      })
-      .when('/createWallet', {
-        templateUrl: 'views/createWallet.html',
-        logged: true
       });
 
     if (config.developmentFeatures) {
