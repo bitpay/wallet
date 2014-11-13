@@ -29,6 +29,8 @@ module.exports = function(config) {
       'lib/angular-foundation/mm-foundation.min.js',
       'lib/angular-foundation/mm-foundation-tpls.min.js',
       'lib/angular-load/angular-load.min.js',
+      'lib/angular-gravatar/build/md5.min.js',
+      'lib/angular-gravatar/build/angular-gravatar.min.js',
       'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/inherits/inherits.js',
       'lib/lodash/dist/lodash.js',
