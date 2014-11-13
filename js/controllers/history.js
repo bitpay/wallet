@@ -38,7 +38,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
       if (!w) return;
 
       $scope.generating = true;
-      var data = w.getTransactionHistory(null, function(err, res) {
+      w.getTransactionHistory(function(err, res) {
         if (err) throw err;
 
         if (!res) {
