@@ -812,6 +812,7 @@ Wallet.prototype._lockIncomming = function() {
 Wallet.prototype._setBlockchainListeners = function() {
   var self = this;
   self.blockchain.removeAllListeners();
+  self.subscribeToAddresses();
 
   log.debug('Setting Blockchain listeners for', this.getName());
   self.blockchain.on('reconnect', function(attempts) {
@@ -2179,6 +2180,7 @@ Wallet.prototype.getAddressesStr = function(opts) {
 
 Wallet.prototype.subscribeToAddresses = function() {
   var addrInfo = this.publicKeyRing.getAddressesInfo();
+console.log('[Wallet.js.2181:addrInfo:]',addrInfo); //TODO
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
   log.debug('Subscribed to ' + addrInfo.length + ' addresses'); //TODO
 };

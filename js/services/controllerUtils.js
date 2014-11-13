@@ -268,11 +268,17 @@ angular.module('copayApp.services')
         r.totalBalance = balanceSat * satToUnit;
         r.totalBalanceBTC = (balanceSat / COIN);
         r.availableBalance = safeBalanceSat * satToUnit;
-        r.safeUnspentCount = safeUnspentCount;
         r.availableBalanceBTC = (safeBalanceSat / COIN);
+        r.safeUnspentCount = safeUnspentCount;
 
         r.lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
         r.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
+
+
+        if (r.safeUnspentCount){
+          var estimatedFee = copay.Wallet.estimatedFee(r.safeUnspentCount);
+          r.topAmount = (((r.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
+        }
 
         var balanceByAddr = {};
         for (var ii in balanceByAddrSat) {
@@ -280,6 +286,8 @@ angular.module('copayApp.services')
         }
         r.balanceByAddr = balanceByAddr;
         root.updateAddressList();
+
+
 
         if (rateService.isAvailable()) {
           r.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
@@ -303,6 +311,7 @@ angular.module('copayApp.services')
     };
 
     root.updateBalance = function(w, cb, refreshAll) {
+
       w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest();
       if (!w.isReady()) return;

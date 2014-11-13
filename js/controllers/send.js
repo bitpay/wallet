@@ -71,9 +71,9 @@ angular.module('copayApp.controllers').controller('SendController',
         configurable: true
       });
 
+
     $scope.loadTxs = function() {
       controllerUtils.updateTxs();
-
       setTimeout(function() {
         $scope.loading = false;
         $rootScope.$digest();
@@ -119,6 +119,9 @@ angular.module('copayApp.controllers').controller('SendController',
 
           if (msg.match('BIG'))
             msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts.'
+
+          if (msg.match('totalNeededAmount'))
+            msg = 'Not enough funds.'
 
           var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created: ' + msg;
           $scope.error = message;
@@ -400,17 +403,8 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
-    $scope.getAvailableAmount = function() {
-      if (!$rootScope.safeUnspentCount) return null;
-
-      var estimatedFee = copay.Wallet.estimatedFee($rootScope.safeUnspentCount);
-      var amount = ((($rootScope.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
-
-      return amount > 0 ? amount : 0;
-    };
-
-    $scope.topAmount = function(form) {
-      $scope.amount = $scope.getAvailableAmount();
+    $scope.setTopAmount = function() {
+      $scope.amount = $rootScope.topAmount;
     };
 
 
@@ -449,6 +443,7 @@ angular.module('copayApp.controllers').controller('SendController',
         $scope.loadTxs();
         return;
       }
+      $scope.error = undefined;
 
       var p = w.txProposals.getTxProposal(ntxid);
       if (p.builder.isFullySigned()) {
