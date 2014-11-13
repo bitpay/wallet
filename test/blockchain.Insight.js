@@ -229,25 +229,12 @@ describe('Insight model', function() {
   it('should get a set of transaction by addresses', function(done) {
     var blockchain = new Insight(FAKE_OPTS);
 
-    sinon.stub(blockchain, "request", function(url, cb) {
-      var res = {statusCode: 200};
-
-      if (url == '/api/addr/2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM') {
-        return setTimeout(function() {
-          var body = JSON.stringify({transactions: [1, 2]});
-          cb(null, res, body);
-        }, 0);
-      }
-
-      if (url == '/api/addr/2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb') {
-        return setTimeout(function() {
-          var body = JSON.stringify({transactions: [3]});
-          cb(null, res, body);
-        }, 0);
-      }
-
+    sinon.stub(blockchain, "requestPost", function(url, data, cb) {
+      url.should.be.equal('/api/addrs/txs');
+      data.addrs.should.be.equal('2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM,2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb');
       setTimeout(function() {
-        var body = JSON.stringify({txid: '123123'});
+        var res = {statusCode: 200};
+        var body = [1, 2, 3];
         cb(null, res, body);
       }, 0);
     });
