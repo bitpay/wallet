@@ -231,7 +231,7 @@ angular.module('copayApp.services')
       if (w) {
         root.setFocusedWallet(w);
       } else {
-        $location.path('/createWallet');
+        $location.path('/create');
       }
       $timeout(function() {
         $rootScope.$digest()
