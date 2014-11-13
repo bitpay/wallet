@@ -247,10 +247,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 
 
 Wallet.prototype._newAddresses = function(dontUpdateUx) {
-  if (this.publicKeyRing.isComplete()) {
-    this.subscribeToAddresses();
-
-  };
+  this.subscribeToAddresses();
   this.emitAndKeepAlive('newAddresses', dontUpdateUx);
 };
 
@@ -2182,8 +2179,9 @@ Wallet.prototype.getAddressesStr = function(opts) {
 };
 
 Wallet.prototype.subscribeToAddresses = function() {
+  if (!this.publicKeyRing.isComplete()) return;
+
   var addrInfo = this.publicKeyRing.getAddressesInfo();
-console.log('[Wallet.js.2181:addrInfo:]',addrInfo); //TODO
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
   log.debug('Subscribed to ' + addrInfo.length + ' addresses'); //TODO
 };
