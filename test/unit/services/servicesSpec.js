@@ -74,11 +74,16 @@ describe("Angular services", function() {
       expect(controllerUtils.updateBalance).not.to.equal(null);
       var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
       var a = {};
-      a[Waddr] = 100;
-      w.getBalance = sinon.stub().returns(100000001, 90000002, a);
+      a[Waddr] = 200;
+      w.getBalance = sinon.stub().yields(null, 100000001, a, 90000002, 5);
+
+      var orig  =controllerUtils.isFocusedWallet;
+      controllerUtils.isFocusedWallet = sinon.stub().returns(true);
 
       //retuns values in DEFAULT UNIT(bits)
       controllerUtils.updateBalance(null, function() {
+
+
         expect($rootScope.totalBalanceBTC).to.be.equal(1.00000001);
         expect($rootScope.availableBalanceBTC).to.be.equal(0.90000002);
         expect($rootScope.lockedBalanceBTC).to.be.equal(0.09999999);
@@ -87,9 +92,12 @@ describe("Angular services", function() {
         expect($rootScope.availableBalance).to.be.equal(900000.02);
         expect($rootScope.lockedBalance).to.be.equal(99999.99);
 
-        expect($rootScope.addrInfos).not.to.equal(null);
-        expect($rootScope.addrInfos[0].address).to.equal(Waddr);
+        expect($rootScope.balanceByAddr[Waddr]).to.equal(2);
+        expect($rootScope.safeUnspentCount).to.equal(5);
+        expect($rootScope.topAmount).to.equal(899800.02);
       });
+
+      controllerUtils.isFocusedWallet = orig;
     }));
 
     it('should set the rootScope', inject(function(controllerUtils, $rootScope) {

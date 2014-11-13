@@ -422,23 +422,11 @@ describe("Unit: Controllers", function() {
       expect(scope.isMobile).not.to.equal(null);
     });
     it('should autotop balance correctly', function() {
-      scope.topAmount(form);
+      scope.setTopAmount(form);
       form.amount.$setViewValue(123356);
       expect(scope.amount).to.equal(123356);
       expect(form.amount.$invalid).to.equal(false);
       expect(form.amount.$pristine).to.equal(false);
-    });
-    it('should return available amount', function() {
-      form.amount.$setViewValue(123356);
-      var amount = scope.getAvailableAmount();
-      expect(amount).to.equal(123356);
-    });
-    it('should return 0 if available amount below minimum fee', function() {
-      inject(function($compile, $rootScope, $controller) {
-        $rootScope.availableBalance = 1;
-      });
-      var amount = scope.getAvailableAmount();
-      expect(amount).to.equal(0);
     });
   });
 
