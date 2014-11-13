@@ -36,7 +36,7 @@
           </div>
           <input type="text" ng-model="insightTestnet" class="form-control" name="insightTestnet" valid-url required>
 
-          <div translate class="small">
+          <div translate class="small text-gray">
           Insight API server is open-source software. You can run your own instances, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
           </div>
         </fieldset>
@@ -45,7 +45,7 @@
           <label for="insightTestnet">Store wallet and profiles on</label>
           <select class="form-control" ng-model="selectedStorage" ng-options="o.name for o in availableStorages" required>
           </select>
-          <div translate class="small">
+          <div translate class="small text-gray">
           Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on your platform, or remotely on the Insight Server. <a target="_blank" href="https://github.com/bitpay/copay/tree/master/js/plugins">More pluggins are welcomed!</a>
           </div>
         </fieldset>
@@ -53,7 +53,7 @@
           <legend translate>Log level</legend>
           <select class="form-control" ng-model="selectedLogLevel" ng-options="o.name for o in availableLogLevels" required>
           </select>
-          <div translate class="small">
+          <div translate class="small text-gray">
           Log level shows information on the console. This is usefull to find bugs and help users. 'debug' is the most verbose level while 'fatal' only shows unexcpected errors</a>
           </div>
         </fieldset>
