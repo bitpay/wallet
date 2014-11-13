@@ -43,7 +43,6 @@ angular.module('copayApp.services')
           $timeout(function() {
             $rootScope.$digest()
           }, 1);
- 
           return;
         }
         var walletOptions = {

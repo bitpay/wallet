@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportProfileController',
-  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, pluginManager) {
+  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, pluginManager, identityService) {
     controllerUtils.redirIfLogged();
 
     $scope.title = 'Import a backup';
@@ -30,8 +30,16 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         if (err && !iden) {
           $scope.error = (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error';
         } else {
-          notification.info('Success', 'Profile imported successfully');
-          $location.path('/');
+          //simulate an angular form
+          var data = {
+            email: {
+              $modelValue: iden.email
+            },
+            password: {
+              $modelValue: iden.password
+            }
+          }
+          identityService.open($scope, data);
         }
       });
     };
