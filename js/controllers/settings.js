@@ -1,12 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $location, controllerUtils, notification) {
+angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, controllerUtils, notification) {
 
 
   controllerUtils.redirIfLogged();
-
-
-
 
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
@@ -102,4 +99,13 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     var hashIndex = window.location.href.indexOf('#!/');
     window.location = window.location.href.substr(0, hashIndex);
   };
+
+
+  $scope.reset = function() {
+    localStorage.removeItem('config');
+    $location.hash('top');
+    $anchorScroll();
+    $scope.message= 'Settings were reset to defaults';
+  };
+
 });
