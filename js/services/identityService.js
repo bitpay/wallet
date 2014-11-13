@@ -33,7 +33,6 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
         failIfExists: true,
       }, function(err, iden) {
-        scope.loading = false;
         if (err || !iden) {
           copay.logger.debug(err);
           if (err && (err.match('EEXISTS') || err.match('BADCREDENTIALS'))) {
@@ -78,7 +77,6 @@ angular.module('copayApp.services')
         walletDefaults: config.wallet,
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
-        scope.loading = false;
         if (err && !iden) {
           if ((err.toString() || '').match('PNOTFOUND')) {
             scope.error = 'Invalid email or password';

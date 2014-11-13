@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       $scope.error('Error', 'Please enter the required fields');
       return;
     }
-    $scope.loading = true;
+    $rootScope.starting = true;
     identityService.create($scope, form);
   }
 

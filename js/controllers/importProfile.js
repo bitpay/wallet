@@ -54,13 +54,13 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     };
 
     $scope.import = function(form) {
-      $scope.loading = true;
 
       if (form.$invalid) {
         $scope.loading = false;
         $scope.error = 'Please enter the required fields';
         return;
       }
+      $rootScope.starting = true;
 
       var backupFile = $scope.file;
       var backupText = form.backupText.$modelValue;
