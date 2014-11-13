@@ -317,17 +317,14 @@ describe('Wallet model', function() {
   });
 
   it('#addressIsOwn', function() {
-    var w = cachedCreateW2();
-    var l = w.getAddressesStr();
-    for (var i = 0; i < l.length; i++)
-      w.addressIsOwn(l[i]).should.equal(true);
+    var wallet = cachedCreateW2();
+    var allAddresses = wallet.getAddressesStr();
+    for (var i = 0; i < allAddresses.length; i++) {
+      wallet.addressIsOwn(allAddresses[i]).should.equal(true);
+    }
 
-    w.addressIsOwn(l[0], {
-      excludeMain: true
-    }).should.equal(false);
-
-    w.addressIsOwn('mmHqhvTVbxgJTnePa7cfweSRjBCy9bQQXJ').should.equal(false);
-    w.addressIsOwn('mgtUfP9sTJ6vPLoBxZLPEccGpcjNVryaCX').should.equal(false);
+    wallet.addressIsOwn('mmHqhvTVbxgJTnePa7cfweSRjBCy9bQQXJ').should.equal(false);
+    wallet.addressIsOwn('mgtUfP9sTJ6vPLoBxZLPEccGpcjNVryaCX').should.equal(false);
   });
 
   it('#create. Signing with derivate keys', function() {
