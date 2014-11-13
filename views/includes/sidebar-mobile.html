@@ -55,10 +55,6 @@
         </div>
         </li>
       </ul>
-      <div class="off-canvas-list" ng-click="toggleWalletSelection()">
-        <a href="#!/createWallet" class="button-setup add-wallet db p20h"
-          title="Create"><i class="m5r fi-plus"></i> {{'Create Wallet' | translate }} </a>
-      </div>
     </div>
     <div class="line-t" ng-show="!walletSelection" ng-click="refresh()">
       <a class="side-bar text-gray right" title="Manual Refresh"><i class="fi-refresh"></i></a>
@@ -87,14 +83,22 @@
         <i class="size-24 m20r {{item.icon}}"></i> {{item.title}}
         <span class="label alert round" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
       </a>
+    </li> 
+    <li>
+      <a href="#!/create" class="db p20h" title="Add new wallet">
+        <i class="size-24 m20r fi-plus"></i> {{'Add new wallet' | translate }} </a>
+    </li>
+    <li>
+    <a href="#!/join" class="db p20h" title="Join an existent wallet">
+      <i class="size-24 m20r fi-torsos-all"></i> {{'Join an existent wallet' | translate }} </a>
+    </li>
+    <li>
+    <a href="#!/import" class="db p20h" title="Import a backup">
+      <i class="size-24 m20r fi-download"></i> {{'Import a backup' | translate }} </a>
     </li>
     <li>
       <a href="#!/profile" class="db p20h" title="Profile">
         <i class="size-24 m20r fi-torso"></i> {{'Profile' | translate }} </a>
-    </li>
-    <li>
-      <a href="#!/createWallet" class="db p20h" title="Create">
-        <i class="size-24 m20r fi-plus"></i> {{'Create Wallet' | translate }} </a>
     </li>
     <li>
       <a href="#!/" class="db p20h" title="Close"

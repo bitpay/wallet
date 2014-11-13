@@ -128,9 +128,13 @@ header .alt-currency {
   border-bottom-left-radius: 3px;
   position: absolute;
   right: 14px;
-  width: 180px;
+  width: 220px;
   list-style-type: none;
   top: 47px;nt 
+}
+
+.head .menu ul li.divider {
+  border-bottom: 1px solid #eee;
 }
 
 .head .menu ul.hover {
