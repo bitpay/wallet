@@ -269,39 +269,15 @@ Insight.prototype.getTransaction = function(txid, cb) {
   });
 };
 
-Insight.prototype.getTransactions = function(addresses, cb) {
+Insight.prototype.getTransactions = function (addresses, cb) {
   preconditions.shouldBeArray(addresses);
   preconditions.shouldBeFunction(cb);
 
-  var self = this;
-  if (!addresses.length) return cb(null, []);
-
-  // Iterator: get a list of transaction ids for an address
-  function getTransactionIds(address, next) {
-    self.request('/api/addr/' + address, function(err, res, body) {
-      if (err || res.statusCode != 200 || !body) return next(err || res);
-      next(null, JSON.parse(body).transactions);
-    });
-  }
-
-  async.map(addresses, getTransactionIds, function then(err, txids) {
-    if (err) return cb(err);
-
-    // txids it's a list of list, let's fix that:
-    var txidsList = txids.reduce(function(a, r) {
-      return r.concat(a);
-    });
-
-    // Remove duplicated txids
-    txidsList = txidsList.filter(function(elem, pos, self) {
-      return self.indexOf(elem) == pos;
-    });
-
-    // Now get the transactions for that list of txIds
-    async.map(txidsList, self.getTransaction.bind(self), function then(err, txs) {
-      if (err) return cb(err);
-      cb(null, txs);
-    });
+  this.requestPost('/api/addrs/txs', {
+    addrs: addresses.join(',')
+  }, function (err, res, txs) {
+    if (err || res.statusCode != 200) return cb(err || res);
+    cb(null, txs);
   });
 };
 
