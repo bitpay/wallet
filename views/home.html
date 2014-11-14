@@ -1,10 +1,10 @@
 <div class="home" ng-controller="HomeController">
 
-  <div data-alert class="loading-screen" ng-show="loading">
+  <div data-alert class="loading-screen" ng-show="$root.starting">
     <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
     <span translate>Accessing your profile...</span>
   </div>
-  <div class="large-4 large-centered medium-6 medium-centered columns" ng-if="!loading && !retreiving">
+  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>

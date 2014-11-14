@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('CreateController',
   function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification, defaults) {
 
     $rootScope.fromSetup = true;
+    $rootScope.starting = false;
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
     $scope.isMobile = !!window.cordova;
