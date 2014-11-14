@@ -11,8 +11,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   }
 
 
-
-
   if ($rootScope.fromEmailConfirmation) {
     $scope.confirmedEmail = true;
     $rootScope.fromEmailConfirmation = false;

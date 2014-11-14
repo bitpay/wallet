@@ -8,12 +8,6 @@
       <h1>{{title|translate}}</h1>
       <form name="settingsForm">
 
-        <p class="text-primary size-14"
-          ng-show="message">
-          <i class="fi-check"></i> 
-          {{message|translate}}
-          </p>
- 
         <fieldset>
           <legend translate>Language</legend>
           <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>

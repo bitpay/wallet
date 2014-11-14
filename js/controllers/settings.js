@@ -103,9 +103,8 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   $scope.reset = function() {
     localStorage.removeItem('config');
-    $location.hash('top');
-    $anchorScroll();
-    $scope.message= 'Settings were reset to defaults';
+    // Go home reloading the application
+    window.location.reload();
   };
 
 });
