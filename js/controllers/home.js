@@ -18,7 +18,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     $rootScope.fromEmailConfirmation = false;
   }
 
-  $scope.retreiving = false;
   Compatibility.check($scope);
 
   $scope.openProfile = function(form) {
@@ -27,7 +26,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
-    $scope.loading = true;
+    $rootScope.starting = true;
     identityService.open($scope, form);
   }
 

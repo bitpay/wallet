@@ -74,7 +74,7 @@
           ng-include="'views/includes/head.html'"
           ng-if="$root.iden"></div>
 
-        <section ng-class="{'main' : $root.iden && $root.iden.listWallets().length>=0}" ng-view></section>
+        <section ng-class="{'main':$root.iden && !$root.starting}" ng-view></section>
 
         <a class="exit-off-canvas"></a>
 
