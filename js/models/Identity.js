@@ -289,8 +289,8 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var w = importFunction(obj, readOpts);
   if (!w) return cb(new Error('Could not decrypt'));
 
-  this._checkVersion(w.version);
-  this.addWallet(w);
+  self._checkVersion(w.version);
+  self.addWallet(w);
   self.bindWallet(w);
   self.storeWallet(w, function(err) {
     if (err) return cb(err);

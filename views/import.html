@@ -1,7 +1,6 @@
 <div class="import" ng-controller="ImportController">
   <div data-alert class="loading-screen" ng-show="loading">
-    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
-    {{ importStatus|translate }}
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> {{ importStatus|translate }}
   </div>
 
   <div ng-show="!loading">
@@ -10,49 +9,42 @@
       <div class="large-12 columns">
         <div class="panel">
           <form name="importForm" ng-submit="import(importForm)" novalidate>
-            <div class="text-warning size-12 m20b"
-              ng-show="error">
-              <i class="fi-x"></i> 
-              {{error|translate}}
-              </div>
-  
- 
+            <div class="text-warning size-12 m20b" ng-show="error">
+              <i class="fi-x"></i> {{error|translate}}
+            </div>
+
+
             <div ng-show="!is_iOS && !backupOldWallet">
-              <legend for="backupFile" class="m10b"> 
-                <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i>
+              <legend for="backupFile" class="m10b">
+                <span translate>Choose backup file from your computer</span>  <i class="fi-laptop"></i>
               </legend>
-              <input type="file" class="form-control" 
-              placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
+              <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
             </div>
 
             <div ng-show="is_iOS && !backupOldWallet">
-              <label for="backupText" class="m10b"> 
-                <span translate>Paste backup plain text code</span> <i class="fi-clipboard"></i>
+              <label for="backupText" class="m10b">
+                <span translate>Paste backup plain text code</span>  <i class="fi-clipboard"></i>
               </label>
-              <textarea class="form-control" 
-                name="backupText" 
-                ng-model="backupText" 
-                rows="5"></textarea>
+              <textarea class="form-control" name="backupText" ng-model="backupText" rows="5"></textarea>
             </div>
 
             <div ng-show="anyWallet && (!backupFile || !backupText)">
-              <label for="backupOldWAllet" class="m10b size-14"> 
-                <span translate>You have old wallets in your localStorage. Choose one to import</span> <i class="fi-bitcoin"></i>
+              <label for="backupOldWAllet" class="m10b size-14">
+                <span translate>You have old wallets in your localStorage. Choose one to import</span>  <i class="fi-bitcoin"></i>
               </label>
-              <select ng-model="backupOldWallet" name="backupOldWallet"
-                ng-options="wallet.name for wallet in oldWallets">
+              <select ng-model="backupOldWallet" name="backupOldWallet" ng-options="wallet.name for wallet in oldWallets">
                 <option value="">-- choose wallet --</option>
               </select>
             </div>
 
 
-            <label for="password" class="m10b"><span translate>Password</span> <small translate>Required</small></label>
-            <input type="password" class="form-control" 
-            placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
+            <label for="password" class="m10b"><span translate>Password</span>  <small translate>Required</small>
+            </label>
+            <input type="password" class="form-control" placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
 
             <div class="line-dashed-h m10b m20t"></div>
 
-            <a class="expand small"  ng-click="hideAdv=!hideAdv">
+            <a class="expand small" ng-click="hideAdv=!hideAdv">
               <i class="fi-widget m3r"></i>
               <span translate ng-hide="!hideAdv">Show</span> 
               <span translate ng-hide="hideAdv">Hide</span> 
@@ -63,15 +55,13 @@
 
             <div ng-hide="hideAdv" class="m10t">
               <label>
-                <input type="checkbox" class="form-control"
-                name="skipPublicKeyRing" ng-model="skipPublicKeyRing"> 
-                <span translate>Skip public keys from peers</span>
+                <input type="checkbox" class="form-control" name="skipPublicKeyRing" ng-model="skipPublicKeyRing">
+                <span translate>Skip public keys</span>
               </label>
 
               <label>
-                <input type="checkbox" class="form-control"
-                name="skipTxProposals" ng-model="skipTxProposals"> 
-                <span translate>Skip transaction proposals from Backup</span>
+                <input type="checkbox" class="form-control" name="skipTxProposals" ng-model="skipTxProposals">
+                <span translate>Skip transaction proposals</span>
               </label>
             </div>
 
