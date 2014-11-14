@@ -844,7 +844,7 @@ table { border-collapse: collapse; text-align: left; width: 100%; border: none;
 
 }
 thead tr{ text-transform: uppercase; border-top: 1px solid #FFFFFF; height: 46px}
-table td, .datagrid table th { padding: 15px 15px; height: 58px} }
+table td, table th { padding: 15px 15px; height: 58px} }
 table thead th {background-color: #F5F5F8; color:#949BAD; font-size: 13px; font-weight: normal; !important} 
 table tbody td { color: #000000; font-size: 14px;border-bottom: 1px solid #F1F1F3; }
 table tbody tr:last-child td { border-bottom: none; }
