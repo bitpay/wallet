@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
         if (err && !iden) {
+          $scope.loading = false;
           $scope.error = (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error';
         } else {
           var firstWallet = iden.getLastFocusedWallet();
@@ -54,14 +55,13 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     };
 
     $scope.import = function(form) {
+      $scope.loading = true;
 
       if (form.$invalid) {
         $scope.loading = false;
         $scope.error = 'Please enter the required fields';
         return;
       }
-      $rootScope.starting = true;
-
       var backupFile = $scope.file;
       var backupText = form.backupText.$modelValue;
       var password = form.password.$modelValue;
