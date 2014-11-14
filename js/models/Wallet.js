@@ -1363,30 +1363,28 @@ Wallet.prototype.getPendingTxProposals = function() {
   var txps = this.getTxProposals();
   var satToUnit = 1 / this.settings.unitToSatoshi;
 
-  _.find(txps, function(txp) {
-    if (txp.isPending) {
-      pendingForUs++;
-      var addresses = {};
-      var outs = JSON.parse(txp.builder.vanilla.outs);
-      outs.forEach(function(o) {
-        if (!self.publicKeyRing.addressToPath[o.Straddress]) {
-          if (!addresses[o.address]) addresses[o.address] = 0;
-          addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
-        };
+  _.each(_.where(txps, 'isPending'), function(txp) {
+    pendingForUs++;
+    var addresses = {};
+    var outs = JSON.parse(txp.builder.vanilla.outs);
+    outs.forEach(function(o) {
+      if (!self.publicKeyRing.addressToPath[o.Straddress]) {
+        if (!addresses[o.address]) addresses[o.address] = 0;
+        addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
+      };
+    });
+    txp.outs = [];
+    _.each(addresses, function(value, address) {
+      txp.outs.push({
+        address: address,
+        value: value * satToUnit
       });
-      txp.outs = [];
-      _.each(addresses, function(value, address) {
-        txp.outs.push({
-          address: address,
-          value: value * satToUnit
-        });
-      });
-      // extra fields
-      txp.fee = txp.builder.feeSat * satToUnit;
-      txp.missingSignatures = txp.builder.build().countInputMissingSignatures(0);
-      txp.actionList = self._getActionList(txp.peerActions);
-      ret.txs.push(txp);
-    }
+    });
+    // extra fields
+    txp.fee = txp.builder.feeSat * satToUnit;
+    txp.missingSignatures = txp.builder.build().countInputMissingSignatures(0);
+    txp.actionList = self._getActionList(txp.peerActions);
+    ret.txs.push(txp);
   });
 
   ret.pendingForUs = pendingForUs;
