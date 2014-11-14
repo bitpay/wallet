@@ -30,16 +30,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         if (err && !iden) {
           $scope.error = (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error';
         } else {
-          //simulate an angular form
-          var data = {
-            email: {
-              $modelValue: iden.email
-            },
-            password: {
-              $modelValue: iden.password
-            }
-          }
-          identityService.open($scope, data);
+          var firstWallet = iden.getLastFocusedWallet();
+          controllerUtils.bindProfile($scope, iden, firstWallet);
         }
       });
     };
