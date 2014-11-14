@@ -36,10 +36,7 @@ angular.module('copayApp.controllers').controller('ImportController',
             $scope.error = 'Could not read wallet. Please check your password';
           } else {
             controllerUtils.installWalletHandlers($scope, wallet);
-            updateStatus('Importing wallet - Scanning for transactions...');
-            wallet.updateIndexes(function(err) {
-              controllerUtils.setFocusedWallet(wallet);
-            });
+            controllerUtils.setFocusedWallet(wallet);
           }
         }
       );
