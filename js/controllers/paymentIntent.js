@@ -5,6 +5,8 @@ var bitcore = require('bitcore');
 angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $modal, $location, controllerUtils) {
 
   $scope.wallets = [];
+  $rootScope.title = 'Payment intent';
+  $rootScope.starting = true;
 
   var wids = _.pluck($rootScope.iden.listWallets(), 'id');
   _.each(wids, function(wid) {
@@ -12,6 +14,7 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
     if (w && w.isReady()) {
 
       $scope.wallets.push(w);
+      $rootScope.starting = false;
       controllerUtils.clearBalanceCache(w);
       controllerUtils.updateBalance(w, function() {
         $rootScope.$digest();
