@@ -352,17 +352,9 @@ a:hover {
   overflow: hidden;
 }
 
-.last-transactions-content {
-  overflow: hidden;
-  padding: 1rem;
-  background: #CED3DB;
-}
-
 table.last-transactions-content {
-  padding: 0;
-  border: 0;
   background-color: #F8F8FB;
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
 .last-transactions-content .box-status {
@@ -836,22 +828,42 @@ label small.has-error {
   font-size: 11px;
 }
 
-table { border-collapse: collapse; text-align: left; width: 100%; border: none; 
+table { 
+  border-collapse: collapse; text-align: left; width: 100%; border: none; 
   box-shadow: -2px 1px 9px 1px #DDDDDD;
--webkit-box-shadow: -2px 1px 5px 1px #DDDDDD;
--moz-box-shadow: -2px 1px 5px 1px #DDDDDD;
--o-box-shadow: -2px 1px 5px 1px #DDDDDD;
-
+  -webkit-box-shadow: -2px 1px 5px 1px #DDDDDD;
+  -moz-box-shadow: -2px 1px 5px 1px #DDDDDD;
+  -o-box-shadow: -2px 1px 5px 1px #DDDDDD;
 }
-thead tr{ text-transform: uppercase; border-top: 1px solid #FFFFFF; height: 46px}
-table td, table th { padding: 15px 15px; height: 58px} }
-table thead th {background-color: #F5F5F8; color:#949BAD; font-size: 13px; font-weight: normal; !important} 
-table tbody td { color: #000000; font-size: 14px;border-bottom: 1px solid #F1F1F3; }
-table tbody tr:last-child td { border-bottom: none; }
 
+thead tr{ 
+  text-transform: uppercase; 
+  border-top: 1px solid #FFFFFF; 
+  height: 46px
+}
 
-table tr.active {
-  background: #CBECE6;
+table tr td, table tr th { 
+  padding: 15px; 
+}
+
+table.last-transactions-content tr td, 
+table.last-transactions-content tr th { 
+  padding: 5px; 
+}
+
+table tfoot tr td, table tfoot tr th, table thead tr td, table thead tr th {
+  background-color: #F5F5F8; 
+  color:#949BAD; 
+  font-weight: normal
+}
+
+table tbody td {
+  color: #666; 
+  border-bottom: 1px solid #F1F1F3; 
+}
+
+table tbody tr:last-child td { 
+  border-bottom: none; 
 }
 
 table tr.deleting {
@@ -1247,6 +1259,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
 .text-warning {color: #CA5649;}
+.text-success {color: #1ABC9C;}
 
 a.text-gray:hover {color: #2C3E50;}
 a.text-black:hover {color: #213140;}
