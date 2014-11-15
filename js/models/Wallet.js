@@ -2693,7 +2693,7 @@ Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
 Wallet.prototype.toggleAddressBookEntry = function(key) {
   if (!key) throw new Error('Key is required');
   this.addressBook[key].hidden = !this.addressBook[key].hidden;
-  this.emitAndKeepAlive('addressBookUpdated');
+  this.emitAndKeepAlive('addressBookUpdated', true);
 };
 
 /**
