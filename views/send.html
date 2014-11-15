@@ -194,7 +194,7 @@
               <th translate>Address</th>
               <th ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
               <th class="hide-for-small-only" translate>Date</th>
-              <th class="hide-for-small-only">&nbsp;</th>
+              <th class="hide-for-small-only">Enable</th>
             </tr>
           </thead>
           <tbody>
@@ -205,8 +205,12 @@
             <td class="size-12">{{addr}} <span class="btn-copy" clip-copy="addr"></span></td>
             <td ng-show="$root.wallet.isShared()" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
             <td class="hide-for-small-only"><time>{{info.createdTs | amCalendar}}</time></td>
-            <td class="hide-for-small-only" width="5"><a ng-click="toggleAddressBookEntry(addr)">{{info.hidden ?
-                'Enable' : 'Disable'}}</a></td>
+            <td class="hide-for-small-only">
+              <a ng-click="toggleAddressBookEntry(addr)" title="{{ info.hidden ? 'Enable' : 'Disable'}} address">
+                <i class="fi-checkbox" 
+                  ng-class="{'text-success':!info.hidden, 'text-gray':info.hidden}"></i>
+              </a>
+            </td>
           </tr>
           </tbody>
         </table>
