@@ -1,6 +1,11 @@
 
 <div class="home" ng-controller="ImportProfileController">
 
+  <div data-alert class="loading-screen" ng-show="loading">
+    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> {{ importStatus|translate }}
+  </div>
+
+  <div ng-show="!loading">
   <div class="large-4 large-centered medium-6 medium-centered columns">
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
@@ -19,7 +24,7 @@
  
             <div ng-show="!is_iOS">
               <legend for="backupFile" class="m10b"> 
-                <span translate>Choose backup file from your computer</span> <i class="fi-laptop"></i>
+                <span translate>Choose backup file</span> 
               </legend>
               <input type="file" class="form-control" 
                 placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
@@ -56,6 +61,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </div>
 
