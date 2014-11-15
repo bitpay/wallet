@@ -534,6 +534,11 @@ a.button-setup {
   margin: 0.7rem 0;
 }
 
+.line-white {
+  border-top: 1px solid #fff;
+  margin: 0.7rem 0;
+}
+
 .line-t {
   border-top: 1px solid #F8F8FB;
   padding-top: 0.5rem;
