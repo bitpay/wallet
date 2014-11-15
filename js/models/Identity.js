@@ -275,6 +275,9 @@ Identity.prototype.close = function(cb) {
   }, cb);
 };
 
+
+// TODO: Add feedback function
+//
 Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var self = this;
   preconditions.checkArgument(cb);
@@ -288,17 +291,21 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
 
   var w = importFunction(obj, readOpts);
   if (!w) return cb(new Error('Could not decrypt'));
+  log.debug('Wallet decryped:' + w.getName());
 
-  this._checkVersion(w.version);
-  this.addWallet(w);
-  self.bindWallet(w);
-  self.storeWallet(w, function(err) {
-    if (err) return cb(err);
-
-    self.store({
-      noWallets: true
-    }, function(err) {
-      return cb(err, w);
+  self._checkVersion(w.version);
+  log.debug('Updating Indexes for wallet:' + w.getName());
+  w.updateIndexes(function(err) {
+    log.debug('Adding wallet to profile:' + w.getName());
+    self.addWallet(w);
+    self.bindWallet(w);
+    self.storeWallet(w, function(err) {
+      if (err) return cb(err);
+      self.store({
+        noWallets: true
+      }, function(err) {
+        return cb(err, w);
+      });
     });
   });
 };
@@ -348,11 +355,16 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   opts.email = email;
   opts.password = password;
 
+  if (!email)
+    return cb('BADSTR');
+
   var iden = new Identity(opts);
 
   json.wallets = json.wallets || {};
 
   async.map(json.wallets, function(walletData, callback) {
+    if (!walletData) 
+      return callback();
 
     iden.importWalletFromObj(walletData, opts, function(err, w) {
       if (err) return callback(err);

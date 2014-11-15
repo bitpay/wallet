@@ -2487,7 +2487,8 @@ Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos
 };
 
 /**
- * @desc Updates all the indexes for the current publicKeyRing
+ * @desc Updates all the indexes for the current publicKeyRing. This scans
+ * the blockchain looking for transactions on derived addresses. 
  *
  * Triggers a wallet {@link Wallet#store} call
  * @param {Function} callback - called when all indexes have been updated. Receives an error, if any, as first argument
