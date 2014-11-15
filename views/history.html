@@ -8,10 +8,8 @@
     <div ng-if="!blockchain_txs[0].txid && !loading">
       <em><strong translate>No transactions yet.</strong></em>
     </div>
-    <div 
-      class="row"
-      ng-if="blockchain_txs[0].txid">
-        <div class="large-12 columns"></div>
+    <div class="row" ng-if="blockchain_txs[0].txid">
+      <div class="large-12 columns">
         <div class="panel" 
           ng-repeat="btx in blockchain_txs | orderBy:'-ts'" ng-click="btx.showDetails = !btx.showDetails">
           <div class="row size-14">
@@ -39,7 +37,7 @@
                 <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
               </div>
             </div>
-            
+
             <div class="large-1 medium-1 small-2 columns text-center">
               <div ng-class="{
                 'text-primary' : btx.action == 'received',
@@ -93,9 +91,9 @@
               </tbody>
             </table>
             <div class="line"></div>
-            <div class="size-12 text-gray">
+            <div class="size-12 text-gray text-right">
+              <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank"> More details <i class="icon-arrow-right2 vm"></i></a>
               <span class="left hide-for-small-only">Transaction ID: {{btx.txid}} </span>
-              <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank" class="right"> More details <i class="icon-arrow-right2 vm"></i> </a>
             </div>
           </div>
         </div>
@@ -115,5 +113,6 @@
         <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
       </div>
     </div>
+  </div>
   </div>
 </div>
