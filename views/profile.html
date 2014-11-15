@@ -42,7 +42,9 @@
   <div class="row" ng-init="getWallets()">
     <div class="large-12 columns">
       <h2>Manage wallets</h2>
-      <table width="100%" role="grid">
+
+
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -54,36 +56,37 @@
         </thead>
         <tbody>
           <tr 
-              data-ng-repeat="item in wallets | orderBy:'name'" 
-              ng-init="isReady = item.isReady(); 
-              networkName = item.getNetworkName()"
-              ng-class="{'deleting':loading==item.id}">
+                data-ng-repeat="item in wallets | orderBy:'name'" 
+                ng-init="isReady = item.isReady(); 
+                networkName = item.getNetworkName()"
+                ng-class="{'deleting':loading==item.id}">
             <td>{{item.name || item.id }}</td>
-            <td width="120">{{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}</td>
-            <td width="200">{{isReady ? 'Complete' : 'Waiting for copayers...'}}</td>
-            <td width="200">
+            <td>{{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}</td>
+            <td>{{isReady ? 'Complete' : 'Waiting for copayers...'}}</td>
+            <td>
               <span ng-if="!isReady">-</span>
               <span ng-if="isReady">
-                {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
+                  {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
               </span>
             </td>
-            <td width="90" class="text-center">
+            <td class="text-center">
 
               <div ng-show="loading != item.id">
                 <a title="Download Backup" class="text-gray" ng-click="downloadWalletBackup(item)"
-                  ng-show="!isSafari"><i class="fi-download size-18 m10r"></i></a>
+                    ng-show="!isSafari"><i class="fi-download size-18 m10r"></i></a>
                 <a title="View Backup" ng-click="viewWalletBackup(item)"
-                  ng-show="isSafari"><i class="fi-eye"></i></a> 
-                &nbsp; &nbsp;
+                    ng-show="isSafari"><i class="fi-eye"></i></a> 
+                  &nbsp; &nbsp;
                 <a title="Delete Wallet" ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
-                  ng-really-click="deleteWallet(item)"
-                  ng-show="loading != item.id"><i class="fi-trash text-gray size-18"></i></a>
+                    ng-really-click="deleteWallet(item)"
+                    ng-show="loading != item.id"><i class="fi-trash text-gray size-18"></i></a>
               </div>
-              <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
     </div>
   </div> 
 </div>
