@@ -43,7 +43,6 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
     $scope.wallets = items;
     $scope.ok = function(selectedItem) {
       controllerUtils.setPaymentWallet(selectedItem);
-console.log('[paymentIntent.js:45]',selectedItem); //TODO
       $modalInstance.close();
     };
 
