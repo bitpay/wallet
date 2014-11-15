@@ -70,7 +70,7 @@
             </div>
 
           </div>
-          <div ng-show="btx.showDetails">
+          <div ng-show="btx.showDetails" class="m10t">
             <table class="last-transactions-content" ng-if="btx.actionList.0">
               <tbody>
               <tr ng-repeat="c in btx.actionList">
@@ -99,17 +99,20 @@
             </div>
           </div>
         </div>
-        <div ng-if="generating" class="right size-12">
-          <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
-          <span translate>Generating file...</span>
+        <div class="line-white"></div>
+        <div class="right size-12">
+          <div ng-if="generating">
+            <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
+            <span translate>Generating file...</span>
+          </div>
+          <div ng-if="!generating">
+            <a class="text-gray" href="#!/history" ng-click="downloadHistory();">
+              <i class="fi-page-export-csv"></i> 
+              <span translate>Download CSV file</span>
+            </a>
+          </div>
         </div>
-        <div ng-if="!generating" class="right size-12">
-          <a class="text-gray" href="#!/history" ng-click="downloadHistory();">
-            <i class="fi-download"></i> 
-            <span translate>Download</span>
-          </a>
-        </div>
-          <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
+        <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
       </div>
     </div>
   </div>

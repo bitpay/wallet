@@ -24,7 +24,7 @@
 <table class="last-transactions-content">
   <tbody>
   <tr ng-repeat="c in tx.actionList">
-    <td class="copayer-name" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+    <td width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
     </td>
     <td>
       <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
