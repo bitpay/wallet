@@ -363,7 +363,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   json.wallets = json.wallets || {};
 
   async.map(json.wallets, function(walletData, callback) {
-    if (!walletData) 
+    if (!walletData)
       return callback();
 
     iden.importWalletFromObj(walletData, opts, function(err, w) {
