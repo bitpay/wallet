@@ -1035,8 +1035,12 @@ Wallet.fromObj = function(o, readOpts) {
   // TODO Why moving everything to opts. This needs refactoring.
   //
   // clone opts
-  var opts = JSON.parse(JSON.stringify(o.opts));
 
+  if (!o.opts) {
+    return null;
+  }
+
+  var opts = JSON.parse(JSON.stringify(o.opts));
   opts.addressBook = o.addressBook;
   opts.settings = o.settings;
 
