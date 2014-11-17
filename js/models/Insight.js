@@ -269,11 +269,14 @@ Insight.prototype.getTransaction = function(txid, cb) {
   });
 };
 
-Insight.prototype.getTransactions = function (addresses, cb) {
+Insight.prototype.getTransactions = function (addresses, from, to, cb) {
   preconditions.shouldBeArray(addresses);
   preconditions.shouldBeFunction(cb);
 
-  this.requestPost('/api/addrs/txs', {
+  var qs = '?from=' + (from || 0);
+  if (to) qs += '&to=' + to;
+
+  this.requestPost('/api/addrs/txs' + qs, {
     addrs: addresses.join(',')
   }, function (err, res, txs) {
     if (err || res.statusCode != 200) return cb(err || res);

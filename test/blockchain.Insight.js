@@ -230,19 +230,19 @@ describe('Insight model', function() {
     var blockchain = new Insight(FAKE_OPTS);
 
     sinon.stub(blockchain, "requestPost", function(url, data, cb) {
-      url.should.be.equal('/api/addrs/txs');
+      url.should.be.equal('/api/addrs/txs?from=0');
       data.addrs.should.be.equal('2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM,2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb');
       setTimeout(function() {
         var res = {statusCode: 200};
-        var body = [1, 2, 3];
+        var body = { totalItems: 3, items: [1, 2, 3] };
         cb(null, res, body);
       }, 0);
     });
 
     var addresses = ['2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM', '2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb'];
-    blockchain.getTransactions(addresses, function(err, txs) {
+    blockchain.getTransactions(addresses, null, null, function(err, res) {
       chai.expect(err).to.be.null;
-      txs.length.should.be.equal(3);
+      res.items.length.should.be.equal(3);
       done();
     });
   });
