@@ -40,9 +40,10 @@ angular.module('copayApp.services')
           } else {
             scope.error = 'Unknown error when connecting Insight Server';
           }
+          $rootScope.starting = false;
           $timeout(function() {
             $rootScope.$digest()
-          }, 1);
+          }, 1);          
           return;
         }
         var walletOptions = {
@@ -57,6 +58,10 @@ angular.module('copayApp.services')
           if (err || !wallet) {
             copay.logger.debug(err);
             scope.error = 'Could not create default wallet';
+            $rootScope.starting = false;
+            $timeout(function() {
+              $rootScope.$digest()
+            }, 1);
             return;
           }
           controllerUtils.bindProfile(scope, iden, wallet.id);
@@ -82,9 +87,10 @@ angular.module('copayApp.services')
           } else {
             scope.error = 'Unknown error';
           }
+          $rootScope.starting = false;
           $timeout(function() {
             $rootScope.$digest()
-          }, 1);
+          }, 1);          
         } else {
           var firstWallet = iden.getLastFocusedWallet();
           controllerUtils.bindProfile(scope, iden, firstWallet);

@@ -6,31 +6,29 @@
   </div>
 
   <div ng-show="!loading">
-  <div class="large-4 large-centered medium-6 medium-centered columns">
-    <div class="logo-setup">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
-      <div ng-include="'views/includes/version.html'"></div>
-    </div>
-    <div class="box-setup">
-      <h1><span translate>Import Profile<span></h1>
-
+    <div class="large-4 large-centered medium-6 medium-centered columns">
+      <div class="logo-setup">
+        <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+        <div ng-include="'views/includes/version.html'"></div>
+      </div>
+      <div class="box-setup">
+        <h1 translate>Import Profile</h1>
         <form name="importProfileForm" ng-submit="import(importProfileForm)" novalidate>
-            <p class="text-warning size-12"
-              ng-show="error">
-              <i class="fi-x"></i> 
-              {{error|translate}}
-              </p>
-  
- 
-            <div ng-show="!is_iOS">
-              <legend for="backupFile" class="m10b"> 
-                <span translate>Choose backup file</span> 
-              </legend>
-              <input type="file" class="form-control" 
-                placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
-            </div>
+          <p class="text-warning size-12"
+            ng-show="error">
+            <i class="fi-x"></i> 
+            {{error|translate}}
+          </p>
 
-            <div ng-show="is_iOS">
+          <div ng-show="!is_iOS">
+            <legend for="backupFile" class="m10b"> 
+              <span translate>Choose backup file</span> 
+            </legend>
+            <input type="file" class="form-control" 
+            placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
+          </div>
+
+          <div ng-show="is_iOS">
             <label for="backupText" class="m10b"> 
               <span translate>Paste backup plain text code</span> <i class="fi-clipboard"></i>
             </label>
@@ -38,38 +36,25 @@
               name="backupText" 
               ng-model="backupText" 
               rows="5"></textarea>
-            </div>
-
-
-            <label for="password" class="m10b"><span translate>Password</span> <small translate>Required</small></label>
-            <input type="password" class="form-control" 
-            placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
-
-          <div class="text-right m20t">
-            <a class="back-button text-white m20r" href="#!/">&laquo; <span translate>Back</span></a>
-            <button translate type="submit" class="button primary m0" ng-disabled="importForm.$invalid">
-              Import backup
-            </button>
           </div>
+
+          <input type="password" class="form-control" 
+          placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
+
+          <button translate type="submit" 
+            class="button primary radius expand m0" 
+            ng-disabled="importProfileForm.$invalid || loading">
+            Import backup
+          </button>
         </form>
-      <div class="box-setup-footer">
-        <div class="right m10t">
+        <div class="box-setup-footer">
           <a class="text-gray" href="#!/">
-            <i class="fi-arrow"></i> 
+            <i class="fi-arrow-left"></i> 
             <span translate>Back</span>
           </a>
         </div>
       </div>
     </div>
   </div>
-  </div>
 </div>
-
-
-
-
-
-
-
-
 
