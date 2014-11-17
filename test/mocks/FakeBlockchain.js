@@ -10,8 +10,8 @@ FakeBlockchain.prototype.getTransaction = function(txid, cb) {
   return cb(null, {txid: txid});
 };
 
-FakeBlockchain.prototype.getTransactions = function(addresses, cb) {
-  cb(null, []);
+FakeBlockchain.prototype.getTransactions = function(addresses, from, to, cb) {
+  cb(null, { totalItems: 0, items: [] });
 };
 
 FakeBlockchain.prototype.subscribe = function() {

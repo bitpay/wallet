@@ -3029,38 +3029,39 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
     }
   };
 
-  function paginate(list, currentPage, itemsPerPage) {
-    var res = {
-      itemsPerPage: itemsPerPage || list.length,
-      currentPage: currentPage || 1,
-      nbItems: list.length,
+  function paginate(res, currentPage, itemsPerPage) {
+    if (!res) {
+      res = {
+        totalItems: 0,
+        items: [],
+      };
     };
-    res.nbPages = res.itemsPerPage != 0 ? Math.ceil(res.nbItems / res.itemsPerPage) : 1;
 
-    var from = (res.currentPage - 1) * res.itemsPerPage;
-    var to = Math.min(from + res.itemsPerPage, res.nbItems);
-    res.items = list.slice(from, to);
-
-    return res;
+    var r = {
+      itemsPerPage: itemsPerPage || res.totalItems,
+      currentPage: currentPage || 1,
+      nbItems: res.totalItems,
+      items: res.items,
+    };
+    r.nbPages = r.itemsPerPage != 0 ? Math.ceil(r.nbItems / r.itemsPerPage) : 1;
+    return r;
   };
 
   if (addresses.length > 0) {
     var addressesStr = _.pluck(addresses, 'addressStr');
-    self.blockchain.getTransactions(addressesStr, function(err, txs) {
+    var from = (opts.currentPage - 1) * opts.itemsPerPage;
+    var to = opts.currentPage * opts.itemsPerPage;
+    self.blockchain.getTransactions(addressesStr, from, to, function(err, res) {
       if (err) return cb(err);
 
-      var history = _.map(txs, function(tx) {
+      _.each(res.items, function(tx) {
         decorateTx(tx);
-        return tx;
-      });
-      history.sort(function(a, b) {
-        return (b.sentTs || b.minedTs) - (a.sentTs || a.minedTs);
       });
 
-      return cb(null, paginate(history, opts.currentPage, opts.itemsPerPage));
+      return cb(null, paginate(res, opts.currentPage, opts.itemsPerPage));
     });
   } else {
-    return paginate([], opts.currentPage, opts.ItemsPerPage);
+    return cb(null, paginate(null, opts.currentPage, opts.itemsPerPage));
   }
 };
 
