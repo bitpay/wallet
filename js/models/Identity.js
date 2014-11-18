@@ -299,11 +299,12 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
     log.debug('Adding wallet to profile:' + w.getName());
     self.addWallet(w);
     self.bindWallet(w);
+
+    var writeOpts = _.extend({ noWallets: true }, opts);
+
     self.storeWallet(w, function(err) {
       if (err) return cb(err);
-      self.store({
-        noWallets: true
-      }, function(err) {
+      self.store(writeOpts, function(err) {
         return cb(err, w);
       });
     });
@@ -327,7 +328,6 @@ Identity.importFromEncryptedFullJson = function(ejson, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
 
   var str = crypto.decrypt(password, ejson);
-
   if (!str) {
     // 0.7.3 broken KDF
     log.debug('Trying legacy encryption...');
@@ -360,7 +360,14 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
 
   var iden = new Identity(opts);
 
+  opts.failIfExists = true;
+
   json.wallets = json.wallets || {};
+
+  iden.store(opts, function(err) {
+    console.log('Error importing existing profile',err);
+      return cb(err, iden);
+  });
 
   async.map(json.wallets, function(walletData, callback) {
     if (!walletData)
@@ -374,7 +381,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   }, function(err, results) {
     if (err) return cb(err);
 
-    iden.store(null, function(err) {
+    iden.store(opts, function(err) {
       return cb(err, iden);
     });
   });
