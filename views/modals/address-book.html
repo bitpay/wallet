@@ -1,12 +1,17 @@
 <h2 translate>Address Book</h2>
 <form class="m0" name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
-  <label for="newaddress"><span translate>Address</span>
+  <label for="newaddress" class="left"><span translate>Address</span>
     <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
-    <small translate class="is-valid" ng-show="!addressBookForm.newaddress.$invalid && newaddress">Valid</small>
-    <small translate class="has-error" ng-show="addressBookForm.newaddress.$invalid && newaddress">Not valid</small>
-    <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
-    placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
   </label>
+  <span translate class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+    <span class="icon-input"><i class="fi-x"></i></span>
+    Not valid
+  </span>
+  <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
+
+  <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
+    placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
+
   <label for="newlabel"><span translate>Label</span>
     <small translate ng-hide="!addressBookForm.newlabel.$pristine || newlabel">Required</small>
     <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
