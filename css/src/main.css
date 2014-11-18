@@ -936,6 +936,12 @@ input[type='submit']
 input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
   color: #7A8C9E;
   margin-bottom: 1.3rem;
+  height: 40px;
+  border-radius: 2px;
+  background: #F2F5F8;
+  -moz-box-shadow:    inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  box-shadow:         inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  border: none;
 }
 
 button.secondary, 
@@ -1168,6 +1174,28 @@ button.gray:focus,
 
 .fi-trash.text-gray:hover {
   color: #CA5649;
+}
+
+.postfix.button, .prefix.button {
+  position: absolute;
+  width: 38px;
+  height: 28px;
+  right: 7px;
+  top: 29px;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  line-height: 1.7rem;
+  border-radius: 2px;
+}
+
+label.postfix, span.postfix {
+  height: 40px;
+  border: none;
+  background-color: #DFE5EB;
+  font-weight: 700;
+  font-size: 10px;
+  color: #7A8C9E;
+  text-transform: uppercase;
 }
 
 .photo-container {
