@@ -27,9 +27,18 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         walletDefaults: config.wallet,
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
-        if (err && !iden) {
+        if (err) {
+        // if (err && !iden) {
           $scope.loading = false;
-          $scope.error = (err.toString() || '').match('BADSTR') ? 'Bad password or corrupt profile file' : 'Unknown error';
+           
+          if ((err.toString() || '').match('BADSTR')) {
+            $scope.error ='Bad password or corrupt profile file';
+          } else if ((err.toString() || '').match('EEXISTS')) {
+            $scope.error = 'Profile already exists';
+          } else {
+            $scope.error = 'Unknown error';
+          }
+        
         } else {
           var firstWallet = iden.getLastFocusedWallet();
           controllerUtils.bindProfile($scope, iden, firstWallet);
