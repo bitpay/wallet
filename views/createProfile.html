@@ -10,45 +10,49 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div> 
     <div class="box-setup">
-      <h1 translate>Create Profile</h1>
+      <h3 class="text-center" translate>Create Profile</h3>
+      <div class="box-notification" ng-show="error">
+        <div class="box-icon error">
+          <i class="fi-x size-24"></i>
+        </div> 
+        <span class="text-warning size-14">
+          {{error|translate}}
+        </span>
+      </div>
       <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
         <div class="row collapse">
           <div class="small-12 columns">
+            <label class="left" for="insightLivenet">Email</label>
+            <span translate class="has-error right size-12" ng-show="profileForm.email.$invalid &&
+              !profileForm.email.$pristine || error">
+              <span class="icon-input"><i class="fi-x"></i></span>
+              Not valid
+            </span>
+            <span class="icon-input right" ng-show="!profileForm.email.$invalid &&
+              !profileForm.email.$pristine || error"><i class="fi-check"></i></span>
             <input type="email" ng-model="email" class="form-control fi-email"
             name="email" placeholder="Email" required>
-            <small class="icon-input" ng-show="!profileForm.email.$invalid &&
-              !profileForm.email.$pristine && !error"><i class="fi-check"></i></small>
-            <small class="icon-input" ng-show="profileForm.email.$invalid &&
-              !profileForm.email.$pristine || error"><i class="fi-x"></i></small>
           </div>
-          <p class="text-warning size-12"
-          ng-show="error">
-          <i class="fi-x"></i> 
-          {{error|translate}}
-          </p>
  
         </div>
+        <label class="left" for="insightLivenet">Password</label>
         <input id="password" type="password" ng-model="$parent.password"
         class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
         tooltip-html-unsafe="Password strength: <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="right">
 
         <div class="pr">
+          <label class="left" for="insightLivenet">Confirm Password</label>
+          <span translate class="has-error right size-12" ng-show="profileForm.repeatpassword.$dirty &&
+            profileForm.repeatpassword.$invalid">
+            <span class="icon-input"><i class="fi-x"></i></span>
+            {{'Passwords must match'|translate}}
+          </span>
+          <span class="icon-input right" ng-show="profileForm.repeatpassword.$dirty &&
+            !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></span>
           <input type="password" ng-model="repeatpassword"
           class="form-control" name="repeatpassword" 
           placeholder="{{'Repeat password'|translate}}"
-          match="password" required >
-          <small class="icon-input"
-            ng-show="profileForm.repeatpassword.$dirty &&
-            !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></small>
-          <small class="icon-input"
-            ng-show="profileForm.repeatpassword.$dirty &&
-            profileForm.repeatpassword.$invalid"><i class="fi-x"></i></small>
-          <p class="text-warning size-12"
-          ng-show="profileForm.repeatpassword.$dirty &&
-          profileForm.repeatpassword.$invalid">
-          <i class="fi-x"></i> 
-          {{'Passwords must match'|translate}}
-          </p>
+          match="password" required >  
         </div>
         <button translate type="submit" class="button primary radius expand m0"
           ng-disabled="profileForm.$invalid || loading">
