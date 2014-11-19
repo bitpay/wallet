@@ -40,7 +40,7 @@
               <small class="icon-input right" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
 
               <div class="pr">
-                <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
+                <input class="columns" type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
                 placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
                 <div ng-hide="showScanner || disableScanner">
                   <button class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></button>
@@ -49,6 +49,7 @@
                   <button translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></button>
                 </div>
               </div>
+
             </div>
             <div id="scanner" ng-if="showScanner">
               <div class="text-centered">
