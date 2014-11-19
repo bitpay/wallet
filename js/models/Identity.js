@@ -299,11 +299,14 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
     log.debug('Adding wallet to profile:' + w.getName());
     self.addWallet(w);
     self.bindWallet(w);
+
+    var writeOpts = _.extend({
+      noWallets: true
+    }, opts);
+
     self.storeWallet(w, function(err) {
       if (err) return cb(err);
-      self.store({
-        noWallets: true
-      }, function(err) {
+      self.store(writeOpts, function(err) {
         return cb(err, w);
       });
     });
@@ -327,7 +330,6 @@ Identity.importFromEncryptedFullJson = function(ejson, password, opts, cb) {
   var crypto = opts.cryptoUtil || cryptoUtil;
 
   var str = crypto.decrypt(password, ejson);
-
   if (!str) {
     // 0.7.3 broken KDF
     log.debug('Trying legacy encryption...');
@@ -360,24 +362,35 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
 
   var iden = new Identity(opts);
 
+  opts.failIfExists = true;
+
   json.wallets = json.wallets || {};
 
-  async.map(json.wallets, function(walletData, callback) {
-    if (!walletData)
-      return callback();
+  iden.store(opts, function(err) {
+    if (err) return cb(err); //profile already exists
 
-    iden.importWalletFromObj(walletData, opts, function(err, w) {
-      if (err) return callback(err);
-      log.debug('Wallet ' + w.getId() + ' imported');
-      callback();
-    });
-  }, function(err, results) {
-    if (err) return cb(err);
+    opts.failIfExists = false;
+    async.map(json.wallets, function(walletData, callback) {
 
-    iden.store(null, function(err) {
-      return cb(err, iden);
+      if (!walletData)
+        return callback();
+
+      iden.importWalletFromObj(walletData, opts, function(err, w) {
+        if (err) return callback(err);
+        log.debug('Wallet ' + w.getId() + ' imported');
+        callback();
+      });
+    }, function(err, results) {
+      if (err) return cb(err);
+
+      iden.store(opts, function(err) {
+        return cb(err, iden);
+      });
     });
+
   });
+
+
 };
 
 Identity.prototype.bindWallet = function(w) {
