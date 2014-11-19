@@ -29,7 +29,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
 
     $scope.downloadHistory = function() {
-
       if (window.cordova) {
         log.info('Not available on mobile');
         return;
@@ -41,18 +40,25 @@ angular.module('copayApp.controllers').controller('HistoryController',
       w.getTransactionHistory(function(err, res) {
         if (err) throw err;
 
-        if (!res) {
-          return;
-        }
+        if (!res) return;
 
         var unit = w.settings.unitName;
         var data = res.items;
         var filename = "copay_history.csv";
         var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment\n";
+        csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment";
+
+        if (w.isShared()) {
+          csvContent += ",Signers\n";
+        } else {
+          csvContent += "\n";
+        }
 
         data.forEach(function(it, index) {
-          var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + it.addressTo + ',' + formatString(it.comment);
+          var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
+          if (it.actionList) {
+            dataString += ',' + formatSigners(it.actionList);
+          }
           csvContent += index < data.length ? dataString + "\n" : dataString;
         });
 
@@ -91,9 +97,19 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
           return str;
         }
-      });
 
+        function formatSigners(item) {
+          if (!item) return '';
+          var str = '';
+          item.forEach(function(it, index) {
+            str += index == 0 ? w.publicKeyRing.nicknameForCopayer(it.cId) : '|' + w.publicKeyRing.nicknameForCopayer(it.cId);
+          });
+          return str;
+        }
+
+      })
     };
+
 
 
 
