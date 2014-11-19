@@ -1,8 +1,15 @@
 <div class="join" ng-controller="JoinController">
-  <div data-alert class="loading-screen" ng-show="loading">
-    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i>
-    <span translate>Connecting to Insight Wallet Server...</span> 
-  </div>
+  <div class="loading-screen" ng-show="loading">
+      <div class="spinner">
+        <div class="contener_general">
+            <div class="contener_mixte"><div class="ballcolor ball_1">&nbsp;</div></div>
+            <div class="contener_mixte"><div class="ballcolor ball_2">&nbsp;</div></div>
+            <div class="contener_mixte"><div class="ballcolor ball_3">&nbsp;</div></div>
+            <div class="contener_mixte"><div class="ballcolor ball_4">&nbsp;</div></div>
+        </div>
+        <span class="text-gray size-12" translate>Connecting to Insight Wallet Server...</span>
+      </div>
+    </div>
 
   <div ng-show="!loading">
     <h1 class="hide-for-large-up">{{$root.title}}</h1>

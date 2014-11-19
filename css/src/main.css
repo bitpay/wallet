@@ -1367,18 +1367,6 @@ a.text-warning:hover {color: #FD7262;}
   background-color: #1ABC9C;
 }
 
-.loading-screen {
-  text-align: center;
-  background-color: #1ABC9C;
-  width: 100%;
-  margin-top: 15%;
-}
-
-.loading-screen .spinner {
-  vertical-align: middle;
-  margin-right: 15px;
-}
-
 .box-setup .panel {
   background-color: #2C3E50;
   padding: 1rem;
@@ -1538,3 +1526,60 @@ a.text-warning:hover {color: #FD7262;}
   color: #FFFFFF; 
 }
 
+/*///////////////////////// LOADING /////////////////////////*/
+.contener_mixte {
+  width:44px; height:44px; position:absolute;
+}
+
+.ballcolor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.contener_general {
+  width:44px; height:44px;
+  margin: 20px auto 20px;
+}
+
+.ball_1, .ball_2, .ball_3, .ball_4 {
+  position: absolute;
+}
+
+.ball_1 {
+  background-color:#3498DB;
+  top:0; left:0;
+}
+
+.ball_2 {
+  background-color:#C0392A;
+  top:0; left:24px;
+}
+
+.ball_3 {
+  background-color:#00a096;
+  top:24px; left:0;
+}
+
+.ball_4 {
+  background-color:#2C3E50;
+  top:24px; left:24px;
+}
+
+.fond{position:absolute;padding-top:85px;top:0;left:0; right:0;bottom:0;}
+
+.loading-screen {
+  background-color: #F2F5F8;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+}
+
+.loading-screen .spinner {
+  margin-top: 20%;
+  width: 100%;
+  text-align: center;
+}

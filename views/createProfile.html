@@ -1,7 +1,15 @@
 <div class="createProfile" ng-controller="CreateProfileController">
+
   <div data-alert class="loading-screen" ng-show="loading">
-    <i class="size-60 fi-bitcoin-circle icon-rotate spinner"></i> 
-    <span translate>Creating profile...</span>
+    <div class="spinner">
+      <div class="contener_general">
+          <div class="contener_mixte"><div class="ballcolor ball_1">&nbsp;</div></div>
+          <div class="contener_mixte"><div class="ballcolor ball_2">&nbsp;</div></div>
+          <div class="contener_mixte"><div class="ballcolor ball_3">&nbsp;</div></div>
+          <div class="contener_mixte"><div class="ballcolor ball_4">&nbsp;</div></div>
+      </div>
+      <span class="text-gray size-12" translate>Creating profile...</span>
+    </div>
   </div>
 
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading">
