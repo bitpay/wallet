@@ -300,7 +300,9 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
     self.addWallet(w);
     self.bindWallet(w);
 
-    var writeOpts = _.extend({ noWallets: true }, opts);
+    var writeOpts = _.extend({
+      noWallets: true
+    }, opts);
 
     self.storeWallet(w, function(err) {
       if (err) return cb(err);
@@ -365,26 +367,30 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   json.wallets = json.wallets || {};
 
   iden.store(opts, function(err) {
-    console.log('Error importing existing profile',err);
-      return cb(err, iden);
+    if (err) return cb(err); //profile already exists
+
+    opts.failIfExists = false;
+    async.map(json.wallets, function(walletData, callback) {
+
+      if (!walletData)
+        return callback();
+
+      iden.importWalletFromObj(walletData, opts, function(err, w) {
+        if (err) return callback(err);
+        log.debug('Wallet ' + w.getId() + ' imported');
+        callback();
+      });
+    }, function(err, results) {
+      if (err) return cb(err);
+
+      iden.store(opts, function(err) {
+        return cb(err, iden);
+      });
+    });
+
   });
 
-  async.map(json.wallets, function(walletData, callback) {
-    if (!walletData)
-      return callback();
 
-    iden.importWalletFromObj(walletData, opts, function(err, w) {
-      if (err) return callback(err);
-      log.debug('Wallet ' + w.getId() + ' imported');
-      callback();
-    });
-  }, function(err, results) {
-    if (err) return cb(err);
-
-    iden.store(opts, function(err) {
-      return cb(err, iden);
-    });
-  });
 };
 
 Identity.prototype.bindWallet = function(w) {
