@@ -112,20 +112,19 @@ angular.module('copayApp.directives')
     }
   ])
   .directive('walletSecret', function() {
-      return {
-        require: 'ngModel',
-        link: function(scope, elem, attrs, ctrl) {
-          var validator = function(value) {
-            var a = new Address(value);
-            ctrl.$setValidity('walletSecret', !a.isValid() && Boolean(copay.Wallet.decodeSecret(value)));
-            return value;
-          };
+    return {
+      require: 'ngModel',
+      link: function(scope, elem, attrs, ctrl) {
+        var validator = function(value) {
+          var a = new Address(value);
+          ctrl.$setValidity('walletSecret', !a.isValid() && Boolean(copay.Wallet.decodeSecret(value)));
+          return value;
+        };
 
-          ctrl.$parsers.unshift(validator);
-        }
-      };
-    }
-  )
+        ctrl.$parsers.unshift(validator);
+      }
+    };
+  })
   .directive('loading', function() {
     return {
       restrict: 'A',
@@ -270,6 +269,16 @@ angular.module('copayApp.directives')
     }
   }
 ])
+  .directive('autoFocus', function($timeout) {
+    return {
+      restrict: 'AC',
+      link: function(_scope, _element) {
+        $timeout(function() {
+          _element[0].focus();
+        }, 0);
+      }
+    };
+  })
   .directive('match', function() {
     return {
       require: 'ngModel',

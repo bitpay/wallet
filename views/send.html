@@ -41,7 +41,7 @@
 
               <div class="pr">
                 <input class="columns" type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
-                placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
+                placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required auto-focus>
                 <div ng-hide="showScanner || disableScanner">
                   <button class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></button>
                 </div>
