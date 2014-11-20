@@ -1,6 +1,8 @@
 <div ng-controller="CopayersController">
   <div class="copay-box" ng-repeat="copayer in copayersList()">
-    <img gravatar-src="'{{copayer.nick}}'" gravatar-size="35">
+    <div class="photo-container">
+      <img gravatar-src="'{{copayer.nick}}'" gravatar-size="35">
+    </div>
     <div
       class="ellipsis"
       tooltip="ID: {{copayer.peerId}}"
