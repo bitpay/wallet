@@ -150,10 +150,10 @@ angular.module('copayApp.controllers').controller('SendController',
             if (merchantData.pr.ca) {
               message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
             }
-            message += ' Message from server: ' + merchantData.pr.pd.memo;
-            message += ' For merchant: ' + merchantData.pr.pd.payment_url;
+            message += merchantData.pr.pd.memo;
+            message += ' Merchant: ' + merchantData.pr.pd.payment_url;
           }
-          notification.success('Success', message);
+          $scope.success = message;
           $scope.loadTxs();
         } else {
           w.sendTx(ntxid, function(txid, merchantData) {
@@ -163,10 +163,10 @@ angular.module('copayApp.controllers').controller('SendController',
                 if (merchantData.pr.ca) {
                   message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
                 }
-                message += ' Message from server: ' + merchantData.pr.pd.memo;
-                message += ' For merchant: ' + merchantData.pr.pd.payment_url;
+                message += merchantData.pr.pd.memo;
+                message += ' Merchant: ' + merchantData.pr.pd.payment_url;
               }
-              notification.success('Transaction broadcasted', message);
+              $scope.success = 'Transaction broadcasted' +  message;
             } else {
               $scope.error = 'There was an error sending the transaction';
             }
@@ -362,7 +362,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
           $scope.submitAddressBook = function(form) {
             if (form.$invalid) {
-              notification.error('Form Error', 'Please complete required fields');
+              scope.error = 'Please complete required fields';
               return;
             }
             var entry = {
@@ -390,6 +390,7 @@ angular.module('copayApp.controllers').controller('SendController',
             errorMsg = e.message;
           }
 
+          // TODO change this notifications
           if (errorMsg) {
             notification.error('Error', errorMsg);
           } else {
@@ -415,7 +416,7 @@ angular.module('copayApp.controllers').controller('SendController',
           $scope.error = 'There was an error sending the transaction';
         } else {
           if (!merchantData) {
-            notification.success('Transaction broadcasted', 'Transaction id: ' + txid);
+            $scope.success = 'Transaction broadcasted!';
           } else {
             var message = 'Transaction ID: ' + txid;
             if (merchantData.pr.ca) {
@@ -423,7 +424,7 @@ angular.module('copayApp.controllers').controller('SendController',
             }
             message += ' Message from server: ' + merchantData.ack.memo;
             message += ' For merchant: ' + merchantData.pr.pd.payment_url;
-            notification.success('Transaction sent', message);
+            $scope.success = 'Transaction sent' + message;
           }
         }
 
@@ -527,19 +528,18 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       };
 
-      notification.info('Fetching Payment',
-        'Retrieving Payment Request from ' + uri.merchant);
-
+      scope.fetchingURL = uri.merchant;
       scope.loading = true;
       apply();
 
       var timeout = setTimeout(function() {
         timeout = null;
+        scope.fetchingURL = null;
         scope.loading = false;
         scope.sendForm.address.$setViewValue('');
         scope.sendForm.address.$render();
         scope.sendForm.address.$isValid = false;
-        notification.error('Error', 'Payment server timed out.');
+        scope.error = 'Payment server timed out';
         apply();
       }, 10 * 1000);
 
@@ -549,6 +549,7 @@ angular.module('copayApp.controllers').controller('SendController',
         clearTimeout(timeout);
 
         scope.loading = false;
+        scope.fetchingURL = null;
         apply();
 
         var balance = $rootScope.availableBalance;
@@ -581,7 +582,7 @@ angular.module('copayApp.controllers').controller('SendController',
           }
           scope.sendForm.address.$isValid = false;
 
-          notification.error('Error', err.message || 'Bad payment server.');
+          scope.error = err.message || 'Bad payment server';
 
           apply();
           return;
@@ -613,10 +614,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
         apply();
 
-        notification.info('Payment Request',
-          'Server is requesting ' + merchantData.unitTotal +
-          ' ' + w.settings.unitName +
-          '.' + ' Message: ' + merchantData.pr.pd.memo);
+        scope.success = 'Payment Request:' + merchantData.unitTotal +
+          ' ' + w.settings.unitName + '. ' + (merchantData.pr.pd.memo || '');
       });
     };
   });
