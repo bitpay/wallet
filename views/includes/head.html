@@ -5,6 +5,9 @@
       <a class="text-gray" ng-click="refresh()" ng-if="!$root.updatingBalance">
         <i class="fi-refresh"></i>
       </a>
+      <span ng-if="$root.iden.backupNeeded">
+        BACKUP!
+      </span>
       <span ng-if="$root.updatingBalance">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
