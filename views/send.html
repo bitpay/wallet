@@ -173,7 +173,12 @@
             </div>
 
             <div class="row">
-              <div class="large-12 columns text-right">
+              <div class="large-6 medium-6 small-6 columns text-left">
+                <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant">
+                  Cancel
+                </a>
+              </div>
+              <div class="large-6 medium-6 small-6 columns text-right">
                 <button type="submit" class="button primary m0" ng-disabled="sendForm.$invalid || loading">
                   Send
                 </button>
