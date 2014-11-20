@@ -884,9 +884,9 @@ label small.has-error {
 table { 
   border-collapse: collapse; text-align: left; width: 100%; border: none; 
   box-shadow: -2px 1px 9px 1px #DDDDDD;
-  -webkit-box-shadow: -2px 1px 5px 1px #DDDDDD;
-  -moz-box-shadow: -2px 1px 5px 1px #DDDDDD;
-  -o-box-shadow: -2px 1px 5px 1px #DDDDDD;
+  -moz-box-shadow:    1.5px 1.5px 0px 0px rgba(32,48,64,0.10);
+  box-shadow:         2px 2px 0px 0px rgba(32,48,64,0.10);
+  -o-box-shadow:         2px 2px 0px 0px rgba(32,48,64,0.10);
 }
 
 thead tr{ 
@@ -1399,6 +1399,7 @@ a.text-warning:hover {color: #FD7262;}
   background: #FFFFFF;
   -moz-box-shadow:    1.5px 1.5px 0px 0px rgba(32,48,64,0.10);
   box-shadow:         1.5px 1.5px 0px 0px rgba(32,48,64,0.10);
+  -o-box-shadow:         1.5px 1.5px 0px 0px rgba(32,48,64,0.10);
   border: none;
 }
 
