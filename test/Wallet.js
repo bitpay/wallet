@@ -1533,6 +1533,8 @@ describe('Wallet model', function() {
         },
       };
 
+      w.txProposals.get = sinon.stub().returns(txp);
+
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
         txp: txp,
@@ -1574,6 +1576,7 @@ describe('Wallet model', function() {
         },
       };
 
+      w.txProposals.get = sinon.stub().returns(txp);
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
         txp: txp,
@@ -1616,6 +1619,7 @@ describe('Wallet model', function() {
         },
       };
 
+      w.txProposals.get = sinon.stub().returns(txp);
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
         txp: txp,
@@ -1649,6 +1653,7 @@ describe('Wallet model', function() {
         },
       };
 
+      w.txProposals.get = sinon.stub().returns(txp);
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
         txp: txp,
@@ -1682,6 +1687,7 @@ describe('Wallet model', function() {
         },
       };
 
+      w.txProposals.get = sinon.stub().returns(txp);
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
         txp: txp,
@@ -1712,6 +1718,7 @@ describe('Wallet model', function() {
         },
       };
 
+      w.txProposals.get = sinon.stub().returns(txp);
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
         txp: txp,

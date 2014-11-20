@@ -426,11 +426,76 @@ Wallet.prototype._getKeyMap = function(txp) {
 Wallet.prototype._checkSentTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
-  var txid = bitcore.util.formatHashFull(tx.getHash());
 
+  var txHex = tx.serialize().toString('hex');
+
+  //Use calcHash NOT getHash which could be cached.
+  var txid = bitcore.util.formatHashFull(tx.calcHash());
   this.blockchain.getTransaction(txid, function(err, tx) {
     if (err) return cb(false);
     return cb(txid);
+  });
+};
+
+Wallet.prototype._processTxProposalSeen = function(ntxid) {
+  var txp = this.txProposals.get(ntxid);
+  if (!txp.getSeen(this.getMyCopayerId())) {
+    txp.setSeen(this.getMyCopayerId());
+    this.sendSeen(ntxid);
+  }
+};
+
+
+Wallet.prototype._processTxProposalSent = function(ntxid, cb) {
+  var self = this;
+  var txp = this.txProposals.get(ntxid);
+
+  this._checkSentTx(ntxid, function(txid) {
+    if (txid) {
+      if (!txp.getSent()) {
+        txp.setSent(txid);
+      }
+    }
+    self.emitAndKeepAlive('txProposalsUpdated');
+    if (cb) return cb(null, txid);
+  });
+};
+
+
+Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
+  var self = this;
+  var txp = mergeInfo.txp;
+  var isNew = mergeInfo.new;
+  var ntxid = mergeInfo.ntxid;
+
+  if (!isNew || !txp.paymentProtocolURL)
+    return cb();
+
+  log.info('Received a Payment Protocol TX Proposal');
+  self.fetchPaymentTx(txp.paymentProtocolURL, function(err, merchantData) {
+    if (err) return cb(err);
+    txp.merchant = merchantData;
+    return cb();
+  });
+};
+
+Wallet.prototype._processIncomingTxProposal = function(mergeInfo, cb) {
+  if (!mergeInfo) return cb();
+  var self = this;
+
+  self._processTxProposalPayPro(mergeInfo, function(err) {
+    if (err) return cb(err);
+
+    self._processTxProposalSeen(mergeInfo.ntxid);
+
+    var tx = mergeInfo.txp.builder.build();
+    if (tx.isComplete())
+      self._processTxProposalSent(mergeInfo.ntxid);
+    else if (mergeInfo.hasChanged) {
+      self.sendTxProposal(mergeInfo.ntxid);
+      self.emitAndKeepAlive('txProposalsUpdated');
+    }
+    return cb();
   });
 };
 
@@ -454,34 +519,20 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     m.newCopayer = m.txp.setCopayers(senderId, keyMap);
   } catch (e) {
     log.error('Corrupt TX proposal received from:', senderId, e.toString());
+    if (m && m.ntxid)
+      this.txProposals.deleteOne(m.ntxid);
     m = null;
   }
 
-  if (m) {
-    if (!m.txp.getSeen(this.getMyCopayerId())) {
-      m.txp.setSeen(this.getMyCopayerId());
-      this.sendSeen(m.ntxid);
+  self._processIncomingTxProposal(m, function(err) {
+    if (err) {
+      log.error('Corrupt TX proposal received from:', senderId, err.toString());
+      if (m && m.ntxid)
+        self.txProposals.deleteOne(m.ntxid);
+      m = null;
     }
-
-    var tx = m.txp.builder.build();
-    if (tx.isComplete()) {
-      this._checkSentTx(m.ntxid, function(txid) {
-        if (txid) {
-          if (!m.txp.getSent()) {
-            m.txp.setSent(txid);
-            self.emitAndKeepAlive('txProposalsUpdated');
-          }
-        }
-      });
-    } else {
-      if (m.hasChanged) {
-        this.sendTxProposal(m.ntxid);
-      }
-    }
-
-    this.emitAndKeepAlive('txProposalsUpdated');
-  }
-  this._processProposalEvents(senderId, m);
+    self._processProposalEvents(senderId, m);
+  });
 };
 
 /**
@@ -1420,16 +1471,18 @@ Wallet.prototype.sign = function(ntxid) {
 Wallet.prototype.sendTx = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
 
-  if (txp.merchant) {
-    return this.sendPaymentTx(ntxid, cb);
-  }
   var tx = txp.builder.build();
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
+
   log.debug('Wallet:' + this.id + ' Broadcasting Transaction');
+
+  if (txp.merchant) {
+    return this.sendPaymentTx(ntxid, cb);
+  }
+
   var scriptSig = tx.ins[0].getScript();
   var size = scriptSig.serialize().length;
-
   var txHex = tx.serialize().toString('hex');
   log.debug('Wallet:' + this.id + ' Raw transaction: ', txHex);
 
@@ -1446,10 +1499,7 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
       return cb(txid);
     } else {
       log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
-      self._checkSentTx(ntxid, function(txid) {
-        if (txid)
-          self.emitAndKeepAlive('txProposalsUpdated');
-
+      self._processTxProposalSent(ntxid, function(err, txid) {
         return cb(txid);
       });
     }
@@ -1640,6 +1690,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       if (!unspent || !unspent.length) {
         return cb(new Error('No unspent outputs available.'));
       }
+
       try {
         self.createPaymentTxSync(options, merchantData, safeUnspent);
       } catch (e) {
@@ -1765,7 +1816,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     view[i] = pay[i];
   }
 
-  return Wallet.request({
+  var postInfo = {
       method: 'POST',
       url: txp.merchant.pr.pd.payment_url,
       headers: {
@@ -1780,7 +1831,9 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       // be the ArrayBuffer, now you send the View instead).
       data: view,
       responseType: 'arraybuffer'
-    })
+    };
+
+  return Wallet.request(postInfo)
     .success(function(data, status, headers, config) {
       data = PayPro.PaymentACK.decode(data);
       var ack = new PayPro();
@@ -1790,9 +1843,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
     .error(function(data, status, headers, config) {
       log.debug('Sending to server was not met with a returned tx.');
       log.debug('XHR status: ' + status);
-      return self._checkSentTx(ntxid, function(txid) {
-        if (txid)
-          self.emitAndKeepAlive('txProposalsUpdated');
+      self._processTxProposalSent(ntxid, function(err, txid) {
         return cb(txid, txp.merchant);
       });
     });
@@ -1822,10 +1873,8 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     tx = payment.message.transactions[0];
     if (!tx) {
       log.debug('Sending to server was not met with a returned tx.');
-      return this._checkSentTx(ntxid, function(txid) {
+      return this._processTxProposalSeen(ntxid, function(err, txid) {
         log.debug('[Wallet.js.1613:txid:%s]', txid);
-        if (txid)
-          self.emitAndKeepAlive('txProposalUpdated');
         return cb(txid, txp.merchant);
       });
     }
@@ -1841,7 +1890,7 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
     log.debug('It is not returning a copy of the transaction.');
   }
 
-  var txid = tx.getHash().toString('hex');
+  var txid = tx.calcHash().toString('hex');
   var txHex = tx.serialize().toString('hex');
   log.debug('Raw transaction: ', txHex);
 
@@ -1855,11 +1904,8 @@ Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
       self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid, txp.merchant);
     } else {
-      log.debug('Sent failed. Checking if the TX was sent already');
-      self._checkSentTx(ntxid, function(txid) {
-        if (txid)
-          self.emitAndKeepAlive('txProposalsUpdated');
-
+      log.debug('PayPro Sent failed. Checking if the TX was sent already');
+      self._processTxProposalSent(ntxid, function(err, txid) {
         return cb(txid, txp.merchant);
       });
     }
@@ -1951,6 +1997,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   });
 
   var selectedUtxos = b.getSelectedUnspent();
+  if (selectedUtxos.length > TX_MAX_INS)
+    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length + ' inputs. Aborting');
+
+
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
@@ -1971,6 +2021,12 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   if (!tx.countInputSignatures(0))
     throw new Error('Could not sign generated tx');
 
+  var txSize = tx.getSize();
+  if (txSize / 1024 > TX_MAX_SIZE_KB)
+    throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
+
+
+
   var me = {};
   me[myId] = now;
   var meSeen = {};
@@ -1984,8 +2040,10 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     createdTs: now,
     builder: b,
     comment: options.memo,
-    merchant: merchantData
+    merchant: merchantData,
+    paymentProtocolURL: options.uri,
   }));
+
   return ntxid;
 };
 
@@ -2187,7 +2245,7 @@ Wallet.prototype.subscribeToAddresses = function() {
 
   var addrInfo = this.publicKeyRing.getAddressesInfo();
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
-  log.debug('Subscribed to ' + addrInfo.length + ' addresses'); //TODO
+  log.debug('Subscribed to ' + addrInfo.length + ' addresses'); 
 };
 
 /**
@@ -2386,7 +2444,7 @@ Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb)
     var ntxid;
     try {
       ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
-      log.debug('TX Created: ntxid', ntxid); //TODO
+      log.debug('TX Created: ntxid', ntxid);
     } catch (e) {
       return cb(e);
     }
