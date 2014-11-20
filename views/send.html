@@ -21,6 +21,13 @@
             <i class="fi-alert"></i> 
             {{error|translate}}
             </p>
+            <p class="text-success size-16"
+            ng-show="success">
+            <i class="fi-check"></i> 
+            {{success|translate}}
+            </p>
+
+
 
             <div class="row collapse">
               <label for="address" class="left">
@@ -120,6 +127,14 @@
             </div>
 
             <div class="row">
+              <div class="large-12 columns" ng-show="fetchingURL">
+                <h3>
+                  <i class="glyphicon glyphicon-refresh icon-rotate"></i>
+                  Fetching payment 
+                </h3>
+                <p> From {{fetchingURL}}
+              </div>
+    
               <div class="large-12 columns" ng-show="!!$root.merchant">
                 <h3>This is a payment protocol transaction</h3>
                 <div class="send-note">
