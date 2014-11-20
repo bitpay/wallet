@@ -129,7 +129,7 @@
             <div class="row">
               <div class="large-12 columns" ng-show="fetchingURL">
                 <h3>
-                  <i class="glyphicon glyphicon-refresh icon-rotate"></i>
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
                   Fetching payment 
                 </h3>
                 <p> From {{fetchingURL}}
@@ -139,34 +139,24 @@
                 <h3>This is a payment protocol transaction</h3>
                 <div class="send-note">
                   <p>
-                  <b translate>Send to</b>: 
-                  {{$root.merchant.domain}}
+                  <b>{{$root.merchant.pr.pd.memo}}</b>
                   </p>
+
                   <p>
-                  <b translate>Total amount for this transaction</b>: 
                   <i>{{amount + defaultFee |noFractionNumber}} {{$root.wallet.settings.unitName}}</i>
-                  <small ng-if="isRateAvailable">
+                  <span class="text-gray" ng-if="isRateAvailable">
                     {{ rateService.toFiat((amount + defaultFee) * unitToSatoshi, alternativeIsoCode) | noFractionNumber: 2 }} {{ alternativeIsoCode }}
-                  </small>
-                  <small>
+                  </span>
+                  <span class="text-gray" >
                     (<span translate>Including fee of</span>
                     {{defaultFee|noFractionNumber}}
                     {{$root.wallet.settings.unitName}})
-                  </small>
-                  </p>
+                  </span>
                   <p>
-                  <b translate>Server Says</b>: 
-                  {{$root.merchant.pr.pd.memo}}
-                  </p>
-                  <p>
-                  <b translate>Certificate</b>: 
-                  <span ng-show="!!$root.merchant.pr.ca">{{$root.merchant.pr.ca}}</span>
-                  <span ng-show="!$root.merchant.pr.ca" style="color:red;weight:bold;">Untrusted</span>
-                  </p>
-                  <p>
-                  <b translate>Payment Expiration</b>: 
-                  {{$root.merchant.expiration}}
-                  </p>
+                  Expires {{$root.merchant.expiration | amTimeAgo }} 
+                  [{{$root.merchant.domain}}]
+                  <span ng-show="!!$root.merchant.pr.ca"><i class="fi-lock"></i> {{$root.merchant.pr.ca}}</span>
+                  <span ng-show="!$root.merchant.pr.ca" style="color:red;weight:bold;"><i class="fi-unlock"></i> Untrusted</span>
                 </div>
               </div>
             </div>

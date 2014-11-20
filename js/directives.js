@@ -186,7 +186,7 @@ angular.module('copayApp.directives')
         }
 
         element.bind('click', function() {
-          selectText(elm[0]);
+          selectText(element[0]);
         });
       }
     };

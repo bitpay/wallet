@@ -20,7 +20,20 @@
       <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
     </div>
   </div>
+
+  <div class="line-t" ng-show="!!tx.merchant">
+    <div class="send-note">
+      <p>
+      <b>{{tx.merchant.pr.pd.memo}}</b>
+      <p>
+      Expires {{tx.merchant.pr.pd.expires * 1000 | amTimeAgo }} 
+      <span ng-show="tx.merchant.domain">[{{tx.merchant.domain}}]</span>
+      <span ng-show="!!tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.pr.ca}}</span>
+      <span ng-show="!tx.merchant.pr.ca" style="color:red;weight:bold;"><i class="fi-unlock"></i> Untrusted</span>
+    </div>
+  </div>
 </div>
+
 <table class="last-transactions-content">
   <tbody>
   <tr ng-repeat="c in tx.actionList">
