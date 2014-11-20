@@ -111,7 +111,14 @@ describe('Identity model', function() {
       params: params
     };
   };
-
+  var orig;
+  beforeEach(function() {
+    orig = Identity.prototype.store;
+    sinon.stub(Identity.prototype, 'store').yields(null);
+  });
+  afterEach(function() {
+    Identity.prototype.store = orig;
+  });
   describe('new Identity()', function() {
     it('returns an identity', function() {
       var iden = new Identity(getDefaultParams());
@@ -124,7 +131,6 @@ describe('Identity model', function() {
     it('should create and store identity', function() {
       var args = createIdentity();
       args.blockchain.on = sinon.stub();
-      sinon.stub(Identity.prototype, 'store').yields(null);
       Identity.create(args.params, function(err, iden) {
         should.not.exist(err);
         should.exist(iden);
@@ -491,5 +497,42 @@ describe('Identity model', function() {
         done();
       });
     });
+  });
+
+  describe('Identity backupNeeded', function() {
+
+    it('should create Profile with backupNeeded set to true', function(done) {
+      var args = createIdentity();
+      Identity.create(args.params, function(err, iden) {
+        should.not.exist(err);
+        iden.backupNeeded.should.be.true;
+        done();
+      });
+    });
+
+    it('making a backup should set backupNeeded set to false', function(done) {
+      var args = createIdentity();
+      Identity.create(args.params, function(err, iden) {
+        should.not.exist(err);
+        iden.exportEncryptedWithWalletInfo(iden.password)
+        iden.backupNeeded.should.be.false;
+        done();
+      });
+    });
+
+    it('adding a wallet should set backupNeeded to true', function(done) {
+      var args = createIdentity();
+      Identity.create(args.params, function(err, iden) {
+        should.not.exist(err);
+        iden.exportEncryptedWithWalletInfo(iden.password);
+        iden.createWallet({
+          walletClass: walletClass,
+        }, function(err, w2) {
+          iden.backupNeeded.should.be.true;
+          done();
+        });
+      });
+    });
+
   });
 });
