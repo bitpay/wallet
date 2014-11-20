@@ -492,6 +492,16 @@ angular.module('copayApp.controllers').controller('SendController',
       }
     };
 
+    $scope.cancelSend = function(form) {
+      delete $rootScope.merchant;
+      $rootScope.merchantError = false;
+      form.address.$setViewValue('');
+      form.address.$render();
+      form.amount.$setViewValue('');
+      form.comment.$setViewValue('');
+      form.$setPristine();
+    };
+
     $scope.onChanged = function() {
       var value = $scope.address || '';
       var uri;
