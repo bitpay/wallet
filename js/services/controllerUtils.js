@@ -362,6 +362,11 @@ angular.module('copayApp.services')
       var res = w.getPendingTxProposals();
       _.each(res.txs, function(tx) {
         root.computeAlternativeAmount(w, tx);
+        if (tx.merchant) {
+          var url = tx.merchant.request_url;
+          var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
+          tx.merchant.domain = domain;
+        }
       });
       $rootScope.txps = res.txs;
       if ($rootScope.pendingTxCount < res.pendingForUs) {

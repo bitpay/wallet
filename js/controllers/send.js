@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
+  function($scope, $rootScope, $window, $timeout, $modal, isMobile, notification, controllerUtils, rateService) {
 
     controllerUtils.redirIfNotComplete();
 
@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $rootScope.title = 'Send';
     $scope.loading = false;
+    $scope.error = $scope.success = null;
     var satToUnit = 1 / w.settings.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
     $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
@@ -145,15 +146,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (w.requiresMultipleSignatures()) {
           $scope.loading = false;
-          var message = 'The transaction proposal has been created';
-          if (merchantData) {
-            if (merchantData.pr.ca) {
-              message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
-            }
-            message += ' Message from server: ' + merchantData.pr.pd.memo;
-            message += ' For merchant: ' + merchantData.pr.pd.payment_url;
-          }
-          notification.success('Success', message);
+          notification.success('Success', 'The transaction proposal created');
           $scope.loadTxs();
         } else {
           w.sendTx(ntxid, function(txid, merchantData) {
@@ -163,10 +156,10 @@ angular.module('copayApp.controllers').controller('SendController',
                 if (merchantData.pr.ca) {
                   message += ' This payment protocol transaction' + ' has been verified through ' + merchantData.pr.ca + '.';
                 }
-                message += ' Message from server: ' + merchantData.pr.pd.memo;
-                message += ' For merchant: ' + merchantData.pr.pd.payment_url;
+                message += merchantData.pr.pd.memo;
+                message += ' Merchant: ' + merchantData.pr.pd.payment_url;
               }
-              notification.success('Transaction broadcasted', message);
+              $scope.success = 'Transaction broadcasted' + message;
             } else {
               $scope.error = 'There was an error sending the transaction';
             }
@@ -352,7 +345,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.copyAddress = function(address) {
       $scope.address = address;
-      $anchorScroll();
     };
 
     $scope.openAddressBookModal = function() {
@@ -363,7 +355,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
           $scope.submitAddressBook = function(form) {
             if (form.$invalid) {
-              notification.error('Form Error', 'Please complete required fields');
               return;
             }
             var entry = {
@@ -391,6 +382,7 @@ angular.module('copayApp.controllers').controller('SendController',
             errorMsg = e.message;
           }
 
+          // TODO change this notifications
           if (errorMsg) {
             notification.error('Error', errorMsg);
           } else {
@@ -409,14 +401,15 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.send = function(ntxid, cb) {
+      $scope.error = $scope.success = null;
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       w.sendTx(ntxid, function(txid, merchantData) {
         if (!txid) {
-          $scope.error = 'There was an error sending the transaction';
+          notification.error('Error', 'There was an error sending the transaction');
         } else {
           if (!merchantData) {
-            notification.success('Transaction broadcasted', 'Transaction id: ' + txid);
+            notification.success('Success', 'Transaction broadcasted!');
           } else {
             var message = 'Transaction ID: ' + txid;
             if (merchantData.pr.ca) {
@@ -424,7 +417,7 @@ angular.module('copayApp.controllers').controller('SendController',
             }
             message += ' Message from server: ' + merchantData.ack.memo;
             message += ' For merchant: ' + merchantData.pr.pd.payment_url;
-            notification.success('Transaction sent', message);
+            notification.success('Success', 'Transaction sent' + message);
           }
         }
 
@@ -435,15 +428,15 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.sign = function(ntxid) {
       $scope.loading = true;
+      $scope.error = $scope.success = null;
 
       try {
         w.sign(ntxid);
       } catch (e) {
-        $scope.error = 'There was an error signing the transaction';
+        notification.error('Error','There was an error signing the transaction');
         $scope.loadTxs();
         return;
       }
-      $scope.error = undefined;
 
       var p = w.txProposals.getTxProposal(ntxid);
       if (p.builder.isFullySigned()) {
@@ -465,16 +458,15 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.clearMerchant = function(callback) {
-      var scope = $scope;
       // TODO: Find a better way of detecting
       // whether we're in the Send scope or not.
-      if (!scope.sendForm || !scope.sendForm.address) {
+      if (!$scope.sendForm || !$scope.sendForm.address) {
         delete $rootScope.merchant;
         $rootScope.merchantError = false;
         if (callback) callback();
         return;
       }
-      var val = scope.sendForm.address.$viewValue || '';
+      var val = $scope.sendForm.address.$viewValue || '';
       var uri;
       // If we're setting the domain, ignore the change.
       if ($rootScope.merchant && $rootScope.merchant.domain && val === $rootScope.merchant.domain) {
@@ -491,8 +483,8 @@ angular.module('copayApp.controllers').controller('SendController',
       }
       if (!uri || !uri.merchant) {
         delete $rootScope.merchant;
-        scope.sendForm.amount.$setViewValue('');
-        scope.sendForm.amount.$render();
+        $scope.sendForm.amount.$setViewValue('');
+        $scope.sendForm.amount.$render();
         if (callback) callback();
         if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
           $rootScope.$apply();
@@ -501,10 +493,10 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.onChanged = function() {
-      var scope = $scope;
-      var value = scope.address || '';
+      var value = $scope.address || '';
       var uri;
 
+      $scope.error = $scope.success = null;
       // If we're setting the domain, ignore the change.
       if ($rootScope.merchant && $rootScope.merchant.domain && value === $rootScope.merchant.domain) {
         return;
@@ -528,28 +520,28 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       };
 
-      notification.info('Fetching Payment',
-        'Retrieving Payment Request from ' + uri.merchant);
-
-      scope.loading = true;
+      $scope.fetchingURL = uri.merchant;
+      $scope.loading = true;
       apply();
 
       var timeout = setTimeout(function() {
         timeout = null;
-        scope.loading = false;
-        scope.sendForm.address.$setViewValue('');
-        scope.sendForm.address.$render();
-        scope.sendForm.address.$isValid = false;
-        notification.error('Error', 'Payment server timed out.');
+        $scope.fetchingURL = null;
+        $scope.loading = false;
+        $scope.sendForm.address.$setViewValue('');
+        $scope.sendForm.address.$render();
+        $scope.sendForm.address.$isValid = false;
+        $scope.error = 'Payment server timed out';
         apply();
       }, 10 * 1000);
 
       // Payment Protocol URI (BIP-72)
-      scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
+      $scope.wallet.fetchPaymentTx(uri.merchant, function(err, merchantData) {
         if (!timeout) return;
         clearTimeout(timeout);
 
-        scope.loading = false;
+        $scope.loading = false;
+        $scope.fetchingURL = null;
         apply();
 
         var balance = $rootScope.availableBalance;
@@ -561,28 +553,29 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (err) {
           if (err.amount) {
-            scope.sendForm.amount.$setViewValue(+err.amount / w.settings.unitToSatoshi);
-            scope.sendForm.amount.$render();
-            scope.sendForm.amount.$isValid = false;
-            scope.notEnoughAmount = true;
+            $scope.sendForm.amount.$setViewValue(+err.amount / w.settings.unitToSatoshi);
+            $scope.sendForm.amount.$render();
+            $scope.sendForm.amount.$isValid = false;
+            $scope.notEnoughAmount = true;
             $rootScope.merchantError = true;
-            var lastAddr = scope.sendForm.address.$viewValue;
-            var unregister = scope.$watch('address', function() {
-              if (scope.sendForm.address.$viewValue !== lastAddr) {
+            var lastAddr = $scope.sendForm.address.$viewValue;
+            var unregister = $scope.$watch('address', function() {
+              if ($scope.sendForm.address.$viewValue !== lastAddr) {
                 delete $rootScope.merchantError;
-                scope.sendForm.amount.$setViewValue('');
-                scope.sendForm.amount.$render();
+                $scope.sendForm.amount.$setViewValue('');
+                $scope.sendForm.amount.$render();
                 unregister();
                 apply();
               }
             });
           } else {
-            scope.sendForm.address.$setViewValue('');
-            scope.sendForm.address.$render();
+            $scope.sendForm.address.$setViewValue('');
+            $scope.sendForm.address.$render();
           }
-          scope.sendForm.address.$isValid = false;
+          $scope.sendForm.address.$isValid = false;
+          copay.logger.error(err);
 
-          notification.error('Error', err.message || 'Bad payment server.');
+          $scope.error = 'Could not fetch payment request';
 
           apply();
           return;
@@ -593,18 +586,18 @@ angular.module('copayApp.controllers').controller('SendController',
 
         merchantData.unitTotal = (+merchantData.total / w.settings.unitToSatoshi) + '';
         merchantData.expiration = new Date(
-          merchantData.pr.pd.expires * 1000).toISOString();
+          merchantData.pr.pd.expires * 1000);
         merchantData.domain = domain;
 
         $rootScope.merchant = merchantData;
 
-        scope.sendForm.address.$setViewValue(domain);
-        scope.sendForm.address.$render();
-        scope.sendForm.address.$isValid = true;
+        $scope.sendForm.address.$setViewValue(domain);
+        $scope.sendForm.address.$render();
+        $scope.sendForm.address.$isValid = true;
 
-        scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
-        scope.sendForm.amount.$render();
-        scope.sendForm.amount.$isValid = true;
+        $scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
+        $scope.sendForm.amount.$render();
+        $scope.sendForm.amount.$isValid = true;
 
         // If the address changes to a non-payment-protocol one,
         // delete the `merchant` property from the scope.
@@ -613,11 +606,6 @@ angular.module('copayApp.controllers').controller('SendController',
         });
 
         apply();
-
-        notification.info('Payment Request',
-          'Server is requesting ' + merchantData.unitTotal +
-          ' ' + w.settings.unitName +
-          '.' + ' Message: ' + merchantData.pr.pd.memo);
       });
     };
   });

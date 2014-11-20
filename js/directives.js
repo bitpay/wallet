@@ -5,6 +5,24 @@ var Address = bitcore.Address;
 var bignum = bitcore.Bignum;
 var preconditions = require('preconditions').singleton();
 
+
+function selectText(element) {
+    var doc = document;
+    if (doc.body.createTextRange) { // ms
+        var range = doc.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) {
+        var selection = window.getSelection();
+        var range = doc.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+    }
+}
+
+
 angular.module('copayApp.directives')
 
 .directive('validAddress', ['$rootScope',
@@ -162,10 +180,14 @@ angular.module('copayApp.directives')
         var contact = scope.wallet.addressBook[address];
         if (contact && !contact.hidden) {
           element.append(contact.label);
-          attrs['tooltip'] = attrs.address;
+          element.attr('tooltip',attrs.address);
         } else {
           element.append(address);
         }
+
+        element.bind('click', function() {
+          selectText(element[0]);
+        });
       }
     };
   })
@@ -296,39 +318,19 @@ angular.module('copayApp.directives')
     };
   })
   .directive('clipCopy', function() {
-    ZeroClipboard.config({
-      moviePath: './lib/zeroclipboard/ZeroClipboard.swf',
-      trustedDomains: ['*'],
-      allowScriptAccess: 'always',
-      forceHandCursor: true
-    });
-
     return {
       restric: 'A',
       scope: {
         clipCopy: '=clipCopy'
       },
       link: function(scope, elm) {
-        var client = new ZeroClipboard(elm);
+        // TODO this does not work (FIXME)
+        elm.attr('tooltip','Press Ctrl+C to Copy');
+        elm.attr('tooltip-placement','top');
 
-        client.on('load', function(client) {
-
-          client.on('datarequested', function(client) {
-            client.setText(scope.clipCopy);
-          });
-
-          client.on('complete', function(client, args) {
-            elm.removeClass('btn-copy').addClass('btn-copied').html('Copied!');
-            setTimeout(function() {
-              elm.addClass('btn-copy').removeClass('btn-copied').html('');
-            }, 1000);
-          });
+        elm.bind('click', function() {
+          selectText(elm[0]);
         });
-        client.on('wrongflash noflash', function() {
-          elm.removeClass('btn-copy').html('');
-          ZeroClipboard.destroy();
-        });
-
       }
     };
   });
