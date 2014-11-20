@@ -48,8 +48,8 @@ then
     rm -rf $PROJECT
   fi
 fi
-
 if [ ! -d $PROJECT ]; then
+echo "ghola"
   cd $BUILDDIR
   echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
   cordova create project com.bitpay.copay Copay
@@ -97,7 +97,7 @@ cd $BUILDDIR/..
 grunt
 checkOK
 
-echo "${OpenColor}${Green}* Coping files...${CloseColor}"
+echo "${OpenColor}${Green}* Copying files...${CloseColor}"
 cd $BUILDDIR/..
 cp -af {css,font,img,js,lib,sound,views,config.js,version.js,init.js} $PROJECT/www
 checkOK
