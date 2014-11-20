@@ -12,7 +12,7 @@ var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
 var VERSION = 1;
-var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment'];
+var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment', 'paymentProtocolURL'];
 
 
 function TxProposal(opts) {
@@ -37,6 +37,7 @@ function TxProposal(opts) {
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
   this.merchant = opts.merchant || null;
+  this.paymentProtocolURL = opts.paymentProtocolURL || null;
   this._sync();
 }
 
