@@ -1979,7 +1979,10 @@ describe('Wallet model', function() {
         fees: 0.00000100
       }];
 
-      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs,
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_in_1'
       }, {
@@ -2045,7 +2048,10 @@ describe('Wallet model', function() {
         fees: 0.00000100
       }];
 
-      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs.slice(2,3),
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_in_1'
       }, {
@@ -2068,7 +2074,11 @@ describe('Wallet model', function() {
     });
     it('should paginate empty list', function(done) {
       var w = cachedCreateW2();
-      w.blockchain.getTransactions = sinon.stub().yields(null, []);
+      var txs = [];
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs,
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_in_1'
       }, {
@@ -2111,7 +2121,10 @@ describe('Wallet model', function() {
         fees: 0.00000100
       }];
 
-      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs,
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_in_1'
       }, {
@@ -2154,7 +2167,10 @@ describe('Wallet model', function() {
         fees: 0.00000100
       }];
 
-      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs,
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_1'
       }, {
@@ -2197,7 +2213,10 @@ describe('Wallet model', function() {
         fees: 0.00000100
       }];
 
-      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs,
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_in_1'
       }, {
@@ -2245,7 +2264,10 @@ describe('Wallet model', function() {
         fees: 0.00000100
       }];
 
-      w.blockchain.getTransactions = sinon.stub().yields(null, txs);
+      w.blockchain.getTransactions = sinon.stub().yields(null, {
+        items: txs,
+        totalItems: txs.length,
+      });
       w.getAddressesInfo = sinon.stub().returns([{
         addressStr: 'addr_in_1'
       }, {
