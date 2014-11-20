@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $anchorScroll, $modal, isMobile, notification, controllerUtils, rateService) {
+  function($scope, $rootScope, $window, $timeout, $modal, isMobile, notification, controllerUtils, rateService) {
 
     controllerUtils.redirIfNotComplete();
 
@@ -352,7 +352,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.copyAddress = function(address) {
       $scope.address = address;
-      $anchorScroll();
     };
 
     $scope.openAddressBookModal = function() {
