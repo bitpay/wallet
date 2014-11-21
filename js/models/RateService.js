@@ -41,37 +41,41 @@ RateService.singleton = function(opts) {
 RateService.prototype._fetchCurrencies = function() {
   var self = this;
 
-  log.info('Fetching exchange rates');
-
   var backoffSeconds = 5;
   var updateFrequencySeconds = 3600;
-  var rateServiceUrl = 'https://bitpay.com/api/rates';
+  var rateServiceUrl = 'https://bitpaya.com/api/rates';
 
-  self.request.get({
-    url: rateServiceUrl,
-    json: true
-  }, function(err, res, body) {
-    if (err || !body) {
-      backoffSeconds *= 1.5;
-      setTimeout(retrieve, backoffSeconds * 1000);
-      return;
-    }
-    _.each(body, function(currency) {
-      self._rates[currency.code] = currency.rate;
-      self._alternatives.push({
-        name: currency.name,
-        isoCode: currency.code,
-        rate: currency.rate
+  var retrieve = function () {
+    log.info('Fetching exchange rates');
+    self.request.get({
+      url: rateServiceUrl,
+      json: true
+    }, function(err, res, body) {
+      if (err || !body) {
+        log.debug('Error fetching exchange rates', err);
+        setTimeout(function () {
+          backoffSeconds *= 1.5;
+          retrieve();
+        }, backoffSeconds * 1000);
+        return;
+      }
+      _.each(body, function(currency) {
+        self._rates[currency.code] = currency.rate;
+        self._alternatives.push({
+          name: currency.name,
+          isoCode: currency.code,
+          rate: currency.rate
+        });
       });
+      self._isAvailable = true;
+      _.each(self._queued, function(callback) {
+        setTimeout(callback, 1);
+      });
+      setTimeout(retrieve, updateFrequencySeconds * 1000);
     });
-    self._isAvailable = true;
-    _.each(self._queued, function(callback) {
-      setTimeout(callback, 1);
-    });
-    setTimeout(function() {
-      self._fetchCurrencies()
-    }, updateFrequencySeconds * 1000);
-  });
+  };
+
+  retrieve();
 };
 
 RateService.prototype._getRate = function(code) {
