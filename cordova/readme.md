@@ -5,6 +5,7 @@
 * [Install XCode for IOS](https://itunes.apple.com/en/app/xcode/id497799835?mt=12)
 * Install Cordova: ``sudo npm install -g cordova``
 * Install Copay dependecies: ``bower install && npm install``
+* Install Java-SDK and Apache Ant
 
 ## Build the project
 

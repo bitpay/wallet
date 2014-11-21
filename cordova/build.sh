@@ -109,6 +109,9 @@ cd $BUILDDIR
 cp config.xml $PROJECT/config.xml
 checkOK
 
+mkdir -p $PROJECT/platforms/android/res/xml/
+checkOK
+
 cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
 checkOK
 
@@ -121,6 +124,12 @@ checkOK
 cp -R android/res/* $PROJECT/platforms/android/res
 checkOK
 
+mkdir -p $PROJECT/platforms/ios/Copay/Resources/icons
+checkOK
+
+mkdir -p $PROJECT/platforms/ios/Copay/Resources/splash
+checkOK
+
 if [[ !$SKIPIOS ]]; then
   cp -R ios/icons/* $PROJECT/platforms/ios/Copay/Resources/icons
   checkOK
@@ -128,5 +137,4 @@ if [[ !$SKIPIOS ]]; then
   cp -R ios/splash/* $PROJECT/platforms/ios/Copay/Resources/splash
   checkOK
 fi
-
 
