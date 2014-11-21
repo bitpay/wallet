@@ -65,7 +65,7 @@ angular.module('copayApp.services')
 
 
     root.updateTxsAndBalance = function(w) {
-      root.updateTxs();
+      root.updateTxs(w);
       root.updateBalance(w, function() {
         $rootScope.$digest();
       });
@@ -356,8 +356,8 @@ angular.module('copayApp.services')
       });
     };
 
-    root.updateTxs = function() {
-      var w = $rootScope.wallet;
+    root.updateTxs = function(w) {
+      w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest(); 
       var res = w.getPendingTxProposals();
       _.each(res.txs, function(tx) {
