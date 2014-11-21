@@ -41,6 +41,38 @@ function TxProposal(opts) {
   this._sync();
 }
 
+TxProposal.prototype._checkPayPro = function() {
+  if (!this.merchant) return;
+
+console.log('[TxProposal.js.46]',
+  this.paymentProtocolURL , this.merchant.request_url);
+
+  if (this.paymentProtocolURL !== this.merchant.request_url)
+    throw new Error('PayPro: Mismatch on Payment URLs');
+
+  if (!this.merchant.outs || this.merchant.outs.length !== 1)
+    throw new Error('PayPro: Unsopported number of outputs');
+
+  if (this.merchant.expires <  (this.getSent() ||  Date.now()/1000.) )
+    throw new Error('PayPro: Request expired');
+
+  if (!this.merchant.total || !this.merchant.outs[0].amountSatStr || !this.merchant.outs[0].address)
+    throw new Error('PayPro: Missing amount');
+
+  if (this.builder.vanilla.outs.length != 1)
+    throw new Error('PayPro: Wrong outs in Tx');
+
+
+  var ppOut = this.merchant.outs[0];
+  var txOut = this.builder.vanilla.outs[0];
+
+  if (ppOut.address !== txOut.address)
+    throw new Error('PayPro: Wrong out address in Tx');
+
+  if (ppOut.amountSatStr !== txOut.amountSatStr)
+    throw new Error('PayPro: Wrong amount in Tx');
+
+};
 
 TxProposal.prototype._check = function() {
 
@@ -61,6 +93,23 @@ TxProposal.prototype._check = function() {
     if (hashType && hashType !== Transaction.SIGHASH_ALL)
       throw new Error('Invalid tx proposal: bad signatures');
   });
+  this._checkPayPro();
+};
+
+
+TxProposal.prototype.trimForStorage = function() {
+  // TODO (remove builder / builderObj. utxos, etc)
+  //
+  return this;
+};
+
+TxProposal.prototype.addMerchantData = function(merchantData) {
+  var m = _.clone(merchantData);
+
+  // remove unneeded data
+  m.raw = m.pr.pki_data = m.pr.signature = undefined;
+  this.merchant = m;
+  this._checkPayPro();
 };
 
 TxProposal.prototype.rejectCount = function() {
@@ -100,7 +149,6 @@ TxProposal.prototype._sync = function() {
   this._updateSignedBy();
   return this;
 }
-
 
 TxProposal.prototype.getId = function() {
   preconditions.checkState(this.builder);
@@ -248,11 +296,14 @@ TxProposal.prototype.setRejected = function(copayerId) {
 
   if (!this.rejectedBy[copayerId])
     this.rejectedBy[copayerId] = Date.now();
+
+  return this;
 };
 
 TxProposal.prototype.setSent = function(sentTxid) {
   this.sentTxid = sentTxid;
   this.sentTs = Date.now();
+  return this;
 };
 
 TxProposal.prototype.getSent = function() {

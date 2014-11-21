@@ -474,8 +474,14 @@ Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
   log.info('Received a Payment Protocol TX Proposal');
   self.fetchPaymentTx(txp.paymentProtocolURL, function(err, merchantData) {
     if (err) return cb(err);
-    txp.merchant = merchantData;
-    return cb();
+
+    try {
+      txp.addMerchantData(merchantData);
+    } catch (e) {
+      log.error(e);
+      err = 'BADPAYPRO: ' + e.toString();
+    }
+    return cb(err);
   });
 };
 
@@ -1435,14 +1441,7 @@ Wallet.prototype.sign = function(ntxid) {
   var myId = this.getMyCopayerId();
   var txp = this.txProposals.get(ntxid);
 
-  // If this is a payment protocol request,
-  // ensure it hasn't been tampered with.
-  if (!this.verifyPaymentRequest(ntxid)) {
-    throw new Error('Bad payment request');
-  }
-
   var before = txp.countSignatures();
-
   var keys = this.privateKey.getForPaths(txp.inputChainPaths);
   txp.builder.sign(keys);
 
@@ -1491,7 +1490,8 @@ Wallet.prototype.sendTx = function(ntxid, cb) {
 
     if (txid) {
       log.debug('Wallet:' + self.getName() + ' Broadcasted TX. BITCOIND txid:', txid);
-      self.txProposals.get(ntxid).setSent(txid);
+      var txp = self.txProposals.get(ntxid);
+      txp.setSent(txid);
       self.sendTxProposal(ntxid);
       self.emitAndKeepAlive('txProposalsUpdated');
       return cb(txid);
@@ -1676,11 +1676,9 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       untrusted: !trust.caTrusted,
       selfSigned: trust.selfSigned
     },
+    expires: expires,
     request_url: options.uri,
     total: bignum('0', 10).toString(10),
-    // Expose so other copayers can verify signature
-    // and identity, not to mention data.
-    raw: pr.serialize().toString('hex')
   };
 
   return this.getUnspent(function(err, safeUnspent, unspent) {
@@ -1694,9 +1692,7 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       } catch (e) {
         var msg = e.message || '';
         if (msg.indexOf('not enough unspent tx outputs to fulfill')) {
-          var sat = /(\d+)/.exec(msg)[1];
           e = new Error('No unspent outputs available.');
-          e.amount = sat;
           return cb(e);
         }
       }
@@ -1815,21 +1811,21 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
   }
 
   var postInfo = {
-      method: 'POST',
-      url: txp.merchant.pr.pd.payment_url,
-      headers: {
-        // BIP-71
-        'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
-        'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
-        // XHR does not allow these:
-        // 'Content-Length': (pay.byteLength || pay.length) + '',
-        // 'Content-Transfer-Encoding': 'binary'
-      },
-      // Technically how this should be done via XHR (used to
-      // be the ArrayBuffer, now you send the View instead).
-      data: view,
-      responseType: 'arraybuffer'
-    };
+    method: 'POST',
+    url: txp.merchant.pr.pd.payment_url,
+    headers: {
+      // BIP-71
+      'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
+      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
+      // XHR does not allow these:
+      // 'Content-Length': (pay.byteLength || pay.length) + '',
+      // 'Content-Transfer-Encoding': 'binary'
+    },
+    // Technically how this should be done via XHR (used to
+    // be the ArrayBuffer, now you send the View instead).
+    data: view,
+    responseType: 'arraybuffer'
+  };
 
   return Wallet.request(postInfo)
     .success(function(data, status, headers, config) {
@@ -1940,7 +1936,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
 
   merchantData.total = bignum(merchantData.total, 10);
 
-  var outs = [];
+  var outs = {};
   merchantData.pr.pd.outputs.forEach(function(output) {
     var amount = output.amount;
 
@@ -1964,13 +1960,11 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     var network = merchantData.pr.pd.network === 'main' ? 'livenet' : 'testnet';
     var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
 
-    outs.push({
-      address: addr[0].toString(),
-      amountSatStr: bignum.fromBuffer(v, {
-        endian: 'big',
-        size: 1
-      }).toString(10)
-    });
+    var a = addr[0].toString();
+    outs[a] = bignum.fromBuffer(v, {
+      endian: 'big',
+      size: 1
+    }).add(outs[a] || bignum(0));
 
     merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
       endian: 'big',
@@ -1978,11 +1972,18 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     }));
   });
 
+  if (Object.keys(outs) > 1)
+    throw new Error('PayPro: Unsupported outputs');
+
+  merchantData.outs = outs;
   merchantData.total = merchantData.total.toString(10);
 
   var b = new Builder(opts)
     .setUnspent(unspent)
-    .setOutputs(outs);
+    .setOutputs({
+      address: _.keys(outs)[0],
+      amountSatStr: _.values(outs)[0].toString(10),
+    });
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -2030,6 +2031,7 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   var meSeen = {};
   if (priv) meSeen[myId] = now;
 
+  console.log('[Wallet.js.2043]', options, merchantData); //TODO
   var ntxid = this.txProposals.add(new TxProposal({
     inputChainPaths: inputChainPaths,
     signedBy: me,
@@ -2043,159 +2045,6 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   }));
 
   return ntxid;
-};
-
-/**
- * @desc Verifies a PaymentRequest sent by another peer
- * This essentially ensures that a copayer hasn't tampered with a
- * PaymentRequest message from a payment server. It verifies the signature
- * based on the cert, and checks to ensure the desired outputs are the same as
- * the ones on the tx proposal.
- * @TODO: Document better
- */
-Wallet.prototype.verifyPaymentRequest = function(ntxid) {
-  if (!ntxid) return false;
-
-  var txp = _.isObject(ntxid) ? ntxid : this.txProposals.get(ntxid);
-
-  // If we're not a payment protocol proposal, ignore.
-  if (!txp.merchant) return true;
-
-  // The copayer didn't send us the raw payment request, unverifiable.
-  if (!txp.merchant.raw) return false;
-
-  // var tx = txp.builder.tx;
-  var tx = txp.builder.build();
-
-  var data = new Buffer(txp.merchant.raw, 'hex');
-  data = PayPro.PaymentRequest.decode(data);
-  var pr = new PayPro();
-  pr = pr.makePaymentRequest(data);
-
-  // Verify the signature so we know this is the real request.
-  var trust = pr.verify(true);
-  if (!trust.verified) {
-    // Signature does not match cert. It may have
-    // been modified by an untrustworthy person.
-    // We should not sign this transaction proposal!
-    return false;
-  }
-
-  var details = pr.get('serialized_payment_details');
-  details = PayPro.PaymentDetails.decode(details);
-  var pd = new PayPro();
-  pd = pd.makePaymentDetails(details);
-
-  var outputs = pd.get('outputs');
-
-  if (tx.outs.length < outputs.length) {
-    // Outputs do not and cannot match.
-    return false;
-  }
-
-  // Figure out whether the user is supposed
-  // to decide the value of the outputs.
-  var undecided = false;
-  var total = bignum('0', 10);
-  for (var i = 0; i < outputs.length; i++) {
-    var output = outputs[i];
-    var amount = output.get('amount');
-    // big endian
-    var v = new Buffer(8);
-    v[0] = (amount.high >> 24) & 0xff;
-    v[1] = (amount.high >> 16) & 0xff;
-    v[2] = (amount.high >> 8) & 0xff;
-    v[3] = (amount.high >> 0) & 0xff;
-    v[4] = (amount.low >> 24) & 0xff;
-    v[5] = (amount.low >> 16) & 0xff;
-    v[6] = (amount.low >> 8) & 0xff;
-    v[7] = (amount.low >> 0) & 0xff;
-    total = total.add(bignum.fromBuffer(v, {
-      endian: 'big',
-      size: 1
-    }));
-  }
-  if (+total.toString(10) === 0) {
-    undecided = true;
-  }
-
-  for (var i = 0; i < outputs.length; i++) {
-    var output = outputs[i];
-
-    var amount = output.get('amount');
-    var script = {
-      offset: output.get('script').offset,
-      limit: output.get('script').limit,
-      buffer: new Buffer(new Uint8Array(output.get('script').buffer))
-    };
-
-    // Expected value
-    // little endian (keep this LE to compare with tx output value)
-    var ev = new Buffer(8);
-    ev[0] = (amount.low >> 0) & 0xff;
-    ev[1] = (amount.low >> 8) & 0xff;
-    ev[2] = (amount.low >> 16) & 0xff;
-    ev[3] = (amount.low >> 24) & 0xff;
-    ev[4] = (amount.high >> 0) & 0xff;
-    ev[5] = (amount.high >> 8) & 0xff;
-    ev[6] = (amount.high >> 16) & 0xff;
-    ev[7] = (amount.high >> 24) & 0xff;
-
-    // Expected script
-    var es = script.buffer.slice(script.offset, script.limit);
-
-    // Actual value
-    var av = tx.outs[i].v;
-
-    // Actual script
-    var as = tx.outs[i].s;
-
-    // XXX allow changing of script as long as address is same
-    // var as = es;
-
-    // XXX allow changing of script as long as address is same
-    // var network = pd.get('network') === 'main' ? 'livenet' : 'testnet';
-    // var es = bitcore.Address.fromScriptPubKey(new bitcore.Script(es), network)[0];
-    // var as = bitcore.Address.fromScriptPubKey(new bitcore.Script(tx.outs[i].s), network)[0];
-
-    if (undecided) {
-      av = ev = new Buffer([0]);
-    }
-
-    // Make sure the tx's output script and values match the payment request's.
-    if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
-      // Verifiable outputs do not match outputs of merchant
-      // data. We should not sign this transaction proposal!
-      return false;
-    }
-
-    // Checking the merchant data itself isn't technically
-    // necessary as long as we check the transaction, but
-    // we can do it for good measure.
-    var ro = txp.merchant.pr.pd.outputs[i];
-
-    // Actual value
-    // little endian (keep this LE to compare with the ev above)
-    var av = new Buffer(8);
-    av[0] = (ro.amount.low >> 0) & 0xff;
-    av[1] = (ro.amount.low >> 8) & 0xff;
-    av[2] = (ro.amount.low >> 16) & 0xff;
-    av[3] = (ro.amount.low >> 24) & 0xff;
-    av[4] = (ro.amount.high >> 0) & 0xff;
-    av[5] = (ro.amount.high >> 8) & 0xff;
-    av[6] = (ro.amount.high >> 16) & 0xff;
-    av[7] = (ro.amount.high >> 24) & 0xff;
-
-    // Actual script
-    var as = new Buffer(ro.script.buffer, 'hex')
-      .slice(ro.script.offset, ro.script.limit);
-
-    if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
-      return false;
-    }
-  }
-
-  return true;
 };
 
 /**
@@ -2243,7 +2092,7 @@ Wallet.prototype.subscribeToAddresses = function() {
 
   var addrInfo = this.publicKeyRing.getAddressesInfo();
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
-  log.debug('Subscribed to ' + addrInfo.length + ' addresses'); 
+  log.debug('Subscribed to ' + addrInfo.length + ' addresses');
 };
 
 /**
