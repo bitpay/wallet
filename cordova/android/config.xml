@@ -10,7 +10,6 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="AndroidLaunchMode" value="singleTop" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="backgroundColor" value="0x2C3E50" />
