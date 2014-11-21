@@ -13,5 +13,4 @@
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="backgroundColor" value="0x2C3E50" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="AndroidLaunchMode" value="singleTop" />
 </widget>
