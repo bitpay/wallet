@@ -43,7 +43,7 @@ RateService.prototype._fetchCurrencies = function() {
 
   var backoffSeconds = 5;
   var updateFrequencySeconds = 3600;
-  var rateServiceUrl = 'https://bitpaya.com/api/rates';
+  var rateServiceUrl = 'https://bitpay.com/api/rates';
 
   var retrieve = function () {
     log.info('Fetching exchange rates');
