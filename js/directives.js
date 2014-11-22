@@ -264,16 +264,6 @@ angular.module('copayApp.directives')
       }
     };
   })
-  .directive('openExternal', function() {
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs) {
-        element.bind('click', function() {
-          window.open('bitcoin:' + attrs.address, '_blank');
-        });
-      }
-    }
-  })
 // From https://gist.github.com/asafge/7430497
 .directive('ngReallyClick', [
 

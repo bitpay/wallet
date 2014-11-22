@@ -46,13 +46,6 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       });
     };
 
-    $scope.openFileDialog = function() {
-      if (window.cshell) {
-        return cshell.send('backup:import');
-      }
-      $scope.choosefile = !$scope.choosefile;
-    };
-
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {

@@ -140,7 +140,8 @@ header .alt-currency {
   right: 14px;
   width: 220px;
   list-style-type: none;
-  top: 47px;nt 
+  top: 47px; 
+  z-index: 10001;
 }
 
 .head .menu ul li.divider {
@@ -666,7 +667,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-container.top {
-  top: 20px;
+  top: 60px;
 }
 
 .dr-notification-container.center {
@@ -675,15 +676,14 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-wrapper {
-  width: 360px;
+  width: 400px;
   position: relative;
-  margin: 10px 0;
+  margin: 0 0 1px 0;
 }
 
 .dr-notification {
-  width: 360px;
+  width: 400px;
   clear: both;
-  height: 90px;
   overflow: hidden;
 }
 
@@ -694,17 +694,15 @@ input[type=number]::-webkit-outer-spin-button {
   border-radius: 20px;
   display: inline-block;
   padding: 5px;
-  font-size: 12px;
+  font-size: 18px;
   position: absolute;
-  right: 350px;
-  top: -8px;
+  right: 5px;
+  top: 5px;
   cursor: pointer;
   z-index: 10;
 }
 
 .dr-notification-image {
-  width: 80px;
-  height: 90px;
   float: left;
   display: block;
   font-size: 40px;
@@ -715,7 +713,7 @@ input[type=number]::-webkit-outer-spin-button {
 .dr-notification-image i {
   display: block;
   width: 100%;
-  padding-top: 20px;
+  padding: 20px;
 }
 .dr-notification-image img {
   margin: 15px;
@@ -724,15 +722,16 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-content {
-  padding-left: 90px;
-  padding-right: 10px;
+  padding-left: 80px;
+  padding-right: 30px;
   padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .dr-notification-title {
   color: white;
   padding: 0px;
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 0;
 }
 
@@ -740,8 +739,6 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #34495E;
   color: #eee;
   border: 1px solid #2C3E50;
-  opacity: 0.9;
-
 }
 .dr-notification-close-btn {
   background-color: #34495E;

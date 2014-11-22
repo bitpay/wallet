@@ -14,25 +14,6 @@ BackupService.prototype._download = function(ew, walletName, filename) {
     type: 'text/plain;charset=utf-8'
   });
 
-
-  // show a native save dialog if we are in the shell
-  // and pass the wallet to the shell to convert to node Buffer
-  if (window.cshell) {
-    return window.cshell.send('backup:download', {
-      name: walletName,
-      wallet: ew
-    });
-  }
-
-  // throw an email intent if we are in the mobile version
-  if (window.cordova) {
-    var name = wallet.name ? wallet.name + ' ' : '';
-    return window.plugin.email.open({
-      subject: 'Copay - ' + name + 'Wallet ' + 'Backup',
-      body: 'Here is the encrypted backup of the wallet ' + wallet.id,
-      attachments: ['base64:' + filename + '//' + btoa(ew)]
-    });
-  }
   this.notifications.success('Backup created', 'Encrypted backup file saved');
 
   // otherwise lean on the browser implementation
