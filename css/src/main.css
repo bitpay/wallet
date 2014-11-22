@@ -551,6 +551,7 @@ a.button-setup {
 .lh {line-height: 0;}
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
+.ma { margin: 0 auto;}
 
 .small {
   font-size: 60%;
@@ -1582,5 +1583,18 @@ a.text-warning:hover {color: #FD7262;}
 .loading-screen .spinner {
   margin-top: 20%;
   width: 100%;
+  text-align: center;
+}
+
+/*/////////////////////////////////////////////////*/
+
+.session-expired {
+  background: rgba(32,48,64,0.90);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  color: #fff;
+  z-index: 999;
+  padding-top: 20%;
   text-align: center;
 }
