@@ -38,6 +38,17 @@ function TxProposal(opts) {
   this.readonly = opts.readonly || null;
   this.merchant = opts.merchant || null;
   this.paymentProtocolURL = opts.paymentProtocolURL || null;
+
+  if (opts.creator) {
+    var now = Date.now();
+    var me = {};
+    me[opts.creator] = now;
+
+    this.signedBy = this.seenBy = me;
+    this.creator = opts.creator;
+    this.createdTs = now;
+  }
+
   this._sync();
 }
 
@@ -50,7 +61,7 @@ TxProposal.prototype._checkPayPro = function() {
   if (!this.merchant.outs || this.merchant.outs.length !== 1)
     throw new Error('PayPro: Unsopported number of outputs');
 
-  if (this.merchant.expires <  (this.getSent() ||  Date.now()/1000.) )
+  if (this.merchant.expires < (this.getSent() || Date.now() / 1000.))
     throw new Error('PayPro: Request expired');
 
   if (!this.merchant.total || !this.merchant.outs[0].amountSatStr || !this.merchant.outs[0].address)

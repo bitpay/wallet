@@ -1541,7 +1541,9 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
       var merchantData, err;
       try {
         merchantData = self.parsePaymentRequest(options, pr);
-      } catch (e) { err = e};
+      } catch (e) {
+        err = e
+      };
 
       log.debug('PayPro request data', merchantData);
       return cb(err, merchantData);
@@ -1831,7 +1833,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
       ack = paypro.makePaymentACK(data);
       return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
     })
-    .error(function(data, status ) {
+    .error(function(data, status) {
       log.debug('Sending to server was not met with a returned tx.');
       log.debug('XHR status: ' + status);
       self._processTxProposalSent(ntxid, function(err, txid) {
@@ -2136,7 +2138,7 @@ Wallet.prototype.createTx = function(opts, cb) {
   var self = this;
   var toAddress = opts.toAddress;
   var amountSat = opts.amountSat;
-  preconditions.checkArgument(!opts.comment || opts.comment.length <= 100);
+  var comment = opts.comment;
   var url = opts.url;
 
   if (url && !opts.merchantData) {
@@ -2148,7 +2150,7 @@ Wallet.prototype.createTx = function(opts, cb) {
       if (err) return cb(err);
       opts.merchantData = merchantData;
       opts.amountSat = merchantData.outs[0].address;
-      opts.toAddress =  merchantData.outs[0].amount;
+      opts.toAddress = merchantData.outs[0].amount;
       self.createTx(opts, cb);
     });
   };
@@ -2158,18 +2160,20 @@ Wallet.prototype.createTx = function(opts, cb) {
   this.getUnspent(function(err, safeUnspent) {
     if (err) return cb(new Error('Could not get list of UTXOs'));
 
-    var ntxid;
+    var ntxid, txp;
     try {
-      var txp = self.createTxProposal(toAddress, amountSat, safeUnspent, opts.builderOpts);
-
-      if (opts.merchantData)
-        txp.addMerchantData(opts.merchantData);
-
-      var ntxid = self.addNewTxProposal(txp);
-      log.debug('TXP Added: ', ntxid);
+      txp = self.createTxProposal(toAddress, amountSat, comment, safeUnspent, opts.builderOpts);
     } catch (e) {
+      log.error(e);
       return cb(e);
     }
+
+    if (opts.merchantData)
+      txp.addMerchantData(opts.merchantData);
+
+    var ntxid = self.txProposals.add(txp);
+    log.debug('TXP Added: ', ntxid);
+
 
     if (!ntxid) {
       return cb(new Error('Error creating the transaction'));
@@ -2194,10 +2198,11 @@ var sanitize = function(address) {
  * @desc Create a transaction proposal
  * @TODO: Document more
  */
-Wallet.prototype.createTxProposal = function(toAddress, amountSat, utxos, builderOpts) {
+Wallet.prototype.createTxProposal = function(toAddress, amountSat, comment, utxos, builderOpts) {
   preconditions.checkArgument(toAddress);
   preconditions.checkArgument(amountSat);
   preconditions.checkArgument(_.isArray(utxos));
+  preconditions.checkArgument(!comment || comment.length <= 100, 'Comment too long');
   builderOpts = builderOpts || {};
 
   var pkr = this.publicKeyRing;
@@ -2257,31 +2262,10 @@ Wallet.prototype.createTxProposal = function(toAddress, amountSat, utxos, builde
     inputChainPaths: inputChainPaths,
     comment: comment,
     builder: b,
+    creator: this.getMyCopayerId(),
   });
 };
 
-
-/* addNewTxProposal
- * adds a transaction proposal to the list. Sets current copayer and creation metadata.
- *
- * @param {txp} Transaction Proposal Object
- * @desc returns normalized transaction ID
- * @param {ntxid}
- */
-Wallet.prototype.addNewTxProposal = function(txp) {
-  var myId = this.getMyCopayerId();
-  var now = Date.now();
-  var me = {};
-  me[myId] = now;
-
-  // Add metadata to TxP
-  txp.signedBy = txp.seenBy = me;
-  txp.creator = myId;
-  txp.createdTs = now;
-
-  var ntxid = this.txProposals.add(txp);
-  return ntxid;
-};
 
 /**
  * @desc Updates all the indexes for the current publicKeyRing. This scans
