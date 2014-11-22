@@ -18,14 +18,6 @@ angular.module('copayApp.controllers').controller('ImportController',
       $scope.$digest();
     }
 
-    $scope.openFileDialog = function() {
-      if (window.cshell) {
-        return cshell.send('backup:import');
-      }
-      $scope.choosefile = !$scope.choosefile;
-    };
-
-
     $scope._doImport = function(encryptedObj, password) {
       updateStatus('Importing wallet - Procesing backup...');
 

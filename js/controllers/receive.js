@@ -25,12 +25,6 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     $scope.openAddressModal = function(address) {
       var ModalInstanceCtrl = function($scope, $modalInstance, address) {
         $scope.address = address;
-        $scope.isMobile = !!window.cordova;
-
-        $scope.mobileCopy = function(address) {
-          window.cordova.plugins.clipboard.copy(address);
-          window.plugins.toast.showShortBottom('Copied to clipboard');
-        };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
