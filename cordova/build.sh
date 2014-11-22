@@ -67,19 +67,8 @@ if [ ! -d $PROJECT ]; then
   fi
 
   echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
-  cordova plugin add https://github.com/Initsogar/cordova-webintent.git
-  checkOK
-
+  
   cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
-  checkOK
-
-  cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
-  checkOK
-
-  cordova plugin add de.appplant.cordova.plugin.email-composer && cordova prepare
-  checkOK
-
-  cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git && cordova prepare
   checkOK
 
   cordova plugin add org.apache.cordova.splashscreen
@@ -88,18 +77,16 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add org.apache.cordova.statusbar
   checkOK
 
-  cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
-  checkOK
 fi
 
 echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
 cd $BUILDDIR/..
-grunt
+grunt dist
 checkOK
 
 echo "${OpenColor}${Green}* Coping files...${CloseColor}"
 cd $BUILDDIR/..
-cp -af {css,font,img,js,lib,sound,views,config.js,version.js,init.js} $PROJECT/www
+cp -af dist/web/** $PROJECT/www
 checkOK
 
 sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' charset='utf-8' src='cordova.js'><\/script>/g" index.html > $PROJECT/www/index.html
@@ -115,11 +102,8 @@ checkOK
 cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
 checkOK
 
-cp android/config.xml $PROJECT/platforms/android/res/xml/config.xml
-checkOK
-
-cp android/project.properties $PROJECT/platforms/android/project.properties
-checkOK
+#cp android/project.properties $PROJECT/platforms/android/project.properties
+#checkOK
 
 cp -R android/res/* $PROJECT/platforms/android/res
 checkOK
