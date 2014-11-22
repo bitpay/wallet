@@ -115,7 +115,6 @@ module.exports = function(grunt) {
       vendors: {
         src: [
           'lib/mousetrap/mousetrap.min.js',
-          'js/shell.js', // shell must be loaded before moment due to the way moment loads in a commonjs env
           'lib/moment/min/moment.min.js',
           'lib/qrcode-generator/js/qrcode.js',
           'lib/lodash/dist/lodash.js',

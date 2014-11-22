@@ -14,13 +14,4 @@ function onDeviceReady() {
 
   }, false);
 
-
-  function handleBitcoinURI(url) {
-    if (!url) return;
-    window.location = '#!/uri-payment/' + url;
-  }
-
-  window.plugins.webintent.getUri(handleBitcoinURI);
-  window.plugins.webintent.onNewIntent(handleBitcoinURI);
-  window.handleOpenURL = handleBitcoinURI;
 }
