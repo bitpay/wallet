@@ -29,10 +29,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
 
     $scope.downloadHistory = function() {
-      if (window.cordova) {
-        log.info('Not available on mobile');
-        return;
-      }
       var w = $rootScope.wallet;
       if (!w) return;
 

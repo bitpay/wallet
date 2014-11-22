@@ -115,7 +115,6 @@ module.exports = function(grunt) {
       vendors: {
         src: [
           'lib/mousetrap/mousetrap.min.js',
-          'js/shell.js', // shell must be loaded before moment due to the way moment loads in a commonjs env
           'lib/moment/min/moment.min.js',
           'lib/qrcode-generator/js/qrcode.js',
           'lib/lodash/dist/lodash.js',
@@ -201,6 +200,30 @@ module.exports = function(grunt) {
         }
       },
     },
+    copy: {
+      dist: {
+        files: [
+          {
+            src: [
+              'index.html',
+              'init.js',
+              'config.js',
+              'css/vendors.min.css',
+              'css/copay.min.css',
+              'js/copayBundle.js',
+              'js/copayMain.js',
+              'lib/vendors.js',
+              'lib/angularjs-all.js',
+              'font/**',
+              'img/**',
+              'sound/**',
+              'views/**'
+            ], 
+            dest: 'dist/web/'
+          }
+        ],
+      },
+    },
     jsdoc: {
       dist: {
         src: ['js/models/*.js', 'js/plugins/*.js'],
@@ -216,6 +239,7 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
+  grunt.registerTask('dist', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify', 'copy:dist']);
   grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('docs', ['jsdoc']);

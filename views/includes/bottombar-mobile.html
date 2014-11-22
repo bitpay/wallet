@@ -1,0 +1,13 @@
+<div class="row" ng-controller="SidebarController">
+    <div class="medium-3 small-3 columns text-center bottombar-item" data-ng-repeat="item in menu" ui-route="{{item.link}}" ng-if="item.link!='more'">
+      <a href="#!/{{item.link}}" ng-class="{active: isActive(item)}"> 
+        <i class="size-24 {{item.icon}} db"></i> 
+        <div class="size-10">
+          {{item.title}} 
+          <span class="label alert round" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
+        </div>
+      </a>
+    </div> 
+
+</div>
+
