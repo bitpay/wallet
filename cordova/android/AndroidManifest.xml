@@ -8,12 +8,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:label="Send Bitcoins">
-              <data android:scheme="bitcoin"/>
-              <action android:name="android.intent.action.VIEW" />
-              <category android:name="android.intent.category.BROWSABLE" />
-              <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity android:clearTaskOnLaunch="true" android:configChanges="orientation|keyboardHidden" android:exported="false" android:name="com.google.zxing.client.android.CaptureActivity" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -33,7 +27,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <provider android:authorities="com.bitpay.copay.plugin.emailcomposer.attachmentprovider" android:name="de.appplant.cordova.plugin.emailcomposer.AttachmentProvider" />
     </application>
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.CAMERA" />

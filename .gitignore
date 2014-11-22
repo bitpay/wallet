@@ -75,6 +75,7 @@ shell/scripts/build
 dist/darwin
 dist/linux
 dist/windows
+dist/web
 dist/*.dmg
 dist/*.tar.gz
 dist/*.exe
