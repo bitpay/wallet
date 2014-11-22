@@ -85,6 +85,11 @@
 
         <section ng-class="{'main':$root.iden && !$root.starting}" ng-view></section>
 
+        <div class="bottom-bar" ng-if="$root.wallet &&
+          $root.wallet.isReady() && !$root.wallet.isLocked">
+          <div ng-include="'views/includes/bottombar-mobile.html'"></div>
+        </div>
+
         <a class="exit-off-canvas"></a>
 
       </div>
