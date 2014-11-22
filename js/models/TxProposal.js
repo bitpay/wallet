@@ -44,9 +44,6 @@ function TxProposal(opts) {
 TxProposal.prototype._checkPayPro = function() {
   if (!this.merchant) return;
 
-console.log('[TxProposal.js.46]',
-  this.paymentProtocolURL , this.merchant.request_url);
-
   if (this.paymentProtocolURL !== this.merchant.request_url)
     throw new Error('PayPro: Mismatch on Payment URLs');
 
@@ -59,12 +56,12 @@ console.log('[TxProposal.js.46]',
   if (!this.merchant.total || !this.merchant.outs[0].amountSatStr || !this.merchant.outs[0].address)
     throw new Error('PayPro: Missing amount');
 
-  if (this.builder.vanilla.outs.length != 1)
+  var outs = JSON.parse(this.builder.vanilla.outs);
+  if (_.size(outs) != 1)
     throw new Error('PayPro: Wrong outs in Tx');
 
-
   var ppOut = this.merchant.outs[0];
-  var txOut = this.builder.vanilla.outs[0];
+  var txOut = outs[0];
 
   if (ppOut.address !== txOut.address)
     throw new Error('PayPro: Wrong out address in Tx');

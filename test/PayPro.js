@@ -137,11 +137,7 @@ describe('PayPro (in Wallet) model', function() {
       var w = cachedCreateW2();
       unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
       unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
-      w.getUnspent = function(cb) {
-        return setTimeout(function() {
-          return cb(null, unspentTest, unspentTest);
-        }, 1);
-      };
+      w.getUnspent = sinon.stub().yields(null, unspentTest, unspentTest);
       return w;
     };
 

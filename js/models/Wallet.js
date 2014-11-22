@@ -1328,10 +1328,14 @@ Wallet.prototype.getTxProposals = function() {
   var copayers = this.getRegisteredCopayerIds();
   for (var ntxid in this.txProposals.txps) {
     var txp = this.txProposals.getTxProposal(ntxid, copayers);
+
     txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
     txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
     txp.finallyRejected = this.totalCopayers - txp.rejectCount < this.requiredCopayers;
     txp.isPending = !txp.finallyRejected && !txp.sentTxid;
+
+    // si no gastada
+    // y si no esta expirada;
 
     if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
       ret.push(txp);
@@ -1682,21 +1686,17 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   };
 
   return this.getUnspent(function(err, safeUnspent, unspent) {
+
     if (options.fetch) {
       if (!unspent || !unspent.length) {
         return cb(new Error('No unspent outputs available.'));
       }
 
+      var err;
       try {
         self.createPaymentTxSync(options, merchantData, safeUnspent);
-      } catch (e) {
-        var msg = e.message || '';
-        if (msg.indexOf('not enough unspent tx outputs to fulfill')) {
-          e = new Error('No unspent outputs available.');
-          return cb(e);
-        }
-      }
-      return cb(null, merchantData, pr);
+      } catch (e) { err = e;}
+      return cb(err, merchantData, pr);
     }
 
     var ntxid = self.createPaymentTxSync(options, merchantData, safeUnspent);
@@ -1972,18 +1972,20 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
     }));
   });
 
-  if (Object.keys(outs) > 1)
+  // TODO, for now we only support PayPro with 1 output.
+  if (_.size(outs) !== 1)
     throw new Error('PayPro: Unsupported outputs');
 
-  merchantData.outs = outs;
+  var out = _.pairs(outs)[0];
+  merchantData.outs = [{
+    address: out[0],
+    amountSatStr: out[1].toString(10),
+  }];
   merchantData.total = merchantData.total.toString(10);
 
   var b = new Builder(opts)
     .setUnspent(unspent)
-    .setOutputs({
-      address: _.keys(outs)[0],
-      amountSatStr: _.values(outs)[0].toString(10),
-    });
+    .setOutputs(merchantData.outs);
 
   merchantData.pr.pd.outputs.forEach(function(output, i) {
     var script = {
@@ -2031,7 +2033,6 @@ Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) 
   var meSeen = {};
   if (priv) meSeen[myId] = now;
 
-  console.log('[Wallet.js.2043]', options, merchantData); //TODO
   var ntxid = this.txProposals.add(new TxProposal({
     inputChainPaths: inputChainPaths,
     signedBy: me,
