@@ -183,5 +183,41 @@
     margin-top: 10px;
   }
 
+  /* notifications */
+
+  .dr-notification {
+    width: 100%;
+  }
+
+  .dr-notification-container {
+    width: 100%;
+  }
+
+  .dr-notification-container.top {
+    top: 2.813rem;
+  }
+
+  .dr-notification-wrapper {
+    width: 100%;
+    margin: 0;
+  }
+
+  .dr-notification-close-btn {
+    font-size: 20px;
+  }
+
+  .dr-notification-image {
+    font-size: 30px;
+  }
+
+  .dr-notification-text {
+    font-size: 10px;
+    line-height: 100%;
+  }
+
+  .dr-notification-image i {
+    padding: 15px;
+  }
+
 }
 

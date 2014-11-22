@@ -1,22 +1,21 @@
 <div class="text-center">
-  <qrcode size="220" data="bitcoin:{{address.address}}"></qrcode>
+  <qrcode size="220" data="{{address.address}}"></qrcode>
 
-  <div class="m10t">
-    <h4 class="size-12">{{address.address}} <span class="btn-copy" clip-copy="address.address"></span></h4>
-    <span ng-if="$root.updatingBalance">
-      <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-    </span>
-    <p class="m15b size-18" ng-if="!$root.updatingBalance">
-      {{address.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+  <div class="m10t" ng-init="label = $root.wallet.addressBook[address.address].label">
+    <div class="size-12">
+      {{address.address}} <small class="label" ng-show="address.isChange">change</small>
+    </div> 
+    <b class="db m5t" ng-show="label">
+      ({{label}})
+    </b>
+    <p class="m10t size-18">
+      <span ng-show="$root.updatingBalance">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+      </span>
+      <span ng-show="!$root.updatingBalance">
+        {{address.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}
+      </span>
     </p>
-    <div class="small-10 columns small-centered">
-      <button class="m15t button secondary hide-for-large-up" ng-show="isMobile" ng-click="mobileCopy(address.address)">
-        <i class="fi-link">&nbsp;</i> <span translate>Copy to clipboard</span>
-      </button>
-      <a class="m15t secondary" open-external address="{{address.address}}">
-        <span translate>Open in external application</span>
-      </a>
-    </div>
   </div>
 </div>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
