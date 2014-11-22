@@ -39,6 +39,15 @@
     background: #3C4E60;
   }
 
+  .bottom-bar {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 5;
+    background: #3C4E60;
+  }
+
   .left-off-canvas-menu {
     background: #2C3E50;
   }
@@ -87,6 +96,17 @@
 
   ul.off-canvas-list li a i {
     opacity: 0.6;
+  }
+
+  .bottombar-item a {
+    color: #fff;
+    padding: 4px 0;
+    display: block;
+  }
+
+  .bottombar-item a.active {
+    color: #000;
+    background-color: #fff;
   }
 
   .box-founds {
