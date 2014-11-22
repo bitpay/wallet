@@ -1,1 +1,0 @@
-This is the destination directory for the built atom-shell binaries and the files used to create them
