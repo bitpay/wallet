@@ -187,3 +187,13 @@ is named *peerId*.
 Registering with a hash avoids disclosing the copayerId to parties outside of the WR.
 Peer discovery is accomplished using only the hashes of the WR members' copayerIds. All members of the WR
 know the full copayerIds of all the other members of the WR.
+
+Bitcore
+-------
+
+Copay uses the Javascript library Bitcore for Bitcoin related functions. Bitcore should be built this way:
+```
+var cmd = `node util/build_bitcore.js`
+cd <BITCORE_HOME>
+node $cmd
+```
