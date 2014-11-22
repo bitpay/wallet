@@ -34,10 +34,10 @@ function FakeBuilder() {
 
   this.vanilla = {
     scriptSig: [VALID_SCRIPTSIG_BUF],
-    outs: [{
+    outs: JSON.stringify([{
       address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
       amountSatStr: '123',
-    }]
+    }]),
  
   }
 }
