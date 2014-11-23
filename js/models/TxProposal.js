@@ -11,6 +11,7 @@ var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
+var TX_MAX_SIZE_KB = 50;
 var VERSION = 1;
 var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment', 'paymentProtocolURL'];
 
@@ -44,10 +45,14 @@ function TxProposal(opts) {
     var me = {};
     me[opts.creator] = now;
 
-    this.signedBy = me;
-    this.signedBy = _.clone(me);
+    this.seenBy = me;
+    this.signedBy = {};
     this.creator = opts.creator;
     this.createdTs = now;
+    if (opts.signWith) {
+      if (!this.sign(opts.signWith, opts.creator))
+        throw new Error('Could not sign generated tx');
+    }
   }
 
   this._sync();
@@ -99,8 +104,6 @@ TxProposal.prototype.sign = function(keys, signerId) {
   return signaturesAdded;
 };
 
-
-
 TxProposal.prototype._check = function() {
 
   if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {
@@ -108,6 +111,11 @@ TxProposal.prototype._check = function() {
   }
 
   var tx = this.builder.build();
+
+  var txSize = tx.getSize();
+  if (txSize / 1024 > TX_MAX_SIZE_KB)
+    throw new Error('BIG: Invalid TX proposal. Too big: ' + txSize + ' bytes');
+
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
@@ -301,17 +309,6 @@ TxProposal._infoFromRedeemScript = function(s) {
   };
 };
 
-TxProposal.prototype.mergeBuilder = function(incoming) {
-  var b0 = this.builder;
-  var b1 = incoming.builder;
-
-  var before = JSON.stringify(b0.toObj());
-  b0.merge(b1);
-  var after = JSON.stringify(b0.toObj());
-  return after !== before;
-};
-
-
 TxProposal.prototype.getSeen = function(copayerId) {
   return this.seenBy[copayerId];
 };
@@ -421,9 +418,14 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
 
 // merge will not merge any metadata.
 TxProposal.prototype.merge = function(incoming) {
-  var hasChanged = this.mergeBuilder(incoming);
+  // Note that all inputs must have the same number of signatures, so checking
+  // one (0) is OK.
+  var before = this._inputSigners[0].length;
+  this.builder.merge(incoming.builder);
   this._sync();
-  return hasChanged;
+
+  var after = this._inputSigners[0].length;
+  return after !== before;
 };
 
 //This should be on bitcore / Transaction
