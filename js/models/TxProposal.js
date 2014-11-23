@@ -13,7 +13,7 @@ var preconditions = require('preconditions').instance();
 
 var TX_MAX_SIZE_KB = 50;
 var VERSION = 1;
-var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment', 'paymentProtocolURL'];
+var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment', 'paymentProtocolURL', 'paymentAckMemo'];
 
 
 function TxProposal(opts) {
@@ -38,6 +38,7 @@ function TxProposal(opts) {
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
   this.merchant = opts.merchant || null;
+  this.paymentAckMemo = null;
   this.paymentProtocolURL = opts.paymentProtocolURL || null;
 
   if (opts.creator) {
