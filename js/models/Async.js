@@ -208,9 +208,6 @@ Network.prototype._onMessage = function(enc) {
     return;
   }
 
-  log.info('Network message: ', payload.type);
-  log.debug('Message payload:', payload);
-
   var self = this;
   switch (payload.type) {
     case 'hello':

@@ -178,16 +178,6 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
 };
 
 
-TxProposals.prototype.reject = function(ntxid, copayerId) {
-  var txp = this.get(ntxid);
-  txp.setRejected(copayerId);
-};
-
-TxProposals.prototype.seen = function(ntxid, copayerId) {
-  var txp = this.get(ntxid);
-  txp.setSeen(copayerId);
-};
-
 //returns the unspent txid-vout used in PENDING Txs
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
