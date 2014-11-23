@@ -24,6 +24,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.isRateAvailable = false;
     $scope.rateService = rateService;
+    $scope.showScanner = false;
 
 
     rateService.whenAvailable(function() {
@@ -105,31 +106,17 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var msg = err.toString();
       if (msg.match('BIG'))
-        msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts.'
+        msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts'
 
       if (msg.match('totalNeededAmount'))
-        msg = 'Not enough funds.'
+        msg = 'Not enough funds'
 
-      var message = 'The transaction' + (w.isShared() ? ' proposal' : '') + ' could not be created: ' + msg;
+      var message = 'The transaction' + (w.isShared() ? ' proposal' : '') +
+        ' could not be created: ' + msg;
+
       $scope.error = message;
       $scope.loading = false;
       $scope.loadTxs();
-    };
-
-    $scope._afterSend = function(err, ntxid, merchantData) {
-      $scope.loading = false;
-
-      if (err) 
-        return $scope._showError(err);
-
-
-      if (w.requiresMultipleSignatures()) {
-        notification.success('Success', 'The transaction proposal created');
-        $scope.loadTxs();
-      } else {
-        $scope.send(ntxid);
-      }
-      $rootScope.pendingPayment = null;
     };
 
     $scope.submitForm = function(form) {
@@ -160,16 +147,21 @@ angular.module('copayApp.controllers').controller('SendController',
           merchant: $rootScope.merchant.request_url
         };
       }
-      // reset fields
-      $scope.address = $scope.amount = $scope.commentText = null;
-      form.address.$pristine = form.amount.$pristine = true;
-
-      w.createTx({
-        toAddress: address, 
-        amountSat: amount, 
-        comment: commentText, 
+      w.spend({
+        toAddress: address,
+        amountSat: amount,
+        comment: commentText,
         url: (payInfo && payInfo.merchant) ? payInfo.merchant : null,
-      }, $scope._afterSend);
+      }, function(err, txid, status) {
+        // reset fields
+        $scope.address = $scope.amount = $scope.commentText = null;
+        form.address.$pristine = form.amount.$pristine = true;
+        $rootScope.pendingPayment = null;
+        if (err) return $scope._showError(err);
+
+        $scope.notifyStatus(status);
+        $scope.loadTxs();
+      });
     };
 
     // QR code Scanner
@@ -267,6 +259,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.openScanner = function() {
       if (window.cordova) return $scope.scannerIntent();
 
+console.log('[send.js.260] OPENN'); //TODO
       $scope.showScanner = true;
 
       // Wait a moment until the canvas shows
@@ -371,22 +364,24 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.amount = $rootScope.topAmount;
     };
 
+    $scope.notifyStatus = function(status) {
+      if (status == copay.Wallet.TX_BROADCASTED)
+        notification.success('Success', 'Transaction broadcasted!');
+      else if (status == copay.Wallet.TX_PROPOSAL_SENT)
+        notification.success('Success', 'Transaction proposal created');
+      else if (status == copay.Wallet.TX_SIGNED)
+        notification.success('Success', 'Transaction proposal was signed');
+      else
+        notification.error('Error', 'Unknown error occured');
+    };
+
 
     $scope.send = function(ntxid, cb) {
       $scope.error = $scope.success = null;
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
-      w.sendTx(ntxid, function(txid, merchantData) {
-        if (!txid) {
-          notification.error('Error', 'There was an error sending the transaction');
-        } else {
-          if (!merchantData) {
-            notification.success('Success', 'Transaction broadcasted!');
-          } else {
-            notification.success('Success', 'Payment sent. ' + merchantData.ack.memo);
-          }
-        }
-
+      w.broadcastTx(ntxid, function(err, txid, status) {
+        $scope.notifyStatus(status);
         if (cb) return cb();
         else $scope.loadTxs();
       });
@@ -396,20 +391,10 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $scope.error = $scope.success = null;
 
-      try {
-        w.sign(ntxid);
-      } catch (e) {
-        notification.error('Error', 'There was an error signing the transaction');
+      w.signAndSend(ntxid, function(err, id, status) {
+        $scope.notifyStatus(status);
         $scope.loadTxs();
-        return;
-      }
-
-      var p = w.txProposals.getTxProposal(ntxid);
-      if (p.builder.isFullySigned()) {
-        $scope.send(ntxid);
-      } else {
-        $scope.loadTxs();
-      }
+      });
     };
 
     $scope.reject = function(ntxid) {
@@ -417,7 +402,6 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.txAlertCount = 0;
       w.reject(ntxid);
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
-      $scope.loading = false;
       $scope.loadTxs();
     };
 
@@ -510,7 +494,9 @@ angular.module('copayApp.controllers').controller('SendController',
       }, 10 * 1000);
 
       // Payment Protocol URI (BIP-72)
-      $scope.wallet.fetchPaymentRequest({url: uri.merchant}, function(err, merchantData) {
+      $scope.wallet.fetchPaymentRequest({
+        url: uri.merchant
+      }, function(err, merchantData) {
         if (!timeout) return;
         clearTimeout(timeout);
 
