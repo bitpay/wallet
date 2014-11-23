@@ -24,6 +24,7 @@ var modules = [
   'ngIdle',
   'gettext',
   'ui.gravatar',
+  'ngTouch',
   'copayApp.filters',
   'copayApp.services',
   'copayApp.controllers',

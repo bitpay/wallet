@@ -212,6 +212,10 @@ header .alt-currency {
   display: none;
 }
 
+.bottom-bar {
+  display: none;
+}
+
 a {
   color: #3498DB;
 }
