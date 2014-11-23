@@ -82,6 +82,24 @@ TxProposal.prototype._checkPayPro = function() {
 
 };
 
+
+TxProposal.prototype.isFullySigned = function() {
+  return txp.builder && txp.builder.isFullySigned();
+};
+
+TxProposal.prototype.sign = function(keys, signerId) {
+  var before = txp.countSignatures();
+  txp.builder.sign(keys);
+
+  var signaturesAdded = txp.countSignatures() > before;
+  if (signaturesAdded){
+    txp.signedBy[signerId] = Date.now();
+  }
+  return signturesAdded;
+};
+
+
+
 TxProposal.prototype._check = function() {
 
   if (this.builder.signhash && this.builder.signhash !== Transaction.SIGHASH_ALL) {

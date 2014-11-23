@@ -207,7 +207,9 @@ Network.prototype._onMessage = function(enc) {
     log.debug('Ignoring trailing message. Ts:', enc.ts);
     return;
   }
-  log.debug('Async: receiving ' + JSON.stringify(payload));
+
+  log.info('Network message: ', payload.type);
+  log.debug('Message payload:', payload);
 
   var self = this;
   switch (payload.type) {
@@ -239,6 +241,7 @@ Network.prototype._onMessage = function(enc) {
 
 Network.prototype._setupConnectionHandlers = function(opts, cb) {
   preconditions.checkState(this.socket);
+  log.debug('setting up connection', opts);
   var self = this;
 
   self.socket.on('connect_error', function(m) {
@@ -260,7 +263,7 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
     if (fromTs) {
       self.ignoreMessageFromTs = fromTs;
     }
-    log.info('Async: synchronizing from: ',fromTs);
+    log.info('Async: syncing from: ', fromTs);
     self.socket.emit('sync', fromTs);
     self.started = true;
   });
@@ -397,8 +400,6 @@ Network.prototype.send = function(dest, payload, cb) {
     var to = dest[ii];
     if (to == this.copayerId)
       continue;
-
-    log.debug('SEND to: ' + to, this.copayerId, JSON.stringify(payload));
 
     var message = this.encode(to, payload);
     this.socket.emit('message', message);

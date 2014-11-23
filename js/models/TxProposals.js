@@ -205,4 +205,22 @@ TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   return ret;
 };
 
+/**
+ * purge
+ *
+ * @param deleteAll
+ * @return {undefined}
+ */
+TxProposals.prototype.purge = function(deleteAll, maxRejectCount) {
+  var m = _.size(this.txps);
+
+  if (deleteAll) {
+    this.deleteAll();
+  } else {
+    this.deletePending(maxRejectCount);
+  }
+  var n = _.size(this.txps);
+  return m - n;
+};
+
 module.exports = TxProposals;
