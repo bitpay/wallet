@@ -136,6 +136,10 @@ angular.module('copayApp.services')
         root.updateTxsAndBalance(w);
       });
 
+      w.on('paymentACK', function(memo) {
+        notification.success('Payment Acknowledged', memo);
+      });
+
       w.on('txProposalEvent', function(e) {
 
         root.updateTxsAndBalance(w);

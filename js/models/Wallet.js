@@ -1505,13 +1505,10 @@ Wallet.prototype.broadcastTx = function(ntxid, cb) {
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
 
-  log.info('Wallet:' + this.id + ' Broadcasting Transaction ntxid:' + ntxid);
 
   var serializedTx = tx.serialize();
 
-  if (txp.merchant) {
-    this.sendPaymentTx(ntxid, serializedTx);
-  }
+  log.info('Wallet:' + this.id + ' Broadcasting Transaction ntxid:' + ntxid);
 
   var txHex = serializedTx.toString('hex');
   log.debug('\tRaw transaction: ', txHex);
@@ -1522,10 +1519,17 @@ Wallet.prototype.broadcastTx = function(ntxid, cb) {
 
     if (txid) {
       log.debug('Wallet:' + self.getName() + ' broadcasted a TX. BITCOIND txid:', txid);
-      var txp = self.txProposals.get(ntxid);
+
       txp.setSent(txid);
       self.sendTxProposal(ntxid);
       self.emitAndKeepAlive('txProposalsUpdated');
+
+      // PAYPRO: Payment message is optional, only if payment_url is set
+      // This is async. and will notify and update txp async.
+      if (txp.merchant && txp.merchant.pr.pd.payment_url) {
+        self.sendPaymentTx(ntxid, serializedTx);
+      }
+
       return cb(null, txid, Wallet.TX_BROADCASTED);
     } else {
       log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
@@ -1732,6 +1736,58 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
 };
 
 /**
+ * _getPayProRefundOutputs
+ * Create refund address for PayPro. 
+ * Uses current transaction's change address.
+ *
+ * @param txp
+ * @return {undefined}
+ */
+Wallet.prototype._getPayProRefundOutputs = function(txp) {
+  var pkr = this.publicKeyRing;
+  var index = pkr.getHDParams(this.publicKey);
+  var amount = +txp.merchant.total.toString(10);
+
+  var output = new PayPro.Output();
+  var script = pkr.getScriptPubKeyHex(index.changeIndex, true, this.pubkey);
+  output.set('script',new Buffer(script, 'hex'));
+  output.set('amount', amount);
+  return [output];
+};
+
+
+Wallet.prototype._createPaymentTx = function(txp, txHex) {
+
+  var refund_outputs = this._getPayProRefundOutputs(txp);
+
+  // We send this to the serve after receiving a PaymentRequest
+  var pay = new PayPro();
+  pay = pay.makePayment();
+
+  var merchant_data = txp.merchant.pr.pd.merchant_data;
+  if (merchant_data) {
+    merchant_data = new Buffer(merchant_data, 'hex');
+    pay.set('merchant_data', merchant_data);
+  }
+
+  pay.set('transactions', [txHex]);
+  pay.set('refund_to', refund_outputs);
+
+  // Unused for now
+  // options.memo = '';
+  // pay.set('memo', options.memo);
+
+  pay = pay.serialize();
+  var buf = new ArrayBuffer(pay.length);
+  var view = new Uint8Array(buf);
+  for (var i = 0; i < pay.length; i++) {
+    view[i] = pay[i];
+  }
+
+  return view;
+};
+
+/**
  * @desc Send a payment transaction to a server, complying with BIP70
  *
  * @param {string} ntxid - the transaction proposal id
@@ -1741,73 +1797,10 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
  */
 Wallet.prototype.sendPaymentTx = function(ntxid, txHex) {
   var self = this;
-
-  var refund_outputs = [];
-  options.refund_to = this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
-
-  if (options.refund_to) {
-    var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
-      // XXX reverse endianness to work around bignum bug:
-      var txv = tx.outs[i].v;
-      var v = new Buffer(8);
-      for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
-      return total.add(bignum.fromBuffer(v, {
-        endian: 'big',
-        size: 1
-      }));
-    }, bignum('0', 10));
-
-    var rpo = new PayPro();
-    rpo = rpo.makeOutput();
-
-    // XXX Bad - the amount *has* to be a Number in protobufjs
-    // Possibly does not matter - server can ignore the amount anyway.
-    rpo.set('amount', +total.toString(10));
-
-    rpo.set('script',
-      Buffer.concat([
-        new Buffer([
-          118, // OP_DUP
-          169, // OP_HASH160
-          76, // OP_PUSHDATA1
-          20, // number of bytes
-        ]),
-        // needs to be ripesha'd
-        bitcore.util.sha256ripe160(options.refund_to),
-        new Buffer([
-          136, // OP_EQUALVERIFY
-          172 // OP_CHECKSIG
-        ])
-      ])
-    );
-
-    refund_outputs.push(rpo.message);
-  }
-
-  // We send this to the serve after receiving a PaymentRequest
-  var pay = new PayPro();
-  pay = pay.makePayment();
-  var merchant_data = txp.merchant.pr.pd.merchant_data;
-  if (merchant_data) {
-    merchant_data = new Buffer(merchant_data, 'hex');
-    pay.set('merchant_data', merchant_data);
-  }
-  pay.set('transactions', [serializedTx]);
-  pay.set('refund_to', refund_outputs);
-
-  // Unused for now
-  // options.memo = '';
-  // pay.set('memo', options.memo);
-
-  pay = pay.serialize();
-  log.debug('Sending Payment Message:', pay.toString('hex'));
-
-  var buf = new ArrayBuffer(pay.length);
-  var view = new Uint8Array(buf);
-  for (var i = 0; i < pay.length; i++) {
-    view[i] = pay[i];
-  }
-
+  var txp  = this.txProposals.get(ntxid);
+  var data = this._createPaymentTx(txp, txHex);
+ 
+  log.debug('Sending Payment Message to merchant server');
   var postInfo = {
     method: 'POST',
     url: txp.merchant.pr.pd.payment_url,
@@ -1821,7 +1814,7 @@ Wallet.prototype.sendPaymentTx = function(ntxid, txHex) {
     },
     // Technically how this should be done via XHR (used to
     // be the ArrayBuffer, now you send the View instead).
-    data: view,
+    data: data,
     responseType: 'arraybuffer'
   };
 
@@ -1832,6 +1825,8 @@ Wallet.prototype.sendPaymentTx = function(ntxid, txHex) {
       var ack = paypro.makePaymentACK(data);
       var memo = ack.get('memo');
       log.debug('Payment Acknowledged!: %s', memo);
+      txp.paymentAckMemo = memo;
+      self.sendTxProposal(ntxid);
       self.emitAndKeepAlive('paymentACK', memo);
     })
     .error(function(data, status) {
@@ -2131,13 +2126,13 @@ Wallet.prototype.spend = function(opts, cb) {
 };
 
 /**
- * _newAddress
+ * _getAddress
  * Returns an Address object from an address string or a BIP21 URL.*
  * @param address
  * @return  { bitcore.Address }
  */
 
-Wallet._newAddress = function(address) {
+Wallet._getAddress = function(address) {
   if (/ ^ bitcoin: /g.test(address)) {
     return new BIP21(address).address;
   }
@@ -2186,7 +2181,7 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
 
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;
-  var addr = Wallet._newAddress(toAddress);
+  var addr = Wallet._getAddress(toAddress);
 
   preconditions.checkState(addr && addr.data && addr.isValid(), 'Bad address:' + addr.toString());
 

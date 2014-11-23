@@ -402,6 +402,9 @@ Identity.prototype.bindWallet = function(w) {
   w.on('txProposalsUpdated', function() {
     Identity.storeWalletDebounced(self, w);
   });
+  w.on('paymentAck', function() {
+    Identity.storeWalletDebounced(self, w);
+  });
   w.on('newAddresses', function() {
     Identity.storeWalletDebounced(self, w);
   });
