@@ -77,7 +77,7 @@ TxProposal.prototype._checkPayPro = function() {
   if (ppOut.address !== txOut.address)
     throw new Error('PayPro: Wrong out address in Tx');
 
-  if (ppOut.amountSatStr !== txOut.amountSatStr)
+  if (ppOut.amountSatStr !== txOut.amountSatStr + '')
     throw new Error('PayPro: Wrong amount in Tx');
 
 };
@@ -112,7 +112,12 @@ TxProposal.prototype.trimForStorage = function() {
 };
 
 TxProposal.prototype.addMerchantData = function(merchantData) {
+  preconditions.checkArgument(merchantData.pr);
+  preconditions.checkArgument(merchantData.request_url);
   var m = _.clone(merchantData);
+
+  if (!this.paymentProtocolURL)
+    this.paymentProtocolURL = m.request_url;
 
   // remove unneeded data
   m.raw = m.pr.pki_data = m.pr.signature = undefined;
