@@ -258,8 +258,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.openScanner = function() {
       if (window.cordova) return $scope.scannerIntent();
-
-console.log('[send.js.260] OPENN'); //TODO
       $scope.showScanner = true;
 
       // Wait a moment until the canvas shows

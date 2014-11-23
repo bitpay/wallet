@@ -44,7 +44,8 @@ function TxProposal(opts) {
     var me = {};
     me[opts.creator] = now;
 
-    this.signedBy = this.seenBy = me;
+    this.signedBy = me;
+    this.signedBy = _.clone(me);
     this.creator = opts.creator;
     this.createdTs = now;
   }
@@ -84,18 +85,18 @@ TxProposal.prototype._checkPayPro = function() {
 
 
 TxProposal.prototype.isFullySigned = function() {
-  return txp.builder && txp.builder.isFullySigned();
+  return this.builder && this.builder.isFullySigned();
 };
 
 TxProposal.prototype.sign = function(keys, signerId) {
-  var before = txp.countSignatures();
-  txp.builder.sign(keys);
+  var before = this.countSignatures();
+  this.builder.sign(keys);
 
-  var signaturesAdded = txp.countSignatures() > before;
+  var signaturesAdded = this.countSignatures() > before;
   if (signaturesAdded){
-    txp.signedBy[signerId] = Date.now();
+    this.signedBy[signerId] = Date.now();
   }
-  return signturesAdded;
+  return signaturesAdded;
 };
 
 

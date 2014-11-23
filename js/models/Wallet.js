@@ -614,11 +614,10 @@ Wallet.prototype._onSeen = function(senderId, data) {
  * @emits txProposalEvent
  */
 Wallet.prototype._onAddressBook = function(senderId, data) {
-  if (!data.addressBook || !_.isArray(data.addressBook))
+  if (!data.addressBook || !_.isObject(data.addressBook))
     return;
 
   var self = this, hasChange;
-
   _.each(data.addressBook, function(value, key) {
     if (!self.addressBook[key] && Address.validate(key)) {
 
@@ -630,6 +629,7 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
       hasChange = true;
     }
   });
+console.log('[Wallet.js.635:hasChange:]',hasChange); //TODO
 
   if (hasChange) {
     this.emitAndKeepAlive('addressBookUpdated');
@@ -1447,7 +1447,8 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
  * @emits txProposalsUpdated
  */
 Wallet.prototype.reject = function(ntxid) {
-  var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
+  var txp = this.txProposals.get(ntxid);
+  txp.setRejected(this.getMyCopayerId());
   this.sendReject(ntxid);
   this.emitAndKeepAlive('txProposalsUpdated');
 };
@@ -1467,7 +1468,7 @@ Wallet.prototype.sign = function(ntxid) {
   var keys = this.privateKey.getForPaths(txp.inputChainPaths);
 
   var signaturesAdded = txp.sign(keys, this.getMyCopayerId());
-  if (!signturesAdded)
+  if (!signaturesAdded)
     return false;
 
   this.emitAndKeepAlive('txProposalsUpdated');
@@ -1477,7 +1478,7 @@ Wallet.prototype.sign = function(ntxid) {
 
 Wallet.prototype.signAndSend = function(ntxid, cb) {
   if (this.sign(ntxid)) {
-    var txp = w.txProposals.get(ntxid);
+    var txp = this.txProposals.get(ntxid);
     if (txp.isFullySigned()) {
       return this.broadcastTx(ntxid, cb);
     } else {
