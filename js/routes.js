@@ -104,9 +104,10 @@ angular
     $idleProvider.warningDuration(40); // in seconds
     $keepaliveProvider.interval(30); // in seconds
   })
-  .run(function($rootScope, $location, $idle, gettextCatalog) {
+  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler) {
     gettextCatalog.currentLanguage = config.defaultLanguage;
     $idle.watch();
+    uriHandler.register();
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
       if (!localStorage || localStorage.length < 1) {
         $location.path('unsupported');

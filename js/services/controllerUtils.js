@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('controllerUtils', function($rootScope, $sce, $location, $filter, notification, $timeout, uriHandler, rateService) {
+  .factory('controllerUtils', function($rootScope, $sce, $location, $filter, notification, $timeout, rateService) {
     var root = {};
 
 
@@ -179,7 +179,6 @@ angular.module('copayApp.services')
 
     root.setupGlobalVariables = function(iden) {
       notification.enableHtml5Mode(); // for chrome: if support, enable it
-      uriHandler.register();
       $rootScope.unitName = config.unitName;
       $rootScope.txAlertCount = 0;
       $rootScope.initialConnection = true;
