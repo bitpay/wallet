@@ -204,6 +204,7 @@ Copay support BIP70 (Payment Protocol), with the following current limitations:
 
   * Only one output is allowed. Payment requests is more that one output are not supported.
   * Only standard Pay-to-pubkeyhash and Pay-to-scripthash scripts are supported (on payment requests). Other script types will cause the entire payment request to be rejected.
+  * Memos from the custormer to the server are not supported (i.e. there is no place to write messages to the server in the current UX)
 
 
 
