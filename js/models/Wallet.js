@@ -474,7 +474,7 @@ Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
     return cb();
 
   log.info('Received a Payment Protocol TX Proposal');
-  self.fetchPaymentRequest(txp.paymentProtocolURL, function(err, merchantData) {
+  self.fetchPaymentRequest({url:txp.paymentProtocolURL}, function(err, merchantData) {
     if (err) return cb(err);
 
     // This will verify current TXP data vs. merchantData (e.g., out addresses)
