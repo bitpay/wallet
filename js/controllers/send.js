@@ -168,7 +168,7 @@ angular.module('copayApp.controllers').controller('SendController',
         toAddress: address, 
         amountSat: amount, 
         comment: commentText, 
-        url: (payInfo && payInfo.merchant) ? url : null,
+        url: (payInfo && payInfo.merchant) ? payInfo.merchant : null,
       }, $scope._afterSend);
     };
 

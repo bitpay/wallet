@@ -5,6 +5,7 @@ var PrivateKey = copay.PrivateKey;
 var Network = requireMock('FakeNetwork');
 var Blockchain = requireMock('FakeBlockchain');
 var Builder = requireMock('FakeBuilder');
+var FakePayProServer = requireMock('FakePayProServer');
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
@@ -58,6 +59,15 @@ var addCopayers = function(w) {
 
 
 describe('Wallet model', function() {
+  var sandbox;
+  beforeEach(function() {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function() {
+    sandbox.restore();
+  });
+
   it('should fail to create an instance', function() {
     (function() {
       new Wallet(walletConfig)
@@ -210,6 +220,8 @@ describe('Wallet model', function() {
       blockchainOpts: {},
       networkOpts: {},
     });
+    if (w.httpUtil.request.restore)
+      w.httpUtil.request.restore();
     return w;
   };
 
@@ -913,17 +925,123 @@ describe('Wallet model', function() {
     });
   });
 
+
+  describe('#fetchPaymentRequest', function() {
+    it('should fetch a payment request', function(done) {
+      var w = cachedCreateW2();
+      sinon.stub(w, 'parsePaymentRequest').returns({
+        hola: 1
+      });
+      var opts = {
+        a: 1,
+        url: 'http://xxx',
+      };
+
+      var rawData ='wqer';
+      var e = sinon.stub();
+      e.error = sinon.stub();
+
+      var s = sinon.stub();
+      s.success = sinon.stub().yields(rawData).returns(e);
+
+      sinon.stub(w.httpUtil,'request').returns(s);
+
+      w.fetchPaymentRequest(opts, function(err, merchantData){
+        should.not.exist(err);
+        should.exist(merchantData);
+        w.parsePaymentRequest.firstCall.args.should.deep.equal([opts,rawData]);
+        done();
+      });
+    });
+
+    it('should return error on fetch error', function(done) {
+      var w = cachedCreateW2();
+      var opts = {
+        a: 1,
+        url: 'http://xxx',
+      };
+
+      var rawData ='wqer';
+      var e = sinon.stub();
+      e.error = sinon.stub().yields(null, 'status');
+
+      var s = sinon.stub();
+      s.success = sinon.stub().returns(e);
+      sinon.stub(w.httpUtil,'request').returns(s);
+      w.fetchPaymentRequest(opts, function(err, merchantData){
+        err.toString().should.contain('status');
+        done();
+      });
+    });
+
+  });
+
+  // TODO parsePaymentRequest should have more tests,
+  // FakePayProServer.getRequest should be parametrizable
+  describe('#parsePaymentRequest', function() {
+    it('should parse a Payment Request', function() {
+      var now = Date.now()/1000;
+      var w = cachedCreateW2();
+      var opts = {
+        url: 'http://xxx',
+      };
+      var data = FakePayProServer.getRequest();
+      var md = w.parsePaymentRequest(opts,data);
+      md.outs.should.deep.equal(FakePayProServer.outs);
+      md.request_url.should.equal(opts.url);
+      md.pr.untrusted.should.equal(true);
+      md.expires.should.be.above(now);
+    });
+  });
+
   describe('#createTx', function() {
     it('should fail if insight server is down', function(done) {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
-      w.blockchain.fixUnspent(utxo);
       sinon.stub(w, 'getUnspent').yields('error', null);
       w.createTx({
         toAddress: toAddress,
         amountSat: amountSatStr,
       }, function(err, ntxid) {
-        chai.expect(err.message).to.equal('Could not get list of UTXOs');
+        err.message.should.contain('UTXOs');
+        done();
+      });
+    });
+
+
+    it('should fail with broken PayPro', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      sinon.stub(w, 'fetchPaymentRequest').yields('error');
+      w.createTx({
+        url: 'test',
+      }, function(err, ntxid) {
+        should.exist(err);
+        done();
+      });
+    });
+
+
+    it('should create a TX with PayPro', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      sinon.stub(w, 'fetchPaymentRequest').yields(null, {
+        outs: [{
+          address: 'n2Wz7KjyzBJVaNMBN88Lj1YUHMDZSAGeMV',
+          amountSatStr: '123400',
+        }],
+        request_url: 'url',
+        pr: {
+          signature: '123',
+        },
+        total: '123400',
+      });
+      w.createTx({
+        url: 'test',
+      }, function(err, ntxid) {
+        should.not.exist(err);
         done();
       });
     });

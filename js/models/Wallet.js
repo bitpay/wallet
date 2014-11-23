@@ -1535,12 +1535,9 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
     .success(function(rawData) {
       log.info('PayPro Request done successfully. Parsing response')
 
-      var data = PayPro.PaymentRequest.decode(rawData);
-      var paypro = new PayPro();
-      var pr = paypro.makePaymentRequest(data);
       var merchantData, err;
       try {
-        merchantData = self.parsePaymentRequest(options, pr);
+        merchantData = self.parsePaymentRequest(options, rawData);
       } catch (e) {
         err = e
       };
@@ -1550,7 +1547,6 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
     })
     .error(function(data, status) {
       log.debug('Server did not return PaymentRequest.\nXHR status: ' + status);
-      preconditions.checkState(options.fetch);
       return cb(new Error('Status: ' + status));
     });
 };
@@ -1635,18 +1631,16 @@ Wallet.prototype._addOutputsToMerchantData = function(merchantData) {
 /**
  * @desc Analyzes a payment request and generate merchantData
  * @param {Object} options
- * @param {PayProRequest} pr
- * @param {string} pr.payment_details_version
- * @param {string} pr.pki_type
- * @param {Object} pr.data
- * @param {string} pr.serialized_payment_details
- * @param {string} pr.signature
- * @param {string} options.memo
- * @param {string} options.comment
+ * @param {string} options.url url where the pay request was acquired
+ * @param {string} options.amount Only used if pay requesst allow user to set the amount
+ * @param {PayProRequest} rawData 
  */
-Wallet.prototype.parsePaymentRequest = function(options, pr) {
+Wallet.prototype.parsePaymentRequest = function(options, rawData) {
   var self = this;
 
+  var data = PayPro.PaymentRequest.decode(rawData);
+  var paypro = new PayPro();
+  var pr = paypro.makePaymentRequest(data);
   var ver = pr.get('payment_details_version');
   var pki_type = pr.get('pki_type');
   var pki_data = pr.get('pki_data');
@@ -2132,8 +2126,7 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
  */
 Wallet.prototype.createTx = function(opts, cb) {
   preconditions.checkArgument(_.isObject(opts));
-  preconditions.checkArgument(opts.amountSat);
-  log.debug(opts);
+  log.debug('create Options', opts);
 
   var self = this;
   var toAddress = opts.toAddress;
@@ -2142,23 +2135,26 @@ Wallet.prototype.createTx = function(opts, cb) {
   var url = opts.url;
 
   if (url && !opts.merchantData) {
-    w.fetchPaymentRequest({
+    return self.fetchPaymentRequest({
       url: url,
       memo: comment,
       amount: amountSat,
     }, function(err, merchantData) {
       if (err) return cb(err);
       opts.merchantData = merchantData;
-      opts.amountSat = merchantData.outs[0].address;
-      opts.toAddress = merchantData.outs[0].amount;
-      self.createTx(opts, cb);
+      opts.toAddress = merchantData.outs[0].address;
+      opts.amountSat = parseInt(merchantData.outs[0].amountSatStr);
+      return self.createTx(opts, cb);
     });
   };
-  preconditions.checkArgument(amountSat);
-  preconditions.checkArgument(toAddress);
+  preconditions.checkArgument(amountSat, 'no amount');
+  preconditions.checkArgument(toAddress, 'no address');
 
   this.getUnspent(function(err, safeUnspent) {
-    if (err) return cb(new Error('Could not get list of UTXOs'));
+    if (err) {
+      log.info(err);
+      return cb(new Error('CreateTx: Could not get list of UTXOs'));
+    }
 
     var ntxid, txp;
     try {
@@ -2168,8 +2164,9 @@ Wallet.prototype.createTx = function(opts, cb) {
       return cb(e);
     }
 
-    if (opts.merchantData)
+    if (opts.merchantData) {
       txp.addMerchantData(opts.merchantData);
+    }
 
     var ntxid = self.txProposals.add(txp);
     log.debug('TXP Added: ', ntxid);
@@ -2207,9 +2204,10 @@ Wallet.prototype.createTxProposal = function(toAddress, amountSat, comment, utxo
 
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;
-  toAddress = sanitize(toAddress);
+  var addr = sanitize(toAddress);
+  preconditions.checkState(addr && addr.data && addr.isValid(), 'Bad address:' + addr.toString());
 
-  preconditions.checkArgument(toAddress.network().name === this.getNetworkName(), 'networkname mismatch');
+  preconditions.checkArgument(addr.network().name === this.getNetworkName(), 'networkname mismatch');
   preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
   preconditions.checkState(priv, 'no private key');
 
@@ -2229,7 +2227,7 @@ Wallet.prototype.createTxProposal = function(toAddress, amountSat, comment, utxo
   var b = new Builder(builderOpts)
     .setUnspent(utxos)
     .setOutputs([{
-      address: toAddress.data,
+      address: addr.data,
       amountSatStr: amountSat,
     }]);
 
