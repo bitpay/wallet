@@ -31,6 +31,7 @@ module.exports = function(config) {
       'lib/angular-load/angular-load.min.js',
       'lib/angular-gravatar/build/md5.min.js',
       'lib/angular-gravatar/build/angular-gravatar.min.js',
+      'lib/angular-touch/angular-touch.min.js',
       'lib/angular-gettext/dist/angular-gettext.min.js',
       'lib/inherits/inherits.js',
       'lib/lodash/dist/lodash.js',
