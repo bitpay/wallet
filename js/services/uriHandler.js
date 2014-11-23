@@ -6,8 +6,7 @@ UriHandler.prototype.register = function() {
   var base = window.location.origin + '/';
   var url = base + '#!/uri-payment/%s';
 
-  var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-  if(navigator.registerProtocolHandler && !isFirefox) {
+  if(navigator.registerProtocolHandler) {
     navigator.registerProtocolHandler('bitcoin', url, 'Copay');
   }
 };
