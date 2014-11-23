@@ -139,7 +139,8 @@ module.exports = function(grunt) {
           'lib/angular-gettext/dist/angular-gettext.min.js',
           'lib/angular-load/angular-load.min.js',
           'lib/angular-gravatar/build/md5.min.js',
-          'lib/angular-gravatar/build/angular-gravatar.min.js'
+          'lib/angular-gravatar/build/angular-gravatar.min.js',
+          'lib/angular-touch/angular-touch.min.js'
           // If you add libs here, remember to add it too to karma.conf
         ],
         dest: 'lib/angularjs-all.js'
