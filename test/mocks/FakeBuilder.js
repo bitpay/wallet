@@ -10,6 +10,11 @@ function Tx() {
   }];
 };
 
+
+Tx.prototype.getSize = function() {
+  return 1;
+};
+
 Tx.prototype.getHashType = function() {
   return 1;
 };
@@ -38,7 +43,7 @@ function FakeBuilder() {
       address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
       amountSatStr: '123',
     }]),
- 
+
   }
 }
 

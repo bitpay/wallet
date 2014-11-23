@@ -31,7 +31,6 @@ var Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
 
-var TX_MAX_SIZE_KB = 50;
 var TX_MAX_INS = 70;
 
 
@@ -527,7 +526,6 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
   var m;
 
-console.log('[Wallet.js.533]a', this.txProposals.txps); //TODO
   try {
     m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
     var keyMap = this._getKeyMap(m.txp);
@@ -538,7 +536,6 @@ console.log('[Wallet.js.533]a', this.txProposals.txps); //TODO
       this.txProposals.deleteOne(m.ntxid);
     m = null;
   }
-console.log('[Wallet.js.533]a', this.txProposals.txps); //TODO
 
   this._processIncomingTxProposal(m, function(err) {
     if (err) {
@@ -546,6 +543,9 @@ console.log('[Wallet.js.533]a', this.txProposals.txps); //TODO
       if (m && m.ntxid)
         self.txProposals.deleteOne(m.ntxid);
       m = null;
+    } else {
+      if (m && m.hasChanged)
+        self.sendTxProposal(m.ntxid);
     }
     self._processProposalEvents(senderId, m);
   });
@@ -1166,7 +1166,7 @@ Wallet.fromObj = function(o, readOpts) {
 Wallet.prototype._sendToPeers = function(recipients, obj) {
   if (!this.isShared()) return;
 
-  log.info('Wallet:' + this.getName() + ' ### SENDING ' + obj.type);
+  log.info('Wallet:' + this.getName() + ' ### Sending ' + obj.type);
   log.debug('Sending obj', obj);
 
   this.network.send(recipients, obj);
@@ -2086,7 +2086,7 @@ Wallet.prototype.spend = function(opts, cb) {
       opts.merchantData = merchantData;
       opts.toAddress = merchantData.outs[0].address;
       opts.amountSat = parseInt(merchantData.outs[0].amountSatStr);
-      return self.createTx(opts, cb);
+      return self.spend(opts, cb);
     });
   };
   preconditions.checkArgument(amountSat, 'no amount');
@@ -2095,7 +2095,7 @@ Wallet.prototype.spend = function(opts, cb) {
   this.getUnspent(function(err, safeUnspent) {
     if (err) {
       log.info(err);
-      return cb(new Error('CreateTx: Could not get list of UTXOs'));
+      return cb(new Error('Spend: Could not get list of UTXOs'));
     }
 
     var ntxid, txp;
@@ -2212,28 +2212,21 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
-
   b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
-
-  var keys = priv.getForPaths(inputChainPaths);
-  b.sign(keys);
 
 
   var tx = b.build();
-  if (!tx.countInputSignatures(0))
-    throw new Error('Could not sign generated tx');
-
-  var txSize = tx.getSize();
-  if (txSize /
-    1024 > TX_MAX_SIZE_KB)
-    throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
-
-  return new TxProposal({
+  var myId = this.getMyCopayerId();
+  var keys = priv.getForPaths(inputChainPaths);
+  return  new TxProposal({
     inputChainPaths: inputChainPaths,
     comment: comment,
     builder: b,
-    creator: this.getMyCopayerId(),
+    creator: myId,
+    signWith: keys,
   });
+
+  return txp;
 };
 
 

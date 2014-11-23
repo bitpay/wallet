@@ -234,7 +234,7 @@ describe('Wallet model', function() {
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
     var f = function() {
-      var ntxid = w.createTxProposal(
+      var ntxid = w._createTxProposal(
         '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
         '123456789',
         null,
@@ -250,7 +250,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
-    var txp = w.createTxProposal(
+    var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
       null,
@@ -269,7 +269,7 @@ describe('Wallet model', function() {
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
-    var txp = w.createTxProposal(
+    var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
       null,
@@ -282,6 +282,7 @@ describe('Wallet model', function() {
     chai.expect(txp.comment).to.be.null;
     tx.isComplete().should.equal(false);
     Object.keys(txp.seenBy).length.should.equal(1);
+    Object.keys(txp.signedBy).length.should.equal(1);
   });
 
   it('#create with comment', function() {
@@ -292,7 +293,7 @@ describe('Wallet model', function() {
     unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
-    var txp = w.createTxProposal(
+    var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
       comment,
@@ -313,7 +314,7 @@ describe('Wallet model', function() {
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
 
     (function() {
-      w.createTxProposal(
+      w._createTxProposal(
         'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
         '123456789',
         comment,
@@ -342,7 +343,7 @@ describe('Wallet model', function() {
       for (var index = 0; index < 3; index++) {
         unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange, w.publicKey).toString();
         unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange, w.publicKey);
-        var txp = w.createTxProposal(
+        var txp = w._createTxProposal(
           'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
           '123456789',
           null,
@@ -778,7 +779,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -795,7 +796,7 @@ describe('Wallet model', function() {
     var w = createW2([k2]);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -812,7 +813,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -827,7 +828,7 @@ describe('Wallet model', function() {
     var oldK = w.privateKey;
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -844,12 +845,14 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
-      w.sendTx(ntxid, function(txid) {
+      w.broadcastTx(ntxid, function(err, txid, status) {
+        should.not.exist(err);
         txid.length.should.equal(64);
+        status.should.equal(Wallet.TX_BROADCASTED);
         done();
       });
     });
@@ -858,7 +861,7 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -871,7 +874,7 @@ describe('Wallet model', function() {
         }
       });
       (function() {
-        w.sendTx(ntxid);
+        w.broadcastTx(ntxid);
       }).should.throw('Tx is not complete. Can not broadcast');
       done();
     });
@@ -880,7 +883,7 @@ describe('Wallet model', function() {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -888,7 +891,7 @@ describe('Wallet model', function() {
         statusCode: 303
       });
       var spyCheckSentTx = sinon.spy(w, '_checkSentTx');
-      w.sendTx(ntxid, function() {});
+      w.broadcastTx(ntxid, function() {});
       chai.expect(spyCheckSentTx.calledOnce).to.be.true;
       done();
     });
@@ -897,7 +900,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -913,7 +916,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-    w.createTx({
+    w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
     }, function(err, ntxid) {
@@ -994,12 +997,12 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('#createTx', function() {
+  describe('#spend', function() {
     it('should fail if insight server is down', function(done) {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
       sinon.stub(w, 'getUnspent').yields('error', null);
-      w.createTx({
+      w.spend({
         toAddress: toAddress,
         amountSat: amountSatStr,
       }, function(err, ntxid) {
@@ -1014,7 +1017,7 @@ describe('Wallet model', function() {
       var utxo = createUTXO(w);
       w.blockchain.fixUnspent(utxo);
       sinon.stub(w, 'fetchPaymentRequest').yields('error');
-      w.createTx({
+      w.spend({
         url: 'test',
       }, function(err, ntxid) {
         should.exist(err);
@@ -1038,7 +1041,7 @@ describe('Wallet model', function() {
         },
         total: '123400',
       });
-      w.createTx({
+      w.spend({
         url: 'test',
       }, function(err, ntxid) {
         should.not.exist(err);
@@ -1150,12 +1153,12 @@ describe('Wallet model', function() {
 
 
 
-  describe('#send', function() {
+  describe('#_sendToPeers', function() {
     it('should call this.network.send', function() {
       var w = cachedCreateW2();
       var save = w.network.send;
       w.network.send = sinon.spy();
-      w.send();
+      w._sendToPeers(null, {type:'hola'});
       w.network.send.calledOnce.should.equal(true);
       w.network.send = save;
     });
@@ -1607,7 +1610,7 @@ describe('Wallet model', function() {
       spy.called.should.be.true;
     });
 
-    it('should handle new', function(done) {
+    it('should handle new 1', function(done) {
       var data = {
         txProposal: {
           dummy: 1,
@@ -1643,11 +1646,13 @@ describe('Wallet model', function() {
       });
 
       w._onTxProposal('senderID', data);
+
       spy1.called.should.be.true;
       spy2.called.should.be.true;
       txp.setSeen.calledOnce.should.be.true;
-      w.sendSeen.calledOnce.should.be.true;
-      w.sendTxProposal.calledOnce.should.be.true;
+      w.sendSeen.calledOnce.should.equal(true);
+      w.sendTxProposal.calledOnce.should.equal(true);
+
     });
 
     it('should handle signed', function(done) {
@@ -1715,14 +1720,14 @@ describe('Wallet model', function() {
         ntxid: 1,
         txp: txp,
         new: false,
-        hasChanged: true,
+        hasChanged: false,
       });
       w._checkSentTx = sinon.stub().yields('123');
 
       w._onTxProposal('senderID', data);
-      txp.setSent.calledOnce.should.be.true;
-      txp.setSent.calledWith('123').should.be.true;
-      w.sendTxProposal.called.should.be.false;
+      txp.setSent.calledOnce.should.equal(true);
+      txp.setSent.calledWith('123').should.equal(true);
+      w.sendTxProposal.called.should.equal(false);
       done();
     });
 
@@ -1749,14 +1754,14 @@ describe('Wallet model', function() {
         ntxid: 1,
         txp: txp,
         new: false,
-        hasChanged: true,
+        hasChanged: false,
       });
       w._checkSentTx = sinon.stub().yields(false);
 
       w._onTxProposal('senderID', data);
-      txp.setSent.called.should.be.false;
-      txp.setSent.calledWith(1).should.be.false;
-      w.sendTxProposal.called.should.be.false;
+      txp.setSent.called.should.equal(false);
+      txp.setSent.calledWith(1).should.equal(false);
+      w.sendTxProposal.called.should.equal(false);
       done();
     });
 
