@@ -260,7 +260,7 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
     if (fromTs) {
       self.ignoreMessageFromTs = fromTs;
     }
-    log.info('Async: syncing from: ', fromTs);
+    log.info('Async: synchronizing from: ', fromTs);
     self.socket.emit('sync', fromTs);
     self.started = true;
   });

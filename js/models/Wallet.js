@@ -36,8 +36,7 @@ var TX_MAX_INS = 70;
 
 /**
  * @desc
- * Wallet manages a private key for Copay, network, storage of the wallet for
- * persistance, and blockchain information.
+ * Wallet manages a private key for Copay, network and blockchain information.
  *
  * @TODO: Split this leviathan.
  *
@@ -133,13 +132,13 @@ Wallet.prototype.emitAndKeepAlive = function(args) {
 };
 
 /**
- * @TODO: Document this. Its usage is kind of weird
+ * @desc Fixed & Forced TransactionBuilder options, for genereration transactions.
  *
  * @static
- * @property lockTime
- * @property signhash
- * @property fee
- * @property feeSat
+ * @property lockTime null
+ * @property signhash SIGHASH
+ * @property fee null (automatic)
+ * @property feeSat null
  */
 Wallet.builderOpts = {
   lockTime: null,
@@ -468,6 +467,15 @@ Wallet.prototype._checkIfTxProposalIsSent = function(ntxid, cb) {
 };
 
 
+/**
+ * _processTxProposalPayPro
+ *
+ * @desc Process and incoming PayPro TX Proposal. Fetchs the payment request
+ * from the merchant.
+ *
+ * @param mergeInfo Proposals merge information, as returned by TxProposals.merge
+ * @return {fetchPaymentRequestCallback}
+ */
 Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
   var self = this;
   var txp = mergeInfo.txp;
@@ -494,6 +502,14 @@ Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
   });
 };
 
+/**
+ * _processIncomingTxProposal
+ *
+ * @desc Process an incoming transaction proposal. Runs safety and sanity checks on it.
+ *
+ * @param mergeInfo Proposals merge information, as returned by TxProposals.merge
+ * @return {errCallback}
+ */
 Wallet.prototype._processIncomingTxProposal = function(mergeInfo, cb) {
   if (!mergeInfo) return cb();
   var self = this;
@@ -617,7 +633,8 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   if (!data.addressBook || !_.isObject(data.addressBook))
     return;
 
-  var self = this, hasChange;
+  var self = this,
+    hasChange;
   _.each(data.addressBook, function(value, key) {
     if (!self.addressBook[key] && Address.validate(key)) {
 
@@ -629,7 +646,6 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
       hasChange = true;
     }
   });
-console.log('[Wallet.js.635:hasChange:]',hasChange); //TODO
 
   if (hasChange) {
     this.emitAndKeepAlive('addressBookUpdated');
@@ -675,7 +691,6 @@ Wallet.prototype._onNoMessages = function() {
  * @emits corrupt
  */
 Wallet.prototype._onData = function(senderId, data, ts) {
-console.log('[Wallet.js.533]0', this.txProposals.txps); //TODO
   preconditions.checkArgument(senderId);
   preconditions.checkArgument(data);
   preconditions.checkArgument(data.type);
@@ -1159,13 +1174,13 @@ Wallet.fromObj = function(o, readOpts) {
 
 
 /**
- * @desc sendToPeers a message to other peers
- * @param {string[]} recipients - the pubkey of the recipients of the message
- * @param {Object} obj - the data to be sent to them
+ * @desc sends a message to  peers
+ * @param {string[]} recipients - the pubkey of the recipients of the message. Null for sending to all peers.
+ * @param {Object} obj - the data to be sent to them.
+ * @param {String} obj.type - Type of the message to be send
  */
 Wallet.prototype._sendToPeers = function(recipients, obj) {
   if (!this.isShared()) return;
-
   log.info('Wallet:' + this.getName() + ' ### Sending ' + obj.type);
   log.debug('Sending obj', obj);
 
@@ -1173,7 +1188,7 @@ Wallet.prototype._sendToPeers = function(recipients, obj) {
 };
 
 /**
- * @desc Send the set of TxProposals to some peers
+ * @desc Send the set of TxProposals to peers
  * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
@@ -1243,8 +1258,6 @@ Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletId = function(recipients) {
-  log.debug('Wallet:' + this.id + ' ### SENDING walletId TO:', recipients || 'All', this.id);
-
   this._sendToPeers(recipients, {
     type: 'walletId',
     walletId: this.id,
@@ -1454,12 +1467,25 @@ Wallet.prototype.reject = function(ntxid) {
 };
 
 /**
- * @desc Sign a proposal
+ * @callback signCallback
+ * @param {Error} error if any
+ * @param {number} Transaction ID or Transaction Proposal ID
+ * @param {status} Wallet.TX_* Status:
+ *
+ *    TX_BROADCASTED
+ *    TX_SIGNED
+ *    TX_PROPOSAL_SENT
+ */
+
+
+/**
+ * @desc Signs a proposal
  * @param {string} ntxid the id of the transaction proposal to sign
  * @emits txProposalsUpdated
  * @throws {Error} Could not sign proposal
  * @throws {Error} Bad payment request
  * @return {boolean} true if signing actually incremented the number of signatures
+ * @emits txProposalsUpdated
  */
 Wallet.prototype.sign = function(ntxid) {
   preconditions.checkState(!_.isUndefined(this.getMyCopayerId()));
@@ -1476,6 +1502,17 @@ Wallet.prototype.sign = function(ntxid) {
 };
 
 
+/**
+ *
+ * @desc signs and send or broadcast a transaction.
+ * In m-n wallets,
+ * if m==1 it will broadcast it to the Bitcoin Network
+ * if n>1 it will send the proposal to the peers
+ *
+ * @param ntxid Transaction Proposal Id
+ * @param {signCallback} cb
+ * @throws {Error} Could not sign proposal
+ */
 Wallet.prototype.signAndSend = function(ntxid, cb) {
   if (this.sign(ntxid)) {
     var txp = this.txProposals.get(ntxid);
@@ -1483,7 +1520,7 @@ Wallet.prototype.signAndSend = function(ntxid, cb) {
       return this.broadcastTx(ntxid, cb);
     } else {
       this.sendTxProposal(ntxid);
-      return cb(null, ntxid, Wallet.TX_SIGNED );
+      return cb(null, ntxid, Wallet.TX_SIGNED);
     }
   } else {
     return cb(new Error('Could not sign the proposal'));
@@ -1493,9 +1530,8 @@ Wallet.prototype.signAndSend = function(ntxid, cb) {
 /**
  * @desc Broadcasts a transaction to the blockchain
  * @param {string} ntxid - the transaction proposal id
- * @param {broadcastCallback} cb
- * @callback broadcastCallback
  * @param {string} txid - the transaction id on the blockchain
+ * @param {signCallback} cb
  */
 Wallet.prototype.broadcastTx = function(ntxid, cb) {
   var self = this;
@@ -1505,32 +1541,36 @@ Wallet.prototype.broadcastTx = function(ntxid, cb) {
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
 
-
-  var serializedTx = tx.serialize();
-
   log.info('Wallet:' + this.id + ' Broadcasting Transaction ntxid:' + ntxid);
 
-  var txHex = serializedTx.toString('hex');
+  var txHex = tx.serialize().toString('hex');
   log.debug('\tRaw transaction: ', txHex);
 
   this.blockchain.broadcast(txHex, function(err, txid) {
-    if (err)
-      log.error('Error sending TX:', err);
+    if (err) {
+      log.error('Error sending TX:' + err);
+      return cb(err);;
+    }
 
     if (txid) {
       log.debug('Wallet:' + self.getName() + ' broadcasted a TX. BITCOIND txid:', txid);
 
       txp.setSent(txid);
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('txProposalsUpdated');
 
       // PAYPRO: Payment message is optional, only if payment_url is set
       // This is async. and will notify and update txp async.
       if (txp.merchant && txp.merchant.pr.pd.payment_url) {
-        self.sendPaymentTx(ntxid, serializedTx);
+        var data = this.createPayProPayment(txp);
+        self.sendPayProPayment(txp, data, function(err, data) {
+          if (err) return cb(err);
+          self.onPayProPaymentAck(ntxid, data);
+        });
       }
 
+      self.sendTxProposal(ntxid);
+      self.emitAndKeepAlive('txProposalsUpdated');
       return cb(null, txid, Wallet.TX_BROADCASTED);
+
     } else {
       log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
       self._checkIfTxProposalIsSent(ntxid, cb);
@@ -1538,11 +1578,18 @@ Wallet.prototype.broadcastTx = function(ntxid, cb) {
   });
 };
 
+
 /**
- * @desc Create a Payment Protocol transaction
+ * @callback {fetchPaymentRequestCallback}
+ * @param {string=} err - an error, if any
+ * @param {Object} merchantData - object representing the payment request. Add described on BIP70 merchant_data
+ */
+
+/**
+ * @desc Creates a Payment Protocol transaction
  * @param {Object|string} options - if it's a string, parse it as the url
  * @param {string} options.url the url for the transaction
- * @param {Function} cb
+ * @return {fetchPaymentRequestCallback} cb
  */
 Wallet.prototype.fetchPaymentRequest = function(options, cb) {
   preconditions.checkArgument(_.isObject(options));
@@ -1578,24 +1625,18 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
     });
 };
 
-/* 
- * addOutputsToMerchantData
- *
- * NOTE: We use to: set the TX scripts with the payment request scripts:
- * but this is a hack around transaction builder, so we dont do it anymore.
- * See Readme.md. For now we only support p2scripthash or p2pubkeyhash
-    merchantData.pr.pd.outputs.forEach(function(output, i) {
-      var script = {
-        offset: output.script.offset,
-        limit: output.script.limit,
-        buffer: new Buffer(output.script.buffer, 'hex')
-      };
-      var s = script.buffer.slice(script.offset, script.limit);
-      b.tx.outs[i].s = s;
-    });
- *
- */
 
+/**
+ * _addOutputsToMerchantData
+ *
+ * @desc parses merchant_data internal output representation and stores
+ * the result in merchant_data.outs = [{address: xx, amountSatStr: xx}],
+ * to be compatible with TransactionBuilder.
+ *`
+ * @param merchantData BIP70 merchant_data (from the payment request)
+ * @throws {Error} PayPro: Unsupported inputs
+ * @return {undefined}
+ */
 Wallet.prototype._addOutputsToMerchantData = function(merchantData) {
 
   var total = bignum(0);
@@ -1737,7 +1778,7 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
 
 /**
  * _getPayProRefundOutputs
- * Create refund address for PayPro. 
+ * Create refund outputs for a PayPro Payment Message
  * Uses current transaction's change address.
  *
  * @param txp
@@ -1750,13 +1791,23 @@ Wallet.prototype._getPayProRefundOutputs = function(txp) {
 
   var output = new PayPro.Output();
   var script = pkr.getScriptPubKeyHex(index.changeIndex, true, this.pubkey);
-  output.set('script',new Buffer(script, 'hex'));
+  output.set('script', new Buffer(script, 'hex'));
   output.set('amount', amount);
   return [output];
 };
 
 
-Wallet.prototype._createPaymentTx = function(txp, txHex) {
+/**
+ *
+ * @desc Creates a Payment Protocol Payment message for the given TX Proposal
+ * @param txp Transaction Proposal
+ * @param txHex
+ * @return {undefined}
+ */
+Wallet.prototype.createPayProPayment = function(txp) {
+
+  var tx = txp.builder.build();
+  var txBuf = tx.serialize();
 
   var refund_outputs = this._getPayProRefundOutputs(txp);
 
@@ -1770,7 +1821,7 @@ Wallet.prototype._createPaymentTx = function(txp, txHex) {
     pay.set('merchant_data', merchant_data);
   }
 
-  pay.set('transactions', [txHex]);
+  pay.set('transactions', [txBuf]);
   pay.set('refund_to', refund_outputs);
 
   // Unused for now
@@ -1787,19 +1838,40 @@ Wallet.prototype._createPaymentTx = function(txp, txHex) {
   return view;
 };
 
+
 /**
- * @desc Send a payment transaction to a server, complying with BIP70
+ * onPayProPaymentAck
  *
- * @param {string} ntxid - the transaction proposal id
- * @param {Function} txHex
+ * @desc parse and process a Payment Protocol Payment Ack. Updates
+ * given TX Proposal with merchant's memo and send it to copayers
  *
- * emits paymentACK(server's memo)
+ * @param ntxid ID of the Transaction Proposal
+ * @param rawData of the Payment Ack
+ * @emits paymentACK - (merchants's memo)
  */
-Wallet.prototype.sendPaymentTx = function(ntxid, txHex) {
+Wallet.prototype.onPayProPaymentAck = function(ntxid, rawData) {
+  var data = PayPro.PaymentACK.decode(rawData);
+  var paypro = new PayPro();
+  var ack = paypro.makePaymentACK(data);
+  var memo = ack.get('memo');
+  log.debug('Payment Acknowledged!: %s', memo);
+  txp.paymentAckMemo = memo;
+  self.sendTxProposal(ntxid);
+  self.emitAndKeepAlive('paymentACK', memo);
+};
+
+
+/**
+ * @desc Send a payment transaction to a merchant, complying with BIP70
+ * on Acknoledge, updates the TX Proposal with server's memo and send it
+ * to peers
+ *
+ * @param {string} ntxid - the transaction proposal ID for with the
+ *
+ */
+Wallet.prototype.sendPayProPayment = function(txp, data, cb) {
   var self = this;
-  var txp  = this.txProposals.get(ntxid);
-  var data = this._createPaymentTx(txp, txHex);
- 
+
   log.debug('Sending Payment Message to merchant server');
   var postInfo = {
     method: 'POST',
@@ -1818,19 +1890,13 @@ Wallet.prototype.sendPaymentTx = function(ntxid, txHex) {
     responseType: 'arraybuffer'
   };
 
-  return this.httpUtil.request(postInfo)
+  this.httpUtil.request(postInfo)
     .success(function(rawData) {
-      var data = PayPro.PaymentACK.decode(rawData);
-      var paypro = new PayPro();
-      var ack = paypro.makePaymentACK(data);
-      var memo = ack.get('memo');
-      log.debug('Payment Acknowledged!: %s', memo);
-      txp.paymentAckMemo = memo;
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('paymentACK', memo);
+      return cb(null, rawData);
     })
     .error(function(data, status) {
       log.error('Sending payment notification: XHR status: ' + status);
+      return cb(new Error(status));
     });
 };
 
@@ -1899,7 +1965,7 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
 
 /**
  * Estimate a tx fee in satoshis given its input count
- * only for spending all wallet funds
+ * (only used when spending all wallet funds)
  */
 Wallet.estimatedFee = function(unspentCount) {
   preconditions.checkArgument(_.isNumber(unspentCount));
@@ -2071,6 +2137,7 @@ Wallet.prototype.spend = function(opts, cb) {
   var comment = opts.comment;
   var url = opts.url;
 
+  // PayPro? Fetch payment data and recurse
   if (url && !opts.merchantData) {
     return self.fetchPaymentRequest({
       url: url,
@@ -2083,7 +2150,8 @@ Wallet.prototype.spend = function(opts, cb) {
       opts.amountSat = parseInt(merchantData.outs[0].amountSatStr);
       return self.spend(opts, cb);
     });
-  };
+  }
+
   preconditions.checkArgument(amountSat, 'no amount');
   preconditions.checkArgument(toAddress, 'no address');
 
@@ -2213,7 +2281,7 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
   var tx = b.build();
   var myId = this.getMyCopayerId();
   var keys = priv.getForPaths(inputChainPaths);
-  return  new TxProposal({
+  return new TxProposal({
     inputChainPaths: inputChainPaths,
     comment: comment,
     builder: b,
