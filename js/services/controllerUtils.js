@@ -46,7 +46,7 @@ angular.module('copayApp.services')
     };
 
     root.onError = function(scope) {
-      if (scope) { 
+      if (scope) {
         scope.loading = false;
       }
     }
@@ -64,12 +64,6 @@ angular.module('copayApp.services')
     };
 
 
-    root.updateTxsAndBalance = function(w) {
-      root.updateTxs(w);
-      root.updateBalance(w, function() {
-        $rootScope.$digest();
-      });
-    };
 
     root.installWalletHandlers = function($scope, w) {
 
@@ -129,35 +123,44 @@ angular.module('copayApp.services')
         }
       });
       w.on('newAddresses', function() {
-        root.updateTxsAndBalance(w);
+        root.updateBalance(w);
       });
 
       w.on('txProposalsUpdated', function() {
-        root.updateTxsAndBalance(w);
+        if (root.isFocusedWallet(wid)) {
+          root.updateTxs();
+        }
+      });
+
+      w.on('paymentACK', function(memo) {
+        notification.success('Payment Acknowledged', memo);
       });
 
       w.on('txProposalEvent', function(e) {
 
-        root.updateTxsAndBalance(w);
+        if (root.isFocusedWallet(wid)) {
+          root.updateTxs();
+        }
+
         // TODO: add wallet name notification
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
         var name = w.getName();
         switch (e.type) {
           case 'new':
-            notification.info('['+ name +'] New Transaction', 
+            notification.info('[' + name + '] New Transaction',
               $filter('translate')('You received a transaction proposal from') + ' ' + user);
             break;
           case 'signed':
-            notification.info('['+ name +'] Transaction Signed', 
+            notification.info('[' + name + '] Transaction Signed',
               $filter('translate')('A transaction was signed by') + ' ' + user);
             break;
           case 'rejected':
-            notification.info('['+ name +'] Transaction Rejected', 
+            notification.info('[' + name + '] Transaction Rejected',
               $filter('translate')('A transaction was rejected by') + ' ' + user);
             break;
           case 'corrupt':
-            notification.error('['+ name +'] Transaction Error', 
-                $filter('translate')('Received corrupt transaction from') + ' ' + user);
+            notification.error('[' + name + '] Transaction Error',
+              $filter('translate')('Received corrupt transaction from') + ' ' + user);
             break;
         }
         $rootScope.$digest();
@@ -181,20 +184,12 @@ angular.module('copayApp.services')
       notification.enableHtml5Mode(); // for chrome: if support, enable it
       uriHandler.register();
       $rootScope.unitName = config.unitName;
-      $rootScope.txAlertCount = 0;
+      $rootScope.pendingTxCount = 0;
       $rootScope.initialConnection = true;
       $rootScope.reconnecting = false;
       $rootScope.isCollapsed = true;
 
       $rootScope.iden = iden;
-
-      // TODO
-      // $rootScope.$watch('txAlertCount', function(txAlertCount) {
-      //   if (txAlertCount && txAlertCount > 0) {
-      //
-      //     notification.info('New Transaction', ($rootScope.txAlertCount == 1) ? 'You have a pending transaction proposal' : $filter('translate')('You have') + ' ' + $rootScope.txAlertCount + ' ' + $filter('translate')('pending transaction proposals'), txAlertCount);
-      //   }
-      // });
     };
 
 
@@ -275,7 +270,7 @@ angular.module('copayApp.services')
         r.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
 
 
-        if (r.safeUnspentCount){
+        if (r.safeUnspentCount) {
           var estimatedFee = copay.Wallet.estimatedFee(r.safeUnspentCount);
           r.topAmount = (((r.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
         }
@@ -319,8 +314,6 @@ angular.module('copayApp.services')
       w.balanceInfo = {};
       var scope = root.isFocusedWallet(w.id) && !refreshAll ? $rootScope : w.balanceInfo;
 
-      root.updateAddressList();
-
       var wid = w.getId();
 
       if (_balanceCache[wid]) {
@@ -345,7 +338,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.computeAlternativeAmount = function(w, tx, cb) {
+    root.setAlternativeAmount = function(w, tx, cb) {
       rateService.whenAvailable(function() {
         _.each(tx.outs, function(out) {
           var valueSat = out.value * w.settings.unitToSatoshi;
@@ -356,12 +349,13 @@ angular.module('copayApp.services')
       });
     };
 
-    root.updateTxs = function(w) {
-      w = w || $rootScope.wallet;
-      if (!w) return root.onErrorDigest(); 
+    root.updateTxs = function() {
+      var w = $rootScope.wallet;
+      if (!w) return;
+
       var res = w.getPendingTxProposals();
       _.each(res.txs, function(tx) {
-        root.computeAlternativeAmount(w, tx);
+        root.setAlternativeAmount(w, tx);
         if (tx.merchant) {
           var url = tx.merchant.request_url;
           var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
@@ -369,14 +363,11 @@ angular.module('copayApp.services')
         }
       });
       $rootScope.txps = res.txs;
-      if ($rootScope.pendingTxCount < res.pendingForUs) {
-        $rootScope.txAlertCount = res.pendingForUs;
-      }
       $rootScope.pendingTxCount = res.pendingForUs;
     };
 
     root.deleteWallet = function($scope, w, cb) {
-      if (!w) return root.onErrorDigest(); 
+      if (!w) return root.onErrorDigest();
       var name = w.getName();
       $rootScope.iden.deleteWallet(w.id, function() {
         notification.info(name + ' deleted', $filter('translate')('This wallet was deleted'));

@@ -11,8 +11,9 @@ var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 var preconditions = require('preconditions').instance();
 
+var TX_MAX_SIZE_KB = 50;
 var VERSION = 1;
-var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment', 'paymentProtocolURL'];
+var CORE_FIELDS = ['builderObj', 'inputChainPaths', 'version', 'comment', 'paymentProtocolURL', 'paymentAckMemo'];
 
 
 function TxProposal(opts) {
@@ -37,10 +38,72 @@ function TxProposal(opts) {
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
   this.merchant = opts.merchant || null;
+  this.paymentAckMemo = null;
   this.paymentProtocolURL = opts.paymentProtocolURL || null;
+
+  if (opts.creator) {
+    var now = Date.now();
+    var me = {};
+    me[opts.creator] = now;
+
+    this.seenBy = me;
+    this.signedBy = {};
+    this.creator = opts.creator;
+    this.createdTs = now;
+    if (opts.signWith) {
+      if (!this.sign(opts.signWith, opts.creator))
+        throw new Error('Could not sign generated tx');
+    }
+  }
+
   this._sync();
 }
 
+TxProposal.prototype._checkPayPro = function() {
+  if (!this.merchant) return;
+
+  if (this.paymentProtocolURL !== this.merchant.request_url)
+    throw new Error('PayPro: Mismatch on Payment URLs');
+
+  if (!this.merchant.outs || this.merchant.outs.length !== 1)
+    throw new Error('PayPro: Unsopported number of outputs');
+
+  if (this.merchant.expires < (this.getSent() || Date.now() / 1000.))
+    throw new Error('PayPro: Request expired');
+
+  if (!this.merchant.total || !this.merchant.outs[0].amountSatStr || !this.merchant.outs[0].address)
+    throw new Error('PayPro: Missing amount');
+
+  var outs = JSON.parse(this.builder.vanilla.outs);
+  if (_.size(outs) != 1)
+    throw new Error('PayPro: Wrong outs in Tx');
+
+  var ppOut = this.merchant.outs[0];
+  var txOut = outs[0];
+
+  if (ppOut.address !== txOut.address)
+    throw new Error('PayPro: Wrong out address in Tx');
+
+  if (ppOut.amountSatStr !== txOut.amountSatStr + '')
+    throw new Error('PayPro: Wrong amount in Tx');
+
+};
+
+
+TxProposal.prototype.isFullySigned = function() {
+  return this.builder && this.builder.isFullySigned();
+};
+
+TxProposal.prototype.sign = function(keys, signerId) {
+  var before = this.countSignatures();
+  this.builder.sign(keys);
+
+  var signaturesAdded = this.countSignatures() > before;
+  if (signaturesAdded){
+    this.signedBy[signerId] = Date.now();
+  }
+  return signaturesAdded;
+};
 
 TxProposal.prototype._check = function() {
 
@@ -49,6 +112,11 @@ TxProposal.prototype._check = function() {
   }
 
   var tx = this.builder.build();
+
+  var txSize = tx.getSize();
+  if (txSize / 1024 > TX_MAX_SIZE_KB)
+    throw new Error('BIG: Invalid TX proposal. Too big: ' + txSize + ' bytes');
+
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
@@ -61,6 +129,28 @@ TxProposal.prototype._check = function() {
     if (hashType && hashType !== Transaction.SIGHASH_ALL)
       throw new Error('Invalid tx proposal: bad signatures');
   });
+  this._checkPayPro();
+};
+
+
+TxProposal.prototype.trimForStorage = function() {
+  // TODO (remove builder / builderObj. utxos, etc)
+  //
+  return this;
+};
+
+TxProposal.prototype.addMerchantData = function(merchantData) {
+  preconditions.checkArgument(merchantData.pr);
+  preconditions.checkArgument(merchantData.request_url);
+  var m = _.clone(merchantData);
+
+  if (!this.paymentProtocolURL)
+    this.paymentProtocolURL = m.request_url;
+
+  // remove unneeded data
+  m.raw = m.pr.pki_data = m.pr.signature = undefined;
+  this.merchant = m;
+  this._checkPayPro();
 };
 
 TxProposal.prototype.rejectCount = function() {
@@ -100,7 +190,6 @@ TxProposal.prototype._sync = function() {
   this._updateSignedBy();
   return this;
 }
-
 
 TxProposal.prototype.getId = function() {
   preconditions.checkState(this.builder);
@@ -221,17 +310,6 @@ TxProposal._infoFromRedeemScript = function(s) {
   };
 };
 
-TxProposal.prototype.mergeBuilder = function(incoming) {
-  var b0 = this.builder;
-  var b1 = incoming.builder;
-
-  var before = JSON.stringify(b0.toObj());
-  b0.merge(b1);
-  var after = JSON.stringify(b0.toObj());
-  return after !== before;
-};
-
-
 TxProposal.prototype.getSeen = function(copayerId) {
   return this.seenBy[copayerId];
 };
@@ -248,11 +326,14 @@ TxProposal.prototype.setRejected = function(copayerId) {
 
   if (!this.rejectedBy[copayerId])
     this.rejectedBy[copayerId] = Date.now();
+
+  return this;
 };
 
 TxProposal.prototype.setSent = function(sentTxid) {
   this.sentTxid = sentTxid;
   this.sentTs = Date.now();
+  return this;
 };
 
 TxProposal.prototype.getSent = function() {
@@ -338,9 +419,17 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
 
 // merge will not merge any metadata.
 TxProposal.prototype.merge = function(incoming) {
-  var hasChanged = this.mergeBuilder(incoming);
+  preconditions.checkArgument(_.isFunction(incoming._sync));
+  incoming._sync();
+
+  // Note that all inputs must have the same number of signatures, so checking
+  // one (0) is OK.
+  var before = this._inputSigners[0].length;
+  this.builder.merge(incoming.builder);
   this._sync();
-  return hasChanged;
+
+  var after = this._inputSigners[0].length;
+  return after !== before;
 };
 
 //This should be on bitcore / Transaction

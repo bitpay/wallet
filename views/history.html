@@ -71,9 +71,11 @@
           <div ng-show="btx.showDetails" class="m10t">
             <div class="send-note" ng-show="!!btx.merchant">
               <p>
-              <b>{{btx.merchant.pr.pd.memo}}</b>
+                <b>{{btx.merchant.pr.pd.memo}}</b>
               <p>
+                <b>{{btx.paymentAckMemo}}</b>
               <span ng-show="tx.merchant.domain">[{{btx.merchant.domain}}]</span>
+
             </div>
             <table class="last-transactions-content" ng-if="btx.actionList.0">
               <tbody>

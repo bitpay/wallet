@@ -197,7 +197,8 @@ Identity.prototype.storeWallet = function(wallet, cb) {
 
   this.storage.setItem(key, val, function(err) {
     if (err) {
-      log.debug('Wallet:' + wallet.getName() + ' couldnt be stored:', err);
+      log.error('Wallet:' + wallet.getName() + ' couldnt be stored:', err);
+      log.error('Wallet:' + wallet.getName() + ' Size:', JSON.stringify(wallet.sizes()));
     }
     if (cb)
       return cb(err);
@@ -400,6 +401,9 @@ Identity.prototype.bindWallet = function(w) {
   log.debug('Binding wallet:' + w.getName());
 
   w.on('txProposalsUpdated', function() {
+    Identity.storeWalletDebounced(self, w);
+  });
+  w.on('paymentAck', function() {
     Identity.storeWalletDebounced(self, w);
   });
   w.on('newAddresses', function() {

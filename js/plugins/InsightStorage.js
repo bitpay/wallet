@@ -156,6 +156,8 @@ InsightStorage.prototype.setItem = function(name, value, callback) {
   var passphrase = this.getPassphrase();
   var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var registerUrl = this.storeUrl + '/save';
+
+  log.debug('setItem ' +  name + ' size:'+ (value.length/1024).toFixed(1) + 'kb' );
   this.request.post({
     url: registerUrl,
     headers: {

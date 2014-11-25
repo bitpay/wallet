@@ -1,12 +1,10 @@
 'use strict';
 
-var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
 var async = require('async');
-var cryptoUtil = require('../util/crypto');
 
 var bitcore = require('bitcore');
 var BIP21 = bitcore.BIP21;
@@ -19,8 +17,10 @@ var Base58Check = bitcore.Base58.base58Check;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var Transaction = bitcore.Transaction;
-var log = require('../log');
 
+var log = require('../log');
+var cryptoUtil = require('../util/crypto');
+var httpUtil = require('../util/HTTP');
 var HDParams = require('./HDParams');
 var PublicKeyRing = require('./PublicKeyRing');
 var TxProposal = require('./TxProposal');
@@ -30,12 +30,12 @@ var Async = require('./Async');
 var Insight = module.exports.Insight = require('./Insight');
 var copayConfig = require('../../config');
 
-var TX_MAX_SIZE_KB = 50;
 var TX_MAX_INS = 70;
+
+
 /**
  * @desc
- * Wallet manages a private key for Copay, network, storage of the wallet for
- * persistance, and blockchain information.
+ * Wallet manages a private key for Copay, network and blockchain information.
  *
  * @TODO: Split this leviathan.
  *
@@ -70,6 +70,7 @@ function Wallet(opts) {
 
   opts.network = opts.network || Wallet._newAsync(opts.networkOpts[networkName]);
   opts.blockchain = opts.blockchain || Wallet._newInsight(opts.blockchainOpts[networkName]);;
+  this.httpUtil = opts.httpUtil || httpUtil;
 
   //required params
   ['network', 'blockchain',
@@ -98,7 +99,7 @@ function Wallet(opts) {
   this.syncedTimestamp = opts.syncedTimestamp || 0;
   this.lastMessageFrom = {};
 
-  this.paymentRequests = opts.paymentRequests || {};
+  this.paymentRequestsCache = {};
 
   var networkName = Wallet.obtainNetworkName(opts);
 
@@ -117,6 +118,11 @@ function Wallet(opts) {
 
 inherits(Wallet, events.EventEmitter);
 
+
+Wallet.TX_BROADCASTED = 'txBroadcasted';
+Wallet.TX_PROPOSAL_SENT = 'txProposalSent';
+Wallet.TX_SIGNED = 'txSigned';
+
 Wallet.prototype.emitAndKeepAlive = function(args) {
   var args = Array.prototype.slice.call(arguments);
   log.debug('Wallet Emitting:', args);
@@ -125,13 +131,13 @@ Wallet.prototype.emitAndKeepAlive = function(args) {
 };
 
 /**
- * @TODO: Document this. Its usage is kind of weird
+ * @desc Fixed & Forced TransactionBuilder options, for genereration transactions.
  *
  * @static
- * @property lockTime
- * @property signhash
- * @property fee
- * @property feeSat
+ * @property lockTime null
+ * @property signhash SIGHASH
+ * @property fee null (automatic)
+ * @property feeSat null
  */
 Wallet.builderOpts = {
   lockTime: null,
@@ -258,13 +264,10 @@ Wallet.prototype._newAddresses = function(dontUpdateUx) {
  * Processes the data using {@link HDParams#fromList} and merges it with the
  * {@link Wallet#publicKeyRing}.
  *
- * Triggers a {@link Wallet#store} if the internal state has changed.
- *
  * @param {string} senderId - the sender id
  * @param {Object} data - the data recived, {@see HDParams#fromList}
  */
 Wallet.prototype._onIndexes = function(senderId, data) {
-  log.debug('Wallet:' + this.id + ' RECV INDEXES:', data);
   var inIndexes = HDParams.fromList(data.indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
@@ -349,17 +352,14 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
         type: 'new',
         cId: senderId
       }
-    } else if (m.newCopayer.length) {
+    } else if (m.newCopayer && m.newCopayer.length) {
       ev = {
         type: 'signed',
         cId: m.newCopayer[0]
       };
+    } else {
+      log.error('unknown  tx proposal event:', m)
     }
-  } else {
-    ev = {
-      type: 'corrupt',
-      cId: senderId
-    };
   }
   if (ev)
     this.emitAndKeepAlive('txProposalEvent', ev);
@@ -413,31 +413,36 @@ Wallet.prototype._getKeyMap = function(txp) {
 
 /**
  * @callback transactionCallback
- * @param {false|Transaction} returnValue
+ * @param {error} error
+ * @param {number} transaction ID (if sent)
  */
 
 /**
  * @desc
  * Asyncchronously check with the blockchain if a given transaction was sent.
  *
- * @param {string} ntxid - the transaction
+ * @param {string} ntxid - the transaction proposal
  * @param {transactionCallback} cb
  */
-Wallet.prototype._checkSentTx = function(ntxid, cb) {
+Wallet.prototype._checkIfTxIsSent = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
-
   var txHex = tx.serialize().toString('hex');
 
   //Use calcHash NOT getHash which could be cached.
   var txid = bitcore.util.formatHashFull(tx.calcHash());
   this.blockchain.getTransaction(txid, function(err, tx) {
-    if (err) return cb(false);
-    return cb(txid);
+    return cb(err, !err ? txid : null);
   });
 };
 
-Wallet.prototype._processTxProposalSeen = function(ntxid) {
+/**
+ *
+ * @desc Set Incomming Transaction Proposal seen status
+ * and send `seen` messages to peers if aplicable.
+ * @param ntxid
+ */
+Wallet.prototype._setTxProposalSeen = function(ntxid) {
   var txp = this.txProposals.get(ntxid);
   if (!txp.getSeen(this.getMyCopayerId())) {
     txp.setSeen(this.getMyCopayerId());
@@ -446,22 +451,41 @@ Wallet.prototype._processTxProposalSeen = function(ntxid) {
 };
 
 
-Wallet.prototype._processTxProposalSent = function(ntxid, cb) {
+
+/**
+ * @desc updates Tx Proposal Sent status by checking the blockchain
+ *
+ * @param ntxid
+ * @param {transactionCallback} cb
+ */
+Wallet.prototype._updateTxProposalSent = function(ntxid, cb) {
   var self = this;
   var txp = this.txProposals.get(ntxid);
 
-  this._checkSentTx(ntxid, function(txid) {
+  this._checkIfTxIsSent(ntxid, function(err, txid) {
+    if (err) return cb(err);
+
     if (txid) {
       if (!txp.getSent()) {
         txp.setSent(txid);
       }
+      self.emitAndKeepAlive('txProposalsUpdated');
     }
-    self.emitAndKeepAlive('txProposalsUpdated');
-    if (cb) return cb(null, txid);
+    if (cb)
+      return cb(null, txid, txid ? Wallet.TX_BROADCASTED : null);
   });
 };
 
 
+/**
+ * _processTxProposalPayPro
+ *
+ * @desc Process and incoming PayPro TX Proposal. Fetchs the payment request
+ * from the merchant.
+ *
+ * @param mergeInfo Proposals merge information, as returned by TxProposals.merge
+ * @return {fetchPaymentRequestCallback}
+ */
 Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
   var self = this;
   var txp = mergeInfo.txp;
@@ -472,13 +496,30 @@ Wallet.prototype._processTxProposalPayPro = function(mergeInfo, cb) {
     return cb();
 
   log.info('Received a Payment Protocol TX Proposal');
-  self.fetchPaymentTx(txp.paymentProtocolURL, function(err, merchantData) {
+  self.fetchPaymentRequest({
+    url: txp.paymentProtocolURL
+  }, function(err, merchantData) {
     if (err) return cb(err);
-    txp.merchant = merchantData;
-    return cb();
+
+    // This will verify current TXP data vs. merchantData (e.g., out addresses)
+    try {
+      txp.addMerchantData(merchantData);
+    } catch (e) {
+      log.error(e);
+      err = 'BADPAYPRO: ' + e.toString();
+    }
+    return cb(err);
   });
 };
 
+/**
+ * _processIncomingTxProposal
+ *
+ * @desc Process an incoming transaction proposal. Runs safety and sanity checks on it.
+ *
+ * @param mergeInfo Proposals merge information, as returned by TxProposals.merge
+ * @return {errCallback}
+ */
 Wallet.prototype._processIncomingTxProposal = function(mergeInfo, cb) {
   if (!mergeInfo) return cb();
   var self = this;
@@ -486,13 +527,12 @@ Wallet.prototype._processIncomingTxProposal = function(mergeInfo, cb) {
   self._processTxProposalPayPro(mergeInfo, function(err) {
     if (err) return cb(err);
 
-    self._processTxProposalSeen(mergeInfo.ntxid);
+    self._setTxProposalSeen(mergeInfo.ntxid);
 
     var tx = mergeInfo.txp.builder.build();
     if (tx.isComplete())
-      self._processTxProposalSent(mergeInfo.ntxid);
-    else if (mergeInfo.hasChanged) {
-      self.sendTxProposal(mergeInfo.ntxid);
+      self._updateTxProposalSent(mergeInfo.ntxid);
+    else {
       self.emitAndKeepAlive('txProposalsUpdated');
     }
     return cb();
@@ -510,29 +550,36 @@ Wallet.prototype._processIncomingTxProposal = function(mergeInfo, cb) {
  */
 Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
-  log.debug('Wallet:' + this.id + ' RECV TXPROPOSAL: ', data);
   var m;
 
   try {
-    m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
-    var keyMap = this._getKeyMap(m.txp);
+    m = self.txProposals.merge(data.txProposal, Wallet.builderOpts);
+    var keyMap = self._getKeyMap(m.txp);
     m.newCopayer = m.txp.setCopayers(senderId, keyMap);
   } catch (e) {
     log.error('Corrupt TX proposal received from:', senderId, e.toString());
     if (m && m.ntxid)
-      this.txProposals.deleteOne(m.ntxid);
+      self.txProposals.deleteOne(m.ntxid);
     m = null;
   }
 
-  self._processIncomingTxProposal(m, function(err) {
-    if (err) {
-      log.error('Corrupt TX proposal received from:', senderId, err.toString());
-      if (m && m.ntxid)
-        self.txProposals.deleteOne(m.ntxid);
-      m = null;
-    }
-    self._processProposalEvents(senderId, m);
-  });
+  if (m) {
+
+    self._processIncomingTxProposal(m, function(err) {
+
+      if (err) {
+        log.error('Corrupt TX proposal received from:', senderId, err.toString());
+        if (m && m.ntxid)
+          self.txProposals.deleteOne(m.ntxid);
+        m = null;
+      } else {
+        if (m && m.hasChanged)
+          self.sendTxProposal(m.ntxid);
+      }
+
+      self._processProposalEvents(senderId, m);
+    });
+  }
 };
 
 /**
@@ -549,20 +596,23 @@ Wallet.prototype._onReject = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   log.debug('Wallet:' + this.id + ' RECV REJECT:', data);
 
-  var txp = this.txProposals.get(data.ntxid);
+  try {
+    var txp = this.txProposals.get(data.ntxid);
+  } catch (e) {
+    log.info(e);
+  };
 
-  if (!txp)
-    throw new Error('Received Reject for an unknown TX from:' + senderId);
+  if (txp) {
+    if (txp.signedBy[senderId])
+      throw new Error('Received Reject for an already signed TX from:' + senderId);
 
-  if (txp.signedBy[senderId])
-    throw new Error('Received Reject for an already signed TX from:' + senderId);
-
-  txp.setRejected(senderId);
-  this.emitAndKeepAlive('txProposalEvent', {
-    type: 'rejected',
-    cId: senderId,
-    txId: data.ntxid
-  });
+    txp.setRejected(senderId);
+    this.emitAndKeepAlive('txProposalEvent', {
+      type: 'rejected',
+      cId: senderId,
+      txId: data.ntxid
+    });
+  }
 };
 
 /**
@@ -577,23 +627,22 @@ Wallet.prototype._onReject = function(senderId, data) {
  */
 Wallet.prototype._onSeen = function(senderId, data) {
   preconditions.checkState(data.ntxid);
-  log.debug('Wallet:' + this.id + ' RECV SEEN:', data);
-
-  var txp = this.txProposals.get(data.ntxid);
-  txp.setSeen(senderId);
-  this.emitAndKeepAlive('txProposalEvent', {
-    type: 'seen',
-    cId: senderId,
-    txId: data.ntxid
-  });
-
+  try {
+    var txp = this.txProposals.get(data.ntxid);
+  } catch (e) {};
+  if (txp) {
+    txp.setSeen(senderId);
+    this.emitAndKeepAlive('txProposalEvent', {
+      type: 'seen',
+      cId: senderId,
+      txId: data.ntxid
+    });
+  }
 };
 
 /**
  * @desc
  * Handle a ADDRESSBOOK message received
- *
- * {@see Wallet#verifyAddressbookEntry}
  *
  * @param {string} senderId
  * @param {Object} data
@@ -602,19 +651,23 @@ Wallet.prototype._onSeen = function(senderId, data) {
  * @emits txProposalEvent
  */
 Wallet.prototype._onAddressBook = function(senderId, data) {
-  preconditions.checkState(data.addressBook);
-  log.debug('Wallet:' + this.id + ' RECV ADDRESSBOOK:', data);
-  var rcv = data.addressBook;
-  var hasChange;
-  for (var key in rcv) {
-    if (!this.addressBook[key]) {
-      var isVerified = this.verifyAddressbookEntry(rcv[key], senderId, key);
-      if (isVerified) {
-        this.addressBook[key] = rcv[key];
-        hasChange = true;
-      }
+  if (!data.addressBook || !_.isObject(data.addressBook))
+    return;
+
+  var self = this,
+    hasChange;
+  _.each(data.addressBook, function(value, key) {
+    if (!self.addressBook[key] && Address.validate(key)) {
+
+      self.addressBook[key] = _.pick(value, ['createdTs', 'label']);
+
+      // Force author to senderId.
+      self.addressBook[key].copayerId = senderId;
+
+      hasChange = true;
     }
-  }
+  });
+
   if (hasChange) {
     this.emitAndKeepAlive('addressBookUpdated');
   }
@@ -645,8 +698,6 @@ Wallet.prototype.updateSyncedTimestamp = function(ts) {
  * Triggers a call to {@link Wallet#sendWalletReady}
  */
 Wallet.prototype._onNoMessages = function() {
-  if (!this.isShared()) return;
-
   log.debug('Wallet:' + this.id + ' No messages at the server. Requesting peer sync from: ' + (this.syncedTimestamp + 1));
   this.sendWalletReady(null, parseInt((this.syncedTimestamp + 1) / 1000000));
 };
@@ -666,8 +717,8 @@ Wallet.prototype._onData = function(senderId, data, ts) {
   preconditions.checkArgument(data.type);
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
-  log.debug('Wallet:' + this.id + ' RECV', senderId, data);
 
+  log.debug('Wallet:' + this.getName() + ' RECV:', data.type, data, senderId);
 
   this.updateSyncedTimestamp(ts);
 
@@ -902,8 +953,13 @@ Wallet.prototype._setBlockchainListeners = function() {
  */
 Wallet.prototype.netStart = function() {
   var self = this;
-  var net = this.network;
 
+  if (!this.isShared()) {
+    self.emitAndKeepAlive('ready');
+    return;
+  }
+
+  var net = this.network;
   net.removeAllListeners();
   net.on('connect', self._onConnect.bind(self));
   net.on('data', self._onData.bind(self));
@@ -938,7 +994,7 @@ Wallet.prototype.netStart = function() {
   };
 
 
-  log.debug('Wallet:' + self.id + ' Starting networking: ' + startOpts.copayerId);
+  log.debug('Wallet:' + self.id + ' Starting network.');
   net.start(startOpts, function() {
     self._setBlockchainListeners();
     self.emitAndKeepAlive('ready', net.getPeer());
@@ -1032,6 +1088,23 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
+/**
+ * @desc: returns the sizes, by component, of a wallet, in bytes.
+ *
+ * @return {object} sizes by component name and 'total' for the total wallet size.
+ */
+Wallet.prototype.sizes = function() {
+  var obj = this.toObj();
+  var sizes = {},
+    total = 0;
+  _.each(obj, function(val, key) {
+    var s = JSON.stringify(val).length;
+    sizes[key] = s;
+    total += s;
+  });
+  sizes.total = total;
+  return sizes;
+};
 
 Wallet.fromUntrustedObj = function(obj, readOpts) {
   obj = _.clone(obj);
@@ -1139,16 +1212,21 @@ Wallet.fromObj = function(o, readOpts) {
 
 
 /**
- * @desc Send a message to other peers
- * @param {string[]} recipients - the pubkey of the recipients of the message
- * @param {Object} obj - the data to be sent to them
+ * @desc sends a message to  peers
+ * @param {string[]} recipients - the pubkey of the recipients of the message. Null for sending to all peers.
+ * @param {Object} obj - the data to be sent to them.
+ * @param {String} obj.type - Type of the message to be send
  */
-Wallet.prototype.send = function(recipients, obj) {
+Wallet.prototype._sendToPeers = function(recipients, obj) {
+  if (!this.isShared()) return;
+  log.info('Wallet:' + this.getName() + ' ### Sending ' + obj.type);
+  log.debug('Sending obj', obj);
+
   this.network.send(recipients, obj);
 };
 
 /**
- * @desc Send the set of TxProposals to some peers
+ * @desc Send the set of TxProposals to peers
  * @param {string[]} recipients - the pubkeys of the recipients
  */
 Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
@@ -1166,8 +1244,7 @@ Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
  */
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
-  log.debug('Wallet:' + this.id + ' ### SENDING txProposal ' + ntxid + ' TO:', recipients || 'All', this.txProposals);
-  this.send(recipients, {
+  this._sendToPeers(recipients, {
     type: 'txProposal',
     txProposal: this.txProposals.get(ntxid).toObjTrim(),
     walletId: this.id,
@@ -1180,8 +1257,7 @@ Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
  */
 Wallet.prototype.sendSeen = function(ntxid) {
   preconditions.checkArgument(ntxid);
-  log.debug('Wallet:' + this.id + ' ### SENDING seen:  ' + ntxid + ' TO: All');
-  this.send(null, {
+  this._sendToPeers(null, {
     type: 'seen',
     ntxid: ntxid,
     walletId: this.id,
@@ -1194,8 +1270,8 @@ Wallet.prototype.sendSeen = function(ntxid) {
  */
 Wallet.prototype.sendReject = function(ntxid) {
   preconditions.checkArgument(ntxid);
-  log.debug('Wallet:' + this.id + ' ### SENDING reject:  ' + ntxid + ' TO: All');
-  this.send(null, {
+
+  this._sendToPeers(null, {
     type: 'reject',
     ntxid: ntxid,
     walletId: this.id,
@@ -1207,9 +1283,7 @@ Wallet.prototype.sendReject = function(ntxid) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
-  log.debug('Wallet:' + this.id + ' ### SENDING WalletReady TO:', recipients || 'All');
-
-  this.send(recipients, {
+  this._sendToPeers(recipients, {
     type: 'walletReady',
     walletId: this.id,
     sinceTs: sinceTs,
@@ -1222,9 +1296,7 @@ Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendWalletId = function(recipients) {
-  log.debug('Wallet:' + this.id + ' ### SENDING walletId TO:', recipients || 'All', this.id);
-
-  this.send(recipients, {
+  this._sendToPeers(recipients, {
     type: 'walletId',
     walletId: this.id,
     opts: this._optsToObj(),
@@ -1237,12 +1309,11 @@ Wallet.prototype.sendWalletId = function(recipients) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  log.debug('Wallet:' + this.id + ' ### SENDING publicKeyRing TO:', recipients || 'All', this.publicKeyRing.toObj());
-  var publicKeyRing = this.publicKeyRing.toObj();
+  var publicKeyRingObj = this.publicKeyRing.toObj();
 
-  this.send(recipients, {
+  this._sendToPeers(recipients, {
     type: 'publicKeyRing',
-    publicKeyRing: publicKeyRing,
+    publicKeyRing: publicKeyRingObj,
     walletId: this.id,
   });
 };
@@ -1253,9 +1324,7 @@ Wallet.prototype.sendPublicKeyRing = function(recipients) {
  */
 Wallet.prototype.sendIndexes = function(recipients) {
   var indexes = HDParams.serialize(this.publicKeyRing.indexes);
-  log.debug('Wallet:' + this.id + ' ### INDEXES TO:', recipients || 'All', indexes);
-
-  this.send(recipients, {
+  this._sendToPeers(recipients, {
     type: 'indexes',
     indexes: indexes,
     walletId: this.id,
@@ -1263,15 +1332,30 @@ Wallet.prototype.sendIndexes = function(recipients) {
 };
 
 /**
+ * sendAddressBook
  * @desc Send our addressBook to other recipients
+ *
  * @param {string[]} recipients - the pubkeys of the recipients
+ * @param onlyKey
+ * @return {undefined}
  */
-Wallet.prototype.sendAddressBook = function(recipients) {
-  if (!Object.keys(this.addressBook).length) return;
-  log.debug('Wallet:' + this.id + ' ### SENDING addressBook TO:', recipients || 'All', this.addressBook);
-  this.send(recipients, {
+Wallet.prototype.sendAddressBook = function(recipients, onlyKey) {
+  var toSend = [],
+    myId = this.getMyCopayerId();
+
+  if (onlyKey && this.addressBook[onlyKey]) {
+    toSend = {};
+    toSend[onlyKey] = this.addressBook[onlyKey];
+  } else {
+    toSend = _.filter(this.addressBook, function(entry) {
+      return entry.copayerId === myId;
+    });
+  }
+  if (_.isEmpty(toSend)) return;
+
+  this._sendToPeers(recipients, {
     type: 'addressbook',
-    addressBook: this.addressBook,
+    addressBook: toSend,
     walletId: this.id,
   });
 };
@@ -1319,18 +1403,20 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
  */
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
-  var copayers = this.getRegisteredCopayerIds();
-  for (var ntxid in this.txProposals.txps) {
-    var txp = this.txProposals.getTxProposal(ntxid, copayers);
-    txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
-    txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
-    txp.finallyRejected = this.totalCopayers - txp.rejectCount < this.requiredCopayers;
+  var self = this;
+  var copayers = self.getRegisteredCopayerIds();
+  var myId = self.getMyCopayerId();
+
+  _.each(self.txProposals.txps, function(txp, ntxid){ 
+    txp.signedByUs = txp.signedBy[myId] ? true : false;
+    txp.rejectedByUs = txp.rejectedBy[self.getMyCopayerId()] ? true : false;
+    txp.finallyRejected = self.totalCopayers - txp.rejectCount < self.requiredCopayers;
     txp.isPending = !txp.finallyRejected && !txp.sentTxid;
 
     if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
       ret.push(txp);
     }
-  }
+  });
   return ret;
 };
 
@@ -1397,17 +1483,11 @@ Wallet.prototype.getPendingTxProposals = function() {
  * @return {number} the number of deleted proposals
  */
 Wallet.prototype.purgeTxProposals = function(deleteAll) {
-  var m = this.txProposals.length();
-
-  if (deleteAll) {
-    this.txProposals.deleteAll();
-  } else {
-    this.txProposals.deletePending(this.maxRejectCount());
+  var deleted = this.txProposals.purge(deleteAll, this.maxRejectCount());
+  if (deleted) {
+    this.emitAndKeepAlive('txProposalsUpdated');
   }
-  this.emitAndKeepAlive('txProposalsUpdated');
-
-  var n = this.txProposals.length();
-  return m - n;
+  return deleted;
 };
 
 /**
@@ -1416,200 +1496,281 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
  * @emits txProposalsUpdated
  */
 Wallet.prototype.reject = function(ntxid) {
-  var txp = this.txProposals.reject(ntxid, this.getMyCopayerId());
+  var txp = this.txProposals.get(ntxid);
+  txp.setRejected(this.getMyCopayerId());
   this.sendReject(ntxid);
   this.emitAndKeepAlive('txProposalsUpdated');
 };
 
 /**
- * @desc Sign a proposal
+ * @callback signCallback
+ * @param {Error} error if any
+ * @param {number} Transaction ID or Transaction Proposal ID
+ * @param {status} Wallet.TX_* Status:
+ *
+ *    TX_BROADCASTED
+ *    TX_SIGNED
+ *    TX_PROPOSAL_SENT
+ */
+
+
+/**
+ * @desc Signs a transaction proposal
  * @param {string} ntxid the id of the transaction proposal to sign
  * @emits txProposalsUpdated
  * @throws {Error} Could not sign proposal
  * @throws {Error} Bad payment request
  * @return {boolean} true if signing actually incremented the number of signatures
+ * @emits txProposalsUpdated
  */
 Wallet.prototype.sign = function(ntxid) {
   preconditions.checkState(!_.isUndefined(this.getMyCopayerId()));
 
-  var myId = this.getMyCopayerId();
   var txp = this.txProposals.get(ntxid);
-
-  // If this is a payment protocol request,
-  // ensure it hasn't been tampered with.
-  if (!this.verifyPaymentRequest(ntxid)) {
-    throw new Error('Bad payment request');
-  }
-
-  var before = txp.countSignatures();
-
   var keys = this.privateKey.getForPaths(txp.inputChainPaths);
-  txp.builder.sign(keys);
 
-  if (txp.countSignatures() <= before) {
+  var signaturesAdded = txp.sign(keys, this.getMyCopayerId());
+  if (!signaturesAdded)
     return false;
-  }
 
-  txp.signedBy[myId] = Date.now();
-  this.sendTxProposal(ntxid);
   this.emitAndKeepAlive('txProposalsUpdated');
-
   return true;
 };
 
-/**
- * @callback broadcastCallback
- * @param {string} txid - the transaction id on the blockchain
- */
-/**
- * @desc Broadcasts a transaction to the blockchain
- * @param {string} ntxid - the transaction proposal id
- * @param {broadcastCallback} cb
- */
-Wallet.prototype.sendTx = function(ntxid, cb) {
-  var txp = this.txProposals.get(ntxid);
 
+/**
+ *
+ * @desc signs and send or broadcast a transaction.
+ * In m-n wallets,
+ * if m==1 it will broadcast it to the Bitcoin Network
+ * if n>1 it will send the proposal to the peers
+ *
+ * @param ntxid Transaction Proposal Id
+ * @param {signCallback} cb
+ * @throws {Error} Could not sign proposal
+ */
+Wallet.prototype.signAndSend = function(ntxid, cb) {
+  if (this.sign(ntxid)) {
+    var txp = this.txProposals.get(ntxid);
+    if (txp.isFullySigned()) {
+      return this.broadcastTx(ntxid, cb);
+    } else {
+      this.sendTxProposal(ntxid);
+      return cb(null, ntxid, Wallet.TX_SIGNED);
+    }
+  } else {
+    return cb(new Error('Could not sign the proposal'));
+  }
+};
+
+
+/**
+ * @desc Broadcast a tx proposal. In case of failure, check if the resulting
+ * transactions is already on the blockchain.
+ *
+ * @param ntxid
+ * @param cb
+ * @return {undefined}
+ */
+Wallet.prototype._doBroadcastTx = function(ntxid, cb) {
+  var self = this;
+  var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
+
   if (!tx.isComplete())
     throw new Error('Tx is not complete. Can not broadcast');
 
-  log.debug('Wallet:' + this.id + ' Broadcasting Transaction');
-
-  if (txp.merchant) {
-    return this.sendPaymentTx(ntxid, cb);
-  }
-
-  var scriptSig = tx.ins[0].getScript();
-  var size = scriptSig.serialize().length;
   var txHex = tx.serialize().toString('hex');
-  log.debug('Wallet:' + this.id + ' Raw transaction: ', txHex);
 
-  var self = this;
+  log.info('Wallet:' + this.id + ' Broadcasting Transaction ntxid:' + ntxid);
+  log.debug('\tRaw transaction: ', txHex);
+
   this.blockchain.broadcast(txHex, function(err, txid) {
-    if (err)
-      log.error('Error sending TX:', err);
+    if (err || !txid) {
 
-    if (txid) {
-      log.debug('Wallet:' + self.getName() + ' Broadcasted TX. BITCOIND txid:', txid);
-      self.txProposals.get(ntxid).setSent(txid);
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('txProposalsUpdated');
-      return cb(txid);
-    } else {
-      log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
-      self._processTxProposalSent(ntxid, function(err, txid) {
-        return cb(txid);
+      log.info('Wallet:' + self.getName() + '. Sent failed:' +
+        err + '. Checking if the TX was sent already');
+
+      self._checkIfTxIsSent(ntxid, function(err, txid) {
+        return cb(err, txid);
       });
+    } else {
+      log.info('Wallet:' + self.getName() + ' broadcasted a TX. BITCOIND txid:', txid);
+      return cb(null, txid);
     }
   });
 };
 
 /**
- * @desc Create a Payment Protocol transaction
- * @param {Object|string} options - if it's a string, parse it as the uri
- * @param {string} options.uri the url for the transaction
- * @param {Function} cb
+ * @desc Broadcasts a transaction to the blockchain, updates tx transactions
+ * sent status. If the tx proposal is a payment protocol request,it will also
+ * send the payment message to the server,and process the response.
+ *
+ * @param {string} ntxid - the transaction proposal id
+ * @param {string} txid - the transaction id on the blockchain
+ * @param {signCallback} cb
  */
-Wallet.prototype.createPaymentTx = function(options, cb) {
+Wallet.prototype.broadcastTx = function(ntxid, cb) {
   var self = this;
 
-  if (_.isString(options)) {
-    options = {
-      uri: options
-    };
-  }
-  options.uri = options.uri || options.url;
+  self._doBroadcastTx(ntxid, function(err, txid) {
+    if (err) return cb(err);
+    preconditions.checkState(txid);
 
-  if (options.uri.indexOf('bitcoin:') === 0) {
-    options.uri = new bitcore.BIP21(options.uri).data.merchant;
-    if (!options.uri) {
-      return cb(new Error('No URI.'));
+    var txp = self.txProposals.get(ntxid);
+    txp.setSent(txid);
+
+
+    // PAYPRO: Payment message is optional, only if payment_url is set
+    // This is async. and will notify and update txp async.
+    if (txp.merchant && txp.merchant.pr.pd.payment_url) {
+      var data = self.createPayProPayment(txp);
+      self.sendPayProPayment(txp, data, function(err, data) {
+        if (err) return cb(err);
+        self.onPayProPaymentAck(ntxid, data);
+      });
     }
-  }
 
-  var req = this.paymentRequests[options.uri];
-  if (req) {
-    delete this.paymentRequests[options.uri];
-    this.receivePaymentRequest(options, req.pr, cb);
-    return;
-  }
+    self.sendTxProposal(ntxid);
+    self.emitAndKeepAlive('txProposalsUpdated');
+    return cb(null, txid, Wallet.TX_BROADCASTED);
+  });
+};
 
-  return Wallet.request({
-      method: 'GET',
-      url: options.uri,
-      headers: {
-        'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
-      },
-      responseType: 'arraybuffer'
+/**
+ * @callback {fetchPaymentRequestCallback}
+ * @param {string=} err - an error, if any
+ * @param {Object} merchantData - object representing the payment request. Add described on BIP70 merchant_data
+ */
+
+/**
+ * @desc Creates a Payment Protocol transaction
+ * @param {Object|string} options - if it's a string, parse it as the url
+ * @param {string} options.url the url for the transaction
+ * @return {fetchPaymentRequestCallback} cb
+ */
+Wallet.prototype.fetchPaymentRequest = function(options, cb) {
+  preconditions.checkArgument(_.isObject(options));
+  preconditions.checkArgument(options.url);
+  preconditions.checkArgument(options.url.indexOf('http') == 0, 'Bad PayPro URL given:' + options.url);
+  var self = this;
+
+  if (self.paymentRequestsCache[options.url])
+    return cb(null, self.paymentRequestsCache[options.url]);
+
+  this.httpUtil.request({
+    method: 'GET',
+    url: options.url,
+    headers: {
+      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+    },
+    responseType: 'arraybuffer'
+  })
+    .success(function(rawData) {
+      log.info('PayPro Request done successfully. Parsing response')
+
+      var merchantData, err;
+      try {
+        merchantData = self.parsePaymentRequest(options, rawData);
+      } catch (e) {
+        err = e
+      };
+
+      log.debug('PayPro request data', merchantData);
+
+      self.paymentRequestsCache[options.url] = merchantData;
+      return cb(err, merchantData);
     })
-    .success(function(data, status, headers, config) {
-      data = PayPro.PaymentRequest.decode(data);
-      var pr = new PayPro();
-      pr = pr.makePaymentRequest(data);
-      return self.receivePaymentRequest(options, pr, cb);
-    })
-    .error(function(data, status, headers, config) {
-      log.debug('Server did not return PaymentRequest.');
-      log.debug('XHR status: ' + status);
-      if (options.fetch) {
-        return cb(new Error('Status: ' + status));
-      } else {
-        // Should never happen:
-        return cb(null, null, null);
-      }
+    .error(function(data, status) {
+      log.debug('Server did not return PaymentRequest.\nXHR status: ' + status);
+      return cb(new Error('Status: ' + status));
     });
 };
 
+
 /**
- * @desc Creates a Payment TxProposal from a uri
- * @param {Object} options
- * @param {string=} options.uri
- * @param {string=} options.url
- * @param {Function} cb
+ * _addOutputsToMerchantData
+ *
+ * @desc parses merchant_data internal output representation and stores
+ * the result in merchant_data.outs = [{address: xx, amountSatStr: xx}],
+ * to be compatible with TransactionBuilder.
+ *`
+ * @param merchantData BIP70 merchant_data (from the payment request)
+ * @throws {Error} PayPro: Unsupported inputs
+ * @return {undefined}
  */
-Wallet.prototype.fetchPaymentTx = function(options, cb) {
-  var self = this;
+Wallet.prototype._addOutputsToMerchantData = function(merchantData) {
 
-  options = options || {};
-  if (_.isString(options)) {
-    options = {
-      uri: options
+  var total = bignum(0);
+  var outs = {};
+
+  _.each(merchantData.pr.pd.outputs, function(output) {
+    var amount = output.amount;
+
+    // big endian
+    var v = new Buffer(8);
+    v[0] = (amount.high >> 24) & 0xff;
+    v[1] = (amount.high >> 16) & 0xff;
+    v[2] = (amount.high >> 8) & 0xff;
+    v[3] = (amount.high >> 0) & 0xff;
+    v[4] = (amount.low >> 24) & 0xff;
+    v[5] = (amount.low >> 16) & 0xff;
+    v[6] = (amount.low >> 8) & 0xff;
+    v[7] = (amount.low >> 0) & 0xff;
+
+    var script = {
+      offset: output.script.offset,
+      limit: output.script.limit,
+      buffer: new Buffer(output.script.buffer, 'hex')
     };
-  }
-  options.uri = options.uri || options.url;
-  options.fetch = true;
+    var s = script.buffer.slice(script.offset, script.limit);
+    var network = merchantData.pr.pd.network === 'main' ? 'livenet' : 'testnet';
+    var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
 
-  var req = this.paymentRequests[options.uri];
-  if (req) {
-    return cb(null, req.merchantData);
-  }
+    var a = addr[0].toString();
+    outs[a] = bignum.fromBuffer(v, {
+      endian: 'big',
+      size: 1
+    }).add(outs[a] || bignum(0));
 
-  return this.createPaymentTx(options, function(err, merchantData, pr) {
-    if (err) return cb(err);
-    self.paymentRequests[options.uri] = {
-      merchantData: merchantData,
-      pr: pr
-    };
-    return cb(null, merchantData);
+    total = total.add(bignum.fromBuffer(v, {
+      endian: 'big',
+      size: 1
+    }));
   });
+
+  // for now we only support PayPro with 1 output.
+  if (_.size(outs) !== 1)
+    throw new Error('PayPro: Unsupported outputs');
+
+  var out = _.pairs(outs)[0];
+
+  merchantData.outs = [{
+    address: out[0],
+    amountSatStr: out[1].toString(10),
+  }];
+  merchantData.total = total.toString(10);
+
+  // If user is granted the privilege of choosing
+  // their own amount, add it to the tx.
+  if (merchantData.total === 0 && options.amount) {
+    merchant.outs[0].amountSatStr = merchantData.total = outions.amount;
+  }
 };
 
 /**
- * @desc Analyzes a payment request and generates a transaction proposal for it.
+ * @desc Analyzes a payment request and generate merchantData
  * @param {Object} options
- * @param {PayProRequest} pr
- * @param {string} pr.payment_details_version
- * @param {string} pr.pki_type
- * @param {Object} pr.data
- * @param {string} pr.serialized_payment_details
- * @param {string} pr.signature
- * @param {string} options.memo
- * @param {string} options.comment
- * @param {Function} cb
+ * @param {string} options.url url where the pay request was acquired
+ * @param {string} options.amount Only used if pay requesst allow user to set the amount
+ * @param {PayProRequest} rawData
  */
-Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
+Wallet.prototype.parsePaymentRequest = function(options, rawData) {
   var self = this;
 
+  var data = PayPro.PaymentRequest.decode(rawData);
+  var paypro = new PayPro();
+  var pr = paypro.makePaymentRequest(data);
   var ver = pr.get('payment_details_version');
   var pki_type = pr.get('pki_type');
   var pki_data = pr.get('pki_data');
@@ -1619,18 +1780,11 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
   var certs = PayPro.X509Certificates.decode(pki_data);
   certs = certs.certificate;
 
-  // Fix for older versions of bitcore
-  if (!PayPro.RootCerts) {
-    PayPro.RootCerts = {
-      getTrusted: function() {}
-    };
-  }
-
   // Verify Signature
   var trust = pr.verify(true);
 
   if (!trust.verified) {
-    return cb(new Error('Server sent a bad signature.'));
+    throw new Error('Server sent a bad signature.');
   }
 
   details = PayPro.PaymentDetails.decode(details);
@@ -1676,526 +1830,138 @@ Wallet.prototype.receivePaymentRequest = function(options, pr, cb) {
       untrusted: !trust.caTrusted,
       selfSigned: trust.selfSigned
     },
-    request_url: options.uri,
+    expires: expires,
+    request_url: options.url,
     total: bignum('0', 10).toString(10),
-    // Expose so other copayers can verify signature
-    // and identity, not to mention data.
-    raw: pr.serialize().toString('hex')
   };
-
-  return this.getUnspent(function(err, safeUnspent, unspent) {
-    if (options.fetch) {
-      if (!unspent || !unspent.length) {
-        return cb(new Error('No unspent outputs available.'));
-      }
-
-      try {
-        self.createPaymentTxSync(options, merchantData, safeUnspent);
-      } catch (e) {
-        var msg = e.message || '';
-        if (msg.indexOf('not enough unspent tx outputs to fulfill')) {
-          var sat = /(\d+)/.exec(msg)[1];
-          e = new Error('No unspent outputs available.');
-          e.amount = sat;
-          return cb(e);
-        }
-      }
-      return cb(null, merchantData, pr);
-    }
-
-    var ntxid = self.createPaymentTxSync(options, merchantData, safeUnspent);
-    if (ntxid) {
-      self.sendIndexes();
-      self.sendTxProposal(ntxid);
-      self.emit('txProposalsUpdated');
-    } else {
-      return cb(new Error('Error creating the transaction'));
-    }
-
-    log.debug('You are currently on this BTC network:', network);
-    log.debug('The server sent you a message:', memo);
-
-    return cb(null, ntxid, merchantData);
-  });
+  this._addOutputsToMerchantData(merchantData, options.amount);
+  return merchantData;
 };
 
 /**
- * @desc Send a payment transaction to a server, complying with BIP70
+ * _getPayProRefundOutputs
+ * Create refund outputs for a PayPro Payment Message
+ * Uses current transaction's change address.
  *
- * @TODO: Get this out of here.
- *
- * @param {string} ntxid - the transaction proposal id
- * @param {Object} options
- * @param {string} options.refund_to
- * @param {string} options.memo
- * @param {string} options.comment
- * @param {Function} cb
+ * @param txp
+ * @return {undefined}
  */
-Wallet.prototype.sendPaymentTx = function(ntxid, options, cb) {
-  var self = this;
+Wallet.prototype._getPayProRefundOutputs = function(txp) {
+  var pkr = this.publicKeyRing;
+  var index = pkr.getHDParams(this.publicKey);
+  var amount = +txp.merchant.total.toString(10);
 
-  if (!cb) {
-    cb = options;
-    options = {};
-  }
+  var output = new PayPro.Output();
+  var script = pkr.getScriptPubKeyHex(index.changeIndex, true, this.pubkey);
+  output.set('script', new Buffer(script, 'hex'));
+  output.set('amount', amount);
+  return [output];
+};
 
-  var txp = this.txProposals.get(ntxid);
-  if (!txp) return;
+
+/**
+ *
+ * @desc Creates a Payment Protocol Payment message for the given TX Proposal
+ * @param txp Transaction Proposal
+ * @param txHex
+ * @return {undefined}
+ */
+Wallet.prototype.createPayProPayment = function(txp) {
 
   var tx = txp.builder.build();
-  if (!tx.isComplete()) return;
-  log.debug('Sending Transaction');
+  var txBuf = tx.serialize();
 
-  var refund_outputs = [];
-
-  options.refund_to = options.refund_to || this.publicKeyRing.getPubKeys(0, false, this.getMyCopayerId())[0];
-
-  if (options.refund_to) {
-    var total = txp.merchant.pr.pd.outputs.reduce(function(total, _, i) {
-      // XXX reverse endianness to work around bignum bug:
-      var txv = tx.outs[i].v;
-      var v = new Buffer(8);
-      for (var j = 0; j < 8; j++) v[j] = txv[7 - j];
-      return total.add(bignum.fromBuffer(v, {
-        endian: 'big',
-        size: 1
-      }));
-    }, bignum('0', 10));
-
-    var rpo = new PayPro();
-    rpo = rpo.makeOutput();
-
-    // XXX Bad - the amount *has* to be a Number in protobufjs
-    // Possibly does not matter - server can ignore the amount anyway.
-    rpo.set('amount', +total.toString(10));
-
-    rpo.set('script',
-      Buffer.concat([
-        new Buffer([
-          118, // OP_DUP
-          169, // OP_HASH160
-          76, // OP_PUSHDATA1
-          20, // number of bytes
-        ]),
-        // needs to be ripesha'd
-        bitcore.util.sha256ripe160(options.refund_to),
-        new Buffer([
-          136, // OP_EQUALVERIFY
-          172 // OP_CHECKSIG
-        ])
-      ])
-    );
-
-    refund_outputs.push(rpo.message);
-  }
+  var refund_outputs = this._getPayProRefundOutputs(txp);
 
   // We send this to the serve after receiving a PaymentRequest
   var pay = new PayPro();
   pay = pay.makePayment();
+
   var merchant_data = txp.merchant.pr.pd.merchant_data;
   if (merchant_data) {
     merchant_data = new Buffer(merchant_data, 'hex');
     pay.set('merchant_data', merchant_data);
   }
-  pay.set('transactions', [tx.serialize()]);
+
+  pay.set('transactions', [txBuf]);
   pay.set('refund_to', refund_outputs);
 
-  options.memo = options.memo || options.comment || 'Hi server, I would like to give you some money.';
-
-  pay.set('memo', options.memo);
+  // Unused for now
+  // options.memo = '';
+  // pay.set('memo', options.memo);
 
   pay = pay.serialize();
-
-  log.debug('Sending Payment Message:', pay.toString('hex'));
-
   var buf = new ArrayBuffer(pay.length);
   var view = new Uint8Array(buf);
   for (var i = 0; i < pay.length; i++) {
     view[i] = pay[i];
   }
 
-  var postInfo = {
-      method: 'POST',
-      url: txp.merchant.pr.pd.payment_url,
-      headers: {
-        // BIP-71
-        'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
-        'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
-        // XHR does not allow these:
-        // 'Content-Length': (pay.byteLength || pay.length) + '',
-        // 'Content-Transfer-Encoding': 'binary'
-      },
-      // Technically how this should be done via XHR (used to
-      // be the ArrayBuffer, now you send the View instead).
-      data: view,
-      responseType: 'arraybuffer'
-    };
-
-  return Wallet.request(postInfo)
-    .success(function(data, status, headers, config) {
-      data = PayPro.PaymentACK.decode(data);
-      var ack = new PayPro();
-      ack = ack.makePaymentACK(data);
-      return self.receivePaymentRequestACK(ntxid, tx, txp, ack, cb);
-    })
-    .error(function(data, status, headers, config) {
-      log.debug('Sending to server was not met with a returned tx.');
-      log.debug('XHR status: ' + status);
-      self._processTxProposalSent(ntxid, function(err, txid) {
-        return cb(txid, txp.merchant);
-      });
-    });
+  return view;
 };
 
-/**
- * @desc Handles a PaymentRequestACK from the server
- */
-Wallet.prototype.receivePaymentRequestACK = function(ntxid, tx, txp, ack, cb) {
-  var self = this;
 
-  var payment = ack.get('payment');
+/**
+ * onPayProPaymentAck
+ *
+ * @desc parse and process a Payment Protocol Payment Ack. Updates
+ * given TX Proposal with merchant's memo and send it to copayers
+ *
+ * @param ntxid ID of the Transaction Proposal
+ * @param rawData of the Payment Ack
+ * @emits paymentACK - (merchants's memo)
+ */
+Wallet.prototype.onPayProPaymentAck = function(ntxid, rawData) {
+  var data = PayPro.PaymentACK.decode(rawData);
+  var paypro = new PayPro();
+  var ack = paypro.makePaymentACK(data);
   var memo = ack.get('memo');
+  log.debug('Payment Acknowledged!: %s', memo);
 
-  log.debug('Our payment was acknowledged!');
-  log.debug('Message from Merchant: %s', memo);
-
-  payment = PayPro.Payment.decode(payment);
-  var pay = new PayPro();
-  payment = pay.makePayment(payment);
-
-  txp.merchant.ack = {
-    memo: memo
-  };
-
-  if (payment.message.transactions && payment.message.transactions.length) {
-    tx = payment.message.transactions[0];
-    if (!tx) {
-      log.debug('Sending to server was not met with a returned tx.');
-      return this._processTxProposalSeen(ntxid, function(err, txid) {
-        log.debug('[Wallet.js.1613:txid:%s]', txid);
-        return cb(txid, txp.merchant);
-      });
-    }
-    if (tx.buffer) {
-      tx.buffer = new Buffer(new Uint8Array(tx.buffer));
-      tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
-      var ptx = new bitcore.Transaction();
-      ptx.parse(tx.buffer);
-      tx = ptx;
-    }
-  } else {
-    log.debug('WARNING: This server does not comply by standards.');
-    log.debug('It is not returning a copy of the transaction.');
-  }
-
-  var txid = tx.calcHash().toString('hex');
-  var txHex = tx.serialize().toString('hex');
-  log.debug('Raw transaction: ', txHex);
-
-  // XXX This fixes the invalid signature error:
-  // we might as well broadcast it ourselves anyway.
-  this.blockchain.broadcast(txHex, function(err, txid) {
-    log.debug('BITCOIND txid:', txid);
-    if (txid) {
-      self.txProposals.get(ntxid).setSent(txid);
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('txProposalsUpdated');
-      return cb(txid, txp.merchant);
-    } else {
-      log.debug('PayPro Sent failed. Checking if the TX was sent already');
-      self._processTxProposalSent(ntxid, function(err, txid) {
-        return cb(txid, txp.merchant);
-      });
-    }
-  });
+  var txp = this.txProposals.get(ntxid);
+  txp.paymentAckMemo = memo;
+  this.sendTxProposal(ntxid);
+  this.emitAndKeepAlive('paymentACK', memo);
 };
 
+
 /**
- * @desc Create a Payment Transaction Sync (see BIP70)
- * @TODO: Document better
+ * @desc Send a payment transaction to a merchant, complying with BIP70
+ * on Acknoledge, updates the TX Proposal with server's memo and send it
+ * to peers
+ *
+ * @param {string} ntxid - the transaction proposal ID for with the
+ *
  */
-Wallet.prototype.createPaymentTxSync = function(options, merchantData, unspent) {
+Wallet.prototype.sendPayProPayment = function(txp, data, cb) {
   var self = this;
-  var priv = this.privateKey;
-  var pkr = this.publicKeyRing;
 
-  preconditions.checkState(pkr.isComplete());
-  if (options.memo) {
-    preconditions.checkArgument(options.memo.length <= 100);
-  }
-
-  var opts = {
-    remainderOut: {
-      address: this._doGenerateAddress(true).toString()
-    }
+  log.debug('Sending Payment Message to merchant server');
+  var postInfo = {
+    method: 'POST',
+    url: txp.merchant.pr.pd.payment_url,
+    headers: {
+      // BIP-71
+      'Accept': PayPro.PAYMENT_ACK_CONTENT_TYPE,
+      'Content-Type': PayPro.PAYMENT_CONTENT_TYPE
+      // XHR does not allow these:
+      // 'Content-Length': (pay.byteLength || pay.length) + '',
+      // 'Content-Transfer-Encoding': 'binary'
+    },
+    // Technically how this should be done via XHR (used to
+    // be the ArrayBuffer, now you send the View instead).
+    data: data,
+    responseType: 'arraybuffer'
   };
 
-  if (_.isUndefined(opts.spendUnconfirmed)) {
-    opts.spendUnconfirmed = this.spendUnconfirmed;
-  }
-
-  for (var k in Wallet.builderOpts) {
-    opts[k] = Wallet.builderOpts[k];
-  }
-
-  merchantData.total = bignum(merchantData.total, 10);
-
-  var outs = [];
-  merchantData.pr.pd.outputs.forEach(function(output) {
-    var amount = output.amount;
-
-    // big endian
-    var v = new Buffer(8);
-    v[0] = (amount.high >> 24) & 0xff;
-    v[1] = (amount.high >> 16) & 0xff;
-    v[2] = (amount.high >> 8) & 0xff;
-    v[3] = (amount.high >> 0) & 0xff;
-    v[4] = (amount.low >> 24) & 0xff;
-    v[5] = (amount.low >> 16) & 0xff;
-    v[6] = (amount.low >> 8) & 0xff;
-    v[7] = (amount.low >> 0) & 0xff;
-
-    var script = {
-      offset: output.script.offset,
-      limit: output.script.limit,
-      buffer: new Buffer(output.script.buffer, 'hex')
-    };
-    var s = script.buffer.slice(script.offset, script.limit);
-    var network = merchantData.pr.pd.network === 'main' ? 'livenet' : 'testnet';
-    var addr = bitcore.Address.fromScriptPubKey(new bitcore.Script(s), network);
-
-    outs.push({
-      address: addr[0].toString(),
-      amountSatStr: bignum.fromBuffer(v, {
-        endian: 'big',
-        size: 1
-      }).toString(10)
+  this.httpUtil.request(postInfo)
+    .success(function(rawData) {
+      return cb(null, rawData);
+    })
+    .error(function(data, status) {
+      log.error('Sending payment notification: XHR status: ' + status);
+      return cb(new Error(status));
     });
-
-    merchantData.total = merchantData.total.add(bignum.fromBuffer(v, {
-      endian: 'big',
-      size: 1
-    }));
-  });
-
-  merchantData.total = merchantData.total.toString(10);
-
-  var b = new Builder(opts)
-    .setUnspent(unspent)
-    .setOutputs(outs);
-
-  merchantData.pr.pd.outputs.forEach(function(output, i) {
-    var script = {
-      offset: output.script.offset,
-      limit: output.script.limit,
-      buffer: new Buffer(output.script.buffer, 'hex')
-    };
-    var s = script.buffer.slice(script.offset, script.limit);
-    b.tx.outs[i].s = s;
-  });
-
-  var selectedUtxos = b.getSelectedUnspent();
-  if (selectedUtxos.length > TX_MAX_INS)
-    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length + ' inputs. Aborting');
-
-
-  var inputChainPaths = selectedUtxos.map(function(utxo) {
-    return pkr.pathForAddress(utxo.address);
-  });
-
-  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
-
-  var keys = priv.getForPaths(inputChainPaths);
-  var signed = b.sign(keys);
-
-  if (options.fetch) return;
-
-  log.debug('Created transaction: %s', b.tx.getStandardizedObject());
-
-  var myId = this.getMyCopayerId();
-  var now = Date.now();
-
-  var tx = b.build();
-  if (!tx.countInputSignatures(0))
-    throw new Error('Could not sign generated tx');
-
-  var txSize = tx.getSize();
-  if (txSize / 1024 > TX_MAX_SIZE_KB)
-    throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
-
-
-
-  var me = {};
-  me[myId] = now;
-  var meSeen = {};
-  if (priv) meSeen[myId] = now;
-
-  var ntxid = this.txProposals.add(new TxProposal({
-    inputChainPaths: inputChainPaths,
-    signedBy: me,
-    seenBy: meSeen,
-    creator: myId,
-    createdTs: now,
-    builder: b,
-    comment: options.memo,
-    merchant: merchantData,
-    paymentProtocolURL: options.uri,
-  }));
-
-  return ntxid;
-};
-
-/**
- * @desc Verifies a PaymentRequest sent by another peer
- * This essentially ensures that a copayer hasn't tampered with a
- * PaymentRequest message from a payment server. It verifies the signature
- * based on the cert, and checks to ensure the desired outputs are the same as
- * the ones on the tx proposal.
- * @TODO: Document better
- */
-Wallet.prototype.verifyPaymentRequest = function(ntxid) {
-  if (!ntxid) return false;
-
-  var txp = _.isObject(ntxid) ? ntxid : this.txProposals.get(ntxid);
-
-  // If we're not a payment protocol proposal, ignore.
-  if (!txp.merchant) return true;
-
-  // The copayer didn't send us the raw payment request, unverifiable.
-  if (!txp.merchant.raw) return false;
-
-  // var tx = txp.builder.tx;
-  var tx = txp.builder.build();
-
-  var data = new Buffer(txp.merchant.raw, 'hex');
-  data = PayPro.PaymentRequest.decode(data);
-  var pr = new PayPro();
-  pr = pr.makePaymentRequest(data);
-
-  // Verify the signature so we know this is the real request.
-  var trust = pr.verify(true);
-  if (!trust.verified) {
-    // Signature does not match cert. It may have
-    // been modified by an untrustworthy person.
-    // We should not sign this transaction proposal!
-    return false;
-  }
-
-  var details = pr.get('serialized_payment_details');
-  details = PayPro.PaymentDetails.decode(details);
-  var pd = new PayPro();
-  pd = pd.makePaymentDetails(details);
-
-  var outputs = pd.get('outputs');
-
-  if (tx.outs.length < outputs.length) {
-    // Outputs do not and cannot match.
-    return false;
-  }
-
-  // Figure out whether the user is supposed
-  // to decide the value of the outputs.
-  var undecided = false;
-  var total = bignum('0', 10);
-  for (var i = 0; i < outputs.length; i++) {
-    var output = outputs[i];
-    var amount = output.get('amount');
-    // big endian
-    var v = new Buffer(8);
-    v[0] = (amount.high >> 24) & 0xff;
-    v[1] = (amount.high >> 16) & 0xff;
-    v[2] = (amount.high >> 8) & 0xff;
-    v[3] = (amount.high >> 0) & 0xff;
-    v[4] = (amount.low >> 24) & 0xff;
-    v[5] = (amount.low >> 16) & 0xff;
-    v[6] = (amount.low >> 8) & 0xff;
-    v[7] = (amount.low >> 0) & 0xff;
-    total = total.add(bignum.fromBuffer(v, {
-      endian: 'big',
-      size: 1
-    }));
-  }
-  if (+total.toString(10) === 0) {
-    undecided = true;
-  }
-
-  for (var i = 0; i < outputs.length; i++) {
-    var output = outputs[i];
-
-    var amount = output.get('amount');
-    var script = {
-      offset: output.get('script').offset,
-      limit: output.get('script').limit,
-      buffer: new Buffer(new Uint8Array(output.get('script').buffer))
-    };
-
-    // Expected value
-    // little endian (keep this LE to compare with tx output value)
-    var ev = new Buffer(8);
-    ev[0] = (amount.low >> 0) & 0xff;
-    ev[1] = (amount.low >> 8) & 0xff;
-    ev[2] = (amount.low >> 16) & 0xff;
-    ev[3] = (amount.low >> 24) & 0xff;
-    ev[4] = (amount.high >> 0) & 0xff;
-    ev[5] = (amount.high >> 8) & 0xff;
-    ev[6] = (amount.high >> 16) & 0xff;
-    ev[7] = (amount.high >> 24) & 0xff;
-
-    // Expected script
-    var es = script.buffer.slice(script.offset, script.limit);
-
-    // Actual value
-    var av = tx.outs[i].v;
-
-    // Actual script
-    var as = tx.outs[i].s;
-
-    // XXX allow changing of script as long as address is same
-    // var as = es;
-
-    // XXX allow changing of script as long as address is same
-    // var network = pd.get('network') === 'main' ? 'livenet' : 'testnet';
-    // var es = bitcore.Address.fromScriptPubKey(new bitcore.Script(es), network)[0];
-    // var as = bitcore.Address.fromScriptPubKey(new bitcore.Script(tx.outs[i].s), network)[0];
-
-    if (undecided) {
-      av = ev = new Buffer([0]);
-    }
-
-    // Make sure the tx's output script and values match the payment request's.
-    if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
-      // Verifiable outputs do not match outputs of merchant
-      // data. We should not sign this transaction proposal!
-      return false;
-    }
-
-    // Checking the merchant data itself isn't technically
-    // necessary as long as we check the transaction, but
-    // we can do it for good measure.
-    var ro = txp.merchant.pr.pd.outputs[i];
-
-    // Actual value
-    // little endian (keep this LE to compare with the ev above)
-    var av = new Buffer(8);
-    av[0] = (ro.amount.low >> 0) & 0xff;
-    av[1] = (ro.amount.low >> 8) & 0xff;
-    av[2] = (ro.amount.low >> 16) & 0xff;
-    av[3] = (ro.amount.low >> 24) & 0xff;
-    av[4] = (ro.amount.high >> 0) & 0xff;
-    av[5] = (ro.amount.high >> 8) & 0xff;
-    av[6] = (ro.amount.high >> 16) & 0xff;
-    av[7] = (ro.amount.high >> 24) & 0xff;
-
-    // Actual script
-    var as = new Buffer(ro.script.buffer, 'hex')
-      .slice(ro.script.offset, ro.script.limit);
-
-    if (av.toString('hex') !== ev.toString('hex') || as.toString('hex') !== es.toString('hex')) {
-      return false;
-    }
-  }
-
-  return true;
 };
 
 /**
@@ -2243,7 +2009,7 @@ Wallet.prototype.subscribeToAddresses = function() {
 
   var addrInfo = this.publicKeyRing.getAddressesInfo();
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
-  log.debug('Subscribed to ' + addrInfo.length + ' addresses'); 
+  log.debug('Subscribed to ' + addrInfo.length + ' addresses');
 };
 
 /**
@@ -2263,7 +2029,7 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
 
 /**
  * Estimate a tx fee in satoshis given its input count
- * only for spending all wallet funds
+ * (only used when spending all wallet funds)
  */
 Wallet.estimatedFee = function(unspentCount) {
   preconditions.checkArgument(_.isNumber(unspentCount));
@@ -2337,15 +2103,14 @@ Wallet.prototype.maxRejectCount = function() {
 
 /**
  * @callback getUnspentCallback
- * @TODO: Document this better
+ * @desc Get a list of unspent transaction outputs
  * @param {string} error
  * @param {Object[]} safeUnspendList
  * @param {Object[]} unspentList
- */
-/**
- * @desc Get a list of unspent transaction outputs
  * @param {getUnspentCallback} cb
  */
+
+// TODO: Can we add cache to getUnspent?
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
@@ -2368,6 +2133,7 @@ Wallet.prototype.getUnspent = function(cb) {
   });
 };
 
+// TODO. not used.
 Wallet.prototype.removeTxWithSpentInputs = function(cb) {
   var self = this;
 
@@ -2420,137 +2186,189 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 };
 
 /**
- * @desc Create a transaction proposal
- * @TODO: Document more
+ * spend
+ *
+ * @desc Spends coins from the wallet
+ * Create a Transaction Proposal and send it
+ * to copayers (broadcast it in a 1-x wallet)
+ * @param {object} opts
+ * @param {string} opts.toAddress address to send coins
+ * @param {number} opts.amountSat amount in satoshis
+ * @param {string} opts.comment optional  transaction proposal private comment (for copayers)
+ * @param {string} opts.url optional (payment protocol URL). If this is given, toAddress will be ignored, and amount could be ignored or not, depending on the payment protocol request.
+ * @param {signCallback} cb
  */
-Wallet.prototype.createTx = function(toAddress, amountSatStr, comment, opts, cb) {
+Wallet.prototype.spend = function(opts, cb) {
+  preconditions.checkArgument(_.isObject(opts));
+  log.debug('create Options', opts);
+
   var self = this;
+  var toAddress = opts.toAddress;
+  var amountSat = opts.amountSat;
+  var comment = opts.comment;
+  var url = opts.url;
 
-  if (_.isFunction(opts)) {
-    cb = opts;
-    opts = {};
+  // PayPro? Fetch payment data and recurse
+  if (url && !opts.merchantData) {
+    return self.fetchPaymentRequest({
+      url: url,
+      memo: comment,
+      amount: amountSat,
+    }, function(err, merchantData) {
+      if (err) return cb(err);
+      opts.merchantData = merchantData;
+      opts.toAddress = merchantData.outs[0].address;
+      opts.amountSat = parseInt(merchantData.outs[0].amountSatStr);
+      return self.spend(opts, cb);
+    });
   }
-  opts = opts || {};
 
-  if (_.isUndefined(opts.spendUnconfirmed)) {
-    opts.spendUnconfirmed = this.spendUnconfirmed;
-  }
+  preconditions.checkArgument(amountSat, 'no amount');
+  preconditions.checkArgument(toAddress, 'no address');
 
   this.getUnspent(function(err, safeUnspent) {
-    if (err) return cb(new Error('Could not get list of UTXOs'));
+    if (err) {
+      log.info(err);
+      return cb(new Error('Spend: Could not get list of UTXOs'));
+    }
 
-    var ntxid;
+    var ntxid, txp;
     try {
-      ntxid = self.createTxSync(toAddress, amountSatStr, comment, safeUnspent, opts);
-      log.debug('TX Created: ntxid', ntxid);
+      txp = self._createTxProposal(toAddress,
+        amountSat, comment, safeUnspent, opts.builderOpts);
     } catch (e) {
+      log.error(e);
       return cb(e);
     }
 
+    if (opts.merchantData) {
+      txp.addMerchantData(opts.merchantData);
+    }
+
+    var ntxid = self.txProposals.add(txp);
     if (!ntxid) {
       return cb(new Error('Error creating the transaction'));
     }
 
+    log.debug('TXP Added: ', ntxid);
+
+    console.log('[Wallet.js.2233]'); //TODO
     self.sendIndexes();
-    self.sendTxProposal(ntxid);
-    self.emitAndKeepAlive('txProposalsUpdated');
-    return cb(null, ntxid);
+    // Needs only one signature? Broadcast it!
+    if (!self.requiresMultipleSignatures()) {
+      self.broadcastTx(ntxid, cb);
+    } else {
+      self.sendTxProposal(ntxid);
+      self.emitAndKeepAlive('txProposalsUpdated');
+      return cb(null, ntxid, Wallet.TX_PROPOSAL_SENT);
+    }
   });
 };
 
-// TODO (eordano): Move this to bitcore
-var sanitize = function(address) {
-  if (/^bitcoin:/g.test(address)) {
+/**
+ * _getAddress
+ * Returns an Address object from an address string or a BIP21 URL.*
+ * @param address
+ * @return  { bitcore.Address }
+ */
+
+Wallet._getAddress = function(address) {
+  if (/ ^ bitcoin: /g.test(address)) {
     return new BIP21(address).address;
   }
   return new Address(address);
 };
 
-/**
- * @desc Create a transaction proposal
- * @TODO: Document more
- */
-Wallet.prototype.createTxSync = function(toAddress, amountSatStr, comment, utxos, opts) {
-  var pkr = this.publicKeyRing;
-  var priv = this.privateKey;
-  opts = opts || {};
-  toAddress = sanitize(toAddress);
 
-  preconditions.checkArgument(toAddress.network().name === this.getNetworkName(), 'networkname mismatch');
-  preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
-  preconditions.checkState(priv, 'no private key');
-  if (comment) preconditions.checkArgument(comment.length <= 100);
+Wallet.prototype._getBuilder = function(opts) {
+  opts = opts || {};
 
   if (!opts.remainderOut) {
     opts.remainderOut = {
       address: this._doGenerateAddress(true).toString()
     };
   }
+  if (_.isUndefined(opts.spendUnconfirmed)) {
+    opts.spendUnconfirmed = this.spendUnconfirmed;
+  }
 
   for (var k in Wallet.builderOpts) {
     opts[k] = Wallet.builderOpts[k];
   }
 
-  var b = new Builder(opts)
-    .setUnspent(utxos)
-    .setOutputs([{
-      address: toAddress.data,
-      amountSatStr: amountSatStr,
-    }]);
+  return new Builder(opts);
+};
 
-  log.debug('Creating TX: Builder ready');
+
+/*
+ * _createTxProposal
+ * Creates a transaction proposal and run many sanity checks
+ *
+ * @param toAddress
+ * @param amountSat
+ * @param comment (optional)
+ * @param utxos
+ * @param builderOpts  bitcore.TransactionBuilder options(like spendUnconfirmed)
+ * @return {TxProposal} The newly created transaction proposal.*
+ * Throws errors on unexpected inputs.
+ */
+
+Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utxos, builderOpts) {
+  preconditions.checkArgument(toAddress);
+  preconditions.checkArgument(amountSat);
+  preconditions.checkArgument(_.isArray(utxos));
+  preconditions.checkArgument(!comment || comment.length <= 100, 'Comment too long');
+
+  var pkr = this.publicKeyRing;
+  var priv = this.privateKey;
+  var addr = Wallet._getAddress(toAddress);
+
+  preconditions.checkState(addr && addr.data && addr.isValid(), 'Bad address:' + addr.toString());
+
+  preconditions.checkArgument(addr.network().name === this.getNetworkName(), 'networkname mismatch');
+  preconditions.checkState(pkr.isComplete(), 'pubkey ring incomplete');
+  preconditions.checkState(priv, 'no private key');
+
+  var b = this._getBuilder(builderOpts);
+
+  b.setUnspent(utxos)
+    .setOutputs([{
+      address: addr.data,
+      amountSatStr: amountSat,
+    }]);
 
   var selectedUtxos = b.getSelectedUnspent();
 
   if (selectedUtxos.length > TX_MAX_INS)
-    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length + ' inputs. Aborting');
+    throw new Error('BIG: Resulting TX is too big:' + selectedUtxos.length +
+      ' inputs. Aborting');
 
 
   var inputChainPaths = selectedUtxos.map(function(utxo) {
     return pkr.pathForAddress(utxo.address);
   });
-
-  b = b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
-
-  var keys = priv.getForPaths(inputChainPaths);
-  var signed = b.sign(keys);
-  var myId = this.getMyCopayerId();
-  var now = Date.now();
+  b.setHashToScriptMap(pkr.getRedeemScriptMap(inputChainPaths));
 
 
   var tx = b.build();
-  if (!tx.countInputSignatures(0))
-    throw new Error('Could not sign generated tx');
-
-  var txSize = tx.getSize();
-
-  if (txSize / 1024 > TX_MAX_SIZE_KB)
-    throw new Error('BIG: Resulting TX is too big ' + txSize + ' bytes. Aborting');
-
-
-  var me = {};
-  me[myId] = now;
-
-  var meSeen = {};
-  if (priv) meSeen[myId] = now;
-
-  var ntxid = this.txProposals.add(new TxProposal({
+  var myId = this.getMyCopayerId();
+  var keys = priv.getForPaths(inputChainPaths);
+  return new TxProposal({
     inputChainPaths: inputChainPaths,
-    signedBy: me,
-    seenBy: meSeen,
-    creator: myId,
-    createdTs: now,
+    comment: comment,
     builder: b,
-    comment: comment
-  }));
-  return ntxid;
+    creator: myId,
+    signWith: keys,
+  });
+
+  return txp;
 };
+
 
 /**
  * @desc Updates all the indexes for the current publicKeyRing. This scans
  * the blockchain looking for transactions on derived addresses.
  *
- * Triggers a wallet {@link Wallet#store} call
  * @param {Function} callback - called when all indexes have been updated. Receives an error, if any, as first argument
  */
 Wallet.prototype.updateIndexes = function(callback) {
@@ -2696,7 +2514,7 @@ Wallet.prototype.getNetwork = function() {
  */
 Wallet.prototype._checkAddressBook = function(key) {
   if (this.addressBook[key] && this.addressBook[key].copayerId != -1) {
-    throw new Error('This address already exists in your Address Book: ' + address);
+    throw new Error('This address already exists in your Address Book');
   }
 };
 
@@ -2710,42 +2528,15 @@ Wallet.prototype.setAddressBook = function(key, label) {
   this._checkAddressBook(key);
   var copayerId = this.getMyCopayerId();
   var ts = Date.now();
-  var payload = {
-    address: key,
-    label: label,
-    copayerId: copayerId,
-    createdTs: ts
-  };
   var newEntry = {
     hidden: false,
     createdTs: ts,
     copayerId: copayerId,
     label: label,
-    signature: this.signJson(payload)
   };
   this.addressBook[key] = newEntry;
-  this.sendAddressBook();
+  this.sendAddressBook(null, key);
   this.emitAndKeepAlive('addressBookUpdated');
-};
-
-/**
- * @desc Verifies that an addressbook entry is correctly signed by a copayer
- *
- * @param {Object} rcvEntry - the entry in the address book
- * @param {string} senderId - the pubkey of a copayer
- * @param {string} key - the base58 encoded address
- * @return {boolean} true if the signature matches
- */
-Wallet.prototype.verifyAddressbookEntry = function(rcvEntry, senderId, key) {
-  if (!key) throw new Error('Keys are required');
-  var signature = rcvEntry.signature;
-  var payload = {
-    address: key,
-    label: rcvEntry.label,
-    copayerId: rcvEntry.copayerId,
-    createdTs: rcvEntry.createdTs
-  };
-  return this.verifySignedJson(senderId, payload, signature);
 };
 
 /**
@@ -2783,122 +2574,6 @@ Wallet.prototype.isReady = function() {
 };
 
 /**
- * @desc Sign a JSON
- *
- * @TODO: THIS WON'T WORK ALLWAYS! JSON.stringify doesn't warants an order
- * @param {Object} payload - the payload to verify
- * @return {string} base64 encoded string
- */
-Wallet.prototype.signJson = function(payload) {
-  var key = new bitcore.Key();
-  key.private = new Buffer(this.getMyCopayerIdPriv(), 'hex');
-  key.regenerateSync();
-  var sign = bitcore.Message.sign(JSON.stringify(payload), key);
-  return sign.toString('hex');
-}
-
-/**
- * @desc Verify that a JSON object is correctly signed
- *
- * @TODO: THIS WON'T WORK ALLWAYS! JSON.stringify doesn't warants an order
- *
- * @param {string} senderId - a sender's public key, hex encoded
- * @param {Object} payload - the object to verify
- * @param {string} signature - a sender's public key, hex encoded
- * @return {boolean}
- */
-Wallet.prototype.verifySignedJson = function(senderId, payload, signature) {
-  var pubkey = new Buffer(senderId, 'hex');
-  var sign = new Buffer(signature, 'hex');
-  var v = bitcore.Message.verifyWithPubKey(pubkey, JSON.stringify(payload), sign);
-  return v;
-}
-
-/**
- * @desc Create a HTTP request
- * @TODO: This shouldn't be a wallet responsibility
- */
-Wallet.request = function(options, callback) {
-  if (_.isString(options)) {
-    options = {
-      uri: options
-    };
-  }
-
-  options.method = options.method || 'GET';
-  options.headers = options.headers || {};
-
-  var ret = {
-    success: function(cb) {
-      this._success = cb;
-      return this;
-    },
-    error: function(cb) {
-      this._error = cb;
-      return this;
-    },
-    _success: function() {;
-    },
-    _error: function(_, err) {
-      throw err;
-    }
-  };
-
-  var method = (options.method || 'GET').toUpperCase();
-  var uri = options.uri || options.url;
-  var req = options;
-
-  req.headers = req.headers || {};
-  req.body = req.body || req.data || {};
-
-  var xhr = new XMLHttpRequest();
-  xhr.open(method, uri, true);
-
-  Object.keys(req.headers).forEach(function(key) {
-    var val = req.headers[key];
-    if (key === 'Content-Length') return;
-    if (key === 'Content-Transfer-Encoding') return;
-    xhr.setRequestHeader(key, val);
-  });
-
-  if (req.responseType) {
-    xhr.responseType = req.responseType;
-  }
-
-  xhr.onload = function(event) {
-    var response = xhr.response;
-    var buf = new Uint8Array(response);
-    var headers = {};
-    (xhr.getAllResponseHeaders() || '').replace(
-      /(?:\r?\n|^)([^:\r\n]+): *([^\r\n]+)/g,
-      function($0, $1, $2) {
-        headers[$1.toLowerCase()] = $2;
-      }
-    );
-    return ret._success(buf, xhr.status, headers, options);
-  };
-
-  xhr.onerror = function(event) {
-    var status;
-    if (xhr.status === 0 || !xhr.statusText) {
-      status = 'HTTP Request Error: This endpoint likely does not support cross-origin requests.';
-    } else {
-      status = xhr.statusText;
-    }
-    return ret._error(null, status, null, options);
-  };
-
-  if (req.body) {
-    xhr.send(req.body);
-  } else {
-    xhr.send(null);
-  }
-
-  return ret;
-};
-
-
-/**
  * @desc Return a list of past transactions
  *
  * @param {number} opts.currentPage - the desired page in the dataset
@@ -2917,6 +2592,9 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   var addresses = self.getAddressesInfo();
   var proposals = self.getTxProposals();
   var satToUnit = 1 / self.settings.unitToSatoshi;
+
+  var indexedProposals = _.indexBy(proposals, 'sentTxid');
+
 
   function extractInsOuts(tx) {
     // Inputs
@@ -3007,17 +2685,16 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
     tx.amount = tx.amountSat * satToUnit;
     tx.minedTs = !_.isNaN(tx.time) ? tx.time * 1000 : undefined;
 
-    var proposal = _.findWhere(proposals, {
-      sentTxid: tx.txid
-    });
-
+    var proposal = indexedProposals[tx.txid];
     if (proposal) {
+      // TODO refactor
       tx.comment = proposal.comment;
       tx.sentTs = proposal.sentTs;
       tx.merchant = proposal.merchant;
       tx.peerActions = proposal.peerActions;
       tx.finallyRejected = proposal.finallyRejected;
       tx.merchant = proposal.merchant;
+      tx.paymentAckMemo = proposal.paymentAckMemo;
       tx.peerActions = proposal.peerActions;
       tx.finallyRejected = proposal.finallyRejected;
 
