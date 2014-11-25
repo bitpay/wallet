@@ -557,6 +557,7 @@ a.button-setup {
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
 .ma { margin: 0 auto;}
+.tu {text-transform: uppercase;}
 
 .small {
   font-size: 60%;
