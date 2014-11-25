@@ -598,7 +598,9 @@ Wallet.prototype._onReject = function(senderId, data) {
 
   try {
     var txp = this.txProposals.get(data.ntxid);
-  } catch (e) {};
+  } catch (e) {
+    log.info(e);
+  };
 
   if (txp) {
     if (txp.signedBy[senderId])
@@ -1401,22 +1403,20 @@ Wallet.prototype.generateAddress = function(isChange, cb) {
  */
 Wallet.prototype.getTxProposals = function() {
   var ret = [];
-  var copayers = this.getRegisteredCopayerIds();
-  for (var ntxid in this.txProposals.txps) {
-    var txp = this.txProposals.getTxProposal(ntxid, copayers);
+  var self = this;
+  var copayers = self.getRegisteredCopayerIds();
+  var myId = self.getMyCopayerId();
 
-    txp.signedByUs = txp.signedBy[this.getMyCopayerId()] ? true : false;
-    txp.rejectedByUs = txp.rejectedBy[this.getMyCopayerId()] ? true : false;
-    txp.finallyRejected = this.totalCopayers - txp.rejectCount < this.requiredCopayers;
+  _.each(self.txProposals.txps, function(txp, ntxid){ 
+    txp.signedByUs = txp.signedBy[myId] ? true : false;
+    txp.rejectedByUs = txp.rejectedBy[self.getMyCopayerId()] ? true : false;
+    txp.finallyRejected = self.totalCopayers - txp.rejectCount < self.requiredCopayers;
     txp.isPending = !txp.finallyRejected && !txp.sentTxid;
-
-    // si no gastada
-    // y si no esta expirada;
 
     if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
       ret.push(txp);
     }
-  }
+  });
   return ret;
 };
 
