@@ -28,9 +28,15 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
       $scope.generating = true;
       w.getTransactionHistory(function(err, res) {
-        if (err) throw err;
+        if (err) {
+          $scope.generating = false;
+          throw err;
+        }
 
-        if (!res) return;
+        if (!res) {
+          $scope.generating = false;
+          return;
+        }
 
         var unit = w.settings.unitName;
         var data = res.items;
@@ -45,6 +51,13 @@ angular.module('copayApp.controllers').controller('HistoryController',
         }
 
         data.forEach(function(it, index) {
+          if (!it) {
+            console.log('Error on tx with index ', index);
+            return;
+          } else {
+            console.log('Txid  with index ', it.txid, index);
+
+          }
           var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
           if (it.actionList) {
             dataString += ',' + formatSigners(it.actionList);
