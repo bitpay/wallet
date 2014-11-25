@@ -1368,7 +1368,31 @@ Wallet.prototype.generateAddress = function(isChange) {
 };
 
 /**
- * TODO: get this out of here
+ * @desc Retrieve all the Transaction proposals (see {@link TxProposals})
+ * @return {Object[]} each object returned represents a transaction proposal, with two additional
+ * booleans: <tt>signedByUs</tt> and <tt>rejectedByUs</tt>. An optional third boolean signals
+ * whether the transaction was finally rejected (<tt>finallyRejected</tt> set to true).
+ */
+Wallet.prototype.getTxProposals = function() {
+  var ret = [];
+  var self = this;
+  var copayers = self.getRegisteredCopayerIds();
+  var myId = self.getMyCopayerId();
+
+  _.each(self.txProposals.txps, function(txp, ntxid) {
+    txp.signedByUs = txp.signedBy[myId] ? true : false;
+    txp.rejectedByUs = txp.rejectedBy[self.getMyCopayerId()] ? true : false;
+    txp.finallyRejected = self.totalCopayers - txp.rejectCount < self.requiredCopayers;
+    txp.isPending = !txp.finallyRejected && !txp.sentTxid;
+
+    if (!txp.readonly || txp.finallyRejected || txp.sentTs) {
+      ret.push(txp);
+    }
+  });
+  return ret;
+};
+
+/**
  * @desc get list of actions (see {@link getPendingTxProposals})
  */
 Wallet.prototype._getActionList = function(txp) {
@@ -2568,6 +2592,7 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
 
   function extractInsOuts(tx) {
     // Inputs
+    console.log('extractInsOuts');
     var inputs = _.map(tx.vin, function(item) {
       return {
         type: 'in',
@@ -2690,8 +2715,11 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
     self.blockchain.getTransactions(addresses, from, to, function(err, res) {
       if (err) return cb(err);
 
+      console.log(res.items);
       _.each(res.items, function(tx) {
-        decorateTx(tx);
+        if (tx) {
+          decorateTx(tx);
+        }
       });
 
       return cb(null, paginate(res, opts.currentPage, opts.itemsPerPage));
