@@ -120,6 +120,7 @@
     color: #7A8C9E;
     padding: 0.5rem 0;
     display: block;
+    border-bottom: 3px solid transparent;
   }
 
   .bottombar-item a.active {

@@ -65,7 +65,7 @@ body, html{
 header {
   background-color: #1ABC9C;
   overflow: hidden;
-  height: 56px;
+  height: 62px;
 }
 
 header .creation {
@@ -611,6 +611,7 @@ a.button-setup {
   width: 72%;
   float: left;
   color: #fff;
+  text-transform: lowercase;
 }
 
 .name-wallet i {
