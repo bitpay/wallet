@@ -100,7 +100,7 @@ function Wallet(opts) {
   this.syncedTimestamp = opts.syncedTimestamp || 0;
   this.lastMessageFrom = {};
 
-  this.paymentRequests = opts.paymentRequests || {};
+  this.paymentRequestsCache = {};
 
   var networkName = Wallet.obtainNetworkName(opts);
 
@@ -353,7 +353,7 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
         type: 'new',
         cId: senderId
       }
-    } else if (m.newCopayer.length) {
+    } else if (m.newCopayer && m.newCopayer.length) {
       ev = {
         type: 'signed',
         cId: m.newCopayer[0]
@@ -417,31 +417,36 @@ Wallet.prototype._getKeyMap = function(txp) {
 
 /**
  * @callback transactionCallback
- * @param {false|Transaction} returnValue
+ * @param {error} error
+ * @param {number} transaction ID (if sent)
  */
 
 /**
  * @desc
  * Asyncchronously check with the blockchain if a given transaction was sent.
  *
- * @param {string} ntxid - the transaction
+ * @param {string} ntxid - the transaction proposal
  * @param {transactionCallback} cb
  */
-Wallet.prototype._checkSentTx = function(ntxid, cb) {
+Wallet.prototype._checkIfTxIsSent = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
-
   var txHex = tx.serialize().toString('hex');
 
   //Use calcHash NOT getHash which could be cached.
   var txid = bitcore.util.formatHashFull(tx.calcHash());
   this.blockchain.getTransaction(txid, function(err, tx) {
-    if (err) return cb(false);
-    return cb(txid);
+    return cb(err, !err ? txid : null);
   });
 };
 
-Wallet.prototype._processTxProposalSeen = function(ntxid) {
+/**
+ *
+ * @desc Set Incomming Transaction Proposal seen status
+ * and send `seen` messages to peers if aplicable.
+ * @param ntxid
+ */
+Wallet.prototype._setTxProposalSeen = function(ntxid) {
   var txp = this.txProposals.get(ntxid);
   if (!txp.getSeen(this.getMyCopayerId())) {
     txp.setSeen(this.getMyCopayerId());
@@ -451,18 +456,27 @@ Wallet.prototype._processTxProposalSeen = function(ntxid) {
 
 
 
-Wallet.prototype._checkIfTxProposalIsSent = function(ntxid, cb) {
+/**
+ * @desc updates Tx Proposal Sent status by checking the blockchain
+ *
+ * @param ntxid
+ * @param {transactionCallback} cb
+ */
+Wallet.prototype._updateTxProposalSent = function(ntxid, cb) {
   var self = this;
   var txp = this.txProposals.get(ntxid);
 
-  this._checkSentTx(ntxid, function(txid) {
+  this._checkIfTxIsSent(ntxid, function(err, txid) {
+    if (err) return cb(err);
+
     if (txid) {
       if (!txp.getSent()) {
         txp.setSent(txid);
       }
+      self.emitAndKeepAlive('txProposalsUpdated');
     }
-    self.emitAndKeepAlive('txProposalsUpdated');
-    if (cb) return cb(null, txid, txid ? Wallet.TX_BROADCASTED : null);
+    if (cb)
+      return cb(null, txid, txid ? Wallet.TX_BROADCASTED : null);
   });
 };
 
@@ -517,11 +531,11 @@ Wallet.prototype._processIncomingTxProposal = function(mergeInfo, cb) {
   self._processTxProposalPayPro(mergeInfo, function(err) {
     if (err) return cb(err);
 
-    self._processTxProposalSeen(mergeInfo.ntxid);
+    self._setTxProposalSeen(mergeInfo.ntxid);
 
     var tx = mergeInfo.txp.builder.build();
     if (tx.isComplete())
-      self._checkIfTxProposalIsSent(mergeInfo.ntxid);
+      self._updateTxProposalSent(mergeInfo.ntxid);
     else {
       self.emitAndKeepAlive('txProposalsUpdated');
     }
@@ -554,6 +568,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   }
 
   this._processIncomingTxProposal(m, function(err) {
+
     if (err) {
       log.error('Corrupt TX proposal received from:', senderId, err.toString());
       if (m && m.ntxid)
@@ -563,6 +578,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
       if (m && m.hasChanged)
         self.sendTxProposal(m.ntxid);
     }
+
     self._processProposalEvents(senderId, m);
   });
 };
@@ -1479,7 +1495,7 @@ Wallet.prototype.reject = function(ntxid) {
 
 
 /**
- * @desc Signs a proposal
+ * @desc Signs a transaction proposal
  * @param {string} ntxid the id of the transaction proposal to sign
  * @emits txProposalsUpdated
  * @throws {Error} Could not sign proposal
@@ -1527,8 +1543,49 @@ Wallet.prototype.signAndSend = function(ntxid, cb) {
   }
 };
 
+
 /**
- * @desc Broadcasts a transaction to the blockchain
+ * @desc Broadcast a tx proposal. In case of failure, check if the resulting
+ * transactions is already on the blockchain.
+ *
+ * @param ntxid
+ * @param cb
+ * @return {undefined}
+ */
+Wallet.prototype._doBroadcastTx = function(ntxid, cb) {
+  var self = this;
+  var txp = this.txProposals.get(ntxid);
+  var tx = txp.builder.build();
+
+  if (!tx.isComplete())
+    throw new Error('Tx is not complete. Can not broadcast');
+
+  var txHex = tx.serialize().toString('hex');
+
+  log.info('Wallet:' + this.id + ' Broadcasting Transaction ntxid:' + ntxid);
+  log.debug('\tRaw transaction: ', txHex);
+
+  this.blockchain.broadcast(txHex, function(err, txid) {
+    if (err || !txid) {
+
+      log.info('Wallet:' + self.getName() + '. Sent failed:' +
+        err + '. Checking if the TX was sent already');
+
+      self._checkIfTxIsSent(ntxid, function(err, txid) {
+        return cb(err, txid);
+      });
+    } else {
+      log.info('Wallet:' + self.getName() + ' broadcasted a TX. BITCOIND txid:', txid);
+      return cb(null, txid);
+    }
+  });
+};
+
+/**
+ * @desc Broadcasts a transaction to the blockchain, updates tx transactions
+ * sent status. If the tx proposal is a payment protocol request,it will also
+ * send the payment message to the server,and process the response.
+ *
  * @param {string} ntxid - the transaction proposal id
  * @param {string} txid - the transaction id on the blockchain
  * @param {signCallback} cb
@@ -1536,48 +1593,29 @@ Wallet.prototype.signAndSend = function(ntxid, cb) {
 Wallet.prototype.broadcastTx = function(ntxid, cb) {
   var self = this;
 
-  var txp = this.txProposals.get(ntxid);
-  var tx = txp.builder.build();
-  if (!tx.isComplete())
-    throw new Error('Tx is not complete. Can not broadcast');
+  self._doBroadcastTx(ntxid, function(err, txid) {
+    if (err) return cb(err);
+    preconditions.checkState(txid);
 
-  log.info('Wallet:' + this.id + ' Broadcasting Transaction ntxid:' + ntxid);
+    var txp = self.txProposals.get(ntxid);
+    txp.setSent(txid);
 
-  var txHex = tx.serialize().toString('hex');
-  log.debug('\tRaw transaction: ', txHex);
 
-  this.blockchain.broadcast(txHex, function(err, txid) {
-    if (err) {
-      log.error('Error sending TX:' + err);
-      return cb(err);;
+    // PAYPRO: Payment message is optional, only if payment_url is set
+    // This is async. and will notify and update txp async.
+    if (txp.merchant && txp.merchant.pr.pd.payment_url) {
+      var data = self.createPayProPayment(txp);
+      self.sendPayProPayment(txp, data, function(err, data) {
+        if (err) return cb(err);
+        self.onPayProPaymentAck(ntxid, data);
+      });
     }
 
-    if (txid) {
-      log.debug('Wallet:' + self.getName() + ' broadcasted a TX. BITCOIND txid:', txid);
-
-      txp.setSent(txid);
-
-      // PAYPRO: Payment message is optional, only if payment_url is set
-      // This is async. and will notify and update txp async.
-      if (txp.merchant && txp.merchant.pr.pd.payment_url) {
-        var data = this.createPayProPayment(txp);
-        self.sendPayProPayment(txp, data, function(err, data) {
-          if (err) return cb(err);
-          self.onPayProPaymentAck(ntxid, data);
-        });
-      }
-
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('txProposalsUpdated');
-      return cb(null, txid, Wallet.TX_BROADCASTED);
-
-    } else {
-      log.info('Wallet:' + self.getName() + '. Sent failed. Checking if the TX was sent already');
-      self._checkIfTxProposalIsSent(ntxid, cb);
-    }
+    self.sendTxProposal(ntxid);
+    self.emitAndKeepAlive('txProposalsUpdated');
+    return cb(null, txid, Wallet.TX_BROADCASTED);
   });
 };
-
 
 /**
  * @callback {fetchPaymentRequestCallback}
@@ -1595,34 +1633,38 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
   preconditions.checkArgument(_.isObject(options));
   preconditions.checkArgument(options.url);
   preconditions.checkArgument(options.url.indexOf('http') == 0, 'Bad PayPro URL given:' + options.url);
-
   var self = this;
 
-  this.httpUtil.request({
-    method: 'GET',
-    url: options.url,
-    headers: {
-      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
-    },
-    responseType: 'arraybuffer'
+  if (self.paymentRequestsCache[options.url])
+    return cb(null, self.paymentRequestsCache[options.url]);
+
+this.httpUtil.request({
+  method: 'GET',
+  url: options.url,
+  headers: {
+    'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+  },
+  responseType: 'arraybuffer'
+})
+  .success(function(rawData) {
+    log.info('PayPro Request done successfully. Parsing response')
+
+    var merchantData, err;
+    try {
+      merchantData = self.parsePaymentRequest(options, rawData);
+    } catch (e) {
+      err = e
+    };
+
+    log.debug('PayPro request data', merchantData);
+
+    self.paymentRequestsCache[options.url] = merchantData;
+    return cb(err, merchantData);
   })
-    .success(function(rawData) {
-      log.info('PayPro Request done successfully. Parsing response')
-
-      var merchantData, err;
-      try {
-        merchantData = self.parsePaymentRequest(options, rawData);
-      } catch (e) {
-        err = e
-      };
-
-      log.debug('PayPro request data', merchantData);
-      return cb(err, merchantData);
-    })
-    .error(function(data, status) {
-      log.debug('Server did not return PaymentRequest.\nXHR status: ' + status);
-      return cb(new Error('Status: ' + status));
-    });
+  .error(function(data, status) {
+    log.debug('Server did not return PaymentRequest.\nXHR status: ' + status);
+    return cb(new Error('Status: ' + status));
+  });
 };
 
 
@@ -2123,9 +2165,17 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
 };
 
 /**
+ * spend
+ *
  * @desc Spends coins from the wallet
  * Create a Transaction Proposal and broadcast it or send it
  * to copayers
+ * @param {object} opts
+ * @param {string} opts.toAddress address to send coins
+ * @param {number} opts.amountSat amount in satoshis
+ * @param {string} opts.comment optional  transaction proposal private comment (for copayers)
+ * @param {string} opts.url optional (payment protocol URL). If this is given, toAddress will be ignored, and amount could be ignored or not, depending on the payment protocol request.
+ * @param {signCallback} cb
  */
 Wallet.prototype.spend = function(opts, cb) {
   preconditions.checkArgument(_.isObject(opts));

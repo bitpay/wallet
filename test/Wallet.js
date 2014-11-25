@@ -1,5 +1,4 @@
 'use strict';
-
 var Wallet = copay.Wallet;
 var PrivateKey = copay.PrivateKey;
 var Network = requireMock('FakeNetwork');
@@ -845,30 +844,6 @@ describe('Wallet model', function() {
         done();
       });
     });
-    it('should fail to send incomplete transaction', function(done) {
-      var w = createW2(null, 1);
-      var utxo = createUTXO(w);
-      w.blockchain.fixUnspent(utxo);
-
-      // TODO in this test, txp should be created with createTxProposal
-      w.spend({
-        toAddress: toAddress,
-        amountSat: amountSatStr,
-      }, function(err, ntxid) {
-        var txp = w.txProposals.get(ntxid);
-        // Assign fake builder
-        txp.builder = new Builder();
-        sinon.stub(txp.builder, 'build').returns({
-          isComplete: function() {
-            return false;
-          }
-        });
-        (function() {
-          w.broadcastTx(ntxid);
-        }).should.throw('Tx is not complete. Can not broadcast');
-        done();
-      });
-    });
     it('should send a TX proposal to peers if incomplete', function(done) {
       var w = createW2(null, 1);
       var utxo = createUTXO(w);
@@ -909,55 +884,112 @@ describe('Wallet model', function() {
         done();
       });
     });
-  });
 
-  it('should return error if failing to send', function(done) {
-    var w = createW2(null, 1);
-    var utxo = createUTXO(w);
-    w.blockchain.fixUnspent(utxo);
-    sinon.stub(w, 'requiresMultipleSignatures').returns(false);
-    sinon.spy(w, 'sendIndexes');
-    sinon.spy(w, 'sendTxProposal');
-    sinon.stub(w.blockchain, 'broadcast').yields('error');
-    w.spend({
-      toAddress: toAddress,
-      amountSat: amountSatStr,
-    }, function(err, id, status) {
-      err.should.equal('error');
-      w.sendTxProposal.calledOnce.should.equal(false);
-      w.sendIndexes.calledOnce.should.equal(true);
+    it('should return error if failing to send', function(done) {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      sinon.stub(w, 'requiresMultipleSignatures').returns(false);
+      sinon.spy(w, 'sendIndexes');
+      sinon.spy(w, 'sendTxProposal');
+      sinon.stub(w, '_doBroadcastTx').yields('error');
+      w.spend({
+        toAddress: toAddress,
+        amountSat: amountSatStr,
+      }, function(err, id, status) {
+        err.should.equal('error');
+        w.sendTxProposal.calledOnce.should.equal(false);
+        w.sendIndexes.calledOnce.should.equal(true);
+        done();
+      });
+    });
+    it('should send TxProposal', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      w.spend({
+        toAddress: toAddress,
+        amountSat: amountSatStr,
+      }, function(err, ntxid) {
+        w.sendTxProposal.bind(w).should.throw('Illegal Argument.');
+        (function() {
+          w.sendTxProposal(ntxid);
+        }).should.not.throw();
+        done();
+      });
+    });
+
+    it('should send all TxProposal', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      w.blockchain.fixUnspent(utxo);
+      w.spend({
+        toAddress: toAddress,
+        amountSat: amountSatStr,
+      }, function(err, ntxid) {
+        w.sendAllTxProposals.bind(w).should.not.throw();
+        (function() {
+          w.sendAllTxProposals();
+        }).should.not.throw();
+        done();
+      });
+    });
+
+
+  });
+  describe.only('#broadcastTx', function() {
+    it('should fail to send incomplete transaction', function(done) {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
+      var ntxid = w.txProposals.add(txp);
+
+      // Assign fake builder
+      txp.builder = new Builder();
+      sinon.stub(txp.builder, 'build').returns({
+        isComplete: function() {
+          return false;
+        }
+      });
+      (function() {
+        w.broadcastTx(ntxid);
+      }).should.throw('Tx is not complete. Can not broadcast');
       done();
     });
-  });
-  it('should send TxProposal', function(done) {
-    var w = cachedCreateW2();
-    var utxo = createUTXO(w);
-    w.blockchain.fixUnspent(utxo);
-    w.spend({
-      toAddress: toAddress,
-      amountSat: amountSatStr,
-    }, function(err, ntxid) {
-      w.sendTxProposal.bind(w).should.throw('Illegal Argument.');
-      (function() {
-        w.sendTxProposal(ntxid);
-      }).should.not.throw();
-      done();
-    });
-  });
 
-  it('should send all TxProposal', function(done) {
-    var w = cachedCreateW2();
-    var utxo = createUTXO(w);
-    w.blockchain.fixUnspent(utxo);
-    w.spend({
-      toAddress: toAddress,
-      amountSat: amountSatStr,
-    }, function(err, ntxid) {
-      w.sendAllTxProposals.bind(w).should.not.throw();
-      (function() {
-        w.sendAllTxProposals();
-      }).should.not.throw();
-      done();
+    it('should broadcast a Tx', function(done) {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
+      var ntxid = w.txProposals.add(txp);
+
+      sinon.stub(w, '_doBroadcastTx').yields(null, 1234);
+      w.broadcastTx(ntxid, function(err, txid, status) {
+        should.not.exist(err);
+        txid.should.equal(1234);
+        status.should.equal(Wallet.TX_BROADCASTED);
+        done();
+      });
+    });
+
+    it('should call CreatePayPayPayment on a PayPro payment', function(done) {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
+      txp.paymentProtocolURL = 'url';
+      txp.merchant =
+      var ntxid = w.txProposals.add(txp);
+
+      sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
+      sinon.stub(w.httpUtil, 'request').returns(w.httpUtil).yields('data');
+      sinon.stub(w.httpUtil, 'success').returns(w.httpUtil).yields(null, 'data');
+      sinon.stub(w, 'onPayProPaymentAck').yields('data');
+      w.broadcastTx(ntxid, function(err, txid, status) {
+        should.not.exist(err);
+        txid.should.equal(1234);
+        status.should.equal(Wallet.TX_BROADCASTED);
+        done();
+      });
     });
   });
 
@@ -1615,43 +1647,82 @@ describe('Wallet model', function() {
     });
   });
 
-
-
   describe('_onTxProposal', function() {
-    var w;
+    var w, data, txp;
+
+    beforeEach(function() {
+      w = cachedCreateW();
+      data = {
+        txProposal: {
+          dummy: 1,
+        },
+      };
+      sinon.stub(w.txProposals, 'deleteOne');
+    });
+
+
+    it('should handle corrupt tx', function(done) {
+      w.txProposals.merge = sinon.stub().throws(new Error('test error'));
+
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('corrupt');
+        w.txProposals.deleteOne.calledOnce.should.equal(false);
+        done();
+      });
+      w._onTxProposal('senderID', data);
+    });
+
+    it('should call _processIncomingTxProposal', function(done) {
+      var args = {
+        xxx: 'yyy',
+        new: true,
+        txp: {
+          setCopayers: sinon.stub(),
+        },
+      };
+      sinon.stub(w.txProposals, 'merge').returns(args);
+      sinon.stub(w, '_processIncomingTxProposal').yields(null);
+      sinon.stub(w, '_getKeyMap').returns(null);
+
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('new');
+        w._processIncomingTxProposal.getCall(0).args[0].should.deep.equal(args);
+        done();
+      });
+      w._onTxProposal('senderID', data);
+    });
+
+    it('should handle corrupt tx, case2', function(done) {
+      sinon.stub(w.txProposals, 'merge').returns({
+        ntxid: '1'
+      });
+      sinon.stub(w, '_getKeyMap').throws(new Error('test error'));
+
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('corrupt');
+        w.txProposals.deleteOne.calledWith('1').should.equal(true);
+        w._getKeyMap.restore();
+        done();
+      });
+      w._onTxProposal('senderID', data);
+    });
+  });
+
+
+  describe.skip('_onTxProposal', function() {
+    var w, data, txp;
+
     beforeEach(function() {
       w = cachedCreateW();
       w._getKeyMap = sinon.stub();
       w.sendSeen = sinon.spy();
       w.sendTxProposal = sinon.spy();
-    });
-
-    it('should handle corrupt tx', function(done) {
-      var data = {
+      data = {
         txProposal: {
           dummy: 1,
         },
       };
-      w.txProposals.merge = sinon.stub().throws(new Error('test error'));
-
-      var spy = sinon.spy();
-      w.on('txProposalEvent', spy);
-      w.on('txProposalEvent', function(e) {
-        e.type.should.equal('corrupt');
-        done();
-      });
-
-      w._onTxProposal('senderID', data);
-      spy.called.should.be.true;
-    });
-
-    it('should handle new 1', function(done) {
-      var data = {
-        txProposal: {
-          dummy: 1,
-        },
-      };
-      var txp = {
+      txp = {
         getSeen: sinon.stub().returns(false),
         setSeen: sinon.spy(),
         setCopayers: sinon.spy(),
@@ -1671,23 +1742,24 @@ describe('Wallet model', function() {
         hasChanged: true,
       });
 
+    });
+    it('should handle new 1', function(done) {
+
       var spy1 = sinon.spy();
       var spy2 = sinon.spy();
       w.on('txProposalEvent', spy1);
       w.on('txProposalsUpdated', spy2);
       w.on('txProposalEvent', function(e) {
         e.type.should.equal('new');
+        spy1.called.should.be.true;
+        spy2.called.should.be.true;
+        txp.setSeen.calledOnce.should.be.true;
+        w.sendSeen.calledOnce.should.equal(true);
+        w.sendTxProposal.calledOnce.should.equal(true);
         done();
       });
 
       w._onTxProposal('senderID', data);
-
-      spy1.called.should.be.true;
-      spy2.called.should.be.true;
-      txp.setSeen.calledOnce.should.be.true;
-      w.sendSeen.calledOnce.should.equal(true);
-      w.sendTxProposal.calledOnce.should.equal(true);
-
     });
 
     it('should handle signed', function(done) {
@@ -1721,69 +1793,20 @@ describe('Wallet model', function() {
       w.on('txProposalsUpdated', spy2);
       w.on('txProposalEvent', function(e) {
         e.type.should.equal('signed');
+        spy1.called.should.be.true;
+        spy2.called.should.be.true;
+        txp.setSeen.calledOnce.should.be.false;
+        w.sendSeen.calledOnce.should.be.false;
+        w.sendTxProposal.calledOnce.should.be.true;
+
         done();
       });
 
       w._onTxProposal('senderID', data);
-      spy1.called.should.be.true;
-      spy2.called.should.be.true;
-      txp.setSeen.calledOnce.should.be.false;
-      w.sendSeen.calledOnce.should.be.false;
-      w.sendTxProposal.calledOnce.should.be.true;
     });
 
-    it('should mark as broadcast when complete', function(done) {
-      var data = {
-        txProposal: {
-          dummy: 1,
-        },
-      };
-      var txp = {
-        getSeen: sinon.stub().returns(true),
-        setCopayers: sinon.stub().returns(['new copayer']),
-        getSent: sinon.stub().returns(false),
-        setSent: sinon.spy(),
-        builder: {
-          build: sinon.stub().returns({
-            isComplete: sinon.stub().returns(true),
-          }),
-        },
-      };
-
-      w.txProposals.get = sinon.stub().returns(txp);
-      w.txProposals.merge = sinon.stub().returns({
-        ntxid: 1,
-        txp: txp,
-        new: false,
-        hasChanged: false,
-      });
-      w._checkSentTx = sinon.stub().yields('123');
-
-      w._onTxProposal('senderID', data);
-      txp.setSent.calledOnce.should.equal(true);
-      txp.setSent.calledWith('123').should.equal(true);
-      w.sendTxProposal.called.should.equal(false);
-      done();
-    });
 
     it('should only mark as broadcast if found in the blockchain', function(done) {
-      var data = {
-        txProposal: {
-          dummy: 1,
-        },
-      };
-      var txp = {
-        getSeen: sinon.stub().returns(true),
-        setCopayers: sinon.stub().returns(['new copayer']),
-        getSent: sinon.stub().returns(false),
-        setSent: sinon.spy(),
-        builder: {
-          build: sinon.stub().returns({
-            isComplete: sinon.stub().returns(true),
-          }),
-        },
-      };
-
       w.txProposals.get = sinon.stub().returns(txp);
       w.txProposals.merge = sinon.stub().returns({
         ntxid: 1,
@@ -1792,12 +1815,14 @@ describe('Wallet model', function() {
         hasChanged: false,
       });
       w._checkSentTx = sinon.stub().yields(false);
+      w.on('txProposalEvent', function(e) {
+        txp.setSent.called.should.equal(false);
+        txp.setSent.calledWith(1).should.equal(false);
+        w.sendTxProposal.called.should.equal(false);
+        done();
+      });
 
       w._onTxProposal('senderID', data);
-      txp.setSent.called.should.equal(false);
-      txp.setSent.calledWith(1).should.equal(false);
-      w.sendTxProposal.called.should.equal(false);
-      done();
     });
 
     it('should not overwrite sent info', function(done) {
@@ -2531,3 +2556,147 @@ describe('Wallet model', function() {
   var o = '{"opts":{"id":"dbfe10c3fae71cea", "spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5","networkName":"testnet"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":[{"copayerIndex":2,"changeIndex":0,"receiveIndex":0}],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{},"settings":{"unitName":"BTC","unitToSatoshi":100000000,"unitDecimals":8,"alternativeName":"Argentine Peso","alternativeIsoCode":"ARS"}}';
 
 });
+
+
+var PP.merchant_data = {
+  request_url: 'url',
+  pr: {
+    pd: {
+      payment_url: 'url'
+    }
+  }
+};
+
+
+var x509 = {
+  priv: '' + 'LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBeFRKdUsyYUdM' + 'bjFkWEpLRGg0TXdQTFVrbDNISTVwR25HNWFjNGwvMGlobXE4Y3dDCitGVlBnWk1TNTlheWtpc0Ir' + 'ekM3dnR2a0prL2J2K0JTT1g3b3hkSXN1TDNkS1FGcHVYWFZmcmRiOTV3WW40TSsKL25qRWhYTWxo' + 'Vk1IL09DaUFnOUpLaFRLV0w2R1JXWkFBaEE3bEJSaGdTTkRUaVRDNTFDYmlLN3hBNnBONCt0UQpI' + 'eG9tSlBYclpSa2JCMmtsT2ZXd2J2OTNZM0oxS0ZEK2kwUE1RSEx3N3JoRXVteEM5MytISFVWWVZI' + 'N0gxVFBaCkgxYmRVSkowMmdRZXlsSnNzWUNKeWRaUHpOVC96dXRzL0tKV2RSdjVseHdHOXU5dE1O' + 'TWdoSmJtQWFNa01HaSsKbzdQTkV5UDNxSEZyWXBZaHM1cHFMSE1STkI3OFFNOUllTmpMRndJREFR' + 'QUJBb0lCQVFERVJyalBiQUdjbmwxaAorZGIrOTczNGZ0aElBUkpWSko1dTRFK1JKcThSRWhGTEVL' + 'UFlKNW0yUC94dVZBMXpYV2xnYXhaRUZ6d1VRaUpZCjdsOEpLVjlwSHhReVlaQ1M4dndYZzhpWGtz' + 'dndQaWRvQmN1YW4vd0RWQ1FCZXk2VkxjVXpSYUd1Ui9sTHNYK1YKN2Z0QjBvUnFsSXFrYmNQZE1N' + 'dnFUeG93UnVoUG11Q3JWVGpPNHBiTnFuU09OUExPaUovRkFYYjJwZnpGZnBCUgpHeCtFTW16d2Ur' + 'SEZuSkJHRGhIWjk5bm4vVEJmYUp6TlZDcURZLzNid3o1WDdIUU5ZN1QrSnlUVUZzZVE5NHhzCnpy' + 'a2lidGRmVGNUanB1K1VoWm80c1p6Q3IrZkhHWm9FOUdEUHF0ZDRnQ3ByazRFS0pzbXFCRVN4QlhT' + 'RGhZZ04KOXBVRDM4c1pBb0dCQU9yZkRqdDZaL0ZDamFuVThXek5GaWYrOVQxQTJ4b013RDVWU2xN' + 'dVJyWW1HbGZyMEM5TQpmMUVvZ2l2dVRrYnA3cmtnZFRhWVRTYndmTnFaQkt4Y3R5YzdCaGRwWnhE' + 'RVdKa2Z5cThxVngvem1Cek1JK1ZzCjJLYi9hcHZXcmJlb3NET0NyeUg1YzhKc1VUOXhUWDNYYnhF' + 'anlPSlFCU1lHRE1qUHlKNkU5czZMQW9HQkFOYnYKd2d0S2Nra0tLbDJhNXZzaGR2RENnNnFLL1Fn' + 'T20vNktUSlVKRVNqaHoydFIrZlBWUjcwVEg5UmhoVFJscERXQgpCd3oyU2NCc1RRNDIvTGsxRnky' + 'MFQvck12S3VmSEw1VE1BNGZ6NWRxMUxIbmN6ejZVazVnWEtBT09rUjlVdVhpClR0eTNoREcyQkM4' + 'Nk1LTVJ4SjUxRWJxam94d0VSMTAwU2FuTVBmTWxBb0dBSUhLY1pyOHNhUHBHMC9XbFBPREEKZE5v' + 'V1MxWVFidkxnQkR5SVBpR2doejJRV2lFcjY3em53ZkNVdXpqNiszVUtFKzFXQkNyYVRjemZrdHVj' + 'OTZyLwphcDRPNDJFZWFnU1dNT0ZoZ1AyYWQ4R1JmRGovcEl4N0NlY3pkVUFkVThnc1A1R0lYR3M0' + 'QU40eUEwL0Y0dUxHCloxbklRT3ZKS2syZnFvWjZNdHd2dEswQ2dZRUFnSjdGTGVDRTkzUmYyZGdD' + 'ZFRHWGJZZlpKc3M1bEFLNkV0NUwKNmJ1ZFN5dWw1Z0VPWkgyekNsQlJjZFJSMUFNbSt1V1ZoSW8x' + 'cERLckFlQ2g1MnIvemRmakxLQXNIejkrQWQ3aQpHUEdzVmw0Vm5jaDFTMzQ0bHJKUGUzQklLZ2dj' + 'L1hncDNTYnNzcHJMY2orT0wyZElrOUpXbzZ1Y3hmMUJmMkwwCjJlbGhBUWtDZ1lCWHN5elZWL1pK' + 'cVhOcFdDZzU1TDNVRm9UTHlLU3FsVktNM1dpRzVCS240QWF6VkNITCtHUVUKeHd4U2dSOWZRNElu' + 'dStyUHJOM0lteWswbEtQR0Y5U3pDUlJUaUpGUjcyc05xbE82bDBWOENXUkFQVFBKY2dxVgoxVThO' + 'SEs4YjNaaUlvR0orbXNOenBkeHJqNjJIM0E2K1krQXNOWTRTbVVUWEg5eWpnK251a2c9PQotLS0t' + 'LUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=',
+  pub: '' + 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FR' + 'OEFNSUlCQ2dLQ0FRRUF4VEp1SzJhR0xuMWRYSktEaDRNdwpQTFVrbDNISTVwR25HNWFjNGwvMGlo' + 'bXE4Y3dDK0ZWUGdaTVM1OWF5a2lzQit6Qzd2dHZrSmsvYnYrQlNPWDdvCnhkSXN1TDNkS1FGcHVY' + 'WFZmcmRiOTV3WW40TSsvbmpFaFhNbGhWTUgvT0NpQWc5SktoVEtXTDZHUldaQUFoQTcKbEJSaGdT' + 'TkRUaVRDNTFDYmlLN3hBNnBONCt0UUh4b21KUFhyWlJrYkIya2xPZld3YnY5M1kzSjFLRkQraTBQ' + 'TQpRSEx3N3JoRXVteEM5MytISFVWWVZIN0gxVFBaSDFiZFVKSjAyZ1FleWxKc3NZQ0p5ZFpQek5U' + 'L3p1dHMvS0pXCmRSdjVseHdHOXU5dE1OTWdoSmJtQWFNa01HaStvN1BORXlQM3FIRnJZcFloczVw' + 'cUxITVJOQjc4UU05SWVOakwKRndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==',
+  der: '' + 'MIIDBjCCAe4CCQDI2qWdA3/VpDANBgkqhkiG9w0BAQUFADBFMQswCQYDVQQGEwJBVTETMBEGA1UE' + 'CAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMB4XDTE0MDcx' + 'NjAxMzM1MVoXDTE1MDcxNjAxMzM1MVowRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3Rh' + 'dGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQAD' + 'ggEPADCCAQoCggEBAMUybitmhi59XVySg4eDMDy1JJdxyOaRpxuWnOJf9IoZqvHMAvhVT4GTEufW' + 'spIrAfswu77b5CZP27/gUjl+6MXSLLi93SkBabl11X63W/ecGJ+DPv54xIVzJYVTB/zgogIPSSoU' + 'yli+hkVmQAIQO5QUYYEjQ04kwudQm4iu8QOqTePrUB8aJiT162UZGwdpJTn1sG7/d2NydShQ/otD' + 'zEBy8O64RLpsQvd/hx1FWFR+x9Uz2R9W3VCSdNoEHspSbLGAicnWT8zU/87rbPyiVnUb+ZccBvbv' + 'bTDTIISW5gGjJDBovqOzzRMj96hxa2KWIbOaaixzETQe/EDPSHjYyxcCAwEAATANBgkqhkiG9w0B' + 'AQUFAAOCAQEAL6AMMfC3TlRcmsIgHxjVD4XYtISlldnrn2X9zvFbJKCpNy8XQQosQxrhyfzPHQKj' + 'lS2L/KCGMnjx9QkYD2Hlp1MJ1uVv9888th/gcZOv3Or3hQyi5K1Sh5xCG+69lUOqUEGu9B4irsqo' + 'FomQVbQolSy+t4apdJi7kuEDwFDk4gZiVEfsuX+naN5a6pCnWnhX1Vf4fKwfkLobKKXm2zQVsjxl' + 'wBAqOEmJGDLoRMXH56qJnEZ/dqsczaJOHQSi9mFEHL0r5rsEDTT5AVxdnBfNnyGaCH7/zANEko+F' + 'GBj1JdJaJgFTXdbxDoyoPTPD+LJqSK5XYToo46y/T0u9CLveNA==',
+  pem: '' + 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCakNDQWU0Q0NRREkycVdkQTMvVnBEQU5C' + 'Z2txaGtpRzl3MEJBUVVGQURCRk1Rc3dDUVlEVlFRR0V3SkIKVlRFVE1CRUdBMVVFQ0F3S1UyOXRa' + 'UzFUZEdGMFpURWhNQjhHQTFVRUNnd1lTVzUwWlhKdVpYUWdWMmxrWjJsMApjeUJRZEhrZ1RIUmtN' + 'QjRYRFRFME1EY3hOakF4TXpNMU1Wb1hEVEUxTURjeE5qQXhNek0xTVZvd1JURUxNQWtHCkExVUVC' + 'aE1DUVZVeEV6QVJCZ05WQkFnTUNsTnZiV1V0VTNSaGRHVXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJt' + 'VjAKSUZkcFpHZHBkSE1nVUhSNUlFeDBaRENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFE' + 'Q0NBUW9DZ2dFQgpBTVV5Yml0bWhpNTlYVnlTZzRlRE1EeTFKSmR4eU9hUnB4dVduT0pmOUlvWnF2' + 'SE1BdmhWVDRHVEV1ZldzcElyCkFmc3d1NzdiNUNaUDI3L2dVamwrNk1YU0xMaTkzU2tCYWJsMTFY' + 'NjNXL2VjR0orRFB2NTR4SVZ6SllWVEIvemcKb2dJUFNTb1V5bGkraGtWbVFBSVFPNVFVWVlFalEw' + 'NGt3dWRRbTRpdThRT3FUZVByVUI4YUppVDE2MlVaR3dkcApKVG4xc0c3L2QyTnlkU2hRL290RHpF' + 'Qnk4TzY0Ukxwc1F2ZC9oeDFGV0ZSK3g5VXoyUjlXM1ZDU2ROb0VIc3BTCmJMR0FpY25XVDh6VS84' + 'N3JiUHlpVm5VYitaY2NCdmJ2YlREVElJU1c1Z0dqSkRCb3ZxT3p6Uk1qOTZoeGEyS1cKSWJPYWFp' + 'eHpFVFFlL0VEUFNIall5eGNDQXdFQUFUQU5CZ2txaGtpRzl3MEJBUVVGQUFPQ0FRRUFMNkFNTWZD' + 'MwpUbFJjbXNJZ0h4alZENFhZdElTbGxkbnJuMlg5enZGYkpLQ3BOeThYUVFvc1F4cmh5ZnpQSFFL' + 'amxTMkwvS0NHCk1uang5UWtZRDJIbHAxTUoxdVZ2OTg4OHRoL2djWk92M09yM2hReWk1SzFTaDV4' + 'Q0crNjlsVU9xVUVHdTlCNGkKcnNxb0ZvbVFWYlFvbFN5K3Q0YXBkSmk3a3VFRHdGRGs0Z1ppVkVm' + 'c3VYK25hTjVhNnBDblduaFgxVmY0Zkt3ZgprTG9iS0tYbTJ6UVZzanhsd0JBcU9FbUpHRExvUk1Y' + 'SDU2cUpuRVovZHFzY3phSk9IUVNpOW1GRUhMMHI1cnNFCkRUVDVBVnhkbkJmTm55R2FDSDcvekFO' + 'RWtvK0ZHQmoxSmRKYUpnRlRYZGJ4RG95b1BUUEQrTEpxU0s1WFlUb28KNDZ5L1QwdTlDTHZlTkE9' + 'PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
+};
+
+x509.priv = new Buffer(x509.priv, 'base64');
+x509.pub = new Buffer(x509.pub, 'base64');
+x509.der = new Buffer(x509.der, 'base64');
+x509.pem = new Buffer(x509.pem, 'base64');
+
+PP.outs = [{
+  address: 'mkYn9qmYwMZfovTb6cd7yCGeNozqUyyhK7',
+  amountSatStr: '3000'
+}];
+PP.getRequest = function() {
+
+  var uid = 0;
+
+  var outputs = [];
+
+  [2000, 1000].forEach(function(value) {
+    var po = new PayPro();
+    po = po.makeOutput();
+    // number of satoshis to be paid
+    po.set('amount', value);
+
+    // TODO use bitcore / script!!
+    // a TxOut script where the payment should be sent. similar to OP_CHECKSIG
+    po.set('script', new Buffer([
+      118, // OP_DUP
+      169, // OP_HASH160
+      76, // OP_PUSHDATA1
+      20, // number of bytes
+      55,
+      48,
+      254,
+      188,
+      186,
+      4,
+      186,
+      208,
+      205,
+      71,
+      108,
+      251,
+      130,
+      15,
+      156,
+      55,
+      215,
+      70,
+      111,
+      217,
+      136, // OP_EQUALVERIFY
+      172 // OP_CHECKSIG
+    ]));
+    outputs.push(po.message);
+  });
+
+  /**
+   * Payment Details
+   */
+
+  var mdata = new Buffer([0]);
+  uid++;
+  if (uid > 0xffff) {
+    throw new Error('UIDs bigger than 0xffff not supported.');
+  } else if (uid > 0xff) {
+    mdata = new Buffer([(uid >> 8) & 0xff, (uid >> 0) & 0xff])
+  } else {
+    mdata = new Buffer([0, uid])
+  }
+  var now = Date.now() / 1000 | 0;
+  var pd = new PayPro();
+  pd = pd.makePaymentDetails();
+  pd.set('network', 'test');
+  pd.set('outputs', outputs);
+  pd.set('time', now);
+  pd.set('expires', now + 60 * 60 * 24);
+  pd.set('memo', 'Hello, this is the server, we would like some money.');
+  pd.set('payment_url', 'https://pay_url');
+  pd.set('merchant_data', mdata);
+
+  /*
+   * PaymentRequest
+   */
+
+  var cr = new PayPro();
+  cr = cr.makeX509Certificates();
+  cr.set('certificate', [x509.der]);
+
+  // We send the PaymentRequest to the customer
+  var pr = new PayPro();
+  pr = pr.makePaymentRequest();
+  pr.set('payment_details_version', 1);
+  pr.set('pki_type', 'x509+sha256');
+  pr.set('pki_data', cr.serialize());
+  pr.set('serialized_payment_details', pd.serialize());
+  pr.sign(x509.priv);
+
+  return pr.serialize();
+};
+PP.processPayment = function(payment) {
+  body = PayPro.Payment.decode(payment);
+  var pay = new PayPro();
+  pay = pay.makePayment(body);
+  var merchant_data = pay.get('merchant_data');
+  var transactions = pay.get('transactions');
+  var refund_to = pay.get('refund_to');
+  var memo = pay.get('memo');
+
+  // We send this to the customer after receiving a Payment
+  // Then we propogate the transaction through bitcoin network
+  var ack = new PayPro();
+  ack = ack.makePaymentACK();
+  ack.set('payment', pay.message);
+  ack.set('memo', 'Thank you for your payment!');
+
+  ack = ack.serialize();
+
+  transactions = transactions.map(function(tx) {
+    tx.buffer = new Buffer(new Uint8Array(tx.buffer));
+    tx.buffer = tx.buffer.slice(tx.offset, tx.limit);
+    var ptx = new bitcore.Transaction();
+    ptx.parse(tx.buffer);
+    return ptx;
+  });
+
+  return ack;
+};

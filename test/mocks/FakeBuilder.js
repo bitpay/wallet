@@ -11,6 +11,11 @@ function Tx() {
 };
 
 
+Tx.prototype.serialize = function() {
+  return new Buffer('1234','hex');
+};
+
+
 Tx.prototype.getSize = function() {
   return 1;
 };
