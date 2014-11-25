@@ -419,6 +419,9 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
 
 // merge will not merge any metadata.
 TxProposal.prototype.merge = function(incoming) {
+  preconditions.checkArgument(_.isFunction(incoming._sync));
+  incoming._sync();
+
   // Note that all inputs must have the same number of signatures, so checking
   // one (0) is OK.
   var before = this._inputSigners[0].length;
