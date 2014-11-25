@@ -1149,14 +1149,6 @@ button.gray:focus,
   height: 100%;
 }
 
-.side-nav.wallets.medium {
-  height: 280px;
-}
-
-.side-nav.wallets.large {
-  height: 380px;
-}
-
 .side-nav.wallets a.wallet-item, 
 .side-nav.wallets a.wallet-item:hover {
   color: #7A8C9E;
