@@ -106,8 +106,11 @@ angular
   })
   .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler) {
     gettextCatalog.currentLanguage = config.defaultLanguage;
-    $idle.watch();
-    uriHandler.register();
+    // not for mobileApp
+    if (!window.cordova) {
+      $idle.watch();
+      uriHandler.register();
+    }
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
       if (!localStorage || localStorage.length < 1) {
         $location.path('unsupported');
