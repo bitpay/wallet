@@ -972,7 +972,7 @@ describe('Wallet model', function() {
         done();
       });
     });
- 
+
 
     it('should send Payment Messages on a PayPro payment', function(done) {
       var w = createW2(null, 1);
@@ -1895,13 +1895,13 @@ describe('Wallet model', function() {
 
 
   describe('_onReject', function() {
-    it('should fails if unknown tx', function() {
+    it('should do nothing on unknown tx', function() {
       var w = cachedCreateW();
-      (function() {
-        w._onReject(1, {
-          ntxid: 1
-        }, 1);
-      }).should.throw('Unknown TXP');
+      var spy1 = sinon.spy(w, 'emitAndKeepAlive');
+      w._onReject(1, {
+        ntxid: 1
+      }, 1);
+      spy1.called.should.equal(false);
     });
     it('should fail to reject a signed tx', function() {
       var w = cachedCreateW();
@@ -1949,13 +1949,13 @@ describe('Wallet model', function() {
 
 
   describe('_onSeen', function() {
-    it('should fails if unknown tx', function() {
+    it('should do nothing on unknown tx', function() {
       var w = cachedCreateW();
-      (function() {
-        w._onReject(1, {
-          ntxid: 1
-        }, 1);
-      }).should.throw('Unknown TXP');
+      var spy1 = sinon.spy(w, 'emitAndKeepAlive');
+      w._onReject(1, {
+        ntxid: 1
+      }, 1);
+      spy1.called.should.equal(false);
     });
     it('should set seen a tx', function() {
       var w = cachedCreateW();
@@ -2458,7 +2458,7 @@ describe('Wallet model', function() {
   describe.skip('#onPayProPaymentAck', function() {
     it('should emit', function() {
       var w = cachedCreateW2();
-      sinon.stub(w,'emitAndKeepAlive');
+      sinon.stub(w, 'emitAndKeepAlive');
       w.onPayProPaymentAck('id', 'data');
 
       w.calledOnce.should.equal(true);
