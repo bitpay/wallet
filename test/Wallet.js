@@ -4,10 +4,10 @@ var PrivateKey = copay.PrivateKey;
 var Network = requireMock('FakeNetwork');
 var Blockchain = requireMock('FakeBlockchain');
 var Builder = requireMock('FakeBuilder');
-var FakePayProServer = requireMock('FakePayProServer');
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
+var PayPro = bitcore.PayPro;
 
 
 function assertObjectEqual(a, b) {
@@ -937,7 +937,7 @@ describe('Wallet model', function() {
 
 
   });
-  describe.only('#broadcastTx', function() {
+  describe('#broadcastTx', function() {
     it('should fail to send incomplete transaction', function(done) {
       var w = createW2(null, 1);
       var utxo = createUTXO(w);
@@ -957,13 +957,13 @@ describe('Wallet model', function() {
       done();
     });
 
-    it('should broadcast a Tx', function(done) {
+    it('should broadcast a TX', function(done) {
       var w = createW2(null, 1);
       var utxo = createUTXO(w);
-      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
+      var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
       var ntxid = w.txProposals.add(txp);
+      sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
 
-      sinon.stub(w, '_doBroadcastTx').yields(null, 1234);
       w.broadcastTx(ntxid, function(err, txid, status) {
         should.not.exist(err);
         txid.should.equal(1234);
@@ -971,23 +971,35 @@ describe('Wallet model', function() {
         done();
       });
     });
+ 
 
-    it('should call CreatePayPayPayment on a PayPro payment', function(done) {
+    it('should send Payment Messages on a PayPro payment', function(done) {
       var w = createW2(null, 1);
       var utxo = createUTXO(w);
-      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
-      txp.paymentProtocolURL = 'url';
-      txp.merchant =
+      var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
+      txp.paymentProtocolURL = PP.merchant_data.request_url;
+      txp.addMerchantData(PP.merchant_data);
       var ntxid = w.txProposals.add(txp);
+      var success = sinon.stub().yields('paymentACK123').returns({
+        error: sinon.stub(),
+      });
 
       sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
-      sinon.stub(w.httpUtil, 'request').returns(w.httpUtil).yields('data');
-      sinon.stub(w.httpUtil, 'success').returns(w.httpUtil).yields(null, 'data');
-      sinon.stub(w, 'onPayProPaymentAck').yields('data');
+      sinon.stub(w.httpUtil, 'request').returns({
+        success: success,
+      });
+      sinon.stub(w, 'onPayProPaymentAck');
+
+
       w.broadcastTx(ntxid, function(err, txid, status) {
         should.not.exist(err);
         txid.should.equal(1234);
         status.should.equal(Wallet.TX_BROADCASTED);
+        w.httpUtil.request.calledOnce.should.equal(true);
+        w.httpUtil.request.getCall(0).args[0].url.should.equal('url123');
+        success.calledOnce.should.equal(true);
+        w.onPayProPaymentAck.calledOnce.should.equal(true);
+        w.onPayProPaymentAck.getCall(0).args[1].should.equal('paymentACK123');
         done();
       });
     });
@@ -1045,7 +1057,7 @@ describe('Wallet model', function() {
   });
 
   // TODO parsePaymentRequest should have more tests,
-  // FakePayProServer.getRequest should be parametrizable
+  // PP.getRequest should be parametrizable
   describe('#parsePaymentRequest', function() {
     it('should parse a Payment Request', function() {
       var now = Date.now() / 1000;
@@ -1053,9 +1065,9 @@ describe('Wallet model', function() {
       var opts = {
         url: 'http://xxx',
       };
-      var data = FakePayProServer.getRequest();
+      var data = PP.getRequest();
       var md = w.parsePaymentRequest(opts, data);
-      md.outs.should.deep.equal(FakePayProServer.outs);
+      md.outs.should.deep.equal(PP.outs);
       md.request_url.should.equal(opts.url);
       md.pr.untrusted.should.equal(true);
       md.expires.should.be.above(now);
@@ -2558,14 +2570,6 @@ describe('Wallet model', function() {
 });
 
 
-var PP.merchant_data = {
-  request_url: 'url',
-  pr: {
-    pd: {
-      payment_url: 'url'
-    }
-  }
-};
 
 
 var x509 = {
@@ -2580,10 +2584,26 @@ x509.pub = new Buffer(x509.pub, 'base64');
 x509.der = new Buffer(x509.der, 'base64');
 x509.pem = new Buffer(x509.pem, 'base64');
 
+var PP = {};
+
 PP.outs = [{
   address: 'mkYn9qmYwMZfovTb6cd7yCGeNozqUyyhK7',
   amountSatStr: '3000'
 }];
+
+PP.merchant_data = {
+  request_url: 'url123',
+  outs: PP.outs,
+  total: PP.outs[0].amountSatStr,
+  pr: {
+    pd: {
+      payment_url: 'url123'
+    }
+  }
+};
+
+
+
 PP.getRequest = function() {
 
   var uid = 0;
