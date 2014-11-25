@@ -1674,15 +1674,12 @@ describe('Wallet model', function() {
     });
 
 
-    it('should handle corrupt tx', function(done) {
+    it('should handle corrupt tx', function() {
       w.txProposals.merge = sinon.stub().throws(new Error('test error'));
 
-      w.on('txProposalEvent', function(e) {
-        e.type.should.equal('corrupt');
-        w.txProposals.deleteOne.calledOnce.should.equal(false);
-        done();
-      });
+      sinon.stub(w, 'on');
       w._onTxProposal('senderID', data);
+      w.on.called.should.equal(false);
     });
 
     it('should call _processIncomingTxProposal', function(done) {
@@ -1705,19 +1702,14 @@ describe('Wallet model', function() {
       w._onTxProposal('senderID', data);
     });
 
-    it('should handle corrupt tx, case2', function(done) {
+    it('should handle corrupt tx, case2', function() {
       sinon.stub(w.txProposals, 'merge').returns({
         ntxid: '1'
       });
+      sinon.stub(w, 'on');
       sinon.stub(w, '_getKeyMap').throws(new Error('test error'));
-
-      w.on('txProposalEvent', function(e) {
-        e.type.should.equal('corrupt');
-        w.txProposals.deleteOne.calledWith('1').should.equal(true);
-        w._getKeyMap.restore();
-        done();
-      });
       w._onTxProposal('senderID', data);
+      w.on.called.should.equal(false);
     });
   });
 

@@ -1,6 +1,5 @@
 'use strict';
 
-var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
@@ -358,12 +357,9 @@ Wallet.prototype._processProposalEvents = function(senderId, m) {
         type: 'signed',
         cId: m.newCopayer[0]
       };
+    } else {
+      log.error('unknown  tx proposal event:', m)
     }
-  } else {
-    ev = {
-      type: 'corrupt',
-      cId: senderId
-    };
   }
   if (ev)
     this.emitAndKeepAlive('txProposalEvent', ev);
@@ -557,30 +553,33 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   var m;
 
   try {
-    m = this.txProposals.merge(data.txProposal, Wallet.builderOpts);
-    var keyMap = this._getKeyMap(m.txp);
+    m = self.txProposals.merge(data.txProposal, Wallet.builderOpts);
+    var keyMap = self._getKeyMap(m.txp);
     m.newCopayer = m.txp.setCopayers(senderId, keyMap);
   } catch (e) {
     log.error('Corrupt TX proposal received from:', senderId, e.toString());
     if (m && m.ntxid)
-      this.txProposals.deleteOne(m.ntxid);
+      self.txProposals.deleteOne(m.ntxid);
     m = null;
   }
 
-  this._processIncomingTxProposal(m, function(err) {
+  if (m) {
 
-    if (err) {
-      log.error('Corrupt TX proposal received from:', senderId, err.toString());
-      if (m && m.ntxid)
-        self.txProposals.deleteOne(m.ntxid);
-      m = null;
-    } else {
-      if (m && m.hasChanged)
-        self.sendTxProposal(m.ntxid);
-    }
+    self._processIncomingTxProposal(m, function(err) {
 
-    self._processProposalEvents(senderId, m);
-  });
+      if (err) {
+        log.error('Corrupt TX proposal received from:', senderId, err.toString());
+        if (m && m.ntxid)
+          self.txProposals.deleteOne(m.ntxid);
+        m = null;
+      } else {
+        if (m && m.hasChanged)
+          self.sendTxProposal(m.ntxid);
+      }
+
+      self._processProposalEvents(senderId, m);
+    });
+  }
 };
 
 /**
@@ -597,20 +596,21 @@ Wallet.prototype._onReject = function(senderId, data) {
   preconditions.checkState(data.ntxid);
   log.debug('Wallet:' + this.id + ' RECV REJECT:', data);
 
-  var txp = this.txProposals.get(data.ntxid);
+  try {
+    var txp = this.txProposals.get(data.ntxid);
+  } catch (e) {};
 
-  if (!txp)
-    throw new Error('Received Reject for an unknown TX from:' + senderId);
+  if (txp) {
+    if (txp.signedBy[senderId])
+      throw new Error('Received Reject for an already signed TX from:' + senderId);
 
-  if (txp.signedBy[senderId])
-    throw new Error('Received Reject for an already signed TX from:' + senderId);
-
-  txp.setRejected(senderId);
-  this.emitAndKeepAlive('txProposalEvent', {
-    type: 'rejected',
-    cId: senderId,
-    txId: data.ntxid
-  });
+    txp.setRejected(senderId);
+    this.emitAndKeepAlive('txProposalEvent', {
+      type: 'rejected',
+      cId: senderId,
+      txId: data.ntxid
+    });
+  }
 };
 
 /**
@@ -625,14 +625,17 @@ Wallet.prototype._onReject = function(senderId, data) {
  */
 Wallet.prototype._onSeen = function(senderId, data) {
   preconditions.checkState(data.ntxid);
-  var txp = this.txProposals.get(data.ntxid);
-  txp.setSeen(senderId);
-  this.emitAndKeepAlive('txProposalEvent', {
-    type: 'seen',
-    cId: senderId,
-    txId: data.ntxid
-  });
-
+  try {
+    var txp = this.txProposals.get(data.ntxid);
+  } catch (e) {};
+  if (txp) {
+    txp.setSeen(senderId);
+    this.emitAndKeepAlive('txProposalEvent', {
+      type: 'seen',
+      cId: senderId,
+      txId: data.ntxid
+    });
+  }
 };
 
 /**
@@ -1083,6 +1086,23 @@ Wallet.prototype.toObj = function() {
   return walletObj;
 };
 
+/**
+ * @desc: returns the sizes, by component, of a wallet, in bytes.
+ *
+ * @return {object} sizes by component name and 'total' for the total wallet size.
+ */
+Wallet.prototype.sizes = function() {
+  var obj = this.toObj();
+  var sizes = {},
+    total = 0;
+  _.each(obj, function(val, key) {
+    var s = JSON.stringify(val).length;
+    sizes[key] = s;
+    total += s;
+  });
+  sizes.total = total;
+  return sizes;
+};
 
 Wallet.fromUntrustedObj = function(obj, readOpts) {
   obj = _.clone(obj);
@@ -1638,33 +1658,33 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
   if (self.paymentRequestsCache[options.url])
     return cb(null, self.paymentRequestsCache[options.url]);
 
-this.httpUtil.request({
-  method: 'GET',
-  url: options.url,
-  headers: {
-    'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
-  },
-  responseType: 'arraybuffer'
-})
-  .success(function(rawData) {
-    log.info('PayPro Request done successfully. Parsing response')
-
-    var merchantData, err;
-    try {
-      merchantData = self.parsePaymentRequest(options, rawData);
-    } catch (e) {
-      err = e
-    };
-
-    log.debug('PayPro request data', merchantData);
-
-    self.paymentRequestsCache[options.url] = merchantData;
-    return cb(err, merchantData);
+  this.httpUtil.request({
+    method: 'GET',
+    url: options.url,
+    headers: {
+      'Accept': PayPro.PAYMENT_REQUEST_CONTENT_TYPE
+    },
+    responseType: 'arraybuffer'
   })
-  .error(function(data, status) {
-    log.debug('Server did not return PaymentRequest.\nXHR status: ' + status);
-    return cb(new Error('Status: ' + status));
-  });
+    .success(function(rawData) {
+      log.info('PayPro Request done successfully. Parsing response')
+
+      var merchantData, err;
+      try {
+        merchantData = self.parsePaymentRequest(options, rawData);
+      } catch (e) {
+        err = e
+      };
+
+      log.debug('PayPro request data', merchantData);
+
+      self.paymentRequestsCache[options.url] = merchantData;
+      return cb(err, merchantData);
+    })
+    .error(function(data, status) {
+      log.debug('Server did not return PaymentRequest.\nXHR status: ' + status);
+      return cb(new Error('Status: ' + status));
+    });
 };
 
 
@@ -2232,7 +2252,7 @@ Wallet.prototype.spend = function(opts, cb) {
 
     log.debug('TXP Added: ', ntxid);
 
-console.log('[Wallet.js.2233]'); //TODO
+    console.log('[Wallet.js.2233]'); //TODO
     self.sendIndexes();
     // Needs only one signature? Broadcast it!
     if (!self.requiresMultipleSignatures()) {
@@ -2573,8 +2593,8 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   var proposals = self.getTxProposals();
   var satToUnit = 1 / self.settings.unitToSatoshi;
 
-  var indexedProposals = _.indexBy(proposal,'sentTxid');
-  
+  var indexedProposals = _.indexBy(proposals, 'sentTxid');
+
 
   function extractInsOuts(tx) {
     // Inputs
