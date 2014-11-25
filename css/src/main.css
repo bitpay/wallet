@@ -65,6 +65,7 @@ body, html{
 header {
   background-color: #1ABC9C;
   overflow: hidden;
+  height: 62px;
 }
 
 header .creation {
@@ -75,6 +76,7 @@ header .creation {
 
 header .alt-currency {
   background: #16A085;
+  color: #fff;
 }
 
 .panel h3, .box-setup h3 {
@@ -534,6 +536,7 @@ a.button-setup {
 .m20r {margin-right: 20px;}
 .m15r {margin-right: 15px;}
 .m20t {margin-top: 20px;}
+.m5 {margin: 5px;}
 .m10 {margin: 10px;}
 .m15 {margin: 15px;}
 .m15h {margin: 0 15px;}
@@ -557,13 +560,14 @@ a.button-setup {
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
 .ma { margin: 0 auto;}
+.tu {text-transform: uppercase;}
 
 .small {
   font-size: 60%;
   line-height: inherit;
 }
 
-.line-dashed-setup-v {
+.line-dashed-setuph-v {
   border-left: 1px dashed #415970;
 }
 
@@ -607,6 +611,7 @@ a.button-setup {
   width: 72%;
   float: left;
   color: #fff;
+  text-transform: lowercase;
 }
 
 .name-wallet i {
@@ -1142,14 +1147,6 @@ button.gray:focus,
 
 .side-nav.wallets.pullDown {
   height: 100%;
-}
-
-.side-nav.wallets.medium {
-  height: 280px;
-}
-
-.side-nav.wallets.large {
-  height: 380px;
 }
 
 .side-nav.wallets a.wallet-item, 
