@@ -1897,9 +1897,11 @@ Wallet.prototype.onPayProPaymentAck = function(ntxid, rawData) {
   var ack = paypro.makePaymentACK(data);
   var memo = ack.get('memo');
   log.debug('Payment Acknowledged!: %s', memo);
+
+  var txp = this.txProposals.get(ntxid);
   txp.paymentAckMemo = memo;
-  self.sendTxProposal(ntxid);
-  self.emitAndKeepAlive('paymentACK', memo);
+  this.sendTxProposal(ntxid);
+  this.emitAndKeepAlive('paymentACK', memo);
 };
 
 
@@ -2570,6 +2572,8 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   var addresses = self.getAddressesInfo();
   var proposals = self.getTxProposals();
   var satToUnit = 1 / self.settings.unitToSatoshi;
+
+  
 
   function extractInsOuts(tx) {
     // Inputs

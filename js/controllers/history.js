@@ -144,6 +144,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
         _.each(items, function(r) {
           r.ts = r.minedTs || r.sentTs;
         });
+
+
         $scope.blockchain_txs = w.cached_txs = items;
         $scope.nbPages = res.nbPages;
         $scope.totalItems = res.nbItems;
