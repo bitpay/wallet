@@ -45,7 +45,7 @@
     bottom: 0;
     width: 100%;
     z-index: 5;
-    background: #3C4E60;
+    background: #2C3E50;
   }
 
   .left-off-canvas-menu {
@@ -99,14 +99,15 @@
   }
 
   .bottombar-item a {
-    color: #fff;
-    padding: 4px 0;
+    color: #7A8C9E;
+    padding: 0.5rem 0;
     display: block;
   }
 
   .bottombar-item a.active {
-    color: #000;
-    background-color: #fff;
+    color: #E4E8EC;
+    background-color: #213140;
+    border-bottom: 3px solid #1ABC9C;
   }
 
   .box-founds {
