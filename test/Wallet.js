@@ -2462,10 +2462,15 @@ describe('Wallet model', function() {
     });
   });
 
+  // TODO
   describe.skip('#onPayProPaymentAck', function() {
     it('should emit', function() {
       var w = cachedCreateW2();
+      sinon.stub(w,'emitAndKeepAlive');
       w.onPayProPaymentAck('id', 'data');
+
+      w.calledOnce.should.equal(true);
+      w.getCall(0).args.should.deep.equal(['paymentACK', 'data']);
     });
   });
 
