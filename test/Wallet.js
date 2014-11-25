@@ -8,6 +8,7 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
+var Buffer = bitcore.Buffer;
 
 
 function assertObjectEqual(a, b) {
@@ -2618,34 +2619,8 @@ PP.getRequest = function() {
 
     // TODO use bitcore / script!!
     // a TxOut script where the payment should be sent. similar to OP_CHECKSIG
-    po.set('script', new Buffer([
-      118, // OP_DUP
-      169, // OP_HASH160
-      76, // OP_PUSHDATA1
-      20, // number of bytes
-      55,
-      48,
-      254,
-      188,
-      186,
-      4,
-      186,
-      208,
-      205,
-      71,
-      108,
-      251,
-      130,
-      15,
-      156,
-      55,
-      215,
-      70,
-      111,
-      217,
-      136, // OP_EQUALVERIFY
-      172 // OP_CHECKSIG
-    ]));
+    var addr = new bitcore.Address(PP.outs[0].address);
+    po.set('script', addr.getScriptPubKey().getBuffer());
     outputs.push(po.message);
   });
 
