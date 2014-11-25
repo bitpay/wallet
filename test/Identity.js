@@ -499,7 +499,7 @@ describe('Identity model', function() {
     });
   });
 
-  describe('Identity backupNeeded', function() {
+  describe.only('Identity backupNeeded', function() {
 
     it('should create Profile with backupNeeded set to true', function(done) {
       var args = createIdentity();
@@ -531,6 +531,44 @@ describe('Identity model', function() {
           iden.backupNeeded.should.be.true;
           done();
         });
+      });
+    });
+
+    it('joining a wallet should set backupNeeded to true', function(done) {
+      var args = createIdentity();
+      var net = null;
+      var opts = {
+        secret: '8WtTuiFTkhP5ao7AF2QErSwV39Cbur6pdMebKzQXFqL59RscXM',
+        nickname: 'test',
+        password: 'pass'
+      };
+      args.params.Async = net = sinon.stub();
+      net = sinon.stub();
+      net.on = sinon.stub();
+      net.start = sinon.stub();
+      net.start.onFirstCall().callsArg(1);
+      net.greet = sinon.stub();
+
+      Identity.create(args.params, function(err, iden) {
+        iden.createWallet = sinon.stub();
+        should.not.exist(err);
+        iden.exportEncryptedWithWalletInfo(iden.password);
+
+        var fakeWallet = {
+          sendWalletReady: _.noop
+        };
+        iden.createWallet.onFirstCall().yields(null, fakeWallet);
+        opts.privHex = 'tprv8ZgxMBicQKsPf7MCvCjnhnr4uiR2Z2gyNC27vgd9KUu98F9mM1tbaRrWMyddVju36GxLbeyntuSadBAttriwGGMWUkRgVmUUCg5nFioGZsd';
+        opts.Async = net;
+        iden.joinWallet(opts, function(err, w) {
+          console.log('err', err);
+          console.log('w', w);
+
+          console.log('join Wallet');
+          iden.backupNeeded.should.be.true;
+          done();
+        });
+
       });
     });
 
