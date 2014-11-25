@@ -10,17 +10,23 @@ var util = bitcore.util;
 var networks = bitcore.networks;
 var FakeBuilder = requireMock('FakeBuilder');
 var TxProposal = copay.TxProposal;
-
-var dummyProposal = new TxProposal({
-  creator: 1,
-  createdTs: 1,
-  builder: new FakeBuilder(),
-  inputChainPaths: ['m/1'],
-});
+var Buffer = bitcore.Buffer;
 
 var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
 
 describe('TxProposal', function() {
+
+  function dummyProposal() {
+    return new TxProposal({
+      creator: 'creator',
+      createdTs: 1,
+      builder: new FakeBuilder(),
+      inputChainPaths: ['m/1'],
+    })
+  };
+
+
+
   describe('new', function() {
     it('should fail to create an instance with wrong arguments', function() {
 
@@ -208,8 +214,8 @@ describe('TxProposal', function() {
     });
     it('#_verifyScriptSig, two signatures', function() {
       // Data taken from bitcore's TransactionBuilder test
-      var txp = dummyProposal;
-      var tx = dummyProposal.builder.build();
+      var txp = dummyProposal();
+      var tx = dummyProposal().builder.build();
       var ret = TxProposal._verifySignatures(pubkeys, validScriptSig, tx.hashForSignature());
       ret.should.deep.equal(['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3']);
     });
@@ -223,13 +229,13 @@ describe('TxProposal', function() {
       Buffer.isBuffer(info.script.getBuffer()).should.equal(true);
     });
     it('#_updateSignedBy', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       txp._inputSigners.should.deep.equal([
         ['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3']
       ]);
     });
     describe('#_check', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       var backup = txp.builder.tx.ins;
 
       it('OK', function() {
@@ -272,8 +278,96 @@ describe('TxProposal', function() {
         txp.builder.tx.ins[0].s = backup;
       });
     });
+
+    describe('#_checkPayPro', function() {
+      var txp, md;
+      beforeEach(function() {
+        txp = dummyProposal();
+        txp.paymentProtocolURL = '123';
+        md = {
+          request_url: '123',
+          pr: {
+            pd: {
+              expires: 123,
+              memo: 'memo',
+
+            },
+          },
+          total: '1230',
+          outs: [{
+            address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
+            amountSatStr: "123"
+          }],
+          expires: 92345678900,
+        };
+      });
+
+      it('OK no merchant data', function() {
+        txp._checkPayPro();
+      });
+      it('OK merchant data', function() {
+        txp.addMerchantData(md);
+      });
+      it('NOK URL', function() {
+        txp.paymentProtocolURL = '1234';
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('Mismatch');
+      });
+      it('NOK OUTS', function() {
+        md.outs = [];
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('outputs');
+      });
+      it('NOK OUTS (case 2)', function() {
+        md.outs = [{}, {}];
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('outputs');
+      });
+      it('NOK OUTS (case 3)', function() {
+        md.outs = [{}, {}];
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('outputs');
+      });
+      it('NOK Amount', function() {
+        md.total = undefined;
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('amount');
+      });
+      it('NOK Outs case 4', function() {
+        md.outs[0].address = 'aaa';
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('address');
+      });
+      it('NOK Outs case 5', function() {
+        md.outs[0].amountSatStr = '432';
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('amount');
+      });
+
+      it('NOK Expired', function() {
+        md.expires = 1;
+        (function() {
+          txp.addMerchantData(md);
+        }).should.throw('expired');
+      });
+
+      it('OK Expired but sent', function() {
+        md.expires = 2;
+        txp.sentTs = 1;
+        txp.addMerchantData(md);
+      });
+
+    });
+
     describe('#merge', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       var backup = txp.builder.tx.ins;
       it('with self', function() {
         var hasChanged = txp.merge(txp);
@@ -283,7 +377,7 @@ describe('TxProposal', function() {
       it('with less signatures', function() {
         var backup = txp.builder.vanilla.scriptSig[0];
         txp.builder.merge = function() {
-          // 2 signatures.
+          // Only one signatures.
           this.vanilla.scriptSig = ['0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
           this.tx.ins[0].s = new Buffer(this.vanilla.scriptSig[0], 'hex');
         };
@@ -307,7 +401,7 @@ describe('TxProposal', function() {
     });
     describe('#setCopayers', function() {
       it("should fails if Tx has no creator", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         txp.signedBy = {
           'hugo': 1
         };
@@ -319,7 +413,7 @@ describe('TxProposal', function() {
         }).should.throw('no creator');
       });
       it("should fails if Tx is not signed by creator", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         txp.creator = 'creator';
         txp.signedBy = {
           'hugo': 1
@@ -336,7 +430,7 @@ describe('TxProposal', function() {
 
 
       it("should fails if Tx has unmapped signatures", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         txp.creator = 'creator';
         txp.signedBy = {
           creator: 1
@@ -353,7 +447,7 @@ describe('TxProposal', function() {
 
       // This was disabled. Unnecessary to check this.
       it.skip("should be signed by sender", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         var ts = Date.now();
         txp._inputSigners = [
           ['pk1', 'pk0']
@@ -372,7 +466,7 @@ describe('TxProposal', function() {
 
 
       it("should set signedBy (trivial case)", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         var ts = Date.now();
         txp._inputSigners = [
           ['pk1', 'pk0']
@@ -390,7 +484,7 @@ describe('TxProposal', function() {
         txp.signedBy['creator'].should.gte(ts);
       });
       it("should assign creator", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         var ts = Date.now();
         txp._inputSigners = [
           ['pk0']
@@ -409,7 +503,7 @@ describe('TxProposal', function() {
         txp.seenBy['creator'].should.equal(txp.createdTs);
       })
       it("New tx should have only 1 signature", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         var ts = Date.now();
         txp.signedBy = {};
         delete txp['creator'];
@@ -431,7 +525,7 @@ describe('TxProposal', function() {
       })
 
       it("if signed, should not change ts", function() {
-        var txp = dummyProposal;
+        var txp = dummyProposal();
         var ts = Date.now();
         txp._inputSigners = [
           ['pk0', 'pk1']
@@ -456,25 +550,25 @@ describe('TxProposal', function() {
 
   describe('micelaneous functions', function() {
     it('should report rejectCount', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       txp.rejectCount().should.equal(0);
       txp.setRejected(['juan'])
       txp.rejectCount().should.equal(1);
     });
     it('should report isPending 1', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       txp.rejectedBy = [];
       txp.sentTxid = 1;
       txp.isPending(3).should.equal(false);
     });
     it('should report isPending 2', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       txp.rejectedBy = [];
       txp.sentTxid = null;
       txp.isPending(3).should.equal(true);
     });
     it('should report isPending 3', function() {
-      var txp = dummyProposal;
+      var txp = dummyProposal();
       txp.rejectedBy = [1, 2, 3, 4];
       txp.sentTxid = null;
       txp.isPending(3).should.equal(false);

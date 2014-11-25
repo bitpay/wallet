@@ -56,7 +56,6 @@ module.exports = function(config) {
       'js/init.js',
 
       'test/mocks/FakeBlockchainSocket.js',
-      'test/mocks/FakePayProServer.js',
 
       'test/mocha.conf.js',
 

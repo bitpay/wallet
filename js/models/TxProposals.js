@@ -98,7 +98,6 @@ TxProposals.prototype.toObj = function() {
 
 TxProposals.prototype.merge = function(inObj, builderOpts) {
   var incomingTx = TxProposal.fromUntrustedObj(inObj, builderOpts);
-  incomingTx._sync();
 
   var myTxps = this.txps;
   var ntxid = incomingTx.getId();
@@ -178,16 +177,6 @@ TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
 };
 
 
-TxProposals.prototype.reject = function(ntxid, copayerId) {
-  var txp = this.get(ntxid);
-  txp.setRejected(copayerId);
-};
-
-TxProposals.prototype.seen = function(ntxid, copayerId) {
-  var txp = this.get(ntxid);
-  txp.setSeen(copayerId);
-};
-
 //returns the unspent txid-vout used in PENDING Txs
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
@@ -203,6 +192,24 @@ TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
     }
   }
   return ret;
+};
+
+/**
+ * purge
+ *
+ * @param deleteAll
+ * @return {undefined}
+ */
+TxProposals.prototype.purge = function(deleteAll, maxRejectCount) {
+  var m = _.size(this.txps);
+
+  if (deleteAll) {
+    this.deleteAll();
+  } else {
+    this.deletePending(maxRejectCount);
+  }
+  var n = _.size(this.txps);
+  return m - n;
 };
 
 module.exports = TxProposals;
