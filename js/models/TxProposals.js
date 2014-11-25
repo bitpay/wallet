@@ -98,7 +98,6 @@ TxProposals.prototype.toObj = function() {
 
 TxProposals.prototype.merge = function(inObj, builderOpts) {
   var incomingTx = TxProposal.fromUntrustedObj(inObj, builderOpts);
-  incomingTx._sync();
 
   var myTxps = this.txps;
   var ntxid = incomingTx.getId();

@@ -2081,15 +2081,14 @@ Wallet.prototype.maxRejectCount = function() {
 
 /**
  * @callback getUnspentCallback
- * @TODO: Document this better
+ * @desc Get a list of unspent transaction outputs
  * @param {string} error
  * @param {Object[]} safeUnspendList
  * @param {Object[]} unspentList
- */
-/* @ TODO add cached?
- * @desc Get a list of unspent transaction outputs
  * @param {getUnspentCallback} cb
  */
+
+// TODO: Can we add cache to getUnspent?
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
   this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
