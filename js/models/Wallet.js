@@ -2573,6 +2573,7 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   var proposals = self.getTxProposals();
   var satToUnit = 1 / self.settings.unitToSatoshi;
 
+  var indexedProposals = _.indexBy(proposal,'sentTxid');
   
 
   function extractInsOuts(tx) {
@@ -2664,10 +2665,7 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
     tx.amount = tx.amountSat * satToUnit;
     tx.minedTs = !_.isNaN(tx.time) ? tx.time * 1000 : undefined;
 
-    var proposal = _.findWhere(proposals, {
-      sentTxid: tx.txid
-    });
-
+    var proposal = indexedProposals[tx.txid];
     if (proposal) {
       // TODO refactor
       tx.comment = proposal.comment;
