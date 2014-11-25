@@ -77,7 +77,7 @@
               <span ng-show="tx.merchant.domain">[{{btx.merchant.domain}}]</span>
 
             </div>
-            <table class="last-transactions-content" ng-if="btx.actionList.0">
+            <table class="last-transactions-content" ng-if="btx.actionList[0]">
               <tbody>
               <tr ng-repeat="c in btx.actionList">
                 <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
