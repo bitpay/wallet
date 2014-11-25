@@ -128,9 +128,6 @@ var createBundle = function(opts) {
     b.require('./test/mocks/FakeNetwork', {
       expose: './mocks/FakeNetwork'
     });
-    b.require('./test/mocks/FakePayProServer', {
-      expose: './mocks/FakePayProServer'
-    });
     b.require('./test/mocks/FakeBuilder', {
       expose: './mocks/FakeBuilder'
     });
