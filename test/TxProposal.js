@@ -10,17 +10,23 @@ var util = bitcore.util;
 var networks = bitcore.networks;
 var FakeBuilder = requireMock('FakeBuilder');
 var TxProposal = copay.TxProposal;
-
-var dummyProposal = function() { return new TxProposal({
-  creator: 'creator',
-  createdTs: 1,
-  builder: new FakeBuilder(),
-  inputChainPaths: ['m/1'],
-})};
+var Buffer = bitcore.Buffer;
 
 var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
 
 describe('TxProposal', function() {
+
+  function dummyProposal() {
+    return new TxProposal({
+      creator: 'creator',
+      createdTs: 1,
+      builder: new FakeBuilder(),
+      inputChainPaths: ['m/1'],
+    })
+  };
+
+
+
   describe('new', function() {
     it('should fail to create an instance with wrong arguments', function() {
 
@@ -351,13 +357,13 @@ describe('TxProposal', function() {
           txp.addMerchantData(md);
         }).should.throw('expired');
       });
- 
+
       it('OK Expired but sent', function() {
         md.expires = 2;
         txp.sentTs = 1;
         txp.addMerchantData(md);
       });
- 
+
     });
 
     describe('#merge', function() {

@@ -12,11 +12,15 @@ saveAs = function(blob, filename) {
   };
 };
 
-var startServer = require('../../mocks/FakePayProServer');
-
 describe("Unit: Controllers", function() {
   config.plugins.LocalStorage = true;
   config.plugins.GoogleDrive = null;
+
+  var anAddr = 'mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy';
+  var anAmount = 1000;
+  var aComment = 'hola';
+
+
 
   var invalidForm = {
     $invalid: true
@@ -69,24 +73,30 @@ describe("Unit: Controllers", function() {
     w.getTransactionHistory = sinon.stub().yields(null);
     w.getNetworkName = sinon.stub().returns('testnet');
 
-    w.createTx = sinon.stub().yields(null);
-    w.sendTx = sinon.stub().yields(null);
+    w.spend = sinon.stub().yields(null);
+    w.sendTxProposal = sinon.stub();
+    w.broadcastTx = sinon.stub().yields(null);
     w.requiresMultipleSignatures = sinon.stub().returns(true);
     w.getTxProposals = sinon.stub().returns([1, 2, 3]);
     w.getPendingTxProposals = sinon.stub().returns({
-      txs : [{ isPending : true }],
+      txs: [{
+        isPending: true
+      }],
       pendingForUs: 1
     });
     w.getId = sinon.stub().returns(1234);
-    w.on = sinon.stub().yields({'e': 'errmsg', 'loading': false});
+    w.on = sinon.stub().yields({
+      'e': 'errmsg',
+      'loading': false
+    });
     w.getBalance = sinon.stub().returns(10000);
     w.publicKeyRing = sinon.stub().yields(null);
     w.publicKeyRing.nicknameForCopayer = sinon.stub().returns('nickcopayer');
     w.updateFocusedTimestamp = sinon.stub().returns(1415804323);
-    w.getAddressesInfo = sinon.stub().returns([
-        { addressStr: "2MxvwvfshZxw4SkkaJZ8NDKLyepa9HLMKtu", 
-          isChange: false }
-        ]);
+    w.getAddressesInfo = sinon.stub().returns([{
+      addressStr: "2MxvwvfshZxw4SkkaJZ8NDKLyepa9HLMKtu",
+      isChange: false
+    }]);
 
     var iden = {};
     iden.deleteWallet = sinon.stub().yields(null);
@@ -240,31 +250,35 @@ describe("Unit: Controllers", function() {
     });
 
     it('should create a transaction proposal with given values', function() {
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
-      sendForm.amount.$setViewValue(1000);
+      sendForm.address.$setViewValue(anAddr);
+      sendForm.amount.$setViewValue(anAmount);
+      sendForm.comment.$setViewValue(aComment);
 
       scope.loadTxs = sinon.spy();
 
       var w = scope.wallet;
       scope.submitForm(sendForm);
-      sinon.assert.callCount(w.createTx, 1);
-      sinon.assert.callCount(w.sendTx, 0);
+      sinon.assert.callCount(w.spend, 1);
+      sinon.assert.callCount(w.broadcastTx, 0);
       sinon.assert.callCount(scope.loadTxs, 1);
-      w.createTx.getCall(0).args[0].should.equal('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
-      w.createTx.getCall(0).args[1].should.equal(1000 * scope.wallet.settings.unitToSatoshi);
-      (typeof w.createTx.getCall(0).args[2]).should.equal('undefined');
+      var spendArgs = w.spend.getCall(0).args[0];
+      spendArgs.toAddress.should.equal(anAddr);
+      spendArgs.amountSat.should.equal(anAmount * scope.wallet.settings.unitToSatoshi);
+      spendArgs.comment.should.equal(aComment);
     });
 
 
     it('should handle big values in 100 BTC', function() {
       var old = scope.wallet.settings.unitToSatoshi;
       scope.wallet.settings.unitToSatoshi = 100000000;;
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.address.$setViewValue(anAddr);
       sendForm.amount.$setViewValue(100);
+      sendForm.address.$setViewValue(anAddr);
+
       scope.loadTxs = sinon.spy();
       scope.submitForm(sendForm);
       var w = scope.wallet;
-      w.createTx.getCall(0).args[1].should.equal(100 * scope.wallet.settings.unitToSatoshi);
+      w.spend.getCall(0).args[0].amountSat.should.equal(100 * scope.wallet.settings.unitToSatoshi);
       scope.wallet.settings.unitToSatoshi = old;
     });
 
@@ -276,11 +290,11 @@ describe("Unit: Controllers", function() {
 
       var old = $rootScope.wallet.settings.unitToSatoshi;
       $rootScope.wallet.settings.unitToSatoshi = 100000000;;
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
+      sendForm.address.$setViewValue(anAddr);
       sendForm.amount.$setViewValue(5000);
       scope.submitForm(sendForm);
 
-      w.createTx.getCall(0).args[1].should.equal(5000 * $rootScope.wallet.settings.unitToSatoshi);
+      w.spend.getCall(0).args[0].amountSat.should.equal(5000 * $rootScope.wallet.settings.unitToSatoshi);
       $rootScope.wallet.settings.unitToSatoshi = old;
     }));
 
@@ -299,39 +313,6 @@ describe("Unit: Controllers", function() {
         expect(scope.amount).to.equal(1e6);
         done();
       });
-    });
-
-    it('should create and send a transaction proposal', function() {
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
-      sendForm.amount.$setViewValue(1000);
-      scope.loadTxs = sinon.spy();
-
-      var w = scope.wallet;
-      w.requiresMultipleSignatures = sinon.stub().returns(false);
-      w.totalCopayers = w.requiredCopayers = 1;
-
-
-      scope.submitForm(sendForm);
-      sinon.assert.callCount(w.createTx, 1);
-      sinon.assert.callCount(w.sendTx, 1);
-      sinon.assert.callCount(scope.loadTxs, 1);
-    });
-
-    it('should not send txp when there is an error at creation', function() {
-      sendForm.address.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
-      sendForm.amount.$setViewValue(1000);
-      scope.wallet.totalCopayers = scope.wallet.requiredCopayers = 1;
-      scope.loadTxs = sinon.spy();
-      var w = scope.wallet;
-      w.createTx.yields('error');
-      w.isShared = sinon.stub().returns(false);
-
-
-      scope.submitForm(sendForm);
-
-      sinon.assert.callCount(w.createTx, 1);
-      sinon.assert.callCount(w.sendTx, 0);
-      sinon.assert.callCount(scope.loadTxs, 1);
     });
   });
 

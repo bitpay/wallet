@@ -2168,8 +2168,8 @@ Wallet.prototype.removeTxWithSpentInputs = function(cb) {
  * spend
  *
  * @desc Spends coins from the wallet
- * Create a Transaction Proposal and broadcast it or send it
- * to copayers
+ * Create a Transaction Proposal and send it
+ * to copayers (broadcast it in a 1-x wallet)
  * @param {object} opts
  * @param {string} opts.toAddress address to send coins
  * @param {number} opts.amountSat amount in satoshis
@@ -2231,6 +2231,7 @@ Wallet.prototype.spend = function(opts, cb) {
 
     log.debug('TXP Added: ', ntxid);
 
+console.log('[Wallet.js.2233]'); //TODO
     self.sendIndexes();
     // Needs only one signature? Broadcast it!
     if (!self.requiresMultipleSignatures()) {
