@@ -49,7 +49,8 @@
   }
 
   .left-off-canvas-menu {
-    background: #2C3E50;
+    background: #E4E8EC;
+    line-height: 24px;
   }
 
   .off-canvas-wrap,.inner-wrap{
@@ -89,9 +90,26 @@
   }
 
   ul.off-canvas-list li a {
+    text-transform: uppercase;
+    font-size: 12px;
+    vertical-align: middle;
+    font-weight: 100;
     border-bottom: transparent;
     padding: 0.66667rem 1rem;
-    color: #fff;
+    color: #7A8C9E;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    -moz-box-shadow:    0px -1px 0px 0px rgba(165,178,191,0.15);
+    box-shadow:         0px -1px 0px 0px rgba(165,178,191,0.15);
+  }
+
+  ul.off-canvas-list li a i {
+    vertical-align: middle;
+  }
+
+  ul.off-canvas-list li a.wallet-item {
+    border: none;
+    -moz-box-shadow:    none;
+    box-shadow:         none;
   }
 
   ul.off-canvas-list li a i {
@@ -166,14 +184,11 @@
     margin-bottom: 50px;
   }
 
-  .founds {
-    color: #8597A7;
-  }
-
   .side-nav.wallets {
     padding: 0;
-    height: auto;
+    height: 100%;
     left: 0;
+    top: 56px;
   }
 
   ul.off-canvas-list li a:hover {
