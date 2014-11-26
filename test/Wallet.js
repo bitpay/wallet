@@ -233,7 +233,7 @@ describe('Wallet model', function() {
     unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
 
     var f = function() {
-      var ntxid = w._createTxProposal(
+      w._createTxProposal(
         '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
         '123456789',
         null,
@@ -1508,7 +1508,7 @@ describe('Wallet model', function() {
     });
   });
 
-  describe('_getKeymap', function() {
+  describe('_getPubkeyToCopayerMap', function() {
     var w = cachedCreateW();
 
     it('should set keymap', function() {
@@ -1521,7 +1521,7 @@ describe('Wallet model', function() {
         ]),
         inputChainPaths: ['/m/1'],
       };
-      var map = w._getKeyMap(txp);
+      var map = w._getPubkeyToCopayerMap(txp);
       console.log('[Wallet.js.1526:map:]', map); //TODO
       Object.keys(map).length.should.equal(1);
       map['123'].should.equal('juan');
@@ -1539,7 +1539,7 @@ describe('Wallet model', function() {
         inputChainPaths: ['/m/1'],
       };
       (function() {
-        w._getKeyMap(txp);
+        w._getPubkeyToCopayerMap(txp);
       }).should.throw('does not match known copayers');
       stub.restore();
     });
@@ -1556,7 +1556,7 @@ describe('Wallet model', function() {
         inputChainPaths: ['/m/1'],
       };
       (function() {
-        w._getKeyMap(txp);
+        w._getPubkeyToCopayerMap(txp);
       }).should.throw('does not match known copayers');
       stub.restore();
     });
@@ -1574,7 +1574,7 @@ describe('Wallet model', function() {
         ]),
         inputChainPaths: ['/m/1'],
       };
-      var map = w._getKeyMap(txp);
+      var map = w._getPubkeyToCopayerMap(txp);
       Object.keys(map).length.should.equal(2);
       map['123'].should.equal('juan');
       map['234'].should.equal('pepe');
@@ -1596,13 +1596,12 @@ describe('Wallet model', function() {
           ['234', '123'],
           ['555']
         ]),
- 
-        _inputSigners: [
-        ],
+
+        _inputSigners: [],
         inputChainPaths: ['/m/1'],
       };
       (function() {
-        w._getKeyMap(txp);
+        w._getPubkeyToCopayerMap(txp);
       }).should.throw('different sig');
       stub.restore();
     });
@@ -1627,7 +1626,7 @@ describe('Wallet model', function() {
         inputChainPaths: ['/m/1'],
       };
       (function() {
-        w._getKeyMap(txp);
+        w._getPubkeyToCopayerMap(txp);
       }).should.throw('different sig');
       stub.restore();
     });
@@ -1651,7 +1650,7 @@ describe('Wallet model', function() {
         ]),
         inputChainPaths: ['/m/1'],
       };
-      var gk = w._getKeyMap(txp);
+      var gk = w._getPubkeyToCopayerMap(txp);
       gk.should.deep.equal({
         '123': 'pedro',
         '234': 'pepe',
@@ -1667,7 +1666,7 @@ describe('Wallet model', function() {
 
     beforeEach(function() {
       w = cachedCreateW();
-      w._getKeyMap = sinon.stub();
+      w._getPubkeyToCopayerMap = sinon.stub();
       w.sendSeen = sinon.spy();
       w.sendTxProposal = sinon.spy();
       data = {
@@ -1715,7 +1714,7 @@ describe('Wallet model', function() {
       };
       sinon.stub(w.txProposals, 'merge').returns(args);
       sinon.stub(w, '_processIncomingTxProposal').yields(null);
-      sinon.stub(w, '_getKeyMap').returns(null);
+      sinon.stub(w, '_getPubkeyToCopayerMap').returns(null);
 
       w.on('txProposalEvent', function(e) {
         e.type.should.equal('new');
@@ -1730,7 +1729,7 @@ describe('Wallet model', function() {
         ntxid: '1'
       });
       sinon.stub(w, 'on');
-      sinon.stub(w, '_getKeyMap').throws(new Error('test error'));
+      sinon.stub(w, '_getPubkeyToCopayerMap').throws(new Error('test error'));
       w._onTxProposal('senderID', data);
       w.on.called.should.equal(false);
     });
@@ -1978,6 +1977,70 @@ describe('Wallet model', function() {
     should.exist(n.networkNonce);
   });
 
+
+  describe('sendMesages', function() {
+    var w, txp;
+    beforeEach(function() {
+      w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      txp = w._createTxProposal(
+        '2MtP8WyiwG7ZdVWM96CVsk2M1N8zyfiVQsY',
+        '123456789',
+        null,
+        utxo
+      );
+    });
+
+    it('should be able to sendReject', function() {
+      w.sendReject(txp.getId());
+      w.network.send.calledOnce.should.equal(true);
+      var payload = w.network.send.getCall(0).args[1];
+      payload.type.should.equal('reject');
+      payload.walletId.should.equal(w.id);
+      payload.ntxid.should.equal(txp.getId());
+    });
+
+
+    it('should be able to sendSend', function() {
+      w.sendSeen(txp.getId());
+      w.network.send.calledOnce.should.equal(true);
+      var payload = w.network.send.getCall(0).args[1];
+      payload.type.should.equal('seen');
+      payload.walletId.should.equal(w.id);
+      payload.ntxid.should.equal(txp.getId());
+    });
+
+    it('should be able to sendTxProposal', function() {
+      w.txProposals.add(txp);
+      w.sendTxProposal(txp.getId());
+      w.network.send.calledOnce.should.equal(true);
+      var payload = w.network.send.getCall(0).args[1];
+      payload.type.should.equal('txProposal');
+      payload.walletId.should.equal(w.id);
+      payload.txProposal.should.deep.equal(txp.toObjTrim());
+    });
+    it('should be able to sendAllTxProposals', function() {
+      w.txProposals.add(txp);
+      w.sendAllTxProposals();
+      w.network.send.calledOnce.should.equal(true);
+      var payload = w.network.send.getCall(0).args[1];
+      payload.type.should.equal('txProposal');
+      payload.walletId.should.equal(w.id);
+      payload.txProposal.should.deep.equal(txp.toObjTrim());
+    });
+    it('should be able to sendSignature', function() {
+      w.txProposals.add(txp);
+      w.sendSignature(txp.getId());
+      w.network.send.calledOnce.should.equal(true);
+      var payload = w.network.send.getCall(0).args[1];
+      payload.type.should.equal('signature');
+      payload.walletId.should.equal(w.id);
+      payload.signatures.length.should.equal(1);
+      var sig = new Buffer(payload.signatures[0],'hex');
+      sig.length.should.be.above(70);
+      sig.length.should.be.below(74);
+    });
+  });
 
   describe('#obtainNetworkName', function() {
     it('should return the networkname', function() {

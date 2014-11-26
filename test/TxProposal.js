@@ -299,6 +299,17 @@ describe('TxProposal', function() {
       var pubkeys = txp.getSignersPubKeys();
       pubkeys.should.deep.equal([PUBKEYS]);
     });
+
+    describe('#getSignatures', function() {
+      it('should', function() {
+        var txp = dummyProposal();
+        var sigs  = txp.getSignatures();
+        sigs.length.should.equal(1);
+        sigs[0].length.should.equal(2);
+        sigs[0][0].should.equal('304502200708a381dde585ef7fdfaeaeb5da9b451d3e22b01eac8a5e3d03b959e24a7478022100c90e76e423523a54a9e9c43858337ebcef1a539a7fc685c2698dd8648fcf1b9101');
+        sigs[0][1].should.equal('3044022030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae01');
+      });
+    });
     describe('#_check', function() {
       it('OK', function() {
         dummyProposal({})._check();
@@ -450,7 +461,6 @@ describe('TxProposal', function() {
         txp.builder.vanilla.scriptSig = [backup];
         txp.builder.tx.ins[0].s = new Buffer(backup, 'hex');
       });
-
 
       it('with more signatures', function() {
         txp.builder.merge = function() {

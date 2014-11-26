@@ -38,8 +38,11 @@ function TxProposal(opts) {
   this.comment = opts.comment || null;
   this.readonly = opts.readonly || null;
   this.merchant = opts.merchant || null;
-  this.paymentAckMemo = null;
+  this.paymentAckMemo = opts.paymentAckMemo || null;
   this.paymentProtocolURL = opts.paymentProtocolURL || null;
+
+  // not from obj
+  this._pubkeysForScriptCache = {};
 
   // New Tx Proposal
   if (_.isEmpty(this.seenBy) && opts.creator) {
@@ -93,13 +96,32 @@ TxProposal.prototype.isFullySigned = function() {
   return this.builder && this.builder.isFullySigned();
 };
 
+
+TxProposal.prototype.getMySignatures = function() {
+  preconditions.checkState(this._mySignatures, 'Still no signatures from us');
+  return _.clone(this._mySignatures);
+};
+
+TxProposal.prototype._setMySignatures = function(signaturesBefore) {
+  var mySigs = [];
+  _.each(this.getSignatures(), function(signatures, index) {
+    var diff = _.difference(signatures, signaturesBefore[index]);
+    preconditions.checkState(diff.length == 1, 'more that one signature added!');
+    mySigs.push(diff[0].toString('hex'));
+  })
+  this._mySignatures = mySigs;
+  return;
+};
+
 TxProposal.prototype.sign = function(keys, signerId) {
   var before = this.countSignatures();
+  var signaturesBefore = this.getSignatures();
   this.builder.sign(keys);
 
   var signaturesAdded = this.countSignatures() > before;
   if (signaturesAdded) {
     this.signedBy[signerId] = Date.now();
+    this._setMySignatures(signaturesBefore);
   }
   return signaturesAdded;
 };
@@ -153,10 +175,14 @@ TxProposal.prototype.addMerchantData = function(merchantData) {
   this._checkPayPro();
 };
 
-TxProposal.prototype.getScriptSigs = function() {
-  var tx = this.builder.build();
-  var sigs =  _.map(tx.ins, function(value) {
-    value.s.toString('hex');
+TxProposal.prototype.getSignatures = function() {
+  var ins = this.builder.build().ins;
+  var sigs = _.map(ins, function(value) {
+    var script = new bitcore.Script(value.s);
+    var nchunks = script.chunks.length;
+    return _.map(script.chunks.slice(1, nchunks - 1), function(buffer) {
+      return buffer.toString('hex');
+    });
   });
 
   return sigs;
@@ -185,36 +211,42 @@ TxProposal.prototype.isPending = function(maxRejectCount) {
  * getSignersPubKey
  * @desc get Pubkeys of signers, for each input
  *
- * @return {string[][]} array of arrays for pubkeys for each input
+ * @return {string[][]} array of hashes for signing pubkeys for each input
  */
 TxProposal.prototype.getSignersPubKeys = function(forceUpdate) {
+  var self = this;
+
 
   var signersPubKey = [];
 
-  if (!this._signersPubKey || forceUpdate) {
+  if (!self._signersPubKey || forceUpdate) {
 
-    log.debug('Verifing signatures...');
+    log.debug('PERFORMANCE WARN: Verifying *all* TX signatures:', self.getId());
 
-    var tx = this.builder.build();
+    var tx = self.builder.build();
     _.each(tx.ins, function(input, index) {
 
-      var scriptSig = new Script(input.s);
-      var signatureCount = scriptSig.countSignatures();
+      if (!self._pubkeysForScriptCache[input.s]) {
+        var scriptSig = new Script(input.s);
+        var signatureCount = scriptSig.countSignatures();
 
-      var info = TxProposal._infoFromRedeemScript(scriptSig);
-      var txSigHash = tx.hashForSignature(info.script, parseInt(index), Transaction.SIGHASH_ALL);
-      var inputSignersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
+        var info = TxProposal._infoFromRedeemScript(scriptSig);
+        var txSigHash = tx.hashForSignature(info.script, parseInt(index), Transaction.SIGHASH_ALL);
+        var inputSignersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
 
-      // Does  scriptSig has strings that are not signatures?
-      if (inputSignersPubKey.length !== signatureCount)
-        throw new Error('Invalid signature');
+        // Does  scriptSig has strings that are not signatures?
+        if (inputSignersPubKey.length !== signatureCount)
+          throw new Error('Invalid signature');
 
-      signersPubKey[index] = inputSignersPubKey;
+        self._pubkeysForScriptCache[input.s] = inputSignersPubKey;
+      }
+
+      signersPubKey[index] = self._pubkeysForScriptCache[input.s];
     });
-    this._signersPubKey = signersPubKey;
+    self._signersPubKey = signersPubKey;
   }
 
-  return this._signersPubKey;
+  return self._signersPubKey;
 };
 
 TxProposal.prototype.getId = function() {
@@ -229,6 +261,7 @@ TxProposal.prototype.getId = function() {
 TxProposal.prototype.toObj = function() {
   var o = JSON.parse(JSON.stringify(this));
   delete o['builder'];
+  delete o['_pubkeysForScriptCache'];
   o.builderObj = this.builder.toObj();
   return o;
 };
@@ -313,6 +346,8 @@ TxProposal._verifySignatures = function(inKeys, scriptSig, txSigHash) {
   for (var i = 1; i <= scriptSig.countSignatures(); i++) {
     var chunk = scriptSig.chunks[i];
     var sigRaw = new Buffer(chunk.slice(0, chunk.length - 1));
+
+    log.debug('\t Verifying CHUNK:', i);
     for (var j in keys) {
       var k = keys[j];
       if (k.keyObj.verifySignatureSync(txSigHash, sigRaw)) {
