@@ -1,10 +1,14 @@
 <div ng-controller="CopayersController">
   <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
 
-  <h1 translate  class="hide-for-large-up">
-    Waiting copayers for {{$root.wallet.getName()}} 
-    <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
-  </h1>
+  <div class="row hide-for-large-up">
+    <div class="medium-12 small-12 columns">
+      <h1 translate>
+        Waiting copayers for {{$root.wallet.getName()}} 
+        <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
+      </h1>
+    </div>
+  </div>
   <div class="row">
     <div class="large-12 columns">
       <div ng-if="!$root.wallet.isReady()">

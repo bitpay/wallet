@@ -11,7 +11,11 @@
     </div>
   </div>
   <div class="setup" ng-show="!loading && !$root.starting">
-    <h1 class="hide-for-large-up">{{$root.title}}</h1>
+    <div class="row hide-for-large-up">
+      <div class="medium-12 small-12 columns">
+        <h1>{{$root.title}}</h1>
+      </div>
+    </div>
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
       <div class="row">
         <div class="large-12 columns">
