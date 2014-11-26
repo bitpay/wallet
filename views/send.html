@@ -9,9 +9,13 @@
           ng-include="'views/includes/transaction.html'"></div>
       </div>
     </div>
-    <div ng-show="$root.txps.length != 0" class="line-dashed-h m20b"></div>
 
-    <h1 class="hide-for-large-up">{{$root.title}}</h1>
+    <div class="row">
+      <div class="large-12 medium-12 small-12 columns">
+        <div ng-show="$root.txps.length != 0" class="line-dashed-h m20b"></div>
+        <h1 class="hide-for-large-up">{{$root.title}}</h1>
+      </div>
+    </div>
     <div class="row">
       <div class="large-12 columns">
           <div class="panel">

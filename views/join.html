@@ -12,7 +12,11 @@
     </div>
 
   <div ng-show="!loading">
-    <h1 class="hide-for-large-up">{{$root.title}}</h1>
+    <div class="row hide-for-large-up">
+      <div class="large-12 medium-12 small-12 columns">
+        <h1>{{$root.title}}</h1>
+      </div>
+    </div>
       <div class="row">
         <div class="large-12 columns">
         <form name="joinForm" ng-submit="join(joinForm)" novalidate>
