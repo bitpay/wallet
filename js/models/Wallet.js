@@ -144,6 +144,7 @@ Wallet.builderOpts = {
   signhash: bitcore.Transaction.SIGHASH_ALL,
   fee: undefined,
   feeSat: undefined,
+  builderClass: undefined,
 };
 
 /**
@@ -377,13 +378,14 @@ Wallet.prototype._getKeyMap = function(txp) {
   var inSig0, keyMapAll = {},
     self = this;
 
-  _.each(txp.getSignersPubKey(), function(inputSignersPubKey, i) {
+    var signersPubKeys = txp.getSignersPubKeys();
+  _.each(signersPubKeys, function(inputSignersPubKey, i) {
     var keyMap = self.publicKeyRing.copayersForPubkeys(inputSignersPubKey, txp.inputChainPaths);
 
     if (_.size(keyMap) !== _.size(inputSignersPubKey))
       throw new Error('Signature does not match known copayers');
 
-    keyMapAll = _.extend(keyMap, keyMapAll);
+    _.extend(keyMapAll, keyMap);
 
     // From here -> only to check that all inputs have the same sigs
     var inSigArr = _.values(keyMap);

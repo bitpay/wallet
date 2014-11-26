@@ -1,5 +1,6 @@
 'use strict';
 
+
 var Transaction = bitcore.Transaction;
 var WalletKey = bitcore.WalletKey;
 var Key = bitcore.Key;
@@ -8,19 +9,73 @@ var Script = bitcore.Script;
 var TransactionBuilder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
-var FakeBuilder = requireMock('FakeBuilder');
-var TxProposal = copay.TxProposal;
 var Buffer = bitcore.Buffer;
 
-var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
+var TxProposal = copay.TxProposal;
+
 
 describe('TxProposal', function() {
 
-  function dummyProposal() {
+
+  // These 2 signed  the scripts below
+  var PUBKEYS = ['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3'];
+  // 1,2 signatures
+  var SCRIPTSIG = _.map([
+    '0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae',
+    '0048304502200708a381dde585ef7fdfaeaeb5da9b451d3e22b01eac8a5e3d03b959e24a7478022100c90e76e423523a54a9e9c43858337ebcef1a539a7fc685c2698dd8648fcf1b9101473044022030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'
+  ], function(hex) {
+    return new Buffer(hex, 'hex');
+  });
+
+  var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
+
+  function dummyBuilder(opts) {
+    opts = opts || {};
+
+    var script = SCRIPTSIG[opts.nsig - 1 || 1];
+
+    var aIn = {
+      s: script
+    };
+
+    var tx = {};
+    tx.ins = opts.noins ? [] : [opts.nosigs ? {} : aIn];
+
+    tx.serialize = sinon.stub().returns(new Buffer('1234', 'hex'));
+    tx.getSize = sinon.stub().returns(1);
+    tx.getHashType = sinon.stub().returns(opts.hashtype || 1);
+    tx.getNormalizedHash = sinon.stub().returns('123456');
+    tx.hashForSignature = sinon.stub().returns(
+      new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
+
+    var builder = {};
+
+    builder.opts = opts.opts || {};
+    builder.build = sinon.stub().returns(tx)
+    builder.toObj = sinon.stub().returns({
+      iAmBuilderObj: true,
+      version: 1,
+      opts: builder.opts,
+    });
+
+    builder.vanilla = {
+      scriptSig: [SCRIPTSIG[1]],
+      outs: JSON.stringify([{
+        address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
+        amountSatStr: '123',
+      }]),
+    };
+
+    return builder;
+  };
+
+  function dummyProposal(opts) {
+    opts = opts || {};
+
     return new TxProposal({
       creator: 'creator',
       createdTs: 1,
-      builder: new FakeBuilder(),
+      builder: dummyBuilder(opts),
       inputChainPaths: ['m/1'],
     })
   };
@@ -47,7 +102,7 @@ describe('TxProposal', function() {
       var txp = new TxProposal({
         creator: 1,
         createdTs: 1,
-        builder: new FakeBuilder(),
+        builder: dummyBuilder(),
         inputChainPaths: 'm/1',
       });
       should.exist(txp);
@@ -59,8 +114,7 @@ describe('TxProposal', function() {
   });
   describe('#getId', function() {
     it('should return id', function() {
-      var b = new FakeBuilder();
-      var spy = sinon.spy(b.tx, 'getNormalizedHash');
+      var b = new dummyBuilder();
       var txp = new TxProposal({
         creator: 1,
         createdTs: 1,
@@ -68,12 +122,12 @@ describe('TxProposal', function() {
         inputChainPaths: 'm/1',
       });
       txp.getId().should.equal('123456');;
-      sinon.assert.callCount(spy, 1);
+      sinon.assert.callCount(b.build().getNormalizedHash, 1);
     });
   });
   describe('#toObj', function() {
     it('should return an object and remove builder', function() {
-      var b = new FakeBuilder();
+      var b = new dummyBuilder();
       var txp = new TxProposal({
         creator: 1,
         createdTs: 1,
@@ -87,7 +141,7 @@ describe('TxProposal', function() {
       should.exist(o.builderObj);
     });
     it('toObjTrim', function() {
-      var b = new FakeBuilder();
+      var b = new dummyBuilder();
       var txp = new TxProposal({
         creator: 1,
         createdTs: 1,
@@ -106,7 +160,7 @@ describe('TxProposal', function() {
   });
   describe('#fromUntrustedObj', function() {
     it('should fail to create from wrong object', function() {
-      var b = new FakeBuilder();
+      var b = new dummyBuilder();
       (function() {
         var txp = TxProposal.fromUntrustedObj({
           creator: 1,
@@ -114,35 +168,44 @@ describe('TxProposal', function() {
           builderObj: b.toObj(),
           inputChainPaths: ['m/1'],
         });
-      }).should.throw('Invalid');
+      }).should.throw('tx is not defined');
     });
     it('sets force opts', function() {
-      var b = new FakeBuilder();
-      b.opts = {
-        juan: 1,
-        pepe: 1,
-        fee: 1000
-      };
-      var txp;
+
+      // Create an incomming TX proposal, with certain options...
+      var b = new dummyBuilder({
+        opts: {
+          juan: 1,
+          pepe: 1,
+          fee: 1000
+        }
+      });
+
       var o = {
         creator: 1,
         createdTs: 1,
         builderObj: b.toObj(),
         inputChainPaths: ['m/1'],
       };
-      (function() {
-        txp = TxProposal.fromUntrustedObj(o, {
-          pepe: 100
-        });
-      }).should.throw('Invalid tx proposal: no ins');
+      sinon.stub(TxProposal.prototype, '_check').returns(true);
+
+      //Force other options
+      var txp = TxProposal.fromUntrustedObj(o, {
+        pepe: 100
+      });
+
       o.builderObj.opts.should.deep.equal({
         juan: 1,
         pepe: 100,
         feeSat: undefined,
         fee: undefined
       });
+
+      TxProposal.prototype._check.restore();
     });
   });
+
+
   describe('#fromObj', function() {
 
   });
@@ -154,7 +217,7 @@ describe('TxProposal', function() {
       var txp = new TxProposal({
         creator: 1,
         createdTs: 1,
-        builder: new FakeBuilder(),
+        builder: new dummyBuilder(),
         inputChainPaths: ['m/1'],
       });
       txp.setSent('3a42');
@@ -169,7 +232,7 @@ describe('TxProposal', function() {
       var txp = new TxProposal({
         creator: 1,
         createdTs: 1,
-        builder: new FakeBuilder(),
+        builder: new dummyBuilder(),
         inputChainPaths: ['m/1'],
       });
 
@@ -183,7 +246,7 @@ describe('TxProposal', function() {
   });
 
   describe('Signature verification', function() {
-    var validScriptSig = new bitcore.Script(FakeBuilder.VALID_SCRIPTSIG_BUF);
+    var validScriptSig = new bitcore.Script(SCRIPTSIG[1]);
 
     var pubkeys = [
       '03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d',
@@ -231,54 +294,53 @@ describe('TxProposal', function() {
       }
       Buffer.isBuffer(info.script.getBuffer()).should.equal(true);
     });
-    it('#_updateSignedBy', function() {
+    it('#getSignersPubKeys', function() {
       var txp = dummyProposal();
-      txp._inputSigners.should.deep.equal([
-        ['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3']
-      ]);
+      var pubkeys = txp.getSignersPubKeys();
+      pubkeys.should.deep.equal([PUBKEYS]);
     });
     describe('#_check', function() {
-      var txp = dummyProposal();
-      var backup = txp.builder.tx.ins;
-
       it('OK', function() {
-        txp._check();
+        dummyProposal({})._check();
       });
       it('FAIL ins', function() {
-        txp.builder.tx.ins = [];
         (function() {
-          txp._check();
+          dummyProposal({
+            noins: true,
+          })._check();
         }).should.throw('no ins');
-        txp.builder.tx.ins = backup;
       });
       it('FAIL signhash SINGLE', function() {
-        sinon.stub(txp.builder.tx, 'getHashType').returns(Transaction.SIGHASH_SINGLE);
+        var txp = dummyProposal({
+          hashtype: Transaction.SIGHASH_SINGLE
+        });
         (function() {
           txp._check();
         }).should.throw('signatures');
-        txp.builder.tx.getHashType.restore();
       });
       it('FAIL signhash NONE', function() {
-        sinon.stub(txp.builder.tx, 'getHashType').returns(Transaction.SIGHASH_NONE);
+        var txp = dummyProposal({
+          hashtype: Transaction.SIGHASH_NONE,
+        });
         (function() {
           txp._check();
         }).should.throw('signatures');
-        txp.builder.tx.getHashType.restore();
       });
       it('FAIL signhash ANYONECANPAY', function() {
-        sinon.stub(txp.builder.tx, 'getHashType').returns(Transaction.SIGHASH_ANYONECANPAY);
+        var txp = dummyProposal({
+          hashtype: Transaction.SIGHASH_ANYONECANPAY,
+        });
         (function() {
           txp._check();
         }).should.throw('signatures');
-        txp.builder.tx.getHashType.restore();
       });
       it('FAIL no signatures', function() {
-        var backup = txp.builder.tx.ins[0].s;
-        txp.builder.tx.ins[0].s = undefined;
+        var txp = dummyProposal({
+          nosigs: true,
+        });
         (function() {
           txp._check();
         }).should.throw('no signatures');
-        txp.builder.tx.ins[0].s = backup;
       });
     });
 
@@ -369,21 +431,19 @@ describe('TxProposal', function() {
 
     });
 
-    describe('#merge', function() {
-      var txp = dummyProposal();
-      var backup = txp.builder.tx.ins;
+    describe.skip('#merge', function() {
       it('with self', function() {
+        var txp = dummyProposal();
         var hasChanged = txp.merge(txp);
         hasChanged.should.equal(false);
       });
 
       it('with less signatures', function() {
+        var txp = dummyProposal();
+        var txp1Sig = dummyProposal({
+          onsig: true
+        });
         var backup = txp.builder.vanilla.scriptSig[0];
-        txp.builder.merge = function() {
-          // Only one signatures.
-          this.vanilla.scriptSig = ['0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'];
-          this.tx.ins[0].s = new Buffer(this.vanilla.scriptSig[0], 'hex');
-        };
         var hasChanged = txp.merge(txp);
         hasChanged.should.equal(true);
 
@@ -471,9 +531,8 @@ describe('TxProposal', function() {
       it("should set signedBy (trivial case)", function() {
         var txp = dummyProposal();
         var ts = Date.now();
-        txp._inputSigners = [
-          ['pk1', 'pk0']
-        ];
+
+        sinon.stub(txp,'getSignersPubKeys').returns(['pk1', 'pk0']);
         txp.signedBy = {
           'creator': Date.now()
         };
@@ -489,9 +548,7 @@ describe('TxProposal', function() {
       it("should assign creator", function() {
         var txp = dummyProposal();
         var ts = Date.now();
-        txp._inputSigners = [
-          ['pk0']
-        ];
+        sinon.stub(txp,'getSignersPubKeys').returns(['pk0']);
         txp.signedBy = {};
         delete txp['creator'];
         delete txp['creatorTs'];
@@ -511,9 +568,7 @@ describe('TxProposal', function() {
         txp.signedBy = {};
         delete txp['creator'];
         delete txp['creatorTs'];
-        txp._inputSigners = [
-          ['pk0', 'pk1']
-        ];
+        sinon.stub(txp,'getSignersPubKeys').returns(['pk0', 'pk1']);
         (function() {
           txp.setCopayers(
             'creator', {
@@ -530,9 +585,7 @@ describe('TxProposal', function() {
       it("if signed, should not change ts", function() {
         var txp = dummyProposal();
         var ts = Date.now();
-        txp._inputSigners = [
-          ['pk0', 'pk1']
-        ];
+        sinon.stub(txp,'getSignersPubKeys').returns(['pk0', 'pk1']);
         txp.creator = 'creator';
         txp.signedBy = {
           'creator': 1

@@ -1,14 +1,16 @@
 'use strict';
 
+var preconditions = require('preconditions').singleton();
+
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var TxProposal = require('./TxProposal');;
 var Script = bitcore.Script;
 var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
-var preconditions = require('preconditions').instance();
+
 var log = require('../log');
+var TxProposal = require('./TxProposal');;
 
 function TxProposals(opts) {
   opts = opts || {};

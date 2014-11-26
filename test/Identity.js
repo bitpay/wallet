@@ -129,7 +129,8 @@ describe('Identity model', function() {
         should.not.exist(err);
         should.exist(iden);
         should.exist(iden.wallets);
-        Identity.prototype.store.calledOnce.should.be.true;
+        iden.store.calledOnce.should.be.true;
+        iden.store.restore();
       });
     });
   });
@@ -169,10 +170,16 @@ describe('Identity model', function() {
       args = createIdentity();
       args.params.noWallets = true;
       var old = Identity.prototype.createWallet;
+      sinon.stub(Identity.prototype, 'store').yields(null);
       Identity.create(args.params, function(err, res) {
         iden = res;
       });
     });
+
+    afterEach(function() {
+      iden.store.restore();
+    });
+
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
       args.storage.setItem = sinon.stub();
@@ -220,7 +227,7 @@ describe('Identity model', function() {
       args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');
       var backup = Wallet.fromUntrustedObj;
       args.params.noWallets = true;
-
+      sinon.stub(Identity.prototype, 'store').yields(null);
       sinon.stub().returns(args.wallet);
 
       var opts = {
@@ -232,6 +239,7 @@ describe('Identity model', function() {
           should.not.exist(err);
           opts.importWallet.calledOnce.should.equal(true);
           should.exist(wallet);
+          iden.store.restore();
           done();
         });
       });
@@ -246,6 +254,7 @@ describe('Identity model', function() {
       var backup = Wallet.fromUntrustedObj;
       args.params.noWallets = true;
       sinon.stub().returns(args.wallet);
+      sinon.stub(Identity.prototype, 'store').yields(null);
 
       var fakeCrypto = {
         kdf: sinon.stub().returns('passphrase'),
@@ -263,6 +272,7 @@ describe('Identity model', function() {
           should.not.exist(err);
           fakeCrypto.decrypt.getCall(0).args[0].should.equal('password');
           fakeCrypto.decrypt.getCall(0).args[1].should.equal(123);
+          iden.store.restore();
           done();
         });
       });
@@ -311,12 +321,14 @@ describe('Identity model', function() {
       args = createIdentity();
       args.params.Async = net = sinon.stub();
 
+      sinon.stub(Identity.prototype, 'store').yields(null);
       net.cleanUp = sinon.spy();
       net.on = sinon.stub();
       net.start = sinon.spy();
       var old = Identity.prototype.createWallet;
       Identity.create(args.params, function(err, res) {
         iden = res;
+        iden.store.restore();
       });
     });
 
