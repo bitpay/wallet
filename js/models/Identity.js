@@ -278,6 +278,13 @@ Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
   return crypto.encrypt(this.password, this.exportWithWalletInfo(opts));
 };
 
+Identity.prototype.setBackupNeeded = function() {
+  this.backupNeeded = true;
+  this.store({
+    noWallets: true
+  }, function() {});
+}
+
 Identity.prototype.setBackupDone = function() {
   this.backupNeeded = false;
   this.store({
