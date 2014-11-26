@@ -339,46 +339,18 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
 
 /**
  * @desc
- * Demultiplexes calls to update TxProposal updates
- *
- * @param {string} senderId - the copayer that sent this event
- * @param {Object} m - the data received
- * @emits txProposalEvent
- */
-Wallet.prototype._processProposalEvents = function(senderId, m) {
-  var ev;
-  if (m) {
-    if (m.new) {
-      ev = {
-        type: 'new',
-        cId: senderId
-      }
-    } else if (m.newCopayer && m.newCopayer.length) {
-      ev = {
-        type: 'signed',
-        cId: m.newCopayer[0]
-      };
-    }
-  }
-  if (ev)
-    this.emitAndKeepAlive('txProposalEvent', ev);
-};
-
-
-/**
- * @desc
  * Retrieves a keymap from a transaction proposal set extracts a maps from
  * public key to cosignerId for each signed input of the transaction proposal.
  *
  * @param {TxProposals} txp - the transaction proposals
  * @return {Object} [pubkey] -> copayerId
  */
-Wallet.prototype._getKeyMap = function(txp) {
+Wallet.prototype._getPubkeyToCopayerMap = function(txp) {
   preconditions.checkArgument(txp);
   var inSig0, keyMapAll = {},
     self = this;
 
-    var signersPubKeys = txp.getSignersPubKeys();
+  var signersPubKeys = txp.getSignersPubKeys();
   _.each(signersPubKeys, function(inputSignersPubKey, i) {
     var keyMap = self.publicKeyRing.copayersForPubkeys(inputSignersPubKey, txp.inputChainPaths);
 
@@ -520,7 +492,7 @@ Wallet.prototype._processIncomingNewTxProposal = function(txp, cb) {
 
 /**
  * @desc
- * Handles a 'TXPROPOSAL' network message
+ * Handles a NEW 'TXPROPOSAL' network message
  *
  * @param {string} senderId - the id of the sender
  * @param {Object} data - the data received
@@ -538,7 +510,6 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
 
   if (localTx) {
     log.debug('Ignoring existing tx Proposal:' + incomingNtxid);
-    console.log('')
     return;
   }
 
@@ -548,7 +519,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
       return;
     }
 
-    var keyMap = self._getKeyMap(incomingTx);
+    var keyMap = self._getPubkeyToCopayerMap(incomingTx);
     incomingTx.setCopayers(senderId, keyMap);
 
     self.txProposals.add(incomingTx);
@@ -556,6 +527,27 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
       type: 'new',
       cId: senderId,
     });
+  });
+};
+
+
+Wallet.prototype._onSignatures = function(senderId, data) {
+  var self = this;
+  try {
+    var localTx = this.txProposals.get(data.ntxid);
+  } catch (e) {
+    log.info('Ignoring signature for unknown tx Proposal:' + data.ntxid);
+    return;
+  };
+
+  var keyMap = self._getPubkeyToCopayerMap(locaTx);
+
+  // TODO look senderIdin keyMap
+  localTx.addSignature(pubkeys, data.signature, keyMap);
+
+  this.emitAndKeepAlive('txProposalEvent', {
+    type: 'signed',
+    cId: senderId,
   });
 };
 
@@ -729,6 +721,9 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       break;
     case 'txProposal':
       this._onTxProposal(senderId, data);
+      break;
+    case 'signature':
+      this._onSignature(senderId, data);
       break;
     case 'indexes':
       this._onIndexes(senderId, data);
@@ -1266,8 +1261,8 @@ Wallet.prototype.sendSignature = function(ntxid) {
   var txp = this.txProposals.get(ntxid);
 
   this._sendToPeers(null, {
-    type: 'sign',
-    signatures: txp.getScriptSigs(),
+    type: 'signature',
+    signatures: txp.getMySignatures(),
     walletId: this.id,
   });
 };
