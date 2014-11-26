@@ -44,9 +44,9 @@ var Insight = function(opts) {
   };
 
 
-   if (opts.transports) {
-     this.opts['transports'] =  opts.transports;
-   }
+  if (opts.transports) {
+    this.opts['transports'] = opts.transports;
+  }
 
   this.socket = this.getSocket();
 }
@@ -224,7 +224,7 @@ Insight.prototype.subscribe = function(addresses) {
 
       s.emit('subscribe', address);
       s.on(address, handler);
-    } 
+    }
   });
 };
 
@@ -267,16 +267,21 @@ Insight.prototype.getTransaction = function(txid, cb) {
   });
 };
 
-Insight.prototype.getTransactions = function (addresses, from, to, cb) {
+Insight.prototype.getTransactions = function(addresses, from, to, cb) {
   preconditions.shouldBeArray(addresses);
   preconditions.shouldBeFunction(cb);
 
-  var qs = '?from=' + (from || 0);
-  if (to) qs += '&to=' + to;
+  var qs = '';
+  if (_.isNumber(from)) {
+    qs += '?from=' + from;
+    if (_.isNumber(to)) {
+      qs += '&to=' + to;
+    }
+  }
 
   this.requestPost('/api/addrs/txs' + qs, {
     addrs: addresses.join(',')
-  }, function (err, res, txs) {
+  }, function(err, res, txs) {
     if (err || res.statusCode != 200) return cb(err || res);
     cb(null, txs);
   });
@@ -294,7 +299,7 @@ Insight.prototype.getUnspent = function(addresses, cb) {
     // This filter out possible broken unspent, as reported on
     // https://github.com/bitpay/copay/issues/1585
     // and later gitter conversation.
-    
+
     var unspent = _.filter(unspentRaw, 'scriptPubKey');
     cb(null, unspent);
   });
@@ -303,7 +308,7 @@ Insight.prototype.getUnspent = function(addresses, cb) {
 Insight.prototype.getActivity = function(addresses, cb) {
   preconditions.shouldBeArray(addresses);
 
-  this.getTransactions(addresses, function then(err, txs) {
+  this.getTransactions(addresses, null, null, function then(err, txs) {
     if (err) return cb(err);
 
     var flatArray = function(xss) {
