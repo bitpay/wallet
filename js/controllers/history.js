@@ -27,88 +27,12 @@ angular.module('copayApp.controllers').controller('HistoryController',
       if (!w) return;
 
       $scope.generating = true;
-      w.getTransactionHistory(function(err, res) {
-        if (err) {
-          $scope.generating = false;
-          throw err;
-        }
 
-        if (!res) {
-          $scope.generating = false;
-          return;
-        }
+      //getTransactionHistoryCSV
 
-        var unit = w.settings.unitName;
-        var data = res.items;
-        var filename = "copay_history.csv";
-        var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment";
-
-        if (w.isShared()) {
-          csvContent += ",Signers\n";
-        } else {
-          csvContent += "\n";
-        }
-
-        data.forEach(function(it, index) {
-          if (!it) {
-            console.log('Error on tx with index ', index);
-            return;
-          } else {
-            console.log('Txid  with index ', it.txid, index);
-
-          }
-          var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
-          if (it.actionList) {
-            dataString += ',' + formatSigners(it.actionList);
-          }
-          csvContent += index < data.length ? dataString + "\n" : dataString;
-        });
-
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", filename);
-
-        link.click();
+      w.getTransactionHistoryCsv(function() {
         $scope.generating = false;
         $scope.$digest();
-
-        function formatDate(date) {
-          var dateObj = new Date(date);
-          if (!dateObj) {
-            log.error('Error formating a date');
-            return 'DateError'
-          }
-          if (!dateObj.toJSON()) {
-            return '';
-          }
-
-          return dateObj.toJSON().substring(0, 10);
-        }
-
-        function formatString(str) {
-          if (!str) return '';
-
-          if (str.indexOf('"') !== -1) {
-            //replace all
-            str = str.replace(new RegExp('"', 'g'), '\'');
-          }
-
-          //escaping commas
-          str = '\"' + str + '\"';
-
-          return str;
-        }
-
-        function formatSigners(item) {
-          if (!item) return '';
-          var str = '';
-          item.forEach(function(it, index) {
-            str += index == 0 ? w.publicKeyRing.nicknameForCopayer(it.cId) : '|' + w.publicKeyRing.nicknameForCopayer(it.cId);
-          });
-          return str;
-        }
 
       })
     };
@@ -147,11 +71,17 @@ angular.module('copayApp.controllers').controller('HistoryController',
         }
 
         var items = res.items;
+<<<<<<< HEAD
         var now = new Date();
         _.each(items, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
           tx.amount = $filter('noFractionNumber')(tx.amount);
+=======
+
+        _.each(items, function(r, index) {
+          r.ts = r.minedTs || r.sentTs;
+>>>>>>> Move function getTransactionHistoryCsv to wallet
         });
 
         var index = _.indexBy(items, 'rateTs');
