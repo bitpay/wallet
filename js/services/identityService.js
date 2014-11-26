@@ -48,6 +48,7 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
         failIfExists: true,
       }, function(err, iden) {
+
         if (err) return cb(err);
         preconditions.checkState(iden);
         root.bind(iden);
@@ -68,19 +69,19 @@ angular.module('copayApp.services')
     };
 
     root.setServerStatus = function(headers) {
-      if (!headers) 
+      if (!headers)
         return;
 
-      if (headers['X-Email-Needs-Validation']) 
-        $rootScope.needsEmailConfirmation = true; 
+      if (headers['X-Email-Needs-Validation'])
+        $rootScope.needsEmailConfirmation = true;
       else
-        $rootScope.needsEmailConfirmation = null; 
+        $rootScope.needsEmailConfirmation = null;
 
-      if (headers['X-Quota-Per-Item']) 
-        $rootScope.quotaPerItem = parseInt(headers['X-Quota-Per-Item']); 
+      if (headers['X-Quota-Per-Item'])
+        $rootScope.quotaPerItem = parseInt(headers['X-Quota-Per-Item']);
 
-      if (headers['X-Quota-Items-Limit']) 
-        $rootScope.quotaItems = parseInt(headers['X-Quota-Items-Limit']); 
+      if (headers['X-Quota-Items-Limit'])
+        $rootScope.quotaItems = parseInt(headers['X-Quota-Items-Limit']);
     };
 
     root.open = function(email, password, cb) {
@@ -102,7 +103,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.deleteProfile = function (cb) {
+    root.deleteProfile = function(cb) {
       $rootScope.iden.remove(null, cb);
     };
 
