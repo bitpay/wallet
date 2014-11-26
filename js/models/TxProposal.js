@@ -110,13 +110,13 @@ TxProposal.prototype._check = function() {
     throw new Error('Invalid tx proposal');
   }
 
+  // Should be able to build
   var tx = this.builder.build();
 
   var txSize = tx.getSize();
   if (txSize / 1024 > TX_MAX_SIZE_KB)
     throw new Error('BIG: Invalid TX proposal. Too big: ' + txSize + ' bytes');
 
-console.log('[TxProposal.js.118]'); //TODO
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
@@ -158,7 +158,6 @@ TxProposal.prototype.getScriptSigs = function() {
   var sigs =  _.map(tx.ins, function(value) {
     value.s.toString('hex');
   });
-console.log('[TxProposal.js.161:sigs:]',sigs); //TODO
 
   return sigs;
 };
@@ -188,7 +187,7 @@ TxProposal.prototype.isPending = function(maxRejectCount) {
  *
  * @return {string[][]} array of arrays for pubkeys for each input
  */
-TxProposal.prototype.getSignersPubKey = function(forceUpdate) {
+TxProposal.prototype.getSignersPubKeys = function(forceUpdate) {
 
   var signersPubKey = [];
 
@@ -201,12 +200,10 @@ TxProposal.prototype.getSignersPubKey = function(forceUpdate) {
 
       var scriptSig = new Script(input.s);
       var signatureCount = scriptSig.countSignatures();
-      console.log('[TxProposal.js.191:signatureCount:]', signatureCount); //TODO
 
       var info = TxProposal._infoFromRedeemScript(scriptSig);
       var txSigHash = tx.hashForSignature(info.script, parseInt(index), Transaction.SIGHASH_ALL);
       var inputSignersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
-      console.log('[TxProposal.js.197:inputSignersPubKey:]', inputSignersPubKey); //TODO
 
       // Does  scriptSig has strings that are not signatures?
       if (inputSignersPubKey.length !== signatureCount)
@@ -249,35 +246,33 @@ TxProposal.fromObj = function(o, forceOpts) {
   preconditions.checkArgument(o.builderObj);
   delete o['builder'];
   forceOpts = forceOpts || {};
+  var builderClass = forceOpts.transactionBuilderClass || TransactionBuilder;
 
-
-  if (forceOpts) {
-    o.builderObj.opts = o.builderObj.opts || {};
-  }
+  o.builderObj.opts = o.builderObj.opts || {};
 
   // force opts is requested.
-  for (var k in forceOpts) {
-    o.builderObj.opts[k] = forceOpts[k];
-  }
-  // Handle undef options
+  _.each(forceOpts, function(value, key) {
+    o.builderObj.opts[key] = value;
+  });
+
+  // Handle undef fee options
   if (_.isUndefined(forceOpts.fee) && _.isUndefined(forceOpts.feeSat)) {
-    if (o.builderObj.opts) {
-      o.builderObj.opts.fee = undefined;
-      o.builderObj.opts.feeSat = undefined;
-    }
+    o.builderObj.opts.fee = undefined;
+    o.builderObj.opts.feeSat = undefined;
   }
 
   try {
-    o.builder = TransactionBuilder.fromObj(o.builderObj);
+    o.builder = builderClass.fromObj(o.builderObj);
   } catch (e) {
-    log.info('Ignoring TXP:', e);
+    throw new Error(e);
     return null;
   }
   return new TxProposal(o);
 };
 
 TxProposal.fromUntrustedObj = function(o, forceOpts) {
-  var txp = TxProposal.fromObj(TxProposal._trim(o), forceOpts);
+  var trimmed = TxProposal._trim(o);
+  var txp = TxProposal.fromObj(trimmed, forceOpts);
   if (!txp)
     throw new Error('Invalid Transaction');
 
@@ -399,8 +394,7 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap) {
   }
 
 
-  var iSig = this.getSignersPubKey();
-  console.log('[TxProposal.js.374:iSig:]', iSig, keyMap); //TODO
+  var iSig = this.getSignersPubKeys();
   for (var i in iSig) {
     var copayerId = keyMap[iSig[i]];
 
@@ -435,21 +429,7 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap) {
     delete this.rejectedBy[i];
   }
 
-  console.log('[TxProposal.js.410:newCopayer:]', newCopayer); //TODO
   return Object.keys(newCopayer);
-};
-
-// merge will not merge any metadata.
-TxProposal.prototype.merge = function(incoming) {
-
-  // Note that all inputs must have the same number of signatures, so checking
-  // one (0) is OK.
-  var before = this._inputSigners[0] ? this._inputSigners[0].length : 0;
-  this.builder.merge(incoming.builder);
-
-  var after = this._inputSigners[0].length;
-  console.log('[TxProposal.js.442:after:]', before, after); //TODO
-  return after !== before;
 };
 
 //This should be on bitcore / Transaction
