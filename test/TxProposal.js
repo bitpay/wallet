@@ -104,11 +104,11 @@ describe('TxProposal', function() {
     });
 
   });
-  describe('#fromObj', function() {
+  describe('#fromUntrustedObj', function() {
     it('should fail to create from wrong object', function() {
       var b = new FakeBuilder();
       (function() {
-        var txp = TxProposal.fromObj({
+        var txp = TxProposal.fromUntrustedObj({
           creator: 1,
           createdTs: 1,
           builderObj: b.toObj(),
@@ -131,7 +131,7 @@ describe('TxProposal', function() {
         inputChainPaths: ['m/1'],
       };
       (function() {
-        txp = TxProposal.fromObj(o, {
+        txp = TxProposal.fromUntrustedObj(o, {
           pepe: 100
         });
       }).should.throw('Invalid tx proposal: no ins');
@@ -142,6 +142,9 @@ describe('TxProposal', function() {
         fee: undefined
       });
     });
+  });
+  describe('#fromObj', function() {
+
   });
 
 

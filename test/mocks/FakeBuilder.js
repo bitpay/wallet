@@ -35,6 +35,7 @@ function FakeBuilder() {
   this.test = 1;
   this.tx = new Tx();
   this.signhash = 1;
+  this.version =1;
   this.inputMap = [{
     address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
     scriptPubKey: new Script(new Buffer('a914dc0623476aefb049066b09b0147a022e6eb8429187', 'hex')),
@@ -48,7 +49,6 @@ function FakeBuilder() {
       address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
       amountSatStr: '123',
     }]),
-
   }
 }
 

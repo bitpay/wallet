@@ -1,15 +1,16 @@
 'use strict';
 
-var bitcore = require('bitcore');
 var _ = require('lodash');
+var preconditions = require('preconditions').singleton();
+
+var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var BuilderMockV0 = require('./BuilderMockV0');;
 var TransactionBuilder = bitcore.TransactionBuilder;
 var Script = bitcore.Script;
 var Key = bitcore.Key;
-var buffertools = bitcore.buffertools;
-var preconditions = require('preconditions').instance();
+
+var log = require('../log');
 
 var TX_MAX_SIZE_KB = 50;
 var VERSION = 1;
@@ -26,13 +27,12 @@ function TxProposal(opts) {
   this.version = opts.version;
   this.builder = opts.builder;
   this.createdTs = opts.createdTs;
-  this._inputSigners = [];
 
-  // CopayerIds
-  this.creator = opts.creator;
+  // Copayer Actions ( copayerId: timeStamp )
   this.signedBy = opts.signedBy || {};
   this.seenBy = opts.seenBy || {};
   this.rejectedBy = opts.rejectedBy || {};
+
   this.sentTs = opts.sentTs || null;
   this.sentTxid = opts.sentTxid || null;
   this.comment = opts.comment || null;
@@ -41,7 +41,8 @@ function TxProposal(opts) {
   this.paymentAckMemo = null;
   this.paymentProtocolURL = opts.paymentProtocolURL || null;
 
-  if (opts.creator) {
+  // New Tx Proposal
+  if (_.isEmpty(this.seenBy) && opts.creator) {
     var now = Date.now();
     var me = {};
     me[opts.creator] = now;
@@ -55,8 +56,6 @@ function TxProposal(opts) {
         throw new Error('Could not sign generated tx');
     }
   }
-
-  this._sync();
 }
 
 TxProposal.prototype._checkPayPro = function() {
@@ -99,7 +98,7 @@ TxProposal.prototype.sign = function(keys, signerId) {
   this.builder.sign(keys);
 
   var signaturesAdded = this.countSignatures() > before;
-  if (signaturesAdded){
+  if (signaturesAdded) {
     this.signedBy[signerId] = Date.now();
   }
   return signaturesAdded;
@@ -117,6 +116,7 @@ TxProposal.prototype._check = function() {
   if (txSize / 1024 > TX_MAX_SIZE_KB)
     throw new Error('BIG: Invalid TX proposal. Too big: ' + txSize + ' bytes');
 
+console.log('[TxProposal.js.118]'); //TODO
   if (!tx.ins.length)
     throw new Error('Invalid tx proposal: no ins');
 
@@ -153,47 +153,80 @@ TxProposal.prototype.addMerchantData = function(merchantData) {
   this._checkPayPro();
 };
 
+TxProposal.prototype.getScriptSigs = function() {
+  var tx = this.builder.build();
+  var sigs =  _.map(tx.ins, function(value) {
+    value.s.toString('hex');
+  });
+console.log('[TxProposal.js.161:sigs:]',sigs); //TODO
+
+  return sigs;
+};
+
 TxProposal.prototype.rejectCount = function() {
   return _.size(this.rejectedBy);
 };
 
-TxProposal.prototype.isPending = function(maxRejectCount) {
-  preconditions.checkArgument(typeof maxRejectCount != 'undefined');
 
-  if (this.rejectCount() > maxRejectCount || this.sentTxid)
+TxProposal.prototype.isFinallyRejected = function(maxRejectCount) {
+  return this.rejectCount() > maxRejectCount;
+};
+
+TxProposal.prototype.isPending = function(maxRejectCount) {
+  preconditions.checkArgument(_.isNumber(maxRejectCount));
+
+  if (this.isFinallyRejected(maxRejectCount) || this.sentTxid)
     return false;
 
   return true;
 };
 
 
-TxProposal.prototype._updateSignedBy = function() {
-  this._inputSigners = [];
+/**
+ * getSignersPubKey
+ * @desc get Pubkeys of signers, for each input
+ *
+ * @return {string[][]} array of arrays for pubkeys for each input
+ */
+TxProposal.prototype.getSignersPubKey = function(forceUpdate) {
 
-  var tx = this.builder.build();
-  for (var i in tx.ins) {
-    var scriptSig = new Script(tx.ins[i].s);
-    var signatureCount = scriptSig.countSignatures();
+  var signersPubKey = [];
 
-    var info = TxProposal._infoFromRedeemScript(scriptSig);
-    var txSigHash = tx.hashForSignature(info.script, parseInt(i), Transaction.SIGHASH_ALL);
-    var signersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
-    if (signersPubKey.length !== signatureCount)
-      throw new Error('Invalid signature');
+  if (!this._signersPubKey || forceUpdate) {
 
-    this._inputSigners[i] = signersPubKey;
-  };
+    log.debug('Verifing signatures...');
+
+    var tx = this.builder.build();
+    _.each(tx.ins, function(input, index) {
+
+      var scriptSig = new Script(input.s);
+      var signatureCount = scriptSig.countSignatures();
+      console.log('[TxProposal.js.191:signatureCount:]', signatureCount); //TODO
+
+      var info = TxProposal._infoFromRedeemScript(scriptSig);
+      var txSigHash = tx.hashForSignature(info.script, parseInt(index), Transaction.SIGHASH_ALL);
+      var inputSignersPubKey = TxProposal._verifySignatures(info.keys, scriptSig, txSigHash);
+      console.log('[TxProposal.js.197:inputSignersPubKey:]', inputSignersPubKey); //TODO
+
+      // Does  scriptSig has strings that are not signatures?
+      if (inputSignersPubKey.length !== signatureCount)
+        throw new Error('Invalid signature');
+
+      signersPubKey[index] = inputSignersPubKey;
+    });
+    this._signersPubKey = signersPubKey;
+  }
+
+  return this._signersPubKey;
 };
-
-TxProposal.prototype._sync = function() {
-  this._check();
-  this._updateSignedBy();
-  return this;
-}
 
 TxProposal.prototype.getId = function() {
   preconditions.checkState(this.builder);
-  return this.builder.build().getNormalizedHash().toString('hex');
+
+  if (!this.ntxid) {
+    this.ntxid = this.builder.build().getNormalizedHash().toString('hex');
+  }
+  return this.ntxid;
 };
 
 TxProposal.prototype.toObj = function() {
@@ -237,18 +270,19 @@ TxProposal.fromObj = function(o, forceOpts) {
   try {
     o.builder = TransactionBuilder.fromObj(o.builderObj);
   } catch (e) {
-
-    // backwards (V0) compatatibility fix.
-    if (!o.version) {
-      o.builder = new BuilderMockV0(o.builderObj);
-      o.readonly = 1;
-    };
+    log.info('Ignoring TXP:', e);
+    return null;
   }
   return new TxProposal(o);
 };
 
 TxProposal.fromUntrustedObj = function(o, forceOpts) {
-  return TxProposal.fromObj(TxProposal._trim(o), forceOpts);
+  var txp = TxProposal.fromObj(TxProposal._trim(o), forceOpts);
+  if (!txp)
+    throw new Error('Invalid Transaction');
+
+  txp._check();
+  return txp;
 };
 
 TxProposal.prototype.toObjTrim = function() {
@@ -340,17 +374,7 @@ TxProposal.prototype.getSent = function() {
   return this.sentTs;
 }
 
-TxProposal.prototype._allSignatures = function() {
-  var ret = {};
-  for (var i in this._inputSigners)
-    for (var j in this._inputSigners[i])
-      ret[this._inputSigners[i][j]] = true;
-
-  return ret;
-};
-
-
-TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
+TxProposal.prototype.setCopayers = function(senderId, keyMap) {
   var newCopayer = {},
     oldCopayers = {},
     newSignedBy = {},
@@ -375,7 +399,8 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
   }
 
 
-  var iSig = this._inputSigners[0];
+  var iSig = this.getSignersPubKey();
+  console.log('[TxProposal.js.374:iSig:]', iSig, keyMap); //TODO
   for (var i in iSig) {
     var copayerId = keyMap[iSig[i]];
 
@@ -389,10 +414,6 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
       delete oldCopayers[i];
     }
   }
-
-  // Seems unncessary to check this:
-  // if (!newCopayer[senderId] && !readOnlyPeers[senderId])
-  //   throw new Error('TX must have a (new) senders signature')
 
   if (Object.keys(newCopayer).length > 1)
     throw new Error('New TX must have only 1 new signature');
@@ -414,21 +435,20 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap, readOnlyPeers) {
     delete this.rejectedBy[i];
   }
 
+  console.log('[TxProposal.js.410:newCopayer:]', newCopayer); //TODO
   return Object.keys(newCopayer);
 };
 
 // merge will not merge any metadata.
 TxProposal.prototype.merge = function(incoming) {
-  preconditions.checkArgument(_.isFunction(incoming._sync));
-  incoming._sync();
 
   // Note that all inputs must have the same number of signatures, so checking
   // one (0) is OK.
-  var before = this._inputSigners[0].length;
+  var before = this._inputSigners[0] ? this._inputSigners[0].length : 0;
   this.builder.merge(incoming.builder);
-  this._sync();
 
   var after = this._inputSigners[0].length;
+  console.log('[TxProposal.js.442:after:]', before, after); //TODO
   return after !== before;
 };
 
