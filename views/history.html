@@ -47,6 +47,7 @@
                 'text-warning': btx.action == 'sent', 
                 'text-gray': btx.action == 'moved'}">
                 <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+                <b ng-show="btx.alternativeAmount >= 0">{{btx.alternativeAmount| noFractionNumber}} {{$root.wallet.settings.alternativeIsoCode}}</b>
               </div>
             </div>
 

@@ -45,7 +45,7 @@ RateService.prototype._fetchCurrencies = function() {
   var updateFrequencySeconds = 3600;
   var rateServiceUrl = 'https://bitpay.com/api/rates';
 
-  var retrieve = function () {
+  var retrieve = function() {
     log.info('Fetching exchange rates');
     self.request.get({
       url: rateServiceUrl,
@@ -53,7 +53,7 @@ RateService.prototype._fetchCurrencies = function() {
     }, function(err, res, body) {
       if (err || !body) {
         log.debug('Error fetching exchange rates', err);
-        setTimeout(function () {
+        setTimeout(function() {
           backoffSeconds *= 1.5;
           retrieve();
         }, backoffSeconds * 1000);
@@ -78,16 +78,36 @@ RateService.prototype._fetchCurrencies = function() {
   retrieve();
 };
 
-RateService.prototype._getRate = function(code) {
+RateService.prototype.getRate = function(code) {
   return this._rates[code];
 };
 
-RateService.prototype._getHistoricRate = function(code, date, cb) {
-  // TODO (isocolsky): implement with a remote call
-  return cb(new Error('Not implemented'));
+RateService.prototype.getHistoricRate = function(code, date, cb) {
+  var self = this;
+
+  self.request.get({
+    url: 'http://localhost:3001/api/rates/' + code + '?ts=' + date,
+    json: true
+  }, function(err, res, body) {
+    if (err || res.statusCode != 200 || !body) return cb(err || res);
+    return cb(null, body.rate);
+  });
 };
 
-RateService.prototype._getAlternatives = function() {
+RateService.prototype.getHistoricRates = function(code, dates, cb) {
+  var self = this;
+
+  dates = [].concat(dates).join(',');
+  self.request.get({
+    url: 'http://localhost:3001/api/rates/' + code + '?ts=' + dates,
+    json: true
+  }, function(err, res, body) {
+    if (err || res.statusCode != 200 || !body) return cb(err || res);
+    return cb(null, body);
+  });
+};
+
+RateService.prototype.getAlternatives = function() {
   return this._alternatives;
 };
 
@@ -107,13 +127,13 @@ RateService.prototype.toFiat = function(satoshis, code) {
   if (!this.isAvailable()) {
     throw new Error(this.UNAVAILABLE_ERROR);
   }
-  return satoshis * this.SAT_TO_BTC * this._getRate(code);
+  return satoshis * this.SAT_TO_BTC * this.getRate(code);
 };
 
 RateService.prototype.toFiatHistoric = function(satoshis, code, date, cb) {
   var self = this;
 
-  self._getHistoricRate(code, date, function(err, rate) {
+  self.getHistoricRate(code, date, function(err, rate) {
     if (err) return cb(err);
     return cb(null, satoshis * self.SAT_TO_BTC * rate);
   });
@@ -123,7 +143,7 @@ RateService.prototype.fromFiat = function(amount, code) {
   if (!this.isAvailable()) {
     throw new Error(this.UNAVAILABLE_ERROR);
   }
-  return amount / this._getRate(code) * this.BTC_TO_SAT;
+  return amount / this.getRate(code) * this.BTC_TO_SAT;
 };
 
 RateService.prototype.listAlternatives = function() {
@@ -131,7 +151,7 @@ RateService.prototype.listAlternatives = function() {
     throw new Error(this.UNAVAILABLE_ERROR);
   }
 
-  return _.map(this._getAlternatives(), function(item) {
+  return _.map(this.getAlternatives(), function(item) {
     return {
       name: item.name,
       isoCode: item.isoCode
