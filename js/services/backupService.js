@@ -38,6 +38,7 @@ BackupService.prototype.profileEncrypted = function(iden) {
 
 BackupService.prototype.profileDownload = function(iden) {
   var ew = this.profileEncrypted(iden);
+  iden.setBackupDone();
   var name = iden.fullName;
   var filename = name + '-profile.json';
   this._download(ew, name, filename)
