@@ -240,7 +240,7 @@ describe('Insight model', function() {
     });
 
     var addresses = ['2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM', '2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb'];
-    blockchain.getTransactions(addresses, null, null, function(err, res) {
+    blockchain.getTransactions(addresses, 0, null, function(err, res) {
       chai.expect(err).to.be.null;
       res.items.length.should.be.equal(3);
       done();
@@ -273,7 +273,7 @@ describe('Insight model', function() {
     it('should get activity for an innactive address', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
 
-      sinon.stub(blockchain, "getTransactions", function(addresses, cb) {
+      sinon.stub(blockchain, "getTransactions", function(addresses, from, to, cb) {
         cb(null, []);
       });
 
@@ -290,7 +290,7 @@ describe('Insight model', function() {
     it('should get activity for active addresses', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
 
-      sinon.stub(blockchain, "getTransactions", function(addresses, cb) {
+      sinon.stub(blockchain, "getTransactions", function(addresses, from, to, cb) {
         cb(null, [{
             vin: [{
               addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
