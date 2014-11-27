@@ -154,6 +154,10 @@ angular.module('copayApp.services')
             notification.info('[' + name + '] Transaction Signed',
               $filter('translate')('A transaction was signed by') + ' ' + user);
             break;
+          case 'signedAndBroadcasted':
+            notification.info('[' + name + '] Transaction Approved',
+              $filter('translate')('A transaction was signed and broadcasted by') + ' ' + user);
+            break;
           case 'rejected':
             notification.info('[' + name + '] Transaction Rejected',
               $filter('translate')('A transaction was rejected by') + ' ' + user);

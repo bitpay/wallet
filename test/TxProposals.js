@@ -9,14 +9,15 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var util = bitcore.util;
 var networks = bitcore.networks;
 
-var FakeBuilder = requireMock('FakeBuilder');
 var TxProposal = copay.TxProposal;
 var TxProposals = copay.TxProposals;
 
 var dummyProposal = new TxProposal({
   creator: 1,
   createdTs: 1,
-  builder: new FakeBuilder(),
+  builder: {
+    toObj: sinon.stub().returns({}),
+  },
   inputChainPaths: ['m/1'],
 });
 

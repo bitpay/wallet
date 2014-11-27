@@ -59,7 +59,7 @@
 <div class="last-transactions-footer">
   <div class="row collapse">
     <div class="large-5 medium-7 small-12 columns" ng-show="!tx.sentTs">
-      <div ng-show="!tx.signedByUs && !tx.rejectedByUs  && !tx.finallyRejected && tx.missingSignatures">
+      <div ng-show="!tx.signedBy[myId] && !tx.rejectedBy[myId]">
         <div class="hide-for-small-only">
           <button class="primary tiny m0 m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
             <i class="fi-check"></i> <span translate>Sign</span>

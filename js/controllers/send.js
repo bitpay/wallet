@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.isRateAvailable = false;
     $scope.rateService = rateService;
     $scope.showScanner = false;
-
+    $scope.myId = w.getMyCopayerId();
 
     rateService.whenAvailable(function() {
       $scope.isRateAvailable = true;
@@ -369,6 +369,8 @@ angular.module('copayApp.controllers').controller('SendController',
         notification.success('Success', 'Transaction proposal created');
       else if (status == copay.Wallet.TX_SIGNED)
         notification.success('Success', 'Transaction proposal was signed');
+      else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
+        notification.success('Success', 'Transaction signed and broadcasted!');
       else
         notification.error('Error', 'Unknown error occured');
     };
@@ -378,7 +380,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.error = $scope.success = null;
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
-      w.broadcastTx(ntxid, function(err, txid, status) {
+      w.issueTx(ntxid, function(err, txid, status) {
         $scope.notifyStatus(status);
         if (cb) return cb();
         else $scope.loadTxs();
