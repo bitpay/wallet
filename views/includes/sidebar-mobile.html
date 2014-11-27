@@ -35,12 +35,12 @@
       </div>
     </div>
     <div ng-show="walletSelection">
-      <div class="side-nav wallets text-center off-canvas-list" ng-show="!wallets.0">
+      <div class="side-nav wallets text-center off-canvas-list" ng-show="!wallets[0]">
         <p class="size-12 text-gray m10t" translate>You do not have another wallets.</p>
         <a href="#!/create" class="db button secondary tiny" title="Create new wallet">
-        <i class="m20r fi-plus"></i> {{'Create new wallet' | translate }} </a>
+        <i class="m10r fi-plus"></i> {{'Create new wallet' | translate }} </a>
       </div>
-      <ul class="side-nav wallets off-canvas-list" ng-show="wallets.0"
+      <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]"
         ng-click="toggleWalletSelection()">
         <li data-ng-repeat="item in wallets track by $index"
           class="nav-item" 

@@ -1,11 +1,5 @@
 <div class="home" ng-controller="HomeController">
 
-  <!-- <div class="session-expired">
-    <i class="fi-battery-empty size-72 text-gray"></i> 
-    <p class="text-gray size-18">Your session is about to expire due to inactivity in </p>
-    <button class="radius primary">Cancel</button>
-  </div> -->
-
   <div class="loading-screen" ng-show="$root.starting">
     <div class="spinner">
       <div class="contener_general">
@@ -18,7 +12,7 @@
     </div>
   </div>
 
-  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting">
+  <div class="large-4 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>

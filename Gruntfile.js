@@ -74,7 +74,6 @@ module.exports = function(grunt) {
           'js/directives.js',
           'js/filters.js',
           'js/routes.js',
-          'js/mobile.js',
           'js/services/*.js',
           'js/controllers/*.js'
         ],
@@ -114,7 +113,6 @@ module.exports = function(grunt) {
     concat: {
       vendors: {
         src: [
-          'lib/mousetrap/mousetrap.min.js',
           'lib/moment/min/moment.min.js',
           'lib/qrcode-generator/js/qrcode.js',
           'lib/lodash/dist/lodash.js',
@@ -122,7 +120,6 @@ module.exports = function(grunt) {
           'lib/file-saver/FileSaver.js',
           'lib/socket.io-client/socket.io.js',
           'lib/sjcl.js',
-         'lib/ios-imagefile-megapixel/megapix-image.js',
           'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js'
         ],
         dest: 'lib/vendors.js'
@@ -154,7 +151,6 @@ module.exports = function(grunt) {
           'js/services/*.js',
           'js/controllers/*.js',
           'js/translations.js',
-          'js/mobile.js', // PLACEHOLDER: CORDOVA SRIPT
           'js/init.js',
         ],
         dest: 'js/copayMain.js'
@@ -209,6 +205,8 @@ module.exports = function(grunt) {
               'index.html',
               'init.js',
               'config.js',
+              'version.js',
+              'popup.html',
               'css/vendors.min.css',
               'css/copay.min.css',
               'js/copayBundle.js',

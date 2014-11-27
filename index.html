@@ -38,6 +38,11 @@
       </div>
     </div>
 
+    <div ng-show="sessionExpired" class="session-expired">
+      <i class="fi-battery-empty size-72 text-gray"></i> 
+      <p class="text-gray size-18">Your session is about to expire due to inactivity in {{countdown}} seconds</p>
+    </div>
+
     <div class="off-canvas-wrap" ng-show="!signingOut">
       <div class="inner-wrap">
         <span class="status" ng-if="$root.reconnecting">

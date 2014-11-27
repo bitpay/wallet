@@ -67,6 +67,9 @@ if [ ! -d $PROJECT ]; then
   fi
 
   echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
+
+  cordova plugin add https://github.com/Initsogar/cordova-webintent.git
+  checkOK
   
   cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
   checkOK
@@ -75,6 +78,9 @@ if [ ! -d $PROJECT ]; then
   checkOK
 
   cordova plugin add org.apache.cordova.statusbar
+  checkOK
+
+  cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
   checkOK
 
 fi
@@ -102,19 +108,22 @@ checkOK
 cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
 checkOK
 
-#cp android/project.properties $PROJECT/platforms/android/project.properties
-#checkOK
+cp android/project.properties $PROJECT/platforms/android/project.properties
+checkOK
 
 cp -R android/res/* $PROJECT/platforms/android/res
 checkOK
 
-mkdir -p $PROJECT/platforms/ios/Copay/Resources/icons
-checkOK
-
-mkdir -p $PROJECT/platforms/ios/Copay/Resources/splash
-checkOK
-
 if [[ !$SKIPIOS ]]; then
+  cp ios/Copay-Info.plist $PROJECT/platforms/ios/Copay-Info.plist
+  checkOK
+
+  mkdir -p $PROJECT/platforms/ios/Copay/Resources/icons
+  checkOK
+
+  mkdir -p $PROJECT/platforms/ios/Copay/Resources/splash
+  checkOK
+
   cp -R ios/icons/* $PROJECT/platforms/ios/Copay/Resources/icons
   checkOK
 
