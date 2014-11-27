@@ -36,7 +36,7 @@
 
 
               <div class="pr">
-                <input id="connectionId" type="text" class="columns" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required auto-focus>
+                <input id="connectionId" type="text" class="columns" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
                 <div ng-hide="showScanner || disableScanner">
                   <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
                 </div>
@@ -45,23 +45,11 @@
                 </div>
               </div>
 
-              <div id="scanner" class="row" ng-if="showScanner">
-                <div class="text-centered">
-                  <canvas id="qr-canvas" width="200" height="150"></canvas>
-                  <div ng-show="isMobile">
-                    <div id="file-input-wrapper" class="btn btn-primary">
-                      <span class="pull-left text-centered">
-                        <i class="glyphicon glyphicon-refresh icon-rotate"></i>
-                        <span translate>Get QR code</span>
-                      </span>
-                      <input id="qrcode-camera" type="file" capture="camera" accept="image/*">
-                    </div>
-                  </div>
-                  <div ng-hide="isMobile">
-                    <video id="qrcode-scanner-video" width="300" height="225" ng-hide="isMobile"></video>
-                  </div>
-                </div>
-              </div>
+              <div id="scanner" 
+                class="row" 
+                ng-if="showScanner"
+                ng-include="'views/includes/scanner.html'"></div>
+              
             </div>
 
             <div class="line-dashed-h"></div>
