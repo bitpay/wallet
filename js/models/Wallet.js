@@ -2688,16 +2688,17 @@ Wallet.prototype.getTransactionHistoryCsv = function(cb) {
   var self = this;
   self.getTransactionHistory(function(err, res) {
     if (err) {
-      return cb(err);
+      log.debug(err);
+      return cb('ERROR');
     }
 
     if (!res) {
-      return cb('Error');
+      return cb('ERROR');
     }
 
     var unit = self.settings.unitName;
     var data = res.items;
-    var filename = "copay_history.csv";
+
     var csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment";
 
@@ -2709,7 +2710,7 @@ Wallet.prototype.getTransactionHistoryCsv = function(cb) {
 
     data.forEach(function(it, index) {
       if (!it) {
-        return cb('Error');
+        return cb('ERROR');
       }
       var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
       if (self.isShared() && it.actionList) {
@@ -2718,14 +2719,9 @@ Wallet.prototype.getTransactionHistoryCsv = function(cb) {
       csvContent += index < data.length ? dataString + "\n" : dataString;
     });
 
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", filename);
 
-    link.click();
 
-    return cb(null);
+    return cb(csvContent);
 
     function formatDate(date) {
       var dateObj = new Date(date);
