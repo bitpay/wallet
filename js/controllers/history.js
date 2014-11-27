@@ -28,12 +28,19 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
       $scope.generating = true;
 
-      //getTransactionHistoryCSV
+      w.getTransactionHistoryCsv(function(csvContent) {
+        if (csvContent && csvContent !== 'ERROR') {
+          var filename = "copay_history.csv";
 
-      w.getTransactionHistoryCsv(function() {
+          var encodedUri = encodeURI(csvContent);
+          var link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          link.setAttribute("download", filename);
+
+          link.click();
+        }
         $scope.generating = false;
         $scope.$digest();
-
       })
     };
 
