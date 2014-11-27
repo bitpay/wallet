@@ -56,11 +56,16 @@
           <i class="fi-x"></i> 
           {{error|translate}}
           </p>
- 
-        <input type="email" ng-model="email" class="form-control"
-          name="email" placeholder="Email" required auto-focus>
+        <div class="input pr">
+          <input type="email" ng-model="email" class="form-control"
+            name="email" placeholder="Email" required auto-focus>
+          <i class="fi-mail"></i>
+        </div>
+        <div class="input pr">
         <input type="password" ng-model="password" class="form-control"
           name="password" placeholder="Password" required>
+          <i class="fi-lock"></i>
+        </div>
           
         <button translate type="submit" class="button primary radius expand m0"
           ng-disabled="loginForm.$invalid || loading">
