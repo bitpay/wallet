@@ -903,12 +903,15 @@ describe('Wallet model', function() {
     it('should broadcast a TX', function(done) {
       var w = createW2(null, 1);
       var utxo = createUTXO(w);
+      var now = Date.now();
       var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
       var ntxid = w.txProposals.add(txp);
       sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
 
       w.issueTx(ntxid, function(err, txid, status) {
         should.not.exist(err);
+        txp.getSent().should.be.above(now-1);
+        txp.sentTxid.should.be.equal(txid);
         txid.should.equal(1234);
         status.should.equal(Wallet.TX_BROADCASTED);
         done();
