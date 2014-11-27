@@ -404,7 +404,7 @@ TxProposal.prototype.getSent = function() {
   return this.sentTs;
 }
 
-TxProposal.prototype.setCopayers = function(senderId, keyMap) {
+TxProposal.prototype.setCopayers = function(pubkeyToCopayerMap) {
   var newCopayer = {},
     oldCopayers = {},
     newSignedBy = {},
@@ -431,7 +431,7 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap) {
 
   var iSig = this.getSignersPubKeys();
   for (var i in iSig) {
-    var copayerId = keyMap[iSig[i]];
+    var copayerId = pubkeyToCopayerMap[iSig[i]];
 
     if (!copayerId)
       throw new Error('Found unknown signature')
@@ -448,7 +448,8 @@ TxProposal.prototype.setCopayers = function(senderId, keyMap) {
     throw new Error('New TX must have only 1 new signature');
 
   // Handler creator / createdTs.
-  // from senderId, and must be signed by senderId
+  // from senderId, and must be signed by senderId * DISABLED*
+  //
   if (isNew) {
     this.creator = Object.keys(newCopayer)[0];
     this.seenBy[this.creator] = this.createdTs = Date.now();

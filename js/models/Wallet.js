@@ -520,7 +520,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
     }
 
     var keyMap = self._getPubkeyToCopayerMap(incomingTx);
-    incomingTx.setCopayers(senderId, keyMap);
+    incomingTx.setCopayers(keyMap);
 
     self.txProposals.add(incomingTx);
     self.emitAndKeepAlive('txProposalEvent', {
