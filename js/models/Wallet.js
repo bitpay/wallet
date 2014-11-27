@@ -2632,6 +2632,7 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
     if (proposal) {
       // TODO refactor
       tx.comment = proposal.comment;
+      tx.sentTs = proposal.sentTs;
       tx.merchant = proposal.merchant;
       tx.peerActions = proposal.peerActions;
       tx.merchant = proposal.merchant;
