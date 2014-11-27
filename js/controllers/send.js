@@ -26,6 +26,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.rateService = rateService;
     $scope.showScanner = false;
     $scope.myId = w.getMyCopayerId();
+    $scope.isMobile = isMobile.any();
 
     rateService.whenAvailable(function() {
       $scope.isRateAvailable = true;
@@ -96,7 +97,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-    $scope.isMobile = isMobile.any();
 
     if (!window.cordova && !navigator.getUserMedia)
       $scope.disableScanner = 1;
@@ -287,15 +287,13 @@ angular.module('copayApp.controllers').controller('SendController',
         function onSuccess(result) {
           if (result.cancelled) return;
 
-          var bip21 = new bitcore.BIP21(result.text);
-          $scope.address = bip21.address + '';
-          $scope.commentText = bip21.data.message;
-
-          if (bip21.data.amount) {
-            $scope.amount = bip21.data.amount * bitcore.util.COIN * satToUnit;
-          }
-
-          $rootScope.$digest();
+          $timeout(function() {
+            var data = result.text;
+            $scope.$apply(function() {
+              $scope.sendForm.address.$setViewValue(result.text);
+              $scope.sendForm.address.$render();
+            });
+          }, 1000);
         },
         function onError(error) {
           alert('Scanning error');
