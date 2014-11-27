@@ -50,6 +50,33 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-receive:before {
+	content: "\e613";
+}
+.icon-bitcoin:before {
+	content: "\e60f";
+}
+.icon-history:before {
+	content: "\e610";
+}
+.icon-home:before {
+	content: "\e611";
+}
+.icon-label:before {
+	content: "\e612";
+}
+.icon-send:before {
+	content: "\e614";
+}
+.icon-setting:before {
+	content: "\e615";
+}
+.icon-usd:before {
+	content: "\e616";
+}
+.icon-wallet:before {
+	content: "\e617";
+}
 .icon-arrow-left:before {
 	content: "\e600";
 }
