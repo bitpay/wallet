@@ -105,6 +105,11 @@ TxProposals.prototype.add = function(txp) {
 };
 
 
+TxProposals.prototype.exist = function(ntxid) {
+  return this.txps[ntxid] ? true : false;
+};
+
+
 TxProposals.prototype.get = function(ntxid) {
   var ret = this.txps[ntxid];
   if (!ret)

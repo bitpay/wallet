@@ -1,6 +1,5 @@
 'use strict';
 
-
 var Transaction = bitcore.Transaction;
 var WalletKey = bitcore.WalletKey;
 var Key = bitcore.Key;
@@ -19,7 +18,18 @@ describe('TxProposal', function() {
 
   // These 2 signed  the scripts below
   var PUBKEYS = ['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3'];
-  // 1,2 signatures
+
+
+  // Signatures of the scripts below
+  var SIG0 = '304502200708a381dde585ef7fdfaeaeb5da9b451d3e22b01eac8a5e3d03b959e24a7478022100c90e76e423523a54a9e9c43858337ebcef1a539a7fc685c2698dd8648fcf1b9101';
+  var SIG1 = '3044022030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae01';
+
+  /* decoded redeemscript
+   *
+    "asm" : "3 03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d 0380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127 0392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed03 03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3 03e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e4 5 OP_CHECKMULTISIG",
+   */ 
+
+  // 1,2 signatures  3-5!
   var SCRIPTSIG = _.map([
     '0048304502207d8e832bd576c93300e53ab6cbd68641961bec60690c358fd42d8e42b7d7d687022100a1daa89923efdb4c9b615d065058d9e1644f67000694a7d0806759afa7bef19b014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae',
     '0048304502200708a381dde585ef7fdfaeaeb5da9b451d3e22b01eac8a5e3d03b959e24a7478022100c90e76e423523a54a9e9c43858337ebcef1a539a7fc685c2698dd8648fcf1b9101473044022030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae014cad532103197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d210380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127210392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed032103a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e32103e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e455ae'
@@ -27,12 +37,15 @@ describe('TxProposal', function() {
     return new Buffer(hex, 'hex');
   });
 
+
   var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
+
 
   function dummyBuilder(opts) {
     opts = opts || {};
 
-    var script = SCRIPTSIG[opts.nsig - 1 || 1];
+    var index = opts.nsig ? opts.nsig  - 1 : 1;
+    var script = SCRIPTSIG[index];
 
     var aIn = {
       s: script
@@ -48,6 +61,7 @@ describe('TxProposal', function() {
     tx.hashForSignature = sinon.stub().returns(
       new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
 
+
     var builder = {};
 
     builder.opts = opts.opts || {};
@@ -57,6 +71,7 @@ describe('TxProposal', function() {
       version: 1,
       opts: builder.opts,
     });
+    builder.isFullySigned = sinon.stub().returns(false);
 
     builder.vanilla = {
       scriptSig: [SCRIPTSIG[1]],
@@ -246,6 +261,7 @@ describe('TxProposal', function() {
   });
 
   describe('Signature verification', function() {
+    var validScriptSig1Sig = new bitcore.Script(SCRIPTSIG[0]);
     var validScriptSig = new bitcore.Script(SCRIPTSIG[1]);
 
     var pubkeys = [
@@ -260,33 +276,43 @@ describe('TxProposal', function() {
     var keyBuf = someKeys.map(function(hex) {
       return new Buffer(hex, 'hex');
     });
-    it('#_formatKeys', function() {
+    it('#formatKeys', function() {
       (function() {
-        TxProposal._formatKeys(someKeys);
+        TxProposal.formatKeys(someKeys);
       }).should.throw('buffers');
-      var res = TxProposal._formatKeys(keyBuf);
+      var res = TxProposal.formatKeys(keyBuf);
     });
     it('#_verifyScriptSig arg checks', function() {
+      var txp = dummyProposal();
       (function() {
-        TxProposal._verifySignatures(
+        txp.verifySignatures(
           keyBuf,
           new bitcore.Script(new Buffer('112233', 'hex')),
           new Buffer('1a', 'hex'));
       }).should.throw('script');
     });
     it('#_verifyScriptSig, no signatures', function() {
-      var ret = TxProposal._verifySignatures(keyBuf, validScriptSig, new Buffer(32));
-      ret.length.should.equal(0);
+      var txp = dummyProposal();
+      (function() {
+        txp.verifySignatures(keyBuf, validScriptSig, new Buffer(32));
+      }).should.throw('invalid');
+    });
+    it('#_verifyScriptSig, one signature', function() {
+      // Data taken from bitcore's TransactionBuilder test
+      var txp = dummyProposal();
+      var tx = dummyProposal().builder.build();
+      var ret = txp.verifySignatures(pubkeys, validScriptSig1Sig, tx.hashForSignature());
+      ret.should.deep.equal(['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d']);
     });
     it('#_verifyScriptSig, two signatures', function() {
       // Data taken from bitcore's TransactionBuilder test
       var txp = dummyProposal();
       var tx = dummyProposal().builder.build();
-      var ret = TxProposal._verifySignatures(pubkeys, validScriptSig, tx.hashForSignature());
+      var ret = txp.verifySignatures(pubkeys, validScriptSig, tx.hashForSignature());
       ret.should.deep.equal(['03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d', '03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3']);
     });
-    it('#_infoFromRedeemScript', function() {
-      var info = TxProposal._infoFromRedeemScript(validScriptSig);
+    it('#infoFromRedeemScript', function() {
+      var info = TxProposal.infoFromRedeemScript(validScriptSig);
       var keys = info.keys;
       keys.length.should.equal(5);
       for (var i in keys) {
@@ -300,14 +326,57 @@ describe('TxProposal', function() {
       pubkeys.should.deep.equal([PUBKEYS]);
     });
 
+
+
     describe('#getSignatures', function() {
-      it('should', function() {
+      it('should get signatures', function() {
         var txp = dummyProposal();
-        var sigs  = txp.getSignatures();
+        var sigs = txp.getSignatures();
         sigs.length.should.equal(1);
         sigs[0].length.should.equal(2);
-        sigs[0][0].should.equal('304502200708a381dde585ef7fdfaeaeb5da9b451d3e22b01eac8a5e3d03b959e24a7478022100c90e76e423523a54a9e9c43858337ebcef1a539a7fc685c2698dd8648fcf1b9101');
-        sigs[0][1].should.equal('3044022030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae01');
+        sigs[0][0].should.equal(SIG0);
+        sigs[0][1].should.equal(SIG1);
+      });
+    });
+    describe('#addSignature', function() {
+      it('should add signatures maintaing pubkeys order', function() {
+        var txp = dummyProposal({
+          nsig:1 
+        });
+        txp.getSignersPubKeys()[0].length.should.equal(1);
+
+        txp.addSignature('pepe', [SIG1]);
+        txp.getSignersPubKeys()[0].length.should.equal(2);
+
+        var keys = txp.getSignersPubKeys()[0];
+        var keysSorted = _.clone(keys).sort();
+        keysSorted.should.deep.equal(keys);
+
+      });
+
+
+
+      it('should fail with invalid signatures', function() {
+        var txp = dummyProposal({
+          nsig:1 
+        });
+        txp.getSignersPubKeys()[0].length.should.equal(1);
+
+        (function(){
+          txp.addSignature('pepe', ['002030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae01']);
+        }).should.throw('BADSIG');
+      });
+
+      it('should fail adding the same signature twice', function() {
+        var txp = dummyProposal({
+          nsig:1 
+        });
+        txp.getSignersPubKeys()[0].length.should.equal(1);
+
+        txp.addSignature('pepe', [SIG1]);
+        (function(){
+          txp.addSignature('pepe', [SIG1]);
+        }).should.throw('BADSIG');
       });
     });
     describe('#_check', function() {
@@ -452,7 +521,7 @@ describe('TxProposal', function() {
       it('with less signatures', function() {
         var txp = dummyProposal();
         var txp1Sig = dummyProposal({
-          onsig: true
+          nsig:1 
         });
         var backup = txp.builder.vanilla.scriptSig[0];
         var hasChanged = txp.merge(txp);
@@ -542,7 +611,7 @@ describe('TxProposal', function() {
         var txp = dummyProposal();
         var ts = Date.now();
 
-        sinon.stub(txp,'getSignersPubKeys').returns(['pk1', 'pk0']);
+        sinon.stub(txp, 'getSignersPubKeys').returns(['pk1', 'pk0']);
         txp.signedBy = {
           'creator': Date.now()
         };
@@ -558,7 +627,7 @@ describe('TxProposal', function() {
       it("should assign creator", function() {
         var txp = dummyProposal();
         var ts = Date.now();
-        sinon.stub(txp,'getSignersPubKeys').returns(['pk0']);
+        sinon.stub(txp, 'getSignersPubKeys').returns(['pk0']);
         txp.signedBy = {};
         delete txp['creator'];
         delete txp['creatorTs'];
@@ -578,24 +647,22 @@ describe('TxProposal', function() {
         txp.signedBy = {};
         delete txp['creator'];
         delete txp['creatorTs'];
-        sinon.stub(txp,'getSignersPubKeys').returns(['pk0', 'pk1']);
+        sinon.stub(txp, 'getSignersPubKeys').returns(['pk0', 'pk1']);
         (function() {
-          txp.setCopayers(
-            {
-              pk0: 'creator',
-              pk1: 'pepe',
-              pk2: 'john'
-            }, {
-              'creator2': 1
-            }
-          );
+          txp.setCopayers({
+            pk0: 'creator',
+            pk1: 'pepe',
+            pk2: 'john'
+          }, {
+            'creator2': 1
+          });
         }).should.throw('only 1');
       })
 
       it("if signed, should not change ts", function() {
         var txp = dummyProposal();
         var ts = Date.now();
-        sinon.stub(txp,'getSignersPubKeys').returns(['pk0', 'pk1']);
+        sinon.stub(txp, 'getSignersPubKeys').returns(['pk0', 'pk1']);
         txp.creator = 'creator';
         txp.signedBy = {
           'creator': 1

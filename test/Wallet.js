@@ -586,46 +586,6 @@ describe('Wallet model', function() {
     }
   });
 
-  it('handle network txProposals correctly', function() {
-    var w = createW();
-    var txp = {
-      'txProposal': {
-        inputChainPaths: ['m/1'],
-        builderObj: {
-          version: 1,
-          outs: [{
-            address: '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
-            amountSatStr: '123456789'
-          }],
-          utxos: [{
-            address: '2N6fdPg2QL7V36XKe7a8wkkA5HCy7fNYmZF',
-            scriptPubKey: 'a91493372782bab70f4eefdefefea8ece0df44f9596887',
-            txid: '2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1',
-            vout: 1,
-            amount: 10,
-            confirmations: 7
-          }],
-          opts: {
-            remainderOut: {
-              address: '2N7BLvdrxJ4YzDtb3hfgt6CMY5rrw5kNT1H'
-            }
-          },
-          scriptSig: ['00493046022100b8249a4fc326c4c33882e9d5468a1c6faa01e8c6cef0a24970122e804abdd860022100dbf6ee3b07d3aad8f73997e62ad20654a08aa63a7609792d02f3d5d088e69ad9014cad5321027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d5092102ab32ba51402a139873aeb919c738f5a945f3956f8f8c6ba296677bd29e85d7e821036f119b72e09f76c11ebe2cf754d64eac2cb42c9e623455d54aaa89d70c11f9c82103bcbd3f8ab2c849ea9eae434733cee8b75120d26233def56011b3682ca12081d72103f37f81dc534163b9f73ecf36b91e6c3fb8ae370c24618f91bb1d972e86ceeee255ae'],
-          hashToScriptMap: {
-            '2N6fdPg2QL7V36XKe7a8wkkA5HCy7fNYmZF': '5321027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d5092102ab32ba51402a139873aeb919c738f5a945f3956f8f8c6ba296677bd29e85d7e821036f119b72e09f76c11ebe2cf754d64eac2cb42c9e623455d54aaa89d70c11f9c82103bcbd3f8ab2c849ea9eae434733cee8b75120d26233def56011b3682ca12081d72103f37f81dc534163b9f73ecf36b91e6c3fb8ae370c24618f91bb1d972e86ceeee255ae'
-          }
-        }
-      }
-    };
-
-    var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys').returns({
-      '027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509': 'pepe'
-    });
-    w._onTxProposal('senderID', txp, true);
-    Object.keys(w.txProposals.txps).length.should.equal(1);
-    //stub.restore();
-  });
-
   var newId = '00bacacafe';
   it('handle new connections', function(done) {
     var w = createW();
@@ -871,8 +831,9 @@ describe('Wallet model', function() {
       w.blockchain.fixUnspent(utxo);
       sinon.spy(w, 'sendIndexes');
       sinon.spy(w, 'sendTxProposal');
-      sinon.spy(w, 'broadcastTx');
+      sinon.spy(w, 'issueTx');
       sinon.stub(w, 'requiresMultipleSignatures').returns(false);
+      sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
       w.spend({
         toAddress: toAddress,
         amountSat: amountSatStr,
@@ -880,9 +841,8 @@ describe('Wallet model', function() {
         should.not.exist(err);
         should.exist(id);
         status.should.equal(Wallet.TX_BROADCASTED);
-        w.sendTxProposal.calledOnce.should.equal(true);
-        w.sendIndexes.calledOnce.should.equal(true);
-        w.broadcastTx.calledOnce.should.equal(true);
+        w.blockchain.broadcast.calledOnce.should.equal(true);
+        w.issueTx.calledOnce.should.equal(true);
         done();
       });
     });
@@ -894,7 +854,7 @@ describe('Wallet model', function() {
       sinon.stub(w, 'requiresMultipleSignatures').returns(false);
       sinon.spy(w, 'sendIndexes');
       sinon.spy(w, 'sendTxProposal');
-      sinon.stub(w, '_doBroadcastTx').yields('error');
+      sinon.stub(w, 'broadcastToBitcoinNetwork').yields('error');
       w.spend({
         toAddress: toAddress,
         amountSat: amountSatStr,
@@ -939,25 +899,7 @@ describe('Wallet model', function() {
 
 
   });
-  describe('#broadcastTx', function() {
-    it('should fail to send incomplete transaction', function(done) {
-      var w = createW2(null, 1);
-      var utxo = createUTXO(w);
-      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
-      var ntxid = w.txProposals.add(txp);
-
-      // Assign fake builder
-      sinon.stub(txp.builder, 'build').returns({
-        isComplete: function() {
-          return false;
-        }
-      });
-      (function() {
-        w.broadcastTx(ntxid);
-      }).should.throw('Tx is not complete. Can not broadcast');
-      done();
-    });
-
+  describe('#issueTx', function() {
     it('should broadcast a TX', function(done) {
       var w = createW2(null, 1);
       var utxo = createUTXO(w);
@@ -965,14 +907,13 @@ describe('Wallet model', function() {
       var ntxid = w.txProposals.add(txp);
       sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
 
-      w.broadcastTx(ntxid, function(err, txid, status) {
+      w.issueTx(ntxid, function(err, txid, status) {
         should.not.exist(err);
         txid.should.equal(1234);
         status.should.equal(Wallet.TX_BROADCASTED);
         done();
       });
     });
-
 
     it('should send Payment Messages on a PayPro payment', function(done) {
       var w = createW2(null, 1);
@@ -992,7 +933,7 @@ describe('Wallet model', function() {
       sinon.stub(w, 'onPayProPaymentAck');
 
 
-      w.broadcastTx(ntxid, function(err, txid, status) {
+      w.issueTx(ntxid, function(err, txid, status) {
         should.not.exist(err);
         txid.should.equal(1234);
         status.should.equal(Wallet.TX_BROADCASTED);
@@ -1004,6 +945,26 @@ describe('Wallet model', function() {
         done();
       });
     });
+
+    it('should fail to send incomplete transaction', function(done) {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      var txp = w._createTxProposal(toAddress, amountSatStr + 0, 'hola', utxo);
+      var ntxid = w.txProposals.add(txp);
+
+      // Assign fake builder
+      sinon.stub(txp.builder, 'build').returns({
+        serialize: sinon.stub().returns('xxx'),
+        isComplete: sinon.stub().returns(false),
+      });
+      (function() {
+        w.issueTx(ntxid);
+      }).should.throw('tx is not complete');
+      done();
+    });
+
+
+
   });
 
 
@@ -1661,20 +1622,20 @@ describe('Wallet model', function() {
     });
   });
 
-  describe.skip('_onTxProposal', function() {
+  describe('_onTxProposal', function() {
     var w, data, txp;
-
     beforeEach(function() {
       w = cachedCreateW();
-      w._getPubkeyToCopayerMap = sinon.stub();
-      w.sendSeen = sinon.spy();
-      w.sendTxProposal = sinon.spy();
       data = {
         txProposal: {
           dummy: 1,
+          builderObj: {
+            dummy: 1,
+          },
         },
       };
       txp = {
+        getId: sinon.stub().returns('ntxid'),
         getSeen: sinon.stub().returns(false),
         setSeen: sinon.spy(),
         setCopayers: sinon.spy(),
@@ -1685,197 +1646,132 @@ describe('Wallet model', function() {
         },
       };
 
-      w.txProposals.get = sinon.stub().returns(txp);
-
-      w.txProposals.merge = sinon.stub().returns({
-        ntxid: 1,
-        txp: txp,
-        new: true,
-        hasChanged: true,
-      });
+      sinon.stub(w, '_processIncomingNewTxProposal').yields(null);
+      sinon.stub(w.txProposals, 'get').returns(null);
       sinon.stub(w.txProposals, 'deleteOne');
+      sinon.stub(w, '_txProposalFromUntrustedObj').returns(txp);
+      sinon.stub(w, '_getPubkeyToCopayerMap');
     });
 
-    it('should handle corrupt tx', function() {
-      w.txProposals.merge = sinon.stub().throws(new Error('test error'));
+    afterEach(function() {});
 
-      sinon.stub(w, 'on');
+    it('should handle corrupt message', function() {
+      w._txProposalFromUntrustedObj.throws('error');
       w._onTxProposal('senderID', data);
-      w.on.called.should.equal(false);
+      w._processIncomingNewTxProposal.called.should.equal(false);
     });
 
-    it('should call _processIncomingTxProposal', function(done) {
-      var args = {
-        xxx: 'yyy',
-        new: true,
-        txp: {
-          setCopayers: sinon.stub(),
-        },
-      };
-      sinon.stub(w.txProposals, 'merge').returns(args);
-      sinon.stub(w, '_processIncomingTxProposal').yields(null);
-      sinon.stub(w, '_getPubkeyToCopayerMap').returns(null);
-
-      w.on('txProposalEvent', function(e) {
-        e.type.should.equal('new');
-        w._processIncomingTxProposal.getCall(0).args[0].should.deep.equal(args);
-        done();
-      });
-      w._onTxProposal('senderID', data);
-    });
-
-    it('should handle corrupt tx, case2', function() {
-      sinon.stub(w.txProposals, 'merge').returns({
-        ntxid: '1'
-      });
-      sinon.stub(w, 'on');
-      sinon.stub(w, '_getPubkeyToCopayerMap').throws(new Error('test error'));
-      w._onTxProposal('senderID', data);
-      w.on.called.should.equal(false);
-    });
-    it('should handle new 1', function(done) {
-
-      var spy1 = sinon.spy();
-      var spy2 = sinon.spy();
-      w.on('txProposalEvent', spy1);
-      w.on('txProposalsUpdated', spy2);
-      w.on('txProposalEvent', function(e) {
-        e.type.should.equal('new');
-        spy1.called.should.be.true;
-        spy2.called.should.be.true;
-        txp.setSeen.calledOnce.should.be.true;
-        w.sendSeen.calledOnce.should.equal(true);
-        w.sendTxProposal.calledOnce.should.equal(true);
-        done();
-      });
-
-      w._onTxProposal('senderID', data);
-    });
-
-    it('should handle signed', function(done) {
-      var data = {
-        txProposal: {
-          dummy: 1,
-        },
-      };
-      var txp = {
-        getSeen: sinon.stub().returns(true),
-        setSeen: sinon.spy(),
-        setCopayers: sinon.stub().returns(['new copayer']),
-        builder: {
-          build: sinon.stub().returns({
-            isComplete: sinon.stub().returns(false),
-          }),
-        },
-      };
-
+    it('should ignore localTx', function() {
       w.txProposals.get = sinon.stub().returns(txp);
-      w.txProposals.merge = sinon.stub().returns({
-        ntxid: 1,
-        txp: txp,
-        new: false,
-        hasChanged: true,
-      });
+      w._txProposalFromUntrustedObj.throws('error');
+      w._onTxProposal('senderID', data);
+      w._processIncomingNewTxProposal.called.should.equal(false);
+    });
 
-      var spy1 = sinon.spy();
-      var spy2 = sinon.spy();
-      w.on('txProposalEvent', spy1);
-      w.on('txProposalsUpdated', spy2);
+    it('should accept a new valid TXP', function(done) {
+      w.txProposals.get = sinon.stub().returns(null);
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('new');
+        w._processIncomingNewTxProposal.called.should.equal(true);
+        w._getPubkeyToCopayerMap.called.should.equal(true);
+        done();
+      })
+      w._onTxProposal('senderID', data);
+    });
+
+
+    it('should ignore is a TXP arrived 2 times', function(done) {
+      w.txProposals.get = sinon.stub().returns(null);
+      var secondCall = false;
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal('new');
+        w._processIncomingNewTxProposal.calledOnce.should.equal(true);
+        w._getPubkeyToCopayerMap.called.should.equal(true);
+        w._onTxProposal('senderID', data);
+        w._processIncomingNewTxProposal.calledOnce.should.equal(true);
+        done();
+      })
+      w._onTxProposal('senderID', data);
+    });
+
+
+
+    it('should handle a real txp correctly', function(done) {
+      w._txProposalFromUntrustedObj.restore();
+      w._getPubkeyToCopayerMap.restore();
+      var txp = {
+        'txProposal': {
+          inputChainPaths: ['m/1'],
+          builderObj: {
+            version: 1,
+            outs: [{
+              address: '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
+              amountSatStr: '123456789'
+            }],
+            utxos: [{
+              address: '2N6fdPg2QL7V36XKe7a8wkkA5HCy7fNYmZF',
+              scriptPubKey: 'a91493372782bab70f4eefdefefea8ece0df44f9596887',
+              txid: '2ac165fa7a3a2b535d106a0041c7568d03b531e58aeccdd3199d7289ab12cfc1',
+              vout: 1,
+              amount: 10,
+              confirmations: 7
+            }],
+            opts: {
+              remainderOut: {
+                address: '2N7BLvdrxJ4YzDtb3hfgt6CMY5rrw5kNT1H'
+              }
+            },
+            scriptSig: ['00493046022100b8249a4fc326c4c33882e9d5468a1c6faa01e8c6cef0a24970122e804abdd860022100dbf6ee3b07d3aad8f73997e62ad20654a08aa63a7609792d02f3d5d088e69ad9014cad5321027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d5092102ab32ba51402a139873aeb919c738f5a945f3956f8f8c6ba296677bd29e85d7e821036f119b72e09f76c11ebe2cf754d64eac2cb42c9e623455d54aaa89d70c11f9c82103bcbd3f8ab2c849ea9eae434733cee8b75120d26233def56011b3682ca12081d72103f37f81dc534163b9f73ecf36b91e6c3fb8ae370c24618f91bb1d972e86ceeee255ae'],
+            hashToScriptMap: {
+              '2N6fdPg2QL7V36XKe7a8wkkA5HCy7fNYmZF': '5321027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d5092102ab32ba51402a139873aeb919c738f5a945f3956f8f8c6ba296677bd29e85d7e821036f119b72e09f76c11ebe2cf754d64eac2cb42c9e623455d54aaa89d70c11f9c82103bcbd3f8ab2c849ea9eae434733cee8b75120d26233def56011b3682ca12081d72103f37f81dc534163b9f73ecf36b91e6c3fb8ae370c24618f91bb1d972e86ceeee255ae'
+            }
+          }
+        }
+      };
+
+      var stub = sinon.stub(w.publicKeyRing, 'copayersForPubkeys').returns({
+        '027445ab3a935dce7aee1dadb0d103ed6147a0f83deb80474a04538b2c5bc4d509': 'pepe'
+      });
+      w.on('txProposalEvent', function(e) {
+        Object.keys(w.txProposals.txps).length.should.equal(1);
+        done();
+      });
+      w._onTxProposal('senderID', txp, true);
+    });
+  });
+
+
+  describe('_onSignature', function() {
+    var w, data, txp;
+    beforeEach(function() {
+      w = cachedCreateW2();
+    });
+
+    afterEach(function() {});
+
+    it('should handle corrupt message', function() {
+      w._onSignature('senderID', 'sigs');
+    });
+
+    it('should sign a txp', function(done) {
+      var utxo = createUTXO(w);
+      var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
+      var ntxid = w.txProposals.add(txp);
+      sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
+      data = {
+        ntxid: ntxid,
+        signatures: [1],
+      }
+      sinon.stub(w.txProposals, 'get').returns(txp);
+      sinon.stub(txp, '_addSignatureAndVerify').returns();
+
       w.on('txProposalEvent', function(e) {
         e.type.should.equal('signed');
-        spy1.called.should.be.true;
-        spy2.called.should.be.true;
-        txp.setSeen.calledOnce.should.be.false;
-        w.sendSeen.calledOnce.should.be.false;
-        w.sendTxProposal.calledOnce.should.be.true;
-
         done();
-      });
-
-      w._onTxProposal('senderID', data);
+      })
+      w._onSignature('senderID', data);
     });
 
-
-    it('should only mark as broadcast if found in the blockchain', function(done) {
-      w.txProposals.get = sinon.stub().returns(txp);
-      w.txProposals.merge = sinon.stub().returns({
-        ntxid: 1,
-        txp: txp,
-        new: false,
-        hasChanged: false,
-      });
-      w._checkSentTx = sinon.stub().yields(false);
-      w.on('txProposalEvent', function(e) {
-        txp.setSent.called.should.equal(false);
-        txp.setSent.calledWith(1).should.equal(false);
-        w.sendTxProposal.called.should.equal(false);
-        done();
-      });
-
-      w._onTxProposal('senderID', data);
-    });
-
-    it('should not overwrite sent info', function(done) {
-      var data = {
-        txProposal: {
-          dummy: 1,
-        },
-      };
-      var txp = {
-        getSeen: sinon.stub().returns(true),
-        setCopayers: sinon.stub().returns(['new copayer']),
-        getSent: sinon.stub().returns(true),
-        setSent: sinon.spy(),
-        builder: {
-          build: sinon.stub().returns({
-            isComplete: sinon.stub().returns(true),
-          }),
-        },
-      };
-
-      w.txProposals.get = sinon.stub().returns(txp);
-      w.txProposals.merge = sinon.stub().returns({
-        ntxid: 1,
-        txp: txp,
-        new: false,
-        hasChanged: false,
-      });
-      w._checkSentTx = sinon.stub().yields(true);
-
-      w._onTxProposal('senderID', data);
-      txp.setSent.called.should.be.false;
-      w.sendTxProposal.called.should.be.false;
-      done();
-    });
-
-    it('should resend when not complete only if changed', function(done) {
-      var data = {
-        txProposal: {
-          dummy: 1,
-        },
-      };
-      var txp = {
-        getSeen: sinon.stub().returns(true),
-        setCopayers: sinon.stub().returns(['new copayer']),
-        builder: {
-          build: sinon.stub().returns({
-            isComplete: sinon.stub().returns(false),
-          }),
-        },
-      };
-
-      w.txProposals.get = sinon.stub().returns(txp);
-      w.txProposals.merge = sinon.stub().returns({
-        ntxid: 1,
-        txp: txp,
-        new: false,
-        hasChanged: false,
-      });
-
-      w._onTxProposal('senderID', data);
-      w.sendTxProposal.called.should.be.false;
-      done();
-    });
   });
 
 
@@ -2036,7 +1932,7 @@ describe('Wallet model', function() {
       payload.type.should.equal('signature');
       payload.walletId.should.equal(w.id);
       payload.signatures.length.should.equal(1);
-      var sig = new Buffer(payload.signatures[0],'hex');
+      var sig = new Buffer(payload.signatures[0], 'hex');
       sig.length.should.be.above(70);
       sig.length.should.be.below(74);
     });

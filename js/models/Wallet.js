@@ -122,6 +122,7 @@ inherits(Wallet, events.EventEmitter);
 Wallet.TX_BROADCASTED = 'txBroadcasted';
 Wallet.TX_PROPOSAL_SENT = 'txProposalSent';
 Wallet.TX_SIGNED = 'txSigned';
+Wallet.TX_SIGNED_AND_BROADCASTED = 'txSignedAndBroadcasted';
 
 Wallet.prototype.emitAndKeepAlive = function(args) {
   var args = Array.prototype.slice.call(arguments);
@@ -131,7 +132,7 @@ Wallet.prototype.emitAndKeepAlive = function(args) {
 };
 
 /**
- * @desc Fixed & Forced TransactionBuilder options, for genereration transactions.
+ * @desc Fixed & Forced TransactionBuilder options, for genererating transactions.
  *
  * @static
  * @property lockTime null
@@ -144,7 +145,6 @@ Wallet.builderOpts = {
   signhash: bitcore.Transaction.SIGHASH_ALL,
   fee: undefined,
   feeSat: undefined,
-  builderClass: undefined,
 };
 
 /**
@@ -467,8 +467,6 @@ Wallet.prototype._processTxProposalPayPro = function(txp, cb) {
 };
 
 /**
- * _processIncomingTxProposal
- *
  * @desc Process an NEW incoming transaction proposal. Runs safety and sanity checks on it.
  *
  * @param mergeInfo Proposals merge information, as returned by TxProposals.merge
@@ -490,6 +488,12 @@ Wallet.prototype._processIncomingNewTxProposal = function(txp, cb) {
   });
 };
 
+
+/* only for stubbing */
+Wallet.prototype._txProposalFromUntrustedObj = function(data, opts) {
+  return TxProposal.fromUntrustedObj(data, opts);
+};
+
 /**
  * @desc
  * Handles a NEW 'TXPROPOSAL' network message
@@ -500,27 +504,31 @@ Wallet.prototype._processIncomingNewTxProposal = function(txp, cb) {
  * @emits txProposalsUpdated
  */
 Wallet.prototype._onTxProposal = function(senderId, data) {
+  preconditions.checkArgument(data.txProposal);
   var self = this;
-  var incomingTx = TxProposal.fromUntrustedObj(data.txProposal, Wallet.builderOpts);
-  var incomingNtxid = incomingTx.getId();
 
   try {
-    var localTx = this.txProposals.get(incomingNtxid);
-  } catch (e) {};
+    var incomingTx = self._txProposalFromUntrustedObj(data.txProposal, Wallet.builderOpts);
+    var incomingNtxid = incomingTx.getId();
+  } catch (e) {
+    log.warn(e);
+    return;
+  }
 
-  if (localTx) {
-    log.debug('Ignoring existing tx Proposal:' + incomingNtxid);
+  if (this.txProposals.exist(incomingNtxid)) {
+    log.warn('Ignoring existing tx Proposal:' + incomingNtxid);
     return;
   }
 
   self._processIncomingNewTxProposal(incomingTx, function(err) {
     if (err) {
-      log.info('Corrupt TX proposal received from:', senderId, err.toString());
+      log.warn('Corrupt TX proposal received from:', senderId, err.toString());
       return;
     }
 
-    var keyMap = self._getPubkeyToCopayerMap(incomingTx);
-    incomingTx.setCopayers(keyMap);
+
+    var pubkeyToCopayerMap = self._getPubkeyToCopayerMap(incomingTx);
+    incomingTx.setCopayers(pubkeyToCopayerMap);
 
     self.txProposals.add(incomingTx);
     self.emitAndKeepAlive('txProposalEvent', {
@@ -531,7 +539,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
 };
 
 
-Wallet.prototype._onSignatures = function(senderId, data) {
+Wallet.prototype._onSignature = function(senderId, data) {
   var self = this;
   try {
     var localTx = this.txProposals.get(data.ntxid);
@@ -539,15 +547,12 @@ Wallet.prototype._onSignatures = function(senderId, data) {
     log.info('Ignoring signature for unknown tx Proposal:' + data.ntxid);
     return;
   };
-
-  var keyMap = self._getPubkeyToCopayerMap(locaTx);
-
-  // TODO look senderIdin keyMap
-  localTx.addSignature(pubkeys, data.signature, keyMap);
-
-  this.emitAndKeepAlive('txProposalEvent', {
-    type: 'signed',
-    cId: senderId,
+  localTx.addSignature(senderId, data.signatures);
+  self.issueTxIfComplete(data.ntxid, function(err, txid) {
+    self.emitAndKeepAlive('txProposalEvent', {
+      type: txid ? 'signedAndBroadcasted' : 'signed',
+      cId: senderId,
+    });
   });
 };
 
@@ -1259,10 +1264,13 @@ Wallet.prototype.sendSignature = function(ntxid) {
   preconditions.checkArgument(ntxid);
 
   var txp = this.txProposals.get(ntxid);
+  var signatures = txp.getMySignatures();
+  preconditions.checkState(signatures && signatures.length);
 
   this._sendToPeers(null, {
     type: 'signature',
-    signatures: txp.getMySignatures(),
+    ntxid: ntxid,
+    signatures: signatures,
     walletId: this.id,
   });
 };
@@ -1517,6 +1525,16 @@ Wallet.prototype.sign = function(ntxid) {
   return true;
 };
 
+Wallet.prototype.issueTxIfComplete = function(ntxid, cb) {
+  var txp = this.txProposals.get(ntxid);
+  var tx = txp.builder.build();
+  if (tx.isComplete()) {
+    this.issueTx(ntxid, cb);
+  } else {
+    return cb();
+  }
+};
+
 
 /**
  *
@@ -1531,13 +1549,13 @@ Wallet.prototype.sign = function(ntxid) {
  */
 Wallet.prototype.signAndSend = function(ntxid, cb) {
   if (this.sign(ntxid)) {
-    var txp = this.txProposals.get(ntxid);
     this.sendSignature(ntxid);
-    if (txp.isFullySigned()) {
-      return this.broadcastTx(ntxid, cb);
-    } else {
-      return cb(null, ntxid, Wallet.TX_SIGNED);
-    }
+    this.issueTxIfComplete(ntxid, function(err, txid, status) {
+      if (!txid)
+        return cb(null, ntxid, Wallet.TX_SIGNED);
+      else
+        return cb(null, ntxid, Wallet.TX_SIGNED_AND_BROADCASTED);
+    });
   } else {
     return cb(new Error('Could not sign the proposal'));
   }
@@ -1552,13 +1570,12 @@ Wallet.prototype.signAndSend = function(ntxid, cb) {
  * @param cb
  * @return {undefined}
  */
-Wallet.prototype._doBroadcastTx = function(ntxid, cb) {
+Wallet.prototype.broadcastToBitcoinNetwork = function(ntxid, cb) {
   var self = this;
   var txp = this.txProposals.get(ntxid);
-  var tx = txp.builder.build();
 
-  if (!tx.isComplete())
-    throw new Error('Tx is not complete. Can not broadcast');
+  var tx = txp.builder.build();
+  preconditions.checkState(tx.isComplete(), 'tx is not complete');
 
   var txHex = tx.serialize().toString('hex');
 
@@ -1575,7 +1592,7 @@ Wallet.prototype._doBroadcastTx = function(ntxid, cb) {
         return cb(err, txid);
       });
     } else {
-      log.info('Wallet:' + self.getName() + ' broadcasted a TX. BITCOIND txid:', txid);
+      log.info('Wallet:' + self.getName() + ' broadcasted a TX! TXID:', txid);
       return cb(null, txid);
     }
   });
@@ -1590,10 +1607,10 @@ Wallet.prototype._doBroadcastTx = function(ntxid, cb) {
  * @param {string} txid - the transaction id on the blockchain
  * @param {signCallback} cb
  */
-Wallet.prototype.broadcastTx = function(ntxid, cb) {
+Wallet.prototype.issueTx = function(ntxid, cb) {
   var self = this;
 
-  self._doBroadcastTx(ntxid, function(err, txid) {
+  self.broadcastToBitcoinNetwork(ntxid, function(err, txid) {
     if (err) return cb(err);
     preconditions.checkState(txid);
 
@@ -1610,8 +1627,6 @@ Wallet.prototype.broadcastTx = function(ntxid, cb) {
         self.onPayProPaymentAck(ntxid, data);
       });
     }
-
-    self.sendTxProposal(ntxid);
     self.emitAndKeepAlive('txProposalsUpdated');
     return cb(null, txid, Wallet.TX_BROADCASTED);
   });
@@ -2183,7 +2198,7 @@ Wallet.prototype.spend = function(opts, cb) {
     self.sendIndexes();
     // Needs only one signature? Broadcast it!
     if (!self.requiresMultipleSignatures()) {
-      self.broadcastTx(ntxid, cb);
+      self.issueTx(ntxid, cb);
     } else {
       self.sendTxProposal(ntxid);
       self.emitAndKeepAlive('txProposalsUpdated');
