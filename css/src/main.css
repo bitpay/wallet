@@ -330,7 +330,7 @@ a:hover {
 
 .main {
   margin-left: 250px;
-  padding: 100px 1.5rem;
+  padding: 85px 1.5rem;
   background-color: #F8F8FB;
 }
 
@@ -941,7 +941,7 @@ input[type='submit']
 
 
 input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
-  color: #7A8C9E;
+  color: #343c43;
   margin-bottom: 1.3rem;
   height: 40px;
   border-radius: 2px;

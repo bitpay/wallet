@@ -1,7 +1,11 @@
 <div class="backup" ng-controller="MoreController">
-  <h1 class="hide-for-large-up">{{$root.title}}</h1>
-  <div class="row">
-    <form name="settingsForm">
+  <div class="row hide-for-large-up">
+    <div class="large-12 medium-12 small-12 columns">
+      <h1>{{$root.title}}</h1>
+    </div>
+  </div>
+  <form name="settingsForm">
+    <div class="row">
       <div class="large-6 medium-6 columns">
         <fieldset>
           <legend translate>Wallet Unit</legend>
@@ -16,20 +20,22 @@
           </select>
         </fieldset>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
     
   <div class="line-dashed-h m20b"></div>
   
-  <div class="m20b">
-    <a class="size-12" ng-click="hideAdv=!hideAdv">
-      <i class="fi-widget m3r"></i>
-      <span translate ng-hide="!hideAdv">Show</span> 
-      <span translate ng-hide="hideAdv">Hide</span> 
-      <span translate>advanced options</span> 
-      <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-      <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-    </a>
+  <div class="m20b row">
+    <div class="large-12 columns">
+      <a class="size-12" ng-click="hideAdv=!hideAdv">
+        <i class="fi-widget m3r"></i>
+        <span translate ng-hide="!hideAdv">Show</span> 
+        <span translate ng-hide="hideAdv">Hide</span> 
+        <span translate>advanced options</span> 
+        <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+        <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+      </a>
+    </div>
   </div>
 
   <div ng-hide="hideAdv" class="row">

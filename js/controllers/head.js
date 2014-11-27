@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, notification, controllerUtils) {
+angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, $timeout, notification, controllerUtils) {
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
@@ -42,12 +42,19 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   });
 
   if ($rootScope.wallet) {
-    $scope.$on('$idleWarn', function(a, countdown) {
-      if (!(countdown % 5))
-        notification.warning('Session will be closed', $filter('translate')('Your session is about to expire due to inactivity in') + ' ' + countdown + ' ' + $filter('translate')('seconds'));
+    $scope.$on('$idleStart', function() {
     });
-
+    $scope.$on('$idleWarn', function(a, countdown) {
+      $rootScope.countdown = countdown;
+      $rootScope.sessionExpired = true;
+    });
+    $scope.$on('$idleEnd', function() {
+      $timeout(function() {
+        $rootScope.sessionExpired = null;
+      }, 500);
+    });
     $scope.$on('$idleTimeout', function() {
+      $rootScope.sessionExpired = null;
       $scope.signout();
       notification.warning('Session closed', 'Session closed because a long time of inactivity');
     });

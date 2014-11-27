@@ -1,20 +1,32 @@
 <div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
   <div ng-show='$root.wallet.isReady()'>
-    <h1 class="hide-for-large-up">{{$root.title}}</h1> 
-    <div ng-if="loading" class="m20b">
-      <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
-      <span translate>Loading...</span>
-    </div>
-    <div ng-if="!blockchain_txs[0].txid && !loading">
-      <em><strong translate>No transactions yet.</strong></em>
+    <div class="row">
+      <div class="large-12 medium-12 small-12 columns">
+        <h1 class="hide-for-large-up">{{$root.title}}</h1> 
+        <div ng-if="loading" class="m20b">
+          <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
+          <span translate>Loading...</span>
+        </div>
+        <div ng-if="!blockchain_txs[0].txid && !loading">
+          <em><strong translate>No transactions yet.</strong></em>
+        </div>
+      </div>
     </div>
     <div class="row" ng-if="blockchain_txs[0].txid">
       <div class="large-12 columns">
         <div class="panel" 
-          ng-repeat="btx in blockchain_txs | orderBy:'-ts'" ng-click="btx.showDetails = !btx.showDetails">
+          ng-repeat="btx in blockchain_txs | orderBy:'-ts'">
           <div class="row size-14">
-            <div class="large-2 medium-2 small-12 columns">
-              <div class="tx-date">
+            <div class="large-2 medium-2 small-12 columns" ng-click="btx.showDetails = !btx.showDetails">
+              <div class="tx-date oh">
+                <div class="right hide-for-large-only">
+                  <span ng-show="!btx.showDetails">
+                    <i class="icon-arrow-down2"></i>
+                  </span>
+                  <span ng-show="btx.showDetails">
+                    <i class="icon-arrow-up2"></i>
+                  </span>
+                </div>
                 <time 
                   class="hastip"
                   ng-if="btx.ts"
@@ -61,7 +73,7 @@
             </div>
 
             <div class="large-1 columns show-for-large-up text-gray text-right" ng-init="btx.showDetails = false">
-              <a>
+              <a ng-click="btx.showDetails = !btx.showDetails">
                 <i ng-if="!btx.showDetails" class="icon-arrow-down4"></i>
                 <i ng-if="btx.showDetails" class="icon-arrow-up4"></i>
               </a>
@@ -77,7 +89,7 @@
               <span ng-show="tx.merchant.domain">[{{btx.merchant.domain}}]</span>
 
             </div>
-            <table class="last-transactions-content" ng-if="btx.actionList.0">
+            <table class="last-transactions-content" ng-if="btx.actionList[0]">
               <tbody>
               <tr ng-repeat="c in btx.actionList">
                 <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
@@ -105,8 +117,15 @@
             </div>
           </div>
         </div>
-        <div class="line-white"></div>
-        <div class="right size-12">
+      </div>
+    </div>
+    <div ng-show="blockchain_txs[0].txid">
+      <div class="line-white"></div>
+      <div class="row">
+        <div class="large-9 columns">
+          <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
+        </div>
+        <div class="large-3 columns m5t text-right size-12 show-for-large-only">
           <div ng-if="generating">
             <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
             <span translate>Generating file...</span>
@@ -118,7 +137,6 @@
             </a>
           </div>
         </div>
-        <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
       </div>
     </div>
   </div>
