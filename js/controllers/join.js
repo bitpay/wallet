@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, controllerUtils, notification) {
+  function($scope, $rootScope, $timeout, isMobile, controllerUtils, notification) {
     $rootScope.fromSetup = false;
     $scope.loading = false;
-    $scope.isMobile = !!window.cordova;
+    $scope.isMobile = isMobile.any();
     $rootScope.title = 'Join shared wallet';
 
     // QR code Scanner
