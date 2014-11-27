@@ -949,6 +949,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   -moz-box-shadow:    inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   box-shadow:         inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   border: none;
+  padding-left: 45px;
 }
 
 button.secondary, 
@@ -1289,6 +1290,19 @@ a:hover .photo-container  {
   text-align: center;
   margin-right: 20px;
   float: left;
+}
+
+.input i {
+  position: absolute;
+  top: 22%;
+  left: 10px;
+  font-size: 22px;
+  color: #CAD2DB;
+  border-right: 1px solid #ccc;
+  padding-right: 8px;
+  border-right: 1px solid #E5E8EB;
+  -moz-box-shadow: 1px 0px 0px 0px #FFFFFF;
+  box-shadow: 1px 0px 0px 0px #FFFFFF;
 }
 
 .icon-input {
