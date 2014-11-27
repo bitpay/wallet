@@ -1,16 +1,16 @@
 'use strict';
 
-var BuilderMockV0 = require('./BuilderMockV0');;
+var preconditions = require('preconditions').singleton();
+
 var bitcore = require('bitcore');
 var util = bitcore.util;
 var Transaction = bitcore.Transaction;
-var BuilderMockV0 = require('./BuilderMockV0');;
-var TxProposal = require('./TxProposal');;
 var Script = bitcore.Script;
 var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
-var preconditions = require('preconditions').instance();
+
 var log = require('../log');
+var TxProposal = require('./TxProposal');;
 
 function TxProposals(opts) {
   opts = opts || {};
@@ -51,9 +51,9 @@ TxProposals.prototype.getNtxidsSince = function(sinceTs) {
   preconditions.checkArgument(sinceTs);
   var ret = [];
 
-  for(var ii in this.txps){
+  for (var ii in this.txps) {
     var txp = this.txps[ii];
-    if (txp.createdTs >=  sinceTs)
+    if (txp.createdTs >= sinceTs)
       ret.push(ii);
   }
   return ret;
@@ -96,101 +96,41 @@ TxProposals.prototype.toObj = function() {
 };
 
 
-TxProposals.prototype.merge = function(inObj, builderOpts) {
-  var incomingTx = TxProposal.fromUntrustedObj(inObj, builderOpts);
-
-  var myTxps = this.txps;
-  var ntxid = incomingTx.getId();
-  var ret = {
-    ntxid: ntxid
-  };
-
-  if (myTxps[ntxid]) {
-
-    // Merge an existing txProposal
-    ret.hasChanged = myTxps[ntxid].merge(incomingTx);
-
-
-  } else {
-    // Create a new one
-    ret.new = ret.hasChanged =  1;
-    this.txps[ntxid] = incomingTx;
-  }
-
-  ret.txp = this.txps[ntxid];
-  return ret;
-};
 
 // Add a LOCALLY CREATED (trusted) tx proposal
 TxProposals.prototype.add = function(txp) {
-  txp._sync();
   var ntxid = txp.getId();
   this.txps[ntxid] = txp;
   return ntxid;
 };
 
 
+TxProposals.prototype.exist = function(ntxid) {
+  return this.txps[ntxid] ? true : false;
+};
+
+
 TxProposals.prototype.get = function(ntxid) {
   var ret = this.txps[ntxid];
   if (!ret)
-    throw new Error('Unknown TXP: '+ntxid);
+    throw new Error('Unknown TXP: ' + ntxid);
 
   return ret;
 };
 
-TxProposals.prototype.getTxProposal = function(ntxid, copayers) {
-  var txp = this.get(ntxid);
-
-  var i = JSON.parse(JSON.stringify(txp));
-  i.builder = txp.builder;
-  i.ntxid = ntxid;
-  i.peerActions = {};
-
-  if (copayers) {
-    for (var j = 0; j < copayers.length; j++) {
-      var p = copayers[j];
-      i.peerActions[p] = {};
-    }
-  }
-
-  for (var p in txp.seenBy) {
-    i.peerActions[p] = {
-      seen: txp.seenBy[p]
-    };
-  }
-  for (var p in txp.signedBy) {
-    i.peerActions[p] = i.peerActions[p] || {};
-    i.peerActions[p].sign = txp.signedBy[p];
-  }
-  var r = 0;
-  for (var p in txp.rejectedBy) {
-    i.peerActions[p] = i.peerActions[p] || {};
-    i.peerActions[p].rejected = txp.rejectedBy[p];
-    r++;
-  }
-  i.rejectCount = r;
-
-  var c = txp.creator;
-  i.peerActions[c] = i.peerActions[c] || {};
-  i.peerActions[c].create = txp.createdTs;
-  return i;
-};
-
-
 //returns the unspent txid-vout used in PENDING Txs
 TxProposals.prototype.getUsedUnspent = function(maxRejectCount) {
   var ret = {};
-  for (var i in this.txps) {
-    if (!this.txps[i].isPending(maxRejectCount))
-      continue;
+  var self = this;
 
-    var u = this.txps[i].builder.getSelectedUnspent();
-    var p = this.getTxProposal(i);
+  _.each(this.txps, function(txp) {
+    if (!txp.isPending(maxRejectCount))
+      return
 
-    for (var j in u) {
-      ret[u[j].txid + ',' + u[j].vout] = 1;
-    }
-  }
+    _.each(txp.builder.getSelectedUnspent(), function(u) {
+      ret[u.txid + ',' + u.vout] = 1;
+    });
+  });
   return ret;
 };
 
