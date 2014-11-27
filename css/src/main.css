@@ -1181,11 +1181,20 @@ button.gray:focus,
   width: 38px;
   height: 28px;
   right: 7px;
-  top: 28px;
+  top: 7px;
   -moz-box-shadow: none;
   box-shadow: none;
   line-height: 1.7rem;
   border-radius: 2px;
+}
+
+.postfix.button i, .prefix.button i {
+  left: 12px;
+  top: 0;
+  border: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #fff;
 }
 
 label.postfix, span.postfix {
@@ -1291,6 +1300,8 @@ a:hover .photo-container  {
   margin-right: 20px;
   float: left;
 }
+
+.input { position: relative;}
 
 .input i {
   position: absolute;
