@@ -480,7 +480,7 @@ describe('TxProposal', function() {
         };
         delete txp['creator'];
         (function() {
-          txp.setCopayers('juan', {
+          txp.setCopayers({
             pk1: 'pepe'
           })
         }).should.throw('no creator');
@@ -495,7 +495,7 @@ describe('TxProposal', function() {
           ['pkX']
         ];
         (function() {
-          txp.setCopayers('juan', {
+          txp.setCopayers({
             pk1: 'pepe'
           })
         }).should.throw('creator');
@@ -512,7 +512,7 @@ describe('TxProposal', function() {
           ['pk0', 'pkX']
         ];
         (function() {
-          txp.setCopayers('juan', {
+          txp.setCopayers({
             pk1: 'pepe'
           })
         }).should.throw('unknown sig');
@@ -529,7 +529,7 @@ describe('TxProposal', function() {
           'creator': Date.now()
         };
         (function() {
-          txp.setCopayers('juan', {
+          txp.setCopayers({
             pk0: 'creator',
             pk1: 'pepe',
             pk2: 'john'
@@ -546,7 +546,7 @@ describe('TxProposal', function() {
         txp.signedBy = {
           'creator': Date.now()
         };
-        txp.setCopayers('pepe', {
+        txp.setCopayers({
           pk0: 'creator',
           pk1: 'pepe',
           pk2: 'john'
@@ -562,7 +562,7 @@ describe('TxProposal', function() {
         txp.signedBy = {};
         delete txp['creator'];
         delete txp['creatorTs'];
-        txp.setCopayers('creator', {
+        txp.setCopayers({
           pk0: 'creator',
           pk1: 'pepe',
           pk2: 'john'
@@ -581,7 +581,7 @@ describe('TxProposal', function() {
         sinon.stub(txp,'getSignersPubKeys').returns(['pk0', 'pk1']);
         (function() {
           txp.setCopayers(
-            'creator', {
+            {
               pk0: 'creator',
               pk1: 'pepe',
               pk2: 'john'
@@ -600,7 +600,7 @@ describe('TxProposal', function() {
         txp.signedBy = {
           'creator': 1
         };
-        txp.setCopayers('pepe', {
+        txp.setCopayers({
           pk0: 'creator',
           pk1: 'pepe',
           pk2: 'john'
