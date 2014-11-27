@@ -2486,7 +2486,7 @@ describe('Wallet model', function() {
   });
 
   describe('#getTransactionHistoryCsv', function() {
-    it.only('should return list of txs', function(done) {
+    it('should return list of txs', function(done) {
       var w = cachedCreateW2();
       var txs = [{
         vin: [{
