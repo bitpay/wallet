@@ -1294,9 +1294,9 @@ a:hover .photo-container  {
 
 .input i {
   position: absolute;
-  top: 22%;
+  top: 25%;
   left: 10px;
-  font-size: 22px;
+  font-size: 18px;
   color: #CAD2DB;
   border-right: 1px solid #ccc;
   padding-right: 8px;

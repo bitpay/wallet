@@ -29,7 +29,7 @@
       </div>
       <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
         <div class="row collapse">
-          <div class="small-12 columns">
+          <div class="row">
             <label class="left" for="insightLivenet">Email</label>
             <span translate class="has-error right size-12" ng-show="profileForm.email.$invalid &&
               !profileForm.email.$pristine || error">
@@ -38,17 +38,23 @@
             </span>
             <span class="icon-input right" ng-show="!profileForm.email.$invalid &&
               !profileForm.email.$pristine || error"><i class="fi-check"></i></span>
+          </div>
+          <div class="input pr">
             <input type="email" ng-model="email" class="form-control fi-email"
             name="email" placeholder="Email" required auto-focus>
+            <i class="fi-mail"></i>
           </div>
- 
         </div>
-        <label class="left" for="insightLivenet">Password</label>
-        <input id="password" type="password" ng-model="$parent.password"
-        class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
-        tooltip-html-unsafe="Password strength: <i>{{passwordStrength}}</i><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="right">
 
-        <div class="pr">
+          <label for="insightLivenet">Password</label>
+          <div class="input pr">
+            <input id="password" type="password" ng-model="$parent.password"
+            class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
+            tooltip-html-unsafe="Password strength: <b>{{passwordStrength}}</b><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="right">
+            <i class="fi-lock"></i>
+          </div>
+
+        <div class="row">
           <label class="left" for="insightLivenet">Confirm Password</label>
           <span translate class="has-error right size-12" ng-show="profileForm.repeatpassword.$dirty &&
             profileForm.repeatpassword.$invalid">
@@ -56,12 +62,16 @@
             {{'Passwords must match'|translate}}
           </span>
           <span class="icon-input right" ng-show="profileForm.repeatpassword.$dirty &&
-            !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></span>
-          <input type="password" ng-model="repeatpassword"
-          class="columns form-control" name="repeatpassword" 
-          placeholder="{{'Repeat password'|translate}}"
-          match="password" required >  
+            !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></span>  
         </div>
+        <div class="input pr">
+          <input type="password" ng-model="repeatpassword"
+          class="form-control" name="repeatpassword" 
+          placeholder="{{'Repeat password'|translate}}"
+          match="password" required>
+          <i class="fi-lock"></i>
+        </div>
+
         <button translate type="submit" class="button primary radius expand m0"
           ng-disabled="profileForm.$invalid || loading">
           Create 
