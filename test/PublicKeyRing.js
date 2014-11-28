@@ -136,7 +136,8 @@ describe('PublicKeyRing model', function() {
 
     [true, false].forEach(function(isChange) {
       for (var i = 0; i < 2; i++) {
-        var a = w.generateAddress(isChange, k.pub);
+        var aStr = w.generateAddress(isChange, k.pub);
+        var a= new bitcore.Address(aStr);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
@@ -152,27 +153,32 @@ describe('PublicKeyRing model', function() {
     var setup = getCachedW();
     var pubkeyring = setup.w;
 
-    var address = pubkeyring.getAddress(3, false, 4);
+    var address = pubkeyring._getAddress(3, false, 4);
 
-    (pubkeyring._cacheAddressMap[3][0][4]).should.equal(address);
+    pubkeyring.cache.addressToPath[address].should.equal("m/45'/4/0/3");
+    _.indexOf(pubkeyring.cache.receiveAddresses,address).should.be.above(0);
+    _.indexOf(pubkeyring.cache.changeAddresses,address).should.be.equal(-1);
   });
 
-  it('getAddress cache hit doesn\'t alter state', function() {
-    var setup = getCachedW();
-    var pubkeyring = setup.w;
-    var spySave;
-
-    pubkeyring.getAddress(3, false, 4);
-
-    spySave = sinon.stub(pubkeyring, '_cacheAddress');
-    spySave.onFirstCall().throws(new Error());
-
-    pubkeyring.getAddress(3, false, 4);
-
-    spySave.restore();
+  it('should generate one address by default', function() {
+    var k = createW();
+    var w = k.w;
+    var a = w.getAddresses();
+    a.length.should.equal(1);
   });
 
-  it('should return PublicKeyRing addresses', function() {
+  it('should generate one address by default', function() {
+    var k = createW();
+    var w = k.w;
+
+    var a = w.getAddresses();
+    a.length.should.equal(1);
+    a = w.getAddresses();
+    a.length.should.equal(1);
+  });
+ 
+
+  it('should generate 4+1 addresses', function() {
     var k = createW();
     var w = k.w;
 
@@ -184,15 +190,16 @@ describe('PublicKeyRing model', function() {
         w.generateAddress(isChange, k.pub);
       }
     });
+  });
 
-    var as = w.getAddressesInfo();
-    as.length.should.equal(5); // include pre-generated shared one
-    for (var j in as) {
-      var a = as[j];
-      a.address.isValid().should.equal(true);
-      a.addressStr.should.equal(a.address.toString());
-      a.isChange.should.equal([false, true, true, false, false][j]);
-    }
+  it('should check isChange 4+1 addresses', function() {
+    var k = createW();
+    var w = k.w;
+    var a = w.getAddresses();
+    _.each(a, function(a, j) {
+      var addr = new bitcore.Address(a);
+      w.addressIsChange(a).should.equal([false, true, true, false, false][j]);
+    });
   });
 
 
@@ -405,7 +412,7 @@ describe('PublicKeyRing model', function() {
 
     (function() {
       PublicKeyRing.fromObj(pkr);
-    }).should.throw('bad data format: Did you use .toObj()?');
+    }).should.throw('format');
   });
 
 

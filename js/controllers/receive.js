@@ -13,13 +13,12 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       var w = $rootScope.wallet;
       $scope.loading = true;
       $scope.isNewAddr = false;
-      w.generateAddress(null, function() {
-        $timeout(function() {
-          controllerUtils.updateAddressList();
-          $scope.loading = false;
-          $scope.isNewAddr = true;
-        }, 1);
-      });
+      w.generateAddress(null);
+      $timeout(function() {
+        controllerUtils.updateAddressList();
+        $scope.loading = false;
+        $scope.isNewAddr = true;
+      }, 1);
     };
 
     $scope.openAddressModal = function(address) {
