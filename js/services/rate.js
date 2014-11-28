@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.services').factory('rateService', function(request) {
-  return copay.RateService.singleton({
+  var cfg = _.extend(config.rates, {
     request: request
   });
+  return copay.RateService.singleton(cfg);
 });

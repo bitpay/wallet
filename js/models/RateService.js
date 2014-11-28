@@ -21,6 +21,8 @@ var RateService = function(opts) {
   self.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable() or use service.whenAvailable()';
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
 
+  self._url = opts.url || 'https://insight.bitpay.com:443/api/rates';
+
   self._isAvailable = false;
   self._rates = {};
   self._alternatives = [];
@@ -86,7 +88,7 @@ RateService.prototype.getHistoricRate = function(code, date, cb) {
   var self = this;
 
   self.request.get({
-    url: 'http://localhost:3001/api/rates/' + code + '?ts=' + date,
+    url: self._url + '/' + code + '?ts=' + date,
     json: true
   }, function(err, res, body) {
     if (err || res.statusCode != 200 || !body) return cb(err || res);
@@ -97,12 +99,15 @@ RateService.prototype.getHistoricRate = function(code, date, cb) {
 RateService.prototype.getHistoricRates = function(code, dates, cb) {
   var self = this;
 
-  dates = [].concat(dates).join(',');
+  var tsList = dates.join(',');
   self.request.get({
-    url: 'http://localhost:3001/api/rates/' + code + '?ts=' + dates,
+    url: self._url + '/' + code + '?ts=' + tsList,
     json: true
   }, function(err, res, body) {
     if (err || res.statusCode != 200 || !body) return cb(err || res);
+    if (!_.isArray(body)) {
+      body = [{ ts: dates[0], rate: body.rate }];
+    }
     return cb(null, body);
   });
 };
