@@ -205,7 +205,6 @@ module.exports = function(grunt) {
               'index.html',
               'init.js',
               'config.js',
-              'version.js',
               'popup.html',
               'css/vendors.min.css',
               'css/copay.min.css',
