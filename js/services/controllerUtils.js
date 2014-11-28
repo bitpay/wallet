@@ -217,22 +217,32 @@ angular.module('copayApp.services')
       $rootScope.wallet = w;
       w.updateFocusedTimestamp(Date.now());
       root.redirIfLogged();
-      root.updateTxs();
-      root.updateBalance(w, function() {
+      $timeout(function(){
         $rootScope.$digest();
-      })
+      },1)
+      // root.updateTxs();
+      // root.updateBalance(w, function() {
+      //   $rootScope.$digest();
+      // })
     };
 
     root.bindProfile = function($scope, iden, w) {
+
+console.log('[controllerUtils.js.230] bindProfile Globals'); //TODO
       root.setupGlobalVariables(iden);
+console.log('[controllerUtils.js.230] bindProfile Wallets'); //TODO
       root.rebindWallets($scope, iden);
       if (w) {
+console.log('[controllerUtils.js.230] bindProfile set Focus'); //TODO
         root.setFocusedWallet(w);
       } else {
         $location.path('/create');
       }
       $timeout(function() {
+
+console.log('[controllerUtils.js.242] DIGEST'); //TODO
         $rootScope.$digest()
+console.log('[controllerUtils.js.242] DIGEST DONE'); //TODO
       }, 1);
     };
 
@@ -309,6 +319,10 @@ angular.module('copayApp.services')
     };
 
     root.updateBalance = function(w, cb, refreshAll) {
+
+      return 
+        cb?cb(): null;
+
 
       w = w || $rootScope.wallet;
       if (!w) return root.onErrorDigest();

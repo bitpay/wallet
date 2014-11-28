@@ -288,6 +288,8 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
       self.socket.emit('subscribe', pubkey);
     });
 
+    log.debug('Async subs done');
+
     if (typeof cb === 'function') cb();
   });
 

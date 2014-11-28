@@ -200,6 +200,8 @@ Insight.prototype.subscribe = function(addresses) {
   addresses = Array.isArray(addresses) ? addresses : [addresses];
   var self = this;
 
+console.log('[Insight.js.202] subscribe STARTED'); //TODO
+
   function handlerFor(self, address) {
     return function(txid) {
       // verify the address is still subscribed
@@ -220,12 +222,15 @@ Insight.prototype.subscribe = function(addresses) {
     if (!self.subscribed[address]) {
       var handler = handlerFor(self, address);
       self.subscribed[address] = handler;
-      log.debug('Subcribe to: ', address);
+      log.debug('Subscribe to: ', address);
 
       s.emit('subscribe', address);
       s.on(address, handler);
     }
   });
+
+
+console.log('[Insight.js.202] subscribe ENDED'); //TODO
 };
 
 Insight.prototype.getSubscriptions = function(addresses) {
