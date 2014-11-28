@@ -92,6 +92,8 @@ angular.module('copayApp.services')
             $rootScope.$digest()
           }, 1);          
         } else {
+
+console.log('[identityService.js.95] LISTO OPEN!!'); //TODO
           var firstWallet = iden.getLastFocusedWallet();
           controllerUtils.bindProfile(scope, iden, firstWallet);
         }

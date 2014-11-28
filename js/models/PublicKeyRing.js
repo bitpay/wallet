@@ -85,22 +85,30 @@ PublicKeyRing.trim = function(data) {
  * @param {object} data - a serialized version of PublicKeyRing {@see PublicKeyRing#trim}
  * @return {PublicKeyRing} - the deserialized object
  */
-PublicKeyRing.fromObj = function(data) {
-  preconditions.checkArgument(!(data instanceof PublicKeyRing), 'bad data format: Did you use .toObj()?');
-  var opts = PublicKeyRing.trim(data);
+PublicKeyRing.fromObj = function(opts) {
+  preconditions.checkArgument(!(opts instanceof PublicKeyRing), 'bad opts format: Did you use .toObj()?');
 
   // Support old indexes schema
   if (!Array.isArray(opts.indexes)) {
     opts.indexes = HDParams.update(opts.indexes, opts.totalCopayers);
   }
 
-  var ret = new PublicKeyRing(opts);
+  var pkr = new PublicKeyRing(opts);
 
   for (var k in opts.copayersExtPubKeys) {
-    ret.addCopayer(opts.copayersExtPubKeys[k]);
+    pkr.addCopayer(opts.copayersExtPubKeys[k]);
   }
 
-  return ret;
+  if (opts._cache){
+    log.debug('PublicKeyRing: Using address cache');
+    pkr._cacheAddressMap = opts._cache;
+  }
+
+  return pkr;
+};
+
+PublicKeyRing.fromUntrustedObj = function(opts) {
+  return PublicKeyRing.fromObj(PublicKeyRing.trim(opts));
 };
 
 /**
@@ -120,9 +128,16 @@ PublicKeyRing.prototype.toObj = function() {
     copayersExtPubKeys: this.copayersHK.map(function(b) {
       return b.extendedPublicKeyString();
     }),
-    nicknameFor: this.nicknameFor
+    nicknameFor: this.nicknameFor,
+    _cache: this._cacheAddressMap
   };
 };
+
+
+PublicKeyRing.prototype.toTrimmedObj = function() {
+  return PublicKeyRing.trim(this.toObj());
+}
+
 
 /**
  * @desc
@@ -335,6 +350,8 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex
 PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
   var copayerIndex = this.getCosigner(id);
   if (!this._cachedAddress(index, isChange, id)) {
+
+console.log('[PublicKeyRing.js.338] CACHE MISS'); //TODO
     var script = this.getRedeemScript(index, isChange, copayerIndex);
     var address = Address.fromScript(script, this.network.name);
     this.addressToPath[address.toString()] = HDPath.FullBranch(index, isChange, copayerIndex);
@@ -472,12 +489,16 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
  */
 PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
 
+console.log('[PublicKeyRing.js.474] STARTED'); //TODO
   var ret = [];
   var self = this;
   var copayerIndex = pubkey && this.getCosigner(pubkey);
+console.log('[PublicKeyRing.js.478:copayerIndex:]',copayerIndex); //TODO
   this.indexes.forEach(function(index) {
+console.log('[PublicKeyRing.js.479:index:]',index); //TODO
     ret = ret.concat(self.getAddressesInfoForIndex(index, opts, copayerIndex));
   });
+console.log('[PublicKeyRing.js.474] END'); //TODO
   return ret;
 };
 
@@ -511,14 +532,22 @@ PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayer
       isChange: isChange,
       owned: isOwned
     });
+
+console.log('[PublicKeyRing.js.518] Appending address'); //TODO
   };
 
+  console.log('[PublicKeyRing.js.519] getAddressesInfoForIndex'); //TODO
   for (var i = 0; !opts.excludeChange && i < index.changeIndex; i++) {
     appendAddressInfo(this.getAddress(i, true, index.copayerIndex), true);
   }
+
+console.log('[PublicKeyRing.js.526]'); //TODO
   for (var i = 0; !opts.excludeMain && i < index.receiveIndex; i++) {
     appendAddressInfo(this.getAddress(i, false, index.copayerIndex), false);
   }
+
+
+console.log('[PublicKeyRing.js.534] CACHE IS' , this._cacheAddressMap); //TODO
 
   return ret;
 };

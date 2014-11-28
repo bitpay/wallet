@@ -133,9 +133,12 @@ Identity.createFromPartialJson = function(jsonString, opts, callback) {
   async.map(exported.walletIds, function(walletId, callback) {
     identity.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
       if (!error) {
+
+console.log('[Identity.js.136] GOT:', wallet.getName()); //TODO
         identity.wallets[wallet.getId()] = wallet;
         identity.bindWallet(wallet);
         wallet.netStart();
+console.log('[Identity.js.136] STARTED:', wallet.getName()); //TODO
       }
       callback(error, wallet);
     });

@@ -314,7 +314,7 @@ Wallet.prototype.changeSettings = function(settings) {
 Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   log.debug('Wallet:' + this.id + ' RECV PUBLICKEYRING:', data);
 
-  var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
+  var inPKR = PublicKeyRing.fromUntrustedObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
   var hasChanged;
 
@@ -886,6 +886,8 @@ Wallet.prototype._lockIncomming = function() {
 };
 
 Wallet.prototype._setBlockchainListeners = function() {
+
+console.log('[Wallet.js.889] address'); //TODO
   var self = this;
   self.blockchain.removeAllListeners();
   self.subscribeToAddresses();
@@ -1053,7 +1055,6 @@ Wallet.prototype.toObj = function() {
     settings: this.settings,
     networkNonce: this.network.getHexNonce(), //yours
     networkNonces: this.network.getHexNonces(), //copayers
-    publicKeyRing: this.publicKeyRing.toObj(),
     txProposals: this.txProposals.toObj(),
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
@@ -1307,7 +1308,7 @@ Wallet.prototype.sendWalletId = function(recipients) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  var publicKeyRingObj = this.publicKeyRing.toObj();
+  var publicKeyRingObj = this.publicKeyRing.toTrimmedObj();
 
   this._sendToPeers(recipients, {
     type: 'publicKeyRing',
@@ -2001,6 +2002,7 @@ Wallet.prototype.getAddressesStr = function(opts) {
 
 Wallet.prototype.subscribeToAddresses = function() {
   if (!this.publicKeyRing.isComplete()) return;
+console.log('[Wallet.js.2002:subscribeToAddresses:]'); //TODO
 
   var addrInfo = this.publicKeyRing.getAddressesInfo();
   this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
