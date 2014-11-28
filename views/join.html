@@ -33,10 +33,11 @@
               </span>
               <small class="icon-input right" ng-show="joinForm.connectionId.$valid
                     && !joinForm.connectionId.$pristine"><i class="fi-check"></i></small>
+            </div>
 
-
-              <div class="pr">
-                <input id="connectionId" type="text" class="columns" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
+              <div class="input">
+                <input id="connectionId" type="text" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
+                <i class="icon-wallet"></i>
                 <div ng-hide="showScanner || disableScanner">
                   <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
                 </div>
@@ -48,9 +49,8 @@
               <div id="scanner" 
                 class="row" 
                 ng-if="showScanner"
-                ng-include="'views/includes/scanner.html'"></div>
-              
-            </div>
+                ng-include="'views/includes/scanner.html'">
+              </div>
 
             <div class="line-dashed-h"></div>
 
