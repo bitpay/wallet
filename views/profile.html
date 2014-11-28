@@ -27,13 +27,10 @@
         </div>
         <div class="row" ng-show="backupProfilePlainText">
           <div class="large-12 columns">
-            <textarea rows="5">{{backupProfilePlainText}}</textarea>
-            <div class="show-for-large-up">
-              <span translate class="size-12">Copy to clipboard</span> <span
-                class="btn-copy" clip-copy="backupProfilePlainText"> </span>
-            </div>
-            <div class="hide-for-large-up">
-              <span translate class="size-12">Copy this text as it is in a safe place (notepad or email)</span>
+            <textarea class="show-for-large-up" readonly rows="5">{{backupProfilePlainText}}</textarea>
+            <textarea class="hide-for-large-up" rows="5">{{backupProfilePlainText}}</textarea>
+            <div translate class="size-12 m10t text-gray text-right">
+              Copy this text as it is in a safe place (notepad or email)
             </div>
           </div>
         </div>
