@@ -8,6 +8,7 @@ var Transaction = bitcore.Transaction;
 var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var Buffer = bitcore.Buffer;
+var Script = bitcore.Script;
 
 
 function assertObjectEqual(a, b) {
@@ -163,17 +164,13 @@ describe('Wallet model', function() {
     should.exist(w.addressBook);
   });
 
-  it('should provide some basic features', function(done) {
+  it('should provide some basic features', function() {
     var opts = {};
     var w = cachedCreateW();
     addCopayers(w);
     w.publicKeyRing.generateAddress(false, w.publicKey);
     w.publicKeyRing.isComplete().should.equal(true);
-    w.generateAddress(true).isValid().should.equal(true);
-    w.generateAddress(true, function(addr) {
-      addr.isValid().should.equal(true);
-      done();
-    });
+    (new bitcore.Address(w.generateAddress(true))).isValid().should.equal(true);
   });
 
   var unspentTest = [{
@@ -224,14 +221,18 @@ describe('Wallet model', function() {
     return w;
   };
 
+  var unSpentTestFromWallet = function(w, addrStr) {
+
+    unspentTest[0].address = addrStr;
+    var a = new bitcore.Address(addrStr);
+    unspentTest[0].scriptPubKey = Script.createP2SH(a.payload()).getBuffer().toString('hex');
+  };
+
 
   it('#create, fail for network', function() {
 
     var w = cachedCreateW2();
-
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true);
-
+    unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
     var f = function() {
       w._createTxProposal(
         '15q6HKjWHAksHcH91JW23BJEuzZgFwydBt',
@@ -240,15 +241,14 @@ describe('Wallet model', function() {
         unspentTest
       );
     };
-    f.should.throw(Error);
+    f.should.throw('networkname');
   });
 
 
 
   it('#create, check builder opts', function() {
     var w = cachedCreateW2();
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
+    unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
     var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
@@ -264,9 +264,7 @@ describe('Wallet model', function() {
 
   it('#create, 1 sign', function() {
     var w = cachedCreateW2();
-
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
+    unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
 
     var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
@@ -288,9 +286,7 @@ describe('Wallet model', function() {
 
     var w = cachedCreateW2();
     var comment = 'This is a comment';
-
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
+    unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
 
     var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
@@ -308,9 +304,7 @@ describe('Wallet model', function() {
 
     var w = cachedCreateW2();
     var comment = 'Lorem ipsum dolor sit amet, suas euismod vis te, velit deleniti vix an. Pri ex suscipit similique, inermis per';
-
-    unspentTest[0].address = w.publicKeyRing.getAddress(1, true, w.publicKey).toString();
-    unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(1, true, w.publicKey);
+    unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
 
     (function() {
       w._createTxProposal(
@@ -340,8 +334,7 @@ describe('Wallet model', function() {
     var ts = Date.now();
     for (var isChange = false; !isChange; isChange = true) {
       for (var index = 0; index < 3; index++) {
-        unspentTest[0].address = w.publicKeyRing.getAddress(index, isChange, w.publicKey).toString();
-        unspentTest[0].scriptPubKey = w.publicKeyRing.getScriptPubKeyHex(index, isChange, w.publicKey);
+        unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
         var txp = w._createTxProposal(
           'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
           '123456789',
@@ -910,7 +903,7 @@ describe('Wallet model', function() {
 
       w.issueTx(ntxid, function(err, txid, status) {
         should.not.exist(err);
-        txp.getSent().should.be.above(now-1);
+        txp.getSent().should.be.above(now - 1);
         txp.sentTxid.should.be.equal(txid);
         txid.should.equal(1234);
         status.should.equal(Wallet.TX_BROADCASTED);
@@ -1170,16 +1163,14 @@ describe('Wallet model', function() {
   describe('#subscribeToAddresses', function() {
     it('should subscribe successfully', function() {
       var w = cachedCreateW2();
-      var addr1 = w.getAddresses()[0].toString();
       var addr2 = w.generateAddress().toString();
       var addr3 = w.generateAddress(true).toString();
-      chai.expect(w.getAddresses().length).to.equal(3);
 
       w.blockchain.subscribe = sinon.spy();
       w.subscribeToAddresses();
       w.blockchain.subscribe.calledOnce.should.equal(true);
       var arg = w.blockchain.subscribe.getCall(0).args[0];
-      chai.expect(_.difference(arg, [addr1, addr2, addr3]).length).to.equal(0);
+      _.intersection(arg, [addr2, addr3]).length.should.be.equal(2);
     });
   });
 
@@ -1967,27 +1958,40 @@ describe('Wallet model', function() {
 
 
 
-  it('should emit notification when tx received', function(done) {
+  it('should emit notification when tx received', function() {
     var w = cachedCreateW2();
+
+    var addr1 = w.generateAddress(false);
+    sinon.stub(w,'subscribeToAddresses');
+
     w.blockchain.removeAllListeners = sinon.stub();
-    var spy = sinon.spy(w, 'emit');
+    w.blockchain.on = sinon.stub();
 
-    w.generateAddress(false, function(addr1) {
-      w.generateAddress(true, function(addr2) {
-        w.blockchain.on = sinon.stub().withArgs('tx').yields({
-          address: addr1.toString(),
-        });
-        w._setBlockchainListeners();
-        spy.calledWith('tx', addr1.toString(), false).should.be.true;
-
-        w.blockchain.on = sinon.stub().withArgs('tx').yields({
-          address: addr2.toString(),
-        });
-        w._setBlockchainListeners();
-        spy.calledWith('tx', addr2.toString(), true).should.be.true;
-        done();
-      });
+    w.blockchain.on.withArgs('tx').yields({
+      address: addr1,
     });
+
+    var spy = sinon.spy(w, 'emit');
+    w._setBlockchainListeners();
+    spy.calledWith('tx', addr1, false).should.equal(true);
+  });
+
+  it('should emit notification when tx received (change addr)', function() {
+    var w = cachedCreateW2();
+
+    var addr1 = w.generateAddress(true);
+    sinon.stub(w,'subscribeToAddresses');
+
+    w.blockchain.removeAllListeners = sinon.stub();
+    w.blockchain.on = sinon.stub();
+
+    w.blockchain.on.withArgs('tx').yields({
+      address: addr1,
+    });
+
+    var spy = sinon.spy(w, 'emit');
+    w._setBlockchainListeners();
+    spy.calledWith('tx', addr1, true).should.equal(true);
   });
 
   describe('#fromObj / #toObj', function() {
@@ -2041,13 +2045,28 @@ describe('Wallet model', function() {
       should.exist(w.txProposals.toObj);
       should.exist(w.privateKey.toObj);
 
-      assertObjectEqual(w.toObj(), JSON.parse(o2));
+      var obj = w.toObj();
+
+      // remove data from new versions
+      delete obj.publicKeyRing['cache'];
+
+      assertObjectEqual(obj, JSON.parse(o2));
     });
   });
 
   describe('#getTransactionHistory', function() {
+    var w;
+    beforeEach(function() {
+      w = cachedCreateW2();
+    });
+    afterEach(function() {
+      if (w.publicKeyRing.addressIsOwn.restore)
+        w.publicKeyRing.addressIsOwn.restore();
+      if (w.publicKeyRing.addressIsChange.restore)
+        w.publicKeyRing.addressIsChange.restore();
+    });
+
     it('should return list of txs', function(done) {
-      var w = cachedCreateW2();
       var txs = [{
         vin: [{
           addr: 'addr_in_1',
@@ -2092,11 +2111,17 @@ describe('Wallet model', function() {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_out_2'
-      }]);
+
+      sinon.stub(w,'getAddresses').returns([ 'addr_in_1', 'addr_out_2' ]);
+      var s = sinon.stub(w.publicKeyRing,'addressIsOwn');
+      s.withArgs('addr_in_1').returns(true);
+      s.withArgs('addr_in_2').returns(false);
+      s.withArgs('addr_out_2').returns(true);
+
+
+      var s2 = sinon.stub(w.publicKeyRing,'addressIsChange');
+      s2.withArgs('addr_out_1').returns(false);
+      s2.withArgs('addr_out_2').returns(false);
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
@@ -2113,7 +2138,6 @@ describe('Wallet model', function() {
       });
     });
     it('should return paginated list of txs', function(done) {
-      var w = cachedCreateW2();
       var txs = [{
         txid: 'id1',
         vin: [{
@@ -2161,11 +2185,6 @@ describe('Wallet model', function() {
         items: txs.slice(2, 3),
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_out_2'
-      }]);
 
       w.getTransactionHistory({
         currentPage: 2,
@@ -2182,17 +2201,11 @@ describe('Wallet model', function() {
       });
     });
     it('should paginate empty list', function(done) {
-      var w = cachedCreateW2();
       var txs = [];
       w.blockchain.getTransactions = sinon.stub().yields(null, {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_out_2'
-      }]);
 
       w.getTransactionHistory({
         currentPage: 2,
@@ -2207,7 +2220,6 @@ describe('Wallet model', function() {
       });
     });
     it('should compute sent amount correctly', function(done) {
-      var w = cachedCreateW2();
       var txs = [{
         vin: [{
           addr: 'addr_in_1',
@@ -2234,14 +2246,17 @@ describe('Wallet model', function() {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_in_2'
-      }, {
-        addressStr: 'change',
-        isChange: true,
-      }]);
+
+
+      sinon.stub(w,'getAddresses').returns([ 'addr_in_1', 'addr_in_2', 'change']);
+      var s = sinon.stub(w.publicKeyRing,'addressIsOwn');
+      s.withArgs('addr_in_1').returns(true);
+      s.withArgs('addr_in_2').returns(true);
+      s.withArgs('change').returns(true);
+
+      var s2 = sinon.stub(w.publicKeyRing,'addressIsChange');
+      s2.withArgs('addr_out_2').returns(false);
+      s2.withArgs('change').returns(true);
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
@@ -2253,7 +2268,6 @@ describe('Wallet model', function() {
       });
     });
     it('should compute moved amount correctly', function(done) {
-      var w = cachedCreateW2();
       var txs = [{
         vin: [{
           addr: 'addr_1',
@@ -2280,14 +2294,16 @@ describe('Wallet model', function() {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_1'
-      }, {
-        addressStr: 'addr_2'
-      }, {
-        addressStr: 'change',
-        isChange: true,
-      }]);
+
+      sinon.stub(w,'getAddresses').returns([ 'addr_in_1', 'addr_in_2', 'change']);
+      var s = sinon.stub(w.publicKeyRing,'addressIsOwn');
+      s.withArgs('addr_1').returns(true);
+      s.withArgs('addr_2').returns(true);
+      s.withArgs('change').returns(true);
+
+      var s2 = sinon.stub(w.publicKeyRing,'addressIsChange');
+      s2.withArgs('addr_1').returns(false);
+      s2.withArgs('change').returns(true);
 
       w.getTransactionHistory(function(err, res) {
         res.should.exist;
@@ -2299,7 +2315,6 @@ describe('Wallet model', function() {
       });
     });
     it('should assign label when address in address book', function(done) {
-      var w = cachedCreateW2();
       var txs = [{
         vin: [{
           addr: 'addr_in_1',
@@ -2349,7 +2364,6 @@ describe('Wallet model', function() {
       });
     });
     it('should assign comment from tx proposal if found', function(done) {
-      var w = cachedCreateW2();
       var txs = [{
         txid: 'id1',
         vin: [{
@@ -2517,7 +2531,7 @@ describe('Wallet model', function() {
 
 
   // DATA
-  var o = '{"opts":{"id":"dbfe10c3fae71cea", "spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5","networkName":"testnet"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{"walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":[{"copayerIndex":2,"changeIndex":0,"receiveIndex":0}],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{},"settings":{"unitName":"BTC","unitToSatoshi":100000000,"unitDecimals":8,"alternativeName":"Argentine Peso","alternativeIsoCode":"ARS"}}';
+  var o = '{"opts":{"id":"dbfe10c3fae71cea", "spendUnconfirmed":1,"requiredCopayers":3,"totalCopayers":5,"version":"0.0.5","networkName":"testnet"},"networkNonce":"0000000000000001","networkNonces":[],"publicKeyRing":{ "cache": { "addressToPath": {}, "changeAddresses": [], "receiveAddresses": [] }, "walletId":"dbfe10c3fae71cea","networkName":"testnet","requiredCopayers":3,"totalCopayers":5,"indexes":[{"copayerIndex":2,"changeIndex":0,"receiveIndex":0}],"copayersExtPubKeys":["tpubD6NzVbkrYhZ4YGK8ZhZ8WVeBXNAAoTYjjpw9twCPiNGrGQYFktP3iVQkKmZNiFnUcAFMJRxJVJF6Nq9MDv2kiRceExJaHFbxUCGUiRhmy97","tpubD6NzVbkrYhZ4YKGDJkzWdQsQV3AcFemaQKiwNhV4RL8FHnBFvinidGdQtP8RKj3h34E65RkdtxjrggZYqsEwJ8RhhN2zz9VrjLnrnwbXYNc","tpubD6NzVbkrYhZ4YkDiewjb32Pp3Sz9WK2jpp37KnL7RCrHAyPpnLfgdfRnTdpn6DTWmPS7niywfgWiT42aJb1J6CjWVNmkgsMCxuw7j9DaGKB","tpubD6NzVbkrYhZ4XEtUAz4UUTWbprewbLTaMhR8NUvSJUEAh4Sidxr6rRPFdqqVRR73btKf13wUjds2i8vVCNo8sbKrAnyoTr3o5Y6QSbboQjk","tpubD6NzVbkrYhZ4Yj9AAt6xUVuGPVd8jXCrEE6V2wp7U3PFh8jYYvVad31b4VUXEYXzSnkco4fktu8r4icBsB2t3pCR3WnhVLedY2hxGcPFLKD"],"nicknameFor":{}},"txProposals":{"txps":[],"walletId":"dbfe10c3fae71cea","networkName":"testnet"},"privateKey":{"extendedPrivateKeyString":"tprv8ZgxMBicQKsPeoHLg3tY75z4xLeEe8MqAXLNcRA6J6UTRvHV8VZTXznt9eoTmSk1fwSrwZtMhY3XkNsceJ14h6sCXHSWinRqMSSbY8tfhHi","networkName":"testnet"},"addressBook":{},"settings":{"unitName":"BTC","unitToSatoshi":100000000,"unitDecimals":8,"alternativeName":"Argentine Peso","alternativeIsoCode":"ARS"}}';
 
 });
 

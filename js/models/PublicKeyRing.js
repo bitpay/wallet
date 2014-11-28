@@ -42,9 +42,20 @@ function PublicKeyRing(opts) {
   this.publicKeysCache = {};
   this.nicknameFor = opts.nicknameFor || {};
   this.copayerIds = [];
-  this.addressToPath = {};
 
+  this.resetCache();
 };
+
+PublicKeyRing.prototype.resetCache = function() {
+  this.cache = {};
+  this.cache.addressToPath = {};
+  this.cache.receiveAddresses = [];
+  this.cache.changeAddresses = [];
+
+  // Non persistent cache
+  this._isChange = {};
+};
+
 
 /**
  * @desc Returns an object with only the keys needed to rebuild a PublicKeyRing
@@ -99,9 +110,9 @@ PublicKeyRing.fromObj = function(opts) {
     pkr.addCopayer(opts.copayersExtPubKeys[k]);
   }
 
-  if (opts._cache){
+  if (opts.cache) {
     log.debug('PublicKeyRing: Using address cache');
-    pkr._cacheAddressMap = opts._cache;
+    pkr.cache = opts.cache;
   }
 
   return pkr;
@@ -129,7 +140,7 @@ PublicKeyRing.prototype.toObj = function() {
       return b.extendedPublicKeyString();
     }),
     nicknameFor: this.nicknameFor,
-    _cache: this._cacheAddressMap
+    cache: this.cache,
   };
 };
 
@@ -300,20 +311,12 @@ PublicKeyRing.prototype.addCopayer = function(newHexaExtendedPublicKey, nickname
 PublicKeyRing.prototype.getPubKeys = function(index, isChange, copayerIndex) {
   this._checkKeys();
 
+  log.warn('Slow pubkey derivation...');
   var path = HDPath.Branch(index, isChange, copayerIndex);
-  var pubKeys = this.publicKeysCache[path];
-  if (!pubKeys) {
-    pubKeys = _.map(this.copayersHK, function(hdKey) {
+  var pubKeys = _.map(this.copayersHK, function(hdKey) {
       return hdKey.derive(path).eckey.public;
-    });
-    this.publicKeysCache[path] = pubKeys.map(function(pk) {
-      return pk.toString('hex');
-    });
-  } else {
-    pubKeys = pubKeys.map(function(s) {
-      return new Buffer(s, 'hex');
-    });
-  }
+  });
+
   return pubKeys;
 };
 
@@ -347,31 +350,24 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex
  * @param {number} copayerIndex - the index of the copayer that requested the derivation
  * @returns {bitcore.Address}
  */
-PublicKeyRing.prototype.getAddress = function(index, isChange, id) {
+PublicKeyRing.prototype._getAddress = function(index, isChange, id) {
   var copayerIndex = this.getCosigner(id);
-  if (!this._cachedAddress(index, isChange, id)) {
+  var path = HDPath.FullBranch(index, isChange, copayerIndex);
 
-console.log('[PublicKeyRing.js.338] CACHE MISS'); //TODO
-    var script = this.getRedeemScript(index, isChange, copayerIndex);
-    var address = Address.fromScript(script, this.network.name);
-    this.addressToPath[address.toString()] = HDPath.FullBranch(index, isChange, copayerIndex);
-    this._cacheAddress(index, isChange, copayerIndex, address);
-  }
-  return this._cachedAddress(index, isChange, copayerIndex);
+  log.info('Generating Address:', index, isChange, copayerIndex);
+  var script = this.getRedeemScript(index, isChange, copayerIndex);
+  var address = Address.fromScript(script, this.network.name).toString();
+
+  this._cacheAddress(address, path, isChange);
+  return address;
 };
-PublicKeyRing.prototype._cacheAddress = function(index, isChange, copayerIndex, address) {
-  var changeIndex = isChange ? 1 : 0;
-  if (!this._cacheAddressMap) this._cacheAddressMap = {};
-  if (!this._cacheAddressMap[index]) this._cacheAddressMap[index] = {};
-  if (!this._cacheAddressMap[index][changeIndex]) this._cacheAddressMap[index][changeIndex] = {};
-  this._cacheAddressMap[index][changeIndex][copayerIndex] = address;
-};
-PublicKeyRing.prototype._cachedAddress = function(index, isChange, copayerIndex) {
-  var changeIndex = isChange ? 1 : 0;
-  if (!this._cacheAddressMap) return undefined;
-  if (!this._cacheAddressMap[index]) return undefined;
-  if (!this._cacheAddressMap[index][changeIndex]) return undefined;
-  return this._cacheAddressMap[index][changeIndex][copayerIndex];
+
+PublicKeyRing.prototype._cacheAddress = function(address, path, isChange) {
+  this.cache.addressToPath[address] = path;
+  if (isChange)
+    this.cache.changeAddresses.push(address);
+  else
+    this.cache.receiveAddresses.push(address);
 };
 
 /**
@@ -401,24 +397,10 @@ PublicKeyRing.prototype.getHDParams = function(id) {
  * @return {HDPath}
  */
 PublicKeyRing.prototype.pathForAddress = function(address) {
-  var path = this.addressToPath[address];
+  this._checkAndRebuildCache();
+  var path = this.cache.addressToPath[address];
   if (!path) throw new Error('Couldn\'t find path for address ' + address);
   return path;
-};
-
-/**
- * @desc
- * Get the hexadecimal representation of a P2SH script
- *
- * @param {number} index - index to use when generating the address
- * @param {boolean} isChange - generate a change address or a receive addres
- * @param {number|string} pubkey - index of the copayer, or his public key
- * @returns {string} hexadecimal encoded P2SH hash
- */
-PublicKeyRing.prototype.getScriptPubKeyHex = function(index, isChange, pubkey) {
-  var copayerIndex = this.getCosigner(pubkey);
-  var addr = this.getAddress(index, isChange, copayerIndex);
-  return Script.createP2SH(addr.payload()).getBuffer().toString('hex');
 };
 
 /**
@@ -433,25 +415,43 @@ PublicKeyRing.prototype.getScriptPubKeyHex = function(index, isChange, pubkey) {
  */
 PublicKeyRing.prototype.generateAddress = function(isChange, pubkey) {
   isChange = !!isChange;
-  var HDParams = this.getHDParams(pubkey);
-  var index = isChange ? HDParams.getChangeIndex() : HDParams.getReceiveIndex();
-  var ret = this.getAddress(index, isChange, HDParams.copayerIndex);
-  HDParams.increment(isChange);
+  var hdParams = this.getHDParams(pubkey);
+  var index = isChange ? hdParams.getChangeIndex() : hdParams.getReceiveIndex();
+  var ret = this._getAddress(index, isChange, hdParams.copayerIndex);
+  hdParams.increment(isChange);
   return ret;
 };
 
 /**
- * @desc
- * Retrieve the addresses from a getAddressInfo return object
+ * @desc Is an address is from this wallet?
  *
- * {@see PublicKeyRing#getAddressInfo}
- * @returns {string[]} the result of retrieving the addresses from calling
+ * @param {string} address
+ * @return {boolean}
  */
-PublicKeyRing.prototype.getAddresses = function(opts) {
-  return this.getAddressesInfo(opts).map(function(info) {
-    return info.address;
-  });
+PublicKeyRing.prototype.addressIsOwn = function(address) {
+  return !!this.cache.addressToPath[address];
 };
+
+/**
+ * @desc Is an address is a change address?
+ *
+ * @param {string} address
+ * @return {boolean}
+ */
+PublicKeyRing.prototype.addressIsChange = function(address) {
+  this._checkAndRebuildCache();
+
+  if (!this.cache.addressToPath[address])
+    return null;
+
+  //Memoization Only, never stored.
+  if (_.isUndefined(this._isChange[address])) {
+    this._isChange[address] = _.indexOf(this.cache.changeAddresses, address) >= 0;
+  }
+  return !!this._isChange[address];
+};
+
+
 
 /**
  * @desc
@@ -478,79 +478,46 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
   return index;
 };
 
+
+
+PublicKeyRing.prototype.buildAddressCache = function() {
+  var ret = [];
+  var self = this;
+
+  log.info('Rebuilding Address Cache...this will take a while');
+  _.each(this.indexes, function(index) {
+    for (var i = 0; i < index.receiveIndex; i++) {
+      self._getAddress(i, false, index.copayerIndex);
+    }
+    for (var i = 0; i < index.changeIndex; i++) {
+      self._getAddress(i, true, index.copayerIndex);
+    }
+  });
+  log.info('...done!');
+};
+
+
+PublicKeyRing.prototype._checkAndRebuildCache = function(opts) {
+  // If cache exists, it has to be updated
+  if (_.isEmpty(this.cache.addressToPath)) {
+    this.buildAddressCache();
+  }
+};
+
+
 /**
  * @desc
  * Gets information about addresses for a copayer
  *
- * @see PublicKeyRing#getAddressesInfoForIndex
  * @param {Object} opts
- * @param {string|number} pubkey - the pubkey or index of a copayer in the ring
  * @returns {AddressInfo[]}
  */
-PublicKeyRing.prototype.getAddressesInfo = function(opts, pubkey) {
-
-console.log('[PublicKeyRing.js.474] STARTED'); //TODO
-  var ret = [];
-  var self = this;
-  var copayerIndex = pubkey && this.getCosigner(pubkey);
-console.log('[PublicKeyRing.js.478:copayerIndex:]',copayerIndex); //TODO
-  this.indexes.forEach(function(index) {
-console.log('[PublicKeyRing.js.479:index:]',index); //TODO
-    ret = ret.concat(self.getAddressesInfoForIndex(index, opts, copayerIndex));
-  });
-console.log('[PublicKeyRing.js.474] END'); //TODO
+PublicKeyRing.prototype.getAddresses = function() {
+  this._checkAndRebuildCache();
+  var ret  = this.cache.receiveAddresses.concat(this.cache.changeAddresses);
   return ret;
 };
 
-/**
- * @typedef AddressInfo
- * @property {bitcore.Address} address - the address generated
- * @property {string} addressStr - the base58 encoded address
- * @property {boolean} isChange - true if it's a change address
- * @property {boolean} owned - true if it's an address generated by a copayer
- */
-/**
- * @desc
- * Retrieves info about addresses generated by a copayer
- *
- * @param {HDParams} index - HDParams of the copayer
- * @param {Object} opts
- * @param {boolean} opts.excludeChange - don't append information about change addresses
- * @param {boolean} opts.excludeMain - don't append information about receive addresses
- * @param {string|number|undefined} copayerIndex - copayer index, pubkey, or undefined to fetch info
- *                                                 about shared addresses
- * @return {AddressInfo[]} a list of AddressInfo
- */
-PublicKeyRing.prototype.getAddressesInfoForIndex = function(index, opts, copayerIndex) {
-  opts = opts || {};
-  var isOwned = index.copayerIndex === HDPath.SHARED_INDEX || index.copayerIndex === copayerIndex;
-  var ret = [];
-  var appendAddressInfo = function(address, isChange) {
-    ret.push({
-      address: address,
-      addressStr: address.toString(),
-      isChange: isChange,
-      owned: isOwned
-    });
-
-console.log('[PublicKeyRing.js.518] Appending address'); //TODO
-  };
-
-  console.log('[PublicKeyRing.js.519] getAddressesInfoForIndex'); //TODO
-  for (var i = 0; !opts.excludeChange && i < index.changeIndex; i++) {
-    appendAddressInfo(this.getAddress(i, true, index.copayerIndex), true);
-  }
-
-console.log('[PublicKeyRing.js.526]'); //TODO
-  for (var i = 0; !opts.excludeMain && i < index.receiveIndex; i++) {
-    appendAddressInfo(this.getAddress(i, false, index.copayerIndex), false);
-  }
-
-
-console.log('[PublicKeyRing.js.534] CACHE IS' , this._cacheAddressMap); //TODO
-
-  return ret;
-};
 
 /**
  * @desc
@@ -722,25 +689,6 @@ PublicKeyRing.prototype._mergePubkeys = function(inPKR) {
   return hasChanged;
 };
 
-/**
- * @desc
- * Merges this public key ring with another one, optionally ignoring the
- * wallet id
- *
- * @param {PublicKeyRing} inPkr
- * @param {boolean} ignoreId
- * @return {boolean} true if the internal state has changed
- */
-PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
-  this._checkInPKR(inPKR, ignoreId);
-
-  var hasChanged = false;
-  hasChanged |= this.mergeIndexes(inPKR.indexes);
-  hasChanged |= this._mergePubkeys(inPKR);
-
-  return !!hasChanged;
-};
-
 
 /**
  * @desc
@@ -761,6 +709,27 @@ PublicKeyRing.prototype.mergeIndexes = function(indexes) {
 
   return !!hasChanged
 }
+
+
+/**
+ * @desc
+ * Merges this public key ring with another one, optionally ignoring the
+ * wallet id
+ *
+ * @param {PublicKeyRing} inPkr
+ * @param {boolean} ignoreId
+ * @return {boolean} true if the internal state has changed
+ */
+PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
+  this._checkInPKR(inPKR, ignoreId);
+
+  var hasChanged = false;
+  hasChanged |= this.mergeIndexes(inPKR.indexes);
+  hasChanged |= this._mergePubkeys(inPKR);
+
+  return !!hasChanged;
+};
+
 
 
 module.exports = PublicKeyRing;
