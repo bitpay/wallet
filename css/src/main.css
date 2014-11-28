@@ -159,10 +159,12 @@ header .alt-currency {
 .head .menu ul li a {
   display: block;
   padding: 5px 10px;
+  color: #8597A7;
 }
 
 .head .menu ul li a:hover {
-  background-color: #fff;
+  background-color: #F8F8FB;
+  color: #2C3E50;
 }
 
 .col1 {
@@ -1305,10 +1307,10 @@ a:hover .photo-container  {
 
 .input i {
   position: absolute;
-  top: 25%;
+  top: 10px;
   left: 10px;
-  font-size: 18px;
-  color: #CAD2DB;
+  font-size: 20px;
+  color: #7A8C9E;
   border-right: 1px solid #ccc;
   padding-right: 8px;
   border-right: 1px solid #E5E8EB;

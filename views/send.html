@@ -90,7 +90,7 @@
                       name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
                       min="0.00000001" max="10000000000" valid-amount required
                       autocomplete="off">
-                      <i class="fi-bitcoin"></i>
+                      <i class="icon-bitcoin"></i>
                     </div>
                     <a class="small input-note" title="{{'Send all funds'|translate}}"
                       ng-show="topAmount && (!$root.merchant || +$root.merchant.total === 0)"
@@ -111,7 +111,7 @@
                       <input type="number" id="alternative_amount"
                       ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0)"
                       name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative"requiredautocomplete="off">
-                      <i class="fi-dollar"></i>
+                      <i class="icon-usd"></i>
                     </div>
                   </div>
                   <div class="small-3 columns">
@@ -165,7 +165,7 @@
                 <div class="input">
                   <textarea id="comment" ng-disabled="loading"
                   name="comment" placeholder="{{(wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction') |translate}}" ng-model="commentText" ng-maxlength="100"></textarea>
-                  <i class="fi-page-edit"></i>
+                  <i class="icon-compose"></i>
                 </div>
               </div>
             </div>

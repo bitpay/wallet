@@ -1,21 +1,28 @@
 <h2 translate>Address Book</h2>
 <form class="m0" name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
-  <label for="newaddress" class="left"><span translate>Address</span>
-    <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
-  </label>
-  <span translate class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
-    <span class="icon-input"><i class="fi-x"></i></span>
-    Not valid
-  </span>
-  <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
-
-  <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
+  <div class="row collapse">
+    <label for="newaddress" class="left"><span translate>Address</span>
+      <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
+    </label>
+    <span translate class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+      <span class="icon-input"><i class="fi-x"></i></span>
+      Not valid
+    </span>
+    <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
+  </div>
+  <div class="input">
+    <input type="text" id="newaddress" name="newaddress" ng-disabled="loading"
     placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
+    <i class="fi-address-book"></i>
+  </div>
 
   <label for="newlabel"><span translate>Label</span>
     <small translate ng-hide="!addressBookForm.newlabel.$pristine || newlabel">Required</small>
-    <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
-    placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
+    <div class="input">
+      <input type="text" id="newlabel" name="newlabel" ng-disabled="loading"
+      placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
+      <i class="icon-pricetag"></i>
+    </div>
   </label>
   <a translate class="m0 button warning small default" ng-click="cancel()">Cancel</a>
   <input type="submit" class="m0 button small primary right"
