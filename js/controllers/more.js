@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, controllerUtils, notification, rateService) {
-    controllerUtils.redirIfNotComplete();
+  function($scope, $rootScope, $location, $filter, balanceService, notification, rateService) {
     var w = $rootScope.wallet;
     $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
@@ -76,7 +75,7 @@ angular.module('copayApp.controllers').controller('MoreController',
         alternativeIsoCode: $scope.selectedAlternative.isoCode,
       });
       notification.success('Success', $filter('translate')('settings successfully updated'));
-      controllerUtils.updateBalance(w, function() {
+      balanceService.update(w, function() {
         $rootScope.$digest();
       });
     }; 
@@ -84,9 +83,9 @@ angular.module('copayApp.controllers').controller('MoreController',
     $scope.purge = function(deleteAll) {
       var removed = w.purgeTxProposals(deleteAll);
       if (removed) {
-        controllerUtils.updateBalance(w, function() {
+        balanceService.update(w, function() {
           $rootScope.$digest();
-        });
+        }, true);
       }
       notification.info('Transactions Proposals Purged', removed + ' ' + $filter('translate')('transaction proposal purged'));
     };
@@ -99,12 +98,11 @@ angular.module('copayApp.controllers').controller('MoreController',
         if (err) {
           notification.error('Error', $filter('translate')('Error updating indexes: ') + err);
         }
-        controllerUtils.updateAddressList();
-        controllerUtils.updateBalance(w, function() {
+        balanceService.update(w, function() {
           notification.info('Finished', 'The balance is updated using the derived addresses');
           w.sendIndexes();
           $rootScope.$digest();
-        });
+        }, true);
       });
     };
   });

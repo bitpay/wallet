@@ -915,6 +915,8 @@ Wallet.prototype._setBlockchainListeners = function() {
   }
 }
 
+
+
 /**
  * @desc Sets up the networking with other peers.
  *
@@ -1983,29 +1985,25 @@ Wallet.prototype.addSeenToTxProposals = function() {
 
 /**
  * @desc Alias for {@link PublicKeyRing#getAddresses}
- * @TODO: remove this method and use getAddressesInfo everywhere
  * @return {Buffer[]}
  */
-Wallet.prototype.getAddresses = function(opts) {
-  return this.publicKeyRing.getAddresses(opts);
+Wallet.prototype.getAddresses = function() {
+  return this.publicKeyRing.getAddresses();
 };
 
 /**
- * @desc Retrieves all addresses as strings.
- *
- * @param {Object} opts - Same options as {@link PublicKeyRing#getAddresses}
- * @return {string[]}
+ * @desc Alias for {@link PublicKeyRing#getAddresses}
+ * @return {Buffer[]}
  */
-Wallet.prototype.getAddressesStr = function(opts) {
-  return this.getAddresses(opts).map(function(a) {
-    return a.toString();
-  });
+Wallet.prototype.getReceiveAddresses = function() {
+  return this.publicKeyRing.getReceiveAddresses();
 };
+
 
 Wallet.prototype.subscribeToAddresses = function() {
   if (!this.publicKeyRing.isComplete()) return;
 
-  var addresses = this.publicKeyRing.getAddresses();
+  var addresses = this.getAddresses();
   this.blockchain.subscribe(addresses);
   log.debug('Subscribed to ' + addresses.length + ' addresses');
 };
@@ -2442,7 +2440,9 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  * @desc Closes the wallet and disconnects all services
  */
 Wallet.prototype.close = function(cb) {
+  this.network.removeAllListeners();
   this.network.cleanUp();
+  this.blockchain.removeAllListeners();
   this.blockchain.destroy();
 
   log.debug('## CLOSING Wallet: ' + this.id);
@@ -2664,10 +2664,9 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   };
 
   if (addresses.length > 0) {
-    var addressesStr = _.pluck(addresses, 'addressStr');
     var from = (opts.currentPage - 1) * opts.itemsPerPage;
     var to = opts.currentPage * opts.itemsPerPage;
-    self.blockchain.getTransactions(addressesStr, from, to, function(err, res) {
+    self.blockchain.getTransactions(addresses, from, to, function(err, res) {
       if (err) return cb(err);
 
       _.each(res.items, function(tx) {

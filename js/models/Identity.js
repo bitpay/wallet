@@ -172,11 +172,7 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback
         blockchainOpts: self.blockchainOpts,
         skipFields: []
       };
-
-      return callback(null, importFunction(walletData, readOpts));
-
     } catch (e) {
-
       log.debug("ERROR: ", e.message);
       if (e && e.message && e.message.indexOf('MISSOPTS') !== -1) {
         return callback(new Error('WERROR: Could not read: ' + walletId + ': ' + e.message));
@@ -184,6 +180,7 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback
         return callback(e);
       }
     }
+    return callback(null, importFunction(walletData, readOpts));
   });
 };
 
@@ -563,6 +560,9 @@ Identity.prototype.listWallets = function() {
  */
 Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
+
+  var w = this.getWalletById(walletId);
+  w.close();
 
   delete this.wallets[walletId];
   this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {

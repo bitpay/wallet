@@ -41,10 +41,10 @@
         <div class="panel oh">
           <h2 class="line-b" translate>Quick receive</h2>
           <div class="text-center">
-            <qrcode size="220" data="bitcoin:{{$root.addrInfos[0].addressStr}}"></qrcode>
+            <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
 
             <div class="m10t">
-              <h4 class="size-12">{{$root.addrInfos[0].addressStr}}  </h4>
+              <h4 class="size-12">{{addr}}  </h4>
               <span ng-if="$root.updatingBalance">
                 <i class="fi-bitcoin-circle icon-rotate spinner"></i>
               </span>

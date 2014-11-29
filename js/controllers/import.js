@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, Compatibility) {
+  function($scope, $rootScope, $location, identityService, notification, isMobile, Compatibility) {
 
     $rootScope.title = 'Import wallet';
     $scope.importStatus = 'Importing wallet - Reading backup...';
@@ -18,28 +18,18 @@ angular.module('copayApp.controllers').controller('ImportController',
       $scope.$digest();
     }
 
-    $scope._doImport = function(encryptedObj, password) {
-      updateStatus('Importing wallet - Procesing backup...');
-
-      copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj,
-        $scope.password, $scope.importOpts, function(err, wallet) {
-          if (err) {
-            $scope.loading = false;
-            $scope.error = 'Could not read wallet. Please check your password';
-          } else {
-            controllerUtils.installWalletHandlers($scope, wallet);
-            controllerUtils.setFocusedWallet(wallet);
-          }
-        }
-      );
-    };
-
   $scope.getFile = function() {
     // If we use onloadend, we need to check the readyState.
     reader.onloadend = function(evt) {
       if (evt.target.readyState == FileReader.DONE) { // DONE == 2
         var encryptedObj = evt.target.result;
-        $scope._doImport(encryptedObj, $scope.password);
+        updateStatus('Importing wallet - Procesing backup...');
+        identityService.importWallet(encryptedObj, $scope.password, {}, function(err){
+          if (err) {
+            $scope.loading = false;
+            $scope.error = 'Could not read wallet. Please check your password';
+          }
+        });
       }
     };
   };
@@ -85,8 +75,14 @@ angular.module('copayApp.controllers').controller('ImportController',
     if (backupFile) {
       reader.readAsBinaryString(backupFile);
     } else {
-      $scope._doImport(backupText, $scope.password);
-      copay.Compatibility.deleteOldWallet(backupOldWallet);
+      updateStatus('Importing wallet - Procesing backup...');
+      identityService.importWallet(encryptedObj, $scope.password, $scope.importOpts, function(err){
+        if (err) {
+          $scope.loading = false;
+          $scope.error = 'Could not read wallet. Please check your password';
+        }
+        copay.Compatibility.deleteOldWallet(backupOldWallet);
+      });
     }
   };
 });

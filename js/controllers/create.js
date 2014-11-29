@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification, defaults) {
+  function($scope, $rootScope, $location, $timeout,  identityService, backupService, notification, defaults) {
 
     $rootScope.fromSetup = true;
-    $rootScope.starting = false;
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
     $scope.isMobile = !!window.cordova;
@@ -53,10 +52,8 @@ angular.module('copayApp.controllers').controller('CreateController',
         privateKeyHex: $scope.private,
         networkName: $scope.networkName,
       };
-      $rootScope.iden.createWallet(opts, function(err, w) {
+      identityService.createWallet(opts, function(){
         $scope.loading = false;
-        controllerUtils.installWalletHandlers($scope, w);
-        controllerUtils.setFocusedWallet(w);
       });
     };
   });

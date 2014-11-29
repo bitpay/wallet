@@ -2,9 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope, $timeout, controllerUtils, notification, rateService) {
-    controllerUtils.redirIfNotComplete();
-
+  function($scope, $rootScope) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -19,14 +17,10 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.blockchain_txs = [];
     $scope.alternativeCurrency = [];
 
-
-
     $scope.selectPage = function(page) {
       $scope.currentPage = page;
       $scope.update();
     };
-
-
 
     $scope.downloadHistory = function() {
       var w = $rootScope.wallet;

@@ -518,6 +518,20 @@ PublicKeyRing.prototype.getAddresses = function() {
   return ret;
 };
 
+/**
+ * @desc
+ * Gets information about addresses for a copayer
+ *
+ * @param {Object} opts
+ * @returns {AddressInfo[]}
+ */
+PublicKeyRing.prototype.getReceiveAddresses = function() {
+  this._checkAndRebuildCache();
+  var ret  = this.cache.receiveAddresses;
+  return ret;
+};
+
+
 
 /**
  * @desc
@@ -526,41 +540,41 @@ PublicKeyRing.prototype.getAddresses = function() {
  * @param {string} path - the BIP32 path
  * @return {Buffer[]} the public keys, in buffer format
  */
-PublicKeyRing.prototype.getForPath = function(path) {
+PublicKeyRing.prototype._getForPath = function(path) {
   var p = HDPath.indexesForPath(path);
   return this.getPubKeys(p.addressIndex, p.isChange, p.copayerIndex);
 };
 
-/**
- * @desc
- * Retrieve the public keys for all cosigners for multiple paths
- * @see PublicKeyRing#getForPath
- *
- * @param {string[]} paths - the BIP32 paths
- * @return {Array[]} the public keys, in buffer format (matrix of Buffer, Buffer[][])
- */
-PublicKeyRing.prototype.getForPaths = function(paths) {
-  preconditions.checkArgument(!_.isUndefined(paths));
-  preconditions.checkArgument(_.isArray(paths));
-  preconditions.checkArgument(_.all(paths, _.isString));
-
-  return paths.map(this.getForPath.bind(this));
-};
 
 /**
  * @desc
  * Retrieve the public keys for derived addresses and the public keys for copayers
  *
- * @TODO: Should this exist? A user should just call getForPath(paths)
+ * @TODO: Should this exist? A user should just call _getForPath(paths)
  *
  * @param {string[]} paths - the paths to be derived
  * @return {Object} with keys pubKeys and copayerIds
  */
 PublicKeyRing.prototype.forPaths = function(paths) {
   return {
-    pubKeys: paths.map(this.getForPath.bind(this)),
+    pubKeys: paths.map(this._getForPath.bind(this)),
     copayerIds: this.copayerIds,
   }
+};
+
+/**
+ * @desc
+ * Retrieve the public keys for all cosigners for multiple paths
+ *
+ * @param {string[]} paths - the BIP32 paths
+ * @return {Array[]} the public keys, in buffer format (matrix of Buffer, Buffer[][])
+ */
+PublicKeyRing.prototype._getForPaths = function(paths) {
+  preconditions.checkArgument(!_.isUndefined(paths));
+  preconditions.checkArgument(_.isArray(paths));
+  preconditions.checkArgument(_.all(paths, _.isString));
+
+  return paths.map(this._getForPath.bind(this));
 };
 
 /**
@@ -580,7 +594,7 @@ PublicKeyRing.prototype.copayersForPubkeys = function(pubkeys, paths) {
     inKeyMap[pubkeys[i]] = 1;
   };
 
-  var keys = this.getForPaths(paths);
+  var keys = this._getForPaths(paths);
   for (var i in keys) {
     for (var copayerIndex in keys[i]) {
       var kHex = keys[i][copayerIndex].toString('hex');

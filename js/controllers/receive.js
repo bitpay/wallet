@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ReceiveController',
-  function($scope, $rootScope, $timeout, $modal, controllerUtils) {
-    controllerUtils.redirIfNotComplete();
-
+  function($scope, $rootScope, $timeout, $modal) {
     $rootScope.title = 'Receive';
     $scope.loading = false;
     $scope.showAll = false;
@@ -15,7 +13,6 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       $scope.isNewAddr = false;
       w.generateAddress(null);
       $timeout(function() {
-        controllerUtils.updateAddressList();
         $scope.loading = false;
         $scope.isNewAddr = true;
       }, 1);
@@ -74,20 +71,22 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
     $scope.addressList = function() {
       $scope.addresses = [];
+      var w = $rootScope.wallet;
+      var balance = $rootScope.balanceByAddr;
 
-      if ($rootScope.addrInfos) {
-        var addrInfos = $rootScope.addrInfos;
-        $scope.addrLength = addrInfos.length;
-        for (var i = 0; i < addrInfos.length; i++) {
-          var addrinfo = addrInfos[i];
+      var addresses = w.getAddresses();
+      if (addresses) {
+        $scope.addrLength = addresses.length;
+        _.each(addresses, function(address, index){
           $scope.addresses.push({
-            'index': i,
-            'address': addrinfo.addressStr,
-            'balance': $rootScope.balanceByAddr ? $rootScope.balanceByAddr[addrinfo.addressStr] : 0,
-            'isChange': addrinfo.isChange,
-            'owned': addrinfo.owned
+            'index': index,
+            'address': address,
+            'balance': balance ? balance[address] : 0,
+            'isChange': w.addressIsChange(address),
+            // TODO
+            'owned': w.addressIsOwn(address),
           });
-        }
+        });
         $scope.addresses = $scope.limitAddress($scope.addresses, $scope.isNewAddr);
       }
     };

@@ -1,16 +1,14 @@
 'use strict';
-angular.module('copayApp.controllers').controller('WarningController', function($scope, $rootScope, $location, controllerUtils) {
-
+angular.module('copayApp.controllers').controller('WarningController', function($scope, $rootScope, $location, identityService) {
 
   $scope.checkLock = function() {
     if (!$rootScope.tmp || !$rootScope.tmp.getLock()) {
-      controllerUtils.redirIfLogged();
+      console.log('[warning.js.7] TODO LOCK'); //TODO
     }
   };
 
-
   $scope.signout = function() {
-    controllerUtils.logout();
+    identityService.logout();
   };
 
   $scope.ignoreLock = function() {
@@ -22,7 +20,8 @@ angular.module('copayApp.controllers').controller('WarningController', function(
     } else {
       w.ignoreLock = 1;
       $scope.loading = true;
-      controllerUtils.startNetwork(w, $scope);
+      //controllerUtils.startNetwork(w, $scope);
+      // TODO
     }
   };
 });

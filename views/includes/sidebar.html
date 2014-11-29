@@ -1,9 +1,9 @@
-<div ng-controller="SidebarController" ng-init="getWallets()">
+<div ng-controller="SidebarController" ng-init="init()">
   <header ng-show="$root.wallet">
     <div class="col1">
       <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
     </div>
-    <div class="col2" ng-class="{'col2_full':!wallets[0]}">
+    <div class="col2" ng-class="{'col2_full':!wallets.length}">
       <div class="oh m5t m10r"> 
         <div class="right size-10">[ {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]</div>
         <div class="name-wallet">
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="col3" ng-if="wallets[0]">
+    <div class="col3" ng-if="wallets.length">
       <a ng-class="{'selected':walletSelection}" 
         ng-click="toggleWalletSelection()"> 
         <span ng-show="!walletSelection">

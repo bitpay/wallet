@@ -439,6 +439,33 @@ describe('PublicKeyRing model', function() {
   });
 
 
+  it('#fromObj old backup ', function() {
+    var pkr = PublicKeyRing.fromObj(JSON.parse(obj));
+    should.exist(pkr);
+    pkr.isComplete().should.equal(true);
+    pkr.requiredCopayers.should.equal(2);
+    pkr.totalCopayers.should.equal(2);
+  });
+
+  it('#fromObj #toObj rountrip', function() {
+    var obj2 = PublicKeyRing.fromObj(JSON.parse(obj)).toObj();
+    var pkr = PublicKeyRing.fromObj(obj2);
+    pkr.isComplete().should.equal(true);
+    pkr.requiredCopayers.should.equal(2);
+    pkr.totalCopayers.should.equal(2);
+  });
+
+  it('#fromUntrustedObj #toObj rountrip', function() {
+    var obj2 = PublicKeyRing.fromUntrustedObj(JSON.parse(obj)).toObj();
+    var pkr = PublicKeyRing.fromUntrustedObj(obj2);
+    pkr.isComplete().should.equal(true);
+    pkr.requiredCopayers.should.equal(2);
+    pkr.totalCopayers.should.equal(2);
+  });
+
+
+
+
   it('#getHDParams should return the right one', function() {
     var config = {
       networkName: 'livenet',
@@ -482,15 +509,15 @@ describe('PublicKeyRing model', function() {
     });
   });
 
-  it('#getForPath should return 5 pubkeys', function() {
+  it('#_getForPath should return 5 pubkeys', function() {
     var w = getCachedW().w;
-    var pubkeys = w.getForPath('m/45\'/2147483647/1/0');
+    var pubkeys = w._getForPath('m/45\'/2147483647/1/0');
     pubkeys.length.should.equal(5);
   });
 
-  it('#getForPaths should return 2 arrays of 5 pubkey ', function() {
+  it('#_getForPaths should return 2 arrays of 5 pubkey ', function() {
     var w = getCachedW().w;
-    var pubkeys = w.getForPaths(['m/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1']);
+    var pubkeys = w._getForPaths(['m/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1']);
     pubkeys.length.should.equal(2);
     pubkeys[0].length.should.equal(5);
     pubkeys[1].length.should.equal(5);
@@ -505,4 +532,8 @@ describe('PublicKeyRing model', function() {
     ret.pubKeys[1].length.should.equal(5);
   });
 
+
+
 });
+
+var obj = '{"walletId":"0a903a2eb33793d1","networkName":"testnet","requiredCopayers":2,"totalCopayers":2,"indexes":[{"copayerIndex":2147483647,"changeIndex":0,"receiveIndex":1},{"copayerIndex":0,"changeIndex":39,"receiveIndex":0},{"copayerIndex":1,"changeIndex":102,"receiveIndex":39}],"copayersExtPubKeys":["tpubD9peJo88ArhgmJNqRkQmhHt4zAGTYVowsHrDj385xyXyMy4RhWZpV5Qx2mMDUVzpbAD5V9jci5D7cZaHhjLYP8gEkngmTKtSF4Y7V3qkAsy","tpubD8udwzKWwNUgoE2WG7LYsXKf5m1eRtJ1Etp43vnoxViFmrmZ1ND2CkdqGyQtuidcN1CiqdBUvbKegbdsMQaj5VLY2hbA4LEnLDrqkgSzikz"],"nicknameFor":{"03338b105850c7126f1f5b0439b357765b17ead8eed15bcdfdbd28d0e3915b696f":"5@queparece","0286b376d65cc4af0de5932fb8299cbef2ca9ed37ec9fdb0edfd4e9cb74eac45da":"4@queparece"}}';
