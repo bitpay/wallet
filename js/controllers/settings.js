@@ -1,8 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, controllerUtils, notification) {
-  controllerUtils.redirIfLogged();
-
+angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, notification) {
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
   $scope.insightLivenet = config.network.livenet.url;

@@ -318,7 +318,7 @@ describe('Wallet model', function() {
 
   it('#addressIsOwn', function() {
     var wallet = cachedCreateW2();
-    var allAddresses = wallet.getAddressesStr();
+    var allAddresses = wallet.getAddresses();
     for (var i = 0; i < allAddresses.length; i++) {
       wallet.addressIsOwn(allAddresses[i]).should.equal(true);
     }

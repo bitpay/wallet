@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CopayersController',
-  function($scope, $rootScope, $location, controllerUtils) {
+  function($scope, $rootScope, $location) {
+
     if (!$rootScope.wallet.isReady()) {
       $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
     }
@@ -9,9 +10,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
     $scope.secret = $rootScope.wallet.getSecret();
 
     $scope.goToWallet = function() {
-      controllerUtils.updateAddressList();
       $location.path('/homeWallet');
-
     };
 
     $scope.copayersList = function() {

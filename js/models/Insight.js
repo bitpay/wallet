@@ -200,8 +200,6 @@ Insight.prototype.subscribe = function(addresses) {
   addresses = Array.isArray(addresses) ? addresses : [addresses];
   var self = this;
 
-console.log('[Insight.js.202] subscribe STARTED'); //TODO
-
   function handlerFor(self, address) {
     return function(txid) {
       // verify the address is still subscribed
@@ -293,6 +291,7 @@ Insight.prototype.getTransactions = function(addresses, from, to, cb) {
 };
 
 Insight.prototype.getUnspent = function(addresses, cb) {
+console.log('[Insight.js.296:addresses:]',addresses); //TODO
   preconditions.shouldBeArray(addresses);
   preconditions.shouldBeFunction(cb);
 

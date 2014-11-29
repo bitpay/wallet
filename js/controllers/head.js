@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, $timeout, notification, controllerUtils) {
+angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, $timeout, notification, identityService, balanceService) {
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
 
   $scope.signout = function() {
     $rootScope.signingOut = true;
-    controllerUtils.logout();
+    identityService.logout();
   };
 
   $scope.refresh = function() {
@@ -23,12 +23,10 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
 
     if (w.isReady()) {
       w.sendWalletReady();
-      if ($rootScope.addrInfos.length > 0) {
-        controllerUtils.clearBalanceCache(w);
-        controllerUtils.updateBalance(w, function() {
-          $rootScope.$digest();
-        });
-      }
+      balanceService.clearBalanceCache(w);
+      balanceService.update(w, function() {
+        $rootScope.$digest();
+      }, true);
     }
   };
 

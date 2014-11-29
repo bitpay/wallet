@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportProfileController',
-  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, pluginManager, identityService) {
-    controllerUtils.redirIfLogged();
-
+  function($scope, $rootScope, $location, notification, isMobile, pluginManager, identityService) {
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
@@ -41,7 +39,7 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
 
         } else {
           var firstWallet = iden.getLastFocusedWallet();
-          controllerUtils.bindProfile($scope, iden, firstWallet);
+          root.bind($scope, iden, firstWallet);
         }
       });
     };

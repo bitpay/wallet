@@ -3,10 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, isMobile, notification, controllerUtils, rateService) {
-
-    controllerUtils.redirIfNotComplete();
-
+  function($scope, $rootScope, $window, $timeout, $modal, isMobile, notification, rateService) {
     var w = $rootScope.wallet;
     preconditions.checkState(w);
     preconditions.checkState(w.settings.unitToSatoshi);
@@ -33,6 +30,34 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.$digest();
     });
 
+    $scope.setAlternativeAmount = function(w, tx, cb) {
+      rateService.whenAvailable(function() {
+        _.each(tx.outs, function(out) {
+          var valueSat = out.value * w.settings.unitToSatoshi;
+          out.alternativeAmount = rateService.toFiat(valueSat, w.settings.alternativeIsoCode);
+          out.alternativeIsoCode = w.settings.alternativeIsoCode;
+        });
+        if (cb) return cb(tx);
+      });
+    };
+
+    $scope.updateTxs = function() {
+      var w = $rootScope.wallet;
+      if (!w) return;
+
+      var res = w.getPendingTxProposals();
+      _.each(res.txs, function(tx) {
+        $scope.setAlternativeAmount(w, tx);
+        if (tx.merchant) {
+          var url = tx.merchant.request_url;
+          var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
+          tx.merchant.domain = domain;
+        }
+      });
+      $scope.txps = res.txs;
+// TODO
+//      $rootScope.pendingTxCount = res.pendingForUs;
+    };
 
     /**
      * Setting the two related amounts as properties prevents an infinite
@@ -76,7 +101,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.loadTxs = function() {
-      controllerUtils.updateTxs();
+      $scope.updateTxs();
       setTimeout(function() {
         $scope.loading = false;
         $rootScope.$digest();

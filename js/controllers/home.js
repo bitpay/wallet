@@ -1,8 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager, identityService, Compatibility) {
-  controllerUtils.redirIfLogged();
-
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, identityService, Compatibility) {
   // This is only for backwards compat, insight api should link to #!/confirmed directly
   if (getParam('confirmed')) {
     var hashIndex = window.location.href.indexOf('/?');
@@ -24,7 +22,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
-    $rootScope.starting = true;
     identityService.open($scope, form);
   }
 
