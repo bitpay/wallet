@@ -85,7 +85,8 @@ angular.module('copayApp.services')
         if (err) return cb(err);
         console.log('[identityService.js.95] LISTO OPEN!!'); //TODO
         root.bind(iden);
-        return iden.openWallets(cb);
+        iden.openWallets();
+        return cb();
       });
     };
 
@@ -243,9 +244,8 @@ angular.module('copayApp.services')
     };
 
     root.bind = function(iden) {
-
-console.log('[identityService.js.250] PROFILE BINE'); //TODO
       preconditions.checkArgument(_.isObject(iden));
+      copay.logger.debug('Binding profile...');
 
       var self = this;
       root.setupGlobalVariables(iden);
