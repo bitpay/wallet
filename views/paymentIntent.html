@@ -17,8 +17,8 @@
               <div class="w-popup-sub">
                 <span ng-if="item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
                 <div ng-if="!item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-                  <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
-                  <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
+                  <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
+                  <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
                 </div>
               </div>
             </a>

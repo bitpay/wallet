@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
 
   $scope.wallets = [];
   $rootScope.title = 'Payment intent';
-  $scope.wallets = rootScope.iden.listWallets();
+  $scope.wallets = $rootScope.iden.listAllWallets();
 
   var l = $scope.wallet.length;
   _.each($scope.wallets, function(w, i) {
@@ -39,8 +39,8 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
 
     $scope.cancel = function() {
       $rootScope.pendingPayment = null;
-      $location.path('/');
       $modalInstance.close();
+      $location.path('/homeWallet');
     };
   };
 
