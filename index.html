@@ -49,12 +49,11 @@
           <i class="fi-loop icon-rotate"></i>
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
-        <nav class="tab-bar" ng-if="$root.wallet &&
-          $root.wallet.isComplete() && !$root.wallet.isLocked">
+        <nav class="tab-bar"  ng-if="$root.iden" >
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
-          <section class="right-small text-center top-balance">
+          <section class="right-small text-center top-balance" ng-if="$root.wallet && $root.wallet.isComplete() && !$root.wallet.isLocked" >
             <span ng-if="$root.updatingBalance">
               <i class="fi-bitcoin-circle icon-rotate spinner"></i>
             </span>
