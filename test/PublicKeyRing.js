@@ -154,10 +154,24 @@ describe('PublicKeyRing model', function() {
     var pubkeyring = setup.w;
 
     var address = pubkeyring._getAddress(3, false, 4);
-
     pubkeyring.cache.addressToPath[address].should.equal("m/45'/4/0/3");
-    _.indexOf(pubkeyring.cache.receiveAddresses,address).should.be.above(0);
-    _.indexOf(pubkeyring.cache.changeAddresses,address).should.be.equal(-1);
+  });
+
+  it('cach4es calls to getAddress (2)', function() {
+    var setup = getCachedW();
+    var pubkeyring = setup.w;
+    var address = pubkeyring.generateAddress(false, setup.pub);
+    _.indexOf(pubkeyring.getReceiveAddresses(),address).should.be.above(-1);
+    _.indexOf(pubkeyring.getAddresses(),address).should.be.above(-1);
+  });
+
+
+  it('cach4es calls to getAddress (3)', function() {
+    var setup = getCachedW();
+    var pubkeyring = setup.w;
+    var address = pubkeyring.generateAddress(true, setup.pub);
+    _.indexOf(pubkeyring.getReceiveAddresses(),address).should.be.equal(-1);
+    _.indexOf(pubkeyring.getAddresses(),address).should.be.above(-1);
   });
 
   it('should generate one address by default', function() {
