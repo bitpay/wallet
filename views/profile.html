@@ -49,6 +49,7 @@
             <th>Type</th>
             <th class="hide-for-small-only">Status</th>
             <th>Balance</th>
+            <th>Approx Size</th>
             <th class="text-right">Actions</th>
           </tr>
         </thead>
@@ -69,6 +70,12 @@
                   {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
               </span>
             </td>
+          <td>
+              <span>
+                  {{item.sizes().total/1000}} kB 
+              </span>
+            </td>
+   
             <td class="text-right">
               <div ng-show="loading != item.id">
                 <a title="Download Backup" class="text-gray" ng-click="downloadWalletBackup(item)"
