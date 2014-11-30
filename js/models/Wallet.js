@@ -1387,11 +1387,39 @@ Wallet.prototype._getActionList = function(txp) {
  * @desc Retrieve Pendings Transaction proposals (see {@link TxProposals})
  * @return {Object[]} each object returned represents a transaction proposal
  */
+Wallet.prototype.getPendingTxProposalsCount = function() {
+  var self = this;
+  var txps = this.txProposals.txps;
+  var maxRejectCount = this.maxRejectCount();
+  var myId = this.getMyCopayerId();
+  var pending =0, pendingForUs = 0;
+
+  _.each(txps, function(inTxp, ntxid) {
+    if (!inTxp.isPending(maxRejectCount))
+      return;
+
+    pending++;
+
+    if (!inTxp.signedBy[myId] && !inTxp.rejectedBy[myId]  )
+      pendingForUs++
+  });
+
+
+  return {
+    pending: pending,
+    pendingForUs: pendingForUs,
+  };
+};
+
+
+/**
+ * @desc Retrieve Pendings Transaction proposals (see {@link TxProposals})
+ * @return {Object[]} each object returned represents a transaction proposal
+ */
 Wallet.prototype.getPendingTxProposals = function() {
   var self = this;
   var ret = [];
   ret.txs = [];
-  var pendingForUs = 0;
   var txps = this.txProposals.txps;
   var maxRejectCount = this.maxRejectCount();
   var satToUnit = 1 / this.settings.unitToSatoshi;
@@ -1403,7 +1431,6 @@ Wallet.prototype.getPendingTxProposals = function() {
     var txp = _.clone(inTxp);
     txp.ntxid = ntxid;
 
-    pendingForUs++;
     var addresses = {};
     var outs = JSON.parse(txp.builder.vanilla.outs);
     outs.forEach(function(o) {
@@ -1426,7 +1453,6 @@ Wallet.prototype.getPendingTxProposals = function() {
     ret.txs.push(txp);
   });
 
-  ret.pendingForUs = pendingForUs;
   return ret;
 };
 
