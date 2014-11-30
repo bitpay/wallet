@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, identityService, Compatibility) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility) {
   // This is only for backwards compat, insight api should link to #!/confirmed directly
   if (getParam('confirmed')) {
     var hashIndex = window.location.href.indexOf('/?');
@@ -24,6 +24,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
     $rootScope.starting = true;
     identityService.open(form.email.$modelValue, form.password.$modelValue, function(err, iden) {
+      $rootScope.starting = false;
       if (err) {
         copay.logger.warn(err);
         if ((err.toString() || '').match('PNOTFOUND')) {
@@ -31,7 +32,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         } else {
           $scope.error = 'Unknown error';
         }
-        $rootScope.$digest()
       }
     });
   }
