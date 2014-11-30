@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('balanceService', function($rootScope, $sce, $location, $filter, notification, $timeout, rateService) {
+  .factory('balanceService', function($rootScope, $filter, rateService) {
     var root = {};
     var _balanceCache = {};
     root.clearBalanceCache = function(w) {
@@ -17,9 +17,9 @@ angular.module('copayApp.services')
         if (err) return cb(err);
 
         var r = {};
-        r.totalBalance = balanceSat * satToUnit;
+        r.totalBalance = $filter('noFractionNumber')(balanceSat * satToUnit);
         r.totalBalanceBTC = (balanceSat / COIN);
-        r.availableBalance = safeBalanceSat * satToUnit;
+        r.availableBalance = $filter('noFractionNumber')(safeBalanceSat * satToUnit);
         r.availableBalanceBTC = (safeBalanceSat / COIN);
         r.safeUnspentCount = safeUnspentCount;
 
@@ -39,11 +39,16 @@ angular.module('copayApp.services')
         r.balanceByAddr = balanceByAddr;
 
         if (rateService.isAvailable()) {
-          r.totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
-          r.alternativeIsoCode = w.settings.alternativeIsoCode;
-          r.lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
-          r.alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
+          var totalBalanceAlternative = rateService.toFiat(balanceSat, w.settings.alternativeIsoCode);
+          var lockedBalanceAlternative = rateService.toFiat(balanceSat - safeBalanceSat, w.settings.alternativeIsoCode);
+          var alternativeConversionRate = rateService.toFiat(100000000, w.settings.alternativeIsoCode);
+
+          r.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
+          r.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
+          r.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
+          
           r.alternativeBalanceAvailable = true;
+          r.alternativeIsoCode = w.settings.alternativeIsoCode;
         };
 
         r.updatingBalance = false;
