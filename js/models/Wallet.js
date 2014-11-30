@@ -1434,10 +1434,8 @@ Wallet.prototype.getPendingTxProposals = function() {
     var addresses = {};
     var outs = JSON.parse(txp.builder.vanilla.outs);
     outs.forEach(function(o) {
-      if (!self.addressIsOwn(o.address)) {
-        if (!addresses[o.address]) addresses[o.address] = 0;
-        addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
-      };
+      if (!addresses[o.address]) addresses[o.address] = 0;
+      addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
     });
     txp.outs = [];
     _.each(addresses, function(value, address) {
