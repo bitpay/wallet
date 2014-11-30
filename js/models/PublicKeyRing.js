@@ -497,8 +497,6 @@ PublicKeyRing.prototype.getCosigner = function(pubKey) {
 PublicKeyRing.prototype.buildAddressCache = function() {
   var ret = [];
   var self = this;
-
-  log.info('Rebuilding Address Cache...this will take a while');
   _.each(this.indexes, function(index) {
     for (var i = 0; i < index.receiveIndex; i++) {
       self._getAddress(i, false, index.copayerIndex);
@@ -507,7 +505,6 @@ PublicKeyRing.prototype.buildAddressCache = function() {
       self._getAddress(i, true, index.copayerIndex);
     }
   });
-  log.info('...done!');
 };
 
 

@@ -108,7 +108,7 @@ Identity.create = function(opts, cb) {
  *
  * After opening a profile, and setting its wallet event handlers,
  * the client must run .netStart on each
- * wallet (or call Identity.netStart())
+ * (probably on iden's newWallet handler
  *
  * @param {Object} opts
  * @param {Object} opts.storage
@@ -322,7 +322,6 @@ Identity.prototype.close = function() {
 };
 
 
-// TODO: Add feedback function
 Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var self = this;
   preconditions.checkArgument(cb);
@@ -336,27 +335,29 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
 
   var w = importFunction(obj, readOpts);
   if (!w) return cb(new Error('Could not decrypt'));
-  log.debug('Wallet decryped:' + w.getName());
+  log.debug('Wallet decrypted:' + w.getName());
 
   self._checkVersion(w.version);
   log.debug('Updating Indexes for wallet:' + w.getName());
   w.updateIndexes(function(err) {
     log.debug('Adding wallet to profile:' + w.getName());
     self.bindWallet(w);
-    self.updateFocusedTimestamp(w.getId());
-
-    var writeOpts = _.extend({
-      noWallets: true
-    }, opts);
-
-    self.storeWallet(w, function(err) {
-      if (err) return cb(err);
-      self.store(writeOpts, function(err) {
-        return cb(err, w);
-      });
-    });
+    self.storeWallet(w, cb);
   });
 };
+
+
+Identity.prototype.importMultipleWalletsFromObj = function(objs, opts) {
+  var self = this;
+  opts = opts || {};
+
+  async.eachSeries(objs, function(walletData, cb) {
+    if (!walletData)
+      return cb();
+    self.importWalletFromObj(walletData, opts, cb);
+  });
+};
+
 
 /**
  * @param {Wallet} wallet
@@ -414,29 +415,10 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   iden.store(opts, function(err) {
     if (err) return cb(err); //profile already exists
 
-    opts.failIfExists = false;
-    async.map(json.wallets, function(walletData, cb) {
-
-      if (!walletData)
-        return cb();
-
-      iden.importWalletFromObj(walletData, opts, function(err, w) {
-        if (err) return cb(err);
-        log.debug('Wallet ' + w.getId() + ' imported');
-        cb();
-      });
-    }, function(err, results) {
-      if (err) return cb(err);
-
-      iden.store(opts, function(err) {
-        return cb(err, iden);
-      });
-    });
-
+    return cb(null, iden, json.wallets);
   });
-
-
 };
+
 
 /**
  * @desc binds a wallet's events and emits 'newWallet'

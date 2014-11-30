@@ -220,8 +220,7 @@ Insight.prototype.subscribe = function(addresses) {
     if (!self.subscribed[address]) {
       var handler = handlerFor(self, address);
       self.subscribed[address] = handler;
-      log.debug('Subscribe to: ', address);
-
+//      log.debug('Subscribe to: ', address);
       s.emit('subscribe', address);
       s.on(address, handler);
     }
