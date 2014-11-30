@@ -83,7 +83,6 @@ angular.module('copayApp.services')
 
       copay.Identity.open(opts, function(err, iden) {
         if (err) return cb(err);
-        console.log('[identityService.js.95] LISTO OPEN!!'); //TODO
         root.bind(iden);
         iden.openWallets();
         return cb();
@@ -256,6 +255,7 @@ angular.module('copayApp.services')
         copay.logger.debug('newWallet:', w.getName(), wid, iden.getLastFocusedWalletId());
         root.installWalletHandlers(w);
         if (wid == iden.getLastFocusedWalletId()) {
+          $rootScope.starting = false;
           copay.logger.debug('GOT Focused wallet:', w.getName());
           root.setFocusedWallet(w, true);
           root.goWalletHome();
