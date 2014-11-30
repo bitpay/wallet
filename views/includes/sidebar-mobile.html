@@ -16,8 +16,8 @@
           <div ng-if="$root.wallet.isComplete()">
             <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
             <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-              <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-              <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">{{$root.wallet.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+              <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
+              <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
               <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">N/A</span>
             </div> 
           </div>
@@ -58,8 +58,8 @@
             <div class="oh">
               <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
               <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-                <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}</b>
-                <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{item.balanceInfo.alternativeIsoCode}}</span>
+                <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
+                <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
               </div>
               <span ng-if="!item.isComplete()">Waiting for copayers...</span>
             </div>
