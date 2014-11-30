@@ -18,18 +18,10 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = $scope.password;
       updateStatus('Importing profile - Setting things up...');
 
-      identityService.importProfile(str,password, function(err){
-      })
-      copay.Identity.importFromEncryptedFullJson(str, password, {
-        pluginManager: pluginManager,
-        network: config.network,
-        networkName: config.networkName,
-        walletDefaults: config.wallet,
-        passphraseConfig: config.passphraseConfig,
-      }, function(err, iden) {
+      identityService.importProfile(str,password, function(err, iden) {
+        $scope.loading = false;
         if (err) {
-          $scope.loading = false;
-
+          copay.logger.warn(err);
           if ((err.toString() || '').match('BADSTR')) {
             $scope.error = 'Bad password or corrupt profile file';
           } else if ((err.toString() || '').match('EEXISTS')) {
@@ -37,12 +29,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
           } else {
             $scope.error = 'Unknown error';
           }
-          $scope.$digest();
-
-        } else {
-          var firstWallet = iden.getLastFocusedWallet();
-          root.bind($scope, iden, firstWallet);
-        }
+          $rootScope.$digest();
+        } 
       });
     };
 

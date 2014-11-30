@@ -310,10 +310,10 @@ angular.module('copayApp.services')
         networkName: config.networkName,
         walletDefaults: config.wallet,
         passphraseConfig: config.passphraseConfig,
-      }, function(err, iden) {
+      }, function(err, iden, walletObjs) {
         if (err) return cb(err);
         root.bind(iden);
-        iden.openWallets();
+        iden.importMultipleWalletsFromObj(walletObjs);
         return cb();
       });
     };

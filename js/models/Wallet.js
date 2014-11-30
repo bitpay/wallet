@@ -1986,7 +1986,7 @@ Wallet.prototype.subscribeToAddresses = function() {
 
   var addresses = this.getAddresses();
   this.blockchain.subscribe(addresses);
-  log.debug('Subscribed to ' + addresses.length + ' addresses');
+  log.debug('Wallet:' + this.getName() + ' Subscribed to:' + addresses.length + ' addresses');
 };
 
 /**
