@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.error = message;
       $scope.loading = false;
-      $scope.loadTxs();
+      $scope.updateTxs();
     };
 
     $scope.submitForm = function(form) {
@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('SendController',
         if (err) return $scope._showError(err);
 
         $scope.notifyStatus(status);
-        $scope.loadTxs();
+        $scope.updateTxs();
       });
     };
 
@@ -405,7 +405,7 @@ angular.module('copayApp.controllers').controller('SendController',
       w.issueTx(ntxid, function(err, txid, status) {
         $scope.notifyStatus(status);
         if (cb) return cb();
-        else $scope.loadTxs();
+        else $scope.updateTxs();
       });
     };
 
@@ -415,7 +415,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       w.signAndSend(ntxid, function(err, id, status) {
         $scope.notifyStatus(status);
-        $scope.loadTxs();
+        $scope.updateTxs();
       });
     };
 
@@ -424,7 +424,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.txAlertCount = 0;
       w.reject(ntxid);
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
-      $scope.loadTxs();
+      $scope.updateTxs();
     };
 
     $scope.clearMerchant = function(callback) {
