@@ -444,7 +444,8 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
  * @emits newWallet  (walletId)
  */
 Identity.prototype.bindWallet = function(w) {
-  this.wallets[w.getId()] = w;
+  var self = this;
+  self.wallets[w.getId()] = w;
   log.debug('Binding wallet:' + w.getName());
 
   w.on('txProposalsUpdated', function() {

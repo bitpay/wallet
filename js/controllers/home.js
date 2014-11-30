@@ -23,8 +23,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       return;
     }
     $rootScope.starting = true;
-    identityService.open(form.email.$modelValue, form.password.$modelValue, function(err) {
-      $rootScope.starting = false;
+    identityService.open(form.email.$modelValue, form.password.$modelValue, function(err, iden) {
       if (err) {
         copay.logger.warn(err);
         if ((err.toString() || '').match('PNOTFOUND')) {
