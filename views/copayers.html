@@ -4,8 +4,7 @@
   <div class="row hide-for-large-up">
     <div class="medium-12 small-12 columns">
       <h1 translate>
-        Waiting copayers for {{$root.wallet.getName()}} 
-        <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
+        Waiting copayers...
       </h1>
     </div>
   </div>
@@ -15,7 +14,6 @@
         <div class="panel oh">
           <h2 class="line-b">
             Share this secret with your other copayers 
-            <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
           </h2>
           <div class="text-center">
             <qrcode size="250" data="{{secret}}"></qrcode>
