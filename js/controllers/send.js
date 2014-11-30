@@ -55,8 +55,6 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       });
       $scope.txps = res.txs;
-// TODO
-//      $rootScope.pendingTxCount = res.pendingForUs;
     };
 
     /**
@@ -100,7 +98,8 @@ angular.module('copayApp.controllers').controller('SendController',
       });
 
 
-    $scope.loadTxs = function() {
+    $scope.init = function() {
+      $rootScope.pendingTxCount = 0;
       $scope.updateTxs();
       setTimeout(function() {
         $scope.loading = false;

@@ -46,8 +46,9 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
 
   $scope.init = function() {
-
-    // Change focused wallet
+    // This should be called only once.
+   
+    // focused wallet change
     if ($rootScope.wallet) {
       $rootScope.$watch('wallet', function() {
         $scope.walletSelection = false;
@@ -55,7 +56,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       });
     }
 
-    // Change wallet list
+    // wallet list chane
     if ($rootScope.iden) {
       var iden = $rootScope.iden;
       iden.on('newWallet', function() {
