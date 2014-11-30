@@ -23,7 +23,7 @@
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>
                 <span class="size-14" ng-show="!$root.updatingBalance">
-                  <b>{{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+                  <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
                 </span>
               </div>
               <div class="large-2 columns show-for-large-up text-right">
@@ -42,7 +42,7 @@
                       <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                     </span>
                     <span class="size-14" ng-show="!$root.updatingBalance">
-                      <b>{{addr.balance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+                      <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
                     </span>
                   </div>
                 </div>
