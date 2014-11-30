@@ -9,9 +9,9 @@
   <div class="row" ng-repeat="out in tx.outs">
     <div class="large-3 medium-3 small-4 columns">
       <div class="size-12">
-        <span>{{out.value |noFractionNumber}} {{$root.wallet.settings.unitName}}</span>
+        <span>{{out.value}} {{$root.wallet.settings.unitName}}</span>
         <span class="label secondary round">
-          {{out.alternativeAmount|noFractionNumber}} {{out.alternativeIsoCode}}
+          {{out.alternativeAmount}} {{out.alternativeIsoCode}}
         </span>
       </div>
     </div>
@@ -106,7 +106,7 @@
         {{tx.missingSignatures}} signatures missing
       </div>
       <div class="ellipsis small text-gray show-for-large-up m5t">
-        <strong translate>Fee</strong>: {{tx.fee|noFractionNumber}} {{$root.wallet.settings.unitName}}
+        <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
         <strong translate>Proposal ID</strong>: {{tx.ntxid}}
       </div>
     </div>
