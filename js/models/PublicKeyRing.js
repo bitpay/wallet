@@ -49,8 +49,7 @@ function PublicKeyRing(opts) {
 PublicKeyRing.prototype.resetCache = function() {
   this.cache = {};
   this.cache.addressToPath = {};
-  this.cache.receiveAddresses = [];
-  this.cache.changeAddresses = [];
+  this.cache.pathToAddress = {};
 
   // Non persistent cache
   this._isChange = {};
@@ -110,12 +109,24 @@ PublicKeyRing.fromObj = function(opts) {
     pkr.addCopayer(opts.copayersExtPubKeys[k]);
   }
 
-  if (opts.cache) {
-    log.debug('PublicKeyRing: Using address cache');
-    pkr.cache = opts.cache;
+  if (opts.cache && opts.cache.addressToPath) {
+    log.info('PublicKeyRing: Using address cache');
+    pkr.cache.addressToPath = opts.cache.addressToPath;
+    pkr.rebuildCache();
   }
 
   return pkr;
+};
+
+
+PublicKeyRing.prototype.rebuildCache = function() {
+  if (!this.cache.addressToPath)
+    return;
+
+  var self = this;
+  _.each(this.cache.addressToPath, function(path, address) {
+    self.cache.pathToAddress[path] = address;
+  });
 };
 
 PublicKeyRing.fromUntrustedObj = function(opts) {
@@ -140,7 +151,11 @@ PublicKeyRing.prototype.toObj = function() {
       return b.extendedPublicKeyString();
     }),
     nicknameFor: this.nicknameFor,
-    cache: this.cache,
+
+    // We only store addressToPath and derive the reset from it
+    cache: {
+      addressToPath: this.cache.addressToPath
+    },
   };
 };
 
@@ -314,7 +329,7 @@ PublicKeyRing.prototype.getPubKeys = function(index, isChange, copayerIndex) {
   log.warn('Slow pubkey derivation...');
   var path = HDPath.Branch(index, isChange, copayerIndex);
   var pubKeys = _.map(this.copayersHK, function(hdKey) {
-      return hdKey.derive(path).eckey.public;
+    return hdKey.derive(path).eckey.public;
   });
 
   return pubKeys;
@@ -353,6 +368,8 @@ PublicKeyRing.prototype.getRedeemScript = function(index, isChange, copayerIndex
 PublicKeyRing.prototype._getAddress = function(index, isChange, id) {
   var copayerIndex = this.getCosigner(id);
   var path = HDPath.FullBranch(index, isChange, copayerIndex);
+  if (this.cache.pathToAddress[path])
+    return this.cache.pathToAddress[path];
 
   log.info('Generating Address:', index, isChange, copayerIndex);
   var script = this.getRedeemScript(index, isChange, copayerIndex);
@@ -364,10 +381,7 @@ PublicKeyRing.prototype._getAddress = function(index, isChange, id) {
 
 PublicKeyRing.prototype._cacheAddress = function(address, path, isChange) {
   this.cache.addressToPath[address] = path;
-  if (isChange)
-    this.cache.changeAddresses.push(address);
-  else
-    this.cache.receiveAddresses.push(address);
+  this.cache.pathToAddress[path] = address;
 };
 
 /**
@@ -397,7 +411,7 @@ PublicKeyRing.prototype.getHDParams = function(id) {
  * @return {HDPath}
  */
 PublicKeyRing.prototype.pathForAddress = function(address) {
-  this._checkAndRebuildCache();
+  this._checkCache();
   var path = this.cache.addressToPath[address];
   if (!path) throw new Error('Couldn\'t find path for address ' + address);
   return path;
@@ -439,18 +453,18 @@ PublicKeyRing.prototype.addressIsOwn = function(address) {
  * @return {boolean}
  */
 PublicKeyRing.prototype.addressIsChange = function(address) {
-  this._checkAndRebuildCache();
+  this._checkCache();
 
-  if (!this.cache.addressToPath[address])
+  var path = this.cache.addressToPath[address];
+  if (!path)
     return null;
 
+  var p = HDPath.indexesForPath(path);
+
   //Memoization Only, never stored.
-  if (_.isUndefined(this._isChange[address])) {
-    this._isChange[address] = _.indexOf(this.cache.changeAddresses, address) >= 0;
-  }
+  this._isChange[address] = p.isChange;
   return !!this._isChange[address];
 };
-
 
 
 /**
@@ -497,9 +511,18 @@ PublicKeyRing.prototype.buildAddressCache = function() {
 };
 
 
-PublicKeyRing.prototype._checkAndRebuildCache = function(opts) {
-  // If cache exists, it has to be updated
+PublicKeyRing.prototype.size = function(opts) {
+  var self = this;
+  return _.reduce(this.indexes, function(sum, index) {
+    return sum + index.receiveIndex + index.changeIndex
+  }, 0);
+};
+
+PublicKeyRing.prototype._checkCache = function(opts) {
   if (_.isEmpty(this.cache.addressToPath)) {
+    this.buildAddressCache();
+  }
+  if (_.size(this.cache.addressToPath) !== this.size()) {
     this.buildAddressCache();
   }
 };
@@ -513,10 +536,38 @@ PublicKeyRing.prototype._checkAndRebuildCache = function(opts) {
  * @returns {AddressInfo[]}
  */
 PublicKeyRing.prototype.getAddresses = function() {
-  this._checkAndRebuildCache();
-  var ret  = this.cache.receiveAddresses.concat(this.cache.changeAddresses);
-  return ret;
+  this._checkCache();
+  return _.keys(this.cache.addressToPath);
 };
+
+/**
+ * getAddressesOrderer
+ *  {@link Wallet#getAddressesOrderer}
+ *
+ * @param pubkey
+ * @return {string[]}
+ */
+PublicKeyRing.prototype.getAddressesOrderer = function(pubkey) {
+  this._checkCache();
+
+  var info = _.map(this.cache.addressToPath, function(path, addr) {
+    var p = HDPath.indexesForPath(path);
+    p.address = addr;
+    return p;
+  });
+
+  var copayerIndex = this.getCosigner(pubkey);
+  var l = info.length;
+
+  var sortedInfo = _.sortBy(info, function(i) {
+    var goodness =  ( (i.copayerIndex !== copayerIndex) ?  2 * l : 0 ) +(  i.isChange ?  l : 0 ) + l - i.addressIndex;
+    return goodness;
+  });
+
+  return _.pluck(sortedInfo, 'address');
+};
+
+
 
 /**
  * @desc
@@ -526,9 +577,12 @@ PublicKeyRing.prototype.getAddresses = function() {
  * @returns {AddressInfo[]}
  */
 PublicKeyRing.prototype.getReceiveAddresses = function() {
-  this._checkAndRebuildCache();
-  var ret  = this.cache.receiveAddresses;
-  return ret;
+  this._checkCache();
+
+  var self = this;
+  return _.filter(this.getAddresses(), function(addr) {
+    return !self.addressIsChange(addr);
+  });
 };
 
 

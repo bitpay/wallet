@@ -5,16 +5,14 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     $rootScope.title = 'Receive';
     $scope.loading = false;
     $scope.showAll = false;
-    $scope.isNewAddr = false;
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
       $scope.loading = true;
-      $scope.isNewAddr = false;
       w.generateAddress(null);
+      $scope.setAddressList();
       $timeout(function() {
         $scope.loading = false;
-        $scope.isNewAddr = true;
       }, 1);
     };
 
@@ -39,55 +37,32 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       });
     };
 
-    $rootScope.$watch('addrInfos', function() {
-      if ($rootScope.updatingBalance) return;
-      $scope.addressList();
-    });
-
     $scope.toggleShowAll = function() {
       $scope.showAll = !$scope.showAll;
-      $scope.addressList();
+      $scope.setAddressList();
     };
 
-    $scope.limitAddress = function(elements, isNewAddr) {
-
-      if(!isNewAddr){
-        elements = elements.sort(function(a, b) {
-          return (+a.isChange - +b.isChange);
-        });
-      }
-
-      if (elements.length <= 1 || $scope.showAll) {
-        return elements;
-      }
-
-      // Show last 3 non-change addresses plus those with balance
-      var addrs = elements.filter(function(e, i) {
-        return (!e.isChange && i < 3) || (e.balance && e.balance > 0);
-      });
-
-      return addrs;
-    };
-
-    $scope.addressList = function() {
-      $scope.addresses = [];
+    $scope.setAddressList = function() {
       var w = $rootScope.wallet;
       var balance = $rootScope.balanceByAddr;
 
-      var addresses = w.getAddresses();
+      var addresses = w.getAddressesOrderer();
       if (addresses) {
         $scope.addrLength = addresses.length;
+
+        if (!$scope.showAll)
+          addresses = addresses.slice(0,3);
+
+        var list = [];
         _.each(addresses, function(address, index){
-          $scope.addresses.push({
+          list.push({
             'index': index,
             'address': address,
             'balance': balance ? balance[address] : 0,
             'isChange': w.addressIsChange(address),
-            // TODO
-            'owned': w.addressIsOwn(address),
           });
         });
-        $scope.addresses = $scope.limitAddress($scope.addresses, $scope.isNewAddr);
+        $scope.addresses = list;
       }
     };
   }

@@ -1961,6 +1961,17 @@ Wallet.prototype.getAddresses = function() {
   return this.publicKeyRing.getAddresses();
 };
 
+
+/**
+ * @desc gets the list of addresses, orderder for the caller:
+ *  1) himselfs first
+ *  2) receive address first
+ *  3) last created first
+ */
+Wallet.prototype.getAddressesOrderer = function() {
+  return this.publicKeyRing.getAddressesOrderer(this.publicKey);
+};
+
 /**
  * @desc Alias for {@link PublicKeyRing#getAddresses}
  * @return {Buffer[]}
