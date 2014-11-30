@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportProfileController',
-  function($scope, $rootScope, $location, notification, isMobile, pluginManager, identityService) {
+  function($scope, $rootScope, $location, notification, isMobile, identityService) {
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
@@ -18,6 +18,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = $scope.password;
       updateStatus('Importing profile - Setting things up...');
 
+      identityService.importProfile(str,password, function(err){
+      })
       copay.Identity.importFromEncryptedFullJson(str, password, {
         pluginManager: pluginManager,
         network: config.network,
@@ -55,10 +57,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     };
 
     $scope.import = function(form) {
-      $scope.loading = true;
 
       if (form.$invalid) {
-        $scope.loading = false;
         $scope.error = 'Please enter the required fields';
         return;
       }
@@ -67,11 +67,11 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
-        $scope.loading = false;
         $scope.error = 'Please, select your backup file';
         return;
       }
 
+      $scope.loading = true;
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {
