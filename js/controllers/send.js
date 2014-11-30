@@ -190,6 +190,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         comment: commentText,
         url: (payInfo && payInfo.merchant) ? payInfo.merchant : null,
       }, function(err, txid, status) {
+        $scope.loading = false;
         // reset fields
         $scope.address = $scope.amount = $scope.commentText = null;
         form.address.$pristine = form.amount.$pristine = true;
