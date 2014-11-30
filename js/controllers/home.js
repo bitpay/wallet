@@ -24,7 +24,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
     $rootScope.starting = true;
     identityService.open(form.email.$modelValue, form.password.$modelValue, function(err) {
-console.log('[home.js.27]'); //TODO
       $rootScope.starting = false;
       if (err) {
         copay.logger.warn(err);

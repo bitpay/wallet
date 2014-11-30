@@ -185,7 +185,6 @@ Identity.prototype.openWallets = function() {
     return va < vb ? 1 : (va === vb ? 0 : -1);
   });
 
-  console.log('[Identity.js.188]', self.walletIds, self.focusedTimestamps); //TODO
   // opens the wallets, in the order they were last accessed. Emits open events (newWallet)
   async.eachSeries(self.walletIds, function(walletId, a_cb) {
     self.readAndBindWallet(walletId, a_cb);
