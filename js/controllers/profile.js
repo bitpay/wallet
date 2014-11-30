@@ -23,6 +23,12 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     });
   };
 
+  $scope.setWallets = function() {
+    if (!$rootScope.iden) return;
+    $scope.wallets=$rootScope.iden.listWallets();
+  };
+
+
   $scope.downloadWalletBackup = function(w) {
     if (!w) return;
     backupService.walletDownload(w);
