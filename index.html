@@ -50,7 +50,7 @@
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
         <nav class="tab-bar" ng-if="$root.wallet &&
-          $root.wallet.isReady() && !$root.wallet.isLocked">
+          $root.wallet.isComplete() && !$root.wallet.isLocked">
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
@@ -91,7 +91,7 @@
         <section ng-class="{'main':$root.iden && !$root.starting}" ng-view></section>
 
         <div class="bottom-bar" ng-if="$root.wallet &&
-          $root.wallet.isReady() && !$root.wallet.isLocked">
+          $root.wallet.isComplete() && !$root.wallet.isLocked">
           <div ng-include="'views/includes/bottombar-mobile.html'"></div>
         </div>
 

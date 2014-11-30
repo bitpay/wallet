@@ -95,7 +95,6 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
-  this.focusedTimestamp = opts.focusedTimestamp || 0;
   this.syncedTimestamp = opts.syncedTimestamp || 0;
   this.lastMessageFrom = {};
 
@@ -126,7 +125,7 @@ Wallet.TX_SIGNED_AND_BROADCASTED = 'txSignedAndBroadcasted';
 
 Wallet.prototype.emitAndKeepAlive = function(args) {
   var args = Array.prototype.slice.call(arguments);
-  log.debug('Wallet Emitting:', args);
+  log.debug('Wallet:'+ this.getName() + '  Emitting:', args);
   this.keepAlive();
   this.emit.apply(this, arguments);
 };
@@ -158,7 +157,6 @@ Wallet.PERSISTED_PROPERTIES = [
   'txProposals',
   'privateKey',
   'addressBook',
-  'focusedTimestamp',
   'syncedTimestamp',
   'secretNumber',
 ];
@@ -647,18 +645,6 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   }
 };
 
-/**
- * @desc Updates the wallet's last modified timestamp and triggers a save
- * @param {number} ts - the timestamp
- */
-Wallet.prototype.updateFocusedTimestamp = function(ts) {
-  preconditions.checkArgument(ts);
-  preconditions.checkArgument(_.isNumber(ts));
-  preconditions.checkArgument(ts > 2999999999, 'use miliseconds');
-  this.focusedTimestamp = ts;
-};
-
-
 Wallet.prototype.updateSyncedTimestamp = function(ts) {
   preconditions.checkArgument(ts);
   preconditions.checkArgument(_.isNumber(ts));
@@ -877,15 +863,8 @@ Wallet.decodeSecret = function(secretB) {
   }
 };
 
-/**
- * @desc Locks other sessions from connecting to the wallet
- * @see Async#lockIncommingConnections
- */
-Wallet.prototype._lockIncomming = function() {
-  this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
-};
 
-Wallet.prototype._setBlockchainListeners = function() {
+Wallet.prototype._setupBlockchainHandlers = function() {
 
   var self = this;
   self.blockchain.removeAllListeners();
@@ -915,7 +894,18 @@ Wallet.prototype._setBlockchainListeners = function() {
   }
 }
 
+Wallet.prototype._setupNetworkHandlers = function() {
+  var self = this;
 
+  var net = this.network;
+  net.removeAllListeners();
+  net.on('connect', self._onConnect.bind(self));
+  net.on('data', self._onData.bind(self));
+  net.on('no_messages', self._onNoMessages.bind(self));
+  net.on('connect_error', function() {
+    self.emitAndKeepAlive('connectionError');
+  });
+};
 
 /**
  * @desc Sets up the networking with other peers.
@@ -926,43 +916,26 @@ Wallet.prototype._setBlockchainListeners = function() {
  * @emits ready
  * @emits txProposalsUpdated
  *
- * @TODO: FIX PROTOCOL -- emit with a space is shitty
- * @emits no messages
  */
 Wallet.prototype.netStart = function() {
   var self = this;
+
+  if (self.netStarted)
+    return;
+
+
+  self._setupBlockchainHandlers();
+  self.netStarted= true;
 
   if (!this.isShared()) {
     self.emitAndKeepAlive('ready');
     return;
   }
 
-  var net = this.network;
-  net.removeAllListeners();
-  net.on('connect', self._onConnect.bind(self));
-  net.on('data', self._onData.bind(self));
-  net.on('no messages', self._onNoMessages.bind(self));
-  net.on('connect_error', function() {
-    self.emitAndKeepAlive('connectionError');
-  });
-
-  if (this.publicKeyRing.isComplete()) {
-    this._lockIncomming();
-  }
-
-
-
-  if (net.started) {
-    log.debug('Wallet:' + self.getName() + ': Wallet networking was ready')
-    self.emitAndKeepAlive('ready', net.getPeer());
-    return;
-  }
-
-
+  self._setupNetworkHandlers();
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
-
   var startOpts = {
     copayerId: myId,
     privkey: myIdPriv,
@@ -971,11 +944,12 @@ Wallet.prototype.netStart = function() {
     secretNumber: self.secretNumber,
   };
 
-
+  if (this.publicKeyRing.isComplete()) {
+    this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+  }
   log.debug('Wallet:' + self.id + ' Starting network.');
-  net.start(startOpts, function() {
-    self._setBlockchainListeners();
-    self.emitAndKeepAlive('ready', net.getPeer());
+  this.network.start(startOpts, function() {
+    self.emitAndKeepAlive('ready');
   });
 };
 
@@ -1059,7 +1033,6 @@ Wallet.prototype.toObj = function() {
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
     syncedTimestamp: this.syncedTimestamp || 0,
-    focusedTimestamp: this.focusedTimestamp || 0,
     secretNumber: this.secretNumber,
   };
 
@@ -1103,7 +1076,6 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
  * @param {string} o.networkName - 'livenet' or 'testnet'
  * @param {Object} o.publicKeyRing - PublicKeyRing to be deserialized by {@link PublicKeyRing#fromObj}
  * @param {number} o.syncedTimestamp - ts of the last synced message with insifht (in microseconds, as insight returns ts)
- * @param {number} o.focusedTimestamp - last time this wallet was focused (open) by a user (in miliseconds)
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
  *
@@ -1180,8 +1152,6 @@ Wallet.fromObj = function(o, readOpts) {
   }
 
   opts.syncedTimestamp = o.syncedTimestamp || 0;
-  opts.focusedTimestamp = o.focusedTimestamp || 0;
-
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
 
@@ -2114,7 +2084,11 @@ Wallet.prototype.maxRejectCount = function() {
 // TODO: Can we add cache to getUnspent?
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
-  this.blockchain.getUnspent(this.getAddresses(), function(err, unspentList) {
+  var addresses = this.getAddresses();
+
+
+  log.debug('Wallet ' + this.getName() + ': Getting unspents from ' +  addresses.length + ' addresses');
+  this.blockchain.getUnspent(addresses, function(err, unspentList) {
 
     if (err) {
       return cb(err);
@@ -2322,7 +2296,7 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
  */
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
-  if (!self.isReady())
+  if (!self.isComplete())
     return callback();
   log.debug('Wallet:' + this.id + ' Updating indexes...');
   var tasks = this.publicKeyRing.indexes.map(function(index) {
@@ -2440,12 +2414,12 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  * @desc Closes the wallet and disconnects all services
  */
 Wallet.prototype.close = function(cb) {
+  log.debug('## CLOSING Wallet: ' + this.id);
   this.network.removeAllListeners();
   this.network.cleanUp();
   this.blockchain.removeAllListeners();
   this.blockchain.destroy();
 
-  log.debug('## CLOSING Wallet: ' + this.id);
   // TODO
   //  this.lock.release(function() {
   if (cb) return cb();
@@ -2521,7 +2495,7 @@ Wallet.prototype.requiresMultipleSignatures = function() {
  * @desc Returns true if the keyring is complete
  * @return {boolean}
  */
-Wallet.prototype.isReady = function() {
+Wallet.prototype.isComplete = function() {
   return this.publicKeyRing.isComplete();
 };
 

@@ -28,7 +28,6 @@ function Network(opts) {
   if (opts.transports) {
     this.socketOptions['transports'] = opts.transports;
   }
-  this.socket = this.createSocket();
 }
 
 nodeUtil.inherits(Network, EventEmitter);
@@ -236,7 +235,7 @@ Network.prototype._onMessage = function(enc) {
   }
 };
 
-Network.prototype._setupConnectionHandlers = function(opts, cb) {
+Network.prototype._setupSocketHandlers = function(opts, cb) {
   preconditions.checkState(this.socket);
   log.debug('setting up connection', opts);
   var self = this;
@@ -274,10 +273,7 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
   });
   self.socket.on('error', self._onError.bind(self));
 
-  self.socket.on('no messages', self.emit.bind(self, 'no messages'));
-
-
-  var pubkey = self.getKey().public.toString('hex');
+  self.socket.on('no_messages', self.emit.bind(self, 'no_messages'));
   self.socket.on('connect', function() {
     var pubkey = self.getKey().public.toString('hex');
     log.debug('Async subscribing to pubkey:', pubkey);
@@ -287,13 +283,8 @@ Network.prototype._setupConnectionHandlers = function(opts, cb) {
     self.socket.on('disconnect', function() {
       self.socket.emit('subscribe', pubkey);
     });
-
-    log.debug('Async subs done');
-
     if (typeof cb === 'function') cb();
   });
-
-
 };
 
 Network.prototype._onError = function(err) {
@@ -350,7 +341,9 @@ Network.prototype.start = function(opts, openCallback) {
   this.privkey = opts.privkey;
   this.setCopayerId(opts.copayerId);
   this.maxPeers = opts.maxPeers || this.maxPeers;
-  this._setupConnectionHandlers(opts, openCallback);
+
+  this.socket = this.createSocket();
+  this._setupSocketHandlers(opts, openCallback);
 };
 
 Network.prototype.createSocket = function() {

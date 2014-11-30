@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $location) {
 
-    if (!$rootScope.wallet.isReady()) {
+    if (!$rootScope.wallet.isComplete()) {
       $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
     }
     $scope.loading = false;

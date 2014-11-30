@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('WarningController', function(
   };
 
   $scope.signout = function() {
-    identityService.logout();
+    identityService.signout();
   };
 
   $scope.ignoreLock = function() {

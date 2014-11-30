@@ -22,7 +22,19 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
-    identityService.open($scope, form);
+    $rootScope.starting = true;
+    identityService.open(form.email.$modelValue, form.password.$modelValue, function(err) {
+      $rootScope.starting = false;
+      if (err) {
+        copay.logger.warn(err);
+        if ((err.toString() || '').match('PNOTFOUND')) {
+          $scope.error = 'Invalid email or password';
+        } else {
+          $scope.error = 'Unknown error';
+        }
+        $rootScope.$digest()
+      }
+    });
   }
 
   function getParam(sname) {
