@@ -77,7 +77,6 @@ angular.module('copayApp.services')
         w.balanceInfo.updating = false;
 
         if (isFocused) {
-          _.extend($rootScope, w.balanceInfo);
           $rootScope.updatingBalance = false;
         }
         if (cb) cb();

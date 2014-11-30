@@ -14,11 +14,11 @@
         <div class="founds size-12">
           <span ng-if="!$root.wallet.isComplete()">Waiting for copayers...</span>
           <div ng-if="$root.wallet.isComplete()">
-            <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-            <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-              <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-              <span ng-if="alternativeBalanceAvailable" class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
-              <span ng-if="!alternativeBalanceAvailable" class="alt-currency">N/A</span>
+            <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+            <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+              <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+              <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">{{$root.wallet.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+              <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">N/A</span>
             </div> 
           </div>
         </div>

@@ -342,8 +342,8 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   log.debug('Updating Indexes for wallet:' + w.getName());
   w.updateIndexes(function(err) {
     log.debug('Adding wallet to profile:' + w.getName());
-    self.updateFocusedTimestamp(w.getId());
     self.bindWallet(w);
+    self.updateFocusedTimestamp(w.getId());
 
     var writeOpts = _.extend({
       noWallets: true
@@ -544,8 +544,8 @@ Identity.prototype.createWallet = function(opts, cb) {
   var self = this;
 
   var w = new walletClass(opts);
-  self.updateFocusedTimestamp(w.getId());
   self.bindWallet(w);
+  self.updateFocusedTimestamp(w.getId());
   self.storeWallet(w, function(err) {
     if (err) return cb(err);
     self.store({
@@ -636,7 +636,7 @@ Identity.prototype.decodeSecret = function(secret) {
  */
 Identity.prototype.getLastFocusedWalletId = function() {
   var max = _.max(this.focusedTimestamp);
-  var aId = this.wallets[0] ? this.wallets[0].getId() : this.walletIds[0];
+  var aId = _.findKey(this.wallets) || this.walletIds[0];
 
   if (!max)
     return aId;
