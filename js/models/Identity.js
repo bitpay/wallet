@@ -165,17 +165,16 @@ Identity.prototype.emitAndKeepAlive = function(args) {
 
 /**
  * @desc open profile's wallets. Call it AFTER setting
- * the proper even listeners
+ * the proper even listeners. no callback.
  *
- * @param cb
  */
-Identity.prototype.openWallets = function(cb) {
+Identity.prototype.openWallets = function() {
   var self = this;
 
 
   if (_.isEmpty(self.walletIds)) {
     self.emitAndKeepAlive('noWallets')
-    return cb();
+    return;
   }
 
   // First read the lastFocused wallet
@@ -187,10 +186,10 @@ Identity.prototype.openWallets = function(cb) {
   });
 
   console.log('[Identity.js.188]', self.walletIds, self.focusedTimestamps); //TODO
-  // Then read the rest of the wallets...
+  // opens the wallets, in the order they were last accessed. Emits open events (newWallet)
   async.eachSeries(self.walletIds, function(walletId, a_cb) {
     self.readAndBindWallet(walletId, a_cb);
-  }, cb);
+  });
 };
 
 /**

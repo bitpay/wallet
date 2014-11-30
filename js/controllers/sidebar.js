@@ -44,14 +44,30 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
 
   $scope.init = function() {
+
+    // Change focused wallet
     if ($rootScope.wallet) {
       $rootScope.$watch('wallet', function() {
         $scope.walletSelection = false;
         $scope.setWallets();
       });
     }
-  };
 
+    // Change wallet list
+    if ($rootScope.iden) {
+      var iden = $rootScope.iden;
+      iden.on('newWallet', function() {
+        $scope.walletSelection = false;
+        $scope.setWallets();
+      });
+      iden.on('deleteWallet', function() {
+        $scope.walletSelection = false;
+        $scope.setWallets();
+      });
+ 
+    }
+ 
+  };
 
   $scope.setWallets = function() {
     if (!$rootScope.iden) return;
