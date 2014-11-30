@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
     $scope.setAddressList = function() {
       var w = $rootScope.wallet;
-      var balance = $rootScope.balanceByAddr;
+      var balance = w.balanceInfo.balanceByAddr;
 
       var addresses = w.getAddressesOrderer();
       if (addresses) {
@@ -58,7 +58,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
           list.push({
             'index': index,
             'address': address,
-            'balance': balance ? balance[address] : 0,
+            'balance': balance ? balance[address] : null,
             'isChange': w.addressIsChange(address),
           });
         });

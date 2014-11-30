@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('pendingTxsService', function($rootScope, $sce, $location, $filter, notification, $timeout, rateService) {
+  .factory('pendingTxsService', function($rootScope) {
     var root = {};
     root.update = function(w) {
       var w = $rootScope.wallet;
