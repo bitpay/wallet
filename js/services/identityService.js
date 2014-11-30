@@ -126,7 +126,6 @@ angular.module('copayApp.services')
     root.installWalletHandlers = function(w) {
       var wid = w.getId();
       w.on('connectionError', function() {
-        console.log('err', w.getName()); //TODO
         if (root.isFocused(wid)) {
           var message = "Could not connect to the Insight server. Check your settings and network configuration";
           notification.error('Networking Error', message);
@@ -134,7 +133,6 @@ angular.module('copayApp.services')
       });
 
       w.on('corrupt', function(peerId) {
-        console.log('corr', w.getName()); //TODO
         if (root.isFocused(wid)) {
           notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
         }
@@ -149,7 +147,6 @@ angular.module('copayApp.services')
       });
 
       w.on('tx', function(address, isChange) {
-        console.log('tx', w.getName()); //TODO
         if (!isChange) {
           notification.funds('Funds received on ' + w.getName(), address);
         }
@@ -159,14 +156,12 @@ angular.module('copayApp.services')
       });
 
       w.on('balanceUpdated', function() {
-        console.log('b', w.getName()); //TODO
         balanceService.update(w, function() {
           $rootScope.$digest();
         }, root.isFocused(wid));
       });
 
       w.on('insightReconnected', function() {
-        console.log('i', w.getName()); //TODO
         $rootScope.reconnecting = false;
         balanceService.update(w, function() {
           $rootScope.$digest();
@@ -174,14 +169,13 @@ angular.module('copayApp.services')
       });
 
       w.on('insightError', function() {
-        console.log('i', w.getName()); //TODO
         if (root.isFocused(wid)) {
           $rootScope.reconnecting = true;
           $rootScope.$digest();
         }
       });
       w.on('newAddresses', function() {
-        console.log('newAddress', w.getName()); //TODO
+        // Nothing yet
       });
 
       w.on('txProposalsUpdated', function() {

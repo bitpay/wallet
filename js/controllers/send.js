@@ -41,7 +41,9 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
-    $scope.updateTxs = function() {
+
+    $scope.updateTxs = _.throttle(function() {
+console.log('[send.js.44:updateTxs:]'); //TODO
       var w = $rootScope.wallet;
       if (!w) return;
 
@@ -60,11 +62,12 @@ angular.module('copayApp.controllers').controller('SendController',
         }        
       });
       $scope.txps = res.txs;
-    };
+    },  1000);
 
     /**
      * Setting the two related amounts as properties prevents an infinite
      * recursion for watches while preserving the original angular updates
+     *
      */
     Object.defineProperty($scope,
       "alternative", {
@@ -106,11 +109,14 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.init = function() {
       $rootScope.pendingTxCount = 0;
       $scope.updateTxs();
-      setTimeout(function() {
-        $scope.loading = false;
-        $rootScope.$digest();
-      }, 1);
-    }
+      var w = $rootScope.wallet;
+      w.on('txProposalEvent', $scope.updateTxs);
+    };
+
+    $scope.$on("$destroy", function(){
+      var w = $rootScope.wallet;
+      w.removeListener('txProposalEvent', $scope.updateTxs );
+    });
 
     $scope.showAddressBook = function() {
       return w && _.keys(w.addressBook).length > 0;
@@ -419,16 +425,14 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.sign = function(ntxid) {
       $scope.loading = true;
       $scope.error = $scope.success = null;
-
       w.signAndSend(ntxid, function(err, id, status) {
+        $scope.loading = false;
         $scope.notifyStatus(status);
         $scope.updateTxs();
       });
     };
 
     $scope.reject = function(ntxid) {
-      $scope.loading = true;
-      $rootScope.txAlertCount = 0;
       w.reject(ntxid);
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
       $scope.updateTxs();
