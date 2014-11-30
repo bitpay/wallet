@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
 
   $scope.wallets = [];
   $rootScope.title = 'Payment intent';
-  $scope.wallets = $rootScope.iden.listAllWallets();
+  $scope.wallets = $rootScope.iden.listWallets();
 
   var l = $scope.wallet.length;
   _.each($scope.wallets, function(w, i) {
