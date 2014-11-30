@@ -37,10 +37,10 @@ angular.module('copayApp.services')
       }
     };
 
-    root.create = function(email, password) {
+    root.create = function(email, password, cb) {
       copay.Identity.create({
-        email: form.email.$modelValue,
-        password: form.password.$modelValue,
+        email: email,
+        password: password,
         pluginManager: pluginManager,
         network: config.network,
         networkName: config.networkName,
@@ -50,6 +50,7 @@ angular.module('copayApp.services')
       }, function(err, iden) {
         if (err) return cb(err);
         preconditions.checkState(iden);
+        root.bind(iden);
 
         var walletOptions = {
           nickname: iden.fullName,
@@ -60,10 +61,7 @@ angular.module('copayApp.services')
           name: 'My wallet',
         };
         iden.createWallet(walletOptions, function(err, wallet) {
-          if (err) return cb(err);
-          root.bind(iden);
-
-          return cb();
+          return cb(err);
         });
       });
 
@@ -314,6 +312,9 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
       }, function(err, iden) {
         if (err) return cb(err);
+        root.bind(iden);
+        iden.openWallets();
+        return cb();
       });
     };
 

@@ -13,11 +13,11 @@
       <div class="founds size-12">
         <span ng-if="!$root.wallet.isComplete()">Waiting for copayers...</span>
         <div ng-if="$root.wallet.isComplete()">
-          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          <div ng-if="$root.wallet && !$root.updatingBalance" data-options="disable_for_touch:true">
-            <b class="m5r">{{totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-            <span ng-if="alternativeBalanceAvailable" class="alt-currency">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
-            <span ng-if="!alternativeBalanceAvailable" class="alt-currency">N/A</span>
+          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+            <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0 |noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
+            <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">{{$root.wallet.balanceInfo.totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
+            <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">N/A</span>
           </div> 
         </div>
       </div>
@@ -34,12 +34,12 @@
       </a>
     </div>
   </header>
-  <div class="locked" ng-show="lockedBalance && !walletSelection">
+  <div class="locked" ng-show="$root.wallet.balanceInfo.lockedBalance && !walletSelection">
     <span class="text-gray">
       <i class="fi-lock"></i> {{'Locked'|translate}} &nbsp;
     </span>
-    <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-    <span ng-if="$root.wallet && !$root.updatingBalance" class="text-gray"><b>{{lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}} </b> - {{lockedBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}
+    <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+    <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" class="text-gray"><b>{{$root.wallet.balanceInfo.lockedBalance || 0|noFractionNumber}} {{$root.wallet.settings.unitName}} </b> - {{$root.wallet.balanceInfo.lockedBalanceAlternative |noFractionNumber:2}} {{$root.wallet.balanceInfo.alternativeIsoCode}}
     </span>
     <i class="fi-info medium right text-gray size-14" 
       tooltip="{{'Balance locked in pending transaction proposals'|translate}}"
