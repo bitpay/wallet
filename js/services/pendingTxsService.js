@@ -8,8 +8,8 @@ angular.module('copayApp.services')
       var w = $rootScope.wallet;
       if (!w) return;
 
-      var res = w.getPendingTxProposals();
-      $rootScope.pendingTxCount = res.pendingForUs;
+      var ret = w.getPendingTxProposalsCount();
+      $rootScope.pendingTxCount = ret.pendingForUs;
     };
     return root;
   });
