@@ -109,7 +109,7 @@ angular.module('copayApp.services')
       $location.path('/send');
     };
 
-    root.setFocusedWallet = function(w) {
+    root.setFocusedWallet = function(w, dontUpdateIt) {
       if (!_.isObject(w))
         w = $rootScope.iden.getWalletById(w);
       preconditions.checkState(w && _.isObject(w));
@@ -117,9 +117,10 @@ angular.module('copayApp.services')
       copay.logger.debug('Set focus:', w.getName());
       $rootScope.wallet = w;
 
-      $rootScope.iden.updateFocusedTimestamp(w.getId());
-      pendingTxsService.update();
+      if (!dontUpdateIt)
+        $rootScope.iden.updateFocusedTimestamp(w.getId());
 
+      pendingTxsService.update();
       $timeout(function() {
         $rootScope.$digest();
       })
@@ -143,7 +144,7 @@ angular.module('copayApp.services')
       });
       w.on('ready', function() {
         var isFocused = root.isFocused(wid);
-        console.log('GOT READY [identityService.js.184:isFocused:]', w.getName(), isFocused); //TODO
+        copay.logger.debug('Wallet:' + w.getName() + ' is ready. Focused:', isFocused);
 
         balanceService.update(w, function() {
           $rootScope.$digest();
@@ -252,15 +253,15 @@ angular.module('copayApp.services')
 
       iden.on('newWallet', function(wid) {
         var w = iden.getWalletById(wid);
-        copay.logger.debug('newWallet:', w.getName());
+        copay.logger.debug('newWallet:', w.getName(), wid, iden.getLastFocusedWalletId());
         root.installWalletHandlers(w);
-        w.netStart();
         if (wid == iden.getLastFocusedWalletId()) {
-          copay.logger.debug('GOT Focused wallet!', w.getName());
-          root.setFocusedWallet(w);
+          copay.logger.debug('GOT Focused wallet:', w.getName());
+          root.setFocusedWallet(w, true);
           root.goWalletHome();
-          $rootScope.$digest()
         }
+        // At the end (after all handlers are in place)...start the wallet.
+        w.netStart();
       });
 
       iden.on('noWallets', function() {
@@ -273,7 +274,7 @@ angular.module('copayApp.services')
         if ($rootScope.wallet.id === wid) {
           $rootScope.wallet = null;
           var lastFocused = iden.getLastFocusedWalletId();
-          self.setFocusedWallet(lastFocused);
+          root.setFocusedWallet(lastFocused);
         }
       });
 
@@ -304,7 +305,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.importProfile = function(str, password, cb){
+    root.importProfile = function(str, password, cb) {
       copay.Identity.importFromEncryptedFullJson(str, password, {
         pluginManager: pluginManager,
         network: config.network,

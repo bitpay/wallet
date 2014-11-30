@@ -33,7 +33,9 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   };
 
   $scope.switchWallet = function(wid) {
+    $scope.walletSelection = false;
     identityService.setFocusedWallet(wid);
+    identityService.goWalletHome();
   };
 
   $scope.toggleWalletSelection = function() {
