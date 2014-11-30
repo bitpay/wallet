@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, isMobile, notification, rateService) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, isMobile, notification, rateService) {
     var w = $rootScope.wallet;
     preconditions.checkState(w);
     preconditions.checkState(w.settings.unitToSatoshi);
@@ -53,6 +53,11 @@ angular.module('copayApp.controllers').controller('SendController',
           var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
           tx.merchant.domain = domain;
         }
+        if (tx.outs) {
+          _.each(tx.outs, function(out) {
+            out.value = $filter('noFractionNumber')(out.value);
+          });
+        }        
       });
       $scope.txps = res.txs;
     };
@@ -115,7 +120,9 @@ angular.module('copayApp.controllers').controller('SendController',
       var pp = $rootScope.pendingPayment;
       $scope.address = pp.address + '';
       var amount = pp.data.amount / w.settings.unitToSatoshi * 100000000;
-      $scope.amount = amount;
+      $scope.amount = $filter('noFractionNumber')(amount);
+      var alternativeAmount = rateService.toFiat((amount + defaultFee) * unitToSatoshi, alternativeIsoCode);
+      $scope.alternativeAmountPayPro = $filter('noFractionNumber')(alternativeAmount, 2);
       $scope.commentText = pp.data.message;
     }
 

@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope) {
+  function($scope, $rootScope, $filter) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -138,6 +138,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
         _.each(items, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
+          tx.amount = $filter('noFractionNumber')(tx.amount);
         });
 
         var index = _.indexBy(items, 'rateTs');
@@ -145,7 +146,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
           if (!err && res) {
             _.each(res, function(r) {
               var tx = index[r.ts];
-              tx.alternativeAmount = r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null;
+              tx.alternativeAmount =   $filter('noFractionNumber')(
+                (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
             });
             setTimeout(function() {
               $scope.$digest();
@@ -153,12 +155,9 @@ angular.module('copayApp.controllers').controller('HistoryController',
           }
         });
 
-
-
         $scope.blockchain_txs = w.cached_txs = items;
         $scope.nbPages = res.nbPages;
         $scope.totalItems = res.nbItems;
-
 
         $scope.loading = false;
         setTimeout(function() {
