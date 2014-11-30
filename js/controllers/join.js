@@ -125,6 +125,19 @@ angular.module('copayApp.controllers').controller('JoinController',
         privateHex: $scope.private,
       }, function(err) {
         $scope.loading = false;
+        if (err) {
+          if (err === 'joinError')
+            notification.error('Fatal error connecting to Insight server');
+          else if (err === 'walletFull')
+            notification.error('The wallet is full');
+          else if (err === 'badNetwork')
+            notification.error('Network Error', 'Wallet network configuration missmatch');
+          else if (err === 'badSecret')
+            notification.error('Bad secret', 'The secret string you entered is invalid');
+          else {
+            notification.error('Error', err.message || err);
+          }
+        }
       });
     }
   });

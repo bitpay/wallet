@@ -524,14 +524,14 @@ describe('Wallet model', function() {
 
 
 
-  it('#isReady', function() {
+  it('#isComplete', function() {
     var w = createW();
     w.publicKeyRing.isComplete().should.equal(false);
-    w.isReady().should.equal(false);
+    w.isComplete().should.equal(false);
 
     var w2 = createW2();
     w2.publicKeyRing.isComplete().should.equal(true);
-    w2.isReady().should.equal(true);
+    w2.isComplete().should.equal(true);
   });
 
   it('handle network indexes correctly', function() {
@@ -2497,7 +2497,7 @@ describe('Wallet model', function() {
         blockchainOpts: {},
       }, function(err, w) {
         should.exist(w);
-        w.isReady().should.equal(true);
+        w.isComplete().should.equal(true);
         var wo = w.toObj();
         wo.opts.id.should.equal('48ba2f1ffdfe9708');
         wo.opts.spendUnconfirmed.should.equal(true);

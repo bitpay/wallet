@@ -13,8 +13,6 @@ angular.module('copayApp.services')
       cb = cb || function() {};
       var satToUnit = 1 / w.settings.unitToSatoshi;
       var COIN = bitcore.util.COIN;
-
-      console.log('[balanceS.js.257] FETCH BALANCE: ', w.getName()); //TODO
       w.getBalance(function(err, balanceSat, balanceByAddrSat, safeBalanceSat, safeUnspentCount) {
         if (err) return cb(err);
 
@@ -55,26 +53,32 @@ angular.module('copayApp.services')
     };
 
     root.update = function(w, cb, isFocused) {
-      console.log(' UPDATE BALANCE!!!!', w ? w.getName() : 'current'); //TODO
-
       w = w || $rootScope.wallet;
-      if (!w || !w.isReady()) return;
+      if (!w || !w.isComplete()) return;
 
-      console.log('DO UPDATE BALANCE!!!!', w.getName()); //TODO
+      copay.logger.debug('Updating balance of:',  w.getName(), isFocused);
       var wid = w.getId();
 
+
+      // cache available? Set the cached values until we updated them
       if (_balanceCache[wid]) {
         w.balanceInfo = _balanceCache[wid];
       } else {
-        $rootScope.updatingBalance = true;
+        if (isFocused)
+          $rootScope.updatingBalance = true;
       }
+
+      w.balanceInfo = w.balanceInfo || {};
+      w.balanceInfo.updating = true;
 
       root._fetchBalance(w, function(err, res) {
         if (err) throw err;
         w.balanceInfo=_balanceCache[wid] = res;
-        $rootScope.updatingBalance = false;
+        w.balanceInfo.updating = false;
+
         if (isFocused) {
           _.extend($rootScope, w.balanceInfo);
+          $rootScope.updatingBalance = false;
         }
         if (cb) cb();
       });

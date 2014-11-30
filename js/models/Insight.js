@@ -226,9 +226,6 @@ Insight.prototype.subscribe = function(addresses) {
       s.on(address, handler);
     }
   });
-
-
-console.log('[Insight.js.202] subscribe ENDED'); //TODO
 };
 
 Insight.prototype.getSubscriptions = function(addresses) {
@@ -291,7 +288,6 @@ Insight.prototype.getTransactions = function(addresses, from, to, cb) {
 };
 
 Insight.prototype.getUnspent = function(addresses, cb) {
-console.log('[Insight.js.296:addresses:]',addresses); //TODO
   preconditions.shouldBeArray(addresses);
   preconditions.shouldBeFunction(cb);
 

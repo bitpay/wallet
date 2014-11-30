@@ -1,9 +1,9 @@
 'use strict';
-
 angular.module('copayApp.services')
-  .factory('identityService', function($rootScope, $location, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService) {
-    var root = {};
+  .factory('identityService', function($rootScope, $location, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService) {
+    notification.enableHtml5Mode(); // for chrome: if support, enable it
 
+    var root = {};
     root.check = function(scope) {
       copay.Identity.checkIfExistsAny({
         pluginManager: pluginManager,
@@ -25,7 +25,7 @@ angular.module('copayApp.services')
     root.goWalletHome = function() {
       var w = $rootScope.wallet;
       if (w) {
-        if (!w.isReady()) {
+        if (!w.isComplete()) {
           $location.path('/copayers');
         } else {
           if ($rootScope.pendingPayment) {
@@ -37,8 +37,7 @@ angular.module('copayApp.services')
       }
     };
 
-    root.create = function(scope, form) {
-      $rootScope.starting = true;
+    root.create = function(email, password) {
       copay.Identity.create({
         email: form.email.$modelValue,
         password: form.password.$modelValue,
@@ -49,19 +48,9 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
         failIfExists: true,
       }, function(err, iden) {
-        if (err || !iden) {
-          copay.logger.debug(err);
-          if (err && (err.match('EEXISTS') || err.match('BADCREDENTIALS'))) {
-            scope.error = 'User already exists!';
-          } else {
-            scope.error = 'Unknown error when connecting Insight Server';
-          }
-          $rootScope.starting = false;
-          $timeout(function() {
-            $rootScope.$digest()
-          }, 1);
-          return;
-        }
+        if (err) return cb(err);
+        preconditions.checkState(iden);
+
         var walletOptions = {
           nickname: iden.fullName,
           networkName: config.networkName,
@@ -71,61 +60,37 @@ angular.module('copayApp.services')
           name: 'My wallet',
         };
         iden.createWallet(walletOptions, function(err, wallet) {
-          if (err || !wallet) {
-            copay.logger.debug(err);
-            scope.error = 'Could not create default wallet';
-            $rootScope.starting = false;
-            $timeout(function() {
-              $rootScope.$digest()
-            }, 1);
-            return;
-          }
-          root.bind(scope, iden, wallet.id);
+          if (err) return cb(err);
+          root.bind(iden);
+
+          return cb();
         });
       });
 
     };
 
 
-    root.open = function(scope, form) {
-      $rootScope.starting = true;
-      copay.Identity.open({
-        email: form.email.$modelValue,
-        password: form.password.$modelValue,
+    root.open = function(email, password, cb) {
+      var opts = {
+        email: email,
+        password: password,
         pluginManager: pluginManager,
         network: config.network,
         networkName: config.networkName,
         walletDefaults: config.wallet,
         passphraseConfig: config.passphraseConfig,
-      }, function(err, iden) {
-        $rootScope.starting = false;
-        if (err && !iden) {
-          if ((err.toString() || '').match('PNOTFOUND')) {
-            scope.error = 'Invalid email or password';
-          } else {
-            scope.error = 'Unknown error';
-          }
-          $timeout(function() {
-            $rootScope.$digest()
-          }, 1);
-        } else {
+      };
 
-          console.log('[identityService.js.95] LISTO OPEN!!'); //TODO
-          var firstWallet = iden.getLastFocusedWallet();
-          root.bind(scope, iden, firstWallet);
-        }
+      copay.Identity.open(opts, function(err, iden) {
+        if (err) return cb(err);
+        console.log('[identityService.js.95] LISTO OPEN!!'); //TODO
+        root.bind(iden);
+        return iden.openWallets(cb);
       });
     };
 
     root.deleteWallet = function($scope, iden, w) {
-      $rootScope.iden.deleteWallet(w.id, function() {
-        notification.info(name + ' deleted', $filter('translate')('This wallet was deleted'));
-        if ($rootScope.wallet.id === w.id) {
-          $rootScope.wallet = null;
-          var lastFocused = $rootScope.iden.getLastFocusedWallet();
-          root.bind($scope, $rootScope.iden, lastFocused);
-        }
-      });
+      $rootScope.iden.deleteWallet(w.id);
     };
 
     root.isFocused = function(wid) {
@@ -133,13 +98,8 @@ angular.module('copayApp.services')
     };
 
     root.setupGlobalVariables = function(iden) {
-      notification.enableHtml5Mode(); // for chrome: if support, enable it
-      $rootScope.unitName = config.unitName;
       $rootScope.pendingTxCount = 0;
-      $rootScope.initialConnection = true;
       $rootScope.reconnecting = false;
-      $rootScope.isCollapsed = true;
-
       $rootScope.iden = iden;
     };
 
@@ -151,20 +111,20 @@ angular.module('copayApp.services')
     root.setFocusedWallet = function(w) {
       if (!_.isObject(w))
         w = $rootScope.iden.getWalletById(w);
-
       preconditions.checkState(w && _.isObject(w));
+
+      copay.logger.debug('Set focus:', w.getName());
       $rootScope.wallet = w;
-      w.updateFocusedTimestamp(Date.now());
-      root.goWalletHome();
+
+      $rootScope.iden.updateFocusedTimestamp(w.getId());
       pendingTxsService.update();
 
-      console.log('[controllerUtils.js.221] SET FOCUS'); //TODO
-      balanceService.update(w, function() {
+      $timeout(function() {
         $rootScope.$digest();
-      }, true)
+      })
     };
 
-    root.installWalletHandlers = function($scope, w) {
+    root.installWalletHandlers = function(w) {
       var wid = w.getId();
       w.on('connectionError', function() {
         console.log('err', w.getName()); //TODO
@@ -181,12 +141,12 @@ angular.module('copayApp.services')
         }
       });
       w.on('ready', function() {
-        console.log('read', w.getName()); //TODO
-        $scope.loading = false;
-        if ($rootScope.initialConnection) {
-          $rootScope.initialConnection = false;
-          root.goWalletHome();
-        }
+        var isFocused = root.isFocused(wid);
+        console.log('GOT READY [identityService.js.184:isFocused:]', w.getName(), isFocused); //TODO
+
+        balanceService.update(w, function() {
+          $rootScope.$digest();
+        }, isFocused);
       });
 
       w.on('tx', function(address, isChange) {
@@ -282,85 +242,79 @@ angular.module('copayApp.services')
       // w.on('locked',);
     };
 
-    root.rebindWallets = function($scope, iden) {
-      _.each(iden.listWallets(), function(wallet) {
-        preconditions.checkState(wallet);
-        root.installWalletHandlers($scope, wallet);
+    root.bind = function(iden) {
+
+console.log('[identityService.js.250] PROFILE BINE'); //TODO
+      preconditions.checkArgument(_.isObject(iden));
+
+      var self = this;
+      root.setupGlobalVariables(iden);
+
+      iden.on('newWallet', function(wid) {
+        var w = iden.getWalletById(wid);
+        copay.logger.debug('newWallet:', w.getName());
+        root.installWalletHandlers(w);
+        w.netStart();
+        if (wid == iden.getLastFocusedWalletId()) {
+          copay.logger.debug('GOT Focused wallet!', w.getName());
+          root.setFocusedWallet(w);
+          root.goWalletHome();
+          $rootScope.$digest()
+        }
+      });
+
+      iden.on('noWallets', function() {
+        $location.path('/create');
+        $rootScope.$digest()
+      });
+
+      iden.on('deletedWallet', function(wid) {
+        notification.info('Wallet deleted', $filter('translate')('This wallet was deleted'));
+        if ($rootScope.wallet.id === wid) {
+          $rootScope.wallet = null;
+          var lastFocused = iden.getLastFocusedWalletId();
+          self.setFocusedWallet(lastFocused);
+        }
+      });
+
+      iden.on('closed', function() {
+        delete $rootScope['wallet'];
+        delete $rootScope['iden'];
+        applicationService.restart();
       });
     };
 
-    root.bind = function($scope, iden, w) {
-      console.log('ident bind Globals'); //TODO
-      root.setupGlobalVariables(iden);
-      root.rebindWallets($scope, iden);
-      if (w) {
-        root.setFocusedWallet(w);
-      } else {
-        $location.path('/create');
-      }
-      $timeout(function() {
-        console.log('[controllerUtils.js.242] DIGEST'); //TODO
-        $rootScope.$digest()
-        console.log('[controllerUtils.js.242] DIGEST DONE'); //TODO
-      }, 1);
-    };
-
-    root.logout = function() {
+    root.signout = function() {
       if ($rootScope.iden) {
-        $rootScope.iden.store(null, function() {
-          $rootScope.iden.close();
-
-          delete $rootScope['wallet'];
-          delete $rootScope['iden'];
-
-          // Go home reloading the application
-          var hashIndex = window.location.href.indexOf('#!/');
-          window.location = window.location.href.substr(0, hashIndex);
-        });
+        $rootScope.iden.close();
       }
     };
 
     root.createWallet = function(opts, cb) {
-      $rootScope.iden.createWallet(opts, function(err, w) {
-        root.installWalletHandlers($scope, w);
-        root.setFocusedWallet(w);
-        return cb();
-      });
+      $rootScope.iden.createWallet(opts, cb);
     };
 
     root.importWallet = function(encryptedObj, pass, opts, cb) {
-      copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj,
-        pass, opts, function(err, wallet) {
-          if (err) return cb(err);
-          root.installWalletHandlers($scope, wallet);
-          root.setFocusedWallet(wallet);
-          return cb();
-        });
+      copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, pass, opts);
     };
 
     root.joinWallet = function(opts, cb) {
       $rootScope.iden.joinWallet(opts, function(err, w) {
-        $scope.loading = false;
-        if (err || !w) {
-          if (err === 'joinError')
-            notification.error('Fatal error connecting to Insight server');
-          else if (err === 'walletFull')
-            notification.error('The wallet is full');
-          else if (err === 'badNetwork')
-            notification.error('Network Error', 'Wallet network configuration missmatch');
-          else if (err === 'badSecret')
-            notification.error('Bad secret', 'The secret string you entered is invalid');
-          else {
-            notification.error('Error', err.message || err);
-          }
-        } else {
-          root.installWalletHandlers($scope, w);
-          root.setFocusedWallet(w);
-        }
         return cb(err);
       });
     };
 
+    root.importProfile = function(str, password, cb){
+      copay.Identity.importFromEncryptedFullJson(str, password, {
+        pluginManager: pluginManager,
+        network: config.network,
+        networkName: config.networkName,
+        walletDefaults: config.wallet,
+        passphraseConfig: config.passphraseConfig,
+      }, function(err, iden) {
+        if (err) return cb(err);
+      });
+    };
 
     return root;
   });

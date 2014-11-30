@@ -47,32 +47,32 @@ angular
       })
       .when('/homeWallet', {
         templateUrl: 'views/homeWallet.html',
-        walletShouldBeReady: true,
+        walletShouldBeComplete: true,
         logged: true
       })
       .when('/receive', {
         templateUrl: 'views/receive.html',
-        walletShouldBeReady: true,
+        walletShouldBeComplete: true,
         logged: true
       })
       .when('/history', {
         templateUrl: 'views/history.html',
-        walletShouldBeReady: true,
+        walletShouldBeComplete: true,
         logged: true
       })
       .when('/send', {
         templateUrl: 'views/send.html',
-        walletShouldBeReady: true,
+        walletShouldBeComplete: true,
         logged: true
       })
       .when('/more', {
         templateUrl: 'views/more.html',
-        walletShouldBeReady: true,
+        walletShouldBeComplete: true,
         logged: true
       })
       .when('/settings', {
         templateUrl: 'views/settings.html',
-        walletShouldBeReady: true,
+        walletShouldBeComplete: true,
         logged: false
       })
       .when('/warning', {
@@ -125,7 +125,7 @@ angular
           $idle.unwatch();
           $location.path('/');
         }
-        if ($rootScope.wallet && !$rootScope.wallet.isReady() && next.walletShouldBeReady) {
+        if ($rootScope.wallet && !$rootScope.wallet.isComplete() && next.walletShouldBeComplete) {
           $location.path('/copayers');
         }
       }

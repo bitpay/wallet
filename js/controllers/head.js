@@ -14,14 +14,14 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
 
   $scope.signout = function() {
     $rootScope.signingOut = true;
-    identityService.logout();
+    identityService.signout();
   };
 
   $scope.refresh = function() {
     var w = $rootScope.wallet;
     if (!w) return;
 
-    if (w.isReady()) {
+    if (w.isComplete()) {
       w.sendWalletReady();
       balanceService.clearBalanceCache(w);
       balanceService.update(w, function() {

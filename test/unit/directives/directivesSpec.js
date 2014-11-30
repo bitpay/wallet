@@ -10,7 +10,7 @@ describe("Unit: Testing Directives", function() {
   beforeEach(inject(function($rootScope) {
 
     var w = {};
-    w.isReady = sinon.stub().returns(true);
+    w.isComplete = sinon.stub().returns(true);
     w.privateKey = {};
     w.settings = {
       unitToSatoshi: 100,

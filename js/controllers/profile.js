@@ -20,7 +20,6 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
 
     identityService.deleteWallet(w.id,function() {
       $scope.loading = false;
-      $scope.getWallets();
     });
   };
 

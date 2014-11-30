@@ -44,7 +44,6 @@ angular.module('copayApp.controllers').controller('CreateController',
         notification.error('Error', 'Please enter the required fields');
         return;
       }
-      $scope.loading = true;
       var opts = {
         requiredCopayers: $scope.requiredCopayers,
         totalCopayers: $scope.totalCopayers,
@@ -52,8 +51,14 @@ angular.module('copayApp.controllers').controller('CreateController',
         privateKeyHex: $scope.private,
         networkName: $scope.networkName,
       };
-      identityService.createWallet(opts, function(){
-        $scope.loading = false;
+      $rootScope.starting = true;
+      identityService.createWallet(opts, function(err, wallet){
+        $rootScope.starting = false;
+        if (err || !wallet) {
+          copay.logger.debug(err);
+          $scope.error = 'Could not create wallet.' + err;
+        }
+        $rootScope.$digest()
       });
     };
   });

@@ -50,7 +50,7 @@ describe("Unit: Controllers", function() {
 
     var w = {};
     w.id = 1234;
-    w.isReady = sinon.stub().returns(true);
+    w.isComplete = sinon.stub().returns(true);
     w.privateKey = {};
     w.settings = {
       unitToSatoshi: 100,
