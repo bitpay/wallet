@@ -55,6 +55,16 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   };
 
   $scope.deleteProfile = function () {
-
+    identityService.deleteProfile(function (err, res) {
+      if (err) {
+        log.warn(err);
+        notification.error('Error', 'Could not delete profile');
+        return;
+      }
+      $location.path('/');      
+      setTimeout(function () {
+        notification.error('Success', 'Profile successfully deleted');
+      }, 1);
+    });
   };
 });
