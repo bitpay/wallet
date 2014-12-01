@@ -9,8 +9,8 @@
   <div class="row" ng-repeat="out in tx.outs">
     <div class="large-3 medium-3 small-4 columns">
       <div class="size-12">
-        <span>{{out.value}} {{$root.wallet.settings.unitName}}</span>
-        <span class="label secondary round">
+        <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
+        <span class="alt-currency gray">
           {{out.alternativeAmount}} {{out.alternativeIsoCode}}
         </span>
       </div>
