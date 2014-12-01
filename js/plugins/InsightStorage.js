@@ -46,12 +46,12 @@ InsightStorage.prototype.getItem = function(name, callback) {
   var passphrase = this.getPassphrase();
   var self = this;
 
-  this._makeGetRequest(passphrase, name, function(err, body) {
+  this._makeGetRequest(passphrase, name, function(err, body, headers) {
     if (err) log.warn(err);
     if (err && err.indexOf('PNOTFOUND') !== -1 && mayBeOldPassword(self.password)) {
       return self._brokenGetItem(name, callback);
     }
-    return callback(err, body);
+    return callback(err, body, headers);
   });
 };
 
@@ -87,7 +87,6 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   };
   this.request.get(getParams,
     function(err, response, body) {
-console.log('[InsightStorage.js.89:response:]',response); //TODO
       if (err) {
         return callback('Connection error');
       }
@@ -97,7 +96,7 @@ console.log('[InsightStorage.js.89:response:]',response); //TODO
       if (response.statusCode !== 200) {
         return callback('Connection error');
       }
-      return callback(null, body);
+      return callback(null, body, response.getAllResponseHeaders());
     }
   );
 };

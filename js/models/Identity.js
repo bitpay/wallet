@@ -122,7 +122,7 @@ Identity.open = function(opts, cb) {
 
   var storage = opts.storage || opts.pluginManager.get('DB');
   storage.setCredentials(opts.email, opts.password, opts);
-  storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data) {
+  storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data, headers) {
     var exported;
     if (err) {
       return cb(err);
@@ -132,7 +132,7 @@ Identity.open = function(opts, cb) {
     } catch (e) {
       return cb(e);
     }
-    return cb(null, new Identity(_.extend(opts, exported)));
+    return cb(null, new Identity(_.extend(opts, exported)), headers);
   });
 };
 

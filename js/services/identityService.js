@@ -79,7 +79,7 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
       };
 
-      copay.Identity.open(opts, function(err, iden) {
+      copay.Identity.open(opts, function(err, iden, headers) {
         if (err) return cb(err);
         root.bind(iden);
         return cb(null, iden);
