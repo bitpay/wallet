@@ -4,6 +4,8 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
+  console.log('$scope.username', $scope.username);
+
   $scope.hoverIn = function() {
     this.hoverMenu = true;
   };
@@ -30,14 +32,16 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     }
   };
 
-  // Ensures a graceful disconnect
-  window.onbeforeunload = function() {
-    $scope.signout();
-  };
 
-  $scope.$on('$destroy', function() {
-    window.onbeforeunload = undefined;
-  });
+  //mpando  restore after solve some chrome app error
+  // Ensures a graceful disconnect
+  // window.onbeforeunload = function() {
+  //   $scope.signout();
+  // };
+
+  // $scope.$on('$destroy', function() {
+  //   window.onbeforeunload = undefined;
+  // });
 
   $scope.init = function() {
     if (!$rootScope.wallet) return;

@@ -1,7 +1,12 @@
-var ld = (document.all);
+var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
+var ld;
+if (!isChromeApp) {
+  ld = (document.all);
+}
+
 var ns4 = document.layers;
-var ns6 = document.getElementById && !document.all;
-var ie4 = document.all;
+var ns6 = !isChromeApp && document.getElementById && !document.all;
+var ie4 = !isChromeApp && document.all;
 if (ns4) {
   ld = document.loading;
 } else if (ns6) {
