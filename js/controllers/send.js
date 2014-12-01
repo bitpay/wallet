@@ -3,10 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, isMobile, notification, controllerUtils, rateService) {
-
-    controllerUtils.redirIfNotComplete();
-
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, isMobile, notification, rateService) {
     var w = $rootScope.wallet;
     preconditions.checkState(w);
     preconditions.checkState(w.settings.unitToSatoshi);
@@ -33,10 +30,44 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.$digest();
     });
 
+    $scope.setAlternativeAmount = function(w, tx, cb) {
+      rateService.whenAvailable(function() {
+        _.each(tx.outs, function(out) {
+          var valueSat = out.value * w.settings.unitToSatoshi;
+          out.alternativeAmount = rateService.toFiat(valueSat, $scope.alternativeIsoCode);
+          out.alternativeIsoCode = $scope.alternativeIsoCode;
+        });
+        if (cb) return cb(tx);
+      });
+    };
+
+
+    $scope.updateTxs = _.throttle(function() {
+console.log('[send.js.44:updateTxs:]'); //TODO
+      var w = $rootScope.wallet;
+      if (!w) return;
+
+      var res = w.getPendingTxProposals();
+      _.each(res.txs, function(tx) {
+        $scope.setAlternativeAmount(w, tx);
+        if (tx.merchant) {
+          var url = tx.merchant.request_url;
+          var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
+          tx.merchant.domain = domain;
+        }
+        if (tx.outs) {
+          _.each(tx.outs, function(out) {
+            out.value = $filter('noFractionNumber')(out.value);
+          });
+        }        
+      });
+      $scope.txps = res.txs;
+    },  1000);
 
     /**
      * Setting the two related amounts as properties prevents an infinite
      * recursion for watches while preserving the original angular updates
+     *
      */
     Object.defineProperty($scope,
       "alternative", {
@@ -47,7 +78,7 @@ angular.module('copayApp.controllers').controller('SendController',
           this._alternative = newValue;
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
             this._amount = parseFloat(
-              (rateService.fromFiat(newValue, w.settings.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
+              (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
           } else {
             this._amount = 0;
           }
@@ -65,7 +96,7 @@ angular.module('copayApp.controllers').controller('SendController',
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
 
             this._alternative = parseFloat(
-              (rateService.toFiat(newValue * w.settings.unitToSatoshi, w.settings.alternativeIsoCode)).toFixed(2), 10);
+              (rateService.toFiat(newValue * w.settings.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
           } else {
             this._alternative = 0;
           }
@@ -75,13 +106,17 @@ angular.module('copayApp.controllers').controller('SendController',
       });
 
 
-    $scope.loadTxs = function() {
-      controllerUtils.updateTxs();
-      setTimeout(function() {
-        $scope.loading = false;
-        $rootScope.$digest();
-      }, 1);
-    }
+    $scope.init = function() {
+      $rootScope.pendingTxCount = 0;
+      $scope.updateTxs();
+      var w = $rootScope.wallet;
+      w.on('txProposalEvent', $scope.updateTxs);
+    };
+
+    $scope.$on("$destroy", function(){
+      var w = $rootScope.wallet;
+      w.removeListener('txProposalEvent', $scope.updateTxs );
+    });
 
     $scope.showAddressBook = function() {
       return w && _.keys(w.addressBook).length > 0;
@@ -89,9 +124,17 @@ angular.module('copayApp.controllers').controller('SendController',
 
     if ($rootScope.pendingPayment) {
       var pp = $rootScope.pendingPayment;
-      $scope.address = pp.address + '';
-      var amount = pp.data.amount / w.settings.unitToSatoshi * 100000000;
-      $scope.amount = amount;
+      var amount = pp.data.amount * 100000000 * satToUnit;
+      var alternativeAmountPayPro = rateService.toFiat((amount + $scope.defaultFee) * w.settings.unitToSatoshi, $scope.alternativeIsoCode);
+      if (pp.data.merchant) {
+        $scope.address = 'bitcoin:' + pp.address.data + '?amount=' + amount + '&r=' + pp.data.r;
+      }
+      else {
+        $scope.address = pp.address + '';
+        $scope.amount = amount;
+        $scope.alternative = alternativeAmountPayPro;
+      }
+      $scope.alternativeAmountPayPro = $filter('noFractionNumber')(alternativeAmountPayPro, 2);
       $scope.commentText = pp.data.message;
     }
 
@@ -116,7 +159,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.error = message;
       $scope.loading = false;
-      $scope.loadTxs();
+      $scope.updateTxs();
     };
 
     $scope.submitForm = function(form) {
@@ -153,6 +196,7 @@ angular.module('copayApp.controllers').controller('SendController',
         comment: commentText,
         url: (payInfo && payInfo.merchant) ? payInfo.merchant : null,
       }, function(err, txid, status) {
+        $scope.loading = false;
         // reset fields
         $scope.address = $scope.amount = $scope.commentText = null;
         form.address.$pristine = form.amount.$pristine = true;
@@ -160,7 +204,7 @@ angular.module('copayApp.controllers').controller('SendController',
         if (err) return $scope._showError(err);
 
         $scope.notifyStatus(status);
-        $scope.loadTxs();
+        $scope.updateTxs();
       });
     };
 
@@ -381,26 +425,24 @@ angular.module('copayApp.controllers').controller('SendController',
       w.issueTx(ntxid, function(err, txid, status) {
         $scope.notifyStatus(status);
         if (cb) return cb();
-        else $scope.loadTxs();
+        else $scope.updateTxs();
       });
     };
 
     $scope.sign = function(ntxid) {
       $scope.loading = true;
       $scope.error = $scope.success = null;
-
       w.signAndSend(ntxid, function(err, id, status) {
+        $scope.loading = false;
         $scope.notifyStatus(status);
-        $scope.loadTxs();
+        $scope.updateTxs();
       });
     };
 
     $scope.reject = function(ntxid) {
-      $scope.loading = true;
-      $rootScope.txAlertCount = 0;
       w.reject(ntxid);
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
-      $scope.loadTxs();
+      $scope.updateTxs();
     };
 
     $scope.clearMerchant = function(callback) {

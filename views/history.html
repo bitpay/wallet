@@ -1,5 +1,4 @@
 <div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
-  <div ng-show='$root.wallet.isReady()'>
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
         <h1 class="hide-for-large-up">{{$root.title}}</h1> 
@@ -46,8 +45,8 @@
                 'text-primary' : btx.action == 'received',
                 'text-warning': btx.action == 'sent', 
                 'text-gray': btx.action == 'moved'}">
-                <b>{{btx.amount| noFractionNumber}} {{$root.wallet.settings.unitName}}</b>
-                <b ng-show="btx.alternativeAmount != null">{{btx.alternativeAmount| noFractionNumber}} {{$root.wallet.settings.alternativeIsoCode}}</b>
+                <b>{{btx.amount}} {{$root.wallet.settings.unitName}}</b>
+                <b ng-show="btx.alternativeAmount != null">{{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}</b>
               </div>
             </div>
 
@@ -140,5 +139,4 @@
         </div>
       </div>
     </div>
-  </div>
 </div>

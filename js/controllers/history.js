@@ -2,9 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope, $timeout, controllerUtils, notification, rateService) {
-    controllerUtils.redirIfNotComplete();
-
+  function($scope, $rootScope, $filter, rateService) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -19,14 +17,10 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.blockchain_txs = [];
     $scope.alternativeCurrency = [];
 
-
-
     $scope.selectPage = function(page) {
       $scope.currentPage = page;
       $scope.update();
     };
-
-
 
     $scope.downloadHistory = function() {
       var w = $rootScope.wallet;
@@ -144,6 +138,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
         _.each(items, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
+          tx.amount = $filter('noFractionNumber')(tx.amount);
         });
 
         var index = _.indexBy(items, 'rateTs');
@@ -151,7 +146,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
           if (!err && res) {
             _.each(res, function(r) {
               var tx = index[r.ts];
-              tx.alternativeAmount = r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null;
+              var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+              tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount) : null;
             });
             setTimeout(function() {
               $scope.$digest();
@@ -159,12 +155,9 @@ angular.module('copayApp.controllers').controller('HistoryController',
           }
         });
 
-
-
         $scope.blockchain_txs = w.cached_txs = items;
         $scope.nbPages = res.nbPages;
         $scope.totalItems = res.nbItems;
-
 
         $scope.loading = false;
         setTimeout(function() {

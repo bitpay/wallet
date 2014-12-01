@@ -136,7 +136,8 @@ describe('PublicKeyRing model', function() {
 
     [true, false].forEach(function(isChange) {
       for (var i = 0; i < 2; i++) {
-        var a = w.generateAddress(isChange, k.pub);
+        var aStr = w.generateAddress(isChange, k.pub);
+        var a= new bitcore.Address(aStr);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
@@ -152,27 +153,46 @@ describe('PublicKeyRing model', function() {
     var setup = getCachedW();
     var pubkeyring = setup.w;
 
-    var address = pubkeyring.getAddress(3, false, 4);
-
-    (pubkeyring._cacheAddressMap[3][0][4]).should.equal(address);
+    var address = pubkeyring._getAddress(3, false, 4);
+    pubkeyring.cache.addressToPath[address].should.equal("m/45'/4/0/3");
   });
 
-  it('getAddress cache hit doesn\'t alter state', function() {
+  it('cach4es calls to getAddress (2)', function() {
     var setup = getCachedW();
     var pubkeyring = setup.w;
-    var spySave;
-
-    pubkeyring.getAddress(3, false, 4);
-
-    spySave = sinon.stub(pubkeyring, '_cacheAddress');
-    spySave.onFirstCall().throws(new Error());
-
-    pubkeyring.getAddress(3, false, 4);
-
-    spySave.restore();
+    var address = pubkeyring.generateAddress(false, setup.pub);
+    _.indexOf(pubkeyring.getReceiveAddresses(),address).should.be.above(-1);
+    _.indexOf(pubkeyring.getAddresses(),address).should.be.above(-1);
   });
 
-  it('should return PublicKeyRing addresses', function() {
+
+  it('cach4es calls to getAddress (3)', function() {
+    var setup = getCachedW();
+    var pubkeyring = setup.w;
+    var address = pubkeyring.generateAddress(true, setup.pub);
+    _.indexOf(pubkeyring.getReceiveAddresses(),address).should.be.equal(-1);
+    _.indexOf(pubkeyring.getAddresses(),address).should.be.above(-1);
+  });
+
+  it('should generate one address by default', function() {
+    var k = createW();
+    var w = k.w;
+    var a = w.getAddresses();
+    a.length.should.equal(1);
+  });
+
+  it('should generate one address by default', function() {
+    var k = createW();
+    var w = k.w;
+
+    var a = w.getAddresses();
+    a.length.should.equal(1);
+    a = w.getAddresses();
+    a.length.should.equal(1);
+  });
+ 
+
+  it('should generate 4+1 addresses', function() {
     var k = createW();
     var w = k.w;
 
@@ -184,15 +204,16 @@ describe('PublicKeyRing model', function() {
         w.generateAddress(isChange, k.pub);
       }
     });
+  });
 
-    var as = w.getAddressesInfo();
-    as.length.should.equal(5); // include pre-generated shared one
-    for (var j in as) {
-      var a = as[j];
-      a.address.isValid().should.equal(true);
-      a.addressStr.should.equal(a.address.toString());
-      a.isChange.should.equal([false, true, true, false, false][j]);
-    }
+  it('should check isChange 4+1 addresses', function() {
+    var k = createW();
+    var w = k.w;
+    var a = w.getAddresses();
+    _.each(a, function(a, j) {
+      var addr = new bitcore.Address(a);
+      w.addressIsChange(a).should.equal([false, true, true, false, false][j]);
+    });
   });
 
 
@@ -405,7 +426,7 @@ describe('PublicKeyRing model', function() {
 
     (function() {
       PublicKeyRing.fromObj(pkr);
-    }).should.throw('bad data format: Did you use .toObj()?');
+    }).should.throw('format');
   });
 
 
@@ -430,6 +451,33 @@ describe('PublicKeyRing model', function() {
     w2.nicknameForIndex(2).should.equal('tito2');
     should.not.exist(w2.nicknameForIndex(3));
   });
+
+
+  it('#fromObj old backup ', function() {
+    var pkr = PublicKeyRing.fromObj(JSON.parse(obj));
+    should.exist(pkr);
+    pkr.isComplete().should.equal(true);
+    pkr.requiredCopayers.should.equal(2);
+    pkr.totalCopayers.should.equal(2);
+  });
+
+  it('#fromObj #toObj rountrip', function() {
+    var obj2 = PublicKeyRing.fromObj(JSON.parse(obj)).toObj();
+    var pkr = PublicKeyRing.fromObj(obj2);
+    pkr.isComplete().should.equal(true);
+    pkr.requiredCopayers.should.equal(2);
+    pkr.totalCopayers.should.equal(2);
+  });
+
+  it('#fromUntrustedObj #toObj rountrip', function() {
+    var obj2 = PublicKeyRing.fromUntrustedObj(JSON.parse(obj)).toObj();
+    var pkr = PublicKeyRing.fromUntrustedObj(obj2);
+    pkr.isComplete().should.equal(true);
+    pkr.requiredCopayers.should.equal(2);
+    pkr.totalCopayers.should.equal(2);
+  });
+
+
 
 
   it('#getHDParams should return the right one', function() {
@@ -475,15 +523,15 @@ describe('PublicKeyRing model', function() {
     });
   });
 
-  it('#getForPath should return 5 pubkeys', function() {
+  it('#_getForPath should return 5 pubkeys', function() {
     var w = getCachedW().w;
-    var pubkeys = w.getForPath('m/45\'/2147483647/1/0');
+    var pubkeys = w._getForPath('m/45\'/2147483647/1/0');
     pubkeys.length.should.equal(5);
   });
 
-  it('#getForPaths should return 2 arrays of 5 pubkey ', function() {
+  it('#_getForPaths should return 2 arrays of 5 pubkey ', function() {
     var w = getCachedW().w;
-    var pubkeys = w.getForPaths(['m/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1']);
+    var pubkeys = w._getForPaths(['m/45\'/2147483647/1/0', 'm/45\'/2147483647/1/1']);
     pubkeys.length.should.equal(2);
     pubkeys[0].length.should.equal(5);
     pubkeys[1].length.should.equal(5);
@@ -498,4 +546,8 @@ describe('PublicKeyRing model', function() {
     ret.pubKeys[1].length.should.equal(5);
   });
 
+
+
 });
+
+var obj = '{"walletId":"0a903a2eb33793d1","networkName":"testnet","requiredCopayers":2,"totalCopayers":2,"indexes":[{"copayerIndex":2147483647,"changeIndex":0,"receiveIndex":1},{"copayerIndex":0,"changeIndex":39,"receiveIndex":0},{"copayerIndex":1,"changeIndex":102,"receiveIndex":39}],"copayersExtPubKeys":["tpubD9peJo88ArhgmJNqRkQmhHt4zAGTYVowsHrDj385xyXyMy4RhWZpV5Qx2mMDUVzpbAD5V9jci5D7cZaHhjLYP8gEkngmTKtSF4Y7V3qkAsy","tpubD8udwzKWwNUgoE2WG7LYsXKf5m1eRtJ1Etp43vnoxViFmrmZ1ND2CkdqGyQtuidcN1CiqdBUvbKegbdsMQaj5VLY2hbA4LEnLDrqkgSzikz"],"nicknameFor":{"03338b105850c7126f1f5b0439b357765b17ead8eed15bcdfdbd28d0e3915b696f":"5@queparece","0286b376d65cc4af0de5932fb8299cbef2ca9ed37ec9fdb0edfd4e9cb74eac45da":"4@queparece"}}';

@@ -1,19 +1,22 @@
 'use strict';
-var preconditions = require('preconditions').singleton();
-
 var _ = require('lodash');
-var bitcore = require('bitcore');
+var preconditions = require('preconditions').singleton();
+var inherits = require('inherits');
+var events = require('events');
 var log = require('../log');
 var async = require('async');
-var cryptoUtil = require('../util/crypto');
 
-var version = require('../../version').version;
+var bitcore = require('bitcore');
+
 var TxProposals = require('./TxProposals');
 var PublicKeyRing = require('./PublicKeyRing');
 var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 var PluginManager = require('./PluginManager');
-var Async = module.exports.Async = require('./Async');
+var Async = require('./Async');
+
+var version = require('../../version').version;
+var cryptoUtil = require('../util/crypto');
 
 /**
  * @desc
@@ -56,8 +59,13 @@ function Identity(opts) {
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
 
+  this.walletIds = opts.walletIds || {};
   this.wallets = opts.wallets || {};
+  this.focusedTimestamps = opts.focusedTimestamps || {};
 };
+
+
+inherits(Identity, events.EventEmitter);
 
 Identity.getStoragePrefix = function() {
   return 'profile::';
@@ -96,7 +104,11 @@ Identity.create = function(opts, cb) {
 
 
 /**
- * Open an Identity from the given storage
+ * Open an Identity from the given storage.
+ *
+ * After opening a profile, and setting its wallet event handlers,
+ * the client must run .netStart on each
+ * (probably on iden's newWallet handler
  *
  * @param {Object} opts
  * @param {Object} opts.storage
@@ -105,42 +117,77 @@ Identity.create = function(opts, cb) {
  * @param {Function} cb
  */
 Identity.open = function(opts, cb) {
+  preconditions.checkArgument(_.isObject(opts));
+  preconditions.checkArgument(_.isFunction(cb));
+
   var storage = opts.storage || opts.pluginManager.get('DB');
   storage.setCredentials(opts.email, opts.password, opts);
   storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data) {
+    var exported;
     if (err) {
       return cb(err);
     }
-    return Identity.createFromPartialJson(data, opts, cb);
+    try {
+      exported = JSON.parse(data);
+    } catch (e) {
+      return cb(e);
+    }
+    return cb(null, new Identity(_.extend(opts, exported)));
   });
 };
 
+
 /**
- * Creates an Identity, retrieves all Wallets remotely, and activates network
+ * readAndBindWallet
  *
- * @param {string} jsonString - a string containing a json object with options to rebuild the identity
- * @param {Object} opts
- * @param {Function} cb
+ * @param {string} wid walletId to be readed
+ * @param {function} cb
+ *
  */
-Identity.createFromPartialJson = function(jsonString, opts, callback) {
-  var exported;
-  try {
-    exported = JSON.parse(jsonString);
-  } catch (e) {
-    return callback('Invalid JSON');
+Identity.prototype.readAndBindWallet = function(walletId, cb) {
+  var self = this;
+  self.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
+    if (!error) {
+      self.bindWallet(wallet);
+    }
+    return cb(error);
+  });
+};
+
+
+Identity.prototype.emitAndKeepAlive = function(args) {
+  var args = Array.prototype.slice.call(arguments);
+  log.debug('Ident Emitting:', args);
+  //this.keepAlive(); // TODO
+  this.emit.apply(this, arguments);
+};
+
+
+/**
+ * @desc open profile's wallets. Call it AFTER setting
+ * the proper even listeners. no callback.
+ *
+ */
+Identity.prototype.openWallets = function() {
+  var self = this;
+
+
+  if (_.isEmpty(self.walletIds)) {
+    self.emitAndKeepAlive('noWallets')
+    return;
   }
-  var identity = new Identity(_.extend(opts, exported));
-  async.map(exported.walletIds, function(walletId, callback) {
-    identity.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
-      if (!error) {
-        identity.wallets[wallet.getId()] = wallet;
-        identity.bindWallet(wallet);
-        wallet.netStart();
-      }
-      callback(error, wallet);
-    });
-  }, function(err) {
-    return callback(err, identity);
+
+  // First read the lastFocused wallet
+  self.walletIds.sort(function(a, b) {
+    var va = self.focusedTimestamps[a] || 0;
+    var vb = self.focusedTimestamps[b] || 0;
+
+    return va < vb ? 1 : (va === vb ? 0 : -1);
+  });
+
+  // opens the wallets, in the order they were last accessed. Emits open events (newWallet)
+  async.eachSeries(self.walletIds, function(walletId, a_cb) {
+    self.readAndBindWallet(walletId, a_cb);
   });
 };
 
@@ -148,16 +195,16 @@ Identity.createFromPartialJson = function(jsonString, opts, callback) {
  * @param {string} walletId
  * @param {} opts
  *           opts.importWallet
- * @param {Function} callback
+ * @param {Function} cb
  */
-Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback) {
+Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, cb) {
   var self = this;
 
   var importFunction = opts.importWallet || Wallet.fromUntrustedObj;
 
   this.storage.getItem(Wallet.getStorageKey(walletId), function(error, walletData) {
     if (error) {
-      return callback(error);
+      return cb(error);
     }
     try {
       log.info('## OPENING Wallet:', walletId);
@@ -169,18 +216,15 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, callback
         blockchainOpts: self.blockchainOpts,
         skipFields: []
       };
-
-      return callback(null, importFunction(walletData, readOpts));
-
     } catch (e) {
-
       log.debug("ERROR: ", e.message);
       if (e && e.message && e.message.indexOf('MISSOPTS') !== -1) {
-        return callback(new Error('WERROR: Could not read: ' + walletId + ': ' + e.message));
+        return cb(new Error('WERROR: Could not read: ' + walletId + ': ' + e.message));
       } else {
-        return callback(e);
+        return cb(e);
       }
     }
+    return cb(null, importFunction(walletData, readOpts));
   });
 };
 
@@ -219,9 +263,9 @@ Identity.storeWalletDebounced = _.debounce(function(identity, wallet, cb) {
 
 Identity.prototype.toObj = function() {
   return _.extend({
-      walletIds: _.keys(this.wallets)
+      walletIds: _.isEmpty(this.wallets) ? this.walletsIds : _.keys(this.wallets),
     },
-    _.pick(this, 'version', 'fullName', 'password', 'email'));
+    _.pick(this, 'version', 'fullName', 'password', 'email', 'focusedTimestamps'));
 };
 
 Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
@@ -270,15 +314,14 @@ Identity.prototype._cleanUp = function() {
 /**
  * @desc Closes the wallet and disconnects all services
  */
-Identity.prototype.close = function(cb) {
-  async.map(this.wallets, function(wallet, callback) {
-    wallet.close(callback);
-  }, cb);
+Identity.prototype.close = function() {
+  var self = this;
+  self.store({}, function(err) {
+    self.emitAndKeepAlive('closed');
+  });
 };
 
 
-// TODO: Add feedback function
-//
 Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var self = this;
   preconditions.checkArgument(cb);
@@ -292,27 +335,29 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
 
   var w = importFunction(obj, readOpts);
   if (!w) return cb(new Error('Could not decrypt'));
-  log.debug('Wallet decryped:' + w.getName());
+  log.debug('Wallet decrypted:' + w.getName());
 
   self._checkVersion(w.version);
   log.debug('Updating Indexes for wallet:' + w.getName());
   w.updateIndexes(function(err) {
     log.debug('Adding wallet to profile:' + w.getName());
-    self.addWallet(w);
     self.bindWallet(w);
-
-    var writeOpts = _.extend({
-      noWallets: true
-    }, opts);
-
-    self.storeWallet(w, function(err) {
-      if (err) return cb(err);
-      self.store(writeOpts, function(err) {
-        return cb(err, w);
-      });
-    });
+    self.storeWallet(w, cb);
   });
 };
+
+
+Identity.prototype.importMultipleWalletsFromObj = function(objs, opts) {
+  var self = this;
+  opts = opts || {};
+
+  async.eachSeries(objs, function(walletData, cb) {
+    if (!walletData)
+      return cb();
+    self.importWalletFromObj(walletData, opts, cb);
+  });
+};
+
 
 /**
  * @param {Wallet} wallet
@@ -321,8 +366,8 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
 Identity.prototype.closeWallet = function(wallet, cb) {
   preconditions.checkState(wallet, 'Wallet not found');
 
+  var self = this;
   wallet.close(function(err) {
-    delete self.wallets[wid];
     return cb(err);
   });
 };
@@ -370,33 +415,18 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
   iden.store(opts, function(err) {
     if (err) return cb(err); //profile already exists
 
-    opts.failIfExists = false;
-    async.map(json.wallets, function(walletData, callback) {
-
-      if (!walletData)
-        return callback();
-
-      iden.importWalletFromObj(walletData, opts, function(err, w) {
-        if (err) return callback(err);
-        log.debug('Wallet ' + w.getId() + ' imported');
-        callback();
-      });
-    }, function(err, results) {
-      if (err) return cb(err);
-
-      iden.store(opts, function(err) {
-        return cb(err, iden);
-      });
-    });
-
+    return cb(null, iden, json.wallets);
   });
-
-
 };
 
+
+/**
+ * @desc binds a wallet's events and emits 'newWallet'
+ * @param {string} walletId Wallet id to be binded
+ * @emits newWallet  (walletId)
+ */
 Identity.prototype.bindWallet = function(w) {
   var self = this;
-
   self.wallets[w.getId()] = w;
   log.debug('Binding wallet:' + w.getName());
 
@@ -421,6 +451,8 @@ Identity.prototype.bindWallet = function(w) {
   w.on('publicKeyRingUpdated', function() {
     Identity.storeWalletDebounced(self, w);
   });
+
+  this.emitAndKeepAlive('newWallet', w.getId());
 };
 
 /**
@@ -494,24 +526,16 @@ Identity.prototype.createWallet = function(opts, cb) {
   var self = this;
 
   var w = new walletClass(opts);
-  this.addWallet(w);
   self.bindWallet(w);
-  w.netStart();
+  self.updateFocusedTimestamp(w.getId());
   self.storeWallet(w, function(err) {
     if (err) return cb(err);
-
     self.store({
       noWallets: true
     }, function(err) {
       return cb(err, w);
     });
   });
-};
-
-Identity.prototype.addWallet = function(wallet) {
-  preconditions.checkArgument(wallet);
-  preconditions.checkArgument(wallet.getId);
-  this.wallets[wallet.getId()] = wallet;
 };
 
 /**
@@ -561,11 +585,17 @@ Identity.prototype.listWallets = function() {
 Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
 
+  var w = this.getWalletById(walletId);
+  w.close();
+
   delete this.wallets[walletId];
+  delete this.focusedTimestamps[walletId];
+
   this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
     if (err) {
       return cb(err);
     }
+    self.emitAndKeepAlive('deletedWallet', walletId);
     self.store(null, cb);
   });
 };
@@ -581,11 +611,26 @@ Identity.prototype.decodeSecret = function(secret) {
   }
 };
 
-Identity.prototype.getLastFocusedWallet = function() {
-  if (_.keys(this.wallets).length == 0) return;
-  return _.max(this.wallets, function(wallet) {
-    return wallet.focusedTimestamp || 0;
-  });
+/**
+ * getLastFocusedWalletId
+ *
+ * @return {string} walletId
+ */
+Identity.prototype.getLastFocusedWalletId = function() {
+  var max = _.max(this.focusedTimestamp);
+  var aId = _.findKey(this.wallets) || this.walletIds[0];
+
+  if (!max)
+    return aId;
+
+  return _.findKey(this.focusedTimestamps, function(ts) {
+    return ts == max;
+  }) || aId;
+};
+
+Identity.prototype.updateFocusedTimestamp = function(wid) {
+  preconditions.checkArgument(wid && this.wallets[wid]);
+  this.focusedTimestamps[wid] = Date.now();
 };
 
 /**

@@ -1,18 +1,16 @@
-<div class="send" ng-controller="SendController" ng-init="loadTxs()">
-  <div ng-show='$root.wallet.isReady()'>
-
-    <div class="row" ng-show="$root.txps.length != 0">
+<div class="send" ng-controller="SendController" ng-init="init()">
+    <div class="row" ng-show="txps.length != 0">
       <div class="large-12 columns">
         <h2 translate>Pending Transactions Proposals</h2>
         <div class="last-transactions" 
-          ng-repeat="tx in $root.txps | paged" 
+          ng-repeat="tx in txps | paged" 
           ng-include="'views/includes/transaction.html'"></div>
       </div>
     </div>
 
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
-        <div ng-show="$root.txps.length != 0" class="line-dashed-h m20b"></div>
+        <div ng-show="txps.length != 0" class="line-dashed-h m20b"></div>
         <h1 class="hide-for-large-up">{{$root.title}}</h1>
       </div>
     </div>
@@ -110,7 +108,7 @@
                     <div class="input">
                       <input type="number" id="alternative_amount"
                       ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0)"
-                      name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative"requiredautocomplete="off">
+                      name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative" requiredautocomplete="off">
                       <i class="icon-usd"></i>
                     </div>
                   </div>
@@ -138,13 +136,13 @@
                   </p>
 
                   <p>
-                  <i>{{amount + defaultFee |noFractionNumber}} {{$root.wallet.settings.unitName}}</i>
+                  <i>{{amount + defaultFee}} {{$root.wallet.settings.unitName}}</i>
                   <span class="text-gray" ng-if="isRateAvailable">
-                    {{ rateService.toFiat((amount + defaultFee) * unitToSatoshi, alternativeIsoCode) | noFractionNumber: 2 }} {{ alternativeIsoCode }}
+                    {{ alternativeAmountPayPro }} {{ alternativeIsoCode }}
                   </span>
                   <span class="text-gray" >
                     (<span translate>Including fee of</span>
-                    {{defaultFee|noFractionNumber}}
+                    {{defaultFee}}
                     {{$root.wallet.settings.unitName}})
                   </span>
                   <p>
@@ -187,10 +185,10 @@
       </div>
     </div><!--  end of row -->
    
-    <div class="row m20b" ng-show="$root.alternativeConversionRate > 0">
+    <div class="row m20b" ng-show="$root.wallet.balanceInfo.alternativeConversionRate > 0">
       <div class="large-12 columns size-12">
         <i class="fi-bitcoin-circle"></i> 
-        1 BTC = {{alternativeConversionRate|noFractionNumber:2}} {{alternativeIsoCode}}
+        1 BTC = {{$root.wallet.balanceInfo.alternativeConversionRate}} {{alternativeIsoCode}}
       </div>
     </div>
 
@@ -230,6 +228,5 @@
           <i class="fi-plus m5r"></i> Add</button>
       </div>
     </div>
-  </div>
 </div>
 

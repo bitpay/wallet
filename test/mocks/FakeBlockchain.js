@@ -17,6 +17,9 @@ FakeBlockchain.prototype.getTransactions = function(addresses, from, to, cb) {
 FakeBlockchain.prototype.subscribe = function() {
 };
 
+FakeBlockchain.prototype.on = function() {
+};
+
 FakeBlockchain.prototype.fixUnspent = function(u) {
   this.u = u;
 };
