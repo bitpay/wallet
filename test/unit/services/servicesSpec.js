@@ -65,49 +65,34 @@ describe("Angular services", function() {
 
 
 
-  describe("Unit: controllerUtils", function() {
+  describe("Unit: balanceService", function() {
 
-    it('should updateBalance in bits', inject(function(controllerUtils, $rootScope) {
+    it('should updateBalance in bits', inject(function(balanceService, $rootScope) {
       var w = $rootScope.wallet;
 
-
-      expect(controllerUtils.updateBalance).not.to.equal(null);
+      expect(balanceService.update).not.to.equal(null);
       var Waddr = Object.keys($rootScope.wallet.balanceByAddr)[0];
       var a = {};
       a[Waddr] = 200;
       w.getBalance = sinon.stub().yields(null, 100000001, a, 90000002, 5);
 
-      var orig  =controllerUtils.isFocusedWallet;
-      controllerUtils.isFocusedWallet = sinon.stub().returns(true);
-
       //retuns values in DEFAULT UNIT(bits)
-      controllerUtils.updateBalance(null, function() {
+      balanceService.update(w, function() {
+        var b = w.balanceInfo;
+        expect(b.totalBalanceBTC).to.be.equal(1.00000001);
+        expect(b.availableBalanceBTC).to.be.equal(0.90000002);
+        expect(b.lockedBalanceBTC).to.be.equal(0.09999999);
 
+        expect(b.totalBalance).to.be.equal('1,000,000.01');
+        expect(b.availableBalance).to.be.equal('900,000.02');
+        expect(b.lockedBalance).to.be.equal(99999.99);
 
-        expect($rootScope.totalBalanceBTC).to.be.equal(1.00000001);
-        expect($rootScope.availableBalanceBTC).to.be.equal(0.90000002);
-        expect($rootScope.lockedBalanceBTC).to.be.equal(0.09999999);
-
-        expect($rootScope.totalBalance).to.be.equal(1000000.01);
-        expect($rootScope.availableBalance).to.be.equal(900000.02);
-        expect($rootScope.lockedBalance).to.be.equal(99999.99);
-
-        expect($rootScope.balanceByAddr[Waddr]).to.equal(2);
-        expect($rootScope.safeUnspentCount).to.equal(5);
-        expect($rootScope.topAmount).to.equal(899800.02);
-      });
-
-      controllerUtils.isFocusedWallet = orig;
+        expect(b.balanceByAddr[Waddr]).to.equal(2);
+        expect(b.safeUnspentCount).to.equal(5);
+        expect(b.topAmount).to.equal(899800.02);
+      },false); 
     }));
 
-    it('should set the rootScope', inject(function(controllerUtils, $rootScope) {
-      controllerUtils.setupGlobalVariables(function() {
-        expect($rootScope.txAlertCount).to.be.equal(0);
-        expect($rootScope.insightError).to.be.equal(0);
-        expect($rootScope.isCollapsed).to.be.equal(0);
-        expect($rootScope.unitName).to.be.equal('bits');
-      });
-    }));
   });
 
   describe("Unit: Notification Service", function() {
