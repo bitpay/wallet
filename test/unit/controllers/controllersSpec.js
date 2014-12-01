@@ -15,6 +15,8 @@ saveAs = function(blob, filename) {
 describe("Unit: Controllers", function() {
   config.plugins.LocalStorage = true;
   config.plugins.GoogleDrive = null;
+  config.plugins.InsightStorage = null;
+  config.plugins.EncryptedInsightStorage= null;
 
   var anAddr = 'mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy';
   var anAmount = 1000;
@@ -254,13 +256,13 @@ describe("Unit: Controllers", function() {
       sendForm.amount.$setViewValue(anAmount);
       sendForm.comment.$setViewValue(aComment);
 
-      scope.loadTxs = sinon.spy();
+      scope.updateTxs = sinon.spy();
 
       var w = scope.wallet;
       scope.submitForm(sendForm);
       sinon.assert.callCount(w.spend, 1);
       sinon.assert.callCount(w.broadcastTx, 0);
-      sinon.assert.callCount(scope.loadTxs, 1);
+      sinon.assert.callCount(scope.updateTxs, 1);
       var spendArgs = w.spend.getCall(0).args[0];
       spendArgs.toAddress.should.equal(anAddr);
       spendArgs.amountSat.should.equal(anAmount * scope.wallet.settings.unitToSatoshi);
@@ -275,7 +277,7 @@ describe("Unit: Controllers", function() {
       sendForm.amount.$setViewValue(100);
       sendForm.address.$setViewValue(anAddr);
 
-      scope.loadTxs = sinon.spy();
+      scope.updateTxs = sinon.spy();
       scope.submitForm(sendForm);
       var w = scope.wallet;
       w.spend.getCall(0).args[0].amountSat.should.equal(100 * scope.wallet.settings.unitToSatoshi);
@@ -602,9 +604,10 @@ describe("Unit: Controllers", function() {
 
     it('Delete a wallet', function() {
       var w = scope.wallet;
-      scope.deleteWallet(w);
-      scope.$digest();
-      expect(scope.wallet).equal(null);
+      scope.deleteWallet(w, function() {
+        scope.$digest();
+        expect(scope.wallet).equal(null);
+      });
     });
 
   });

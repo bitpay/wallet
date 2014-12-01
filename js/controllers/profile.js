@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, backupService) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, backupService, identityService) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
@@ -16,10 +16,11 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   
   $scope.deleteWallet = function(w) {
     if (!w) return;
-    $scope.loading = w.id;
-
-    identityService.deleteWallet(w.id,function() {
+    identityService.deleteWallet(w, function(err) {
       $scope.loading = false;
+      if (err) {
+        log.warn(err);
+      }
     });
   };
 

@@ -19,6 +19,7 @@ angular.module('copayApp.services')
         var r = {};
         r.totalBalance = $filter('noFractionNumber')(balanceSat * satToUnit);
         r.totalBalanceBTC = (balanceSat / COIN);
+        var availableBalanceNr = safeBalanceSat * satToUnit;
         r.availableBalance = $filter('noFractionNumber')(safeBalanceSat * satToUnit);
         r.availableBalanceBTC = (safeBalanceSat / COIN);
         r.safeUnspentCount = safeUnspentCount;
@@ -29,7 +30,7 @@ angular.module('copayApp.services')
 
         if (r.safeUnspentCount) {
           var estimatedFee = copay.Wallet.estimatedFee(r.safeUnspentCount);
-          r.topAmount = (((r.availableBalance * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
+          r.topAmount = (((availableBalanceNr * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
         }
 
         var balanceByAddr = {};

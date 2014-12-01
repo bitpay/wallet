@@ -147,7 +147,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
             _.each(res, function(r) {
               var tx = index[r.ts];
               tx.alternativeAmount =   $filter('noFractionNumber')(
-                (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+                (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null))
+                ;
             });
             setTimeout(function() {
               $scope.$digest();
