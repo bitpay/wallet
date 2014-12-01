@@ -41,7 +41,7 @@ angular.module('copayApp.controllers').controller('CreateController',
 
     $scope.create = function(form) {
       if (form && form.$invalid) {
-        notification.error('Error', 'Please enter the required fields');
+        $scope.error = 'Please enter the required fields';
         return;
       }
       var opts = {
@@ -56,7 +56,11 @@ angular.module('copayApp.controllers').controller('CreateController',
         $rootScope.starting = false;
         if (err || !wallet) {
           copay.logger.debug(err);
-          $scope.error = 'Could not create wallet.' + err;
+          if (err.match('OVERQUOTA')){
+            $scope.error = 'Could not create wallet: storage limits on remove server exceeded';
+          } else {
+            $scope.error = 'Could not create wallet: ' + err;
+          }
         }
         $rootScope.$digest()
       });

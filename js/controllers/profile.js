@@ -19,8 +19,9 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     identityService.deleteWallet(w, function(err) {
       $scope.loading = false;
       if (err) {
-        log.warn(err);
+        copay.logger.warn(err);
       }
+      $scope.setWallets();
     });
   };
 

@@ -592,11 +592,10 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
   delete this.focusedTimestamps[walletId];
 
   this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
-    if (err) {
-      return cb(err);
-    }
+    if (err) return cb(err);
     self.emitAndKeepAlive('deletedWallet', walletId);
     self.store(null, cb);
+    return cb();
   });
 };
 
