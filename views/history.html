@@ -40,13 +40,18 @@
               </div>
             </div>
 
-            <div class="large-2 medium-3 small-5 columns text-right">
+            <div class="large-3 medium-3 small-5 columns text-right">
               <div class="tx-amount" ng-class="{
                 'text-primary' : btx.action == 'received',
                 'text-warning': btx.action == 'sent', 
                 'text-gray': btx.action == 'moved'}">
                 <b>{{btx.amount}} {{$root.wallet.settings.unitName}}</b>
-                <b ng-show="btx.alternativeAmount != null">{{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}</b>
+                <span class="alt-currency" ng-class="{
+                'green' : btx.action == 'received',
+                'red': btx.action == 'sent', 
+                'gray': btx.action == 'moved'}" ng-show="btx.alternativeAmount != null">
+                  {{btx.alternativeAmount| noFractionNumber}} {{$root.wallet.settings.alternativeIsoCode}}
+                </span>
               </div>
             </div>
 
@@ -67,7 +72,7 @@
               <span class="ellipsis">{{btx.labelTo || btx.addressTo}}</span>
             </div>
 
-            <div class="large-3 medium-3 small-12 columns text-gray"> 
+            <div class="large-2 medium-2 small-12 columns text-gray"> 
               <div class="tx-comment" ng-show="btx.comment">
                 <i class="fi-comment-quotes"></i> {{btx.comment}}</div>
             </div>
