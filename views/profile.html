@@ -73,7 +73,7 @@
           <td>
               <span>
                   {{item.kb}} kB 
-                  ({{item.usage}}%) 
+                  <span ng-if="item.usage">({{item.usage}}%) </span>
               </span>
             </td>
    
