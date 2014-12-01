@@ -136,7 +136,6 @@ console.log('[send.js.44:updateTxs:]'); //TODO
       }
       $scope.alternativeAmountPayPro = $filter('noFractionNumber')(alternativeAmountPayPro, 2);
       $scope.commentText = pp.data.message;
-      $scope.onChanged();
     }
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
