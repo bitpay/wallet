@@ -52,7 +52,10 @@
 
             <label for="password"><span translate>Password</span>  <small translate>Required</small>
             </label>
-            <input type="password" class="form-control" placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
+            <div class="input">
+              <input type="password" class="form-control" placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
+              <i class="icon-locked"></i>
+            </div>
 
             <div class="line-dashed-h m10b m20t"></div>
 

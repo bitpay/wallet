@@ -159,10 +159,12 @@ header .alt-currency {
 .head .menu ul li a {
   display: block;
   padding: 5px 10px;
+  color: #8597A7;
 }
 
 .head .menu ul li a:hover {
-  background-color: #fff;
+  background-color: #F8F8FB;
+  color: #2C3E50;
 }
 
 .col1 {
@@ -949,6 +951,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   -moz-box-shadow:    inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   box-shadow:         inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   border: none;
+  padding-left: 45px;
 }
 
 button.secondary, 
@@ -1180,11 +1183,20 @@ button.gray:focus,
   width: 38px;
   height: 28px;
   right: 7px;
-  top: 28px;
+  top: 7px;
   -moz-box-shadow: none;
   box-shadow: none;
   line-height: 1.7rem;
   border-radius: 2px;
+}
+
+.postfix.button i, .prefix.button i {
+  left: 12px;
+  top: 0;
+  border: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #fff;
 }
 
 label.postfix, span.postfix {
@@ -1289,6 +1301,21 @@ a:hover .photo-container  {
   text-align: center;
   margin-right: 20px;
   float: left;
+}
+
+.input { position: relative;}
+
+.input i {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 20px;
+  color: #7A8C9E;
+  border-right: 1px solid #ccc;
+  padding-right: 8px;
+  border-right: 1px solid #E5E8EB;
+  -moz-box-shadow: 1px 0px 0px 0px #FFFFFF;
+  box-shadow: 1px 0px 0px 0px #FFFFFF;
 }
 
 .icon-input {

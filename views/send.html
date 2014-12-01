@@ -48,24 +48,26 @@
                 Not valid
               </span>
               <small class="icon-input right" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
-
-              <div class="pr">
-                <input class="columns" type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
-                placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
-                <div ng-hide="showScanner || disableScanner">
-                  <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
-                </div>
-                <div ng-show="showScanner">
-                  <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
-                </div>
-              </div>
-
-              <div id="scanner" 
-                class="row" 
-                ng-if="showScanner"
-                ng-include="'views/includes/scanner.html'"></div>
-              
             </div>
+
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
+              placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
+              <i class="fi-address-book"></i>
+              <div ng-hide="showScanner || disableScanner">
+                <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
+              </div>
+              <div ng-show="showScanner">
+                <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
+              </div>
+            </div>
+
+            <div id="scanner" 
+              class="row" 
+              ng-if="showScanner"
+              ng-include="'views/includes/scanner.html'">
+            </div>
+
 
             <div class="row">
               <div class="large-6 medium-6 columns">
@@ -80,19 +82,21 @@
                   <small class="icon-input right" ng-show="!sendForm.amount.$invalid &&
                     !sendForm.amount.$pristine"><i class="fi-check"></i></small>
                   
-                  <div class="pr">
+                  
                   <div class="small-9 columns">
-                    <input type="number" id="amount"
-                    ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0)"
-                    name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
-                    min="0.00000001" max="10000000000" valid-amount required
-                    autocomplete="off">
+                    <div class="input">
+                      <input type="number" id="amount"
+                      ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0)"
+                      name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
+                      min="0.00000001" max="10000000000" valid-amount required
+                      autocomplete="off">
+                      <i class="icon-bitcoin"></i>
+                    </div>
                     <a class="small input-note" title="{{'Send all funds'|translate}}"
                       ng-show="topAmount && (!$root.merchant || +$root.merchant.total === 0)"
                       ng-click="setTopAmount(sendForm)">
                       <span translate>Use all funds</span> {{$root.wallet.settings.unitName}}
                     </a>
-                  </div>
                   </div>
                   <div class="small-3 columns">
                     <span class="postfix">{{$root.wallet.settings.unitName}}</span>
@@ -103,12 +107,12 @@
                 <div class="row collapse">
                   <label for="alternative"><span translate>Amount in</span> {{ alternativeName }} </label>
                   <div class="small-9 columns">
-                    <input type="number" id="alternative_amount"
-                    ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0)"
-                    name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative"
-                    required
-                    autocomplete="off"
-                    >
+                    <div class="input">
+                      <input type="number" id="alternative_amount"
+                      ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0)"
+                      name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative"requiredautocomplete="off">
+                      <i class="icon-usd"></i>
+                    </div>
                   </div>
                   <div class="small-3 columns">
                     <span class="postfix">{{alternativeIsoCode}}</span>
@@ -158,8 +162,11 @@
                   <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
                   <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
                 </label>
-                <textarea id="comment" ng-disabled="loading"
+                <div class="input">
+                  <textarea id="comment" ng-disabled="loading"
                   name="comment" placeholder="{{(wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction') |translate}}" ng-model="commentText" ng-maxlength="100"></textarea>
+                  <i class="icon-compose"></i>
+                </div>
               </div>
             </div>
 
