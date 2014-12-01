@@ -26,7 +26,7 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
         $scope.wallets = ret;
         $scope.loading = false;
         $scope.$digest();
-      }, 1);
+      }, 1000);
     };
     if ($rootScope.iden) {
       var iden = $rootScope.iden;
