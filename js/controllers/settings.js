@@ -1,8 +1,6 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, controllerUtils, notification) {
-
-
   controllerUtils.redirIfLogged();
 
   $scope.title = 'Settings';
@@ -92,6 +90,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       logLevel: $scope.selectedLogLevel.name,
       EncryptedInsightStorage: _.extend(config.EncryptedInsightStorage, {
         url: insightSettings.livenet.url + '/api/email'
+      }),
+      rates: _.extend(config.rates, {
+        url: insightSettings.livenet.url + '/api/rates'
       }),
     }));
 
