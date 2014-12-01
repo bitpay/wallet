@@ -16,6 +16,20 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   Compatibility.check($scope);
 
+  $scope.done = function() {
+    $rootScope.starting = false;
+  };
+
+
+  $scope.$on("$destroy", function(){
+    var iden = $rootScope.iden;
+    if (iden) {
+      iden.removeListener('newWallets', $scope.done );
+      iden.removeListener('noWallets', $scope.done );
+    }
+  });
+
+
   $scope.openProfile = function(form) {
     $scope.confirmedEmail = false;
     if (form && form.$invalid) {
@@ -24,14 +38,19 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
     $rootScope.starting = true;
     identityService.open(form.email.$modelValue, form.password.$modelValue, function(err, iden) {
-      $rootScope.starting = false;
-      if (err) {
+     if (err) {
+        $rootScope.starting = false;
         copay.logger.warn(err);
         if ((err.toString() || '').match('PNOTFOUND')) {
           $scope.error = 'Invalid email or password';
         } else {
           $scope.error = 'Unknown error';
         }
+      }
+
+      if (iden) {
+        iden.on('newWallet', $scope.done);
+        iden.on('noWallets', $scope.done);
       }
     });
   }
