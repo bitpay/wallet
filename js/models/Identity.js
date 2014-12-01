@@ -317,13 +317,15 @@ Identity.prototype.remove = function(opts, cb) {
   var self = this;
   opts = opts || {};
 
-  // HACK (isocolsky): remove notifications while deleting wallets
-  self.removeAllListeners('deletedWallet');
-  
   async.each(_.values(self.wallets), function(w, cb) {
-    self.deleteWallet(w.getId(), cb);
+    w.close();
+    self.storage.removeItem(Wallet.getStorageKey(w.getId()), function(err) {
+      if (err) return cb(err);
+      cb();
+    });
   }, function (err) {
     if (err) return cb(err);
+    
     self.storage.removeItem(self.getId(), function(err) {
       if (err) return cb(err);
       self.emitAndKeepAlive('closed');
