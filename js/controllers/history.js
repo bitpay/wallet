@@ -140,10 +140,25 @@ angular.module('copayApp.controllers').controller('HistoryController',
         }
 
         var items = res.items;
-
-        _.each(items, function(r) {
-          r.ts = r.minedTs || r.sentTs;
+        var now = new Date();
+        _.each(items, function(tx) {
+          tx.ts = tx.minedTs || tx.sentTs;
+          tx.rateTs = Math.floor((tx.ts || now) / 1000);
         });
+
+        var index = _.indexBy(items, 'rateTs');
+        rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
+          if (!err && res) {
+            _.each(res, function(r) {
+              var tx = index[r.ts];
+              tx.alternativeAmount = r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null;
+            });
+            setTimeout(function() {
+              $scope.$digest();
+            }, 1);
+          }
+        });
+
 
 
         $scope.blockchain_txs = w.cached_txs = items;

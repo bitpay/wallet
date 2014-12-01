@@ -86,7 +86,7 @@ describe('RateService model', function() {
       it('should return current valuation', function() {
         var rs = new RateService();
         rs.isAvailable = sinon.stub().returns(true);
-        var getRateStub = sinon.stub(rs, '_getRate')
+        var getRateStub = sinon.stub(rs, 'getRate')
         getRateStub.withArgs('USD').returns(300.00);
         getRateStub.withArgs('EUR').returns(250.00);
         var params = [{
@@ -119,7 +119,7 @@ describe('RateService model', function() {
         rs.isAvailable = sinon.stub().returns(true);
         var today = Date.now();
         var yesterday = today - 24 * 3600;
-        var getHistoricalRateStub = sinon.stub(rs, '_getHistoricRate');
+        var getHistoricalRateStub = sinon.stub(rs, 'getHistoricRate');
         getHistoricalRateStub.withArgs('USD', today).yields(null, 300.00);
         getHistoricalRateStub.withArgs('USD', yesterday).yields(null, 250.00);
         getHistoricalRateStub.withArgs('EUR', today).yields(null, 250.00);
@@ -185,7 +185,7 @@ describe('RateService model', function() {
       it('should return current valuation', function() {
         var rs = new RateService();
         rs.isAvailable = sinon.stub().returns(true);
-        var getRateStub = sinon.stub(rs, '_getRate')
+        var getRateStub = sinon.stub(rs, 'getRate')
         getRateStub.withArgs('USD').returns(300.00);
         getRateStub.withArgs('EUR').returns(250.00);
         var params = [{
@@ -223,7 +223,7 @@ describe('RateService model', function() {
       it('should return list of available currencies', function() {
         var rs = new RateService();
         rs.isAvailable = sinon.stub().returns(true);
-        sinon.stub(rs, '_getAlternatives').returns([{
+        sinon.stub(rs, 'getAlternatives').returns([{
           name: 'United States Dollar',
           isoCode: 'USD',
           rate: 300.00,
