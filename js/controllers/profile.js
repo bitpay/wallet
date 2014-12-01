@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
   $rootScope.title = 'Profile';
+  $scope.hideAdv = true;
 
   $scope.downloadProfileBackup = function() {
     backupService.profileDownload($rootScope.iden);
@@ -53,4 +54,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     });
   };
 
+  $scope.deleteProfile = function () {
+
+  };
 });
