@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope, $filter) {
+  function($scope, $rootScope, $filter, rateService) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -146,9 +146,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
           if (!err && res) {
             _.each(res, function(r) {
               var tx = index[r.ts];
-              tx.alternativeAmount =   $filter('noFractionNumber')(
-                (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null))
-                ;
+              var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+              tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount) : null;
             });
             setTimeout(function() {
               $scope.$digest();
