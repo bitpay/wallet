@@ -11,10 +11,10 @@ angular.module('copayApp.controllers').controller('SendController',
     $rootScope.title = 'Send';
     $scope.loading = false;
     $scope.error = $scope.success = null;
-    var unitToSatoshi = w.settings.unitToSatoshi;
-    var satToUnit = 1 / unitToSatoshi;
+    var satToUnit = 1 / w.settings.unitToSatoshi;
     $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
-    $scope.unitToBtc = unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
+    $scope.unitToSatoshi = w.settings.unitToSatoshi;
 
     $scope.alternativeName = w.settings.alternativeName;
     $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.setAlternativeAmount = function(w, tx, cb) {
       rateService.whenAvailable(function() {
         _.each(tx.outs, function(out) {
-          var valueSat = out.value * unitToSatoshi;
+          var valueSat = out.value * w.settings.unitToSatoshi;
           out.alternativeAmount = rateService.toFiat(valueSat, $scope.alternativeIsoCode);
           out.alternativeIsoCode = $scope.alternativeIsoCode;
         });
@@ -96,7 +96,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
           if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
 
             this._alternative = parseFloat(
-              (rateService.toFiat(newValue * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
+              (rateService.toFiat(newValue * w.settings.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
           } else {
             this._alternative = 0;
           }
@@ -125,7 +125,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
     if ($rootScope.pendingPayment) {
       var pp = $rootScope.pendingPayment;
       var amount = pp.data.amount * 100000000 * satToUnit;
-      var alternativeAmountPayPro = rateService.toFiat((amount + $scope.defaultFee) * unitToSatoshi, $scope.alternativeIsoCode);
+      var alternativeAmountPayPro = rateService.toFiat((amount + $scope.defaultFee) * w.settings.unitToSatoshi, $scope.alternativeIsoCode);
       if (pp.data.merchant) {
         $scope.address = 'bitcoin:' + pp.address.data + '?amount=' + amount + '&r=' + pp.data.r;
       }
@@ -171,7 +171,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = parseInt((form.amount.$modelValue * unitToSatoshi).toFixed(0));
+      var amount = parseInt((form.amount.$modelValue * w.settings.unitToSatoshi).toFixed(0));
       var commentText = form.comment.$modelValue;
 
 
@@ -545,7 +545,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         apply();
 
         var balance = $rootScope.availableBalance;
-        var available = +(balance * unitToSatoshi).toFixed(0);
+        var available = +(balance * w.settings.unitToSatoshi).toFixed(0);
         if (merchantData && available < +merchantData.total) {
           err = new Error('Insufficient funds.');
           err.amount = merchantData.total;
@@ -553,7 +553,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
 
         if (err) {
           if (err.amount) {
-            $scope.sendForm.amount.$setViewValue(+err.amount / unitToSatoshi);
+            $scope.sendForm.amount.$setViewValue(+err.amount / w.settings.unitToSatoshi);
             $scope.sendForm.amount.$render();
             $scope.sendForm.amount.$isValid = false;
             $scope.notEnoughAmount = true;
@@ -584,7 +584,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         var url = merchantData.request_url;
         var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
 
-        merchantData.unitTotal = (+merchantData.total / unitToSatoshi) + '';
+        merchantData.unitTotal = (+merchantData.total / w.settings.unitToSatoshi) + '';
         merchantData.expiration = new Date(
           merchantData.pr.pd.expires * 1000);
         merchantData.domain = domain;
