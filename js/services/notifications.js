@@ -4,9 +4,31 @@ angular.module('copayApp.services').
 factory('notification', ['$timeout',
   function($timeout) {
 
-    var notifications = JSON.parse(localStorage.getItem('notifications')) || [],
-      queue = [];
+    var localStorage;
+    if (window.chrome && chrome.runtime && chrome.runtime.id) {
+      console.log('Is a chrome app!');
+      localStorage = chrome.storage.local;
+    } else {
+      console.log('Is web!');
+      localStorage = window.localStorage;
+    }
 
+    var notifications = [];
+
+    if (window.chrome && chrome.runtime && chrome.runtime.id) {
+      localStorage.get('notifications', function(data) {
+        console.log('data', data);
+        if (data) {
+          notifications = JSON.parse(data);
+        }
+      });
+
+    } else {
+      notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    }
+
+
+    var queue = [];
     var settings = {
       info: {
         duration: 6000,

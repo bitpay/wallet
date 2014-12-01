@@ -118,6 +118,19 @@ angular
       uriHandler.register();
     }
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
+
+      var localStorage;
+      if (window.chrome && chrome.runtime && chrome.runtime.id) {
+        console.log('Is a chrome app!');
+        localStorage = chrome.storage.local;
+
+        console.log('chrome.storage', chrome.storage);
+        console.log('localStorage', localStorage);
+      } else {
+        console.log('Is web!');
+        localStorage = window.localStorage;
+      }
+
       if (!localStorage || localStorage.length < 1) {
         $location.path('unsupported');
       } else {

@@ -3,7 +3,23 @@
 var copay = require('copay');
 var _ = require('lodash');
 var config = defaultConfig;
-var localConfig = JSON.parse(localStorage.getItem('config'));
+
+var localStorage;
+if (window.chrome && chrome.runtime && chrome.runtime.id) {
+  console.log('Is a chrome app!');
+  localStorage = chrome.storage.local;
+  console.log('localStorage', localStorage);
+} else {
+  console.log('Is web!');
+  localStorage = window.localStorage;
+}
+
+var localConfig;
+if (localStorage) {
+  localConfig = JSON.parse(localStorage.getItem('config'));
+}
+
+
 var defaults = JSON.parse(JSON.stringify(defaultConfig));
 
 if (localConfig) {
@@ -47,9 +63,10 @@ copayApp.config(function($sceDelegateProvider) {
 });
 
 angular.module('ui.gravatar').config([
-  'gravatarServiceProvider', function(gravatarServiceProvider) {
+  'gravatarServiceProvider',
+  function(gravatarServiceProvider) {
     gravatarServiceProvider.defaults = {
-      size     : 35
+      size: 35
     };
     // Use https endpoint
     gravatarServiceProvider.secure = true;

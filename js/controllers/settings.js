@@ -7,6 +7,18 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   $scope.insightTestnet = config.network.testnet.url;
   $scope.defaultLogLevel = config.logLevel || 'log';
 
+
+  var localStorage;
+
+  var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
+  if (isChromeApp) {
+    console.log('Is a chrome app!');
+    localStorage = chrome.storage.local;
+  } else {
+    console.log('Is web!');
+    localStorage = window.localStorage;
+  }
+
   var logLevels = copay.logger.getLevels();
 
   $scope.availableLogLevels = [];

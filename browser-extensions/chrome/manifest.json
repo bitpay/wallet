@@ -4,7 +4,8 @@
   "description": "A multisignature bitcoin wallet",
   "version": "APP_VERSION",
   "permissions": [
-    "storage", "notifications"
+    "storage",
+    "notifications"
   ],
   "app": {
     "background": {
