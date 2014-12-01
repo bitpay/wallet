@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, isMobile, controllerUtils, notification) {
+  function($scope, $rootScope, $timeout, isMobile, notification) {
     $rootScope.fromSetup = false;
     $scope.loading = false;
     $scope.isMobile = isMobile.any();
@@ -119,15 +119,13 @@ angular.module('copayApp.controllers').controller('JoinController',
       }
 
       $scope.loading = true;
-
-      $rootScope.iden.joinWallet({
+      identityService.joinWallet({
         secret: $scope.connectionId,
         nickname: $scope.nickname,
         privateHex: $scope.private,
-      }, function(err, w) {
-
+      }, function(err) {
         $scope.loading = false;
-        if (err || !w) {
+        if (err) {
           if (err === 'joinError')
             notification.error('Fatal error connecting to Insight server');
           else if (err === 'walletFull')
@@ -139,10 +137,6 @@ angular.module('copayApp.controllers').controller('JoinController',
           else {
             notification.error('Error', err.message || err);
           }
-          controllerUtils.onErrorDigest();
-        } else {
-          controllerUtils.installWalletHandlers($scope, w);
-          controllerUtils.setFocusedWallet(w);
         }
       });
     }

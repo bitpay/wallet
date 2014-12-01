@@ -1,8 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, notification, controllerUtils, pluginManager, identityService, Compatibility) {
-  controllerUtils.redirIfLogged();
-
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility) {
   // This is only for backwards compat, insight api should link to #!/confirmed directly
   if (getParam('confirmed')) {
     var hashIndex = window.location.href.indexOf('/?');
@@ -18,6 +16,20 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   Compatibility.check($scope);
 
+  $scope.done = function() {
+    $rootScope.starting = false;
+  };
+
+
+  $scope.$on("$destroy", function(){
+    var iden = $rootScope.iden;
+    if (iden) {
+      iden.removeListener('newWallets', $scope.done );
+      iden.removeListener('noWallets', $scope.done );
+    }
+  });
+
+
   $scope.openProfile = function(form) {
     $scope.confirmedEmail = false;
     if (form && form.$invalid) {
@@ -25,7 +37,22 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       return;
     }
     $rootScope.starting = true;
-    identityService.open($scope, form);
+    identityService.open(form.email.$modelValue, form.password.$modelValue, function(err, iden) {
+     if (err) {
+        $rootScope.starting = false;
+        copay.logger.warn(err);
+        if ((err.toString() || '').match('PNOTFOUND')) {
+          $scope.error = 'Invalid email or password';
+        } else {
+          $scope.error = 'Unknown error';
+        }
+      }
+
+      if (iden) {
+        iden.on('newWallet', $scope.done);
+        iden.on('noWallets', $scope.done);
+      }
+    });
   }
 
   function getParam(sname) {

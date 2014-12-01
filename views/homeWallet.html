@@ -1,5 +1,4 @@
 <div class="home-wallet" ng-controller="HomeWalletController">
-  <div ng-show='$root.wallet.isReady()'>
     <div class="row hide-for-large-up">
       <div class="medium-12 small-12 columns">
         <h1 translate>Home</h1>
@@ -18,15 +17,15 @@
               <div class="text-right">
                 <span class="size-21">
                   <strong>
-                    <span ng-if="!$root.updatingBalance">{{totalBalance || 0 |noFractionNumber}}</span>
+                    <span ng-if="!$root.updatingBalance">{{$root.wallet.balanceInfo.totalBalance || 0}}</span>
                     <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
                     {{$root.wallet.settings.unitName}}
                   </strong>
                 </span>
                 <span class="size-14 db m5t text-gray">
-                  <span ng-if="!$root.updatingBalance && alternativeBalanceAvailable">{{totalBalanceAlternative |noFractionNumber:2}} {{alternativeIsoCode}}</span>
-                  <span ng-if="!$root.updatingBalance && !alternativeBalanceAvailable">N/A</span>
-                  <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+                  <span ng-if="!$root.wallet.balanceInfo.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+                  <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
+                  <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
                 </span>
               </div>
             </div>
@@ -41,10 +40,10 @@
         <div class="panel oh">
           <h2 class="line-b" translate>Quick receive</h2>
           <div class="text-center">
-            <qrcode size="220" data="bitcoin:{{$root.addrInfos[0].addressStr}}"></qrcode>
+            <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
 
             <div class="m10t">
-              <h4 class="size-12">{{$root.addrInfos[0].addressStr}}  </h4>
+              <h4 class="size-12">{{addr}}  </h4>
               <span ng-if="$root.updatingBalance">
                 <i class="fi-bitcoin-circle icon-rotate spinner"></i>
               </span>
@@ -60,7 +59,5 @@
         </div> 
       </div>
     </div>
-
-  </div>
 </div>
 

@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout, controllerUtils, backupService, notification, defaults) {
+  function($scope, $rootScope, $location, $timeout,  identityService, backupService, notification, defaults) {
 
     $rootScope.fromSetup = true;
-    $rootScope.starting = false;
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
     $scope.isMobile = !!window.cordova;
@@ -45,7 +44,6 @@ angular.module('copayApp.controllers').controller('CreateController',
         notification.error('Error', 'Please enter the required fields');
         return;
       }
-      $scope.loading = true;
       var opts = {
         requiredCopayers: $scope.requiredCopayers,
         totalCopayers: $scope.totalCopayers,
@@ -53,10 +51,14 @@ angular.module('copayApp.controllers').controller('CreateController',
         privateKeyHex: $scope.private,
         networkName: $scope.networkName,
       };
-      $rootScope.iden.createWallet(opts, function(err, w) {
-        $scope.loading = false;
-        controllerUtils.installWalletHandlers($scope, w);
-        controllerUtils.setFocusedWallet(w);
+      $rootScope.starting = true;
+      identityService.createWallet(opts, function(err, wallet){
+        $rootScope.starting = false;
+        if (err || !wallet) {
+          copay.logger.debug(err);
+          $scope.error = 'Could not create wallet.' + err;
+        }
+        $rootScope.$digest()
       });
     };
   });

@@ -95,7 +95,6 @@ function Wallet(opts) {
   this.registeredPeerIds = [];
   this.addressBook = opts.addressBook || {};
   this.publicKey = this.privateKey.publicHex;
-  this.focusedTimestamp = opts.focusedTimestamp || 0;
   this.syncedTimestamp = opts.syncedTimestamp || 0;
   this.lastMessageFrom = {};
 
@@ -126,7 +125,7 @@ Wallet.TX_SIGNED_AND_BROADCASTED = 'txSignedAndBroadcasted';
 
 Wallet.prototype.emitAndKeepAlive = function(args) {
   var args = Array.prototype.slice.call(arguments);
-  log.debug('Wallet Emitting:', args);
+  log.debug('Wallet:'+ this.getName() + '  Emitting:', args);
   this.keepAlive();
   this.emit.apply(this, arguments);
 };
@@ -158,7 +157,6 @@ Wallet.PERSISTED_PROPERTIES = [
   'txProposals',
   'privateKey',
   'addressBook',
-  'focusedTimestamp',
   'syncedTimestamp',
   'secretNumber',
 ];
@@ -314,7 +312,7 @@ Wallet.prototype.changeSettings = function(settings) {
 Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   log.debug('Wallet:' + this.id + ' RECV PUBLICKEYRING:', data);
 
-  var inPKR = PublicKeyRing.fromObj(data.publicKeyRing);
+  var inPKR = PublicKeyRing.fromUntrustedObj(data.publicKeyRing);
   var wasIncomplete = !this.publicKeyRing.isComplete();
   var hasChanged;
 
@@ -631,7 +629,7 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   var self = this,
     hasChange;
   _.each(data.addressBook, function(value, key) {
-    if (!self.addressBook[key] && Address.validate(key)) {
+    if (key && !self.addressBook[key] && Address.validate(key)) {
 
       self.addressBook[key] = _.pick(value, ['createdTs', 'label']);
 
@@ -646,18 +644,6 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
     this.emitAndKeepAlive('addressBookUpdated');
   }
 };
-
-/**
- * @desc Updates the wallet's last modified timestamp and triggers a save
- * @param {number} ts - the timestamp
- */
-Wallet.prototype.updateFocusedTimestamp = function(ts) {
-  preconditions.checkArgument(ts);
-  preconditions.checkArgument(_.isNumber(ts));
-  preconditions.checkArgument(ts > 2999999999, 'use miliseconds');
-  this.focusedTimestamp = ts;
-};
-
 
 Wallet.prototype.updateSyncedTimestamp = function(ts) {
   preconditions.checkArgument(ts);
@@ -877,15 +863,9 @@ Wallet.decodeSecret = function(secretB) {
   }
 };
 
-/**
- * @desc Locks other sessions from connecting to the wallet
- * @see Async#lockIncommingConnections
- */
-Wallet.prototype._lockIncomming = function() {
-  this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
-};
 
-Wallet.prototype._setBlockchainListeners = function() {
+Wallet.prototype._setupBlockchainHandlers = function() {
+
   var self = this;
   self.blockchain.removeAllListeners();
   self.subscribeToAddresses();
@@ -900,14 +880,12 @@ Wallet.prototype._setBlockchainListeners = function() {
     log.debug('Wallet:' + self.id + 'blockchain disconnect event');
     self.emitAndKeepAlive('insightError');
   });
+
   self.blockchain.on('tx', function(tx) {
     log.debug('Wallet:' + self.id + ' blockchain tx event');
-    var addresses = self.getAddressesInfo();
-    var addr = _.findWhere(addresses, {
-      addressStr: tx.address
-    });
-    if (addr) {
-      self.emitAndKeepAlive('tx', tx.address, addr.isChange);
+    var addresses = self.getAddresses();
+    if (_.indexOf(addresses,tx.address)>=0) {
+      self.emitAndKeepAlive('tx', tx.address, self.addressIsChange(tx.address));
     }
   });
 
@@ -915,6 +893,19 @@ Wallet.prototype._setBlockchainListeners = function() {
     self.blockchain.on('block', self.emitAndKeepAlive.bind(self, 'balanceUpdated'));
   }
 }
+
+Wallet.prototype._setupNetworkHandlers = function() {
+  var self = this;
+
+  var net = this.network;
+  net.removeAllListeners();
+  net.on('connect', self._onConnect.bind(self));
+  net.on('data', self._onData.bind(self));
+  net.on('no_messages', self._onNoMessages.bind(self));
+  net.on('connect_error', function() {
+    self.emitAndKeepAlive('connectionError');
+  });
+};
 
 /**
  * @desc Sets up the networking with other peers.
@@ -925,43 +916,26 @@ Wallet.prototype._setBlockchainListeners = function() {
  * @emits ready
  * @emits txProposalsUpdated
  *
- * @TODO: FIX PROTOCOL -- emit with a space is shitty
- * @emits no messages
  */
 Wallet.prototype.netStart = function() {
   var self = this;
+
+  if (self.netStarted)
+    return;
+
+
+  self._setupBlockchainHandlers();
+  self.netStarted= true;
 
   if (!this.isShared()) {
     self.emitAndKeepAlive('ready');
     return;
   }
 
-  var net = this.network;
-  net.removeAllListeners();
-  net.on('connect', self._onConnect.bind(self));
-  net.on('data', self._onData.bind(self));
-  net.on('no messages', self._onNoMessages.bind(self));
-  net.on('connect_error', function() {
-    self.emitAndKeepAlive('connectionError');
-  });
-
-  if (this.publicKeyRing.isComplete()) {
-    this._lockIncomming();
-  }
-
-
-
-  if (net.started) {
-    log.debug('Wallet:' + self.getName() + ': Wallet networking was ready')
-    self.emitAndKeepAlive('ready', net.getPeer());
-    return;
-  }
-
-
+  self._setupNetworkHandlers();
 
   var myId = self.getMyCopayerId();
   var myIdPriv = self.getMyCopayerIdPriv();
-
   var startOpts = {
     copayerId: myId,
     privkey: myIdPriv,
@@ -970,11 +944,12 @@ Wallet.prototype.netStart = function() {
     secretNumber: self.secretNumber,
   };
 
-
+  if (this.publicKeyRing.isComplete()) {
+    this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+  }
   log.debug('Wallet:' + self.id + ' Starting network.');
-  net.start(startOpts, function() {
-    self._setBlockchainListeners();
-    self.emitAndKeepAlive('ready', net.getPeer());
+  this.network.start(startOpts, function() {
+    self.emitAndKeepAlive('ready');
   });
 };
 
@@ -1058,7 +1033,6 @@ Wallet.prototype.toObj = function() {
     privateKey: this.privateKey ? this.privateKey.toObj() : undefined,
     addressBook: this.addressBook,
     syncedTimestamp: this.syncedTimestamp || 0,
-    focusedTimestamp: this.focusedTimestamp || 0,
     secretNumber: this.secretNumber,
   };
 
@@ -1102,7 +1076,6 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
  * @param {string} o.networkName - 'livenet' or 'testnet'
  * @param {Object} o.publicKeyRing - PublicKeyRing to be deserialized by {@link PublicKeyRing#fromObj}
  * @param {number} o.syncedTimestamp - ts of the last synced message with insifht (in microseconds, as insight returns ts)
- * @param {number} o.focusedTimestamp - last time this wallet was focused (open) by a user (in miliseconds)
  * @param {Object} o.txProposals - TxProposals to be deserialized by {@link TxProposals#fromObj}
  * @param {string} o.nickname - user's nickname
  *
@@ -1179,8 +1152,6 @@ Wallet.fromObj = function(o, readOpts) {
   }
 
   opts.syncedTimestamp = o.syncedTimestamp || 0;
-  opts.focusedTimestamp = o.focusedTimestamp || 0;
-
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
 
@@ -1307,7 +1278,7 @@ Wallet.prototype.sendWalletId = function(recipients) {
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
 Wallet.prototype.sendPublicKeyRing = function(recipients) {
-  var publicKeyRingObj = this.publicKeyRing.toObj();
+  var publicKeyRingObj = this.publicKeyRing.toTrimmedObj();
 
   this._sendToPeers(recipients, {
     type: 'publicKeyRing',
@@ -1376,20 +1347,14 @@ Wallet.prototype._doGenerateAddress = function(isChange) {
 };
 
 /**
- * @callback addressCallback
- * @param {string} addr - all the addresses of the wallet
- */
-/**
  * @desc Generate a new address
  * @param {boolean} isChange - whether to generate a change address or a receive address
- * @param {addressCallback} cb
  * @return {string[]} a list of all the addresses generated so far for the wallet
  */
-Wallet.prototype.generateAddress = function(isChange, cb) {
+Wallet.prototype.generateAddress = function(isChange) {
   var addr = this._doGenerateAddress(isChange);
   this.sendIndexes();
   this._newAddresses();
-  if (cb) return cb(addr);
   return addr;
 };
 
@@ -1422,11 +1387,39 @@ Wallet.prototype._getActionList = function(txp) {
  * @desc Retrieve Pendings Transaction proposals (see {@link TxProposals})
  * @return {Object[]} each object returned represents a transaction proposal
  */
+Wallet.prototype.getPendingTxProposalsCount = function() {
+  var self = this;
+  var txps = this.txProposals.txps;
+  var maxRejectCount = this.maxRejectCount();
+  var myId = this.getMyCopayerId();
+  var pending =0, pendingForUs = 0;
+
+  _.each(txps, function(inTxp, ntxid) {
+    if (!inTxp.isPending(maxRejectCount))
+      return;
+
+    pending++;
+
+    if (!inTxp.signedBy[myId] && !inTxp.rejectedBy[myId]  )
+      pendingForUs++
+  });
+
+
+  return {
+    pending: pending,
+    pendingForUs: pendingForUs,
+  };
+};
+
+
+/**
+ * @desc Retrieve Pendings Transaction proposals (see {@link TxProposals})
+ * @return {Object[]} each object returned represents a transaction proposal
+ */
 Wallet.prototype.getPendingTxProposals = function() {
   var self = this;
   var ret = [];
   ret.txs = [];
-  var pendingForUs = 0;
   var txps = this.txProposals.txps;
   var maxRejectCount = this.maxRejectCount();
   var satToUnit = 1 / this.settings.unitToSatoshi;
@@ -1438,14 +1431,11 @@ Wallet.prototype.getPendingTxProposals = function() {
     var txp = _.clone(inTxp);
     txp.ntxid = ntxid;
 
-    pendingForUs++;
     var addresses = {};
     var outs = JSON.parse(txp.builder.vanilla.outs);
     outs.forEach(function(o) {
-      if (!self.addressIsOwn(o.address)) {
-        if (!addresses[o.address]) addresses[o.address] = 0;
-        addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
-      };
+      if (!addresses[o.address]) addresses[o.address] = 0;
+      addresses[o.address] += (o.amountSatStr || Math.round(o.amount * bitcore.util.COIN));
     });
     txp.outs = [];
     _.each(addresses, function(value, address) {
@@ -1461,7 +1451,6 @@ Wallet.prototype.getPendingTxProposals = function() {
     ret.txs.push(txp);
   });
 
-  ret.pendingForUs = pendingForUs;
   return ret;
 };
 
@@ -1843,12 +1832,21 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
  */
 Wallet.prototype._getPayProRefundOutputs = function(txp) {
   var pkr = this.publicKeyRing;
-  var index = pkr.getHDParams(this.publicKey);
   var amount = +txp.merchant.total.toString(10);
 
   var output = new PayPro.Output();
-  var script = pkr.getScriptPubKeyHex(index.changeIndex, true, this.pubkey);
-  output.set('script', new Buffer(script, 'hex'));
+  var opts = JSON.parse(txp.builder.vanilla.opts);
+  if (!opts.remainderOut) {
+    log.warn('no remainder set. Not setting refund in PayPro');
+    return; 
+  }
+console.log('[Wallet.js.1842:builder:]',txp.builder.vanilla.opts); //TODO
+  var addrStr = opts.remainderOut.address;
+  var addr = new bitcore.Address(addrStr);
+  var script = bitcore.Script.createP2SH(addr.payload()).getBuffer();
+  log.debug('PayPro refund address set to:' + addrStr);
+
+  output.set('script', script);
   output.set('amount', amount);
   return [output];
 };
@@ -1866,7 +1864,6 @@ Wallet.prototype.createPayProPayment = function(txp) {
   var tx = txp.builder.build();
   var txBuf = tx.serialize();
 
-  var refund_outputs = this._getPayProRefundOutputs(txp);
 
   // We send this to the serve after receiving a PaymentRequest
   var pay = new PayPro();
@@ -1877,9 +1874,11 @@ Wallet.prototype.createPayProPayment = function(txp) {
     merchant_data = new Buffer(merchant_data, 'hex');
     pay.set('merchant_data', merchant_data);
   }
-
   pay.set('transactions', [txBuf]);
-  pay.set('refund_to', refund_outputs);
+
+  var refund_outputs = this._getPayProRefundOutputs(txp);
+  if (refund_outputs)
+    pay.set('refund_to', refund_outputs);
 
   // Unused for now
   // options.memo = '';
@@ -1980,46 +1979,58 @@ Wallet.prototype.addSeenToTxProposals = function() {
 
 /**
  * @desc Alias for {@link PublicKeyRing#getAddresses}
- * @TODO: remove this method and use getAddressesInfo everywhere
  * @return {Buffer[]}
  */
-Wallet.prototype.getAddresses = function(opts) {
-  return this.publicKeyRing.getAddresses(opts);
+Wallet.prototype.getAddresses = function() {
+  return this.publicKeyRing.getAddresses();
+};
+
+
+/**
+ * @desc gets the list of addresses, orderder for the caller:
+ *  1) himselfs first
+ *  2) receive address first
+ *  3) last created first
+ */
+Wallet.prototype.getAddressesOrderer = function() {
+  return this.publicKeyRing.getAddressesOrderer(this.publicKey);
 };
 
 /**
- * @desc Retrieves all addresses as strings.
- *
- * @param {Object} opts - Same options as {@link PublicKeyRing#getAddresses}
- * @return {string[]}
+ * @desc Alias for {@link PublicKeyRing#getAddresses}
+ * @return {Buffer[]}
  */
-Wallet.prototype.getAddressesStr = function(opts) {
-  return this.getAddresses(opts).map(function(a) {
-    return a.toString();
-  });
+Wallet.prototype.getReceiveAddresses = function() {
+  return this.publicKeyRing.getReceiveAddresses();
 };
+
 
 Wallet.prototype.subscribeToAddresses = function() {
   if (!this.publicKeyRing.isComplete()) return;
 
-  var addrInfo = this.publicKeyRing.getAddressesInfo();
-  this.blockchain.subscribe(_.pluck(addrInfo, 'addressStr'));
-  log.debug('Subscribed to ' + addrInfo.length + ' addresses');
+  var addresses = this.getAddresses();
+  this.blockchain.subscribe(addresses);
+  log.debug('Wallet:' + this.getName() + ' Subscribed to:' + addresses.length + ' addresses');
 };
 
-/**
- * @desc Alias for {@link PublicKeyRing#getAddressesInfo}
- */
-Wallet.prototype.getAddressesInfo = function(opts) {
-  return this.publicKeyRing.getAddressesInfo(opts, this.publicKey);
-};
 /**
  * @desc Returns true if a given address was generated by deriving our master public key
  * @return {boolean}
  */
 Wallet.prototype.addressIsOwn = function(addrStr) {
-  return !!this.publicKeyRing.addressToPath[addrStr];
+  return this.publicKeyRing.addressIsOwn(addrStr);
 };
+
+
+/**
+ * @desc Returns true if a given address is a change address (remainder)
+ * @param addrStr
+ * @return {boolean} 
+ */
+Wallet.prototype.addressIsChange = function(addrStr) {
+  return this.publicKeyRing.addressIsChange(addrStr);
+};
+
 
 
 /**
@@ -2108,7 +2119,11 @@ Wallet.prototype.maxRejectCount = function() {
 // TODO: Can we add cache to getUnspent?
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
-  this.blockchain.getUnspent(this.getAddressesStr(), function(err, unspentList) {
+  var addresses = this.getAddresses();
+
+
+  log.debug('Wallet ' + this.getName() + ': Getting unspents from ' +  addresses.length + ' addresses');
+  this.blockchain.getUnspent(addresses, function(err, unspentList) {
 
     if (err) {
       return cb(err);
@@ -2316,7 +2331,7 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
  */
 Wallet.prototype.updateIndexes = function(callback) {
   var self = this;
-  if (!self.isReady())
+  if (!self.isComplete())
     return callback();
   log.debug('Wallet:' + this.id + ' Updating indexes...');
   var tasks = this.publicKeyRing.indexes.map(function(index) {
@@ -2370,7 +2385,8 @@ Wallet.prototype.deriveAddresses = function(index, amount, isChange, copayerInde
 
   var ret = new Array(amount);
   for (var i = 0; i < amount; i++) {
-    ret[i] = this.publicKeyRing.getAddress(index + i, isChange, copayerIndex).toString();
+    // TODO
+    ret[i] = this.publicKeyRing._getAddress(index + i, isChange, copayerIndex).toString();
   }
   return ret;
 };
@@ -2433,10 +2449,12 @@ Wallet.prototype.indexDiscovery = function(start, change, copayerIndex, gap, cb)
  * @desc Closes the wallet and disconnects all services
  */
 Wallet.prototype.close = function(cb) {
+  log.debug('## CLOSING Wallet: ' + this.id);
+  this.network.removeAllListeners();
   this.network.cleanUp();
+  this.blockchain.removeAllListeners();
   this.blockchain.destroy();
 
-  log.debug('## CLOSING Wallet: ' + this.id);
   // TODO
   //  this.lock.release(function() {
   if (cb) return cb();
@@ -2512,7 +2530,7 @@ Wallet.prototype.requiresMultipleSignatures = function() {
  * @desc Returns true if the keyring is complete
  * @return {boolean}
  */
-Wallet.prototype.isReady = function() {
+Wallet.prototype.isComplete = function() {
   return this.publicKeyRing.isComplete();
 };
 
@@ -2532,7 +2550,7 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   }
   opts = opts || {};
 
-  var addresses = self.getAddressesInfo();
+  var addresses = self.getAddresses();
   var proposals = self.txProposals.txps;
   var satToUnit = 1 / self.settings.unitToSatoshi;
 
@@ -2542,33 +2560,26 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   function extractInsOuts(tx) {
     // Inputs
     var inputs = _.map(tx.vin, function(item) {
-      var addr = _.findWhere(addresses, {
-        addressStr: item.addr
-      });
       return {
         type: 'in',
-        address: addr ? addr.addressStr : item.addr,
-        isMine: !_.isUndefined(addr),
-        isChange: addr ? !!addr.isChange : false,
+        address: item.addr,
+        isMine: self.addressIsOwn(item.addr),
+        isChange: self.addressIsChange(item.addr),
         amountSat: item.valueSat,
       }
     });
     var outputs = _.map(tx.vout, function(item) {
-      var addr;
       var itemAddr;
       // If classic multisig, ignore
       if (item.scriptPubKey && item.scriptPubKey.addresses.length == 1) {
         itemAddr = item.scriptPubKey.addresses[0];
-        addr = _.findWhere(addresses, {
-          addressStr: itemAddr,
-        });
       }
 
       return {
         type: 'out',
-        address: addr ? addr.addressStr : itemAddr,
-        isMine: !_.isUndefined(addr),
-        isChange: addr ? !!addr.isChange : false,
+        address: itemAddr,
+        isMine: self.addressIsOwn(itemAddr),
+        isChange: self.addressIsChange(itemAddr),
         label: self.addressBook[itemAddr] ? self.addressBook[itemAddr].label : undefined,
         amountSat: parseInt((item.value * bitcore.util.COIN).toFixed(0)),
       }
@@ -2606,6 +2617,8 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
 
     var fees = parseInt((tx.fees * bitcore.util.COIN).toFixed(0));
     var amount;
+
+
     if (amountIn == (amountOut + amountOutChange + (amountIn > 0 ? fees : 0))) {
       tx.action = 'moved';
       amount = amountOut;
@@ -2660,10 +2673,9 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   };
 
   if (addresses.length > 0) {
-    var addressesStr = _.pluck(addresses, 'addressStr');
     var from = (opts.currentPage - 1) * opts.itemsPerPage;
     var to = opts.currentPage * opts.itemsPerPage;
-    self.blockchain.getTransactions(addressesStr, from, to, function(err, res) {
+    self.blockchain.getTransactions(addresses, from, to, function(err, res) {
       if (err) return cb(err);
 
       _.each(res.items, function(tx) {

@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportProfileController',
-  function($scope, $rootScope, $location, controllerUtils, notification, isMobile, pluginManager, identityService) {
-    controllerUtils.redirIfLogged();
-
+  function($scope, $rootScope, $location, notification, isMobile, identityService) {
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
@@ -20,16 +18,10 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = $scope.password;
       updateStatus('Importing profile - Setting things up...');
 
-      copay.Identity.importFromEncryptedFullJson(str, password, {
-        pluginManager: pluginManager,
-        network: config.network,
-        networkName: config.networkName,
-        walletDefaults: config.wallet,
-        passphraseConfig: config.passphraseConfig,
-      }, function(err, iden) {
+      identityService.importProfile(str,password, function(err, iden) {
+        $scope.loading = false;
         if (err) {
-          $scope.loading = false;
-
+          copay.logger.warn(err);
           if ((err.toString() || '').match('BADSTR')) {
             $scope.error = 'Bad password or corrupt profile file';
           } else if ((err.toString() || '').match('EEXISTS')) {
@@ -37,12 +29,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
           } else {
             $scope.error = 'Unknown error';
           }
-          $scope.$digest();
-
-        } else {
-          var firstWallet = iden.getLastFocusedWallet();
-          controllerUtils.bindProfile($scope, iden, firstWallet);
-        }
+          $rootScope.$digest();
+        } 
       });
     };
 
@@ -57,10 +45,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     };
 
     $scope.import = function(form) {
-      $scope.loading = true;
 
       if (form.$invalid) {
-        $scope.loading = false;
         $scope.error = 'Please enter the required fields';
         return;
       }
@@ -69,11 +55,11 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
-        $scope.loading = false;
         $scope.error = 'Please, select your backup file';
         return;
       }
 
+      $scope.loading = true;
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {

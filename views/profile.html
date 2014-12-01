@@ -1,4 +1,4 @@
-<div class="backup" ng-controller="ProfileController">
+<div class="backup" ng-controller="ProfileController" ng-init="setWallets()">
   <div class="row hide-for-large-up">
     <div class="large-12 medium-12 small-12 columns">
       <h1>{{$root.title}}</h1>
@@ -49,26 +49,33 @@
             <th>Type</th>
             <th class="hide-for-small-only">Status</th>
             <th>Balance</th>
+            <th>Approx Size</th>
             <th class="text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr 
               data-ng-repeat="item in wallets | orderBy:'name'" 
-              ng-init="isReady = item.isReady();
+              ng-init="isComplete = item.isComplete();
               networkName = item.getNetworkName()"
               ng-class="{'deleting':loading==item.id}">
             <td>{{item.name || item.id }}</td>
             <td>{{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}</td>
             <td class="hide-for-small-only">
-              {{isReady ? 'Complete' : 'Waiting for copayers...'}}
+              {{isComplete ? 'Complete' : 'Waiting for copayers...'}}
             </td>
             <td>
-              <span ng-if="!isReady">-</span>
-              <span ng-if="isReady">
-                  {{item.balanceInfo.totalBalance || 0 |noFractionNumber}} {{item.settings.unitName}}
+              <span ng-if="!isComplete">-</span>
+              <span ng-if="isComplete">
+                  {{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}
               </span>
             </td>
+          <td>
+              <span>
+                  {{item.sizes().total/1000}} kB 
+              </span>
+            </td>
+   
             <td class="text-right">
               <div ng-show="loading != item.id">
                 <a title="Download Backup" class="text-gray" ng-click="downloadWalletBackup(item)"

@@ -85,7 +85,6 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
       'Authorization': authHeader
     }
   };
-  log.debug('Insight request', getParams);
   this.request.get(getParams,
     function(err, response, body) {
       if (err) {

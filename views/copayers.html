@@ -1,21 +1,19 @@
 <div ng-controller="CopayersController">
-  <div ng-if='$root.wallet && $root.wallet.isReady()' ng-init="goToWallet()"></div>
+  <div ng-if='$root.wallet && $root.wallet.isComplete()' ng-init="goToWallet()"></div>
 
   <div class="row hide-for-large-up">
     <div class="medium-12 small-12 columns">
       <h1 translate>
-        Waiting copayers for {{$root.wallet.getName()}} 
-        <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
+        Waiting copayers...
       </h1>
     </div>
   </div>
   <div class="row">
     <div class="large-12 columns">
-      <div ng-if="!$root.wallet.isReady()">
+      <div ng-if="!$root.wallet.isComplete()">
         <div class="panel oh">
           <h2 class="line-b">
             Share this secret with your other copayers 
-            <small>{{$root.wallet.requiredCopayers}}-of-{{$root.wallet.totalCopayers}}</small>
           </h2>
           <div class="text-center">
             <qrcode size="250" data="{{secret}}"></qrcode>
@@ -27,7 +25,7 @@
       </div>
       <div class="panel oh">
         <div ng-include="'views/includes/copayer.html'"></div> 
-        <div class="copay-box" ng-if="!$root.wallet.isReady()">
+        <div class="copay-box" ng-if="!$root.wallet.isComplete()">
           <span ng-include="'views/includes/photo.html'"></span>
           <p class="size-12 text-white text-light m0">
           <i class="fi-loop icon-rotate spinner"></i>

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, controllerUtils, backupService) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, backupService, identityService) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
@@ -14,32 +14,21 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     $scope.hideViewProfileBackup = true;
   };
   
-  $scope.getWallets = function() {
-    if (!$rootScope.iden) return;
-    $scope.wallets = [];
-    var wids = _.pluck($rootScope.iden.listWallets(), 'id');
-    _.each(wids, function(wid) {
-      var w = $rootScope.iden.getWalletById(wid);
-      $scope.wallets.push(w);
-      controllerUtils.updateBalance(w, function() {
-        $rootScope.$digest();
-      }, true);
-    });
-  };
-  
   $scope.deleteWallet = function(w) {
     if (!w) return;
-    $scope.loading = w.id;
-    controllerUtils.deleteWallet($scope, w, function() {
-      if ($rootScope.wallet.id === w.id) {
-        $rootScope.wallet = null;
-        var lastFocused = $rootScope.iden.getLastFocusedWallet();
-        controllerUtils.bindProfile($scope, $rootScope.iden, lastFocused);
-      }
+    identityService.deleteWallet(w, function(err) {
       $scope.loading = false;
-      $scope.getWallets();
+      if (err) {
+        log.warn(err);
+      }
     });
   };
+
+  $scope.setWallets = function() {
+    if (!$rootScope.iden) return;
+    $scope.wallets=$rootScope.iden.listWallets();
+  };
+
 
   $scope.downloadWalletBackup = function(w) {
     if (!w) return;
