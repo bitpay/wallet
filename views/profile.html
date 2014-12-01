@@ -1,4 +1,4 @@
-<div class="backup" ng-controller="ProfileController" ng-init="setWallets()">
+<div class="backup" ng-controller="ProfileController" ng-init="init()">
   <div class="row hide-for-large-up">
     <div class="large-12 medium-12 small-12 columns">
       <h1>{{$root.title}}</h1>
@@ -39,7 +39,7 @@
   </div>
   <div class="line-dashed-h m20b"></div>
   
-  <div class="row" ng-init="getWallets()">
+  <div class="row" ng-init="setWallets()">
     <div class="large-12 columns">
       <h2>Manage wallets</h2>
       <table>
@@ -72,7 +72,8 @@
             </td>
           <td>
               <span>
-                  {{item.sizes().total/1000}} kB 
+                  {{item.kb}} kB 
+                  ({{item.usage}}%) 
               </span>
             </td>
    
@@ -92,6 +93,15 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="size-12">
+        <div ng-if="perItem">
+          <p> Your current Insight server usage quotas are: {{perItem}}kB per walelt and up to {{nrWallets}} wallets.
+        </div>
+        <div ng-if="$root.needsEmailConfirmation">
+          <p> <i class="fi-alert"></i> Confirming for email with increase your storage usage limits.
+        </div>
+      </div>
     </div>
   </div> 
 </div>

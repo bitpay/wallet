@@ -74,6 +74,30 @@ InsightStorage.prototype.getPassphrase = function() {
   return bitcore.util.twoSha256(this.getKey()).toString('base64');
 };
 
+/**
+ * XmlHttpRequest's getAllResponseHeaders() method returns a string of response
+ * headers according to the format described here:
+ * http://www.w3.org/TR/XMLHttpRequest/#the-getallresponseheaders-method
+ * This method parses that string into a user-friendly key/value pair object.
+ */
+InsightStorage.parseResponseHeaders = function (headerStr) {
+  var headers = {};
+  if (!headerStr) {
+    return headers;
+  }
+  var headerPairs = headerStr.split('\u000d\u000a');
+  for (var i = 0, len = headerPairs.length; i < len; i++) {
+    var headerPair = headerPairs[i];
+    var index = headerPair.indexOf('\u003a\u0020');
+    if (index > 0) {
+      var key = headerPair.substring(0, index);
+      var val = headerPair.substring(index + 2);
+      headers[key] = val;
+    }
+  }
+  return headers;
+}
+
 InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
   var retrieveUrl = this.storeUrl + '/retrieve';
@@ -96,7 +120,7 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
       if (response.statusCode !== 200) {
         return callback('Connection error');
       }
-      return callback(null, body, response.getAllResponseHeaders());
+      return callback(null, body, InsightStorage.parseResponseHeaders(response.getAllResponseHeaders()));
     }
   );
 };
