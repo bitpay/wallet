@@ -272,7 +272,7 @@ describe("Unit: Controllers", function() {
 
     it('should handle big values in 100 BTC', function() {
       var old = scope.wallet.settings.unitToSatoshi;
-      scope.wallet.settings.unitToSatoshi = 100000000;;
+      scope.wallet.settings.unitToSatoshi = 100000000;
       sendForm.address.$setViewValue(anAddr);
       sendForm.amount.$setViewValue(100);
       sendForm.address.$setViewValue(anAddr);
@@ -291,7 +291,7 @@ describe("Unit: Controllers", function() {
 
 
       var old = $rootScope.wallet.settings.unitToSatoshi;
-      $rootScope.wallet.settings.unitToSatoshi = 100000000;;
+      $rootScope.wallet.settings.unitToSatoshi = 100000000;
       sendForm.address.$setViewValue(anAddr);
       sendForm.amount.$setViewValue(5000);
       scope.submitForm(sendForm);
