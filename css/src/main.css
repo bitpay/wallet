@@ -90,10 +90,27 @@ header .alt-currency {
 }
 
 .alt-currency {
-  background: #2C3E50;
   padding: 0.05rem 0.2rem;
   border-radius: 2px;
   font-size: 10px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.alt-currency.green {
+  background: #1ABC9C;
+}
+
+.alt-currency.red {
+  background: #A02F23;
+}
+
+.alt-currency.black {
+  background: #213140;
+}
+
+.alt-currency.gray {
+  background: #7A8C9E;
 }
 
 .head {
