@@ -47,7 +47,7 @@ InsightStorage.prototype.getItem = function(name, callback) {
   var self = this;
 
   this._makeGetRequest(passphrase, name, function(err, body) {
-    if (err) log.info('[InsightStorage. err]', err);
+    if (err) log.warn(err);
     if (err && err.indexOf('PNOTFOUND') !== -1 && mayBeOldPassword(self.password)) {
       return self._brokenGetItem(name, callback);
     }
@@ -87,6 +87,7 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   };
   this.request.get(getParams,
     function(err, response, body) {
+console.log('[InsightStorage.js.89:response:]',response); //TODO
       if (err) {
         return callback('Connection error');
       }
@@ -172,16 +173,39 @@ InsightStorage.prototype.setItem = function(name, value, callback) {
     }
     if (response.statusCode === 409) {
       return callback('BADCREDENTIALS: Invalid username or password');
-    }
-    if (response.statusCode !== 200) {
+    } else if (response.statusCode === 406) {
+      return callback('OVERQUOTA: Quota exceeded');
+    } else if (response.statusCode !== 200) {
       return callback('Unable to store data on insight');
     }
     return callback();
   });
 };
 
-InsightStorage.prototype.removeItem = function(name, callback) {
-  this.setItem(name, '', callback);
+InsightStorage.prototype.removeItem = function(key, callback) {
+  var passphrase = this.getPassphrase();
+  var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
+  var deleteUrl = this.storeUrl + '/delete/item';
+  var getParams = {
+    url: deleteUrl + '?' + querystring.encode({
+      key: key
+    }),
+    headers: {
+      'Authorization': authHeader
+    }
+  };
+  log.debug('erase ' +  name);
+  this.request.get(getParams, function(err, response, body) {
+    if (err) {
+      return callback('Connection error');
+    }
+    if (response.statusCode === 409) {
+      return callback('BADCREDENTIALS: Invalid username or password');
+    } else if (response.statusCode !== 200) {
+      return callback('Unable to remove data on insight');
+    }
+    return callback();
+  });
 };
 
 InsightStorage.prototype.clear = function(callback) {

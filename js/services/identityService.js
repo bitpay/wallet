@@ -82,8 +82,7 @@ angular.module('copayApp.services')
       copay.Identity.open(opts, function(err, iden) {
         if (err) return cb(err);
         root.bind(iden);
-        iden.openWallets();
-        return cb();
+        return cb(null, iden);
       });
     };
 
@@ -247,7 +246,6 @@ angular.module('copayApp.services')
         copay.logger.debug('newWallet:', w.getName(), wid, iden.getLastFocusedWalletId());
         root.installWalletHandlers(w);
         if (wid == iden.getLastFocusedWalletId()) {
-          $rootScope.starting = false;
           copay.logger.debug('GOT Focused wallet:', w.getName());
           root.setFocusedWallet(w, true);
           root.goWalletHome();
