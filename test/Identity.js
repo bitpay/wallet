@@ -215,7 +215,7 @@ describe('Identity model', function() {
           getName: sinon.stub().returns('wallet' + i),
           close: sinon.stub(),
         };
-        iden.bindWallet(w);
+        iden.wallets[w.getId()] = w;
       });
 
       iden.remove(null, function(err, res) {
@@ -225,7 +225,6 @@ describe('Identity model', function() {
         storage.removeItem.getCall(3).args[0].should.equal(iden.getId());
         done();
       });
-
     });
   });
 
