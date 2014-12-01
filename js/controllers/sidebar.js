@@ -4,23 +4,23 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
   $scope.menu = [{
     'title': 'Home',
-    'icon': 'fi-home',
+    'icon': 'icon-home',
     'link': 'homeWallet'
   }, {
     'title': 'Receive',
-    'icon': 'fi-download',
+    'icon': 'icon-receive',
     'link': 'receive'
   }, {
     'title': 'Send',
-    'icon': 'fi-arrow-right',
+    'icon': 'icon-paperplane',
     'link': 'send'
   }, {
     'title': 'History',
-    'icon': 'fi-clipboard-pencil',
+    'icon': 'icon-history',
     'link': 'history'
   }, {
     'title': 'Settings',
-    'icon': 'fi-widget',
+    'icon': 'icon-gear',
     'link': 'more'
   }];
 
