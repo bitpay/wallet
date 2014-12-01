@@ -307,6 +307,31 @@ Identity.prototype.store = function(opts, cb) {
   });
 };
 
+/**
+ * @param {Object} opts
+ * @param {Function} cb
+ */
+Identity.prototype.remove = function(opts, cb) {
+  log.debug('Deleting profile');
+
+  var self = this;
+  opts = opts || {};
+
+  // HACK (isocolsky): remove notifications while deleting wallets
+  self.removeAllListeners('deletedWallet');
+  
+  async.each(_.values(self.wallets), function(w, cb) {
+    self.deleteWallet(w.getId(), cb);
+  }, function (err) {
+    if (err) return cb(err);
+    self.storage.removeItem(self.getId(), function(err) {
+      if (err) return cb(err);
+      self.emitAndKeepAlive('closed');
+      return cb();
+    });
+  });
+};
+
 Identity.prototype._cleanUp = function() {
   // NOP
 };
