@@ -38,7 +38,17 @@
 
 <div class="last-transactions-footer">
   <div class="row collapse">
-    <div class="large-5 medium-7 small-12 columns" ng-show="!tx.sentTs">
+    <div class="large-5 medium-12 small-12 columns" ng-show="!tx.sentTs">
+      <div ng-show="tx.signedBy[myId]">
+        <button class="secondary tiny m0" ng-disabled="true"> <i class="fi-check"></i>
+          <span translate>I signed</span>
+        </button>
+      </div>
+      <div ng-show="tx.rejectedBy[myId]">
+        <button class="warning tiny m0" ng-disabled="true"> <i class="fi-x"></i>
+          <span translate>I rejected</span>
+        </button>
+      </div>
       <div ng-show="!tx.signedBy[myId] && !tx.rejectedBy[myId]">
         <div class="hide-for-small-only">
           <button class="primary tiny m0 m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
@@ -58,31 +68,36 @@
         </div>
       </div>
       <div ng-show="!tx.missingSignatures && !tx.sentTs">
-        <button class="primary tiny m0"  ng-click="send(tx.ntxid)" ng-disabled="loading"> <i class=".fi-upload-cloud"></i>
+        <button class="primary tiny m0"  ng-click="send(tx.ntxid)" ng-disabled="loading"> <i class="fi-upload-cloud"></i>
           <span translate>Broadcast Transaction</span>
         </button>
       </div>
     </div>
 
-    <div class="ellipsis large-7 columns small text-gray show-for-large-up m5t text-right">
-      <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
-      <strong translate>Proposal ID</strong>: {{tx.ntxid}}
+    <div class="large-7 columns small text-gray show-for-large-up text-right">
+      <div>
+        <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
+      </div>
+      <div class="m5t">
+        <strong translate>Proposal ID</strong>: {{tx.ntxid}}
+      </div>
     </div>
   </div>
 </div>
 
-<a class="missing-copayers" ng-click="">
-  <div translate ng-show="!tx.finallyRejected && tx.missingSignatures==1">
-    <i class="icon-people size-16"></i>
+<a class="missing-copayers" ng-click="tx.showDetails = !tx.showDetails">
+  <span ng-show="!tx.finallyRejected && tx.missingSignatures==1">
+    <i class="fi-torso"></i> 
     One signature missing
-  </div>
-  <div translate ng-show="!tx.finallyRejected && tx.missingSignatures>1">
-    <i class="icon-people size-16"></i>
+  </span> 
+  <span ng-show="!tx.finallyRejected && tx.missingSignatures>1">
+    <i class="icon-people"></i> 
     {{tx.missingSignatures}} signatures missing
-  </div>
+  </span> 
+  <i ng-class="{'icon-arrow-up':tx.showDetails, 'icon-arrow-down':!tx.showDetails}"></i>
 </a>
 
-<ul class="tx-copayers">
+<ul class="tx-copayers" ng-show="tx.showDetails">
   <li ng-repeat="c in tx.actionList">
     <span>
       <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x m10r"></i>
@@ -91,32 +106,8 @@
     </span>
     <span>
       <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
-      <i ng-if="!c.actions.create" class="fi-crown icon-status m10r"></i>
     </span>
     <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
   </li>
 </ul>
-<!-- 
-<div class="tx-copayers">
-  <table>
-    <tbody>
-    <tr ng-repeat="c in tx.actionList">
-      <td width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
-      </td>
-      <td>
-        <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
-        <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
-      </td>
-      <td>
-        <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
-        <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
-      </td>
-      <td>
-        <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
-        <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
-        <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div> -->
+
