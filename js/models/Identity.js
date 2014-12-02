@@ -125,7 +125,7 @@ Identity.open = function(opts, cb) {
 
   var storage = opts.storage || opts.pluginManager.get('DB');
   storage.setCredentials(opts.email, opts.password, opts);
-  storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data, headers) {
+  storage.getItem(Identity.getKeyForEmail(opts.email), function(err, data) {
     var exported;
     if (err) {
       return cb(err);
@@ -135,7 +135,7 @@ Identity.open = function(opts, cb) {
     } catch (e) {
       return cb(e);
     }
-    return cb(null, new Identity(_.extend(opts, exported)), headers);
+    return cb(null, new Identity(_.extend(opts, exported)));
   });
 };
 
@@ -654,7 +654,6 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
     if (err) return cb(err);
     self.emitAndKeepAlive('walletDeleted', walletId);
     self.store(null, cb);
-    return cb();
   });
 };
 
