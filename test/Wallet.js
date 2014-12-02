@@ -2391,14 +2391,6 @@ describe('Wallet model', function() {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_in_2'
-      }, {
-        addressStr: 'change',
-        isChange: true,
-      }]);
 
       w.addressBook = {
         'addr_out_1': {
@@ -2441,14 +2433,6 @@ describe('Wallet model', function() {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_in_2'
-      }, {
-        addressStr: 'change',
-        isChange: true,
-      }]);
 
       w.txProposals.txps = [{
         sentTxid: 'id0',
@@ -2490,37 +2474,37 @@ describe('Wallet model', function() {
       var w = cachedCreateW2();
       var txs = [{
         vin: [{
-          addr: 'addr_in_1',
+          addr: 'in_1',
           valueSat: 1000
         }],
         vout: [{
           scriptPubKey: {
-            addresses: ['addr_out_1'],
+            addresses: ['out_1'],
           },
           value: '0.00000900',
         }],
         fees: 0.00000100
       }, {
         vin: [{
-          addr: 'addr_in_2',
+          addr: 'in_2',
           valueSat: 2000
         }],
         vout: [{
           scriptPubKey: {
-            addresses: ['addr_out_2'],
+            addresses: ['out_2'],
           },
           value: '0.00001900',
         }],
         fees: 0.00000100
       }, {
         vin: [{
-          addr: 'addr_in_1',
+          addr: 'in_3',
           valueSat: 3000
 
         }],
         vout: [{
           scriptPubKey: {
-            addresses: ['addr_out_2'],
+            addresses: ['out_3'],
           },
           value: '0.00002900',
 
@@ -2532,15 +2516,22 @@ describe('Wallet model', function() {
         items: txs,
         totalItems: txs.length,
       });
-      w.getAddressesInfo = sinon.stub().returns([{
-        addressStr: 'addr_in_1'
-      }, {
-        addressStr: 'addr_out_2'
-      }]);
+
+      sinon.stub(w, 'getAddresses').returns(['in_1', 'in_2', 'in_3', 'out_1', 'out_2', 'out_3']);
+      var s = sinon.stub(w.publicKeyRing, 'addressIsOwn');
+      s.withArgs('in_1').returns(true);
+      s.withArgs('out_1').returns(false);
+
+      s.withArgs('in_2').returns(false);
+      s.withArgs('out_2').returns(true);
+
+      s.withArgs('in_3').returns(true);
+      s.withArgs('out_3').returns(true);
+
 
       w.getTransactionHistoryCsv(function(data) {
         data.should.exist;
-        data.should.equal('data:text/csv;charset=utf-8,Date,Amount(bits),Action,AddressTo,Comment,Signers\n,9,sent,"addr_out_1",\n,19,received,,\n,29,moved,"addr_out_2",\n');
+        data.should.equal('data:text/csv;charset=utf-8,Date,Amount(bits),Action,AddressTo,Comment,Signers\n,9,sent,"out_1",\n,0,moved,"out_2",\n,29,sent,"out_3",\n');
         done();
       });
     });
