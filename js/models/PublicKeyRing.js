@@ -110,7 +110,7 @@ PublicKeyRing.fromObj = function(opts) {
   }
 
   if (opts.cache && opts.cache.addressToPath) {
-    log.info('PublicKeyRing: Using address cache');
+    log.debug('PublicKeyRing: Using address cache');
     pkr.cache.addressToPath = opts.cache.addressToPath;
     pkr.rebuildCache();
   }
