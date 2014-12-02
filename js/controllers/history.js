@@ -27,76 +27,20 @@ angular.module('copayApp.controllers').controller('HistoryController',
       if (!w) return;
 
       $scope.generating = true;
-      w.getTransactionHistory(function(err, res) {
-        if (err) throw err;
 
-        if (!res) return;
+      w.getTransactionHistoryCsv(function(csvContent) {
+        if (csvContent && csvContent !== 'ERROR') {
+          var filename = "copay_history.csv";
 
-        var unit = w.settings.unitName;
-        var data = res.items;
-        var filename = "copay_history.csv";
-        var csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment";
+          var encodedUri = encodeURI(csvContent);
+          var link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          link.setAttribute("download", filename);
 
-        if (w.isShared()) {
-          csvContent += ",Signers\n";
-        } else {
-          csvContent += "\n";
+          link.click();
         }
-
-        data.forEach(function(it, index) {
-          var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
-          if (it.actionList) {
-            dataString += ',' + formatSigners(it.actionList);
-          }
-          csvContent += index < data.length ? dataString + "\n" : dataString;
-        });
-
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", filename);
-
-        link.click();
         $scope.generating = false;
         $scope.$digest();
-
-        function formatDate(date) {
-          var dateObj = new Date(date);
-          if (!dateObj) {
-            log.error('Error formating a date');
-            return 'DateError'
-          }
-          if (!dateObj.toJSON()) {
-            return '';
-          }
-
-          return dateObj.toJSON().substring(0, 10);
-        }
-
-        function formatString(str) {
-          if (!str) return '';
-
-          if (str.indexOf('"') !== -1) {
-            //replace all
-            str = str.replace(new RegExp('"', 'g'), '\'');
-          }
-
-          //escaping commas
-          str = '\"' + str + '\"';
-
-          return str;
-        }
-
-        function formatSigners(item) {
-          if (!item) return '';
-          var str = '';
-          item.forEach(function(it, index) {
-            str += index == 0 ? w.publicKeyRing.nicknameForCopayer(it.cId) : '|' + w.publicKeyRing.nicknameForCopayer(it.cId);
-          });
-          return str;
-        }
-
       })
     };
 
