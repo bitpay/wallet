@@ -314,7 +314,7 @@ angular.module('copayApp.services')
     };
 
     root.importWallet = function(encryptedObj, pass, opts, cb) {
-      copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, pass, opts);
+      copay.Compatibility.importEncryptedWallet($rootScope.iden, encryptedObj, pass, opts, cb);
     };
 
     root.joinWallet = function(opts, cb) {

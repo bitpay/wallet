@@ -81,6 +81,8 @@ angular.module('copayApp.controllers').controller('ImportController',
           if (err) {
             $scope.loading = false;
             $scope.error = 'Could not read wallet. Please check your password';
+            $rootScope.$digest();
+            return;
           }
           copay.Compatibility.deleteOldWallet(backupOldWallet);
         });
