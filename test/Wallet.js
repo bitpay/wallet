@@ -1616,6 +1616,56 @@ describe('Wallet model', function() {
     });
   });
 
+
+  describe('_onPublicKeyRing', function() {
+    var w, data, txp, pkr;
+    beforeEach(function() {
+      w = cachedCreateW();
+      pkr = '{"walletId":"0a903a2eb33793d1","networkName":"testnet","requiredCopayers":2,"totalCopayers":2,"indexes":[{"copayerIndex":2147483647,"changeIndex":0,"receiveIndex":1},{"copayerIndex":0,"changeIndex":39,"receiveIndex":0},{"copayerIndex":1,"changeIndex":102,"receiveIndex":39}],"copayersExtPubKeys":["tpubD9peJo88ArhgmJNqRkQmhHt4zAGTYVowsHrDj385xyXyMy4RhWZpV5Qx2mMDUVzpbAD5V9jci5D7cZaHhjLYP8gEkngmTKtSF4Y7V3qkAsy","tpubD8udwzKWwNUgoE2WG7LYsXKf5m1eRtJ1Etp43vnoxViFmrmZ1ND2CkdqGyQtuidcN1CiqdBUvbKegbdsMQaj5VLY2hbA4LEnLDrqkgSzikz"],"nicknameFor":{"03338b105850c7126f1f5b0439b357765b17ead8eed15bcdfdbd28d0e3915b696f":"5@queparece","0286b376d65cc4af0de5932fb8299cbef2ca9ed37ec9fdb0edfd4e9cb74eac45da":"4@queparece"}}';
+    });
+
+    it('should fail wrong nr copayers PublicKeyRing', function() {
+      var spy = sinon.spy(console, 'warn');
+      w._onPublicKeyRing('sender', {
+        publicKeyRing: JSON.parse(pkr),
+      });
+      spy.getCall(0).args[1].toString().should.contain('mismatch');
+      spy.restore();
+    });
+    it('should receive and send PKR', function() {
+      var obj = JSON.parse(pkr);
+
+      sinon.stub(w.network, 'send').returns();
+
+      obj.requiredCopayers = 3;
+      obj.totalCopayers = 5;
+      w._onPublicKeyRing('sender', {
+        publicKeyRing: obj,
+      });
+      w.network.send.calledOnce.should.equal(true);
+      should.not.exist(w.network.send.getCall(0).args[0])
+      var o = w.network.send.getCall(0).args[1];
+      _.isObject(o).should.equal(true);
+      o.type.should.equal('publicKeyRing');
+    });
+    it('should lock incomming connections', function() {
+      var obj = JSON.parse(pkr);
+      sinon.stub(w.network, 'send').returns();
+      sinon.stub(w.network, 'lockIncommingConnections').returns();
+
+      obj.requiredCopayers = 3;
+      obj.totalCopayers = 5;
+      var s = sinon.stub(w.publicKeyRing, 'isComplete');
+      s.returns(true);
+
+      w._onPublicKeyRing('sender', {
+        publicKeyRing: obj,
+      });
+      w.network.send.calledOnce.should.equal(false); // wasComplete
+      w.network.lockIncommingConnections.calledOnce.should.equal(true);
+    });
+  });
+
   describe('_onTxProposal', function() {
     var w, data, txp;
     beforeEach(function() {
@@ -1962,7 +2012,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
 
     var addr1 = w.generateAddress(false);
-    sinon.stub(w,'subscribeToAddresses');
+    sinon.stub(w, 'subscribeToAddresses');
 
     w.blockchain.removeAllListeners = sinon.stub();
     w.blockchain.on = sinon.stub();
@@ -1980,7 +2030,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
 
     var addr1 = w.generateAddress(true);
-    sinon.stub(w,'subscribeToAddresses');
+    sinon.stub(w, 'subscribeToAddresses');
 
     w.blockchain.removeAllListeners = sinon.stub();
     w.blockchain.on = sinon.stub();
@@ -2112,14 +2162,14 @@ describe('Wallet model', function() {
         totalItems: txs.length,
       });
 
-      sinon.stub(w,'getAddresses').returns([ 'addr_in_1', 'addr_out_2' ]);
-      var s = sinon.stub(w.publicKeyRing,'addressIsOwn');
+      sinon.stub(w, 'getAddresses').returns(['addr_in_1', 'addr_out_2']);
+      var s = sinon.stub(w.publicKeyRing, 'addressIsOwn');
       s.withArgs('addr_in_1').returns(true);
       s.withArgs('addr_in_2').returns(false);
       s.withArgs('addr_out_2').returns(true);
 
 
-      var s2 = sinon.stub(w.publicKeyRing,'addressIsChange');
+      var s2 = sinon.stub(w.publicKeyRing, 'addressIsChange');
       s2.withArgs('addr_out_1').returns(false);
       s2.withArgs('addr_out_2').returns(false);
 
@@ -2248,13 +2298,13 @@ describe('Wallet model', function() {
       });
 
 
-      sinon.stub(w,'getAddresses').returns([ 'addr_in_1', 'addr_in_2', 'change']);
-      var s = sinon.stub(w.publicKeyRing,'addressIsOwn');
+      sinon.stub(w, 'getAddresses').returns(['addr_in_1', 'addr_in_2', 'change']);
+      var s = sinon.stub(w.publicKeyRing, 'addressIsOwn');
       s.withArgs('addr_in_1').returns(true);
       s.withArgs('addr_in_2').returns(true);
       s.withArgs('change').returns(true);
 
-      var s2 = sinon.stub(w.publicKeyRing,'addressIsChange');
+      var s2 = sinon.stub(w.publicKeyRing, 'addressIsChange');
       s2.withArgs('addr_out_2').returns(false);
       s2.withArgs('change').returns(true);
 
@@ -2295,13 +2345,13 @@ describe('Wallet model', function() {
         totalItems: txs.length,
       });
 
-      sinon.stub(w,'getAddresses').returns([ 'addr_in_1', 'addr_in_2', 'change']);
-      var s = sinon.stub(w.publicKeyRing,'addressIsOwn');
+      sinon.stub(w, 'getAddresses').returns(['addr_in_1', 'addr_in_2', 'change']);
+      var s = sinon.stub(w.publicKeyRing, 'addressIsOwn');
       s.withArgs('addr_1').returns(true);
       s.withArgs('addr_2').returns(true);
       s.withArgs('change').returns(true);
 
-      var s2 = sinon.stub(w.publicKeyRing,'addressIsChange');
+      var s2 = sinon.stub(w.publicKeyRing, 'addressIsChange');
       s2.withArgs('addr_1').returns(false);
       s2.withArgs('change').returns(true);
 

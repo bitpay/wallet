@@ -327,15 +327,18 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
   try {
     hasChanged = this.publicKeyRing.merge(inPKR, true);
   } catch (e) {
-    log.debug('Wallet:' + this.id + '## WALLET ERROR', e);
-    this.emitAndKeepAlive('connectionError', e.message);
+    log.warn('Wallet:' + this.id, e);
     return;
   }
   if (hasChanged) {
+console.log('[Wallet.js.333:hasChanged:]',hasChanged); //TODO
     if (wasIncomplete) {
       this.sendPublicKeyRing();
     }
+
+console.log('[Wallet.js.335:wasIncomplete:]',wasIncomplete); //TODO
     if (this.publicKeyRing.isComplete()) {
+console.log('[Wallet.js.338]'); //TODO
       this._lockIncomming();
     }
 
