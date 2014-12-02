@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController',
-  function($scope, $rootScope) {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope) {
+  $scope.init = function() {
     $rootScope.title = 'Home';
     $scope.addr = _.last($rootScope.wallet.getReceiveAddresses());
 
@@ -9,5 +9,5 @@ angular.module('copayApp.controllers').controller('HomeWalletController',
     $rootScope.$watch('wallet', function() {
       $scope.addr = _.last($rootScope.wallet.getReceiveAddresses());
     });
-  }
-);
+  };
+});
