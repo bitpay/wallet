@@ -19,6 +19,16 @@
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
       <div class="row">
         <div class="large-12 columns">
+          <div class="box-notification" ng-show="error">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div> 
+            <span class="text-warning size-14">
+              {{error|translate}}
+            </span>
+          </div>
+    
+
           <div class="panel">
             <label><span translate>Wallet name</span>
               <div class="input">

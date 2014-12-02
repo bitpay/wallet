@@ -20,7 +20,7 @@ EncryptedInsightStorage.prototype._brokenDecrypt = function(body) {
 EncryptedInsightStorage.prototype.getItem = function(name, callback) {
   var self = this;
   InsightStorage.prototype.getItem.apply(this, [name,
-    function(err, body) {
+    function(err, body, headers) {
       if (err) {
         return callback(err);
       }
@@ -35,7 +35,7 @@ EncryptedInsightStorage.prototype.getItem = function(name, callback) {
         log.debug('Could not decrypt value.');
         return callback('PNOTFOUND');
       }
-      return callback(null, decryptedJson);
+      return callback(null, decryptedJson, headers);
     }
   ]);
 };

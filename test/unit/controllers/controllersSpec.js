@@ -91,6 +91,7 @@ describe("Unit: Controllers", function() {
       'e': 'errmsg',
       'loading': false
     });
+    w.sizes = sinon.stub().returns({tota:1234});
     w.getBalance = sinon.stub().returns(10000);
     w.publicKeyRing = sinon.stub().yields(null);
     w.publicKeyRing.nicknameForCopayer = sinon.stub().returns('nickcopayer');
