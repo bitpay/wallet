@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, notification, applicationService) {
+angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, notification, applicationService, localstorageService) {
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
   $scope.insightLivenet = config.network.livenet.url;
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     plugins[$scope.selectedStorage.pluginName] = true;
     copay.logger.setLevel($scope.selectedLogLevel.name);
 
-    localStorage.setItem('config', JSON.stringify({
+    localstorageService.setItem('config', JSON.stringify({
       network: insightSettings,
       version: copay.version,
       defaultLanguage: $scope.selectedLanguage.isoCode,
@@ -92,15 +92,16 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       rates: _.extend(config.rates, {
         url: insightSettings.livenet.url + '/api/rates'
       }),
-    }));
-
-    applicationService.restart();
+    }), function() {
+      applicationService.restart();
+    });
   };
 
 
   $scope.reset = function() {
-    localStorage.removeItem('config');
-    applicationService.reload();
+    localstorageService.removeItem('config', function() {
+      applicationService.reload();
+    });
   };
 
 });
