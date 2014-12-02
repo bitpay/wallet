@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   $scope.done = function() {
     $rootScope.starting = false;
+    $rootScope.$digest();
   };
 
 
@@ -46,11 +47,13 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         } else {
           $scope.error = 'Unknown error';
         }
+        return $scope.done();
       }
 
       if (iden) {
         iden.on('newWallet', $scope.done);
         iden.on('noWallets', $scope.done);
+        iden.openWallets();
       }
     });
   }

@@ -67,6 +67,21 @@ angular.module('copayApp.services')
 
     };
 
+    root.setServerStatus = function(headers) {
+      if (!headers) 
+        return;
+
+      if (headers['X-Email-Needs-Validation']) 
+        $rootScope.needsEmailConfirmation = true; 
+      else
+        $rootScope.needsEmailConfirmation = null; 
+
+      if (headers['X-Quota-Per-Item']) 
+        $rootScope.quotaPerItem = parseInt(headers['X-Quota-Per-Item']); 
+
+      if (headers['X-Quota-Items-Limit']) 
+        $rootScope.quotaItems = parseInt(headers['X-Quota-Items-Limit']); 
+    };
 
     root.open = function(email, password, cb) {
       var opts = {
@@ -79,11 +94,11 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
       };
 
-      copay.Identity.open(opts, function(err, iden) {
+      copay.Identity.open(opts, function(err, iden, headers) {
         if (err) return cb(err);
+        root.setServerStatus(headers);
         root.bind(iden);
-        iden.openWallets();
-        return cb();
+        return cb(null, iden);
       });
     };
 
@@ -251,7 +266,6 @@ angular.module('copayApp.services')
         copay.logger.debug('newWallet:', w.getName(), wid, iden.getLastFocusedWalletId());
         root.installWalletHandlers(w);
         if (wid == iden.getLastFocusedWalletId()) {
-          $rootScope.starting = false;
           copay.logger.debug('GOT Focused wallet:', w.getName());
           root.setFocusedWallet(w, true);
           root.goWalletHome();

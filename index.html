@@ -49,6 +49,12 @@
           <i class="fi-loop icon-rotate"></i>
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
+        <span class="status" ng-if="$root.needsEmailConfirmation">
+          <i class="fi-alert"></i>
+          <span translate> <strong class="size-16">email not confirmed</strong>.<br> Please confirm your email address 
+   using the confirmation link at the message we sent you</span>
+        </span>
+ 
         <nav class="tab-bar"  ng-if="$root.iden" >
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>

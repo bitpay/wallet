@@ -12,6 +12,7 @@ describe('insight storage plugin', function() {
   var password = '1234';
 
   var data = '{"random": true}';
+  var headers = 'X-test: 12\r\nX-testb: 32';
   var namespace = 'profile::0000000000000000000000000000000000000000';
 
   var oldSecret = 'rFA+F/N+ZvKXp717zBdfCKYQ5v9Fjry0W6tautj5etIH' + 'KLQliZBEYXA7AXjTJ9K3DglzGWJKost3QJUCMbhM/A=='
@@ -47,7 +48,8 @@ describe('insight storage plugin', function() {
 
   var setupForRetrieval = function() {
     requestMock.get.onFirstCall().callsArgWith(1, null, {
-      statusCode: 200
+      statusCode: 200,
+      getAllResponseHeaders: sinon.stub().returns(headers),
     }, data);
   };
 
@@ -61,6 +63,20 @@ describe('insight storage plugin', function() {
       return done();
     });
   });
+
+  it('should be able to retrieve headers', function(done) {
+
+    setupForRetrieval();
+
+    storage.getItem(namespace, function(err, retrieved, headers) {
+      assert(!err);
+      headers['X-test'].should.equal('12');
+      headers['X-testb'].should.equal('32');
+      return done();
+    });
+  });
+
+
 
   var setupForSave = function() {
     requestMock.post.onFirstCall().callsArgWith(1, null, {
@@ -106,11 +122,13 @@ describe('insight storage plugin', function() {
       statusCode: 403
     });
     requestMock.get.onSecondCall().callsArgWith(1, null, {
-      statusCode: 200
+      statusCode: 200,
+      getAllResponseHeaders: sinon.stub(),
     }, data);
     requestMock.post = sinon.stub();
     requestMock.post.onFirstCall().callsArgWith(1, null, {
-      statusCode: 200
+      statusCode: 200,
+      getAllResponseHeaders: sinon.stub(),
     });
   }
 

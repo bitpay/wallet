@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, backupService, identityService) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, backupService, identityService) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
@@ -20,16 +20,35 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     identityService.deleteWallet(w, function(err) {
       $scope.loading = false;
       if (err) {
-        log.warn(err);
+        copay.logger.warn(err);
       }
+      $scope.setWallets();
     });
+  };
+
+  $scope.init = function() {
+    if ($rootScope.quotaPerItem) {
+      $scope.perItem = $filter('noFractionNumber')($rootScope.quotaPerItem/1000,1);
+      $scope.nrWallets =parseInt($rootScope.quotaItems) - 1;
+    }
   };
 
   $scope.setWallets = function() {
     if (!$rootScope.iden) return;
-    $scope.wallets=$rootScope.iden.listWallets();
-  };
 
+    var wallets = $rootScope.iden.listWallets();
+    var max =$rootScope.quotaPerItem;
+
+    _.each(wallets, function(w) {
+      var bits = w.sizes().total;
+      w.kb = $filter('noFractionNumber')(bits/1000, 1);
+      if (max) {
+        w.usage =  $filter('noFractionNumber')(bits/max * 100, 0);
+      }
+    });
+
+    $scope.wallets = wallets;
+  };
 
   $scope.downloadWalletBackup = function(w) {
     if (!w) return;
