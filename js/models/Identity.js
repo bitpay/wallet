@@ -151,6 +151,7 @@ Identity.prototype.readAndBindWallet = function(walletId, cb) {
   var self = this;
   self.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
     if (!error) {
+      self.wallets[wallet.getId()] = wallet;
       self.bindWallet(wallet);
     }
     return cb(error);
@@ -386,6 +387,8 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   log.debug('Updating Indexes for wallet:' + w.getName());
   w.updateIndexes(function(err) {
     log.debug('Adding wallet to profile:' + w.getName());
+    self.wallets[w.getId()] = w;
+    self.updateFocusedTimestamp(w.getId());
     self.bindWallet(w);
     self.storeWallet(w, cb);
   });
@@ -471,8 +474,9 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
  * @emits newWallet  (walletId)
  */
 Identity.prototype.bindWallet = function(w) {
+  preconditions.checkArgument(w && this.wallets[w.getId()]);
+
   var self = this;
-  self.wallets[w.getId()] = w;
   log.debug('Binding wallet:' + w.getName());
 
   w.on('txProposalsUpdated', function() {
@@ -569,11 +573,10 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.version = opts.version || this.version;
 
   var self = this;
-
-
   var w = new walletClass(opts);
-  self.bindWallet(w);
+  self.wallets[w.getId()] = w;
   self.updateFocusedTimestamp(w.getId());
+  self.bindWallet(w);
   self.storeWallet(w, function(err) {
     if (err) return cb(err);
 
@@ -641,7 +644,7 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
 
   this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
     if (err) return cb(err);
-    self.emitAndKeepAlive('deletedWallet', walletId);
+    self.emitAndKeepAlive('walletDeleted', walletId);
     self.store(null, cb);
     return cb();
   });
@@ -664,15 +667,16 @@ Identity.prototype.decodeSecret = function(secret) {
  * @return {string} walletId
  */
 Identity.prototype.getLastFocusedWalletId = function() {
-  var max = _.max(this.focusedTimestamp);
-  var aId = _.findKey(this.wallets) || this.walletIds[0];
+  if (this.walletIds.length == 0) return undefined;
+
+  var max = _.max(this.focusedTimestamps);
 
   if (!max)
-    return aId;
+    return this.walletIds[0];
 
   return _.findKey(this.focusedTimestamps, function(ts) {
     return ts == max;
-  }) || aId;
+  }) || this.walletIds[0];
 };
 
 Identity.prototype.updateFocusedTimestamp = function(wid) {
