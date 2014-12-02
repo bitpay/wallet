@@ -6,7 +6,7 @@ factory('notification', ['$timeout',
 
     var localStorage;
     if (window.chrome && chrome.runtime && chrome.runtime.id) {
-      console.log('Is a chrome app!');
+      console.log('Is a chrome app!...notification.js');
       localStorage = chrome.storage.local;
     } else {
       console.log('Is web!');

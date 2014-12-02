@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
   if (isChromeApp) {
-    console.log('Is a chrome app!');
+    console.log('Is a chrome app!...settings.js');
     localStorage = chrome.storage.local;
   } else {
     console.log('Is web!');
@@ -92,6 +92,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     plugins[$scope.selectedStorage.pluginName] = true;
     copay.logger.setLevel($scope.selectedLogLevel.name);
 
+
     localstorageService.setItem('config', JSON.stringify({
       network: insightSettings,
       version: copay.version,
@@ -107,6 +108,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }), function() {
       applicationService.restart();
     });
+
   };
 
 

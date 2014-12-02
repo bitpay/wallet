@@ -7,6 +7,7 @@ var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
 function LocalStorage() {
   this.type = 'DB';
 
+
   if (isChromeApp) {
     localStorage = chrome.storage.local;
     window.localStorage = chrome.storage.local;

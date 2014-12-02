@@ -119,12 +119,14 @@ angular
     }
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
 
+
       var localStorage;
       if (window.chrome && chrome.runtime && chrome.runtime.id) {
-        console.log('Is a chrome app!');
+        console.log('Is a chrome app!...routes.js');
+        console.log('chrome.storage', chrome.storage);
+        console.log('chrome.storage.local', chrome.storage.local);
         localStorage = chrome.storage.local;
 
-        console.log('chrome.storage', chrome.storage);
         console.log('localStorage', localStorage);
       } else {
         console.log('Is web!');
