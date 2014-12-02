@@ -62,7 +62,8 @@ angular.module('copayApp.controllers').controller('CreateController',
             $scope.error = 'Could not create wallet: ' + err;
           }
         }
-        $rootScope.$digest()
+        
+        $rootScope.$digest();
       });
     };
   });
