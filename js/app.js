@@ -4,19 +4,67 @@ var copay = require('copay');
 var _ = require('lodash');
 var config = defaultConfig;
 
+var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
+
 var localStorage;
-if (window.chrome && chrome.runtime && chrome.runtime.id) {
-  console.log('Is a chrome app!');
+if (isChromeApp) {
+  var storage = chrome.storage.local;
+
+  var myAccess = 'myAccess';
+
+  var obj = {};
+
+  obj[myAccess] = Math.floor((Math.random() * 1000) + 1);;
+
+  storage.get(myAccess, function(result) {
+    console.log('Last access 1', JSON.stringify(myAccess), JSON.stringify(result));
+  });
+
+  storage.set(obj);
+
+  storage.get(myAccess, function(result) {
+    console.log('Last access 2', JSON.stringify(myAccess), JSON.stringify(result));
+  });
+
+
+
+  console.log('Is a chrome app!...app.js');
+  console.log('chrome.storage', chrome.storage);
+  chrome.storage.local.set({
+    'MiNombre': 'Matias'
+  }, function(done) {
+    console.log('Saving  to local storage', done);
+  });
   localStorage = chrome.storage.local;
+
+
+
   console.log('localStorage', localStorage);
 } else {
   console.log('Is web!');
   localStorage = window.localStorage;
 }
 
+console.log('access to localStorage');
+
 var localConfig;
 if (localStorage) {
-  localConfig = JSON.parse(localStorage.getItem('config'));
+
+  if (isChromeApp) {
+    var result;
+    localStorage.getItem('config', function(data) {
+      result = data;
+    });
+
+    console.log('retrieving data from local storage', result);
+    localConfig = JSON.parse(result);
+  } else {
+    localConfig = JSON.parse(localStorage.getItem('config'));
+    console.log('localStorage', localConfig);
+  }
+} else {
+
+  console.log('localStorage is null ');
 }
 
 

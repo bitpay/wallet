@@ -22,6 +22,7 @@
   color: #B7C2CD;
 }
 
+
 #qr-canvas { display: none; }
 #qrcode-scanner-video {
   display: block;
@@ -60,6 +61,7 @@ body, html{
   height:100%;
   width:100%;
   color: #2C3E50;
+  -webkit-user-select: text;
 }
 
 header {

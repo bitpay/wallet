@@ -76,6 +76,15 @@ Compatibility._decrypt = function(base64, passphrase) {
 Compatibility._read = function(k, passphrase, cb) {
   preconditions.checkArgument(cb);
 
+  var localStorage;
+  if (window.chrome && chrome.runtime && chrome.runtime.id) {
+    console.log('Is a chrome app!..Compatibility.js');
+    localStorage = chrome.storage.local;
+  } else {
+    console.log('Is web!');
+    localStorage = window.localStorage;
+  }
+
   var ret = localStorage.getItem(k);
   if (!ret) return cb(null);
   var ret = self._decrypt(ret, passphrase);
