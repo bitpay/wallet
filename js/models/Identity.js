@@ -474,6 +474,8 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
  * @emits newWallet  (walletId)
  */
 Identity.prototype.bindWallet = function(w) {
+  preconditions.checkArgument(w && this.wallets[w.getId()]);
+
   var self = this;
   log.debug('Binding wallet:' + w.getName());
 
@@ -571,13 +573,10 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.version = opts.version || this.version;
 
   var self = this;
-
-
   var w = new walletClass(opts);
   self.wallets[w.getId()] = w;
   self.updateFocusedTimestamp(w.getId());
   self.bindWallet(w);
-  self.updateFocusedTimestamp(w.getId());
   self.storeWallet(w, function(err) {
     if (err) return cb(err);
 

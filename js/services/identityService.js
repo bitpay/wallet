@@ -164,6 +164,11 @@ angular.module('copayApp.services')
           notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
         }
       });
+
+      w.on('publicKeyRingUpdated', function() {
+        $rootScope.$digest();
+      });
+
       w.on('ready', function() {
         var isFocused = root.isFocused(wid);
         copay.logger.debug('Wallet:' + w.getName() + ' is ready. Focused:', isFocused);
