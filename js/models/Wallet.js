@@ -1367,8 +1367,8 @@ Wallet.prototype.generateAddress = function(isChange) {
   return addr;
 };
 
+
 /**
- * TODO: get this out of here
  * @desc get list of actions (see {@link getPendingTxProposals})
  */
 Wallet.prototype._getActionList = function(txp) {
@@ -2544,6 +2544,87 @@ Wallet.prototype.isComplete = function() {
 };
 
 /**
+ * @desc Return a list of transactions on CSV format
+ * @return {Object} the list of transactions on CSV format
+ */
+Wallet.prototype.getTransactionHistoryCsv = function(cb) {
+  var self = this;
+  self.getTransactionHistory(function(err, res) {
+    preconditions.checkState(res);
+    if (err) {
+      log.warn(err);
+      return cb(new Error('TXHISTORY: ' + err.toString()));
+    }
+
+    var unit = self.settings.unitName;
+    var data = res.items;
+
+    var csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Date,Amount(" + unit + "),Action,AddressTo,Comment";
+
+    if (self.isShared()) {
+      csvContent += ",Signers\n";
+    } else {
+      csvContent += "\n";
+    }
+
+    data.forEach(function(it, index) {
+      if (!it) {
+        return cb(new Error('TXHISTORY: The item is null'));
+      }
+      var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
+      if (self.isShared() && it.actionList) {
+        dataString += ',' + formatSigners(it.actionList);
+      }
+      csvContent += index < data.length ? dataString + "\n" : dataString;
+    });
+
+
+
+    return cb(csvContent);
+
+    function formatDate(date) {
+      var dateObj = new Date(date);
+      if (!dateObj) {
+        log.warn('Error formating a date');
+        return 'DateError'
+      }
+      if (!dateObj.toJSON()) {
+        return '';
+      }
+
+      return dateObj.toJSON().substring(0, 10);
+    }
+
+    function formatString(str) {
+      if (!str) return '';
+
+      if (str.indexOf('"') !== -1) {
+        //replace all
+        str = str.replace(new RegExp('"', 'g'), '\'');
+      }
+
+      //escaping commas
+      str = '\"' + str + '\"';
+
+      return str;
+    }
+
+    function formatSigners(item) {
+      if (!item) return '';
+      var str = '';
+      item.forEach(function(it, index) {
+        str += index == 0 ? self.publicKeyRing.nicknameForCopayer(it.cId) : '|' + self.publicKeyRing.nicknameForCopayer(it.cId);
+      });
+      return str;
+    }
+
+  });
+
+}
+
+
+/**
  * @desc Return a list of past transactions
  *
  * @param {number} opts.currentPage - the desired page in the dataset
@@ -2691,7 +2772,9 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
       if (err) return cb(err);
 
       _.each(res.items, function(tx) {
-        decorateTx(tx);
+        if (tx) {
+          decorateTx(tx);
+        }
       });
 
       return cb(null, paginate(res, opts.currentPage, opts.itemsPerPage));
