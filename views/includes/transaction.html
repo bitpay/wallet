@@ -1,60 +1,40 @@
-<div class="header-message">
-  <span class="date-message">{{tx.createdTs | amCalendar}}</span>
-</div>
-<div class="last-transactions-header" ng-init="txIndex = $index">
-  <div class="private-message" ng-show="tx.comment">
-    <i class="fi-comment-quotes"></i> 
-    <span class="text-light">{{tx.comment}}</span>
+
+<div class="last-transactions-header row collapse" ng-init="txIndex = $index">
+  <div class="large-9 small-7 columns size-14">
+    <div ng-show="tx.comment">
+      <i class="fi-comment-quotes size-18 vm"></i> 
+      <span class="text-light">{{tx.comment}}</span>
+    </div>
   </div>
+  <div class="large-3 small-5 columns text-right">
+    <span class="date-message">{{tx.createdTs | amCalendar}}</span>
+  </div>
+</div>
+
+<div class="last-transactions-content">
   <div class="row" ng-repeat="out in tx.outs">
-    <div class="large-3 medium-3 small-4 columns">
-      <div class="size-12">
-        <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
-        <span class="alt-currency gray">
-          {{out.alternativeAmount}} {{out.alternativeIsoCode}}
-        </span>
-      </div>
+    <div class="large-3 medium-3 small-4 columns size-14">
+      <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
+      <span class="alt-currency gray">
+        {{out.alternativeAmount}} {{out.alternativeIsoCode}}
+      </span>
     </div>
     <div class="large-1 medium-1 small-1 columns fi-arrow-right"></div>
-    <div class="large-8 medium-8 small-7 columns ellipsis">
+    <div class="large-8 medium-8 small-7 columns ellipsis size-12">
       <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
     </div>
   </div>
-
-  <div class="line-t m5t" ng-show="!!tx.merchant">
+  <div class="m10t" ng-show="!!tx.merchant">
     <div class="send-note">
-      <p>
-      <b>{{tx.merchant.pr.pd.memo}}</b>
-      <p>
-      Expires {{tx.merchant.pr.pd.expires * 1000 | amTimeAgo }} 
+      <span><b>{{tx.merchant.pr.pd.memo}}</b></span> <br>
+      <span>Expires {{tx.merchant.pr.pd.expires * 1000 | amTimeAgo }} </span>
       <span ng-show="tx.merchant.domain">[{{tx.merchant.domain}}]</span>
-      <span ng-show="!!tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.pr.ca}}</span>
+      <span ng-show="!!tx.merchant.pr.ca"><i class="icon-locked size-14"></i> {{tx.merchant.pr.ca}}</span>
       <span ng-show="!tx.merchant.pr.ca" style="color:red;weight:bold;"><i class="fi-unlock"></i> Untrusted</span>
     </div>
   </div>
+  <div class="line-b"></div>
 </div>
-
-<table class="last-transactions-content">
-  <tbody>
-  <tr ng-repeat="c in tx.actionList">
-    <td width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
-    </td>
-    <td>
-      <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
-      <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
-    </td>
-    <td>
-      <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
-      <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
-    </td>
-    <td>
-      <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
-      <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
-      <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
-    </td>
-  </tr>
-  </tbody>
-</table>
 
 <div class="last-transactions-footer">
   <div class="row collapse">
@@ -84,31 +64,59 @@
       </div>
     </div>
 
-    <div class="large-7 medium-5 small-12 columns text-right">
-      <div translate ng-show="tx.finallyRejected" class="has-error">
-        Transaction finally rejected
-      </div>
-      <div ng-show="!tx.missingSignatures && tx.sentTs">
-        <div class="is-valid">
-          <strong translate>Sent</strong>  <span class="text-gray" am-time-ago="tx.sentTs"></span>
-        </div>
-        <div class="ellipsis small m10t">
-          <span translate>Transaction ID</span>:
-          <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{tx.sentTxid}}" target="_blank">
-            {{tx.sentTxid}}
-          </a>
-        </div>
-      </div>
-      <div translate class="text-gray" ng-show="!tx.finallyRejected && tx.missingSignatures==1">
-        One signature missing
-      </div>
-      <div translate class="text-gray" ng-show="!tx.finallyRejected && tx.missingSignatures>1">
-        {{tx.missingSignatures}} signatures missing
-      </div>
-      <div class="ellipsis small text-gray show-for-large-up m5t">
-        <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
-        <strong translate>Proposal ID</strong>: {{tx.ntxid}}
-      </div>
+    <div class="ellipsis large-7 columns small text-gray show-for-large-up m5t text-right">
+      <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
+      <strong translate>Proposal ID</strong>: {{tx.ntxid}}
     </div>
   </div>
 </div>
+
+<a class="missing-copayers" ng-click="">
+  <div translate ng-show="!tx.finallyRejected && tx.missingSignatures==1">
+    <i class="icon-people size-16"></i>
+    One signature missing
+  </div>
+  <div translate ng-show="!tx.finallyRejected && tx.missingSignatures>1">
+    <i class="icon-people size-16"></i>
+    {{tx.missingSignatures}} signatures missing
+  </div>
+</a>
+
+<ul class="tx-copayers">
+  <li ng-repeat="c in tx.actionList">
+    <span>
+      <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x m10r"></i>
+      <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check m10r"></i>
+      <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="m10r fi-loop icon-rotate"></i>
+    </span>
+    <span>
+      <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
+      <i ng-if="!c.actions.create" class="fi-crown icon-status m10r"></i>
+    </span>
+    <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
+  </li>
+</ul>
+<!-- 
+<div class="tx-copayers">
+  <table>
+    <tbody>
+    <tr ng-repeat="c in tx.actionList">
+      <td width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+      </td>
+      <td>
+        <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
+        <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
+      </td>
+      <td>
+        <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
+        <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
+      </td>
+      <td>
+        <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
+        <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
+        <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div> -->

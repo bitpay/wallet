@@ -221,10 +221,6 @@
     padding: 0.15rem 0.2rem;
   }
 
-  .line-t {
-    border-top: 1px solid #3C5269;
-  }
-
 }
 
 @media (max-width: 640px) {

@@ -2,7 +2,7 @@
     <div class="row" ng-show="txps.length != 0">
       <div class="large-12 columns">
         <h2 translate>Pending Transactions Proposals</h2>
-        <div class="last-transactions" 
+        <div class="panel last-transactions pr" 
           ng-repeat="tx in txps | paged" 
           ng-include="'views/includes/transaction.html'"></div>
       </div>
