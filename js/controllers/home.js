@@ -18,14 +18,14 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   $scope.done = function() {
     $rootScope.starting = false;
-    setTimeout(function () { $rootScope.$digest(); }, 1);
+    $rootScope.$digest();
   };
 
 
   $scope.$on("$destroy", function(){
     var iden = $rootScope.iden;
     if (iden) {
-      iden.removeListener('newWallets', $scope.done );
+      iden.removeListener('newWallet', $scope.done );
       iden.removeListener('noWallets', $scope.done );
     }
   });
