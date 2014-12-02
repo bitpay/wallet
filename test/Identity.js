@@ -158,6 +158,76 @@ describe('Identity model', function() {
     });
   });
 
+  describe('#remove', function(done) {
+    it('should remove empty profile', function (done) {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+
+      var iden = new Identity(opts);
+      iden.remove(null, function (err, res) {
+        should.not.exist(err);
+        storage.removeItem.calledOnce.should.be.true;
+        storage.removeItem.getCall(0).args[0].should.equal(iden.getId());
+        done();
+      });
+    });
+
+    it('should remove profile and wallets', function(done) {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+
+      var iden = new Identity(opts);
+
+      _.each(_.range(3), function(i) {
+        var w = {
+          on: sinon.stub().yields(null),
+          getId: sinon.stub().returns('wallet' + i),
+          getName: sinon.stub().returns('wallet' + i),
+          close: sinon.stub(),
+        };
+        iden.wallets[w.getId()] = w;
+      });
+
+      iden.remove(null, function(err, res) {
+        should.not.exist(err);
+        storage.removeItem.callCount.should.equal(4);
+        storage.removeItem.getCall(0).args[0].should.equal(Wallet.getStorageKey('wallet0'));
+        storage.removeItem.getCall(3).args[0].should.equal(iden.getId());
+        done();
+      });
+    });
+  });
+
   describe.skip('#storeWallet', function() {
     // TODO test storeWallet
   });

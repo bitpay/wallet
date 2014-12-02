@@ -87,6 +87,10 @@ angular.module('copayApp.services')
       });
     };
 
+    root.deleteProfile = function (cb) {
+      $rootScope.iden.remove(null, cb);
+    };
+
     root.deleteWallet = function(w, cb) {
       $rootScope.iden.deleteWallet(w.id, cb);
     };
