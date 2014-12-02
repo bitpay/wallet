@@ -44,6 +44,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         copay.logger.warn(err);
         if ((err.toString() || '').match('PNOTFOUND')) {
           $scope.error = 'Invalid email or password';
+        } else if ((err.toString() || '').match('Connection')) {
+          $scope.error = 'Could not connect to Insight Server';
         } else {
           $scope.error = 'Unknown error';
         }
