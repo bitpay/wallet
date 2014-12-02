@@ -1,28 +1,52 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility) {
-  // This is only for backwards compat, insight api should link to #!/confirmed directly
-  if (getParam('confirmed')) {
-    var hashIndex = window.location.href.indexOf('/?');
-    window.location = window.location.href.substr(0, hashIndex) + '#!/confirmed';
-    return;
-  }
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService) {
 
+  $scope.init = function() {
+    // This is only for backwards compat, insight api should link to #!/confirmed directly
+    if (getParam('confirmed')) {
+      var hashIndex = window.location.href.indexOf('/?');
+      window.location = window.location.href.substr(0, hashIndex) + '#!/confirmed';
+      return;
+    }
 
-  if ($rootScope.fromEmailConfirmation) {
-    $scope.confirmedEmail = true;
-    $rootScope.fromEmailConfirmation = false;
-  }
+    if ($rootScope.fromEmailConfirmation) {
+      $scope.confirmedEmail = true;
+      $rootScope.fromEmailConfirmation = false;
+    }
+    Compatibility.check($scope);
+    $scope.hasPin = pinService.check();
+  };
 
-  Compatibility.check($scope);
+  Object.defineProperty($scope,
+    "pin", {
+      get: function() {
+        return this._pin;
+      },
+    set: function(newValue) {
+      console.log('[home.js:26]',newValue, this._pin); //TODO
+      this._pin = newValue;
+      if (newValue && newValue.length == 4) {
+        console.log('[home.js:26] INGRESANDO AUTOMATICAMENTE',newValue); //TODO
+        $scope.openPin(newValue); 
+      }
+      if (!newValue) {
+        $scope.error = null;
+      }
+    },
+    enumerable: true,
+    configurable: true
+    });
+
 
   $scope.done = function() {
+    $scope.hasPin = pinService.check();
     $rootScope.starting = false;
     $rootScope.$digest();
   };
 
 
-  $scope.$on("$destroy", function(){
+  $scope.$on("$destroy", function() {
     var iden = $rootScope.iden;
     if (iden) {
       iden.removeListener('newWallet', $scope.done );
@@ -30,20 +54,57 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
   });
 
-
-  $scope.openProfile = function(form) {
+  $scope.openWithPin = function(form) {
     $scope.confirmedEmail = false;
     if (form && form.$invalid) {
       $scope.error = 'Please enter the required fields';
       return;
     }
+   $scope.openPin(pin); 
+  };
+
+  $scope.openPin = function(pin) {
+    var credentials = pinService.get(parseInt(pin));
+    if (!credentials) {
+      $scope.error = 'Wrong PIN';
+      return;
+    }
+
     $rootScope.starting = true;
-    identityService.open(form.email.$modelValue, form.password.$modelValue, function(err, iden) {
-     if (err) {
+    $scope.open(credentials.email, credentials.password);
+  };
+
+  $scope.createPin = function(form) {
+    if (form) {
+      pinService.save(form.repeatpin.$modelValue, $scope.email, $scope.password);
+    }
+    $scope.open($scope.email, $scope.password);
+  };
+
+  $scope.openWithCredentials = function(form) {
+    $scope.confirmedEmail = false;
+    if (form && form.$invalid) {
+      $scope.error = 'Please enter the required fields';
+      return;
+    }
+    if (!$scope.hasPin) {
+      $scope.email = form.email.$modelValue;
+      $scope.password = form.password.$modelValue;
+      $scope.setPin = true;
+      return;
+    }
+    $scope.open(form.email.$modelValue, form.password.$modelValue);
+  };
+
+  $scope.open = function(email, password) {
+    $rootScope.starting = true;
+    identityService.open(email, password, function(err, iden) {
+      if (err) {
         $rootScope.starting = false;
         copay.logger.warn(err);
         if ((err.toString() || '').match('PNOTFOUND')) {
           $scope.error = 'Invalid email or password';
+          pinService.clear();
         } else if ((err.toString() || '').match('Connection')) {
           $scope.error = 'Could not connect to Insight Server';
         } else if ((err.toString() || '').match('Unable')) {
