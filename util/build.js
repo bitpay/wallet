@@ -116,7 +116,6 @@ var createBundle = function(opts) {
 
   // The following 2 lines fix karma tests
   b.require('sjcl');
-
   if (opts.debug) {
     //include dev dependencies
     b.require('sinon');

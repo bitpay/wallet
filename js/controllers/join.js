@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, isMobile, notification) {
+  function($scope, $rootScope, $timeout, isMobile, notification, identityService) {
     $rootScope.fromSetup = false;
     $scope.loading = false;
     $scope.isMobile = isMobile.any();

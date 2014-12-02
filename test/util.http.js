@@ -16,7 +16,7 @@ describe('http utils', function() {
       send: function() {
         var self = this;
         setTimeout(function() {
-          self.response = 'test';
+          self.response = [1,2,3,4];
           self.error ? self.onerror() : self.onload();
         }, 10);
       },
