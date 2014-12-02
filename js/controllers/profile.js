@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, backupService, identityService) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
@@ -26,11 +26,13 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     });
   };
 
+
   $scope.init = function() {
     if ($rootScope.quotaPerItem) {
       $scope.perItem = $filter('noFractionNumber')($rootScope.quotaPerItem / 1000, 1);
       $scope.nrWallets = parseInt($rootScope.quotaItems) - 1;
     }
+    // no need to add event handlers here. Wallet deletion is handle by callback.
   };
 
   $scope.setWallets = function() {
@@ -46,8 +48,10 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
         w.usage = $filter('noFractionNumber')(bits / max * 100, 0);
       }
     });
-
     $scope.wallets = wallets;
+    $timeout(function(){
+      $scope.$digest();
+    })
   };
 
   $scope.downloadWalletBackup = function(w) {
