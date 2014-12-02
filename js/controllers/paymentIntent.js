@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $modal, $location, balanceService) {
+angular.module('copayApp.controllers').controller('PaymentIntentController', function($rootScope, $scope, $modal, $location, $timeout, balanceService) {
 
   $rootScope.title = 'Payment intent'; 
 
@@ -22,8 +22,11 @@ angular.module('copayApp.controllers').controller('PaymentIntentController', fun
       var ret = _.filter($rootScope.iden.listWallets(), function(w) {
         return w.balanceInfo && w.balanceInfo.totalBalanceBTC;
       });
-      $scope.wallets = ret;
-      $scope.loading = false;
+      $timeout(function() {
+        $scope.wallets = ret;
+        $scope.loading = false;
+        $scope.$digest();
+      }, 1000);
     };
     if ($rootScope.iden) {
       var iden = $rootScope.iden;

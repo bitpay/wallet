@@ -39,7 +39,7 @@
                   tooltip="{{'Enter a valid Bitcoin address. Payment Protocol URLs are also supported'|translate}}"
                   tooltip-trigger="mouseenter"
                   tooltip-placement="right"></i>
-                <small translate ng-hide="!sendForm.address.$pristine || address">required</small>
+                <small translate ng-hide="!sendForm.address.$pristine && address">required</small>
               </label>
               <span translate class="has-error right size-12" ng-show="sendForm.address.$invalid && address">
                 <span class="icon-input"><i class="fi-x"></i></span>
@@ -49,8 +49,8 @@
             </div>
 
             <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant"
-              placeholder="{{'Bitcoin address'|translate}}" ng-model="address" ng-change="onChanged()" valid-address required>
+              <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant || isPayUri"
+              placeholder="{{'Bitcoin address'|translate}}" ng-model="address" valid-address required>
               <i class="fi-address-book"></i>
               <div ng-hide="showScanner || disableScanner">
                 <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
@@ -71,9 +71,10 @@
               <div class="large-6 medium-6 columns">
                 <div class="row collapse">
                   <label for="amount" class="small-7 columns m5b"><span translate>Amount</span>
-                    <small translate ng-hide="!sendForm.amount.$pristine">required</small>
+                    <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
                   </label>
-                  <span translate class="has-error right size-12" ng-show="(sendForm.amount.$invalid || notValidAmount) && !sendForm.amount.$pristine">
+                  <span translate class="has-error right size-12" ng-show="sendForm.amount.$invalid &&
+                    !sendForm.amount.$pristine && (notValidAmount || amount)">
                     <span class="icon-input"><i class="fi-x"></i></span>
                     Not valid
                   </span>
@@ -84,7 +85,7 @@
                   <div class="small-9 columns">
                     <div class="input">
                       <input type="number" id="amount"
-                      ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0)"
+                      ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || isPayUri"
                       name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
                       min="0.00000001" max="10000000000" valid-amount required
                       autocomplete="off">
@@ -106,8 +107,9 @@
                   <label for="alternative"><span translate>Amount in</span> {{ alternativeName }} </label>
                   <div class="small-9 columns">
                     <div class="input">
-                      <input type="number" id="alternative_amount"
-                      ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0)"
+                      <input type="number" id="alternative"
+                      ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0) ||
+                      isPayUri"
                       name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative" requiredautocomplete="off">
                       <i class="icon-usd"></i>
                     </div>
@@ -128,28 +130,30 @@
                 <p> From {{fetchingURL}}
               </div>
     
-              <div class="large-12 columns" ng-show="!!$root.merchant">
-                <h3>This is a payment protocol transaction</h3>
+              <div class="large-12 columns" ng-show="!!$root.merchant || isPayUri">
+                <h3 ng-show="!isPayUri">This is a payment protocol transaction</h3>
                 <div class="send-note">
                   <p>
-                  <b>{{$root.merchant.pr.pd.memo}}</b>
+                  <span ng-show="isPayUri">Payment to: </span>
+                  <b>{{$root.merchant.pr.pd.memo || address}}</b>
                   </p>
 
                   <p>
                   <i>{{amount + defaultFee}} {{$root.wallet.settings.unitName}}</i>
                   <span class="text-gray" ng-if="isRateAvailable">
-                    {{ alternativeAmountPayPro }} {{ alternativeIsoCode }}
+                    {{ alternative }} {{ alternativeIsoCode }}
                   </span>
                   <span class="text-gray" >
                     (<span translate>Including fee of</span>
                     {{defaultFee}}
                     {{$root.wallet.settings.unitName}})
                   </span>
-                  <p>
+                  <p ng-show="!!$root.merchant">
                   Expires {{$root.merchant.expiration | amTimeAgo }} 
                   [{{$root.merchant.domain}}]
                   <span ng-show="!!$root.merchant.pr.ca"><i class="fi-lock"></i> {{$root.merchant.pr.ca}}</span>
                   <span ng-show="!$root.merchant.pr.ca" style="color:red;weight:bold;"><i class="fi-unlock"></i> Untrusted</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -170,7 +174,7 @@
 
             <div class="row">
               <div class="large-6 medium-6 small-6 columns text-left">
-                <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant">
+                <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant || isPayUri">
                   Cancel
                 </a>
               </div>
