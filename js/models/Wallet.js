@@ -125,7 +125,7 @@ Wallet.TX_SIGNED_AND_BROADCASTED = 'txSignedAndBroadcasted';
 
 Wallet.prototype.emitAndKeepAlive = function(args) {
   var args = Array.prototype.slice.call(arguments);
-  log.debug('Wallet:'+ this.getName() + '  Emitting:', args);
+  log.debug('Wallet:' + this.getName() + '  Emitting:', args);
   this.keepAlive();
   this.emit.apply(this, arguments);
 };
@@ -332,14 +332,16 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     return;
   }
   if (hasChanged) {
+
     if (wasIncomplete) {
       this.sendPublicKeyRing();
     }
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
+      this.emitAndKeepAlive('ready');
+    } else {
+      this.emitAndKeepAlive('publicKeyRingUpdated');
     }
-
-    this.emitAndKeepAlive('publicKeyRingUpdated');
   }
 };
 
@@ -892,7 +894,7 @@ Wallet.prototype._setupBlockchainHandlers = function() {
   self.blockchain.on('tx', function(tx) {
     log.debug('Wallet:' + self.id + ' blockchain tx event');
     var addresses = self.getAddresses();
-    if (_.indexOf(addresses,tx.address)>=0) {
+    if (_.indexOf(addresses, tx.address) >= 0) {
       self.emitAndKeepAlive('tx', tx.address, self.addressIsChange(tx.address));
     }
   });
@@ -933,7 +935,7 @@ Wallet.prototype.netStart = function() {
 
 
   self._setupBlockchainHandlers();
-  self.netStarted= true;
+  self.netStarted = true;
 
   if (!this.isShared()) {
     self.emitAndKeepAlive('ready');
@@ -957,7 +959,7 @@ Wallet.prototype.netStart = function() {
   }
   log.debug('Wallet:' + self.id + ' Starting network.');
   this.network.start(startOpts, function() {
-    self.emitAndKeepAlive('ready');
+    self.emitAndKeepAlive(self.isComplete() ? 'ready' : 'waitingCopayers');
   });
 };
 
@@ -1400,7 +1402,8 @@ Wallet.prototype.getPendingTxProposalsCount = function() {
   var txps = this.txProposals.txps;
   var maxRejectCount = this.maxRejectCount();
   var myId = this.getMyCopayerId();
-  var pending =0, pendingForUs = 0;
+  var pending = 0,
+    pendingForUs = 0;
 
   _.each(txps, function(inTxp, ntxid) {
     if (!inTxp.isPending(maxRejectCount))
@@ -1408,7 +1411,7 @@ Wallet.prototype.getPendingTxProposalsCount = function() {
 
     pending++;
 
-    if (!inTxp.signedBy[myId] && !inTxp.rejectedBy[myId]  )
+    if (!inTxp.signedBy[myId] && !inTxp.rejectedBy[myId])
       pendingForUs++
   });
 
@@ -1846,9 +1849,8 @@ Wallet.prototype._getPayProRefundOutputs = function(txp) {
   var opts = JSON.parse(txp.builder.vanilla.opts);
   if (!opts.remainderOut) {
     log.warn('no remainder set. Not setting refund in PayPro');
-    return; 
+    return;
   }
-console.log('[Wallet.js.1842:builder:]',txp.builder.vanilla.opts); //TODO
   var addrStr = opts.remainderOut.address;
   var addr = new bitcore.Address(addrStr);
   var script = bitcore.Script.createP2SH(addr.payload()).getBuffer();
@@ -2033,7 +2035,7 @@ Wallet.prototype.addressIsOwn = function(addrStr) {
 /**
  * @desc Returns true if a given address is a change address (remainder)
  * @param addrStr
- * @return {boolean} 
+ * @return {boolean}
  */
 Wallet.prototype.addressIsChange = function(addrStr) {
   return this.publicKeyRing.addressIsChange(addrStr);
@@ -2130,7 +2132,7 @@ Wallet.prototype.getUnspent = function(cb) {
   var addresses = this.getAddresses();
 
 
-  log.debug('Wallet ' + this.getName() + ': Getting unspents from ' +  addresses.length + ' addresses');
+  log.debug('Wallet ' + this.getName() + ': Getting unspents from ' + addresses.length + ' addresses');
   this.blockchain.getUnspent(addresses, function(err, unspentList) {
 
     if (err) {
