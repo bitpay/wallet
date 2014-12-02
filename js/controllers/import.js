@@ -73,7 +73,6 @@ angular.module('copayApp.controllers').controller('ImportController',
         $scope.importOpts.skipFields = skipFields;
 
 
-      << << << < HEAD
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {
@@ -87,12 +86,4 @@ angular.module('copayApp.controllers').controller('ImportController',
         });
       }
     };
-  }); === === =
-if (backupFile) {
-  reader.readAsBinaryString(backupFile);
-} else {
-  $scope._doImport(backupText, $scope.password);
-  copay.Compatibility.deleteOldWallet(backupOldWallet);
-}
-};
-}); >>> >>> > Added needBackup flag when importing a wallet
+  });

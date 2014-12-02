@@ -576,9 +576,9 @@ Identity.prototype.createWallet = function(opts, cb) {
   self.bindWallet(w);
   self.updateFocusedTimestamp(w.getId());
   self.storeWallet(w, function(err) {
-    if (err) return cb(err); << << << < HEAD === === =
+    if (err) return cb(err);
 
-    self.backupNeeded = true; >>> >>> > Added the flag backupNeeded
+    self.backupNeeded = true;
     self.store({
       noWallets: true,
     }, function(err) {
