@@ -88,7 +88,7 @@
                       <input type="number" id="amount"
                       ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || isPayUri"
                       name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
-                      min="0.00000001" max="10000000000" valid-amount required
+                      ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required
                       autocomplete="off">
                       <i class="icon-bitcoin"></i>
                     </div>
