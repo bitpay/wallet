@@ -111,7 +111,14 @@ describe('Identity model', function() {
       params: params
     };
   };
-
+  var orig;
+  beforeEach(function() {
+    orig = Identity.prototype.store;
+    sinon.stub(Identity.prototype, 'store').yields(null);
+  });
+  afterEach(function() {
+    Identity.prototype.store = orig;
+  });
   describe('new Identity()', function() {
     it('returns an identity', function() {
       var iden = new Identity(getDefaultParams());
@@ -124,7 +131,6 @@ describe('Identity model', function() {
     it('should create and store identity', function() {
       var args = createIdentity();
       args.blockchain.on = sinon.stub();
-      sinon.stub(Identity.prototype, 'store').yields(null);
       Identity.create(args.params, function(err, iden) {
         should.not.exist(err);
         should.exist(iden);
@@ -240,7 +246,6 @@ describe('Identity model', function() {
       args = createIdentity();
       args.params.noWallets = true;
       var old = Identity.prototype.createWallet;
-      sinon.stub(Identity.prototype, 'store').yields(null);
       Identity.create(args.params, function(err, res) {
         iden = res;
       });
@@ -297,7 +302,6 @@ describe('Identity model', function() {
       args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');
       var backup = Wallet.fromUntrustedObj;
       args.params.noWallets = true;
-      sinon.stub(Identity.prototype, 'store').yields(null);
       sinon.stub().returns(args.wallet);
 
       var opts = {
@@ -390,8 +394,6 @@ describe('Identity model', function() {
     beforeEach(function() {
       args = createIdentity();
       args.params.Async = net = sinon.stub();
-
-      sinon.stub(Identity.prototype, 'store').yields(null);
       net.cleanUp = sinon.spy();
       net.on = sinon.stub();
       net.start = sinon.spy();

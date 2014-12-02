@@ -1244,6 +1244,21 @@ label.postfix, span.postfix {
   height: 80px;
 }
 
+.need-backup {
+  background: #C0392A;
+  -moz-box-shadow:    1px 1px 0px 0px #A02F23;
+  box-shadow:         1px 1px 0px 0px #A02F23;
+  position: absolute;
+  top: 22px;
+  left: 0px;
+  width: 14px;
+  height: 14px;
+  border-radius: 100%;
+  font-size: 9px;
+  padding-top: 2px;
+  color: #fff;
+}
+
 a:hover .photo-container  {
   background: #34495E;
   color: #fff;

@@ -16,10 +16,13 @@
 
 <div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
   ng-click="hoverMenu = !hoverMenu">
-  <a class="dropdown ellipsis text-gray" ng-class="{'hover': hoverMenu}">
+  <a class="dropdown ellipsis text-gray pr" ng-class="{'hover': hoverMenu}">
     <div class="photo-container">
       <img gravatar-src="'{{username}}'" gravatar-size="35">
     </div>
+    <span class="need-backup" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded">
+      <i class="fi-alert vm"></i> 
+    </span>
     <span class="m15t">{{username}} </span>
     <i class="icon-arrow-down2 size-16 vm"></i> 
   </a>
@@ -33,7 +36,8 @@
       <i class="icon-download size-18 m10r"></i> {{'Import wallet'|translate}}</a></li>
     <li class="divider"></li>
     <li><a href="#!/profile" title="Profile">
-      <i class="icon-person size-18 m10r"></i> {{'Profile'|translate}}</a></li> 
+      <i class="icon-person size-18 m10r"></i> {{'Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
+      </li> 
     <li><a href="#!/" title="Close" ng-click="signout()">
       <i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</a></li>
   </ul>

@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     $scope.backupProfilePlainText = backupService.profileEncrypted($rootScope.iden);
     $scope.hideViewProfileBackup = true;
   };
-  
+
   $scope.deleteWallet = function(w) {
     if (!w) return;
     identityService.deleteWallet(w, function(err) {
@@ -28,8 +28,8 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
 
   $scope.init = function() {
     if ($rootScope.quotaPerItem) {
-      $scope.perItem = $filter('noFractionNumber')($rootScope.quotaPerItem/1000,1);
-      $scope.nrWallets =parseInt($rootScope.quotaItems) - 1;
+      $scope.perItem = $filter('noFractionNumber')($rootScope.quotaPerItem / 1000, 1);
+      $scope.nrWallets = parseInt($rootScope.quotaItems) - 1;
     }
   };
 
@@ -37,13 +37,13 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     if (!$rootScope.iden) return;
 
     var wallets = $rootScope.iden.listWallets();
-    var max =$rootScope.quotaPerItem;
+    var max = $rootScope.quotaPerItem;
 
     _.each(wallets, function(w) {
       var bits = w.sizes().total;
-      w.kb = $filter('noFractionNumber')(bits/1000, 1);
+      w.kb = $filter('noFractionNumber')(bits / 1000, 1);
       if (max) {
-        w.usage =  $filter('noFractionNumber')(bits/max * 100, 0);
+        w.usage = $filter('noFractionNumber')(bits / max * 100, 0);
       }
     });
 
@@ -73,15 +73,15 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     });
   };
 
-  $scope.deleteProfile = function () {
-    identityService.deleteProfile(function (err, res) {
+  $scope.deleteProfile = function() {
+    identityService.deleteProfile(function(err, res) {
       if (err) {
         log.warn(err);
         notification.error('Error', 'Could not delete profile');
         return;
       }
-      $location.path('/');      
-      setTimeout(function () {
+      $location.path('/');
+      setTimeout(function() {
         notification.error('Success', 'Profile successfully deleted');
       }, 1);
     });

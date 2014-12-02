@@ -62,6 +62,8 @@ function Identity(opts) {
   this.walletIds = opts.walletIds || {};
   this.wallets = opts.wallets || {};
   this.focusedTimestamps = opts.focusedTimestamps || {};
+  this.backupNeeded = opts.backupNeeded || false;
+
 };
 
 
@@ -91,7 +93,9 @@ Identity.prototype.getName = function() {
  * @return {undefined}
  */
 Identity.create = function(opts, cb) {
-  opts = _.extend({}, opts);
+  opts = _.extend({
+    backupNeeded: true
+  }, opts);
 
   var iden = new Identity(opts);
   iden.store(_.extend(opts, {
@@ -265,13 +269,28 @@ Identity.prototype.toObj = function() {
   return _.extend({
       walletIds: _.isEmpty(this.wallets) ? this.walletsIds : _.keys(this.wallets),
     },
-    _.pick(this, 'version', 'fullName', 'password', 'email', 'focusedTimestamps'));
+    _.pick(this, 'version', 'fullName', 'password', 'email', 'backupNeeded', 'focusedTimestamps'));
 };
 
 Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
   var crypto = opts.cryptoUtil || cryptoUtil;
+
   return crypto.encrypt(this.password, this.exportWithWalletInfo(opts));
 };
+
+Identity.prototype.setBackupNeeded = function() {
+  this.backupNeeded = true;
+  this.store({
+    noWallets: true
+  }, function() {});
+}
+
+Identity.prototype.setBackupDone = function() {
+  this.backupNeeded = false;
+  this.store({
+    noWallets: true
+  }, function() {});
+}
 
 Identity.prototype.exportWithWalletInfo = function(opts) {
   return _.extend({
@@ -279,7 +298,7 @@ Identity.prototype.exportWithWalletInfo = function(opts) {
         return wallet.toObj();
       })
     },
-    _.pick(this, 'version', 'fullName', 'password', 'email')
+    _.pick(this, 'version', 'fullName', 'password', 'email', 'backupNeeded')
   );
 };
 
@@ -288,15 +307,15 @@ Identity.prototype.exportWithWalletInfo = function(opts) {
  * @param {Function} cb
  */
 Identity.prototype.store = function(opts, cb) {
-  log.debug('Storing profile');
-
   var self = this;
   opts = opts || {};
 
   var storeFunction = opts.failIfExists ? self.storage.createItem : self.storage.setItem;
 
   storeFunction.call(self.storage, this.getId(), this.toObj(), function(err) {
-    if (err) return cb(err);
+    if (err) {
+      return cb(err);
+    }
 
     if (opts.noWallets)
       return cb();
@@ -323,9 +342,9 @@ Identity.prototype.remove = function(opts, cb) {
       if (err) return cb(err);
       cb();
     });
-  }, function (err) {
+  }, function(err) {
     if (err) return cb(err);
-    
+
     self.storage.removeItem(self.getId(), function(err) {
       if (err) return cb(err);
       self.emitAndKeepAlive('closed');
@@ -552,13 +571,16 @@ Identity.prototype.createWallet = function(opts, cb) {
 
   var self = this;
 
+
   var w = new walletClass(opts);
   self.bindWallet(w);
   self.updateFocusedTimestamp(w.getId());
   self.storeWallet(w, function(err) {
     if (err) return cb(err);
+
+    self.backupNeeded = true;
     self.store({
-      noWallets: true
+      noWallets: true,
     }, function(err) {
       return cb(err, w);
     });
