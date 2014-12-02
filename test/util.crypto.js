@@ -14,6 +14,19 @@ describe('crypto utils', function() {
     decrypted.should.equal(message);
   });
 
+
+  it('should decrypt what it encrypts (JSON)', function() {
+
+    var key = 'My secret key';
+    var message = {'hola': 'picho'};
+    var encrypted = cryptoUtils.encrypt(key, message);
+    var decrypted = cryptoUtils.decrypt(key, encrypted);
+
+    JSON.parse(decrypted).should.deep.equal(message);
+  });
+
+
+
   it('should return null if the provided key cant decrypt', function() {
     var key = 'My secret key';
     var message = 'My secret message';
@@ -22,6 +35,17 @@ describe('crypto utils', function() {
 
     assert(decrypted === null);
   });
+ 
+
+
+  it('should sign a message', function() {
+    var key = 'My secret key';
+    var message = 'My secret message';
+    var signature = cryptoUtils.hmac(key, message);
+    signature.should.be.equal('6tpegxYl/Eig9k1Lla8b8G8OcdtOxyNbDsdyic1Yzh4=');
+  });
+ 
+
 
   var tests = [
     {
@@ -54,6 +78,11 @@ describe('crypto utils', function() {
                    + 'pEoO+WqHgqBbdf0gn2wiyWZv3zymB+7L75Xnz3uSlg==';
       phrase.should.equal(expected);
     });
+  });
+  it('should generate a passphrase using default salt/iter', function() {
+    var phrase = cryptoUtils.kdf('Pwd123!@#$%^&*(){}[]\|/?.>,<=+-_`~åéþïœ’ä²¤þçæ¶');
+    var expected = 'ml+mMtjgcvL2pdfDwQqW2qONRNjZ3YD8KnGeV3aFjyOoM0ByOmoREw9zBvowC/ZXsfrezbRXX/W/XIzKOqdrXA==';
+    phrase.should.equal(expected);
   });
 
 

@@ -5,6 +5,7 @@ var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
 var async = require('async');
+var request = require('request');
 
 var bitcore = require('bitcore');
 var BIP21 = bitcore.BIP21;
