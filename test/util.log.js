@@ -6,7 +6,7 @@ var sinon = sinon || require('sinon');
 var should = chai.should();
 var log = require('../js/util/log');
 
-describe.only('log utils', function() {
+describe('log utils', function() {
   afterEach(function() {
     log.setLevel('info');
   });
