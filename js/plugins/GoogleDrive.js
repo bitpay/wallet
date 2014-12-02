@@ -3,7 +3,7 @@
 var preconditions = require('preconditions').singleton();
 var loaded = 0;
 var SCOPES = 'https://www.googleapis.com/auth/drive';
-var log = require('../log');
+var log = require('../util/log');
 
 function GoogleDrive(config) {
   preconditions.checkArgument(config && config.clientId, 'No clientId at GoogleDrive config');

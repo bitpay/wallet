@@ -1,5 +1,5 @@
 var cryptoUtil = require('../util/crypto');
-var log = require('../log');
+var log = require('../util/log');
 var LocalStorage = require('./LocalStorage');
 var inherits = require('inherits');
 

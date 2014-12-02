@@ -2,7 +2,7 @@
 
 var preconditions = require('preconditions').instance();
 var _ = require('lodash');
-var log = require('../log');
+var log = require('../util/log');
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;
 var Address = bitcore.Address;

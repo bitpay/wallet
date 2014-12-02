@@ -4,7 +4,7 @@ var bitcore = require('bitcore');
 var buffers = require('buffer');
 var querystring = require('querystring');
 var Identity = require('../models/Identity');
-var log = require('../log');
+var log = require('../util/log');
 
 var SEPARATOR = '|';
 

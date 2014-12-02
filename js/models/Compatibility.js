@@ -5,7 +5,7 @@ var Wallet = require('./Wallet');
 var cryptoUtils = require('../util/crypto');
 var CryptoJS = require('node-cryptojs-aes').CryptoJS;
 var sjcl = require('../../lib/sjcl');
-var log = require('../log');
+var log = require('../util/log');
 var preconditions = require('preconditions').instance();
 var _ = require('lodash');
 
