@@ -33,8 +33,8 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.setAlternativeAmount = function(w, tx, cb) {
       rateService.whenAvailable(function() {
         _.each(tx.outs, function(out) {
-          var valueSat = out.value * w.settings.unitToSatoshi;
-          out.alternativeAmount = rateService.toFiat(valueSat, $scope.alternativeIsoCode);
+          var valueSat = out.valueSat * w.settings.unitToSatoshi;
+          out.alternativeAmount =  $filter('noFractionNumber')(rateService.toFiat(valueSat, $scope.alternativeIsoCode));
           out.alternativeIsoCode = $scope.alternativeIsoCode;
         });
         if (cb) return cb(tx);
@@ -56,6 +56,7 @@ angular.module('copayApp.controllers').controller('SendController',
         }
         if (tx.outs) {
           _.each(tx.outs, function(out) {
+            out.valueSat = out.value;
             out.value = $filter('noFractionNumber')(out.value);
           });
         }        
