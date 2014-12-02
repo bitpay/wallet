@@ -81,6 +81,13 @@ var createBundle = function(opts) {
   b.require('./js/models/PluginManager', {
     expose: '../js/models/PluginManager'
   });
+  b.require('./js/util/HTTP', {
+    expose: '../js/util/HTTP'
+  });
+   b.require('./js/util/log', {
+    expose: '../js/util/log'
+  });
+ 
   if (!opts.disablePlugins) {
     b.require('./js/plugins/GoogleDrive', {
       expose: '../plugins/GoogleDrive'
@@ -109,9 +116,6 @@ var createBundle = function(opts) {
 
   // The following 2 lines fix karma tests
   b.require('sjcl');
-  b.require('./js/util/log', {
-    expose: '../../log.js'
-  });
 
   if (opts.debug) {
     //include dev dependencies

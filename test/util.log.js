@@ -6,20 +6,24 @@ var sinon = sinon || require('sinon');
 var should = chai.should();
 var log = require('../js/util/log');
 
-describe.only('log utils', function() {
+describe('log utils', function() {
   afterEach(function() {
     log.setLevel('info');
   });
 
-  it('should log debug', function() {
-    sinon.stub(console,'log');
-    log.setLevel('debug');
-    log.debug('hola');
+  it('should log fatal', function() {
+    if (console.warn.restore)
+      console.warn.restore();
 
-    var arg = console.log.getCall(0).args[0];
+    sinon.stub(console,'warn');
+
+    log.setLevel('debug');
+    log.warn('hola');
+
+    var arg = console.warn.getCall(0).args[0];
     arg.should.contain('util.log.js');
     arg.should.contain('hola');
-    console.log.restore();
+    console.warn.restore();
   });
 
   it('should not log debug', function() {
@@ -34,6 +38,4 @@ describe.only('log utils', function() {
     log.getLevels().debug.should.equal(0);
     log.getLevels().fatal.should.equal(5);
   });
-
-
 });
