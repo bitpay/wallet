@@ -1,5 +1,7 @@
-var config = config || require('../config');
+var config = config || require('../../config');
 var _ = require('lodash');
+var LS = require('../plugins/LocalStorage');
+var ls = new LS();
 
 
 /**

@@ -10,7 +10,7 @@ var TransactionBuilder = bitcore.TransactionBuilder;
 var Script = bitcore.Script;
 var Key = bitcore.Key;
 
-var log = require('../log');
+var log = require('../util/log');
 
 var TX_MAX_SIZE_KB = 50;
 var VERSION = 1;
