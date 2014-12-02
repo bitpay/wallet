@@ -116,6 +116,9 @@ var createBundle = function(opts) {
 
   // The following 2 lines fix karma tests
   b.require('sjcl');
+  b.require('./js/util/log', {
+    expose: '../../log.js'
+  });
 
   if (opts.debug) {
     //include dev dependencies
