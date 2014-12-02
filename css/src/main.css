@@ -283,15 +283,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   -moz-box-shadow:    inset 0px -1px 1px 0px rgba(159,47,34,0.30);
   box-shadow:         inset 0px -1px 1px 0px rgba(159,47,34,0.30);
   color: #FFFFFF;
-  background-color: #D0021B;
+  background-color: #A02F23;
   position: absolute;
   left: 250px;
   right: 0;
-  top: 62px;
-  padding: 10px 0;
+  bottom: 0;
+  padding: 10px 2rem;
   z-index: 9;
   font-size: 14px;
-  text-align: center;
+  text-align: left;
+  line-height: 17px;
 }
 
 .status-first-line {
