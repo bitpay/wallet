@@ -1,8 +1,12 @@
 'use strict';
 var _ = require('lodash');
+var preconditions = require('preconditions').singleton();
 
 function LocalStorage() {
   this.type = 'DB';
+
+  preconditions.checkState(typeof localStorage !== 'undefined',
+                           'localstorage not available, cannot run plugin');
 };
 
 LocalStorage.prototype.init = function() {

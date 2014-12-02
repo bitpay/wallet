@@ -2,7 +2,7 @@
 
 var preconditions = require('preconditions').instance();
 var _ = require('lodash');
-var log = require('../log');
+var log = require('../util/log');
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;
 var Address = bitcore.Address;
@@ -110,7 +110,7 @@ PublicKeyRing.fromObj = function(opts) {
   }
 
   if (opts.cache && opts.cache.addressToPath) {
-    log.info('PublicKeyRing: Using address cache');
+    log.debug('PublicKeyRing: Using address cache');
     pkr.cache.addressToPath = opts.cache.addressToPath;
     pkr.rebuildCache();
   }

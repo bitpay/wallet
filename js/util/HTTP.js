@@ -1,3 +1,5 @@
+var preconditions = require('preconditions').singleton();
+
 module.exports = {
   request: function(options, callback) {
     preconditions.checkArgument(_.isObject(options));
@@ -25,9 +27,9 @@ module.exports = {
     var req = options;
 
     req.headers = req.headers || {};
-    req.body = req.body || req.data || {};
+    req.body = req.body || req.data || '';
 
-    var xhr = new XMLHttpRequest();
+    var xhr = options.xhr || new XMLHttpRequest();
     xhr.open(method, url, true);
 
     Object.keys(req.headers).forEach(function(key) {
@@ -51,6 +53,7 @@ module.exports = {
           headers[$1.toLowerCase()] = $2;
         }
       );
+
       return ret._success(buf, xhr.status, headers, options);
     };
 

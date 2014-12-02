@@ -2,8 +2,9 @@
  * Small module for some helpers that wrap sjcl with some good practices.
  */
 var sjcl = require('sjcl');
-var log = require('../log.js');
 var _ = require('lodash');
+
+var log = require('../util/log.js');
 var config = require('../../config');
 
 var defaultSalt = (config && config.passphraseConfig && config.passphraseConfig.storageSalt) || 'mjuBtGybi/4=';
