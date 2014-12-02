@@ -239,6 +239,7 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, cb) {
 Identity.prototype.storeWallet = function(wallet, cb) {
   preconditions.checkArgument(wallet && _.isObject(wallet));
 
+  wallet.setVersion(this.version);
   var val = wallet.toObj();
   var key = wallet.getStorageKey();
   log.debug('Storing wallet:' + wallet.getName());
