@@ -2,7 +2,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 var bitcore = require('bitcore');
-var log = require('../log');
+var log = require('../util/log');
 var AuthMessage = bitcore.AuthMessage;
 var util = bitcore.util;
 var nodeUtil = require('util');

@@ -9,7 +9,7 @@ var Script = bitcore.Script;
 var Key = bitcore.Key;
 var buffertools = bitcore.buffertools;
 
-var log = require('../log');
+var log = require('../util/log');
 var TxProposal = require('./TxProposal');;
 
 function TxProposals(opts) {

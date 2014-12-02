@@ -18,7 +18,7 @@ var Address = bitcore.Address;
 var PayPro = bitcore.PayPro;
 var Transaction = bitcore.Transaction;
 
-var log = require('../log');
+var log = require('../util/log');
 var cryptoUtil = require('../util/crypto');
 var httpUtil = require('../util/HTTP');
 var HDParams = require('./HDParams');
