@@ -2623,6 +2623,14 @@ Wallet.prototype.getTransactionHistoryCsv = function(cb) {
 
 }
 
+/**
+ * @desc Sets the version of this wallet object
+ * 
+ * @param {string} version - the new version for the wallet
+ */
+Wallet.prototype.setVersion = function(version) {
+  this.version = this.opts.version = version;
+};
 
 /**
  * @desc Return a list of past transactions
