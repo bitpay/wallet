@@ -2683,6 +2683,9 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
   if (addresses.length > 0) {
     var from = (opts.currentPage - 1) * opts.itemsPerPage;
     var to = opts.currentPage * opts.itemsPerPage;
+    if (!_.isNumber(from) || _.isNaN(from)) from = 0;
+    if (!_.isNumber(to) || _.isNaN(to)) to = null;
+
     self.blockchain.getTransactions(addresses, from, to, function(err, res) {
       if (err) return cb(err);
 
