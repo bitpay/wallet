@@ -43,7 +43,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.updateTxs = _.throttle(function() {
-console.log('[send.js.44:updateTxs:]'); //TODO
       var w = $rootScope.wallet;
       if (!w) return;
 
@@ -104,6 +103,18 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         enumerable: true,
         configurable: true
       });
+    Object.defineProperty($scope,
+      "address", {
+        get: function() {
+          return this._address;
+        },
+        set: function(newValue) {
+          this._address = newValue; 
+          _onChanged();
+        },
+        enumerable: true,
+        configurable: true
+      });
 
 
     $scope.init = function() {
@@ -121,22 +132,6 @@ console.log('[send.js.44:updateTxs:]'); //TODO
     $scope.showAddressBook = function() {
       return w && _.keys(w.addressBook).length > 0;
     };
-
-    if ($rootScope.pendingPayment) {
-      var pp = $rootScope.pendingPayment;
-      var amount = pp.data.amount * 100000000 * satToUnit;
-      var alternativeAmountPayPro = rateService.toFiat((amount + $scope.defaultFee) * w.settings.unitToSatoshi, $scope.alternativeIsoCode);
-      if (pp.data.merchant) {
-        $scope.address = 'bitcoin:' + pp.address.data + '?amount=' + amount + '&r=' + pp.data.r;
-      }
-      else {
-        $scope.address = pp.address + '';
-        $scope.amount = amount;
-        $scope.alternative = alternativeAmountPayPro;
-      }
-      $scope.alternativeAmountPayPro = $filter('noFractionNumber')(alternativeAmountPayPro, 2);
-      $scope.commentText = pp.data.message;
-    }
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
@@ -201,6 +196,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         $scope.address = $scope.amount = $scope.commentText = null;
         form.address.$pristine = form.amount.$pristine = true;
         $rootScope.pendingPayment = null;
+        $scope.isPayUri = null;
         if (err) return $scope._showError(err);
 
         $scope.notifyStatus(status);
@@ -451,6 +447,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
       if (!$scope.sendForm || !$scope.sendForm.address) {
         delete $rootScope.merchant;
         $rootScope.merchantError = false;
+        $scope.isPayUri = false;
         if (callback) callback();
         return;
       }
@@ -483,15 +480,36 @@ console.log('[send.js.44:updateTxs:]'); //TODO
     $scope.cancelSend = function(form) {
       delete $rootScope.merchant;
       $rootScope.merchantError = false;
+      $scope.isPayUri = false;
       form.address.$setViewValue('');
       form.address.$render();
       form.amount.$setViewValue('');
+      form.amount.$render();
       form.comment.$setViewValue('');
+      form.comment.$render();
       form.$setPristine();
-    };
+    }; 
 
-    $scope.onChanged = function() {
-      var value = $scope.address || '';
+    var _onChanged = function(pp) { 
+      var value;
+
+      if (pp) {
+        $scope.isPayUri = true;
+        var amount = (pp.data && pp.data.amount) ? pp.data.amount * 100000000 * satToUnit : 0;
+        $scope.commentText = pp.data.message;
+        if (pp.data.merchant) {
+          value = 'bitcoin:' + pp.address.data + '?amount=' + amount + '&r=' + pp.data.r;
+        }
+        else {
+          value = pp.address + '';
+          $timeout(function() {
+            $scope.amount = amount;
+          }, 1000);
+          $scope.address = value;
+        }
+      }
+
+      value = value || $scope.address || '';
       var uri;
 
       $scope.error = $scope.success = null;
@@ -501,14 +519,28 @@ console.log('[send.js.44:updateTxs:]'); //TODO
       }
 
       if (value.indexOf('bitcoin:') === 0) {
-        uri = new bitcore.BIP21(value).data;
+        uri = new bitcore.BIP21(value);
       } else if (/^https?:\/\//.test(value)) {
         uri = {
-          merchant: value
+          data : {
+            merchant: value
+          }
         };
       }
 
-      if (!uri || !uri.merchant) {
+      if (!uri || !uri.data.merchant) {
+        if (uri && uri.address) {
+          var amount = (uri.data && uri.data.amount) ? uri.data.amount * 100000000 * satToUnit : 0;
+          var address = uri.address.data;
+          if (amount && address) {
+            $scope.isPayUri = true;
+          }
+          $timeout(function() {
+            $scope.amount = amount;
+          }, 1000);
+          $scope.commentText = uri.data.message;
+          $scope.address = address;
+        }
         return;
       }
 
@@ -518,7 +550,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         }
       };
 
-      $scope.fetchingURL = uri.merchant;
+      $scope.fetchingURL = uri.data.merchant;
       $scope.loading = true;
       apply();
 
@@ -535,7 +567,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
 
       // Payment Protocol URI (BIP-72)
       $scope.wallet.fetchPaymentRequest({
-        url: uri.merchant
+        url: uri.data.merchant
       }, function(err, merchantData) {
         if (!timeout) return;
         clearTimeout(timeout);
@@ -562,6 +594,7 @@ console.log('[send.js.44:updateTxs:]'); //TODO
             var unregister = $scope.$watch('address', function() {
               if ($scope.sendForm.address.$viewValue !== lastAddr) {
                 delete $rootScope.merchantError;
+                $scope.isPayUri = false;
                 $scope.sendForm.amount.$setViewValue('');
                 $scope.sendForm.amount.$render();
                 unregister();
@@ -608,4 +641,11 @@ console.log('[send.js.44:updateTxs:]'); //TODO
         apply();
       });
     };
+
+    if ($rootScope.pendingPayment) {
+      var value;
+      var pp = $rootScope.pendingPayment; 
+      _onChanged(pp);
+    }
+
   });
