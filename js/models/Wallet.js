@@ -2550,13 +2550,10 @@ Wallet.prototype.isComplete = function() {
 Wallet.prototype.getTransactionHistoryCsv = function(cb) {
   var self = this;
   self.getTransactionHistory(function(err, res) {
+    preconditions.checkState(res);
     if (err) {
-      log.debug(err);
-      return cb('ERROR');
-    }
-
-    if (!res) {
-      return cb('ERROR');
+      log.warn(err);
+      return cb(new Error('TXHISTORY: ' + err.toString()));
     }
 
     var unit = self.settings.unitName;
@@ -2573,7 +2570,7 @@ Wallet.prototype.getTransactionHistoryCsv = function(cb) {
 
     data.forEach(function(it, index) {
       if (!it) {
-        return cb('ERROR');
+        return cb(new Error('TXHISTORY: The item is null'));
       }
       var dataString = formatDate(it.minedTs || it.sentTs) + ',' + it.amount + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.comment);
       if (self.isShared() && it.actionList) {
@@ -2589,7 +2586,7 @@ Wallet.prototype.getTransactionHistoryCsv = function(cb) {
     function formatDate(date) {
       var dateObj = new Date(date);
       if (!dateObj) {
-        log.error('Error formating a date');
+        log.warn('Error formating a date');
         return 'DateError'
       }
       if (!dateObj.toJSON()) {
