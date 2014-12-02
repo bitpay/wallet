@@ -76,6 +76,7 @@ PublicKeyRing.prototype.resetCache = function() {
  *                   as a parameter
  */
 PublicKeyRing.trim = function(data) {
+  preconditions.checkArgument(data);
   var opts = {};
   ['walletId', 'networkName', 'requiredCopayers', 'totalCopayers',
     'indexes', 'nicknameFor', 'copayersExtPubKeys'
@@ -698,6 +699,7 @@ PublicKeyRing.prototype.getRedeemScriptMap = function(paths) {
  */
 
 PublicKeyRing.prototype._checkInPKR = function(inPKR, ignoreId) {
+  preconditions.checkArgument(_.isObject(inPKR));
 
   if (!ignoreId && this.walletId !== inPKR.walletId)
     throw new Error('inPKR walletId mismatch');
@@ -786,8 +788,8 @@ PublicKeyRing.prototype.mergeIndexes = function(indexes) {
  * @return {boolean} true if the internal state has changed
  */
 PublicKeyRing.prototype.merge = function(inPKR, ignoreId) {
-  this._checkInPKR(inPKR, ignoreId);
 
+  this._checkInPKR(inPKR, ignoreId);
   var hasChanged = false;
   hasChanged |= this.mergeIndexes(inPKR.indexes);
   hasChanged |= this._mergePubkeys(inPKR);
