@@ -307,6 +307,33 @@ Identity.prototype.store = function(opts, cb) {
   });
 };
 
+/**
+ * @param {Object} opts
+ * @param {Function} cb
+ */
+Identity.prototype.remove = function(opts, cb) {
+  log.debug('Deleting profile');
+
+  var self = this;
+  opts = opts || {};
+
+  async.each(_.values(self.wallets), function(w, cb) {
+    w.close();
+    self.storage.removeItem(Wallet.getStorageKey(w.getId()), function(err) {
+      if (err) return cb(err);
+      cb();
+    });
+  }, function (err) {
+    if (err) return cb(err);
+    
+    self.storage.removeItem(self.getId(), function(err) {
+      if (err) return cb(err);
+      self.emitAndKeepAlive('closed');
+      return cb();
+    });
+  });
+};
+
 Identity.prototype._cleanUp = function() {
   // NOP
 };
