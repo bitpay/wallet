@@ -72,7 +72,8 @@
               </a>
             </div>
             <div ng-hide="hideAdv" class="row">
-              <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="testnet" ng-false-value="livenet" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
+              <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="'testnet'"
+              ng-false-value="'livenet'" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
               <label for="network-name" translate>Use test network</label>
 
               <p>
