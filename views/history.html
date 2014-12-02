@@ -50,7 +50,7 @@
                 'green' : btx.action == 'received',
                 'red': btx.action == 'sent', 
                 'gray': btx.action == 'moved'}" ng-show="btx.alternativeAmount != null">
-                  {{btx.alternativeAmount| noFractionNumber}} {{$root.wallet.settings.alternativeIsoCode}}
+                  {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
                 </span>
               </div>
             </div>
