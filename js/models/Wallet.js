@@ -291,6 +291,14 @@ Wallet.prototype.changeSettings = function(settings) {
 };
 
 /**
+ * @desc Locks other sessions from connecting to the wallet
+ * @see Async#lockIncommingConnections
+ */
+Wallet.prototype._lockIncomming = function() {
+  this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+};
+
+/**
  * @desc
  * Handles a 'PUBLICKEYRING' message from <tt>senderId</tt>.
  *
@@ -945,7 +953,7 @@ Wallet.prototype.netStart = function() {
   };
 
   if (this.publicKeyRing.isComplete()) {
-    this.network.lockIncommingConnections(this.publicKeyRing.getAllCopayerIds());
+    this._lockIncomming(this.publicKeyRing.getAllCopayerIds());
   }
   log.debug('Wallet:' + self.id + ' Starting network.');
   this.network.start(startOpts, function() {
