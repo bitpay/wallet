@@ -78,17 +78,11 @@ angular.module('copayApp.controllers').controller('HistoryController',
         }
 
         var items = res.items;
-<<<<<<< HEAD
         var now = new Date();
         _.each(items, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
           tx.amount = $filter('noFractionNumber')(tx.amount);
-=======
-
-        _.each(items, function(r, index) {
-          r.ts = r.minedTs || r.sentTs;
->>>>>>> Move function getTransactionHistoryCsv to wallet
         });
 
         var index = _.indexBy(items, 'rateTs');
