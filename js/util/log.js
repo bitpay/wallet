@@ -1,5 +1,6 @@
 var config = config || require('../../config');
 var _ = require('lodash');
+
 var LS = require('../plugins/LocalStorage');
 var ls = new LS();
 
@@ -123,11 +124,16 @@ var error = new Error();
 
 var logLevel = config.logLevel;
 
-if (typeof localStorage !== "undefined" && localStorage.getItem) {
-  var localConfig = JSON.parse(localStorage.getItem("config"));
-  if (localConfig && localConfig.logLevel)
-    logLevel = localConfig.logLevel;
+if (ls.getItem) {
+  ls.getItem("config", function(err, value) {
+    if (err) return;
+    var localConfig = JSON.parse(value);
+    if (localConfig && localConfig.logLevel)
+      logLevel = localConfig.logLevel;
+    logger.setLevel(logLevel);
+  });
+} else {
+  logger.setLevel(logLevel);
 }
 
-logger.setLevel(logLevel);
 module.exports = logger;
