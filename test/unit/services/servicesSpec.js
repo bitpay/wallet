@@ -76,6 +76,7 @@ describe("Angular services", function() {
       a[Waddr] = 200;
       w.getBalance = sinon.stub().yields(null, 100000001, a, 90000002, 5);
 
+
       //retuns values in DEFAULT UNIT(bits)
       balanceService.update(w, function() {
         var b = w.balanceInfo;
@@ -90,7 +91,7 @@ describe("Angular services", function() {
         expect(b.balanceByAddr[Waddr]).to.equal(2);
         expect(b.safeUnspentCount).to.equal(5);
         expect(b.topAmount).to.equal(899800.02);
-      },false); 
+      }, false);
     }));
 
   });
