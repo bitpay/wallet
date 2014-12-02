@@ -331,14 +331,10 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     return;
   }
   if (hasChanged) {
-console.log('[Wallet.js.333:hasChanged:]',hasChanged); //TODO
     if (wasIncomplete) {
       this.sendPublicKeyRing();
     }
-
-console.log('[Wallet.js.335:wasIncomplete:]',wasIncomplete); //TODO
     if (this.publicKeyRing.isComplete()) {
-console.log('[Wallet.js.338]'); //TODO
       this._lockIncomming();
     }
 
