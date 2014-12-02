@@ -63,7 +63,19 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
         $scope.walletSelection = false;
         $scope.setWallets();
       });
-      iden.on('deleteWallet', function() {
+      iden.on('walletDeleted', function(wid) {
+        if (wid == $rootScope.wallet.id) {
+          copay.logger.debug('Deleted focused wallet:', wid);
+
+          // new focus
+          var newWid = $rootScope.iden.getLastFocusedWalletId();
+          if (newWid && $rootScope.iden.getWalletById(newWid)) {
+            identityService.setFocusedWallet(newWid);
+          } else {
+            copay.logger.debug('No wallets'); 
+            identityService.noFocusedWallet(newWid);
+          }
+        }
         $scope.walletSelection = false;
         $scope.setWallets();
       });

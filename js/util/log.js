@@ -1,6 +1,11 @@
-var config = config || require('../config');
+var config = config || require('../../config');
 var _ = require('lodash');
+var ls;
 
+try {
+  var LS = require('../plugins/LocalStorage');
+  ls = new LS();
+} catch(e) {};
 
 /**
  * @desc
@@ -119,13 +124,18 @@ Logger.prototype.setLevel = function(level) {
 var logger = new Logger('copay');
 var error = new Error();
 
-var logLevel = config.logLevel;
+var logLevel = config.logLevel || 'info';
 
-if (typeof localStorage !== "undefined" && localStorage.getItem) {
-  var localConfig = JSON.parse(localStorage.getItem("config"));
-  if (localConfig && localConfig.logLevel)
-    logLevel = localConfig.logLevel;
+if (ls && ls.getItem) {
+  ls.getItem("config", function(err, value) {
+    if (err) return;
+    var localConfig = JSON.parse(value);
+    if (localConfig && localConfig.logLevel)
+      logLevel = localConfig.logLevel;
+    logger.setLevel(logLevel);
+  });
+} else {
+  logger.setLevel(logLevel);
 }
 
-logger.setLevel(logLevel);
 module.exports = logger;

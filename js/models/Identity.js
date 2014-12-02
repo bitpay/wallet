@@ -3,7 +3,6 @@ var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
 var inherits = require('inherits');
 var events = require('events');
-var log = require('../log');
 var async = require('async');
 
 var bitcore = require('bitcore');
@@ -14,9 +13,9 @@ var PrivateKey = require('./PrivateKey');
 var Wallet = require('./Wallet');
 var PluginManager = require('./PluginManager');
 var Async = require('./Async');
-
-var version = require('../../version').version;
 var cryptoUtil = require('../util/crypto');
+var log = require('../util/log');
+var version = require('../../version').version;
 
 /**
  * @desc
@@ -475,6 +474,8 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
  * @emits newWallet  (walletId)
  */
 Identity.prototype.bindWallet = function(w) {
+  preconditions.checkArgument(w && this.wallets[w.getId()]);
+
   var self = this;
   log.debug('Binding wallet:' + w.getName());
 
@@ -572,8 +573,6 @@ Identity.prototype.createWallet = function(opts, cb) {
   opts.version = opts.version || this.version;
 
   var self = this;
-
-
   var w = new walletClass(opts);
   self.wallets[w.getId()] = w;
   self.updateFocusedTimestamp(w.getId());
@@ -645,7 +644,7 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
 
   this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
     if (err) return cb(err);
-    self.emitAndKeepAlive('deletedWallet', walletId);
+    self.emitAndKeepAlive('walletDeleted', walletId);
     self.store(null, cb);
     return cb();
   });

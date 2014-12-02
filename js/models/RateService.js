@@ -2,7 +2,7 @@
 
 var util = require('util');
 var _ = require('lodash');
-var log = require('../log');
+var log = require('../util/log');
 var preconditions = require('preconditions').singleton();
 var request = require('request');
 

@@ -3,13 +3,15 @@
 var util = require('util');
 var async = require('async');
 var request = require('request');
-var bitcore = require('bitcore');
 var io = require('socket.io-client');
 var _ = require('lodash');
-var log = require('../log');
-
 var EventEmitter = require('events').EventEmitter;
 var preconditions = require('preconditions').singleton();
+
+var bitcore = require('bitcore');
+
+var log = require('../util/log.js');
+
 
 /*
   This class lets interfaces with the blockchain, making general queries and

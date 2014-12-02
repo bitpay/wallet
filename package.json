@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
+    "coverage": "./node_modules/.bin/istanbul cover -x lib/sjcl.js ./node_modules/.bin/_mocha -- --reporter spec test",
     "test": "sh test/run.sh",
     "dist": "node shell/scripts/dist.js",
     "shell": "node shell/scripts/launch.js",

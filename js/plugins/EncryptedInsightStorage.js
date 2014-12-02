@@ -1,7 +1,7 @@
 var cryptoUtil = require('../util/crypto');
 var InsightStorage = require('./InsightStorage');
 var inherits = require('inherits');
-var log = require('../log');
+var log = require('../util/log');
 var SEPARATOR = '%^#@';
 
 function EncryptedInsightStorage(config) {
