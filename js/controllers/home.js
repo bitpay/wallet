@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   $scope.done = function() {
     $rootScope.starting = false;
-    $rootScope.$digest();
+    setTimeout(function () { $rootScope.$digest(); }, 1);
   };
 
 
