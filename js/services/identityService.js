@@ -126,6 +126,13 @@ angular.module('copayApp.services')
       $location.path('/send');
     };
 
+    root.noFocusedWallet = function() {
+      $rootScope.wallet = null;
+      $timeout(function() {
+        $rootScope.$digest();
+      })
+    };
+
     root.setFocusedWallet = function(w, dontUpdateIt) {
       if (!_.isObject(w))
         w = $rootScope.iden.getWalletById(w);
@@ -280,13 +287,8 @@ angular.module('copayApp.services')
         $rootScope.$digest()
       });
 
-      iden.on('deletedWallet', function(wid) {
-        notification.info('Wallet deleted', $filter('translate')('This wallet was deleted'));
-        if ($rootScope.wallet.id === wid) {
-          $rootScope.wallet = null;
-          var lastFocused = iden.getLastFocusedWalletId();
-          root.setFocusedWallet(lastFocused);
-        }
+      iden.on('walletDeleted', function(wid) {
+        // do nothing. this is handled 'on sync' on controller.
       });
 
       iden.on('closed', function() {
