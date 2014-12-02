@@ -58,6 +58,11 @@
     padding: 12px 5px;
   }
 
+  .status {
+    bottom: 66px;
+    left: 0;
+  }
+
   .left-off-canvas-menu {
     background: #E4E8EC;
     line-height: 24px;
