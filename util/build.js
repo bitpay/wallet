@@ -90,22 +90,22 @@ var createBundle = function(opts) {
  
   if (!opts.disablePlugins) {
     b.require('./js/plugins/GoogleDrive', {
-      expose: '../plugins/GoogleDrive'
+      expose: '../js/plugins/GoogleDrive'
     });
     b.require('./js/plugins/InsightStorage', {
-      expose: '../plugins/InsightStorage'
+      expose: '../js/plugins/InsightStorage'
     });
     b.require('./js/plugins/InsightStorage', {
       expose: '../js/plugins/InsightStorage'
     });
     b.require('./js/plugins/LocalStorage', {
-      expose: '../plugins/LocalStorage'
+      expose: '../js/plugins/LocalStorage'
     });
     b.require('./js/plugins/EncryptedInsightStorage', {
-      expose: '../plugins/EncryptedInsightStorage'
+      expose: '../js/plugins/EncryptedInsightStorage'
     });
     b.require('./js/plugins/EncryptedLocalStorage', {
-      expose: '../plugins/EncryptedLocalStorage'
+      expose: '../js/plugins/EncryptedLocalStorage'
     });
   }
 
