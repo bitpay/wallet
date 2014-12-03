@@ -48,5 +48,24 @@ angular.module('copayApp.services')
       ls.removeItem(KEY, cb);
     };
 
+
+    root.makePinInput = function(scope, name, cb) {
+      Object.defineProperty(scope, name, {
+          get: function() {
+            return this['_' + name];
+          },
+          set: function(newValue) {
+            this['_' + name] = newValue;
+            scope.error = null;
+            if (newValue && newValue.length == 4) {
+              return cb(newValue);
+            }
+          },
+          enumerable: true,
+          configurable: true
+        });
+    };
+
+
     return root;
   });

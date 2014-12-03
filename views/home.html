@@ -47,7 +47,7 @@
       <a class="text-white" href="#!/createProfile">creating your profile</a>
     </div>
 
-    <div class="box-setup" ng-if="askForPin" ng-init="secondPin = false">
+    <div class="box-setup" ng-if="askForPin">
       <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
       <p class="size-14"> Enter a 4-digit number for easier access from this device
       
@@ -61,18 +61,18 @@
       </div>
 
       <form name="setPinForm" ng-submit="createPin(setPinForm)" novalidate> 
-        <div class="input" ng-show="!secondPin">
+        <div class="input" ng-show="askForPin == 1">
           <input id="newpin" type="tel" ng-model="newpin" class="form-control"
             ng-maxlength="4" ng-minlength="4" maxlength="4"
             ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="PIN" name="newpin" required show-focus="!secondPin">
+            placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
           <i class="icon-locked"></i>
         </div>
-        <div class="input" ng-show="secondPin">
+        <div class="input" ng-show="askForPin == 2">
           <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control"
             ng-maxlength="4" ng-minlength="4" maxlength="4"
             ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="Confirm your PIN" name="repeatpin" required show-focus="secondPin">
+            placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
           <i class="icon-locked"></i>
         </div>
 
