@@ -18,11 +18,11 @@ LocalStorage.prototype.init = function() {
 };
 
 LocalStorage.prototype.setCredentials = function(email, password, opts) {
-  this.email = email;
-  this.password = password;
+  // NOP
 };
 
 LocalStorage.prototype.getItem = function(k,cb) {
+  preconditions.checkArgument(_.isFunction(cb));
   return cb(null, this.ls.getItem(k));
 };
 
@@ -30,6 +30,7 @@ LocalStorage.prototype.getItem = function(k,cb) {
  * Same as setItem, but fails if an item already exists
  */
 LocalStorage.prototype.createItem = function(name, value, callback) {
+  preconditions.checkArgument(_.isFunction(callback));
   if (this.ls.getItem(name)) {
     return callback('EEXISTS');
   }
@@ -37,16 +38,19 @@ LocalStorage.prototype.createItem = function(name, value, callback) {
 };
 
 LocalStorage.prototype.setItem = function(k,v,cb) {
+  preconditions.checkArgument(_.isFunction(cb));
   this.ls.setItem(k,v);
   return cb();
 };
 
 LocalStorage.prototype.removeItem = function(k,cb) { 
+  preconditions.checkArgument(_.isFunction(cb));
   this.ls.removeItem(k);
   return cb();
 };
 
 LocalStorage.prototype.clear = function(cb) { 
+  preconditions.checkArgument(_.isFunction(cb));
   this.ls.clear();
   return cb();
 };
