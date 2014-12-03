@@ -85,6 +85,7 @@ describe('Identity model', function() {
       obj: 1
     });
     w.getName = sinon.stub().returns('name');
+    w.setVersion = sinon.stub();
     w.on = sinon.stub();
     w.netStart = sinon.stub();
     w.args = args;
@@ -234,8 +235,62 @@ describe('Identity model', function() {
     });
   });
 
-  describe.skip('#storeWallet', function() {
-    // TODO test storeWallet
+  describe('#storeWallet', function() {
+    var iden = null;
+    var storage = null;
+    beforeEach(function() {
+      storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+
+      iden = new Identity(opts);
+    });
+
+    it('should store a simple wallet', function (done) {
+      storage.setItem = sinon.stub().yields(null);
+      var w = {
+        toObj: sinon.stub().returns({ key1: 'val1' }),
+        getStorageKey: sinon.stub().returns('storage_key'),
+        getName: sinon.stub().returns('name'),
+        setVersion: sinon.spy(),
+      };
+      iden.storeWallet(w, function (err) {
+        should.not.exist(err);
+        storage.setItem.calledOnce.should.be.true;
+        storage.setItem.calledWith('storage_key', { key1: 'val1' });
+        done();
+      });
+    });
+    it('should change wallet version when storing', function (done) {
+      storage.setItem = sinon.stub().yields(null);
+      var w = {
+        toObj: sinon.stub().returns({ key1: 'val1' }),
+        getStorageKey: sinon.stub().returns('storage_key'),
+        getName: sinon.stub().returns('name'),
+        setVersion: sinon.spy(),
+        version: '1.0',
+        opts: { version: '1.0' },
+      };
+      iden.version = '2.0';
+      iden.storeWallet(w, function (err) {
+        should.not.exist(err);
+        w.setVersion.calledWith('2.0').should.be.true;
+        done();
+      });
+    });
   });
 
 
