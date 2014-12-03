@@ -127,6 +127,7 @@ var error = new Error();
 var logLevel = config.logLevel || 'info';
 
 
+
 if (ls && ls.getItem) {
   ls.getItem("config", function(err, value) {
     if (err) return;
