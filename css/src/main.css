@@ -426,7 +426,7 @@ a.missing-copayers {
 
 ul.tx-copayers {
   background: #E4E8EC;  
-  padding: 0.8rem;
+  padding: 0.3rem 0.8rem;
   margin-left: 0;
   box-shadow: inset 0 1px 1px 0 rgba(10,19,28,.12);
   border-radius: 0 0 3px 3px;
