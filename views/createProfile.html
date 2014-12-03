@@ -96,44 +96,43 @@
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading && askForPin">
     <div class="box-setup">
       <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
-      <p class="size-14">Enter a 4-digit number for easier access from this device
+      <p class="size-14">Enter a 4-digit number for easier access from this device</p>
 
-        <div class="box-notification" ng-show="error">
-          <div class="box-icon error">
-            <i class="fi-x size-24"></i>
-          </div>
-          <span class="text-warning size-14">
+      <div class="box-notification" ng-show="error">
+        <div class="box-icon error">
+          <i class="fi-x size-24"></i>
+        </div>
+        <span class="text-warning size-14">
           {{error|translate}}
         </span>
+      </div>
+
+      <form name="setPinForm" ng-submit="createPin(setPinForm)" novalidate>
+        <div class="input" ng-show="askForPin == 1">
+          <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
+          <i class="icon-locked"></i>
+        </div>
+        <div class="input" ng-show="askForPin == 2">
+          <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
+          <i class="icon-locked"></i>
         </div>
 
-        <form name="setPinForm" ng-submit="createPin(setPinForm)" novalidate>
-          <div class="input" ng-show="askForPin == 1">
-            <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
-            <i class="icon-locked"></i>
-          </div>
-          <div class="input" ng-show="askForPin == 2">
-            <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
-            <i class="icon-locked"></i>
-          </div>
-
-          <button translate type="submit" class="dn button primary radius expand m0" ng-disabled="setPinForm.$invalid || error">
-            Set pin
-          </button>
-        </form>
         <div class="box-setup-footer row collapse">
-          <div class="large-6 medium-6 small-6 columns text-right">
+          <div class="large-6 medium-6 small-6 columns">
             <a class="button secondary radius m0" ng-click="createDefaultWallet()">
               <span translate>Skip</span> 
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <a class="button secondary radius m0">
-              <span translate>OK</span> 
-            </a>
+            <button translate type="submit" class="button primary radius expand m0"
+              ng-disabled="setPinForm.$invalid || error">
+              OK 
+            </button>
           </div>
-
         </div>
+
+
+      </form> 
     </div>
   </div>
 </div>
