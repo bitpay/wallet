@@ -85,19 +85,21 @@ angular.module('copayApp.controllers').controller('HistoryController',
           tx.amount = $filter('noFractionNumber')(tx.amount);
         });
 
-        var index = _.indexBy(items, 'rateTs');
-        rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
-          if (!err && res) {
-            _.each(res, function(r) {
-              var tx = index[r.ts];
-              var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
-              tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
-            });
-            setTimeout(function() {
-              $scope.$digest();
-            }, 1);
-          }
-        });
+        if (items.length > 0) {
+          var index = _.indexBy(items, 'rateTs');
+          rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
+            if (!err && res) {
+              _.each(res, function(r) {
+                var tx = index[r.ts];
+                var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+                tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
+              });
+              setTimeout(function() {
+                $scope.$digest();
+              }, 1);
+            }
+          });
+        }
 
         $scope.blockchain_txs = w.cached_txs = items;
         $scope.nbPages = res.nbPages;
