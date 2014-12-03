@@ -1,4 +1,4 @@
-<div ng-controller="SidebarController" ng-init="getWallets()">
+<div ng-controller="SidebarController" ng-init="init()">
   <header>
     <div ng-click="toggleWalletSelection()">
       <div class="col1">
@@ -101,7 +101,10 @@
       </li>
       <li>
       <a href="#!/" class="db p20h nav-item" title="Close"
-        ng-click="signout()"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</a>
+        ng-click="signout()">
+        <span ng-if="!hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
+        <span ng-if="hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
+      </a>
       </li>
     </ul>
     <div class="text-gray size-12 text-center columns">
