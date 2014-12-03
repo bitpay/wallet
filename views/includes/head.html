@@ -39,7 +39,10 @@
       <i class="icon-person size-18 m10r"></i> {{'Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
       </li> 
     <li><a href="#!/" title="Close" ng-click="signout()">
-      <i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</a></li>
+        <span ng-if="!hasPin"><i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</span>
+        <span ng-if="hasPin"><i class="icon-power size-18 m10r"></i> {{'Lock'|translate}}</span>
+      </a></li>
+
   </ul>
 </div>
 

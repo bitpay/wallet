@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, $timeout, notification, identityService, balanceService) {
+angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, $timeout, notification, identityService, balanceService, pinService) {
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
@@ -39,7 +39,13 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     window.onbeforeunload = undefined;
   });
 
+  // TODO put this on init()
   if ($rootScope.wallet) {
+    pinService.check(function(err, value) {
+      $scope.hasPin = value;
+    });
+
+
     $scope.$on('$idleStart', function() {
     });
     $scope.$on('$idleWarn', function(a, countdown) {
