@@ -8,6 +8,7 @@ describe('local storage plugin', function() {
   beforeEach(function() {
     storageMock = {};
     storageMock.getItem = sinon.stub().returns(VALUE);
+    storageMock.createItem = sinon.stub().returns();
     storageMock.setItem = sinon.stub().returns();
     storageMock.removeItem = sinon.stub().returns();
     storageMock.clear = sinon.stub().returns();
@@ -24,6 +25,22 @@ describe('local storage plugin', function() {
       return done();
     });
   });
+
+  it('#createItem', function(done) {
+    storageMock.getItem = sinon.stub().returns(null);
+    storage.createItem('hola', 'value', function(err) {
+      assert(!err);
+      return done();
+    });
+  });
+
+  it('#createItem (Exists)', function(done) {
+    storage.createItem('hola', 'value', function(err) {
+      err.should.contain('EEXISTS');
+      return done();
+    });
+  });
+
 
 
   it('#removeItem', function(done) {
