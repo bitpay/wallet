@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
   $scope.init = function() {
     // This is only for backwards compat, insight api should link to #!/confirmed directly
@@ -20,9 +20,11 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
 
     Compatibility.check($scope);
-    pinService.check(function(err, value) {
-      $scope.hasPin = value;
-    });
+    if (isMobile.any()) {
+      pinService.check(function(err, value) {
+        $scope.hasPin = value;
+      });
+    }
   };
 
   Object.defineProperty($scope,
@@ -131,7 +133,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
-    if (!$scope.hasPin) {
+    if (isMobile.any() && !$scope.hasPin) {
       $scope.email = form.email.$modelValue;
       $scope.password = form.password.$modelValue;
       $scope.setPin = true;
