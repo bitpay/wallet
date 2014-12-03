@@ -11,20 +11,19 @@ var moment = moment || require('moment');
 describe('csv utils', function() {
   it('should convert simple json', function(done) {
     var data = [
-      { name: 'Lennon John', age: 40, lastLogin: moment(1417608870000), },
-      { name: 'Cobain, Kurt', age: 27, lastLogin: moment('2014-11-01'), },
+      { name: 'Lennon John', age: 40 },
+      { name: 'Cobain, Kurt', age: 27 },
     ];
 
     var descriptor = {
       columns: [
         { label: 'Name', property: 'name', type: 'string' },
         { label: 'Age', property: 'age', type: 'number' },
-        { property: 'lastLogin', type: 'date' },
       ],
     };
 
     csv.toCsv(data, descriptor, function (err, res) {
-      res.should.equal('Name,Age,lastLogin\r\nLennon John,40,2014-12-03T09:14:30-03:00\r\n"Cobain, Kurt",27,2014-11-01T00:00:00-03:00\r\n');
+      res.should.equal('Name,Age\r\nLennon John,40\r\n"Cobain, Kurt",27\r\n');
       done();
     });
   });
