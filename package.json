@@ -28,7 +28,7 @@
     "preconditions": "^1.0.7",
     "querystring": "^0.2.0",
     "request": "^2.40.0",
-    "moment": "^2.8.4"
+    "moment": "2.6.0"
   },
   "scripts": {
     "start": "node server.js",
