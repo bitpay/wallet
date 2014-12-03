@@ -56,7 +56,7 @@
           </span>
         </span>
  
-        <nav class="tab-bar"  ng-if="$root.iden" >
+        <nav class="tab-bar"  ng-if="$root.iden && !$root.hideNavigation" >
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
@@ -92,7 +92,9 @@
           ng-controller="HeadController"
           class="head show-for-large-up" 
           ng-include="'views/includes/head.html'"
-          ng-if="$root.iden"></div>
+          ng-if="$root.iden"
+          ng-class="{'dni':$root.hideNavigation}"
+        ></div>
 
         <section ng-class="{'main':$root.iden && !$root.starting}" ng-view></section>
 

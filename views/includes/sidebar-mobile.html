@@ -1,6 +1,6 @@
 <div ng-controller="SidebarController" ng-init="init()">
   <header>
-    <div ng-click="toggleWalletSelection()">
+    <div ng-click="toggleWalletSelection()" ng-if="$root.wallet">
       <div class="col1">
         <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
       </div>
@@ -95,15 +95,15 @@
       <a href="#!/import" class="db p20h nav-item" title="Import wallet">
         <i class="size-24 m20r fi-download"></i> {{'Import a wallet' | translate }} </a>
       </li>
-      <li>
-      <a href="#!/more" class="db p20h nav-item" title="Settings">
-        <i class="size-24 m20r fi-widget"></i> {{'Settings' | translate }} </a>
+      <li ng-if="$root.wallet">
+      <a href="#!/more" class="db p20h nav-item" title="Settings" >
+        <i class="size-24 m20r fi-widget"></i> {{'Wallet Settings' | translate }} </a>
       </li>
       <li>
       <a href="#!/" class="db p20h nav-item" title="Close"
         ng-click="signout()">
-        <span ng-if="!hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
-        <span ng-if="hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
+        <span ng-if="!$root.hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
+        <span ng-if="$root.hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
       </a>
       </li>
     </ul>
