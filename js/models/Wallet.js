@@ -2741,7 +2741,6 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
 
     var proposal = indexedProposals[tx.txid];
     if (proposal) {
-      // TODO refactor
       tx.comment = proposal.comment;
       tx.sentTs = proposal.sentTs;
       tx.merchant = proposal.merchant;
