@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   };
 
   pinService.makePinInput($scope, 'pin', function(newValue) {
-    $scope.openPin(newValue);
+    $scope.openWithPin(newValue);
   });
 
   pinService.makePinInput($scope, 'newpin', function(newValue) {
@@ -39,11 +39,18 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
   pinService.makePinInput($scope, 'repeatpin', function(newValue) {
     if (newValue === _firstpin) {
-      _firstpin  = null;
+      _firstpin = null;
       $scope.createPin(newValue);
     } else {
-      _firstpin  = null;
+      _firstpin = null;
       $scope.error = 'Entered PINs were not equal. Try again';
+      $scope.askForPin = 1;
+
+      $scope.setPinForm.newpin.$setViewValue('');
+      $scope.setPinForm.newpin.$render();
+      $scope.setPinForm.repeatpin.$setViewValue('');
+      $scope.setPinForm.repeatpin.$render();
+      $scope.setPinForm.$setPristine();
     }
   });
 
@@ -61,16 +68,14 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
   });
 
-  $scope.openWithPin = function(form) {
-    $scope.confirmedEmail = false;
-    if (form && form.$invalid) {
+
+  $scope.openWithPin = function(pin) {
+
+    if (!pin) {
       $scope.error = 'Please enter the required fields';
       return;
     }
-    $scope.openPin(pin);
-  };
 
-  $scope.openPin = function(pin) {
     var credentials = pinService.get(pin, function(err, credentials) {
       if (err || !credentials) {
         $scope.error = 'Wrong PIN';
@@ -108,7 +113,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   };
 
   $scope.openWithCredentials = function(form) {
-    $scope.confirmedEmail = false;
     if (form && form.$invalid) {
       $scope.error = 'Please enter the required fields';
       return;
@@ -151,6 +155,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
       // Open successfully?
       if (iden) {
+        $scope.confirmedEmail = false;
 
         // mobile
         //if (isMobile.any() && !$rootScope.hasPin) {
