@@ -6,7 +6,7 @@ var sinon = sinon || require('sinon');
 var should = chai.should();
 
 var csv = require('../js/util/csv')
-moment = moment || require('moment');
+var moment = moment || require('moment');
 
 describe('csv utils', function() {
   it('should convert simple json', function(done) {
