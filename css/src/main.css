@@ -433,10 +433,13 @@ ul.tx-copayers {
 }
 
 .tx-copayers li {
-  border-bottom: 1px solid #CAD2DA;
   list-style: none;
   padding: 0.3rem;
   font-size: 12px;
+}
+
+.tx-copayers li.bottom-line-copayers {
+  border-bottom: 1px solid #CAD2DA;
 }
 
 .last-transactions-header {
