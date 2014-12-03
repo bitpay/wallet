@@ -86,10 +86,9 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
           },1);
         $scope.error = msg;
       } else {
-          $scope.error = null;
+        $scope.error = null;
         // mobile
-        //if (isMobile.any()) {
-        if (true) {
+        if (isMobile.any()) {
           _credentials = {
             email: form.email.$modelValue,
             password: form.password.$modelValue,
@@ -100,7 +99,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
             $rootScope.$digest();
           }, 1);
 
-          console.log('[createProfile.js.70]'); //TODO
           return;
         } else {
           $scope.createDefaultWallet();

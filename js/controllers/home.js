@@ -41,16 +41,15 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     if (newValue === _firstpin) {
       _firstpin = null;
       $scope.createPin(newValue);
-    } else {
+    } else { 
+      $scope.$$childTail.setPinForm.newpin.$setViewValue('');
+      $scope.$$childTail.setPinForm.newpin.$render();
+      $scope.$$childTail.setPinForm.repeatpin.$setViewValue('');
+      $scope.$$childTail.setPinForm.repeatpin.$render();
+      
       _firstpin = null;
-      $scope.error = 'Entered PINs were not equal. Try again';
       $scope.askForPin = 1;
-
-      $scope.setPinForm.newpin.$setViewValue('');
-      $scope.setPinForm.newpin.$render();
-      $scope.setPinForm.repeatpin.$setViewValue('');
-      $scope.setPinForm.repeatpin.$render();
-      $scope.setPinForm.$setPristine();
+      $scope.error = 'Entered PINs were not equal. Try again';
     }
   });
 
@@ -155,11 +154,11 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
       // Open successfully?
       if (iden) {
+        $scope.error = null;
         $scope.confirmedEmail = false;
 
         // mobile
-        //if (isMobile.any() && !$rootScope.hasPin) {
-        if (true && !$rootScope.hasPin) {
+        if (isMobile.any() && !$rootScope.hasPin) {
           $scope.done();
           _credentials = {
             email: email,
