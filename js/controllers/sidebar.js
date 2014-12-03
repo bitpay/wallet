@@ -25,7 +25,8 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   }];
 
   $scope.signout = function() {
-    $scope.$emit('signout');
+    $rootScope.signingOut = true;
+    identityService.signout();
   };
 
   $scope.isActive = function(item) {

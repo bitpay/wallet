@@ -14,6 +14,11 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.confirmedEmail = true;
       $rootScope.fromEmailConfirmation = false;
     }
+
+    if($rootScope.iden) {
+      identityService.goWalletHome();
+    }
+
     Compatibility.check($scope);
     pinService.check(function(err, value) {
       $scope.hasPin = value;
