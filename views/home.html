@@ -98,7 +98,7 @@
 
     <div class="box-setup" ng-if='$root.hasPin'>
       <h1><span translate>Enter your </span> <b> PIN</b></h1>
-      <form name="pinForm" ng-submit="openWithPin(pinForm)" novalidate>
+      <form name="pinForm" novalidate>
         <div class="box-notification" ng-show="error">
           <div class="box-icon error">
             <i class="fi-x size-24"></i>
@@ -116,7 +116,7 @@
           <i class="icon-locked"></i>
         </div>
  
-        <button translate type="submit" class="dn button primary radius expand m0"
+        <button translate type="submit" class="button primary radius expand m0"
           ng-disabled="pinForm.$invalid || error">
           Sign in 
         </button>
