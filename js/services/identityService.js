@@ -3,6 +3,11 @@ angular.module('copayApp.services')
   .factory('identityService', function($rootScope, $location, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService) {
     notification.enableHtml5Mode(); // for chrome: if support, enable it
 
+    // TODO:
+    // * remove iden from rootScope
+    // * remove wallet from rootScope
+    // * create walletService
+
     var root = {};
     root.check = function(scope) {
       copay.Identity.checkIfExistsAny({
@@ -22,6 +27,7 @@ angular.module('copayApp.services')
       });
     };
 
+    // TODO should be on 'walletService'
     root.goWalletHome = function() {
       var w = $rootScope.wallet;
       if (w) {
@@ -49,23 +55,30 @@ angular.module('copayApp.services')
         failIfExists: true,
       }, function(err, iden) {
 
+console.log('[identityService.js.57]'); //TODO
         if (err) return cb(err);
         preconditions.checkState(iden);
         root.bind(iden);
 
-        var walletOptions = {
-          nickname: iden.fullName,
-          networkName: config.networkName,
-          requiredCopayers: 1,
-          totalCopayers: 1,
-          password: iden.password,
-          name: 'My wallet',
-        };
-        iden.createWallet(walletOptions, function(err, wallet) {
-          return cb(err);
-        });
+console.log('[identityService.js.62]'); //TODO
+        return cb(null);
       });
+    };
 
+    root.createDefaultWallet = function(cb) {
+      var iden = $rootScope.iden;
+
+      var walletOptions = {
+        nickname: iden.fullName,
+        networkName: config.networkName,
+        requiredCopayers: 1,
+        totalCopayers: 1,
+        password: iden.password,
+        name: 'My wallet',
+      };
+      iden.createWallet(walletOptions, function(err, wallet) {
+        return cb(err);
+      });
     };
 
     root.setServerStatus = function(headers) {
