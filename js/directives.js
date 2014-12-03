@@ -91,15 +91,14 @@ angular.module('copayApp.directives')
   ])
   .directive('validAmount', ['$rootScope', '$locale',
     function($rootScope, locale) {
-      var w = $rootScope.wallet;
-      preconditions.checkState(w);
-      preconditions.checkState(w.settings.unitToSatoshi);
       var formats = locale.NUMBER_FORMATS;
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
+            var w = $rootScope.wallet;
+            preconditions.checkState(w);
             var vNum = Number((value * w.settings.unitToSatoshi).toFixed(0));
 
             if (typeof value == 'undefined') {

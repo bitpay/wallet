@@ -96,21 +96,15 @@
             </div>
             <table class="last-transactions-content" ng-if="btx.actionList[0]">
               <tbody>
-              <tr ng-repeat="c in btx.actionList">
-                <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
-                </td>
-                <td>
-                  <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
-                  <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
-                </td>
-                <td>
-                  <i ng-if="c.actions.seen" class="fi-eye icon-status icon-active"></i>
-                  <i ng-if="!c.actions.seen" class="fi-eye icon-status"></i>
-                </td>
+              <tr ng-repeat="c in btx.actionList"> 
                 <td>
                   <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
                   <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
-                  <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="fi-loop icon-rotate"></i>
+                </td>
+                <td>
+                  <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
+                </td> 
+                <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
                 </td>
               </tr> 
               </tbody>
