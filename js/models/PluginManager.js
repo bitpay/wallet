@@ -17,7 +17,7 @@ function PluginManager(config) {
     if(config.pluginsPath){
       pluginClass = require(config.pluginsPath + pluginName);
     } else {
-      pluginClass = require('../plugins/' + pluginName);
+      pluginClass = require('../js/plugins/' + pluginName);
     }
     var pluginObj = new pluginClass(config[pluginName]);
     pluginObj.init();
