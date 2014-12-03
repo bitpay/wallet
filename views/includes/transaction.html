@@ -101,7 +101,7 @@
 </a>
 
 <ul class="tx-copayers" ng-show="tx.showDetails">
-  <li ng-repeat="c in tx.actionList">
+  <li ng-repeat="c in tx.actionList" ng-class="{'bottom-line-copayers':!$last}">
     <span>
       <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
       <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
