@@ -36,6 +36,7 @@ module.exports = function(config) {
       'lib/inherits/inherits.js',
       'lib/lodash/dist/lodash.js',
       'lib/file-saver/FileSaver.js',
+      'lib/fastclick/lib/fastclick.js',
       'lib/socket.io-client/socket.io.js',
       'lib/sjcl.js',
       'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
