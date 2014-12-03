@@ -355,17 +355,17 @@ Identity.prototype.remove = function(opts, cb) {
 };
 
 Identity.prototype._cleanUp = function() {
-  // NOP
+  _.each(this.wallets, function(w){
+    w.close();
+  });
 };
 
 /**
  * @desc Closes the wallet and disconnects all services
  */
 Identity.prototype.close = function() {
-  var self = this;
-  self.store({}, function(err) {
-    self.emitAndKeepAlive('closed');
-  });
+  this._cleanUp();
+  this.emitAndKeepAlive('closed');
 };
 
 
