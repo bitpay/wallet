@@ -103,7 +103,6 @@
                 </td>
                 <td>
                   <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
-                  <i ng-if="!c.actions.create" class="fi-crown icon-status"></i>
                 </td> 
                 <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
                 </td>
