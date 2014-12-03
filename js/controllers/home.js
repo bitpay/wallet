@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService) {
 
   $scope.init = function() {
     // This is only for backwards compat, insight api should link to #!/confirmed directly
@@ -145,7 +145,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     pinService.clear(function() {
       copay.logger.debug('PIN erased');
       $scope.hasPin = null;
-      $scope.$digest();
+      applicationService.reload();
     });
   };
 
