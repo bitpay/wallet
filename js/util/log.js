@@ -3,7 +3,7 @@ var _ = require('lodash');
 var ls;
 
 try {
-  var LS = require('../plugins/LocalStorage');
+  var LS = require('../js/plugins/LocalStorage');
   ls = new LS();
 } catch(e) {};
 
