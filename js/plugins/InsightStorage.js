@@ -118,7 +118,7 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
         return callback('PNOTFOUND: Profile not found');
       }
       if (response.statusCode !== 200) {
-        return callback('Connection error');
+        return callback('Unable to read item from insight');
       }
       return callback(null, body, InsightStorage.parseResponseHeaders(response.getAllResponseHeaders()));
     }
@@ -217,7 +217,7 @@ InsightStorage.prototype.removeItem = function(key, callback) {
       'Authorization': authHeader
     }
   };
-  log.debug('erase ' +  name);
+  log.debug('Erasing: ' +  key);
   this.request.get(getParams, function(err, response, body) {
     if (err) {
       return callback('Connection error');
@@ -234,16 +234,6 @@ InsightStorage.prototype.removeItem = function(key, callback) {
 InsightStorage.prototype.clear = function(callback) {
   // NOOP
   callback();
-};
-
-InsightStorage.prototype.allKeys = function(callback) {
-  // TODO: compatibility with localStorage
-  return callback(null);
-};
-
-InsightStorage.prototype.getFirst = function(prefix, opts, callback) {
-  // TODO: compatibility with localStorage
-  return callback(null, true, true);
 };
 
 module.exports = InsightStorage;
