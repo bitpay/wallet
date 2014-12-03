@@ -13,7 +13,7 @@
   </div>
 
   <div class="large-4 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
-    <div class="logo-setup">
+    <div class="logo-setup" ng-show="!$root.iden">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
@@ -47,8 +47,10 @@
       <a class="text-white" href="#!/createProfile">creating your profile</a>
     </div>
 
-    <div class="box-setup" ng-if="setPin" ng-init="secondPin = false">
-      <h1><span translate>Set your </span> <b> PIN number</b></h1>
+    <div class="box-setup" ng-if="askForPin" ng-init="secondPin = false">
+      <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
+      <p class="size-14"> Enter a 4-digit number for easier access from this device
+      
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
@@ -63,14 +65,14 @@
           <input id="newpin" type="tel" ng-model="newpin" class="form-control"
             ng-maxlength="4" ng-minlength="4" maxlength="4"
             ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="Pin number" name="newpin" required show-focus="!secondPin">
+            placeholder="PIN" name="newpin" required show-focus="!secondPin">
           <i class="icon-locked"></i>
         </div>
         <div class="input" ng-show="secondPin">
           <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control"
             ng-maxlength="4" ng-minlength="4" maxlength="4"
             ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="Repeat pin number" name="repeatpin" required show-focus="secondPin">
+            placeholder="Confirm your PIN" name="repeatpin" required show-focus="secondPin">
           <i class="icon-locked"></i>
         </div>
 
@@ -80,23 +82,22 @@
         </button>
       </form>
       <div class="box-setup-footer row collapse">
-        <div class="large-6 medium-6 small-6 columns">
-          <a class="button warning radius m0" ng-click="pinLogout()">
-            <span translate>Cancel</span> 
-            <i class="icon-x"></i>
+        <div class="large-6 medium-6 small-6 columns text-right">
+          <a class="button secondary radius m0" ng-click="openWallets()">
+            <span translate>Skip</span> 
           </a>
         </div>
         <div class="large-6 medium-6 small-6 columns text-right">
-          <a class="button secondary radius m0" ng-click="open(email, password)">
-            <span translate>Skip</span> 
-            <i class="icon-arrow-right3"></i>
+          <a class="button secondary radius m0">
+            <span translate>OK</span> 
           </a>
         </div>
+ 
       </div>
     </div>
 
-    <div class="box-setup" ng-if='hasPin'>
-      <h1><span translate>Enter your </span> <b> PIN number</b></h1>
+    <div class="box-setup" ng-if='$root.hasPin'>
+      <h1><span translate>Enter your </span> <b> PIN</b></h1>
       <form name="pinForm" ng-submit="openWithPin(pinForm)" novalidate>
         <div class="box-notification" ng-show="error">
           <div class="box-icon error">
@@ -129,7 +130,7 @@
     </div>
 
 
-    <div class="box-setup" ng-if='!hasPin && !setPin'>
+    <div class="box-setup" ng-if='!$root.hasPin && !askForPin'>
       <h1><span translate>Sign in to</span> <b>Copay</b></h1>
       <form name="loginForm" ng-submit="openWithCredentials(loginForm)" novalidate>
         <p class="text-warning size-12"

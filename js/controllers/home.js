@@ -2,6 +2,9 @@
 
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
+
+  var _credentials;
+
   $scope.init = function() {
     // This is only for backwards compat, insight api should link to #!/confirmed directly
     if (getParam('confirmed')) {
@@ -15,16 +18,14 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $rootScope.fromEmailConfirmation = false;
     }
 
-    if($rootScope.iden) {
+    if ($rootScope.iden) {
       identityService.goWalletHome();
     }
 
     Compatibility.check($scope);
-    if (isMobile.any()) {
-      pinService.check(function(err, value) {
-        $scope.hasPin = value;
-      });
-    }
+    pinService.check(function(err, value) {
+      $rootScope.hasPin = value;
+    });
   };
 
   Object.defineProperty($scope,
@@ -72,9 +73,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           if ($scope.$$childTail._newpin === newValue) {
             // save and submit
             $scope.createPin($scope.$$childTail.setPinForm);
-          }
-          else {
-            $scope.error = 'Pin must match!';
+          } else {
+            $scope.error = 'Entered PINs were not equal. Try again';
           }
         }
         if (!newValue) {
@@ -119,11 +119,28 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     });
   };
 
+
+  $scope.openWallets = function() {
+    preconditions.checkState($rootScope.iden);
+    var iden = $rootScope.iden;
+
+    $rootScope.hideNavigation = false;
+    $rootScope.starting = true;
+    iden.on('newWallet', $scope.done);
+    iden.on('noWallets', $scope.done);
+    iden.openWallets();
+  };
+
   $scope.createPin = function(form) {
     if (!form) return;
+    preconditions.checkState($rootScope.iden);
+    preconditions.checkState(_credentials && _credentials.email);
 
-    pinService.save(form.repeatpin.$modelValue, $scope.email, $scope.password, function(err) {
-      $scope.open($scope.email, $scope.password);
+    pinService.save(form.repeatpin.$modelValue, _credentials.email, _credentials.password, function(err) {
+      _credentials.password = '';
+      _credentials = null;
+      $rootScope.hasPin = true;
+      $scope.openWallets();
     });
   };
 
@@ -133,12 +150,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
-    if (isMobile.any() && !$scope.hasPin) {
-      $scope.email = form.email.$modelValue;
-      $scope.password = form.password.$modelValue;
-      $scope.setPin = true;
-      return;
-    }
+
     $scope.open(form.email.$modelValue, form.password.$modelValue);
   };
 
@@ -146,7 +158,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   $scope.pinLogout = function() {
     pinService.clear(function() {
       copay.logger.debug('PIN erased');
-      $scope.hasPin = null;
+      delete $rootScope['hasPin'];
       applicationService.reload();
     });
   };
@@ -169,13 +181,32 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         } else {
           $scope.error = 'Unknown error';
         }
-        return $scope.done();
+        $rootScope.starting = false;
+        $rootScope.$digest();
+        return;
       }
 
+      // Open successfully?
       if (iden) {
-        iden.on('newWallet', $scope.done);
-        iden.on('noWallets', $scope.done);
-        iden.openWallets();
+
+        // mobile
+        //if (isMobile.any() && !$rootScope.hasPin) {
+        if (true && !$rootScope.hasPin) {
+          $scope.done();
+          _credentials = {
+            email: email,
+            password: password,
+          };
+          $scope.askForPin = true;
+          $rootScope.starting = false;
+          $rootScope.hideNavigation = true;
+          $rootScope.$digest();
+          return;
+        }
+        // no mobile
+        else {
+          $scope.openWallets();
+        }
       }
     });
   }

@@ -1,7 +1,7 @@
 <div class="title">
   <h1>
     {{$root.title}} 
-    <small>
+    <small ng-if="$root.wallet">
       <a class="text-gray" ng-click="refresh()" ng-if="!$root.updatingBalance">
         <i class="fi-refresh"></i>
       </a>
@@ -14,8 +14,7 @@
 
 
 
-<div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
-  ng-click="hoverMenu = !hoverMenu">
+<div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" ng-init="init()" ng-click="hoverMenu = !hoverMenu">
   <a class="dropdown ellipsis text-gray pr" ng-class="{'hover': hoverMenu}">
     <div class="photo-container">
       <img gravatar-src="'{{username}}'" gravatar-size="35">
@@ -39,8 +38,8 @@
       <i class="icon-person size-18 m10r"></i> {{'Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
       </li> 
     <li><a href="#!/" title="Close" ng-click="signout()">
-        <span ng-if="!hasPin"><i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</span>
-        <span ng-if="hasPin"><i class="icon-power size-18 m10r"></i> {{'Lock'|translate}}</span>
+        <span ng-if="!$root.hasPin"><i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</span>
+        <span ng-if="$root.hasPin"><i class="fi-lock size-18 m10r"></i> {{'Lock'|translate}}</span>
       </a></li>
 
   </ul>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, pinService) {
+angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService) {
 
   $scope.menu = [{
     'title': 'Home',
@@ -79,9 +79,6 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
         }
         $scope.walletSelection = false;
         $scope.setWallets();
-      });
-      pinService.check(function(err, value) {
-        $scope.hasPin = value;
       });
     }
   };
