@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService) {
+angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, pinService) {
 
   $scope.menu = [{
     'title': 'Home',
@@ -48,7 +48,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
   $scope.init = function() {
     // This should be called only once.
-   
+
     // focused wallet change
     if ($rootScope.wallet) {
       $rootScope.$watch('wallet', function() {
@@ -73,16 +73,17 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
           if (newWid && $rootScope.iden.getWalletById(newWid)) {
             identityService.setFocusedWallet(newWid);
           } else {
-            copay.logger.debug('No wallets'); 
+            copay.logger.debug('No wallets');
             identityService.noFocusedWallet(newWid);
           }
         }
         $scope.walletSelection = false;
         $scope.setWallets();
       });
- 
+      pinService.check(function(err, value) {
+        $scope.hasPin = value;
+      });
     }
- 
   };
 
   $scope.setWallets = function() {
