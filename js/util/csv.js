@@ -3,7 +3,7 @@
  */
 var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
-var moment = require('../../lib/moment/moment');
+moment = moment || require('moment');
 
 var logger = require('../util/log.js');
 var config = require('../../config');
