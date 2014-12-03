@@ -298,32 +298,4 @@ GoogleDrive.prototype._checkHomeDir = function(cb) {
   });
 };
 
-GoogleDrive.prototype.allKeys = function(cb) {
-  var self = this;
-
-  this._checkHomeDir(function(homeId) {
-    preconditions.checkState(homeId);
-
-    var request = gapi.client.request({
-      'path': '/drive/v2/files',
-      'method': 'GET',
-      'params': {
-        'q': "'" + homeId + "' in parents and trashed = false",
-        'fields': 'items(id,title)'
-      },
-    });
-    request.execute(function(res) {
-      // console.log('[googleDrive.js.152:res:]', res); //TODO
-      if (res.error)
-        throw new Error(res.error.message);
-
-      var ret = [];
-      for (var ii in res.items) {
-        ret.push(res.items[ii].title);
-      }
-      return cb(ret);
-    });
-  });
-};
-
 module.exports = GoogleDrive;
