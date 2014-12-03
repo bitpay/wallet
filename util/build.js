@@ -87,6 +87,9 @@ var createBundle = function(opts) {
    b.require('./js/util/log', {
     expose: '../js/util/log'
   });
+  b.require('./js/util/csv', {
+    expose: '../js/util/csv'
+  });
  
   if (!opts.disablePlugins) {
     b.require('./js/plugins/GoogleDrive', {
