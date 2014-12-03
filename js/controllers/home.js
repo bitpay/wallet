@@ -43,6 +43,45 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       configurable: true
     });
 
+  Object.defineProperty($scope,
+    "newpin", {
+      get: function() {
+        return this._newpin;
+      },
+      set: function(newValue) {
+        this._newpin = newValue;
+        if (newValue && newValue.length == 4) {
+          // next input
+          $scope.$$childTail.secondPin = true;
+        }
+      },
+      enumerable: true,
+      configurable: true
+    });
+
+  Object.defineProperty($scope,
+    "repeatpin", {
+      get: function() {
+        return this._repeatpin;
+      },
+      set: function(newValue) {
+        this._repeatpin = newValue;
+        if (newValue && newValue.length == 4) {
+          if ($scope.$$childTail._newpin === newValue) {
+            // save and submit
+            $scope.createPin($scope.$$childTail.setPinForm);
+          }
+          else {
+            $scope.error = 'Pin must match!';
+          }
+        }
+        if (!newValue) {
+          $scope.error = null;
+        }
+      },
+      enumerable: true,
+      configurable: true
+    });
 
   $scope.done = function() {
     $rootScope.starting = false;

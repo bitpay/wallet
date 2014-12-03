@@ -286,9 +286,19 @@ angular.module('copayApp.directives')
       link: function(_scope, _element) {
         $timeout(function() {
           _element[0].focus();
-        }, 0);
+        });
       }
     };
+  })
+  .directive('showFocus', function($timeout) {
+    return function(scope, element, attrs) {
+      scope.$watch(attrs.showFocus, 
+        function (newValue) { 
+          $timeout(function() {
+              newValue && element[0].focus();
+          });
+        },true);
+    };    
   })
   .directive('match', function() {
     return {
