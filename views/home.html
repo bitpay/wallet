@@ -49,7 +49,7 @@
 
     <div class="box-setup" ng-if="askForPin">
       <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
-      <p class="size-14"> Enter a 4-digit number for easier access from this device
+      <p class="size-14"> Enter a 4-digit number for easier access from this device</p>
       
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
@@ -60,7 +60,7 @@
         </span>
       </div>
 
-      <form name="setPinForm" ng-submit="createPin(setPinForm)" novalidate> 
+      <form name="setPinForm" ng-model="setPinForm" ng-submit="createPin(setPinForm)" novalidate> 
         <div class="input" ng-show="askForPin == 1">
           <input id="newpin" type="tel" ng-model="newpin" class="form-control"
             ng-maxlength="4" ng-minlength="4" maxlength="4"
@@ -76,24 +76,22 @@
           <i class="icon-locked"></i>
         </div>
 
-        <button translate type="submit" class="dn button primary radius expand m0"
-          ng-disabled="setPinForm.$invalid || error">
-          Set pin 
-        </button>
-      </form>
-      <div class="box-setup-footer row collapse">
-        <div class="large-6 medium-6 small-6 columns text-right">
-          <a class="button secondary radius m0" ng-click="openWallets()">
-            <span translate>Skip</span> 
-          </a>
+        <div class="box-setup-footer row collapse">
+          <div class="large-6 medium-6 small-6 columns">
+            <a class="button secondary radius m0" ng-click="openWallets()">
+              <span translate>Skip</span> 
+            </a>
+          </div>
+          <div class="large-6 medium-6 small-6 columns text-right">
+            <button translate type="submit" class="button primary radius expand m0"
+              ng-disabled="setPinForm.$invalid || error">
+              OK 
+            </button>
+          </div>
         </div>
-        <div class="large-6 medium-6 small-6 columns text-right">
-          <a class="button secondary radius m0">
-            <span translate>OK</span> 
-          </a>
-        </div>
- 
-      </div>
+
+        
+      </form> 
     </div>
 
     <div class="box-setup" ng-if='$root.hasPin'>
@@ -115,18 +113,22 @@
             placeholder="Pin number" name="pin" required auto-focus>
           <i class="icon-locked"></i>
         </div>
- 
-        <button translate type="submit" class="button primary radius expand m0"
-          ng-disabled="pinForm.$invalid || error">
-          Sign in 
-        </button>
-      </form>
-      <div class="box-setup-footer">
-        <a class="button warning radius m0" ng-click="pinLogout()">
-          <i class="icon-power"></i> 
-          <span translate>Logout</span>
-        </a>
-      </div>
+
+        <div class="box-setup-footer row collapse">
+          <div class="large-6 medium-6 small-6 columns">
+            <a class="button warning radius m0" ng-click="pinLogout()">
+              <i class="icon-power"></i> 
+              <span translate>Logout</span>
+            </a>
+          </div>
+          <div class="large-6 medium-6 small-6 columns text-right">
+            <button translate type="submit" class="button primary radius expand m0"
+              ng-disabled="pinForm.$invalid || error">
+              Sign in 
+            </button>
+          </div>
+        </div> 
+      </form> 
     </div>
 
 

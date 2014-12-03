@@ -55,12 +55,10 @@ angular.module('copayApp.services')
         failIfExists: true,
       }, function(err, iden) {
 
-console.log('[identityService.js.57]'); //TODO
         if (err) return cb(err);
         preconditions.checkState(iden);
         root.bind(iden);
 
-console.log('[identityService.js.62]'); //TODO
         return cb(null);
       });
     };
