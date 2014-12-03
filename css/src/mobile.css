@@ -173,6 +173,10 @@
     padding: 0.5rem;
   }
 
+  .panel.last-transactions {
+    margin-bottom: 3.25rem;
+  }
+
   .addresses .list-addr contact {
     margin-left: 0;
     font-size: 14px;
@@ -182,11 +186,12 @@
     width: auto;
     padding: 0 5px;
   }
-
-  table.last-transactions-content .icon-status { 
-    border-radius: 0;
-    padding: 0.1rem 0.3rem;
-    margin-bottom: 0;
+  
+  a.missing-copayers {
+    bottom: -34px;
+    text-align: center;
+    padding: .7rem;
+    width: 100%;
   }
 
   .button, button {

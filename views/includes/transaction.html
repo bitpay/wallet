@@ -38,32 +38,32 @@
 
 <div class="last-transactions-footer">
   <div class="row collapse">
-    <div class="large-5 medium-12 small-12 columns" ng-show="!tx.sentTs">
+    <div class="large-6 medium-12 small-12 columns" ng-show="!tx.sentTs">
       <div ng-show="tx.signedBy[myId]">
-        <button class="secondary tiny m0" ng-disabled="true"> <i class="fi-check"></i>
+        <button class="secondary left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-check icon-sign check"></i>
           <span translate>I signed</span>
         </button>
       </div>
       <div ng-show="tx.rejectedBy[myId]">
-        <button class="warning tiny m0" ng-disabled="true"> <i class="fi-x"></i>
+        <button class="warning left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-x icon-sign x"></i>
           <span translate>I rejected</span>
         </button>
       </div>
       <div ng-show="!tx.signedBy[myId] && !tx.rejectedBy[myId]">
         <div class="hide-for-small-only">
           <button class="primary tiny m0 m15r"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
-            <i class="fi-check"></i> <span translate>Sign</span>
+            <i class="fi-check icon-sign check"></i> <span translate>Sign</span>
           </button>
           <button class="warning tiny m0" ng-click="reject(tx.ntxid)" ng-disabled="loading">
-            <i class="fi-x" ></i> <span translate>Reject</span>
+            <i class="fi-x icon-sign x" ></i> <span translate>Reject</span>
           </button>
         </div>
         <div class="show-for-small-only row">
           <button class="primary tiny small-5 columns m10b"  ng-click="sign(tx.ntxid)" ng-disabled="loading">
-            <i class="fi-check"></i> <span translate>Sign</span>
+            <i class="fi-check icon-sign check"></i> <span translate>Sign</span>
           </button>
           <button class="warning tiny small-5 columns m10b" ng-click="reject(tx.ntxid)" ng-disabled="loading">
-            <i class="fi-x" ></i> <span translate>Reject</span>
+            <i class="fi-x icon-sign x" ></i> <span translate>Reject</span>
           </button>
         </div>
       </div>
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <div class="large-7 columns small text-gray show-for-large-up text-right">
+    <div class="large-6 columns small text-gray show-for-large-up text-right">
       <div>
         <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
       </div>
@@ -94,14 +94,17 @@
     <i class="icon-people"></i> 
     {{tx.missingSignatures}} signatures missing
   </span> 
-  <i ng-class="{'icon-arrow-up':tx.showDetails, 'icon-arrow-down':!tx.showDetails}"></i>
+  <span ng-show="!tx.finallyRejected && tx.missingSignatures==0">
+    Copayers
+  </span>
+  <i ng-class="{'icon-arrow-up2':tx.showDetails, 'icon-arrow-down2':!tx.showDetails}"></i>
 </a>
 
 <ul class="tx-copayers" ng-show="tx.showDetails">
   <li ng-repeat="c in tx.actionList">
     <span>
-      <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x m10r"></i>
-      <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check m10r"></i>
+      <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
+      <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
       <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="m10r fi-loop icon-rotate"></i>
     </span>
     <span>
