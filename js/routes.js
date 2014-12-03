@@ -111,6 +111,7 @@ angular
     $keepaliveProvider.interval(30); // in seconds
   })
   .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler) {
+    FastClick.attach(document.body);
     gettextCatalog.currentLanguage = config.defaultLanguage;
     // not for mobileApp
     if (!window.cordova) {

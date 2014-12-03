@@ -118,6 +118,7 @@ module.exports = function(grunt) {
           'lib/lodash/dist/lodash.js',
           'lib/bitcore.js',
           'lib/file-saver/FileSaver.js',
+          'lib/fastclick/lib/fastclick.js',
           'lib/socket.io-client/socket.io.js',
           'lib/sjcl.js',
           'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js'
