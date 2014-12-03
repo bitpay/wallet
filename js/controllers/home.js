@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
 
-  var _credentials;
+  var _credentials, _firstpin;
 
   $scope.init = function() {
     // This is only for backwards compat, insight api should link to #!/confirmed directly
@@ -28,62 +28,24 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     });
   };
 
-  Object.defineProperty($scope,
-    "pin", {
-      get: function() {
-        return this._pin;
-      },
-      set: function(newValue) {
-        this._pin = newValue;
-        if (newValue && newValue.length == 4) {
-          $scope.openPin(newValue);
-        }
-        if (!newValue) {
-          $scope.error = null;
-        }
-      },
-      enumerable: true,
-      configurable: true
-    });
+  pinService.makePinInput($scope, 'pin', function(newValue) {
+    $scope.openPin(newValue);
+  });
 
-  Object.defineProperty($scope,
-    "newpin", {
-      get: function() {
-        return this._newpin;
-      },
-      set: function(newValue) {
-        this._newpin = newValue;
-        if (newValue && newValue.length == 4) {
-          // next input
-          $scope.$$childTail.secondPin = true;
-        }
-      },
-      enumerable: true,
-      configurable: true
-    });
+  pinService.makePinInput($scope, 'newpin', function(newValue) {
+    _firstpin = newValue;
+    $scope.askForPin = 2;
+  });
 
-  Object.defineProperty($scope,
-    "repeatpin", {
-      get: function() {
-        return this._repeatpin;
-      },
-      set: function(newValue) {
-        this._repeatpin = newValue;
-        if (newValue && newValue.length == 4) {
-          if ($scope.$$childTail._newpin === newValue) {
-            // save and submit
-            $scope.createPin($scope.$$childTail.setPinForm);
-          } else {
-            $scope.error = 'Entered PINs were not equal. Try again';
-          }
-        }
-        if (!newValue) {
-          $scope.error = null;
-        }
-      },
-      enumerable: true,
-      configurable: true
-    });
+  pinService.makePinInput($scope, 'repeatpin', function(newValue) {
+    if (newValue === _firstpin) {
+      _firstpin  = null;
+      $scope.createPin(newValue);
+    } else {
+      _firstpin  = null;
+      $scope.error = 'Entered PINs were not equal. Try again';
+    }
+  });
 
   $scope.done = function() {
     $rootScope.starting = false;
@@ -131,14 +93,15 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     iden.openWallets();
   };
 
-  $scope.createPin = function(form) {
-    if (!form) return;
+  $scope.createPin = function(pin) {
+    preconditions.checkArgument(pin);
     preconditions.checkState($rootScope.iden);
     preconditions.checkState(_credentials && _credentials.email);
 
-    pinService.save(form.repeatpin.$modelValue, _credentials.email, _credentials.password, function(err) {
+    pinService.save(pin, _credentials.email, _credentials.password, function(err) {
       _credentials.password = '';
       _credentials = null;
+      $scope.askForPin = 0;
       $rootScope.hasPin = true;
       $scope.openWallets();
     });
@@ -197,7 +160,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
             email: email,
             password: password,
           };
-          $scope.askForPin = true;
+          $scope.askForPin = 1;
           $rootScope.starting = false;
           $rootScope.hideNavigation = true;
           $rootScope.$digest();
