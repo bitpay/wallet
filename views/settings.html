@@ -64,7 +64,7 @@
           <select class="form-control" ng-model="selectedLogLevel" ng-options="o.name for o in availableLogLevels" required>
           </select>
           <div translate class="small text-gray">
-          Log level shows information on the console. This is usefull to find bugs and help users. 'debug' is the most verbose level while 'fatal' only shows unexcpected errors</a>
+          Log level shows information on the console. This is useful to find bugs and to help users. 'debug' is the most verbose level while 'fatal' only shows unexpected errors</a>
           </div>
         </fieldset>
         <button translate type="submit" class="button primary radius expand m0" ng-disabled="settingsForm.$invalid || loading" ng-click="save()">
