@@ -40,16 +40,16 @@
         <a href="#!/create" class="db button secondary tiny" title="Create new wallet">
         <i class="m10r fi-plus"></i> {{'Create new wallet' | translate }} </a>
       </div>
-      <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]"
-        ng-click="toggleWalletSelection()">
+      <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
         <li data-ng-repeat="item in wallets track by $index"
           class="nav-item" 
-          ng-if="item.id != $root.wallet.id">
+          ng-if="item.id != $root.wallet.id"
+          ng-click="toggleWalletSelection(); switchWallet(item.id)">
         <div class="col1">
           <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
         </div>
         <div class="col2">
-          <a class="size-12 wallet-item" ng-click="switchWallet(item.id)">
+          <a class="size-12 wallet-item">
             <div class="oh">
               <div class="right size-10 type-wallet">
                 [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
