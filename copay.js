@@ -7,6 +7,7 @@ module.exports.HDPath = require('./js/models/HDPath');
 module.exports.HDParams = require('./js/models/HDParams');
 module.exports.crypto = require('./js/util/crypto');
 module.exports.logger = require('./js/util/log');
+module.exports.csv = require('./js/util/csv');
 
 
 // components
