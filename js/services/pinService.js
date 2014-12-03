@@ -1,38 +1,52 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('pinService', function($rootScope) {
-    var root = {};
-    var storage = {
-      pinData: {
-        pin: 1234,
-        credentials: {
-          email: '4@queparece',
-          password: '1',
-        }
-      }
-    };
-    root.check = function() {
-      return storage.pinData ? true : false;
-    };
-    root.get = function(pin) {
-      var storedPin = storage.pinData.pin;
-      if (storedPin !== pin)
-        return;
+  .factory('pinService', function($rootScope, localstorageService) {
 
-      return storage.pinData.credentials;
+    var KEY = 'pinDATA';
+    var SALT = '4gllotIKguqi0EkIslC0';
+    var ITER = 2000;
+
+    var ls = localstorageService;
+    var root = {};
+
+    root.check = function(cb) {
+      ls.getItem(KEY, function(err, value) {
+        return cb(err, value ? true : false);
+      });
     };
-    root.save = function(pin, email, password) {
-      storage.pinData = {
-        pin: pin,
-        credentials: {
-          email: email,
-          password: password
+
+    root.get = function(pin, cb) {
+      ls.getItem(KEY, function(err, value) {
+        if (!value) return cb(null);
+        var enc = value;
+        var data = copay.crypto.decrypt('' + parseInt(pin), enc);
+        var err = new Error('Could not decrypt');
+        if (data) {
+          var obj;
+          try {
+            obj = JSON.parse(data);
+            err = null;
+          } catch (e) {};
         }
+        return cb(err, obj);
+      });
+    };
+
+    root.save = function(pin, email, password, cb) {
+      var credentials = {
+        email: email,
+        password: password,
       };
+      var enc = copay.crypto.encrypt('' + parseInt(pin), credentials, SALT, ITER);
+      ls.setItem(KEY, enc, function(err) {
+        return cb(err);
+      });
     };
-    root.clear = function(){
-     delete storage['pinData'];
+
+    root.clear = function(cb) {
+      ls.removeItem(KEY, cb);
     };
+
     return root;
   });
