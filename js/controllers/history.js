@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope, $filter, rateService) {
+  function($scope, $rootScope, $filter, $timeout, rateService, notification) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -26,25 +26,58 @@ angular.module('copayApp.controllers').controller('HistoryController',
       var w = $rootScope.wallet;
       if (!w) return;
 
+      var filename = "copay_history.csv";
+      var descriptor = {
+        columns: [
+          { label: 'Date', property: 'ts', type: 'date' },
+          { label: 'Amount (' + w.settings.unitName + ')', property: 'amount', type: 'number' },
+          { label: 'Amount (' + w.settings.alternativeIsoCode + ')', property: 'alternativeAmount' },
+          { label: 'Action', property: 'action' },
+          { label: 'AddressTo', property: 'addressTo' },
+          { label: 'Comment', property: 'comment' },
+        ],
+      };
+      if (w.isShared()) {
+        descriptor.columns.push({
+          label: 'Signers',
+          property: function(obj) {
+            if (!obj.actionList) return '';
+            return _.map(obj.actionList, function(action) {
+              return w.publicKeyRing.nicknameForCopayer(action.cId);
+            }).join('|');
+          }
+        });
+      }
+
       $scope.generating = true;
 
-      w.getTransactionHistoryCsv(function(csvContent) {
-        if (csvContent && csvContent !== 'ERROR') {
-          var filename = "copay_history.csv";
-
-          var encodedUri = encodeURI(csvContent);
-          var link = document.createElement("a");
-          link.setAttribute("href", encodedUri);
-          link.setAttribute("download", filename);
-
-          link.click();
+      $scope._getTransactions(w, null, function(err, res) {
+        if (err) {
+          $scope.generating = false;
+          logger.error(err);
+          notification.error('Could not get transaction history');
+          return;
         }
-        $scope.generating = false;
-        $scope.$digest();
-      })
+        $scope._addRates(w, res.items, function (err) {
+          copay.csv.toCsv(res.items, descriptor, function (err, res) {
+            if (err) {
+              $scope.generating = false;
+              logger.error(err);
+              notification.error('Could not generate csv file');
+              return;
+            }
+            var csvContent = "data:text/csv;charset=utf-8," + res;
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            link.click();
+            $scope.generating = false;
+            $scope.$digest();
+          });
+        });
+      });
     };
-
-
 
 
     $scope.update = function() {
@@ -58,6 +91,37 @@ angular.module('copayApp.controllers').controller('HistoryController',
       }, 1);
     };
 
+    $scope._getTransactions = function (w, opts, cb) {
+      w.getTransactionHistory(opts, function(err, res) {
+        if (err) return cb(err);
+        if (!res) return cb();
+
+        var now = new Date();
+        var items = res.items;
+        _.each(items, function(tx) {
+          tx.ts = tx.minedTs || tx.sentTs;
+          tx.rateTs = Math.floor((tx.ts || now) / 1000);
+          tx.amount = $filter('noFractionNumber')(tx.amount);
+        });
+        return cb(null, res);
+      });
+    };
+
+    $scope._addRates = function (w, txs, cb) {
+      if (!txs || txs.length == 0) return cb();
+      var index = _.indexBy(txs, 'rateTs');
+      rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
+        if (err) return cb(err);
+        if (!res) return cb();
+        _.each(res, function(r) {
+          var tx = index[r.ts];
+          var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+          tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
+        });
+        return cb();
+      });
+    };
+
     $scope.getTransactions = function() {
       var w = $rootScope.wallet;
       if (!w) return;
@@ -65,7 +129,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
       $scope.blockchain_txs = w.cached_txs || [];
       $scope.loading = true;
 
-      w.getTransactionHistory({
+      $scope._getTransactions(w, {
         currentPage: $scope.currentPage,
         itemsPerPage: $scope.itemsPerPage,
       }, function(err, res) {
@@ -78,28 +142,11 @@ angular.module('copayApp.controllers').controller('HistoryController',
         }
 
         var items = res.items;
-        var now = new Date();
-        _.each(items, function(tx) {
-          tx.ts = tx.minedTs || tx.sentTs;
-          tx.rateTs = Math.floor((tx.ts || now) / 1000);
-          tx.amount = $filter('noFractionNumber')(tx.amount);
-        });
-
-        if (items.length > 0) {
-          var index = _.indexBy(items, 'rateTs');
-          rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
-            if (!err && res) {
-              _.each(res, function(r) {
-                var tx = index[r.ts];
-                var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
-                tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
-              });
-              setTimeout(function() {
-                $scope.$digest();
-              }, 1);
-            }
-          });
-        }
+        $scope._addRates(w, items, function (err) {
+            $timeout(function() {
+              $scope.$digest();
+            }, 1);
+        })
 
         $scope.blockchain_txs = w.cached_txs = items;
         $scope.nbPages = res.nbPages;
