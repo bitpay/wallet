@@ -90,8 +90,10 @@ angular.module('copayApp.controllers').controller('HistoryController',
           if (!err && res) {
             _.each(res, function(r) {
               var tx = index[r.ts];
-              var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
-              tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
+              if (tx) {
+                var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+                tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
+              }
             });
             setTimeout(function() {
               $scope.$digest();
