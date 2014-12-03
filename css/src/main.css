@@ -380,7 +380,6 @@ a:hover {
   height: 41px;
   position: relative;
   font-size: 12px;
-  width: 70%;
   padding: 0.9rem 0.7rem 0.7rem 3rem;
   border-radius: 4px;
   background: #F2F5F8;
@@ -389,7 +388,6 @@ a:hover {
 }
 
 .box-notification .box-icon {
-  margin-right: 77px;
   position: absolute;
   top: 0;
   left: 0;

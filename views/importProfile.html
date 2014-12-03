@@ -21,11 +21,14 @@
       <div class="box-setup">
         <h1 translate>Import Profile</h1>
         <form name="importProfileForm" ng-submit="import(importProfileForm)" novalidate>
-          <p class="text-warning size-12"
-            ng-show="error">
-            <i class="fi-x"></i> 
-            {{error|translate}}
-          </p>
+          <div class="box-notification" ng-show="error">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div> 
+            <span class="text-warning size-14">
+              {{error|translate}}
+            </span>
+          </div>
 
           <div ng-show="!is_iOS">
             <legend for="backupFile" class="m10b"> 
