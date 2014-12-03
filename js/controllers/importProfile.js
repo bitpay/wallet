@@ -29,7 +29,6 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
           } else {
             $scope.error = 'Unknown error';
           }
-          $rootScope.$digest();
         } 
       });
     };

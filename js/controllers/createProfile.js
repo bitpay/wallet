@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, notification, pluginManager, identityService) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService) {
   identityService.goWalletHome();
 
   $scope.createProfile = function(form) {
@@ -17,7 +17,16 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
           if (msg.indexOf('EEXIST')>=0 || msg.indexOf('BADC')>=0 ) {
             msg = 'This profile already exists'
           } 
-          $scope.error =  msg;
+          $timeout(function() {
+            form.email.$setViewValue('');
+            form.email.$render();
+            form.password.$setViewValue('');
+            form.password.$render();
+            form.repeatpassword.$setViewValue('');
+            form.repeatpassword.$render();
+            form.$setPristine();
+            $scope.error =  msg;
+          },1);
         } 
     });
   }
