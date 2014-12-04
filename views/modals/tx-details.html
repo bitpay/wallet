@@ -1,0 +1,91 @@
+
+<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+
+<h3>Transaction Details</h3>
+<div class="size-14">
+  <div>
+    <span class="ellipsis"> ID:  {{btx.txid}}</span>
+  </div>
+  <div ng-if="btx.ts" class="m10v">
+    <time>{{btx.ts | amTimeAgo}}</time>
+    :
+    <time>{{btx.ts | amCalendar}}</time>
+  </div>
+
+
+  <div class="m30v">
+    <div class="text-center size-72">
+      <div ng-class="{
+                'text-primary' : btx.action == 'received',
+                'text-warning': btx.action == 'sent', 
+                'text-gray': btx.action == 'moved'}">
+        <i ng-class="{
+                  'fi-arrow-left' : btx.action == 'received',
+                  'fi-arrow-right': btx.action == 'sent', 
+                  'fi-loop': btx.action == 'moved'}"></i>
+      </div>
+    </div>
+
+
+    <div class="text-center" class="m10v">
+      <div class="tx-amount" ng-class="{
+                'text-primary' : btx.action == 'received',
+                'text-warning': btx.action == 'sent', 
+                'text-gray': btx.action == 'moved'}">
+        <b>{{btx.amount}} {{$root.wallet.settings.unitName}}</b>
+        <span class="alt-currency" ng-class="{
+                'green' : btx.action == 'received',
+                'red': btx.action == 'sent', 
+                'gray': btx.action == 'moved'}" ng-show="btx.alternativeAmount != null">
+                  {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
+                </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="m10v" class="m10v">
+    <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
+  <span translate>Unconfirmed</span>
+    </span>
+    <span ng-show="btx.confirmations>0" class="m10v">
+  <span translate>Confirmations:</span>{{btx.confirmations}}
+    </span>
+  </div>
+
+  <div ng-if="btx.addressTo" class="m10v">
+    <span class="ellipsis">To:  {{btx.labelTo || btx.addressTo}}</span>
+  </div>
+
+  <div ng-if="!!btx.merchant" class="m10v">
+    Payment Protocol Information:
+    <br>{{btx.merchant.pr.pd.memo}}</b>
+    <br>{{btx.paymentAckMemo}}
+    <span ng-show="tx.merchant.domain">[{{btx.merchant.domain}}]</span>
+  </div>
+
+  <div ng-if="btx.actionList[0]" class="m10v">
+    Copayers Actions
+    <table class="last-transactions-content" ng-if="btx.actionList[0]">
+      <tbody>
+        <tr ng-repeat="c in btx.actionList">
+          <td>
+            <i ng-if="c.actions.rejected" class="fi-x icon-status icon-active-x"></i>
+            <i ng-if="c.actions.sign" class="fi-check icon-status icon-active-check"></i>
+          </td>
+          <td>
+            <i ng-if="c.actions.create" class="fi-crown icon-status icon-active"></i>
+          </td>
+          <td class="copayer-name text-gray" width="100%">{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="m10v">
+    <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank"> See it on the blockchain <i class="icon-arrow-right2 vm"></i></a>
+    </p>
+  </div>
+</div>
+
+
