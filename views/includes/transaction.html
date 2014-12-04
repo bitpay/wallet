@@ -13,14 +13,16 @@
 
 <div class="last-transactions-content">
   <div class="row" ng-repeat="out in tx.outs">
-    <div class="large-3 medium-3 small-4 columns size-14">
+    <div class="large-5 medium-5 small-6 columns size-14">
       <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
-      <span class="alt-currency gray">
+      <span ng-show="out.alternativeAmount" class="alt-currency gray">
         {{out.alternativeAmount}} {{out.alternativeIsoCode}}
       </span>
     </div>
-    <div class="large-1 medium-1 small-1 columns fi-arrow-right"></div>
-    <div class="large-8 medium-8 small-7 columns ellipsis size-12">
+    <div class="large-2 medium-2 small-1 columns text-center">
+      <i class="fi-arrow-right"></i>
+    </div>
+    <div class="large-5 medium-5 small-5 columns ellipsis size-12">
       <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" />
     </div>
   </div>
