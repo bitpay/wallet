@@ -367,12 +367,10 @@ a:hover {
 }
 
 .box-setup {
-  margin-bottom: 7rem;
-  padding: 1.3rem; 
-  border-radius: 2px;
-  background: #FFFFFF;
-  -moz-box-shadow: 1px 1px 0px 0px #213140;
-  box-shadow: 1px 1px 0px 0px #213140;
+  margin-bottom: 1rem;
+  padding: 0.3rem; 
+  border-radius: 3px;
+  background: #fff;
 }
 
 .box-setup-footer {
@@ -1643,6 +1641,20 @@ a.text-warning:hover {color: #FD7262;}
 }
 
 /*/////////////////////////////////////////////////*/
+
+.bg-circle {
+  background: #253547;
+  border-radius: 100%;
+  margin: .5rem 1rem 0.5rem 0;
+  padding: 0.75rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  color: #7A8C9E;
+  font-size: 30px;
+  width: 60px;
+  height: 60px;
+}
 
 .session-expired {
   background: rgba(32,48,64,0.90);
