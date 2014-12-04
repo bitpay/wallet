@@ -53,6 +53,7 @@ describe("Unit: Controllers", function() {
     var w = {};
     w.id = 1234;
     w.isComplete = sinon.stub().returns(true);
+    w.isShared = sinon.stub().returns(true);
     w.privateKey = {};
     w.settings = {
       unitToSatoshi: 100,
@@ -218,7 +219,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should have a title', function() {
-      expect(scope.title).equal('Send');
+      expect(scope.title).equal('Create Transaction Proposal');
     });
 
     it('should return true if wallet has addressBook', function() {
@@ -254,13 +255,10 @@ describe("Unit: Controllers", function() {
       sendForm.amount.$setViewValue(anAmount);
       sendForm.comment.$setViewValue(aComment);
 
-      scope.updateTxs = sinon.spy();
-
       var w = scope.wallet;
       scope.submitForm(sendForm);
       sinon.assert.callCount(w.spend, 1);
       sinon.assert.callCount(w.broadcastTx, 0);
-      sinon.assert.callCount(scope.updateTxs, 1);
       var spendArgs = w.spend.getCall(0).args[0];
       spendArgs.toAddress.should.equal(anAddr);
       spendArgs.amountSat.should.equal(anAmount * scope.wallet.settings.unitToSatoshi);
