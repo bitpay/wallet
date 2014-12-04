@@ -1,23 +1,13 @@
-<div class="send" ng-controller="SendController" ng-init="init()">
+<div class="send" ng-controller="SendController" ng-init="init()"> 
+
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
-        <div ng-show="txps.length != 0" class="line-dashed-h m20b"></div>
         <h1 class="hide-for-large-up">{{$root.title}}</h1>
       </div>
     </div>
 
-    <div class="row" ng-show="txps.length != 0">
-      <div class="large-12 columns">
-        <h2 translate>Pending Transactions Proposals</h2>
-        <div class="panel last-transactions pr" 
-          ng-repeat="tx in txps | paged" 
-          ng-include="'views/includes/transaction.html'"></div>
-      </div>
-    </div>
-
     <div class="row">
       <div class="large-12 columns">
-        <h2 ng-show="txps.length != 0" translate>Create Transaction Proposal</h2>
         <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
           <div class="panel">
             <p class="text-warning size-16"
@@ -167,7 +157,7 @@
                 </label>
                 <div class="input">
                   <textarea id="comment" ng-disabled="loading"
-                  name="comment" placeholder="{{(wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction') |translate}}" ng-model="commentText" ng-maxlength="100"></textarea>
+                  name="comment" placeholder="{{($root.wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction')}}" ng-model="commentText" ng-maxlength="100"></textarea>
                   <i class="icon-compose"></i>
                 </div>
               </div>
@@ -194,6 +184,18 @@
       <div class="large-12 columns size-12">
         <i class="fi-bitcoin-circle"></i> 
         1 BTC = {{$root.wallet.balanceInfo.alternativeConversionRate}} {{alternativeIsoCode}}
+      </div>
+    </div>
+
+    <div ng-show="$root.wallet.isShared() && txps.length != 0">
+      <div class="line-dashed-h m20b"></div>
+      <div class="row">
+        <div class="large-12 columns">
+          <h2 translate>Pending Transactions Proposals</h2>
+          <div class="panel last-transactions pr" 
+            ng-repeat="tx in txps | paged" 
+            ng-include="'views/includes/transaction.html'"></div>
+        </div>
       </div>
     </div>
 
