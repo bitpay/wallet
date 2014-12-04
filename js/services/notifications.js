@@ -1,32 +1,19 @@
 'use strict';
 
+var LS = require('../plugins/LocalStorage');
+var ls = new LS();
+
 angular.module('copayApp.services').
 factory('notification', ['$timeout',
   function($timeout) {
 
-    var localStorage;
-    if (window.chrome && chrome.runtime && chrome.runtime.id) {
-      console.log('Is a chrome app!...notification.js');
-      localStorage = chrome.storage.local;
-    } else {
-      console.log('Is web!');
-      localStorage = window.localStorage;
-    }
-
     var notifications = [];
 
-    if (window.chrome && chrome.runtime && chrome.runtime.id) {
-      localStorage.get('notifications', function(data) {
-        console.log('data', data);
-        if (data) {
-          notifications = JSON.parse(data);
-        }
-      });
-
-    } else {
-      notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    }
-
+    ls.getItem('notifications', function(err, data) {
+      if (data) {
+        notifications = JSON.parse(data);
+      }
+    });
 
     var queue = [];
     var settings = {

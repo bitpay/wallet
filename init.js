@@ -21,15 +21,7 @@ function init() {
   } else if (ns6 || ie4) {
     ld.display = "none";
   } else {
-    console.log('Warning!! is a chrome app!');
-    console.log('ns4', ns4);
-    console.log('ns6', ns6);
-    console.log('ie4', ie4);
-
-    ld = document.loading;
-
     ld = document.getElementById("loading").style;
-
     ld.visibility = "hidden";
     ld.display = "none";
   }

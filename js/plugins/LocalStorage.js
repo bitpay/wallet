@@ -7,7 +7,6 @@ var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
 function LocalStorage() {
   this.type = 'DB';
 
-
   if (isChromeApp) {
     localStorage = chrome.storage.local;
     window.localStorage = chrome.storage.local;
@@ -57,12 +56,8 @@ LocalStorage.prototype.createItem = function(name, value, callback) {
 
 LocalStorage.prototype.setItem = function(k, v, cb) {
   if (isChromeApp) {
-    console.log('.............key', k);
-    console.log('.............value', v);
-
     var obj = {};
     obj[k] = v;
-
     chrome.storage.local.set(obj, cb);
   } else {
     localStorage.setItem(k, v);
