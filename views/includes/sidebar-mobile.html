@@ -1,18 +1,16 @@
-<div ng-controller="SidebarController" ng-init="username = $root.iden.getName()">
-  <header>
-    <h1 class="left-sidebar">
-      <span class="photo-container m20r">
+<div ng-init="username = $root.iden.getName()">
+  <div class="text-center off-canvas-list">
+    <a href="#!/profile" class="columns m10v" title="Profile">
+      <div class="photo-container">
         <img gravatar-src="'{{username}}'" gravatar-size="35">
+      </div>
+      <p class="text-black m5">{{username}}</p>
+      <span class="db text-gray size-10" >
+        <i class="fi-torso"></i> {{'ViewProfile' | translate }} 
       </span>
-      <span class="m5t">{{username}}</span>
-    </h1>
-  </header>
+    </a>
+    </div>
   <ul class="off-canvas-list">
-    <li>
-      <a href="#!/profile" class="db p20h nav-item" title="Profile">
-        <i class="size-24 m20r fi-torso"></i> {{'My profile' | translate }}
-      </a>
-    </li>
     <li>
     <a href="#!/create" class="db p20h nav-item" title="Create new wallet">
       <i class="size-24 m20r fi-plus"></i> {{'Create new wallet' | translate }} </a>
