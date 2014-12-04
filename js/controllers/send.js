@@ -39,30 +39,7 @@ angular.module('copayApp.controllers').controller('SendController',
         });
         if (cb) return cb(tx);
       });
-    };
-
-
-    $scope.updateTxs = _.throttle(function() {
-      var w = $rootScope.wallet;
-      if (!w) return;
-
-      var res = w.getPendingTxProposals();
-      _.each(res.txs, function(tx) {
-        $scope.setAlternativeAmount(w, tx);
-        if (tx.merchant) {
-          var url = tx.merchant.request_url;
-          var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
-          tx.merchant.domain = domain;
-        }
-        if (tx.outs) {
-          _.each(tx.outs, function(out) {
-            out.valueSat = out.value;
-            out.value = $filter('noFractionNumber')(out.value);
-          });
-        }        
-      });
-      $scope.txps = res.txs;
-    },  1000);
+    }; 
 
     /**
      * Setting the two related amounts as properties prevents an infinite
@@ -119,16 +96,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.init = function() {
-      $rootScope.pendingTxCount = 0;
-      $scope.updateTxs();
-      var w = $rootScope.wallet;
-      w.on('txProposalEvent', $scope.updateTxs);
-    };
-
-    $scope.$on("$destroy", function(){
-      var w = $rootScope.wallet;
-      w.removeListener('txProposalEvent', $scope.updateTxs );
-    });
+      // Empty
+    }; 
 
     $scope.showAddressBook = function() {
       return w && _.keys(w.addressBook).length > 0;
@@ -155,7 +124,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.error = message;
       $scope.loading = false;
-      $scope.updateTxs();
     };
 
     $scope.submitForm = function(form) {
@@ -201,7 +169,6 @@ angular.module('copayApp.controllers').controller('SendController',
         if (err) return $scope._showError(err);
 
         $scope.notifyStatus(status);
-        $scope.updateTxs();
       });
     };
 
@@ -422,25 +389,8 @@ angular.module('copayApp.controllers').controller('SendController',
       w.issueTx(ntxid, function(err, txid, status) {
         $scope.notifyStatus(status);
         if (cb) return cb();
-        else $scope.updateTxs();
       });
-    };
-
-    $scope.sign = function(ntxid) {
-      $scope.loading = true;
-      $scope.error = $scope.success = null;
-      w.signAndSend(ntxid, function(err, id, status) {
-        $scope.loading = false;
-        $scope.notifyStatus(status);
-        $scope.updateTxs();
-      });
-    };
-
-    $scope.reject = function(ntxid) {
-      w.reject(ntxid);
-      notification.warning('Transaction rejected', 'You rejected the transaction successfully');
-      $scope.updateTxs();
-    };
+    }; 
 
     $scope.clearMerchant = function(callback) {
       // TODO: Find a better way of detecting
