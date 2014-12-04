@@ -42,9 +42,9 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
 
-    $scope.updateTxs = _.throttle(function(cb) {
+    $scope.updateTxs = _.throttle(function() {
       var w = $rootScope.wallet;
-      if (!w || !cb) return;
+      if (!w) return;
 
       var res = w.getPendingTxProposals();
       _.each(res.txs, function(tx) {
@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('SendController',
           });
         }        
       });
-      return cb(res.txs);
+      $scope.txps = res.txs;
     },  1000);
 
     /**
@@ -120,24 +120,14 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.init = function() {
       $rootScope.pendingTxCount = 0;
-      $scope.updateTxs(function(txps) {
-        $scope.txps = txps;
-      });
+      $scope.updateTxs();
       var w = $rootScope.wallet;
-      w.on('txProposalEvent', function() {
-        $scope.updateTxs(function(txps) {
-          $scope.txps = txps;
-        });
-      });
+      w.on('txProposalEvent', $scope.updateTxs);
     };
 
     $scope.$on("$destroy", function(){
       var w = $rootScope.wallet;
-      w.removeListener('txProposalEvent', function() { 
-        $scope.updateTxs(function(txps) {
-          $scope.txps = txps;
-        });
-      });
+      w.removeListener('txProposalEvent', $scope.updateTxs );
     });
 
     $scope.showAddressBook = function() {
@@ -165,9 +155,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.error = message;
       $scope.loading = false;
-      $scope.updateTxs(function(txps) {
-        $scope.txps = txps;
-      });
+      $scope.updateTxs();
     };
 
     $scope.submitForm = function(form) {
@@ -213,9 +201,7 @@ angular.module('copayApp.controllers').controller('SendController',
         if (err) return $scope._showError(err);
 
         $scope.notifyStatus(status);
-        $scope.updateTxs(function(txps) {
-          $scope.txps = txps;
-        });
+        $scope.updateTxs();
       });
     };
 
@@ -436,11 +422,7 @@ angular.module('copayApp.controllers').controller('SendController',
       w.issueTx(ntxid, function(err, txid, status) {
         $scope.notifyStatus(status);
         if (cb) return cb();
-        else { 
-          $scope.updateTxs(function(txps) {
-            $scope.txps = txps;
-          });
-        }
+        else $scope.updateTxs();
       });
     };
 
@@ -450,18 +432,14 @@ angular.module('copayApp.controllers').controller('SendController',
       w.signAndSend(ntxid, function(err, id, status) {
         $scope.loading = false;
         $scope.notifyStatus(status);
-        $scope.updateTxs(function(txps) {
-        $scope.txps = txps;
-      });
+        $scope.updateTxs();
       });
     };
 
     $scope.reject = function(ntxid) {
       w.reject(ntxid);
       notification.warning('Transaction rejected', 'You rejected the transaction successfully');
-      $scope.updateTxs(function(txps) {
-        $scope.txps = txps;
-      });
+      $scope.updateTxs();
     };
 
     $scope.clearMerchant = function(callback) {
