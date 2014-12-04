@@ -185,19 +185,7 @@
         <i class="fi-bitcoin-circle"></i> 
         1 BTC = {{$root.wallet.balanceInfo.alternativeConversionRate}} {{alternativeIsoCode}}
       </div>
-    </div>
-
-    <div ng-show="$root.wallet.isShared() && txps.length != 0">
-      <div class="line-dashed-h m20b"></div>
-      <div class="row">
-        <div class="large-12 columns">
-          <h2 translate>Pending Transactions Proposals</h2>
-          <div class="panel last-transactions pr" 
-            ng-repeat="tx in txps | paged" 
-            ng-include="'views/includes/transaction.html'"></div>
-        </div>
-      </div>
-    </div>
+    </div> 
 
     <div class="line-dashed-h m20b"></div>
     <div class="row">
