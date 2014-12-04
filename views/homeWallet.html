@@ -1,63 +1,57 @@
 <div class="home-wallet" ng-controller="HomeWalletController" ng-init="init()">
-    <div class="row hide-for-large-up">
-      <div class="medium-12 small-12 columns">
-        <h1 translate>Home</h1>
-      </div>
+  <div class="row hide-for-large-up">
+    <div class="medium-12 small-12 columns">
+      <h1 translate>Home</h1>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="large-12 columns">
-        <div class="panel oh">
-          <div class="row">
-            <div class="large-8 medium-6 small-3 columns">
-              <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
-              <h2 class="ellipsis m10t left hide-for-small-only">{{$root.wallet.getName()}}</h2>
-            </div>
-            <div class="large-4 medium-6 small-9 columns">
-              <div class="text-right">
-                <span class="size-21">
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel oh">
+        <div class="row">
+          <div class="large-8 medium-6 small-3 columns">
+            <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
+            <h2 class="ellipsis m10t left hide-for-small-only">{{$root.wallet.getName()}}</h2>
+          </div>
+          <div class="large-4 medium-6 small-9 columns">
+            <div class="text-right">
+              <span class="size-21">
                   <strong>
                     <span ng-if="!$root.updatingBalance">{{$root.wallet.balanceInfo.totalBalance || 0}}</span>
-                    <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-                    {{$root.wallet.settings.unitName}}
-                  </strong>
-                </span>
-                <span class="size-14 db m5t text-gray">
+              <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              {{$root.wallet.settings.unitName}}
+              </strong>
+              </span>
+              <span class="size-14 db m5t text-gray">
                   <span ng-if="!$root.wallet.balanceInfo.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
-                  <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
-                  <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <!-- Address-->
-      <div class="large-6 columns">
-        <div class="panel oh">
-          <h2 class="line-b" translate>Quick receive</h2>
-          <div class="text-center">
-            <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
-
-            <div class="m10t">
-              <h4 class="size-12">{{addr}}  </h4>
-              <span ng-if="$root.updatingBalance">
-                <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+              <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
+              <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
               </span>
             </div>
           </div>
         </div>
+        <div class="row ">
+          <div class="large-12 columns line-t m10t">
+            <div class="right size-10">
+              <span ng-if="!$root.wallet.isShared()">Personal Wallet</span>
+              <span ng-if="$root.wallet.isShared()">
+            Multisignature wallet [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
+        </span>
+              <span ng-if="$root.wallet.isTestnet()"> in TESTNET</span>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="row" ng-if="$root.wallet.isShared()">
       <!-- List of copayers -->
-      <div class="large-6 columns">
+      <div class="large-12 columns">
         <div class="panel oh">
           <h2 class="line-b" translate>Copayers</h2>
           <div ng-include="'views/includes/copayer.html'"></div>
-        </div> 
+        </div>
       </div>
     </div>
-</div>
+  </div>
 
