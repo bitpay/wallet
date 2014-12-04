@@ -229,12 +229,6 @@
 }
 
 @media (max-width: 640px) {
-  .tx-date {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;    
-  }
-
   .tx-comment {
     border-top: 1px solid #eee;    
     padding-top: 10px;
