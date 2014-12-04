@@ -26,7 +26,6 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div class="box-setup">
-      <h1>Create Profile</h1>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
@@ -35,7 +34,46 @@
           {{error|translate}}
         </span>
       </div>
-      <form name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
+
+
+      <form ng-show="0" name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
+          <tabset>
+            <tab heading="In the cloud" style="width: 50%;">
+              <div class="line-b">
+                <div class="bg-circle"><i class="icon-wallet"></i></div>
+                <span class="text-gray">Access your wallets anywhere</span>
+              </div>
+              <div class="line-b">
+                <div class="bg-circle"><i class="icon-download"></i></div>
+                <span class="text-gray">Backups managed by the server</span>
+              </div>
+              <div class="">
+                <div class="bg-circle"><i class="icon-email"></i></div>
+                <span class="text-gray">Email address confirmation needed</span>
+              </div>
+            </tab>
+            <tab heading="In your device" style="width: 50%;">
+              <div class="line-b">
+                <div class="bg-circle"><i class="icon-wallet"></i></div>
+                <span class="text-gray">Access your wallets anywhere</span>
+              </div>
+              <div class="line-b">
+                <div class="bg-circle"><i class="icon-download"></i></div>
+                <span class="text-gray">Backups managed by the server</span>
+              </div>
+              <div class="">
+                <div class="bg-circle"><i class="icon-email"></i></div>
+                <span class="text-gray">Email address confirmation needed</span>
+              </div>
+            </tab>
+          </tabset>
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="profileForm.$invalid || loading">
+          Create
+        </button>
+      </form>
+
+      <form ng-show="0" name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
+        <div class="box-setup">
         <div class="m5b text-right">
           <span translate class="has-error size-12" ng-show="profileForm.email.$invalid &&
             !profileForm.email.$pristine">
@@ -45,12 +83,20 @@
           <span class="icon-input" ng-show="!profileForm.email.$invalid &&
             !profileForm.email.$pristine"><i class="fi-check"></i></span>
         </div>
+        
         <div class="input">
           <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email"
           show-focus="!isMobile" required>
           <i class="icon-email"></i>
         </div>
+        </div>
 
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="profileForm.$invalid || loading">
+          Create
+        </button>
+      </form>
+
+      <form ng-show="1" name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
         <div class="input">
           <input id="password" type="password" ng-model="$parent.password" 
           class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
@@ -77,6 +123,8 @@
           Create
         </button>
       </form>
+
+
       <div class="box-setup-footer">
         <div class="left">
           <a class="text-gray" href="#!/">
