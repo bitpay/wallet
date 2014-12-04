@@ -3,7 +3,7 @@
 var copay = require('copay');
 var _ = require('lodash');
 var config = defaultConfig;
-var LS = require('../plugins/LocalStorage');
+var LS = require('../js/plugins/LocalStorage');
 var ls = new LS();
 
 var localConfig;
