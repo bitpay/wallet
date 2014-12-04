@@ -41,12 +41,12 @@
     <div class="large-6 medium-12 small-12 columns" ng-show="!tx.sentTs">
       <div ng-show="tx.signedBy[myId]">
         <button class="secondary left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-check icon-sign check"></i>
-          <span translate>I signed</span>
+          <span translate>Signed by me</span>
         </button>
       </div>
       <div ng-show="tx.rejectedBy[myId]">
         <button class="warning left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-x icon-sign x"></i>
-          <span translate>I rejected</span>
+          <span translate>Rejected by me</span>
         </button>
       </div>
       <div ng-show="!tx.signedBy[myId] && !tx.rejectedBy[myId]">
@@ -77,9 +77,6 @@
     <div class="large-6 columns small text-gray show-for-large-up text-right">
       <div>
         <strong translate>Fee</strong>: {{tx.fee}} {{$root.wallet.settings.unitName}}
-      </div>
-      <div class="m5t">
-        <strong translate>Proposal ID</strong>: {{tx.ntxid}}
       </div>
     </div>
   </div>

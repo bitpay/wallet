@@ -1,67 +1,92 @@
-<div class="addresses" ng-controller="ReceiveController" ng-init="setAddressList()">
-    <div class="row">
-      <div class="large-12 medium-12 small-12 columns">
-        <h1 class="hide-for-large-up">{{$root.title}}</h1> 
-        <div ng-show="!addresses[0]">
-          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-        </div>
-      </div>
+<div class="addresses" ng-controller="ReceiveController" ng-init="init()">
+  <div class="row">
+    <div class="large-12 medium-12 small-12 columns">
+      <h1 class="hide-for-large-up">{{$root.title}}</h1> 
     </div>
-    <div class="row">
-      <div class="large-12 columns" ng-if="addresses.length">
-        <div ng-repeat="addr in addresses">
-          <div class="panel">
-            <div class="row show-for-large-up">
-              <div class="large-7 medium-9 columns">
-                <div class="list-addr">
-                  <contact address="{{::addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
-                  <small translate class="label" ng-if="::addr.isChange">change</small>
-                </div>
-              </div>
-              <div class="large-3 medium-3 columns text-right">
-                <span ng-show="$root.updatingBalance">
-                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-                </span>
-                <span class="size-14" ng-show="!$root.updatingBalance">
-                  <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
-                </span>
-              </div>
-              <div class="large-2 columns show-for-large-up text-right">
-                <a class="size-12" ng-click="openAddressModal(addr)"> Show QR</a>
-              </div>
+  </div>
+
+  <div class="row">
+    <!-- Address-->
+    <div class="large-12 columns" ng-if="addr">
+      <div class="panel oh">
+        <div class="row">
+          <h2 class="line-b" translate>My Bitcoin address:</h2>
+          <div class="text-center" ng-if="!loading">
+            <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+            <div class="m10t">
+              <h4 class="size-12">{{addr}}</h4>
             </div>
-            <div class="row hide-for-large-up" ng-click="openAddressModal(addr)">
-              <div class="small-12 columns">
-                <div class="list-addr">
-                  <div class="ellipsis">
-                    <span><contact address="{{::addr.address}}"></span>
-                    <small translate class="label" ng-if="::addr.isChange">change</small>
-                  </div>
-                  <div class="text-right m10t">
-                    <span class="size-14" ng-show="$root.updatingBalance">
-                      <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-                    </span>
-                    <span class="size-14" ng-show="!$root.updatingBalance">
-                      <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div> <!-- end of panel mobile --> 
+          </div>
+          <div class="text-center" ng-if="loading">
+            Generating new address...
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-12 columns line-t m10t size-12">
+            Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
           </div>
         </div>
       </div>
-      <div class="large-12 columns">
-        <div class="m20b text-right">
-          <a class="size-12" ng-click="toggleShowAll()" ng-show="addrLength > 3">
-            <span translate ng-if="!showAll">Show all</span>
-            <span translate ng-if="showAll">Show less</span>
-          </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns" ng-if="addresses.length">
+      <div ng-repeat="addr in addresses">
+        <div class="panel">
+          <div class="row show-for-large-up">
+            <div class="large-7 medium-9 columns">
+              <div class="list-addr">
+                <contact address="{{::addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
+                  <small translate class="label" ng-if="::addr.isChange">change</small>
+              </div>
+            </div>
+            <div class="large-3 medium-3 columns text-right">
+              <span ng-show="$root.updatingBalance">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                </span>
+              <span class="size-14" ng-show="!$root.updatingBalance">
+                  <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
+                </span>
+            </div>
+            <div class="large-2 columns show-for-large-up text-right">
+              <a class="size-12" ng-click="openAddressModal(addr)"> Show QR</a>
+            </div>
+          </div>
+          <div class="row hide-for-large-up" ng-click="openAddressModal(addr)">
+            <div class="small-12 columns">
+              <div class="list-addr">
+                <div class="ellipsis">
+                  <span><contact address="{{::addr.address}}"></span>
+                  <small translate class="label" ng-if="::addr.isChange">change</small>
+                </div>
+                <div class="text-right m10t">
+                  <span class="size-14" ng-show="$root.updatingBalance">
+                      <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                    </span>
+                  <span class="size-14" ng-show="!$root.updatingBalance">
+                      <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
+                    </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end of panel mobile -->
         </div>
-        <a class="button tiny primary text-center" ng-click="newAddr()" ng-disabled="loading">
-          <i class="fi-plus m5r"></i> Add
+      </div>
+      <a class="button primary text-center right" ng-click="newAddr()" ng-disabled="loading">
+          Generate new address
+      </a>
+      <a class="button primary text-center" ng-click="toggleShowAll()" ng-disabled="loading">
+        <span translate ng-if="showAll">Hide them</span>
+      </a>
+    </div>
+    <div class="large-12 columns"  ng-if="!showAll">
+      <div class="m20b">
+        <a class="button primary text-center" ng-click="toggleShowAll()" ng-disabled="loading">
+          <span translate>Show all my addresses</span>
         </a>
       </div>
     </div>
+  </div>
 </div>
 

@@ -145,9 +145,6 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it('should have a ReceiveController controller', function() {
-      expect(scope.loading).equal(false);
-    });
   });
 
   describe('History Controller', function() {
