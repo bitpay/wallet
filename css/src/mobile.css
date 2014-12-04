@@ -169,10 +169,6 @@
     color: white;
   }
 
-  .panel {
-    padding: 0.5rem;
-  }
-
   .panel.last-transactions {
     margin-bottom: 3.25rem;
   }
