@@ -102,6 +102,48 @@ describe("Angular services", function() {
     }));
   });
 
+  describe("Unit: identityService Service", function() {
+    it('should contain a identityService service', inject(function(identityService) {
+      expect(identityService).not.to.equal(null);
+    }));
+  });
+
+  describe("Unit: pinService", function() {
+    it('should contain a pinService service', inject(function(pinService) {
+      expect(pinService).not.to.equal(null);
+    }));
+    it('should be able to check -> save -> get ->  clear -> check', function(done) {
+      inject(function(pinService) {
+        pinService.save('123', 'user', 'pass', function(err) {
+          pinService.check(function(err, value) {
+            should.not.exist(err);
+            value.should.equal(true);
+            pinService.get('123', function(err, data) {
+              should.not.exist(err);
+              data.email.should.be.equal('user');
+              data.password.should.be.equal('pass');
+              pinService.clear(function(err) {
+                should.not.exist(err);
+                pinService.check(function(err, value) {
+                  should.not.exist(err);
+                  value.should.equal(false);
+                  done();
+                });
+              });
+            });
+          });
+        })
+      })
+    });
+  });
+
+  describe("Unit: localstorageService", function() {
+    it('should contain a localstorageService service', inject(function(localstorageService) {
+      expect(localstorageService).not.to.equal(null);
+    }));
+  });
+
+
   describe("Unit: Backup Service", function() {
     it('should contain a backup service', inject(function(backupService) {
       expect(backupService).not.to.equal(null);

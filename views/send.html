@@ -217,9 +217,9 @@
             ng-repeat="(addr, info) in $root.wallet.addressBook"
             ng-class="{'addressbook-disabled': info.hidden}">
             <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
-            <td class="size-12">{{addr}}</td>
+            <td class="size-12">{{::addr}}</td>
             <td ng-show="$root.wallet.isShared()" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
-            <td class="hide-for-small-only"><time>{{info.createdTs | amCalendar}}</time></td>
+            <td class="hide-for-small-only"><time>{{::info.createdTs | amCalendar}}</time></td>
             <td class="hide-for-small-only">
               <a ng-click="toggleAddressBookEntry(addr)" title="{{ info.hidden ? 'Enable' : 'Disable'}} address">
                 <i class="fi-checkbox" 

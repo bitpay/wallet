@@ -59,22 +59,22 @@ module.exports = {
   /**
    * Encrypts symmetrically using a passphrase
    */
-  encrypt: function(key, message) {
+  encrypt: function(key, message, salt, iter) {
     if (!_.isString(message)) {
       message = JSON.stringify(message);
     }
-    sjcl.json.defaults.salt = defaultSalt;
-    sjcl.json.defaults.iter = defaultIterations;
+    sjcl.json.defaults.salt = salt || defaultSalt;
+    sjcl.json.defaults.iter = iter || defaultIterations;
     return sjcl.encrypt(key, message);
   },
 
   /**
    * Decrypts symmetrically using a passphrase
    */
-  decrypt: function(key, cyphertext) {
+  decrypt: function(key, sjclEncryptedJson) {
     var output = {};
     try {
-      return sjcl.decrypt(key, cyphertext);
+      return sjcl.decrypt(key, sjclEncryptedJson);
     } catch (e) {
       log.info('Decryption failed due to error: ' + e.message);
       return null;

@@ -39,9 +39,10 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     window.onbeforeunload = undefined;
   });
 
-  if ($rootScope.wallet) {
-    $scope.$on('$idleStart', function() {
-    });
+  $scope.init = function() {
+    if (!$rootScope.wallet) return;
+
+    $scope.$on('$idleStart', function() {});
     $scope.$on('$idleWarn', function(a, countdown) {
       $rootScope.countdown = countdown;
       $rootScope.sessionExpired = true;
@@ -64,8 +65,5 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     $rootScope.$watch('title', function(newTitle, oldTitle) {
       $scope.title = newTitle;
     });
-    $rootScope.$on('signout', function() {
-      $scope.signout();
-    });
-  }
+  };
 });

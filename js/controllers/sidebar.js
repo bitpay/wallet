@@ -24,8 +24,13 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     'link': 'more'
   }];
 
+  $scope.go = function (path) {
+    $location.path(path);
+  };
+
   $scope.signout = function() {
-    $scope.$emit('signout');
+    $rootScope.signingOut = true;
+    identityService.signout();
   };
 
   $scope.isActive = function(item) {
@@ -47,7 +52,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
   $scope.init = function() {
     // This should be called only once.
-   
+
     // focused wallet change
     if ($rootScope.wallet) {
       $rootScope.$watch('wallet', function() {
@@ -72,16 +77,14 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
           if (newWid && $rootScope.iden.getWalletById(newWid)) {
             identityService.setFocusedWallet(newWid);
           } else {
-            copay.logger.debug('No wallets'); 
+            copay.logger.debug('No wallets');
             identityService.noFocusedWallet(newWid);
           }
         }
         $scope.walletSelection = false;
         $scope.setWallets();
       });
- 
     }
- 
   };
 
   $scope.setWallets = function() {

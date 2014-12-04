@@ -8,14 +8,6 @@
     <b class="db m5t" ng-show="label">
       ({{label}})
     </b>
-    <p class="m10t size-18">
-      <span ng-show="$root.updatingBalance">
-        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-      </span>
-      <span ng-show="!$root.updatingBalance">
-        {{address.balance || 0}} {{$root.wallet.settings.unitName}}
-      </span>
-    </p>
   </div>
 </div>
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>

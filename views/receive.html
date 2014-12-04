@@ -14,8 +14,8 @@
             <div class="row show-for-large-up">
               <div class="large-7 medium-9 columns">
                 <div class="list-addr">
-                  <contact address="{{addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
-                  <small translate class="label" ng-if="addr.isChange">change</small>
+                  <contact address="{{::addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
+                  <small translate class="label" ng-if="::addr.isChange">change</small>
                 </div>
               </div>
               <div class="large-3 medium-3 columns text-right">
@@ -34,8 +34,8 @@
               <div class="small-12 columns">
                 <div class="list-addr">
                   <div class="ellipsis">
-                    <span><contact address="{{addr.address}}"></span>
-                    <small translate class="label" ng-if="addr.isChange">change</small>
+                    <span><contact address="{{::addr.address}}"></span>
+                    <small translate class="label" ng-if="::addr.isChange">change</small>
                   </div>
                   <div class="text-right m10t">
                     <span class="size-14" ng-show="$root.updatingBalance">
