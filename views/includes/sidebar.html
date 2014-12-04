@@ -1,4 +1,4 @@
-<div ng-controller="SidebarController" ng-init="init()">
+<div>
   <header ng-show="$root.wallet">
     <div class="col1">
       <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
@@ -53,7 +53,11 @@
 
   <div>
     <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}" ng-show="wallets[0]">
-      <li data-ng-repeat="item in wallets track by $index" class="nav-item" ng-if="item.id != $root.wallet.id" ng-click="switchWallet(item.id)">
+      <li 
+        ng-repeat="item in wallets track by $index" 
+        class="nav-item" 
+        ng-if="item.id != $root.wallet.id" 
+        ng-click="switchWallet(item.id)">
         <div class="col1">
           <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
         </div>

@@ -1,8 +1,15 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, rateService, notification) {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $location, rateService, notification, identityService) {
   $scope.init = function() {
     $rootScope.title = 'Home';
+
+    // fix for Safari and mobile devices
+    var walletId = $location.hash();
+    if (walletId) {
+      $location.hash('');
+      identityService.setFocusedWallet(walletId);
+    }
 
     $scope.rateService = rateService;
     $scope.isRateAvailable = false;
@@ -99,8 +106,6 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
       $scope.$digest();
     },1)
   }, 100);
-
-
 
   $scope.sign = function(ntxid) {
     var w = $rootScope.wallet;

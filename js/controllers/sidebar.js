@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService) {
+angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, isMobile) {
+
+  $scope.isMobile = isMobile.any()
 
   $scope.menu = [{
     'title': 'Home',
@@ -49,7 +51,6 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     $scope.setWallets();
   };
 
-
   $scope.init = function() {
     // This should be called only once.
 
@@ -90,8 +91,8 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   $scope.setWallets = function() {
     if (!$rootScope.iden) return;
     var ret = _.filter($rootScope.iden.listWallets(), function(w) {
-      return !identityService.isFocused(w.getId());
+      return w;
     });
-    $scope.wallets = ret;
+    $scope.wallets = _.sortBy(ret, 'name');
   };
 });
