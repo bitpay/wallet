@@ -2,9 +2,6 @@
 
 angular.module('copayApp.controllers').controller('ReceiveController',
   function($scope, $rootScope, $timeout, $modal) {
-    $rootScope.title = 'Receive';
-    $scope.loading = false;
-    $scope.showAll = false;
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
@@ -14,6 +11,25 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       $timeout(function() {
         $scope.loading = false;
       }, 1);
+    };
+
+    $scope.init = function() {
+      $rootScope.title = 'Receive';
+      $scope.showAll = false;
+
+      var w = $rootScope.wallet;
+      var lastAddr = _.first(w.getAddressesOrderer()); 
+      var balance = w.balanceInfo.balanceByAddr;
+
+      if (balance[lastAddr]>0)
+        $scope.loading = true;
+
+      while (balance && balance[lastAddr] > 0) {
+        $scope.newAddr();
+        lastAddr = w.generateAddress(null);
+      };
+      $scope.loading = false;
+      $scope.addr = lastAddr;
     };
 
     $scope.openAddressModal = function(address) {
@@ -43,26 +59,30 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     };
 
     $scope.setAddressList = function() {
-      var w = $rootScope.wallet;
-      var balance = w.balanceInfo.balanceByAddr;
+      if ($scope.showAll) {
+        var w = $rootScope.wallet;
+        var balance = w.balanceInfo.balanceByAddr;
 
-      var addresses = w.getAddressesOrderer();
-      if (addresses) {
-        $scope.addrLength = addresses.length;
+        var addresses = w.getAddressesOrderer();
+        if (addresses) {
+          $scope.addrLength = addresses.length;
 
-        if (!$scope.showAll)
-          addresses = addresses.slice(0,3);
+          if (!$scope.showAll)
+            addresses = addresses.slice(0, 3);
 
-        var list = [];
-        _.each(addresses, function(address, index){
-          list.push({
-            'index': index,
-            'address': address,
-            'balance': balance ? balance[address] : null,
-            'isChange': w.addressIsChange(address),
+          var list = [];
+          _.each(addresses, function(address, index) {
+            list.push({
+              'index': index,
+              'address': address,
+              'balance': balance ? balance[address] : null,
+              'isChange': w.addressIsChange(address),
+            });
           });
-        });
-        $scope.addresses = list;
+          $scope.addresses = list;
+        }
+      } else {
+        $scope.addresses = [];
       }
     };
   }
