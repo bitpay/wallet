@@ -245,15 +245,15 @@ angular.module('copayApp.services')
               $filter('translate')('You received a transaction proposal from') + ' ' + user);
             break;
           case 'signed':
-            notification.info('[' + name + '] Transaction Signed',
+            notification.success('[' + name + '] Transaction Signed',
               $filter('translate')('A transaction was signed by') + ' ' + user);
             break;
           case 'signedAndBroadcasted':
-            notification.info('[' + name + '] Transaction Approved',
+            notification.success('[' + name + '] Transaction Approved',
               $filter('translate')('A transaction was signed and broadcasted by') + ' ' + user);
             break;
           case 'rejected':
-            notification.info('[' + name + '] Transaction Rejected',
+            notification.warning('[' + name + '] Transaction Rejected',
               $filter('translate')('A transaction was rejected by') + ' ' + user);
             break;
           case 'corrupt':
