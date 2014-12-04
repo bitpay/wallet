@@ -39,7 +39,9 @@
       <i class="fi-lock"></i> {{'Locked'|translate}} &nbsp;
     </span>
     <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-    <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" class="text-gray"><b>{{$root.wallet.balanceInfo.lockedBalance || 0}} {{$root.wallet.settings.unitName}} </b> - {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}
+    <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" class="text-gray">
+      <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
+      - {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}
     </span>
     <i class="fi-info medium right text-gray size-14" 
       tooltip="{{'Balance locked in pending transaction proposals'|translate}}"
