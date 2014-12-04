@@ -307,6 +307,10 @@ angular.module('copayApp.services')
         // do nothing. this is handled 'on sync' on controller.
       });
 
+      iden.on('walletStorageError', function (wid, message) {
+        notification.error('Error storing wallet', message);
+      });
+
       iden.on('closed', function() {
         delete $rootScope['wallet'];
         delete $rootScope['iden'];

@@ -248,6 +248,12 @@ Identity.prototype.storeWallet = function(wallet, cb) {
     if (err) {
       log.error('Wallet:' + wallet.getName() + ' couldnt be stored:', err);
       log.error('Wallet:' + wallet.getName() + ' Size:', JSON.stringify(wallet.sizes()));
+
+      if (err.match('OVERQUOTA')) {
+        self.emitAndKeepAlive('walletStorageError', w.getId(), 'Storage limits on remote server exceeded');
+      } else {
+        self.emitAndKeepAlive('walletStorageError', w.getId(), err);
+      }
     }
     if (cb)
       return cb(err);
