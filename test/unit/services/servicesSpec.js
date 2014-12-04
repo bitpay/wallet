@@ -86,7 +86,7 @@ describe("Angular services", function() {
 
         expect(b.totalBalance).to.be.equal('1,000,000.01');
         expect(b.availableBalance).to.be.equal('900,000.02');
-        expect(b.lockedBalance).to.be.equal(99999.99);
+        expect(b.lockedBalance).to.be.equal('99,999.99');
 
         expect(b.balanceByAddr[Waddr]).to.equal(2);
         expect(b.safeUnspentCount).to.equal(5);
