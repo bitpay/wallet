@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
       });
     }
 
-    // wallet list chane
+    // wallet list change
     if ($rootScope.iden) {
       var iden = $rootScope.iden;
       iden.on('newWallet', function() {

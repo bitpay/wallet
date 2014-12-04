@@ -9,11 +9,13 @@
     <div class="large-12 columns">
       <div class="panel oh">
         <div class="row">
-          <div class="large-8 medium-6 small-3 columns">
-            <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
-            <h2 class="ellipsis m10t left hide-for-small-only">{{$root.wallet.getName()}}</h2>
+          <div class="large-8 medium-6 small-12 columns">
+            <div class="ellipsis oh">
+              <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
+              <h2 class="m10t left">{{$root.wallet.getName()}}</h2>
+            </div>
           </div>
-          <div class="large-4 medium-6 small-9 columns">
+          <div class="large-4 medium-6 small-12 columns">
             <div class="text-right">
               <span class="size-21">
                 <strong>
