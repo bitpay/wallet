@@ -26,7 +26,7 @@
           </div>
 
           <div class="large-3 medium-9 small-8 columns text-right">
-            <div class="tx-amount left" ng-class="{
+            <span class="tx-amount " ng-class="{
                 'text-primary' : btx.action == 'received',
                 'text-warning': btx.action == 'sent', 
                 'text-gray': btx.action == 'moved'}">
@@ -37,8 +37,8 @@
                 'gray': btx.action == 'moved'}" ng-show="btx.alternativeAmount != null">
                   {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
                 </span>
-            </div>
-            <div ng-class="{
+            </span>
+            <span ng-class="{
                 'text-primary' : btx.action == 'received',
                 'text-warning': btx.action == 'sent', 
                 'text-gray': btx.action == 'moved'}">
@@ -46,7 +46,7 @@
                   'fi-arrow-left' : btx.action == 'received',
                   'fi-arrow-right': btx.action == 'sent', 
                   'fi-loop': btx.action == 'moved'}"></i>
-            </div>
+            </span>
           </div>
 
           <div class="large-7 medium-12 small-12 columns text-gray">
