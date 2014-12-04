@@ -316,7 +316,11 @@ angular.module('copayApp.services')
 
     root.signout = function() {
       if ($rootScope.iden) {
-        $rootScope.iden.close();
+        $rootScope.iden.store({
+          noWallets: true
+        }, function() {
+          $rootScope.iden.close();
+        });
       }
     };
 
