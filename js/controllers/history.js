@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope, $filter, $timeout, rateService, notification) {
+  function($scope, $rootScope, $filter, $timeout, $modal, rateService, notification) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -28,14 +28,27 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
       var filename = "copay_history.csv";
       var descriptor = {
-        columns: [
-          { label: 'Date', property: 'ts', type: 'date' },
-          { label: 'Amount (' + w.settings.unitName + ')', property: 'amount', type: 'number' },
-          { label: 'Amount (' + w.settings.alternativeIsoCode + ')', property: 'alternativeAmount' },
-          { label: 'Action', property: 'action' },
-          { label: 'AddressTo', property: 'addressTo' },
-          { label: 'Comment', property: 'comment' },
-        ],
+        columns: [{
+          label: 'Date',
+          property: 'ts',
+          type: 'date'
+        }, {
+          label: 'Amount (' + w.settings.unitName + ')',
+          property: 'amount',
+          type: 'number'
+        }, {
+          label: 'Amount (' + w.settings.alternativeIsoCode + ')',
+          property: 'alternativeAmount'
+        }, {
+          label: 'Action',
+          property: 'action'
+        }, {
+          label: 'AddressTo',
+          property: 'addressTo'
+        }, {
+          label: 'Comment',
+          property: 'comment'
+        }, ],
       };
       if (w.isShared()) {
         descriptor.columns.push({
@@ -58,8 +71,8 @@ angular.module('copayApp.controllers').controller('HistoryController',
           notification.error('Could not get transaction history');
           return;
         }
-        $scope._addRates(w, res.items, function (err) {
-          copay.csv.toCsv(res.items, descriptor, function (err, res) {
+        $scope._addRates(w, res.items, function(err) {
+          copay.csv.toCsv(res.items, descriptor, function(err, res) {
             if (err) {
               $scope.generating = false;
               logger.error(err);
@@ -91,7 +104,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
       }, 1);
     };
 
-    $scope._getTransactions = function (w, opts, cb) {
+    $scope._getTransactions = function(w, opts, cb) {
       w.getTransactionHistory(opts, function(err, res) {
         if (err) return cb(err);
         if (!res) return cb();
@@ -107,7 +120,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
       });
     };
 
-    $scope._addRates = function (w, txs, cb) {
+    $scope._addRates = function(w, txs, cb) {
       if (!txs || txs.length == 0) return cb();
       var index = _.indexBy(txs, 'rateTs');
       rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
@@ -119,6 +132,29 @@ angular.module('copayApp.controllers').controller('HistoryController',
           tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
         });
         return cb();
+      });
+    };
+
+
+    $scope.openTxModal = function(btx) {
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.btx = btx;
+
+        $scope.getShortNetworkName = function() {
+          var w = $rootScope.wallet;
+          return w.getNetworkName().substring(0, 4);
+        };
+
+
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+      };
+
+      $modal.open({
+        templateUrl: 'views/modals/tx-details.html',
+        windowClass: 'tiny',
+        controller: ModalInstanceCtrl,
       });
     };
 
@@ -142,10 +178,10 @@ angular.module('copayApp.controllers').controller('HistoryController',
         }
 
         var items = res.items;
-        $scope._addRates(w, items, function (err) {
-            $timeout(function() {
-              $scope.$digest();
-            }, 1);
+        $scope._addRates(w, items, function(err) {
+          $timeout(function() {
+            $scope.$digest();
+          }, 1);
         })
 
         $scope.blockchain_txs = w.cached_txs = items;
@@ -162,11 +198,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
     $scope.hasAction = function(actions, action) {
       return actions.hasOwnProperty('create');
-    };
-
-    $scope.getShortNetworkName = function() {
-      var w = $rootScope.wallet;
-      return w.getNetworkName().substring(0, 4);
     };
 
   });
