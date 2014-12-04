@@ -2550,7 +2550,10 @@ Wallet.prototype.isComplete = function() {
  * @param {string} version - the new version for the wallet
  */
 Wallet.prototype.setVersion = function(version) {
-  this.version = this.opts.version = version;
+  this.version = version;
+  if (this.opts) {
+    this.opts.version = version;
+  }
 };
 
 /**
