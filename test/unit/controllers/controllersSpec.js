@@ -53,6 +53,7 @@ describe("Unit: Controllers", function() {
     var w = {};
     w.id = 1234;
     w.isComplete = sinon.stub().returns(true);
+    w.isShared = sinon.stub().returns(true);
     w.privateKey = {};
     w.settings = {
       unitToSatoshi: 100,
@@ -218,7 +219,7 @@ describe("Unit: Controllers", function() {
     });
 
     it('should have a title', function() {
-      expect(scope.title).equal('Send');
+      expect(scope.title).equal('Create Transaction Proposal');
     });
 
     it('should return true if wallet has addressBook', function() {
