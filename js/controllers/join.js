@@ -130,6 +130,8 @@ angular.module('copayApp.controllers').controller('JoinController',
             notification.error('Fatal error connecting to Insight server');
           else if (err === 'walletFull')
             notification.error('The wallet is full');
+          else if (err === 'walletAlreadyExists')
+            notification.error('Wallet already exists', 'Cannot join again from the same profile');
           else if (err === 'badNetwork')
             notification.error('Network Error', 'Wallet network configuration missmatch');
           else if (err === 'badSecret')
@@ -138,6 +140,7 @@ angular.module('copayApp.controllers').controller('JoinController',
             notification.error('Error', err.message || err);
           }
         }
+        $timeout(function () { $scope.$digest(); }, 1);
       });
     }
   });

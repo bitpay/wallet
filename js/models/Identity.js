@@ -575,6 +575,13 @@ Identity.prototype.createWallet = function(opts, cb) {
 
   var self = this;
   var w = new walletClass(opts);
+
+  console.log(_.keys(self.wallets));
+  console.log(w.getId());
+  if (_.contains(_.keys(self.wallets), w.getId())) {
+    return cb('walletAlreadyExists');
+  }
+
   self.wallets[w.getId()] = w;
   self.updateFocusedTimestamp(w.getId());
   self.bindWallet(w);
