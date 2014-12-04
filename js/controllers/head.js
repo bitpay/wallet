@@ -4,8 +4,6 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
-  console.log('$scope.username', $scope.username);
-
   $scope.hoverIn = function() {
     this.hoverMenu = true;
   };

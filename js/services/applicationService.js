@@ -11,8 +11,7 @@ angular.module('copayApp.services')
       // Go home reloading the application
       var hashIndex = window.location.href.indexOf('#!/');
       if (isChromeApp) {
-        console.log('isChromeApp  restting ');
-        chrome.runtime.restart();
+        chrome.runtime.reload();
       } else {
         window.location = window.location.href.substr(0, hashIndex);
       }

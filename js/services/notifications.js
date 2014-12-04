@@ -1,6 +1,6 @@
 'use strict';
 
-var LS = require('../plugins/LocalStorage');
+var LS = require('../js/plugins/LocalStorage');
 var ls = new LS();
 
 angular.module('copayApp.services').
