@@ -24,7 +24,8 @@ angular.module('copayApp.services')
         r.availableBalanceBTC = (safeBalanceSat / COIN);
         r.safeUnspentCount = safeUnspentCount;
 
-        r.lockedBalance = $filter('noFractionNumber')((balanceSat - safeBalanceSat) * satToUnit);
+        var lockedBalance = (balanceSat - safeBalanceSat) * satToUnit;
+        r.lockedBalance = lockedBalance ? $filter('noFractionNumber')(lockedBalance) : null;
         r.lockedBalanceBTC = (balanceSat - safeBalanceSat) / COIN;
 
 
