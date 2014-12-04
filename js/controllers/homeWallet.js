@@ -1,45 +1,71 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, rateService) {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, rateService, notification) {
   $scope.init = function() {
-    $rootScope.title = 'Home'; 
+    $rootScope.title = 'Home';
 
     $scope.rateService = rateService;
     $scope.isRateAvailable = false;
 
-    var w = $rootScope.wallet; 
-    w.on('txProposalEvent', function() { _updateTxs()});
-    $timeout(function() {
-      _updateTxs();
-    }, 1);
+    var w = $rootScope.wallet;
+    w.on('txProposalEvent', _updateTxs);
+    _updateTxs();
 
     rateService.whenAvailable(function() {
       $scope.isRateAvailable = true;
       $scope.$digest();
-    }); 
-  }; 
+    });
+  };
 
   // This is necesarry, since wallet can change in homeWallet, without running init() again.
-  var removeWatch = $rootScope.$watch('wallet.id', function(newWallet, oldWallet) {
+  var removeWatch;
+  removeWatch = $rootScope.$watch('wallet.id', function(newWallet, oldWallet) {
     if ($rootScope.wallet && $rootScope.wallet.isComplete() && newWallet !== oldWallet) {
-      var w = $rootScope.wallet; 
-      $rootScope.pendingTxCount = 0; 
-      w.on('txProposalEvent', function() { _updateTxs()});
+
+      if (removeWatch)
+        removeWatch();
+
+      if (oldWallet) {
+        var oldw = $rootScope.iden.getWalletById(oldWallet);
+        if (oldw)
+          oldw.removeListener('txProposalEvent', _updateTxs);
+      }
+
+
+      var w = $rootScope.wallet;
+      $rootScope.pendingTxCount = 0;
+      w.on('txProposalEvent', _updateTxs);
       _updateTxs();
     }
   });
-  
-  $scope.$on("$destroy", function(){
+
+
+  // TODO duplicated on controller send. move to a service.
+  $scope.notifyStatus = function(status) {
+    if (status == copay.Wallet.TX_BROADCASTED)
+      notification.success('Success', 'Transaction broadcasted!');
+    else if (status == copay.Wallet.TX_PROPOSAL_SENT)
+      notification.info('Success', 'Transaction proposal created');
+    else if (status == copay.Wallet.TX_SIGNED)
+      notification.success('Success', 'Transaction proposal was signed');
+    else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
+      notification.success('Success', 'Transaction signed and broadcasted!');
+    else
+      notification.error('Error', 'Unknown error occured');
+  };
+
+
+  $scope.$on("$destroy", function() {
     var w = $rootScope.wallet;
     removeWatch();
-    w.removeListener('txProposalEvent', function() {_updateTxs()} );
+    w.removeListener('txProposalEvent', _updateTxs);
   });
 
   $scope.setAlternativeAmount = function(w, tx, cb) {
     rateService.whenAvailable(function() {
       _.each(tx.outs, function(out) {
         var valueSat = out.valueSat * w.settings.unitToSatoshi;
-        out.alternativeAmount =  $filter('noFractionNumber')(rateService.toFiat(valueSat, $scope.alternativeIsoCode), 2);
+        out.alternativeAmount = $filter('noFractionNumber')(rateService.toFiat(valueSat, $scope.alternativeIsoCode), 2);
         out.alternativeIsoCode = $scope.alternativeIsoCode;
       });
       if (cb) return cb(tx);
@@ -52,7 +78,7 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
 
     $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
     $scope.myId = w.getMyCopayerId();
-    
+
     var res = w.getPendingTxProposals();
     _.each(res.txs, function(tx) {
       $scope.setAlternativeAmount(w, tx);
@@ -66,13 +92,15 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
           out.valueSat = out.value;
           out.value = $filter('noFractionNumber')(out.value);
         });
-      }        
+      }
     });
     $scope.txps = res.txs;
-    console.log('[homeWallet.js:45]',$scope.txps); //TODO
-  }, 100); 
+    $timeout(function(){
+      $scope.$digest();
+    },1)
+  }, 100);
 
-  
+
 
   $scope.sign = function(ntxid) {
     var w = $rootScope.wallet;
