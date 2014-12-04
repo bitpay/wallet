@@ -77,9 +77,10 @@ describe('Identity model', function() {
     return params;
   }
 
+  var wid = 0;
   function getNewWallet(args) {
     var w = sinon.stub();
-    w.getId = sinon.stub().returns('wid');
+    w.getId = sinon.stub().returns('wid' + (++wid));
     w.getStorageKey = sinon.stub().returns('wkey');
     w.toObj = sinon.stub().returns({
       obj: 1

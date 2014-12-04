@@ -125,7 +125,6 @@ angular.module('copayApp.controllers').controller('JoinController',
         privateHex: $scope.private,
       }, function(err) {
         $scope.loading = false;
-        console.log(err);
         if (err) {
           if (err === 'joinError')
             notification.error('Fatal error connecting to Insight server');
