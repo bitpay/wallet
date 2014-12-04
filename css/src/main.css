@@ -548,6 +548,7 @@ a.button-setup {
 }
 
 .dn {display: none;}
+.dni {display: none !important;}
 .pr {position: relative;}
 .pa {position: absolute;}
 .m0 {margin: 0;}
