@@ -56,7 +56,7 @@
           <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
         </div>
         <div class="col2">
-          <a class="size-12 wallet-item" >
+          <a href class="size-12 wallet-item">
             <div class="oh">
               <div class="right size-10 type-wallet">[ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
               <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
@@ -80,7 +80,9 @@
       <a href="#!/{{item.link}}" ng-click="toggleCollapse()" class="db p20h">
         <i class="size-21 m20r {{item.icon}}"></i> {{item.title|translate}}
         <span class="right">
-          <span class="label alert" ng-if="item.link=='send' && $root.pendingTxCount > 0">{{$root.pendingTxCount}}</span>
+          <span class="label alert" ng-if="item.link=='homeWallet' && $root.pendingTxCount > 0">
+            {{$root.pendingTxCount}}
+          </span>
         </span>
       </a>
     </li>
