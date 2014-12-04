@@ -1,5 +1,8 @@
 'use strict';
 
+var LS = require('../plugins/LocalStorage');
+var ls = new LS();
+
 //Setting up route
 angular
   .module('copayApp')
@@ -120,20 +123,7 @@ angular
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
 
 
-      var localStorage;
-      if (window.chrome && chrome.runtime && chrome.runtime.id) {
-        console.log('Is a chrome app!...routes.js');
-        console.log('chrome.storage', chrome.storage);
-        console.log('chrome.storage.local', chrome.storage.local);
-        localStorage = chrome.storage.local;
-
-        console.log('localStorage', localStorage);
-      } else {
-        console.log('Is web!');
-        localStorage = window.localStorage;
-      }
-
-      if (!localStorage || localStorage.length < 1) {
+      if (!ls || ls.length < 1) {
         $location.path('unsupported');
       } else {
         if (!$rootScope.iden && next.logged) {

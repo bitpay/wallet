@@ -7,22 +7,9 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   $scope.insightTestnet = config.network.testnet.url;
   $scope.defaultLogLevel = config.logLevel || 'log';
 
-
-  var localStorage;
-
-  var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
-  if (isChromeApp) {
-    console.log('Is a chrome app!...settings.js');
-    localStorage = chrome.storage.local;
-  } else {
-    console.log('Is web!');
-    localStorage = window.localStorage;
-  }
-
   var logLevels = copay.logger.getLevels();
 
   $scope.availableLogLevels = [];
-
 
   for (var key in logLevels) {
     $scope.availableLogLevels.push({
@@ -75,7 +62,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     $scope.insightLivenet = copay.Insight.setCompleteUrl($scope.insightLivenet);
     $scope.insightTestnet = copay.Insight.setCompleteUrl($scope.insightTestnet);
 
-
     var insightSettings = {
       livenet: {
         url: $scope.insightLivenet,
@@ -91,7 +77,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     var plugins = {};
     plugins[$scope.selectedStorage.pluginName] = true;
     copay.logger.setLevel($scope.selectedLogLevel.name);
-
 
     localstorageService.setItem('config', JSON.stringify({
       network: insightSettings,
