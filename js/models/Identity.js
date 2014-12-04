@@ -237,6 +237,8 @@ Identity.prototype.retrieveWalletFromStorage = function(walletId, opts, cb) {
  * @param {Function} cb
  */
 Identity.prototype.storeWallet = function(wallet, cb) {
+  var self = this;
+
   preconditions.checkArgument(wallet && _.isObject(wallet));
 
   wallet.setVersion(this.version);
@@ -246,13 +248,13 @@ Identity.prototype.storeWallet = function(wallet, cb) {
 
   this.storage.setItem(key, val, function(err) {
     if (err) {
-      log.error('Wallet:' + wallet.getName() + ' couldnt be stored:', err);
+      log.error('Wallet:' + wallet.getName() + ' could not be stored:', err);
       log.error('Wallet:' + wallet.getName() + ' Size:', JSON.stringify(wallet.sizes()));
 
       if (err.match('OVERQUOTA')) {
-        self.emitAndKeepAlive('walletStorageError', w.getId(), 'Storage limits on remote server exceeded');
+        self.emitAndKeepAlive('walletStorageError', wallet.getId(), 'Storage limits on remote server exceeded');
       } else {
-        self.emitAndKeepAlive('walletStorageError', w.getId(), err);
+        self.emitAndKeepAlive('walletStorageError', wallet.getId(), err);
       }
     }
     if (cb)
@@ -582,12 +584,9 @@ Identity.prototype.createWallet = function(opts, cb) {
   var self = this;
   var w = new walletClass(opts);
 
-  console.log(_.keys(self.wallets));
-  console.log(w.getId());
-  if (_.contains(_.keys(self.wallets), w.getId())) {
+  if (self.wallets[w.getId()]) {
     return cb('walletAlreadyExists');
   }
-
   self.wallets[w.getId()] = w;
   self.updateFocusedTimestamp(w.getId());
   self.bindWallet(w);
