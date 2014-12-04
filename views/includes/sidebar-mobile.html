@@ -1,115 +1,44 @@
-<div ng-controller="SidebarController" ng-init="init()">
+<div ng-controller="SidebarController" ng-init="username = $root.iden.getName()">
   <header>
-    <div ng-click="toggleWalletSelection()" ng-if="$root.wallet">
-      <div class="col1">
-        <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
-      </div>
-      <div class="col2">
-        <div class="oh m5t m10r"> 
-          <div class="right size-10 text-white">[ {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]</div>
-          <div class="name-wallet">
-            <div class="ellipsis">{{$root.wallet.getName()}}</div>
-          </div> 
-        </div>
-        <div class="founds size-12">
-          <span ng-if="!$root.wallet.isComplete()">Waiting for copayers...</span>
-          <div ng-if="$root.wallet.isComplete()">
-            <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-            <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-              <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
-              <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
-              <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency">N/A</span>
-            </div> 
-          </div>
-        </div>
-      </div>
-      <div class="col3">
-        <a ng-class="{'selected':walletSelection}"> 
-          <span ng-show="!walletSelection">
-            <i class="icon-arrow-down2"></i>
-          </span>
-          <span ng-show="walletSelection">
-            <i class="icon-arrow-up2"></i>
-          </span> 
-        </a>
-      </div>
-    </div>
-    <div ng-show="walletSelection">
-      <div class="side-nav wallets text-center off-canvas-list" ng-show="!wallets[0]">
-        <p class="size-12 text-gray m10t" translate>You do not have another wallets.</p>
-        <a href="#!/create" class="db button secondary tiny" title="Create new wallet">
-        <i class="m10r fi-plus"></i> {{'Create new wallet' | translate }} </a>
-      </div>
-      <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
-        <li data-ng-repeat="item in wallets track by $index"
-          class="nav-item" 
-          ng-if="item.id != $root.wallet.id"
-          ng-click="toggleWalletSelection(); switchWallet(item.id)">
-        <div class="col1">
-          <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
-        </div>
-        <div class="col2">
-          <a class="size-12 wallet-item">
-            <div class="oh">
-              <div class="right size-10 type-wallet">
-                [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
-              <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
-            </div>
-            <div class="oh">
-              <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-              <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-                <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
-                <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
-              </div>
-              <span ng-if="!item.isComplete()">Waiting for copayers...</span>
-            </div>
-          </a>
-        </div>
-        </li>
-      </ul>
-    </div>
-  </header>
-
-  <div ng-show="!walletSelection" ng-init="username = $root.iden.getName()">
-    <div class="off-canvas-list">
-    <a href="#!/profile" class="columns text-center m10v" title="Profile">
-      <div class="photo-container">
+    <h1 class="left-sidebar">
+      <span class="photo-container m20r">
         <img gravatar-src="'{{username}}'" gravatar-size="35">
-      </div>
-      <p class="text-black m5">{{username}}</p>
-      <span class="db text-gray size-10" >
-        <i class="fi-torso"></i> {{'ViewProfile' | translate }} 
       </span>
-    </a>
-    </div>
-    <ul class="off-canvas-list columns">
-      <li>
-      <a href="#!/create" class="db p20h nav-item" title="Create new wallet">
-        <i class="size-24 m20r fi-plus"></i> {{'Create new wallet' | translate }} </a>
-      </li>
-      <li>
-      <a href="#!/join" class="db p20h nav-item" title="Join shared wallet">
-        <i class="size-24 m20r fi-torsos-all"></i> {{'Join shared wallet' | translate }} </a>
-      </li>
-      <li>
-      <a href="#!/import" class="db p20h nav-item" title="Import wallet">
-        <i class="size-24 m20r fi-download"></i> {{'Import a wallet' | translate }} </a>
-      </li>
-      <li ng-if="$root.wallet">
-      <a href="#!/more" class="db p20h nav-item" title="Settings" >
-        <i class="size-24 m20r fi-widget"></i> {{'Wallet Settings' | translate }} </a>
-      </li>
-      <li>
-      <a href="#!/" class="db p20h nav-item" title="Close"
-        ng-click="signout()">
-        <span ng-if="!$root.hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
-        <span ng-if="$root.hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
+      <span class="m5t">{{username}}</span>
+    </h1>
+  </header>
+  <ul class="off-canvas-list">
+    <li>
+      <a href="#!/profile" class="db p20h nav-item" title="Profile">
+        <i class="size-24 m20r fi-torso"></i> {{'My profile' | translate }}
       </a>
-      </li>
-    </ul>
-    <div class="text-gray size-12 text-center columns">
-      <div ng-include="'views/includes/version.html'"></div>
-    </div>
+    </li>
+    <li>
+    <a href="#!/create" class="db p20h nav-item" title="Create new wallet">
+      <i class="size-24 m20r fi-plus"></i> {{'Create new wallet' | translate }} </a>
+    </li>
+    <li>
+    <a href="#!/join" class="db p20h nav-item" title="Join shared wallet">
+      <i class="size-24 m20r fi-torsos-all"></i> {{'Join shared wallet' | translate }} </a>
+    </li>
+    <li>
+    <a href="#!/import" class="db p20h nav-item" title="Import wallet">
+      <i class="size-24 m20r fi-download"></i> {{'Import a wallet' | translate }} </a>
+    </li>
+    <li ng-if="$root.wallet">
+    <a href="#!/more" class="db p20h nav-item" title="Settings" >
+      <i class="size-24 m20r fi-widget"></i> {{'Wallet Settings' | translate }} </a>
+    </li>
+    <li>
+    <a href="#!/" class="db p20h nav-item" title="Close"
+      ng-click="signout()">
+      <span ng-if="!$root.hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
+      <span ng-if="$root.hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
+    </a>
+    </li>
+  </ul>
+  <div class="text-gray size-12 text-center columns">
+    <div ng-include="'views/includes/version.html'"></div>
   </div>
 </div>
 

@@ -60,24 +60,23 @@
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
-          <section class="right-small text-center top-balance" ng-if="$root.wallet && $root.wallet.isComplete() && !$root.wallet.isLocked" >
-            <span ng-if="$root.updatingBalance">
-              <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-            </span>
-            <span class="size-14" ng-if="!$root.updatingBalance">
-              {{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}
-            </span>
+          <section class="right-small" >
+            <a class="right-off-canvas-toggle p10"><i class="icon-wallet size-21"></i></a>
           </section>
 
           <section class="middle tab-bar-section">
-            <h1 class="title ellipsis">
-              {{$root.wallet.getName()}}
+            <h1 class="title">
+              <img src="img/logo-negative-beta.svg" alt="Copay" width="60">
             </h1>
           </section>
         </nav>
 
         <aside class="left-off-canvas-menu" ng-if="$root.iden">
           <div ng-include="'views/includes/sidebar-mobile.html'"></div>
+        </aside>
+
+        <aside class="right-off-canvas-menu" ng-if="$root.iden">
+          <div ng-include="'views/includes/walletbar-mobile.html'"></div>
         </aside>
 
         <div notifications="right top"></div>
