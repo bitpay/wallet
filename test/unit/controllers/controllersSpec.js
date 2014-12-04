@@ -255,13 +255,10 @@ describe("Unit: Controllers", function() {
       sendForm.amount.$setViewValue(anAmount);
       sendForm.comment.$setViewValue(aComment);
 
-      scope.updateTxs = sinon.spy();
-
       var w = scope.wallet;
       scope.submitForm(sendForm);
       sinon.assert.callCount(w.spend, 1);
       sinon.assert.callCount(w.broadcastTx, 0);
-      sinon.assert.callCount(scope.updateTxs, 1);
       var spendArgs = w.spend.getCall(0).args[0];
       spendArgs.toAddress.should.equal(anAddr);
       spendArgs.amountSat.should.equal(anAmount * scope.wallet.settings.unitToSatoshi);
