@@ -38,12 +38,11 @@
 
       <form ng-show="createStep == 'storage' " novalidate>
         <tabset>
-          <tab style="width: 50%;" ng-click="useLocalstorage=false">            
+          <tab style="width: 50%;" select="selectStorage('remote')">
             <tab-heading>
               <span class="text-bold">In the Cloud </span><br>
               <span class="size-10 text-gray">( Recommended )</span>
             </tab-heading>
-            <div ng-if="!useLocalstorage">
               <div class="content-item">
                 <div class="bg-circle"><i class="icon-wallet"></i>
                 </div>
@@ -59,14 +58,12 @@
                 </div>
                 <span class="text-gray">Email address confirmation needed</span>
               </div>
-            </div>
           </tab>
           
-          <tab style="width: 50%;" ng-click="useLocalstorage=true">
+          <tab style="width: 50%;" select="selectStorage('local')">
             <tab-heading>
               <div class="m5t text-bold">In this Device </div>
             </tab-heading>
-            <div ng-if="useLocalstorage">
               <div class="content-item">
                 <div class="bg-circle"><i class="icon-download"></i>
                 </div>
@@ -82,7 +79,6 @@
                 </div>
                 <span class="text-gray">Need to be careful with backups</span>
               </div>
-            </div>
           </tab>
         </tabset>
 
