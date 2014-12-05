@@ -42,10 +42,7 @@
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant || isPayUri"
               placeholder="{{'Bitcoin address'|translate}}" ng-model="address" valid-address required>
-              <i class="fi-address-book"></i>
-              <a class="postfix button addressbook" ng-click="openAddressBook()">
-                <i class="fi-address-book size-24"></i>
-              </a>
+              <i class="fi-address-book"></i> 
               <div ng-hide="showScanner || disableScanner">
                 <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
               </div>
@@ -168,6 +165,9 @@
 
             <div class="row">
               <div class="large-6 medium-6 small-6 columns text-left">
+                <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || isPayUri" ng-click="openAddressBook()">
+                  <i class="fi-address-book"></i> Address book
+                </a>
                 <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant || isPayUri">
                   Cancel
                 </a>
