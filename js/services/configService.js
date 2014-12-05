@@ -1,12 +1,15 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(localstorageService) {
+angular.module('copayApp.services').factory('configService', function(localstorageService, gettextCatalog) {
   var root = {};
 
   root.set = function(opts, cb) {
 
     if (opts.logLevel)
       copay.logger.setLevel(opts.logLevel);
+
+    if (opts.defaultLanguage)
+      gettextCatalog.currentLanguage = opts.defaultLanguage;
 
     localstorageService.getItem('config', function(err, oldOpsStr) {
 
