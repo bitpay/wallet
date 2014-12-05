@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService, isMobile) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService, isMobile, configService) {
 
   var _credentials, _firstpin;
 
@@ -50,7 +50,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     });
   };
 
-
   $scope.selectStorage = function (storage) {
     $scope.useLocalstorage = storage == 'local';
     $timeout(function() {
@@ -58,16 +57,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     }, 1);
   };
 
-  $scope.setStorage = function(useLocalstorage) {
-    console.log('[createProfile.js.53:useLocalstorage:]', useLocalstorage); //TODO
+  $scope.goToEmail = function() {
     console.log('[createProfile.js.53:useLocalstorage:]', $scope.useLocalstorage); //TODO
-    //settingsService.save({...})
     $scope.createStep = 'email';
-    $scope.useEmail = !useLocalstorage;
-    $scope.useLocalstorage = useLocalstorage;
-    $timeout(function() {
-      $scope.$digest();
-    }, 1);
+    $scope.useEmail = !$scope.useLocalstorage;
   };
 
   $scope.setEmailOrUsername = function(form) {
@@ -97,14 +90,12 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     });
   };
 
-  $scope.createProfile = function(form) {
-    $rootScope.hideNavigation = false;
-    if (form && form.$invalid) {
-      $scope.error = 'Please enter the required fields';
-      return;
-    }
-    $scope.loading = true;
-    identityService.create( $scope.userOrEmail, form.password.$modelValue, function(err) {
+
+  $scope._doCreateProfile = function(emailOrUsername, password) {
+    preconditions.checkArgument(_.isString(emailOrUsername));
+    preconditions.checkArgument(_.isString(password));
+
+    identityService.create(emailOrUsername, password, function(err) {
       $scope.loading = false;
 
       if (err) {
@@ -141,5 +132,32 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         }
       }
     });
-  }
+  };
+
+
+  $scope.createProfile = function(form) {
+    $rootScope.hideNavigation = false;
+    if (form && form.$invalid) {
+      $scope.error = 'Please enter the required fields';
+      return;
+    }
+    $scope.loading = true;
+
+    var plugins = config.plugins;
+
+    plugins.EncryptedLocalStorage = false;
+    plugins.EncryptedInsightStorage = false;
+
+    var pluginName = $scope.useLocalstorage ? 'EncryptedLocalStorage' : 'EncryptedInsightStorage';
+
+    plugins[pluginName] = true;
+    console.log('[createProfile.js.102:plugins:]', plugins); //TODO
+
+    configService.set({
+      plugins: plugins
+    }, function() {
+      $scope._doCreateProfile($scope.userOrEmail, form.password.$modelValue);
+    });
+  };
+
 });
