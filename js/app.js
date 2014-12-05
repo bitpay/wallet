@@ -38,10 +38,6 @@ var modules = [
   'copayApp.directives',
 ];
 
-if (Object.keys(config.plugins).length)
-  modules.push('angularLoad');
-
-
 var copayApp = window.copayApp = angular.module('copayApp', modules);
 
 copayApp.value('defaults', defaults);
