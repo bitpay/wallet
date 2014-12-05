@@ -56,7 +56,7 @@
           </span>
         </span>
  
-        <div ng-controller="SidebarController" ng-init="init()" ng-show="$root.iden && !$root.hideNavigation">
+        <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation">
           <nav class="tab-bar" >
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
@@ -80,6 +80,7 @@
             <div ng-include="'views/includes/walletbar-mobile.html'"></div>
           </aside>
           <div 
+            ng-if="$root.iden"
             ng-include="'views/includes/sidebar.html'" 
             role='navigation'
             class="sidebar"></div>
