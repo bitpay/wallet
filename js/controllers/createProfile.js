@@ -8,6 +8,9 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     identityService.goWalletHome();
     $scope.isMobile = isMobile.any();
 
+    $scope.createStep = 'storage';
+    $scope.useLocalstorage = false;
+
     pinService.makePinInput($scope, 'newpin', function(newValue) {
       _firstpin = newValue;
       $scope.askForPin = 2;
@@ -47,10 +50,37 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     });
   };
 
+
+  $scope.setStorage = function(useLocalstorage) {
+    console.log('[createProfile.js.53:useLocalstorage:]', useLocalstorage); //TODO
+    console.log('[createProfile.js.53:useLocalstorage:]', $scope.useLocalstorage); //TODO
+    //settingsService.save({...})
+    $scope.createStep = 'email';
+    $scope.useEmail = !useLocalstorage;
+    $scope.useLocalstorage = useLocalstorage;
+    $timeout(function() {
+      $scope.$digest();
+    }, 1);
+  };
+
+  $scope.setEmailOrUsername = function(form) {
+    console.log('[createProfile.js.53:useLocalstorage:]', $scope.useLocalstorage); //TODO
+
+    $scope.userOrEmail = $scope.useLocalstorage ? form.username.$modelValue : form.email.$modelValue;
+    preconditions.checkState($scope.userOrEmail);
+
+    $scope.createStep = 'pass';
+    $timeout(function() {
+      $scope.$digest();
+    }, 1);
+  };
+
+
+
   $scope.createDefaultWallet = function() {
     $rootScope.hideNavigation = false;
     identityService.createDefaultWallet(function(err) {
-      $scope.askForPin =0 ;
+      $scope.askForPin = 0;
       $scope.loading = false;
 
       if (err) {
@@ -67,7 +97,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       return;
     }
     $scope.loading = true;
-    identityService.create(form.email.$modelValue, form.password.$modelValue, function(err) {
+    identityService.create( $scope.userOrEmail, form.password.$modelValue, function(err) {
       $scope.loading = false;
 
       if (err) {
@@ -76,15 +106,13 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
           msg = 'This profile already exists'
         }
         $timeout(function() {
-            form.email.$setViewValue('');
-            form.email.$render();
-            form.password.$setViewValue('');
-            form.password.$render();
-            form.repeatpassword.$setViewValue('');
-            form.repeatpassword.$render();
-            form.$setPristine();
-            $scope.error =  msg;
-          },1);
+          form.password.$setViewValue('');
+          form.password.$render();
+          form.repeatpassword.$setViewValue('');
+          form.repeatpassword.$render();
+          form.$setPristine();
+          $scope.error = msg;
+        }, 1);
         $scope.error = msg;
       } else {
         $scope.error = null;

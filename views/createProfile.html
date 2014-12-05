@@ -36,109 +36,148 @@
       </div>
 
 
-      <form ng-show="0" name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
-          <tabset>
-            <tab heading="In the cloud" style="width: 50%;">
+      <form ng-show="createStep == 'storage' " novalidate>
+        <tabset>
+          <tab heading="In the cloud" style="width: 50%;" ng-click="useLocalstorage=false">
+            <div ng-if="!useLocalstorage">
               <div class="line-b">
-                <div class="bg-circle"><i class="icon-wallet"></i></div>
+                <div class="bg-circle"><i class="icon-wallet"></i>
+                </div>
                 <span class="text-gray">Access your wallets anywhere</span>
               </div>
               <div class="line-b">
-                <div class="bg-circle"><i class="icon-download"></i></div>
+                <div class="bg-circle"><i class="icon-download"></i>
+                </div>
                 <span class="text-gray">Backups managed by the server</span>
               </div>
               <div class="">
-                <div class="bg-circle"><i class="icon-email"></i></div>
+                <div class="bg-circle"><i class="icon-email"></i>
+                </div>
                 <span class="text-gray">Email address confirmation needed</span>
               </div>
-            </tab>
-            <tab heading="In your device" style="width: 50%;">
+            </div>
+            <button translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
+              Create in the cloud
+            </button>
+          </tab>
+          <tab heading="In your device" style="width: 50%;" ng-click="useLocalstorage=true">
+            <div ng-if="useLocalstorage">
               <div class="line-b">
-                <div class="bg-circle"><i class="icon-wallet"></i></div>
-                <span class="text-gray">Access your wallets anywhere</span>
+                <div class="bg-circle"><i class="icon-wallet"></i>
+                </div>
+                <span class="text-gray">Todo1</span>
               </div>
               <div class="line-b">
-                <div class="bg-circle"><i class="icon-download"></i></div>
-                <span class="text-gray">Backups managed by the server</span>
+                <div class="bg-circle"><i class="icon-download"></i>
+                </div>
+                <span class="text-gray">Todo2</span>
               </div>
               <div class="">
-                <div class="bg-circle"><i class="icon-email"></i></div>
-                <span class="text-gray">Email address confirmation needed</span>
+                <div class="bg-circle"><i class="icon-email"></i>
+                </div>
+                <span class="text-gray">Todo3</span>
               </div>
-            </tab>
-          </tabset>
-        <button translate type="submit" class="button primary radius expand m0" ng-disabled="profileForm.$invalid || loading">
-          Create
-        </button>
+            </div>
+            <button translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
+              Create in this device
+            </button>
+          </tab>
+        </tabset>
+
+        <div class="box-setup-footer">
+          <div class="left">
+            <a class="text-gray" href="#!/">
+              <i class="icon-arrow-left4"></i> 
+              <span translate>Back</span>
+            </a>
+          </div>
+        </div>
       </form>
 
-      <form ng-show="0" name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
+      <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
         <div class="box-setup">
-        <div class="m5b text-right">
-          <span translate class="has-error size-12" ng-show="profileForm.email.$invalid &&
-            !profileForm.email.$pristine">
-            <span class="icon-input"><i class="fi-x"></i></span>
-          Not valid
-          </span>
-          <span class="icon-input" ng-show="!profileForm.email.$invalid &&
-            !profileForm.email.$pristine"><i class="fi-check"></i></span>
-        </div>
-        
-        <div class="input">
-          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email"
-          show-focus="!isMobile" required>
-          <i class="icon-email"></i>
-        </div>
+
+
+            <div ng-if="useLocalstorage"> [x] Creating in this device </div>
+            <div ng-if="!useLocalstorage"> [x] Creating in the cloud </div>
+
+          <div class="m5b text-right" ng-if="useEmail">
+            <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
+            !emailForm.email.$pristine">
+              <span class="icon-input"><i class="fi-x"></i></span>
+              Not valid
+            </span>
+            <span class="icon-input" ng-show="!emailForm.email.$invalid &&
+            !emailForm.email.$pristine"><i class="fi-check"></i></span>
+          </div>
+
+          <div class="input" ng-if="useEmail">
+            <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
+            <i class="icon-email"></i>
+          </div>
+          <div class="input" ng-if="!useEmail">
+            <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
+            <i class="icon-user"></i>
+          </div>
         </div>
 
-        <button translate type="submit" class="button primary radius expand m0" ng-disabled="profileForm.$invalid || loading">
-          Create
-        </button>
-      </form>
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="(useEmail && emailForm.email.$invalid) || (!useEmail && emailForm.username.$invalid)">
+          Next
+        </button
 
-      <form ng-show="1" name="profileForm" ng-submit="createProfile(profileForm)" novalidate>
-        <div class="input">
-          <input id="password" type="password" ng-model="$parent.password" 
-          class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" 
-          tooltip-html-unsafe="Password strength: <b>{{passwordStrength}}</b><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
-          <i class="icon-locked"></i>
+>
+        <div class="box-setup-footer">
+          <div class="left">
+            <a class="text-gray" ng-click="createStep='storage'">
+              <i class="icon-arrow-left4"></i> 
+              <span translate>Back</span>
+            </a>
+          </div>
         </div>
  
+      </form>
+
+      <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
+
+            <div ng-if="useLocalstorage"> [x] Creating in this device </div>
+            <div ng-if="!useLocalstorage"> [x] Creating in the cloud </div>
+            <div > -&gt; {{userOrEmail}} </div>
+
+
+        <div class="input">
+          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: <b>{{passwordStrength}}</b><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
+          <i class="icon-locked"></i>
+        </div>
+
         <div class="m5b text-right">
-          <span translate class="has-error size-12" ng-show="profileForm.repeatpassword.$dirty &&
-            profileForm.repeatpassword.$invalid">
+          <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
+            passForm.repeatpassword.$invalid">
             <span class="icon-input"><i class="fi-x"></i></span>
           {{'Passwords must match'|translate}}
           </span>
-          <span class="icon-input" ng-show="profileForm.repeatpassword.$dirty &&
-            !profileForm.repeatpassword.$invalid"><i class="fi-check"></i></span> 
+          <span class="icon-input" ng-show="passForm.repeatpassword.$dirty &&
+            !passForm.repeatpassword.$invalid"><i class="fi-check"></i></span> 
         </div>
 
         <div class="input">
           <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required>
           <i class="icon-locked"></i>
-        </div> 
+        </div>
 
-        <button translate type="submit" class="button primary radius expand m0" ng-disabled="profileForm.$invalid || loading">
-          Create
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="passForm.$invalid || loading">
+          Create Profile
         </button>
+
+        <div class="box-setup-footer">
+          <div class="left">
+            <a class="text-gray" ng-click="createStep='email'">
+              <i class="icon-arrow-left4"></i> 
+              <span translate>Back</span>
+            </a>
+          </div>
+        </div>
       </form>
 
-
-      <div class="box-setup-footer">
-        <div class="left">
-          <a class="text-gray" href="#!/">
-            <i class="icon-arrow-left4"></i> 
-            <span translate>Back</span>
-          </a>
-        </div>
-        <div class="right">
-          <a class="right size-12 text-gray" href="#!/settings">
-            <i class="icon-wrench"></i> 
-            <span translate>Settings</span>
-          </a>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -173,15 +212,14 @@
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate type="submit" class="button primary radius expand m0"
-              ng-disabled="setPinForm.$invalid || error">
-              OK 
+            <button translate type="submit" class="button primary radius expand m0" ng-disabled="setPinForm.$invalid || error">
+              OK
             </button>
           </div>
         </div>
 
 
-      </form> 
+      </form>
     </div>
   </div>
 </div>
