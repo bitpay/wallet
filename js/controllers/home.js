@@ -140,7 +140,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         if ((err.toString() || '').match('PNOTFOUND')) {
           $scope.error = 'Invalid email or password';
           pinService.clear(function() {
-            copay.logger.debug('PIN erased');
           });
         } else if ((err.toString() || '').match('Connection')) {
           $scope.error = 'Could not connect to Insight Server';
@@ -150,7 +149,9 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           $scope.error = 'Unknown error';
         }
         $rootScope.starting = false;
-        $rootScope.$digest();
+        $timeout(function(){
+          $rootScope.$digest();
+        },1)
         return;
       }
 
