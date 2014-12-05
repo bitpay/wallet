@@ -115,6 +115,10 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('totalNeededAmount'))
         msg = 'Not enough funds'
 
+
+      if (msg.match('unspent not set'))
+        msg = 'Not enough funds'
+
       var message = 'The transaction' + (w.isShared() ? ' proposal' : '') +
         ' could not be created: ' + msg;
 
@@ -310,15 +314,19 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.notifyStatus = function(status) {
       if (status == copay.Wallet.TX_BROADCASTED)
-        notification.success('Success', 'Transaction broadcasted!');
+        $scope.success = 'Transaction broadcasted!';
       else if (status == copay.Wallet.TX_PROPOSAL_SENT)
-        notification.success('Success', 'Transaction proposal created');
+        $scope.success = 'Transaction proposal created';
       else if (status == copay.Wallet.TX_SIGNED)
-        notification.success('Success', 'Transaction proposal was signed');
+        $scope.success = 'Transaction proposal was signed';
       else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
-        notification.success('Success', 'Transaction signed and broadcasted!');
+        $scope.success = 'Transaction signed and broadcasted!';
       else
-        notification.error('Error', 'Unknown error occured');
+        $scope.error = 'Unknown error occured';
+
+      $timeout(function() {
+        $scope.$digest();
+      });
     };
 
 
@@ -327,6 +335,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
       w.issueTx(ntxid, function(err, txid, status) {
+        $scope.loading = false;
         $scope.notifyStatus(status);
         if (cb) return cb();
       });
