@@ -22,7 +22,7 @@
 
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading  && !askForPin">
     <div class="logo-setup">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div>
@@ -110,7 +110,7 @@
       </form>
 
       <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
-        <div class="box-setup">
+        <div>
 
 
             <div ng-if="useLocalstorage"> [x] Creating in this device </div>
