@@ -58,12 +58,9 @@
             </div>
 
 
-            <div class="row">
-              <div class="large-6 medium-6 columns">
-                <div class="row collapse">
-                  <label for="amount" class="small-7 columns m5b"><span translate>Amount</span>
-                    <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
-                  </label>
+            <div class="row" ng-init="showAlternative = false">
+              <div class="large-12 medium-12 columns">
+                <div class="m5b right">
                   <span translate class="has-error right size-12" ng-show="sendForm.amount.$invalid &&
                     !sendForm.amount.$pristine && (notValidAmount || amount)">
                     <span class="icon-input"><i class="fi-x"></i></span>
@@ -71,42 +68,51 @@
                   </span>
                   <small class="icon-input right" ng-show="!sendForm.amount.$invalid &&
                     !sendForm.amount.$pristine"><i class="fi-check"></i></small>
-                  
-                  
-                  <div class="small-9 columns">
-                    <div class="input">
-                      <input type="number" id="amount"
-                      ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || isPayUri"
-                      name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
-                      ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required
-                      autocomplete="off">
-                      <i class="icon-bitcoin"></i>
+                </div>
+                <div ng-show="!showAlternative">
+                  <div class="row collapse"> 
+
+                    <label for="amount"><span translate>Amount in</span> {{$root.wallet.settings.unitName}}
+                      <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
+                    </label>
+
+                    <div class="small-9 columns">
+                      <div class="input">
+                        <input type="number" id="amount"
+                        ng-disabled="loading || ($root.merchant && +$root.merchant.total > 0) || isPayUri"
+                        name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
+                        ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required
+                        autocomplete="off">
+                        <i class="icon-bitcoin"></i>
+                      </div>
+                      <a class="small input-note" title="{{'Send all funds'|translate}}"
+                        ng-show="topAmount && (!$root.merchant || +$root.merchant.total === 0)"
+                        ng-click="setTopAmount(sendForm)">
+                        <span translate>Use all funds</span> {{$root.wallet.settings.unitName}}
+                      </a>
                     </div>
-                    <a class="small input-note" title="{{'Send all funds'|translate}}"
-                      ng-show="topAmount && (!$root.merchant || +$root.merchant.total === 0)"
-                      ng-click="setTopAmount(sendForm)">
-                      <span translate>Use all funds</span> {{$root.wallet.settings.unitName}}
-                    </a>
-                  </div>
-                  <div class="small-3 columns">
-                    <span class="postfix">{{$root.wallet.settings.unitName}}</span>
+                    <div class="small-3 columns pointer" ng-click="showAlternative = true">
+                      <span class="postfix">{{$root.wallet.settings.unitName}}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="large-6 medium-6 columns">
-                <div class="row collapse">
-                  <label for="alternative"><span translate>Amount in</span> {{ alternativeName }} </label>
-                  <div class="small-9 columns">
-                    <div class="input">
-                      <input type="number" id="alternative"
-                      ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0) ||
-                      isPayUri"
-                      name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative" requiredautocomplete="off">
-                      <i class="icon-usd"></i>
+                <div ng-show="showAlternative">
+                  <div class="row collapse">
+                    <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
+                      <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
+                    </label>
+                    <div class="small-9 columns">
+                      <div class="input">
+                        <input type="number" id="alternative"
+                        ng-disabled="loading || !isRateAvailable || ($root.merchant && +$root.merchant.total > 0) ||
+                        isPayUri"
+                        name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative" requiredautocomplete="off">
+                        <i class="icon-usd"></i>
+                      </div>
                     </div>
-                  </div>
-                  <div class="small-3 columns">
-                    <span class="postfix">{{alternativeIsoCode}}</span>
+                    <div class="small-3 columns pointer" ng-click="showAlternative = false">
+                      <span class="postfix">{{alternativeIsoCode}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
