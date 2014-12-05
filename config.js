@@ -8,7 +8,7 @@ var defaultConfig = {
 
   // wallet limits
   limits: {
-    totalCopayers: 12,
+    totalCopayers: 6,
     mPlusN: 100,
   },
 
