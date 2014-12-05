@@ -231,6 +231,9 @@
     background-color: #3C4E60;
   }
 
+  .tooltip {
+    display: none !important;
+  }
 }
 
 @media (max-width: 640px) {

@@ -354,6 +354,10 @@ a:hover {
   background-color: #F8F8FB;
 }
 
+.pin-main {
+  background-color: #2C3E50;
+}
+
 .logo-setup {
   text-align: center;
   padding: 5rem 0 4rem;
