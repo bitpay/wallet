@@ -1,10 +1,10 @@
-<div ng-init="username = $root.iden.getName()">
+<div>
   <div class="text-center off-canvas-list">
     <a href="#!/profile" class="columns m10v" title="Profile">
       <div class="photo-container">
-        <img gravatar-src="'{{username}}'" gravatar-size="35">
+        <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="35">
       </div>
-      <p class="text-black m5">{{username}}</p>
+      <p class="text-black m5">{{$root.iden.getName()}}</p>
       <span class="db text-gray size-10" >
         <i class="fi-torso"></i> {{'ViewProfile' | translate }} 
       </span>
