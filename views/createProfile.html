@@ -60,22 +60,22 @@
               Create in the cloud
             </button>
           </tab>
-          <tab heading="In your device" style="width: 50%;" ng-click="useLocalstorage=true">
+          <tab heading="In this device" style="width: 50%;" ng-click="useLocalstorage=true">
             <div ng-if="useLocalstorage">
-              <div class="line-b">
-                <div class="bg-circle"><i class="icon-wallet"></i>
-                </div>
-                <span class="text-gray">Todo1</span>
-              </div>
-              <div class="line-b">
+             <div class="line-b">
                 <div class="bg-circle"><i class="icon-download"></i>
                 </div>
-                <span class="text-gray">Todo2</span>
+                <span class="text-gray">Your private keys never leave this device</span>
               </div>
               <div class="">
                 <div class="bg-circle"><i class="icon-email"></i>
                 </div>
-                <span class="text-gray">Todo3</span>
+                <span class="text-gray">No email required</span>
+              </div>
+              <div class="line-b">
+                <div class="bg-circle"><i class="icon-wallet"></i>
+                </div>
+                <span class="text-gray">Need to be careful with backups</span>
               </div>
             </div>
             <button translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
@@ -91,6 +91,12 @@
               <span translate>Back</span>
             </a>
           </div>
+          <div class="right">
+            <a class="text-gray" href="https://copay.io/profile-storage"
+              <span translate>Learn more about this option</span>
+            </a>
+          </div>
+ 
         </div>
       </form>
 
