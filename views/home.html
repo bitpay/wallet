@@ -38,9 +38,9 @@
       </div>
     </div>
 
-    <div class="box-setup" ng-if="askForPin">
-      <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
-      <p class="size-14">Enter a 4-digit number for easier access from this device</p>
+    <div ng-if="askForPin">
+      <h2><span translate>Set up a </span> <b> PIN </b>?</h2>
+      <p class="size-14 text-gray">Enter a 4-digit number for easier access from this device</p>
 
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
@@ -61,7 +61,7 @@
           <i class="icon-locked"></i>
         </div>
 
-        <div class="box-setup-footer row collapse">
+        <div class="row collapse">
           <div class="large-6 medium-6 small-6 columns">
             <a class="button secondary radius m0" ng-click="openWallets()">
               <span translate>Skip</span> 
@@ -78,8 +78,8 @@
       </form>
     </div>
 
-    <div class="box-setup" ng-if='$root.hasPin'>
-      <h1><span translate>Enter your </span> <b> PIN</b></h1>
+    <div ng-if='$root.hasPin'>
+      <h2><span translate>Enter your </span> <b> PIN</b></h2>
       <form name="pinForm" novalidate>
         <div class="box-notification" ng-show="error">
           <div class="box-icon error">
@@ -95,7 +95,7 @@
           <i class="icon-locked"></i>
         </div>
 
-        <div class="box-setup-footer row collapse">
+        <div class="row collapse">
           <div class="large-6 medium-6 small-6 columns">
             <a class="button warning radius m0" ng-click="pinLogout()">
               <i class="icon-power"></i> 
