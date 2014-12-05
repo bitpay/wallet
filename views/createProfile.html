@@ -59,7 +59,6 @@
                 <span class="text-gray">Email address confirmation needed</span>
               </div>
           </tab>
-          
           <tab style="width: 50%;" select="selectStorage('local')">
             <tab-heading>
               <div class="m5t text-bold">In this Device </div>
@@ -82,16 +81,10 @@
           </tab>
         </tabset>
 
-        <button ng-show="!useLocalstorage" translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
-          Create in the cloud
+        <button  translate class="button primary radius expand m0" ng-click="goToEmail()">
+          <span ng-if="!useLocalstorage"> Create in the cloud</span>
+          <span ng-if="useLocalstorage"> Create in this device</span>
         </button>
-
-        <button ng-show="useLocalstorage" translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
-          Create in this device
-        </button>
-
-
-        
 
         <div class="box-setup-footer">
           <div class="left">
@@ -143,7 +136,7 @@
 >
         <div class="box-setup-footer">
           <div class="left">
-            <a class="text-gray" ng-click="createStep='storage'">
+            <a class="text-gray" ng-click="setStep('storage')">
               <i class="icon-arrow-left4"></i> 
               <span translate>Back</span>
             </a>
@@ -185,7 +178,7 @@
 
         <div class="box-setup-footer">
           <div class="left">
-            <a class="text-gray" ng-click="createStep='email'">
+            <a class="text-gray" ng-click="setStep('email')">
               <i class="icon-arrow-left4"></i> 
               <span translate>Back</span>
             </a>

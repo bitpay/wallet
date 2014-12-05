@@ -64,8 +64,10 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
 
   $scope.$on("$destroy", function() {
     var w = $rootScope.wallet;
-    removeWatch();
-    w.removeListener('txProposalEvent', _updateTxs);
+    if (w) {
+      removeWatch();
+      w.removeListener('txProposalEvent', _updateTxs);
+    };
   });
 
   $scope.setAlternativeAmount = function(w, tx, cb) {
