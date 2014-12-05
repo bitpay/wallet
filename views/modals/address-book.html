@@ -12,13 +12,13 @@
       {{success}}
     </span>
   </div>
-  <table class="addressbook m0" ng-show="!showForm && hasEntry()">
-    <thead>
+  <table class="addressbook" ng-show="!showForm && hasEntry()">
+    <thead class="show-for-large-up">
       <tr>
         <th translate>Entry</th>
         <th ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
-        <th class="hide-for-small-only" translate>Date</th>
-        <th class="hide-for-small-only">Visible</th>
+        <th class="show-for-large-up" translate>Date</th>
+        <th class="show-for-large-up">Visible</th>
       </tr>
     </thead>
     <tbody>
@@ -29,12 +29,12 @@
       <td ng-click="copyToSend(addr)">
         <dl>
           <dt><b>{{info.label}}</b></dt>
-          <dd><span class="ellipsis">{{::addr}}</span></dd>
+          <dd><span class="address-size">{{::addr}}</span></dd>
         </dl>
       </td>
       <td ng-click="copyToSend(addr)" ng-show="$root.wallet.isShared()" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
-      <td ng-click="copyToSend(addr)" class="hide-for-small-only"><time>{{::info.createdTs | amCalendar}}</time></td>
-      <td class="hide-for-small-only text-center">
+      <td ng-click="copyToSend(addr)" class="show-for-large-up"><time>{{::info.createdTs | amCalendar}}</time></td>
+      <td class="show-for-large-up text-center">
         <a ng-click="toggleAddressBookEntry(addr)" title="{{ info.hidden ? 'Enable' : 'Disable'}} address">
           <i class="fi-checkbox size-21" 
             ng-class="{'text-success':!info.hidden, 'text-gray':info.hidden}"></i>

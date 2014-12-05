@@ -1496,8 +1496,21 @@ a.text-warning:hover {color: #FD7262;}
 
 @media only screen and (max-width: 40em) {
   dialog.large, .reveal-modal.large {
-    height: auto;
-    padding: 0;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.25rem 0.25rem;
+  }
+  
+  dialog.large span.address-size, .reveal-modal.large span.address-size {
+    font-size: 12px;
+  }
+  
+  dialog.large table, .reveal-modal.large table {
+    margin: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
   }
 }
 
