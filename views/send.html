@@ -42,7 +42,7 @@
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="loading || !!$root.merchant || isPayUri"
               placeholder="{{'Bitcoin address'|translate}}" ng-model="address" valid-address required>
-              <i class="fi-address-book"></i>
+              <i class="fi-address-book"></i> 
               <div ng-hide="showScanner || disableScanner">
                 <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
               </div>
@@ -165,6 +165,9 @@
 
             <div class="row">
               <div class="large-6 medium-6 small-6 columns text-left">
+                <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || isPayUri" ng-click="openAddressBook()">
+                  <i class="fi-address-book"></i> Address book
+                </a>
                 <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant || isPayUri">
                   Cancel
                 </a>
@@ -186,42 +189,5 @@
         1 BTC = {{$root.wallet.balanceInfo.alternativeConversionRate}} {{alternativeIsoCode}}
       </div>
     </div> 
-
-    <div class="line-dashed-h m20b"></div>
-    <div class="row">
-      <div class="large-12 columns">
-        <h2 translate>Address Book</h2>
-        <p translate class="text-gray m15b" ng-hide="showAddressBook()">Empty. Create an alias for your addresses</p>
-        <table ng-show="showAddressBook()">
-          <thead>
-            <tr>
-              <th translate>Label</th>
-              <th translate>Address</th>
-              <th ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
-              <th class="hide-for-small-only" translate>Date</th>
-              <th class="hide-for-small-only">Enable</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr
-            ng-repeat="(addr, info) in $root.wallet.addressBook"
-            ng-class="{'addressbook-disabled': info.hidden}">
-            <td><a ng-click="copyAddress(addr)" title="Copy address">{{info.label}}</a></td>
-            <td class="size-12">{{::addr}}</td>
-            <td ng-show="$root.wallet.isShared()" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
-            <td class="hide-for-small-only"><time>{{::info.createdTs | amCalendar}}</time></td>
-            <td class="hide-for-small-only">
-              <a ng-click="toggleAddressBookEntry(addr)" title="{{ info.hidden ? 'Enable' : 'Disable'}} address">
-                <i class="fi-checkbox" 
-                  ng-class="{'text-success':!info.hidden, 'text-gray':info.hidden}"></i>
-              </a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <button translate class="button tiny primary" ng-click="openAddressBookModal()">
-          <i class="fi-plus m5r"></i> Add</button>
-      </div>
-    </div>
 </div>
 
