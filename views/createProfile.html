@@ -113,8 +113,8 @@
         <div>
 
 
-            <div ng-if="useLocalstorage"> [x] Creating in this device </div>
-            <div ng-if="!useLocalstorage"> [x] Creating in the cloud </div>
+            <h2 ng-if="useLocalstorage"> Creating in this device </h2>
+            <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
 
           <div class="m5b text-right" ng-if="useEmail">
             <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
@@ -132,7 +132,7 @@
           </div>
           <div class="input" ng-if="!useEmail">
             <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
-            <i class="icon-user"></i>
+            <i class="icon-person"></i>
           </div>
         </div>
 
@@ -154,9 +154,9 @@
 
       <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
 
-            <div ng-if="useLocalstorage"> [x] Creating in this device </div>
-            <div ng-if="!useLocalstorage"> [x] Creating in the cloud </div>
-            <div > -&gt; {{userOrEmail}} </div>
+            <h2 ng-if="useLocalstorage"> Creating in this device </h2>
+            <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
+            <div class="text-gray text-center m20b"> {{userOrEmail}} </div>
 
 
         <div class="input">
