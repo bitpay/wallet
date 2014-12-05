@@ -992,7 +992,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   color: #343c43;
   margin-bottom: 1.3rem;
   height: 40px;
-  border-radius: 2px;
+  border-radius: 3px;
   background: #F2F5F8;
   -moz-box-shadow:    inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   box-shadow:         inset 1px 1px 0px 0px rgba(0,0,0,0.05);
@@ -1035,8 +1035,8 @@ button.primary,
 .button.primary { 
   background-color: #1ABC9C;
   color: #fff;
-  border-radius: 2px;
-  border-radius: 2px;
+  border-radius: 3px;
+  border-radius: 3px;
   -moz-box-shadow:    1px 1px 0px 0px #16A085;
   box-shadow:         1px 1px 0px 0px #16A085;
 }
@@ -1070,7 +1070,7 @@ button.warning,
 .button.warning { 
   background-color: #C0392A;
   color: #fff;
-  border-radius: 2px;
+  border-radius: 3px;
   -moz-box-shadow:    1px 1px 0px 0px #A02F23;
   box-shadow:         1px 1px 0px 0px #A02F23;
 }
@@ -1419,6 +1419,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .text-light {font-weight: 100;}
+.text-bold {font-weight: 700;}
 .text-gray {color: #8597A7;}
 .text-black {color: #2C3E50;}
 .text-primary {color: #1ABC9C;}
@@ -1642,10 +1643,51 @@ a.text-warning:hover {color: #FD7262;}
 
 /*/////////////////////////////////////////////////*/
 
+.tabbable {
+  border: 2px solid #213140;
+  border-radius: 3px;
+  margin-bottom: 1.2rem;
+}
+
+.tabs dd.active a {
+  color: #fff;
+  background-color: transparent;
+}
+
+.tabs dd>a {
+  background: #213140;
+  text-transform: uppercase;
+  color: #3E4F5D;
+  padding: 1rem;
+  text-align: center;
+  height: 64px;
+  font-size: 14px;
+  line-height: 15px;
+}
+
+.tabs dd>a:hover {
+  background: #1C2B39;
+}
+
+.tabs dd.active a:hover {
+  background: transparent;
+}
+
+.tabs-content {
+  margin-bottom: 0;
+}
+
+.content-item {
+  border-bottom: 1px solid rgba(32,48,64,0.30);
+  box-shadow: 0px 1px 0px 0px rgba(121,140,158,0.10);
+  margin: .5rem 1.3rem;
+  padding: 0.8rem 0;
+}
+
 .bg-circle {
   background: #253547;
   border-radius: 100%;
-  margin: .5rem 1rem 0.5rem 0;
+  margin: 0 1rem 0.3rem 0;
   padding: 0.75rem;
   display: inline-block;
   text-align: center;

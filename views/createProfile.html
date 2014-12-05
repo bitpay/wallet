@@ -25,7 +25,7 @@
       <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
-    <div class="box-setup">
+    <div>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
@@ -38,51 +38,64 @@
 
       <form ng-show="createStep == 'storage' " novalidate>
         <tabset>
-          <tab heading="In the cloud" style="width: 50%;" ng-click="useLocalstorage=false">
+          <tab style="width: 50%;" ng-click="useLocalstorage=false">            
+            <tab-heading>
+              <span class="text-bold">In the Cloud </span><br>
+              <span class="size-10 text-gray">( Recommended )</span>
+            </tab-heading>
             <div ng-if="!useLocalstorage">
-              <div class="line-b">
+              <div class="content-item">
                 <div class="bg-circle"><i class="icon-wallet"></i>
                 </div>
                 <span class="text-gray">Access your wallets anywhere</span>
               </div>
-              <div class="line-b">
+              <div class="content-item">
                 <div class="bg-circle"><i class="icon-download"></i>
                 </div>
                 <span class="text-gray">Backups managed by the server</span>
               </div>
-              <div class="">
+              <div class="content-item">
                 <div class="bg-circle"><i class="icon-email"></i>
                 </div>
                 <span class="text-gray">Email address confirmation needed</span>
               </div>
             </div>
-            <button translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
-              Create in the cloud
-            </button>
           </tab>
-          <tab heading="In this device" style="width: 50%;" ng-click="useLocalstorage=true">
+          
+          <tab style="width: 50%;" ng-click="useLocalstorage=true">
+            <tab-heading>
+              <div class="m5t text-bold">In this Device </div>
+            </tab-heading>
             <div ng-if="useLocalstorage">
-             <div class="line-b">
+              <div class="content-item">
                 <div class="bg-circle"><i class="icon-download"></i>
                 </div>
                 <span class="text-gray">Your private keys never leave this device</span>
               </div>
-              <div class="">
+              <div class="content-item">
                 <div class="bg-circle"><i class="icon-email"></i>
                 </div>
                 <span class="text-gray">No email required</span>
               </div>
-              <div class="line-b">
+              <div class="content-item">
                 <div class="bg-circle"><i class="icon-wallet"></i>
                 </div>
                 <span class="text-gray">Need to be careful with backups</span>
               </div>
             </div>
-            <button translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
-              Create in this device
-            </button>
           </tab>
         </tabset>
+
+        <button ng-show="!useLocalstorage" translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
+          Create in the cloud
+        </button>
+
+        <button ng-show="useLocalstorage" translate class="button primary radius expand m0" ng-click="setStorage(useLocalstorage)">
+          Create in this device
+        </button>
+
+
+        
 
         <div class="box-setup-footer">
           <div class="left">
