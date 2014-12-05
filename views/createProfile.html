@@ -116,20 +116,22 @@
         <h2 ng-if="useLocalstorage"> Creating in this device </h2>
         <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
 
-        <div class="m5b text-right" ng-if="useEmail">
-          <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
-          !emailForm.email.$pristine">
-            <span class="icon-input"><i class="fi-x"></i></span>
-            Not valid
-          </span>
-          <span class="icon-input" ng-show="!emailForm.email.$invalid &&
-          !emailForm.email.$pristine"><i class="fi-check"></i></span>
-        </div>
-
         <div class="input" ng-if="useEmail">
           <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
           <i class="icon-email"></i>
+          <div class="icon-input m5b text-right" ng-if="useEmail">
+            <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
+            !emailForm.email.$pristine">
+            <div class="">
+              <i class="fi-x"></i>
+              Not valid
+            </div>
+            </span>
+            <div class="" ng-show="!emailForm.email.$invalid &&
+            !emailForm.email.$pristine"><i class="fi-check"></i></div>
+          </div>
         </div>
+
         <div class="input" ng-if="!useEmail">
           <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
           <i class="icon-person"></i>
@@ -166,19 +168,20 @@
           <i class="icon-locked"></i>
         </div>
 
-        <div class="m5b text-right">
-          <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
-            passForm.repeatpassword.$invalid">
-            <span class="icon-input"><i class="fi-x"></i></span>
-          {{'Passwords must match'|translate}}
-          </span>
-          <span class="icon-input" ng-show="passForm.repeatpassword.$dirty &&
-            !passForm.repeatpassword.$invalid"><i class="fi-check"></i></span> 
-        </div>
-
         <div class="input">
           <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required>
           <i class="icon-locked"></i>
+          <div class="icon-input m5b text-right">
+            <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
+            passForm.repeatpassword.$invalid">
+              <div>
+                <i class="fi-x"></i>
+                {{'Passwords must match'|translate}}
+              </div>
+            </span>
+            <div class="" ng-show="passForm.repeatpassword.$dirty &&
+            !passForm.repeatpassword.$invalid"><i class="fi-check"></i></div>
+          </div>
         </div>
 
         <button translate type="submit" class="button primary radius expand m0" ng-disabled="passForm.$invalid || loading">
