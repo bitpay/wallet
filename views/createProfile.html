@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading  && !askForPin">
+  <div class="large-4 large-centered medium-6 medium-centered columns m20b" ng-show="!loading  && !askForPin">
     <div class="logo-setup">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
@@ -37,6 +37,9 @@
 
 
       <form ng-show="createStep == 'storage' " novalidate>
+        <div class="clipo">
+          <img src="img/clipo-signup1.png" alt="clipo" width="311">
+        </div>
         <tabset>
           <tab style="width: 50%;" select="selectStorage('remote')">
             <tab-heading>
@@ -64,17 +67,17 @@
               <div class="m5t text-bold">In this Device </div>
             </tab-heading>
               <div class="content-item">
-                <div class="bg-circle"><i class="icon-download"></i>
+                <div class="bg-circle"><i class="icon-locked"></i>
                 </div>
                 <span class="text-gray">Your private keys never leave this device</span>
               </div>
               <div class="content-item">
-                <div class="bg-circle"><i class="icon-email"></i>
+                <div class="bg-circle"><i class="icon-person"></i>
                 </div>
                 <span class="text-gray">No email required</span>
               </div>
               <div class="content-item">
-                <div class="bg-circle"><i class="icon-wallet"></i>
+                <div class="bg-circle"><i class="icon-download"></i>
                 </div>
                 <span class="text-gray">Need to be careful with backups</span>
               </div>
@@ -103,30 +106,33 @@
       </form>
 
       <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
-        <div>
+        <div class="clipo" ng-if="useLocalstorage">
+          <img src="img/clipo-signup2-1.png" alt="clipo" width="373">
+        </div>
+        <div class="clipo" ng-if="!useLocalstorage">
+          <img src="img/clipo-signup2.png" alt="clipo" width="373">
+        </div>
 
+        <h2 ng-if="useLocalstorage"> Creating in this device </h2>
+        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
 
-            <h2 ng-if="useLocalstorage"> Creating in this device </h2>
-            <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
+        <div class="m5b text-right" ng-if="useEmail">
+          <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
+          !emailForm.email.$pristine">
+            <span class="icon-input"><i class="fi-x"></i></span>
+            Not valid
+          </span>
+          <span class="icon-input" ng-show="!emailForm.email.$invalid &&
+          !emailForm.email.$pristine"><i class="fi-check"></i></span>
+        </div>
 
-          <div class="m5b text-right" ng-if="useEmail">
-            <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
-            !emailForm.email.$pristine">
-              <span class="icon-input"><i class="fi-x"></i></span>
-              Not valid
-            </span>
-            <span class="icon-input" ng-show="!emailForm.email.$invalid &&
-            !emailForm.email.$pristine"><i class="fi-check"></i></span>
-          </div>
-
-          <div class="input" ng-if="useEmail">
-            <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
-            <i class="icon-email"></i>
-          </div>
-          <div class="input" ng-if="!useEmail">
-            <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
-            <i class="icon-person"></i>
-          </div>
+        <div class="input" ng-if="useEmail">
+          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
+          <i class="icon-email"></i>
+        </div>
+        <div class="input" ng-if="!useEmail">
+          <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
+          <i class="icon-person"></i>
         </div>
 
         <button translate type="submit" class="button primary radius expand m0" ng-disabled="(useEmail && emailForm.email.$invalid) || (!useEmail && emailForm.username.$invalid)">
@@ -146,10 +152,13 @@
       </form>
 
       <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
+        <div class="clipo">
+          <img src="img/clipo-signup3.png" alt="clipo" width="380">
+        </div>
 
-            <h2 ng-if="useLocalstorage"> Creating in this device </h2>
-            <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
-            <div class="text-gray text-center m20b"> {{userOrEmail}} </div>
+        <h2 ng-if="useLocalstorage"> Creating in this device </h2>
+        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
+        <div class="text-gray text-center m20b"> {{userOrEmail}} </div>
 
 
         <div class="input">
@@ -189,7 +198,7 @@
     </div>
   </div>
 
-  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!loading && askForPin">
+  <div class="large-4 large-centered medium-6 medium-centered columns m20b" ng-show="!loading && askForPin">
     <div class="box-setup">
       <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
       <p class="size-14">Enter a 4-digit number for easier access from this device</p>
