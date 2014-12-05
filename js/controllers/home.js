@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   var _credentials, _firstpin;
 
   $scope.init = function() {
+    $scope.isMobile = isMobile.any();
+
     // This is only for backwards compat, insight api should link to #!/confirmed directly
     if (getParam('confirmed')) {
       var hashIndex = window.location.href.indexOf('/?');
@@ -158,7 +160,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         $scope.confirmedEmail = false;
 
         // mobile
-        if (isMobile.any() && !$rootScope.hasPin) {
+        if ($scope.isMobile && !$rootScope.hasPin) {
           $scope.done();
           _credentials = {
             email: email,

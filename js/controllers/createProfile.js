@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService, isMobile) {
 
   var _credentials, _firstpin;
 
   $scope.init = function() {
     identityService.goWalletHome();
+    $scope.isMobile = isMobile.any();
 
     pinService.makePinInput($scope, 'newpin', function(newValue) {
       _firstpin = newValue;
@@ -88,7 +89,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       } else {
         $scope.error = null;
         // mobile
-        if (isMobile.any()) {
+        if ($scope.isMobile) {
           _credentials = {
             email: form.email.$modelValue,
             password: form.password.$modelValue,

@@ -38,7 +38,7 @@
     </div>
 
     <div ng-show="sessionExpired" class="session-expired">
-      <i class="fi-battery-empty size-72 text-gray"></i> 
+      <i class="fi-clock size-72 text-gray"></i> 
       <p class="text-gray size-18">Your session is about to expire due to inactivity in {{countdown}} seconds</p>
     </div>
 
@@ -56,37 +56,40 @@
           </span>
         </span>
  
-        <nav class="tab-bar"  ng-if="$root.iden && !$root.hideNavigation" >
-          <section class="left-small">
-            <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
-          </section>
-          <section class="right-small text-center top-balance" ng-if="$root.wallet && $root.wallet.isComplete() && !$root.wallet.isLocked" >
-            <span ng-if="$root.updatingBalance">
-              <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-            </span>
-            <span class="size-14" ng-if="!$root.updatingBalance">
-              {{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}
-            </span>
-          </section>
+        <div ng-controller="SidebarController" ng-init="init()" ng-if="$root.iden && !$root.hideNavigation">
+          <nav class="tab-bar" >
+            <section class="left-small">
+              <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+            </section>
+            <section class="right-small">
+              <a class="right-off-canvas-toggle p10"><i class="icon-wallet size-24"></i></a>
+            </section>
 
-          <section class="middle tab-bar-section">
-            <h1 class="title ellipsis">
-              {{$root.wallet.getName()}}
-            </h1>
-          </section>
-        </nav>
+            <section class="middle tab-bar-section">
+              <h1 class="title">
+                <img src="img/logo-negative-beta.svg" alt="Copay" width="60">
+              </h1>
+            </section>
+          </nav>
 
-        <aside class="left-off-canvas-menu" ng-if="$root.iden">
-          <div ng-include="'views/includes/sidebar-mobile.html'"></div>
-        </aside>
+          <aside class="left-off-canvas-menu">
+            <div ng-include="'views/includes/sidebar-mobile.html'"></div>
+          </aside>
 
-        <div notifications="right top"></div>
+          <aside class="right-off-canvas-menu">
+            <div ng-include="'views/includes/walletbar-mobile.html'"></div>
+          </aside>
+          <div 
+            ng-include="'views/includes/sidebar.html'" 
+            role='navigation'
+            class="sidebar"></div>
+          <div class="bottom-bar" ng-if="$root.wallet &&
+            $root.wallet.isComplete() && !$root.wallet.isLocked">
+            <div ng-include="'views/includes/bottombar-mobile.html'"></div>
+          </div>
+        </div>
 
-        <div 
-          ng-include="'views/includes/sidebar.html'" 
-          role='navigation'
-          class="sidebar"
-          ng-if="$root.iden"></div>
+        <div notifications="right top"></div> 
 
         <div 
           ng-controller="HeadController"
@@ -96,12 +99,7 @@
           ng-class="{'dni':$root.hideNavigation}"
         ></div>
 
-        <section ng-class="{'main':$root.iden && !$root.starting}" ng-view></section>
-
-        <div class="bottom-bar" ng-if="$root.wallet &&
-          $root.wallet.isComplete() && !$root.wallet.isLocked">
-          <div ng-include="'views/includes/bottombar-mobile.html'"></div>
-        </div>
+        <section ng-class="{'main':$root.iden && !$root.starting}" ng-view></section> 
 
         <a class="exit-off-canvas"></a>
 

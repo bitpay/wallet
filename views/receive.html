@@ -8,23 +8,19 @@
   <div class="row">
     <!-- Address-->
     <div class="large-12 columns" ng-if="addr">
-      <div class="panel oh">
-        <div class="row">
-          <h2 class="line-b" translate>My Bitcoin address:</h2>
-          <div class="text-center" ng-if="!loading">
-            <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
-            <div class="m10t">
-              <h4 class="size-12">{{addr}}</h4>
-            </div>
-          </div>
-          <div class="text-center" ng-if="loading">
-            Generating new address...
+      <div class="panel">
+        <h2 class="line-b" translate>My Bitcoin address:</h2>
+        <div class="text-center" ng-if="!loading">
+          <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+          <div class="m10t">
+            <h4 class="size-12">{{addr}}</h4>
           </div>
         </div>
-        <div class="row">
-          <div class="large-12 columns line-t m10t size-12">
-            Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
-          </div>
+        <div class="text-center" ng-if="loading">
+          Generating new address...
+        </div>
+        <div class="line-t m10t size-12">
+          Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
         </div>
       </div>
     </div>
