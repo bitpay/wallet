@@ -375,7 +375,7 @@ a:hover {
 
 .box-setup-footer {
   overflow: hidden;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   padding: 1rem 0 0;
   border-top: 1px solid #425467;
   font-size: 12px;
@@ -1645,8 +1645,19 @@ a.text-warning:hover {color: #FD7262;}
 /*/////////////////////////////////////////////////*/
 
 .createProfile .input {
+  box-shadow: 0px 0px 0px 3px #213140, inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   border-radius: 3px;
-  box-shadow: 0px 0px 0px 3px #1A2836, inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+}
+
+.createProfile h2 {
+  font-weight: 700;
+  font-size: 14px;
+  color: #A5B2BF;
+  text-transform: uppercase;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #425467;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .tabbable {
