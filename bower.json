@@ -24,7 +24,6 @@
     "angular-load": "0.2.0",
     "lodash": "~2.4.1",
     "angular-gravatar": "*",
-    "fastclick": "*",
     "angular-touch": "~1.3.0"
   },
   "resolutions": {

@@ -25,9 +25,9 @@
 
   .main {
     height: 92%;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-left: 0;
-    margin-bottom: -40px;
+    margin-bottom: -30px;
     padding: 20px 0 80px 0;
   }
 
@@ -53,6 +53,11 @@
     line-height: 110%;
   }
 
+  header h1 {
+    color: #fff;
+    text-align: center;
+  }
+
   .col3 a {
     height: 45px;
     padding: 12px 5px;
@@ -61,6 +66,10 @@
   .status {
     bottom: 66px;
     left: 0;
+  }
+
+  .right-off-canvas-menu {
+    background-color: #213140 ;
   }
 
   .left-off-canvas-menu {
@@ -177,11 +186,6 @@
     margin-left: 0;
     font-size: 14px;
   }
-
-  .top-balance {
-    width: auto;
-    padding: 0 5px;
-  }
   
   a.missing-copayers {
     bottom: -34px;
@@ -204,14 +208,7 @@
 
   .footer-setup {
     margin-bottom: 50px;
-  }
-
-  .side-nav.wallets {
-    padding: 0;
-    height: 100%;
-    left: 0;
-    top: 45px;
-  }
+  } 
 
   ul.off-canvas-list li a:hover {
     background: transparent;
@@ -220,6 +217,18 @@
   .label {
     font-size: 80%;
     padding: 0.15rem 0.2rem;
+  }
+
+  .side-nav.wallets {
+    z-index: 100;
+    overflow-y: inherit;
+    position: inherit;
+    height: auto;
+    border-bottom: none;
+  }
+
+  .side-nav li.nav-item.selected {
+    background-color: #3C4E60;
   }
 
 }

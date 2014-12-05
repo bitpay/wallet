@@ -280,16 +280,6 @@ angular.module('copayApp.directives')
     }
   }
 ])
-  .directive('autoFocus', function($timeout) {
-    return {
-      restrict: 'AC',
-      link: function(_scope, _element) {
-        $timeout(function() {
-          _element[0].focus();
-        });
-      }
-    };
-  })
   .directive('showFocus', function($timeout) {
     return function(scope, element, attrs) {
       scope.$watch(attrs.showFocus, 

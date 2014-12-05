@@ -1,0 +1,37 @@
+<div>
+  <header ng-show="$root.wallet">
+    <h1>My wallets</h1>
+  </header>
+  <div class="side-nav text-center off-canvas-list" ng-show="!wallets[0]">
+    <p class="size-12 text-gray m10t" translate>You do not have another wallets.</p>
+    <a href="#!/create" class="db button secondary tiny" title="Create new wallet">
+      <i class="m10r fi-plus"></i> {{'Create new wallet' | translate }} </a>
+  </div>
+  <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
+    <li 
+      ng-repeat="item in wallets track by $index"
+      ng-class="{'selected': item.id == $root.wallet.id}"
+      class="nav-item">
+    <div class="col1">
+      <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
+    </div>
+    <div class="col2">
+      <a href="#!/homeWallet#{{item.id}}" class="size-12 wallet-item">
+        <div class="oh">
+          <div class="right size-10 type-wallet">
+            [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
+          <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
+        </div>
+        <div class="oh">
+          <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+            <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
+            <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
+          </div>
+          <span ng-if="!item.isComplete()">Waiting for copayers...</span>
+        </div>
+      </a>
+    </div>
+    </li>
+  </ul>
+</div>

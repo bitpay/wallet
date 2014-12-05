@@ -110,7 +110,7 @@
           <input id="pin" type="tel" ng-model="pin" class="form-control"
             ng-maxlength="4" ng-minlength="4" maxlength="4"
             ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="Pin number" name="pin" required auto-focus>
+            placeholder="Pin number" name="pin" required>
           <i class="icon-locked"></i>
         </div>
 
@@ -142,7 +142,7 @@
           </p>
         <div class="input">
           <input type="email" ng-model="email" class="form-control"
-            name="email" placeholder="Email" required auto-focus>
+            name="email" placeholder="Email" required show-focus="!isMobile">
           <i class="icon-email"></i>
         </div>
         <div class="input">
