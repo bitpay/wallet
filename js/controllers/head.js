@@ -4,6 +4,8 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
+  var isChromeApp = typeof window !== "undefined" && window.chrome && chrome.runtime && chrome.runtime.id;
+
   $scope.hoverIn = function() {
     this.hoverMenu = true;
   };
@@ -30,12 +32,14 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
     }
   };
 
-  // Ensures a graceful disconnect
+
+  //Ensures a graceful disconnect
   window.onbeforeunload = function() {
     $scope.signout();
   };
 
   $scope.$on('$destroy', function() {
+    if (isChromeApp) return;
     window.onbeforeunload = undefined;
   });
 

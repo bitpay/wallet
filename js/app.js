@@ -3,18 +3,25 @@
 var copay = require('copay');
 var _ = require('lodash');
 var config = defaultConfig;
-var localConfig = JSON.parse(localStorage.getItem('config'));
+var LS = require('../js/plugins/LocalStorage');
+var ls = new LS();
+
+var localConfig;
 var defaults = JSON.parse(JSON.stringify(defaultConfig));
 
-if (localConfig) {
-  var cmv = copay.version.split('.')[1];
-  var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
-  if (cmv === lmv) {
-    _.each(localConfig, function(value, key) {
-      config[key] = value;
-    });
+
+ls.getItem('config', function(err, data) {
+  localConfig = JSON.parse(data);
+  if (localConfig) {
+    var cmv = copay.version.split('.')[1];
+    var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
+    if (cmv === lmv) {
+      _.each(localConfig, function(value, key) {
+        config[key] = value;
+      });
+    }
   }
-}
+});
 
 var modules = [
   'ngRoute',
@@ -47,9 +54,10 @@ copayApp.config(function($sceDelegateProvider) {
 });
 
 angular.module('ui.gravatar').config([
-  'gravatarServiceProvider', function(gravatarServiceProvider) {
+  'gravatarServiceProvider',
+  function(gravatarServiceProvider) {
     gravatarServiceProvider.defaults = {
-      size     : 35
+      size: 35
     };
     // Use https endpoint
     gravatarServiceProvider.secure = true;

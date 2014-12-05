@@ -1,12 +1,21 @@
 'use strict';
 
+var LS = require('../js/plugins/LocalStorage');
+var ls = new LS();
+
 angular.module('copayApp.services').
 factory('notification', ['$timeout',
   function($timeout) {
 
-    var notifications = JSON.parse(localStorage.getItem('notifications')) || [],
-      queue = [];
+    var notifications = [];
 
+    ls.getItem('notifications', function(err, data) {
+      if (data) {
+        notifications = JSON.parse(data);
+      }
+    });
+
+    var queue = [];
     var settings = {
       info: {
         duration: 6000,
