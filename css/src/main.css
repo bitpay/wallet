@@ -1698,6 +1698,10 @@ a.text-warning:hover {color: #FD7262;}
   margin-bottom: 0;
 }
 
+.tabs-content>.content {
+  padding: 0;
+}
+
 .content-item {
   border-bottom: 1px solid rgba(32,48,64,0.30);
   box-shadow: 0px 1px 0px 0px rgba(121,140,158,0.10);
@@ -1734,4 +1738,9 @@ a.text-warning:hover {color: #FD7262;}
 .clipo {
   padding: 0 0 2rem;
   text-align: center;
+}
+
+.line-none {
+  border: none;
+  box-shadow: none;
 }
