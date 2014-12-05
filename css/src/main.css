@@ -1492,6 +1492,32 @@ a.text-warning:hover {color: #FD7262;}
     width: 50%;
     margin-left: -25%;
   }
+  dialog.large, .reveal-modal.large {
+    max-height: 70%;
+    overflow-y: auto;
+    width: 80%;
+    margin-left: -40%;
+  }
+}
+
+@media only screen and (max-width: 40em) {
+  dialog.large, .reveal-modal.large {
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.25rem 0.25rem;
+  }
+  
+  dialog.large span.address-size, .reveal-modal.large span.address-size {
+    font-size: 12px;
+  }
+  
+  dialog.large table, .reveal-modal.large table {
+    margin: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+  }
 }
 
 @media (max-height: 380px) {
@@ -1640,6 +1666,15 @@ a.text-warning:hover {color: #FD7262;}
   margin-top: 20%;
   width: 100%;
   text-align: center;
+}
+
+.addressbook-entry td {
+  display: block;
+  cursor: pointer;
+}
+
+.addressbook-disabled td, .addressbook-disabled td a {
+  color: #8597A7;
 }
 
 /*/////////////////////////////////////////////////*/
