@@ -4,9 +4,9 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
 
   var _credentials, _firstpin;
-
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
+    $scope.attempt=0;
 
     // This is only for backwards compat, insight api should link to #!/confirmed directly
     if (getParam('confirmed')) {
@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     pinService.check(function(err, value) {
       $rootScope.hasPin = value;
     });
+    $scope.usingLocalStorage = config.plugins.EncryptedLocalStorage;
   };
 
   pinService.makePinInput($scope, 'pin', function(newValue) {
@@ -139,6 +140,12 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         copay.logger.warn(err);
         if ((err.toString() || '').match('PNOTFOUND')) {
           $scope.error = 'Invalid email or password';
+
+          if($scope.attempt++>1) {
+            var storage = $scope.usingLocalStorage ? 'this device storage' : 'cloud storage';
+            $scope.error = 'Invalid email or password. You are trying to sign in using ' + storage + '. Change it on settings is necessary.';
+          };
+
           pinService.clear(function() {
           });
         } else if ((err.toString() || '').match('Connection')) {
