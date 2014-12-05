@@ -222,10 +222,6 @@ describe("Unit: Controllers", function() {
       expect(scope.title).equal('Create Transaction Proposal');
     });
 
-    it('should return true if wallet has addressBook', function() {
-      expect(scope.showAddressBook()).equal(true);
-    });
-
     it('should validate address with network', function() {
       form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
       expect(form.newaddress.$invalid).to.equal(false);
