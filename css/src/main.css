@@ -1179,7 +1179,7 @@ button.gray:focus,
 }
 
 .side-nav.wallets li {
-  margin: 1.2rem .6rem;
+  margin: 1.2rem 0;
   padding: 0.3rem 0.1rem;
 }
 
