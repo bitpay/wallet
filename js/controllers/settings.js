@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, $anchorScroll, notification, applicationService, localstorageService) {
+angular.module('copayApp.controllers').controller('SettingsController', function($scope, $rootScope, $window, $route, $location, notification, configService) {
   $scope.title = 'Settings';
   $scope.defaultLanguage = config.defaultLanguage || 'en';
   $scope.insightLivenet = config.network.livenet.url;
@@ -18,10 +18,10 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   }
 
   $scope.availableStorages = [{
-      name: 'Insight',
+      name: 'In the cloud (Insight server)',
       pluginName: 'EncryptedInsightStorage',
     }, {
-      name: 'Localstorage',
+      name: 'In this device (localstorage)',
       pluginName: 'EncryptedLocalStorage',
     },
     // {
@@ -57,7 +57,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }
   }
 
-
   $scope.save = function() {
     $scope.insightLivenet = copay.Insight.setCompleteUrl($scope.insightLivenet);
     $scope.insightTestnet = copay.Insight.setCompleteUrl($scope.insightTestnet);
@@ -73,33 +72,32 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       },
     }
 
-
     var plugins = {};
     plugins[$scope.selectedStorage.pluginName] = true;
-    copay.logger.setLevel($scope.selectedLogLevel.name);
 
-    localstorageService.setItem('config', JSON.stringify({
-      network: insightSettings,
-      version: copay.version,
-      defaultLanguage: $scope.selectedLanguage.isoCode,
-      plugins: plugins,
-      logLevel: $scope.selectedLogLevel.name,
-      EncryptedInsightStorage: _.extend(config.EncryptedInsightStorage, {
-        url: insightSettings.livenet.url + '/api/email'
-      }),
-      rates: _.extend(config.rates, {
-        url: insightSettings.livenet.url + '/api/rates'
-      }),
-    }), function() {
-      applicationService.restart();
-    });
-
+    configService.set({
+        network: insightSettings,
+        version: copay.version,
+        defaultLanguage: $scope.selectedLanguage.isoCode,
+        plugins: plugins,
+        logLevel: $scope.selectedLogLevel.name,
+        EncryptedInsightStorage: _.extend(config.EncryptedInsightStorage, {
+          url: insightSettings.livenet.url + '/api/email'
+        }),
+        rates: _.extend(config.rates, {
+          url: insightSettings.livenet.url + '/api/rates'
+        }),
+      },
+      function() {
+        notification.success('Settings saved');
+        $location.path('/');
+      });
   };
 
-
   $scope.reset = function() {
-    localstorageService.removeItem('config', function() {
-      applicationService.reload();
+    configService.reset(function() {
+      notification.success('Settings reseted');
+      $location.path('/');
     });
   };
 

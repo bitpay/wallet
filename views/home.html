@@ -3,10 +3,18 @@
   <div class="loading-screen" ng-show="$root.starting">
     <div class="spinner">
       <div class="contener_general">
-          <div class="contener_mixte"><div class="ballcolor ball_1">&nbsp;</div></div>
-          <div class="contener_mixte"><div class="ballcolor ball_2">&nbsp;</div></div>
-          <div class="contener_mixte"><div class="ballcolor ball_3">&nbsp;</div></div>
-          <div class="contener_mixte"><div class="ballcolor ball_4">&nbsp;</div></div>
+        <div class="contener_mixte">
+          <div class="ballcolor ball_1">&nbsp;</div>
+        </div>
+        <div class="contener_mixte">
+          <div class="ballcolor ball_2">&nbsp;</div>
+        </div>
+        <div class="contener_mixte">
+          <div class="ballcolor ball_3">&nbsp;</div>
+        </div>
+        <div class="contener_mixte">
+          <div class="ballcolor ball_4">&nbsp;</div>
+        </div>
       </div>
       <span class="text-gray size-12" translate>Accessing your profile...</span>
     </div>
@@ -14,18 +22,10 @@
 
   <div class="large-4 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup" ng-show="!$root.iden">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
 
-    <div class="p10 box-setup bg-success m10b text-white" ng-show="pendingPayment">
-      <div class="left">
-        <i class="size-36 m10r"></i>
-      </div>
-      <div class="size-14">
-        Please sign in to make the payment
-      </div>
-    </div>
     <div class="p10 box-setup bg-success m10b text-white" ng-show="confirmedEmail">
       <div class="left">
         <i class="size-36 fi-check m10r"></i>
@@ -34,45 +34,30 @@
         <h3>
         Your email was confimed!
         </h3>
-  
         Please sign in to access your wallets
       </div>
-    </div>
-    <div class="p10 box-setup bg-success m10b text-white" ng-show="anyWallet && !confirmedEmail && !error">
-      <div class="left">
-        <i class="size-36 fi-alert m10r"></i>
-      </div>
-      <b>Copay now needs a profile to access wallets.</b>
-      You can import your current wallets after 
-      <a class="text-white" href="#!/createProfile">creating your profile</a>
     </div>
 
     <div class="box-setup" ng-if="askForPin">
       <h1><span translate>Set up a </span> <b> PIN </b>?</h1>
-      <p class="size-14"> Enter a 4-digit number for easier access from this device</p>
-      
+      <p class="size-14">Enter a 4-digit number for easier access from this device</p>
+
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
-        </div> 
+        </div>
         <span class="text-warning size-14">
           {{error|translate}}
         </span>
       </div>
 
-      <form name="setPinForm" ng-model="setPinForm" ng-submit="createPin(setPinForm)" novalidate> 
+      <form name="setPinForm" ng-model="setPinForm" ng-submit="createPin(setPinForm)" novalidate>
         <div class="input" ng-show="askForPin == 1">
-          <input id="newpin" type="tel" ng-model="newpin" class="form-control"
-            ng-maxlength="4" ng-minlength="4" maxlength="4"
-            ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
+          <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
           <i class="icon-locked"></i>
         </div>
         <div class="input" ng-show="askForPin == 2">
-          <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control"
-            ng-maxlength="4" ng-minlength="4" maxlength="4"
-            ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
+          <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
           <i class="icon-locked"></i>
         </div>
 
@@ -83,15 +68,14 @@
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate type="submit" class="button primary radius expand m0"
-              ng-disabled="setPinForm.$invalid || error">
-              OK 
+            <button translate type="submit" class="button primary radius expand m0" ng-disabled="setPinForm.$invalid || error">
+              OK
             </button>
           </div>
         </div>
 
-        
-      </form> 
+
+      </form>
     </div>
 
     <div class="box-setup" ng-if='$root.hasPin'>
@@ -100,17 +84,14 @@
         <div class="box-notification" ng-show="error">
           <div class="box-icon error">
             <i class="fi-x size-24"></i>
-          </div> 
+          </div>
           <span class="text-warning size-14">
             {{error|translate}}
           </span>
         </div>
 
         <div class="input">
-          <input id="pin" type="tel" ng-model="pin" class="form-control"
-            ng-maxlength="4" ng-minlength="4" maxlength="4"
-            ng-pattern="/^[0-9]{1,4}$/" 
-            placeholder="Pin number" name="pin" required>
+          <input id="pin" type="tel" ng-model="pin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Pin number" name="pin" required>
           <i class="icon-locked"></i>
         </div>
 
@@ -122,40 +103,63 @@
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate type="submit" class="button primary radius expand m0"
-              ng-disabled="pinForm.$invalid || error">
-              Sign in 
+            <button translate type="submit" class="button primary radius expand m0" ng-disabled="pinForm.$invalid || error">
+              Sign in
             </button>
           </div>
-        </div> 
-      </form> 
+        </div>
+      </form>
     </div>
 
-
-    <div class="box-setup" ng-if='!$root.hasPin && !askForPin'>
-      <h1><span translate>Sign in to</span> <b>Copay</b></h1>
+    <div ng-if='!$root.hasPin && !askForPin'>
+      <div class="clipo">
+        <img src="img/clipo-signin.png" alt="clipo" width="310">
+      </div>
+      <h2 translate>Sign in to Copay</h2>
+      <div class="p10 m20b size-14 box-setup bg-success text-white" ng-show="anyWallet && !confirmedEmail && !error">
+        <div class="left">
+          <i class="size-36 fi-alert m10r"></i>
+        </div>
+        <b>Copay now needs a profile to access wallets.</b>
+        You can import your current wallets after
+        <a class="text-white" href="#!/createProfile">creating your profile</a>
+      </div>
+      <div class="p10 box-setup bg-success m20b text-white" ng-show="pendingPayment">
+        <div class="left">
+          <i class="size-36 m10r"></i>
+        </div>
+        <div class="size-14">
+          Please sign in to make the payment
+        </div>
+      </div>
       <form name="loginForm" ng-submit="openWithCredentials(loginForm)" novalidate>
-        <p class="text-warning size-12"
-          ng-show="error">
-          <i class="fi-x"></i> 
-          {{error|translate}}
-          </p>
-        <div class="input">
-          <input type="email" ng-model="email" class="form-control"
-            name="email" placeholder="Email" required show-focus="!isMobile">
+        <p class="text-warning size-12" ng-show="error">
+          <i class="fi-x"></i> {{error|translate}}
+        </p>
+        <div class="input" ng-if="!usingLocalStorage">
+          <input type="email" ng-model="email" class="form-control" name="email" placeholder="Email" required show-focus="!isMobile">
           <i class="icon-email"></i>
         </div>
+
+        <div class="input" ng-if="usingLocalStorage">
+          <input type="text" ng-model="email" class="form-control" name="email" placeholder="Username" required show-focus="!isMobile">
+          <i class="icon-person"></i>
+        </div>
         <div class="input">
-        <input type="password" ng-model="password" class="form-control"
-          name="password" placeholder="Password" required>
+          <input type="password" ng-model="password" class="form-control" name="password" placeholder="Password" required>
           <i class="icon-locked"></i>
         </div>
-          
-        <button translate type="submit" class="button primary radius expand m0"
-          ng-disabled="loginForm.$invalid || loading">
-          Sign in 
+
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="loginForm.$invalid || loading">
+          Sign in
         </button>
       </form>
+
+        <div ng-if="usingLocalStorage" class="text-gray size-12">
+          * Using this device storage. Change to cloud storage on 'settings'.
+        </div>
+
+
 
       <div class="box-setup-footer">
         <div class="left m10r">

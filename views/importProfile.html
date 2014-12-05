@@ -18,8 +18,8 @@
         <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
         <div ng-include="'views/includes/version.html'"></div>
       </div>
-      <div class="box-setup">
-        <h1 translate>Import Profile</h1>
+      <div>
+        <h2 translate>Import Profile</h2>
         <form name="importProfileForm" ng-submit="import(importProfileForm)" novalidate>
           <div class="box-notification" ng-show="error">
             <div class="box-icon error">
@@ -32,10 +32,12 @@
 
           <div ng-show="!is_iOS">
             <legend for="backupFile" class="m10b"> 
-              <span translate>Choose backup file</span> 
+              <span class="text-gray size-12" translate>Choose backup file</span> 
             </legend>
-            <input type="file" class="form-control" 
+            <div class="input">
+              <input type="file" class="db form-control" 
             placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
+            </div>
           </div>
 
           <div ng-show="is_iOS">
