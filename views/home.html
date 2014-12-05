@@ -133,9 +133,14 @@
         <p class="text-warning size-12" ng-show="error">
           <i class="fi-x"></i> {{error|translate}}
         </p>
-        <div class="input">
+        <div class="input" ng-if="!usingLocalStorage">
           <input type="email" ng-model="email" class="form-control" name="email" placeholder="Email" required show-focus="!isMobile">
           <i class="icon-email"></i>
+        </div>
+
+        <div class="input" ng-if="usingLocalStorage">
+          <input type="text" ng-model="email" class="form-control" name="email" placeholder="Username" required show-focus="!isMobile">
+          <i class="icon-person"></i>
         </div>
         <div class="input">
           <input type="password" ng-model="password" class="form-control" name="password" placeholder="Password" required>
