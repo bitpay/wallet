@@ -233,8 +233,12 @@ angular.module('copayApp.services')
 
       w.on('txProposalEvent', function(e) {
         if (root.isFocused(wid)) {
-          pendingTxsService.update();
+          pendingTxsService.update(); 
         }
+
+        balanceService.update(w, function() {
+          $rootScope.$digest();
+        }, root.isFocused(wid));
 
         // TODO: add wallet name notification
         var user = w.publicKeyRing.nicknameForCopayer(e.cId);
