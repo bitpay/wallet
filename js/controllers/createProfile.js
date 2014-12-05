@@ -51,6 +51,13 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   };
 
 
+  $scope.selectStorage = function (storage) {
+    $scope.useLocalstorage = storage == 'local';
+    $timeout(function() {
+      $scope.$digest();
+    }, 1);
+  };
+
   $scope.setStorage = function(useLocalstorage) {
     console.log('[createProfile.js.53:useLocalstorage:]', useLocalstorage); //TODO
     console.log('[createProfile.js.53:useLocalstorage:]', $scope.useLocalstorage); //TODO
