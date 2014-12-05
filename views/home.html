@@ -22,18 +22,10 @@
 
   <div class="large-4 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup" ng-show="!$root.iden">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
 
-    <div class="p10 box-setup bg-success m10b text-white" ng-show="pendingPayment">
-      <div class="left">
-        <i class="size-36 m10r"></i>
-      </div>
-      <div class="size-14">
-        Please sign in to make the payment
-      </div>
-    </div>
     <div class="p10 box-setup bg-success m10b text-white" ng-show="confirmedEmail">
       <div class="left">
         <i class="size-36 fi-check m10r"></i>
@@ -44,14 +36,6 @@
         </h3>
         Please sign in to access your wallets
       </div>
-    </div>
-    <div class="p10 box-setup bg-success m10b text-white" ng-show="anyWallet && !confirmedEmail && !error">
-      <div class="left">
-        <i class="size-36 fi-alert m10r"></i>
-      </div>
-      <b>Copay now needs a profile to access wallets.</b>
-      You can import your current wallets after
-      <a class="text-white" href="#!/createProfile">creating your profile</a>
     </div>
 
     <div class="box-setup" ng-if="askForPin">
@@ -127,8 +111,27 @@
       </form>
     </div>
 
-    <div class="box-setup" ng-if='!$root.hasPin && !askForPin'>
-      <h1><span translate>Sign in to</span> <b>Copay</b></h1>
+    <div ng-if='!$root.hasPin && !askForPin'>
+      <div class="clipo">
+        <img src="img/clipo-signin.png" alt="clipo" width="310">
+      </div>
+      <h2 translate>Sign in to Copay</h2>
+      <div class="p10 m20b size-14 box-setup bg-success text-white" ng-show="anyWallet && !confirmedEmail && !error">
+        <div class="left">
+          <i class="size-36 fi-alert m10r"></i>
+        </div>
+        <b>Copay now needs a profile to access wallets.</b>
+        You can import your current wallets after
+        <a class="text-white" href="#!/createProfile">creating your profile</a>
+      </div>
+      <div class="p10 box-setup bg-success m20b text-white" ng-show="pendingPayment">
+        <div class="left">
+          <i class="size-36 m10r"></i>
+        </div>
+        <div class="size-14">
+          Please sign in to make the payment
+        </div>
+      </div>
       <form name="loginForm" ng-submit="openWithCredentials(loginForm)" novalidate>
         <p class="text-warning size-12" ng-show="error">
           <i class="fi-x"></i> {{error|translate}}

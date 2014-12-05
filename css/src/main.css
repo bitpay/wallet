@@ -362,7 +362,7 @@ a:hover {
 
 .logo-setup {
   text-align: center;
-  padding: 5rem 0 4rem;
+  padding: 2rem 0;
   color: #fff;
 }
 
@@ -1644,12 +1644,12 @@ a.text-warning:hover {color: #FD7262;}
 
 /*/////////////////////////////////////////////////*/
 
-.createProfile .input {
+.createProfile .input, .home .input {
   box-shadow: 0px 0px 0px 3px #213140, inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   border-radius: 3px;
 }
 
-.createProfile h2 {
+.createProfile h2, .home h2 {
   font-weight: 700;
   font-size: 14px;
   color: #A5B2BF;
@@ -1658,6 +1658,10 @@ a.text-warning:hover {color: #FD7262;}
   border-bottom: 1px solid #425467;
   margin-bottom: 2rem;
   text-align: center;
+}
+
+.createProfile a.text-gray:hover, .home a.text-gray:hover {
+  color: #fff;
 }
 
 .tabbable {
@@ -1699,20 +1703,21 @@ a.text-warning:hover {color: #FD7262;}
   box-shadow: 0px 1px 0px 0px rgba(121,140,158,0.10);
   margin: .5rem 1.3rem;
   padding: 0.3rem 0;
+  font-size: 14px;
 }
 
 .bg-circle {
   background: #253547;
   border-radius: 100%;
-  margin: 0 1rem 0.3rem 0;
-  padding: 0.75rem;
+  margin: 0 0.5rem 0.3rem 0;
+  padding: .45rem 0.5rem;
   display: inline-block;
   text-align: center;
   vertical-align: middle;
   color: #7A8C9E;
   font-size: 30px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
 }
 
 .session-expired {
@@ -1723,5 +1728,10 @@ a.text-warning:hover {color: #FD7262;}
   color: #fff;
   z-index: 999;
   padding-top: 20%;
+  text-align: center;
+}
+
+.clipo {
+  padding: 0 0 2rem;
   text-align: center;
 }
