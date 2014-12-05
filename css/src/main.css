@@ -362,23 +362,22 @@ a:hover {
 
 .logo-setup {
   text-align: center;
-  padding: 5rem 0 4rem;
+  padding: 2rem 0;
   color: #fff;
 }
 
 .box-setup {
-  margin-bottom: 7rem;
+  margin-bottom: 1rem;
   padding: 1.3rem; 
-  border-radius: 2px;
-  background: #FFFFFF;
-  -moz-box-shadow: 1px 1px 0px 0px #213140;
-  box-shadow: 1px 1px 0px 0px #213140;
+  border-radius: 3px;
+  background: #fff;
 }
 
 .box-setup-footer {
   overflow: hidden;
+  margin-top: 2rem;
   padding: 1rem 0 0;
-  border-top: 1px solid #E5E7EA;
+  border-top: 1px solid #425467;
   font-size: 12px;
 }
 
@@ -994,7 +993,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   color: #343c43;
   margin-bottom: 1.3rem;
   height: 40px;
-  border-radius: 2px;
+  border-radius: 3px;
   background: #F2F5F8;
   -moz-box-shadow:    inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   box-shadow:         inset 1px 1px 0px 0px rgba(0,0,0,0.05);
@@ -1037,8 +1036,8 @@ button.primary,
 .button.primary { 
   background-color: #1ABC9C;
   color: #fff;
-  border-radius: 2px;
-  border-radius: 2px;
+  border-radius: 3px;
+  border-radius: 3px;
   -moz-box-shadow:    1px 1px 0px 0px #16A085;
   box-shadow:         1px 1px 0px 0px #16A085;
 }
@@ -1072,7 +1071,7 @@ button.warning,
 .button.warning { 
   background-color: #C0392A;
   color: #fff;
-  border-radius: 2px;
+  border-radius: 3px;
   -moz-box-shadow:    1px 1px 0px 0px #A02F23;
   box-shadow:         1px 1px 0px 0px #A02F23;
 }
@@ -1421,6 +1420,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .text-light {font-weight: 100;}
+.text-bold {font-weight: 700;}
 .text-gray {color: #8597A7;}
 .text-black {color: #2C3E50;}
 .text-primary {color: #1ABC9C;}
@@ -1679,6 +1679,102 @@ a.text-warning:hover {color: #FD7262;}
 
 /*/////////////////////////////////////////////////*/
 
+.createProfile .icon-input {
+  position: absolute;
+  right: 10px;
+  top: 11px;
+}
+
+.createProfile .icon-input i {
+  font-size: 14px;
+  position: relative;
+  color: #fff;
+  margin-right: 14px;
+  border: none;
+  box-shadow: none;
+  top: 2px;
+}
+
+.createProfile .input, .home .input {
+  box-shadow: 0px 0px 0px 3px #213140, inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  border-radius: 3px;
+}
+
+.createProfile h2, .home h2 {
+  font-weight: 700;
+  font-size: 14px;
+  color: #A5B2BF;
+  text-transform: uppercase;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #425467;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.createProfile a.text-gray:hover, .home a.text-gray:hover {
+  color: #fff;
+}
+
+.tabbable {
+  border: 2px solid #213140;
+  border-radius: 3px;
+  margin-bottom: 1.2rem;
+}
+
+.tabs dd.active a {
+  color: #fff;
+  background-color: transparent;
+}
+
+.tabs dd>a {
+  background: #213140;
+  text-transform: uppercase;
+  color: #3E4F5D;
+  padding: 1rem;
+  text-align: center;
+  height: 64px;
+  font-size: 14px;
+  line-height: 15px;
+}
+
+.tabs dd>a:hover {
+  background: #1C2B39;
+}
+
+.tabs dd.active a:hover {
+  background: transparent;
+}
+
+.tabs-content {
+  margin-bottom: 0;
+}
+
+.tabs-content>.content {
+  padding: 0;
+}
+
+.content-item {
+  border-bottom: 1px solid rgba(32,48,64,0.30);
+  box-shadow: 0px 1px 0px 0px rgba(121,140,158,0.10);
+  margin: .5rem 1.3rem;
+  padding: 0.3rem 0;
+  font-size: 14px;
+}
+
+.bg-circle {
+  background: #253547;
+  border-radius: 100%;
+  margin: 0 0.5rem 0.3rem 0;
+  padding: .45rem 0.5rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  color: #7A8C9E;
+  font-size: 30px;
+  width: 50px;
+  height: 50px;
+}
+
 .session-expired {
   background: rgba(32,48,64,0.90);
   width: 100%;
@@ -1688,4 +1784,14 @@ a.text-warning:hover {color: #FD7262;}
   z-index: 999;
   padding-top: 20%;
   text-align: center;
+}
+
+.clipo {
+  padding: 0 0 2rem;
+  text-align: center;
+}
+
+.line-none {
+  border: none;
+  box-shadow: none;
 }

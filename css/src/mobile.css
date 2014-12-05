@@ -8,7 +8,7 @@
 
   .logo-setup {
     margin: 0;
-    padding: 2rem 0;
+    padding: 1rem 0;
   }
 
   .home, .open, .join, .waiting-copayers, .setup, .import, .settings {
@@ -196,6 +196,10 @@
 
   .button, button {
     padding: 1rem 1.2rem 1.0625rem;
+  }
+  
+  .home form {
+    margin-bottom: 1rem;
   }
 
   form {

@@ -11,10 +11,10 @@ angular.module('copayApp.services')
     var root = {};
     root.check = function(scope) {
       copay.Identity.checkIfExistsAny({
-        pluginManager: pluginManager,
+        pluginManager: pluginManager.getInstance(config),
       }, function(anyProfile) {
         copay.Wallet.checkIfExistsAny({
-          pluginManager: pluginManager,
+          pluginManager: pluginManager.getInstance(config),
         }, function(anyWallet) {
           scope.loading = false;
           scope.anyProfile = anyProfile ? true : false;
@@ -47,7 +47,7 @@ angular.module('copayApp.services')
       copay.Identity.create({
         email: email,
         password: password,
-        pluginManager: pluginManager,
+        pluginManager: pluginManager.getInstance(config),
         network: config.network,
         networkName: config.networkName,
         walletDefaults: config.wallet,
@@ -99,7 +99,7 @@ angular.module('copayApp.services')
       var opts = {
         email: email,
         password: password,
-        pluginManager: pluginManager,
+        pluginManager: pluginManager.getInstance(config),
         network: config.network,
         networkName: config.networkName,
         walletDefaults: config.wallet,
@@ -348,7 +348,7 @@ angular.module('copayApp.services')
 
     root.importProfile = function(str, password, cb) {
       copay.Identity.importFromEncryptedFullJson(str, password, {
-        pluginManager: pluginManager,
+        pluginManager: pluginManager.getInstance(config),
         network: config.network,
         networkName: config.networkName,
         walletDefaults: config.wallet,

@@ -2,16 +2,17 @@
 
 var copay = require('copay');
 var _ = require('lodash');
-var config = defaultConfig;
 var LS = require('../js/plugins/LocalStorage');
 var ls = new LS();
 
-var localConfig;
-var defaults = JSON.parse(JSON.stringify(defaultConfig));
 
-
+// TODO move this to configService !
+var config = copay.defaultConfig;
 ls.getItem('config', function(err, data) {
+  var localConfig;
+  try {
   localConfig = JSON.parse(data);
+  } catch(e) {};
   if (localConfig) {
     var cmv = copay.version.split('.')[1];
     var lmv = localConfig.version ? localConfig.version.split('.')[1] : '-1';
@@ -38,12 +39,9 @@ var modules = [
   'copayApp.directives',
 ];
 
-if (Object.keys(config.plugins).length)
-  modules.push('angularLoad');
-
-
 var copayApp = window.copayApp = angular.module('copayApp', modules);
 
+var defaults = JSON.parse(JSON.stringify(copay.defaultConfig));
 copayApp.value('defaults', defaults);
 
 copayApp.config(function($sceDelegateProvider) {
