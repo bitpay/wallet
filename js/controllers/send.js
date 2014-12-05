@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, isMobile, notification, rateService) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, $location, isMobile, notification, rateService) {
     var w = $rootScope.wallet;
     preconditions.checkState(w);
     preconditions.checkState(w.settings.unitToSatoshi);
@@ -96,12 +96,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.init = function() {
-      // Empty
+      // Empty 
     }; 
-
-    $scope.showAddressBook = function() {
-      return w && _.keys(w.addressBook).length > 0;
-    };
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
@@ -307,62 +303,6 @@ angular.module('copayApp.controllers').controller('SendController',
           alert('Scanning error');
         });
     }
-
-    $scope.toggleAddressBookEntry = function(key) {
-      w.toggleAddressBookEntry(key);
-    };
-
-    $scope.copyAddress = function(address) {
-      $scope.address = address;
-    };
-
-    $scope.openAddressBookModal = function() {
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/address-book.html',
-        windowClass: 'tiny',
-        controller: function($scope, $modalInstance) {
-
-          $scope.submitAddressBook = function(form) {
-            if (form.$invalid) {
-              return;
-            }
-            var entry = {
-              "address": form.newaddress.$modelValue,
-              "label": form.newlabel.$modelValue
-            };
-            form.newaddress.$pristine = form.newlabel.$pristine = true;
-            $modalInstance.close(entry);
-          };
-
-          $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
-          };
-        },
-      });
-
-      modalInstance.result.then(function(entry) {
-
-        $timeout(function() {
-          $scope.loading = false;
-          var errorMsg;
-          try {
-            w.setAddressBook(entry.address, entry.label);
-          } catch (e) {
-            errorMsg = e.message;
-          }
-
-          // TODO change this notifications
-          if (errorMsg) {
-            notification.error('Error', errorMsg);
-          } else {
-            notification.success('Success', 'New entry has been created');
-          }
-          $rootScope.$digest();
-        }, 500);
-        // reset fields
-        $scope.newaddress = $scope.newlabel = null;
-      });
-    };
 
     $scope.setTopAmount = function() {
       $scope.amount = $rootScope.topAmount;
@@ -597,6 +537,81 @@ angular.module('copayApp.controllers').controller('SendController',
       var value;
       var pp = $rootScope.pendingPayment; 
       _onChanged(pp);
-    }
+    } 
+
+    $scope.openAddressBook = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/address-book.html',
+          windowClass: 'large',
+          controller: function($scope, $modalInstance) {
+
+            $scope.showForm = null;
+            $scope.addressBook = w.addressBook;
+
+            $scope.hasEntry = function() {
+              return _.keys($scope.addressBook).length > 0 ? true : false;
+            }; 
+
+            $scope.toggleAddressBookEntry = function(key) {
+              w.toggleAddressBookEntry(key);
+            };
+
+            $scope.copyToSend = function(addr) {
+              $modalInstance.close(addr);
+            };
+
+            $scope.cancel = function() {
+              $scope.error = $scope.success = null;
+              $scope.toggleForm();
+            };
+
+            $scope.toggleForm = function() {
+              $scope.showForm = !$scope.showForm;
+            };
+
+            $scope.submitAddressBook = function(form) {
+              if (form.$invalid) {
+                return;
+              }
+              $timeout(function() {              
+                var errorMsg;
+                var entry = {
+                  "address": form.newaddress.$modelValue,
+                "label": form.newlabel.$modelValue
+                };
+                try {
+                  w.setAddressBook(entry.address, entry.label);
+                } catch (e) {
+                  console.log('[send.js:583]',e); //TODO
+                  errorMsg = e.message;
+                }
+
+                if (errorMsg) {
+                  $scope.error = errorMsg; 
+                } else {
+                  $scope.toggleForm();
+                  $scope.success = 'New entry has been created';
+                }
+                $rootScope.$digest();
+              }, 500);
+              
+              $timeout(function() {
+                $scope.error = $scope.success = null;
+              }, 5000);
+
+              return;
+              
+            };
+
+            $scope.close = function() {
+              $modalInstance.dismiss('cancel');
+            };
+          },
+      });
+
+      modalInstance.result.then(function(addr) {
+        $scope.address = addr;
+      });
+    };
 
   });

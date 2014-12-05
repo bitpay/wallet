@@ -1486,6 +1486,12 @@ a.text-warning:hover {color: #FD7262;}
     width: 50%;
     margin-left: -25%;
   }
+  dialog.large, .reveal-modal.large {
+    max-height: 70%;
+    overflow-y: auto;
+    width: 80%;
+    margin-left: -40%;
+  }
 }
 
 @media (max-height: 380px) {
@@ -1634,6 +1640,19 @@ a.text-warning:hover {color: #FD7262;}
   margin-top: 20%;
   width: 100%;
   text-align: center;
+}
+
+.postfix.button.addressbook {
+  right: 60px;
+}
+
+.addressbook-entry td {
+  display: block;
+  cursor: pointer;
+}
+
+.addressbook-disabled td, .addressbook-disabled td a {
+  color: #8597A7;
 }
 
 /*/////////////////////////////////////////////////*/
