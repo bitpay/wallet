@@ -6,8 +6,6 @@ angular.module('copayApp.services')
 
     root.restart = function() {
 
-      console.log('RESTART');
-
       // Go home reloading the application
       var hashIndex = window.location.href.indexOf('#!/');
       if (isChromeApp) {

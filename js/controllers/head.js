@@ -4,6 +4,8 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   $scope.username = $rootScope.iden.getName();
   $scope.hoverMenu = false;
 
+  var isChromeApp = typeof window !== "undefined" && window.chrome && chrome.runtime && chrome.runtime.id;
+
   $scope.hoverIn = function() {
     this.hoverMenu = true;
   };
@@ -31,15 +33,15 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   };
 
 
-  //mpando  restore after solve some chrome app error
-  // Ensures a graceful disconnect
-  // window.onbeforeunload = function() {
-  //   $scope.signout();
-  // };
+  //Ensures a graceful disconnect
+  window.onbeforeunload = function() {
+    $scope.signout();
+  };
 
-  // $scope.$on('$destroy', function() {
-  //   window.onbeforeunload = undefined;
-  // });
+  $scope.$on('$destroy', function() {
+    if (isChromeApp) return;
+    window.onbeforeunload = undefined;
+  });
 
   $scope.init = function() {
     if (!$rootScope.wallet) return;
