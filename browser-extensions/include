@@ -6,9 +6,11 @@ sound
 views
 config.js 
 init.js
+initial.js
 version.js 
 index.html 
 popup.html 
 lib/angular/angular-csp.css
 lib/angular/angular.min.js.map
 lib/angular-route/angular-route.min.js.map
+lib/angular-touch/angular-touch.min.js.map

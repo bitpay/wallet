@@ -1,5 +1,8 @@
 'use strict';
 
+var LS = require('../js/plugins/LocalStorage');
+var ls = new LS();
+
 //Setting up route
 angular
   .module('copayApp')
@@ -118,7 +121,9 @@ angular
       uriHandler.register();
     }
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if (!localStorage || localStorage.length < 1) {
+
+
+      if (!ls || ls.length < 1) {
         $location.path('unsupported');
       } else {
         if (!$rootScope.iden && next.logged) {

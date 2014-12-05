@@ -11,7 +11,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
   $scope.availableLogLevels = [];
 
-
   for (var key in logLevels) {
     $scope.availableLogLevels.push({
       'name': key
@@ -63,7 +62,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     $scope.insightLivenet = copay.Insight.setCompleteUrl($scope.insightLivenet);
     $scope.insightTestnet = copay.Insight.setCompleteUrl($scope.insightTestnet);
 
-
     var insightSettings = {
       livenet: {
         url: $scope.insightLivenet,
@@ -95,6 +93,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
     }), function() {
       applicationService.restart();
     });
+
   };
 
 
