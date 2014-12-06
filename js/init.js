@@ -20,6 +20,10 @@ angular.element(document).ready(function() {
 
       startAngular();
     }, false);
+
+    document.addEventListener('pause', function() {
+      window.location = '#!';
+    });
   } else {
     startAngular();
   }
