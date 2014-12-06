@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="large-4 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
+  <div class="large-5 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup" ng-show="!$root.iden">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
@@ -164,22 +164,22 @@
       <div class="box-setup-footer">
 
         <div class="right">
-          <a class="button-setup text-gray"  ng-click="$root.go('#!/settings')">
+          <a class="button-setup text-gray"  ng-click="$root.go('/settings')">
             <i class="icon-wrench"></i> 
             <span translate>Settings</span>
           </a>
         </div>
 
         <div class="left m10r">
-          <a class="button-setup text-gray"  ng-click="$root.go('#!/createProfile')">
+          <a class="button-setup text-gray"  ng-click="$root.go('/createProfile')">
             <i class="icon-person"></i> 
-            <span translate>Create a profile</span>
+            <span translate>Create profile</span>
           </a>
         </div>
         <div class="left">
-          <a class="button-setup text-gray"  ng-click="$root.go('#!/importProfile')">
+          <a class="button-setup text-gray"  ng-click="$root.go('/importProfile')">
             <i class="icon-upload"></i> 
-            <span translate>Import a profile</span>
+            <span translate>Import</span>
           </a>
         </div>
       </div>
