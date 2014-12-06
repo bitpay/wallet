@@ -122,7 +122,7 @@
         </div>
         <b>Copay now needs a profile to access wallets.</b>
         You can import your current wallets after
-        <a class="text-white" href="#!/createProfile">creating your profile</a>
+        <a class="text-white" ng-click="$root.go('#!/createProfile')">creating your profile</a>
       </div>
       <div class="p10 box-setup bg-success m20b text-white" ng-show="pendingPayment">
         <div class="left">
@@ -162,22 +162,24 @@
 
 
       <div class="box-setup-footer">
+
+        <div class="right">
+          <a class="button-setup text-gray"  ng-click="$root.go('#!/settings')">
+            <i class="icon-wrench"></i> 
+            <span translate>Settings</span>
+          </a>
+        </div>
+
         <div class="left m10r">
-          <a class="button-setup text-gray" href="#!/createProfile">
+          <a class="button-setup text-gray"  ng-click="$root.go('#!/createProfile')">
             <i class="icon-person"></i> 
             <span translate>Create a profile</span>
           </a>
         </div>
         <div class="left">
-          <a class="button-setup text-gray" href="#!/importProfile">
+          <a class="button-setup text-gray"  ng-click="$root.go('#!/importProfile')">
             <i class="icon-upload"></i> 
             <span translate>Import a profile</span>
-          </a>
-        </div>
-        <div class="right m10t">
-          <a class="text-gray" href="#!/settings">
-            <i class="icon-wrench"></i> 
-            <span translate>Settings</span>
           </a>
         </div>
       </div>
