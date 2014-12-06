@@ -2,6 +2,10 @@
 
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
+  // Global functions (TODO should be somewhere else)
+  $rootScope.go = function (path) {
+    $location.path(path);
+  };
 
   var _credentials, _firstpin;
   $scope.init = function() {
@@ -56,21 +60,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
   });
 
-  $scope.done = function() {
-    $rootScope.starting = false;
-    $rootScope.$digest();
-  };
-
-
-  $scope.$on("$destroy", function() {
-    var iden = $rootScope.iden;
-    if (iden) {
-      iden.removeListener('newWallet', $scope.done);
-      iden.removeListener('noWallets', $scope.done);
-    }
-  });
-
-
   $scope.openWithPin = function(pin) {
 
     if (!pin) {
@@ -92,11 +81,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   $scope.openWallets = function() {
     preconditions.checkState($rootScope.iden);
     var iden = $rootScope.iden;
-
     $rootScope.hideNavigation = false;
     $rootScope.starting = true;
-    iden.on('newWallet', $scope.done);
-    iden.on('noWallets', $scope.done);
     iden.openWallets();
   };
 
@@ -169,7 +155,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
 
         // mobile
         if ($scope.isMobile && !$rootScope.hasPin) {
-          $scope.done();
           _credentials = {
             email: email,
             password: password,

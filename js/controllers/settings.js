@@ -89,14 +89,14 @@ angular.module('copayApp.controllers').controller('SettingsController', function
         }),
       },
       function() {
-        notification.success('Settings saved');
+        notification.success('Settings saved',"Settings were saved");
         $location.path('/');
       });
   };
 
   $scope.reset = function() {
     configService.reset(function() {
-      notification.success('Settings reseted');
+      notification.success('Settings reseted',"Settings were reseted");
       $location.path('/');
     });
   };
