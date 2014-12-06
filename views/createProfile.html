@@ -64,7 +64,7 @@
           </tab>
           <tab style="width: 50%;" select="selectStorage('local')">
             <tab-heading>
-              <div class="m5t text-bold">In this Device </div>
+              <div class="m5t text-bold">On this Device </div>
             </tab-heading>
               <div class="content-item">
                 <div class="bg-circle"><i class="icon-locked"></i>
@@ -86,7 +86,7 @@
 
         <button  translate class="button primary radius expand m0" ng-click="goToEmail()">
           <span ng-if="!useLocalstorage"> Create in the cloud</span>
-          <span ng-if="useLocalstorage"> Create in this device</span>
+          <span ng-if="useLocalstorage"> Create on this device</span>
         </button>
 
         <div class="box-setup-footer">
@@ -113,8 +113,8 @@
           <img src="img/clipo-signup2.png" alt="clipo" width="373">
         </div>
 
-        <h2 ng-if="useLocalstorage"> Creating in this device </h2>
         <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
+        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
 
         <div class="input" ng-if="useEmail">
           <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
@@ -158,7 +158,7 @@
           <img src="img/clipo-signup3.png" alt="clipo" width="380">
         </div>
 
-        <h2 ng-if="useLocalstorage"> Creating in this device </h2>
+        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
         <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
         <div class="text-gray text-center m20b"> {{userOrEmail}} </div>
 
