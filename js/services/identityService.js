@@ -31,6 +31,7 @@ angular.module('copayApp.services')
     root.goWalletHome = function() {
       var w = $rootScope.wallet;
       if (w) {
+        $rootScope.starting = false;
         if (!w.isComplete()) {
           $location.path('/copayers');
         } else {
@@ -233,7 +234,7 @@ angular.module('copayApp.services')
 
       w.on('txProposalEvent', function(e) {
         if (root.isFocused(wid)) {
-          pendingTxsService.update(); 
+          pendingTxsService.update();
         }
 
         balanceService.update(w, function() {
@@ -288,7 +289,6 @@ angular.module('copayApp.services')
 
       var self = this;
       root.setupGlobalVariables(iden);
-
       iden.on('newWallet', function(wid) {
         var w = iden.getWalletById(wid);
         copay.logger.debug('newWallet:', w.getName(), wid, iden.getLastFocusedWalletId());
@@ -298,20 +298,25 @@ angular.module('copayApp.services')
           root.setFocusedWallet(w, true);
           root.goWalletHome();
         }
+
         // At the end (after all handlers are in place)...start the wallet.
         w.netStart();
       });
 
       iden.on('noWallets', function() {
+        notification.warning('No Wallets','Your profile has no wallets. Create one here');
+        $rootScope.starting = false;
         $location.path('/create');
-        $rootScope.$digest()
+        $timeout(function() {
+          $rootScope.$digest();
+        }, 1);
       });
 
       iden.on('walletDeleted', function(wid) {
         // do nothing. this is handled 'on sync' on controller.
       });
 
-      iden.on('walletStorageError', function (wid, message) {
+      iden.on('walletStorageError', function(wid, message) {
         notification.error('Error storing wallet', message);
       });
 

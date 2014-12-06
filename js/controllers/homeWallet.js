@@ -68,7 +68,7 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
       removeWatch();
       w.removeListener('txProposalEvent', _updateTxs);
     };
-  });
+  }); 
 
   $scope.setAlternativeAmount = function(w, tx, cb) {
     rateService.whenAvailable(function() {

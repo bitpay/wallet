@@ -117,8 +117,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         // mobile
         if ($scope.isMobile) {
           _credentials = {
-            email: form.email.$modelValue,
-            password: form.password.$modelValue,
+            email: emailOrUsername,
+            password: password,
           };
           $scope.askForPin = 1;
           $rootScope.hideNavigation = true;
