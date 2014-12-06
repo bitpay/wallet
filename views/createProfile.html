@@ -23,9 +23,34 @@
   <div class="large-5 large-centered medium-6 medium-centered columns m20b" ng-show="!loading  && !askForPin">
     <div class="logo-setup hide-for-small-only">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
-      <div ng-include="'views/includes/version.html'"></div>
     </div>
     <div>
+
+      <div class="clipo"  ng-show="createStep == 'storage' ">
+        <img src="img/clipo-signup1.png" alt="clipo" width="311">
+      </div>
+
+      <div ng-show="createStep == 'email'">
+        <div class="clipo" ng-if="useLocalstorage">
+          <img src="img/clipo-signup2-1.png" alt="clipo" width="373">
+        </div>
+        <div class="clipo" ng-if="!useLocalstorage">
+          <img src="img/clipo-signup2.png" alt="clipo" width="373">
+        </div>
+        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
+        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
+      </div>
+
+      <div ng-show="createStep == 'pass'">
+        <div class="clipo">
+          <img src="img/clipo-signup3.png" alt="clipo" width="380">
+        </div>
+
+        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
+        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
+        <div class="text-gray text-center m20b"> {{userOrEmail}} </div>
+      </div>
+
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
@@ -37,10 +62,7 @@
 
 
       <form ng-show="createStep == 'storage' " novalidate>
-        <div class="clipo">
-          <img src="img/clipo-signup1.png" alt="clipo" width="311">
-        </div>
-        <tabset>
+       <tabset>
           <tab style="width: 50%;" select="selectStorage('remote')">
             <tab-heading>
               <span class="text-bold">In the Cloud </span><br>
@@ -106,16 +128,6 @@
       </form>
 
       <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
-        <div class="clipo" ng-if="useLocalstorage">
-          <img src="img/clipo-signup2-1.png" alt="clipo" width="373">
-        </div>
-        <div class="clipo" ng-if="!useLocalstorage">
-          <img src="img/clipo-signup2.png" alt="clipo" width="373">
-        </div>
-
-        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
-        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
-
         <div class="input" ng-if="useEmail">
           <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
           <i class="icon-email"></i>
@@ -154,15 +166,6 @@
       </form>
 
       <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
-        <div class="clipo">
-          <img src="img/clipo-signup3.png" alt="clipo" width="380">
-        </div>
-
-        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
-        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
-        <div class="text-gray text-center m20b"> {{userOrEmail}} </div>
-
-
         <div class="input">
           <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: <b>{{passwordStrength}}</b><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
           <i class="icon-locked"></i>

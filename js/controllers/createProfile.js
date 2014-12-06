@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
 
   $scope.init = function() {
     identityService.goWalletHome();
-    $scope.isMobile = isMobile.any();
+    $scope.isMobile = 1; //isMobile.any();
 
     $scope.createStep = 'storage';
     $scope.useLocalstorage = false;
@@ -111,6 +111,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         var msg = err.toString();
         if (msg.indexOf('EEXIST') >= 0 || msg.indexOf('BADC') >= 0) {
           msg = 'This profile already exists'
+          $scope.createStep = 'email';
         }
         $scope.error = msg;
       } else {
