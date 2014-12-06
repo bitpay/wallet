@@ -1,6 +1,6 @@
 <div class="row collapse">
     <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in menu" ui-route="{{item.link}}" ng-if="item.link!='more'">
-      <a ng-click="go(item.link)" ng-class="{active: isActive(item)}"> 
+      <a ng-click="$root.go(item.link)" ng-class="{active: isActive(item)}"> 
         <i class="size-36 {{item.icon}} db"></i> 
         <div class="size-10 tu">
           {{item.title}} 
