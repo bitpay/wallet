@@ -2,11 +2,6 @@
   <header ng-show="$root.wallet">
     <h1>My wallets</h1>
   </header>
-  <div class="side-nav text-center off-canvas-list" ng-show="!wallets[0]">
-    <p class="size-12 text-gray m10t" translate>You do not have another wallets.</p>
-    <a href="#!/create" class="db button secondary tiny" title="Create new wallet">
-      <i class="m10r fi-plus"></i> {{'Create new wallet' | translate }} </a>
-  </div>
   <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
     <li 
       ng-repeat="item in wallets track by $index"
