@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('SettingsController', function
       name: 'In the cloud (Insight server)',
       pluginName: 'EncryptedInsightStorage',
     }, {
-      name: 'In this device (localstorage)',
+      name: 'On this device (localstorage)',
       pluginName: 'EncryptedLocalStorage',
     },
     // {

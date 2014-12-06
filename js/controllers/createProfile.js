@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
 
   $scope.init = function() {
     identityService.goWalletHome();
-    $scope.isMobile = 1; //isMobile.any();
+    $scope.isMobile = isMobile.any();
 
     $scope.createStep = 'storage';
     $scope.useLocalstorage = false;
@@ -75,6 +75,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.userOrEmail = $scope.useLocalstorage ? form.username.$modelValue : form.email.$modelValue;
     preconditions.checkState($scope.userOrEmail);
 
+    $scope.error = null;
     $scope.createStep = 'pass';
     $timeout(function() {
       $scope.$digest();
