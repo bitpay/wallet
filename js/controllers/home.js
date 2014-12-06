@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
-  // Global functions (TODO should be somewere else)
+  // Global functions (TODO should be somewhere else)
   $rootScope.go = function (path) {
     $location.path(path);
   };
