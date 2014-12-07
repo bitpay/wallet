@@ -4,12 +4,6 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
   $scope.init = function() {
     $rootScope.title = 'Home';
 
-    // fix for Safari and mobile devices
-    var walletId = $location.hash();
-    if (walletId) {
-      $location.hash('');
-      identityService.setFocusedWallet(walletId);
-    }
 
     $scope.rateService = rateService;
     $scope.isRateAvailable = false;
