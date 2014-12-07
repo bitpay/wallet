@@ -1,0 +1,23 @@
+'use strict';
+
+angular.module('copayApp.services').factory('go', function($window, $location) {
+  var root = {};
+
+  var hideSidebars = function() {
+    // hack to hide sidebars and use ng-click (no href=)
+    var win = angular.element($window);
+    var elem = win.find('#off-canvas-wrap');
+    elem.removeClass('move-right');
+    elem.removeClass('move-left');
+  };
+
+  root.go = function(path) {
+    var parts = path.split('#');
+    $location.path(parts[0]);
+    if (parts[1])
+      $location.hash(parts[1]);
+    hideSidebars();
+  };
+
+  return root;
+});
