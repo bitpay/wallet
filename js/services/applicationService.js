@@ -5,7 +5,7 @@ angular.module('copayApp.services')
     var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
 
     root.restart = function() {
-      if (window.cordova !== undefined) {
+      if (1 || window.cordova !== undefined) {
         $rootScope.iden = $rootScope.wallet = undefined;
         // NOP. no need to restart on cordova apps.
         $location.path('/');
