@@ -113,12 +113,12 @@ angular
     $idleProvider.warningDuration(40); // in seconds
     $keepaliveProvider.interval(30); // in seconds
   })
-  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler) {
+  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler, isCordova) {
 
     gettextCatalog.currentLanguage = config.defaultLanguage;
 
     // Register URI handler, not for mobileApp
-    if (!window.cordova) {
+    if (!isCordova) {
       $idle.watch();
       uriHandler.register();
     }

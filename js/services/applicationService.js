@@ -1,11 +1,11 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('applicationService', function($rootScope, $location, $timeout, go) {
+  .factory('applicationService', function($rootScope, $location, $timeout, go, isCordova) {
     var root = {};
     var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
 
     root.restart = function() {
-      if (1 || window.cordova !== undefined) {
+      if (isCordova) {
         $rootScope.iden = $rootScope.wallet = undefined;
         go.go('/');
         $timeout(function(){
