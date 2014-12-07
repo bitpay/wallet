@@ -15,7 +15,6 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   };
 
   $scope.signout = function() {
-    $rootScope.signingOut = true;
     identityService.signout();
   };
 

@@ -114,7 +114,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     pinService.clear(function() {
       copay.logger.debug('PIN erased');
       delete $rootScope['hasPin'];
-      applicationService.reload();
+      applicationService.restart();
     });
   };
 

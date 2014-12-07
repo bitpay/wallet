@@ -158,6 +158,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       return;
     }
     $scope.saveSettings(function(err) {
+      preconditions.checkState(!err,err);
+
       $scope._doCreateProfile($scope.userOrEmail, form.password.$modelValue, function(err) {
         $timeout(function() {
           form.password.$setViewValue('');
