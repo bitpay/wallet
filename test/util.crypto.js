@@ -81,7 +81,7 @@ describe('crypto utils', function() {
   });
   it('should generate a passphrase using default salt/iter', function() {
     var phrase = cryptoUtils.kdf('Pwd123!@#$%^&*(){}[]\|/?.>,<=+-_`~åéþïœ’ä²¤þçæ¶');
-    var expected = 'ml+mMtjgcvL2pdfDwQqW2qONRNjZ3YD8KnGeV3aFjyOoM0ByOmoREw9zBvowC/ZXsfrezbRXX/W/XIzKOqdrXA==';
+    var expected = 'n9QYDBJvRCHfpAfp8X/Z1XDA00CnZtnehLKOVrtNYTLt9H+hlcyaZgbAGGgJ/dVRCsVtIBzYwaACNPckknMiCg==';
     phrase.should.equal(expected);
   });
 

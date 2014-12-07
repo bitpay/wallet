@@ -113,16 +113,17 @@ angular
     $idleProvider.warningDuration(40); // in seconds
     $keepaliveProvider.interval(30); // in seconds
   })
-  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler) {
+  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler, isCordova) {
+
     gettextCatalog.currentLanguage = config.defaultLanguage;
-    // not for mobileApp
-    if (!window.cordova) {
+
+    // Register URI handler, not for mobileApp
+    if (!isCordova) {
       $idle.watch();
       uriHandler.register();
     }
+
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-
-
       if (!ls || ls.length < 1) {
         $location.path('unsupported');
       } else {

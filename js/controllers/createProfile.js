@@ -75,6 +75,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.userOrEmail = $scope.useLocalstorage ? form.username.$modelValue : form.email.$modelValue;
     preconditions.checkState($scope.userOrEmail);
 
+    $scope.error = null;
     $scope.createStep = 'pass';
     $timeout(function() {
       $scope.$digest();
@@ -111,6 +112,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         var msg = err.toString();
         if (msg.indexOf('EEXIST') >= 0 || msg.indexOf('BADC') >= 0) {
           msg = 'This profile already exists'
+          $scope.createStep = 'email';
         }
         $scope.error = msg;
       } else {
@@ -156,6 +158,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       return;
     }
     $scope.saveSettings(function(err) {
+      preconditions.checkState(!err,err);
+
       $scope._doCreateProfile($scope.userOrEmail, form.password.$modelValue, function(err) {
         $timeout(function() {
           form.password.$setViewValue('');
