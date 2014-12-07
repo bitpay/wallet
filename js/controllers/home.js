@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $location, $timeout, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, go, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
-  // Global functions (TODO should be somewhere else)
+  // Global go. This should be in a better place TODO
+  // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
   $rootScope.go = function (path) {
-    $location.path(path);
+    go.go(path);
   };
 
   var _credentials, _firstpin;
@@ -66,13 +67,14 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
+    $rootScope.starting = true;
 
     var credentials = pinService.get(pin, function(err, credentials) {
       if (err || !credentials) {
+        $rootScope.starting = false;
         $scope.error = 'Wrong PIN';
         return;
       }
-      $rootScope.starting = true;
       $scope.open(credentials.email, credentials.password);
     });
   };

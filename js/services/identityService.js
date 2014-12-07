@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('identityService', function($rootScope, $location, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService) {
+  .factory('identityService', function($rootScope, $location, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService, go) {
     notification.enableHtml5Mode(); // for chrome: if support, enable it
 
     // TODO:
@@ -334,7 +334,7 @@ angular.module('copayApp.services')
           noWallets: true
         }, function() {
           $rootScope.signingOut = false;
-          $rootScope.iden.close();
+          $rootScope.iden.close(); // Will trigger 'closed'
         });
       }
     };

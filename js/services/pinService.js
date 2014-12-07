@@ -5,7 +5,7 @@ angular.module('copayApp.services')
 
     var KEY = 'pinDATA';
     var SALT = '4gllotIKguqi0EkIslC0';
-    var ITER = 2000;
+    var ITER = 5000;
 
     var ls = localstorageService;
     var root = {};
