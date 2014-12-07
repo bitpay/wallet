@@ -43,7 +43,7 @@
       <p class="text-gray size-18">Your session is about to expire due to inactivity in {{countdown}} seconds</p>
     </div>
 
-    <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="!signingOut">
+    <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="!signingOut" ng-swipe-left="hideLeftMenu = true">
       <div class="inner-wrap">
         <span class="status" ng-if="$root.reconnecting">
           <i class="fi-loop icon-rotate"></i>
@@ -104,6 +104,7 @@
         <section ng-class="{'main':$root.iden && !$root.starting, 'pin-main':$root.hideNavigation}" ng-view></section> 
 
         <a class="exit-off-canvas"></a>
+        <a ng-if="hideLeftMenu" class="exit-off-canvas"></a>
 
       </div>
     </div>
