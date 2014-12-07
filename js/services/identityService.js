@@ -27,18 +27,18 @@ angular.module('copayApp.services')
       });
     };
 
-    // TODO should be on 'walletService'
+    // TODO should be on 'walletService' or 'go'
     root.goWalletHome = function() {
       var w = $rootScope.wallet;
       if (w) {
         $rootScope.starting = false;
         if (!w.isComplete()) {
-          $location.path('/copayers');
+          go.go('copayers');
         } else {
           if ($rootScope.pendingPayment) {
-            $location.path('paymentIntent');
+            go.go('paymentIntent');
           } else {
-            $location.path('homeWallet');
+            go.go('homeWallet');
           }
         }
       }
