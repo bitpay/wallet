@@ -63,7 +63,9 @@ angular.module('copayApp.controllers').controller('CreateController',
           }
         }
         
-        $rootScope.$digest();
+        $timeout(function(){
+          $rootScope.$digest();
+        },1);
       });
     };
   });
