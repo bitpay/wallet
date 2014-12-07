@@ -23,7 +23,7 @@
   <div class="large-5 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup" ng-show="!$root.iden">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
-      <div ng-include="'views/includes/version.html'"></div>
+      <div class="text-gray" ng-include="'views/includes/version.html'"></div>
     </div>
 
     <div class="p10 box-setup bg-success m10b text-white" ng-show="confirmedEmail">
@@ -115,7 +115,6 @@
       <div class="clipo">
         <img src="img/clipo-signin.png" alt="clipo" width="310">
       </div>
-      <h2 translate>Sign in to Copay</h2>
       <div class="p10 m20b size-14 box-setup bg-success text-white" ng-show="anyWallet && !confirmedEmail && !error">
         <div class="left">
           <i class="size-36 fi-alert m10r"></i>

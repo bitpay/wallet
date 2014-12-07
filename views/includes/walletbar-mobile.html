@@ -11,7 +11,7 @@
       <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
     </div>
     <div class="col2">
-      <a href="#!/homeWallet#{{item.id}}" class="size-12 wallet-item">
+      <a ng-click="$root.go('/homeWallet#{{item.id}}')" class="size-12 wallet-item">
         <div class="oh">
           <div class="right size-10 type-wallet">
             [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 

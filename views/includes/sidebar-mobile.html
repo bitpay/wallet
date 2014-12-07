@@ -1,7 +1,7 @@
 <div>
   <ul class="off-canvas-list">
     <li>
-      <a href="#!/profile" class="db p20h nav-item text-center" title="Create new wallet">
+      <a ng-click="$root.go('profile')" class="db p20h nav-item text-center" title="Create new wallet">
         <div class="photo-container m20t">
           <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="35">
         </div>
@@ -14,23 +14,23 @@
 
     </li>
     <li>
-      <a href="#!/create" class="db p20h nav-item" title="Create new wallet">
+      <a  ng-click="$root.go('create')" class="db p20h nav-item" title="Create new wallet">
         <i class="size-24 m20r fi-plus"></i> {{'Create new wallet' | translate }}</a>
     </li>
     <li>
-      <a href="#!/join" class="db p20h nav-item" title="Join shared wallet">
+      <a ng-click="$root.go('join')" class="db p20h nav-item" title="Join shared wallet">
         <i class="size-24 m20r fi-torsos-all"></i> {{'Join shared wallet' | translate }}</a>
     </li>
     <li>
-      <a href="#!/import" class="db p20h nav-item" title="Import wallet">
+      <a ng-click="$root.go('import')" class="db p20h nav-item" title="Import wallet">
         <i class="size-24 m20r fi-download"></i> {{'Import a wallet' | translate }}</a>
     </li>
     <li ng-if="$root.wallet">
-      <a href="#!/more" class="db p20h nav-item" title="Settings">
+      <a ng-click="$root.go('more')" class="db p20h nav-item" title="Settings">
         <i class="size-24 m20r fi-widget"></i> {{'Wallet Settings' | translate }}</a>
     </li>
     <li>
-      <a href="#!/" class="db p20h nav-item" title="Close" ng-click="signout()">
+      <a class="db p20h nav-item" title="Close" ng-click="signout()">
         <span ng-if="!$root.hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
         <span ng-if="$root.hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
       </a>
