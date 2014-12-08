@@ -23,7 +23,7 @@
   <div class="large-5 large-centered medium-7 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup" ng-show="!$root.iden">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
-      <div class="text-gray" ng-include="'views/includes/version.html'"></div>
+      <div ng-include="'views/includes/version.html'"></div>
     </div>
 
     <div class="p10 box-setup bg-success m10b text-white" ng-show="confirmedEmail">
@@ -78,7 +78,7 @@
       </form>
     </div>
 
-    <div ng-if='$root.hasPin'>
+    <div ng-if='$root.hasPin && !$root.iden'>
       <h2><span translate>Enter your </span> <b> PIN</b></h2>
       <form name="pinForm" novalidate>
         <div class="box-notification" ng-show="error">
@@ -103,7 +103,9 @@
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate type="submit" class="button primary radius expand m0" ng-disabled="pinForm.$invalid || error">
+            <button translate type="submit" class="button primary radius expand m0" 
+              ng-disabled="pinForm.$invalid || error || loading">
+              <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> 
               Sign in
             </button>
           </div>
