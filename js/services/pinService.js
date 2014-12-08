@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('pinService', function($rootScope, localstorageService) {
+  .factory('pinService', function($rootScope, $timeout, localstorageService) {
 
     var KEY = 'pinDATA';
     var SALT = '4gllotIKguqi0EkIslC0';
@@ -57,8 +57,12 @@ angular.module('copayApp.services')
           set: function(newValue) {
             this['_' + name] = newValue;
             scope.error = null;
+            scope.loading = null;
             if (newValue && newValue.length == 4) {
-              return cb(newValue);
+              scope.loading = true;
+              $timeout(function() {
+                return cb(newValue);
+              }, 30);
             }
           },
           enumerable: true,

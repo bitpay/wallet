@@ -7,12 +7,7 @@
 @media (max-width: 1024px) {
 
   .logo-setup {
-    margin: 0;
-    padding: 1rem 0;
-  }
-
-  .home, .open, .join, .waiting-copayers, .setup, .import, .settings {
-    margin-top: 0;
+    margin: 0 0 1rem 0;
   }
 
   .sidebar {
@@ -46,6 +41,11 @@
     width: 100%;
     z-index: 5;
     background: #2C3E50;
+  }
+
+  .home, .settings, .createProfile, .import-profile {
+    overflow: hidden;
+    padding: 1rem 0;
   }
 
   header {
@@ -196,10 +196,6 @@
 
   .button, button {
     padding: 1rem 1.2rem 1.0625rem;
-  }
-  
-  .home form {
-    margin-bottom: 1rem;
   }
 
   form {
