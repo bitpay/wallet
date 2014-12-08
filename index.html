@@ -101,7 +101,7 @@
           ng-class="{'dni':$root.hideNavigation}"
         ></div>
 
-        <section ng-class="{'main':$root.iden && !$root.starting, 'pin-main':$root.hideNavigation}" ng-view></section> 
+        <section ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation}" ng-view></section> 
 
         <a class="exit-off-canvas"></a>
 

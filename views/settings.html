@@ -1,7 +1,7 @@
 <div class="settings" ng-controller="SettingsController">
   <div class="large-4 large-centered medium-6 medium-centered columns">
-    <div class="logo-setup" id="top">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="146" height="59">
+    <div class="logo-setup show-for-large-up" id="top">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
       <h2>{{title|translate}}</h2>
@@ -71,11 +71,13 @@
         </button>
       </form>
       <div class="box-setup-footer">
-        <a class="text-gray" href="#!/">
-          <i class="icon-arrow-left4"></i> 
-          <span translate>Back</span>
-        </a>
-        <div class="right m10r">
+        <div class="left">
+          <a class="button-setup text-gray" href="#!/">
+            <i class="icon-arrow-left4"></i> 
+            <span translate>Back</span>
+          </a>
+        </div>
+        <div class="right">
           <a class="button-setup text-gray" href="" ng-click="reset()">
             <i class="fi-page-delete"></i> 
             <span translate>Reset settings</span>
