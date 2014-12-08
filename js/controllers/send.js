@@ -30,12 +30,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.isMobile = isMobile.any();
 
       if ($rootScope.pendingPayment) {
-        var value;
-        var pp = $rootScope.pendingPayment;
-        var amount = (pp.data && pp.data.amount) ?
-          pp.data.amount * 100000000 * satToUnit : 0;
-        $scope.setForm(pp.address, amount, pp.data.message)
-        _onAddressChange(pp);
+        $scope.setFromUri($rootScope.pendingPayment)
       }
 
       $scope.setInputs();
@@ -95,8 +90,7 @@ angular.module('copayApp.controllers').controller('SendController',
             return this._address;
           },
           set: function(newValue) {
-            this._address = newValue;
-            _onAddressChange();
+            this._address = $scope.onAddressChange(newValue);
           },
           enumerable: true,
           configurable: true
@@ -104,10 +98,10 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.setScanner = function() {
-      navigator.getUserMedia = navigator.getUserMedia || 
-        navigator.webkitGetUserMedia || navigator.mozGetUserMedia || 
+      navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
         navigator.msGetUserMedia;
-      window.URL = window.URL || window.webkitURL || 
+      window.URL = window.URL || window.webkitURL ||
         window.mozURL || window.msURL;
 
       if (!window.cordova && !navigator.getUserMedia)
@@ -343,16 +337,21 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.setForm = function(to, amount, comment) {
       var form = $scope.sendForm;
-      form.address.$setViewValue(merchantData.domain);
+      form.address.$setViewValue(to);
       form.address.$render();
       form.address.$isValid = true;
+      $scope.lockAddress = true;
 
-      form.amount.$setViewValue(merchantData.unitTotal);
-      form.amount.$render();
-      form.amount.$isValid = true;
+      if (amount) {
+        form.amount.$setViewValue(amount);
+        form.amount.$render();
+        form.amount.$isValid = true;
+        $scope.lockAmount = true;
+      }
 
-      if (comment)
-        $scope.commentText = comment;
+      if (comment) {
+        form.commentText.$setViewValue(comment);
+      }
     };
 
     $scope.cancelSend = function(error) {
@@ -388,50 +387,18 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
 
+    $scope.setFromPayPro = function(uri) {
+      console.log('[send.js.391:uri:]', uri); //TODO
 
-    var _onAddressChange = function(pp) {
-      var value;
-      value = value || $scope.address || '';
-      var uri;
-
-      $scope.error = $scope.success = null;
-
-      if (value.indexOf('bitcoin:') === 0) {
-        uri = new bitcore.BIP21(value);
-      } else if (/^https?:\/\//.test(value)) {
-        uri = {
-          data: {
-            merchant: value
-          }
-        };
-      }
-
-      if (!uri || !uri.data.merchant) {
-        if (uri && uri.address) {
-          var amount = (uri.data && uri.data.amount) ? uri.data.amount * 100000000 * satToUnit : 0;
-          var address = uri.address.data;
-          if (amount && address) {
-            $scope.isPayUri = {fixedAmount: true} ;
-          }
-          $timeout(function() {
-            $scope.amount = amount;
-          }, 1000);
-          $scope.commentText = uri.data.message;
-          $scope.address = address;
-        }
-        return;
-      }
-
-      $scope.fetchingURL = uri.data.merchant;
+      $scope.fetchingURL = uri;
       $scope.loading = true;
-
 
       var balance = w.balanceInfo.availableBalance;
       var available = +(balance * unitToSat).toFixed(0);
 
       // Payment Protocol URI (BIP-72)
-      $scope.wallet.fetchPaymentRequest({
-        url: uri.data.merchant
+      w.fetchPaymentRequest({
+        url: uri
       }, function(err, merchantData) {
         $scope.loading = false;
         $scope.fetchingURL = null;
@@ -442,16 +409,51 @@ angular.module('copayApp.controllers').controller('SendController',
           } else {
             $scope.cancelSend(err.toString());
           }
-
         } else if (merchantData && available < +merchantData.total) {
-          $scope.cancelSend(err.toString('Insufficient funds'));
+          $scope.cancelSend('Insufficient funds');
         } else {
           $scope.setForm(merchantData.domain, merchantData.unitTotal)
         }
-        $timeout(function() {
-          $scope.$digest();
-        }, 1);
       });
+    };
+
+    $scope.setFromUri = function(uri) {
+      var form = $scope.sendForm;
+
+      var parsed = new bitcore.BIP21(uri);
+      if (!parsed.isValid() || !parsed.address.isValid()) {
+        $scope.error = 'Invalid bitcoin URL';
+        form.address.$isValid = false;
+        return uri;
+      };
+
+      var addr = parsed.address.toString();
+
+console.log('[send.js.430:parsed:]',addr,parsed.data); //TODO
+
+      if (parsed.data.merchant)
+        return $scope.setFromPayPro(parsed.data.merchant);
+
+      var amount = (parsed.data && parsed.data.amount) ?
+        parsed.data.amount * 100000000 * satToUnit : 0;
+
+      $scope.setForm(addr, amount, parsed.data.message, true);
+      return addr;
+    };
+
+    $scope.onAddressChange = function(value) {
+      var addr;
+      console.log('[send.js.391:value:]', value); //TODO
+
+      $scope.error = $scope.success = null;
+      if (!value) return '';
+
+      if (value.indexOf('bitcoin:') === 0) {
+        return $scope.setFromUri(value);
+      } else if (/^https?:\/\//.test(value)) {
+        return $scope.setFromPayPro(value);
+      }
+      return value;
     };
 
     $scope.openAddressBook = function() {
