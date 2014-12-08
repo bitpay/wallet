@@ -80,7 +80,7 @@
                 <div ng-show="!showAlternative">
                   <div class="row collapse"> 
 
-                    <label for="amount"><span translate>Amount in</span> {{$root.wallet.settings.unitName}}
+                    <label for="amount"><span translate>Amount 
                       <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
                     </label>
 
@@ -135,11 +135,10 @@
                 <p> From {{fetchingURL}}
               </div>
     
-              <div class="large-12 columns" ng-show="!!$root.merchant || isPayUri">
-                <h3 ng-show="!isPayUri">This is a payment protocol transaction</h3>
+              <div class="large-12 columns" ng-show="!!$root.merchant">
+                <h3 >This is a payment protocol transaction</h3>
                 <div class="send-note">
                   <p>
-                  <span ng-show="isPayUri">Payment to: </span>
                   <b>{{$root.merchant.pr.pd.memo || address}}</b>
                   </p>
 
@@ -147,11 +146,6 @@
                   <i>{{amount}} {{$root.wallet.settings.unitName}}</i>
                   <span class="text-gray" ng-if="isRateAvailable">
                     {{ alternative }} {{ alternativeIsoCode }}
-                  </span>
-                  <span class="text-gray" >
-                    (<span translate>Including fee of</span>
-                    {{defaultFee}}
-                    {{$root.wallet.settings.unitName}})
                   </span>
                   <p ng-show="!!$root.merchant">
                   Expires {{$root.merchant.expiration | amTimeAgo }} 
