@@ -78,7 +78,7 @@
       </form>
     </div>
 
-    <div ng-if='$root.hasPin'>
+    <div ng-if='$root.hasPin && !$root.iden'>
       <h2><span translate>Enter your </span> <b> PIN</b></h2>
       <form name="pinForm" novalidate>
         <div class="box-notification" ng-show="error">
