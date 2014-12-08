@@ -356,14 +356,10 @@ a:hover {
   background-color: #F8F8FB;
 }
 
-.pin-main {
-  background-color: #2C3E50;
-}
-
 .logo-setup {
   text-align: center;
-  padding: 2rem 0;
-  color: #fff;
+  margin: 0 0 2rem 0;
+  color: #8597A7;
 }
 
 .box-setup {
@@ -375,7 +371,7 @@ a:hover {
 
 .box-setup-footer {
   overflow: hidden;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 1rem 0 0;
   border-top: 1px solid #425467;
   font-size: 12px;
@@ -1724,6 +1720,11 @@ a.text-warning:hover {color: #FD7262;}
   color: #fff;
 }
 
+.home, .settings, .createProfile, .import-profile {
+  overflow: hidden;
+  padding: 2rem 0;
+}
+
 .tabbable {
   border: 2px solid #213140;
   border-radius: 3px;
@@ -1793,6 +1794,8 @@ a.text-warning:hover {color: #FD7262;}
   z-index: 999;
   padding-top: 20%;
   text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 .clipo {
