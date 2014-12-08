@@ -164,9 +164,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           $scope.askForPin = 1;
           $rootScope.starting = false;
           $rootScope.hideNavigation = true;
-          $timeout(function(){
-            $rootScope.$digest();
-          });
+          $rootScope.$digest();
           return;
         }
         // no mobile
