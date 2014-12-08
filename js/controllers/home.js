@@ -25,8 +25,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $rootScope.fromEmailConfirmation = false;
     }
 
-    if ($rootScope.iden) {
-      identityService.goWalletHome();
+    if ($rootScope.wallet) {
+      go.walletHome();
     }
 
     Compatibility.check($scope);

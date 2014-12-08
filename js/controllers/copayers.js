@@ -3,14 +3,10 @@
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $location) {
 
-    if (!$rootScope.wallet.isComplete()) {
+    $scope.init = function() {
       $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
-    }
-    $scope.loading = false;
-    $scope.secret = $rootScope.wallet.getSecret();
-
-    $scope.goToWallet = function() {
-      $location.path('/homeWallet');
+      $scope.loading = false;
+      $scope.secret = $rootScope.wallet.getSecret();
     };
 
     $scope.copayersList = function() {

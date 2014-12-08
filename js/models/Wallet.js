@@ -1793,6 +1793,7 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
   var payment_url = pd.get('payment_url');
   var merchant_data = pd.get('merchant_data');
 
+  var total = bignum('0', 10).toString(10);
   var merchantData = {
     pr: {
       payment_details_version: ver,
@@ -1826,8 +1827,12 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
     },
     expires: expires,
     request_url: options.url,
-    total: bignum('0', 10).toString(10),
+    domain: /^(?:https?)?:\/\/([^\/:]+).*$/.exec(options.url)[1],
+    total: total,
+    unitTotal: total ? (+total / w.settings.unitToSatoshi) + '' : null,
+    expirationDate: expires ? new Date(expires * 1000) : null,
   };
+
   this._addOutputsToMerchantData(merchantData, options.amount);
   return merchantData;
 };
@@ -2546,7 +2551,7 @@ Wallet.prototype.isComplete = function() {
 
 /**
  * @desc Sets the version of this wallet object
- * 
+ *
  * @param {string} version - the new version for the wallet
  */
 Wallet.prototype.setVersion = function(version) {
