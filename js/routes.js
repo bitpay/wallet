@@ -22,11 +22,14 @@ angular
         template: " ", // just fire controller
         controller: 'EmailConfirmationController',
       })
+      // Payment intents come here.
       .when('/uri-payment/:data', {
-        templateUrl: 'views/uri-payment.html'
+        template: " ", // just fire controller
+        controller: 'paymentUriController',
       })
-      .when('/paymentIntent', {
-        templateUrl: 'views/paymentIntent.html',
+      .when('/selectWalletForPayment', {
+        template: " ", // just fire controller
+        controller: 'walletForPaymentController',
         logged: true
       })
       .when('/join', {

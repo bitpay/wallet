@@ -5,7 +5,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   var _credentials, _firstpin;
 
   $scope.init = function() {
-    identityService.goWalletHome();
+
+    if ($rootScope.wallet)
+      go.walletHome();
+
     $scope.isMobile = isMobile.any();
 
     $scope.createStep = 'storage';

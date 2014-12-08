@@ -4,106 +4,116 @@ var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $modal, $filter, $location, isMobile, notification, rateService) {
-    var w = $rootScope.wallet;
-    preconditions.checkState(w);
-    preconditions.checkState(w.settings.unitToSatoshi);
 
-    $rootScope.title = w.isShared() ? 'Create Transaction Proposal' : 'Send';
-    $scope.loading = false;
-    $scope.error = $scope.success = null;
-    var satToUnit = 1 / w.settings.unitToSatoshi;
-    $scope.defaultFee = bitcore.TransactionBuilder.FEE_PER_1000B_SAT * satToUnit;
-    $scope.unitToBtc = w.settings.unitToSatoshi / bitcore.util.COIN;
-    $scope.unitToSatoshi = w.settings.unitToSatoshi;
-
-    $scope.alternativeName = w.settings.alternativeName;
-    $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
-
-    $scope.isRateAvailable = false;
-    $scope.rateService = rateService;
-    $scope.showScanner = false;
-    $scope.myId = w.getMyCopayerId();
-    $scope.isMobile = isMobile.any();
-
-    rateService.whenAvailable(function() {
-      $scope.isRateAvailable = true;
-      $scope.$digest();
-    });
-
-    $scope.setAlternativeAmount = function(w, tx, cb) {
-      rateService.whenAvailable(function() {
-        _.each(tx.outs, function(out) {
-          var valueSat = out.valueSat * w.settings.unitToSatoshi;
-          out.alternativeAmount =  $filter('noFractionNumber')(rateService.toFiat(valueSat, $scope.alternativeIsoCode), 2);
-          out.alternativeIsoCode = $scope.alternativeIsoCode;
-        });
-        if (cb) return cb(tx);
-      });
-    }; 
-
-    /**
-     * Setting the two related amounts as properties prevents an infinite
-     * recursion for watches while preserving the original angular updates
-     *
-     */
-    Object.defineProperty($scope,
-      "alternative", {
-        get: function() {
-          return this._alternative;
-        },
-        set: function(newValue) {
-          this._alternative = newValue;
-          if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-            this._amount = parseFloat(
-              (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
-          } else {
-            this._amount = 0;
-          }
-        },
-        enumerable: true,
-        configurable: true
-      });
-    Object.defineProperty($scope,
-      "amount", {
-        get: function() {
-          return this._amount;
-        },
-        set: function(newValue) {
-          this._amount = newValue;
-          if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-
-            this._alternative = parseFloat(
-              (rateService.toFiat(newValue * w.settings.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
-          } else {
-            this._alternative = 0;
-          }
-        },
-        enumerable: true,
-        configurable: true
-      });
-    Object.defineProperty($scope,
-      "address", {
-        get: function() {
-          return this._address;
-        },
-        set: function(newValue) {
-          this._address = newValue; 
-          _onChanged();
-        },
-        enumerable: true,
-        configurable: true
-      });
-
+    var satToUnit, unitToSat, w;
 
     $scope.init = function() {
-      // Empty 
-    }; 
+      w = $rootScope.wallet;
+      preconditions.checkState(w);
+      preconditions.checkState(w.settings.unitToSatoshi);
 
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-    window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+      $rootScope.title = w.isShared() ? 'Create Transaction Proposal' : 'Send';
+      $scope.loading = false;
+      $scope.error = $scope.success = null;
 
-    if (!window.cordova && !navigator.getUserMedia)
-      $scope.disableScanner = 1;
+      unitToSat = w.settings.unitToSatoshi;
+      satToUnit = 1 / w.settings.unitToSatoshi;
+
+      $scope.alternativeName = w.settings.alternativeName;
+      $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
+
+      $scope.isPayUri = false;
+      $scope.isRateAvailable = false;
+      $scope.rateService = rateService;
+      $scope.showScanner = false;
+      $scope.myId = w.getMyCopayerId();
+      $scope.isMobile = isMobile.any();
+
+      if ($rootScope.pendingPayment) {
+        var value;
+        var pp = $rootScope.pendingPayment;
+        var amount = (pp.data && pp.data.amount) ?
+          pp.data.amount * 100000000 * satToUnit : 0;
+        $scope.setForm(pp.address, amount, pp.data.message)
+        _onAddressChange(pp);
+      }
+
+      $scope.setInputs();
+      $scope.setScanner();
+
+      rateService.whenAvailable(function() {
+        $scope.isRateAvailable = true;
+        $scope.$digest();
+      });
+    }
+
+    $scope.setInputs = function() {
+      /**
+       * Setting the two related amounts as properties prevents an infinite
+       * recursion for watches while preserving the original angular updates
+       *
+       */
+      Object.defineProperty($scope,
+        "alternative", {
+          get: function() {
+            return this._alternative;
+          },
+          set: function(newValue) {
+            this._alternative = newValue;
+            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+              this._amount = parseFloat(
+                (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
+            } else {
+              this._amount = 0;
+            }
+          },
+          enumerable: true,
+          configurable: true
+        });
+      Object.defineProperty($scope,
+        "amount", {
+          get: function() {
+            return this._amount;
+          },
+          set: function(newValue) {
+            this._amount = newValue;
+            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+
+              this._alternative = parseFloat(
+                (rateService.toFiat(newValue * unitToSat, $scope.alternativeIsoCode)).toFixed(2), 10);
+            } else {
+              this._alternative = 0;
+            }
+          },
+          enumerable: true,
+          configurable: true
+        });
+
+      Object.defineProperty($scope,
+        "address", {
+          get: function() {
+            return this._address;
+          },
+          set: function(newValue) {
+            this._address = newValue;
+            _onAddressChange();
+          },
+          enumerable: true,
+          configurable: true
+        });
+    };
+
+    $scope.setScanner = function() {
+      navigator.getUserMedia = navigator.getUserMedia || 
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia || 
+        navigator.msGetUserMedia;
+      window.URL = window.URL || window.webkitURL || 
+        window.mozURL || window.msURL;
+
+      if (!window.cordova && !navigator.getUserMedia)
+        $scope.disableScanner = 1;
+    };
+
 
     $scope._showError = function(err) {
       copay.logger.error(err);
@@ -112,12 +122,8 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('BIG'))
         msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts'
 
-      if (msg.match('totalNeededAmount'))
-        msg = 'Not enough funds'
-
-
-      if (msg.match('unspent not set'))
-        msg = 'Not enough funds'
+      if (msg.match('totalNeededAmount') || msg.match('unspent not set'))
+        msg = 'Insufficient funds'
 
       var message = 'The transaction' + (w.isShared() ? ' proposal' : '') +
         ' could not be created: ' + msg;
@@ -135,7 +141,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
 
       var address = form.address.$modelValue;
-      var amount = parseInt((form.amount.$modelValue * w.settings.unitToSatoshi).toFixed(0));
+      var amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
       var commentText = form.comment.$modelValue;
 
 
@@ -148,12 +154,6 @@ angular.module('copayApp.controllers').controller('SendController',
         };
       }
 
-      // If we're setting the domain, ignore the change.
-      if ($rootScope.merchant && $rootScope.merchant.domain && address === $rootScope.merchant.domain) {
-        payInfo = {
-          merchant: $rootScope.merchant.request_url
-        };
-      }
       w.spend({
         toAddress: address,
         amountSat: amount,
@@ -339,48 +339,30 @@ angular.module('copayApp.controllers').controller('SendController',
         $scope.notifyStatus(status);
         if (cb) return cb();
       });
-    }; 
-
-    $scope.clearMerchant = function(callback) {
-      // TODO: Find a better way of detecting
-      // whether we're in the Send scope or not.
-      if (!$scope.sendForm || !$scope.sendForm.address) {
-        delete $rootScope.merchant;
-        $rootScope.merchantError = false;
-        $scope.isPayUri = false;
-        if (callback) callback();
-        return;
-      }
-      var val = $scope.sendForm.address.$viewValue || '';
-      var uri;
-      // If we're setting the domain, ignore the change.
-      if ($rootScope.merchant && $rootScope.merchant.domain && val === $rootScope.merchant.domain) {
-        uri = {
-          merchant: $rootScope.merchant.request_url
-        };
-      }
-      if (val.indexOf('bitcoin:') === 0) {
-        uri = new bitcore.BIP21(val).data;
-      } else if (/^https?:\/\//.test(val)) {
-        uri = {
-          merchant: val
-        };
-      }
-      if (!uri || !uri.merchant) {
-        delete $rootScope.merchant;
-        $scope.sendForm.amount.$setViewValue('');
-        $scope.sendForm.amount.$render();
-        if (callback) callback();
-        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-          $rootScope.$apply();
-        }
-      }
     };
 
-    $scope.cancelSend = function(form) {
-      delete $rootScope.merchant;
-      $rootScope.merchantError = false;
-      $scope.isPayUri = false;
+    $scope.setForm = function(to, amount, comment) {
+      var form = $scope.sendForm;
+      form.address.$setViewValue(merchantData.domain);
+      form.address.$render();
+      form.address.$isValid = true;
+
+      form.amount.$setViewValue(merchantData.unitTotal);
+      form.amount.$render();
+      form.amount.$isValid = true;
+
+      if (comment)
+        $scope.commentText = comment;
+    };
+
+    $scope.cancelSend = function(error) {
+      var form = $scope.sendForm;
+
+      if (error)
+        $scope.error = error;
+
+      $scope.fetchingURL = null;
+      $scope.isPayUri = null;
       form.address.$setViewValue('');
       form.address.$render();
       form.amount.$setViewValue('');
@@ -388,41 +370,37 @@ angular.module('copayApp.controllers').controller('SendController',
       form.comment.$setViewValue('');
       form.comment.$render();
       form.$setPristine();
-    }; 
+    };
 
-    var _onChanged = function(pp) { 
+
+    $scope.openPPModal = function(pp) {
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.pp = pp;
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+      };
+      $modal.open({
+        templateUrl: 'views/modals/paypro.html',
+        windowClass: 'tiny',
+        controller: ModalInstanceCtrl,
+      });
+    };
+
+
+
+    var _onAddressChange = function(pp) {
       var value;
-
-      if (pp) {
-        $scope.isPayUri = true;
-        var amount = (pp.data && pp.data.amount) ? pp.data.amount * 100000000 * satToUnit : 0;
-        $scope.commentText = pp.data.message;
-        if (pp.data.merchant) {
-          value = 'bitcoin:' + pp.address.data + '?amount=' + amount + '&r=' + pp.data.r;
-        }
-        else {
-          value = pp.address + '';
-          $timeout(function() {
-            $scope.amount = amount;
-          }, 1000);
-          $scope.address = value;
-        }
-      }
-
       value = value || $scope.address || '';
       var uri;
 
       $scope.error = $scope.success = null;
-      // If we're setting the domain, ignore the change.
-      if ($rootScope.merchant && $rootScope.merchant.domain && value === $rootScope.merchant.domain) {
-        return;
-      }
 
       if (value.indexOf('bitcoin:') === 0) {
         uri = new bitcore.BIP21(value);
       } else if (/^https?:\/\//.test(value)) {
         uri = {
-          data : {
+          data: {
             merchant: value
           }
         };
@@ -433,7 +411,7 @@ angular.module('copayApp.controllers').controller('SendController',
           var amount = (uri.data && uri.data.amount) ? uri.data.amount * 100000000 * satToUnit : 0;
           var address = uri.address.data;
           if (amount && address) {
-            $scope.isPayUri = true;
+            $scope.isPayUri = {fixedAmount: true} ;
           }
           $timeout(function() {
             $scope.amount = amount;
@@ -444,178 +422,106 @@ angular.module('copayApp.controllers').controller('SendController',
         return;
       }
 
-      var apply = function() {
-        if ($rootScope.$$phase !== '$apply' && $rootScope.$$phase !== '$digest') {
-          $rootScope.$apply();
-        }
-      };
-
       $scope.fetchingURL = uri.data.merchant;
       $scope.loading = true;
-      apply();
 
-      var timeout = setTimeout(function() {
-        timeout = null;
-        $scope.fetchingURL = null;
-        $scope.loading = false;
-        $scope.sendForm.address.$setViewValue('');
-        $scope.sendForm.address.$render();
-        $scope.sendForm.address.$isValid = false;
-        $scope.error = 'Payment server timed out';
-        apply();
-      }, 10 * 1000);
+
+      var balance = w.balanceInfo.availableBalance;
+      var available = +(balance * unitToSat).toFixed(0);
 
       // Payment Protocol URI (BIP-72)
       $scope.wallet.fetchPaymentRequest({
         url: uri.data.merchant
       }, function(err, merchantData) {
-        if (!timeout) return;
-        clearTimeout(timeout);
-
         $scope.loading = false;
         $scope.fetchingURL = null;
-        apply();
-
-        var balance = $rootScope.availableBalance;
-        var available = +(balance * w.settings.unitToSatoshi).toFixed(0);
-        if (merchantData && available < +merchantData.total) {
-          err = new Error('Insufficient funds.');
-          err.amount = merchantData.total;
-        }
 
         if (err) {
-          if (err.amount) {
-            $scope.sendForm.amount.$setViewValue(+err.amount / w.settings.unitToSatoshi);
-            $scope.sendForm.amount.$render();
-            $scope.sendForm.amount.$isValid = false;
-            $scope.notEnoughAmount = true;
-            $rootScope.merchantError = true;
-            var lastAddr = $scope.sendForm.address.$viewValue;
-            var unregister = $scope.$watch('address', function() {
-              if ($scope.sendForm.address.$viewValue !== lastAddr) {
-                delete $rootScope.merchantError;
-                $scope.isPayUri = false;
-                $scope.sendForm.amount.$setViewValue('');
-                $scope.sendForm.amount.$render();
-                unregister();
-                apply();
-              }
-            });
+          if (err.match('TIMEOUT')) {
+            $scope.cancelSend('Payment server timed out');
           } else {
-            $scope.sendForm.address.$setViewValue('');
-            $scope.sendForm.address.$render();
+            $scope.cancelSend(err.toString());
           }
-          $scope.sendForm.address.$isValid = false;
-          copay.logger.error(err);
 
-          $scope.error = 'Could not fetch payment request';
-
-          apply();
-          return;
+        } else if (merchantData && available < +merchantData.total) {
+          $scope.cancelSend(err.toString('Insufficient funds'));
+        } else {
+          $scope.setForm(merchantData.domain, merchantData.unitTotal)
         }
-
-        var url = merchantData.request_url;
-        var domain = /^(?:https?)?:\/\/([^\/:]+).*$/.exec(url)[1];
-
-        merchantData.unitTotal = (+merchantData.total / w.settings.unitToSatoshi) + '';
-        merchantData.expiration = new Date(
-          merchantData.pr.pd.expires * 1000);
-        merchantData.domain = domain;
-
-        $rootScope.merchant = merchantData;
-
-        $scope.sendForm.address.$setViewValue(domain);
-        $scope.sendForm.address.$render();
-        $scope.sendForm.address.$isValid = true;
-
-        $scope.sendForm.amount.$setViewValue(merchantData.unitTotal);
-        $scope.sendForm.amount.$render();
-        $scope.sendForm.amount.$isValid = true;
-
-        // If the address changes to a non-payment-protocol one,
-        // delete the `merchant` property from the scope.
-        var unregister = $rootScope.$watch(function() {
-          $scope.clearMerchant(unregister);
-        });
-
-        apply();
+        $timeout(function() {
+          $scope.$digest();
+        }, 1);
       });
     };
-
-    if ($rootScope.pendingPayment) {
-      var value;
-      var pp = $rootScope.pendingPayment; 
-      _onChanged(pp);
-    } 
 
     $scope.openAddressBook = function() {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/address-book.html',
-          windowClass: 'large',
-          controller: function($scope, $modalInstance) {
+        windowClass: 'large',
+        controller: function($scope, $modalInstance) {
 
-            $scope.showForm = null;
-            $scope.addressBook = w.addressBook;
+          $scope.showForm = null;
+          $scope.addressBook = w.addressBook;
 
-            $scope.hasEntry = function() {
-              return _.keys($scope.addressBook).length > 0 ? true : false;
-            }; 
+          $scope.hasEntry = function() {
+            return _.keys($scope.addressBook).length > 0 ? true : false;
+          };
 
-            $scope.toggleAddressBookEntry = function(key) {
-              w.toggleAddressBookEntry(key);
-            };
+          $scope.toggleAddressBookEntry = function(key) {
+            w.toggleAddressBookEntry(key);
+          };
 
-            $scope.copyToSend = function(addr) {
-              $modalInstance.close(addr);
-            };
+          $scope.copyToSend = function(addr) {
+            $modalInstance.close(addr);
+          };
 
-            $scope.cancel = function() {
-              $scope.error = $scope.success = null;
-              $scope.toggleForm();
-            };
+          $scope.cancel = function() {
+            $scope.error = $scope.success = null;
+            $scope.toggleForm();
+          };
 
-            $scope.toggleForm = function() {
-              $scope.showForm = !$scope.showForm;
-            };
+          $scope.toggleForm = function() {
+            $scope.showForm = !$scope.showForm;
+          };
 
-            $scope.submitAddressBook = function(form) {
-              if (form.$invalid) {
-                return;
-              }
-              $timeout(function() {              
-                var errorMsg;
-                var entry = {
-                  "address": form.newaddress.$modelValue,
-                "label": form.newlabel.$modelValue
-                };
-                try {
-                  w.setAddressBook(entry.address, entry.label);
-                } catch (e) {
-                  console.log('[send.js:583]',e); //TODO
-                  errorMsg = e.message;
-                }
-
-                if (errorMsg) {
-                  $scope.error = errorMsg; 
-                } else {
-                  $scope.toggleForm();
-                  $scope.success = 'New entry has been created';
-                }
-                $rootScope.$digest();
-              }, 500);
-              
-              $timeout(function() {
-                $scope.error = $scope.success = null;
-              }, 5000);
-
+          $scope.submitAddressBook = function(form) {
+            if (form.$invalid) {
               return;
-              
-            };
+            }
+            $timeout(function() {
+              var errorMsg;
+              var entry = {
+                "address": form.newaddress.$modelValue,
+                "label": form.newlabel.$modelValue
+              };
+              try {
+                w.setAddressBook(entry.address, entry.label);
+              } catch (e) {
+                console.log('[send.js:583]', e); //TODO
+                errorMsg = e.message;
+              }
 
-            $scope.close = function() {
-              $modalInstance.dismiss('cancel');
-            };
-          },
+              if (errorMsg) {
+                $scope.error = errorMsg;
+              } else {
+                $scope.toggleForm();
+                $scope.success = 'New entry has been created';
+              }
+              $rootScope.$digest();
+            }, 500);
+
+            $timeout(function() {
+              $scope.error = $scope.success = null;
+            }, 5000);
+
+            return;
+
+          };
+
+          $scope.close = function() {
+            $modalInstance.dismiss('cancel');
+          };
+        },
       });
 
       modalInstance.result.then(function(addr) {

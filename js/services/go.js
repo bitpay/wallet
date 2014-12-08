@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $location) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location) {
   var root = {};
 
   var hideSidebars = function() {
@@ -44,7 +44,7 @@ angular.module('copayApp.services').factory('go', function($window, $location) {
     var ref = window.open(url, '_blank', 'location=no');
   };
 
-  root.go = function(path) {
+  root.path = function(path) {
     var parts = path.split('#');
     $location.path(parts[0]);
     if (parts[1])
@@ -54,6 +54,36 @@ angular.module('copayApp.services').factory('go', function($window, $location) {
 
   root.swipe = function(invert) {
     toggleSidebar(invert);
+  };
+
+  root.walletHome = function() {
+console.log('[go.js.25:walletHome:]'); //TODO
+    var w = $rootScope.wallet;
+    preconditions.checkState(w);
+    $rootScope.starting = false;
+    if (!w.isComplete()) {
+      root.path('copayers');
+    } else {
+      if ($rootScope.pendingPayment) {
+        root.path('selectWalletForPayment');
+      } else {
+
+console.log('[go.js.36]'); //TODO
+        root.path('homeWallet');
+      }
+    }
+  };
+
+  root.home = function() {
+    if ($rootScope.iden)
+      root.walletHome();
+    else
+      root.path('/');
+  };
+
+
+  root.send = function() {
+    $location.path('send');
   };
 
   return root;
