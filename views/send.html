@@ -48,7 +48,7 @@
             </div>
 
             <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="loading || isPayUri"
+              <input type="text" id="address" name="address" ng-disabled="loading || lockAddress"
               placeholder="{{'Bitcoin address'|translate}}" ng-model="address" valid-address required>
               <i class="fi-address-book"></i> 
               <div ng-hide="showScanner || disableScanner">
@@ -87,7 +87,7 @@
                     <div class="small-9 columns">
                       <div class="input">
                         <input type="number" id="amount"
-                        ng-disabled="loading || isPayUri.fixedAmount"
+                        ng-disabled="loading || lockAmount"
                         name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
                         ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required
                         autocomplete="off">
@@ -112,7 +112,7 @@
                     <div class="small-9 columns">
                       <div class="input">
                         <input type="number" id="alternative"
-                        ng-disabled="loading || !isRateAvailable ||isPayUri"
+                        ng-disabled="loading || !isRateAvailable || lockAmount"
                         name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative" requiredautocomplete="off">
                         <i class="icon-usd"></i>
                       </div>
@@ -173,10 +173,10 @@
 
             <div class="row">
               <div class="large-6 medium-6 small-6 columns text-left">
-                <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || isPayUri" ng-click="openAddressBook()">
+                <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || lockAddress" ng-click="openAddressBook()">
                   <i class="fi-address-book"></i> Address book
                 </a>
-                <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant || isPayUri">
+                <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant || lockAddress">
                   Cancel
                 </a>
               </div>
