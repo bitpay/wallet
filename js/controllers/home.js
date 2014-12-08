@@ -72,6 +72,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     var credentials = pinService.get(pin, function(err, credentials) {
       if (err || !credentials) {
         $rootScope.starting = false;
+        $scope.loading = null;
         $scope.error = 'Wrong PIN';
         return;
       }
