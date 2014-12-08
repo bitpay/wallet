@@ -1,5 +1,5 @@
 
-<div class="home" ng-controller="ImportProfileController">
+<div class="import-profile" ng-controller="ImportProfileController">
   <div class="loading-screen" ng-show="loading">
     <div class="spinner">
       <div class="contener_general">
@@ -31,9 +31,6 @@
           </div>
 
           <div ng-show="!is_iOS">
-            <legend for="backupFile" class="m10b"> 
-              <span class="text-gray size-12" translate>Choose backup file</span> 
-            </legend>
             <div class="input">
               <input type="file" class="db form-control" 
             placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
@@ -41,13 +38,15 @@
           </div>
 
           <div ng-show="is_iOS">
-            <label for="backupText" class="m10b"> 
-              <span translate>Paste backup plain text code</span> <i class="fi-clipboard"></i>
-            </label>
-            <textarea class="form-control" 
+            <div class="input"> 
+            <textarea 
+              placeholder="Paste backup plain text code" 
+              class="form-control" 
               name="backupText" 
               ng-model="backupText" 
               rows="5"></textarea>
+            <i class="icon-compose"></i>
+            </div>
           </div>
           <div class="input">
             <input type="password" class="form-control" placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>

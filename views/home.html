@@ -132,9 +132,15 @@
         </div>
       </div>
       <form name="loginForm" ng-submit="openWithCredentials(loginForm)" novalidate>
-        <p class="text-warning size-12" ng-show="error">
-          <i class="fi-x"></i> {{error|translate}}
-        </p>
+        <div class="box-notification" ng-show="error">
+          <div class="box-icon error">
+            <i class="fi-x size-24"></i>
+          </div>
+          <span class="text-warning size-14">
+            {{error|translate}}
+          </span>
+        </div>
+
         <div class="input" ng-if="!usingLocalStorage">
           <input type="email" ng-model="email" class="form-control" name="email" placeholder="Email" required show-focus="!isMobile">
           <i class="icon-email"></i>
