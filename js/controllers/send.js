@@ -29,8 +29,10 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.isMobile = isMobile.any();
 
       if ($rootScope.pendingPayment) {
-        $scope.setFromUri($rootScope.pendingPayment)
-        $rootScope.pendingPayment = null;
+        $timeout(function() {
+          $scope.setFromUri($rootScope.pendingPayment)
+          $rootScope.pendingPayment = null;
+        },100);
       }
 
       $scope.setInputs();
@@ -154,11 +156,8 @@ angular.module('copayApp.controllers').controller('SendController',
         amountSat: amount,
         comment: comment,
       }, function(err, txid, status) {
-        console.log('[send.js.156:txid:]', txid); //TODO
-        console.log('[send.js.156:status:]', status); //TODO
         $scope.loading = false;
 
-        console.log('[send.js.158]'); //TODO
         if (err)
           return $scope.setError(err);
 

@@ -73,7 +73,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.home = function() {
-console.log('[go.js.48:home:]'); //TODO
     if ($rootScope.iden)
       root.walletHome();
     else
@@ -82,8 +81,6 @@ console.log('[go.js.48:home:]'); //TODO
 
 
   root.send = function() {
-
-console.log('[go.js.58]'); //TODO
     $location.path('send');
   };
 

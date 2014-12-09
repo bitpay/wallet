@@ -7,11 +7,12 @@ angular.module('copayApp.controllers').controller('paymentUriController', functi
   angular.forEach($location.search(), function(value, key) {
     query.push(key + "=" + value);
   });
-  var queryString = query ? "?" + query.join("&") : "";
-  var bitcoinURI = $routeParams.data + queryString;
+  var queryString = query ? query.join("&") : null;
+  var bitcoinURI = $routeParams.data + ( queryString ? '?' + queryString : '');
   var uri = new bitcore.BIP21(bitcoinURI);
 
-  if (uri.isValid()) {
+  if (uri && uri.address && (_.isString(uri.address) || uri.address.isValid()) ) {
+    copay.logger.debug('Payment Intent:', bitcoinURI);
     $rootScope.pendingPayment = bitcoinURI;
   }
 
