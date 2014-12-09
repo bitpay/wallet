@@ -509,6 +509,9 @@ Identity.prototype.bindWallet = function(w) {
   w.on('publicKeyRingUpdated', function() {
     Identity.storeWalletDebounced(self, w);
   });
+  w.on('ready', function() {
+    Identity.storeWalletDebounced(self, w);
+  });
 
   this.emitAndKeepAlive('newWallet', w.getId());
 };

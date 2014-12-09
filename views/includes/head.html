@@ -2,7 +2,7 @@
   <h1>
     {{$root.title}} 
     <small ng-if="$root.wallet">
-      <a class="text-gray" ng-click="refresh()" ng-if="!$root.updatingBalance">
+      <a class="text-gray" ng-click="refresh()" ng-if="$root.wallet.isComplete() && !$root.updatingBalance">
         <i class="fi-refresh"></i>
       </a>
       <span ng-if="$root.updatingBalance">

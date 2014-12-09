@@ -22,11 +22,11 @@ angular
         template: " ", // just fire controller
         controller: 'EmailConfirmationController',
       })
-      // Payment intents come here.
-      .when('/uri-payment/:data', {
-        template: " ", // just fire controller
-        controller: 'paymentUriController',
-      })
+    // Payment intents come here.
+    .when('/uri-payment/:data', {
+      template: " ", // just fire controller
+      controller: 'paymentUriController',
+    })
       .when('/selectWalletForPayment', {
         template: " ", // just fire controller
         controller: 'walletForPaymentController',
@@ -127,6 +127,7 @@ angular
     }
 
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
+
       if (!ls || ls.length < 1) {
         $location.path('unsupported');
       } else {
@@ -134,7 +135,8 @@ angular
           $idle.unwatch();
           $location.path('/');
         }
-        if ($rootScope.wallet && !$rootScope.wallet.isComplete() && next.walletShouldBeComplete) {
+        if ($rootScope.wallet && !$rootScope.wallet.isComplete() 
+            && next.walletShouldBeComplete) {
           $location.path('/copayers');
         }
       }
