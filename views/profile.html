@@ -108,9 +108,9 @@
 
   <div class="line-dashed-h m20b"></div>
   
-  <div class="m20b row">
+  <div class="m20b row oh">
     <div class="large-12 columns">
-      <a class="size-12" ng-click="hideAdv=!hideAdv">
+      <a class="small left button-setup" ng-click="hideAdv=!hideAdv">
         <i class="fi-widget m3r"></i>
         <span translate ng-hide="!hideAdv">Show</span> 
         <span translate ng-hide="hideAdv">Hide</span> 
@@ -122,17 +122,15 @@
   </div>
 
   <div ng-hide="hideAdv" class="row">
-    <div class="row">
-      <div class="large-12 columns">
-        <div class="panel">
-          <h2><i class="fi-minus-circle m10r"></i> 
-            <span translate>Delete Profile</span>
-          </h2>
-          <p translate class="text-gray">Permanently delete this profile and all its wallets. WARNING: this action cannot be reversed.</p>
-          <a translate class="button warning m0" ng-really-message="{{'Are you sure you want to delete this profile?' | translate}}" 
-            ng-really-click="deleteProfile()">Delete Profile
-          </a>
-        </div>
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> 
+          <span translate>Delete Profile</span>
+        </h2>
+        <p translate class="text-gray">Permanently delete this profile and all its wallets. WARNING: this action cannot be reversed.</p>
+        <a translate class="button warning m0" ng-really-message="{{'Are you sure you want to delete this profile?' | translate}}" 
+          ng-really-click="deleteProfile()">Delete Profile
+        </a>
       </div>
     </div>
   </div>

@@ -30,7 +30,7 @@
     
 
           <div class="panel">
-            <label><span translate>Wallet name (*)</span>
+            <label><span translate>Wallet name</span>
               <div class="input">
                 <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName" ng-required="true">
                 <i class="icon-wallet"></i>
@@ -59,10 +59,10 @@
             </div>
             <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
 
-            <div class="line-dashed-h"></div>
+            <div class="line-dashed-h m20b"></div>
 
-            <div class="m20t m20b">
-              <a class="small" ng-click="hideAdv=!hideAdv">
+            <div class="m20b oh">
+              <a class="small left button-setup" ng-click="hideAdv=!hideAdv">
                 <i class="fi-widget m3r"></i>
                 <span translate ng-hide="!hideAdv">Show</span> 
                 <span translate ng-hide="hideAdv">Hide</span> 
@@ -72,17 +72,25 @@
               </a>
             </div>
             <div ng-hide="hideAdv" class="row">
-              <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="'testnet'"
-              ng-false-value="'livenet'" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
-              <label for="network-name" translate>Use test network</label>
+              <div class="large-12 columns">
 
-              <p>
-              <input type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="private">
+                <label for="network-name">
+                  <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="'testnet'"
+                  ng-false-value="'livenet'" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
+                  Use test network
+                </label>
+
+                <label for="ext-master">Master extended private key
+                <input id="ext-master" 
+                  type="text" 
+                  placeholder="BIP32 master extended private key (hex)" 
+                  name="private" ng-model="private">
+              </div>
             </div>
 
 
             <div class="text-right">
-              <button translate  type="submit" class="button primary m0" ng-disabled="setupForm.$invalid || loading">
+              <button translate  type="submit" class="button primary expand m0" ng-disabled="setupForm.$invalid || loading">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
             </div>
