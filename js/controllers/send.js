@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus) {
 
     var satToUnit, unitToSat, w;
 
@@ -250,7 +250,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
     qrcode.callback = function(data) {
       _scanStop();
-
       $scope.$apply(function() {
         $scope.sendForm.address.$setViewValue(data);
         $scope.sendForm.address.$render();
@@ -389,7 +388,10 @@ angular.module('copayApp.controllers').controller('SendController',
         form.address.$setViewValue('');
         form.address.$render();
       }
-      $scope.notifyStatus(status);
+
+      if (!txStatus.notify(status))
+        $scope.error = status;
+
       $timeout(function() {
         $rootScope.$digest();
       }, 1);
@@ -414,23 +416,8 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
-    $scope.openTxStatusModal = function(statusStr) {
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.statusStr = statusStr;
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
-      };
-      $modal.open({
-        templateUrl: 'views/modals/tx-status.html',
-        windowClass: 'tiny',
-        controller: ModalInstanceCtrl,
-      });
-    };
 
     $scope.setFromPayPro = function(uri) {
-      console.log('[send.js.391:uri:]', uri); //TODO
-
       $scope.fetchingURL = uri;
       $scope.loading = true;
 
@@ -478,9 +465,6 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.onAddressChange = function(value) {
-      var addr;
-      console.log('[send.js.391:value:]', value); //TODO
-
       $scope.error = $scope.success = null;
       if (!value) return '';
 
@@ -489,6 +473,7 @@ angular.module('copayApp.controllers').controller('SendController',
       } else if (/^https?:\/\//.test(value)) {
         return $scope.setFromPayPro(value);
       }
+
       return value;
     };
 
@@ -558,8 +543,7 @@ angular.module('copayApp.controllers').controller('SendController',
       });
 
       modalInstance.result.then(function(addr) {
-        $scope._address = addr;
+        $scope.setForm(addr);
       });
     };
-
   });

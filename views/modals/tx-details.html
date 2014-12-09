@@ -31,11 +31,11 @@
   </div>
   <div class="line-b m10t"></div>
   <h1 class="m30v">Transaction Details</h1>
-  <div class="ellipsis"> <b>ID:</b> <span class="text-gray"> {{btx.txid}} </span></div>
-  <div ng-if="btx.ts" class="m10v">
-    <time> <span>{{btx.ts | amCalendar}}</span></time>
+  <div class="ellipsis"  ng-if="btx.txid"> <b>ID:</b> <span class="text-gray"> {{btx.txid}} </span></div>
+  <div ng-if="btx.ts || btx.createdTs " class="m10v">
+    <time> <span>{{ (btx.ts || btx.createdTs ) | amCalendar}}</span></time>
 
-    [<time>{{btx.ts | amTimeAgo}}</time>]
+    [<time>{{ (btx.ts || btx.createdTs ) | amTimeAgo}}</time>]
   </div>
 
   <div class="m10v">
@@ -83,12 +83,11 @@
     </ul>
   </div>
 
-  <div class="m10t oh">
+  <div class="m10t oh"  ng-if="btx.txid">
     <a class="right button-setup" 
       ng-click="openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
       See it on the blockchain <i class="icon-arrow-right2 vm"></i>
     </a>
-    </p>
   </div>
 </div>
 
