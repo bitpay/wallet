@@ -57,24 +57,23 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.walletHome = function() {
-console.log('[go.js.25:walletHome:]'); //TODO
     var w = $rootScope.wallet;
     preconditions.checkState(w);
     $rootScope.starting = false;
+
     if (!w.isComplete()) {
       root.path('copayers');
     } else {
       if ($rootScope.pendingPayment) {
         root.path('selectWalletForPayment');
       } else {
-
-console.log('[go.js.36]'); //TODO
         root.path('homeWallet');
       }
     }
   };
 
   root.home = function() {
+console.log('[go.js.48:home:]'); //TODO
     if ($rootScope.iden)
       root.walletHome();
     else
@@ -83,6 +82,8 @@ console.log('[go.js.36]'); //TODO
 
 
   root.send = function() {
+
+console.log('[go.js.58]'); //TODO
     $location.path('send');
   };
 

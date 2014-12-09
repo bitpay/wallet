@@ -1,4 +1,4 @@
-<div ng-controller="CopayersController">
+<div ng-controller="CopayersController" ng-init="init()">
   <div class="row hide-for-large-up">
     <div class="medium-12 small-12 columns">
       <h1 translate>
@@ -12,6 +12,13 @@
         <div class="panel oh">
           <h2 class="line-b">
             Share this secret with your other copayers 
+            <div class="right size-10">
+              <span ng-if="!$root.wallet.isShared()">Personal Wallet</span>
+              <span ng-if="$root.wallet.isShared()">
+                Multisignature wallet [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
+              </span>
+              <span ng-if="$root.wallet.isTestnet()"> in TESTNET</span>
+            </div>
           </h2>
           <div class="text-center">
             <qrcode size="250" data="{{secret}}"></qrcode>
@@ -22,7 +29,7 @@
         </div>
       </div>
       <div class="panel oh">
-        <div ng-include="'views/includes/copayer.html'"></div> 
+        <div ng-include="'views/includes/copayers.html'"></div> 
         <div class="copay-box" ng-if="!$root.wallet.isComplete()">
           <span ng-include="'views/includes/photo.html'"></span>
           <p class="size-12 text-white text-light m0">

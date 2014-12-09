@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $location, rateService, notification, identityService) {
-  $scope.init = function() {
+  $scope.initHome = function() {
+    var w = $rootScope.wallet;
+
     $rootScope.title = 'Home';
-
-
     $scope.rateService = rateService;
     $scope.isRateAvailable = false;
 
-    var w = $rootScope.wallet;
-    w.on('txProposalEvent', _updateTxs);
+    if (w.isShared())
+      $scope.copayers = w.getRegisteredPeerIds();
+
+     w.on('txProposalEvent', _updateTxs);
     _updateTxs();
 
     rateService.whenAvailable(function() {
@@ -18,7 +20,9 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
     });
   };
 
-  // This is necesarry, since wallet can change in homeWallet, without running init() again.
+  // This is necessary, since wallet can change in homeWallet, 
+  // without running init() again.
+  
   var removeWatch;
   removeWatch = $rootScope.$watch('wallet.id', function(newWallet, oldWallet) {
     if ($rootScope.wallet && $rootScope.wallet.isComplete() && newWallet !== oldWallet) {
