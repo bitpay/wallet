@@ -59,7 +59,6 @@ angular.module('copayApp.services')
             scope.error = null;
             scope.loading = null;
             if (newValue && newValue.length == 4) {
-              scope.loading = true;
               $timeout(function() {
                 return cb(newValue);
               }, 30);
