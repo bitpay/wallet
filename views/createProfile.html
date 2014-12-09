@@ -230,7 +230,9 @@
           </a>
         </div>
         <div class="large-6 medium-6 small-6 columns text-right">
-          <button translate type="submit" class="button primary radius expand m0" ng-disabled="setPinForm.$invalid || error">
+          <button translate type="submit" class="button primary radius expand m0" 
+            ng-disabled="setPinForm.$invalid || error || loading">
+            <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> 
             OK
           </button>
         </div>
