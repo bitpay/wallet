@@ -83,6 +83,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
   checkOK
 
+  cordova plugin add org.apache.cordova.inappbrowser
+  checkOK
+
 fi
 
 echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
