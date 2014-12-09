@@ -42,54 +42,54 @@
   
   <div class="row" ng-init="setWallets()">
     <div class="large-12 columns">
-      <h2>Manage wallets</h2>
-      <table>
+      <h2>Manage wallets</h2> 
+
+      <div class="box-notification" ng-show="success">
+        <div class="box-icon success">
+          <i class="fi-check size-24"></i>
+        </div>
+        <span class="text-success size-14">
+          {{success|translate}}
+        </span>
+        <a href ng-click="success=false" class="close-notification success">&#215;</a>
+      </div>
+
+      <table class="manage-wallets">
         <thead>
           <tr>
             <th>Name</th>
             <th>Type</th>
             <th class="hide-for-small-only">Status</th>
-            <th>Balance</th>
-            <th>Approx Size</th>
-            <th class="text-right">Actions</th>
+            <th class="hide-for-small-only">Balance</th>
+            <th class="hide-for-small-only">Approx Size</th>
           </tr>
         </thead>
         <tbody>
           <tr 
               data-ng-repeat="item in wallets | orderBy:'name'" 
-              ng-init="isComplete = item.isComplete();
-              networkName = item.getNetworkName()"
-              ng-class="{'deleting':loading==item.id}">
-            <td>{{item.name || item.id }}</td>
+              ng-init="isComplete = item.isComplete(); networkName = item.getNetworkName()"
+              ng-click="showWalletInfo(item)">
+            <td>
+              <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+              <span ng-show="loading != item.id">
+                {{item.name || item.id }}
+              </span>
+            </td>
             <td>{{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}</td>
             <td class="hide-for-small-only">
               {{isComplete ? 'Complete' : 'Waiting for copayers...'}}
             </td>
-            <td>
+            <td class="hide-for-small-only">
               <span ng-if="!isComplete">-</span>
               <span ng-if="isComplete">
                   {{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}
               </span>
             </td>
-          <td>
+            <td class="hide-for-small-only">
               <span>
                   {{item.kb}} kB 
                   <span ng-if="item.usage">({{item.usage}}%) </span>
               </span>
-            </td>
-   
-            <td class="text-right">
-              <div ng-show="loading != item.id">
-                <a title="Download Backup" class="text-gray" ng-click="downloadWalletBackup(item)"
-                  ng-show="!isSafari"><i class="fi-download size-18 m10r"></i></a>
-                <a title="View Backup" ng-click="viewWalletBackup(item)"
-                  ng-show="isSafari"><i class="fi-eye"></i></a> 
-                &nbsp; 
-                <a title="Delete Wallet" ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
-                  ng-really-click="deleteWallet(item)"
-                  ng-show="loading != item.id"><i class="fi-trash text-gray size-18"></i></a>
-              </div>
-              <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
             </td>
           </tr>
         </tbody>

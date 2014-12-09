@@ -148,6 +148,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           $scope.error = 'Unknown error';
         }
         $rootScope.starting = false;
+        $scope.loading = null;
         $timeout(function(){
           $rootScope.$digest();
         },1)
