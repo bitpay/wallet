@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, $location, isMobile, notification, rateService) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService) {
 
     var satToUnit, unitToSat, w;
 
@@ -154,10 +154,16 @@ angular.module('copayApp.controllers').controller('SendController',
         amountSat: amount,
         comment: comment,
       }, function(err, txid, status) {
+        console.log('[send.js.156:txid:]', txid); //TODO
+        console.log('[send.js.156:status:]', status); //TODO
         $scope.loading = false;
 
+        console.log('[send.js.158]'); //TODO
         if (err)
           return $scope.setError(err);
+
+
+        console.log('[send.js.162:status:]', status); //TODO
 
         $scope.resetForm(status);
       });
@@ -307,20 +313,21 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.notifyStatus = function(status) {
-      if (status == copay.Wallet.TX_BROADCASTED)
-        $scope.success = 'Transaction broadcasted!';
-      else if (status == copay.Wallet.TX_PROPOSAL_SENT)
-        $scope.success = 'Transaction proposal created';
-      else if (status == copay.Wallet.TX_SIGNED)
-        $scope.success = 'Transaction proposal was signed';
-      else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
-        $scope.success = 'Transaction signed and broadcasted!';
-      else
-        $scope.error = status;
+      var msg;
 
-      $timeout(function() {
-        $scope.$digest();
-      });
+      if (status == copay.Wallet.TX_BROADCASTED)
+        msg = 'Transaction broadcasted!';
+      else if (status == copay.Wallet.TX_PROPOSAL_SENT)
+        msg = 'Transaction proposal created';
+      else if (status == copay.Wallet.TX_SIGNED)
+        msg = 'Transaction proposal was signed';
+      else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
+        msg = 'Transaction signed and broadcasted!';
+
+      if (msg)
+        $scope.openTxStatusModal(msg);
+      else 
+        $scope.error = status;
     };
 
 
@@ -377,14 +384,13 @@ angular.module('copayApp.controllers').controller('SendController',
       form.comment.$render();
       form.$setPristine();
 
+      if (form.address) {
+        form.address.$pristine = true;
+        form.address.$setViewValue('');
+        form.address.$render();
+      }
       $scope.notifyStatus(status);
       $timeout(function() {
-        if (form.address) {
-          form.address.$pristine = true;
-          form.address.$setViewValue('');
-          form.address.$render();
-        }
-
         $rootScope.$digest();
       }, 1);
     };
@@ -408,6 +414,19 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
+    $scope.openTxStatusModal = function(statusStr) {
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.statusStr = statusStr;
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+      };
+      $modal.open({
+        templateUrl: 'views/modals/tx-status.html',
+        windowClass: 'tiny',
+        controller: ModalInstanceCtrl,
+      });
+    };
 
     $scope.setFromPayPro = function(uri) {
       console.log('[send.js.391:uri:]', uri); //TODO
@@ -503,6 +522,7 @@ angular.module('copayApp.controllers').controller('SendController',
             $scope.showForm = !$scope.showForm;
           };
 
+          // TODO change to modal
           $scope.submitAddressBook = function(form) {
             if (form.$invalid) {
               return;
@@ -516,7 +536,7 @@ angular.module('copayApp.controllers').controller('SendController',
               try {
                 w.setAddressBook(entry.address, entry.label);
               } catch (e) {
-                console.log('[send.js:583]', e); //TODO
+                copay.logger.warn(e);
                 errorMsg = e.message;
               }
 
@@ -524,17 +544,11 @@ angular.module('copayApp.controllers').controller('SendController',
                 $scope.error = errorMsg;
               } else {
                 $scope.toggleForm();
-                $scope.success = 'New entry has been created';
+                notification.success('Entry created', 'New addressbook entry created')
               }
               $rootScope.$digest();
-            }, 500);
-
-            $timeout(function() {
-              $scope.error = $scope.success = null;
-            }, 5000);
-
+            }, 1);
             return;
-
           };
 
           $scope.close = function() {
