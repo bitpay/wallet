@@ -1,2 +1,4 @@
 - join. on walletComplete!
 - paypro fetch-> return TIMEOUT
+- yellow lock on paypro
+- attack: change paypro ->no! in is cached

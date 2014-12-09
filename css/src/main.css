@@ -99,14 +99,13 @@ header .alt-currency {
   font-weight: 700;
 }
 
-.green {
-  color: #1abc9c;
+.color-greeni {
+  color: #1abc9c !important;
 }
 
-.red {
-  color: #A02F23;
+.color-yellowi {
+  color: yellow !important;
 }
-
 
 .alt-currency.green {
   background: #1abc9c;

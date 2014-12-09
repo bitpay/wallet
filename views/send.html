@@ -29,47 +29,52 @@
         </span>
           </div>
 
-          <div ng-show="!_url">
-          <div class="row collapse">
+          <div ng-if="!_merchantData">
+            <div class="row collapse">
 
-            <label for="address" class="left">
-              <span translate>To (*)</span> 
-            </label>
+              <label for="address" class="left">
+                <span translate>To (*)</span> 
+              </label>
 
-            <span ng-hide="sendForm.address.$pristine">
+              <span ng-hide="sendForm.address.$pristine">
               <span translate class="has-error right size-12" ng-show="sendForm.address.$invalid">
               <span class="icon-input">
                 <i class="fi-x"></i>
               </span>
-            Not valid
-            </span>
-            <small class="icon-input right" ng-show="!sendForm.address.$invalid">
+              Not valid
+              </span>
+              <small class="icon-input right" ng-show="!sendForm.address.$invalid">
                 <i class="fi-check"></i>
               </small>
-            </span>
-          </div>
-
-          <div class="input">
-            <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required>
-            <i class="fi-address-book"></i> 
-            <div ng-hide="showScanner || disableScanner">
-              <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
+              </span>
             </div>
-            <div ng-show="showScanner">
-              <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
+
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required>
+              <i class="fi-address-book"></i> 
+              <div ng-hide="showScanner || disableScanner">
+                <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
+              </div>
+              <div ng-show="showScanner">
+                <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
+              </div>
+            </div>
+            <div id="scanner" class="row" ng-if="showScanner" ng-include="'views/includes/scanner.html'">
             </div>
           </div>
-          <div ng-show="_url">
-          <div class="row collapse">
-            {{_url}}
-          </div>
-          </div>
+          <div ng-show="_merchantData">
+            <div class="row collapse" ng-click="openPPModal(_merchantData)">
 
-          <div id="scanner" class="row" ng-if="showScanner" ng-include="'views/includes/scanner.html'">
-          </div>
-          </div>
-      
+              <label for="domain">
+                <span translate>Payment to</span> 
+              </label>
 
+            <div class="input">
+              <input type="text" id="domain" name="domain" ng-model="_domain" ng-disabled="1">
+              <i class="fi-lock color-greeni"></i> 
+            </div>
+            </div>
+          </div>
 
           <div class="row" ng-init="showAlternative = false">
             <div class="large-12 medium-12 columns">
@@ -118,34 +123,11 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="large-12 columns" ng-show="fetchingURL">
-              <h3>
+          <div class="row"  ng-show="fetchingURL">
+            <div class="large-12 columns">
+              <p>>>
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
-                  Fetching payment 
-                </h3>
-              <p>From {{fetchingURL}}
-            </div>
-
-            <div class="large-12 columns" ng-show="!!$root.merchant">
-              <h3>Payment Protocol Request</h3>
-              <div class="send-note" ng-click="openPPModal(btx)">
-                <p>
-                  <span ng-show="!!$root.merchant.pr.ca"><i class="fi-lock green"></i> {{$root.merchant.pr.ca}}</span>
-                  <span ng-show="!$root.merchant.pr.ca"><i class="fi-unlock red"></i> Untrusted</span>
-                  {{$root.merchant.pr.pd.memo || address}} TODO ADDRESS
-                </p>
-
-                <p>TODO AMOUNT
-                  <i>{{amount}} {{$root.wallet.settings.unitName}}</i>
-                  <span class="text-gray" ng-if="isRateAvailable">
-                TODO ALT
-                    {{ alternative }} {{ alternativeIsoCode }}
-                  </span>
-                  <p ng-show="!!$root.merchant">
-                    Expires {{$root.merchant.expiration | amTimeAgo }} [{{$root.merchant.domain}}]
-                  </p>
-              </div>
+                  Fetching payment request
             </div>
           </div>
 
@@ -164,10 +146,10 @@
 
           <div class="row">
             <div class="large-6 medium-6 small-6 columns text-left">
-              <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || lockAddress" ng-click="openAddressBook()">
+              <a class="button tiny secondary m0" title="Address book" ng-hide="_merchantData || lockAddress" ng-click="openAddressBook()">
                 <i class="fi-address-book"></i> Address book
               </a>
-              <a ng-click="resetForm()" class="button warning m0" ng-show="!!$root.merchant || lockAddress"  ng-disabled="loading">
+              <a ng-click="resetForm()" class="button warning m0" ng-show="_merchantData || lockAddress" ng-disabled="loading">
                   Cancel
                 </a>
             </div>

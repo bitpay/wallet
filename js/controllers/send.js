@@ -119,38 +119,44 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('totalNeededAmount') || msg.match('unspent not set'))
         msg = 'Insufficient funds'
 
+      if (msg.match('expired'))
+        msg = 'The payment request has expired';
+
       var message = 'The transaction' + (w.isShared() ? ' proposal' : '') +
         ' could not be created: ' + msg;
 
       $scope.error = message;
 
-      $timeout(function(){
+      $timeout(function() {
         $scope.$digest();
-      },1);
+      }, 1);
     };
 
     $scope.submitForm = function(form) {
+
       if (form.$invalid) {
         $scope.error = 'Unable to send transaction proposal';
         return;
       }
 
       $scope.loading = true;
-
-      var url = $scope._url;
-      var address = form.address.$modelValue;
-      var amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
       var comment = form.comment.$modelValue;
+      var merchantData = $scope._merchantData;
+      var address, amount;
+      if (!merchantData) {
+        address = form.address.$modelValue;
+        amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+      }
 
       w.spend({
+        merchantData: merchantData,
         toAddress: address,
         amountSat: amount,
         comment: comment,
-        url: url,
       }, function(err, txid, status) {
         $scope.loading = false;
 
-        if (err) 
+        if (err)
           return $scope.setError(err);
 
         $scope.resetForm(status);
@@ -331,13 +337,15 @@ angular.module('copayApp.controllers').controller('SendController',
 
     $scope.setForm = function(to, amount, comment) {
       var form = $scope.sendForm;
-      form.address.$setViewValue(to);
-      form.address.$isValid = true;
-      form.address.$render();
-      $scope.lockAddress = true;
+      if (to) {
+        form.address.$setViewValue(to);
+        form.address.$isValid = true;
+        form.address.$render();
+        $scope.lockAddress = true;
+      }
 
       if (amount) {
-        form.amount.$setViewValue(""+amount);
+        form.amount.$setViewValue("" + amount);
         form.amount.$isValid = true;
         form.amount.$render();
         $scope.lockAmount = true;
@@ -353,28 +361,42 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.resetForm = function(status) {
       var form = $scope.sendForm;
 
-      form.address.$pristine = form.amount.$pristine = true;
       $scope.fetchingURL = null;
+      $scope._merchantData = $scope._domain = null;
+
       $scope.lockAddress = false;
       $scope.lockAmount = false;
-      form.address.$setViewValue('');
-      form.address.$render();
+
+      $scope._amount = $scope._address = null;
+
+      form.amount.$pristine = true;
       form.amount.$setViewValue('');
       form.amount.$render();
+
       form.comment.$setViewValue('');
       form.comment.$render();
       form.$setPristine();
 
       $scope.notifyStatus(status);
-      $timeout(function(){
+      $timeout(function() {
+        if (form.address) {
+          form.address.$pristine = true;
+          form.address.$setViewValue('');
+          form.address.$render();
+        }
+
         $rootScope.$digest();
-      },1);
+      }, 1);
     };
 
-
-    $scope.openPPModal = function(pp) {
+    var $oscope = $scope;
+    $scope.openPPModal = function(merchantData) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.pp = pp;
+        $scope.md = merchantData;
+        $scope.alternative = $oscope._alternative;
+        $scope.alternativeIsoCode = $oscope.alternativeIsoCode;
+        $scope.isRateAvailable = $oscope.isRateAvailable;
+
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
         };
@@ -393,9 +415,6 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.fetchingURL = uri;
       $scope.loading = true;
 
-      var balance = w.balanceInfo.availableBalance;
-      var available = +(balance * unitToSat).toFixed(0);
-
       // Payment Protocol URI (BIP-72)
       w.fetchPaymentRequest({
         url: uri
@@ -404,15 +423,16 @@ angular.module('copayApp.controllers').controller('SendController',
         $scope.fetchingURL = null;
 
         if (err) {
-          if (err.match('TIMEOUT')) {
+          copay.logger.warn(err);
+          if (err.toString().match('TIMEOUT')) {
             $scope.resetForm('Payment server timed out');
           } else {
             $scope.resetForm(err.toString());
           }
-        } else if (merchantData && available < +merchantData.total) {
-          $scope.resetForm('Insufficient funds');
         } else {
-          $scope.setForm(merchantData.domain, merchantData.unitTotal)
+          $scope._merchantData = merchantData;
+          $scope._domain = merchantData.domain;
+          $scope.setForm(null, merchantData.unitTotal);
         }
       });
     };
@@ -428,9 +448,6 @@ angular.module('copayApp.controllers').controller('SendController',
       };
 
       var addr = parsed.address.toString();
-
-console.log('[send.js.430:parsed:]',addr,parsed.data); //TODO
-
       if (parsed.data.merchant)
         return $scope.setFromPayPro(parsed.data.merchant);
 
