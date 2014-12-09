@@ -27,23 +27,6 @@ angular.module('copayApp.services')
       });
     };
 
-    // TODO should be on 'walletService' or 'go'
-    root.goWalletHome = function() {
-      var w = $rootScope.wallet;
-      if (w) {
-        $rootScope.starting = false;
-        if (!w.isComplete()) {
-          go.go('copayers');
-        } else {
-          if ($rootScope.pendingPayment) {
-            go.go('paymentIntent');
-          } else {
-            go.go('homeWallet');
-          }
-        }
-      }
-    };
-
     root.create = function(email, password, cb) {
       copay.Identity.create({
         email: email,
@@ -133,10 +116,6 @@ angular.module('copayApp.services')
       $rootScope.iden = iden;
     };
 
-    root.setPaymentWallet = function(w) {
-      root.setFocusedWallet(w);
-      $location.path('/send');
-    };
 
     root.noFocusedWallet = function() {
       $rootScope.wallet = null;
@@ -296,7 +275,7 @@ angular.module('copayApp.services')
         if (wid == iden.getLastFocusedWalletId()) {
           copay.logger.debug('GOT Focused wallet:', w.getName());
           root.setFocusedWallet(w, true);
-          root.goWalletHome();
+          go.walletHome();
         }
 
         // At the end (after all handlers are in place)...start the wallet.

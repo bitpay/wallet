@@ -1,12 +1,1 @@
-
- - homeWallet address...e sta ok?
-- receive controller .. owned
--- 
-//    pkr.cache = opts.cache;
-
-(en send.js)
-//      $rootScope.pendingTxCount = res.pendingForUs;
-
--- probar payment intent
-
-// TODO refrescar en 'add'
+- addressbock

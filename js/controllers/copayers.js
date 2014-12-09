@@ -1,22 +1,33 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CopayersController',
-  function($scope, $rootScope, $location) {
+  function($scope, $rootScope, $timeout, go) {
 
-    if (!$rootScope.wallet.isComplete()) {
+    console.log('[copayers.js.5]'); //TODO
+
+    $scope.init = function() {
+      var w = $rootScope.wallet;
       $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
-    }
-    $scope.loading = false;
-    $scope.secret = $rootScope.wallet.getSecret();
+      $scope.loading = false;
+      $scope.secret = $rootScope.wallet.getSecret();
 
-    $scope.goToWallet = function() {
-      $location.path('/homeWallet');
+      w.on('publicKeyRingUpdated', $scope.updateList);
+      w.on('ready', $scope.updateList);
+      $scope.updateList();
     };
 
-    $scope.copayersList = function() {
-      if ($rootScope.wallet) {
-        $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
+    $scope.updateList = function() {
+      var w = $rootScope.wallet;
+
+      $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
+      if (w.isComplete()) {
+
+        w.removeListener('publicKeyRingUpdated', $scope.updateList);
+        w.removeListener('ready', $scope.updateList);
+        go.walletHome();
       }
-      return $scope.copayers;
-    }
+      $timeout(function() {
+        $rootScope.$digest();
+      }, 1);
+    };
   });

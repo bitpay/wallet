@@ -21,10 +21,8 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       var lastAddr = _.first(w.getAddressesOrderer()); 
       var balance = w.balanceInfo.balanceByAddr;
 
-      if (balance[lastAddr]>0)
-        $scope.loading = true;
-
       while (balance && balance[lastAddr] > 0) {
+        $scope.loading = true;
         $scope.newAddr();
         lastAddr = w.generateAddress(null);
       };

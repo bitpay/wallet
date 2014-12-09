@@ -1,0 +1,30 @@
+<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+
+<div class="size-14">
+  <h1 class="m30v">Payment Request</h1>
+
+    <p>
+      <b translate>Signature:</b>  {{md.domain}}
+      <span ng-show="md.pr.ca"><i class="fi-lock color-greeni"></i> {{md.pr.ca}}</span>
+      <span ng-show="!md.pr.ca"><i class="fi-unlock color-yellowi"></i> Untrusted</span>
+    <p>
+      <b translate>Merchant Message:</b>
+      <br>
+      {{md.pr.pd.memo || address}}
+    </p>
+
+    <p>
+      <b translate>Amount:</b>
+      {{md.unitTotal}} {{$root.wallet.settings.unitName}}
+      <span class="text-gray" ng-if="isRateAvailable">
+                    {{ alternative }} {{ alternativeIsoCode }}
+                  </span>
+
+      <div ng-if="md.expirationDate" class="m10v">
+        <b>Expires</b>: {{md.expirationDate | amTimeAgo }}
+      </div>
+  </div>
+
+</div>
+
+

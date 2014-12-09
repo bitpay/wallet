@@ -1,15 +1,17 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $location, rateService, notification, identityService) {
-  $scope.init = function() {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService) {
+  $scope.initHome = function() {
+    var w = $rootScope.wallet;
+
     $rootScope.title = 'Home';
-
-
     $scope.rateService = rateService;
     $scope.isRateAvailable = false;
 
-    var w = $rootScope.wallet;
-    w.on('txProposalEvent', _updateTxs);
+    if (w.isShared())
+      $scope.copayers = w.getRegisteredPeerIds();
+
+     w.on('txProposalEvent', _updateTxs);
     _updateTxs();
 
     rateService.whenAvailable(function() {
@@ -18,7 +20,9 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
     });
   };
 
-  // This is necesarry, since wallet can change in homeWallet, without running init() again.
+  // This is necessary, since wallet can change in homeWallet, 
+  // without running init() again.
+  
   var removeWatch;
   removeWatch = $rootScope.$watch('wallet.id', function(newWallet, oldWallet) {
     if ($rootScope.wallet && $rootScope.wallet.isComplete() && newWallet !== oldWallet) {
@@ -40,23 +44,7 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
     }
   });
 
-
-  // TODO duplicated on controller send. move to a service.
-  $scope.notifyStatus = function(status) {
-    if (status == copay.Wallet.TX_BROADCASTED)
-      notification.success('Success', 'Transaction broadcasted!');
-    else if (status == copay.Wallet.TX_PROPOSAL_SENT)
-      notification.info('Success', 'Transaction proposal created');
-    else if (status == copay.Wallet.TX_SIGNED)
-      notification.success('Success', 'Transaction proposal was signed');
-    else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
-      notification.success('Success', 'Transaction signed and broadcasted!');
-    else
-      notification.error('Error', 'Unknown error occured');
-  };
-
-
-  $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function() {
     var w = $rootScope.wallet;
     if (w) {
       removeWatch();
@@ -109,7 +97,8 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
     $scope.error = $scope.success = null;
     w.signAndSend(ntxid, function(err, id, status) {
       $scope.loading = false;
-      $scope.notifyStatus(status);
+      if (!txStatus.notify(status))
+        $scope.error = status;
       _updateTxs();
     });
   };
@@ -117,8 +106,32 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
   $scope.reject = function(ntxid) {
     var w = $rootScope.wallet;
     w.reject(ntxid);
-    notification.warning('Transaction rejected', 'You rejected the transaction successfully');
+    txStatus.notify('txRejected');
     _updateTxs();
   };
+
+
+  $scope.openTxModal = function(tx) {
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.tx = tx;
+
+      $scope.getShortNetworkName = function() {
+        var w = $rootScope.wallet;
+        return w.getNetworkName().substring(0, 4);
+      };
+
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    };
+
+    $modal.open({
+      templateUrl: 'views/modals/txp-details.html',
+      windowClass: 'tiny',
+      controller: ModalInstanceCtrl,
+    });
+  };
+
+
 
 });
