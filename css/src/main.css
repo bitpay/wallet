@@ -538,7 +538,7 @@ a.button-setup.add-wallet:hover {
 
 a.button-setup {
   border-radius: 3px;
-  border: 1px solid #B7C2CE;
+  border: 1px solid #3E5366;
   display: block;
   padding: 0.5rem;
   background: transparent;
@@ -1093,6 +1093,8 @@ button[disabled].warning:focus,
 .button[disabled].warning:focus {
   background-color: #95a5a6;
   color: #E6E6E6;
+  -moz-box-shadow:    none;
+  box-shadow:         none;
 }
 
 /* WHITE */
