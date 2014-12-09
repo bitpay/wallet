@@ -67,6 +67,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $scope.error = 'Please enter the required fields';
       return;
     }
+    $scope.loading = true;
     $rootScope.starting = true;
 
     var credentials = pinService.get(pin, function(err, credentials) {
@@ -93,12 +94,14 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     preconditions.checkArgument(pin);
     preconditions.checkState($rootScope.iden);
     preconditions.checkState(_credentials && _credentials.email);
+    $scope.loading = true;
 
     pinService.save(pin, _credentials.email, _credentials.password, function(err) {
       _credentials.password = '';
       _credentials = null;
       $scope.askForPin = 0;
       $rootScope.hasPin = true;
+      $scope.loading = null;
       $scope.openWallets();
     });
   };

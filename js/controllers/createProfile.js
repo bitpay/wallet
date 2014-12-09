@@ -40,12 +40,14 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkArgument(pin);
     preconditions.checkState($rootScope.iden);
     preconditions.checkState(_credentials && _credentials.email);
+    $scope.loading = true;
 
     pinService.save(pin, _credentials.email, _credentials.password, function(err) {
       _credentials.password = '';
       _credentials = null;
       $scope.askForPin = 0;
       $rootScope.hasPin = true;
+      $scope.loading = null;
       $scope.createDefaultWallet();
     });
   };
@@ -106,7 +108,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.loading = true;
 
     identityService.create(emailOrUsername, password, function(err) {
-      $scope.loading = false;
+      $scope.loading = null;
       $scope.error = null;
       if (err) {
         var msg = err.toString();
