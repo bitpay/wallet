@@ -47,7 +47,13 @@
 
   <div ng-if="tx.merchant" class="size-12 m10v">
     {{tx.merchant.pr.pd.memo}}
+
+    <div ng-if="tx.merchant.expirationDate" class="m10v">
+      <b>Expires</b>: {{tx.merchant.expirationDate | amTimeAgo }}
+    </div>
   </div>
+
+
 
   <div ng-if="tx.actionList[0]" class="m10v">
     <b>Copayers Signatures</b>

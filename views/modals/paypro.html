@@ -19,9 +19,10 @@
       <span class="text-gray" ng-if="isRateAvailable">
                     {{ alternative }} {{ alternativeIsoCode }}
                   </span>
-      <p>
-        <b>Expires</b> {{md.expiration | amTimeAgo }}
-      </p>
+
+      <div ng-if="md.expirationDate" class="m10v">
+        <b>Expires</b>: {{md.expirationDate | amTimeAgo }}
+      </div>
   </div>
 
 </div>
