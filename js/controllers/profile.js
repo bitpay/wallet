@@ -1,7 +1,7 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService, isMobile) {
   $scope.username = $rootScope.iden.getName();
-  $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+  $scope.isSafari = isMobile.Safari();
 
   $rootScope.title = 'Profile';
   $scope.hideAdv = true;
@@ -13,18 +13,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   $scope.viewProfileBackup = function() {
     $scope.backupProfilePlainText = backupService.profileEncrypted($rootScope.iden);
     $scope.hideViewProfileBackup = true;
-  };
-
-  $scope.deleteWallet = function(w) {
-    if (!w) return;
-    identityService.deleteWallet(w, function(err) {
-      $scope.loading = false;
-      if (err) {
-        copay.logger.warn(err);
-      }
-      $scope.setWallets();
-    });
-  };
+  }; 
 
 
   $scope.init = function() {
@@ -52,30 +41,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     $timeout(function(){
       $scope.$digest();
     })
-  };
-
-  $scope.downloadWalletBackup = function(w) {
-    if (!w) return;
-    backupService.walletDownload(w);
-  }
-
-  $scope.viewWalletBackup = function(w) {
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-
-      if (!w) return;
-      $scope.backupWalletPlainText = backupService.walletEncrypted(w);
-      $scope.hideViewWalletBackup = true;
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-    };
-
-    $modal.open({
-      templateUrl: 'views/modals/backup-text.html',
-      windowClass: 'tiny',
-      controller: ModalInstanceCtrl
-    });
-  };
+  }; 
 
   $scope.deleteProfile = function() {
     identityService.deleteProfile(function(err, res) {
@@ -88,6 +54,47 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
       setTimeout(function() {
         notification.error('Success', 'Profile successfully deleted');
       }, 1);
+    });
+  };
+
+  $scope.walletInfo = function(w) {
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      if (!w) return;
+      $scope.isSafari = isMobile.Safari();
+      $scope.item = w;
+
+      $scope.deleteWallet = function() {
+        $scope.loading = true;
+        identityService.deleteWallet($scope.item, function(err) {
+          if (err) {
+            copay.logger.warn(err);
+          }
+          $modalInstance.close();
+        });
+      };
+
+      $scope.downloadWalletBackup = function() {
+        backupService.walletDownload($scope.item);
+      };
+
+      $scope.viewWalletBackup = function() {
+        $scope.backupWalletPlainText = backupService.walletEncrypted($scope.item);
+      };
+
+      $scope.close = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    }; 
+
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/wallet-info.html',
+      windowClass: 'tiny',
+      controller: ModalInstanceCtrl
+    });
+
+    modalInstance.result.then(function() {
+      $scope.loading = false;
+      $scope.setWallets();
     });
   };
 });
