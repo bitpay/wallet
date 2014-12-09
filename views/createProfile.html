@@ -131,17 +131,15 @@
         <div class="input" ng-if="useEmail">
           <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
           <i class="icon-email"></i>
-          <div class="icon-input m5b text-right" ng-if="useEmail">
+          <div class="icon-input" ng-if="useEmail">
             <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
             !emailForm.email.$pristine">
-            <div class="">
               <i class="fi-x"></i>
               Not valid
-            </div>
             </span>
-            <div class="" ng-show="!emailForm.email.$invalid &&
+            <span ng-show="!emailForm.email.$invalid &&
             !emailForm.email.$pristine"><i class="fi-check"></i>
-            </div>
+            </span>
           </div>
         </div>
 
@@ -173,17 +171,15 @@
         <div class="input">
           <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required>
           <i class="icon-locked"></i>
-          <div class="icon-input m5b text-right">
+          <div class="icon-input">
             <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
             passForm.repeatpassword.$invalid">
-              <div>
-                <i class="fi-x"></i>
-                {{'Passwords must match'|translate}}
-              </div>
+              <i class="fi-x"></i>
+              {{'Passwords must match'|translate}}
             </span>
-            <div class="" ng-show="passForm.repeatpassword.$dirty &&
+            <span ng-show="passForm.repeatpassword.$dirty &&
             !passForm.repeatpassword.$invalid"><i class="fi-check"></i>
-            </div>
+            </span>
           </div>
         </div>
 
