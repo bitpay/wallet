@@ -16,7 +16,7 @@ describe("Unit: Controllers", function() {
   config.plugins.LocalStorage = true;
   config.plugins.GoogleDrive = null;
   config.plugins.InsightStorage = null;
-  config.plugins.EncryptedInsightStorage= null;
+  config.plugins.EncryptedInsightStorage = null;
 
   var anAddr = 'mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy';
   var anAmount = 1000;
@@ -50,6 +50,10 @@ describe("Unit: Controllers", function() {
     $rootScope.safeUnspentCount = 1;
     $rootScope.pendingTxCount = 0;
 
+    //
+    // TODO Use the REAL wallet, and stub only networking and DB components!
+    //
+    
     var w = {};
     w.id = 1234;
     w.isComplete = sinon.stub().returns(true);
@@ -92,7 +96,9 @@ describe("Unit: Controllers", function() {
       'e': 'errmsg',
       'loading': false
     });
-    w.sizes = sinon.stub().returns({tota:1234});
+    w.sizes = sinon.stub().returns({
+      tota: 1234
+    });
     w.getBalance = sinon.stub().returns(10000);
     w.publicKeyRing = sinon.stub().yields(null);
     w.publicKeyRing.nicknameForCopayer = sinon.stub().returns('nickcopayer');
@@ -103,11 +109,11 @@ describe("Unit: Controllers", function() {
     }]);
 
     var iden = {};
-    iden.deleteWallet = sinon.stub().yields(null);
     iden.getLastFocusedWallet = sinon.stub().returns(null);
     iden.listWallets = sinon.stub().returns([w]);
     iden.getWalletById = sinon.stub().returns(w);
     iden.getName = sinon.stub().returns('name');
+    iden.deleteWallet = sinon.stub();
 
     $rootScope.wallet = w;
     $rootScope.iden = iden;
@@ -561,20 +567,35 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Profile Controller', function() {
-    var ctrl, scope;
+    var ctrl, inScope, modalCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
       ctrl = $controller('ProfileController', {
         $scope: scope,
-        $modal: {},
+        $modal: {
+          open: function(opts) {
+            inScope = $rootScope.$new();
+            modalCtrl = opts.controller(inScope, {
+              close: sinon.stub(),
+            });
+            return {
+              result: {
+                then: sinon.stub(),
+              }
+            };
+          },
+        },
       });
       saveAsLastCall = null;
+
     }));
 
     it('Backup Wallet controller #download', function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
-      scope.downloadWalletBackup(w);
+      scope.showWalletInfo(w);
+      inScope.downloadWalletBackup();
+
       expect(saveAsLastCall.blob.size).equal(7);
       expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
     });
@@ -582,7 +603,8 @@ describe("Unit: Controllers", function() {
     it('Backup Wallet controller should name backup correctly for multiple copayers', function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
-      scope.downloadWalletBackup(w);
+      scope.showWalletInfo(w);
+      inScope.downloadWalletBackup();
       expect(saveAsLastCall.filename).equal('nickname-fakeWallet-keybackup.json.aes');
     });
 
@@ -590,16 +612,19 @@ describe("Unit: Controllers", function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
       scope.wallet.totalCopayers = 1;
-      scope.downloadWalletBackup(w);
+      scope.showWalletInfo(w);
+      inScope.downloadWalletBackup();
       expect(saveAsLastCall.filename).equal('fakeWallet-keybackup.json.aes');
     });
 
     it('Delete a wallet', function() {
       var w = scope.wallet;
-      scope.deleteWallet(w, function() {
-        scope.$digest();
-        expect(scope.wallet).equal(null);
-      });
+
+      scope.showWalletInfo(w);
+      inScope.deleteWallet();
+      scope.$digest();
+      scope.iden.deleteWallet.calledOnce.should.equal(true);
+      scope.iden.deleteWallet.getCall(0).args[0].should.equal(w.getId());
     });
 
   });

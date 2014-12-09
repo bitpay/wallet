@@ -120,7 +120,7 @@ angular.module('copayApp.services')
     };
 
     root.deleteWallet = function(w, cb) {
-      $rootScope.iden.deleteWallet(w.id, cb);
+      $rootScope.iden.deleteWallet(w.getId(), cb);
     };
 
     root.isFocused = function(wid) {

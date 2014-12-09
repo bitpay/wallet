@@ -57,7 +57,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     });
   };
 
-  $scope.walletInfo = function(w) {
+  $scope.showWalletInfo = function(w) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       if (!w) return;
       $scope.isSafari = isMobile.Safari();
@@ -66,6 +66,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
       $scope.success = null;
 
       $scope.deleteWallet = function() {
+
         $scope.loading = true;
         identityService.deleteWallet($scope.item, function(err) {
           if (err) {

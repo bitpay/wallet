@@ -68,7 +68,7 @@
           <tr 
               data-ng-repeat="item in wallets | orderBy:'name'" 
               ng-init="isComplete = item.isComplete(); networkName = item.getNetworkName()"
-              ng-click="walletInfo(item)">
+              ng-click="showWalletInfo(item)">
             <td>
               <span ng-show="loading == item.id"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
               <span ng-show="loading != item.id">
