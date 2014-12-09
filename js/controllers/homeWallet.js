@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $location, rateService, notification, identityService) {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, identityService) {
   $scope.initHome = function() {
     var w = $rootScope.wallet;
 
@@ -124,5 +124,29 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
     notification.warning('Transaction rejected', 'You rejected the transaction successfully');
     _updateTxs();
   };
+
+
+  $scope.openTxModal = function(btx) {
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.btx = btx;
+
+      $scope.getShortNetworkName = function() {
+        var w = $rootScope.wallet;
+        return w.getNetworkName().substring(0, 4);
+      };
+
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    };
+
+    $modal.open({
+      templateUrl: 'views/modals/tx-details.html',
+      windowClass: 'tiny',
+      controller: ModalInstanceCtrl,
+    });
+  };
+
+
 
 });

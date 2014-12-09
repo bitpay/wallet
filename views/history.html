@@ -13,8 +13,8 @@
   </div>
   <div class="row" ng-if="blockchain_txs[0].txid">
     <div class="large-12 columns">
-      <div class="panel" ng-repeat="btx in blockchain_txs | orderBy:'-ts'">
-        <div class="row size-14" ng-click="openTxModal(btx)">
+      <div class="panel" ng-repeat="btx in blockchain_txs | orderBy:'-ts'"  ng-click="openTxModal(btx)">
+        <div class="row size-14">
 
           <div class="large-2 medium-3 small-4 columns">
             <div class="tx-date oh">
