@@ -1747,9 +1747,11 @@ Wallet.prototype._addOutputsToMerchantData = function(merchantData) {
 
   // If user is granted the privilege of choosing
   // their own amount, add it to the tx.
-  if (merchantData.total === 0 && options.amount) {
-    merchant.outs[0].amountSatStr = merchantData.total = outions.amount;
+  if (merchantData.total == "0" && options.amount) {
+    merchant.outs[0].amountSatStr = merchantData.total = options.amount;
   }
+
+  merchantData.unitTotal = merchantData.total ? (+merchantData.total / this.settings.unitToSatoshi) + '' : 0;
 };
 
 /**
@@ -1829,11 +1831,11 @@ Wallet.prototype.parsePaymentRequest = function(options, rawData) {
     request_url: options.url,
     domain: /^(?:https?)?:\/\/([^\/:]+).*$/.exec(options.url)[1],
     total: total,
-    unitTotal: total ? (+total / w.settings.unitToSatoshi) + '' : null,
     expirationDate: expires ? new Date(expires * 1000) : null,
   };
 
   this._addOutputsToMerchantData(merchantData, options.amount);
+
   return merchantData;
 };
 
@@ -2178,9 +2180,21 @@ Wallet.prototype.spend = function(opts, cb) {
   var toAddress = opts.toAddress;
   var amountSat = opts.amountSat;
   var comment = opts.comment;
-  var url = opts.url;
+  var merchantData = opts.merchantData;
+
+
+  // PayPro? With given merchant data
+  if (opts.merchantData && !opts.toAddress) {
+    if (!merchantData.outs[0].address)
+      return cb(new Error('BADPAYPRO'));
+
+    opts.toAddress = merchantData.outs[0].address;
+    opts.amountSat = parseInt(merchantData.outs[0].amountSatStr);
+    return self.spend(opts, cb);
+  }
 
   // PayPro? Fetch payment data and recurse
+  var url = opts.url;
   if (url && !opts.merchantData) {
     return self.fetchPaymentRequest({
       url: url,
@@ -2189,8 +2203,6 @@ Wallet.prototype.spend = function(opts, cb) {
     }, function(err, merchantData) {
       if (err) return cb(err);
       opts.merchantData = merchantData;
-      opts.toAddress = merchantData.outs[0].address;
-      opts.amountSat = parseInt(merchantData.outs[0].amountSatStr);
       return self.spend(opts, cb);
     });
   }
@@ -2208,13 +2220,13 @@ Wallet.prototype.spend = function(opts, cb) {
     try {
       txp = self._createTxProposal(toAddress,
         amountSat, comment, safeUnspent, opts.builderOpts);
-    } catch (e) {
-      log.error(e);
-      return cb(e);
-    }
 
-    if (opts.merchantData) {
-      txp.addMerchantData(opts.merchantData);
+      if (opts.merchantData) {
+        txp.addMerchantData(opts.merchantData);
+      }
+    } catch (e) {
+      log.warn(e);
+      return cb(e);
     }
 
     var ntxid = self.txProposals.add(txp);

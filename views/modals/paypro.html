@@ -1,25 +1,26 @@
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 
 <div class="size-14">
-  <h1 class="m30v">Payment Protocol Request</h1>
+  <h1 class="m30v">Payment Request</h1>
 
     <p>
-      <b translate>Signature:</b>
-      <span ng-show="!!$root.merchant.pr.ca"><i class="fi-lock green"></i> {{$root.merchant.pr.ca}}</span>
-      <span ng-show="!$root.merchant.pr.ca"><i class="fi-unlock red"></i> Untrusted</span>
+      <b translate>Signature:</b>  {{md.domain}}
+      <span ng-show="md.pr.ca"><i class="fi-lock color-greeni"></i> {{md.pr.ca}}</span>
+      <span ng-show="!md.pr.ca"><i class="fi-unlock color-yellowi"></i> Untrusted</span>
     <p>
       <b translate>Merchant Message:</b>
-      {{$root.merchant.pr.pd.memo || address}}
+      <br>
+      {{md.pr.pd.memo || address}}
     </p>
 
     <p>
-      <b translate>Merchant Message:</b>
-      <i>{{amount}} {{$root.wallet.settings.unitName}}</i>
+      <b translate>Amount:</b>
+      {{md.unitTotal}} {{$root.wallet.settings.unitName}}
       <span class="text-gray" ng-if="isRateAvailable">
                     {{ alternative }} {{ alternativeIsoCode }}
                   </span>
-      <p ng-show="!!$root.merchant">
-        Expires {{$root.merchant.expiration | amTimeAgo }} [{{$root.merchant.domain}}]
+      <p>
+        <b>Expires</b> {{md.expiration | amTimeAgo }}
       </p>
   </div>
 
