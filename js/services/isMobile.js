@@ -17,6 +17,9 @@ var isMobile = {
   Windows: function() {
     return !!navigator.userAgent.match(/IEMobile/i);
   },
+  Safari: function() {
+    return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+  },
   any: function() {
     return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
   }
