@@ -2,7 +2,7 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.controllers').controller('HistoryController',
-  function($scope, $rootScope, $filter, $timeout, $modal, rateService, notification) {
+  function($scope, $rootScope, $filter, $timeout, $modal, rateService, notification, go) {
     var w = $rootScope.wallet;
 
     $rootScope.title = 'History';
@@ -145,6 +145,9 @@ angular.module('copayApp.controllers').controller('HistoryController',
           return w.getNetworkName().substring(0, 4);
         };
 
+        $scope.openExternalLink = function(url) {
+          go.openExternalLink(url);
+        };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');

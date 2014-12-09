@@ -975,24 +975,13 @@ table tr.deleting {
   background: #FCD5D5;
 }
 
-/* SECONDARY */
-
-input[type='submit']
-{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-
 input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
   color: #343c43;
   margin-bottom: 1.3rem;
   height: 40px;
-  border-radius: 3px;
   background: #F2F5F8;
-  -moz-box-shadow:    inset 1px 1px 0px 0px rgba(0,0,0,0.05);
-  box-shadow:         inset 1px 1px 0px 0px rgba(0,0,0,0.05);
+  -moz-box-shadow: none;
+  box-shadow: none;
   border: none;
   padding-left: 45px;
 }
@@ -1001,8 +990,6 @@ button.secondary,
 .button.secondary { 
   color: #fff;
   background: #008CC1;
-  -moz-box-shadow:    1px 1px 0px 0px #10769D;
-  box-shadow:         1px 1px 0px 0px #10769D;
 }
 button.secondary:hover, 
 button.secondary:focus, 
@@ -1034,8 +1021,6 @@ button.primary,
   color: #fff;
   border-radius: 3px;
   border-radius: 3px;
-  -moz-box-shadow:    1px 1px 0px 0px #16A085;
-  box-shadow:         1px 1px 0px 0px #16A085;
 }
 button.primary:hover, 
 button.primary:focus, 
@@ -1056,8 +1041,6 @@ button[disabled].primary:focus,
 .button.disabled.primary:focus, 
 .button[disabled].primary:hover, 
 .button[disabled].primary:focus {
-  -moz-box-shadow:    1px 1px 0px 0px #687D80;
-  box-shadow:         1px 1px 0px 0px #687D80;
   background-color: #95a5a6;
   color: #E6E6E6;
 }
@@ -1068,8 +1051,6 @@ button.warning,
   background-color: #C0392A;
   color: #fff;
   border-radius: 3px;
-  -moz-box-shadow:    1px 1px 0px 0px #A02F23;
-  box-shadow:         1px 1px 0px 0px #A02F23;
 }
 button.warning:hover, 
 button.warning:focus, 
@@ -1130,8 +1111,6 @@ button[disabled].white:focus,
 /* BLACK */
 button.black, 
 .button.black { 
-  -moz-box-shadow:    1px 1px 0px 0px #1B2937;
-  box-shadow:         1px 1px 0px 0px #1B2937;
   background-color: #2C3E50;
   color: #fff;
 }

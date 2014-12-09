@@ -57,16 +57,18 @@
               <i class="icon-locked"></i>
             </div>
 
-            <div class="line-dashed-h m10b m20t"></div>
+            <div class="line-dashed-h m20b"></div>
 
-            <a class="expand small" ng-click="hideAdv=!hideAdv">
-              <i class="fi-widget m3r"></i>
-              <span translate ng-hide="!hideAdv">Show</span> 
-              <span translate ng-hide="hideAdv">Hide</span> 
-              <span translate>advanced options</span>
-              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-            </a>
+            <div class="m20b oh">
+              <a class="small left button-setup" ng-click="hideAdv=!hideAdv">
+                <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdv">Show</span> 
+                <span translate ng-hide="hideAdv">Hide</span> 
+                <span translate>advanced options</span>
+                <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+              </a>
+            </div>
 
             <div ng-hide="hideAdv" class="m10t">
               <label>
@@ -88,7 +90,7 @@
 
 
             <div class="text-right m20t">
-              <button translate type="submit" class="button black m0" ng-disabled="importForm.$invalid">
+              <button translate type="submit" class="button expand black m0" ng-disabled="importForm.$invalid">
                 Import backup
               </button>
             </div>
