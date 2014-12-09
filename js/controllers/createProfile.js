@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService, isMobile, configService) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService, isMobile, configService, go) {
 
   var _credentials, _firstpin;
 
@@ -170,6 +170,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         }, 1);
       });
     });
+  };
+
+  $scope.openExternalLink = function(url) {
+    go.openExternalLink(url);
   };
 
 });

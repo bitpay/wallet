@@ -40,6 +40,10 @@ angular.module('copayApp.services').factory('go', function($window, $location) {
     }
   };
 
+  root.openExternalLink = function(url) {
+    var ref = window.open(url, '_blank', 'location=no');
+  };
+
   root.go = function(path) {
     var parts = path.split('#');
     $location.path(parts[0]);

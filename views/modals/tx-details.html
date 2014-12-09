@@ -79,8 +79,11 @@
     </ul>
   </div>
 
-  <div class="m10v text-right">
-    <a href="http://{{getShortNetworkName()}}.insight.is/tx/{{btx.txid}}" target="_blank"> See it on the blockchain <i class="icon-arrow-right2 vm"></i></a>
+  <div class="m10t oh">
+    <a class="right button-setup" 
+      ng-click="openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
+      See it on the blockchain <i class="icon-arrow-right2 vm"></i>
+    </a>
     </p>
   </div>
 </div>
