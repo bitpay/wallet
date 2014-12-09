@@ -174,7 +174,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         }
       }
     });
-  }
+  };
 
   function getParam(sname) {
     var params = location.search.substr(location.search.indexOf("?") + 1);

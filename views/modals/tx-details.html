@@ -33,9 +33,9 @@
   <h1 class="m30v">Transaction Details</h1>
   <div class="ellipsis"> <b>ID:</b> <span class="text-gray"> {{btx.txid}} </span></div>
   <div ng-if="btx.ts" class="m10v">
-    <time><b>{{btx.ts | amTimeAgo}}</b></time>
-    :
-    <time> <span class="text-gray">{{btx.ts | amCalendar}}</span></time>
+    <time> <span>{{btx.ts | amCalendar}}</span></time>
+
+    [<time>{{btx.ts | amTimeAgo}}</time>]
   </div>
 
   <div class="m10v">
@@ -51,15 +51,19 @@
   <div ng-if="btx.addressTo" class="m10v">
     <span class="ellipsis">
       <b>To:</b>
-      <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
+      <span ng-if="btx.merchant">
+        <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
+        <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+      </span>
+
+      <span ng-if="!btx.merchant">
+        <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
+      </span>
     </span>
   </div>
 
-  <div ng-if="!!btx.merchant" class="m10v">
-    Payment Protocol Information:
-    <br>{{btx.merchant.pr.pd.memo}}</b>
-    <br>{{btx.paymentAckMemo}}
-    <span ng-show="tx.merchant.domain">[{{btx.merchant.domain}}]</span>
+  <div ng-if="btx.merchant" class="m10v">
+    {{btx.merchant.pr.pd.memo}}
   </div>
 
   <div ng-if="btx.actionList[0]" class="m10v">

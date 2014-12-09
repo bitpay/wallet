@@ -417,20 +417,6 @@ a:hover {
   border-radius: 3px 3px 0 3px;
 }
 
-a.missing-copayers {
-  background: #7A8C9E;
-  position: absolute;
-  display: block;
-  right: -1px;
-  bottom: -18px;
-  padding: 0.2rem 0.5rem;
-  font-size: 10px;
-  border-radius: 0 0 3px 3px;
-  text-transform: uppercase;
-  color: #fff;
-  font-weight: 700;
-}
-
 ul.tx-copayers {
   background: #E4E8EC;  
   padding: 0.3rem 0.8rem;
