@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, isMobile) {
+angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, isMobile, go) {
 
   $scope.isMobile = isMobile.any()
 
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
   $scope.switchWallet = function(wid) {
     $scope.walletSelection = false;
     identityService.setFocusedWallet(wid);
-    identityService.goWalletHome();
+    go.walletHome();
   };
 
   $scope.toggleWalletSelection = function() {

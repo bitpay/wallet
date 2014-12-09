@@ -94,9 +94,6 @@ describe("Unit: Testing Directives", function() {
         form.amount.$setViewValue(800);
         expect(form.amount.$invalid).to.equal(false);
         form.amount.$setViewValue(900);
-        expect($scope.notValidAmount).to.equal(null);
-        form.amount.$setViewValue(0.44);
-        expect($scope.notValidAmount).to.equal(null);
 
       });
 
@@ -105,8 +102,6 @@ describe("Unit: Testing Directives", function() {
         expect(form.amount.$invalid).to.equal(true);
         form.amount.$setViewValue(999999999999);
         expect(form.amount.$invalid).to.equal(true);
-        form.amount.$setViewValue(0.333);
-        expect($scope.notValidAmount).to.equal(true);
       });
     });
 
@@ -134,19 +129,15 @@ describe("Unit: Testing Directives", function() {
 
       it('should validate', function() {
         form.amount.$setViewValue(0.01);
-        expect($scope.notValidAmount).to.equal(null);
         expect(form.amount.$invalid).to.equal(false);
         form.amount.$setViewValue(0.039);
-        expect($scope.notValidAmount).to.equal(null);
         expect(form.amount.$invalid).to.equal(false);
         form.amount.$setViewValue(100292.039);
-        expect($scope.notValidAmount).to.equal(null);
         expect(form.amount.$invalid).to.equal(false);
       });
 
       it('should not validate', function() {
         form.amount.$setViewValue(0.039998888888888);
-        expect($scope.notValidAmount).to.equal(true);
         expect(form.amount.$invalid).to.equal(true);
         form.amount.$setViewValue(0);
         expect(form.amount.$invalid).to.equal(true);

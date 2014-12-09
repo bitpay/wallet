@@ -26,7 +26,7 @@ var inherits = function(ctor, superCtor) {
 
 inherits(FakeSocket, EventEmitter);
 
-FakeSocket.prototype.removeEventListener = function() {
+FakeSocket.prototype.removeListener = function() {
   return;
 }
 

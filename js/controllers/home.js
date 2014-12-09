@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   // Global go. This should be in a better place TODO
   // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
   $rootScope.go = function (path) {
-    go.go(path);
+    go.path(path);
   };
 
   var _credentials, _firstpin;
@@ -25,8 +25,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $rootScope.fromEmailConfirmation = false;
     }
 
-    if ($rootScope.iden) {
-      identityService.goWalletHome();
+    if ($rootScope.wallet) {
+      go.walletHome();
     }
 
     Compatibility.check($scope);
@@ -178,7 +178,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         }
       }
     });
-  }
+  };
 
   function getParam(sname) {
     var params = location.search.substr(location.search.indexOf("?") + 1);
