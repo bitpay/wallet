@@ -81,7 +81,7 @@ header .alt-currency {
   color: #fff;
 }
 
-.panel h3, .box-setup h3 {
+.panel h3 {
   font-weight: 700;
   font-size: 16px;
   color: #2C3E50;
@@ -362,13 +362,6 @@ a:hover {
   color: #8597A7;
 }
 
-.box-setup {
-  margin-bottom: 1rem;
-  padding: 1.3rem; 
-  border-radius: 3px;
-  background: #fff;
-}
-
 .box-setup-footer {
   overflow: hidden;
   margin-top: 1rem;
@@ -401,6 +394,13 @@ a:hover {
 
 .box-notification .box-icon.error {
   background-color: #C0392A;
+}
+
+.box-notification a.close-notification {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 24px;
 }
 
 .panel.last-transactions {
@@ -971,8 +971,9 @@ table tbody tr:last-child td {
   border-bottom: none; 
 }
 
-table tr.deleting {
-  background: #FCD5D5;
+table.manage-wallets tr:hover {
+  background-color: #eee;
+  cursor: pointer;
 }
 
 input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
@@ -1425,16 +1426,10 @@ a.text-warning:hover {color: #FD7262;}
   background-color: #1ABC9C;
 }
 
-.box-setup .panel {
+.panel {
   background-color: #2C3E50;
   padding: 1rem;
   border: 0;
-}
-
-.box-setup h1 {
-  font-size: 16px;
-  text-transform: uppercase;
-  text-align: center;
 }
 
 .panel qrcode {

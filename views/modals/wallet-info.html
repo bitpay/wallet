@@ -1,0 +1,58 @@
+<div class="text-center" ng-init="isComplete = item.isComplete(); networkName = item.getNetworkName()">
+  <h1>{{item.name || item.id }}</h1>
+  <h3>
+    {{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}
+    , {{isComplete ? 'Complete' : 'Waiting for copayers...'}}
+  </h3>
+  <div class="m10b" ng-if="isComplete">
+    <b>{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
+  </div>
+  <div class="m20b">
+    Approximate size: {{item.kb}} kB 
+    <span ng-if="item.usage">({{item.usage}}%) </span>
+  </div>
+
+  <div class="box-notification" ng-show="error">
+    <div class="box-icon error">
+      <i class="fi-x size-24"></i>
+    </div>
+    <span class="text-warning size-14">
+      {{error|translate}}
+    </span>
+  </div>
+
+  <div class="row" ng-show="!backupWalletPlainText && !error">
+    <div class="large-6 medium-6 small-6 columns">
+    <button class="primary tiny" ng-click="downloadWalletBackup()" ng-disabled="loading"
+      ng-show="!isSafari"><i class="fi-download"></i> Download backup</button>
+    <button class="primary tiny" ng-click="viewWalletBackup()" ng-disabled="loading"
+      ng-show="isSafari"><i class="fi-eye"></i> View Backup</button> 
+    </div>
+    <div class="large-6 medium-6 small-6 columns">
+    <button class="warning tiny" ng-disabled="loading" 
+      ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
+      ng-really-click="deleteWallet()">
+      <span ng-show="!loading">
+        <i class="fi-trash"></i> Delete
+      </span>
+      <span ng-show="loading">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i> Deleting...
+      </span>
+    </button>
+    </div>
+  </div>
+
+  <div ng-show="backupWalletPlainText">
+    <h3>Copy backup in a safe place</h3>
+    <div class="input">
+      <textarea class="show-for-large-up" readonly rows="7">{{backupWalletPlainText}}</textarea>
+      <textarea class="hide-for-large-up" rows="12">{{backupWalletPlainText}}</textarea>
+      <i class="icon-compose"></i>
+    </div>
+    <div translate class="m10t size-12 text-gray text-right">
+      Copy this text as it is in a safe place (notepad or email)
+    </div>
+  </div>
+
+  <a class="close-reveal-modal" ng-click="close()">&#215;</a>
+</div>
