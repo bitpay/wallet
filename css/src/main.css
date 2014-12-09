@@ -81,7 +81,7 @@ header .alt-currency {
   color: #fff;
 }
 
-.panel h3, .box-setup h3 {
+.panel h3 {
   font-weight: 700;
   font-size: 16px;
   color: #2C3E50;
@@ -360,13 +360,6 @@ a:hover {
   text-align: center;
   margin: 0 0 2rem 0;
   color: #8597A7;
-}
-
-.box-setup {
-  margin-bottom: 1rem;
-  padding: 1.3rem; 
-  border-radius: 3px;
-  background: #fff;
 }
 
 .box-setup-footer {
@@ -1425,16 +1418,10 @@ a.text-warning:hover {color: #FD7262;}
   background-color: #1ABC9C;
 }
 
-.box-setup .panel {
+.panel {
   background-color: #2C3E50;
   padding: 1rem;
   border: 0;
-}
-
-.box-setup h1 {
-  font-size: 16px;
-  text-transform: uppercase;
-  text-align: center;
 }
 
 .panel qrcode {
