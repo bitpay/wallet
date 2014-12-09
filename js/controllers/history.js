@@ -145,7 +145,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
           return w.getNetworkName().substring(0, 4);
         };
 
-        $scope.go = function(url) {
+        $scope.openExternalLink = function(url) {
           go.openExternalLink(url);
         };
 
