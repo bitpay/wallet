@@ -1,202 +1,192 @@
-<div class="send" ng-controller="SendController" ng-init="init()"> 
+<div class="send" ng-controller="SendController" ng-init="init()">
 
-    <div class="row">
-      <div class="large-12 medium-12 small-12 columns">
-        <h1 class="hide-for-large-up">{{$root.title}}</h1>
-      </div>
+  <div class="row">
+    <div class="large-12 medium-12 small-12 columns">
+      <h1 class="hide-for-large-up">{{$root.title}}</h1>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="large-12 columns">
-        <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
-          <div class="panel">
+  <div class="row">
+    <div class="large-12 columns">
+      <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
+        <div class="panel">
 
-      <div class="box-notification" ng-show="error">
-        <div class="box-icon error">
-          <i class="fi-x size-24"></i>
-        </div>
-        <span class="text-warning size-14">
+          <div class="box-notification" ng-show="error">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div>
+            <span class="text-warning size-14">
           {{error|translate}}
         </span>
-      </div>
+          </div>
 
-      <div class="box-notification" ng-show="success">
-        <div class="box-icon success">
-          <i class="fi-check size-24"></i>
-        </div>
-        <span class="text-success size-14">
+          <div class="box-notification" ng-show="success">
+            <div class="box-icon success">
+              <i class="fi-check size-24"></i>
+            </div>
+            <span class="text-success size-14">
           {{success|translate}}
         </span>
-      </div>
+          </div>
 
-            <div class="row collapse">
-              <label for="address" class="left">
-                <span translate>To</span> 
-                <i class="fi-info size-12" href="#"
-                  data-options="disable_for_touch:true"
-                  tooltip-popup-delay='500'
-                  tooltip="{{'Enter a valid Bitcoin address. Payment Protocol URLs are also supported'|translate}}"
-                  tooltip-trigger="mouseenter"
-                  tooltip-placement="right"></i>
-                <small translate ng-hide="!sendForm.address.$pristine && address">required</small>
-              </label>
-              <span translate class="has-error right size-12" ng-show="sendForm.address.$invalid && address">
-                <span class="icon-input"><i class="fi-x"></i></span>
-                Not valid
+          <div ng-show="!_url">
+          <div class="row collapse">
+
+            <label for="address" class="left">
+              <span translate>To (*)</span> 
+            </label>
+
+            <span ng-hide="sendForm.address.$pristine">
+              <span translate class="has-error right size-12" ng-show="sendForm.address.$invalid">
+              <span class="icon-input">
+                <i class="fi-x"></i>
               </span>
-              <small class="icon-input right" ng-show="!sendForm.address.$invalid && address"><i class="fi-check"></i></small>
-            </div>
+            Not valid
+            </span>
+            <small class="icon-input right" ng-show="!sendForm.address.$invalid">
+                <i class="fi-check"></i>
+              </small>
+            </span>
+          </div>
 
-            <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="loading || lockAddress"
-              placeholder="{{'Bitcoin address'|translate}}" ng-model="address" valid-address required>
-              <i class="fi-address-book"></i> 
-              <div ng-hide="showScanner || disableScanner">
-                <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
+          <div class="input">
+            <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required>
+            <i class="fi-address-book"></i> 
+            <div ng-hide="showScanner || disableScanner">
+              <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
+            </div>
+            <div ng-show="showScanner">
+              <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
+            </div>
+          </div>
+          <div ng-show="_url">
+          <div class="row collapse">
+            {{_url}}
+          </div>
+          </div>
+
+          <div id="scanner" class="row" ng-if="showScanner" ng-include="'views/includes/scanner.html'">
+          </div>
+          </div>
+      
+
+
+          <div class="row" ng-init="showAlternative = false">
+            <div class="large-12 medium-12 columns">
+              <div class="m5b right" ng-hide="sendForm.amount.$pristine">
+                <span translate class="has-error right size-12" ng-show="sendForm.amount.$invalid">
+                  <span class="icon-input"><i class="fi-x"></i></span>
+                Not valid
+                </span>
+                <small class="icon-input right" ng-show="!sendForm.amount.$invalid">
+                    <i class="fi-check"></i>
+                </small>
               </div>
-              <div ng-show="showScanner">
-                <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
-              </div>
-            </div>
+              <div ng-show="!showAlternative">
+                <div class="row collapse">
 
-            <div id="scanner" 
-              class="row" 
-              ng-if="showScanner"
-              ng-include="'views/includes/scanner.html'">
-            </div>
+                  <label for="amount">
+                    <span translate>Amount (*)</span>
+                  </label>
 
-
-            <div class="row" ng-init="showAlternative = false">
-              <div class="large-12 medium-12 columns">
-                <div class="m5b right">
-                  <span translate class="has-error right size-12" ng-show="sendForm.amount.$invalid &&
-                    !sendForm.amount.$pristine && (notValidAmount || amount)">
-                    <span class="icon-input"><i class="fi-x"></i></span>
-                    Not valid
-                  </span>
-                  <small class="icon-input right" ng-show="!sendForm.amount.$invalid &&
-                    !sendForm.amount.$pristine"><i class="fi-check"></i></small>
-                </div>
-                <div ng-show="!showAlternative">
-                  <div class="row collapse"> 
-
-                    <label for="amount"><span translate>Amount 
-                      <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
-                    </label>
-
-                    <div class="small-9 columns">
-                      <div class="input">
-                        <input type="number" id="amount"
-                        ng-disabled="loading || lockAmount"
-                        name="amount" placeholder="{{'Amount'|translate}}" ng-model="amount"
-                        ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required
-                        autocomplete="off">
-                        <i class="icon-bitcoin"></i>
-                      </div>
-                      <a class="small input-note" title="{{'Send all funds'|translate}}"
-                        ng-show="topAmount && (!$root.merchant || +$root.merchant.total === 0)"
-                        ng-click="setTopAmount(sendForm)">
-                        <span translate>Use all funds</span> {{$root.wallet.settings.unitName}}
-                      </a>
-                    </div>
-                    <div class="small-3 columns pointer" ng-click="showAlternative = true">
-                      <span class="postfix">{{$root.wallet.settings.unitName}}</span>
+                  <div class="small-9 columns">
+                    <div class="input">
+                      <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off">
+                      <i class="icon-bitcoin"></i>
                     </div>
                   </div>
-                </div>
-                <div ng-show="showAlternative">
-                  <div class="row collapse">
-                    <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
-                      <small translate ng-hide="!sendForm.amount.$pristine && amount">required</small>
-                    </label>
-                    <div class="small-9 columns">
-                      <div class="input">
-                        <input type="number" id="alternative"
-                        ng-disabled="loading || !isRateAvailable || lockAmount"
-                        name="alternative" placeholder="{{'Amount'|translate}}" ng-model="alternative" requiredautocomplete="off">
-                        <i class="icon-usd"></i>
-                      </div>
-                    </div>
-                    <div class="small-3 columns pointer" ng-click="showAlternative = false">
-                      <span class="postfix">{{alternativeIsoCode}}</span>
-                    </div>
+                  <div class="small-3 columns pointer" ng-click="showAlternative = true">
+                    <span class="postfix">{{$root.wallet.settings.unitName}}</span>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="large-12 columns" ng-show="fetchingURL">
-                <h3>
-                  <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
-                  Fetching payment 
-                </h3>
-                <p> From {{fetchingURL}}
-              </div>
-    
-              <div class="large-12 columns" ng-show="!!$root.merchant">
-                <h3 >Payment Protocol Request</h3>
-                <div class="send-note"  ng-click="openPPModal(btx)">
-                  <p>
-                  <span ng-show="!!$root.merchant.pr.ca"><i class="fi-lock green"></i> {{$root.merchant.pr.ca}}</span>
-                  <span ng-show="!$root.merchant.pr.ca"><i class="fi-unlock red"></i> Untrusted</span>
- 
-                  {{$root.merchant.pr.pd.memo || address}}
-                  </p>
-
-                  <p>
-                  <i>{{amount}} {{$root.wallet.settings.unitName}}</i>
-                  <span class="text-gray" ng-if="isRateAvailable">
-                    {{ alternative }} {{ alternativeIsoCode }}
-                  </span>
-                  <p ng-show="!!$root.merchant">
-                  Expires {{$root.merchant.expiration | amTimeAgo }} 
-                  [{{$root.merchant.domain}}]
-                 </p>
+              <div ng-show="showAlternative">
+                <div class="row collapse">
+                  <label for="alternative"><span translate>Amount in</span> {{ alternativeName }} (*)
+                  </label>
+                  <div class="small-9 columns">
+                    <div class="input">
+                      <input type="number" id="alternative" ng-disabled="loading || !isRateAvailable || lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off">
+                      <i class="icon-usd"></i>
+                    </div>
+                  </div>
+                  <div class="small-3 columns pointer" ng-click="showAlternative = false">
+                    <span class="postfix">{{alternativeIsoCode}}</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="large-12 columns">
-                <label for="comment"><span translate>Note</span>
-                  <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
-                  <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
-                </label>
-                <div class="input">
-                  <textarea id="comment" ng-disabled="loading"
-                  name="comment" placeholder="{{($root.wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction')}}" ng-model="commentText" ng-maxlength="100"></textarea>
-                  <i class="icon-compose"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="large-6 medium-6 small-6 columns text-left">
-                <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || lockAddress" ng-click="openAddressBook()">
-                  <i class="fi-address-book"></i> Address book
-                </a>
-                <a ng-click="cancelSend(sendForm)" class="button warning m0" ng-show="!!$root.merchant || lockAddress">
-                  Cancel
-                </a>
-              </div>
-              <div class="large-6 medium-6 small-6 columns text-right">
-                <button type="submit" class="button primary m0" ng-disabled="sendForm.$invalid || loading">
-                <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> 
-                  Send
-                </button>
               </div>
             </div>
           </div>
-        </form>
-      </div>
-    </div><!--  end of row -->
-   
-    <div class="row m20b" ng-show="$root.wallet.balanceInfo.alternativeConversionRate > 0">
-      <div class="large-12 columns size-12">
-        <i class="fi-bitcoin-circle"></i> 
-        1 BTC = {{$root.wallet.balanceInfo.alternativeConversionRate}} {{alternativeIsoCode}}
-      </div>
-    </div> 
+
+          <div class="row">
+            <div class="large-12 columns" ng-show="fetchingURL">
+              <h3>
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
+                  Fetching payment 
+                </h3>
+              <p>From {{fetchingURL}}
+            </div>
+
+            <div class="large-12 columns" ng-show="!!$root.merchant">
+              <h3>Payment Protocol Request</h3>
+              <div class="send-note" ng-click="openPPModal(btx)">
+                <p>
+                  <span ng-show="!!$root.merchant.pr.ca"><i class="fi-lock green"></i> {{$root.merchant.pr.ca}}</span>
+                  <span ng-show="!$root.merchant.pr.ca"><i class="fi-unlock red"></i> Untrusted</span>
+                  {{$root.merchant.pr.pd.memo || address}} TODO ADDRESS
+                </p>
+
+                <p>TODO AMOUNT
+                  <i>{{amount}} {{$root.wallet.settings.unitName}}</i>
+                  <span class="text-gray" ng-if="isRateAvailable">
+                TODO ALT
+                    {{ alternative }} {{ alternativeIsoCode }}
+                  </span>
+                  <p ng-show="!!$root.merchant">
+                    Expires {{$root.merchant.expiration | amTimeAgo }} [{{$root.merchant.domain}}]
+                  </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="comment"><span translate>Note</span>
+                <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
+                <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+              </label>
+              <div class="input">
+                <textarea id="comment" ng-disabled="loading" name="comment" placeholder="{{($root.wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction')}}" ng-maxlength="100" ng-model="_comment"></textarea>
+                <i class="icon-compose"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="large-6 medium-6 small-6 columns text-left">
+              <a class="button tiny secondary m0" title="Address book" ng-hide="!!$root.merchant || lockAddress" ng-click="openAddressBook()">
+                <i class="fi-address-book"></i> Address book
+              </a>
+              <a ng-click="resetForm()" class="button warning m0" ng-show="!!$root.merchant || lockAddress"  ng-disabled="loading">
+                  Cancel
+                </a>
+            </div>
+            <div class="large-6 medium-6 small-6 columns text-right">
+              <button type="submit" class="button primary m0" ng-disabled="sendForm.$invalid || loading">
+                <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--  end of row -->
+
+  <div class="row m20b" ng-show="$root.wallet.balanceInfo.alternativeConversionRate > 0">
+    <div class="large-12 columns size-12">
+      <i class="fi-bitcoin-circle"></i> 1 BTC = {{$root.wallet.balanceInfo.alternativeConversionRate}} {{alternativeIsoCode}}
+    </div>
+  </div>
 </div>
 

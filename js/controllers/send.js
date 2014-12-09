@@ -22,7 +22,6 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.alternativeName = w.settings.alternativeName;
       $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
 
-      $scope.isPayUri = false;
       $scope.isRateAvailable = false;
       $scope.rateService = rateService;
       $scope.showScanner = false;
@@ -31,6 +30,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       if ($rootScope.pendingPayment) {
         $scope.setFromUri($rootScope.pendingPayment)
+        $rootScope.pendingPayment = null;
       }
 
       $scope.setInputs();
@@ -49,12 +49,12 @@ angular.module('copayApp.controllers').controller('SendController',
        *
        */
       Object.defineProperty($scope,
-        "alternative", {
+        "_alternative", {
           get: function() {
-            return this._alternative;
+            return this.__alternative;
           },
           set: function(newValue) {
-            this._alternative = newValue;
+            this.__alternative = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               this._amount = parseFloat(
                 (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
@@ -66,18 +66,18 @@ angular.module('copayApp.controllers').controller('SendController',
           configurable: true
         });
       Object.defineProperty($scope,
-        "amount", {
+        "_amount", {
           get: function() {
-            return this._amount;
+            return this.__amount;
           },
           set: function(newValue) {
-            this._amount = newValue;
+            this.__amount = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
 
-              this._alternative = parseFloat(
+              this.__alternative = parseFloat(
                 (rateService.toFiat(newValue * unitToSat, $scope.alternativeIsoCode)).toFixed(2), 10);
             } else {
-              this._alternative = 0;
+              this.__alternative = 0;
             }
           },
           enumerable: true,
@@ -85,12 +85,12 @@ angular.module('copayApp.controllers').controller('SendController',
         });
 
       Object.defineProperty($scope,
-        "address", {
+        "_address", {
           get: function() {
-            return this._address;
+            return this.__address;
           },
           set: function(newValue) {
-            this._address = $scope.onAddressChange(newValue);
+            this.__address = $scope.onAddressChange(newValue);
           },
           enumerable: true,
           configurable: true
@@ -109,8 +109,8 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
 
-    $scope._showError = function(err) {
-      copay.logger.error(err);
+    $scope.setError = function(err) {
+      copay.logger.warn(err);
 
       var msg = err.toString();
       if (msg.match('BIG'))
@@ -123,7 +123,10 @@ angular.module('copayApp.controllers').controller('SendController',
         ' could not be created: ' + msg;
 
       $scope.error = message;
-      $scope.loading = false;
+
+      $timeout(function(){
+        $scope.$digest();
+      },1);
     };
 
     $scope.submitForm = function(form) {
@@ -134,35 +137,23 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.loading = true;
 
+      var url = $scope._url;
       var address = form.address.$modelValue;
       var amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
-      var commentText = form.comment.$modelValue;
-
-
-      var payInfo;
-      if (address.indexOf('bitcoin:') === 0) {
-        payInfo = (new bitcore.BIP21(address)).data;
-      } else if (/^https?:\/\//.test(address)) {
-        payInfo = {
-          merchant: address
-        };
-      }
+      var comment = form.comment.$modelValue;
 
       w.spend({
         toAddress: address,
         amountSat: amount,
-        comment: commentText,
-        url: (payInfo && payInfo.merchant) ? payInfo.merchant : null,
+        comment: comment,
+        url: url,
       }, function(err, txid, status) {
         $scope.loading = false;
-        // reset fields
-        $scope.address = $scope.amount = $scope.commentText = null;
-        form.address.$pristine = form.amount.$pristine = true;
-        $rootScope.pendingPayment = null;
-        $scope.isPayUri = null;
-        if (err) return $scope._showError(err);
 
-        $scope.notifyStatus(status);
+        if (err) 
+          return $scope.setError(err);
+
+        $scope.resetForm(status);
       });
     };
 
@@ -303,7 +294,10 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.setTopAmount = function() {
-      $scope.amount = $rootScope.topAmount;
+      var form = $scope.sendForm;
+      form.amount.$setViewValue(w.balanceInfo.topAmount);
+      form.amount.$render();
+      form.amount.$isValid = true;
     };
 
     $scope.notifyStatus = function(status) {
@@ -316,7 +310,7 @@ angular.module('copayApp.controllers').controller('SendController',
       else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
         $scope.success = 'Transaction signed and broadcasted!';
       else
-        $scope.error = 'Unknown error occured';
+        $scope.error = status;
 
       $timeout(function() {
         $scope.$digest();
@@ -330,7 +324,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.txAlertCount = 0;
       w.issueTx(ntxid, function(err, txid, status) {
         $scope.loading = false;
-        $scope.notifyStatus(status);
+        $scope.resetForm(status);
         if (cb) return cb();
       });
     };
@@ -338,30 +332,31 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.setForm = function(to, amount, comment) {
       var form = $scope.sendForm;
       form.address.$setViewValue(to);
-      form.address.$render();
       form.address.$isValid = true;
+      form.address.$render();
       $scope.lockAddress = true;
 
       if (amount) {
-        form.amount.$setViewValue(amount);
-        form.amount.$render();
+        form.amount.$setViewValue(""+amount);
         form.amount.$isValid = true;
+        form.amount.$render();
         $scope.lockAmount = true;
       }
 
       if (comment) {
-        form.commentText.$setViewValue(comment);
+        form.comment.$setViewValue(comment);
+        form.comment.$isValid = true;
+        form.comment.$render();
       }
     };
 
-    $scope.cancelSend = function(error) {
+    $scope.resetForm = function(status) {
       var form = $scope.sendForm;
 
-      if (error)
-        $scope.error = error;
-
+      form.address.$pristine = form.amount.$pristine = true;
       $scope.fetchingURL = null;
-      $scope.isPayUri = null;
+      $scope.lockAddress = false;
+      $scope.lockAmount = false;
       form.address.$setViewValue('');
       form.address.$render();
       form.amount.$setViewValue('');
@@ -369,6 +364,11 @@ angular.module('copayApp.controllers').controller('SendController',
       form.comment.$setViewValue('');
       form.comment.$render();
       form.$setPristine();
+
+      $scope.notifyStatus(status);
+      $timeout(function(){
+        $rootScope.$digest();
+      },1);
     };
 
 
@@ -405,12 +405,12 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (err) {
           if (err.match('TIMEOUT')) {
-            $scope.cancelSend('Payment server timed out');
+            $scope.resetForm('Payment server timed out');
           } else {
-            $scope.cancelSend(err.toString());
+            $scope.resetForm(err.toString());
           }
         } else if (merchantData && available < +merchantData.total) {
-          $scope.cancelSend('Insufficient funds');
+          $scope.resetForm('Insufficient funds');
         } else {
           $scope.setForm(merchantData.domain, merchantData.unitTotal)
         }
@@ -435,7 +435,7 @@ console.log('[send.js.430:parsed:]',addr,parsed.data); //TODO
         return $scope.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
-        parsed.data.amount * 100000000 * satToUnit : 0;
+        (parsed.data.amount * 100000000).toFixed(0) * satToUnit : 0;
 
       $scope.setForm(addr, amount, parsed.data.message, true);
       return addr;
@@ -527,7 +527,7 @@ console.log('[send.js.430:parsed:]',addr,parsed.data); //TODO
       });
 
       modalInstance.result.then(function(addr) {
-        $scope.address = addr;
+        $scope._address = addr;
       });
     };
 

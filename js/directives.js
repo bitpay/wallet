@@ -32,12 +32,6 @@ angular.module('copayApp.directives')
       link: function(scope, elem, attrs, ctrl) {
         var validator = function(value) {
 
-          // If we're setting the domain, ignore the change.
-          if ($rootScope.merchant && $rootScope.merchant.domain && value === $rootScope.merchant.domain) {
-            ctrl.$setValidity('validAddress', true);
-            return value;
-          }
-
           // Regular url
           if (/^https?:\/\//.test(value)) {
             ctrl.$setValidity('validAddress', true);
@@ -51,6 +45,11 @@ angular.module('copayApp.directives')
             var hasAddress = uri.address && uri.isValid() && uri.address.network().name === $rootScope.wallet.getNetworkName();
             ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
             return value;
+          }
+
+          if (typeof value == 'undefined') {
+            ctrl.$pristine = true;
+            return;
           }
 
           // Regular Address
@@ -111,14 +110,11 @@ angular.module('copayApp.directives')
               var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
                 ctrl.$setValidity('validAmount', false);
-                scope.notValidAmount = true;
               } else {
                 ctrl.$setValidity('validAmount', true);
-                scope.notValidAmount = null;
               }
             } else {
               ctrl.$setValidity('validAmount', false);
-              scope.notValidAmount = null;
             }
             return value;
           }
