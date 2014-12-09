@@ -2686,7 +2686,6 @@ Wallet.prototype.getTransactionHistory = function(opts, cb) {
       tx.sentTs = proposal.sentTs;
       tx.merchant = proposal.merchant;
       tx.peerActions = proposal.peerActions;
-      tx.merchant = proposal.merchant;
       tx.paymentAckMemo = proposal.paymentAckMemo;
       tx.actionList = self._getActionList(proposal);
     }
