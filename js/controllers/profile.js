@@ -62,14 +62,20 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
       if (!w) return;
       $scope.isSafari = isMobile.Safari();
       $scope.item = w;
+      $scope.error = null;
+      $scope.success = null;
 
       $scope.deleteWallet = function() {
         $scope.loading = true;
         identityService.deleteWallet($scope.item, function(err) {
           if (err) {
+            $scope.loading = null;
+            $scope.error = err.message;
             copay.logger.warn(err);
           }
-          $modalInstance.close();
+          else {
+            $modalInstance.close($scope.item.name || $scope.item.id);
+          }
         });
       };
 
@@ -92,8 +98,9 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
       controller: ModalInstanceCtrl
     });
 
-    modalInstance.result.then(function() {
+    modalInstance.result.then(function(walletName) {
       $scope.loading = false;
+      $scope.success = 'The wallet "' + walletName + '" was deleted';
       $scope.setWallets();
     });
   };
