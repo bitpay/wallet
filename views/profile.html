@@ -42,7 +42,18 @@
   
   <div class="row" ng-init="setWallets()">
     <div class="large-12 columns">
-      <h2>Manage wallets</h2>
+      <h2>Manage wallets</h2> 
+
+      <div class="box-notification" ng-show="success">
+        <div class="box-icon success">
+          <i class="fi-check size-24"></i>
+        </div>
+        <span class="text-success size-14">
+          {{success|translate}}
+        </span>
+        <a href ng-click="success=false" class="close-notification success">&#215;</a>
+      </div>
+
       <table class="manage-wallets">
         <thead>
           <tr>

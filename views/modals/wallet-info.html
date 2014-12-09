@@ -12,7 +12,16 @@
     <span ng-if="item.usage">({{item.usage}}%) </span>
   </div>
 
-  <div class="row" ng-show="!backupWalletPlainText">
+  <div class="box-notification" ng-show="error">
+    <div class="box-icon error">
+      <i class="fi-x size-24"></i>
+    </div>
+    <span class="text-warning size-14">
+      {{error|translate}}
+    </span>
+  </div>
+
+  <div class="row" ng-show="!backupWalletPlainText && !error">
     <div class="large-6 medium-6 small-6 columns">
     <button class="primary tiny" ng-click="downloadWalletBackup()" ng-disabled="loading"
       ng-show="!isSafari"><i class="fi-download"></i> Download backup</button>
@@ -27,7 +36,7 @@
         <i class="fi-trash"></i> Delete
       </span>
       <span ng-show="loading">
-        <i class="fi-bitcoin-circle icon-rotate spinner"></i> Deleting
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i> Deleting...
       </span>
     </button>
     </div>
