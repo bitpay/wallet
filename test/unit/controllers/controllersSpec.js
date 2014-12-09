@@ -189,16 +189,16 @@ describe("Unit: Controllers", function() {
       scope.model = {
         newaddress: null,
         newlabel: null,
-        address: null,
-        amount: null
+        _address: null,
+        _amount: null
       };
       $compile(element)(scope);
 
       var element2 = angular.element(
         '<form name="form2">' +
-        '<input type="text" id="address" name="address" ng-model="address" valid-address required>' +
-        '<input type="number" id="amount" name="amount" ng-model="amount" min="1" max="10000000000" required>' +
-        '<input type="number" id="alternative" name="alternative" ng-model="alternative">' +
+        '<input type="text" id="address" name="address" ng-model="_address" valid-address required>' +
+        '<input type="number" id="amount" name="amount" ng-model="_amount" min="1" max="10000000000" required>' +
+        '<input type="number" id="alternative" name="alternative" ng-model="_alternative">' +
         '<textarea id="comment" name="comment" ng-model="commentText" ng-maxlength="100"></textarea>' +
         '</form>'
       );
@@ -207,7 +207,7 @@ describe("Unit: Controllers", function() {
         $scope: scope,
         $modal: {},
       });
-
+      scope.init();
       scope.$digest();
       form = scope.form;
       sendForm = scope.form2;
@@ -215,11 +215,11 @@ describe("Unit: Controllers", function() {
     }));
 
     it('should have a SendController controller', function() {
-      expect(scope.loading).equal(false);
+      should.exist(scope.submitForm);
     });
 
     it('should have a title', function() {
-      expect(scope.title).equal('Create Transaction Proposal');
+      expect(scope.title);
     });
 
     it('should validate address with network', function() {
@@ -296,7 +296,8 @@ describe("Unit: Controllers", function() {
       scope.rateService.whenAvailable(function() {
         sendForm.amount.$setViewValue(1e6);
         scope.$digest();
-        expect(scope.alternative).to.equal(2);
+        expect(scope._amount).to.equal(1e6);
+        expect(scope.__alternative).to.equal(2);
         done();
       });
     });
@@ -304,7 +305,8 @@ describe("Unit: Controllers", function() {
       scope.rateService.whenAvailable(function() {
         sendForm.alternative.$setViewValue(2);
         scope.$digest();
-        expect(scope.amount).to.equal(1e6);
+        expect(scope.__alternative).to.equal(2);
+        expect(scope._amount).to.equal(1e6);
         done();
       });
     });
@@ -511,7 +513,7 @@ describe("Unit: Controllers", function() {
     });
   });
 
-  describe('UriPayment Controller', function() {
+  describe('paymentUriController Controller', function() {
     var what;
     beforeEach(inject(function($controller, $rootScope, $location) {
       scope = $rootScope.$new();
@@ -522,7 +524,7 @@ describe("Unit: Controllers", function() {
         amount: 0.1,
         message: "a bitcoin donation"
       };
-      what = $controller('UriPaymentController', {
+      what = $controller('paymentUriController', {
         $scope: scope,
         $routeParams: routeParams,
         $location: {
@@ -540,9 +542,7 @@ describe("Unit: Controllers", function() {
     it('should parse url correctly', function() {
       should.exist(what);
       should.exist(scope.pendingPayment);
-      scope.pendingPayment.address.data.should.equal('19mP9FKrXqL46Si58pHdhGKow88SUPy1V8');
-      scope.pendingPayment.data.amount.should.equal(0.1);
-      scope.pendingPayment.data.message.should.equal('a bitcoin donation');
+      scope.pendingPayment.should.equal('bitcoin:19mP9FKrXqL46Si58pHdhGKow88SUPy1V8?amount=0.1&message=a bitcoin donation');
     });
   });
 

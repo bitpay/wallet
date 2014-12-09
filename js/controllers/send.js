@@ -5,10 +5,10 @@ var preconditions = require('preconditions').singleton();
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus) {
 
-    var satToUnit, unitToSat, w;
+    var satToUnit;
 
     $scope.init = function() {
-      w = $rootScope.wallet;
+      var w = $rootScope.wallet;
       preconditions.checkState(w);
       preconditions.checkState(w.settings.unitToSatoshi);
 
@@ -16,7 +16,6 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = false;
       $scope.error = $scope.success = null;
 
-      unitToSat = w.settings.unitToSatoshi;
       satToUnit = 1 / w.settings.unitToSatoshi;
 
       $scope.alternativeName = w.settings.alternativeName;
@@ -32,7 +31,7 @@ angular.module('copayApp.controllers').controller('SendController',
         $timeout(function() {
           $scope.setFromUri($rootScope.pendingPayment)
           $rootScope.pendingPayment = null;
-        },100);
+        }, 100);
       }
 
       $scope.setInputs();
@@ -45,6 +44,8 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.setInputs = function() {
+      var w = $rootScope.wallet;
+      var unitToSat = w.settings.unitToSatoshi;
       /**
        * Setting the two related amounts as properties prevents an infinite
        * recursion for watches while preserving the original angular updates
@@ -75,7 +76,6 @@ angular.module('copayApp.controllers').controller('SendController',
           set: function(newValue) {
             this.__amount = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-
               this.__alternative = parseFloat(
                 (rateService.toFiat(newValue * unitToSat, $scope.alternativeIsoCode)).toFixed(2), 10);
             } else {
@@ -135,6 +135,8 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.submitForm = function(form) {
+      var w = $rootScope.wallet;
+      var unitToSat = w.settings.unitToSatoshi;
 
       if (form.$invalid) {
         $scope.error = 'Unable to send transaction proposal';
@@ -160,9 +162,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (err)
           return $scope.setError(err);
-
-
-        console.log('[send.js.162:status:]', status); //TODO
 
         $scope.resetForm(status);
       });
@@ -304,10 +303,13 @@ angular.module('copayApp.controllers').controller('SendController',
     }
 
     $scope.setTopAmount = function() {
+      var w = $rootScope.wallet;
       var form = $scope.sendForm;
-      form.amount.$setViewValue(w.balanceInfo.topAmount);
-      form.amount.$render();
-      form.amount.$isValid = true;
+      if (form) {
+        form.amount.$setViewValue(w.balanceInfo.topAmount);
+        form.amount.$render();
+        form.amount.$isValid = true;
+      }
     };
 
     $scope.notifyStatus = function(status) {
@@ -324,12 +326,13 @@ angular.module('copayApp.controllers').controller('SendController',
 
       if (msg)
         $scope.openTxStatusModal(msg);
-      else 
+      else
         $scope.error = status;
     };
 
 
     $scope.send = function(ntxid, cb) {
+      var w = $rootScope.wallet;
       $scope.error = $scope.success = null;
       $scope.loading = true;
       $rootScope.txAlertCount = 0;
@@ -417,6 +420,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.setFromPayPro = function(uri) {
+      var w = $rootScope.wallet;
       $scope.fetchingURL = uri;
       $scope.loading = true;
 
@@ -477,6 +481,7 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.openAddressBook = function() {
+      var w = $rootScope.wallet;
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/address-book.html',
         windowClass: 'large',
