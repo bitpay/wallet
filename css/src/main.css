@@ -352,7 +352,7 @@ a:hover {
 
 .main {
   margin-left: 250px;
-  padding: 85px 1.5rem;
+  padding: 95px 1.5rem;
   background-color: #F8F8FB;
 }
 
@@ -538,7 +538,7 @@ a.button-setup.add-wallet:hover {
 
 a.button-setup {
   border-radius: 3px;
-  border: 1px solid #B7C2CE;
+  border: 1px solid #3E5366;
   display: block;
   padding: 0.5rem;
   background: transparent;
@@ -1093,6 +1093,8 @@ button[disabled].warning:focus,
 .button[disabled].warning:focus {
   background-color: #95a5a6;
   color: #E6E6E6;
+  -moz-box-shadow:    none;
+  box-shadow:         none;
 }
 
 /* WHITE */
@@ -1384,9 +1386,10 @@ a:hover .photo-container  {
 }
 
 .icon-input .fi-check {
-  padding: .1rem .3rem;
+  padding: .2rem .3rem;
   background-color: #1ABC9C;
   border-radius: 100%;
+  display: block;
 }
 
 .icon-input .fi-x {
@@ -1688,7 +1691,7 @@ a.text-warning:hover {color: #FD7262;}
   margin-right: 14px;
   border: none;
   box-shadow: none;
-  top: 2px;
+  top: 0;
 }
 
 .createProfile .input, 
