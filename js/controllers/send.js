@@ -112,6 +112,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.setError = function(err) {
+      var w = $rootScope.wallet;
       copay.logger.warn(err);
 
       var msg = err.toString();
