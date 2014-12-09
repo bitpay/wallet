@@ -52,10 +52,10 @@
                 ng-include="'views/includes/scanner.html'">
               </div>
 
-            <div class="line-dashed-h"></div>
+            <div class="line-dashed-h m20b"></div>
 
-            <div class="m20t m20b left">
-              <a class="expand small" ng-click="hideAdv=!hideAdv">
+            <div class="m20b oh">
+              <a class="small left button-setup" ng-click="hideAdv=!hideAdv">
                 <i class="fi-widget m3r"></i>
                 <span translate ng-hide="!hideAdv">Show</span> 
                 <span translate ng-hide="hideAdv">Hide</span> 
@@ -64,13 +64,18 @@
                 <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
               </a>
             </div>
-            <div ng-hide="hideAdv">
-              <p>
-              <input class="columns" type="text" placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
+            <div ng-hide="hideAdv" class="row">
+              <div class="large-12 columns">
+                <label for="ext-master">Master extended private key
+                  <input id="ext-master" 
+                  type="text" 
+                  placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
+                </label>
+              </div>
             </div>
 
             <div class="text-right m20t">
-              <button translate type="submit" class="button secondary m0" ng-disabled="joinForm.$invalid">Join</button>
+              <button translate type="submit" class="button expand secondary m0" ng-disabled="joinForm.$invalid">Join</button>
             </div>
           </div>
         </form>
