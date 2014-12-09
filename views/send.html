@@ -10,23 +10,21 @@
     <div class="large-12 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
         <div class="panel">
-
           <div class="box-notification" ng-show="error">
             <div class="box-icon error">
               <i class="fi-x size-24"></i>
             </div>
             <span class="text-warning size-14">
-          {{error|translate}}
-        </span>
+              {{error|translate}}
+            </span>
           </div>
-
           <div class="box-notification" ng-show="success">
             <div class="box-icon success">
               <i class="fi-check size-24"></i>
             </div>
             <span class="text-success size-14">
-          {{success|translate}}
-        </span>
+              {{success|translate}}
+            </span>
           </div>
 
           <div ng-if="!_merchantData">
