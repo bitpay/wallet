@@ -7,23 +7,21 @@
   <form name="settingsForm">
     <div class="row">
       <div class="large-6 medium-6 columns">
-        <fieldset>
-          <legend translate>Wallet Unit</legend>
+        <div class="panel">
+          <label translate>Wallet Unit</label>
           <select class="form-control" ng-model="selectedUnit" ng-options="o.name for o in unitOpts" ng-change="save()">
           </select>
-        </fieldset>
+        </div>
       </div>
       <div class="large-6 medium-6 columns">
-        <fieldset>
-          <legend translate>Alternative Currency</legend>
+        <div class="panel">
+          <label translate>Alternative Currency</label>
           <select class="form-control" ng-model="selectedAlternative" ng-options="alternative.name for alternative in alternativeOpts" ng-change="save()">
           </select>
-        </fieldset>
+        </div>
       </div>
     </div>
   </form>
-    
-  <div class="line-dashed-h m20b"></div>
   
   <div class="m20b row">
     <div class="large-12 columns">
