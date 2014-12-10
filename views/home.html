@@ -22,7 +22,7 @@
 
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting">
     <div class="logo-setup" ng-show="!$root.iden">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
+      <img src="img/logo-negative-beta.svg" alt="Cop ay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
 
@@ -39,6 +39,9 @@
     </div>
 
     <div ng-if="askForPin">
+      <div class="clipo">
+        <img src="img/clipo-pin.png" alt="clipo" width="380">
+      </div>
       <h2><span translate>Set up a </span> <b> PIN </b>?</h2>
       <p class="size-14 text-gray">Enter a 4-digit number for easier access from this device</p>
 
@@ -81,7 +84,9 @@
     </div>
 
     <div ng-if='$root.hasPin && !$root.iden'>
-      <h2><span translate>Enter your </span> <b> PIN</b></h2>
+      <div class="clipo">
+        <img src="img/clipo-pin-enter.png" alt="clipo" width="300">
+      </div>
       <form name="pinForm" novalidate>
         <div class="box-notification" ng-show="error">
           <div class="box-icon error">
