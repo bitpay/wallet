@@ -35,12 +35,19 @@
       <i class="icon-download size-18 m10r"></i> {{'Import wallet'|translate}}</a></li>
     <li class="divider"></li>
     <li><a href="#!/profile" title="Profile">
-      <i class="icon-person size-18 m10r"></i> {{'Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
+      <i class="icon-person size-18 m10r"></i> {{'My Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
       </li> 
     <li><a href="#!/" title="Close" ng-click="signout()">
         <span ng-if="!$root.hasPin"><i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</span>
         <span ng-if="$root.hasPin"><i class="fi-lock size-18 m10r"></i> {{'Lock'|translate}}</span>
       </a></li>
+
+    <li class="divider"></li>
+    <li><a ng-click="$root.openExternalLink('https://github.com/bitpay/copay/issues/new')">
+        <i class="fi-comment-quotes size-18 m10r"></i> {{'Leave feedback'|translate}}
+      </a>
+      </li> 
+
 
   </ul>
 </div>
