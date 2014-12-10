@@ -118,6 +118,10 @@ function Wallet(opts) {
 inherits(Wallet, events.EventEmitter);
 
 
+Wallet.TX_NEW = 'txNew';
+Wallet.TX_PURGED = 'txPurged';
+Wallet.TX_ALL_PURGED = 'txAllPurged';
+Wallet.TX_REJECTED = 'txRejected';
 Wallet.TX_BROADCASTED = 'txBroadcasted';
 Wallet.TX_PROPOSAL_SENT = 'txProposalSent';
 Wallet.TX_SIGNED = 'txSigned';
@@ -433,7 +437,6 @@ Wallet.prototype._updateTxProposalSent = function(txp, cb) {
 
     if (txid) {
       txp.setSent(txid);
-      self.emitAndKeepAlive('txProposalsUpdated');
     }
     if (cb)
       return cb(null, txid, txid ? Wallet.TX_BROADCASTED : null);
@@ -508,7 +511,7 @@ Wallet.prototype._txProposalFromUntrustedObj = function(data, opts) {
  * @param {string} senderId - the id of the sender
  * @param {Object} data - the data received
  * @param {Object} data.txProposal - first parameter for {@link TxProposals#merge}
- * @emits txProposalsUpdated
+ * @emits txProposalEvent
  */
 Wallet.prototype._onTxProposal = function(senderId, data) {
   preconditions.checkArgument(data.txProposal);
@@ -539,7 +542,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
 
     self.txProposals.add(incomingTx);
     self.emitAndKeepAlive('txProposalEvent', {
-      type: 'new',
+      type: Wallet.TX_NEW,
       cId: senderId,
     });
   });
@@ -555,12 +558,11 @@ Wallet.prototype._onSignature = function(senderId, data) {
     return;
   };
   localTx.addSignature(senderId, data.signatures);
-  self.issueTxIfComplete(data.ntxid, function(err, txid) {
-    self.emitAndKeepAlive('txProposalEvent', {
-      type: txid ? 'signedAndBroadcasted' : 'signed',
-      cId: senderId,
-    });
+  self.emitAndKeepAlive('txProposalEvent', {
+    type: Wallet.TX_SIGNED,
+    cId: senderId,
   });
+  self.issueTxIfComplete(data.ntxid, function(err, txid) {});
 };
 
 /**
@@ -570,7 +572,6 @@ Wallet.prototype._onSignature = function(senderId, data) {
  * @param {string} senderId
  * @param {Object} data
  * @param {string} data.ntxid
- * @emits txProposalsUpdated
  * @emits txProposalEvent
  */
 Wallet.prototype._onReject = function(senderId, data) {
@@ -589,7 +590,7 @@ Wallet.prototype._onReject = function(senderId, data) {
 
     txp.setRejected(senderId);
     this.emitAndKeepAlive('txProposalEvent', {
-      type: 'rejected',
+      type: Wallet.TX_REJECTED,
       cId: senderId,
       txId: data.ntxid
     });
@@ -603,7 +604,6 @@ Wallet.prototype._onReject = function(senderId, data) {
  * @param {string} senderId
  * @param {Object} data
  * @param {string} data.ntxid
- * @emits txProposalsUpdated
  * @emits txProposalEvent
  */
 Wallet.prototype._onSeen = function(senderId, data) {
@@ -614,7 +614,7 @@ Wallet.prototype._onSeen = function(senderId, data) {
   if (txp) {
     txp.setSeen(senderId);
     this.emitAndKeepAlive('txProposalEvent', {
-      type: 'seen',
+      type: Wallet.TX_SEEN,
       cId: senderId,
       txId: data.ntxid
     });
@@ -808,7 +808,11 @@ Wallet.prototype.getCopayerId = function(index) {
  * @return {string} hex-encoded pubkey
  */
 Wallet.prototype.getMyCopayerId = function() {
-  return this.getCopayerId(0); //copayer id is hex of a public key
+
+  if (!this._myId)
+    this._myId = this.getCopayerId(0);
+
+  return this._myId; //copayer id is hex of a public key
 };
 
 /**
@@ -923,7 +927,6 @@ Wallet.prototype._setupNetworkHandlers = function() {
  * @emits data
  *
  * @emits ready
- * @emits txProposalsUpdated
  *
  */
 Wallet.prototype.netStart = function() {
@@ -1429,7 +1432,6 @@ Wallet.prototype.getPendingTxProposalsCount = function() {
 Wallet.prototype.getPendingTxProposals = function() {
   var self = this;
   var ret = [];
-  ret.txs = [];
   var txps = this.txProposals.txps;
   var maxRejectCount = this.maxRejectCount();
   var satToUnit = 1 / this.settings.unitToSatoshi;
@@ -1458,7 +1460,7 @@ Wallet.prototype.getPendingTxProposals = function() {
     txp.fee = txp.builder.feeSat * satToUnit;
     txp.missingSignatures = txp.builder.build().countInputMissingSignatures(0);
     txp.actionList = self._getActionList(txp);
-    ret.txs.push(txp);
+    ret.push(txp);
   });
 
   return ret;
@@ -1472,7 +1474,10 @@ Wallet.prototype.getPendingTxProposals = function() {
 Wallet.prototype.purgeTxProposals = function(deleteAll) {
   var deleted = this.txProposals.purge(deleteAll, this.maxRejectCount());
   if (deleted) {
-    this.emitAndKeepAlive('txProposalsUpdated');
+    this.emitAndKeepAlive('txProposalEvent', {
+      type: deleteAll ? Wallet.TX_PURGED : Wallet.TX_ALL_PURGED,
+      cId: this.getMyCopayerId(),
+    });
   }
   return deleted;
 };
@@ -1480,47 +1485,47 @@ Wallet.prototype.purgeTxProposals = function(deleteAll) {
 /**
  * @desc Reject a proposal
  * @param {string} ntxid the id of the transaction proposal to reject
- * @emits txProposalsUpdated
+ * @emits txProposalsEvent
  */
-Wallet.prototype.reject = function(ntxid) {
+Wallet.prototype.reject = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   txp.setRejected(this.getMyCopayerId());
   this.sendReject(ntxid);
-  this.emitAndKeepAlive('txProposalsUpdated');
+
+  this.emitAndKeepAlive('txProposalEvent', {
+    type: Wallet.TX_REJECTED,
+    cId: this.getMyCopayerId(),
+  });
+
+  // TODO this callback should be triggered by sendRejected, which is trully async
+  if (cb)
+    cb(null, Wallet.TX_REJECTED);
 };
 
 /**
  * @callback signCallback
  * @param {Error} error if any
  * @param {number} Transaction ID or Transaction Proposal ID
- * @param {status} Wallet.TX_* Status:
- *
- *    TX_BROADCASTED
- *    TX_SIGNED
- *    TX_PROPOSAL_SENT
+ * @param {status} Wallet.TX_* Status
  */
 
 
 /**
  * @desc Signs a transaction proposal
  * @param {string} ntxid the id of the transaction proposal to sign
- * @emits txProposalsUpdated
  * @throws {Error} Could not sign proposal
  * @throws {Error} Bad payment request
  * @return {boolean} true if signing actually incremented the number of signatures
- * @emits txProposalsUpdated
  */
 Wallet.prototype.sign = function(ntxid) {
   preconditions.checkState(!_.isUndefined(this.getMyCopayerId()));
 
   var txp = this.txProposals.get(ntxid);
   var keys = this.privateKey.getForPaths(txp.inputChainPaths);
-
   var signaturesAdded = txp.sign(keys, this.getMyCopayerId());
   if (!signaturesAdded)
     return false;
 
-  this.emitAndKeepAlive('txProposalsUpdated');
   return true;
 };
 
@@ -1545,15 +1550,25 @@ Wallet.prototype.issueTxIfComplete = function(ntxid, cb) {
  * @param ntxid Transaction Proposal Id
  * @param {signCallback} cb
  * @throws {Error} Could not sign proposal
+ * @emits txProposalEvent
  */
 Wallet.prototype.signAndSend = function(ntxid, cb) {
+  var self = this;
+
   if (this.sign(ntxid)) {
+
     this.sendSignature(ntxid);
     this.issueTxIfComplete(ntxid, function(err, txid, status) {
-      if (!txid)
-        return cb(null, ntxid, Wallet.TX_SIGNED);
-      else
-        return cb(null, ntxid, Wallet.TX_SIGNED_AND_BROADCASTED);
+
+      // We did not broadcast the TX, only signed it.
+      if (!txid) {
+        self.emitAndKeepAlive('txProposalEvent', {
+          type: Wallet.TX_SIGNED,
+          cId: self.getMyCopayerId(),
+        });
+      }
+
+      return cb(err, txid, status ? status : Wallet.TX_SIGNED);
     });
   } else {
     return cb(new Error('Could not sign the proposal'));
@@ -1615,7 +1630,10 @@ Wallet.prototype.issueTx = function(ntxid, cb) {
 
     var txp = self.txProposals.get(ntxid);
     txp.setSent(txid);
-
+    self.emitAndKeepAlive('txProposalEvent', {
+      type: Wallet.TX_BROADCASTED,
+      cId: self.getMyCopayerId(),
+    });
 
     // PAYPRO: Payment message is optional, only if payment_url is set
     // This is async. and will notify and update txp async.
@@ -1626,7 +1644,6 @@ Wallet.prototype.issueTx = function(ntxid, cb) {
         self.onPayProPaymentAck(ntxid, data);
       });
     }
-    self.emitAndKeepAlive('txProposalsUpdated');
     return cb(null, txid, Wallet.TX_BROADCASTED);
   });
 };
@@ -2210,6 +2227,8 @@ Wallet.prototype.spend = function(opts, cb) {
   preconditions.checkArgument(amountSat, 'no amount');
   preconditions.checkArgument(toAddress, 'no address');
 
+  // TODO no bajar los unspends de vuelta...
+  //
   this.getUnspent(function(err, safeUnspent) {
     if (err) {
       log.info(err);
@@ -2237,14 +2256,17 @@ Wallet.prototype.spend = function(opts, cb) {
     log.debug('TXP Added: ', ntxid);
 
     self.sendIndexes();
+
     // Needs only one signature? Broadcast it!
-    if (!self.requiresMultipleSignatures()) {
-      self.issueTx(ntxid, cb);
-    } else {
-      self.sendTxProposal(ntxid);
-      self.emitAndKeepAlive('txProposalsUpdated');
-      return cb(null, ntxid, Wallet.TX_PROPOSAL_SENT);
-    }
+    if (!self.requiresMultipleSignatures())
+      return self.issueTx(ntxid, cb);
+
+    self.sendTxProposal(ntxid);
+    self.emitAndKeepAlive('txProposalEvent', {
+      type: Wallet.TX_PROPOSAL_SENT,
+      cId: self.getMyCopayerId(),
+    });
+    return cb(null, ntxid, Wallet.TX_PROPOSAL_SENT);
   });
 };
 

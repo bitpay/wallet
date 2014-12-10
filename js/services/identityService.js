@@ -110,7 +110,6 @@ angular.module('copayApp.services')
     };
 
     root.setupGlobalVariables = function(iden) {
-      $rootScope.pendingTxCount = 0;
       $rootScope.reconnecting = false;
       $rootScope.iden = iden;
     };
@@ -140,6 +139,32 @@ angular.module('copayApp.services')
       })
     };
 
+    root.notifyTxProposalEvent = function(w, e) {
+      if (e.cId == w.getMyCopayerId()) 
+        return;
+
+      var user = w.publicKeyRing.nicknameForCopayer(e.cId);
+      var name = w.getName();
+      switch (e.type) {
+        case copay.Wallet.TX_NEW:
+          notification.info('[' + name + '] New Transaction',
+            $filter('translate')('You received a transaction proposal from') + ' ' + user);
+          break;
+        case copay.Wallet.TX_SIGNED:
+          notification.success('[' + name + '] Transaction Signed',
+            $filter('translate')('A transaction was signed by') + ' ' + user);
+          break;
+        case copay.Wallet.TX_BROADCASTED:
+          notification.success('[' + name + '] Transaction Approved',
+            $filter('translate')('A transaction was broadcasted by') + ' ' + user);
+          break;
+        case copay.Wallet.TX_REJECTED:
+          notification.warning('[' + name + '] Transaction Rejected',
+            $filter('translate')('A transaction was rejected by') + ' ' + user);
+          break;
+      }
+    };
+
     root.installWalletHandlers = function(w) {
       var wid = w.getId();
       w.on('connectionError', function() {
@@ -150,9 +175,7 @@ angular.module('copayApp.services')
       });
 
       w.on('corrupt', function(peerId) {
-        if (root.isFocused(wid)) {
-          notification.error('Error', $filter('translate')('Received corrupt message from ') + peerId);
-        }
+        copay.logger.warn('Received corrupt message from ' + peerId);
       });
 
       w.on('publicKeyRingUpdated', function() {
@@ -200,52 +223,29 @@ angular.module('copayApp.services')
         // Nothing yet
       });
 
-      w.on('txProposalsUpdated', function() {
-        if (root.isFocused(wid)) {
-          pendingTxsService.update();
-        }
-      });
+      // Disabled for now, does not seens to have much value for the user
+      // w.on('paymentACK', function(memo) {
+      //   notification.success('Payment Acknowledged', memo);
+      // });
+      
+      w.on('txProposalEvent', function(ev) {
 
-      w.on('paymentACK', function(memo) {
-        notification.success('Payment Acknowledged', memo);
-      });
-
-      w.on('txProposalEvent', function(e) {
         if (root.isFocused(wid)) {
           pendingTxsService.update();
         }
 
+        // TODO aqui lo unico que cambia son los locked
+        // se puede optimizar 
         balanceService.update(w, function() {
           $rootScope.$digest();
         }, root.isFocused(wid));
 
-        // TODO: add wallet name notification
-        var user = w.publicKeyRing.nicknameForCopayer(e.cId);
-        var name = w.getName();
-        switch (e.type) {
-          case 'new':
-            notification.info('[' + name + '] New Transaction',
-              $filter('translate')('You received a transaction proposal from') + ' ' + user);
-            break;
-          case 'signed':
-            notification.success('[' + name + '] Transaction Signed',
-              $filter('translate')('A transaction was signed by') + ' ' + user);
-            break;
-          case 'signedAndBroadcasted':
-            notification.success('[' + name + '] Transaction Approved',
-              $filter('translate')('A transaction was signed and broadcasted by') + ' ' + user);
-            break;
-          case 'rejected':
-            notification.warning('[' + name + '] Transaction Rejected',
-              $filter('translate')('A transaction was rejected by') + ' ' + user);
-            break;
-          case 'corrupt':
-            notification.error('[' + name + '] Transaction Error',
-              $filter('translate')('Received corrupt transaction from') + ' ' + user);
-            break;
-        }
-        $rootScope.$digest();
+        root.notifyTxProposalEvent(w, ev);
+        $timeout(function(){
+          $rootScope.$digest();
+        });
       });
+
       w.on('addressBookUpdated', function(dontDigest) {
         if (root.isFocused(wid)) {
           if (!dontDigest) {
@@ -282,7 +282,7 @@ angular.module('copayApp.services')
       });
 
       iden.on('noWallets', function() {
-        notification.warning('No Wallets','Your profile has no wallets. Create one here');
+        notification.warning('No Wallets', 'Your profile has no wallets. Create one here');
         $rootScope.starting = false;
         $location.path('/create');
         $timeout(function() {

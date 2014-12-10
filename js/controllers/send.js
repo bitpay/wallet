@@ -160,11 +160,10 @@ angular.module('copayApp.controllers').controller('SendController',
         comment: comment,
       }, function(err, txid, status) {
         $scope.loading = false;
-
         if (err)
           return $scope.setError(err);
-
-        $scope.resetForm(status);
+        txStatus.notify(status);
+        $scope.resetForm();
       });
     };
 
@@ -313,37 +312,6 @@ angular.module('copayApp.controllers').controller('SendController',
       }
     };
 
-    $scope.notifyStatus = function(status) {
-      var msg;
-
-      if (status == copay.Wallet.TX_BROADCASTED)
-        msg = 'Transaction broadcasted!';
-      else if (status == copay.Wallet.TX_PROPOSAL_SENT)
-        msg = 'Transaction proposal created';
-      else if (status == copay.Wallet.TX_SIGNED)
-        msg = 'Transaction proposal was signed';
-      else if (status == copay.Wallet.TX_SIGNED_AND_BROADCASTED)
-        msg = 'Transaction signed and broadcasted!';
-
-      if (msg)
-        $scope.openTxStatusModal(msg);
-      else
-        $scope.error = status;
-    };
-
-
-    $scope.send = function(ntxid, cb) {
-      var w = $rootScope.wallet;
-      $scope.error = $scope.success = null;
-      $scope.loading = true;
-      $rootScope.txAlertCount = 0;
-      w.issueTx(ntxid, function(err, txid, status) {
-        $scope.loading = false;
-        $scope.resetForm(status);
-        if (cb) return cb();
-      });
-    };
-
     $scope.setForm = function(to, amount, comment) {
       var form = $scope.sendForm;
       if (to) {
@@ -367,7 +335,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
     };
 
-    $scope.resetForm = function(status) {
+    $scope.resetForm = function() {
       var form = $scope.sendForm;
 
       $scope.fetchingURL = null;
@@ -391,10 +359,6 @@ angular.module('copayApp.controllers').controller('SendController',
         form.address.$setViewValue('');
         form.address.$render();
       }
-
-      if (!txStatus.notify(status))
-        $scope.error = status;
-
       $timeout(function() {
         $rootScope.$digest();
       }, 1);
@@ -434,11 +398,8 @@ angular.module('copayApp.controllers').controller('SendController',
 
         if (err) {
           copay.logger.warn(err);
-          if (err.toString().match('TIMEOUT')) {
-            $scope.resetForm('Payment server timed out');
-          } else {
-            $scope.resetForm(err.toString());
-          }
+          $scope.resetForm();
+          $scope.error = err.toString();
         } else {
           $scope._merchantData = merchantData;
           $scope._domain = merchantData.domain;
