@@ -25,7 +25,15 @@
   <div class="text-light size-14">{{tx.comment}}</div>
 
   <div class="line-b m10t"></div>
-  <div ng-if="tx.createdTs " class="m10v size-14">
+
+  <div ng-if="tx.merchant" class="m20v">
+    {{tx.merchant.pr.pd.memo}}
+  </div>
+
+
+
+  <div ng-if="tx.createdTs " class="m10v">
+    <i translate>Date:</i>
     <time> <span>{{  tx.createdTs | amCalendar}}</span></time>
 
     [<time>{{ tx.createdTs  | amTimeAgo}}</time>]
@@ -33,7 +41,7 @@
 
   <div ng-if="tx.addressTo" class="m10v">
     <span class="ellipsis">
-      <b>To:</b>
+      <i>To:</i>
       <span ng-if="tx.merchant">
         <span ng-show="tx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{tx.merchant.domain}}</span>
         <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{tx.merchant.domain}}</span>
@@ -45,18 +53,13 @@
     </span>
   </div>
 
-  <div ng-if="tx.merchant" class="size-12 m10v">
-    {{tx.merchant.pr.pd.memo}}
-
-    <div ng-if="tx.merchant.expirationDate" class="m10v">
-      <b>Expires</b>: {{tx.merchant.expirationDate | amTimeAgo }}
-    </div>
+  <div ng-if="tx.merchant && tx.merchant.expirationDate" class="m10v">
+    <i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}
   </div>
 
 
-
   <div ng-if="tx.actionList[0]" class="m10v">
-    <b>Copayers Signatures</b>
+    <i>Signatures</i>
     <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
       <li ng-repeat="c in tx.actionList" ng-class="{'bottom-line-copayers':!$last}">
         <span>
