@@ -4,7 +4,9 @@
  *
  */
 
-
+body, div, .row {
+  -webkit-overflow-scrolling: touch;
+};
 
 ::-webkit-input-placeholder {
   color: #B7C2CD;
