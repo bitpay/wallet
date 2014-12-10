@@ -381,10 +381,9 @@ a:hover {
 }
 
 .box-notification {
-  height: 41px;
   position: relative;
   font-size: 12px;
-  padding: 0.9rem 0.7rem 0.7rem 3rem;
+  padding: 0.7rem 3rem;
   border-radius: 4px;
   background: #F2F5F8;
   margin: 0 auto;
@@ -397,9 +396,16 @@ a:hover {
   left: 0;
   color: white;
   background-color: #1ABC9C;
-  padding: 0.5rem;
+  padding:0 0.5rem;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+  height: 100%;
+}
+
+.box-notification .box-icon i {
+  position: relative;
+  top: 20%;
+  display: block
 }
 
 .box-notification .box-icon.error {
