@@ -2,7 +2,7 @@
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 
 <div class="size-14">
-  <div class="text-center size-72">
+  <div class="text-center size-72 m20t">
     <div ng-class="{
               'text-primary' : btx.action == 'received',
               'text-warning': btx.action == 'sent', 
@@ -13,8 +13,6 @@
                 'fi-loop': btx.action == 'moved'}"></i>
     </div>
   </div>
-
-
   <div class="text-center" class="m10v">
     <div class="tx-amount" ng-class="{
               'text-primary' : btx.action == 'received',
@@ -29,13 +27,22 @@
               </span>
     </div>
   </div>
-  <div class="line-b m10t"></div>
-  <h1 class="m30v">Transaction Details</h1>
-  <div class="ellipsis"  ng-if="btx.txid"> <b>ID:</b> <span class="text-gray"> {{btx.txid}} </span></div>
-  <div ng-if="btx.ts || btx.createdTs " class="m10v">
-    <time> <span>{{ (btx.ts || btx.createdTs ) | amCalendar}}</span></time>
 
-    [<time>{{ (btx.ts || btx.createdTs ) | amTimeAgo}}</time>]
+
+  <div class="line-b m10t"></div>
+  <h2>Transaction Details</h2>
+
+  <div class="m20v" ng-show="btx.comment">
+    <i class="fi-comment-quotes"></i> {{btx.comment}}
+  </div>
+
+  <div ng-if="btx.ts || btx.createdTs " class="m10v">
+    <i translate>Date:</i>
+    <time> <span>{{ (btx.ts || btx.createdTs ) | amCalendar}}</span>
+    </time>
+
+    [
+    <time>{{ (btx.ts || btx.createdTs ) | amTimeAgo}}</time>]
   </div>
 
   <div class="m10v">
@@ -43,22 +50,22 @@
       <span translate>Unconfirmed</span>
     </span>
     <span ng-show="btx.confirmations>0" class="m10v">
-      <b translate>Confirmations:</b>
+      <i translate>Confirmations:</i>
       <span class="text-gray">{{btx.confirmations}}</span>
     </span>
   </div>
 
   <div ng-if="btx.addressTo" class="m10v">
     <span class="ellipsis">
-      <b>To:</b>
+      <i>To:</i>
       <span ng-if="btx.merchant">
         <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
-        <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
-      </span>
+    <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+    </span>
 
-      <span ng-if="!btx.merchant">
+    <span ng-if="!btx.merchant">
         <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
-      </span>
+    </span>
     </span>
   </div>
 
@@ -67,7 +74,7 @@
   </div>
 
   <div ng-if="btx.actionList[0]" class="m10v">
-    <b>Copayers Signatures</b>
+    <i>Signatures</i>
     <ul class="tx-copayers m10t" ng-if="btx.actionList[0]">
       <li ng-repeat="c in btx.actionList" ng-class="{'bottom-line-copayers':!$last}">
         <span>
@@ -83,9 +90,11 @@
     </ul>
   </div>
 
-  <div class="m10t oh"  ng-if="btx.txid">
-    <a class="right button-setup" 
-      ng-click="openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
+  <div class="m10t oh" ng-if="btx.txid">
+    <div class="ellipsis text-gray" > ID: {{btx.txid}} </span>
+  </div>
+
+    <a class="right button-setup" ng-click="openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
       See it on the blockchain <i class="icon-arrow-right2 vm"></i>
     </a>
   </div>
