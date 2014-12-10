@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('SendController',
       preconditions.checkState(w);
       preconditions.checkState(w.settings.unitToSatoshi);
 
-      $rootScope.title = w.isShared() ? 'Create Transaction Proposal' : 'Send';
+      $rootScope.title = w.isShared() ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
 
