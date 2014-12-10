@@ -399,7 +399,11 @@ angular.module('copayApp.controllers').controller('SendController',
         if (err) {
           copay.logger.warn(err);
           $scope.resetForm();
-          $scope.error = err.toString();
+          var msg = err.toString();
+          if (msg.match('HTTP')) {
+            msg = 'Could not fetch payment information';
+          }
+          $scope.error = msg;
         } else {
           $scope._merchantData = merchantData;
           $scope._domain = merchantData.domain;

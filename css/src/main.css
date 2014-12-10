@@ -414,6 +414,13 @@ a:hover {
   background-color: #C0392A;
 }
 
+.box-notification .box-icon.secondary {
+  background-color: #3498DB;
+}
+
+
+
+
 .box-notification a.close-notification {
   position: absolute;
   top: 8px;
