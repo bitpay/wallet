@@ -446,7 +446,6 @@ ul.tx-copayers {
 }
 
 .last-transactions-header {
-  border-radius: 3px 3px 0 0;
   background: #2C3E50;
   padding: 0.6rem;
   color: #fff;
@@ -456,11 +455,12 @@ ul.tx-copayers {
 }
 
 .last-transactions-content {
-  padding: 0.8rem 0.8rem 0;
+  padding: 0.8rem 0.8rem;
   color: #7A8C9E;
 }
 
 .last-transactions-footer {
+  background: #E4E8EC;
   padding: 0.8rem;
   overflow: hidden;
 }
@@ -485,6 +485,13 @@ ul.tx-copayers {
 
 .last-transactions-content .icon-active {
   color: #fff;
+}
+
+.sign-action {
+  background: #E4E8EC;
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
 }
 
 .icon-sign {

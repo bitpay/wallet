@@ -116,6 +116,10 @@
     display: none;
   }
 
+  .reveal-modal, dialog {
+    padding: 0;
+  }
+
 
   .tab-bar h1 {
     font-weight: 100;
