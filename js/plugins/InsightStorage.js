@@ -232,8 +232,28 @@ InsightStorage.prototype.removeItem = function(key, callback) {
 };
 
 InsightStorage.prototype.clear = function(callback) {
-  // NOOP
-  callback();
+  var passphrase = this.getPassphrase();
+  var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
+  var deleteUrl = this.storeUrl + '/delete/profile';
+
+  log.debug('Clearing storage for: ' + this.email);
+  this.request.post({
+    url: deleteUrl,
+    headers: {
+      'Authorization': authHeader
+    },
+    body: null,
+  }, function(err, response, body) {
+    if (err) {
+      return callback('Connection error');
+    }
+    if (response.statusCode === 409) {
+      return callback('BADCREDENTIALS: Invalid username or password');
+    } else if (response.statusCode !== 200) {
+      return callback('Unable to remove data on insight');
+    }
+    return callback();
+  });
 };
 
 module.exports = InsightStorage;
