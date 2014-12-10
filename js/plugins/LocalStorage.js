@@ -80,11 +80,7 @@ LocalStorage.prototype.removeItem = function(k, cb) {
 };
 
 LocalStorage.prototype.clear = function(cb) {
-  if (isChromeApp) {
-    chrome.storage.clear();
-  } else {
-    this.ls.clear();
-  }
+  // NOP
   return cb();
 };
 

@@ -171,6 +171,7 @@ describe('Identity model', function() {
       var storage = sinon.stub();
       storage.setCredentials = sinon.stub();
       storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
 
       var opts = {
         email: 'test@test.com',
@@ -191,6 +192,7 @@ describe('Identity model', function() {
         should.not.exist(err);
         storage.removeItem.calledOnce.should.be.true;
         storage.removeItem.getCall(0).args[0].should.equal(iden.getId());
+        storage.clear.calledOnce.should.be.true;
         done();
       });
     });
@@ -199,6 +201,7 @@ describe('Identity model', function() {
       var storage = sinon.stub();
       storage.setCredentials = sinon.stub();
       storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
 
       var opts = {
         email: 'test@test.com',
@@ -231,6 +234,7 @@ describe('Identity model', function() {
         storage.removeItem.callCount.should.equal(4);
         storage.removeItem.getCall(0).args[0].should.equal(Wallet.getStorageKey('wallet0'));
         storage.removeItem.getCall(3).args[0].should.equal(iden.getId());
+        storage.clear.calledOnce.should.be.true;
         done();
       });
     });

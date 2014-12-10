@@ -63,7 +63,7 @@ describe('local storage plugin', function() {
   it('#clear', function(done) {
     storage.clear(function(err) {
       assert(!err);
-      storageMock.clear.calledOnce.should.equal(true);
+      storageMock.clear.calledOnce.should.be.false;
       return done();
     });
   });

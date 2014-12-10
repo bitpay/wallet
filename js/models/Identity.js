@@ -356,8 +356,13 @@ Identity.prototype.remove = function(opts, cb) {
 
     self.storage.removeItem(self.getId(), function(err) {
       if (err) return cb(err);
-      self.emitAndKeepAlive('closed');
-      return cb();
+
+      self.storage.clear(function (err) {
+        if (err) return cb(err);
+        
+        self.emitAndKeepAlive('closed');
+        return cb();
+      });
     });
   });
 };
