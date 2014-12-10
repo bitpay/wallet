@@ -23,7 +23,12 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
   // This is necessary, since wallet can change in homeWallet, 
   // without running init() again.
   
-  var removeWatch;
+  var removeWatch, _initHome;
+
+  _initHome = $rootScope.$on('initHome', function() {
+    $scope.initHome();
+  });
+
   removeWatch = $rootScope.$watch('wallet.id', function(newWallet, oldWallet) {
     if ($rootScope.wallet && $rootScope.wallet.isComplete() && newWallet !== oldWallet) {
 
@@ -38,15 +43,15 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
 
 
       var w = $rootScope.wallet;
-      $rootScope.pendingTxCount = 0;
       w.on('txProposalEvent', _updateTxs);
       _updateTxs();
     }
   });
 
-    $scope.$on("$destroy", function() {
+  $scope.$on("$destroy", function() {
     var w = $rootScope.wallet;
     if (w) {
+      _initHome();
       removeWatch();
       w.removeListener('txProposalEvent', _updateTxs);
     };
