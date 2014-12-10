@@ -144,15 +144,15 @@
 
           <div class="row">
             <div class="large-6 medium-6 small-6 columns text-left">
-              <a class="button tiny secondary m0" title="Address book" ng-hide="_merchantData || lockAddress" ng-click="openAddressBook()">
-                <i class="fi-address-book"></i> Address book
+              <a class="button tiny secondary m0 radius" title="Address book" ng-hide="_merchantData || lockAddress" ng-click="openAddressBook()">
+                <i class="fi-address-book size-14 m5r vm"></i> Address book
               </a>
               <a ng-click="resetForm()" class="button warning m0" ng-show="_merchantData || lockAddress" ng-disabled="loading">
                   Cancel
                 </a>
             </div>
-            <div class="large-6 medium-6 small-6 columns text-right">
-              <button type="submit" class="button primary m0" ng-disabled="sendForm.$invalid || loading">
+            <div class="large-4 medium-4 small-6 columns text-right">
+              <button type="submit" class="button primary m0 expand" ng-disabled="sendForm.$invalid || loading">
                 <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> Send
               </button>
             </div>
