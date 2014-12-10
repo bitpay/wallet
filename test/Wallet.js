@@ -756,17 +756,24 @@ describe('Wallet model', function() {
         toAddress: toAddress,
         amountSat: amountSatStr,
       }, function(err, ntxid) {
-        w.on('txProposalsUpdated', function() {
+        var calledType;
+        w.privateKey = k2;
+        w.on('txProposalEvent', function(e) {
+          calledType = e.type;
+        });
+        w.signAndSend(ntxid, function(err, tx, status) {
+          should.not.exist(err);
           var txp = w.txProposals.txps[ntxid];
           var myId = w.getMyCopayerId();
           txp.signedBy[myId].should.be.above(now - 1);
           should.not.exist(txp.rejectedBy[myId]);
+          status.should.equal(Wallet.TX_SIGNED);
+          calledType.should.equal(Wallet.TX_SIGNED);
           done();
         });
-        w.privateKey = k2;
-        w.sign(ntxid).should.equal.true;
       });
     });
+
     it('should fail to reject a signed transaction', function() {
       var w = cachedCreateW2();
       var utxo = createUTXO(w);
@@ -1715,7 +1722,7 @@ describe('Wallet model', function() {
     it('should accept a new valid TXP', function(done) {
       w.txProposals.get = sinon.stub().returns(null);
       w.on('txProposalEvent', function(e) {
-        e.type.should.equal('new');
+        e.type.should.equal(Wallet.TX_NEW);
         w._processIncomingNewTxProposal.called.should.equal(true);
         w._getPubkeyToCopayerMap.called.should.equal(true);
         done();
@@ -1728,7 +1735,7 @@ describe('Wallet model', function() {
       w.txProposals.get = sinon.stub().returns(null);
       var secondCall = false;
       w.on('txProposalEvent', function(e) {
-        e.type.should.equal('new');
+        e.type.should.equal(Wallet.TX_NEW);
         w._processIncomingNewTxProposal.calledOnce.should.equal(true);
         w._getPubkeyToCopayerMap.called.should.equal(true);
         w._onTxProposal('senderID', data);
@@ -1810,7 +1817,7 @@ describe('Wallet model', function() {
       sinon.stub(txp, '_addSignatureAndVerify').returns();
 
       w.on('txProposalEvent', function(e) {
-        e.type.should.equal('signed');
+        e.type.should.equal(Wallet.TX_SIGNED);
         done();
       })
       w._onSignature('senderID', data);
@@ -1865,7 +1872,7 @@ describe('Wallet model', function() {
       spy1.calledOnce.should.equal(true);
       spy2.callCount.should.equal(1);
       spy2.firstCall.args.should.deep.equal(['txProposalEvent', {
-        type: 'rejected',
+        type: Wallet.TX_REJECTED,
         cId: 'john',
         txId: 'qwerty',
       }]);
@@ -1903,7 +1910,7 @@ describe('Wallet model', function() {
       w.txProposals.txps['qwerty'].ok.should.equal(1);
       spy2.callCount.should.equal(1);
       spy2.firstCall.args.should.deep.equal(['txProposalEvent', {
-        type: 'seen',
+        type: Wallet.TX_SEEN,
         cId: 'john',
         txId: 'qwerty',
       }]);
