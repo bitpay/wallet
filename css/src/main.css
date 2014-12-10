@@ -540,7 +540,7 @@ a.button-setup {
   background: transparent;
 }
 
-.createProfile a.button-setup, .home a.button-setup {
+.createProfile a.button-setup, .home a.button-setup, .settings a.button-setup, .import-profile a.button-setup {
   border-radius: 3px;
   border: 1px solid #3E5366;
   display: block;
@@ -548,7 +548,7 @@ a.button-setup {
   background: transparent;
 }
 
-.createProfile .button-setup a:hover, .home .button-setup a:hover {
+.createProfile .button-setup a:hover, .home .button-setup a:hover, .settings .button-setup a:hover, .import-profile .button-setup a:hover {
   background: #3C4E60;
 }
 
