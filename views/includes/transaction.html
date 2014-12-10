@@ -33,7 +33,7 @@
 </div>
 
 
-<div class="last-transactions-footer">
+<div class="last-transactions-footer" ng-init="myId = $root.wallet.getMyCopayerId()">
   <div class="row collapse">
     <div class="small-12 columns" ng-show="!tx.sentTs">
       <div ng-show="tx.signedBy[myId]">
@@ -60,8 +60,9 @@
           </div>
         </div>
       </div>
+
       <div ng-show="!tx.missingSignatures && !tx.sentTs">
-        <button class="primary tiny m0" ng-click="send(tx.ntxid)" ng-disabled="loading"> <i class="fi-upload-cloud"></i>
+        <button class="primary tiny m0" ng-click="broadcast(tx.ntxid)" ng-disabled="loading"> <i class="fi-upload-cloud"></i>
           <span translate>Broadcast Transaction</span>
         </button>
       </div>
