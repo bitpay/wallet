@@ -1,43 +1,54 @@
 
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 
-  <h1 class="m30v">Transaction Proposal Details</h1>
+<div class="last-transactions-header row collapse" ng-init="txIndex = $index" ng-show="tx.comment">
+  <i class="fi-comment-quotes size-18 vm"></i> 
+  <span class="text-light">{{tx.comment}}</span>
+</div>
 
-  <div class="row" ng-repeat="out in tx.outs">
-    <div class="large-5 medium-5 small-6 columns size-14">
-      <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
-      <span ng-show="out.alternativeAmount" class="alt-currency gray">
-        {{out.alternativeAmount}} {{out.alternativeIsoCode}}
+<div class="sign-action">
+  <div ng-show="tx.signedBy[myId]">
+    <button class="secondary left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-check icon-sign check"></i>
+      <span translate>Signed by me</span>
+    </button>
+  </div>
+  <div ng-show="tx.rejectedBy[myId]">
+    <button class="warning left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-x icon-sign x"></i>
+      <span translate>Rejected by me</span>
+    </button>
+  </div>
+</div>
+
+<div ng-if="tx.createdTs " class="p15 line-b size-10">
+  <time class="left"> <span>{{tx.createdTs | amCalendar}}</span></time>
+  [<time class="right">{{tx.createdTs | amTimeAgo}}</time>]
+</div>
+
+<div class="text-center p15 m10t line-b" ng-repeat="out in tx.outs">
+  <div class="size-18 m10b">
+    <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
+    <span ng-show="out.alternativeAmount" class="alt-currency gray">
+      {{out.alternativeAmount}} {{out.alternativeIsoCode}}
+    </span>
+  </div>
+  <i class="fi-arrow-down m10b db"></i>
+  <div class="size-12 m20b">
+      <div ng-if="tx.merchant" class="ellipsis">
+      <span ng-show="tx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{tx.merchant.domain}}</span>
+      <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{tx.merchant.domain}}</span>
       </span>
     </div>
-    <div class="large-2 medium-2 small-1 columns text-center">
-      <i class="fi-arrow-right"></i>
-    </div>
-    <div class="large-5 medium m0-5 small-5 columns ellipsis size-12">
-      <div ng-if="tx.merchant">
-        <span ng-show="tx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{tx.merchant.domain}}</span>
-        <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{tx.merchant.domain}}</span>
-        </span>
-      </div>
-      <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" ng-hide="tx.merchant" />
-    </div>
+    <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" ng-hide="tx.merchant" />
+  </div>
+</div>
 
-  <div class="text-light size-14">{{tx.comment}}</div>
-
-  <div class="line-b m10t"></div>
-
-  <div ng-if="tx.merchant" class="m20v">
+  <div ng-if="tx.merchant" class="p15 line-b">
     {{tx.merchant.pr.pd.memo}}
+    <div ng-if="tx.merchant && tx.merchant.expirationDate" class="m10v">
+      <i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}
+    </div>
   </div>
 
-
-
-  <div ng-if="tx.createdTs " class="m10v">
-    <i translate>Date:</i>
-    <time> <span>{{  tx.createdTs | amCalendar}}</span></time>
-
-    [<time>{{ tx.createdTs  | amTimeAgo}}</time>]
-  </div>
 
   <div ng-if="tx.addressTo" class="m10v">
     <span class="ellipsis">
@@ -53,12 +64,9 @@
     </span>
   </div>
 
-  <div ng-if="tx.merchant && tx.merchant.expirationDate" class="m10v">
-    <i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}
-  </div>
 
 
-  <div ng-if="tx.actionList[0]" class="m10v">
+  <div ng-if="tx.actionList[0]" class="p15">
     <i>Signatures</i>
     <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
       <li ng-repeat="c in tx.actionList" ng-class="{'bottom-line-copayers':!$last}">
@@ -74,6 +82,5 @@
       </li>
     </ul>
   </div>
-</div>
 
 
