@@ -84,11 +84,11 @@ describe("Unit: Controllers", function() {
     w.broadcastTx = sinon.stub().yields(null);
     w.requiresMultipleSignatures = sinon.stub().returns(true);
     w.getTxProposals = sinon.stub().returns([1, 2, 3]);
-    w.getPendingTxProposals = sinon.stub().returns({
+    w.getPendingTxProposals = sinon.stub().returns(
       [{
         isPending: true
       }]
-    });
+    );
     w.getId = sinon.stub().returns(1234);
     w.on = sinon.stub().yields({
       'e': 'errmsg',

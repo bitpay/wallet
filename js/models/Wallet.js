@@ -1498,7 +1498,8 @@ Wallet.prototype.reject = function(ntxid, cb) {
   });
 
   // TODO this callback should be triggered by sendRejected, which is trully async
-  return cb(null, Wallet.TX_REJECTED);
+  if (cb)
+    cb(null, Wallet.TX_REJECTED);
 };
 
 /**
@@ -1521,7 +1522,6 @@ Wallet.prototype.sign = function(ntxid) {
 
   var txp = this.txProposals.get(ntxid);
   var keys = this.privateKey.getForPaths(txp.inputChainPaths);
-
   var signaturesAdded = txp.sign(keys, this.getMyCopayerId());
   if (!signaturesAdded)
     return false;
