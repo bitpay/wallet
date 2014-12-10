@@ -51,7 +51,7 @@ factory('notification', ['$timeout',
       },
       details: true,
       localStorage: false,
-      html5Mode: true,
+      html5Mode: false,
       html5DefaultIcon: 'img/favicon.ico'
     };
 
