@@ -534,13 +534,21 @@ a.button-setup.add-wallet:hover {
 
 a.button-setup {
   border-radius: 3px;
+  border: 1px solid #E4E8EC;
+  display: block;
+  padding: 0.5rem;
+  background: transparent;
+}
+
+.createProfile a.button-setup, .home a.button-setup {
+  border-radius: 3px;
   border: 1px solid #3E5366;
   display: block;
   padding: 0.5rem;
   background: transparent;
 }
 
-.button-setup a:hover {
+.createProfile .button-setup a:hover, .home .button-setup a:hover {
   background: #3C4E60;
 }
 
