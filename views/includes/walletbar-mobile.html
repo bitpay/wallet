@@ -6,12 +6,12 @@
     <li 
       ng-repeat="item in wallets track by $index"
       ng-class="{'selected': item.id == $root.wallet.id}"
-      class="nav-item">
+      class="nav-item" ng-click="switchWallet(item.id)" >
     <div class="col1">
       <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
     </div>
     <div class="col2">
-      <a ng-click="switchWallet(item.id)" class="size-12 wallet-item">
+      <a class="size-12 wallet-item">
         <div class="oh">
           <div class="right size-10 type-wallet">
             [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
