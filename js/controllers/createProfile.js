@@ -176,9 +176,4 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       });
     });
   };
-
-  $scope.openExternalLink = function(url) {
-    go.openExternalLink(url);
-  };
-
 });

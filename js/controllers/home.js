@@ -2,12 +2,6 @@
 
 angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, go, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
-  // Global go. This should be in a better place TODO
-  // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
-  $rootScope.go = function (path) {
-    go.path(path);
-  };
-
   var _credentials, _firstpin;
   $scope.init = function() {
     $scope.isMobile = isMobile.any();

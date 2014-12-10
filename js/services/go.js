@@ -84,5 +84,18 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     $location.path('send');
   };
 
+
+  // Global go. This should be in a better place TODO
+  // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
+  $rootScope.go = function (path) {
+    root.path(path);
+  };
+
+  $rootScope.openExternalLink = function (url) {
+    root.openExternalLink(url);
+  };
+
+
+
   return root;
 });
