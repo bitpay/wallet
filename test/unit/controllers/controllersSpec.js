@@ -48,7 +48,6 @@ describe("Unit: Controllers", function() {
   beforeEach(inject(function($controller, $rootScope) {
     scope = $rootScope.$new();
     $rootScope.safeUnspentCount = 1;
-    $rootScope.pendingTxCount = 0;
 
     //
     // TODO Use the REAL wallet, and stub only networking and DB components!
@@ -86,10 +85,9 @@ describe("Unit: Controllers", function() {
     w.requiresMultipleSignatures = sinon.stub().returns(true);
     w.getTxProposals = sinon.stub().returns([1, 2, 3]);
     w.getPendingTxProposals = sinon.stub().returns({
-      txs: [{
+      [{
         isPending: true
-      }],
-      pendingForUs: 1
+      }]
     });
     w.getId = sinon.stub().returns(1234);
     w.on = sinon.stub().yields({
