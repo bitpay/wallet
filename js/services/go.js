@@ -68,6 +68,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
         root.path('selectWalletForPayment');
       } else {
         root.path('homeWallet');
+        $rootScope.$emit('initHome');
       }
     }
   };
