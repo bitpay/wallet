@@ -462,7 +462,7 @@ ul.tx-copayers {
 }
 
 .last-transactions-content {
-  padding: 0.8rem 0.8rem;
+  padding: 0.8rem 0;
   color: #7A8C9E;
 }
 
