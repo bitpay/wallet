@@ -1,102 +1,32 @@
-<div class="last-transactions-header row collapse show-for-large-up" ng-init="txIndex = $index">
-  <div class="large-9 small-7 columns size-14">
-    <div ng-show="tx.comment">
-      <i class="fi-comment-quotes size-18 vm"></i> 
-      <span class="text-light">{{tx.comment}}</span>
-    </div>
-  </div>
-  <div class="large-3 small-5 columns text-right">
-    <span class="date-message">{{tx.createdTs | amCalendar}}</span>
-  </div>
-</div>
 
-<div class="last-transactions-content" ng-click="openTxModal(tx)">
+
+<div class="last-transactions-content" ng-class="{'line-b':!$last}"  ng-click="openTxModal(tx)">
   <div class="row" ng-repeat="out in tx.outs">
-    <div class="large-5 medium-5 small-5 columns size-14">
-      <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
-      <span ng-show="out.alternativeAmount" class="alt-currency gray">
-        {{out.alternativeAmount}} {{out.alternativeIsoCode}}
-      </span>
-    </div>
-    <div class="large-2 medium-2 small-2 columns text-center">
-      <i class="fi-arrow-right"></i>
-    </div>
-    <div class="large-5 medium-5 small-5 columns ellipsis size-12">
-      <div ng-if="tx.merchant">
+    <div class="large-6 medium-6 small-12 columns size-16">
+      <div class="ellipsis m10b">
+      To:
+      <span ng-if="tx.merchant">
         <span ng-show="tx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{tx.merchant.domain}}</span>
         <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{tx.merchant.domain}}</span>
         </span>
+      </span>
+      <contact address="{{out.address}}" ng-hide="tx.merchant"> </contact>
       </div>
-      <contact address="{{out.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right" ng-hide="tx.merchant" />
     </div>
-  </div>
-</div>
 
-<div class="p10 line-t show-for-large-up" ng-init="myId = $root.wallet.getMyCopayerId()">
-  <div class="row collapse">
-    <div class="small-12 columns" ng-show="!tx.sentTs">
-      <div ng-show="tx.signedBy[myId]">
-        <button class="secondary left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-check icon-sign check"></i>
-          <span translate>Signed by me</span>
-        </button>
-      </div>
-      <div ng-show="tx.rejectedBy[myId]">
-        <button class="warning left m10r tiny m0 radius" ng-disabled="true"> <i class="fi-x icon-sign x"></i>
-          <span translate>Rejected by me</span>
-        </button>
-      </div>
-      <div ng-show="!tx.signedBy[myId] && !tx.rejectedBy[myId]">
-        <div class="row">
-          <div class="large-6 medium-6 small-6 columns text-left">
-            <button class="button warning tiny m0" ng-click="reject(tx.ntxid)" ng-disabled="loading">
-              <i class="fi-x icon-sign x"></i>  <span translate>Reject</span>
-            </button>
-          </div>
-          <div class="large-6 medium-6 small-6 columns text-right">
-            <button class="button primary  tiny m0" ng-click="sign(tx.ntxid)" ng-disabled="loading">
-              <i class="fi-check icon-sign check"></i>  <span translate>Sign</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div ng-show="!tx.missingSignatures && !tx.sentTs">
-        <button class="primary tiny m0" ng-click="broadcast(tx.ntxid)" ng-disabled="loading"> <i class="fi-upload-cloud"></i>
-          <span translate>Broadcast Transaction</span>
-        </button>
-      </div>
-      <div class="row collapse right show-for-large-up" ng-click="openTxModal(tx)">
-        <div class="text-gray text-center m10t size-12">
-            <span ng-show="!tx.finallyRejected && tx.missingSignatures==1">
-              One signature missing
-              <i class="icon-arrow-right2 size-18"></i>
-            </span> 
-            <span ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
-              {{tx.missingSignatures}} signatures missing
-              <i class="icon-arrow-right2 size-18"></i>
-            </span> 
-            <span ng-show="!tx.finallyRejected && tx.missingSignatures==0">
-              Approved
+    <div class="large-6 medium-6 small-12 columns">
+      <div class="text-right">
+        <span class="size-21">
+            <span ng-if="!$root.updatingBalance">
+              {{out.value}}
             </span>
-        </div>
+            {{$root.wallet.settings.unitName}}
+        </span>
+        <span class="size-14 db m5t text-gray">
+          {{out.alternativeAmount}} {{out.alternativeIsoCode}}
+        </span>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="row collapse last-transactions-footer hide-for-large-up size-14" ng-click="openTxModal(tx)">
-  <div class="text-gray text-center">
-    <span ng-show="!tx.finallyRejected && tx.missingSignatures==1">
-      <i class="fi-torso"></i> 
-      One signature missing
-    </span> 
-    <span ng-show="!tx.finallyRejected && tx.missingSignatures>1">
-      <i class="icon-people"></i> 
-      {{tx.missingSignatures}} signatures missing
-    </span> 
-    <span ng-show="!tx.finallyRejected && tx.missingSignatures==0">
-      Approved
-    </span>
   </div>
 </div>
 

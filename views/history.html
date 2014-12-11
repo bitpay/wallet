@@ -13,50 +13,38 @@
   </div>
   <div class="row" ng-if="blockchain_txs[0].txid">
     <div class="large-12 columns">
-      <div class="panel" ng-repeat="btx in blockchain_txs | orderBy:'-ts'"  ng-click="openTxModal(btx)">
-        <div class="row size-14">
+    <div class="panel oh">
+    <div ng-repeat="btx in blockchain_txs | orderBy:'-ts'"  ng-click="openTxModal(btx)" ng-class="{'line-b':!$last}" class="last-transactions-content">
 
-          <div class="large-2 medium-3 small-4 columns">
-            <div class="tx-date oh">
-              <time  ng-if="btx.ts">{{btx.ts | amTimeAgo}}</time>
-              <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
-                  <span translate>Unconfirmed</span>
-              </span>
-            </div>
-          </div>
-
-          <div class="large-4 medium-9 small-8 columns text-right">
-            <span class="tx-amount " ng-class="{
-                'text-primary' : btx.action == 'received',
-                'text-warning': btx.action == 'sent', 
-                'text-gray': btx.action == 'moved'}">
-              <b>{{btx.amount}} {{$root.wallet.settings.unitName}}</b>
-              <span class="alt-currency" ng-class="{
-                'green' : btx.action == 'received',
-                'red': btx.action == 'sent', 
-                'gray': btx.action == 'moved'}" ng-show="btx.alternativeAmount != null">
-                  {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
-                </span>
+      <div class="row">
+        <div class="large-6 medium-6 small-12 columns size-16">
+          <div class="ellipsis m10b">
+            <time  ng-if="btx.ts">{{btx.ts | amTimeAgo}}</time>
+            <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
+              <span translate>Unconfirmed</span>
             </span>
-            <span ng-class="{
-                'text-primary' : btx.action == 'received',
-                'text-warning': btx.action == 'sent', 
-                'text-gray': btx.action == 'moved'}">
-              <i class="m15h" ng-class="{
-                  'fi-arrow-left' : btx.action == 'received',
-                  'fi-arrow-right': btx.action == 'sent', 
-                  'fi-loop': btx.action == 'moved'}"></i>
-            </span>
-          </div>
-
-          <div class="large-6 medium-12 small-12 columns text-gray">
-            <div class="tx-comment" ng-show="btx.comment">
-              <i class="fi-comment-quotes"></i> {{btx.comment}}
-            </div>
           </div>
         </div>
 
+        <div class="large-6 medium-6 small-12 columns">
+          <div class="text-right"  ng-class="{
+                'text-primary' : btx.action == 'received',
+                'text-warning': btx.action == 'sent', 
+                'text-gray': btx.action == 'moved'}">
+            <span class="size-21">
+                <span ng-if="!$root.updatingBalance">
+                <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
+                </span>
+                {{$root.wallet.settings.unitName}}
+            </span>
+            <span class="size-14 db m5t text-gray">
+              {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
+            </span>
+          </div>
+        </div>
       </div>
+    </div>
+    </div>
     </div>
   </div>
   <div ng-show="blockchain_txs[0].txid">
