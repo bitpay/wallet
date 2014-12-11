@@ -48,14 +48,18 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
   };
 
 
+  var $outScope = $scope;
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.tx = tx;
-      $scope.getShortNetworkName = function() {
-        var w = $rootScope.wallet;
-        return w.getNetworkName().substring(0, 4);
+      $scope.sign = function(ntxid) {
+        $outScope.sign(ntxid);
+        $modalInstance.dismiss('cancel');
       };
-
+      $scope.reject = function(ntxid) {
+        $outScope.reject(ntxid);
+        $modalInstance.dismiss('cancel');
+      };
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };

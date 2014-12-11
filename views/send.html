@@ -6,7 +6,22 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" ng-show="fetchingURL">
+    <div class="large-12 columns">
+      <div class="panel">
+        <div class="box-notification">
+          <div class="box-icon secondary">
+            <i class="fi-bitcoin-circle icon-rotate spinner size-24"></i>
+          </div>
+          <span class="text-secondary size-14">
+              Fetching Payment Information...
+            </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="!fetchingURL">
     <div class="large-12 columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
         <div class="panel">
@@ -17,6 +32,7 @@
             <span class="text-warning size-14">
               {{error|translate}}
             </span>
+            <a class="close-notification  text-warning" ng-click="error=null">&#215;</a>
           </div>
           <div class="box-notification" ng-show="success">
             <div class="box-icon success">
@@ -25,6 +41,7 @@
             <span class="text-success size-14">
               {{success|translate}}
             </span>
+            <a class="close-notification text-success" ng-click="success=null">&#215;</a>
           </div>
 
           <div ng-if="!_merchantData">
@@ -67,10 +84,10 @@
                 <span translate>Payment to</span> 
               </label>
 
-            <div class="input">
-              <input type="text" id="domain" name="domain" ng-model="_domain" ng-disabled="1">
-              <i class="fi-lock color-greeni"></i> 
-            </div>
+              <div class="input">
+                <input type="text" id="domain" name="domain" ng-model="_domain" ng-disabled="1">
+                <i class="fi-lock color-greeni"></i> 
+              </div>
             </div>
           </div>
 
@@ -120,15 +137,6 @@
               </div>
             </div>
           </div>
-
-          <div class="row"  ng-show="fetchingURL">
-            <div class="large-12 columns">
-              <p>>>
-                  <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
-                  Fetching payment request
-            </div>
-          </div>
-
           <div class="row">
             <div class="large-12 columns">
               <label for="comment"><span translate>Note</span>

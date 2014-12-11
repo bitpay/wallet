@@ -109,6 +109,11 @@ header .alt-currency {
   color: yellow !important;
 }
 
+
+.color-alert {
+  color: #C0392A;
+}
+
 .alt-currency.green {
   background: #1abc9c;
 }
@@ -414,6 +419,13 @@ a:hover {
   background-color: #C0392A;
 }
 
+.box-notification .box-icon.secondary {
+  background-color: #3498DB;
+}
+
+
+
+
 .box-notification a.close-notification {
   position: absolute;
   top: 8px;
@@ -445,46 +457,23 @@ ul.tx-copayers {
   border-bottom: 1px solid #CAD2DA;
 }
 
-.last-transactions-header {
-  border-radius: 3px 3px 0 0;
-  background: #2C3E50;
-  padding: 0.6rem;
-  color: #fff;
-  box-shadow: 1.5px 0px 0 0 rgba(32,48,64,1);
-  -moz-box-shadow: 1.5px 0px 0 0 rgba(32,48,64,1);
-  -o-box-shadow: 1.5px 0px 0 0 rgba(32,48,64,1);
-}
 
 .last-transactions-content {
-  padding: 0.8rem 0.8rem 0;
-  color: #7A8C9E;
-}
-
-.last-transactions-footer {
   padding: 0.8rem;
-  overflow: hidden;
+  cursor:pointer;
 }
 
-.last-transactions-content .box-status {
-  font-size: 13px;
-  width: 30px;
-} 
+.last-transactions-content:hover {
+  background: #eee;
+}
 
-.last-transactions-content .box-copayer {
-  width: 100px;
-  margin-right: 20px;
-  float: left;
+
+
+.sign-action {
+  background: #E4E8EC;
+  width: 100%;
+  padding: 1rem;
   text-align: center;
-}
-
-.last-transactions-content .copayer-ico {
-  width: 45px;
-  height: 45px;
-  border: 2px solid #7A8C9B;
-}
-
-.last-transactions-content .icon-active {
-  color: #fff;
 }
 
 .icon-sign {
@@ -593,6 +582,7 @@ a.button-setup {
 .m20r {margin-right: 20px;}
 .m15r {margin-right: 15px;}
 .m20t {margin-top: 20px;}
+.m20tp {margin-top: 20%;}
 .m5 {margin: 5px;}
 .m10 {margin: 10px;}
 .m15 {margin: 15px;}
@@ -615,6 +605,7 @@ a.button-setup {
 .m-negative-l {margin-left: -0.9375rem;}
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
+.lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
 .ma { margin: 0 auto;}
@@ -1512,6 +1503,10 @@ a.text-warning:hover {color: #FD7262;}
 }
 
 @media only screen and (max-width: 40em) {
+  dialog.tiny, .reveal-modal.tiny {
+    height: 100%;
+    overflow-y: auto;
+  }
   dialog.large, .reveal-modal.large {
     height: 100%;
     overflow-y: auto;
@@ -1835,5 +1830,21 @@ a.text-warning:hover {color: #FD7262;}
 .settings label {
   color: #A5B2BF;
   font-weight: normal;
+}
+
+.reveal-modal .close-reveal-modal, dialog .close-reveal-modal {
+  padding: 5px 10px;
+  position: relative;
+  font-weight: normal;
+  border: 1px solid #bbb;
+  font-size: 22px;
+  background:#eee;
+  right:0;
+  top:0;
+  text-transform: uppercase;
+}
+
+.reveal-modal .close-reveal-modal:hover, dialog .close-reveal-modal:hover {
+  background:#ddd;
 }
 
