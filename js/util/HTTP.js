@@ -18,6 +18,7 @@ module.exports = {
       _success: function() {;
       },
       _error: function(_, err) {
+        console.trace(err);
         throw err;
       }
     };
