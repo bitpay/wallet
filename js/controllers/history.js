@@ -152,7 +152,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
       $modal.open({
         templateUrl: 'views/modals/tx-details.html',
-        windowClass: 'tiny',
+        windowClass: 'medium',
         controller: ModalInstanceCtrl,
       });
     };

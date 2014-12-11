@@ -43,20 +43,18 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkArgument(pin);
     preconditions.checkState($rootScope.iden);
     preconditions.checkState(_credentials && _credentials.email);
-    $scope.loading = true;
+    $rootScope.starting = true;
 
     $timeout(function() {
-      $rootScope.$digest();
-
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
         _credentials.password = '';
         _credentials = null;
         $scope.askForPin = 0;
         $rootScope.hasPin = true;
-        $scope.loading = null;
+        $rootScope.starting = null;
         $scope.createDefaultWallet();
       });
-    }, 1);
+    }, 100);
   };
 
 
@@ -91,13 +89,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     }, 1);
   };
 
-
-
   $scope.createDefaultWallet = function() {
     $rootScope.hideNavigation = false;
     identityService.createDefaultWallet(function(err) {
       $scope.askForPin = 0;
-      $scope.loading = false;
 
       if (err) {
         var msg = err.toString();
@@ -106,16 +101,15 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     });
   };
 
-
   $scope._doCreateProfile = function(emailOrUsername, password, cb) {
     preconditions.checkArgument(_.isString(emailOrUsername));
     preconditions.checkArgument(_.isString(password));
 
     $rootScope.hideNavigation = false;
-    $scope.loading = true;
+    $rootScope.starting = true;
 
     identityService.create(emailOrUsername, password, function(err) {
-      $scope.loading = null;
+      $rootScope.starting = null;
       $scope.error = null;
       if (err) {
         var msg = err.toString();

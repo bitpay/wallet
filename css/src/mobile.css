@@ -6,6 +6,10 @@
 
 @media (max-width: 1024px) {
 
+  .loading-screen {
+    background-color: #2C3E50;
+  }
+
   .logo-setup {
     margin: 0 0 1rem 0;
   }
@@ -205,10 +209,6 @@
     margin-bottom: 50px;
   } 
 
-  ul.off-canvas-list li a:hover {
-    background: transparent;
-  }
-
   .label {
     font-size: 80%;
     padding: 0.15rem 0.2rem;
@@ -234,6 +234,17 @@
   .move-left .exit-off-canvas {
     box-shadow: none;
   }
+
+  /* Remove all vendors hover */
+
+  ul.off-canvas-list li a:hover {
+    background: none;
+  }
+
+  .side-nav li a:not(.button) {
+    padding: 0;
+  }
+
 }
 
 @media (max-width: 640px) {

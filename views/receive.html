@@ -30,11 +30,13 @@
       <div ng-repeat="addr in addresses" ng-click="openAddressModal(addr)" class="pointer">
         <div class="panel">
           <div class="row">
-            <div class="large-8 medium-9 columns">
-              <contact address="{{::addr.address}}" tooltip-popup-delay="500" tooltip tooltip-placement="right">
-              <small translate class="label" ng-if="::addr.isChange">change</small>
+            <div class="large-7 medium-7 small-9 columns">
+              <contact class="ellipsis" address="{{::addr.address}}">
             </div>
-            <div class="large-4 medium-3 columns text-right">
+            <div class="large-1 medium-2 small-3 columns text-right">
+              <small translate class="label" ng-show="::addr.isChange">change</small>
+            </div>
+            <div class="large-4 medium-3 small-12 columns text-right">
               <span ng-show="$root.updatingBalance">
                   <i class="fi-bitcoin-circle icon-rotate spinner"></i>
                 </span>

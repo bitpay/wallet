@@ -98,12 +98,12 @@ if $DBGJS
 then
   echo "${OpenColor}${Green}* Generating copay bundle (debug js)...${CloseColor}"
   cd $BUILDDIR/..
-  grunt dist-dbg
+  grunt dist-mobile-dbg
   checkOK
 else
   echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
   cd $BUILDDIR/..
-  grunt dist
+  grunt dist-mobile
   checkOK
 fi
 
