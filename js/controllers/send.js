@@ -468,7 +468,7 @@ angular.module('copayApp.controllers').controller('SendController',
             $modalInstance.close(addr);
           };
 
-          $scope.cancel = function() {
+          $scope.cancel = function(form) {
             $scope.error = $scope.success = null;
             $scope.toggleForm();
           };
