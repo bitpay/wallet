@@ -87,9 +87,9 @@ One solution is to use Copay with a Python version manager for 2.6.
 
 # Development
 
-## Google Chrome Extension
+## Google Chrome App
 
-To build Copay's  *Chrome Extension*, run:
+To build Copay's  *Chorme App*, run:
 
 ```
 npm run-script chrome
@@ -104,18 +104,7 @@ To install it go to  `chrome://extensions/` at your chrome browser, make sure yo
 
 ## Firefox Add-on
 
-System Requirements
-
-* Download [Add-on SDK](https://addons.mozilla.org/en-US/developers/builder)
-* Install it. [Mozilla Docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
-
-Run
-
-```
-npm run-script firefox
-```
-- On sucess, the firefox add-on is located at:
-  browser-extensions/firefox/copay.xpi
+Firefox Extension is no longer supported.
 
 # QA - Bug Reporting
 
