@@ -1,30 +1,39 @@
-<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
 
-<div class="size-14">
-  <h1 class="m30v">Payment Request</h1>
-
-    <p>
-      <b translate>Signature:</b>  {{md.domain}}
-      <span ng-show="md.pr.ca"><i class="fi-lock color-greeni"></i> {{md.pr.ca}}</span>
-      <span ng-show="!md.pr.ca"><i class="fi-unlock color-yellowi"></i> Untrusted</span>
-    <p>
-      <b translate>Merchant Message:</b>
-      <br>
-      {{md.pr.pd.memo || address}}
-    </p>
-
-    <p>
-      <b translate>Amount:</b>
-      {{md.unitTotal}} {{$root.wallet.settings.unitName}}
-      <span class="text-gray" ng-if="isRateAvailable">
-                    {{ alternative }} {{ alternativeIsoCode }}
-                  </span>
-
-      <div ng-if="md.expirationDate" class="m10v">
-        <b>Expires</b>: {{md.expirationDate | amTimeAgo }}
-      </div>
-  </div>
-
+<div class="text-right">
+  <a class="close-reveal-modal" ng-click="cancel()">Close</a>
 </div>
+
+
+
+<div class="m20t text-center ">
+  <div class="size-48">
+  {{md.unitTotal}} {{$root.wallet.settings.unitName}}
+  </div>
+  <div class="size-18 m5t text-gray">
+    {{ alternative }} {{ alternativeIsoCode }}
+  </div>
+</div>
+<div class="line-b m10v"></div>
+
+<div class="ellipsis m10v">
+  <i>To:</i> {{md.domain}}
+</div>
+
+<div class="m10v">
+  <i>Certified by:</i>
+  <span ng-show="md.pr.ca"><i class="fi-lock color-greeni"></i> {{md.pr.ca}}</span>
+  <span ng-show="!md.pr.ca"><i class="fi-unlock color-yellowi"></i> Untrusted</span>
+</div>
+
+<div ng-if="md.pr.pd.memo" class="m10v lh140">
+  <i>Merchant Message:</i>  <span class="text-gray">
+  {{md.pr.pd.memo}}
+</div>
+
+
+<div ng-if="md.expirationDate" class="m10v">
+  <i>Expires:</i> {{md.expirationDate | amTimeAgo }}
+</div>
+
 
 
