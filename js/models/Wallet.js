@@ -2452,9 +2452,9 @@ Wallet.prototype.updateIndexes = function(callback) {
   async.parallel(tasks, function(err) {
     if (err) callback(err);
     log.debug('Wallet:' + self.id + ' Indexes updated');
-    this.clearUnspentCache();
-    this.subscribeToAddresses();
-    this.emitAndKeepAlive('newAddresses');
+    self.clearUnspentCache();
+    self.subscribeToAddresses();
+    self.emitAndKeepAlive('newAddresses');
     callback();
   });
 };
