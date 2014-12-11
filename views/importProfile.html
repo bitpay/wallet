@@ -1,15 +1,7 @@
 
 <div class="import-profile" ng-controller="ImportProfileController">
-  <div class="loading-screen" ng-show="loading">
-    <div class="spinner">
-      <div class="contener_general">
-          <div class="contener_mixte"><div class="ballcolor ball_1">&nbsp;</div></div>
-          <div class="contener_mixte"><div class="ballcolor ball_2">&nbsp;</div></div>
-          <div class="contener_mixte"><div class="ballcolor ball_3">&nbsp;</div></div>
-          <div class="contener_mixte"><div class="ballcolor ball_4">&nbsp;</div></div>
-      </div>
-      <span class="text-gray size-12">{{ importStatus|translate }}</span>
-    </div>
+  <div ng-show="loading">
+    <div ng-include="'views/includes/loading.html'" ng-init="title = importStatus"></div>
   </div>
 
   <div ng-show="!loading">

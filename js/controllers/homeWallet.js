@@ -67,7 +67,7 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
 
     $modal.open({
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'tiny',
+      windowClass: 'medium',
       controller: ModalInstanceCtrl,
     });
   };

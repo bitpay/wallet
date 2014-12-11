@@ -30,15 +30,8 @@
   </div>
   <div ng-cloak class="page ng-cloak">
 
-    <div class="loading-screen" ng-show="signingOut">
-      <div class="spinner">
-        <div class="contener_general">
-            <div class="contener_mixte"><div class="ballcolor ball_1">&nbsp;</div></div>
-            <div class="contener_mixte"><div class="ballcolor ball_2">&nbsp;</div></div>
-            <div class="contener_mixte"><div class="ballcolor ball_3">&nbsp;</div></div>
-            <div class="contener_mixte"><div class="ballcolor ball_4">&nbsp;</div></div>
-        </div>
-      </div>
+    <div ng-show="signingOut">
+      <div ng-include="'views/includes/loading.html'" ng-init="title = 'Signing out'"></div>
     </div>
 
     <div ng-show="sessionExpired" class="session-expired">
@@ -61,7 +54,7 @@
         </span>
  
         <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation">
-          <nav class="tab-bar" >
+          <nav class="tab-bar">
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
