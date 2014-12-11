@@ -7,7 +7,7 @@ angular.module('copayApp.services')
     root.restart = function() {
       if (isCordova) {
         $rootScope.iden = $rootScope.wallet = undefined;
-        go.go('/');
+        go.path('/');
         $timeout(function(){
           $rootScope.$digest();
         },1);
