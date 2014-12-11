@@ -32,6 +32,8 @@
             </div>
           </div>
         </div>
+
+
         <div class="row ">
           <div class="large-12 columns line-t m10t">
             <div class="right size-12">
@@ -53,8 +55,16 @@
       <div class="large-12 columns">
         <div class="panel oh">
           <h2 class="line-b" translate>Spend proposals</h2>
-          <div class="last-transactions pr" ng-repeat="tx in  $root.wallet.pendingTxProposals | paged" ng-include="'views/includes/transaction.html'" ng-if="$root.wallet.pendingTxProposals[0]">
+          <div class="last-transactions pr" ng-repeat="tx in  $root.wallet.pendingTxProposals  | orderBy:'-createdTs'" ng-include="'views/includes/transaction.html'" ng-if="$root.wallet.pendingTxProposals[0]">
           </div>
+
+          <div class="text-right size-12 line-t m10t p10t" ng-show="$root.wallet.balanceInfo.lockedBalance && !$root.wallet.balanceInfo.updatingBalance">
+          Total Locked Balance:
+          <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
+          <span class="text-gray"> {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}} </span>
+          </div>
+
+
           <div class="pr" ng-if="!$root.wallet.pendingTxProposals[0]">
               <p> No pending spend proposals at the moment.
           </div>

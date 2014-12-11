@@ -1,15 +1,19 @@
 
-<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
-<div class="text-center size-48 m20t">
-  <div class="text-right"  ng-class="{
+<div class="text-right">
+  <a class="close-reveal-modal" ng-click="cancel()">Close</a>
+</div>
+
+
+<div class="m20t text-center">
+  <div class="size-48"  ng-class="{
         'text-primary' : btx.action == 'received',
         'text-warning': btx.action == 'sent', 
         'text-gray': btx.action == 'moved'}">
     <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
       {{$root.wallet.settings.unitName}}
-    <span class="size-18 db m5t text-gray">
-      {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
-    </span>
+  </div>
+  <div class="size-18 m5t text-gray">
+    {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
   </div>
 </div>
 
@@ -37,9 +41,10 @@
   </span>
 </div>
 
-<div ng-if="btx.merchant" class="m10v text-gray">
-  {{btx.merchant.pr.pd.memo}}
+<div ng-if="btx.merchant" class="lh140 m10v">
+  <i>Merchant Message:</i>  <span class="text-gray">{{btx.merchant.pr.pd.memo}}</span>
 </div>
+
 
 <div class="m10v">
   <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
@@ -52,7 +57,7 @@
 </div>
 
 <div ng-if="btx.actionList[0]" class="m10v">
-  <i>Signatures</i>
+  <i>Signatures:</i>
   <ul class="tx-copayers m10t" ng-if="btx.actionList[0]">
     <li ng-repeat="c in btx.actionList" ng-class="{'bottom-line-copayers':!$last}" ng-if="c.actions.rejected || c.actions.sign || c.actions.create">
       <span>
