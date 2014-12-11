@@ -10,9 +10,18 @@ BackupService.prototype.getCopayer = function(wallet) {
 };
 
 BackupService.prototype._download = function(ew, walletName, filename) {
-  var blob = new Blob([ew], {
-    type: 'text/plain;charset=utf-8'
-  });
+  var blob;
+
+  if (window.cordova) {
+    console.log('Cordova blob!!!!!!!!');
+    var bb = new BlobBuilder();
+    bb.append([ew.buffer]);
+    blob = bb.getBlob('text/plain;charset=utf-8');
+  } else {
+    blob = new Blob([ew], {
+      type: 'text/plain;charset=utf-8'
+    });
+  }
 
   this.notifications.success('Backup created', 'Encrypted backup file saved');
 
