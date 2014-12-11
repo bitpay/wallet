@@ -1,23 +1,7 @@
 <div class="home" ng-controller="HomeController" ng-init="init()">
 
-  <div class="loading-screen" ng-show="$root.starting">
-    <div class="spinner">
-      <div class="contener_general">
-        <div class="contener_mixte">
-          <div class="ballcolor ball_1">&nbsp;</div>
-        </div>
-        <div class="contener_mixte">
-          <div class="ballcolor ball_2">&nbsp;</div>
-        </div>
-        <div class="contener_mixte">
-          <div class="ballcolor ball_3">&nbsp;</div>
-        </div>
-        <div class="contener_mixte">
-          <div class="ballcolor ball_4">&nbsp;</div>
-        </div>
-      </div>
-      <span class="text-gray size-12" translate>Accessing your profile...</span>
-    </div>
+  <div ng-show="$root.starting">
+    <div ng-include="'views/includes/loading.html'" ng-init="title = 'Accessing your profile'"></div>
   </div>
 
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting">
