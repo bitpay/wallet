@@ -45,14 +45,18 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkState(_credentials && _credentials.email);
     $scope.loading = true;
 
-    pinService.save(pin, _credentials.email, _credentials.password, function(err) {
-      _credentials.password = '';
-      _credentials = null;
-      $scope.askForPin = 0;
-      $rootScope.hasPin = true;
-      $scope.loading = null;
-      $scope.createDefaultWallet();
-    });
+    $timeout(function() {
+      $rootScope.$digest();
+
+      pinService.save(pin, _credentials.email, _credentials.password, function(err) {
+        _credentials.password = '';
+        _credentials = null;
+        $scope.askForPin = 0;
+        $rootScope.hasPin = true;
+        $scope.loading = null;
+        $scope.createDefaultWallet();
+      });
+    }, 1);
   };
 
 
@@ -163,7 +167,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       return;
     }
     $scope.saveSettings(function(err) {
-      preconditions.checkState(!err,err);
+      preconditions.checkState(!err, err);
 
       $scope._doCreateProfile($scope.userOrEmail, form.password.$modelValue, function(err) {
         $timeout(function() {
