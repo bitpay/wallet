@@ -46,8 +46,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $rootScope.starting = true;
 
     $timeout(function() {
-      $rootScope.$digest();
-
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
         _credentials.password = '';
         _credentials = null;
