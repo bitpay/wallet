@@ -266,7 +266,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
  *
  * @param {Object} data - the data recived, {@see HDParams#fromList}
  */
-Wallet.prototype._onIndexes = function(indexes, fromTxProposal) {
+Wallet.prototype._doOnIndexes = function(indexes, fromTxProposal) {
   preconditions.checkArgument(indexes);
   var inIndexes = HDParams.fromList(indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
@@ -280,6 +280,11 @@ Wallet.prototype._onIndexes = function(indexes, fromTxProposal) {
     this.subscribeToAddresses();
     this.emitAndKeepAlive('newAddresses');
   }
+};
+
+
+Wallet.prototype._onIndexes = function(senderId, data) {
+  return this._doOnIndexes(data.indexes);
 };
 
 /**
