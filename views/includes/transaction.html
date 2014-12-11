@@ -1,4 +1,4 @@
-<div class="last-transactions-header row collapse" ng-init="txIndex = $index"   ng-click="openTxModal(tx)">
+<div class="last-transactions-header row collapse show-for-large-up" ng-init="txIndex = $index">
   <div class="large-9 small-7 columns size-14">
     <div ng-show="tx.comment">
       <i class="fi-comment-quotes size-18 vm"></i> 
@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<div class="last-transactions-content">
+<div class="last-transactions-content" ng-click="openTxModal(tx)">
   <div class="row" ng-repeat="out in tx.outs">
     <div class="large-5 medium-5 small-6 columns size-14">
       <b>{{out.value}} {{$root.wallet.settings.unitName}}</b>
@@ -32,8 +32,7 @@
   </div>
 </div>
 
-
-<div class="last-transactions-footer" ng-init="myId = $root.wallet.getMyCopayerId()">
+<div class="p10 line-t show-for-large-up" ng-init="myId = $root.wallet.getMyCopayerId()">
   <div class="row collapse">
     <div class="small-12 columns" ng-show="!tx.sentTs">
       <div ng-show="tx.signedBy[myId]">
@@ -66,13 +65,29 @@
           <span translate>Broadcast Transaction</span>
         </button>
       </div>
+      <div class="row collapse right show-for-large-up" ng-click="openTxModal(tx)">
+        <div class="text-gray text-center m10t size-12">
+          <span ng-click="tx.showDetails = !tx.showDetails">
+            <span ng-show="!tx.finallyRejected && tx.missingSignatures==1">
+              One signature missing
+              <i class="icon-arrow-right2 size-18"></i>
+            </span> 
+            <span ng-show="!tx.finallyRejected && tx.missingSignatures>1"> 
+              {{tx.missingSignatures}} signatures missing
+              <i class="icon-arrow-right2 size-18"></i>
+            </span> 
+            <span ng-show="!tx.finallyRejected && tx.missingSignatures==0">
+              Copayers
+              <i class="icon-arrow-right2 size-18"></i>
+            </span>
+          </span>
+        </div>
+      </div>
     </div>
-
   </div>
-
 </div>
 
-<div class="row collapse">
+<div class="row collapse last-transactions-footer hide-for-large-up size-12" ng-click="openTxModal(tx)">
   <div class="small-12 small text-gray text-center">
     <span ng-click="tx.showDetails = !tx.showDetails">
   <span ng-show="!tx.finallyRejected && tx.missingSignatures==1">
