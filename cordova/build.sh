@@ -24,16 +24,22 @@ VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 
 SKIPIOS=false
 CLEAR=false
+DBGJS=false
 
 # Check Args
-if [[ $1 = "--android" || $2 = "--android" ]]
+if [[ $1 = "--android" || $2 = "--android" || $3 = "--android" ]]
 then
   SKIPIOS=true
 fi
 
-if [[ $1 = "--clear" || $2 = "--clear" ]]
+if [[ $1 = "--clear" || $2 = "--clear" || $3 = "--clear" ]]
 then
   CLEAR=true
+fi
+
+if [[ $1 = "--dbgjs" || $2 = "--dbgjs" || $3 = "--dbgjs" ]]
+then
+  DBGJS=true
 fi
 
 
@@ -88,10 +94,18 @@ if [ ! -d $PROJECT ]; then
 
 fi
 
-echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
-cd $BUILDDIR/..
-grunt dist
-checkOK
+if $DBGJS
+then
+  echo "${OpenColor}${Green}* Generating copay bundle (debug js)...${CloseColor}"
+  cd $BUILDDIR/..
+  grunt dist-dbg
+  checkOK
+else
+  echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
+  cd $BUILDDIR/..
+  grunt dist
+  checkOK
+fi
 
 echo "${OpenColor}${Green}* Coping files...${CloseColor}"
 cd $BUILDDIR/..
