@@ -12,7 +12,7 @@
     <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
       {{$root.wallet.settings.unitName}}
   </div>
-  <div class="size-18 m5t text-gray">
+  <div class="size-18 m5t text-gray" ng-show="btx.alternativeAmount">
     {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
   </div>
 </div>

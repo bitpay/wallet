@@ -1,4 +1,7 @@
-<div class="text-center">
+<div class="text-right">
+  <a class="close-reveal-modal" ng-click="cancel()">Close</a>
+</div>
+<div class="text-center m20t">
   <qrcode size="220" data="{{address.address}}"></qrcode>
 
   <div class="m10t" ng-init="label = $root.wallet.addressBook[address.address].label">
@@ -10,4 +13,3 @@
     </b>
   </div>
 </div>
-<a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
