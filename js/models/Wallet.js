@@ -98,7 +98,6 @@ function Wallet(opts) {
   this.syncedTimestamp = opts.syncedTimestamp || 0;
   this.lastMessageFrom = {};
 
-  this.paymentRequestsCache = {};
 
   var networkName = Wallet.obtainNetworkName(opts);
 
@@ -114,7 +113,9 @@ function Wallet(opts) {
   this.network.setHexNonce(opts.networkNonce);
   this.network.setHexNonces(opts.networkNonces);
 
-  this.cache = {};
+  this.cache = {
+    paymentRequests: {},
+  };
 }
 
 inherits(Wallet, events.EventEmitter);
@@ -257,26 +258,27 @@ Wallet.prototype.seedCopayer = function(pubKey) {
 };
 
 
-Wallet.prototype._newAddresses = function(dontUpdateUx) {
-  this.subscribeToAddresses();
-  this.emitAndKeepAlive('newAddresses', dontUpdateUx);
-};
-
-
 /**
  * @desc Handles an 'indexes' message.
  *
  * Processes the data using {@link HDParams#fromList} and merges it with the
  * {@link Wallet#publicKeyRing}.
  *
- * @param {string} senderId - the sender id
  * @param {Object} data - the data recived, {@see HDParams#fromList}
  */
-Wallet.prototype._onIndexes = function(senderId, data) {
-  var inIndexes = HDParams.fromList(data.indexes);
+Wallet.prototype._onIndexes = function(indexes, fromTxProposal) {
+  preconditions.checkArgument(indexes);
+  var inIndexes = HDParams.fromList(indexes);
   var hasChanged = this.publicKeyRing.mergeIndexes(inIndexes);
   if (hasChanged) {
-    this._newAddresses();
+
+    // If the new indexes come from TX proposals (change address)
+    // that addresses should be new. No need to clean cache.
+    if (!fromTxProposal)
+      this.clearUnspentCache();
+
+    this.subscribeToAddresses();
+    this.emitAndKeepAlive('newAddresses');
   }
 };
 
@@ -519,6 +521,10 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   preconditions.checkArgument(data.txProposal);
   var self = this;
 
+  if (data.indexes) {
+    this._onIndexes(data.indexes, true);
+  }
+
   try {
     var incomingTx = self._txProposalFromUntrustedObj(data.txProposal, Wallet.builderOpts);
     var incomingNtxid = incomingTx.getId();
@@ -728,7 +734,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this._onSignature(senderId, data);
       break;
     case 'indexes':
-      this._onIndexes(senderId, data);
+      this._onIndexes(data.indexes);
       break;
     case 'addressbook':
       this._onAddressBook(senderId, data);
@@ -888,6 +894,7 @@ Wallet.prototype._setupBlockchainHandlers = function() {
   log.debug('Setting Blockchain listeners for', this.getName());
   self.blockchain.on('reconnect', function(attempts) {
     log.debug('Wallet:' + self.id + 'blockchain reconnect event');
+    self.clearUnspentCache();
     self.emitAndKeepAlive('insightReconnected');
   });
 
@@ -899,12 +906,19 @@ Wallet.prototype._setupBlockchainHandlers = function() {
   self.blockchain.on('tx', function(tx) {
     log.debug('Wallet:' + self.id + ' blockchain tx event');
     var addresses = self.getAddresses();
+    // This should always be >=0
     if (_.indexOf(addresses, tx.address) >= 0) {
+      self.clearUnspentCache();
       self.emitAndKeepAlive('tx', tx.address, self.addressIsChange(tx.address));
     }
   });
 
   if (!self.spendUnconfirmed) {
+
+    // TODO HERE should only clean utxos if there are some wallet
+    // transactions waiting for confirmation (ie confirmation < min confirmation)
+    self.clearUnspentCache();
+
     self.blockchain.on('block', self.emitAndKeepAlive.bind(self, 'balanceUpdated'));
   }
 }
@@ -1206,10 +1220,12 @@ Wallet.prototype.sendAllTxProposals = function(recipients, sinceTs) {
  */
 Wallet.prototype.sendTxProposal = function(ntxid, recipients) {
   preconditions.checkArgument(ntxid);
+  var indexes = HDParams.serialize(this.publicKeyRing.indexes);
   this._sendToPeers(recipients, {
     type: 'txProposal',
     txProposal: this.txProposals.get(ntxid).toObjTrim(),
     walletId: this.id,
+    indexes: indexes,
   });
 };
 
@@ -1357,7 +1373,10 @@ Wallet.prototype.getName = function() {
  * @return {string[]} a list of all the addresses generated so far for the wallet
  */
 Wallet.prototype._doGenerateAddress = function(isChange) {
-  return this.publicKeyRing.generateAddress(isChange, this.publicKey);
+  var addr = this.publicKeyRing.generateAddress(isChange, this.publicKey);
+  this.subscribeToAddresses();
+  this.emitAndKeepAlive('newAddresses');
+  return addr;
 };
 
 /**
@@ -1368,7 +1387,6 @@ Wallet.prototype._doGenerateAddress = function(isChange) {
 Wallet.prototype.generateAddress = function(isChange) {
   var addr = this._doGenerateAddress(isChange);
   this.sendIndexes();
-  this._newAddresses();
   return addr;
 };
 
@@ -1668,8 +1686,8 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
   preconditions.checkArgument(options.url.indexOf('http') == 0, 'Bad PayPro URL given:' + options.url);
   var self = this;
 
-  if (self.paymentRequestsCache[options.url])
-    return cb(null, self.paymentRequestsCache[options.url]);
+  if (self.cache.paymentRequests[options.url])
+    return cb(null, self.cache.paymentRequests[options.url]);
 
   this.httpUtil.request({
     method: 'GET',
@@ -1691,7 +1709,7 @@ Wallet.prototype.fetchPaymentRequest = function(options, cb) {
 
       log.debug('PayPro request data', merchantData);
 
-      self.paymentRequestsCache[options.url] = merchantData;
+      self.cache.paymentRequests[options.url] = merchantData;
       return cb(err, merchantData);
     })
     .error(function(data, status) {
@@ -2156,6 +2174,12 @@ Wallet.prototype.maxRejectCount = function() {
   return this.totalCopayers - this.requiredCopayers;
 };
 
+
+Wallet.prototype.clearUnspentCache = function() {
+  log.debug('Cleaning unspent cache');
+  this.cache.unspent = null;
+};
+
 /**
  * @callback getUnspentCallback
  * @desc Get a list of unspent transaction outputs
@@ -2168,6 +2192,13 @@ Wallet.prototype.maxRejectCount = function() {
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
 
+
+  if (self.cache.unspent != null) {
+    log.debug('Wallet ' + this.getName() + ': Get unspent cache hit');
+    return self.computeUnspent(self.cache.unspent, cb);
+    return 
+  }
+
   var addresses = this.getAddresses();
   log.debug('Wallet ' + this.getName() + ': Getting unspents from ' + addresses.length + ' addresses');
   this.blockchain.getUnspent(addresses, function(err, unspentList) {
@@ -2175,7 +2206,7 @@ Wallet.prototype.getUnspent = function(cb) {
       return cb(err);
 
     self.cache.unspent = unspentList;
-    return self.computeUnspent(unspentList, cb);
+    return self.computeUnspent(self.cache.unspent, cb);
   });
 };
 
@@ -2198,7 +2229,7 @@ Wallet.prototype.computeUnspent = function(unspentList, cb) {
   var safeUnspendList = [];
   var uu = this.txProposals.getUsedUnspent(this.maxRejectCount());
 
-  _.each(unspentList, function(u){
+  _.each(unspentList, function(u) {
     var name = u.txid + ',' + u.vout;
     if (!uu[name] && (self.spendUnconfirmed || u.confirmations >= 1))
       safeUnspendList.push(u);
@@ -2283,9 +2314,6 @@ Wallet.prototype.spend = function(opts, cb) {
     }
 
     log.debug('TXP Added: ', ntxid);
-
-    self.sendIndexes();
-
     // Needs only one signature? Broadcast it!
     if (!self.requiresMultipleSignatures())
       return self.issueTx(ntxid, cb);
@@ -2395,7 +2423,6 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
     signWith: keys,
   });
 
-  console.log('[Wallet.js.2303]'); //TODO
   return txp;
 };
 
@@ -2420,7 +2447,9 @@ Wallet.prototype.updateIndexes = function(callback) {
   async.parallel(tasks, function(err) {
     if (err) callback(err);
     log.debug('Wallet:' + self.id + ' Indexes updated');
-    self._newAddresses();
+    this.clearUnspentCache();
+    this.subscribeToAddresses();
+    this.emitAndKeepAlive('newAddresses');
     callback();
   });
 };

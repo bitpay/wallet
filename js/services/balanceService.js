@@ -2,10 +2,11 @@
 var bitcore = require('bitcore');
 
 angular.module('copayApp.services')
-  .factory('balanceService', function($rootScope, $filter, rateService) {
+  .factory('balanceService', function($rootScope, $filter, $timeout, rateService) {
     var root = {};
     var _balanceCache = {};
     root.clearBalanceCache = function(w) {
+      w.clearUnspentCache();
       delete _balanceCache[w.getId()];
     };
 
@@ -48,7 +49,7 @@ angular.module('copayApp.services')
           r.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
           r.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
           r.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
-          
+
           r.alternativeBalanceAvailable = true;
           r.alternativeIsoCode = w.settings.alternativeIsoCode;
         };
@@ -63,7 +64,7 @@ angular.module('copayApp.services')
       w = w || $rootScope.wallet;
       if (!w || !w.isComplete()) return;
 
-      copay.logger.debug('Updating balance of:',  w.getName(), isFocused);
+      copay.logger.debug('Updating balance of:', w.getName(), isFocused);
       var wid = w.getId();
 
 
@@ -80,13 +81,17 @@ angular.module('copayApp.services')
 
       root._fetchBalance(w, function(err, res) {
         if (err) throw err;
-        w.balanceInfo=_balanceCache[wid] = res;
+        w.balanceInfo = _balanceCache[wid] = res;
         w.balanceInfo.updating = false;
 
         if (isFocused) {
           $rootScope.updatingBalance = false;
         }
-        if (cb) cb();
+        // we alwalys calltimeout because if balance is cached, we are still on the same
+        // execution path
+        if (cb) $timeout(function() {
+          return cb();
+        }, 1);
       });
     };
 
