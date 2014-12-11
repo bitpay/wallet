@@ -687,6 +687,7 @@ describe('Wallet model', function() {
           amount: u
         }
       }));
+      w.clearUnspentCache();
       w.getBalance(function(err, balance, balanceByAddr, safeBalance) {
         balance.should.equal(c.balance);
         done();
@@ -821,7 +822,7 @@ describe('Wallet model', function() {
         should.exist(id);
         status.should.equal(Wallet.TX_PROPOSAL_SENT);
         w.sendTxProposal.calledOnce.should.equal(true);
-        w.sendIndexes.calledOnce.should.equal(true);
+        w.sendIndexes.calledOnce.should.equal(false);
         done();
       });
     });
@@ -861,7 +862,7 @@ describe('Wallet model', function() {
       }, function(err, id, status) {
         err.should.equal('error');
         w.sendTxProposal.calledOnce.should.equal(false);
-        w.sendIndexes.calledOnce.should.equal(true);
+        w.sendIndexes.calledOnce.should.equal(false);
         done();
       });
     });

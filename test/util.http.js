@@ -75,15 +75,15 @@ describe('http utils', function() {
       done();
     });
   });
-  it('should get with default error', function() {
+  it('should get with default error', function(done) {
     xhr.error = 1;
-
     var ret = httpUtils.request({
       xhr: xhr,
       method: 'GET',
       url: 'http://test',
-    });
-    ret._error.should.throw()
+    }).error(function(){
+      done();
+    })
   });
 
 });
