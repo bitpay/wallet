@@ -65,7 +65,7 @@ module.exports = function(grunt) {
       },
       css: {
         files: ['css/src/*.css'],
-        tasks: ['cssmin:copay']
+        tasks: ['cssmin:desktop']
       },
       main: {
         files: [
@@ -157,9 +157,14 @@ module.exports = function(grunt) {
       }
     },
     cssmin: {
-      copay: {
+      desktop: {
         files: {
           'css/copay.min.css': ['css/src/*.css'],
+        }
+      },
+      mobile: {
+        files: {
+          'css/copay.min.css': ['css/src/*.css', '!css/src/desktop.css', '!css/src/animation.css'],
         }
       },
       vendors: {
@@ -236,10 +241,27 @@ module.exports = function(grunt) {
   });
 
 
-  grunt.registerTask('default', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin']);
-  grunt.registerTask('dist', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify', 'copy:dist']);
-  grunt.registerTask('dist-dbg', ['shell:dev', 'nggettext_compile', 'concat', 'cssmin', 'copy:dist']);
-  grunt.registerTask('prod', ['shell:prod', 'nggettext_compile', 'concat', 'cssmin', 'uglify']);
+  grunt.registerTask('default', [
+    'shell:dev', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors'
+  ]);
+  grunt.registerTask('mobile', [
+    'shell:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors'
+  ]);
+  grunt.registerTask('dist', [
+    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify', 'copy:dist'
+  ]);
+  grunt.registerTask('dist-dbg', [
+    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'copy:dist'
+  ]);
+  grunt.registerTask('dist-mobile', [
+    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'uglify', 'copy:dist'
+  ]);
+  grunt.registerTask('dist-mobile-dbg', [
+    'shell:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'copy:dist'
+  ]);
+  grunt.registerTask('prod', [
+    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify'
+  ]);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('docs', ['jsdoc']);
 };

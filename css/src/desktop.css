@@ -1,0 +1,174 @@
+.head .menu a.dropdown:hover,
+.head .menu a.dropdown.hover {
+  border-bottom: 1px solid #fff;
+}
+
+.head .menu ul.hover {
+  background: #FFFFFF;
+}
+
+.head .menu ul li a:hover {
+  background-color: #F8F8FB;
+  color: #2C3E50;
+}
+
+.col3 a.selected:hover {
+  background-color: #213140;
+  color: #fff;
+}
+
+.col3 a:hover {
+  background-color: #16A085;
+  color: #fff;
+}
+
+a:hover {
+  color: #2980b9;
+}
+
+.last-transactions-content:hover {
+  background: #eee;
+}
+
+a.button-setup.add-wallet:hover {
+  opacity: 1;
+}
+
+a.button-setup:hover {
+  color: #666;
+  border-color: #666;
+}
+
+.createProfile .button-setup a:hover, .home .button-setup a:hover, .settings .button-setup a:hover, .import-profile .button-setup a:hover {
+  background: #3C4E60;
+}
+
+.name-wallet i:hover {
+  color: #fff;
+}
+
+ul.pagination li.current a:hover, ul.pagination li.current a:focus {
+  background: #16A085;
+}
+
+table tr:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+button.secondary:hover, 
+button.secondary:focus, 
+.button.secondary:hover, 
+.button.secondary:focus {
+  background-color: #2980B9;
+  color: #fff;
+}
+
+button.primary:hover, 
+button.primary:focus, 
+.button.primary:hover, 
+.button.primary:focus {
+  background-color: #16A085;
+  color: #fff;
+}
+
+button.warning:hover, 
+button.warning:focus, 
+.button.warning:hover, 
+.button.warning:focus {
+  background-color: #82251A;
+  color: #e6e6e6;
+}
+
+button.white:hover, 
+button.white:focus, 
+.button.white:hover, 
+.button.white:focus {
+  background-color: #E0E0E0;
+  color: #2C3E50;
+}
+
+button.black:hover, 
+button.black:focus, 
+.button.black:hover, 
+.button.black:focus {
+  background-color: #213140;
+  color: #fff;
+}
+
+button.gray:hover, 
+button.gray:focus, 
+.button.gray:hover, 
+.button.gray:focus {
+  background-color: #E0E5E5;
+  color: #2C3E50;
+}
+
+.wallet-selection.wallets li:hover {
+  background-color: #3C4E60;
+}
+
+.wallet-selection.wallets a.wallet-item:hover, 
+.side-nav.wallets a.wallet-item:hover {
+  color: #7A8C9E;
+  line-height: 20px;
+}
+
+.side-nav li.nav-item:hover {
+  background-color: #3C4E60;
+  overflow: hidden;
+}
+
+.fi-trash.text-gray:hover {
+  color: #CA5649;
+}
+
+a:hover .photo-container  {
+  background: #34495E;
+  color: #fff;
+}
+
+.side-nav li.active:hover a {
+  background-color: #F8F8FB;
+}
+
+.side-nav li:hover a {
+  background-color: #3C4E60;
+}
+
+a.text-gray:hover {color: #2C3E50;}
+a.text-black:hover {color: #213140;}
+a.text-primary:hover {color: #50E3C2;}
+a.text-secondary:hover {color: #4A90E2;}
+a.text-white:hover {color: #ccc;}
+a.text-warning:hover {color: #FD7262;}
+
+.w-popup-menu li:hover{
+    background-color: #34B191;
+}
+.w-popup-menu li:hover .w-popup-icon {
+  color: transparent;
+}
+.w-popup-menu li:hover .w-popup-main, .w-popup-menu li:hover .w-popup-sub {
+  color: #FFFFFF; 
+}
+
+.createProfile a.text-gray:hover, 
+.home a.text-gray:hover,
+.import-profile a.text-gray:hover,
+.settings a.text-gray:hover {
+  color: #fff;
+}
+
+.tabs dd>a:hover {
+  background: #1C2B39;
+}
+
+.tabs dd.active a:hover {
+  background: transparent;
+}
+
+.reveal-modal .close-reveal-modal:hover, dialog .close-reveal-modal:hover {
+  background: #ddd;
+}
+
