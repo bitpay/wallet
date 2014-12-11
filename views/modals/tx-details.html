@@ -1,103 +1,79 @@
 
 <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
-
-<div class="size-14">
-  <div class="text-center size-72 m20t">
-    <div ng-class="{
-              'text-primary' : btx.action == 'received',
-              'text-warning': btx.action == 'sent', 
-              'text-gray': btx.action == 'moved'}">
-      <i ng-class="{
-                'fi-arrow-left' : btx.action == 'received',
-                'fi-arrow-right': btx.action == 'sent', 
-                'fi-loop': btx.action == 'moved'}"></i>
-    </div>
-  </div>
-  <div class="text-center" class="m10v">
-    <div class="tx-amount" ng-class="{
-              'text-primary' : btx.action == 'received',
-              'text-warning': btx.action == 'sent', 
-              'text-gray': btx.action == 'moved'}">
-      <b>{{btx.amount}} {{$root.wallet.settings.unitName}}</b>
-      <span class="alt-currency" ng-class="{
-              'green' : btx.action == 'received',
-              'red': btx.action == 'sent', 
-              'gray': btx.action == 'moved'}" ng-show="btx.alternativeAmount != null">
-                {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
-              </span>
-    </div>
-  </div>
-
-
-  <div class="line-b m10t"></div>
-  <h2>Transaction Details</h2>
-
-  <div class="m20v" ng-show="btx.comment">
-    <i class="fi-comment-quotes"></i> {{btx.comment}}
-  </div>
-
-  <div ng-if="btx.ts || btx.createdTs " class="m10v">
-    <i translate>Date:</i>
-    <time> <span>{{ (btx.ts || btx.createdTs ) | amCalendar}}</span>
-    </time>
-
-    [
-    <time>{{ (btx.ts || btx.createdTs ) | amTimeAgo}}</time>]
-  </div>
-
-  <div class="m10v">
-    <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
-      <span translate>Unconfirmed</span>
-    </span>
-    <span ng-show="btx.confirmations>0" class="m10v">
-      <i translate>Confirmations:</i>
-      <span class="text-gray">{{btx.confirmations}}</span>
+<div class="text-center size-48 m20t">
+  <div class="text-right"  ng-class="{
+        'text-primary' : btx.action == 'received',
+        'text-warning': btx.action == 'sent', 
+        'text-gray': btx.action == 'moved'}">
+    <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
+      {{$root.wallet.settings.unitName}}
+    <span class="size-18 db m5t text-gray">
+      {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
     </span>
   </div>
+</div>
 
-  <div ng-if="btx.addressTo" class="m10v">
-    <span class="ellipsis">
-      <i>To:</i>
-      <span ng-if="btx.merchant">
-        <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
-    <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
-    </span>
+<div class="line-b m10t"></div>
+<div ng-if="btx.ts || btx.createdTs " class="m10v">
+  <time >{{ (btx.ts || btx.createdTs ) | amCalendar}}</time>
+  <time class="text-gray">[ {{ (btx.ts || btx.createdTs ) | amTimeAgo}} ]</time>
+</div>
 
-    <span ng-if="!btx.merchant">
-        <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
-    </span>
-    </span>
-  </div>
+<div class="m10v" ng-show="btx.comment">
+  <i>Note:</i> {{btx.comment}}
+</div>
 
-  <div ng-if="btx.merchant" class="m10v">
-    {{btx.merchant.pr.pd.memo}}
-  </div>
+<div ng-if="btx.addressTo" class="m10v">
+  <span class="ellipsis">
+    <i>To:</i>
+    <span ng-if="btx.merchant">
+      <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
+  <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+  </span>
 
-  <div ng-if="btx.actionList[0]" class="m10v">
-    <i>Signatures</i>
-    <ul class="tx-copayers m10t" ng-if="btx.actionList[0]">
-      <li ng-repeat="c in btx.actionList" ng-class="{'bottom-line-copayers':!$last}">
-        <span>
-          <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
-          <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
-          <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="m10r fi-loop icon-rotate"></i>
-        </span>
-        <span>
-          <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
-        </span>
-        <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
-      </li>
-    </ul>
-  </div>
+  <span ng-if="!btx.merchant">
+      <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
+  </span>
+  </span>
+</div>
 
-  <div class="m10t oh" ng-if="btx.txid">
-    <div class="ellipsis text-gray" > ID: {{btx.txid}} </span>
-  </div>
+<div ng-if="btx.merchant" class="m10v text-gray">
+  {{btx.merchant.pr.pd.memo}}
+</div>
 
-    <a class="right button-setup" ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
+<div class="m10v">
+  <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
+    <span translate>Unconfirmed</span>
+  </span>
+  <span ng-show="btx.confirmations>0" class="m10v">
+    <i translate>Confirmations:</i>
+    <span class="text-gray">{{btx.confirmations}}</span>
+  </span>
+</div>
+
+<div ng-if="btx.actionList[0]" class="m10v">
+  <i>Signatures</i>
+  <ul class="tx-copayers m10t" ng-if="btx.actionList[0]">
+    <li ng-repeat="c in btx.actionList" ng-class="{'bottom-line-copayers':!$last}" ng-if="c.actions.rejected || c.actions.sign || c.actions.create">
+      <span>
+        <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
+        <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
+      </span>
+      <span>
+        <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
+      </span>
+      <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
+    </li>
+  </ul>
+</div>
+
+<div class="ellipsis text-gray m10v"  ng-if="btx.txid" > ID: {{btx.txid}} </span>
+</div>
+
+<div class="oh">
+  <a class="button-setup right" ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)"  ng-if="btx.txid">
       See it on the blockchain <i class="icon-arrow-right2 vm"></i>
-    </a>
-  </div>
+  </a>
 </div>
 
 

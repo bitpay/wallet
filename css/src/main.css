@@ -452,47 +452,17 @@ ul.tx-copayers {
   border-bottom: 1px solid #CAD2DA;
 }
 
-.last-transactions-header {
-  background: #2C3E50;
-  padding: 0.6rem;
-  color: #fff;
-  box-shadow: 1.5px 0px 0 0 rgba(32,48,64,1);
-  -moz-box-shadow: 1.5px 0px 0 0 rgba(32,48,64,1);
-  -o-box-shadow: 1.5px 0px 0 0 rgba(32,48,64,1);
-}
 
 .last-transactions-content {
-  padding: 0.8rem 0;
-  color: #7A8C9E;
-}
-
-.last-transactions-footer {
-  background: #E4E8EC;
   padding: 0.8rem;
-  overflow: hidden;
+  cursor:pointer;
 }
 
-.last-transactions-content .box-status {
-  font-size: 13px;
-  width: 30px;
-} 
-
-.last-transactions-content .box-copayer {
-  width: 100px;
-  margin-right: 20px;
-  float: left;
-  text-align: center;
+.last-transactions-content:hover {
+  background: #eee;
 }
 
-.last-transactions-content .copayer-ico {
-  width: 45px;
-  height: 45px;
-  border: 2px solid #7A8C9B;
-}
 
-.last-transactions-content .icon-active {
-  color: #fff;
-}
 
 .sign-action {
   background: #E4E8EC;
