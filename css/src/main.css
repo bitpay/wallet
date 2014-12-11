@@ -467,8 +467,6 @@ ul.tx-copayers {
   background: #eee;
 }
 
-
-
 .sign-action {
   background: #E4E8EC;
   width: 100%;
@@ -535,6 +533,13 @@ a.button-setup {
   display: block;
   padding: 0.5rem;
   background: transparent;
+  color: #A0A3A6;
+}
+
+
+a.button-setup:hover {
+  color: #666;
+  border-color: #666;
 }
 
 .createProfile a.button-setup, .home a.button-setup, .settings a.button-setup, .import-profile a.button-setup {
@@ -938,26 +943,18 @@ label small.has-error {
 }
 
 table { 
-  border-collapse: collapse; text-align: left; width: 100%; border: none; 
-  box-shadow: -2px 1px 9px 1px #DDDDDD;
-  -webkit-box-shadow: -2px 1px 5px 1px #DDDDDD;
-  -moz-box-shadow: -2px 1px 5px 1px #DDDDDD;
-  -o-box-shadow: -2px 1px 5px 1px #DDDDDD;
+  border-collapse: collapse; 
+  text-align: left; 
+  width: 100%; 
+  border: none;
 }
 
 thead tr{ 
   text-transform: uppercase; 
-  border-top: 1px solid #FFFFFF; 
-  height: 46px
 }
 
 table tr td, table tr th { 
   padding: 15px; 
-}
-
-table.last-transactions-content tr td, 
-table.last-transactions-content tr th { 
-  padding: 5px; 
 }
 
 table tfoot tr td, table tfoot tr th, table thead tr td, table thead tr th {
@@ -975,7 +972,7 @@ table tbody tr:last-child td {
   border-bottom: none; 
 }
 
-table.manage-wallets tr:hover {
+table tr:hover {
   background-color: #eee;
   cursor: pointer;
 }
@@ -1350,13 +1347,6 @@ a:hover .photo-container  {
   margin-left: 0;
 }
 
-.addresses .list-addr i {
-  position: absolute;
-  top: -15px;
-  left: 0;
-  cursor: pointer;
-}
-
 .addresses .list-addr contact {
   cursor: text;
 }
@@ -1368,7 +1358,7 @@ a:hover .photo-container  {
 .copay-box {
   width: 70px;
   text-align: center;
-  margin-right: 20px;
+  margin-right: 10px;
   float: left;
 }
 
@@ -1446,8 +1436,6 @@ a.text-warning:hover {color: #FD7262;}
 
 .box-setup-copayers {
   background: #F8F8FB;
-  -moz-box-shadow:   inset 0px 0px 5px 0px rgba(0,0,0,0.20);
-  box-shadow:        inset 0px 0px 5px 0px rgba(0,0,0,0.20);
   margin-bottom: 15px;
 }
 
@@ -1479,9 +1467,6 @@ a.text-warning:hover {color: #FD7262;}
 .panel {
   border-radius: 3px;
   background: #FFFFFF;
-  -moz-box-shadow:    1.5px 1.5px 0px 0px rgba(32,48,64,0.20);
-  box-shadow:         1.5px 1.5px 0px 0px rgba(32,48,64,0.20);
-  -o-box-shadow:         1.5px 1.5px 0px 0px rgba(32,48,64,0.20);
   border: none;
 }
 
@@ -1510,19 +1495,6 @@ a.text-warning:hover {color: #FD7262;}
   dialog.large, .reveal-modal.large {
     height: 100%;
     overflow-y: auto;
-    padding: 1.25rem 0.25rem;
-  }
-  
-  dialog.large span.address-size, .reveal-modal.large span.address-size {
-    font-size: 12px;
-  }
-  
-  dialog.large table, .reveal-modal.large table {
-    margin: 0;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    -o-box-shadow: none;
   }
 }
 
@@ -1672,15 +1644,6 @@ a.text-warning:hover {color: #FD7262;}
   margin-top: 20%;
   width: 100%;
   text-align: center;
-}
-
-.addressbook-entry td {
-  display: block;
-  cursor: pointer;
-}
-
-.addressbook-disabled td, .addressbook-disabled td a {
-  color: #8597A7;
 }
 
 /*/////////////////////////////////////////////////*/
