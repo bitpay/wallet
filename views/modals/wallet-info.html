@@ -1,3 +1,8 @@
+
+<div class="text-right">
+  <a class="close-reveal-modal" ng-click="cancel()">Close</a>
+</div>
+
 <div class="text-center" ng-init="isComplete = item.isComplete(); networkName = item.getNetworkName()">
   <h1>{{item.name || item.id }}</h1>
   <h3>
@@ -54,5 +59,4 @@
     </div>
   </div>
 
-  <a class="close-reveal-modal" ng-click="close()">&#215;</a>
 </div>

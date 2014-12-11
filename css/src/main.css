@@ -109,6 +109,11 @@ header .alt-currency {
   color: yellow !important;
 }
 
+
+.color-alert {
+  color: #C0392A;
+}
+
 .alt-currency.green {
   background: #1abc9c;
 }
@@ -577,6 +582,7 @@ a.button-setup {
 .m20r {margin-right: 20px;}
 .m15r {margin-right: 15px;}
 .m20t {margin-top: 20px;}
+.m20tp {margin-top: 20%;}
 .m5 {margin: 5px;}
 .m10 {margin: 10px;}
 .m15 {margin: 15px;}
@@ -599,6 +605,7 @@ a.button-setup {
 .m-negative-l {margin-left: -0.9375rem;}
 .br100 {border-radius: 100%;}
 .lh {line-height: 0;}
+.lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
 .ma { margin: 0 auto;}
@@ -1496,6 +1503,10 @@ a.text-warning:hover {color: #FD7262;}
 }
 
 @media only screen and (max-width: 40em) {
+  dialog.tiny, .reveal-modal.tiny {
+    height: 100%;
+    overflow-y: auto;
+  }
   dialog.large, .reveal-modal.large {
     height: 100%;
     overflow-y: auto;
@@ -1819,5 +1830,21 @@ a.text-warning:hover {color: #FD7262;}
 .settings label {
   color: #A5B2BF;
   font-weight: normal;
+}
+
+.reveal-modal .close-reveal-modal, dialog .close-reveal-modal {
+  padding: 5px 10px;
+  position: relative;
+  font-weight: normal;
+  border: 1px solid #bbb;
+  font-size: 22px;
+  background:#eee;
+  right:0;
+  top:0;
+  text-transform: uppercase;
+}
+
+.reveal-modal .close-reveal-modal:hover, dialog .close-reveal-modal:hover {
+  background:#ddd;
 }
 
