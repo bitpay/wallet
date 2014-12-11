@@ -62,21 +62,18 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       return;
     }
     $rootScope.starting = true;
-
+    
     $timeout(function() {
-      $rootScope.$digest();
       var credentials = pinService.get(pin, function(err, credentials) {
         if (err || !credentials) {
-          $rootScope.starting = false;
-          $scope.loading = null;
+          $rootScope.starting = null;
           $scope.error = 'Wrong PIN';
           return;
         }
         $scope.open(credentials.email, credentials.password);
       });
-    },1);
+    },100);
   };
-
 
   $scope.openWallets = function() {
     preconditions.checkState($rootScope.iden);
@@ -90,16 +87,18 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     preconditions.checkArgument(pin);
     preconditions.checkState($rootScope.iden);
     preconditions.checkState(_credentials && _credentials.email);
-    $scope.loading = true;
+    $rootScope.starting = true;
 
-    pinService.save(pin, _credentials.email, _credentials.password, function(err) {
-      _credentials.password = '';
-      _credentials = null;
-      $scope.askForPin = 0;
-      $rootScope.hasPin = true;
-      $scope.loading = null;
-      $scope.openWallets();
-    });
+    $timeout(function() {
+      pinService.save(pin, _credentials.email, _credentials.password, function(err) {
+        _credentials.password = '';
+        _credentials = null;
+        $scope.askForPin = 0;
+        $rootScope.hasPin = true;
+        $rootScope.starting = null;
+        $scope.openWallets();
+      });
+    },100);
   };
 
   $scope.openWithCredentials = function(form) {
@@ -144,7 +143,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           $scope.error = 'Unknown error';
         }
         $rootScope.starting = false;
-        $scope.loading = null;
         $timeout(function(){
           $rootScope.$digest();
         },1)

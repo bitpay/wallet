@@ -36,7 +36,7 @@
         </span>
       </div>
 
-      <form name="setPinForm" ng-model="setPinForm" ng-submit="createPin(setPinForm)" novalidate>
+      <form name="setPinForm" ng-model="setPinForm" novalidate>
         <div class="input" ng-show="askForPin == 1">
           <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
           <i class="icon-locked"></i>
@@ -53,9 +53,8 @@
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate type="submit" class="button primary radius expand m0" 
-              ng-disabled="setPinForm.$invalid || error || loading">
-              <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> 
+            <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0" 
+              ng-disabled="setPinForm.$invalid || error">
               OK
             </button>
           </div>
@@ -92,7 +91,7 @@
             </a>
           </div>
           <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate type="submit" class="button primary radius expand m0" 
+            <button translate ng-click="openWithPin(pinForm.pin.$modelValue)" class="button primary radius expand m0" 
               ng-disabled="pinForm.$invalid || error">
               Sign in
             </button>
@@ -145,7 +144,7 @@
           <i class="icon-locked"></i>
         </div>
 
-        <button translate type="submit" class="button primary radius expand m0" ng-disabled="loginForm.$invalid || loading">
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="loginForm.$invalid">
           Sign in
         </button>
       </form>

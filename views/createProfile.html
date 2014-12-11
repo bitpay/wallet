@@ -1,9 +1,9 @@
 <div class="createProfile" ng-controller="CreateProfileController" ng-init="init()">
-  <div data-alert ng-show="loading">
+  <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Creating profile'"></div>
   </div>
 
-  <div class="large-4 large-centered medium-7 medium-centered columns m20b" ng-show="!loading  && !askForPin">
+  <div class="large-4 large-centered medium-7 medium-centered columns m20b" ng-show="!$root.starting  && !askForPin">
     <div class="logo-setup hide-for-small-only">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
     </div>
@@ -167,7 +167,7 @@
           </div>
         </div>
 
-        <button translate type="submit" class="button primary radius expand m0" ng-disabled="passForm.$invalid || loading">
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="passForm.$invalid">
           Create Profile
         </button>
 
@@ -184,7 +184,7 @@
     </div>
   </div>
 
-  <div class="large-4 large-centered medium-6 medium-centered columns m20b" ng-show="!loading && askForPin">
+  <div class="large-4 large-centered medium-6 medium-centered columns m20b" ng-show="!$root.starting && askForPin">
     <div class="clipo">
       <img src="img/clipo-pin.png" alt="clipo" width="380">
     </div>
@@ -198,7 +198,7 @@
         </span>
     </div>
 
-    <form name="setPinForm" ng-submit="createPin(setPinForm)" novalidate>
+    <form name="setPinForm" novalidate>
       <div class="input" ng-show="askForPin == 1">
         <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
         <i class="icon-locked"></i>
@@ -215,9 +215,8 @@
           </a>
         </div>
         <div class="large-6 medium-6 small-6 columns text-right">
-          <button translate type="submit" class="button primary radius expand m0" 
-            ng-disabled="setPinForm.$invalid || error || loading">
-            <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> 
+          <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0" 
+            ng-disabled="setPinForm.$invalid || error">
             OK
           </button>
         </div>
