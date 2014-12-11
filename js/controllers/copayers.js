@@ -2,9 +2,6 @@
 
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $timeout, go) {
-
-    console.log('[copayers.js.5]'); //TODO
-
     $scope.init = function() {
       var w = $rootScope.wallet;
       $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
