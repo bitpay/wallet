@@ -113,6 +113,8 @@ function Wallet(opts) {
   //one nonce for oneself, and then one nonce for each copayer
   this.network.setHexNonce(opts.networkNonce);
   this.network.setHexNonces(opts.networkNonces);
+
+  this.cache = {};
 }
 
 inherits(Wallet, events.EventEmitter);
@@ -2076,6 +2078,7 @@ Wallet.estimatedFee = function(unspentCount) {
   return parseInt(estimatedSizeKb * bitcore.TransactionBuilder.FEE_PER_1000B_SAT);
 };
 
+
 /**
  * @callback {getBalanceCallback}
  * @param {string=} err - an error, if any
@@ -2084,45 +2087,58 @@ Wallet.estimatedFee = function(unspentCount) {
  * @param {number} safeBalance - total number of satoshis in UTXOs that are not part of any TxProposal
  * @param {number} safeUnspentCount - total number of safe unspent Outputs that make this balance.
  */
+
 /**
- * @desc Returns the balances for all addresses in Satoshis
+ * computeBalance
+ *
+ * @param safeUnspent
+ * @param unspent
  * @param {getBalanceCallback} cb
  */
-Wallet.prototype.getBalance = function(cb) {
+Wallet.prototype.computeBalance = function(safeUnspent, unspent, cb) {
   var balance = 0;
   var safeBalance = 0;
   var balanceByAddr = {};
   var COIN = coinUtil.COIN;
 
+  for (var i = 0; i < unspent.length; i++) {
+    var u = unspent[i];
+    var amt = u.amount * COIN;
+    balance += amt;
+    balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
+  }
+
+  // we multiply and divide by BIT to avoid rounding errors when adding
+  for (var a in balanceByAddr) {
+    balanceByAddr[a] = parseInt(balanceByAddr[a].toFixed(0), 10);
+  }
+
+  balance = parseInt(balance.toFixed(0), 10);
+
+  var safeUnspentCount = safeUnspent.length;
+
+  for (var i = 0; i < safeUnspentCount; i++) {
+    var u = safeUnspent[i];
+    var amt = u.amount * COIN;
+    safeBalance += amt;
+  }
+
+  safeBalance = parseInt(safeBalance.toFixed(0), 10);
+  return cb(null, balance, balanceByAddr, safeBalance, safeUnspentCount);
+};
+
+/**
+ * @desc Returns the balances for all addresses in Satoshis
+ * @param {getBalanceCallback} cb
+ */
+Wallet.prototype.getBalance = function(cb) {
+  var self = this;
+
   this.getUnspent(function(err, safeUnspent, unspent) {
     if (err) {
       return cb(err);
     }
-
-    for (var i = 0; i < unspent.length; i++) {
-      var u = unspent[i];
-      var amt = u.amount * COIN;
-      balance += amt;
-      balanceByAddr[u.address] = (balanceByAddr[u.address] || 0) + amt;
-    }
-
-    // we multiply and divide by BIT to avoid rounding errors when adding
-    for (var a in balanceByAddr) {
-      balanceByAddr[a] = parseInt(balanceByAddr[a].toFixed(0), 10);
-    }
-
-    balance = parseInt(balance.toFixed(0), 10);
-
-    var safeUnspentCount = safeUnspent.length;
-
-    for (var i = 0; i < safeUnspentCount; i++) {
-      var u = safeUnspent[i];
-      var amt = u.amount * COIN;
-      safeBalance += amt;
-    }
-
-    safeBalance = parseInt(safeBalance.toFixed(0), 10);
-    return cb(null, balance, balanceByAddr, safeBalance, safeUnspentCount);
+    self.computeBalance(safeUnspent, unspent, cb);
   });
 };
 
@@ -2149,31 +2165,46 @@ Wallet.prototype.maxRejectCount = function() {
  * @param {getUnspentCallback} cb
  */
 
-// TODO: Can we add cache to getUnspent?
 Wallet.prototype.getUnspent = function(cb) {
   var self = this;
+
   var addresses = this.getAddresses();
-
-
   log.debug('Wallet ' + this.getName() + ': Getting unspents from ' + addresses.length + ' addresses');
   this.blockchain.getUnspent(addresses, function(err, unspentList) {
-
-    if (err) {
+    if (err)
       return cb(err);
-    }
 
-    var safeUnspendList = [];
-    var uu = self.txProposals.getUsedUnspent(self.maxRejectCount());
-
-    for (var i in unspentList) {
-      var u = unspentList[i];
-      var name = u.txid + ',' + u.vout;
-      if (!uu[name] && (self.spendUnconfirmed || u.confirmations >= 1))
-        safeUnspendList.push(u);
-    }
-
-    return cb(null, safeUnspendList, unspentList);
+    self.cache.unspent = unspentList;
+    return self.computeUnspent(unspentList, cb);
   });
+};
+
+/**
+ *
+ * @callback getUnspentCallback
+ * @param {string} error
+ * @param {Object[]} safeUnspendList
+ * @param {Object[]} unspentList
+ */
+/**
+ * computeUnspent
+ *
+ * @param unspentList List of unprocessed utxos.
+ * @param {getUnspentCallback} cb
+ */
+Wallet.prototype.computeUnspent = function(unspentList, cb) {
+  var self = this;
+
+  var safeUnspendList = [];
+  var uu = this.txProposals.getUsedUnspent(this.maxRejectCount());
+
+  _.each(unspentList, function(u){
+    var name = u.txid + ',' + u.vout;
+    if (!uu[name] && (self.spendUnconfirmed || u.confirmations >= 1))
+      safeUnspendList.push(u);
+  });
+
+  return cb(null, safeUnspendList, unspentList);
 };
 
 /**
@@ -2227,8 +2258,6 @@ Wallet.prototype.spend = function(opts, cb) {
   preconditions.checkArgument(amountSat, 'no amount');
   preconditions.checkArgument(toAddress, 'no address');
 
-  // TODO no bajar los unspends de vuelta...
-  //
   this.getUnspent(function(err, safeUnspent) {
     if (err) {
       log.info(err);
