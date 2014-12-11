@@ -527,7 +527,7 @@ Wallet.prototype._onTxProposal = function(senderId, data) {
   var self = this;
 
   if (data.indexes) {
-    this._onIndexes(data.indexes, true);
+    this._doOnIndexes(data.indexes, true);
   }
 
   try {
