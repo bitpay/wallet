@@ -27,7 +27,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
         hideSidebars();
       }
       else {
-        elem.addClass('move-right');
+        if ($rootScope.iden && !$rootScope.hideNavigation) {
+          elem.addClass('move-right');
+        }
       }
     }
     else { 
@@ -35,7 +37,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
         hideSidebars();
       }
       else {
-        elem.addClass('move-left');
+        if ($rootScope.iden && $rootScope.iden.listWallets().length >1) {
+          elem.addClass('move-left');
+        }
       }
     }
   };
