@@ -467,8 +467,6 @@ ul.tx-copayers {
   background: #eee;
 }
 
-
-
 .sign-action {
   background: #E4E8EC;
   width: 100%;
@@ -1347,13 +1345,6 @@ a:hover .photo-container  {
 
 .addresses ul {
   margin-left: 0;
-}
-
-.addresses .list-addr i {
-  position: absolute;
-  top: -15px;
-  left: 0;
-  cursor: pointer;
 }
 
 .addresses .list-addr contact {
