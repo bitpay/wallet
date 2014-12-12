@@ -36,14 +36,8 @@
     "test": "sh test/run.sh",
     "dist": "node shell/scripts/dist.js",
     "shell": "node shell/scripts/launch.js",
-    "chrome": "source browser-extensions/chrome/build.sh",
     "setup-shell": "node shell/scripts/download-atom-shell.js",
-    "postinstall": "./node_modules/.bin/grunt",
-    "sign": "gpg -u 1112CFA1 --output browser-extensions/chrome/copay-chrome-extension.zip.sig --detach-sig browser-extensions/chrome/copay-chrome-extension.zip",
-    "verify": "gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip",
-    "ios": "cordova/build.sh && cd cordova/project && cordova build ios && open platforms/ios/Copay.xcodeproj",
-    "android": "cordova/build.sh --android && cd cordova/project && cordova run android"
-
+    "postinstall": "./node_modules/.bin/grunt"
   },
   "devDependencies": {
     "angular-gravatar": "*",
