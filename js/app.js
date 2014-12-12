@@ -8,6 +8,7 @@ var ls = new LS();
 
 // TODO move this to configService !
 var config = copay.defaultConfig;
+
 ls.getItem('config', function(err, data) {
   var localConfig;
   try {
