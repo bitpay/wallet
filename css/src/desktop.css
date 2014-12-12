@@ -172,3 +172,12 @@ a.text-warning:hover {color: #FD7262;}
   background: #ddd;
 }
 
+.reveal-modal .close-reveal-modal:hover, dialog .close-reveal-modal:hover {
+  background-color: #7A8C9E;
+  color: #fff;
+}
+
+.last-transactions-content.active:hover {
+  background-color: #E4E8EC;
+}
+

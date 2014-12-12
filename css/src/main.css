@@ -435,10 +435,6 @@ ul.tx-copayers {
   background-color: #F5F7F8;
 }
 
-.last-transactions-content.active:hover {
-  background-color: #E4E8EC;
-}
-
 .sign-action {
   background: #E4E8EC;
   width: 100%;
@@ -803,7 +799,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #A02F23;
 }
 
-.txp-popup .header {
+.header-modal {
   background: #F3F5F6;
   width: 100%;
   padding: 0.8rem;
@@ -1625,7 +1621,3 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-radius: 3px;
 }
 
-.reveal-modal .close-reveal-modal:hover, dialog .close-reveal-modal:hover {
-  background-color: #7A8C9E;
-  color: #fff;
-}

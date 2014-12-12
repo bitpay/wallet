@@ -1,5 +1,5 @@
-<div class="txp-popup">
-  <div class="header">
+<div class="header-modal">
+  <div ng-repeat="out in tx.outs">
     <div class="ellipsis p10b size-16 m20r">
       <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':pendingForUs}" class="fi-arrow-right"></i> </span>
       <span class="text-gray">
@@ -10,10 +10,9 @@
         </span>
         <contact address="{{out.address}}" ng-hide="tx.merchant"></contact>
       </span>
-      </span>
     </div>
 
-    <div class="p25l" ng-class="{'text-gray':!pendingForUs}" ng-repeat="out in tx.outs">
+    <div class="p25l" ng-class="{'text-gray':!pendingForUs}">
       <div class="size-21 text-bold m5b">
         {{out.value}} {{$root.wallet.settings.unitName}}
       </div>
@@ -21,80 +20,79 @@
         {{out.alternativeAmount}} {{out.alternativeIsoCode}}
       </span>
     </div>
-    <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
   </div>
+  <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
+</div>
 
-  <div class="m10v line-b size-14" ng-show="tx.comment">
-    <div class="oh" ng-if="tx.ts || tx.createdTs ">
-      <p class="left m5b">Bechilandia@gmail.com</p>
-      <div class="text-gray text-right m5t size-12">
-        <time>{{ (tx.ts || tx.createdTs ) | amTimeAgo}}</time>
-      </div>
-    </div>
-    <div class="text-gray m10b">
-      {{tx.comment}}
+<div class="m10v line-b size-14" ng-show="tx.comment">
+  <div class="oh" ng-if="tx.ts || tx.createdTs ">
+    <p class="left m5b">{{$root.iden.getName()}}</p>
+    <div class="text-gray text-right m5t size-12">
+      <time>{{ (tx.ts || tx.createdTs ) | amTimeAgo}}</time>
     </div>
   </div>
+  <div class="text-gray m10b">
+    {{tx.comment}}
+  </div>
+</div>
 
-  <div class="m10v line-b size-14" ng-if="tx.merchant">
-    <div class="oh">
-      <p class="left m5b">Merchant Message:</p>
-      <div class="text-gray text-right m5t size-12" ng-if="tx.merchant && tx.merchant.expirationDate">
-        <span><i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}</span>
-      </div>
-    </div>
-    <div class="text-gray m10b">
-      {{tx.merchant.pr.pd.memo}}
+<div class="m10v line-b size-14" ng-if="tx.merchant">
+  <div class="oh">
+    <p class="left m5b">Merchant Message:</p>
+    <div class="text-gray text-right m5t size-12" ng-if="tx.merchant && tx.merchant.expirationDate">
+      <span><i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}</span>
     </div>
   </div>
+  <div class="text-gray m10b">
+    {{tx.merchant.pr.pd.memo}}
+  </div>
+</div>
 
-  <div ng-if="tx.actionList[0]" class="m10v">
-    <i>Signatures:</i>
-    <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
-      <li ng-repeat="c in tx.actionList" ng-class="{'bottom-line-copayers':!$last}">
-        <span>
-            <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
-            <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
-            <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="m10r fi-loop icon-rotate"></i>
-          </span>
-        <span>
-            <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
-          </span>
-        <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
-      </li>
-    </ul>
-  </div>
-  </div>
-
-  <div class="box-notification" ng-show="error">
-    <div class="box-icon error">
-      <i class="fi-x size-24"></i>
-    </div>
-    <span class="text-warning size-14">
-      {{error}}
+<div ng-if="tx.actionList[0]" class="m10v">
+  <i>Signatures:</i>
+  <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
+    <li ng-repeat="c in tx.actionList" ng-class="{'bottom-line-copayers':!$last}">
+    <span>
+      <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
+      <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
+      <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="m10r fi-loop icon-rotate"></i>
     </span>
-    <a class="close-notification text-warning" ng-click="error=null">&#215;</a>
-  </div>
+    <span>
+      <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
+    </span>
+    <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
+    </li>
+  </ul>
+</div>
 
-  <div class="row button-popup" 
-    ng-init="hideSign = false; hideReject = false"
-    ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
-    <div class="large-6 medium-6 small-6 columns">
-      <button class="button warning m0 expand" ng-click="hideSign = true; reject(tx.ntxid);" 
-        ng-disabled="loading" ng-show="!hideReject">
-        <i class="fi-x icon-sign x" ng-show="!loading"></i>  
-        <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
-        <span translate>Reject</span>
-      </button>
-    </div>
-    <div class="large-6 medium-6 small-6 columns text-right">
-      <button class="button primary m0 expand" ng-click="hideReject = true; sign(tx.ntxid)" 
-        ng-disabled="loading" ng-show="!hideSign">
-        <i class="fi-check icon-sign check" ng-show="!loading"></i>  
-        <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
-        <span translate>Sign</span>
-      </button>
-    </div>
+<div class="box-notification" ng-show="error">
+  <div class="box-icon error">
+    <i class="fi-x size-24"></i>
+  </div>
+  <span class="text-warning size-14">
+    {{error}}
+  </span>
+  <a class="close-notification text-warning" ng-click="error=null">&#215;</a>
+</div>
+
+<div class="row" 
+  ng-init="hideSign = false; hideReject = false"
+  ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
+  <div class="large-6 medium-6 small-6 columns">
+    <button class="button warning m0 expand" ng-click="hideSign = true; reject(tx.ntxid);" 
+      ng-disabled="loading" ng-show="!hideReject">
+      <i class="fi-x icon-sign x" ng-show="!loading"></i>  
+      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <span translate>Reject</span>
+    </button>
+  </div>
+  <div class="large-6 medium-6 small-6 columns text-right">
+    <button class="button primary m0 expand" ng-click="hideReject = true; sign(tx.ntxid)" 
+      ng-disabled="loading" ng-show="!hideSign">
+      <i class="fi-check icon-sign check" ng-show="!loading"></i>  
+      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <span translate>Sign</span>
+    </button>
   </div>
 </div>
 
