@@ -1,11 +1,18 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportProfileController',
-  function($scope, $rootScope, $location, notification, isMobile, identityService) {
+  function($scope, $rootScope, $location, $timeout, notification, isMobile, identityService) {
     $scope.title = 'Import a backup';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
     $scope.is_iOS = isMobile.iOS();
+
+    window.ignoreMobilePause = true;
+    $scope.$on('$destroy', function() {
+      $timeout(function(){
+        window.ignoreMobilePause = false;
+      }, 100);
+    });
 
     var reader = new FileReader();
 

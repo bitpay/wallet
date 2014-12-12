@@ -10,7 +10,7 @@ angular.element(document).ready(function() {
     document.addEventListener('deviceready', function() {
 
       document.addEventListener('pause', function() {
-        if (!window.usingCamera) {
+        if (!window.ignoreMobilePause) {
           window.location = '#!';
         }
       });
