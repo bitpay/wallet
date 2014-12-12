@@ -9,10 +9,49 @@ BackupService.prototype.getCopayer = function(wallet) {
   return wallet.totalCopayers > 1 ? wallet.getMyCopayerNickname() : '';
 };
 
+
+
+
+
 BackupService.prototype._download = function(ew, walletName, filename) {
-  var blob = new Blob([ew], {
-    type: 'text/plain;charset=utf-8'
-  });
+
+  var NewBlob = function(data, datatype) {
+    var out;
+
+    try {
+      out = new Blob([data], {
+        type: datatype
+      });
+      console.debug("case 1");
+    } catch (e) {
+      window.BlobBuilder = window.BlobBuilder ||
+        window.WebKitBlobBuilder ||
+        window.MozBlobBuilder ||
+        window.MSBlobBuilder;
+
+      if (e.name == 'TypeError' && window.BlobBuilder) {
+        var bb = new BlobBuilder();
+        bb.append(data);
+        out = bb.getBlob(datatype);
+        console.debug("case 2");
+      } else if (e.name == "InvalidStateError") {
+        // InvalidStateError (tested on FF13 WinXP)
+        out = new Blob([data], {
+          type: datatype
+        });
+        console.debug("case 3");
+      } else {
+        // We're screwed, blob constructor unsupported entirely   
+        console.debug("Errore");
+      }
+    }
+    return out;
+  };
+
+  var blob;
+
+  blob = new NewBlob(ew, 'text/plain;charset=utf-8');
+
 
   this.notifications.success('Backup created', 'Encrypted backup file saved');
 
