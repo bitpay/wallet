@@ -9,6 +9,13 @@ angular.module('copayApp.controllers').controller('ImportController',
     $scope.is_iOS = isMobile.iOS();
     $scope.importOpts = {};
 
+    window.ignoreMobilePause = true;
+    $scope.$on('$destroy', function() {
+      $timeout(function(){
+        window.ignoreMobilePause = false;
+      }, 100);
+    });
+
     Compatibility.check($scope);
 
     var reader = new FileReader();
