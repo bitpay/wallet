@@ -160,6 +160,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       $scope.error = 'Please enter the required fields';
       return;
     }
+
     $scope.saveSettings(function(err) {
       preconditions.checkState(!err, err);
 
