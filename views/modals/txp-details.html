@@ -1,5 +1,6 @@
 <div class="header-modal">
-  <div ng-repeat="out in tx.outs">
+  <div class="row collapse" ng-repeat="out in tx.outs">
+    <div class="small-10 columns">
     <div class="ellipsis p10b size-16 m20r">
       <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':pendingForUs}" class="fi-arrow-right"></i> </span>
       <span class="text-gray">
@@ -19,6 +20,7 @@
       <span class="alt-currency black size-12" ng-class="{'gray':!pendingForUs}">
         {{out.alternativeAmount}} {{out.alternativeIsoCode}}
       </span>
+    </div>
     </div>
   </div>
   <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
@@ -75,10 +77,10 @@
   <a class="close-notification text-warning" ng-click="error=null">&#215;</a>
 </div>
 
-<div class="row" 
+<div class="row collapse" 
   ng-init="hideSign = false; hideReject = false"
   ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
-  <div class="large-6 medium-6 small-6 columns">
+  <div class="large-5 medium-5 small-5 columns">
     <button class="button warning m0 expand" ng-click="hideSign = true; reject(tx.ntxid);" 
       ng-disabled="loading" ng-show="!hideReject">
       <i class="fi-x icon-sign x" ng-show="!loading"></i>  
@@ -86,7 +88,7 @@
       <span translate>Reject</span>
     </button>
   </div>
-  <div class="large-6 medium-6 small-6 columns text-right">
+  <div class="large-5 medium-5 small-5 columns text-right">
     <button class="button primary m0 expand" ng-click="hideReject = true; sign(tx.ntxid)" 
       ng-disabled="loading" ng-show="!hideSign">
       <i class="fi-check icon-sign check" ng-show="!loading"></i>  
