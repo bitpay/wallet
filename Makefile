@@ -18,5 +18,6 @@ android:
 	cd cordova/project && cordova run android
 
 chrome:
+	grunt prod
 	browser-extensions/chrome/build.sh
 
