@@ -80,6 +80,7 @@ describe('TxProposal', function() {
         amountSatStr: '123',
       }]),
     };
+    builder.inputsSigned =0;
 
     return builder;
   };
@@ -338,6 +339,7 @@ describe('TxProposal', function() {
         sigs[0][1].should.equal(SIG1);
       });
     });
+
     describe('#addSignature', function() {
       it('should add signatures maintaing pubkeys order', function() {
         var txp = dummyProposal({
@@ -353,8 +355,13 @@ describe('TxProposal', function() {
         keysSorted.should.deep.equal(keys);
 
       });
-
-
+      it('should add signatures to incomplete txs ', function() {
+        var txp = dummyProposal({
+          nsig:1 
+        });
+        txp.addSignature('pepe', [SIG1]);
+        txp.builder.inputsSigned.should.be.equal(0);
+      });
 
       it('should fail with invalid signatures', function() {
         var txp = dummyProposal({
