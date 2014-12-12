@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(localstorageService, gettextCatalog) {
+angular.module('copayApp.services').factory('configService', function($timeout, localstorageService, gettextCatalog) {
   var root = {};
 
   root.set = function(opts, cb) {
@@ -22,10 +22,12 @@ angular.module('copayApp.services').factory('configService', function(localstora
       var newOpts = {};
       _.extend(newOpts, copay.defaultConfig, oldOpts, opts);
 
-      // TODO remove this gloval variable.
+      // TODO remove this global variable.
       config = newOpts;
 
-      localstorageService.setItem('config', JSON.stringify(newOpts), cb);
+      localstorageService.setItem('config', JSON.stringify(newOpts), function() {
+        $timeout(cb, 1);
+      });
     });
   };
 
