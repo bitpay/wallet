@@ -58,16 +58,35 @@
     </li>
   </ul>
 </div>
+</div>
 
-<div class="row collapse" ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
+<div class="box-notification" ng-show="error">
+  <div class="box-icon error">
+    <i class="fi-x size-24"></i>
+  </div>
+  <span class="text-warning size-14">
+    {{error}}
+  </span>
+  <a class="close-notification text-warning" ng-click="error=null">&#215;</a>
+</div>
+
+<div class="row collapse" 
+  ng-init="hideSign = false; hideReject = false"
+  ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
   <div class="large-6 medium-6 small-6 columns">
-    <button class="button warning m0" ng-click="reject(tx.ntxid)" ng-disabled="loading">
-      <i class="fi-x icon-sign x"></i>  <span translate>Reject</span>
+    <button class="button warning m0" ng-click="hideSign = true; reject(tx.ntxid);" 
+      ng-disabled="loading" ng-show="!hideReject">
+      <i class="fi-x icon-sign x" ng-show="!loading"></i>  
+      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <span translate>Reject</span>
     </button>
   </div>
   <div class="large-6 medium-6 small-6 columns text-right">
-    <button class="button primary m0" ng-click="sign(tx.ntxid)" ng-disabled="loading">
-      <i class="fi-check icon-sign check"></i>  <span translate>Sign</span>
+    <button class="button primary m0" ng-click="hideReject = true; sign(tx.ntxid)" 
+      ng-disabled="loading" ng-show="!hideSign">
+      <i class="fi-check icon-sign check" ng-show="!loading"></i>  
+      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <span translate>Sign</span>
     </button>
   </div>
 </div>

@@ -6,9 +6,7 @@ angular.module('copayApp.controllers').controller('IndexController', function($s
   };
 
   $scope.swipe = function(invert) {
-    if (isCordova) { 
-      go.swipe(invert);
-    }
+    go.swipe(invert);
   };
 
 });

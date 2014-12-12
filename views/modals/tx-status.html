@@ -1,8 +1,11 @@
 
 <div class="m20tp">
   <div class="text-center size-72 m10v">
-    <div class="text-primary">
+    <div ng-show="statusStr !== 'Transaction was rejected'" class="text-primary">
       <i class="fi-check"></i>
+    </div>
+    <div ng-show="statusStr === 'Transaction was rejected'" class="text-warning">
+      <i class="fi-x"></i>
     </div>
   </div>
 
