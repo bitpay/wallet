@@ -1618,8 +1618,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   padding: 0.8rem;
   position: absolute;
   background: #E4E8EC;
-  top: 37px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   line-height: 0;
   color: #7A8C9E;
   border-radius: 3px;
