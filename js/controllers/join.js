@@ -99,14 +99,21 @@ angular.module('copayApp.controllers').controller('JoinController',
     };
 
     $scope.scannerIntent = function() {
+      window.usingCamera = true;
       cordova.plugins.barcodeScanner.scan(
         function onSuccess(result) {
+          $timeout(function(){
+            window.usingCamera = false;
+          }, 100);
           if (result.cancelled) return;
 
           $scope.connectionId = result.text;
           $rootScope.$digest();
         },
         function onError(error) {
+          $timeout(function(){
+            window.usingCamera = false;
+          }, 100);
           alert('Scanning error');
         });
     }

@@ -285,8 +285,12 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.scannerIntent = function() {
+      window.usingCamera = true;
       cordova.plugins.barcodeScanner.scan(
         function onSuccess(result) {
+          $timeout(function(){
+            window.usingCamera = false;
+          }, 100);
           if (result.cancelled) return;
 
           $timeout(function() {
@@ -298,6 +302,9 @@ angular.module('copayApp.controllers').controller('SendController',
           }, 1000);
         },
         function onError(error) {
+          $timeout(function(){
+            window.usingCamera = false;
+          }, 100);
           alert('Scanning error');
         });
     }

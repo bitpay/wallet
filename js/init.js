@@ -10,7 +10,9 @@ angular.element(document).ready(function() {
     document.addEventListener('deviceready', function() {
 
       document.addEventListener('pause', function() {
-        window.location = '#!';
+        if (!window.usingCamera) {
+          window.location = '#!';
+        }
       });
 
       setTimeout(function() {
