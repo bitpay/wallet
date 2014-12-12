@@ -122,14 +122,14 @@ angular.module('copayApp.controllers').controller('HistoryController',
 
     $scope._addRates = function(w, txs, cb) {
       if (!txs || txs.length == 0) return cb();
-      var index = _.indexBy(txs, 'rateTs');
+      var index = _.groupBy(txs, 'rateTs');
       rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
-        if (err) return cb(err);
-        if (!res) return cb();
+        if (err || !res) return cb(err);
         _.each(res, function(r) {
-          var tx = index[r.ts];
-          var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
-          tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
+          _.each(index[r.ts], function (tx) {
+            var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+            tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
+          });
         });
         return cb();
       });
