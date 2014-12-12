@@ -49,4 +49,8 @@ EncryptedInsightStorage.prototype.removeItem = function(name, callback) {
   InsightStorage.prototype.removeItem.apply(this, [name, callback]);
 };
 
+EncryptedInsightStorage.prototype.clear = function(callback) {
+  InsightStorage.prototype.clear.apply(this, [callback]);
+};
+
 module.exports = EncryptedInsightStorage;
