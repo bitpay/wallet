@@ -24,6 +24,8 @@ describe('TxProposal', function() {
   var SIG0 = '304502200708a381dde585ef7fdfaeaeb5da9b451d3e22b01eac8a5e3d03b959e24a7478022100c90e76e423523a54a9e9c43858337ebcef1a539a7fc685c2698dd8648fcf1b9101';
   var SIG1 = '3044022030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae01';
 
+
+
   /* decoded redeemscript
    *
     "asm" : "3 03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d 0380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127 0392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed03 03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3 03e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e4 5 OP_CHECKMULTISIG",
@@ -40,6 +42,9 @@ describe('TxProposal', function() {
 
   var someKeys = ["03b39d61dc9a504b13ae480049c140dcffa23a6cc9c09d12d6d1f332fee5e18ca5", "022929f515c5cf967474322468c3bd945bb6f281225b2c884b465680ef3052c07e"];
 
+
+  // 3-5
+  
 
   function dummyBuilder(opts) {
     opts = opts || {};
@@ -340,7 +345,7 @@ describe('TxProposal', function() {
       });
     });
 
-    describe('#addSignature', function() {
+    describe('#addSignature', function() { 
       it('should add signatures maintaing pubkeys order', function() {
         var txp = dummyProposal({
           nsig:1 
