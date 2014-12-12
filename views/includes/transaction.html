@@ -1,34 +1,30 @@
 
 
-<div class="last-transactions-content" ng-class="{'line-b':!$last}"  ng-click="openTxModal(tx)">
-  <div class="row" ng-repeat="out in tx.outs">
-    <div class="large-6 medium-6 small-12 columns size-16">
-      <div class="ellipsis m10b" ng-init="pendingForUs = !tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
-
-      <span ng-class="{'color-alert':pendingForUs, 'hidden':!pendingForUs} "> ● </span>
-
-      To:
-      <span ng-if="tx.merchant">
-        <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-        <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+<div class="last-transactions-content" ng-class="{'line-b':!$last, 'active':pendingForUs}"  ng-click="openTxModal(tx)">
+  <div ng-repeat="out in tx.outs">
+    <div class="ellipsis p10b size-16 m20r" ng-init="pendingForUs = !tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
+      <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':pendingForUs}" class="fi-arrow-right"></i> </span>
+      <span class="text-gray">
+        To:
+        <span ng-if="tx.merchant">
+          <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+          <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
         </span>
+        <contact address="{{out.address}}" ng-hide="tx.merchant"> </contact>
       </span>
-      <contact address="{{out.address}}" ng-hide="tx.merchant"> </contact>
-      </div>
     </div>
 
-    <div class="large-6 medium-6 small-12 columns">
-      <div class="text-right">
-        <span class="size-21">
-            <span ng-if="!$root.updatingBalance">
-              {{out.value}}
-            </span>
-            {{$root.wallet.settings.unitName}}
-        </span>
-        <span class="size-14 db m5t text-gray">
-          {{out.alternativeAmount}} {{out.alternativeIsoCode}}
-        </span>
+    <div class="p25l m10b" ng-class="{'text-gray':!pendingForUs}">
+      <div class="size-21 text-bold m10b">
+          <span ng-if="!$root.updatingBalance">
+            {{out.value}}
+          </span>
+          {{$root.wallet.settings.unitName}}
+          <i class="icon-arrow-right3 size-24 text-gray right"></i>
       </div>
+      <span class="alt-currency black size-12" ng-class="{'gray':!pendingForUs}">
+        {{out.alternativeAmount}} {{out.alternativeIsoCode}}
+      </span>
     </div>
   </div>
 </div>
