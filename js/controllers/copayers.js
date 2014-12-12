@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $timeout, go) {
     $scope.init = function() {
       var w = $rootScope.wallet;
-      $rootScope.title = 'Waiting copayers for ' + $rootScope.wallet.getName();
+      $rootScope.title = 'Share this secret with your copayers';
       $scope.loading = false;
       $scope.secret = $rootScope.wallet.getSecret();
 
