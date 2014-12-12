@@ -52,6 +52,9 @@ EncryptedLocalStorage.prototype.removeItem = function(name, callback) {
   LocalStorage.prototype.removeItem.apply(this, [name, callback]);
 };
 
+EncryptedLocalStorage.prototype.clear = function(callback) {
+  LocalStorage.prototype.clear.apply(this, [callback]);
+};
 
 
 module.exports = EncryptedLocalStorage;
