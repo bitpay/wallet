@@ -133,8 +133,9 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
             $scope.error = 'Invalid email or password. You are trying to sign in using ' + storage + '. Change it on settings is necessary.';
           };
 
-          pinService.clear(function() {
-          });
+          $rootScope.hasPin = false;
+          pinService.clear(function() {});
+
         } else if ((err.toString() || '').match('Connection')) {
           $scope.error = 'Could not connect to Insight Server';
         } else if ((err.toString() || '').match('Unable')) {
