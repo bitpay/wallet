@@ -412,8 +412,12 @@ Wallet.prototype._checkIfTxIsSent = function(ntxid, cb) {
   var tx = txp.builder.build();
   var txHex = tx.serialize().toString('hex');
 
+
   //Use calcHash NOT getHash which could be cached.
   var txid = bitcore.util.formatHashFull(tx.calcHash());
+
+  log.debug('Checking if transactions was broadcasted... ID:' + txid);
+
   this.blockchain.getTransaction(txid, function(err, tx) {
     return cb(err, !err ? txid : null);
   });
@@ -1625,9 +1629,7 @@ Wallet.prototype.broadcastToBitcoinNetwork = function(ntxid, cb) {
 
   this.blockchain.broadcast(txHex, function(err, txid) {
     if (err || !txid) {
-
-      log.info('Wallet:' + self.getName() + '. Sent failed:' +
-        err + '. Checking if the TX was sent already');
+      log.debug('Wallet:' + self.getName() + ' Send failed:' + err );
 
       self._checkIfTxIsSent(ntxid, function(err, txid) {
         return cb(err, txid);
