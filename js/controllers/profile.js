@@ -2,6 +2,7 @@
 angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService, isMobile) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = isMobile.Safari();
+  $scope.isCordova = !!window.cordova;
 
   $rootScope.title = 'Profile';
   $scope.hideAdv = true;
