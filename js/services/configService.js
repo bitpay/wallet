@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function($timeout, localstorageService, gettextCatalog) {
+angular.module('copayApp.services').factory('configService', function($timeout, localstorageService, gettextCatalog, defaults) {
   var root = {};
 
   root.set = function(opts, cb) {
@@ -31,7 +31,7 @@ angular.module('copayApp.services').factory('configService', function($timeout, 
   };
 
   root.reset = function(cb) {
-    config = copay.defaultConfig;
+    config = defauls;
     localstorageService.removeItem('config', cb);
   };
 
