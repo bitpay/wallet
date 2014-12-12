@@ -350,6 +350,7 @@ Wallet.prototype._onPublicKeyRing = function(senderId, data) {
     }
     if (this.publicKeyRing.isComplete()) {
       this._lockIncomming();
+      this.subscribeToAddresses();
       this.emitAndKeepAlive('ready');
     } else {
       this.emitAndKeepAlive('publicKeyRingUpdated');
@@ -739,7 +740,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this._onSignature(senderId, data);
       break;
     case 'indexes':
-      this._onIndexes(data.indexes);
+      this._onIndexes(senderId, data);
       break;
     case 'addressbook':
       this._onAddressBook(senderId, data);

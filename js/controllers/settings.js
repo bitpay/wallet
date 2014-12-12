@@ -77,7 +77,6 @@ angular.module('copayApp.controllers').controller('SettingsController', function
 
     configService.set({
         network: insightSettings,
-        version: copay.version,
         defaultLanguage: $scope.selectedLanguage.isoCode,
         plugins: plugins,
         logLevel: $scope.selectedLogLevel.name,
