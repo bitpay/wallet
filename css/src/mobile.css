@@ -52,6 +52,10 @@
     padding: 1rem 0;
   }
 
+  .reveal-modal {
+    padding: 0.5rem;
+  } 
+
   header {
     height: 45px;
     line-height: 110%;
@@ -288,6 +292,15 @@
 
   .dr-notification-image i {
     padding: 15px;
+  }
+
+  .button-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #F3F5F6;
+    padding: 1rem 0;
   }
 
 }
