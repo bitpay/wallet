@@ -559,7 +559,9 @@ PublicKeyRing.prototype.getAddressesOrderer = function(pubkey) {
   var l = info.length;
 
   var sortedInfo = _.sortBy(info, function(i) {
-    var goodness =  ( (i.copayerIndex !== copayerIndex) ?  2 * l : 0 ) +(  i.isChange ?  l : 0 ) + l - i.addressIndex;
+    var goodness =  ( (i.copayerIndex !== copayerIndex) ?  2 * l : 0 ) 
+          + (  i.isChange ?  l : 0 ) 
+          + l - i.addressIndex;
     return goodness;
   });
 

@@ -235,6 +235,8 @@ TxProposal.prototype._addSignatureAndVerify = function(signatures) {
 
   var inputsFullySigned = 0;
   var newScriptSigs = [];
+
+  this.resetCache();
   _.each(tx.ins, function(input, index) {
     var scriptSig = new Script(input.s);
 
@@ -288,11 +290,9 @@ TxProposal.prototype._addSignatureAndVerify = function(signatures) {
     input.s = newScriptSigs[index];
 
     // just to keep TransactionBuilder updated
-    if (tx.ins.length == inputsFullySigned) 
+    if (tx.ins.length == inputsFullySigned)
       self.builder.inputsSigned++;
   });
-
-  this.resetCache();
 };
 
 TxProposal.prototype.resetCache = function() {
