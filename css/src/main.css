@@ -426,10 +426,17 @@ ul.tx-copayers {
   border-bottom: 1px solid #CAD2DA;
 }
 
-
 .last-transactions-content {
-  padding: 0.8rem;
+  padding: 0.8rem 0.5rem;
   cursor:pointer;
+}
+
+.last-transactions-content.active {
+  background-color: #F5F7F8;
+}
+
+.last-transactions-content.active:hover {
+  background-color: #E4E8EC;
 }
 
 .sign-action {
@@ -549,6 +556,7 @@ a.button-setup {
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
+.p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
 .p10 {padding:10px;}
@@ -782,6 +790,17 @@ input[type=number]::-webkit-outer-spin-button {
 
 .bg-success { 
   background-color: #1ABC9C;
+}
+
+.tx-proposal i { 
+  padding: .1rem .3rem;
+  background-color: #A5B2BF;
+  border-radius: 100%;
+  color: #fff;
+}
+
+.tx-proposal i.active {
+  background-color: #A02F23;
 }
 
 .addresses .label {

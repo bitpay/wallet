@@ -58,7 +58,7 @@
           <div class="last-transactions pr" ng-repeat="tx in  $root.wallet.pendingTxProposals  | orderBy:'-createdTs'" ng-include="'views/includes/transaction.html'" ng-if="$root.wallet.pendingTxProposals[0]">
           </div>
 
-          <div class="text-right size-12 line-t m10t p10t" ng-show="$root.wallet.balanceInfo.lockedBalance && !$root.wallet.balanceInfo.updatingBalance">
+          <div class="text-right size-12 line-t p10t" ng-show="$root.wallet.balanceInfo.lockedBalance && !$root.wallet.balanceInfo.updatingBalance">
           Total Locked Balance:
           <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
           <span class="text-gray"> {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}} </span>
