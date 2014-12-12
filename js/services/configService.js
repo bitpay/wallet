@@ -5,16 +5,18 @@ angular.module('copayApp.services').factory('configService', function($timeout, 
 
   root.set = function(opts, cb) {
 
+    // Options that have runtime effects
     if (opts.logLevel)
       copay.logger.setLevel(opts.logLevel);
 
     if (opts.defaultLanguage)
       gettextCatalog.currentLanguage = opts.defaultLanguage;
 
+    // Set current version
+    opts.version = copay.version;
+
     localstorageService.getItem('config', function(err, oldOpsStr) {
-
       var oldOpts = {};
-
       try {
         oldOpts = JSON.parse(oldOpsStr);
       } catch (e) {};
@@ -24,10 +26,7 @@ angular.module('copayApp.services').factory('configService', function($timeout, 
 
       // TODO remove this global variable.
       config = newOpts;
-
-      localstorageService.setItem('config', JSON.stringify(newOpts), function() {
-        $timeout(cb, 1);
-      });
+      localstorageService.setItem('config', JSON.stringify(newOpts), cb);
     });
   };
 
