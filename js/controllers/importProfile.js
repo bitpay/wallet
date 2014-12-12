@@ -7,6 +7,13 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     $scope.hideAdv = true;
     $scope.is_iOS = isMobile.iOS();
 
+    window.ignoreMobilePause = true;
+    $scope.$on('$destroy', function() {
+      $timeout(function(){
+        window.ignoreMobilePause = false;
+      }, 100);
+    });
+
     var reader = new FileReader();
 
     var updateStatus = function(status) {
