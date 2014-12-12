@@ -499,7 +499,8 @@ Wallet.prototype._processIncomingNewTxProposal = function(txp, cb) {
   self._processTxProposalPayPro(txp, function(err) {
     if (err) return cb(err);
 
-    self._setTxProposalSeen(txp);
+    // Disabled, not been shown on the UX now.
+    //self._setTxProposalSeen(txp);
 
     var tx = txp.builder.build();
     if (tx.isComplete() && !txp.getSent())

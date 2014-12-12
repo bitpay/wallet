@@ -233,6 +233,7 @@ TxProposal.prototype._addSignatureAndVerify = function(signatures) {
   var ret = [];
   var tx = self.builder.build();
 
+  var inputsFullySigned = 0;
   var newScriptSigs = [];
   _.each(tx.ins, function(input, index) {
     var scriptSig = new Script(input.s);
@@ -268,14 +269,16 @@ TxProposal.prototype._addSignatureAndVerify = function(signatures) {
     });
 
     var insertAt = 0;
-    while ( !_.isUndefined(currentPrios[insertAt]) && prio > currentPrios[insertAt] )
+    while (!_.isUndefined(currentPrios[insertAt]) && prio > currentPrios[insertAt])
       insertAt++;
 
     // Insert it! (1 is OP_0!)
     scriptSig.chunks.splice(1 + insertAt, 0, sig);
     scriptSig.updateBuffer();
 
-
+    if (info.nreq == currentKeys.length + 1) {
+      inputsFullySigned++;
+    }
     newScriptSigs.push(scriptSig.buffer);
   });
   preconditions.checkState(newScriptSigs.length === tx.ins.length);
@@ -284,9 +287,11 @@ TxProposal.prototype._addSignatureAndVerify = function(signatures) {
   _.each(tx.ins, function(input, index) {
     input.s = newScriptSigs[index];
 
-    // TODO just to keep TransactionBuilder 
-    self.builder.inputsSigned++;
+    // just to keep TransactionBuilder updated
+    if (tx.ins.length == inputsFullySigned) 
+      self.builder.inputsSigned++;
   });
+
   this.resetCache();
 };
 
@@ -312,9 +317,9 @@ TxProposal.prototype.addSignature = function(copayerId, signatures) {
   preconditions.checkArgument(signatures.length === tx.ins.length, 'Wrong number of signatures given');
 
   this._addSignatureAndVerify(signatures);
-  this._setSigned(copayerId);
 
-  return false;
+  this._setSigned(copayerId);
+  return true;
 };
 
 /**
@@ -508,11 +513,13 @@ TxProposal.infoFromRedeemScript = function(s) {
   if (!redeemScript)
     throw new Error('Bad scriptSig (no redeemscript)');
 
+  var nreq = nreq = redeemScript.chunks[0] - 80; //see OP_2-OP_16
   var pubkeys = redeemScript.capture();
   if (!pubkeys || !pubkeys.length)
     throw new Error('Bad scriptSig (no pubkeys)');
 
   return {
+    nreq: nreq,
     keys: pubkeys,
     script: redeemScript,
   };
