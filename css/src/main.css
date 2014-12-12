@@ -803,6 +803,13 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #A02F23;
 }
 
+.txp-popup .header {
+  background: #F3F5F6;
+  width: 100%;
+  padding: 0.8rem;
+  position: relative;
+}
+
 .addresses .label {
   font-weight: normal;
   padding: .2rem .3rem;
@@ -1608,14 +1615,17 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .reveal-modal .close-reveal-modal, dialog .close-reveal-modal {
-  padding: 5px 10px;
-  position: relative;
-  font-weight: normal;
-  border: 1px solid #bbb;
-  font-size: 22px;
-  background:#eee;
-  right:0;
-  top:0;
-  text-transform: uppercase;
+  padding: 0.8rem;
+  position: absolute;
+  background: #E4E8EC;
+  top: 37px;
+  right: 15px;
+  line-height: 0;
+  color: #7A8C9E;
+  border-radius: 3px;
 }
 
+.reveal-modal .close-reveal-modal:hover, dialog .close-reveal-modal:hover {
+  background-color: #7A8C9E;
+  color: #fff;
+}
