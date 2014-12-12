@@ -20,9 +20,9 @@
           </div>
           <div class="large-3 medium-3 columns">
               <a translate class="button primary m0" ng-click="downloadProfileBackup()"
-                ng-show="!isSafari">Backup profile</a>
+                ng-show="!isSafari && !isCordova">Backup profile</a>
               <a translate class="button primary m0" ng-click="viewProfileBackup()"
-                ng-show="isSafari && !hideViewProfileBackup">View profile backup</a>
+                ng-show="isSafari || isCordova && !hideViewProfileBackup">View profile backup</a>
           </div>
         </div>
         <div class="row" ng-show="backupProfilePlainText">
