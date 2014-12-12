@@ -140,7 +140,7 @@ angular.module('copayApp.services')
     };
 
     root.notifyTxProposalEvent = function(w, e) {
-      if (e.cId == w.getMyCopayerId()) 
+      if (e.cId == w.getMyCopayerId())
         return;
 
       var user = w.publicKeyRing.nicknameForCopayer(e.cId);
@@ -227,7 +227,7 @@ angular.module('copayApp.services')
       // w.on('paymentACK', function(memo) {
       //   notification.success('Payment Acknowledged', memo);
       // });
-      
+
       w.on('txProposalEvent', function(ev) {
 
         if (root.isFocused(wid)) {
@@ -241,7 +241,7 @@ angular.module('copayApp.services')
         }, root.isFocused(wid));
 
         root.notifyTxProposalEvent(w, ev);
-        $timeout(function(){
+        $timeout(function() {
           $rootScope.$digest();
         });
       });
@@ -269,7 +269,8 @@ angular.module('copayApp.services')
       root.setupGlobalVariables(iden);
       iden.on('newWallet', function(wid) {
         var w = iden.getWalletById(wid);
-        copay.logger.debug('newWallet:', w.getName(), wid, iden.getLastFocusedWalletId());
+        copay.logger.debug('newWallet:',
+          w.getName(), wid, iden.getLastFocusedWalletId());
         root.installWalletHandlers(w);
         if (wid == iden.getLastFocusedWalletId()) {
           copay.logger.debug('GOT Focused wallet:', w.getName());
