@@ -184,7 +184,8 @@ angular.module('copayApp.services')
 
       w.on('ready', function() {
         var isFocused = root.isFocused(wid);
-        copay.logger.debug('Wallet:' + w.getName() + ' is ready. Focused:', isFocused);
+        copay.logger.debug('Wallet:' + w.getName() +
+          ' is ready. Focused:', isFocused);
 
         balanceService.update(w, function() {
           $rootScope.$digest();
