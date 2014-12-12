@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('walletForPaymentController', 
 
   var modalInstance = $modal.open({
     templateUrl: 'views/modals/walletSelection.html',
-    windowClass: 'tiny',
+    windowClass: 'small',
     controller: ModalInstanceCtrl,
   });
 

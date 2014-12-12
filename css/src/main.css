@@ -339,7 +339,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 .main {
   margin-left: 250px;
   padding: 95px 1.5rem;
-  background-color: #F8F8FB;
+  background-color: #E8ECEF;
 }
 
 .logo-setup {
@@ -426,10 +426,13 @@ ul.tx-copayers {
   border-bottom: 1px solid #CAD2DA;
 }
 
-
 .last-transactions-content {
-  padding: 0.8rem;
+  padding: 0.8rem 0.5rem;
   cursor:pointer;
+}
+
+.last-transactions-content.active {
+  background-color: #F5F7F8;
 }
 
 .sign-action {
@@ -549,6 +552,7 @@ a.button-setup {
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
+.p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
 .p10 {padding:10px;}
@@ -782,6 +786,24 @@ input[type=number]::-webkit-outer-spin-button {
 
 .bg-success { 
   background-color: #1ABC9C;
+}
+
+.tx-proposal i { 
+  padding: .1rem .3rem;
+  background-color: #A5B2BF;
+  border-radius: 100%;
+  color: #fff;
+}
+
+.tx-proposal i.active {
+  background-color: #A02F23;
+}
+
+.header-modal {
+  background: #F3F5F6;
+  width: 100%;
+  padding: 0.8rem;
+  position: relative;
 }
 
 .addresses .label {
@@ -1589,14 +1611,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .reveal-modal .close-reveal-modal, dialog .close-reveal-modal {
-  padding: 5px 10px;
-  position: relative;
-  font-weight: normal;
-  border: 1px solid #bbb;
-  font-size: 22px;
-  background:#eee;
-  right:0;
-  top:0;
-  text-transform: uppercase;
+  padding: 0.8rem;
+  position: absolute;
+  background: #E4E8EC;
+  top: 10px;
+  right: 10px;
+  line-height: 0;
+  color: #7A8C9E;
+  border-radius: 3px;
 }
 

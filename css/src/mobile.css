@@ -52,6 +52,10 @@
     padding: 1rem 0;
   }
 
+  .reveal-modal {
+    padding: 0.5rem;
+  } 
+
   header {
     height: 45px;
     line-height: 110%;
