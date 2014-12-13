@@ -26,7 +26,8 @@ function LocalStorage(opts) {
 LocalStorage.prototype.init = function() {};
 
 LocalStorage.prototype.setCredentials = function(email, password, opts) {
-  // NOP
+  this.email = email;
+  this.password = password;
 };
 
 LocalStorage.prototype.getItem = function(k, cb) {
