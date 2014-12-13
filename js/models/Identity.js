@@ -377,6 +377,7 @@ Identity.prototype._cleanUp = function() {
  * @desc Closes the wallet and disconnects all services
  */
 Identity.prototype.close = function() {
+
   this._cleanUp();
   this.emitAndKeepAlive('closed');
 };

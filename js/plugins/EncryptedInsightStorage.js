@@ -9,7 +9,6 @@ function EncryptedInsightStorage(config) {
 }
 inherits(EncryptedInsightStorage, InsightStorage);
 
-
 EncryptedInsightStorage.prototype._brokenDecrypt = function(body) {
   var key = cryptoUtil.kdf(this.password + this.email, 'mjuBtGybi/4=', 100);
   log.debug('Trying legacy decrypt')
