@@ -353,7 +353,7 @@ describe('TxProposal', function() {
         txp.getSignersPubKeys()[0].length.should.equal(1);
 
         txp.addSignature('pepe', [SIG1]);
-        txp.getSignersPubKeys()[0].length.should.equal(2);
+        txp.getSignersPubKeys(true)[0].length.should.equal(2);
 
         var keys = txp.getSignersPubKeys()[0];
         var keysSorted = _.clone(keys).sort();
