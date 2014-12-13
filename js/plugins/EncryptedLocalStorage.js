@@ -22,7 +22,6 @@ EncryptedLocalStorage.prototype._brokenDecrypt = function(body) {
 
 EncryptedLocalStorage.prototype._brokenDecryptUndef = function(body) {
   var badkey = undefined + SEPARATOR + undefined;
-console.log('[EncryptedLocalStorage.js.25:badkey:]',badkey); //TODO
   return cryptoUtil.decrypt(badkey, body);
 };
 
