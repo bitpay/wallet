@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   var _credentials, _firstpin;
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
-    $scope.attempt=0;
+    $scope.attempt = 0;
 
     // This is only for backwards compat, insight api should link to #!/confirmed directly
     if (getParam('confirmed')) {
@@ -43,12 +43,12 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     if (newValue === _firstpin) {
       _firstpin = null;
       $scope.createPin(newValue);
-    } else { 
+    } else {
       $scope.$$childTail.setPinForm.newpin.$setViewValue('');
       $scope.$$childTail.setPinForm.newpin.$render();
       $scope.$$childTail.setPinForm.repeatpin.$setViewValue('');
       $scope.$$childTail.setPinForm.repeatpin.$render();
-      
+
       _firstpin = null;
       $scope.askForPin = 1;
       $scope.error = 'Entered PINs were not equal. Try again';
@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       return;
     }
     $rootScope.starting = true;
-    
+
     $timeout(function() {
       var credentials = pinService.get(pin, function(err, credentials) {
         if (err || !credentials) {
@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         }
         $scope.open(credentials.email, credentials.password);
       });
-    },100);
+    }, 100);
   };
 
   $scope.openWallets = function() {
@@ -98,7 +98,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         $rootScope.starting = null;
         $scope.openWallets();
       });
-    },100);
+    }, 100);
   };
 
   $scope.openWithCredentials = function(form) {
@@ -128,7 +128,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         if ((err.toString() || '').match('PNOTFOUND')) {
           $scope.error = 'Invalid email or password';
 
-          if($scope.attempt++>1) {
+          if ($scope.attempt++ > 1) {
             var storage = $scope.usingLocalStorage ? 'this device storage' : 'cloud storage';
             $scope.error = 'Invalid email or password. You are trying to sign in using ' + storage + '. Change it on settings is necessary.';
           };
@@ -144,9 +144,9 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           $scope.error = 'Unknown error';
         }
         $rootScope.starting = false;
-        $timeout(function(){
+        $timeout(function() {
           $rootScope.$digest();
-        },1)
+        }, 1)
         return;
       }
 
@@ -164,7 +164,9 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
           $scope.askForPin = 1;
           $rootScope.starting = false;
           $rootScope.hideNavigation = true;
-          $rootScope.$digest();
+          $timeout(function() {
+            $rootScope.$digest();
+          }, 1);
           return;
         }
         // no mobile
