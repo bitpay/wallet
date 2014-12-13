@@ -2,6 +2,7 @@ var cryptoUtil = require('../util/crypto');
 var log = require('../util/log');
 var LocalStorage = require('./LocalStorage');
 var inherits = require('inherits');
+var preconditions = require('preconditions').singleton();
 
 var SEPARATOR = '@#$';
 
@@ -30,8 +31,12 @@ EncryptedLocalStorage.prototype._brokenDecryptUndef = function(body) {
 
 EncryptedLocalStorage.prototype.getItem = function(name, callback) {
   var self = this;
+  preconditions.checkState(self.email);
+
   LocalStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
+
+
       var decryptedJson = cryptoUtil.decrypt(self.email + SEPARATOR + self.password, body);
       if (!decryptedJson) {
         log.debug('Could not decrypt value using current decryption schema');
