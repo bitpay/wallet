@@ -9,11 +9,6 @@ function EncryptedInsightStorage(config) {
 }
 inherits(EncryptedInsightStorage, InsightStorage);
 
-
-EncryptedInsightStorage.prototype._brokenDecryptUndef = function(body) {
-  cryptoUtil.decrypt('undefined' + SEPARATOR + 'undefined', body);
-};
-
 EncryptedInsightStorage.prototype._brokenDecrypt = function(body) {
   var key = cryptoUtil.kdf(this.password + this.email, 'mjuBtGybi/4=', 100);
   log.debug('Trying legacy decrypt')
@@ -33,10 +28,6 @@ EncryptedInsightStorage.prototype.getItem = function(name, callback) {
       if (!decryptedJson) {
         log.debug('Could not decrypt value using current decryption schema');
         decryptedJson = self._brokenDecrypt(body);
-      }
-
-      if (!decryptedJson) {
-        decryptedJson = self._brokenDecryptUndef(body);
       }
 
       if (!decryptedJson) {

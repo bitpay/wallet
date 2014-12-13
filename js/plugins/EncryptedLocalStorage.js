@@ -19,15 +19,28 @@ EncryptedLocalStorage.prototype._brokenDecrypt = function(body) {
 };
 
 
+
+EncryptedLocalStorage.prototype._brokenDecryptUndef = function(body) {
+  var badkey = undefined + SEPARATOR + undefined;
+console.log('[EncryptedLocalStorage.js.25:badkey:]',badkey); //TODO
+  return cryptoUtil.decrypt(badkey, body);
+};
+
+
+
+
 EncryptedLocalStorage.prototype.getItem = function(name, callback) {
   var self = this;
   LocalStorage.prototype.getItem.apply(this, [name,
     function(err, body) {
       var decryptedJson = cryptoUtil.decrypt(self.email + SEPARATOR + self.password, body);
-
       if (!decryptedJson) {
         log.debug('Could not decrypt value using current decryption schema');
         decryptedJson = self._brokenDecrypt(body);
+      }
+
+      if (!decryptedJson) {
+        decryptedJson = self._brokenDecryptUndef(body);
       }
 
       if (!decryptedJson) {
