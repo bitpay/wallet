@@ -22,14 +22,14 @@
             </span>
           </div>
 
-          <div ng-show="!is_iOS && !isCordova">
+          <div ng-show="!isSafari && !isCordova">
             <div class="input">
               <input type="file" class="db form-control" 
             placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
             </div>
           </div>
 
-          <div ng-show="is_iOS || isCordova">
+          <div ng-show="isSafari || isCordova">
             <div class="input"> 
             <textarea 
               placeholder="Paste backup plain text code" 
