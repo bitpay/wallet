@@ -1171,7 +1171,7 @@ label.postfix, span.postfix {
 
 .side-nav li.active>a:first-child:not(.button) {
   color: #2C3E50;
-  background-color: #F8F8FB;
+  background-color: #E8ECEF;
 }
 
 .side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
