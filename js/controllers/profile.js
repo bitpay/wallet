@@ -1,8 +1,8 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService, isMobile) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService, isMobile, isCordova) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = isMobile.Safari();
-  $scope.isCordova = !!window.cordova;
+  $scope.isCordova = isCordova;
 
   $rootScope.title = 'Profile';
   $scope.hideAdv = true;
@@ -62,6 +62,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       if (!w) return;
       $scope.isSafari = isMobile.Safari();
+      $scope.isCordova = isCordova;
       $scope.item = w;
       $scope.error = null;
       $scope.success = null;
