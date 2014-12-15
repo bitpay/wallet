@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, $timeout, identityService, notification, isMobile, Compatibility) {
+  function($scope, $rootScope, $location, $timeout, identityService, notification, isMobile, isCordova, Compatibility) {
 
     $rootScope.title = 'Import wallet';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
     $scope.is_iOS = isMobile.iOS();
+    $scope.isCordova = isCordova;
     $scope.importOpts = {};
 
     window.ignoreMobilePause = true;
