@@ -34,8 +34,11 @@ angular.module('copayApp.controllers').controller('ImportController',
           updateStatus('Importing wallet - Procesing backup...');
           identityService.importWallet(encryptedObj, $scope.password, {}, function(err) {
             if (err) {
-              $scope.loading = false;
+              $rootScope.starting = false;
               $scope.error = 'Could not read wallet. Please check your password';
+              $timeout(function() {
+                $rootScope.$digest();
+              }, 1);
             }
           });
         }
@@ -43,10 +46,8 @@ angular.module('copayApp.controllers').controller('ImportController',
     };
 
     $scope.import = function(form) {
-      $scope.loading = true;
 
       if (form.$invalid) {
-        $scope.loading = false;
         $scope.error = 'There is an error in the form';
         return;
       }
@@ -61,10 +62,11 @@ angular.module('copayApp.controllers').controller('ImportController',
       }
 
       if (!backupFile && !backupText) {
-        $scope.loading = false;
         $scope.error = 'Please, select your backup file';
         return;
       }
+
+      $rootScope.starting = true;
 
       $scope.importOpts = {};
 
@@ -79,21 +81,19 @@ angular.module('copayApp.controllers').controller('ImportController',
       if (skipFields)
         $scope.importOpts.skipFields = skipFields;
 
-
-      $timeout(function() {
-        if (backupFile) {
-          reader.readAsBinaryString(backupFile);
-        } else {
-          updateStatus('Importing wallet - Procesing backup...');
-          identityService.importWallet(backupText, $scope.password, $scope.importOpts, function(err) {
-            if (err) {
-              $scope.loading = false;
-              $scope.error = 'Could not read wallet. Please check your password';
+      if (backupFile) {
+        reader.readAsBinaryString(backupFile);
+      } else {
+        updateStatus('Importing wallet - Procesing backup...');
+        identityService.importWallet(backupText, $scope.password, $scope.importOpts, function(err) {
+          if (err) {
+            $rootScope.starting = false;
+            $scope.error = 'Could not read wallet. Please check your password';
+            $timeout(function() {
               $rootScope.$digest();
-              return;
-            }
-          });
-        }
-      }, 1);
+            }, 1);
+          }
+        });
+      }
     };
   });
