@@ -125,12 +125,14 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       if (err) {
         $rootScope.starting = false;
         copay.logger.warn(err);
+
+        var identifier = $scope.usingLocalStorage ? 'username' : 'email';
         if ((err.toString() || '').match('PNOTFOUND')) {
-          $scope.error = 'Invalid email or password';
+          $scope.error = 'Invalid ' + identifier + ' or password';
 
           if ($scope.attempt++ > 1) {
             var storage = $scope.usingLocalStorage ? 'this device storage' : 'cloud storage';
-            $scope.error = 'Invalid email or password. You are trying to sign in using ' + storage + '. Change it on settings if necessary.';
+            $scope.error = 'Invalid ' + identifier + ' or password. You are trying to sign in using ' + storage + '. Change it on settings if necessary.';
           };
 
           $rootScope.hasPin = false;
