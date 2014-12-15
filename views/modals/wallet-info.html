@@ -1,4 +1,4 @@
-<div class="text-center" ng-init="isComplete = item.isComplete(); networkName = item.getNetworkName()">
+  <div class="text-center" ng-init="isComplete = item.isComplete(); networkName = item.getNetworkName()">
   <h1>{{item.name || item.id }}</h1>
   <h3>
     {{item.requiredCopayers}} of {{item.totalCopayers}} - {{networkName}}
@@ -22,14 +22,14 @@
   </div>
 
   <div class="row" ng-show="!backupWalletPlainText && !error">
-    <div class="large-6 medium-6 small-6 columns">
-    <button class="primary tiny" ng-click="downloadWalletBackup()" ng-disabled="loading"
+    <div class="large-6 medium-6 small-12 columns">
+    <button class="primary expand" ng-click="downloadWalletBackup()" ng-disabled="loading"
       ng-show="!isSafari"><i class="fi-download"></i> Download backup</button>
-    <button class="primary tiny" ng-click="viewWalletBackup()" ng-disabled="loading"
+    <button class="primary expand" ng-click="viewWalletBackup()" ng-disabled="loading"
       ng-show="isSafari"><i class="fi-eye"></i> View Backup</button> 
     </div>
-    <div class="large-6 medium-6 small-6 columns">
-    <button class="warning tiny" ng-disabled="loading" 
+    <div class="large-6 medium-6 small-12 columns">
+    <button class="warning expand" ng-disabled="loading" 
       ng-really-message="{{'Are you sure you want to delete the wallet'}} {{(item.name || item.id)}}" 
       ng-really-click="deleteWallet()">
       <span ng-show="!loading">
