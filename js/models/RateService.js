@@ -106,7 +106,10 @@ RateService.prototype.getHistoricRates = function(code, dates, cb) {
   }, function(err, res, body) {
     if (err || res.statusCode != 200 || !body) return cb(err || res);
     if (!_.isArray(body)) {
-      body = [{ ts: dates[0], rate: body.rate }];
+      body = [{
+        ts: dates[0],
+        rate: body.rate
+      }];
     }
     return cb(null, body);
   });
