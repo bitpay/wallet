@@ -1,9 +1,15 @@
 body {
 }
 
+h1 {
+  font-weight: 300;
+  font-size: 30px;
+}
+
 h2 {
-  font-weight:300;
+  font-weight:700;
   color: #535A6C;
+  font-size: 30px;
 }
 
 p {
@@ -25,6 +31,11 @@ p {
 .reveal-modal.line-dashed-v {
   border-right: 1px dashed #E3E3E3;
 
+}
+
+.line-mobile {
+  border-bottom: 1px solid #EAEDF0;
+  margin-bottom: 3rem;
 }
 
 .text-warning {
@@ -70,6 +81,7 @@ p {
 .p1b {padding-bottom: 1rem;}
 .p1tb {padding: 1rem 0;}
 .p0m0 {padding: 0; margin: 0}
+.db {display: block;}
 
 .row {
   width: 100%;
@@ -104,7 +116,7 @@ header {
     left: 0;
     z-index: 1;
   background-color: #00BD9C;
-  padding-top: 3.5em;
+  padding-top: 1em;
   padding-bottom: 1em;
  }
 
@@ -126,19 +138,19 @@ header {
   width: 210px;
   }  
 
-   .copay-version, .copay-version-small {
+.copay-version, .copay-version-small {
   color: #FFFFFF;
-   position: absolute;
-  }
+  position: absolute;
+}
 
 
- .copay-version {
-  left: 65px; 
-   bottom: -5px; 
-  }
+.copay-version {
+  left: 100px; 
+  bottom: 0; 
+}
 
    .copay-version-small {
-  right: 15px; 
+  right: 40%; 
    bottom: 5px; 
   }
 
@@ -152,9 +164,11 @@ a:hover.btn-dwnld {
 
     }  
 
-#drop1 li a, #drop2 li a {
-    padding-left: 40px !important;   
-    }
+#drop1 li i {
+  font-size: 28px;
+  margin-right: 10px;
+  color: #9B9B9B;
+}
 
 #drop1 li, #drop2 li {
     border-bottom: 1px solid #E7E7EB;  
@@ -214,15 +228,11 @@ a:hover.btn-dwnld {
     
 
 .slogan-small{
-  padding: 15em 0 1em 0;
-    }
-
-.slogan-medium{
-  padding: 12em 0 1em 0;
+  padding: 11em 0 1em 0;
     }
 
 .slogan-large{
-  padding: 11em 0 1em 0;
+  padding: 9em 0 1em 0;
     }
 
 .subheader{
@@ -258,18 +268,13 @@ a:hover.btn-dwnld {
   padding: 10em 0 ;
   }
 
- .s-p-even-nbr{
-  background-color:#EAEDF0; 
-  } 
+.strong-points h2 {
+  margin-top: 3rem;
+}
 
-  .separator-1 {
-    padding-top: 1em;
-    margin-bottom: 1em;
-    width: 3em;
-    border-bottom: 1px solid #2C3E50;
-      }
-
-
+.bg-gray {
+background-color:#EAEDF0; 
+} 
 
 #bank, #signature, #opensource, #family, #business, #friends{
     visibility: hidden;
