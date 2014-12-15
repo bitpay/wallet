@@ -26,8 +26,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       updateStatus('Importing profile - Setting things up...');
 
       identityService.importProfile(str,password, function(err, iden) {
-        $scope.loading = false;
         if (err) {
+          $rootScope.starting = false;
           copay.logger.warn(err);
           if ((err.toString() || '').match('BADSTR')) {
             $scope.error = 'Bad password or corrupt profile file';
@@ -36,6 +36,9 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
           } else {
             $scope.error = 'Unknown error';
           }
+          $timeout(function() {
+            $rootScope.$digest();
+          }, 1);
         } 
       });
     };
@@ -51,10 +54,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     };
 
     $scope.import = function(form) {
-      $scope.loading = true;
 
       if (form.$invalid) {
-        $scope.loading = false;
         $scope.error = 'Please enter the required fields';
         return;
       }
@@ -63,17 +64,16 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
-        $scope.loading = false;
         $scope.error = 'Please, select your backup file';
         return;
       }
+      
+      $rootScope.starting = true;
 
-      $timeout(function() {
-        if (backupFile) {
-          reader.readAsBinaryString(backupFile);
-        } else {
-          _importBackup(backupText);
-        }
-      }, 1);
+      if (backupFile) {
+        reader.readAsBinaryString(backupFile);
+      } else {
+        _importBackup(backupText);
+      }
     };
   });
