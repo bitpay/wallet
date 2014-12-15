@@ -18,7 +18,6 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
 
     var updateStatus = function(status) {
       $scope.importStatus = status;
-      $scope.$digest();
     }
 
     var _importBackup = function(str) {
@@ -66,10 +65,12 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       }
 
       $scope.loading = true;
-      if (backupFile) {
-        reader.readAsBinaryString(backupFile);
-      } else {
-        _importBackup(backupText);
-      }
+      $timeout(function() {
+        if (backupFile) {
+          reader.readAsBinaryString(backupFile);
+        } else {
+          _importBackup(backupText);
+        }
+      }, 1);
     };
   });
