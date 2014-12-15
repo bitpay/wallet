@@ -50,8 +50,10 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
     };
 
     $scope.import = function(form) {
+      $scope.loading = true;
 
       if (form.$invalid) {
+        $scope.loading = false;
         $scope.error = 'Please enter the required fields';
         return;
       }
@@ -60,11 +62,11 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
+        $scope.loading = false;
         $scope.error = 'Please, select your backup file';
         return;
       }
 
-      $scope.loading = true;
       $timeout(function() {
         if (backupFile) {
           reader.readAsBinaryString(backupFile);
