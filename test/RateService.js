@@ -1,5 +1,6 @@
 'use strict';
 
+var moment = require('moment');
 var RateService = copay.RateService;
 
 describe('RateService model', function() {
@@ -10,10 +11,10 @@ describe('RateService model', function() {
 
   describe('Fetching currencies', function() {
     var clock;
-    before(function () {
+    before(function() {
       clock = sinon.useFakeTimers();
     });
-    after(function () {
+    after(function() {
       clock.restore();
     });
     it('should retry fetching currencies on error', function() {
@@ -171,6 +172,53 @@ describe('RateService model', function() {
             rate.toFixed(2).should.equal(p.expected);
           });
         });
+      });
+    });
+
+    describe('#getHistoricRate', function() {
+      it('should return historic rate', function() {
+        var yesterday = moment().subtract(1, 'day');
+        var reqStub = sinon.stub();
+        reqStub.get = sinon.stub().yields(null, {
+          statusCode: 200
+        }, {
+          ts: yesterday,
+          rate: 100
+        });
+
+        var rs = new RateService({
+          request: reqStub
+        });
+        rs.isAvailable = sinon.stub().returns(true);
+
+        var params = [{
+          code: 'USD',
+          date: yesterday,
+          expected: '100.00'
+        }];
+
+        _.each(params, function(p) {
+          rs.getHistoricRate('USD', yesterday, function(err, rate) {
+            rate.toFixed(2).should.equal(p.expected);
+          });
+        });
+      });
+      it.only('should return error', function() {
+        var yesterday = moment().subtract(1, 'day');
+        var reqStub = sinon.stub();
+        reqStub.get = sinon.stub().yields(null, {
+          statusCode: 500
+        });
+
+        var rs = new RateService({
+          request: reqStub
+        });
+        rs.isAvailable = sinon.stub().returns(true);
+
+        rs.getHistoricRate('USD', yesterday, function(err, rate) {
+          err.statusCode.should.equal(500);
+        });
+
       });
     });
 
