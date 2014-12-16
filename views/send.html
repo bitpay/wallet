@@ -105,14 +105,14 @@
                 </small>
               </div>
               <div ng-show="!showAlternative">
+                <label for="amount">
+                  <span translate>Amount</span>
+                </label>
 
-              <label for="amount">
-                <span translate>Amount</span>
-              </label>
-
-              <div class="input">
-                <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off">
-                <a class="postfix" ng-click="showAlternative = true">{{$root.wallet.settings.unitName}}</a>
+                <div class="input">
+                  <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off">
+                  <a class="postfix" ng-click="showAlternative = true">{{$root.wallet.settings.unitName}}</a>
+                </div>
               </div>
               <div ng-show="showAlternative">
                 <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
