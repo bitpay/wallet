@@ -4,7 +4,7 @@
  *
  */
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px) { 
 
   .loading-screen {
     background-color: #2C3E50;
@@ -228,7 +228,11 @@
 
   .side-nav li.nav-item.selected {
     background-color: #3C4E60;
-  }
+  } 
+
+  /* 
+   * Remove all vendors hover / shadow / fade 
+   */
 
   .tooltip {
     display: none !important;
@@ -239,8 +243,6 @@
     box-shadow: none;
   }
 
-  /* Remove all vendors hover */
-
   ul.off-canvas-list li a:hover {
     background: none;
   }
@@ -248,6 +250,30 @@
   .side-nav li a:not(.button) {
     padding: 0;
   }
+
+  a, button, .button, input, textarea, select {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+  }
+
+  .modal.fade, .reveal-modal-bg {
+    opacity: 1;
+  }
+
+  .modal.fade .modal-dialog, .modal.in .modal-dialog, .reveal-modal-bg {
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+
+  .button.secondary:hover, button.secondary:hover {
+    background: #008CC1;
+    color: #fff;
+  }
+
+  /*******************************************/
 
 }
 
