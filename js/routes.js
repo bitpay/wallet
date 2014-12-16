@@ -3,6 +3,20 @@
 var LS = require('../js/plugins/LocalStorage');
 var ls = new LS();
 
+var unsupported = false;
+
+if (!ls || ls.length < 1)
+  unsupported = true;
+
+
+if (window && window.navigator) {
+  var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
+  var isaosp = (rxaosp && rxaosp[1] < 537);
+  if (isaosp)
+    unsupported = true;
+}
+
+
 //Setting up route
 angular
   .module('copayApp')
@@ -127,18 +141,17 @@ angular
     }
 
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-
-      if (!ls || ls.length < 1) {
+      if (unsupported) {
         $location.path('unsupported');
-      } else {
-        if (!$rootScope.iden && next.logged) {
-          $idle.unwatch();
-          $location.path('/');
-        }
-        if ($rootScope.wallet && !$rootScope.wallet.isComplete() 
-            && next.walletShouldBeComplete) {
-          $location.path('/copayers');
-        }
+        return;
+      }
+
+      if (!$rootScope.iden && next.logged) {
+        $idle.unwatch();
+        $location.path('/');
+      }
+      if ($rootScope.wallet && !$rootScope.wallet.isComplete() && next.walletShouldBeComplete) {
+        $location.path('/copayers');
       }
     });
   })
