@@ -137,7 +137,7 @@
           </div>
 
           <div class="row">
-            <div class="large-6 medium-6 small-12 columns text-left">
+            <div class="large-4 medium-4 small-12 columns text-left">
               <div class="show-for-large-up">
                 <div ng-hide="showScanner || disableScanner">
                   <a class="button radius tiny black" ng-click="openScanner()"><i class="fi-camera size-18 vm m5r"></i> Scan QR </a>
@@ -146,9 +146,7 @@
                   <a translate class="button radius tiny warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i> </a>
                 </div>
               </div>
-              <a ng-click="resetForm()" class="button warning m0" ng-show="_merchantData || lockAddress" ng-disabled="loading">
-                  Cancel
-                </a>
+              <a ng-click="resetForm()" class="button expand warning" ng-show="_merchantData || lockAddress" ng-disabled="loading">Cancel</a>
             </div>
             <div class="large-6 medium-6 small-12 columns text-right">
               <button type="submit" class="button primary m0 expand" ng-disabled="sendForm.$invalid || loading">
