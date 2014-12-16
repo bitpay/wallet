@@ -29,7 +29,7 @@
 
               <div class="input">
                 <input id="connectionId" type="text" placeholder="{{'Paste wallet secret here'|translate}}" name="connectionId" ng-model="connectionId" wallet-secret required>
-                <i class="icon-wallet"></i>
+                <label for="connectionId"><i class="icon-wallet"></i></label>
                 <div ng-hide="showScanner || disableScanner">
                   <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera">&nbsp;</i></a>
                 </div>

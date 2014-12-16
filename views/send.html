@@ -66,7 +66,7 @@
 
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required>
-              <i class="fi-address-book"></i> 
+              <label for="address"><i class="fi-address-book"></i> </label>
               <div ng-hide="showScanner || disableScanner">
                 <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
               </div>
@@ -112,7 +112,7 @@
                   <div class="small-9 columns">
                     <div class="input">
                       <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off">
-                      <i class="icon-bitcoin"></i>
+                      <label for="amount"><i class="icon-bitcoin"></i></label>
                     </div>
                   </div>
                   <div class="small-3 columns pointer" ng-click="showAlternative = true">
@@ -127,7 +127,7 @@
                   <div class="small-9 columns">
                     <div class="input">
                       <input type="number" id="alternative" ng-disabled="loading || !isRateAvailable || lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off">
-                      <i class="icon-usd"></i>
+                      <label for="alternative"><i class="icon-usd"></i></label>
                     </div>
                   </div>
                   <div class="small-3 columns pointer" ng-click="showAlternative = false">
@@ -145,7 +145,7 @@
               </label>
               <div class="input">
                 <textarea id="comment" ng-disabled="loading" name="comment" placeholder="{{($root.wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction')}}" ng-maxlength="100" ng-model="_comment"></textarea>
-                <i class="icon-compose"></i>
+                <label for="comment"><i class="icon-reference"></i></label>
               </div>
             </div>
           </div>
