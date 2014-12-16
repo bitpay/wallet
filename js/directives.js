@@ -304,7 +304,7 @@ angular.module('copayApp.directives')
   })
   .directive('clipCopy', function() {
     return {
-      restric: 'A',
+      restrict: 'A',
       scope: {
         clipCopy: '=clipCopy'
       },
