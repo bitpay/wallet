@@ -173,6 +173,57 @@ describe('Wallet model', function() {
     (new bitcore.Address(w.generateAddress(true))).isValid().should.equal(true);
   });
 
+  it('should check sizes', function() {
+    var opts = {};
+    var w = cachedCreateW();
+    var s = w.sizes();
+    s.total.should.be.equal(1634);
+  });
+
+  it('should check pending proposals', function() {
+    var opts = {};
+    var w = cachedCreateW();
+
+    var p = w.getPendingTxProposalsCount();
+    console.log('p', p);
+    p.pending.should.be.equal(0);
+    p.pendingForUs.should.be.equal(0);
+  });
+
+  it('should set version', function() {
+    var opts = {};
+    var w = cachedCreateW();
+    w.setVersion('0.123')
+    w.version.should.be.equal('0.123');
+  });
+
+  it('should check pending proposals', function(done) {
+    var w = createW2(null, 1);
+    var utxo = createUTXO(w);
+    w.blockchain.fixUnspent(utxo);
+
+    sinon.spy(w, 'sendIndexes');
+    sinon.spy(w, 'sendTxProposal');
+    w.spend({
+      toAddress: toAddress,
+      amountSat: amountSatStr,
+    }, function(err, id, status) {
+      should.not.exist(err);
+      should.exist(id);
+      status.should.equal(Wallet.TX_PROPOSAL_SENT);
+      w.sendTxProposal.calledOnce.should.equal(true);
+      w.sendIndexes.calledOnce.should.equal(false);
+
+      var p = w.getPendingTxProposalsCount();
+      p.pending.should.be.equal(1);
+      p.pendingForUs.should.be.equal(0);
+
+      var p2 = w.getPendingTxProposals();
+      p2.length.should.be.equal(1);
+      done();
+    });
+  });
+
   var unspentTest = [{
     "address": "dummy",
     "scriptPubKey": "dummy",
@@ -707,6 +758,25 @@ describe('Wallet model', function() {
     });
   });
 
+
+  it('should exportEncrypted', function() {
+    var w = createW2();
+    var enc = w.exportEncrypted('', {});
+    enc.length.should.equal(2405);
+  });
+
+  it('should close wallet', function(done) {
+    var w = createW2();
+    w.removeAllListeners = sinon.stub();
+    w.network.removeAllListeners = sinon.stub();
+    w.network.cleanUp = sinon.stub();
+    w.blockchain.removeAllListeners = sinon.stub();
+    w.blockchain.destroy = sinon.stub();
+
+    w.close(function() {
+      done();
+    });
+  });
 
   // tx handling
 
