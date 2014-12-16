@@ -169,7 +169,7 @@ module.exports = function(grunt) {
       },
       vendors: {
         files: {
-          'css/vendors.min.css': ['css/foundation.min.css', 'css/foundation-icons.css', 'lib/angular/angular-csp.css']
+          'css/vendors.min.css': ['css/foundation.min.css', 'css/foundation-icons.css']
         }
       }
     },
