@@ -1229,6 +1229,11 @@ label.postfix, span.postfix {
   box-shadow: 1px 0px 0px 0px #FFFFFF;
 }
 
+.input label {
+  line-height: 0;
+  padding: 0;
+}
+
 .icon-input {
   font-size: 9px;
   color: #fff;
