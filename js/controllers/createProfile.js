@@ -45,6 +45,9 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkState(_credentials && _credentials.email);
     $rootScope.starting = true;
 
+    // hide Keyboard after submit form
+    var hideKeyboard = document.querySelector('#repeatpin').blur();
+
     $timeout(function() {
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
         _credentials.password = '';
