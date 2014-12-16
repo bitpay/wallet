@@ -168,15 +168,16 @@ Wallet.PERSISTED_PROPERTIES = [
   'secretNumber',
 ];
 
+/* For compressed keys, m*73 + n*34 <= 496 */
 Wallet.COPAYER_PAIR_LIMITS = {
   1: 1,
   2: 2,
   3: 3,
   4: 4,
   5: 4,
-  6: 3,
+  6: 4,
   7: 3,
-  8: 2,
+  8: 3,
   9: 2,
   10: 2,
   11: 1,
