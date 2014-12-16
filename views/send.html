@@ -1,8 +1,16 @@
 <div class="send" ng-controller="SendController" ng-init="init()">
 
-  <div class="row">
-    <div class="large-12 medium-12 small-12 columns">
-      <h1 class="hide-for-large-up">{{$root.title}}</h1>
+  <div class="row hide-for-large-up" >
+    <div class="large-10 medium-10 small-9 columns">
+      <h1>{{$root.title}}</h1>
+    </div>
+    <div class="large-2 medium-2 small-3 columns">
+      <div ng-hide="showScanner || disableScanner">
+        <a class="button right m10b radius tiny black" ng-click="openScanner()"><i class="fi-camera size-18"></i></a>
+      </div>
+      <div ng-show="showScanner">
+        <a translate class="button right radius tiny m10b warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
+      </div>
     </div>
   </div>
 
@@ -22,7 +30,7 @@
   </div>
 
   <div class="row" ng-show="!fetchingURL">
-    <div class="large-12 columns">
+    <div class="large-8 large-centered columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
         <div class="panel">
           <div class="box-notification" ng-show="error">
@@ -66,13 +74,7 @@
 
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required>
-              <label for="address"><i class="fi-address-book"></i> </label>
-              <div ng-hide="showScanner || disableScanner">
-                <a class="postfix button black" ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
-              </div>
-              <div ng-show="showScanner">
-                <a translate class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
-              </div>
+              <a class="postfix" ng-click="openAddressBook()"><i class="fi-address-book size-24"></i></a>
             </div>
             <div id="scanner" class="row" ng-if="showScanner" ng-include="'views/includes/scanner.html'">
             </div>
@@ -103,36 +105,21 @@
                 </small>
               </div>
               <div ng-show="!showAlternative">
-                <div class="row collapse">
 
-                  <label for="amount">
-                    <span translate>Amount</span>
-                  </label>
+              <label for="amount">
+                <span translate>Amount</span>
+              </label>
 
-                  <div class="small-9 columns">
-                    <div class="input">
-                      <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off">
-                      <label for="amount"><i class="icon-bitcoin"></i></label>
-                    </div>
-                  </div>
-                  <div class="small-3 columns pointer" ng-click="showAlternative = true">
-                    <span class="postfix">{{$root.wallet.settings.unitName}}</span>
-                  </div>
-                </div>
+              <div class="input">
+                <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off">
+                <a class="postfix" ng-click="showAlternative = true">{{$root.wallet.settings.unitName}}</a>
               </div>
               <div ng-show="showAlternative">
-                <div class="row collapse">
-                  <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
-                  </label>
-                  <div class="small-9 columns">
-                    <div class="input">
-                      <input type="number" id="alternative" ng-disabled="loading || !isRateAvailable || lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off">
-                      <label for="alternative"><i class="icon-usd"></i></label>
-                    </div>
-                  </div>
-                  <div class="small-3 columns pointer" ng-click="showAlternative = false">
-                    <span class="postfix">{{alternativeIsoCode}}</span>
-                  </div>
+                <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
+                </label>
+                <div class="input">
+                  <input type="number" id="alternative" ng-disabled="loading || !isRateAvailable || lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off">
+                  <a class="postfix" ng-click="showAlternative = false"> {{ alternativeName }}</a>
                 </div>
               </div>
             </div>
@@ -145,21 +132,25 @@
               </label>
               <div class="input">
                 <textarea id="comment" ng-disabled="loading" name="comment" placeholder="{{($root.wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction')}}" ng-maxlength="100" ng-model="_comment"></textarea>
-                <label for="comment"><i class="icon-reference"></i></label>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="large-6 medium-6 small-6 columns text-left">
-              <a class="button tiny secondary m0 radius" title="Address book" ng-hide="_merchantData || lockAddress" ng-click="openAddressBook()">
-                <i class="fi-address-book size-14 m5r vm"></i> Address book
-              </a>
+            <div class="large-6 medium-6 small-12 columns text-left">
+              <div class="show-for-large-up">
+                <div ng-hide="showScanner || disableScanner">
+                  <a class="button radius tiny black" ng-click="openScanner()"><i class="fi-camera size-18 vm m5r"></i> Scan QR </a>
+                </div>
+                <div ng-show="showScanner">
+                  <a translate class="button radius tiny warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i> </a>
+                </div>
+              </div>
               <a ng-click="resetForm()" class="button warning m0" ng-show="_merchantData || lockAddress" ng-disabled="loading">
                   Cancel
                 </a>
             </div>
-            <div class="large-4 medium-4 small-6 columns text-right">
+            <div class="large-6 medium-6 small-12 columns text-right">
               <button type="submit" class="button primary m0 expand" ng-disabled="sendForm.$invalid || loading">
                 <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i> Send
               </button>

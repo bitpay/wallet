@@ -946,6 +946,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   box-shadow: none;
   border: none;
   padding-left: 45px;
+  font-size: 13px;
 }
 
 /* SECONDARY */
@@ -1115,14 +1116,19 @@ ul.wallet-selection.wallets {
   color: #fff;
 }
 
-label.postfix, span.postfix {
-  height: 40px;
+label.postfix, a.postfix {
+  height: 100%;
   border: none;
-  background-color: #DFE5EB;
   font-weight: 700;
-  font-size: 10px;
-  color: #7A8C9E;
+  font-size: 12px;
+  color: #fff;
   text-transform: uppercase;
+  background: #7A8C9E;
+  border-radius: 0 2px 2px 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
 }
 
 .photo-container {
@@ -1216,7 +1222,7 @@ label.postfix, span.postfix {
 
 .input { position: relative;}
 
-.input i {
+.createProfile .input i, .home .input i {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -1232,6 +1238,10 @@ label.postfix, span.postfix {
 .input label {
   line-height: 0;
   padding: 0;
+}
+
+.send input[type=text], .send input[type=number], .send textarea {
+  padding: 0.5rem;
 }
 
 .icon-input {
