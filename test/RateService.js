@@ -82,7 +82,7 @@ describe('RateService model', function() {
         rs.isAvailable = sinon.stub().returns(false);
         (function() {
           rs.toFiat(10000, 'USD');
-        }).should.throw;
+        }).should.throw('not available');
       });
       it('should return current valuation', function() {
         var rs = new RateService();
@@ -203,7 +203,7 @@ describe('RateService model', function() {
           });
         });
       });
-      it.only('should return error', function() {
+      it('should return error', function() {
         var yesterday = moment().subtract(1, 'day');
         var reqStub = sinon.stub();
         reqStub.get = sinon.stub().yields(null, {
@@ -222,13 +222,75 @@ describe('RateService model', function() {
       });
     });
 
+    describe('#getHistoricRates', function() {
+      it('should return historic rates for many dates', function() {
+        var yesterday = moment().subtract(1, 'day');
+        var lastWeekday = moment().subtract(7, 'day');
+        var reqStub = sinon.stub();
+        reqStub.get = sinon.stub().yields(null, {
+          statusCode: 200
+        }, [{
+          ts: lastWeekday,
+          rate: 90,
+        }, {
+          ts: yesterday,
+          rate: 100,
+        }, ]);
+
+        var rs = new RateService({
+          request: reqStub
+        });
+        rs.isAvailable = sinon.stub().returns(true);
+
+        var params = [{
+          code: 'USD',
+          date: lastWeekday,
+          expected: '90.00'
+        }, {
+          code: 'USD',
+          date: yesterday,
+          expected: '100.00'
+        }];
+
+        var dates = [lastWeekday, yesterday];
+        rs.getHistoricRates('USD', dates, function(err, r) {
+          r.length.should.equal(2);
+        });
+
+        //same input dates should return only two values
+        dates.push(lastWeekday);
+        dates.push(yesterday);
+        rs.getHistoricRates('USD', dates, function(err, r) {
+          r.length.should.equal(2);
+        });
+      });
+
+      it('should return error', function() {
+        var yesterday = moment().subtract(1, 'day');
+        var reqStub = sinon.stub();
+        reqStub.get = sinon.stub().yields(null, {
+          statusCode: 500
+        });
+
+        var rs = new RateService({
+          request: reqStub
+        });
+        rs.isAvailable = sinon.stub().returns(true);
+
+        var dates = [yesterday, yesterday];
+        rs.getHistoricRates('USD', dates, function(err, rate) {
+          err.statusCode.should.equal(500);
+        });
+      });
+    });
+
     describe('#fromFiat', function() {
       it('should throw error when unavailable', function() {
         var rs = new RateService();
         rs.isAvailable = sinon.stub().returns(false);
         (function() {
           rs.fromFiat(300, 'USD');
-        }).should.throw;
+        }).should.throw('not available');
       });
       it('should return current valuation', function() {
         var rs = new RateService();
@@ -265,7 +327,9 @@ describe('RateService model', function() {
         rs.isAvailable = sinon.stub().returns(false);
         (function() {
           rs.listAlternatives();
-        }).should.throw;
+        }).should.throw('not available');;
+
+        rs.getAlternatives();
       });
 
       it('should return list of available currencies', function() {
@@ -284,6 +348,32 @@ describe('RateService model', function() {
         var list = rs.listAlternatives();
         list.should.exist;
         list.length.should.equal(2);
+
+        list = rs.getAlternatives();
+        list.should.exist;
+        list.length.should.equal(2);
+      });
+
+      it('should return an error when trying to get the list of available currencies', function() {
+        var rs = new RateService();
+        rs.isAvailable = sinon.stub().returns(true);
+        rs.whenAvailable(function() {});
+        rs.isAvailable = sinon.stub().returns(false);
+        rs.whenAvailable(function() {});
+
+        rs.getAlternatives().length.should.equal(0);
+
+        (function() {
+          rs.listAlternatives();
+        }).should.throw;
+      });
+    });
+    describe('#singleton', function() {
+      it('should create only one instance', function() {
+        var rs = RateService.singleton();
+        rs.should.be.not.null;
+        rs = RateService.singleton();
+        rs.should.be.not.null;
       });
     });
   });
