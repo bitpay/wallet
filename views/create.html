@@ -36,7 +36,7 @@
                 </label>
               </div>
               <div class="large-6 medium-6 columns">
-                <label><span translate>Select required signatures (*)</span>
+                <label><span translate>Select required signatures</span>
                   <select ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in RCValues" ng-disabled="totalCopayers == 1">
                   </select>
                 </label>
@@ -49,7 +49,6 @@
                 </div>
               </div>
             </div>
-            <p translate class="comment" ng-show="totalCopayers>1">(*) The limits are imposed by the bitcoin network.</p>
 
             <div class="line-dashed-h m20b"></div>
 
