@@ -31,7 +31,7 @@ angular.module('copayApp.services').factory('configService', function($timeout, 
   };
 
   root.reset = function(cb) {
-    config = defauls;
+    config = defaults;
     localstorageService.removeItem('config', cb);
   };
 

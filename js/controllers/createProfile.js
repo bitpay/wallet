@@ -117,6 +117,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
           msg = 'This profile already exists'
           $scope.createStep = 'email';
         }
+        if (msg.indexOf('EMAILERROR') >= 0) {
+          msg = 'Could not send verification email. Please check your email address.';
+          $scope.createStep = 'email';
+        }
         $scope.error = msg;
       } else {
         // mobile
