@@ -250,10 +250,7 @@ angular.module('copayApp.directives')
         scope.$watch(attrs.ngModel, function(newValue, oldValue) {
           if (newValue && newValue !== '') {
             var info = evaluateMeter(newValue);
-            element.css({
-              'border-color': info.color
-            });
-            scope[attrs.checkStrength] = info.message;
+            scope[attrs.checkStrength] = info;
           }
         });
       }
