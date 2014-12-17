@@ -96,7 +96,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/wallet-info.html',
-      windowClass: 'tiny',
+      windowClass: 'medium',
       controller: ModalInstanceCtrl
     });
 

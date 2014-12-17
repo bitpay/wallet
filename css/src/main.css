@@ -945,7 +945,8 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   -moz-box-shadow: none;
   box-shadow: none;
   border: none;
-  padding-left: 45px;
+  padding-left: 0.5rem;
+  font-size: 13px;
 }
 
 /* SECONDARY */
@@ -1115,14 +1116,19 @@ ul.wallet-selection.wallets {
   color: #fff;
 }
 
-label.postfix, span.postfix {
-  height: 40px;
+label.postfix, a.postfix {
+  height: 100%;
   border: none;
-  background-color: #DFE5EB;
   font-weight: 700;
-  font-size: 10px;
-  color: #7A8C9E;
+  font-size: 12px;
+  color: #fff;
   text-transform: uppercase;
+  background: #7A8C9E;
+  border-radius: 0 2px 2px 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
 }
 
 .photo-container {
@@ -1171,7 +1177,7 @@ label.postfix, span.postfix {
 
 .side-nav li.active>a:first-child:not(.button) {
   color: #2C3E50;
-  background-color: #F8F8FB;
+  background-color: #E8ECEF;
 }
 
 .side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
@@ -1216,7 +1222,7 @@ label.postfix, span.postfix {
 
 .input { position: relative;}
 
-.input i {
+.createProfile .input i, .home .input i, .import-profile .input i, .input.block i {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -1227,6 +1233,20 @@ label.postfix, span.postfix {
   border-right: 1px solid #E5E8EB;
   -moz-box-shadow: 1px 0px 0px 0px #FFFFFF;
   box-shadow: 1px 0px 0px 0px #FFFFFF;
+}
+
+.input label {
+  line-height: 0;
+  padding: 0;
+}
+
+.createProfile input[type=email],
+.createProfile input[type=text],
+.createProfile input[type=password],
+.home input[type=email],
+.home input[type=password],
+.import-profile input[type=password] {
+  padding-left: 45px;
 }
 
 .icon-input {
