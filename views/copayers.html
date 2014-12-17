@@ -4,15 +4,27 @@
       <h1 class="hide-for-large-up size-18">{{$root.title}}</h1> 
     </div>
   </div>
+
   <div class="row">
     <div class="large-12 columns">
+
       <div ng-if="!$root.wallet.isComplete()">
         <div class="panel oh">
+        <div class="box-notification">
+          <div class="box-icon error">
+            <i class="fi-alert size-24"></i>
+          </div>
+          <span class="text-warning size-14">
+    Please note the wallet creator <b>must be online</b> until all copayers have joined.
+    </span>
+        </div>
+
+
           <div class="text-center">
             <qrcode size="250" data="{{secret}}"></qrcode>
           </div>
           <div class="secret m10v">
-            {{secret}} 
+            {{secret}}
           </div>
           <div class="size-10 line-t text-center">
             <h2 class="m10t">{{$root.wallet.getName()}}</h2>
@@ -25,16 +37,17 @@
       </div>
       <div class="panel oh">
         <h3>Waiting for copayers</h3>
-        <div ng-include="'views/includes/copayers.html'"></div> 
+        <div ng-include="'views/includes/copayers.html'"></div>
         <div class="copay-box" ng-if="!$root.wallet.isComplete()">
           <span ng-include="'views/includes/photo.html'"></span>
           <p class="size-12 text-white text-light m0">
-          <i class="fi-loop icon-rotate spinner"></i>
-          <span translate>Waiting...</span>
+            <i class="fi-loop icon-rotate spinner"></i>
+            <span translate>Waiting...</span>
           </p>
         </div>
       </div>
     </div>
-  </div> <!-- end of row -->
+  </div>
+  <!-- end of row -->
 </div>
 
