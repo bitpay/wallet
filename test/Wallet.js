@@ -185,7 +185,6 @@ describe('Wallet model', function() {
     var w = cachedCreateW();
 
     var p = w.getPendingTxProposalsCount();
-    console.log('p', p);
     p.pending.should.be.equal(0);
     p.pendingForUs.should.be.equal(0);
   });
