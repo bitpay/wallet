@@ -42,7 +42,7 @@
   "devDependencies": {
     "angular-gravatar": "*",
     "async": "^0.9.0",
-    "bitcore": "^0.1.36",
+    "bitcore": "git://github.com/bitpay/bitcore.git#0d238f116500a732057ec9dd80a8a87b2190ca49",
     "blanket": "^1.1.6",
     "browser-pack": "^2.0.1",
     "browser-request": "^0.3.2",

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var modules = [
   'lib/Address',
   'lib/AuthMessage',
@@ -34,8 +36,6 @@ var modules = [
 
 
 var cmd = 'node browser/build.js -s '
-
 cmd = cmd + modules.join(',');
-
 
 console.log(cmd);
