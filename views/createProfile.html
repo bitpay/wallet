@@ -154,8 +154,8 @@
 
     <div class="box-notification" ng-show="passwordStrength">
       <div class="box-icon" style="background-color:{{passwordStrength.color}}">
-        <i class="fi-x size-24"></i>
-        <i class="fi-x size-24"></i>
+        <i class="fi-x size-24" ng-if="passwordStrength.strength<4"></i>
+        <i class="fi-check size-24" ng-if="passwordStrength.strength>3"></i>
       </div>
       <span class="size-14" >
         Password Strength: {{passwordStrength.message}}
