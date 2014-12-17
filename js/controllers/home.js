@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, go, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
 
   var _credentials, _firstpin;
   $scope.init = function() {
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     $rootScope.starting = true;
 
     // hide Keyboard after submit form
-    var hideKeyboard = document.querySelector('#pin').blur();
+    $window.document.querySelector('#pin').blur();
 
     $timeout(function() {
       var credentials = pinService.get(pin, function(err, credentials) {
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     $rootScope.starting = true;
 
     // hide Keyboard after submit form
-    var hideKeyboard = document.querySelector('#repeatpin').blur();
+    $window.document.querySelector('#repeatpin').blur();
 
     $timeout(function() {
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {

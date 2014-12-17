@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, notification, pluginManager, identityService, pinService, isMobile, configService, go) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, $window, notification, pluginManager, identityService, pinService, isMobile, configService, go) {
 
   var _credentials, _firstpin;
 
@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $rootScope.starting = true;
 
     // hide Keyboard after submit form
-    var hideKeyboard = document.querySelector('#repeatpin').blur();
+    $window.document.querySelector('#repeatpin').blur();
 
     $timeout(function() {
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
