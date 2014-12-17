@@ -7,21 +7,19 @@
 
   <div class="row">
     <div class="large-12 columns">
-      <div class="box-notification">
-        <div class="box-icon error">
-          <i class="fi-alert size-24"></i>
-        </div>
-        <span class="text-warning size-14">
-    Please note the wallet creator <b>must be online</b> until all copayers have joined.
-    </span>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="large-12 columns">
       <div ng-if="!$root.wallet.isComplete()">
         <div class="panel oh">
+        <div class="box-notification">
+          <div class="box-icon error">
+            <i class="fi-alert size-24"></i>
+          </div>
+          <span class="text-warning size-14">
+    Please note the wallet creator <b>must be online</b> until all copayers have joined.
+    </span>
+        </div>
+
+
           <div class="text-center">
             <qrcode size="250" data="{{secret}}"></qrcode>
           </div>
