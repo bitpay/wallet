@@ -1,6 +1,6 @@
 'use strict';
 
-var moment = require('moment');
+var moment = moment || require('moment');
 var RateService = copay.RateService;
 
 describe('RateService model', function() {
