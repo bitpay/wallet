@@ -208,7 +208,7 @@ angular.module('copayApp.directives')
 
         var MIN_LENGTH = 8;
         var MESSAGES = ['Very Weak', 'Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
-        var COLOR = ['#dd514c', '#dd514c', '#faa732', '#faa732', '#5eb95e', '#5eb95e'];
+        var COLOR = ['#dd514c', '#dd514c', '#faa732', '#faa732', '#16A085', '#16A085'];
 
         function evaluateMeter(password) {
           var passwordStrength = 0;
