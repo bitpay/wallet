@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportProfileController',
-  function($scope, $rootScope, $location, $timeout, notification, isMobile, identityService) {
+  function($scope, $rootScope, $location, $timeout, notification, isMobile, isCordova, identityService) {
     $scope.title = 'Import a backup';
-    $scope.importStatus = 'Importing wallet - Reading backup...';
+    $scope.importStatus = 'Importing profile - Reading backup...';
     $scope.hideAdv = true;
-    $scope.is_iOS = isMobile.iOS();
+    $scope.isSafari = isMobile.Safari();
+    $scope.isCordova = isCordova;
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
@@ -18,7 +19,6 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
 
     var updateStatus = function(status) {
       $scope.importStatus = status;
-      $scope.$digest();
     }
 
     var _importBackup = function(str) {
@@ -26,8 +26,8 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       updateStatus('Importing profile - Setting things up...');
 
       identityService.importProfile(str,password, function(err, iden) {
-        $scope.loading = false;
         if (err) {
+          $rootScope.starting = false;
           copay.logger.warn(err);
           if ((err.toString() || '').match('BADSTR')) {
             $scope.error = 'Bad password or corrupt profile file';
@@ -36,6 +36,9 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
           } else {
             $scope.error = 'Unknown error';
           }
+          $timeout(function() {
+            $rootScope.$digest();
+          }, 1);
         } 
       });
     };
@@ -64,8 +67,9 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
         $scope.error = 'Please, select your backup file';
         return;
       }
+      
+      $rootScope.starting = true;
 
-      $scope.loading = true;
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {

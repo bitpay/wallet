@@ -72,12 +72,12 @@ BackupService.prototype.walletDownload = function(wallet) {
 };
 
 BackupService.prototype.profileEncrypted = function(iden) {
+  iden.setBackupDone();
   return iden.exportEncryptedWithWalletInfo(iden.password);
 }
 
 BackupService.prototype.profileDownload = function(iden) {
   var ew = this.profileEncrypted(iden);
-  iden.setBackupDone();
   var name = iden.fullName;
   var filename = name + '-profile.json';
   this._download(ew, name, filename)

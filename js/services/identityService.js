@@ -140,7 +140,7 @@ angular.module('copayApp.services')
       pendingTxsService.update();
       $timeout(function() {
         $rootScope.$digest();
-      })
+      }, 1);
     };
 
     root.notifyTxProposalEvent = function(w, e) {

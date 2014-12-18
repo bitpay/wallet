@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ImportController',
-  function($scope, $rootScope, $location, $timeout, identityService, notification, isMobile, Compatibility) {
+  function($scope, $rootScope, $location, $timeout, identityService, notification, isMobile, isCordova, Compatibility) {
 
     $rootScope.title = 'Import wallet';
     $scope.importStatus = 'Importing wallet - Reading backup...';
     $scope.hideAdv = true;
-    $scope.is_iOS = isMobile.iOS();
+    $scope.isSafari = isMobile.Safari();
+    $scope.isCordova = isCordova;
     $scope.importOpts = {};
 
     window.ignoreMobilePause = true;
@@ -22,7 +23,6 @@ angular.module('copayApp.controllers').controller('ImportController',
 
     var updateStatus = function(status) {
       $scope.importStatus = status;
-      $scope.$digest();
     }
 
 
@@ -34,8 +34,11 @@ angular.module('copayApp.controllers').controller('ImportController',
           updateStatus('Importing wallet - Procesing backup...');
           identityService.importWallet(encryptedObj, $scope.password, {}, function(err) {
             if (err) {
-              $scope.loading = false;
+              $rootScope.starting = false;
               $scope.error = 'Could not read wallet. Please check your password';
+              $timeout(function() {
+                $rootScope.$digest();
+              }, 1);
             }
           });
         }
@@ -43,10 +46,8 @@ angular.module('copayApp.controllers').controller('ImportController',
     };
 
     $scope.import = function(form) {
-      $scope.loading = true;
 
       if (form.$invalid) {
-        $scope.loading = false;
         $scope.error = 'There is an error in the form';
         return;
       }
@@ -61,10 +62,11 @@ angular.module('copayApp.controllers').controller('ImportController',
       }
 
       if (!backupFile && !backupText) {
-        $scope.loading = false;
         $scope.error = 'Please, select your backup file';
         return;
       }
+
+      $rootScope.starting = true;
 
       $scope.importOpts = {};
 
@@ -79,19 +81,18 @@ angular.module('copayApp.controllers').controller('ImportController',
       if (skipFields)
         $scope.importOpts.skipFields = skipFields;
 
-
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {
         updateStatus('Importing wallet - Procesing backup...');
-        identityService.importWallet(encryptedObj, $scope.password, $scope.importOpts, function(err) {
+        identityService.importWallet(backupText, $scope.password, $scope.importOpts, function(err) {
           if (err) {
-            $scope.loading = false;
+            $rootScope.starting = false;
             $scope.error = 'Could not read wallet. Please check your password';
-            $rootScope.$digest();
-            return;
+            $timeout(function() {
+              $rootScope.$digest();
+            }, 1);
           }
-          copay.Compatibility.deleteOldWallet(backupOldWallet);
         });
       }
     };

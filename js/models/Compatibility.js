@@ -247,6 +247,7 @@ Compatibility.kdf = function(password) {
 };
 
 Compatibility.deleteOldWallet = function(walletObj) {
+console.log('[Compatibility.js:249]',walletObj); //TODO
   localStorage.removeItem('wallet::' + walletObj.id + '_' + walletObj.name);
   log.info('Old wallet ' + walletObj.name + ' deleted: ' + walletObj.id);
 };
