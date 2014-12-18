@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   $scope.setWallets = function() {
     if (!$rootScope.iden) return;
 
-    var wallets = $rootScope.iden.listWallets();
+    var wallets = $rootScope.iden.getWallets();
     var max = $rootScope.quotaPerItem;
 
     _.each(wallets, function(w) {

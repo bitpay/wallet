@@ -108,7 +108,7 @@ describe("Unit: Controllers", function() {
 
     var iden = {};
     iden.getLastFocusedWallet = sinon.stub().returns(null);
-    iden.listWallets = sinon.stub().returns([w]);
+    iden.getWallets = sinon.stub().returns([w]);
     iden.getWalletById = sinon.stub().returns(w);
     iden.getName = sinon.stub().returns('name');
     iden.deleteWallet = sinon.stub();
