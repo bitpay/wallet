@@ -5,8 +5,8 @@ angular.module('copayApp.controllers').controller('IndexController', function($s
 
   };
 
-  $scope.resendVerificationEmail = function (cb) {
-  	identityService.resendVerificationEmail(cb);
+  $scope.resendVerificationEmail = function () {
+  	identityService.resendVerificationEmail(function () {});
   };
 
   $scope.swipe = function(invert) {
