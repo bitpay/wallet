@@ -327,11 +327,8 @@ describe('RateService model', function() {
         rs.isAvailable = sinon.stub().returns(false);
         (function() {
           rs.listAlternatives();
-        }).should.throw('not available');;
-
-        rs.getAlternatives();
+        }).should.throw('not available');
       });
-
       it('should return list of available currencies', function() {
         var rs = new RateService();
         rs.isAvailable = sinon.stub().returns(true);
@@ -348,32 +345,24 @@ describe('RateService model', function() {
         var list = rs.listAlternatives();
         list.should.exist;
         list.length.should.equal(2);
-
-        list = rs.getAlternatives();
-        list.should.exist;
-        list.length.should.equal(2);
       });
-
-      it('should return an error when trying to get the list of available currencies', function() {
+    });
+    describe('#getAlternatives', function() {
+      it('should return nothing when trying to get the list of available currencies', function() {
         var rs = new RateService();
-        rs.isAvailable = sinon.stub().returns(true);
-        rs.whenAvailable(function() {});
         rs.isAvailable = sinon.stub().returns(false);
         rs.whenAvailable(function() {});
-
         rs.getAlternatives().length.should.equal(0);
-
-        (function() {
-          rs.listAlternatives();
-        }).should.throw;
       });
+
     });
     describe('#singleton', function() {
       it('should create only one instance', function() {
         var rs = RateService.singleton();
         rs.should.be.not.null;
-        rs = RateService.singleton();
-        rs.should.be.not.null;
+        var rs2 = RateService.singleton();
+        rs2.should.be.not.null;
+        rs.should.deep.equal(rs2);
       });
     });
   });
