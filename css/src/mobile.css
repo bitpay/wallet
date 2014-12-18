@@ -36,6 +36,7 @@
     width: 100%;
     z-index: 5;
     background: #3C4E60;
+    height: 55px;
   }
 
   .bottom-bar {
@@ -57,8 +58,17 @@
   } 
 
   header {
-    height: 45px;
+    padding: 0.45rem;
+    height: 55px;
     line-height: 110%;
+    background-color: #213140;
+  }
+
+  header .photo-container {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border: 1px solid #7A8C9E;
   }
 
   header h1 {
@@ -112,10 +122,6 @@
     height: 30px;
   }
 
-  .tab-bar-section {
-    text-align: left;
-  }
-
   .setup-page {
     height: 100%;
   }
@@ -125,8 +131,10 @@
   }
 
   .tab-bar h1 {
-    font-weight: 100;
+    font-weight: 700;
     text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
   }
 
   ul.off-canvas-list li a {
@@ -173,8 +181,9 @@
     background-color: #213140;
   }
 
-  .left-small {
+  .left-small, .right-small, .tab-bar-section {
     border-right: none;
+    padding-top: 0.3rem;
   }
 
   .right-small {
@@ -219,6 +228,7 @@
   }
 
   .side-nav.wallets {
+    background: #E4E8EC;
     z-index: 100;
     overflow-y: inherit;
     position: inherit;
@@ -226,8 +236,14 @@
     border-bottom: none;
   }
 
+  .side-nav.wallets li {
+    margin: 0;
+    padding: 0.8rem .1rem;
+    border-bottom: 1px solid #D6DBE1;
+  }
+
   .side-nav li.nav-item.selected {
-    background-color: #3C4E60;
+    background-color: #CED5DC;
   } 
 
   /* 

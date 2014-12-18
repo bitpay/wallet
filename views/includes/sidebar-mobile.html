@@ -1,12 +1,15 @@
 <header>
-  <a ng-click="$root.go('profile')" class="db p20h nav-item text-center" title="Create new wallet">
-    <div class="photo-container">
-      <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="35">
+  <a ng-click="$root.go('profile')" class="db nav-item" title="Create new wallet">
+    <div class="photo-container left">
+      <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="40">
     </div>
-    <p class="text-black m5">{{$root.iden.getName()}}</p>
-    <span class="db text-gray size-10">
-      <i class="fi-torso"></i> {{'View My Profile' | translate }} 
-    </span>
+    <div class="left">
+      <p class="text-white m0">{{$root.iden.getName()}}</p>
+      <span class="db text-gray size-10"> {{'View My Profile' | translate }} </span>
+    </div>
+    <div class="right">
+      <i class="icon-arrow-right3 size-16 db m10t text-white"></i>
+    </div>
   </a>
 </header>
 <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
@@ -20,15 +23,15 @@
   <div class="col2">
     <a class="size-12 wallet-item">
       <div class="oh">
-        <div class="right size-10 type-wallet">
+        <div class="right size-10 text-gray">
           [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
-        <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
+        <div class="ellipsis name-wallet text-black">{{item.name || item.id}}</div>
       </div>
       <div class="oh">
         <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
         <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
           <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
-          <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
+          <span class="alt-currency gray size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
         </div>
         <span ng-if="!item.isComplete()">Waiting for copayers...</span>
       </div>
