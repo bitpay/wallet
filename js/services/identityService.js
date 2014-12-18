@@ -70,16 +70,24 @@ angular.module('copayApp.services')
       if (!headers)
         return;
 
-      if (headers['X-Email-Needs-Validation'])
+      var customHeaders = {};
+      _.each(_.keys(headers), function (headerKey) {
+        var hk = headerKey.toLowerCase();
+        if (hk.indexOf('x-') === 0) {
+          customHeaders[hk] = headers[headerKey];
+        }
+      });
+
+      if (customHeaders['x-email-needs-validation'])
         $rootScope.needsEmailConfirmation = true;
       else
         $rootScope.needsEmailConfirmation = null;
 
-      if (headers['X-Quota-Per-Item'])
-        $rootScope.quotaPerItem = parseInt(headers['X-Quota-Per-Item']);
+      if (customHeaders['x-quota-per-item'])
+        $rootScope.quotaPerItem = parseInt(customHeaders['x-quota-per-item']);
 
-      if (headers['X-Quota-Items-Limit'])
-        $rootScope.quotaItems = parseInt(headers['X-Quota-Items-Limit']);
+      if (customHeaders['x-quota-items-limit'])
+        $rootScope.quotaItems = parseInt(customHeaders['x-quota-items-limit']);
     };
 
     root.open = function(email, password, cb) {
