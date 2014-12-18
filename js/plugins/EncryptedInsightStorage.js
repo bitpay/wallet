@@ -16,6 +16,10 @@ EncryptedInsightStorage.prototype._brokenDecrypt = function(body) {
   return decryptedJson;
 };
 
+EncryptedInsightStorage.prototype.resendVerificationEmail = function(callback) {
+  InsightStorage.prototype.resendVerificationEmail.apply(this, [callback]);
+};
+
 EncryptedInsightStorage.prototype.getItem = function(name, callback) {
   var self = this;
   InsightStorage.prototype.getItem.apply(this, [name,
