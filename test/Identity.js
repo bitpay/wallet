@@ -11,6 +11,7 @@ var Insight = require('../js/models/Insight');
 var Identity = copay.Identity;
 var Wallet = copay.Wallet;
 var Passphrase = copay.Passphrase;
+var version = copay.version;
 
 var FakeBlockchain = require('./mocks/FakeBlockchain');
 
@@ -78,6 +79,7 @@ describe('Identity model', function() {
   }
 
   var wid = 0;
+
   function getNewWallet(args) {
     var w = sinon.stub();
     w.getId = sinon.stub().returns('wid' + (++wid));
@@ -167,7 +169,7 @@ describe('Identity model', function() {
   });
 
   describe('#remove', function(done) {
-    it('should remove empty profile', function (done) {
+    it('should remove empty profile', function(done) {
       var storage = sinon.stub();
       storage.setCredentials = sinon.stub();
       storage.removeItem = sinon.stub().yields(null);
@@ -188,7 +190,7 @@ describe('Identity model', function() {
       };
 
       var iden = new Identity(opts);
-      iden.remove(null, function (err, res) {
+      iden.remove(null, function(err, res) {
         should.not.exist(err);
         storage.removeItem.calledOnce.should.be.true;
         storage.removeItem.getCall(0).args[0].should.equal(iden.getId());
@@ -264,33 +266,41 @@ describe('Identity model', function() {
       iden = new Identity(opts);
     });
 
-    it('should store a simple wallet', function (done) {
+    it('should store a simple wallet', function(done) {
       storage.setItem = sinon.stub().yields(null);
       var w = {
-        toObj: sinon.stub().returns({ key1: 'val1' }),
+        toObj: sinon.stub().returns({
+          key1: 'val1'
+        }),
         getStorageKey: sinon.stub().returns('storage_key'),
         getName: sinon.stub().returns('name'),
         setVersion: sinon.spy(),
       };
-      iden.storeWallet(w, function (err) {
+      iden.storeWallet(w, function(err) {
         should.not.exist(err);
         storage.setItem.calledOnce.should.be.true;
-        storage.setItem.calledWith('storage_key', { key1: 'val1' });
+        storage.setItem.calledWith('storage_key', {
+          key1: 'val1'
+        });
         done();
       });
     });
-    it('should change wallet version when storing', function (done) {
+    it('should change wallet version when storing', function(done) {
       storage.setItem = sinon.stub().yields(null);
       var w = {
-        toObj: sinon.stub().returns({ key1: 'val1' }),
+        toObj: sinon.stub().returns({
+          key1: 'val1'
+        }),
         getStorageKey: sinon.stub().returns('storage_key'),
         getName: sinon.stub().returns('name'),
         setVersion: sinon.spy(),
         version: '1.0',
-        opts: { version: '1.0' },
+        opts: {
+          version: '1.0'
+        },
       };
       iden.version = '2.0';
-      iden.storeWallet(w, function (err) {
+      iden.storeWallet(w, function(err) {
         should.not.exist(err);
         w.setVersion.calledWith('2.0').should.be.true;
         done();
@@ -552,6 +562,132 @@ describe('Identity model', function() {
         w.should.equal(fakeWallet);
         done();
       });
+    });
+  });
+
+
+  describe('add / delete / list Wallets', function() {
+    var iden, w;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+      iden = new Identity(opts);
+
+      w = {
+        getId: sinon.stub().returns('32'),
+        getName: sinon.stub().returns('treintaydos'),
+        close: sinon.stub(),
+      };
+    });
+
+    it('should add wallet', function() {
+      iden.addWallet(w);
+      iden.getWalletById('32').getName().should.equal('treintaydos');
+      iden.walletIds.should.deep.equal(['32']);
+
+      _.find(iden.getWallets(), function(w) {
+        return w.getName() == 'treintaydos';
+      }).should.deep.equal(w);
+
+    });
+
+    it('should not add same wallet twice', function() {
+      iden.addWallet(w);
+      iden.addWallet(w);
+      iden.getWalletById('32').getName().should.equal('treintaydos');
+      iden.walletIds.should.deep.equal(['32']);
+      _.find(iden.getWallets(), function(w) {
+        return w.getName() == 'treintaydos';
+      }).should.deep.equal(w);
+    });
+
+ 
+
+    it('should delete wallet', function(done) {
+      iden.addWallet(w);
+      iden.getWalletById('32').getName().should.equal('treintaydos');
+      iden.deleteWallet('32', function(err) {
+        should.not.exist(iden.getWalletById('32'));
+        iden.walletIds.should.deep.equal([]);
+
+        should.not.exist(_.find(iden.getWallets(), function(w) {
+          return w.getName() == 'treintaydos';
+        }));
+        done();
+      });
+    });
+  });
+
+  describe('toObj', function() {
+    var iden, w, w2;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+      iden = new Identity(opts);
+
+      w = {
+        getId: sinon.stub().returns('32'),
+        getName: sinon.stub().returns('treintaydos'),
+        close: sinon.stub(),
+      };
+      w2 = {
+        getId: sinon.stub().returns('33'),
+        getName: sinon.stub().returns('treintaytres'),
+        close: sinon.stub(),
+      };
+    });
+
+    it('should include wallets', function() {
+      iden.addWallet(w);
+      var obj = iden.toObj();
+      _.indexOf(obj.walletIds,'32').should.be.above(-1);
+    });
+
+    it('should set version to actual version', function() {
+      var obj = iden.toObj();
+      obj.version.should.equal(version);
+    });
+
+
+
+    it('should include 2 wallets', function() {
+      iden.addWallet(w);
+      iden.addWallet(w2);
+      var obj = iden.toObj();
+      _.indexOf(obj.walletIds,'32').should.be.above(-1);
+      _.indexOf(obj.walletIds,'33').should.be.above(-1);
     });
   });
 });

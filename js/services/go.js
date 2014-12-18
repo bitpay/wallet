@@ -37,7 +37,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
         hideSidebars();
       }
       else {
-        if ($rootScope.iden && $rootScope.iden.listWallets().length >1) {
+        if ($rootScope.iden && $rootScope.iden.getWallets().length >1) {
           elem.addClass('move-left');
         }
       }
