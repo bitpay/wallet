@@ -37,6 +37,31 @@ InsightStorage.prototype.createItem = function(name, value, callback) {
   });
 };
 
+InsightStorage.prototype.resendVerificationEmail = function (callback) {
+  var passphrase = this.getPassphrase();
+  var authHeader = new buffers.Buffer(this.email + ':' + passphrase).toString('base64');
+  var resendUrl = this.storeUrl + '/resend_email';
+
+  log.debug('Resending verification email: ' + this.email);
+  this.request.get({
+    url: resendUrl,
+    headers: {
+      'Authorization': authHeader
+    },
+    body: null,
+  }, function(err, response, body) {
+    if (err) {
+      return callback('Connection error');
+    }
+    if (response.statusCode === 409) {
+      return callback('BADCREDENTIALS: Invalid username or password');
+    } else if (response.statusCode !== 200) {
+      return callback('Unable to process the request');
+    }
+    return callback();
+  });
+};
+
 function mayBeOldPassword(password) {
   // Test for base64
   return /^[a-zA-Z0-9\/=\+]+$/.test(password);

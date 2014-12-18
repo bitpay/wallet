@@ -62,6 +62,11 @@ angular.module('copayApp.services')
       });
     };
 
+    root.resendVerificationEmail = function (cb) {
+      var iden = $rootScope.iden;
+      iden.resendVerificationEmail(cb);
+    };
+
     root.setServerStatus = function(headers) {
       if (!headers)
         return;
