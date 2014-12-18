@@ -223,6 +223,8 @@ InsightStorage.prototype.setItem = function(name, value, callback) {
       return callback('BADCREDENTIALS: Invalid username or password');
     } else if (response.statusCode === 406) {
       return callback('OVERQUOTA: Quota exceeded');
+    } else if (response.statusCode === 501) {
+      return callback('EMAILERROR: Error sending verification email');
     } else if (response.statusCode !== 200) {
       return callback('Unable to store data on insight');
     }
