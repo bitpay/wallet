@@ -1,51 +1,58 @@
-<header>
-  <a ng-click="$root.go('profile')" class="db nav-item" title="Create new wallet">
-    <div class="photo-container left">
-      <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="40">
-    </div>
-    <div class="left">
-      <p class="text-white m0">{{$root.iden.getName()}}</p>
-      <span class="db text-gray size-10"> {{'View My Profile' | translate }} </span>
-    </div>
-    <div class="right">
-      <i class="icon-arrow-right3 size-16 db m10t text-white"></i>
-    </div>
-  </a>
-</header>
-<ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
-  <li 
-  ng-repeat="item in wallets track by $index"
-  ng-class="{'selected': item.id == $root.wallet.id}"
-  class="nav-item" ng-click="switchWallet(item.id)" >
-  <div class="col1">
-    <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
-  </div>
-  <div class="col2">
-    <a class="size-12 wallet-item">
-      <div class="oh">
-        <div class="right size-10 text-gray">
-          [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
-        <div class="ellipsis name-wallet text-black">{{item.name || item.id}}</div>
+<div class="pr">
+  <header ng-click="$root.go('profile')">
+    <a class="db nav-item" title="Create new wallet">
+      <div class="photo-container left">
+        <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="40">
       </div>
-      <div class="oh">
-        <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-        <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-          <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
-          <span class="alt-currency gray size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
-        </div>
-        <span ng-if="!item.isComplete()">Waiting for copayers...</span>
+      <div class="left">
+        <p class="text-white m0">{{$root.iden.getName()}}</p>
+        <span class="db text-gray size-10"> {{'View My Profile' | translate }} </span>
+      </div>
+      <div class="right">
+        <i class="icon-arrow-right3 size-16 db m10t text-white"></i>
       </div>
     </a>
+  </header>
+  <div class="scroll-section">
+    <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
+      <li 
+      ng-repeat="item in wallets track by $index"
+      ng-class="{'selected': item.id == $root.wallet.id}"
+      class="nav-item" ng-click="switchWallet(item.id)" >
+      <div class="col1">
+        <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
+      </div>
+      <div class="col2">
+        <a class="size-12 wallet-item">
+          <div class="oh">
+            <div class="right size-10 text-gray">
+              [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
+            <div class="ellipsis name-wallet text-black">{{item.name || item.id}}</div>
+          </div>
+          <div class="oh text-bold">
+            <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+            <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+              <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
+              <span class="alt-currency gray size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
+            </div>
+            <span ng-if="!item.isComplete()">Waiting for copayers...</span>
+          </div>
+        </a>
+      </div>
+      </li> 
+    </ul>
+    <a class="db button-addwallet button" title="Add wallet" ng-click="$root.go('add')">
+      <i class="fi-plus"></i> Add wallet
+    </a>
+
+    <div class="text-gray size-12 text-center columns">
+      <div ng-include="'views/includes/version.html'"></div>
+    </div>
   </div>
-  </li> 
-</ul>
-<a class="db" title="Add wallet" ng-click="$root.go('add')">
-  Add wallet
-</a>
-<a class="db" title="Close" ng-click="signout()">
-  <span ng-if="!$root.hasPin"><i class="size-24 m20r fi-power"></i> {{'Close'|translate}}</span>
-  <span ng-if="$root.hasPin"><i class="size-24 m20r fi-lock"></i> {{'Lock'|translate}}</span>
-</a>
-<div class="text-gray size-12 text-center columns">
-  <div ng-include="'views/includes/version.html'"></div>
+  <div class="sidebar bottom-bar">
+    <a class="db text-gray tu" title="Close" ng-click="signout()">
+      <span ng-if="!$root.hasPin"><i class="size-16 m5r icon-locked"></i> {{'Close'|translate}}</span>
+      <span ng-if="$root.hasPin"><i class="size-16 m5r icon-locked"></i> {{'Lock'|translate}}</span>
+    </a>
+  </div>
 </div>
