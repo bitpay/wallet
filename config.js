@@ -73,6 +73,8 @@ var defaultConfig = {
     salt: 'jBbYTj8zTrOt6V',
   },
 
+  minPasswordStrength: 4,
+
   /*
   GoogleDrive: {
     home: 'copay',
