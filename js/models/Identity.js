@@ -105,6 +105,15 @@ Identity.create = function(opts, cb) {
   });
 };
 
+Identity.prototype.resendVerificationEmail = function (cb) {
+  var self = this;
+
+  preconditions.checkArgument(_.isFunction(cb));
+  preconditions.checkState(_.isFunction(self.storage.resendVerificationEmail));
+
+  self.storage.resendVerificationEmail(cb);
+};
+
 
 /**
  * Open an Identity from the given storage.
