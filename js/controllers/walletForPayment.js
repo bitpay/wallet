@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('walletForPaymentController', 
     });
 
     $scope.setWallets = function() {
-      $scope.wallets = $rootScope.iden.listWallets();
+      $scope.wallets = $rootScope.iden.getWallets();
     };
 
     $scope.ok = function(w) {

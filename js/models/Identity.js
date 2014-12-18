@@ -58,7 +58,7 @@ function Identity(opts) {
   this.walletDefaults = opts.walletDefaults || {};
   this.version = opts.version || version;
 
-  this.walletIds = opts.walletIds || {};
+  this.walletIds = opts.walletIds || [];
   this.wallets = opts.wallets || {};
   this.focusedTimestamps = opts.focusedTimestamps || {};
   this.backupNeeded = opts.backupNeeded || false;
@@ -139,6 +139,59 @@ Identity.open = function(opts, cb) {
   });
 };
 
+/**
+ * @param {string} walletId
+ * @returns {Wallet}
+ */
+Identity.prototype.getWalletById = function(walletId) {
+  return this.wallets[walletId];
+};
+
+/**
+ * @returns {Wallet[]}
+ */
+Identity.prototype.getWallets = function() {
+  return _.values(this.wallets);
+};
+
+/**
+ * addWallet
+ *
+ * @param w
+ */
+Identity.prototype.addWallet = function(w) {
+  this.wallets[w.getId()] = w;
+  this.walletIds = _.union(this.walletIds, [w.getId()]);
+};
+
+/**
+ * @desc Deletes a wallet. This involves removing it from the storage instance
+ *
+ * @param {string} walletId
+ * @callback cb
+ * @return {err}
+ */
+Identity.prototype.deleteWallet = function(walletId, cb) {
+  preconditions.checkArgument(_.isString(walletId));
+
+  var self = this;
+
+
+
+  var w = this.getWalletById(walletId);
+  w.close();
+
+  delete this.wallets[walletId];
+  delete this.focusedTimestamps[walletId];
+  this.walletIds = _.without(this.walletIds, walletId);
+
+  this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
+    if (err) return cb(err);
+    self.emitAndKeepAlive('walletDeleted', walletId);
+    self.store(null, cb);
+  });
+};
+
 
 /**
  * readAndBindWallet
@@ -151,7 +204,7 @@ Identity.prototype.readAndBindWallet = function(walletId, cb) {
   var self = this;
   self.retrieveWalletFromStorage(walletId, {}, function(error, wallet) {
     if (!error) {
-      self.wallets[wallet.getId()] = wallet;
+      self.addWallet(wallet);
       self.bindWallet(wallet);
     }
     return cb(error);
@@ -275,10 +328,7 @@ Identity.storeWalletDebounced = _.debounce(function(identity, wallet, cb) {
 
 
 Identity.prototype.toObj = function() {
-  return _.extend({
-      walletIds: _.isEmpty(this.wallets) ? this.walletsIds : _.keys(this.wallets),
-    },
-    _.pick(this, 'version', 'fullName', 'password', 'email', 'backupNeeded', 'focusedTimestamps'));
+  return _.pick(this, 'walletIds', 'version', 'fullName', 'password', 'email', 'backupNeeded', 'focusedTimestamps');
 };
 
 Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
@@ -303,7 +353,7 @@ Identity.prototype.setBackupDone = function() {
 
 Identity.prototype.exportWithWalletInfo = function(opts) {
   return _.extend({
-      wallets: _.map(this.wallets, function(wallet) {
+      wallets: _.map(this.getWallets(), function(wallet) {
         return wallet.toObj();
       })
     },
@@ -329,7 +379,7 @@ Identity.prototype.store = function(opts, cb) {
     if (opts.noWallets)
       return cb();
 
-    async.each(_.values(self.wallets), function(wallet, in_cb) {
+    async.each(self.getWallets(), function(wallet, in_cb) {
       self.storeWallet(wallet, in_cb);
     }, cb);
   });
@@ -345,7 +395,7 @@ Identity.prototype.remove = function(opts, cb) {
   var self = this;
   opts = opts || {};
 
-  async.each(_.values(self.wallets), function(w, cb) {
+  async.each(self.getWallets(), function(w, cb) {
     w.close();
     self.storage.removeItem(Wallet.getStorageKey(w.getId()), function(err) {
       if (err) return cb(err);
@@ -357,9 +407,9 @@ Identity.prototype.remove = function(opts, cb) {
     self.storage.removeItem(self.getId(), function(err) {
       if (err) return cb(err);
 
-      self.storage.clear(function (err) {
+      self.storage.clear(function(err) {
         if (err) return cb(err);
-        
+
         self.emitAndKeepAlive('closed');
         return cb();
       });
@@ -368,7 +418,7 @@ Identity.prototype.remove = function(opts, cb) {
 };
 
 Identity.prototype._cleanUp = function() {
-  _.each(this.wallets, function(w){
+  _.each(this.getWallets(), function(w) {
     w.close();
   });
 };
@@ -402,7 +452,7 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   log.debug('Updating Indexes for wallet:' + w.getName());
   w.updateIndexes(function(err) {
     log.debug('Adding wallet to profile:' + w.getName());
-    self.wallets[w.getId()] = w;
+    self.addWallet(w);
     self.updateFocusedTimestamp(w.getId());
     self.bindWallet(w);
     self.storeWallet(w, cb);
@@ -489,7 +539,7 @@ Identity.importFromFullJson = function(str, password, opts, cb) {
  * @emits newWallet  (walletId)
  */
 Identity.prototype.bindWallet = function(w) {
-  preconditions.checkArgument(w && this.wallets[w.getId()]);
+  preconditions.checkArgument(w && this.getWalletById(w.getId()));
 
   var self = this;
   log.debug('Binding wallet:' + w.getName());
@@ -593,10 +643,10 @@ Identity.prototype.createWallet = function(opts, cb) {
   var self = this;
   var w = new walletClass(opts);
 
-  if (self.wallets[w.getId()]) {
+  if (self.getWalletById(w.getId())) {
     return cb('walletAlreadyExists');
   }
-  self.wallets[w.getId()] = w;
+  self.addWallet(w);
   self.updateFocusedTimestamp(w.getId());
   self.bindWallet(w);
   self.storeWallet(w, function(err) {
@@ -633,43 +683,6 @@ Identity.prototype._checkVersion = function(inVersion) {
   }
 };
 
-/**
- * @param {string} walletId
- * @returns {Wallet}
- */
-Identity.prototype.getWalletById = function(walletId) {
-  return this.wallets[walletId];
-};
-
-/**
- * @returns {Wallet[]}
- */
-Identity.prototype.listWallets = function() {
-  return _.values(this.wallets);
-};
-
-/**
- * @desc Deletes a wallet. This involves removing it from the storage instance
- *
- * @param {string} walletId
- * @callback cb
- * @return {err}
- */
-Identity.prototype.deleteWallet = function(walletId, cb) {
-  var self = this;
-
-  var w = this.getWalletById(walletId);
-  w.close();
-
-  delete this.wallets[walletId];
-  delete this.focusedTimestamps[walletId];
-
-  this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
-    if (err) return cb(err);
-    self.emitAndKeepAlive('walletDeleted', walletId);
-    self.store(null, cb);
-  });
-};
 
 /**
  * @desc Pass through to {@link Wallet#secret}
@@ -701,7 +714,7 @@ Identity.prototype.getLastFocusedWalletId = function() {
 };
 
 Identity.prototype.updateFocusedTimestamp = function(wid) {
-  preconditions.checkArgument(wid && this.wallets[wid]);
+  preconditions.checkArgument(wid && this.getWalletById(wid));
   this.focusedTimestamps[wid] = Date.now();
 };
 
