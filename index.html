@@ -65,7 +65,7 @@
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
-            <section class="right-small" ng-show="$root.iden && $root.iden.listWallets().length >1">
+            <section class="right-small" ng-show="$root.iden && $root.iden.getWallets().length >1">
               <a class="right-off-canvas-toggle p10"><i class="icon-wallet size-24"></i></a>
             </section>
 
@@ -80,7 +80,7 @@
             <div ng-include="'views/includes/sidebar-mobile.html'"></div>
           </nav>
 
-          <nav class="right-off-canvas-menu" ng-show="$root.iden && $root.iden.listWallets().length >1">
+          <nav class="right-off-canvas-menu" ng-show="$root.iden && $root.iden.getWallets().length >1">
             <div ng-include="'views/includes/walletbar-mobile.html'"></div>
           </nav>
           <div 
