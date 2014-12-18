@@ -203,6 +203,7 @@ describe('Wallet model', function() {
 
     sinon.spy(w, 'sendIndexes');
     sinon.spy(w, 'sendTxProposal');
+
     w.spend({
       toAddress: toAddress,
       amountSat: amountSatStr,
@@ -212,6 +213,9 @@ describe('Wallet model', function() {
       status.should.equal(Wallet.TX_PROPOSAL_SENT);
       w.sendTxProposal.calledOnce.should.equal(true);
       w.sendIndexes.calledOnce.should.equal(false);
+
+      w.network.send.calledOnce.should.equal(true);
+
 
       var p = w.getPendingTxProposalsCount();
       p.pending.should.be.equal(1);
@@ -766,13 +770,16 @@ describe('Wallet model', function() {
 
   it('should close wallet', function(done) {
     var w = createW2();
-    w.removeAllListeners = sinon.stub();
     w.network.removeAllListeners = sinon.stub();
     w.network.cleanUp = sinon.stub();
     w.blockchain.removeAllListeners = sinon.stub();
     w.blockchain.destroy = sinon.stub();
 
     w.close(function() {
+      w.network.removeAllListeners.calledOnce.should.equal(true);
+      w.network.cleanUp.calledOnce.should.equal(true);
+      w.blockchain.removeAllListeners.calledOnce.should.equal(true);
+      w.network.cleanUp.calledOnce.should.equal(true);
       done();
     });
   });
