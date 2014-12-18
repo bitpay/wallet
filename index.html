@@ -53,12 +53,12 @@
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
         <span class="status" ng-if="$root.needsEmailConfirmation"> 
+          <a class="text-white button warning tiny m0 right" ng-click="resendVerificationEmail()">Resend</a>
           <i class="fi-alert size-36 left m20r"></i>
           <span translate> 
             <strong class="size-16">Email not confirmed</strong>.<br> 
             Please confirm your email address using the confirmation link at the message we sent you
           </span>
-          <a class="text-white right" style="text-decoration:underline;" ng-click="resendVerificationEmail()">Resend</a>
         </span>
  
         <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation">
