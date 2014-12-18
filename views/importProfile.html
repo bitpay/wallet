@@ -1,10 +1,10 @@
 
 <div class="import-profile" ng-controller="ImportProfileController">
-  <div ng-show="loading">
+  <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = importStatus"></div>
   </div>
 
-  <div ng-show="!loading">
+  <div ng-show="!$root.starting">
     <div class="large-4 large-centered medium-6 medium-centered columns">
       <div class="logo-setup show-for-large-up">
         <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
@@ -22,14 +22,14 @@
             </span>
           </div>
 
-          <div ng-show="!is_iOS">
+          <div ng-show="!isSafari && !isCordova">
             <div class="input">
               <input type="file" class="db form-control" 
             placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="backupFile" ng-file-select>
             </div>
           </div>
 
-          <div ng-show="is_iOS">
+          <div ng-show="isSafari || isCordova">
             <div class="input"> 
             <textarea 
               placeholder="Paste backup plain text code" 
@@ -41,13 +41,13 @@
             </div>
           </div>
           <div class="input">
-            <input type="password" class="form-control" placeholder="{{'Your wallet password'|translate}}" name="password" ng-model="password" required>
+            <input type="password" class="form-control" placeholder="{{'Your profile password'|translate}}" name="password" ng-model="password" required>
             <i class="icon-locked"></i>
           </div>
 
           <button translate type="submit" 
             class="button primary radius expand m0" 
-            ng-disabled="importProfileForm.$invalid || loading">
+            ng-disabled="importProfileForm.$invalid || $root.starting">
             Import backup
           </button>
         </form>
