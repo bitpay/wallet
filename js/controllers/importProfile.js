@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('ImportProfileController',
   function($scope, $rootScope, $location, $timeout, notification, isMobile, isCordova, identityService) {
     $scope.title = 'Import a backup';
-    $scope.importStatus = 'Importing wallet - Reading backup...';
+    $scope.importStatus = 'Importing profile - Reading backup...';
     $scope.hideAdv = true;
     $scope.isSafari = isMobile.Safari();
     $scope.isCordova = isCordova;
