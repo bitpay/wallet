@@ -791,5 +791,50 @@ describe('Identity model', function() {
       iden._cleanUp();
       _.size(iden.wallets).should.be.equal(0);
     });
+
+  });
+
+  describe('#getLastFocusedWalletId', function() {
+    var iden, w, w2;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+      iden = new Identity(opts);
+
+      w = {
+        getId: sinon.stub().returns('32'),
+        getName: sinon.stub().returns('treintaydos'),
+        close: sinon.stub(),
+      };
+      w2 = {
+        getId: sinon.stub().returns('33'),
+        getName: sinon.stub().returns('treintaytres'),
+        close: sinon.stub(),
+      };
+      iden.addWallet(w);
+      iden.addWallet(w2);
+    });
+
+    it.only('should return indefined', function() {
+      var a = iden.getLastFocusedWalletId();
+      console.log('a', a);
+    });
+
   });
 });
