@@ -168,6 +168,17 @@ describe('Identity model', function() {
     });
   });
 
+
+  describe('#openWallets', function(done) {
+    it('should emit noWallets', function() {
+      var iden = new Identity(getDefaultParams());
+      sinon.spy(iden, 'emitAndKeepAlive');
+      iden.openWallets();
+      iden.emitAndKeepAlive.calledOnce.should.be.true;
+      iden.emitAndKeepAlive.getCall(0).args[0].should.equal('noWallets');
+    });
+  });
+
   describe('#remove', function(done) {
     it('should remove empty profile', function(done) {
       var storage = sinon.stub();
@@ -285,6 +296,48 @@ describe('Identity model', function() {
         done();
       });
     });
+
+    it('should return error because the limit has been reached', function(done) {
+      storage.setItem = sinon.stub().yields('OVERQUOTA');
+      var w = {
+        toObj: sinon.stub().returns({
+          key1: 'val1'
+        }),
+        getStorageKey: sinon.stub().returns('storage_key'),
+        getName: sinon.stub().returns('name'),
+        setVersion: sinon.spy(),
+        sizes: sinon.stub().returns(99),
+        getId: sinon.spy(),
+      };
+      iden.storeWallet(w, function(err) {
+        should.exist(err);
+        err.should.be.equal('OVERQUOTA');
+        done();
+      });
+    });
+
+    it('should return error', function(done) {
+      storage.setItem = sinon.stub().yields('UNKNOWN');
+      var w = {
+        toObj: sinon.stub().returns({
+          key1: 'val1'
+        }),
+        getStorageKey: sinon.stub().returns('storage_key'),
+        getName: sinon.stub().returns('name'),
+        setVersion: sinon.spy(),
+        sizes: sinon.stub().returns(99),
+        getId: sinon.spy(),
+      };
+      iden.storeWallet(w, function(err) {
+        should.exist(err);
+        err.should.be.equal('UNKNOWN');
+        done();
+      });
+    });
+
+
+
+
     it('should change wallet version when storing', function(done) {
       storage.setItem = sinon.stub().yields(null);
       var w = {
@@ -620,7 +673,7 @@ describe('Identity model', function() {
       }).should.deep.equal(w);
     });
 
- 
+
 
     it('should delete wallet', function(done) {
       iden.addWallet(w);
@@ -676,7 +729,7 @@ describe('Identity model', function() {
     it('should include wallets', function() {
       iden.addWallet(w);
       var obj = iden.toObj();
-      _.indexOf(obj.walletIds,'32').should.be.above(-1);
+      _.indexOf(obj.walletIds, '32').should.be.above(-1);
     });
 
     it('should set version to actual version', function() {
@@ -690,8 +743,53 @@ describe('Identity model', function() {
       iden.addWallet(w);
       iden.addWallet(w2);
       var obj = iden.toObj();
-      _.indexOf(obj.walletIds,'32').should.be.above(-1);
-      _.indexOf(obj.walletIds,'33').should.be.above(-1);
+      _.indexOf(obj.walletIds, '32').should.be.above(-1);
+      _.indexOf(obj.walletIds, '33').should.be.above(-1);
+    });
+  });
+
+
+  describe('#_cleanUp', function() {
+    var iden, w, w2;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+      iden = new Identity(opts);
+
+      w = {
+        getId: sinon.stub().returns('32'),
+        getName: sinon.stub().returns('treintaydos'),
+        close: sinon.stub(),
+      };
+      w2 = {
+        getId: sinon.stub().returns('33'),
+        getName: sinon.stub().returns('treintaytres'),
+        close: sinon.stub(),
+      };
+      iden.addWallet(w);
+      iden.addWallet(w2);
+    });
+
+    it('should close all wallets', function() {
+      _.size(iden.wallets).should.be.equal(2);
+      iden._cleanUp();
+      _.size(iden.wallets).should.be.equal(0);
     });
   });
 });
