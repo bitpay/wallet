@@ -196,13 +196,10 @@ describe('Wallet model', function() {
     w.version.should.be.equal('0.123');
   });
 
-  it('should check pending proposals', function(done) {
+  it('should check pending proposals case 2', function(done) {
     var w = createW2(null, 1);
     var utxo = createUTXO(w);
     w.blockchain.fixUnspent(utxo);
-
-    sinon.spy(w, 'sendIndexes');
-    sinon.spy(w, 'sendTxProposal');
 
     w.spend({
       toAddress: toAddress,
@@ -211,11 +208,12 @@ describe('Wallet model', function() {
       should.not.exist(err);
       should.exist(id);
       status.should.equal(Wallet.TX_PROPOSAL_SENT);
-      w.sendTxProposal.calledOnce.should.equal(true);
-      w.sendIndexes.calledOnce.should.equal(false);
 
       w.network.send.calledOnce.should.equal(true);
-
+      console.log(w.network.send.getCall(0).args[1]);
+      w.network.send.getCall(0).args[1].type.should.equal("txProposal");
+      should.exist(w.network.send.getCall(0).args[1].indexes);
+      should.exist(w.network.send.getCall(0).args[1].txProposal);
 
       var p = w.getPendingTxProposalsCount();
       p.pending.should.be.equal(1);
