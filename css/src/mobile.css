@@ -18,6 +18,12 @@
     display: none;
   }
 
+  .sidebar.bottom-bar {
+    background: #213140;
+    padding: 1.2rem;
+    font-size: 14px;
+  }
+
   .page, .main {
     height: auto;
   }
@@ -46,6 +52,15 @@
     width: 100%;
     z-index: 5;
     background: #2C3E50;
+    height: 65px;
+    text-align: center;
+  }
+
+  .bar-lock {
+    background: #213140;
+    height: 65px;
+    width: 100%;
+    text-align: center;
   }
 
   .home, .settings, .createProfile, .import-profile {
@@ -62,6 +77,9 @@
     height: 55px;
     line-height: 110%;
     background-color: #213140;
+    position: fixed;
+    width: 100%;
+    top: 0;
   }
 
   header .photo-container {
@@ -74,6 +92,11 @@
   header h1 {
     color: #fff;
     text-align: center;
+  }
+
+  .scroll-section {
+    margin: 55px 0 85px;
+
   }
 
   .col3 a {
@@ -272,6 +295,24 @@
     -moz-box-shadow: none !important;
     box-shadow: none !important;
     -webkit-tap-highlight-color:rgba(0,0,0,0);
+  }
+
+  .button-addwallet {
+    background: #D8DEE3;
+    border-radius: 4px;
+    color: #7A8C9E;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 20px;
+  }
+
+  .button-addwallet i {
+    background-color: #7A8C9E;
+    color: #D8DEE3;
+    border-radius: 100%;
+    padding: .1rem 0.25rem;
+    margin-right: 5px;
   }
 
   .modal.fade, .reveal-modal-bg {
