@@ -18,10 +18,15 @@
     display: none;
   }
 
-  .sidebar.bottom-bar {
+  .sidebar-bottom {
     background: #213140;
     padding: 1.2rem;
     font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    height: 65px;
   }
 
   .page, .main {
@@ -30,7 +35,7 @@
 
   .main {
     height: 92%;
-    margin-top: 45px;
+    margin-top: 30px;
     margin-left: 0;
     margin-bottom: -30px;
     padding: 20px 0 80px 0;
@@ -42,7 +47,6 @@
     width: 100%;
     z-index: 5;
     background: #3C4E60;
-    height: 55px;
   }
 
   .bottom-bar {
@@ -52,15 +56,6 @@
     width: 100%;
     z-index: 5;
     background: #2C3E50;
-    height: 65px;
-    text-align: center;
-  }
-
-  .bar-lock {
-    background: #213140;
-    height: 65px;
-    width: 100%;
-    text-align: center;
   }
 
   .home, .settings, .createProfile, .import-profile {
@@ -73,20 +68,28 @@
   } 
 
   header {
+    height: 45px;
+    background-color: #213140;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    line-height: 110%;
+    padding: 0 0.45rem;
+/*    
     padding: 0.45rem;
-    height: 55px;
     line-height: 110%;
     background-color: #213140;
     position: fixed;
     width: 100%;
     top: 0;
+*/
   }
 
   header .photo-container {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     margin-right: 10px;
-    border: 1px solid #7A8C9E;
+    margin-top: 5px;
   }
 
   header h1 {
@@ -95,8 +98,11 @@
   }
 
   .scroll-section {
-    margin: 55px 0 85px;
-
+    position: absolute;
+    top: 45px;
+    bottom: 65px;
+    overflow: scroll;
+    width: 100%;
   }
 
   .col3 a {
@@ -204,9 +210,8 @@
     background-color: #213140;
   }
 
-  .left-small, .right-small, .tab-bar-section {
+  .left-small {
     border-right: none;
-    padding-top: 0.3rem;
   }
 
   .right-small {
@@ -250,22 +255,11 @@
     padding: 0.15rem 0.2rem;
   }
 
-  .side-nav.wallets {
+  .sidebar-mobile-wallets {
     background: #E4E8EC;
-    z-index: 100;
-    overflow-y: inherit;
-    position: inherit;
-    height: auto;
-    border-bottom: none;
   }
 
-  .side-nav.wallets li {
-    margin: 0;
-    padding: 0.8rem .1rem;
-    border-bottom: 1px solid #D6DBE1;
-  }
-
-  .side-nav li.nav-item.selected {
+  .sidebar-mobile-wallets li.nav-item.selected {
     background-color: #CED5DC;
   } 
 
@@ -297,17 +291,16 @@
     -webkit-tap-highlight-color:rgba(0,0,0,0);
   }
 
-  .button-addwallet {
+  .button-addwallet a {
     background: #D8DEE3;
     border-radius: 4px;
     color: #7A8C9E;
     text-transform: uppercase;
     font-weight: 700;
     font-size: 12px;
-    margin: 20px;
   }
 
-  .button-addwallet i {
+  .button-addwallet a i {
     background-color: #7A8C9E;
     color: #D8DEE3;
     border-radius: 100%;

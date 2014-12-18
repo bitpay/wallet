@@ -1,20 +1,17 @@
-<div class="pr">
-  <header ng-click="$root.go('profile')">
-    <a class="db nav-item" title="Create new wallet">
-      <div class="photo-container left">
-        <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="40">
-      </div>
-      <div class="left">
-        <p class="text-white m0">{{$root.iden.getName()}}</p>
-        <span class="db text-gray size-10"> {{'View My Profile' | translate }} </span>
-      </div>
-      <div class="right">
-        <i class="icon-arrow-right3 size-16 db m10t text-white"></i>
-      </div>
-    </a>
-  </header>
+<header ng-click="$root.go('profile')">
+  <div class="photo-container left">
+    <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="35">
+  </div>
+  <div class="left m10t">
+    <div class="text-white">{{$root.iden.getName()}}</div>
+    <div class="text-gray size-10"> {{'View My Profile' | translate }} </div>
+  </div>
+  <div class="right">
+    <i class="icon-arrow-right3 size-16 db m15t text-white"></i>
+  </div>
+</header>
   <div class="scroll-section">
-    <ul class="side-nav wallets off-canvas-list" ng-show="wallets[0]">
+    <ul class="sidebar-mobile-wallets oh off-canvas-list m10b" ng-show="wallets[0]">
       <li 
       ng-repeat="item in wallets track by $index"
       ng-class="{'selected': item.id == $root.wallet.id}"
@@ -41,7 +38,8 @@
       </div>
       </li> 
     </ul>
-    <a class="db button-addwallet button" title="Add wallet" ng-click="$root.go('add')">
+
+    <a class="button gray expand" title="Add wallet" ng-click="$root.go('add')">
       <i class="fi-plus"></i> Add wallet
     </a>
 
@@ -49,11 +47,10 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div>
   </div>
-  <div class="sidebar bottom-bar">
+  <div class="sidebar-bottom">
     <a class="db text-gray tu" title="Close" ng-click="signout()">
       <span ng-if="!$root.hasPin"><i class="size-16 m5r fi-power"></i> {{'Close'|translate}}</span>
       <span ng-if="$root.hasPin"><i class="size-16 m5r icon-locked"></i> {{'Lock'|translate}}</span>
     </a>
   </div>
-</div>
 
