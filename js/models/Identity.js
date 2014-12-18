@@ -381,12 +381,9 @@ Identity.prototype.store = function(opts, cb) {
   var storeFunction = opts.failIfExists ? self.storage.createItem : self.storage.setItem;
 
   storeFunction.call(self.storage, this.getId(), this.toObj(), function(err) {
-    if (err) {
-      return cb(err);
-    }
+    if (err) return cb(err);
 
-    if (opts.noWallets)
-      return cb();
+    if (opts.noWallets) return cb();
 
     async.each(self.getWallets(), function(wallet, in_cb) {
       self.storeWallet(wallet, in_cb);

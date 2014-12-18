@@ -37,7 +37,6 @@ angular.module('copayApp.services')
         passphraseConfig: config.passphraseConfig,
         failIfExists: true,
       }, function(err, iden) {
-
         if (err) return cb(err);
         preconditions.checkState(iden);
         root.bind(iden);
