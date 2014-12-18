@@ -109,7 +109,7 @@ Identity.create = function(opts, cb) {
   });
 };
 
-Identity.prototype.resendVerificationEmail = function (cb) {
+Identity.prototype.resendVerificationEmail = function(cb) {
   var self = this;
 
   preconditions.checkArgument(_.isFunction(cb));
@@ -152,7 +152,7 @@ Identity.open = function(opts, cb) {
   });
 };
 
-Identity.prototype.verifyChecksum = function (cb) {
+Identity.prototype.verifyChecksum = function(cb) {
   var self = this;
 
   self.storage.getItem(Identity.getKeyForEmail(self.email), function(err, data, headers) {
@@ -202,11 +202,9 @@ Identity.prototype.addWallet = function(w) {
  */
 Identity.prototype.deleteWallet = function(walletId, cb) {
   preconditions.checkArgument(_.isString(walletId));
-
   var self = this;
 
-
-  self.verifyChecksum(function (err, match) {
+  self.verifyChecksum(function(err, match) {
     if (err) return cb(err);
     if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
@@ -222,6 +220,7 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
       self.emitAndKeepAlive('walletDeleted', walletId);
       self.store(null, cb);
     });
+
   });
 };
 
@@ -375,7 +374,7 @@ Identity.prototype.setBackupNeeded = function(backupNeeded) {
 
   self.backupNeeded = !!backupNeeded;
 
-  self.verifyChecksum(function (err, match) {
+  self.verifyChecksum(function(err, match) {
     if (err) return cb(err);
     if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
@@ -449,8 +448,11 @@ Identity.prototype.remove = function(opts, cb) {
 };
 
 Identity.prototype._cleanUp = function() {
+  var self = this;
+
   _.each(this.getWallets(), function(w) {
     w.close();
+    delete self.wallets[w.getId()];
   });
 };
 
@@ -458,7 +460,6 @@ Identity.prototype._cleanUp = function() {
  * @desc Closes the wallet and disconnects all services
  */
 Identity.prototype.close = function() {
-
   this._cleanUp();
   this.emitAndKeepAlive('closed');
 };
@@ -623,10 +624,10 @@ Identity.prototype.bindWallet = function(w) {
  */
 Identity.prototype.createWallet = function(opts, cb) {
   preconditions.checkArgument(cb);
-  
+
   var self = this;
 
-  self.verifyChecksum(function (err, match) {
+  self.verifyChecksum(function(err, match) {
     if (err) return cb(err);
     if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
