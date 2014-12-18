@@ -20,26 +20,15 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
     var elem = angular.element(document.querySelector('#off-canvas-wrap'));
     var leftbarActive = angular.element(document.getElementsByClassName('move-right')).length;
-    var rightbarActive = angular.element(document.getElementsByClassName('move-left')).length;
     
     if (invert) {
-      if (rightbarActive) {
-        hideSidebars();
-      }
-      else {
-        if ($rootScope.iden && !$rootScope.hideNavigation) {
-          elem.addClass('move-right');
-        }
+      if ($rootScope.iden && !$rootScope.hideNavigation) {
+        elem.addClass('move-right');
       }
     }
     else { 
       if (leftbarActive) {
         hideSidebars();
-      }
-      else {
-        if ($rootScope.iden && $rootScope.iden.getWallets().length >1) {
-          elem.addClass('move-left');
-        }
       }
     }
   };
