@@ -75,14 +75,6 @@
     width: 100%;
     line-height: 110%;
     padding: 0 0.45rem;
-/*    
-    padding: 0.45rem;
-    line-height: 110%;
-    background-color: #213140;
-    position: fixed;
-    width: 100%;
-    top: 0;
-*/
   }
 
   header .photo-container {
@@ -101,8 +93,7 @@
     position: absolute;
     top: 45px;
     bottom: 65px;
-    overflow: scroll;
-    width: 100%;
+    overflow-y: auto;
   }
 
   .col2 {
