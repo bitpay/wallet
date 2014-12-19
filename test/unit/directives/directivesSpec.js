@@ -191,25 +191,26 @@ describe("Unit: Testing Directives", function() {
     it('should check very weak password', function() {
       $scope.password = 'asd';
       $scope.$digest();
-      expect($scope.passwordStrength).to.equal('Very Weak, that\'s short');
+      expect($scope.passwordStrength.strength).to.equal(1);
     });
+
 
     it('should check weak password', function() {
       $scope.password = 'asdasdASDASD';
       $scope.$digest();
-      expect($scope.passwordStrength).to.equal('Weak, add numerals');
+      expect($scope.passwordStrength.message).to.equal('Weak, add numerals');
     });
 
     it('should check medium password', function() {
       $scope.password = 'asdasdA1';
       $scope.$digest();
-      expect($scope.passwordStrength).to.equal('Medium, add punctuation');
+      expect($scope.passwordStrength.message).to.equal('Medium, add punctuation');
     });
 
     it('should check strong password', function() {
       $scope.password = 'asdasdASDASD1{';
       $scope.$digest();
-      expect($scope.passwordStrength).to.equal('Strong, add punctuation');
+      expect($scope.passwordStrength.message).to.equal('Strong, add punctuation');
     });
 
   });
