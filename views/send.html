@@ -4,7 +4,7 @@
     <div class="large-10 medium-10 small-9 columns">
       <h1>{{$root.title}}</h1>
     </div>
-    <div class="large-2 medium-2 small-3 columns">
+    <div class="large-2 medium-2 small-3 columns" ng-show="!lockAddress && !_merchantData">
       <div ng-hide="showScanner || disableScanner">
         <a class="button right m10b radius tiny black" ng-click="openScanner()"><i class="fi-camera size-18"></i></a>
       </div>
@@ -87,7 +87,7 @@
               </label>
 
               <div class="input block">
-                <input type="text" id="domain" name="domain" ng-model="_domain" ng-disabled="1">
+                <input class="p45li" type="text" id="domain" name="domain" ng-model="_domain" ng-disabled="1">
                 <i class="fi-lock color-greeni"></i> 
               </div>
             </div>
@@ -138,7 +138,7 @@
 
           <div class="row">
             <div class="large-4 medium-4 small-12 columns text-left">
-              <div class="show-for-large-up">
+              <div class="show-for-large-up" ng-show="!lockAddress && !_merchantData">
                 <div ng-hide="showScanner || disableScanner">
                   <a class="button radius black size-12" ng-click="openScanner()"><i class="fi-camera size-18 vm m5r"></i> Scan QR </a>
                 </div>
