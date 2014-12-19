@@ -102,6 +102,10 @@ angular
       .when('/profile', {
         templateUrl: 'views/profile.html',
         logged: true
+      })
+      .when('/add', {
+        templateUrl: 'views/add.html',
+        logged: true
       });
 
     if (config.developmentFeatures) {
