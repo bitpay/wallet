@@ -34,7 +34,7 @@
         <div class="text-gray text-center m20b">{{userOrEmail}}</div>
       </div>
 
-      <div class="box-notification" ng-show="error">
+      <div class="box-notification" ng-show="error  && !passwordStrength">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
         </div>
@@ -202,7 +202,7 @@
       <img src="img/clipo-pin.png" alt="clipo" width="380">
     </div>
 
-    <div class="box-notification" ng-show="error">
+    <div class="box-notification" ng-show="error  && !passwordStrength">
       <div class="box-icon error">
         <i class="fi-x size-24"></i>
       </div>
