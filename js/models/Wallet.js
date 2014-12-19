@@ -1442,7 +1442,8 @@ Wallet.prototype.getPendingTxProposalsCount = function() {
   _.each(txps, function(inTxp, ntxid) {
     if (!inTxp.isPending(maxRejectCount))
       return;
-
+// TODO: are the uxtos availables?
+    //
     pending++;
 
     if (!inTxp.signedBy[myId] && !inTxp.rejectedBy[myId])

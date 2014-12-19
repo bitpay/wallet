@@ -396,7 +396,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 
 
-.box-notification a.close-notification {
+a.close-notification {
   position: absolute;
   top: 8px;
   right: 10px;
