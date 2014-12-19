@@ -444,6 +444,9 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.error = $scope.success = null;
       if (!value) return '';
 
+      // Fixes when a region uses comma to separate decimals
+      value = value.replace(',', '.');
+
       if (value.indexOf('bitcoin:') === 0) {
         return $scope.setFromUri(value);
       } else if (/^https?:\/\//.test(value)) {
