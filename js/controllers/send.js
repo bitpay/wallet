@@ -414,7 +414,7 @@ angular.module('copayApp.controllers').controller('SendController',
         } else {
           $scope._merchantData = merchantData;
           $scope._domain = merchantData.domain;
-          $scope.setForm(null, merchantData.unitTotal);
+          $scope.setForm(null, merchantData.total * satToUnit);
         }
       });
     };
