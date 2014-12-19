@@ -1249,7 +1249,8 @@ label.postfix, a.postfix {
 .home input[type=text],
 .home input[type=tel],
 .home input[type=password],
-.import-profile input[type=password] {
+.import-profile input[type=password], 
+.import-profile textarea {
   padding-left: 45px;
 }
 
