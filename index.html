@@ -51,7 +51,12 @@
 
         <span class="status" ng-if="$root.needsEmailConfirmation && !$root.pleaseConfirmEmailAck"> 
           <a class="close-notification text-white" ng-click="$root.pleaseConfirmEmailAck=true">&#215;</a>
-          <a class="text-white button warning tiny m0 right" ng-click="resendVerificationEmail()">Resend</a>
+          <button class="text-white warning tiny m0 right" 
+            ng-click="resendVerificationEmail()" 
+            ng-disabled="loading"
+            ng-show="!hideReSendButton">
+            {{ loading ? 'Resending...' : 'Resend' }}
+          </button>
           <i class="fi-alert size-36 left m20r"></i>
           <span translate> 
             <strong class="size-16">Email not confirmed</strong>.<br> 
