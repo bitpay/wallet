@@ -94,6 +94,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     }, 1);
   };
 
+  /* Last step. Will emit after creation so the UX gets updated */
   $scope.createDefaultWallet = function() {
     $rootScope.hideNavigation = false;
     identityService.createDefaultWallet(function(err) {
@@ -102,7 +103,12 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       if (err) {
         var msg = err.toString();
         $scope.error = msg;
+      } else {
+        if (!$scope.useLocalstorage) {
+          $rootScope.pleaseConfirmEmail = true;
+        }
       }
+
     });
   };
 
@@ -127,6 +133,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
           $scope.createStep = 'email';
         }
         $scope.error = msg;
+        $scope.passwordStrength = null;
       } else {
         // mobile
         if ($scope.isMobile) {
