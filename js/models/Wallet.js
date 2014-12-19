@@ -1798,8 +1798,6 @@ Wallet.prototype._addOutputsToMerchantData = function(merchantData) {
   if (merchantData.total == "0" && options.amount) {
     merchant.outs[0].amountSatStr = merchantData.total = options.amount;
   }
-
-  merchantData.unitTotal = merchantData.total ? (+merchantData.total / this.settings.unitToSatoshi) + '' : 0;
 };
 
 /**
