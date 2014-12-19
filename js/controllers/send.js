@@ -420,7 +420,21 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.setFromUri = function(uri) {
+      function sanitizeUri(uri) {
+        // Fixes when a region uses comma to separate decimals
+        var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+        var match = regex.exec(uri);
+        if (!match || match.length === 0) {
+          return uri;
+        }
+        var value = match[0].replace(',', '.');
+        var newUri = uri.replace(regex, value);
+        return newUri;
+      };
+
       var form = $scope.sendForm;
+
+      uri = sanitizeUri(uri);
 
       var parsed = new bitcore.BIP21(uri);
       if (!parsed.isValid() || !parsed.address.isValid()) {
@@ -443,9 +457,6 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.onAddressChange = function(value) {
       $scope.error = $scope.success = null;
       if (!value) return '';
-
-      // Fixes when a region uses comma to separate decimals
-      value = value.replace(',', '.');
 
       if (value.indexOf('bitcoin:') === 0) {
         return $scope.setFromUri(value);
