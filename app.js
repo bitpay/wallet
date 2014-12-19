@@ -2,6 +2,14 @@ var express = require('express');
 var http = require('http');
 var app = express();
 
+// This is not really necesarry, just to simulate 
+// Content Security Policy from Google Chrome Apps.
+//
+// app.use(function(req, res, next){
+//     res.header("Content-Security-Policy", "script-src 'self';object-src 'none';media-src 'self';frame-src 'none';font-src 'self' data:");
+//     next();
+// });
+
 app.use('/', express.static(__dirname + '/'));
 app.get('*', function(req, res) {
   return res.sendFile(__dirname + '/' + 'index.html');
