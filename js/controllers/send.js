@@ -392,9 +392,17 @@ angular.module('copayApp.controllers').controller('SendController',
 
 
     $scope.setFromPayPro = function(uri) {
+
+      var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
+      if (isChromeApp) {
+        $scope.error = 'Payment Protocol not yet supported on ChromeApp';
+        return;
+      }
+
       var w = $rootScope.wallet;
       $scope.fetchingURL = uri;
       $scope.loading = true;
+
 
       // Payment Protocol URI (BIP-72)
       w.fetchPaymentRequest({
