@@ -219,6 +219,7 @@ header .alt-currency {
     height:100%;   
 }
 
+
 .tab-bar {
   display: none;
 }
@@ -249,11 +250,11 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 .side-nav.wallets .avatar-wallet, 
 .wallet-selection.wallets .avatar-wallet
 {
-  background-color: #7A8C9E;
-  color: #213140;
+  background-color: #1ABC9C;
+  color: #fff;
   padding: 0.35rem 0.5rem;
   text-align: center;
-  margin-top: 6px;
+  margin-top: 3px;
   width: 35px;
 }
 
@@ -621,6 +622,7 @@ a.button-setup {
   float: left;
   color: #fff;
   text-transform: lowercase;
+  font-weight: 500;
 }
 
 .name-wallet i {

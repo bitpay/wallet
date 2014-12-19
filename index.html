@@ -66,13 +66,14 @@
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
-            <section class="right-small" ng-show="$root.iden && $root.iden.getWallets().length >1">
-              <a class="right-off-canvas-toggle p10"><i class="icon-wallet size-24"></i></a>
+
+            <section class="right-small" ng-show="$root.iden && $root.wallet.isComplete()">
+              <a class="p10" ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
             </section>
 
             <section class="middle tab-bar-section">
-              <h1 class="title">
-                <img src="img/logo-negative-beta.svg" alt="Copay" width="60">
+              <h1 class="title ellipsis" ng-show="$root.iden && $root.wallet">
+                {{$root.wallet.getName()}}
               </h1>
             </section>
           </nav>
@@ -81,9 +82,6 @@
             <div ng-include="'views/includes/sidebar-mobile.html'"></div>
           </nav>
 
-          <nav class="right-off-canvas-menu" ng-show="$root.iden && $root.iden.getWallets().length >1">
-            <div ng-include="'views/includes/walletbar-mobile.html'"></div>
-          </nav>
           <div 
             ng-if="$root.iden"
             ng-include="'views/includes/sidebar.html'" 
