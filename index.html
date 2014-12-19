@@ -48,10 +48,7 @@
 
     <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="!signingOut">
       <div class="inner-wrap">
-        <span class="status" ng-if="$root.reconnecting">
-          <i class="fi-loop icon-rotate"></i>
-          <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
-        </span>
+
         <span class="status" ng-if="$root.needsEmailConfirmation && !$root.pleaseConfirmEmailAck"> 
           <a class="close-notification text-white" ng-click="$root.pleaseConfirmEmailAck=true">&#215;</a>
           <a class="text-white button warning tiny m0 right" ng-click="resendVerificationEmail()">Resend</a>
@@ -69,6 +66,10 @@
             An email was sent to {{$root.iden.getName()}}. Please follow the link on it to confirm it. Unconfirmed profiles could be deleted from server.
           </span>
 
+        </span>
+        <span class="status" ng-if="$root.reconnecting">
+          <i class="fi-loop icon-rotate"></i>
+          <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
  
         <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation">
