@@ -147,10 +147,23 @@
       </form>
 
       <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
+
+      <div class="box-notification" ng-show="passwordStrength">
+        <div class="box-icon" style="background-color:{{passwordStrength.color}}">
+          <i class="fi-x size-24" ng-if="passwordStrength.strength< minPasswordStrength"></i>
+          <i class="fi-check size-24" ng-if="passwordStrength.strength >= minPasswordStrength"></i>
+        </div>
+        <span class="size-14" >
+          Password Strength: {{passwordStrength.message}}
+        </span>
+      </div>
+
+
         <div class="input">
-          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" tooltip-html-unsafe="Password strength: <b>{{passwordStrength}}</b><br/><span class='size-12'>Tip: Use lower and uppercase, numbers and symbols</span>" tooltip-trigger="focus" required tooltip-placement="top">
+          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" >
           <i class="icon-locked"></i>
         </div>
+
 
         <div class="input">
           <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required>
@@ -167,7 +180,7 @@
           </div>
         </div>
 
-        <button translate type="submit" class="button primary radius expand m0" ng-disabled="passForm.$invalid">
+        <button translate type="submit" class="button primary radius expand m0" ng-disabled="passForm.$invalid || passwordStrength.strength < minPasswordStrength">
           Create Profile
         </button>
 
