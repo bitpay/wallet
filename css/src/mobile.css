@@ -105,6 +105,14 @@
     width: 100%;
   }
 
+  .col2 {
+    width: 180px;
+  }
+
+  .col2 a.wallet-item {
+    padding: 0.15rem 0 0.3rem;
+  }
+
   .col3 a {
     height: 45px;
     padding: 12px 5px;
@@ -133,9 +141,11 @@
   }
 
   .avatar-wallet {
+    background-color: #1ABC9C;
+    color: #fff;
     margin-top: 5px;
     margin-left: 5px;
-    margin-right: 5px;
+    margin-right: 13px;
     padding: 0.35rem 0.65rem;
   }
 
@@ -259,6 +269,12 @@
     background: #E4E8EC;
   }
 
+  .sidebar-mobile-wallets li {
+    overflow: hidden;
+    padding:0.4rem;
+    border-bottom: 1px solid #DDE2E7;
+  }
+
   .sidebar-mobile-wallets li.nav-item.selected {
     background-color: #CED5DC;
   } 
@@ -291,16 +307,21 @@
     -webkit-tap-highlight-color:rgba(0,0,0,0);
   }
 
-  .button-addwallet a {
+  a.button-addwallet {
     background: #D8DEE3;
     border-radius: 4px;
     color: #7A8C9E;
     text-transform: uppercase;
     font-weight: 700;
     font-size: 12px;
+    padding: 0.8rem;
+    width: 80%;
+    display: block;
+    margin: 20px;
+    text-align: center;
   }
 
-  .button-addwallet a i {
+  a.button-addwallet i {
     background-color: #7A8C9E;
     color: #D8DEE3;
     border-radius: 100%;
