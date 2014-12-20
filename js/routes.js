@@ -145,7 +145,7 @@ angular
     }
 
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if (unsupported) {
+      if (unsupported && !isCordova) {
         $location.path('unsupported');
         return;
       }
