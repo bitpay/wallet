@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var preconditions = require('preconditions').singleton();
 
 var bitcore = require('bitcore');
