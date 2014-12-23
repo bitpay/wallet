@@ -2,13 +2,17 @@
 
 // 62.9% typed (by google's closure-compiler account)
 
+var _ = require('lodash');
+var preconditions = require('preconditions').instance();
+
 var bitcore = require('bitcore');
 var HK = bitcore.HierarchicalKey;
 var WalletKey = bitcore.WalletKey;
 var networks = bitcore.networks;
 var util = bitcore.util;
-var _ = require('lodash');
-var preconditions = require('preconditions').instance();
+var BIP39 = bitcore.BIP39;
+var BIP39WordlistEn = bitcore.BIP39WordlistEn;
+
 var HDPath = require('./HDPath');
 
 /**
@@ -26,8 +30,13 @@ var HDPath = require('./HDPath');
 function PrivateKey(opts) {
   opts = opts || {};
   this.network = opts.networkName === 'testnet' ?  networks.testnet : networks.livenet;
-  var init = opts.extendedPrivateKeyString || this.network.name;
-  this.bip = new HK(init);
+  if (opts.extendedPrivateKeyString) {
+    this.bip = new HK(opts.extendedPrivateKeyString);
+  } else {
+    this.mnemonic = opts.mnemonic || BIP39.mnemonic(BIP39WordlistEn, 128);
+    var seed = BIP39.mnemonic2seed(this.mnemonic, '');
+    this.bip = HK.seed(seed, this.network.name);
+  }
   this.privateKeyCache = {};
   this.publicHex = this.deriveBIP45Branch().eckey.public.toString('hex');
 };
@@ -120,7 +129,7 @@ PrivateKey.prototype.deriveBIP45Branch = function() {
  */
 PrivateKey.trim = function(data) {
   var opts = {};
-  ['networkName', 'extendedPrivateKeyString'].forEach(function(k){
+  ['networkName', 'extendedPrivateKeyString', 'mnemonic'].forEach(function(k){
     opts[k] = data[k];
   });
   return opts
@@ -148,7 +157,8 @@ PrivateKey.fromObj = function(obj) {
 PrivateKey.prototype.toObj = function() {
   return {
     extendedPrivateKeyString: this.getExtendedPrivateKeyString(),
-    networkName: this.network.name
+    networkName: this.network.name,
+    mnemonic: this.mnemonic,
   };
 };
 
