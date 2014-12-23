@@ -44,11 +44,26 @@ angular.module('copayApp.controllers').controller('CreateController',
         $scope.error = 'Please enter the required fields';
         return;
       }
+
+      var hexPriv, mnemonicPriv;
+      if ($scope.private) {
+        if ($scope.private.trim().indexOf(' ') === -1) {
+          hexPriv = $scope.private;
+        } else {
+          mnemonicPriv = $scope.private;
+          if (menmonicPriv.split(' ').length < 12) {
+            $scope.error = 'Please enter at least 12 words';
+            return;
+          }
+        }
+      }
+
       var opts = {
         requiredCopayers: $scope.requiredCopayers,
         totalCopayers: $scope.totalCopayers,
         name: $scope.walletName,
-        privateKeyHex: $scope.private,
+        privateKeyHex: hexPriv,
+        privateKeyMnemonic: mnemonicPriv,
         networkName: $scope.networkName,
       };
       $rootScope.starting = true;

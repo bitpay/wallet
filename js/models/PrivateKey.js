@@ -33,8 +33,8 @@ function PrivateKey(opts) {
   if (opts.extendedPrivateKeyString) {
     this.bip = new HK(opts.extendedPrivateKeyString);
   } else {
-    this.mnemonic = opts.mnemonic || BIP39.mnemonic(BIP39WordlistEn, 128);
-    var seed = BIP39.mnemonic2seed(this.mnemonic, '');
+    this.extendedPrivateKeyMnemonic = opts.extendedPrivateKeyMnemonic || BIP39.mnemonic(BIP39WordlistEn, 128);
+    var seed = BIP39.mnemonic2seed(this.extendedPrivateKeyMnemonic, '');
     this.bip = HK.seed(seed, this.network.name);
   }
   this.privateKeyCache = {};
@@ -129,7 +129,7 @@ PrivateKey.prototype.deriveBIP45Branch = function() {
  */
 PrivateKey.trim = function(data) {
   var opts = {};
-  ['networkName', 'extendedPrivateKeyString', 'mnemonic'].forEach(function(k){
+  ['networkName', 'extendedPrivateKeyString', 'extendedPrivateKeyMnemonic'].forEach(function(k){
     opts[k] = data[k];
   });
   return opts
@@ -158,7 +158,7 @@ PrivateKey.prototype.toObj = function() {
   return {
     extendedPrivateKeyString: this.getExtendedPrivateKeyString(),
     networkName: this.network.name,
-    mnemonic: this.mnemonic,
+    extendedPrivateKeyMnemonic: this.extendedPrivateKeyMnemonic,
   };
 };
 

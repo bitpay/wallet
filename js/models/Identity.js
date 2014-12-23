@@ -611,6 +611,9 @@ Identity.prototype.createWallet = function(opts, cb) {
   if (opts.privateKeyHex && opts.privateKeyHex.length > 1) {
     privOpts.extendedPrivateKeyString = opts.privateKeyHex;
   }
+  if (opts.privateKeyMnemonic && opts.privateKeyMnemonic.length > 1) {
+    privOpts.extendedPrivateKeyMnemonic = opts.privateKeyMnemonic;
+  }
 
   opts.privateKey = opts.privateKey || new PrivateKey(privOpts);
 
