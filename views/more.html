@@ -48,8 +48,8 @@
           <span translate ng-hide="!hidePriv">Show</span>
           <span translate ng-hide="hidePriv">Hide</span>
         </a>
-        <textarea class="m10t" ng-hide="hidePriv">{{privHex}}</textarea>
-        <textarea class="m10t" ng-hide="hidePriv">{{privMnemonic}}</textarea>
+        <textarea class="m10t" ng-hide="hidePriv || privMnemonic">{{privHex}}</textarea>
+        <textarea class="m10t" ng-hide="hidePriv || !privMnemonic">{{privMnemonic}}</textarea>
       </div>
     </div>
     <div class="large-12 columns">

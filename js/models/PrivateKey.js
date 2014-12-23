@@ -31,9 +31,10 @@ function PrivateKey(opts) {
   opts = opts || {};
   this.network = opts.networkName === 'testnet' ?  networks.testnet : networks.livenet;
   if (opts.extendedPrivateKeyString) {
+    this.extendedPrivateKeyMnemonic = opts.extendedPrivateKeyMnemonic;
     this.bip = new HK(opts.extendedPrivateKeyString);
   } else {
-    this.extendedPrivateKeyMnemonic = opts.extendedPrivateKeyMnemonic || BIP39.mnemonic(BIP39WordlistEn, 128);
+    this.extendedPrivateKeyMnemonic = opts.extendedPrivateKeyMnemonic || BIP39.mnemonic(BIP39WordlistEn, 256);
     var seed = BIP39.mnemonic2seed(this.extendedPrivateKeyMnemonic, '');
     this.bip = HK.seed(seed, this.network.name);
   }
