@@ -57,7 +57,9 @@ angular.module('copayApp.controllers').controller('MoreController',
     $scope.hidePriv = true;
     $scope.hideSecret = true;
     if (w) {
-      $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
+      var pkObj = w.privateKey.toObj();
+      $scope.privHex = pkObj.extendedPrivateKeyString;
+      $scope.privMnemonic = pkObj.extendedPrivateKeyMnemonic;
       $scope.secret = w.getSecret();
     }
 

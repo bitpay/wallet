@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('CreateController',
           hexPriv = $scope.private;
         } else {
           mnemonicPriv = $scope.private;
-          if (menmonicPriv.split(' ').length < 12) {
+          if (mnemonicPriv.split(' ').length < 12) {
             $scope.error = 'Please enter at least 12 words';
             return;
           }
