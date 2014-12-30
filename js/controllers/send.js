@@ -10,9 +10,11 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.init = function() {
       var w = $rootScope.wallet;
       preconditions.checkState(w);
+
       preconditions.checkState(w.settings.unitToSatoshi);
 
-      $rootScope.title = w.isShared() ? 'Send Proposal' : 'Send';
+      $scope.isShared = w.isShared();
+      $rootScope.title =$scope.isShared ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
 
@@ -125,7 +127,7 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('expired'))
         msg = 'The payment request has expired';
 
-      var message = 'The transaction' + (w.isShared() ? ' proposal' : '') +
+      var message = 'The transaction' + ($scope.isShared ? ' proposal' : '') +
         ' could not be created: ' + msg;
 
       $scope.error = message;

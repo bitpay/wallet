@@ -131,7 +131,8 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="loading" name="comment" placeholder="{{($root.wallet.isShared() ? 'Leave a private message to your copayers' : 'Add a private comment to identify the transaction')}}" ng-maxlength="100" ng-model="_comment"></textarea>
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="isShared" placeholder="Leave a private message to your copayers" ng-maxlength="100" ng-model="_comment"></textarea>
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="!isShared" placeholder="Add a private comment to identify the transaction" ng-maxlength="100" ng-model="_comment"></textarea>
               </div>
             </div>
           </div>

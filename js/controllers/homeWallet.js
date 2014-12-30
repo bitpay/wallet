@@ -4,7 +4,8 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
   $scope.initHome = function() {
     $rootScope.title = 'Home';
     var w = $rootScope.wallet;
-    if (w.isShared())
+    $scope.isShared = w.isShared();
+    if ($scope.isShared)
       $scope.copayers = w.getRegisteredPeerIds();
   }; 
 
