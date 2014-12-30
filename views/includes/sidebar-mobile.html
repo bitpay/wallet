@@ -43,14 +43,14 @@
       <i class="fi-plus"></i> Add wallet
     </a>
 
-    <div class="text-gray size-12 text-center columns">
-      <div ng-include="'views/includes/version.html'"></div>
-    </div>
-  </div>
-  <div class="sidebar-bottom">
-    <a class="db text-gray tu" title="Close" ng-click="signout()">
+    <a class="button-close" title="Close" ng-click="signout()">
       <span ng-if="!$root.hasPin"><i class="size-16 m5r fi-power"></i> {{'Close'|translate}}</span>
       <span ng-if="$root.hasPin"><i class="size-16 m5r icon-locked"></i> {{'Lock'|translate}}</span>
     </a>
+
+
+    <div class="text-gray size-12 text-center columns">
+      <div ng-include="'views/includes/version.html'"></div>
+    </div>
   </div>
 
