@@ -21,7 +21,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "dependencies": {
-    "browser-request": "^0.3.2",
+    "browser-request": "git://github.com/matiu/browser-request.git#67200dd4ec133457fb7dc69f005540f92b543f0a",
     "inherits": "^2.0.1",
     "lodash": "^2.4.1",
     "optimist": "^0.6.1",
@@ -45,7 +45,6 @@
     "bitcore": "git://github.com/bitpay/bitcore.git#0d238f116500a732057ec9dd80a8a87b2190ca49",
     "blanket": "^1.1.6",
     "browser-pack": "^2.0.1",
-    "browser-request": "^0.3.2",
     "browserify": "^3.32.1",
     "buffertools": "^2.0.1",
     "chai": "^1.9.1",
