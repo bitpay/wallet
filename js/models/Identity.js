@@ -208,7 +208,7 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
 
   self.verifyChecksum(function (err, match) {
     if (err) return cb(err);
-    if (!match) return cb('The profile is out of sync');
+    if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
     var w = self.getWalletById(walletId);
     w.close();
@@ -377,7 +377,7 @@ Identity.prototype.setBackupNeeded = function(backupNeeded) {
 
   self.verifyChecksum(function (err, match) {
     if (err) return cb(err);
-    if (!match) return cb('The profile is out of sync');
+    if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
     self.store({
       noWallets: true
@@ -628,7 +628,7 @@ Identity.prototype.createWallet = function(opts, cb) {
 
   self.verifyChecksum(function (err, match) {
     if (err) return cb(err);
-    if (!match) return cb('The profile is out of sync');
+    if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
     opts = opts || {};
     opts.networkName = opts.networkName || 'testnet';
