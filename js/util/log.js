@@ -49,7 +49,14 @@ _.each(levels, function(level, levelName) {
       if (Error.stackTraceLimit && this.level == 'debug') {
         var old = Error.stackTraceLimit;
         Error.stackTraceLimit = 2
-        var stack = new Error().stack;
+        var stack;
+
+        // this hack is to be compatible with IE11
+        try {
+          anerror();
+        } catch (e) {
+          stack = e.stack;
+        }
         var lines = stack.split('\n');
         var caller = lines[2];
         caller = ':' + caller.substr(6);
