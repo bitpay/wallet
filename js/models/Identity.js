@@ -76,6 +76,10 @@ Identity.getKeyForEmail = function(email) {
   return Identity.getStoragePrefix() + bitcore.util.sha256ripe160(email).toString('hex');
 };
 
+Identity.prototype.getChecksumForStorage = function() {
+  return JSON.stringify(this.walletIds);
+};
+
 Identity.prototype.getId = function() {
   return Identity.getKeyForEmail(this.email);
 };
@@ -147,6 +151,22 @@ Identity.open = function(opts, cb) {
     return cb(null, new Identity(_.extend(opts, exported)), headers);
   });
 };
+
+Identity.prototype.verifyChecksum = function (cb) {
+  var self = this;
+
+  self.storage.getItem(Identity.getKeyForEmail(self.email), function(err, data, headers) {
+    var iden;
+    if (err) return cb(err);
+    try {
+      iden = JSON.parse(data);
+    } catch (e) {
+      return cb(e);
+    }
+
+    return cb(null, self.getChecksumForStorage() == self.getChecksumForStorage.call(iden));
+};
+
 
 /**
  * @param {string} walletId
