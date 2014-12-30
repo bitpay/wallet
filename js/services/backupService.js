@@ -72,7 +72,7 @@ BackupService.prototype.walletDownload = function(wallet) {
 };
 
 BackupService.prototype.profileEncrypted = function(iden) {
-  iden.setBackupDone();
+  iden.setBackupNeeded(false);
   return iden.exportEncryptedWithWalletInfo(iden.password);
 }
 

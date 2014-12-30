@@ -77,7 +77,7 @@ Identity.getKeyForEmail = function(email) {
 };
 
 Identity.prototype.getChecksumForStorage = function() {
-  return JSON.stringify(this.walletIds);
+  return JSON.stringify(_.sortBy(this.walletIds));
 };
 
 Identity.prototype.getId = function() {
@@ -163,8 +163,8 @@ Identity.prototype.verifyChecksum = function (cb) {
     } catch (e) {
       return cb(e);
     }
-
     return cb(null, self.getChecksumForStorage() == self.getChecksumForStorage.call(iden));
+  });
 };
 
 
@@ -206,18 +206,22 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
   var self = this;
 
 
-
-  var w = this.getWalletById(walletId);
-  w.close();
-
-  delete this.wallets[walletId];
-  delete this.focusedTimestamps[walletId];
-  this.walletIds = _.without(this.walletIds, walletId);
-
-  this.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
+  self.verifyChecksum(function (err, match) {
     if (err) return cb(err);
-    self.emitAndKeepAlive('walletDeleted', walletId);
-    self.store(null, cb);
+    if (!match) return cb('The profile is out of sync');
+
+    var w = self.getWalletById(walletId);
+    w.close();
+
+    delete self.wallets[walletId];
+    delete self.focusedTimestamps[walletId];
+    self.walletIds = _.without(self.walletIds, walletId);
+
+    self.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
+      if (err) return cb(err);
+      self.emitAndKeepAlive('walletDeleted', walletId);
+      self.store(null, cb);
+    });
   });
 };
 
@@ -366,18 +370,19 @@ Identity.prototype.exportEncryptedWithWalletInfo = function(opts) {
   return crypto.encrypt(this.password, this.exportWithWalletInfo(opts));
 };
 
-Identity.prototype.setBackupNeeded = function() {
-  this.backupNeeded = true;
-  this.store({
-    noWallets: true
-  }, function() {});
-}
+Identity.prototype.setBackupNeeded = function(backupNeeded) {
+  var self = this;
 
-Identity.prototype.setBackupDone = function() {
-  this.backupNeeded = false;
-  this.store({
-    noWallets: true
-  }, function() {});
+  self.backupNeeded = !!backupNeeded;
+
+  self.verifyChecksum(function (err, match) {
+    if (err) return cb(err);
+    if (!match) return cb('The profile is out of sync');
+
+    self.store({
+      noWallets: true
+    }, function() {});
+  });
 }
 
 Identity.prototype.exportWithWalletInfo = function(opts) {
@@ -618,71 +623,77 @@ Identity.prototype.bindWallet = function(w) {
  */
 Identity.prototype.createWallet = function(opts, cb) {
   preconditions.checkArgument(cb);
-
-  opts = opts || {};
-  opts.networkName = opts.networkName || 'testnet';
-
-  log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
-
-  var privOpts = {
-    networkName: opts.networkName,
-  };
-
-  if (opts.privateKeyHex && opts.privateKeyHex.length > 1) {
-    privOpts.extendedPrivateKeyString = opts.privateKeyHex;
-  }
-
-  opts.privateKey = opts.privateKey || new PrivateKey(privOpts);
-
-  var requiredCopayers = opts.requiredCopayers || this.walletDefaults.requiredCopayers;
-  var totalCopayers = opts.totalCopayers || this.walletDefaults.totalCopayers;
-  opts.lockTimeoutMin = this.walletDefaults.idleDurationMin;
-
-  opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
-    networkName: opts.networkName,
-    requiredCopayers: requiredCopayers,
-    totalCopayers: totalCopayers,
-  });
-  opts.publicKeyRing.addCopayer(
-    opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
-    opts.nickname || this.getName()
-  );
-  log.debug('\t### PublicKeyRing Initialized');
-
-  opts.txProposals = opts.txProposals || new TxProposals({
-    networkName: opts.networkName,
-  });
-  var walletClass = opts.walletClass || Wallet;
-
-  log.debug('\t### TxProposals Initialized');
-
-
-  opts.networkOpts = this.networkOpts;
-  opts.blockchainOpts = this.blockchainOpts;
-
-  opts.spendUnconfirmed = opts.spendUnconfirmed || this.walletDefaults.spendUnconfirmed;
-  opts.reconnectDelay = opts.reconnectDelay || this.walletDefaults.reconnectDelay;
-  opts.requiredCopayers = requiredCopayers;
-  opts.totalCopayers = totalCopayers;
-  opts.version = opts.version || this.version;
-
+  
   var self = this;
-  var w = new walletClass(opts);
 
-  if (self.getWalletById(w.getId())) {
-    return cb('walletAlreadyExists');
-  }
-  self.addWallet(w);
-  self.updateFocusedTimestamp(w.getId());
-  self.bindWallet(w);
-  self.storeWallet(w, function(err) {
+  self.verifyChecksum(function (err, match) {
     if (err) return cb(err);
+    if (!match) return cb('The profile is out of sync');
 
-    self.backupNeeded = true;
-    self.store({
-      noWallets: true,
-    }, function(err) {
-      return cb(err, w);
+    opts = opts || {};
+    opts.networkName = opts.networkName || 'testnet';
+
+    log.debug('### CREATING NEW WALLET.' + (opts.id ? ' USING ID: ' + opts.id : ' NEW ID') + (opts.privateKey ? ' USING PrivateKey: ' + opts.privateKey.getId() : ' NEW PrivateKey'));
+
+    var privOpts = {
+      networkName: opts.networkName,
+    };
+
+    if (opts.privateKeyHex && opts.privateKeyHex.length > 1) {
+      privOpts.extendedPrivateKeyString = opts.privateKeyHex;
+    }
+
+    opts.privateKey = opts.privateKey || new PrivateKey(privOpts);
+
+    var requiredCopayers = opts.requiredCopayers || self.walletDefaults.requiredCopayers;
+    var totalCopayers = opts.totalCopayers || self.walletDefaults.totalCopayers;
+    opts.lockTimeoutMin = self.walletDefaults.idleDurationMin;
+
+    opts.publicKeyRing = opts.publicKeyRing || new PublicKeyRing({
+      networkName: opts.networkName,
+      requiredCopayers: requiredCopayers,
+      totalCopayers: totalCopayers,
+    });
+    opts.publicKeyRing.addCopayer(
+      opts.privateKey.deriveBIP45Branch().extendedPublicKeyString(),
+      opts.nickname || self.getName()
+    );
+    log.debug('\t### PublicKeyRing Initialized');
+
+    opts.txProposals = opts.txProposals || new TxProposals({
+      networkName: opts.networkName,
+    });
+    var walletClass = opts.walletClass || Wallet;
+
+    log.debug('\t### TxProposals Initialized');
+
+
+    opts.networkOpts = self.networkOpts;
+    opts.blockchainOpts = self.blockchainOpts;
+
+    opts.spendUnconfirmed = opts.spendUnconfirmed || self.walletDefaults.spendUnconfirmed;
+    opts.reconnectDelay = opts.reconnectDelay || self.walletDefaults.reconnectDelay;
+    opts.requiredCopayers = requiredCopayers;
+    opts.totalCopayers = totalCopayers;
+    opts.version = opts.version || self.version;
+
+    var w = new walletClass(opts);
+
+    if (self.getWalletById(w.getId())) {
+      return cb('walletAlreadyExists');
+    }
+    self.addWallet(w);
+    self.updateFocusedTimestamp(w.getId());
+    self.bindWallet(w);
+    self.storeWallet(w, function(err) {
+      if (err) return cb(err);
+
+      self.backupNeeded = true;
+      self.store({
+        noWallets: true,
+      }, function(err) {
+        return cb(err, w);
+      });
     });
   });
 };
