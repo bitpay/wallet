@@ -327,6 +327,7 @@ describe('Identity model', function() {
 
     it('should be able to create wallets with given pk', function(done) {
       var priv = 'tprv8ZgxMBicQKsPdEqHcA7RjJTayxA3gSSqeRTttS1JjVbgmNDZdSk9EHZK5pc52GY5xFmwcakmUeKWUDzGoMLGAhrfr5b3MovMUZUTPqisL2m';
+      args.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
       args.storage.setItem = sinon.stub();
       args.storage.setItem.onFirstCall().callsArg(2);
       args.storage.setItem.onSecondCall().callsArg(2);
@@ -342,6 +343,7 @@ describe('Identity model', function() {
     });
 
     it('should be able to create wallets with random pk', function(done) {
+      args.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
       args.storage.setItem = sinon.stub();
       args.storage.setItem.onCall(0).callsArg(2);
       args.storage.setItem.onCall(1).callsArg(2);
@@ -351,7 +353,8 @@ describe('Identity model', function() {
         walletClass: walletClass,
       }, function(err, w1) {
         should.exist(w1);
-
+        
+        args.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
         iden.createWallet({
           walletClass: walletClass,
         }, function(err, w2) {
@@ -622,6 +625,7 @@ describe('Identity model', function() {
     it('should delete wallet', function(done) {
       iden.addWallet(w);
       iden.getWalletById('32').getName().should.equal('treintaydos');
+      iden.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
       iden.deleteWallet('32', function(err) {
         should.not.exist(iden.getWalletById('32'));
         iden.walletIds.should.deep.equal([]);

@@ -52,9 +52,9 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
         return;
       }
       $location.path('/');
-      setTimeout(function() {
+      $timeout(function() {
         notification.error('Success', 'Profile successfully deleted');
-      }, 1);
+      });
     });
   };
 
@@ -73,10 +73,10 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
         identityService.deleteWallet($scope.item, function(err) {
           if (err) {
             $scope.loading = null;
-            $scope.error = err.message;
+            $scope.error = err.message || err;
             copay.logger.warn(err);
-          }
-          else {
+            $timeout(function () { $scope.$digest(); });
+          } else {
             $modalInstance.close($scope.item.name || $scope.item.id);
           }
         });
