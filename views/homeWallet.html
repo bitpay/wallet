@@ -37,8 +37,8 @@
         <div class="row ">
           <div class="large-12 columns line-t m10t">
             <div class="right size-12">
-              <span ng-if="!$root.wallet.isShared()">Personal Wallet</span>
-              <span ng-if="$root.wallet.isShared()">
+              <span ng-if="!isShared">Personal Wallet</span>
+              <span ng-if="isShared">
                 Multisignature wallet [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
               </span>
               <span ng-if="$root.wallet.isTestnet()"> in TESTNET</span>
@@ -50,7 +50,7 @@
   </div>
 
 
-  <div ng-show="$root.wallet.isShared()">
+  <div ng-show="isShared">
     <div class="row">
       <div class="large-12 columns">
         <div class="panel oh">
@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <div class="row" ng-if="$root.wallet.isShared()">
+  <div class="row" ng-if="isShared">
     <!-- List of copayers -->
     <div class="large-12 columns">
       <div class="panel oh">
