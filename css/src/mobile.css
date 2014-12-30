@@ -18,15 +18,16 @@
     display: none;
   }
 
-  .sidebar-bottom {
+  .button-close {
+    margin-top:65px;
     background: #213140;
     padding: 1.2rem;
     font-size: 14px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
     text-align: center;
     height: 65px;
+    display:block;
+    color: #fff;
   }
 
   .page, .main {
@@ -70,8 +71,6 @@
   header {
     height: 45px;
     background-color: #213140;
-    position: fixed;
-    top: 0;
     width: 100%;
     line-height: 110%;
     padding: 0 0.45rem;
