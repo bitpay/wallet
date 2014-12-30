@@ -48,7 +48,7 @@ _.each(levels, function(level, levelName) {
 
       if (Error.stackTraceLimit && this.level == 'debug') {
         var old = Error.stackTraceLimit;
-        Error.stackTraceLimit = 2
+        Error.stackTraceLimit = 2;
         var stack;
 
         // this hack is to be compatible with IE11
