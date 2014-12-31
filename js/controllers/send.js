@@ -14,7 +14,8 @@ angular.module('copayApp.controllers').controller('SendController',
       preconditions.checkState(w.settings.unitToSatoshi);
 
       $scope.isShared = w.isShared();
-      $rootScope.title = w.requiresMultipleSignatures() ? 'Send Proposal' : 'Send';
+      $scope.requiresMultipleSignatures = w.requiresMultipleSignatures();
+      $rootScope.title =$scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
 
@@ -127,7 +128,7 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('expired'))
         msg = 'The payment request has expired';
 
-      var message = 'The transaction' + (w.requiresMultipleSignatures() ? ' proposal' : '') +
+      var message = 'The transaction' + ($scope.requiresMultipleSignatures ? ' proposal' : '') +
         ' could not be created: ' + msg;
 
       $scope.error = message;
