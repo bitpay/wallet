@@ -12,7 +12,7 @@ if (!ls || ls.length < 1)
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
   var isaosp = (rxaosp && rxaosp[1] < 537);
-  if (isaosp)
+  if (!window.cordova && isaosp)
     unsupported = true;
 }
 
