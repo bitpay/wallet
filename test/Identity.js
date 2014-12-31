@@ -406,7 +406,7 @@ describe('Identity model', function() {
         walletClass: walletClass,
       }, function(err, w1) {
         should.exist(w1);
-        
+
         args.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
         iden.createWallet({
           walletClass: walletClass,
@@ -801,6 +801,7 @@ describe('Identity model', function() {
       storage.setCredentials = sinon.stub();
       storage.removeItem = sinon.stub().yields(null);
       storage.clear = sinon.stub().yields();
+      storage.getItem = sinon.stub();
 
       var opts = {
         email: 'test@test.com',
