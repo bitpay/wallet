@@ -11,7 +11,7 @@ if (!ls || ls.length < 1)
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
-  var isaosp = (rxaosp && rxaosp[1] < 537);
+  var isaosp = (rxaosp && rxaosp[1] < 534);
   if (isaosp)
     unsupported = true;
 }
@@ -145,7 +145,7 @@ angular
     }
 
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if (unsupported && !isCordova) {
+      if (unsupported) {
         $location.path('unsupported');
         return;
       }
