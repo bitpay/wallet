@@ -94,19 +94,19 @@ if [ ! -d $PROJECT ]; then
 
   cd $PROJECT
 
-  if [$CURRENT_OS == "ANDROID"]; then
+  if [ $CURRENT_OS == "ANDROID" ]; then
     echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
     cordova platforms add android
     checkOK
   fi
 
-  if [$CURRENT_OS == "IPHONE" ]; then
+  if [ $CURRENT_OS == "IPHONE" ]; then
     echo "${OpenColor}${Green}* Adding IOS platform... ${CloseColor}"
     cordova platforms add ios
     checkOK
   fi
 
-  if [$CURRENT_OS == "WP8"]; then
+  if [ $CURRENT_OS == "WP8" ]; then
     echo "${OpenColor}${Green}* Adding WP8 platform... ${CloseColor}"
     cordova platforms add wp8
     checkOK
@@ -157,11 +157,14 @@ checkOK
 
 cd $BUILDDIR
 
-if [ $CURRENT_OS == "ANDROID" ]; then
-  echo "Android project!!!"
+
 
   cp config.xml $PROJECT/config.xml
   checkOK
+
+  if [ $CURRENT_OS == "ANDROID" ]; then
+  echo "Android project!!!"
+
 
   mkdir -p $PROJECT/platforms/android/res/xml/
   checkOK
@@ -196,10 +199,10 @@ if [ $CURRENT_OS == "IPHONE" ]; then
 fi
 
 if [ $CURRENT_OS == "WP8" ]; then
-  echo "Windows project!!!"
-  echo "from " $PROJECT/www
-  echo "to " $PROJECT/platforms/wp8/www
-  cp -R $PROJECT/www $PROJECT/platforms/wp8/www
-checkOK
+  echo "Wp8 project!!!"
+  cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
+  checkOK
+
+
 fi
 

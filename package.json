@@ -22,13 +22,14 @@
   },
   "dependencies": {
     "browser-request": "git://github.com/matiu/browser-request.git#67200dd4ec133457fb7dc69f005540f92b543f0a",
+    "cordova": "^4.1.2",
     "inherits": "^2.0.1",
     "lodash": "^2.4.1",
+    "moment": "2.6.0",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
     "querystring": "^0.2.0",
-    "request": "^2.40.0",
-    "moment": "2.6.0"
+    "request": "^2.40.0"
   },
   "scripts": {
     "start": "node server.js",
