@@ -9,11 +9,10 @@
 
 ## Build the project
 
-    $ sh cordova/build.sh [--android]
-    $ cd cordova/project
-    $ cordova run android
-    $ cordova emulate ios
+    $ make [clean] open-ios
+    OR $ make [clean] android-run
+    OR $ make [clean] wp8
 
-## Build for release
+    See Makefile for more targets
 
-    $ cordova build android --release
+
