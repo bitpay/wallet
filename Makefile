@@ -27,6 +27,10 @@ chrome:
 	grunt prod
 	browser-extensions/chrome/build.sh
 
+
+wp8:
+	cordova/build.sh
+
 fix-wp8-svg:
 	cordova/wp/fix-svg.sh
 
