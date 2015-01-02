@@ -3,11 +3,6 @@
 # Usage:
 # sh ./build.sh --android --reload
 #
-OpenColor="\033["
-Red="1;31m"
-Yellow="1;33m"
-Green="1;32m"
-CloseColor="\033[0m"
 #
 # Check function OK
 checkOK() {
@@ -22,49 +17,22 @@ BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT="$BUILDDIR/project"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 
-CURRENT_OS="WP8"
-#CURRENT_OS="IPHONE"
-#CURRENT_OS="ANDROID"
+CURRENT_OS=$1
+
+if [ -z "CURRENT_OS" ]
+do
+ echo "Build.sh WP8|ANDROID|IPHONE"
+done
+
 CLEAR=false
 DBGJS=false
 
-if [ $CURRENT_OS == "ANDROID" ]; then
-echo "ANDROID ....."
-fi
-
-if [ $CURRENT_OS == "IPHONE" ]; then
-echo "IPHONE ....."
-fi
-
-if [ $CURRENT_OS == "WP8" ]; then
-echo "WP8 ....."
-fi
-
-
-
-# Check Args
-#if [[ $1 = "--android" || $2 = "--android" || $3 = "--android" ]]
-#then
-#  CURRENT_OS="ANDROID"
-#fi
-#
-#if [[ $1 = "--ios" || $2 = "--ios" || $3 = "--ios" ]]
-#then
-#  CURRENT_OS="IPHONE"
-#fi
-#
-#if [[ $1 = "--wp8" || $2 = "--wp8" || $3 = "--wp8" ]]
-#then
-#  CURRENT_OS="WP8"
-#fi
-
-
-if [[ $1 = "--clear" || $2 = "--clear" || $3 = "--clear" ]]
+if [[ $2 = "--clear" || $3 = "--clear" ]]
 then
   CLEAR=true
 fi
 
-if [[ $1 = "--dbgjs" || $2 = "--dbgjs" || $3 = "--dbgjs" ]]
+if [[ $2 = "--dbgjs" || $3 = "--dbgjs" ]]
 then
   DBGJS=true
 fi
@@ -203,6 +171,8 @@ if [ $CURRENT_OS == "WP8" ]; then
   cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
   checkOK
 
+  cp -R wp/res/* $PROJECT/platforms/wp/res
+  checkOK
 
 fi
 
