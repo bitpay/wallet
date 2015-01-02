@@ -28,7 +28,7 @@ chrome:
 	browser-extensions/chrome/build.sh
 
 fix-wp8-svg:
-	cordova/wp8/fix-svg.sh
+	cordova/wp/fix-svg.sh
 
 wp8: fix-wp8-svg
 
