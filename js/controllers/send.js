@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova) {
 
     var satToUnit;
 
@@ -73,7 +73,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
       $timeout(function() {
         $rootScope.$digest();
-      }, 1);
+      }, 100);
     };
 
     $scope.setInputs = function() {
@@ -178,25 +178,35 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       $scope.loading = true;
-      var comment = form.comment.$modelValue;
-      var merchantData = $scope._merchantData;
-      var address, amount;
-      if (!merchantData) {
-        address = form.address.$modelValue;
-        amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
-      }
+      $scope.creatingTX = true;
+      if ($scope.isWindowsPhoneApp)
+          $rootScope.wpInputFocused = true;
 
-      w.spend({
-        merchantData: merchantData,
-        toAddress: address,
-        amountSat: amount,
-        comment: comment,
-      }, function(err, txid, status) {
-        $scope.loading = false;
-        if (err)
-          return $scope.setError(err);
-        txStatus.notify(status);
-        $scope.resetForm();
+      $timeout(function () {
+          var comment = form.comment.$modelValue;
+          var merchantData = $scope._merchantData;
+          var address, amount;
+          if (!merchantData) {
+              address = form.address.$modelValue;
+              amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+          }
+
+          w.spend({
+              merchantData: merchantData,
+              toAddress: address,
+              amountSat: amount,
+              comment: comment,
+          }, function (err, txid, status) {
+              $scope.loading = false;
+              $scope.creatingTX = false;
+              if ($scope.isWindowsPhoneApp)
+                  $rootScope.wpInputFocused = false;
+
+              if (err)
+                  return $scope.setError(err);
+              txStatus.notify(status);
+              $scope.resetForm();
+          });
       });
     };
 
