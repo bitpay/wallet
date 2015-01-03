@@ -6,7 +6,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
     $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
-    $scope.isWindowsPhoneApp = 1;
     $scope.hideForWP = 0;
     $scope.attempt = 0;
 

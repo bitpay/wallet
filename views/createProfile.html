@@ -113,7 +113,7 @@
 
       <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
         <div class="input" ng-if="useEmail">
-          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
+          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile"  ng-focus="formFocus()">
           <i class="icon-email"></i>
           <div class="icon-input" ng-if="useEmail">
             <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
@@ -128,7 +128,7 @@
         </div>
 
         <div class="input" ng-if="!useEmail">
-          <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
+          <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required  auto-focus="!isMobile" ng-focus="formFocus()">
           <i class="icon-person"></i>
         </div>
 
@@ -160,13 +160,13 @@
 
 
         <div class="input">
-          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" >
+          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength"  ng-focus="formFocus()" >
           <i class="icon-locked"></i>
         </div>
 
 
         <div class="input">
-          <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required>
+          <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required  ng-focus="formFocus()">
           <i class="icon-locked"></i>
           <div class="icon-input">
             <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
@@ -213,11 +213,11 @@
 
     <form name="setPinForm" novalidate>
       <div class="input" ng-show="askForPin == 1">
-        <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
+        <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1"  ng-focus="formFocus()">
         <i class="icon-locked"></i>
       </div>
       <div class="input" ng-show="askForPin == 2">
-        <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
+        <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2"  ng-focus="formFocus()">
         <i class="icon-locked"></i>
       </div>
 

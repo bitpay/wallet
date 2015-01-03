@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, $window, notification, pluginManager, identityService, pinService, isMobile, configService, go) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, $window, notification, pluginManager, identityService, pinService, isMobile, isCordova, configService, go) {
 
   var _credentials, _firstpin;
 
@@ -77,6 +77,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   $scope.setStep = function(step) {
     $scope.error = null;
     $scope.createStep = step;
+    $scope.hideForWP = false;
     $timeout(function() {
       $scope.$digest();
     }, 1);
@@ -84,6 +85,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
 
   $scope.selectStorage = function(storage) {
     $scope.useLocalstorage = storage == 'local';
+    $scope.hideForWP = false;
     $timeout(function() {
       $scope.$digest();
     }, 1);
@@ -99,6 +101,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkState($scope.userOrEmail);
 
     $scope.error = null;
+    $scope.hideForWP = false;
     $scope.createStep = 'pass';
     $timeout(function() {
       $scope.$digest();
