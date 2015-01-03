@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile, isCordova) {
 
   var _credentials, _firstpin;
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
+    $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     $scope.attempt = 0;
 
     // This is only for backwards compat, insight api should link to #!/confirmed directly
