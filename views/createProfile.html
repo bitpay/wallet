@@ -4,20 +4,20 @@
   </div>
 
   <div class="large-4 large-centered medium-7 medium-centered columns m20b" ng-show="!$root.starting  && !askForPin">
-    <div class="logo-setup hide-for-small-only">
+    <div class="logo-setup hide-for-small-only" ng-hide="hideForWP">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
     </div>
     <div>
 
-      <div class="clipo" ng-show="createStep == 'storage' ">
+      <div class="clipo" ng-show="createStep == 'storage' && !hideForWP ">
         <img src="img/clipo-signup1.png" alt="clipo" width="311">
       </div>
 
       <div ng-show="createStep == 'email'">
-        <div class="clipo" ng-if="useLocalstorage">
+        <div class="clipo" ng-if="useLocalstorage  && !hideForWP" >
           <img src="img/clipo-signup2-1.png" alt="clipo" width="373">
         </div>
-        <div class="clipo" ng-if="!useLocalstorage">
+        <div class="clipo" ng-if="!useLocalstorage  && !hideForWP">
           <img src="img/clipo-signup2.png" alt="clipo" width="373">
         </div>
         <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
@@ -25,7 +25,7 @@
       </div>
 
       <div ng-show="createStep == 'pass'">
-        <div class="clipo">
+        <div class="clipo" ng-hide="hideForWP">
           <img src="img/clipo-signup3.png" alt="clipo" width="380">
         </div>
 
@@ -198,7 +198,7 @@
   </div>
 
   <div class="large-4 large-centered medium-6 medium-centered columns m20b" ng-show="!$root.starting && askForPin">
-    <div class="clipo">
+    <div class="clipo" ng-hide="hideForWP">
       <img src="img/clipo-pin.png" alt="clipo" width="380">
     </div>
 
