@@ -23,4 +23,9 @@ android: cordova-base
 release-android: cordova-base
 	make -C cordova release-android
 
+wp8:
+	cordova/build.sh WP8 
+	cordova/wp/fix-svg.sh
+	echo -e "\a"
+
 

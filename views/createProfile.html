@@ -214,31 +214,29 @@
     </div>
 
     <form name="setPinForm" novalidate>
-      <div class="input" ng-show="askForPin == 1">
+      <div class="input" ng-if="askForPin == 1">
         <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1 && !isWindowsPhoneApp"  ng-focus="formFocus()">
-        <i class="icon-locked"></i>
+          <i class="icon-locked" ng-hide="isWindowsPhoneApp"></i>
       </div>
-      <div class="input" ng-show="askForPin == 2">
+      <div class="input" ng-if="askForPin == 2">
           <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2 && !isWindowsPhoneApp" ng-focus="formFocus()">
-        <i class="icon-locked"></i>
+          <i class="icon-locked" ng-hide="isWindowsPhoneApp"></i>
       </div>
-
-      <div class="box-setup-footer row collapse">
-        <div class="large-6 medium-6 small-6 columns">
-          <a class="button secondary radius m0" ng-click="createDefaultWallet()">
-            <span translate>Skip</span> 
-          </a>
+        <div class="box-setup-footer row collapse">
+            <div class="large-6 medium-6 small-6 columns">
+                <a class="button secondary radius m0" ng-click="createDefaultWallet()">
+                    <span translate>Skip</span>
+                </a>
+            </div>
+            <div class="large-6 medium-6 small-6 columns text-right">
+                <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0"
+                        ng-disabled="setPinForm.$invalid || error">
+                    OK
+                </button>
+            </div>
         </div>
-        <div class="large-6 medium-6 small-6 columns text-right">
-          <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0" 
-            ng-disabled="setPinForm.$invalid || error">
-            OK
-          </button>
-        </div>
-      </div>
 
-
-    </form>
+</form>
   </div>
 </div>
 
