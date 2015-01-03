@@ -20,9 +20,9 @@ VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 CURRENT_OS=$1
 
 if [ -z "CURRENT_OS" ]
-do
+then
  echo "Build.sh WP8|ANDROID|IPHONE"
-done
+fi
 
 CLEAR=false
 DBGJS=false
@@ -171,7 +171,9 @@ if [ $CURRENT_OS == "WP8" ]; then
   cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
   checkOK
 
-  cp -R wp/res/* $PROJECT/platforms/wp/res
+  mkdir -p  $PROJECT/platforms/res/wp
+	  cp -v wp/res/* $PROJECT/platforms/wp8/Assets
+	  cp -v wp/res/SplashScreenImage.jpg $PROJECT/platforms/wp8/
   checkOK
 
 fi
