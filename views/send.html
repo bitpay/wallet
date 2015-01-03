@@ -29,7 +29,23 @@
     </div>
   </div>
 
-  <div class="row" ng-show="!fetchingURL">
+    <div class="row" ng-show="creatingTX">
+        <div class="large-12 columns">
+            <div class="panel">
+                <div class="box-notification">
+                    <div class="box-icon secondary">
+                        <i class="fi-bitcoin-circle icon-rotate spinner size-24"></i>
+                    </div>
+                    <span class="text-secondary size-14">
+                        Creating Transaction...
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <div class="row" ng-show="!fetchingURL && !creatingTX">
     <div class="large-8 large-centered columns">
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
         <div class="panel">
