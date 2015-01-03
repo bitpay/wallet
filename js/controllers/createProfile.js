@@ -22,6 +22,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     pinService.makePinInput($scope, 'newpin', function(newValue) {
       _firstpin = newValue;
       $scope.askForPin = 2;
+      $scope.hideForWP = 0;
+
     });
 
     pinService.makePinInput($scope, 'repeatpin', function(newValue) {
@@ -29,7 +31,9 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         _firstpin = null;
         $scope.createPin(newValue);
       } else {
-        $scope.askForPin = 1;
+          $scope.askForPin = 1;
+          $scope.hideForWP = 0;
+
         _firstpin = null;
 
         $scope.setPinForm.newpin.$setViewValue('');
@@ -156,6 +160,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
             password: password,
           };
           $scope.askForPin = 1;
+          $scope.hideForWP = 0;
+
           $rootScope.hideNavigation = true;
           $timeout(function() {
             $rootScope.$digest();
