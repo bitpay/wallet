@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
     $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    $scope.isWindowsPhoneApp = 1;
+    $scope.hideForWP = 0;
     $scope.attempt = 0;
 
     // This is only for backwards compat, insight api should link to #!/confirmed directly
@@ -29,6 +31,16 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $rootScope.hasPin = value;
     });
     $scope.usingLocalStorage = config.plugins.EncryptedLocalStorage;
+  };
+
+
+  $scope.formFocus = function() {
+    if ($scope.isWindowsPhoneApp) {
+      $scope.hideForWP = true;
+      $timeout(function() {
+        $scope.$digest();
+      }, 1);
+    }
   };
 
   pinService.makePinInput($scope, 'pin', function(newValue) {

@@ -10,6 +10,9 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       go.walletHome();
 
     $scope.isMobile = isMobile.any();
+    $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    $scope.hideForWP = 0;
+ 
 
     $scope.createStep = 'storage';
     $scope.useLocalstorage = false;
@@ -41,6 +44,14 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   };
 
 
+  $scope.formFocus = function() {
+    if ($scope.isWindowsPhoneApp) {
+      $scope.hideForWP = true;
+      $timeout(function() {
+        $scope.$digest();
+      }, 1);
+    }
+  };
   $scope.createPin = function(pin) {
     preconditions.checkArgument(pin);
     preconditions.checkState($rootScope.iden);
