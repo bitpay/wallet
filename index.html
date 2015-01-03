@@ -77,7 +77,7 @@
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
  
-        <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation">
+        <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation  && !$root.wpInputFocused">
           <nav class="tab-bar">
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
@@ -98,8 +98,7 @@
             <div ng-include="'views/includes/sidebar-mobile.html'"></div>
           </nav>
 
-          <div 
-            ng-if="$root.iden"
+          <div ng-if="$root.iden"
             ng-include="'views/includes/sidebar.html'" 
             role='navigation'
             class="sidebar"></div>
@@ -116,10 +115,10 @@
           class="head show-for-large-up" 
           ng-include="'views/includes/head.html'"
           ng-if="$root.iden"
-          ng-class="{'dni':$root.hideNavigation}"
+          ng-class="{'dni':$root.hideNavigation || $root.wpInputFocused}"
         ></div>
 
-        <section ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation}" ng-view></section> 
+        <section ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" ng-view></section> 
 
         <a class="exit-off-canvas"></a>
 
