@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" ng-app="copayApp" ng-csp>
 <head>
   <meta charset="utf-8">
@@ -83,14 +83,14 @@
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
 
-            <section class="right-small" ng-show="$root.iden && $root.wallet.isComplete()">
-              <a class="p10" ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
-            </section>
+              <section class="right-small" ng-show="$root.iden && $root.wallet.isComplete()  && !$root.hideWalletNavigation">
+                  <a class="p10" ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
+              </section>
 
             <section class="middle tab-bar-section">
-              <h1 class="title ellipsis" ng-show="$root.iden && $root.wallet">
-                {{$root.wallet.getName()}}
-              </h1>
+                <h1 class="title ellipsis" ng-show="$root.iden && $root.wallet  && !$root.hideWalletNavigation">
+                    {{$root.wallet.getName()}}
+                </h1>
             </section>
           </nav>
 
@@ -103,7 +103,7 @@
             role='navigation'
             class="sidebar"></div>
           <div class="bottom-bar" ng-if="$root.wallet &&
-            $root.wallet.isComplete() && !$root.wallet.isLocked">
+            $root.wallet.isComplete() && !$root.wallet.isLocked && !$root.hideWalletNavigation">
             <div ng-include="'views/includes/bottombar-mobile.html'"></div>
           </div>
         </div>

@@ -15,9 +15,6 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.isMobile = isMobile.any();
       $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
-
-      // TODO
-      $scope.isWindowsPhoneApp = 1;
       $rootScope.wpInputFocused = false;
 
       $scope.isShared = w.isShared();
@@ -73,7 +70,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
       $timeout(function() {
         $rootScope.$digest();
-      }, 100);
+      }, 1);
     };
 
     $scope.setInputs = function() {

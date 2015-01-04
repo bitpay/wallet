@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout,  identityService, backupService, notification, defaults) {
+  function($scope, $rootScope, $location, $timeout,  identityService, backupService, notification, defaults, isMobile, isCordova) {
 
     $rootScope.fromSetup = true;
     $scope.loading = false;
     $scope.walletPassword = $rootScope.walletPassword;
-    $scope.isMobile = !!window.cordova;
+    $scope.isMobile = isMobile.any();
     $scope.hideAdv = true;
     $scope.networkName = config.networkName;
     $rootScope.title = 'Create new wallet';
+    $rootScope.hideWalletNavigation = true;
+    $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 
     // ng-repeat defined number of times instead of repeating over array?
     $scope.getNumber = function(num) {
@@ -38,6 +40,7 @@ angular.module('copayApp.controllers').controller('CreateController',
     $scope.showNetwork = function() {
       return $scope.networkUrl != defaults.network.livenet.url && $scope.networkUrl != defaults.network.testnet.url;
     };
+
 
     $scope.create = function(form) {
       if (form && form.$invalid) {
@@ -68,4 +71,8 @@ angular.module('copayApp.controllers').controller('CreateController',
         },1);
       });
     };
+
+    $scope.$on("$destroy", function () {
+        $rootScope.hideWalletNavigation = false;
+    });
   });
