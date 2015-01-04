@@ -204,7 +204,7 @@ angular.module('copayApp.controllers').controller('SendController',
               txStatus.notify(status);
               $scope.resetForm();
           });
-      });
+      }, 1);
     };
 
     // QR code Scanner
