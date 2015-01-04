@@ -3,11 +3,6 @@
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Creating wallet'"></div>
   </div>
   <div class="setup" ng-show="!loading && !$root.starting">
-    <div class="row hide-for-large-up">
-      <div class="medium-12 small-12 columns">
-        <h1>{{$root.title}}</h1>
-      </div>
-    </div>
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
       <div class="row">
         <div class="large-12 columns">
@@ -24,7 +19,7 @@
           <div class="panel">
             <label><span translate>Wallet name</span>
               <div class="input">
-                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName" ng-required="true">
+                  <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" ng-model="walletName" ng-required="true">
               </div>
             </label>
             <div class="row">

@@ -149,6 +149,7 @@
       <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
 
       <div class="box-notification" ng-show="passwordStrength">
+          <!-- if you change this, check it on WP...-->
           <div class="box-icon" ng-if="passwordStrength.strength< minPasswordStrength" style="background-color:#dd514c">
               <i class="fi-x size-24"></i>
           </div>

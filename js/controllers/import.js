@@ -9,6 +9,8 @@ angular.module('copayApp.controllers').controller('ImportController',
     $scope.isSafari = isMobile.Safari();
     $scope.isCordova = isCordova;
     $scope.importOpts = {};
+    $rootScope.hideWalletNavigation = true;
+
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
@@ -96,4 +98,10 @@ angular.module('copayApp.controllers').controller('ImportController',
         });
       }
     };
+
+
+    $scope.$on("$destroy", function () {
+        $rootScope.hideWalletNavigation = false;
+    });
+
   });

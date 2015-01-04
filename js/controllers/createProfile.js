@@ -19,8 +19,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.minPasswordStrength = _.isUndefined(config.minPasswordStrength) ?
       4 : config.minPasswordStrength;
 
-    //TODO
-    $scope.minPasswordStrength = 1;
 
     pinService.makePinInput($scope, 'newpin', function(newValue) {
       _firstpin = newValue;
