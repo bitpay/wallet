@@ -250,23 +250,25 @@ describe("Unit: Controllers", function() {
       expect(form.newlabel.$invalid).to.equal(true);
     });
 
-    it('should create a transaction proposal with given values', function() {
+    it('should create a transaction proposal with given values', inject(function($timeout) {
       sendForm.address.$setViewValue(anAddr);
       sendForm.amount.$setViewValue(anAmount);
       sendForm.comment.$setViewValue(aComment);
 
       var w = scope.wallet;
       scope.submitForm(sendForm);
+
+      $timeout.flush();
       sinon.assert.callCount(w.spend, 1);
       sinon.assert.callCount(w.broadcastTx, 0);
       var spendArgs = w.spend.getCall(0).args[0];
       spendArgs.toAddress.should.equal(anAddr);
       spendArgs.amountSat.should.equal(anAmount * scope.wallet.settings.unitToSatoshi);
       spendArgs.comment.should.equal(aComment);
-    });
+    }));
 
 
-    it('should handle big values in 100 BTC', function() {
+    it('should handle big values in 100 BTC', inject(function($timeout) {
       var old = scope.wallet.settings.unitToSatoshi;
       scope.wallet.settings.unitToSatoshi = 100000000;
       sendForm.address.$setViewValue(anAddr);
@@ -276,12 +278,13 @@ describe("Unit: Controllers", function() {
       scope.updateTxs = sinon.spy();
       scope.submitForm(sendForm);
       var w = scope.wallet;
+      $timeout.flush();
       w.spend.getCall(0).args[0].amountSat.should.equal(100 * scope.wallet.settings.unitToSatoshi);
       scope.wallet.settings.unitToSatoshi = old;
-    });
+    }));
 
 
-    it('should handle big values in 5000 BTC', inject(function($rootScope) {
+    it('should handle big values in 5000 BTC', inject(function($rootScope, $timeout) {
       var w = scope.wallet;
       w.requiresMultipleSignatures = sinon.stub().returns(true);
 
@@ -291,6 +294,7 @@ describe("Unit: Controllers", function() {
       sendForm.address.$setViewValue(anAddr);
       sendForm.amount.$setViewValue(5000);
       scope.submitForm(sendForm);
+      $timeout.flush();
 
       w.spend.getCall(0).args[0].amountSat.should.equal(5000 * $rootScope.wallet.settings.unitToSatoshi);
       $rootScope.wallet.settings.unitToSatoshi = old;

@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('JoinController',
     $scope.loading = false;
     $scope.isMobile = isMobile.any();
     $rootScope.title = 'Join shared wallet';
+    $rootScope.hideWalletNavigation = true;
+
 
     // QR code Scanner
     var cameraInput;
@@ -150,4 +152,9 @@ angular.module('copayApp.controllers').controller('JoinController',
         $timeout(function () { $scope.$digest(); }, 1);
       });
     }
+
+
+    $scope.$on("$destroy", function () {
+        $rootScope.hideWalletNavigation = false;
+    });
   });

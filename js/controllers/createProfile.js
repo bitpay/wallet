@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, $window, notification, pluginManager, identityService, pinService, isMobile, configService, go) {
+angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, $window, notification, pluginManager, identityService, pinService, isMobile, isCordova, configService, go) {
 
   var _credentials, _firstpin;
 
@@ -10,15 +10,25 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       go.walletHome();
 
     $scope.isMobile = isMobile.any();
+    $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    $scope.hideForWP = 0;
+
 
     $scope.createStep = 'storage';
     $scope.useLocalstorage = false;
     $scope.minPasswordStrength = _.isUndefined(config.minPasswordStrength) ?
       4 : config.minPasswordStrength;
 
+
     pinService.makePinInput($scope, 'newpin', function(newValue) {
       _firstpin = newValue;
+      $scope.hideForWP = 0;
       $scope.askForPin = 2;
+      $timeout(function() {
+        $scope.$digest();
+      }, 1);
+
+
     });
 
     pinService.makePinInput($scope, 'repeatpin', function(newValue) {
@@ -27,6 +37,9 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         $scope.createPin(newValue);
       } else {
         $scope.askForPin = 1;
+        $scope.hideForWP = 0;
+        $scope.passwordStrength = null;
+
         _firstpin = null;
 
         $scope.setPinForm.newpin.$setViewValue('');
@@ -36,10 +49,20 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         $scope.setPinForm.$setPristine();
 
         $scope.error = 'Entered PINs were not equal. Try again';
+        $timeout(function() {
+          $scope.$digest();
+        }, 1);
       }
     });
   };
 
+  $scope.formFocus = function() {
+    if (!$scope.isWindowsPhoneApp) return
+    $scope.hideForWP = true;
+    $timeout(function() {
+      $scope.$digest();
+    }, 1);
+  };
 
   $scope.createPin = function(pin) {
     preconditions.checkArgument(pin);
@@ -66,6 +89,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   $scope.setStep = function(step) {
     $scope.error = null;
     $scope.createStep = step;
+    $scope.hideForWP = false;
     $timeout(function() {
       $scope.$digest();
     }, 1);
@@ -73,6 +97,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
 
   $scope.selectStorage = function(storage) {
     $scope.useLocalstorage = storage == 'local';
+    $scope.hideForWP = false;
     $timeout(function() {
       $scope.$digest();
     }, 1);
@@ -88,6 +113,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkState($scope.userOrEmail);
 
     $scope.error = null;
+    $scope.hideForWP = false;
     $scope.createStep = 'pass';
     $timeout(function() {
       $scope.$digest();
@@ -142,6 +168,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
             password: password,
           };
           $scope.askForPin = 1;
+          $scope.hideForWP = 0;
+
           $rootScope.hideNavigation = true;
           $timeout(function() {
             $rootScope.$digest();
