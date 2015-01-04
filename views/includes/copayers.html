@@ -1,5 +1,5 @@
 <div>
-  <div class="copay-box" ng-repeat="copayer in copayers">
+  <div class="copay-box" ng-repeat="copayer in $root.wallet.getRegisteredPeerIds()">
     <div class="photo-container">
       <img gravatar-src="'{{copayer.nick}}'" gravatar-size="35">
     </div>

@@ -1,19 +1,10 @@
 'use strict';
 
-var watching;
 angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService) {
 
   $scope.initHome = function() {
     $rootScope.title = 'Home';
-    if (!watching) {
-      watching = $rootScope.$watch('wallet', function (w) {
-        $scope.isShared = w.isShared();
-        $scope.requiresMultipleSignatures = w.requiresMultipleSignatures();
-        if ($scope.isShared)
-          $scope.copayers = w.getRegisteredPeerIds();
-      });
-    }
-    }; 
+  }; 
 
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
