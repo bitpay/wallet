@@ -5,7 +5,7 @@
   </div>
 
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting">
-    <div class="logo-setup" ng-show="!$root.iden">
+    <div class="logo-setup" ng-show="!$root.iden && !hideForWP">
       <img src="img/logo-negative-beta.svg" alt="Cop ay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
@@ -38,11 +38,11 @@
 
       <form name="setPinForm" ng-model="setPinForm" novalidate>
         <div class="input" ng-show="askForPin == 1">
-          <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
+            <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1  && !isWindowsPhoneApp" ng-focus="formFocus()">
           <i class="icon-locked"></i>
         </div>
         <div class="input" ng-show="askForPin == 2">
-          <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
+            <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2 && !isWindowsPhoneApp" ng-focus="formFocus()">
           <i class="icon-locked"></i>
         </div>
 
@@ -65,7 +65,7 @@
     </div>
 
     <div ng-if='$root.hasPin && !$root.iden'>
-      <div class="clipo">
+      <div class="clipo" ng-hide="hideForWP">
         <img src="img/clipo-pin-enter.png" alt="clipo" width="300">
       </div>
       <form name="pinForm" novalidate>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="input">
-          <input id="pin" type="tel" ng-model="pin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Pin number" name="pin" required>
+            <input id="pin" type="tel" ng-model="pin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Pin number" name="pin" required ng-focus="formFocus()">
           <i class="icon-locked"></i>
         </div>
 
@@ -101,7 +101,7 @@
     </div>
 
     <div ng-if='!$root.hasPin && !askForPin && !$root.iden'>
-      <div class="clipo">
+      <div class="clipo" ng-hide="hideForWP">
         <img src="img/clipo-signin.png" alt="clipo" width="310">
       </div>
       <div class="p10 m20b size-14 bg-success text-white" ng-show="anyWallet && !confirmedEmail && !error">
@@ -131,24 +131,28 @@
         </div>
 
         <div class="input" ng-if="!usingLocalStorage">
-          <input type="email" ng-model="email" class="form-control" name="email" placeholder="Email" required show-focus="!isMobile">
+            <input type="email" ng-model="email" class="form-control" name="email" placeholder="Email" required show-focus="!isMobile" ng-focus="formFocus()">
           <i class="icon-email"></i>
         </div>
 
         <div class="input" ng-if="usingLocalStorage">
-          <input type="text" ng-model="email" class="form-control" name="email" placeholder="Username" required show-focus="!isMobile">
+          <input type="text" ng-model="email" class="form-control" name="email" placeholder="Username" required show-focus="!isMobile"  ng-focus="formFocus()">
           <i class="icon-person"></i>
         </div>
         <div class="input">
-          <input type="password" ng-model="password" class="form-control" name="password" placeholder="Password" required>
+          <input type="password" ng-model="password" class="form-control" name="password" placeholder="Password" required    ng-focus="formFocus()">
           <i class="icon-locked"></i>
         </div>
 
+
+
         <button translate type="submit" class="button primary radius expand m0" ng-disabled="loginForm.$invalid">
           Sign in
+ {{hideAll}}
         </button>
       </form>
 
+aasdas
         <div ng-if="usingLocalStorage" class="text-gray size-12 m10v">
           * Using this device storage. Change to cloud storage on 'settings'.
         </div>

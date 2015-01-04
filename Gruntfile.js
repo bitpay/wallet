@@ -25,19 +25,11 @@ module.exports = function(grunt) {
         }
       }
     },
-    shell: {
+    exec: {
       prod: {
-        options: {
-          stdout: false,
-          stderr: false
-        },
-        command: 'node ./util/build.js'
+     command: 'ls'
       },
       dev: {
-        options: {
-          stdout: true,
-          stderr: true
-        },
         command: 'node ./util/build.js -d'
       }
     },
@@ -242,25 +234,25 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('default', [
-    'shell:dev', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors'
+    'exec:dev', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors'
   ]);
   grunt.registerTask('mobile', [
-    'shell:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors'
+    'exec:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors'
   ]);
   grunt.registerTask('dist', [
-    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify', 'copy:dist'
+    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify', 'copy:dist'
   ]);
   grunt.registerTask('dist-dbg', [
-    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'copy:dist'
+    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'copy:dist'
   ]);
   grunt.registerTask('dist-mobile', [
-    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'uglify', 'copy:dist'
+    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'uglify', 'copy:dist'
   ]);
   grunt.registerTask('dist-mobile-dbg', [
-    'shell:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'copy:dist'
+    'exec:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'copy:dist'
   ]);
   grunt.registerTask('prod', [
-    'shell:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify'
+    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify'
   ]);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('docs', ['jsdoc']);

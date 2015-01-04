@@ -22,13 +22,14 @@
   },
   "dependencies": {
     "browser-request": "git://github.com/matiu/browser-request.git#67200dd4ec133457fb7dc69f005540f92b543f0a",
+    "cordova": "^4.1.2",
     "inherits": "^2.0.1",
     "lodash": "^2.4.1",
+    "moment": "2.6.0",
     "optimist": "^0.6.1",
     "preconditions": "^1.0.7",
     "querystring": "^0.2.0",
-    "request": "^2.40.0",
-    "moment": "2.6.0"
+    "request": "^2.40.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -66,7 +67,7 @@
     "grunt-markdown": "^0.5.0",
     "grunt-mocha-test": "^0.8.2",
     "grunt-release": "^0.7.0",
-    "grunt-shell": "^0.6.4",
+    "grunt-exec": "*",
     "istanbul": "^0.2.10",
     "karma": "^0.12.9",
     "karma-chai": "^0.1.0",

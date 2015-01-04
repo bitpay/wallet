@@ -4,34 +4,34 @@
   </div>
 
   <div class="large-4 large-centered medium-7 medium-centered columns m20b" ng-show="!$root.starting  && !askForPin">
-    <div class="logo-setup hide-for-small-only">
+    <div class="logo-setup hide-for-small-only" ng-hide="hideForWP">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
     </div>
     <div>
 
-      <div class="clipo" ng-show="createStep == 'storage' ">
+      <div class="clipo" ng-show="createStep == 'storage' && !hideForWP ">
         <img src="img/clipo-signup1.png" alt="clipo" width="311">
       </div>
 
       <div ng-show="createStep == 'email'">
-        <div class="clipo" ng-if="useLocalstorage">
+        <div class="clipo" ng-if="useLocalstorage  && !hideForWP" >
           <img src="img/clipo-signup2-1.png" alt="clipo" width="373">
         </div>
-        <div class="clipo" ng-if="!useLocalstorage">
+        <div class="clipo" ng-if="!useLocalstorage  && !hideForWP">
           <img src="img/clipo-signup2.png" alt="clipo" width="373">
         </div>
-        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
-        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
+        <h2 ng-if="!useLocalstorage" ng-hide="hideForWP"> Creating in the cloud </h2>
+          <h2 ng-if="useLocalstorage" ng-hide="hideForWP"> Creating on this device </h2>
       </div>
 
       <div ng-show="createStep == 'pass'">
-        <div class="clipo">
+        <div class="clipo" ng-hide="hideForWP">
           <img src="img/clipo-signup3.png" alt="clipo" width="380">
         </div>
 
-        <h2 ng-if="useLocalstorage"> Creating on this device </h2>
-        <h2 ng-if="!useLocalstorage"> Creating in the cloud </h2>
-        <div class="text-gray text-center m20b">{{userOrEmail}}</div>
+          <h2 ng-if="useLocalstorage" ng-hide="hideForWP"> Creating on this device </h2>
+          <h2 ng-if="!useLocalstorage" ng-hide="hideForWP"> Creating in the cloud </h2>
+          <div class="text-gray text-center m20b" ng-hide="hideForWP">{{userOrEmail}}</div>
       </div>
 
       <div class="box-notification" ng-show="error  && !passwordStrength">
@@ -113,7 +113,7 @@
 
       <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
         <div class="input" ng-if="useEmail">
-          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile">
+          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile"  ng-focus="formFocus()">
           <i class="icon-email"></i>
           <div class="icon-input" ng-if="useEmail">
             <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
@@ -128,7 +128,7 @@
         </div>
 
         <div class="input" ng-if="!useEmail">
-          <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required auto-focus>
+          <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required  auto-focus="!isMobile" ng-focus="formFocus()">
           <i class="icon-person"></i>
         </div>
 
@@ -149,10 +149,13 @@
       <form ng-show="createStep == 'pass'" name="passForm" ng-submit="createProfile(passForm)" novalidate>
 
       <div class="box-notification" ng-show="passwordStrength">
-        <div class="box-icon" style="background-color:{{passwordStrength.color}}">
-          <i class="fi-x size-24" ng-if="passwordStrength.strength< minPasswordStrength"></i>
-          <i class="fi-check size-24" ng-if="passwordStrength.strength >= minPasswordStrength"></i>
-        </div>
+          <!-- if you change this, check it on WP...-->
+          <div class="box-icon" ng-if="passwordStrength.strength< minPasswordStrength" style="background-color:#dd514c">
+              <i class="fi-x size-24"></i>
+          </div>
+          <div class="box-icon" ng-if="passwordStrength.strength >= minPasswordStrength" style="background-color:#16A085">
+                  <i class="fi-check size-24"></i>
+          </div>
         <span class="size-14" >
           Password Strength: {{passwordStrength.message}}
         </span>
@@ -160,13 +163,13 @@
 
 
         <div class="input">
-          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength" >
+          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength"  ng-focus="formFocus()" >
           <i class="icon-locked"></i>
         </div>
 
 
         <div class="input">
-          <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required>
+          <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required  ng-focus="formFocus()">
           <i class="icon-locked"></i>
           <div class="icon-input">
             <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
@@ -198,7 +201,7 @@
   </div>
 
   <div class="large-4 large-centered medium-6 medium-centered columns m20b" ng-show="!$root.starting && askForPin">
-    <div class="clipo">
+    <div class="clipo" ng-hide="hideForWP">
       <img src="img/clipo-pin.png" alt="clipo" width="380">
     </div>
 
@@ -212,31 +215,29 @@
     </div>
 
     <form name="setPinForm" novalidate>
-      <div class="input" ng-show="askForPin == 1">
-        <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1">
-        <i class="icon-locked"></i>
+      <div class="input" ng-if="askForPin == 1">
+        <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1 && !isWindowsPhoneApp"  ng-focus="formFocus()">
+          <i class="icon-locked" ng-hide="isWindowsPhoneApp"></i>
       </div>
-      <div class="input" ng-show="askForPin == 2">
-        <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2">
-        <i class="icon-locked"></i>
+      <div class="input" ng-if="askForPin == 2">
+          <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2 && !isWindowsPhoneApp" ng-focus="formFocus()">
+          <i class="icon-locked" ng-hide="isWindowsPhoneApp"></i>
       </div>
-
-      <div class="box-setup-footer row collapse">
-        <div class="large-6 medium-6 small-6 columns">
-          <a class="button secondary radius m0" ng-click="createDefaultWallet()">
-            <span translate>Skip</span> 
-          </a>
+        <div class="box-setup-footer row collapse">
+            <div class="large-6 medium-6 small-6 columns">
+                <a class="button secondary radius m0" ng-click="createDefaultWallet()">
+                    <span translate>Skip</span>
+                </a>
+            </div>
+            <div class="large-6 medium-6 small-6 columns text-right">
+                <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0"
+                        ng-disabled="setPinForm.$invalid || error">
+                    OK
+                </button>
+            </div>
         </div>
-        <div class="large-6 medium-6 small-6 columns text-right">
-          <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0" 
-            ng-disabled="setPinForm.$invalid || error">
-            OK
-          </button>
-        </div>
-      </div>
 
-
-    </form>
+</form>
   </div>
 </div>
 

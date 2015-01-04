@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova) {
 
     var satToUnit;
 
@@ -13,9 +13,13 @@ angular.module('copayApp.controllers').controller('SendController',
 
       preconditions.checkState(w.settings.unitToSatoshi);
 
+      $scope.isMobile = isMobile.any();
+      $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+      $rootScope.wpInputFocused = false;
+
       $scope.isShared = w.isShared();
       $scope.requiresMultipleSignatures = w.requiresMultipleSignatures();
-      $rootScope.title =$scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
+      $rootScope.title = $scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
 
@@ -44,7 +48,30 @@ angular.module('copayApp.controllers').controller('SendController',
         $scope.isRateAvailable = true;
         $scope.$digest();
       });
-    }
+    };
+
+    $scope.formFocus = function(what) {
+      if (!$scope.isWindowsPhoneApp) return
+
+      if (!what) {
+        $rootScope.wpInputFocused = false;
+        $scope.hideAddress = false;
+        $scope.hideAmount = false;
+
+      } else {
+        $rootScope.wpInputFocused = true;
+        if (what == 'amount') {
+          $scope.hideAddress = true;
+        } else if (what == 'msg') {
+          $scope.hideAddress = true;
+          $scope.hideAmount = true;
+        }
+
+      }
+      $timeout(function() {
+        $rootScope.$digest();
+      }, 1);
+    };
 
     $scope.setInputs = function() {
       var w = $rootScope.wallet;
@@ -148,26 +175,36 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       $scope.loading = true;
-      var comment = form.comment.$modelValue;
-      var merchantData = $scope._merchantData;
-      var address, amount;
-      if (!merchantData) {
-        address = form.address.$modelValue;
-        amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
-      }
+      $scope.creatingTX = true;
+      if ($scope.isWindowsPhoneApp)
+          $rootScope.wpInputFocused = true;
 
-      w.spend({
-        merchantData: merchantData,
-        toAddress: address,
-        amountSat: amount,
-        comment: comment,
-      }, function(err, txid, status) {
-        $scope.loading = false;
-        if (err)
-          return $scope.setError(err);
-        txStatus.notify(status);
-        $scope.resetForm();
-      });
+      $timeout(function () {
+          var comment = form.comment.$modelValue;
+          var merchantData = $scope._merchantData;
+          var address, amount;
+          if (!merchantData) {
+              address = form.address.$modelValue;
+              amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+          }
+
+          w.spend({
+              merchantData: merchantData,
+              toAddress: address,
+              amountSat: amount,
+              comment: comment,
+          }, function (err, txid, status) {
+              $scope.loading = false;
+              $scope.creatingTX = false;
+              if ($scope.isWindowsPhoneApp)
+                  $rootScope.wpInputFocused = false;
+
+              if (err)
+                  return $scope.setError(err);
+              txStatus.notify(status);
+              $scope.resetForm();
+          });
+      }, 1);
     };
 
     // QR code Scanner
@@ -291,7 +328,7 @@ angular.module('copayApp.controllers').controller('SendController',
       window.ignoreMobilePause = true;
       cordova.plugins.barcodeScanner.scan(
         function onSuccess(result) {
-          $timeout(function(){
+          $timeout(function() {
             window.ignoreMobilePause = false;
           }, 100);
           if (result.cancelled) return;
@@ -305,7 +342,7 @@ angular.module('copayApp.controllers').controller('SendController',
           }, 1000);
         },
         function onError(error) {
-          $timeout(function(){
+          $timeout(function() {
             window.ignoreMobilePause = false;
           }, 100);
           alert('Scanning error');
