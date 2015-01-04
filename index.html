@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en" ng-csp>
+﻿<!doctype html>
+<html lang="en" ng-app="copayApp" ng-csp>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -77,20 +77,20 @@
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </span>
  
-        <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation">
+        <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation  && !$root.wpInputFocused">
           <nav class="tab-bar">
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
 
-            <section class="right-small" ng-show="$root.iden && $root.wallet.isComplete()">
-              <a class="p10" ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
-            </section>
+              <section class="right-small" ng-show="$root.iden && $root.wallet.isComplete()  && !$root.hideWalletNavigation">
+                  <a class="p10" ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
+              </section>
 
             <section class="middle tab-bar-section">
-              <h1 class="title ellipsis" ng-show="$root.iden && $root.wallet">
-                {{$root.wallet.getName()}}
-              </h1>
+                <h1 class="title ellipsis" ng-show="$root.iden && $root.wallet  && !$root.hideWalletNavigation">
+                    {{$root.wallet.getName()}}
+                </h1>
             </section>
           </nav>
 
@@ -98,13 +98,12 @@
             <div ng-include="'views/includes/sidebar-mobile.html'"></div>
           </nav>
 
-          <div 
-            ng-if="$root.iden"
+          <div ng-if="$root.iden"
             ng-include="'views/includes/sidebar.html'" 
             role='navigation'
             class="sidebar"></div>
           <div class="bottom-bar" ng-if="$root.wallet &&
-            $root.wallet.isComplete() && !$root.wallet.isLocked">
+            $root.wallet.isComplete() && !$root.wallet.isLocked && !$root.hideWalletNavigation">
             <div ng-include="'views/includes/bottombar-mobile.html'"></div>
           </div>
         </div>
@@ -116,10 +115,10 @@
           class="head show-for-large-up" 
           ng-include="'views/includes/head.html'"
           ng-if="$root.iden"
-          ng-class="{'dni':$root.hideNavigation}"
+          ng-class="{'dni':$root.hideNavigation || $root.wpInputFocused}"
         ></div>
 
-        <section ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation}" ng-view></section> 
+        <section ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" ng-view></section> 
 
         <a class="exit-off-canvas"></a>
 

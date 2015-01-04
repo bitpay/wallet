@@ -1,14 +1,9 @@
 #! /bin/bash
-
+#
 # Usage:
 # sh ./build.sh --android --reload
-
-OpenColor="\033["
-Red="1;31m"
-Yellow="1;33m"
-Green="1;32m"
-CloseColor="\033[0m"
-
+#
+#
 # Check function OK
 checkOK() {
   if [ $? != 0 ]; then
@@ -22,22 +17,22 @@ BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT="$BUILDDIR/project"
 VERSION=`cut -d '"' -f2 $BUILDDIR/../version.js`
 
-SKIPIOS=false
+CURRENT_OS=$1
+
+if [ -z "CURRENT_OS" ]
+then
+ echo "Build.sh WP8|ANDROID|IPHONE"
+fi
+
 CLEAR=false
 DBGJS=false
 
-# Check Args
-if [[ $1 = "--android" || $2 = "--android" || $3 = "--android" ]]
-then
-  SKIPIOS=true
-fi
-
-if [[ $1 = "--clear" || $2 = "--clear" || $3 = "--clear" ]]
+if [[ $2 = "--clear" || $3 = "--clear" ]]
 then
   CLEAR=true
 fi
 
-if [[ $1 = "--dbgjs" || $2 = "--dbgjs" || $3 = "--dbgjs" ]]
+if [[ $2 = "--dbgjs" || $3 = "--dbgjs" ]]
 then
   DBGJS=true
 fi
@@ -45,7 +40,7 @@ fi
 
 echo "${OpenColor}${Green}* Checking dependencies...${CloseColor}"
 command -v cordova >/dev/null 2>&1 || { echo >&2 "Cordova is not present, please install it: sudo npm -g cordova."; exit 1; }
-command -v xcodebuild >/dev/null 2>&1 || { echo >&2 "XCode is not present, install it or use [--android]."; exit 1; }
+#command -v xcodebuild >/dev/null 2>&1 || { echo >&2 "XCode is not present, install it or use [--android]."; exit 1; }
 
 # Create project dir
 if $CLEAR
@@ -55,6 +50,10 @@ then
   fi
 fi
 
+echo "Build directory is $BUILDDIR"
+echo "Project directory is $PROJECT"
+
+
 if [ ! -d $PROJECT ]; then
   cd $BUILDDIR
   echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
@@ -62,13 +61,22 @@ if [ ! -d $PROJECT ]; then
   checkOK
 
   cd $PROJECT
-  echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
-  cordova platforms add android
-  checkOK
 
-  if [[ !$SKIPIOS ]]; then
+  if [ $CURRENT_OS == "ANDROID" ]; then
+    echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
+    cordova platforms add android
+    checkOK
+  fi
+
+  if [ $CURRENT_OS == "IPHONE" ]; then
     echo "${OpenColor}${Green}* Adding IOS platform... ${CloseColor}"
     cordova platforms add ios
+    checkOK
+  fi
+
+  if [ $CURRENT_OS == "WP8" ]; then
+    echo "${OpenColor}${Green}* Adding WP8 platform... ${CloseColor}"
+    cordova platforms add wp8
     checkOK
   fi
 
@@ -76,7 +84,7 @@ if [ ! -d $PROJECT ]; then
 
   cordova plugin add https://github.com/Initsogar/cordova-webintent.git
   checkOK
-  
+
   cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
   checkOK
 
@@ -116,22 +124,32 @@ sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' char
 checkOK
 
 cd $BUILDDIR
-cp config.xml $PROJECT/config.xml
-checkOK
 
-mkdir -p $PROJECT/platforms/android/res/xml/
-checkOK
 
-cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
-checkOK
 
-cp android/project.properties $PROJECT/platforms/android/project.properties
-checkOK
+  cp config.xml $PROJECT/config.xml
+  checkOK
 
-cp -R android/res/* $PROJECT/platforms/android/res
-checkOK
+  if [ $CURRENT_OS == "ANDROID" ]; then
+  echo "Android project!!!"
 
-if [[ !$SKIPIOS ]]; then
+
+  mkdir -p $PROJECT/platforms/android/res/xml/
+  checkOK
+
+  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
+  checkOK
+
+  cp android/project.properties $PROJECT/platforms/android/project.properties
+  checkOK
+
+  cp -R android/res/* $PROJECT/platforms/android/res
+  checkOK
+fi
+
+if [ $CURRENT_OS == "IPHONE" ]; then
+
+  echo "Iphone project!!!"
   cp ios/Copay-Info.plist $PROJECT/platforms/ios/Copay-Info.plist
   checkOK
 
@@ -147,4 +165,17 @@ if [[ !$SKIPIOS ]]; then
   cp -R ios/splash/* $PROJECT/platforms/ios/Copay/Resources/splash
   checkOK
 fi
+
+if [ $CURRENT_OS == "WP8" ]; then
+  echo "Wp8 project!!!"
+  cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
+  checkOK
+
+  mkdir -p  $PROJECT/platforms/res/wp
+	  cp -v wp/res/* $PROJECT/platforms/wp8/Assets
+	  cp -v wp/res/SplashScreenImage.jpg $PROJECT/platforms/wp8/
+  checkOK
+
+fi
+
 

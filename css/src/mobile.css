@@ -19,7 +19,7 @@
   }
 
   .button-close {
-    margin-top:65px;
+    margin-top:10px;
     background: #213140;
     padding: 1.2rem;
     font-size: 14px;
@@ -91,7 +91,6 @@
   .scroll-section {
     position: absolute;
     top: 45px;
-    bottom: 65px;
     overflow-y: auto;
   }
 
