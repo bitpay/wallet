@@ -690,9 +690,6 @@ Wallet.prototype._onNoMessages = function() {
   if (this.isComplete()) {
     log.debug('Wallet:' + this.getName() + ' No messages at the server. Requesting peer sync from: ' + (this.syncedTimestamp + 1));
     this.sendWalletReady(null, parseInt((this.syncedTimestamp + 1) / 1000000));
-  } else {
-    log.debug('Incomplete wallet:' + this.getName() + ' No messages at the server. Requesting forced peer sync from 0');
-    this.sendWalletReady(null, 0, true);
   }
 };
 
@@ -992,7 +989,12 @@ Wallet.prototype.netStart = function() {
   if (this.publicKeyRing.isComplete()) {
     this._lockIncomming(this.publicKeyRing.getAllCopayerIds());
   } else {
-    this.network.setCopayers(this.publicKeyRing.getAllCopayerIds());
+    //Partially complete wallet.
+    if (this.publicKeyRing.getAllCopayerIds() > 1) {
+      this.network.setCopayers(this.publicKeyRing.getAllCopayerIds());
+      log.debug('Incomplete wallet opened:' + this.getName() + '.  forced peer sync from 0');
+      this.sendWalletReady(null, 0, true);
+    }
   }
 
   log.debug('Wallet:' + self.id + ' Starting network.');
@@ -1216,7 +1218,7 @@ Wallet.fromObj = function(o, readOpts) {
 Wallet.prototype._sendToPeers = function(recipients, obj) {
   if (!this.isShared()) return;
   log.info('Wallet:' + this.getName() + ' ### Sending ' + obj.type);
-  log.debug('Sending:', recipients,  obj);
+  log.debug('Sending:', recipients, obj);
 
   this.network.send(recipients, obj);
 };
