@@ -687,8 +687,10 @@ Wallet.prototype.updateSyncedTimestamp = function(ts) {
  * Triggers a call to {@link Wallet#sendWalletReady}
  */
 Wallet.prototype._onNoMessages = function() {
-  log.debug('Wallet:' + this.id + ' No messages at the server. Requesting peer sync from: ' + (this.syncedTimestamp + 1));
-  this.sendWalletReady(null, parseInt((this.syncedTimestamp + 1) / 1000000));
+  if (this.isComplete()) {
+    log.debug('Wallet:' + this.getName() + ' No messages at the server. Requesting peer sync from: ' + (this.syncedTimestamp + 1));
+    this.sendWalletReady(null, parseInt((this.syncedTimestamp + 1) / 1000000));
+  }
 };
 
 /**
@@ -986,9 +988,20 @@ Wallet.prototype.netStart = function() {
 
   if (this.publicKeyRing.isComplete()) {
     this._lockIncomming(this.publicKeyRing.getAllCopayerIds());
+  } else {
+    //Partially complete wallet.
+    if (this.publicKeyRing.getAllCopayerIds().length > 1) {
+      this.network.setCopayers(this.publicKeyRing.getAllCopayerIds());
+    }
   }
+
   log.debug('Wallet:' + self.id + ' Starting network.');
   this.network.start(startOpts, function() {
+    //Partially complete wallet.
+    if (self.publicKeyRing.getAllCopayerIds().length > 1) {
+      log.debug('Incomplete wallet opened:' + self.getName() + '.  forced peer sync from 0');
+      self.sendWalletReady(null, 0);
+    }
     self.emitAndKeepAlive(self.isComplete() ? 'ready' : 'waitingCopayers');
   });
 };
@@ -1191,7 +1204,7 @@ Wallet.fromObj = function(o, readOpts) {
     });
   }
 
-  opts.syncedTimestamp = o.syncedTimestamp || 0;
+  opts.syncedTimestamp = opts.publicKeyRing.isComplete() ? o.syncedTimestamp || 0 : 0;
   opts.blockchainOpts = readOpts.blockchainOpts;
   opts.networkOpts = readOpts.networkOpts;
 
@@ -1208,7 +1221,7 @@ Wallet.fromObj = function(o, readOpts) {
 Wallet.prototype._sendToPeers = function(recipients, obj) {
   if (!this.isShared()) return;
   log.info('Wallet:' + this.getName() + ' ### Sending ' + obj.type);
-  log.debug('Sending obj', obj);
+  log.debug('Sending:', recipients, obj);
 
   this.network.send(recipients, obj);
 };
@@ -1297,7 +1310,7 @@ Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
   this._sendToPeers(recipients, {
     type: 'walletReady',
     walletId: this.id,
-    sinceTs: sinceTs,
+    sinceTs: sinceTs
   });
 };
 
@@ -1442,7 +1455,7 @@ Wallet.prototype.getPendingTxProposalsCount = function() {
   _.each(txps, function(inTxp, ntxid) {
     if (!inTxp.isPending(maxRejectCount))
       return;
-// TODO: are the uxtos availables?
+    // TODO: are the uxtos availables?
     //
     pending++;
 
@@ -1631,7 +1644,7 @@ Wallet.prototype.broadcastToBitcoinNetwork = function(ntxid, cb) {
 
   this.blockchain.broadcast(txHex, function(err, txid) {
     if (err || !txid) {
-      log.debug('Wallet:' + self.getName() + ' Send failed:' + err );
+      log.debug('Wallet:' + self.getName() + ' Send failed:' + err);
 
       self._checkIfTxIsSent(ntxid, function(err, txid) {
         return cb(err, txid);
@@ -2205,7 +2218,6 @@ Wallet.prototype.getUnspent = function(cb) {
   if (self.cache.unspent != null) {
     log.debug('Wallet ' + this.getName() + ': Get unspent cache hit');
     return self.computeUnspent(self.cache.unspent, cb);
-    return 
   }
 
   var addresses = this.getAddresses();
