@@ -35,7 +35,7 @@ mkdir -p $APPDIR
 
 # Re-compile copayBundle.js
 echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
-grunt --target=dev shell
+grunt prod
 checkOK
 
 # Copy all chrome-extension files
