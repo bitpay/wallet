@@ -51,6 +51,14 @@ p {
   color: #C0392A;
 }
 
+.text-green {
+  color: #1ABC9C;
+}
+
+.text-yellow {
+  color: #F5A623;
+}
+
 
 .ubuntulight
 {font-family: ubuntulight;}
@@ -76,6 +84,7 @@ p {
 .size-72 { font-size: 72px; }
 
 .m5r {margin-right: 5px;}
+.m5t {margin-top: 5px;}
 .p5h {padding: 0 5rem;}
 .m2r {margin-right: 2rem;}
 .m1r {margin-right: 1rem;}
@@ -92,6 +101,7 @@ p {
 .p1tb {padding: 1rem 0;}
 .p0m0 {padding: 0; margin: 0}
 .db {display: block;}
+.m0 {margin: 0;}
 
 .row {
   width: 100%;
