@@ -371,7 +371,6 @@ Network.prototype.getCopayerIds = function() {
     for (var peerId in this.copayerForPeer) {
       copayerIds.push(this.copayerForPeer[peerId]);
     }
-    console.log('[Async.js.373]', copayerIds); //TODO
     return copayerIds;
   }
 };
@@ -384,7 +383,6 @@ Network.prototype.send = function(dest, payload, cb) {
   var self = this;
   if (!dest) {
     dest = this.getCopayerIds();
-    console.log('[Async.js.383:dest:]', dest); //TODO
     payload.isBroadcast = 1;
   }
 
