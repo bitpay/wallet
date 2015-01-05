@@ -73,7 +73,7 @@ module.exports = function(grunt) {
       },
       config: {
         files: ['config.js'],
-        tasks: ['shell:dev', 'concat:main']
+        tasks: ['exec:dev', 'concat:main']
       },
       test: {
         files: ['test/**/*.js'],
