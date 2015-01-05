@@ -480,6 +480,60 @@ describe('Identity model', function() {
   });
 
 
+  describe('#deleteWallet', function() {
+    var iden, w;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+      iden = new Identity(opts);
+
+      w = {
+        getId: sinon.stub().returns('32'),
+        getName: sinon.stub().returns('treintaydos'),
+        close: sinon.stub(),
+      };
+    });
+
+    it('should not save other wallets', function(done) {
+      iden.addWallet(w);
+      iden.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
+      iden.deleteWallet('32', function(err) {
+        iden.walletIds.should.deep.equal([]);
+
+        should.not.exist(_.find(iden.getWallets(), function(w) {
+          return w.getName() == 'treintaydos';
+        }));
+
+        iden.store.calledOnce.should.be.true;
+        iden.store.getCall(0).args[0].noWallets.should.equal(true);
+        done();
+      });
+    });
+  });
+
+
+
+
+
+
+
+
 
   describe('#export', function() {
 
@@ -492,12 +546,7 @@ describe('Identity model', function() {
   /**
    * TODO (eordano): Move this to a different test file
    *
-  describe('#pluginManager', function() {
-    it('should create a new PluginManager object', function() {
-      var pm = new PluginManager({plugins: { FakeLocalStorage: true }, pluginsPath: '../../test/mocks/'});
-      should.exist(pm);
-    });
-  });
+
 
   describe('#Insight', function() {
     it('should parse a uri', function() {
@@ -831,7 +880,7 @@ describe('Identity model', function() {
 
     });
 
-    it('should return indefined', function() {
+    it('should return undefined', function() {
       expect(iden.getLastFocusedWalletId()).to.be.undefined;
     });
 
