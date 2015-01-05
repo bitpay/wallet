@@ -53,7 +53,7 @@ module.exports = function(grunt) {
           '!js/copayBundle.js',
           '!js/copayMain.js'
         ],
-        tasks: ['shell:dev']
+        tasks: ['exec:dev']
       },
       css: {
         files: ['css/src/*.css'],
