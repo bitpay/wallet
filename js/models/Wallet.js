@@ -2214,7 +2214,6 @@ Wallet.prototype.getUnspent = function(cb) {
   if (self.cache.unspent != null) {
     log.debug('Wallet ' + this.getName() + ': Get unspent cache hit');
     return self.computeUnspent(self.cache.unspent, cb);
-    return
   }
 
   var addresses = this.getAddresses();
