@@ -18,6 +18,10 @@ p {
   font-size: 1.2rem;
 }
 
+.panel.radius p {
+  font-size: 1rem;
+}
+
 .download p {
   font-weight: 300;
 }
@@ -28,9 +32,14 @@ p {
 }
 
 
+
 .reveal-modal.line-dashed-v {
   border-right: 1px dashed #E3E3E3;
+}
 
+.line-dashed {
+  padding-top: 2rem;
+  border-bottom: 1px dashed #E3E3E3
 }
 
 .line-mobile {
@@ -66,6 +75,7 @@ p {
 .size-60 { font-size: 60px; }
 .size-72 { font-size: 72px; }
 
+.m5r {margin-right: 5px;}
 .p5h {padding: 0 5rem;}
 .m2r {margin-right: 2rem;}
 .m1r {margin-right: 1rem;}
