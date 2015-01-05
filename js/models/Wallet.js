@@ -725,7 +725,7 @@ Wallet.prototype._onData = function(senderId, data, ts) {
       this.sendWalletReady(senderId);
       break;
     case 'walletReady':
-      if (this.lastMessageFrom[senderId] !== 'walletReady' || data.force) {
+      if (this.lastMessageFrom[senderId] !== 'walletReady') {
         log.debug('Wallet:' + this.id + ' peer Sync received. since: ' + (data.sinceTs || 0));
         this.sendPublicKeyRing(senderId);
         this.sendAddressBook(senderId);
@@ -990,10 +990,10 @@ Wallet.prototype.netStart = function() {
     this._lockIncomming(this.publicKeyRing.getAllCopayerIds());
   } else {
     //Partially complete wallet.
-    if (this.publicKeyRing.getAllCopayerIds() > 1) {
+    if (this.publicKeyRing.getAllCopayerIds().length > 1) {
       this.network.setCopayers(this.publicKeyRing.getAllCopayerIds());
       log.debug('Incomplete wallet opened:' + this.getName() + '.  forced peer sync from 0');
-      this.sendWalletReady(null, 0, true);
+      this.sendWalletReady(null, 0);
     }
   }
 
@@ -1303,12 +1303,11 @@ Wallet.prototype.sendSignature = function(ntxid) {
  * @desc Notify other peers that a wallet has been backed up and it's ready to be used
  * @param {string[]} [recipients] - the pubkeys of the recipients
  */
-Wallet.prototype.sendWalletReady = function(recipients, sinceTs, force) {
+Wallet.prototype.sendWalletReady = function(recipients, sinceTs) {
   this._sendToPeers(recipients, {
     type: 'walletReady',
     walletId: this.id,
-    sinceTs: sinceTs,
-    force: force,
+    sinceTs: sinceTs
   });
 };
 
