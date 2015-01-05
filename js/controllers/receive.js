@@ -6,8 +6,9 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
       $scope.loading = true;
-      w.generateAddress(null);
+      var lastAddr = w.generateAddress(null);
       $scope.setAddressList();
+      $scope.addr = lastAddr;
       $timeout(function() {
         $scope.loading = false;
       }, 1);
@@ -20,10 +21,10 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       var w = $rootScope.wallet;
       var lastAddr = _.first(w.getAddressesOrderer()); 
       var balance = w.balanceInfo.balanceByAddr;
+      $scope.setAddressList();
 
       while (balance && balance[lastAddr] > 0) {
         $scope.loading = true;
-        $scope.newAddr();
         lastAddr = w.generateAddress(null);
       };
       $scope.loading = false;
