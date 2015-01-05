@@ -106,10 +106,14 @@ Network.prototype._deletePeer = function(peerId) {
   this.connectedPeers = Network._arrayRemove(peerId, this.connectedPeers);
 };
 
-Network.prototype._addConnectedCopayer = function(copayerId) {
+Network.prototype._addCopayer = function(copayerId) {
   var peerId = this.peerFromCopayer(copayerId);
   this._addCopayerMap(peerId, copayerId);
   Network._arrayPushOnce(peerId, this.connectedPeers);
+};
+
+Network.prototype._addConnectedCopayer = function(copayerId) {
+  this._addCopayer(copayerId);
   this.emit('connect', copayerId);
 };
 
@@ -255,7 +259,7 @@ Network.prototype._setupSocketHandlers = function(opts, cb) {
 
     // We ask for this message, and then ignore it, only to see if the
     // server has erased our old messages.
-    
+
     if (fromTs) {
       self.ignoreMessageFromTs = fromTs;
     }
@@ -272,8 +276,8 @@ Network.prototype._setupSocketHandlers = function(opts, cb) {
     }, 1);
   });
   self.socket.on('error', self._onError.bind(self));
-
   self.socket.on('no_messages', self.emit.bind(self, 'no_messages'));
+  self.socket.on('no messages', self.emit.bind(self, 'no_messages'));
   self.socket.on('connect', function() {
     var pubkey = self.getKey().public.toString('hex');
     log.debug('Async subscribing to pubkey:', pubkey);
@@ -331,7 +335,6 @@ Network.prototype.start = function(opts, openCallback) {
   preconditions.checkArgument(opts);
   preconditions.checkArgument(opts.privkey);
   preconditions.checkArgument(opts.copayerId);
-  preconditions.checkState(this.connectedPeers && this.connectedPeers.length === 0);
 
   if (this.started) {
     log.debug('Async: Networing already started for this wallet.')
@@ -368,6 +371,7 @@ Network.prototype.getCopayerIds = function() {
     for (var peerId in this.copayerForPeer) {
       copayerIds.push(this.copayerForPeer[peerId]);
     }
+    console.log('[Async.js.373]', copayerIds); //TODO
     return copayerIds;
   }
 };
@@ -380,6 +384,7 @@ Network.prototype.send = function(dest, payload, cb) {
   var self = this;
   if (!dest) {
     dest = this.getCopayerIds();
+    console.log('[Async.js.383:dest:]', dest); //TODO
     payload.isBroadcast = 1;
   }
 
@@ -388,6 +393,7 @@ Network.prototype.send = function(dest, payload, cb) {
 
   var l = dest.length;
   var i = 0;
+
   for (var ii in dest) {
     var to = dest[ii];
     if (to == this.copayerId)
@@ -420,6 +426,12 @@ Network.prototype.lockIncommingConnections = function(allowedCopayerIdsArray) {
   this.allowedCopayerIds = {};
   for (var i in allowedCopayerIdsArray) {
     this.allowedCopayerIds[allowedCopayerIdsArray[i]] = true;
+  }
+};
+
+Network.prototype.setCopayers = function(copayersIdsArray) {
+  for (var i in copayersIdsArray) {
+    this._addCopayer(copayersIdsArray[i]);
   }
 };
 
