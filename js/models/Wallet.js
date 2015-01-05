@@ -992,13 +992,16 @@ Wallet.prototype.netStart = function() {
     //Partially complete wallet.
     if (this.publicKeyRing.getAllCopayerIds().length > 1) {
       this.network.setCopayers(this.publicKeyRing.getAllCopayerIds());
-      log.debug('Incomplete wallet opened:' + this.getName() + '.  forced peer sync from 0');
-      this.sendWalletReady(null, 0);
     }
   }
 
   log.debug('Wallet:' + self.id + ' Starting network.');
   this.network.start(startOpts, function() {
+    //Partially complete wallet.
+    if (self.publicKeyRing.getAllCopayerIds().length > 1) {
+      log.debug('Incomplete wallet opened:' + self.getName() + '.  forced peer sync from 0');
+      self.sendWalletReady(null, 0);
+    }
     self.emitAndKeepAlive(self.isComplete() ? 'ready' : 'waitingCopayers');
   });
 };
