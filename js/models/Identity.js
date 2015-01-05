@@ -468,26 +468,42 @@ Identity.prototype.close = function() {
 Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
   var self = this;
   preconditions.checkArgument(cb);
-  var importFunction = opts.importWallet || Wallet.fromUntrustedObj;
 
-  var readOpts = {
-    networkOpts: this.networkOpts,
-    blockchainOpts: this.blockchainOpts,
-    skipFields: opts.skipFields,
-  };
+  self.verifyChecksum(function(err, match) {
+    if (err) return cb(err);
+    if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
 
-  var w = importFunction(obj, readOpts);
-  if (!w) return cb(new Error('Could not decrypt'));
-  log.debug('Wallet decrypted:' + w.getName());
+    var importFunction = opts.importWallet || Wallet.fromUntrustedObj;
 
-  self._checkVersion(w.version);
-  log.debug('Updating Indexes for wallet:' + w.getName());
-  w.updateIndexes(function(err) {
-    log.debug('Adding wallet to profile:' + w.getName());
-    self.addWallet(w);
-    self.updateFocusedTimestamp(w.getId());
-    self.bindWallet(w);
-    self.storeWallet(w, cb);
+    var readOpts = {
+      networkOpts: self.networkOpts,
+      blockchainOpts: self.blockchainOpts,
+      skipFields: opts.skipFields,
+    };
+
+    var w = importFunction(obj, readOpts);
+    if (!w) return cb(new Error('Could not decrypt'));
+    log.debug('Wallet decrypted:' + w.getName());
+
+    self._checkVersion(w.version);
+    log.debug('Updating Indexes for wallet:' + w.getName());
+    w.updateIndexes(function(err) {
+      log.debug('Adding wallet to profile:' + w.getName());
+      self.storeWallet(w, function (err) {
+        if (err) return cb(err);
+
+        self.addWallet(w);
+        self.updateFocusedTimestamp(w.getId());
+        self.bindWallet(w);
+
+        self.backupNeeded = true;
+        self.store({
+          noWallets: true,
+        }, function(err) {
+          return cb(err);
+        });
+      });
+    });
   });
 };
 
