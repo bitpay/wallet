@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     },
     exec: {
       prod: {
-     command: 'ls'
+        command: 'node ./util/build.js'
       },
       dev: {
         command: 'node ./util/build.js -d'
