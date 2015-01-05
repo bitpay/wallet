@@ -218,9 +218,10 @@ Identity.prototype.deleteWallet = function(walletId, cb) {
     self.storage.removeItem(Wallet.getStorageKey(walletId), function(err) {
       if (err) return cb(err);
       self.emitAndKeepAlive('walletDeleted', walletId);
-      self.store(null, cb);
+      self.store({
+        noWallets: true
+      }, cb);
     });
-
   });
 };
 
