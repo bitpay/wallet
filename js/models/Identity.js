@@ -683,11 +683,13 @@ Identity.prototype.createWallet = function(opts, cb) {
     if (self.getWalletById(w.getId())) {
       return cb('walletAlreadyExists');
     }
-    self.addWallet(w);
-    self.updateFocusedTimestamp(w.getId());
-    self.bindWallet(w);
+
     self.storeWallet(w, function(err) {
       if (err) return cb(err);
+
+      self.addWallet(w);
+      self.updateFocusedTimestamp(w.getId());
+      self.bindWallet(w);
 
       self.backupNeeded = true;
       self.store({
