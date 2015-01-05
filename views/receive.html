@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="large-12 columns" ng-if="addresses.length">
+    <div class="large-12 columns" ng-if="showAll">
       <div ng-repeat="addr in addresses" ng-click="openAddressModal(addr)" class="pointer">
         <div class="panel">
           <div class="row">
@@ -48,19 +48,15 @@
           <!-- end of panel mobile -->
         </div>
       </div>
+    </div>
+    <div class="large-12 columns">
       <a class="button secondary tiny text-center right" ng-click="newAddr()" ng-disabled="loading">
-          Generate new address
+        Generate new address
       </a>
       <a class="button secondary tiny text-center" ng-click="toggleShowAll()" ng-disabled="loading">
-        <span translate ng-if="showAll">Hide them</span>
+        <span ng-show="!showAll" translate>Show all my addresses</span>
+        <span ng-show="showAll" translate>Hide them</span>
       </a>
-    </div>
-    <div class="large-12 columns" ng-if="!showAll">
-      <div class="m20b">
-        <a class="button secondary tiny text-center" ng-click="toggleShowAll()" ng-disabled="loading">
-          <span translate>Show all my addresses</span>
-        </a>
-      </div>
     </div>
   </div>
 </div>
