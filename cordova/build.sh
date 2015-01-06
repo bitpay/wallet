@@ -21,18 +21,18 @@ CURRENT_OS=$1
 
 if [ -z "CURRENT_OS" ]
 then
- echo "Build.sh WP8|ANDROID|IPHONE"
+ echo "Build.sh WP8|ANDROID|IOS"
 fi
 
 CLEAR=false
 DBGJS=false
 
-if [[ $2 = "--clear" || $3 = "--clear" ]]
+if [[ $2 == "--clear" || $3 == "--clear" ]]
 then
   CLEAR=true
 fi
 
-if [[ $2 = "--dbgjs" || $3 = "--dbgjs" ]]
+if [[ $2 == "--dbgjs" || $3 == "--dbgjs" ]]
 then
   DBGJS=true
 fi
@@ -68,7 +68,7 @@ if [ ! -d $PROJECT ]; then
     checkOK
   fi
 
-  if [ $CURRENT_OS == "IPHONE" ]; then
+  if [ $CURRENT_OS == "IOS" ]; then
     echo "${OpenColor}${Green}* Adding IOS platform... ${CloseColor}"
     cordova platforms add ios
     checkOK
@@ -115,7 +115,7 @@ else
   checkOK
 fi
 
-echo "${OpenColor}${Green}* Coping files...${CloseColor}"
+echo "${OpenColor}${Green}* Copying files...${CloseColor}"
 cd $BUILDDIR/..
 cp -af dist/web/** $PROJECT/www
 checkOK
@@ -125,14 +125,11 @@ checkOK
 
 cd $BUILDDIR
 
+cp config.xml $PROJECT/config.xml
+checkOK
 
-
-  cp config.xml $PROJECT/config.xml
-  checkOK
-
-  if [ $CURRENT_OS == "ANDROID" ]; then
+if [ $CURRENT_OS == "ANDROID" ]; then
   echo "Android project!!!"
-
 
   mkdir -p $PROJECT/platforms/android/res/xml/
   checkOK
@@ -147,9 +144,13 @@ cd $BUILDDIR
   checkOK
 fi
 
-if [ $CURRENT_OS == "IPHONE" ]; then
+if [ $CURRENT_OS == "IOS" ]; then
 
-  echo "Iphone project!!!"
+  echo "IOS project!!!"
+
+  mkdir -p $PROJECT/platforms/ios
+  checkOK
+
   cp ios/Copay-Info.plist $PROJECT/platforms/ios/Copay-Info.plist
   checkOK
 
