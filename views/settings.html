@@ -13,12 +13,7 @@
           <span class="text-primary size-14">
             {{message|translate}}
           </span>
-        </div>
-        <fieldset>
-          <legend translate>Language</legend>
-          <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
-          </select>
-        </fieldset>
+        </div> 
         <fieldset>
           <legend translate>Insight API server</legend>
           <div class="row collapse">
@@ -55,6 +50,11 @@
           <div translate class="small text-gray">
           Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on this device, or remotely on the cloud (Insight Server). <a target="_blank" href="https://github.com/bitpay/copay/tree/master/js/plugins">More pluggins are welcomed!</a>
           </div>
+        </fieldset>
+        <fieldset>
+          <legend translate>Language</legend>
+          <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
+          </select>
         </fieldset>
         <fieldset>
           <legend translate>Log level</legend>
