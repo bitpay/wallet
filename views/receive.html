@@ -50,13 +50,19 @@
       </div>
     </div>
     <div class="large-12 columns">
-      <a class="button secondary tiny text-center right" ng-click="newAddr()" ng-disabled="loading">
-        Generate new address
-      </a>
-      <a class="button secondary tiny text-center" ng-click="toggleShowAll()" ng-disabled="loading">
-        <span ng-show="!showAll" translate>Show all my addresses</span>
-        <span ng-show="showAll" translate>Hide them</span>
-      </a>
+      <div class="row">
+        <div class="large-6 medium-6 small-6 columns">
+          <a class="button secondary tiny text-center right" ng-click="newAddr()" ng-disabled="loading">
+            Generate new address
+          </a>
+        </div>
+        <div class="large-6 medium-6 small-6 columns">
+          <a class="button secondary tiny text-center" ng-click="toggleShowAll()" ng-disabled="loading">
+            <span ng-show="!showAll" translate>Show all my addresses</span>
+            <span ng-show="showAll" translate>Hide them</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
