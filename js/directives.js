@@ -256,23 +256,6 @@ angular.module('copayApp.directives')
       }
     };
   })
-// From https://gist.github.com/asafge/7430497
-.directive('ngReallyClick', [
-
-  function() {
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs) {
-        element.bind('click', function() {
-          var message = attrs.ngReallyMessage;
-          if (message && confirm(message)) {
-            scope.$apply(attrs.ngReallyClick);
-          }
-        });
-      }
-    }
-  }
-])
   .directive('showFocus', function($timeout) {
     return function(scope, element, attrs) {
       scope.$watch(attrs.showFocus, 
