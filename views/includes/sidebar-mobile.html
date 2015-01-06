@@ -37,16 +37,40 @@
         </a>
       </div>
       </li> 
+      <li>
+        <div class="buttons-sidebar" title="Add wallet" ng-click="$root.go('add')">
+          <div class="col1">
+            <i class="fi-plus size-21"></i> 
+          </div>
+          <div class="col2">
+            <i class="icon-arrow-right3 size-18 right m10t"></i>
+            <span class="tu text-bold">Add wallet</span> <br>
+            <span class="text-light">Create, join or import</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div ng-if="!$root.hasPin" class="buttons-sidebar" title="Close" ng-click="signout()">
+          <div class="col1">
+            <i class="fi-power size-21"></i> 
+          </div>
+          <div class="col2 m5t">
+            <span class="tu text-bold">Close</span> <br>
+          </div>
+        </div>
+        <div ng-if="$root.hasPin" class="buttons-sidebar" title="Close" ng-click="signout()">
+          <div class="col1">
+            <i class="fi-lock size-21"></i> 
+          </div>
+          <div class="col2">
+            <span class="tu text-bold">Lock</span> <br>
+            <span class="text-light"> Require pin to unlock</span>
+          </div>
+        </div>
+      </li>
     </ul>
 
-    <a class="button-addwallet" title="Add wallet" ng-click="$root.go('add')">
-      <i class="fi-plus"></i> Add wallet
-    </a>
-
-    <a class="button-close" title="Close" ng-click="signout()">
-      <span ng-if="!$root.hasPin"><i class="size-16 m5r fi-power"></i> {{'Close'|translate}}</span>
-      <span ng-if="$root.hasPin"><i class="size-16 m5r icon-locked"></i> {{'Lock'|translate}}</span>
-    </a>
+      
 
 
     <div class="text-gray size-12 text-center columns">
