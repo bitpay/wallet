@@ -142,13 +142,17 @@ header {
 
 
 .f-dropdown {
-    z-index: 1000;
-
-  }
+  z-index: 1000;
+  max-width: 240px; 
+}
 
 .header{
   background-color: #00BD9C;
   }
+
+.header a.white:hover {
+  color: rgba(255, 255, 255, 0.72);
+}
 
 .header-logo, .header-logo-small {
   position: relative;
@@ -157,6 +161,8 @@ header {
 .header-logo-small {
   width: 210px;
   }  
+
+
 
 .copay-version, .copay-version-small {
   color: #FFFFFF;
