@@ -128,9 +128,21 @@
           <span translate>Delete Profile</span>
         </h2>
         <p translate class="text-gray">Permanently delete this profile and all its wallets. WARNING: this action cannot be reversed.</p>
-        <a translate class="button warning m0" ng-really-message="{{'Are you sure you want to delete this profile?' | translate}}" 
-          ng-really-click="deleteProfile()">Delete Profile
-        </a>
+        <div ng-show="!confirmDelete">
+          <a translate class="button warning m0" ng-click="confirmDelete=!confirmDelete">Delete Profile
+          </a>
+        </div>
+        <div class="text-center" ng-show="confirmDelete">
+          <h2>Are you sure you want to delete this profile?</h2>
+          <div class="row">
+            <div class="large-6 medium-6 small-6 columns">
+              <a translate class="button gray m0" ng-click="confirmDelete=!confirmDelete">Cancel</a>
+            </div>
+            <div class="large-6 medium-6 small-6 columns">
+              <a translate class="button warning m0" ng-click="deleteProfile()">Delete</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
