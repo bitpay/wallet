@@ -18,18 +18,6 @@
     display: none;
   }
 
-  .button-close {
-    margin-top:10px;
-    background: #213140;
-    padding: 1.2rem;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
-    height: 65px;
-    display:block;
-    color: #fff;
-  }
-
   .page, .main {
     height: auto;
   }
@@ -192,6 +180,27 @@
     opacity: 0.6;
   }
 
+  ul.off-canvas-list li .buttons-sidebar {
+    color: #4B6178;
+    font-weight: 700;
+    font-size: 12px;
+    display: block;
+    padding: 0.5rem 0;
+  }
+
+  .buttons-sidebar .col1 {
+    margin-top: 2px;
+  }
+
+  .buttons-sidebar .col1 i {
+    background-color: #fff;
+    color: #4B6178;
+    border-radius: 100%;
+    padding: .3rem 0.55rem;
+    margin: 0 7px;
+  }
+
+
   .bottombar-item a {
     color: #7A8C9E;
     padding: 0.5rem 0;
@@ -294,28 +303,6 @@
     -moz-box-shadow: none !important;
     box-shadow: none !important;
     -webkit-tap-highlight-color:rgba(0,0,0,0);
-  }
-
-  a.button-addwallet {
-    background: #D8DEE3;
-    border-radius: 4px;
-    color: #7A8C9E;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 0.8rem;
-    width: 80%;
-    display: block;
-    margin: 20px;
-    text-align: center;
-  }
-
-  a.button-addwallet i {
-    background-color: #7A8C9E;
-    color: #D8DEE3;
-    border-radius: 100%;
-    padding: .1rem 0.25rem;
-    margin-right: 5px;
   }
 
   .add-wallet .button-setup {
