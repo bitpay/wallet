@@ -5,19 +5,16 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" ng-if="addr">
     <!-- Address-->
-    <div class="large-12 columns" ng-if="addr">
+    <div class="large-12 columns">
       <div class="panel">
         <h2 class="line-b" translate>My Bitcoin address:</h2>
-        <div class="text-center" ng-if="!loading">
+        <div class="text-center">
           <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
           <div class="m10t">
             <h4 class="size-12">{{addr}}</h4>
           </div>
-        </div>
-        <div class="text-center" ng-if="loading">
-          Generating new address...
         </div>
         <div class="line-t m10t size-12">
           Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
@@ -51,15 +48,15 @@
     </div>
     <div class="large-12 columns">
       <div class="row">
-        <div class="large-6 medium-6 small-6 columns">
-          <a class="button secondary tiny text-center right" ng-click="newAddr()" ng-disabled="loading">
-            Generate new address
-          </a>
-        </div>
-        <div class="large-6 medium-6 small-6 columns">
-          <a class="button secondary tiny text-center" ng-click="toggleShowAll()" ng-disabled="loading">
+        <div class="large-6 medium-6 small-6 columns text-left">
+          <a class="button secondary tiny" ng-click="toggleShowAll()">
             <span ng-show="!showAll" translate>Show all my addresses</span>
             <span ng-show="showAll" translate>Hide them</span>
+          </a>
+        </div>
+        <div class="large-6 medium-6 small-6 columns text-right">
+          <a class="button secondary tiny" ng-click="newAddr()" ng-disabled="loading">
+            Generate new address
           </a>
         </div>
       </div>
