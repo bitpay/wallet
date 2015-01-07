@@ -548,6 +548,10 @@ describe('PublicKeyRing model', function() {
     ret.pubKeys[1].length.should.equal(5);
   });
 
+  it('#myCopayerId should return first copayerId ', function() {
+    var w = getCachedW().w;
+    w.myCopayerId().should.be.equal(w.getCopayerId(0));
+  });
 
 
 });
