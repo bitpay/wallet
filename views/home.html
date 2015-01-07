@@ -4,7 +4,37 @@
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Accessing your profile'"></div>
   </div>
 
-  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting">
+  <div class="row" ng-show="showDisclaimer">
+    <div class="large-8 medium-10 small-12 large-centered medium-centered columns">
+      <h1 class="text-white text-center">Disclaimer</h1>
+      <p class="text-white">
+      The software you are about to use is free, open source, and unsupported beta software. It is important to understand
+      that beta software refers to software that is undergoing testing and has not officially been released, could have
+      bugs, and may not act in a reliable fashion. Because the software is currently in beta, it is possible but not certain
+      that you may lose bitcoin or the value of your bitcoin. It is recommended that you store only nominal amounts of
+      bitcoins. You acknowledge that your use of this software is at your own discretion and in compliance with all
+      applicable laws. You are responsible for safekeeping your login IDs, passwords, private key pairs, PINs and any other
+      codes you use to access the software. IF YOU HAVE NOT SEPARATELY STORED A BACKUP OF ANY WALLET ADDRESSES AND PRIVATE
+      KEY PAIRS MAINTAINED IN YOUR ACCOUNT, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOINS YOU HAVE ASSOCIATED WITH SUCH WALLET
+      ADDRESSES WILL BECOME INACCESSIBLE IF YOU DO NOT HAVE YOUR ACCOUNT PASSWORD AND/OR PIN.  All transaction requests are
+      irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc.
+      cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction
+      confirmation as they do not have control over the Bitcoin network. You agree to provide accurate and complete
+      information in connection with your use of the account. You assume any and all risk associated with the use of the
+      software. To the fullest extent permitted by law, this software is provided “as is” and no representations or
+      warranties can be made of any kind, express or implied, including but not limited to the warranties of
+      merchantability, fitness or a particular purpose and noninfringement. In no event shall the authors of the software,
+      employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other
+      liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the
+      software or the use or other dealings in the software. We reserve the right to modify this disclaimer from time to
+      time.
+      </p>
+      <button class="success expand" ng-click="agreeDisclaimer()">I read and agree with these terms</button>
+    </div>
+  </div>
+
+  <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting && !showDisclaimer">
+
     <div class="logo-setup" ng-show="!$root.iden && !hideForWP">
       <img src="img/logo-negative-beta.svg" alt="Cop ay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
