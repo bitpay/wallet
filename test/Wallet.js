@@ -382,9 +382,11 @@ describe('Wallet model', function() {
 
     wallet.addressIsOwn('mmHqhvTVbxgJTnePa7cfweSRjBCy9bQQXJ').should.equal(false);
     wallet.addressIsOwn('mgtUfP9sTJ6vPLoBxZLPEccGpcjNVryaCX').should.equal(false);
+  });
 
-
-    allAddresses = wallet.getAddressesOrdered();
+  it('#getAddressesOrdered', function() {
+    var wallet = cachedCreateW2();
+    var allAddresses = wallet.getAddressesOrdered();
     for (var i = 0; i < allAddresses.length; i++) {
       wallet.addressIsOwn(allAddresses[i]).should.equal(true);
     }

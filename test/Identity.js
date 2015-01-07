@@ -672,7 +672,7 @@ describe('Identity model', function() {
 
 
   describe('add / delete / list Wallets', function() {
-    var iden, w;
+    var iden, w, w2;
     beforeEach(function() {
       var storage = sinon.stub();
       storage.setCredentials = sinon.stub();
@@ -699,6 +699,12 @@ describe('Identity model', function() {
         getName: sinon.stub().returns('treintaydos'),
         close: sinon.stub(),
       };
+
+      w2 = {
+        getId: sinon.stub().returns('33'),
+        getName: sinon.stub().returns('treintaytres'),
+        close: sinon.stub(),
+      };
     });
 
     it('should add wallet', function() {
@@ -709,6 +715,40 @@ describe('Identity model', function() {
       _.find(iden.getWallets(), function(w) {
         return w.getName() == 'treintaydos';
       }).should.deep.equal(w);
+
+      iden.addWallet(w2);
+      iden.getWalletById('33').getName().should.equal('treintaytres');
+      iden.walletIds.should.deep.equal(['32', '33']);
+
+    });
+
+    it('should read and bind wallet', function(done) {
+      iden.addWallet(w);
+      iden.storage.getItem = sinon.stub().yields(w, JSON.stringify(iden));
+      iden.readAndBindWallet('32', function(err) {
+        iden.getWalletById('32').getName().should.equal('treintaydos');
+        done();
+      });
+    });
+
+
+    it('should open wallet', function() {
+      iden.addWallet(w);
+      iden.storage.getItem = sinon.stub().yields(w, JSON.stringify(iden));
+      iden.readAndBindWallet = sinon.spy();
+      iden.openWallets();
+      iden.readAndBindWallet.should.calledOnce;
+
+    });
+
+    it('should open wallets', function() {
+      iden.addWallet(w);
+      iden.addWallet(w2);
+      iden.storage.getItem = sinon.stub().yields(w, JSON.stringify(iden));
+      iden.readAndBindWallet = sinon.spy();
+      iden.openWallets();
+      iden.walletIds.should.deep.equal(['32', '33']);
+      iden.readAndBindWallet.callCount.should.be.equal(1);
 
     });
 
