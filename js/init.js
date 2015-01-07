@@ -15,7 +15,15 @@ angular.element(document).ready(function() {
         if (!window.ignoreMobilePause) {
           window.location = '#!';
         }
-      });
+      }, false);
+
+      document.addEventListener('backbutton', function() {
+        window.location = '#!/homeWallet';
+      }, false);
+
+      document.addEventListener("menubutton", function() {
+        window.location = '#!/more';
+      }, false);
 
       setTimeout(function() {
         navigator.splashscreen.hide();
