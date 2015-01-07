@@ -128,8 +128,12 @@ describe('Insight model', function() {
 
     sinon.stub(blockchain, "requestPost", function(url, data, cb) {
       url.should.be.equal('/api/tx/send');
-      var res = {statusCode: 200};
-      var body = {txid: 1234};
+      var res = {
+        statusCode: 200
+      };
+      var body = {
+        txid: 1234
+      };
       setTimeout(function() {
         cb(null, res, body);
       }, 0);
@@ -145,11 +149,16 @@ describe('Insight model', function() {
     it('should get a transaction by id', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       var txid = '123321';
-      var tx = {txid: txid, more: 'something'};
+      var tx = {
+        txid: txid,
+        more: 'something'
+      };
 
       sinon.stub(blockchain, "request", function(url, cb) {
         url.should.be.equal('/api/tx/' + txid);
-        var res = {statusCode: 200};
+        var res = {
+          statusCode: 200
+        };
         var body = JSON.stringify(tx);
         setTimeout(function() {
           cb(null, res, body);
@@ -171,7 +180,9 @@ describe('Insight model', function() {
 
       sinon.stub(blockchain, "request", function(url, cb) {
         url.should.be.equal('/api/tx/' + txid);
-        var res = {statusCode: 404};
+        var res = {
+          statusCode: 404
+        };
         var body = '';
         setTimeout(function() {
           cb(null, res, body);
@@ -191,7 +202,9 @@ describe('Insight model', function() {
 
       sinon.stub(blockchain, "request", function(url, cb) {
         url.should.be.equal('/api/tx/' + txid);
-        var res = {statusCode: 200};
+        var res = {
+          statusCode: 200
+        };
         var body = null;
         setTimeout(function() {
           cb(null, res, body);
@@ -211,7 +224,9 @@ describe('Insight model', function() {
 
       sinon.stub(blockchain, "request", function(url, cb) {
         url.should.be.equal('/api/tx/' + txid);
-        var res = {statusCode: 200};
+        var res = {
+          statusCode: 200
+        };
         var body = null;
         setTimeout(function() {
           cb(null, res, body);
@@ -233,8 +248,13 @@ describe('Insight model', function() {
       url.should.be.equal('/api/addrs/txs?from=0');
       data.addrs.should.be.equal('2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM,2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb');
       setTimeout(function() {
-        var res = {statusCode: 200};
-        var body = { totalItems: 3, items: [1, 2, 3] };
+        var res = {
+          statusCode: 200
+        };
+        var body = {
+          totalItems: 3,
+          items: [1, 2, 3]
+        };
         cb(null, res, body);
       }, 0);
     });
@@ -254,7 +274,9 @@ describe('Insight model', function() {
       url.should.be.equal('/api/addrs/utxo');
       data.addrs.should.be.equal('2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM,2NE9hTCffeugo5gQtfB4owq98gyTeWC56yb,2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x');
       setTimeout(function() {
-        var res = {statusCode: 200};
+        var res = {
+          statusCode: 200
+        };
         var body = UNSPENT;
         cb(null, res, body);
       }, 0);
@@ -292,27 +314,27 @@ describe('Insight model', function() {
 
       sinon.stub(blockchain, "getTransactions", function(addresses, from, to, cb) {
         cb(null, [{
-            vin: [{
-              addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
-            }],
-            vout: []
-          }, {
-            vin: [{
-              addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
-            }],
-            vout: []
-          }, {
-            vin: [{
-              addr: '2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x'
-            }],
-            vout: []
-          }, {
-            vin: [],
-            vout: [{
-              scriptPubKey: {
-                addresses: ['2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY']
-              }
-            }]
+          vin: [{
+            addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
+          }],
+          vout: []
+        }, {
+          vin: [{
+            addr: '2NATQJnaQe2CUKLyhL1zdNkttJM1dUH9HaM'
+          }],
+          vout: []
+        }, {
+          vin: [{
+            addr: '2N9D5bcCQ2bPWUDByQ6Qb5bMgMtgsk1rw3x'
+          }],
+          vout: []
+        }, {
+          vin: [],
+          vout: [{
+            scriptPubKey: {
+              addresses: ['2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY']
+            }
+          }]
         }]);
       });
 
@@ -364,7 +386,9 @@ describe('Insight model', function() {
       blockchain.on('connect', function() {
         var socket = blockchain.getSocket();
         socket.emit('2NFjCBFZSsxiwWAD7CKQ3hzWFtf9DcqTucY', '1123');
-        setTimeout(function() { done(); }, 20);
+        setTimeout(function() {
+          done();
+        }, 20);
       });
 
       blockchain.on('tx', function(ev) {
@@ -390,6 +414,18 @@ describe('Insight model', function() {
       blockchain.on('disconnect', function() {
         done();
       });
+    });
+  });
+  describe('setCompleteUrl', function() {
+    it('should check setCompleteUrl', function() {
+      var url;
+      expect(Insight.setCompleteUrl(url)).to.be.undefined;
+      url = '';
+      Insight.setCompleteUrl(url).should.be.equal(url);
+      url = 'http://mydomain.com';
+      Insight.setCompleteUrl(url).should.be.equal('http://mydomain.com:80');
+      url = 'https://mydomain.com';
+      Insight.setCompleteUrl(url).should.be.equal('https://mydomain.com:443');
     });
   });
 
