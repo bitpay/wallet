@@ -460,9 +460,26 @@ Identity.prototype._cleanUp = function() {
 /**
  * @desc Closes the wallet and disconnects all services
  */
-Identity.prototype.close = function() {
-  this._cleanUp();
-  this.emitAndKeepAlive('closed');
+Identity.prototype.close = function(cb) {
+  var self = this;
+
+  function doClose() {
+    self._cleanUp();
+    self.emitAndKeepAlive('closed');
+    if (cb) return cb();
+  };
+
+  self.verifyChecksum(function(err, match) {
+    if (!err && match) {
+      self.store({
+        noWallets: true,
+      }, function(err) {
+        return doClose();
+      });
+    } else {
+      return doClose();
+    }
+  });
 };
 
 
