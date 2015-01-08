@@ -179,6 +179,36 @@ describe('Identity model', function() {
     });
   });
 
+  describe('#close', function(done) {
+    it('should store profile', function(done) {
+      var iden = new Identity(getDefaultParams());
+      sinon.spy(iden, 'emitAndKeepAlive');
+      sinon.spy(iden, '_cleanUp');
+      iden.verifyChecksum = sinon.stub().yields(null, true);
+      iden.close(function() {
+        iden._cleanUp.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.getCall(0).args[0].should.equal('closed');
+        iden.store.calledOnce.should.be.true;
+        iden.store.getCall(0).args[0].noWallets.should.equal(true);
+        done();
+      });
+    });
+    it('should not store profile', function(done) {
+      var iden = new Identity(getDefaultParams());
+      sinon.spy(iden, 'emitAndKeepAlive');
+      sinon.spy(iden, '_cleanUp');
+      iden.verifyChecksum = sinon.stub().yields(null, false);
+      iden.close(function() {
+        iden._cleanUp.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.getCall(0).args[0].should.equal('closed');
+        iden.store.calledOnce.should.be.false;
+        done();
+      });
+    });
+  });
+
   describe('#remove', function(done) {
     it('should remove empty profile', function(done) {
       var storage = sinon.stub();

@@ -461,6 +461,7 @@ Identity.prototype._cleanUp = function() {
  * @desc Closes the wallet and disconnects all services
  */
 Identity.prototype.close = function(cb) {
+  console.log('close!!!!!');
   var self = this;
 
   function doClose() {
@@ -507,7 +508,7 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
     log.debug('Updating Indexes for wallet:' + w.getName());
     w.updateIndexes(function(err) {
       log.debug('Adding wallet to profile:' + w.getName());
-      self.storeWallet(w, function (err) {
+      self.storeWallet(w, function(err) {
         if (err) return cb(err);
 
         self.addWallet(w);
