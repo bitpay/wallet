@@ -61,7 +61,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.resendVerificationEmail = function (cb) {
+    root.resendVerificationEmail = function(cb) {
       var iden = $rootScope.iden;
       iden.resendVerificationEmail(cb);
     };
@@ -71,7 +71,7 @@ angular.module('copayApp.services')
         return;
 
       var customHeaders = {};
-      _.each(_.keys(headers), function (headerKey) {
+      _.each(_.keys(headers), function(headerKey) {
         var hk = headerKey.toLowerCase();
         if (hk.indexOf('x-') === 0) {
           customHeaders[hk] = headers[headerKey];
@@ -320,10 +320,11 @@ angular.module('copayApp.services')
     };
 
     root.signout = function() {
-      $rootScope.signingOut = true;
       if ($rootScope.iden) {
-        $rootScope.signingOut = false;
-        $rootScope.iden.close(); // Will trigger 'closed'
+        $rootScope.signingOut = true;
+        $rootScope.iden.close(function() { // Will trigger 'closed'
+          $rootScope.signingOut = false;
+        }); // Will trigger 'closed'
       }
     };
 
