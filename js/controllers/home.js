@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile, isCordova) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile, isCordova, localstorageService) {
 
+  var KEY = 'CopayDisclaimer';
+  var ls = localstorageService;
   var _credentials, _firstpin;
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
@@ -30,8 +32,19 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       $rootScope.hasPin = value;
     });
     $scope.usingLocalStorage = config.plugins.EncryptedLocalStorage;
+
+    if (isCordova) {
+      ls.getItem(KEY, function(err, value) {
+        $scope.showDisclaimer = value ? null : true;
+      });
+    }
   };
 
+  $scope.agreeDisclaimer = function() {
+    ls.setItem(KEY, true, function(err) {
+      $scope.showDisclaimer = null;
+    });   
+  };
 
   $scope.formFocus = function() {
     if ($scope.isWindowsPhoneApp) {
