@@ -5,7 +5,7 @@
     <Language code="en-US" />
   </Languages>
   <App Author="Bitpay Inc." BitsPerPixel="32" Description="A multisignature Bitcoin Wallet" Genre="apps.normal" ProductID="{5381aa50-9069-11e4-84cc-293caf9cbdc8}" Publisher="Copay Wallet" PublisherID="{31cdd08b-457c-413d-b440-f6665eec847d}" RuntimeType="Silverlight" Title="Copay Wallet" Version="0.9.4.0" xmlns="" SDOptOut="false" NotificationService="MPN">
-    <IconPath IsRelative="true" IsResource="false">icon@2.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Assets/icon@2.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
       <Capability Name="ID_CAP_NETWORKING" />
@@ -17,9 +17,9 @@
     <Tokens>
       <PrimaryToken TaskName="_default" TokenID="CopayToken">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">200x200@1.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets/200x200@1.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">200x200@2.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets/200x200@2.png</BackgroundImageURI>
           <Title>Copay Wallet</Title>
           <BackContent />
           <BackBackgroundImageURI />
