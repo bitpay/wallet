@@ -1122,9 +1122,57 @@ describe('Identity model', function() {
         expect(err).to.be.null;
         iden.should.not.be.null;
       });
-
     });
+  });
 
+  describe('importFromEncryptedFullJson', function() {
+    var opts;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var fakeCrypto = {
+        kdf: sinon.stub().returns('passphrase'),
+        decrypt: sinon.stub().returns('{"walletId":123}'),
+      };
+
+
+      opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+        cryptoUtil: fakeCrypto,
+      };
+    });
+    it('should throw error because json is wrong', function() {
+      Identity.importFromEncryptedFullJson('asdfg', '1', {}, function(c) {
+        c.should.be.equal('BADSTR');
+      });
+    });
+    it('should throw error because json does not have required fields', function() {
+      Identity.importFromEncryptedFullJson('{"age":23}', '1', {}, function(c) {
+        c.should.be.equal('BADSTR');
+      });
+    });
+    it('should create a profile', function() {
+      var json = '{"networkOpts":{"livenet":{"url":"https://insight.bitpay.com:443","transports":["polling"]},"testnet":{"url":"https://test-insight.bitpay.com:443","transports":["polling"]}},"blockchainOpts":{"livenet":{"url":"https://insight.bitpay.com:443","transports":["polling"]},"testnet":{"url":"https://test-insight.bitpay.com:443","transports":["polling"]}},"fullName":"l@l","email":"l@l","password":"1","storage":{"type":"DB","storeUrl":"https://insight.bitpay.com:443/api/email","iterations":1000,"salt":"jBbYTj8zTrOt6V","email":"l@l","password":"1","_cachedKey":"y4a352k6sM15gGag+PgQwXRdFjzi0yX6aLEGttWaeP+kbU7JeSPDUfbhhzonnQRUicJu/1IMWgDZbDJjWmrKgA=="},"walletDefaults":{"requiredCopayers":2,"totalCopayers":3,"spendUnconfirmed":true,"reconnectDelay":5000,"idleDurationMin":4,"settings":{"unitName":"bits","unitToSatoshi":100,"unitDecimals":2,"alternativeName":"US Dollar","alternativeIsoCode":"USD"}},"version":"0.8.2","walletIds":["15a3ecd34dfb7000","59220d2110461861","bfd6adad419078d9","893dc0c0a776648b","e8ee7218c6ea7f93"],"wallets":{},"focusedTimestamps":{"15a3ecd34dfb7000":1418916813711,"bfd6adad419078d9":1418835855887,"e8ee7218c6ea7f93":1418775999995,"59220d2110461861":1418835858871,"893dc0c0a776648b":1418835763680},"backupNeeded":true,"_events":{}}';
+
+      opts.cryptoUtil.decrypt = sinon.stub().returns(json);
+      Identity.importFromEncryptedFullJson(json, '1', opts, function(err, iden) {
+        expect(err).to.be.null;
+        iden.should.not.be.null;
+      });
+    });
   });
 
   describe('#closeWallet', function() {
