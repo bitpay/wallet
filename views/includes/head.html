@@ -27,13 +27,6 @@
   </a>
   <ul ng-show="hoverMenu" class="size-16 text-gray" ng-class="{'hover': hoverMenu}">
     <li>
-      <a href="#!/create" title="Create new wallet">
-      <i class="fi-plus size-18 m10r"></i> {{'Create new wallet'|translate}}</a></li>
-    <li><a href="#!/join" title="Join shared wallet">
-      <i class="icon-people size-18 m10r"></i> {{'Join shared wallet'|translate}}</a></li>
-    <li><a href="#!/import" title="Import wallet">
-      <i class="icon-download size-18 m10r"></i> {{'Import wallet'|translate}}</a></li>
-    <li class="divider"></li>
     <li><a href="#!/profile" title="Profile">
       <i class="icon-person size-18 m10r"></i> {{'My Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
       </li> 
