@@ -40,7 +40,7 @@ angular.module('copayApp.directives')
 
 
           // Bip21 uri
-          if (/^bitcoin:/.test(value)) {
+          if (/^digibyte:/.test(value)) {
             var uri = new bitcore.BIP21(value);
             var hasAddress = uri.address && uri.isValid() && uri.address.network().name === $rootScope.wallet.getNetworkName();
             ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
@@ -145,7 +145,7 @@ angular.module('copayApp.directives')
         var a = element.html();
         var text = attr.loading;
         element.on('click', function() {
-          element.html('<i class="size-21 fi-bitcoin-circle icon-rotate spinner"></i> ' + text + '...');
+          element.html('<i class="size-21 fi-dollar-bill icon-rotate spinner"></i> ' + text + '...');
         });
         $scope.$watch('loading', function(val) {
           if (!val) {

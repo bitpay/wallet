@@ -3,8 +3,8 @@
  */
 (function() {
   /*
-   ** This is a monkey patch for when Copay is running from
-   ** within Copay-Shell (atom-shell). Since the renderer (the frontend)
+   ** This is a monkey patch for when DGBWallet is running from
+   ** within DGBWallet-Shell (atom-shell). Since the renderer (the frontend)
    ** receives context from Node.js, we get a `module.exports` contruct
    ** available to us. Because of this, some libs (specifically Moment.js)
    ** attempt to assume their CommonJS form and bind to this. This causes

@@ -21,7 +21,7 @@ var RateService = function(opts) {
   self.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable() or use service.whenAvailable()';
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
 
-  self._url = opts.url || 'https://insight.bitpay.com:443/api/rates';
+  self._url = opts.url || 'https://digiexplorer.info:443/api/rates';
 
   self._isAvailable = false;
   self._rates = {};

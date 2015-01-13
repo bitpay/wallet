@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Copay\n"
+"Project-Id-Version: DGBWallet\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
@@ -13,8 +13,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: views/create.html
-msgid "(*) The limits are imposed by the bitcoin network."
-msgstr "(*) Los límites son impuestos por la red de bitcoin."
+msgid "(*) The limits are imposed by the digibyte network."
+msgstr "(*) Los límites son impuestos por la red de digibyte."
 
 #: views/dummy-translations.html
 msgid "A transaction was rejected by"
@@ -92,8 +92,8 @@ msgid "Balance locked in pending transaction proposals"
 msgstr "Balance bloqueado en las propuestas de transacción pendientes"
 
 #: views/send.html
-msgid "Bitcoin address"
-msgstr "Dirección bitcoin"
+msgid "Digibyte address"
+msgstr "Dirección digibyte"
 
 #: views/includes/transaction.html
 msgid "Broadcast Transaction"
@@ -312,8 +312,8 @@ msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
 
 #: views/dummy-translations.html
-msgid "It's important that you update your wallet at https://copay.io"
-msgstr "Es importante que actualices tu monedero en https://copay.io"
+msgid "It's important that you update your wallet at https://dgbwallet.com"
+msgstr "Es importante que actualices tu monedero en https://dgbwallet.com"
 
 #: views/more.html
 msgid ""
@@ -489,8 +489,8 @@ msgid "Please open wallet to complete payment"
 msgstr "Por favor abrir un monedero para completar el pago"
 
 #: views/dummy-translations.html
-msgid "Please update your wallet at https://copay.io"
-msgstr "Por favor actualiza tu monedero de https://copay.io"
+msgid "Please update your wallet at https://dgbwallet.com"
+msgstr "Por favor actualiza tu monedero de https://dgbwallet.com"
 
 #: views/dummy-translations.html
 msgid "Please, select your backup file"
@@ -958,8 +958,8 @@ msgstr "Faltan {{tx.missingSignatures}} firmas"
 #~ msgid "Your Password"
 #~ msgstr "Tu contraseña"
 
-#~ msgid "Bitcoin Network"
-#~ msgstr "Red Bitcoin"
+#~ msgid "Digibyte Network"
+#~ msgstr "Red Digibyte"
 
 #~ msgid "Delete wallet"
 #~ msgstr "Borrar monedero"
@@ -969,12 +969,12 @@ msgstr "Faltan {{tx.missingSignatures}} firmas"
 
 #~ msgid ""
 #~ "Network has been fixed to <strong>{{networkName}}</strong> in this setup. "
-#~ "See <a href=\"https://copay.io\">copay.io</a> for options to use Copay on "
+#~ "See <a href=\"https://dgbwallet.com\">dgbwallet.com</a> for options to use DGBWallet on "
 #~ "both livenet and testnet."
 #~ msgstr ""
 #~ "La red fue fijada a <strong>{{networkName}}</strong> para esta "
-#~ "configuración. Ver <a href=\"https://copay.io\">copay.io</a> para más "
-#~ "opciones de uso de Copay en livenet y testnet."
+#~ "configuración. Ver <a href=\"https://dgbwallet.com\">dgbwallet.com</a> para más "
+#~ "opciones de uso de DGBWallet en livenet y testnet."
 
 #~ msgid "Port"
 #~ msgstr "Puerto"

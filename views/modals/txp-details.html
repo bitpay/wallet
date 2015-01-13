@@ -17,9 +17,6 @@
       <div class="size-21 text-bold m5b">
         {{out.value}} {{$root.wallet.settings.unitName}}
       </div>
-      <span class="alt-currency black size-12" ng-class="{'gray':!pendingForUs}">
-        {{out.alternativeAmount}} {{out.alternativeIsoCode}}
-      </span>
     </div>
     </div>
   </div>
@@ -84,7 +81,7 @@
     <button class="button warning m0 expand" ng-click="hideSign = true; reject(tx.ntxid);" 
       ng-disabled="loading" ng-show="!hideReject">
       <i class="fi-x icon-sign x" ng-show="!loading"></i>  
-      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <i class="fi-dollar-bill icon-rotate spinner" ng-show="loading"></i>
       <span translate>Reject</span>
     </button>
   </div>
@@ -92,7 +89,7 @@
     <button class="button primary m0 expand" ng-click="hideReject = true; sign(tx.ntxid)" 
       ng-disabled="loading" ng-show="!hideSign">
       <i class="fi-check icon-sign check" ng-show="!loading"></i>  
-      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <i class="fi-dollar-bill icon-rotate spinner" ng-show="loading"></i>
       <span translate>Sign</span>
     </button>
   </div>

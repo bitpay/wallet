@@ -10,7 +10,7 @@ module.exports = function(app, web) {
 
   var menu = Menu.buildFromTemplate([]);
 
-  tray.setToolTip('Copay');
+  tray.setToolTip('DGBWallet');
   tray.setContextMenu(menu);
 
 };

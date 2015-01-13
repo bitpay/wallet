@@ -7,7 +7,7 @@
 @media (max-width: 1024px) { 
 
   .loading-screen {
-    background-color: #2C3E50;
+    background-color: #0066cc;
   }
 
   .logo-setup {
@@ -44,7 +44,7 @@
     bottom: 0;
     width: 100%;
     z-index: 5;
-    background: #2C3E50;
+    background: #0066cc;
   }
 
   .home, .settings, .createProfile, .import-profile {
@@ -58,7 +58,7 @@
 
   header {
     height: 45px;
-    background-color: #213140;
+    background-color: #003366;
     width: 100%;
     line-height: 110%;
     padding-left: 0.45rem;
@@ -101,7 +101,7 @@
   }
 
   .right-off-canvas-menu {
-    background-color: #213140 ;
+    background-color: #f4f4f4 ;
   }
 
   .left-off-canvas-menu {
@@ -118,7 +118,7 @@
   }
 
   .avatar-wallet {
-    background-color: #1ABC9C;
+    background-color: #003366;
     color: #fff;
     margin-top: 5px;
     margin-left: 5px;
@@ -160,7 +160,7 @@
     font-weight: 100;
     border-bottom: transparent;
     padding: 0.66667rem 1rem;
-    color: #7A8C9E;
+    color: #003366;
     border-top: 1px solid rgba(255,255,255,0.25);
     -moz-box-shadow:    0px -1px 0px 0px rgba(165,178,191,0.15);
     box-shadow:         0px -1px 0px 0px rgba(165,178,191,0.15);
@@ -181,7 +181,7 @@
   }
 
   ul.off-canvas-list li .buttons-sidebar {
-    color: #4B6178;
+    color: #003366;
     font-weight: 700;
     font-size: 12px;
     display: block;
@@ -202,20 +202,20 @@
 
 
   .bottombar-item a {
-    color: #7A8C9E;
+    color: #fff;
     padding: 0.5rem 0;
     display: block;
     border-bottom: 3px solid transparent;
   }
 
   .bottombar-item a.active {
-    color: #E4E8EC;
-    background-color: #213140;
-    border-bottom: 3px solid #1ABC9C;
+    color: #fff;
+    background-color: #003366;
+    border-bottom: 3px solid #003366;
   }
 
   .box-founds {
-    background-color: #213140;
+    background-color: #f4f4f4;
   }
 
   .left-small {

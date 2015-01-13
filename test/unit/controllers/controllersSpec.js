@@ -530,7 +530,7 @@ describe("Unit: Controllers", function() {
       };
       var query = {
         amount: 0.1,
-        message: "a bitcoin donation"
+        message: "a digibyte donation"
       };
       what = $controller('paymentUriController', {
         $scope: scope,

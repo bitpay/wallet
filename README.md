@@ -12,7 +12,7 @@ When friends or company executives join a Copay wallet, more than one person mus
 ## Before you start
 
 Please check [Copay Known Issues](https://github.com/bitpay/copay/wiki/Copay-Known-issues) before using Copay
-with real Bitcoins. 
+with real Digibytes. 
 
 
 ## Installation
@@ -150,7 +150,7 @@ Each participant manages their own private key, and that private key is never tr
 Once a transaction proposal is created, the proposal is distributed among the
 wallet participants for each participant to sign the transaction locally.
 Once the transaction is signed, the last signing participant will broadcast the
-transaction to the Bitcoin network using a public API (defaults to the [Insight API](https://github.com/bitpay/insight-api)).
+transaction to the Digibyte network using a public API (defaults to the [Insight API](https://github.com/bitpay/insight-api)).
 
 *Copay* also implements BIP32 to generate new addresses for the peers. The public key each participant contributes
 to the wallet is a BIP32 extended public key. As additional public keys are needed for wallet operations (to produce
@@ -167,7 +167,7 @@ ECIES (a.k.a. asynchronous encryption) as decribed on
 [http://en.wikipedia.org/wiki/Integrated_Encryption_Scheme].
 
 The *identity key* is a ECDSA public key derived from the participant's extended public
-key using a specific BIP32 branch. This special public key is never used for Bitcoin address creation, and
+key using a specific BIP32 branch. This special public key is never used for Digibyte address creation, and
 should only be known by members of the WR.
 In *Copay* this special public key is named *copayerId*.  The copayerId is hashed and the hash is used to
 register with the peerjs server (See SINs at https://en.bitcoin.it/wiki/Identity_protocol_v1). This hash
@@ -180,7 +180,7 @@ know the full copayerIds of all the other members of the WR.
 Bitcore
 -------
 
-Copay uses the Javascript library Bitcore for Bitcoin related functions. Bitcore should be built this way:
+Copay uses the Javascript library Bitcore for Digibyte related functions. Bitcore should be built this way:
 ```
 var cmd = `node util/build_bitcore.js`
 cd <BITCORE_HOME>

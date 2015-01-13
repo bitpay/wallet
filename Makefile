@@ -14,7 +14,7 @@ cordova-base:
 
 # ios:  cordova-base
 # 	make -C cordova ios
-# 	open cordova/project/platforms/ios/Copay
+# 	open cordova/project/platforms/ios/DGBWallet
 #
 # android: cordova-base
 # 	make -C cordova run-android
@@ -31,12 +31,12 @@ wp8:
 ios:
 	cordova/build.sh IOS --clear
 	cd cordova/project && cordova build ios
-	open cordova/project/platforms/ios/Copay.xcodeproj
+	open cordova/project/platforms/ios/DGBWallet.xcodeproj
 
 ios-debug:
 	cordova/build.sh IOS --dbgjs
 	cd cordova/project && cordova build ios
-	open cordova/project/platforms/ios/Copay.xcodeproj
+	open cordova/project/platforms/ios/DGBWallet.xcodeproj
 
 android:
 	cordova/build.sh ANDROID --dbgjs  --clear

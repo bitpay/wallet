@@ -8,7 +8,7 @@ plugins:
 	make -C project plugins
 
 project: 
-	cordova create project com.bitpay.copay Copay
+	cordova create project com.bitpay.copay DGBWallet
 	cp config.xml project/config.xml
 	cp ProjectMakefile project/Makefile
 	cp -af ../dist/web/** project/www
@@ -29,14 +29,14 @@ wp8: project plugins
 
 ios: project plugins
 	make -C project ios
-	cp ios/Copay-Info.plist project/platforms/ios/Copay-Info.plist
-	mkdir -p project/platforms/ios/Copay/Resources/icons
-	mkdir -p project/platforms/ios/Copay/Resources/splash
-	cp -R ios/icons/* project/platforms/ios/Copay/Resources/icons
-	cp -R ios/splash/* project/platforms/ios/Copay/Resources/splash
+	cp ios/DGBWallet-Info.plist project/platforms/ios/DGBWallet-Info.plist
+	mkdir -p project/platforms/ios/DGBWallet/Resources/icons
+	mkdir -p project/platforms/ios/DGBWallet/Resources/splash
+	cp -R ios/icons/* project/platforms/ios/DGBWallet/Resources/icons
+	cp -R ios/splash/* project/platforms/ios/DGBWallet/Resources/splash
 
 open-ios: ios
-	open project/platforms/ios/Copay.xcodeproj
+	open project/platforms/ios/DGBWallet.xcodeproj
 
 run-android: android
 	make -C project run-android

@@ -7,7 +7,7 @@
     "wallet",
     "copay",
     "multisignature",
-    "bitcoin"
+    "digibyte"
   ],
   "main": "app.js",
   "id": "jid1-x7bV5evAaI1P9Q",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "angular-gravatar": "*",
     "async": "^0.9.0",
-    "bitcore": "git://github.com/bitpay/bitcore.git#0d238f116500a732057ec9dd80a8a87b2190ca49",
+    "bitcore": "git://github.com/Digitools/bitcore.git#7cedd71da99b33d3c84f098ef1b7739216756b06",
     "blanket": "^1.1.6",
     "browser-pack": "^2.0.1",
     "browserify": "^3.32.1",

@@ -9,9 +9,9 @@
     <!-- Address-->
     <div class="large-12 columns">
       <div class="panel">
-        <h2 class="line-b" translate>My Bitcoin address:</h2>
+        <h2 class="line-b" translate>My Digibyte address:</h2>
         <div class="text-center">
-          <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+          <qrcode size="220" data="digibyte:{{addr}}"></qrcode>
           <div class="m10t">
             <h4 class="size-12">{{addr}}</h4>
           </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="large-4 medium-3 small-12 columns text-right">
               <span ng-show="$root.updatingBalance">
-                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+                  <i class="fi-dollar-bill icon-rotate spinner"></i>
                 </span>
               <span class="size-14" ng-show="!$root.updatingBalance">
                   <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>

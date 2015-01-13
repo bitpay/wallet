@@ -17,7 +17,7 @@ module.exports = function(renderer) {
     dialog.showMessageBox(renderer, {
       type: type || 'info',
       buttons: ['Okay'],
-      title: 'Copay',
+      title: 'DGBWallet',
       message: message
     });
   });
@@ -36,7 +36,7 @@ module.exports = function(renderer) {
         dialog.showMessageBox(renderer, {
           type: err ? 'warning' : 'info',
           buttons: ['Okay'],
-          title: 'Copay',
+          title: 'DGBWallet',
           message: err ? err.message : 'Wallet backup saved!'
         });
       });
@@ -64,7 +64,7 @@ module.exports = function(renderer) {
           return dialog.showMessageBox(renderer, {
             type: 'warning',
             buttons: ['Okay'],
-            title: 'Copay',
+            title: 'DGBWallet',
             message: err.message
           });
         }

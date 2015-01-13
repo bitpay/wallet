@@ -57,7 +57,7 @@ echo "Project directory is $PROJECT"
 if [ ! -d $PROJECT ]; then
   cd $BUILDDIR
   echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
-  cordova create project com.bitpay.copay Copay
+  cordova create project com.bitpay.copay DGBWallet
   checkOK
 
   cd $PROJECT
@@ -94,7 +94,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add org.apache.cordova.statusbar
   checkOK
 
-  cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
+  cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=digibyte
   checkOK
 
   cordova plugin add org.apache.cordova.inappbrowser
@@ -151,19 +151,19 @@ if [ $CURRENT_OS == "IOS" ]; then
   mkdir -p $PROJECT/platforms/ios
   checkOK
 
-  cp ios/Copay-Info.plist $PROJECT/platforms/ios/Copay-Info.plist
+  cp ios/DGBWallet-Info.plist $PROJECT/platforms/ios/DGBWallet-Info.plist
   checkOK
 
-  mkdir -p $PROJECT/platforms/ios/Copay/Resources/icons
+  mkdir -p $PROJECT/platforms/ios/DGBWallet/Resources/icons
   checkOK
 
-  mkdir -p $PROJECT/platforms/ios/Copay/Resources/splash
+  mkdir -p $PROJECT/platforms/ios/DGBWallet/Resources/splash
   checkOK
 
-  cp -R ios/icons/* $PROJECT/platforms/ios/Copay/Resources/icons
+  cp -R ios/icons/* $PROJECT/platforms/ios/DGBWallet/Resources/icons
   checkOK
 
-  cp -R ios/splash/* $PROJECT/platforms/ios/Copay/Resources/splash
+  cp -R ios/splash/* $PROJECT/platforms/ios/DGBWallet/Resources/splash
   checkOK
 fi
 

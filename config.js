@@ -19,7 +19,7 @@ var defaultConfig = {
       transports: ['polling'],
     },
     livenet: {
-      url: 'https://insight.bitpay.com:443',
+      url: 'https://digiexplorer.info:443',
       transports: ['polling'],
     },
   },
@@ -32,9 +32,9 @@ var defaultConfig = {
     reconnectDelay: 5000,
     idleDurationMin: 4,
     settings: {
-      unitName: 'bits',
-      unitToSatoshi: 100,
-      unitDecimals: 2,
+      unitName: 'DGB',
+      unitToSatoshi: 100000000,
+      unitDecimals: 8,
       alternativeName: 'US Dollar',
       alternativeIsoCode: 'USD',
     }
@@ -47,7 +47,7 @@ var defaultConfig = {
   },
 
   rates: {
-    url: 'https://insight.bitpay.com:443/api/rates',
+    url: 'https://digiexplorer.info/api/rates',
   },
 
   verbose: 1,
@@ -62,7 +62,7 @@ var defaultConfig = {
 
   // This can be changed on the UX > Settings > Insight livenet
   EncryptedInsightStorage: {
-    url: 'https://insight.bitpay.com:443/api/email',
+    url: 'https://digiexplorer.info:443/api/email',
     //url: 'http://localhost:3001/api/email'
 
     // This KDF parameters are for the passphrase for Insight authentication
@@ -82,13 +82,13 @@ var defaultConfig = {
     
     // This clientId was generated at:
     // https://console.developers.google.com/project
-    // To run Copay with Google Drive at your domain you need
+    // To run DGBWallet with Google Drive at your domain you need
     // to generata your own Id.
     // for localhost:3001 you can use  you can:
     //
     clientId: '232630733383-a35gcnovnkgka94394i88gq60vtjb4af.apps.googleusercontent.com',
 
-    // for copay.io:
+    // for dgbwallet.com:
     // clientId: '1036948132229-biqm3b8sirik9lt5rtvjo9kjjpotn4ac.apps.googleusercontent.com',
   },
   */

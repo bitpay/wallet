@@ -7,7 +7,7 @@ plugins:
 	cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
 	cordova plugin add org.apache.cordova.splashscreen
 	cordova plugin add org.apache.cordova.statusbar
-	cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
+	cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=digibyte
 	cordova plugin add org.apache.cordova.inappbrowser
 
 android:

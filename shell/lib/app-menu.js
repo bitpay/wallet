@@ -10,17 +10,17 @@ module.exports = function(app, web) {
   // add the mac osx app menu entry
   if (process.platform === 'darwin') {
     menu.push({
-      label: 'Copay',
+      label: 'DGBWallet',
       submenu: [
         {
-          label: 'About Copay',
+          label: 'About DGBWallet',
           selector: 'orderFrontStandardAboutPanel:'
         },
         {
           type: 'separator'
         },
         {
-          label: 'Hide Copay',
+          label: 'Hide DGBWallet',
           accelerator: 'Command+H',
           selector: 'hide:'
         },

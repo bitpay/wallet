@@ -1124,7 +1124,7 @@ Wallet.fromUntrustedObj = function(obj, readOpts) {
  * @desc Retrieve the wallet state from a trusted object
  *
  * @param {Object} o
- * @param {Object[]} o.addressBook - Stores known associations of bitcoin addresses to names
+ * @param {Object[]} o.addressBook - Stores known associations of digibyte addresses to names
  * @param {Object} o.privateKey - Private key to be deserialized by {@link PrivateKey#fromObj}
  * @param {string} o.networkName - 'livenet' or 'testnet'
  * @param {Object} o.publicKeyRing - PublicKeyRing to be deserialized by {@link PublicKeyRing#fromObj}
@@ -2356,7 +2356,7 @@ Wallet.prototype.spend = function(opts, cb) {
  */
 
 Wallet._getAddress = function(address) {
-  if (/ ^ bitcoin: /g.test(address)) {
+  if (/ ^ digibyte: /g.test(address)) {
     return new BIP21(address).address;
   }
   return new Address(address);
@@ -2400,7 +2400,6 @@ Wallet.prototype._createTxProposal = function(toAddress, amountSat, comment, utx
   preconditions.checkArgument(toAddress);
   preconditions.checkArgument(amountSat);
   preconditions.checkArgument(_.isArray(utxos));
-  preconditions.checkArgument(!comment || comment.length <= 100, 'Comment too long');
 
   var pkr = this.publicKeyRing;
   var priv = this.privateKey;

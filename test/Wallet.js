@@ -33,7 +33,7 @@ var walletConfig = {
       transports: ['polling'],
     },
     livenet: {
-      url: 'https://insight.bitpay.com:443',
+      url: 'https://digiexplorer.info:443',
       transports: ['polling'],
     },
   },
@@ -2762,7 +2762,7 @@ PP.processPayment = function(payment) {
   var memo = pay.get('memo');
 
   // We send this to the customer after receiving a Payment
-  // Then we propogate the transaction through bitcoin network
+  // Then we propogate the transaction through digibyte network
   var ack = new PayPro();
   ack = ack.makePaymentACK();
   ack.set('payment', pay.message);

@@ -10,7 +10,7 @@ var SEPARATOR = '|';
 
 function InsightStorage(config) {
   this.type = 'DB';
-  this.storeUrl = config.url || 'https://insight.bitpay.com:443/api/email',
+  this.storeUrl = config.url || 'https://digiexplorer.info:443/api/email',
   this.request = config.request || request;
 
   this.iterations = config.iterations || 1000;

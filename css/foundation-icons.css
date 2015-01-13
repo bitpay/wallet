@@ -39,8 +39,8 @@
 .fi-battery-empty:before,
 .fi-battery-full:before,
 .fi-battery-half:before,
-.fi-bitcoin-circle:before,
-.fi-bitcoin:before,
+.fi-dollar-bill:before,
+.fi-dollar-bill:before,
 .fi-blind:before,
 .fi-bluetooth:before,
 .fi-bold:before,
@@ -333,8 +333,8 @@
 .fi-battery-empty:before { content: "\f115"; }
 .fi-battery-full:before { content: "\f116"; }
 .fi-battery-half:before { content: "\f117"; }
-.fi-bitcoin-circle:before { content: "\f118"; }
-.fi-bitcoin:before { content: "\f119"; }
+.fi-dollar-bill:before { content: "\f118"; }
+.fi-dollar-bill:before { content: "\f119"; }
 .fi-blind:before { content: "\f11a"; }
 .fi-bluetooth:before { content: "\f11b"; }
 .fi-bold:before { content: "\f11c"; }

@@ -5,9 +5,9 @@
 	<key>BuildMachineOSBuild</key>
 	<string>12F45</string>
 	<key>CFBundleDisplayName</key>
-	<string>Copay</string>
+	<string>DGBWallet</string>
 	<key>CFBundleExecutable</key>
-	<string>Copay</string>
+	<string>DGBWallet</string>
 	<key>CFBundleIconFile</key>
 	<string>copay.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Copay</string>
+	<string>DGBWallet</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleVersion</key>

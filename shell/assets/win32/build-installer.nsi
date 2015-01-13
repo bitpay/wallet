@@ -7,7 +7,7 @@
 # If you change the names "app.exe", "logo.ico", or "license.rtf" you should do a search and replace - they
 # show up in a few places.
 # All the other settings can be tweaked by editing the !defines at the top of this script
-!define APPNAME "Copay"
+!define APPNAME "DGBWallet"
 !define COMPANYNAME "BitPay, Inc"
 !define DESCRIPTION "Multisignature Wallet"
 # These three must be integers
@@ -58,7 +58,7 @@ section "install"
 	# Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
 	setOutPath $INSTDIR
 	# Files added here should be removed by the uninstaller (see section "uninstall")
-	file "Copay.exe"
+	file "DGBWallet.exe"
 	file "logo.ico"
 	# Add any other files for the install directory (license files, app data, etc) here
 	file /r "locales"
@@ -79,7 +79,7 @@ section "install"
  
 	# Start Menu
 	createDirectory "$SMPROGRAMS\${COMPANYNAME}"
-	createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\Copay.exe" "" "$INSTDIR\logo.ico"
+	createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\DGBWallet.exe" "" "$INSTDIR\logo.ico"
  
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName" "${COMPANYNAME} - ${APPNAME} - ${DESCRIPTION}"
@@ -135,7 +135,7 @@ section "uninstall"
 	delete $INSTDIR\LICENSE
 	delete $INSTDIR\version
 	delete $INSTDIR\xinput1_3.dll
-	delete $INSTDIR\Copay.exe
+	delete $INSTDIR\DGBWallet.exe
  
 	# Always delete uninstaller as the last action
 	delete $INSTDIR\uninstall.exe

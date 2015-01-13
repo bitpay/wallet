@@ -3,11 +3,11 @@
   version="0.9.4" 
   android-versionCode="23"
   ios-CFBundleVersion="0.9.4">
-    <name>Copay</name>
+    <name>DGBWallet</name>
     <description>
-      A secure bitcoin wallet for friends and companies.
+      A secure digibyte wallet for friends and companies.
     </description>
-    <author email="support@bitpay.com" href="https://copay.io">
+    <author email="support@bitpay.com" href="https://dgbwallet.com">
         BitPay Inc.
     </author>
     <content src="index.html" />
@@ -16,7 +16,7 @@
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
     <preference name="SplashScreen" value="copayscreen" />
     <preference name="SplashScreenDelay" value="10000" />
-    <preference name="BackgroundColor" value="#2C3E50" />
+    <preference name="BackgroundColor" value="#0066cc" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#3C4E60" />
     <preference name="StatusBarStyle" value="lightcontent" />

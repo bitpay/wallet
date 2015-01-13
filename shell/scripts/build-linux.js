@@ -33,16 +33,16 @@ async.series(
     },
     function removeDefaultApp(done) {
       console.log(color.blue('{copay}'), 'removing default application');
-      rmdir(path.normalize(__dirname + '/../build/linux/Copay/resources/default_app'));
+      rmdir(path.normalize(__dirname + '/../build/linux/DGBWallet/resources/default_app'));
       done();
     },
     function renameExecutable(done) {
       console.log(color.blue('{copay}'), 'renaming executable');
-      fs.rename(shell_target + '/atom', shell_target + '/Copay', done);
+      fs.rename(shell_target + '/atom', shell_target + '/DGBWallet', done);
     },
     function zipBuild(done) {
       console.log(color.blue('{copay}'), 'zipping distributable package');
-      exec('zip -r ' + path.normalize(shell_target, '/../Copay-' + process.platform) + ' ' + shell_target, {
+      exec('zip -r ' + path.normalize(shell_target, '/../DGBWallet-' + process.platform) + ' ' + shell_target, {
         maxBuffer: Infinity // LOL x 2
       },function(err, stdout, stderr) {
         done(err || stderr);
