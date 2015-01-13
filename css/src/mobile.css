@@ -24,7 +24,7 @@
 
   .main {
     height: 92%;
-    margin-top: 30px;
+    margin-top: 45px;
     margin-left: 0;
     margin-bottom: -30px;
     padding: 20px 0 80px 0;
@@ -180,26 +180,14 @@
     opacity: 0.6;
   }
 
-  ul.off-canvas-list li .buttons-sidebar {
+  .buttons-sidebar {
     color: #4B6178;
-    font-weight: 700;
-    font-size: 12px;
-    display: block;
-    padding: 0.5rem 0;
-  }
-
-  .buttons-sidebar .col1 {
-    margin-top: 2px;
   }
 
   .buttons-sidebar .col1 i {
     background-color: #fff;
     color: #4B6178;
-    border-radius: 100%;
-    padding: .3rem 0.55rem;
-    margin: 0 7px;
   }
-
 
   .bottombar-item a {
     color: #7A8C9E;
