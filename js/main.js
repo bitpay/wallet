@@ -1,5 +1,6 @@
 $(document)
   .foundation()
   .ready(function() {
-	  $('header').fadeIn('slow');
+  	if(window.location.hash.match('uri-payment')) { window.location.href = '/in/app' + window.location.hash;}
+	$('header').fadeIn('slow');
   });
