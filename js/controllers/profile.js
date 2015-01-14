@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService, isMobile, isCordova) {
+angular.module('copayApp.controllers').controller('ProfileController', function($scope, $rootScope, $location, $modal, $filter, $timeout, backupService, identityService, isMobile, isCordova, notification) {
   $scope.username = $rootScope.iden.getName();
   $scope.isSafari = isMobile.Safari();
   $scope.isCordova = isCordova;
@@ -26,16 +26,20 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   };
 
   $scope.deleteProfile = function() {
+    $scope.loading = true;
     identityService.deleteProfile(function(err, res) {
+      $scope.loading = false;
       if (err) {
         log.warn(err);
         notification.error('Error', 'Could not delete profile');
-        return;
+        $timeout(function () { $scope.$digest(); });
       }
-      $location.path('/');
-      $timeout(function() {
-        notification.error('Success', 'Profile successfully deleted');
-      });
+      else {
+        $location.path('/');
+        $timeout(function() {
+          notification.success('Success', 'Profile successfully deleted');
+        });
+      }
     });
   };
 });
