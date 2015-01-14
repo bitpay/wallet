@@ -1,9 +1,20 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, balanceService, notification, rateService) {
+  function($scope, $rootScope, $location, $filter, $timeout, balanceService, notification, rateService, backupService, identityService, isMobile, isCordova, go) {
     var w = $rootScope.wallet;
-    $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+    var max = $rootScope.quotaPerItem;
+    $scope.isSafari = isMobile.Safari();
+    $scope.isCordova = isCordova;
+    $scope.wallet = w;
+    $scope.error = null;
+    $scope.success = null;
+
+    var bits = w.sizes().total;
+    w.kb = $filter('noFractionNumber')(bits / 1000, 1);
+    if (max) {
+      w.usage = $filter('noFractionNumber')(bits / max * 100, 0);
+    }
 
     $rootScope.title = 'Settings';
 
@@ -105,4 +116,34 @@ angular.module('copayApp.controllers').controller('MoreController',
         }, true);
       });
     };
+
+    $scope.deleteWallet = function() {
+      $scope.loading = true;
+      identityService.deleteWallet(w, function(err) {
+        if (err) {
+          $scope.loading = null;
+          $scope.error = err.message || err;
+          copay.logger.warn(err);
+          $timeout(function () { $scope.$digest(); });
+        } else {
+          $scope.loading = false;
+          if ($rootScope.wallet) {
+            go.walletHome();
+          }
+          $timeout(function() {
+            notification.success('Success', 'The wallet "' + (w.name || w.id) + '" was deleted');
+          });
+        }
+      });
+    };
+
+    $scope.downloadWalletBackup = function() {
+      backupService.walletDownload(w);
+    };
+
+    $scope.viewWalletBackup = function() {
+      $scope.backupWalletPlainText = backupService.walletEncrypted(w);
+    };
+
+
   });
