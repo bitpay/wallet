@@ -175,6 +175,17 @@
           </div>
         </div>
       </form>
+      <div class="locked" ng-show="$root.wallet.balanceInfo.lockedBalance && !walletSelection">
+        <span>
+           {{'Locked'|translate}} &nbsp;
+        </span>
+        <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+        <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance">
+          <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
+          - {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}
+       </span>
+       <a href="#" class="has-tip" tooltip-placement="left" tooltip="More info"><i class="fi-info"></i></a>
+      </div>
     </div>
   </div>
   <!--  end of row -->
