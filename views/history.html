@@ -1,7 +1,7 @@
 <div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
   <div class="row">
     <div class="large-12 medium-12 small-12 columns">
-      <h1 class="hide-for-large-up">{{$root.title}}</h1> 
+      <h1 class="show-for-large-up">{{$root.title}}</h1> 
       <div ng-if="loading && !blockchain_txs[0].txid" class="m20b">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
         <span translate>Loading...</span>
