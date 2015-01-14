@@ -23,77 +23,57 @@
     </div>
   </form>
 
-  <div class="text-center" ng-init="isComplete = wallet.isComplete(); networkName = wallet.getNetworkName()">
-    <div ng-show="!confirmDelete">
-      <h1>{{wallet.name || wallet.id }}</h1>
-      <h3>
-        {{wallet.requiredCopayers}} of {{wallet.totalCopayers}} - {{networkName}}
-        , {{isComplete ? 'Complete' : 'Waiting for copayers...'}}
-      </h3>
-      <div class="m10b" ng-if="isComplete">
-        <b>{{wallet.balanceInfo.totalBalance || 0}} {{wallet.settings.unitName}}</b>
-      </div>
-      <div class="m20b">
-        Approximate size: {{wallet.kb}} kB 
-        <span ng-if="wallet.usage">({{wallet.usage}}%) </span>
-      </div>
-
-      <div class="box-notification" ng-show="error">
-        <div class="box-icon error">
-          <i class="fi-x size-24"></i>
-        </div>
-        <span class="text-warning size-14">
-          {{error|translate}}
-        </span>
-      </div>
-
-      <div class="row" ng-show="!backupWalletPlainText && !error">
-        <div class="large-6 medium-6 small-12 columns">
-          <button class="primary expand" ng-click="downloadWalletBackup()" ng-disabled="loading"
-            ng-show="!isSafari && !isCordova"><i class="fi-download"></i> Download backup</button>
-          <button class="primary expand" ng-click="viewWalletBackup()" ng-disabled="loading"
-            ng-show="isSafari || isCordova"><i class="fi-eye"></i> View Backup</button> 
-        </div>
-        <div class="large-6 medium-6 small-12 columns">
-          <button class="warning expand" ng-click="confirmDelete=!confirmDelete">
-            <i class="fi-trash"></i> Delete
-          </button> 
-        </div>
-      </div>
-
-      <div ng-show="backupWalletPlainText">
-        <h3>Copy backup in a safe place</h3>
-        <div class="input">
-          <textarea class="show-for-large-up" readonly rows="7">{{backupWalletPlainText}}</textarea>
-          <textarea class="hide-for-large-up" rows="12">{{backupWalletPlainText}}</textarea>
-          <i class="icon-compose"></i>
-        </div>
-        <div translate class="m10t size-12 text-gray text-right">
-          Copy this text as it is in a safe place (notepad or email)
-        </div>
-      </div>
+  <div class="row" ng-init="isComplete = wallet.isComplete(); networkName = wallet.getNetworkName()">
+    <div class="large-12 columns">
+      <h4>Wallet info</h4>
+      <table>
+        <tr>
+          <td><strong>Name:</strong></td>
+          <td>{{wallet.name || wallet.id }}</td>
+        </tr>
+        <tr>
+          <td><strong>Status:</strong></td>
+          <td>{{isComplete ? 'Complete' : 'Waiting for copayers...'}}</td>
+        </tr>
+        <tr>
+          <td><strong>Type:</strong></td>
+          <td>{{wallet.requiredCopayers}} of {{wallet.totalCopayers}} - {{networkName}}</td>
+        </tr>
+        <tr>
+          <td><strong>Balance:</strong></td>
+          <td><span ng-if="isComplete">{{wallet.balanceInfo.totalBalance || 0}} {{wallet.settings.unitName}}</span></td>
+        </tr>
+        <tr>
+          <td><strong>Aprox. size:</strong></td>
+          <td>{{wallet.kb}} kB <span ng-if="wallet.usage">({{wallet.usage}}%)</span></td>
+        </tr>
+      </table> 
     </div>
-    <div class="row" ng-show="confirmDelete">
-      <h1>Are you sure you want to delete the wallet 
-        <strong>{{(wallet.name || wallet.id)}}</strong>
-      </h1>
-      <div class="large-6 medium-6 small-6 columns">
-        <button class="gray" ng-disabled="loading" 
-          ng-click="confirmDelete=!confirmDelete">Cancel</button>
+  </div>
+
+  <div class="row" ng-show="!backupWalletPlainText && !error">
+    <div class="large-12 medium-12 small-12 columns">
+      <button class="primary expand" ng-click="downloadWalletBackup()" ng-disabled="loading"
+        ng-show="!isSafari && !isCordova"><i class="fi-download"></i> Download backup</button>
+      <button class="primary expand" ng-click="viewWalletBackup()" ng-disabled="loading"
+        ng-show="isSafari || isCordova"><i class="fi-eye"></i> View Backup</button> 
+    </div>
+  </div>
+
+  <div class="row" ng-show="backupWalletPlainText">
+    <div class="large-12 columns">
+      <h3>Copy backup in a safe place</h3>
+      <div class="input">
+        <textarea class="show-for-large-up" readonly rows="7">{{backupWalletPlainText}}</textarea>
+        <textarea class="hide-for-large-up" rows="12">{{backupWalletPlainText}}</textarea>
+        <i class="icon-compose"></i>
       </div>
-      <div class="large-6 medium-6 small-6 columns">
-        <button class="warning" ng-disabled="loading" ng-click="deleteWallet()">
-          <span ng-show="!loading">
-            <i class="fi-trash"></i> Delete
-          </span>
-          <span ng-show="loading">
-            <i class="fi-bitcoin-circle icon-rotate spinner"></i> Deleting...
-          </span>
-        </button>
+      <div translate class="m10t size-12 text-gray text-right">
+        Copy this text as it is in a safe place (notepad or email)
       </div>
     </div>
   </div>
-  
+
   <div class="m20b row">
     <div class="large-12 columns">
       <a class="small left button-setup" ng-click="hideAdv=!hideAdv">
@@ -108,6 +88,45 @@
   </div>
 
   <div ng-hide="hideAdv" class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> 
+          <span translate>Delete wallet</span>
+        </h2>
+        <div class="box-notification" ng-show="error">
+          <div class="box-icon error">
+            <i class="fi-x size-24"></i>
+          </div>
+          <span class="text-warning size-14">
+            {{error|translate}}
+          </span>
+        </div>
+        <p translate class="text-gray">Permanently delete this wallet. WARNING: this action cannot be reversed.</p>
+        <div ng-show="!confirmDelete">
+          <a translate class="button warning m0" ng-click="confirmDelete=!confirmDelete">Delete wallet
+          </a>
+        </div>
+        <div class="text-center" ng-show="confirmDelete">
+          <h2>Are you sure you want to delete this wallet?</h2>
+          <div class="row">
+            <div class="large-6 medium-6 small-6 columns">
+              <button class="gray" ng-disabled="loading" 
+                ng-click="confirmDelete=!confirmDelete">Cancel</button>
+            </div>
+            <div class="large-6 medium-6 small-6 columns">
+              <button class="warning" ng-disabled="loading" ng-click="deleteWallet()">
+                <span ng-show="!loading">
+                  <i class="fi-trash"></i> Delete
+                </span>
+                <span ng-show="loading">
+                  <i class="fi-bitcoin-circle icon-rotate spinner"></i> Deleting...
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="large-12 columns">
       <div class="panel">
         <h2><i class="fi-minus-circle m10r"></i> 
