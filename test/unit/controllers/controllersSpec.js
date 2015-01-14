@@ -568,25 +568,12 @@ describe("Unit: Controllers", function() {
     });
   });
 
-  describe('Profile Controller', function() {
-    var ctrl, inScope, modalCtrl;
+  describe('More Controller', function() {
+    var ctrl, modalCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      ctrl = $controller('ProfileController', {
-        $scope: scope,
-        $modal: {
-          open: function(opts) {
-            inScope = $rootScope.$new();
-            modalCtrl = opts.controller(inScope, {
-              close: sinon.stub(),
-            });
-            return {
-              result: {
-                then: sinon.stub(),
-              }
-            };
-          },
-        },
+      ctrl = $controller('MoreController', {
+        $scope: scope
       });
       saveAsLastCall = null;
 
@@ -595,8 +582,7 @@ describe("Unit: Controllers", function() {
     it('Backup Wallet controller #download', function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
-      scope.showWalletInfo(w);
-      inScope.downloadWalletBackup();
+      scope.downloadWalletBackup();
 
       expect(saveAsLastCall.blob.size).equal(7);
       expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
@@ -605,8 +591,7 @@ describe("Unit: Controllers", function() {
     it('Backup Wallet controller should name backup correctly for multiple copayers', function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
-      scope.showWalletInfo(w);
-      inScope.downloadWalletBackup();
+      scope.downloadWalletBackup();
       expect(saveAsLastCall.filename).equal('nickname-fakeWallet-keybackup.json.aes');
     });
 
@@ -614,16 +599,14 @@ describe("Unit: Controllers", function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
       scope.wallet.totalCopayers = 1;
-      scope.showWalletInfo(w);
-      inScope.downloadWalletBackup();
+      scope.downloadWalletBackup();
       expect(saveAsLastCall.filename).equal('fakeWallet-keybackup.json.aes');
     });
 
     it('Delete a wallet', function() {
       var w = scope.wallet;
 
-      scope.showWalletInfo(w);
-      inScope.deleteWallet();
+      scope.deleteWallet();
       scope.$digest();
       scope.iden.deleteWallet.calledOnce.should.equal(true);
       scope.iden.deleteWallet.getCall(0).args[0].should.equal(w.getId());
