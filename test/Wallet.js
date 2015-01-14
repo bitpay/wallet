@@ -773,7 +773,7 @@ describe('Wallet model', function() {
   });
 
 
-  it('should exportEncrypted', function() {
+  it('should exportEncrypted ', function() {
     var w = createW2();
     var enc = w.exportEncrypted('', {});
     enc.length.should.equal(2405);
