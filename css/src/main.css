@@ -142,13 +142,9 @@ header .alt-currency {
   right: 0;
 }
 
-.head .title {
+.head .founds {
   float: left;
   padding-left: 2rem;
-}
-
-.head .title h1 {
-  margin: 0;
 }
 
 .head .menu {
@@ -267,7 +263,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   padding: 0.5rem 0.65rem;
   background-color: #fff;
   color: #1ABC9C;
-  border-radius: 3px;
   line-height: 24px;
   text-align: center;
 }
@@ -671,11 +666,8 @@ a.button-setup {
 
 .name-wallet {
   font-size: 14px;
-  width: 72%;
-  float: left;
   color: #fff;
-  text-transform: lowercase;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .name-wallet i {
@@ -689,16 +681,15 @@ a.button-setup {
 }
 
 .founds {
-  font-weight: 100;
-  color: #B6E9DF;
+  font-size: 20px;
+  color: #7A8C9E;
+  font-weight: 700;
 }
 
 .locked {
   font-size: 11px;
-  background-color: #213140;
-  width: 100%;
-  padding: 0.3rem 0.7rem;
-  color: white;
+  margin-top: 0.2rem;
+  color: #7A8C9E;
 }
 
 .hidden {
@@ -1112,7 +1103,7 @@ ul.wallet-selection.wallets {
 }
 
 .side-nav.wallets li {
-  margin: 1.2rem 0;
+  margin: 0.8rem 0;
   padding: 0.3rem 0.1rem;
 }
 
