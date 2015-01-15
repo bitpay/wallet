@@ -1,13 +1,10 @@
-<header ng-click="$root.go('profile')">
-  <div class="photo-container left">
-    <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="35">
+<header ng-click="$root.go('profile')" class="text-center">
+  <div class="photo-container">
+    <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="45">
   </div>
-  <div class="col2 m5t">
-    <div class="text-white ellipsis">{{$root.iden.getName()}}</div>
+  <div class="m5t">
+    <div class="text-white text-bold ellipsis size-14">{{$root.iden.getName()}}</div>
     <div class="text-gray size-10"> {{'View My Profile' | translate }} </div>
-  </div>
-  <div class="right">
-    <i class="icon-arrow-right3 size-16 db m15t text-white"></i>
   </div>
 </header>
   <div class="scroll-section">
