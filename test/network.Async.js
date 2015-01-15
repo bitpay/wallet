@@ -369,5 +369,53 @@ describe('Network / Async', function() {
     });
   });
 
+  describe('#getCopayerIds', function() {
+    it('should return the copayer ids', function() {
+      var n = createN();
+      n.getCopayerIds().length.should.be.equal(1);
+    });
+  });
+
+  describe('#isOnline', function() {
+    it('should return if is online', function() {
+      var n = createN();
+      n.isOnline().should.be.true;
+      n.cleanUp();
+      n.isOnline().should.be.false;
+    });
+  });
+
+  describe('#greet', function() {
+    it('should greet ', function() {
+      var n = createN();
+      n.greet('03b51d01d798522cf61211b4dfcdd6db219ee33cf166e1cb7f43d836ab00ccddee', 'mySecret');
+    });
+  });
+
+  describe('#setCopayers', function() {
+    it('should setCopayers ', function() {
+      var n = createN();
+      n.connectedPeers.length.should.be.equal(0);
+      var cids = ['abc001', 'abc002'];
+      n.setCopayers(cids);
+      n.connectedPeers.length.should.be.equal(2);
+    });
+  });
+
+
+  describe('#lockIncommingConnections', function() {
+    it('should lock Incomming Connections ', function() {
+      var n = createN();
+      var cids = ['abc001', 'abc002', 'abc003'];
+      n.setCopayers(cids);
+
+      var lockIds = ['abc001', 'abc002'];
+      n.lockIncommingConnections(lockIds);
+      console.log(n.allowedCopayerIds);
+      Object.keys(n.allowedCopayerIds).length.should.be.equal(2);
+
+
+    });
+  });
 
 });
