@@ -1,6 +1,6 @@
-<div class="home-wallet" ng-controller="HomeWalletController" ng-init="initHome()">
+<div class="home-wallet" ng-controller="HomeWalletController">
   <div class="row show-for-large-up">
-    <div class="medium-12 small-12 columns">
+    <div class="large-12 columns">
       <h1 translate>Home</h1>
     </div>
   </div>
@@ -14,7 +14,6 @@
               <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
               <h2 class="m10t left">
                 {{$root.wallet.getName()}} 
-                <a ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
               </h2>
             </div>
           </div>
@@ -39,7 +38,7 @@
 
         <div class="row ">
           <div class="large-12 columns line-t m10t">
-            <div class="right size-12">
+            <div class="text-right size-12">
               <span ng-if="!$root.wallet.isShared()">Personal Wallet</span>
               <span ng-if="$root.wallet.isShared()">
                 Multisignature wallet [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
@@ -76,13 +75,19 @@
     </div>
   </div>
 
-  <div class="row m50b" ng-if="$root.wallet.isShared()">
+  <div class="row" ng-if="$root.wallet.isShared()">
     <!-- List of copayers -->
     <div class="large-12 columns">
       <div class="panel oh">
         <h2 class="line-b" translate>Copayers</h2>
         <div ng-include="'views/includes/copayers.html'"></div>
       </div>
+    </div>
+  </div>
+
+  <div class="row m50b" ng-show="isMobile">
+    <div class="large-12 columns text-right size-12">
+      <a ng-click="$root.go('more')"><i class="fi-widget"></i> Settings</a>
     </div>
   </div>
 </div>

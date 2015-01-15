@@ -1,10 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService) {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService, isMobile) {
 
-  $scope.initHome = function() {
-    $rootScope.title = 'Home';
-  }; 
+  $scope.isMobile = isMobile.any();
 
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
