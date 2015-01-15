@@ -19,15 +19,30 @@
   }
 
   .page, .main {
-    height: auto;
+    height: 100%;
   }
 
   .main {
-    height: 92%;
-    margin-top: 30px;
     margin-left: 0;
-    margin-bottom: -30px;
-    padding: 20px 0 80px 0;
+    padding: 60px 0 80px 0;
+  }
+
+  /* Fix IE */
+  .extra-margin-bottom {
+    display: block
+    height: 75px
+    overflow: hidden
+    clear: both
+  }
+
+  /* Fix Firefox */
+  @-moz-document url-prefix() {
+    .extra-margin-bottom {
+      display: block;
+      height: 75px;
+      overflow: hidden;
+      clear: both;
+    }
   }
 
   .tab-bar {
