@@ -121,7 +121,9 @@
           ng-class="{'dni':$root.hideNavigation || $root.wpInputFocused}"
         ></div>
 
-        <section ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" ng-view></section> 
+        <section 
+          ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" 
+          ng-view></section> 
 
         <a class="exit-off-canvas"></a>
 
