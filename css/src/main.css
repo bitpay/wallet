@@ -319,6 +319,27 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   line-height: 24px;
 }
 
+.buttons-sidebar {
+  color: #A5B2BF;
+  font-weight: 700;
+  font-size: 12px;
+  display: block;
+  padding: 0.5rem 0;
+  line-height: 16px;
+}
+
+.buttons-sidebar .col1 {
+  margin-top: 2px;
+}
+
+.buttons-sidebar .col1 i {
+  background-color: #2C3E50;
+  color: #A5B2BF;
+  border-radius: 100%;
+  padding: .3rem 0.55rem;
+  margin: 0 7px;
+}
+
 .button.small.side-bar {
   padding: 0rem 0.4rem;
 }
@@ -483,13 +504,41 @@ ul.tx-copayers {
   color: #2C3E50;
 }
 
-a.button-setup.add-wallet {
-  opacity: .5;
-  margin: 1rem auto;
-  width: 125px;
-  font-size: 14px;
-  padding: .3rem 0.7rem;
+.manage a {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #1ABC9C;
+}
+
+.manage a.join {
+  color: #2980B9;
+}
+
+.manage a.import {
+  color: #213140;
+}
+
+
+
+.manage a i {
+  background-color: #1ABC9C;
+  width: 60px;
+  height: 60px;
+  padding: 0.85rem;
+  border-radius: 100%;
+  display: block;
+  font-size: 30px;
+  margin: 0 auto 20px;
   color: #fff;
+}
+
+.manage a.join i {
+  background-color: #2980B9;
+}
+
+.manage a.import i {
+  background-color: #213140;
 }
 
 a.button-setup {
