@@ -84,8 +84,10 @@
               <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
             </section>
 
-              <section class="right-small" ng-show="$root.iden && $root.wallet.isComplete()  && !$root.hideWalletNavigation">
-                  <a class="p10" ng-click="$root.go('more')"><i class="fi-widget size-24"></i></a>
+              <section class="right-small" 
+                ng-show="$root.iden && $root.wallet.isComplete() && !$root.hideWalletNavigation && isCordova">
+                <a class="p10" 
+                  ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
               </section>
 
             <section class="middle tab-bar-section">

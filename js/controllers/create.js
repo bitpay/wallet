@@ -73,6 +73,6 @@ angular.module('copayApp.controllers').controller('CreateController',
     };
 
     $scope.$on("$destroy", function () {
-        $rootScope.hideWalletNavigation = false;
+      $rootScope.hideWalletNavigation = false;
     });
   });
