@@ -21,7 +21,7 @@
     <preference name="StatusBarBackgroundColor" value="#3C4E60" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="BackupWebStorage" value="none"/>
-        <preference name="windows-target-version" value="8.1"/>
+    <preference name="windows-target-version" value="8.1"/>
     <feature name="App">
       <param name="android-package" value="com.bitpay.copay" />
     </feature>
