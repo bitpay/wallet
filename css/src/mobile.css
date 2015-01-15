@@ -57,18 +57,20 @@
   } 
 
   header {
-    height: 45px;
-    background-color: #213140;
+    background-image: -webkit-linear-gradient(#2C3E50 0%, #1D2833 100%);
+    background-image: -o-linear-gradient(#2C3E50 0%, #1D2833 100%);
+    background-image: linear-gradient(#2C3E50 0%, #1D2833 100%);
+    box-shadow: 0px 1px 0px 0px #2C3E50, inset -1px 0px 0px 0px rgba(0,0,0,0.24);
+    height: 120px;
     width: 100%;
     line-height: 110%;
-    padding-left: 0.45rem;
+    padding: 1rem;
   }
 
   header .photo-container {
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-    margin-top: 5px;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 5px;
   }
 
   header h1 {
@@ -78,7 +80,7 @@
 
   .scroll-section {
     position: absolute;
-    top: 45px;
+    top: 120px;
     overflow-y: auto;
   }
 
