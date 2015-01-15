@@ -323,4 +323,51 @@ describe('Network / Async', function() {
 
   });
 
+  describe('#_arrayRemove', function() {
+    it('should remove an element from an array', function() {
+      var array = ['1', '2', '3', '4'];
+      array = Async._arrayRemove('2', array);
+      array.length.should.be.equal(3);
+      array.indexOf('2').should.be.equal(-1);
+    });
+  });
+
+  describe('#getOnlinePeerIDs', function() {
+    it('should get peer ids that are online', function() {
+      var n = createN();
+      n.getOnlinePeerIDs().length.should.be.equal(0);
+      n._addCopayer('ab0001');
+      n.getOnlinePeerIDs().length.should.be.equal(1);
+      n._addCopayer('ab0001');
+      n.getOnlinePeerIDs().length.should.be.equal(1);
+      n._addCopayer('ab0002');
+      n.getOnlinePeerIDs().length.should.be.equal(2);
+    });
+  });
+
+  describe('#connectedCopayers', function() {
+    it('should get peer ids that are online', function() {
+      var n = createN();
+      n.connectedCopayers().length.should.be.equal(0);
+      n._addCopayer('ab0001');
+      n.connectedCopayers().length.should.be.equal(1);
+      n._addCopayer('ab0001');
+      n.connectedCopayers().length.should.be.equal(1);
+      n._addCopayer('ab0002');
+      n.connectedCopayers().length.should.be.equal(2);
+    });
+  });
+
+  describe('#_deletePeer', function() {
+    it('should delete a Peer', function() {
+      var n = createN();
+      n._addCopayer('ab0001');
+      n.connectedPeers.length.should.be.equal(1);
+      var peerId = n.connectedPeers[0];
+      n._deletePeer(peerId);
+      n.connectedPeers.length.should.be.equal(0);
+    });
+  });
+
+
 });
