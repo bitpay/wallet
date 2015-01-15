@@ -1,4 +1,17 @@
-<div class="m20t text-center">
+<div class="header-modal text-center">
+  <div ng-if="btx.addressTo" class="m10v">
+    <span class="ellipsis">
+      <i>To:</i>
+      <span ng-if="btx.merchant">
+        <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
+    <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+    </span>
+
+    <span ng-if="!btx.merchant">
+        <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
+    </span>
+    </span>
+  </div>
   <div class="size-48"  ng-class="{
         'text-primary' : btx.action == 'received',
         'text-warning': btx.action == 'sent', 
@@ -12,42 +25,28 @@
   <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
 
-<div class="line-b m10t"></div>
-<div ng-if="btx.ts || btx.createdTs " class="m10v">
+<div ng-if="btx.ts || btx.createdTs " class="m20v line-b">
+  <i>Date:</i>
   <time >{{ (btx.ts || btx.createdTs ) | amCalendar}}</time>
-  <time class="text-gray">[ {{ (btx.ts || btx.createdTs ) | amTimeAgo}} ]</time>
 </div>
 
-<div class="m10v" ng-show="btx.comment">
-  <i>Note:</i> {{btx.comment}}
+<div ng-show="btx.comment" class="line-b m20v lh140">
+  <i>Note:</i> 
+  <span>{{btx.comment}}</span>
 </div>
 
-<div ng-if="btx.addressTo" class="m10v">
-  <span class="ellipsis">
-    <i>To:</i>
-    <span ng-if="btx.merchant">
-      <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
-  <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
-  </span>
-
-  <span ng-if="!btx.merchant">
-      <span class="text-gray"> {{btx.labelTo || btx.addressTo}}</span>
-  </span>
-  </span>
+<div ng-if="btx.merchant" class="lh140 m10v line-b">
+  <i>Merchant Message:</i>  
+  <p class="text-gray size-14">{{btx.merchant.pr.pd.memo}}</p>
 </div>
 
-<div ng-if="btx.merchant" class="lh140 m10v">
-  <i>Merchant Message:</i>  <span class="text-gray">{{btx.merchant.pr.pd.memo}}</span>
-</div>
-
-
-<div class="m10v">
+<div class="m10v line-b">
   <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
     <span translate>Unconfirmed</span>
   </span>
   <span ng-show="btx.confirmations>0" class="m10v">
-    <i translate>Confirmations:</i>
-    <span class="text-gray">{{btx.confirmations}}</span>
+    <i translate>Confirmations:  </i>
+    <p class="label radius">{{btx.confirmations}}</p>
   </span>
 </div>
 
@@ -67,8 +66,7 @@
   </ul>
 </div>
 
-<div class="ellipsis text-gray m10v"  ng-if="btx.txid" > ID: {{btx.txid}} </span>
-</div>
+<small class="ellipsis text-gray m10v"  ng-if="btx.txid" > ID: {{btx.txid}} </small>
 
 <div class="oh">
   <a class="button-setup right" ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)"  ng-if="btx.txid">
