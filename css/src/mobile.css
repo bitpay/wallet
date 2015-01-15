@@ -5,6 +5,10 @@
  */
 
 @media (max-width: 1024px) { 
+  body {
+    overflow: hidden;
+    -ms-content-zooming: none; 
+  }
 
   .loading-screen {
     background-color: #2C3E50;
@@ -27,12 +31,30 @@
     padding: 60px 0 80px 0;
   }
 
-  /* Fix IE */
+  /* Fix IE 10 */
   .extra-margin-bottom {
     display: block
     height: 75px
     overflow: hidden
     clear: both
+  }
+  
+  .main {
+    height: 99%
+    overflow: auto
+  }
+  
+  /* Fix IE 11 */
+  _:-ms-fullscreen, :root .extra-margin-bottom {
+    display: block;
+    height: 75px;
+    overflow: hidden;
+    clear: both;
+  }
+  
+  _:-ms-fullscreen, :root .main {
+    height: 99%;
+    overflow: auto;
   }
 
   /* Fix Firefox */
