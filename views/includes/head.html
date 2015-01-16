@@ -1,25 +1,20 @@
-<div class="founds">
-  <span ng-if="!$root.wallet.isComplete()">Waiting for copayers...</span>
-  <div ng-if="$root.wallet.isComplete()">
-    <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-    <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-      <small class="db text-light">Balance:</small>
-      <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
-      <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
-      <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">N/A</span>
-      <small ng-if="$root.wallet">
-        <a class="text-gray" ng-click="refresh()" ng-if="$root.wallet.isComplete() && !$root.updatingBalance">
-          <i class="fi-refresh"></i>
-        </a>
-        <span ng-if="$root.updatingBalance">
-          <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-        </span>
-      </small>
-    </div> 
-  </div>
+<div class="founds" ng-if="$root.wallet.isComplete()">
+  <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+  <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+    <small class="db text-light">Balance:</small>
+    <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
+    <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+    <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">N/A</span>
+    <small ng-if="$root.wallet">
+      <a class="text-gray" ng-click="refresh()" ng-if="$root.wallet.isComplete() && !$root.updatingBalance">
+        <i class="fi-refresh"></i>
+      </a>
+      <span ng-if="$root.updatingBalance">
+        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+      </span>
+    </small>
+  </div> 
 </div>
-
-
 
 <div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" ng-init="init()" ng-click="hoverMenu = !hoverMenu">
   <a class="dropdown ellipsis text-gray pr" ng-class="{'hover': hoverMenu}">
