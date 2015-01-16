@@ -1,8 +1,8 @@
 <div ng-controller="CreateController">
-  <div data-alert ng-show="loading">
+  <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Creating wallet'"></div>
   </div>
-  <div class="setup" ng-show="!loading && !$root.starting">
+  <div class="setup" ng-show="!$root.starting">
     <form name="setupForm" ng-submit="create(setupForm)" novalidate>
       <div class="row">
         <div class="large-12 columns">
@@ -75,7 +75,7 @@
 
 
             <div class="text-right">
-              <button translate  type="submit" class="button primary expand m0" ng-disabled="setupForm.$invalid || loading">
+              <button translate  type="submit" class="button primary expand m0" ng-disabled="setupForm.$invalid">
                 Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
               </button>
             </div>
