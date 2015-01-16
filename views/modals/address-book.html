@@ -73,10 +73,10 @@
               placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
             </div>
           </label>
-          <a translate class="m0 button secondary small default" ng-click="cancel(addressBookForm)">Back</a>
-          <input type="submit" class="m0 button small primary right"
-          ng-disabled="addressBookForm.$invalid || loading" 
-          value="{{'Add'|translate}}">
+          <a translate class="button secondary default" ng-click="cancel(addressBookForm)">Cancel</a>
+          <button class="primary right" 
+            ng-disabled="addressBookForm.$invalid || loading" 
+            ng-click="submitAddressBook(addressBookForm)">{{'Add'|translate}}</button>
         </form>
       </div>
     </div>
