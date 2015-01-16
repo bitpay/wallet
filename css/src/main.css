@@ -268,15 +268,13 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .status {
-  -moz-box-shadow:    inset 0px -1px 1px 0px rgba(159,47,34,0.30);
-  box-shadow:         inset 0px -1px 1px 0px rgba(159,47,34,0.30);
   color: #FFFFFF;
   background-color: #A02F23;
   position: absolute;
   left: 250px;
   right: 0;
   bottom: 0;
-  padding: 10px 2rem;
+  padding: 10px 1rem 10px 0.5rem;
   z-index: 9;
   font-size: 14px;
   text-align: left;
@@ -284,7 +282,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .status-first-line {
-
   z-index: 9;
   font-size: 16px;
 }
@@ -414,9 +411,10 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 a.close-notification {
   position: absolute;
-  top: 8px;
-  right: 10px;
+  top: 0;
+  right: 0;
   font-size: 24px;
+  padding: 10px;
 }
 
 .panel.last-transactions {
