@@ -1335,7 +1335,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .black {
   background-color: #2C3E50;
 }
-
+.text-italic {font-style: italic;}
 .text-light {font-weight: 100;}
 .text-bold {font-weight: 700;}
 .text-gray {color: #8597A7;}
