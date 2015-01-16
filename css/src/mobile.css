@@ -5,6 +5,10 @@
  */
 
 @media (max-width: 1024px) { 
+  body {
+    overflow: hidden;
+    -ms-content-zooming: none; 
+  }
 
   .loading-screen {
     background-color: #2C3E50;
@@ -19,15 +23,48 @@
   }
 
   .page, .main {
-    height: auto;
+    height: 100%;
   }
 
   .main {
-    height: 92%;
-    margin-top: 30px;
     margin-left: 0;
-    margin-bottom: -30px;
-    padding: 20px 0 80px 0;
+    padding: 60px 0 80px 0;
+  }
+
+  /* Fix IE 10 */
+  .extra-margin-bottom {
+    display: block
+    height: 75px
+    overflow: hidden
+    clear: both
+  }
+  
+  .main {
+    height: 99%
+    overflow: auto
+  }
+  
+  /* Fix IE 11 */
+  _:-ms-fullscreen, :root .extra-margin-bottom {
+    display: block;
+    height: 75px;
+    overflow: hidden;
+    clear: both;
+  }
+  
+  _:-ms-fullscreen, :root .main {
+    height: 99%;
+    overflow: auto;
+  }
+
+  /* Fix Firefox */
+  @-moz-document url-prefix() {
+    .extra-margin-bottom {
+      display: block;
+      height: 75px;
+      overflow: hidden;
+      clear: both;
+    }
   }
 
   .tab-bar {
@@ -57,18 +94,20 @@
   } 
 
   header {
-    height: 45px;
-    background-color: #213140;
+    background-image: -webkit-linear-gradient(#2C3E50 0%, #1D2833 100%);
+    background-image: -o-linear-gradient(#2C3E50 0%, #1D2833 100%);
+    background-image: linear-gradient(#2C3E50 0%, #1D2833 100%);
+    box-shadow: 0px 1px 0px 0px #2C3E50, inset -1px 0px 0px 0px rgba(0,0,0,0.24);
+    height: 120px;
     width: 100%;
     line-height: 110%;
-    padding-left: 0.45rem;
+    padding: 1rem;
   }
 
   header .photo-container {
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-    margin-top: 5px;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 5px;
   }
 
   header h1 {
@@ -78,7 +117,7 @@
 
   .scroll-section {
     position: absolute;
-    top: 45px;
+    top: 120px;
     overflow-y: auto;
   }
 
@@ -154,7 +193,6 @@
   }
 
   ul.off-canvas-list li a {
-    text-transform: uppercase;
     font-size: 12px;
     vertical-align: middle;
     font-weight: 100;
@@ -180,26 +218,14 @@
     opacity: 0.6;
   }
 
-  ul.off-canvas-list li .buttons-sidebar {
+  .buttons-sidebar {
     color: #4B6178;
-    font-weight: 700;
-    font-size: 12px;
-    display: block;
-    padding: 0.5rem 0;
-  }
-
-  .buttons-sidebar .col1 {
-    margin-top: 2px;
   }
 
   .buttons-sidebar .col1 i {
     background-color: #fff;
     color: #4B6178;
-    border-radius: 100%;
-    padding: .3rem 0.55rem;
-    margin: 0 7px;
   }
-
 
   .bottombar-item a {
     color: #7A8C9E;

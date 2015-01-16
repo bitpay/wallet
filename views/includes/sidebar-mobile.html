@@ -1,13 +1,10 @@
-<header ng-click="$root.go('profile')">
-  <div class="photo-container left">
-    <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="35">
+<header ng-click="$root.go('profile')" class="text-center">
+  <div class="photo-container">
+    <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="45">
   </div>
-  <div class="col2 m5t">
-    <div class="text-white ellipsis">{{$root.iden.getName()}}</div>
+  <div class="m5t">
+    <div class="text-white text-bold ellipsis size-14">{{$root.iden.getName()}}</div>
     <div class="text-gray size-10"> {{'View My Profile' | translate }} </div>
-  </div>
-  <div class="right">
-    <i class="icon-arrow-right3 size-16 db m15t text-white"></i>
   </div>
 </header>
   <div class="scroll-section">
@@ -21,19 +18,8 @@
       </div>
       <div class="col2">
         <a class="size-12 wallet-item">
-          <div class="oh">
-            <div class="right size-10 text-gray">
-              [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
-            <div class="ellipsis name-wallet text-black">{{item.name || item.id}}</div>
-          </div>
-          <div class="oh text-bold">
-            <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-            <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-              <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
-              <span class="alt-currency gray size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
-            </div>
-            <span ng-if="!item.isComplete()">Waiting for copayers...</span>
-          </div>
+          <div class="ellipsis name-wallet text-black">{{item.name || item.id}}</div>
+          <div class="size-12">  {{item.requiredCopayers}} of {{item.totalCopayers}}  </div> 
         </a>
       </div>
       </li> 
@@ -54,7 +40,7 @@
           <div class="col1">
             <i class="fi-power size-21"></i> 
           </div>
-          <div class="col2 m5t">
+          <div class="col2 m5t m15b">
             <span class="tu text-bold">Close</span> <br>
           </div>
         </div>

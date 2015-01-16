@@ -155,6 +155,6 @@ angular.module('copayApp.controllers').controller('JoinController',
 
 
     $scope.$on("$destroy", function () {
-        $rootScope.hideWalletNavigation = false;
+      $rootScope.hideWalletNavigation = false;
     });
   });

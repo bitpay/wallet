@@ -1,7 +1,7 @@
 <div class="transactions" data-ng-controller="HistoryController" data-ng-init="update()">
   <div class="row">
     <div class="large-12 medium-12 small-12 columns">
-      <h1 class="hide-for-large-up">{{$root.title}}</h1> 
+      <h1 class="show-for-large-up">{{$root.title}}</h1> 
       <div ng-if="loading && !blockchain_txs[0].txid" class="m20b">
         <i class="fi-bitcoin-circle icon-rotate spinner"></i> 
         <span translate>Loading...</span>
@@ -47,7 +47,7 @@
     </div>
     </div>
   </div>
-  <div class="m50b" ng-show="blockchain_txs[0].txid">
+  <div class="m10b" ng-show="blockchain_txs[0].txid">
     <div class="row">
       <div class="large-9 columns">
         <pagination page="currentPage" total-items="totalItems" items-per-page="itemsPerPage" on-select-page="selectPage(page)" max-size="10" />
@@ -67,3 +67,4 @@
     </div>
   </div>
 </div>
+<div class="extra-margin-bottom"></div>
