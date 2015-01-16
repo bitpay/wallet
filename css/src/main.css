@@ -1286,6 +1286,7 @@ label.postfix, a.postfix {
 .createProfile input[type=email],
 .createProfile input[type=text],
 .createProfile input[type=password],
+.createProfile input[type=tel],
 .home input[type=email],
 .home input[type=text],
 .home input[type=tel],
