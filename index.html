@@ -50,21 +50,25 @@
     <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="!signingOut">
       <div class="inner-wrap">
 
-        <span class="status" ng-if="$root.needsEmailConfirmation && !$root.pleaseConfirmEmailAck"> 
-          <a class="close-notification text-white" ng-click="$root.pleaseConfirmEmailAck=true">&#215;</a>
-          <button class="text-white warning tiny m0 right" 
-            ng-click="resendVerificationEmail()" 
-            ng-disabled="loading"
-            ng-show="!hideReSendButton">
-            {{ loading ? 'Resending...' : 'Resend' }}
-          </button>
-          <i class="fi-alert size-36 left m20r"></i>
-          <span translate> 
-            <strong class="size-16">Email not confirmed</strong>.<br> 
-            Please confirm your email address using the confirmation link at the message we sent you
-          </span>
-        </span>
-         <span class="status" ng-if="$root.pleaseConfirmEmail"> 
+        <div class="status" ng-if="$root.needsEmailConfirmation && !$root.pleaseConfirmEmailAck"> 
+          <a class="close-notification text-white" ng-click="$root.pleaseConfirmEmailAck=true">&#215;</a> 
+          <div class="row">
+            <div class="large-10 medium-9 small-12 columns m5b">
+              <i class="fi-alert size-36 left m20r"></i>
+              <strong class="size-16">Email not confirmed</strong>.<br> 
+              Please confirm your email address using the confirmation link at the message we sent you
+            </div>
+            <div class="large-2 medium-3 small-12 columns text-center">
+              <button class="text-white warning tiny m0" 
+                ng-click="resendVerificationEmail()" 
+                ng-disabled="loading"
+                ng-show="!hideReSendButton">
+                {{ loading ? 'Resending...' : 'Resend' }}
+              </button>
+            </div>
+          </div>
+        </div>
+         <div class="status" ng-if="$root.pleaseConfirmEmail"> 
           <a class="close-notification text-white" ng-click="$root.pleaseConfirmEmail=null">&#215;</a>
           <i class="fi-alert size-36 left m20r"></i>
           <span translate> 
@@ -72,11 +76,11 @@
             An email was sent to {{$root.iden.getName()}}. Please follow the link on it to confirm it. Unconfirmed profiles could be deleted from server.
           </span>
 
-        </span>
-        <span class="status" ng-if="$root.reconnecting">
+        </div>
+        <div class="status" ng-if="$root.reconnecting">
           <i class="fi-loop icon-rotate"></i>
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
-        </span>
+        </div>
  
         <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation  && !$root.wpInputFocused">
           <nav class="tab-bar">

@@ -8,8 +8,8 @@
   </div>
 </header>
   <div class="scroll-section">
-    <ul class="sidebar-mobile-wallets oh off-canvas-list m10b" ng-show="wallets[0]">
-      <li 
+    <ul class="sidebar-mobile-wallets oh off-canvas-list m10b">
+      <li ng-show="wallets[0]"
       ng-repeat="item in wallets track by $index"
       ng-class="{'selected': item.id == $root.wallet.id}"
       class="nav-item" ng-click="switchWallet(item.id)" >

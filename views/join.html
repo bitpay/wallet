@@ -1,9 +1,9 @@
 <div class="join" ng-controller="JoinController">
-  <div ng-show="loading">
+  <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Connecting to Insight Wallet Server'"></div>
   </div>
 
-  <div ng-show="!loading">
+  <div ng-show="!$root.starting">
     <div class="row hide-for-large-up">
       <div class="large-12 medium-12 small-12 columns">
         <h1>{{$root.title}}</h1>
@@ -73,7 +73,6 @@
       </div>
     </div>
   </div>
-  <!-- End !loading -->
 </div>
 
 <div class="extra-margin-bottom"></div>
