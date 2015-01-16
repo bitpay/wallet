@@ -173,6 +173,7 @@ if [ $CURRENT_OS == "WP8" ]; then
   checkOK
   cp -vf wp/Properties/* $PROJECT/platforms/wp8/Properties/
   cp -vf wp/Package.appxmanifest $PROJECT/platforms/wp8/
+  cp -vf wp/MainPage.xaml $PROJECT/platforms/wp8/
   checkOK
   cp -vf wp/Assets/* $PROJECT/platforms/wp8/Assets/
   cp -vf wp/SplashScreenImage.jpg $PROJECT/platforms/wp8/
