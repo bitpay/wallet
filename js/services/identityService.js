@@ -323,7 +323,9 @@ angular.module('copayApp.services')
       if ($rootScope.iden) {
         $rootScope.signingOut = true;
         $rootScope.iden.close(function() { // Will trigger 'closed'
-          $rootScope.signingOut = false;
+          $timeout(function() {
+            $rootScope.signingOut = null;
+          }, 100);
         }); // Will trigger 'closed'
       }
     };
