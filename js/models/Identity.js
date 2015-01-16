@@ -507,7 +507,7 @@ Identity.prototype.importWalletFromObj = function(obj, opts, cb) {
     log.debug('Updating Indexes for wallet:' + w.getName());
     w.updateIndexes(function(err) {
       log.debug('Adding wallet to profile:' + w.getName());
-      self.storeWallet(w, function (err) {
+      self.storeWallet(w, function(err) {
         if (err) return cb(err);
 
         self.addWallet(w);

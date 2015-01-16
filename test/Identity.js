@@ -146,28 +146,63 @@ describe('Identity model', function() {
   });
 
   describe('#open', function(done) {
-    it.skip('should return last focused wallet', function(done) {
-      var wallets = [{
-        id: 'wallet1',
-        store: sinon.stub().yields(null),
-        netStart: sinon.stub(),
-      }, {
-        id: 'wallet2',
-        store: sinon.stub().yields(null),
-        netStart: sinon.stub(),
-      }, {
-        id: 'wallet3',
-        store: sinon.stub().yields(null),
-        netStart: sinon.stub(),
-      }];
-      var args = createIdentity();
-      Identity.create(args.params, function(err, identity) {
-        // TODO: Add checks for what is this testing
+    it('should open a profile', function(done) {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+
+      var iden = new Identity(opts);
+
+      storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
+
+      Identity.open(opts, function(err, res) {
+        should.not.exist(err);
+        should.exist(res);
+        res.should.be.deep.equal(iden);
         done();
       });
     });
   });
 
+  describe('#resendVerificationEmail', function(done) {
+    it('should resend verification email', function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.resendVerificationEmail = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+
+      var iden = new Identity(opts);
+      iden.resendVerificationEmail(function() {});
+      storage.resendVerificationEmail.calledOnce.should.be.true;
+
+    });
+  });
 
   describe('#openWallets', function(done) {
     it('should emit noWallets', function() {
@@ -176,6 +211,57 @@ describe('Identity model', function() {
       iden.openWallets();
       iden.emitAndKeepAlive.calledOnce.should.be.true;
       iden.emitAndKeepAlive.getCall(0).args[0].should.equal('noWallets');
+    });
+  });
+
+
+  describe('#setBackupNeeded', function(done) {
+    it('should set the flag backupNeeded to true', function() {
+      var iden = new Identity(getDefaultParams());
+      iden.verifyChecksum = sinon.stub().yields(null, true);
+      iden.setBackupNeeded(true);
+      iden.backupNeeded.should.be.true;
+      iden.store.calledOnce.should.be.true;
+      iden.store.getCall(0).args[0].noWallets.should.equal(true);
+
+    });
+    it('should set the flag backupNeeded to false', function() {
+      var iden = new Identity(getDefaultParams());
+      iden.verifyChecksum = sinon.stub().yields(null, true);
+      iden.setBackupNeeded(false);
+      iden.backupNeeded.should.be.false;
+      iden.store.calledOnce.should.be.true;
+      iden.store.getCall(0).args[0].noWallets.should.equal(true);
+    });
+  });
+
+  describe('#close', function(done) {
+    it('should store profile', function(done) {
+      var iden = new Identity(getDefaultParams());
+      sinon.spy(iden, 'emitAndKeepAlive');
+      sinon.spy(iden, '_cleanUp');
+      iden.verifyChecksum = sinon.stub().yields(null, true);
+      iden.close(function() {
+        iden._cleanUp.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.getCall(0).args[0].should.equal('closed');
+        iden.store.calledOnce.should.be.true;
+        iden.store.getCall(0).args[0].noWallets.should.equal(true);
+        done();
+      });
+    });
+    it('should not store profile when out of sync', function(done) {
+      var iden = new Identity(getDefaultParams());
+      sinon.spy(iden, 'emitAndKeepAlive');
+      sinon.spy(iden, '_cleanUp');
+      iden.verifyChecksum = sinon.stub().yields(null, false);
+      iden.close(function() {
+        iden._cleanUp.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.calledOnce.should.be.true;
+        iden.emitAndKeepAlive.getCall(0).args[0].should.equal('closed');
+        iden.store.calledOnce.should.be.false;
+        done();
+      });
     });
   });
 
@@ -421,8 +507,6 @@ describe('Identity model', function() {
   });
 
   describe('#retrieveWalletFromStorage', function() {
-
-
     it('should return wallet', function(done) {
       var args = createIdentity();
       args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');
@@ -439,6 +523,56 @@ describe('Identity model', function() {
           should.not.exist(err);
           opts.importWallet.calledOnce.should.equal(true);
           should.exist(wallet);
+          iden.store.restore();
+          done();
+        });
+      });
+    });
+  });
+
+
+
+  describe('#importWalletFromObj', function() {
+    it('should import a wallet, call the right encryption functions', function(done) {
+      var args = createIdentity();
+      args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');
+      var backup = Wallet.fromUntrustedObj;
+      args.params.noWallets = true;
+      sinon.stub().returns(args.wallet);
+
+
+      var fakeCrypto = {
+        kdf: sinon.stub().returns('passphrase'),
+        decrypt: sinon.stub().returns('{"walletId":123}'),
+      };
+
+      function getNewWallet2(args) {
+        var w = sinon.stub();
+        w.getId = sinon.stub().returns('wid1');
+        w.getStorageKey = sinon.stub().returns('wkey');
+        w.toObj = sinon.stub().returns({
+          obj: 1
+        });
+        w.getName = sinon.stub().returns('name');
+        w.setVersion = sinon.stub();
+        w.on = sinon.stub();
+        w.netStart = sinon.stub();
+        w.updateIndexes = sinon.stub().yields(null),
+        w.args = args;
+        return w;
+      }
+
+      var opts = {
+        importWallet: sinon.stub().returns(getNewWallet2()),
+        cryptoUtil: fakeCrypto,
+      };
+
+
+      Identity.create(args.params, function(err, iden) {
+
+        iden.importWalletFromObj(getNewWallet2(), opts, function(err) {
+          should.not.exist(err);
+
           iden.store.restore();
           done();
         });
@@ -480,6 +614,60 @@ describe('Identity model', function() {
   });
 
 
+  describe('#deleteWallet', function() {
+    var iden, w;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+      };
+      iden = new Identity(opts);
+
+      w = {
+        getId: sinon.stub().returns('32'),
+        getName: sinon.stub().returns('treintaydos'),
+        close: sinon.stub(),
+      };
+    });
+
+    it('should not save other wallets', function(done) {
+      iden.addWallet(w);
+      iden.storage.getItem = sinon.stub().yields(null, JSON.stringify(iden));
+      iden.deleteWallet('32', function(err) {
+        iden.walletIds.should.deep.equal([]);
+
+        should.not.exist(_.find(iden.getWallets(), function(w) {
+          return w.getName() == 'treintaydos';
+        }));
+
+        iden.store.calledOnce.should.be.true;
+        iden.store.getCall(0).args[0].noWallets.should.equal(true);
+        done();
+      });
+    });
+  });
+
+
+
+
+
+
+
+
 
   describe('#export', function() {
 
@@ -492,12 +680,7 @@ describe('Identity model', function() {
   /**
    * TODO (eordano): Move this to a different test file
    *
-  describe('#pluginManager', function() {
-    it('should create a new PluginManager object', function() {
-      var pm = new PluginManager({plugins: { FakeLocalStorage: true }, pluginsPath: '../../test/mocks/'});
-      should.exist(pm);
-    });
-  });
+
 
   describe('#Insight', function() {
     it('should parse a uri', function() {
@@ -623,7 +806,7 @@ describe('Identity model', function() {
 
 
   describe('add / delete / list Wallets', function() {
-    var iden, w;
+    var iden, w, w2;
     beforeEach(function() {
       var storage = sinon.stub();
       storage.setCredentials = sinon.stub();
@@ -650,6 +833,12 @@ describe('Identity model', function() {
         getName: sinon.stub().returns('treintaydos'),
         close: sinon.stub(),
       };
+
+      w2 = {
+        getId: sinon.stub().returns('33'),
+        getName: sinon.stub().returns('treintaytres'),
+        close: sinon.stub(),
+      };
     });
 
     it('should add wallet', function() {
@@ -661,6 +850,48 @@ describe('Identity model', function() {
         return w.getName() == 'treintaydos';
       }).should.deep.equal(w);
 
+      iden.addWallet(w2);
+      iden.getWalletById('33').getName().should.equal('treintaytres');
+      iden.walletIds.should.deep.equal(['32', '33']);
+
+    });
+
+    it('should read and bind wallet', function(done) {
+      iden.addWallet(w);
+      iden.storage.getItem = sinon.stub().yields(w, JSON.stringify(iden));
+      iden.readAndBindWallet('32', function(err) {
+        iden.getWalletById('32').getName().should.equal('treintaydos');
+        done();
+      });
+    });
+
+
+    it('should open wallet', function() {
+      iden.addWallet(w);
+      iden.storage.getItem = sinon.stub().yields(w, JSON.stringify(iden));
+      iden.readAndBindWallet = sinon.spy();
+      iden.openWallets();
+      iden.readAndBindWallet.should.calledOnce;
+
+    });
+
+    it('should open wallets', function(done) {
+      var c = 0;
+      var old = iden.readAndBindWallet;
+
+      iden.addWallet(w);
+      iden.addWallet(w2);
+
+      iden.readAndBindWallet = function(wid, myFunction) {
+        c++;
+        if (c == 2) {
+          iden.readAndBindWallet = old;
+          done();
+        }
+        myFunction();
+      };
+
+      iden.openWallets();
     });
 
     it('should not add same wallet twice', function() {
@@ -831,7 +1062,7 @@ describe('Identity model', function() {
 
     });
 
-    it('should return indefined', function() {
+    it('should return undefined', function() {
       expect(iden.getLastFocusedWalletId()).to.be.undefined;
     });
 
@@ -891,9 +1122,57 @@ describe('Identity model', function() {
         expect(err).to.be.null;
         iden.should.not.be.null;
       });
-
     });
+  });
 
+  describe('importFromEncryptedFullJson', function() {
+    var opts;
+    beforeEach(function() {
+      var storage = sinon.stub();
+      storage.setCredentials = sinon.stub();
+      storage.removeItem = sinon.stub().yields(null);
+      storage.clear = sinon.stub().yields();
+
+      var fakeCrypto = {
+        kdf: sinon.stub().returns('passphrase'),
+        decrypt: sinon.stub().returns('{"walletId":123}'),
+      };
+
+
+      opts = {
+        email: 'test@test.com',
+        password: '123',
+        network: {
+          testnet: {
+            url: 'https://test-insight.bitpay.com:443'
+          },
+          livenet: {
+            url: 'https://insight.bitpay.com:443'
+          },
+        },
+        storage: storage,
+        cryptoUtil: fakeCrypto,
+      };
+    });
+    it('should throw error because json is wrong', function() {
+      Identity.importFromEncryptedFullJson('asdfg', '1', {}, function(c) {
+        c.should.be.equal('BADSTR');
+      });
+    });
+    it('should throw error because json does not have required fields', function() {
+      Identity.importFromEncryptedFullJson('{"age":23}', '1', {}, function(c) {
+        c.should.be.equal('BADSTR');
+      });
+    });
+    it('should create a profile', function() {
+      var json = '{"networkOpts":{"livenet":{"url":"https://insight.bitpay.com:443","transports":["polling"]},"testnet":{"url":"https://test-insight.bitpay.com:443","transports":["polling"]}},"blockchainOpts":{"livenet":{"url":"https://insight.bitpay.com:443","transports":["polling"]},"testnet":{"url":"https://test-insight.bitpay.com:443","transports":["polling"]}},"fullName":"l@l","email":"l@l","password":"1","storage":{"type":"DB","storeUrl":"https://insight.bitpay.com:443/api/email","iterations":1000,"salt":"jBbYTj8zTrOt6V","email":"l@l","password":"1","_cachedKey":"y4a352k6sM15gGag+PgQwXRdFjzi0yX6aLEGttWaeP+kbU7JeSPDUfbhhzonnQRUicJu/1IMWgDZbDJjWmrKgA=="},"walletDefaults":{"requiredCopayers":2,"totalCopayers":3,"spendUnconfirmed":true,"reconnectDelay":5000,"idleDurationMin":4,"settings":{"unitName":"bits","unitToSatoshi":100,"unitDecimals":2,"alternativeName":"US Dollar","alternativeIsoCode":"USD"}},"version":"0.8.2","walletIds":["15a3ecd34dfb7000","59220d2110461861","bfd6adad419078d9","893dc0c0a776648b","e8ee7218c6ea7f93"],"wallets":{},"focusedTimestamps":{"15a3ecd34dfb7000":1418916813711,"bfd6adad419078d9":1418835855887,"e8ee7218c6ea7f93":1418775999995,"59220d2110461861":1418835858871,"893dc0c0a776648b":1418835763680},"backupNeeded":true,"_events":{}}';
+
+      opts.cryptoUtil.decrypt = sinon.stub().returns(json);
+      Identity.importFromEncryptedFullJson(json, '1', opts, function(err, iden) {
+        expect(err).to.be.null;
+        iden.should.not.be.null;
+      });
+    });
   });
 
   describe('#closeWallet', function() {
