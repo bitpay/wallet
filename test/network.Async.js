@@ -257,6 +257,26 @@ describe('Network / Async', function() {
       n.networkNonce.toString('hex').should.equal(hex);
     });
 
+    it('should return an error', function() {
+      var hex = '0000';
+      var n = createN();
+      (function() {
+        n.setHexNonce(hex);
+      }).should.throw('incorrect length');
+    });
+
+    it('should iterateNonce', function() {
+      var n = createN();
+      n.iterateNonce = sinon.spy();
+      n.setHexNonce();
+      n.iterateNonce.callCount.should.be.equal(1);
+      n.setHexNonce(null);
+      n.iterateNonce.callCount.should.be.equal(2);
+      n.setHexNonce(undefined);
+      n.iterateNonce.callCount.should.be.equal(3);
+
+    });
+
   });
 
   describe('#setHexNonces', function() {
@@ -329,6 +349,8 @@ describe('Network / Async', function() {
       array = Async._arrayRemove('2', array);
       array.length.should.be.equal(3);
       array.indexOf('2').should.be.equal(-1);
+      array = Async._arrayRemove('5', array);
+      array.length.should.be.equal(3);
     });
   });
 
@@ -413,8 +435,18 @@ describe('Network / Async', function() {
       n.lockIncommingConnections(lockIds);
       console.log(n.allowedCopayerIds);
       Object.keys(n.allowedCopayerIds).length.should.be.equal(2);
+    });
+  });
 
-
+  describe('#getKey', function() {
+    it('should return the key or generate a new one ', function() {
+      var n = createN();
+      n.key = null;
+      var k1 = n.getKey();
+      k1.should.not.be.undefined;
+      var k2 = n.getKey();
+      k2.should.not.be.undefined;
+      k1.should.be.equal(k2);
     });
   });
 
