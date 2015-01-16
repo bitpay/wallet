@@ -1,6 +1,10 @@
-<div class="title">
-  <h1>
-    {{$root.title}} 
+<div class="founds" ng-if="$root.wallet.isComplete()">
+  <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+  <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
+    <small class="db text-light">Balance:</small>
+    <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
+    <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+    <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">N/A</span>
     <small ng-if="$root.wallet">
       <a class="text-gray" ng-click="refresh()" ng-if="$root.wallet.isComplete() && !$root.updatingBalance">
         <i class="fi-refresh"></i>
@@ -9,10 +13,8 @@
         <i class="fi-bitcoin-circle icon-rotate spinner"></i>
       </span>
     </small>
-  </h1> 
+  </div> 
 </div>
-
-
 
 <div class="menu" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" ng-init="init()" ng-click="hoverMenu = !hoverMenu">
   <a class="dropdown ellipsis text-gray pr" ng-class="{'hover': hoverMenu}">
@@ -27,13 +29,6 @@
   </a>
   <ul ng-show="hoverMenu" class="size-16 text-gray" ng-class="{'hover': hoverMenu}">
     <li>
-      <a href="#!/create" title="Create new wallet">
-      <i class="fi-plus size-18 m10r"></i> {{'Create new wallet'|translate}}</a></li>
-    <li><a href="#!/join" title="Join shared wallet">
-      <i class="icon-people size-18 m10r"></i> {{'Join shared wallet'|translate}}</a></li>
-    <li><a href="#!/import" title="Import wallet">
-      <i class="icon-download size-18 m10r"></i> {{'Import wallet'|translate}}</a></li>
-    <li class="divider"></li>
     <li><a href="#!/profile" title="Profile">
       <i class="icon-person size-18 m10r"></i> {{'My Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
       </li> 

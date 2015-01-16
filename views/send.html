@@ -1,16 +1,7 @@
 <div class="send" ng-controller="SendController" ng-init="init()">
-
-  <div class="row hide-for-large-up"  ng-hide="$root.wpInputFocused" >
-    <div class="large-10 medium-10 small-9 columns">
+  <div class="row show-for-large-up">
+    <div class="large-8 large-centered columns">
       <h1>{{$root.title}}</h1>
-    </div>
-    <div class="large-2 medium-2 small-3 columns" ng-show="!lockAddress && !_merchantData">
-      <div ng-hide="showScanner || disableScanner">
-        <a class="button right m10b radius tiny black" ng-click="openScanner()"><i class="fi-camera size-18"></i></a>
-      </div>
-      <div ng-show="showScanner">
-        <a translate class="button right radius tiny m10b warning" ng-click="cancelScanner()"><i class="fi-x size-18"></i></a>
-      </div>
     </div>
   </div>
 
@@ -29,24 +20,24 @@
     </div>
   </div>
 
-    <div class="row" ng-show="creatingTX">
-        <div class="large-12 columns">
-            <div class="panel">
-                <div class="box-notification">
-                    <div class="box-icon secondary">
-                        <i class="fi-bitcoin-circle icon-rotate spinner size-24"></i>
-                    </div>
-                    <span class="text-secondary size-14">
-                        Creating Transaction...
-                    </span>
-                </div>
-            </div>
+  <div class="row" ng-show="creatingTX">
+    <div class="large-12 columns">
+      <div class="panel">
+        <div class="box-notification">
+          <div class="box-icon secondary">
+            <i class="fi-bitcoin-circle icon-rotate spinner size-24"></i>
+          </div>
+          <span class="text-secondary size-14">
+            Creating Transaction...
+          </span>
         </div>
+      </div>
     </div>
+  </div>
 
 
   <div class="row" ng-show="!fetchingURL && !creatingTX">
-    <div class="large-8 large-centered columns">
+    <div class="large-8 large-centered columns"> 
       <form name="sendForm" ng-submit="submitForm(sendForm)" novalidate>
         <div class="panel">
           <div class="box-notification" ng-show="error  && !hideForWP ">
@@ -173,8 +164,20 @@
           </div>
         </div>
       </form>
+      <div class="locked m10b" ng-show="$root.wallet.balanceInfo.lockedBalance && !walletSelection">
+        <i class="fi-lock"></i>
+        <span>
+          {{'Locked'|translate}} &nbsp;
+        </span>
+        <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+        <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance">
+          <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
+          - {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}
+        </span>
+      </div>
     </div>
   </div>
   <!--  end of row -->
 </div>
 
+<div class="extra-margin-bottom"></div>

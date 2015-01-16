@@ -142,13 +142,9 @@ header .alt-currency {
   right: 0;
 }
 
-.head .title {
+.head .founds {
   float: left;
   padding-left: 2rem;
-}
-
-.head .title h1 {
-  margin: 0;
 }
 
 .head .menu {
@@ -267,7 +263,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   padding: 0.5rem 0.65rem;
   background-color: #fff;
   color: #1ABC9C;
-  border-radius: 3px;
   line-height: 24px;
   text-align: center;
 }
@@ -317,6 +312,27 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   background-color: #2C3E50;
   color: #fff;
   line-height: 24px;
+}
+
+.buttons-sidebar {
+  color: #A5B2BF;
+  font-weight: 700;
+  font-size: 12px;
+  display: block;
+  padding: 0.5rem 0;
+  line-height: 16px;
+}
+
+.buttons-sidebar .col1 {
+  margin-top: 2px;
+}
+
+.buttons-sidebar .col1 i {
+  background-color: #2C3E50;
+  color: #A5B2BF;
+  border-radius: 100%;
+  padding: .3rem 0.55rem;
+  margin: 0 7px;
 }
 
 .button.small.side-bar {
@@ -483,13 +499,41 @@ ul.tx-copayers {
   color: #2C3E50;
 }
 
-a.button-setup.add-wallet {
-  opacity: .5;
-  margin: 1rem auto;
-  width: 125px;
-  font-size: 14px;
-  padding: .3rem 0.7rem;
+.manage a {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #1ABC9C;
+}
+
+.manage a.join {
+  color: #2980B9;
+}
+
+.manage a.import {
+  color: #213140;
+}
+
+
+
+.manage a i {
+  background-color: #1ABC9C;
+  width: 60px;
+  height: 60px;
+  padding: 0.85rem;
+  border-radius: 100%;
+  display: block;
+  font-size: 30px;
+  margin: 0 auto 20px;
   color: #fff;
+}
+
+.manage a.join i {
+  background-color: #2980B9;
+}
+
+.manage a.import i {
+  background-color: #213140;
 }
 
 a.button-setup {
@@ -622,11 +666,8 @@ a.button-setup {
 
 .name-wallet {
   font-size: 14px;
-  width: 72%;
-  float: left;
   color: #fff;
-  text-transform: lowercase;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .name-wallet i {
@@ -640,16 +681,14 @@ a.button-setup {
 }
 
 .founds {
-  font-weight: 100;
-  color: #B6E9DF;
+  font-size: 20px;
+  color: #7A8C9E;
+  font-weight: 700;
 }
 
 .locked {
   font-size: 11px;
-  background-color: #213140;
-  width: 100%;
-  padding: 0.3rem 0.7rem;
-  color: white;
+  color: #7A8C9E;
 }
 
 .hidden {
@@ -1063,7 +1102,7 @@ ul.wallet-selection.wallets {
 }
 
 .side-nav.wallets li {
-  margin: 1.2rem 0;
+  margin: 0.8rem 0;
   padding: 0.3rem 0.1rem;
 }
 
