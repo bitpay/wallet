@@ -32,6 +32,7 @@
   <div>
     <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}">
       <li 
+        ng-if="wallets[0]"
         ng-repeat="item in wallets track by $index" 
         class="nav-item" 
         ng-if="item.id != $root.wallet.id" 

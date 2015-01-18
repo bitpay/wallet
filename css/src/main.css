@@ -536,7 +536,7 @@ ul.tx-copayers {
 
 a.button-setup {
   border-radius: 3px;
-  border: 1px solid #E4E8EC;
+  border: 1px solid #ccc;
   display: block;
   padding: 0.5rem;
   background: transparent;
