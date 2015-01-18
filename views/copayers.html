@@ -50,11 +50,11 @@
   </div>
   <!-- end of row -->
   <div class="row">
-    <div class="large-12 columns size-12">
-      <button class="warning" ng-show="!confirmDelete" ng-click="confirmDelete=!confirmDelete">
+    <div class="large-12 columns">
+      <button class="small warning" ng-show="!confirmDelete" ng-click="confirmDelete=!confirmDelete">
         <i class="fi-trash"></i> Cancel
       </button>
-      <div ng-show="confirmDelete">
+      <div class="text-center" ng-show="confirmDelete">
         <h2>Are you sure you want to cancel and delete this wallet</h2>
         <div class="row">
           <div class="large-6 medium-6 small-6 columns">
@@ -63,12 +63,7 @@
           </div>
           <div class="large-6 medium-6 small-6 columns">
             <button class="warning" ng-disabled="loading" ng-click="deleteWallet()">
-              <span ng-show="!loading">
-                <i class="fi-trash"></i> Yes
-              </span>
-              <span ng-show="loading">
-                <i class="fi-bitcoin-circle icon-rotate spinner"></i> Deleting...
-              </span>
+              <i class="fi-trash"></i> Yes
             </button>
           </div>
         </div>
