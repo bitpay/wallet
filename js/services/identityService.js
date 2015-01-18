@@ -298,7 +298,7 @@ angular.module('copayApp.services')
       iden.on('noWallets', function() {
         notification.warning('No Wallets', 'Your profile has no wallets. Create one here');
         $rootScope.starting = false;
-        $location.path('/create');
+        $location.path('/add');
         $timeout(function() {
           $rootScope.$digest();
         }, 1);
