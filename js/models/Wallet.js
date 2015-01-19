@@ -658,7 +658,7 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   var self = this,
     hasChange;
   _.each(data.addressBook, function(value, key) {
-    if (key && !self.addressBook[key] && Address.validate(key)) {
+    if (key && !self.addressBook[key] && _.isString(key) && Address.validate(key)) {
 
       self.addressBook[key] = _.pick(value, ['createdTs', 'label']);
 
