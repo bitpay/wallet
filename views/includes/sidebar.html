@@ -1,17 +1,22 @@
 <div ng-init="init()">
-  <header ng-show="$root.wallet">
-    <div class="col1">
-      <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
+  <header>
+    <div class="left p15" ng-show="!$root.wallet">
+      <span class="db m5t text-italic">You have no wallets</span>
     </div>
-    <div class="col2" ng-class="{'col2_full':!wallets.length}">
-      <div class="oh m5t m10r"> 
-        <div class="name-wallet">
-          <div class="ellipsis">{{$root.wallet.getName()}}</div>
-        </div> 
-        <div class="size-12">  {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} </div>
+    <div ng-show="$root.wallet">
+      <div class="col1">
+        <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
+      </div>
+      <div class="col2" ng-class="{'col2_full':!wallets.length}">
+        <div class="oh m5t m10r"> 
+          <div class="name-wallet">
+            <div class="ellipsis">{{$root.wallet.getName()}}</div>
+          </div> 
+          <div class="size-12">  {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} </div>
+        </div>
       </div>
     </div>
-    <div class="col3" ng-if="wallets.length > 1">
+    <div class="col3">
       <a ng-class="{'selected':walletSelection}" 
         ng-click="toggleWalletSelection()"> 
         <span ng-show="!walletSelection">
@@ -25,8 +30,9 @@
   </header>
 
   <div>
-    <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}" ng-show="wallets[0]">
+    <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}">
       <li 
+        ng-if="wallets[0]"
         ng-repeat="item in wallets track by $index" 
         class="nav-item" 
         ng-if="item.id != $root.wallet.id" 
