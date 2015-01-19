@@ -713,6 +713,10 @@ Wallet.prototype._onData = function(senderId, data, ts) {
 
   this.updateSyncedTimestamp(ts);
 
+  console.log('data.type ', data.type);
+  console.log('this.id ', this.id);
+  console.log('data.walletId ', data.walletId);
+
   if (data.type !== 'walletId' && this.id !== data.walletId) {
     log.debug('Wallet:' + this.id + ' Received corrupt message:', data)
     this.emitAndKeepAlive('corrupt', senderId);
