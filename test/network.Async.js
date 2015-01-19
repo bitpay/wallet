@@ -257,6 +257,26 @@ describe('Network / Async', function() {
       n.networkNonce.toString('hex').should.equal(hex);
     });
 
+    it('should return an error', function() {
+      var hex = '0000';
+      var n = createN();
+      (function() {
+        n.setHexNonce(hex);
+      }).should.throw('incorrect length');
+    });
+
+    it('should iterateNonce', function() {
+      var n = createN();
+      n.iterateNonce = sinon.spy();
+      n.setHexNonce();
+      n.iterateNonce.callCount.should.be.equal(1);
+      n.setHexNonce(null);
+      n.iterateNonce.callCount.should.be.equal(2);
+      n.setHexNonce(undefined);
+      n.iterateNonce.callCount.should.be.equal(3);
+
+    });
+
   });
 
   describe('#setHexNonces', function() {
@@ -321,6 +341,113 @@ describe('Network / Async', function() {
       n.networkNonce[0].should.equal(buf[0]);
     });
 
+  });
+
+  describe('#_arrayRemove', function() {
+    it('should remove an element from an array', function() {
+      var array = ['1', '2', '3', '4'];
+      array = Async._arrayRemove('2', array);
+      array.length.should.be.equal(3);
+      array.indexOf('2').should.be.equal(-1);
+      array = Async._arrayRemove('5', array);
+      array.length.should.be.equal(3);
+    });
+  });
+
+  describe('#getOnlinePeerIDs', function() {
+    it('should get peer ids that are online', function() {
+      var n = createN();
+      n.getOnlinePeerIDs().length.should.be.equal(0);
+      n._addCopayer('ab0001');
+      n.getOnlinePeerIDs().length.should.be.equal(1);
+      n._addCopayer('ab0001');
+      n.getOnlinePeerIDs().length.should.be.equal(1);
+      n._addCopayer('ab0002');
+      n.getOnlinePeerIDs().length.should.be.equal(2);
+    });
+  });
+
+  describe('#connectedCopayers', function() {
+    it('should get peer ids that are online', function() {
+      var n = createN();
+      n.connectedCopayers().length.should.be.equal(0);
+      n._addCopayer('ab0001');
+      n.connectedCopayers().length.should.be.equal(1);
+      n._addCopayer('ab0001');
+      n.connectedCopayers().length.should.be.equal(1);
+      n._addCopayer('ab0002');
+      n.connectedCopayers().length.should.be.equal(2);
+    });
+  });
+
+  describe('#_deletePeer', function() {
+    it('should delete a Peer', function() {
+      var n = createN();
+      n._addCopayer('ab0001');
+      n.connectedPeers.length.should.be.equal(1);
+      var peerId = n.connectedPeers[0];
+      n._deletePeer(peerId);
+      n.connectedPeers.length.should.be.equal(0);
+    });
+  });
+
+  describe('#getCopayerIds', function() {
+    it('should return the copayer ids', function() {
+      var n = createN();
+      n.getCopayerIds().length.should.be.equal(1);
+    });
+  });
+
+  describe('#isOnline', function() {
+    it('should return if is online', function() {
+      var n = createN();
+      n.isOnline().should.be.true;
+      n.cleanUp();
+      n.isOnline().should.be.false;
+    });
+  });
+
+  describe('#greet', function() {
+    it('should greet ', function() {
+      var n = createN();
+      n.greet('03b51d01d798522cf61211b4dfcdd6db219ee33cf166e1cb7f43d836ab00ccddee', 'mySecret');
+    });
+  });
+
+  describe('#setCopayers', function() {
+    it('should setCopayers ', function() {
+      var n = createN();
+      n.connectedPeers.length.should.be.equal(0);
+      var cids = ['abc001', 'abc002'];
+      n.setCopayers(cids);
+      n.connectedPeers.length.should.be.equal(2);
+    });
+  });
+
+
+  describe('#lockIncommingConnections', function() {
+    it('should lock Incomming Connections ', function() {
+      var n = createN();
+      var cids = ['abc001', 'abc002', 'abc003'];
+      n.setCopayers(cids);
+
+      var lockIds = ['abc001', 'abc002'];
+      n.lockIncommingConnections(lockIds);
+      console.log(n.allowedCopayerIds);
+      Object.keys(n.allowedCopayerIds).length.should.be.equal(2);
+    });
+  });
+
+  describe('#getKey', function() {
+    it('should return the key or generate a new one ', function() {
+      var n = createN();
+      n.key = null;
+      var k1 = n.getKey();
+      k1.should.not.be.undefined;
+      var k2 = n.getKey();
+      k2.should.not.be.undefined;
+      k1.should.be.equal(k2);
+    });
   });
 
 });

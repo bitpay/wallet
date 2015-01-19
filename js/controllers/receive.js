@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
         var w = $rootScope.wallet;
         var balance = w.balanceInfo.balanceByAddr;
 
-        var addresses = w.getAddressesOrderer();
+        var addresses = w.getAddressesOrdered();
         if (addresses) {
           $scope.addrLength = addresses.length;
 
