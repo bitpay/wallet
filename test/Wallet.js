@@ -521,6 +521,18 @@ describe('Wallet model', function() {
 
     });
 
+    it('should call emitAndKeepAlive', function() {
+      var data = {
+        type: "typeUnknown",
+        walletId: '00001111'
+      };
+
+      var spy = sinon.spy(w, 'emitAndKeepAlive');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+
     it('should call sendWalletReady', function() {
       var data = {
         type: "walletId",
@@ -531,6 +543,109 @@ describe('Wallet model', function() {
       w._onData(sender, data, ts);
       sinon.assert.callCount(spy, 1);
     });
+
+    it('should call sendPublicKeyRing', function() {
+      var data = {
+        type: "walletReady",
+        walletId: w.id
+      };
+
+      var spy = sinon.spy(w, 'sendPublicKeyRing');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+    it('should call _onPublicKeyRing', function() {
+      var data = {
+        type: "publicKeyRing",
+        walletId: w.id,
+        publicKeyRing: {
+          networkName: 'testnet',
+          requiredCopayers: 3,
+          totalCopayers: 3,
+          indexes: [],
+          nicknameFor: 'NickName',
+          copayersExtPubKeys: [],
+        }
+      };
+
+      var spy = sinon.spy(w, '_onPublicKeyRing');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+    it('should call _onReject', function() {
+      var data = {
+        type: "reject",
+        walletId: w.id,
+        ntxid: '12345',
+      };
+
+      //todo: add a txp
+
+      var spy = sinon.spy(w, '_onReject');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+    it('should call _onSeen', function() {
+      var data = {
+        type: "seen",
+        walletId: w.id,
+        ntxid: '12345',
+      };
+
+      var spy = sinon.spy(w, '_onSeen');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+    it('should call _onTxProposal', function() {
+      var data = {
+        type: "txProposal",
+        walletId: w.id,
+        ntxid: '12345',
+        txProposal: '0001'
+      };
+
+      var spy = sinon.spy(w, '_onTxProposal');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+    it('should call _onSignature', function() {
+      var data = {
+        type: "signature",
+        walletId: w.id,
+      };
+
+      var spy = sinon.spy(w, '_onSignature');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+
+    it('should call _onIndexes', function() {
+      var data = {
+        type: "indexes",
+        walletId: w.id,
+        indexes: []
+      };
+      var spy = sinon.spy(w, '_onIndexes');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
+    it('should call _onAddressBook', function() {
+      var data = {
+        type: "addressbook",
+        walletId: w.id,
+      };
+      var spy = sinon.spy(w, '_onAddressBook');
+      w._onData(sender, data, ts);
+      sinon.assert.callCount(spy, 1);
+    });
+
 
   });
 
@@ -1061,6 +1176,80 @@ describe('Wallet model', function() {
   });
 
 
+  describe('#_processTxProposalPayPro', function() {
+    it('should return without error', function(done) {
+      var w = cachedCreateW2();
+
+      var utxos = [{
+        txid: 'txid0',
+        vout: 'vout1',
+      }, {
+        txid: 'txid0',
+        vout: 'vout2',
+      }];
+
+      var txp = {
+        ntxid: 'txid1',
+        isPending: true,
+        builder: {
+          utxos: [utxos[0]],
+        },
+        paymentProtocolURL: null
+      };
+      txp.addMerchantData = sinon.spy();
+      w.getTxProposals = sinon.stub().returns([txp]);
+      w.blockchain.getUnspent = sinon.stub().yields(null, utxos);
+
+      w._processTxProposalPayPro(txp, function(err) {
+        should.not.exist(err);
+
+        done();
+      });
+    });
+    it('should call addMerchantData', function(done) {
+      var w = cachedCreateW2();
+
+      var utxos = [{
+        txid: 'txid0',
+        vout: 'vout1',
+      }, {
+        txid: 'txid0',
+        vout: 'vout2',
+      }];
+
+      var txp = {
+        ntxid: 'txid1',
+        isPending: true,
+        builder: {
+          utxos: [utxos[0]],
+        },
+        paymentProtocolURL: 'http://mydomain.com'
+      };
+      txp.addMerchantData = sinon.spy();
+      w.getTxProposals = sinon.stub().returns([txp]);
+      w.blockchain.getUnspent = sinon.stub().yields(null, utxos);
+
+      sinon.stub(w, 'fetchPaymentRequest').yields(null, {
+        outs: [{
+          address: 'n2Wz7KjyzBJVaNMBN88Lj1YUHMDZSAGeMV',
+          amountSatStr: '123400',
+        }],
+        request_url: 'url',
+        pr: {
+          signature: '123',
+        },
+        total: '123400',
+      });
+
+      w._processTxProposalPayPro(txp, function(err) {
+        should.not.exist(err);
+
+        txp.addMerchantData.calledOnce.should.be.true;
+        done();
+      });
+    });
+  });
+
   describe('#fetchPaymentRequest', function() {
     it('should fetch a payment request', function(done) {
       var w = cachedCreateW2();
@@ -1532,6 +1721,35 @@ describe('Wallet model', function() {
       w.publicKeyRing.nicknameForCopayer = sinon.spy();
       w.getMyCopayerNickname();
       w.publicKeyRing.nicknameForCopayer.calledOnce.should.equal(true);
+    });
+  });
+
+
+
+  describe('#changeSettings', function() {
+    it('should call emitAndKeepAlive', function() {
+      var w = cachedCreateW2();
+      w.emitAndKeepAlive = sinon.spy();
+      var settings = {
+        unitName: 'bits',
+        unitToSatoshi: 100,
+        alternativeName: 'US Dollar',
+        alternativeIsoCode: 'USD',
+      };
+      w.changeSettings(settings);
+      w.emitAndKeepAlive.calledOnce.should.equal(true);
+      w.emitAndKeepAlive.getCall(0).args[0].should.equal('settingsUpdated');
+    });
+  });
+
+
+  describe('#_onNoMessages', function() {
+    it('should call sendWalletReady', function() {
+      var w = cachedCreateW2();
+      w.sendWalletReady = sinon.spy();
+      w._onNoMessages();
+      w.sendWalletReady.calledOnce.should.equal(true);
+
     });
   });
 
