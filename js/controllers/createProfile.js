@@ -139,7 +139,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $rootScope.hideNavigation = false;
 
     identityService.create(emailOrUsername, password, function(err) {
-      $scope.error = null;
       if (err) {
         var msg = err.toString();
         $scope.createStep = 'email';
@@ -149,8 +148,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         if (msg.indexOf('EMAILERROR') >= 0) {
           msg = 'Could not send verification email. Please check your email address.';
         }
-        $scope.error = msg;
-        $scope.passwordStrength = null;
+        return cb(msg);
       } else {
         // mobile
         if ($scope.isMobile) {
@@ -202,12 +200,18 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       $rootScope.starting = true;
 
       $scope._doCreateProfile($scope.userOrEmail, form.password.$modelValue, function(err) {
+        if (err) { 
+          $scope.error = err;
+          $scope.passwordStrength = null;
+          $rootScope.starting = false; 
+        }
+        form.password.$setViewValue('');
+        form.password.$render();
+        form.repeatpassword.$setViewValue('');
+        form.repeatpassword.$render();
+        form.$setPristine();
         $timeout(function() {
-          form.password.$setViewValue('');
-          form.password.$render();
-          form.repeatpassword.$setViewValue('');
-          form.repeatpassword.$render();
-          form.$setPristine();
+          $rootScope.$digest();
         }, 1);
       });
     });
