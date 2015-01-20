@@ -39,47 +39,44 @@
       </tr>
       </tbody>
     </table>
-
-    <div class="row" ng-show="showForm">
-      <div class="large-6 medium-6 columns large-centered medium-centered">
-        <form class="m0" name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
-          <div class="box-notification" ng-show="error">
-            <div class="box-icon error">
-              <i class="size-24 fi-x"></i>
-            </div>
-            <span class="size-14 text-warning">
-              {{error}}
-            </span>
-          </div>
-          <div class="row collapse">
-            <label for="newaddress" class="left"><span translate>Address</span>
-              <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
-            </label>
-            <span translate class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
-              <span class="icon-input"><i class="fi-x"></i></span>
-              Not valid
-            </span>
-            <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
-          </div>
-          <div class="input">
-            <input type="text" name="newaddress"
-            placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
-          </div>
-
-          <label for="newlabel"><span translate>Label</span>
-            <small translate ng-hide="!addressBookForm.newlabel.$pristine || newlabel">Required</small>
-            <div class="input">
-              <input type="text" name="newlabel"
-              placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
-            </div>
-          </label>
-          <a translate class="button secondary default" ng-click="cancel(addressBookForm)">Cancel</a>
-          <button class="primary right" 
-            ng-disabled="addressBookForm.$invalid || loading" 
-            ng-click="submitAddressBook(addressBookForm)">{{'Add'|translate}}</button>
-        </form>
+  </div>
+   <div class="large-6 medium-6 columns large-centered medium-centered" > 
+    <form ng-show="showForm" class="m0" name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
+      <div class="box-notification" ng-show="error">
+        <div class="box-icon error">
+          <i class="size-24 fi-x"></i>
+        </div>
+        <span class="size-14 text-warning">
+          {{error}}
+        </span>
       </div>
-    </div>
+      <div class="row collapse">
+        <label for="newaddress" class="left"><span translate>Address</span>
+          <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
+        </label>
+        <span translate class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+          <span class="icon-input"><i class="fi-x"></i></span>
+          Not valid
+        </span>
+        <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
+      </div>
+      <div class="input">
+        <input type="text" name="newaddress"
+        placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
+      </div>
+
+      <label for="newlabel"><span translate>Label</span>
+        <small translate ng-hide="!addressBookForm.newlabel.$pristine || newlabel">Required</small>
+        <div class="input">
+          <input type="text" name="newlabel"
+          placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
+        </div>
+      </label>
+      <a translate class="button secondary default" ng-click="cancel(addressBookForm)">Cancel</a>
+      <button class="primary right" 
+        ng-disabled="addressBookForm.$invalid || loading" 
+        ng-click="submitAddressBook(addressBookForm)">{{'Add'|translate}}</button>
+    </form>
   </div>
   <div class="large-12 columns" ng-show="!showForm">
     <a class="button primary expand" ng-click="toggleForm()"><i class="fi-plus"></i> Add entry</a>
