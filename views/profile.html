@@ -33,18 +33,20 @@
     </div>
   </div>
 
-  <div class="line-dashed-h m20b"></div>
-  
-  <div class="row size-12 m20b">
-    <div class="large-12 columns">
-      <div ng-if="perItem">
-        Your current server usage quotas are: <b>{{perItem}}kB</b> per wallet and up to <b>{{nrWallets}}</b> wallets.
+  <div ng-show="$rootScope.quotaPerItem">
+    <div class="line-dashed-h m20b"></div>
+
+    <div class="row size-12 m20b">
+      <div class="large-12 columns">
+        <div ng-if="perItem">
+          Your current server usage quotas are: <b>{{perItem}}kB</b> per wallet and up to <b>{{nrWallets}}</b> wallets.
+        </div>
+        <div ng-if="$root.needsEmailConfirmation" class="m10t">
+          <i class="fi-alert"></i> Confirm your email address to increase storage usage limits.
+        </div>
       </div>
-      <div ng-if="$root.needsEmailConfirmation" class="m10t">
-        <i class="fi-alert"></i> Confirm your email address to increase storage usage limits.
-      </div>
-    </div>
-  </div> 
+    </div> 
+  </div>
 
   <div class="line-dashed-h m20b"></div>
   
