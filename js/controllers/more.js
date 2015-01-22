@@ -158,12 +158,11 @@ angular.module('copayApp.controllers').controller('MoreController',
       window.plugins.toast.showShortCenter('Preparing backup...');
       var name = (w.name || w.id);
       var ew = backupService.walletEncrypted(w);
-      var filename = name + '-keybackup.json.aes';
       var properties = {
         subject: 'Copay Wallet Backup: ' + name,
         body: 'Here is the encrypted backup of the wallet ' 
           + name + ': \n\n' + ew 
-          + '\n\n To import this backup, copy all text between {...}, inclusive the symbols {}',
+          + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
         isHtml:  false
       };
       window.plugin.email.open(properties);
