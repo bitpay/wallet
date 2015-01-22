@@ -1,17 +1,20 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ReceiveController',
-  function($scope, $rootScope, $timeout, $modal) {
+  function($scope, $rootScope, $timeout, $modal, isCordova) {
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
-      $scope.loading = true;
       var lastAddr = w.generateAddress(null);
       $scope.setAddressList();
       $scope.addr = lastAddr;
-      $timeout(function() {
-        $scope.loading = false;
-      }, 1);
+    };
+
+    $scope.copyAddress = function(addr) {
+      if (isCordova) {
+        window.cordova.plugins.clipboard.copy(addr);
+        window.plugins.toast.showShortCenter('Copied to clipboard');
+      }
     };
 
     $scope.init = function() {
@@ -32,8 +35,13 @@ angular.module('copayApp.controllers').controller('ReceiveController',
     };
 
     $scope.openAddressModal = function(address) {
+      var scope = $scope;
       var ModalInstanceCtrl = function($scope, $modalInstance, address) {
         $scope.address = address;
+        $scope.isCordova = isCordova;
+        $scope.copyAddress = function(addr) {
+          scope.copyAddress(addr);
+        };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
