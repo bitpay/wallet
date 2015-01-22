@@ -23,6 +23,28 @@ describe('PrivateKey model', function() {
     should.exist(w.bip.derive);
   });
 
+  it('should return the extended public key', function() {
+    var w = new PrivateKey(pkConfig);
+    var pubk1 = w.getExtendedPublicKeyString();
+    should.exist(pubk1);
+    console.log(pubk1);
+  });
+
+  it('should return the private key', function() {
+    var w = new PrivateKey(pkConfig);
+    var pk1 = w.getIdKey();
+    should.exist(pk1);
+    var pk2 = w.getIdKey();
+    should.exist(pk2);
+    pk1.should.be.equal(pk2);
+  });
+
+  it('should return the Hierarchical key', function() {
+    var w = new PrivateKey(pkConfig);
+    var hk = w._getHK();
+    should.exist(hk);
+  });
+
   it('should derive priv keys', function() {
     var pk = new PrivateKey(pkConfig);
     for (var j = false; !j; j = true) {
