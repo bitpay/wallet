@@ -13,7 +13,7 @@ angular.element(document).ready(function() {
 
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
-          window.location = '#!';
+          window.location = '#!/signout';
         }
       }, false);
 

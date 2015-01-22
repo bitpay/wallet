@@ -106,6 +106,11 @@ angular
       .when('/add', {
         templateUrl: 'views/add.html',
         logged: true
+      })
+      .when('/signout', {
+        template: " ", // just fire controller
+        controller: 'signOutController',
+        logged: true
       });
 
     if (config.developmentFeatures) {
