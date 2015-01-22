@@ -1,13 +1,19 @@
-<div class="text-center m20t">
-  <qrcode size="220" data="{{address.address}}"></qrcode>
+<div class="text-center m20t" ng-init="addr = address.address">
+  <qrcode size="220" data="{{addr}}"></qrcode>
 
-  <div class="m10t" ng-init="label = $root.wallet.addressBook[address.address].label">
+  <div class="m10t"
+    ng-init="label = $root.wallet.addressBook[addr].label">
     <div class="size-12">
-      {{address.address}} <small class="label" ng-show="address.isChange">change</small>
+      {{addr}} <small class="label" ng-show="address.isChange">change</small>
     </div> 
     <b class="db m5t" ng-show="label">
       ({{label}})
     </b>
+  </div>
+  <div class="text-center m10t" ng-if="isCordova">
+    <button class="primary expand" ng-click="copyAddress(addr)">
+      Copy to clipboard
+    </button>
   </div>
   <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
