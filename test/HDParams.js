@@ -17,7 +17,9 @@ describe('HDParams model', function() {
     should.exist(is);
     is.length.should.equal(3);
 
-    var cosigners = is.map(function(i) { return i.copayerIndex; });
+    var cosigners = is.map(function(i) {
+      return i.copayerIndex;
+    });
     cosigners.indexOf(HDPath.SHARED_INDEX).should.not.equal(-1);
     cosigners.indexOf(0).should.not.equal(-1);
     cosigners.indexOf(1).should.not.equal(-1);
@@ -36,7 +38,7 @@ describe('HDParams model', function() {
     is2.length.should.equal(4);
   });
 
-  it('show be able to store and read', function() {
+  it('should be able to store and read', function() {
     var i = new HDParams();
     i.copayerIndex = 1;
     var changeN = 2;
@@ -58,13 +60,27 @@ describe('HDParams model', function() {
     i2.getReceiveIndex().should.equal(addressN);
   });
 
+  it('should throw an error', function() {
+    var data = new HDParams();
+
+    if (data instanceof HDParams) {
+      console.log('ok');
+    } else {
+      console.log('error');
+    }
+    (function() {
+      HDParams.fromObj(data);
+    }).should.throw('BADDATA');
+
+  });
+
   it('should count generation indexes', function() {
     var j = new HDParams();
     j.copayerIndex = 1;
     for (var i = 0; i < 3; i++)
-    j.increment(true);
+      j.increment(true);
     for (var i = 0; i < 2; i++)
-    j.increment(false);
+      j.increment(false);
 
     j.changeIndex.should.equal(3);
     j.receiveIndex.should.equal(2);
@@ -75,9 +91,9 @@ describe('HDParams model', function() {
     j.copayerIndex = 1;
 
     for (var i = 0; i < 15; i++)
-    j.increment(true);
+      j.increment(true);
     for (var i = 0; i < 7; i++)
-    j.increment(false);
+      j.increment(false);
     var j2 = new HDParams({
       copayerIndex: j.copayerIndex,
     });
@@ -89,10 +105,18 @@ describe('HDParams model', function() {
   });
 
   it('#merge should fail with different copayerIndex index', function() {
-    var j1 = new HDParams({ walletId: '1234', copayerIndex: 2 });
-    var j2 = new HDParams({ walletId: '1234', copayerIndex: 3 });
+    var j1 = new HDParams({
+      walletId: '1234',
+      copayerIndex: 2
+    });
+    var j2 = new HDParams({
+      walletId: '1234',
+      copayerIndex: 3
+    });
 
-    var merge = function() { j2.merge(j1); };
+    var merge = function() {
+      j2.merge(j1);
+    };
     merge.should.throw(Error);
   })
 
