@@ -8,16 +8,16 @@
   <div class="row">
     <div class="large-12 columns">
       <div class="panel oh">
-        <div class="row">
-          <div class="large-8 medium-6 small-12 columns">
-            <div class="ellipsis oh">
+        <div class="row p10b">
+          <div class="large-8 medium-6 small-4 columns">
+            <div class="oh">
               <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
-              <h2 class="m10t left">
+              <h2 class="m10t ellipsis hide-for-small-only">
                 {{$root.wallet.getName()}} 
               </h2>
             </div>
           </div>
-          <div class="large-4 medium-6 small-12 columns">
+          <div class="large-4 medium-6 small-8 columns">
             <div class="text-right">
               <span class="size-21">
                 <strong>
@@ -36,8 +36,11 @@
         </div>
 
 
-        <div class="row ">
-          <div class="large-12 columns line-t m10t">
+        <div class="row line-t">
+          <div class="small-4 medium-4 columns m5t size-12 hide-for-large-up">
+            <a ng-click="$root.go('more')"><i class="fi-widget"></i> Settings</a>
+          </div>
+          <div class="small-8 medium-8 columns m5t">
             <div class="text-right size-12">
               <span ng-if="!$root.wallet.isShared()">Personal Wallet</span>
               <span ng-if="$root.wallet.isShared()">
@@ -82,12 +85,6 @@
         <h2 class="line-b" translate>Copayers</h2>
         <div ng-include="'views/includes/copayers.html'"></div>
       </div>
-    </div>
-  </div>
-
-  <div class="row hide-for-large-up">
-    <div class="large-12 columns text-right size-12">
-      <a ng-click="$root.go('more')"><i class="fi-widget"></i> Settings</a>
     </div>
   </div>
 </div>
