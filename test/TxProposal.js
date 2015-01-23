@@ -29,7 +29,7 @@ describe('TxProposal', function() {
   /* decoded redeemscript
    *
     "asm" : "3 03197599f6e209cefef07da2fddc6fe47715a70162c531ffff8e611cef23dfb70d 0380a29968851f93af55e581c43d9ef9294577a439a3ca9fc2bc47d1ca2b3e9127 0392dccb2ed470a45984811d6402fdca613c175f8f3e4eb8e2306e8ccd7d0aed03 03a94351fecc4328bb683bf93a1aa67378374904eac5980c7966723a51897c56e3 03e085eb6fa1f20b2722c16161144314070a2c316a9cae2489fd52ce5f63fff6e4 5 OP_CHECKMULTISIG",
-   */ 
+   */
 
   // 1,2 signatures  3-5!
   var SCRIPTSIG = _.map([
@@ -44,12 +44,12 @@ describe('TxProposal', function() {
 
 
   // 3-5
-  
+
 
   function dummyBuilder(opts) {
     opts = opts || {};
 
-    var index = opts.nsig ? opts.nsig  - 1 : 1;
+    var index = opts.nsig ? opts.nsig - 1 : 1;
     var script = SCRIPTSIG[index];
 
     var aIn = {
@@ -85,7 +85,7 @@ describe('TxProposal', function() {
         amountSatStr: '123',
       }]),
     };
-    builder.inputsSigned =0;
+    builder.inputsSigned = 0;
 
     return builder;
   };
@@ -345,10 +345,10 @@ describe('TxProposal', function() {
       });
     });
 
-    describe('#addSignature', function() { 
+    describe('#addSignature', function() {
       it('should add signatures maintaing pubkeys order', function() {
         var txp = dummyProposal({
-          nsig:1 
+          nsig: 1
         });
         txp.getSignersPubKeys()[0].length.should.equal(1);
 
@@ -362,31 +362,43 @@ describe('TxProposal', function() {
       });
       it('should add signatures to incomplete txs ', function() {
         var txp = dummyProposal({
-          nsig:1 
+          nsig: 1
         });
         txp.addSignature('pepe', [SIG1]);
         txp.builder.inputsSigned.should.be.equal(0);
       });
 
+      it.only('should not add signatures to complete txs ', function() {
+        var txp = dummyProposal({
+          nsig: 1
+        });
+        txp.addSignature('pepe', [SIG1]);
+        txp.builder.inputsSigned.should.be.equal(0);
+
+        var r = txp.addSignature('lolo', [SIG0]);
+        r.should.be.false;
+        txp.builder.inputsSigned.should.be.equal(0);
+      });
+
       it('should fail with invalid signatures', function() {
         var txp = dummyProposal({
-          nsig:1 
+          nsig: 1
         });
         txp.getSignersPubKeys()[0].length.should.equal(1);
 
-        (function(){
+        (function() {
           txp.addSignature('pepe', ['002030a77c9613d6ee010717c1abc494668d877e3fa0ae4c520f65cc3b308754c98c02205219d387bcb291bd44805b9468439e4168b02a6a180cdbcc24d84d71d696c1ae01']);
         }).should.throw('BADSIG');
       });
 
       it('should fail adding the same signature twice', function() {
         var txp = dummyProposal({
-          nsig:1 
+          nsig: 1
         });
         txp.getSignersPubKeys()[0].length.should.equal(1);
 
         txp.addSignature('pepe', [SIG1]);
-        (function(){
+        (function() {
           txp.addSignature('pepe', [SIG1]);
         }).should.throw('BADSIG');
       });
@@ -533,7 +545,7 @@ describe('TxProposal', function() {
       it('with less signatures', function() {
         var txp = dummyProposal();
         var txp1Sig = dummyProposal({
-          nsig:1 
+          nsig: 1
         });
         var backup = txp.builder.vanilla.scriptSig[0];
         var hasChanged = txp.merge(txp);
