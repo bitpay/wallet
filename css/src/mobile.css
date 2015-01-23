@@ -4,7 +4,13 @@
  *
  */
 
-@media (max-width: 1024px) { 
+@media (max-width: 1024px) {  
+
+  .inner-wrap {
+    -webkit-transition-duration: 250ms; 
+    transition-duration: 250ms; 
+  }
+
   body {
     overflow: hidden;
     -ms-content-zooming: none; 
@@ -344,9 +350,10 @@
   }
 
   .modal.fade .modal-dialog, .modal.in .modal-dialog, .reveal-modal-bg {
-    -webkit-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
-    transform: translate(0, 0);
+    -webkit-transition: none !important;
+    transition: none !important;
+    -webkit-transform: none !important;
+    transform: none !important;
   }
 
   .button.secondary:hover, button.secondary:hover {
