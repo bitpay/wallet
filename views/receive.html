@@ -10,7 +10,7 @@
     <div class="large-12 columns">
       <div class="panel">
         <h2 class="line-b" translate>My Bitcoin address:</h2>
-        <div class="text-center">
+        <div class="text-center" ng-click="copyAddress(addr)">
           <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
           <div class="m10t">
             <h4 class="size-12">{{addr}}</h4>
