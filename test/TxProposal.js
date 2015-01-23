@@ -231,6 +231,28 @@ describe('TxProposal', function() {
 
   });
 
+  describe('#getSeen', function() {
+    it('should set txid and timestamp', function() {
+      var txp = new TxProposal({
+        creator: 1,
+        createdTs: 1,
+        builder: new dummyBuilder(),
+        inputChainPaths: ['m/1'],
+      });
+      var ts = txp.getSeen('pepe');
+      expect(ts).to.be.undefined;
+
+      txp.setSeen('pepe');
+
+      ts = txp.getSeen('pepe');
+      expect(ts).to.be.not.undefined;
+
+      txp.setSeen('pepe');
+      var ts2 = txp.getSeen('pepe');
+      ts.should.be.equal(ts2);
+    });
+  });
+
 
   describe('#setSent', function() {
     it('should set txid and timestamp', function() {
@@ -326,6 +348,9 @@ describe('TxProposal', function() {
       }
       Buffer.isBuffer(info.script.getBuffer()).should.equal(true);
     });
+
+
+
     it('#getSignersPubKeys', function() {
       var txp = dummyProposal();
       var pubkeys = txp.getSignersPubKeys();
@@ -368,16 +393,14 @@ describe('TxProposal', function() {
         txp.builder.inputsSigned.should.be.equal(0);
       });
 
-      it.only('should not add signatures to complete txs ', function() {
+      it('should not add signatures to complete txs ', function() {
         var txp = dummyProposal({
           nsig: 1
         });
-        txp.addSignature('pepe', [SIG1]);
-        txp.builder.inputsSigned.should.be.equal(0);
 
-        var r = txp.addSignature('lolo', [SIG0]);
+        txp.builder.isFullySigned = sinon.stub.returns(true);
+        var r = txp.addSignature('pepe', [SIG1]);
         r.should.be.false;
-        txp.builder.inputsSigned.should.be.equal(0);
       });
 
       it('should fail with invalid signatures', function() {
