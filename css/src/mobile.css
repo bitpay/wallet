@@ -369,6 +369,7 @@
 
   .dr-notification {
     width: 100%;
+    border-radius: 0;
   }
 
   .dr-notification-container {
@@ -393,12 +394,8 @@
   }
 
   .dr-notification-text {
-    font-size: 10px;
-    line-height: 100%;
-  }
-
-  .dr-notification-image i {
-    padding: 15px;
+    font-size: 12px;
+    line-height: 120%;
   }
 
 }
