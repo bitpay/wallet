@@ -100,6 +100,15 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add org.apache.cordova.inappbrowser
   checkOK
 
+  cordova plugin add nl.x-services.plugins.toast && cordova prepare
+  checkOK
+
+  cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
+  checkOK
+
+  cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
+  checkOK
+
 fi
 
 if $DBGJS

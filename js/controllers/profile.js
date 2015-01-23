@@ -12,10 +12,31 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   };
 
   $scope.viewProfileBackup = function() {
-    $scope.backupProfilePlainText = backupService.profileEncrypted($rootScope.iden);
-    $scope.hideViewProfileBackup = true;
+    $scope.loading = true;
+    $timeout(function() {
+      $scope.backupProfilePlainText = backupService.profileEncrypted($rootScope.iden);
+    }, 100);
   }; 
 
+  $scope.copyProfileBackup = function() {
+    var ep = backupService.profileEncrypted($rootScope.iden);
+    window.cordova.plugins.clipboard.copy(ep);
+    window.plugins.toast.showShortCenter('Copied to clipboard');
+  };
+
+  $scope.sendProfileBackup = function() {
+    window.plugins.toast.showShortCenter('Preparing backup...');
+    var name = $rootScope.iden.fullName;
+    var ep = backupService.profileEncrypted($rootScope.iden);
+    var properties = {
+      subject: 'Copay Profile Backup: ' + name,
+      body: 'Here is the encrypted backup of the profile ' 
+        + name + ': \n\n' + ep 
+        + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
+      isHtml:  false
+    };
+    window.plugin.email.open(properties);
+  };
 
   $scope.init = function() {
     if ($rootScope.quotaPerItem) {

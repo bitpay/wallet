@@ -142,8 +142,30 @@ angular.module('copayApp.controllers').controller('MoreController',
     };
 
     $scope.viewWalletBackup = function() {
-      $scope.backupWalletPlainText = backupService.walletEncrypted(w);
+      $scope.loading = true;
+      $timeout(function() {
+        $scope.backupWalletPlainText = backupService.walletEncrypted(w);
+      }, 100);
     };
 
+    $scope.copyWalletBackup = function() {
+      var ew = backupService.walletEncrypted(w);
+      window.cordova.plugins.clipboard.copy(ew);
+      window.plugins.toast.showShortCenter('Copied to clipboard');
+    };
+
+    $scope.sendWalletBackup = function() {
+      window.plugins.toast.showShortCenter('Preparing backup...');
+      var name = (w.name || w.id);
+      var ew = backupService.walletEncrypted(w);
+      var properties = {
+        subject: 'Copay Wallet Backup: ' + name,
+        body: 'Here is the encrypted backup of the wallet ' 
+          + name + ': \n\n' + ew 
+          + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
+        isHtml:  false
+      };
+      window.plugin.email.open(properties);
+    };
 
   });
