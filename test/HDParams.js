@@ -74,6 +74,7 @@ describe('HDParams model', function() {
 
   });
 
+
   it('should count generation indexes', function() {
     var j = new HDParams();
     j.copayerIndex = 1;
@@ -120,4 +121,29 @@ describe('HDParams model', function() {
     merge.should.throw(Error);
   })
 
+});
+
+describe('#checkRange', function() {
+  it('should throw an error', function() {
+    var hd = new HDParams();
+
+    (function() {
+      hd.checkRange(60, true);
+    }).should.throw('Out of bounds');
+
+  });
+  it('should throw an error', function() {
+    var hd = new HDParams();
+
+    (function() {
+      hd.checkRange(60, false);
+    }).should.throw('Out of bounds');
+
+  });
+  it('should not throw an error', function() {
+    var hd = new HDParams();
+    hd.checkRange(0, false);
+    hd.checkRange(0, true);
+
+  });
 });
