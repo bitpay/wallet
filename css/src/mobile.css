@@ -370,6 +370,8 @@
   .dr-notification {
     width: 100%;
     border-radius: 0;
+    box-shadow: none;
+    border-bottom: 2px solid #E4E8EC;
   }
 
   .dr-notification-container {
