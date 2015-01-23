@@ -98,3 +98,11 @@
   </div>
 </div>
 
+<div class="row collapse" ng-show="!tx.missingSignatures && !tx.sentTs">
+  <button class="primary tiny m0 expand"
+    ng-click="broadcast(tx.ntxid)"
+    ng-disabled="loading"> <i class="fi-upload-cloud"></i>
+    <span translate>Broadcast Transaction</span>
+  </button>
+</div>
+
