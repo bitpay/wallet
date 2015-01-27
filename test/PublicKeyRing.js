@@ -553,6 +553,54 @@ describe('PublicKeyRing model', function() {
     w.myCopayerId().should.be.equal(w.getCopayerId(0));
   });
 
+  it('#_checkKeys should throw error is not complete', function() {
+    var config = {
+      networkName: 'livenet',
+    };
+    var w2 = new PublicKeyRing(config);
+
+    (function() {
+      return w2._checkKeys();
+    }).should.throw('dont have required keys');
+
+  });
+
+  it('#pathForAddress', function() {
+    var k = getCachedW();
+    var w = k.w;
+    var addr = w.generateAddress(true, k.pub);
+
+    var path = w.pathForAddress(addr);
+
+    path.should.not.be.undefined;
+
+    (function() {
+      return w.pathForAddress('abcd');
+    }).should.throw('find path for address');
+
+
+  });
+
+
+  it('#copayersForPubkeys', function() {
+    var k = getCachedW();
+    var w = k.w;
+    var addr = w.generateAddress(true, k.pub);
+    var path = w.pathForAddress(addr);
+    var paths = [];
+    paths.push(path);
+
+
+
+    (function() {
+      return w.copayersForPubkeys(k.pub, paths);
+    }).should.throw('Pubkeys not identified');
+  });
+
+
+
+
+
 
 });
 

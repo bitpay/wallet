@@ -728,6 +728,9 @@ describe('TxProposal', function() {
 
   });
 
+
+
+
   describe('micelaneous functions', function() {
     it('should report rejectCount', function() {
       var txp = dummyProposal();
@@ -754,6 +757,7 @@ describe('TxProposal', function() {
       txp.isPending(3).should.equal(false);
     });
   });
+
 
 
 });
