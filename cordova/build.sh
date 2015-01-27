@@ -109,6 +109,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
   checkOK
 
+  cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
+  checkOK
+
 fi
 
 if $DBGJS
