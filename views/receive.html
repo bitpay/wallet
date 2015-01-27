@@ -16,6 +16,12 @@
             <h4 class="size-12">{{addr}}</h4>
           </div>
         </div>
+        <div class="m10t text-center" ng-show="isCordova">
+          <a href class="button-setup" 
+            ng-click="shareAddress(addr)">
+            <i class="fi-share"></i> Share address
+          </a>
+        </div>
         <div class="line-t m10t size-12">
           Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
         </div>
