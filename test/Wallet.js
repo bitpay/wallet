@@ -1104,6 +1104,98 @@ describe('Wallet model', function() {
 
 
   });
+
+
+
+
+  describe('#_updateTxProposalSent', function() {
+    it('should call setSent', function(done) {
+      var w = createW2(null, 1);
+      var txp = {
+        getId: sinon.stub().returns('1'),
+        setSent: sinon.stub()
+      };
+
+      w._checkIfTxIsSent = sinon.stub().yields(null, '2');
+
+      w._updateTxProposalSent(txp);
+      txp.setSent.calledOnce.should.be.true;
+      done();
+    });
+    it('should not call setSent', function(done) {
+      var w = createW2(null, 1);
+      var txp = {
+        getId: sinon.stub().returns('1'),
+        setSent: sinon.stub()
+      };
+
+      w._checkIfTxIsSent = sinon.stub().yields(null, null);
+
+      w._updateTxProposalSent(txp);
+      txp.setSent.calledOnce.should.be.false;
+      done();
+    });
+
+    it('should not call setSent case 2', function(done) {
+      var w = createW2(null, 1);
+      var txp = {
+        getId: sinon.stub().returns('1'),
+        setSent: sinon.stub()
+      };
+
+      w._checkIfTxIsSent = sinon.stub().yields('error', null);
+
+      w._updateTxProposalSent(txp, function(err) {
+        err.should.be.equal('error');
+        txp.setSent.calledOnce.should.be.false;
+        done();
+      });
+    });
+  });
+
+
+
+  describe('#_doOnIndexes', function() {
+    it('should call subscribeToAddresses', function() {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      var now = Date.now();
+      var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
+      var indexes = [{
+        index: 1
+      }];
+      w.subscribeToAddresses = sinon.stub().returns();
+      w.emitAndKeepAlive = sinon.stub().returns();
+      w.publicKeyRing.mergeIndexes = sinon.stub().returns(true);
+      w.clearUnspentCache = sinon.stub();
+
+      w._doOnIndexes(indexes, false);
+      w.clearUnspentCache.calledOnce.should.be.true;
+      w.subscribeToAddresses.calledOnce.should.be.true;
+      w.emitAndKeepAlive.calledOnce.should.be.true;
+    });
+
+    it('should call subscribeToAddresses case 2', function() {
+      var w = createW2(null, 1);
+      var utxo = createUTXO(w);
+      var now = Date.now();
+      var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
+      var indexes = [{
+        index: 1
+      }];
+      w.subscribeToAddresses = sinon.stub().returns();
+      w.emitAndKeepAlive = sinon.stub().returns();
+      w.publicKeyRing.mergeIndexes = sinon.stub().returns(true);
+      w.clearUnspentCache = sinon.stub();
+
+      w._doOnIndexes(indexes, true);
+      w.clearUnspentCache.calledOnce.should.be.false;
+      w.subscribeToAddresses.calledOnce.should.be.true;
+      w.emitAndKeepAlive.calledOnce.should.be.true;
+    });
+
+
+  });
   describe('#issueTx', function() {
     it('should broadcast a TX', function(done) {
       var w = createW2(null, 1);
@@ -1471,6 +1563,26 @@ describe('Wallet model', function() {
   });
 
 
+  describe('#getStorageKey', function() {
+    it('should return storage key', function() {
+      var w = cachedCreateW2();
+      var r = w.getStorageKey();
+      r.should.not.be.undefined;
+    });
+  });
+
+  describe('#seedCopayer', function() {
+    it('should set copayerId', function() {
+      var w = cachedCreateW2();
+      w.seedCopayer('abcd');
+      w.seededCopayerId.should.be.equal('abcd');
+    });
+  });
+
+
+
+
+
 
   describe('#_sendToPeers', function() {
     it('should call this.network.send', function() {
@@ -1749,7 +1861,13 @@ describe('Wallet model', function() {
       w.sendWalletReady = sinon.spy();
       w._onNoMessages();
       w.sendWalletReady.calledOnce.should.equal(true);
-
+    });
+    it('should not call sendWalletReady', function() {
+      var w = cachedCreateW2();
+      w.sendWalletReady = sinon.spy();
+      w.isComplete = sinon.stub().returns(false);
+      w._onNoMessages();
+      w.sendWalletReady.calledOnce.should.equal(false);
     });
   });
 
@@ -1966,7 +2084,7 @@ describe('Wallet model', function() {
 
     // For some unknown reason this test times out on 
     // the Travis server, so we skip it for now.
-    it.skip('should lock incomming connections', function() {
+    it('should lock incomming connections', function() {
       var obj = JSON.parse(pkr);
       sinon.stub(w.network, 'send').returns();
       sinon.stub(w.network, 'lockIncommingConnections').returns();
@@ -2103,6 +2221,47 @@ describe('Wallet model', function() {
   });
 
 
+
+
+  describe('_processIncomingNewTxProposal', function(done) {
+    it('should return an error', function(done) {
+      var w = cachedCreateW2();
+      var txp = {
+        getId: sinon.stub().returns('1')
+      };
+
+      w._processTxProposalPayPro = sinon.stub().yields('error');
+      w._processIncomingNewTxProposal(txp, function(err) {
+        err.should.be.equal('error');
+        done();
+      });
+    });
+
+    it('should call _updateTxProposalSent', function(done) {
+      var w = cachedCreateW2();
+      var tx = {
+        isComplete: sinon.stub().returns(true)
+      };
+
+      var txp = {
+        getId: sinon.stub().returns('1'),
+        builder: {
+          build: sinon.stub().returns(tx)
+        },
+        getSent: sinon.stub().returns(false)
+      };
+
+      w._updateTxProposalSent = sinon.stub().returns();
+      w._processTxProposalPayPro = sinon.stub().yields(null);
+      w._processIncomingNewTxProposal(txp, function(err) {
+        expect(err).to.be.undefined;
+        w._updateTxProposalSent.calledOnce.should.be.true;
+        done();
+      });
+    });
+  });
+
+
   describe('_onSignature', function() {
     var w, data, txp;
     beforeEach(function() {
@@ -2136,6 +2295,35 @@ describe('Wallet model', function() {
 
   });
 
+
+  describe('_checkIfTxIsSent', function() {
+    it('should call the blockchain ', function(done) {
+      var w = cachedCreateW2();
+      var utxo = createUTXO(w);
+      var txp = w._createTxProposal(PP.outs[0].address, PP.outs[0].amountSatStr, 'hola', utxo);
+      var ntxid = w.txProposals.add(txp);
+      sinon.stub(w.blockchain, 'broadcast').yields(null, 1234);
+      var data = {
+        ntxid: ntxid,
+        signatures: [1],
+      }
+      sinon.stub(w.txProposals, 'get').returns(txp);
+      sinon.stub(txp, '_addSignatureAndVerify').returns();
+
+      sinon.stub(w.blockchain, 'getTransaction').yields(null, null);
+
+
+      w.on('txProposalEvent', function(e) {
+        e.type.should.equal(Wallet.TX_SIGNED);
+        w._checkIfTxIsSent(txp, function() {
+          w.blockchain.getTransaction.called.should.equal(true);
+          done();
+        });
+      })
+      w._onSignature('senderID', data);
+
+    });
+  });
 
   describe('_onReject', function() {
     it('should do nothing on unknown tx', function() {
@@ -2190,6 +2378,36 @@ describe('Wallet model', function() {
     });
   });
 
+
+
+  describe('_setTxProposalSeen', function() {
+    it('should call sendSeen', function() {
+      var w = cachedCreateW();
+
+      var txp = {
+        getSeen: sinon.stub().returns(false),
+        setSeen: sinon.stub(),
+        getId: sinon.stub().returns('1'),
+      };
+
+      var spy1 = sinon.spy(w, 'sendSeen');
+      w._setTxProposalSeen(txp);
+      spy1.called.should.equal(true);
+    });
+    it('should not call sendSeen', function() {
+      var w = cachedCreateW();
+
+      var txp = {
+        getSeen: sinon.stub().returns(true),
+        setSeen: sinon.stub(),
+        getId: sinon.stub().returns('1'),
+      };
+
+      var spy1 = sinon.spy(w, 'sendSeen');
+      w._setTxProposalSeen(txp);
+      spy1.called.should.equal(false);
+    });
+  });
 
   describe('_onSeen', function() {
     it('should do nothing on unknown tx', function() {

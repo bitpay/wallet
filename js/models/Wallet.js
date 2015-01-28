@@ -265,7 +265,7 @@ Wallet.prototype.seedCopayer = function(pubKey) {
  * Processes the data using {@link HDParams#fromList} and merges it with the
  * {@link Wallet#publicKeyRing}.
  *
- * @param {Object} data - the data recived, {@see HDParams#fromList}
+ * @param {Object} data - the data received, {@see HDParams#fromList}
  */
 Wallet.prototype._doOnIndexes = function(indexes, fromTxProposal) {
   preconditions.checkArgument(indexes);
@@ -403,7 +403,7 @@ Wallet.prototype._getPubkeyToCopayerMap = function(txp) {
 
 /**
  * @desc
- * Asyncchronously check with the blockchain if a given transaction was sent.
+ * Asynchronously check with the blockchain if a given transaction was sent.
  *
  * @param {string} ntxid - the transaction proposal
  * @param {transactionCallback} cb
@@ -411,7 +411,9 @@ Wallet.prototype._getPubkeyToCopayerMap = function(txp) {
 Wallet.prototype._checkIfTxIsSent = function(ntxid, cb) {
   var txp = this.txProposals.get(ntxid);
   var tx = txp.builder.build();
-  var txHex = tx.serialize().toString('hex');
+
+  //not used anymore
+  //var txHex = tx.serialize().toString('hex');
 
 
   //Use calcHash NOT getHash which could be cached.
