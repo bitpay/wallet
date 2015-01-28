@@ -50,6 +50,17 @@ angular.module('copayApp.controllers').controller('SendController',
       });
     };
 
+    if (isCordova) {
+      var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
+        $scope.sendForm.address.$setViewValue(data);
+        $scope.sendForm.address.$render();
+      });
+
+      $scope.$on('$destroy', function() {
+        openScannerCordova();
+      });
+    }
+
     $scope.formFocus = function(what) {
       if (!$scope.isWindowsPhoneApp) return
 
@@ -299,7 +310,6 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     $scope.openScanner = function() {
-      if (window.cordova) return $scope.scannerIntent();
       $scope.showScanner = true;
 
       // Wait a moment until the canvas shows
@@ -323,31 +333,6 @@ angular.module('copayApp.controllers').controller('SendController',
         }
       }, 500);
     };
-
-    $scope.scannerIntent = function() {
-      window.ignoreMobilePause = true;
-      cordova.plugins.barcodeScanner.scan(
-        function onSuccess(result) {
-          $timeout(function() {
-            window.ignoreMobilePause = false;
-          }, 100);
-          if (result.cancelled) return;
-
-          $timeout(function() {
-            var data = result.text;
-            $scope.$apply(function() {
-              $scope.sendForm.address.$setViewValue(result.text);
-              $scope.sendForm.address.$render();
-            });
-          }, 1000);
-        },
-        function onError(error) {
-          $timeout(function() {
-            window.ignoreMobilePause = false;
-          }, 100);
-          alert('Scanning error');
-        });
-    }
 
     $scope.setTopAmount = function() {
       var w = $rootScope.wallet;

@@ -52,7 +52,7 @@ describe("Unit: Controllers", function() {
     //
     // TODO Use the REAL wallet, and stub only networking and DB components!
     //
-    
+
     var w = {};
     w.id = 1234;
     w.isComplete = sinon.stub().returns(true);
@@ -148,8 +148,80 @@ describe("Unit: Controllers", function() {
       c = $controller('ReceiveController', {
         $scope: scope,
       });
+
+
+      var createW = function(N, conf) {
+
+        var c = JSON.parse(JSON.stringify(conf || walletConfig));
+        if (!N) N = c.totalCopayers;
+
+        var mainPrivateKey = new copay.PrivateKey({
+          networkName: walletConfig.networkName
+        });
+        var mainCopayerEPK = mainPrivateKey.deriveBIP45Branch().extendedPublicKeyString();
+        c.privateKey = mainPrivateKey;
+
+        c.publicKeyRing = new copay.PublicKeyRing({
+          networkName: c.networkName,
+          requiredCopayers: Math.min(N, c.requiredCopayers),
+          totalCopayers: N,
+        });
+        c.publicKeyRing.addCopayer(mainCopayerEPK);
+
+        c.publicKeyRing.getAddressesOrdered = sinon.stub().returns(null);
+
+        c.txProposals = new copay.TxProposals({
+          networkName: c.networkName,
+        });
+
+        c.blockchain = new Blockchain(walletConfig.blockchain);
+
+        c.network = sinon.stub();
+        c.network.setHexNonce = sinon.stub();
+        c.network.setHexNonces = sinon.stub();
+        c.network.getHexNonce = sinon.stub();
+        c.network.getHexNonces = sinon.stub();
+        c.network.peerFromCopayer = sinon.stub().returns('xxxx');
+        c.network.send = sinon.stub();
+
+        c.addressBook = {
+          '2NFR2kzH9NUdp8vsXTB4wWQtTtzhpKxsyoJ': {
+            label: 'John',
+            copayerId: '026a55261b7c898fff760ebe14fd22a71892295f3b49e0ca66727bc0a0d7f94d03',
+            createdTs: 1403102115,
+            hidden: false
+          },
+          '2MtP8WyiwG7ZdVWM96CVsk2M1N8zyfiVQsY': {
+            label: 'Jennifer',
+            copayerId: '032991f836543a492bd6d0bb112552bfc7c5f3b7d5388fcbcbf2fbb893b44770d7',
+            createdTs: 1403103115,
+            hidden: false
+          }
+        };
+
+        c.networkName = walletConfig.networkName;
+        c.version = '0.0.1';
+
+        c.balanceInfo = {};
+
+        return new Wallet(c);
+      };
+
+      $rootScope.wallet = createW();
+      $rootScope.wallet.balanceInfo = {};
     }));
 
+    it('should exist', function() {
+      should.exist(c);
+    });
+
+    it('should call setAddressList', function() {
+      scope.setAddressList();
+      expect(scope.addresses).to.be.empty;
+      scope.toggleShowAll();
+      scope.setAddressList();
+      expect(scope.addresses).to.be.empty;
+    });
   });
 
   describe('History Controller', function() {
@@ -568,25 +640,12 @@ describe("Unit: Controllers", function() {
     });
   });
 
-  describe('Profile Controller', function() {
-    var ctrl, inScope, modalCtrl;
+  describe('More Controller', function() {
+    var ctrl, modalCtrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      ctrl = $controller('ProfileController', {
-        $scope: scope,
-        $modal: {
-          open: function(opts) {
-            inScope = $rootScope.$new();
-            modalCtrl = opts.controller(inScope, {
-              close: sinon.stub(),
-            });
-            return {
-              result: {
-                then: sinon.stub(),
-              }
-            };
-          },
-        },
+      ctrl = $controller('MoreController', {
+        $scope: scope
       });
       saveAsLastCall = null;
 
@@ -595,8 +654,7 @@ describe("Unit: Controllers", function() {
     it('Backup Wallet controller #download', function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
-      scope.showWalletInfo(w);
-      inScope.downloadWalletBackup();
+      scope.downloadWalletBackup();
 
       expect(saveAsLastCall.blob.size).equal(7);
       expect(saveAsLastCall.blob.type).equal('text/plain;charset=utf-8');
@@ -605,8 +663,7 @@ describe("Unit: Controllers", function() {
     it('Backup Wallet controller should name backup correctly for multiple copayers', function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
-      scope.showWalletInfo(w);
-      inScope.downloadWalletBackup();
+      scope.downloadWalletBackup();
       expect(saveAsLastCall.filename).equal('nickname-fakeWallet-keybackup.json.aes');
     });
 
@@ -614,16 +671,14 @@ describe("Unit: Controllers", function() {
       var w = scope.wallet;
       expect(saveAsLastCall).equal(null);
       scope.wallet.totalCopayers = 1;
-      scope.showWalletInfo(w);
-      inScope.downloadWalletBackup();
+      scope.downloadWalletBackup();
       expect(saveAsLastCall.filename).equal('fakeWallet-keybackup.json.aes');
     });
 
     it('Delete a wallet', function() {
       var w = scope.wallet;
 
-      scope.showWalletInfo(w);
-      inScope.deleteWallet();
+      scope.deleteWallet();
       scope.$digest();
       scope.iden.deleteWallet.calledOnce.should.equal(true);
       scope.iden.deleteWallet.getCall(0).args[0].should.equal(w.getId());

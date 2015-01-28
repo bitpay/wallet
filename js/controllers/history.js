@@ -37,9 +37,6 @@ angular.module('copayApp.controllers').controller('HistoryController',
           property: 'amount',
           type: 'number'
         }, {
-          label: 'Amount (' + w.settings.alternativeIsoCode + ')',
-          property: 'alternativeAmount'
-        }, {
           label: 'Action',
           property: 'action'
         }, {

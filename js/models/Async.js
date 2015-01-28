@@ -358,10 +358,6 @@ Network.prototype.getOnlinePeerIDs = function() {
   return this.connectedPeers;
 };
 
-Network.prototype.getPeer = function() {
-  return this.peer;
-};
-
 
 Network.prototype.getCopayerIds = function() {
   if (this.allowedCopayerIds) {

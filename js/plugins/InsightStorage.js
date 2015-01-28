@@ -128,7 +128,8 @@ InsightStorage.prototype._makeGetRequest = function(passphrase, key, callback) {
   var retrieveUrl = this.storeUrl + '/retrieve';
   var getParams = {
     url: retrieveUrl + '?' + querystring.encode({
-      key: key
+      key: key, 
+      rand: Math.random() // prevent cache
     }),
     headers: {
       'Authorization': authHeader

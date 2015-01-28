@@ -77,6 +77,7 @@ describe('Wallet model', function() {
   it('should getNetworkName', function() {
     var w = cachedCreateW();
     w.getNetworkName().should.equal('testnet');
+    w.isTestnet().should.be.true;
   });
 
 
@@ -155,6 +156,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW();
     should.exist(w);
     w.publicKeyRing.walletId.should.equal(w.id);
+    w.getId().should.equal(w.id);
     w.txProposals.walletId.should.equal(w.id);
     w.requiredCopayers.should.equal(3);
     should.exist(w.id);
@@ -318,6 +320,7 @@ describe('Wallet model', function() {
     var w = cachedCreateW2();
     unSpentTestFromWallet(unspentTest[0], w.publicKeyRing.generateAddress(true));
 
+
     var txp = w._createTxProposal(
       'mgGJEugdPnvhmRuFdbdQcFfoFLc1XXeB79',
       '123456789',
@@ -325,11 +328,13 @@ describe('Wallet model', function() {
       unspentTest
     );
 
+    w.addSeenToTxProposals().should.be.false;
     Object.keys(txp.getSignersPubKeys()).length.should.equal(1);
     var tx = txp.builder.build();
     should.exist(tx);
     chai.expect(txp.comment).to.be.null;
     tx.isComplete().should.equal(false);
+    w.addSeenToTxProposals().should.be.false;
     Object.keys(txp.seenBy).length.should.equal(1);
     Object.keys(txp.signedBy).length.should.equal(1);
   });
@@ -377,6 +382,14 @@ describe('Wallet model', function() {
 
     wallet.addressIsOwn('mmHqhvTVbxgJTnePa7cfweSRjBCy9bQQXJ').should.equal(false);
     wallet.addressIsOwn('mgtUfP9sTJ6vPLoBxZLPEccGpcjNVryaCX').should.equal(false);
+  });
+
+  it('#getAddressesOrdered', function() {
+    var wallet = cachedCreateW2();
+    var allAddresses = wallet.getAddressesOrdered();
+    for (var i = 0; i < allAddresses.length; i++) {
+      wallet.addressIsOwn(allAddresses[i]).should.equal(true);
+    }
   });
 
   it('#create. Signing with derivate keys', function() {
@@ -760,7 +773,7 @@ describe('Wallet model', function() {
   });
 
 
-  it('should exportEncrypted', function() {
+  it('should exportEncrypted ', function() {
     var w = createW2();
     var enc = w.exportEncrypted('', {});
     enc.length.should.equal(2405);
@@ -874,7 +887,9 @@ describe('Wallet model', function() {
       }, function(err, ntxid) {
         var s = sinon.stub(w, 'getMyCopayerId').returns('213');
         Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(0);
+        w.addSeenToTxProposals().should.be.true;
         w.reject(ntxid);
+
         Object.keys(w.txProposals.get(ntxid).rejectedBy).length.should.equal(1);
         w.txProposals.get(ntxid).rejectedBy['213'].should.gt(1);
         s.restore();
@@ -2053,6 +2068,15 @@ describe('Wallet model', function() {
       payload.walletId.should.equal(w.id);
       payload.txProposal.should.deep.equal(txp.toObjTrim());
     });
+    it('should be able to sendAllTxProposals since ', function() {
+      w.txProposals.add(txp);
+      w.sendAllTxProposals(null, txp.createdTs);
+      w.network.send.calledOnce.should.equal(true);
+      var payload = w.network.send.getCall(0).args[1];
+      payload.type.should.equal('txProposal');
+      payload.walletId.should.equal(w.id);
+      payload.txProposal.should.deep.equal(txp.toObjTrim());
+    });
     it('should be able to sendSignature', function() {
       w.txProposals.add(txp);
       w.sendSignature(txp.getId());
@@ -2540,7 +2564,6 @@ describe('Wallet model', function() {
       });
     });
   });
-
 
   // TODO
   describe.skip('#onPayProPaymentAck', function() {

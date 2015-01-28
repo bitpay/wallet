@@ -658,7 +658,7 @@ Wallet.prototype._onAddressBook = function(senderId, data) {
   var self = this,
     hasChange;
   _.each(data.addressBook, function(value, key) {
-    if (key && !self.addressBook[key] && Address.validate(key)) {
+    if (key && !self.addressBook[key] && _.isString(key) && Address.validate(key)) {
 
       self.addressBook[key] = _.pick(value, ['createdTs', 'label']);
 
@@ -2062,13 +2062,13 @@ Wallet.prototype.getAddresses = function() {
 
 
 /**
- * @desc gets the list of addresses, orderder for the caller:
+ * @desc gets the list of addresses, ordered for the caller:
  *  1) himselfs first
  *  2) receive address first
  *  3) last created first
  */
-Wallet.prototype.getAddressesOrderer = function() {
-  return this.publicKeyRing.getAddressesOrderer(this.publicKey);
+Wallet.prototype.getAddressesOrdered = function() {
+  return this.publicKeyRing.getAddressesOrdered(this.publicKey);
 };
 
 /**

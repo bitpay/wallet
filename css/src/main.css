@@ -142,13 +142,9 @@ header .alt-currency {
   right: 0;
 }
 
-.head .title {
+.head .founds {
   float: left;
   padding-left: 2rem;
-}
-
-.head .title h1 {
-  margin: 0;
 }
 
 .head .menu {
@@ -267,21 +263,18 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   padding: 0.5rem 0.65rem;
   background-color: #fff;
   color: #003366;
-  border-radius: 3px;
   line-height: 24px;
   text-align: center;
 }
 
 .status {
-  -moz-box-shadow:    inset 0px -1px 1px 0px rgba(159,47,34,0.30);
-  box-shadow:         inset 0px -1px 1px 0px rgba(159,47,34,0.30);
   color: #FFFFFF;
   background-color: #A02F23;
   position: absolute;
   left: 250px;
   right: 0;
   bottom: 0;
-  padding: 10px 2rem;
+  padding: 10px 1rem 10px 0.5rem;
   z-index: 9;
   font-size: 14px;
   text-align: left;
@@ -289,7 +282,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .status-first-line {
-
   z-index: 9;
   font-size: 16px;
 }
@@ -317,6 +309,27 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   background-color: #0066cc;
   color: #fff;
   line-height: 24px;
+}
+
+.buttons-sidebar {
+  color: #A5B2BF;
+  font-weight: 700;
+  font-size: 12px;
+  display: block;
+  padding: 0.5rem 0;
+  line-height: 16px;
+}
+
+.buttons-sidebar .col1 {
+  margin-top: 2px;
+}
+
+.buttons-sidebar .col1 i {
+  background-color: #2C3E50;
+  color: #A5B2BF;
+  border-radius: 100%;
+  padding: .3rem 0.55rem;
+  margin: 0 7px;
 }
 
 .button.small.side-bar {
@@ -398,9 +411,10 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 a.close-notification {
   position: absolute;
-  top: 8px;
-  right: 10px;
+  top: 0;
+  right: 0;
   font-size: 24px;
+  padding: 10px;
 }
 
 .panel.last-transactions {
@@ -483,18 +497,46 @@ ul.tx-copayers {
   color: #0066cc;
 }
 
-a.button-setup.add-wallet {
-  opacity: .5;
-  margin: 1rem auto;
-  width: 125px;
-  font-size: 14px;
-  padding: .3rem 0.7rem;
+.manage a {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #1ABC9C;
+}
+
+.manage a.join {
+  color: #2980B9;
+}
+
+.manage a.import {
+  color: #213140;
+}
+
+
+
+.manage a i {
+  background-color: #1ABC9C;
+  width: 60px;
+  height: 60px;
+  padding: 0.85rem;
+  border-radius: 100%;
+  display: block;
+  font-size: 30px;
+  margin: 0 auto 20px;
   color: #fff;
+}
+
+.manage a.join i {
+  background-color: #2980B9;
+}
+
+.manage a.import i {
+  background-color: #213140;
 }
 
 a.button-setup {
   border-radius: 3px;
-  border: 1px solid #E4E8EC;
+  border: 1px solid #ccc;
   display: block;
   padding: 0.5rem;
   background: transparent;
@@ -624,11 +666,8 @@ a.button-setup {
 
 .name-wallet {
   font-size: 14px;
-  width: 72%;
-  float: left;
   color: #fff;
-  text-transform: lowercase;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .name-wallet i {
@@ -642,16 +681,14 @@ a.button-setup {
 }
 
 .founds {
-  font-weight: 100;
-  color: #B6E9DF;
+  font-size: 20px;
+  color: #7A8C9E;
+  font-weight: 700;
 }
 
 .locked {
   font-size: 11px;
   background-color: #f4f4f4;
-  width: 100%;
-  padding: 0.3rem 0.7rem;
-  color: white;
 }
 
 .hidden {
@@ -1065,7 +1102,7 @@ ul.wallet-selection.wallets {
 }
 
 .side-nav.wallets li {
-  margin: 1.2rem 0;
+  margin: 0.8rem 0;
   padding: 0.3rem 0.1rem;
 }
 
@@ -1251,6 +1288,7 @@ label.postfix, a.postfix {
 .createProfile input[type=email],
 .createProfile input[type=text],
 .createProfile input[type=password],
+.createProfile input[type=tel],
 .home input[type=email],
 .home input[type=text],
 .home input[type=tel],
@@ -1299,7 +1337,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .black {
   background-color: #0066cc;
 }
-
+.text-italic {font-style: italic;}
 .text-light {font-weight: 100;}
 .text-bold {font-weight: 700;}
 .text-gray {color: #8597A7;}
@@ -1366,6 +1404,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   dialog.small, .reveal-modal.small,
   dialog.medium, .reveal-modal.medium,
   dialog.large, .reveal-modal.large {
+    width:100%;
     height: 100%;
     overflow-y: auto;
   }

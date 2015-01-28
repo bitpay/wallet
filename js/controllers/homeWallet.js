@@ -2,10 +2,6 @@
 
 angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService) {
 
-  $scope.initHome = function() {
-    $rootScope.title = 'Home';
-  }; 
-
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       var w = $rootScope.wallet;

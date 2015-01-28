@@ -1,7 +1,7 @@
 <div ng-controller="CopayersController" ng-init="init()">
   <div class="row">
     <div class="large-12 medium-12 small-12 columns">
-      <h1 class="hide-for-large-up size-18">{{$root.title}}</h1> 
+      <h1>Share this secret with your copayers</h1> 
     </div>
   </div>
 
@@ -49,5 +49,27 @@
     </div>
   </div>
   <!-- end of row -->
+  <div class="row">
+    <div class="large-12 columns">
+      <button class="small warning" ng-show="!confirmDelete" ng-click="confirmDelete=!confirmDelete">
+        <i class="fi-trash"></i> Cancel
+      </button>
+      <div class="text-center" ng-show="confirmDelete">
+        <h2>Are you sure you want to cancel and delete this wallet</h2>
+        <div class="row">
+          <div class="large-6 medium-6 small-6 columns">
+            <button class="gray" ng-disabled="loading" 
+              ng-click="confirmDelete=!confirmDelete">No</button>
+          </div>
+          <div class="large-6 medium-6 small-6 columns">
+            <button class="warning" ng-disabled="loading" ng-click="deleteWallet()">
+              <i class="fi-trash"></i> Yes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="extra-margin-bottom"></div>
 

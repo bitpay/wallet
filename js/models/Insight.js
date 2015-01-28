@@ -14,8 +14,8 @@ var log = require('../util/log.js');
 
 
 /*
-  This class lets interfaces with the blockchain, making general queries and
-  subscribing to transactions on adressess and blocks.
+  This class lets interface with the blockchain, making general queries and
+  subscribing to transactions on addresses and blocks.
 
   Opts: 
     - url

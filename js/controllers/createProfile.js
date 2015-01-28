@@ -41,13 +41,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         $scope.passwordStrength = null;
 
         _firstpin = null;
-
-        $scope.setPinForm.newpin.$setViewValue('');
-        $scope.setPinForm.newpin.$render();
-        $scope.setPinForm.repeatpin.$setViewValue('');
-        $scope.setPinForm.repeatpin.$render();
-        $scope.setPinForm.$setPristine();
-
         $scope.error = 'Entered PINs were not equal. Try again';
         $timeout(function() {
           $scope.$digest();
@@ -79,7 +72,6 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         _credentials = null;
         $scope.askForPin = 0;
         $rootScope.hasPin = true;
-        $rootScope.starting = null;
         $scope.createDefaultWallet();
       });
     }, 100);
@@ -123,8 +115,10 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
   /* Last step. Will emit after creation so the UX gets updated */
   $scope.createDefaultWallet = function() {
     $rootScope.hideNavigation = false;
+    $rootScope.starting = true;
     identityService.createDefaultWallet(function(err) {
       $scope.askForPin = 0;
+      $rootScope.starting = null;
 
       if (err) {
         var msg = err.toString();
@@ -143,11 +137,8 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkArgument(_.isString(password));
 
     $rootScope.hideNavigation = false;
-    $rootScope.starting = true;
 
     identityService.create(emailOrUsername, password, function(err) {
-      $rootScope.starting = null;
-      $scope.error = null;
       if (err) {
         var msg = err.toString();
         $scope.createStep = 'email';
@@ -157,11 +148,11 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
         if (msg.indexOf('EMAILERROR') >= 0) {
           msg = 'Could not send verification email. Please check your email address.';
         }
-        $scope.error = msg;
-        $scope.passwordStrength = null;
+        return cb(msg);
       } else {
         // mobile
         if ($scope.isMobile) {
+          $rootScope.starting = null;
           _credentials = {
             email: emailOrUsername,
             password: password,
@@ -206,14 +197,21 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
 
     $scope.saveSettings(function(err) {
       preconditions.checkState(!err, err);
+      $rootScope.starting = true;
 
       $scope._doCreateProfile($scope.userOrEmail, form.password.$modelValue, function(err) {
+        if (err) { 
+          $scope.error = err;
+          $scope.passwordStrength = null;
+          $rootScope.starting = false; 
+        }
+        form.password.$setViewValue('');
+        form.password.$render();
+        form.repeatpassword.$setViewValue('');
+        form.repeatpassword.$render();
+        form.$setPristine();
         $timeout(function() {
-          form.password.$setViewValue('');
-          form.password.$render();
-          form.repeatpassword.$setViewValue('');
-          form.repeatpassword.$render();
-          form.$setPristine();
+          $rootScope.$digest();
         }, 1);
       });
     });

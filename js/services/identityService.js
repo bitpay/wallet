@@ -298,7 +298,7 @@ angular.module('copayApp.services')
       iden.on('noWallets', function() {
         notification.warning('No Wallets', 'Your profile has no wallets. Create one here');
         $rootScope.starting = false;
-        $location.path('/create');
+        $location.path('/add');
         $timeout(function() {
           $rootScope.$digest();
         }, 1);
@@ -323,7 +323,9 @@ angular.module('copayApp.services')
       if ($rootScope.iden) {
         $rootScope.signingOut = true;
         $rootScope.iden.close(function() { // Will trigger 'closed'
-          $rootScope.signingOut = false;
+          $timeout(function() {
+            $rootScope.signingOut = null;
+          }, 100);
         }); // Will trigger 'closed'
       }
     };

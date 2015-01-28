@@ -137,7 +137,7 @@ describe('PublicKeyRing model', function() {
     [true, false].forEach(function(isChange) {
       for (var i = 0; i < 2; i++) {
         var aStr = w.generateAddress(isChange, k.pub);
-        var a= new bitcore.Address(aStr);
+        var a = new bitcore.Address(aStr);
         a.isValid().should.equal(true);
         a.isScript().should.equal(true);
         a.network().name.should.equal('livenet');
@@ -161,8 +161,8 @@ describe('PublicKeyRing model', function() {
     var setup = getCachedW();
     var pubkeyring = setup.w;
     var address = pubkeyring.generateAddress(false, setup.pub);
-    _.indexOf(pubkeyring.getReceiveAddresses(),address).should.be.above(-1);
-    _.indexOf(pubkeyring.getAddresses(),address).should.be.above(-1);
+    _.indexOf(pubkeyring.getReceiveAddresses(), address).should.be.above(-1);
+    _.indexOf(pubkeyring.getAddresses(), address).should.be.above(-1);
   });
 
 
@@ -170,8 +170,8 @@ describe('PublicKeyRing model', function() {
     var setup = getCachedW();
     var pubkeyring = setup.w;
     var address = pubkeyring.generateAddress(true, setup.pub);
-    _.indexOf(pubkeyring.getReceiveAddresses(),address).should.be.equal(-1);
-    _.indexOf(pubkeyring.getAddresses(),address).should.be.above(-1);
+    _.indexOf(pubkeyring.getReceiveAddresses(), address).should.be.equal(-1);
+    _.indexOf(pubkeyring.getAddresses(), address).should.be.above(-1);
   });
 
   it('should generate one address by default', function() {
@@ -179,6 +179,8 @@ describe('PublicKeyRing model', function() {
     var w = k.w;
     var a = w.getAddresses();
     a.length.should.equal(1);
+    var b = w.getAddressesOrdered();
+    b.length.should.equal(1);
   });
 
   it('should generate one address by default', function() {
@@ -190,7 +192,7 @@ describe('PublicKeyRing model', function() {
     a = w.getAddresses();
     a.length.should.equal(1);
   });
- 
+
 
   it('should generate 4+1 addresses', function() {
     var k = createW();
@@ -546,6 +548,10 @@ describe('PublicKeyRing model', function() {
     ret.pubKeys[1].length.should.equal(5);
   });
 
+  it('#myCopayerId should return first copayerId ', function() {
+    var w = getCachedW().w;
+    w.myCopayerId().should.be.equal(w.getCopayerId(0));
+  });
 
 
 });

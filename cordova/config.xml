@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.bitpay.copay" 
-  version="0.9.4" 
-  android-versionCode="23"
-  ios-CFBundleVersion="0.9.4">
+  version="0.9.5" 
+  android-versionCode="24"
+  ios-CFBundleVersion="0.9.5">
     <name>DGBWallet</name>
     <description>
       A secure digibyte wallet for friends and companies.
@@ -21,7 +21,7 @@
     <preference name="StatusBarBackgroundColor" value="#3C4E60" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="BackupWebStorage" value="none"/>
-        <preference name="windows-target-version" value="8.1"/>
+    <preference name="windows-target-version" value="8.1"/>
     <feature name="App">
       <param name="android-package" value="com.bitpay.copay" />
     </feature>

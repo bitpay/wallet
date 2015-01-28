@@ -1,9 +1,20 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, balanceService, notification, rateService) {
+  function($scope, $rootScope, $location, $filter, $timeout, balanceService, notification, rateService, backupService, identityService, isMobile, isCordova, go) {
     var w = $rootScope.wallet;
-    $scope.isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+    var max = $rootScope.quotaPerItem;
+    $scope.isSafari = isMobile.Safari();
+    $scope.isCordova = isCordova;
+    $scope.wallet = w;
+    $scope.error = null;
+    $scope.success = null;
+
+    var bits = w.sizes().total;
+    w.kb = $filter('noFractionNumber')(bits / 1000, 1);
+    if (max) {
+      w.usage = $filter('noFractionNumber')(bits / max * 100, 0);
+    }
 
     $rootScope.title = 'Settings';
 
@@ -90,4 +101,56 @@ angular.module('copayApp.controllers').controller('MoreController',
         }, true);
       });
     };
+
+    $scope.deleteWallet = function() {
+      $scope.loading = true;
+      identityService.deleteWallet(w, function(err) {
+        if (err) {
+          $scope.loading = null;
+          $scope.error = err.message || err;
+          copay.logger.warn(err);
+          $timeout(function () { $scope.$digest(); });
+        } else {
+          $scope.loading = false;
+          if ($rootScope.wallet) {
+            go.walletHome();
+          }
+          $timeout(function() {
+            notification.success('Success', 'The wallet "' + (w.name || w.id) + '" was deleted');
+          });
+        }
+      });
+    };
+
+    $scope.downloadWalletBackup = function() {
+      backupService.walletDownload(w);
+    };
+
+    $scope.viewWalletBackup = function() {
+      $scope.loading = true;
+      $timeout(function() {
+        $scope.backupWalletPlainText = backupService.walletEncrypted(w);
+      }, 100);
+    };
+
+    $scope.copyWalletBackup = function() {
+      var ew = backupService.walletEncrypted(w);
+      window.cordova.plugins.clipboard.copy(ew);
+      window.plugins.toast.showShortCenter('Copied to clipboard');
+    };
+
+    $scope.sendWalletBackup = function() {
+      window.plugins.toast.showShortCenter('Preparing backup...');
+      var name = (w.name || w.id);
+      var ew = backupService.walletEncrypted(w);
+      var properties = {
+        subject: 'Copay Wallet Backup: ' + name,
+        body: 'Here is the encrypted backup of the wallet ' 
+          + name + ': \n\n' + ew 
+          + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
+        isHtml:  false
+      };
+      window.plugin.email.open(properties);
+    };
+
   });

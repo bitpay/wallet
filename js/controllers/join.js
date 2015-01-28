@@ -127,13 +127,13 @@ angular.module('copayApp.controllers').controller('JoinController',
         return;
       }
 
-      $scope.loading = true;
+      $rootScope.starting = true;
       identityService.joinWallet({
         secret: $scope.connectionId,
         nickname: $scope.nickname,
         privateHex: $scope.private,
       }, function(err) {
-        $scope.loading = false;
+        $rootScope.starting = false;
         if (err) {
           if (err === 'joinError')
             notification.error('Fatal error connecting to Insight server');
@@ -155,6 +155,6 @@ angular.module('copayApp.controllers').controller('JoinController',
 
 
     $scope.$on("$destroy", function () {
-        $rootScope.hideWalletNavigation = false;
+      $rootScope.hideWalletNavigation = false;
     });
   });

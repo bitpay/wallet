@@ -1,26 +1,22 @@
 <div ng-init="init()">
-  <header ng-show="$root.wallet">
-    <div class="col1">
-      <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
+  <header>
+    <div class="left p15" ng-show="!$root.wallet">
+      <span class="db m5t text-italic">You have no wallets</span>
     </div>
-    <div class="col2" ng-class="{'col2_full':!wallets.length}">
-      <div class="oh m5t m10r"> 
-        <div class="right size-10">[ {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]</div>
-        <div class="name-wallet">
-          <div class="ellipsis">{{$root.wallet.getName()}}</div>
-        </div> 
+    <div ng-show="$root.wallet">
+      <div class="col1">
+        <div class="avatar-wallet">{{$root.wallet.getName() | limitTo: 1}}</div>
       </div>
-      <div class="founds size-12">
-        <span ng-if="!$root.wallet.isComplete()">Waiting for copayers...</span>
-        <div ng-if="$root.wallet.isComplete()">
-          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-dollar-bill icon-rotate spinner"></i></span>
-          <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-            <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
+      <div class="col2" ng-class="{'col2_full':!wallets.length}">
+        <div class="oh m5t m10r"> 
+          <div class="name-wallet">
+            <div class="ellipsis">{{$root.wallet.getName()}}</div>
           </div> 
+          <div class="size-12">  {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} </div>
         </div>
       </div>
     </div>
-    <div class="col3" ng-if="wallets.length > 1">
+    <div class="col3">
       <a ng-class="{'selected':walletSelection}" 
         ng-click="toggleWalletSelection()"> 
         <span ng-show="!walletSelection">
@@ -32,20 +28,11 @@
       </a>
     </div>
   </header>
-  <div class="locked" ng-show="$root.wallet.balanceInfo.lockedBalance && !walletSelection">
-    <span class="text-gray">
-       {{'Locked'|translate}} &nbsp;
-    </span>
-    <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-dollar-bill icon-rotate spinner"></i></span>
-    <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" class="text-gray">
-      <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
-    </span>
-
-  </div>
 
   <div>
-    <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}" ng-show="wallets[0]">
+    <ul class="side-nav wallets" ng-class="{'pullDown': walletSelection}">
       <li 
+        ng-if="wallets[0]"
         ng-repeat="item in wallets track by $index" 
         class="nav-item" 
         ng-if="item.id != $root.wallet.id" 
@@ -55,18 +42,20 @@
         </div>
         <div class="col2">
           <a href class="size-12 wallet-item">
-            <div class="oh">
-              <div class="right size-10 type-wallet">[ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div> 
-              <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
-            </div>
-            <div class="oh">
-              <span ng-if="item.isComplete() && item.balanceInfo.updatingBalance"><i class="fi-dollar-bill icon-rotate spinner"></i></span>
-              <div ng-if="item.isComplete() && !item.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-                <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
-              </div>
-              <span ng-if="!item.isComplete()">Waiting for copayers...</span>
-            </div>
+            <span class="ellipsis name-wallet">{{item.name || item.id}}</span>
+            <span class="size-12 type-wallet">  {{item.requiredCopayers}} of {{item.totalCopayers}}  </span> 
           </a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <div class="buttons-sidebar" title="Add wallet" ng-click="$root.go('add')">
+          <div class="col1">
+            <i class="fi-plus size-21"></i> 
+          </div>
+          <div class="col2">
+            <span class="tu text-bold">Add wallet</span> <br>
+            <span class="text-light">Create, join or import</span>
+          </div>
         </div>
       </li>
     </ul>

@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, isMobile, go) {
+angular.module('copayApp.controllers').controller('SidebarController', function($scope, $rootScope, $location, $timeout, identityService, isMobile, isCordova, go) {
 
-  $scope.isMobile = isMobile.any()
+  $scope.isMobile = isMobile.any();
+  $scope.isCordova = isCordova;
 
   $scope.menu = [{
     'title': 'Home',
@@ -44,6 +45,32 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     $scope.walletSelection = !$scope.walletSelection;
     if (!$scope.walletSelection) return;
     $scope.setWallets();
+  };
+
+  $scope.openScanner = function() {
+    window.ignoreMobilePause = true;
+    cordova.plugins.barcodeScanner.scan(
+      function onSuccess(result) {
+        $timeout(function() {
+          window.ignoreMobilePause = false;
+        }, 100);
+        if (result.cancelled) return;
+
+        $timeout(function() {
+          var data = result.text;
+          $scope.$apply(function() {
+            $rootScope.$emit('dataScanned', data); 
+          });
+        }, 1000);
+      },
+      function onError(error) {
+        $timeout(function() {
+          window.ignoreMobilePause = false;
+        }, 100);
+        alert('Scanning error');
+      }
+    );
+    go.send();
   };
 
   $scope.init = function() {
