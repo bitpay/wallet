@@ -351,6 +351,7 @@ describe('TxProposal', function() {
 
 
 
+
     it('#getSignersPubKeys', function() {
       var txp = dummyProposal();
       var pubkeys = txp.getSignersPubKeys();
@@ -732,6 +733,15 @@ describe('TxProposal', function() {
 
 
   describe('micelaneous functions', function() {
+    it('should sign previously reject tx', function() {
+      var txp = dummyProposal();
+      txp.rejectCount().should.equal(0);
+      txp.setRejected(['juan'])
+      txp.rejectCount().should.equal(1);
+      txp._setSigned('juan');
+      txp.rejectCount().should.equal(0);
+
+    });
     it('should report rejectCount', function() {
       var txp = dummyProposal();
       txp.rejectCount().should.equal(0);
