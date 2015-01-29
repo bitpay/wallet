@@ -63,6 +63,7 @@
         <img src="img/clipo-pin-enter.png" alt="clipo" width="300" ng-show="$root.hasPin && !$root.iden">
         <img src="img/clipo-pin.png" alt="clipo" width="380" ng-show="$root.askForPin">
       </div>
+      <div class="text-white text-center" ng-show="$root.askForPin == 2">Repeat PIN</div>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>

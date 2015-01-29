@@ -64,6 +64,7 @@ angular.module('copayApp.services')
         if (!$rootScope.hasPin) {
           if (!_firstpin) {
             _firstpin = pin;
+            $rootScope.askForPin = 2;
             $timeout(function() {
               scope.clear();
             }, 100);
@@ -71,10 +72,13 @@ angular.module('copayApp.services')
           }
           else {
             if (pin === _firstpin) {
+              _firstpin = null;
+              $rootScope.askForPin = null;
               scope.createPin(pin);
             }
             else {
               _firstpin = null;
+              $rootScope.askForPin = 1;
               $timeout(function() {
                 scope.clear();
                 scope.error = 'Entered PINs were not equal. Try again';
