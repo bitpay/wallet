@@ -352,14 +352,25 @@
     padding: 0;
   }
 
-  a, button, .button, input, textarea, select {
+  a, button, .button, input, textarea, select, .reveal-modal {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
     -webkit-tap-highlight-color:rgba(0,0,0,0);
   }
 
-  .modal.fade, .reveal-modal-bg {
+  .add-wallet .button-setup {
+    border: 1px solid #A5B2BF;
+    border-radius: 5px;
+    color: #7A8C9E;
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+
+  .modal.fade {
     opacity: 1;
   }
 
@@ -373,6 +384,19 @@
   .button.secondary:hover, button.secondary:hover {
     background: #008CC1;
     color: #fff;
+  } 
+
+  .move-right .close-menu {
+    cursor: pointer;
+    box-shadow: none;
+    display: block;
+    position: absolute;
+    background: rgba(255,255,255,.2);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1002;
   }
 
   /*******************************************/
@@ -424,6 +448,20 @@
     border-top: 1px solid #eee;    
     padding-top: 10px;
     margin-top: 10px;
+  }
+
+  .reveal-modal {
+    border: none;
+  }
+
+  .reveal-modal-bg {
+    position: absolute;
+    height: 0;
+    width: 0;
+    background: none;
+    display: none;
+    top: 0;
+    left: 0;
   }
 
   /* notifications */
