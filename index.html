@@ -85,7 +85,7 @@
         <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation  && !$root.wpInputFocused">
           <nav class="tab-bar">
             <section class="left-small">
-              <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+              <a href class="menu-icon" ng-click="openMenu()"><span></span></a>
             </section>
 
               <section class="right-small" 
@@ -129,7 +129,7 @@
           ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" 
           ng-view></section> 
 
-        <a class="exit-off-canvas"></a>
+        <a class="close-menu" ng-click="swipe()"></a>
 
       </div>
     </div>

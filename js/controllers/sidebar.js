@@ -117,4 +117,8 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
     });
     $scope.wallets = _.sortBy(ret, 'name');
   };
+
+  $scope.openMenu = function() {
+    go.swipe(true);
+  };
 });
