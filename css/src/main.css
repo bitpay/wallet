@@ -718,7 +718,7 @@ input[type=number]::-webkit-outer-spin-button {
 .dr-notification-wrapper {
   width: 375px;
   position: relative;
-  margin: 0 0 1px 0;
+  margin: 0 0 5px 0;
 }
 
 .dr-notification-close-btn {
@@ -738,19 +738,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 .dr-notification-image {
   float: left;
-  display: block;
   padding: 0.8rem;
-  color: white;
+  color: #7A8C9E;
   text-align: center;
-}
-.dr-notification-image i {
-  height: 40px;
-  width: 40px;
-  padding: 0.3rem 0.5rem;
-  display: block;
-  border-radius: 100%;
+  background-color: #E4E8EC;
   font-size: 30px;
+  width: 50px;
+  height: 100%;
 }
+
 .dr-notification-image img {
   margin: 15px;
   max-width: 70px;
@@ -770,36 +766,13 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification {
-  background: rgba(255,255,255,0.90);
-  box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.20);
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 1px 5px 0 rgba(0,0,0,0.15);
   width: 400px;
   clear: both;
   overflow: hidden;
   border-radius: 3px 0 0 3px;
-}
-
-.dr-notification-image.dr-notification-type-funds i {
-  background-color: #7A8C9E;
-}
-
-.dr-notification-image.dr-notification-type-info i {
-  background-color: #7A8C9E;
-}
-
-.dr-notification-image.dr-notification-type-warning i {
-  background-color: #FFA226;
-}
-
-.dr-notification-image.dr-notification-type-error i {
-  background-color: #FF4B4F;
-}
-
-.dr-notification-image.dr-notification-type-success i {
-  background-color: #1ABC9C;
-}
-
-.dr-notification-image.success i {
-  background-color: #1ABC9C;
+  height: 60px;
 }
 
 .success { 
