@@ -1655,7 +1655,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .clipo {
-  padding: 0 0 2rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 

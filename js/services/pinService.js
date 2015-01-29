@@ -10,6 +10,8 @@ angular.module('copayApp.services')
     var ls = localstorageService;
     var root = {};
 
+    var _firstpin;
+
     root.check = function(cb) {
       ls.getItem(KEY, function(err, value) {
         return cb(err, value ? true : false);
@@ -48,27 +50,65 @@ angular.module('copayApp.services')
       ls.removeItem(KEY, cb);
     };
 
-
-    root.makePinInput = function(scope, name, cb) {
-      Object.defineProperty(scope, name, {
-          get: function() {
-            return this['_' + name];
-          },
-          set: function(newValue) {
-            this['_' + name] = newValue;
-            scope.error = null;
-            scope.loading = null;
-            if (newValue && newValue.length == 4) {
-              $timeout(function() {
-                return cb(newValue);
-              }, 30);
-            }
-          },
-          enumerable: true,
-          configurable: true
-        });
+    root.clearPin = function(scope) {
+      scope.digits = [];
+      scope.defined = [];     
     };
 
+    root.pressPin = function(scope, digit, skipOpenWithPin) {
+      scope.error = null;
+      scope.digits.push(digit);
+      scope.defined.push(true);
+      if (scope.digits.length == 4) {
+        var pin = scope.digits.join('');
+        if (!$rootScope.hasPin) {
+          if (!_firstpin) {
+            _firstpin = pin;
+            scope.askForPin = 2;
+            $timeout(function() {
+              scope.clear();
+            }, 100);
+            return;
+          }
+          else {
+            if (pin === _firstpin) {
+              _firstpin = null;
+              scope.askForPin = null;
+              scope.createPin(pin);
+            }
+            else {
+              _firstpin = null;
+              scope.askForPin = 1;
+              $timeout(function() {
+                scope.clear();
+                scope.error = 'Entered PINs were not equal. Try again';
+                $timeout(function() {
+                  scope.error = null;
+                }, 2000);
+              }, 100);
+              return;
+            }
+          }
+        }
+        if (!skipOpenWithPin) {
+          scope.openWithPin(pin);
+        }
+      }   
+    };
+
+    root.skipPin = function(scope, creatingProfile) {
+      if (!$rootScope.hasPin) {
+        if (!creatingProfile) {
+          scope.openWallets();
+        }
+        else {
+          scope.createDefaultWallet()        
+        }
+      }
+      else {
+        scope.pinLogout();
+      }   
+    };
 
     return root;
   });

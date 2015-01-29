@@ -1,5 +1,10 @@
 <div class="home" ng-controller="HomeController" ng-init="init()">
 
+
+  <div ng-if="askForPin || ($root.hasPin && !$root.iden)">
+    <div ng-include="'views/includes/pin-number.html'"></div>
+  </div>
+
   <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Accessing your profile'"></div>
   </div>
@@ -33,9 +38,10 @@
     </div>
   </div>
 
+  <div class="row">
   <div class="large-4 large-centered medium-6 medium-centered columns" ng-show="!$root.starting && !showDisclaimer">
 
-    <div class="logo-setup" ng-show="!$root.iden && !hideForWP">
+    <div class="logo-setup" ng-show="!$root.iden && !hideForWP && !$root.hasPin">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
       <div ng-include="'views/includes/version.html'"></div>
     </div>
@@ -52,11 +58,12 @@
       </div>
     </div>
 
-    <div ng-if="askForPin">
+    <div ng-if='askForPin || ($root.hasPin && !$root.iden)'>
       <div class="clipo">
-        <img src="img/clipo-pin.png" alt="clipo" width="380">
+        <img src="img/clipo-pin-enter.png" alt="clipo" width="300" ng-show="$root.hasPin && !$root.iden">
+        <img src="img/clipo-pin.png" alt="clipo" width="380" ng-show="askForPin">
       </div>
-
+      <div class="text-white text-center" ng-show="askForPin == 2">Repeat PIN</div>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
@@ -65,69 +72,7 @@
           {{error|translate}}
         </span>
       </div>
-
-      <form name="setPinForm" ng-model="setPinForm" novalidate>
-        <div class="input" ng-show="askForPin == 1">
-            <input id="newpin" type="tel" ng-model="newpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="PIN" name="newpin" required show-focus="askForPin == 1  && !isWindowsPhoneApp" ng-focus="formFocus()">
-          <i class="icon-locked"></i>
-        </div>
-        <div class="input" ng-show="askForPin == 2">
-            <input id="repeatpin" type="tel" ng-model="repeatpin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Confirm your PIN" name="repeatpin" required show-focus="askForPin == 2 && !isWindowsPhoneApp" ng-focus="formFocus()">
-          <i class="icon-locked"></i>
-        </div>
-
-        <div class="row collapse">
-          <div class="large-6 medium-6 small-6 columns">
-            <a class="button secondary radius m0" ng-click="openWallets()">
-              <span translate>Skip</span> 
-            </a>
-          </div>
-          <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate ng-click="createPin(setPinForm.repeatpin.$modelValue)" class="button primary radius expand m0" 
-              ng-disabled="setPinForm.$invalid || error">
-              OK
-            </button>
-          </div>
-        </div>
-
-
-      </form>
-    </div>
-
-    <div ng-if='$root.hasPin && !$root.iden'>
-      <div class="clipo" ng-hide="hideForWP">
-        <img src="img/clipo-pin-enter.png" alt="clipo" width="300">
-      </div>
-      <form name="pinForm" novalidate>
-        <div class="box-notification" ng-show="error">
-          <div class="box-icon error">
-            <i class="fi-x size-24"></i>
-          </div>
-          <span class="text-warning size-14">
-            {{error|translate}}
-          </span>
-        </div>
-
-        <div class="input">
-            <input id="pin" type="tel" ng-model="pin" class="form-control" ng-maxlength="4" ng-minlength="4" maxlength="4" ng-pattern="/^[0-9]{1,4}$/" placeholder="Pin number" name="pin" required ng-focus="formFocus()">
-          <i class="icon-locked"></i>
-        </div>
-
-        <div class="row collapse">
-          <div class="large-6 medium-6 small-6 columns">
-            <a class="button warning radius m0" ng-click="pinLogout()">
-              <i class="icon-power"></i> 
-              <span translate>Logout</span>
-            </a>
-          </div>
-          <div class="large-6 medium-6 small-6 columns text-right">
-            <button translate ng-click="openWithPin(pinForm.pin.$modelValue)" class="button primary radius expand m0" 
-              ng-disabled="pinForm.$invalid || error">
-              Sign in
-            </button>
-          </div>
-        </div>
-      </form>
+      <div ng-include="'views/includes/pin.html'"></div>
     </div>
 
     <div ng-if='!$root.hasPin && !askForPin && !$root.iden'>
@@ -212,6 +157,7 @@ aasdas
         </div>
       </div>
     </div>
+  </div>
   </div>
 </div>
 
