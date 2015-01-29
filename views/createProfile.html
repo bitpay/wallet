@@ -1,6 +1,6 @@
 <div class="createProfile" ng-controller="CreateProfileController" ng-init="init()">
 
-  <div ng-if="!$root.starting && $root.askForPin">
+  <div ng-if="!$root.starting && askForPin">
     <div ng-include="'views/includes/pin-number.html'"></div>
   </div>
 
@@ -8,7 +8,7 @@
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Creating profile'"></div>
   </div>
 
-  <div class="row m20b" ng-show="!$root.starting && !$root.askForPin">
+  <div class="row m20b" ng-show="!$root.starting && !askForPin">
   <div class="large-4 large-centered medium-7 medium-centered columns">
     <div class="logo-setup hide-for-small-only" ng-hide="hideForWP">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
@@ -207,13 +207,13 @@
   </div>
   </div>
 
-  <div class="row m20b" ng-show="!$root.starting && $root.askForPin">
+  <div class="row m20b" ng-show="!$root.starting && askForPin">
   <div class="large-4 large-centered medium-6 medium-centered columns">
     <div class="clipo">
       <img src="img/clipo-pin.png" alt="clipo" width="380">
     </div>
 
-    <div class="text-white text-center" ng-show="$root.askForPin == 2">Repeat PIN</div>
+    <div class="text-white text-center" ng-show="askForPin == 2">Repeat PIN</div>
     <div class="box-notification" ng-show="error">
       <div class="box-icon error">
         <i class="fi-x size-24"></i>
