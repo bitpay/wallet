@@ -16,6 +16,12 @@ angular.element(document).ready(function() {
           window.location = '#!/signout';
         }
       }, false);
+      
+      document.addEventListener('resume', function() {
+        setTimeout(function() {
+          window.ignoreMobilePause = false;
+        }, 100);
+      }, false);
 
       document.addEventListener('backbutton', function() {
         window.location = '#!/homeWallet';

@@ -155,6 +155,9 @@ angular.module('copayApp.controllers').controller('MoreController',
     };
 
     $scope.sendWalletBackup = function() {
+      if (!isMobile.iOS) {
+        window.ignoreMobilePause = true;
+      }
       window.plugins.toast.showShortCenter('Preparing backup...');
       var name = (w.name || w.id);
       var ew = backupService.walletEncrypted(w);
