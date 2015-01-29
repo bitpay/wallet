@@ -1,0 +1,25 @@
+<div class="pin-numbers">
+  <div class="pin-button-bar">
+    <a class="pin-button" ng-click="press(1)">1</a>
+    <a class="pin-button" ng-click="press(2)">2</a>
+    <a class="pin-button" ng-click="press(3)">3</a>
+  </div>
+  <div class="pin-button-bar">
+    <a class="pin-button" ng-click="press(4)">4</a>
+    <a class="pin-button" ng-click="press(5)">5</a>
+    <a class="pin-button" ng-click="press(6)">6</a>
+  </div>
+  <div class="pin-button-bar">
+    <a class="pin-button" ng-click="press(7)">7</a>
+    <a class="pin-button" ng-click="press(8)">8</a>
+    <a class="pin-button" ng-click="press(9)">9</a>
+  </div>
+  <div class="pin-button-bar">
+    <a class="pin-button" ng-click="skip()">
+      <i class="fi-unlock" ng-show="$root.hasPin"></i>
+      <i class="fi-home" ng-show="!$root.hasPin"></i>
+    </a>
+    <a class="pin-button" ng-click="press(0)">0</a>
+    <a class="pin-button" ng-click="clear()"><i class="fi-arrow-left"></i></a>
+  </div>
+</div>

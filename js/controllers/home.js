@@ -1,15 +1,19 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile, isCordova, localstorageService) {
+angular.module('copayApp.controllers').controller('HomeController', function($scope, $rootScope, $timeout, $window, go, notification, identityService, Compatibility, pinService, applicationService, isMobile, isCordova, localstorageService) { 
 
   var KEY = 'CopayDisclaimer';
   var ls = localstorageService;
-  var _credentials, _firstpin;
+  var _credentials;
+
   $scope.init = function() {
     $scope.isMobile = isMobile.any();
     $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     $scope.hideForWP = 0;
-    $scope.attempt = 0;
+    $scope.attempt = 0; 
+    $scope.digits = [];
+    $scope.defined = [];
+    $scope.askForPin = 0;
 
     // This is only for backwards compat, insight api should link to #!/confirmed directly
     if (getParam('confirmed')) {
@@ -40,6 +44,18 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
   };
 
+  $scope.clear = function() {
+    pinService.clearPin($scope);
+  };
+
+  $scope.press = function(digit) {
+    pinService.pressPin($scope, digit);
+  };
+
+  $scope.skip = function () {
+    pinService.skipPin($scope);
+  };
+
   $scope.agreeDisclaimer = function() {
     ls.setItem(KEY, true, function(err) {
       $scope.showDisclaimer = null;
@@ -55,31 +71,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
   };
 
-  pinService.makePinInput($scope, 'pin', function(newValue) {
-    $scope.openWithPin(newValue);
-  });
-
-  pinService.makePinInput($scope, 'newpin', function(newValue) {
-    _firstpin = newValue;
-    $scope.askForPin = 2;
-  });
-
-  pinService.makePinInput($scope, 'repeatpin', function(newValue) {
-    if (newValue === _firstpin) {
-      _firstpin = null;
-      $scope.createPin(newValue);
-    } else {
-      $scope.$$childTail.setPinForm.newpin.$setViewValue('');
-      $scope.$$childTail.setPinForm.newpin.$render();
-      $scope.$$childTail.setPinForm.repeatpin.$setViewValue('');
-      $scope.$$childTail.setPinForm.repeatpin.$render();
-
-      _firstpin = null;
-      $scope.askForPin = 1;
-      $scope.error = 'Entered PINs were not equal. Try again';
-    }
-  });
-
   $scope.openWithPin = function(pin) {
 
     if (!pin) {
@@ -88,14 +79,15 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     }
     $rootScope.starting = true;
 
-    // hide Keyboard after submit form
-    $window.document.querySelector('#pin').blur();
-
     $timeout(function() {
       var credentials = pinService.get(pin, function(err, credentials) {
         if (err || !credentials) {
           $rootScope.starting = null;
           $scope.error = 'Wrong PIN';
+          $scope.clear();
+          $timeout(function() {
+            $scope.error = null;
+          }, 2000);
           return;
         }
         $scope.open(credentials.email, credentials.password);
@@ -116,9 +108,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     preconditions.checkState($rootScope.iden);
     preconditions.checkState(_credentials && _credentials.email);
     $rootScope.starting = true;
-
-    // hide Keyboard after submit form
-    $window.document.querySelector('#repeatpin').blur();
 
     $timeout(function() {
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
