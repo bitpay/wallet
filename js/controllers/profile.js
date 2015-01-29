@@ -25,7 +25,9 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   };
 
   $scope.sendProfileBackup = function() {
-    window.ignoreMobilePause = true;
+    if (!isMobile.iOS) {
+      window.ignoreMobilePause = true;
+    }
     window.plugins.toast.showShortCenter('Preparing backup...');
     var name = $rootScope.iden.fullName;
     var ep = backupService.profileEncrypted($rootScope.iden);
