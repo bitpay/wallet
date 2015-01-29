@@ -447,7 +447,7 @@ angular.module('copayApp.controllers').controller('SendController',
         } else {
           $scope._merchantData = merchantData;
           $scope._domain = merchantData.domain;
-          $scope.setForm(null, merchantData.total * satToUnit);
+          $scope.setForm(null, merchantData.total * 1 / w.settings.unitToSatoshi);
         }
       });
     };
@@ -465,6 +465,7 @@ angular.module('copayApp.controllers').controller('SendController',
         return newUri;
       };
 
+      var w = $rootScope.wallet;
       var form = $scope.sendForm;
 
       uri = sanitizeUri(uri);
@@ -481,7 +482,7 @@ angular.module('copayApp.controllers').controller('SendController',
         return $scope.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
-        (parsed.data.amount * 100000000).toFixed(0) * satToUnit : 0;
+        (parsed.data.amount * 100000000).toFixed(0) * 1 / w.settings.unitToSatoshi: 0;
 
       $scope.setForm(addr, amount, parsed.data.message, true);
       return addr;
