@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     $scope.attempt = 0; 
     $scope.digits = [];
     $scope.defined = [];
-    $rootScope.askForPin = 0;
+    $scope.askForPin = 0;
 
     // This is only for backwards compat, insight api should link to #!/confirmed directly
     if (getParam('confirmed')) {
@@ -113,7 +113,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
         _credentials.password = '';
         _credentials = null;
-        $rootScope.askForPin = 0;
+        $scope.askForPin = 0;
         $rootScope.hasPin = true;
         $rootScope.starting = null;
         $scope.openWallets();
@@ -183,7 +183,7 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
             email: email,
             password: password,
           };
-          $rootScope.askForPin = 1;
+          $scope.askForPin = 1;
           $rootScope.starting = false;
           $rootScope.hideNavigation = true;
           $timeout(function() {

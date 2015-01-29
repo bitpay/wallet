@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.hideForWP = 0;
     $scope.digits = [];
     $scope.defined = [];
-    $rootScope.askForPin = 0;
+    $scope.askForPin = 0;
 
     $scope.createStep = 'storage';
     $scope.useLocalstorage = false;
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
         _credentials.password = '';
         _credentials = null;
-        $rootScope.askForPin = 0;
+        $scope.askForPin = 0;
         $rootScope.hasPin = true;
         $scope.createDefaultWallet();
       });
@@ -100,7 +100,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $rootScope.hideNavigation = false;
     $rootScope.starting = true;
     identityService.createDefaultWallet(function(err) {
-      $rootScope.askForPin = 0;
+      $scope.askForPin = 0;
       $rootScope.starting = null;
 
       if (err) {
@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
             email: emailOrUsername,
             password: password,
           };
-          $rootScope.askForPin = 1;
+          $scope.askForPin = 1;
           $scope.hideForWP = 0;
 
           $rootScope.hideNavigation = true;
