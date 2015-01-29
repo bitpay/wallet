@@ -4,7 +4,32 @@
  *
  */
 
-@media (max-width: 1024px) {  
+@media (max-width: 1024px) {
+
+  /* disabling text selection */
+  * {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  input {
+    -webkit-user-select: auto !important;
+    -khtml-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+  }
+
+  * {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    user-drag: none;
+  }
+  /* END disabling text selection */
 
   .inner-wrap {
     -webkit-transition-duration: 250ms; 
@@ -14,7 +39,7 @@
   body {
     overflow: hidden;
     -ms-content-zooming: none; 
-  }
+  } 
 
   .loading-screen {
     background-color: #2C3E50;
@@ -362,6 +387,45 @@
   }
 
   /*******************************************/
+
+  .pin {
+    margin: 0 auto;
+    width: 70%;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .pin-box {
+    color: #fff;
+    font-size: 28px;
+    width: 25%;
+    float: left;
+  }
+
+  .pin-numbers {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #000;
+    height: 50%;
+  }
+
+  .pin-button-bar {
+    height: 25%;
+  }
+
+  a.pin-button {
+    margin: 2px;
+    padding: 4% 10%;
+    display: inline-block;
+    color: #ccc;
+    font-size: 120%;
+  }
+
+  a.pin-button:active {
+    color: #fff;
+  }
 
 }
 
