@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('CreateProfileController', function($scope, $rootScope, $location, $timeout, $window, notification, pluginManager, identityService, pinService, isMobile, isCordova, configService, go) {
 
-  var _credentials, _firstpin;
+  var _credentials;
 
   $scope.init = function() {
 
@@ -12,41 +12,27 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.isMobile = isMobile.any();
     $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     $scope.hideForWP = 0;
-
+    $scope.digits = [];
+    $scope.defined = [];
+    $rootScope.askForPin = 0;
 
     $scope.createStep = 'storage';
     $scope.useLocalstorage = false;
     $scope.minPasswordStrength = _.isUndefined(config.minPasswordStrength) ?
       4 : config.minPasswordStrength;
 
+  };
 
-    pinService.makePinInput($scope, 'newpin', function(newValue) {
-      _firstpin = newValue;
-      $scope.hideForWP = 0;
-      $scope.askForPin = 2;
-      $timeout(function() {
-        $scope.$digest();
-      }, 1);
+  $scope.clear = function() {
+    pinService.clearPin($scope);
+  };
 
+  $scope.press = function(digit) {
+    pinService.pressPin($scope, digit, true);
+  };
 
-    });
-
-    pinService.makePinInput($scope, 'repeatpin', function(newValue) {
-      if (newValue === _firstpin) {
-        _firstpin = null;
-        $scope.createPin(newValue);
-      } else {
-        $scope.askForPin = 1;
-        $scope.hideForWP = 0;
-        $scope.passwordStrength = null;
-
-        _firstpin = null;
-        $scope.error = 'Entered PINs were not equal. Try again';
-        $timeout(function() {
-          $scope.$digest();
-        }, 1);
-      }
-    });
+  $scope.skip = function () {
+    pinService.skipPin($scope, true);
   };
 
   $scope.formFocus = function() {
@@ -63,14 +49,11 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     preconditions.checkState(_credentials && _credentials.email);
     $rootScope.starting = true;
 
-    // hide Keyboard after submit form
-    $window.document.querySelector('#repeatpin').blur();
-
     $timeout(function() {
       pinService.save(pin, _credentials.email, _credentials.password, function(err) {
         _credentials.password = '';
         _credentials = null;
-        $scope.askForPin = 0;
+        $rootScope.askForPin = 0;
         $rootScope.hasPin = true;
         $scope.createDefaultWallet();
       });
@@ -117,7 +100,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $rootScope.hideNavigation = false;
     $rootScope.starting = true;
     identityService.createDefaultWallet(function(err) {
-      $scope.askForPin = 0;
+      $rootScope.askForPin = 0;
       $rootScope.starting = null;
 
       if (err) {
@@ -157,7 +140,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
             email: emailOrUsername,
             password: password,
           };
-          $scope.askForPin = 1;
+          $rootScope.askForPin = 1;
           $scope.hideForWP = 0;
 
           $rootScope.hideNavigation = true;
