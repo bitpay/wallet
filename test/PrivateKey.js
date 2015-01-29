@@ -27,7 +27,6 @@ describe('PrivateKey model', function() {
     var w = new PrivateKey(pkConfig);
     var pubk1 = w.getExtendedPublicKeyString();
     should.exist(pubk1);
-    console.log(pubk1);
   });
 
   it('should return the private key', function() {

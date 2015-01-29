@@ -433,7 +433,6 @@ describe('Network / Async', function() {
 
       var lockIds = ['abc001', 'abc002'];
       n.lockIncommingConnections(lockIds);
-      console.log(n.allowedCopayerIds);
       Object.keys(n.allowedCopayerIds).length.should.be.equal(2);
     });
   });
