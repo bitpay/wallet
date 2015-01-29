@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('ReceiveController',
-  function($scope, $rootScope, $timeout, $modal, isCordova) {
+  function($scope, $rootScope, $timeout, $modal, isCordova, isMobile) {
 
     $scope.newAddr = function() {
       var w = $rootScope.wallet;
@@ -19,7 +19,9 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
     $scope.shareAddress = function(addr) {
       if (isCordova) {
-        window.ignoreMobilePause = true;
+        if (!isMobile.iOS) {
+          window.ignoreMobilePause = true;
+        }
         window.plugins.socialsharing.share('My bitcoin address: ' + addr, null, null, null);
       }
     };
