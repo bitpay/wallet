@@ -17,9 +17,16 @@ angular.module('copayApp.controllers').controller('ReceiveController',
       }
     };
 
+    $scope.shareAddress = function(addr) {
+      if (isCordova) {
+        window.plugins.socialsharing.share('My bitcoin address: ' + addr);
+      }
+    };
+
     $scope.init = function() {
       $rootScope.title = 'Receive';
       $scope.showAll = false;
+      $scope.isCordova = isCordova;
 
       var w = $rootScope.wallet;
       var lastAddr = _.first(w.getAddressesOrdered());
