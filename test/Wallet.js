@@ -212,7 +212,6 @@ describe('Wallet model', function() {
       status.should.equal(Wallet.TX_PROPOSAL_SENT);
 
       w.network.send.calledOnce.should.equal(true);
-      console.log(w.network.send.getCall(0).args[1]);
       w.network.send.getCall(0).args[1].type.should.equal("txProposal");
       should.exist(w.network.send.getCall(0).args[1].indexes);
       should.exist(w.network.send.getCall(0).args[1].txProposal);
@@ -1910,7 +1909,7 @@ describe('Wallet model', function() {
         inputChainPaths: ['/m/1'],
       };
       var map = w._getPubkeyToCopayerMap(txp);
-      console.log('[Wallet.js.1526:map:]', map); //TODO
+      //console.log('[Wallet.js.1526:map:]', map); //TODO
       Object.keys(map).length.should.equal(1);
       map['123'].should.equal('juan');
       stub.restore();

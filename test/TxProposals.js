@@ -213,8 +213,6 @@ describe('TxProposals', function() {
   describe('#getUsedUnspent', function() {
     it('should return an empty object', function() {
       var txps = new TxProposals();
-
-      console.log(txps);
       txps.txps = {
         a: {
           isPending: sinon.stub().returns(false)

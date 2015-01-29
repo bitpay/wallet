@@ -62,12 +62,6 @@ describe('HDParams model', function() {
 
   it('should throw an error', function() {
     var data = new HDParams();
-
-    if (data instanceof HDParams) {
-      console.log('ok');
-    } else {
-      console.log('error');
-    }
     (function() {
       HDParams.fromObj(data);
     }).should.throw('BADDATA');

@@ -1263,7 +1263,7 @@ describe('Identity model', function() {
       expect(iden._checkVersion()).to.be.undefined;
       expect(iden._checkVersion('0.0.0')).to.be.undefined;
       (function() {
-        console.log('b', iden._checkVersion('9.9.9'));
+        iden._checkVersion('9.9.9');
       }).should.throw('Major difference');
     });
   });
