@@ -565,7 +565,7 @@ describe('PublicKeyRing model', function() {
 
   });
 
-  it('#pathForAddress', function() {
+  it.skip('#pathForAddress', function() {
     var k = getCachedW();
     var w = k.w;
     var addr = w.generateAddress(true, k.pub);
