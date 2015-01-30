@@ -402,14 +402,19 @@ describe("Unit: Controllers", function() {
 
     it('receive from uri using BTC', inject(function($rootScope) {
       var old = $rootScope.wallet.settings.unitToSatoshi;
+      var old_decimals = $rootScope.wallet.settings.unitDecimals;
       $rootScope.wallet.settings.unitToSatoshi = 100000000;
+      $rootScope.wallet.settings.unitDecimals = 8;
       sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=1.018085');
       expect(sendForm.amount.$modelValue).to.equal(1.018085);
       sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=1.01808500');
       expect(sendForm.amount.$modelValue).to.equal(1.018085);
       sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=0.29133585');
       expect(sendForm.amount.$modelValue).to.equal(0.29133585);
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=0.1');
+      expect(sendForm.amount.$modelValue).to.equal(0.1);
       $rootScope.wallet.settings.unitToSatoshi = old;
+      $rootScope.wallet.settings.unitDecimals = old_decimals;
     }));
   });
 
