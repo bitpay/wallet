@@ -416,8 +416,8 @@
   }
 
   a.pin-button {
-    margin: 2px;
-    padding: 4% 10%;
+    margin: 4px;
+    padding: 5% 10%;
     display: inline-block;
     color: #ccc;
     font-size: 120%;
@@ -425,6 +425,7 @@
 
   a.pin-button:active {
     color: #fff;
+    background-color: #2C3E50;
   }
 
 }
