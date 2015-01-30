@@ -30,8 +30,8 @@
 <body
   ng-controller="IndexController" 
   ng-swipe-disable-mouse 
-  ng-swipe-left="swipe()"
-  ng-swipe-right="swipe(true)">
+  ng-swipe-left="closeMenu()"
+  ng-swipe-right="openMenu()">
 
   <div id="loading" class="loadingpage">
     <img src="img/ajax-loader.gif" alt="Loading...">
@@ -129,7 +129,7 @@
           ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" 
           ng-view></section> 
 
-        <a class="close-menu" ng-click="swipe()"></a>
+        <a class="close-menu" ng-click="closeMenu()"></a>
 
       </div>
     </div>
