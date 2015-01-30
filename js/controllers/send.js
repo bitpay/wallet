@@ -5,8 +5,6 @@ var preconditions = require('preconditions').singleton();
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova) {
 
-    var satToUnit;
-
     $scope.init = function() {
       var w = $rootScope.wallet;
       preconditions.checkState(w);
@@ -22,8 +20,6 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.title = $scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
-
-      satToUnit = 1 / w.settings.unitToSatoshi;
 
       $scope.alternativeName = w.settings.alternativeName;
       $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
@@ -87,6 +83,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.setInputs = function() {
       var w = $rootScope.wallet;
       var unitToSat = w.settings.unitToSatoshi;
+      var satToUnit = 1 / unitToSat;
       /**
        * Setting the two related amounts as properties prevents an infinite
        * recursion for watches while preserving the original angular updates
@@ -425,6 +422,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       var w = $rootScope.wallet;
+      var satToUnit = 1 / w.settings.unitToSatoshi;
       $scope.fetchingURL = uri;
       $scope.loading = true;
 
@@ -447,7 +445,7 @@ angular.module('copayApp.controllers').controller('SendController',
         } else {
           $scope._merchantData = merchantData;
           $scope._domain = merchantData.domain;
-          $scope.setForm(null, merchantData.total * satToUnit);
+          $scope.setForm(null, (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals));
         }
       });
     };
@@ -465,6 +463,8 @@ angular.module('copayApp.controllers').controller('SendController',
         return newUri;
       };
 
+      var w = $rootScope.wallet;
+      var satToUnit = 1 / w.settings.unitToSatoshi;
       var form = $scope.sendForm;
 
       uri = sanitizeUri(uri);
@@ -481,7 +481,7 @@ angular.module('copayApp.controllers').controller('SendController',
         return $scope.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
-        (parsed.data.amount * 100000000).toFixed(0) * satToUnit : 0;
+        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals): 0;
 
       $scope.setForm(addr, amount, parsed.data.message, true);
       return addr;

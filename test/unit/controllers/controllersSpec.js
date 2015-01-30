@@ -273,7 +273,7 @@ describe("Unit: Controllers", function() {
       var element2 = angular.element(
         '<form name="form2">' +
         '<input type="text" id="address" name="address" ng-model="_address" valid-address required>' +
-        '<input type="number" id="amount" name="amount" ng-model="_amount" min="1" max="10000000000" required>' +
+        '<input type="number" id="amount" name="amount" ng-model="_amount" min="0.00000001" max="10000000000" valid-amount required>' +
         '<input type="number" id="alternative" name="alternative" ng-model="_alternative">' +
         '<textarea id="comment" name="comment" ng-model="commentText" ng-maxlength="100"></textarea>' +
         '</form>'
@@ -390,6 +390,32 @@ describe("Unit: Controllers", function() {
         done();
       });
     });
+
+    it('receive from uri using bits', inject(function() {
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=1.018085');
+      expect(sendForm.amount.$modelValue).to.equal(1018085);
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=1.01808500');
+      expect(sendForm.amount.$modelValue).to.equal(1018085);
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=0.29133585');
+      expect(sendForm.amount.$modelValue).to.equal(291335.85);
+    }));
+
+    it('receive from uri using BTC', inject(function($rootScope) {
+      var old = $rootScope.wallet.settings.unitToSatoshi;
+      var old_decimals = $rootScope.wallet.settings.unitDecimals;
+      $rootScope.wallet.settings.unitToSatoshi = 100000000;
+      $rootScope.wallet.settings.unitDecimals = 8;
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=1.018085');
+      expect(sendForm.amount.$modelValue).to.equal(1.018085);
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=1.01808500');
+      expect(sendForm.amount.$modelValue).to.equal(1.018085);
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=0.29133585');
+      expect(sendForm.amount.$modelValue).to.equal(0.29133585);
+      sendForm.address.$setViewValue('bitcoin:mxf5psDyA8EQVzb2MZ7MkDWiXuAuWWCRMB?amount=0.1');
+      expect(sendForm.amount.$modelValue).to.equal(0.1);
+      $rootScope.wallet.settings.unitToSatoshi = old;
+      $rootScope.wallet.settings.unitDecimals = old_decimals;
+    }));
   });
 
   describe("Unit: Version Controller", function() {
