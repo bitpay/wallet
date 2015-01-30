@@ -992,7 +992,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   background: #F2F5F8;
   -moz-box-shadow: none;
   box-shadow: none;
-  border: 1px solid #CED5DC;
+  border: none;
   padding-left: 0.5rem;
   font-size: 13px;
 }
