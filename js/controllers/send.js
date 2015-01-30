@@ -83,6 +83,7 @@ angular.module('copayApp.controllers').controller('SendController',
     $scope.setInputs = function() {
       var w = $rootScope.wallet;
       var unitToSat = w.settings.unitToSatoshi;
+      var satToUnit = 1 / unitToSat;
       /**
        * Setting the two related amounts as properties prevents an infinite
        * recursion for watches while preserving the original angular updates
@@ -97,7 +98,7 @@ angular.module('copayApp.controllers').controller('SendController',
             this.__alternative = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               this._amount = parseFloat(
-                (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * 1 / w.settings.unitToSatoshi).toFixed(w.settings.unitDecimals), 10);
+                (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
             } else {
               this._amount = 0;
             }
@@ -421,6 +422,7 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       var w = $rootScope.wallet;
+      var satToUnit = 1 / w.settings.unitToSatoshi;
       $scope.fetchingURL = uri;
       $scope.loading = true;
 
@@ -443,7 +445,7 @@ angular.module('copayApp.controllers').controller('SendController',
         } else {
           $scope._merchantData = merchantData;
           $scope._domain = merchantData.domain;
-          $scope.setForm(null, merchantData.total * 1 / w.settings.unitToSatoshi);
+          $scope.setForm(null, (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals));
         }
       });
     };
@@ -462,6 +464,7 @@ angular.module('copayApp.controllers').controller('SendController',
       };
 
       var w = $rootScope.wallet;
+      var satToUnit = 1 / w.settings.unitToSatoshi;
       var form = $scope.sendForm;
 
       uri = sanitizeUri(uri);
@@ -478,7 +481,7 @@ angular.module('copayApp.controllers').controller('SendController',
         return $scope.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
-        (parsed.data.amount * 100000000).toFixed(0) * 1 / w.settings.unitToSatoshi: 0;
+        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals): 0;
 
       $scope.setForm(addr, amount, parsed.data.message, true);
       return addr;
