@@ -40,7 +40,9 @@
           </div>
 
           <div translate class="small text-gray">
-          Insight API server is open-source software. You can run your own instances, check <a href="http://insight.is" target="_blank">Insight API Homepage</a>
+          Insight API server is open-source software. You can run your own instances, check 
+          <a href 
+            ng-click="$root.openExternalLink('https://insight.is')">Insight API Homepage</a>
           </div>
         </fieldset>
         <fieldset>
@@ -49,7 +51,10 @@
           <select class="form-control" ng-model="selectedStorage" ng-options="o.name for o in availableStorages" required>
           </select>
           <div translate class="small text-gray">
-          Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on this device, or remotely on the cloud (Insight Server). <a target="_blank" href="https://github.com/bitpay/copay/tree/master/js/plugins">More pluggins are welcomed!</a>
+          Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on this device, or remotely on the cloud (Insight Server). 
+          <a href 
+            ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/master/js/plugins')">
+            More pluggins are welcomed!</a>
           </div>
         </fieldset>
         <fieldset>
