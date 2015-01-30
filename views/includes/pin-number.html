@@ -16,8 +16,8 @@
   </div>
   <div class="pin-button-bar">
     <a class="pin-button" ng-click="skip()">
-      <i class="fi-unlock" ng-show="$root.hasPin"></i>
-      <i class="fi-home" ng-show="!$root.hasPin"></i>
+      <i class="fi-unlock text-warning" ng-show="$root.hasPin"></i>
+      <i class="fi-home text-secondary" ng-show="!$root.hasPin"></i>
     </a>
     <a class="pin-button" ng-click="press(0)">0</a>
     <a class="pin-button" ng-click="clear()"><i class="fi-arrow-left"></i></a>
