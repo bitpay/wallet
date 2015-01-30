@@ -5,8 +5,6 @@ var preconditions = require('preconditions').singleton();
 angular.module('copayApp.controllers').controller('SendController',
   function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova) {
 
-    var satToUnit;
-
     $scope.init = function() {
       var w = $rootScope.wallet;
       preconditions.checkState(w);
@@ -22,8 +20,6 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.title = $scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
-
-      satToUnit = 1 / w.settings.unitToSatoshi;
 
       $scope.alternativeName = w.settings.alternativeName;
       $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
@@ -101,7 +97,7 @@ angular.module('copayApp.controllers').controller('SendController',
             this.__alternative = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               this._amount = parseFloat(
-                (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
+                (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * 1 / w.settings.unitToSatoshi).toFixed(w.settings.unitDecimals), 10);
             } else {
               this._amount = 0;
             }
