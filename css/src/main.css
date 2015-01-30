@@ -4,6 +4,11 @@
  *
  */
 
+
+.panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6, .panel p {
+  color: #2C3E50;
+}
+
 body, div, .row {
   -webkit-overflow-scrolling: touch;
 };
@@ -987,7 +992,7 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   background: #F2F5F8;
   -moz-box-shadow: none;
   box-shadow: none;
-  border: none;
+  border: 1px solid #CED5DC;
   padding-left: 0.5rem;
   font-size: 13px;
 }
