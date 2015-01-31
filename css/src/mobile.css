@@ -7,7 +7,7 @@
 @media (max-width: 1024px) {
 
   /* disabling text selection */
-  * {
+  body {
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -163,7 +163,7 @@
   }
 
   .status {
-    bottom: 66px;
+    bottom: 65px;
     left: 0;
   }
 
