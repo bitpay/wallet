@@ -280,7 +280,7 @@
     border-left: none;
   }
 
-  .right-small a {
+  .right-small a, .left-small a {
     color: white;
   }
 
