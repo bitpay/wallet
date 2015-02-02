@@ -6,6 +6,11 @@
   </div>
   <h1 class="text-center" ng-class="{'text-white': !$root.iden}">404</h1>
   <h3 translate class="text-center" ng-class="{'text-white': !$root.iden}">Page not found</h3>
-  <p class="text-center"><a href="#!/">&laquo; <span translate>Back</span></a></p>
+  <p class="text-center">
+  <a class="button outline dark-gray tiny" ng-click="$root.go('/')"> 
+    <i class="icon-arrow-left4 size-10"></i>
+    <span translate>Back</span>
+  </a>
+  </p>
 </div>
 <div class="extra-margin-bottom"></div>
