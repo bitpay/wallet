@@ -429,7 +429,7 @@ describe('Insight model', function() {
     });
   });
 
-  describe('#request', function() {
+  describe.skip('#request', function() {
     it('should check request', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       blockchain.request('hola', function() {
@@ -438,7 +438,7 @@ describe('Insight model', function() {
     });
   });
 
-  describe('#requestPost', function() {
+  describe.skip('#requestPost', function() {
     it('should check requestPost', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
       blockchain.requestPost('hola', 'myData', function() {
