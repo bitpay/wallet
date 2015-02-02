@@ -1,4 +1,16 @@
 <div class="send" ng-controller="SendController" ng-init="init()">
+  <div class="columns" ng-show="$root.wallet.balanceInfo.lockedBalance && !walletSelection">
+    <div class="panel">
+      <div class="left">
+        <i class="fi-info size-42 m10r"></i>
+      </div>
+      <div>
+        <p class="m0 size-14 text-bold">Available Balance: {{$root.wallet.balanceInfo.availableBalance}} {{$root.wallet.settings.unitName}}</p>
+        <span class="size-12 text-gray">{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} in pending transactions</span>
+      </div>
+    </div>
+  </div>
+
   <div class="row show-for-large-up">
     <div class="large-8 large-centered columns">
       <h1>{{$root.title}}</h1>
@@ -164,17 +176,6 @@
           </div>
         </div>
       </form>
-      <div class="locked m10b" ng-show="$root.wallet.balanceInfo.lockedBalance && !walletSelection">
-        <i class="fi-lock"></i>
-        <span>
-          {{'Locked'|translate}} &nbsp;
-        </span>
-        <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-        <span ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance">
-          <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
-          - {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}
-        </span>
-      </div>
     </div>
   </div>
   <!--  end of row -->
