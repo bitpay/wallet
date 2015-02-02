@@ -1,12 +1,13 @@
-<header ng-click="$root.go('profile')" class="text-center">
-  <div class="photo-container">
-    <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="45">
-  </div>
-  <div class="m5t">
-    <div class="text-white text-bold ellipsis size-14">{{$root.iden.getName()}}</div>
-    <div class="text-gray size-10"> {{'View My Profile' | translate }} </div>
-  </div>
-</header>
+<div ng-init="init()">
+  <header ng-click="$root.go('profile')" class="text-center">
+    <div class="photo-container">
+      <img gravatar-src="'{{$root.iden.getName()}}'" gravatar-size="45">
+    </div>
+    <div class="m5t">
+      <div class="text-white text-bold ellipsis size-14">{{$root.iden.getName()}}</div>
+      <div class="text-gray size-10"> {{'View My Profile' | translate }} </div>
+    </div>
+  </header>
   <div class="scroll-section">
     <ul class="sidebar-mobile-wallets oh off-canvas-list m10b">
       <li ng-show="wallets[0]"
@@ -63,4 +64,4 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div>
   </div>
-
+</div>
