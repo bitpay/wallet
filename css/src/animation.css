@@ -43,10 +43,10 @@
 }
 
 .dr-notification-close-btn:hover {
-  -webkit-transform: scale3d(1.25, 1.25, 1);
-  -moz-transform: scale3d(1.25, 1.25, 1);
-  -ms-transform: scale3d(1.25, 1.25, 1);
-  transform: scale3d(1.25, 1.25, 1);
+  -webkit-transform: scale3d(1.1, 1.1, 1);
+  -moz-transform: scale3d(1.1, 1.1, 1);
+  -ms-transform: scale3d(1.1, 1.1, 1);
+  transform: scale3d(1.1, 1.1, 1);
 }
 
 .slideDown{

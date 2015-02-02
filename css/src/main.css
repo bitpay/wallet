@@ -534,23 +534,6 @@ ul.tx-copayers {
   background-color: #213140;
 }
 
-a.button-setup {
-  border-radius: 3px;
-  border: 1px solid #ccc;
-  display: block;
-  padding: 0.5rem;
-  background: transparent;
-  color: #A0A3A6;
-}
-
-.createProfile a.button-setup, .home a.button-setup, .settings a.button-setup, .import-profile a.button-setup {
-  border-radius: 3px;
-  border: 1px solid #3E5366;
-  display: block;
-  padding: 0.5rem;
-  background: transparent;
-}
-
 .dn {display: none;}
 .dni {display: none !important;}
 .pr {position: relative;}
@@ -724,7 +707,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-container.top {
-  top: 60px;
+  top: 70px;
 }
 
 .dr-notification-container.center {
@@ -733,45 +716,37 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-wrapper {
-  width: 400px;
+  width: 375px;
   position: relative;
-  margin: 0 0 1px 0;
-}
-
-.dr-notification {
-  width: 400px;
-  clear: both;
-  overflow: hidden;
+  margin: 0 0 5px 0;
 }
 
 .dr-notification-close-btn {
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  border-radius: 20px;
+  color: #A5B2BF;
+  border: 1px solid #CED5DC;
+  border-radius: 100%;
   display: inline-block;
-  padding: 5px;
+  padding: 4px 7px;
   font-size: 18px;
   position: absolute;
   right: 5px;
   top: 5px;
   cursor: pointer;
   z-index: 10;
+  margin: 13px 8px 0;
 }
 
 .dr-notification-image {
   float: left;
-  display: block;
-  font-size: 40px;
-  color: white;
+  padding: 0.8rem;
+  color: #7A8C9E;
   text-align: center;
-  border-right: 1px dashed #415970;
+  background-color: #E4E8EC;
+  font-size: 30px;
+  width: 50px;
+  height: 100%;
 }
-.dr-notification-image i {
-  display: block;
-  width: 100%;
-  padding: 20px;
-}
+
 .dr-notification-image img {
   margin: 15px;
   max-width: 70px;
@@ -779,48 +754,25 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dr-notification-content {
-  padding-left: 80px;
-  padding-right: 30px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 7px 70px 5px 65px;
 }
 
 .dr-notification-title {
-  color: white;
+  color: #4B6178;
   padding: 0px;
   font-size: 16px;
-  margin-top: 0;
+  margin-bottom: 3px;
+  font-weight: 700;
 }
 
 .dr-notification {
-  background-color: #34495E;
-  color: #eee;
-  border: 1px solid #2C3E50;
-}
-.dr-notification-close-btn {
-  background-color: #34495E;
-  color: #fff;
-  border: 1px solid #3C5269;
-}
-
-.dr-notification-image.dr-notification-type-info {
-  color: #FFF;
-}
-
-.dr-notification-image.dr-notification-type-warning {
-  color: #FFA226;
-}
-
-.dr-notification-image.dr-notification-type-error {
-  color: #FF4B4F;
-}
-
-.dr-notification-image.dr-notification-type-success {
-  color: #1ABC9C;
-}
-
-.dr-notification-image.success {
-  color: #1ABC9C;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 1px 5px 0 rgba(0,0,0,0.15);
+  width: 400px;
+  clear: both;
+  overflow: hidden;
+  border-radius: 3px 0 0 3px;
+  height: 60px;
 }
 
 .success { 
@@ -875,6 +827,7 @@ input[type=number]::-webkit-outer-spin-button {
 .dr-notification-text {
   font-size: 12px;
   line-height: 120%;
+  color: #7A8C9E;
 }
 
 .ellipsis {
@@ -990,6 +943,24 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   border: none;
   padding-left: 0.5rem;
   font-size: 13px;
+}
+
+/*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
+
+.button.outline {
+  border-radius: 3px;
+  background: transparent;
+  text-transform: none;
+}
+
+.button.outline.dark-gray {
+  border: 1px solid #A5B2BF;
+  color: #A5B2BF;
+}
+
+.button.outline.light-gray {
+  border: 1px solid #CED5DC;
+  color: #7A8C9E;
 }
 
 /* SECONDARY */
