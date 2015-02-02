@@ -333,9 +333,13 @@
     background: #E4E8EC;
   }
 
+  .sidebar-mobile-wallets .avatar-wallet {
+    margin-top: 5px;
+  }
+
   .sidebar-mobile-wallets li {
     overflow: hidden;
-    padding:0.4rem;
+    padding:.6rem 0.4rem;
     border-bottom: 1px solid #DDE2E7;
   }
 
