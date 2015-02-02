@@ -963,16 +963,6 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   color: #7A8C9E;
 }
 
-.button.outline.light-gray:hover {
-  background: rgba(206,213,220,0.40);
-  color: #4B6178;
-}
-
-.button.outline.dark-gray:hover {
-  background: rgba(255,255,255,.1);
-  color: #fff;
-}
-
 /* SECONDARY */
 button.secondary, 
 .button.secondary { 
