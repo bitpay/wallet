@@ -248,26 +248,35 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   color: #FFF;
 }
 
-.side-nav.wallets .avatar-wallet, 
-.wallet-selection.wallets .avatar-wallet
+.home-wallet .wallet-info {
+    margin-left: 0;
+    line-height: 110%;
+    float: left;
+  }
+
+.side-nav.wallets .avatar-wallet
 {
-  background-color: #1ABC9C;
-  color: #fff;
   padding: 0.35rem 0.5rem;
   text-align: center;
-  margin-top: 3px;
+  margin-top: 5px;
   width: 35px;
 }
 
+header .avatar-wallet {
+  background-color: #fff;
+  color: #1ABC9C;
+}
+
+
 .avatar-wallet {
+  background-color: #1ABC9C;
+  color: #fff;
   font-size: 20px;
   font-weight: 700;
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 8px;
   padding: 0.5rem 0.65rem;
-  background-color: #fff;
-  color: #1ABC9C;
   line-height: 24px;
   text-align: center;
 }

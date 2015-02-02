@@ -22,9 +22,8 @@
       </div>
     </div>
   </form>
-
-  <div class="row" ng-init="isComplete = wallet.isComplete(); networkName = wallet.getNetworkName()">
-    <div class="large-12 columns">
+  <div class="row">
+    <div class="large-8 columns" ng-init="isComplete = wallet.isComplete(); networkName = wallet.getNetworkName()">
       <h4>Wallet info</h4>
       <table>
         <tr>
@@ -49,10 +48,16 @@
         </tr>
       </table> 
     </div>
+    <div class="large-4 columns" ng-if="$root.wallet.isShared()">
+      <h4>Copayers</h4>
+      <div class="panel oh">
+        <div ng-include="'views/includes/copayers.html'"></div>
+      </div>
+    </div>
   </div>
 
   <div class="row" ng-show="!backupWalletPlainText && !error">
-    <div class="large-12 medium-12 small-12 columns">
+    <div class="large-8 medium-12 small-12 columns">
       <button class="primary expand" ng-click="downloadWalletBackup()" ng-disabled="loading"
         ng-show="!isSafari && !isCordova"><i class="fi-download"></i> Download backup</button>
       <button class="primary expand" ng-click="viewWalletBackup()" ng-disabled="loading"
