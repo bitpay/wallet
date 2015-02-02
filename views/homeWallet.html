@@ -4,50 +4,42 @@
       <h1 translate>Home</h1>
     </div>
   </div>
-
+  
+  
   <div class="row">
-    <div class="large-12 columns">
+    <div class="columns">
       <div class="panel oh">
-        <div class="row p10b">
-          <div class="large-8 medium-6 small-4 columns">
-            <div class="oh">
-              <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>
-              <h2 class="m10t ellipsis hide-for-small-only">
-                {{$root.wallet.getName()}} 
-              </h2>
-            </div>
-          </div>
-          <div class="large-4 medium-6 small-8 columns">
-            <div class="text-right">
-              <span class="size-21">
-                <strong>
-                  <span ng-if="!$root.updatingBalance">{{$root.wallet.balanceInfo.totalBalance || 0}}</span>
-              <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-              {{$root.wallet.settings.unitName}}
-              </strong>
-              </span>
-              <span class="size-14 db m5t text-gray">
-                <span ng-if="!$root.wallet.balanceInfo.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
-              <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
-              <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-              </span>
-            </div>
-          </div>
+        <div class="amount hide-for-large-up">
+          <span class="size-36">
+            <strong>
+              <span ng-if="!$root.updatingBalance">{{$root.wallet.balanceInfo.totalBalance || 0}}</span>
+          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          {{$root.wallet.settings.unitName}}
+          </strong>
+          </span>
+          <span class="size-14 db m5t text-gray">
+            <span ng-if="!$root.wallet.balanceInfo.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+          <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
+          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          </span>
         </div>
-
-
-        <div class="row line-t">
-          <div class="small-4 medium-4 columns m5t size-12 hide-for-large-up">
-            <a ng-click="$root.go('more')"><i class="fi-widget"></i> Settings</a>
-          </div>
-          <div class="small-8 medium-8 columns m5t">
-            <div class="text-right size-12">
-              <span ng-if="!$root.wallet.isShared()">Personal Wallet</span>
-              <span ng-if="$root.wallet.isShared()">
-                Multisignature wallet [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
-              </span>
-              <span ng-if="$root.wallet.isTestnet()"> in TESTNET</span>
+        <div class="pr">
+          <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>      
+          <div class="wallet-info">
+              <p class="m0">
+                {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} 
+              </p>
+            <div class="size-12 text-gray">
+              <span ng-if="$root.wallet.isShared() && !$root.wallet.isTestnet()">Multisignature wallet </span>
+              <span ng-if="!$root.wallet.isShared() && !$root.wallet.isTestnet()">Personal Wallet</span>
+              <span ng-if="$root.wallet.isTestnet()"> Testnet</span>
             </div>
+          </div>
+          <div class="right">
+            <a ng-click="$root.go('more')" class="button outline light-gray tiny m0">
+              <i class="fi-widget size-18 vm"></i>
+              <span class="show-for-medium-up">Settings</span>
+            </a>
           </div>
         </div>
       </div>
