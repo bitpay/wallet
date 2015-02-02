@@ -30,8 +30,8 @@
 <body
   ng-controller="IndexController" 
   ng-swipe-disable-mouse 
-  ng-swipe-left="swipe()"
-  ng-swipe-right="swipe(true)">
+  ng-swipe-left="closeMenu()"
+  ng-swipe-right="openMenu()">
 
   <div id="loading" class="loadingpage">
     <img src="img/ajax-loader.gif" alt="Loading...">
@@ -85,7 +85,8 @@
         <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation  && !$root.wpInputFocused">
           <nav class="tab-bar">
             <section class="left-small">
-              <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+              <a class="p10" 
+                ng-click="openMenu()"><i class="fi-list size-24"></i></a>
             </section>
 
               <section class="right-small" 
@@ -129,7 +130,7 @@
           ng-class="{'main':$root.iden && !$root.starting && !$root.hideNavigation  && !$root.wpInputFocused}" 
           ng-view></section> 
 
-        <a class="exit-off-canvas"></a>
+        <a class="close-menu" ng-click="closeMenu()"></a>
 
       </div>
     </div>
