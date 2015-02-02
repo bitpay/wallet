@@ -17,7 +17,9 @@ var dummyProposal = new TxProposal({
   creator: 1,
   createdTs: 1,
   builder: {
-    toObj: sinon.stub().returns({}),
+    toObj: sinon.stub().returns({
+      getId: sinon.stub().returns('1234')
+    }),
   },
   inputChainPaths: ['m/1'],
 });
@@ -42,6 +44,66 @@ describe('TxProposals', function() {
       should.exist(txps);
       txps.network.name.should.equal('livenet');
     });
+    it('should create an instance from an Object using builder', function() {
+
+      function dummyBuilder(opts) {
+        opts = opts || {};
+
+        var index = opts.nsig ? opts.nsig - 1 : 1;
+        var script = SCRIPTSIG[index];
+
+        var aIn = {
+          s: script
+        };
+
+        var tx = {};
+        tx.ins = opts.noins ? [] : [opts.nosigs ? {} : aIn];
+
+        tx.serialize = sinon.stub().returns(new Buffer('1234', 'hex'));
+        tx.getSize = sinon.stub().returns(1);
+        tx.getHashType = sinon.stub().returns(opts.hashtype || 1);
+        tx.getNormalizedHash = sinon.stub().returns('123456');
+        tx.hashForSignature = sinon.stub().returns(
+          new Buffer('31103626e162f1cbfab6b95b08c9f6e78aae128523261cb37f8dfd4783cb09a7', 'hex'));
+        tx.getId = sinon.returns(tx.getNormalizedHash().toString('hex'));
+
+        var builder = {};
+
+        builder.opts = opts.opts || {};
+        builder.build = sinon.stub().returns(tx)
+        builder.toObj = sinon.stub().returns({
+          iAmBuilderObj: true,
+          version: 1,
+          opts: builder.opts,
+        });
+        builder.isFullySigned = sinon.stub().returns(false);
+
+        builder.vanilla = {
+          scriptSig: [SCRIPTSIG[1]],
+          outs: JSON.stringify([{
+            address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6',
+            amountSatStr: '123',
+          }]),
+        };
+        builder.inputsSigned = 0;
+
+        return builder;
+      };
+
+      var txps1 = [];
+      txps1.push(dummyProposal);
+
+      var txps = TxProposals.fromObj({
+        networkName: 'testnet',
+        walletId: '123a12',
+        txps: txps1,
+        builder: dummyBuilder
+      });
+      should.exist(txps);
+    });
+
+
+
     it('should skip Objects with errors', function() {
       var txps = TxProposals.fromObj({
         networkName: 'livenet',
@@ -131,6 +193,61 @@ describe('TxProposals', function() {
       }).should.throw('Unknown TXP: c');
     });
   });
+
+  describe('#deletePending', function() {
+    it('should delete pending proposals', function() {
+      var txps = new TxProposals();
+      txps.txps = {
+        a: {
+          isPending: sinon.stub().returns(true)
+        },
+        b: {
+          isPending: sinon.stub().returns(false)
+        },
+      };
+      txps.deletePending(2);
+      txps.getNtxids().should.deep.equal(['b']);
+    });
+  });
+
+  describe('#getUsedUnspent', function() {
+    it('should return an empty object', function() {
+      var txps = new TxProposals();
+      txps.txps = {
+        a: {
+          isPending: sinon.stub().returns(false)
+        },
+        b: {
+          isPending: sinon.stub().returns(false)
+        },
+      };
+      var r = txps.getUsedUnspent(2);
+      Object.keys(r).length.should.equal(0);
+
+    });
+
+    it('should return an non empty object', function() {
+      var txps = new TxProposals();
+      txps.txps = {
+        a: {
+          isPending: sinon.stub().returns(true),
+          builder: {
+            getSelectedUnspent: sinon.stub().returns([{
+              txid: 'a1',
+              vout: '00'
+            }])
+          }
+        },
+        b: {
+          isPending: sinon.stub().returns(false)
+        },
+      };
+      var r = txps.getUsedUnspent(2);
+      Object.keys(r).length.should.equal(1);
+
+    });
+  });
+
   describe('#toObj', function() {
     it('should an object', function() {
       var txps = TxProposals.fromObj({

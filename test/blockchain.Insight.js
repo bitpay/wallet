@@ -429,4 +429,76 @@ describe('Insight model', function() {
     });
   });
 
+  describe.skip('#request', function() {
+    it('should check request', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.request('hola', function() {
+        done();
+      });
+    });
+  });
+
+  describe.skip('#requestPost', function() {
+    it('should check requestPost', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.requestPost('hola', 'myData', function() {
+        done();
+      });
+    });
+  });
+
+  describe('#broadcast', function() {
+    it('should check broadcast', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.requestPost = sinon.stub().yields({
+        error: 'error',
+        status: 500
+      });
+      blockchain.broadcast('myTX', function(err) {
+        err.should.not.be.undefined;
+        done();
+      });
+    });
+  });
+
+  describe('#getTransactions', function() {
+    it('should check getTransactions', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.requestPost = sinon.stub().yields({
+        error: 'error',
+        status: 500
+      });
+      blockchain.getTransactions(['addr1'], 'to', 'from', function(err) {
+        err.should.not.be.undefined;
+        done();
+      });
+    });
+
+    it('should check getTransactions using to and from as numbers', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.requestPost = sinon.stub().yields({
+        error: 'error',
+        status: 500
+      });
+      blockchain.getTransactions(['addr1'], 1, 10, function(err) {
+        err.should.not.be.undefined;
+        done();
+      });
+    });
+  });
+
+  describe('#getUnspent', function() {
+    it('should check getUnspent with error response', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+      blockchain.requestPost = sinon.stub().yields({
+        error: 'error',
+        status: 500
+      });
+      blockchain.getUnspent(['addr1'], function(err) {
+        err.should.not.be.undefined;
+        done();
+      });
+    });
+  });
+
 });

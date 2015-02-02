@@ -173,6 +173,29 @@ describe('RateService model', function() {
           });
         });
       });
+
+      it('should return an error', function() {
+        var rs = new RateService();
+        rs.isAvailable = sinon.stub().returns(true);
+        var today = Date.now();
+        var yesterday = today - 24 * 3600;
+        var getHistoricalRateStub = sinon.stub(rs, 'getHistoricRate');
+        getHistoricalRateStub.withArgs('XXX', today).yields('Not found', null);
+
+
+        var params = [{
+          satoshis: 0,
+          code: 'XXX',
+          date: today,
+          expected: '0.00'
+        }];
+        _.each(params, function(p) {
+          rs.toFiatHistoric(p.satoshis, p.code, p.date, function(err, rate) {
+            err.should.equal('Not found');
+          });
+        });
+      });
+
     });
 
     describe('#getHistoricRate', function() {
@@ -203,6 +226,7 @@ describe('RateService model', function() {
           });
         });
       });
+
       it('should return error', function() {
         var yesterday = moment().subtract(1, 'day');
         var reqStub = sinon.stub();
@@ -262,6 +286,30 @@ describe('RateService model', function() {
         dates.push(yesterday);
         rs.getHistoricRates('USD', dates, function(err, r) {
           r.length.should.equal(2);
+        });
+      });
+
+      it('should return a value', function() {
+        var yesterday = moment().subtract(1, 'day');
+        var reqStub = sinon.stub();
+
+        var statusIn = {
+          statusCode: 200
+        };
+
+        var rateIn = {
+          rate: 50
+        };
+        reqStub.get = sinon.stub().yields(null, statusIn, rateIn);
+
+        var rs = new RateService({
+          request: reqStub
+        });
+        rs.isAvailable = sinon.stub().returns(true);
+
+        var dates = [yesterday, yesterday];
+        rs.getHistoricRates('USD', dates, function(err, status, rate) {
+          status[0].rate.should.equal(50);
         });
       });
 
@@ -356,6 +404,26 @@ describe('RateService model', function() {
       });
 
     });
+
+    describe('#whenAvailable is available', function() {
+      it('should return callback ', function() {
+        var rs = new RateService();
+        rs.isAvailable = sinon.stub().returns(true);
+        rs.whenAvailable(function() {});
+      });
+    });
+
+    describe('#whenAvailable is not available', function() {
+      it('should queue the callback ', function() {
+
+        var rs = new RateService();
+        var count = rs._queued.length;
+        rs.isAvailable = sinon.stub().returns(false);
+        rs.whenAvailable(function() {});
+        rs._queued.length.should.be.equal(count + 1);
+      });
+    });
+
     describe('#singleton', function() {
       it('should create only one instance', function() {
         var rs = RateService.singleton();
