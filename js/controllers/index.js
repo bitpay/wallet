@@ -23,8 +23,12 @@ angular.module('copayApp.controllers').controller('IndexController', function($s
     });
   };
 
-  $scope.swipe = function(invert) {
-    go.swipe(invert);
+  $scope.openMenu = function() {
+    go.swipe(true);
+  };
+
+  $scope.closeMenu = function() {
+    go.swipe();
   };
 
 });
