@@ -6,7 +6,7 @@
   </div>
 
   <div class="row">
-    <div class="large-12 columns">
+    <div class="large-8 columns">
 
       <div ng-if="!$root.wallet.isComplete()">
         <div class="panel oh">
@@ -35,18 +35,21 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="large-4 columns">
       <div class="panel oh">
         <h3>Waiting for copayers</h3>
         <div ng-include="'views/includes/copayers.html'"></div>
-        <div class="copay-box" ng-if="!$root.wallet.isComplete()">
-          <span ng-include="'views/includes/photo.html'"></span>
-          <p class="size-12 text-white text-light m0">
+        <div ng-if="!$root.wallet.isComplete()" class="m15t">
+          <div class="left m10r" ng-include="'views/includes/photo.html'"></div>
+          <p class="size-12 m0 m5t left mv">
             <i class="fi-loop icon-rotate spinner"></i>
             <span translate>Waiting...</span>
           </p>
         </div>
       </div>
     </div>
+    
   </div>
   <!-- end of row -->
   <div class="row">
