@@ -145,7 +145,7 @@ factory('notification', ['$timeout',
       },
 
       funds: function(title, content, userData) {
-        return this.awesomeNotify('funds', 'bitcoin', title, content, userData);
+        return this.awesomeNotify('funds', 'bitcoin-circle', title, content, userData);
       },
 
       version: function(title, content, severe) {
