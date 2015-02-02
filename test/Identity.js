@@ -1137,8 +1137,6 @@ describe('Identity model', function() {
         kdf: sinon.stub().returns('passphrase'),
         decrypt: sinon.stub().returns('{"walletId":123}'),
       };
-
-
       opts = {
         email: 'test@test.com',
         password: '123',
@@ -1267,5 +1265,8 @@ describe('Identity model', function() {
       }).should.throw('Major difference');
     });
   });
+
+
+
 
 });
