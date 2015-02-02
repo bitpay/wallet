@@ -18,7 +18,7 @@
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="BackgroundColor" value="#2C3E50" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#3C4E60" />
+    <preference name="StatusBarBackgroundColor" value="#2C3E50" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
