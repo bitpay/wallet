@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
     $scope.shareAddress = function(addr) {
       if (isCordova) {
-        if (!isMobile.iOS) {
+        if (isMobile.Android() || isMobile.Windows()) {
           window.ignoreMobilePause = true;
         }
         window.plugins.socialsharing.share('My bitcoin address: ' + addr, null, null, null);
