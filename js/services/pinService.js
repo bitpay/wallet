@@ -75,6 +75,7 @@ angular.module('copayApp.services')
               _firstpin = null;
               scope.askForPin = null;
               scope.createPin(pin);
+              return;
             }
             else {
               _firstpin = null;
