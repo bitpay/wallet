@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
   };
 
   $scope.sendProfileBackup = function() {
-    if (!isMobile.iOS) {
+    if (isMobile.Android() || isMobile.Windows()) {
       window.ignoreMobilePause = true;
     }
     window.plugins.toast.showShortCenter('Preparing backup...');
