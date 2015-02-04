@@ -1,3 +1,7 @@
+<nav class="tab-bar text-right hide-for-large-up">
+  <a ng-click="cancel()" class="p10 text-white">Close</a>
+</nav>
+<div class="modal-mobile">
 <div class="header-modal">
   <div class="row collapse" ng-repeat="out in tx.outs">
     <div class="small-10 columns">
@@ -23,7 +27,7 @@
     </div>
     </div>
   </div>
-  <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
+  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
 
 <div class="m10v line-b size-14" ng-show="tx.comment">
@@ -105,4 +109,4 @@
     <span translate>Broadcast Transaction</span>
   </button>
 </div>
-
+</div>

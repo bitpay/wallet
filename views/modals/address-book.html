@@ -1,4 +1,7 @@
-<div class="row m10t">
+<nav class="tab-bar text-right hide-for-large-up">
+  <a ng-click="close()" class="p10 text-white">Close</a>
+</nav>
+<div class="row modal-mobile">
   <div class="large-12 columns"> 
     <h1 ng-show="!showForm">Address Book</h1>
     <h1 ng-show="showForm">Add a new entry</h1>
@@ -81,5 +84,5 @@
   <div class="large-12 columns" ng-show="!showForm">
     <a class="button primary expand" ng-click="toggleForm()"><i class="fi-plus"></i> Add entry</a>
   </div>
-  <a class="close-reveal-modal" ng-click="close()"><i class="fi-x size-18"></i></a>
+  <a class="close-reveal-modal show-for-large-up" ng-click="close()"><i class="fi-x size-18"></i></a>
 </div>

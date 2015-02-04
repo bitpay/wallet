@@ -120,9 +120,24 @@
     padding: 1rem 0;
   }
 
+  .modal-mobile {
+    padding: 60px 0.5rem;
+  }
+
   .reveal-modal {
-    padding: 0.5rem;
+    padding: 0;
   } 
+
+  .reveal-modal .close-reveal-modal, dialog .close-reveal-modal {
+    padding: 0.8rem;
+    position: relative;
+    background: #E4E8EC;
+    top: 0;
+    right: 0;
+    line-height: 0;
+    color: #7A8C9E;
+    border-radius: 3px;
+  }
 
   header {
     background-color: #2C3E50;
