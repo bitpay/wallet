@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('SidebarController', function(
 
   $scope.isMobile = isMobile.any();
   $scope.isCordova = isCordova;
+  $scope.username = $rootScope.iden ? $rootScope.iden.getName() : '';
 
   $scope.menu = [{
     'title': 'Home',
