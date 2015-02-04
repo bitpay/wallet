@@ -1,11 +1,15 @@
-<div class="m20t text-center ">
+<nav class="tab-bar text-right hide-for-large-up">
+  <a ng-click="cancel()" class="p10 text-white">Close</a>
+</nav>
+<div class="modal-mobile">
+<div class="text-center">
   <div class="size-48">
   {{md.unitTotal}} {{$root.wallet.settings.unitName}}
   </div>
   <div class="size-18 m5t text-gray">
     {{ alternative }} {{ alternativeIsoCode }}
   </div>
-  <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
+  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
 <div class="line-b m10v"></div>
 
@@ -28,6 +32,6 @@
 <div ng-if="md.expirationDate" class="m10v">
   <i>Expires:</i> {{md.expirationDate | amTimeAgo }}
 </div>
-
+</div>
 
 

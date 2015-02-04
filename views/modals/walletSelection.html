@@ -1,4 +1,7 @@
-<div ng-init="setWallets()">
+<nav class="tab-bar text-right hide-for-large-up">
+  <a ng-click="cancel()" class="p10 text-white">Close</a>
+</nav>
+<div class="modal-mobile" ng-init="setWallets()">
 
   <h1 class="line-b"> Select a wallet to make the payment</h1>
 
@@ -23,5 +26,5 @@
       </div>
     </li>
   </ul>
-  <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
+  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
