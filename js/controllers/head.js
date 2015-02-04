@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('HeadController', function($scope, $rootScope, $filter, $timeout, notification, identityService, balanceService) {
-  $scope.username = $rootScope.iden.getName();
+  $scope.username = $rootScope.iden ? $rootScope.iden.getName() : '';
   $scope.hoverMenu = false;
 
   var isChromeApp = typeof window !== "undefined" && window.chrome && chrome.runtime && chrome.runtime.id;

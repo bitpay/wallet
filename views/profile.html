@@ -4,7 +4,11 @@
       <div class="panel">
         <div class="row collapse">
           <div class="large-2 medium-2 columns text-center">
-            <a class="photo-container profile" href="https://en.gravatar.com/" ng-init="isHover=0" ng-mouseenter="isHover=1" ng-mouseleave="isHover=0" target="_blank">
+            <a class="photo-container profile" 
+              ng-click="$root.openExternalLink('https://gravatar.com/')"
+              ng-init="isHover=0" 
+              ng-mouseenter="isHover=1" 
+              ng-mouseleave="isHover=0">
               <img ng-show="!isHover" gravatar-src="'{{username}}'" gravatar-size="80">
               <img ng-show="isHover" src="img/change-avatar.png" with="80">
             </a>
