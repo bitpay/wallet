@@ -431,6 +431,17 @@ describe('TxProposal', function() {
       it('OK', function() {
         dummyProposal({})._check();
       });
+      it('FAIL Invalid tx proposal', function() {
+        var txp = dummyProposal();
+        var old = txp.builder.signhash;
+        txp.builder.signhash = 'ppp';
+        (function() {
+          txp._check();
+        }).should.throw('Invalid tx proposal');
+
+        txp.builder.signhash = old;
+      });
+
       it('FAIL ins', function() {
         (function() {
           dummyProposal({
@@ -438,6 +449,24 @@ describe('TxProposal', function() {
           })._check();
         }).should.throw('no ins');
       });
+
+      it('FAIL txp too big ', function() {
+        var txp = dummyProposal();
+        var old_builder = txp.builder.build;
+
+        var tx = {
+          getSize: function() {
+            return 90000;
+          }
+        };
+
+        txp.builder.build = sinon.stub().returns(tx);;
+        (function() {
+          txp._check();
+        }).should.throw('BIG: Invalid TX proposal. Too big');
+        txp.builder.build = old_builder;
+      });
+
       it('FAIL signhash SINGLE', function() {
         var txp = dummyProposal({
           hashtype: Transaction.SIGHASH_SINGLE
