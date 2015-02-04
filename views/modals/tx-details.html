@@ -1,3 +1,7 @@
+<nav class="tab-bar text-right hide-for-large-up">
+  <a ng-click="cancel()" class="p10 text-white">Close</a>
+</nav>
+<div class="modal-mobile">
 <div class="header-modal text-center">
   <div ng-if="btx.addressTo" class="m10v">
     <span class="ellipsis">
@@ -22,7 +26,7 @@
   <div class="size-18 m5t text-gray" ng-show="btx.alternativeAmount">
     {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
   </div>
-  <a class="close-reveal-modal" ng-click="cancel()"><i class="fi-x size-18"></i></a>
+  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
 
 <div ng-if="btx.ts || btx.createdTs " class="m20v line-b">
@@ -73,5 +77,5 @@
       See it on the blockchain <i class="icon-arrow-right2 vm"></i>
   </a>
 </div>
-
+</div>
 
