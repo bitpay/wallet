@@ -82,37 +82,38 @@
           <span translate> <strong class="size-16">Network Error</strong>.<br> Attempting to reconnect..</span>
         </div>
  
-        <div ng-controller="SidebarController" ng-show="$root.iden && !$root.hideNavigation  && !$root.wpInputFocused">
-          <nav class="tab-bar">
-            <section class="left-small">
-              <a class="p10" 
-                ng-click="openMenu()"><i class="fi-list size-24"></i></a>
-            </section>
+        <div ng-if="$root.iden">
+          <div ng-controller="SidebarController" ng-show="!$root.hideNavigation  && !$root.wpInputFocused">
+            <nav class="tab-bar">
+              <section class="left-small">
+                <a class="p10" 
+                  ng-click="openMenu()"><i class="fi-list size-24"></i></a>
+              </section>
 
               <section class="right-small" 
-                ng-show="$root.iden && $root.wallet.isComplete() && !$root.hideWalletNavigation && isCordova">
+                ng-show="$root.wallet.isComplete() && !$root.hideWalletNavigation && isCordova">
                 <a class="p10" 
                   ng-click="openScanner()"><i class="fi-camera size-24"></i></a>
               </section>
 
-            <section class="middle tab-bar-section">
-                <h1 class="title ellipsis" ng-show="$root.iden && $root.wallet  && !$root.hideWalletNavigation">
-                    {{$root.wallet.getName()}}
+              <section class="middle tab-bar-section">
+                <h1 class="title ellipsis" ng-show="$root.wallet  && !$root.hideWalletNavigation">
+                  {{$root.wallet.getName()}}
                 </h1>
-            </section>
-          </nav>
+              </section>
+            </nav>
 
-          <nav class="left-off-canvas-menu" ng-show="$root.iden">
-            <div ng-include="'views/includes/sidebar-mobile.html'"></div>
-          </nav>
+            <nav class="left-off-canvas-menu">
+              <div ng-include="'views/includes/sidebar-mobile.html'"></div>
+            </nav>
 
-          <div ng-if="$root.iden"
-            ng-include="'views/includes/sidebar.html'" 
-            role='navigation'
-            class="sidebar"></div>
-          <div class="bottom-bar" ng-if="$root.wallet &&
-            $root.wallet.isComplete() && !$root.wallet.isLocked && !$root.hideWalletNavigation">
-            <div ng-include="'views/includes/bottombar-mobile.html'"></div>
+            <div ng-include="'views/includes/sidebar.html'" 
+              role='navigation'
+              class="sidebar"></div>
+            <div class="bottom-bar" ng-if="$root.wallet &&
+              $root.wallet.isComplete() && !$root.wallet.isLocked && !$root.hideWalletNavigation">
+              <div ng-include="'views/includes/bottombar-mobile.html'"></div>
+            </div>
           </div>
         </div>
 
