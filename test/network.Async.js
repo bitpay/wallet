@@ -138,6 +138,59 @@ describe('Network / Async', function() {
       n2._deletePeer.calledOnce.should.equal(false);
     });
 
+    it('should ignore messages', function() {
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2._deletePeer = sinon.spy();
+
+      var message = {
+        type: 'hello',
+        copayerId: cid1,
+        secretNumber: 'mySecret',
+        ts: 1
+      };
+      var enc = n1.encode(cid2, message);
+
+      enc.ts = 1;
+      n2.ignoreMessageFromTs = 1;
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(false);
+    });
+
+
+    it('should delete peer if copayer does not belong', function() {
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2.lockIncommingConnections([cid3]);
+      n2._deletePeer = sinon.spy();
+
+      var message = {
+        type: 'hello',
+        copayerId: cid1,
+        secretNumber: 'mySecret',
+      };
+      var enc = n1.encode(cid2, message);
+
+      n2._onMessage(enc);
+      n2._deletePeer.calledOnce.should.equal(true);
+    });
+
+    it('should emit data', function() {
+      var n1 = createN(pk1);
+      var n2 = createN(pk2);
+      n2.emit = sinon.spy();
+
+      var message = {
+        type: 'helloxxx',
+        copayerId: cid1,
+        secretNumber: 'mySecret',
+      };
+      var enc = n1.encode(cid2, message);
+
+      n2._onMessage(enc);
+      n2.emit.calledOnce.should.equal(true);
+    });
+
     it('should reject data sent from a peer with hijacked pubkey', function() {
       var n = createN(pk2);
 
@@ -396,6 +449,13 @@ describe('Network / Async', function() {
       var n = createN();
       n.getCopayerIds().length.should.be.equal(1);
     });
+
+    it('should return the allowed copayer ids', function() {
+      var n = createN();
+      var lockIds = ['abc001', 'abc002'];
+      n.lockIncommingConnections(lockIds);
+      n.getCopayerIds().length.should.be.equal(2);
+    });
   });
 
   describe('#isOnline', function() {
@@ -446,6 +506,43 @@ describe('Network / Async', function() {
       var k2 = n.getKey();
       k2.should.not.be.undefined;
       k1.should.be.equal(k2);
+    });
+  });
+
+  describe('#_onError', function() {
+    it('should set criticalError ', function() {
+      var n = createN();
+      expect(n.criticalError).to.be.undefined;
+      var myError = {
+        message: 'Some error'
+      };
+      n._onError(myError);
+      n.criticalError.should.be.equal('Some error');
+    });
+  });
+
+  describe('#_setInboundPeerAuth', function() {
+    it('should set isInboundPeerAuth ', function() {
+      var n = createN();
+      expect(n.isInboundPeerAuth['1']).to.be.undefined;
+
+      n._setInboundPeerAuth('1');
+      n.isInboundPeerAuth['1'].should.be.true;
+    });
+  });
+
+  describe('#start', function() {
+    it('should not start ', function(done) {
+      var n = createN();
+      var opts = {
+        privkey: 'fb23b9074ca5e7163719b86b41c7ce8348cf3d2839bb5f6125ef6efd5d40d7d3',
+        copayerId: '0311a10109320efb3646c832d3e140c6d9c4f69b16e73fc3f0c23b3d014ec77828'
+      };
+      n.started = 1;
+
+      n.start(opts, function() {
+        done();
+      });
     });
   });
 
