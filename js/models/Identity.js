@@ -379,8 +379,14 @@ Identity.prototype.setBackupNeeded = function(backupNeeded) {
   self.backupNeeded = !!backupNeeded;
 
   self.verifyChecksum(function(err, match) {
-    if (err) return cb(err);
-    if (!match) return cb('The profile is out of sync. Please re-login to get the latest changes.');
+    if (err) {
+      log.error(err);
+      return;
+    }
+    if (!match) {
+      log.error('The profile is out of sync. Please re-login to get the latest changes.');
+      return;
+    }
 
     self.store({
       noWallets: true
