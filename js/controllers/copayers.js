@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('CopayersController',
-  function($scope, $rootScope, $timeout, go, identityService, notification) {
+  function($scope, $rootScope, $timeout, go, identityService, notification, isCordova) {
     var w = $rootScope.wallet;
     $scope.init = function() {
       $rootScope.title = 'Share this secret with your copayers';
       $scope.loading = false;
       $scope.secret = $rootScope.wallet.getSecret();
+      $scope.isCordova = isCordova;
 
       w.on('publicKeyRingUpdated', $scope.updateList);
       w.on('ready', $scope.updateList);
@@ -46,6 +47,22 @@ angular.module('copayApp.controllers').controller('CopayersController',
           });
         }
       });
+    };
+
+    $scope.copySecret = function(secret) {
+      if (isCordova) {
+        window.cordova.plugins.clipboard.copy(secret);
+        window.plugins.toast.showShortCenter('Copied to clipboard');
+      }
+    };
+
+    $scope.shareSecret = function(secret) {
+      if (isCordova) {
+        if (isMobile.Android() || isMobile.Windows()) {
+          window.ignoreMobilePause = true;
+        }
+        window.plugins.socialsharing.share(secret, null, null, null);
+      }
     };
 
   });

@@ -137,6 +137,13 @@ angular.module('copayApp.controllers').controller('MoreController',
       });
     };
 
+    $scope.copyText = function(text) {
+      if (isCordova) {
+        window.cordova.plugins.clipboard.copy(text);
+        window.plugins.toast.showShortCenter('Copied to clipboard');
+      }
+    };
+
     $scope.downloadWalletBackup = function() {
       backupService.walletDownload(w);
     };
