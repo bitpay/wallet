@@ -6,7 +6,6 @@ verify:
 	gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip
 
 chrome:
-	grunt prod
 	browser-extensions/chrome/build.sh
 
 cordova-base:
