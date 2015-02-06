@@ -72,7 +72,7 @@ LocalStorage.prototype.setItem = function(k, v, cb) {
 
 LocalStorage.prototype.removeItem = function(k, cb) {
   if (isChromeApp) {
-    chrome.storage.remove(k, cb);
+    chrome.storage.local.remove(k, cb);
   } else {
     this.ls.removeItem(k);
     return cb();
