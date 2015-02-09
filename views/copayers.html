@@ -10,21 +10,28 @@
 
       <div ng-if="!$root.wallet.isComplete()">
         <div class="panel oh">
-        <div class="box-notification">
-          <div class="box-icon error">
-            <i class="fi-alert size-24"></i>
+          <div class="box-notification">
+            <div class="box-icon error">
+              <i class="fi-alert size-24"></i>
+            </div>
+            <span class="text-warning size-14">
+              Please note the wallet creator <b>must be online</b> until all copayers have joined.
+            </span>
           </div>
-          <span class="text-warning size-14">
-    Please note the wallet creator <b>must be online</b> until all copayers have joined.
-    </span>
-        </div>
 
-
-          <div class="text-center">
-            <qrcode size="250" data="{{secret}}"></qrcode>
+          <div ng-click="copySecret(secret)">
+            <div class="text-center">
+              <qrcode size="250" data="{{secret}}"></qrcode>
+            </div>
+            <div class="secret m10t">
+              {{secret}}
+            </div>
           </div>
-          <div class="secret m10v">
-            {{secret}}
+          <div class="text-center m10t" ng-if="isCordova">
+            <span class="button outline dark-gray tiny" 
+              ng-click="shareSecret(secret)">
+              <i class="fi-share"></i> Share secret
+            </span>
           </div>
           <div class="size-10 line-t text-center">
             <h2 class="m10t">{{$root.wallet.getName()}}</h2>
@@ -32,7 +39,7 @@
             [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
             </span>
             <span ng-if="$root.wallet.isTestnet()"> in TESTNET</span>
-          </div>
+          </div> 
         </div>
       </div>
     </div>

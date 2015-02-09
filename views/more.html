@@ -145,7 +145,13 @@
           <span translate ng-hide="!hidePriv">Show</span>
           <span translate ng-hide="hidePriv">Hide</span>
         </a>
-        <textarea class="m10t" ng-hide="hidePriv">{{priv}}</textarea>
+        <div class="m10t" ng-hide="hidePriv">
+          <textarea>{{priv}}</textarea>
+          <span ng-if="isCordova" class="button outline dark-gray tiny" 
+            ng-click="copyText(priv)">
+            <i class="fi-clipboard-pencil"></i> Copy to clipboard
+          </span>
+        </div>
       </div>
     </div>
     <div class="large-12 columns">
@@ -193,7 +199,13 @@
           <span translate ng-hide="!hideSecret">Show</span>
           <span translate ng-hide="hideSecret">Hide</span>
         </a>
-        <textarea class="m10t" ng-hide="hideSecret">{{secret}}</textarea>
+        <div class="m10t" ng-hide="hideSecret">
+          <textarea>{{secret}}</textarea>
+          <span ng-if="isCordova" class="button outline dark-gray tiny" 
+            ng-click="copyText(secret)">
+            <i class="fi-clipboard-pencil"></i> Copy to clipboard
+          </span>
+        </div>
       </div>
     </div>
   </div>
