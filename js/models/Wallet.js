@@ -988,19 +988,21 @@ Wallet.prototype.netStart = function() {
     secretNumber: self.secretNumber,
   };
 
+  var wasIncomplete;
   if (this.publicKeyRing.isComplete()) {
     this._lockIncomming(this.publicKeyRing.getAllCopayerIds());
   } else {
     //Partially complete wallet.
     if (this.publicKeyRing.getAllCopayerIds().length > 1) {
       this.network.setCopayers(this.publicKeyRing.getAllCopayerIds());
+      wasIncomplete = true;
     }
   }
 
   log.debug('Wallet:' + self.id + ' Starting network.');
   this.network.start(startOpts, function() {
     //Partially complete wallet.
-    if (self.publicKeyRing.getAllCopayerIds().length > 1) {
+    if (wasIncomplete) {
       log.debug('Incomplete wallet opened:' + self.getName() + '.  forced peer sync from 0');
       self.sendWalletReady(null, 0);
     }
