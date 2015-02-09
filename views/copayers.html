@@ -65,7 +65,7 @@
               ng-click="confirmDelete=!confirmDelete">No</button>
           </div>
           <div class="large-6 medium-6 small-6 columns">
-            <button class="warning" ng-disabled="loading" ng-click="deleteWallet()">
+            <button class="warning" ng-disabled="loading" ng-click="deleteWallet(); confirmDelete = !confirmDelete">
               <i class="fi-trash"></i> Yes
             </button>
           </div>
