@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
     $scope.copyAddress = function(addr) {
       if (isCordova) {
-        window.cordova.plugins.clipboard.copy(addr);
+        window.cordova.plugins.clipboard.copy('bitcoin:' + addr);
         window.plugins.toast.showShortCenter('Copied to clipboard');
       }
     };
@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
         if (isMobile.Android() || isMobile.Windows()) {
           window.ignoreMobilePause = true;
         }
-        window.plugins.socialsharing.share('My bitcoin address: ' + addr, null, null, null);
+        window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
       }
     };
 
