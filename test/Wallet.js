@@ -2081,12 +2081,12 @@ describe('Wallet model', function() {
       o.type.should.equal('publicKeyRing');
     });
 
-    // For some unknown reason this test times out on 
-    // the Travis server, so we skip it for now.
-    it.skip('should lock incomming connections', function() {
+
+    it('should lock incomming connections', function() {
       var obj = JSON.parse(pkr);
-      sinon.stub(w.network, 'send').returns();
-      sinon.stub(w.network, 'lockIncommingConnections').returns();
+      sinon.stub(w, 'subscribeToAddresses').returns();
+      sinon.stub(w, '_lockIncomming').returns();
+      sinon.stub(w, 'emitAndKeepAlive').returns();
 
       obj.requiredCopayers = 3;
       obj.totalCopayers = 5;
@@ -2096,8 +2096,10 @@ describe('Wallet model', function() {
       w._onPublicKeyRing('sender', {
         publicKeyRing: obj,
       });
-      w.network.send.calledOnce.should.equal(false); // wasComplete
-      w.network.lockIncommingConnections.calledOnce.should.equal(true);
+      w.subscribeToAddresses.calledOnce.should.equal(true);
+      w._lockIncomming.calledOnce.should.equal(true);
+      w.emitAndKeepAlive.calledOnce.should.equal(true);
+
     });
   });
 
