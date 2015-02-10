@@ -704,6 +704,37 @@ describe('Identity model', function() {
 
 
   describe('#importWalletFromObj', function() {
+    it('should return an error', function(done) {
+      var iden = new Identity(getDefaultParams());
+      iden.verifyChecksum = sinon.stub().yields('error', true);
+      iden.importWalletFromObj({}, {}, function(err) {
+        should.exist(err);
+        done();
+      });
+    });
+    it('should return an error case 2', function(done) {
+      var iden = new Identity(getDefaultParams());
+      iden.verifyChecksum = sinon.stub().yields(null, false);
+      iden.importWalletFromObj({}, {}, function(err) {
+        should.exist(err);
+        done();
+      });
+    });
+
+    it('should return an error case 3', function(done) {
+      var iden = new Identity(getDefaultParams());
+      iden.verifyChecksum = sinon.stub().yields(null, true);
+      iden.importWalletFromObj({}, {
+        importWallet: function() {
+          return false;
+        }
+      }, function(err) {
+        console.log(err);
+        should.exist(err);
+        done();
+      });
+    });
+
     it('should import a wallet, call the right encryption functions', function(done) {
       var args = createIdentity();
       args.storage.getItem.onFirstCall().callsArgWith(1, null, '{"wallet": "fakeData"}');

@@ -75,8 +75,6 @@ TxProposal.prototype._checkPayPro = function() {
   if (!this.merchant.total || !this.merchant.outs[0].amountSatStr || !this.merchant.outs[0].address)
     throw new Error('PayPro: Missing amount');
 
-  console.log('outs ', this.builder.vanilla.outs);
-  console.log('size ', _.size(outs));
   var outs = JSON.parse(this.builder.vanilla.outs);
   if (_.size(outs) != 1)
     throw new Error('PayPro: Wrong outs in Tx');

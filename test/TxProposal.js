@@ -349,9 +349,6 @@ describe('TxProposal', function() {
       Buffer.isBuffer(info.script.getBuffer()).should.equal(true);
     });
 
-
-
-
     it('#getSignersPubKeys', function() {
       var txp = dummyProposal();
       var pubkeys = txp.getSignersPubKeys();
@@ -548,12 +545,29 @@ describe('TxProposal', function() {
           txp.addMerchantData(md);
         }).should.throw('outputs');
       });
+
       it('NOK OUTS (case 3)', function() {
         md.outs = [{}, {}];
         (function() {
           txp.addMerchantData(md);
         }).should.throw('outputs');
       });
+
+      it('NOK OUTS (case 4)', function() {
+        txp.builder.vanilla.outs = '[1,2]';
+        txp.merchant = {};
+        txp.paymentProtocolURL = txp.merchant.request_url;
+        txp.merchant.total = 1;
+        txp.merchant.outs = [{
+          amountSatStr: '1',
+          address: '2NDJbzwzsmRgD2o5HHXPhuq5g6tkKTjYkd6'
+        }];
+
+        (function() {
+          txp._checkPayPro();
+        }).should.throw('Wrong outs in Tx');
+      });
+
       it('NOK Amount', function() {
         md.total = undefined;
         (function() {
@@ -717,7 +731,7 @@ describe('TxProposal', function() {
         txp.creator.should.equal('creator');
         txp.createdTs.should.gte(ts);
         txp.seenBy['creator'].should.equal(txp.createdTs);
-      })
+      });
       it("New tx should have only 1 signature", function() {
         var txp = dummyProposal();
         var ts = Date.now();
@@ -734,7 +748,7 @@ describe('TxProposal', function() {
             'creator2': 1
           });
         }).should.throw('only 1');
-      })
+      });
 
       it("if signed, should not change ts", function() {
         var txp = dummyProposal();
@@ -753,7 +767,8 @@ describe('TxProposal', function() {
         txp.creator.should.equal('creator');
         txp.signedBy['creator'].should.equal(1);
         txp.signedBy['pepe'].should.gte(ts);
-      })
+      });
+
     });
 
   });
