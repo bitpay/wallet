@@ -112,6 +112,8 @@ describe("Unit: Controllers", function() {
     iden.getWalletById = sinon.stub().returns(w);
     iden.getName = sinon.stub().returns('name');
     iden.deleteWallet = sinon.stub();
+    iden.close = sinon.stub().returns(null);
+
 
     $rootScope.wallet = w;
     $rootScope.iden = iden;
@@ -479,7 +481,7 @@ describe("Unit: Controllers", function() {
 
   });
 
-  describe.skip("Unit: Sidebar Controller", function() {
+  describe("Unit: Sidebar Controller", function() {
     beforeEach(inject(function($controller, $rootScope) {
       rootScope = $rootScope;
       scope = $rootScope.$new();
@@ -488,10 +490,10 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it('should return an array of n undefined elements', function() {
-      var n = 5;
-      var array = scope.getNumber(n);
-      expect(array.length).equal(n);
+    it.only('should call sign out', function() {
+
+      scope.signout();
+      rootScope.iden.close.calledOnce.should.be.true;
     });
   });
 
@@ -565,6 +567,20 @@ describe("Unit: Controllers", function() {
       it('should work with invalid form', function() {
         scope.open(invalidForm);
       });
+    });
+  });
+
+  describe.only('SignOut Controller', function() {
+    var what;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      what = $controller('signOutController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(what);
     });
   });
 
