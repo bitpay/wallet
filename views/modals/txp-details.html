@@ -57,16 +57,19 @@
 <div ng-if="tx.actionList[0]" class="m10v">
   <i>Signatures:</i>
   <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
-    <li ng-repeat="c in tx.actionList" ng-class="{'bottom-line-copayers':!$last}">
+    <li ng-repeat="cId in registeredCopayerIds" 
+    ng-class="{'bottom-line-copayers':!$last}">
     <span>
-      <i ng-if="c.actions.rejected" class="fi-x icon-sign x"></i>
-      <i ng-if="c.actions.sign" class="fi-check icon-sign check"></i>
-      <i ng-if="!c.actions.sign && !c.actions.rejected && tx.missingSignatures" class="m10r fi-loop icon-rotate"></i>
+      <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId]" class="fi-x icon-sign x"></i>
+      <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="fi-check icon-sign check"></i>
+      <i ng-if="!$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId] 
+        && !$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="m10r fi-loop icon-rotate"></i>
     </span>
     <span>
-      <i ng-if="c.actions.create" class="fi-crown icon-status icon-active m10r"></i>
+      <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].creator == cId" 
+        class="fi-crown icon-status icon-active m10r"></i>
     </span>
-    <span>{{c.cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(c.cId)}}</span>
+    <span>{{cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}</span>
     </li>
   </ul>
 </div>
@@ -83,7 +86,8 @@
 
 <div class="row collapse" 
   ng-init="hideSign = false; hideReject = false"
-  ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]">
+  ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()] &&
+  $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) != 0">
   <div class="large-5 medium-5 small-5 columns">
     <button class="button warning m0 expand" ng-click="hideSign = true; reject(tx.ntxid);" 
       ng-disabled="loading" ng-show="!hideReject">
@@ -102,11 +106,23 @@
   </div>
 </div>
 
-<div class="row collapse" ng-show="!tx.missingSignatures && !tx.sentTs">
+<div class="row collapse" 
+  ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs 
+  && $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) == 0">
   <button class="primary tiny m0 expand"
     ng-click="broadcast(tx.ntxid)"
     ng-disabled="loading"> <i class="fi-upload-cloud"></i>
     <span translate>Broadcast Transaction</span>
   </button>
+</div>
+<div class="text-center text-success" 
+  ng-show="$root.wallet.txProposals.txps[tx.ntxid].sentTs 
+  && $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) == 0">
+  Transaction sent!
+</div>
+<div class="text-center text-warning"
+  ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs && 
+  !$root.wallet.txProposals.txps[tx.ntxid].isPending($root.wallet.maxRejectCount())">
+  Transaction finally rejected
 </div>
 </div>
