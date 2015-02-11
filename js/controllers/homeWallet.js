@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       var w = $rootScope.wallet;
       $scope.tx = tx;
+      $scope.registeredCopayerIds = w.getRegisteredCopayerIds();
       $scope.loading = null;
 
       $scope.sign = function(ntxid) {
