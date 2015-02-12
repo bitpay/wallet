@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('CopayersController',
   function($scope, $rootScope, $timeout, go, identityService, notification, isCordova) {
     var w = $rootScope.wallet;
+
+
     $scope.init = function() {
       $rootScope.title = 'Share this secret with your copayers';
       $scope.loading = false;
@@ -11,6 +13,7 @@ angular.module('copayApp.controllers').controller('CopayersController',
 
       w.on('publicKeyRingUpdated', $scope.updateList);
       w.on('ready', $scope.updateList);
+
       $scope.updateList();
     };
 
@@ -36,7 +39,9 @@ angular.module('copayApp.controllers').controller('CopayersController',
           $scope.loading = null;
           $scope.error = err.message || err;
           copay.logger.warn(err);
-          $timeout(function () { $scope.$digest(); });
+          $timeout(function() {
+            $scope.$digest();
+          });
         } else {
           $scope.loading = false;
           if ($rootScope.wallet) {
