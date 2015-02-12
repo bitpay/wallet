@@ -5,44 +5,63 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       var w = $rootScope.wallet;
+      $scope.error = null;
       $scope.tx = tx;
       $scope.registeredCopayerIds = w.getRegisteredCopayerIds();
       $scope.loading = null;
 
+      $scope.getShortNetworkName = function() {
+        var w = $rootScope.wallet;
+        return w.getNetworkName().substring(0, 4);
+      };
+
       $scope.sign = function(ntxid) {
         $scope.loading = true;
+        $scope.error = null;
         $timeout(function() {
           w.signAndSend(ntxid, function(err, id, status) {
             $scope.loading = false;
-            if (err)
-            $scope.error = err;
-            else
-            $modalInstance.close(status);
+            if (err) {
+              $scope.error = 'Transaction could not send. Please try again.';
+              $scope.$digest();
+            }
+            else {
+              $modalInstance.close(status);
+            }
           });
         }, 100);
       };
 
       $scope.reject = function(ntxid) {
         $scope.loading = true;
+        $scope.error = null;
         $timeout(function() {
           w.reject(ntxid, function(err, status) {
             $scope.loading = false;
-            if (err)
-            $scope.error = err;
-            else
-            $modalInstance.close(status);
+            if (err) {
+              $scope.error = err;
+              $scope.$digest();
+            }
+            else {
+              $modalInstance.close(status);
+            }
           });
         }, 100);
       };
 
       $scope.broadcast = function(ntxid) {
         $scope.loading = true;
+        $scope.error = null;
         $timeout(function() {
           w.issueTx(ntxid, function(err, txid, status) {
             $scope.loading = false;
-            if (err)
-              $scope.error = err;
-            $modalInstance.close(status);
+            if (err) {
+              $scope.error = 'Transaction could not send. Please try again.';
+              $scope.$digest();
+            }
+            else {
+              $modalInstance.close(status);
+            }
           });
         }, 100);
       };

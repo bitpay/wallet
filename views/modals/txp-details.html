@@ -81,15 +81,14 @@
   <span class="text-warning size-14">
     {{error}}
   </span>
-  <a class="close-notification text-warning" ng-click="error=null">&#215;</a>
 </div>
 
-<div class="row collapse" 
+<div class="row collapse m10t" 
   ng-init="hideSign = false; hideReject = false"
   ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()] &&
   $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) != 0">
   <div class="large-5 medium-5 small-5 columns">
-    <button class="button warning m0 expand" ng-click="hideSign = true; reject(tx.ntxid);" 
+    <button class="button warning m0 expand" ng-click="hideTxInfo = true; hideSign = true; reject(tx.ntxid);" 
       ng-disabled="loading" ng-show="!hideReject">
       <i class="fi-x icon-sign x" ng-show="!loading"></i>  
       <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
@@ -97,7 +96,7 @@
     </button>
   </div>
   <div class="large-5 medium-5 small-5 columns text-right">
-    <button class="button primary m0 expand" ng-click="hideReject = true; sign(tx.ntxid)" 
+    <button class="button primary m0 expand" ng-click="hideTxInfo = true; hideReject = true; sign(tx.ntxid)" 
       ng-disabled="loading" ng-show="!hideSign">
       <i class="fi-check icon-sign check" ng-show="!loading"></i>  
       <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
@@ -106,23 +105,30 @@
   </div>
 </div>
 
-<div class="row collapse" 
-  ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs 
-  && $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) == 0">
-  <button class="primary tiny m0 expand"
-    ng-click="broadcast(tx.ntxid)"
-    ng-disabled="loading"> <i class="fi-upload-cloud"></i>
-    <span translate>Broadcast Transaction</span>
-  </button>
-</div>
-<div class="text-center text-success" 
-  ng-show="$root.wallet.txProposals.txps[tx.ntxid].sentTs 
-  && $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) == 0">
-  Transaction sent!
-</div>
-<div class="text-center text-warning"
-  ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs && 
-  !$root.wallet.txProposals.txps[tx.ntxid].isPending($root.wallet.maxRejectCount())">
-  Transaction finally rejected
+<div ng-show="!hideTxInfo">
+  <div class="row collapse m10t" 
+    ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs 
+    && $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) == 0">
+    <button class="primary tiny m0 expand"
+      ng-click="broadcast(tx.ntxid)"
+      ng-disabled="loading"> <i class="fi-upload-cloud"></i>
+      <span translate>Broadcast Transaction</span>
+    </button>
+  </div>
+  <div class="text-success m10t oh" 
+    ng-show="$root.wallet.txProposals.txps[tx.ntxid].sentTs 
+    && $root.wallet.txProposals.txps[tx.ntxid].isFullySigned()">
+    <a class="button outline light-gray tiny right" 
+      ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' +
+      $root.wallet.txProposals.txps[tx.ntxid].sentTxid)">
+      See it on the blockchain <i class="icon-arrow-right2 vm"></i>
+    </a>
+    <div class="m10t">Transaction sent!</div>
+  </div>
+  <div class="text-center text-warning"
+    ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs && 
+    $root.wallet.txProposals.txps[tx.ntxid].isFinallyRejected($root.wallet.maxRejectCount())">
+    Transaction finally rejected
+  </div>
 </div>
 </div>
