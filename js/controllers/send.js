@@ -185,33 +185,33 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $scope.creatingTX = true;
       if ($scope.isWindowsPhoneApp)
-          $rootScope.wpInputFocused = true;
+        $rootScope.wpInputFocused = true;
 
-      $timeout(function () {
-          var comment = form.comment.$modelValue;
-          var merchantData = $scope._merchantData;
-          var address, amount;
-          if (!merchantData) {
-              address = form.address.$modelValue;
-              amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
-          }
+      $timeout(function() {
+        var comment = form.comment.$modelValue;
+        var merchantData = $scope._merchantData;
+        var address, amount;
+        if (!merchantData) {
+          address = form.address.$modelValue;
+          amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+        }
 
-          w.spend({
-              merchantData: merchantData,
-              toAddress: address,
-              amountSat: amount,
-              comment: comment,
-          }, function (err, txid, status) {
-              $scope.loading = false;
-              $scope.creatingTX = false;
-              if ($scope.isWindowsPhoneApp)
-                  $rootScope.wpInputFocused = false;
+        w.spend({
+          merchantData: merchantData,
+          toAddress: address,
+          amountSat: amount,
+          comment: comment,
+        }, function(err, txid, status) {
+          $scope.loading = false;
+          $scope.creatingTX = false;
+          if ($scope.isWindowsPhoneApp)
+            $rootScope.wpInputFocused = false;
 
-              if (err)
-                  return $scope.setError(err);
-              txStatus.notify(status);
-              $scope.resetForm();
-          });
+          if (err)
+            return $scope.setError(err);
+          txStatus.notify(status);
+          $scope.resetForm();
+        });
       }, 1);
     };
 
@@ -481,7 +481,7 @@ angular.module('copayApp.controllers').controller('SendController',
         return $scope.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
-        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals): 0;
+        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals) : 0;
 
       $scope.setForm(addr, amount, parsed.data.message, true);
       return addr;
