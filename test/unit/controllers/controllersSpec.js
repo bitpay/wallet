@@ -106,6 +106,7 @@ describe("Unit: Controllers", function() {
       isChange: false
     }]);
 
+
     var iden = {};
     iden.getLastFocusedWallet = sinon.stub().returns(null);
     iden.getWallets = sinon.stub().returns([w]);
@@ -140,12 +141,37 @@ describe("Unit: Controllers", function() {
         scope.create(invalidForm);
       });
     });
+  });
+
+
+  describe('Create Profile Controller', function() {
+    var c;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      c = $controller('CreateProfileController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(c);
+    });
+
+    it('#init', function() {
+      scope.init();
+    });
+
+    it('#clear', function() {
+      scope.clear();
+    });
 
   });
 
   describe('Receive Controller', function() {
     var c;
+    var rootScope;
     beforeEach(inject(function($controller, $rootScope) {
+      rootScope = $rootScope;
       scope = $rootScope.$new();
       c = $controller('ReceiveController', {
         $scope: scope,
@@ -204,6 +230,8 @@ describe("Unit: Controllers", function() {
         c.networkName = walletConfig.networkName;
         c.version = '0.0.1';
 
+        c.generateAddress = sinon.stub().returns({});
+
         c.balanceInfo = {};
 
         return new Wallet(c);
@@ -217,12 +245,23 @@ describe("Unit: Controllers", function() {
       should.exist(c);
     });
 
+    it('#init', function() {
+      scope.init();
+      rootScope.title.should.be.equal('Receive');
+    });
+
     it('should call setAddressList', function() {
       scope.setAddressList();
       expect(scope.addresses).to.be.empty;
       scope.toggleShowAll();
       scope.setAddressList();
       expect(scope.addresses).to.be.empty;
+    });
+
+    it('#newAddr', function() {
+      rootScope.wallet.generateAddress = sinon.stub().returns({});
+      scope.newAddr();
+      rootScope.wallet.generateAddress.calledOnce.should.be.true;
     });
   });
 
@@ -254,9 +293,10 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Send Controller', function() {
-    var scope, form, sendForm, sendCtrl;
+    var scope, form, sendForm, sendCtrl, rootScope;
     beforeEach(angular.mock.inject(function($compile, $rootScope, $controller, rateService, notification) {
       scope = $rootScope.$new();
+      rootScope = $rootScope;
       scope.rateService = rateService;
       var element = angular.element(
         '<form name="form">' +
@@ -299,6 +339,21 @@ describe("Unit: Controllers", function() {
     it('should have a title', function() {
       expect(scope.title);
     });
+
+    it('#setError', function() {
+      scope.setError('my error');
+      expect(scope.error);
+    });
+
+    it('#setFromPayPro', function() {
+      var old = rootScope.wallet.fetchPaymentRequest
+      rootScope.wallet.fetchPaymentRequest = sinon.stub().returns(null);
+      scope.setFromPayPro('newURL');
+      rootScope.wallet.fetchPaymentRequest.calledOnce.should.be.true;
+      rootScope.wallet.fetchPaymentRequest = old;
+    });
+
+
 
     it('should validate address with network', function() {
       form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
@@ -478,7 +533,6 @@ describe("Unit: Controllers", function() {
       expect(rootScope.insightError).equal(1);
       scope.$apply();
     });
-
   });
 
   describe("Unit: Sidebar Controller", function() {
@@ -490,8 +544,7 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it.only('should call sign out', function() {
-
+    it('should call sign out', function() {
       scope.signout();
       rootScope.iden.close.calledOnce.should.be.true;
     });
@@ -570,7 +623,7 @@ describe("Unit: Controllers", function() {
     });
   });
 
-  describe.only('SignOut Controller', function() {
+  describe('SignOut Controller', function() {
     var what;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
@@ -613,7 +666,6 @@ describe("Unit: Controllers", function() {
     it('should exist', function() {
       should.exist(ctrl);
     });
-
   });
 
   describe('Join Controller', function() {
@@ -683,9 +735,10 @@ describe("Unit: Controllers", function() {
   });
 
   describe('More Controller', function() {
-    var ctrl, modalCtrl;
+    var ctrl, modalCtrl, rootScope;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
+      rootScope = $rootScope;
       ctrl = $controller('MoreController', {
         $scope: scope
       });
@@ -724,6 +777,47 @@ describe("Unit: Controllers", function() {
       scope.$digest();
       scope.iden.deleteWallet.calledOnce.should.equal(true);
       scope.iden.deleteWallet.getCall(0).args[0].should.equal(w.getId());
+    });
+
+    it('#save', function() {
+      var old = rootScope.wallet.changeSettings;
+      rootScope.wallet.changeSettings = sinon.stub().returns(null);
+      scope.selectedUnit = {};
+      scope.save();
+      rootScope.wallet.changeSettings.calledOnce.should.equal.true;
+      rootScope.wallet.changeSettings = old;
+    });
+
+    it('#purge checking balance', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.purgeTxProposals = sinon.stub().returns(true);
+      scope.purge();
+      rootScope.wallet.purgeTxProposals.calledOnce.should.equal.true;
+      rootScope.wallet.purgeTxProposals = old;
+    });
+
+    it('#purge without checking balance', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.purgeTxProposals = sinon.stub().returns(false);
+      scope.purge();
+      rootScope.wallet.purgeTxProposals.calledOnce.should.equal.true;
+      rootScope.wallet.purgeTxProposals = old;
+    });
+
+    it('#updateIndexes', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.updateIndexes = sinon.stub().yields();
+      scope.updateIndexes();
+      rootScope.wallet.updateIndexes.calledOnce.should.equal.true;
+      rootScope.wallet.updateIndexes = old;
+    });
+
+    it('#updateIndexes return error', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.updateIndexes = sinon.stub().yields('error');
+      scope.updateIndexes();
+      rootScope.wallet.updateIndexes.calledOnce.should.equal.true;
+      rootScope.wallet.updateIndexes = old;
     });
 
   });
