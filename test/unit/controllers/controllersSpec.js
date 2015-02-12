@@ -328,6 +328,104 @@ describe("Unit: Controllers", function() {
     });
   });
 
+
+
+  describe('Profile Controller', function() {
+    var ctrl, bkpService, idenService;
+    beforeEach(inject(function($controller, $rootScope, backupService, identityService) {
+      scope = $rootScope.$new();
+      bkpService = backupService;
+      idenService = identityService;
+      ctrl = $controller('ProfileController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(ctrl);
+    });
+
+    it('#downloadProfileBackup', function() {
+      var old = bkpService.profileDownload;
+      bkpService.profileDownload = sinon.stub().returns(null);
+      scope.downloadProfileBackup();
+      bkpService.profileDownload.calledOnce.should.be.true;
+      bkpService.profileDownload = old;
+    });
+
+    it('#viewProfileBackup', function() {
+      var old = bkpService.profileEncrypted;
+      bkpService.profileEncrypted = sinon.stub().returns(null);
+      scope.viewProfileBackup();
+      //bkpService.profileEncrypted.calledOnce.should.be.true;
+      bkpService.profileEncrypted = old;
+    });
+
+    it('#copyProfileBackup', function() {
+      var old = bkpService.profileEncrypted;
+      bkpService.profileEncrypted = sinon.stub().returns(null);
+
+      window.cordova = {
+        plugins: {
+          clipboard: {
+            copy: function(e) {
+              return e;
+            }
+          }
+        }
+      };
+
+      window.plugins = {
+        toast: {
+          showShortCenter: function(e) {
+            return e;
+          }
+        }
+      };
+
+      scope.copyProfileBackup();
+      bkpService.profileEncrypted.calledOnce.should.be.true;
+      bkpService.profileEncrypted = old;
+    });
+
+    it('#sendProfileBackup', function() {
+      var old = bkpService.profileEncrypted;
+      bkpService.profileEncrypted = sinon.stub().returns(null);
+
+      window.plugin = {
+        email: {
+          open: function(e) {
+            return e;
+          }
+        }
+      };
+
+      window.plugins = {
+        toast: {
+          showShortCenter: function(e) {
+            return e;
+          }
+        }
+      };
+
+      scope.sendProfileBackup();
+      bkpService.profileEncrypted.calledOnce.should.be.true;
+      bkpService.profileEncrypted = old;
+    });
+
+    it('#deleteProfile', function() {
+      var old = idenService.deleteProfile;
+      idenService.deleteProfile = sinon.stub().returns(null);
+      scope.deleteProfile();
+      idenService.deleteProfile.calledOnce.should.be.true;
+      idenService.deleteProfile = old;
+    });
+
+
+  });
+
+
+
   describe('Send Controller', function() {
     var scope, form, sendForm, sendCtrl, rootScope;
     beforeEach(angular.mock.inject(function($compile, $rootScope, $controller, rateService, notification) {
@@ -658,16 +756,16 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Import Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('ImportController', {
+      ctrl = $controller('ImportController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
     it('import status', function() {
       expect(scope.importStatus).equal('Importing wallet - Reading backup...');
@@ -676,16 +774,16 @@ describe("Unit: Controllers", function() {
 
   // TODO: fix this test
   describe.skip('Home Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('HomeController', {
+      ctrl = $controller('HomeController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
     describe('#open', function() {
       it('should work with invalid form', function() {
@@ -695,16 +793,16 @@ describe("Unit: Controllers", function() {
   });
 
   describe('SignOut Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('signOutController', {
+      ctrl = $controller('signOutController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
   });
 
@@ -724,10 +822,11 @@ describe("Unit: Controllers", function() {
 
   describe('Copayers Controller', function() {
     var saveDownload = null;
-    var ctrl;
-    beforeEach(inject(function($controller, $rootScope) {
+    var ctrl, rootScope, idenService;
+    beforeEach(inject(function($controller, $rootScope, identityService) {
       scope = $rootScope.$new();
-
+      rootScope = $rootScope;
+      idenService = identityService;
       ctrl = $controller('CopayersController', {
         $scope: scope,
         $modal: {},
@@ -746,19 +845,36 @@ describe("Unit: Controllers", function() {
       scope.updateList = old;
     });
 
+    it('#updateList', function() {
+      var old = rootScope.wallet.getRegisteredPeerIds;
+      rootScope.wallet.getRegisteredPeerIds = sinon.stub().returns(null);
+      rootScope.wallet.removeListener = sinon.stub().returns(null);
+      scope.updateList();
+      rootScope.wallet.getRegisteredPeerIds.callCount.should.be.equal(1);
+      rootScope.wallet.getRegisteredPeerIds = old;
+    });
+
+    it('#deleteWallet', function() {
+      var old = idenService.deleteWallet;
+      idenService.deleteWallet = sinon.stub().returns(null);
+      scope.deleteWallet();
+      idenService.deleteWallet.callCount.should.be.equal(1);
+      idenService.deleteWallet = old;
+    });
+
   });
 
   describe('Join Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('JoinController', {
+      ctrl = $controller('JoinController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
     describe('#join', function() {
       it('should work with invalid form', function() {
