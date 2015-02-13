@@ -183,35 +183,33 @@ angular.module('copayApp.controllers').controller('SendController',
       }
 
       $scope.loading = true;
-      $scope.creatingTX = true;
       if ($scope.isWindowsPhoneApp)
         $rootScope.wpInputFocused = true;
 
       $timeout(function () {
-          var comment = form.comment.$modelValue;
-          var merchantData = $scope._merchantData;
-          var address, amount;
-          if (!merchantData) {
-              address = form.address.$modelValue;
-              amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
-          }
+        var comment = form.comment.$modelValue;
+        var merchantData = $scope._merchantData;
+        var address, amount;
+        if (!merchantData) {
+          address = form.address.$modelValue;
+          amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+        }
 
-          w.spend({
-              merchantData: merchantData,
-              toAddress: address,
-              amountSat: amount,
-              comment: comment,
-          }, function (err, txid, status) {
-              $scope.loading = false;
-              $scope.creatingTX = false;
-              if ($scope.isWindowsPhoneApp)
-                  $rootScope.wpInputFocused = false;
+        w.spend({
+          merchantData: merchantData,
+          toAddress: address,
+          amountSat: amount,
+          comment: comment,
+        }, function (err, txid, status) {
+          $scope.loading = false;
+          if ($scope.isWindowsPhoneApp)
+          $rootScope.wpInputFocused = false;
 
-              if (err)
-                  return $scope.setError(err);
-              txStatus.notify(status);
-              $scope.resetForm();
-          });
+          if (err)
+            return $scope.setError(err);
+          txStatus.notify(status);
+          $scope.resetForm();
+        });
       }, 100);
     };
 
