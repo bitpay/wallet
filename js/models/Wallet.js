@@ -1651,6 +1651,7 @@ Wallet.prototype.broadcastToBitcoinNetwork = function(ntxid, cb) {
       log.debug('Wallet:' + self.getName() + ' Send failed:' + err);
 
       self._checkIfTxIsSent(ntxid, function(err, txid) {
+        self.emitAndKeepAlive('balanceUpdated');
         return cb(err, txid);
       });
     } else {

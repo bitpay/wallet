@@ -163,6 +163,9 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('expired'))
         msg = 'The payment request has expired';
 
+      if (msg.match('XMLHttpRequest'))
+        msg = 'Error when sending to the blockchain. Resend it from Home';
+
       var message = 'The transaction' + ($scope.requiresMultipleSignatures ? ' proposal' : '') +
         ' could not be created: ' + msg;
 
@@ -203,12 +206,15 @@ angular.module('copayApp.controllers').controller('SendController',
         }, function (err, txid, status) {
           $scope.loading = false;
           if ($scope.isWindowsPhoneApp)
-          $rootScope.wpInputFocused = false;
+            $rootScope.wpInputFocused = false;
 
-          if (err)
-            return $scope.setError(err);
-          txStatus.notify(status);
-          $scope.resetForm();
+          if (err) {
+            $scope.setError(err);
+          }
+          else {
+            txStatus.notify(status);
+            $scope.resetForm();
+          }
         });
       }, 100);
     };
