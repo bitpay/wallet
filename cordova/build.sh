@@ -112,6 +112,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
   checkOK
 
+  cordova plugin add hu.dpal.phonegap.plugins.spinnerdialog
+  checkOK
+
 fi
 
 if $DBGJS

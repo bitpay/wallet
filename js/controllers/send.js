@@ -185,6 +185,10 @@ angular.module('copayApp.controllers').controller('SendController',
         return;
       }
 
+      if (isCordova) {
+        window.plugins.spinnerDialog.show(null, 'Creating transaction...', true);
+      }
+
       $scope.loading = true;
       if ($scope.isWindowsPhoneApp)
         $rootScope.wpInputFocused = true;
@@ -204,6 +208,9 @@ angular.module('copayApp.controllers').controller('SendController',
           amountSat: amount,
           comment: comment,
         }, function (err, txid, status) {
+          if (isCordova) {
+            window.plugins.spinnerDialog.hide();
+          }
           $scope.loading = false;
           if ($scope.isWindowsPhoneApp)
             $rootScope.wpInputFocused = false;
