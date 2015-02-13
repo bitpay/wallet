@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService) {
+angular.module('copayApp.controllers').controller('HomeWalletController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService, isCordova) {
 
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -9,9 +9,15 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
       $scope.loading = null;
 
       $scope.sign = function(ntxid) {
+        if (isCordova) {
+          window.plugins.spinnerDialog.show(null, 'Signing transaction...', true);
+        }
         $scope.loading = true;
         $timeout(function() {
           w.signAndSend(ntxid, function(err, id, status) {
+            if (isCordova) {
+              window.plugins.spinnerDialog.hide();
+            }
             $scope.loading = false;
             if (err)
             $scope.error = err;
@@ -22,9 +28,15 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
       };
 
       $scope.reject = function(ntxid) {
+        if (isCordova) {
+          window.plugins.spinnerDialog.show(null, 'Rejecting transaction...', true);
+        }
         $scope.loading = true;
         $timeout(function() {
           w.reject(ntxid, function(err, status) {
+            if (isCordova) {
+              window.plugins.spinnerDialog.hide();
+            }
             $scope.loading = false;
             if (err)
             $scope.error = err;
@@ -35,9 +47,15 @@ angular.module('copayApp.controllers').controller('HomeWalletController', functi
       };
 
       $scope.broadcast = function(ntxid) {
+        if (isCordova) {
+          window.plugins.spinnerDialog.show(null, 'Sending transaction...', true);
+        }
         $scope.loading = true;
         $timeout(function() {
           w.issueTx(ntxid, function(err, txid, status) {
+            if (isCordova) {
+              window.plugins.spinnerDialog.hide();
+            }
             $scope.loading = false;
             if (err)
               $scope.error = err;
