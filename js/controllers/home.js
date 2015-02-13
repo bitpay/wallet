@@ -127,7 +127,9 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       return;
     }
 
-    $scope.open(form.email.$modelValue, form.password.$modelValue);
+    $timeout(function() {
+      $scope.open(form.email.$modelValue, form.password.$modelValue);
+    }, 100);
   };
 
 
@@ -165,7 +167,6 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
         } else {
           $scope.error = 'Unknown error';
         }
-        $rootScope.starting = false;
         $timeout(function() {
           $rootScope.$digest();
         }, 1)
