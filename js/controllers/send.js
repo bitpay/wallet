@@ -185,7 +185,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.loading = true;
       $scope.creatingTX = true;
       if ($scope.isWindowsPhoneApp)
-          $rootScope.wpInputFocused = true;
+        $rootScope.wpInputFocused = true;
 
       $timeout(function () {
           var comment = form.comment.$modelValue;
@@ -212,7 +212,7 @@ angular.module('copayApp.controllers').controller('SendController',
               txStatus.notify(status);
               $scope.resetForm();
           });
-      }, 1);
+      }, 100);
     };
 
     // QR code Scanner
