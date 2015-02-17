@@ -69,6 +69,7 @@ body, html{
   width:100%;
   color: #2C3E50;
   -webkit-user-select: text;
+  background-color: #2C3E50;
 }
 
 header {

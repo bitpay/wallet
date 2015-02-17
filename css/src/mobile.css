@@ -53,7 +53,7 @@
     display: none;
   }
 
-  .page, .main {
+  .page, .main, .setup-page {
     height: 100%;
   }
 
@@ -203,10 +203,6 @@
     height:100%;   
   }
 
-  .page{
-    height:100%;   
-  }
-
   .home-wallet .avatar-wallet {
     padding: 1.7rem;
     width: 90px;
@@ -230,10 +226,6 @@
   ul.copayer-list img {
     width: 30px;
     height: 30px;
-  }
-
-  .setup-page {
-    height: 100%;
   }
 
   .hide-tab-bar {
