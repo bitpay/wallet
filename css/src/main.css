@@ -1565,8 +1565,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   color: #A5B2BF;
   text-transform: uppercase;
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid #425467;
-  margin-bottom: 2rem;
+  margin: 1rem 0;
   text-align: center;
 }
 
