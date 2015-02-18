@@ -70,10 +70,13 @@ angular.module('copayApp.controllers').controller('ImportProfileController',
       
       $rootScope.starting = true;
 
-      if (backupFile) {
-        reader.readAsBinaryString(backupFile);
-      } else {
-        _importBackup(backupText);
-      }
+      $timeout(function() {
+
+        if (backupFile) {
+          reader.readAsBinaryString(backupFile);
+        } else {
+          _importBackup(backupText);
+        }
+      }, 100);
     };
   });
