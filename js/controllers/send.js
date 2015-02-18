@@ -407,10 +407,13 @@ angular.module('copayApp.controllers').controller('SendController',
     var $oscope = $scope;
     $scope.openPPModal = function(merchantData) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
+        var w = $rootScope.wallet;
+        var satToUnit = 1 / w.settings.unitToSatoshi;
         $scope.md = merchantData;
         $scope.alternative = $oscope._alternative;
         $scope.alternativeIsoCode = $oscope.alternativeIsoCode;
         $scope.isRateAvailable = $oscope.isRateAvailable;
+        $scope.unitTotal = (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals);
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -418,7 +421,7 @@ angular.module('copayApp.controllers').controller('SendController',
       };
       $modal.open({
         templateUrl: 'views/modals/paypro.html',
-        windowClass: 'tiny',
+        windowClass: 'medium',
         controller: ModalInstanceCtrl,
       });
     };
