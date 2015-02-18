@@ -121,7 +121,7 @@
   }
 
   .modal-mobile {
-    padding: 60px 0.5rem;
+    padding: 20px .5rem;
   }
 
   .reveal-modal {
@@ -462,10 +462,22 @@
     color:  #1ABC9C;
   }
 
+  .tab-bar {
+    position: relative;
+  }
 
 }
 
 @media (max-width: 640px) {
+
+  .tab-bar {
+    position: absolute;
+  }
+
+  .modal-mobile {
+    padding: 60px 0.5rem;
+  }
+
   .tx-comment {
     border-top: 1px solid #eee;    
     padding-top: 10px;
