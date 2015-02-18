@@ -291,6 +291,7 @@ describe('Insight model', function() {
     });
   });
 
+
   describe('getActivity', function() {
     it('should get activity for an innactive address', function(done) {
       var blockchain = new Insight(FAKE_OPTS);
@@ -305,6 +306,19 @@ describe('Insight model', function() {
         actives.filter(function(i) {
           return i
         }).length.should.equal(0);
+        done();
+      });
+    });
+
+    it('should not get activity because of error', function(done) {
+      var blockchain = new Insight(FAKE_OPTS);
+
+      sinon.stub(blockchain, "getTransactions", function(addresses, from, to, cb) {
+        cb('error', []);
+      });
+
+      blockchain.getActivity(ADDRESSES, function(err, actives) {
+        chai.expect(err).to.be.not.null;
         done();
       });
     });
