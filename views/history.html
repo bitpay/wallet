@@ -11,7 +11,14 @@
       </div>
     </div>
   </div>
-  <div class="row" ng-if="blockchain_txs[0].txid">
+  <div class="row m10b" ng-show="paging">
+    <div class="large-12 columns">
+      <div class="panel oh">
+        <span class="text-gray" translate>Getting transactions...</span>
+      </div>
+    </div>
+  </div>
+  <div ng-show="!paging" class="row" ng-if="blockchain_txs[0].txid">
     <div class="large-12 columns">
     <div class="panel oh">
     <div ng-repeat="btx in blockchain_txs | orderBy:'-ts'"  ng-click="openTxModal(btx)" ng-class="{'line-b':!$last}" class="last-transactions-content">
