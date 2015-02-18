@@ -1487,7 +1487,7 @@ Wallet.prototype.getPendingTxProposals = function() {
   var satToUnit = 1 / this.settings.unitToSatoshi;
 
   _.each(txps, function(inTxp, ntxid) {
-    if (!inTxp.isPending(maxRejectCount))
+    if (!inTxp.isPending(maxRejectCount) || (inTxp.sentTs && inTxp.isFullySigned()))
       return;
 
     var txp = _.clone(inTxp);
