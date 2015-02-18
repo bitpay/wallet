@@ -70,33 +70,36 @@ angular.module('copayApp.controllers').controller('ImportController',
 
       $rootScope.starting = true;
 
-      $scope.importOpts = {};
+      $timeout(function() {
 
-      var skipFields = [];
+        $scope.importOpts = {};
 
-      if ($scope.skipPublicKeyRing)
-        skipFields.push('publicKeyRing');
+        var skipFields = [];
 
-      if ($scope.skipTxProposals)
-        skipFields.push('txProposals');
+        if ($scope.skipPublicKeyRing)
+          skipFields.push('publicKeyRing');
 
-      if (skipFields)
-        $scope.importOpts.skipFields = skipFields;
+        if ($scope.skipTxProposals)
+          skipFields.push('txProposals');
 
-      if (backupFile) {
-        reader.readAsBinaryString(backupFile);
-      } else {
-        updateStatus('Importing wallet - Procesing backup...');
-        identityService.importWallet(backupText, $scope.password, $scope.importOpts, function(err) {
-          if (err) {
-            $rootScope.starting = false;
-            $scope.error = 'Could not read wallet. Please check your password';
-            $timeout(function() {
-              $rootScope.$digest();
-            }, 1);
-          }
-        });
-      }
+        if (skipFields)
+          $scope.importOpts.skipFields = skipFields;
+
+        if (backupFile) {
+          reader.readAsBinaryString(backupFile);
+        } else {
+          updateStatus('Importing wallet - Procesing backup...');
+          identityService.importWallet(backupText, $scope.password, $scope.importOpts, function(err) {
+            if (err) {
+              $rootScope.starting = false;
+              $scope.error = 'Could not read wallet. Please check your password';
+              $timeout(function() {
+                $rootScope.$digest();
+              }, 1);
+            }
+          });
+        }
+      }, 100);
     };
 
 

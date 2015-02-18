@@ -163,6 +163,9 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('expired'))
         msg = 'The payment request has expired';
 
+      if (msg.match('XMLHttpRequest'))
+        msg = 'Error when sending to the blockchain. Resend it from Home';
+
       var message = 'The transaction' + ($scope.requiresMultipleSignatures ? ' proposal' : '') +
         ' could not be created: ' + msg;
 
@@ -182,37 +185,45 @@ angular.module('copayApp.controllers').controller('SendController',
         return;
       }
 
+      if (isCordova) {
+        window.plugins.spinnerDialog.show(null, 'Creating transaction...', true);
+      }
+
       $scope.loading = true;
-      $scope.creatingTX = true;
       if ($scope.isWindowsPhoneApp)
-          $rootScope.wpInputFocused = true;
+        $rootScope.wpInputFocused = true;
 
       $timeout(function () {
-          var comment = form.comment.$modelValue;
-          var merchantData = $scope._merchantData;
-          var address, amount;
-          if (!merchantData) {
-              address = form.address.$modelValue;
-              amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+        var comment = form.comment.$modelValue;
+        var merchantData = $scope._merchantData;
+        var address, amount;
+        if (!merchantData) {
+          address = form.address.$modelValue;
+          amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
+        }
+
+        w.spend({
+          merchantData: merchantData,
+          toAddress: address,
+          amountSat: amount,
+          comment: comment,
+        }, function (err, txid, status) {
+          if (isCordova) {
+            window.plugins.spinnerDialog.hide();
           }
+          $scope.loading = false;
+          if ($scope.isWindowsPhoneApp)
+            $rootScope.wpInputFocused = false;
 
-          w.spend({
-              merchantData: merchantData,
-              toAddress: address,
-              amountSat: amount,
-              comment: comment,
-          }, function (err, txid, status) {
-              $scope.loading = false;
-              $scope.creatingTX = false;
-              if ($scope.isWindowsPhoneApp)
-                  $rootScope.wpInputFocused = false;
-
-              if (err)
-                  return $scope.setError(err);
-              txStatus.notify(status);
-              $scope.resetForm();
-          });
-      }, 1);
+          if (err) {
+            $scope.setError(err);
+          }
+          else {
+            txStatus.notify(status);
+            $scope.resetForm();
+          }
+        });
+      }, 100);
     };
 
     // QR code Scanner
