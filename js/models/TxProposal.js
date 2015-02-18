@@ -154,12 +154,6 @@ TxProposal.prototype._check = function() {
 };
 
 
-TxProposal.prototype.trimForStorage = function() {
-  // TODO (remove builder / builderObj. utxos, etc)
-  //
-  return this;
-};
-
 TxProposal.prototype.addMerchantData = function(merchantData) {
   preconditions.checkArgument(merchantData.pr);
   preconditions.checkArgument(merchantData.request_url);
