@@ -415,14 +415,14 @@
 
   .pin {
     margin: 0 auto;
-    width: 70%;
+    width: 35%;
     text-align: center;
     overflow: hidden;
   }
 
   .pin-box {
     color: #fff;
-    font-size: 28px;
+    font-size: 14px;
     width: 25%;
     float: left;
   }
@@ -432,8 +432,8 @@
     bottom: 0;
     width: 100%;
     text-align: center;
-    background-color: #000;
-    height: 50%;
+    height: 72%;
+    margin-bottom: 1.5%;
   }
 
   .pin-button-bar {
@@ -441,17 +441,27 @@
   }
 
   a.pin-button {
-    margin: 4px;
-    padding: 5% 10%;
+    margin: 2.5%;
     display: inline-block;
-    color: #ccc;
-    font-size: 120%;
+    color: #CED5DC;
+    font-size: 210%;
+    font-weight: 100;
+    border: 1px solid #4B6178;
+    border-radius: 100%;
+    width: 70px;
+    padding-top: 1rem;
+    height: 70px;
   }
 
   a.pin-button:active {
     color: #fff;
-    background-color: #2C3E50;
+    background-color: #3E5367;
   }
+
+  .icon-circle, .icon-circle-active {
+    color:  #1ABC9C;
+  }
+
 
 }
 

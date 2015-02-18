@@ -59,11 +59,9 @@
     </div>
 
     <div ng-if='askForPin || ($root.hasPin && !$root.iden)'>
-      <div class="clipo">
-        <img src="img/clipo-pin-enter.png" alt="clipo" width="300" ng-show="$root.hasPin && !$root.iden">
-        <img src="img/clipo-pin.png" alt="clipo" width="380" ng-show="askForPin">
-      </div>
-      <div class="text-white text-center" ng-show="askForPin == 2">Repeat PIN</div>
+      <h2 ng-show="$root.hasPin && !$root.iden"> Enter PIN </h2>
+      <h2 ng-show="askForPin && askForPin !=2"> Set up a PIN </h2>
+      <h2 ng-show="askForPin == 2">Repeat PIN</h2>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
