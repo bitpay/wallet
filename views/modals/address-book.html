@@ -42,9 +42,9 @@
       </tr>
       </tbody>
     </table>
-  </div>
-   <div class="large-6 medium-6 columns large-centered medium-centered" > 
-    <form ng-show="showForm" class="m0" name="addressBookForm" ng-submit="submitAddressBook(addressBookForm)" novalidate>
+    <form ng-show="showForm" class="m0" name="addressBookForm" 
+      ng-disabled="loading"
+      ng-submit="submitAddressBook(addressBookForm)" novalidate>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="size-24 fi-x"></i>
@@ -75,14 +75,14 @@
           placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
         </div>
       </label>
-      <a translate class="button secondary default" ng-click="cancel(addressBookForm)">Cancel</a>
+      <a translate class="button secondary default" ng-show="!loading" ng-click="cancel(addressBookForm)">Cancel</a>
       <button class="primary right" 
         ng-disabled="addressBookForm.$invalid || loading" 
         ng-click="submitAddressBook(addressBookForm)">{{'Add'|translate}}</button>
     </form>
-  </div>
-  <div class="large-12 columns" ng-show="!showForm">
-    <a class="button primary expand" ng-click="toggleForm()"><i class="fi-plus"></i> Add entry</a>
+    <a ng-show="!showForm" class="button primary expand" ng-disabled="loading" ng-click="toggleForm()">
+      <i class="fi-plus"></i> Add entry
+    </a>
   </div>
   <a class="close-reveal-modal show-for-large-up" ng-click="close()"><i class="fi-x size-18"></i></a>
 </div>
