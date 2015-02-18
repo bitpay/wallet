@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
     $scope.alternativeCurrency = [];
 
     $scope.selectPage = function(page) {
+      $scope.paging = true;
       $scope.currentPage = page;
       $scope.update();
     };
@@ -188,6 +189,7 @@ angular.module('copayApp.controllers').controller('HistoryController',
         $scope.totalItems = res.nbItems;
 
         $scope.loading = false;
+        $scope.paging = false;
         setTimeout(function() {
           $scope.$digest();
         }, 1);
