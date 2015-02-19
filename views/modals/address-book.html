@@ -1,8 +1,7 @@
 <nav class="tab-bar text-right hide-for-large-up">
   <span ng-click="close()" class="p10 text-white">Close</span>
 </nav>
-<div class="row modal-mobile">
-  <div class="large-12 columns"> 
+<div class="modal-mobile">
     <h1 ng-show="!showForm">Address Book</h1>
     <h1 ng-show="showForm">Add a new entry</h1>
     <p translate class="text-gray m15b" ng-show="!showForm && !hasEntry()">Empty. Create an alias for your addresses</p>
@@ -18,7 +17,7 @@
       <thead class="show-for-large-up">
         <tr>
           <th translate>Entry</th>
-          <th ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
+          <th class="show-for-large-up" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
           <th class="show-for-large-up" translate>Date</th>
           <th class="show-for-large-up">Visible</th>
         </tr>
@@ -28,10 +27,10 @@
         ng-repeat="(addr, info) in addressBook"
         ng-class="{'addressbook-disabled': info.hidden}">
         <td ng-click="copyToSend(addr)">
-          <b>{{info.label}}</b><br>
-          <span class="address-size">{{::addr}}</span>
+          <b>{{info.label}}</b>
+          <div class="small address-size">{{::addr}}</div>
         </td>
-        <td ng-click="copyToSend(addr)" ng-show="$root.wallet.isShared()" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
+        <td class="show-for-large-up" ng-click="copyToSend(addr)" ng-show="$root.wallet.isShared()">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
         <td ng-click="copyToSend(addr)" class="show-for-large-up"><time>{{::info.createdTs | amCalendar}}</time></td>
         <td class="show-for-large-up text-center">
           <a ng-click="toggleAddressBookEntry(addr)" title="{{ info.hidden ? 'Enable' : 'Disable'}} address">
@@ -83,6 +82,5 @@
     <a ng-show="!showForm" class="button primary expand" ng-disabled="loading" ng-click="toggleForm()">
       <i class="fi-plus"></i> Add entry
     </a>
-  </div>
   <a class="close-reveal-modal show-for-large-up" ng-click="close()"><i class="fi-x size-18"></i></a>
 </div>

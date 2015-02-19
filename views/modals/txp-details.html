@@ -90,16 +90,14 @@
   <div class="large-5 medium-5 small-5 columns">
     <button class="button warning m0 expand" ng-click="hideTxInfo = true; hideSign = true; reject(tx.ntxid);" 
       ng-disabled="loading" ng-show="!hideReject">
-      <i class="fi-x icon-sign x" ng-show="!loading"></i>  
-      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <i class="fi-x icon-sign x"></i>  
       <span translate>Reject</span>
     </button>
   </div>
   <div class="large-5 medium-5 small-5 columns text-right">
     <button class="button primary m0 expand" ng-click="hideTxInfo = true; hideReject = true; sign(tx.ntxid)" 
       ng-disabled="loading" ng-show="!hideSign">
-      <i class="fi-check icon-sign check" ng-show="!loading"></i>  
-      <i class="fi-bitcoin-circle icon-rotate spinner" ng-show="loading"></i>
+      <i class="fi-check icon-sign check"></i>  
       <span translate>Sign</span>
     </button>
   </div>
