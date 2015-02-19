@@ -492,7 +492,7 @@ angular.module('copayApp.controllers').controller('SendController',
         return $scope.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
-        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals): 0;
+        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals) : 0;
 
       $scope.setForm(addr, amount, parsed.data.message, true);
       return addr;

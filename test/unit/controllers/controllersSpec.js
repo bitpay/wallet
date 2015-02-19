@@ -106,12 +106,15 @@ describe("Unit: Controllers", function() {
       isChange: false
     }]);
 
+
     var iden = {};
     iden.getLastFocusedWallet = sinon.stub().returns(null);
     iden.getWallets = sinon.stub().returns([w]);
     iden.getWalletById = sinon.stub().returns(w);
     iden.getName = sinon.stub().returns('name');
     iden.deleteWallet = sinon.stub();
+    iden.close = sinon.stub().returns(null);
+
 
     $rootScope.wallet = w;
     $rootScope.iden = iden;
@@ -138,12 +141,73 @@ describe("Unit: Controllers", function() {
         scope.create(invalidForm);
       });
     });
+  });
+
+
+  describe('Create Profile Controller', function() {
+    var c, confService, idenService;
+    beforeEach(inject(function($controller, $rootScope, configService, identityService) {
+      scope = $rootScope.$new();
+      confService = configService;
+      idenService = identityService;
+      c = $controller('CreateProfileController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(c);
+    });
+
+    it('#init', function() {
+      scope.init();
+    });
+
+    it('#clear', function() {
+      scope.clear();
+    });
+
+    it('#saveSettings', function() {
+      var old = confService.set;
+      confService.set = sinon.stub().returns(null);
+      scope.saveSettings();
+      confService.set.calledOnce.should.be.true;
+      confService.set = old;
+    });
+
+    it('#createProfile', function() {
+      var old = scope.saveSettings;
+      scope.saveSettings = sinon.stub().returns(null);
+      scope.createProfile();
+      scope.saveSettings.calledOnce.should.be.true;
+      scope.saveSettings = old;
+    });
+
+    it('#_doCreateProfile', function() {
+      var old = idenService.create;
+      idenService.create = sinon.stub().returns(null);
+      scope._doCreateProfile('myemail@domain.com', 'password');
+      idenService.create.calledOnce.should.be.true;
+      idenService.create = old;
+    });
+
+    it('#createDefaultWallet', function() {
+      var old = idenService.createDefaultWallet;
+      idenService.createDefaultWallet = sinon.stub().returns(null);
+      scope.createDefaultWallet();
+      idenService.createDefaultWallet.calledOnce.should.be.true;
+      idenService.createDefaultWallet = old;
+    });
+
+
 
   });
 
   describe('Receive Controller', function() {
     var c;
+    var rootScope;
     beforeEach(inject(function($controller, $rootScope) {
+      rootScope = $rootScope;
       scope = $rootScope.$new();
       c = $controller('ReceiveController', {
         $scope: scope,
@@ -202,6 +266,8 @@ describe("Unit: Controllers", function() {
         c.networkName = walletConfig.networkName;
         c.version = '0.0.1';
 
+        c.generateAddress = sinon.stub().returns({});
+
         c.balanceInfo = {};
 
         return new Wallet(c);
@@ -215,12 +281,23 @@ describe("Unit: Controllers", function() {
       should.exist(c);
     });
 
+    it('#init', function() {
+      scope.init();
+      rootScope.title.should.be.equal('Receive');
+    });
+
     it('should call setAddressList', function() {
       scope.setAddressList();
       expect(scope.addresses).to.be.empty;
       scope.toggleShowAll();
       scope.setAddressList();
       expect(scope.addresses).to.be.empty;
+    });
+
+    it('#newAddr', function() {
+      rootScope.wallet.generateAddress = sinon.stub().returns({});
+      scope.newAddr();
+      rootScope.wallet.generateAddress.calledOnce.should.be.true;
     });
   });
 
@@ -251,10 +328,109 @@ describe("Unit: Controllers", function() {
     });
   });
 
+
+
+  describe('Profile Controller', function() {
+    var ctrl, bkpService, idenService;
+    beforeEach(inject(function($controller, $rootScope, backupService, identityService) {
+      scope = $rootScope.$new();
+      bkpService = backupService;
+      idenService = identityService;
+      ctrl = $controller('ProfileController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(ctrl);
+    });
+
+    it('#downloadProfileBackup', function() {
+      var old = bkpService.profileDownload;
+      bkpService.profileDownload = sinon.stub().returns(null);
+      scope.downloadProfileBackup();
+      bkpService.profileDownload.calledOnce.should.be.true;
+      bkpService.profileDownload = old;
+    });
+
+    it('#viewProfileBackup', function() {
+      var old = bkpService.profileEncrypted;
+      bkpService.profileEncrypted = sinon.stub().returns(null);
+      scope.viewProfileBackup();
+      //bkpService.profileEncrypted.calledOnce.should.be.true;
+      bkpService.profileEncrypted = old;
+    });
+
+    it('#copyProfileBackup', function() {
+      var old = bkpService.profileEncrypted;
+      bkpService.profileEncrypted = sinon.stub().returns(null);
+
+      window.cordova = {
+        plugins: {
+          clipboard: {
+            copy: function(e) {
+              return e;
+            }
+          }
+        }
+      };
+
+      window.plugins = {
+        toast: {
+          showShortCenter: function(e) {
+            return e;
+          }
+        }
+      };
+
+      scope.copyProfileBackup();
+      bkpService.profileEncrypted.calledOnce.should.be.true;
+      bkpService.profileEncrypted = old;
+    });
+
+    it('#sendProfileBackup', function() {
+      var old = bkpService.profileEncrypted;
+      bkpService.profileEncrypted = sinon.stub().returns(null);
+
+      window.plugin = {
+        email: {
+          open: function(e) {
+            return e;
+          }
+        }
+      };
+
+      window.plugins = {
+        toast: {
+          showShortCenter: function(e) {
+            return e;
+          }
+        }
+      };
+
+      scope.sendProfileBackup();
+      bkpService.profileEncrypted.calledOnce.should.be.true;
+      bkpService.profileEncrypted = old;
+    });
+
+    it('#deleteProfile', function() {
+      var old = idenService.deleteProfile;
+      idenService.deleteProfile = sinon.stub().returns(null);
+      scope.deleteProfile();
+      idenService.deleteProfile.calledOnce.should.be.true;
+      idenService.deleteProfile = old;
+    });
+
+
+  });
+
+
+
   describe('Send Controller', function() {
-    var scope, form, sendForm, sendCtrl;
+    var scope, form, sendForm, sendCtrl, rootScope;
     beforeEach(angular.mock.inject(function($compile, $rootScope, $controller, rateService, notification) {
       scope = $rootScope.$new();
+      rootScope = $rootScope;
       scope.rateService = rateService;
       var element = angular.element(
         '<form name="form">' +
@@ -297,6 +473,21 @@ describe("Unit: Controllers", function() {
     it('should have a title', function() {
       expect(scope.title);
     });
+
+    it('#setError', function() {
+      scope.setError('my error');
+      expect(scope.error);
+    });
+
+    it('#setFromPayPro', function() {
+      var old = rootScope.wallet.fetchPaymentRequest
+      rootScope.wallet.fetchPaymentRequest = sinon.stub().returns(null);
+      scope.setFromPayPro('newURL');
+      rootScope.wallet.fetchPaymentRequest.calledOnce.should.be.true;
+      rootScope.wallet.fetchPaymentRequest = old;
+    });
+
+
 
     it('should validate address with network', function() {
       form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
@@ -476,10 +667,9 @@ describe("Unit: Controllers", function() {
       expect(rootScope.insightError).equal(1);
       scope.$apply();
     });
-
   });
 
-  describe.skip("Unit: Sidebar Controller", function() {
+  describe("Unit: Sidebar Controller", function() {
     beforeEach(inject(function($controller, $rootScope) {
       rootScope = $rootScope;
       scope = $rootScope.$new();
@@ -488,11 +678,45 @@ describe("Unit: Controllers", function() {
       });
     }));
 
-    it('should return an array of n undefined elements', function() {
-      var n = 5;
-      var array = scope.getNumber(n);
-      expect(array.length).equal(n);
+    it('should call sign out', function() {
+      scope.signout();
+      rootScope.iden.close.calledOnce.should.be.true;
     });
+  });
+
+  describe("Head Controller", function() {
+    var scope, ctrl, rootScope, idenService, balService;
+    beforeEach(inject(function($controller, $rootScope, identityService, balanceService) {
+      rootScope = $rootScope;
+      idenService = identityService;
+      balService = balanceService;
+      scope = $rootScope.$new();
+      ctrl = $controller('HeadController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(ctrl);
+    });
+
+    it('should call sign out', function() {
+      var old = idenService.signout;
+      idenService.signout = sinon.stub().returns(null);
+      scope.signout();
+      idenService.signout.calledOnce.should.be.true;
+      idenService.signout = old;
+    });
+
+    it('should call refresh', function() {
+      var old = rootScope.wallet.sendWalletReady;
+      rootScope.wallet.sendWalletReady = sinon.stub().returns(null);
+      balService.clearBalanceCache = sinon.stub().returns(null);
+      scope.refresh();
+      rootScope.wallet.sendWalletReady.calledOnce.should.be.true;
+      rootScope.wallet.sendWalletReady = old;
+    });
+
   });
 
   describe('Send Controller', function() {
@@ -532,16 +756,16 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Import Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('ImportController', {
+      ctrl = $controller('ImportController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
     it('import status', function() {
       expect(scope.importStatus).equal('Importing wallet - Reading backup...');
@@ -550,21 +774,35 @@ describe("Unit: Controllers", function() {
 
   // TODO: fix this test
   describe.skip('Home Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('HomeController', {
+      ctrl = $controller('HomeController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
     describe('#open', function() {
       it('should work with invalid form', function() {
         scope.open(invalidForm);
       });
+    });
+  });
+
+  describe('SignOut Controller', function() {
+    var ctrl;
+    beforeEach(inject(function($controller, $rootScope) {
+      scope = $rootScope.$new();
+      ctrl = $controller('signOutController', {
+        $scope: scope,
+      });
+    }));
+
+    it('should exist', function() {
+      should.exist(ctrl);
     });
   });
 
@@ -584,10 +822,11 @@ describe("Unit: Controllers", function() {
 
   describe('Copayers Controller', function() {
     var saveDownload = null;
-    var ctrl;
-    beforeEach(inject(function($controller, $rootScope) {
+    var ctrl, rootScope, idenService;
+    beforeEach(inject(function($controller, $rootScope, identityService) {
       scope = $rootScope.$new();
-
+      rootScope = $rootScope;
+      idenService = identityService;
       ctrl = $controller('CopayersController', {
         $scope: scope,
         $modal: {},
@@ -598,19 +837,44 @@ describe("Unit: Controllers", function() {
       should.exist(ctrl);
     });
 
+    it('#init', function() {
+      var old = scope.updateList;
+      scope.updateList = sinon.stub().returns(null);
+      scope.init();
+      scope.updateList.callCount.should.be.equal(3); //why 3 ??????
+      scope.updateList = old;
+    });
+
+    it('#updateList', function() {
+      var old = rootScope.wallet.getRegisteredPeerIds;
+      rootScope.wallet.getRegisteredPeerIds = sinon.stub().returns(null);
+      rootScope.wallet.removeListener = sinon.stub().returns(null);
+      scope.updateList();
+      rootScope.wallet.getRegisteredPeerIds.callCount.should.be.equal(1);
+      rootScope.wallet.getRegisteredPeerIds = old;
+    });
+
+    it('#deleteWallet', function() {
+      var old = idenService.deleteWallet;
+      idenService.deleteWallet = sinon.stub().returns(null);
+      scope.deleteWallet();
+      idenService.deleteWallet.callCount.should.be.equal(1);
+      idenService.deleteWallet = old;
+    });
+
   });
 
   describe('Join Controller', function() {
-    var what;
+    var ctrl;
     beforeEach(inject(function($controller, $rootScope) {
       scope = $rootScope.$new();
-      what = $controller('JoinController', {
+      ctrl = $controller('JoinController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
     describe('#join', function() {
       it('should work with invalid form', function() {
@@ -653,23 +917,36 @@ describe("Unit: Controllers", function() {
   });
 
   describe('Warning Controller', function() {
-    var what;
-    beforeEach(inject(function($controller, $rootScope) {
+    var ctrl, idenService;
+    beforeEach(inject(function($controller, $rootScope, identityService) {
       scope = $rootScope.$new();
-      what = $controller('WarningController', {
+      idenService = identityService;
+      ctrl = $controller('WarningController', {
         $scope: scope,
       });
     }));
 
     it('should exist', function() {
-      should.exist(what);
+      should.exist(ctrl);
     });
+
+    it('#signout', function() {
+      var old = idenService.signout;
+      idenService.signout = sinon.stub().returns(null);
+      scope.signout();
+      idenService.signout.calledOnce.should.be.true;
+      idenService.signout = old;
+    });
+
   });
 
   describe('More Controller', function() {
-    var ctrl, modalCtrl;
-    beforeEach(inject(function($controller, $rootScope) {
+    var ctrl, modalCtrl, rootScope, idenService, bkpService;
+    beforeEach(inject(function($controller, $rootScope, backupService, identityService) {
       scope = $rootScope.$new();
+      rootScope = $rootScope;
+      idenService = identityService;
+      bkpService = backupService;
       ctrl = $controller('MoreController', {
         $scope: scope
       });
@@ -708,6 +985,122 @@ describe("Unit: Controllers", function() {
       scope.$digest();
       scope.iden.deleteWallet.calledOnce.should.equal(true);
       scope.iden.deleteWallet.getCall(0).args[0].should.equal(w.getId());
+    });
+
+    it('#save', function() {
+      var old = rootScope.wallet.changeSettings;
+      rootScope.wallet.changeSettings = sinon.stub().returns(null);
+      scope.selectedUnit = {};
+      scope.save();
+      rootScope.wallet.changeSettings.calledOnce.should.equal.true;
+      rootScope.wallet.changeSettings = old;
+    });
+
+    it('#purge checking balance', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.purgeTxProposals = sinon.stub().returns(true);
+      scope.purge();
+      rootScope.wallet.purgeTxProposals.calledOnce.should.equal.true;
+      rootScope.wallet.purgeTxProposals = old;
+    });
+
+    it('#purge without checking balance', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.purgeTxProposals = sinon.stub().returns(false);
+      scope.purge();
+      rootScope.wallet.purgeTxProposals.calledOnce.should.equal.true;
+      rootScope.wallet.purgeTxProposals = old;
+    });
+
+    it('#updateIndexes', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.updateIndexes = sinon.stub().yields();
+      scope.updateIndexes();
+      rootScope.wallet.updateIndexes.calledOnce.should.equal.true;
+      rootScope.wallet.updateIndexes = old;
+    });
+
+    it('#updateIndexes return error', function() {
+      var old = rootScope.wallet.purgeTxProposals;
+      rootScope.wallet.updateIndexes = sinon.stub().yields('error');
+      scope.updateIndexes();
+      rootScope.wallet.updateIndexes.calledOnce.should.equal.true;
+      rootScope.wallet.updateIndexes = old;
+    });
+
+    it('#deleteWallet', function() {
+      var old = idenService.deleteWallet;
+      idenService.deleteWallet = sinon.stub().yields(null);
+      scope.deleteWallet();
+      idenService.deleteWallet.calledOnce.should.equal.true;
+      scope.loading.should.be.false;
+      idenService.deleteWallet = old;
+    });
+
+    it('#deleteWallet with error', function() {
+      var old = idenService.deleteWallet;
+      idenService.deleteWallet = sinon.stub().yields('error');
+      scope.deleteWallet();
+      idenService.deleteWallet.calledOnce.should.equal.true;
+      scope.error.should.be.equal('error');
+      idenService.deleteWallet = old;
+    });
+
+    it('#viewWalletBackup', function() {
+      var old = bkpService.walletEncrypted;
+      bkpService.walletEncrypted = sinon.stub().returns('backup0001');
+      scope.viewWalletBackup();
+      bkpService.walletEncrypted.calledOnce.should.equal.true;
+      bkpService.walletEncrypted = old;
+    });
+
+    it('#copyWalletBackup', function() {
+      var old = bkpService.walletEncrypted;
+      bkpService.walletEncrypted = sinon.stub().returns('backup0001');
+      window.cordova = {
+        plugins: {
+          clipboard: {
+            copy: function(e) {
+              return e;
+            }
+          }
+        }
+      };
+
+      window.plugins = {
+        toast: {
+          showShortCenter: function(e) {
+            return e;
+          }
+        }
+      };
+      scope.copyWalletBackup();
+      bkpService.walletEncrypted.calledOnce.should.equal.true;
+      bkpService.walletEncrypted = old;
+    });
+
+    it('#sendWalletBackup', function() {
+      var old = bkpService.walletEncrypted;
+      bkpService.walletEncrypted = sinon.stub().returns('backup0001');
+
+      window.plugins = {
+        toast: {
+          showShortCenter: function(e) {
+            return e;
+          }
+        }
+      };
+
+      window.plugin = {
+        email: {
+          open: function(e) {
+            return e;
+          }
+        }
+      };
+      scope.sendWalletBackup();
+      bkpService.walletEncrypted.calledOnce.should.equal.true;
+      bkpService.walletEncrypted = old;
     });
 
   });
