@@ -119,22 +119,23 @@ angular.module('copayApp.controllers').controller('MoreController',
 
     $scope.deleteWallet = function() {
       $scope.loading = true;
-      identityService.deleteWallet(w, function(err) {
-        if (err) {
-          $scope.loading = null;
-          $scope.error = err.message || err;
-          copay.logger.warn(err);
-          $timeout(function () { $scope.$digest(); });
-        } else {
+      $timeout(function() {
+        identityService.deleteWallet(w, function(err) {
           $scope.loading = false;
-          if ($rootScope.wallet) {
-            go.walletHome();
+          if (err) {
+            $scope.error = err.message || err;
+            copay.logger.warn(err);
+            $timeout(function () { $scope.$digest(); });
+          } else {
+            if ($rootScope.wallet) {
+              go.walletHome();
+            }
+            $timeout(function() {
+              notification.success('Success', 'The wallet "' + (w.name || w.id) + '" was deleted');
+            });
           }
-          $timeout(function() {
-            notification.success('Success', 'The wallet "' + (w.name || w.id) + '" was deleted');
-          });
-        }
-      });
+        });
+      }, 100);
     };
 
     $scope.copyText = function(text) {

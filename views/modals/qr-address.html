@@ -4,14 +4,18 @@
 <div class="modal-mobile text-center" ng-init="addr = address.address">
   <qrcode size="220" data="{{addr}}"></qrcode>
 
-  <div class="m10t"
+  <div class="m20t"
     ng-init="label = $root.wallet.addressBook[addr].label">
     <div class="size-12">
-      {{addr}} <small class="label" ng-show="address.isChange">change</small>
+      {{addr}}
     </div> 
-    <b class="db m5t" ng-show="label">
+    <div class="m5t size-10 text-secondary" ng-show="address.isChange" translate>change</div>
+    <div class="m10t" ng-show="label">
       ({{label}})
-    </b>
+    </div>
+    <div class="m5t" ng-show="address.balance && address.balance > 0">
+      <b>{{address.balance}} {{$root.wallet.settings.unitName}}</b>
+    </div>
   </div>
   <div class="text-center m10t" ng-if="isCordova">
     <button class="primary expand" ng-click="copyAddress(addr)">

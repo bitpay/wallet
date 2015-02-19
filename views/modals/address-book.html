@@ -27,8 +27,8 @@
         ng-repeat="(addr, info) in addressBook"
         ng-class="{'addressbook-disabled': info.hidden}">
         <td ng-click="copyToSend(addr)">
-          <b>{{info.label}}</b>
-          <div class="small address-size">{{::addr}}</div>
+          <b>{{info.label}}</b><br>
+          <small class="address-size">{{::addr}}</small>
         </td>
         <td class="show-for-large-up" ng-click="copyToSend(addr)" ng-show="$root.wallet.isShared()">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
         <td ng-click="copyToSend(addr)" class="show-for-large-up"><time>{{::info.createdTs | amCalendar}}</time></td>
