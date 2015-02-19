@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('ReceiveController',
 
       $modal.open({
         templateUrl: 'views/modals/qr-address.html',
-        windowClass: 'tiny',
+        windowClass: 'small',
         controller: ModalInstanceCtrl,
         resolve: {
           address: function() {
