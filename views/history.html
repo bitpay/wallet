@@ -21,35 +21,38 @@
   <div ng-show="!paging" class="row" ng-if="blockchain_txs[0].txid">
     <div class="large-12 columns">
     <div class="panel oh">
-    <div ng-repeat="btx in blockchain_txs | orderBy:'-ts'"  ng-click="openTxModal(btx)" ng-class="{'line-b':!$last}" class="last-transactions-content">
+    <div ng-repeat="btx in blockchain_txs | orderBy:'-ts'" 
+      ng-click="openTxModal(btx)" 
+      ng-class="{'line-b':!$last}" 
+      class="row last-transactions-content">
 
-      <div class="row">
-        <div class="large-6 medium-6 small-12 columns size-16">
-          <div class="ellipsis m10b">
+        <div class="large-6 medium-6 small-5 columns">
+          <div class="ellipsis">
+            {{btx.comment || btx.labelTo}} &nbsp;
+          </div>
+          <div class="m5t size-14 text-gray">
             <time  ng-if="btx.ts">{{btx.ts | amTimeAgo}}</time>
-            <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
-              <span translate>Unconfirmed</span>
+            <span translate class="text-warning" 
+              ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
+              Unconfirmed
             </span>
           </div>
         </div>
 
-        <div class="large-6 medium-6 small-12 columns">
-          <div class="text-right"  ng-class="{
+        <div class="large-6 medium-6 small-7 columns">
+          <div ng-if="!$root.updatingBalance" class="text-right"  ng-class="{
                 'text-primary' : btx.action == 'received',
                 'text-warning': btx.action == 'sent', 
                 'text-gray': btx.action == 'moved'}">
-            <span class="size-21">
-                <span ng-if="!$root.updatingBalance">
-                <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
-                </span>
-                {{$root.wallet.settings.unitName}}
+            <span class="size-18">
+              <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
+              {{$root.wallet.settings.unitName}}
             </span>
             <span class="size-14 db m5t text-gray" ng-show="btx.alternativeAmount">
               {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
             </span>
           </div>
         </div>
-      </div>
     </div>
     </div>
     </div>

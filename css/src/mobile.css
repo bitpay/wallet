@@ -393,11 +393,6 @@
     transform: none !important;
   }
 
-  .button.secondary:hover, button.secondary:hover {
-    background: #008CC1;
-    color: #fff;
-  } 
-
   .move-right .close-menu {
     cursor: pointer;
     box-shadow: none;
