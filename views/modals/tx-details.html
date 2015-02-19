@@ -44,13 +44,13 @@
   <p class="text-gray size-14">{{btx.merchant.pr.pd.memo}}</p>
 </div>
 
-<div class="m10v line-b">
-  <span class="label alert" ng-show="!btx.ts && (!btx.confirmations || btx.confirmations == 0)">
-    <span translate>Unconfirmed</span>
+<div class="m10v line-b" ng-show="btx.ts">
+  <i translate>Confirmations: </i>
+  <span class="label radius alert" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
+    Unconfirmed
   </span>
-  <span ng-show="btx.confirmations>0" class="m10v">
-    <i translate>Confirmations:  </i>
-    <p class="label radius">{{btx.confirmations}}</p>
+  <span class="label radius" ng-show="btx.confirmations>0">
+    {{btx.confirmations}}
   </span>
 </div>
 
