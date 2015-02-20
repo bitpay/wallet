@@ -616,11 +616,6 @@ ul.tx-copayers {
 .ma { margin: 0 auto;}
 .tu {text-transform: uppercase;}
 
-.small {
-  font-size: 60%;
-  line-height: inherit;
-}
-
 .line-dashed-setuph-v {
   border-left: 1px dashed #415970;
 }
@@ -850,6 +845,8 @@ input[type=number]::-webkit-outer-spin-button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-top: 3px;
+  line-height: 120%;
 }
 
 ul.pagination li.current a {

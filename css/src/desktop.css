@@ -26,10 +26,6 @@ a:hover {
   color: #2980b9;
 }
 
-.last-transactions-content:hover {
-  background: #eee;
-}
-
 a.button-setup.add-wallet:hover {
   opacity: 1;
 }
@@ -49,11 +45,6 @@ a.button-setup:hover {
 
 ul.pagination li.current a:hover, ul.pagination li.current a:focus {
   background: #16A085;
-}
-
-table tr:hover {
-  background-color: #eee;
-  cursor: pointer;
 }
 
 .button.outline.light-gray:hover {
@@ -187,7 +178,4 @@ a.text-warning:hover {color: #FD7262;}
   color: #fff;
 }
 
-.last-transactions-content.active:hover {
-  background-color: #E4E8EC;
-}
 
