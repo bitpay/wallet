@@ -33,19 +33,16 @@
       <div ng-repeat="addr in addresses" ng-click="openAddressModal(addr)" class="pointer">
         <div class="panel">
           <div class="row">
-            <div class="large-7 medium-7 small-9 columns">
-              <contact class="ellipsis" address="{{::addr.address}}">
+            <div class="large-3 medium-4 small-5 columns">
+              <contact class="size-12 ellipsis" address="{{::addr.address}}"></contact>
             </div>
-            <div class="large-1 medium-2 small-3 columns text-right">
-              <small translate class="label" ng-show="::addr.isChange">change</small>
+            <div class="large-1 medium-1 small-2 columns">
+              <span translate class="text-secondary size-10" ng-show="::addr.isChange">change</span>
             </div>
-            <div class="large-4 medium-3 small-12 columns text-right">
-              <span ng-show="$root.updatingBalance">
-                  <i class="fi-bitcoin-circle icon-rotate spinner"></i>
-                </span>
-              <span class="size-14" ng-show="!$root.updatingBalance">
-                  <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
-                </span>
+            <div class="large-8 medium-7 small-5 columns text-right">
+              <span class="size-12" ng-show="!$root.updatingBalance">
+                <b>{{addr.balance || '0'}} {{$root.wallet.settings.unitName}}</b>
+              </span>
             </div>
           </div>
           <!-- end of panel mobile -->

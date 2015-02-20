@@ -407,10 +407,13 @@ angular.module('copayApp.controllers').controller('SendController',
     var $oscope = $scope;
     $scope.openPPModal = function(merchantData) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
+        var w = $rootScope.wallet;
+        var satToUnit = 1 / w.settings.unitToSatoshi;
         $scope.md = merchantData;
         $scope.alternative = $oscope._alternative;
         $scope.alternativeIsoCode = $oscope.alternativeIsoCode;
         $scope.isRateAvailable = $oscope.isRateAvailable;
+        $scope.unitTotal = (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals);
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -418,7 +421,7 @@ angular.module('copayApp.controllers').controller('SendController',
       };
       $modal.open({
         templateUrl: 'views/modals/paypro.html',
-        windowClass: 'tiny',
+        windowClass: 'medium',
         controller: ModalInstanceCtrl,
       });
     };
@@ -534,7 +537,8 @@ angular.module('copayApp.controllers').controller('SendController',
           };
 
           $scope.cancel = function(form) {
-            $scope.error = $scope.success = null;
+            $scope.error = $scope.success = $scope.newaddress = $scope.newlabel = null;
+            clearForm(form);
             $scope.toggleForm();
           };
 
@@ -542,11 +546,23 @@ angular.module('copayApp.controllers').controller('SendController',
             $scope.showForm = !$scope.showForm;
           };
 
+          var clearForm = function(form) {
+            form.newaddress.$pristine = true;
+            form.newaddress.$setViewValue('');
+            form.newaddress.$render();
+
+            form.newlabel.$pristine = true;
+            form.newlabel.$setViewValue('');
+            form.newlabel.$render();
+            form.$setPristine();
+          };
+
           // TODO change to modal
           $scope.submitAddressBook = function(form) {
             if (form.$invalid) {
               return;
             }
+            $scope.loading = true;
             $timeout(function() {
               var errorMsg;
               var entry = {
@@ -563,11 +579,13 @@ angular.module('copayApp.controllers').controller('SendController',
               if (errorMsg) {
                 $scope.error = errorMsg;
               } else {
+                clearForm(form);
                 $scope.toggleForm();
                 notification.success('Entry created', 'New addressbook entry created')
               }
+              $scope.loading = false;
               $rootScope.$digest();
-            }, 1);
+            }, 100);
             return;
           };
 
