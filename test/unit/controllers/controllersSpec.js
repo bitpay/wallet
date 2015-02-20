@@ -854,13 +854,14 @@ describe("Unit: Controllers", function() {
       rootScope.wallet.getRegisteredPeerIds = old;
     });
 
-    it('#deleteWallet', function() {
+    it('#deleteWallet', inject(function($timeout) {
       var old = idenService.deleteWallet;
       idenService.deleteWallet = sinon.stub().returns(null);
       scope.deleteWallet();
+      $timeout.flush();
       idenService.deleteWallet.callCount.should.be.equal(1);
       idenService.deleteWallet = old;
-    });
+    }));
 
   });
 
@@ -978,14 +979,15 @@ describe("Unit: Controllers", function() {
       expect(saveAsLastCall.filename).equal('fakeWallet-keybackup.json.aes');
     });
 
-    it('Delete a wallet', function() {
+    it('Delete a wallet', inject(function($timeout) {
       var w = scope.wallet;
 
       scope.deleteWallet();
+      $timeout.flush();
       scope.$digest();
       scope.iden.deleteWallet.calledOnce.should.equal(true);
       scope.iden.deleteWallet.getCall(0).args[0].should.equal(w.getId());
-    });
+    }));
 
     it('#save', function() {
       var old = rootScope.wallet.changeSettings;
@@ -1028,23 +1030,25 @@ describe("Unit: Controllers", function() {
       rootScope.wallet.updateIndexes = old;
     });
 
-    it('#deleteWallet', function() {
+    it('#deleteWallet', inject(function($timeout) {
       var old = idenService.deleteWallet;
       idenService.deleteWallet = sinon.stub().yields(null);
       scope.deleteWallet();
+      $timeout.flush();
       idenService.deleteWallet.calledOnce.should.equal.true;
       scope.loading.should.be.false;
       idenService.deleteWallet = old;
-    });
+    }));
 
-    it('#deleteWallet with error', function() {
+    it('#deleteWallet with error', inject(function($timeout) {
       var old = idenService.deleteWallet;
       idenService.deleteWallet = sinon.stub().yields('error');
       scope.deleteWallet();
+      $timeout.flush();
       idenService.deleteWallet.calledOnce.should.equal.true;
       scope.error.should.be.equal('error');
       idenService.deleteWallet = old;
-    });
+    }));
 
     it('#viewWalletBackup', function() {
       var old = bkpService.walletEncrypted;
