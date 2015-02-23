@@ -14,23 +14,23 @@
 <div class="line-b m10v"></div>
 
 <div class="ellipsis m10v">
-  <i>To:</i> {{md.domain}}
+  <i translate>To:</i> {{md.domain}}
 </div>
 
 <div class="m10v">
-  <i>Certified by:</i>
+  <i translate>Certified by:</i>
   <span ng-show="md.pr.ca"><i class="fi-lock color-greeni"></i> {{md.pr.ca}}</span>
-  <span ng-show="!md.pr.ca"><i class="fi-unlock color-yellowi"></i> Untrusted</span>
+  <span ng-show="!md.pr.ca"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
 </div>
 
 <div ng-if="md.pr.pd.memo" class="m10v lh140">
-  <i>Merchant Message:</i>  <span class="text-gray">
+  <i translate>Merchant Message:</i>  <span class="text-gray">
   {{md.pr.pd.memo}}
 </div>
 
 
 <div ng-if="md.expirationDate" class="m10v">
-  <i>Expires:</i> {{md.expirationDate | amTimeAgo }}
+  <i translate>Expires:</i> {{md.expirationDate | amTimeAgo }}
 </div>
 </div>
 

@@ -1,11 +1,11 @@
 <nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white">Close</span>
+  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
 </nav>
 <div class="modal-mobile">
 <div class="header-modal text-center">
   <div ng-if="btx.addressTo" class="m10v">
     <span class="ellipsis">
-      <i>To:</i>
+      <i translate>To:</i>
       <span ng-if="btx.merchant">
         <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
     <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
@@ -75,7 +75,7 @@
 <small class="ellipsis text-gray m20b text-right"  ng-if="btx.txid" > ID: {{btx.txid}} </small>
 
 <a class="button outline light-gray tiny right" ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)"  ng-if="btx.txid">
-  See it on the blockchain <i class="icon-arrow-right2 vm"></i>
+  <span translate>See it on the blockchain</span> <i class="icon-arrow-right2 vm"></i>
 </a>
 </div>
 

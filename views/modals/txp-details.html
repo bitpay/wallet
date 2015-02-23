@@ -1,5 +1,5 @@
 <nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white">Close</span>
+  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
 </nav>
 <div class="modal-mobile">
 <div class="header-modal">
@@ -8,7 +8,7 @@
     <div class="ellipsis p10b size-16 m20r">
       <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':pendingForUs}" class="fi-arrow-right"></i> </span>
       <span class="text-gray">
-        To:
+        <span translate>To:</span>
         <span ng-if="tx.merchant">
           <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
           <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
@@ -44,7 +44,7 @@
 
 <div class="m10v line-b size-14" ng-if="tx.merchant">
   <div class="oh">
-    <p class="left m5b">Merchant Message:</p>
+    <p class="left m5b" translate>Merchant Message:</p>
     <div class="text-gray text-right m5t size-12" ng-if="tx.merchant && tx.merchant.expirationDate">
       <span><i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}</span>
     </div>
@@ -55,7 +55,7 @@
 </div>
 
 <div ng-if="tx.actionList[0]" class="m10v">
-  <i>Signatures:</i>
+  <i translate>Signatures:</i>
   <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
     <li ng-repeat="cId in registeredCopayerIds" 
     ng-class="{'bottom-line-copayers':!$last}">
@@ -79,7 +79,7 @@
     <i class="fi-x size-24"></i>
   </div>
   <span class="text-warning size-14">
-    {{error}}
+    {{error|translate}}
   </span>
 </div>
 
@@ -119,13 +119,13 @@
     <a class="button outline light-gray tiny right" 
       ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' +
       $root.wallet.txProposals.txps[tx.ntxid].sentTxid)">
-      See it on the blockchain <i class="icon-arrow-right2 vm"></i>
+      <span translate>See it on the blockchain</span> <i class="icon-arrow-right2 vm"></i>
     </a>
-    <div class="m10t">Transaction sent!</div>
+    <div class="m10t" translate>Transaction sent!</div>
   </div>
   <div class="text-center text-warning"
     ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs && 
-    $root.wallet.txProposals.txps[tx.ntxid].isFinallyRejected($root.wallet.maxRejectCount())">
+    $root.wallet.txProposals.txps[tx.ntxid].isFinallyRejected($root.wallet.maxRejectCount())" translate>
     Transaction finally rejected
   </div>
 </div>
