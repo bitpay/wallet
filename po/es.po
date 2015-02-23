@@ -44,6 +44,10 @@ msgstr ""
 msgid "Access your wallets anywhere"
 msgstr "Acceder a sus monederos en cualquier lugar"
 
+#: views/dummy-translations.html
+msgid "Accessing your profile"
+msgstr "Abriendo tu perfil"
+
 #: views/modals/address-book.html
 msgid "Add"
 msgstr "Agregar"
@@ -306,6 +310,10 @@ msgstr "Correo electrónico"
 msgid "Email address confirmation needed"
 msgstr "Confirmar correo electrónico"
 
+#: index.html
+msgid "Email not confirmed"
+msgstr "Correo sin confirmar"
+
 #: views/modals/address-book.html
 msgid "Empty. Create an alias for your addresses"
 msgstr "Vacío. Crea una etiqueta para tus direcciones"
@@ -388,6 +396,10 @@ msgid "Home"
 msgstr "Inicio"
 
 #: views/home.html
+msgid "I read and agree with these terms"
+msgstr "He leído y aceptado estos términos"
+
+#: views/home.html
 msgid "Import"
 msgstr "Importar"
 
@@ -463,10 +475,6 @@ msgstr "Unirse a un monedero"
 #: views/modals/address-book.html
 msgid "Label"
 msgstr "Etiqueta"
-
-#: views/settings.html
-msgid "Language"
-msgstr "Idioma"
 
 #: views/createProfile.html
 msgid "Learn more about this option"
@@ -671,6 +679,13 @@ msgstr "Monedero Personal"
 #: views/dummy-translations.html
 msgid "Please complete required fields"
 msgstr "Por favor complete los campos requeridos"
+
+#: index.html
+msgid ""
+"Please confirm your email address using the confirmation link at the message "
+"we sent you"
+msgstr ""
+"Por favor confirma tu correo electrónico usando el enlace de este mensaje"
 
 #: views/dummy-translations.html
 msgid "Please enter the required fields"
@@ -880,6 +895,10 @@ msgstr "Ingresar"
 #: views/modals/tx-details.html views/modals/txp-details.html
 msgid "Signatures:"
 msgstr "Firmas:"
+
+#: views/dummy-translations.html
+msgid "Signing out"
+msgstr "Saliendo"
 
 #: views/includes/pin-number.html
 msgid "Skip"
@@ -1247,6 +1266,12 @@ msgstr "Contraseña de tu perfil"
 msgid "Your session is about to expire due to inactivity in"
 msgstr "Tu sesión está va a expirar por inactividad en"
 
+#: index.html
+msgid ""
+"Your session is about to expire due to inactivity in {{countdown}} seconds"
+msgstr ""
+"Tu sesión actual va a expirar por inactividad en {{countdown}} segundos"
+
 #: views/import.html
 msgid "Your wallet password"
 msgstr "Contraseña de tu monedero"
@@ -1280,7 +1305,8 @@ msgstr "en TESTNET"
 msgid "in pending transactions"
 msgstr "en transacciones pendientes"
 
-#: views/copayers.html views/create.html views/includes/sidebar.html
+#: views/copayers.html views/create.html views/homeWallet.html
+#: views/includes/sidebar.html
 msgid "of"
 msgstr "de"
 
@@ -1307,6 +1333,9 @@ msgstr "propuestas de transacciones purgadas"
 #: views/create.html
 msgid "wallet"
 msgstr "monedero"
+
+#~ msgid "Language"
+#~ msgstr "Idioma"
 
 #~ msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
 #~ msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
