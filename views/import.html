@@ -6,7 +6,7 @@
   <div ng-show="!$root.starting">
     <div class="row hide-for-large-up">
       <div class="large-12 medium-12 small-12 columns">
-        <h1>{{$root.title}}</h1>
+        <h1>{{$root.title|translate}}</h1>
       </div>
     </div>
     <div class="row">
@@ -41,7 +41,7 @@
                 <span translate>You have old wallets in your localStorage. Choose one to import</span>  <i class="fi-bitcoin"></i>
               </label>
               <select ng-model="backupOldWallet" name="backupOldWallet" ng-options="wallet.name for wallet in oldWallets">
-                <option value="">-- choose wallet --</option>
+                <option value="" translate>-- choose wallet --</option>
               </select>
             </div>
 

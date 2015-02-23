@@ -6,8 +6,14 @@
           <i class="fi-info size-42 m10r"></i>
         </div>
         <div>
-          <p class="m0 size-14 text-bold">Available Balance: {{$root.wallet.balanceInfo.availableBalance}} {{$root.wallet.settings.unitName}}</p>
-          <span class="size-12 text-gray">{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} in pending transactions</span>
+          <p class="m0 size-14 text-bold">
+            <span translate>Available Balance</span>: 
+            {{$root.wallet.balanceInfo.availableBalance}} {{$root.wallet.settings.unitName}}
+          </p>
+          <span class="size-12 text-gray">
+            {{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} 
+            <span translate>in pending transactions</span>
+          </span>
         </div>
       </div>
     </div>
@@ -16,7 +22,7 @@
     <div class="large-8 large-centered columns"> 
       <div class="row show-for-large-up">
         <div class="large-7 columns">
-          <h1>{{$root.title}}</h1>
+          <h1>{{$root.title|translate}}</h1>
         </div>
         <div class="large-5 columns show-for-large-up text-right" 
           ng-show="(!lockAddress && !_merchantData && !fetchingURL)">
@@ -24,7 +30,7 @@
             <a class="button radius black tiny m0" ng-click="openScanner()"><i class="fi-camera size-18 vm m5r"></i> Scan QR </a>
           </div>
           <div ng-show="showScanner">
-            <a translate class="button radius tiny warning m0" ng-click="cancelScanner()"><i class="fi-x size-18"></i> </a>
+            <a class="button radius tiny warning m0" ng-click="cancelScanner()"><i class="fi-x size-18"></i> </a>
           </div>
         </div>
       </div>
@@ -32,7 +38,7 @@
         <div class="box-icon secondary">
           <i class="fi-bitcoin-circle size-24"></i>
         </div>
-        <span class="text-secondary size-14">
+        <span class="text-secondary size-14" translate>
           Fetching Payment Information...
         </span>
       </div>
@@ -65,11 +71,11 @@
               </label>
 
               <span ng-hide="sendForm.address.$pristine">
-                <span translate class="has-error right size-12" ng-show="sendForm.address.$invalid && _address">
+                <span class="has-error right size-12" ng-show="sendForm.address.$invalid && _address">
                   <span class="icon-input">
                     <i class="fi-x"></i>
                   </span>
-                  Not valid
+                  <span translate>Not valid</span>
                 </span>
                 <small class="icon-input right" ng-show="!sendForm.address.$invalid">
                   <i class="fi-check"></i>
@@ -101,9 +107,9 @@
           <div class="row" ng-init="showAlternative = false"   ng-hide="hideAmount">
             <div class="large-12 medium-12 columns">
               <div class="m5b right" ng-hide="sendForm.amount.$pristine">
-                <span translate class="has-error right size-12" ng-show="sendForm.amount.$invalid">
+                <span class="has-error right size-12" ng-show="sendForm.amount.$invalid">
                   <span class="icon-input"><i class="fi-x"></i></span>
-                  Not valid
+                  <span translate>Not valid</span>
                 </span>
                 <small class="icon-input right" ng-show="!sendForm.amount.$invalid">
                   <i class="fi-check"></i>
@@ -136,21 +142,27 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="isShared" placeholder="Leave a private message to your copayers" ng-maxlength="100" ng-model="_comment"  ng-focus="formFocus('msg')" ng-blur="formFocus(false)"></textarea>
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="!isShared" placeholder="Add a private comment to identify the transaction" ng-maxlength="100" ng-model="_comment"  ng-focus="formFocus('msg')" ng-blur="formFocus(false)"></textarea>
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="isShared" 
+                  placeholder="{{'Leave a private message to your copayers'|translate}}" 
+                  ng-maxlength="100" ng-model="_comment"  ng-focus="formFocus('msg')" 
+                  ng-blur="formFocus(false)"></textarea>
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="!isShared" 
+                  placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
+                  ng-maxlength="100" ng-model="_comment"  ng-focus="formFocus('msg')" 
+                  ng-blur="formFocus(false)"></textarea>
               </div>
             </div>
           </div>
 
           <div class="row">
             <div class="large-6 medium-6 small-12 columns">
-              <button type="submit" class="button primary expand" ng-disabled="sendForm.$invalid || loading">
+              <button type="submit" class="button primary expand" ng-disabled="sendForm.$invalid || loading" translate>
                 Send
               </button>
             </div>
             <div class="large-4 medium-4 small-12 columns text-right">
               <a ng-click="resetForm()" class="button expand warning" 
-                ng-show="(_merchantData || lockAddress) && !loading">Cancel</a>
+                ng-show="(_merchantData || lockAddress) && !loading" translate>Cancel</a>
             </div>
           </div>
         </div>

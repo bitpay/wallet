@@ -27,18 +27,19 @@
           <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>      
           <div class="wallet-info">
               <p class="m0">
-                {{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} 
+              {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} 
               </p>
             <div class="size-12 text-gray">
-              <span ng-if="$root.wallet.isShared() && !$root.wallet.isTestnet()">Multisignature wallet </span>
-              <span ng-if="!$root.wallet.isShared() && !$root.wallet.isTestnet()">Personal Wallet</span>
-              <span ng-if="$root.wallet.isTestnet()"> Testnet</span>
+              <span ng-if="$root.wallet.isShared() && !$root.wallet.isTestnet()" translate>Multisignature wallet </span>
+              
+              <span ng-if="!$root.wallet.isShared() && !$root.wallet.isTestnet()" translate>Personal Wallet</span> 
+              <span ng-if="$root.wallet.isTestnet()" translate>Testnet</span>
             </div>
           </div>
           <div class="right">
             <a ng-click="$root.go('more')" class="button outline light-gray tiny m0">
               <i class="fi-widget size-18 vm"></i>
-              <span class="show-for-medium-up">Settings</span>
+              <span class="show-for-medium-up" translate>Settings</span>
             </a>
           </div>
         </div>
@@ -56,14 +57,16 @@
             ng-include="'views/includes/transaction.html'" ng-if="$root.wallet.pendingTxProposals[0]">
           </div>
 
-          <div class="text-right size-12 line-t p10t" ng-show="$root.wallet.balanceInfo.lockedBalance && !$root.wallet.balanceInfo.updatingBalance">
-          Total Locked Balance:
-          <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
-          <span class="text-gray"> {{$root.wallet.balanceInfo.lockedBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}} </span>
+          <div class="text-right size-12 line-t p10t" 
+            ng-show="$root.wallet.balanceInfo.lockedBalance && !$root.wallet.balanceInfo.updatingBalance">
+            <span translate>Total Locked Balance</span>:
+            <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
+            <span class="text-gray"> {{$root.wallet.balanceInfo.lockedBalanceAlternative}} 
+              {{$root.wallet.balanceInfo.alternativeIsoCode}} </span>
           </div>
 
           <div class="pr" ng-if="!$root.wallet.pendingTxProposals[0]">
-            <p> No pending spend proposals at the moment.
+            <p translate>No pending spend proposals at the moment.</p>
           </div>
         </div>
       </div>
