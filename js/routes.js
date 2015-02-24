@@ -150,7 +150,7 @@ angular
       userLang = navigator.userLanguage || navigator.language;
     }
 
-    userLang = userLang.split('-', 1)[0];
+    userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
     gettextCatalog.setCurrentLanguage(userLang);
     amMoment.changeLanguage(userLang);
 
