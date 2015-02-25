@@ -47,6 +47,12 @@ angular.module('copayApp.directives')
             return value;
           }
 
+          // Wallet Name lookup
+          if (config.walletNameLookup.enabled && /^([a-z\d][a-z\d\-]*\.)+[a-z]{2,}$/i.test(value)) {
+            ctrl.$setValidity('validAddress', true);
+            return value;
+          }
+
           if (typeof value == 'undefined') {
             ctrl.$pristine = true;
             return;

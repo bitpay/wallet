@@ -428,10 +428,11 @@ describe("Unit: Controllers", function() {
 
   describe('Send Controller', function() {
     var scope, form, sendForm, sendCtrl, rootScope;
-    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller, rateService, notification) {
+    beforeEach(angular.mock.inject(function($compile, $rootScope, $controller, rateService, notification, walletNameLookupService) {
       scope = $rootScope.$new();
       rootScope = $rootScope;
       scope.rateService = rateService;
+      scope.walletNameLookupService = walletNameLookupService;
       var element = angular.element(
         '<form name="form">' +
         '<input type="text" id="newaddress" name="newaddress" ng-disabled="loading" placeholder="Address" ng-model="newaddress" valid-address required>' +
@@ -487,7 +488,73 @@ describe("Unit: Controllers", function() {
       rootScope.wallet.fetchPaymentRequest = old;
     });
 
+    describe('#fetchWalletName Wallet Name Lookup Tests', function () {
+      var setFormSpy;
 
+      beforeEach(function () {
+        setFormSpy = sinon.spy(scope, 'setForm');
+      });
+
+      it('Verifies a successful Wallet Name Lookup', function () {
+        var lookupReturn = {
+          'isError': false,
+          'walletAddress': 'mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy'
+        };
+
+        var lookupSpy = sinon.stub(scope.walletNameLookupService, 'getWalletName').returns({
+          then: function (success, fail) {
+            success(lookupReturn)
+          }
+        });
+
+        scope.fetchWalletName('wallet.testdomain.com');
+
+        sinon.assert.callCount(setFormSpy, 1);
+        sinon.assert.calledWithExactly(lookupSpy, 'wallet.testdomain.com');
+        sinon.assert.calledWithExactly(setFormSpy, 'mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy', null, 'Wallet Name: wallet.testdomain.com');
+        expect(scope.error).to.equal(null);
+      });
+
+      it('Verifies a Wallet Name Lookup with no wallet addresses returned', function () {
+        var lookupReturn = {
+          'isError': true,
+          'message': 'Wallet Name not found'
+        };
+
+        var lookupSpy = sinon.stub(scope.walletNameLookupService, 'getWalletName').returns({
+          then: function (success, fail) {
+            success(lookupReturn)
+          }
+        });
+
+        scope.fetchWalletName('wallet.testdomain.com');
+
+        sinon.assert.notCalled(setFormSpy);
+        sinon.assert.calledWithExactly(lookupSpy, 'wallet.testdomain.com');
+        expect(scope.error).to.equal(lookupReturn['message']);
+        expect(form.newaddress.$invalid).to.equal(true);
+      });
+
+      it('Verifies a Wallet Name Lookup failure', function () {
+        var lookupReturn = {
+          'isError': true,
+          'message': 'Wallet Name lookup failed'
+        };
+
+        var lookupSpy = sinon.stub(scope.walletNameLookupService, 'getWalletName').returns({
+          then: function (success, fail) {
+            fail(lookupReturn)
+          }
+        });
+
+        scope.fetchWalletName('wallet.testdomain.com');
+
+        sinon.assert.notCalled(setFormSpy);
+        sinon.assert.calledWithExactly(lookupSpy, 'wallet.testdomain.com');
+        expect(scope.error).to.equal(lookupReturn['message']);
+        expect(form.newaddress.$invalid).to.equal(true);
+      });
+    });
 
     it('should validate address with network', function() {
       form.newaddress.$setViewValue('mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy');
