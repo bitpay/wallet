@@ -9,9 +9,6 @@ angular.module('copayApp.services').factory('configService', function($timeout, 
     if (opts.logLevel)
       copay.logger.setLevel(opts.logLevel);
 
-    if (opts.defaultLanguage)
-      gettextCatalog.currentLanguage = opts.defaultLanguage;
-
     // Set current version
     opts.version = copay.version;
 

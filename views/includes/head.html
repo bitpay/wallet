@@ -1,7 +1,7 @@
 <div class="founds" ng-if="$root.wallet.isComplete()">
   <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
   <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
-    <small class="db text-light">Balance:</small>
+    <small class="db text-light" translate>Balance:</small>
     <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
     <span ng-if="$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
     <span ng-if="!$root.wallet.balanceInfo.alternativeBalanceAvailable" class="alt-currency gray">N/A</span>
@@ -30,8 +30,10 @@
   <ul ng-show="hoverMenu" class="size-16 text-gray" ng-class="{'hover': hoverMenu}">
     <li>
     <li><a href="#!/profile" title="Profile">
-      <i class="icon-person size-18 m10r"></i> {{'My Profile'|translate}}<span class="size-10 text-warning" ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> [ Needs Backup ]</span></a>
-      </li> 
+      <i class="icon-person size-18 m10r"></i> {{'My Profile'|translate}}<span class="size-10 text-warning"
+        ng-if="!$root.needsEmailConfirmation && $root.iden.backupNeeded"> 
+      [ <span translate>Needs Backup</span> ]</span></a>
+    </li> 
     <li><a ng-click="signout()">
         <span ng-if="!$root.hasPin"><i class="icon-power size-18 m10r"></i> {{'Close'|translate}}</span>
         <span ng-if="$root.hasPin"><i class="fi-lock size-18 m10r"></i> {{'Lock'|translate}}</span>

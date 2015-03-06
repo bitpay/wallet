@@ -6,7 +6,7 @@
   <div class="!$root.starting">
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
-        <h1>Share this secret with your copayers</h1> 
+        <h1 translate>Share this secret with your copayers</h1> 
       </div>
     </div>
 
@@ -19,7 +19,7 @@
               <div class="box-icon error">
                 <i class="fi-alert size-24"></i>
               </div>
-              <span class="text-warning size-14">
+              <span class="text-warning size-14" translate>
                 Please note the wallet creator <b>must be online</b> until all copayers have joined.
               </span>
             </div>
@@ -35,22 +35,23 @@
             <div class="text-center m10t" ng-if="isCordova">
               <span class="button outline dark-gray tiny" 
                 ng-click="shareSecret(secret)">
-                <i class="fi-share"></i> Share secret
+                <i class="fi-share"></i> 
+                <span translate>Share secret</span>
               </span>
             </div>
             <div class="size-10 line-t text-center">
               <h2 class="m10t">{{$root.wallet.getName()}}</h2>
               <span class="text-gray">
-                [{{$root.wallet.requiredCopayers}} of {{$root.wallet.totalCopayers}} ]
-              </span>
-              <span ng-if="$root.wallet.isTestnet()"> in TESTNET</span>
+                [{{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} ]
+              </span> 
+              <span ng-if="$root.wallet.isTestnet()" translate>in TESTNET</span>
             </div> 
           </div>
         </div>
       </div>
       <div class="large-4 columns">
         <div class="panel oh">
-          <h3>Waiting for copayers</h3>
+          <h3 translate>Waiting for copayers</h3>
           <div ng-include="'views/includes/copayers.html'"></div>
           <div ng-if="!$root.wallet.isComplete()" class="m15t">
             <div class="left m10r" ng-include="'views/includes/photo.html'"></div>
@@ -67,18 +68,18 @@
     <div class="row">
       <div class="large-12 columns">
         <button class="small warning" ng-show="!confirmDelete" ng-click="confirmDelete=!confirmDelete">
-          <i class="fi-trash"></i> Cancel
+          <i class="fi-trash"></i> <span translate>Cancel</span>
         </button>
         <div class="text-center" ng-show="confirmDelete">
-          <h2>Are you sure you want to cancel and delete this wallet</h2>
+          <h2 translate>Are you sure you want to cancel and delete this wallet</h2>
           <div class="row">
             <div class="large-6 medium-6 small-6 columns">
               <button class="gray" ng-disabled="loading" 
-                ng-click="confirmDelete=!confirmDelete">No</button>
+                ng-click="confirmDelete=!confirmDelete" translate>No</button>
             </div>
             <div class="large-6 medium-6 small-6 columns">
               <button class="warning" ng-disabled="loading" ng-click="deleteWallet(); confirmDelete = !confirmDelete">
-                <i class="fi-trash"></i> Yes
+                <i class="fi-trash"></i> <span translate>Yes</span>
               </button>
             </div>
           </div>

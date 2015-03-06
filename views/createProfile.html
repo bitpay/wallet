@@ -26,8 +26,8 @@
         <div class="clipo" ng-if="!useLocalstorage  && !hideForWP">
           <img src="img/clipo-signup2.png" alt="clipo" width="373">
         </div>
-        <h2 ng-if="!useLocalstorage" ng-hide="hideForWP"> Creating in the cloud </h2>
-          <h2 ng-if="useLocalstorage" ng-hide="hideForWP"> Creating on this device </h2>
+        <h2 ng-if="!useLocalstorage" ng-hide="hideForWP" translate>Creating in the cloud</h2>
+        <h2 ng-if="useLocalstorage" ng-hide="hideForWP" translate>Creating on this device</h2>
       </div>
 
       <div ng-show="createStep == 'pass'">
@@ -35,8 +35,8 @@
           <img src="img/clipo-signup3.png" alt="clipo" width="380">
         </div>
 
-          <h2 ng-if="useLocalstorage" ng-hide="hideForWP"> Creating on this device </h2>
-          <h2 ng-if="!useLocalstorage" ng-hide="hideForWP"> Creating in the cloud </h2>
+          <h2 ng-if="useLocalstorage" ng-hide="hideForWP" translate>Creating on this device</h2>
+          <h2 ng-if="!useLocalstorage" ng-hide="hideForWP" translate>Creating in the cloud</h2>
           <div class="text-gray text-center m20b" ng-hide="hideForWP">{{userOrEmail}}</div>
       </div>
 
@@ -54,51 +54,53 @@
         <tabset>
           <tab style="width: 50%;" select="selectStorage('remote')">
             <tab-heading>
-              <span>In the Cloud </span>
+              <span translate>In the Cloud</span>
               <br>
-              <span class="size-10 text-gray">( Recommended )</span>
+              <span class="size-10 text-gray">
+                (<span translate>Recommended</span>)
+              </span>
             </tab-heading>
             <div class="content-item">
               <div class="bg-circle"><i class="icon-wallet"></i>
               </div>
-              <span class="text-gray">Access your wallets anywhere</span>
+              <span class="text-gray" translate>Access your wallets anywhere</span>
             </div>
             <div class="content-item">
               <div class="bg-circle"><i class="icon-download"></i>
               </div>
-              <span class="text-gray">Backups managed by the server</span>
+              <span class="text-gray" translate>Backups managed by the server</span>
             </div>
             <div class="content-item line-none">
               <div class="bg-circle"><i class="icon-email"></i>
               </div>
-              <span class="text-gray">Email address confirmation needed</span>
+              <span class="text-gray" translate>Email address confirmation needed</span>
             </div>
           </tab>
           <tab style="width: 50%;" select="selectStorage('local')">
             <tab-heading>
-              <div class="m5t">On this Device</div>
+              <div class="m5t" translate>On this Device</div>
             </tab-heading>
             <div class="content-item">
               <div class="bg-circle"><i class="icon-locked"></i>
               </div>
-              <span class="text-gray">Your private keys never leave this device</span>
+              <span class="text-gray" translate>Your private keys never leave this device</span>
             </div>
             <div class="content-item">
               <div class="bg-circle"><i class="icon-person"></i>
               </div>
-              <span class="text-gray">No email required</span>
+              <span class="text-gray" translate>No email required</span>
             </div>
             <div class="content-item line-none">
               <div class="bg-circle"><i class="icon-download"></i>
               </div>
-              <span class="text-gray">Need to be careful with backups</span>
+              <span class="text-gray" translate>Need to be careful with backups</span>
             </div>
           </tab>
         </tabset>
 
-        <button translate class="button primary radius expand m0" ng-click="goToEmail()">
-          <span ng-if="!useLocalstorage"> Create in the cloud</span>
-          <span ng-if="useLocalstorage"> Create on this device</span>
+        <button class="button primary radius expand m0" ng-click="goToEmail()">
+          <span ng-if="!useLocalstorage" translate>Create in the cloud</span>
+          <span ng-if="useLocalstorage" translate>Create on this device</span>
         </button>
 
         <div class="box-setup-footer">
@@ -110,7 +112,7 @@
           </div>
           <div class="right">
             <a class="button outline dark-gray tiny" 
-              ng-click="$root.openExternalLink('https://copay.io/profile-storage.html')"> 
+              ng-click="$root.openExternalLink('https://copay.io/profile-storage.html')" translate> 
               Learn more about this option
             </a>
           </div>
@@ -119,13 +121,14 @@
 
       <form ng-show="createStep == 'email'" name="emailForm" ng-submit="setEmailOrUsername(emailForm)" novalidate>
         <div class="input" ng-if="useEmail">
-          <input type="email" ng-model="email" class="form-control fi-email" name="email" placeholder="Email" required auto-focus="!isMobile"  ng-focus="formFocus()">
+          <input type="email" ng-model="email" class="form-control fi-email" name="email"
+          placeholder="{{'Email'|translate}}" required auto-focus="!isMobile"  ng-focus="formFocus()">
           <i class="icon-email"></i>
           <div class="icon-input" ng-if="useEmail">
-            <span translate class="has-error size-12" ng-show="emailForm.email.$invalid &&
+            <span class="has-error size-12" ng-show="emailForm.email.$invalid &&
             !emailForm.email.$pristine">
               <i class="fi-x"></i>
-              Not valid
+              <span translate>Not valid</span>
             </span>
             <span ng-show="!emailForm.email.$invalid &&
             !emailForm.email.$pristine"><i class="fi-check"></i>
@@ -134,7 +137,8 @@
         </div>
 
         <div class="input" ng-if="!useEmail">
-          <input type="text" ng-model="username" class="form-control fi-user" name="username" placeholder="Username" required  auto-focus="!isMobile" ng-focus="formFocus()">
+          <input type="text" ng-model="username" class="form-control fi-user" name="username"
+          placeholder="{{'Username'|translate}}" required  auto-focus="!isMobile" ng-focus="formFocus()">
           <i class="icon-person"></i>
         </div>
 
@@ -178,7 +182,7 @@
           <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required  ng-focus="formFocus()">
           <i class="icon-locked"></i>
           <div class="icon-input">
-            <span translate class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
+            <span class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
             passForm.repeatpassword.$invalid">
               <i class="fi-x"></i>
               {{'Passwords must match'|translate}}
@@ -213,7 +217,7 @@
       <img src="img/clipo-pin.png" alt="clipo" width="380">
     </div>
 
-    <div class="text-white text-center" ng-show="askForPin == 2">Repeat PIN</div>
+    <div class="text-white text-center" ng-show="askForPin == 2" translate>Repeat PIN</div>
     <div class="box-notification" ng-show="error">
       <div class="box-icon error">
         <i class="fi-x size-24"></i>

@@ -139,9 +139,20 @@ angular
     $idleProvider.warningDuration(40); // in seconds
     $keepaliveProvider.interval(30); // in seconds
   })
-  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler, isCordova) {
+  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler, isCordova, amMoment) {
 
-    gettextCatalog.currentLanguage = config.defaultLanguage;
+    var userLang, androidLang;
+
+    if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
+      userLang = androidLang[1];
+    } else {
+      // works for iOS and Android 4.x
+      userLang = navigator.userLanguage || navigator.language;
+    }
+
+    userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+    gettextCatalog.setCurrentLanguage(userLang);
+    amMoment.changeLanguage(userLang);
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {

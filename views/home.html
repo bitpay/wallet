@@ -11,8 +11,8 @@
 
   <div class="row" ng-show="showDisclaimer">
     <div class="large-8 medium-10 small-12 large-centered medium-centered columns">
-      <h1 class="text-white text-center">Disclaimer</h1>
-      <p class="text-white">
+      <h1 class="text-white text-center" translate>Disclaimer</h1>
+      <p class="text-white" translate>
       The software you are about to use is free, open source, and unsupported beta software. It is important to understand
       that beta software refers to software that is undergoing testing and has not officially been released, could have
       bugs, and may not act in a reliable fashion. Because the software is currently in beta, it is possible but not certain
@@ -34,7 +34,9 @@
       software or the use or other dealings in the software. We reserve the right to modify this disclaimer from time to
       time.
       </p>
-      <button class="success expand" ng-click="agreeDisclaimer()">I read and agree with these terms</button>
+      <button class="success expand" ng-click="agreeDisclaimer()">
+        {{'I read and agree with these terms'|translate}}
+      </button>
     </div>
   </div>
 
@@ -51,17 +53,15 @@
         <i class="size-36 fi-check m10r"></i>
       </div>
       <div class="size-14">
-        <h3>
-        Your email was confimed!
-        </h3>
-        Please sign in to access your wallets
+        <h3 translate>Your email was confimed!</h3>
+        <span translate>Please sign in to access your wallets</span>
       </div>
     </div>
 
     <div ng-if='askForPin || ($root.hasPin && !$root.iden)'>
-      <h2 ng-show="$root.hasPin && !$root.iden"> Enter PIN </h2>
-      <h2 ng-show="askForPin && askForPin !=2"> Set up a PIN </h2>
-      <h2 ng-show="askForPin == 2">Repeat PIN</h2>
+      <h2 ng-show="$root.hasPin && !$root.iden" translate>Enter PIN</h2>
+      <h2 ng-show="askForPin && askForPin !=2" translate>Set up a PIN</h2>
+      <h2 ng-show="askForPin == 2" translate>Repeat PIN</h2>
       <div class="box-notification" ng-show="error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
@@ -81,15 +81,15 @@
         <div class="left">
           <i class="size-36 fi-alert m10r"></i>
         </div>
-        <b>Copay now needs a profile to access wallets.</b>
-        You can import your current wallets after
-        <a class="text-white" ng-click="$root.go('/createProfile')">creating your profile</a>
+        <b translate>Copay now needs a profile to access wallets.</b>
+        <span translate>You can import your current wallets after</span>
+        <a class="text-white" ng-click="$root.go('/createProfile')" translate>creating your profile</a>
       </div>
       <div class="p10 bg-success m20b text-white" ng-show="pendingPayment">
         <div class="left">
           <i class="size-36 m10r"></i>
         </div>
-        <div class="size-14">
+        <div class="size-14" translate>
           Please sign in to make the payment
         </div>
       </div>
@@ -104,27 +104,30 @@
         </div>
 
         <div class="input" ng-if="!usingLocalStorage">
-            <input type="email" ng-model="email" class="form-control" name="email" placeholder="Email" required show-focus="!isMobile" ng-focus="formFocus()">
+          <input type="email" ng-model="email" class="form-control" name="email" placeholder="{{'Email'|translate}}" 
+          required show-focus="!isMobile" ng-focus="formFocus()">
           <i class="icon-email"></i>
         </div>
 
         <div class="input" ng-if="usingLocalStorage">
-          <input type="text" ng-model="email" class="form-control" name="email" placeholder="Username" required show-focus="!isMobile"  ng-focus="formFocus()">
+          <input type="text" ng-model="email" class="form-control" name="email" placeholder="{{'Username'|translate}}" 
+          required show-focus="!isMobile"  ng-focus="formFocus()">
           <i class="icon-person"></i>
         </div>
         <div class="input">
-          <input type="password" ng-model="password" class="form-control" name="password" placeholder="Password" required    ng-focus="formFocus()">
+          <input type="password" ng-model="password" class="form-control" name="password"
+          placeholder="{{'Password'|translate}}" required ng-focus="formFocus()">
           <i class="icon-locked"></i>
         </div>
 
 
 
-        <button translate type="submit" class="button primary radius expand m0" 
+        <button type="submit" class="button primary radius expand m0" 
           ng-disabled="loginForm.$invalid">
-          Sign in
+          {{'Sign in'|translate}}
         </button>
       </form>
-        <div ng-if="usingLocalStorage" class="text-gray size-12 m10v">
+        <div ng-if="usingLocalStorage" class="text-gray size-12 m10v" translate>
           * Using this device storage. Change to cloud storage on 'settings'.
         </div>
 

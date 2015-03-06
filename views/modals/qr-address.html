@@ -1,5 +1,5 @@
 <nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white">Close</span>
+  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
 </nav>
 <div class="modal-mobile text-center" ng-init="addr = address.address">
   <qrcode size="220" data="{{addr}}"></qrcode>
@@ -19,7 +19,7 @@
   </div>
   <div class="text-center m10t" ng-if="isCordova">
     <button class="primary expand" ng-click="copyAddress(addr)">
-      <i class="fi-clipboard-pencil"></i> Copy to clipboard
+      <i class="fi-clipboard-pencil"></i> <span translate>Copy to clipboard</span>
     </button>
   </div>
   <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>

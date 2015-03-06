@@ -62,24 +62,28 @@
                 <label for="network-name">
                   <input id="network-name" type="checkbox" ng-model="networkName" ng-true-value="'testnet'"
                   ng-false-value="'livenet'" class="form-control" ng-checked="networkName == 'testnet' ? true : false">
-                  Use test network
+                  <span translate>Use test network</span>
                 </label>
 
-                <label for="ext-master">Master extended private key
-                <input id="ext-master" 
+                <label for="ext-master">
+                  <span translate>Master extended private key</span>
+                  <input id="ext-master" 
                   type="text" 
-                  placeholder="BIP32 master extended private key (hex)" 
+                  placeholder="{{'BIP32 master extended private key (hex)'|translate}}" 
                   name="private" ng-model="private">
               </div>
             </div>
 
 
             <div class="text-right">
-              <button translate  type="submit" class="button primary expand m0" ng-disabled="setupForm.$invalid">
-                Create {{requiredCopayers}}-of-{{totalCopayers}} wallet
+              <button type="submit" class="button primary expand m0" ng-disabled="setupForm.$invalid">
+                <span translate>Create</span> 
+                {{requiredCopayers}}-<span translate>of</span>-{{totalCopayers}} <span translate>wallet</span>
               </button>
             </div>
-            <div ng-show="showNetwork()"><p translate class="size-12">Using network: {{networkName}} at <a href="{{networkUrl}}" target="_blank">{{networkUrl}}</a></p></div>
+            <div ng-show="showNetwork()"><p class="size-12">
+              <span translate>Using network:</span> 
+              {{networkName}} <span translate>at</span> <a href="{{networkUrl}}" target="_blank">{{networkUrl}}</a></p></div>
           </div>
         </div>
       </div>

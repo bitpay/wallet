@@ -1,16 +1,18 @@
 <nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="close()" class="p10 text-white">Close</span>
+  <span ng-click="close()" class="p10 text-white" translate>Close</span>
 </nav>
 <div class="modal-mobile">
-    <h1 ng-show="!showForm">Address Book</h1>
-    <h1 ng-show="showForm">Add a new entry</h1>
-    <p translate class="text-gray m15b" ng-show="!showForm && !hasEntry()">Empty. Create an alias for your addresses</p>
+    <h1 ng-show="!showForm" translate>Address Book</h1>
+    <h1 ng-show="showForm" translate>Add a new entry</h1>
+    <p translate class="text-gray m15b" ng-show="!showForm && !hasEntry()" translate>
+      Empty. Create an alias for your addresses
+    </p>
     <div class="box-notification" ng-show="success">
       <div class="box-icon success">
         <i class="size-24 fi-check"></i>
       </div>
       <span class="size-14 text-success">
-        {{success}}
+        {{success|translate}}
       </span>
     </div>
     <table class="addressbook line-t" ng-show="!showForm && hasEntry()">
@@ -19,7 +21,7 @@
           <th translate>Entry</th>
           <th class="show-for-large-up" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
           <th class="show-for-large-up" translate>Date</th>
-          <th class="show-for-large-up">Visible</th>
+          <th class="show-for-large-up" translate>Visible</th>
         </tr>
       </thead>
       <tbody>
@@ -49,16 +51,16 @@
           <i class="size-24 fi-x"></i>
         </div>
         <span class="size-14 text-warning">
-          {{error}}
+          {{error|translate}}
         </span>
       </div>
       <div class="row collapse">
         <label for="newaddress" class="left"><span translate>Address</span>
           <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
         </label>
-        <span translate class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+        <span class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
           <span class="icon-input"><i class="fi-x"></i></span>
-          Not valid
+          <span translate>Not valid</span>
         </span>
         <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
       </div>
@@ -80,7 +82,7 @@
         ng-click="submitAddressBook(addressBookForm)">{{'Add'|translate}}</button>
     </form>
     <a ng-show="!showForm" class="button primary expand" ng-disabled="loading" ng-click="toggleForm()">
-      <i class="fi-plus"></i> Add entry
+      <i class="fi-plus"></i> <span translate>Add entry</span>
     </a>
   <a class="close-reveal-modal show-for-large-up" ng-click="close()"><i class="fi-x size-18"></i></a>
 </div>
